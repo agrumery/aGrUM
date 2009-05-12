@@ -1,0 +1,977 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES et Pierre-Henri WUILLEMIN   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of lazy propagation for inference
+ * Bayesian Networks.
+ */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+namespace gum {
+  
+
+  // ==============================================================================
+  /// default constructor
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  LazyPropagation<T_DATA>::LazyPropagation( const BayesNet<T_DATA>& BN ) :
+    BayesNetInference<T_DATA>( BN ) {
+    // for debugging purposessetRequiredInference
+    GUM_CONSTRUCTOR( LazyPropagation );
+    // set the correspondance between variables and their id and get the variables
+    // domain sizes
+    HashTable<NodeId, unsigned int> modalities;
+    const DAG& dag = this->bn().dag();
+    const NodeSet& nodes = dag.nodes();
+
+    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
+      const DiscreteVariable& var = this->bn().variable( *iter );
+      modalities.insert( *iter, var.domainSize() );
+    }
+
+    // initialize the __triangulation algorithm
+    __triangulation.setGraph( this->bn().moralGraph(),modalities );
+
+    __JT = &( __triangulation.junctionTree() );
+
+    // indicate, for each node of the BN, a clique in __JT that can contain its
+    // conditional probability table
+    const std::vector <NodeId>& JT_elim_order = __triangulation.eliminationOrder();
+
+    HashTable <NodeId,unsigned int> elim_order( JT_elim_order.size() );
+
+    for ( unsigned int i = 0; i < JT_elim_order.size(); ++i )
+      elim_order.insert( JT_elim_order[i], i );
+
+    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
+      // get the variables in the potential of iter_node
+      NodeId first_var_eliminated = *iter;
+      unsigned int elim_number = elim_order[*iter];
+      const ArcSet& parents = dag.parents( *iter );
+
+      for ( ArcSetIterator parent = parents.begin();
+            parent != parents.end(); ++parent ) {
+        NodeId theParent = parent->tail();
+
+        if ( elim_order[theParent] < elim_number ) {
+          elim_number = elim_order[theParent];
+          first_var_eliminated = theParent;
+        }
+      }
+
+      // first_var_eliminated contains the first var (iter or one of its parents)
+      // eliminated => the clique created during its elmination contains iter
+      // and all of its parents => it can contain iter's potential
+      __node_to_clique.insert(*iter,
+                              __triangulation.createdClique(first_var_eliminated));
+    }
+
+    // create empty potential lists into the cliques of the joint tree as well
+    // as empty lists of evidence
+    List <const Potential<T_DATA>*> empty_list;
+
+    const NodeSet& jt_cliques = __JT->nodes();
+
+    for ( NodeSetIterator iter = jt_cliques.begin();
+          iter != jt_cliques.end(); ++iter ) {
+      __clique_potentials.insert( *iter, empty_list );
+      __clique_evidence.insert( *iter, empty_list );
+    }
+
+    // put all the CPT's of the Bayes net nodes into the cliques
+    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
+      const Potential<T_DATA>& cpt =this->bn().cpt( *iter ) ;
+      __clique_potentials[__node_to_clique[*iter]].insert( &cpt );
+    }
+
+    // create empty messages on the separators
+    __PotentialSet empty_set;
+
+    const EdgeSet& jt_edges = __JT->edges();
+
+    for ( EdgeSetIterator iter = jt_edges.begin();iter != jt_edges.end(); ++iter ) {
+      __sep_potentials.insert( Arc( iter->first(),iter->second() ), empty_set );
+      __sep_potentials.insert( Arc( iter->second(),iter->first() ), empty_set );
+    }
+
+    // indicate that __collect and __diffusion passed through no clique yet
+    for ( NodeSetIterator iter = jt_cliques.begin();
+          iter != jt_cliques.end(); ++iter ) {
+      __collected_cliques.insert( *iter,false );
+      __diffused_cliques.insert( *iter,false );
+    }
+  }
+
+  // ==============================================================================
+  /// destructor
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  LazyPropagation<T_DATA>::~LazyPropagation() {
+    // for debugging purposes
+    GUM_DESTRUCTOR( LazyPropagation );
+    // remove all the created potentials
+
+    for ( __PotentialSetIterator iter = __created_potentials.begin();
+          iter != __created_potentials.end(); ++iter )
+      delete( *iter );
+
+    __created_potentials.clear();
+  }
+
+  // ==============================================================================
+  /// indicates that we need inference in a given Junction tree connected component
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::__setRequiredInference( NodeId id, NodeId from ) {
+    // check if an inference has already happened through clique id
+    if (( __collected_cliques[id] == false ) && ( __diffused_cliques[id] == false ) )
+      return;
+
+    // indicates that clique "id" needs an inference
+    __collected_cliques[id] = false;
+
+    __diffused_cliques[id]  = false;
+
+    // propagate this requirement to id's neighbours
+    const EdgeSet& nei = __JT->neighbours( id );
+
+    for ( EdgeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
+      NodeId other = iter->other( id );
+
+      if ( other != from ) {
+        // remove the potentials sent on clique id's adjacent separators
+        Arc sep( other,id );
+        __PotentialSet& del_pots = __sep_potentials[sep];
+
+        for ( __PotentialSetIterator iter2 = del_pots.begin();
+              iter2 != del_pots.end(); ++iter2 )
+          delete *iter2;
+
+        __sep_potentials[sep].clear();
+
+        sep=Arc( id,other );
+
+        del_pots = __sep_potentials[sep];
+
+        for ( __PotentialSetIterator iter2 = del_pots.begin();
+              iter2 != del_pots.end(); ++iter2 )
+          delete *iter2;
+
+        __sep_potentials[sep].clear();
+
+        // propagate the "required" state to the neighbours
+        __setRequiredInference( other, id );
+      }
+    }
+  }
+
+  // ==============================================================================
+  /// remove a given evidence from the graph
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
+    // if the evidence does not exist, do nothing
+    if ( !__evidences.contains( pot ) ) return;
+
+    // remove the potential from the list of evidence of the cliques
+    // @todo : elle n'est pas que dans une seule clique ?
+    // (donc utiliser pot_clique ligne 204)
+    for ( HashTableIterator< NodeId, List <const Potential<T_DATA>*> >
+            iter=__clique_evidence.begin();
+          iter != __clique_evidence.end(); ++iter ) {
+      iter->eraseByVal( pot );
+    }
+
+    // remove the potential from the list of evidence
+    __evidences.erase( pot );
+
+    // indicate that we need to perform both __collect and __diffusion in the
+    // connected component containing the variable of the evidence
+    const Sequence<const DiscreteVariable *>& vars = pot->variablesSequence();
+
+    NodeId pot_clique = __node_to_clique[this->bn().nodeId( *vars.atPos( 0 ) )];
+
+    __setRequiredInference( pot_clique,pot_clique );
+  }
+
+  // ==============================================================================
+  /// remove all evidence from the graph
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::eraseAllEvidence() {
+    // remove the evidence store in the cliques
+    for ( HashTableIterator<NodeId,List<const Potential<T_DATA>*> >
+            iter = __clique_evidence.begin();
+          iter != __clique_evidence.end(); ++iter )
+      iter->clear();
+
+    // remove the messages sent during a previous propagation
+    for ( typename Property< __PotentialSet >::onArcs::iterator iter =
+            __sep_potentials.begin();
+          iter != __sep_potentials.end(); ++iter )
+      iter->clear();
+
+    // remove actually all the evidence taken into account
+    __evidences.clear();
+
+    // remove from memory all the created potentials
+    for ( __PotentialSetIterator iter = __created_potentials.begin();
+          iter != __created_potentials.end(); ++iter )
+      delete *iter;
+
+    __created_potentials.clear();
+
+    // indicate that, now, new inference is required
+    for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+          iter != __collected_cliques.end(); ++iter )
+      *iter = false;
+
+    for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+          iter != __diffused_cliques.end(); ++iter )
+      *iter = false;
+  }
+
+  // ==============================================================================
+  /// insert new evidence in the graph
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::insertEvidence
+  ( const List<const Potential<T_DATA>*>& pot_list ) {
+    List <const Potential<T_DATA>*> empty_list;
+
+    for ( ListIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+          iter != pot_list.end(); ++iter ) {
+      // check that the evidence is given w.r.t.only one random variable
+      const Sequence<const DiscreteVariable *>& vars=( *iter )->variablesSequence();
+
+      if ( vars.size() != 1 )
+        GUM_ERROR( IdError, "" );
+
+      // remove already existing evidence w.r.t. iter's node
+      const DiscreteVariable *var = vars.atPos( 0 );
+
+      NodeId var_id = this->bn().nodeId( *var );
+
+      for ( __PotentialSetIterator iter2 = __evidences.begin();
+            iter2 != __evidences.end();
+            ++iter2 ) {
+        if ( var == ( *iter2 )->variablesSequence().atPos( 0 ) ) {
+          eraseEvidence( *iter2 );
+          break;
+        }
+      }
+
+      // insert the evidence
+      __evidences.insert( *iter );
+
+      NodeId clique_id = __node_to_clique[var_id];
+
+      __clique_evidence[clique_id].insert( *iter );
+
+      // indicate that, now, new inference is required
+      __setRequiredInference( clique_id,clique_id );
+    }
+  }
+
+  // ==============================================================================
+  /// remove variables del_vars from the list of potentials pot_list
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::__marginalizeOut
+  ( __PotentialSet& pot_list, Set<const DiscreteVariable*>& del_vars ) {
+    // when we remove a variable, we need to combine all the tables containing this
+    // variable in order to produce a new unique table containing this variable.
+    // removing the variable is then performed by marginalizing it out of the
+    // table. In the marginalizeOut algorithm, we wish to remove first variables that
+    // produce small tables. This should speed up the marginalizing process
+    // the sizes of the tables produced when removing a given discrete variable
+    PriorityQueue<const DiscreteVariable *, double> product_size;
+    // the potentials containing a given variable
+    HashTable<const DiscreteVariable *, List<const Potential<T_DATA>*> > pot_per_var;
+    // for a given variable X to be deleted, the list of all the variables of
+    // the potentials containing X (actually, we count the number of potentials
+    // containing the variable. This is more efficient for computing and updating
+    // the product_size priority queue when some potentials are removed)
+    HashTable<const DiscreteVariable *,  HashTable<const DiscreteVariable *,
+      unsigned int> > pot_vars_per_var;
+    // initialize pot_vars_per_var and pot_per_var
+    List<const Potential<T_DATA>*> empty_list;
+    HashTable<const DiscreteVariable *, unsigned int>
+      empty_hash( 16 ); // @todo why 16 ?
+
+    for ( SetIterator<const DiscreteVariable*> iter=del_vars.begin();
+          iter != del_vars.end(); ++iter ) {
+      pot_per_var.insert( *iter, empty_list );
+      pot_vars_per_var.insert( *iter, empty_hash );
+    }
+
+    // update properly pot_per_var and pot_vars_per_var
+    for ( __PotentialSetIterator iter = pot_list.begin();
+          iter != pot_list.end(); ++iter ) {
+      const Sequence<const DiscreteVariable *>& vars =
+        ( *iter )->variablesSequence();
+
+      for ( unsigned int i = 0; i < vars.size(); ++i ) {
+        if ( del_vars.contains( vars[i] ) ) {
+          // add the potential to the set of potentials related to vars[i]
+          pot_per_var[vars[i]].insert( *iter );
+          // add the variables of the potential to pot_vars_per_var[vars[i]]
+          HashTable<const DiscreteVariable *, unsigned int>& iter_vars =
+            pot_vars_per_var[vars[i]];
+
+          for ( unsigned int j = 0; j < vars.size(); ++j ) {
+            try { ++iter_vars[vars[j]]; }
+            catch ( const NotFound& ) { iter_vars.insert( vars[j], 1 ); }
+          }
+        }
+      }
+    }
+
+    // initialize properly product_size
+    for ( HashTableIterator<const DiscreteVariable *,
+            HashTable<const DiscreteVariable *, unsigned int> >
+            iter = pot_vars_per_var.begin();
+          iter != pot_vars_per_var.end(); ++iter ) {
+      double size = 1.0;
+      HashTable<const DiscreteVariable *, unsigned int>& vars = *iter;
+
+      if ( vars.size() ) {
+        for ( HashTableIterator<const DiscreteVariable *, unsigned int>
+                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 )
+          size *= iter2.key()->domainSize();
+
+        product_size.insert( size, iter.key() );
+      }
+    }
+
+    // create a hashtable of the temporary potentials created during the
+    // marginalization process
+    __PotentialSet tmp_marginals( 30 ); //@todo why 30 ????
+
+    // now, remove all the variables in del_vars, starting from those that produce
+    // the smallest tables
+    while ( ! product_size.empty() ) {
+      // get the best variable to remove
+      const DiscreteVariable *del_var = product_size.pop();
+      del_vars.erase( del_var );
+      // get the list of potentials to multiply
+      List<const Potential<T_DATA>*>& pot_to_mult = pot_per_var[del_var];
+      // if there is no poential to multiply, do nothing
+
+      if ( pot_to_mult.size() == 0 )
+        continue;
+
+      // compute the product of all the potentials
+      Potential<T_DATA> joint ;
+
+      if ( pot_to_mult.size() == 1 ) {
+        joint = *pot_to_mult[0];
+      } else {
+        ListIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+        joint = **iter;
+
+        for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
+          joint.multiplicateBy( **iter );
+        }
+      }
+
+      // compute the table resulting from marginalizing out del_var from joint
+      Potential<T_DATA>* marginal = new Potential<T_DATA>
+        ( new MultiDimArray<T_DATA>() );
+
+      const Sequence<const DiscreteVariable*>& joint_vars =
+        joint.variablesSequence();
+
+      for ( unsigned int i = 0; i < joint_vars.size(); ++i ) {
+        if ( joint_vars[i] != del_var )
+          marginal->add( *joint_vars[i] );
+      }
+
+      marginal->marginalize( joint );
+
+      // update pot_vars_per_var : remove the variables of the potential we
+      // multiplied from this table
+      // update accordingly pot_per_vars : remove these potentials
+      // update accordingly product_size : when a variable is no more used by
+      // any potential, divide product_size by its domain size
+      for ( ListIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+            iter != pot_to_mult.end(); ++iter ) {
+        const Sequence<const DiscreteVariable*>& pot_vars =
+          ( *iter )->variablesSequence();
+
+        for ( unsigned int i = 0; i < pot_vars.size(); ++i ) {
+          if ( del_vars.contains( pot_vars[i] ) ) {
+            // ok, here we have a variable that needed to be removed => update
+            // product_size, pot_per_var and pot_vars_per_var
+            HashTable<const DiscreteVariable *, unsigned int>&
+              pot_vars_of_var_i = pot_vars_per_var[pot_vars[i]];
+            double div_size = 1;
+
+            for ( unsigned int j = 0; j < pot_vars.size(); ++j ) {
+              unsigned int k = --pot_vars_of_var_i[pot_vars[j]];
+
+              if ( k == 0 ) {
+                div_size *= pot_vars[j]->domainSize();
+                pot_vars_of_var_i.erase( pot_vars[j] );
+              }
+            }
+
+            pot_per_var[pot_vars[i]].eraseByVal( *iter );
+
+            if ( div_size != 1 ) {
+              product_size.setPriorityByVal
+                ( pot_vars[i], product_size.getPriorityByVal( pot_vars[i] ) /
+                  div_size );
+            }
+          }
+        }
+
+        if ( tmp_marginals.contains( *iter ) ) {
+          delete *iter;
+          tmp_marginals.erase( *iter );
+        }
+
+        pot_list.erase( *iter );
+      }
+
+      pot_per_var.erase( del_var );
+
+      // add the new marginal to the list of potentials
+      const Sequence<const DiscreteVariable*>& marginal_vars =
+        marginal->variablesSequence();
+
+      for ( unsigned int i = 0; i < marginal_vars.size(); ++i ) {
+        if ( del_vars.contains( marginal_vars[i] ) ) {
+          // add the new marginal potential to the ser of potentials of var i
+          pot_per_var[marginal_vars[i]].insert( marginal );
+          // add the variables of the potential to pot_vars_per_var[vars[i]]
+          HashTable<const DiscreteVariable *, unsigned int>& iter_vars =
+            pot_vars_per_var[marginal_vars[i]];
+          double mult_size = 1;
+
+          for ( unsigned int j = 0; j < marginal_vars.size(); ++j ) {
+            try {
+              ++iter_vars[marginal_vars[j]];
+            } catch ( const NotFound& ) {
+              iter_vars.insert( marginal_vars[j], 1 );
+              mult_size *= marginal_vars[j]->domainSize();
+            }
+          }
+
+          if ( mult_size != 1 ) {
+            product_size.setPriorityByVal
+              ( marginal_vars[i],
+                product_size.getPriorityByVal( marginal_vars[i] ) * mult_size );
+          }
+        }
+      }
+
+      pot_list.insert( marginal );
+
+      tmp_marginals.insert( marginal );
+    }
+
+    // add to the list of potentials created during propagation the set of marginals
+    // that appear in the final list of potentials returned after marginalization
+    for ( __PotentialSetIterator iter = tmp_marginals.begin();
+          iter != tmp_marginals.end(); ++iter ) {
+      __created_potentials.insert( *iter );
+    }
+  }
+
+  // ==============================================================================
+  /// creates the message sent by clique from_id to clique to_id
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::__produceMessage( NodeId from_id, NodeId to_id ) {
+    // get the potentials of the clique
+    const List <const Potential<T_DATA>*>& clique_pot = __clique_potentials[from_id];
+    __PotentialSet pot_list( clique_pot.size() );
+
+    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+          iter != clique_pot.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the evidence to the clique potentials
+    const List <const Potential<T_DATA>*>& evidence_list =
+      __clique_evidence[from_id];
+
+    for ( ListIterator <const Potential<T_DATA>*> iter =
+            evidence_list.begin();iter != evidence_list.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the messages sent by adjacent nodes to from_id
+    const EdgeSet& nei = __JT->neighbours( from_id );
+
+    for ( EdgeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
+      NodeId other = iter->other( from_id );
+
+      if ( other != to_id ) {
+        Arc sep( other,from_id );
+        const __PotentialSet& sep_pot_list = __sep_potentials[sep];
+
+        for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
+              iter2 != sep_pot_list.end(); ++iter2 )
+          pot_list.insert( *iter2 );
+      }
+    }
+
+    // get the set of variables that need be removed from the potentials
+    const NodeSet& from_clique = __JT->clique( from_id );
+
+    const NodeSet& separator = __JT->separator( from_id, to_id );
+
+    Set<const DiscreteVariable*> del_vars( from_clique.size() );
+
+    for ( NodeSetIterator iter = from_clique.begin();
+          iter != from_clique.end(); ++iter ) {
+      if ( !separator.contains( *iter ) )
+        del_vars.insert( &( this->bn().variable( *iter ) ) );
+    }
+
+    // ok, now, pot_list contains all the potentials to multiply and marginalize
+    // => now, combine the messages
+    __marginalizeOut( pot_list, del_vars );
+
+    Arc sep( from_id,to_id );
+
+    __sep_potentials[sep] = pot_list;
+  }
+
+  // ==============================================================================
+  /// performs the __collect phase of Lazy Propagation
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::__collect( NodeId id, NodeId from ) {
+    __collected_cliques[id] = true;
+    const EdgeSet& neighbours = __JT->neighbours( id );
+
+    for ( EdgeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      NodeId other = iter->other( id );
+
+      if ( other != from ) {
+        __collect( other, id );
+      }
+    }
+
+    if ( id != from ) {
+      __produceMessage( id, from );
+    }
+  }
+
+  // ==============================================================================
+  /// performs the __collect phase of Lazy Propagation
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::collect( NodeId id, bool force_collect ) {
+    // get a clique that contains id
+    NodeId clique = __node_to_clique[id];
+    // check if we really need to perform an inference
+
+    if ( !force_collect && __collected_cliques[clique] ) return;
+
+    // clean-up the area that will receive the __collect
+    __setRequiredInference( clique, clique );
+
+    // perform the __collect
+    __last_collect_clique = clique;
+
+    __collect( clique, clique );
+  }
+
+  // ==============================================================================
+  /// performs the __diffusion phase of Lazy Propagation
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::__diffusion( NodeId id, NodeId from ) {
+    __diffused_cliques[id] = true;
+    const EdgeSet& neighbours = __JT->neighbours( id );
+    // #### TODO: make a more efficient inference using a stack of
+    // of partial computations (see Gonzales, Mellouli, Mourali (2007))
+
+    for ( EdgeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      NodeId other = iter->other( id );
+
+      if ( other != from ) {
+        __produceMessage( id, other );
+        __diffusion( other, id );
+      }
+    }
+  }
+
+  // ==============================================================================
+  /// performs the __collect phase of Lazy Propagation
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::diffusion( NodeId id, bool force_diffusion ) {
+    // get a clique that contains id
+    NodeId clique = __node_to_clique[id];
+    // check if we really need to perform an inference
+
+    if ( force_diffusion ) {
+      __collect( clique, true );
+      __diffusion( clique, clique );
+    } else if ( __diffused_cliques[clique] ) return;
+
+    if ( ! __collected_cliques[clique] ) __collect( clique, false );
+
+    __diffusion( clique, clique );
+  }
+
+  // ==============================================================================
+  /// performs a whole inference (__collect + __diffusion)
+  // ==============================================================================
+  template<typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::makeInference() {
+    makeInference( false );
+  }
+
+  // ==============================================================================
+  /// performs a whole inference (__collect + __diffusion)
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::makeInference( bool force_inference ) {
+    // prepare a new inference from scratch
+    if ( force_inference ) {
+      // remove all the separator potentials, if any
+      //for ( HashTableIterator< Arc,__PotentialSet >
+      for ( typename Property< __PotentialSet >::onArcs::iterator
+              iter = __sep_potentials.begin();
+            iter != __sep_potentials.end(); ++iter )
+        iter->clear();
+
+      for ( __PotentialSetIterator iter = __created_potentials.begin();
+            iter != __created_potentials.end(); ++iter )
+        delete *iter;
+
+      __created_potentials.clear();
+
+      // indicate that __collect and __diffusion passed through no clique yet
+      for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+            iter != __collected_cliques.end(); ++iter )
+        *iter = false;
+
+      for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+            iter != __diffused_cliques.end(); ++iter )
+        *iter = false;
+    }
+
+    // perform the __collect in all connected components of the junction tree
+    for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+          iter != __collected_cliques.end(); ++iter ) {
+      if ( *iter == false )
+        __collect( iter.key(),iter.key() );
+    }
+
+    // perform the __diffusion in all connected components of the junction tree
+    for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+          iter != __diffused_cliques.end(); ++iter ) {
+      if ( *iter == false )
+        __diffusion( iter.key(),iter.key() );
+    }
+
+    // indicate that we performed the inference with root =
+    // __collected_cliques.begin()
+    __last_collect_clique = __collected_cliques.begin().key();
+
+    // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
+    // il faut plusieurs cliques de collecte
+  }
+
+  // ==============================================================================
+  /// returns the marginal a posteriori proba of a given node
+  // ==============================================================================
+  template <typename T_DATA> void
+  LazyPropagation<T_DATA>::__aPosterioriMarginal( NodeId id,
+                                                  Potential<T_DATA>& marginal ) {
+    // check if we performed a __collect on id, else we need some
+    NodeId clique_of_id = __node_to_clique[id];
+
+    if ( !__collected_cliques[clique_of_id] )
+      __collect( clique_of_id, clique_of_id );
+
+    // ok, we performed a __collect, but maybe this __collect was not performed
+    // from the clique containing id. In this case, we also need to perform
+    // a __diffusion
+    const NodeSet& clique_nodes = __JT->clique( __last_collect_clique );
+
+    bool last_collect_clique_contains_id = true;
+
+    if ( ! clique_nodes.contains( id ) ) {
+      makeInference( false );
+      last_collect_clique_contains_id = false;
+    }
+
+    // now we just need to create the product of the potentials of the clique
+    // containing id with the messages received by this clique and
+    // marginalize out all variables except id
+    NodeId myclique = last_collect_clique_contains_id ?
+      __last_collect_clique : clique_of_id;
+
+    const List <const Potential<T_DATA>*>& clique_pot =
+      __clique_potentials[myclique];
+
+    // get the potentials of the clique
+    __PotentialSet pot_list(clique_pot.size() +
+                            __clique_evidence[myclique].size());
+
+    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+          iter != clique_pot.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the evidence to the clique potentials
+    const List <const Potential<T_DATA>*>& evidence_list =
+      __clique_evidence[myclique];
+
+    for ( ListIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+          iter != evidence_list.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the messages sent by adjacent nodes to myclique
+    const EdgeSet& neighbours = __JT->neighbours( myclique );
+
+    for ( EdgeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      NodeId other = iter->other( myclique );
+      Arc sep( other,myclique );
+      const __PotentialSet&
+        sep_pot_list = __sep_potentials[sep];
+
+      for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
+            iter2 != sep_pot_list.end(); ++iter2 )
+        pot_list.insert( *iter2 );
+    }
+
+    // get the set of variables that need be removed from the potentials
+    const NodeSet& nodes = __JT->clique( myclique );
+
+    Set<const DiscreteVariable*> del_vars( nodes.size() );
+
+    for ( NodeSetIterator iter = nodes.begin();
+          iter != nodes.end(); ++iter ) {
+      if ( *iter != id )
+        del_vars.insert( &( this->bn().variable( *iter ) ) );
+    }
+
+    // ok, now, pot_list contains all the potentials to multiply and marginalize
+    // => now, combine the messages
+    __marginalizeOut( pot_list, del_vars );
+
+    __PotentialSetIterator iter = pot_list.begin();
+
+    marginal= **iter;
+
+    for ( ++iter; iter != pot_list.end(); ++iter )
+      marginal.multiplicateBy( **iter );
+  }
+
+  
+  // ==============================================================================
+  /// returns the joint a posteriori proba of a given set of nodes
+  // ==============================================================================
+  template <typename T_DATA> void
+  LazyPropagation<T_DATA>::__aPosterioriJoint( const NodeSet& ids,
+                                               Potential<T_DATA>& marginal ) {
+    // find a clique that contains all the nodes in ids. To do so, we loop over
+    // all the cliques and check wheither there exists one with this feature
+    NodeId clique_of_ids=0;
+    bool clique_found = false;
+    for (NodeSetIterator iter = __JT->beginNodes();
+         iter != __JT->endNodes(); ++iter) {
+      // get the nodes contained in the clique
+      const NodeSet& clique = __JT->clique (*iter);
+      // check whether the clique actually contains all of ids
+      bool clique_ok = true;
+      for (NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2) {
+        if ( !clique.contains (*iter2) ) {
+          clique_ok = false;
+          break;
+        }
+      }
+      // check if we found the clique we wanted
+      if (clique_ok) {
+        clique_of_ids = *iter;
+        clique_found = true;
+        break;
+      }
+    }
+
+    // check if we actually found the clique we were interested in
+    if ( !clique_found )
+      GUM_ERROR (OperationNotAllowed,
+                 "no clique was found to compute the joint probability");
+
+    /*
+    // check if we performed a __collect on the set of ids, else we need some
+    if ( !__collected_cliques[clique_of_ids] )
+      __collect( clique_of_ids, clique_of_ids );
+
+    // ok, we performed a __collect, but maybe this __collect was not performed
+    // from the clique containing id. In this case, we also need to perform
+    // a __diffusion
+    const NodeSet& clique_nodes = __JT->clique( __last_collect_clique );
+
+    bool last_collect_clique_contains_id = true;
+
+    for (NodeSetIterator iter = ids.begin(); iter != ids.end(); ++iter) {
+        if ( !clique_nodes.contains (*iter) ) {
+          last_collect_clique_contains_id = false;
+          break;
+        }
+    }
+
+    if ( ! last_collect_clique_contains_id ) {
+      makeInference( false );
+      last_collect_clique_contains_id = false;
+    }
+    */
+
+    // for the moment, always perform an inference before computing the
+    // joint a posteriori distribution
+    makeInference( true );
+
+    // now we just need to create the product of the potentials of the clique
+    // containing id with the messages received by this clique and
+    // marginalize out all variables except id
+    /*
+    NodeId myclique = last_collect_clique_contains_id ?
+      __last_collect_clique : clique_of_ids;
+    */
+    NodeId myclique = clique_of_ids;
+      
+    const List <const Potential<T_DATA>*>& clique_pot =
+      __clique_potentials[myclique];
+
+    // get the potentials of the clique
+    __PotentialSet pot_list(clique_pot.size() +
+                            __clique_evidence[myclique].size());
+
+    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+          iter != clique_pot.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the evidence to the clique potentials
+    const List <const Potential<T_DATA>*>& evidence_list =
+      __clique_evidence[myclique];
+
+    for ( ListIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+          iter != evidence_list.end(); ++iter )
+      pot_list.insert( *iter );
+
+    // add the messages sent by adjacent nodes to myclique
+    const EdgeSet& neighbours = __JT->neighbours( myclique );
+
+    for ( EdgeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      NodeId other = iter->other( myclique );
+      Arc sep( other,myclique );
+      const __PotentialSet&
+        sep_pot_list = __sep_potentials[sep];
+
+      for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
+            iter2 != sep_pot_list.end(); ++iter2 )
+        pot_list.insert( *iter2 );
+    }
+
+    // get the set of variables that need be removed from the potentials
+    const NodeSet& nodes = __JT->clique( myclique );
+
+    Set<const DiscreteVariable*> del_vars( nodes.size() );
+
+    for ( NodeSetIterator iter = nodes.begin();
+          iter != nodes.end(); ++iter ) {
+      if ( ! ids.contains (*iter ))
+        del_vars.insert( &( this->bn().variable( *iter ) ) );
+    }
+
+    // ok, now, pot_list contains all the potentials to multiply and marginalize
+    // => now, combine the messages
+    __marginalizeOut( pot_list, del_vars );
+
+    __PotentialSetIterator iter = pot_list.begin();
+
+    marginal= **iter;
+
+    for ( ++iter; iter != pot_list.end(); ++iter )
+      marginal.multiplicateBy( **iter );
+  }
+
+
+  template <typename T_DATA> INLINE
+  const JunctionTree * LazyPropagation<T_DATA>::junctionTree() const {
+    return __JT;
+  }
+
+  
+  // ==============================================================================
+  /// returns the marginal a posteriori proba of a given node
+  // ==============================================================================
+  template <typename T_DATA> INLINE
+  void LazyPropagation<T_DATA>::_fillMarginal( NodeId id,
+                                               Potential<T_DATA>& marginal ) {
+    __aPosterioriMarginal (id, marginal);
+    marginal.normalize();
+  }
+
+  
+  template <typename T_DATA> INLINE
+  T_DATA LazyPropagation<T_DATA>::evidenceMarginal () {
+    // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
+    // noeud X sur lequel je fais une collecte, et je calcule P(e) comme etant
+    // P(e) = sum_X P(X,e). Mais s'il y a plusieurs composantes connexes dans
+    // le reseau bayesien, ca ne fonctionne pas, il faudrait choisir un X par
+    // composante connexe et multiplier entre elle les probas P(e) obtenues sur
+    // chaque composante. So un TODO a faire rapidement.
+    Potential<T_DATA>* tmp = new Potential<T_DATA>();
+    Id id = __node_to_clique.begin().key();
+    __aPosterioriMarginal( id, *tmp );
+
+    T_DATA sum = 0;
+    Instantiation iter (*tmp);
+    for (iter.setFirst(); !iter.end(); ++iter)
+      sum += tmp->get(iter);
+    delete tmp;
+    return sum;
+  }
+
+  // ============================================================================
+  /// returns the joint a posteriori probability P(nodes|e)
+  /** @warning right now, method joint cannot compute joint a posteriori
+   * probabilities of every nodeset. In cases where it is not able to perform
+   * properly this task, it will raise a OperationNotAllowed exception. */
+  // ============================================================================
+  template <typename T_DATA> INLINE
+  Potential<T_DATA>* LazyPropagation<T_DATA>::joint ( const NodeSet& nodes ) {
+    Potential<T_DATA> *res = new Potential<T_DATA>();
+    __aPosterioriJoint( nodes, *res);
+    res->normalize();
+
+    return res;
+  }
+
+  
+} /* namespace gum */
+
+  
+#endif    // DOXYGEN_SHOULD_SKIP_THIS

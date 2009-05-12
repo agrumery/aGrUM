@@ -1,0 +1,541 @@
+%{
+#include <iostream>
+#include <limits>
+#include <stdio.h>
+#include <vector>
+#include <sstream>
+#include <exception>
+
+#include <agrum/core/list.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/multidim/potential.h>
+%}
+
+
+%name-prefix="GUM_BIF_"
+%expect 6
+%parse-param {gum::BayesNet<float>& net}
+
+%union {
+  char  Char;
+  float Float;
+  int   Int;
+}
+
+
+%{
+  // The pointer on the file being parsed
+  extern FILE *GUM_BIF_in;
+  // line number
+  int line_no;
+
+	void reset_parser();
+	void clean_parser();
+
+  // Declaration of the lex analyzer function
+  int  GUM_BIF_lex (YYSTYPE* LMNFile_Bif_lval);
+  // Declaration of the yacc-generated parser function
+  int  GUM_BIF_parse ();
+  void GUM_BIF_reset_lexer(void);
+
+  // Declaration of the error routine
+  int  GUM_BIF_error(gum::BayesNet<float>&, const char*);
+  // Declaration of the user-defined parser function
+  bool GUM_BIF_parser (gum::BayesNet<float>&, const std::string&);
+
+  // These two are used by GUM_BIF_lex.lpp
+  // Key of the last value inserted in GUM_BIF_words
+  unsigned int GUM_BIF_words_size;
+  // Stores the values of GUM_BIF_text
+  gum::HashTable<unsigned int,std::string> *GUM_BIF_words;
+
+  // My functions
+  void syntaxError(const std::string& s);
+  void ioError(const std::string& s);
+
+  gum::Idx variableModalityIdx(const gum::DiscreteVariable&, const std::string&);
+  void fillProbaWithValuesList(gum::BayesNet<float> &net);
+  void fillProbaWithValuesTable(gum::BayesNet<float> &net);
+  bool increment(std::vector<gum::Idx> &modCounter, gum::List<const gum::DiscreteVariable*> &varList);
+
+  // My variables
+  // To retrieve varaible's id by their name
+  gum::HashTable<std::string, gum::Id> *GUM_BIF_labelVarsMap;
+  // Used for added the modalities
+  std::string GUM_BIF_varName;
+  gum::Idx GUM_BIF_modalityCount;
+  gum::LabelizedVariable *GUM_BIF_currentVar = NULL;
+  // For adding the parents of a node and fill the CPT
+  gum::Id GUM_BIF_currentVarId;
+  const gum::Potential<float> *GUM_BIF_currentProba = NULL;
+  gum::List<const gum::DiscreteVariable*> *GUM_BIF_parentsList;
+  // For filling the CPT with a table
+  std::vector<float> GUM_BIF_probaTable;
+  // For filling the CPT using modalities
+  std::vector<std::string> GUM_BIF_modalities;
+  std::vector<float> GUM_BIF_modalitiesValues;
+  std::vector<float> GUM_BIF_defaultValues;
+%}
+
+
+%defines
+
+%token <Int>   TOK_NETWORK
+%token <Int>   TOK_VARIABLE
+%token <Int>   TOK_PROBABILITY
+%token <Int>   TOK_TYPE
+%token <Int>   TOK_DISCRETE
+%token <Int>   TOK_DEFAULT
+%token <Int>   TOK_TABLE
+%token <Int>   TOK_PROPERTY
+%token <Int>   TOK_PROPERTY_VALUE
+%token <Char>  TOK_BEG_CURLY
+%token <Char>  TOK_END_CURLY
+%token <Char>  TOK_BEG_BRACKET
+%token <Char>  TOK_END_BRACKET
+%token <Char>  TOK_BEG_PARENTHESIS
+%token <Char>  TOK_END_PARENTHESIS
+%token <Int>   TOK_WORD
+%token <Int>   TOK_NET_NAME
+%token <Int>   TOK_MODALITY
+%token <Float> TOK_FLOAT
+%token <Int>   TOK_INTEGER
+%token <Char>  TOK_VERTICAL_BAR
+
+%pure-parser
+
+%%
+
+CompilationUnit:
+    /* empty */
+  | NetworkUnit DeclarationUnit
+  | error { syntaxError("Invalid Syntax"); }
+;
+
+
+NetworkUnit:
+  TOK_NETWORK TOK_NET_NAME TOK_BEG_CURLY PropertyUnit TOK_END_CURLY {
+    GUM_BIF_words->erase($2);
+  }
+;
+
+
+DeclarationUnit:
+    /* empty */
+  | DeclarationUnit VariableUnit
+  | DeclarationUnit ProbaUnit
+;
+
+
+VariableUnit:
+  VariableDeclaration TOK_BEG_CURLY VariableContent TOK_END_CURLY {
+    //std::cerr << std::endl << "Out of VariableUnit.";
+  }
+;
+
+
+VariableDeclaration:
+    TOK_VARIABLE TOK_WORD {
+      // Saving the name of the variable
+      GUM_BIF_varName = (*GUM_BIF_words)[$2];
+      GUM_BIF_words->erase($2);
+    }
+  | TOK_VARIABLE TOK_INTEGER {
+      // Saving the name of the variable
+      std::stringstream str;
+      str << $2;
+      GUM_BIF_varName = str.str();
+    }
+;
+
+
+VariableContent:
+  PropertyUnit VariableDiscreteUnit PropertyUnit
+;
+
+
+VariableDiscreteUnit:
+  VariableDiscrete TOK_BEG_CURLY VariableValuesList TOK_END_CURLY {
+    while (GUM_BIF_currentVar->domainSize() < GUM_BIF_modalityCount) {
+      std::stringstream labelName;
+      labelName << GUM_BIF_currentVar->domainSize() + 1;
+      GUM_BIF_currentVar->addLabel(labelName.str());
+    }
+    gum::NodeId id = net.addVariable(*GUM_BIF_currentVar);
+
+    GUM_BIF_labelVarsMap->insert(GUM_BIF_currentVar->name(), id);
+  }
+;
+
+
+VariableDiscrete:
+  TOK_TYPE TOK_DISCRETE TOK_BEG_BRACKET TOK_INTEGER TOK_END_BRACKET {
+    if (GUM_BIF_currentVar != NULL) delete GUM_BIF_currentVar;
+
+    GUM_BIF_currentVar = new gum::LabelizedVariable(GUM_BIF_varName, "", 0);
+    GUM_BIF_modalityCount = $4;
+  }
+;
+
+
+VariableValuesList:
+    /* empty */
+  | VariableValuesList TOK_MODALITY {
+			try{
+				GUM_BIF_currentVar->addLabel((*GUM_BIF_words)[$2]);
+			} catch (gum::DuplicateElement) {
+				std::stringstream str;
+				str<<"The label \""<<(*GUM_BIF_words)[$2]<<"\" alreay exists";
+				syntaxError(str.str());
+			}
+      GUM_BIF_words->erase($2);
+    }
+;
+
+ProbaUnit:
+  ProbaDeclaration ProbaVariables TOK_BEG_CURLY ProbaContent TOK_END_CURLY {
+    if (! GUM_BIF_defaultValues.empty()) {
+      gum::Instantiation cptInst(*GUM_BIF_currentProba);
+      const gum::DiscreteVariable& var = net.variable(GUM_BIF_currentVarId);
+
+      for (cptInst.setFirst(); ! cptInst.end(); ++cptInst) {
+        if ((*GUM_BIF_currentProba)[cptInst] == -1) {
+          GUM_BIF_currentProba->set(cptInst,GUM_BIF_defaultValues.at(cptInst.val(var)));
+        }
+      }
+      GUM_BIF_defaultValues.clear();
+    }
+    GUM_BIF_parentsList->clear();
+    //std::cerr << std::endl << "Out of ProbaUnit.";
+  }
+  ;
+
+ProbaDeclaration:
+  TOK_PROBABILITY
+  ;
+
+ProbaVariables:
+    TOK_BEG_PARENTHESIS ProbaLeftVar TOK_END_PARENTHESIS {
+      GUM_BIF_currentProba->fill((float) -1);
+    }
+  | TOK_BEG_PARENTHESIS ProbaLeftVar ProbaRightVars TOK_END_PARENTHESIS {
+      GUM_BIF_currentProba->fill((float) -1);
+    }
+  ;
+
+ProbaLeftVar:
+    TOK_WORD {
+      try {
+        GUM_BIF_currentVarId = (* GUM_BIF_labelVarsMap)[(*GUM_BIF_words)[$1]];
+        GUM_BIF_currentProba = &(net.cpt(GUM_BIF_currentVarId));
+        GUM_BIF_words->erase($1);
+      } catch (gum::NotFound e) {
+				std::stringstream ss;
+				ss<<"Reference to an undeclared variable: " <<(*GUM_BIF_words)[$1];
+				syntaxError(ss.str());
+      }
+    }
+  | TOK_INTEGER {
+      std::stringstream str;
+      str << $1;
+      try {
+        GUM_BIF_currentVarId = (* GUM_BIF_labelVarsMap)[str.str()];
+        GUM_BIF_currentProba = &(net.cpt(GUM_BIF_currentVarId));
+      } catch (gum::NotFound e) {
+				std::stringstream ss;
+				ss<<"Reference to an undeclared variable: " <<(*GUM_BIF_words)[$1];
+				syntaxError(ss.str());
+      }
+    }
+  ;
+
+ProbaRightVars:
+    /* empty */
+  | ProbaRightVars TOK_WORD {
+    try {
+      gum::Id id = (* GUM_BIF_labelVarsMap)[(*GUM_BIF_words)[$2]];
+
+      net.insertArc(id, GUM_BIF_currentVarId);
+      GUM_BIF_parentsList->insert(&(net.variable(id)));
+      GUM_BIF_words->erase($2);
+    } catch (gum::InvalidEdge e) {
+				std::stringstream ss;
+				ss<<"Reference to an undeclared variable: " <<(*GUM_BIF_words)[$2];
+				syntaxError(ss.str());
+    }
+  }
+  | ProbaRightVars TOK_INTEGER {
+    try {
+      std::stringstream str;
+      str << $2;
+      gum::Id id = (* GUM_BIF_labelVarsMap)[str.str()];
+      net.insertArc(id, GUM_BIF_currentVarId);
+      GUM_BIF_parentsList->insert(&(net.variable(id)));
+    } catch (gum::InvalidEdge e) {
+			std::stringstream ss;
+			ss<<"Reference to an undeclared variable: " <<(*GUM_BIF_words)[$2];
+			syntaxError(ss.str());
+    }
+  }
+  ;
+
+
+ProbaContent:
+    /* empty */
+  | ProbaContent PropertyUnit
+  | ProbaContent ProbaContentByModalities ProbaValuesList {
+      fillProbaWithValuesList(net);
+  }
+  | ProbaContent ProbaContentByTable ProbaValuesListTable {
+    fillProbaWithValuesTable(net);
+  }
+  ;
+
+ProbaContentByTable:
+  TOK_TABLE {
+    //std::cerr << std::endl << "In ProbaContentByTable";
+  }
+  ;
+
+
+ProbaValuesListTable:
+    /* empty */
+  | ProbaValuesListTable TOK_INTEGER {
+    GUM_BIF_probaTable.push_back((float) $2);
+  }
+  | ProbaValuesListTable TOK_FLOAT {
+    // Add the proba
+    GUM_BIF_probaTable.push_back((float) $2);
+  }
+  ;
+
+ProbaContentByModalities:
+    TOK_DEFAULT
+  | TOK_BEG_PARENTHESIS ProbaModalities TOK_END_PARENTHESIS
+  ;
+
+ProbaModalities:
+    /* empty */
+  | ProbaModalities TOK_MODALITY {
+      GUM_BIF_modalities.push_back((*GUM_BIF_words)[$2]);
+      GUM_BIF_words->erase ($2);
+    }
+  ;
+
+ProbaValuesList:
+    /* empty */
+  | ProbaValuesList TOK_INTEGER {
+      GUM_BIF_modalitiesValues.push_back((float) $2);
+  }
+  | ProbaValuesList TOK_FLOAT {
+      GUM_BIF_modalitiesValues.push_back((float) $2);
+    }
+;
+
+
+PropertyUnit:
+    /* empty */
+  | PropertyUnit TOK_PROPERTY TOK_WORD TOK_PROPERTY_VALUE {
+      GUM_BIF_words->erase ($3);
+      GUM_BIF_words->erase ($4);
+    }
+;
+
+%%
+
+/* ========================================================================== */
+/* === function for printing error messages                               === */
+/* ========================================================================== */
+int  GUM_BIF_error(gum::BayesNet<float>& /*net*/, const char* s)
+{
+  syntaxError( s);
+  return 1;
+}
+
+
+
+/* ========================================================================== */
+/* === Funtion which retrieves a modality index giving its name           === */
+/* ========================================================================== */
+gum::Idx variableModalityIdx(const gum::DiscreteVariable &var, const std::string &name) {
+  for (gum::Idx idx = 0; idx < var.domainSize(); idx++) {
+    if (var.label(idx) == name)
+      return idx;
+  }
+	std::stringstream ss;
+	ss<<"No label found with the name: " << name;
+	syntaxError(ss.str());
+
+	return (gum::Idx)0;
+}
+
+/* ========================================================================== */
+/* === Function wich fills a probability CPT when it is given with a list === */
+/* ===        of values with the given parent's modalities.               === */
+/* ========================================================================== */
+void fillProbaWithValuesList(gum::BayesNet<float> &net)
+{
+  if (GUM_BIF_modalities.empty()) {
+    GUM_BIF_defaultValues = GUM_BIF_modalitiesValues;
+  } else {
+    gum::Instantiation cptInst(*GUM_BIF_currentProba);
+
+    for (unsigned int i = 0; i < GUM_BIF_modalities.size(); i++) {
+      gum::Idx idx = variableModalityIdx(*((* GUM_BIF_parentsList)[i]), GUM_BIF_modalities[i]);
+      cptInst.chgVal(*((* GUM_BIF_parentsList)[i]), idx);
+    }
+
+    const gum::DiscreteVariable &var = net.variable(GUM_BIF_currentVarId);
+
+    for (gum::Idx idx = 0; idx < var.domainSize(); idx++) {
+      try {
+        cptInst.chgVal(var, idx);
+        GUM_BIF_currentProba->set(cptInst, GUM_BIF_modalitiesValues.at(idx));
+      } catch (std::exception) {
+        GUM_BIF_currentProba->set(cptInst ,(float) 0);
+      }
+    }
+  }
+
+  GUM_BIF_modalities.clear();
+  GUM_BIF_modalitiesValues.clear();
+}
+
+/* ========================================================================== */
+/* === Function wich fills a probability CPT when it is given by table.   === */
+/* ========================================================================== */
+void fillProbaWithValuesTable(gum::BayesNet<float> &net)
+{
+  gum::Instantiation cptInst(*GUM_BIF_currentProba);
+
+  gum::List<const gum::DiscreteVariable*> varList(*GUM_BIF_parentsList);
+  varList.pushFront(&net.variable(GUM_BIF_currentVarId));
+
+  gum::Idx nbrVar = varList.size();
+  std::vector<gum::Idx> modCounter;
+
+  // initializing the array
+  for (gum::Idx i = 0; i < nbrVar; i++) {
+    modCounter.push_back(0);
+  }
+
+  gum::Idx j = 0;
+  do {
+    for (gum::Idx i = 0; i < nbrVar; i++)  {
+      cptInst.chgVal(*(varList[i]), modCounter[i]);
+    }
+
+    if (j < GUM_BIF_probaTable.size()) {
+      GUM_BIF_currentProba->set(cptInst, GUM_BIF_probaTable[j]);
+    } else {
+      GUM_BIF_currentProba->set(cptInst,(float) 0);
+    }
+    j++;
+  } while (increment(modCounter, varList));
+
+  GUM_BIF_probaTable.clear();
+}
+
+bool increment(std::vector<gum::Idx> &modCounter, gum::List<const gum::DiscreteVariable*>& varList)
+{
+  bool last = true;
+  for (unsigned int j = 0; j < modCounter.size(); j++) {
+    last = (modCounter[j] == (varList[j]->domainSize() - 1)) && last;
+    if (!last)
+      break;
+  }
+  if (last) {
+    return false;
+  }
+
+  bool add = false;
+  unsigned int i = varList.size() - 1;
+  do {
+    if (modCounter[i] == (varList[i]->domainSize() - 1)) {
+      modCounter[i] = 0;
+      add = true;
+    } else {
+      modCounter[i] += 1;
+      add = false;
+    }
+
+    i--;
+  } while (add);
+
+  return true;
+}
+
+/* ========================================================================== */
+/* === function that parses the input file                                === */
+/* ========================================================================== */
+bool GUM_BIF_parser (gum::BayesNet<float>& net, const std::string& filename) {
+  GUM_BIF_parentsList= new gum::List<const gum::DiscreteVariable*>();
+  GUM_BIF_words=new gum::HashTable<unsigned int,std::string> ();
+  GUM_BIF_labelVarsMap=new gum::HashTable<std::string, gum::Id> ();
+
+  /*  open the input file */
+  GUM_BIF_in = fopen (filename.c_str(), "r");
+  if (GUM_BIF_in == NULL) {
+    std::stringstream ss;
+    ss<<"unable to open file "<< filename.c_str();
+		ioError(ss.str());
+  }
+
+	reset_parser();
+
+  // parse the input file
+  try{
+    GUM_BIF_parse (net);
+  }catch(gum::IOError& e){
+		clean_parser();
+    throw(e);
+  }
+  fclose (GUM_BIF_in);
+
+	clean_parser();
+  return true;
+}
+
+void reset_parser() {
+	GUM_BIF_reset_lexer();
+	line_no=1;
+
+	GUM_BIF_labelVarsMap->clear();
+  GUM_BIF_parentsList->clear();
+  GUM_BIF_modalities.clear();
+  GUM_BIF_modalitiesValues.clear();
+  GUM_BIF_defaultValues.clear();
+  if (GUM_BIF_currentVar != NULL)
+  {
+    delete GUM_BIF_currentVar;
+    GUM_BIF_currentVar = NULL;
+  }
+  GUM_BIF_words->clear ();
+  GUM_BIF_words_size = 0;
+}
+void clean_parser() {
+  reset_parser();
+
+  delete(GUM_BIF_parentsList);
+  delete(GUM_BIF_words);
+  delete(GUM_BIF_labelVarsMap);
+}
+
+void syntaxError(const std::string& s) {
+  std::stringstream str;
+  str<<"at line "<<line_no<<" : "<<s;
+
+  clean_parser();
+
+  //GUM_TRACE(str.str());
+  //GUM_ERROR(gum::SyntaxError,str.str());
+}
+
+void ioError(const std::string& s) {
+  GUM_ERROR(gum::IOError,s);
+}

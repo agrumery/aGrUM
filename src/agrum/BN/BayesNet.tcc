@@ -1,0 +1,360 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Template implementation of bns/bayesNet.h classes.
+ *
+ * @author Lionel Torti and Pierre-Henri Wuillemin
+ */
+// ============================================================================
+namespace gum {
+
+// Default constructor
+template<typename T_DATA> INLINE
+BayesNet<T_DATA>::BayesNet():
+  VariableNodeMap(), __moralGraph(0), __topologicalOrder(0)
+{
+  GUM_CONSTRUCTOR( BayesNet );
+  __topologicalOrder = new Sequence<NodeId>();
+  __moralGraph = new UndiGraph();
+}
+
+// Copy constructor
+template<typename T_DATA> INLINE
+BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ):
+  VariableNodeMap( source ), __dag(source.dag()), __moralGraph(0), __topologicalOrder(0)
+{
+  GUM_CONSTRUCTOR( BayesNet );
+  Potential<T_DATA> *sourcePtr = 0;
+  Potential<T_DATA> *copyPtr = 0;
+  __moralGraph = new UndiGraph(*(source.__moralGraph));
+  __topologicalOrder = new Sequence<NodeId>(*(source.__topologicalOrder));
+
+  for ( HashTableIterator<NodeId, Potential<T_DATA>*> cptIter = source.__probaMap.begin(); cptIter != source.__probaMap.end(); ++cptIter ) {
+    // First we build the node's CPT
+    copyPtr = new Potential<T_DATA>();
+    ( *copyPtr ) << variable( cptIter.key() );
+    // Add it's parents
+    const ArcSet& parentArcs = __dag.parents(cptIter.key());
+
+    for ( ArcSetIterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter ) {
+      ( *copyPtr ) << variable(( *arcIter ).tail() );
+    }
+
+    // Second, we fill the CPT
+    sourcePtr = *cptIter;
+    Instantiation srcInst( *sourcePtr );
+    Instantiation cpInst( *copyPtr );
+
+    // Slowest but safest
+    for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
+      for ( Idx i = 0; i < cpInst.nbrDim(); i++ ) {
+        NodeId id = nodeId(cpInst.variable(i));
+        srcInst.chgVal(source.variable(id), cpInst.val(i));
+      }
+      copyPtr->set(cpInst, ( *sourcePtr )[srcInst]);
+    }
+
+    // We add the CPT to the CPT's hashmap
+    __probaMap.insert( cptIter.key(), copyPtr );
+  }
+}
+
+// Copy Operator
+template<typename T_DATA> INLINE
+BayesNet<T_DATA>&
+BayesNet<T_DATA>::operator=( const BayesNet<T_DATA>& source )
+{
+  // Removing previous potentials
+  for (HashTableIterator< NodeId, Potential<T_DATA>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter) {
+    delete *iter;
+  }
+  __probaMap.clear();
+
+  Potential<T_DATA> *sourcePtr, *copyPtr;
+
+  for (typename Property<Potential<T_DATA>*>::onNodes::iterator iter = source.__probaMap.begin(); iter != source.__probaMap.end(); ++iter) {
+    sourcePtr = *iter;
+    copyPtr = new Potential<T_DATA>( *sourcePtr );
+    __probaMap.insert( iter.key(), copyPtr );
+  }
+
+  __topologicalOrder->clear();
+  (*__topologicalOrder) = *(source->__topologicalOrder);
+  __moralGraph->clear();
+  (*__moralGraph) = *(source->__moralGraph);
+
+  return *this;
+}
+
+// Destructor
+template<typename T_DATA> INLINE
+BayesNet<T_DATA>::~BayesNet()
+{
+  GUM_DESTRUCTOR( BayesNet );
+  for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter = __probaMap.begin();
+        iter != __probaMap.end();
+        ++iter )
+  {
+    delete *iter;
+  }
+  delete __moralGraph;
+  delete __topologicalOrder;
+}
+
+// Add a variable, it's associate node and it's CPT
+template<typename T_DATA> INLINE
+NodeId
+BayesNet<T_DATA>::add(const DiscreteVariable& var) {
+  return add(var, new MultiDimArray<T_DATA>());
+}
+
+// Add a variable, it's associate node and it's CPT
+template<typename T_DATA> INLINE
+NodeId
+BayesNet<T_DATA>::add(const DiscreteVariable& var,
+                      MultiDimImplementation<T_DATA> *aContent )
+{
+  NodeId id = VariableNodeMap::_set(__dag.insertNode(), var);
+  Potential<T_DATA> *cpt = new Potential<T_DATA>(aContent);
+  (*cpt) << variable(id);
+  __probaMap.insert(id, cpt);
+  return id;
+}
+
+// Deprecated!
+template<typename T_DATA> INLINE
+NodeId
+BayesNet<T_DATA>::addVariable(const DiscreteVariable& var) {
+  return add(var);
+}
+
+// Deprecated!
+template<typename T_DATA> INLINE
+NodeId
+BayesNet<T_DATA>::addVariable(const DiscreteVariable& var,
+                              MultiDimImplementation<T_DATA> *aContent )
+{
+  return add(var, aContent);
+}
+
+// Returns a constant reference over a variabe given it's node id.
+template<typename T_DATA> INLINE
+const DiscreteVariable&
+BayesNet<T_DATA>::variable(NodeId id) const
+{
+  return VariableNodeMap::get(id);
+}
+
+// Return id node from discrete var pointer.
+template<typename T_DATA> INLINE
+NodeId
+BayesNet<T_DATA>::nodeId(const DiscreteVariable &var) const
+{
+  return VariableNodeMap::get(var);
+}
+
+// Returns the CPT of a variable
+template<typename T_DATA> INLINE
+const Potential<T_DATA>&
+BayesNet<T_DATA>::cpt(NodeId varId) const { return *( __probaMap[varId] ); }
+
+// Returns the DAG of this bayes net
+template<typename T_DATA> INLINE
+const DAG&
+BayesNet<T_DATA>::dag() const { return __dag; }
+
+// Returns the number of variables in this bayes net.
+template<typename T_DATA> INLINE
+Idx
+BayesNet<T_DATA>::size() const { return __dag.size(); }
+
+// Retursn true if this bayes net is empty.
+template<typename T_DATA> INLINE
+bool
+BayesNet<T_DATA>::empty() const { return size() == 0; }
+
+// Deprecated!
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::eraseVariable(NodeId varId) { erase(varId); }
+
+// Erase a variable and update dependent CPTs.
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::erase(const DiscreteVariable& var) {
+  erase(VariableNodeMap::get(var));
+}
+
+// Erase a variable and update dependent CPTs.
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::erase(NodeId varId) {
+  if ( VariableNodeMap::exists(varId) ) {
+    // Reduce the variable child's CPT
+    for (ArcSetIterator iter = __dag.children(varId).begin(); iter != __dag.children(varId).end(); ++iter) {
+      __probaMap[iter->head()]->erase(get(varId));
+    }
+    delete __probaMap[varId];
+    __probaMap.erase(varId);
+    VariableNodeMap::_erase(varId);
+    __dag.eraseNode(varId);
+  }
+}
+
+// Add an arc in the BN, and update arc.head's CPT
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::insertArc(const Arc& arc) {
+  insertArc(arc.tail(), arc.head());
+}
+
+// Add an arc in the BN, and update arc.head's CPT
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::insertArc(NodeId tail, NodeId head) {
+  __dag.insertArc(tail, head);
+  // Add parent in the child's CPT
+  ( *(__probaMap[head]) ) << VariableNodeMap::get(tail);
+}
+
+// Removes an arc in the BN, and update head's CTP
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::eraseArc(const Arc& arc) {
+  eraseArc(arc.tail(), arc.head());
+}
+
+// Removes an arc in the BN, and update head's CTP
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::eraseArc(NodeId tail, NodeId head) {
+  if ( VariableNodeMap::exists(tail) && VariableNodeMap::exists(head) ) {
+    __dag.eraseArc(tail, head);
+    // Remove parent froms child's CPT
+    ( *(__probaMap[head]) ) >> VariableNodeMap::get(tail);
+  }
+}
+
+// Shortcut for this->dag().beginNodes().
+template<typename T_DATA> INLINE
+const NodeSetIterator
+BayesNet<T_DATA>::beginNodes() const { return __dag.beginNodes(); }
+
+// Shortcut for this->dag().endNodes().
+template<typename T_DATA> INLINE
+const NodeSetIterator
+BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
+
+// Shortcut for this->dag().beginArcs().
+template<typename T_DATA> INLINE
+const ArcSetIterator
+BayesNet<T_DATA>::beginArcs() const { return __dag.beginArcs(); }
+
+// Shortcut for this->dag().endArcs().
+template<typename T_DATA> INLINE
+const ArcSetIterator& 
+BayesNet<T_DATA>::endArcs() const { return __dag.endArcs(); }
+
+// The node's id are coherent with the variables and nodes of the topology.
+template<typename T_DATA> INLINE
+const UndiGraph&
+BayesNet<T_DATA>::moralGraph(bool clear) const
+{
+  if (clear or __moralGraph == 0) {
+    if (__moralGraph != 0) delete __moralGraph;
+    __moralGraph = new UndiGraph();
+    __moralGraph->populateNodes(__dag);
+    // transform the arcs into edges
+    for (ArcSetIterator iter = __dag.beginArcs(); iter != __dag.endArcs(); ++iter ) {
+      __moralGraph->insertEdge( iter->first(), iter->second() );
+    }
+    // mary the parents
+    for (NodeSetIterator iter = beginNodes(); iter != endNodes(); ++iter) {
+      //const ArcSet& parentsList = __dag.parents(*iter);
+      for (ArcSetIterator it1 = __dag.parents(*iter).begin(); it1 != __dag.parents(*iter).end(); ++it1) {
+        ArcSetIterator it2 = it1;
+        for (++it2; it2 != __dag.parents(*iter).end(); ++it2) {
+          // will automatically check if this edge already exists
+          __moralGraph->insertEdge(it1->tail(), it2->tail());
+        }
+      }
+    }
+  }
+  return *__moralGraph;
+}
+
+// The topological order stays the same as long as no variable or arcs are
+// added or erased from the topology.
+template<typename T_DATA> INLINE
+const Sequence<NodeId>&
+BayesNet<T_DATA>::getTopologicalOrder(bool clear) const
+{
+  if (clear or (__topologicalOrder->empty())) {
+    __topologicalOrder->clear();
+    // Add all root nodes in the list
+    NodeSet nodeList = __dag.nodes();
+    __getRootTopologyLevel(nodeList);
+    // Check if the graph has at least one root node
+    if (__topologicalOrder->empty())
+      GUM_ERROR(OperationNotAllowed, "No root node in DAG.");
+    // Add nodes in topological order
+    while (!nodeList.empty())
+      __getNextTopologyLevel(nodeList);
+  }
+  return *__topologicalOrder;
+}
+
+// Add all the dag's root nodes in __topologicalOrder
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::__getRootTopologyLevel(NodeSet& uncheckedNodes) const {
+  // Add all root nodes in the list
+  for (NodeSetIterator iter = uncheckedNodes.begin(); iter != uncheckedNodes.end(); ++iter) {
+    if (__dag.parents( *iter ).empty()) {
+      __topologicalOrder->insert(*iter);
+      uncheckedNodes.erase(*iter);
+    }
+  }
+}
+
+// Add the next level of nodes in the topological order
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::__getNextTopologyLevel(NodeSet& uncheckedNodes) const {
+  bool add;
+  // Parsing all nodes in uncheckedNodes
+  for ( NodeSetIterator nodeIter = uncheckedNodes.begin(); nodeIter != uncheckedNodes.end(); ++nodeIter ) {
+    add = true;
+    // Parsing all parents of current node
+    const ArcSet& parentsList = __dag.parents( *nodeIter );
+    for ( ArcSetIterator arcIter = parentsList.begin(); arcIter != parentsList.end(); ++arcIter ) {
+      add = add && __topologicalOrder->exists(( *arcIter ).tail() );
+    }
+    // If current node's parent are all in __topologicalOrder, then we add it
+    if ( add ) {
+      __topologicalOrder->insert( *nodeIter );
+      uncheckedNodes.erase( *nodeIter );
+    }
+  }
+}
+
+} /* namespace gum */
+// ============================================================================

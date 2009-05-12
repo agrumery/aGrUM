@@ -1,0 +1,548 @@
+network Unknown {
+}
+variable GoodStudent {
+  type discrete [ 2 ] { True, False };
+}
+variable Age {
+  type discrete [ 3 ] { Adolescent, Adult, Senior };
+}
+variable SocioEcon {
+  type discrete [ 4 ] { Prole, Middle, UpperMiddle, Wealthy };
+}
+variable RiskAversion {
+  type discrete [ 4 ] { Psychopath, Adventurous, Normal, Cautious };
+}
+variable VehicleYear {
+  type discrete [ 2 ] { Current, Older };
+}
+variable ThisCarDam {
+  type discrete [ 4 ] { None, Mild, Moderate, Severe };
+}
+variable RuggedAuto {
+  type discrete [ 3 ] { EggShell, Football, Tank };
+}
+variable Accident {
+  type discrete [ 4 ] { None, Mild, Moderate, Severe };
+}
+variable MakeModel {
+  type discrete [ 5 ] { SportsCar, Economy, FamilySedan, Luxury, SuperLuxury };
+}
+variable DrivQuality {
+  type discrete [ 3 ] { Poor, Normal, Excellent };
+}
+variable Mileage {
+  type discrete [ 4 ] { FiveThou, TwentyThou, FiftyThou, Domino };
+}
+variable Antilock {
+  type discrete [ 2 ] { True, False };
+}
+variable DrivingSkill {
+  type discrete [ 3 ] { SubStandard, Normal, Expert };
+}
+variable SeniorTrain {
+  type discrete [ 2 ] { True, False };
+}
+variable ThisCarCost {
+  type discrete [ 4 ] { Thousand, TenThou, HundredThou, Million };
+}
+variable Theft {
+  type discrete [ 2 ] { True, False };
+}
+variable CarValue {
+  type discrete [ 5 ] { FiveThou, TenThou, TwentyThou, FiftyThou, Million };
+}
+variable HomeBase {
+  type discrete [ 4 ] { Secure, City, Suburb, Rural };
+}
+variable AntiTheft {
+  type discrete [ 2 ] { True, False };
+}
+variable PropCost {
+  type discrete [ 4 ] { Thousand, TenThou, HundredThou, Million };
+}
+variable OtherCarCost {
+  type discrete [ 4 ] { Thousand, TenThou, HundredThou, Million };
+}
+variable OtherCar {
+  type discrete [ 2 ] { True, False };
+}
+variable MedCost {
+  type discrete [ 4 ] { Thousand, TenThou, HundredThou, Million };
+}
+variable Cushioning {
+  type discrete [ 4 ] { Poor, Fair, Good, Excellent };
+}
+variable Airbag {
+  type discrete [ 2 ] { True, False };
+}
+variable ILiCost {
+  type discrete [ 4 ] { Thousand, TenThou, HundredThou, Million };
+}
+variable DrivHist {
+  type discrete [ 3 ] { Zero, One, Many };
+}
+probability ( Age ) {
+  table 0.2, 0.6, 0.2;
+}
+probability ( GoodStudent | SocioEcon, Age ) {
+  (Prole, Adolescent) 0.1, 0.9;
+  (Prole, Adult) 0, 1;
+  (Prole, Senior) 0, 1;
+  (Middle, Adolescent) 0.2, 0.8;
+  (Middle, Adult) 0, 1;
+  (Middle, Senior) 0, 1;
+  (UpperMiddle, Adolescent) 0.5, 0.5;
+  (UpperMiddle, Adult) 0, 1;
+  (UpperMiddle, Senior) 0, 1;
+  (Wealthy, Adolescent) 0.4, 0.6;
+  (Wealthy, Adult) 0, 1;
+  (Wealthy, Senior) 0, 1;
+}
+probability ( SocioEcon | Age ) {
+  (Adolescent) 0.4, 0.4, 0.19, 0.01;
+  (Adult) 0.4, 0.4, 0.19, 0.01;
+  (Senior) 0.5, 0.2, 0.29, 0.01;
+}
+probability ( RiskAversion | Age, SocioEcon ) {
+  (Adolescent, Prole) 0.02, 0.58, 0.3, 0.1;
+  (Adolescent, Middle) 0.02, 0.38, 0.5, 0.1;
+  (Adolescent, UpperMiddle) 0.02, 0.48, 0.4, 0.1;
+  (Adolescent, Wealthy) 0.02, 0.58, 0.3, 0.1;
+  (Adult, Prole) 0.015, 0.285, 0.5, 0.2;
+  (Adult, Middle) 0.015, 0.185, 0.6, 0.2;
+  (Adult, UpperMiddle) 0.015, 0.285, 0.5, 0.2;
+  (Adult, Wealthy) 0.015, 0.285, 0.4, 0.3;
+  (Senior, Prole) 0.01, 0.09, 0.4, 0.5;
+  (Senior, Middle) 0.01, 0.04, 0.35, 0.6;
+  (Senior, UpperMiddle) 0.01, 0.09, 0.4, 0.5;
+  (Senior, Wealthy) 0.01, 0.09, 0.4, 0.5;
+}
+probability ( VehicleYear | SocioEcon, RiskAversion ) {
+  (Prole, Psychopath) 0.15, 0.85;
+  (Prole, Adventurous) 0.15, 0.85;
+  (Prole, Normal) 0.15, 0.85;
+  (Prole, Cautious) 0.15, 0.85;
+  (Middle, Psychopath) 0.3, 0.7;
+  (Middle, Adventurous) 0.3, 0.7;
+  (Middle, Normal) 0.3, 0.7;
+  (Middle, Cautious) 0.3, 0.7;
+  (UpperMiddle, Psychopath) 0.8, 0.2;
+  (UpperMiddle, Adventurous) 0.8, 0.2;
+  (UpperMiddle, Normal) 0.8, 0.2;
+  (UpperMiddle, Cautious) 0.8, 0.2;
+  (Wealthy, Psychopath) 0.9, 0.1;
+  (Wealthy, Adventurous) 0.9, 0.1;
+  (Wealthy, Normal) 0.9, 0.1;
+  (Wealthy, Cautious) 0.9, 0.1;
+}
+probability ( ThisCarDam | Accident, RuggedAuto ) {
+  (None, EggShell) 1, 0, 0, 0;
+  (None, Football) 1, 0, 0, 0;
+  (None, Tank) 1, 0, 0, 0;
+  (Mild, EggShell) 0.001, 0.9, 0.098, 0.001;
+  (Mild, Football) 0.2, 0.75, 0.049999, 0.000001;
+  (Mild, Tank) 0.7, 0.29, 0.009999, 0.000001;
+  (Moderate, EggShell) 0.000001, 0.000999, 0.7, 0.299;
+  (Moderate, Football) 0.001, 0.099, 0.8, 0.1;
+  (Moderate, Tank) 0.05, 0.6, 0.3, 0.05;
+  (Severe, EggShell) 0.000001, 0.000009, 0.00009, 0.9999;
+  (Severe, Football) 0.000001, 0.000999, 0.009, 0.99;
+  (Severe, Tank) 0.05, 0.2, 0.2, 0.55;
+}
+probability ( RuggedAuto | MakeModel, VehicleYear ) {
+  (SportsCar, Current) 0.95, 0.04, 0.01;
+  (SportsCar, Older) 0.95, 0.04, 0.01;
+  (Economy, Current) 0.5, 0.5, 0;
+  (Economy, Older) 0.9, 0.1, 0;
+  (FamilySedan, Current) 0.2, 0.6, 0.2;
+  (FamilySedan, Older) 0.05, 0.55, 0.4;
+  (Luxury, Current) 0.1, 0.6, 0.3;
+  (Luxury, Older) 0.1, 0.6, 0.3;
+  (SuperLuxury, Current) 0.05, 0.55, 0.4;
+  (SuperLuxury, Older) 0.05, 0.55, 0.4;
+}
+probability ( Accident | Antilock, Mileage, DrivQuality ) {
+  (True, FiveThou, Poor) 0.7, 0.2, 0.07, 0.03;
+  (True, FiveThou, Normal) 0.99, 0.007, 0.002, 0.001;
+  (True, FiveThou, Excellent) 0.999, 0.0007, 0.0002, 0.0001;
+  (True, TwentyThou, Poor) 0.4, 0.3, 0.2, 0.1;
+  (True, TwentyThou, Normal) 0.98, 0.01, 0.005, 0.005;
+  (True, TwentyThou, Excellent) 0.995, 0.003, 0.001, 0.001;
+  (True, FiftyThou, Poor) 0.3, 0.3, 0.2, 0.2;
+  (True, FiftyThou, Normal) 0.97, 0.02, 0.007, 0.003;
+  (True, FiftyThou, Excellent) 0.99, 0.007, 0.002, 0.001;
+  (True, Domino, Poor) 0.2, 0.2, 0.3, 0.3;
+  (True, Domino, Normal) 0.95, 0.03, 0.01, 0.01;
+  (True, Domino, Excellent) 0.985, 0.01, 0.003, 0.002;
+  (False, FiveThou, Poor) 0.6, 0.2, 0.1, 0.1;
+  (False, FiveThou, Normal) 0.98, 0.01, 0.005, 0.005;
+  (False, FiveThou, Excellent) 0.995, 0.003, 0.001, 0.001;
+  (False, TwentyThou, Poor) 0.3, 0.2, 0.2, 0.3;
+  (False, TwentyThou, Normal) 0.96, 0.02, 0.015, 0.005;
+  (False, TwentyThou, Excellent) 0.99, 0.007, 0.002, 0.001;
+  (False, FiftyThou, Poor) 0.2, 0.2, 0.2, 0.4;
+  (False, FiftyThou, Normal) 0.95, 0.03, 0.015, 0.005;
+  (False, FiftyThou, Excellent) 0.98, 0.01, 0.005, 0.005;
+  (False, Domino, Poor) 0.1, 0.1, 0.3, 0.5;
+  (False, Domino, Normal) 0.94, 0.03, 0.02, 0.01;
+  (False, Domino, Excellent) 0.98, 0.01, 0.007, 0.003;
+}
+probability ( MakeModel | SocioEcon, RiskAversion ) {
+  (Prole, Psychopath) 0.1, 0.7, 0.2, 0, 0;
+  (Prole, Adventurous) 0.1, 0.7, 0.2, 0, 0;
+  (Prole, Normal) 0.1, 0.7, 0.2, 0, 0;
+  (Prole, Cautious) 0.1, 0.7, 0.2, 0, 0;
+  (Middle, Psychopath) 0.15, 0.2, 0.65, 0, 0;
+  (Middle, Adventurous) 0.15, 0.2, 0.65, 0, 0;
+  (Middle, Normal) 0.15, 0.2, 0.65, 0, 0;
+  (Middle, Cautious) 0.15, 0.2, 0.65, 0, 0;
+  (UpperMiddle, Psychopath) 0.2, 0.05, 0.3, 0.45, 0;
+  (UpperMiddle, Adventurous) 0.2, 0.05, 0.3, 0.45, 0;
+  (UpperMiddle, Normal) 0.2, 0.05, 0.3, 0.45, 0;
+  (UpperMiddle, Cautious) 0.2, 0.05, 0.3, 0.45, 0;
+  (Wealthy, Psychopath) 0.3, 0.01, 0.09, 0.4, 0.2;
+  (Wealthy, Adventurous) 0.3, 0.01, 0.09, 0.4, 0.2;
+  (Wealthy, Normal) 0.3, 0.01, 0.09, 0.4, 0.2;
+  (Wealthy, Cautious) 0.3, 0.01, 0.09, 0.4, 0.2;
+}
+probability ( DrivQuality | DrivingSkill, RiskAversion ) {
+  (SubStandard, Psychopath) 1, 0, 0;
+  (SubStandard, Adventurous) 1, 0, 0;
+  (SubStandard, Normal) 1, 0, 0;
+  (SubStandard, Cautious) 1, 0, 0;
+  (Normal, Psychopath) 0.5, 0.2, 0.3;
+  (Normal, Adventurous) 0.3, 0.4, 0.3;
+  (Normal, Normal) 0, 1, 0;
+  (Normal, Cautious) 0, 0.8, 0.2;
+  (Expert, Psychopath) 0.3, 0.2, 0.5;
+  (Expert, Adventurous) 0.01, 0.01, 0.98;
+  (Expert, Normal) 0, 0, 1;
+  (Expert, Cautious) 0, 0, 1;
+}
+probability ( Mileage ) {
+  table 0.1, 0.4, 0.4, 0.1;
+}
+probability ( Antilock | MakeModel, VehicleYear ) {
+  (SportsCar, Current) 0.9, 0.1;
+  (SportsCar, Older) 0.1, 0.9;
+  (Economy, Current) 0.001, 0.999;
+  (Economy, Older) 0, 1;
+  (FamilySedan, Current) 0.4, 0.6;
+  (FamilySedan, Older) 0, 1;
+  (Luxury, Current) 0.99, 0.01;
+  (Luxury, Older) 0.3, 0.7;
+  (SuperLuxury, Current) 0.99, 0.01;
+  (SuperLuxury, Older) 0.15, 0.85;
+}
+probability ( DrivingSkill | Age, SeniorTrain ) {
+  (Adolescent, True) 0.5, 0.45, 0.05;
+  (Adolescent, False) 0.5, 0.45, 0.05;
+  (Adult, True) 0.3, 0.6, 0.1;
+  (Adult, False) 0.3, 0.6, 0.1;
+  (Senior, True) 0.1, 0.6, 0.3;
+  (Senior, False) 0.4, 0.5, 0.1;
+}
+probability ( SeniorTrain | Age, RiskAversion ) {
+  (Adolescent, Psychopath) 0, 1;
+  (Adolescent, Adventurous) 0, 1;
+  (Adolescent, Normal) 0, 1;
+  (Adolescent, Cautious) 0, 1;
+  (Adult, Psychopath) 0, 1;
+  (Adult, Adventurous) 0, 1;
+  (Adult, Normal) 0, 1;
+  (Adult, Cautious) 0, 1;
+  (Senior, Psychopath) 0.000001, 0.999999;
+  (Senior, Adventurous) 0.000001, 0.999999;
+  (Senior, Normal) 0.3, 0.7;
+  (Senior, Cautious) 0.9, 0.1;
+}
+probability ( ThisCarCost | ThisCarDam, CarValue, Theft ) {
+  (None, FiveThou, True) 0.2, 0.8, 0, 0;
+  (None, FiveThou, False) 1, 0, 0, 0;
+  (None, TenThou, True) 0.05, 0.95, 0, 0;
+  (None, TenThou, False) 1, 0, 0, 0;
+  (None, TwentyThou, True) 0.04, 0.01, 0.95, 0;
+  (None, TwentyThou, False) 1, 0, 0, 0;
+  (None, FiftyThou, True) 0.04, 0.01, 0.95, 0;
+  (None, FiftyThou, False) 1, 0, 0, 0;
+  (None, Million, True) 0.04, 0.01, 0.2, 0.75;
+  (None, Million, False) 1, 0, 0, 0;
+  (Mild, FiveThou, True) 0.15, 0.85, 0, 0;
+  (Mild, FiveThou, False) 0.95, 0.05, 0, 0;
+  (Mild, TenThou, True) 0.03, 0.97, 0, 0;
+  (Mild, TenThou, False) 0.95, 0.05, 0, 0;
+  (Mild, TwentyThou, True) 0.03, 0.02, 0.95, 0;
+  (Mild, TwentyThou, False) 0.99, 0.01, 0, 0;
+  (Mild, FiftyThou, True) 0.03, 0.02, 0.95, 0;
+  (Mild, FiftyThou, False) 0.99, 0.01, 0, 0;
+  (Mild, Million, True) 0.02, 0.03, 0.25, 0.7;
+  (Mild, Million, False) 0.98, 0.01, 0.01, 0;
+  (Moderate, FiveThou, True) 0.05, 0.95, 0, 0;
+  (Moderate, FiveThou, False) 0.25, 0.75, 0, 0;
+  (Moderate, TenThou, True) 0.01, 0.99, 0, 0;
+  (Moderate, TenThou, False) 0.15, 0.85, 0, 0;
+  (Moderate, TwentyThou, True) 0.001, 0.001, 0.998, 0;
+  (Moderate, TwentyThou, False) 0.01, 0.01, 0.98, 0;
+  (Moderate, FiftyThou, True) 0.001, 0.001, 0.998, 0;
+  (Moderate, FiftyThou, False) 0.005, 0.005, 0.99, 0;
+  (Moderate, Million, True) 0.001, 0.001, 0.018, 0.98;
+  (Moderate, Million, False) 0.003, 0.003, 0.044, 0.95;
+  (Severe, FiveThou, True) 0.03, 0.97, 0, 0;
+  (Severe, FiveThou, False) 0.05, 0.95, 0, 0;
+  (Severe, TenThou, True) 0.000001, 0.999999, 0, 0;
+  (Severe, TenThou, False) 0.01, 0.99, 0, 0;
+  (Severe, TwentyThou, True) 0.000001, 0.000001, 0.999998, 0;
+  (Severe, TwentyThou, False) 0.005, 0.005, 0.99, 0;
+  (Severe, FiftyThou, True) 0.000001, 0.000001, 0.999998, 0;
+  (Severe, FiftyThou, False) 0.001, 0.001, 0.998, 0;
+  (Severe, Million, True) 0.000001, 0.000001, 0.009998, 0.99;
+  (Severe, Million, False) 0.000001, 0.000001, 0.029998, 0.97;
+}
+probability ( Theft | AntiTheft, HomeBase, CarValue ) {
+  (True, Secure, FiveThou) 0.000001, 0.999999;
+  (True, Secure, TenThou) 0.000002, 0.999998;
+  (True, Secure, TwentyThou) 0.000003, 0.999997;
+  (True, Secure, FiftyThou) 0.000002, 0.999998;
+  (True, Secure, Million) 0.000001, 0.999999;
+  (True, City, FiveThou) 0.0005, 0.9995;
+  (True, City, TenThou) 0.002, 0.998;
+  (True, City, TwentyThou) 0.005, 0.995;
+  (True, City, FiftyThou) 0.005, 0.995;
+  (True, City, Million) 0.000001, 0.999999;
+  (True, Suburb, FiveThou) 0.00001, 0.99999;
+  (True, Suburb, TenThou) 0.0001, 0.9999;
+  (True, Suburb, TwentyThou) 0.0003, 0.9997;
+  (True, Suburb, FiftyThou) 0.0003, 0.9997;
+  (True, Suburb, Million) 0.000001, 0.999999;
+  (True, Rural, FiveThou) 0.00001, 0.99999;
+  (True, Rural, TenThou) 0.00002, 0.99998;
+  (True, Rural, TwentyThou) 0.00005, 0.99995;
+  (True, Rural, FiftyThou) 0.00005, 0.99995;
+  (True, Rural, Million) 0.000001, 0.999999;
+  (False, Secure, FiveThou) 0.000001, 0.999999;
+  (False, Secure, TenThou) 0.000002, 0.999998;
+  (False, Secure, TwentyThou) 0.000003, 0.999997;
+  (False, Secure, FiftyThou) 0.000002, 0.999998;
+  (False, Secure, Million) 0.000001, 0.999999;
+  (False, City, FiveThou) 0.001, 0.999;
+  (False, City, TenThou) 0.005, 0.995;
+  (False, City, TwentyThou) 0.01, 0.99;
+  (False, City, FiftyThou) 0.01, 0.99;
+  (False, City, Million) 0.000001, 0.999999;
+  (False, Suburb, FiveThou) 0.00001, 0.99999;
+  (False, Suburb, TenThou) 0.0002, 0.9998;
+  (False, Suburb, TwentyThou) 0.0005, 0.9995;
+  (False, Suburb, FiftyThou) 0.0005, 0.9995;
+  (False, Suburb, Million) 0.000001, 0.999999;
+  (False, Rural, FiveThou) 0.00001, 0.99999;
+  (False, Rural, TenThou) 0.0001, 0.9999;
+  (False, Rural, TwentyThou) 0.0002, 0.9998;
+  (False, Rural, FiftyThou) 0.0002, 0.9998;
+  (False, Rural, Million) 0.000001, 0.999999;
+}
+probability ( CarValue | MakeModel, VehicleYear, Mileage ) {
+  (SportsCar, Current, FiveThou) 0, 0.1, 0.8, 0.09, 0.01;
+  (SportsCar, Current, TwentyThou) 0, 0.1, 0.8, 0.09, 0.01;
+  (SportsCar, Current, FiftyThou) 0, 0.1, 0.8, 0.09, 0.01;
+  (SportsCar, Current, Domino) 0, 0.1, 0.8, 0.09, 0.01;
+  (SportsCar, Older, FiveThou) 0.03, 0.3, 0.6, 0.06, 0.01;
+  (SportsCar, Older, TwentyThou) 0.16, 0.5, 0.3, 0.03, 0.01;
+  (SportsCar, Older, FiftyThou) 0.4, 0.47, 0.1, 0.02, 0.01;
+  (SportsCar, Older, Domino) 0.9, 0.06, 0.02, 0.01, 0.01;
+  (Economy, Current, FiveThou) 0.1, 0.8, 0.1, 0, 0;
+  (Economy, Current, TwentyThou) 0.1, 0.8, 0.1, 0, 0;
+  (Economy, Current, FiftyThou) 0.1, 0.8, 0.1, 0, 0;
+  (Economy, Current, Domino) 0.1, 0.8, 0.1, 0, 0;
+  (Economy, Older, FiveThou) 0.25, 0.7, 0.05, 0, 0;
+  (Economy, Older, TwentyThou) 0.7, 0.2999, 0.0001, 0, 0;
+  (Economy, Older, FiftyThou) 0.99, 0.009999, 0.000001, 0, 0;
+  (Economy, Older, Domino) 0.999998, 0.000001, 0.000001, 0, 0;
+  (FamilySedan, Current, FiveThou) 0, 0.1, 0.9, 0, 0;
+  (FamilySedan, Current, TwentyThou) 0, 0.1, 0.9, 0, 0;
+  (FamilySedan, Current, FiftyThou) 0, 0.1, 0.9, 0, 0;
+  (FamilySedan, Current, Domino) 0, 0.1, 0.9, 0, 0;
+  (FamilySedan, Older, FiveThou) 0.2, 0.3, 0.5, 0, 0;
+  (FamilySedan, Older, TwentyThou) 0.5, 0.3, 0.2, 0, 0;
+  (FamilySedan, Older, FiftyThou) 0.7, 0.2, 0.1, 0, 0;
+  (FamilySedan, Older, Domino) 0.99, 0.009999, 0.000001, 0, 0;
+  (Luxury, Current, FiveThou) 0, 0, 0, 1, 0;
+  (Luxury, Current, TwentyThou) 0, 0, 0, 1, 0;
+  (Luxury, Current, FiftyThou) 0, 0, 0, 1, 0;
+  (Luxury, Current, Domino) 0, 0, 0, 1, 0;
+  (Luxury, Older, FiveThou) 0.01, 0.09, 0.2, 0.7, 0;
+  (Luxury, Older, TwentyThou) 0.05, 0.15, 0.3, 0.5, 0;
+  (Luxury, Older, FiftyThou) 0.1, 0.3, 0.3, 0.3, 0;
+  (Luxury, Older, Domino) 0.2, 0.2, 0.3, 0.3, 0;
+  (SuperLuxury, Current, FiveThou) 0, 0, 0, 0, 1;
+  (SuperLuxury, Current, TwentyThou) 0, 0, 0, 0, 1;
+  (SuperLuxury, Current, FiftyThou) 0, 0, 0, 0, 1;
+  (SuperLuxury, Current, Domino) 0, 0, 0, 0, 1;
+  (SuperLuxury, Older, FiveThou) 0.000001, 0.000001, 0.000001, 0.000001, 0.999996;
+  (SuperLuxury, Older, TwentyThou) 0.000001, 0.000001, 0.000001, 0.000001, 0.999996;
+  (SuperLuxury, Older, FiftyThou) 0.000001, 0.000001, 0.000001, 0.000001, 0.999996;
+  (SuperLuxury, Older, Domino) 0.000001, 0.000001, 0.000001, 0.000001, 0.999996;
+}
+probability ( HomeBase | RiskAversion, SocioEcon ) {
+  (Psychopath, Prole) 0.000001, 0.8, 0.049999, 0.15;
+  (Psychopath, Middle) 0.15, 0.8, 0.04, 0.01;
+  (Psychopath, UpperMiddle) 0.35, 0.6, 0.04, 0.01;
+  (Psychopath, Wealthy) 0.489999, 0.5, 0.000001, 0.01;
+  (Adventurous, Prole) 0.000001, 0.8, 0.05, 0.149999;
+  (Adventurous, Middle) 0.01, 0.25, 0.6, 0.14;
+  (Adventurous, UpperMiddle) 0.2, 0.4, 0.3, 0.1;
+  (Adventurous, Wealthy) 0.95, 0.000001, 0.000001, 0.049998;
+  (Normal, Prole) 0.000001, 0.8, 0.05, 0.149999;
+  (Normal, Middle) 0.299999, 0.000001, 0.6, 0.1;
+  (Normal, UpperMiddle) 0.5, 0.000001, 0.4, 0.099999;
+  (Normal, Wealthy) 0.85, 0.000001, 0.001, 0.148999;
+  (Cautious, Prole) 0.000001, 0.8, 0.05, 0.149999;
+  (Cautious, Middle) 0.95, 0.000001, 0.024445, 0.025554;
+  (Cautious, UpperMiddle) 0.999997, 0.000001, 0.000001, 0.000001;
+  (Cautious, Wealthy) 0.999997, 0.000001, 0.000001, 0.000001;
+}
+probability ( AntiTheft | RiskAversion, SocioEcon ) {
+  (Psychopath, Prole) 0.000001, 0.999999;
+  (Psychopath, Middle) 0.000001, 0.999999;
+  (Psychopath, UpperMiddle) 0.05, 0.95;
+  (Psychopath, Wealthy) 0.5, 0.5;
+  (Adventurous, Prole) 0.000001, 0.999999;
+  (Adventurous, Middle) 0.000001, 0.999999;
+  (Adventurous, UpperMiddle) 0.2, 0.8;
+  (Adventurous, Wealthy) 0.5, 0.5;
+  (Normal, Prole) 0.1, 0.9;
+  (Normal, Middle) 0.3, 0.7;
+  (Normal, UpperMiddle) 0.9, 0.1;
+  (Normal, Wealthy) 0.8, 0.2;
+  (Cautious, Prole) 0.95, 0.05;
+  (Cautious, Middle) 0.999999, 0.000001;
+  (Cautious, UpperMiddle) 0.999999, 0.000001;
+  (Cautious, Wealthy) 0.999999, 0.000001;
+}
+probability ( PropCost | OtherCarCost, ThisCarCost ) {
+  (Thousand, Thousand) 0.7, 0.3, 0, 0;
+  (Thousand, TenThou) 0, 0.95, 0.05, 0;
+  (Thousand, HundredThou) 0, 0, 0.98, 0.02;
+  (Thousand, Million) 0, 0, 0, 1;
+  (TenThou, Thousand) 0, 0.95, 0.05, 0;
+  (TenThou, TenThou) 0, 0.6, 0.4, 0;
+  (TenThou, HundredThou) 0, 0, 0.95, 0.05;
+  (TenThou, Million) 0, 0, 0, 1;
+  (HundredThou, Thousand) 0, 0, 0.98, 0.02;
+  (HundredThou, TenThou) 0, 0, 0.8, 0.2;
+  (HundredThou, HundredThou) 0, 0, 0.6, 0.4;
+  (HundredThou, Million) 0, 0, 0, 1;
+  (Million, Thousand) 0, 0, 0, 1;
+  (Million, TenThou) 0, 0, 0, 1;
+  (Million, HundredThou) 0, 0, 0, 1;
+  (Million, Million) 0, 0, 0, 1;
+}
+probability ( OtherCarCost | Accident, RuggedAuto ) {
+  (None, EggShell) 1, 0, 0, 0;
+  (None, Football) 1, 0, 0, 0;
+  (None, Tank) 1, 0, 0, 0;
+  (Mild, EggShell) 0.99, 0.005, 0.00499, 0.00001;
+  (Mild, Football) 0.98, 0.01, 0.009985, 0.00005;
+  (Mild, Tank) 0.95, 0.03, 0.01998, 0.00002;
+  (Moderate, EggShell) 0.6, 0.2, 0.19998, 0.00002;
+  (Moderate, Football) 0.5, 0.2, 0.29997, 0.00003;
+  (Moderate, Tank) 0.4, 0.3, 0.29996, 0.00004;
+  (Severe, EggShell) 0.2, 0.4, 0.39996, 0.00004;
+  (Severe, Football) 0.1, 0.5, 0.39994, 0.00006;
+  (Severe, Tank) 0.005, 0.55, 0.4449, 0.0001;
+}
+probability ( OtherCar | SocioEcon ) {
+  (Prole) 0.5, 0.5;
+  (Middle) 0.8, 0.2;
+  (UpperMiddle) 0.9, 0.1;
+  (Wealthy) 0.95, 0.05;
+}
+probability ( MedCost | Accident, Age, Cushioning ) {
+  (None, Adolescent, Poor) 1, 0, 0, 0;
+  (None, Adolescent, Fair) 1, 0, 0, 0;
+  (None, Adolescent, Good) 1, 0, 0, 0;
+  (None, Adolescent, Excellent) 1, 0, 0, 0;
+  (None, Adult, Poor) 1, 0, 0, 0;
+  (None, Adult, Fair) 1, 0, 0, 0;
+  (None, Adult, Good) 1, 0, 0, 0;
+  (None, Adult, Excellent) 1, 0, 0, 0;
+  (None, Senior, Poor) 1, 0, 0, 0;
+  (None, Senior, Fair) 1, 0, 0, 0;
+  (None, Senior, Good) 1, 0, 0, 0;
+  (None, Senior, Excellent) 1, 0, 0, 0;
+  (Mild, Adolescent, Poor) 0.96, 0.03, 0.009, 0.001;
+  (Mild, Adolescent, Fair) 0.98, 0.019, 0.0009, 0.0001;
+  (Mild, Adolescent, Good) 0.99, 0.0099, 0.00009, 0.00001;
+  (Mild, Adolescent, Excellent) 0.999, 0.00099, 0.000009, 0.000001;
+  (Mild, Adult, Poor) 0.96, 0.03, 0.009, 0.001;
+  (Mild, Adult, Fair) 0.98, 0.019, 0.0009, 0.0001;
+  (Mild, Adult, Good) 0.99, 0.0099, 0.00009, 0.00001;
+  (Mild, Adult, Excellent) 0.999, 0.00099, 0.000009, 0.000001;
+  (Mild, Senior, Poor) 0.9, 0.07, 0.02, 0.01;
+  (Mild, Senior, Fair) 0.95, 0.04, 0.007, 0.003;
+  (Mild, Senior, Good) 0.97, 0.025, 0.003, 0.002;
+  (Mild, Senior, Excellent) 0.99, 0.007, 0.002, 0.001;
+  (Moderate, Adolescent, Poor) 0.5, 0.2, 0.2, 0.1;
+  (Moderate, Adolescent, Fair) 0.8, 0.15, 0.03, 0.02;
+  (Moderate, Adolescent, Good) 0.95, 0.02, 0.02, 0.01;
+  (Moderate, Adolescent, Excellent) 0.99, 0.007, 0.002, 0.001;
+  (Moderate, Adult, Poor) 0.5, 0.2, 0.2, 0.1;
+  (Moderate, Adult, Fair) 0.8, 0.15, 0.03, 0.02;
+  (Moderate, Adult, Good) 0.95, 0.02, 0.02, 0.01;
+  (Moderate, Adult, Excellent) 0.99, 0.007, 0.002, 0.001;
+  (Moderate, Senior, Poor) 0.3, 0.3, 0.2, 0.2;
+  (Moderate, Senior, Fair) 0.5, 0.2, 0.2, 0.1;
+  (Moderate, Senior, Good) 0.9, 0.07, 0.02, 0.01;
+  (Moderate, Senior, Excellent) 0.95, 0.03, 0.01, 0.01;
+  (Severe, Adolescent, Poor) 0.3, 0.3, 0.2, 0.2;
+  (Severe, Adolescent, Fair) 0.5, 0.2, 0.2, 0.1;
+  (Severe, Adolescent, Good) 0.9, 0.07, 0.02, 0.01;
+  (Severe, Adolescent, Excellent) 0.95, 0.03, 0.01, 0.01;
+  (Severe, Adult, Poor) 0.3, 0.3, 0.2, 0.2;
+  (Severe, Adult, Fair) 0.5, 0.2, 0.2, 0.1;
+  (Severe, Adult, Good) 0.9, 0.07, 0.02, 0.01;
+  (Severe, Adult, Excellent) 0.95, 0.03, 0.01, 0.01;
+  (Severe, Senior, Poor) 0.2, 0.2, 0.3, 0.3;
+  (Severe, Senior, Fair) 0.3, 0.3, 0.2, 0.2;
+  (Severe, Senior, Good) 0.6, 0.3, 0.07, 0.03;
+  (Severe, Senior, Excellent) 0.9, 0.05, 0.03, 0.02;
+}
+probability ( Cushioning | RuggedAuto, Airbag ) {
+  (EggShell, True) 0.5, 0.3, 0.2, 0;
+  (EggShell, False) 0.7, 0.3, 0, 0;
+  (Football, True) 0, 0.1, 0.6, 0.3;
+  (Football, False) 0.1, 0.6, 0.3, 0;
+  (Tank, True) 0, 0, 0, 1;
+  (Tank, False) 0, 0, 0.7, 0.3;
+}
+probability ( Airbag | MakeModel, VehicleYear ) {
+  (SportsCar, Current) 1, 0;
+  (SportsCar, Older) 0.1, 0.9;
+  (Economy, Current) 1, 0;
+  (Economy, Older) 0.05, 0.95;
+  (FamilySedan, Current) 1, 0;
+  (FamilySedan, Older) 0.2, 0.8;
+  (Luxury, Current) 1, 0;
+  (Luxury, Older) 0.6, 0.4;
+  (SuperLuxury, Current) 1, 0;
+  (SuperLuxury, Older) 0.1, 0.9;
+}
+probability ( ILiCost | Accident ) {
+  (None) 1, 0, 0, 0;
+  (Mild) 0.999, 0.000998, 0.000001, 0.000001;
+  (Moderate) 0.9, 0.05, 0.03, 0.02;
+  (Severe) 0.8, 0.1, 0.06, 0.04;
+}
+probability ( DrivHist | DrivingSkill, RiskAversion ) {
+  (SubStandard, Psychopath) 0.001, 0.004, 0.995;
+  (SubStandard, Adventurous) 0.002, 0.008, 0.99;
+  (SubStandard, Normal) 0.03, 0.15, 0.82;
+  (SubStandard, Cautious) 0.3, 0.3, 0.4;
+  (Normal, Psychopath) 0.1, 0.3, 0.6;
+  (Normal, Adventurous) 0.5, 0.3, 0.2;
+  (Normal, Normal) 0.9, 0.07, 0.03;
+  (Normal, Cautious) 0.95, 0.04, 0.01;
+  (Expert, Psychopath) 0.3, 0.3, 0.4;
+  (Expert, Adventurous) 0.6, 0.3, 0.1;
+  (Expert, Normal) 0.99, 0.009999, 0.000001;
+  (Expert, Cautious) 0.999998, 0.000001, 0.000001;
+}

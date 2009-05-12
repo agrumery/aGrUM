@@ -1,0 +1,18 @@
+<DATABASE>
+  <VARIABLE name="xxx">
+    <MODALITY name="toto" id="4" />
+    <MODALITY name="titi" id="6"/>
+  </VARIABLE>
+  <VARIABLE name="yyy">
+    <MODALITY name="a" id="1" />
+    <MODALITY name="b"/>
+  </VARIABLE>
+  <VARIABLE name="zzz">
+    <MODALITY name="cc" id="20" />
+    <MODALITY name="dd" id="15"/>
+  </VARIABLE>
+  <DATA>
+    <CASE>4 2 20</CASE>
+    <CASE>6 1 15</CASE>
+  </DATA>
+</DATABASE>

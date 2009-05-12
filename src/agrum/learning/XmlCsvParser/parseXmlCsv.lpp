@@ -1,0 +1,157 @@
+%option prefix="GUM_PARSE_XML_CSV_"
+%option nounput
+
+%{
+#include <iostream>
+#include <vector>
+#include <agrum/core/hashTable.h>
+
+#include "parseXmlCsv.hpp"
+
+#define YY_DECL int GUM_PARSE_XML_CSV_lex (YYSTYPE* GUM_PARSE_XML_CSV_lval)
+
+
+int  GUM_PARSE_XML_CSV_property_caller_var;
+int  GUM_PARSE_XML_CSV_property_caller_modal;
+int  GUM_PARSE_XML_CSV_property_caller_name;
+int  GUM_PARSE_XML_CSV_property_caller_id;
+int  GUM_PARSE_XML_CSV_property_caller_data;
+int  GUM_PARSE_XML_CSV_property_caller_case;
+
+
+extern unsigned int GUM_PARSE_XML_CSV_words_size;
+extern gum::HashTable<unsigned int,std::string> *GUM_PARSE_XML_CSV_words;
+
+#define string_yylval() \
+        GUM_PARSE_XML_CSV_lval->Int = GUM_PARSE_XML_CSV_words_size; \
+        { std::string mycopy = GUM_PARSE_XML_CSV_text + 1; \
+          mycopy.resize (mycopy.size() - 1); \
+          GUM_PARSE_XML_CSV_words->insert(GUM_PARSE_XML_CSV_words_size,mycopy); } \
+        ++GUM_PARSE_XML_CSV_words_size;
+
+#define id_yylval() \
+        sscanf(GUM_PARSE_XML_CSV_text, "\"%d\"", &GUM_PARSE_XML_CSV_lval->Int);
+
+#define int_yylval() \
+        sscanf(GUM_PARSE_XML_CSV_text, "%d", &GUM_PARSE_XML_CSV_lval->Int);
+
+%}
+
+
+MISSING               \?
+INTEGER               [0-9][0-9]*
+ATTRIBUTE_INT_VALUE   \"[0-9][0-9]*\"
+ATTRIBUTE_STR_VALUE   \"[^"]*\"
+ATTRIBUTE_NAME        "name"
+ATTRIBUTE_ID          "id"
+DATABASE_BEGIN        "<DATABASE>"
+DATABASE_END          "</DATABASE>"
+
+
+%x IN_VARIABLE_TAG
+%x IN_MODALITY_TAG
+%x IN_MODALITY_ID
+%x IN_DATA_TAG
+%x IN_CASE_TAG
+%x IN_NAME_TAG
+
+%%
+
+{DATABASE_BEGIN} {
+       return TOK_DATABASE_TAG_BEGIN;
+     }
+
+{DATABASE_END} {
+       return TOK_DATABASE_TAG_END;
+     }
+
+
+"<VARIABLE" {
+       GUM_PARSE_XML_CSV_property_caller_var=YYSTATE;
+       BEGIN (IN_VARIABLE_TAG);
+       return TOK_VARIABLE_TAG_BEGIN;
+     }
+<IN_VARIABLE_TAG>">" {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_var);
+       return TOK_VARIABLE_TAG_END;
+     }
+"</VARIABLE>" {
+       return TOK_END_VARIABLE_TAG;
+     }
+
+
+"<MODALITY" {
+       GUM_PARSE_XML_CSV_property_caller_modal=YYSTATE;
+       BEGIN (IN_MODALITY_TAG);
+       return TOK_MODALITY_TAG_BEGIN;
+     }
+<IN_MODALITY_TAG>"/>" {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_modal);
+       return TOK_MODALITY_TAG_END;
+     }
+
+
+<IN_MODALITY_TAG>{ATTRIBUTE_ID} {
+       GUM_PARSE_XML_CSV_property_caller_id=YYSTATE;
+       BEGIN (IN_MODALITY_ID);
+       return TOK_ID_TAG;
+     }
+<IN_MODALITY_ID>{ATTRIBUTE_INT_VALUE} {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_id);
+       id_yylval();
+       return TOK_INTEGER;
+     }
+
+
+"<DATA>" {
+       GUM_PARSE_XML_CSV_property_caller_data=YYSTATE;
+       BEGIN (IN_DATA_TAG);
+       return TOK_DATA_TAG;
+     }
+<IN_DATA_TAG>"</DATA>" {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_data);
+       return TOK_END_DATA_TAG;
+     }
+
+
+<IN_DATA_TAG>"<CASE>" {
+       GUM_PARSE_XML_CSV_property_caller_case=YYSTATE;
+       BEGIN (IN_CASE_TAG);
+       return TOK_CASE_TAG;
+     }
+<IN_CASE_TAG>"</CASE>" {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_case);
+       return TOK_END_CASE_TAG;
+     }
+<IN_CASE_TAG>{INTEGER} {
+       int_yylval();
+       return TOK_INTEGER;
+     }
+<IN_CASE_TAG>{MISSING} {
+       return TOK_MISSING;
+     }
+
+<*>{ATTRIBUTE_NAME} {
+       GUM_PARSE_XML_CSV_property_caller_name=YYSTATE;
+       BEGIN (IN_NAME_TAG);
+       return TOK_NAME_TAG;
+     }
+<IN_NAME_TAG>{ATTRIBUTE_STR_VALUE} {
+       BEGIN (GUM_PARSE_XML_CSV_property_caller_name);
+       string_yylval();
+       return TOK_STRING;
+     }
+
+
+<*>"="              { return TOK_EQUAL; }
+<*>[[:blank:]]|\n   /* remove superfluous characters */
+<*>.                { return TOK_ERROR; }
+
+
+%%
+
+int GUM_PARSE_XML_CSV_wrap () {
+   BEGIN(INITIAL);
+   YY_FLUSH_BUFFER;
+   return 1;
+}

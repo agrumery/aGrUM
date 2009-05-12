@@ -1,0 +1,14 @@
+# Find the aGrUM includes and library
+#
+# AGRUM_INCLUDE_DIR - where to find the includes
+# AGRUM_LIBRARIES - list of qualified libraries to link against
+# AGRUM_FOUND - set to 1 if found
+#
+#
+set (AGRUM_FOUND 1)
+set (AGRUM_INCLUDE_DIR "@CMAKE_INSTALL_PREFIX@/include")
+set (AGRUM_LIB_DIR "@CMAKE_INSTALL_PREFIX@/lib")
+
+set (aGrUM_BUILD_SETTINGS_FILE "@CMAKE_INSTALL_PREFIX@/lib/aGrUM/aGrUMBuildSettings.cmake")
+include("@CMAKE_INSTALL_PREFIX@/lib/aGrUM/aGrUMLibraryDepends.cmake")
+set(aGrUM_USE_FILE "@CMAKE_INSTALL_PREFIX@/lib/aGrUM/aGrUMUse.cmake")

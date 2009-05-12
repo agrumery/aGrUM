@@ -1,0 +1,801 @@
+network DXPNetwork {
+  property Source = "DXPNetwork"
+  property displaySize = ( 2000, 1200);
+}
+variable N5 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (827, 511);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N9 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1078, 484);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N19 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (821, 581);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N20 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1037, 576);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N27 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (835, 638);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N29 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (839, 699);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N34 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (840, 751);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N38 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1087, 644);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N26 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1340, 760);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N28 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1340, 811);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N40 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1113, 761);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N41 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (1115, 706);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N57 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1101, 825);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N42 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1290, 520);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N63 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (609, 435);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N64 {
+  type discrete [ 4 ] { 0, 1, 2, 3 };
+  property position = (623, 845);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N65 {
+  type discrete [ 4 ] { 0, 1, 2, 3 };
+  property position = (614, 787);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N66 {
+  type discrete [ 3 ] { 0, 1, 2 };
+  property position = (605, 645);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N67 {
+  type discrete [ 4 ] { 0, 1, 2, 3 };
+  property position = (613, 559);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N68 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (635, 902);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N33 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (468, 436);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N35 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (450, 500);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N37 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (441, 563);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N39 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (435, 619);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N43 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (422, 684);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N44 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (414, 761);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N69 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (806, 264);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N70 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (824, 428);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N71 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (806, 373);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N73 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (803, 319);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N51 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1066, 352);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N52 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (483, 379);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N88 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (492, 320);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N89 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1243, 420);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N90 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1110, 218);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N91 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (439, 199);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N59 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (598, 718);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N141 {
+  type discrete [ 2 ] { 0, 1 };
+  property fault = 1;
+  property position = (800, 215);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = true;
+  property cost = 0;
+}
+variable N143 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (872, 84);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N146 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (622, 141);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N147 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (610, 79);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N150 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (995, 129);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N152 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (401, 60);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N153 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (823, 140);
+  property observable = false;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N187 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (995, 193);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N81 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1095, 289);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N84 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (493, 258);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+variable N113 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (226, 280);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N114 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (237, 327);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N115 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (223, 377);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N116 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (216, 424);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N118 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (223, 470);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N119 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (225, 521);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N120 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (227, 568);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N121 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (226, 624);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N122 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (205, 688);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N100 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (206, 175);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N104 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (219, 219);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N108 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (149, 39);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N112 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (196, 124);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0.5;
+}
+variable N117 {
+  type discrete [ 2 ] { 0, 1 };
+  property position = (1364, 616);
+  property observable = true;
+  property mandatory = false;
+  property hypothesis = false;
+  property cost = 0;
+}
+probability ( N5  | N143 ,N187  ) {
+  property function max;
+  (0, 0) 0.25 , 0.75;  // Leak term
+  (1, 0) 0.5 , 0.5; 
+  (0, 1) 0.5 , 0.5; 
+}
+probability ( N9  | N5 ,N19 ,N69  ) {
+  property function max;
+  (0, 0, 0) 0.8999999762 , 0.05000000075 , 0.05000000075;  // Leak term
+  (1, 0, 0) 0.1000000015 , 0.8000000119 , 0.1000000015; 
+  (0, 1, 0) 0.05000000075 , 0.1000000015 , 0.8500000238; 
+  (0, 0, 1) 0.1000000015 , 0.8000000119 , 0.1000000015; 
+}
+probability ( N19   ) {
+  table 0.9750000238 , 0.02500000037;  // Leak term
+}
+probability ( N20  | N27 ,N29 ,N51 ,N69  ) {
+  property function max;
+  (0, 0, 0, 0) 0.9800000191 , 0.009999999776 , 0.009999999776;  // Leak term
+  (1, 0, 0, 0) 0.05000000075 , 0.8500000238 , 0.1000000015; 
+  (0, 1, 0, 0) 0.05000000075 , 0.150000006 , 0.8000000119; 
+  (0, 0, 1, 0) 0.1299999952 , 0.01999999955 , 0.8500000238; 
+  (0, 0, 0, 1) 0.1899999976 , 0.009999999776 , 0.8000000119; 
+}
+probability ( N27   ) {
+  table 0.9499999881 , 0.05000000075;  // Leak term
+}
+probability ( N29   ) {
+  table 0.6499999762 , 0.349999994;  // Leak term
+}
+probability ( N34   ) {
+  table 0.9900000095 , 0.009999999776;  // Leak term
+}
+probability ( N38  | N34  ) {
+  property function max;
+  (0) 0.9900000095 , 0.009999999776;  // Leak term
+  (1) 0.25 , 0.75; 
+}
+probability ( N26  | N19  ) {
+  property function max;
+  (0) 0.7799999714 , 0.200000003 , 0.01999999955;  // Leak term
+  (1) 0.5 , 0.25 , 0.25; 
+}
+probability ( N28  | N29  ) {
+  property function max;
+  (0) 0.7799999714 , 0.200000003 , 0.01999999955;  // Leak term
+  (1) 0.400000006 , 0.400000006 , 0.200000003; 
+}
+probability ( N40  | N5 ,N19  ) {
+  property function max;
+  (0, 0) 0.9499999881 , 0.02500000037 , 0.02500000037;  // Leak term
+  (1, 0) 0.1000000015 , 0.6999999881 , 0.200000003; 
+  (0, 1) 0.02999999933 , 0.01999999955 , 0.9499999881; 
+}
+probability ( N41  | N27 ,N29  ) {
+  property function max;
+  (0, 0) 0.9800000191 , 0.009999999776 , 0.009999999776;  // Leak term
+  (1, 0) 0.05000000075 , 0.8500000238 , 0.1000000015; 
+  (0, 1) 0.05000000075 , 0.150000006 , 0.8000000119; 
+}
+probability ( N57  | N34  ) {
+  property function max;
+  (0) 0.05000000075 , 0.9499999881;  // Leak term
+  (1) 0.9499999881 , 0.05000000075; 
+}
+probability ( N42  | N5 ,N19 ,N27 ,N29 ,N51  ) {
+  property function max;
+  (0, 0, 0, 0, 0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1, 0, 0, 0, 0) 0.400000006 , 0.6000000238; 
+  (0, 1, 0, 0, 0) 0.25 , 0.75; 
+  (0, 0, 1, 0, 0) 0.200000003 , 0.8000000119; 
+  (0, 0, 0, 1, 0) 0.400000006 , 0.6000000238; 
+  (0, 0, 0, 0, 1) 0.3000000119 , 0.6999999881; 
+}
+probability ( N63  | N5 ,N19 ,N51 ,N69  ) {
+  property function max;
+  (0, 0, 0, 0) 0.9700000286 , 0.01999999955 , 0.009999999776;  // Leak term
+  (1, 0, 0, 0) 0.8500000238 , 0.1000000015 , 0.05000000075; 
+  (0, 1, 0, 0) 0.8500000238 , 0.1000000015 , 0.05000000075; 
+  (0, 0, 1, 0) 0.6000000238 , 0.3000000119 , 0.1000000015; 
+  (0, 0, 0, 1) 0.9300000072 , 0.05000000075 , 0.01999999955; 
+}
+probability ( N64  | N29 ,N27  ) {
+  property function max;
+  (0, 0) 0.9789999723 , 0.009999999776 , 0.009999999776 , 0.001000000047;  // Leak term
+  (1, 0) 0.3000000119 , 0.200000003 , 0.400000006 , 0.1000000015; 
+  (0, 1) 0.4499999881 , 0.5 , 0 , 0.05000000075; 
+}
+probability ( N65  | N5 ,N19  ) {
+  property function max;
+  (0, 0) 0.9700000286 , 0.009999999776 , 0.009999999776 , 0.009999999776;  // Leak term
+  (1, 0) 0.400000006 , 0.5 , 0.05000000075 , 0.05000000075; 
+  (0, 1) 0.4499999881 , 0 , 0.5 , 0.05000000075; 
+}
+probability ( N66  | N19 ,N29 ,N69  ) {
+  property function max;
+  (0, 0, 0) 0.9800000191 , 0.009999999776 , 0.009999999776;  // Leak term
+  (1, 0, 0) 0.398999989 , 0.001000000047 , 0.6000000238; 
+  (0, 1, 0) 0.9800000191 , 0.01999999955 , 0; 
+  (0, 0, 1) 0.75 , 0.05000000075 , 0.200000003; 
+}
+probability ( N67  | N27 ,N29 ,N51 ,N69  ) {
+  property function max;
+  (0, 0, 0, 0) 0.9800000191 , 0.009999999776 , 0.009999999776 , 0;  // Leak term
+  (1, 0, 0, 0) 0.200000003 , 0.6000000238 , 0.1000000015 , 0.1000000015; 
+  (0, 1, 0, 0) 0.25 , 0.6000000238 , 0.1000000015 , 0.05000000075; 
+  (0, 0, 1, 0) 0.5 , 0.400000006 , 0.1000000015 , 0; 
+  (0, 0, 0, 1) 0.75 , 0.200000003 , 0.05000000075 , 0; 
+}
+probability ( N68  | N34  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.3000000119 , 0.6999999881; 
+}
+probability ( N33  | N5  ) {
+  property function max;
+  (0) 0.9900000095 , 0.009999999776;  // Leak term
+  (1) 0.1000000015 , 0.8999999762; 
+}
+probability ( N35  | N5  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.200000003 , 0.8000000119; 
+}
+probability ( N37  | N27  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.3000000119 , 0.6999999881; 
+}
+probability ( N39  | N19  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.3000000119 , 0.6999999881; 
+}
+probability ( N43  | N29  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.3000000119 , 0.6999999881; 
+}
+probability ( N44  | N34  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.150000006 , 0.8500000238; 
+}
+probability ( N69   ) {
+  table 0.9700000286 , 0.02999999933;  // Leak term
+}
+probability ( N70   ) {
+  table 0.9900000095 , 0.009999999776;  // Leak term
+}
+probability ( N71   ) {
+  table 0.9980000257 , 0.002000000095;  // Leak term
+}
+probability ( N73   ) {
+  table 0.9980000257 , 0.002000000095;  // Leak term
+}
+probability ( N51  | N70 ,N73  ) {
+  property function max;
+  (0, 0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1, 0) 0.05000000075 , 0.9499999881; 
+  (0, 1) 0.200000003 , 0.8000000119; 
+}
+probability ( N52  | N51  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.5 , 0.5; 
+}
+probability ( N88  | N70  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.200000003 , 0.8000000119; 
+}
+probability ( N89  | N69  ) {
+  property function max;
+  (0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1) 0.150000006 , 0.8500000238; 
+}
+probability ( N90  | N69  ) {
+  property function max;
+  (0) 0.5 , 0.5;  // Leak term
+  (1) 0.200000003 , 0.8000000119; 
+}
+probability ( N91  | N69  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.25 , 0.75; 
+}
+probability ( N59  | N69 ,N71  ) {
+  property function max;
+  (0, 0) 0.9800000191 , 0.01999999955;  // Leak term
+  (1, 0) 0.400000006 , 0.6000000238; 
+  (0, 1) 0.150000006 , 0.8500000238; 
+}
+probability ( N141  | N152 ,N143 ,N147 ,N146 ,N153  ) {
+  property function max;
+  (0, 0, 0, 0, 0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1, 0, 0, 0, 0) 0.5 , 0.5; 
+  (0, 1, 0, 0, 0) 0.5 , 0.5; 
+  (0, 0, 1, 0, 0) 0.5 , 0.5; 
+  (0, 0, 0, 1, 0) 0.5 , 0.5; 
+  (0, 0, 0, 0, 1) 0.5 , 0.5; 
+}
+probability ( N143   ) {
+  table 0.8999999762 , 0.1000000015;  // Leak term
+}
+probability ( N146   ) {
+  table 0.9700000286 , 0.02999999933;  // Leak term
+}
+probability ( N147   ) {
+  table 0.9900000095 , 0.009999999776;  // Leak term
+}
+probability ( N150   ) {
+  table  0.3000000119, 0.6999999881;
+}
+probability ( N152   ) {
+  table 0.9900000095 , 0.009999999776;  // Leak term
+}
+probability ( N153   ) {
+  table 0.9990000129 , 0.001000000047;  // Leak term
+}
+probability ( N187  | N150  ) {
+  (0)  1, 0;
+  (1)  0.9499999881, 0.05000000075;
+}
+probability ( N81  | N141  ) {
+  property function max;
+  (0) 0.9900000095 , 0.009999999776;  // Leak term
+  (1) 0.009999999776 , 0.9900000095; 
+}
+probability ( N84  | N141  ) {
+  property function max;
+  (0) 0.9900000095 , 0.009999999776;  // Leak term
+  (1) 0.009999999776 , 0.9900000095; 
+}
+probability ( N113  | N141  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.1000000015 , 0.8999999762; 
+}
+probability ( N114  | N69  ) {
+  property function max;
+  (0) 0.8000000119 , 0.200000003;  // Leak term
+  (1) 0.150000006 , 0.8500000238; 
+}
+probability ( N115  | N51  ) {
+  property function max;
+  (0) 0.75 , 0.25;  // Leak term
+  (1) 0.1000000015 , 0.8999999762; 
+}
+probability ( N116  | N71  ) {
+  property function max;
+  (0) 0.8999999762 , 0.1000000015;  // Leak term
+  (1) 0.05000000075 , 0.9499999881; 
+}
+probability ( N118  | N5  ) {
+  property function max;
+  (0) 0.8000000119 , 0.200000003;  // Leak term
+  (1) 0.02999999933 , 0.9700000286; 
+}
+probability ( N119  | N19  ) {
+  property function max;
+  (0) 0.8500000238 , 0.150000006;  // Leak term
+  (1) 0.05000000075 , 0.9499999881; 
+}
+probability ( N120  | N27  ) {
+  property function max;
+  (0) 0.8999999762 , 0.1000000015;  // Leak term
+  (1) 0.05000000075 , 0.9499999881; 
+}
+probability ( N121  | N29  ) {
+  property function max;
+  (0) 0.8500000238 , 0.150000006;  // Leak term
+  (1) 0.05000000075 , 0.9499999881; 
+}
+probability ( N122  | N34  ) {
+  property function max;
+  (0) 0.75 , 0.25;  // Leak term
+  (1) 0.1000000015 , 0.8999999762; 
+}
+probability ( N100  | N69  ) {
+  property function max;
+  (0) 0.5 , 0.5;  // Leak term
+  (1) 0.200000003 , 0.8000000119; 
+}
+probability ( N104  | N70  ) {
+  property function max;
+  (0) 0.9499999881 , 0.05000000075;  // Leak term
+  (1) 0.25 , 0.75; 
+}
+probability ( N108  | N69  ) {
+  property function max;
+  (0) 0.8999999762 , 0.1000000015;  // Leak term
+  (1) 0.02999999933 , 0.9700000286; 
+}
+probability ( N112  | N73  ) {
+  property function max;
+  (0) 0.9900000095 , 0.009999999776;  // Leak term
+  (1) 0.009999999776 , 0.9900000095; 
+}

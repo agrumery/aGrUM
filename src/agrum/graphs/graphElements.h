@@ -1,0 +1,715 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/*!
+  \ingroup graph_group
+
+  \page graph_page How to use the graph classes ?
+
+  The basic idea of the implementation of graphs in aGrUM is to leave it "as
+  pure as possible". Hence graphs consist of integers (@ref NodeId) and binary
+  relations between them (Edge, Arc).
+
+  \section graph_sec_1 graph hierarchy
+  Precisely a graph can contain a set of @ref NodeId, a set of Arc and a set of Edge.
+
+  In aGrUM,
+  - 3 classes wrap these 3 sets : EdgeGraphPart, ArcGraphPart and NodeGraphPart
+  (resp. wrapping @ref NodeSet, @ref ArcSet and @ref EdgeSet, 3 typedefs of Set),
+  - UndiGraph inherits from EdgeGraphPart and NodeGraphPart,
+  - DiGraph inherits from ArcGraphPart and NodeGraphPart and
+  - MixedGraph inherits from DiGraph and UndiGraph.
+
+  (as shown in the inheritance diagram for MixedGraph, the class hierarchy for
+  graphs in aGrUM uses multiple inheritance.)
+
+  This patterns of inheritance allows aGrUM to have a quite standardized API for
+  all basic operations in graphs : manipulates and iterates over nodes, edges
+  and arcs.
+
+  \section graph_sec_2 IDs and properties
+  Such representation of graph has two major drawbacks that aGrUM has to face :
+  - how to certify that all node id is unique in a graph ?
+  - how to put properties (name/position/integer/flag) on nodes, edges and arcs ?
+
+  <h4>ID factory</h4>
+  For the uniqueness of ids, insertNode() in NodeGraphPart containes an internal
+  idFactory which guaranties this property.
+
+  The only ways to bypass the idFactory is either to use the copy constructor or
+  to use the NodeGraphPart::populateNodes(). These very two methodes copy a set of
+  nodes and ensure that the ids are the same as those of their argument
+  (NodeGraphPart::populateNodes() clears the NodeGraphPart before copying).
+
+  <h4>Properties</h4>
+  Properties are the way to put (dynamic) informations in nodes, edges and arcs.
+  Properties are just HashTable where keys are @ref NodeId, Edge or Arc.
+  Unfortunately, due to a lack
+  (or what we find to be lack) of C++, there is no way to create templated
+  typedefs... So aGrUM uses (for now) \#define like @ref GUM_NODE_PROPERTY,
+  @ref GUM_NODE_PROPERTY_ITERATOR and @ref NEW_NODE_PROPERTY.
+
+  @code
+  gum::UndiGraph g;
+  gum::Property<bool>::onNodes is_id_odd=g.nodesProperty( false );
+
+  g.insertNode();
+  g.insertNode();
+  g.insertNode();
+
+  for ( gum::NodeSet::iterator i=g.beginNodes(); i!=g.endNodes(); ++i ) {
+    is_id_odd.set( *i, *i % 2 == 0 );
+  }
+
+  std::cout<<is_id_odd<<std::cout<<std::endl;
+
+  for ( gum::Property<bool>::onNodes::iterator i=is_id_odd.begin(); i!=is_id_odd.end(); ++i ) {
+    std::cout<<i.key()<<" : "<<*i<<std::endl;
+  }
+  @endcode
+
+  Equivalently, you should have written :
+  @code
+  bool is_it_odd(const gum::NodeId& i) {
+    return i%2==0;
+  }
+
+  gum::UndiGraph g;
+  g.insertNode();
+  g.insertNode();
+  g.insertNode();
+
+  gum::Property<bool>::onNodes is_id_odd=g.nodesProperty(is_it_odd);
+
+  std::cout<<is_id_odd<<std::endl<<std::endl;
+
+  for (gum::Property<bool>::onNodes::iterator i=is_id_odd.begin(); i!=is_id_odd.end(); ++i ) {
+    std::cout<<i.key()<<" : "<<*i<<std::endl;
+  }
+  @endcode
+
+  Here is a code for \subpage exemple_recherche_chemin "searching directed path
+  in a DiGraph" g from \ref NodeId n1 to \ref NodeId n2.
+
+  \page exemple_recherche_chemin Exemple : Search of a directed path in a DiGraph
+  from n1 to n2
+  \ingroup graph_group
+
+  @code
+  using namespace gum;
+
+  List<NodeId> nodeFile;
+  // mark[node] contains 0 if not visited
+  // mark[node]=predecessor if visited
+  Property<NodeId>::onNodes mark=g.nodesProperty( 0 );
+  NodeId current;
+
+  mark[n1]=n1;
+  nodeFile.pushBack( n1 );
+  while ( ! nodeFile.empty() ) {
+    current=nodeFile.front();nodeFile.popFront();
+    const ArcSet& set=g.children( current );
+
+    for ( ArcSet::iterator ite=set.begin();ite!=set.end();++ite ) {
+      NodeId new_one=ite->head();
+
+      if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue.
+
+      mark[new_one]=current;
+      if ( new_one==n2 ) break; // if we reach n2, stop.
+
+      nodeFile.pushBack( new_one );
+    }
+  }
+
+  if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
+  @endcode
+*/
+
+
+/** @file
+ * @brief some utils for topology : NodeId, Edge, Arc and consorts ...
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ *
+ * This file provides three classes, namely Link, Edge and Arc.
+ * The last two represent respectively undirected and directed edges. The
+ * "directed/undirected" term may be misleading although in practice this
+ * will probably result in how these edges will be drawn. In fact, a more
+ * appropriate term would be "symmetric/asymmetric edges": a Arc is an edge in
+ * which the extremities have different status whereas in a Edge the role of the
+ * extremities is symmetric. For instance, in an arrow, one node is near the head
+ * and the other one is farther, hence these nodes have different status and
+ * swapping the nodes results in reversing the direction of the arrow. Thus, the
+ * nodes in an arrow can be thought of as asymmetric and the arrow's graphical
+ * representation contains a pointed extremity so as to account for this asymmetry.
+ * Conversely, in a Markov field, an edge between two nodes, x and y, means that x
+ * and y are probabilistically dependent of one another. This being a symmetrical
+ * relation, there is no difference between edge (x,y) and edge (y,x). Thus, it can
+ * be represented by a Edge and, graphically, by an undirected edge.
+ *
+ * Link is the common point between Edge and Arc. This class is provided
+ * as a convenience for developers. It can be useful for instance in algorithms
+ * that need parsing lists of directed and undirected edges without having to
+ * discriminate between these two kind of edges. However, this kind of algorithm
+ * should be marginal and, in general, you should not have to use class Link.
+ * @par Usage example:
+ * @code
+ * // creation of an edge between nodes whose IDs are 3 and 4
+ * Edge edge1 (3,4);
+ *
+ * // print that the edge is "undirected"
+ * if (!edge1.isDirected ()) cerr << "undirected edge" << endl;
+ *
+ * // copy the edge into another edge
+ * Edge edge2 (edge1), edge3 = edge4;
+ *
+ * // compare two edges
+ * if (Edge(3,4) == Edge(4,3)) cerr << "ok, this is symmetric" << endl;
+ * if (Edge(3,4) != Edge(5,4)) cerr << "different edges" << endl;
+ *
+ * // get the extremities of the edge
+ * cerr << edge1.first() << " = 3 and " << edge1.second() << " = 4\n";
+ * cerr << "edge1 = (3," << edge1.other (3) << ")" << endl;
+ *
+ * // display the edge in a console
+ * cerr << edge1 << endl;
+ *
+ * // creation of an arc (directed edge) from 3 to 4
+ * Arc arc1 (3,4);
+ *
+ * // print that this edge is "directed"
+ * if (arc1.isDirected ()) cerr << "directed edge" << endl;
+ *
+ * // compare two arcs
+ * if (Arc(3,4) != Arc(4,3)) cerr << "ok, this is asymmetric" << endl;
+ *
+ * // get the extremities of the edge
+ * cerr << arc1.tail() << " = 3 and " << arc1.head() << " = 4\n";
+ * cerr << "arc1 = (3 -> " << edge1.other (3) << ")" << endl;
+ *
+ * // display an arc in a console
+ * cerr << arc1 << endl;
+ * @endcode
+ */
+#ifndef GUM_GRAPH_ELEMENTS_H
+#define GUM_GRAPH_ELEMENTS_H
+
+#include <iostream>
+#include <agrum/core/utils.h>
+#include <agrum/core/set.h>
+
+
+namespace gum {
+
+
+  /** \ingroup graph_group
+   * Type for node ids
+   */
+  typedef unsigned int NodeId;
+
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /* ===                     BASE CLASS FOR EDGES AND ARCS                    === */
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /** @class Link
+   * @brief The base class for all directed and undirected edges.
+   * \ingroup graph_group
+   *
+   * This class is used as a basis for manipulating any directed and undirected edge
+   * in any graph. It is not intended for users: those should use classes Edge
+   * for undirected edges and Arc for directed edges. But Link may prove useful
+   * in algorithms that need parsing lists of directed and undirected edges without
+   * having to discriminate between these two kind of edges.
+   * @par Usage example:
+   * @code
+   * // creation of a link between nodes whose IDs are 3 and 4
+   * Edge edge1 (3,4);
+   * Link& link1 = edge1;
+   *
+   * // print that the edge is "undirected"
+   * if (!link1.isDirected ()) cerr << "undirected edge" << endl;
+   *
+   * // compare two edges
+   * Edge edge2 (4,3), edge3 (5,4);
+   * Link& link2 = edge2;
+   * Link& link3 = edge3;
+   * if (link1 == link2) cerr << "ok, this is symmetric" << endl;
+   * if (link1 != link3) cerr << "different edges" << endl;
+   *
+   * // get the extremities of the edge
+   * cerr << link1.first() << " = 3 and " << link1.second() << " = 4\n";
+   * cerr << "link1 = (3," << link1.other (3) << ")" << endl;
+   * @endcode
+   */
+  /* ============================================================================ */
+
+  class Link {
+  public:
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// returns an extremal node of an edge given the ID of the other one
+    // ============================================================================
+    const NodeId& other( const NodeId& id ) const;
+
+    // ============================================================================
+    /// returns one extremal node ID (whichever one it is is unspecified)
+    // ============================================================================
+    const NodeId& first() const ;
+
+    // ============================================================================
+    /// returns the node ID of the other extremal node ID
+    // ============================================================================
+    const NodeId& second() const ;
+
+    // ============================================================================
+    /// returns a boolean indicating whether the edge is directed or undirected
+    // ============================================================================
+    virtual bool isDirected() const  = 0;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// checks whether two Links are equal
+    /** Link equality means that either the two edges are directed and they
+     * have the same tail and head, or they are undirected and they have the same
+     * extremities. Edges and arcs are considered different, even if they have the
+     * same extremal nodes. */
+    // ============================================================================
+    bool operator== ( const Link& from ) const ;
+
+    // ============================================================================
+    /// check if two basic edges are different
+    /** Link inequality means that either one of the edges is directed and
+     * the other is undirected, or both nodes are directed and they have a different
+     * tail and/or a different head, or they are both undirected and they do not
+     * have the same extremities. */
+    // ============================================================================
+    bool operator!= ( const Link& from ) const ;
+
+    /// @}
+
+
+  private:
+    /// the extremal nodes of the edge (their order is unimportant)
+    NodeId n1, n2;
+    
+    /// Edge can construct Link
+    friend class Edge;
+    
+    /// Arc can construct Link
+    friend class Arc;
+
+    /// only EdgeListBase can change the extremities of the link
+    template <typename Edge> friend class EdgeListBase;
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// constructs a new link (aN1,aN2)
+    /** @param aN1 the ID of the first extremal node
+     * @param aN2 the ID of the second extremal node */
+    // ============================================================================
+    Link( const NodeId& aN1,const NodeId& aN2 ) ;
+    
+    // ============================================================================
+    /// copy constructor
+    // ============================================================================
+    Link( const Link& from ) ;
+
+    // ============================================================================
+    /// copy operator
+    // ============================================================================
+    Link& operator= ( const Link& from ) ;
+
+    // ============================================================================
+    /// destructor
+    // ============================================================================
+    virtual ~Link();
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Modifiers
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// modifies one extremal node ID (whichever one it is is unspecified)
+    // ============================================================================
+    void setFirst( const NodeId& id ) ;
+
+    // ============================================================================
+    /// modifies the node ID of the other extremal node ID
+    // ============================================================================
+    void setSecond( const NodeId& id ) ;
+
+    /// @}
+  };
+
+
+  
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /* ===                       GENERIC UNDIRECTED EDGES                       === */
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /** @class Edge
+   * @brief The base class for all undirected edges.
+   * \ingroup graph_group
+   *
+   * This class is used as a basis for manipulating any undirected edge in any
+   * graph. By undirected edge, we mean a symmetric edge, i.e., an edge in which the
+   * order of the nodes is unimportant. for instance, in a Markov field, an edge
+   * between two nodes, x and y, means that x and y are probabilistically dependent
+   * of one another. This being a symmetrical relation, there is no difference
+   * between edge (x,y) and edge (y,x). Thus, it can be represented by an undirected
+   * edge and, in aGrUM, by a Edge.
+   * @par Usage example:
+   * @code
+   * // creation of an edge between nodes whose IDs are 3 and 4
+   * Edge edge1 (3,4);
+   *
+   * // print that the edge is "undirected"
+   * if (!edge1.isDirected ()) cerr << "undirected edge" << endl;
+   *
+   * // copy the edge into another edge
+   * Edge edge2 (edge1), edge3 = edge4;
+   *
+   * // compare two edges
+   * if (Edge(3,4) == Edge(4,3)) cerr << "ok, this is symmetric" << endl;
+   * if (Edge(3,4) != Edge(5,4)) cerr << "different edges" << endl;
+   *
+   * // get the extremities of the edge
+   * cerr << edge1.first() << " = 3 and " << edge1.second() << " = 4\n";
+   * cerr << "edge1 = (3," << edge1.other (3) << ")" << endl;
+   *
+   * // display the edge in a console
+   * cerr << edge1 << endl;
+   * @endcode
+   */
+  /* ============================================================================ */
+  class Edge : public Link {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// constructs a new edge (aN1,aN2)
+    /** @param aN1 the ID of the first extremal node
+     * @param aN2 the ID of the second extremal node */
+    // ============================================================================
+    Edge( const NodeId& aN1, const NodeId& aN2 ) ;
+    
+    // ============================================================================
+    /// copy constructor
+    // ============================================================================
+    Edge( const Edge& from ) ;
+
+    // ============================================================================
+    /// destructor
+    // ============================================================================
+    virtual ~Edge();
+
+    ///@}
+
+
+    // ############################################################################
+    /// @name Accessors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// returns a boolean (false) indicating that the edge is undirected
+    // ============================================================================
+    bool isDirected() const ;
+
+    ///@}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// copy operator
+    // ============================================================================
+    Edge& operator= ( const Edge& from ) ;
+
+    // ============================================================================
+    /// checks whether two undirected edges are equal
+    /** Two Edge are equal if they have the same extremal nodes, whetever their
+     * order. For instance (3,4) == (4,3). */
+    // ============================================================================
+    bool operator== ( const Edge& from ) const ;
+
+    // ============================================================================
+    /// checks whether two undirected edges are different
+    /** Two Edge are different if at least one extremal node of an edge is not
+     * an extremal node of the other edge. For instance, (4,5) != (5,6). */
+    // ============================================================================
+    bool operator!= ( const Edge& from ) const ;
+
+    /// @}
+
+
+  private:
+    /// only EdgeListBase can change the extremities of the edge
+    template <typename Edge> friend class EdgeListBase;
+  };
+
+
+
+  
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /* ===                        GENERIC DIRECTED EDGES                        === */
+  /* ============================================================================ */
+  /* ============================================================================ */
+  /** @class Arc
+   * @brief The base class for all directed edges
+   * \ingroup graph_group
+   *
+   * This class is used as a basis for manipulating all directed edges (i.e., edges
+   * in which the order of the nodes is meaningful). For instance, in an arrow, one
+   * node is near the head and the other one is farther, hence these nodes have
+   * different status and swapping the nodes results in reversing the direction of
+   * the arrow. Thus, the nodes in an arrow can be thought of as asymmetric and the
+   * arrow's graphical representation contains a pointed extremity so as to account
+   * for this asymmetry. In aGrUM, the latter is taken into account by Arc.
+   * @par Usage example:
+   * @code
+   * // creation of an arc (directed edge) from 3 to 4
+   * Arc arc1 (3,4);
+   *
+   * // print that this edge is "directed"
+   * if (arc1.isDirected ()) cerr << "directed edge" << endl;
+   *
+   * // compare two arcs
+   * if (Arc(3,4) != Arc(4,3)) cerr << "ok, this is asymmetric" << endl;
+   *
+   * // get the extremities of the edge
+   * cerr << arc1.tail() << " = 3 and " << arc1.head() << " = 4\n";
+   * cerr << "arc1 = (3 -> " << edge1.other (3) << ")" << endl;
+   *
+   * // display an arc in a console
+   * cerr << arc1 << endl;
+   * @endcode
+   */
+  /* ============================================================================ */
+  class Arc : public Link {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// basic constructor. Creates aN1 -> aN2.
+    /** @warning the order in which the nodes are passed is important */
+    // ============================================================================
+    Arc( const NodeId& aN1,const NodeId& aN2 ) ;
+    
+    // ============================================================================
+    /// copy constructor
+    // ============================================================================
+    Arc( const Arc& from ) ;
+
+    // ============================================================================
+    /// destructor
+    // ============================================================================
+    virtual ~Arc();
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// returns the tail of the arc
+    // ============================================================================
+    const NodeId& tail() const ;
+
+    // ============================================================================
+    /// returns the head of the arc
+    // ============================================================================
+    const NodeId& head() const ;
+
+    // ============================================================================
+    /// returns a boolean (true) indicating that the arc is directed
+    // ============================================================================
+    bool isDirected() const ;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// copy operator
+    // ============================================================================
+    Arc& operator= ( const Arc& from ) ;
+
+    // ============================================================================
+    /// checks whether two arcs are equal
+    /** Two arcs are considered equal if they have the same head and tail
+     * (by same we mean they have the same ID). */
+    // ============================================================================
+    bool operator== ( const Arc& from ) const ;
+
+    // ============================================================================
+    /// check if two arcs are different
+    /** Two arcs are considered different if they have different head and/or tail
+     * (by different we mean they have different ID). */
+    // ============================================================================
+    bool operator!= ( const Arc& from ) const ;
+
+    /// @}
+
+
+  private:
+    /// only EdgeListBase can change the extremities of the arc
+    template <typename Edge> friend class EdgeListBase;
+    
+    // ============================================================================
+    /// modifies the tail of the arc
+    // ============================================================================
+    void setTail( const NodeId& id ) ;
+
+    // ============================================================================
+    /// modifies the head of the arc
+    // ============================================================================
+    void setHead( const NodeId& id ) ;
+
+    // ============================================================================
+    /// reverses the direction of the arc
+    // ============================================================================
+    void operator- () ;
+  };
+
+
+  
+  ////////////////////////////////////////////////////////////////
+  //we need to provide hash functions for some Edge and Arc
+  template <> class HashFunc<Edge> : public HashFuncBase<Edge> {
+  public:
+    /**
+     * @throw HashSize
+     */
+    void resize( Size );
+    Size operator()( const Edge& key ) const ;
+  private:
+    mutable std::pair<NodeId,NodeId> pair;
+    HashFunc< std::pair<NodeId,NodeId> > real_func;
+  };
+
+  
+  template <> class HashFunc<Arc> : public HashFuncBase<Arc> {
+  public:
+    /**
+     * @throw HashSize
+     */
+    void resize( Size );
+    Size operator()( const Arc& key ) const ;
+  private:
+    mutable std::pair<NodeId,NodeId> pair;
+    HashFunc< std::pair<NodeId,NodeId> > real_func;
+  };
+
+  /** \ingroup graph_group
+   * @{
+   * Some typdefs and define for shortcuts ...
+   */
+  typedef Set<NodeId> NodeSet;
+  typedef Set<Edge> EdgeSet;
+  typedef Set<Arc> ArcSet;
+
+  typedef ArcSet::iterator ArcSetIterator;
+  typedef EdgeSet::iterator EdgeSetIterator;
+  typedef NodeSet::iterator NodeSetIterator;
+  /** @} */
+
+  /** \ingroup graph_group
+   * @{
+   * @brief Property
+   *
+   * C++ does not allow template typdef; so instead of having something like
+   * @code
+   * NodeProperty<TRUC>
+   * @endcode
+   * we have had to create this
+   * @code
+   * Property<TRUC>::onNodes
+   * @endcode
+  *
+  * @warning Note that you have access to iterators by Property<TRUC>::onNodes::iterator
+   **/
+
+template<class VAL>
+struct Property {
+ typedef HashTable<NodeId,VAL> onNodes;
+ typedef HashTable<Edge,VAL> onEdges;
+ typedef HashTable<Arc,VAL> onArcs;
+
+};
+
+
+  /// @}
+
+
+  // ==============================================================================
+  /// to friendly display a gumLink
+  // ==============================================================================
+  std::ostream& operator<< ( std::ostream& stream, const Link& edge );
+
+  // ==============================================================================
+  /// to friendly display an edge
+  // ==============================================================================
+  std::ostream& operator<< ( std::ostream& stream, const Edge& edge );
+
+  // ==============================================================================
+  /// to friendly display an arc
+  // ==============================================================================
+  std::ostream& operator<< ( std::ostream& stream, const Arc& arc );
+
+  
+} /* namespace gum */
+
+
+
+
+#ifndef GUM_NO_INLINE
+#include <agrum/graphs/graphElements.inl>
+#endif /* GUM_NO_INLINE */
+
+#endif // GUM_GRAPHELEMENTS_H
