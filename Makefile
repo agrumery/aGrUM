@@ -1,5 +1,5 @@
 OPTION_VERBOSE =
-#OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
+# OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
 OPTION_NBR_PROCESSOR = 
 
 # which version will be used for "install" and "pack" rules ?
