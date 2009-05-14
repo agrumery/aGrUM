@@ -34,17 +34,16 @@ namespace gum {
   // splits a CSV-like string into a vector of fields. Missing value are
   // labelized by "?"
   // ==============================================================================
-  void SplitCSVLine( const std::string& str_to_split,
-                     std::vector<std::string>& result,
-                     char field_separator,
-                     char field_delimiter,
-                     char escape_char ) {
+  std::vector<std::string> SplitCSVLine( const std::string& str_to_split,
+                                         char field_separator,
+                                         char field_delimiter,
+                                         char escape_char ) {
+    std::vector<std::string> result;
     bool delimited = false;
     bool new_string_to_add = false;
     bool last_is_delimiter = false;
     std::string string_to_add;
 
-    result.clear ();
     string_to_add.reserve( str_to_split.size() );
 
     // parse the string
@@ -97,8 +96,9 @@ namespace gum {
       result.push_back( string_to_add );
     if (last_is_delimiter)
       result.push_back( "?");
+
+    return result;
   }
-
-
+  
 } /* namespace gum */
 

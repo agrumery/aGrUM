@@ -43,7 +43,6 @@ namespace gum {
    * may be enclosed within delimiters (usually ") and characters may be
    * escaped using the escape_char character.
    * @param str_to_split the string in CVS format to split
-   * @param result the vector of strings that will contain the result
    * @param field_separator the character to use to separate fileds in the CSV
    * @param field_delimiter the character to use to encapsulate, for instance,
    * strings within a field of the CVS
@@ -52,11 +51,10 @@ namespace gum {
    * @throws IOError is thrown if, in a field, a delimiter is opened
    * but not closed. */
   // ==============================================================================
-  void SplitCSVLine( const std::string& str_to_split,
-                     std::vector<std::string>& result,
-                     char field_separator = ';',
-                     char field_delimiter = '"',
-                     char escape_char = '\\' );
+  std::vector<std::string> SplitCSVLine( const std::string& str_to_split,
+                                         char field_separator = ';',
+                                         char field_delimiter = '"',
+                                         char escape_char = '\\' );
 
 
 } /* namespace gum */

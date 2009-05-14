@@ -174,9 +174,8 @@ namespace gum {
       if ( !inFile.good() )
         GUM_ERROR( IOError, "error parsing file" + filename );
 
-      SplitCSVLine( str, database.__node_names,
-                    separator_separator, field_delimiter, escape_char );
-
+      database.__node_names =
+        SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
       database.__nb_nodes = database.__node_names.size();
 
       for ( unsigned int i = 0; i < database.__nb_nodes; ++i )
@@ -209,11 +208,10 @@ namespace gum {
     while ( ! inFile.eof() ) {
       // get the content of the new line
       getline( inFile, str );
-      std::vector<std::string> line;
-      SplitCSVLine( str, line,
-                    separator_separator, field_delimiter, escape_char );
-      // check that it has exactly __nb_nodes fields
+      std::vector<std::string> line = 
+        SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
 
+      // check that it has exactly __nb_nodes fields
       if (( line.size() != database.__nb_nodes ) && ( line.size() != 0 ) ) {
         GUM_ERROR( IOError, "CSV file does not have a constant number of fields" );
       }
