@@ -42,8 +42,9 @@ namespace gum {
   /// constructor for end/rend
   // ==============================================================================
   template <> ListIterator<Debug>::ListIterator()  :
-    list( 0 ), bucket( 0 ), next_current_bucket( 0 ), prev_current_bucket( 0 ),
-    null_pointing( false ), container( 0 ) {
+    __list( 0 ), __bucket( 0 ),
+    __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
+    __null_pointing( false ), __container( 0 ) {
   }
 
   // an iterator that represents both end and rend for all the Lists

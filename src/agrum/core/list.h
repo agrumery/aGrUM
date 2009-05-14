@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr                                                  *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -127,7 +127,7 @@ namespace gum {
 
 
   #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // _list_end is a 'pseudo static' iterator that represents both end and rend
+  // __list_end is a 'pseudo static' iterator that represents both end and rend
   // iterators for all Lists (whatever their type). This global variable
   // avoids creating the same iterators whithin every List instance (this would
   // be quite inefficient as end and rend are precisely identical for all lists)
@@ -201,11 +201,11 @@ namespace gum {
     template <typename T> friend class ListIterator;
 
     // chaining toward the adjacent elements
-    ListBucket<Val> *prev;
-    ListBucket<Val> *next;
+    ListBucket<Val> *__prev;
+    ListBucket<Val> *__next;
 
     // val is the value contained in the box.
-    Val val;
+    Val __val;
   };
 
   #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -508,18 +508,20 @@ namespace gum {
     ( std::ostream& stream, const ListBase<Val>& list );
 
     /// a pointer on the first element of the chained list
-    ListBucket<Val> *deb_list;
+    ListBucket<Val> *__deb_list;
 
     /// a pointer on the last element of the chained list
-    ListBucket<Val> *end_list;
+    ListBucket<Val> *__end_list;
 
     /// the number of elements in the list
-    unsigned int nb_elements;
+    unsigned int __nb_elements;
 
     // ============================================================================
     /// a function used to perform copies of elements of ListBases
+    /** before performing the copy, we assume in this function that the current
+     * list (this) is empty (else there would be memory leak). */
     // ============================================================================
-    void _copy_elements( const ListBase<Val> &from );
+    void __copy_elements( const ListBase<Val> &from );
 
     // ============================================================================
     /// returns the bucket corresponding to a given value
@@ -529,7 +531,7 @@ namespace gum {
      * @param val the value of the element the bucket of which we wish to return.
      * Comparisons between Val instances are performed through == operators. */
     // ============================================================================
-    ListBucket<Val>* getBucket( const Val& val ) const;
+    ListBucket<Val>* __getBucket( const Val& val ) const;
 
     // ============================================================================
     /// suppresses an element from a chained list
@@ -540,7 +542,7 @@ namespace gum {
      * @param bucket a pointer on the bucket in the chained list
      * we wish to remove. */
     // ============================================================================
-    void erase( ListBucket<Val>* bucket );
+    void __erase( ListBucket<Val>* bucket );
   };
 
 
@@ -860,6 +862,11 @@ namespace gum {
     using ListBase<Val>::empty;
     
     // ============================================================================
+    /// converts a list into a string
+    // ============================================================================
+    using ListBase<Val>::toString;
+    
+    // ============================================================================
     /// creates a list of mountains from a list of val
     /** @param f a function that maps any Val element into a Mount */
     // ============================================================================
@@ -944,8 +951,7 @@ namespace gum {
      * @param bucket a pointer on the bucket in the chained list we wish
      * to remove. */
     // ============================================================================
-    void erase( ListBucket<Val>* bucket );
-    using ListBase<Val>::toString;
+    void _erase( ListBucket<Val>* bucket );
 
 
   private:
@@ -960,9 +966,9 @@ namespace gum {
      * list may be shared by other Lists. Indeed, during its construction, a
      * pointer to an external iterator's list may indeed be passed to the List.
      * This feature is particularly useful for complex classes which aggregate
-     * several distinct lists (such as EdgeLists) as it speeds up significantly
+     * several distinct lists as it speeds up significantly
      * iterating over all the elements of these complex classes. */
-    RefPtr< ListBase<ListIterator<Val>*> > iterator_list;
+    RefPtr< ListBase<ListIterator<Val>*> > __iterator_list;
   };
 
 
@@ -1134,30 +1140,32 @@ namespace gum {
     friend class List<Val>;
     
     /// the list the iterator is pointing to
-    const List<Val> *list;
+    const List<Val> *__list;
 
     /// the bucket in the chained list pointed to by the iterator
-    ListBucket<Val> *bucket;
+    ListBucket<Val> *__bucket;
 
     /** \brief the bucket we should start from when we are pointing on a deleted
      * bucket and we decide to do a ++. */
-    ListBucket<Val> *next_current_bucket;
+    ListBucket<Val> *__next_current_bucket;
 
     /** \brief the bucket we should start from when we are pointing on a deleted
      * bucket and we decide to do a --. */
-    ListBucket<Val> *prev_current_bucket;
+    ListBucket<Val> *__prev_current_bucket;
 
     /// indicates whether the bucket the iterator points to has been deleted
-    bool null_pointing;
+    bool __null_pointing;
 
     /// the bucket which contains this iterator in the list of iterators
-    ListBucket<ListIterator<Val>*> *container;
+    ListBucket<ListIterator<Val>*> *__container;
 
     // ============================================================================
     /// returns the bucket the iterator is pointing to.
     // ============================================================================
-    ListBucket<Val>* getBucket() const ;
+    ListBucket<Val>* __getBucket() const ;
   };
+
+  
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend
