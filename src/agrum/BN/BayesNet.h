@@ -22,6 +22,7 @@
  * @brief Class representing Bayesian networks
  *
  * @author Lionel Torti
+ *
  */
 #ifndef GUM_BAYES_NET_H
 #define GUM_BAYES_NET_H
