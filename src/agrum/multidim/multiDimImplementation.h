@@ -134,6 +134,10 @@ namespace gum {
       /**
        * The compression ratio of the table (depending on the type of implementation).
        *
+       * This method uses domainSize() and realSize() to compute the ration,
+       * both methods are virtual and should be surcharge if a subclass has a
+       * special policies about memory management.
+       *
        * @warning This compression ratio is not exactly the memory compression ratio.
        *          It is computed in terms of number of parameters.
        */
@@ -195,6 +199,27 @@ namespace gum {
       // ============================================================================
       virtual void endMultipleChanges( void );
 
+    protected:
+      // ============================================================================
+      /// Synchronize content after MultipleChanges.
+      // ============================================================================
+      virtual void _commitMultipleChanges( void );
+
+      // ============================================================================
+      /// Get the actual change method of *this.
+      // ============================================================================
+      bool _isInMultipleChangeMethod() const;
+
+      // ============================================================================
+      /// Get the actual state of *this.
+      // ============================================================================
+      bool _isCommitNeeded() const;
+
+      // ============================================================================
+      /// Returns a constant reference over the list of slaved instantiations.
+      // ============================================================================
+      const List<Instantiation*>& _slaves() const;
+
       /// @}
 
     private:
@@ -226,22 +251,6 @@ namespace gum {
       // ============================================================================
       Size __domainSize;
 
-
-    protected:
-      // ============================================================================
-      /// Synchronise content after MultipleChanges.
-      // ============================================================================
-      virtual void _commitMultipleChanges( void );
-
-      // ============================================================================
-      /// Get the actual change method of *this.
-      // ============================================================================
-      bool _isInMultipleChangeMethod() const;
-
-      // ============================================================================
-      /// Get the actual state of *this.
-      // ============================================================================
-      bool _isCommitNeeded() const;
 
   };
 

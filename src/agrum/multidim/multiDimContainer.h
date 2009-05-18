@@ -138,7 +138,7 @@ namespace gum {
        * @return Returns the adressed (T_DATA) value.
        */
       // ============================================================================
-      T_DATA operator[]( const Instantiation& i ) const;
+      virtual T_DATA operator[]( const Instantiation& i ) const;
 
       // ============================================================================
       /**
@@ -226,7 +226,7 @@ namespace gum {
       /// @{
       // ============================================================================
       /**
-       * @brief Class this method before doing important changes in this
+       * @brief Call this method before doing important changes in this
        *        gum::MultiDimContainer.
        * @warning Remember to call endMultipleChanges() when you finish your changes.
        */
@@ -235,7 +235,7 @@ namespace gum {
 
       // ============================================================================
       /**
-       * @brief Class this method after doing important changes in this
+       * @brief Call this method after doing important changes in this
        *        gum::MultiDimContainer.
        */
       // ============================================================================

@@ -219,8 +219,7 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void MultiDimImplementation<T_DATA>::_commitMultipleChanges( void ) {
-    // @todo is this normal? Why not a pure virtual method?
-    GUM_TRACE( "committing ..." );
+    // empty!
   }
 
   /// get the actual change method of *this
@@ -233,6 +232,13 @@ namespace gum {
   template<typename T_DATA> INLINE
   bool MultiDimImplementation<T_DATA>::_isCommitNeeded() const {
     return ( __internalChangeState==NOT_COMMITTED_CHANGE );
+  }
+
+  /// Returns a constant reference over the list of slaved instantiations.
+  template<typename T_DATA> INLINE
+  const List<Instantiation*>&
+  MultiDimImplementation<T_DATA>::_slaves() const {
+    return __slaveInstantiations;
   }
 
   /// get the actual state of *this

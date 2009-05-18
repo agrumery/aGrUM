@@ -17,42 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Abstract base class for all readonly multi dimensionnal 
+/**
+ * @file
+ * @brief Header of the gum::MultiDimReadOnly class.
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
+// ============================================================================
 #ifndef GUM_MULTI_DIM_READONLY_H
 #define GUM_MULTI_DIM_READONLY_H
-
+// ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
-
-
+// ============================================================================
 namespace gum {
-
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                     GUM_MULTI_DIM_READONLY                     === */
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /** @class MultiDimReadOnly
-  * @brief Abstract base class for all multi dimensionnal read only structure
-  * @ingroup multidim_group
-  *
-  */
-  /* ============================================================================ */
+  /**
+   * @class MultiDimReadOnly
+   * @brief Abstract base class for all multi dimensionnal read only structure.
+   *
+   * @ingroup multidim_group
+   */
   template<typename T_DATA>
-
   class MultiDimReadOnly : public MultiDimImplementation<T_DATA> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
+
       // ============================================================================
       /// Default constructor.
       // ============================================================================
       MultiDimReadOnly();
+
+      // ============================================================================
+      /// Copy constructor.
+      // ============================================================================
       MultiDimReadOnly( const MultiDimReadOnly<T_DATA>& from );
 
       // ============================================================================
@@ -61,22 +60,30 @@ namespace gum {
       virtual ~MultiDimReadOnly();
 
       /// @}
-
-
       // ############################################################################
       /// @name Accessors / Modifiers
       // ############################################################################
       /// @{
+
       // ============================================================================
-    protected:
-      virtual T_DATA& _get( const Instantiation &i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
+      /// @throw OperationNotAllowed Raised because this is a read only table.
+      // ============================================================================
+      virtual void set( const Instantiation& i ,const T_DATA& value ) const;
 
-    public:
-      virtual void set( const Instantiation& i ,const T_DATA& value ) const {GUM_ERROR( OperationNotAllowed,"Write access to an aggregator" );};
-
-      void fill( const T_DATA& ) const { GUM_ERROR( OperationNotAllowed,"Write access to an aggregator" ); };
+      // ============================================================================
+      /// @throw OperationNotAllowed Raised because this is a read only table.
+      // ============================================================================
+      virtual void fill( const T_DATA& ) const;
 
       /// @}
+
+    protected:
+
+      // ============================================================================
+      /// @throw OperationNotAllowed Raised because this is a read only table.
+      // ============================================================================
+      virtual T_DATA& _get( const Instantiation &i ) const;
+
   };
 } /* namespace gum */
 
