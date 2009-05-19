@@ -32,7 +32,7 @@ namespace gum {
 template<typename T_DATA> INLINE
 MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
   MultiDimReadOnly<T_DATA>(), __bufferSize(bufferSize),
-  __bucket(0), __changed(false)
+  __instantiations(0), __bucket(0), __changed(false)
 {
   GUM_CONSTRUCTOR( MultiDimBucket );
 }
@@ -41,8 +41,8 @@ MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
 template<typename T_DATA> INLINE
 MultiDimBucket<T_DATA>::MultiDimBucket(const MultiDimBucket<T_DATA>& source):
   MultiDimReadOnly<T_DATA>(source), __bufferSize(source.__bufferSize),
-  __bucket(0), __multiDims(source.__multiDims), __allVariables(source.__allVariables),
-  __changed(source.__changed)
+  __instantiations(0), __bucket(0), __multiDims(source.__multiDims),
+  __allVariables(source.__allVariables), __changed(source.__changed)
 {
   GUM_CONS_CPY( MultiDimBucket );
 }
@@ -53,6 +53,7 @@ MultiDimBucket<T_DATA>::~MultiDimBucket()
 {
   GUM_DESTRUCTOR( MultiDimBucket );
   if (__bucket != 0) delete __bucket;
+  if (__instantiations != 0) delete __instantiations;
 }
 
 // Add a gum::MultiDimImplementation in the bucket.
@@ -119,6 +120,29 @@ MultiDimBucket<T_DATA>::bucketChanged() const
   return __changed;
 }
 
+// Returns the amount of memory allowed for this bucket.
+template<typename T_DATA> INLINE
+Size
+MultiDimBucket<T_DATA>::bufferSize() const
+{
+  return __bufferSize;
+}
+
+// @brief Changes the amount of memory allowed for this bucket.
+// If the new amount is not enough for the current size of this bucket, then
+// internal buffer is deleted.
+template<typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::setBufferSize(Size ammount)
+{
+  __bufferSize = ammount;
+  if ( (this->domainSize() > __bufferSize) && (__bucket != 0) ) {
+    __eraseBuffer();
+  } else if (__bucket == 0) {
+    __initializeBuffer();
+  }
+}
+
 // @brief This method computes the final table of this bucket.
 // A flag is used to prevent unnecessary computation if the table has
 // already been computed.
@@ -152,10 +176,7 @@ MultiDimBucket<T_DATA>::add (const DiscreteVariable &v)
   if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
     if (this->domainSize() <= __bufferSize) {
       if (__bucket == 0) {
-        __bucket = new MultiDimArray<T_DATA>();
-        for (MultiDimInterface::iterator iter = this->begin(); iter != this->end(); ++iter) {
-          __bucket->add(**iter);
-        }
+        __initializeBuffer();
       } else {
         __bucket->add(v);
       }
@@ -172,10 +193,7 @@ MultiDimBucket<T_DATA>::erase (const DiscreteVariable &v)
   if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
     if (this->domainSize() <= __bufferSize) {
       if (__bucket == 0) {
-        __bucket = new MultiDimArray<T_DATA>();
-        for (MultiDimInterface::iterator iter = this->begin(); iter != this->end(); ++iter) {
-          __bucket->add(**iter);
-        }
+        __initializeBuffer();
       } else {
         __bucket->erase(v);
       }
@@ -223,6 +241,8 @@ MultiDimBucket<T_DATA>::changeNotification (Instantiation &i,
 {
   if (__bucket != 0) {
     __bucket->changeNotification(i, var, oldval, newval);
+  } else if (i.isMaster(this)) {
+    __slavesValue.erase(&i);
   }
 }
 
@@ -292,7 +312,12 @@ bool
 MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
 {
   if (__bucket != 0) {
-    return __bucket->registerSlave(i);
+    if (__bucket->registerSlave(i)) {
+      __instantiations->insert(&i);
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return this->registerSlave(i);
   }
@@ -304,11 +329,17 @@ bool
 MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
 {
   if (__bucket != 0) {
-    return __bucket->unregisterSlave(i);
+    if (__bucket->unregisterSlave(i)) {
+      __instantiations->eraseByVal(&i);
+      return true;
+    }
   } else {
-    __slavesValue.erase(&i);
-    return this->unregisterSlave(i);
+    if (this->unregisterSlave(i)) {
+      __slavesValue.erase(&i);
+      return true;
+    }
   }
+  return false;
 }
 
 // String representation of internal data about i in this.
@@ -327,15 +358,10 @@ void
 MultiDimBucket<T_DATA>::_commitMultipleChanges()
 {
   MultiDimImplementation<T_DATA>::_commitMultipleChanges();
-  if (__bucket != 0) {
-    delete __bucket;
-    __bucket = 0;
-  }
   if (this->domainSize() <= __bufferSize) {
-    __bucket = new MultiDimArray<T_DATA>();
-    for (MultiDimInterface::iterator iter = this->begin(); iter != this->end(); ++iter) {
-      __bucket->add(**iter);
-    }
+    __initializeBuffer();
+  } else {
+    __eraseBuffer();
   }
   __allVariables.clear();
   for (SetIterator< const MultiDimImplementation<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
@@ -381,8 +407,55 @@ MultiDimBucket<T_DATA>::__eraseVariable(const DiscreteVariable* var)
       break;
     }
   }
-  if (! found) {
-    __allVariables.erase(var);
+  if (! found) __allVariables.erase(var);
+}
+
+// Initialize the internal buffer.
+template<typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::__initializeBuffer()
+{
+  if (__bucket != 0) {
+    delete __bucket;
+    __bucket = 0;
+  }
+  // Creating the table.
+  __bucket = new MultiDimArray<T_DATA>();
+  for (MultiDimInterface::iterator iter = this->begin(); iter != this->end(); ++iter) {
+    __bucket->add(**iter);
+  }
+  if (__instantiations == 0) {
+    __instantiations = new List<Instantiation*>(this->_slaves());
+  }
+  // Associating the instantiations to the new table.
+  for (List<Instantiation*>::iterator iter = __instantiations->begin(); iter != __instantiations->end(); ++iter) {
+    (*iter)->forgetMaster();
+    if (! (*iter)->actAsSlave(*__bucket)) {
+      (**iter) = Instantiation(*__bucket);
+    }
+  }
+  __changed = true;
+}
+
+// Clean the buffer and switch it's instantiation to this bucket.
+template<typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::__eraseBuffer()
+{
+  if (__bucket != 0) {
+    delete __bucket;
+    __bucket = 0;
+  }
+  // Moving the instantiations on this bucket.
+  if (__instantiations != 0) {
+    for (List<Instantiation*>::iterator iter = __instantiations->begin(); iter != __instantiations->end(); ++iter) {
+      (*iter)->forgetMaster();
+      if (! (*iter)->actAsSlave(*this)) {
+        (**iter) = Instantiation(*this);
+      }
+    }
+    delete __instantiations;
+    __instantiations = 0;
   }
 }
 

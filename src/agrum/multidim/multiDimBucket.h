@@ -46,6 +46,7 @@ namespace gum {
  * If the memory allowed is enough to contain the bucket's table, then the
  * resulting table is computed when a value is demanded for the first time.
  *
+ * TODO handle slave switch between buffer and hashtable.
  * @ingroup multidim_group
  */
 // ============================================================================
@@ -104,6 +105,18 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      */
     bool bucketChanged() const;
 
+    /// Returns the amount of memory allowed for this bucket.
+    Size bufferSize() const;
+
+    /**
+     * @brief Changes the amount of memory allowed for this bucket.
+     *
+     * If the new amount is not enough for the current size of this bucket, then
+     * internal buffer is deleted. In the other case, the internal buffer is created
+     * but not computed.
+     */
+    void setBufferSize(Size ammount);
+
     /**
      * @brief This method computes the final table of this bucket.
      *
@@ -147,7 +160,6 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// See gum::MultiDimContainer::get().
     virtual T_DATA get (const Instantiation &i) const;
-
 
     /// @}
     // ========================================================================
@@ -198,6 +210,9 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// The number of element allowed in __bucket.
     Size __bufferSize;
 
+    /// The list of instantiations registered on __bucket.
+    List<Instantiation*>* __instantiations;
+
     /// The result table of this bucket.
     MultiDimArray<T_DATA>* __bucket;
 
@@ -214,6 +229,13 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// Erase a variable from __allVariables if no other multidimensional table
     /// uses it in this bucket.
     void __eraseVariable(const DiscreteVariable* var);
+
+    /// Initialize the internal buffer.
+    /// This method delete __bucket after saving it's slave instantiations.
+    void __initializeBuffer();
+
+    /// Clean the buffer and switch it's instantiation to this bucket.
+    void __eraseBuffer();
 
     /// Compute the value of the final table of this bucket given i.
     /// If i variables are a subset of this bucket, then the missing values are

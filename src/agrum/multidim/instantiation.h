@@ -947,15 +947,10 @@ class Instantiation : public MultiDimInterface {
      * we mean a physical equality, that is, the variables are at the same places
      * in memory).
      *
-     * Note that if the Instantiation is already registered to another
-     * gum::MultiDimAdressable, it will be unregistered from this
-     * gum::MultiDimAdressable prior to trying the association to aMD.
-     *
      * @param aMD the multidimensional array which will be the master of *this
      * @returns true if and only if the Instantiation has been associated
      *          successfully to aMD.
-     * @throw OperationNotAllowed Raised if the instantiated does not share the
-     *                            same set of variables with aMD.
+     * @throw OperationNotAllowed Raised if this instantiation has already a master.
      */
     // ============================================================================
     bool actAsSlave( MultiDimAdressable& aMD );
