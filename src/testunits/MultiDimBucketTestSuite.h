@@ -20,6 +20,7 @@
 #include <sstream>
 
 #include <cxxtest/TestSuite.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
@@ -29,8 +30,24 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
     std::vector<gum::LabelizedVariable*>* __variables;
     std::vector< gum::Potential<double>* >* __potentials;
 
+    void __fillBucket(gum::MultiDimBucket<double>* bucket) {
+      for (size_t i = 0; i < 5; ++i) {
+        bucket->add(__potentials->at(i));
+      }
+    }
+
+    // Product must have variables
+    void __makeProduct(gum::Potential<double>& product) {
+      gum::Potential<double> temp;
+      for (size_t i = 0; i < 5; ++i) {
+        temp.multiplicateBy(*(__potentials->at(i)));
+      }
+      product.marginalize(temp);
+    }
+
   public:
     void setUp() {
+      gum::SimpleCPTGenerator cptGenerator;
       __variables = new std::vector<gum::LabelizedVariable*>();
       for (gum::Size i = 0; i < 10; ++i) {
         std::stringstream sBuff;
@@ -43,20 +60,25 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
       }
       // Creating a table of 2 elements
       __potentials->at(0)->add(*(__variables->at(0)));
+      cptGenerator.generateCPT(__potentials->at(0)->pos(*(__variables->at(0))), *(__potentials->at(0)));
       // Creating a table of 2 elements
       __potentials->at(1)->add(*(__variables->at(1)));
+      cptGenerator.generateCPT(__potentials->at(1)->pos(*(__variables->at(1))), *(__potentials->at(1)));
       // Creating a table of 2^4=16 elements
       for (size_t i = 2; i < 6; ++i) {
         __potentials->at(2)->add(*(__variables->at(i)));
       }
+      cptGenerator.generateCPT(__potentials->at(2)->pos(*(__variables->at(2))), *(__potentials->at(2)));
       // Creatinh a table of 2^4=16 elements
       for (size_t i = 4; i < 8; ++i) {
         __potentials->at(3)->add(*(__variables->at(i)));
       }
+      cptGenerator.generateCPT(__potentials->at(3)->pos(*(__variables->at(4))), *(__potentials->at(3)));
       // Creatinh a table of 2^4=16 elements
       for (size_t i = 6; i < 10; ++i) {
         __potentials->at(4)->add(*(__variables->at(i)));
       }
+      cptGenerator.generateCPT(__potentials->at(4)->pos(*(__variables->at(6))), *(__potentials->at(4)));
     }
 
     void tearDown() {
@@ -84,6 +106,80 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
       if (bucket != 0) {
         TS_ASSERT(bucket->isBucketEmpty());
+        for (size_t i = 0; i < 5; ++i) {
+          TS_ASSERT_THROWS_NOTHING(bucket->add(__potentials->at(i)));
+        }
+        TS_ASSERT(! bucket->isBucketEmpty());
+        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size) 5);
+        TS_ASSERT_THROWS_NOTHING(bucket->erase(__potentials->at(4)));
+        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size) 4);
+        for (size_t i = 5; i > 0; --i) {
+          TS_ASSERT_THROWS_NOTHING(bucket->erase(__potentials->at(i-1)));
+        }
+        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size) 0);
+        TS_ASSERT(bucket->isBucketEmpty());
+        delete bucket;
+      }
+    }
+
+    void testComputation() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+      gum::Instantiation inst(product);
+      TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize());
+      TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim());
+      for (inst.setFirst(); ! inst.end(); inst.inc()) {
+        TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), (double) 0.01);
+      }
+    }
+
+    void testOnTheFly() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+      gum::Instantiation inst(product);
+      TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize());
+      TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim());
+      TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size) 0);
+      for (inst.setFirst(); ! inst.end(); inst.inc()) {
+        TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), (double) 0.01);
+      }
+    }
+
+    void testInstantiationsWithBuffer() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+
+      gum::Instantiation* inst = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+      if (inst != 0) {
+        TS_ASSERT(! inst->isMaster(bucket));
+        for (inst->setFirst(); ! inst->end(); inst->inc()) {
+          TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
+        }
       }
     }
 };

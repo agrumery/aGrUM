@@ -79,23 +79,30 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     // ========================================================================
     /// @{
 
-    /// Add a gum::MultiDimImplementation in the bucket.
+    /// Add a gum::MultiDimContainer in the bucket.
     /// @throw gum::DuplicateElement Raised if impl is already in the bucket.
-    void add(const MultiDimImplementation<T_DATA>& impl);
+    void add(const MultiDimContainer<T_DATA>& impl);
 
-    /// Remove a gum::MultiDimImplementation from this bucket.
-    void erase(const MultiDimImplementation<T_DATA>& impl);
+    /// Add a gum::MultiDimContainer in the bucket.
+    /// @throw gum::DuplicateElement Raised if impl is already in the bucket.
+    void add(const MultiDimContainer<T_DATA>* impl);
 
-    /// Returns true if the gum::MultiDimImplementation is in this bucket.
-    bool contains(const MultiDimImplementation<T_DATA>& impl) const;
+    /// Remove a gum::MultiDimContainer from this bucket.
+    void erase(const MultiDimContainer<T_DATA>& impl);
 
-    /// Returns the number of gum::MultiDimImplementation in in this bukcet.
+    /// Remove a gum::MultiDimContainer from this bucket.
+    void erase(const MultiDimContainer<T_DATA>* impl);
+
+    /// Returns true if the gum::MultiDimContainer is in this bucket.
+    bool contains(const MultiDimContainer<T_DATA>& impl) const;
+
+    /// Returns the number of gum::MultiDimContainer in in this bukcet.
     Size bucketSize() const;
 
     /**
      * Returns true if this bucket is empty.
      *
-     * Which mean thath there is no gum::MultiDimImplementation in this bucket.
+     * Which mean thath there is no gum::MultiDimContainer in this bucket.
      */
     bool isBucketEmpty() const;
 
@@ -133,6 +140,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      *              re-computed.
      * @throw OperationNotAllowed Raised if the size of the final table is above
      *                            the authorized amount of memory.
+     * @throw SizeError Raised if the bucket is empty.
      */
     void compute(bool force=false) const;
 
@@ -216,8 +224,8 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// The result table of this bucket.
     MultiDimArray<T_DATA>* __bucket;
 
-    /// The set of gum::MultiDimImplementation in this bucket.
-    Set<const MultiDimImplementation<T_DATA>* > __multiDims;
+    /// The set of gum::MultiDimContainer in this bucket.
+    Set<const MultiDimContainer<T_DATA>* > __multiDims;
 
     /// The set of all variables of the multidims in this bucket.
     Set<const DiscreteVariable*> __allVariables;
@@ -243,6 +251,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// @param value The value to compute.
     /// @param buffer An initialized MultiDimArray with all variables not in this
     ///               bucket final table.
+    /// @throw SizeError Raised if the bucket is empty.
     T_DATA __computeValue(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last

@@ -143,7 +143,7 @@ namespace gum {
   Potential<T_DATA>& Potential<T_DATA>::multiplicateBy( const Potential& p1 ) {
     if ( p1.empty() ) {
       GUM_ERROR( OperationNotAllowed,
-                 "Multiplicate by empty potential is not allows" );
+                 "Multiplicate by empty potential is not allowed" );
     }
 
     if ( this->empty() ) {

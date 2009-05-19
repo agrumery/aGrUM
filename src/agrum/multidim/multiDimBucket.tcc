@@ -56,44 +56,61 @@ MultiDimBucket<T_DATA>::~MultiDimBucket()
   if (__instantiations != 0) delete __instantiations;
 }
 
-// Add a gum::MultiDimImplementation in the bucket.
+// Add a gum::MultiDimContainer in the bucket.
 // @throw DuplicateElement Raised if impl is already in the bucket.
 template<typename T_DATA> INLINE
 void
-MultiDimBucket<T_DATA>::add(const MultiDimImplementation<T_DATA>& impl)
+MultiDimBucket<T_DATA>::add(const MultiDimContainer<T_DATA>& impl)
 {
-  __multiDims.insert(&impl);
-  __changed = true;
-  if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
-    for (MultiDimInterface::iterator iter = impl.begin(); iter != impl.end(); ++iter) {
-      __addVariable(**iter);
-    }
-  }
+  this->add(&impl);
 }
 
-// Remove a gum::MultiDimImplementation from this bucket.
+// Add a gum::MultiDimContainer in the bucket.
+// @throw DuplicateElement Raised if impl is already in the bucket.
 template<typename T_DATA> INLINE
 void
-MultiDimBucket<T_DATA>::erase(const MultiDimImplementation<T_DATA>& impl)
+MultiDimBucket<T_DATA>::add(const MultiDimContainer<T_DATA>* impl)
 {
-  __multiDims.erase(&impl);
+  __multiDims.insert(impl);
   __changed = true;
   if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
-    for (MultiDimInterface::iterator iter = impl.begin(); iter != impl.end(); ++iter) {
-      __eraseVariable(**iter);
+    for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
+      __addVariable(*iter);
     }
   }
 }
 
-// Returns true if the gum::MultiDimImplementation is in this bucket.
+// Remove a gum::MultiDimContainer from this bucket.
+template<typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::erase(const MultiDimContainer<T_DATA>& impl)
+{
+  this->erase(&impl);
+}
+
+// Remove a gum::MultiDimContainer from this bucket.
+template<typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::erase(const MultiDimContainer<T_DATA>* impl)
+{
+  __multiDims.erase(impl);
+  __changed = true;
+  if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
+    for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
+      __eraseVariable(*iter);
+    }
+  }
+}
+
+// Returns true if the gum::MultiDimContainer is in this bucket.
 template<typename T_DATA> INLINE
 bool
-MultiDimBucket<T_DATA>::contains(const MultiDimImplementation<T_DATA>& impl) const
+MultiDimBucket<T_DATA>::contains(const MultiDimContainer<T_DATA>& impl) const
 {
   return __multiDims.contains(&impl);
 }
 
-// Returns the number of gum::MultiDimImplementation in in this bukcet.
+// Returns the number of gum::MultiDimContainer in in this bukcet.
 template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::bucketSize() const
@@ -103,7 +120,7 @@ MultiDimBucket<T_DATA>::bucketSize() const
 
 
 // Returns true if this bucket is empty.
-// Which mean thath there is no gum::MultiDimImplementation in this bucket.
+// Which mean thath there is no gum::MultiDimContainer in this bucket.
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::isBucketEmpty() const
@@ -312,14 +329,15 @@ bool
 MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
 {
   if (__bucket != 0) {
-    if (__bucket->registerSlave(i)) {
+    i.forgetMaster();
+    if (i.actAsSlave(*__bucket)) {
       __instantiations->insert(&i);
       return true;
     } else {
       return false;
     }
   } else {
-    return this->registerSlave(i);
+    return MultiDimImplementation<T_DATA>::registerSlave(i);
   }
 }
 
@@ -334,7 +352,7 @@ MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
       return true;
     }
   } else {
-    if (this->unregisterSlave(i)) {
+    if (MultiDimImplementation<T_DATA>::unregisterSlave(i)) {
       __slavesValue.erase(&i);
       return true;
     }
@@ -364,7 +382,7 @@ MultiDimBucket<T_DATA>::_commitMultipleChanges()
     __eraseBuffer();
   }
   __allVariables.clear();
-  for (SetIterator< const MultiDimImplementation<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
+  for (SetIterator< const MultiDimContainer<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
     for (MultiDimInterface::iterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
       __addVariable(*jter);
     }
@@ -401,7 +419,7 @@ void
 MultiDimBucket<T_DATA>::__eraseVariable(const DiscreteVariable* var)
 {
   bool found = false;
-  for (SetIterator< const MultiDimImplementation<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
+  for (SetIterator< const MultiDimContainer<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
     if ((*iter)->contains(*var)) {
       found = true;
       break;
@@ -462,25 +480,31 @@ MultiDimBucket<T_DATA>::__eraseBuffer()
 // Compute the value of the final table of this bucket given i.
 // If i variables are a subset of this bucket, then the missing values are
 // supposed to be at 0.
+// @throw SizeError Raised if the bucket is empty.
 template<typename T_DATA> INLINE
 T_DATA
 MultiDimBucket<T_DATA>::__computeValue(const Instantiation& value) const
 {
-  T_DATA sum = (T_DATA) 0;
-  T_DATA current;
-  Instantiation allVar_inst;
-  for (Set<const DiscreteVariable*>::iterator iter = __allVariables.begin(); iter != __allVariables.end(); ++iter) {
-    allVar_inst.add(**iter);
-  }
-  allVar_inst.chgValIn(value);
-  for (allVar_inst.setFirstOut(value); ! allVar_inst.end(); allVar_inst.incOut(value)) {
-    current = (T_DATA) 1;
-    for (SetIterator< const MultiDimImplementation<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
-      current *= (*iter)->get(allVar_inst);
+  try {
+    T_DATA sum = (T_DATA) 0;
+    T_DATA current;
+    Instantiation allVar_inst;
+    for (Set<const DiscreteVariable*>::iterator iter = __allVariables.begin(); iter != __allVariables.end(); ++iter) {
+      allVar_inst.add(**iter);
     }
-    sum += current;
+    allVar_inst.chgValIn(value);
+    for (allVar_inst.setFirstOut(value); ! allVar_inst.end(); allVar_inst.incOut(value)) {
+      current = (T_DATA) 1;
+      for (SetIterator< const MultiDimContainer<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
+        current *= (*iter)->get(allVar_inst);
+      }
+      sum += current;
+    }
+    return sum;
+  } catch (NotFound&) {
+    // This happens if the bucket is empty.
+    GUM_ERROR(SizeError, "This MultiDimBucket is empty.");
   }
-  return sum;
 }
 
 } /* namespace gum */
