@@ -99,7 +99,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     bool isBucketEmpty() const;
 
     /**
-     * Returns true if the bucket need re-computation since the last 
+     * Returns true if the bucket need re-computation since the last
      * computation.
      */
     bool bucketChanged() const;
@@ -148,8 +148,6 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// See gum::MultiDimContainer::get().
     virtual T_DATA get (const Instantiation &i) const;
 
-    /// See gum::MultiDimContainer::operator[]().
-    virtual T_DATA operator[] (const Instantiation &i) const;
 
     /// @}
     // ========================================================================

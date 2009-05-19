@@ -110,7 +110,7 @@ MultiDimBucket<T_DATA>::isBucketEmpty() const
   return __multiDims.empty();
 }
 
-// Returns true if the bucket need re-computation since the last 
+// Returns true if the bucket need re-computation since the last
 // computation.
 template<typename T_DATA> INLINE
 bool
@@ -212,14 +212,6 @@ MultiDimBucket<T_DATA>::get(const Instantiation &i) const
   } else {
     return __computeValue(i);
   }
-}
-
-// See gum::MultiDimContainer::operator[]().
-template<typename T_DATA> INLINE
-T_DATA
-MultiDimBucket<T_DATA>::operator[] (const Instantiation &i) const
-{
-  return this->get(i);
 }
 
 // See gum::MultiDimAdressable::changeNotification().

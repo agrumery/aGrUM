@@ -109,7 +109,7 @@ namespace gum {
        * Changes the value pointed by i.
        *
        * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the 
+       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        */
       // ============================================================================
@@ -120,7 +120,7 @@ namespace gum {
        * Returns the value pointed by i.
        *
        * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the 
+       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        */
       // ============================================================================
@@ -131,14 +131,14 @@ namespace gum {
        * An [] operator using a Instantiation as argument.
        *
        * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the 
+       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        *
        * @param i An Instantiation.
        * @return Returns the adressed (T_DATA) value.
        */
       // ============================================================================
-      virtual T_DATA operator[]( const Instantiation& i ) const;
+      T_DATA operator[]( const Instantiation& i ) const;
 
       // ============================================================================
       /**
@@ -253,7 +253,7 @@ namespace gum {
        * The method is still tagged as const.
        *
        * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the 
+       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        *
        * @param i The instantiation used to find the data.

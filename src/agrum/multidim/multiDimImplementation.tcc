@@ -64,7 +64,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// add a new var to the sequence of __vars
+  /// add a new var to the sequence of __vars.
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimImplementation<T_DATA>::add( const DiscreteVariable& v ) {
