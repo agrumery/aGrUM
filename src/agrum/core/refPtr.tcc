@@ -70,7 +70,7 @@ namespace gum {
   /// removes the current content of the smart pointer
   // ==============================================================================
   template <typename Val> INLINE void
-  RefPtr<Val>::destroy( unsigned int *count, Val *v ) {
+  RefPtr<Val>::__destroy( unsigned int *count, Val *v ) {
     if ( count ) {
       if ( *count == 1U ) {
         // do not change the order of the deletes (this prevents memory leaks when
@@ -102,7 +102,7 @@ namespace gum {
       if ( __refcount ) ++*__refcount;
 
       // now try to dereference the old dumb pointer
-      destroy( old_refcount,old_val );
+      __destroy( old_refcount,old_val );
     }
 
     return *this;
@@ -144,7 +144,7 @@ namespace gum {
       }
 
       // now try to dereference the old dumb pointer
-      destroy( old_refcount,old_val );
+      __destroy( old_refcount,old_val );
     }
 
     return *this;
@@ -167,7 +167,7 @@ namespace gum {
     if ( __refcount ) ++*__refcount;
 
     // now try to dereference the old dumb pointer
-    destroy( old_refcount,old_val );
+    __destroy( old_refcount,old_val );
 
     return *this;
   }
@@ -178,7 +178,7 @@ namespace gum {
   template <typename Val> INLINE RefPtr<Val>::~RefPtr() {
     // for debugging purposes
     GUM_DESTRUCTOR( RefPtr );
-    destroy( __refcount,__val );
+    __destroy( __refcount,__val );
   }
 
   // ==============================================================================
@@ -245,7 +245,7 @@ namespace gum {
     __val = 0;
     __refcount = 0;
     // now try to dereference the old dumb pointer
-    destroy( old_refcount,old_val );
+    __destroy( old_refcount,old_val );
   }
 
   
@@ -256,6 +256,15 @@ namespace gum {
   unsigned int RefPtr<Val>::refCount () const {
     if (__refcount == 0) return 0;
     return *__refcount;
+  }
+
+  
+  // ==============================================================================
+  /// returns the refcount pointer
+  // ==============================================================================
+  template <typename Val> INLINE
+  unsigned int* RefPtr<Val>::__refCountPtr () const {
+    return __refcount;
   }
     
   

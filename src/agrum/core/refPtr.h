@@ -71,6 +71,7 @@ namespace gum {
   #ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <typename Val> class RefPtr;
   template <typename Val> void swap( RefPtr<Val>&, RefPtr<Val>& ) ;
+  template <typename Val> class HashFunc;
   #endif
 
   
@@ -294,6 +295,9 @@ namespace gum {
   private:
     /// a friend to allow downcastings
     template <typename T> friend class RefPtr;
+
+    /// a friend for hashing quickly ref pointers
+    template <typename T> friend class HashFunc;
     
     /// the dumb pointer encapsulated into the "smart" pointer
     Val *__val;
@@ -302,7 +306,10 @@ namespace gum {
     unsigned int *__refcount;
 
     /// a function to remove the content of the smart pointer, if any
-    void destroy( unsigned int *, Val * );
+    void __destroy( unsigned int *, Val * );
+
+    /// a function to return the refcount pointer
+    unsigned int *__refCountPtr () const;
   };
 
 

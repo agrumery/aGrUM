@@ -47,16 +47,20 @@ namespace gum {
   const Size   GUM_HASHTABLE_INT_GOLD  = 2654435769UL;
   const Size   GUM_HASHTABLE_INT_PI    = 3373259426UL;
   const Size   GUM_HASHTABLE_MASK      = 4294967295UL;
-  const size_t             GUM_HASHTABLE_OFFSET    = 32;
-//for pedantic  const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
-//for pedantic  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  const size_t GUM_HASHTABLE_OFFSET    = 32;
+  /* for pedantic reasons, we remove these two lines:
+  const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
+  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  */
   #else // unsigned long = 64 bits
   const Size   GUM_HASHTABLE_INT_GOLD  = 11400714819323198486UL;
   const Size   GUM_HASHTABLE_INT_PI    = 14488038916154245684UL;
   const Size   GUM_HASHTABLE_MASK      = 18446744073709551615UL;
-  const size_t             GUM_HASHTABLE_OFFSET    = 64;
-//for pedantic    const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
-  //for pedantic  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  const size_t GUM_HASHTABLE_OFFSET    = 64;
+  /* for pedantic reasons, we remove these two lines:
+  const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
+  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  */
   #endif /* unsigned long = 32 bits */
 
 } /* namespace gum */

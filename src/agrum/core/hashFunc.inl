@@ -50,8 +50,9 @@ namespace gum {
   INLINE Size
   HashFunc<std::string>::operator()( const std::string& key ) const  {
     register Size h = 0;
-    for ( size_t i = 0, j = key.size(); i < j; ++i ) h = 19 * h + key[i];
-    return (( h * GUM_HASHTABLE_INT_GOLD ) & hash_mask );
+    for ( size_t i = 0, j = key.size(); i < j; ++i )
+      h = 19 * h + key[i];
+    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 
   
@@ -62,8 +63,9 @@ namespace gum {
   INLINE Size
   HashFunc<Debug>::operator()( const Debug& key ) const  {
     register Size h = 0;
-    for ( size_t i = 0, j = key.size(); i < j; ++i ) h = 19 * h + key[i];
-    return (( h * GUM_HASHTABLE_INT_GOLD ) & hash_mask );
+    for ( size_t i = 0, j = key.size(); i < j; ++i )
+      h = 19 * h + key[i];
+    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 
 } /* namespace gum */

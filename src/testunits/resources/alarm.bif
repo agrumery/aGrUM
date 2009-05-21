@@ -1,119 +1,122 @@
 network Unknown {
 }
 variable HISTORY {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable CVP {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable PCWP {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable HYPOVOLEMIA {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable LVEDVOLUME {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable LVFAILURE {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable STROKEVOLUME {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable ERRLOWOUTPUT {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable HRBP {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable HREKG {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable ERRCAUTER {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable HRSAT {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable INSUFFANESTH {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable ANAPHYLAXIS {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable TPR {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable EXPCO2 {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable KINKEDTUBE {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable MINVOL {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable FIO2 {
-  type discrete [ 2 ] { LOW, NORMAL };
+  type discrete[2] { LOW, NORMAL };
 }
 variable PVSAT {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable SAO2 {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable PAP {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable PULMEMBOLUS {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable SHUNT {
-  type discrete [ 2 ] { NORMAL, HIGH };
+  type discrete[2] { NORMAL, HIGH };
 }
 variable INTUBATION {
-  type discrete [ 3 ] { NORMAL, ESOPHAGEAL, ONESIDED };
+  type discrete[3] { NORMAL, ESOPHAGEAL, ONESIDED };
 }
 variable PRESS {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable DISCONNECT {
-  type discrete [ 2 ] { TRUE, FALSE };
+  type discrete[2] { TRUE, FALSE };
 }
 variable MINVOLSET {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable VENTMACH {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable VENTTUBE {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable VENTLUNG {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable VENTALV {
-  type discrete [ 4 ] { ZERO, LOW, NORMAL, HIGH };
+  type discrete[4] { ZERO, LOW, NORMAL, HIGH };
 }
 variable ARTCO2 {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable CATECHOL {
-  type discrete [ 2 ] { NORMAL, HIGH };
+  type discrete[2] { NORMAL, HIGH };
 }
 variable HR {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable CO {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 variable BP {
-  type discrete [ 3 ] { LOW, NORMAL, HIGH };
+  type discrete[3] { LOW, NORMAL, HIGH };
 }
 probability ( HISTORY | LVFAILURE ) {
   (TRUE) 0.9, 0.1;
   (FALSE) 0.01, 0.99;
+}
+probability ( HYPOVOLEMIA ) {
+  table 0.2, 0.8;
 }
 probability ( CVP | LVEDVOLUME ) {
   (LOW) 0.95, 0.04, 0.01;
@@ -124,9 +127,6 @@ probability ( PCWP | LVEDVOLUME ) {
   (LOW) 0.95, 0.04, 0.01;
   (NORMAL) 0.04, 0.95, 0.01;
   (HIGH) 0.01, 0.04, 0.95;
-}
-probability ( HYPOVOLEMIA ) {
-  table 0.2, 0.8;
 }
 probability ( LVEDVOLUME | HYPOVOLEMIA, LVFAILURE ) {
   (TRUE, TRUE) 0.95, 0.04, 0.01;

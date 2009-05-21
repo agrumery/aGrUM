@@ -33,45 +33,45 @@ link_directories(${AGRUM_BINARY_DIR}/lib})
 
 #file(GLOB AGRUM_TESTS *Suite.h)
 file(GLOB AGRUM_TESTS
-#  ArcTestSuite.h
-#  AVLTestSuite.h
-#  BayesBallsTestSuite.h
-#  BayesNetGeneratorTestSuite.h
-#  BayesNetTestSuite.h
+  ArcTestSuite.h
+  AVLTestSuite.h
+  BayesBallsTestSuite.h
+  BayesNetGeneratorTestSuite.h
+  BayesNetTestSuite.h
 #  BIFReaderTestSuite.h
 #  BIFWriterTestSuite.h
-#  CliqueGraphTestSuite.h
-#  CompareInferencesTestSuite.h
+  CliqueGraphTestSuite.h
+  CompareInferencesTestSuite.h
   CrossMultiDimTestSuite.h
-#  DatabaseTestSuite.h # <------------------------- faire qqchose pour XML with missing value
-#  DAGTestSuite.h
+  DatabaseTestSuite.h # <------------------------- faire qqchose pour XML with missing value
+  DAGTestSuite.h
 #  DefaultTriangulationTestSuite.h
-#  DiGraphTestSuite.h
-#  DiscretizedVariableTestSuite.h
-#  DiscretizedVariableListenerTestSuite.h
-#  EdgeTestSuite.h
-#  GibbsInferenceBNTestSuite.h
-#  HashTableTestSuite.h
+  DiGraphTestSuite.h
+  DiscretizedVariableTestSuite.h
+  DiscretizedVariableListenerTestSuite.h
+  EdgeTestSuite.h
+  GibbsInferenceBNTestSuite.h
+  HashTableTestSuite.h
   InstantiationTestSuite.h
-#  LabelizedVariableListenerTestSuite.h
-#  LabelizedVariableTestSuite.h
-#  LazyInferenceBNTestSuite.h
-#  ListBaseTestSuite.h
-#  MixedGraphTestSuite.h
+  LabelizedVariableListenerTestSuite.h
+  LabelizedVariableTestSuite.h
+  LazyInferenceBNTestSuite.h
+  ListBaseTestSuite.h
+  MixedGraphTestSuite.h
   MultiDimTestSuite.h
   MultiDimAggregatorTestSuite.h
   MultiDimBucketTestSuite.h
   MultiDimNoisyORTestSuite.h
   PotentialTestSuite.h
-#  RangeVariableTestSuite.h
-#  RefPtrTestSuite.h
-#  SequenceTestSuite.h
-#  SetTestSuite.h
-#  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
-#  SimpleCPTGeneratorTestSuite.h
-#  VariableNodeMapTestSuite.h
-#  TorcsTestSuite.h  #<-----------------------MEMORY LEAK
-#  UndiGraphTestSuite.h
+  RangeVariableTestSuite.h
+  RefPtrTestSuite.h
+  SequenceTestSuite.h
+  SetTestSuite.h
+  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
+  SimpleCPTGeneratorTestSuite.h
+  VariableNodeMapTestSuite.h
+  TorcsTestSuite.h  #<-----------------------MEMORY LEAK
+  UndiGraphTestSuite.h
  )
 
 add_cxxtest(test ${AGRUM_TESTS})

@@ -120,7 +120,8 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
     };
 
-    void testBIFtriangulation1( void ) {
+  
+    void xxtestBIFtriangulation1( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Barley.bif ) ));
     };
     void testBIFtriangulation1bis( void ) {
