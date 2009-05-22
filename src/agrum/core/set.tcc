@@ -54,7 +54,7 @@ namespace gum {
   template<typename KEY> INLINE
   SetIterator<KEY>::SetIterator( const SetIterator<KEY>& iter ) :
     __ht_iter( iter.__ht_iter ) {
-    GUM_CONSTRUCTOR( SetIterator );
+    GUM_CONS_CPY( SetIterator );
   }
 
   

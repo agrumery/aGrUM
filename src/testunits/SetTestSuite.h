@@ -32,7 +32,7 @@ class SetTestSuite: public CxxTest::TestSuite {
   public:
 
     void testConstructor() {
-      gum::Set<int> *set=NULL;
+      gum::Set<int> *set=0;
       TS_GUM_ASSERT_THROWS_NOTHING( set = new gum::Set< int>() );
       TS_GUM_ASSERT_THROWS_NOTHING( delete set);
     }

@@ -178,8 +178,10 @@ namespace gum {
       __dec_creation( "Set"        ,"__empty_arc_set",0,"static variable correction",0 );
       __dec_creation( "HashTable"  ,"__empty_arc_set",0,"static variable correction",0 );
       __dec_creation( "SetIterator","__empty_arc_set",0,"static variable correction",0 );
+      __dec_creation( "SetIterator","__empty_arc_set",0,"static variable correction",0 );
       __dec_creation( "Set"        ,"__empty_edge_set",0,"static variable correction",0 );
       __dec_creation( "HashTable"  ,"__empty_edge_set",0,"static variable correction",0 );
+      __dec_creation( "SetIterator","__empty_edge_set",0,"static variable correction",0 );
       __dec_creation( "SetIterator","__empty_edge_set",0,"static variable correction",0 );
 #endif //NDEBUG
     }
