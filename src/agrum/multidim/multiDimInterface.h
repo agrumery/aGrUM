@@ -17,40 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief interface for all classes addressing in a multiDim fashion
+/**
+ * @file
+ * @brief Interface for all classes addressing in a multidimensional fashion.
  *
  * This class is a base interface for Instantiation and for all classes
  * addressed by a Instantiation (mainly: MultiDimContainer and hence for all
- * dimensionnal containers). Its purpose is to deal with the dimensions
+ * multidimensional containers). Its purpose is to deal with the dimensions
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-
+// ============================================================================
 /*!
   @ingroup multidim_group
   \page multidim_page How to use the MultiDim hierarchy.
 
   \section multidim_sec_1 Why the MultiDim hierarchy?
 */
+// ============================================================================
 #ifndef GUM_MULTIDIM_INTERFACE_H
 #define GUM_MULTIDIM_INTERFACE_H
-
+// ============================================================================
 #include <iostream>
 #include <vector>
-
+// ============================================================================
 #include <agrum/core/utils.h>
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
-
+// ============================================================================
 #include <agrum/multidim/discreteVariable.h>
-
+// ============================================================================
 namespace gum {
 
 class Instantiation;
 
 /**
- * @class MultiDimInterface
+ * @class MultiDimInterface multiDimInterface.h agrum/multidim/multiDimInterface.h
  *
  * @brief interface for all classes addressing in a multiDim fashion
  * @ingroup multidim_group
@@ -58,6 +60,8 @@ class Instantiation;
  * This class is a base interface for Instantiation and for all classes
  * addressed by a Instantiation (mainly: MultiDimContainer and hence for all
  * dimensionnal containers). Its purpose is to deal with the dimensions.
+ *
+ * @ingroup multidim_group
  */
 class MultiDimInterface {
   public:
@@ -197,6 +201,8 @@ class MultiDimInterface {
  * @throw DuplicateElement is thrown if the variable already belongs to the
  *                         sequence of variables.
  * @throw OperationNotAllowed if *this is non mutable
+ *
+ * @ingroup multidim_group
  */
 // ==============================================================================
 MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v );
@@ -207,6 +213,8 @@ MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v 
  *
  * @throw OperationNotAllowed if this object is non mutable.
  * @throw NotFound is v does not belong to this
+ *
+ * @ingroup multidim_group
  */
 // ==============================================================================
 MultiDimInterface& operator>> ( MultiDimInterface& c, const DiscreteVariable& v );

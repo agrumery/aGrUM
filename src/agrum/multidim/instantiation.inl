@@ -774,6 +774,13 @@ namespace gum {
   }
 
   // ==============================================================================
+  /// indicates wether the MultiDimAdressable* m is the master
+  // ==============================================================================
+  INLINE bool Instantiation::isMaster( const MultiDimAdressable& m ) const  {
+    return isMaster(&m);
+  }
+
+  // ==============================================================================
   /// returns the sequence of DiscreteVariable
   // ============================================================================
   INLINE const Sequence<const DiscreteVariable *>&

@@ -130,9 +130,9 @@ class MultiDimAdressable;
 /* ============================================================================ */
 /* ============================================================================ */
 /**
- * @ingroup multidim_group
- * @class Instantiation
+ * @class Instantiation instantiation.h agrum/multidim/instantiation.h
  * @brief Class for assigning/browsing values to tuples of discrete variables.
+ * @ingroup multidim_group
  *
  * Instantiation is designed to assign values to tuples of variables and to
  * efficiently loop over values of subsets of variables. This class can be used in
@@ -972,6 +972,11 @@ class Instantiation : public MultiDimInterface {
     /// Indicates whether m is the master of this instantiation.
     // ==============================================================================
     bool isMaster( const MultiDimAdressable* m ) const ;
+
+    // ==============================================================================
+    /// Indicates whether m is the master of this instantiation.
+    // ==============================================================================
+    bool isMaster( const MultiDimAdressable& m ) const ;
 
     // ==============================================================================
     /**

@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * Headers of the MultiDimContainer class.
+ * @brief Headers of the MultiDimContainer class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */

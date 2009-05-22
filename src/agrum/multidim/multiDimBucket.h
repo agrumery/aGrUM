@@ -46,6 +46,11 @@ namespace gum {
  * If the memory allowed is enough to contain the bucket's table, then the
  * resulting table is computed when a value is demanded for the first time.
  *
+ * Since a MultiDimArray is used as a buffer, an instantiation real master
+ * will be the internal buffer of a gum::MultiDimBucket. This is why you should
+ * always call the gum::Instantiation::isMaster() method with the reference
+ * retuned by gum::MultiDimBucket::getMasterRef().
+ *
  * TODO handle slave switch between buffer and hashtable.
  * @ingroup multidim_group
  */
@@ -200,6 +205,12 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// See gum::MultiDimAdressable::unregisterSlave().
     virtual bool unregisterSlave (Instantiation &i);
+
+    /// See gum::MultiDimAdressable::getMasterRef().
+    virtual MultiDimAdressable& getMasterRef (void);
+
+    /// See gum::MultiDimAdressable::getMasterRef().
+    virtual const MultiDimAdressable& getMasterRef (void) const;
 
     /// @}
 

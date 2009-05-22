@@ -177,10 +177,102 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
       if (inst != 0) {
         TS_ASSERT(! inst->isMaster(bucket));
+        TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
         for (inst->setFirst(); ! inst->end(); inst->inc()) {
           TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
         }
       }
+    }
+
+    void testInstantiationsWithBufferAndAutoCompute() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+
+      gum::Instantiation* inst = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+      if (inst != 0) {
+        TS_ASSERT(! inst->isMaster(bucket));
+        TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
+        for (inst->setFirst(); ! inst->end(); inst->inc()) {
+          TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
+        }
+      }
+    }
+
+    void testInstantiationsOnTheFly() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+
+      gum::Instantiation* inst = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+      if (inst != 0) {
+        TS_ASSERT(inst->isMaster(bucket));
+        TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
+        for (inst->setFirst(); ! inst->end(); inst->inc()) {
+          TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
+        }
+      }
+    }
+
+    void testBucketSizeChanges() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      gum::Potential<double> product;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      TS_ASSERT(bucket->bucketChanged());
+      for (size_t i = 3; i < 6; ++i) {
+        TS_ASSERT_THROWS_NOTHING(bucket->add(*(__variables->at(i))));
+        TS_ASSERT(bucket->bucketChanged());
+        product.add(*(__variables->at(i)));
+      }
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_ASSERT(! bucket->bucketChanged());
+      TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
+
+      TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size) 0);
+
+      gum::Instantiation* inst = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+      TS_ASSERT(! bucket->bucketChanged());
+      if (inst != 0) {
+        TS_ASSERT(inst->isMaster(bucket));
+        TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
+        for (inst->setFirst(); ! inst->end(); inst->inc()) {
+          TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
+          TS_ASSERT(! bucket->bucketChanged());
+        }
+      }
+
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize((gum::Size) 65536));
+      TS_ASSERT(bucket->bucketChanged());
+      TS_ASSERT(bucket->realSize() > (gum::Size) 0);
+      TS_ASSERT(bucket->bucketChanged());
+      TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+      TS_ASSERT(! bucket->bucketChanged());
+
+      if (inst != 0) {
+        TS_ASSERT(!inst->isMaster(bucket));
+        TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
+        for (inst->setFirst(); ! inst->end(); inst->inc()) {
+          TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
+        }
+      }
+
     }
 };
 

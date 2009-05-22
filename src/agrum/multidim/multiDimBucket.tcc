@@ -180,8 +180,8 @@ MultiDimBucket<T_DATA>::compute(bool force) const
     for (values.setFirst(); ! values.end(); values.inc()) {
       __bucket->set(values, __computeValue(values));
     }
-    __changed = false;
   }
+  __changed = false;
 }
 
 // See gum::MultiDimInterface::add().
@@ -223,7 +223,6 @@ template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::realSize() const
 {
-  compute();
   if (__bucket != 0) {
     return __bucket->realSize();
   } else {
@@ -347,17 +346,32 @@ bool
 MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
 {
   if (__bucket != 0) {
-    if (__bucket->unregisterSlave(i)) {
-      __instantiations->eraseByVal(&i);
-      return true;
-    }
+    __bucket->unregisterSlave(i);
+    __instantiations->eraseByVal(&i);
+    return true;
   } else {
-    if (MultiDimImplementation<T_DATA>::unregisterSlave(i)) {
-      __slavesValue.erase(&i);
-      return true;
-    }
+    MultiDimImplementation<T_DATA>::unregisterSlave(i);
+    __slavesValue.erase(&i);
+    return true;
   }
-  return false;
+}
+
+// See gum::MultiDimAdressable::getMasterRef().
+template<typename T_DATA> INLINE
+MultiDimAdressable&
+MultiDimBucket<T_DATA>::getMasterRef (void)
+{
+  if (__bucket != 0) return *__bucket;
+  else return *this;
+}
+
+// See gum::MultiDimAdressable::getMasterRef().
+template<typename T_DATA> INLINE
+const MultiDimAdressable&
+MultiDimBucket<T_DATA>::getMasterRef (void) const
+{
+  if (__bucket != 0) return *__bucket;
+  else return *this;
 }
 
 // String representation of internal data about i in this.
@@ -446,12 +460,16 @@ MultiDimBucket<T_DATA>::__initializeBuffer()
     __instantiations = new List<Instantiation*>(this->_slaves());
   }
   // Associating the instantiations to the new table.
-  for (List<Instantiation*>::iterator iter = __instantiations->begin(); iter != __instantiations->end(); ++iter) {
-    (*iter)->forgetMaster();
-    if (! (*iter)->actAsSlave(*__bucket)) {
-      (**iter) = Instantiation(*__bucket);
+  Instantiation* inst = 0;
+  while (__instantiations->size() > 0) {
+    inst =  __instantiations->back();
+    inst->forgetMaster();
+    if (! inst->actAsSlave(*__bucket)) {
+      (*inst) = Instantiation(*__bucket);
     }
   }
+  delete __instantiations;
+  __instantiations = 0;
   __changed = true;
 }
 

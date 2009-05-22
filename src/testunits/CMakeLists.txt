@@ -56,17 +56,17 @@ file(GLOB AGRUM_TESTS
 #  LabelizedVariableListenerTestSuite.h
 #  LabelizedVariableTestSuite.h
 #  LazyInferenceBNTestSuite.h
-  ListBaseTestSuite.h
+#  ListBaseTestSuite.h
 #  MixedGraphTestSuite.h
-#  MultiDimTestSuite.h
-#  MultiDimAggregatorTestSuite.h
-#  MultiDimBucketTestSuite.h
-#  MultiDimNoisyORTestSuite.h
+  MultiDimTestSuite.h
+  MultiDimAggregatorTestSuite.h
+  MultiDimBucketTestSuite.h
+  MultiDimNoisyORTestSuite.h
 #  PotentialTestSuite.h
 #  RangeVariableTestSuite.h
 #  RefPtrTestSuite.h
 #  SequenceTestSuite.h
-  SetTestSuite.h
+#  SetTestSuite.h
 #  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
 #  SimpleCPTGeneratorTestSuite.h
 #  VariableNodeMapTestSuite.h
