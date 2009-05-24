@@ -41,7 +41,7 @@ file(GLOB AGRUM_TESTS
 #  BIFReaderTestSuite.h
 #  BIFWriterTestSuite.h
 #  CliqueGraphTestSuite.h
-#  CompareInferencesTestSuite.h
+  CompareInferencesTestSuite.h
 #  CrossMultiDimTestSuite.h
 #  DatabaseTestSuite.h # <------------------------- faire qqchose pour XML with missing value
 #  DAGTestSuite.h
@@ -58,10 +58,10 @@ file(GLOB AGRUM_TESTS
 #  LazyInferenceBNTestSuite.h
 #  ListBaseTestSuite.h
 #  MixedGraphTestSuite.h
-  MultiDimTestSuite.h
-  MultiDimAggregatorTestSuite.h
-  MultiDimBucketTestSuite.h
-  MultiDimNoisyORTestSuite.h
+#  MultiDimTestSuite.h
+#  MultiDimAggregatorTestSuite.h
+#  MultiDimBucketTestSuite.h
+#  MultiDimNoisyORTestSuite.h
 #  PotentialTestSuite.h
 #  RangeVariableTestSuite.h
 #  RefPtrTestSuite.h

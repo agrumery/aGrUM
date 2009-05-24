@@ -110,6 +110,14 @@ MultiDimBucket<T_DATA>::contains(const MultiDimContainer<T_DATA>& impl) const
   return __multiDims.contains(&impl);
 }
 
+// Returns the sequence of all the variables contained in the bucket.
+template<typename T_DATA> INLINE
+const Set<const DiscreteVariable*>
+MultiDimBucket<T_DATA>::allVariables() const
+{
+  return __allVariables;
+}
+
 // Returns the number of gum::MultiDimContainer in in this bukcet.
 template<typename T_DATA> INLINE
 Size

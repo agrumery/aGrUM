@@ -58,8 +58,7 @@ namespace gum {
   template <typename T_DATA>
   const Potential<T_DATA>& BayesNetInference<T_DATA>::marginal( NodeId id ) {
     if ( ! _marginals.exists( id ) ) {
-      Potential<T_DATA> *tmp=new Potential<T_DATA>();
-      _marginals.insert( id,tmp );
+      _marginals.insert(id, new Potential<T_DATA>());
       _fillMarginal( id,*_marginals[id] );
     }
 
@@ -67,7 +66,7 @@ namespace gum {
   }
 
   template <typename T_DATA>
-  const BayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() {return __bayesNet;}
+    const BayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
 
 
 } /* namespace gum */

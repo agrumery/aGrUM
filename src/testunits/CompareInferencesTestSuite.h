@@ -28,6 +28,7 @@
 #include <agrum/BN/inference/Gibbs.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/valueElimination.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -171,6 +172,9 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
 
       gum::LazyPropagation<double> inf_LazyProp( *bn );
       inf_LazyProp.makeInference();
+
+      gum::ValueElimination<double> inf_ValElim(*bn);
+      //inf_ValElim.makeInference();
 
       {
         for ( gum::NodeSetIterator it=bn->beginNodes(); it!=bn->endNodes(); ++it ) {
