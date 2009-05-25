@@ -29,6 +29,10 @@
 // ============================================================================
 #include <sstream>
 // ============================================================================
+#include <agrum/core/set.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/core/sequence.h>
+// ============================================================================
 #include <agrum/multidim/multiDimReadOnly.h>
 // ============================================================================
 namespace gum {
@@ -102,7 +106,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     bool contains(const MultiDimContainer<T_DATA>& impl) const;
 
     /// Returns the sequence of all the variables contained in the bucket.
-    const Set<const DiscreteVariable*> allVariables() const;
+    const Set<const DiscreteVariable*>& allVariables() const;
 
 
     /// Returns the number of gum::MultiDimContainer in in this bukcet.
@@ -168,6 +172,9 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// See gum::MultiDimImplementation::realSize().
     virtual Size realSize() const;
+
+    /// See gum::MultiDimImplementation::contains(const DiscreteVariable& v).
+    bool contains (const DiscreteVariable &v) const;
 
     /// @}
     // ========================================================================

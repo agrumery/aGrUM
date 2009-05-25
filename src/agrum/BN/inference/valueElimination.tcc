@@ -19,12 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of lazy propagation for inference
- * Bayesian Networks.
+ * @brief Implementation of lazy propagation for inference Bayesian Networks.
+ *
+ * @author Lionel Torti
  */
 // ============================================================================
 namespace gum {
-
 
 // Default constructor.
 template<typename T_DATA> INLINE
@@ -129,18 +129,12 @@ ValueElimination<T_DATA>::_fillMarginal(NodeId id, Potential<T_DATA>& marginal)
   for (size_t i = 0; i < __eliminationOrder.size(); ++i) {
     if (__eliminationOrder[i] != id) {
       MultiDimBucket<T_DATA>* bucket = new MultiDimBucket<T_DATA>();
-     __eliminateNode(__eliminationOrder[i], *bucket, pool);
+      __eliminateNode(__eliminationOrder[i], *bucket, pool);
     }
   }
   marginal.add(BayesNetInference<T_DATA>::__bayesNet.variable(id));
   marginal.fill((T_DATA) 1);
-  // TODO remove this if it works
-  GUM_TRACE_VAR(pool.size());
   for (SetIterator< Potential<T_DATA>* > iter = pool.begin(); iter != pool.end(); ++iter) {
-    // TODO remove this if it works
-    if (! ((*iter)->contains(BayesNetInference<T_DATA>::__bayesNet.variable(id)) && ((*iter)->nbrDim() == 1)) ) {
-      GUM_ASSERT(false);
-    }
     marginal.multiplicateBy(**iter);
   }
   marginal.normalize();
@@ -157,8 +151,8 @@ void
 ValueElimination<T_DATA>::__computeEliminationOrder()
 {
   if (__eliminationOrder.empty()) {
-    Property<unsigned int>::onNodes modalities;
-    for (NodeSetIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.beginNodes(); ++iter) {
+    typename Property<unsigned int>::onNodes modalities;
+    for (NodeSetIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter) {
       modalities.insert(*iter, BayesNetInference<T_DATA>::__bayesNet.variable(*iter).domainSize());
     }
     DefaultTriangulation triang((const DiGraph&) BayesNetInference<T_DATA>::__bayesNet.dag(), modalities);
@@ -184,29 +178,25 @@ ValueElimination<T_DATA>::__createInitialPool()
 template<typename T_DATA> INLINE
 void
 ValueElimination<T_DATA>::__eliminateNode(NodeId id,
-                                         MultiDimBucket<T_DATA>& bucket,
-                                         Set< Potential<T_DATA>* > pool)
+                                          MultiDimBucket<T_DATA>& bucket,
+                                          Set< Potential<T_DATA>* >& pool)
 {
-  Potential<T_DATA>* pot = 0;
-  Size i = 0; Size j = pool.size();
+  Set< Potential<T_DATA>* > toRemove;
   for (SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter) {
     if ((*iter)->contains(BayesNetInference<T_DATA>::__bayesNet.variable(id))) {
       bucket.add(**iter);
-      pot = *iter;
-      ++iter;
-      pool.erase(pot);
+      toRemove.insert(*iter);
     }
-    ++i;
   }
-  // TODO remove this if it works
-  GUM_ASSERT(i == j);
-
+  for (SetIterator< Potential<T_DATA>* > iter = toRemove.begin(); iter != toRemove.end(); ++iter) {
+    pool.erase(*iter);
+  }
   Potential<T_DATA>* bucket_pot = new Potential<T_DATA>(&bucket);
   __trash.insert(bucket_pot);
   pool.insert(bucket_pot);
-  for (Set<const DiscreteVariable*>::iterator iter = bucket.allVariables().begin(); iter != bucket.allVariables().end(); ++iter) {
-    if (BayesNetInference<T_DATA>::__bayesNet.nodeId(**iter) != id) {
-      bucket_pot->add(**iter);
+  for (Set<const DiscreteVariable*>::iterator jter = bucket.allVariables().begin(); jter != bucket.allVariables().end(); ++jter) {
+    if (BayesNetInference<T_DATA>::__bayesNet.nodeId(**jter) != id) {
+      bucket_pot->add(**jter);
     }
   }
 }

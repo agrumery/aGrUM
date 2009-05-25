@@ -31,6 +31,8 @@
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
+#include <agrum/graphs/defaultTriangulation.h>
+// ============================================================================
 #include <agrum/BN/inference/BayesNetInference.h>
 // ============================================================================
 #include <agrum/multidim/multiDimBucket.h>
@@ -137,7 +139,7 @@ private:
   /// insert it in pool as a Potential after removing all the potentials
   /// already in it. If you don't understand, read the code...
   void __eliminateNode(NodeId id, MultiDimBucket<T_DATA>& bucket,
-                       Set< Potential<T_DATA>* > pool);
+                       Set< Potential<T_DATA>* >& pool);
 
 };
 } /* namespace gum */

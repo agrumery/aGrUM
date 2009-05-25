@@ -69,6 +69,7 @@ file(GLOB AGRUM_TESTS
 #  SetTestSuite.h
 #  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
 #  SimpleCPTGeneratorTestSuite.h
+#  ValueEliminationTestSuite.h
 #  VariableNodeMapTestSuite.h
 #  TorcsTestSuite.h  #<-----------------------MEMORY LEAK
 #  UndiGraphTestSuite.h

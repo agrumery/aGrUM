@@ -272,6 +272,29 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
           TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
         }
       }
+    }
+
+    void testAllVariables() {
+      gum::MultiDimBucket<double>* bucket = 0;
+      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
+      TS_ASSERT_THROWS_NOTHING(__fillBucket(bucket));
+      TS_ASSERT_EQUALS(bucket->allVariables().size(), (gum::Size) 10);
+      gum::Size inBucket = 0;
+      gum::Size outBucket = 0;
+      try {
+        for (gum::Set<const gum::DiscreteVariable*>::iterator iter = bucket->allVariables().begin(); iter != bucket->allVariables().end(); ++iter) {
+          if (bucket->contains(**iter)) {
+            inBucket++;
+          } else {
+            outBucket++;
+          }
+        }
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl << e.getContent() << std::endl;
+        TS_ASSERT(false);
+      }
+      TS_ASSERT_EQUALS(inBucket, bucket->nbrDim());
+      TS_ASSERT_EQUALS(inBucket + outBucket, (gum::Size) 10);
 
     }
 };

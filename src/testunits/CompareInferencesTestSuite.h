@@ -174,7 +174,7 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
       inf_LazyProp.makeInference();
 
       gum::ValueElimination<double> inf_ValElim(*bn);
-      //inf_ValElim.makeInference();
+      inf_ValElim.makeInference();
 
       {
         for ( gum::NodeSetIterator it=bn->beginNodes(); it!=bn->endNodes(); ++it ) {
@@ -182,11 +182,14 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
           const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal( i );
           const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.marginal( i );
           const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.marginal( i );
+          const gum::Potential<double>& marginal_ValElim = inf_ValElim.marginal( i );
 
           gum::Instantiation I;I<<bn->variable(*it);
           for ( I.setFirst() ; ! I.end() ; ++I ) {
             TS_ASSERT_DELTA( marginal_gibbs[I],marginal_ShaShe[I],5e-3 ); // APPROX INFERENCE
             TS_ASSERT_DELTA( marginal_LazyProp[I],marginal_ShaShe[I],1e-10 ); // EXACT INFERENCE
+            TS_ASSERT_DELTA( marginal_LazyProp[I],marginal_ValElim[I],1e-10 ); // EXACT INFERENCE
+            TS_ASSERT_DELTA( marginal_ShaShe[I],marginal_ValElim[I],1e-10 ); // EXACT INFERENCE
           }
         }
       }
