@@ -41,7 +41,8 @@ file(GLOB AGRUM_TESTS
 #  BIFReaderTestSuite.h
 #  BIFWriterTestSuite.h
 #  CliqueGraphTestSuite.h
-  CompareInferencesTestSuite.h
+#  CompareInferencesTestSuite.h
+EliminationSequenceTriangulationTestSuite.h
 #  CrossMultiDimTestSuite.h
 #  DatabaseTestSuite.h # <------------------------- faire qqchose pour XML with missing value
 #  DAGTestSuite.h
