@@ -361,6 +361,15 @@ namespace gum {
     bool exists( const Val& val ) const;
 
     // ============================================================================
+    /// erases the ith element of the List (the first one is in position 0)
+    /** If no element equal to \e val can be found, the function
+     * returns without throwing any exception. It runs in linear time in
+     * the size of the list.
+     * @param i the position in the list of the element we wish to remove. */
+    // ============================================================================
+    void erase( unsigned int i );
+
+    // ============================================================================
     /// erases the first element encountered with a given value
     /** If no element equal to \e val can be found, the function
      * returns without throwing any exception. It runs in linear time in
@@ -369,15 +378,6 @@ namespace gum {
      * @param val the value of the element we wish to remove. */
     // ============================================================================
     void eraseByVal( const Val& val );
-
-    // ============================================================================
-    /// erases the ith element of the List (the first one is in position 0)
-    /** If no element equal to \e val can be found, the function
-     * returns without throwing any exception. It runs in linear time in
-     * the size of the list.
-     * @param i the position in the list of the element we wish to remove. */
-    // ============================================================================
-    void erase( unsigned int i );
 
     // ============================================================================
     /// erases all the elements encountered with a given value
@@ -795,6 +795,15 @@ namespace gum {
     using ListBase<Val>::exists;
 
     // ============================================================================
+    /// erases the ith element of the List (the first one is in position 0)
+    /** If no element equal to \e val can be found, the function
+     * returns without throwing any exception. It runs in linear time in
+     * the size of the list.
+     * @param i the position in the list of the element we wish to remove. */
+    // ============================================================================
+    void erase( unsigned int i );
+
+    // ============================================================================
     /// erases the first element encountered with a given value
     /** If no element equal to \e val can be found, the function
      * returns without throwing any exception. It runs in linear time both in
@@ -803,15 +812,6 @@ namespace gum {
      * @param val the value of the element we wish to remove. */
     // ============================================================================
     void eraseByVal( const Val& val );
-
-    // ============================================================================
-    /// erases the ith element of the List (the first one is in position 0)
-    /** If no element equal to \e val can be found, the function
-     * returns without throwing any exception. It runs in linear time in
-     * the size of the list.
-     * @param i the position in the list of the element we wish to remove. */
-    // ============================================================================
-    void erase( unsigned int i );
 
     // ============================================================================
     /// erases all the elements encountered with a given value
@@ -846,8 +846,8 @@ namespace gum {
     /** @brief changes the iterator's list (this implies that all iterators
      * previously attached to the List will point to end/rend) */
     // ============================================================================
-    void setIteratorList
-    ( const RefPtr< ListBase<ListIterator<Val>*> >& new_list );
+    void
+    setIteratorList ( const RefPtr< ListBase<ListIterator<Val>*> >& new_list );
 
     // ============================================================================
     /// returns the list containing the iterators pointing toward the List

@@ -147,7 +147,9 @@ namespace gum {
   /// default constructor
   template<typename KEY>
   Set<KEY>::Set( Size capacity ,  bool resize_policy ):
-    __inside( capacity, resize_policy ),
+    // create the hash table without key uniqueness policy (as we will check
+    // ourselves the uniqueness of KEYs before inserting new elements)
+    __inside( capacity, resize_policy, false ),
     __it_end( *this, SetIterator<KEY>::GUM_SET_ITERATOR_END ),
     __it_rend ( *this, SetIterator<KEY>::GUM_SET_ITERATOR_REND ) {
     GUM_CONSTRUCTOR( Set );
@@ -161,6 +163,9 @@ namespace gum {
     __it_end( *this, SetIterator<KEY>::GUM_SET_ITERATOR_END ),
     __it_rend ( *this, SetIterator<KEY>::GUM_SET_ITERATOR_REND ) {
     GUM_CONSTRUCTOR( Set );
+    // ensure that __inside's uniqueness policy is set to false as this
+    // will speed-up insertions of new elements
+    __inside.setKeyUniquenessPolicy (false);
   }
 
   
@@ -240,7 +245,7 @@ namespace gum {
 
       // prepare the set for its new data
       resize( s.capacity() );
-      setResizePolicy( s.getResizePolicy() );
+      setResizePolicy( s.resizePolicy() );
 
       // copy the set
       __inside = s.__inside;
@@ -266,6 +271,9 @@ namespace gum {
   /// inserts a new element in the set
   template<typename KEY> INLINE
   void Set<KEY>::insert( const KEY& k ) {
+    // WARNING: we shall always test whether k already belongs to the set before
+    // trying to insert it because we set __inside's key uniqueness policy to
+    // false
     if ( ! contains( k ) ) {
       // insert the element
       __inside.insert( k, true );
@@ -470,8 +478,8 @@ namespace gum {
   
   /// returns the current resizing policy of the underlying hashtable
   template<typename KEY> INLINE
-  bool Set<KEY>::getResizePolicy() const {
-    return __inside.getResizePolicy();
+  bool Set<KEY>::resizePolicy() const {
+    return __inside.resizePolicy();
   }
 
   

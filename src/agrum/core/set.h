@@ -209,7 +209,7 @@ namespace gum {
     void setResizePolicy( const bool new_policy ) ;
     
     /// returns the current resizing policy of the underlying hashtable
-    bool getResizePolicy() const ;
+    bool resizePolicy() const ;
 
     ///  @}
 

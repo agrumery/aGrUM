@@ -38,11 +38,11 @@ GUM_MAKE_ERROR(NoFather, Exception, "No father")
 GUM_MAKE_ERROR(NoLeftSon, Exception, "No left son")
 GUM_MAKE_ERROR(NoRightSon, Exception, "No right son")
 
-/* ============================================================================ */
-  /* ============================================================================ */
+/* ============================================================================= */
+  /* =========================================================================== */
   /* ===                          GENERIC TREE NODES                         === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class TreeNode
    * @brief The class for generic Tree Nodes
    * @ingroup basicstruct_group
@@ -59,8 +59,10 @@ public:
    * 
    * @param e the element
    * @param father the father (if 0, we assume that the node doesn't have father)
-   * @param leftSon the left son (if 0, we assume that the node doesn't have left son)
-   * @param father the father (if 0, we assume that the node doesn't have right son)
+   * @param leftSon the left son (if 0, we assume that the node doesn't have
+   * left son)
+   * @param father the father (if 0, we assume that the node doesn't have
+   * right son)
    */
   TreeNode(const Element& e,
 	      TreeNode<Element>* father = 0,
@@ -72,8 +74,9 @@ public:
    * Construct a node copying another node
    * 
    * @param node node to copy
-   * @warning it's not a safe method : father, leftSon and rightSon are at the same address
-   *          than the original node and aren't modifyed you must know what you do !
+   * @warning it's not a safe method : father, leftSon and rightSon are at the
+   * same address than the original node and aren't modifyed you must know what
+   * you do !
    */
   TreeNode(const TreeNode<Element>& node);
 
@@ -157,13 +160,15 @@ public:
 
   /**
    * Change the left son of this node
-   * @param node the new left son (0 if you want that this node forgets its left son)
+   * @param node the new left son (0 if you want that this node forgets its
+   * left son)
    */  
   void setLeftSon(TreeNode<Element>* node);
 
   /**
    * Change the right son of this node
-   * @param node the new right son (0 if you want that this node forgets its right son)
+   * @param node the new right son (0 if you want that this node forgets its
+   * right son)
    */  
   void setRightSon(TreeNode<Element>* node);
 
@@ -182,7 +187,8 @@ public:
 
   /**
    * If the node has a father, this method returns the position of actual node
-   * @return true if the current node is a left son of his father, false for right son
+   * @return true if the current node is a left son of his father, false for
+   * right son
    * @warning throw gumNoFather if the current node doesn't have a father
    */
   bool getPosition() const;
@@ -191,7 +197,8 @@ public:
   /**
    * A little more safe method for defining a new father :
    * The old father is forgotten (and it forgets his son)
-   * A new father is defined, this new father knows its new son (and forgets its old son)
+   * A new father is defined, this new father knows its new son (and forgets
+   * its old son)
    * 
    * @param newFather the new father
    * @param direction true if we want to have a left son, false if right
@@ -231,7 +238,9 @@ protected:
 
 GUM_MAKE_ERROR(NoMax, Exception, "")
 
-template <typename Element, typename Priority = int, typename Cmp = std::less<Priority> >
+template <typename Element,
+          typename Priority = int,
+          typename Cmp = std::less<Priority> >
 class AVLTree {
 public:
   
@@ -349,11 +358,13 @@ protected:
 
   void deleteJustANode(TreeNode<std::pair<Priority, Element> >& node);
   
-  TreeNode<std::pair<Priority, Element> >& getMaximalNodeInSubtree(TreeNode<std::pair<Priority, Element> >& subtree);
+  TreeNode<std::pair<Priority, Element> >&
+  getMaximalNodeInSubtree(TreeNode<std::pair<Priority, Element> >& subtree);
 
 
-  const TreeNode<std::pair<Priority, Element> >& searchByPriorityInSubtree(const Priority& priority,
- 									      const TreeNode<std::pair<Priority, Element> >& subTree) const;
+  const TreeNode<std::pair<Priority, Element> >&
+  searchByPriorityInSubtree(const Priority& priority,
+                            const TreeNode<std::pair<Priority, Element> >& subTree) const;
 
   TreeNode<std::pair<Priority, Element> >& searchByPriorityInSubtree(const Priority& priority,
 									TreeNode<std::pair<Priority, Element> >& subTree);

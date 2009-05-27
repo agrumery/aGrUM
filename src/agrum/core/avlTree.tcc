@@ -139,7 +139,8 @@ bool TreeNode<Element>::getPosition() const {
 }
 
 template <typename Element> INLINE
-void TreeNode<Element>::setCoherentFather(TreeNode<Element>& newFather, bool direction) {
+void TreeNode<Element>::setCoherentFather(TreeNode<Element>& newFather,
+                                          bool direction) {
   try {
     TreeNode<Element>& actualFather =
       getFather();
@@ -247,7 +248,8 @@ Element& AVLTree<Element, Priority, Cmp>::search(const Priority& priority) {
 }
 
 template <typename Element, typename Priority, typename Cmp> INLINE
-const Element& AVLTree<Element, Priority, Cmp>::search(const Priority& priority) const {
+const Element&
+AVLTree<Element, Priority, Cmp>::search(const Priority& priority) const {
   if(root != 0) {
     return searchByPriorityInSubtree(priority, *root).getElement().second;
   } else {
@@ -281,15 +283,19 @@ const Element& AVLTree<Element, Priority, Cmp>::operator[]( const Priority& key 
 
 
 template <typename Element, typename Priority, typename Cmp>
-TreeNode<std::pair<Priority, Element> >* AVLTree<Element, Priority, Cmp>::copyTreeContent(const TreeNode<std::pair<Priority, Element> >& node) {
-  TreeNode<std::pair<Priority, Element> >* nodeCopy = new TreeNode<std::pair<Priority, Element> >(node);
+TreeNode<std::pair<Priority, Element> >*
+AVLTree<Element, Priority, Cmp>::copyTreeContent(const TreeNode<std::pair<Priority, Element> >& node) {
+  TreeNode<std::pair<Priority, Element> >* nodeCopy =
+    new TreeNode<std::pair<Priority, Element> >(node);
   if(node.hasLeftSon()) {
-    TreeNode<std::pair<Priority, Element> >* left = copyTreeContent(node.getLeftSon());
+    TreeNode<std::pair<Priority, Element> >* left =
+      copyTreeContent(node.getLeftSon());
     nodeCopy->setLeftSon(left);
     left->setFather(nodeCopy);
   }
   if(node.hasRightSon()) {
-    TreeNode<std::pair<Priority, Element> >* right = copyTreeContent(node.getRightSon());
+    TreeNode<std::pair<Priority, Element> >* right =
+      copyTreeContent(node.getRightSon());
     nodeCopy->setRightSon(right);
     right->setFather(nodeCopy);
   }
@@ -321,7 +327,8 @@ void AVLTree<Element, Priority, Cmp>::deleteSubtree(TreeNode<std::pair<Priority,
 template <typename Element, typename Priority, typename Cmp>
 void AVLTree<Element, Priority, Cmp>::insert(const Priority& priority, const Element& element) {
   ++nbrElements;
-  TreeNode<std::pair<Priority, Element> >* node = new TreeNode<std::pair<Priority, Element> >(std::make_pair(priority, element));
+  TreeNode<std::pair<Priority, Element> >* node =
+    new TreeNode<std::pair<Priority, Element> >(std::make_pair(priority, element));
   recursiveInsertion(*node, root);
   if( ((maximalNode != 0) && 
        (! compare(priority, maximalNode->getElement().first)))
@@ -332,7 +339,7 @@ void AVLTree<Element, Priority, Cmp>::insert(const Priority& priority, const Ele
 
 template <typename Element, typename Priority, typename Cmp>
 void AVLTree<Element, Priority, Cmp>::recursiveInsertion(TreeNode<std::pair<Priority, Element> >& toInsert,
-							    TreeNode<std::pair<Priority, Element> >* toStudy) {
+                                                         TreeNode<std::pair<Priority, Element> >* toStudy) {
   Priority priority = toInsert.getElement().first;
   if(toStudy != 0) {
     toInsert.setFather(toStudy);
@@ -369,9 +376,11 @@ void AVLTree<Element, Priority, Cmp>::balance(TreeNode<std::pair<Priority, Eleme
 
   if((lHeight > rHeight) && ((lHeight - rHeight) > 1)) {
     unsigned int hll = 
-      (node.getLeftSon().hasLeftSon() ? node.getLeftSon().getLeftSon().getHeight() : 0);
+      (node.getLeftSon().hasLeftSon() ?
+       node.getLeftSon().getLeftSon().getHeight() : 0);
     unsigned int hlr = 
-      (node.getLeftSon().hasRightSon() ? node.getLeftSon().getRightSon().getHeight() : 0);
+      (node.getLeftSon().hasRightSon() ?
+       node.getLeftSon().getRightSon().getHeight() : 0);
     if(hll < hlr) {
       leftRotation(node.getLeftSon());
     }
@@ -381,9 +390,11 @@ void AVLTree<Element, Priority, Cmp>::balance(TreeNode<std::pair<Priority, Eleme
     }
   } else if((rHeight > lHeight) && ((rHeight - lHeight) > 1)) {
     unsigned int hrl = 
-      (node.getRightSon().hasLeftSon() ? node.getRightSon().getLeftSon().getHeight() : 0);
+      (node.getRightSon().hasLeftSon() ?
+       node.getRightSon().getLeftSon().getHeight() : 0);
     unsigned int hrr = 
-      (node.getRightSon().hasRightSon() ? node.getRightSon().getRightSon().getHeight() : 0);
+      (node.getRightSon().hasRightSon() ?
+       node.getRightSon().getRightSon().getHeight() : 0);
     if(hrr < hrl) {
       rightRotation(node.getRightSon());
     }
@@ -624,7 +635,8 @@ void AVLTree<Element, Priority, Cmp>::deleteJustANode(TreeNode<std::pair<Priorit
 }
 
 template <typename Element, typename Priority, typename Cmp>
-const TreeNode<std::pair<Priority, Element> >& AVLTree<Element, Priority, Cmp>::searchByPriorityInSubtree(const Priority& priority, 
+const TreeNode<std::pair<Priority, Element> >&
+AVLTree<Element, Priority, Cmp>::searchByPriorityInSubtree(const Priority& priority, 
 														const TreeNode<std::pair<Priority, Element> >& subTree) const {
   const Priority& priorityToStudy = subTree.getElement().first;
   if(subTree.getElement().first == priority) {

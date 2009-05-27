@@ -321,11 +321,11 @@ class HashTableTestSuite: public CxxTest::TestSuite {
       fill( t1 );
       fill( t2 );
 
-      TS_ASSERT( t1.getResizePolicy() );
-      TS_ASSERT( t2.getResizePolicy() );
+      TS_ASSERT( t1.resizePolicy() );
+      TS_ASSERT( t2.resizePolicy() );
 
       TS_GUM_ASSERT_THROWS_NOTHING( t2.setResizePolicy( false ) );
-      TS_ASSERT( ! t2.getResizePolicy() );
+      TS_ASSERT( ! t2.resizePolicy() );
       TS_ASSERT_EQUALS( t1, t2 );
     }
 

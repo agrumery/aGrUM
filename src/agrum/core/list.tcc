@@ -633,7 +633,8 @@ namespace gum {
         __iterator_list = iter_list;
       // note that, if iter_list contains a null pointer, then operator() will
       // raise a NullElement exception 
-    } catch ( NullElement& ) {
+    }
+    catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListIterator<Val>*> >
         ( new ListBase<ListIterator<Val>*> );
     }
@@ -665,7 +666,8 @@ namespace gum {
         __iterator_list = iter_list;
       // note that, if iter_list contains a null pointer, then operator() will
       // raise a NullElement exception 
-    } catch ( NullElement& ) {
+    }
+    catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListIterator<Val>*> >
         ( new ListBase<ListIterator<Val>*> );
     }

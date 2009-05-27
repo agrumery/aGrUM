@@ -23,18 +23,18 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
  * This file provides class HashTable. This class is both efficient and flexible:
- * efficient because the access to elements is susually computed using a small
- * amount of processor instructions, and flexible because several methods allow fine
- * tuning the behavior of each hash table. For instance, a hashtable can allow or
- * forbid different elements to have the same key. This behavior can be modified
- * at any time during the execution of the program. Functions for hashing keys are
- * defined in file HashFunc.h. Here again, these functions are quite flexible as
- * they can be overloaded by the user to support new kind of keys. In addition to
- * HashTable, the current file provides class HashTableIterator that allows
- * safe parsing of the hash tables. By safe, we mean that whenever the element
- * pointed to by an iterator is removed from the hashtable, accessing it through
- * the iterator (*iter) does not result in a segmentation fault but rather in an
- * exception being thrown. This safety is ensured at a very low cost.
+ * efficient because the access to elements is usually computed using a small
+ * amount of processor instructions, and flexible because several methods allow
+ * fine tuning the behavior of each hash table. For instance, a hashtable can
+ * allow or forbid different elements to have the same key. This behavior can be
+ * modified at any time during the execution of the program. Functions for hashing
+ * keys are defined in file HashFunc.h. Here again, these functions are quite
+ * flexible as they can be overloaded by the user to support new kind of keys. In
+ * addition to HashTable, the current file provides class HashTableIterator that
+ * allows safe parsing of the hash tables. By safe, we mean that whenever the
+ * element pointed to by an iterator is removed from the hashtable, accessing it
+ * through the iterator (*iter) does not result in a segmentation fault but rather
+ * in an exception being thrown. This safety is ensured at a very low cost.
  * @par Usage example:
  * @code
  * // creation of an empty hash table
@@ -139,18 +139,18 @@ namespace gum {
 
   
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===           LISTS SPECIFIC FOR SAVING ELEMENTS IN HASHTABLES           === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===          LISTS SPECIFIC FOR SAVING ELEMENTS IN HASHTABLES           === */
+  /* =========================================================================== */
+  /* =========================================================================== */
 
-  /* ============================================================================ */
+  /* =========================================================================== */
   /* in aGrUM, hashtables are vectors of chained lists. Each list corresponds to
    * the pairs (key,val) the keys of which have the same hashed value. Each box of
    * the list is called a bucket. Lists are doubly linked so as to enable efficient
    * rbegin/rend iterators. */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template <typename Key, typename Val> struct HashTableBucket {
     HashTableBucket<Key, Val> *prev;
     HashTableBucket<Key, Val> *next;
@@ -169,9 +169,9 @@ namespace gum {
 
 
   
-  /* ============================================================================ */
-  /* ===       DOUBLY CHAINED LISTS FOR STORING ELEMENTS IN HASH TABLES       === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===       DOUBLY CHAINED LISTS FOR STORING ELEMENTS IN HASH TABLES      === */
+  /* =========================================================================== */
   template <typename Key, typename Val> class HashTableList {
   public:
     // ============================================================================
@@ -186,7 +186,7 @@ namespace gum {
      * stored in the list to be copied. Of course if these values are pointers,
      * the new values point toward the same elements. */
     // ============================================================================
-    HashTableList( const HashTableList<Key, Val> &from );
+    HashTableList( const HashTableList<Key, Val>& from );
     
     // ============================================================================
     /** assignment operator. The new list and that which is copied do not share the
@@ -257,12 +257,12 @@ namespace gum {
     // a method to get the bucket corresponding to a given key. This enables
     // efficient removals of buckets
     // ============================================================================
-    HashTableBucket<Key, Val>* getBucket( const Key& key ) const ;
+    HashTableBucket<Key, Val>* _getBucket( const Key& key ) const ;
     
     // ============================================================================
     /* function erase suppresses an element from a chained list. */
     // ============================================================================
-    void erase( const HashTableBucket<Key, Val>* ptr );
+    void _erase( const HashTableBucket<Key, Val>* ptr );
     
   private:
     // friends
@@ -279,13 +279,13 @@ namespace gum {
                                          const HashTable<Key*,Val>& );
     
     // a pointer on the first element of the chained list
-    HashTableBucket<Key, Val> *deb_list;
+    HashTableBucket<Key, Val> *__deb_list;
 
     // a pointer on the last element of the chained list
-    HashTableBucket<Key, Val> *end_list;
+    HashTableBucket<Key, Val> *__end_list;
 
     // the number of elements in the chained list
-    unsigned int nb_elements;
+    unsigned int __nb_elements;
   };
 
 
@@ -293,34 +293,35 @@ namespace gum {
 
 
   
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                          GENERIC HASH TABLES                         === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                          GENERIC HASH TABLES                        === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class HashTable
    * @brief The class for generic Hash Tables
    * @ingroup basicstruct_group
    *
    * In aGrUM, a hashtable is a vector of chained lists (fix collision problems by
-   * chaining). Each slot of the vector contains a list of elements sharing the same
-   * hashed value. To be computationally efficient, the hash table should not contain
-   * too many elements as compared to its number of slots. Therefore, it is sometimes
-   * useful to resize the chained lists vector. aGrUM's hash tables are designed to
-   * automatically double their size when there is in average more than 3 nodes
-   * per slot. However, when memory consumption is a concern, this feature can be
-   * turned off either by passing false as an optional resize_pol
-   * argument to the constructor of the hash table or by using method setResizePolicy
-   * when the instance of the class has already been constructed. Similarly, the
-   * default number of slots of the hash table may be parameterized as an optional
-   * argument of the constructor (size_param). Beware: when inserting elements of a
-   * given class into a hash table, only a copy of this element is stored into the
-   * table (this is compulsory if the hashtable is to be generic and can be used to
-   * store both complex classes and built-in types like integers). Note that
-   * HashTables can be parsed using "safe" iterators: whenever the element
-   * pointed to by an iterator is removed from the hashtable, accessing it through
-   * the iterator (*iter) does not result in a segmentation fault but rather in an
-   * exception being thrown. This safety is ensured at a very low cost.
+   * chaining). Each slot of the vector contains a list of elements sharing the
+   * same hashed value. To be computationally efficient, the hash table should not
+   * contain too many elements as compared to its number of slots. Therefore, it
+   * is sometimes useful to resize the chained lists vector. aGrUM's hash tables
+   * are designed to automatically double their size when there is in average more
+   * than 3 nodes per slot. However, when memory consumption is a concern, this
+   * feature can be turned off either by passing false as an optional resize_pol
+   * argument to the constructor of the hash table or by using method
+   * setResizePolicy when the instance of the class has already been constructed.
+   * Similarly, the default number of slots of the hash table may be parameterized
+   * as an optional argument of the constructor (size_param). Beware: when
+   * inserting elements of a given class into a hash table, only a copy of this
+   * element is stored into the table (this is compulsory if the hashtable is to
+   * be generic and can be used to store both complex classes and built-in types
+   * like integers). Note that HashTables can be parsed using "safe" iterators:
+   * whenever the element pointed to by an iterator is removed from the hashtable,
+   * accessing it through the iterator (*iter) does not result in a segmentation
+   * fault but rather in an exception being thrown. This safety is ensured at a
+   * very low cost.
    * @par Usage example:
    * @code
    * // creation of an empty hash table
@@ -373,7 +374,7 @@ namespace gum {
    *   table1.eraseByVal (*iter);
    * @endcode
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template <typename Key, typename Val> class HashTable {
   public:
     /// iterators for hash tables (to be used with HashTable<X,Y>::iterator)
@@ -386,28 +387,31 @@ namespace gum {
 
     /// @{
     
-    // ============================================================================
-    /** @brief Default constructor: optionnally we may indicate the desired size for
-     * the nodes vector.
+    // ===========================================================================
+    /** @brief Default constructor: optionnally we may indicate the desired size
+     * for the nodes vector.
      *
-     * Actually, the true size of the hashtable will be the lowest
-     * number greater than or equal to size_param that is also a power of 2. The
-     * second optional argument is the resizing policy. By default, each time there
-     * is an average of 3 elements by node, the size of the hashtable is
+     * Actually, the true capacity (vector's size) of the hashtable will be the
+     * lowest number greater than or equal to size_param that is also a power of 2.
+     * The second optional argument is the resizing policy. By default, each time
+     * there is an average of 3 elements by node, the size of the hashtable is
      * automatically multiplied by 2. But the user may pass false as argument to
      * resize_pol to disable this feature.
      * @param size_param the size of the vector of chained lists
-     * @param resize_pol the policy for resizing the hashtable when new elements are
-     * added (possible values: true = automatic resize and false = manual resize)
+     * @param resize_pol the policy for resizing the hashtable when new elements
+     * are added (possible values: true = automatic resize and false = manual
+     * resize)
      * @param key_uniqueness_pol uniqueness policy : should we prevent inserting
      * the same key more than once in the table? */
     // ============================================================================
-    explicit HashTable(Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
-                       bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-                       bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
+    explicit
+    HashTable(Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
+              bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
+              bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
 
     #ifndef NDEBUG
-    HashTable( std::string dummy,Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
+    HashTable( std::string dummy,
+               Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
                bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
                bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
     #endif //NDEBUG
@@ -432,9 +436,9 @@ namespace gum {
     /// @}
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Iterators
-    // ##############################################################################
+    // ############################################################################
     /// @{
 
     // ============================================================================
@@ -443,7 +447,8 @@ namespace gum {
     const iterator& end() const ;
 
     // ============================================================================
-    /// returns the iterator at the rend (just before the beginning) of the hashtable
+    /** @brief returns the iterator at the rend (just before the beginning) of
+     * the hashtable */
     // ============================================================================
     const iterator& rend() const ;
 
@@ -460,18 +465,18 @@ namespace gum {
     /// @}
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Operators
-    // ##############################################################################
+    // ############################################################################
     /// @{
 
     // ============================================================================
     /// copy operator
-    /** the copy operators ensures that whenever a memory allocation problem occurs,
-     * no memory leak occurs as well and it also guarantees that in this case the
-     * hashtable returned is in a coherent state (it is an empty hashtable).
-     * note that the copy not only involves copying pairs (key,value) but also the
-     * copy of the resize and key uniqueness policies. */
+    /** the copy operators ensures that whenever a memory allocation problem
+     * occurs, no memory leak occurs as well and it also guarantees that in this
+     * case the hashtable returned is in a coherent state (it is an empty
+     * hashtable). note that the copy not only involves copying pairs (key,value)
+     * but also the copy of the resize and key uniqueness policies. */
     // ============================================================================
     HashTable<Key,Val>& operator= ( const HashTable<Key, Val> &from );
 
@@ -479,8 +484,7 @@ namespace gum {
     /// returns a reference on the value the key of which is passed in argument
     /** In case of multiple identical keys in the hash table, the first value
      * encountered is returned. The method runs in constant time.
-     * @throws NotFound exception is thrown if the element
-     * cannot be found. */
+     * @throws NotFound exception is thrown if the element cannot be found. */
     // ============================================================================
     Val& operator[]( const Key& key );
     const Val& operator[]( const Key& key ) const;
@@ -491,17 +495,18 @@ namespace gum {
      * encountered is returned. The method runs in constant time.
      * In case of not found key, (key,default_value) is inserted in *this. */
     // ============================================================================
-    Val& getWithDefault( const Key& key,const Val& default_value );
-    const Val& getWithDefault( const Key& key,const Val& default_value ) const;
+    Val& getWithDefault( const Key& key, const Val& default_value );
+    const Val& getWithDefault( const Key& key, const Val& default_value ) const;
 
     // ============================================================================
     /// add or remove property
     /** When used as a "dynamic property list", it may be convenient to use these
-     * functions. set insert or change a property
-     * reset remove a property if it exists.
-     */
+     * functions. Function set inserts a new pair (key,val) if the key does not
+     * already exists, or it changes the value associated with key if a pair
+     * (key,val) already exists in the hash table.
+     * reset removes a property (i.e., a pair (key,val)) if it exists. */
     // ============================================================================
-    void set( const Key& key,const Val& default_value );
+    void set( const Key& key, const Val& default_value );
     void reset( const Key& key );
 
     // ============================================================================
@@ -516,8 +521,8 @@ namespace gum {
     // ============================================================================
     /// checks whether two hashtables contain different sets of elements
     /** Two hashtables are considered different if they contain different pairs
-     * (key,val). Two pairs are different if heir keys have different hashed values,
-     * or if they are different in the sense of !=, or if their val's are
+     * (key,val). Two pairs are different if heir keys have different hashed
+     * values, or if they are different in the sense of !=, or if their val's are
      * different in the sense of !=. */
     // ============================================================================
     bool operator!= ( const HashTable<Key, Val> &from ) const ;
@@ -525,9 +530,9 @@ namespace gum {
     /// @}
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Fine tuning
-    // ##############################################################################
+    // ############################################################################
     /// @{
 
     // ============================================================================
@@ -567,7 +572,7 @@ namespace gum {
     // ============================================================================
     /// returns the current resizing policy
     // ============================================================================
-    bool getResizePolicy() const ;
+    bool resizePolicy() const ;
 
     // ============================================================================
     /** @brief enables the user to change dynamically the policy for checking
@@ -578,8 +583,8 @@ namespace gum {
      * know for sure that no duplicate key will be entered into the table, we may
      * avoid uniqueness checks.
      * @warning When setting the key policy to "uniqueness", the function does not
-     * check whether there are already different elements with identical keys in the
-     * table. It thus only ensures that elements inserted from now on will have
+     * check whether there are already different elements with identical keys in
+     * the table. It thus only ensures that elements inserted from now on will have
      * unique keys. */
     // ============================================================================
     void setKeyUniquenessPolicy( const bool new_policy ) ;
@@ -592,9 +597,9 @@ namespace gum {
     /// @}
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Accessors / Modifiers
-    // ##############################################################################
+    // ############################################################################
     /// @{
 
     // ============================================================================
@@ -605,7 +610,8 @@ namespace gum {
 
     // ============================================================================
     /// checks whether there exists an element with a given key in the hashtable
-    /** The method runs in average in constant time if the resizing policy is set. */
+    /** The method runs in average in constant time if the resizing policy
+     * is set. */
     // ============================================================================
     bool exists( const Key& key ) const ;
 
@@ -630,28 +636,28 @@ namespace gum {
 
     // ============================================================================
     /// removes a given element from the hash table
-    /** The element is the first one encountered in the list (from begin() to end())
-     * having the specified key. If no such element can be found, nothing is done (in
-     * particular, it does not throw any exception). The function never resizes the
-     * nodes vector (even if the resizing policy would enable to decrease this size).
-     * The method runs in average in time linear to the number of iterators pointing
-     * to the table if the automatic resizing policy is set (else it is in linear
-     * time in the number of elements of the hash table plus the number of
-     * iterators). */
+    /** The element is the first one encountered in the list (from begin() to
+     * end()) having the specified key. If no such element can be found, nothing
+     * is done (in particular, it does not throw any exception). The function
+     * never resizes the nodes vector (even if the resizing policy would enable to
+     * decrease this size). The method runs in average in time linear to the
+     * number of iterators pointing to the table if the automatic resizing policy
+     * is set (else it is in linear time in the number of elements of the hash
+     * table plus the number of iterators). */
     // ============================================================================
     void erase( const Key& key );
 
     // ============================================================================
     /// removes a given element from the hash table
-    /** The element is the first one encountered in the list (from begin() to end())
-     * having the specified value. If no such element can be found, nothing is done
-     * (in particular, it does not throw any exception). The function never resizes
-     * the nodes vector (even if the resizing policy would enable to decrease
-     * this size). Comparisons between Val instances are performed through ==
-     * operators. Logically, this method should have been named "erase", however,
-     * this would have prevented creating hash tables where both keys and vals have
-     * the same type. Hence we chose to add "ByVal" after erase to make a difference
-     * between erasing by key and erasing by val. */
+    /** The element is the first one encountered in the list (from begin() to
+     * end()) having the specified value. If no such element can be found, nothing
+     * is done (in particular, it does not throw any exception). The function
+     * never resizes the nodes vector (even if the resizing policy would enable to
+     * decrease this size). Comparisons between Val instances are performed
+     * through == operators. Logically, this method should have been named "erase",
+     * however, this would have prevented creating hash tables where both keys and
+     * vals have the same type. Hence we chose to add "ByVal" after erase to make
+     * a difference between erasing by key and erasing by val. */
     // ============================================================================
     void eraseByVal( const Val& val );
 
@@ -659,18 +665,17 @@ namespace gum {
     /// returns a reference on the key the value of which is passed in argument
     /** In case of multiple identical values in the hash table, the first key
      * encountered is returned. The method runs in linear time.
-     * @throws NotFound exception is thrown if the element
-     * cannot be found. */
+     * @throws NotFound exception is thrown if the element cannot be found. */
     // ============================================================================
     const Key& keyByVal( const Val& key ) const;
 
     // ============================================================================
     /// returns a reference on a given key
-    /** Some complex structures use pointers on keys of hashtables. These structures
-     * thus require that we do not only get a copy of a given key, but the key
-     * stored in the hashtable itself. This is the very purpose of this function.
-     * @throw NotFound
-     */
+    /** Some complex structures use pointers on keys of hashtables. These
+     * structures thus require that we do not only get a copy of a given key, but
+     * the key stored in the hashtable itself. This is the very purpose of this
+     * function.
+     * @throw NotFound is raised if the element cannot be found. */
     // ============================================================================
     const Key& key( const Key& key ) const;
 
@@ -710,9 +715,9 @@ namespace gum {
      * the original hashtable, by default, the size of the former may not be equal
      * to that of the latter. Hence iterators on the original hashtable may not
      * parse it in the same order as iterators on the resulting hashtable. To
-     * guarrantee that both hashtables have the same size (and thus have the elements
-     * in the same order), set the @e size argument to the size of the original
-     * hashtable. */
+     * guarrantee that both hashtables have the same size (and thus have the
+     * elements in the same order), set the @e size argument to the size of the
+     * original hashtable. */
     // ============================================================================
     template <typename Mount> HashTable<Key,Mount>
     map( Mount( *f )( Val ), Size size = 0,
@@ -739,9 +744,9 @@ namespace gum {
      * the original hashtable, by default, the size of the former may not be equal
      * to that of the latter. Hence iterators on the original hashtable may not
      * parse it in the same order as iterators on the resulting hashtable. To
-     * guarrantee that both hashtables have the same size (and thus have the elements
-     * in the same order), set the @e size argument to the size of the original
-     * hashtable. */
+     * guarrantee that both hashtables have the same size (and thus have the
+     * elements in the same order), set the @e size argument to the size of the
+     * original hashtable. */
     // ============================================================================
     template <typename Mount> HashTable<Key,Mount>
     map( const Mount& val, Size size = 0,
@@ -760,8 +765,8 @@ namespace gum {
      * - no memory leak occurs
      * - the hashtable returned is empty but in a coherent state
      * - an exception is thrown
-     * The function assumes that both this and table have arrays 'nodes' of the same
-     * size. */
+     * The function assumes that both this and table have arrays 'nodes' of the
+     * same size. */
     // ============================================================================
     void _copy( const HashTable<Key, Val>& table );
 
@@ -786,33 +791,33 @@ namespace gum {
     
     /** @brief the hash table is represented as a vector of chained lists. 'nodes'
      * is this very vector. */
-    HashTableList<Key, Val> *nodes;
+    HashTableList<Key, Val> *__nodes;
 
     /// the number of nodes in vector 'nodes'
     Size __size;
 
     /// number of elements of type Val stored in the hash table
-    Size nb_elements;
+    Size __nb_elements;
 
     /// the function used to hash keys  (may change when the table is resized)
-    HashFunc<Key> hash_func;
+    HashFunc<Key> __hash_func;
 
     /// is resizing performed automatically?
-    bool resize_policy;
+    bool __resize_policy;
 
     /// shall we check for key uniqueness in the table?
-    bool key_uniqueness_policy;
+    bool __key_uniqueness_policy;
 
     /// the list of iterators pointing to the hash table
-    mutable iterator *iterator_list;
+    mutable iterator *__iterator_list;
 
     /** @name pseudo static iterators
      * the end and rend iterators are constructed only once per hash table
      * so as to optimize for(iter = begin();iter != end(); iter++) loops: this
      * will avoid creating objects end and rend each time we pass in the loop. */
     //\{
-    iterator iter_end;
-    iterator iter_rend;
+    iterator __iter_end;
+    iterator __iter_rend;
     //\}
     /// for friendly displaying the content of the hashtable
     friend std::ostream& operator<< <> ( std::ostream&,
@@ -824,18 +829,18 @@ namespace gum {
 
 
   
-  /* ============================================================================ */
-  /* ===                         HASH TABLES ITERATORS                        === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===                         HASH TABLES ITERATORS                       === */
+  /* =========================================================================== */
   /** @class HashTableIterator
    * @brief Iterators for hashtables
    *
    * HashTableIterator provide a safe way to parse HashTable. They are safe
    * because they are kept informed by the hashtable they belong to of the
-   * elements deleted by the user. Hence, even if the user removes an element pointed
-   * to by a HashTableIterator, using the latter to access this element will never
-   * crash the application. Instead it will properly throw a UndefinedIteratorValue
-   * exception.
+   * elements deleted by the user. Hence, even if the user removes an element
+   * pointed to by a HashTableIterator, using the latter to access this element
+   * will never crash the application. Instead it will properly throw a
+   * UndefinedIteratorValue exception.
    *
    * Developers may consider using HashTable<x,y>::iterator instead of
    * HashTableIterator<x,y>.
@@ -869,7 +874,7 @@ namespace gum {
    * iter1.clear ();
    * @endcode
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template <typename Key, typename Val> class HashTableIterator {
   public:
     // ############################################################################
@@ -906,9 +911,9 @@ namespace gum {
     /// @}
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Accessors / Modifiers
-    // ##############################################################################
+    // ############################################################################
     /// @{
     
     // ============================================================================
@@ -932,9 +937,9 @@ namespace gum {
 
 
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Operators
-    // ##############################################################################
+    // ############################################################################
     /// @{
 
     // ============================================================================
@@ -999,51 +1004,51 @@ namespace gum {
     friend class HashTable<Key, Val>;
     
     /// the hash table the iterator is pointing to
-    const HashTable<Key, Val> *table;
+    const HashTable<Key, Val> *_table;
 
     /** @brief the index of the chained list pointed by the iterator in the
      * array of nodes of the hash table */
-    Size index;
+    Size _index;
 
     /// the bucket in the chained list pointed to by the iterator
-    HashTableBucket<Key, Val> *bucket;
+    HashTableBucket<Key, Val> *_bucket;
 
     /** @brief the bucket we should start from when we decide to do a ++. Usually
      * it should be equal to bucket. However, if the user has deleted the object
      * pointed to by bucket, this will point to another bucket. When it is equal to
      * 0, it means that the bucket reached after a ++ belongs to another slot of
      * the hash table's 'node' vector. */
-    HashTableBucket<Key, Val> *next_current_bucket;
+    HashTableBucket<Key, Val> *_next_current_bucket;
 
     /** @brief the bucket we should start from when we decide to do a --. When it
      * is equal to 0, it means that the bucket reached after a -- belongs to
      * another slot of the hash table's 'node' vector. */
-    HashTableBucket<Key, Val> *prev_current_bucket;
+    HashTableBucket<Key, Val> *_prev_current_bucket;
 
     /// next iterator attached to the hashtable
-    HashTableIterator<Key, Val> *next;
+    HashTableIterator<Key, Val> *_next;
 
     /// preceding iterator of the hashtable registered list of iterators
-    HashTableIterator<Key, Val> *prev;
+    HashTableIterator<Key, Val> *_prev;
 
     // ============================================================================
     /** a method used by the hashtables to construct properly end and rend iters
      * boolean forward indicates whether we wish to construct end (true) or rend.
      * Note that this function does not register the iterator into the iterator's
-     * list of the hashtable, hence it should only be used for initializing/updating
-     * end and rend iterators. */
+     * list of the hashtable, hence it should only be used for
+     * initializing/updating end and rend iterators. */
     // ============================================================================
-    void initialize( HashTable<Key, Val> *tab, bool forward ) ;
+    void _initialize( HashTable<Key, Val> *tab, bool forward ) ;
 
     // ============================================================================
     /// returns the current iterator's bucket
     // ============================================================================
-    HashTableBucket<Key, Val> *getBucket() const ;
+    HashTableBucket<Key, Val> *_getBucket() const ;
 
     // ============================================================================
     /// returns the index in the hashtable's node vector pointed to by the iterator
     // ============================================================================
-    Size getIndex() const ;
+    Size _getIndex() const ;
   };
 
   

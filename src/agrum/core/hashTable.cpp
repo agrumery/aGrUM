@@ -41,10 +41,11 @@ namespace gum {
   /** a boolean indicating whether inserting too many values into the hashtable
    * makes it resize itself automatically. true = automatic, false = manual */
   const bool GUM_HASHTABLE_DEFAULT_RESIZE_POLICY = true;
-  /** a boolean indicating the default behavior when trying to insert more than once
-   * elements with identical keys. true = do not insert the elements but the first
-   * one and throw an exception after the first insertion; false = insert the
-   * elements without complaining */
+
+  /** a boolean indicating the default behavior when trying to insert more than
+   * once elements with identical keys. true = do not insert the elements but the
+   * first one and throw an exception after the first insertion; false = insert
+   * the elements without complaining */
   const bool GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY = true;
 
 
