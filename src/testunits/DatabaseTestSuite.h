@@ -105,5 +105,28 @@ class DatabaseTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_THROWS( gum::Database d=gum::Database::createFromXmlCSV( db1_name ),
                         gum::Exception );
     }
+
+    void testDatabase_with_newline() {
+      std::string db1_name( GET_PATH_STR( db_with_newline.csv ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( gum::Database d=gum::Database::createFromCSV( db1_name,',' ) );
+
+      gum::Database d=gum::Database::createFromCSV( db1_name,',' );
+      TS_ASSERT_EQUALS( d.nbrNodes(),( gum::Idx )2 );
+      TS_ASSERT_EQUALS( d.nbrLines(),( gum::Idx )8 );
+
+      TS_ASSERT_THROWS( d.nbrModalities( 2 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.nodeName( 2 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.modalitiesNames( 2 ) ,gum::NotFound );
+
+      TS_ASSERT_EQUALS( d.nbrModalities( 0 ),( gum::Idx )3 ); // 1,0 and "toto"
+      TS_ASSERT_THROWS( d.modalityName( 1,6 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.modalityName( 4,0 ) ,gum::NotFound );
+      TS_GUM_ASSERT_THROWS_NOTHING( d.modalityName( 1,0 ) );
+
+      TS_ASSERT_THROWS( d.value( 1,6 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.value( 10,3 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.value( 10,6 ) ,gum::NotFound );
+      TS_ASSERT_THROWS( d.line( 10 ) ,gum::NotFound );
+    }
 };
 

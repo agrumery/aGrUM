@@ -142,6 +142,23 @@ namespace gum {
       ( *iter )->clear();
   }
 
+// local function which checks if a line is empty or is a comment line.
+  bool isValidLine( std::string s ) {
+    unsigned int l=s.length();
+
+    if ( l==0 ) return false;
+
+    for ( unsigned int i=0;i<l;i++ ) {
+      const char& c=s.at( i );
+
+      if ( c=='#' ) return false;
+
+      if ( c!=' ' ) return true;
+    }
+
+    return false;
+  }
+
   // ==============================================================================
   /// creates a new database from a pure CSV file
   // ==============================================================================
@@ -176,13 +193,14 @@ namespace gum {
 
       database.__node_names =
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
+
       database.__nb_nodes = database.__node_names.size();
 
       for ( unsigned int i = 0; i < database.__nb_nodes; ++i )
         database.__node_name_per_id.insert( database.__node_names[i], i );
 
       // get the number of __cases
-      for ( database.__nb_cases = 0; getline( inFile, str ); ++database.__nb_cases );
+      for ( database.__nb_cases = 0; getline( inFile, str ); database.__nb_cases+=( isValidLine(str) )?1:0 ); // we do not count empty lines
     }
 
     // open the file to fill the __cases and skip the header
@@ -199,6 +217,7 @@ namespace gum {
     modal_names.resize( database.__nb_nodes,HashTable<std::string, unsigned int>() );
 
     database.__nb_modalities.resize( database.__nb_nodes, 0 );
+
     database.__missing_value.resize( database.__nb_nodes, false );
 
     database.__cases = new unsigned int [database.__nb_cases * database.__nb_nodes];
@@ -208,7 +227,10 @@ namespace gum {
     while ( ! inFile.eof() ) {
       // get the content of the new line
       getline( inFile, str );
-      std::vector<std::string> line = 
+
+      if (! isValidLine(str)) continue; // get rid of empty lines
+
+      std::vector<std::string> line =
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
 
       // check that it has exactly __nb_nodes fields
@@ -240,7 +262,7 @@ namespace gum {
         database.__modalities_names[i][*iter] = iter.key();
       }
 
-      database.__missing_value[i]=modals.exists("?");
+      database.__missing_value[i]=modals.exists( "?" );
     }
 
     // create the __iterators begin/rbegin/end/rend
