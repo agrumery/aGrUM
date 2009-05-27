@@ -131,7 +131,7 @@ namespace gum {
         s+=p[it_p];
       }
 
-      set( it_this ,s);
+      this->set( it_this ,s);
 
       it_p.unsetOverflow();
     }

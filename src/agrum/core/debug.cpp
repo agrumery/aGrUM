@@ -117,6 +117,8 @@ namespace gum {
 
     void __dumpObjects( void ) {
 #ifndef NDEBUG
+      unsigned int nb_err=0;
+
       std::cerr<<std::setfill( '-' );
       std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|"<<std::endl;
       std::cerr<<std::setfill( ' ' );
@@ -142,7 +144,7 @@ namespace gum {
 
         stream<<" |";;
 
-        if ( zeCreatedObjs!=zeDeletedObjts ) stream<<"<--- failed";
+        if ( zeCreatedObjs!=zeDeletedObjts ) {nb_err++;stream<<"<--- failed";}
 
         res.push_back( stream.str() );
       }
@@ -155,6 +157,7 @@ namespace gum {
           std::stringstream stream;
           stream<<"| "<<std::setw( 50 )<<xx.key()<<" | "<<std::setw( 5 )<<"?????"<<" | "<<std::setw( 5 )<<*xx<<" |<--- failed";
           res.push_back( stream.str() );
+          nb_err++;
         }
       }
 
@@ -169,6 +172,17 @@ namespace gum {
       std::cerr<<std::setfill( '-' );
 
       std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|"<<std::endl;
+
+      std::cerr<<std::setfill( ' ' );
+      if ( nb_err==0 ) {
+        std::cerr<<"| NO MEMORY LEAK !"<<std::setw( 52 )<<"|"<<std::endl;
+      } else {
+       std::cerr<<"| Memory leaks found : "<<std::setw(4)<<nb_err<<std::setw( 43 )<<"|"<<std::endl;
+      }
+      std::cerr<<std::setfill( '-' );
+        std::cerr<<"|"<<std::setw(69)<<"|"<<std::endl;
+
+
 #endif //NDEBUG
     }
 
@@ -187,6 +201,7 @@ namespace gum {
     }
 
     void __atexit( void ) {
+
 #ifndef NDEBUG
       staticCorrections();
       __dumpObjects();
