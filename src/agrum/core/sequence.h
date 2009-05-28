@@ -245,7 +245,7 @@ namespace gum {
     // ============================================================================
     const KEY& back() const;
 
-    std::string toString( ) const;
+    std::string toString() const;
 
     // ============================================================================
     /// modifies the size of the internal structures of the sequence

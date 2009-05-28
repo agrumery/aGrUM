@@ -47,7 +47,7 @@ namespace gum {
     if ( __changed_status.contains( id ) )  __updateList( id );
 
     // check if the node belongs to the simplicial list
-    return __simplicial_nodes.exists( id );
+    return __simplicial_nodes.contains( id );
   }
 
   // ==============================================================================

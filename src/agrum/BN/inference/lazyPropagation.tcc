@@ -439,7 +439,7 @@ namespace gum {
 
             if ( div_size != 1 ) {
               product_size.setPriorityByVal
-                ( pot_vars[i], product_size.getPriorityByVal( pot_vars[i] ) /
+                ( pot_vars[i], product_size.priorityByVal( pot_vars[i] ) /
                   div_size );
             }
           }
@@ -480,7 +480,7 @@ namespace gum {
           if ( mult_size != 1 ) {
             product_size.setPriorityByVal
               ( marginal_vars[i],
-                product_size.getPriorityByVal( marginal_vars[i] ) * mult_size );
+                product_size.priorityByVal( marginal_vars[i] ) * mult_size );
           }
         }
       }

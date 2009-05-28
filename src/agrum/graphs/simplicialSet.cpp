@@ -155,12 +155,12 @@ namespace gum {
     // be performed for a given node. This enables performing the updates only
     // when necessary. if the node is known to be simplicial, there is nothing
     // to do
-    if ( __simplicial_nodes.exists( id ) ) {
+    if ( __simplicial_nodes.contains ( id ) ) {
       if ( __changed_status.contains( id ) )
         __changed_status.erase( id );
       return;
     }
-    else if ( __almost_simplicial_nodes.exists( id ) ) {
+    else if ( __almost_simplicial_nodes.contains( id ) ) {
       // get the neighbour that does not form a clique with the other neighbours
       // recall that id is an almost simplicial node if there exists a node,
       // say Y, such that, after deleting Y, id and its adjacent nodes form a
@@ -372,7 +372,7 @@ namespace gum {
     }
 
     // update the __changed_status of node id as well as its containing list
-    if ( !__simplicial_nodes.exists ( id ) ) {
+    if ( !__simplicial_nodes.contains ( id ) ) {
       if ( __changed_status.contains( id ) )
         __changed_status.erase( id );
 
@@ -692,7 +692,7 @@ namespace gum {
 
     for ( NodeSetIterator iter = __changed_status.begin();
           iter !=  __changed_status.end(); ++iter ) {
-      if ( __almost_simplicial_nodes.exists( *iter ) )
+      if ( __almost_simplicial_nodes.contains ( *iter ) )
         __updateList( *iter );
     }
 
@@ -726,7 +726,7 @@ namespace gum {
 
     for ( NodeSetIterator iter = __changed_status.begin();
           iter != __changed_status.end(); ++iter ) {
-      if ( __quasi_simplicial_nodes.exists( *iter ) )
+      if ( __quasi_simplicial_nodes.contains ( *iter ) )
         __updateList( *iter );
     }
 

@@ -495,7 +495,7 @@ namespace gum {
     // ============================================================================
     /// displays the content of a chained list
     // ============================================================================
-    virtual const std::string toString() const;
+    virtual std::string toString() const;
 
 
   private:

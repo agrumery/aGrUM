@@ -513,7 +513,7 @@ namespace gum {
 
         try {
           numbered_neighbours.setPriorityByVal
-            ( neighbour, 1 + numbered_neighbours.getPriorityByVal( neighbour ) );
+            ( neighbour, 1 + numbered_neighbours.priorityByVal( neighbour ) );
         } catch ( NotFound& ) { }
       }
     }

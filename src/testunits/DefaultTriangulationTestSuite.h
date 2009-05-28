@@ -124,43 +124,43 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
     void xxtestBIFtriangulation1( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Barley.bif ) ));
     };
-    void testBIFtriangulation1bis( void ) {
+    void xxtestBIFtriangulation1bis( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( alarm.bif ) ));
     };
 
-    void testBIFtriangulation2( void ) {
+    void xxtestBIFtriangulation2( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( carpo.bif ) ));
     };
 
-    void testBIFtriangulation3( void ) {
+    void xxtestBIFtriangulation3( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Pigs.bif ) ));
     };
 
-    void testBIFtriangulation4( void ) {
+    void xxtestBIFtriangulation4( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Water.bif ) ));
     };
 
-    void testBIFtriangulation5( void ) {
+    void xxtestBIFtriangulation5( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Link.bif ) ));
     };
 
-    void testBIFtriangulation6( void ) {
+    void xxtestBIFtriangulation6( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Mildew.bif ) ));
     };
 
-    void testBIFtriangulation7( void ) {
+    void xxtestBIFtriangulation7( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Munin1.bif ) ));
     };
 
-    void testBIFtriangulation8( void ) {
+    void xxtestBIFtriangulation8( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( hailfinder.bif ) ));
     };
 
-    void testBIFtriangulation9( void ) {
+    void xxtestBIFtriangulation9( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Diabetes.bif ) ));
     };
 
-    void testBIFtriangulation10( void ) {
+    void xxtestBIFtriangulation10( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( insurance.bif ) ));
     };
 

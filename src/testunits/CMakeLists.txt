@@ -46,8 +46,8 @@ CliqueGraphTestSuite.h
 CompareInferencesTestSuite.h
 CrossMultiDimTestSuite.h
 DAGTestSuite.h
-# DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
-# DefaultTriangulationTestSuite.h <---- ERROR
+DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
+DefaultTriangulationTestSuite.h <---- ERROR
 DiGraphTestSuite.h
 DiscretizedVariableListenerTestSuite.h
 DiscretizedVariableTestSuite.h
@@ -58,7 +58,7 @@ HashTableTestSuite.h
 InstantiationTestSuite.h
 LabelizedVariableListenerTestSuite.h
 LabelizedVariableTestSuite.h
-# LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
+LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
 ListBaseTestSuite.h
 MixedGraphTestSuite.h
 MultiDimAggregatorTestSuite.h
@@ -70,9 +70,9 @@ RangeVariableTestSuite.h
 RefPtrTestSuite.h
 SequenceTestSuite.h
 SetTestSuite.h
-# ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
+ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
 SimpleCPTGeneratorTestSuite.h
-# TorcsTestSuite.h   #<-----------------------MEMORY LEAK
+TorcsTestSuite.h   #<-----------------------MEMORY LEAK
 UndiGraphTestSuite.h
 ValueEliminationTestSuite.h
 VariableNodeMapTestSuite.h

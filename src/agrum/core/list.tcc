@@ -205,7 +205,7 @@ namespace gum {
   /// displays the content of a chained list
   // ==============================================================================
   template <typename Val>
-  const std::string ListBase<Val>::toString() const {
+  std::string ListBase<Val>::toString() const {
     bool deja = false;
     std::stringstream stream;
     stream << "[";
