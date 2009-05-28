@@ -302,6 +302,20 @@ namespace gum {
     }
   }
 
+  
+  /// erases an element from the set
+  template<typename KEY> INLINE
+  void Set<KEY>::erase( const SetIterator<KEY>& iter ) {
+    // erase the element
+    __inside.erase( iter.__ht_iter );
+      
+    // update end and rend iterators. Note that actually there is no
+    // need to update the rend iterator as this one is not affected by changes
+    // within hashtables (adding/deleting elements). Hence, for speedup, we do
+    // not update the rend iterator
+    __it_end.__updatePosition( __inside.end() );
+  }
+
 
   /// adds a new element to the set
   template<typename KEY> INLINE

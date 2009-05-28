@@ -49,14 +49,14 @@ namespace gum {
   template <typename Key, typename Val> class BSTreeIterator;
 
   
-  /* ============================================================================ */
-  /* ===                 GENERIC NODE OF A BINARY SEARCH TREE                 === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===                 GENERIC NODE OF A BINARY SEARCH TREE                === */
+  /* =========================================================================== */
   /** @class BSTreeNode
    * @brief Nodes of a binary search tree 
    * @ingroup basicstruct_group
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template <typename Key, typename Val> class BSTreeNode {
     /// the binary tree should have unrestricted access to its nodes
     friend class BSTree<Key,Val>;
@@ -97,23 +97,27 @@ namespace gum {
 
   private:
     // ============================================================================
-    /// copy constructor: used to prevent using a default constructor provided by C++
-    /** copying a BSTree node would be meaningless as its parent and children would
+    /** @brief copy constructor: used to prevent using a default constructor
+     * provided by C++
+     *
+     * copying a BSTree node would be meaningless as its parent and children would
      * still be linked to the original node, not to the current one. Hence the
      * system would be in an instable state. */
     // ============================================================================
     BSTreeNode( const BSTreeNode<Key,Val>& node ) {
-      GUM_ERROR(OperationNotAllowed,"use of BSTreeNode copy constructor is forbidden");
+      GUM_ERROR( OperationNotAllowed,
+                 "use of BSTreeNode copy constructor is forbidden");
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// copy operator: used to prevent using a default operator provided by C++
     /** copying a BSTree node would be meaningless as its parent and children would
      * still be linked to the original node, not to the current one. Hence the
      * system would be in an instable state. */
-    // ==============================================================================
+    // ============================================================================
     BSTreeNode<Key,Val>& operator= ( const BSTreeNode<Key,Val>& node ) {
-      GUM_ERROR(OperationNotAllowed,"use of BSTreeNode copy constructor is forbidden");
+      GUM_ERROR(OperationNotAllowed,
+                "use of BSTreeNode copy constructor is forbidden");
     }
 
   public:
@@ -185,7 +189,8 @@ namespace gum {
     }
 
     // ============================================================================
-    /// returns the key stored in a node (key according to which the BST is ordered)
+    /** @brief returns the key stored in a node (key according to which the BST
+     * is ordered) */
     // ============================================================================
     const Key& key() const {
       return key;
@@ -245,8 +250,10 @@ namespace gum {
     }
     
     // ============================================================================
-    /// returns the node with the highest key less than or equal to the current node
-    /** if the current node is the leftmost node with the smallest key in the tree,
+    /** @brief returns the node with the highest key less than or equal to the
+     * current node
+     *
+     * if the current node is the leftmost node with the smallest key in the tree,
      * then it has no predecessor and the method returns 0 */
     // ============================================================================
     BSTreeNode<Key,Val>* getPrecNode() const {
@@ -309,14 +316,16 @@ namespace gum {
     }
 
     // ============================================================================
-    /// returns the leftmost node with the given key in the subtree rooted by @e this
-    /** if the node cannot be found, the function returns 0
+    /** @brief returns the leftmost node with the given key in the subtree rooted
+     * by @e this 
+     *
+     * if the node cannot be found, the function returns 0
      * @param k the key of the lement we look for
      * @param uniqueness_policy the uniqueness policy of the binary search tree the
      * node belongs to */
     // ============================================================================
     BSTreeNode<Key,Val>* getLeftmostNode(const Key& k,
-                                            bool uniqueness_policy = false ) const {
+                                         bool uniqueness_policy = false ) const {
       BSTreeNode<Key,Val>* node = this;
       // for efficiency reasons, we differentiate the case where the uniqueness
       // policy is on and that where it is off
@@ -447,12 +456,12 @@ namespace gum {
   };
 
   
-  /* ============================================================================ */
-  /* ===                      GENERIC BINARY SEARCH TREE                      === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===                      GENERIC BINARY SEARCH TREE                     === */
+  /* =========================================================================== */
   /** @class BSTree
    * @brief binary search tree */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template <typename Key, typename Val> class BSTree {
     /// developpers should always use the BSTree<X,Y>::iterator terminology
     typedef BSTreeIterator<Key,Val> iterator;
@@ -497,9 +506,9 @@ namespace gum {
       return new_node;
     }
     
-    // ==============================================================================
+    // ============================================================================
     /// a method for recursively destroying the content of a BSTree
-    // ==============================================================================
+    // ============================================================================
     void _delete( BSTreeNode<Key,Val> *node ) {
       BSTreeNode<Key,Val>* child;
       // delete the left subgraph
@@ -515,9 +524,9 @@ namespace gum {
       delete node;
     }
     
-    // ==============================================================================
+    // ============================================================================
     /// erase the node passed in argument
-    // ==============================================================================
+    // ============================================================================
     void _erase( BSTreeNode<Key,Val> *node ) {
       // if the node is a leaf, we remove it directly
       if ( !node->getChild( BSTREE_LEFT ) && !node->getChild( BSTREE_RIGHT ) ) {
@@ -529,7 +538,9 @@ namespace gum {
           delete node;
           height = root->getHeight();
         }
-      } else if ( !node->getChild( BSTREE_LEFT ) || !node->getChild( BSTREE_RIGHT ) ) {
+      }
+      else if ( !node->getChild( BSTREE_LEFT ) ||
+                !node->getChild( BSTREE_RIGHT ) ) {
         // if the node has only one child, we substitute the former by the latter
         // get the child
         BSTreeNode<Key,Val> *child;
@@ -574,7 +585,8 @@ namespace gum {
         pred->parent->children[pred->parent_dir] = 0;
         
         if ( pred->parent->children[1 - pred->parent_dir] )
-          pred->parent->height = 1+pred->parent->children[1-pred->parent_dir]->height;
+          pred->parent->height =
+            1+pred->parent->children[1-pred->parent_dir]->height;
         else
           pred->parent->height = 1;
         
@@ -606,20 +618,20 @@ namespace gum {
     }
     
   public:
-    // ##############################################################################
+    // ############################################################################
     // constructors / destructors
-    // ##############################################################################
-    // ==============================================================================
+    // ############################################################################
+    // ============================================================================
     /// basic constructor: returns an empty binary search tree
-    // ==============================================================================
+    // ============================================================================
     BSTree( bool uniqueness_policy = true ) :
       root( 0 ), height( 0 ), key_uniqueness_policy( uniqueness_policy ) {
       GUM_CONSTRUCTOR( BSTree );
     }
     
-    // ==============================================================================
+    // ============================================================================
     /// copy constructor
-    // ==============================================================================
+    // ============================================================================
     BSTree( const BSTree<Key,Val>& from ) :
       height( from.height ), key_uniqueness_policy( from.key_uniqueness_policy ) {
       // for debugging purposes
@@ -632,9 +644,9 @@ namespace gum {
         root = _copy( from.root );
     }
     
-    // ==============================================================================
+    // ============================================================================
     /// copy operator
-    // ==============================================================================
+    // ============================================================================
     const BSTree<Key,Val>& operator= ( const BSTree<Key,Val>& from ) {
       // avoid self assignment
       if ( this != &from ) {
@@ -660,9 +672,9 @@ namespace gum {
       return *this;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// destructor
-    // ==============================================================================
+    // ============================================================================
     virtual ~BSTree() {
       // for debugging purposes
       DESTRUCTOR( BSTree );
@@ -672,27 +684,28 @@ namespace gum {
         _delete( root );
     }
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Accessors / Modifiers
-    // ##############################################################################
+    // ############################################################################
     /// @{
-    // ==============================================================================
+    // ============================================================================
     /// returns the value of the leftmost node with the given key
     /** @throw if the key cannot be found, the method throws a
      * NotFound exception */
-    // ==============================================================================
+    // ============================================================================
     Val& operator[]( const Key& key ) const {
-      BSTreeNode<Key,Val>* node = root->getLeftmostNode( key,key_uniqueness_policy );
+      BSTreeNode<Key,Val>* node =
+        root->getLeftmostNode( key,key_uniqueness_policy );
 
       if ( node ) return node;
 
       GUM_ERROR( NotFound, "the binary search tree contains no such key" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the value of the leftmost node with the minimal key in the tree
     /** @throw if the tree is empty, the method throws a EmptyBSTree exception */
-    // ==============================================================================
+    // ============================================================================
     Val& getMinValue() const {
       if ( root == 0 )
         GUM_ERROR( EmptyBSTree, "no minimal value in an empty BS tree" );
@@ -700,10 +713,10 @@ namespace gum {
       return root->getMinNode()->val;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the minimal key in the tree
     /** @throw if the tree is empty, the method throws a EmptyBSTree exception */
-    // ==============================================================================
+    // ============================================================================
     const Key& getMinKey() const {
       if ( root == 0 )
         GUM_ERROR( EmptyBSTree, "no minimal key in an empty BS tree" );
@@ -711,10 +724,10 @@ namespace gum {
       return root->getMinNode()->key;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the value of the rightmost node with the maximal key in the tree
     /** @throw if the tree is empty, the method throws a EmptyBSTree exception */
-    // ==============================================================================
+    // ============================================================================
     Val& getMaxValue() const {
       if ( root == 0 )
         GUM_ERROR( EmptyBSTree, "no maximal value in an empty BS tree" );
@@ -722,10 +735,10 @@ namespace gum {
       return root->getMaxNode()->val;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the maximal key in the tree
     /** @throw if the tree is empty, the method throws a EmptyBSTree exception */
-    // ==============================================================================
+    // ============================================================================
     const Key& getMaxKey() const {
       if ( root == 0 )
         GUM_ERROR( EmptyBSTree, "no maximal key in an empty BS tree" );
@@ -733,14 +746,14 @@ namespace gum {
       return root->getMaxNode()->key;
     }
 
-    // ==============================================================================
-    /** @brief creates a copy of the key and value and insert their pair in the tree
-     * and returns the copy value
+    // ============================================================================
+    /** @brief creates a copy of the key and value and insert their pair in the
+     * tree and returns the copy value
      *
      * When elements are inserted into binary search trees, this is actually copies
      * that are inserted (both key and value). Thus, the method returns the newly
      * created copy, so that the user may modify or reference it. */
-    // ==============================================================================
+    // ============================================================================
     Val& insert( const Key& key, const Val& val ) {
       // if the tree is not empty, search the binary search tree to know
       // where the node should be inserted
@@ -785,11 +798,11 @@ namespace gum {
       return root->val();
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// erase the leftmost node with the given (key,val) pair
     /** if we could not find the node, then nothing happens. In particular, no
      * exception is raised. */
-    // ==============================================================================
+    // ============================================================================
     void erase( const Key& key, const Val& val ) {
       BSTreeNode<Key,Val> *node;
       // first, we should find the node corresponding to the pair (key,val)
@@ -812,13 +825,14 @@ namespace gum {
       _erase( node );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// erase the leftmost node with the given key
     /** if we could not find the node, then nothing happens. In particular, no
      * exception is raised. */
-    // ==============================================================================
+    // ============================================================================
     void erase( const Key& key ) {
-      BSTreeNode<Key,Val> *node = root.getLeftmostNode( key,key_uniqueness_policy );
+      BSTreeNode<Key,Val> *node =
+        root.getLeftmostNode( key,key_uniqueness_policy );
       // check if we could find the node we looked for
 
       if ( node == 0 ) return;
@@ -830,12 +844,12 @@ namespace gum {
     /// @}
   };
 
-  /* ============================================================================== */
-  /* ===                      BINARY SEARCH TREE ITERATORS                      === */
-  /* ============================================================================== */
+  /* =========================================================================== */
+  /* ===                      BINARY SEARCH TREE ITERATORS                   === */
+  /* =========================================================================== */
   /** @class BSTreeIterator
    * @brief Binary search tree iterators */
-  /* ============================================================================== */
+  /* =========================================================================== */
 
   template <typename Key, typename Val> class BSTreeIterator {
     /** class BSTree must be a friend because it stores iterators end and
@@ -849,45 +863,55 @@ namespace gum {
     BSTree<Key, Val> *tree;
     /// the node pointed to by the iterator
     BSTreeNode<Key, Val> *node;
-    /** @brief the BSTree node we should start from when we decide to do a ++. Usually
-     * it should be equal to node. However, if the user has deleted the object
-     * pointed to by node, this will point to another BSTreeNode. When it is equal
-     * to 0, it means that the node reached after a ++ is end(). */
+    /** @brief the BSTree node we should start from when we decide to do a ++.
+     * Usually it should be equal to node. However, if the user has deleted the
+     * object pointed to by node, this will point to another BSTreeNode. When it
+     * is equal to 0, it means that the node reached after a ++ is end(). */
     BSTreeNode<Key, Val> *next_current_node;
+    
     /** @brief the node we should start from when we decide to do a --. When it
      * is equal to 0, it means that the node reached after a -- is rend(). */
     BSTreeNode<Key, Val> *prev_current_node;
+
     /** @brief the node we should start from when we decide to do a up. When it
      * is equal to 0, it means that the node reached after an up is upend() */
     BSTreeNode<Key, Val> *up_current_node;
-    /** @brief the node we should start from when we decide to do a downLeft. When it
-     * is equal to 0, it means that the node reached after an up is downleftend() */
+
+    /** @brief the node we should start from when we decide to do a downLeft. When
+     * it is equal to 0, it means that the node reached after an up is
+     * downleftend() */
     BSTreeNode<Key, Val> *downleft_current_node;
-    /** @brief the node we should start from when we decide to do a downRight. When it
-     * is equal to 0, it means that the node reached after an up is downrightend() */
+    
+    /** @brief the node we should start from when we decide to do a downRight.
+     * When it is equal to 0, it means that the node reached after an up is
+     * downrightend() */
     BSTreeNode<Key, Val> *downright_current_node;
+    
     /// next iterator attached to the tree
     BSTreeIterator<Key, Val> *next;
+    
     /// preceding iterator of the tree registered list of iterators
     BSTreeIterator<Key, Val> *prev;
+    
   public:
-    // ##############################################################################
+    // ############################################################################
     // constructors / destructors
-    // ##############################################################################
-    // ==============================================================================
+    // ############################################################################
+    // ============================================================================
     /// basic constructor
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator() :
       tree( 0 ), node( 0 ),
       next_current_node( 0 ), prev_current_node( 0 ), up_current_node( 0 ),
-      downleft_current_node( 0 ), downright_current_node( 0 ), next( 0 ), prev( 0 ) {
+      downleft_current_node( 0 ), downright_current_node( 0 ),
+      next( 0 ), prev( 0 ) {
       GUM_CONSTRUCTOR( BSTreeIterator );
       GUM_DEBUG_TRACE( "<-- BSTreeIterator EMPTY constructor" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// copy constructor
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator( const BSTreeIterator<Key,Val>& from ) :
       tree( from.tree ), node( from.node ),
       next_current_node( from.next_current_node ),
@@ -911,9 +935,9 @@ namespace gum {
         next = 0;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// copy operator
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator<Key,Val>& operator= ( const BSTreeIterator<Key,Val>& from ) {
       // avoid self assignment
       if ( this != &from ) {
@@ -966,7 +990,7 @@ namespace gum {
       return *this;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// Constructor for an iterator pointing to the leftmost element of
     /** The first element of a list is in position 0.
      * If the list does not contain at leat \e ind_elt elements, then the method
@@ -977,7 +1001,7 @@ namespace gum {
      * The frist element of a list is in position 0.
      * @throw UndefinedIteratorValue the list does not contain at least
      * \e ind_elt elements */
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator( const BSTree<Key,Val>& theTree, BSTreeDir dir ) :
       tree( const_cast<BSTree<Key,Val>*>( &theTree ) ), node( 0 ),
       next_current_node( 0 ), prev_current_node( 0 ), up_current_node( 0 ),
@@ -1019,15 +1043,15 @@ namespace gum {
       }
     }
 
-    // ##############################################################################
+    // ############################################################################
     /// @name Accessors / Modifiers
-    // ##############################################################################
+    // ############################################################################
     /// @{
-    // ==============================================================================
+    // ============================================================================
     /// returns the value of a given child of the current node
     /** @throw if the child does not exist, the method throws a NoChild
      * exception */
-    // ==============================================================================
+    // ============================================================================
     Val& getChildValue( BSTreeDir dir ) const {
       if ( node && node->children[dir] )
         return node->children[dir]->val;
@@ -1035,11 +1059,11 @@ namespace gum {
         GUM_ERROR( NoChild, "the child cannot be found" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the key of a given child of the current node
     /** @throw if the child does not exist, the method throws a NoChild
      * exception */
-    // ==============================================================================
+    // ============================================================================
     const Key& getChildKey( BSTreeDir dir ) const {
       if ( node && node->children[dir] )
         return node->children[dir]->key;
@@ -1047,11 +1071,11 @@ namespace gum {
         GUM_ERROR( NoChild, "the child cannot be found" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the value of the parent of the current node
     /** @throw if the parent does not exist, the method throws a NoParent
      * exception */
-    // ==============================================================================
+    // ============================================================================
     Val& getParentValue() const {
       if ( node && node->parent )
         return node->parent->val;
@@ -1059,11 +1083,11 @@ namespace gum {
         GUM_ERROR( NoParent, "the curent node has no parent" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the key of the parent of the current node
     /** @throw if the parent does not exist, the method throws a NoParent
      * exception */
-    // ==============================================================================
+    // ============================================================================
     const Key& getParentKey() const {
       if ( node && node->parent )
         return node->parent->key;
@@ -1071,13 +1095,13 @@ namespace gum {
         GUM_ERROR( NoParent, "the curent node has no parent" );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /** @brief returns the value of the leftmost node with the minimal key in the
      * subtree rooted by the current node
      *
      * @warning the method may return the value of the current node if the latter
      * has the smallest key in the whole subtree */
-    // ==============================================================================
+    // ============================================================================
     Val& getMinValue() const {
       // check if we point somewhere in a tree
       if ( node == 0 )
@@ -1087,11 +1111,11 @@ namespace gum {
       return node->getMinNode()->val;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the minimal key in the subtree rooted by the current node
     /** @warning the method may return the key of the current node if the latter
      * is the smallest in the whole subtree */
-    // ==============================================================================
+    // ============================================================================
     Key& getMinKey() const {
       // check if we point somewhere in a tree
       if ( node == 0 )
@@ -1101,13 +1125,13 @@ namespace gum {
       return node->getMinNode()->key;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /** @brief returns the value of the rightmost node with the maximal key in the
      * subtree rooted by the current node
      *
      * @warning the method may return the value of the current node if the latter
      * has the highest key in the whole subtree */
-    // ==============================================================================
+    // ============================================================================
     Val& getMaxValue() const {
       // check if we point somewhere in a tree
       if ( node == 0 )
@@ -1117,11 +1141,11 @@ namespace gum {
       return node->getMaxNode()->val;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the maximal key in the subtree rooted by the current node
     /** @warning the method may return the key of the current node if the latter
      * is the highest in the whole subtree */
-    // ==============================================================================
+    // ============================================================================
     Key& getMaxKey() const {
       // check if we point somewhere in a tree
       if ( node == 0 )
@@ -1131,11 +1155,11 @@ namespace gum {
       return node->getMaxNode()->key;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// detaches the iterator from the BSTree it is attached to
     /** It is mainly used by the BSTree when the latter is deleted while the
      * iterator is still alive. */
-    // ==============================================================================
+    // ============================================================================
     void detach() {
       // remove the iterator from the tree's iterator list
       if ( prev )
@@ -1167,17 +1191,17 @@ namespace gum {
     }
 
     /// @}
-    // ##############################################################################
+    // ############################################################################
     /// @name Operators
-    // ##############################################################################
+    // ############################################################################
     /// @{
-    // ==============================================================================
+    // ============================================================================
     /// makes the iterator point to the successor of the current element
     /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse the
      * whole BSTree as long as no element is added to or deleted from the
      * BSTree while being in the loop. Deleting elements during the
      * loop is guaranteed to never produce a segmentation fault. */
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator<Key, Val>& operator++() {
       // if we are pointing to an element of the BSTree, just
       // point on the next node in the tree
@@ -1219,13 +1243,13 @@ namespace gum {
       return *this;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// makes the iterator point to the preceding element in the BSTree
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole BSTree as long as no element is added to or deleted from
      * the BSTree while being in the loop. Deleting elements during the
      * loop is guaranteed to never produce a segmentation fault. */
-    // ==============================================================================
+    // ============================================================================
     BSTreeIterator<Key, Val>& operator--() {
       // if we are not pointing on the first element of the BSTree, just
       // point on the preceding node in this tree
@@ -1267,29 +1291,29 @@ namespace gum {
       return *this;
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// checks whether two iterators are pointing toward different elements
-    // ==============================================================================
+    // ============================================================================
     const bool operator!= ( const BSTreeIterator<Key, Val> &from ) {
       return (( node != from.node ) ||
               ( next_current_node != from.next_current_node ) ||
               ( prev_current_node != from.prev_current_node ) );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// checks whether two iterators are pointing toward the same element
-    // ==============================================================================
+    // ============================================================================
     const bool operator== ( const BSTreeIterator<Key, Val> &from ) {
       return (( node == from.node ) &&
               ( next_current_node == from.next_current_node ) &&
               ( prev_current_node == from.prev_current_node ) );
     }
 
-    // ==============================================================================
+    // ============================================================================
     /// returns the value pointed to by the iterator
     /** @throws UndefinedIteratorValue when the iterator does not point to
      * a valid BSTree node */
-    // ==============================================================================
+    // ============================================================================
     Val& operator*() {
       if ( node )
         return node->val;

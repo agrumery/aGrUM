@@ -1172,6 +1172,30 @@ namespace gum {
     __nodes[hash]._erase( bucket );
     --__nb_elements;
   }
+  
+  // ==============================================================================
+  /// removes a given element from the hash table
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  void HashTable<Key,Val>::erase( const iterator& elt_iter ) {
+    // get the bucket containing the element to erase
+    HashTableBucket<Key, Val>* bucket = elt_iter._getBucket();
+    if ( bucket == 0 ) return;
+
+    // update the registered iterators pointing to this bucket
+    for ( iterator* iter = __iterator_list; iter; iter = iter->_next ) {
+      if ( iter->_next_current_bucket == bucket )
+        iter->_next_current_bucket = bucket->prev;
+      if ( iter->_prev_current_bucket == bucket )
+        iter->_prev_current_bucket = bucket->next;
+      if ( iter->_bucket == bucket )
+        iter->_bucket = 0;
+    }
+
+    // remove the element from the __nodes vector
+    __nodes[elt_iter._getIndex()]._erase( bucket );
+    --__nb_elements;
+  }
 
   // ==============================================================================
   /// removes a given element from the hash table

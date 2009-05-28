@@ -111,6 +111,34 @@ class HashTableTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( table.size(), (gum::Size)1 );
     }
 
+    void testEraseIterator() {
+      gum::HashTable<int, string> table;
+      fill( table );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)6 );
+      
+      gum::HashTable<int, string>::iterator iter = table.begin();
+      
+      TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)5 );
+
+      ++iter; ++iter;
+      
+      TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)4 );
+
+      iter = table.rbegin();
+      TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
+
+      iter = table.end();
+      TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
+
+      iter = table.rend();
+      TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
+      TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
+    }
+
     void testEraseByVal() {
       gum::HashTable<int, string> table;
       fill( table );

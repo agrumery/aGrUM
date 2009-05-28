@@ -156,6 +156,11 @@ namespace gum {
      * In particular, no exception is thrown. */    
     void erase( const KEY& k );
 
+    /// erases an element from the set
+    /** @warning if the set does not contain the element, nothing is done.
+     * In particular, no exception is thrown. */    
+    void erase( const iterator& k );
+
     /// removes all the elements, if any, from the set
     void clear();
 

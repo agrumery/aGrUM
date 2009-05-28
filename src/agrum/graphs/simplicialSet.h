@@ -30,8 +30,8 @@
 #include <agrum/core/utils.h>
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
-#include <agrum/graphs/cliqueGraph.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/graphs/cliqueGraph.h>
 
 #define GUM_QUASI_RATIO      0.95
 #define GUM_WEIGHT_THRESHOLD 0.0

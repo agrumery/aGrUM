@@ -111,6 +111,32 @@ class SetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( set.size(), (gum::Size)1 );
     }
 
+    void testEraseIterator() {
+      gum::Set<int> set;
+      fill( set );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)6 );
+
+      gum::Set<int>::iterator iter = set.begin();
+      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)5 );
+
+      ++iter; ++iter;
+      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)4 );
+
+      iter = set.rbegin ();
+      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
+
+      iter = set.end ();
+      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
+
+      iter = set.rend ();
+      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
+      TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
+    }
+
     void testClear() {
       gum::Set<int> set;
 

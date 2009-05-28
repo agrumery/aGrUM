@@ -649,6 +649,11 @@ namespace gum {
 
     // ============================================================================
     /// removes a given element from the hash table
+    // ============================================================================
+    void erase( const iterator& iter );
+
+    // ============================================================================
+    /// removes a given element from the hash table
     /** The element is the first one encountered in the list (from begin() to
      * end()) having the specified value. If no such element can be found, nothing
      * is done (in particular, it does not throw any exception). The function
