@@ -32,7 +32,7 @@
 
 #define GUM_CHECKPOINT {                                                \
     std::cerr << __FILE__ << ":" << __LINE__ <<": warning : aGrUM checkpoint"<< std::endl; }
-  
+
 #define GUM_TRACE(x) {                                                  \
     std::cerr << __FILE__ << ":" << __LINE__ <<": trace : "<<x << std::endl; }
 
@@ -46,19 +46,19 @@ namespace gum {
   namespace debug {
 
     std::string __getFile( const char* f );
-  
+
 
     /////////////////////////////////////////////////////////////
     void __show_trace( const char *zeKey, const char *zeFile, long zeLine,
                        const char *zeMsg, const void *zePtr );
     void __inc_creation( const char *zeKey, const char *zeFile, long zeLine,
-                         const char *zeMsg, const void *zePtr );
+                         const char *zeMsg, const void *zePtr,int zeSize=-1 );
     void __inc_deletion( const char *zeKey, const char *zeFile, long zeLine,
                          const char *zeMsg, const void *zePtr );
     void __dumpObjects( void );
     void __atexit( void );
 
-    
+
 #ifndef NDEBUG
     // FLAG : verbose mode
 #undef TRACE_ON
@@ -74,7 +74,7 @@ namespace gum {
 #define GUM_DEBUG_TRACE(x)
 #endif
 #define GUM_CONSTRUCTOR(x) { GUM_DEBUG_TRACE("Création de " #x)                                           \
-      gum::debug::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this); }
+      gum::debug::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this,sizeof(x)); }
 #define GUM_DESTRUCTOR(x) {                                             \
       gum::debug::__inc_deletion(#x,__FILE__,__LINE__,"destructor of",(void *)this); }
 #define GUM_CONS_CPY(x) {                                               \
@@ -97,7 +97,7 @@ namespace gum {
 
   } /* namespace gum::debug */
 
-  
+
   /* =========================================================================== */
   /* ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        === */
   /* =========================================================================== */
