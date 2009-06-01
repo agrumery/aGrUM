@@ -298,6 +298,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     }
 
     void testAlarm() {
+      std::cerr << std::endl;
       std::string file = GET_PATH_STR( alarm.bif );
       gum::BIFReader reader;
       gum::BayesNet<float> *net=NULL;
@@ -369,25 +370,25 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
           errlowoutputInst.chgVal( errlowoutput, 1 );
           TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95 ) < 0.001 );
 
-          delete net;
         } catch ( gum::Exception &e ) {
           std::cerr << std::endl << e.getContent() << std::endl;
           TS_ASSERT( false );
         }
+        delete net;
       }
     }
 
-    void testBarley() {
-      std::string file = GET_PATH_STR( Barley.bif );
-      gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
-
-      try {
-        net = reader.read( file );
-      } catch ( gum::SyntaxError ) {};
-
-      if ( net ) delete net;
-    }
+//    void testBarley() {
+//      std::string file = GET_PATH_STR( Barley.bif );
+//      gum::BIFReader reader;
+//      gum::BayesNet<float> *net=NULL;
+//
+//      try {
+//        TS_GUM_ASSERT_THROWS_NOTHING(net = reader.read( file ));
+//      } catch ( gum::SyntaxError ) {};
+//
+//      if ( net ) delete net;
+//    }
 
     void testUnexisting() {
       std::string file = "Schmurtz";

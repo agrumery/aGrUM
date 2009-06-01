@@ -64,16 +64,18 @@
   bool increment(std::vector<gum::Idx> &modCounter, gum::List<const gum::DiscreteVariable*> &varList);
 
   // My variables
+  // The current file name
+  std::string GUM_BIF_filename;
   // To retrieve varaible's id by their name
   gum::HashTable<std::string, gum::Id> *GUM_BIF_labelVarsMap;
   // Used for added the modalities
   std::string GUM_BIF_varName;
   gum::Idx GUM_BIF_modalityCount;
-  gum::LabelizedVariable *GUM_BIF_currentVar = NULL;
+  gum::LabelizedVariable *GUM_BIF_currentVar = 0;
   // For adding the parents of a node and fill the CPT
   gum::Id GUM_BIF_currentVarId;
-  const gum::Potential<float> *GUM_BIF_currentProba = NULL;
-  gum::List<const gum::DiscreteVariable*> *GUM_BIF_parentsList;
+  const gum::Potential<float> *GUM_BIF_currentProba = 0;
+  gum::List<const gum::DiscreteVariable*> *GUM_BIF_parentsList = 0;
   // For filling the CPT with a table
   std::vector<float> GUM_BIF_probaTable;
   // For filling the CPT using modalities
@@ -477,6 +479,7 @@ bool GUM_BIF_parser (gum::BayesNet<float>& net, const std::string& filename) {
   GUM_BIF_parentsList= new gum::List<const gum::DiscreteVariable*>();
   GUM_BIF_words=new gum::HashTable<unsigned int,std::string> ();
   GUM_BIF_labelVarsMap=new gum::HashTable<std::string, gum::Id> ();
+  GUM_BIF_filename = filename;
 
   /*  open the input file */
   GUM_BIF_in = fopen (filename.c_str(), "r");
@@ -502,18 +505,18 @@ bool GUM_BIF_parser (gum::BayesNet<float>& net, const std::string& filename) {
 }
 
 void reset_parser() {
-	GUM_BIF_reset_lexer();
-	line_no=1;
+  GUM_BIF_reset_lexer();
+  line_no=1;
 
-	GUM_BIF_labelVarsMap->clear();
+  GUM_BIF_labelVarsMap->clear();
   GUM_BIF_parentsList->clear();
   GUM_BIF_modalities.clear();
   GUM_BIF_modalitiesValues.clear();
   GUM_BIF_defaultValues.clear();
-  if (GUM_BIF_currentVar != NULL)
+  if (GUM_BIF_currentVar != 0)
   {
     delete GUM_BIF_currentVar;
-    GUM_BIF_currentVar = NULL;
+    GUM_BIF_currentVar = 0;
   }
   GUM_BIF_words->clear ();
   GUM_BIF_words_size = 0;
@@ -521,21 +524,28 @@ void reset_parser() {
 void clean_parser() {
   reset_parser();
 
-  delete(GUM_BIF_parentsList);
-  delete(GUM_BIF_words);
-  delete(GUM_BIF_labelVarsMap);
+  if (GUM_BIF_parentsList != 0) {
+    delete(GUM_BIF_parentsList);
+    GUM_BIF_parentsList = 0;
+  }
+  if (GUM_BIF_words != 0) {
+    delete(GUM_BIF_words);
+    GUM_BIF_words = 0;
+    GUM_BIF_words_size = 0;
+  }
+  if (GUM_BIF_labelVarsMap != 0) {
+    delete(GUM_BIF_labelVarsMap);
+    GUM_BIF_labelVarsMap = 0;
+  }
 }
 
 void syntaxError(const std::string& s) {
-  std::stringstream str;
-  str<<"at line "<<line_no<<" : "<<s;
+  std::cerr << GUM_BIF_filename << ":" << line_no << ": " << s << std::endl;
 
   clean_parser();
-
-  //GUM_TRACE(str.str());
-  //GUM_ERROR(gum::SyntaxError,str.str());
 }
 
 void ioError(const std::string& s) {
+  clean_parser();
   GUM_ERROR(gum::IOError,s);
 }

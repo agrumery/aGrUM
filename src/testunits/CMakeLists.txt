@@ -31,6 +31,10 @@ include_directories(${AGRUM_BINARY_DIR}/agrum)
 link_directories(${AGRUM_BINARY_DIR}/lib})
 
 
+<<<<<<< .mine
+file(GLOB AGRUM_TESTS *Suite.h)
+#file(GLOB AGRUM_TESTS
+=======
 # file(GLOB AGRUM_TESTS *Suite.h)
 
 # ls -1 *Suite.h
