@@ -38,6 +38,7 @@ AVLTestSuite.h
 BayesBallsTestSuite.h
 BayesNetGeneratorTestSuite.h
 BayesNetTestSuite.h
+BijectionTestSuite.h
 # BIFReaderTestSuite.h <---- ERROR
 BIFWriterTestSuite.h
 CliqueGraphTestSuite.h
