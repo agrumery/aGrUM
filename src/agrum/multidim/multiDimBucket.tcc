@@ -361,6 +361,7 @@ template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
 {
+  MultiDimReadOnly<T_DATA>::unregisterSlave(i);
   if (__bucket != 0) {
     __bucket->unregisterSlave(i);
     __instantiations->eraseByVal(&i);
