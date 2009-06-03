@@ -154,32 +154,26 @@ namespace gum {
 
     // ============================================================================
     /// returns a reference on the value the first element of which is passed in argument
-    /** In case of multiple identical keys in the hash table, the first value
-     * encountered is returned. The method runs in constant time.
+    /**
      * @throws NotFound exception is thrown if the element cannot be found. */
     // ============================================================================
-    FirstType& first(const SecondType& second);
     const FirstType& first(const SecondType& second) const;
 
     /**
      * Same method than first, but if the value is not found, a default value is returned
      */
-    FirstType& firstWithDefault(const SecondType& second, const FirstType& val);
     const FirstType& firstWithDefault(const SecondType& second, const FirstType& val) const;
  
     // ============================================================================
     /// returns a reference on the value the second element of which is passed in argument
-    /** In case of multiple identical keys in the hash table, the first value
-     * encountered is returned. The method runs in constant time.
+    /** 
      * @throws NotFound exception is thrown if the element cannot be found. */
     // ============================================================================
-    SecondType& second(const FirstType& first);
     const SecondType& second(const FirstType& first) const;
 
     /**
      * Same method than second, but if the value is not found, a default value is returned
      */
-    SecondType& secondWithDefault(const FirstType& first, const SecondType& val);
     const SecondType& secondWithDefault(const FirstType& first, const SecondType& val) const;
 
     /**

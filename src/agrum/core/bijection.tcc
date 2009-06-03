@@ -103,40 +103,24 @@ Bijection<FirstType, SecondType>::end() const {
   return BijectionIterator<FirstType, SecondType>(__firstToSecond.end(), &__secondToFirst);
 }
 
-template <typename FirstType, typename SecondType> INLINE
-FirstType& Bijection<FirstType, SecondType>::first(const SecondType& second) {
-  return __secondToFirst[second];
-}
 
 template <typename FirstType, typename SecondType> INLINE
 const FirstType& Bijection<FirstType, SecondType>::first(const SecondType& second) const {
   return __secondToFirst[second];
 }
 
-template <typename FirstType, typename SecondType> INLINE
-FirstType& Bijection<FirstType, SecondType>::firstWithDefault(const SecondType& second, const FirstType& val) {
-  return __secondToFirst.getWithDefault(second, val);
-}
 
 template <typename FirstType, typename SecondType> INLINE
 const FirstType& Bijection<FirstType, SecondType>::firstWithDefault(const SecondType& second, const FirstType& val) const {
   return __secondToFirst.getWithDefault(second, val);
 }
 
-template <typename FirstType, typename SecondType> INLINE
-SecondType& Bijection<FirstType, SecondType>::second(const FirstType& first) {
-  return __firstToSecond[first];
-}
 
 template <typename FirstType, typename SecondType> INLINE
 const SecondType& Bijection<FirstType, SecondType>::second(const FirstType& first) const {
   return __firstToSecond[first];
 }
 
-template <typename FirstType, typename SecondType> INLINE
-SecondType& Bijection<FirstType, SecondType>::secondWithDefault(const FirstType& first, const SecondType& val) {
-  return __firstToSecond.getWithDefault(first, val);
-}
 
 template <typename FirstType, typename SecondType> INLINE
 const SecondType& Bijection<FirstType, SecondType>::secondWithDefault(const FirstType& first, const SecondType& val) const {
@@ -156,7 +140,13 @@ bool Bijection<FirstType, SecondType>::existsSecond(const SecondType& second) co
 template <typename FirstType, typename SecondType> INLINE
 void Bijection<FirstType, SecondType>::insert(const FirstType& first, const SecondType& second) {
   __firstToSecond.insert(first, second);
-  __secondToFirst.insert(second, first);
+  try {
+    __secondToFirst.insert(second, first);
+  } catch (DuplicateElement&) {
+    __firstToSecond.erase(first);
+    GUM_ERROR( DuplicateElement,
+	       "the bijection contains an element with the same key" );
+  }
 }
 
 template <typename FirstType, typename SecondType> INLINE

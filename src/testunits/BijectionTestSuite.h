@@ -56,6 +56,18 @@ public:
     TS_ASSERT(bijection.empty());
   }
 
+  void test_ph() {
+    Bijection<int,int> carre;
+    carre.insert( 1,1 );
+    carre.insert( 2,4 );
+    carre.insert( 3,9 );
+    try {
+      carre.insert(4, 1);
+    } catch(DuplicateElement&) { }
+    TS_ASSERT(! carre.existsFirst(4));
+
+  }
+
 protected:
 
 private:
