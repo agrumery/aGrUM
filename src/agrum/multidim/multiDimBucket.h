@@ -160,7 +160,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// @}
 
     // ========================================================================
-    /// Accessors and modifiers over variables.
+    /// @name Accessors and modifiers over variables.
     // ========================================================================
     /// @{
 
@@ -178,7 +178,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// @}
     // ========================================================================
-    /// Accessors over values.
+    /// @name Accessors over values.
     // ========================================================================
     /// @{
 
@@ -187,7 +187,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// @}
     // ========================================================================
-    /// Slave management and extension due to slave management
+    /// @name Slave management and extension due to slave management
     // ========================================================================
     /// @{
 
