@@ -58,13 +58,13 @@ bool BijectionIterator<FirstType, SecondType>::operator==(const BijectionIterato
   return __iter == toCompare.__iter;
 }
 
-// key uniqueness = true because we are in a bijection
+// key uniqueness = false because we do our tests
 
 template <typename FirstType, typename SecondType> INLINE
 Bijection<FirstType, SecondType>::Bijection(Size size,
 					    bool resize) :
-  __firstToSecond(size, resize, true),
-  __secondToFirst(size, resize, true)
+  __firstToSecond(size, resize, false),
+  __secondToFirst(size, resize, false)
 {
   GUM_CONSTRUCTOR(Bijection);
 }
@@ -139,14 +139,12 @@ bool Bijection<FirstType, SecondType>::existsSecond(const SecondType& second) co
 
 template <typename FirstType, typename SecondType> INLINE
 void Bijection<FirstType, SecondType>::insert(const FirstType& first, const SecondType& second) {
-  __firstToSecond.insert(first, second);
-  try {
-    __secondToFirst.insert(second, first);
-  } catch (DuplicateElement&) {
-    __firstToSecond.erase(first);
+  if(existsFirst(first) || existsSecond(second)) {
     GUM_ERROR( DuplicateElement,
 	       "the bijection contains an element with the same key" );
   }
+  __firstToSecond.insert(first, second);
+  __secondToFirst.insert(second, first);
 }
 
 template <typename FirstType, typename SecondType> INLINE
