@@ -180,22 +180,22 @@ public:
   void testRandomErase () {
     srand( time( NULL ) );
     gum::AVLSearchTree<int> tree;
-    std::vector<unsigned int> vect (1000);
+    std::vector<unsigned int> vect (4000);
 
-    for ( unsigned int i = 0; i < 1000; ++i )
+    for ( unsigned int i = 0; i < 4000; ++i )
       vect[i] = rand();
     
-    for ( unsigned int i = 0; i < 1000; ++i)
+    for ( unsigned int i = 0; i < 4000; ++i) {
       tree.insert ( i );
-
-    TS_ASSERT( tree.checkAVLStructure() == true );
-
-   for (unsigned int i = 0; i < 10; ++i) {
-     for (unsigned int j = 0; j < 1000; j+=10 ) {
-       tree.erase ( vect[i + j] );
-     }
-     TS_ASSERT( tree.checkAVLStructure() == true );
-   }
+      TS_ASSERT( tree.checkAVLStructure() == true );
+    }
+    
+    for (unsigned int i = 0; i < 10; ++i) {
+      for (unsigned int j = 0; j < 4000; j+=10 ) {
+        tree.erase ( vect[i + j] );
+        TS_ASSERT( tree.checkAVLStructure() == true );
+      }
+    }
   }
 
   void testEraseIterator () {
