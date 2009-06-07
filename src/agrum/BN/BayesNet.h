@@ -41,6 +41,8 @@
 #include <agrum/BN/variableNodeMap.h>
 // ============================================================================
 namespace gum {
+template<typename T_DATA>
+class BayesNetFactory;
 /**
  * @class BayesNet
  * @brief Class representing a Bayesian Network.
@@ -57,6 +59,7 @@ namespace gum {
  */
 template<typename T_DATA>
 class BayesNet: protected VariableNodeMap {
+  friend class BayesNetFactory<T_DATA>;
 
   public:
   // ===========================================================================
@@ -83,6 +86,23 @@ class BayesNet: protected VariableNodeMap {
      * Copy operator.
      */
     BayesNet<T_DATA>& operator=(const BayesNet<T_DATA>& source);
+
+    /// @}
+  // ===========================================================================
+  /// @name Getter and setters
+  // ===========================================================================
+    /// @{
+
+    /**
+     * Return the value of the property "name" of this BayesNet.
+     * @throw NotFound Raised if no "name" property is found.
+     */
+    const std::string& property(const std::string& name) const;
+
+    /**
+     * Add or change a property of this BayesNet.
+     */
+    void setProperty(const std::string& name, const std::string& value);
 
     /// @}
   // ===========================================================================
@@ -270,13 +290,9 @@ class BayesNet: protected VariableNodeMap {
 
   private:
 
-  // ===========================================================================
-  /// @name Illegal methods
-  // ===========================================================================
-    /// @{
-
-
-    /// @}
+    /// The properties of this BayesNet.
+    /// Initialized using a lazy instantiation.
+    mutable HashTable<std::string, std::string>* __propertiesMap;
 
     /// The DAG of this bayes net.
     DAG __dag;
@@ -290,6 +306,14 @@ class BayesNet: protected VariableNodeMap {
 
     /// The topology sequence of this bayes net.
     mutable Sequence<NodeId>* __topologicalOrder;
+
+    /// Return the properties of this BayesNet and initialize the hash table is
+    /// necessary.
+    HashTable<std::string, std::string>& __properties();
+
+    /// Return the properties of this BayesNet and initialize the hash table is
+    /// necessary.
+    const HashTable<std::string, std::string>& __properties() const;
 
     /// Add all the dag's root nodes in __topologicalOrder
     void __getRootTopologyLevel(NodeSet& uncheckedNodes) const;

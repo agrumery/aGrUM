@@ -17,42 +17,53 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+// ============================================================================
 #ifndef GUM_BIF_IO_H
 #define GUM_BIF_IO_H
-
+// ============================================================================
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+// ============================================================================
 #include <agrum/BN/io/BNIO.h>
+// ============================================================================
 #include <agrum/core/debug.h>
-
-
+// ============================================================================
+#include <agrum/BN/io/BIFparser/BIFDriver.h>
+// ============================================================================
 namespace gum {
-
-
-  /**
-   * @class BIFWriter
-   * @brief Writes a BayesNet in the BIF format.
-   * @ingroup bn_group
-   *
-   * This class servers to write the content of a Bayesian Network in
-   * the BIF format. See
-   * http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/Old/xmlbif02.html
-   * for information on this format.
-   *
-   */
-  template<typename T_DATA>
-  class BIFWriter: public BNWriter<T_DATA> {
+// ============================================================================
+/**
+ * @class BIFWriter
+ * @brief Writes a BayesNet in the BIF format.
+ * @ingroup bn_group
+ *
+ * This class servers to write the content of a Bayesian Network in
+ * the BIF format. See
+ * http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/Old/xmlbif02.html
+ * for information on this format.
+ *
+ */
+template<typename T_DATA>
+class BIFWriter: public BNWriter<T_DATA> {
   public:
+  // ==========================================================================
+  /// @name Constructor & destructor
+  // ==========================================================================
+  /// @{
+
     /**
      * Default constructor.
      */
     BIFWriter();
+
     /**
-     * Default destructor.
+     * Destructor.
      */
     virtual ~BIFWriter();
+
+  /// @}
 
     /**
      * Writes a Bayesian Network in the output stream using the BIF format.
@@ -86,20 +97,24 @@ namespace gum {
 
     // Returns the modalities labels of the variables in varsSeq
     std::string __variablesLabels( const Sequence<const DiscreteVariable*>& varsSeq,
-                                   const Instantiation& inst );
-  };
-
-
-  
-  /**
-   * @class
-   * @brief Pure virtual class for reading a BN from a file.
-   *
-   * Every class used to read the content of a Bayesian Network from a
-   * stream, or a file must be a subclass of BNReader.
-   */
-  class BIFReader: public BNReader {
+        const Instantiation& inst );
+};
+// ============================================================================
+/**
+ * @class
+ * @brief Pure virtual class for reading a BN from a file.
+ *
+ * Every class used to read the content of a Bayesian Network from a
+ * stream, or a file must be a subclass of BNReader.
+ */
+// ============================================================================
+class BIFReader: public BNReader {
   public:
+  // ==========================================================================
+  /// @name Constructor & destructor
+  // ==========================================================================
+  /// @{
+
     /**
      * Default constructor.
      */
@@ -110,19 +125,19 @@ namespace gum {
      */
     virtual ~BIFReader();
 
+  /// @}
+
     /**
-     * Reads a Bayesian Network from the file referenced by filePath.
-     * @return Returns the Bayesian Network represented in filePath or
-     * NULL if an error occured.
+     * Reads a Bayesian Network from the file referenced by filePath into`
+     * parameter bayesNet.
+     * @return Returns true if the parsing went well.
      */
-    virtual BayesNet<float>* read( std::string filePath );
-  };
-
-
+    virtual bool read( std::string filePath, BayesNet<double>* bayesNet );
+};
+// ============================================================================
 } /* namespace gum */
-
-
+// ============================================================================
 #include <agrum/BN/io/BIFIO.tcc>
-
-
+// ============================================================================
 #endif    // GUM_BIF_IO_H
+// ============================================================================

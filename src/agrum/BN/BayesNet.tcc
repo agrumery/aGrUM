@@ -29,7 +29,7 @@ namespace gum {
 // Default constructor
 template<typename T_DATA> INLINE
 BayesNet<T_DATA>::BayesNet():
-  VariableNodeMap(), __moralGraph(0), __topologicalOrder(0)
+  VariableNodeMap(), __propertiesMap(0), __moralGraph(0), __topologicalOrder(0)
 {
   GUM_CONSTRUCTOR( BayesNet );
   __topologicalOrder = new Sequence<NodeId>();
@@ -39,9 +39,12 @@ BayesNet<T_DATA>::BayesNet():
 // Copy constructor
 template<typename T_DATA> INLINE
 BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ):
-  VariableNodeMap( source ), __dag(source.dag()), __moralGraph(0), __topologicalOrder(0)
+  VariableNodeMap( source ), __propertiesMap(0), __dag(source.dag()), __moralGraph(0), __topologicalOrder(0)
 {
   GUM_CONSTRUCTOR( BayesNet );
+  if (source.__propertiesMap != 0) {
+    __propertiesMap = new HashTable<std::string, std::string>(*(source.__propertiesMap));
+  }
   Potential<T_DATA> *sourcePtr = 0;
   Potential<T_DATA> *copyPtr = 0;
   __moralGraph = new UndiGraph(*(source.__moralGraph));
@@ -82,6 +85,13 @@ template<typename T_DATA> INLINE
 BayesNet<T_DATA>&
 BayesNet<T_DATA>::operator=( const BayesNet<T_DATA>& source )
 {
+  // Removing previous properties
+  if (__propertiesMap != 0) {
+    delete __propertiesMap;
+  }
+  if (source.__propertiesMap != 0) {
+    __propertiesMap = new HashTable<std::string, std::string>(*(source.__propertiesMap));
+  }
   // Removing previous potentials
   for (HashTableIterator< NodeId, Potential<T_DATA>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter) {
     delete *iter;
@@ -109,6 +119,9 @@ template<typename T_DATA> INLINE
 BayesNet<T_DATA>::~BayesNet()
 {
   GUM_DESTRUCTOR( BayesNet );
+  if (__propertiesMap != 0) {
+    delete __propertiesMap;
+  }
   for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter = __probaMap.begin();
         iter != __probaMap.end();
         ++iter )
@@ -117,6 +130,32 @@ BayesNet<T_DATA>::~BayesNet()
   }
   delete __moralGraph;
   delete __topologicalOrder;
+}
+
+// Return the value of the property "name" of this BayesNet.
+// @throw NotFound Raised if no "name" property is found.
+template<typename T_DATA> INLINE
+const std::string&
+BayesNet<T_DATA>::property(const std::string& name) const
+{
+  try {
+    return (__properties())[name];
+  } catch (NotFound&) {
+    std::string msg = "The following property does not exists: ";
+    GUM_ERROR(NotFound, msg + name);
+  }
+}
+
+// Add or change a property of this BayesNet.
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::setProperty(const std::string& name, const std::string& value)
+{
+  try {
+    __properties()[name] = value;
+  } catch (NotFound&) {
+    __properties().insert(name, value);
+  }
 }
 
 // Add a variable, it's associate node and it's CPT
@@ -320,6 +359,30 @@ BayesNet<T_DATA>::getTopologicalOrder(bool clear) const
       __getNextTopologyLevel(nodeList);
   }
   return *__topologicalOrder;
+}
+
+// Return the properties of this BayesNet and initialize the hash table is
+// necessary.
+template<typename T_DATA> INLINE
+HashTable<std::string, std::string>&
+BayesNet<T_DATA>::__properties()
+{
+  if (__propertiesMap == 0) {
+    __propertiesMap = new HashTable<std::string, std::string>();
+  }
+  return *__propertiesMap;
+}
+
+// Return the properties of this BayesNet and initialize the hash table is
+// necessary.
+template<typename T_DATA> INLINE
+const HashTable<std::string, std::string>&
+BayesNet<T_DATA>::__properties() const
+{
+  if (__propertiesMap == 0) {
+    __propertiesMap = new HashTable<std::string, std::string>();
+  }
+  return *__propertiesMap;
 }
 
 // Add all the dag's root nodes in __topologicalOrder

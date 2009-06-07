@@ -27,13 +27,35 @@
 #ifndef GUM_BAYESNET_FACTORY_H
 #define GUM_BAYESNET_FACTORY_H
 // ============================================================================
-#include <agrum/core/sequence.h>
+#include <string>
+#include <vector>
 // ============================================================================
 #include <agrum/multidim/labelizedVariable.h>
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
+#include <agrum/BN/io/BIFparser/BIFDriver.h>
+// ============================================================================
 namespace gum {
+/**
+ * @class AbstractBayesNetFactory
+ * This class is used to implement the factory_state enumeration because
+ * Cpp is a pain in the ***.
+ */
+class AbstractBayesNetFactory {
+  public:
+    /**
+     * @brief The enumeration of states in which the factory can be in.
+     *
+     * Every documentation section's name indicates from which state you can
+     * call it's methods, and in which state it places the factory.
+     *
+     * There is an exception for the delegated CPT definition methods which do
+     * not changes the state of the factory.
+     */
+    typedef enum { NONE, NETWORK, VARIABLE, PARENTS, RAW_CPT, FACT_CPT, FACT_ENTRY}
+            factory_state;
+};
 /**
  * @class BayesNetFactory
  * @brief A factory class to ease BayesNet construction.
@@ -52,21 +74,8 @@ namespace gum {
  *
  */
 template<typename T_DATA>
-class BayesNetFactory {
+class BayesNetFactory :public AbstractBayesNetFactory {
   public:
-
-    /**
-     * @brief The enumeration of states in which the factory can be in.
-     *
-     * Every documentation section's name indicates from which state you can
-     * call it's methods, and in which state it places the factory.
-     *
-     * There is an exception for the delegated CPT definition methods which do
-     * not changes the state of the factory.
-     */
-    typedef enum { NONE, NETWORK, VARIABLE, PARENTS, RAW_CPT, FACT_CPT, FACT_ENTRY}
-            factory_state;
-
   // ==========================================================================
   /// @name Constructor & destructor.
   // ==========================================================================
@@ -74,7 +83,14 @@ class BayesNetFactory {
 
     /**
      * Default constructor.
+     */
+    BayesNetFactory();
+
+    /**
+     * Use this constructor if you want to use an already created BayesNet.
      * @param bn A pointer over the BayesNet filled by this factory.
+     * @throw DuplicateElement Raised if two variables in bn share the same
+     *                         name.
      */
     BayesNetFactory(BayesNet<T_DATA>* bn);
 
@@ -89,7 +105,15 @@ class BayesNetFactory {
      */
     BayesNetFactory(const BayesNetFactory<T_DATA>& source);
 
-    /// Destructor
+    /**
+     * @brief Destructor.
+     *
+     * To prevent strange behaviour you should always destroy a BayesNetFactory
+     * when it's state equals NONE.
+     *
+     * @throw FatalError Raised if the state of the factory prevents it to die
+     *                   peacefully.
+     */
     virtual ~BayesNetFactory();
 
     /// @}
@@ -107,6 +131,10 @@ class BayesNetFactory {
 
     /// Returns the current state of the factory.
     factory_state state() const;
+
+    /// Returns the NodeId of a variable given it's name.
+    /// @throw NotFound Raised if no variable matches the name.
+    NodeId variableId(const std::string& name) const;
 
     /// @}
   // ==========================================================================
@@ -143,6 +171,23 @@ class BayesNetFactory {
 
     /// Adds a modality to the current variable.
     void addModality(const std::string& name);
+
+    /**
+     * @brief Defines the implementation to use for var's Potential.
+     *
+     * @warning The implementation must be empty.
+     *
+     * @warning The pointer is always delegated to var's Potential! No copy of it
+     *          is made.
+     * @todo When copy of a MultiDimImplementation is available use a copy
+     *       behaviour for this method.
+     *
+     * @throw NotFound Raised if no variable matches var.
+     * @throw OperationNotAllowed Raised if impl is not empty.
+     * @throw OperationNotAllowed If an implementation is already defined for the
+     *                            current variable.
+     */
+    void setVariableCPTImplementation(MultiDimImplementation<T_DATA>* impl);
 
     /// Tells the factory that we're out of a variable declaration.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
@@ -197,7 +242,7 @@ class BayesNetFactory {
      *
      * @param rawTable The raw table.
      */
-    void rawConditionalTable(const Sequence<T_DATA>& rawTable);
+    void rawConditionalTable(const std::vector<T_DATA>& rawTable);
 
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
@@ -225,6 +270,7 @@ class BayesNetFactory {
     void setParentModality(const std::string& parent,
                            const std::string& modality);
 
+
     /**
      * @brief Gives the values of the variable with respect to precedent
      *        parents modality.
@@ -242,7 +288,7 @@ class BayesNetFactory {
      * // add parents
      * factory.endParentsDelclaration();
      * factory.startFactorizedProbabilityDeclaration("foo");
-     * Sequence<double> seq;
+     * std::vector<double> seq;
      * seq.insert(0.4); // if foo true
      * seq.insert(O.6); // if foo false
      * factory.setVariableValues(seq); // fills the table with a default value
@@ -252,7 +298,7 @@ class BayesNetFactory {
      * @throw OperationNotAllowed Raised if value's size is different than the number
      *                            of modalities of the current variable.
      */
-    void setVariableValues(const Sequence<double>& values);
+    void setVariableValues(const std::vector<T_DATA>& values);
 
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
@@ -265,18 +311,38 @@ class BayesNetFactory {
     /// @{
 
     /**
-     * @brief Define a variable's cpt.
+     * @brief Define a variable.
      *
-     * Default behaviour create a copy of table which is used in the constructed
-     * BayesNet.
+     * You can only call this method is the factory is in the NONE or NETWORK
+     * state.
+     *
+     * The variable is added by copy.
+     *
+     * @param var The pointer over a DiscreteVariable used to define a new
+     *            varialbe in the built BayesNet.
+     * @throw DuplicateElement Raised if a variable with the same name already
+     *                         exists.
+     * @throw OperationNotAllowed Raised if redefineParents == false and if table
+     *                            is not a valid CPT for var in the current state
+     *                            of the BayesNet.
+     */
+    void setVariable(const DiscreteVariable& var);
+
+    /**
+     * @brief Define a variable's CPT.
+     *
+     * You can only call this method if the factory is in the NONE or NETWORK
+     * state.
+     *
+     * Be careful that table is given to the built BayesNet, so it will be
+     * deleted with it, and you should not directly access it after you call
+     * this method.
      *
      * When the redefineParents flag is set to true the constructed BayesNet's
      * DAG is changed to fit with table's definition.
      *
      * @param var The name of the concerned variable.
      * @param table A pointer over the CPT used for var.
-     * @param reusePtr If true table is not copied and the pointer is delegated
-     *                 to var's BayesNet.
      * @param redefineParents If true redefine var's parents to match table's
      *                        variables set.
      *
@@ -285,24 +351,8 @@ class BayesNetFactory {
      *                            is not a valid CPT for var in the current state
      *                            of the BayesNet.
      */
-    void setVariableCPT(const std::string& var, Potential<T_DATA>* table,
-                        bool reusePtr=false, bool redefineParents=false);
-
-    /**
-     * @brief Defines the implementation to use for var's Potential.
-     *
-     * @warning The implementation must be empty.
-     *
-     * @warning The pointer is always delegated to var's Potential! No copy of it
-     *          is made.
-     * @todo When copy of a MultiDimImplementation is available use a copy
-     *       behaviour for this method.
-     *
-     * @throw NotFound Raised if no variable matches var.
-     * @throw OperationNotAllowed Raised if impl is not empty.
-     */
-    void setVariableCPTImplementation(const std::string& var,
-                                      MultiDimImplementation<T_DATA>* impl);
+    void setVariableCPT(const std::string& varName, Potential<T_DATA>* table,
+                        bool redefineParents=false);
 
     /// @}
 
@@ -313,16 +363,21 @@ class BayesNetFactory {
   // ==========================================================================
   /// @{
 
+    /// Depending on the context this flag is used for some VERY important reasons.
     bool __foo_flag;
 
+    /// Depending on the context this flag is used for some VERY important reasons.
     bool __bar_flag;
 
+    /// Just to keep track of strings between two start/end calls.
     std::vector<std::string> __stringBag;
 
+    /// Used when a factorized CPT is built.
     Instantiation* __parents;
 
-    //HashTable<std::string, Idx pos> __parentModals;
-
+    /// Implementation of variable between two
+    /// startVariableDeclaration/endVariableDeclaration calls.
+    MultiDimImplementation<T_DATA>* __impl;
 
   /// @}
 
@@ -348,6 +403,13 @@ class BayesNetFactory {
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
     Idx __checkVariableModality(const std::string& name, const std::string& mod);
+
+    /// Check if in __stringBag there is no other modality with the same name.
+    void __checkModalityInBag(const std::string& mod);
+
+    /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
+    /// respect to table.
+    void __setCPTAndParents(const DiscreteVariable& var, Potential<T_DATA>* table);
 
     /// Reset the different parts used to constructed the BayesNet.
     void __resetParts();

@@ -378,17 +378,17 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
       }
     }
 
-//    void testBarley() {
-//      std::string file = GET_PATH_STR( Barley.bif );
-//      gum::BIFReader reader;
-//      gum::BayesNet<float> *net=NULL;
-//
-//      try {
-//        TS_GUM_ASSERT_THROWS_NOTHING(net = reader.read( file ));
-//      } catch ( gum::SyntaxError ) {};
-//
-//      if ( net ) delete net;
-//    }
+    void testBarley() {
+      std::string file = GET_PATH_STR( Barley.bif );
+      gum::BIFReader reader;
+      gum::BayesNet<float> *net=NULL;
+
+      try {
+        TS_GUM_ASSERT_THROWS_NOTHING(net = reader.read( file ));
+      } catch ( gum::SyntaxError ) {};
+
+      if ( net ) delete net;
+    }
 
     void testUnexisting() {
       std::string file = "Schmurtz";

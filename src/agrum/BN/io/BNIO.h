@@ -110,10 +110,11 @@ namespace gum {
     virtual ~BNReader();
 
     /**
-     * Reads a Bayesian Network from the file referenced by filePath.
-     * @return Returns the Bayesian Network represented in filePath.
+     * Reads a Bayesian Network from the file referenced by filePath into`
+     * parameter bayesNet.
+     * @return Returns true if the parsing went well.
      */
-    virtual BayesNet<float>* read( std::string filePath ) =0;
+    virtual bool read( std::string filePath, BayesNet<double>* bayesNet ) =0;
   };
 
 
