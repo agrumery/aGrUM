@@ -861,6 +861,14 @@ namespace gum {
   }
 
   // ==============================================================================
+  /// erases the element of the List pointed to by the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  void List<Val>::erase( const iterator& iter ) {
+    _erase ( iter.__getBucket() );
+  }
+
+  // ==============================================================================
   /// erases all the elements encountered with a given value
   // ==============================================================================
   template <typename Val> INLINE

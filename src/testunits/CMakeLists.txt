@@ -34,13 +34,16 @@ link_directories(${AGRUM_BINARY_DIR}/lib})
 # file(GLOB AGRUM_TESTS *Suite.h)
 file(GLOB AGRUM_TESTS
  ArcTestSuite.h
- AVLTestSuite.h
+ AVLSearchTreeTestSuite.h
  BayesBallsTestSuite.h
  BayesNetGeneratorTestSuite.h
  BayesNetTestSuite.h
  BijectionTestSuite.h
 # BIFReaderTestSuite.h # <---- ERROR
-#BIFWriterTestSuite.h
+# BIFWriterTestSuite.h
+ BinTreeNodeTestSuite.h
+ BinTreeNode4AVLTestSuite.h
+ BinSearchTreeTestSuite.h
  CliqueGraphTestSuite.h
  CompareInferencesTestSuite.h
  CrossMultiDimTestSuite.h
@@ -59,6 +62,7 @@ file(GLOB AGRUM_TESTS
  LabelizedVariableTestSuite.h
  LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
  ListBaseTestSuite.h
+ ListTestSuite.h
  MixedGraphTestSuite.h
  MultiDimAggregatorTestSuite.h
  MultiDimBucketTestSuite.h

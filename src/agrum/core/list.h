@@ -84,6 +84,10 @@
  * for (List<int>::iterator iter = list2.rbegin(); iter != list2.rend(); --iter)
  *   cerr << *iter << endl;
  *
+ * // use an iterator to point the element we wish to erase
+ * List<int>::iterator iter = list2.begin();
+ * List2.erase ( iter );
+ *
  * // map a list into another list (assuming function f is defined as
  * // float f (int x) { return (2.5 * x); } )
  * List<float> flist = list2.map (f);
@@ -362,9 +366,8 @@ namespace gum {
 
     // ============================================================================
     /// erases the ith element of the List (the first one is in position 0)
-    /** If no element equal to \e val can be found, the function
-     * returns without throwing any exception. It runs in linear time in
-     * the size of the list.
+    /** If the ith element cannot be found, the function returns without throwing
+     * any exception. It runs in linear time in the size of the list.
      * @param i the position in the list of the element we wish to remove. */
     // ============================================================================
     void erase( unsigned int i );
@@ -630,6 +633,10 @@ namespace gum {
    * for (List<int>::iterator iter = list2.rbegin(); iter != list2.rend(); --iter)
    *   cerr << *iter << endl;
    *
+   * // use an iterator to point the element we wish to erase
+   * List<int>::iterator iter = list2.begin();
+   * List2.erase ( iter );
+   *
    * // map a list into another list (assuming function f is defined as
    * // float f (int x) { return (2.5 * x); } )
    * List<float> flist = list2.map (f);
@@ -796,12 +803,19 @@ namespace gum {
 
     // ============================================================================
     /// erases the ith element of the List (the first one is in position 0)
-    /** If no element equal to \e val can be found, the function
-     * returns without throwing any exception. It runs in linear time in
-     * the size of the list.
+    /** If the element cannot be found, the function returns without throwing any
+     * exception. It runs in linear time in the size of the list.
      * @param i the position in the list of the element we wish to remove. */
     // ============================================================================
     void erase( unsigned int i );
+
+    // ============================================================================
+    /// erases the element of the List pointed to by the iterator
+    /** If the element cannot be found, i.e., it has already been erased or the
+     * iterator points to end/rend, the function returns without throwing any
+     * exception. It runs in linear time in the size of the list. */
+    // ============================================================================
+    void erase( const iterator& iter );
 
     // ============================================================================
     /// erases the first element encountered with a given value

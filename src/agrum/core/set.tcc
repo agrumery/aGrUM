@@ -34,7 +34,7 @@ namespace gum {
 
   /// default constructor: the iterator points toward nothing
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( ) {
+  SetIterator<KEY>::SetIterator( ) : __ht_iter() {
     GUM_CONSTRUCTOR( SetIterator );
   }
 

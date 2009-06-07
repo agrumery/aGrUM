@@ -54,21 +54,25 @@ namespace gum {
    *   set<<i;
    *
    * // parse the set
-   * for (Set<int>::iterator iter = table.begin ();
-   *        iter != table.end (); ++iter) {
+   * for (Set<int>::iterator iter = set.begin ();
+   *        iter != set.end (); ++iter) {
    *   // display the values
    *   cerr <<  *iter << endl;
    * }
    *
-   * // parse the hash table in the other direction
-   * for (Set<int>::iterator iter = table.rbegin ();
-   *        iter != table.rend (); --iter)
+   * // parse the set in the other direction
+   * for (Set<int>::iterator iter = set.rbegin ();
+   *        iter != set.rend (); --iter)
    *   cerr <<  *iter << endl;
    *
+   * // use an iterator to point the element we wish to erase
+   * Set<int>::iterator iter = set.rbegin ();
+   * set.erase ( iter );
+   *
    * // check whether two iterators point toward the same element
-   * Set<int>::iterator iter1 = table1.begin();
-   * Set<int>::iterator iter2 = table1.rbegin();
-   * if (iter1 != iter)
+   * Set<int>::iterator iter1 = set.begin();
+   * Set<int>::iterator iter2 = set.rbegin();
+   * if (iter1 != iter2)
    *   cerr << "iter1 and iter2 point toward different elements";
    *
    * @endcode

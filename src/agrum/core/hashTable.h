@@ -81,6 +81,10 @@
  *       iter != table1.end(); ++iter)
  *   cerr << *iter;
  *
+ * // use an iterator to point the element we wish to erase
+ * HashTable<int,string>::iterator iter = table1.begin();
+ * table1.erase ( iter );
+ *
  * // check for iterator's safety
  * for (HashTable<int,string>::iterator iter = table1.begin();
  *       iter != table1.end(); ++iter)
@@ -367,6 +371,10 @@ namespace gum {
    * for (HashTable<int,string>::iterator iter = table1.begin();
    *       iter != table1.end(); ++iter)
    *   cerr << *iter;
+   *
+   * // use an iterator to point the element we wish to erase
+   * HashTable<int,string>::iterator iter = table1.begin();
+   * table1.erase ( iter );
    *
    * // check for iterator's safety
    * for (HashTable<int,string>::iterator iter = table1.begin();
