@@ -206,6 +206,7 @@ namespace gum {
         node->leftChild() ? node->leftChild()->__height : 0;
       unsigned int right_height =
         node->rightChild() ? node->rightChild()->__height : 0;
+      unsigned int old_height = node->__height;
       node->__height = 1 + std::max ( left_height, right_height );
 
       // check whether we need a single or a double rotation
@@ -230,12 +231,18 @@ namespace gum {
           right_child->__rightRotation ();
         node = node->__leftRotation ();
       }
-
+      // we need not rebalance the tree here. If, in addition, the height did
+      // not change, then there is no need to rebalance the ancestors. Hence
+      // we return 0 to indicate that the root has not changed
+      else if ( node->__height == old_height ) {
+        return 0;
+      }
+      
       // ok, here "node" is the root of a balanced tree. Now we need to check
       // whether the ancestors are well balanced
       root = node;
       node = node->parent();
-    }
+    } 
 
     // return the current root of the tree
     return root;
@@ -420,7 +427,8 @@ namespace gum {
         // node's destructor.
         Node* parent = node->parent ();
         delete node;
-        BinSearchTree<Val,Cmp,Node>::_root = parent->__balance ();
+        Node* new_root = parent->__balance ();
+        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
       }
     }
     // if there is just a right child
@@ -439,7 +447,8 @@ namespace gum {
         node->eraseRightLink ();
         parent->insertChild ( *child, dir );
         delete node;
-        BinSearchTree<Val,Cmp,Node>::_root = parent->__balance ();
+        Node* new_root = parent->__balance ();
+        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
       }
     }
     // if there is just a left child
@@ -458,7 +467,8 @@ namespace gum {
         node->eraseLeftLink ( );
         parent->insertChild ( *child, dir );
         delete node;
-        BinSearchTree<Val,Cmp,Node>::_root = parent->__balance ();
+        Node* new_root = parent->__balance ();
+        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
       }
     }
     // ok, here there are two children
@@ -490,7 +500,11 @@ namespace gum {
           parent->eraseLink ( par_dir );
           parent->insertChild ( *successor, par_dir );
         }
-        BinSearchTree<Val,Cmp,Node>::_root = successor->__balance ();
+        Node* new_root = successor->__balance ();
+        if ( new_root )
+          BinSearchTree<Val,Cmp,Node>::_root = new_root;
+        else if ( BinSearchTree<Val,Cmp,Node>::_root == node )
+          BinSearchTree<Val,Cmp,Node>::_root = successor;
       }
       else { // proceed to case 2:
         Node *parent = successor->parent ();
@@ -501,6 +515,7 @@ namespace gum {
           parent->insertLeftChild ( *succ_child );
         }
         Node *left = node->leftChild (), *right = node->rightChild();
+        successor->__height = node->__height;
         node->eraseLeftLink ();
         node->eraseRightLink ();
         successor->insertLeftChild ( *left );
@@ -512,7 +527,11 @@ namespace gum {
           the_parent->eraseLink ( par_dir );
           the_parent->insertChild ( *successor, par_dir );
         }
-        BinSearchTree<Val,Cmp,Node>::_root = parent->__balance ();
+        Node* new_root = parent->__balance ();
+        if ( new_root )
+          BinSearchTree<Val,Cmp,Node>::_root = new_root;
+        else if ( BinSearchTree<Val,Cmp,Node>::_root == node )
+          BinSearchTree<Val,Cmp,Node>::_root = successor;
       }
       // now we shall physically remove node from memory
       delete node;
@@ -552,8 +571,13 @@ namespace gum {
     Node* new_node = BinSearchTree<Val,Cmp,Node>::_insert ( val );
 
     // balance the tree and update its root
-    BinSearchTree<Val,Cmp,Node>::_root = new_node->__balance ();
-    
+    if ( new_node->parent() ) {
+      Node* new_root = new_node->parent()->__balance ();
+      if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
+    }
+    else {
+      BinSearchTree<Val,Cmp,Node>::_root = new_node;
+    }
     return new_node;
   }
 

@@ -312,7 +312,9 @@ namespace gum {
      * old nodes. We assume in this function that:
      * # before insertions/removals, the tree is AVL
      * # when inserting new nodes, those have no children
-     * As such, these restrictions hold in binary serach trees. */
+     * As such, these restrictions hold in binary search trees.
+     * @return Either the new root of the whole tree if this one may have changed
+     * or 0 if we are certain that the new root equals the old root. */
     // ============================================================================
     BinTreeNode4AVL<Val>* __balance ();
 
