@@ -68,6 +68,7 @@ file(GLOB AGRUM_TESTS
  MultiDimBucketTestSuite.h
  MultiDimNoisyORTestSuite.h
  MultiDimTestSuite.h
+  NancyTestSuite.h
  PotentialTestSuite.h
  RangeVariableTestSuite.h
  RefPtrTestSuite.h

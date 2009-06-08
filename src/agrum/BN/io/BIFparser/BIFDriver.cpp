@@ -36,7 +36,7 @@ namespace gum_bif {
 // @param bayesNet A pointer over the BayesNet used by the factory. It can
 //                 be a non-empty BayesNet.
 BIFDriver::BIFDriver(gum::BayesNet<double>* bayesNet):
-  __factory(new gum::BayesNetFactory<double>(bayesNet))
+  __factory(new gum::BayesNetFactory<double>(bayesNet)),__traceScanning(false),__traceParsing(false)
 {
   GUM_CONSTRUCTOR( BIFDriver );
 }

@@ -36,7 +36,7 @@
 #undef yyFlexLexer
 #endif // __FLEX_LEXER_H
 // ============================================================================
-#include <agrum/BN/io/BIFparser/BIFParser.hpp>
+#include <agrum/BN/io/BIFparser/generated/BIFParser.hpp>
 // ============================================================================
 namespace gum_bif
 // ============================================================================
@@ -77,7 +77,7 @@ namespace gum_bif
       /// @{
       // ======================================================================
       /**
-       * Performs the same role as yylex() does for ordinary flex scanners: it 
+       * Performs the same role as yylex() does for ordinary flex scanners: it
        * scans the input stream, consuming tokens, until a rule's action return
        * a value.
        */

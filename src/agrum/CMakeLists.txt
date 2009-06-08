@@ -5,7 +5,7 @@ file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR}/agrum/ *.inl)
 file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR}/agrum/ *.tcc)
 
 ## macro in src/cmake/FlexBison.cmake
-## FlexBisonTarget(BIFparser BN/io parseBIF)
+FlexBisonCppTarget(BIFparser BN/io BIF)
 FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
 
 ###################################################################################
