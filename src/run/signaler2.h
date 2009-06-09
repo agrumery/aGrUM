@@ -10,6 +10,7 @@ namespace gum {
 
     class BasicEmitter2 {
       public:
+      virtual ~BasicEmitter2() { }
         virtual Listener* getdest() const = 0;
         virtual void notify( const void *,type1,type2 ) = 0;
         virtual BasicEmitter2<type1,type2>* clone() = 0;
