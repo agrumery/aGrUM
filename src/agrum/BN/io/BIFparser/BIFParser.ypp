@@ -152,7 +152,8 @@ DeclarationUnit:
 VariableUnit:
   { driver.factory().startVariableDeclaration(); }
   VariableDeclaration TOK_BEG_CURLY VariableContent TOK_END_CURLY
-  { driver.factory().endVariableDeclaration(); }
+  { try { driver.factory().endVariableDeclaration(); }
+    catch (gum::OperationNotAllowed& e) { error(@$, e.getContent()); } }
   ;
 
 VariableDeclaration:

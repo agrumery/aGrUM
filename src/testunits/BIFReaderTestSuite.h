@@ -305,81 +305,124 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
 
     void testAlarm() {
       std::string file = GET_PATH_STR( alarm.bif );
-      gum::BIFReader reader;
       gum::BayesNet<double> *net = new gum::BayesNet<double>();
+      gum_bif::BIFDriver driver(net);
+      //driver.traceParsing(true);
+      TS_GUM_ASSERT_THROWS_NOTHING(driver.parseFile(file));
 
-      try {
-        reader.read(file, net);
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
+      gum::HashTable<std::string, gum::Id> idMap;
+
+      for ( gum::NodeSetIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
+        idMap.insert( net->variable(*iter).name(), *iter);
       }
 
-      TS_ASSERT( net != 0 );
+      // The node wich we'll test
+      TS_ASSERT( idMap.exists( "HISTORY" ) );
+      // It's parent
+      TS_ASSERT( idMap.exists( "LVFAILURE" ) );
 
-      if ( net != 0 ) {
-        gum::HashTable<std::string, gum::Id> idMap;
-
-        for ( gum::NodeSetIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
-          idMap.insert( net->variable(*iter).name(), *iter);
-        }
-
-        try {
-          // The node wich we'll test
-          TS_ASSERT( idMap.exists( "HISTORY" ) );
-          // It's parent
-          TS_ASSERT( idMap.exists( "LVFAILURE" ) );
-
-          const gum::DiscreteVariable &history = net->variable( idMap["HISTORY"] );
-          TS_ASSERT_EQUALS( history.domainSize(), ( gum::Size )2 );
-          TS_ASSERT_EQUALS( history.label( 0 ), "TRUE" );
-          TS_ASSERT_EQUALS( history.label( 1 ), "FALSE" );
-          TS_ASSERT( net->dag().existsArc( idMap["LVFAILURE"], idMap["HISTORY"] ) );
-          const gum::Potential<double> &historyCPT = net->cpt( idMap["HISTORY"] );
-          TS_ASSERT_EQUALS( historyCPT.domainSize(),( gum::Size ) 4 );
-          TS_ASSERT( historyCPT.contains( net->variable( idMap["HISTORY"] ) ) );
-          TS_ASSERT( historyCPT.contains( net->variable( idMap["LVFAILURE"] ) ) );
-          gum::Instantiation historyInst( historyCPT );
-          // (TRUE | TRUE)
-          historyInst.chgVal( history, 0 );
-          historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-          TS_ASSERT( abs( historyCPT[historyInst] - 0.9 ) < 0.0001 );
-          // (FALSE | TRUE)
-          historyInst.chgVal( history, 1 );
-          historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
-          TS_ASSERT( abs( historyCPT[historyInst] - 0.1 ) < 0.0001 );
-          // (TRUE | FALSE)
-          historyInst.chgVal( history, 0 );
-          historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-          TS_ASSERT( abs( historyCPT[historyInst] - 0.01 ) < 0.0001 );
-          // (FALSE | FALSE)
-          historyInst.chgVal( history, 1 );
-          historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
-          TS_ASSERT( abs( historyCPT[historyInst] - 0.99 ) < 0.0001 );
-
-
-          // The node wich we'll test
-          TS_ASSERT( idMap.exists( "ERRLOWOUTPUT" ) );
-          // It's Children
-          TS_ASSERT( idMap.exists( "HRBP" ) );
-          const gum::DiscreteVariable &errlowoutput = net->variable( idMap["ERRLOWOUTPUT"] );
-          TS_ASSERT_EQUALS( errlowoutput.domainSize(), ( gum::Size )2 );
-          TS_ASSERT_EQUALS( errlowoutput.label( 0 ), "TRUE" );
-          TS_ASSERT_EQUALS( errlowoutput.label( 1 ), "FALSE" );
-          TS_ASSERT( net->dag().existsArc( idMap["ERRLOWOUTPUT"], idMap["HRBP"] ) );
-          const gum::Potential<double> &errlowoutputCPT = net->cpt( idMap["ERRLOWOUTPUT"] );
-          TS_ASSERT_EQUALS( errlowoutputCPT.domainSize(),( gum::Size ) 2 );
-          TS_ASSERT( errlowoutputCPT.contains( errlowoutput ) );
-          gum::Instantiation errlowoutputInst( errlowoutputCPT );
-          errlowoutputInst.chgVal( errlowoutput, 0 );
-          TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.05 ) < 0.001 );
-          errlowoutputInst.chgVal( errlowoutput, 1 );
-          TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95 ) < 0.001 );
-
-        } catch ( gum::Exception &e ) {
-          TS_ASSERT( false );
-        }
-        delete net;
+      if ( idMap.exists("HISTORY") and idMap.exists("LVFAILURE") ) {
+        const gum::DiscreteVariable &history = net->variable( idMap["HISTORY"] );
+        TS_ASSERT_EQUALS( history.domainSize(), ( gum::Size )2 );
+        TS_ASSERT_EQUALS( history.label( 0 ), "TRUE" );
+        TS_ASSERT_EQUALS( history.label( 1 ), "FALSE" );
+        TS_ASSERT( net->dag().existsArc( idMap["LVFAILURE"], idMap["HISTORY"] ) );
+        const gum::Potential<double> &historyCPT = net->cpt( idMap["HISTORY"] );
+        TS_ASSERT_EQUALS( historyCPT.domainSize(),( gum::Size ) 4 );
+        TS_ASSERT( historyCPT.contains( net->variable( idMap["HISTORY"] ) ) );
+        TS_ASSERT( historyCPT.contains( net->variable( idMap["LVFAILURE"] ) ) );
+        gum::Instantiation historyInst( historyCPT );
+        // (TRUE | TRUE)
+        historyInst.chgVal( history, 0 );
+        historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.9 ) < 0.0001 );
+        // (FALSE | TRUE)
+        historyInst.chgVal( history, 1 );
+        historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 0 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.1 ) < 0.0001 );
+        // (TRUE | FALSE)
+        historyInst.chgVal( history, 0 );
+        historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.01 ) < 0.0001 );
+        // (FALSE | FALSE)
+        historyInst.chgVal( history, 1 );
+        historyInst.chgVal( net->variable( idMap["LVFAILURE"] ), 1 );
+        TS_ASSERT( abs( historyCPT[historyInst] - 0.99 ) < 0.0001 );
       }
+
+      // The node wich we'll test
+      TS_ASSERT( idMap.exists( "ERRLOWOUTPUT" ) );
+      // It's Children
+      TS_ASSERT( idMap.exists( "HRBP" ) );
+      if ( idMap.exists("ERRLOWOUTPUT") and idMap.exists("HRBP") ) {
+        const gum::DiscreteVariable &errlowoutput = net->variable( idMap["ERRLOWOUTPUT"] );
+        TS_ASSERT_EQUALS( errlowoutput.domainSize(), ( gum::Size )2 );
+        TS_ASSERT_EQUALS( errlowoutput.label( 0 ), "TRUE" );
+        TS_ASSERT_EQUALS( errlowoutput.label( 1 ), "FALSE" );
+        TS_ASSERT( net->dag().existsArc( idMap["ERRLOWOUTPUT"], idMap["HRBP"] ) );
+        const gum::Potential<double> &errlowoutputCPT = net->cpt( idMap["ERRLOWOUTPUT"] );
+        TS_ASSERT_EQUALS( errlowoutputCPT.domainSize(),( gum::Size ) 2 );
+        TS_ASSERT( errlowoutputCPT.contains( errlowoutput ) );
+        gum::Instantiation errlowoutputInst( errlowoutputCPT );
+        errlowoutputInst.chgVal( errlowoutput, 0 );
+        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.05 ) < 0.001 );
+        errlowoutputInst.chgVal( errlowoutput, 1 );
+        TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95 ) < 0.001 );
+      }
+
+      // The nide wich we'll test
+      TS_ASSERT( idMap.exists( "LVEDVOLUME" ) );
+      // It's parents
+      TS_ASSERT( idMap.exists( "HYPOVOLEMIA" ) );
+      TS_ASSERT( idMap.exists( "LVFAILURE" ) );
+      if ( idMap.exists( "LVEDVOLUME" )  and
+           idMap.exists( "HYPOVOLEMIA" ) and
+           idMap.exists( "LVFAILURE" ) )
+      {
+        const gum::DiscreteVariable& lvedvolume = net->variable( idMap["LVEDVOLUME"] );
+        const gum::DiscreteVariable& hypovolemia = net->variable( idMap["HYPOVOLEMIA"] );
+        const gum::DiscreteVariable& lvfailure = net->variable( idMap["LVFAILURE"] );
+        // checking label order
+        TS_ASSERT_EQUALS( lvedvolume.label( 0 ), "LOW" );
+        TS_ASSERT_EQUALS( lvedvolume.label( 1 ), "NORMAL" );
+        TS_ASSERT_EQUALS( lvedvolume.label( 2 ), "HIGH" );
+        TS_ASSERT_EQUALS( hypovolemia.label( 0 ), "TRUE" );
+        TS_ASSERT_EQUALS( hypovolemia.label( 1 ), "FALSE" );
+        TS_ASSERT_EQUALS( lvfailure.label( 0 ), "TRUE" );
+        TS_ASSERT_EQUALS( lvfailure.label( 1 ), "FALSE" );
+        const gum::Potential<double>& cpt = net->cpt( idMap["LVEDVOLUME"] );
+        gum::Instantiation inst(cpt);
+        gum::Instantiation var_inst; var_inst << lvedvolume;
+        inst.chgVal(hypovolemia, 0);
+        inst.chgVal(lvfailure, 0);
+        double array_1[] = {0.95, 0.04, 0.01};
+        size_t i = 0;
+        for (inst.setFirstIn(var_inst); ! inst.end(); inst.incIn(var_inst), ++i) {
+          TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001);
+        }
+        inst.chgVal(hypovolemia, 1);
+        inst.chgVal(lvfailure, 0);
+        double array_2[] = {0.98, 0.01, 0.01};
+        i = 0;
+        for (inst.setFirstIn(var_inst); ! inst.end(); inst.incIn(var_inst), ++i) {
+          TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001);
+        }
+        inst.chgVal(hypovolemia, 0);
+        inst.chgVal(lvfailure, 1);
+        double array_3[] = {0.01, 0.09, 0.9};
+        i = 0;
+        for (inst.setFirstIn(var_inst); ! inst.end(); inst.incIn(var_inst), ++i) {
+          TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001);
+        }
+        inst.chgVal(hypovolemia, 1);
+        inst.chgVal(lvfailure, 1);
+        double array_4[] = {0.05, 0.9, 0.05};
+        i = 0;
+        for (inst.setFirstIn(var_inst); ! inst.end(); inst.incIn(var_inst), ++i) {
+          TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001);
+        }
+      }
+      delete net;
     }
 
     void testBarley() {

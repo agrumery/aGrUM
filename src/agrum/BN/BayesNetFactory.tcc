@@ -241,15 +241,9 @@ BayesNetFactory<T_DATA>::endVariableDeclaration()
 {
   if (state() != VARIABLE) {
     __illegalStateError("endVariableDeclaration");
-  } else if ( (__foo_flag && (! __bar_flag) && __stringBag.size() > 2) ||
-              (__foo_flag && __bar_flag && __stringBag.size() > 3) )
-  {
-    LabelizedVariable* var = 0;
-    if (__bar_flag) {
-      var = new LabelizedVariable(__stringBag[0], __stringBag[1], 0);
-    } else {
-      var = new LabelizedVariable(__stringBag[0], "", 0);
-    }
+  } else if (__foo_flag and (__stringBag.size() > 3) ) {
+    LabelizedVariable* var =
+      new LabelizedVariable(__stringBag[0], (__bar_flag)?__stringBag[1]:"", 0);
     for (size_t i = 2; i < __stringBag.size(); ++i) {
       var->addLabel(__stringBag[i]);
     }
@@ -263,8 +257,16 @@ BayesNetFactory<T_DATA>::endVariableDeclaration()
     __resetParts();
     __states.pop_back();
   } else {
-    GUM_ERROR(OperationNotAllowed, "Not enough elements defined to end variable "
-                                   "declaration.");
+    std::stringstream msg;
+    msg << "Not enough modalities (";
+    if (__stringBag.size() > 2) { msg << __stringBag.size() - 2; }
+    else { msg << 0; }
+    msg << ") declared for variable ";
+    if (__foo_flag) { msg << __stringBag[0]; }
+    else { msg << "unknown"; }
+    __resetParts();
+    __states.pop_back();
+    GUM_ERROR(OperationNotAllowed, msg.str());
   }
 }
 
@@ -563,7 +565,8 @@ BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
       Instantiation var_inst;
       var_inst << var;
       for (var_inst.setFirst(); ! var_inst.end(); ++var_inst) {
-        for (inst.setFirstOut(var_inst); ! inst.end(); ++inst) {
+        inst.chgValIn(var_inst);
+        for (inst.setFirstOut(var_inst); ! inst.end(); inst.incOut(var_inst)) {
           (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
         }
       }
