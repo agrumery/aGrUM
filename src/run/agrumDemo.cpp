@@ -19,57 +19,85 @@
 ***************************************************************************/
 
 #include <iostream>
-
+#include "signaler0.h"
+#include "signaler2.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/BN/bayesNet.h>
-#include <agrum/BN/io/BIFIO.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 
+class A {
+    std::string _label;
 
-#define GET_PATH_STR(x) ("src/testunits/resources/" #x)
+  public:
+    gum::Signaler0 onAddNode;
+    gum::Signaler2<int,std::string> onChangeLabel;
 
-void f( std::string n ) {
-  GUM_TRACE( n+" en cours " );
+    A( std::string s ) : _label( s ) {}
 
-  gum::BIFReader b;
-  gum::BayesNet<float>* bn=b.read( n );
+    const std::string& label() const { return _label;}
 
-  gum::LazyPropagation<float> inf( *bn );
-  // gum::ShaferShenoyInference<float> inf( *bn );
-  inf.makeInference();
+    void addNode() { GUM_EMIT0( this,onAddNode );}
 
-  const gum::Potential<float>& xxx = inf.marginal (2);
+    void changeLabel( int id,std::string s ) { GUM_EMIT2( this,onChangeLabel,id,s );_label=s;}
+};
 
-  delete( bn );
+class B : public gum::Listener {
+  public:
+    void nodeAdded( const void* v ) {
+      const A* source=static_cast<const A*>( v );
+      std::cout<<"in "<<source->label()<<": node  added ..."<<std::endl;
+    }
 
-  GUM_TRACE( n+" OK" );
+    void labelChanged( const void* v,int i,std::string s ) {
+      const A* source=static_cast<const A*>( v );
+      std::cout<<"in "<<source->label()<<": label '"<<s <<"' changed  for id "<<i<<"..."<<std::endl;
+    }
+};
 
+class C : public gum::Listener {
+  public:
+    void f( const void* v,int i,std::string s ) {
+      std::cout<<v<<" "<<i<<" "<<s<<std::endl;
+    }
+};
+
+void f( void ) {
+  A x( "x" );
+  A Y( "y" );
+
+  B gui;
+
+  //  GUM_CONNECT(sender,signal,receiver,slot)
+  GUM_CONNECT( x,onAddNode,gui,B::nodeAdded );
+  GUM_CONNECT( x,onChangeLabel,gui,B::labelChanged );
+
+  std::cout<<std::endl<<"******"<<std::endl;
+  x.addNode();
+
+  {
+    C anonymous;
+    GUM_CONNECT( x,onChangeLabel, anonymous,C::f );
+
+    std::cout<<std::endl<<"******"<<std::endl;
+    x.changeLabel( 1,"my new label" );
+  }
+
+  // anonymous has been destroyed. He should not listen anymore.
+
+  std::cout<<std::endl<<"******"<<std::endl;
+  x.addNode();
+
+  std::cout<<std::endl<<"******"<<std::endl;
+
+  // it is possible to directly emit a signal (is it a feature or a bug ?)
+  GUM_EMIT2( &x,onChangeLabel,1,"toto" );
+
+  std::cout<<std::endl<<"******"<<std::endl;
 }
-int main( void ) {
-  try {
-    /*
-    f( GET_PATH_STR(Barley.bif) );
-    f( GET_PATH_STR(alarm.bif) );
-    f( GET_PATH_STR(carpo.bif) );
-    f( GET_PATH_STR(Pigs.bif) );
-    f( GET_PATH_STR(Water.bif) );
-    f( GET_PATH_STR(Link.bif) );
-    f( GET_PATH_STR(Mildew.bif) );
-    f( GET_PATH_STR(Munin1.bif) );
-    f( GET_PATH_STR(hailfinder.bif) );
-    */
-    f( GET_PATH_STR(Diabetes.bif) );
-    /*
-    f( GET_PATH_STR(insurance.bif) );
-    */
-  }
-  catch ( gum::Exception& e ) {
-    GUM_SHOWERROR( e );
-  }
-  
-  return 0;
+
+int main( void) {
+  f();
+
+  gum::__atexit();
 }
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
