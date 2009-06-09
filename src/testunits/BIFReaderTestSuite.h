@@ -24,6 +24,7 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIFIO.h>
+#include <agrum/BN/io/BIFparser/BIFDriver.h>
 
 
 #define GET_PATH_STR(x) ("../../../src/testunits/resources/" #x)
@@ -39,7 +40,7 @@
 class BIFReaderTestSuite: public CxxTest::TestSuite {
   public:
     void testConstuctor() {
-      gum::BIFReader *reader=NULL;
+      gum::BIFReader *reader=0;
       TS_GUM_ASSERT_THROWS_NOTHING( reader = new gum::BIFReader() );
       TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
     }
@@ -47,12 +48,18 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     void testRead_file1() {
       std::string file = GET_PATH_STR( BIFReader_file1.txt );
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING( net = reader.read( file ) );
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
 
-      TS_ASSERT( net != NULL );
+      gum_bif::BIFDriver driver(net);
+      //driver.traceScanning(true);
+      driver.traceParsing(false);
 
-      if ( net != NULL ) {
+      TS_GUM_ASSERT_THROWS_NOTHING(driver.parseFile(file));
+      //TS_GUM_ASSERT_THROWS_NOTHING( reader.read(file, net) );
+
+      TS_ASSERT( net != 0 );
+
+      if ( net != 0 ) {
         TS_ASSERT( net->empty() );
         delete net;
       }
@@ -61,12 +68,15 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     void testRead_file2() {
       std::string file = GET_PATH_STR( BIFReader_file2.txt );
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING( net = reader.read( file ) );
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
+      //TS_GUM_ASSERT_THROWS_NOTHING(reader.read(file, net) );
+      //
+      gum_bif::BIFDriver driver(net);
+      TS_GUM_ASSERT_THROWS_NOTHING(driver.parseFile(file));
 
-      TS_ASSERT( net != NULL );
+      TS_ASSERT( net != 0 );
 
-      if ( net != NULL ) {
+      if ( net != 0 ) {
         TS_ASSERT_EQUALS( net->size(), ( gum::Size )2 );
         gum::NodeId node_1=0, node_2=0;
 
@@ -81,7 +91,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
 
         TS_ASSERT_EQUALS( var_1.name(), "1" );
         TS_ASSERT_EQUALS( var_1.domainSize(), ( gum::Size )2 );
-        const gum::Potential<float> &proba_1 = net->cpt( node_1 );
+        const gum::Potential<double> &proba_1 = net->cpt( node_1 );
         TS_ASSERT_EQUALS( proba_1.domainSize(), ( gum::Size )2 );
         gum::Instantiation inst_1( proba_1 );
         inst_1.setFirst();
@@ -92,7 +102,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         const gum::DiscreteVariable &var_2 = net->variable( node_2 );
         TS_ASSERT_EQUALS( var_2.name(), "2" );
         TS_ASSERT_EQUALS( var_2.domainSize(), ( gum::Size )2 );
-        const gum::Potential<float> &proba_2 = net->cpt( node_2 );
+        const gum::Potential<double> &proba_2 = net->cpt( node_2 );
         TS_ASSERT_EQUALS( proba_2.domainSize(), ( gum::Size )2 );
         gum::Instantiation inst_2( proba_2 );
         inst_2.setFirst();
@@ -105,21 +115,17 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     }
 
     void testRead_file3() {
-      //std::cerr << std::endl << "In testRead_file3.";
       std::string file = GET_PATH_STR( BIFReader_file3.txt );
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
-      //TS_GUM_ASSERT_THROWS_NOTHING(net = reader.read(file));
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
+      //TS_GUM_ASSERT_THROWS_NOTHING(reader.read(file, net));
+      gum_bif::BIFDriver driver(net);
+      //driver.traceParsing(true);
+      TS_GUM_ASSERT_THROWS_NOTHING(driver.parseFile(file));
 
-      try {
-        net = reader.read( file );
-      } catch ( gum::Exception e ) {
-        //std::cerr << std::endl << e.getContent();
-      }
+      TS_ASSERT( net != 0 );
 
-      TS_ASSERT( net != NULL );
-
-      if ( net != NULL ) {
+      if ( net != 0 ) {
         gum::HashTable<std::string, gum::Id> idMap;
 
         for ( gum::NodeSetIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
@@ -132,26 +138,26 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS( var_1.domainSize(), ( gum::Size )2 );
         TS_ASSERT_EQUALS( var_1.label( 0 ), "0" );
         TS_ASSERT_EQUALS( var_1.label( 1 ), "1" );
-        const gum::Potential<float> &proba_1 = net->cpt( idMap["1"] );
+        const gum::Potential<double> &proba_1 = net->cpt( idMap["1"] );
         TS_ASSERT_EQUALS( proba_1.domainSize(), ( gum::Size )2 );
         gum::Instantiation inst_1( proba_1 );
         inst_1.setFirst();
-        TS_ASSERT( abs(( proba_1[inst_1] - 0.2 ) ) < 0.001 );
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.2, 0.001);
         inst_1.setLast();
-        TS_ASSERT( abs(( proba_1[inst_1] - 0.8 ) ) < 0.001 );
+        TS_ASSERT_DELTA(proba_1[inst_1], 0.8, 0.001);
 
         const gum::DiscreteVariable &var_2 = net->variable( idMap["2"] );
         TS_ASSERT_EQUALS( var_2.name(), "2" );
         TS_ASSERT_EQUALS( var_2.domainSize(), ( gum::Size )2 );
         TS_ASSERT_EQUALS( var_2.label( 0 ), "foo" );
         TS_ASSERT_EQUALS( var_2.label( 1 ), "bar" );
-        const gum::Potential<float> &proba_2 = net->cpt( idMap["2"] );
+        const gum::Potential<double> &proba_2 = net->cpt( idMap["2"] );
         TS_ASSERT_EQUALS( proba_2.domainSize(), ( gum::Size )2 );
         gum::Instantiation inst_2( proba_2 );
         inst_2.setFirst();
-        TS_ASSERT( abs(( proba_2[inst_2] - 0.3 ) ) < 0.001 );
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.3, 0.001);
         inst_2.setLast();
-        TS_ASSERT( abs(( proba_2[inst_2] - 0.7 ) ) < 0.001 );
+        TS_ASSERT_DELTA(proba_2[inst_2], 0.7, 0.001);
 
         const gum::DiscreteVariable &var_3 = net->variable( idMap["3"] );
         TS_ASSERT_EQUALS( var_3.name(), "3" );
@@ -159,19 +165,19 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS( var_3.label( 0 ), "0" );
         TS_ASSERT_EQUALS( var_3.label( 1 ), "1" );
         TS_ASSERT( net->dag().existsArc( idMap["1"], idMap["3"] ) );
-        const gum::Potential<float> &proba_3 = net->cpt( idMap["3"] );
+        const gum::Potential<double> &proba_3 = net->cpt( idMap["3"] );
         TS_ASSERT_EQUALS( proba_3.domainSize(), ( gum::Size )4 );
         gum::Instantiation inst_3( proba_3 );
         inst_3.chgVal( var_1, 0 );
         inst_3.chgVal( var_3, 0 );
-        TS_ASSERT( abs( proba_3[inst_3] - 0.1 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001);
         inst_3.chgVal( var_3, 1 );
-        TS_ASSERT( abs( proba_3[inst_3] - 0.9 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001);
         inst_3.chgVal( var_1, 1 );
         inst_3.chgVal( var_3, 0 );
-        TS_ASSERT( abs( proba_3[inst_3] - 0.9 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.9, 0.001);
         inst_3.chgVal( var_3, 1 );
-        TS_ASSERT( abs( proba_3[inst_3] - 0.1 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_3[inst_3], 0.1, 0.001);
 
         const gum::DiscreteVariable &var_4 = net->variable( idMap["4"] );
         TS_ASSERT_EQUALS( var_4.name(), "4" );
@@ -180,27 +186,27 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS( var_4.label( 1 ), "1" );
         TS_ASSERT( net->dag().existsArc( idMap["1"], idMap["4"] ) );
         TS_ASSERT( net->dag().existsArc( idMap["2"], idMap["4"] ) );
-        const gum::Potential<float> &proba_4 = net->cpt( idMap["4"] );
+        const gum::Potential<double> &proba_4 = net->cpt( idMap["4"] );
         TS_ASSERT_EQUALS( proba_4.domainSize(), ( gum::Size )8 );
         gum::Instantiation inst_4( proba_4 );
         inst_4.chgVal( var_1, 0 );
         inst_4.chgVal( var_2, 0 );
         inst_4.chgVal( var_4, 0 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.4 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.4, 0.001);
         inst_4.chgVal( var_4, 1 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.6 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.6, 0.001);
         inst_4.chgVal( var_1, 1 );
         inst_4.chgVal( var_2, 0 );
         inst_4.chgVal( var_4, 0 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
         inst_4.chgVal( var_4, 1 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
         inst_4.chgVal( var_1, 0 );
         inst_4.chgVal( var_2, 1 );
         inst_4.chgVal( var_4, 0 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
         inst_4.chgVal( var_4, 1 );
-        TS_ASSERT( abs( proba_4[inst_4] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_4[inst_4], 0.5, 0.001);
         inst_4.chgVal( var_1, 1 );
         inst_4.chgVal( var_2, 1 );
         inst_4.chgVal( var_4, 0 );
@@ -216,39 +222,39 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS( var_5.label( 2 ), "frontiere" );
         TS_ASSERT( net->dag().existsArc( idMap["2"], idMap["5"] ) );
         TS_ASSERT( net->dag().existsArc( idMap["3"], idMap["5"] ) );
-        const gum::Potential<float> &proba_5 = net->cpt( idMap["5"] );
+        const gum::Potential<double> &proba_5 = net->cpt( idMap["5"] );
         TS_ASSERT_EQUALS( proba_5.domainSize(), ( gum::Size )12 );
         gum::Instantiation inst_5( proba_5 );
         inst_5.chgVal( var_3, 0 );
         inst_5.chgVal( var_2, 0 );
         inst_5.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.3 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.3, 0.001);
         inst_5.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.6 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001);
         inst_5.chgVal( var_5, 2 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.1 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.1, 0.001);
         inst_5.chgVal( var_2, 0 );
         inst_5.chgVal( var_3, 1 );
         inst_5.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
         inst_5.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
         inst_5.chgVal( var_5, 2 );
-        TS_ASSERT( proba_5[inst_5] == 0 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001);
         inst_5.chgVal( var_2, 1 );
         inst_5.chgVal( var_3, 0 );
         inst_5.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.4 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.4, 0.001);
         inst_5.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.6 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.6, 0.001);
         inst_5.chgVal( var_5, 2 );
-        TS_ASSERT( proba_5[inst_5] == 0 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.0, 0.001);
         inst_5.chgVal( var_2, 1 );
         inst_5.chgVal( var_3, 1 );
         inst_5.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
         inst_5.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_5[inst_5] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_5[inst_5], 0.5, 0.001);
         inst_5.chgVal( var_5, 2 );
         TS_ASSERT( proba_5[inst_5] == 0 );
 
@@ -259,32 +265,32 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS( var_6.label( 1 ), "1" );
         TS_ASSERT( net->dag().existsArc( idMap["1"], idMap["6"] ) );
         TS_ASSERT( net->dag().existsArc( idMap["5"], idMap["6"] ) );
-        const gum::Potential<float> &proba_6 = net->cpt( idMap["6"] );
+        const gum::Potential<double> &proba_6 = net->cpt( idMap["6"] );
         TS_ASSERT_EQUALS( proba_6.domainSize(),( gum::Size ) 12 );
         gum::Instantiation inst_6( proba_6 );
         inst_6.chgVal( var_6, 0 );
         inst_6.chgVal( var_1, 0 );
         inst_6.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.1 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.1, 0.001);
         inst_6.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.2 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.2, 0.001);
         inst_6.chgVal( var_5, 2 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.3 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.3, 0.001);
         inst_6.chgVal( var_1, 1 );
         inst_6.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.4 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.4, 0.001);
         inst_6.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.5 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.5, 0.001);
         inst_6.chgVal( var_5, 2 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.6 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.6, 0.001);
         inst_6.chgVal( var_6, 1 );
         inst_6.chgVal( var_1, 0 );
         inst_6.chgVal( var_5, 0 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.7 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.7, 0.001);
         inst_6.chgVal( var_5, 1 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.8 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.8, 0.001);
         inst_6.chgVal( var_5, 2 );
-        TS_ASSERT( abs( proba_6[inst_6] - 0.9 ) < 0.001 );
+        TS_ASSERT_DELTA(proba_6[inst_6], 0.9, 0.001);
         inst_6.chgVal( var_1, 1 );
         inst_6.chgVal( var_5, 0 );
         TS_ASSERT( proba_6[inst_6] == 1 );
@@ -298,20 +304,19 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     }
 
     void testAlarm() {
-      std::cerr << std::endl;
       std::string file = GET_PATH_STR( alarm.bif );
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
 
       try {
-        net = reader.read( file );
+        reader.read(file, net);
       } catch ( gum::Exception e ) {
         TS_ASSERT( false );
       }
 
-      TS_ASSERT( net != NULL );
+      TS_ASSERT( net != 0 );
 
-      if ( net != NULL ) {
+      if ( net != 0 ) {
         gum::HashTable<std::string, gum::Id> idMap;
 
         for ( gum::NodeSetIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
@@ -329,7 +334,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
           TS_ASSERT_EQUALS( history.label( 0 ), "TRUE" );
           TS_ASSERT_EQUALS( history.label( 1 ), "FALSE" );
           TS_ASSERT( net->dag().existsArc( idMap["LVFAILURE"], idMap["HISTORY"] ) );
-          const gum::Potential<float> &historyCPT = net->cpt( idMap["HISTORY"] );
+          const gum::Potential<double> &historyCPT = net->cpt( idMap["HISTORY"] );
           TS_ASSERT_EQUALS( historyCPT.domainSize(),( gum::Size ) 4 );
           TS_ASSERT( historyCPT.contains( net->variable( idMap["HISTORY"] ) ) );
           TS_ASSERT( historyCPT.contains( net->variable( idMap["LVFAILURE"] ) ) );
@@ -361,7 +366,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
           TS_ASSERT_EQUALS( errlowoutput.label( 0 ), "TRUE" );
           TS_ASSERT_EQUALS( errlowoutput.label( 1 ), "FALSE" );
           TS_ASSERT( net->dag().existsArc( idMap["ERRLOWOUTPUT"], idMap["HRBP"] ) );
-          const gum::Potential<float> &errlowoutputCPT = net->cpt( idMap["ERRLOWOUTPUT"] );
+          const gum::Potential<double> &errlowoutputCPT = net->cpt( idMap["ERRLOWOUTPUT"] );
           TS_ASSERT_EQUALS( errlowoutputCPT.domainSize(),( gum::Size ) 2 );
           TS_ASSERT( errlowoutputCPT.contains( errlowoutput ) );
           gum::Instantiation errlowoutputInst( errlowoutputCPT );
@@ -371,7 +376,6 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
           TS_ASSERT( abs( errlowoutputCPT[errlowoutputInst] - 0.95 ) < 0.001 );
 
         } catch ( gum::Exception &e ) {
-          std::cerr << std::endl << e.getContent() << std::endl;
           TS_ASSERT( false );
         }
         delete net;
@@ -381,10 +385,10 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     void testBarley() {
       std::string file = GET_PATH_STR( Barley.bif );
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
 
       try {
-        TS_GUM_ASSERT_THROWS_NOTHING(net = reader.read( file ));
+        TS_GUM_ASSERT_THROWS_NOTHING(reader.read(file, net));
       } catch ( gum::SyntaxError ) {};
 
       if ( net ) delete net;
@@ -393,11 +397,23 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
     void testUnexisting() {
       std::string file = "Schmurtz";
       gum::BIFReader reader;
-      gum::BayesNet<float> *net=NULL;
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
 
       try {
-        net=reader.read( file );
+        reader.read(file, net);
       } catch ( gum::IOError ) {};
+
+      if ( net ) delete net;
+    }
+
+    void testNancy() {
+      std::string file = GET_PATH_STR( nancy.bif );
+      gum::BIFReader reader;
+      gum::BayesNet<double> *net = new gum::BayesNet<double>();
+
+      try {
+        TS_GUM_ASSERT_THROWS_NOTHING(reader.read(file, net));
+      } catch ( gum::SyntaxError ) {};
 
       if ( net ) delete net;
     }
@@ -405,9 +421,9 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
 
 
   private:
-    float abs( float d ) {
+    double abs( double d ) {
       if ( d < 0 )
-        return ( d * ( float ) -1 );
+        return ( d * ( double ) -1 );
 
       return d;
     }

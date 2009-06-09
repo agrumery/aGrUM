@@ -85,83 +85,62 @@ TABLE           "table"
 DIGIT    [0-9]
 LETTER   [a-zA-Z_.?-]
 WORD     {LETTER}({LETTER}|{DIGIT})*
-MODALITY [a-zA-Z0-9_-]+
-NET_NAME [a-zA-Z0-9._-]+
-INTEGER  [1-9][0-9]*
+INTEGER  ({DIGIT}|[1-9][0-9]*)
 COMMENT  ("//"[^\n]*|"/*"([^*]*|("*"[^/])*)*"*/")
 EXPONENT [eE]([+,-])?([0-9])+
 FLOAT    (([0-9])+"."([0-9])*{EXPONENT}?|"."([0-9])+{EXPONENT}?|([0-9])+{EXPONENT})
-EQUAL    [[:blank:]]*=[[:blank:]]*
-PROP_VAL [^ =;\n]([^;\n])*
-
 
 %x IN_PROPERTY
-%x IN_BEG_PROPERTY
-%x IN_DISCRETE
-%x IN_BEG_DISCRETE
-%x IN_PROBA
-%x IN_BEG_PROBA
-%x IN_COND_PROBA
-%x IN_BEG_NETWORK
-%x IN_NETWORK
 
 %%
 
+ /* code to place at the beginning of yylex() */
+%{
+    // reset location
+    yylloc->step();
+%}
+
+ /* gobble up properties */
+<*>{PROPERTY}              { property_caller=YYSTATE; BEGIN (IN_PROPERTY); }
+<IN_PROPERTY>[^;]*     /* we do nothing */
+<IN_PROPERTY>[;]           { BEGIN (property_caller); }
+
+ /* gobble up white-spaces */
+<*>[ \t\r]+ {
+    yylloc->step();
+}
+
+ /* gobble up end-of-lines */
+<*>\n {
+    yylloc->lines(yyleng); yylloc->step();
+}
 
 <*>{COMMENT}   /* remove comments */
 
-<*>{PROPERTY}              { property_caller=YYSTATE; BEGIN (IN_BEG_PROPERTY); }
-<IN_BEG_PROPERTY>[^;]*     /* we do nothing */
-<IN_PROPERTY>[;]           { BEGIN (property_caller); }
+["] { return token::TOK_DOUBLE_QUOTE; }
+['] { return token::TOK_QUOTE; }
+[(] { return token::TOK_BEG_PARENTHESIS; }
+[)] { return token::TOK_END_PARENTHESIS; }
+[;] { return token::TOK_SEMICOLON; }
+[=] { return token::TOK_EQUAL; }
+[,] { return token::TOK_COMMA; }
+[|] { return token::TOK_BAR; }
+[[] { return token::TOK_BEG_BRACKET; }
+[]] { return token::TOK_END_BRACKET; }
+[{] { return token::TOK_BEG_CURLY; }
+[}] { return token::TOK_END_CURLY; }
 
-
-<*>["] { return token::TOK_DOUBLE_QUOTE; }
-<*>['] { return token::TOK_QUOTE; }
-"(" { return token::TOK_BEG_PARENTHESIS; }
-")" { return token::TOK_END_PARENTHESIS; }
-";" { return token::TOK_SEMICOLON; }
-"=" { return token::TOK_EQUAL; }
-"," { return token::TOK_COMMA; }
-
-{NETWORK}                  { BEGIN(IN_BEG_NETWORK); return token::TOK_NETWORK; }
-<IN_BEG_NETWORK>{WORD}     { string_yylval(); return token::TOK_WORD; }
-<IN_BEG_NETWORK>"{"        { BEGIN (IN_NETWORK); return token::TOK_BEG_CURLY; }
-<IN_NETWORK>"}"            { BEGIN (INITIAL); return token::TOK_END_CURLY; }
-
+{NETWORK}      { return token::TOK_NETWORK; }
 {VARIABLE}     { return token::TOK_VARIABLE; }
 {TYPE}         { return token::TOK_TYPE; }
+{DISCRETE}     { return token::TOK_DISCRETE; }
+{PROBABILITY}  { return token::TOK_PROBABILITY; }
+{DEFAULTVALUE} { return token::TOK_DEFAULT; }
+{TABLE}        { return token::TOK_TABLE; }
 
-{DISCRETE}                 { BEGIN (IN_BEG_DISCRETE); return token::TOK_DISCRETE; }
-<IN_BEG_DISCRETE>{INTEGER} { int_yylval(); return token::TOK_INTEGER; }
-<IN_BEG_DISCRETE>"["       { return token::TOK_BEG_BRACKET; }
-<IN_BEG_DISCRETE>"]"       { return token::TOK_END_BRACKET; }
-<IN_BEG_DISCRETE>"{"       { BEGIN (IN_DISCRETE); return token::TOK_BEG_CURLY; }
-<IN_DISCRETE>{WORD}        { string_yylval(); return token::TOK_MODALITY; }
-<IN_DISCRETE>"}"           { BEGIN (INITIAL); return token::TOK_END_CURLY; }
-
-{PROBABILITY}              { BEGIN (IN_BEG_PROBA); return token::TOK_PROBABILITY; }
-<IN_BEG_PROBA>"("          { return token::TOK_BEG_PARENTHESIS; }
-<IN_BEG_PROBA>")"          { return token::TOK_END_PARENTHESIS; }
-<IN_BEG_PROBA>"|"          { return token::TOK_BAR; }
-<IN_BEG_PROBA>{WORD}       { string_yylval(); return token::TOK_WORD; }
-<IN_BEG_PROBA>{INTEGER}    { int_yylval(); return token::TOK_INTEGER; }
-<IN_BEG_PROBA>"{"          { BEGIN (IN_PROBA); return token::TOK_BEG_CURLY; }
-<IN_PROBA>"("              { BEGIN (IN_COND_PROBA); return token::TOK_BEG_PARENTHESIS; }
-<IN_COND_PROBA>{MODALITY}  { string_yylval(); return token::TOK_MODALITY; }
-<IN_COND_PROBA>")"         { BEGIN (IN_PROBA); return token::TOK_END_PARENTHESIS; }
-<IN_PROBA>{DEFAULTVALUE}   { return token::TOK_DEFAULT; }
-<IN_PROBA>{TABLE}          { return token::TOK_TABLE; }
-<IN_PROBA>{FLOAT}          { float_yylval(); return token::TOK_FLOAT; }
-<IN_PROBA>{DIGIT}          { int_yylval(); return token::TOK_INTEGER; }
-<IN_PROBA>{INTEGER}        { int_yylval(); return token::TOK_INTEGER; }
-<IN_PROBA>"}"              { BEGIN (INITIAL); return token::TOK_END_CURLY; }
-
-{FLOAT}    { float_yylval();  return token::TOK_FLOAT; }
-{INTEGER}  { int_yylval();    return token::TOK_INTEGER; }
-{WORD}     { string_yylval(); return token::TOK_WORD; }
-{MODALITY} { string_yylval(); return token::TOK_MODALITY; }
-
-<*>.    /* remove superfluous characters */
+{WORD}         { string_yylval(); return token::TOK_WORD; }
+{INTEGER}      { int_yylval(); return token::TOK_INTEGER; }
+{FLOAT}        { float_yylval(); return token::TOK_FLOAT; }
 
 %% /*** Additional Code ***/
 
@@ -209,3 +188,4 @@ int BIFFlexLexer::yywrap()
 {
     return 1;
 }
+

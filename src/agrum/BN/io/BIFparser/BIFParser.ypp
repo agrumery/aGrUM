@@ -74,7 +74,8 @@
   std::vector<std::string>* SVectorVal;
 }
 
-%token                END
+%token                END     0     "end of file"
+%token                EOL           "end of line"
 
 %token                TOK_BEG_CURLY
 %token                TOK_END_CURLY
@@ -100,10 +101,8 @@
 
 %token <Int>          TOK_PROPERTY_VALUE
 %token <StringVal>    TOK_WORD
-%token <Int>          TOK_MODALITY
 %token <Float>        TOK_FLOAT
 %token <Int>          TOK_INTEGER
-%token <Char>         TOK_VERTICAL_BAR
 
 %type <StringVal>    word
 %type <StringVal>    words
@@ -134,6 +133,7 @@ std::vector<std::string> __variables;
 start:
     NetworkUnit DeclarationUnit
   | DeclarationUnit
+  | error TOK_END_CURLY
   ;
 
 NetworkUnit:
@@ -168,7 +168,7 @@ VariableContent:
 
 
 VariableDiscreteUnit:
-  VariableDiscrete TOK_BEG_CURLY VariableModalities TOK_END_CURLY
+  VariableDiscrete TOK_BEG_CURLY VariableModalities TOK_END_CURLY TOK_SEMICOLON
   ;
 
 
@@ -177,10 +177,20 @@ VariableDiscrete:
   ;
 
 VariableModalities:
-    word TOK_COMMA word
+    word word
+    { try { driver.factory().addModality(*$1); }
+      catch (gum::DuplicateElement& e) { driver.error(@$, e.getContent()); }
+      try { driver.factory().addModality(*$2); }
+      catch (gum::DuplicateElement& e) { driver.error(@$, e.getContent()); }
+    }
+  | word TOK_COMMA word
     { try { driver.factory().addModality(*$1); }
       catch (gum::DuplicateElement& e) { driver.error(@$, e.getContent()); }
       try { driver.factory().addModality(*$3); }
+      catch (gum::DuplicateElement& e) { driver.error(@$, e.getContent()); }
+    }
+  | VariableModalities word
+    { try { driver.factory().addModality(*$2); }
       catch (gum::DuplicateElement& e) { driver.error(@$, e.getContent()); }
     }
   | VariableModalities TOK_COMMA word
@@ -198,22 +208,40 @@ ProbaVariables:
     TOK_BEG_PARENTHESIS word TOK_END_PARENTHESIS
     { __variables.push_back(*$2);
       try { driver.factory().startParentsDeclaration(__variables[0]);}
-      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
+      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } 
+      driver.factory().endParentsDelclaration(); }
   | TOK_BEG_PARENTHESIS word
     { __variables.push_back(*$2);
       try { driver.factory().startParentsDeclaration(__variables[0]);}
       catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
     TOK_BAR ProbaRightVars TOK_END_PARENTHESIS
+    { driver.factory().endParentsDelclaration(); }
   ;
 
 ProbaRightVars:
+    ProbaRightVarsWithComma
+  | ProbaRightVarsWithoutComma
+  ;
+
+ProbaRightVarsWithoutComma:
     word
     { __variables.push_back(*$1);
       try { driver.factory().addParent(*$1); }
       catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
-  | ProbaRightVars word
+  | ProbaRightVarsWithoutComma word
     { __variables.push_back(*$2);
       try { driver.factory().addParent(*$2); }
+      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
+  ;
+
+ProbaRightVarsWithComma:
+    word
+    { __variables.push_back(*$1);
+      try { driver.factory().addParent(*$1); }
+      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
+  | ProbaRightVarsWithComma TOK_COMMA word
+    { __variables.push_back(*$3);
+      try { driver.factory().addParent(*$3); }
       catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
   ;
 
@@ -226,8 +254,8 @@ ProbaContent:
 
 ProbaByTable:
   { driver.factory().startRawProbabilityDeclaration(__variables[0]); }
-  TOK_TABLE tableValues
-  { driver.factory().rawConditionalTable(*$3);
+  TOK_TABLE tableValues TOK_SEMICOLON
+  { driver.factory().rawConditionalTable(__variables, *$3);
     driver.factory().endRawProbabilityDeclaration(); }
   ;
 
@@ -235,17 +263,24 @@ tableValues:
     number { $$ = new std::vector<double>(); $$->push_back($1); }
   | tableValues number
     { $$ = new std::vector<double>(*$1); $$->push_back($2); }
+  | tableValues TOK_COMMA number
+    { $$ = new std::vector<double>(*$1); $$->push_back($3); }
   ;
 
 ProbaByModalities:
+    { driver.factory().startFactorizedEntry(); }
     ModalityEntry
-  | ProbaByModalities ModalityEntry
+    { driver.factory().endFactorizedEntry(); }
+  | ProbaByModalities
+    { driver.factory().startFactorizedEntry(); }
+    ModalityEntry
+    { driver.factory().endFactorizedEntry(); }
   ;
 
 ModalityEntry:
-    TOK_DEFAULT modalityValues
+    TOK_DEFAULT modalityValues TOK_SEMICOLON
     { driver.factory().setVariableValues(*$2); }
-  | ParentsInstantiation modalityValues
+  | ParentsInstantiation modalityValues TOK_SEMICOLON
     { driver.factory().setVariableValues(*$2); }
   ;
 
@@ -259,6 +294,8 @@ ParentsInstantiation:
 
 parents:
     word { $$ = new std::vector<std::string>(); $$->push_back(*$1); }
+  | parents word
+    { $$ = new std::vector<std::string>(*$1); $$->push_back(*$2); }
   | parents TOK_COMMA word
     { $$ = new std::vector<std::string>(*$1); $$->push_back(*$3); }
   ;
@@ -266,6 +303,7 @@ parents:
 modalityValues:
     number { $$ = new std::vector<double>(); $$->push_back($1); }
   | modalityValues number { $$ = new std::vector<double>(*$1); $$->push_back($2); }
+  | modalityValues TOK_COMMA number { $$ = new std::vector<double>(*$1); $$->push_back($3); }
   ;
 
 word:

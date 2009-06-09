@@ -121,7 +121,7 @@ void
 BayesNetFactory<T_DATA>::startNetworkDeclaration()
 {
   if (state() != NONE) {
-    __illegalStateError();
+    __illegalStateError("startNetworkDeclaration");
   } else {
     __states.push_back(BayesNetFactory<T_DATA>::NETWORK);
   }
@@ -142,7 +142,7 @@ void
 BayesNetFactory<T_DATA>::endNetworkDeclaration()
 {
   if (state() != NETWORK) {
-    __illegalStateError();
+    __illegalStateError("endNetworkDeclaration");
   } else {
     __states.pop_back();
   }
@@ -153,8 +153,8 @@ template<typename T_DATA> INLINE
 void
 BayesNetFactory<T_DATA>::startVariableDeclaration()
 {
-  if (state() != NETWORK) {
-    __illegalStateError();
+  if (state() != NONE) {
+    __illegalStateError("startVariableDeclaration");
   } else {
     __states.push_back(VARIABLE);
     __stringBag.push_back("name");
@@ -168,7 +168,7 @@ void
 BayesNetFactory<T_DATA>::variableName(const std::string& name)
 {
   if (state() != VARIABLE) {
-    __illegalStateError();
+    __illegalStateError("variableName");
   } else {
     if (__varNameMap.exists(name)) {
       std::string str = "Name already used: ";
@@ -185,7 +185,7 @@ void
 BayesNetFactory<T_DATA>::variableDescription(const std::string& desc)
 {
   if (state() != VARIABLE) {
-    __illegalStateError();
+    __illegalStateError("variableDescription");
   } else {
     __bar_flag = true;
     __stringBag[1] = desc;
@@ -200,7 +200,7 @@ void
 BayesNetFactory<T_DATA>::addModality(const std::string& name)
 {
   if (state() != VARIABLE) {
-    __illegalStateError();
+    __illegalStateError("addModality");
   } else {
     __checkModalityInBag(name);
     __stringBag.push_back(name);
@@ -222,7 +222,7 @@ void
 BayesNetFactory<T_DATA>::setVariableCPTImplementation(MultiDimImplementation<T_DATA>* impl)
 {
   if (state() != VARIABLE) {
-    __illegalStateError();
+    __illegalStateError("setVariableCPTImplementation");
   } else {
     if (__impl != 0) {
     GUM_ERROR(OperationNotAllowed, "An implementation for this variable is already "
@@ -240,7 +240,7 @@ void
 BayesNetFactory<T_DATA>::endVariableDeclaration()
 {
   if (state() != VARIABLE) {
-    __illegalStateError();
+    __illegalStateError("endVariableDeclaration");
   } else if ( (__foo_flag && (! __bar_flag) && __stringBag.size() > 2) ||
               (__foo_flag && __bar_flag && __stringBag.size() > 3) )
   {
@@ -250,9 +250,8 @@ BayesNetFactory<T_DATA>::endVariableDeclaration()
     } else {
       var = new LabelizedVariable(__stringBag[0], "", 0);
     }
-    size_t i = (__foo_flag and __bar_flag)?2:1;
-    while (i < __stringBag.size()) {
-      var->addLabel(__stringBag[i++]);
+    for (size_t i = 2; i < __stringBag.size(); ++i) {
+      var->addLabel(__stringBag[i]);
     }
     if (__impl != 0) {
       __varNameMap.insert(var->name(), __bn->add(*var, __impl));
@@ -275,8 +274,8 @@ template<typename T_DATA> INLINE
 void
 BayesNetFactory<T_DATA>::startParentsDeclaration(const std::string& var)
 {
-  if (state() != NETWORK) {
-    __illegalStateError();
+  if (state() != NONE) {
+    __illegalStateError("startParentsDeclaration");
   } else {
     __checkVariableName(var);
     std::vector<std::string>::iterator iter = __stringBag.begin();
@@ -293,7 +292,7 @@ void
 BayesNetFactory<T_DATA>::addParent(const std::string& var)
 {
   if (state() != PARENTS) {
-    __illegalStateError();
+    __illegalStateError("addParent");
   } else {
     __checkVariableName(var);
     __stringBag.push_back(var);
@@ -309,13 +308,11 @@ void
 BayesNetFactory<T_DATA>::endParentsDelclaration()
 {
   if (state() != PARENTS) {
-    __illegalStateError();
+    __illegalStateError("endParentsDelclaration");
   } else {
-    if (__foo_flag) {
-      NodeId id = __varNameMap[__stringBag[0]];
-      for (size_t i = 1; i < __stringBag.size(); ++i) {
-        __bn->insertArc(__varNameMap[__stringBag[i]], id);
-      }
+    NodeId id = __varNameMap[__stringBag[0]];
+    for (size_t i = 1; i < __stringBag.size(); ++i) {
+      __bn->insertArc(__varNameMap[__stringBag[i]], id);
     }
     __resetParts();
     __states.pop_back();
@@ -329,8 +326,8 @@ template<typename T_DATA> INLINE
 void
 BayesNetFactory<T_DATA>::startRawProbabilityDeclaration(const std::string& var)
 {
-  if (state() != NETWORK) {
-    __illegalStateError();
+  if (state() != NONE) {
+    __illegalStateError("startRawProbabilityDeclaration");
   } else {
     __checkVariableName(var);
     __stringBag.push_back(var);
@@ -350,22 +347,85 @@ BayesNetFactory<T_DATA>::startRawProbabilityDeclaration(const std::string& var)
 // @param rawTable The raw table.
 template<typename T_DATA> INLINE
 void
-BayesNetFactory<T_DATA>::rawConditionalTable(const std::vector<T_DATA>& rawTable)
+BayesNetFactory<T_DATA>::rawConditionalTable(const std::vector<std::string>& variables,
+                                             const std::vector<T_DATA>& rawTable)
 {
   if (state() != RAW_CPT) {
-    __illegalStateError();
+    __illegalStateError("rawConditionalTable");
   } else {
-    const Potential<T_DATA>& table = __bn->cpt(__varNameMap[__stringBag[0]]);
-    Instantiation inst(table);
-    size_t i = 0;
-    for (inst.setFirst(); (! inst.end()) && (i < rawTable.size()); ++i, ++inst) {
-      table.set(inst, rawTable[i]);
-    }
-    while (! inst.end()) {
-      table.set(inst, (T_DATA) 0);
-    }
+    __fillProbaWithValuesTable(variables, rawTable);
   }
 }
+
+template<typename T_DATA> INLINE
+void
+BayesNetFactory<T_DATA>::__fillProbaWithValuesTable(const std::vector<std::string>& variables,
+                                                    const std::vector<T_DATA>& rawTable)
+{
+  const Potential<T_DATA>& table = __bn->cpt(__varNameMap[__stringBag[0]]);
+  Instantiation cptInst(table);
+
+  List<const DiscreteVariable*> varList;
+  for (size_t i = 0; i < variables.size(); ++i) {
+    varList.pushBack(&(__bn->variable(__varNameMap[variables[i]])));
+  }
+  //varList.pushFront(&(__bn->variable(__varNameMap[__stringBag[0]])));
+
+  Idx nbrVar = varList.size();
+  std::vector<Idx> modCounter;
+
+  // initializing the array
+  for (Idx i = 0; i < nbrVar; i++) {
+    modCounter.push_back(0);
+  }
+
+  Idx j = 0;
+  do {
+    for (Idx i = 0; i < nbrVar; i++)  {
+      cptInst.chgVal(*(varList[i]), modCounter[i]);
+    }
+
+    if (j < rawTable.size()) {
+      table.set(cptInst, rawTable[j]);
+    } else {
+      table.set(cptInst,(float) 0);
+    }
+    j++;
+  } while (__increment(modCounter, varList));
+}
+
+template<typename T_DATA> INLINE
+bool
+BayesNetFactory<T_DATA>::__increment(std::vector<gum::Idx> &modCounter,
+                 List<const DiscreteVariable*>& varList)
+{
+  bool last = true;
+  for (unsigned int j = 0; j < modCounter.size(); j++) {
+    last = (modCounter[j] == (varList[j]->domainSize() - 1)) && last;
+    if (!last)
+      break;
+  }
+  if (last) {
+    return false;
+  }
+
+  bool add = false;
+  unsigned int i = varList.size() - 1;
+  do {
+    if (modCounter[i] == (varList[i]->domainSize() - 1)) {
+      modCounter[i] = 0;
+      add = true;
+    } else {
+      modCounter[i] += 1;
+      add = false;
+    }
+
+    i--;
+  } while (add);
+
+  return true;
+}
+
 
 // Tells the factory that we finished declaring a conditional probability
 // table.
@@ -374,7 +434,7 @@ void
 BayesNetFactory<T_DATA>::endRawProbabilityDeclaration()
 {
   if (state() != RAW_CPT) {
-    __illegalStateError();
+    __illegalStateError("endRawProbabilityDeclaration");
   } else {
     __resetParts();
     __states.pop_back();
@@ -386,8 +446,8 @@ template<typename T_DATA> INLINE
 void
 BayesNetFactory<T_DATA>::startFactorizedProbabilityDeclaration(const std::string& var)
 {
-  if (state() != NETWORK) {
-    __illegalStateError();
+  if (state() != NONE) {
+    __illegalStateError("startFactorizedProbabilityDeclaration");
   } else {
     __checkVariableName(var);
     std::vector<std::string>::iterator iter = __stringBag.begin();
@@ -403,7 +463,7 @@ void
 BayesNetFactory<T_DATA>::startFactorizedEntry()
 {
   if (state() != FACT_CPT) {
-    __illegalStateError();
+    __illegalStateError("startFactorizedEntry");
   } else {
     __parents = new Instantiation();
     __states.push_back(FACT_ENTRY);
@@ -417,7 +477,7 @@ void
 BayesNetFactory<T_DATA>::endFactorizedEntry()
 {
   if (state() != FACT_ENTRY) {
-    __illegalStateError();
+    __illegalStateError("endFactorizedEntry");
   } else {
     delete __parents;
     __parents = 0;
@@ -433,7 +493,7 @@ BayesNetFactory<T_DATA>::setParentModality(const std::string& parent,
                                            const std::string& modality)
 {
   if (state() != FACT_ENTRY) {
-    __illegalStateError();
+    __illegalStateError("string");
   } else {
     __checkVariableName(parent);
     Idx id = __checkVariableModality(parent, modality);
@@ -472,27 +532,41 @@ void
 BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
 {
   if (state() != FACT_ENTRY) {
-    __illegalStateError();
+    __illegalStateError("setVariableValues");
   } else {
     const DiscreteVariable& var = __bn->variable(__varNameMap[__stringBag[0]]);
     Idx varId = __varNameMap[__stringBag[0]];
     // Checking consistency between values and var.
     if (values.size() != var.domainSize()) {
-      GUM_ERROR(OperationNotAllowed, "Invalid number of modalities.");
+      std::stringstream sBuff;
+      sBuff << "Invalid number of modalities: found " << values.size();
+      sBuff << " while needed " << var.domainSize();
+      GUM_ERROR(OperationNotAllowed, sBuff.str());
     }
-    Instantiation inst(__bn->cpt(__varNameMap[var.name()]));
-    inst.chgValIn(*__parents);
-    // Creating an instantiation containing all the variables not ins __parents.
-    Instantiation inst_default;
-    inst_default << var;
-    for (ArcSet::iterator iter = __bn->dag().parents(varId).begin(); iter != __bn->dag().parents(varId).end(); ++iter) {
-      if (! __parents->contains(__bn->variable(iter->tail()))) {
-        inst_default << __bn->variable(iter->tail());
+    if (__parents->domainSize() > 0) {
+      Instantiation inst(__bn->cpt(__varNameMap[var.name()]));
+      inst.chgValIn(*__parents);
+      // Creating an instantiation containing all the variables not ins __parents.
+      Instantiation inst_default;
+      inst_default << var;
+      for (ArcSet::iterator iter = __bn->dag().parents(varId).begin(); iter != __bn->dag().parents(varId).end(); ++iter) {
+        if (! __parents->contains(__bn->variable(iter->tail()))) {
+          inst_default << __bn->variable(iter->tail());
+        }
       }
-    }
-    // Filling the variable's table.
-    for (inst.setFirstIn(inst_default); ! inst.end(); inst.incIn(inst_default)) {
-      (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
+      // Filling the variable's table.
+      for (inst.setFirstIn(inst_default); ! inst.end(); inst.incIn(inst_default)) {
+        (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
+      }
+    } else {
+      Instantiation inst(__bn->cpt(__varNameMap[var.name()]));
+      Instantiation var_inst;
+      var_inst << var;
+      for (var_inst.setFirst(); ! var_inst.end(); ++var_inst) {
+        for (inst.setFirstOut(var_inst); ! inst.end(); ++inst) {
+          (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
+        }
+      }
     }
   }
 }
@@ -504,7 +578,7 @@ void
 BayesNetFactory<T_DATA>::endFactorizedProbabilityDeclaration()
 {
   if (state() != FACT_CPT) {
-    __illegalStateError();
+    __illegalStateError("endFactorizedProbabilityDeclaration");
   } else {
     __resetParts();
     __states.pop_back();
@@ -526,9 +600,8 @@ template<typename T_DATA> INLINE
 void
 BayesNetFactory<T_DATA>::setVariable(const DiscreteVariable& var)
 {
-  if ( (state() != BayesNetFactory<T_DATA>::NONE) and
-       (state() != BayesNetFactory<T_DATA>::NETWORK) ) {
-    __illegalStateError();
+  if (state() != BayesNetFactory<T_DATA>::NONE) {
+    __illegalStateError("setVariable");
   } else {
     __checkVariableName(var.name());
     __varNameMap.insert(var.name(), __bn->addVariable(var));
@@ -558,9 +631,8 @@ BayesNetFactory<T_DATA>::setVariableCPT(const std::string& varName,
                                         Potential<T_DATA>* table,
                                         bool redefineParents)
 {
-  if ( (state() != BayesNetFactory<T_DATA>::NONE) and
-       (state() != BayesNetFactory<T_DATA>::NETWORK) ) {
-    __illegalStateError();
+  if (state() != BayesNetFactory<T_DATA>::NONE) {
+    __illegalStateError("setVariableCPT");
   } else {
     __checkVariableName(varName);
     const DiscreteVariable& var = __bn->variable(__varNameMap[varName]);
@@ -594,9 +666,22 @@ BayesNetFactory<T_DATA>::operator=(const BayesNetFactory<T_DATA>& source)
 // Raise an OperationNotAllowed with the message "Illegal state."
 template<typename T_DATA> INLINE
 void
-BayesNetFactory<T_DATA>::__illegalStateError()
+BayesNetFactory<T_DATA>::__illegalStateError(const std::string& s)
 {
-  GUM_ERROR(OperationNotAllowed, "Illegal state.");
+  std::string msg = "Illegal state call (";
+  msg += s;
+  msg += ") in state ";
+  switch (state()) {
+    case NONE:        { msg += "NONE"; break; }
+    case NETWORK:     { msg += "NETWORK"; break; }
+    case VARIABLE:    { msg += "VARIABLE"; break; }
+    case PARENTS:     { msg += "PARENTS"; break; }
+    case RAW_CPT:     { msg += "RAW_CPT"; break; }
+    case FACT_CPT:    { msg += "FACT_CPT"; break; }
+    case FACT_ENTRY:  { msg += "FACT_ENTRY"; break; }
+    default: { msg += "Unknown state"; }
+  }
+  GUM_ERROR(OperationNotAllowed, msg);
 }
 
 // Check if a variable with the given name exists, if not raise an NotFound

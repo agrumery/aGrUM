@@ -242,7 +242,8 @@ class BayesNetFactory :public AbstractBayesNetFactory {
      *
      * @param rawTable The raw table.
      */
-    void rawConditionalTable(const std::vector<T_DATA>& rawTable);
+    void rawConditionalTable(const std::vector<std::string>& variables,
+                             const std::vector<T_DATA>& rawTable);
 
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
@@ -394,7 +395,7 @@ class BayesNetFactory :public AbstractBayesNetFactory {
     BayesNetFactory<T_DATA>& operator=(const BayesNetFactory<T_DATA>& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void __illegalStateError();
+    void __illegalStateError(const std::string& s);
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
@@ -413,6 +414,14 @@ class BayesNetFactory :public AbstractBayesNetFactory {
 
     /// Reset the different parts used to constructed the BayesNet.
     void __resetParts();
+
+    /// Fill a potential from a raw CPT.
+    void __fillProbaWithValuesTable(const std::vector<std::string>& variables,
+                                    const std::vector<T_DATA>& rawTable);
+
+    /// Increment a modality counter for the __fillProbaWithValuesTable method.
+    bool __increment(std::vector<gum::Idx> &modCounter,
+                     List<const DiscreteVariable*>& varList);
 
 };
 } /* namespace gum */
