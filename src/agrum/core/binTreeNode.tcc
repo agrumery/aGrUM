@@ -51,7 +51,7 @@ namespace gum {
   BinTreeNode<Val>::BinTreeNode( const BinTreeNode<Val>& from) :
     _val( from._val ), _parent( 0 ), _parent_dir ( GUM_BIN_TREE_NO_PARENT ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( BinTreeNode );
+    GUM_CONS_CPY( BinTreeNode );
 
     // set the children
     _children[0] = 0;
@@ -87,6 +87,7 @@ namespace gum {
   BinTreeNode<Val>& BinTreeNode<Val>::operator= ( const BinTreeNode<Val>& from ) {
     // avoid self assignment
     if (this != &from) {
+      GUM_OP_CPY( BinTreeNode );
       _val = from._val;
     }
 

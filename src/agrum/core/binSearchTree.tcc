@@ -62,7 +62,7 @@ namespace gum {
     _parent ( from._parent ),
     _left_child ( from._left_child ), _right_child ( from._right_child),
     _tree ( from._tree ) {
-    GUM_CONSTRUCTOR ( BinSearchTreeIterator );
+    GUM_CONS_CPY ( BinSearchTreeIterator );
     if ( _tree ) {
       _next_iter = _tree->_iterator_list;
       _tree->_iterator_list = this;
@@ -150,6 +150,8 @@ namespace gum {
   ( const BinSearchTreeIterator<Val,Cmp,Node>& from ) {
     // avoid self assignment
     if ( this != &from ) {
+      GUM_OP_CPY ( BinSearchTreeIterator );
+      
       // if from and this belong to different trees, detach this from its
       // current tree
       if ( from._tree != _tree ) {

@@ -232,7 +232,7 @@ namespace gum {
     /// adds a new left child to the current node
     /** @warning the new child is created on the C++ heap (i.e., using a
      * dynamic memory allocation)
-     * @returns a reference on the new created child
+     * @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
     // ============================================================================
     BinTreeNode<Val>* insertLeftChild ( const Val& );
@@ -246,7 +246,7 @@ namespace gum {
 
     // ============================================================================
     /// adds a new right child to the current node
-    /**  @returns a reference on the new created child
+    /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
     // ============================================================================
     BinTreeNode<Val>* insertRightChild ( const Val& );
@@ -260,7 +260,7 @@ namespace gum {
     
     // ============================================================================
     /// adds a new child to the current node
-    /**  @returns a reference on the new created child
+    /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a child in the
      * child_dir subtree */
     // ============================================================================

@@ -311,8 +311,8 @@ namespace gum {
      * the copy value
      *
      * When elements are inserted into binary search trees, this is actually copies
-     * that are inserted. Thus, the method returns the newly created copy, so that
-     * the user may reference it.
+     * that are inserted. Thus, the method returns the node containing the newly
+     * created copy, so that the user may reference the new copy.
      * @warning this method is actually the implementation of method insert. It
      * is used to speed-up insertions in terminal classes such as AVL trees.
      * @throw DuplicateElement exception is raised if the binary tree already

@@ -114,10 +114,10 @@ namespace gum {
 
     // ============================================================================
     /** @brief copy constructor: creates a new disconnected node with the same
-     * value as "from"
+     * value and height as "from"
      *
-     * @warning Although the new node contains the same value as from, it has
-     * no parent, nor any children, even if from has some. */
+     * @warning Although the new node contains the same value as "from", it has
+     * no parent, nor any children, even when "from" has some. */
     // ============================================================================
     BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from);
     
@@ -194,7 +194,7 @@ namespace gum {
     /// adds a new left child to the current node
     /** @warning the new child is created on the C++ heap (i.e., using a
      * dynamic memory allocation)
-     * @returns a reference on the new created child
+     * @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
     // ============================================================================
     BinTreeNode4AVL<Val>* insertLeftChild ( const Val& );
@@ -208,7 +208,7 @@ namespace gum {
 
     // ============================================================================
     /// adds a new right child to the current node
-    /**  @returns a reference on the new created child
+    /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
     // ============================================================================
     BinTreeNode4AVL<Val>* insertRightChild ( const Val& );
@@ -222,7 +222,7 @@ namespace gum {
     
     // ============================================================================
     /// adds a new child to the current node
-    /**  @returns a reference on the new created child
+    /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a child in the
      * child_dir subtree */
     // ============================================================================
@@ -275,7 +275,7 @@ namespace gum {
     
     // ============================================================================
     /// returns the top ancestor of the current tree
-    /** if the current node has no parent, the the method returns this */
+    /** if the current node has no parent, the method returns this */
     // ============================================================================
     BinTreeNode4AVL<Val>* root() const;
     
@@ -306,14 +306,16 @@ namespace gum {
     
     // ============================================================================
     /// balance the whole tree, starting from the current node
-    /** the balance is performed the usual way in AVL trees assuming that the
-     * root of the tree to be balanced is the current node.
+    /** the balance is performed the usual way in AVL trees starting from the
+     * current node and iterating the balance up to the root of the tree.
      * @warning balancing must be done after inserting new nodes or removing
      * old nodes. We assume in this function that:
+     *
      * # before insertions/removals, the tree is AVL
      * # when inserting new nodes, those have no children
+     * 
      * As such, these restrictions hold in binary search trees.
-     * @return Either the new root of the whole tree if this one may have changed
+     * @return either the new root of the whole tree if this one may have changed
      * or 0 if we are certain that the new root equals the old root. */
     // ============================================================================
     BinTreeNode4AVL<Val>* __balance ();
@@ -432,8 +434,8 @@ namespace gum {
      * the copy value
      *
      * When elements are inserted into binary search trees, this is actually copies
-     * that are inserted. Thus, the method returns the newly created copy, so that
-     * the user may reference it.
+     * that are inserted. Thus, the method returns the node containing the newly
+     * created copy, so that the user may reference the new copy.
      * @warning this method is actually the implementation of method insert. It
      * is used to speed-up insertions in terminal classes such as AVL trees.
      * @throw DuplicateElement exception is raised if the binary tree already

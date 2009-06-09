@@ -53,7 +53,7 @@ namespace gum {
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from) :
     BinTreeNode<Val>( from ), __height ( from.__height ) {
-    GUM_CONSTRUCTOR ( BinTreeNode4AVL );
+    GUM_CONS_CPY ( BinTreeNode4AVL );
   }
 
   // ==============================================================================
@@ -71,6 +71,7 @@ namespace gum {
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>&
   BinTreeNode4AVL<Val>::operator= ( const BinTreeNode4AVL<Val>& from ) {
+    GUM_OP_CPY ( BinTreeNode4AVL );
     BinTreeNode<Val>::operator= (from);
     return *this;
   }
@@ -145,8 +146,8 @@ namespace gum {
     unsigned int right_height = rightChild() ? rightChild()->__height : 0;
 
     eraseLeftLink ();
-    node_P->eraseRightLink ();
     if (V ) {
+      node_P->eraseRightLink ();
       BinTreeNode<Val>::insertLeftChild ( *V );
       left_height = V-> __height;
     } 
@@ -177,8 +178,8 @@ namespace gum {
     unsigned int left_height = leftChild() ? leftChild()->__height : 0;
       
     eraseRightLink ();
-    node_Q->eraseLeftLink ();
     if ( V ) {
+      node_Q->eraseLeftLink ();
       BinTreeNode<Val>::insertRightChild ( *V );
       right_height = V-> __height;
     }
@@ -377,7 +378,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val, class Cmp> INLINE
   AVLSearchTree<Val,Cmp>::AVLSearchTree( const AVLSearchTree<Val,Cmp>& from ) :
-   BinSearchTree<Val,Cmp,Node> (from) {
+    BinSearchTree<Val,Cmp,Node> (from) {
     GUM_CONS_CPY (AVLSearchTree);
   }
     
@@ -395,6 +396,7 @@ namespace gum {
   template <typename Val, class Cmp> INLINE
   AVLSearchTree<Val,Cmp>&
   AVLSearchTree<Val,Cmp>::operator= ( const AVLSearchTree<Val,Cmp>& from ) {
+    GUM_OP_CPY (AVLSearchTree);
     BinSearchTree< Val,Cmp,Node>::operator= (from);
     return *this;
   }
