@@ -89,8 +89,8 @@ namespace gum {
             ++itNext;
 
             if (( *it )->getdest() == pslot ) {
+	      delete *it;
               __connectors.erase( it );
-              //			delete *it;
             }
 
             it = itNext;
