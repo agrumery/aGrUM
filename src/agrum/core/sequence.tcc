@@ -19,10 +19,155 @@
  ***************************************************************************/
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+#include <limits>
+
+
 namespace gum {
+
+
+  
+  // ==============================================================================
+  // ==============================================================================
+  // SequenceIterator
+  // ==============================================================================
+  // ==============================================================================
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>::SequenceIterator( const Sequence<KEY>& seq,
+                                           Idx pos ) : __seq( &seq ) {
+    GUM_CONSTRUCTOR( SequenceIterator );
+
+    if ( pos > __seq->size() )
+      __iterator = __seq->size(); // make the iterator point to end
+    else
+      __iterator = pos; 
+  }
   
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>::SequenceIterator( const SequenceIterator<KEY>& source ):
+    __iterator( source.__iterator ),__seq( source.__seq ) {
+    GUM_CONS_CPY( SequenceIterator );
+  }
+
+
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>::~SequenceIterator() {
+    GUM_DESTRUCTOR( SequenceIterator );
+  }
+
+
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>& SequenceIterator<KEY>::operator=
+  ( const SequenceIterator<KEY>& source ) {
+    __iterator = source.__iterator;
+    __seq = source.__seq;
+    return *this;
+  }
+
+
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>& SequenceIterator<KEY>::operator++( ) {
+    if ( __iterator < __seq->size() )
+      ++__iterator;
+    else
+      __iterator = __seq->size();
+
+    return *this;
+  }
+
+
+  template <typename KEY> INLINE
+  SequenceIterator<KEY>& SequenceIterator<KEY>::operator--( ) {
+    if ( __iterator != std::numeric_limits<Idx>::max() )
+      --__iterator;
+    else
+      __iterator = std::numeric_limits<Idx>::max();
+
+    return *this;
+  }
+
+
+  template <typename KEY> INLINE
+  bool SequenceIterator<KEY>::operator==
+  ( const SequenceIterator<KEY>& source ) const {
+    if ( __seq->empty() )
+      return true; // all iterators are the same if seq is empty
+
+    if ( ( __iterator != source.__iterator ) ||
+         ( __seq != source.__seq ) )
+      return false;
+
+    return true;
+  }
+
+  
+  template <typename KEY> INLINE
+  bool SequenceIterator<KEY>::operator!=
+  ( const SequenceIterator<KEY>& source ) const {
+    return ! operator==( source );
+  }
+
+  
+  template <typename KEY> INLINE
+  Idx SequenceIterator<KEY>::pos() const {
+    if ( __iterator == std::numeric_limits<Idx>::max() )
+      GUM_ERROR( UndefinedIteratorValue, "iterator is rend()" );
+    if ( __iterator >= __seq->size() )
+      GUM_ERROR( UndefinedIteratorValue, "iterator is end()" );
+
+    return  __iterator;
+  }
+  
+
+  template <typename KEY> INLINE
+  const KEY& SequenceIterator<KEY>::operator*() const {
+    return *( __seq->__v[ pos() ] );
+  }
+
+
+  template <typename KEY> INLINE
+  const KEY* SequenceIterator<KEY>::operator->() const {
+    return  __seq->__v[ pos() ];
+  }
+
+
+  template <typename KEY> INLINE
+  void SequenceIterator<KEY>::__setPos( Idx pos ) {
+    if ( pos > __seq->size() ) __iterator = __seq->size();
+    else __iterator = pos;
+  }
+
+
+  template <typename KEY> INLINE
+  void SequenceIterator<KEY>::__setAtRend( ) {
+    __iterator = std::numeric_limits<Idx>::max();
+  }
+
+
+  template <typename KEY> INLINE
+  void SequenceIterator<KEY>::__setAtEnd( ) {
+    __iterator = __seq->size();
+  }
+
+
+
+
+
+
+  
+  
+
+  
+  // ==============================================================================
+  /// updates const iterators
+  // ==============================================================================
+  template <typename KEY> INLINE
+  void Sequence<KEY>::__update_end( ) {
+    __end.__setAtEnd();
+  }
 
   // ==============================================================================
   /// clear the sequence
@@ -31,9 +176,34 @@ namespace gum {
   void Sequence<KEY>::clear() {
     __h.clear();
     __v.clear();
-    __update_iterators();
+    __update_end();
   }
 
+  // ==============================================================================
+  /** insert an element at the end of the sequence. private version for internal
+   * use */
+  // ==============================================================================
+  template <typename KEY> INLINE
+  void Sequence<KEY>::__insert( const KEY k ) {
+    if ( __h.exists( k ) )
+      GUM_ERROR( DuplicateElement,"Key already in sequence" );
+
+    // k will be added at the end. Insert the new key into the hashtable
+    Idx pos = __h.size();
+    KEY& new_key = const_cast<KEY&>( __h.insertAndGetKey ( k, pos ) );
+
+    __v.push_back( &new_key );
+  }
+
+  // ==============================================================================
+  /// returns the size of the sequence
+  // ==============================================================================
+  template <typename KEY> INLINE
+  Size Sequence<KEY>::size() const  {
+    return __v.size();
+  }
+
+  
   // ==============================================================================
   /// clears the current sequence and fill it with copies the element of aSeq
   // ==============================================================================
@@ -41,20 +211,20 @@ namespace gum {
   void Sequence<KEY>::__copy( const Sequence<KEY>& aSeq ) {
     clear();
 
-    for ( iterator iter = aSeq.begin(); iter != aSeq.end(); ++iter )
-      __insert( *iter );
+    for ( unsigned int i = 0; i < aSeq.size(); ++i)
+      __insert( *( aSeq.__v[i] ) );
 
-    __update_iterators();
+    __update_end();
   }
 
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
   template <typename KEY>
-  Sequence<KEY>::Sequence():__h(),__v(),__end( this ),__rend( this ) {
+  Sequence<KEY>::Sequence(): __h(), __v(), __end( *this ), __rend( *this ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Sequence );
-    __rend.__setAtBegin();
+    __rend.__setAtRend();
     __end.__setAtEnd();
   }
 
@@ -63,10 +233,10 @@ namespace gum {
   // ==============================================================================
   template <typename KEY>
   Sequence<KEY>::Sequence( const Sequence<KEY>& aSeq ) :
-    __h( aSeq.__h ),__v( aSeq.__v ),__end( this ),__rend( this ) {
+    __h ( aSeq.__h ), __v( aSeq.__v ), __end( *this ), __rend( *this ) {
     // for debugging purposes
     GUM_CONS_CPY( Sequence );
-    __rend.__setAtBegin();
+    __rend.__setAtRend();
     __end.__setAtEnd();
   }
 
@@ -92,14 +262,6 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// returns the size of the sequence
-  // ==============================================================================
-  template <typename KEY> INLINE
-  Size Sequence<KEY>::size() const  {
-    return __h.size();
-  }
-
-  // ==============================================================================
   /// return true if empty
   // ==============================================================================
   template <typename KEY> INLINE
@@ -121,23 +283,28 @@ namespace gum {
   template <typename KEY> INLINE
   void Sequence<KEY>::insert( const KEY& k ) {
     __insert( k );
-    __update_iterators();
+    __update_end();
   }
 
   // ==============================================================================
-  /// insert an element at the end of the sequence. private version for internal use
+  // returns the object at the pos i
   // ==============================================================================
   template <typename KEY> INLINE
-  void Sequence<KEY>::__insert( const KEY k ) {
-    if ( __h.exists( k ) ) GUM_ERROR( DuplicateElement,"Key already in sequence" );
+  const KEY& Sequence<KEY>::atPos( const Idx i ) const {
+    if ( i >= __h.size() )
+      GUM_ERROR( NotFound, "" );
 
-    // k will be added at the end.
-    Idx pos=__h.size();
-
-    __h.insert( k,pos );
-
-    __v.push_back( k );
+    return *( __v[i] );
   }
+
+  // ==============================================================================
+  /// returns the position of the object passed in argument (if it exists)
+  // ==============================================================================
+  template <typename KEY> INLINE
+  Idx Sequence<KEY>::pos( const KEY& key ) const {
+    return __h[key];
+  }
+
 
   // ==============================================================================
   /// insert k in the sequence (synonym for insert)
@@ -151,27 +318,39 @@ namespace gum {
   // ==============================================================================
   /// remove an element from the sequence
   // ==============================================================================
-  template <typename KEY>
+  template <typename KEY> INLINE
   void Sequence<KEY>::erase( const KEY& k ) {
     // get the position of the element to remove
     Idx pos;
 
-    try { pos=__h[k]; }
+    try { pos = __h[k]; }
     catch ( NotFound& ) { return; }
 
     // erase the element
-    try {
-      __v.erase( __v.begin()+pos );
-      __h.erase( k );
-
-      for ( Idx i=pos; i<__v.size(); ++i ) {
-        --__h[ __v[i] ];
-      }
-    } catch ( Exception& e ) {
-      GUM_SHOWERROR( e );
+    __v.erase( __v.begin()+pos );
+    for ( Idx i = pos; i < __v.size(); ++i ) {
+      --__h[ *(__v[i]) ];
     }
+    __update_end();
+    __h.erase( k );
+  }
 
-    __update_iterators();
+  // ==============================================================================
+  /// remove from the sequence the element pointed to by the iterator
+  // ==============================================================================
+  template <typename KEY> INLINE
+  void Sequence<KEY>::erase( const iterator& iter ) {
+    if ( iter.pos() >= size() ) return;
+
+    // erase the element
+    Idx  pos = iter.pos();
+    KEY* key = __v[pos];
+    __v.erase( __v.begin()+pos );
+    for ( Idx i = pos; i < __v.size(); ++i ) {
+      --__h[ *(__v[i]) ];
+    }
+    __update_end();
+    __h.erase( *key );
   }
 
   // ==============================================================================
@@ -187,30 +366,15 @@ namespace gum {
   // returns the object at the pos i
   // ==============================================================================
   template <typename KEY> INLINE
-  const KEY& Sequence<KEY>::atPos( const Idx i ) const {
-    if ( i >= __h.size() )
-      GUM_ERROR( NotFound, "" );
-
-    return __v[i];
-  }
-
-  // ==============================================================================
-  // returns the object at the pos i
-  // ==============================================================================
-  template <typename KEY> INLINE
   void Sequence<KEY>::setAtPos( Idx i,const KEY newKey ) {
-    if ( i >= __h.size() )  GUM_ERROR( NotFound, "index too large" );
-
+    if ( i >= __h.size() )
+      GUM_ERROR( NotFound, "index too large" );
     if ( __h.exists( newKey ) )
       GUM_ERROR( DuplicateElement,"Key already in sequence" );
 
-    const KEY& oldKey=atPos( i );
-
-    __h.erase( oldKey );
-
-    __h.insert( newKey,i );
-
-    __v[i]=newKey;
+    __h.erase( *(__v[i]) );
+    KEY& new_key = const_cast<KEY&>( __h.insertAndGetKey( newKey,i ) );
+    __v[i] = &new_key;
   }
 
   // ==============================================================================
@@ -218,31 +382,32 @@ namespace gum {
   // ==============================================================================
   template <typename KEY> INLINE
   void Sequence<KEY>::swap( Idx i,Idx j ) {
-    if ( i==j ) return;
+    if ( i == j ) return;
 
-    const KEY ki=atPos( i ); // we copy only one KEY
+    KEY& ki = const_cast<KEY&>( atPos( i ) );
+    KEY& kj = const_cast<KEY&>( atPos( j ) );
 
-    const KEY& kj=atPos( j );
+    __h[ki]=j;
+    __h[kj]=i;
 
-    __h[ki]=j;__h[kj]=i;
-
-    __v[i]=kj; __v[j]=ki;
+    __v[i] = &kj;
+    __v[j] = &ki;
   }
 
-  // ============================================================================
+  // ==============================================================================
   /// returns the first element
-  // ============================================================================
+  // ==============================================================================
   template <typename KEY> INLINE
   const KEY& Sequence<KEY>::front() const {
-    return this->atPos(0);
+    return atPos ( 0 );
   }
   
-  // ============================================================================
+  // ==============================================================================
   /// returns the last element
-  // ============================================================================
+  // ==============================================================================
   template <typename KEY> INLINE
   const KEY& Sequence<KEY>::back() const {
-    return this->atPos(this->size() - 1);
+    return atPos ( size() - 1 );
   }
 
   // ==============================================================================
@@ -270,15 +435,15 @@ namespace gum {
     stream<<"[";
 
     if ( ! __h.empty() ) {
-      stream<<0<<":"<<  __v[0] ;
+      stream<<0<<":"<<  *__v[0] ;
 
       for ( Idx i=1;i<__h.size();++i ) {
-        stream<<" - "<<i<<":"<<  __v[i] ;
+        stream<<" - "<<i<<":"<<  *__v[i] ;
       }
     }
 
     stream<<"]";
-
+    
     std::string res=stream.str();
     return res;
   }
@@ -288,10 +453,10 @@ namespace gum {
   // ==============================================================================
   template <typename KEY> INLINE
   bool Sequence<KEY>::operator==( const Sequence<KEY>& k ) const {
-    if ( size()!=k.size() ) return false;
+    if ( size() != k.size() ) return false;
     else {
-      for ( Idx i=0;i<size();++i )
-        if ( __v[i] != k.__v[i] ) return false;
+      for ( Idx i=0; i < size(); ++i )
+        if ( *__v[i] != *(k.__v[i]) ) return false;
     }
 
     return true;
@@ -310,20 +475,16 @@ namespace gum {
   // ==============================================================================
   template <typename KEY> INLINE
   std::ostream& operator<< ( std::ostream& stream, const Sequence<KEY>& seq ) {
-    stream<<seq.toString();
+    stream << seq.toString();
     return stream;
   }
-
+  
   // ==============================================================================
   /// returns a value to 0
   // ==============================================================================
   template <typename KEY> INLINE
   SequenceIterator<KEY> Sequence<KEY>::begin() const {
-    SequenceIterator<KEY> it( this,0 );
-
-    if ( empty() ) it.__setAtBegin();
-
-    return it;
+    return SequenceIterator<KEY> ( *this );
   }
 
   // ==============================================================================
@@ -339,11 +500,8 @@ namespace gum {
   // ==============================================================================
   template <typename KEY> INLINE
   SequenceIterator<KEY> Sequence<KEY>::rbegin() const {
-    SequenceIterator<KEY> it( this,0 );
-
-    if ( empty() ) it.__setAtEnd();
-    else it.__setPos( size()-1 );
-
+    SequenceIterator<KEY> it( *this );
+    it.__setPos( size()-1 );
     return it;
   }
 
@@ -363,132 +521,16 @@ namespace gum {
     if ( new_size < __h.size() ) return;
 
     __h.resize( new_size );
-
     __v.reserve( new_size );
   }
 
-  // ==============================================================================
-  /// updates const iterators
-  // ==============================================================================
-  template <typename KEY> INLINE
-  void Sequence<KEY>::__update_iterators( ) {
-    __end.__setAtEnd();
-  }
-
 
 
 
 
   
-  // ==============================================================================
-  // ==============================================================================
-  // SequenceIterator
-  // ==============================================================================
-  // ==============================================================================
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>::SequenceIterator( const Sequence<KEY> * const seq,
-                                           Idx pos ):
-    __iterator( pos ),__seq( seq ) {
-    GUM_CONSTRUCTOR( SequenceIterator );
-
-    if ( pos>__seq->size()-1 ) __iterator=__seq->size()-1;
-
-    __iterator++; // internally : __iterator=0 at begin, in [1,..,size()]
-                  // if valid, =size()+1 at end
-  }
-
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>::SequenceIterator( const SequenceIterator<KEY>& source ):
-    __iterator( source.__iterator ),__seq( source.__seq ) {
-    GUM_CONS_CPY( SequenceIterator );
-  }
-
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>::~SequenceIterator() {
-    GUM_DESTRUCTOR( SequenceIterator );
-  }
-
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator=
-  ( const SequenceIterator<KEY>& source ) {
-    __iterator=source.__iterator;
-    __seq=source.__seq;
-    return *this;
-  }
-
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator++( ) {
-    if ( __iterator<__seq->size()+1 )
-      __iterator++;
-
-    return *this;
-  }
-
-  template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator--( ) {
-    if ( __iterator>0 )
-      __iterator--;
-
-    return *this;
-  }
-
-  template <typename KEY> INLINE
-  bool SequenceIterator<KEY>::operator==
-  ( const SequenceIterator<KEY>& source ) const {
-    if ( __seq!=source.__seq ) return false;
-
-    if ( __seq->empty() ) return true; // all iterators are the same if seq is empty
-
-    return ( __iterator==source.__iterator );
-  }
-
-  template <typename KEY> INLINE
-  bool SequenceIterator<KEY>::operator!=
-  ( const SequenceIterator<KEY>& source ) const {
-    return ! operator==( source );
-  }
-
-  template <typename KEY> INLINE
-  const KEY& SequenceIterator<KEY>::operator*() const {
-    return __seq->atPos( pos() );
-  }
-
-  template <typename KEY> INLINE
-  const KEY* SequenceIterator<KEY>::operator->() const {
-    return &__seq->atPos( pos() );
-  }
-
-  template <typename KEY> INLINE
-  Idx SequenceIterator<KEY>::pos() const {
-    if ( __iterator==0 ) GUM_ERROR( OperationNotAllowed,"iterator is begin()" );
-
-    if ( __iterator==__seq->size()+1 )
-      GUM_ERROR( OperationNotAllowed,"iterator is end()" );
-
-    return  __iterator-1 ;// internally : __iterator=0 at begin, in [1,..,size()]
-                          // if valid, =size()+1 at end. externally :
-                          // from 0 to size()-1
-  }
-
-  template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setPos( Idx pos ) {
-    if ( pos>__seq->size()-1 ) pos=__seq->size()-1;
-
-    __iterator=pos+1;
-  }
-
-  template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setAtBegin( ) {
-    __iterator=0;
-  }
-
-  template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setAtEnd( ) {
-    __iterator=__seq->size()+1;
-  }
-  
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-
 } /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

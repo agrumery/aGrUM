@@ -303,6 +303,15 @@ namespace gum {
     return new_elt->__val;
   }
 
+  
+  // ==============================================================================
+  /// alias for push_front
+  // ==============================================================================
+  template <typename Val> INLINE
+  Val& ListBase<Val>::push_front( const Val& val ) {
+    return pushFront( val );
+  }
+  
   // ==============================================================================
   /// Insertion of a new element (a copy) at the end of the chained list.
   // ==============================================================================
@@ -322,6 +331,14 @@ namespace gum {
 
     // returns the current value
     return new_elt->__val;
+  }
+  
+  // ==============================================================================
+  /// alias for push_back
+  // ==============================================================================
+  template <typename Val> INLINE
+  Val& ListBase<Val>::push_back( const Val& val ) {
+    return pushBack( val );
   }
 
   // ==============================================================================

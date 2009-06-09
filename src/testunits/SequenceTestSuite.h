@@ -149,31 +149,50 @@ class SequenceTestSuite: public CxxTest::TestSuite {
 
       int n;
 
-      n=0;for ( gum::Sequence<int>::iterator it=seq.begin();it!=seq.end();++it ) n++;
-
+      n=0;
+      for ( gum::Sequence<int>::iterator it = seq.begin();
+            it != seq.end(); ++it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
 
-      n=0;for ( gum::Sequence<int>::iterator it=seq.rbegin();it!=seq.rend();--it ) n++;
-
+      n=0;
+      for ( gum::Sequence<int>::iterator it = seq.rbegin();
+            it != seq.rend(); --it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
       seq<<1<<3<<5<<2<<4;
 
-      n=0;for ( gum::Sequence<int>::iterator it=seq.begin();it!=seq.end();++it ) {
-
+      n=0;
+      for ( gum::Sequence<int>::iterator it=seq.begin();it!=seq.end();++it ) {
         n*=10;n+=*it;
       }
-
       TS_ASSERT_EQUALS( n,13524 );
 
-      n=0;for ( gum::Sequence<int>::iterator it=seq.rbegin();it!=seq.rend();--it ) {
-
+      n=0;
+      for ( gum::Sequence<int>::iterator it=seq.rbegin();it!=seq.rend();--it ) {
         n*=10;n+=*it;
       }
 
       TS_ASSERT_EQUALS( n,42531 );
     }
+
+  void testIdxSeq () {
+    gum::Sequence<gum::Idx> seq;
+
+    seq<<1<<3<<5<<2<<4;
+
+    int n = 0;
+    for ( gum::Sequence<Idx>::iterator it=seq.rbegin();
+          it!=seq.rend();--it ) {
+      n*=10;n+=*it;
+    }
+
+    TS_ASSERT_EQUALS( n,42531 );
+
+    gum::Sequence<gum::Idx> seq2;
+    TS_ASSERT_THROWS( seq2.front(), gum::NotFound );
+  }
+  
 };
 
 

@@ -144,7 +144,7 @@ namespace gum {
   // ==============================================================================
   // basic constructor that creates an empty list
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableList<Key,Val>::HashTableList()  :
     __deb_list( 0 ), __end_list( 0 ), __nb_elements( 0 ) {
   }
@@ -152,7 +152,7 @@ namespace gum {
   // ==============================================================================
   // copy constructor
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableList<Key,Val>::HashTableList( const HashTableList<Key,Val>&from ) {
     _copy( from );
   }
@@ -182,7 +182,7 @@ namespace gum {
   // ==============================================================================
   // destructor
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableList<Key,Val>::~HashTableList() {
     HashTableBucket<Key, Val> *ptr, *next_ptr;
 
@@ -281,9 +281,35 @@ namespace gum {
   }
 
   // ==============================================================================
+  // insertion of a new element in the chained list
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  const Key&
+  HashTableList<Key,Val>::insertAndGetKey ( const Key& key, const Val& val ) {
+    // create a new bucket
+    HashTableBucket<Key,Val> *new_elt = new HashTableBucket<Key,Val>( key,val );
+
+    // place the bucket at the beginning of the list
+    new_elt->prev = 0;
+    new_elt->next = __deb_list;
+
+    if ( __deb_list )
+      __deb_list->prev = new_elt;
+
+    __deb_list = new_elt;
+
+    if ( __end_list == 0 )
+      __end_list = new_elt;
+
+    ++__nb_elements;
+
+    return new_elt->key;
+  }
+
+  // ==============================================================================
   // function for deleting all the elements of a chained list
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   void HashTableList<Key,Val>::clear() {
     HashTableBucket<Key, Val> *ptr, *next_ptr;
 
@@ -460,7 +486,7 @@ namespace gum {
   // ==============================================================================
   /// destructor
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableIterator<Key,Val>::~HashTableIterator()  {
     // remove the iterator from the table's iterator list
     if ( _prev )
@@ -487,7 +513,7 @@ namespace gum {
   /** @brief makes the iterator point toward nothing (in particular, it is not
    * related anymore to its current hash table) */
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   void HashTableIterator<Key,Val>::clear()  {
     // remove the iterator from the table's iterator list
     if ( _prev )
@@ -666,7 +692,7 @@ namespace gum {
   // ==============================================================================
   /// a method used by the hashtables to construct properly end and rend iters
   // ==============================================================================
-  template <typename Key, typename Val>
+  template <typename Key, typename Val>  INLINE
   void HashTableIterator<Key,Val>::_initialize
   ( HashTable<Key, Val> *tab, bool forward )  {
     // attach the hash table to the iterator
@@ -1143,6 +1169,37 @@ namespace gum {
     ++__nb_elements;
 
     return new_val;
+  }
+
+  // ==============================================================================
+  /// add a new element (actually a copy of this element) in the hash table
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  const Key&
+  HashTable<Key,Val>::insertAndGetKey ( const Key& key, const Val& val ) {
+    Size hash_key = __hash_func( key );
+
+    if ( __key_uniqueness_policy )
+      // check that there does not already exist an element with the same key
+      for ( HashTableBucket<Key, Val> *ptr = __nodes[hash_key].__deb_list;
+            ptr; ptr = ptr->next )
+        if ( ptr->key == key )
+          GUM_ERROR( DuplicateElement,
+                     "the hashtable contains an element with the same key" );
+
+    // check whether there is sufficient space to insert the new pair
+    // if not, resize the current hashtable
+    if ( __resize_policy &&
+         ( __nb_elements >= __size * GUM_HASHTABLE_DEFAULT_MEAN_VAL_BY_SLOT ) ) {
+      resize( __size << 1 );
+      hash_key = __hash_func( key );
+    }
+
+    // add the new pair
+    const Key& new_key = __nodes[hash_key].insertAndGetKey ( key, val );
+    ++__nb_elements;
+
+    return new_key;
   }
 
   // ==============================================================================

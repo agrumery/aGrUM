@@ -39,8 +39,8 @@ file(GLOB AGRUM_TESTS
  BayesNetGeneratorTestSuite.h
  BayesNetTestSuite.h
  BijectionTestSuite.h
- BIFReaderTestSuite.h
- #BIFWriterTestSuite.h
+# BIFReaderTestSuite.h
+# BIFWriterTestSuite.h
  BinTreeNodeTestSuite.h
  BinTreeNode4AVLTestSuite.h
  BinSearchTreeTestSuite.h
@@ -68,7 +68,7 @@ file(GLOB AGRUM_TESTS
  MultiDimBucketTestSuite.h
  MultiDimNoisyORTestSuite.h
  MultiDimTestSuite.h
-  NancyTestSuite.h
+ NancyTestSuite.h
  PotentialTestSuite.h
  RangeVariableTestSuite.h
  RefPtrTestSuite.h

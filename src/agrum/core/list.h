@@ -321,6 +321,11 @@ namespace gum {
     Val& pushFront( const Val& val );
 
     // ============================================================================
+    /// alias for push_front
+    // ============================================================================
+    Val& push_front( const Val& val );
+
+    // ============================================================================
     /// inserts a new element (a copy) at the end of the chained list
     /** The value passed in argument is not actually inserted into the list: this
      * is a copy of this value that is inserted. The method runs in constant time.
@@ -329,6 +334,11 @@ namespace gum {
      * is a copy of val that is inserted. */
     // ============================================================================
     Val& pushBack( const Val& val );
+
+    // ============================================================================
+    /// alias for push_back
+    // ============================================================================
+    Val& push_back( const Val& val );
 
     // ============================================================================
     /// inserts a new element at the end of the chained list (alias of pushBack)
@@ -756,6 +766,7 @@ namespace gum {
      * is a copy of val that is inserted. */
     // ============================================================================
     using ListBase<Val>::pushFront;
+    using ListBase<Val>::push_front;
 
     // ============================================================================
     /// inserts a new element (a copy) at the end of the chained list.
@@ -766,6 +777,7 @@ namespace gum {
      * is a copy of val that is inserted. */
     // ============================================================================
     using ListBase<Val>::pushBack;
+    using ListBase<Val>::push_back;
 
     // ============================================================================
     /// inserts a new element at the end of the chained list (alias of pushBack)

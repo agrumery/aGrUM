@@ -239,6 +239,13 @@ namespace gum {
     Val& insert( const Key& key, const Val& val );
     
     // ============================================================================
+    /** inserts a new element in the chained list. The element is inserted
+     * at the beginning of the list. When allocation cannot be performed, the
+     * function raises a bad_alloc exception. */
+    // ============================================================================
+    const Key& insertAndGetKey ( const Key& key, const Val& val );
+    
+    // ============================================================================
     /// function for deleting all the elements of a chained list
     // ============================================================================
     void clear();
@@ -641,6 +648,24 @@ namespace gum {
      * However, the latter is guaranteed to stay in a coherent state. */
     // ============================================================================
     Val& insert( const Key& key, const Val& val );
+
+    // ============================================================================
+    /// adds a new element (actually a copy of this element) in the hash table
+    /** If there already exists an element with the same key in the list and the
+     * uniqueness policy prevents multiple identical keys to belong to the same
+     * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
+     * is not set, the method runs in the worst case in constant time, else if
+     * the automatic resizing policy is set, it runs in constant time in average
+     * linear in the number of elements by slot.
+     * @return a reference to the key inserted in the hash table.
+     * @throw DuplicateElement is thrown when attempting to insert a pair
+     * (key,val) in a hash table containing already a pair with the same key and
+     * when the hash table's uniqueness policy is set.
+     * @throw bad_alloc exception is thrown when memory allocation problems occur.
+     * In this case, the new element is of course not added to the hash table.
+     * However, the latter is guaranteed to stay in a coherent state. */
+    // ============================================================================
+    const Key& insertAndGetKey ( const Key& key, const Val& val );
 
     // ============================================================================
     /// removes a given element from the hash table
