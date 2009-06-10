@@ -39,6 +39,9 @@
 #include <agrum/BN/io/BIFparser/generated/BIFParser.hpp>
 // Workaround since same flag is used for all bison generated parser
 #undef PARSER_HEADER_H
+#undef BISON_STACK_HH
+#undef BISON_POSITION_HH
+#undef BISON_LOCATION_HH
 // ============================================================================
 namespace gum_bif
 // ============================================================================
