@@ -38,7 +38,6 @@
 #include <agrum/BN/BayesNetFactory.h>
 // ============================================================================
 #include <agrum/BN/io/BIFparser/BIFScanner.h>
-#include <agrum/BN/io/BIFparser/generated/BIFParser.hpp>
 // ============================================================================
 #include <agrum/multidim/labelizedVariable.h>
 // ============================================================================

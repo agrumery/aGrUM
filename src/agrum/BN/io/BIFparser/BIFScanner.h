@@ -37,6 +37,8 @@
 #endif // __FLEX_LEXER_H
 // ============================================================================
 #include <agrum/BN/io/BIFparser/generated/BIFParser.hpp>
+// Workaround since same flag is used for all bison generated parser
+#undef PARSER_HEADER_H
 // ============================================================================
 namespace gum_bif
 // ============================================================================
