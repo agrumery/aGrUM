@@ -1,5 +1,5 @@
-#ifndef SIGNALER3_H__
-#define SIGNALER3_H__
+#ifndef SIGNALER4_H__
+#define SIGNALER4_H__
 
 #include "signaler.h"
 
@@ -13,5 +13,5 @@
 
 #include "signaler_with_args.patron.h"
 
-#endif // SIGNALER3_H__
+#endif // SIGNALER4_H__
 

@@ -1,4 +1,4 @@
-
+#define TOTO MAKE_NAME(BasicSignaler)
 namespace gum {
 
   namespace sig {
@@ -22,11 +22,11 @@ namespace gum {
         typedef typename ConnectorList::iterator constConnectors_iterator; //Connections::const_iterator
 
         MAKE_NAME(BasicSignaler)() {
-          GUM_CONSTRUCTOR( MAKE_NAME(BasicSignaler) );
+          GUM_CONSTRUCTOR( TOTO );
         }
 
         MAKE_NAME(BasicSignaler)( const MAKE_NAME(BasicSignaler)& s ) : BasicSignaler( s ) {
-          GUM_CONS_CPY( BasicSignaler0 );
+          GUM_CONS_CPY( TOTO );
 
           for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
             ( *it )->getdest()->signal_link( this );
@@ -35,7 +35,7 @@ namespace gum {
         }
 
         virtual ~MAKE_NAME(BasicSignaler)() {
-          GUM_DESTRUCTOR( MAKE_NAME(BasicSignaler) );
+          GUM_DESTRUCTOR( TOTO );
           unlink_all();
         }
 
