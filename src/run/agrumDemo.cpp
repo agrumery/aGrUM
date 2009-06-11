@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include "signaler0.h"
-#include "signaler2.h"
+#include "signaler3.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -29,15 +29,15 @@ class A {
 
   public:
     gum::Signaler0 onAddNode;
-    gum::Signaler2<int,std::string> onChangeLabel;
+    gum::Signaler3<int,std::string,float> onChangeLabel;
 
     A( std::string s ) : _label( s ) {}
 
     const std::string& label() const { return _label;}
 
-    void addNode() { GUM_EMIT0( this,onAddNode );}
+    void addNode() { GUM_EMIT0( onAddNode );}
 
-    void changeLabel( int id,std::string s ) { GUM_EMIT2( this,onChangeLabel,id,s );_label=s;}
+    void changeLabel( int id,std::string s ) { GUM_EMIT3( onChangeLabel,id,s,3.1415 );_label=s;}
 };
 
 class B : public gum::Listener {
@@ -47,16 +47,16 @@ class B : public gum::Listener {
       std::cout<<"in "<<source->label()<<": node  added ..."<<std::endl;
     }
 
-    void labelChanged( const void* v,int i,std::string s ) {
+    void labelChanged( const void* v,int i,std::string s,float f ) {
       const A* source=static_cast<const A*>( v );
-      std::cout<<"in "<<source->label()<<": label '"<<s <<"' changed  for id "<<i<<"..."<<std::endl;
+      std::cout<<"in "<<source->label()<<": label '"<<s <<"' changed  for id "<<i<<"..."<<f<<std::endl;
     }
 };
 
 class C : public gum::Listener {
   public:
-    void f( const void* v,int i,std::string s ) {
-      std::cout<<v<<" "<<i<<" "<<s<<std::endl;
+    void f( const void* v,int i,std::string s,float f ) {
+      std::cout<<v<<" "<<i<<" "<<s<<" "<<f<<std::endl;
     }
 };
 
@@ -88,8 +88,9 @@ void f( void ) {
 
   std::cout<<std::endl<<"******"<<std::endl;
 
-  // it is possible to directly emit a signal (is it a feature or a bug ?)
-  GUM_EMIT2( &x,onChangeLabel,1,"toto" );
+  // is not validate
+  // x.GUM_EMIT2( onChangeLabel,1,"toto" );
+
 
   std::cout<<std::endl<<"******"<<std::endl;
 }

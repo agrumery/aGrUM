@@ -28,16 +28,12 @@ namespace gum {
         GUM_CONSTRUCTOR( Listener );
       }
 
-      Listener( const Listener& hs ) {
+      Listener( const Listener& l ) {
         GUM_CONS_CPY( Listener );
 
-        const_iterator it = hs._senders.begin();
-        const_iterator itEnd = hs._senders.end();
-
-        while ( it != itEnd ) {
-          ( *it )->slot_duplicate( &hs, this );
+        for ( const_iterator it = l._senders.begin(); it != l._senders.end() ; ++it ) {
+          ( *it )->slot_duplicate( &l, this );
           _senders.insert( *it );
-          ++it;
         }
       }
 
@@ -55,14 +51,8 @@ namespace gum {
       }
 
       void unlink_all() {
-
-        const_iterator it = _senders.begin();
-        const_iterator itEnd = _senders.end();
-
-        while ( it != itEnd ) {
+        for ( const_iterator it = _senders.begin(); it != _senders.end() ; ++it )
           ( *it )->slot_unlink( this );
-          ++it;
-        }
 
         _senders.clear();
       }

@@ -9,9 +9,7 @@ namespace gum {
 
     class BasicEmitter0 {
       public:
-        virtual ~BasicEmitter0() {
-//GUM_TRACE( "DESTRUCTION BASIC_EMITTER0" );
-        };
+        virtual ~BasicEmitter0() { };
 
         virtual Listener* getdest() const = 0;
         virtual void notify( const void * ) = 0;
@@ -30,67 +28,45 @@ namespace gum {
 
         BasicSignaler0( const BasicSignaler0& s ) : BasicSignaler( s ) {
           GUM_CONS_CPY( BasicSignaler0 );
-          constConnectors_iterator it = s.__connectors.begin();
-          constConnectors_iterator itEnd = s.__connectors.end();
 
-          while ( it != itEnd ) {
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
             ( *it )->getdest()->signal_link( this );
-            __connectors.pushBack(( *it )->clone() );
-
-            ++it;
+            _connectors.pushBack(( *it )->clone() );
           }
         }
 
         virtual ~BasicSignaler0() {
-          //GUM_TRACE( "yi !" );
           GUM_DESTRUCTOR( BasicSignaler0 );
           unlink_all();
         }
 
         void unlink_all() {
-          //GUM_TRACE( "unlink !"<<__connectors.size() );
-          constConnectors_iterator it = __connectors.begin();
-          constConnectors_iterator itEnd = __connectors.end();
-
-          while ( it != itEnd ) {
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
             ( *it )->getdest()->signal_unlink( this );
-            //GUM_TRACE( "Destruction" );
             delete *it;
-
-            ++it;
           }
 
-          __connectors.clear();
+          _connectors.clear();
         }
 
-        void unlink( Listener* pclass ) {
-
-          constConnectors_iterator it = __connectors.begin();
-          constConnectors_iterator itEnd = __connectors.end();
-
-          while ( it != itEnd ) {
-            if (( *it )->getdest() == pclass ) {
+        void unlink( Listener* l ) {
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
+            if (( *it )->getdest() == l ) {
               delete *it;
-              __connectors.erase( it );
-              pclass->signal_unlink( this );
+              _connectors.erase( it );
+              l->signal_unlink( this );
               return;
             }
-
-            ++it;
-          }
         }
 
-        void slot_unlink( Listener* pslot ) {
-          constConnectors_iterator it = __connectors.begin();
-          constConnectors_iterator itEnd = __connectors.end();
-
-          while ( it != itEnd ) {
+        void slot_unlink( Listener* l ) {
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
             constConnectors_iterator itNext = it;
             ++itNext;
 
-            if (( *it )->getdest() == pslot ) {
-	      delete *it;
-              __connectors.erase( it );
+            if (( *it )->getdest() == l ) {
+              delete *it;
+              _connectors.erase( it );
             }
 
             it = itNext;
@@ -98,39 +74,33 @@ namespace gum {
         }
 
         void slot_duplicate( const Listener* oldtarget, Listener* newtarget ) {
-          constConnectors_iterator it = __connectors.begin();
-          constConnectors_iterator itEnd = __connectors.end();
-
-          while ( it != itEnd ) {
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
             if (( *it )->getdest() == oldtarget ) {
-              __connectors.pushBack(( *it )->duplicate( newtarget ) );
+              _connectors.pushBack(( *it )->duplicate( newtarget ) );
             }
-
-            ++it;
-          }
         }
 
       protected:
-        ConnectorList __connectors;
+        ConnectorList _connectors;
     };
 
-    template<class dest_type>
+    template<class TargetClass>
 
     class Connector0 : public BasicEmitter0 {
       public:
         Connector0() {
           GUM_CONSTRUCTOR( Connector0 );
-          _pobject = NULL;
-          _pmemfun = NULL;
+          __target = NULL;
+          __method = NULL;
         }
 
-        Connector0( dest_type* pobject, void ( dest_type::*pmemfun )( const void * ) ) {
+        Connector0( TargetClass* target, void ( TargetClass::*method )( const void * ) ) {
           GUM_CONSTRUCTOR( Connector0 );
-          _pobject = pobject;
-          _pmemfun = pmemfun;
+          __target = target;
+          __method = method;
         }
 
-        Connector0( const Connector0<dest_type>* src ) : BasicEmitter0( src ) {
+        Connector0( const Connector0<TargetClass>* src ) : BasicEmitter0( src ) {
           GUM_CONS_CPY( Connector0 );
         }
 
@@ -139,24 +109,24 @@ namespace gum {
         }
 
         virtual BasicEmitter0* clone() {
-          return new Connector0<dest_type>( *this );
+          return new Connector0<TargetClass>( *this );
         }
 
         virtual BasicEmitter0* duplicate( Listener* pnewdest ) {
-          return new Connector0<dest_type>(( dest_type * )pnewdest, _pmemfun );
+          return new Connector0<TargetClass>(( TargetClass * )pnewdest, __method );
         }
 
         virtual void notify( const void * src ) {
-          ( _pobject->*_pmemfun )( src );
+          ( __target->*__method )( src );
         }
 
         virtual Listener* getdest() const {
-          return _pobject;
+          return __target;
         }
 
       private:
-        dest_type* _pobject;
-        void ( dest_type::* _pmemfun )( const void * );
+        TargetClass* __target;
+        void ( TargetClass::* __method )( const void * );
     };
   } // namespace sig
 
@@ -174,48 +144,28 @@ namespace gum {
         GUM_DESTRUCTOR( Signaler0 );
       }
 
-      template<class desttype>
-      void link( desttype* pclass, void ( desttype::*pmemfun )( const void * ) ) {
+      template<class TargetClass>
+      void link( TargetClass* target, void ( TargetClass::*method )( const void * ) ) {
 
-        sig::Connector0<desttype>* conn = new sig::Connector0<desttype>( pclass, pmemfun );
-        __connectors.pushBack( conn );
-        pclass->signal_link( this );
+        sig::Connector0<TargetClass>* conn = new sig::Connector0<TargetClass>( target, method );
+        this->_connectors.pushBack( conn );
+        target->signal_link( this );
       }
 
       void notify( const void *src ) {
-
-        constConnectors_iterator itNext, it = __connectors.begin();
-        constConnectors_iterator itEnd = __connectors.end();
-
-        while ( it != itEnd ) {
-          itNext = it;
-          ++itNext;
-
+        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it )
           ( *it )->notify( src );
-
-          it = itNext;
-        }
       }
 
       void operator()( const void *src ) {
-
-        constConnectors_iterator itNext, it = __connectors.begin();
-        constConnectors_iterator itEnd = __connectors.end();
-
-        while ( it != itEnd ) {
-          itNext = it;
-          ++itNext;
-
+        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it )
           ( *it )->notify( src );
-
-          it = itNext;
-        }
       }
   };
 
 } // namespace gum
 
-#define GUM_EMIT0(sender,signal) (sender)->signal((sender))
+#define GUM_EMIT0(signal) this->signal(this)
 
 #endif // SIGNALER0_H__
 
