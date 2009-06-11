@@ -192,6 +192,26 @@ class SequenceTestSuite: public CxxTest::TestSuite {
     gum::Sequence<gum::Idx> seq2;
     TS_ASSERT_THROWS( seq2.front(), gum::NotFound );
   }
+
+  
+  void testIntStarSeq () {
+    gum::Sequence<int*> seq;
+
+    int *a = 0, *b;
+    b = a + 3;
+    
+    seq<<a<<b;
+
+    int* n = 0;
+    for ( gum::Sequence<int*>::iterator it=seq.rbegin();
+          it!=seq.rend();--it ) {
+      n=*it;
+    }
+
+
+    gum::Sequence<int*> seq2;
+    TS_ASSERT_THROWS( seq2.front(), gum::NotFound );
+  }
   
 };
 

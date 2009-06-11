@@ -58,6 +58,7 @@ class InstantiationTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_THROWS( i>>b , gum::NotFound );
       TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size ) 2 );
       TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*5 ) );
+
       TS_ASSERT_EQUALS( i.toString(),"<a:1|c:4>" );
 
       TS_ASSERT( ! i.contains( b ) );

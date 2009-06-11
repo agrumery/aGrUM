@@ -259,7 +259,8 @@ namespace gum {
   // insertion of a new element in the chained list
   // ==============================================================================
   template <typename Key, typename Val> INLINE
-  Val& HashTableList<Key,Val>::insert( const Key& key, const Val& val ) {
+  HashTableBucket<Key,Val>*
+  HashTableList<Key,Val>::_insertAndGetBucket ( const Key& key, const Val& val ) {
     // create a new bucket
     HashTableBucket<Key,Val> *new_elt = new HashTableBucket<Key,Val>( key,val );
 
@@ -277,7 +278,15 @@ namespace gum {
 
     ++__nb_elements;
 
-    return new_elt->val;
+    return new_elt;
+  }
+
+  // ==============================================================================
+  // insertion of a new element in the chained list
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  Val& HashTableList<Key,Val>::insert( const Key& key, const Val& val ) {
+    return _insertAndGetBucket ( key, val )->val;
   }
 
   // ==============================================================================
@@ -286,24 +295,7 @@ namespace gum {
   template <typename Key, typename Val> INLINE
   const Key&
   HashTableList<Key,Val>::insertAndGetKey ( const Key& key, const Val& val ) {
-    // create a new bucket
-    HashTableBucket<Key,Val> *new_elt = new HashTableBucket<Key,Val>( key,val );
-
-    // place the bucket at the beginning of the list
-    new_elt->prev = 0;
-    new_elt->next = __deb_list;
-
-    if ( __deb_list )
-      __deb_list->prev = new_elt;
-
-    __deb_list = new_elt;
-
-    if ( __end_list == 0 )
-      __end_list = new_elt;
-
-    ++__nb_elements;
-
-    return new_elt->key;
+    return _insertAndGetBucket ( key, val )->key;
   }
 
   // ==============================================================================
@@ -974,41 +966,6 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// returns a reference on the value the key of which is passed in argument
-  // ==============================================================================
-  template <typename Key, typename Val> INLINE
-  const Val&
-  HashTable<Key,Val>::getWithDefault( const Key& key,
-                                      const Val& default_value ) const {
-    if ( ! exists( key ) ) return insert( key,default_value );
-    return operator[]( key );
-  }
-
-  // ==============================================================================
-  /// returns a reference on the value the key of which is passed in argument
-  // ==============================================================================
-  template <typename Key, typename Val> INLINE
-  Val&
-  HashTable<Key,Val>::getWithDefault( const Key& key,
-                                      const Val& default_value) {
-    if ( ! exists( key ) ) return insert( key,default_value );
-    return operator[]( key );
-  }
-
-  // ==============================================================================
-  /// add or update a couple (key,value)
-  // ==============================================================================
-  template <typename Key, typename Val> INLINE
-  void HashTable<Key,Val>::set( const Key& key,const Val& value ) {
-    if ( ! exists( key ) ) {
-      insert( key,value );
-    }
-    else {
-      operator[]( key )=value;
-    }
-  }
-
-  // ==============================================================================
   /// returns the number of elements in the hashtable
   // ==============================================================================
   template <typename Key, typename Val> INLINE
@@ -1145,7 +1102,8 @@ namespace gum {
   /// add a new element (actually a copy of this element) in the hash table
   // ==============================================================================
   template <typename Key, typename Val> INLINE
-  Val& HashTable<Key,Val>::insert( const Key& key, const Val& val ) {
+  HashTableBucket<Key,Val>*
+  HashTable<Key,Val>::_insertAndGetBucket ( const Key& key, const Val& val ) {
     Size hash_key = __hash_func( key );
 
     if ( __key_uniqueness_policy )
@@ -1165,10 +1123,19 @@ namespace gum {
     }
 
     // add the new pair
-    Val& new_val = __nodes[hash_key].insert( key, val );
+    HashTableBucket<Key,Val>* new_bucket =
+      __nodes[hash_key]._insertAndGetBucket ( key, val );
     ++__nb_elements;
 
-    return new_val;
+    return new_bucket;
+  }
+
+  // ==============================================================================
+  /// add a new element (actually a copy of this element) in the hash table
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  Val& HashTable<Key,Val>::insert( const Key& thekey, const Val& theval ) {
+    return _insertAndGetBucket (thekey,theval)->val;
   }
 
   // ==============================================================================
@@ -1176,30 +1143,43 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Val> INLINE
   const Key&
-  HashTable<Key,Val>::insertAndGetKey ( const Key& key, const Val& val ) {
-    Size hash_key = __hash_func( key );
+  HashTable<Key,Val>::insertAndGetKey ( const Key& thekey, const Val& theval ) {
+    return _insertAndGetBucket (thekey,theval)->key;
+  }
 
-    if ( __key_uniqueness_policy )
-      // check that there does not already exist an element with the same key
-      for ( HashTableBucket<Key, Val> *ptr = __nodes[hash_key].__deb_list;
-            ptr; ptr = ptr->next )
-        if ( ptr->key == key )
-          GUM_ERROR( DuplicateElement,
-                     "the hashtable contains an element with the same key" );
+  // ==============================================================================
+  /// returns a reference on the value the key of which is passed in argument
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  const Val&
+  HashTable<Key,Val>::getWithDefault( const Key& key,
+                                      const Val& default_value ) const {
+    if ( ! exists( key ) ) return insert( key,default_value );
+    return operator[]( key );
+  }
 
-    // check whether there is sufficient space to insert the new pair
-    // if not, resize the current hashtable
-    if ( __resize_policy &&
-         ( __nb_elements >= __size * GUM_HASHTABLE_DEFAULT_MEAN_VAL_BY_SLOT ) ) {
-      resize( __size << 1 );
-      hash_key = __hash_func( key );
+  // ==============================================================================
+  /// returns a reference on the value the key of which is passed in argument
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  Val&
+  HashTable<Key,Val>::getWithDefault( const Key& key,
+                                      const Val& default_value) {
+    if ( ! exists( key ) ) return insert( key,default_value );
+    return operator[]( key );
+  }
+
+  // ==============================================================================
+  /// add or update a couple (key,value)
+  // ==============================================================================
+  template <typename Key, typename Val> INLINE
+  void HashTable<Key,Val>::set( const Key& key,const Val& value ) {
+    if ( ! exists( key ) ) {
+      insert( key,value );
     }
-
-    // add the new pair
-    const Key& new_key = __nodes[hash_key].insertAndGetKey ( key, val );
-    ++__nb_elements;
-
-    return new_key;
+    else {
+      operator[]( key )=value;
+    }
   }
 
   // ==============================================================================

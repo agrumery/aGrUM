@@ -113,6 +113,7 @@ namespace gum {
   template <typename Key, typename Val> class HashTable;
   template <typename Key, typename Val> class HashTableIterator;
   template <typename Key, typename Val> class HashTableConstIterator;
+  template <typename T1,  typename T2>  class Bijection;
 
   
   // ==============================================================================
@@ -274,7 +275,16 @@ namespace gum {
     /* function erase suppresses an element from a chained list. */
     // ============================================================================
     void _erase( const HashTableBucket<Key, Val>* ptr );
+
+    // ============================================================================
+    /** inserts a new element in the chained list. The element is inserted
+     * at the beginning of the list. When allocation cannot be performed, the
+     * function raises a bad_alloc exception. */
+    // ============================================================================
+    HashTableBucket<Key,Val>*
+    _insertAndGetBucket ( const Key& key, const Val& val );
     
+     
   private:
     // friends
     friend class HashTable<Key, Val>;
@@ -818,6 +828,25 @@ namespace gum {
     // ============================================================================
     void _create( Size size );
 
+    // ============================================================================
+    /// adds a new element (actually a copy of this element) in the hash table
+    /** If there already exists an element with the same key in the list and the
+     * uniqueness policy prevents multiple identical keys to belong to the same
+     * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
+     * is not set, the method runs in the worst case in constant time, else if
+     * the automatic resizing policy is set, it runs in constant time in average
+     * linear in the number of elements by slot.
+     * @return the bucket inserted in the hash table.
+     * @throw DuplicateElement is thrown when attempting to insert a pair
+     * (key,val) in a hash table containing already a pair with the same key and
+     * when the hash table's uniqueness policy is set.
+     * @throw bad_alloc exception is thrown when memory allocation problems occur.
+     * In this case, the new element is of course not added to the hash table.
+     * However, the latter is guaranteed to stay in a coherent state. */
+    // ============================================================================
+    HashTableBucket<Key,Val>*
+    _insertAndGetBucket ( const Key& key, const Val& val );
+
     #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
@@ -826,6 +855,16 @@ namespace gum {
     // friends
     /// to optimize the access to data, iterators mut be friends
     friend class HashTableIterator<Key, Val>;
+
+    /// for friendly displaying the content of the hashtable
+    friend std::ostream& operator<< <> ( std::ostream&,
+                                         const HashTable<Key, Val>& );
+    friend std::ostream& operator<< <> ( std::ostream&,
+                                         const HashTable<Key*, Val>& );
+
+    /// for bijections to quickly access data
+    template <typename T1, typename T2> friend class Bijection;
+
     
     /** @brief the hash table is represented as a vector of chained lists. 'nodes'
      * is this very vector. */
@@ -857,11 +896,7 @@ namespace gum {
     iterator __iter_end;
     iterator __iter_rend;
     //\}
-    /// for friendly displaying the content of the hashtable
-    friend std::ostream& operator<< <> ( std::ostream&,
-                                         const HashTable<Key, Val>& );
-    friend std::ostream& operator<< <> ( std::ostream&,
-                                         const HashTable<Key*, Val>& );
+
   };
 
 
