@@ -36,9 +36,9 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===     BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
+  /* =========================================================================== */
   /** @class DiGraph
    * @brief Base class for all graphs
    *
@@ -82,15 +82,18 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes(); iter != g3.endNodes(); ++iter )
-   * cerr << *iter << endl;
+   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
+   *       iter != g3.endNodes(); ++iter )
+   *   cerr << *iter << endl;
    *
-   * for ( ArcGraphPart::iterator iter = g3.beginArcs(); iter != g3.endArcs(); ++iter )
-   * cerr << *iter << endl;
+   * for ( ArcGraphPart::iterator iter = g3.beginArcs();
+   *       iter != g3.endArcs(); ++iter )
+   *   cerr << *iter << endl;
    *
    * const ArcSet& a=g3.parents( 3 );
    *
-   * for ( ArcSetIterator iter = a.begin( ); iter != a.end(); ++iter ) cerr << "  -  "<<*iter;
+   * for ( ArcSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   *   cerr << "  -  "<<*iter;
    *
    * cerr<<endl;
    *
@@ -98,7 +101,7 @@ namespace gum {
    *  g3.eraseParents( 2
    * @endcode
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class DiGraph : public ArcGraphPart,public virtual NodeGraphPart {
   public:
     /** @param nodes_size the size of the hash table used to store all the nodes

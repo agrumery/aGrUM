@@ -35,9 +35,9 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    === */
+  /* =========================================================================== */
   /** @class MixedGraph
    * @brief Base class for mixed graphs
    *
@@ -48,7 +48,7 @@ namespace gum {
    * @code
    * @endcode
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class MixedGraph : public virtual UndiGraph,public virtual DiGraph {
   public:
     /** @param nodes_size the size of the hash table used to store all the nodes

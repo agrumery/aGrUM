@@ -42,7 +42,7 @@ namespace gum {
    *
    * NodeGraphPart wraps a NodeSet and implements an NodeId factory
    *
-   * @author Pierre-Henri WUILLEMIN and Christophe GONZALES*
+   * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
    *
    * @par Usage example:
    * @code
@@ -56,7 +56,6 @@ namespace gum {
    * std::cerr<<"a="<<id_a<<"    b="<<id_b<<std::endl;
    *
    * // checks if there exists a node with ID = 6
-   *
    * if ( !nodes1.exists( 6 ) ) std::cerr << "no node with ID 6" << std::endl;
    *
    * // check if the list is empty
@@ -89,73 +88,140 @@ namespace gum {
 
   class NodeGraphPart {
   public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// default constructor
     /** @param nodes_size the size of the hash table used to store all the nodes
      * @param nodes_resize_policy the resizing policy of this hash table**/
     explicit NodeGraphPart( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
                             bool nodes_resize_policy    = true );
+
+    /// copy constructor
     NodeGraphPart( const NodeGraphPart& s );
+
+    /// destructor
     virtual ~NodeGraphPart();
 
-    /**
-     * populateNodes clears *this and take nodes from s or h keys. It is basically
-     * the only way to insert nodes with IDs not selected by the internal idFactory.
-     */
+    /// @}
+
+    
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// check whether two NodeGraphParts contain the same nodes
+    bool operator==( const NodeGraphPart& p ) const;
+
+    /// check whether two NodeGraphParts contain different nodes
+    bool operator!=( const NodeGraphPart& p ) const;
+
+    /// @}
+    
+    
+    
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+    
+    /// populateNodes clears *this and fills it with the same nodes as "s"
+    /** It is basically the only way to insert nodes with IDs not selected by the
+     * internal idFactory. */
     void populateNodes( const NodeGraphPart& s );
 
-    /**
-     * populateNodes clears *this and take nodes from h keys. It is basically
-     * the only way to insert nodes with IDs not selected by the internal idFactory.
-     */
-    template<typename T> void populateNodesFromProperty( const typename Property<T>::onNodes& h );
+    /// populateNodes clears *this and fills it with the keys of "h"
+    /** It is basically the only way to insert nodes with IDs not selected by the
+     * internal idFactory. */
+    template<typename T>
+    void populateNodesFromProperty( const typename Property<T>::onNodes& h );
 
-    /** insert a new node
+    /** insert a new node and 
      * @return the id chosen by the internal idFactory
      */
     virtual NodeId insertNode ( );
+
+    /// try to insert a node with the given id
+    /** @throws DuplicateElement exception is thrown if the id already exists
+     * @return the id chosen by the internal idFactory
+     */
     virtual void insertNode ( const NodeId id );
 
+    /// erase the node with the given id
+    /** If the NodeGraphPart does not contain the nodeId, then nothing is done. In
+     * particular, no exception is raised. */
     virtual void eraseNode( const NodeId id );
+
+    /// returns true iff the NodeGraphPart contains the given nodeId
     bool exists( const NodeId id ) const;
+
+    /// indicates whether there exists nodes in the NodeGraphPart
     bool empty() const;
+
+    /// remove all the nodes from the NodeGraphPart
     virtual void clear();
+
+    /// returns the number of nodes in the NodeGraphPart
     Size size() const;
+
+    /// returns a number such that all node ids are less than or equal to it 
     NodeId maxId () const;
-    
+
+    /// returns the set of nodes contained in the NodeGraphPart
     const NodeSet& nodes()  const;
+
+    /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
     const NodeSetIterator beginNodes() const;
+
+    /// the end iterator to parse the set of nodes contained in the NodeGraphPart
     const NodeSetIterator& endNodes() const;
 
-    bool operator==( const NodeGraphPart& p ) const;
-    bool operator!=( const NodeGraphPart& p ) const;
-    const std::string toString() const;
+    /// a function to display the set of nodes
+    std::string toString() const;
 
-    /** a method to create a HashTable with key:NodeId and value:Assent
-     * (i.e. a GUM_NODE_PROPERTY(Assent)) from the nodes (using for all node x,
-     * the ASSENT f(x))
+ 
+    /// a method to create a HashTable with key:NodeId and value:VAL
+    /** VAL are computed from the nodes using for all node x, VAL f(x).
      * This method is a wrapper of the same method in HashTable.
      * @see HashTable::map.
      */
-    template <typename ASSENT> typename Property<ASSENT>::onNodes nodesProperty( ASSENT( *f )( const NodeId& ), Size size = 0 ) const;
+    template <typename VAL>
+    typename Property<VAL>::onNodes
+    nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
 
-    /** a method to create a hashMap with key:NodeId and value:Assent (i.e. a
-     * GUM_NODE_PROPERTY(Assent)) from the nodes (using for all node x, the ASSENT a)
-     * This method is a wrapper of the same method in HashTable.
+    /// a method to create a hashMap with key:NodeId and value:VAL
+    /** for all nodes, the value stored is a. This method is a wrapper of the same
+     * method in HashTable. 
      * @see HashTable::map.
      */
-    template <typename ASSENT> typename Property<ASSENT>::onNodes nodesProperty( const ASSENT& a, Size size = 0 ) const;
+    template <typename VAL>
+    typename Property<VAL>::onNodes
+    nodesProperty( const VAL& a, Size size = 0 ) const;
 
-    /// a method to create a list of Assent from a node list
-    template <typename ASSENT> List<ASSENT> listMapNodes( ASSENT( *f )( const NodeId& ) ) const;
+    /// a method to create a list of VAL from the set of nodes
+    template <typename VAL>
+    List<VAL>
+    listMapNodes( VAL ( *f )( const NodeId& ) ) const;
 
 
 
   private:
     /// internal idFactory
     NodeId __nextNodeId();
+
+    /// the set of nodes contained in the NodeGraphPart
     Set<NodeId> __nodes;
+
+    /** @brief the id above which nodes ids are guaranteed to not belong yet to
+     * the NodeGraphPart */
     NodeId __max;
   };
 
+  
   /// for friendly displaying the content of node set
   std::ostream& operator<< ( std::ostream&, const NodeGraphPart& );
   

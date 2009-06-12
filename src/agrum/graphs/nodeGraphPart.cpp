@@ -56,7 +56,7 @@ namespace gum {
     __max=s.__max;
   }
 
-  const std::string NodeGraphPart::toString() const {
+  std::string NodeGraphPart::toString() const {
     std::stringstream s;
     std::string res;
     bool first=true;

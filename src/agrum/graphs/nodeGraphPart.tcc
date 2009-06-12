@@ -29,28 +29,30 @@
 namespace gum {
 
 
-  template <typename ASSENT> INLINE
-  typename Property<ASSENT>::onNodes
-    NodeGraphPart::nodesProperty( ASSENT( *f )( const NodeId& ), Size size ) const {
+  template <typename VAL> INLINE
+  typename Property<VAL>::onNodes
+    NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
     return __nodes.hashMap( f,size );
   }
 
-  template <typename ASSENT> INLINE
-  typename Property<ASSENT>::onNodes
-    NodeGraphPart::nodesProperty( const ASSENT& val, Size size ) const {
+  template <typename VAL> INLINE
+  typename Property<VAL>::onNodes
+    NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
     return __nodes.hashMap( val,size );
   }
 
-  template <typename ASSENT> INLINE
-  List<ASSENT> NodeGraphPart::listMapNodes( ASSENT( *f )( const NodeId& ) ) const {
+  template <typename VAL> INLINE
+  List<VAL> NodeGraphPart::listMapNodes( VAL( *f )( const NodeId& ) ) const {
     return __nodes.listMap( f );
   }
 
   template<typename T> void
-  NodeGraphPart::populateNodesFromProperty( const typename Property<T>::onNodes& h ) {
+  NodeGraphPart::populateNodesFromProperty
+  ( const typename Property<T>::onNodes& h ) {
     clear();
 
-    for ( typename Property<T>::onNodes::iterator iter=h.begin();iter!=h.end();++iter ) {
+    for ( typename Property<T>::onNodes::iterator iter = h.begin();
+          iter != h.end(); ++iter ) {
       NodeId new_one=iter.key();
 
       if ( __nodes.contains( new_one ) )

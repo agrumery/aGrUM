@@ -35,23 +35,24 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===     BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
+  /* =========================================================================== */
   /** @class UndiGraph
    * @brief Base class for undirected graphs
    *
    * \ingroup graph_group
    *
    *
-   * This is the base class for graphs containing undirected edges (so-called edges).
+   * This is the base class for graphs containing undirected edges
+   * (so-called edges).
    *
    * @par Usage example:
    * @code
    *
    * @endcode
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class UndiGraph : public virtual NodeGraphPart,public EdgeGraphPart {
   public:
     /** @param nodes_size the size of the hash table used to store all the nodes

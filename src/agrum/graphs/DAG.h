@@ -46,9 +46,9 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    === */
+  /* =========================================================================== */
   /** @class DAG
    * @brief Base class for dag
    *
@@ -58,7 +58,7 @@ namespace gum {
    * This is the base class for Directed Acyclic Graph : insertArc may throw a
    * Circuit if any (directed) cycle is created by this arc.
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class DAG : public DiGraph {
   public:
     /** @param nodes_size the size of the hash table used to store all the nodes

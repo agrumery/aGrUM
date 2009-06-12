@@ -93,7 +93,8 @@ namespace gum {
 
       const ArcSet& set_children=children( current );
 
-      for ( ArcSetIterator ite=set_children.begin();ite!=set_children.end();++ite ) {
+      for ( ArcSetIterator ite = set_children.begin();
+            ite != set_children.end(); ++ite ) {
         NodeId new_one=ite->head();
 
         if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
@@ -149,7 +150,8 @@ namespace gum {
       // check the children //////////////////////////////////////////////
       const ArcSet& set_children=children( current );
 
-      for ( ArcSetIterator ite=set_children.begin();ite!=set_children.end();++ite ) {
+      for ( ArcSetIterator ite = set_children.begin();
+            ite!=set_children.end();++ite ) {
         NodeId new_one=ite->head();
 
         if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop

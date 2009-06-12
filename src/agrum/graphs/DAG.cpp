@@ -54,7 +54,8 @@ namespace gum {
 
   /// we prefer to re-implement this (instead of using ArcGraphPart::directedPath)
   /// for optimisation
-  /// @warning : this version is optimized for the searc of a directedPath in a dag !
+  /// @warning : this version is optimized for the searc of a directedPath
+  /// in a dag !
   bool DAG::hasDirectedPath( const NodeId& from, const NodeId& to ) {
     if ( from==to ) return true;
 

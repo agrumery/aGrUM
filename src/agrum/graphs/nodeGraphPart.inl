@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation of classes for directed edge sets
+ * @brief Inline implementation of the base node set class for graphs
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
@@ -27,16 +27,20 @@
 namespace gum {
 
 
+  INLINE  void NodeGraphPart::insertNode( const NodeId id ) {
+    __nodes.insert( id );
+    if ( __max < id ) __max = id;
+  }
+
+  INLINE NodeId NodeGraphPart::__nextNodeId() {
+    return ( ++__max );
+  }
+
   INLINE  NodeId NodeGraphPart::insertNode() {
     // only one tmp
     NodeId newNode=__nextNodeId();
     __nodes.insert( newNode );
     return newNode;
-  }
-
-  INLINE  void NodeGraphPart::insertNode( const NodeId id ) {
-    __nodes.insert( id );
-    if ( __max < id ) __max = id;
   }
 
   INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
@@ -61,6 +65,7 @@ namespace gum {
 
   INLINE void NodeGraphPart::clear() {
     __nodes.clear();
+    __max = 0;
   }
 
   INLINE const NodeSetIterator NodeGraphPart::beginNodes() const {
@@ -69,10 +74,6 @@ namespace gum {
 
   INLINE const NodeSetIterator& NodeGraphPart::endNodes() const {
     return __nodes.end();
-  }
-
-  INLINE NodeId NodeGraphPart::__nextNodeId() {
-    return ( ++__max );
   }
 
   INLINE const NodeSet& NodeGraphPart::nodes() const {
