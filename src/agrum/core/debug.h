@@ -73,14 +73,26 @@ namespace gum {
 #else
 #define GUM_DEBUG_TRACE(x)
 #endif
-#define GUM_CONSTRUCTOR(x) { GUM_DEBUG_TRACE("Création de " #x)                                           \
+
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
+#define GUM_CONSTRUCTOR_BASIC(x) { GUM_DEBUG_TRACE("Création de " #x)                                           \
       gum::debug::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this,sizeof(x)); }
-#define GUM_DESTRUCTOR(x) {                                             \
+#define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x)
+
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_DESTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_DESTRUCTOR
+#define GUM_DESTRUCTOR_BASIC(x) {                                             \
       gum::debug::__inc_deletion(#x,__FILE__,__LINE__,"destructor of",(void *)this); }
-#define GUM_CONS_CPY(x) {                                               \
+#define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x)
+
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_CPY, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONS_CPY
+#define GUM_CONS_CPY_BASIC(x) {                                               \
       gum::debug::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this);}
-#define GUM_OP_CPY(x) {                                                 \
+#define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
+
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
+#define GUM_OP_CPY_BASIC(x) {                                                 \
       gum::debug::__show_trace(#x,__FILE__,__LINE__,"copy operator of",(void *)this); }
+#define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
     /////////////////////////////////////////////////////////////
 #else //NDEBUG
     /////////////////////////////////////////////////////////////

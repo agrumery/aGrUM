@@ -160,7 +160,7 @@ namespace gum {
 
         stream<<" |";;
 
-        if ( zeCreatedObjs!=zeDeletedObjts ) {nb_err+=abs(zeDeletedObjts-zeCreatedObjs);stream<<"<--- failed";}
+        if ( zeCreatedObjs!=zeDeletedObjts ) {nb_err+=abs( zeDeletedObjts-zeCreatedObjs );stream<<"<--- failed";}
 
         res.push_back( stream.str() );
       }
@@ -177,7 +177,7 @@ namespace gum {
         }
       }
 
-      sort( res.begin(),res.end() );
+      sort( res.begin(),res.end());
 
       for ( std::vector<std::string>::iterator iter=res.begin();
             iter!=res.end();
@@ -192,11 +192,12 @@ namespace gum {
       std::cerr<<std::setfill( ' ' );
 
       if ( nb_err==0 ) {
-        std::cerr<<"| "<<std::setw( 50 )<<"NO MEMORY LEAK !"<<""<<" | "<<std::setw(25)<<"|"<<std::endl;
+        std::cerr<<"| "<<std::setw( 50 )<<"NO MEMORY LEAK !"<<""<<" | "<<std::setw( 25 )<<"|"<<std::endl;
       } else {
-        std::cerr<<"| "<<std::setw( 50 )<<"Memory leaks found : "<<""<<" | "<<std::setw(11)<<nb_err<<" object(s) "<<std::setw(3)<<"|"<<std::endl;
+        std::cerr<<"| "<<std::setw( 50 )<<"Memory leaks found : "<<""<<" | "<<std::setw( 11 )<<nb_err<<" object(s) "<<std::setw( 3 )<<"|"<<std::endl;
       }
-      std::cerr<<"| "<<std::setw( 50 )<<"total "<<""<<" | "<<std::setw(11)<<total_size<<" octet(s) "<<std::setw(4)<<"|"<<std::endl;
+
+      std::cerr<<"| "<<std::setw( 50 )<<"total "<<""<<" | "<<std::setw( 11 )<<total_size<<" octet(s) "<<std::setw( 4 )<<"|"<<std::endl;
 
       std::cerr<<std::setfill( '-' );
 
