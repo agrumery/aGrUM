@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #ifndef SIGNALER_PATRON_ACCEPTED
 #error "This file should not be included directly. Please use signaler{x}.h"
 #endif // SIGNALER_PATRON_ACCEPTED
@@ -25,11 +45,11 @@ namespace gum {
         typedef typename ConnectorList::iterator constConnectors_iterator; //Connections::const_iterator
       protected:
         MAKE_NAME( BasicSignaler )() {
-          GUM_CONSTRUCTOR( MAKE_NAME(BasicSignaler) );
+          GUM_CONSTRUCTOR( MAKE_NAME( BasicSignaler ) );
         }
 
         MAKE_NAME( BasicSignaler )( const MAKE_NAME( BasicSignaler )& s ) : ISignaler( s ) {
-          GUM_CONS_CPY( MAKE_NAME(BasicSignaler) );
+          GUM_CONS_CPY( MAKE_NAME( BasicSignaler ) );
 
           for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
             ( *it )->target()->attachSignal__( this );
@@ -39,7 +59,7 @@ namespace gum {
 
       public:
         virtual ~MAKE_NAME( BasicSignaler )() {
-          GUM_DESTRUCTOR( MAKE_NAME(BasicSignaler) );
+          GUM_DESTRUCTOR( MAKE_NAME( BasicSignaler ) );
 
           for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
             ( *it )->target()->detachSignal__( this );
@@ -158,14 +178,10 @@ namespace gum {
         target->attachSignal__( this );
       }
 
-      INLINE void notify( const void *src,LIST_DECL_ARGS ) {
-        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it )
-          ( *it )->notify( src ,LIST_ARGS );
-      }
-
       INLINE void operator()( const void *src ,LIST_DECL_ARGS ) {
-        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it )
+        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it ) {
           ( *it )->notify( src,LIST_ARGS );
+        }
       }
   };
 

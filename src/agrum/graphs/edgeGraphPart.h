@@ -22,7 +22,10 @@
 
 #include <algorithm>
 #include <utility>
+
 #include <agrum/core/utils.h>
+#include <agrum/core/signal/signaler.h>
+
 #include <agrum/graphs/graphElements.h>
 
 
@@ -67,59 +70,63 @@ namespace gum {
    * std::cerr<<edges2.neighbours( 5 )<<std::endl;
    * @endcode
    */
+
   class EdgeGraphPart {
-  private:
-    static EdgeSet __empty_edge_set;
-  public:
-    /** @param edges_size the size of the hash table used to store all the edges
-     * @param edges_resize_policy the resizing policy of this hash table */
-    explicit EdgeGraphPart( Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                            bool edges_resize_policy    = true );
-    EdgeGraphPart( const EdgeGraphPart& s );
-    virtual ~EdgeGraphPart();
-    virtual void insertEdge( const Edge& edge );
-    virtual void insertEdge( const NodeId n1,const NodeId n2 );
-    virtual void eraseEdge( const Edge edge );
-    virtual void eraseEdge( const NodeId n1,const NodeId n2 );
-    bool existsEdge( const Edge& edge ) const;
-    bool existsEdge( const NodeId& n1,const NodeId& n2 ) const;
-    bool emptyEdges() const;
-    virtual void clearEdges();
-    Size sizeEdges() const;
-    const EdgeSet& edges() const;
-    const EdgeSet& neighbours( const NodeId id ) const;
-    void eraseNeighbours( const NodeId id );
-    const EdgeSetIterator beginEdges() const;
-    const EdgeSetIterator& endEdges() const;
-    bool operator==( const EdgeGraphPart& p ) const;
-    bool operator!=( const EdgeGraphPart& p ) const;
-    const std::string toString() const;
-    template <typename ASSENT> typename Property< ASSENT >::onEdges edgesProperty( ASSENT( *f )( const Edge& ), Size size = 0 ) const;
-    template <typename ASSENT> typename Property< ASSENT >::onEdges edgesProperty( const ASSENT& a, Size size = 0 ) const;
-    template <typename ASSENT> List<ASSENT> listMapEdges( ASSENT( *f )( const Edge& ) ) const;
+    private:
+      static EdgeSet __empty_edge_set;
+    public:
+      Signaler2<NodeId,NodeId> onEdgeAdded;
+      Signaler2<NodeId,NodeId> onEdgeDeleted;
 
-    // ============================================================================
-    /// returns a possible path from node1 to node2 in the edge set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound
-     */
-    // ============================================================================
-    const std::vector<NodeId>
-    undirectedPath( const NodeId node1, const NodeId node2 ) const;
+      /** @param edges_size the size of the hash table used to store all the edges
+       * @param edges_resize_policy the resizing policy of this hash table */
+      explicit EdgeGraphPart( Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                              bool edges_resize_policy    = true );
+      EdgeGraphPart( const EdgeGraphPart& s );
+      virtual ~EdgeGraphPart();
+      virtual void insertEdge( const Edge edge );
+      virtual void insertEdge( const NodeId n1,const NodeId n2 );
+      virtual void eraseEdge( const Edge edge );
+      virtual void eraseEdge( const NodeId n1,const NodeId n2 );
+      bool existsEdge( const Edge edge ) const;
+      bool existsEdge( const NodeId n1,const NodeId n2 ) const;
+      bool emptyEdges() const;
+      virtual void clearEdges();
+      Size sizeEdges() const;
+      const EdgeSet& edges() const;
+      const EdgeSet& neighbours( const NodeId id ) const;
+      void eraseNeighbours( const NodeId id );
+      const EdgeSetIterator beginEdges() const;
+      const EdgeSetIterator& endEdges() const;
+      bool operator==( const EdgeGraphPart& p ) const;
+      bool operator!=( const EdgeGraphPart& p ) const;
+      const std::string toString() const;
+      template <typename ASSENT> typename Property< ASSENT >::onEdges edgesProperty( ASSENT( *f )( const Edge& ), Size size = 0 ) const;
+      template <typename ASSENT> typename Property< ASSENT >::onEdges edgesProperty( const ASSENT& a, Size size = 0 ) const;
+      template <typename ASSENT> List<ASSENT> listMapEdges( ASSENT( *f )( const Edge& ) ) const;
+
+      // ============================================================================
+      /// returns a possible path from node1 to node2 in the edge set
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound
+       */
+      // ============================================================================
+      const std::vector<NodeId>
+      undirectedPath( const NodeId node1, const NodeId node2 ) const;
 
 
-  private:
-    EdgeSet __edges;
-    mutable Property<EdgeSet>::onNodes __neighbours;
-    void __checkNeighbours( const NodeId id )const;
+    private:
+      EdgeSet __edges;
+      mutable Property<EdgeSet>::onNodes __neighbours;
+      void __checkNeighbours( const NodeId id )const;
   };
 
-  
+
   /// for friendly displaying the content of edge set
   std::ostream& operator<< ( std::ostream&, const EdgeGraphPart& );
 
-  
+
 } /* namespace gum */
 
 

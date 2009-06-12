@@ -27,43 +27,6 @@
 
 namespace gum {
 
-
-  INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
-    if ( ! __parents.exists( id ) ) {
-      __parents.insert( id,__empty_arc_set );
-    }
-  }
-
-  INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
-    if ( ! __children.exists( id ) ) {
-      __children.insert( id,__empty_arc_set );
-    }
-  }
-
-  INLINE void ArcGraphPart::insertArc( const Arc& arc ) {
-    __arcs.insert( arc );
-    __checkParents( arc.head() );
-    __checkChildren( arc.tail() );
-    __parents[arc.head()].insert( arc );
-    __children[arc.tail()].insert( arc );
-  }
-
-  INLINE void ArcGraphPart::insertArc( const NodeId& tail,const NodeId& head ) {
-    insertArc( Arc( tail,head ) );
-  }
-
-  INLINE void ArcGraphPart::eraseArc( Arc arc ) {
-    // ASSUMING tail and head exists in __parents anf __children
-    // (if not, it is an error)
-    __parents[arc.head()].erase( arc );
-    __children[arc.tail()].erase( arc );
-    __arcs.erase( arc );
-  }
-
-  INLINE void ArcGraphPart::eraseArc( NodeId tail,NodeId head ) {
-    eraseArc( Arc( tail,head ) );
-  }
-
   INLINE bool ArcGraphPart::emptyArcs() const {
     return __arcs.empty();
   }
@@ -76,19 +39,12 @@ namespace gum {
     return __arcs;
   }
 
-  INLINE bool ArcGraphPart::existsArc( const Arc& arc ) const {
+  INLINE bool ArcGraphPart::existsArc( const Arc arc ) const {
     return __arcs.contains( arc );
   }
 
-  INLINE bool ArcGraphPart::existsArc( const NodeId& tail,
-                                       const NodeId& head ) const {
+  INLINE bool ArcGraphPart::existsArc( const NodeId tail,const NodeId head ) const {
     return __arcs.contains( Arc( tail,head ) );
-  }
-
-  INLINE void ArcGraphPart::clearArcs() {
-    __arcs.clear();
-    __parents.clear();
-    __children.clear();
   }
 
   INLINE const ArcSet& ArcGraphPart::parents( const NodeId id ) const {
@@ -108,6 +64,59 @@ namespace gum {
   INLINE const ArcSetIterator& ArcGraphPart::endArcs() const {
     return __arcs.end();
   }
+
+  INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
+    if ( ! __parents.exists( id ) ) {
+      __parents.insert( id,__empty_arc_set );
+    }
+  }
+
+  INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
+    if ( ! __children.exists( id ) ) {
+      __children.insert( id,__empty_arc_set );
+    }
+  }
+
+  INLINE void ArcGraphPart::insertArc( const Arc arc ) {
+    __arcs.insert( arc );
+    __checkParents( arc.head() );
+    __checkChildren( arc.tail() );
+    __parents[arc.head()].insert( arc );
+    __children[arc.tail()].insert( arc );
+    GUM_EMIT2( onArcAdded,arc.tail(),arc.head() );
+  }
+
+  INLINE void ArcGraphPart::insertArc( const NodeId tail,const NodeId head ) {
+    insertArc( Arc( tail,head ) );
+  }
+
+  INLINE void ArcGraphPart::eraseArc( const Arc arc ) {
+    // ASSUMING tail and head exists in __parents anf __children
+    // (if not, it is an error)
+    if ( existsArc( arc ) ) {
+      __parents[arc.head()].erase( arc );
+      __children[arc.tail()].erase( arc );
+      __arcs.erase( arc );
+      GUM_EMIT2( onArcDeleted,arc.tail(),arc.head() );
+    }
+  }
+
+  INLINE void ArcGraphPart::eraseArc( NodeId tail,NodeId head ) {
+    eraseArc( Arc( tail,head ) );
+  }
+
+  INLINE void ArcGraphPart::clearArcs() {
+    ArcSet tmp=__arcs;
+
+    __arcs.clear();
+
+    __parents.clear();
+
+    __children.clear();
+
+    for ( ArcSetIterator iter=tmp.begin();iter!=tmp.end();++iter ) GUM_EMIT2( onArcDeleted, iter->tail(),iter->head() );
+  }
+
 
   INLINE void ArcGraphPart::_eraseSetOfArcs( const ArcSet& set ) {
     for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter ) eraseArc( *iter );

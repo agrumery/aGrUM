@@ -158,7 +158,6 @@ class ValueEliminationTestSuite: public CxxTest::TestSuite {
 
     // Testing when there is no evidence
     void testMakeInference() {
-      std::cerr << std::endl;
       fill( *bn );
       // Testing the inference
       gum::ValueElimination<float>* inf = 0;

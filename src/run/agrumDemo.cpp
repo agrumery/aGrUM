@@ -19,12 +19,9 @@
 ***************************************************************************/
 
 #include <iostream>
-#include "signaler0.h"
-#include "signaler1.h"
-#include "signaler2.h"
-#include "signaler3.h"
-#include "signaler4.h"
-#include "signaler5.h"
+
+#include <agrum/core/signal/listener.h>
+#include <agrum/core/signal/signaler.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -33,7 +30,7 @@ class A {
 
   public:
     gum::Signaler0 onAddNode;
-    gum::Signaler3<int,std::string,float> onChangeLabel;
+    gum::Signaler6<int,std::string,float,char,char,char> onChangeLabel;
 
 
     A( std::string s ) : _label( s ) {}
@@ -42,7 +39,7 @@ class A {
 
     void addNode() { GUM_EMIT0( onAddNode );}
 
-    void changeLabel( int id,std::string s ) { GUM_EMIT3( onChangeLabel,id,s,3.1415 );_label=s;}
+    void changeLabel( int id,std::string s ) { GUM_EMIT6( onChangeLabel,id,s,3.1415,'h','e','l' );_label=s;}
 };
 
 class B : public gum::Listener {
@@ -52,7 +49,7 @@ class B : public gum::Listener {
       std::cout<<"in "<<source->label()<<": node  added ..."<<std::endl;
     }
 
-    void labelChanged( const void* v,int i,std::string s,float f ) {
+    void labelChanged( const void* v,int i,std::string s,float f ,char ,char ,char ) {
       const A* source=static_cast<const A*>( v );
       std::cout<<"in "<<source->label()<<": label '"<<s <<"' changed  for id "<<i<<"..."<<f<<std::endl;
     }
@@ -60,44 +57,45 @@ class B : public gum::Listener {
 
 class C : public gum::Listener {
   public:
-    void f( const void* v,int i,std::string s,float f ) {
+    void f( const void* v,int i,std::string s,float f ,char ,char ,char ) {
       std::cout<<v<<" "<<i<<" "<<s<<" "<<f<<std::endl;
     }
 };
 
 void f( void ) {
-  A x( "x" );
-  A Y( "y" );
 
   B gui;
-
-  //  GUM_CONNECT(sender,signal,receiver,target)
-  GUM_CONNECT( x,onAddNode,gui,B::nodeAdded );
-  GUM_CONNECT( x,onChangeLabel,gui,B::labelChanged );
-
-  std::cout<<std::endl<<"******"<<std::endl;
-  x.addNode();
-
   {
-    C anonymous;
-    GUM_CONNECT( x,onChangeLabel, anonymous,C::f );
+    A x( "x" );
+    A Y( "y" );
+    //  GUM_CONNECT(sender,signal,receiver,target)
+    GUM_CONNECT( x,onAddNode,gui,B::nodeAdded );
+    GUM_CONNECT( x,onChangeLabel,gui,B::labelChanged );
 
     std::cout<<std::endl<<"******"<<std::endl;
-    x.changeLabel( 1,"my new label" );
-  }
+    x.addNode();
 
-  // anonymous has been destroyed. He should not listen anymore.
+    {
+      C anonymous;
+      GUM_CONNECT( x,onChangeLabel, anonymous,C::f );
 
-  std::cout<<std::endl<<"******"<<std::endl;
-  x.addNode();
+      std::cout<<std::endl<<"******"<<std::endl;
+      x.changeLabel( 1,"my new label" );
+    }
 
-  std::cout<<std::endl<<"******"<<std::endl;
+    // anonymous has been destroyed. He should not listen anymore.
 
-  // is not validate
-  // x.GUM_EMIT2( onChangeLabel,1,"toto" );
+    std::cout<<std::endl<<"******"<<std::endl;
+    x.addNode();
+
+    std::cout<<std::endl<<"******"<<std::endl;
+
+    // is not validate
+    // x.GUM_EMIT2( onChangeLabel,1,"toto" );
 
 
-  std::cout<<std::endl<<"******"<<std::endl;
+    std::cout<<std::endl<<"******"<<std::endl;
+  } // here signaler are destroyed before listener
 }
 
 int main( void ) {

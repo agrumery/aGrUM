@@ -29,6 +29,8 @@ namespace gum {
 
   INLINE  void NodeGraphPart::insertNode( const NodeId id ) {
     __nodes.insert( id );
+    GUM_EMIT1( onNodeAdded,id );
+
     if ( __max < id ) __max = id;
   }
 
@@ -40,11 +42,14 @@ namespace gum {
     // only one tmp
     NodeId newNode=__nextNodeId();
     __nodes.insert( newNode );
+    GUM_EMIT1( onNodeAdded,newNode );
+
     return newNode;
   }
 
   INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
     __nodes.erase( node );
+    GUM_EMIT1( onNodeDeleted,node );
   }
 
   INLINE bool NodeGraphPart::empty() const {
@@ -64,7 +69,13 @@ namespace gum {
   }
 
   INLINE void NodeGraphPart::clear() {
+    NodeSet tmp=__nodes;
     __nodes.clear();
+
+    for ( NodeSet::iterator n=tmp.begin();n!=tmp.end();++n ) {
+      GUM_EMIT1( onNodeDeleted,*n );
+    }
+
     __max = 0;
   }
 

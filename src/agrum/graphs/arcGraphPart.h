@@ -24,6 +24,7 @@
 #include <utility>
 #include <agrum/core/utils.h>
 #include <agrum/graphs/graphElements.h>
+#include <agrum/core/signal/signaler.h>
 
 
 namespace gum {
@@ -72,86 +73,90 @@ namespace gum {
    * std::cerr<<std::endl<<std::endl;
    * @endcode
    */
+
   class ArcGraphPart {
-  private:
-    static ArcSet __empty_arc_set;
-  public:
-    /**
-     * @param arcs_size the size of the hash table used to store all the edges
-     * @param arcs_resize_policy the resizing policy of this hash table*/
-    explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                           bool arcs_resize_policy    = true );
-    ArcGraphPart( const ArcGraphPart& s );
-    virtual ~ArcGraphPart();
-    virtual void insertArc( const Arc& arc );
-    virtual void insertArc( const NodeId& tail,const NodeId& head );
-    virtual void eraseArc( Arc arc );
-    virtual void eraseArc( NodeId tail,NodeId head );
-    bool existsArc( const Arc& arc ) const;
-    bool existsArc( const NodeId& tail,const NodeId& head ) const;
-    bool emptyArcs() const;
-    void clearArcs();
-    Size sizeArcs() const;
-    const ArcSet& arcs() const;
-    const ArcSet& parents( const NodeId id ) const;
-    const ArcSet& children( const NodeId id ) const;
-    void eraseParents( const NodeId id );
-    void eraseChildren( const NodeId id );
-    const ArcSetIterator beginArcs() const;
-    const ArcSetIterator& endArcs() const;
-    bool operator==( const ArcGraphPart& p ) const;
-    bool operator!=( const ArcGraphPart& p ) const;
-    const std::string toString() const;
+    private:
+      static ArcSet __empty_arc_set;
+    public:
+      Signaler2<NodeId,NodeId> onArcAdded;  // onArcAdded(tail,head)
+      Signaler2<NodeId,NodeId> onArcDeleted;  // onArcAdded(tail,head)
 
-    /** @brief a method to create a hashMap of Assent from a node list
-     * (using for all node x, the ASSENT f(x)) */
-    template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( ASSENT( *f )( const Arc& ), Size size = 0 ) const;
+      /**
+       * @param arcs_size the size of the hash table used to store all the edges
+       * @param arcs_resize_policy the resizing policy of this hash table*/
+      explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                             bool arcs_resize_policy    = true );
+      ArcGraphPart( const ArcGraphPart& s );
+      virtual ~ArcGraphPart();
+      virtual void insertArc( const Arc arc );
+      virtual void insertArc( const NodeId tail,const NodeId head );
+      virtual void eraseArc( const Arc arc );
+      virtual void eraseArc( NodeId tail,NodeId head );
+      bool existsArc( const Arc arc ) const;
+      bool existsArc( const NodeId tail,const NodeId head ) const;
+      bool emptyArcs() const;
+      void clearArcs();
+      Size sizeArcs() const;
+      const ArcSet& arcs() const;
+      const ArcSet& parents( const NodeId id ) const;
+      const ArcSet& children( const NodeId id ) const;
+      void eraseParents( const NodeId id );
+      void eraseChildren( const NodeId id );
+      const ArcSetIterator beginArcs() const;
+      const ArcSetIterator& endArcs() const;
+      bool operator==( const ArcGraphPart& p ) const;
+      bool operator!=( const ArcGraphPart& p ) const;
+      const std::string toString() const;
 
-    /** @brief a method to create a hashMap of Assent from a node list
-     * (using for all node x, the ASSENT a) */
-    template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( const ASSENT& a, Size size = 0 ) const;
+      /** @brief a method to create a hashMap of Assent from a node list
+       * (using for all node x, the ASSENT f(x)) */
+      template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( ASSENT( *f )( const Arc& ), Size size = 0 ) const;
 
-    template <typename ASSENT> List<ASSENT> listMapArcs( ASSENT( *f )( const Arc& ) ) const;
+      /** @brief a method to create a hashMap of Assent from a node list
+       * (using for all node x, the ASSENT a) */
+      template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( const ASSENT& a, Size size = 0 ) const;
 
-
-    // ============================================================================
-    /// returns a directed path from node1 to node2 in the edge set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound
-     */
-    // ============================================================================
-    const std::vector<NodeId>
-    directedPath( const NodeId node1, const NodeId node2 ) const;
-
-    // ============================================================================
-    /// returns an unoriented (directed) path from node1 to node2 in the edge set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound
-     */
-    // ============================================================================
-    const std::vector<NodeId>
-    directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
+      template <typename ASSENT> List<ASSENT> listMapArcs( ASSENT( *f )( const Arc& ) ) const;
 
 
-  protected:
-    void _eraseSetOfArcs( const ArcSet& set );
+      // ============================================================================
+      /// returns a directed path from node1 to node2 in the edge set
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound
+       */
+      // ============================================================================
+      const std::vector<NodeId>
+      directedPath( const NodeId node1, const NodeId node2 ) const;
+
+      // ============================================================================
+      /// returns an unoriented (directed) path from node1 to node2 in the edge set
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound
+       */
+      // ============================================================================
+      const std::vector<NodeId>
+      directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
 
 
-  private:
-    Set<Arc> __arcs;
-    mutable Property<ArcSet>::onNodes __parents;
-    mutable Property<ArcSet>::onNodes __children;
-    void __checkParents( const NodeId id ) const;
-    void __checkChildren( const NodeId id ) const;
+    protected:
+      void _eraseSetOfArcs( const ArcSet& set );
+
+
+    private:
+      Set<Arc> __arcs;
+      mutable Property<ArcSet>::onNodes __parents;
+      mutable Property<ArcSet>::onNodes __children;
+      void __checkParents( const NodeId id ) const;
+      void __checkChildren( const NodeId id ) const;
   };
 
 
   /// for friendly displaying the content of arc set
   std::ostream& operator<< ( std::ostream&, const ArcGraphPart& );
-  
-  
+
+
 } /* namespace gum */
 
 
