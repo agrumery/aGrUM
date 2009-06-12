@@ -1,5 +1,5 @@
-#ifndef SIGNALER2_H__
-#define SIGNALER2_H__
+#ifndef SIGNALER1_H__
+#define SIGNALER1_H__
 
 #include "signaler.h"
 
@@ -11,7 +11,8 @@
 
 #define GUM_EMIT1(signal,arg1) this->signal(this,arg1)
 
-#include "signaler.patron.h"
+#define SIGNALER_PATRON_ACCEPTED
+#include "signaler_with_args.patron.h"
 
-#endif // SIGNALER2_H__
+#endif // SIGNALER1_H__
 

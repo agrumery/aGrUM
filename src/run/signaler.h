@@ -9,18 +9,18 @@ namespace gum {
   class Listener;
 
 
-  namespace sig {
+  namespace __sig__ {
 
-    class BasicSignaler {
+    class ISignaler {
       public:
-        virtual void slot_unlink( Listener* pslot ) = 0;
-        virtual void slot_duplicate( const Listener* poldslot, Listener* pnewslot ) = 0;
+        virtual void detachFromTarget( Listener* target ) = 0;
+        virtual void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) = 0;
     };
   } //namespace sig
 
   class Listener {
     private:
-      typedef Set<sig::BasicSignaler *> Senders_set;
+      typedef Set<__sig__::ISignaler *> Senders_set;
       typedef Senders_set::iterator const_iterator; //Senders_set::const_iterator const_iterator;
 
     public:
@@ -32,29 +32,25 @@ namespace gum {
         GUM_CONS_CPY( Listener );
 
         for ( const_iterator it = l._senders.begin(); it != l._senders.end() ; ++it ) {
-          ( *it )->slot_duplicate( &l, this );
+          ( *it )->duplicateTarget( &l, this );
           _senders.insert( *it );
         }
       }
 
-      void signal_link( sig::BasicSignaler* sender ) {
+      virtual ~Listener() {
+        GUM_DESTRUCTOR( Listener );
+        for ( const_iterator it = _senders.begin(); it != _senders.end() ; ++it )
+          ( *it )->detachFromTarget( this );
+
+        _senders.clear();
+      }
+
+      INLINE void attachSignal__( __sig__::ISignaler* sender ) {
         _senders.insert( sender );
       }
 
-      void signal_unlink( sig::BasicSignaler* sender ) {
+      INLINE void detachSignal__( __sig__::ISignaler* sender ) {
         _senders.erase( sender );
-      }
-
-      virtual ~Listener() {
-        GUM_DESTRUCTOR( Listener );
-        unlink_all();
-      }
-
-      void unlink_all() {
-        for ( const_iterator it = _senders.begin(); it != _senders.end() ; ++it )
-          ( *it )->slot_unlink( this );
-
-        _senders.clear();
       }
 
     private:
@@ -62,7 +58,7 @@ namespace gum {
   };
 } // namespace gum
 
-#define GUM_CONNECT(sender,signal,receiver,slot) (sender).signal.link(&(receiver),&slot)
+#define GUM_CONNECT(sender,signal,receiver,target) (sender).signal.attach(&(receiver),&target)
 
 #endif // SIGNALER_H__
 

@@ -11,7 +11,8 @@
 
 #define GUM_EMIT2(signal,arg1,arg2) this->signal(this,arg1,arg2)
 
-#include "signaler.patron.h"
+#define SIGNALER_PATRON_ACCEPTED
+#include "signaler_with_args.patron.h"
 
 #endif // SIGNALER2_H__
 

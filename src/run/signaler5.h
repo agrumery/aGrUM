@@ -9,8 +9,9 @@
 #define LIST_DECL_ARGS type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5
 #define LIST_ARGS arg1,arg2,arg3,arg4,arg5
 
-#define GUM_EMIT4(signal,arg1,arg2,arg3,arg4,arg5) this->signal(this,arg1,arg2,arg3,arg4,arg5)
+#define GUM_EMIT5(signal,arg1,arg2,arg3,arg4,arg5) this->signal(this,arg1,arg2,arg3,arg4,arg5)
 
+#define SIGNALER_PATRON_ACCEPTED
 #include "signaler_with_args.patron.h"
 
 #endif // SIGNALER5_H__

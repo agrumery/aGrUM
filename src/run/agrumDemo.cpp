@@ -20,7 +20,11 @@
 
 #include <iostream>
 #include "signaler0.h"
+#include "signaler1.h"
+#include "signaler2.h"
 #include "signaler3.h"
+#include "signaler4.h"
+#include "signaler5.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -30,6 +34,7 @@ class A {
   public:
     gum::Signaler0 onAddNode;
     gum::Signaler3<int,std::string,float> onChangeLabel;
+
 
     A( std::string s ) : _label( s ) {}
 
@@ -66,7 +71,7 @@ void f( void ) {
 
   B gui;
 
-  //  GUM_CONNECT(sender,signal,receiver,slot)
+  //  GUM_CONNECT(sender,signal,receiver,target)
   GUM_CONNECT( x,onAddNode,gui,B::nodeAdded );
   GUM_CONNECT( x,onChangeLabel,gui,B::labelChanged );
 
@@ -95,7 +100,7 @@ void f( void ) {
   std::cout<<std::endl<<"******"<<std::endl;
 }
 
-int main( void) {
+int main( void ) {
   f();
 
   gum::__atexit();
