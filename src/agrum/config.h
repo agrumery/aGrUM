@@ -124,6 +124,7 @@
 #include <agrum/multidim/instantiation.h>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BIFIO.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
