@@ -1367,7 +1367,7 @@ namespace gum {
     HashTable<Key,Mount> table( __size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
-    for ( HashTableIterator<Key,Val> iter = rbegin(); iter != rend(); --iter ) {
+    for ( HashTableIterator<Key,Val> iter = begin(); iter != end(); ++iter ) {
       table.insert( iter.key(), f( *iter ) );
     }
 
@@ -1392,7 +1392,7 @@ namespace gum {
     HashTable<Key,Mount> table( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
-    for ( HashTableIterator<Key,Val> iter = rbegin(); iter != rend(); --iter ) {
+    for ( HashTableIterator<Key,Val> iter = begin(); iter != end(); ++iter ) {
       table.insert( iter.key(), f( *iter ) );
     }
 
@@ -1417,7 +1417,7 @@ namespace gum {
     HashTable<Key,Mount> table( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
-    for ( HashTableIterator<Key,Val> iter = rbegin(); iter != rend(); --iter ) {
+    for ( HashTableIterator<Key,Val> iter = begin(); iter != end(); ++iter ) {
       table.insert( iter.key(), f( *iter ) );
     }
 
@@ -1442,7 +1442,7 @@ namespace gum {
     HashTable<Key,Mount> table( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
-    for ( HashTableIterator<Key,Val> iter = rbegin(); iter != rend(); --iter ) {
+    for ( HashTableIterator<Key,Val> iter = begin(); iter != end(); ++iter ) {
       table.insert( iter.key(), val );
     }
 
