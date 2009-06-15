@@ -40,7 +40,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  Database::Database() : __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ) {
+  Database::Database() : __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ),__filename( "" ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Database );
 
@@ -62,7 +62,7 @@ namespace gum {
       __nb_nodes( from.__nb_nodes ), __nb_cases( from.__nb_cases ),
       __node_names( from.__node_names ), __node_name_per_id( from.__node_name_per_id ),
       __nb_modalities( from.__nb_modalities ), __modalities_names( from.__modalities_names ),
-      __cases( new unsigned int [__nb_nodes * __nb_cases] ) {
+      __cases( new unsigned int [__nb_nodes * __nb_cases] ),__filename( from.__filename ) {
     // for debugging purposes
     GUM_CONS_CPY( Database );
     // copy the __cases
@@ -105,6 +105,8 @@ namespace gum {
       __node_name_per_id = from.__node_name_per_id;
 
       __nb_modalities = from.__nb_modalities;
+
+      __filename= from.__filename;
 
       __cases = new unsigned int [__nb_nodes * __nb_cases];
 
@@ -179,6 +181,8 @@ namespace gum {
       if ( ! inFile.is_open() )
         GUM_ERROR( IOError, "cannot open file" + filename );
 
+      database.__filename=filename;
+
       // if the file is empty, do nothing
       if ( inFile.eof() )
         return database;
@@ -200,7 +204,7 @@ namespace gum {
         database.__node_name_per_id.insert( database.__node_names[i], i );
 
       // get the number of __cases
-      for ( database.__nb_cases = 0; getline( inFile, str ); database.__nb_cases+=( isValidLine(str) )?1:0 ); // we do not count empty lines
+      for ( database.__nb_cases = 0; getline( inFile, str ); database.__nb_cases+=( isValidLine( str ) )?1:0 ); // we do not count empty lines
     }
 
     // open the file to fill the __cases and skip the header
@@ -228,7 +232,7 @@ namespace gum {
       // get the content of the new line
       getline( inFile, str );
 
-      if (! isValidLine(str)) continue; // get rid of empty lines
+      if ( ! isValidLine( str ) ) continue; // get rid of empty lines
 
       std::vector<std::string> line =
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
@@ -292,6 +296,8 @@ namespace gum {
     if ( ! GUM_PARSE_XML_CSV_parser( database, filename ) ) {
       GUM_ERROR( IOError, "error parsing file" + filename );
     }
+
+    database.__filename=filename;
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.initializeIterator

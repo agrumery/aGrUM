@@ -295,9 +295,9 @@ namespace gum {
        *   corresponds to a database with 2 rows (cases) and 3 columns (variables).
        *   In the first line, variable "xxx"'s value is "toto", variable "yyy"'s value
        *   is "b" and variable "zzz"'s value is "cc".
-			 *
-			 *   Missing value are represented by "?"
-			 */
+       *
+       *   Missing value are represented by "?"
+       */
       // ============================================================================
       static Database createFromXmlCSV( const std::string& filename );
 
@@ -352,7 +352,7 @@ namespace gum {
 
       // ============================================================================
       /// get the number of modalities of the kth node
-			/// @warning : including "?" label if there are missing values
+      /// @warning : including "?" label if there are missing values
       // ============================================================================
       unsigned int nbrModalities( unsigned int k ) const throw( NotFound );
 
@@ -407,7 +407,8 @@ namespace gum {
 
       /// @}
 
-
+      /// returns the name of the file.
+      const std::string filename() const;
     protected:
       // ============================================================================
       /// basic constructor
@@ -418,6 +419,7 @@ namespace gum {
 
 
     private:
+
       /// the number of nodes
       unsigned int __nb_nodes;
 
@@ -449,6 +451,9 @@ namespace gum {
       DatabaseIterator __iter_end;
       DatabaseIterator __iter_rbegin;
       DatabaseIterator __iter_rend;
+
+			/// name of the file
+      std::string __filename;
 
       /// the list of iterators pointing toward the current database
       mutable List<DatabaseIterator*> __iterators;
