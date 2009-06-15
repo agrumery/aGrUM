@@ -81,8 +81,7 @@ file(GLOB AGRUM_TESTS
  UndiGraphTestSuite.h
  ValueEliminationTestSuite.h
  VariableNodeMapTestSuite.h
- # Just for showing a merge example.
-)
+ )
 
 add_cxxtest(test ${AGRUM_TESTS})
 
