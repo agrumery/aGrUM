@@ -46,9 +46,9 @@ BayesBalls<T_DATA>::~BayesBalls()
 template<typename T_DATA> INLINE
 Sequence<NodeId>*
 BayesBalls<T_DATA>::requisiteNodes(const BayesNet<T_DATA>& bayesNet,
-                                   const Sequence<NodeId> query,
-                                   const Sequence<NodeId> softEvidence,
-                                   const Sequence<NodeId> hardEvidence)
+                                   const Sequence<NodeId>& query,
+                                   const Sequence<NodeId>& softEvidence,
+                                   const Sequence<NodeId>& hardEvidence)
 {
   // Initialization.
   __bayesNet = &bayesNet;

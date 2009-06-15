@@ -60,9 +60,9 @@ public:
    * @return Returns a pointer over a sequence, delete it after use.
    */
   Sequence<NodeId>* requisiteNodes(const BayesNet<T_DATA>& bayesNet,
-                                   const Sequence<NodeId> query,
-                                   const Sequence<NodeId> softEvidence,
-                                   const Sequence<NodeId> hardEvidence);
+                                   const Sequence<NodeId>& query,
+                                   const Sequence<NodeId>& softEvidence,
+                                   const Sequence<NodeId>& hardEvidence);
 
 private:
 
@@ -73,8 +73,8 @@ private:
   void __fromParent(NodeId node);
 
   /// Top and bottom flags for each nodes.
-  HashTable< NodeId, std::pair<bool, bool> > __marks;
-  //Property<std::pair<bool, bool>::onNodes __marks;
+  //HashTable< NodeId, std::pair<bool, bool> > __marks;
+  Property< std::pair<bool, bool> >::onNodes __marks;
 
   /// Sequence of visited nodes.
   Sequence<NodeId>* __visited;
