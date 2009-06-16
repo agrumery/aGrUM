@@ -23,6 +23,10 @@
 
 namespace gum {
 
+/// return a ref to filename
+INLINE const std::string& Database::filename() const {
+  return __filename;
+}
 
   /* ============================================================================ */
   /* ============================================================================ */

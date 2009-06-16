@@ -408,7 +408,7 @@ namespace gum {
       /// @}
 
       /// returns the name of the file.
-      const std::string filename() const;
+      const std::string& filename() const;
     protected:
       // ============================================================================
       /// basic constructor
