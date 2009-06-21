@@ -638,12 +638,12 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
 
         TS_GUM_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
 
-        /** Now can only have 4 nodes in the path. */
-        TS_ASSERT_EQUALS( vec.size(), (gum::Size)4 );
+        /** Now can only have 3 nodes in the path. */
+        TS_ASSERT_EQUALS( vec.size(), (gum::Size)3 );
 
         graph.eraseEdge( 2,3 );
 
-        TS_ASSERT_THROWS_ANYTHING( vec = graph.undirectedPath( 1, 4 ) );
+        TS_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
       }
     }
 };

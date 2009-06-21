@@ -36,9 +36,32 @@ namespace gum {
 
 
   template<typename KEY> class SetIterator;
+  template<typename KEY> class Set;
+
 
   
-  template<class KEY>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  
+  // a class used to create the static iterator used by Sets. The aim of
+  // using this class rather than just creating __SetIterEnd as a global
+  // variable is to prevent other classes to access and modify __SetIterEnd
+  class SetIteratorStaticEnd {
+  private:
+    // the iterator used by everyone
+    static const SetIterator<int>* __SetIterEnd;
+
+    // creates (if needed) and returns the iterator __SetIterEnd
+    static const SetIterator<int>* end4Statics ();
+
+    // friends that have access to the iterator
+    template<typename KEY> friend class Set;
+  };
+  
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+  
+  
+  template<typename KEY>
   /**
    * @class Set
    * @brief Representation of a set
@@ -60,18 +83,13 @@ namespace gum {
    *   cerr <<  *iter << endl;
    * }
    *
-   * // parse the set in the other direction
-   * for (Set<int>::iterator iter = set.rbegin ();
-   *        iter != set.rend (); --iter)
-   *   cerr <<  *iter << endl;
-   *
    * // use an iterator to point the element we wish to erase
-   * Set<int>::iterator iter = set.rbegin ();
+   * Set<int>::iterator iter = set.begin ();
    * set.erase ( iter );
    *
    * // check whether two iterators point toward the same element
    * Set<int>::iterator iter1 = set.begin();
-   * Set<int>::iterator iter2 = set.rbegin();
+   * Set<int>::iterator iter2 = set.end();
    * if (iter1 != iter2)
    *   cerr << "iter1 and iter2 point toward different elements";
    *
@@ -79,7 +97,7 @@ namespace gum {
    *
    * @ingroup basicstruct_group
    */
-  class Set {
+  class Set : private SetIteratorStaticEnd {
   public:
     typedef SetIterator<KEY> iterator;
 
@@ -177,20 +195,53 @@ namespace gum {
     /// indicates whether the set is the empty set
     bool empty() const;
 
+    /// prints the content of the set
+    std::string toString() const;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Iterators
+    // ############################################################################
+    /// @{
+
     /// the usual begin iterator to parse the set
     iterator begin() const;
 
     /// the usual end iterator to parse the set
     const iterator& end() const;
 
-    /// the usual rbegin iterator to parse the set
-    iterator rbegin() const;
-
-    /// the usual rend iterator to parse the set
-    const iterator& rend() const;
-
-    /// prints the content of the set
-    std::string toString() const;
+    /** @brief returns the end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce the Sets memory consumption (which are heavily used in aGrUM)
+     * while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
+     * iterators are created just once as a static member of a non-template Set.
+     * While this scheme is efficient and it works quite effectively when
+     * manipulating sets, it has a drawback: other classes with static members
+     * using the Set's end() iterator may fail to work due to the well known
+     * "static initialization order fiasco" (see Marshall Cline's C++ FAQ for more
+     * details about this C++ feature). OK, so what is the problem? Consider a
+     * class, say X, containing a Set that stores all its elements in a convenient
+     * way. To reduce memory consumption, X::end iterator is a static member that
+     * is initialized with a Set::end iterator. If the compiler decides to
+     * initialize X::end before initializing Set::end, then X::end will be in an
+     * incoherent state. Unfortunately, we cannot know for sure in which order
+     * static members will be initialized (the order is a compiler's decision).
+     * Hence, we shall enfore the fact that Set::end is initialized before X::end.
+     * Using method Set::end4Statics will ensure this fact: it uses the C++
+     * "construct on first use" idiom (see the C++ FAQ) that ensures that the
+     * order fiasco is avoided. More precisely, end4Statics uses a global
+     * variable that is the very end iterator used by all Sets. Now, this induces
+     * a small overhead. So, we also provide a Set::end() method that returns the
+     * Set::end iterator without this small overhead, but assuming that function
+     * end4Statics has already been called once (which is always the case) when a
+     * Set has been created.
+     *
+     * So, to summarize: when initializing static members, use end4Statics() rather
+     * than end(). In all the other cases, use simply the usual method end(). */
+    static const iterator& end4Statics ();
 
     /// @}
     
@@ -200,13 +251,13 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns the size of the underlying hashtable containing the set
+    /// returns the capacity of the underlying hashtable containing the set
     /** The method runs in constant time. */
     Size capacity() const ;
 
     /// changes the size of the underlying hashtable containing the set
     /** See HashTable's method resize for more details */
-    void resize( Size capacity ) ;
+    void resize( Size new_capacity ) ;
 
     /** @brief enables the user to change dynamically the resizing policy of
      * the underlying hashtable
@@ -252,9 +303,9 @@ namespace gum {
     template <typename NEWKEY>
     HashTable<KEY,NEWKEY> hashMap( const NEWKEY& val, Size size = 0 ) const;
 
-   /// a method to create a List of NEWKEY from the list of nodes of the graph
-    /** @param f a function that maps a node into a Assent
-     * @warning the order of the Assent elements in the resulting list is
+   /// a method to create a List of NEWKEY from the set
+    /** @param f a function that maps a KEY into a NEWKEY
+     * @warning the order of the NEWKEY elements in the resulting list is
      * arbitrary */
     template <typename NEWKEY> List<NEWKEY>
     listMap( NEWKEY( *f )( const KEY& ) ) const;
@@ -268,10 +319,6 @@ namespace gum {
 
     /// a set of X's is actually a hashtable whose keys are the X's
     HashTable<KEY,bool> __inside;
-
-    /// to optimize the access to data, end and rend are computed once and for all
-    iterator __it_end;
-    iterator __it_rend;
 
     /// convert a hashtable into a set of keys
     Set( const HashTable<KEY,bool>& h );
@@ -301,14 +348,9 @@ namespace gum {
    *   cerr <<  *iter << endl;
    * }
    *
-   * // parse the hash table in the other direction
-   * for (Set<int>::iterator iter = table.rbegin ();
-   *        iter != table.rend (); --iter)
-   *   cerr <<  *iter << endl;
-   *
    * // check whether two iterators point toward the same element
    * Set<int>::iterator iter1 = table1.begin();
-   * Set<int>::iterator iter2 = table1.rbegin();
+   * Set<int>::iterator iter2 = table1.end();
    * if (iter1 != iter)
    *   cerr << "iter1 and iter2 point toward different elements";
    *
@@ -321,9 +363,7 @@ namespace gum {
      * of the set */
     enum Position {
       GUM_SET_ITERATOR_BEGIN,
-      GUM_SET_ITERATOR_END,
-      GUM_SET_ITERATOR_RBEGIN,
-      GUM_SET_ITERATOR_REND
+      GUM_SET_ITERATOR_END
     };
   
     // ############################################################################
@@ -357,9 +397,6 @@ namespace gum {
     /// increments the iterator
     SetIterator<KEY>& operator++();
 
-    /// decrements the iterator
-    SetIterator<KEY>& operator--();
-
     /// indicates whether two iterators point to different elements or sets
     bool operator!= ( const SetIterator<KEY> &from ) const;
 
@@ -375,7 +412,7 @@ namespace gum {
      * pointed to by the iterator have been deleted) */
     const KEY& operator*() const ;
 
-    /// returns aointer to the element pointed to by the iterator
+    /// returns a pointer to the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception if the iterator does not point
      * to an element of the set (for instance if the set or the element previously
      * pointed to by the iterator have been deleted) */
@@ -389,18 +426,14 @@ namespace gum {
     /// the underlying iterator for the set's hashtable containing the data 
     HashTableIterator<KEY,bool> __ht_iter;
 
-    /// a function to update end/rend iterators
-    /** This function is called by Set to update its end/rnd iterators.
-     * @param iter __ht_iter will be set to iter */
-    void __updatePosition( const HashTableIterator<KEY,bool>& iter );
   };
 
   
   /// a << operator for HashTableList
   template <typename KEY> std::ostream& operator<<
   ( std::ostream&, const Set<KEY>& );
-
-
+  
+  
 } /* namespace gum */
 
 

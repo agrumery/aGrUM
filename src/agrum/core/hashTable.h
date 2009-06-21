@@ -142,6 +142,28 @@ namespace gum {
 
 
 
+
+  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  
+  // a class used to create the static iterator used by HashTables. The aim of
+  // using this class rather than just creating __HashTableIterEnd as a global
+  // variable is to prevent other classes to access and modify __HashTableIterEnd
+  class HashTableIteratorStaticEnd {
+  private:
+    // the iterator used by everyone
+    static const HashTableIterator<int,int>* __HashTableIterEnd;
+
+    // creates (if needed) and returns the iterator __HashTableIterEnd
+    static const HashTableIterator<int,int>* end4Statics ();
+
+    // friends that have access to the iterator
+    template<typename Key, typename Val> friend class HashTable;
+  };
+  
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+
   
 
   /* =========================================================================== */
@@ -154,7 +176,7 @@ namespace gum {
   /* in aGrUM, hashtables are vectors of chained lists. Each list corresponds to
    * the pairs (key,val) the keys of which have the same hashed value. Each box of
    * the list is called a bucket. Lists are doubly linked so as to enable efficient
-   * rbegin/rend iterators. */
+   * begin/end iterators. */
   /* =========================================================================== */
   template <typename Key, typename Val> struct HashTableBucket {
     HashTableBucket<Key, Val> *prev;
@@ -472,21 +494,44 @@ namespace gum {
     const iterator& end() const ;
 
     // ============================================================================
-    /** @brief returns the iterator at the rend (just before the beginning) of
-     * the hashtable */
-    // ============================================================================
-    const iterator& rend() const ;
-
-    // ============================================================================
     /// returns the iterator at the beginning of the hashtable
     // ============================================================================
     iterator begin() const ;
 
     // ============================================================================
-    /// returns the iterator at the rbegin (the last element) of the hashtable
+    /** @brief returns the end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce memory consumption of hash tables (which are heavily used in
+     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
+     * end iterators are created just once as a static member of a non-template
+     * hashtable. While this scheme is efficient and it works quite effectively
+     * when manipulating hashtables, it has a drawback: other classes with static
+     * members using the HashTable's end() iterator may fail to work due to the
+     * well known "static initialization order fiasco" (see Marshall Cline's
+     * C++ FAQ for more details about this C++ feature). OK, so what is the
+     * problem? Consider for instance class Set. A Set contains a hashtable that
+     * stores all its elements in a convenient way. To reduce memory consumption,
+     * Set::end iterator is a static member that is initialized with a
+     * HashTable's end iterator. If the compiler decides to initialize Set::end
+     * before initializing HashTable::end, then Set::end will be in an incoherent
+     * state. Unfortunately, we cannot know for sure in which order static members
+     * will be initialized (the order is a compiler's decision). Hence, we shall
+     * enfore the fact that HashTable::end is initialized before Set::end. Using
+     * method HashTable::end4Statics will ensure this fact: it uses the C++
+     * "construct on first use" idiom (see the C++ FAQ) that ensures that the
+     * order fiasco is avoided. More precisely, end4Statics initializes a global
+     * variable that is the very end iterator used by all hashtables. Now, this
+     * induces a small overhead. So, we also provide a HashTable::end() method
+     * that returns the end iterator without this small overhead, but assuming that
+     * function end4Statics has already been called once (which is always the case)
+     * when a hashtable has been created.
+     *
+     * So, to summarize: when initializing static members, use end4Statics() rather
+     * than end(). In all the other cases, use simply the usual method end(). */
     // ============================================================================
-    iterator rbegin() const ;
-
+    static const iterator& end4Statics ();
+    
     /// @}
 
 
@@ -741,7 +786,7 @@ namespace gum {
     /// removes all the elements in the hash table
     /** The function does not resize the nodes vector (even if the size of this one
      * has been increased after the creation of the hash table) and it resets the
-     * iterators on the hash table to rend. The method runs in linear time w.r.t.
+     * iterators on the hash table to end. The method runs in linear time w.r.t.
      * the number of iterators pointing to the hash table. */
     // ============================================================================
     void clear();
@@ -888,14 +933,10 @@ namespace gum {
     /// the list of iterators pointing to the hash table
     mutable iterator *__iterator_list;
 
-    /** @name pseudo static iterators
-     * the end and rend iterators are constructed only once per hash table
-     * so as to optimize for(iter = begin();iter != end(); iter++) loops: this
-     * will avoid creating objects end and rend each time we pass in the loop. */
-    //\{
-    iterator __iter_end;
-    iterator __iter_rend;
-    //\}
+    // ============================================================================
+    /// erases a given bucket
+    // ============================================================================
+    void __erase ( HashTableBucket<Key, Val>* bucket, Size index );
 
   };
 
@@ -933,14 +974,9 @@ namespace gum {
    *   iter->append ("yyy");
    * }
    *
-   * // parse the hash table in the other direction
-   * for (HashTable<int,string>::iterator iter = table.rbegin ();
-   *        iter != table.rend (); --iter)
-   *   cerr << "at " << iter.key() << " value = " << *iter << endl;
-   *
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::iterator iter1 = table1.begin();
-   * HashTable<int,string>::iterator iter2 = table1.rbegin();
+   * HashTable<int,string>::iterator iter2 = table1.end();
    * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
    *
    * // make iter1 point toward nothing
@@ -1031,15 +1067,6 @@ namespace gum {
     HashTableIterator<Key, Val>& operator++() ;
 
     // ============================================================================
-    /// makes the iterator point to the preceding element in the hash table
-    /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
-     * parse the whole hash table as long as no element is added to or deleted from
-     * the hash table while being in the loop. Deleting elements during the
-     * loop is guaranteed to never produce a segmentation fault. */
-    // ============================================================================
-    HashTableIterator<Key, Val>& operator--() ;
-
-    // ============================================================================
     /// checks whether two iterators are pointing toward different elements
     // ============================================================================
     bool operator!= ( const HashTableIterator<Key, Val> &from ) const ;
@@ -1069,65 +1096,60 @@ namespace gum {
     /// @}
 
 
-  protected:
-    /** class HashTable must be a friend because it stores iterators end and
-     * rend, and those can be properly initialized only when the hashtable has been
+  private:
+    /** class HashTable must be a friend because it stores iterator end
+     * and those can be properly initialized only when the hashtable has been
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
     friend class HashTable<Key, Val>;
     
     /// the hash table the iterator is pointing to
-    const HashTable<Key, Val> *_table;
+    const HashTable<Key, Val> *__table;
 
     /** @brief the index of the chained list pointed by the iterator in the
      * array of nodes of the hash table */
-    Size _index;
+    Size __index;
 
     /// the bucket in the chained list pointed to by the iterator
-    HashTableBucket<Key, Val> *_bucket;
+    HashTableBucket<Key, Val> *__bucket;
 
     /** @brief the bucket we should start from when we decide to do a ++. Usually
      * it should be equal to bucket. However, if the user has deleted the object
      * pointed to by bucket, this will point to another bucket. When it is equal to
      * 0, it means that the bucket reached after a ++ belongs to another slot of
      * the hash table's 'node' vector. */
-    HashTableBucket<Key, Val> *_next_current_bucket;
-
-    /** @brief the bucket we should start from when we decide to do a --. When it
-     * is equal to 0, it means that the bucket reached after a -- belongs to
-     * another slot of the hash table's 'node' vector. */
-    HashTableBucket<Key, Val> *_prev_current_bucket;
+    HashTableBucket<Key, Val> *__next_bucket;
 
     /// next iterator attached to the hashtable
-    HashTableIterator<Key, Val> *_next;
+    HashTableIterator<Key, Val> *__next;
 
     /// preceding iterator of the hashtable registered list of iterators
-    HashTableIterator<Key, Val> *_prev;
-
-    // ============================================================================
-    /** a method used by the hashtables to construct properly end and rend iters
-     * boolean forward indicates whether we wish to construct end (true) or rend.
-     * Note that this function does not register the iterator into the iterator's
-     * list of the hashtable, hence it should only be used for
-     * initializing/updating end and rend iterators. */
-    // ============================================================================
-    void _initialize( HashTable<Key, Val> *tab, bool forward ) ;
+    HashTableIterator<Key, Val> *__prev;
 
     // ============================================================================
     /// returns the current iterator's bucket
     // ============================================================================
-    HashTableBucket<Key, Val> *_getBucket() const ;
+    HashTableBucket<Key, Val> *__getBucket() const ;
 
     // ============================================================================
     /// returns the index in the hashtable's node vector pointed to by the iterator
     // ============================================================================
-    Size _getIndex() const ;
+    Size __getIndex() const ;    
+
   };
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+  /// the end iterator for all hash tables
+  extern const HashTableIterator<int,int>* HashTableIterEnd;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   
 } /* namespace gum */
 
-  
+
 /// always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
   

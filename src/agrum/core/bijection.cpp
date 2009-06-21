@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Outlined implementation of the hash tables
+ * @brief Outlined implementation of Bijections
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -27,50 +27,49 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-#include <agrum/core/hashTable.h>
+#include <agrum/core/bijection.h>
 
 
 namespace gum {
 
-  /** The default number of slots in hashtables. By default, hashtables can store
-   * up to thrice the number of slots elements before their size is increased. */
-  const Size GUM_HASHTABLE_DEFAULT_SIZE = 4;
-
-  /** the mean number of values admissible by slots. Once this number
-   * is reached, the size of the hashtable is automatically doubled
-   * if we are in automatic resize mode. */
-  const unsigned int GUM_HASHTABLE_DEFAULT_MEAN_VAL_BY_SLOT = 3;
-
-  /** a boolean indicating whether inserting too many values into the hashtable
-   * makes it resize itself automatically. true = automatic, false = manual */
-  const bool GUM_HASHTABLE_DEFAULT_RESIZE_POLICY = true;
-
-  /** a boolean indicating the default behavior when trying to insert more than
-   * once elements with identical keys. true = do not insert the elements but the
-   * first one and throw an exception after the first insertion; false = insert
-   * the elements without complaining */
-  const bool GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY = true;
-
-
-
-  // creates (if needed) and returns the iterator __HashTableIterEnd
-  const HashTableIterator<int,int>* HashTableIteratorStaticEnd::end4Statics () {
+  // creates (if needed) and returns the iterator __BijectionIterEnd
+  const BijectionIterator<int,int>* BijectionIteratorStaticEnd::end4Statics () {
     static bool first_time = true;
     if ( first_time ) {
       first_time = false;
-      __HashTableIterEnd = new HashTableIterator<int,int>;
+      __BijectionIterEnd = new BijectionIterator<int,int>;
     }
 
-    return __HashTableIterEnd; 
+    return __BijectionIterEnd; 
   }
+
+
+  // create the end iterator for all Bijections
+  const BijectionIterator<int,int>*
+  BijectionIteratorStaticEnd::__BijectionIterEnd =
+    BijectionIteratorStaticEnd::end4Statics ();
   
- 
-  /// create the end iterator for all hash tables
-  const HashTableIterator<int,int>*
-  HashTableIteratorStaticEnd::__HashTableIterEnd =
-    HashTableIteratorStaticEnd::end4Statics ();
 
   
+  // creates (if needed) and returns the iterator __BijectionStarIterEnd
+  const BijectionIterator<int*,int*>*
+  BijectionStarIteratorStaticEnd::end4Statics () {
+    static bool first_time = true;
+    if ( first_time ) {
+      first_time = false;
+      __BijectionStarIterEnd = new BijectionIterator<int*,int*>;
+    }
+
+    return __BijectionStarIterEnd;
+  }
+
+
+  // create the end iterator for all BijectionStars
+  const BijectionIterator<int*,int*>*
+  BijectionStarIteratorStaticEnd::__BijectionStarIterEnd =
+    BijectionStarIteratorStaticEnd::end4Statics ();
+
+
 } /* namespace gum */
 
 

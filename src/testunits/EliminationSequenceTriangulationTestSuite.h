@@ -120,14 +120,15 @@ class EliminationSequenceTriangulationTestSuite: public CxxTest::TestSuite {
     TS_GUM_ASSERT_THROWS_NOTHING(tr.junctionTree());
     const CliqueGraph& junction = tr.junctionTree();
     //TS_ASSERT(junction.isJoinTree());
+
     TS_ASSERT(junction.size() == 4);
     TS_ASSERT(junction.sizeEdges() == 3);
     TS_ASSERT(junction.clique(tr.createdClique(0)).size() == 3);
     TS_ASSERT(junction.clique(tr.createdClique(1)).size() == 4);
-    TS_ASSERT(junction.clique(tr.createdClique(2)).size() == 3);
+    TS_ASSERT(junction.clique(tr.createdClique(2)).size() == 4);
     TS_ASSERT(junction.clique(tr.createdClique(3)).size() == 4);
     TS_ASSERT(junction.clique(tr.createdClique(4)).size() == 4);
-    TS_ASSERT(junction.clique(tr.createdClique(5)).size() == 3);
+    TS_ASSERT(junction.clique(tr.createdClique(5)).size() == 4);
     TS_ASSERT(junction.clique(tr.createdClique(6)).size() == 3);
     TS_ASSERT(junction.separator(tr.createdClique(0),
 				 tr.createdClique(1)).size() == 2); // BC

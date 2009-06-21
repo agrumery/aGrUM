@@ -36,20 +36,6 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
-  // WARNING: bijection iterators use Bijection's hashtable in reverse order, that
-  // is, when you do a for (BijectionIterator<T1,T2> iter = B.begin();
-  // iter != B.end(); ++iter), what is actually done is something like:
-  // (HashtableIterator<T1,T2> iter = B.hash.rbegin(); iter != B.hash.rend();
-  // --iter). This may seem strange but this is actually an optimization of the
-  // code: Bijection iterators contain hashtableIterators that perform all the
-  // job. Unfortunately, each time we add/remove an element to/from the
-  // hashtable, or each time we update the size of the latter, the end() iterator
-  // of the hashtable is updated. Hence, if we did not use this reverse order,
-  // we should update the BijectionIterator::end() accordingly. By using the
-  // reverse order, the BijectionIterator::end contains a HashTableIterator::rend
-  // which, fortunately, is insensitive to modifications in the hashtable.
-
-  
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
@@ -62,12 +48,10 @@ namespace gum {
   /// Constructor
   // ==============================================================================
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>::BijectionIterator ( const Bijection<T1,T2>& biject,
-                                                BijectionPosition pos ) :
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    __iter ( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.rbegin() :
-             biject.__firstToSecond.rend() ) {
+  BijectionIterator<T1,T2>::BijectionIterator
+  ( const Bijection<T1,T2>& biject, BijectionIterator<T1,T2>::Position pos ) :
+    __iter ( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
+             biject.__firstToSecond.end() ) {
     GUM_CONSTRUCTOR(BijectionIterator);
   }
   
@@ -120,25 +104,12 @@ namespace gum {
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>& BijectionIterator<T1,T2>::operator++() {
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    --__iter;
+    ++__iter;
     return *this;
   }
   
   // ==============================================================================
-  /// Go to the previous association (if exists)
-  // ==============================================================================
-  template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>& BijectionIterator<T1,T2>::operator--() {
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    ++__iter;
-    return *this;
-  }
-
-  // ==============================================================================
-  /// Comparaison iterators
+  /// Comparison of iterators
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   bool BijectionIterator<T1,T2>::operator!=
@@ -147,7 +118,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Comparaison iterators
+  /// Comparison of iterators
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   bool BijectionIterator<T1,T2>::operator==
@@ -167,6 +138,15 @@ namespace gum {
   // ==============================================================================
 
   // ==============================================================================
+  // returns the end iterator for other classes' statics
+  // ==============================================================================
+  template <typename T1, typename T2>
+  const BijectionIterator<T1,T2>& Bijection<T1,T2>::end4Statics() {
+    return *(reinterpret_cast<const BijectionIterator<T1,T2>*>
+             (BijectionIteratorStaticEnd::end4Statics ()));
+  }
+  
+  // ==============================================================================
   /// Default constructor: creates a bijection without association
   // ==============================================================================
   template <typename T1, typename T2> INLINE
@@ -176,13 +156,11 @@ namespace gum {
     // policy set to false because we will do the uniqueness tests ourselves (this
     // will speed-up the process)
     __firstToSecond(size, resize_policy, false),
-    __secondToFirst(size, resize_policy, false),    
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order, that is, __iter_end
-    // is actually  __firstToSecond.rend(), which is a constant, whatever we
-    // add/remove to/from __firstToSecond
-    __iter_end ( *this, BijectionIterator<T1,T2>::GUM_BIJECTION_END ) {
+    __secondToFirst(size, resize_policy, false) {
     GUM_CONSTRUCTOR( Bijection );
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();    
   }
 
   // ==============================================================================
@@ -208,8 +186,9 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   const BijectionIterator<T1,T2>&
   Bijection<T1,T2>::end() const {
-    return __iter_end;
-  }  
+    return *(reinterpret_cast<const BijectionIterator<T1,T2>*>
+             (BijectionIteratorStaticEnd::__BijectionIterEnd));
+  }
 
   // ==============================================================================
   /// a function that performs a complete copy of another bijection
@@ -227,28 +206,22 @@ namespace gum {
       bucket1->val = &(bucket2->key);
       bucket2->val = &(bucket1->key);
     }
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after __copy
   }
+
   
   // ==============================================================================
   /// Copy constructor
   // ==============================================================================
   template <typename T1, typename T2> INLINE
-  Bijection<T1,T2>::Bijection(const Bijection<T1,T2>& toCopy) :
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order, that is, __iter_end
-    // is actually  __firstToSecond.rend(), which is a constant, whatever we
-    // add/remove to/from __firstToSecond
-    __iter_end ( *this, BijectionIterator<T1,T2>::GUM_BIJECTION_END ) {
+  Bijection<T1,T2>::Bijection(const Bijection<T1,T2>& toCopy) {
     GUM_CONS_CPY( Bijection );
     __copy ( toCopy.__firstToSecond);
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
 
   // ==============================================================================
@@ -258,10 +231,9 @@ namespace gum {
   void Bijection<T1,T2>::clear() {
     __firstToSecond.clear();
     __secondToFirst.clear();
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after the clear's
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after the clear's
   }
   
   // ==============================================================================
@@ -275,10 +247,9 @@ namespace gum {
       clear ();
       __copy ( toCopy.__firstToSecond );
     }
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after __copy
     return *this;
   }
 
@@ -354,7 +325,7 @@ namespace gum {
   const T1&
   Bijection<T1,T2>::firstWithDefault(const T2& second, const T1& val) const {
     try { return first ( second ); }
-    catch ( NotFound& ) { return __insert ( second, val )->key; }
+    catch ( NotFound& ) { return __insert ( val, second )->key; }
   }
 
   // ==============================================================================
@@ -465,20 +436,6 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
-  // WARNING: bijection iterators use Bijection's hashtable in reverse order, that
-  // is, when you do a for (BijectionIterator<T1,T2> iter = B.begin();
-  // iter != B.end(); ++iter), what is actually done is something like:
-  // (HashtableIterator<T1,T2> iter = B.hash.rbegin(); iter != B.hash.rend();
-  // --iter). This may seem strange but this is actually an optimization of the
-  // code: Bijection iterators contain hashtableIterators that perform all the
-  // job. Unfortunately, each time we add/remove an element to/from the
-  // hashtable, or each time we update the size of the latter, the end() iterator
-  // of the hashtable is updated. Hence, if we did not use this reverse order,
-  // we should update the BijectionIterator::end() accordingly. By using the
-  // reverse order, the BijectionIterator::end contains a HashTableIterator::rend
-  // which, fortunately, is insensitive to modifications in the hashtable.
-
-  
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
@@ -491,12 +448,10 @@ namespace gum {
   /// Constructor
   // ==============================================================================
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>::BijectionIterator ( const Bijection<T1*,T2*>& biject,
-                                                  BijectionPosition pos ) :
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    __iter ( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.rbegin() :
-             biject.__firstToSecond.rend() ) {
+  BijectionIterator<T1*,T2*>::BijectionIterator
+  ( const Bijection<T1*,T2*>& biject, BijectionIterator<T1*,T2*>::Position pos ) :
+    __iter ( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
+             biject.__firstToSecond.end() ) {
     GUM_CONSTRUCTOR(BijectionIterator);
   }
   
@@ -549,25 +504,12 @@ namespace gum {
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1*,T2*>& BijectionIterator<T1*,T2*>::operator++() {
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    --__iter;
+    ++__iter;
     return *this;
   }
   
   // ==============================================================================
-  /// Go to the previous association (if exists)
-  // ==============================================================================
-  template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>& BijectionIterator<T1*,T2*>::operator--() {
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order
-    ++__iter;
-    return *this;
-  }
-
-  // ==============================================================================
-  /// Comparaison iterators
+  /// Comparison of iterators
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   bool BijectionIterator<T1*,T2*>::operator!=
@@ -576,7 +518,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Comparaison iterators
+  /// Comparison of iterators
   // ==============================================================================
   template <typename T1, typename T2> INLINE
   bool BijectionIterator<T1*,T2*>::operator==
@@ -596,6 +538,15 @@ namespace gum {
   // ==============================================================================
 
   // ==============================================================================
+  // returns the end iterator for other classes' statics
+  // ==============================================================================
+  template <typename T1, typename T2>
+  const BijectionIterator<T1*,T2*>& Bijection<T1*,T2*>::end4Statics() {
+    return *(reinterpret_cast<const BijectionIterator<T1*,T2*>*>
+             (BijectionStarIteratorStaticEnd::end4Statics ()));
+  }
+  
+  // ==============================================================================
   /// Default constructor: creates a bijection without association
   // ==============================================================================
   template <typename T1, typename T2> INLINE
@@ -605,13 +556,11 @@ namespace gum {
     // policy set to false because we will do the uniqueness tests ourselves (this
     // will speed-up the process)
     __firstToSecond(size, resize_policy, false),
-    __secondToFirst(size, resize_policy, false),    
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order, that is, __iter_end
-    // is actually  __firstToSecond.rend(), which is a constant, whatever we
-    // add/remove to/from __firstToSecond
-    __iter_end ( *this, BijectionIterator<T1*,T2*>::GUM_BIJECTION_END ) {
+    __secondToFirst(size, resize_policy, false) {
     GUM_CONSTRUCTOR( Bijection );
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
 
   // ==============================================================================
@@ -637,8 +586,9 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   const BijectionIterator<T1*,T2*>&
   Bijection<T1*,T2*>::end() const {
-    return __iter_end;
-  }  
+    return *(reinterpret_cast<const BijectionIterator<T1*,T2*>*>
+             (BijectionStarIteratorStaticEnd::__BijectionStarIterEnd)); 
+  }
 
   // ==============================================================================
   /// a function that performs a complete copy of another bijection
@@ -652,28 +602,21 @@ namespace gum {
       try { __secondToFirst._insertAndGetBucket ( *iter, iter.key() ); }
       catch (...) { __firstToSecond.erase ( iter.key() ); throw; }
     }
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after __copy
   }
   
   // ==============================================================================
   /// Copy constructor
   // ==============================================================================
   template <typename T1, typename T2> INLINE
-  Bijection<T1*,T2*>::Bijection(const Bijection<T1*,T2*>& toCopy) :
-    // remember the warning at the beginning of the BijectionIterator's section:
-    // BijectionIterator parse Hashtables in reverse order, that is, __iter_end
-    // is actually  __firstToSecond.rend(), which is a constant, whatever we
-    // add/remove to/from __firstToSecond
-    __iter_end ( *this, BijectionIterator<T1*,T2*>::GUM_BIJECTION_END ) {
+  Bijection<T1*,T2*>::Bijection(const Bijection<T1*,T2*>& toCopy) {
     GUM_CONS_CPY( Bijection );
     __copy ( toCopy.__firstToSecond);
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
 
   // ==============================================================================
@@ -683,10 +626,9 @@ namespace gum {
   void Bijection<T1*,T2*>::clear() {
     __firstToSecond.clear();
     __secondToFirst.clear();
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after the clear's
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after the clear's
   }
   
   // ==============================================================================
@@ -700,10 +642,9 @@ namespace gum {
       clear ();
       __copy ( toCopy.__firstToSecond );
     }
-    // note that, as BijectionIterator parse Hashtables in reverse order, that is,
-    // __iter_end is actually  __firstToSecond.rend(), this is a constant,
-    // whatever we add/remove to/from __firstToSecond. As a consequence, __iter_end
-    // need not be updated after __copy
+    // note that __iter_end is actually a constant, whatever we add/remove
+    // to/from __firstToSecond. As a consequence, it need not be updated
+    // after __copy
     return *this;
   }
 
@@ -773,7 +714,7 @@ namespace gum {
   Bijection<T1*,T2*>::firstWithDefault(T2* const second, T1* const val) const {
     try { return first ( second ); }
     catch ( NotFound& ) {
-      __insert ( second, val );
+      __insert ( val, second );
       return val;
     }
   }

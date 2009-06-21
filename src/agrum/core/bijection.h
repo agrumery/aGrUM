@@ -35,7 +35,31 @@
 
 
 namespace gum {
- 
+
+  
+  template <typename T1, typename T2> class BijectionIterator;
+
+  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  
+  // a class used to create the static iterator used by Bijections. The aim of
+  // using this class rather than just creating __BijectionIterEnd as a global
+  // variable is to prevent other classes to access and modify __BijectionIterEnd
+  class BijectionIteratorStaticEnd {
+  private:
+    // the iterator used by everyone
+    static const BijectionIterator<int,int>* __BijectionIterEnd;
+
+    // creates (if needed) and returns the iterator __BijectionIterEnd
+    static const BijectionIterator<int,int>* end4Statics ();
+
+    // friends that have access to the iterator
+    template<typename T1, typename T2> friend class Bijection;
+  };
+  
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+  
   
   // ==============================================================================
   // ==============================================================================
@@ -47,7 +71,7 @@ namespace gum {
   public:
 
     /// the possible positions for the iterators 
-    enum BijectionPosition {
+    enum Position {
       GUM_BIJECTION_BEGIN,
       GUM_BIJECTION_END
     };
@@ -67,7 +91,7 @@ namespace gum {
     /** By default, the iterator points to the starting point of the bijection */
     // ============================================================================
     BijectionIterator ( const Bijection<T1,T2>& bijection,
-                        BijectionPosition pos = GUM_BIJECTION_BEGIN);
+                        Position pos = GUM_BIJECTION_BEGIN);
 
     // ============================================================================
     /// Copy constructor
@@ -98,12 +122,7 @@ namespace gum {
     BijectionIterator<T1,T2>& operator++();
 
     // ============================================================================
-    /// Go to the previous association (if it exists)
-    // ============================================================================
-    BijectionIterator<T1,T2>& operator--();
-
-    // ============================================================================
-    /// Comparaison iterators
+    /// Comparison of iterators
     // ============================================================================
     bool operator!=(const BijectionIterator<T1,T2>& toCompare) const;
     bool operator==(const BijectionIterator<T1,T2>& toCompare) const;
@@ -137,7 +156,6 @@ namespace gum {
 
 
 
-
   
 
   // ==============================================================================
@@ -164,7 +182,7 @@ namespace gum {
     /// @{
 
     // ============================================================================
-    /// Default constructor: creates a bijection without association
+    /// Default constructor: creates a bijection without any association
     // ============================================================================
     Bijection(Size size = GUM_HASHTABLE_DEFAULT_SIZE,
 	      bool resize_policy = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY);
@@ -220,6 +238,40 @@ namespace gum {
     // ============================================================================
     const iterator& end() const;
 
+    // ============================================================================
+    /** @brief returns the end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce the Bijections memory consumption (which are heavily used in
+     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
+     * iterators are created just once as a static member of a non-template
+     * Bijection. While this scheme is efficient and it works quite effectively
+     * when manipulating bijections, it has a drawback: other classes with static
+     * members using the Bijection's end() iterator may fail to work due to the
+     * well known "static initialization order fiasco" (see Marshall Cline's C++
+     * FAQ for more details about this C++ feature). OK, so what is the problem?
+     * Consider a class, say X, containing a Bijection that stores all its elements
+     * in a convenient way. To reduce memory consumption, X::end iterator is a
+     * static member that is initialized with a Bijection::end iterator. If the
+     * compiler decides to initialize X::end before initializing Bijection::end,
+     * then X::end will be in an incoherent state. Unfortunately, we cannot know
+     * for sure in which order static members will be initialized (the order is a
+     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
+     * is initialized before X::end. Using method Bijection::end4Statics will
+     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
+     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
+     * end4Statics uses a global variable that is the very end iterator used by
+     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * Bijection::end() method that returns the Bijection::end iterator without
+     * this small overhead, but assuming that function end4Statics has already
+     * been called once (which is always the case) when a Bijection has been
+     * created.
+     *
+     * So, to summarize: when initializing static members, use end4Statics() rather
+     * than end(). In all the other cases, use simply the usual method end(). */
+    // ============================================================================
+    static const iterator& end4Statics ();
+    
     /// @}
 
 
@@ -347,22 +399,6 @@ namespace gum {
 
     /// hashtable associating T1 objects to T2 objects
     HashTable<T2,T1*> __secondToFirst;
-
-    /// an end iterator to speed-up accesses
-    BijectionIterator<T1,T2> __iter_end;
-    // WARNING: bijection iterators use Bijection's hashtable in reverse order,
-    // that is, when you do a for (BijectionIterator<T1,T2> iter = B.begin();
-    // iter != B.end(); ++iter), what is actually done is something like:
-    // (HashtableIterator<T1,T2> iter = B.hash.rbegin(); iter != B.hash.rend();
-    // --iter). This may seem strange but this is actually an optimization of the
-    // code: Bijection iterators contain hashtableIterators that perform all the
-    // job. Unfortunately, each time we add/remove an element to/from the
-    // hashtable, or each time we update the size of the latter, the end() iterator
-    // of the hashtable is updated. Hence, if we did not use this reverse order,
-    // we should update the BijectionIterator::end() accordingly. By using the
-    // reverse order, the BijectionIterator::end contains a HashTableIterator::rend
-    // which, fortunately, is insensitive to modifications in the hashtable.
-
     
     
     // ============================================================================
@@ -407,7 +443,7 @@ namespace gum {
   public:
 
     /// the possible positions for the iterators 
-    enum BijectionPosition {
+    enum Position {
       GUM_BIJECTION_BEGIN,
       GUM_BIJECTION_END
     };
@@ -427,7 +463,7 @@ namespace gum {
     /** By default, the iterator points to the starting point of the bijection */
     // ============================================================================
     BijectionIterator ( const Bijection<T1*,T2*>& bijection,
-                        BijectionPosition pos = GUM_BIJECTION_BEGIN);
+                        Position pos = GUM_BIJECTION_BEGIN);
 
     // ============================================================================
     /// Copy constructor
@@ -458,12 +494,7 @@ namespace gum {
     BijectionIterator<T1*,T2*>& operator++();
 
     // ============================================================================
-    /// Go to the previous association (if it exists)
-    // ============================================================================
-    BijectionIterator<T1*,T2*>& operator--();
-
-    // ============================================================================
-    /// Comparaison iterators
+    /// Comparison of iterators
     // ============================================================================
     bool operator!=(const BijectionIterator<T1*,T2*>& toCompare) const;
     bool operator==(const BijectionIterator<T1*,T2*>& toCompare) const;
@@ -496,6 +527,25 @@ namespace gum {
   };
 
 
+  
+
+  
+  // a class used to create the static iterator used by Bijections. The aim of
+  // using this class rather than just creating __BijectionStarIterEnd as
+  // a global variable is to prevent other classes to access and modify
+  // __BijectionStarIterEnd
+  class BijectionStarIteratorStaticEnd {
+  private:
+    // the iterator used by everyone
+    static const BijectionIterator<int*,int*>* __BijectionStarIterEnd;
+
+    // creates (if needed) and returns the iterator __BijectionStarIterEnd
+    static const BijectionIterator<int*,int*>* end4Statics ();
+
+    // friends that have access to the iterator
+    template<typename T1, typename T2> friend class Bijection;
+  };
+  
 
 
   
@@ -505,9 +555,9 @@ namespace gum {
   /**
    * This class is designed for modeling a bijection between two sets, the idea is
    * following :
-   * - we want to create a bijection relation between type T1* and type T2
-   * - for x in T1*, there exists only one y in T2 associated to x
-   * - for y in T2, there exists only one x in T1* associated to y
+   * - we want to create a bijection relation between type T1* and type T2*
+   * - for x in T1*, there exists only one y in T2* associated to x
+   * - for y in T2*, there exists only one x in T1* associated to y
    * - the user inserts all the (x, y) associations and can search efficiently the
    * values thus associated
    */
@@ -580,6 +630,40 @@ namespace gum {
     // ============================================================================
     const iterator& end() const;
 
+    // ============================================================================
+    /** @brief returns the end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce the Bijections memory consumption (which are heavily used in
+     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
+     * iterators are created just once as a static member of a non-template
+     * Bijection. While this scheme is efficient and it works quite effectively
+     * when manipulating bijections, it has a drawback: other classes with static
+     * members using the Bijection's end() iterator may fail to work due to the
+     * well known "static initialization order fiasco" (see Marshall Cline's C++
+     * FAQ for more details about this C++ feature). OK, so what is the problem?
+     * Consider a class, say X, containing a Bijection that stores all its elements
+     * in a convenient way. To reduce memory consumption, X::end iterator is a
+     * static member that is initialized with a Bijection::end iterator. If the
+     * compiler decides to initialize X::end before initializing Bijection::end,
+     * then X::end will be in an incoherent state. Unfortunately, we cannot know
+     * for sure in which order static members will be initialized (the order is a
+     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
+     * is initialized before X::end. Using method Bijection::end4Statics will
+     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
+     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
+     * end4Statics uses a global variable that is the very end iterator used by
+     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * Bijection::end() method that returns the Bijection::end iterator without
+     * this small overhead, but assuming that function end4Statics has already
+     * been called once (which is always the case) when a Bijection has been
+     * created.
+     *
+     * So, to summarize: when initializing static members, use end4Statics() rather
+     * than end(). In all the other cases, use simply the usual method end(). */
+    // ============================================================================
+    static const iterator& end4Statics ();
+
     /// @}
 
 
@@ -625,9 +709,7 @@ namespace gum {
 
     // ============================================================================
     /// inserts a new association in the bijection
-    /** Note that what is actually inserted into the bijection is a copy of
-     * the pair (first,second)
-     * @throws DuplicateElement exception is thrown if the association
+    /**@throws DuplicateElement exception is thrown if the association
      * already exists */
     // ============================================================================
     void insert(T1* const first, T2* const second);
@@ -697,31 +779,11 @@ namespace gum {
     /// a friend to speed-up accesses
     friend class BijectionIterator<T1*,T2*>;
   
-    // below, we create the two hashtables used by the bijection. Note that
-    // the values of these hashtables are actually pointers. This enables to
-    // create only once objects (T1*,T2*). When using bijections with large
-    // size objects, this feature is of particular interest
-    
     /// hashtable associating T2* objects to T1* objects
     HashTable<T1*,T2*> __firstToSecond;
 
     /// hashtable associating T1* objects to T2* objects
     HashTable<T2*,T1*> __secondToFirst;
-
-    /// an end iterator to speed-up accesses
-    BijectionIterator<T1*,T2*> __iter_end;
-    // WARNING: bijection iterators use Bijection's hashtable in reverse order,
-    // that is, when you do a for (BijectionIterator<T1*,T2*> iter = B.begin();
-    // iter != B.end(); ++iter), what is actually done is something like:
-    // (HashtableIterator<T1*,T2*> iter = B.hash.rbegin(); iter != B.hash.rend();
-    // --iter). This may seem strange but this is actually an optimization of the
-    // code: Bijection iterators contain hashtableIterators that perform all the
-    // job. Unfortunately, each time we add/remove an element to/from the
-    // hashtable, or each time we update the size of the latter, the end() iterator
-    // of the hashtable is updated. Hence, if we did not use this reverse order,
-    // we should update the BijectionIterator::end() accordingly. By using the
-    // reverse order, the BijectionIterator::end contains a HashTableIterator::rend
-    // which, fortunately, is insensitive to modifications in the hashtable.
 
     
     
@@ -739,7 +801,7 @@ namespace gum {
     
   };
 
-  
+ 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
     

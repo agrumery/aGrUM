@@ -42,10 +42,8 @@ namespace gum {
   /// creates an iterator for a given set
   template<typename KEY> INLINE
   SetIterator<KEY>::SetIterator( const Set<KEY>& set, Position pos ) :
-    __ht_iter ( pos == GUM_SET_ITERATOR_END ? set.__inside.end() :
-                pos == GUM_SET_ITERATOR_BEGIN ? set.__inside.begin() :
-                pos == GUM_SET_ITERATOR_RBEGIN ? set.__inside.rbegin() :
-                set.__inside.rend() ) {
+    __ht_iter ( pos == GUM_SET_ITERATOR_END ?
+                set.__inside.end() : set.__inside.begin() ) {
     GUM_CONSTRUCTOR( SetIterator );
   }
 
@@ -59,7 +57,8 @@ namespace gum {
 
   
   /// destructor
-  template<typename KEY> INLINE SetIterator<KEY>::~SetIterator() {
+  template<typename KEY> INLINE
+  SetIterator<KEY>::~SetIterator() {
     GUM_DESTRUCTOR( SetIterator );
   }
 
@@ -114,68 +113,60 @@ namespace gum {
     return *this;
   }
 
-  
-  /// decrements the iterator
-  template<typename KEY> INLINE
-  SetIterator<KEY>& SetIterator<KEY>::operator--() {
-    // note that, if the hashtable's iterator points toward nothing, the
-    // hashtable's iterator decrementation will do nothing. In particular, it
-    // will not segfault.
-    --__ht_iter;
-    return *this;
-  }
-
-
-  /// a function to update end/rend iterators
-  template<typename KEY> INLINE
-  void
-  SetIterator<KEY>::__updatePosition( const HashTableIterator<KEY,bool>& iter ) {
-    __ht_iter=iter;
-  }
 
 
 
 
 
 
-
-
+  /* =========================================================================== */
   /* =========================================================================== */
   /* ===                                 SETS                                === */
   /* =========================================================================== */
+  /* =========================================================================== */
   
+  // returns the end iterator for other classes' statics
+  template <typename KEY>
+  const SetIterator<KEY>& Set<KEY>::end4Statics() {
+    return *(reinterpret_cast<const SetIterator<KEY>*>
+             (SetIteratorStaticEnd::end4Statics ())); 
+  }
+
   /// default constructor
   template<typename KEY>
   Set<KEY>::Set( Size capacity ,  bool resize_policy ):
     // create the hash table without key uniqueness policy (as we will check
     // ourselves the uniqueness of KEYs before inserting new elements)
-    __inside( capacity, resize_policy, false ),
-    __it_end( *this, SetIterator<KEY>::GUM_SET_ITERATOR_END ),
-    __it_rend ( *this, SetIterator<KEY>::GUM_SET_ITERATOR_REND ) {
+    __inside( capacity, resize_policy, false ) {
     GUM_CONSTRUCTOR( Set );
+    
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
   
 
   /// convert a hashtable into a set of keys
   template<typename KEY>
   Set<KEY>::Set( const HashTable<KEY,bool>& h ):
-    __inside( h ),
-    __it_end( *this, SetIterator<KEY>::GUM_SET_ITERATOR_END ),
-    __it_rend ( *this, SetIterator<KEY>::GUM_SET_ITERATOR_REND ) {
+    __inside( h ) {
     GUM_CONSTRUCTOR( Set );
     // ensure that __inside's uniqueness policy is set to false as this
     // will speed-up insertions of new elements
     __inside.setKeyUniquenessPolicy (false);
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
 
   
   /// copy constructor
   template<typename KEY>
   Set<KEY>::Set( const Set<KEY>& s ) :
-    __inside( s.__inside ),
-    __it_end( *this, SetIterator<KEY>::GUM_SET_ITERATOR_END ),
-    __it_rend ( *this, SetIterator<KEY>::GUM_SET_ITERATOR_REND ) {
+    __inside( s.__inside ) {
     GUM_CONS_CPY( Set );
+
+    // make sure the end() iterator is constructed properly
+    end4Statics ();
   }
 
 
@@ -196,21 +187,8 @@ namespace gum {
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
   const SetIterator<KEY>& Set<KEY>::end() const {
-    return __it_end;
-  }
-
-  
-  /// the usual rbegin iterator to parse the set
-  template<typename KEY> INLINE
-  SetIterator<KEY> Set<KEY>::rbegin() const {
-    return SetIterator<KEY>( *this, SetIterator<KEY>::GUM_SET_ITERATOR_RBEGIN );
-  }
-
-
-  /// the usual rend iterator to parse the set
-  template<typename KEY> INLINE
-  const SetIterator<KEY> & Set<KEY>::rend() const {
-    return __it_rend;
+    return *(reinterpret_cast<const SetIterator<KEY>*>
+             (SetIteratorStaticEnd::__SetIterEnd)); 
   }
 
   
@@ -223,11 +201,9 @@ namespace gum {
     // operation will be performed on a SetIterator, this will raise an exception.
     __inside.clear();
 
-    // now we shall update the end iterator. Note that actually there is no need
-    // to update the rend iterator as this one is not affected by changes within
-    // hashtables (adding/deleting elements). Hence, for speedup, we do not
-    // update the rend iterator
-    __it_end.__updatePosition( __inside.end() );
+    // Note that actually there is no need to update the end iterator as this one
+    // is not affected by changes within hashtables (adding/deleting elements).
+    // Hence, for speedup, we do not update the end iterator
   }
 
   
@@ -250,11 +226,9 @@ namespace gum {
       // copy the set
       __inside = s.__inside;
     
-      // now we shall update the end/rend iterators. Note that actually there is no
-      // need to update the rend iterator as this one is not affected by changes
-      // within hashtables (adding/deleting elements).  Hence, for speedup, we do
-      // not update the rend iterator
-      __it_end.__updatePosition( __inside.end() );
+      // Note that actually there is no need to update the end iterator as this one
+      // is not affected by changes within hashtables (adding/deleting elements).
+      // Hence, for speedup, we do not update the end iterator
     }
     
     return *this;
@@ -277,12 +251,10 @@ namespace gum {
     if ( ! contains( k ) ) {
       // insert the element
       __inside.insert( k, true );
-
-      // update end iterator. Note that actually there is no need to update the
-      // rend iterator as this one is not affected by changes within hashtables
-      // (adding/deleting elements).  Hence, for speedup, we do not update the
-      // rend iterator
-      __it_end.__updatePosition( __inside.end() );
+      
+      // Note that actually there is no need to update the end iterator as this one
+      // is not affected by changes within hashtables (adding/deleting elements).
+      // Hence, for speedup, we do not update the end iterator
     }
   }
 
@@ -290,16 +262,12 @@ namespace gum {
   /// erases an element from the set
   template<typename KEY> INLINE
   void Set<KEY>::erase( const KEY& k ) {
-    if ( contains( k ) ) {
-      // erase the element
-      __inside.erase( k );
+    // erase the element (if it exists)
+    __inside.erase( k );
       
-      // update end and rend iterators. Note that actually there is no
-      // need to update the rend iterator as this one is not affected by changes
-      // within hashtables (adding/deleting elements). Hence, for speedup, we do
-      // not update the rend iterator
-      __it_end.__updatePosition( __inside.end() );
-    }
+    // Note that actually there is no need to update the end iterator as this one
+    // is not affected by changes within hashtables (adding/deleting elements).
+    // Hence, for speedup, we do not update the end iterator
   }
 
   
@@ -309,11 +277,9 @@ namespace gum {
     // erase the element
     __inside.erase( iter.__ht_iter );
       
-    // update end and rend iterators. Note that actually there is no
-    // need to update the rend iterator as this one is not affected by changes
-    // within hashtables (adding/deleting elements). Hence, for speedup, we do
-    // not update the rend iterator
-    __it_end.__updatePosition( __inside.end() );
+    // Note that actually there is no need to update the end iterator as this one
+    // is not affected by changes within hashtables (adding/deleting elements).
+    // Hence, for speedup, we do not update the end iterator
   }
 
 
@@ -475,8 +441,10 @@ namespace gum {
   template<typename KEY> INLINE
   void Set<KEY>::resize( Size new_size ) {
     __inside.resize( new_size );
-    // update the position of the end iterator as the size of the table has changed
-    __it_end.__updatePosition( __inside.end() );
+
+    // Note that actually there is no need to update the end iterator as this one
+    // is not affected by changes within hashtables (adding/deleting elements).
+    // Hence, for speedup, we do not update the end iterator
   }
 
   
@@ -485,9 +453,11 @@ namespace gum {
   template<typename KEY> INLINE
   void Set<KEY>::setResizePolicy( const bool new_policy ) {
     __inside.setResizePolicy( new_policy );
-    // update the position of the end iterator as the size of the table may change
-    __it_end.__updatePosition( __inside.end() );
-  }
+
+    // Note that actually there is no need to update the end iterator as this one
+    // is not affected by changes within hashtables (adding/deleting elements).
+    // Hence, for speedup, we do not update the end iterator
+   }
 
   
   /// returns the current resizing policy of the underlying hashtable
@@ -512,8 +482,8 @@ namespace gum {
     HashTable<KEY,NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableIterator<KEY,bool > iter = __inside.rbegin();
-          iter != __inside.rend(); --iter ) {
+    for ( HashTableIterator<KEY,bool > iter = __inside.begin();
+          iter != __inside.end(); ++iter ) {
       table.insert( iter.key(), f( iter.key() ) );
     }
 
@@ -535,8 +505,8 @@ namespace gum {
     HashTable<KEY,NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableIterator<KEY,bool > iter = __inside.rbegin();
-          iter != __inside.rend(); --iter ) {
+    for ( HashTableIterator<KEY,bool > iter = __inside.begin();
+          iter != __inside.end(); ++iter ) {
       table.insert( iter.key(), val );
     }
 
@@ -544,14 +514,14 @@ namespace gum {
   }
 
 
-  /// a method to create a list of Assent from a node list
+  /// a method to create a list of NEWKEY from the set
   template<typename KEY>
   template <typename NEWKEY>
   List<NEWKEY> Set<KEY>::listMap( NEWKEY( *f )( const KEY& ) ) const {
     // create a new list
     List<NEWKEY> list;
-    // fill the new list
 
+    // fill the new list
     for ( HashTableIterator<KEY,bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
       list.pushBack( f( iter.key() ) );

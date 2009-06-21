@@ -124,7 +124,7 @@ class SetTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
       TS_ASSERT_EQUALS( set.size(), (gum::Size)4 );
 
-      iter = set.rbegin ();
+      iter = set.begin ();
       TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
       TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
 
@@ -132,9 +132,6 @@ class SetTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
       TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
 
-      iter = set.rend ();
-      TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
-      TS_ASSERT_EQUALS( set.size(), (gum::Size)3 );
     }
 
     void testClear() {

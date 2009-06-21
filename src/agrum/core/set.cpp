@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *                                                                         *
+ *   test $Id: $                                                           *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,23 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Classes of signaler. For more documentation, @see signaler0.h
+ * @brief Outlined implementation of Sets
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef __SIGNALER_H
-#define __SIGNALER_H
 
-#include <agrum/core/signal/listener.h>
 
-#include <agrum/core/signal/signaler0.h>
-#include <agrum/core/signal/signaler1.h>
-#include <agrum/core/signal/signaler2.h>
-#include <agrum/core/signal/signaler3.h>
-#include <agrum/core/signal/signaler4.h>
-#include <agrum/core/signal/signaler5.h>
-#include <agrum/core/signal/signaler6.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#endif // __SIGNALER_H
 
+#include <agrum/core/set.h>
+
+
+namespace gum {
+
+
+  // creates (if needed) and returns the iterator __SetIterEnd
+  const SetIterator<int>* SetIteratorStaticEnd::end4Statics () {
+    static bool first_time = true;
+    if (first_time ) {
+      first_time = false;
+      __SetIterEnd = new SetIterator<int>;
+    }
+
+    return __SetIterEnd; 
+  }
+
+
+  // create the end iterator for all Sets
+  const SetIterator<int>* SetIteratorStaticEnd::__SetIterEnd =
+    SetIteratorStaticEnd::end4Statics ();
+  
+
+} /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -112,12 +112,12 @@ class HashTableTestSuite: public CxxTest::TestSuite {
     }
 
     void testEraseIterator() {
-      gum::HashTable<int, string> table;
+      gum::HashTable<int, string> table (4);
       fill( table );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)6 );
-      
+
       gum::HashTable<int, string>::iterator iter = table.begin();
-      
+
       TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)5 );
 
@@ -126,15 +126,15 @@ class HashTableTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)4 );
 
-      iter = table.rbegin();
+      iter = table.begin();
       TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
-
+      
       iter = table.end();
       TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
 
-      iter = table.rend();
+      iter = table.end();
       TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
       TS_ASSERT_EQUALS( table.size(), (gum::Size)3 );
     }
@@ -174,11 +174,14 @@ class HashTableTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 7, "Space, the final frontiere" ) );
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 8, "Space, the final frontiere" ) );
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 9, "Space, the final frontiere" ) );
+
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 10, "foo" ) );
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 11, "bar" ) );
 
       TS_ASSERT_EQUALS( table.size(), (gum::Size)11 );
+
       TS_GUM_ASSERT_THROWS_NOTHING( table.eraseAllVal( "Space, the final frontiere" ) );
+
       TS_ASSERT_EQUALS( table.size(), (gum::Size)2 );
 
       TS_GUM_ASSERT_THROWS_NOTHING( table.eraseAllVal( "Space, the final frontiere" ) );
@@ -362,17 +365,17 @@ class HashTableTestSuite: public CxxTest::TestSuite {
 
       TS_GUM_ASSERT_THROWS_NOTHING( t2.setResizePolicy( false ) );
 
-      TS_ASSERT_EQUALS( t1.capacity(), (gum::Size)16 );
-      TS_ASSERT_EQUALS( t2.capacity(), (gum::Size)16 );
+      TS_ASSERT_EQUALS( t1.capacity(), (gum::Size)4 );
+      TS_ASSERT_EQUALS( t2.capacity(), (gum::Size)4 );
 
       for ( int i = 0; i < 10000; i++ ) {
         TS_GUM_ASSERT_THROWS_NOTHING( t1.insert( i, i ) );
         TS_GUM_ASSERT_THROWS_NOTHING( t2.insert( i, i ) );
       }
 
-      TS_ASSERT_DIFFERS( t1.capacity(), (gum::Size)16 );
+      TS_ASSERT_DIFFERS( t1.capacity(), (gum::Size)4 );
 
-      TS_ASSERT_EQUALS( t2.capacity(), (gum::Size)16 );
+      TS_ASSERT_EQUALS( t2.capacity(), (gum::Size)4 );
     }
 
     void testMap() {
@@ -426,9 +429,8 @@ class HashTableTestSuite: public CxxTest::TestSuite {
         expected.insert( t1[i] );
       }
 
-      for ( gum::HashTable<int, string>::iterator iter = t1.rbegin();
-            iter != t1.rend();
-            -- iter ) {
+      for ( gum::HashTable<int, string>::iterator iter = t1.begin();
+            iter != t1.end(); ++iter ) {
         obtained.insert( *iter );
       }
 

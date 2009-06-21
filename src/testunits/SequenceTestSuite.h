@@ -182,7 +182,7 @@ class SequenceTestSuite: public CxxTest::TestSuite {
     seq<<1<<3<<5<<2<<4;
 
     int n = 0;
-    for ( gum::Sequence<Idx>::iterator it=seq.rbegin();
+    for ( gum::Sequence<gum::Idx>::iterator it=seq.rbegin();
           it!=seq.rend();--it ) {
       n*=10;n+=*it;
     }

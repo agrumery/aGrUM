@@ -52,38 +52,44 @@ namespace gum {
   }
 
   bool UndiGraph::hasUndirectedCycle() const {
-    // not recursive version ...
-    List<NodeId> nodeFile;
-    Property<NodeId>::onNodes predecessor=nodesProperty(( NodeId ) 0 );
+    List< std::pair<NodeId,NodeId> > open_nodes;
+    Property<bool>::onNodes examined_nodes = nodesProperty( false );
+    std::pair<NodeId,NodeId> thePair;
+    NodeId current, from_current, new_node;
 
-    for ( NodeSetIterator iteFirst=nodes().begin();
-          iteFirst!=nodes().end();++iteFirst ) {
-      if ( predecessor[*iteFirst]==( NodeId ) 0 ) {
-        // we found a not-already-visited node
-        nodeFile.insert( *iteFirst );
-        predecessor[*iteFirst]=*iteFirst;
+    for ( NodeSetIterator iter = nodes().begin(); iter != nodes().end(); ++iter ) {
+      // check if the node has already been examined (if this is not the case,
+      // this means that we are on a new connected component)
+      if ( ! examined_nodes[*iter] ) {
+        // indicates that we are examining a new node
+        examined_nodes[*iter] = true;
 
-        while ( ! nodeFile.empty() ) {
-          NodeId current=nodeFile.front();nodeFile.popFront();
-          // check the neighbour //////////////////////////////////////////////
-          const EdgeSet& set=neighbours( current );
+        // check recursively all the nodes of the connected component
+        thePair.first = *iter; thePair.second = *iter; 
+        open_nodes.insert ( thePair );
 
-          for ( EdgeSetIterator ite=set.begin();ite!=set.end();++ite ) {
-            NodeId new_one=ite->other( current );
+        while ( ! open_nodes.empty() ) {
+          // get a node to propagate
+          thePair = open_nodes.front(); open_nodes.popFront();
+          current = thePair.first;
+          from_current = thePair.second;
 
-            if ( new_one==*iteFirst )
-              continue; // the father of all nodes in the search
-
-            if ( predecessor[new_one]==current )
-              continue; // the direct parent in the search
-
-            if ( predecessor[new_one]!=( NodeId ) 0 ) {
-              return true; // we found an undirectedcycle !!
+          // check the neighbours
+          const EdgeSet& set = neighbours( current );
+          for ( EdgeSetIterator iter_neigh = set.begin();
+                iter_neigh != set.end(); ++iter_neigh ) {
+            new_node = iter_neigh->other( current );
+            // avoid to check the node we are coming from
+            if ( new_node != from_current ) {
+              if ( examined_nodes[new_node] )
+                return true;
+              else {
+                examined_nodes[new_node] = true;
+                thePair.first = new_node;
+                thePair.second = current;
+                open_nodes.insert ( std::pair<NodeId,NodeId>(thePair) );
+              } 
             }
-
-            predecessor[new_one]=current;
-
-            nodeFile.pushBack( new_one );
           }
         }
       }
