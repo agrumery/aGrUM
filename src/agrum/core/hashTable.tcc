@@ -59,7 +59,7 @@ namespace gum {
   // ==============================================================================
   /// a function used to perform copies of HashTableLists
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   void HashTableList<Key,Val>::_copy( const HashTableList<Key, Val> &from ) {
     HashTableBucket<Key, Val> *ptr, *old_ptr, *new_elt = 0;
     // set the defaults
@@ -366,7 +366,7 @@ namespace gum {
   // ==============================================================================
   /// constructor for an iterator pointing to the nth element of a hashtable
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableIterator<Key,Val>::HashTableIterator
   ( const HashTable<Key,Val>& tab, Size ind_elt ) :
     __table( &tab ), __bucket( 0 ), __next_bucket( 0 ), __prev( 0 ) {
@@ -425,7 +425,7 @@ namespace gum {
   // ==============================================================================
   /// copy operator
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableIterator<Key,Val>& HashTableIterator<Key,Val>::operator=
   ( const HashTableIterator<Key,Val>& from )  {
     // here, no need to avoid self assignment: this would slow down normal
@@ -1016,7 +1016,7 @@ namespace gum {
   // ==============================================================================
   /// add a new element (actually a copy of this element) in the hash table
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableBucket<Key,Val>*
   HashTable<Key,Val>::_insertAndGetBucket ( const Key& key, const Val& val ) {
     Size hash_key = __hash_func( key );
@@ -1102,7 +1102,7 @@ namespace gum {
   // ==============================================================================
   /// removes a given element from the hash table
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   void HashTable<Key,Val>::__erase( HashTableBucket<Key, Val>* bucket,
                                     Size index ) {
     if ( bucket == 0 ) return;
@@ -1203,8 +1203,8 @@ namespace gum {
   void HashTable<Key,Val>::eraseAllVal( const Val& val ) {
     for ( HashTableIterator<Key,Val> iterAll = begin();
           iterAll != end(); ++iterAll) {
-      if ( iterAll.__getBucket()->val == val ) {
-        __erase ( iterAll.__getBucket(), iterAll.__getIndex() );
+      if ( iterAll.__bucket->val == val ) {
+        __erase ( iterAll.__bucket, iterAll.__index );
       }
     }
   }
