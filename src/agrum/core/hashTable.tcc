@@ -1199,7 +1199,7 @@ namespace gum {
   // ==============================================================================
   /// removes all the elements having a certain value from the hash table
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   void HashTable<Key,Val>::eraseAllVal( const Val& val ) {
     for ( HashTableIterator<Key,Val> iterAll = begin();
           iterAll != end(); ++iterAll) {
