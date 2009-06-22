@@ -37,8 +37,8 @@ set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -pedantic -O0 -pg -DGUM_NO_INLINE")
 set(CMAKE_C_FLAGS_DEBUG "-Wall  -pedantic -O0 -pg -DGUM_NO_INLINE")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-Wall -O2 -DNDEBUG")
 
 subdirs(agrum EXCLUDE_FROM_ALL run testunits)
 include_directories(${AGRUM_SOURCE_DIR})
