@@ -13,10 +13,10 @@ if(MINGW)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
 endif(MINGW)
+
 if(UNIX)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
-#  set(CMAKE_CXX_COMPILER /usr/bin/g++-4.2)
   set(CMAKE_INSTALL_PREFIX /usr)
 endif(UNIX)
 if(APPLE)
@@ -31,14 +31,24 @@ set(AGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION
 
 #new configuration (which will be the default one)
 #set(CMAKE_BUILD_TYPE current)
-set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
-set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -pedantic -O0 -pg -DGUM_NO_INLINE")
 set(CMAKE_C_FLAGS_DEBUG "-Wall  -pedantic -O0 -pg -DGUM_NO_INLINE")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+    # to detect Intel 64 bits platform : inline tends to be a bug for 64bits (???)
+set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
+set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
+
+  set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
+  set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
+else("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
+  set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
+
+  set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+  set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+endif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
 subdirs(agrum EXCLUDE_FROM_ALL run testunits)
 include_directories(${AGRUM_SOURCE_DIR})

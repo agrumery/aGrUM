@@ -39,8 +39,8 @@ file(GLOB AGRUM_TESTS
  BayesNetGeneratorTestSuite.h
  BayesNetTestSuite.h
  BijectionTestSuite.h
-# BIFReaderTestSuite.h
-# BIFWriterTestSuite.h
+ #BIFReaderTestSuite.h
+ #BIFWriterTestSuite.h
  BinTreeNodeTestSuite.h
  BinTreeNode4AVLTestSuite.h
  BinSearchTreeTestSuite.h
@@ -48,8 +48,8 @@ file(GLOB AGRUM_TESTS
  CompareInferencesTestSuite.h
  CrossMultiDimTestSuite.h
  DAGTestSuite.h
-# DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
-# DefaultTriangulationTestSuite.h # <---- ERROR
+#  DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
+ #DefaultTriangulationTestSuite.h # <---- ERROR
  DiGraphTestSuite.h
  DiscretizedVariableListenerTestSuite.h
  DiscretizedVariableTestSuite.h
@@ -61,7 +61,7 @@ file(GLOB AGRUM_TESTS
  InstantiationTestSuite.h
  LabelizedVariableListenerTestSuite.h
  LabelizedVariableTestSuite.h
-# LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
+#  LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
  ListBaseTestSuite.h
  ListTestSuite.h
  MixedGraphTestSuite.h
@@ -75,9 +75,9 @@ file(GLOB AGRUM_TESTS
  RefPtrTestSuite.h
  SequenceTestSuite.h
  SetTestSuite.h
-# ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
+#  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
  SimpleCPTGeneratorTestSuite.h
-# TorcsTestSuite.h   #<-----------------------MEMORY LEAK
+#  TorcsTestSuite.h   #<-----------------------MEMORY LEAK
  UndiGraphTestSuite.h
  ValueEliminationTestSuite.h
  VariableNodeMapTestSuite.h
