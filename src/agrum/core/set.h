@@ -418,6 +418,8 @@ namespace gum {
      * pointed to by the iterator have been deleted) */
     const KEY* operator->() const ;
 
+    /// @}
+
     
   private:
     /// for efficiency, Set should be able to modify the hashtable iterator
