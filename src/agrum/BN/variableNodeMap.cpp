@@ -40,7 +40,7 @@ VariableNodeMap::VariableNodeMap() {
 // Copy constructor.
 VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
   GUM_CONS_CPY( VariableNodeMap );
-  for (HashTable<NodeId, DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
+  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = source.__nodes2vars.begin();
        iter != source.__nodes2vars.end();
        ++iter)
   {
@@ -52,7 +52,7 @@ VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
 // Destructor
 VariableNodeMap::~VariableNodeMap() {
   GUM_DESTRUCTOR( VariableNodeMap );
-  for (HashTable<NodeId, DiscreteVariable*>::iterator iter = __nodes2vars.begin();
+  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = __nodes2vars.begin();
        iter != __nodes2vars.end();
        ++iter)
   {
@@ -66,7 +66,7 @@ VariableNodeMap::~VariableNodeMap() {
 INLINE
 VariableNodeMap&
 VariableNodeMap::operator=(const VariableNodeMap& source) {
-  for (HashTable<NodeId, DiscreteVariable*>::iterator iter = __nodes2vars.begin();
+  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = __nodes2vars.begin();
        iter != __nodes2vars.end();
        ++iter)
   {
@@ -75,7 +75,7 @@ VariableNodeMap::operator=(const VariableNodeMap& source) {
   __nodes2vars.clear();
   __vars2nodes.clear();
 
-  for (HashTable<NodeId, DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
+  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = source.__nodes2vars.begin();
        iter != source.__nodes2vars.end();
        ++iter)
   {

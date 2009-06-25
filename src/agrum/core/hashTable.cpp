@@ -63,7 +63,15 @@ namespace gum {
 
     return __HashTableIterEnd; 
   }
+
   
+  // creates (if needed) and returns the iterator __HashTableIterEnd
+  const HashTableConstIterator<int,int>*
+  HashTableIteratorStaticEnd::constEnd4Statics () {
+    return
+      reinterpret_cast<const HashTableConstIterator<int,int>*>( end4Statics () );
+  }
+
  
   /// create the end iterator for all hash tables
   const HashTableIterator<int,int>*

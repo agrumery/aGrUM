@@ -83,7 +83,6 @@
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/core/utils.h>
-#include <agrum/core/hashTable.h>
 
 
 namespace gum {

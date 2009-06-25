@@ -174,7 +174,7 @@ namespace gum {
     List<const Potential<T_DATA>*>* list = NULL;
     bool calledRemoveDifMess;
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
           iter != pot_list.end();
           ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
@@ -194,7 +194,7 @@ namespace gum {
         __clique_evidences.insert( __node2CliqueMap[varId], list );
       }
 
-      for ( ListIterator<const Potential<T_DATA>* > iter2 = list->begin();
+      for ( ListConstIterator<const Potential<T_DATA>* > iter2 = list->begin();
             iter2 != list->end();
             ++iter2 ) {
         if ( varId == this->bn().nodeId(( *iter2 )->variable( 0 ) ) ) {
@@ -223,7 +223,7 @@ namespace gum {
       Id cliqueId = __node2CliqueMap[varId];
       List<const Potential<T_DATA>* >& e_list = * ( __clique_evidences[cliqueId] );
 
-      for ( ListIterator<const Potential<T_DATA>*> iter = e_list.begin();
+      for ( ListConstIterator<const Potential<T_DATA>*> iter = e_list.begin();
             iter != e_list.end();
             ++iter ) {
         Id iterId = this->bn().nodeId(( *iter )->variable( 0 ) );
@@ -462,7 +462,7 @@ namespace gum {
     try {
       List<const Potential<T_DATA>*>& evidenceList = *__clique_evidences[tail];
 
-      for ( ListIterator<const Potential<T_DATA>*> iter = evidenceList.begin();
+      for ( ListConstIterator<const Potential<T_DATA>*> iter = evidenceList.begin();
             iter != evidenceList.end(); ++iter ) {
         Potential<T_DATA>* temp = joint;
         joint = new Potential<T_DATA>();

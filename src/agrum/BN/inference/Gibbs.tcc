@@ -266,7 +266,7 @@ namespace gum {
     __evidences.clear();
     __hard_evidences.clear();
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Potential<T_DATA>& pot=**iter;

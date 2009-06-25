@@ -692,7 +692,7 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    for ( iterator iter = begin(); iter != end(); ++iter, deja=true ) {
+    for ( const_iterator iter = begin(); iter != end(); ++iter, deja=true ) {
       if ( deja ) stream << " , ";
 
       stream << *iter;
@@ -728,9 +728,33 @@ namespace gum {
   // ==============================================================================
   template <typename Val, class Cmp, class Node> INLINE
   BinSearchTreeIterator<Val,Cmp,Node>
+  BinSearchTree<Val,Cmp,Node>::begin () {
+    BinSearchTreeIterator<Val,Cmp,Node> iter;
+    iter._initialize ( this, _minNode ( _root ), true );
+    return iter;
+  }
+
+  
+  // ==============================================================================
+  /// begin iterator
+  // ==============================================================================
+  template <typename Val, class Cmp, class Node> INLINE
+  BinSearchTreeIterator<Val,Cmp,Node>
   BinSearchTree<Val,Cmp,Node>::begin () const {
     BinSearchTreeIterator<Val,Cmp,Node> iter;
     iter._initialize ( this, _minNode ( _root ), true );
+    return iter;
+  }
+
+  
+  // ==============================================================================
+  /// rbegin iterator
+  // ==============================================================================
+  template <typename Val, class Cmp, class Node> INLINE
+  BinSearchTreeIterator<Val,Cmp,Node>
+  BinSearchTree<Val,Cmp,Node>::rbegin () {
+    BinSearchTreeIterator<Val,Cmp,Node> iter;
+    iter._initialize ( this, _maxNode ( _root ), true );
     return iter;
   }
 
@@ -752,6 +776,16 @@ namespace gum {
   // ==============================================================================
   template <typename Val, class Cmp, class Node> INLINE
   const BinSearchTreeIterator<Val,Cmp,Node>&
+  BinSearchTree<Val,Cmp,Node>::end () {
+    return _iter_end;
+  }
+
+
+  // ==============================================================================
+  /// end iterator
+  // ==============================================================================
+  template <typename Val, class Cmp, class Node> INLINE
+  const BinSearchTreeIterator<Val,Cmp,Node>&
   BinSearchTree<Val,Cmp,Node>::end () const {
     return _iter_end;
   }
@@ -762,11 +796,33 @@ namespace gum {
   // ==============================================================================
   template <typename Val, class Cmp, class Node> INLINE
   const BinSearchTreeIterator<Val,Cmp,Node>&
+  BinSearchTree<Val,Cmp,Node>::rend () {
+    return _iter_end;
+  }
+
+  
+  // ==============================================================================
+  /// rend iterator
+  // ==============================================================================
+  template <typename Val, class Cmp, class Node> INLINE
+  const BinSearchTreeIterator<Val,Cmp,Node>&
   BinSearchTree<Val,Cmp,Node>::rend () const {
     return _iter_end;
   }
 
   
+  // ==============================================================================
+  /// returns an iterator pointing to the root of the tree
+  // ==============================================================================
+  template <typename Val, class Cmp, class Node> INLINE
+  BinSearchTreeIterator<Val,Cmp,Node>
+  BinSearchTree<Val,Cmp,Node>::root () {
+    BinSearchTreeIterator<Val,Cmp,Node> iter;
+    iter._initialize ( this, _root, true );
+    return iter;
+  }
+
+
   // ==============================================================================
   /// returns an iterator pointing to the root of the tree
   // ==============================================================================

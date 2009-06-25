@@ -65,13 +65,13 @@ namespace gum {
     GUM_CONS_CPY( CliqueGraph );
     // fill the __cliques sets
 
-    for ( Property<NodeSet>::onNodes::iterator iter=from.__cliques.begin();
+    for ( Property<NodeSet>::onNodes::const_iterator iter=from.__cliques.begin();
           iter!=from.__cliques.end();
           ++iter )
       __cliques.insert( iter.key(), *iter );
 
     // fill the __separators sets
-    for ( Property< NodeSet >::onEdges::iterator iter=from.__separators.begin();
+    for ( Property< NodeSet >::onEdges::const_iterator iter=from.__separators.begin();
           iter!=from.__separators.end();
           ++iter )
       __separators.insert( iter.key(), *iter );
@@ -278,7 +278,7 @@ namespace gum {
 
     // check that no clique requires an additional chain to guarrantee the
     // running intersection property
-    for (Property<NodeSet>::onNodes::iterator iter =
+    for (Property<NodeSet>::onNodes::const_iterator iter =
             infos_DFS.cliques_DFS_chain.begin();
           iter != infos_DFS.cliques_DFS_chain.end(); ++iter )
       if ( ! iter->empty() ) return false;
@@ -294,7 +294,7 @@ namespace gum {
     if ( UndiGraph::operator!= ( from ) ) return false;
 
     // check if the __cliques are identical
-    for ( Property<NodeSet>::onNodes::iterator iter = __cliques.begin();
+    for ( Property<NodeSet>::onNodes::const_iterator iter = __cliques.begin();
           iter != __cliques.end();
           ++iter )
       if ( *iter != from.__cliques[iter.key()] ) return false;

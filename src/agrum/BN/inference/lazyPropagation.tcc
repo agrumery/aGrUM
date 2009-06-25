@@ -258,7 +258,7 @@ namespace gum {
   ( const List<const Potential<T_DATA>*>& pot_list ) {
     List <const Potential<T_DATA>*> empty_list;
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable *>& vars=( *iter )->variablesSequence();
@@ -386,7 +386,7 @@ namespace gum {
       if ( pot_to_mult.size() == 1 ) {
         joint = *pot_to_mult[0];
       } else {
-        ListIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+        ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
         joint = **iter;
 
         for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
@@ -413,7 +413,7 @@ namespace gum {
       // update accordingly pot_per_vars : remove these potentials
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
-      for ( ListIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+      for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
             iter != pot_to_mult.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& pot_vars =
           ( *iter )->variablesSequence();
@@ -507,7 +507,7 @@ namespace gum {
     const List <const Potential<T_DATA>*>& clique_pot = __clique_potentials[from_id];
     __PotentialSet pot_list( clique_pot.size() );
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -515,7 +515,7 @@ namespace gum {
     const List <const Potential<T_DATA>*>& evidence_list =
       __clique_evidence[from_id];
 
-    for ( ListIterator <const Potential<T_DATA>*> iter =
+    for ( ListConstIterator <const Potential<T_DATA>*> iter =
             evidence_list.begin();iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -736,7 +736,7 @@ namespace gum {
     __PotentialSet pot_list(clique_pot.size() +
                             __clique_evidence[myclique].size());
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -744,7 +744,7 @@ namespace gum {
     const List <const Potential<T_DATA>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+    for ( ListConstIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
           iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -867,7 +867,7 @@ namespace gum {
     __PotentialSet pot_list(clique_pot.size() +
                             __clique_evidence[myclique].size());
 
-    for ( ListIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -875,7 +875,7 @@ namespace gum {
     const List <const Potential<T_DATA>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+    for ( ListConstIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
           iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 

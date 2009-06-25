@@ -196,12 +196,12 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   void Bijection<T1,T2>::__copy (const HashTable<T1,T2*>& f2s) {
     // parse f2s and perform copies
-    for ( HashTableIterator<T1,T2*> iter = f2s.begin();
+    for ( HashTableConstIterator<T1,T2*> iter = f2s.begin();
           iter != f2s.end(); ++iter ) {
       HashTableBucket<T1,T2*>* bucket1 =  
-        __firstToSecond._insertAndGetBucket ( iter.key(), 0 );
+        __firstToSecond.__insertAndGetBucket ( iter.key(), 0 );
       HashTableBucket<T1,T2*>* bucket2;
-      try { bucket2 = __secondToFirst._insertAndGetBucket ( **iter, 0 ); }
+      try { bucket2 = __secondToFirst.__insertAndGetBucket ( **iter, 0 ); }
       catch (...) { __firstToSecond.erase ( iter.key() ); throw; }
       bucket1->val = &(bucket2->key);
       bucket2->val = &(bucket1->key);
@@ -299,9 +299,9 @@ namespace gum {
 
     // insert copies of first and second
     HashTableBucket<T1,T2*>* bucket1 =
-      __firstToSecond._insertAndGetBucket ( first, 0 );
+      __firstToSecond.__insertAndGetBucket ( first, 0 );
     HashTableBucket<T1,T2*>* bucket2;
-    try { bucket2 = __secondToFirst._insertAndGetBucket ( second, 0 ); }
+    try { bucket2 = __secondToFirst.__insertAndGetBucket ( second, 0 ); }
     catch (...) { __firstToSecond.erase ( first ); throw; }
     bucket1->val = &(bucket2->key);
     bucket2->val = &(bucket1->key);
@@ -596,10 +596,10 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   void Bijection<T1*,T2*>::__copy (const HashTable<T1*,T2*>& f2s) {
     // parse f2s and perform copies
-    for ( HashTableIterator<T1*,T2*> iter = f2s.begin();
+    for ( HashTableConstIterator<T1*,T2*> iter = f2s.begin();
           iter != f2s.end(); ++iter ) {
-      __firstToSecond._insertAndGetBucket ( iter.key(), *iter );
-      try { __secondToFirst._insertAndGetBucket ( *iter, iter.key() ); }
+      __firstToSecond.__insertAndGetBucket ( iter.key(), *iter );
+      try { __secondToFirst.__insertAndGetBucket ( *iter, iter.key() ); }
       catch (...) { __firstToSecond.erase ( iter.key() ); throw; }
     }
     // note that __iter_end is actually a constant, whatever we add/remove
@@ -692,8 +692,8 @@ namespace gum {
     }
 
     // insert copies of first and second
-    __firstToSecond._insertAndGetBucket ( first, second );
-    try { __secondToFirst._insertAndGetBucket ( second, first ); }
+    __firstToSecond.__insertAndGetBucket ( first, second );
+    try { __secondToFirst.__insertAndGetBucket ( second, first ); }
     catch (...) { __firstToSecond.erase ( first ); throw; }
   }
 

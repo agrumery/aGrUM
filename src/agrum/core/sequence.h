@@ -65,7 +65,9 @@ namespace gum {
     
   public:
     typedef SequenceIterator<KEY> iterator;
+    typedef SequenceIterator<KEY> const_iterator;
 
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -623,7 +625,9 @@ namespace gum {
     
   public:
     typedef SequenceIterator<KEY*> iterator;
+    typedef SequenceIterator<KEY*> const_iterator;
 
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################

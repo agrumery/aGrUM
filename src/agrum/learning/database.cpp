@@ -261,7 +261,7 @@ namespace gum {
       database.__modalities_names[i].resize( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableIterator<std::string, unsigned int>
+      for ( HashTableConstIterator<std::string, unsigned int>
             iter = modals.begin(); iter != modals.end(); ++iter ) {
         database.__modalities_names[i][*iter] = iter.key();
       }

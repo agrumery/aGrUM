@@ -213,7 +213,7 @@ namespace gum {
     NodeId Mx = mps1[0];
 
     if ( mps1.size() <= mps2.size() ) {
-      for ( ListIterator<NodeId> iter = mps1.begin();
+      for ( ListConstIterator<NodeId> iter = mps1.begin();
             iter != mps1.end(); ++iter ) {
         if ( __T_mpd.clique( *iter ).contains( Y ) ) {
           Mx = *iter;
@@ -222,7 +222,7 @@ namespace gum {
       }
     }
     else {
-      for ( ListIterator<NodeId> iter = mps2.begin();
+      for ( ListConstIterator<NodeId> iter = mps2.begin();
             iter != mps2.end(); ++iter ) {
         if ( __T_mpd.clique( *iter ).contains( X ) ) {
           Mx = *iter;
@@ -532,7 +532,7 @@ namespace gum {
           nodes[*iter2] = true;
       }
 
-      for ( HashTableIterator<NodeId,bool> iter = nodes.begin();
+      for ( HashTableConstIterator<NodeId,bool> iter = nodes.begin();
             iter != nodes.end(); ++iter )
         if ( !*iter ) {
           std::cerr << "check nodes" << std::endl
@@ -564,7 +564,7 @@ namespace gum {
         }
       }
 
-      for ( HashTableIterator<Edge,bool> iter = edges.begin();
+      for ( HashTableConstIterator<Edge,bool> iter = edges.begin();
             iter != edges.end(); ++iter )
         if ( !*iter ) {
           std::cerr << "check edges" << std::endl
@@ -585,7 +585,7 @@ namespace gum {
           nodes[*iter2] = true;
       }
 
-      for ( HashTableIterator<NodeId,bool> iter = nodes.begin();
+      for ( HashTableConstIterator<NodeId,bool> iter = nodes.begin();
             iter != nodes.end(); ++iter )
         if ( !*iter ) {
           std::cerr << "check nodes" << std::endl
@@ -617,7 +617,7 @@ namespace gum {
         }
       }
       
-      for ( HashTableIterator<Edge,bool> iter = edges.begin();
+      for ( HashTableConstIterator<Edge,bool> iter = edges.begin();
             iter != edges.end(); ++iter )
         if ( !*iter ) {
           std::cerr << "check edges" << std::endl
@@ -642,12 +642,12 @@ namespace gum {
           chk[*iter2].insert( *iter, false );
       }
 
-      for ( HashTableIterator< NodeId,List<NodeId> > iter =  __mps_of_node.begin();
+      for ( HashTableConstIterator< NodeId,List<NodeId> > iter =  __mps_of_node.begin();
             iter !=  __mps_of_node.end(); ++iter ) {
         const List<NodeId>& liste = *iter;
         HashTable<NodeId,bool>& hash = chk[iter.key()];
 
-        for ( ListIterator<NodeId> iter2 = liste.begin();
+        for ( ListConstIterator<NodeId> iter2 = liste.begin();
               iter2 != liste.end(); ++iter2 ) {
           if ( !hash.exists( *iter2 ) )
             std::cerr << "check mps of nodes" << std::endl
@@ -657,11 +657,11 @@ namespace gum {
         }
       }
 
-      for ( HashTableIterator< NodeId,HashTable<NodeId,bool> > iter=chk.begin();
+      for ( HashTableConstIterator< NodeId,HashTable<NodeId,bool> > iter=chk.begin();
             iter != chk.end(); ++iter ) {
         const HashTable<NodeId,bool>& hash = *iter;
 
-        for ( HashTableIterator<NodeId,bool> iter2 = hash.begin();
+        for ( HashTableConstIterator<NodeId,bool> iter2 = hash.begin();
               iter2 != hash.end(); ++iter2 )
           if ( !*iter2 )
             std::cerr << "check mps of nodes2" << std::endl
@@ -701,7 +701,7 @@ namespace gum {
     std::vector<Edge> notAffectedneighbourCliques;
 
     // parse all the affected MPS and get the corresponding cliques
-    for ( HashTableIterator<NodeId,bool> iter_mps = __mps_affected.begin();
+    for ( HashTableConstIterator<NodeId,bool> iter_mps = __mps_affected.begin();
           iter_mps != __mps_affected.end(); ++iter_mps ) {
       if ( *iter_mps ) {
         // get the cliques contained in this MPS
@@ -714,7 +714,7 @@ namespace gum {
 
     // for each connected set of cliques involved in the triangulations
     // perform a new triangulation and update the max prime subgraph tree
-    for ( HashTableIterator<NodeId,bool> iter_clique = all_cliques_affected.begin();
+    for ( HashTableConstIterator<NodeId,bool> iter_clique = all_cliques_affected.begin();
           iter_clique != all_cliques_affected.end(); ++iter_clique ) {
       if ( *iter_clique ) {
         // set up the connected subgraph that need be retriangulated and the cliques
@@ -737,7 +737,7 @@ namespace gum {
               iter_node != tmp_graph.endNodes(); ++iter_node ) {
           List<NodeId>& mps = __mps_of_node[ *iter_node ];
 
-          for ( HashTableIterator<NodeId,bool> iter_mps = __mps_affected.begin();
+          for ( HashTableConstIterator<NodeId,bool> iter_mps = __mps_affected.begin();
                 iter_mps != __mps_affected.end(); ++iter_mps ) {
             if ( *iter_mps )
               mps.eraseByVal( iter_mps.key() );
@@ -838,13 +838,13 @@ namespace gum {
     }
 
     // remove the mps that were affected and update the cliques_of_mps table
-    for ( HashTableIterator<NodeId,bool> iter_clique = all_cliques_affected.begin();
+    for ( HashTableConstIterator<NodeId,bool> iter_clique = all_cliques_affected.begin();
           iter_clique != all_cliques_affected.end(); ++iter_clique ) {
       __mps_of_clique.erase( iter_clique.key() );
       __junction_tree.eraseNode( iter_clique.key() );
     }
 
-    for ( HashTableIterator<NodeId,bool> iter_MPS = __mps_affected.begin();
+    for ( HashTableConstIterator<NodeId,bool> iter_MPS = __mps_affected.begin();
           iter_MPS != __mps_affected.end(); ++iter_MPS ) {
       if ( *iter_MPS ) {
         __cliques_of_mps.erase( iter_MPS.key() );
@@ -873,7 +873,7 @@ namespace gum {
 
     HashTable<NodeId,bool> mark = T_mpd_cliques.map( false );
 
-    for ( HashTableIterator<NodeId,bool> iter_clique = mark.begin();
+    for ( HashTableConstIterator<NodeId,bool> iter_clique = mark.begin();
           iter_clique != mark.end(); ++iter_clique )
       if ( !mark[iter_clique.key()] )
         __computeMaxPrimeMergings( iter_clique.key(), iter_clique.key(),
@@ -893,7 +893,7 @@ namespace gum {
 
     // now we can create the max prime junction tree. First, create the new cliques
     // and create the corresponding cliques_of_mps entries
-    for ( HashTableIterator<NodeId,NodeId> iter_clique = T_mpd_cliques.begin();
+    for ( HashTableConstIterator<NodeId,NodeId> iter_clique = T_mpd_cliques.begin();
           iter_clique != T_mpd_cliques.end(); ++iter_clique ) {
       if ( iter_clique.key() == *iter_clique ) {
         __T_mpd.insertNode( *iter_clique, __junction_tree.clique( *iter_clique ) );
@@ -905,7 +905,7 @@ namespace gum {
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them and update the cliques_of_mps
-    for ( HashTableIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
+    for ( HashTableConstIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
           iter != T_mpd_cliques.end(); ++iter ) {
       if (( iter.key() != *iter ) && ( *iter > max_old_id ) ) {
         const NodeSet& new_clique = __junction_tree.clique( iter.key() );
@@ -921,7 +921,7 @@ namespace gum {
     }
 
     // update the mps_of_node and the mps_of_clique
-    for ( HashTableIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
+    for ( HashTableConstIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
           iter != T_mpd_cliques.end(); ++iter ) {
       __mps_of_clique.insert( iter.key(), *iter );
 
@@ -935,7 +935,7 @@ namespace gum {
     }
 
     // add the edges to the max prime subgraph tree
-    for ( HashTableIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
+    for ( HashTableConstIterator<NodeId,NodeId> iter = T_mpd_cliques.begin();
           iter != T_mpd_cliques.end(); ++iter ) {
       NodeId clique = *iter;
 

@@ -80,7 +80,7 @@ void
 ValueElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list )
 {
   NodeId varId;
-  for (ListIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter) {
+  for (ListConstIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter) {
     if (( *iter )->nbrDim() != 1 ) {
       GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
     }

@@ -51,6 +51,7 @@ namespace gum {
             class Node=BinTreeNode<Val> > class BinSearchTree {
   public:
     typedef BinSearchTreeIterator<Val,Cmp,Node> iterator;
+    typedef BinSearchTreeIterator<Val,Cmp,Node> const_iterator;
     
 
     // ############################################################################
@@ -98,27 +99,32 @@ namespace gum {
     // ============================================================================
     /// begin iterator
     // ============================================================================
-    iterator begin () const;
+    iterator begin ();
+    const_iterator begin () const;
 
     // ============================================================================
     /// rbegin iterator
     // ============================================================================
-    iterator rbegin () const;
+    iterator rbegin ();
+    const_iterator rbegin () const;
 
     // ============================================================================
     /// end iterator
     // ============================================================================
-    const iterator& end () const;
+    const iterator& end ();
+    const const_iterator& end () const;
 
     // ============================================================================
     /// rend iterator
     // ============================================================================
-    const iterator& rend () const;
+    const iterator& rend ();
+    const const_iterator& rend () const;
 
     // ============================================================================
     /// returns an iterator pointing to the root of the tree
     // ============================================================================
-    iterator root () const;
+    iterator root ();
+    const_iterator root () const;
 
     ///@}    
  

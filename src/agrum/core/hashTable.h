@@ -157,6 +157,9 @@ namespace gum {
     // creates (if needed) and returns the iterator __HashTableIterEnd
     static const HashTableIterator<int,int>* end4Statics ();
 
+    // creates (if needed) and returns the iterator __HashTableIterEnd
+    static const HashTableConstIterator<int,int>* constEnd4Statics ();
+
     // friends that have access to the iterator
     template<typename Key, typename Val> friend class HashTable;
   };
@@ -278,34 +281,6 @@ namespace gum {
     // ============================================================================
     bool empty() const ;
     
-  protected:
-    // ============================================================================
-    /* a function used to perform copies of HashTableLists. This code is
-     * shared by the copy constructor and the copy operator. The function throws
-     * a bad_alloc exception if it cannot perform the necessary allocations. In
-     * this case, no memory leak occurs and the list is set to the empty list. */
-    // ============================================================================
-    void _copy( const HashTableList<Key, Val> &from );
-    
-    // ============================================================================
-    // a method to get the bucket corresponding to a given key. This enables
-    // efficient removals of buckets
-    // ============================================================================
-    HashTableBucket<Key, Val>* _getBucket( const Key& key ) const ;
-    
-    // ============================================================================
-    /* function erase suppresses an element from a chained list. */
-    // ============================================================================
-    void _erase( const HashTableBucket<Key, Val>* ptr );
-
-    // ============================================================================
-    /** inserts a new element in the chained list. The element is inserted
-     * at the beginning of the list. When allocation cannot be performed, the
-     * function raises a bad_alloc exception. */
-    // ============================================================================
-    HashTableBucket<Key,Val>*
-    _insertAndGetBucket ( const Key& key, const Val& val );
-    
      
   private:
     // friends
@@ -329,6 +304,34 @@ namespace gum {
 
     // the number of elements in the chained list
     unsigned int __nb_elements;
+
+    // ============================================================================
+    /* a function used to perform copies of HashTableLists. This code is
+     * shared by the copy constructor and the copy operator. The function throws
+     * a bad_alloc exception if it cannot perform the necessary allocations. In
+     * this case, no memory leak occurs and the list is set to the empty list. */
+    // ============================================================================
+    void __copy( const HashTableList<Key, Val> &from );
+
+    // ============================================================================
+    /* function erase suppresses an element from a chained list. */
+    // ============================================================================
+    void __erase( const HashTableBucket<Key, Val>* ptr );
+
+    // ============================================================================
+    /** inserts a new element in the chained list. The element is inserted
+     * at the beginning of the list. When allocation cannot be performed, the
+     * function raises a bad_alloc exception. */
+    // ============================================================================
+    HashTableBucket<Key,Val>*
+    __insertAndGetBucket ( const Key& key, const Val& val );
+
+    // ============================================================================
+    // a method to get the bucket corresponding to a given key. This enables
+    // efficient removals of buckets
+    // ============================================================================
+    HashTableBucket<Key, Val>* __getBucket( const Key& key ) const ;
+    
   };
 
 
@@ -426,6 +429,7 @@ namespace gum {
   public:
     /// iterators for hash tables (to be used with HashTable<X,Y>::iterator)
     typedef HashTableIterator<Key, Val> iterator;
+    typedef HashTableConstIterator<Key, Val> const_iterator;
 
     
     // ############################################################################
@@ -491,12 +495,14 @@ namespace gum {
     // ============================================================================
     /// returns the iterator to the end of the hashtable
     // ============================================================================
-    const iterator& end() const ;
+    const const_iterator& end() const;
+    const iterator& end();
 
     // ============================================================================
     /// returns the iterator at the beginning of the hashtable
     // ============================================================================
-    iterator begin() const ;
+    const_iterator begin() const;
+    iterator begin();
 
     // ============================================================================
     /** @brief returns the end iterator for other classes' statics (read the
@@ -531,6 +537,7 @@ namespace gum {
      * than end(). In all the other cases, use simply the usual method end(). */
     // ============================================================================
     static const iterator& end4Statics ();
+    static const const_iterator& constEnd4Statics ();
     
     /// @}
 
@@ -739,6 +746,7 @@ namespace gum {
     /// removes a given element from the hash table
     // ============================================================================
     void erase( const iterator& iter );
+    void erase( const const_iterator& iter );
 
     // ============================================================================
     /// removes a given element from the hash table
@@ -849,57 +857,12 @@ namespace gum {
     /// @}
 
     
-  protected:
-    #ifndef DOXYGEN_SHOULD_SKIP_THIS
-    // ============================================================================
-    /** a function used to perform copies of HashTables. This code is
-     * shared by the copy constructor and the copy operator. The function ensures
-     * that when a memory allocation problem occurs:
-     * - no memory leak occurs
-     * - the hashtable returned is empty but in a coherent state
-     * - an exception is thrown
-     * The function assumes that both this and table have arrays 'nodes' of the
-     * same size. */
-    // ============================================================================
-    void _copy( const HashTable<Key, Val>& table );
-
-    // ============================================================================
-    /// a function used by all destructors (general and specialized)
-    // ============================================================================
-    void _destroy();
-
-    // ============================================================================
-    /// a function used by all default constructors (general and specialized)
-    // ============================================================================
-    void _create( Size size );
-
-    // ============================================================================
-    /// adds a new element (actually a copy of this element) in the hash table
-    /** If there already exists an element with the same key in the list and the
-     * uniqueness policy prevents multiple identical keys to belong to the same
-     * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
-     * is not set, the method runs in the worst case in constant time, else if
-     * the automatic resizing policy is set, it runs in constant time in average
-     * linear in the number of elements by slot.
-     * @return the bucket inserted in the hash table.
-     * @throw DuplicateElement is thrown when attempting to insert a pair
-     * (key,val) in a hash table containing already a pair with the same key and
-     * when the hash table's uniqueness policy is set.
-     * @throw bad_alloc exception is thrown when memory allocation problems occur.
-     * In this case, the new element is of course not added to the hash table.
-     * However, the latter is guaranteed to stay in a coherent state. */
-    // ============================================================================
-    HashTableBucket<Key,Val>*
-    _insertAndGetBucket ( const Key& key, const Val& val );
-
-    #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-
 
   private:
     // friends
     /// to optimize the access to data, iterators mut be friends
     friend class HashTableIterator<Key, Val>;
+    friend class HashTableConstIterator<Key, Val>;
 
     /// for friendly displaying the content of the hashtable
     friend std::ostream& operator<< <> ( std::ostream&,
@@ -930,19 +893,266 @@ namespace gum {
     /// shall we check for key uniqueness in the table?
     bool __key_uniqueness_policy;
 
+    /// indicates whether we know which __index begin() should have
+    mutable bool __know_begin_index;
+
+    /// the __index begin() should have
+    mutable Size __begin_index;
+
     /// the list of iterators pointing to the hash table
-    mutable iterator *__iterator_list;
+    mutable const_iterator *__iterator_list;
+
+    
+
+    #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     // ============================================================================
     /// erases a given bucket
     // ============================================================================
     void __erase ( HashTableBucket<Key, Val>* bucket, Size index );
 
+    // ============================================================================
+    /** a function used to perform copies of HashTables. This code is
+     * shared by the copy constructor and the copy operator. The function ensures
+     * that when a memory allocation problem occurs:
+     * - no memory leak occurs
+     * - the hashtable returned is empty but in a coherent state
+     * - an exception is thrown
+     * The function assumes that both this and table have arrays 'nodes' of the
+     * same size. */
+    // ============================================================================
+    void __copy( const HashTable<Key, Val>& table );
+
+    // ============================================================================
+    /// a function used by all default constructors (general and specialized)
+    // ============================================================================
+    void __create( Size size );
+
+    // ============================================================================
+    /// adds a new element (actually a copy of this element) in the hash table
+    /** If there already exists an element with the same key in the list and the
+     * uniqueness policy prevents multiple identical keys to belong to the same
+     * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
+     * is not set, the method runs in the worst case in constant time, else if
+     * the automatic resizing policy is set, it runs in constant time in average
+     * linear in the number of elements by slot.
+     * @return the bucket inserted in the hash table.
+     * @throw DuplicateElement is thrown when attempting to insert a pair
+     * (key,val) in a hash table containing already a pair with the same key and
+     * when the hash table's uniqueness policy is set.
+     * @throw bad_alloc exception is thrown when memory allocation problems occur.
+     * In this case, the new element is of course not added to the hash table.
+     * However, the latter is guaranteed to stay in a coherent state. */
+    // ============================================================================
+    HashTableBucket<Key,Val>*
+    __insertAndGetBucket ( const Key& key, const Val& val );
+    
+   #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
   };
 
 
 
   
+
+  
+  /* =========================================================================== */
+  /* ===                      HASH TABLES CONST ITERATORS                    === */
+  /* =========================================================================== */
+  /** @class HashTableConstIterator
+   * @brief Const Iterators for hashtables
+   *
+   * HashTableConstIterator provide a safe way to parse HashTable. They are safe
+   * because they are kept informed by the hashtable they belong to of the
+   * elements deleted by the user. Hence, even if the user removes an element
+   * pointed to by a HashTableConstIterator, using the latter to access this
+   * element will never crash the application. Instead it will properly throw a
+   * UndefinedIteratorValue exception.
+   *
+   * Developers may consider using HashTable<x,y>::const_iterator instead of
+   * HashTableConstIterator<x,y>.
+   * @par Usage example:
+   * @code
+   * // creation of a hash table with 10 elements
+   * HashTable<int,string> table;
+   * for (int i = 0; i< 10; ++i)
+   *   table.insert (i,"xxx" + string (i,'x'));
+   *
+   * // parse the hash table
+   * for (HashTable<int,string>::const_iterator iter = table.begin ();
+   *        iter != table.end (); ++iter) {
+   *   // display the values
+   *   cerr << "at " << iter.key() << " value = " << *iter << endl;
+   *   // make the string pointed to by the iterator use method append
+   *   iter->append ("yyy");
+   * }
+   *
+   * // check whether two iterators point toward the same element
+   * HashTable<int,string>::const_iterator iter1 = table1.begin();
+   * HashTable<int,string>::const_iterator iter2 = table1.end();
+   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
+   *
+   * // make iter1 point toward nothing
+   * iter1.clear ();
+   * @endcode
+   */
+  /* =========================================================================== */
+  template <typename Key, typename Val> class HashTableConstIterator {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    
+    // ============================================================================
+    /// basic constructor: creates an iterator pointing to nothing
+    // ============================================================================
+    HashTableConstIterator() ;
+
+    // ============================================================================
+    /// copy constructor
+    // ============================================================================
+    HashTableConstIterator( const HashTableConstIterator<Key, Val>& from ) ;
+
+    // ============================================================================
+    /// constructor for an iterator pointing to the nth element of a hashtable
+    /** The method runs in time linear to ind_elt.
+     * @param tab the hash table to which the so-called element belongs
+     * @param ind_elt the position of the element in the hash table (0 means the
+     * first element).
+     * @throw UndefinedIteratorValue exception is thrown if the element cannot
+     * be found */
+    // ============================================================================
+    HashTableConstIterator( const HashTable<Key, Val>& tab, Size ind_elt );
+
+    // ============================================================================
+    /// destructor
+    // ============================================================================
+    ~HashTableConstIterator() ;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    
+    // ============================================================================
+    /// returns the key corresponding to the value pointed to by the iterator
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid hash table element
+     * @throw UndefinedIteratorValue */
+    // ============================================================================
+    const Key& key() const;
+    
+    // ============================================================================
+    /** @brief makes the iterator point toward nothing (in particular, it is not
+     * related anymore to its current hash table)
+     *
+     * It is mainly used by the hashtable when the latter is deleted while the
+     * iterator is still alive. */
+    // ============================================================================
+    void clear() ;
+
+    /// @}
+
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// copy operator
+    // ============================================================================
+    HashTableConstIterator<Key,Val>& operator=
+    ( const HashTableConstIterator<Key,Val>& from ) ;
+
+    // ============================================================================
+    /// makes the iterator point to the next element in the hash table
+    /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse the
+     * whole hash table as long as no element is added to or deleted from the
+     * hash table while being in the loop. Deleting elements during the
+     * loop is guaranteed to never produce a segmentation fault. */
+    // ============================================================================
+    HashTableConstIterator<Key, Val>& operator++() ;
+
+    // ============================================================================
+    /// checks whether two iterators are pointing toward different elements
+    // ============================================================================
+    bool operator!= ( const HashTableConstIterator<Key, Val> &from ) const ;
+
+    // ============================================================================
+    /// checks whether two iterators are pointing toward the same element
+    // ============================================================================
+    bool operator== ( const HashTableConstIterator<Key, Val> &from ) const ;
+
+    // ============================================================================
+    /// returns the value pointed to by the iterator
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid hash table element
+     * @throw UndefinedIteratorValue */
+    // ============================================================================
+    const Val& operator*() const;
+    
+    // ============================================================================
+    /// dereferences the value pointed to by the iterator
+    /** This operator allows developers to write code like @c iterator->member()
+     * to run the member() method of the Val pointed to by the iterator
+     * @throw UndefinedIteratorValue */
+    // ============================================================================
+    const Val* operator-> () const;
+    
+    /// @}
+
+
+  private:
+    /** class HashTable must be a friend because it stores iterator end
+     * and those can be properly initialized only when the hashtable has been
+     * fully allocated. Thus, proper initialization can only take place within
+     * the constructor's code of the hashtable. */
+    friend class HashTable<Key, Val>;
+    
+    /// the hash table the iterator is pointing to
+    const HashTable<Key, Val> *__table;
+
+    /** @brief the index of the chained list pointed by the iterator in the
+     * array of nodes of the hash table */
+    Size __index;
+
+    /// the bucket in the chained list pointed to by the iterator
+    HashTableBucket<Key, Val> *__bucket;
+
+    /** @brief the bucket we should start from when we decide to do a ++. Usually
+     * it should be equal to bucket. However, if the user has deleted the object
+     * pointed to by bucket, this will point to another bucket. When it is equal to
+     * 0, it means that the bucket reached after a ++ belongs to another slot of
+     * the hash table's 'node' vector. */
+    HashTableBucket<Key, Val> *__next_bucket;
+
+    /// next iterator attached to the hashtable
+    HashTableConstIterator<Key, Val> *__next;
+
+    /// preceding iterator of the hashtable registered list of iterators
+    HashTableConstIterator<Key, Val> *__prev;
+
+    // ============================================================================
+    /// returns the current iterator's bucket
+    // ============================================================================
+    HashTableBucket<Key, Val> *__getBucket() const ;
+
+    // ============================================================================
+    /// returns the index in the hashtable's node vector pointed to by the iterator
+    // ============================================================================
+    Size __getIndex() const ;    
+
+  };
+
+
+
+
   /* =========================================================================== */
   /* ===                         HASH TABLES ITERATORS                       === */
   /* =========================================================================== */
@@ -984,7 +1194,8 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  template <typename Key, typename Val> class HashTableIterator {
+  template <typename Key, typename Val> class HashTableIterator :
+    public HashTableConstIterator<Key,Val> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -1025,22 +1236,8 @@ namespace gum {
     // ############################################################################
     /// @{
     
-    // ============================================================================
-    /// returns the key corresponding to the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
-    // ============================================================================
-    const Key& key() const;
-    
-    // ============================================================================
-    /** @brief makes the iterator point toward nothing (in particular, it is not
-     * related anymore to its current hash table)
-     *
-     * It is mainly used by the hashtable when the latter is deleted while the
-     * iterator is still alive. */
-    // ============================================================================
-    void clear() ;
+    using HashTableConstIterator<Key,Val>::key;
+    using HashTableConstIterator<Key,Val>::clear;
 
     /// @}
 
@@ -1065,7 +1262,7 @@ namespace gum {
      * loop is guaranteed to never produce a segmentation fault. */
     // ============================================================================
     HashTableIterator<Key, Val>& operator++() ;
-
+    
     // ============================================================================
     /// checks whether two iterators are pointing toward different elements
     // ============================================================================
@@ -1091,53 +1288,16 @@ namespace gum {
      * to run the member() method of the Val pointed to by the iterator
      * @throw UndefinedIteratorValue */
     // ============================================================================
-    Val* operator-> () const;
+    Val* operator-> ();
+    const Val* operator-> () const;
     
     /// @}
-
-
-  private:
-    /** class HashTable must be a friend because it stores iterator end
-     * and those can be properly initialized only when the hashtable has been
-     * fully allocated. Thus, proper initialization can only take place within
-     * the constructor's code of the hashtable. */
-    friend class HashTable<Key, Val>;
     
-    /// the hash table the iterator is pointing to
-    const HashTable<Key, Val> *__table;
-
-    /** @brief the index of the chained list pointed by the iterator in the
-     * array of nodes of the hash table */
-    Size __index;
-
-    /// the bucket in the chained list pointed to by the iterator
-    HashTableBucket<Key, Val> *__bucket;
-
-    /** @brief the bucket we should start from when we decide to do a ++. Usually
-     * it should be equal to bucket. However, if the user has deleted the object
-     * pointed to by bucket, this will point to another bucket. When it is equal to
-     * 0, it means that the bucket reached after a ++ belongs to another slot of
-     * the hash table's 'node' vector. */
-    HashTableBucket<Key, Val> *__next_bucket;
-
-    /// next iterator attached to the hashtable
-    HashTableIterator<Key, Val> *__next;
-
-    /// preceding iterator of the hashtable registered list of iterators
-    HashTableIterator<Key, Val> *__prev;
-
-    // ============================================================================
-    /// returns the current iterator's bucket
-    // ============================================================================
-    HashTableBucket<Key, Val> *__getBucket() const ;
-
-    // ============================================================================
-    /// returns the index in the hashtable's node vector pointed to by the iterator
-    // ============================================================================
-    Size __getIndex() const ;    
-
   };
 
+
+
+  
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

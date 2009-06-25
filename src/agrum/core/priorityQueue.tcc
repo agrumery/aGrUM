@@ -59,8 +59,8 @@ namespace gum {
     GUM_CONS_CPY( PriorityQueue );
 
     // fill the heap structure
-    HashTableIterator< Val,std::vector<Size> > iter;
-    typename std::vector<Size>::iterator iter_index;
+    HashTableConstIterator< Val,std::vector<Size> > iter;
+    typename std::vector<Size>::const_iterator iter_index;
 
     try {
       for ( iter = __indices.begin(); iter != __indices.end(); ++iter ) {
@@ -74,13 +74,14 @@ namespace gum {
       }
     }    
     catch ( ... ) {  // if there was a problem, deallocate everything
-      for ( HashTableIterator< Val,std::vector<Size> > iter2 = __indices.begin();
-            iter2!=iter; ++iter2 )
-        for ( typename std::vector<Size>::iterator iter_index2 = iter2->begin();
+      for ( HashTableConstIterator< Val,std::vector<Size> >
+              iter2 = __indices.begin(); iter2!=iter; ++iter2 )
+        for ( typename std::vector<Size>::const_iterator
+                iter_index2 = iter2->begin();
               iter_index2 != iter2->end(); ++iter_index2 )
           delete __heap[*iter_index2];
 
-      for ( typename std::vector<Size>::iterator iter_index2 = iter->begin();
+      for ( typename std::vector<Size>::const_iterator iter_index2 = iter->begin();
             iter_index2 != iter_index; ++iter_index2 )
         delete __heap[*iter_index2];
 
@@ -129,8 +130,8 @@ namespace gum {
       }
 
       // fill properly the heap structure
-      HashTableIterator< Val,std::vector<Size> > iter;
-      typename std::vector<Size>::iterator iter_index;
+      HashTableConstIterator< Val,std::vector<Size> > iter;
+      typename std::vector<Size>::const_iterator iter_index;
 
       try {
         for ( iter = __indices.begin(); iter != __indices.end(); ++iter )
@@ -150,8 +151,8 @@ namespace gum {
         __nb_elements = from.__nb_elements;
       }
       catch ( ... ) { // in case something went wrong, clear the queue
-        HashTableIterator< Val,std::vector<Size> > iter2;
-        typename std::vector<Size>::iterator iter_index2;
+        HashTableConstIterator< Val,std::vector<Size> > iter2;
+        typename std::vector<Size>::const_iterator iter_index2;
 
         for ( iter2 = __indices.begin(); iter2 != iter; ++iter2 ) {
           for ( iter_index2=iter2->begin(); iter_index2!=iter2->end();

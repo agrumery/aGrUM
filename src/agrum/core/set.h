@@ -53,6 +53,9 @@ namespace gum {
     // creates (if needed) and returns the iterator __SetIterEnd
     static const SetIterator<int>* end4Statics ();
 
+    // creates (if needed) and returns the iterator __SetIterEnd
+    static const SetIterator<int>* constEnd4Statics ();
+
     // friends that have access to the iterator
     template<typename KEY> friend class Set;
   };
@@ -100,7 +103,9 @@ namespace gum {
   class Set : private SetIteratorStaticEnd {
   public:
     typedef SetIterator<KEY> iterator;
+    typedef SetIterator<KEY> const_iterator;
 
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -207,10 +212,12 @@ namespace gum {
     /// @{
 
     /// the usual begin iterator to parse the set
-    iterator begin() const;
+    iterator begin();
+    const_iterator begin() const;
 
     /// the usual end iterator to parse the set
-    const iterator& end() const;
+    const iterator& end();
+    const const_iterator& end() const;
 
     /** @brief returns the end iterator for other classes' statics (read the
      * detailed description of this method)
@@ -242,6 +249,7 @@ namespace gum {
      * So, to summarize: when initializing static members, use end4Statics() rather
      * than end(). In all the other cases, use simply the usual method end(). */
     static const iterator& end4Statics ();
+    static const const_iterator& constEnd4Statics ();
 
     /// @}
     
@@ -327,6 +335,7 @@ namespace gum {
 
 
   
+
   /* =========================================================================== */
   /* ===                             SET ITERATORS                           === */
   /* =========================================================================== */
@@ -426,9 +435,15 @@ namespace gum {
     friend class Set<KEY>;
 
     /// the underlying iterator for the set's hashtable containing the data 
-    HashTableIterator<KEY,bool> __ht_iter;
+    HashTableConstIterator<KEY,bool> __ht_iter;
 
   };
+
+  
+
+
+
+
 
   
   /// a << operator for HashTableList

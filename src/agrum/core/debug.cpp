@@ -142,7 +142,7 @@ namespace gum {
       // list of created objects
       std::vector<std::string> res;
 
-      for ( HashTable<std::string,int>::iterator xx = __creation().begin(); xx != __creation().end();++xx ) {
+      for ( HashTable<std::string,int>::const_iterator xx = __creation().begin(); xx != __creation().end();++xx ) {
         std::stringstream stream;
         int zeCreatedObjs=*xx;
         int zeDeletedObjts=-1;
@@ -166,7 +166,7 @@ namespace gum {
       }
 
       // list of deleted objects, but not created (?)
-      for ( HashTable<std::string,int>::iterator xx = __deletion().begin(); xx != __deletion().end();++xx ) {
+      for ( HashTable<std::string,int>::const_iterator xx = __deletion().begin(); xx != __deletion().end();++xx ) {
         try {
           __creation()[xx.key()];
         } catch ( NotFound& ) {
@@ -179,7 +179,7 @@ namespace gum {
 
       sort( res.begin(),res.end());
 
-      for ( std::vector<std::string>::iterator iter=res.begin();
+      for ( std::vector<std::string>::const_iterator iter=res.begin();
             iter!=res.end();
             ++iter ) {
         std::cerr<<*iter<<std::endl;
@@ -212,6 +212,7 @@ namespace gum {
 #ifndef NDEBUG
       __dec_creation( "Set"        ,"__empty_arc_set",0,"static variable correction",0 );
       __dec_creation( "HashTable"  ,"__empty_arc_set",0,"static variable correction",0 );
+      __dec_creation( "HashTableIterator"  ,"__hash_static_end",0,"static variable correction",0 );
       __dec_creation( "Set"        ,"__empty_edge_set",0,"static variable correction",0 );
       __dec_creation( "HashTable"  ,"__empty_edge_set",0,"static variable correction",0 );
       __dec_creation( "SetIterator","__empty_edge_set",0,"static variable correction",0 );

@@ -112,6 +112,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> class ListBucket;
   template <typename Val> class ListIterator;
+  template <typename Val> class ListConstIterator;
   template <typename Val> class ListBase;
   template <typename Val> class List;
 
@@ -135,7 +136,7 @@ namespace gum {
   // iterators for all Lists (whatever their type). This global variable
   // avoids creating the same iterators whithin every List instance (this would
   // be quite inefficient as end and rend are precisely identical for all lists)
-  extern const ListIterator<Debug> __list_end;
+  extern const ListConstIterator<Debug> __list_end;
 
   #define GUM_LIST_ITERATOR_BEGIN  1
   #define GUM_LIST_ITERATOR_RBEGIN 2
@@ -203,6 +204,7 @@ namespace gum {
     template <typename T> friend class List;
     template <typename T> friend class ListBase;
     template <typename T> friend class ListIterator;
+    template <typename T> friend class ListConstIterator;
 
     // chaining toward the adjacent elements
     ListBucket<Val> *__prev;
@@ -515,6 +517,7 @@ namespace gum {
     /// true Lists should have access to the members of ListBase
     template <typename T> friend class List;
     template <typename T> friend class ListIterator;
+    template <typename T> friend class ListConstIterator;
 
     /// for friendly displaying the content of a list
     friend std::ostream& operator<< <>
@@ -657,6 +660,7 @@ namespace gum {
   public:
     /// developers should always use the List<X>::iterator terminology
     typedef ListIterator<Val> iterator;
+    typedef ListConstIterator<Val> const_iterator;
     
     // ############################################################################
     /// @name Constructors / Destructors
@@ -681,7 +685,7 @@ namespace gum {
      * equal to 0, a new iterator's list is created for the current List.
      * This constructor runs in constant time. */
     // ============================================================================
-    List( const RefPtr< ListBase<ListIterator<Val>*> >& iter_list );
+    List( const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
 
     // ============================================================================
     /// Copy constructor sharing its iterator's list with that of \c from
@@ -708,7 +712,7 @@ namespace gum {
      * the current List. */
     // ============================================================================
     List( const List<Val> &from,
-          const RefPtr< ListBase<ListIterator<Val>*> >& iter_list );
+          const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
 
     // ============================================================================
     /// Destructor
@@ -732,22 +736,26 @@ namespace gum {
     // ============================================================================
     /// returns an iterator pointing to the end of the List
     // ============================================================================
-    const iterator& end() const ;
+    const const_iterator& end() const ;
+    const iterator& end();
 
     // ============================================================================
     /// returns an iterator pointing just before the beginning of the List
     // ============================================================================
-    const iterator& rend() const ;
+    const const_iterator& rend() const ;
+    const iterator& rend();
 
     // ============================================================================
     /// returns an iterator pointing to the beginning of the List
     // ============================================================================
-    iterator begin() const;
+    const_iterator begin() const;
+    iterator begin();
 
     // ============================================================================
     /// returns an iterator pointing to the last element of the List
     // ============================================================================
-    iterator rbegin() const;
+    const_iterator rbegin() const;
+    iterator rbegin();
 
     /// @}
 
@@ -828,6 +836,7 @@ namespace gum {
      * exception. It runs in linear time in the size of the list. */
     // ============================================================================
     void erase( const iterator& iter );
+    void erase( const const_iterator& iter );
 
     // ============================================================================
     /// erases the first element encountered with a given value
@@ -873,14 +882,14 @@ namespace gum {
      * previously attached to the List will point to end/rend) */
     // ============================================================================
     void
-    setIteratorList ( const RefPtr< ListBase<ListIterator<Val>*> >& new_list );
+    setIteratorList ( const RefPtr< ListBase<ListConstIterator<Val>*> >& list );
 
     // ============================================================================
     /// returns the list containing the iterators pointing toward the List
     /** note that this list may also contain iterators pointing toward other Lists
      * as the iterator's lists may be shared by several Lists. */
     // ============================================================================
-    const RefPtr< ListBase<ListIterator<Val>*> >& getIteratorList() const ;
+    const RefPtr< ListBase<ListConstIterator<Val>*> >& getIteratorList() const ;
 
     // ============================================================================
     /// returns a boolean indicating whether the chained list is empty
@@ -983,6 +992,7 @@ namespace gum {
   private:
     /// ListIterator should be a friend to optimize access to elements
     friend class ListIterator<Val>;
+    friend class ListConstIterator<Val>;
     
     /// for friendly displaying the content of a list
     friend std::ostream& operator<< <>
@@ -994,13 +1004,209 @@ namespace gum {
      * This feature is particularly useful for complex classes which aggregate
      * several distinct lists as it speeds up significantly
      * iterating over all the elements of these complex classes. */
-    RefPtr< ListBase<ListIterator<Val>*> > __iterator_list;
+    RefPtr< ListBase<ListConstIterator<Val>*> > __iterator_list;
   };
 
 
 
 
   
+  /* =========================================================================== */
+  /* ===                            LIST ITERATORS                           === */
+  /* =========================================================================== */
+  /** @class ListConstIterator
+   * @brief iterators for Lists.
+   *
+   * Class ListConstIterator implements iterators for List. However, developers
+   * may consider using List<x>::iterator instead of ListConstIterator<x>. These
+   * iterators ensure that whenever they point to an element that is being deleted
+   * from memory, their accessing this element will never produce a segmentation
+   * fault but rather throw an exception. Similarly, incrementing or decrementing
+   * an iterator pointing to a deleted element is guaranteed to make the iterator
+   * point on the next (or preceding) element that has not been deleted. This
+   * enables safely writing code like:
+   * \code
+   * for (iter=mylist.begin(); iter != mylist.end(); ++iter)
+   *   delete *iter;
+   * \endcode
+   *
+   * @par Usage example:
+   * @code
+   * // create a list of strings
+   * List<string> list;
+   * list.pushBack ("toto"); list.pushBack ("titi");
+   *
+   * // parse all the elements of a list
+   * for (List<string>::iterator iter = list.begin(); iter != list.end(); ++iter)
+   *   cerr << *iter << endl;
+   * for (List<string>::iterator iter = list.rbegin(); iter != list.rend(); --iter)
+   *   cerr << *iter << endl;
+   *
+   * // use member size() of the strings
+   * for (List<string>::iterator iter = list.begin(); iter != list.end(); ++iter)
+   *   cerr << iter->size() << endl;
+   * @endcode
+   */
+  /* =========================================================================== */
+  template <typename Val> class ListConstIterator {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    
+    // ============================================================================
+    /// basic constructor. returns an iterator pointing toward nothing
+    // ============================================================================
+    ListConstIterator() ;
+
+    // ============================================================================
+    /// copy constructor
+    // ============================================================================
+    ListConstIterator( const ListConstIterator<Val>& from );
+
+    // ============================================================================
+    /// Constructor for an iterator pointing to the \e ind_eltth element of a List
+    // ============================================================================
+    ListConstIterator( const List<Val>& theList, unsigned int ind_elt );
+
+    // ============================================================================
+    /// Destructor
+    // ============================================================================
+    virtual ~ListConstIterator() ;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    
+    // ============================================================================
+    /// Makes the iterator point toward nothing
+    /** A method for detaching the iterator from the List it is attached to.
+     * It is mainly used by the List when the latter is deleted while the
+     * iterator is still alive. After being detached, the iterator does not point
+     * to any element, i.e., trying to access its content will raise an exception.
+     */
+    // ============================================================================
+    void clear() ;
+
+    // ============================================================================
+    /// positions the iterator to the end of the list
+    // ============================================================================
+    void setToEnd() ;
+
+    // ============================================================================
+    /** @brief returns a bool indicating whether the iterator points to the end
+     * of the list */
+    // ============================================================================
+    bool isEnd() const ;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    
+    // ============================================================================
+    /// Copy operator
+    /** The current iterator now points to the same element as iterator \e from. */
+    // ============================================================================
+    ListConstIterator<Val>& operator= ( const ListConstIterator<Val>& from );
+
+    // ============================================================================
+    /// makes the iterator point to the next element in the List
+    /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse
+     * the whole List as long as no element is added to or deleted from the List
+     * while being in the loop. Deleting elements during the loop is guaranteed
+     * to never produce a segmentation fault. Runs in constant time. */
+    // ============================================================================
+    ListConstIterator<Val>& operator++() ;
+
+    // ============================================================================
+    /// makes the iterator point to the preceding element in the List
+    /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
+     * parse the whole List as long as no element is added to or deleted from
+     * the List while being in the loop. Deleting elements during the loop is
+     * guaranteed to never produce a segmentation fault. Runs in constant time. */
+    // ============================================================================
+    ListConstIterator<Val>& operator--() ;
+
+    // ============================================================================
+    /// checks whether two iterators point toward different elements
+    /** @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend(). */
+    // ============================================================================
+    bool operator!= ( const ListConstIterator<Val> &from ) const ;
+
+    // ============================================================================
+    /// checks whether two iterators point toward the same elements.
+    /** @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend(). */
+    // ============================================================================
+    bool operator== ( const ListConstIterator<Val> &from ) const ;
+
+    // ============================================================================
+    /// gives access to the content of the iterator
+    /**
+     * @throw UndefinedIteratorValue
+     */
+    // ============================================================================
+    const Val& operator*() const;
+
+    // ============================================================================
+    /// dereferences the value pointed to by the iterator
+    /**
+     * @throw UndefinedIteratorValue
+     */
+    // ============================================================================
+    const Val* operator->() const;
+
+    /// @}
+
+
+  private:
+    /** class List must be a friend because it uses the getBucket method
+     * to speed up some processes. */
+    friend class List<Val>;
+    
+    /// the list the iterator is pointing to
+    const List<Val> *__list;
+
+    /// the bucket in the chained list pointed to by the iterator
+    ListBucket<Val> *__bucket;
+
+    /** \brief the bucket we should start from when we are pointing on a deleted
+     * bucket and we decide to do a ++. */
+    ListBucket<Val> *__next_current_bucket;
+
+    /** \brief the bucket we should start from when we are pointing on a deleted
+     * bucket and we decide to do a --. */
+    ListBucket<Val> *__prev_current_bucket;
+
+    /// indicates whether the bucket the iterator points to has been deleted
+    bool __null_pointing;
+
+    /// the bucket which contains this iterator in the list of iterators
+    ListBucket<ListConstIterator<Val>*> *__container;
+
+    // ============================================================================
+    /// returns the bucket the iterator is pointing to.
+    // ============================================================================
+    ListBucket<Val>* __getBucket() const ;
+  };
+
+
+
+
+
+
+
+
   /* =========================================================================== */
   /* ===                            LIST ITERATORS                           === */
   /* =========================================================================== */
@@ -1038,7 +1244,7 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  template <typename Val> class ListIterator {
+  template <typename Val> class ListIterator : public ListConstIterator<Val> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -1063,7 +1269,7 @@ namespace gum {
     // ============================================================================
     /// Destructor
     // ============================================================================
-    ~ListIterator() ;
+    virtual ~ListIterator() ;
 
     /// @}
 
@@ -1155,48 +1361,18 @@ namespace gum {
      * @throw UndefinedIteratorValue
      */
     // ============================================================================
-    Val* operator->() const;
+    Val* operator->();
+    const Val* operator->() const;
 
     /// @}
 
-
-  private:
-    /** class List must be a friend because it uses the getBucket method
-     * to speed up some processes. */
-    friend class List<Val>;
-    
-    /// the list the iterator is pointing to
-    const List<Val> *__list;
-
-    /// the bucket in the chained list pointed to by the iterator
-    ListBucket<Val> *__bucket;
-
-    /** \brief the bucket we should start from when we are pointing on a deleted
-     * bucket and we decide to do a ++. */
-    ListBucket<Val> *__next_current_bucket;
-
-    /** \brief the bucket we should start from when we are pointing on a deleted
-     * bucket and we decide to do a --. */
-    ListBucket<Val> *__prev_current_bucket;
-
-    /// indicates whether the bucket the iterator points to has been deleted
-    bool __null_pointing;
-
-    /// the bucket which contains this iterator in the list of iterators
-    ListBucket<ListIterator<Val>*> *__container;
-
-    // ============================================================================
-    /// returns the bucket the iterator is pointing to.
-    // ============================================================================
-    ListBucket<Val>* __getBucket() const ;
   };
-
   
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend
-  template <> ListIterator<Debug>::ListIterator() ;
-  template <> ListIterator<Debug>::~ListIterator() ;
+  template <> ListConstIterator<Debug>::ListConstIterator() ;
+  template <> ListConstIterator<Debug>::~ListConstIterator() ;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 

@@ -150,7 +150,7 @@ namespace gum {
     
   private:
     /// the hashTable iterator that actually does all the job
-    typename HashTable<T1,T2*>::iterator __iter;
+    typename HashTable<T1,T2*>::const_iterator __iter;
 
   };
 
@@ -175,7 +175,9 @@ namespace gum {
   class Bijection {
   public:
     typedef BijectionIterator<T1,T2> iterator;
+    typedef BijectionIterator<T1,T2> const_iterator;
 
+    
     // ############################################################################
     /// @name Constructors/destructors
     // ############################################################################
@@ -522,7 +524,7 @@ namespace gum {
     
   private:
     /// the hashTable iterator that actually does all the job
-    typename HashTable<T1*,T2*>::iterator __iter;
+    typename HashTable<T1*,T2*>::const_iterator __iter;
 
   };
 
@@ -567,6 +569,7 @@ namespace gum {
   class Bijection<T1*,T2*> {
   public:
     typedef BijectionIterator<T1*,T2*> iterator;
+    typedef BijectionIterator<T1*,T2*> const_iterator;
 
     // ############################################################################
     /// @name Constructors/destructors

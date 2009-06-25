@@ -122,7 +122,7 @@ namespace gum {
       }
     }
     // Now we have cliques, we need to add separator
-    for(HashTable<NodeId, NodeId>::iterator iter = cliqueToLink.begin();
+    for(HashTable<NodeId, NodeId>::const_iterator iter = cliqueToLink.begin();
 	iter != cliqueToLink.end(); ++iter) {
       __eliminationTree->insertEdge(iter.key(),
 				    (*__createdCliqueTab)[*iter]);

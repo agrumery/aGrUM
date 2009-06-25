@@ -44,6 +44,12 @@ namespace gum {
     return __SetIterEnd; 
   }
 
+  
+  // creates (if needed) and returns the iterator __SetIterEnd
+  const SetIterator<int>* SetIteratorStaticEnd::constEnd4Statics () {
+    return end4Statics ();
+  }
+
 
   // create the end iterator for all Sets
   const SetIterator<int>* SetIteratorStaticEnd::__SetIterEnd =

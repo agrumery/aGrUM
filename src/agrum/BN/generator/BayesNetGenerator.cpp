@@ -90,7 +90,7 @@ namespace gum {
     }
 
     // And fill the CPTs
-    for ( HashTable<Size, NodeId>::iterator iter = map.begin();
+    for ( HashTable<Size, NodeId>::const_iterator iter = map.begin();
           iter != map.end();
           ++iter ) {
       __cptGenerator->generateCPT( bayesNet->cpt( *iter ).pos( bayesNet->variable( *iter ) ), bayesNet->cpt( *iter ) );
@@ -132,7 +132,7 @@ namespace gum {
     }
 
     // And fill the CPTs
-    for ( HashTable<Size, NodeId>::iterator iter = map.begin();
+    for ( HashTable<Size, NodeId>::const_iterator iter = map.begin();
           iter != map.end();
           ++iter ) {
       __cptGenerator->generateCPT( bayesNet->cpt( *iter ).pos

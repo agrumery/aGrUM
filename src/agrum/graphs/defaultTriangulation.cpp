@@ -317,7 +317,7 @@ namespace gum {
         removable_node = simplicial.bestQuasiSimplicialNode();
       else {
         // removable_node = heuristic.getNode ();
-        Property< float >::onNodes::iterator iter_heuristic = log_weights.begin();
+        Property< float >::onNodes::const_iterator iter_heuristic = log_weights.begin();
         float min_weight = *iter_heuristic;
         removable_node = iter_heuristic.key();
 
@@ -758,7 +758,7 @@ namespace gum {
     }
 
     // now we can create the max prime junction tree. First, create the cliques
-    for ( Property< NodeId >::onNodes::iterator iter_clique = T_mpd_cliques.begin();
+    for ( Property< NodeId >::onNodes::const_iterator iter_clique = T_mpd_cliques.begin();
           iter_clique != T_mpd_cliques.end(); ++iter_clique ) {
       if ( iter_clique.key() == *iter_clique ) {
         __max_prime_junction_tree.setClique
@@ -768,7 +768,7 @@ namespace gum {
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them
-    for ( Property< NodeId >::onNodes::iterator  iter = T_mpd_cliques.begin();
+    for ( Property< NodeId >::onNodes::const_iterator  iter = T_mpd_cliques.begin();
           iter != T_mpd_cliques.end(); ++iter ) {
       if ( iter.key() != *iter ) {
         const NodeSet& new_clique = __junction_tree.clique( iter.key() );
@@ -797,7 +797,7 @@ namespace gum {
 
     // compute for each node which clique of the max prime junction tree was created
     // by the elmination of the node
-    for ( Property< NodeId >::onNodes::iterator iter_junction =
+    for ( Property< NodeId >::onNodes::const_iterator iter_junction =
             __node_2_junction_clique.begin();
           iter_junction != __node_2_junction_clique.end(); ++iter_junction )
       __node_2_max_prime_clique.insert( iter_junction.key(),

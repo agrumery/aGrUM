@@ -132,6 +132,13 @@ namespace gum {
              (SetIteratorStaticEnd::end4Statics ())); 
   }
 
+  // returns the end iterator for other classes' statics
+  template <typename KEY>
+  const SetIterator<KEY>& Set<KEY>::constEnd4Statics() {
+    return *(reinterpret_cast<const SetIterator<KEY>*>
+             (SetIteratorStaticEnd::constEnd4Statics ())); 
+  }
+
   /// default constructor
   template<typename KEY>
   Set<KEY>::Set( Size capacity ,  bool resize_policy ):
@@ -179,14 +186,29 @@ namespace gum {
 
   /// the usual begin iterator to parse the set
   template<typename KEY> INLINE
-  SetIterator<KEY> Set<KEY>::begin() const {
+  typename Set<KEY>::const_iterator Set<KEY>::begin() const {
     return SetIterator<KEY>( *this );
   }
   
   
+  /// the usual begin iterator to parse the set
+  template<typename KEY> INLINE
+  SetIterator<KEY> Set<KEY>::begin() {
+    return SetIterator<KEY>( *this );
+  }
+
+  
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
-  const SetIterator<KEY>& Set<KEY>::end() const {
+  const typename Set<KEY>::const_iterator& Set<KEY>::end() const {
+    return *(reinterpret_cast<const SetIterator<KEY>*>
+             (SetIteratorStaticEnd::__SetIterEnd)); 
+  }
+
+  
+  /// the usual end iterator to parse the set
+  template<typename KEY> INLINE
+  const SetIterator<KEY>& Set<KEY>::end() {
     return *(reinterpret_cast<const SetIterator<KEY>*>
              (SetIteratorStaticEnd::__SetIterEnd)); 
   }
@@ -282,7 +304,7 @@ namespace gum {
     // Hence, for speedup, we do not update the end iterator
   }
 
-
+  
   /// adds a new element to the set
   template<typename KEY> INLINE
   Set<KEY>& Set<KEY>::operator<<( const KEY& k ) {
@@ -322,7 +344,7 @@ namespace gum {
     if ( size() != h2.size() ) return false;
 
     // check the content of the sets
-    for ( HashTableIterator<KEY, bool> iter = __inside.begin();
+    for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
       if ( ! h2.exists( iter.key() ) )
         return false;
@@ -347,14 +369,14 @@ namespace gum {
     HashTable<KEY, bool>& h_r=res.__inside;
 
     if ( size() < h2.size() ) {
-      for ( HashTableIterator<KEY, bool> iter = __inside.begin();
+      for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
             iter != __inside.end(); ++iter ) {
         if ( h2.exists( iter.key() ) )
           h_r.insert( iter.key(), true );
       }
     }
     else {
-      for ( HashTableIterator<KEY, bool> iter=h2.begin();
+      for ( HashTableConstIterator<KEY, bool> iter=h2.begin();
             iter!=h2.end(); ++iter ) {        
         if ( __inside.exists( iter.key() ) )
           h_r.insert( iter.key(), true );
@@ -372,7 +394,8 @@ namespace gum {
     const HashTable<KEY, bool>& h2=s2.__inside;
     HashTable<KEY, bool>& h_r=res.__inside;
 
-    for ( HashTableIterator<KEY,bool> iter=h2.begin(); iter!=h2.end(); ++iter ) {
+    for ( HashTableConstIterator<KEY,bool> iter=h2.begin();
+          iter!=h2.end(); ++iter ) {
       if ( ! h_r.exists( iter.key() ) )
         h_r.insert( iter.key(), true );
     }
@@ -388,7 +411,7 @@ namespace gum {
     const HashTable<KEY, bool>& h2=s2.__inside;
     HashTable<KEY, bool>& h_r=res.__inside;
 
-    for ( HashTableIterator<KEY,bool> iter = __inside.begin();
+    for ( HashTableConstIterator<KEY,bool> iter = __inside.begin();
           iter != __inside.end();++iter )
       if ( ! h2.exists( iter.key() ) )
         h_r.insert( iter.key(), true );
@@ -482,7 +505,7 @@ namespace gum {
     HashTable<KEY,NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableIterator<KEY,bool > iter = __inside.begin();
+    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
       table.insert( iter.key(), f( iter.key() ) );
     }
@@ -505,7 +528,7 @@ namespace gum {
     HashTable<KEY,NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableIterator<KEY,bool > iter = __inside.begin();
+    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
       table.insert( iter.key(), val );
     }
@@ -522,7 +545,7 @@ namespace gum {
     List<NEWKEY> list;
 
     // fill the new list
-    for ( HashTableIterator<KEY,bool > iter = __inside.begin();
+    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
       list.pushBack( f( iter.key() ) );
     }

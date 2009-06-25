@@ -50,7 +50,7 @@ BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ):
   __moralGraph = new UndiGraph(*(source.__moralGraph));
   __topologicalOrder = new Sequence<NodeId>(*(source.__topologicalOrder));
 
-  for ( HashTableIterator<NodeId, Potential<T_DATA>*> cptIter = source.__probaMap.begin(); cptIter != source.__probaMap.end(); ++cptIter ) {
+  for ( HashTableConstIterator<NodeId, Potential<T_DATA>*> cptIter = source.__probaMap.begin(); cptIter != source.__probaMap.end(); ++cptIter ) {
     // First we build the node's CPT
     copyPtr = new Potential<T_DATA>();
     ( *copyPtr ) << variable( cptIter.key() );
@@ -93,14 +93,14 @@ BayesNet<T_DATA>::operator=( const BayesNet<T_DATA>& source )
     __propertiesMap = new HashTable<std::string, std::string>(*(source.__propertiesMap));
   }
   // Removing previous potentials
-  for (HashTableIterator< NodeId, Potential<T_DATA>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter) {
+  for (HashTableConstIterator< NodeId, Potential<T_DATA>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter) {
     delete *iter;
   }
   __probaMap.clear();
 
   Potential<T_DATA> *sourcePtr, *copyPtr;
 
-  for (typename Property<Potential<T_DATA>*>::onNodes::iterator iter = source.__probaMap.begin(); iter != source.__probaMap.end(); ++iter) {
+  for (typename Property<Potential<T_DATA>*>::onNodes::const_iterator iter = source.__probaMap.begin(); iter != source.__probaMap.end(); ++iter) {
     sourcePtr = *iter;
     copyPtr = new Potential<T_DATA>( *sourcePtr );
     __probaMap.insert( iter.key(), copyPtr );
@@ -122,7 +122,7 @@ BayesNet<T_DATA>::~BayesNet()
   if (__propertiesMap != 0) {
     delete __propertiesMap;
   }
-  for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter = __probaMap.begin();
+  for ( HashTableConstIterator<NodeId, Potential<T_DATA>*> iter = __probaMap.begin();
         iter != __probaMap.end();
         ++iter )
   {

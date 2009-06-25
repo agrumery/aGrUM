@@ -628,7 +628,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val>
   List<Val>::List():
-    __iterator_list( new ListBase<ListIterator<Val>*> ) {
+    __iterator_list( new ListBase<ListConstIterator<Val>*> ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( List );
   }
@@ -639,8 +639,7 @@ namespace gum {
    * RefPtr containing 0. */
   // ==============================================================================
   template <typename Val>
-  List<Val>::List
-  ( const RefPtr< ListBase<ListIterator<Val>*> >& iter_list ) :
+  List<Val>::List ( const RefPtr<ListBase<ListConstIterator<Val>*> >& iter_list ) :
     __iterator_list( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( List );
@@ -652,8 +651,8 @@ namespace gum {
       // raise a NullElement exception 
     }
     catch ( NullElement& ) {
-      __iterator_list = RefPtr< ListBase<ListIterator<Val>*> >
-        ( new ListBase<ListIterator<Val>*> );
+      __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
+        ( new ListBase<ListConstIterator<Val>*> );
     }
   }
 
@@ -673,7 +672,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val>
   List<Val>::List( const List<Val> &from,
-                   const RefPtr< ListBase<ListIterator<Val>*> >& iter_list ) :
+                   const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list ) :
     ListBase<Val>( from ), __iterator_list( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( List );
@@ -685,8 +684,8 @@ namespace gum {
       // raise a NullElement exception 
     }
     catch ( NullElement& ) {
-      __iterator_list = RefPtr< ListBase<ListIterator<Val>*> >
-        ( new ListBase<ListIterator<Val>*> );
+      __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
+        ( new ListBase<ListConstIterator<Val>*> );
     }
   }
 
@@ -729,9 +728,9 @@ namespace gum {
   void List<Val>::clear() {
     // first we update all the iterators of the list : they should now
     // point to rend
-    ListIterator<Val> *ptr;
+    ListConstIterator<Val> *ptr;
 
-    for ( ListBucket<ListIterator<Val>*> *iter = __iterator_list->__deb_list,
+    for ( ListBucket<ListConstIterator<Val>*> *iter = __iterator_list->__deb_list,
             *iter_next=0; iter; iter=iter_next ) {
       ptr = **iter;
       iter_next = iter->__next;
@@ -751,11 +750,11 @@ namespace gum {
   // ==============================================================================
   template <typename Val>
   void List<Val>::setIteratorList
-  ( const RefPtr< ListBase<ListIterator<Val>*> >& new_list ) {
+  ( const RefPtr< ListBase<ListConstIterator<Val>*> >& new_list ) {
     // first we update all the iterators of the list : they should now
     // point to rend
-    ListIterator<Val> *ptr;
-    for ( ListBucket<ListIterator<Val>*> *iter = __iterator_list->__deb_list,
+    ListConstIterator<Val> *ptr;
+    for ( ListBucket<ListConstIterator<Val>*> *iter = __iterator_list->__deb_list,
             *iter_next=0; iter; iter=iter_next ) {
       ptr = **iter;
       iter_next = iter->__next;
@@ -773,7 +772,7 @@ namespace gum {
   /// returns the list containing the iterators pointing toward the List
   // ==============================================================================
   template <typename Val> INLINE
-  const RefPtr< ListBase<ListIterator<Val>*> >&
+  const RefPtr< ListBase<ListConstIterator<Val>*> >&
   List<Val>::getIteratorList() const  {
     return __iterator_list;
   }
@@ -784,11 +783,11 @@ namespace gum {
   template <typename Val> INLINE
   void List<Val>::_erase( ListBucket<Val>* bucket ) {
     if ( bucket ) {
-      ListIterator<Val> *ptr;
+      ListConstIterator<Val> *ptr;
       
       // update the iterators pointing on this element
-      for ( ListBucket<ListIterator<Val>*> *iter = __iterator_list->__deb_list;
-            iter; iter=iter->__next ) {
+      for ( ListBucket<ListConstIterator<Val>*>
+              *iter = __iterator_list->__deb_list; iter; iter=iter->__next ) {
         ptr = iter->__val;
 
         if ( ptr->__bucket == bucket ) {
@@ -813,27 +812,58 @@ namespace gum {
   /// the iterator pointing to the end of the List
   // ==============================================================================
   template <typename Val> INLINE
-  const ListIterator<Val>& List<Val>::end() const  {
+  const ListConstIterator<Val>& List<Val>::end() const  {
     // ok, the code below is a little bit complicated, but it avoids the
     // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListIterator<Val>*>(( void* ) &__list_end ) );
+    return *( static_cast<const ListConstIterator<Val>*>( (void*) &__list_end ) );
+  }
+
+  // ==============================================================================
+  /// the iterator pointing to the end of the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListIterator<Val>& List<Val>::end()  {
+    // ok, the code below is a little bit complicated, but it avoids the
+    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
+    return *( static_cast<const ListIterator<Val>*>( (void*) &__list_end ) );
   }
 
   // ==============================================================================
   /// the iterator pointing to the rend (just before the beginning) of the List
   // ==============================================================================
   template <typename Val> INLINE
-  const ListIterator<Val>& List<Val>::rend() const  {
+  const ListConstIterator<Val>& List<Val>::rend() const  {
     // ok, the code below is a little bit complicated, but it avoids the
     // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListIterator<Val>*>(( void* ) &__list_end ) );
+    return *( static_cast<const ListConstIterator<Val>*>( (void*) &__list_end ) );
+  }
+
+  // ==============================================================================
+  /// the iterator pointing to the rend (just before the beginning) of the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListIterator<Val>& List<Val>::rend()  {
+    // ok, the code below is a little bit complicated, but it avoids the
+    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
+    return *( static_cast<const ListIterator<Val>*>( (void*) &__list_end ) );
   }
 
   // ==============================================================================
   /// the iterator pointing to the beginning of the List
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val> List<Val>::begin() const {
+  ListConstIterator<Val> List<Val>::begin() const {
+    if ( ListBase<Val>::__nb_elements )
+      return ListConstIterator<Val> ( *this, 0U );
+    else
+      return ListConstIterator<Val>();
+  }
+
+  // ==============================================================================
+  /// the iterator pointing to the beginning of the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val> List<Val>::begin() {
     if ( ListBase<Val>::__nb_elements )
       return ListIterator<Val> ( *this, 0U );
     else
@@ -844,7 +874,18 @@ namespace gum {
   /// the iterator pointing to the rbegin (the last element) of the List
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val> List<Val>::rbegin() const {
+  ListConstIterator<Val> List<Val>::rbegin() const {
+    if ( ListBase<Val>::__nb_elements )
+      return ListConstIterator<Val> ( *this, ListBase<Val>::__nb_elements-1 );
+    else
+      return ListConstIterator<Val>();
+  }
+
+  // ==============================================================================
+  /// the iterator pointing to the rbegin (the last element) of the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val> List<Val>::rbegin() {
     if ( ListBase<Val>::__nb_elements )
       return ListIterator<Val> ( *this, ListBase<Val>::__nb_elements-1 );
     else
@@ -883,6 +924,14 @@ namespace gum {
   template <typename Val> INLINE
   void List<Val>::erase( const iterator& iter ) {
     _erase ( iter.__getBucket() );
+  }
+
+  // ==============================================================================
+  /// erases the element of the List pointed to by the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  void List<Val>::erase( const const_iterator& iter ) {
+    _erase ( reinterpret_cast<const iterator&> (iter) );
   }
 
   // ==============================================================================
@@ -927,7 +976,7 @@ namespace gum {
     List<Mount> list;
     
     // fill the new list
-    for ( ListIterator<Val> iter = begin(); iter != end(); ++iter ) {
+    for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 
@@ -944,7 +993,7 @@ namespace gum {
     List<Mount> list;
     
     // fill the new list
-    for ( ListIterator<Val> iter = begin(); iter != end(); ++iter ) {
+    for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 
@@ -961,7 +1010,7 @@ namespace gum {
     List<Mount> list;
     
     // fill the new list
-    for ( ListIterator<Val> iter = begin(); iter != end(); ++iter ) {
+    for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 
@@ -1038,25 +1087,25 @@ namespace gum {
   /// basic constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>::ListIterator()  :
+  ListConstIterator<Val>::ListConstIterator()  :
     __list( 0 ), __bucket( 0 ),
     __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
     __null_pointing( false ), __container( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ListIterator );
+    GUM_CONSTRUCTOR( ListConstIterator );
   }
 
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>::ListIterator( const ListIterator<Val>& from ) :
+  ListConstIterator<Val>::ListConstIterator( const ListConstIterator<Val>& from ) :
     __list( from.__list ), __bucket( from.__bucket ),
     __next_current_bucket( from.__next_current_bucket ),
     __prev_current_bucket( from.__prev_current_bucket ),
     __null_pointing( from.__null_pointing ), __container( 0 ) {
     // for debugging purposes
-    GUM_CONS_CPY( ListIterator );
+    GUM_CONS_CPY( ListConstIterator );
     
     // rechain properly the list of iterators of the List
     if ( __list ) {
@@ -1068,13 +1117,13 @@ namespace gum {
   // ==============================================================================
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
   // ==============================================================================
-  template <typename Val> INLINE
-  ListIterator<Val>::ListIterator( const List<Val>& theList,
+  template <typename Val>
+  ListConstIterator<Val>::ListConstIterator( const List<Val>& theList,
                                    unsigned int ind_elt ) :
     __list( &theList ), __bucket( 0 ), __next_current_bucket( 0 ),
     __prev_current_bucket( 0 ), __null_pointing( false ), __container( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ListIterator );
+    GUM_CONSTRUCTOR( ListConstIterator );
     
     // check if the index ind_elt passed as parameter is valid
     if ( ind_elt >= __list->__nb_elements )
@@ -1102,13 +1151,13 @@ namespace gum {
   // ==============================================================================
   /// Copy operator
   // ==============================================================================
-  template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator=
-  ( const ListIterator<Val>& from ) {
+  template <typename Val>
+  ListConstIterator<Val>& ListConstIterator<Val>::operator=
+  ( const ListConstIterator<Val>& from ) {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
-      GUM_OP_CPY( ListIterator );
+      GUM_OP_CPY( ListConstIterator );
       
       // check if from and this belong to the same iterator's list. If this is not
       // the case, we shall remove the iterator from its current List iterator's
@@ -1155,9 +1204,9 @@ namespace gum {
   /// Destructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>::~ListIterator()  {
+  ListConstIterator<Val>::~ListConstIterator()  {
     // for debugging purposes
-    GUM_DESTRUCTOR( ListIterator );
+    GUM_DESTRUCTOR( ListConstIterator );
     
     // remove the iterator from the table's iterator list
     if ( __list )
@@ -1168,7 +1217,7 @@ namespace gum {
   /// returns the bucket the iterator is pointing to
   // ==============================================================================
   template <typename Val> INLINE
-  ListBucket<Val>* ListIterator<Val>::__getBucket() const  {
+  ListBucket<Val>* ListConstIterator<Val>::__getBucket() const  {
     return __bucket;
   }
 
@@ -1176,7 +1225,7 @@ namespace gum {
   /// Makes the iterator point toward nothing
   // ==============================================================================
   template <typename Val> INLINE
-  void ListIterator<Val>::clear()  {
+  void ListConstIterator<Val>::clear()  {
     // remove the iterator from the list's iterator list
     if ( __list )
       __list->__iterator_list->__erase( __container );
@@ -1194,7 +1243,7 @@ namespace gum {
   /// makes the iterator point to the next element in the List
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator++()  {
+  ListConstIterator<Val>& ListConstIterator<Val>::operator++()  {
     // check if we are pointing to something that has been deleted
     if ( __null_pointing ) {
       // if we are pointing to an element of the chained list that has been deleted
@@ -1238,7 +1287,7 @@ namespace gum {
   /// makes the iterator point to the preceding element in the List
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator--()  {
+  ListConstIterator<Val>& ListConstIterator<Val>::operator--()  {
     // check if we are pointing to something that has been deleted
     if ( __null_pointing ) {
       // if we are pointing to an element of the chained list that has been deleted
@@ -1283,7 +1332,8 @@ namespace gum {
   /// checks whether two iterators point toward different elements
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListIterator<Val>::operator!= ( const ListIterator<Val> &from ) const  {
+  bool ListConstIterator<Val>::operator!=
+  ( const ListConstIterator<Val> &from ) const  {
     if ( __null_pointing )
       return (( __next_current_bucket != from.__next_current_bucket ) ||
               ( __prev_current_bucket != from.__prev_current_bucket ) );
@@ -1295,7 +1345,8 @@ namespace gum {
   /// checks whether two iterators point toward the same elements.
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListIterator<Val>::operator== ( const ListIterator<Val> &from ) const  {
+  bool ListConstIterator<Val>::operator==
+  ( const ListConstIterator<Val> &from ) const  {
     if ( __null_pointing )
       return (( __next_current_bucket == from.__next_current_bucket ) &&
               ( __prev_current_bucket == from.__prev_current_bucket ) );
@@ -1307,7 +1358,7 @@ namespace gum {
   /// dereferences the value pointed to by the iterator
   // ==============================================================================
   template <typename Val> INLINE
-  Val* ListIterator<Val>::operator->() const  {
+  const Val* ListConstIterator<Val>::operator->() const  {
     if ( __bucket )
       return &( __bucket->__val );
     else
@@ -1318,19 +1369,7 @@ namespace gum {
   /// gives access to the content of the iterator
   // ==============================================================================
   template <typename Val> INLINE
-  Val& ListIterator<Val>::operator*()  {
-    if ( __bucket )
-      return __bucket->__val;
-    else
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a NULL object" );
-  }
-
-  // ==============================================================================
-  /// gives access to the content of the iterator
-  // ==============================================================================
-  template <typename Val> INLINE
-  const Val& ListIterator<Val>::operator*()
-    const  {
+  const Val& ListConstIterator<Val>::operator*() const {
     if ( __bucket )
       return __bucket->__val;
     else
@@ -1341,7 +1380,7 @@ namespace gum {
   /// positions the iterator to the end of the list
   // ==============================================================================
   template <typename Val> INLINE
-  void ListIterator<Val>::setToEnd()  {
+  void ListConstIterator<Val>::setToEnd()  {
     clear();
   }
 
@@ -1349,13 +1388,159 @@ namespace gum {
   /// returns a bool indicating whether the iterator points to the end of the list
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListIterator<Val>::isEnd() const  {
+  bool ListConstIterator<Val>::isEnd() const  {
     if ( __null_pointing )
       return ( !__next_current_bucket && !__prev_current_bucket );
     else
       return ( !__bucket );
   }
 
+
+
+
+ /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                   GUM_LIST_ITERATOR IMPLEMENTATION                  === */
+  /* =========================================================================== */
+  /* =========================================================================== */
+
+  // ==============================================================================
+  /// basic constructor
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>::ListIterator()  : ListConstIterator<Val>() {
+    GUM_CONSTRUCTOR( ListIterator );
+  }
+
+  // ==============================================================================
+  /// copy constructor
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>::ListIterator( const ListIterator<Val>& from ) :
+    ListConstIterator<Val>( from ) {
+    GUM_CONS_CPY( ListIterator );
+  }
+
+  // ==============================================================================
+  /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>::ListIterator( const List<Val>& theList,
+                                   unsigned int ind_elt ) :
+    ListConstIterator<Val>( theList, ind_elt ) {
+    GUM_CONSTRUCTOR( ListIterator );
+  }
+
+  // ==============================================================================
+  /// Copy operator
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>& ListIterator<Val>::operator=
+  ( const ListIterator<Val>& from ) {
+    ListConstIterator<Val>::operator= ( from );
+    return *this;
+  }
+    
+  // ==============================================================================
+  /// Destructor
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>::~ListIterator()  {
+    GUM_DESTRUCTOR( ListIterator );
+  }
+
+  // ==============================================================================
+  /// Makes the iterator point toward nothing
+  // ==============================================================================
+  template <typename Val> INLINE
+  void ListIterator<Val>::clear()  {
+    ListConstIterator<Val>::clear();
+  }
+
+  // ==============================================================================
+  /// makes the iterator point to the next element in the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>& ListIterator<Val>::operator++() {
+    ListConstIterator<Val>::operator++();
+    return *this;
+  }
+
+  // ==============================================================================
+  /// makes the iterator point to the preceding element in the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListIterator<Val>& ListIterator<Val>::operator--() {
+    ListConstIterator<Val>::operator--();
+    return *this;
+  }
+
+  // ==============================================================================
+  /// checks whether two iterators point toward different elements
+  // ==============================================================================
+  template <typename Val> INLINE
+  bool ListIterator<Val>::operator!= ( const ListIterator<Val> &from ) const {
+    return ListConstIterator<Val>::operator!= (from);
+  }
+
+  // ==============================================================================
+  /// checks whether two iterators point toward the same elements.
+  // ==============================================================================
+  template <typename Val> INLINE
+  bool ListIterator<Val>::operator== ( const ListIterator<Val> &from ) const {
+    return ListConstIterator<Val>::operator== (from);
+  }
+
+  // ==============================================================================
+  /// dereferences the value pointed to by the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  const Val* ListIterator<Val>::operator->() const {
+    return ListConstIterator<Val>::operator->();
+  }
+    
+  // ==============================================================================
+  /// dereferences the value pointed to by the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  Val* ListIterator<Val>::operator->() {
+    return const_cast<Val*> ( ListConstIterator<Val>::operator->() );
+  }
+
+  // ==============================================================================
+  /// gives access to the content of the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  const Val& ListIterator<Val>::operator*() const {
+    return ListConstIterator<Val>::operator*();
+  }
+
+  // ==============================================================================
+  /// gives access to the content of the iterator
+  // ==============================================================================
+  template <typename Val> INLINE
+  Val& ListIterator<Val>::operator*() {
+    return const_cast<Val&> ( ListConstIterator<Val>::operator*() );
+  }
+
+  // ==============================================================================
+  /// positions the iterator to the end of the list
+  // ==============================================================================
+  template <typename Val> INLINE
+  void ListIterator<Val>::setToEnd() {
+    ListConstIterator<Val>::setToEnd();
+  }
+
+  // ==============================================================================
+  /// returns a bool indicating whether the iterator points to the end of the list
+  // ==============================================================================
+  template <typename Val> INLINE
+  bool ListIterator<Val>::isEnd() const {
+    return ListConstIterator<Val>::isEnd();
+  }
+
+
+  
   // ==============================================================================
   /// A \c << operator for List
   // ==============================================================================

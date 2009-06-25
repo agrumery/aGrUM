@@ -51,7 +51,7 @@ namespace gum {
   ( const typename Property<T>::onNodes& h ) {
     clear();
 
-    for ( typename Property<T>::onNodes::iterator iter = h.begin();
+    for ( typename Property<T>::onNodes::const_iterator iter = h.begin();
           iter != h.end(); ++iter ) {
       NodeId new_one=iter.key();
 
