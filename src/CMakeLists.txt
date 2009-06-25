@@ -37,8 +37,8 @@ set(CMAKE_C_FLAGS_DEBUG "-Wall  -pedantic -O0 -pg -DGUM_NO_INLINE")
 
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
     # to detect Intel 64 bits platform : inline tends to be a bug for 64bits (???)
-set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
-set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
+  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions") 
+  set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
 
   set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
   set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
