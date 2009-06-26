@@ -41,14 +41,14 @@
   (as shown in the inheritance diagram for MixedGraph, the class hierarchy for
   graphs in aGrUM uses multiple inheritance.)
 
-  This patterns of inheritance allows aGrUM to have a quite standardized API for
-  all basic operations in graphs : manipulates and iterates over nodes, edges
+  This pattern of inheritance allows aGrUM to have a quite standardized API for
+  all basic operations in graphs: manipulating and iterating over nodes, edges
   and arcs.
 
   \section graph_sec_2 IDs and properties
-  Such representation of graph has two major drawbacks that aGrUM has to face :
-  - how to certify that all node id is unique in a graph ?
-  - how to put properties (name/position/integer/flag) on nodes, edges and arcs ?
+  Such representation of graphs has two major drawbacks that aGrUM has to face:
+  - how to certify that all node ids are unique in a graph ?
+  - how to put properties (name/position/integer/flag) on nodes, edges and arcs?
 
   <h4>ID factory</h4>
   For the uniqueness of ids, insertNode() in NodeGraphPart contains an internal
@@ -64,7 +64,7 @@
   Properties are just HashTable where keys are @ref NodeId, Edge or Arc.
   Unfortunately, due to a lack
   (or what we find to be lack) of C++, there is no way to create templated
-  typedefs... So aGrUM uses (for now)
+  typedefs... So aGrUM uses (currently)
   gum::Property<X>::onNodes, gum::Property<X>::onEdges and
   gum::Property<X>::onArcs to add new properties related to nodes, edges and
   arcs respectively.
@@ -112,7 +112,7 @@
   Here is a code for \subpage exemple_recherche_chemin "searching directed path
   in a DiGraph" g from \ref NodeId n1 to \ref NodeId n2.
 
-  \page exemple_recherche_chemin Exemple : Search of a directed path in a DiGraph
+  \page exemple_recherche_chemin Example: Search of a directed path in a DiGraph
   from n1 to n2
   \ingroup graph_group
 
@@ -131,7 +131,7 @@
     current=nodeFile.front();nodeFile.popFront();
     const ArcSet& set=g.children( current );
 
-    for ( ArcSet::iterator ite=set.begin();ite!=set.end();++ite ) {
+    for ( ArcSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
       NodeId new_one=ite->head();
 
       if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
@@ -158,7 +158,7 @@
  * "directed/undirected" term may be misleading although in practice this
  * will probably result in how these edges will be drawn. In fact, a more
  * appropriate term would be "symmetric/asymmetric edges": a Arc is an edge in
- * which the extremities have different status whereas in a Edge the role of the
+ * which the extremities have different status whereas in an Edge the role of the
  * extremities is symmetric. For instance, in an arrow, one node is near the head
  * and the other one is farther, hence these nodes have different status and
  * swapping the nodes results in reversing the direction of the arrow. Thus, the
