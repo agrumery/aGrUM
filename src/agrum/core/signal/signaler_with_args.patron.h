@@ -42,7 +42,8 @@ namespace gum {
     class MAKE_NAME( BasicSignaler ) : public ISignaler {
       public:
         typedef List<MAKE_NAME( IConnector )<LIST_CLASSES> *>  ConnectorList;
-        typedef typename ConnectorList::iterator constConnectors_iterator; //Connections::const_iterator
+        typedef typename ConnectorList::const_iterator constConnectors_iterator;
+        typedef typename ConnectorList::iterator Connectors_iterator;
       protected:
         MAKE_NAME( BasicSignaler )() {
           GUM_CONSTRUCTOR( MAKE_NAME( BasicSignaler ) );
@@ -70,7 +71,7 @@ namespace gum {
         }
 
         void detach( Listener* target ) {
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
+          for ( Connectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
             if (( *it )->target() == target ) {
               delete *it;
               _connectors.erase( it );
@@ -91,8 +92,8 @@ namespace gum {
         }
 
         void detachFromTarget( Listener* target ) {
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
-            constConnectors_iterator itNext = it;
+          for ( Connectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
+            Connectors_iterator itNext = it;
             ++itNext;
 
             if (( *it )->target() == target ) {

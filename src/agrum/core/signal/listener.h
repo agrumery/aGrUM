@@ -56,7 +56,7 @@ namespace gum {
   class Listener {
     private:
       typedef Set<__sig__::ISignaler *> Senders_set;
-      typedef Senders_set::iterator const_iterator; //Senders_set::const_iterator const_iterator;
+      typedef Senders_set::const_iterator const_iterator;
 
     public:
       Listener() {
