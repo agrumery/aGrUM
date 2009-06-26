@@ -245,6 +245,15 @@ class BayesNetFactory :public AbstractBayesNetFactory {
     void rawConditionalTable(const std::vector<std::string>& variables,
                              const std::vector<T_DATA>& rawTable);
 
+														 /**
+     * @brief Fills the variable's table with the values in rawTable.
+     *
+     * use the canonical ordering for the variables (e.g. see BIF format) ...
+     *
+     * @param rawTable The raw table.
+     */
+    void rawConditionalTable(const std::vector<T_DATA>& rawTable);
+
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
     void endRawProbabilityDeclaration();
@@ -418,6 +427,8 @@ class BayesNetFactory :public AbstractBayesNetFactory {
     /// Fill a potential from a raw CPT.
     void __fillProbaWithValuesTable(const std::vector<std::string>& variables,
                                     const std::vector<T_DATA>& rawTable);
+    /// Fill a potential from a raw CPT.(using the canonical order of vars)
+    void __fillProbaWithValuesTable(const std::vector<T_DATA>& rawTable);
 
     /// Increment a modality counter for the __fillProbaWithValuesTable method.
     bool __increment(std::vector<gum::Idx> &modCounter,

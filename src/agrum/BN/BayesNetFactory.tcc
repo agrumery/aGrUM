@@ -396,6 +396,36 @@ BayesNetFactory<T_DATA>::__fillProbaWithValuesTable(const std::vector<std::strin
   } while (__increment(modCounter, varList));
 }
 
+
+template<typename T_DATA> INLINE
+void
+BayesNetFactory<T_DATA>::rawConditionalTable(const std::vector<T_DATA>& rawTable)
+{
+  if (state() != RAW_CPT) {
+    __illegalStateError("rawConditionalTable");
+  } else {
+    __fillProbaWithValuesTable(rawTable);
+  }
+}
+
+template<typename T_DATA> INLINE
+void
+BayesNetFactory<T_DATA>::__fillProbaWithValuesTable(const std::vector<T_DATA>& rawTable)
+{
+  const Potential<T_DATA>& table = __bn->cpt(__varNameMap[__stringBag[0]]);
+
+  Instantiation cptInst(table);
+
+	// the main loop is on the first variables. The others are in the right order.
+	const DiscreteVariable& first=table.variable(0);	Idx j=0;
+
+	for(cptInst.setFirstVar(first);! cptInst.end(); cptInst.incVar(first)) {
+		for(cptInst.setFirstNotVar(first); ! cptInst.end(); cptInst.incNotVar(first))
+			table.set(cptInst,(j<rawTable.size())?rawTable[j++]:(T_DATA)0);
+		cptInst.unsetEnd();
+	}
+}
+
 template<typename T_DATA> INLINE
 bool
 BayesNetFactory<T_DATA>::__increment(std::vector<gum::Idx> &modCounter,
