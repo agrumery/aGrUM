@@ -287,7 +287,7 @@ class BayesNetFactory :public AbstractBayesNetFactory {
      * factory.endVariableDeclaration();
      * factory.startParentsDeclaration("foo");
      * // add parents
-     * factory.endParentsDelclaration();
+     * factory.endParentsDeclaration();
      * factory.startFactorizedProbabilityDeclaration("foo");
      * std::vector<double> seq;
      * seq.insert(0.4); // if foo true

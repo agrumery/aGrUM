@@ -310,7 +310,7 @@ void
 BayesNetFactory<T_DATA>::endParentsDeclaration()
 {
   if (state() != PARENTS) {
-    __illegalStateError("endParentsDelclaration");
+    __illegalStateError("endParentsDeclaration");
   } else {
     NodeId id = __varNameMap[__stringBag[0]];
     for (size_t i = 1; i < __stringBag.size(); ++i) {
@@ -518,7 +518,7 @@ BayesNetFactory<T_DATA>::setParentModality(const std::string& parent,
 // factory.endVariableDeclaration();
 // factory.startParentsDeclaration("foo");
 // // add parents
-// factory.endParentsDelclaration();
+// factory.endParentsDeclaration();
 // factory.startFactorizedProbabilityDeclaration("foo");
 // std::vector<double> seq;
 // seq.insert(0.4); // if foo true
