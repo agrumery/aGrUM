@@ -79,7 +79,7 @@ namespace gum {
   ListBucket<Val>::~ListBucket() {
     // for debugging purposes
     GUM_DESTRUCTOR( ListBucket );
-    
+
     // rechain properly the buckets
     if ( __prev ) __prev->__next = __next;
     if ( __next ) __next->__prev = __prev;
@@ -119,7 +119,7 @@ namespace gum {
 
 
 
-  
+
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -252,7 +252,7 @@ namespace gum {
     if ( this != &from ) {
       // for debugging purposes
       GUM_OP_CPY( ListBase );
-      
+
       // remove the old content of 'this'
       ListBucket<Val> *ptr, *next_ptr;
       for ( ptr = __deb_list; ptr; ptr = next_ptr ) {
@@ -274,7 +274,7 @@ namespace gum {
   ListBase<Val>::~ListBase() {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( ListBase );
-    
+
     // we remove all the elements from the list
     for ( ListBucket<Val> *ptr = __deb_list, *next_ptr = 0; ptr; ptr = next_ptr ) {
       next_ptr = ptr->__next;
@@ -289,7 +289,7 @@ namespace gum {
   Val& ListBase<Val>::pushFront( const Val& val ) {
     // create a new bucket
     ListBucket<Val> *new_elt = new ListBucket<Val>( val );
-    
+
     // place the bucket at the beginning of the list
     new_elt->__next = __deb_list;
     if ( __deb_list ) __deb_list->__prev = new_elt;
@@ -303,7 +303,7 @@ namespace gum {
     return new_elt->__val;
   }
 
-  
+
   // ==============================================================================
   /// alias for push_front
   // ==============================================================================
@@ -311,7 +311,7 @@ namespace gum {
   Val& ListBase<Val>::push_front( const Val& val ) {
     return pushFront( val );
   }
-  
+
   // ==============================================================================
   /// Insertion of a new element (a copy) at the end of the chained list.
   // ==============================================================================
@@ -319,7 +319,7 @@ namespace gum {
   Val& ListBase<Val>::pushBack( const Val& val ) {
     // create a new bucket
     ListBucket<Val> *new_elt = new ListBucket<Val>( val );
-    
+
     // place the bucket at the end of the list
     new_elt->__prev = __end_list;
     if ( __end_list ) __end_list->__next = new_elt;
@@ -332,7 +332,7 @@ namespace gum {
     // returns the current value
     return new_elt->__val;
   }
-  
+
   // ==============================================================================
   /// alias for push_back
   // ==============================================================================
@@ -477,7 +477,7 @@ namespace gum {
   ListBase<Mount> ListBase<Val>::map( Mount( *f )( Val& ) ) const {
     // create a new empty list
     ListBase<Mount> list;
-    
+
     // fill the new list
     for ( ListBucket<Val> *ptr = __deb_list; ptr; ptr = ptr->__next )
       list.pushBack( f( **ptr ) );
@@ -493,7 +493,7 @@ namespace gum {
   ListBase<Mount> ListBase<Val>::map( Mount( *f )( const Val& ) ) const {
     // create a new empty list
     ListBase<Mount> list;
-    
+
     // fill the new list
     for ( ListBucket<Val> *ptr = __deb_list; ptr; ptr = ptr->__next )
       list.pushBack( f( **ptr ) );
@@ -509,7 +509,7 @@ namespace gum {
   ListBase<Mount> ListBase<Val>::map( Mount( *f )( Val ) ) const {
     // create a new empty list
     ListBase<Mount> list;
-    
+
     // fill the new list
     for ( ListBucket<Val> *ptr = __deb_list; ptr; ptr = ptr->__next )
       list.pushBack( f( **ptr ) );
@@ -525,7 +525,7 @@ namespace gum {
   ListBase<Mount> ListBase<Val>::map( const Mount& mount ) const {
     // create a new empty list
     ListBase<Mount> list;
-    
+
     // fill the new list
     for ( unsigned int i = 0; i < __nb_elements; ++i )
       list.pushBack( mount );
@@ -614,7 +614,7 @@ namespace gum {
 
 
 
-  
+
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -648,7 +648,7 @@ namespace gum {
       if ( iter_list.operator->() != 0 )
         __iterator_list = iter_list;
       // note that, if iter_list contains a null pointer, then operator() will
-      // raise a NullElement exception 
+      // raise a NullElement exception
     }
     catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
@@ -681,7 +681,7 @@ namespace gum {
       if ( iter_list.operator-> () != 0 )
         __iterator_list = iter_list;
       // note that, if iter_list contains a null pointer, then operator() will
-      // raise a NullElement exception 
+      // raise a NullElement exception
     }
     catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
@@ -698,7 +698,7 @@ namespace gum {
     if ( this != &from ) {
       // for debugging purposes
       GUM_OP_CPY( List );
-      
+
       // remove the old content of 'this' and update accordingly the iterators
       clear();
 
@@ -716,7 +716,7 @@ namespace gum {
   List<Val>::~List() {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( List );
-    
+
     // we detach all the iterators attached to the current List
     clear();
   }
@@ -784,7 +784,7 @@ namespace gum {
   void List<Val>::_erase( ListBucket<Val>* bucket ) {
     if ( bucket ) {
       ListConstIterator<Val> *ptr;
-      
+
       // update the iterators pointing on this element
       for ( ListBucket<ListConstIterator<Val>*>
               *iter = __iterator_list->__deb_list; iter; iter=iter->__next ) {
@@ -931,7 +931,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   void List<Val>::erase( const const_iterator& iter ) {
-    _erase ( reinterpret_cast<const iterator&> (iter) );
+    _erase ( iter.__getBucket() );
   }
 
   // ==============================================================================
@@ -974,7 +974,7 @@ namespace gum {
     const {
     // create a new empty list
     List<Mount> list;
-    
+
     // fill the new list
     for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
@@ -991,7 +991,7 @@ namespace gum {
     const {
     // create a new empty list
     List<Mount> list;
-    
+
     // fill the new list
     for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
@@ -1008,7 +1008,7 @@ namespace gum {
     const {
     // create a new empty list
     List<Mount> list;
-    
+
     // fill the new list
     for ( ListConstIterator<Val> iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
@@ -1025,7 +1025,7 @@ namespace gum {
     const {
     // create a new empty list
     List<Mount> list;
-    
+
     // fill the new list
     for ( unsigned int i=0; i<ListBase<Val>::__nb_elements; ++i )
       list.pushBack( mount );
@@ -1106,7 +1106,7 @@ namespace gum {
     __null_pointing( from.__null_pointing ), __container( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ListConstIterator );
-    
+
     // rechain properly the list of iterators of the List
     if ( __list ) {
       __list->__iterator_list->pushFront( this );
@@ -1124,7 +1124,7 @@ namespace gum {
     __prev_current_bucket( 0 ), __null_pointing( false ), __container( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIterator );
-    
+
     // check if the index ind_elt passed as parameter is valid
     if ( ind_elt >= __list->__nb_elements )
       GUM_ERROR( UndefinedIteratorValue,"Not enough elements in the list" );
@@ -1158,7 +1158,7 @@ namespace gum {
     if ( this != &from ) {
       // for debugging purposes
       GUM_OP_CPY( ListConstIterator );
-      
+
       // check if from and this belong to the same iterator's list. If this is not
       // the case, we shall remove the iterator from its current List iterator's
       // list and add it to the new List iterator's list
@@ -1207,7 +1207,7 @@ namespace gum {
   ListConstIterator<Val>::~ListConstIterator()  {
     // for debugging purposes
     GUM_DESTRUCTOR( ListConstIterator );
-    
+
     // remove the iterator from the table's iterator list
     if ( __list )
       __list->__iterator_list->__erase( __container );
@@ -1440,7 +1440,7 @@ namespace gum {
     ListConstIterator<Val>::operator= ( from );
     return *this;
   }
-    
+
   // ==============================================================================
   /// Destructor
   // ==============================================================================
@@ -1498,7 +1498,7 @@ namespace gum {
   const Val* ListIterator<Val>::operator->() const {
     return ListConstIterator<Val>::operator->();
   }
-    
+
   // ==============================================================================
   /// dereferences the value pointed to by the iterator
   // ==============================================================================
@@ -1540,7 +1540,7 @@ namespace gum {
   }
 
 
-  
+
   // ==============================================================================
   /// A \c << operator for List
   // ==============================================================================
@@ -1562,5 +1562,5 @@ namespace gum {
 } /* namespace gum */
 
 
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

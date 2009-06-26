@@ -41,7 +41,6 @@ namespace gum {
       public:
         typedef List<IConnector0 *>  ConnectorList;
         typedef ConnectorList::const_iterator constConnectors_iterator;
-        typedef ConnectorList::iterator Connectors_iterator;
 
       protected:
         BasicSignaler0() {
@@ -70,7 +69,7 @@ namespace gum {
         }
 
         void detach( Listener* target ) {
-          for ( Connectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
             if (( *it )->target() == target ) {
               delete *it;
               _connectors.erase( it );
@@ -82,8 +81,8 @@ namespace gum {
       protected:
 
         void detachFromTarget( Listener* target ) {
-          for ( Connectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
-            Connectors_iterator itNext = it;
+          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
+            constConnectors_iterator itNext = it;
             ++itNext;
 
             if (( *it )->target() == target ) {

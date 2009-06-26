@@ -214,7 +214,7 @@ class BayesNetFactory :public AbstractBayesNetFactory {
     /// variable.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
     ///                         enough defined).
-    void endParentsDelclaration();
+    void endParentsDeclaration();
 
     /// @}
   // ==========================================================================

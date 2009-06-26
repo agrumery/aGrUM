@@ -209,14 +209,14 @@ ProbaVariables:
     TOK_BEG_PARENTHESIS word TOK_END_PARENTHESIS
     { __variables.push_back(*$2);
       try { driver.factory().startParentsDeclaration(__variables[0]);}
-      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } 
-      driver.factory().endParentsDelclaration(); }
+      catch (gum::NotFound& e) { driver.error(@$, e.getContent()); }
+      driver.factory().endParentsDeclaration(); }
   | TOK_BEG_PARENTHESIS word
     { __variables.push_back(*$2);
       try { driver.factory().startParentsDeclaration(__variables[0]);}
       catch (gum::NotFound& e) { driver.error(@$, e.getContent()); } }
     TOK_BAR ProbaRightVars TOK_END_PARENTHESIS
-    { driver.factory().endParentsDelclaration(); }
+    { driver.factory().endParentsDeclaration(); }
   ;
 
 ProbaRightVars:

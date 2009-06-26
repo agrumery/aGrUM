@@ -307,7 +307,7 @@ BayesNetFactory<T_DATA>::addParent(const std::string& var)
 //                         enough defined).
 template<typename T_DATA> INLINE
 void
-BayesNetFactory<T_DATA>::endParentsDelclaration()
+BayesNetFactory<T_DATA>::endParentsDeclaration()
 {
   if (state() != PARENTS) {
     __illegalStateError("endParentsDelclaration");
