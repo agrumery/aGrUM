@@ -305,9 +305,14 @@ class BayesNetFactory :public AbstractBayesNetFactory {
      * // finish your stuff
      * factory.endFactorizedProbabilityDeclaration();
      * @code
-     * @throw OperationNotAllowed Raised if value's size is different than the number
-     *                            of modalities of the current variable.
+		 * as for rawProba, if value's size is different than the number of modalities of the current variable,
+		 * we don't use the supplementary values and we fill by 0 the missign values.
      */
+		void setVariableValuesUnchecked(const std::vector<T_DATA>& values);
+
+		/**
+		* @brief same than below with gum::OperationNotAllowed exception if value's size not OK.
+		*/
     void setVariableValues(const std::vector<T_DATA>& values);
 
     /// Tells the factory that we finished declaring a conditional probability

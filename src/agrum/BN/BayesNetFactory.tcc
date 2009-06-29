@@ -557,24 +557,24 @@ BayesNetFactory<T_DATA>::setParentModality(const std::string& parent,
 // // finish your stuff
 // factory.endFactorizedProbabilityDeclaration();
 // @code
-// @throw OperationNotAllowed Raised if value's size is different than the number
-//                            of modalities of the current variable.
+// as for rawProba, if value's size is different than the number of modalities of the current variable,
+// we don't use the supplementary values and we fill by 0 the missign values.
 template<typename T_DATA> INLINE
 void
-BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
+BayesNetFactory<T_DATA>::setVariableValuesUnchecked(const std::vector<T_DATA>& values)
 {
   if (state() != FACT_ENTRY) {
     __illegalStateError("setVariableValues");
   } else {
     const DiscreteVariable& var = __bn->variable(__varNameMap[__stringBag[0]]);
     Idx varId = __varNameMap[__stringBag[0]];
-    // Checking consistency between values and var.
-    if (values.size() != var.domainSize()) {
-      std::stringstream sBuff;
-      sBuff << "Invalid number of modalities: found " << values.size();
-      sBuff << " while needed " << var.domainSize();
-      GUM_ERROR(OperationNotAllowed, sBuff.str());
-    }
+//     Checking consistency between values and var.
+//     if (values.size() != var.domainSize()) {
+//       std::stringstream sBuff;
+//       sBuff << "Invalid number of modalities: found " << values.size();
+//       sBuff << " while needed " << var.domainSize();
+//       GUM_ERROR(OperationNotAllowed, sBuff.str());
+//     }
     if (__parents->domainSize() > 0) {
       Instantiation inst(__bn->cpt(__varNameMap[var.name()]));
       inst.chgValIn(*__parents);
@@ -588,7 +588,7 @@ BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
       }
       // Filling the variable's table.
       for (inst.setFirstIn(inst_default); ! inst.end(); inst.incIn(inst_default)) {
-        (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
+        (__bn->cpt(varId)).set(inst, inst.val(var)<values.size()?values[inst.val(var)]:(T_DATA)0);
       }
     } else {
       Instantiation inst(__bn->cpt(__varNameMap[var.name()]));
@@ -597,13 +597,31 @@ BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
       for (var_inst.setFirst(); ! var_inst.end(); ++var_inst) {
         inst.chgValIn(var_inst);
         for (inst.setFirstOut(var_inst); ! inst.end(); inst.incOut(var_inst)) {
-          (__bn->cpt(varId)).set(inst, values[inst.val(var)]);
+          (__bn->cpt(varId)).set(inst,inst.val(var)<values.size()?values[inst.val(var)]:(T_DATA)0);
         }
       }
     }
   }
 }
 
+template<typename T_DATA> INLINE
+void
+BayesNetFactory<T_DATA>::setVariableValues(const std::vector<T_DATA>& values)
+{
+  if (state() != FACT_ENTRY) {
+    __illegalStateError("setVariableValues");
+  } else {
+    const DiscreteVariable& var = __bn->variable(__varNameMap[__stringBag[0]]);
+//     Checking consistency between values and var.
+     if (values.size() != var.domainSize()) {
+       std::stringstream sBuff;
+       sBuff << "Invalid number of modalities: found " << values.size();
+       sBuff << " while needed " << var.domainSize();
+       GUM_ERROR(OperationNotAllowed, sBuff.str());
+     }
+		 setVariableValuesUnchecked(values);
+	}
+}
 // Tells the factory that we finished declaring a conditional probability
 // table.
 template<typename T_DATA> INLINE
