@@ -61,7 +61,7 @@ namespace gum {
        * @{
        **/
       Exception( const std::string aMsg = "",
-                 const std::string aType = "Erreur generique gum" );
+                 const std::string aType = "Generic error" );
 
       ~Exception() {}
 
@@ -71,6 +71,10 @@ namespace gum {
        */
       const std::string getContent() const {
         return _type + " "+_msg;
+      }
+
+			const std::string getType() const {
+        return _type;
       }
 
       const std::string getCallStack() const {
