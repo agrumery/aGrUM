@@ -91,7 +91,7 @@ namespace gum {
        * @throw DuplicateElement
        */
       // ============================================================================
-      void add( const DiscreteVariable& v );
+      virtual void add( const DiscreteVariable& v );
 
       // ============================================================================
       /// removes a dimension, needed for updating the offsets & gaps
@@ -102,7 +102,7 @@ namespace gum {
        * @throw OperationNotAllowed
        */
       // ============================================================================
-      void erase( const DiscreteVariable& v );
+      virtual void erase( const DiscreteVariable& v );
 
       /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
       virtual Size realSize() const;
