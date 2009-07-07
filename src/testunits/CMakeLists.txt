@@ -33,7 +33,6 @@ link_directories(${AGRUM_BINARY_DIR}/lib})
 
 # file(GLOB AGRUM_TESTS *Suite.h)
 file(GLOB AGRUM_TESTS
-  # WTFTestSuite.h
     ArcTestSuite.h
     AVLSearchTreeTestSuite.h
     BayesBallsTestSuite.h
