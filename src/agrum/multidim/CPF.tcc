@@ -97,7 +97,7 @@ namespace gum {
   //               otherwise it is added as a conditioning variable.
   template <typename T_DATA> INLINE
   void 
-  CPF<T_DATA>::add(const DiscreteVariable& var, bool isConditionned)
+  CPF<T_DATA>::add(const DiscreteVariable& var, bool isConditioned)
   {
     MultiDimDecorator<T_DATA>::add(var);
     __condMap->insert(&var, isConditioned);

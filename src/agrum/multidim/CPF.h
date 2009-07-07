@@ -113,7 +113,7 @@ namespace gum {
      *               otherwise it is added as a conditioning variable.
      * @throw DuplicateElement 
      */
-    void add(const DiscreteVariable& var, bool isConditionned);
+    void add(const DiscreteVariable& var, bool isConditioned);
 
     /**
      * Returns true if the variable is a conditioned variable.
