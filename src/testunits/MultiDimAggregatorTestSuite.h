@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <sstream>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/rangeVariable.h>
 #include <agrum/multidim/potential.h>

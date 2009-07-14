@@ -20,7 +20,7 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/inference/lazyPropagation.h>

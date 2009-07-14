@@ -21,7 +21,7 @@
 #include <string>
 #include <sstream>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/generator/BayesNetGenerator.h>
 #include <agrum/BN/inference/BayesBalls.h>
 

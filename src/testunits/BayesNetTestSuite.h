@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>

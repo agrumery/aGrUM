@@ -127,7 +127,7 @@ namespace gum {
      * @throw OutOfBound
      */
     // ============================================================================
-    virtual const std::string label( Idx indice ) const = 0;
+    virtual const std::string label(const Idx indice ) const = 0;
 
     /**
      * Sets the listener of *this.
@@ -175,6 +175,9 @@ namespace gum {
 
     
   protected:
+		/// (protected) Default constructor
+    DiscreteVariable( ) {GUM_CONSTRUCTOR(DiscreteVariable);};
+		
     // ############################################################################
     /// @name Notification methods
     // ############################################################################

@@ -151,6 +151,10 @@ namespace gum {
 
 
   protected:
+		
+		/// (protected) Default constructor
+    LabelizedVariable( ) {GUM_CONSTRUCTOR(LabelizedVariable);};
+		
     // ============================================================================
     /// copies the content of aLDRV
     // ============================================================================

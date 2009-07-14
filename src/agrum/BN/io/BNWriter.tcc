@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Templates implementation of bns/io/gumBNIO.h classes.
+ * @brief Templates implementation of bns/io/gumBNWriter.h classes.
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

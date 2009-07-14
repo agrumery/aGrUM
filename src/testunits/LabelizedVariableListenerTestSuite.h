@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/list.h>
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/multidim/labelizedVariable.h>

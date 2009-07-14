@@ -866,32 +866,6 @@ namespace gum {
     __create( __size );
   }
 
-
-#ifndef NDEBUG
-
-  // ==============================================================================
-  // DUMMY constructor (just for debug purpose)
-  // ==============================================================================
-  template <typename Key, typename Val>
-  HashTable<Key,Val>::HashTable( std::string dummy, Size size_param,
-                                 bool resize_pol, bool key_uniqueness_pol ) :
-      __nodes( 0 ),
-      // size must be >= 2 else we lose all the bits of the hash function
-      __size( 1UL << __hashTableLog2( std::max( 2UL,size_param ) ) ),
-      __nb_elements( 0 ),
-      __resize_policy( resize_pol ),
-      __key_uniqueness_policy( key_uniqueness_pol ),
-      __know_begin_index ( false ),
-      __begin_index ( 0 ),
-      __iterator_list( 0 ) {
-
-    // finalize the creation
-    __create( __size );
-  }
-
-#endif
-
-
   // ==============================================================================
   // copy constructor
   // ==============================================================================

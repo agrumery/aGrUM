@@ -19,16 +19,16 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Definition of abstract classes for file input / output manipulation
+ * @brief Definition of abstract classes for file input  manipulation
  * of Bayesian Networks.
  *
- * Every classe used to read or write a BN from a file, must inherit from
+ * Every classe used to read a BN from a file, must inherit from
  * BNWriter or BNReader.
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  */
-#ifndef GUM_BN_IO_H
-#define GUM_BN_IO_H
+#ifndef GUM_BN_READER_H
+#define GUM_BN_READER_H
 
 #include <iostream>
 #include <string>
@@ -37,56 +37,6 @@
 
 
 namespace gum {
-
-
-  /* ============================================================================ */
-  /* ===                              WRITTERS                                === */
-  /* ============================================================================ */
-  /**
-   * @class BNWriter
-   * @brief Pure virtual class for writting a BN to a file.
-   * @ingroup bn_group
-   *
-   * Every class used to write the content of a Bayesian Network in a stream, or
-   * a file must be a subclass of BNWriter.
-   */
-  template<typename T_DATA>
-
-  class BNWriter {
-  public:
-    /**
-     * Default constructor.
-     */
-    BNWriter();
-
-    /**
-     * Default destructor.
-     */
-    virtual ~BNWriter();
-
-    /**
-     * Writes a Bayesian Network in the ouput stream.
-     *
-     * @param ouput The output stream.
-     * @param bn The Bayesian Network writed in output.
-     * @throws IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn ) =0;
-
-    /**
-     * Writes a Bayesian Network in the file referenced by filePath.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
-     *
-     * @param filePath The path to the file used to write the Bayesian Network.
-     * @param bn The Bayesian Network writen in the file.
-     * @throw IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::string filePath, const BayesNet<T_DATA>& bn ) =0;
-  };
-
-
-  
   /* ============================================================================ */
   /* ===                               READERS                                === */
   /* ============================================================================ */
@@ -97,12 +47,16 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of BNReader.
    */
+	template<typename T_DATA>
   class BNReader {
   public:
     /**
-     * Default constructor.
+     * Constructor
+		 * A reader is defined for reading a defined file. Hence the 2 args of the constructor.
+		 * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
+		 * the BN from inside the reader.
      */
-    BNReader();
+    BNReader(BayesNet<T_DATA>* bn,const std::string& filename );
 
     /**
      * Default destructor.
@@ -112,15 +66,15 @@ namespace gum {
     /**
      * Reads a Bayesian Network from the file referenced by filePath into`
      * parameter bayesNet.
-     * @return Returns true if the parsing went well.
+     * @return Returns the number of error during the parsing (0 if none).
      */
-    virtual bool read( std::string filePath, BayesNet<double>* bayesNet ) =0;
+    virtual int proceed() =0;
   };
 
 
 } /* namespace gum */
 
 
-#include <agrum/BN/io/BNIO.tcc>
+#include <agrum/BN/io/BNReader.tcc>
 
-#endif // GUM_BN_IO_H
+#endif // GUM_BN_READER_H

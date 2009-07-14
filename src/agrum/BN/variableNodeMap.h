@@ -103,6 +103,18 @@ class VariableNodeMap {
     virtual NodeId operator[](const DiscreteVariable& var) const;
 
     /**
+     * Returns a constant reference over a variabe given it's node id.
+     * @throw NotFound If no variable's id matches varId.
+     */
+    virtual const DiscreteVariable& variable(NodeId id) const = 0;
+
+    /**
+     * Return id node from discrete var pointer.
+     * @throw NotFound If no variable matches var.
+     */
+    virtual NodeId nodeId(const DiscreteVariable &var) const = 0;
+
+    /**
      * Copy operator.
      */
     virtual VariableNodeMap& operator=(const VariableNodeMap& source);

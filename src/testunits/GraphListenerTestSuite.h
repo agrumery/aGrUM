@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/graphElements.h>

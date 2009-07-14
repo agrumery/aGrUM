@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cstdlib>
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/AVLSearchTree.h>
 
 class AVLSearchTreeTestSuite : public CxxTest::TestSuite {

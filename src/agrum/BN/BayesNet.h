@@ -114,13 +114,13 @@ class BayesNet: protected VariableNodeMap {
      * Returns a constant reference over a variabe given it's node id.
      * @throw NotFound If no variable's id matches varId.
      */
-    const DiscreteVariable& variable(NodeId id) const;
+    virtual const DiscreteVariable& variable(NodeId id) const;
 
     /**
      * Return id node from discrete var pointer.
      * @throw NotFound If no variable matches var.
      */
-    NodeId nodeId(const DiscreteVariable &var) const;
+    virtual NodeId nodeId(const DiscreteVariable &var) const;
 
     /**
      * Returns the CPT of a variable.

@@ -35,39 +35,39 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef NDEBUG
-#include <agrum/core/hashTable.h>
+#include <map>
 #endif // NDEBUG
 
 
 namespace gum {
 
-
   namespace debug {
-
 #ifndef NDEBUG
+		typedef std::map<std::string,int> DEBUG_MAP;
+
     // this static hashtable only on debug mode.
-    static HashTable<std::string,int>& __sizeof() {
+    static DEBUG_MAP& __sizeof() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static HashTable<std::string,int>* sizeOf=new HashTable<std::string,int>( "dummy constructor for debug purpose" );
+      static DEBUG_MAP* sizeOf=new DEBUG_MAP();
       return *sizeOf;
     }
 
     // this static hashtable only on debug mode.
-    static HashTable<std::string,int>& __creation() {
+    static DEBUG_MAP& __creation() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static HashTable<std::string,int>* creation=new HashTable<std::string,int>( "dummy constructor for debug purpose" );
+      static DEBUG_MAP* creation=new DEBUG_MAP();
       return *creation;
     }
 
-    static HashTable<std::string,int>& __deletion() {
+    static DEBUG_MAP& __deletion() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static HashTable<std::string,int>* deletion=new HashTable<std::string,int>( "dummy constructor for debug purpose" );
+      static DEBUG_MAP* deletion=new DEBUG_MAP();
       return *deletion;
     }
 
@@ -78,33 +78,20 @@ namespace gum {
       return s.erase( 0,s.rfind( "/" )+1 );
     }
 
-#ifdef TRACE_ON
     void __show_trace( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
+#ifdef TRACE_ON
       std::cerr <<std::setw( 20 )<<std::setfill( ' ' )<<__getFile( zeFile )<<"#"<<std::setfill( '0' )  <<  std::setw( 5 )<<std::dec<<zeLine<<" : "<<zeMsg<<" <"<<zeKey<<"> ["<<std::hex<<zePtr<<"]"<<std::dec<<std::endl;
-    }
-
-#else //TRACE_ON
-    void __show_trace( const char *,const char *,long ,const char *,const void * ) { }
-
 #endif //TRACE_ON
+    }
 
     void __inc_creation( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr,int zeSize ) {
 #ifndef NDEBUG
       __show_trace( zeKey,zeFile,zeLine,zeMsg,zePtr );
 
-      try {
-        __creation()[zeKey]++;
-      } catch ( NotFound& ) {
-        __creation().insert( zeKey,1 );
-        __deletion().insert( zeKey,0 );
-
-        if ( zeSize!=-1 )
-          if ( !__sizeof().exists( zeKey ) )
-            __sizeof().insert( zeKey,zeSize );
-      }
-
+      __creation()[zeKey]++;
+			__sizeof()[zeKey]=zeSize;
 #endif //NDEBUG
-    }
+      }
 
     // to handle static element of agrum library
     void __dec_creation( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
@@ -117,13 +104,7 @@ namespace gum {
     void __inc_deletion( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
 #ifndef NDEBUG
       __show_trace( zeKey,zeFile,zeLine,zeMsg,zePtr );
-
-      try {
-        __deletion()[zeKey]++;
-      } catch ( NotFound& ) {
-        __deletion().insert( zeKey,1 );
-      }
-
+      __deletion()[zeKey]++;
 #endif //NDEBUG
     }
 
@@ -142,17 +123,17 @@ namespace gum {
       // list of created objects
       std::vector<std::string> res;
 
-      for ( HashTable<std::string,int>::const_iterator xx = __creation().begin(); xx != __creation().end();++xx ) {
+      for ( DEBUG_MAP::const_iterator xx = __creation().begin(); xx != __creation().end();++xx ) {
         std::stringstream stream;
-        int zeCreatedObjs=*xx;
+        int zeCreatedObjs=xx->second;
         int zeDeletedObjts=-1;
-        int size=__sizeof().getWithDefault( xx.key(),-1 );
-        stream<<"| "<<std::setw( 50 )<<xx.key()<<" | "<<std::setw( 5 )<<size<<" o | "<<std::setw( 5 )<<zeCreatedObjs<<" | ";
+        int size=__sizeof()[xx->first];
+        stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 5 )<<size<<" o | "<<std::setw( 5 )<<zeCreatedObjs<<" | ";
 
         if ( size>0 ) total_size+=zeCreatedObjs*size;
 
         try {
-          zeDeletedObjts=__deletion()[xx.key()];
+          zeDeletedObjts=__deletion()[xx->first];
           stream<<std::setw( 5 )<<zeDeletedObjts;
         } catch ( NotFound& ) {
           stream<<std::setw( 5 )<<"?????";
@@ -166,14 +147,14 @@ namespace gum {
       }
 
       // list of deleted objects, but not created (?)
-      for ( HashTable<std::string,int>::const_iterator xx = __deletion().begin(); xx != __deletion().end();++xx ) {
+      for ( DEBUG_MAP::const_iterator xx = __deletion().begin(); xx != __deletion().end();++xx ) {
         try {
-          __creation()[xx.key()];
+          __creation()[xx->first];
         } catch ( NotFound& ) {
           std::stringstream stream;
-          stream<<"| "<<std::setw( 50 )<<xx.key()<<" | "<<std::setw( 7 )<<__sizeof()[xx.key()]<<" | "<<std::setw( 5 )<<"?????"<<" | "<<std::setw( 5 )<<*xx<<" |<--- failed";
+          stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 7 )<<__sizeof()[xx->first]<<" | "<<std::setw( 5 )<<"?????"<<" | "<<std::setw( 5 )<<xx->second<<" |<--- failed";
           res.push_back( stream.str() );
-          nb_err+=*xx;
+          nb_err+=xx->second;
         }
       }
 

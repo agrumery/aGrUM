@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <sstream>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/labelizedVariable.h>

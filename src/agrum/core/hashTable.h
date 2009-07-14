@@ -460,14 +460,6 @@ namespace gum {
               bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
               bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
 
-    #ifndef NDEBUG
-    HashTable( std::string dummy,
-               Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
-               bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-               bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
-    #endif //NDEBUG
-
-    
     // ============================================================================
     /// copy constructor
     /** This creates a new hashtable the content of which is

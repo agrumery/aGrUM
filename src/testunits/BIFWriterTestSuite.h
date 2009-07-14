@@ -20,10 +20,10 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIFIO.h>
+#include <agrum/BN/io/BIF/BIFWriter.h>
 
 #define GET_PATH_STR(x) ("../../../src/testunits/resources/" #x)
 

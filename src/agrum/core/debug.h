@@ -86,7 +86,7 @@ namespace gum {
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_CPY, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONS_CPY
 #define GUM_CONS_CPY_BASIC(x) {                                               \
-      gum::debug::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this);}
+      gum::debug::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this,sizeof(x));}
 #define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR

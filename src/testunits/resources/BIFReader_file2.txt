@@ -3,19 +3,19 @@ network aGrUM_BN {
    property author aGrUM;
 }
 
-variable 2 {
+variable n2 {
    type discrete[2] {0, 1};
 }
 
-variable 1 {
+variable n1 {
    type discrete[2] {0, 1};
 }
 
-probability (2) {
+probability (n2) {
   default 0.3 0.7;
 }
 
-probability (1) {
+probability (n1) {
   default 0.2 0.8;
 }
 

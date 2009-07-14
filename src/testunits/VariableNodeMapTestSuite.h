@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/labelizedVariable.h>

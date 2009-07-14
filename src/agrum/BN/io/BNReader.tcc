@@ -17,34 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
-#include <agrum/BN/io/BIFIO.h>
-// ============================================================================
+/** @file
+ * @brief Templates implementation of bns/io/gumBNReader.h classes.
+ *
+ * @author Lionel Torti & Pierre-Henri Wuillemin
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
 namespace gum {
 
-// Default constructor
-BIFReader::BIFReader() {
-  GUM_CONSTRUCTOR( BIFReader );
-}
 
-// Destructor
-BIFReader::~BIFReader() {
-  GUM_DESTRUCTOR( BIFReader );
-}
-
-// Reads a Bayesian Network from the file referenced by filePath into`
-// parameter bayesNet.
-// @return Returns true if the parsing went well.
-bool
-BIFReader::read( std::string filePath, BayesNet<double>* bayesNet )
-{
-  gum_bif::BIFDriver driver(bayesNet);
-  try {
-    driver.parseFile(filePath);
-    return true;
-  } catch (OperationNotAllowed&) {
-    return false;
+  /* ============================================================================ */
+  /* ===                           GUM_BN_WRITTER                             === */
+  /* ============================================================================ */
+  template<typename T_DATA> INLINE
+  BNReader<T_DATA>:: BNReader(BayesNet<T_DATA>* bn,const std::string& filename ) {
+    GUM_CONSTRUCTOR( BNReader );
   }
-}
+
+  template<typename T_DATA> INLINE
+  BNReader<T_DATA>::~BNReader() {
+    GUM_DESTRUCTOR( BNReader );
+  }
+
+
 } /* namespace gum */
-// ============================================================================
+
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

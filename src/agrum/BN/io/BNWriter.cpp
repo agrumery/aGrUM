@@ -18,31 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Outlined implementation of gumBNIO
+ * @brief Outlined implementation of gumBNWriter
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  */
-#include <agrum/BN/io/BNIO.h>
+#include <agrum/BN/io/BNWriter.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
-namespace gum {
-
-
-  /* ============================================================================ */
-  /* ===                           GUM_BN_READER                              === */
-  /* ============================================================================ */
-  BNReader::BNReader() {
-    GUM_CONSTRUCTOR( BNReader );
-  }
-
-  BNReader::~BNReader() {
-    GUM_DESTRUCTOR( BNReader );
-  }
-
-  
-} /* namespace gum */
-
-  
 #endif // DOXYGEN_SHOULD_SKIP_THIS

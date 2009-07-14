@@ -1,172 +1,172 @@
 network "Unknown" {
 }
 variable N0_7muVerMo {
-  type discrete [ 4 ] = { StrongUp, WeakUp, Neutral, Down };
+  type discrete [ 4 ] { StrongUp, WeakUp, Neutral, Down };
 }
 variable SubjVertMo {
-  type discrete [ 4 ] = { StronUp, WeakUp, Neutral, Down };
+  type discrete [ 4 ] { StronUp, WeakUp, Neutral, Down };
 }
 variable QGVertMotion {
-  type discrete [ 4 ] = { StrongUp, WeakUp, Neutral, Down };
+  type discrete [ 4 ] { StrongUp, WeakUp, Neutral, Down };
 }
 variable CombVerMo {
-  type discrete [ 4 ] = { StrongUp, WeakUp, Neutral, Down };
+  type discrete [ 4 ] { StrongUp, WeakUp, Neutral, Down };
 }
 variable AreaMeso_ALS {
-  type discrete [ 4 ] = { StrongUp, WeakUp, Neutral, Down };
+  type discrete [ 4 ] { StrongUp, WeakUp, Neutral, Down };
 }
 variable SatContMoist {
-  type discrete [ 4 ] = { VeryWet, Wet, Neutral, Dry };
+  type discrete [ 4 ] { VeryWet, Wet, Neutral, Dry };
 }
 variable RaoContMoist {
-  type discrete [ 4 ] = { VeryWet, Wet, Neutral, Dry };
+  type discrete [ 4 ] { VeryWet, Wet, Neutral, Dry };
 }
 variable CombMoisture {
-  type discrete [ 4 ] = { VeryWet, Wet, Neutral, Dry };
+  type discrete [ 4 ] { VeryWet, Wet, Neutral, Dry };
 }
 variable AreaMoDryAir {
-  type discrete [ 4 ] = { VeryWet, Wet, Neutral, Dry };
+  type discrete [ 4 ] { VeryWet, Wet, Neutral, Dry };
 }
 variable VISCloudCov {
-  type discrete [ 3 ] = { Cloudy, PC, Clear };
+  type discrete [ 3 ] { Cloudy, PC, Clear };
 }
 variable IRCloudCover {
-  type discrete [ 3 ] = { Cloudy, PC, Clear };
+  type discrete [ 3 ] { Cloudy, PC, Clear };
 }
 variable CombClouds {
-  type discrete [ 3 ] = { Cloudy, PC, Clear };
+  type discrete [ 3 ] { Cloudy, PC, Clear };
 }
 variable CldShadeOth {
-  type discrete [ 3 ] = { Cloudy, PC, Clear };
+  type discrete [ 3 ] { Cloudy, PC, Clear };
 }
 variable AMInstabMt {
-  type discrete [ 3 ] = { None, Weak, Strong };
+  type discrete [ 3 ] { None, Weak, Strong };
 }
 variable InsInMt {
-  type discrete [ 3 ] = { None, Weak, Strong };
+  type discrete [ 3 ] { None, Weak, Strong };
 }
 variable WndHodograph {
-  type discrete [ 4 ] = { DCVZFavor, StrongWest, Westerly, Other };
+  type discrete [ 4 ] { DCVZFavor, StrongWest, Westerly, Other };
 }
 variable OutflowFrMt {
-  type discrete [ 3 ] = { None, Weak, Strong };
+  type discrete [ 3 ] { None, Weak, Strong };
 }
 variable MorningBound {
-  type discrete [ 3 ] = { None, Weak, Strong };
+  type discrete [ 3 ] { None, Weak, Strong };
 }
 variable Boundaries {
-  type discrete [ 3 ] = { None, Weak, Strong };
+  type discrete [ 3 ] { None, Weak, Strong };
 }
 variable CldShadeConv {
-  type discrete [ 3 ] = { None, Some, Marked };
+  type discrete [ 3 ] { None, Some, Marked };
 }
 variable CompPlFcst {
-  type discrete [ 3 ] = { IncCapDecIns, LittleChange, DecCapIncIns };
+  type discrete [ 3 ] { IncCapDecIns, LittleChange, DecCapIncIns };
 }
 variable CapChange {
-  type discrete [ 3 ] = { Decreasing, LittleChange, Increasing };
+  type discrete [ 3 ] { Decreasing, LittleChange, Increasing };
 }
 variable LoLevMoistAd {
-  type discrete [ 4 ] = { StrongPos, WeakPos, Neutral, Negative };
+  type discrete [ 4 ] { StrongPos, WeakPos, Neutral, Negative };
 }
 variable InsChange {
-  type discrete [ 3 ] = { Decreasing, LittleChange, Increasing };
+  type discrete [ 3 ] { Decreasing, LittleChange, Increasing };
 }
 variable MountainFcst {
-  type discrete [ 3 ] = { XNIL, SIG, SVR };
+  type discrete [ 3 ] { XNIL, SIG, SVR };
 }
 variable Date {
-  type discrete [ 6 ] = { May15_Jun14, Jun15_Jul1, Jul2_Jul15, Jul16_Aug10, Aug11_Aug20, Aug20_Sep15 };
+  type discrete [ 6 ] { May15_Jun14, Jun15_Jul1, Jul2_Jul15, Jul16_Aug10, Aug11_Aug20, Aug20_Sep15 };
 }
 variable Scenario {
-  type discrete [ 11 ] = { A, B, C, D, E, F, G, H, I, J, K };
+  type discrete [ 11 ] { A, B, C, D, E, F, G, H, I, J, K };
 }
 variable ScenRelAMCIN {
-  type discrete [ 2 ] = { AB, CThruK };
+  type discrete [ 2 ] { AB, CThruK };
 }
 variable MorningCIN {
-  type discrete [ 4 ] = { None, PartInhibit, Stifling, TotalInhibit };
+  type discrete [ 4 ] { None, PartInhibit, Stifling, TotalInhibit };
 }
 variable AMCINInScen {
-  type discrete [ 3 ] = { LessThanAve, Average, MoreThanAve };
+  type discrete [ 3 ] { LessThanAve, Average, MoreThanAve };
 }
 variable CapInScen {
-  type discrete [ 3 ] = { LessThanAve, Average, MoreThanAve };
+  type discrete [ 3 ] { LessThanAve, Average, MoreThanAve };
 }
 variable ScenRelAMIns {
-  type discrete [ 6 ] = { ABI, CDEJ, F, G, H, K };
+  type discrete [ 6 ] { ABI, CDEJ, F, G, H, K };
 }
 variable LIfr12ZDENSd {
-  type discrete [ 4 ] = { LIGt0, N1GtLIGt_4, N5GtLIGt_8, LILt_8 };
+  type discrete [ 4 ] { LIGt0, N1GtLIGt_4, N5GtLIGt_8, LILt_8 };
 }
 variable AMDewptCalPl {
-  type discrete [ 3 ] = { Instability, Neutral, Stability };
+  type discrete [ 3 ] { Instability, Neutral, Stability };
 }
 variable AMInsWliScen {
-  type discrete [ 3 ] = { LessUnstable, Average, MoreUnstable };
+  type discrete [ 3 ] { LessUnstable, Average, MoreUnstable };
 }
 variable InsSclInScen {
-  type discrete [ 3 ] = { LessUnstable, Average, MoreUnstable };
+  type discrete [ 3 ] { LessUnstable, Average, MoreUnstable };
 }
 variable ScenRel3_4 {
-  type discrete [ 5 ] = { ACEFK, B, D, GJ, HI };
+  type discrete [ 5 ] { ACEFK, B, D, GJ, HI };
 }
 variable LatestCIN {
-  type discrete [ 4 ] = { None, PartInhibit, Stifling, TotalInhibit };
+  type discrete [ 4 ] { None, PartInhibit, Stifling, TotalInhibit };
 }
 variable LLIW {
-  type discrete [ 4 ] = { Unfavorable, Weak, Moderate, Strong };
+  type discrete [ 4 ] { Unfavorable, Weak, Moderate, Strong };
 }
 variable CurPropConv {
-  type discrete [ 4 ] = { None, Slight, Moderate, Strong };
+  type discrete [ 4 ] { None, Slight, Moderate, Strong };
 }
 variable ScnRelPlFcst {
-  type discrete [ 11 ] = { A, B, C, D, E, F, G, H, I, J, K };
+  type discrete [ 11 ] { A, B, C, D, E, F, G, H, I, J, K };
 }
 variable PlainsFcst {
-  type discrete [ 3 ] = { XNIL, SIG, SVR };
+  type discrete [ 3 ] { XNIL, SIG, SVR };
 }
 variable N34StarFcst {
-  type discrete [ 3 ] = { XNIL, SIG, SVR };
+  type discrete [ 3 ] { XNIL, SIG, SVR };
 }
 variable R5Fcst {
-  type discrete [ 3 ] = { XNIL, SIG, SVR };
+  type discrete [ 3 ] { XNIL, SIG, SVR };
 }
 variable Dewpoints {
-  type discrete [ 7 ] = { LowEvrywhere, LowAtStation, LowSHighN, LowNHighS, LowMtsHighPl, HighEvrywher, Other };
+  type discrete [ 7 ] { LowEvrywhere, LowAtStation, LowSHighN, LowNHighS, LowMtsHighPl, HighEvrywher, Other };
 }
 variable LowLLapse {
-  type discrete [ 4 ] = { CloseToDryAd, Steep, ModerateOrLe, Stable };
+  type discrete [ 4 ] { CloseToDryAd, Steep, ModerateOrLe, Stable };
 }
 variable MeanRH {
-  type discrete [ 3 ] = { VeryMoist, Average, Dry };
+  type discrete [ 3 ] { VeryMoist, Average, Dry };
 }
 variable MidLLapse {
-  type discrete [ 3 ] = { CloseToDryAd, Steep, ModerateOrLe };
+  type discrete [ 3 ] { CloseToDryAd, Steep, ModerateOrLe };
 }
 variable MvmtFeatures {
-  type discrete [ 4 ] = { StrongFront, MarkedUpper, OtherRapid, NoMajor };
+  type discrete [ 4 ] { StrongFront, MarkedUpper, OtherRapid, NoMajor };
 }
 variable RHRatio {
-  type discrete [ 3 ] = { MoistMDryL, DryMMoistL, Other };
+  type discrete [ 3 ] { MoistMDryL, DryMMoistL, Other };
 }
 variable SfcWndShfDis {
-  type discrete [ 7 ] = { DenvCyclone, E_W_N, E_W_S, MovingFtorOt, DryLine, None, Other };
+  type discrete [ 7 ] { DenvCyclone, E_W_N, E_W_S, MovingFtorOt, DryLine, None, Other };
 }
 variable SynForcng {
-  type discrete [ 5 ] = { SigNegative, NegToPos, SigPositive, PosToNeg, LittleChange };
+  type discrete [ 5 ] { SigNegative, NegToPos, SigPositive, PosToNeg, LittleChange };
 }
 variable TempDis {
-  type discrete [ 4 ] = { QStationary, Moving, None, Other };
+  type discrete [ 4 ] { QStationary, Moving, None, Other };
 }
 variable WindAloft {
-  type discrete [ 4 ] = { LV, SWQuad, NWQuad, AllElse };
+  type discrete [ 4 ] { LV, SWQuad, NWQuad, AllElse };
 }
 variable WindFieldMt {
-  type discrete [ 2 ] = { Westerly, LVorOther };
+  type discrete [ 2 ] { Westerly, LVorOther };
 }
 variable WindFieldPln {
-  type discrete [ 6 ] = { LV, DenvCyclone, LongAnticyc, E_NE, SEQuad, WidespdDnsl };
+  type discrete [ 6 ] { LV, DenvCyclone, LongAnticyc, E_NE, SEQuad, WidespdDnsl };
 }
 probability ( MvmtFeatures | Scenario ) {
   (A) 0.25, 0.55, 0.2, 0;
@@ -180,13 +180,13 @@ probability ( MvmtFeatures | Scenario ) {
   (I) 0.2, 0.1, 0.2, 0.5;
   (J) 0.04, 0, 0.04, 0.92;
   (K) 0.5, 0.35, 0.09, 0.06;
-};
+}
 probability ( AMDewptCalPl ) {
   table 0.3, 0.25, 0.45;
-};
+}
 probability ( MorningBound ) {
   table 0.5, 0.35, 0.15;
-};
+}
 probability ( MidLLapse | Scenario ) {
   (A) 0.25, 0.55, 0.2;
   (B) 0.25, 0.5, 0.25;
@@ -199,7 +199,7 @@ probability ( MidLLapse | Scenario ) {
   (I) 0.41, 0.29, 0.3;
   (J) 0.23, 0.42, 0.35;
   (K) 0.16, 0.28, 0.56;
-};
+}
 probability ( InsSclInScen | AMInsWliScen, InsChange ) {
   (LessUnstable, Decreasing) 1, 0, 0;
   (LessUnstable, LittleChange) 0.9, 0.1, 0;
@@ -210,7 +210,7 @@ probability ( InsSclInScen | AMInsWliScen, InsChange ) {
   (MoreUnstable, Decreasing) 0.25, 0.35, 0.4;
   (MoreUnstable, LittleChange) 0, 0.1, 0.9;
   (MoreUnstable, Increasing) 0, 0, 1;
-};
+}
 probability ( CapInScen | AMCINInScen, CapChange ) {
   (LessThanAve, Decreasing) 1, 0, 0;
   (LessThanAve, LittleChange) 0.98, 0.02, 0;
@@ -221,15 +221,15 @@ probability ( CapInScen | AMCINInScen, CapChange ) {
   (MoreThanAve, Decreasing) 0.3, 0.35, 0.35;
   (MoreThanAve, LittleChange) 0, 0.02, 0.98;
   (MoreThanAve, Increasing) 0, 0, 1;
-};
+}
 probability ( LoLevMoistAd ) {
   table 0.12, 0.28, 0.3, 0.3;
-};
+}
 probability ( CapChange | CompPlFcst ) {
   (IncCapDecIns) 0, 0, 1;
   (LittleChange) 0, 1, 0;
   (DecCapIncIns) 1, 0, 0;
-};
+}
 probability ( CldShadeOth | AreaMoDryAir, AreaMeso_ALS, CombClouds ) {
   (VeryWet, StrongUp, Cloudy) 1, 0, 0;
   (VeryWet, StrongUp, PC) 0.85, 0.15, 0;
@@ -279,10 +279,10 @@ probability ( CldShadeOth | AreaMoDryAir, AreaMeso_ALS, CombClouds ) {
   (Dry, Down, Cloudy) 0.42, 0.55, 0.03;
   (Dry, Down, PC) 0.05, 0.65, 0.3;
   (Dry, Down, Clear) 0, 0, 1;
-};
+}
 probability ( QGVertMotion ) {
   table 0.15, 0.15, 0.5, 0.2;
-};
+}
 probability ( AMCINInScen | ScenRelAMCIN, MorningCIN ) {
   (AB, None) 1, 0, 0;
   (AB, PartInhibit) 0.6, 0.37, 0.03;
@@ -292,13 +292,13 @@ probability ( AMCINInScen | ScenRelAMCIN, MorningCIN ) {
   (CThruK, PartInhibit) 0.3, 0.6, 0.1;
   (CThruK, Stifling) 0.01, 0.4, 0.59;
   (CThruK, TotalInhibit) 0, 0.03, 0.97;
-};
+}
 probability ( MorningCIN ) {
   table 0.15, 0.57, 0.2, 0.08;
-};
+}
 probability ( Date ) {
   table 0.254098, 0.131148, 0.106557, 0.213115, 0.07377, 0.221312;
-};
+}
 probability ( CldShadeConv | InsInMt, WndHodograph ) {
   (None, DCVZFavor) 1, 0, 0;
   (None, StrongWest) 1, 0, 0;
@@ -312,10 +312,10 @@ probability ( CldShadeConv | InsInMt, WndHodograph ) {
   (Strong, StrongWest) 0, 0.2, 0.8;
   (Strong, Westerly) 0.1, 0.5, 0.4;
   (Strong, Other) 0.5, 0.38, 0.12;
-};
+}
 probability ( AMInstabMt ) {
   table 0.333333, 0.333333, 0.333334;
-};
+}
 probability ( AreaMoDryAir | AreaMeso_ALS, CombMoisture ) {
   (StrongUp, VeryWet) 0.99, 0.01, 0, 0;
   (StrongUp, Wet) 0.7, 0.29, 0.01, 0;
@@ -333,7 +333,7 @@ probability ( AreaMoDryAir | AreaMeso_ALS, CombMoisture ) {
   (Down, Wet) 0.05, 0.4, 0.45, 0.1;
   (Down, Neutral) 0, 0.05, 0.5, 0.45;
   (Down, Dry) 0, 0, 0.01, 0.99;
-};
+}
 probability ( Dewpoints | Scenario ) {
   (A) 0.04, 0.05, 0.15, 0.05, 0.19, 0.3, 0.22;
   (B) 0.05, 0.07, 0.15, 0.1, 0.3, 0.27, 0.06;
@@ -346,7 +346,7 @@ probability ( Dewpoints | Scenario ) {
   (I) 0, 0.02, 0.7, 0, 0.2, 0.04, 0.04;
   (J) 0.1, 0.45, 0.1, 0.05, 0.26, 0.02, 0.02;
   (K) 0.1, 0.1, 0.1, 0.2, 0.05, 0.1, 0.35;
-};
+}
 probability ( PlainsFcst | CurPropConv, InsSclInScen, CapInScen, ScnRelPlFcst ) {
   (None, LessUnstable, LessThanAve, A) 0.75, 0.2, 0.05;
   (None, LessUnstable, LessThanAve, B) 0.75, 0.2, 0.05;
@@ -744,10 +744,10 @@ probability ( PlainsFcst | CurPropConv, InsSclInScen, CapInScen, ScnRelPlFcst ) 
   (Strong, MoreUnstable, MoreThanAve, I) 0.2, 0.32, 0.48;
   (Strong, MoreUnstable, MoreThanAve, J) 0.3, 0.28, 0.42;
   (Strong, MoreUnstable, MoreThanAve, K) 0.38, 0.32, 0.3;
-};
+}
 probability ( LLIW ) {
   table 0.12, 0.32, 0.38, 0.18;
-};
+}
 probability ( InsChange | LoLevMoistAd, CompPlFcst ) {
   (StrongPos, IncCapDecIns) 0, 0.05, 0.95;
   (StrongPos, LittleChange) 0, 0.12, 0.88;
@@ -761,10 +761,10 @@ probability ( InsChange | LoLevMoistAd, CompPlFcst ) {
   (Negative, IncCapDecIns) 0.5, 0.4, 0.1;
   (Negative, LittleChange) 0.8, 0.16, 0.04;
   (Negative, DecCapIncIns) 0.9, 0.09, 0.01;
-};
+}
 probability ( IRCloudCover ) {
   table 0.15, 0.45, 0.4;
-};
+}
 probability ( SfcWndShfDis | Scenario ) {
   (A) 0.65, 0.05, 0.1, 0.08, 0.04, 0.07, 0.01;
   (B) 0.65, 0.05, 0.1, 0.1, 0.02, 0.07, 0.01;
@@ -777,10 +777,10 @@ probability ( SfcWndShfDis | Scenario ) {
   (I) 0.02, 0.1, 0.5, 0.3, 0.01, 0.02, 0.05;
   (J) 0.06, 0.08, 0.04, 0.02, 0.6, 0.14, 0.06;
   (K) 0.05, 0.13, 0.05, 0.39, 0.13, 0.15, 0.1;
-};
+}
 probability ( LatestCIN ) {
   table 0.4, 0.4, 0.15, 0.05;
-};
+}
 probability ( CompPlFcst | Boundaries, CldShadeConv, AreaMeso_ALS, CldShadeOth ) {
   (None, None, StrongUp, Cloudy) 0.4, 0.35, 0.25;
   (None, None, StrongUp, PC) 0.1, 0.35, 0.55;
@@ -890,10 +890,10 @@ probability ( CompPlFcst | Boundaries, CldShadeConv, AreaMeso_ALS, CldShadeOth )
   (Strong, Marked, Down, Cloudy) 0.7, 0.24, 0.06;
   (Strong, Marked, Down, PC) 0.65, 0.28, 0.07;
   (Strong, Marked, Down, Clear) 0.6, 0.3, 0.1;
-};
+}
 probability ( N0_7muVerMo ) {
   table 0.25, 0.25, 0.25, 0.25;
-};
+}
 probability ( RHRatio | Scenario ) {
   (A) 0.05, 0.5, 0.45;
   (B) 0.1, 0.5, 0.4;
@@ -906,7 +906,7 @@ probability ( RHRatio | Scenario ) {
   (I) 0.1, 0.7, 0.2;
   (J) 0.4, 0.4, 0.2;
   (K) 0.15, 0.45, 0.4;
-};
+}
 probability ( ScenRelAMIns | Scenario ) {
   (A) 1, 0, 0, 0, 0, 0;
   (B) 1, 0, 0, 0, 0, 0;
@@ -919,7 +919,7 @@ probability ( ScenRelAMIns | Scenario ) {
   (I) 1, 0, 0, 0, 0, 0;
   (J) 0, 1, 0, 0, 0, 0;
   (K) 0, 0, 0, 0, 0, 1;
-};
+}
 probability ( ScenRelAMCIN | Scenario ) {
   (A) 1, 0;
   (B) 1, 0;
@@ -932,7 +932,7 @@ probability ( ScenRelAMCIN | Scenario ) {
   (I) 0, 1;
   (J) 0, 1;
   (K) 0, 1;
-};
+}
 probability ( Boundaries | OutflowFrMt, WndHodograph, MorningBound ) {
   (None, DCVZFavor, None) 0.5, 0.48, 0.02;
   (None, DCVZFavor, Weak) 0.3, 0.5, 0.2;
@@ -970,7 +970,7 @@ probability ( Boundaries | OutflowFrMt, WndHodograph, MorningBound ) {
   (Strong, Other, None) 0.02, 0.73, 0.25;
   (Strong, Other, Weak) 0.01, 0.5, 0.49;
   (Strong, Other, Strong) 0.01, 0.2, 0.79;
-};
+}
 probability ( InsInMt | CldShadeOth, AMInstabMt ) {
   (Cloudy, None) 0.9, 0.1, 0;
   (Cloudy, Weak) 0.01, 0.4, 0.59;
@@ -981,19 +981,19 @@ probability ( InsInMt | CldShadeOth, AMInstabMt ) {
   (Clear, None) 0.5, 0.35, 0.15;
   (Clear, Weak) 0, 0.15, 0.85;
   (Clear, Strong) 0, 0, 1;
-};
+}
 probability ( RaoContMoist ) {
   table 0.15, 0.2, 0.4, 0.25;
-};
+}
 probability ( AreaMeso_ALS | CombVerMo ) {
   (StrongUp) 1, 0, 0, 0;
   (WeakUp) 0, 1, 0, 0;
   (Neutral) 0, 0, 1, 0;
   (Down) 0, 0, 0, 1;
-};
+}
 probability ( SubjVertMo ) {
   table 0.15, 0.15, 0.5, 0.2;
-};
+}
 probability ( WindFieldPln | Scenario ) {
   (A) 0.05, 0.6, 0.02, 0.1, 0.23, 0;
   (B) 0.08, 0.6, 0.02, 0.1, 0.2, 0;
@@ -1006,7 +1006,7 @@ probability ( WindFieldPln | Scenario ) {
   (I) 0.2, 0.3, 0.05, 0.37, 0.07, 0.01;
   (J) 0.6, 0.08, 0.07, 0.03, 0.2, 0.02;
   (K) 0.1, 0.05, 0.1, 0.05, 0.2, 0.5;
-};
+}
 probability ( CurPropConv | LatestCIN, LLIW ) {
   (None, Unfavorable) 0.7, 0.28, 0.02, 0;
   (None, Weak) 0.1, 0.5, 0.3, 0.1;
@@ -1024,7 +1024,7 @@ probability ( CurPropConv | LatestCIN, LLIW ) {
   (TotalInhibit, Weak) 0.95, 0.05, 0, 0;
   (TotalInhibit, Moderate) 0.75, 0.2, 0.05, 0;
   (TotalInhibit, Strong) 0.5, 0.35, 0.1, 0.05;
-};
+}
 probability ( TempDis | Scenario ) {
   (A) 0.13, 0.15, 0.1, 0.62;
   (B) 0.15, 0.15, 0.25, 0.45;
@@ -1037,7 +1037,7 @@ probability ( TempDis | Scenario ) {
   (I) 0.8, 0.19, 0, 0.01;
   (J) 0.1, 0.05, 0.4, 0.45;
   (K) 0.2, 0.3, 0.3, 0.2;
-};
+}
 probability ( SynForcng | Scenario ) {
   (A) 0.35, 0.25, 0, 0.35, 0.05;
   (B) 0.06, 0.1, 0.06, 0.3, 0.48;
@@ -1050,7 +1050,7 @@ probability ( SynForcng | Scenario ) {
   (I) 0.25, 0.2, 0.15, 0.2, 0.2;
   (J) 0.01, 0.05, 0.01, 0.05, 0.88;
   (K) 0.2, 0.2, 0.35, 0.15, 0.1;
-};
+}
 probability ( MeanRH | Scenario ) {
   (A) 0.33, 0.5, 0.17;
   (B) 0.4, 0.4, 0.2;
@@ -1063,7 +1063,7 @@ probability ( MeanRH | Scenario ) {
   (I) 0.2, 0.45, 0.35;
   (J) 0.05, 0.55, 0.4;
   (K) 0.2, 0.4, 0.4;
-};
+}
 probability ( LowLLapse | Scenario ) {
   (A) 0.04, 0.25, 0.35, 0.36;
   (B) 0.07, 0.31, 0.31, 0.31;
@@ -1076,10 +1076,10 @@ probability ( LowLLapse | Scenario ) {
   (I) 0.22, 0.4, 0.3, 0.08;
   (J) 0.13, 0.4, 0.35, 0.12;
   (K) 0.09, 0.4, 0.33, 0.18;
-};
+}
 probability ( WndHodograph ) {
   table 0.3, 0.25, 0.25, 0.2;
-};
+}
 probability ( CombMoisture | SatContMoist, RaoContMoist ) {
   (VeryWet, VeryWet) 0.9, 0.1, 0, 0;
   (VeryWet, Wet) 0.6, 0.35, 0.05, 0;
@@ -1097,10 +1097,10 @@ probability ( CombMoisture | SatContMoist, RaoContMoist ) {
   (Dry, Wet) 0.25, 0.25, 0.25, 0.25;
   (Dry, Neutral) 0.25, 0.25, 0.25, 0.25;
   (Dry, Dry) 0.25, 0.25, 0.25, 0.25;
-};
+}
 probability ( LIfr12ZDENSd ) {
   table 0.1, 0.52, 0.3, 0.08;
-};
+}
 probability ( Scenario | Date ) {
   (May15_Jun14) 0.1, 0.16, 0.1, 0.08, 0.08, 0.01, 0.08, 0.1, 0.09, 0.03, 0.17;
   (Jun15_Jul1) 0.05, 0.16, 0.09, 0.09, 0.12, 0.02, 0.13, 0.06, 0.07, 0.11, 0.1;
@@ -1108,7 +1108,7 @@ probability ( Scenario | Date ) {
   (Jul16_Aug10) 0.04, 0.13, 0.09, 0.07, 0.2, 0.08, 0.06, 0.05, 0.07, 0.13, 0.08;
   (Aug11_Aug20) 0.04, 0.11, 0.1, 0.07, 0.17, 0.05, 0.1, 0.05, 0.07, 0.14, 0.1;
   (Aug20_Sep15) 0.05, 0.11, 0.1, 0.08, 0.11, 0.02, 0.11, 0.06, 0.08, 0.11, 0.17;
-};
+}
 probability ( N34StarFcst | ScenRel3_4, PlainsFcst ) {
   (ACEFK, XNIL) 0.94, 0.05, 0.01;
   (ACEFK, SIG) 0.06, 0.89, 0.05;
@@ -1125,10 +1125,10 @@ probability ( N34StarFcst | ScenRel3_4, PlainsFcst ) {
   (HI, XNIL) 0.99, 0.01, 0;
   (HI, SIG) 0.09, 0.9, 0.01;
   (HI, SVR) 0.03, 0.12, 0.85;
-};
+}
 probability ( SatContMoist ) {
   table 0.15, 0.2, 0.4, 0.25;
-};
+}
 probability ( WindFieldMt | Scenario ) {
   (A) 0.8, 0.2;
   (B) 0.35, 0.65;
@@ -1141,7 +1141,7 @@ probability ( WindFieldMt | Scenario ) {
   (I) 0.5, 0.5;
   (J) 0.01, 0.99;
   (K) 0.7, 0.3;
-};
+}
 probability ( ScnRelPlFcst | Scenario ) {
   (A) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   (B) 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -1154,7 +1154,7 @@ probability ( ScnRelPlFcst | Scenario ) {
   (I) 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0;
   (J) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0;
   (K) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
-};
+}
 probability ( AMInsWliScen | ScenRelAMIns, LIfr12ZDENSd, AMDewptCalPl ) {
   (ABI, LIGt0, Instability) 0.6, 0.3, 0.1;
   (ABI, LIGt0, Neutral) 0.85, 0.13, 0.02;
@@ -1228,12 +1228,12 @@ probability ( AMInsWliScen | ScenRelAMIns, LIfr12ZDENSd, AMDewptCalPl ) {
   (K, LILt_8, Instability) 0.02, 0.1, 0.88;
   (K, LILt_8, Neutral) 0.04, 0.16, 0.8;
   (K, LILt_8, Stability) 0.1, 0.25, 0.65;
-};
+}
 probability ( MountainFcst | InsInMt ) {
   (None) 1, 0, 0;
   (Weak) 0.48, 0.5, 0.02;
   (Strong) 0.2, 0.5, 0.3;
-};
+}
 probability ( OutflowFrMt | InsInMt, WndHodograph ) {
   (None, DCVZFavor) 1, 0, 0;
   (None, StrongWest) 1, 0, 0;
@@ -1247,10 +1247,10 @@ probability ( OutflowFrMt | InsInMt, WndHodograph ) {
   (Strong, StrongWest) 0.01, 0.15, 0.84;
   (Strong, Westerly) 0.1, 0.25, 0.65;
   (Strong, Other) 0.6, 0.3, 0.1;
-};
+}
 probability ( VISCloudCov ) {
   table 0.1, 0.5, 0.4;
-};
+}
 probability ( WindAloft | Scenario ) {
   (A) 0, 0.95, 0.01, 0.04;
   (B) 0.2, 0.3, 0.2, 0.3;
@@ -1263,7 +1263,7 @@ probability ( WindAloft | Scenario ) {
   (I) 0.2, 0.41, 0.1, 0.29;
   (J) 0.96, 0, 0, 0.04;
   (K) 0.03, 0.08, 0.33, 0.56;
-};
+}
 probability ( R5Fcst | MountainFcst, N34StarFcst ) {
   (XNIL, XNIL) 1, 0, 0;
   (XNIL, SIG) 0, 1, 0;
@@ -1274,7 +1274,7 @@ probability ( R5Fcst | MountainFcst, N34StarFcst ) {
   (SVR, XNIL) 0, 0, 1;
   (SVR, SIG) 0, 0, 1;
   (SVR, SVR) 0, 0, 1;
-};
+}
 probability ( ScenRel3_4 | Scenario ) {
   (A) 1, 0, 0, 0, 0;
   (B) 0, 1, 0, 0, 0;
@@ -1287,7 +1287,7 @@ probability ( ScenRel3_4 | Scenario ) {
   (I) 0, 0, 0, 0, 1;
   (J) 0, 0, 0, 1, 0;
   (K) 1, 0, 0, 0, 0;
-};
+}
 probability ( CombClouds | VISCloudCov, IRCloudCover ) {
   (Cloudy, Cloudy) 0.95, 0.04, 0.01;
   (Cloudy, PC) 0.85, 0.13, 0.02;
@@ -1298,7 +1298,7 @@ probability ( CombClouds | VISCloudCov, IRCloudCover ) {
   (Clear, Cloudy) 0.1, 0.4, 0.5;
   (Clear, PC) 0.02, 0.28, 0.7;
   (Clear, Clear) 0, 0.02, 0.98;
-};
+}
 probability ( CombVerMo | N0_7muVerMo, SubjVertMo, QGVertMotion ) {
   (StrongUp, StronUp, StrongUp) 1, 0, 0, 0;
   (StrongUp, StronUp, WeakUp) 0.9, 0.1, 0, 0;
@@ -1364,4 +1364,4 @@ probability ( CombVerMo | N0_7muVerMo, SubjVertMo, QGVertMotion ) {
   (Down, Down, WeakUp) 0, 0.1, 0.2, 0.7;
   (Down, Down, Neutral) 0, 0, 0.3, 0.7;
   (Down, Down, Down) 0, 0, 0, 1;
-};
+}

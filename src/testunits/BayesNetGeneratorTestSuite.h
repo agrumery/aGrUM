@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/generator/BayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/core/set.h>

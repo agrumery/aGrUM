@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
+#include <cxxtest/AgrumTestSuite.h>
 
 #include <agrum/graphs/eliminationSequenceTriangulation.h>
 #include <agrum/graphs/cliqueGraph.h>

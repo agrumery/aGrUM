@@ -111,6 +111,10 @@ namespace gum {
 
 
   protected:
+		/// (protected) Default constructor
+    Variable( ) {GUM_CONSTRUCTOR(Variable);};
+		
+		
     // ============================================================================
     /// protected copy
     /** @param aRV to be copied */

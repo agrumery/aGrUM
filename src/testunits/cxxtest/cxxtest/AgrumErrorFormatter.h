@@ -17,8 +17,6 @@
 #include <cxxtest/TestTracker.h>
 #include <cxxtest/ValueTraits.h>
 
-#define TS_GUM_ASSERT_THROWS_NOTHING(x) TS_ASSERT_THROWS_NOTHING(try { x; } catch (gum::Exception& e) {GUM_SHOWERROR(e);TS_FAIL("gum::Exception thrown");})
-
 namespace CxxTest {
 
   class OutputStream {
