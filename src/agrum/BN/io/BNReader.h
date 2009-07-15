@@ -41,7 +41,7 @@ namespace gum {
   /* ===                               READERS                                === */
   /* ============================================================================ */
   /**
-   * @class
+   * @class BNReader
    * @brief Pure virtual class for reading a BN from a file.
    *
    * Every class used to read the content of a Bayesian Network from a stream,

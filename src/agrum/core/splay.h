@@ -77,14 +77,14 @@ namespace gum {
   template<class Element> class SplayBinaryNode;
   template<class Element> class SplayTree;
 
-  
+
   // ============================================================================
   /// Display the node
   // ============================================================================
   template <typename Element> INLINE
   std::ostream& operator<<( std::ostream& out,
                             const SplayBinaryNode<Element>& e );
-  
+
   // ============================================================================
   /// Display the tree
   // ============================================================================
@@ -106,10 +106,10 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Position of the node
-    /*
+    /**
      * @return the position of the node into the tree
      */
     // ============================================================================
@@ -117,14 +117,14 @@ namespace gum {
 
     // ============================================================================
     /// Element in the node
-    /*
+    /**
      * @return the element in the node
      */
     // ============================================================================
     const Element& getElement() const ;
 
     // ============================================================================
-    /*
+    /**
      * @return the left child
      * @warning the returned value can be null
      */
@@ -132,7 +132,7 @@ namespace gum {
     const SplayBinaryNode<Element>* getFg() const ;
 
     // ============================================================================
-    /*
+    /**
      * @return the right child
      * @warning the returned value can be null
      */
@@ -147,11 +147,12 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// basic constructor: creates a node with a reference to the element
     /**
-     * @param e the element in the node
+		* @param e the element in the node
+		* @param addr TODO don't know what to do here ..
      * @param g the left child of the node, can be NULL
      * @param d the right child of the node, can be NULL
      * @param p the father of the node, can be NULL if the node
@@ -164,15 +165,23 @@ namespace gum {
                      SplayBinaryNode* p = 0 );
 
     // ============================================================================
-    /// copy constructor
+		/// copy constructor
+		/**
+		* @param from the src SplayBinaryNode
+		* @param addr TODO don't know what to do here ..
+		*/
     // ============================================================================
     SplayBinaryNode( const SplayBinaryNode<Element>& from,
                      HashTable<Element, SplayBinaryNode<Element>*>& addr );
 
     // ==============================================================================
-    /// a function used to perform copies
+		/// a function used to perform copies
+		/**
+		* @param from the src SplayBinaryNode
+		* @param addr TODO don't know what to do here ..
+		*/
     // ==============================================================================
-    void _copy( const SplayBinaryNode<Element>&,
+    void _copy( const SplayBinaryNode<Element>& from,
                 HashTable<Element, SplayBinaryNode<Element>*>& addr );
 
     // ============================================================================
@@ -187,10 +196,10 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// A right rotation, the node must have a father
-    /*
+    /**
      * @return a pointer to the root of the sub-tree after rotation
      */
     // ============================================================================
@@ -198,7 +207,7 @@ namespace gum {
 
     // ============================================================================
     /// A left rotation, the node must hava a father
-    /*
+    /**
      * @return a pointer to the root of the sub-tree after rotation
      */
     // ============================================================================
@@ -206,7 +215,7 @@ namespace gum {
 
     // ============================================================================
     /// A splay rotation, the node will be the root of the tree
-    /*
+    /**
      * @return a pointer to the root of the sub-tree after rotation
      */
     // ============================================================================
@@ -216,6 +225,7 @@ namespace gum {
     /// Concatenation of two trees
     /**
      * @param e the node to add
+		 * @param addr TODO don't know what to do here ..
      * @return the root of the created tree
      */
     // ============================================================================
@@ -230,7 +240,7 @@ namespace gum {
     /// @name Data Members
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// The content
     // ============================================================================
@@ -263,7 +273,7 @@ namespace gum {
     /// Friendly with SplayTree
     // ============================================================================
     friend class SplayTree<Element>;
-    
+
     // ============================================================================
     /// Friendly to display
     // ============================================================================
@@ -272,7 +282,7 @@ namespace gum {
   };
 
 
-  
+
 
   /* ============================================================================ */
   /* ===                                SPLAY TREE                            === */
@@ -293,7 +303,7 @@ namespace gum {
     /// basic constructor, make an empty splay tree
     // ============================================================================
     SplayTree();
-    
+
     // ============================================================================
     /// basic constructor, make a splay tree with one element
     /*
@@ -324,7 +334,7 @@ namespace gum {
     /// @name Methods
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Get the element at the position n
     /**
@@ -429,7 +439,7 @@ namespace gum {
     /// @name Data Menbers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Root of the tree
     // ============================================================================

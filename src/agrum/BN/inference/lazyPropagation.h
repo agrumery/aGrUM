@@ -27,12 +27,9 @@
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/graphs/defaultTriangulation.h>
 
-
 namespace gum {
-
-
   /**
-   * @class BayesNetInference<T_DATA>
+   * @class BayesNetInference
    * @brief Implementation of lazy propagation for inference in Bayesian Networks
    * @ingroup bn_group
    */
@@ -112,7 +109,7 @@ namespace gum {
 
     const JunctionTree *junctionTree() const ;
 
-    
+
     /// @}
 
 
@@ -202,7 +199,7 @@ namespace gum {
     // ============================================================================
     void __aPosterioriJoint( const NodeSet& ids, Potential<T_DATA>& marginal );
 
-    
+
     /// avoid copy constructors
     LazyPropagation( const LazyPropagation<T_DATA>& );
 

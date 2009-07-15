@@ -62,14 +62,14 @@ namespace gum {
     /// @{
     /**
      * Generates a CPT using floats.
-     * @param varID The variable id of the CPT owner.
+		 * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
     virtual void generateCPT(const Idx& varId, const Potential<float>& cpt);
 
     /**
      * Generates a CPT using doubles.
-     * @param varID The variable id of the CPT owner.
+		 * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
     virtual void generateCPT(const Idx& varId, const Potential<double>& cpt);

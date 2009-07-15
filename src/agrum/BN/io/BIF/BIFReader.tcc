@@ -23,6 +23,9 @@
  *
  * @author Pierre-Henri Wuillemin
  */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 namespace gum {
@@ -162,4 +165,5 @@ namespace gum {
 
   /// @}
 } // namespace
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+
+#endif //DOXYGEN_SHOULD_SKIP_THIS

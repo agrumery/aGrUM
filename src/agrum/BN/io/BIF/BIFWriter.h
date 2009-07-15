@@ -76,7 +76,7 @@ namespace gum {
       /**
        * Writes a Bayesian Network in the output stream using the BIF format.
        *
-       * @param ouput The output stream.
+			 * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */

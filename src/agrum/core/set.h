@@ -39,9 +39,9 @@ namespace gum {
   template<typename KEY> class Set;
 
 
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  
+
   // a class used to create the static iterator used by Sets. The aim of
   // using this class rather than just creating __SetIterEnd as a global
   // variable is to prevent other classes to access and modify __SetIterEnd
@@ -59,11 +59,11 @@ namespace gum {
     // friends that have access to the iterator
     template<typename KEY> friend class Set;
   };
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-  
-  
+
+
   template<typename KEY>
   /**
    * @class Set
@@ -105,11 +105,11 @@ namespace gum {
     typedef SetIterator<KEY> iterator;
     typedef SetIterator<KEY> const_iterator;
 
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
-    /// @{ 
+    /// @{
 
     /// default constructor
     /** Sets rely on hashtables to store their items. The optional parameters
@@ -135,7 +135,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     /// copy operator
     Set<KEY>& operator=( const Set<KEY>& from );
 
@@ -154,7 +154,7 @@ namespace gum {
     Set<KEY> operator+( const Set<KEY>& s2 ) const;
 
     /// Disjunction operator
-    /** @return a Set whose elements belong to this but not to s2 
+    /** @return a Set whose elements belong to this but not to s2
      * @warning Unlike + and *, the - operator is not commutative! */
     Set<KEY> operator-( const Set<KEY>& s2 ) const;
 
@@ -167,7 +167,7 @@ namespace gum {
     /// @}
 
 
-    
+
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -180,12 +180,12 @@ namespace gum {
 
     /// erases an element from the set
     /** @warning if the set does not contain the element, nothing is done.
-     * In particular, no exception is thrown. */    
+     * In particular, no exception is thrown. */
     void erase( const KEY& k );
 
     /// erases an element from the set
     /** @warning if the set does not contain the element, nothing is done.
-     * In particular, no exception is thrown. */    
+     * In particular, no exception is thrown. */
     void erase( const iterator& k );
 
     /// removes all the elements, if any, from the set
@@ -252,7 +252,7 @@ namespace gum {
     static const const_iterator& constEnd4Statics ();
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Fine tuning
@@ -275,13 +275,13 @@ namespace gum {
      * false, the set will not try to change its memory size, hence resulting in
      * potentially slower accesses. */
     void setResizePolicy( const bool new_policy ) ;
-    
+
     /// returns the current resizing policy of the underlying hashtable
     bool resizePolicy() const ;
 
     ///  @}
 
-    
+
 
     // ############################################################################
     /// @name mapper
@@ -290,7 +290,7 @@ namespace gum {
 
     /// creates a hashtable of NEWKEY from the set
     /** @param f a function that maps KEY into a NEWKEY
-     * @param size the size of the resulting hashtable. When equal to 0, a default
+		* @param capacity the size of the resulting hashtable. When equal to 0, a default
      * size is computed that is a good trade-off between space consumption and
      * efficiency of new elements insertions.
      * @warning The order in the resulting hashtable may not be similar to that of
@@ -317,12 +317,12 @@ namespace gum {
      * arbitrary */
     template <typename NEWKEY> List<NEWKEY>
     listMap( NEWKEY( *f )( const KEY& ) ) const;
-    
+
     /// @}
 
 
   private:
-    // friends 
+    // friends
     friend class SetIterator<KEY>;
 
     /// a set of X's is actually a hashtable whose keys are the X's
@@ -334,7 +334,7 @@ namespace gum {
   };
 
 
-  
+
 
   /* =========================================================================== */
   /* ===                             SET ITERATORS                           === */
@@ -374,7 +374,7 @@ namespace gum {
       GUM_SET_ITERATOR_BEGIN,
       GUM_SET_ITERATOR_END
     };
-  
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -429,33 +429,33 @@ namespace gum {
 
     /// @}
 
-    
+
   private:
     /// for efficiency, Set should be able to modify the hashtable iterator
     friend class Set<KEY>;
 
-    /// the underlying iterator for the set's hashtable containing the data 
+    /// the underlying iterator for the set's hashtable containing the data
     HashTableConstIterator<KEY,bool> __ht_iter;
 
   };
 
-  
 
 
 
 
 
-  
+
+
   /// a << operator for HashTableList
   template <typename KEY> std::ostream& operator<<
   ( std::ostream&, const Set<KEY>& );
-  
-  
+
+
 } /* namespace gum */
 
 
 /// always include the implementation of the templates
 #include <agrum/core/set.tcc>
 
-  
+
 #endif  // GUM_SET_H

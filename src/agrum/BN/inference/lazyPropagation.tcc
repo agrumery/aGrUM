@@ -24,17 +24,14 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum {
-  
-
   // ==============================================================================
   /// default constructor
   // ==============================================================================
   template <typename T_DATA> INLINE
-  LazyPropagation<T_DATA>::LazyPropagation( const BayesNet<T_DATA>& BN ) :
-    BayesNetInference<T_DATA>( BN ) {
+  LazyPropagation<T_DATA>::LazyPropagation( const BayesNet<T_DATA>& BN ) :  BayesNetInference<T_DATA>( BN ) {
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
     // set the correspondance between variables and their id and get the variables
@@ -786,7 +783,7 @@ namespace gum {
       marginal.multiplicateBy( **iter );
   }
 
-  
+
   // ==============================================================================
   /// returns the joint a posteriori proba of a given set of nodes
   // ==============================================================================
@@ -859,7 +856,7 @@ namespace gum {
       __last_collect_clique : clique_of_ids;
     */
     NodeId myclique = clique_of_ids;
-      
+
     const List <const Potential<T_DATA>*>& clique_pot =
       __clique_potentials[myclique];
 
@@ -923,7 +920,7 @@ namespace gum {
     return __JT;
   }
 
-  
+
   // ==============================================================================
   /// returns the marginal a posteriori proba of a given node
   // ==============================================================================
@@ -934,7 +931,7 @@ namespace gum {
     marginal.normalize();
   }
 
-  
+
   template <typename T_DATA> INLINE
   T_DATA LazyPropagation<T_DATA>::evidenceMarginal () {
     // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
@@ -970,8 +967,8 @@ namespace gum {
     return res;
   }
 
-  
+
 } /* namespace gum */
 
-  
+
 #endif    // DOXYGEN_SHOULD_SKIP_THIS

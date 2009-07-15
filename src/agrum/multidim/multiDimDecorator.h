@@ -23,7 +23,7 @@
  * A MultiDimDecorator is a virtual class for all encapsulation of
  * MultiDimImplementation * (for instance probability, utility, etc.).
  * It implements a decorator design pattern in order to have a array/tree/sparse
- * matrix/... implementation for multiDim*<T_DATA>*
+ * matrix/... implementation for multiDim
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
@@ -49,7 +49,7 @@ namespace gum {
    * A MultiDimDecorator is a virtual class for all encapsulation of
    * MultiDimImplementation * (for instance probability, utility, etc.).
    * It implements a decorator design pattern in order to have a array/tree/sparse
-   * matrix/... implementation for multiDim*<T_DATA>*
+   * matrix/... implementation for multiDim<*T_DATA*>
    */
   /* ============================================================================ */
   template<typename T_DATA>
@@ -165,7 +165,8 @@ namespace gum {
        * listen to change in each recorded Instantiation. final method
        * @param i the Instantiation
        * @param var the changed dim.
-       * @param val the changed value
+       * @param oldval the old value
+			 * @param newval the new value
        */
       // ============================================================================
       void changeNotification( Instantiation& i,
@@ -181,8 +182,6 @@ namespace gum {
       /**
        * listen to setFirst in each recorded Instantiation. final method.
        * @param i the Instantiation
-       * @param var the changed dim.
-       * @param val the changed value
        */
       // ============================================================================
       void setFirstNotification( Instantiation& i );
@@ -191,8 +190,6 @@ namespace gum {
       /**
        * listen to setLast in each recorded Instantiation. final method.
        * @param i the Instantiation
-       * @param var the changed dim.
-       * @param val the changed value
        */
       // ============================================================================
       void setLastNotification( Instantiation& i );
@@ -201,8 +198,6 @@ namespace gum {
       /**
        * listen to increment in each recorded Instantiation. final method.
        * @param i the Instantiation
-       * @param var the changed dim.
-       * @param val the changed value
        */
       // ============================================================================
       void setIncNotification( Instantiation& i );
@@ -211,16 +206,13 @@ namespace gum {
       /**
        * listen to increment in each recorded Instantiation. final method.
        * @param i the Instantiation
-       * @param var the changed dim.
-       * @param val the changed value
        */
       // ============================================================================
       void setDecNotification( Instantiation& i );
 
       // ============================================================================
       /** @brief notification modification on vars to all Instantiation listeners.
-       * final method.
-       * @param  v the new sequence of vars */
+       * final method. */
       // ============================================================================
       virtual void notifyChange() const;
 
@@ -271,8 +263,8 @@ namespace gum {
       // ============================================================================
       /**
        * Perform an homothety on a multiDim container.
-       * @param lpha The ratio.
-       * @param (* mul)( const T_DATA , const T_DATA ) The mult operation.
+       * @param alpha The ratio.
+       * @param mul The chosen mult operation.
        */
       // ============================================================================
       virtual void
@@ -281,7 +273,7 @@ namespace gum {
       // ============================================================================
       /**
        * Iterate add on each element of a multiDim container.
-       * @param (* add)( const T_DATA , const T_DATA ) The add operation.
+       * @param add The chosen folded operation.
        * @return Returns the sum of values contains in the multiDim.
        */
       // ============================================================================

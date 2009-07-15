@@ -195,6 +195,7 @@ class MultiDimInterface {
  *
  * @code mat << var1 << var2 @endcode will insert @code var1 @endcode first.
  *
+ * @param c the multidim container
  * @param v the new var
  * @return a reference to *this
  *

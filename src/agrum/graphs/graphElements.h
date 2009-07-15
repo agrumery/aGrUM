@@ -24,16 +24,16 @@
   \page graph_page How to use the graph classes ?
 
   The basic idea of the implementation of graphs in aGrUM is to leave it "as
-  pure as possible". Hence graphs consist of integers (@ref NodeId) and binary
+  pure as possible". Hence graphs consist of integers (@ref gum::NodeId) and binary
   relations between them (Edge, Arc).
 
   \section graph_sec_1 graph hierarchy
-  Precisely a graph can contain a set of @ref NodeId, a set of Arc and a set
+  Precisely a graph can contain a set of @ref gum::NodeId, a set of Arc and a set
   of Edge.
 
   In aGrUM,
   - 3 classes wrap these 3 sets : EdgeGraphPart, ArcGraphPart and NodeGraphPart
-  (resp. wrapping @ref NodeSet, @ref ArcSet and @ref EdgeSet, 3 typedefs of Set),
+  (resp. wrapping @ref gum::NodeSet, @ref gum::ArcSet and @ref gum::EdgeSet, 3 typedefs of Set),
   - UndiGraph inherits from EdgeGraphPart and NodeGraphPart,
   - DiGraph inherits from ArcGraphPart and NodeGraphPart and
   - MixedGraph inherits from DiGraph and UndiGraph.
@@ -61,7 +61,7 @@
 
   <h4>Properties</h4>
   Properties are the way to put (dynamic) informations in nodes, edges and arcs.
-  Properties are just HashTable where keys are @ref NodeId, Edge or Arc.
+  Properties are just HashTable where keys are @ref gum::NodeId, Edge or Arc.
   Unfortunately, due to a lack
   (or what we find to be lack) of C++, there is no way to create templated
   typedefs... So aGrUM uses (currently)
@@ -110,7 +110,7 @@
   @endcode
 
   Here is a code for \subpage exemple_recherche_chemin "searching directed path
-  in a DiGraph" g from \ref NodeId n1 to \ref NodeId n2.
+  in a DiGraph" g from \ref gum::NodeId n1 to \ref gum::NodeId n2.
 
   \page exemple_recherche_chemin Example: Search of a directed path in a DiGraph
   from n1 to n2
@@ -323,10 +323,10 @@ namespace gum {
   private:
     /// the extremal nodes of the edge (their order is unimportant)
     NodeId n1, n2;
-    
+
     /// Edge can construct Link
     friend class Edge;
-    
+
     /// Arc can construct Link
     friend class Arc;
 
@@ -340,7 +340,7 @@ namespace gum {
      * @param aN2 the ID of the second extremal node */
     // ============================================================================
     Link( const NodeId& aN1,const NodeId& aN2 ) ;
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
@@ -377,7 +377,7 @@ namespace gum {
   };
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                       GENERIC UNDIRECTED EDGES                      === */
@@ -430,7 +430,7 @@ namespace gum {
      * @param aN2 the ID of the second extremal node */
     // ============================================================================
     Edge( const NodeId& aN1, const NodeId& aN2 ) ;
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
@@ -485,7 +485,7 @@ namespace gum {
 
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                        GENERIC DIRECTED EDGES                       === */
@@ -533,7 +533,7 @@ namespace gum {
     /** @warning the order in which the nodes are passed is important */
     // ============================================================================
     Arc( const NodeId& aN1,const NodeId& aN2 ) ;
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
@@ -615,9 +615,9 @@ namespace gum {
 
 
 
-  
 
-  
+
+
   ////////////////////////////////////////////////////////////////
   //we need to provide hash functions for some Edge and Arc
   template <> class HashFunc<Edge> : public HashFuncBase<Edge> {
@@ -632,7 +632,7 @@ namespace gum {
     HashFunc< std::pair<NodeId,NodeId> > real_func;
   };
 
-  
+
   template <> class HashFunc<Arc> : public HashFuncBase<Arc> {
   public:
     /**
@@ -702,7 +702,7 @@ struct Property {
   // ==============================================================================
   std::ostream& operator<< ( std::ostream& stream, const Arc& arc );
 
-  
+
 } /* namespace gum */
 
 

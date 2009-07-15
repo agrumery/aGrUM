@@ -259,18 +259,18 @@ namespace gum {
       // ============================================================================
       /// creates a new database from a mixed XML/CSV file
       /** The format of the file is the following:
-       * - the whole file is enclosed in tags <DATABASE></DATABASE>
-       * - then variables are given as <VARIABLE name="xxx"></VARIABLE>
-       * - whithin <VARIABLE>'s tags, modalities are specified as:
-       *   <MODALITY name="xxx" id="integer" /> or <MODALITY name="xxx"/>
+       * - the whole file is enclosed in tags <*DATABASE*><* /DATABASE*>
+       * - then variables are given as <*VARIABLE name="xxx"*><* /VARIABLE*>
+       * - whithin <*VARIABLE*>'s tags, modalities are specified as:
+       *   <*MODALITY name="xxx" id="integer" / *> or <*MODALITY name="xxx"/ *>
        *   for each modality, it is compulsory to fill its name.
        *   However, you can avoid the id tag. In this case, an id is generated as
        *   1 + preceding id if it exists, else 0.
-       * - finally, cases of the database are specified within <DATA></DATA>.
+       * - finally, cases of the database are specified within <*DATA*><* /DATA*>.
        * - Each case is given within as a list of numbers separated by blanks within
-       *   <CASE></CASE> tags. These numbers correspond to the id's of the modalities
+       *   <*CASE*><* /CASE*> tags. These numbers correspond to the id's of the modalities
        *   of the variables. The first id given correspond to the first variable
-       *   specified within <VARIABLE></VARIABLE> tags, the second id to the second
+       *   specified within <*VARIABLE*><* /VARIABLE*> tags, the second id to the second
        *   variable and so on. For instance:
        *   @code
        *   <DATABASE>

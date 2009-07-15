@@ -51,7 +51,7 @@ namespace gum {
    * std::numeric_limits<T_TICKS>::infinity() as tick value.
    * @warning If a variable contains less than 3 ticks, it is considered as
    * empty(). A variable with 3 ticks is binary and contains 2 ranges :
-   * [T1,T2[ (modality 0) and [T2,T3] (modality 1). 
+   * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
   template<typename T_TICKS>
@@ -61,7 +61,7 @@ namespace gum {
     Size __ticks_size;
   protected:
     /**
-     * make a copy 
+     * make a copy
      * TODO since we removed T_OtherData maybe some changes are
      * needed in this method?
      * @param aDRV  the copied object
@@ -92,6 +92,12 @@ namespace gum {
     /** @name constructors & destructors
      * @{
      **/
+
+	  /**
+		* Constructor
+		* @param aName the name
+		* @param aDesc the description
+		*/
     DiscretizedVariable( const std::string& aName,
                          const std::string& aDesc );
 
@@ -100,23 +106,24 @@ namespace gum {
      * @param aDRV
      */
     DiscretizedVariable( const DiscretizedVariable<T_TICKS>& aDRV);
-    virtual ~DiscretizedVariable();
 
     /**
      * Destructor.
-     */
+		 */
+		 virtual ~DiscretizedVariable();
+
 
     /// @}
 
-
+		/// a virtual copyFactory
     virtual DiscreteVariable* copyFactory() const;
+
     /**
      * operator =
      * @param aDRV a labelized discrete random variable
      * @return a reference to *this
      **/
-    const DiscretizedVariable<T_TICKS>&
-    operator=( DiscretizedVariable<T_TICKS>& aDRV );
+    const DiscretizedVariable<T_TICKS>& operator=( DiscretizedVariable<T_TICKS>& aDRV );
 
     /**
      *
@@ -143,11 +150,11 @@ namespace gum {
      * @throw OutOfBound
      */
     virtual const std::string label( const Idx i ) const;
-    
+
     /// from the label to its index in var.
     /// @throws NotFound
     virtual Idx operator[](const std::string& label) const;
-    
+
     /**
      *
      * @param aTarget searched label

@@ -32,7 +32,7 @@
  \section inst_sec_1 Basic principles
 
  MultiDims (see also gum::MultiDimInterface, gum::Potential, gum::CPF, etc ...) are aGrUM's
- multidimensional tables and instantiations (@ref Instantiation) are smart iterators
+ multidimensional tables and instantiations (@ref gum::Instantiation) are smart iterators
  over these tables. Since MultDims are containers over random discrete variables
  (see gum::DiscreteVariable) we need when iterating over a MultiDim to indicate which
  variable and which label of this variable we are on. Instantiations does exactly that:
@@ -61,7 +61,7 @@
  When registered to a MultiDim finding a value in a table and other computation
  are optimized. For example, the complexity of iterating over a MultiDim with a
  registered instantiation will be in O(k), if it is not registered the complexity
- will be in O(n*k). With n being the number of variables in the MultiDim, and k the 
+ will be in O(n*k). With n being the number of variables in the MultiDim, and k the
  Cartesian product of the variables domain's.
 
  Why should you use non-registered instantiation? Because they allow to iterate
@@ -184,6 +184,7 @@ class Instantiation : public MultiDimInterface {
      * its master is notified of the value of the Instantiation if notifyMaster
      * is true.
      * @param aI the Instantiation we copy
+		 * @param notifyMaster whether or not notify master if exits
      */
     // ============================================================================
     Instantiation( const Instantiation& aI, const bool notifyMaster = true );
@@ -435,7 +436,7 @@ class Instantiation : public MultiDimInterface {
      * informs its master of the modification. This function also unsets the
      * overflow flag.
      *
-     * @param varpos The index of the variable whose value is assigned in the
+		 * @param varPos The index of the variable whose value is assigned in the
      *        tuple of variables of the Instantiation.
      * @param newval The index of the value assigned (consider the values of the
      *        variable as an array indexed from 0 to n of values (which might be
@@ -483,7 +484,7 @@ class Instantiation : public MultiDimInterface {
     /**
      * Indicates whether a given variable belongs to the Instantiation.
      *
-     * @param A pointer on the variable for which the test is made.
+     * @param v A pointer on the variable for which the test is made.
      * @return Returns true if *v is in the Instantiation.
      */
     // ============================================================================

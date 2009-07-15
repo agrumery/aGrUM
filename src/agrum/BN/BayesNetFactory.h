@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the BayesNetFactory class.
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  */
 // ============================================================================
 #ifndef GUM_BAYESNET_FACTORY_H
@@ -182,12 +182,12 @@ namespace gum {
       /// @{
 
       /// Tells the factory that we're declaring parents for some variable.
-      /// @var The concerned variable's name.
+      /// @param var The concerned variable's name.
       /// @throw NotFound Raised if var does not exists.
       void startParentsDeclaration( const std::string& var );
 
       /// Tells the factory for which variable we're declaring parents.
-      /// @var The parent's name.
+      /// @param var The parent's name.
       /// @throw NotFound Raised if var does not exists.
       void addParent( const std::string& var );
 
@@ -214,8 +214,7 @@ namespace gum {
       /**
        * @brief Fills the variable's table with the values in rawTable.
        *
-       * Parse the parents in the same order in which they were added to the
-       * variable.
+       * Parse the parents in the same order in variables
        *
        * Given a sequence [var, p_1, p_2, ...,p_n-1, p_n] of parents, modalities are parsed
        * in the given order (if all p_i are binary):
@@ -224,6 +223,7 @@ namespace gum {
        * ...,
        * [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
        *
+			 * @param variables the vector giving the order of parents
        * @param rawTable The raw table.
        */
       void rawConditionalTable( const std::vector<std::string>& variables,
@@ -288,7 +288,7 @@ namespace gum {
        * factory.setVariableValues(seq); // fills the table with a default value
        * // finish your stuff
        * factory.endFactorizedProbabilityDeclaration();
-       * @code
+       * @endcode
        * as for rawProba, if value's size is different than the number of modalities of the current variable,
        * we don't use the supplementary values and we fill by 0 the missign values.
        */
@@ -340,7 +340,7 @@ namespace gum {
        * When the redefineParents flag is set to true the constructed BayesNet's
        * DAG is changed to fit with table's definition.
        *
-       * @param var The name of the concerned variable.
+			 * @param varName The name of the concerned variable.
        * @param table A pointer over the CPT used for var.
        * @param redefineParents If true redefine var's parents to match table's
        *                        variables set.

@@ -39,10 +39,10 @@
 
 namespace gum {
 
-  
+
   template<typename KEY> class SequenceIterator;
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                             GUM_SEQUENCE                            === */
@@ -62,12 +62,12 @@ namespace gum {
   template<typename KEY>
   class Sequence {
     friend class SequenceIterator<KEY>;
-    
+
   public:
     typedef SequenceIterator<KEY> iterator;
     typedef SequenceIterator<KEY> const_iterator;
 
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -98,7 +98,7 @@ namespace gum {
     /// @name Iterators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// begin iterator
     // ============================================================================
@@ -126,7 +126,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// copy operator
     /** @param aSeq : the copied sequence
@@ -188,7 +188,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// clear the sequence
     // ============================================================================
@@ -234,7 +234,7 @@ namespace gum {
      * of at most the n elements)
      * @param k */
     // ============================================================================
-    void erase( const iterator& );
+    void erase( const iterator& k);
 
     // ============================================================================
     /// returns the object at the pos i
@@ -269,7 +269,7 @@ namespace gum {
      * @throw NotFound if the sequence is empty */
     // ============================================================================
     const KEY& front() const;
-    
+
     // ============================================================================
     /// returns the last element
     /**
@@ -312,7 +312,7 @@ namespace gum {
     /// stores the rend iterator for fast access
     SequenceIterator<KEY> __rend;
 
-    
+
     // ============================================================================
     /// a method to update the end iterator after changes in the sequence
     // ============================================================================
@@ -335,8 +335,8 @@ namespace gum {
 
 
 
-  
-  
+
+
   /// @class SequenceIterator
   /**@brief iterator for Sequence.
    *
@@ -347,7 +347,7 @@ namespace gum {
   template<typename KEY>
   class SequenceIterator {
     friend class Sequence<KEY>;
-    
+
   public:
     // ############################################################################
     /// @name constructors / destructors
@@ -355,18 +355,20 @@ namespace gum {
     ///@{
     // ============================================================================
     /// constructor: always give a valid iterator (even if pos too large)
-    /** @param pos indicates to which position of the sequence the iterator should
+    /**
+		 * @param seq the sequence
+		 * @param pos indicates to which position of the sequence the iterator should
      * be pointing. By default, the iterator points to begin()
      * @warning if pos is greater than the size of the sequence, the iterator
      * is made pointing to end() */
     // ============================================================================
     SequenceIterator( const Sequence<KEY>& seq, Idx pos=0 );
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
     SequenceIterator( const SequenceIterator<KEY>& source );
-    
+
     // ============================================================================
     /// destructor
     // ============================================================================
@@ -374,7 +376,7 @@ namespace gum {
 
     ///@}
 
-    
+
     // ############################################################################
     /// @name operators
     // ############################################################################
@@ -393,7 +395,7 @@ namespace gum {
     /// point the iterator to the preceding value in the sequence
     // ============================================================================
     SequenceIterator<KEY>& operator--();
-    
+
     // ============================================================================
     /// checks whether two iterators are pointing toward different elements
     // ============================================================================
@@ -428,7 +430,7 @@ namespace gum {
 
     /// @}
 
-    
+
 
   private:
     /// the index in the sequence's vector where the iterator is pointing
@@ -436,7 +438,7 @@ namespace gum {
 
     /// the sequence pointed to by the iterator
     const Sequence<KEY> *__seq;
-    
+
 
     // ============================================================================
     /// the iterator points to the posth element (0 = beginning of the sequence).
@@ -447,7 +449,7 @@ namespace gum {
     /// the iterator points to rend
     // ============================================================================
     void __setAtRend();
-    
+
     // ============================================================================
     /// the iterator points to the end (which is pos size()-1)
     // ============================================================================
@@ -473,7 +475,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  
+
   // ##############################################################################
   // ##############################################################################
   //
@@ -482,7 +484,7 @@ namespace gum {
   // ##############################################################################
   // ##############################################################################
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===             GUM_SEQUENCE_ITERATOR OPTIMIZED FOR POINTERS            === */
@@ -498,7 +500,7 @@ namespace gum {
   template<typename KEY>
   class SequenceIterator<KEY*> {
     friend class Sequence<KEY*>;
-    
+
   public:
     // ############################################################################
     /// @name constructors / destructors
@@ -512,12 +514,12 @@ namespace gum {
      * is made pointing to end() */
     // ============================================================================
     SequenceIterator( const Sequence<KEY*>& seq, Idx pos=0 );
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
     SequenceIterator( const SequenceIterator<KEY*>& source );
-    
+
     // ============================================================================
     /// destructor
     // ============================================================================
@@ -525,7 +527,7 @@ namespace gum {
 
     ///@}
 
-    
+
     // ############################################################################
     /// @name operators
     // ############################################################################
@@ -544,7 +546,7 @@ namespace gum {
     /// point the iterator to the preceding value in the sequence
     // ============================================================================
     SequenceIterator<KEY*>& operator--();
-    
+
     // ============================================================================
     /// checks whether two iterators are pointing toward different elements
     // ============================================================================
@@ -562,7 +564,7 @@ namespace gum {
     KEY* const operator*() const ;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -574,7 +576,7 @@ namespace gum {
 
     /// @}
 
-    
+
 
   private:
     /// the index in the sequence's vector where the iterator is pointing
@@ -582,7 +584,7 @@ namespace gum {
 
     /// the sequence pointed to by the iterator
     const Sequence<KEY*> *__seq;
-    
+
 
     // ============================================================================
     /// the iterator points to the posth element (0 = beginning of the sequence).
@@ -593,7 +595,7 @@ namespace gum {
     /// the iterator points to rend
     // ============================================================================
     void __setAtRend();
-    
+
     // ============================================================================
     /// the iterator points to the end (which is pos size()-1)
     // ============================================================================
@@ -602,7 +604,7 @@ namespace gum {
   };
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                 GUM_SEQUENCE OPTIMIZED FOR POINTERS                 === */
@@ -622,12 +624,12 @@ namespace gum {
   template<typename KEY>
   class Sequence<KEY*> {
     friend class SequenceIterator<KEY*>;
-    
+
   public:
     typedef SequenceIterator<KEY*> iterator;
     typedef SequenceIterator<KEY*> const_iterator;
 
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -658,7 +660,7 @@ namespace gum {
     /// @name Iterators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// begin iterator
     // ============================================================================
@@ -686,7 +688,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// copy operator
     /** @param aSeq : the copied sequence
@@ -748,7 +750,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// clear the sequence
     // ============================================================================
@@ -829,7 +831,7 @@ namespace gum {
      * @throw NotFound if the sequence is empty */
     // ============================================================================
     KEY* const front() const;
-    
+
     // ============================================================================
     /// returns the last element
     /**
@@ -872,7 +874,7 @@ namespace gum {
     /// stores the rend iterator for fast access
     SequenceIterator<KEY*> __rend;
 
-    
+
     // ============================================================================
     /// a method to update the end iterator after changes in the sequence
     // ============================================================================
@@ -894,10 +896,10 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
-  
+
 } /* namespace gum */
-  
-  
+
+
 /// always include the implementation of the templates
 #include <agrum/core/sequence.tcc>
 

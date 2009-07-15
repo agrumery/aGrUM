@@ -108,7 +108,7 @@ namespace gum {
       T_DATA __external_weight;
 
       /// @name causal weights
-      /// \f$ P(e | c_i) in Henrion (89) in a hashtable with a default_value.
+      /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
       /// @{
       T_DATA __default_weight;
       HashTable<const DiscreteVariable *,T_DATA> __causal_weights;

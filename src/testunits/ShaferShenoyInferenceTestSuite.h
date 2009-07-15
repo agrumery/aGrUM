@@ -41,7 +41,6 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
   public:
     gum::BayesNet<float> *bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -61,26 +60,10 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
       bn->insertArc( i4, i5 );
       bn->insertArc( i2, i4 );
       bn->insertArc( i2, i5 );
-
-      e_i1 = new gum::Potential<float>();
-      ( *e_i1 ) << bn->variable( i1 );
-      e_i1->fill(( float ) 0 );
-      gum::Instantiation inst_1( *e_i1 );
-      inst_1.chgVal( bn->variable( i1 ), 0 );
-      e_i1->set(inst_1, ( float ) 1);
-
-      e_i4 = new gum::Potential<float>();
-      ( *e_i4 ) << bn->variable( i4 );
-      e_i4->fill(( float ) 0 );
-      gum::Instantiation inst_4( *e_i4 );
-      inst_4.chgVal( bn->variable( i4 ), 1 );
-      e_i4->set(inst_4,( float ) 1);
     }
 
     void tearDown() {
       delete bn;
-      delete e_i1;
-      delete e_i4;
     }
 
     void testFill() {
@@ -222,8 +205,8 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
     void testShaferShenoyInf_3() {
       fill( *bn );
       gum::List<const gum::Potential<float>* > e_list;
-      e_list.insert( e_i1 );
-      e_list.insert( e_i4 );
+      e_list.insert( &(bn->cpt(i1)) );
+			e_list.insert( &(bn->cpt(i2)));
 
       gum::ShaferShenoyInference<float> inf( *bn );
 
@@ -287,8 +270,7 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
       for ( int i = 0; i < nbr_essai; ++i ) {
         gum::BayesNet<float>* bn = bnGen.generateBNF( 10, density[i] );
         gum::ShaferShenoyInference<float>* inf = NULL;
-
-        try {
+       try {
           //GUM_TRACE_VAR( i )
           inf = new gum::ShaferShenoyInference<float>(*bn);
         } catch ( std::bad_alloc ) {
@@ -297,20 +279,22 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
           break;
         }
 
-        try {
+        //try {
           inf->makeInference();
           //delete inf;
-        } catch ( gum::Exception e ) {
+        /*} catch ( gum::Exception e ) {
           error = true;
           std::cout << bn->dag().toDot() << std::endl;
-          delete inf;
           break;
-        }
+					}
+					*/
+
+				if (inf) delete inf;
         delete bn;
       }
     }
 
-    // void testWithBNGen_1() {
+    // void tstWithBNGen_1() {
     //   gum::BayesNetGenerator bnGen;
     //   float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
     //   for (int count = 0; count < 100; ++count) {
@@ -325,7 +309,7 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
     //   }
     // }
 
-    // void testWithBNGen_2() {
+    // void tstWithBNGen_2() {
     //   gum::BayesNetGenerator bnGen;
     //   float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
     //   for (int count = 0; count < 100; ++count) {
@@ -338,7 +322,7 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
     // }
 
   private:
-    // Builds a BN to test the inference
+    // Builds a BN to tst the inference
     void fill( gum::BayesNet<float> &bn ) {
       const gum::Potential<float>& p1 = bn.cpt( i1 );
       {

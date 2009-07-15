@@ -271,8 +271,6 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// If i variables are a subset of this bucket, then the missing values are
     /// supposed to be at 0.
     /// @param value The value to compute.
-    /// @param buffer An initialized MultiDimArray with all variables not in this
-    ///               bucket final table.
     /// @throw SizeError Raised if the bucket is empty.
     T_DATA __computeValue(const Instantiation& value) const;
 

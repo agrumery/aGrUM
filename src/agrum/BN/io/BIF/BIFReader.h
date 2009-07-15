@@ -66,7 +66,10 @@ public:
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BNReader.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/BN/io/BIF/cocoR/Parser.h>
+#endif //DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /**

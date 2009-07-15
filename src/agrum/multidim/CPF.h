@@ -40,10 +40,10 @@
 namespace gum {
 
 
-  /** 
+  /**
    * @class CPF
    * @brief Abstract class representing a Conditionnal Probability Function.
-   * @ingroup multidim_group 
+   * @ingroup multidim_group
    *
    * A CPF in it's simplest form is a table (which gives a conditionnale
    * probability table). However since we want to exploit micro factors
@@ -86,15 +86,15 @@ namespace gum {
 
     /// @}
 
-    
+
     // ============================================================================
     /// Getters & setters
     // ============================================================================
     /// @{
     /**
-     * Add a new conditioned variable. 
-     * @param v The new conditioned variable added.
-     * @throw DuplicateElement 
+     * Add a new conditioned variable.
+     * @param var The new conditioned variable added.
+     * @throw DuplicateElement
      */
     virtual void add( const DiscreteVariable& var );
 
@@ -109,22 +109,23 @@ namespace gum {
     /**
      * Adds a conditioning variable.
      * @param var The variable added as a conditioning variable.
-     * @param isCond If true then var is added as a conditioned variable, 
+		 * @param isConditioned If true then var is added as a conditioned variable,
      *               otherwise it is added as a conditioning variable.
-     * @throw DuplicateElement 
+     * @throw DuplicateElement
      */
     void add(const DiscreteVariable& var, bool isConditioned);
 
     /**
-     * Returns true if the variable is a conditioned variable.
+		* Returns true if the variable is a conditioned variable.
+		* @param var The variable that is tested.
      */
     bool isConditioned(const DiscreteVariable& var) const;
 
     /**
-     * Returns a Instantiation initialized 
+     * Returns a Instantiation initialized
      * over the conditioned variables.
      *
-     * The methods parse all the sequence of variables to build the 
+     * The methods parse all the sequence of variables to build the
      * Instantiation (i.e. it's not fast).
      *
      * To speed your code call this method this way:
@@ -135,10 +136,10 @@ namespace gum {
     Instantiation conditionedVars();
 
     /**
-     * Returns a constant Instantiation initialized 
+     * Returns a constant Instantiation initialized
      * over the conditioned variables.
      *
-     * The methods parse all the sequence of variables to build the 
+     * The methods parse all the sequence of variables to build the
      * Instantiation (i.e. it's not fast).
      *
      * To speed your code call this method this way:
@@ -149,10 +150,10 @@ namespace gum {
     const Instantiation conditionedVars() const;
 
     /**
-     * Returns a Instantiation initialized 
+     * Returns a Instantiation initialized
      * over the conditioning variables.
      *
-     * The methods parse all the sequence of variables to build the 
+     * The methods parse all the sequence of variables to build the
      * Instantiation (i.e. it's not fast).
      *
      * To speed your code call this method this way:
@@ -163,10 +164,10 @@ namespace gum {
     Instantiation conditioningVars();
 
     /**
-     * Returns a constant Instantiation initialized 
+     * Returns a constant Instantiation initialized
      * over the conditioning variables.
      *
-     * The methods parse all the sequence of variables to build the 
+     * The methods parse all the sequence of variables to build the
      * Instantiation (i.e. it's not fast).
      *
      * To speed your code call this method this way:
@@ -178,7 +179,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ============================================================================
     /// @name Various methods
     // ============================================================================
@@ -195,7 +196,7 @@ namespace gum {
     virtual const std::string toString(const Instantiation *i) const;
 
     /// @}
-    
+
   private:
     // Used to no if a given is conditioned or not (if _cond[var] == true then
     // var is a conditioned variable).

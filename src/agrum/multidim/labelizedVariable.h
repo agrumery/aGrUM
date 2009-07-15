@@ -62,15 +62,22 @@ namespace gum {
     // ############################################################################
     /// @{
     // ============================================================================
-    // Default constructor
+
+		/** @brief Default constructor
+		* @param aName the name
+		* @param aDesc the Description
+		* @param nbrLabel the domainSize (2 by default)
+		*/
     // ============================================================================
     LabelizedVariable( const std::string& aName,
                        const std::string& aDesc="",
                        const int nbrLabel = 2 );
-    
+
     // ============================================================================
     /// Copy constructor
-    /** @param aDRV the variable we copy */
+		/**
+		* @param aLDRV the variable we copy
+		*/
     // ============================================================================
     LabelizedVariable( const LabelizedVariable& aLDRV );
 
@@ -78,8 +85,10 @@ namespace gum {
     /// destructor
     // ============================================================================
     virtual ~LabelizedVariable();
+
+		/// a virtual copyFactory ...
     virtual DiscreteVariable* copyFactory() const;
-    
+
     /// @}
 
 
@@ -92,7 +101,7 @@ namespace gum {
     /** @param aLDRV the labelized discrete random variable we copy */
     // ============================================================================
     const LabelizedVariable& operator= ( const LabelizedVariable& aLDRV );
-    
+
     // ============================================================================
     /// returns the index of a given label
     /** @param aLabel searched label
@@ -114,10 +123,10 @@ namespace gum {
      * @return true if the label already exists */
     // ============================================================================
     bool isLabel( const std::string& aLabel ) const;
-    
+
     // ============================================================================
     /// add a label with a new index (we assume that we will NEVER remove a label)
-    /** @param label the label to be added to the labelized variable
+		/** @param aLabel the label to be added to the labelized variable
      * @throw DuplicateElement is raised if the variable already contains
      * the label
      * @return *this which allows : v.addLabel("1").addLabel("2")...;
@@ -151,10 +160,10 @@ namespace gum {
 
 
   protected:
-		
+
 		/// (protected) Default constructor
     LabelizedVariable( ) {GUM_CONSTRUCTOR(LabelizedVariable);};
-		
+
     // ============================================================================
     /// copies the content of aLDRV
     // ============================================================================
@@ -169,7 +178,7 @@ namespace gum {
 
 
 } /* namespace gum */
-  
+
 
 /* ============================================================================== */
 /* ============================================================================== */

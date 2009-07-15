@@ -80,7 +80,7 @@ namespace gum {
     /// returns the fill-ins added by the triangulation algorithm
     // ============================================================================
     const EdgeSet& fillIns() ;
-    
+
     // ============================================================================
     /// returns an elimination ordering compatible with the triangulated graph
     /// @todo : whu not a Sequence ?
@@ -117,7 +117,7 @@ namespace gum {
     // ============================================================================
     /// returns a junction tree of maximal prime subgraphs
     /**
-     * TODO 
+     * TODO
      * @warning Actually, the cliques of the junction tree are guarranteed to be
      * maximal prime subgraph of the original graph that was triangulated only if
      * the triangulation performed is minimal (in the sense that removing any edge
@@ -128,7 +128,7 @@ namespace gum {
 
     // ============================================================================
     /**
-     * TODO 
+     * TODO
      * @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
     // ============================================================================
@@ -153,7 +153,7 @@ namespace gum {
      * more effective C++.*/
     // ============================================================================
     virtual Triangulation* copyFactory () const ;
-    
+
 
 
   private:
@@ -176,12 +176,10 @@ namespace gum {
     CliqueGraph __maxPrimeSubgraph;
 
   };
+} /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/eliminationSequenceTriangulation.inl>
 #endif
 
-} /* namespace gum */
-
-  
 #endif /* GUM_ELIMINATION_SEQUENCE_TRIANGULATION_H */

@@ -100,8 +100,9 @@ namespace gum {
     /**
      * Listen to change in a given Instantiation.
      * @param i the Instantiation
-     * @param var The changed dim.
-     * @param val The changed value.
+		 * @param var The changed dim.
+		 * @param oldval The old value.
+		 * @param newval The changed value.
      */
     // ============================================================================
     virtual void changeNotification( Instantiation& i,
@@ -112,8 +113,6 @@ namespace gum {
     /**
      * Listen to setFirst in a given Instantiation.
      * @param i The Instantiation.
-     * @param var The changed dim.
-     * @param val The changed value.
      */
     // ============================================================================
     virtual void setFirstNotification( Instantiation& i )=0;
@@ -122,8 +121,6 @@ namespace gum {
     /**
      * Listen to setLast in a given Instantiation.
      * @param i The Instantiation.
-     * @param var The changed dim.
-     * @param val The changed value.
      */
     // ============================================================================
     virtual void setLastNotification( Instantiation& i ) =0;
@@ -132,8 +129,6 @@ namespace gum {
     /**
      * Listen to increment in a given Instantiation.
      * @param i The Instantiation
-     * @param var The changed dim.
-     * @param val The changed value.
      */
     // ============================================================================
     virtual void setIncNotification( Instantiation& i ) =0;
@@ -142,8 +137,6 @@ namespace gum {
     /**
      * Listen to increment in each recorded Instantiation.
      * @param i The Instantiation
-     * @param var The changed dim.
-     * @param val The changed value.
      */
     // ============================================================================
     virtual void setDecNotification( Instantiation& i ) =0;

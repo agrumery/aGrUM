@@ -38,7 +38,6 @@
     - \ref graph_page "How to use graph classes ?"
     - \ref multidim_page "How to use the MultiDim hierarchy ?"
     - \ref instantiation_page "How to use a Instantiation ?"
-    - \ref prm_page "How to use Probabilistic Relational Models ?"
 
     \defgroup basicstruct_group Basic data structures
     \defgroup graph_group Graph representation

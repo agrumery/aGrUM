@@ -159,7 +159,7 @@ namespace gum {
     /// default constructor
     // ============================================================================
     explicit ListBucket( const Val& v );
-    
+
     // ============================================================================
     /// copy constructor
     // ============================================================================
@@ -280,7 +280,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// A basic constructor that creates an empty list.
     // ============================================================================
@@ -311,7 +311,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// inserts a new element (a copy) at the beginning of the chained list
     /** The value passed in argument is not actually inserted into the list: this
@@ -456,7 +456,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Copy operator
     /** The new list and that which is copied do not share the
@@ -465,10 +465,9 @@ namespace gum {
      * point toward the same elements. This constructor runs in linear time. If an
      * exception is thrown, the ListBase guarrantees that no memory leak occurs.
      * In such a case, the list returned is empty.
-     * @param from the list the content of which will be copied into the
-     * current List */
+		 * @param fr the list the content of which will be copied into the current List */
     // ============================================================================
-    ListBase<Val>& operator= ( const ListBase<Val>& from );
+    ListBase<Val>& operator= ( const ListBase<Val> &fr);
 
     // ============================================================================
     /// inserts a new element at the end of the list (alias of pushBack)
@@ -502,6 +501,14 @@ namespace gum {
      * @return a reference on the element stored at the ith position in the list */
     // ============================================================================
     Val& operator[]( unsigned int i ) ;
+
+		/// returns the const ith element in the current chained list
+		/** The first of the list element has index 0.
+		* This method runs in linear time w.r.t. the size of the list.
+		* @param i the position of the element in the list (0 = first element)
+		* @throw NotFound exception is thrown if the element to be retrieved
+		* does not exist
+		* @return a reference on the element stored at the ith position in the list */
     const Val& operator[]( unsigned int i ) const ;
 
     /// @}
@@ -563,7 +570,7 @@ namespace gum {
 
 
 
-  
+
   /* =========================================================================== */
   /* ===                     GENERIC DOUBLY CHAINED LISTS                    === */
   /* =========================================================================== */
@@ -661,12 +668,12 @@ namespace gum {
     /// developers should always use the List<X>::iterator terminology
     typedef ListIterator<Val> iterator;
     typedef ListConstIterator<Val> const_iterator;
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /** @brief A basic constructor that creates an empty list as well as its own
      * iterator's list */
@@ -732,7 +739,7 @@ namespace gum {
     /// @name Iterators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// returns an iterator pointing to the end of the List
     // ============================================================================
@@ -764,7 +771,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// inserts a new element (a copy) at the beginning of the chained list.
     /** The value passed in argument is not actually inserted into the list: this
@@ -836,6 +843,11 @@ namespace gum {
      * exception. It runs in linear time in the size of the list. */
     // ============================================================================
     void erase( const iterator& iter );
+
+		/// erases the element of the List pointed to by the const iterator
+		/** If the element cannot be found, i.e., it has already been erased or the
+		* iterator points to end/rend, the function returns without throwing any
+		* exception. It runs in linear time in the size of the list. */
     void erase( const const_iterator& iter );
 
     // ============================================================================
@@ -895,18 +907,24 @@ namespace gum {
     /// returns a boolean indicating whether the chained list is empty
     // ============================================================================
     using ListBase<Val>::empty;
-    
+
     // ============================================================================
     /// converts a list into a string
     // ============================================================================
     using ListBase<Val>::toString;
-    
+
     // ============================================================================
     /// creates a list of mountains from a list of val
     /** @param f a function that maps any Val element into a Mount */
     // ============================================================================
     template <typename Mount> List<Mount> map( Mount( *f )( Val ) ) const;
+
+		/// creates a list of mountains from a list of val
+		/** @param f a function that maps any Val element into a Mount */
     template <typename Mount> List<Mount> map( Mount( *f )( Val& ) ) const;
+
+		/// creates a list of mountains from a list of val
+		/** @param f a function that maps any Val element into a Mount */
     template <typename Mount> List<Mount> map( Mount( *f )( const Val& ) ) const;
 
     // ============================================================================
@@ -922,7 +940,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Copy operator. The List keeps its own iterator's list.
     /** The new list and that which is copied do not share the
@@ -971,6 +989,14 @@ namespace gum {
      * @return a reference on the element stored at the ith position in the list */
     // ============================================================================
     Val& operator[]( const unsigned int i ) ;
+
+		/// returns the const ith element in the current chained list.
+		/** The first of the list element has index 0.
+		* This method runs in linear time.
+		* @param i the position of the element in the list (0 = first element)
+		* @throw NotFound exception is thrown if the element to be retrieved
+		* does not exist
+		* @return a reference on the element stored at the ith position in the list */
     const Val& operator[]( const unsigned int i ) const ;
 
     /// @}
@@ -993,7 +1019,7 @@ namespace gum {
     /// ListIterator should be a friend to optimize access to elements
     friend class ListIterator<Val>;
     friend class ListConstIterator<Val>;
-    
+
     /// for friendly displaying the content of a list
     friend std::ostream& operator<< <>
     ( std::ostream& stream, const List<Val>& list );
@@ -1010,7 +1036,7 @@ namespace gum {
 
 
 
-  
+
   /* =========================================================================== */
   /* ===                            LIST ITERATORS                           === */
   /* =========================================================================== */
@@ -1054,7 +1080,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// basic constructor. returns an iterator pointing toward nothing
     // ============================================================================
@@ -1082,7 +1108,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Makes the iterator point toward nothing
     /** A method for detaching the iterator from the List it is attached to.
@@ -1111,7 +1137,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
@@ -1173,7 +1199,7 @@ namespace gum {
     /** class List must be a friend because it uses the getBucket method
      * to speed up some processes. */
     friend class List<Val>;
-    
+
     /// the list the iterator is pointing to
     const List<Val> *__list;
 
@@ -1250,7 +1276,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// basic constructor. returns an iterator pointing toward nothing
     // ============================================================================
@@ -1278,7 +1304,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Makes the iterator point toward nothing
     /** A method for detaching the iterator from the List it is attached to.
@@ -1307,7 +1333,7 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
@@ -1367,7 +1393,7 @@ namespace gum {
     /// @}
 
   };
-  
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend

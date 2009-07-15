@@ -1,10 +1,31 @@
-#include <agrum/graphs/eliminationSequenceTriangulation.h>
 
-namespace gum {
+/***************************************************************************
+*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+*   {prenom.nom}_at_lip6.fr                                               *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
+#include <agrum/graphs/eliminationSequenceTriangulation.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/eliminationSequenceTriangulation.inl>
 #endif
+
+namespace gum {
+
 
   EliminationSequenceTriangulation::EliminationSequenceTriangulation(const UndiGraph& graph,
 								     const std::vector<NodeId>& eliminationSequence) :
@@ -42,8 +63,8 @@ namespace gum {
   {
     GUM_CONS_CPY(EliminationSequenceTriangulation);
   }
-  
-  
+
+
   EliminationSequenceTriangulation& EliminationSequenceTriangulation::operator=(const EliminationSequenceTriangulation& toCopy) {
     __graph = toCopy.__graph;
     __eliminationSequence = toCopy.__eliminationSequence;
@@ -67,7 +88,7 @@ namespace gum {
     return 666;
   }
 
- 
+
   void EliminationSequenceTriangulation::__computeEliminationTree() {
     __fillIns = new EdgeSet;
     __triangulatedGraph = new UndiGraph(__graph);
@@ -146,7 +167,7 @@ namespace gum {
 	  iter != neighbours.end(); ++iter) {
 	Edge edge = *iter;
 	NodeId otherClique = edge.other(cliqueId);
-	if((! flag.contains(edge)) && 
+	if((! flag.contains(edge)) &&
 	   (((int) __junctionTree->clique(otherClique).size()) - cliqueSize == 1)
 	   && (__cliqueOrder[otherClique] < order)) {
 	  idToAbsorb = edge.other(cliqueId);
@@ -173,7 +194,7 @@ namespace gum {
 	  if(otherClique != idToAbsorb) {
 	    __junctionTree->insertEdge(Edge(otherClique, idToAbsorb));
 	    if(__cliqueOrder[otherClique] < order) {
-	      flag.insert(Edge(otherClique, idToAbsorb)); 
+	      flag.insert(Edge(otherClique, idToAbsorb));
 	    }
 	  }
 	}
@@ -183,4 +204,4 @@ namespace gum {
 
   }
 
-}
+} //namespace gum

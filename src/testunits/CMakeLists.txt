@@ -69,13 +69,12 @@ file(GLOB AGRUM_TESTS
     MultiDimBucketTestSuite.h
     MultiDimNoisyORTestSuite.h
     MultiDimTestSuite.h
-    NancyTestSuite.h
     PotentialTestSuite.h
     RangeVariableTestSuite.h
     RefPtrTestSuite.h
     SequenceTestSuite.h
     SetTestSuite.h
-   # ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
+			  ShaferShenoyInferenceTestSuite.h  #<-----------------------MEMORY LEAK
     SimpleCPTGeneratorTestSuite.h
    # TorcsTestSuite.h   #<-----------------------MEMORY LEAK
     UndiGraphTestSuite.h
