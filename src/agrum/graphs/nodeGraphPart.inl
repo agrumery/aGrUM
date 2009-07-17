@@ -38,6 +38,10 @@ namespace gum {
     return ( ++__max );
   }
 
+	INLINE NodeId NodeGraphPart::nextNodeId() const {
+		return 1+__max;
+	}
+
   INLINE  NodeId NodeGraphPart::insertNode() {
     // only one tmp
     NodeId newNode=__nextNodeId();

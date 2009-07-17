@@ -324,6 +324,15 @@ class DiGraphTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( sk,sv );
     }
 
+		// this test should be in NodeGraphPartTestSuite.h which does not exist for now ...
+		void testNodeId() {
+      gum::DiGraph graph=buildGraph();
+
+			gum::NodeId id=graph.nextNodeId();
+			gum::NodeId id2=graph.insertNode();
+			TS_ASSERT_EQUALS(id,id2);
+		}
+
     // void testToDot() {
     //   gum::DiGraph graph = buildGraph();
     //   TS_GUM_ASSERT_THROWS_NOTHING(std::cout << graph.toDot());

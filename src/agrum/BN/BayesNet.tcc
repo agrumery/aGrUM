@@ -171,7 +171,12 @@ NodeId
 BayesNet<T_DATA>::add(const DiscreteVariable& var,
                       MultiDimImplementation<T_DATA> *aContent )
 {
-  NodeId id = VariableNodeMap::_set(__dag.insertNode(), var);
+	// this code is not thread safe !!!!
+  NodeId id = __dag.nextNodeId();
+	VariableNodeMap::_set(id, var);
+	__dag.insertNode();
+	// end of not thread safe code !!!
+
   Potential<T_DATA> *cpt = new Potential<T_DATA>(aContent);
   (*cpt) << variable(id);
   __probaMap.insert(id, cpt);
@@ -309,7 +314,7 @@ BayesNet<T_DATA>::beginArcs() const { return __dag.beginArcs(); }
 
 // Shortcut for this->dag().endArcs().
 template<typename T_DATA> INLINE
-const ArcSetIterator& 
+const ArcSetIterator&
 BayesNet<T_DATA>::endArcs() const { return __dag.endArcs(); }
 
 // The node's id are coherent with the variables and nodes of the topology.

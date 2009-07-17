@@ -145,7 +145,13 @@ namespace gum {
       template<typename T>
       void populateNodesFromProperty( const typename Property<T>::onNodes& h );
 
-      /** insert a new node and
+      /** next id (by using insertNode)
+			 * @warning a code like @code id=nextId();insertId(); @endcode is basically not thread safe !!
+       * @return the next id
+       */
+      NodeId nextNodeId( ) const;
+
+			/** insert a new node and
        * @return the id chosen by the internal idFactory
        */
       virtual NodeId insertNode( );
