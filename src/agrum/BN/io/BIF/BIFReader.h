@@ -180,3 +180,4 @@ namespace gum {
 #include <agrum/BN/io/BIF/BIFReader.tcc>
 
 #endif // BIF_READER_H
+

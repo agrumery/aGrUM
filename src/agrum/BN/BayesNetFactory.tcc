@@ -674,7 +674,8 @@ namespace gum {
     template<typename T_DATA> INLINE
     void
     BayesNetFactory<T_DATA>::setVariable ( const DiscreteVariable& var ) {
-        if ( state() != BayesNetFactory<T_DATA>::NONE ) {
+        if ( (state() != BayesNetFactory<T_DATA>::NONE) &&
+             (state() != BayesNetFactory<T_DATA>::NETWORK) ) {
             __illegalStateError ( "setVariable" );
         } else {
             __checkVariableName ( var.name() );

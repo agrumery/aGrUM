@@ -38,7 +38,7 @@ file(GLOB AGRUM_TESTS
     BayesBallsTestSuite.h
     BayesNetGeneratorTestSuite.h
     BayesNetTestSuite.h
-    BijectionTestSuite.h
+    #BijectionTestSuite.h
     BIFReaderTestSuite.h
     #BIFWriterTestSuite.h
     BinTreeNodeTestSuite.h

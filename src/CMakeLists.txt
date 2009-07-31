@@ -20,7 +20,7 @@ if(UNIX)
   set(CMAKE_INSTALL_PREFIX /usr)
 endif(UNIX)
 if(APPLE)
-  set(CMAKE_CXX_COMPILER /opt/local/bin/g++-mp-4.2)
+  set(CMAKE_CXX_COMPILER /opt/local/bin/g++-mp-4.3)
   set(CMAKE_INSTALL_PREFIX /opt/local)
 endif(APPLE)
 

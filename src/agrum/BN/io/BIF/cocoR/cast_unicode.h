@@ -23,3 +23,4 @@ inline std::string narrow( const std::wstring& str ) {
 }
 
 #endif //CAST_UNICODE_H
+
