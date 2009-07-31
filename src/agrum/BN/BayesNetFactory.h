@@ -104,7 +104,7 @@ namespace gum {
        *                            than NONE.
        */
       BayesNet<T_DATA>* bayesNet();
-			const VariableNodeMap* variableNodeMap( void );
+      const VariableNodeMap* variableNodeMap( void );
 
       /// Returns the current state of the factory.
       factory_state state() const;
@@ -113,9 +113,13 @@ namespace gum {
       /// @throw NotFound Raised if no variable matches the name.
       NodeId variableId( const std::string& name ) const;
 
-			/// Returns the domainSize of the cpt for the node n.
-			/// @throw NotFound raised if no such NodeId exists.
-			Size cptDomainSize(const NodeId n) const;
+      /// Returns a constant reference on a variable given it's name.
+      /// @throw NotFound Raised if no variable matches the name.
+      const DiscreteVariable& variable(const std::string& name) const;
+
+      /// Returns the domainSize of the cpt for the node n.
+      /// @throw NotFound raised if no such NodeId exists.
+      Size cptDomainSize(const NodeId n) const;
 
       /// @}
       // ==========================================================================
@@ -171,9 +175,10 @@ namespace gum {
       void setVariableCPTImplementation( MultiDimAdressable* impl );
 
       /// Tells the factory that we're out of a variable declaration.
+      /// @return The Node id of the created variable.
       /// @throw UndefinedElement Raised if the variable isn't defined (or not
       ///                         enough defined).
-      void endVariableDeclaration();
+      NodeId endVariableDeclaration();
 
       /// @}
       // ==========================================================================
@@ -192,10 +197,10 @@ namespace gum {
       void addParent( const std::string& var );
 
       /// Tells the factory that we've finished declaring parents for some
-			/// variable.
-			/// @warning When parents exist, endParentsDeclaration creates some arcs. Due to the order used
-			/// in BIF file for probability specification, these arcs are created in the inverse order of
-			/// the order of the parent specifications.
+      /// variable.
+      /// @warning When parents exist, endParentsDeclaration creates some arcs. Due to the order used
+      /// in BIF file for probability specification, these arcs are created in the inverse order of
+      /// the order of the parent specifications.
       /// @throw UndefinedElement Raised if the variable isn't defined (or not
       ///                         enough defined).
       void endParentsDeclaration();
@@ -223,7 +228,7 @@ namespace gum {
        * ...,
        * [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
        *
-			 * @param variables the vector giving the order of parents
+       * @param variables the vector giving the order of parents
        * @param rawTable The raw table.
        */
       void rawConditionalTable( const std::vector<std::string>& variables,
@@ -340,7 +345,7 @@ namespace gum {
        * When the redefineParents flag is set to true the constructed BayesNet's
        * DAG is changed to fit with table's definition.
        *
-			 * @param varName The name of the concerned variable.
+       * @param varName The name of the concerned variable.
        * @param table A pointer over the CPT used for var.
        * @param redefineParents If true redefine var's parents to match table's
        *                        variables set.

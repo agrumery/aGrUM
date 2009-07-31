@@ -111,6 +111,18 @@ namespace gum {
         }
     }
 
+// Returns a constant reference on a variable given it's name.
+// @throw NotFound Raised if no variable matches the name.
+template<typename T_DATA> INLINE
+const DiscreteVariable&
+BayesNetFactory<T_DATA>::variable(const std::string& name) const {
+  try {
+    return __bn->variable(variableId(name));
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, name);
+  }
+}
+
 // Returns the domainSize of the cpt for the node n.
 // @throw NotFound raised if no such NodeId exists.
 // @throw OperationNotAllowed if there is no bayesian networks.
@@ -238,7 +250,7 @@ namespace gum {
 
 // Tells the factory that we're out of a variable declaration.
     template<typename T_DATA> INLINE
-    void
+    NodeId
     BayesNetFactory<T_DATA>::endVariableDeclaration() {
         if ( state() != VARIABLE ) {
             __illegalStateError ( "endVariableDeclaration" );
@@ -257,10 +269,12 @@ namespace gum {
                 __varNameMap.insert ( var->name(), __bn->add ( *var ) );
             }
 
+            NodeId retVal = __varNameMap[var->name()];
             delete var;
 
             __resetParts();
             __states.pop_back();
+            return retVal;
         } else {
             std::stringstream msg;
             msg << "Not enough modalities (";
@@ -284,6 +298,8 @@ namespace gum {
             __states.pop_back();
             GUM_ERROR ( OperationNotAllowed, msg.str() );
         }
+        // For noisy compilers
+        return 0;
     }
 
 // Tells the factory that we're declaring parents for some variable.
