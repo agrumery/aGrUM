@@ -109,7 +109,7 @@ class DAGTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
-      TS_ASSERT_THROWS( graph.insertArc( id5,id2 ) ,gum::Circuit );
+      TS_ASSERT_THROWS( graph.insertArc( id5,id2 ) ,gum::InvalidCircuit );
 
     }
 

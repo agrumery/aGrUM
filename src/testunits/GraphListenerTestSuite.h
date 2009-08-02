@@ -28,7 +28,9 @@
 #include <agrum/graphs/mixedGraph.h>
 
 #include <agrum/core/signal/listener.h>
+#include <agrum/graphs/undiGraphListener.h>
 #include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/mixedGraphListener.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -132,6 +134,85 @@ class GraphListenerTestSuite: public CxxTest::TestSuite {
 
     };
 
+    class UndiGraphCounter : public gum::UndiGraphListener {
+    private:
+        int __nbrNode,__nbrEdges;
+    public:
+        UndiGraphCounter(gum::UndiGraph *g) : gum::UndiGraphListener(g) {
+            __nbrNode=__nbrEdges=0;
+        }
+
+        void whenNodeAdded( const void * ,gum::NodeId ) {
+            __nbrNode++;
+        }
+
+        void whenNodeDeleted( const void *,gum::NodeId ) {
+            __nbrNode--;
+        }
+
+        void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrEdges++;
+        }
+
+        void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrEdges--;
+        }
+        const int nodes() const {
+            return __nbrNode;
+        }
+
+        const int edges() const {
+            return __nbrEdges;
+        }
+
+    };
+
+    class MixedGraphCounter : public gum::MixedGraphListener {
+    private:
+        int __nbrNode,__nbrArcs,__nbrEdges;
+    public:
+        MixedGraphCounter(gum::MixedGraph *g) : gum::MixedGraphListener(g) {
+            __nbrNode=__nbrArcs=__nbrEdges=0;
+        }
+
+        void whenNodeAdded( const void * ,gum::NodeId ) {
+            __nbrNode++;
+        }
+
+        void whenNodeDeleted( const void *,gum::NodeId ) {
+            __nbrNode--;
+        }
+
+        void whenArcAdded( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrArcs++;
+        }
+
+        void whenArcDeleted( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrArcs--;
+        }
+
+        void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrEdges++;
+        }
+
+        void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId ) {
+            __nbrEdges--;
+        }
+
+        const int nodes() const {
+            return __nbrNode;
+        }
+
+        const int arcs() const {
+            return __nbrArcs;
+        }
+
+        const int edges() const {
+            return __nbrEdges;
+        }
+
+    };
+
 private:
     gum::NodeId id1;
     gum::NodeId id2;
@@ -139,7 +220,7 @@ private:
     gum::NodeId id4;
     gum::NodeId id5;
 
-    void buildDAG( gum::DAG& g ) {
+    void buildDAG( gum::DiGraph& g ) {
         id1=g.insertNode();
         id2=g.insertNode();
         id3=g.insertNode();
@@ -406,8 +487,34 @@ public:
         TS_ASSERT_EQUALS( c2.arcs(),0+0 );
     }
 
-    void testDAGWithGraphListener() {
-        gum::DAG g;
+    void testUndiGraphWithGraphListener() {
+        gum::UndiGraph g;
+
+        UndiGraphCounter c(&g);
+
+        buildUndiGraph( g ); // 5 nodes/6 edges for g
+
+        TS_ASSERT_EQUALS( c.nodes(),5 );
+        TS_ASSERT_EQUALS( c.edges(),6 );
+
+        g.eraseNode( id5 );// -1 nodes/-3 edges for g
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.edges(),3 );
+
+        g.eraseEdge( id1,id3 ); // -1 edges
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.edges(),2 );
+
+        g.clear(); // 0 node, 0 arc
+
+        TS_ASSERT_EQUALS( c.nodes(),0 );
+        TS_ASSERT_EQUALS( c.edges(),0 );
+    }
+
+    void testDiGraphWithGraphListener() {
+        gum::DiGraph g;
 
         DiGraphCounter c(&g);
 
@@ -429,6 +536,65 @@ public:
         g.clear(); // 0 node, 0 arc
 
         TS_ASSERT_EQUALS( c.nodes(),0 );
+        TS_ASSERT_EQUALS( c.arcs(),0 );
+    }
+
+    void testDAGWithGraphListener() {
+        gum::DAG g;
+
+        DiGraphCounter c(&g);
+
+        buildDAG( g ); // 5 nodes/6 arcs for g
+
+        TS_ASSERT_THROWS(g.insertArc(id5,id2),gum::InvalidCircuit); // should throw InvalidCircuit and should not call the listeners
+
+        TS_ASSERT_EQUALS( c.nodes(),5 );
+        TS_ASSERT_EQUALS( c.arcs(),6 );
+
+        g.eraseNode( id5 );// -1 nodes/-3 arcs for g
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.arcs(),3 );
+
+        g.eraseArc( id1,id3 ); // -1 arcs
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.arcs(),2 );
+
+        g.clear(); // 0 node, 0 arc
+
+        TS_ASSERT_EQUALS( c.nodes(),0 );
+        TS_ASSERT_EQUALS( c.arcs(),0 );
+    }
+
+    void testMixedGraphWithGraphListener() {
+
+        gum::MixedGraph g;
+
+        MixedGraphCounter c(&g);
+
+        buildMixedGraph( g ); // 5 nodes/3 arcs/3 edges for g
+
+        TS_ASSERT_EQUALS( c.nodes(),5 );
+        TS_ASSERT_EQUALS( c.edges(),3 );
+        TS_ASSERT_EQUALS( c.arcs(),3 );
+
+        g.eraseNode( id5 );// -1 nodes/-2 edge / -1 arcs for g
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.edges(),1 );
+        TS_ASSERT_EQUALS( c.arcs(),2 );
+
+        g.eraseArc( id1,id3 ); // -1 arcs
+
+        TS_ASSERT_EQUALS( c.nodes(),4 );
+        TS_ASSERT_EQUALS( c.edges(),1 );
+        TS_ASSERT_EQUALS( c.arcs(),1 );
+
+        g.clear(); // 0 node, 0 arc
+
+        TS_ASSERT_EQUALS( c.nodes(),0 );
+        TS_ASSERT_EQUALS( c.edges(),0 );
         TS_ASSERT_EQUALS( c.arcs(),0 );
     }
 };

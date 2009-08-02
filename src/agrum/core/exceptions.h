@@ -139,7 +139,7 @@ namespace gum {
   /// Exception : default in label
   GUM_MAKE_ERROR( DefaultInLabel, GraphError,"Error on label" )
   /// Exception : existence of a directed cycle in a graph
-  GUM_MAKE_ERROR( Circuit, GraphError,"the graph contains a directed cycle" )
+  GUM_MAKE_ERROR( InvalidCircuit, GraphError,"the graph contains a directed cycle" )
 
 } /* namespace gum */
 
