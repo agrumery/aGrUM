@@ -18,48 +18,50 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 /** @file
-* @brief Base classes for oriented graph listeners
+* @brief Base classes for mixed graph listeners
 *
 * @author Pierre-Henri WUILLEMIN
 */
-#ifndef GUM_DIGRAPH_LISTENER_H
+#ifndef GUM_MIXEDGRAPH_LISTENER_H
 #define GUM_DIGRAPH_LISTENER_H
 
-#include <agrum/graphs/diGraph.h>
+#include <agrum/graphs/mixedGraph.h>
 
 
 namespace gum {
-/** @class DiGraphListener
-* @brief Abstract Base class for all diGraph Listener
+/** @class MixedGraphListener
+* @brief Abstract Base class for all mixed Graph Listener
 *
 * \ingroup graph_group
 *
 *
 * This is the virtual base class for graphs meta-listener.
 *
-* A DiGraphListener will have to implement following pure methods :
+* A MixedGraphListener will have to implement following pure methods :
   *  - void whenNodeAdded( const void * ,gum::NodeId )
   *  - void whenNodeDeleted( const void *,gum::NodeId )
   *  - void whenArcAdded( const void *,gum::NodeId,gum::NodeId )
   *  - void whenArcDeleted( const void *,gum::NodeId,gum::NodeId )
+  *  - void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )
+  *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
   */
-class DiGraphListener : public Listener {
+class MixedGraphListener : public Listener {
 protected:
-    DiGraph* _digraph;
+    MixedGraph* _digraph;
 
-    DiGraphListener(const DiGraphListener& d);
-    DiGraphListener& operator=(const DiGraphListener& d);
+    MixedGraphListener(const MixedGraphListener& d);
+    MixedGraphListener& operator=(const MixedGraphListener& d);
 
 public:
     /// @name Constructors / Destructors
     /// @{
-    /** constructor of DiGraphListener
+    /** constructor of MixedGraphListener
     * @param g the graph to be listened to
     */
-    DiGraphListener(DiGraph* g);
+    MixedGraphListener(MixedGraph* g);
 
     /// destructor
-    ~DiGraphListener();
+    ~MixedGraphListener();
     /// @}
 
     /// signals to listen to
@@ -68,12 +70,14 @@ public:
     virtual void whenNodeDeleted( const void *,gum::NodeId )=0;
     virtual void whenArcAdded( const void *,gum::NodeId,gum::NodeId )=0;
     virtual void whenArcDeleted( const void *,gum::NodeId,gum::NodeId )=0;
+    virtual void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )=0;
+    virtual void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )=0;
     /// @}
 };
 } // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/diGraphListener.inl>
+#include <agrum/graphs/mixedGraphListener.inl>
 #endif //GUM_NOINLINE
 
 #endif // GUM_DIGRAPH_LISTENER_H

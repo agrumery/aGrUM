@@ -18,39 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation of Base classes for dag
+ * @brief Inline implementation fo base classes for oriented graphs listener
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Pierre-Henri WUILLEMIN
  */
-
+#include <agrum/graphs/mixedGraphListener.h>
 
 namespace gum {
 
+MixedGraphListener::MixedGraphListener(const MixedGraphListener& d) {
+    GUM_CONS_CPY(MixedGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy constructor for MixedGraphListener");
+}
 
-  INLINE void DAG::insertArc( const Arc& arc ) {
-    if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );
+MixedGraphListener& MixedGraphListener::operator=(const MixedGraphListener& d) {
+    GUM_OP_CPY(MixedGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy operator for MixedGraphListener");
+}
 
-    if ( ! exists( arc.tail() ) ) GUM_ERROR( InvalidNode,"tail node" );
+MixedGraphListener::MixedGraphListener(MixedGraph* g) {
+    GUM_CONSTRUCTOR(MixedGraphListener);
+    if (! g) GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+    _digraph=g;
+    GUM_CONNECT( (*_digraph),onNodeAdded,(*this),MixedGraphListener::whenNodeAdded );
+    GUM_CONNECT( (*_digraph),onNodeDeleted,(*this),MixedGraphListener::whenNodeDeleted );
+    GUM_CONNECT( (*_digraph),onArcAdded ,(*this),MixedGraphListener::whenArcAdded );
+    GUM_CONNECT( (*_digraph),onArcDeleted,(*this),MixedGraphListener::whenArcDeleted );
+    GUM_CONNECT( (*_digraph),onEdgeAdded ,(*this),MixedGraphListener::whenEdgeAdded );
+    GUM_CONNECT( (*_digraph),onEdgeDeleted,(*this),MixedGraphListener::whenEdgeDeleted );
+}
+MixedGraphListener::~MixedGraphListener() {
+    GUM_DESTRUCTOR(MixedGraphListener);
+}
 
-    if ( hasDirectedPath( arc.head(), arc.tail() ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
+} // namespace gum
 
-    DiGraph::insertArc( arc );
-  }
-
-  INLINE void DAG::insertArc( const NodeId& tail,const NodeId& head ) {
-    if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-
-    if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( head, tail ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( tail,head );
-  }
-
-
-} /* namespace gum */
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

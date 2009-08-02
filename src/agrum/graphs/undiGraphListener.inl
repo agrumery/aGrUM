@@ -18,39 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation of Base classes for dag
+ * @brief Inline implementation fo base classes for oriented graphs listener
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Pierre-Henri WUILLEMIN
  */
-
+#include <agrum/graphs/undiGraphListener.h>
 
 namespace gum {
 
+UndiGraphListener::UndiGraphListener(const UndiGraphListener& d) {
+    GUM_CONS_CPY(UndiGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy constructor for UndiGraphListener");
+}
 
-  INLINE void DAG::insertArc( const Arc& arc ) {
-    if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );
+UndiGraphListener& UndiGraphListener::operator=(const UndiGraphListener& d) {
+    GUM_OP_CPY(UndiGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy operator for UndiGraphListener");
+}
 
-    if ( ! exists( arc.tail() ) ) GUM_ERROR( InvalidNode,"tail node" );
+UndiGraphListener::UndiGraphListener(UndiGraph* g) {
+    GUM_CONSTRUCTOR(UndiGraphListener);
+    if (! g) GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+    _digraph=g;
+    GUM_CONNECT( (*_digraph),onNodeAdded,(*this),UndiGraphListener::whenNodeAdded );
+    GUM_CONNECT( (*_digraph),onNodeDeleted,(*this),UndiGraphListener::whenNodeDeleted );
+    GUM_CONNECT( (*_digraph),onEdgeAdded ,(*this),UndiGraphListener::whenEdgeAdded );
+    GUM_CONNECT( (*_digraph),onEdgeDeleted,(*this),UndiGraphListener::whenEdgeDeleted );
+}
+UndiGraphListener::~UndiGraphListener() {
+    GUM_DESTRUCTOR(UndiGraphListener);
+}
 
-    if ( hasDirectedPath( arc.head(), arc.tail() ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( arc );
-  }
-
-  INLINE void DAG::insertArc( const NodeId& tail,const NodeId& head ) {
-    if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-
-    if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( head, tail ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( tail,head );
-  }
-
-
-} /* namespace gum */
+} // namespace gum

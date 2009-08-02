@@ -18,39 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation of Base classes for dag
+ * @brief source file for virtual Base classes for non-oriented graphs listener
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Pierre-Henri WUILLEMIN
  */
 
+#ifdef GUM_NO_INLINE
+#include <agrum/graphs/undiGraphListener.inl>
+#endif //GUM_NOINLINE
 
-namespace gum {
-
-
-  INLINE void DAG::insertArc( const Arc& arc ) {
-    if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );
-
-    if ( ! exists( arc.tail() ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( arc.head(), arc.tail() ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( arc );
-  }
-
-  INLINE void DAG::insertArc( const NodeId& tail,const NodeId& head ) {
-    if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-
-    if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( head, tail ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( tail,head );
-  }
-
-
-} /* namespace gum */
