@@ -78,6 +78,7 @@ file(GLOB AGRUM_TESTS
     SimpleCPTGeneratorTestSuite.h
    # TorcsTestSuite.h   #<-----------------------MEMORY LEAK
     UndiGraphTestSuite.h
+    UtilityTestSuite.h
     ValueEliminationTestSuite.h
     VariableNodeMapTestSuite.h
  )

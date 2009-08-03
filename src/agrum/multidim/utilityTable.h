@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
-   @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+   @author Pierre-Henri WUILLEMIN et Christophe GONZALES et Jean-Philippe DUBUS
 */
 
 #ifndef GUM_UTILITY_TABLE_H
@@ -26,12 +26,13 @@
 
 #include <agrum/core/utils.h>
 #include <agrum/multidim/multiDimDecorator.h>
+#include <agrum/multidim/multiDimArray.h>
 
 
 namespace gum {
 
 
-  template<typename T_DATA>
+  template <typename T_DATA>
 
   /** @class UtilityTable
    * representation of multi-dimensional utility (experimental)
@@ -39,14 +40,36 @@ namespace gum {
    */
   class UtilityTable : public MultiDimDecorator<T_DATA> {
   public:
-    UtilityTable( MultiDimImplementation<T_DATA>* aContent ) :
-      MultiDimDecorator<T_DATA>( aContent ) {
-      GUM_CONSTRUCTOR( UtilityTable );
-    };
+    /**
+     * Default constructor (with a multiDimArray<> for implementation)
+     */
+    UtilityTable();
 
-    ~UtilityTable() {
-      GUM_DESTRUCTOR( UtilityTable );
-    };
+    /**
+     * Constructor
+     * @param aContent implementation of utility table
+     */
+    UtilityTable( MultiDimImplementation<T_DATA>* aContent );
+
+    /**
+     * Destructor
+     */
+    virtual ~UtilityTable();
+
+    /**
+     * Copy constructor
+     *
+     * @param toCopy utility to copy (with the same variables and content)
+     */
+    UtilityTable(const UtilityTable<T_DATA>& toCopy);
+
+    /**
+     * Copy operator
+     *
+     * @param toCopy utility to copy (with the same variables and content)
+     * @raturn the copy
+     */
+    UtilityTable<T_DATA>& operator=(const UtilityTable<T_DATA>& toCopy);
 
     /**
      * This method creates a clone of this object, withouth its content
@@ -63,6 +86,27 @@ namespace gum {
      */
     virtual MultiDimContainer<T_DATA>* newFactory() const;
 
+    /**
+     * This method modifies the current table in order to store the
+     * result of the addition p1 + p2)
+     *
+     * @param p1 an utility
+     * @param p2 an utility
+     */
+    void sum(const UtilityTable<T_DATA>& p1,
+	     const UtilityTable<T_DATA>& p2);
+
+    /**
+     * This method modifies the current table A in order to compute the
+     * result of the addition with B (A <- A + B)
+     *
+     * @param toAdd table to add in this table (B in the description)
+     */
+    //    void sumBy(const UtilityTable<T_DATA>& toAdd);
+
+  protected:
+
+  private:
 
   };
 

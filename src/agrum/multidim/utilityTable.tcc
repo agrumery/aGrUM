@@ -23,21 +23,88 @@
 namespace gum {
 
   template <typename T_DATA> INLINE
+  UtilityTable<T_DATA>::UtilityTable() :
+    MultiDimDecorator<T_DATA>( new MultiDimArray<T_DATA> ) {
+    GUM_CONSTRUCTOR( UtilityTable );
+  }
+
+  template <typename T_DATA> INLINE
+  UtilityTable<T_DATA>::UtilityTable( MultiDimImplementation<T_DATA>* aContent ) :
+    MultiDimDecorator<T_DATA>( aContent ) {
+    GUM_CONSTRUCTOR( UtilityTable );
+  }
+  
+  template <typename T_DATA> INLINE
+  UtilityTable<T_DATA>::~UtilityTable() {
+    GUM_DESTRUCTOR( UtilityTable );
+  }
+  
+  template <typename T_DATA> INLINE
+  UtilityTable<T_DATA>::UtilityTable(const UtilityTable<T_DATA>& toCopy) :
+    MultiDimDecorator<T_DATA>(0)
+  {
+    GUM_ERROR( OperationNotAllowed,
+	       "No copy for UtilityTable : how to choose the implementation ?" );
+    GUM_CONS_CPY( UtilityTable ); 
+  }
+
+  template <typename T_DATA> INLINE
+  UtilityTable<T_DATA>& UtilityTable<T_DATA>::operator=(const UtilityTable<T_DATA>& toCopy) {
+    GUM_ERROR( OperationNotAllowed,
+	       "No copy for UtilityTable : how to choose the implementation ?" );
+    return *this;
+  }
+
+  template <typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* UtilityTable<T_DATA>::newFactory() const {
     return new UtilityTable<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
   }
 
+template <typename T_DATA> INLINE
+void UtilityTable<T_DATA>::sum(const UtilityTable<T_DATA>& p1,
+			       const UtilityTable<T_DATA>& p2) {
+  this->beginMultipleChanges();
+  // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
+    const Sequence<const DiscreteVariable *> seq0=this->variablesSequence() ;
 
-//   template<typename T_DATA> INLINE
-//   T_DATA UtilityTable<T_DATA>::add( const T_DATA& a,const T_DATA& b ) const {
-//     return ( a>b )?a:b;
+    for ( Sequence<const DiscreteVariable *>::iterator iter = seq0.begin();
+          iter!=seq0.end();++iter ) {
+      this->erase( **iter );
+    }
+
+    // adding vars in p1
+    const Sequence<const DiscreteVariable *>& seq1=p1.variablesSequence() ;
+
+    for ( Sequence<const DiscreteVariable *>::iterator iter = seq1.begin();
+          iter!=seq1.end();++iter ) {
+      this->add( **iter );
+    }
+
+    // adding vars in p2 not already there
+    const Sequence<const DiscreteVariable *>& seq2=p2.variablesSequence() ;
+
+    for ( Sequence<const DiscreteVariable *>::iterator iter = seq2.begin();
+          iter!=seq2.end();++iter ) {
+      if ( ! this->contains( **iter ) ) {
+        this->add( **iter );
+      }
+    }
+
+    this->endMultipleChanges();
+
+    Instantiation i( this );
+    // it looks like we don't need much more optimization (all the sums & prods
+    // have to be made once at least) ...
+    // remember that p1[i] means p1[just the part of i that concerns p1]
+
+    for ( i.setFirst();! i.end(); ++i ) this->set( i ,p1[i]+p2[i]);
+
+}
+
+//   template <typename T_DATA> 
+//   void UtilityTable<T_DATA>::sumBy(const UtilityTable<T_DATA>& toAdd) {
+   
 //   }
-
-//   template<typename T_DATA> INLINE
-//   T_DATA UtilityTable<T_DATA>::multiply( const T_DATA& a,const T_DATA& b ) const {
-//     return a+b;
-//   }
-
 
 } /* namespace gum */
 
