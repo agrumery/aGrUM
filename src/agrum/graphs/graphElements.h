@@ -21,7 +21,7 @@
 /*!
   \ingroup graph_group
 
-  \page graph_page How to use the graph classes ?
+  \page graph_page How to use the graph classes?
 
   The basic idea of the implementation of graphs in aGrUM is to leave it "as
   pure as possible". Hence graphs consist of integers (@ref gum::NodeId) and binary
@@ -33,7 +33,8 @@
 
   In aGrUM,
   - 3 classes wrap these 3 sets : EdgeGraphPart, ArcGraphPart and NodeGraphPart
-  (resp. wrapping @ref gum::NodeSet, @ref gum::ArcSet and @ref gum::EdgeSet, 3 typedefs of Set),
+  (resp. wrapping @ref gum::NodeSet, @ref gum::ArcSet and @ref gum::EdgeSet,
+  3 typedefs of Set),
   - UndiGraph inherits from EdgeGraphPart and NodeGraphPart,
   - DiGraph inherits from ArcGraphPart and NodeGraphPart and
   - MixedGraph inherits from DiGraph and UndiGraph.
@@ -47,7 +48,7 @@
 
   \section graph_sec_2 IDs and properties
   Such representation of graphs has two major drawbacks that aGrUM has to face:
-  - how to certify that all node ids are unique in a graph ?
+  - how to certify that all node ids are unique in a graph?
   - how to put properties (name/position/integer/flag) on nodes, edges and arcs?
 
   <h4>ID factory</h4>
@@ -60,11 +61,10 @@
   (NodeGraphPart::populateNodes() clears the NodeGraphPart before copying).
 
   <h4>Properties</h4>
-  Properties are the way to put (dynamic) informations in nodes, edges and arcs.
-  Properties are just HashTable where keys are @ref gum::NodeId, Edge or Arc.
-  Unfortunately, due to a lack
-  (or what we find to be lack) of C++, there is no way to create templated
-  typedefs... So aGrUM uses (currently)
+  Properties are the way to put (dynamic) informations within nodes, edges and
+  arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
+  or Arc. Unfortunately, due to a lack (or what we find to be lack) of C++, there
+  is no way to create templated typedefs... So aGrUM uses (currently)
   gum::Property<X>::onNodes, gum::Property<X>::onEdges and
   gum::Property<X>::onArcs to add new properties related to nodes, edges and
   arcs respectively.
@@ -113,24 +113,24 @@
   in a DiGraph" g from \ref gum::NodeId n1 to \ref gum::NodeId n2.
 
   \page exemple_recherche_chemin Example: Search of a directed path in a DiGraph
-  from n1 to n2
+  g from n1 to n2
   \ingroup graph_group
 
   @code
   using namespace gum;
 
-  List<NodeId> nodeFile;
+  List<NodeId> nodeFIFO;
   // mark[node] contains 0 if not visited
   // mark[node]=predecessor if visited
   Property<NodeId>::onNodes mark=g.nodesProperty( 0 );
   NodeId current;
 
   mark[n1]=n1;
-  nodeFile.pushBack( n1 );
-  while ( ! nodeFile.empty() ) {
-    current=nodeFile.front();nodeFile.popFront();
-    const ArcSet& set=g.children( current );
+  nodeFIFO.pushBack( n1 );
+  while ( ! nodeFIFO.empty() ) {
+    current=nodeFIFO.front();nodeFIFO.popFront();
 
+    const ArcSet& set=g.children( current );
     for ( ArcSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
       NodeId new_one=ite->head();
 
@@ -139,7 +139,7 @@
       mark[new_one]=current;
       if ( new_one==n2 ) break; // if we reach n2, stop.
 
-      nodeFile.pushBack( new_one );
+      nodeFIFO.pushBack( new_one );
     }
   }
 
@@ -157,7 +157,7 @@
  * The last two represent respectively undirected and directed edges. The
  * "directed/undirected" term may be misleading although in practice this
  * will probably result in how these edges will be drawn. In fact, a more
- * appropriate term would be "symmetric/asymmetric edges": a Arc is an edge in
+ * appropriate term would be "symmetric/asymmetric edges": an Arc is an edge in
  * which the extremities have different status whereas in an Edge the role of the
  * extremities is symmetric. For instance, in an arrow, one node is near the head
  * and the other one is farther, hence these nodes have different status and
@@ -167,7 +167,7 @@
  * Conversely, in a Markov Random Field, an edge between two nodes, x and y,
  * means that x and y are probabilistically dependent of one another. This being a
  * symmetrical relation, there is no difference between edge (x,y) and edge (y,x).
- * Thus, it can be represented by a Edge and, graphically, by an undirected edge.
+ * Thus, it can be represented by an Edge and, graphically, by an undirected edge.
  *
  * Link is the common point between Edge and Arc. This class is provided
  * as a convenience for developers. It can be useful for instance in algorithms
@@ -275,20 +275,20 @@ namespace gum {
     // ============================================================================
     /// returns an extremal node of an edge given the ID of the other one
     // ============================================================================
-    const NodeId& other( const NodeId& id ) const;
+    NodeId other( NodeId id ) const;
 
     // ============================================================================
     /// returns one extremal node ID (whichever one it is is unspecified)
     // ============================================================================
-    const NodeId& first() const ;
+    NodeId first() const ;
 
     // ============================================================================
     /// returns the node ID of the other extremal node ID
     // ============================================================================
-    const NodeId& second() const ;
+    NodeId second() const ;
 
     // ============================================================================
-    /// returns a boolean indicating whether the edge is directed or undirected
+    /// returns a Boolean indicating whether the edge is directed or undirected
     // ============================================================================
     virtual bool isDirected() const  = 0;
 
@@ -339,7 +339,7 @@ namespace gum {
     /** @param aN1 the ID of the first extremal node
      * @param aN2 the ID of the second extremal node */
     // ============================================================================
-    Link( const NodeId& aN1,const NodeId& aN2 ) ;
+    Link( NodeId aN1, NodeId aN2 ) ;
 
     // ============================================================================
     /// copy constructor
@@ -366,12 +366,12 @@ namespace gum {
     // ============================================================================
     /// modifies one extremal node ID (whichever one it is is unspecified)
     // ============================================================================
-    void __setFirst( const NodeId& id ) ;
+    void __setFirst( NodeId id ) ;
 
     // ============================================================================
     /// modifies the node ID of the other extremal node ID
     // ============================================================================
-    void __setSecond( const NodeId& id ) ;
+    void __setSecond( NodeId id ) ;
 
     /// @}
   };
@@ -389,11 +389,11 @@ namespace gum {
    *
    * This class is used as a basis for manipulating any undirected edge in any
    * graph. By undirected edge, we mean a symmetric edge, i.e., an edge in which
-   * the order of the nodes is unimportant. For instance, in a Markov Random
+   * the order of the nodes is unimportant. For instance, in Markov Random
    * fields, an edge between two nodes, x and y, means that x and y are
    * probabilistically dependent of one another. This being a symmetrical relation,
    * there is no difference between edge (x,y) and edge (y,x). Thus, it can be
-   * represented by an undirected edge and, in aGrUM, by a Edge.
+   * represented by an undirected edge and, in aGrUM, by an Edge.
    * @par Usage example:
    * @code
    * // creation of an edge between nodes whose IDs are 3 and 4
@@ -429,7 +429,7 @@ namespace gum {
     /** @param aN1 the ID of the first extremal node
      * @param aN2 the ID of the second extremal node */
     // ============================================================================
-    Edge( const NodeId& aN1, const NodeId& aN2 ) ;
+    Edge( NodeId aN1, NodeId aN2 ) ;
 
     // ============================================================================
     /// copy constructor
@@ -532,7 +532,7 @@ namespace gum {
     /// basic constructor. Creates aN1 -> aN2.
     /** @warning the order in which the nodes are passed is important */
     // ============================================================================
-    Arc( const NodeId& aN1,const NodeId& aN2 ) ;
+    Arc( NodeId aN1, NodeId aN2 ) ;
 
     // ============================================================================
     /// copy constructor
@@ -554,15 +554,15 @@ namespace gum {
     // ============================================================================
     /// returns the tail of the arc
     // ============================================================================
-    const NodeId& tail() const ;
+    NodeId tail() const ;
 
     // ============================================================================
     /// returns the head of the arc
     // ============================================================================
-    const NodeId& head() const ;
+    NodeId head() const ;
 
     // ============================================================================
-    /// returns a boolean (true) indicating that the arc is directed
+    /// returns a Boolean (true) indicating that the arc is directed
     // ============================================================================
     bool isDirected() const ;
 
@@ -599,12 +599,12 @@ namespace gum {
     // ============================================================================
     /// modifies the tail of the arc
     // ============================================================================
-    void __setTail( const NodeId& id ) ;
+    void __setTail( NodeId id ) ;
 
     // ============================================================================
     /// modifies the head of the arc
     // ============================================================================
-    void __setHead( const NodeId& id ) ;
+    void __setHead( NodeId id ) ;
 
     // ============================================================================
     /// reverses the direction of the arc
@@ -620,31 +620,29 @@ namespace gum {
 
   ////////////////////////////////////////////////////////////////
   //we need to provide hash functions for some Edge and Arc
-  template <> class HashFunc<Edge> : public HashFuncBase<Edge> {
+  template <> class HashFunc<Edge> : public  HashFuncSmallKeyPair<NodeId,NodeId> {
   public:
     /**
      * @throw HashSize
      */
-    void resize( Size );
     Size operator()( const Edge& key ) const ;
   private:
     mutable std::pair<NodeId,NodeId> pair;
-    HashFunc< std::pair<NodeId,NodeId> > real_func;
   };
 
 
-  template <> class HashFunc<Arc> : public HashFuncBase<Arc> {
+  template <> class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId,NodeId> {
   public:
     /**
      * @throw HashSize
      */
-    void resize( Size );
     Size operator()( const Arc& key ) const ;
   private:
     mutable std::pair<NodeId,NodeId> pair;
-    HashFunc< std::pair<NodeId,NodeId> > real_func;
   };
 
+
+  
   /** \ingroup graph_group
    * @{
    * Some typdefs and define for shortcuts ...
@@ -653,16 +651,20 @@ namespace gum {
   typedef Set<Edge> EdgeSet;
   typedef Set<Arc> ArcSet;
 
-  typedef ArcSet::iterator ArcSetIterator;
+  typedef ArcSet::iterator  ArcSetIterator;
   typedef EdgeSet::iterator EdgeSetIterator;
   typedef NodeSet::iterator NodeSetIterator;
+
+  typedef ArcSet::const_iterator  ArcSetConstIterator;
+  typedef EdgeSet::const_iterator EdgeSetConstIterator;
+  typedef NodeSet::const_iterator NodeSetConstIterator;
   /** @} */
 
   /** \ingroup graph_group
    * @{
    * @brief Property
    *
-   * C++ does not allow template typdef; so instead of having something like
+   * ISO C++ does not allow template typdef; so instead of having something like
    * @code
    * NodeProperty<TRUC>
    * @endcode

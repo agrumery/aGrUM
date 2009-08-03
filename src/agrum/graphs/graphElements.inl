@@ -42,7 +42,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  INLINE Link::Link( const NodeId& aN1,const NodeId& aN2 )  :
+  INLINE Link::Link( NodeId aN1, NodeId aN2 )  :
     n1( aN1 ), n2( aN2 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Link );
@@ -79,7 +79,7 @@ namespace gum {
   // ============================================================================
   /// returns an extremal node of an edge given the ID of the other one
   // ============================================================================
-  INLINE const NodeId& Link::other( const NodeId& id ) const {
+  INLINE NodeId Link::other( NodeId id ) const {
     if ( id == n1 ) return n2;
     else if ( id == n2 ) return n1;
     else GUM_ERROR( IdError, "" );
@@ -88,28 +88,28 @@ namespace gum {
   // ==============================================================================
   /// returns one extremal node ID (whichever one it is is unspecified)
   // ==============================================================================
-  INLINE const NodeId& Link::first() const  {
+  INLINE NodeId Link::first() const  {
     return n1;
   }
 
   // ==============================================================================
   /// modifies one extremal node ID (whichever one it is is unspecified)
   // ==============================================================================
-  INLINE void Link::__setFirst( const NodeId& id )  {
+  INLINE void Link::__setFirst( NodeId id )  {
     n1 = id;
   }
 
   // ==============================================================================
   /// returns the second extremal node
   // ==============================================================================
-  INLINE const NodeId& Link::second() const  {
+  INLINE NodeId Link::second() const  {
     return n2;
   }
 
   // ==============================================================================
   /// modifies the second extremal node
   // ==============================================================================
-  INLINE void Link::__setSecond( const NodeId& id )  {
+  INLINE void Link::__setSecond( NodeId id )  {
     n2 = id;
   }
 
@@ -142,7 +142,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  INLINE Edge::Edge( const NodeId& aN1, const NodeId& aN2 )  :
+  INLINE Edge::Edge( NodeId aN1, NodeId aN2 )  :
     Link( std::min( aN1,aN2 ),std::max( aN1,aN2 ) ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Edge );
@@ -207,7 +207,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor.
   // ==============================================================================
-  INLINE Arc::Arc( const NodeId& aN1,const NodeId& aN2 )  :
+  INLINE Arc::Arc( NodeId aN1, NodeId aN2 )  :
     Link( aN1,aN2 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Arc );
@@ -242,28 +242,28 @@ namespace gum {
   // ==============================================================================
   /// returns the tail of the arc
   // ==============================================================================
-  INLINE const NodeId& Arc::tail() const  {
+  INLINE NodeId Arc::tail() const  {
     return n1;
   }
 
   // ==============================================================================
   /// modifies the tail of the arc
   // ==============================================================================
-  INLINE void Arc::__setTail( const NodeId& id )  {
+  INLINE void Arc::__setTail( NodeId id )  {
     n1 = id;
   }
 
   // ==============================================================================
   /// returns the head of the arc
   // ==============================================================================
-  INLINE const NodeId& Arc::head() const  {
+  INLINE NodeId Arc::head() const  {
     return n2;
   }
 
   // ==============================================================================
   /// modifies the head of the arc
   // ==============================================================================
-  INLINE void Arc::__setHead( const NodeId& id )  {
+  INLINE void Arc::__setHead( NodeId id )  {
     n2 = id;
   }
 
@@ -295,53 +295,6 @@ namespace gum {
     NodeId n_temp = n1;
     n1 = n2;
     n2 = n_temp;
-  }
-
-
-
-
-
-  
-
-  ////////////////////////////////////////////////////////////////
-  //we need to provide hash functions for some Edge and Arc
-
-  // ==============================================================================
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by a Edge
-  // ==============================================================================
-  INLINE Size
-  HashFunc<Edge>::operator()( const Edge& key ) const {
-    pair.first  = key.first();
-    pair.second = key.second();
-    return real_func.operator()( pair );
-  }
-
-  // ==============================================================================
-  /// update the hash function to take into account a resize of the hash table
-  // ==============================================================================
-  INLINE void
-  HashFunc<Edge>::resize( Size new_size ) {
-    real_func.resize( new_size );
-  }
-
-  // ==============================================================================
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by a Arc
-  // ==============================================================================
-  INLINE Size
-  HashFunc<Arc>::operator()( const Arc& key ) const {
-    pair.first  = key.first();
-    pair.second = key.second();
-    return real_func.operator()( pair );
-  }
-
-  // ==============================================================================
-  /// update the hash function to take into account a resize of the hash table
-  // ==============================================================================
-  INLINE void
-  HashFunc<Arc>::resize( Size new_size ) {
-    real_func.resize( new_size );
   }
 
 

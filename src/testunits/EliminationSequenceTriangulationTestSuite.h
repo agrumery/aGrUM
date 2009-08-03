@@ -30,10 +30,6 @@
 
 
 
-using namespace gum;
-
-
-
 // The graph used for the tests:
 /* 
        D
@@ -47,17 +43,17 @@ using namespace gum;
 
  */
 class EliminationSequenceTriangulationTestSuite: public CxxTest::TestSuite {
-  public:
+public:
 
-  UndiGraph createGraph() {
-    UndiGraph markovGraph;
-    NodeId a = 0;
-    NodeId b = 1;
-    NodeId c = 2;
-    NodeId d = 3;
-    NodeId e = 4;
-    NodeId f = 5;
-    NodeId g = 6;
+  gum::UndiGraph createGraph() {
+    gum::UndiGraph markovGraph;
+    gum::NodeId a = 0;
+    gum::NodeId b = 1;
+    gum::NodeId c = 2;
+    gum::NodeId d = 3;
+    gum::NodeId e = 4;
+    gum::NodeId f = 5;
+    gum::NodeId g = 6;
     markovGraph.insertNode(a);
     markovGraph.insertNode(b);
     markovGraph.insertNode(c);
@@ -65,19 +61,19 @@ class EliminationSequenceTriangulationTestSuite: public CxxTest::TestSuite {
     markovGraph.insertNode(e);
     markovGraph.insertNode(f);
     markovGraph.insertNode(g);
-    markovGraph.insertEdge(Edge(a,b));
-    markovGraph.insertEdge(Edge(b,d));
-    markovGraph.insertEdge(Edge(b,e));
-    markovGraph.insertEdge(Edge(d,f));
-    markovGraph.insertEdge(Edge(e,f));
-    markovGraph.insertEdge(Edge(a,c));
-    markovGraph.insertEdge(Edge(c,g));
-    markovGraph.insertEdge(Edge(g,f));
+    markovGraph.insertEdge( gum::Edge(a,b));
+    markovGraph.insertEdge( gum::Edge(b,d));
+    markovGraph.insertEdge( gum::Edge(b,e));
+    markovGraph.insertEdge( gum::Edge(d,f));
+    markovGraph.insertEdge( gum::Edge(e,f));
+    markovGraph.insertEdge( gum::Edge(a,c));
+    markovGraph.insertEdge( gum::Edge(c,g));
+    markovGraph.insertEdge( gum::Edge(g,f));
     return markovGraph;
   }
 
-  std::vector<NodeId> createElimination() {
-    std::vector<NodeId> result;
+  std::vector<gum::NodeId> createElimination() {
+    std::vector<gum::NodeId> result;
     result.push_back(0);
     result.push_back(1);
     result.push_back(6);
@@ -88,37 +84,37 @@ class EliminationSequenceTriangulationTestSuite: public CxxTest::TestSuite {
     return result;
   }
 
-  EliminationSequenceTriangulation createTriangulation() {
-    UndiGraph graph = createGraph();
-    std::vector<NodeId> elim = createElimination();
-    return EliminationSequenceTriangulation(graph, elim);
+  gum::EliminationSequenceTriangulation createTriangulation() {
+    gum::UndiGraph graph = createGraph();
+    std::vector< gum::NodeId> elim = createElimination();
+    return gum::EliminationSequenceTriangulation(graph, elim);
   }
   
   void testFillIns() {
-    EliminationSequenceTriangulation tr = createTriangulation();
+    gum::EliminationSequenceTriangulation tr = createTriangulation();
     TS_GUM_ASSERT_THROWS_NOTHING(tr.fillIns());
-    const EdgeSet& fillIns = tr.fillIns();
+    const gum::EdgeSet& fillIns = tr.fillIns();
     TS_ASSERT(fillIns.size() == 5);
-    TS_ASSERT(fillIns.contains(Edge(1, 2))); // BC
-    TS_ASSERT(fillIns.contains(Edge(2, 3))); // CD
-    TS_ASSERT(fillIns.contains(Edge(3, 4))); // DE
-    TS_ASSERT(fillIns.contains(Edge(2, 4))); // CE
-    TS_ASSERT(fillIns.contains(Edge(2, 5))); // CF
+    TS_ASSERT(fillIns.contains(gum::Edge(1, 2))); // BC
+    TS_ASSERT(fillIns.contains(gum::Edge(2, 3))); // CD
+    TS_ASSERT(fillIns.contains(gum::Edge(3, 4))); // DE
+    TS_ASSERT(fillIns.contains(gum::Edge(2, 4))); // CE
+    TS_ASSERT(fillIns.contains(gum::Edge(2, 5))); // CF
   };
 
   void testTriangulated() {
-    EliminationSequenceTriangulation tr = createTriangulation();
+    gum::EliminationSequenceTriangulation tr = createTriangulation();
     TS_GUM_ASSERT_THROWS_NOTHING(tr.triangulatedGraph());
-    const UndiGraph& triang = tr.triangulatedGraph();
+    const gum::UndiGraph& triang = tr.triangulatedGraph();
     TS_ASSERT(triang.size() == 7);
     TS_ASSERT(triang.sizeEdges() == 5 + 8);
     // For more structural tests, see testFillIns
   }
 
   void testJunctionTree() {
-    EliminationSequenceTriangulation tr = createTriangulation();
+    gum::EliminationSequenceTriangulation tr = createTriangulation();
     TS_GUM_ASSERT_THROWS_NOTHING(tr.junctionTree());
-    const CliqueGraph& junction = tr.junctionTree();
+    const gum::CliqueGraph& junction = tr.junctionTree();
     //TS_ASSERT(junction.isJoinTree());
 
     TS_ASSERT(junction.size() == 4);

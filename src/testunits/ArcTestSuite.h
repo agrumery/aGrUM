@@ -88,5 +88,24 @@ class ArcTestSuite: public CxxTest::TestSuite {
       gum::Arc arc(( gum::NodeId )1,( gum::NodeId )2 );
       TS_ASSERT( arc.isDirected() );
     }
+
+  void testHash () {
+    gum::HashTable<gum::Arc, unsigned long> hash;
+
+    for ( gum::NodeId x = 0; x < 1000; ++x ) {
+      for ( gum::NodeId y = x; y < 1000; ++y) {
+        gum::Arc arc (x,y);
+        hash.insert (arc, x + y);
+      }
+    }
+
+    for ( gum::NodeId x = 0; x < 1000; ++x ) {
+      for ( gum::NodeId y = x; y < 1000; ++y) {
+        gum::Arc arc (x,y);
+        TS_ASSERT( hash[arc] == (x + y));
+      }
+    }
+  }
+
 };
 

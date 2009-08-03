@@ -32,7 +32,8 @@ public:
       gum::UtilityTable<double> p( new gum::MultiDimArray<double>() );
       TS_ASSERT( p.empty() );
 
-      gum::LabelizedVariable a( "a","first var",2 ),b( "b","second var",4 ),c( "c","third var",5 );
+      gum::LabelizedVariable a( "a","first var",2 ), b( "b","second var",4 ),
+        c( "c","third var",5 );
       TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c );
     }
 
@@ -52,7 +53,7 @@ public:
         p2<<b<<c<<d;
         p3<<a<<d;
 
-	UtilityTable<double> res;
+        gum::UtilityTable<double> res;
 
         gum::Instantiation i;i<<a<<b<<c<<d;
 
@@ -72,7 +73,7 @@ public:
         TS_ASSERT_EQUALS( j2.toString(),"<c:0|b:0|d:0>" );
 
         int nbr_err=0;
-	UtilityTable<double> res2;
+        gum::UtilityTable<double> res2;
         gum::Instantiation j( res2 );
 	res2.sum(res, p3);
 
