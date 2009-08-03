@@ -243,7 +243,14 @@ namespace gum {
     return const_cast<Potential<T_DATA>&>( *this );
   }
 
-
+  template <typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* Potential<T_DATA>::newFactory() const {
+    return new Potential<T_DATA>(
+				 static_cast<MultiDimImplementation<T_DATA>*>(
+	       this->getContent()->newFactory()
+						     )
+				 );
+  }
 
 } /* namespace gum */
 

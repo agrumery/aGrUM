@@ -60,5 +60,10 @@ namespace gum {
     template<typename T_DATA> INLINE
     std::string Min<T_DATA>::aggregatorName( void ) const { return "min";}
 
+    template<typename T_DATA> INLINE
+    MultiDimContainer<T_DATA>* Min<T_DATA>::newFactory() const {
+      return new Min<T_DATA>;
+    }
+
   } // aggregator
 } // namespace gum

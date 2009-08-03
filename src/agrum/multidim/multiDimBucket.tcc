@@ -542,5 +542,10 @@ MultiDimBucket<T_DATA>::__computeValue(const Instantiation& value) const
   }
 }
 
+template <typename T_DATA> INLINE
+MultiDimContainer<T_DATA>* MultiDimBucket<T_DATA>::newFactory() const {
+  return new MultiDimBucket<T_DATA>;
+}
+
 } /* namespace gum */
 // ============================================================================

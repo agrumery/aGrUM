@@ -51,5 +51,10 @@ namespace gum {
   template<typename T_DATA> INLINE
   std::string Max<T_DATA>::aggregatorName( void ) const { return "max";}
 
+    template<typename T_DATA> INLINE
+    MultiDimContainer<T_DATA>* Max<T_DATA>::newFactory() const {
+      return new Max<T_DATA>;
+    }
+
   } // aggregator
 } // namespace gum

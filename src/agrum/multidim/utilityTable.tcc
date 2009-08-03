@@ -22,6 +22,11 @@
 
 namespace gum {
 
+  template <typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* UtilityTable<T_DATA>::newFactory() const {
+    return new UtilityTable<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
+  }
+
 
 //   template<typename T_DATA> INLINE
 //   T_DATA UtilityTable<T_DATA>::add( const T_DATA& a,const T_DATA& b ) const {

@@ -134,5 +134,13 @@ namespace gum {
     return s << ag.toString();
   }
 
+  template<typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* MultiDimNoisyOR<T_DATA>::newFactory() const {
+    GUM_ERROR( OperationNotAllowed,
+	       "This class doesn't contain an empty constructor" );
+    return 0;
+  }
+
+
 // ==================================================
 } /* namespace gum */

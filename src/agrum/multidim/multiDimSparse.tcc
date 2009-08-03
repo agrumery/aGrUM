@@ -128,6 +128,11 @@ namespace gum {
     return _params.size();
   }
 
+  template<typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* MultiDimSparse<T_DATA>::newFactory() const {
+    return new MultiDimSparse<T_DATA>(_default);
+  }
+
 // ============================================================================
 
 } /* namespace gum */

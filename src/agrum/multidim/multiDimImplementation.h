@@ -79,6 +79,22 @@ namespace gum {
 
       /// @}
 
+      /**
+       * This method creates a clone of this object, withouth its content
+       * (including variable), you must use this method if you want to ensure
+       * that the generated object has the same type than the object containing
+       * the called newFactory()
+       * For example :
+       *   MultiDimArray<double> y;
+       *   MultiDimContainer<double>* x = y.newFactory();
+       * Then x is a MultiDimArray<double>*
+       *
+       * @warning you must desallocate by yourself the memory
+       * @return an empty clone of this object with the same type
+       */
+      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+
+
       // ############################################################################
       /// @name Accessors / Modifiers
       // ############################################################################

@@ -142,6 +142,11 @@ namespace gum {
     if ( ! this->empty() ) std::fill( _values.begin(),_values.end(),d );
   }
 
+  template<typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* MultiDimArray<T_DATA>::newFactory() const {
+    return new MultiDimArray<T_DATA>;
+  }
+
 // ============================================================================
 
 } /* namespace gum */

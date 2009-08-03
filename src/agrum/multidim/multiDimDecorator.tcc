@@ -218,6 +218,13 @@ namespace gum {
     return _content;
   }
 
+  /// protected access to _content
+  template<typename T_DATA> INLINE
+  const MultiDimImplementation<T_DATA>* MultiDimDecorator<T_DATA>::getContent() const {
+    return _content;
+  }
+
+
   /// string representation of internal data about i in this.
   template<typename T_DATA> INLINE
   const std::string MultiDimDecorator<T_DATA>::toString( const Instantiation *i ) const {

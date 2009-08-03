@@ -64,5 +64,13 @@ namespace aggregator {
     ss>>s;
     return s;
   }
+
+    template<typename T_DATA> INLINE
+    MultiDimContainer<T_DATA>* Forall<T_DATA>::newFactory() const {
+      GUM_ERROR( OperationNotAllowed,
+		 "This class doesn't contain an empty constructor" );
+      return 0;
+    }
+
 }// aggregator
 } // namespace gum
