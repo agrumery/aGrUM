@@ -42,7 +42,7 @@ namespace gum {
   // ==============================================================================
   INLINE void LabelizedVariable::eraseLabels( void ) {
     zeLabels.clear();
-    raiseDomainSizeChanged();
+//     raiseDomainSizeChanged();
   }
 
   // ==============================================================================
@@ -52,7 +52,7 @@ namespace gum {
     DiscreteVariable::_copy( aLDRV );
     zeLabels.clear();
     zeLabels=aLDRV.labels();
-    raiseDomainSizeChanged();
+//     raiseDomainSizeChanged();
   }
 
   // ==============================================================================
@@ -67,7 +67,7 @@ namespace gum {
   // ==============================================================================
   INLINE LabelizedVariable& LabelizedVariable::addLabel( const std::string aLabel ) {
     zeLabels.insert( aLabel );
-    raiseDomainSizeChanged();
+//     raiseDomainSizeChanged();
 
     return *this;
   }

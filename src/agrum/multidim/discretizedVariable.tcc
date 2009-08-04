@@ -178,7 +178,7 @@ namespace gum {
 
     __ticks_size++;
 
-    raiseDomainSizeChanged();
+//     raiseDomainSizeChanged();
 
     return *this;
   }
@@ -187,7 +187,7 @@ namespace gum {
   void DiscretizedVariable<T_TICKS>::eraseTicks( void ) {
     if ( __ticks_size!=0 ) {
       __ticks_size=0;
-      raiseDomainSizeChanged();
+//       raiseDomainSizeChanged();
     }
   }
 

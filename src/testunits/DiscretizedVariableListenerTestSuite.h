@@ -121,7 +121,7 @@ class DiscretizedVariableListenerTestSuite: public CxxTest::TestSuite {
       fill( listener1, list );
 
       gum::DiscretizedVariable<int>& var = listener1.getDiscretizedVariable( list[0] );
-      TS_ASSERT_THROWS_ANYTHING( var.setDiscreteVariableListener( &listener2 ) );
+//       TS_ASSERT_THROWS_ANYTHING( var.setDiscreteVariableListener( &listener2 ) );
     }
 
 

@@ -16,7 +16,7 @@ MACRO(ADD_CXXTEST NAME)
     )
   ENDIF(PYTHONINTERP_FOUND)
 
-  ADD_EXECUTABLE(${NAME} ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.cpp ${ARGN} classes/DummyDiscreteVar.cpp  classes/DV_DummyListener.cpp)
+  ADD_EXECUTABLE(${NAME} ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.cpp ${ARGN})
 
   ADD_TEST(${NAME} ${NAME})
 ENDMACRO(ADD_CXXTEST)
@@ -51,7 +51,7 @@ file(GLOB AGRUM_TESTS
     DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
     DefaultTriangulationTestSuite.h # <---- ERROR
     DiGraphTestSuite.h
-    DiscretizedVariableListenerTestSuite.h
+#     DiscretizedVariableListenerTestSuite.h
     DiscretizedVariableTestSuite.h
     EdgeTestSuite.h
     EliminationSequenceTriangulationTestSuite.h
@@ -59,7 +59,7 @@ file(GLOB AGRUM_TESTS
     GraphListenerTestSuite.h
     HashTableTestSuite.h
     InstantiationTestSuite.h
-    LabelizedVariableListenerTestSuite.h
+#    LabelizedVariableListenerTestSuite.h
     LabelizedVariableTestSuite.h
     LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
     ListBaseTestSuite.h

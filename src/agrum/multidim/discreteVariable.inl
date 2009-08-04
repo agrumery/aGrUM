@@ -35,7 +35,7 @@ namespace gum {
   // ==============================================================================
   INLINE DiscreteVariable::DiscreteVariable( const std::string& aName,
       const std::string& aDesc )  :
-      Variable( aName, aDesc ), listener( NULL ) {
+      Variable( aName, aDesc ) {
     GUM_CONSTRUCTOR( DiscreteVariable );
   }
 
@@ -43,7 +43,7 @@ namespace gum {
   /// Copy constructor
   // ==============================================================================
   INLINE DiscreteVariable::DiscreteVariable( const DiscreteVariable& aDRV ) :
-      Variable( aDRV ), listener( NULL ) {
+      Variable( aDRV ) {
     GUM_CONSTRUCTOR( DiscreteVariable );
   }
 
@@ -59,7 +59,7 @@ namespace gum {
   // ==============================================================================
   INLINE void DiscreteVariable::setName( const std::string& theValue ) {
     Variable::setName( theValue );
-    raiseNameChanged();
+//     raiseNameChanged();
   }
 
   // ==============================================================================
@@ -67,22 +67,22 @@ namespace gum {
   // ==============================================================================
   INLINE void DiscreteVariable::setDescription( const std::string& theValue ) {
     Variable::setDescription( theValue );
-    raiseDescriptionChanged();
+//     raiseDescriptionChanged();
   }
 
 // ==============================================================================
   /// Setter for the listener
   // ==============================================================================
-  INLINE
-  void
-  DiscreteVariable::setDiscreteVariableListener( DiscreteVariableListener* l=NULL ) {
-    if ( listener == NULL || l == NULL ) {
-      listener = l;
-    } else {
-      GUM_ERROR( OperationNotAllowed,
-                 "The listener for this variable is already defined." );
-    }
-  }
+//   INLINE
+//   void
+//   DiscreteVariable::setDiscreteVariableListener( DiscreteVariableListener* l=NULL ) {
+//     if ( listener == NULL || l == NULL ) {
+//       listener = l;
+//     } else {
+//       GUM_ERROR( OperationNotAllowed,
+//                  "The listener for this variable is already defined." );
+//     }
+//   }
 
   // ==============================================================================
   /// Copy operator
@@ -118,86 +118,6 @@ namespace gum {
   INLINE bool DiscreteVariable::empty() const {
     return domainSize()<2;
   }
-
-  // ==============================================================================
-  /// Domain size change notification
-  // ==============================================================================
-  INLINE void DiscreteVariable::raiseDomainSizeChanged() {
-    if ( listener != NULL ) {
-      DiscreteVariableEvent e( this );
-      listener->variableDomainChanged( e );
-    }
-  }
-
-  // ==============================================================================
-  /// Name change notification
-  // ==============================================================================
-  INLINE void DiscreteVariable::raiseNameChanged() {
-    if ( listener != NULL ) {
-      DiscreteVariableEvent e( this );
-      listener->variableNameChanged( e );
-    }
-  }
-
-  // ==============================================================================
-  /// Description change notification
-  // ==============================================================================
-  INLINE void DiscreteVariable::raiseDescriptionChanged() {
-    if ( listener != NULL ) {
-      DiscreteVariableEvent e( this );
-      listener->variableDescriptionChanged( e );
-    }
-  }
-
-
-
-
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                GUM_DISCRETE_VARIABLE_LISTENER                        === */
-  /* ============================================================================ */
-  /* ============================================================================ */
-  INLINE DiscreteVariableListener::DiscreteVariableListener() {
-    GUM_CONSTRUCTOR( DiscreteVariableListener );
-  }
-
-  INLINE DiscreteVariableListener::~DiscreteVariableListener() {
-    GUM_DESTRUCTOR( DiscreteVariableListener );
-  }
-
-
-
-
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                   GUM_DISCRETE_VARIABLE_EVENT                        === */
-  /* ============================================================================ */
-  /* ============================================================================ */
-
-  // ==============================================================================
-  /// Default constructor
-  // ==============================================================================
-  INLINE
-  DiscreteVariableEvent::DiscreteVariableEvent( DiscreteVariable* variable ) :
-      source( variable ) {
-    GUM_CONSTRUCTOR( DiscreteVariableEvent );
-  }
-
-  // ==============================================================================
-  /// Destructor
-  // ==============================================================================
-  INLINE DiscreteVariableEvent::~DiscreteVariableEvent() {
-    GUM_DESTRUCTOR( DiscreteVariableEvent );
-  }
-
-  // ==============================================================================
-  /// Source accessor
-  // ==============================================================================
-  INLINE DiscreteVariable* DiscreteVariableEvent::getSource() {
-    return source;
-  }
-
-
 } /* namespace gum */
 
 
