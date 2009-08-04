@@ -59,7 +59,6 @@ namespace gum {
   // ==============================================================================
   INLINE void DiscreteVariable::setName( const std::string& theValue ) {
     Variable::setName( theValue );
-//     raiseNameChanged();
   }
 
   // ==============================================================================
@@ -67,22 +66,7 @@ namespace gum {
   // ==============================================================================
   INLINE void DiscreteVariable::setDescription( const std::string& theValue ) {
     Variable::setDescription( theValue );
-//     raiseDescriptionChanged();
   }
-
-// ==============================================================================
-  /// Setter for the listener
-  // ==============================================================================
-//   INLINE
-//   void
-//   DiscreteVariable::setDiscreteVariableListener( DiscreteVariableListener* l=NULL ) {
-//     if ( listener == NULL || l == NULL ) {
-//       listener = l;
-//     } else {
-//       GUM_ERROR( OperationNotAllowed,
-//                  "The listener for this variable is already defined." );
-//     }
-//   }
 
   // ==============================================================================
   /// Copy operator

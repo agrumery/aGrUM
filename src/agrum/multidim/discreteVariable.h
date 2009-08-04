@@ -36,19 +36,6 @@
 namespace gum
 {
 
-
-	class DiscreteVariable;
-	class DiscreteVariableListener;
-	class DiscreteVariableEvent;
-
-
-	// ===============================================================================
-	/// for friendly displaying the content of the variable
-	// ===============================================================================
-	std::ostream& operator<< ( std::ostream&, const DiscreteVariable& );
-
-
-
 	/* ============================================================================ */
 	/* ============================================================================ */
 	/* ===                         GUM_DISCRETE_VARIABLE                        === */
@@ -171,6 +158,12 @@ namespace gum
 			/// (protected) Default constructor
 			DiscreteVariable( ) {GUM_CONSTRUCTOR ( DiscreteVariable );};
 	};
+
+	// ===============================================================================
+	/// for friendly displaying the content of the variable
+	// ===============================================================================
+	std::ostream& operator<< ( std::ostream&, const DiscreteVariable& );
+
 } /* namespace gum */
 
 
