@@ -115,6 +115,7 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
 
       TS_GUM_ASSERT_THROWS_NOTHING( triangle->junctionTree() );
 
+			/// TODO : problem here !!
 //      TS_ASSERT( triangle->junctionTree().hasRunningIntersection() );
 
       TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
