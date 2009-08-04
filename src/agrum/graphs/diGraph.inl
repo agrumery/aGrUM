@@ -26,7 +26,13 @@
 
 
 namespace gum {
-
+	INLINE DiGraph& DiGraph::operator=( const DiGraph& g ) {
+		if (this!=&g) {
+			NodeGraphPart::operator=(g);
+			ArcGraphPart::operator=(g);
+		}
+		return *this;
+	}
 
   INLINE void DiGraph::insertArc( const Arc& arc ) {
     if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );

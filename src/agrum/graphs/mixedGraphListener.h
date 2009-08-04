@@ -35,7 +35,7 @@ namespace gum {
 * \ingroup graph_group
 *
 *
-* This is the virtual base class for graphs meta-listener.
+* This is the virtual base class for mixed graphs meta-listener.
 *
 * A MixedGraphListener will have to implement following pure methods :
   *  - void whenNodeAdded( const void * ,gum::NodeId )

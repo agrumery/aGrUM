@@ -83,6 +83,7 @@ namespace gum {
       explicit EdgeGraphPart( Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
                               bool edges_resize_policy    = true );
       EdgeGraphPart( const EdgeGraphPart& s );
+			EdgeGraphPart& operator=(const EdgeGraphPart& s );
       virtual ~EdgeGraphPart();
       virtual void insertEdge( const Edge edge );
       virtual void insertEdge( const NodeId n1,const NodeId n2 );

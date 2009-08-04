@@ -104,6 +104,27 @@ class DiGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy3(graph));
     }
 
+
+		void testCopyOperator() {
+      gum::DiGraph graph=buildGraph();
+
+			gum::DiGraph g2=buildGraph();
+			g2.insertNode();
+
+			gum::DiGraph g3;
+
+			g2=g3=graph;
+
+			TS_ASSERT_EQUALS(g2,graph);	
+			TS_ASSERT_EQUALS(g3,graph);
+
+			g2.clear();
+			g3.clearArcs();
+
+			TS_ASSERT_DIFFERS(g2,graph);
+			TS_ASSERT_DIFFERS(g3,graph);
+		}
+
     void testEmptyNodes() {
       gum::DiGraph graph;
 

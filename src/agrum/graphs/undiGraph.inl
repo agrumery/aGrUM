@@ -27,6 +27,14 @@
 
 namespace gum {
 
+	
+	INLINE UndiGraph& UndiGraph::operator=(const UndiGraph& g ) {
+		if (this!=&g) {
+			NodeGraphPart::operator=(g);
+			EdgeGraphPart::operator=(g);
+		}
+		return *this;
+	}
 
   INLINE void UndiGraph::insertEdge( const Edge& edge ) {
     if ( ! exists( edge.first() ) ) GUM_ERROR( InvalidNode,"first node" );

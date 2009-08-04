@@ -113,6 +113,7 @@ namespace gum {
                       Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                       bool arcs_resize_policy    = true );
     DiGraph( const DiGraph& g );
+    DiGraph& operator=( const DiGraph& g );
     virtual ~DiGraph();
 
     /// @throw InvalidNode if head or tail does not belong to the graph nodes

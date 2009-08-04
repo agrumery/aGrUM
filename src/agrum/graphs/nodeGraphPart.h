@@ -46,6 +46,7 @@ namespace gum {
    *
    * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
    *
+   *
    * @par Usage example:
    * @code
    * // create an empty node list
@@ -118,6 +119,8 @@ namespace gum {
       /// @name Operators
       // ############################################################################
       /// @{
+			/// operator=
+			NodeGraphPart& operator=(const NodeGraphPart& p);
 
       /// check whether two NodeGraphParts contain the same nodes
       bool operator==( const NodeGraphPart& p ) const;
@@ -135,29 +138,30 @@ namespace gum {
       /// @{
 
       /// populateNodes clears *this and fills it with the same nodes as "s"
-      /** It is basically the only way to insert nodes with IDs not selected by the
+      /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
        * internal idFactory. */
       void populateNodes( const NodeGraphPart& s );
 
-      /// populateNodes clears *this and fills it with the keys of "h"
-      /** It is basically the only way to insert nodes with IDs not selected by the
+      /// populateNodesFromProperty clears *this and fills it with the keys of "h"
+      /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
        * internal idFactory. */
       template<typename T>
       void populateNodesFromProperty( const typename Property<T>::onNodes& h );
 
       /** next id (by using insertNode)
-			 * @warning a code like @code id=nextId();insertId(); @endcode is basically not thread safe !!
+			 * @warning a code like @code id=nextId();insertNode(id); @endcode is basically not thread safe !!
        * @return the next id
        */
       NodeId nextNodeId( ) const;
 
-			/** insert a new node and
-       * @return the id chosen by the internal idFactory
+			/// insert a new node and return the new id
+       /** @return the id chosen by the internal idFactory
        */
       virtual NodeId insertNode( );
 
       /// try to insert a node with the given id
-      /** @throws DuplicateElement exception is thrown if the id already exists
+			 /** @warning This method should be carefully used. Please prefere @ref populateNodes or @ref populateNodesFromProperty
+       * @throws DuplicateElement exception is thrown if the id already exists
        * @return the id chosen by the internal idFactory
        */
       virtual void insertNode( const NodeId id );

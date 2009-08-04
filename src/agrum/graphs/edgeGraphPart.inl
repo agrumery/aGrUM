@@ -27,6 +27,14 @@
 
 namespace gum {
 
+	INLINE EdgeGraphPart& EdgeGraphPart::operator=(const EdgeGraphPart& s ) {
+		if (this!=&s) {
+			__edges=s.__edges;
+            __neighbours=s.__neighbours;
+		}
+		return *this;
+	}
+
   INLINE bool EdgeGraphPart::emptyEdges() const {
     return __edges.empty();
   }

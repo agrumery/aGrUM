@@ -87,6 +87,7 @@ namespace gum {
       explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                              bool arcs_resize_policy    = true );
       ArcGraphPart( const ArcGraphPart& s );
+      ArcGraphPart& operator=( const ArcGraphPart& s );
       virtual ~ArcGraphPart();
       virtual void insertArc( const Arc arc );
       virtual void insertArc( const NodeId tail,const NodeId head );

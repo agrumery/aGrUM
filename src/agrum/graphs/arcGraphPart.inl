@@ -27,6 +27,15 @@
 
 namespace gum {
 
+  INLINE  ArcGraphPart& ArcGraphPart::operator=( const ArcGraphPart& s ) {
+		if (this!=&s) {
+			__arcs=s.__arcs;
+			__parents=s.__parents;
+			__children=s.__children;
+		}
+		return *this;
+	}
+
   INLINE bool ArcGraphPart::emptyArcs() const {
     return __arcs.empty();
   }

@@ -104,6 +104,26 @@ class UndiGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( gum::UndiGraph copy3( graph ) );
     }
 
+		void testCopyOperator() {
+      gum::UndiGraph graph=buildGraph();
+
+			gum::UndiGraph g2=buildGraph();
+			g2.insertNode();
+
+			gum::UndiGraph g3;
+
+			g2=g3=graph;
+
+			TS_ASSERT_EQUALS(g2,graph);	
+			TS_ASSERT_EQUALS(g3,graph);
+
+			g2.clear();
+			g3.clearEdges();
+
+			TS_ASSERT_DIFFERS(g2,graph);
+			TS_ASSERT_DIFFERS(g3,graph);
+		}
+
     void testEmptyNodes() {
       gum::UndiGraph graph;
       TS_ASSERT( graph.empty() );

@@ -70,6 +70,7 @@ namespace gum {
                   Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                   bool arcs_resize_policy    = true );
     DAG( const DAG& g );
+    DAG& operator=( const DAG& g );
 
     virtual ~DAG();
     

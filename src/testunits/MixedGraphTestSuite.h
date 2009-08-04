@@ -444,5 +444,28 @@ class MixedGraphTestSuite: public CxxTest::TestSuite {
 
       TS_ASSERT_EQUALS( sk,sv );
     }
+
+		void testCopyOperator() {
+      gum::MixedGraph graph=buildGraph();
+
+			gum::MixedGraph g2=buildGraph();
+			g2.insertNode();
+
+			gum::MixedGraph g3;
+			gum::MixedGraph g4;
+
+			g2=g3=g4=graph;
+
+			TS_ASSERT_EQUALS(g2,graph);	
+			TS_ASSERT_EQUALS(g3,graph);
+			TS_ASSERT_EQUALS(g4,graph);
+
+			g2.clear();
+			g3.clearArcs();
+			g4.clearEdges();
+
+			TS_ASSERT_DIFFERS(g2,graph);
+			TS_ASSERT_DIFFERS(g3,graph);
+		}
 };
 

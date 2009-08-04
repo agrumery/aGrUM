@@ -64,6 +64,7 @@ namespace gum {
                          Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
                          bool edges_resize_policy    = true );
     MixedGraph( const MixedGraph& g );
+    MixedGraph& operator=( const MixedGraph& g );
     virtual ~MixedGraph();
 
     virtual void eraseNode( const NodeId id );

@@ -27,6 +27,14 @@
 
 namespace gum {
 
+	INLINE MixedGraph& MixedGraph::operator=( const MixedGraph& g ) {
+		if (this!=&g) {
+			NodeGraphPart::operator=(g);
+			EdgeGraphPart::operator=(g);
+			ArcGraphPart::operator=(g);
+		}
+		return *this;
+	}
 
   INLINE void MixedGraph::clear() {
     clearEdges();

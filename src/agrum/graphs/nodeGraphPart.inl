@@ -27,11 +27,24 @@
 namespace gum {
 
 
+	INLINE NodeGraphPart& NodeGraphPart::operator=(const NodeGraphPart& p) {	
+    if ( this != &p ) {
+			__nodes=p.__nodes;
+			__max=p.__max;
+		}
+		return *this;
+	}
+
   INLINE  void NodeGraphPart::insertNode( const NodeId id ) {
+    if ( __max < id ) {
+			__max = id;
+		}
+		else {
+			if (exists(id)) GUM_ERROR(DuplicateElement,"This id is already used");
+		}
+
     __nodes.insert( id );
     GUM_EMIT1( onNodeAdded,id );
-
-    if ( __max < id ) __max = id;
   }
 
   INLINE NodeId NodeGraphPart::__nextNodeId() {

@@ -27,6 +27,12 @@
 
 namespace gum {
 
+  INLINE DAG& DAG::operator=( const DAG& g ) {
+		if (this!=&g) {
+			DiGraph::operator=(g);
+		}
+		return *this;
+	}
 
   INLINE void DAG::insertArc( const Arc& arc ) {
     if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );

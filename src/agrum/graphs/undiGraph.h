@@ -64,6 +64,7 @@ namespace gum {
                         Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
                         bool edges_resize_policy    = true );
     UndiGraph( const UndiGraph& g );
+	UndiGraph& operator=(const UndiGraph& g );
     virtual ~UndiGraph();
     
     /// @throw InvalidNode if head or tail does not belong to the graph nodes

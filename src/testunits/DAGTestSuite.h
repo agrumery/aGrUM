@@ -344,5 +344,25 @@ class DAGTestSuite: public CxxTest::TestSuite {
 
       TS_ASSERT_EQUALS( sk,sv );
     }
+
+		void testCopyOperator() {
+      gum::DAG graph=buildGraph();
+
+			gum::DAG g2=buildGraph();
+			g2.insertNode();
+
+			gum::DAG g3;
+
+			g2=g3=graph;
+
+			TS_ASSERT_EQUALS(g2,graph);	
+			TS_ASSERT_EQUALS(g3,graph);
+
+			g2.clear();
+			g3.clearArcs();
+
+			TS_ASSERT_DIFFERS(g2,graph);
+			TS_ASSERT_DIFFERS(g3,graph);
+		}
 };
 

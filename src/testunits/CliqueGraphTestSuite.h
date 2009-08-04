@@ -646,5 +646,29 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
       }
     }
+
+
+    void testCopyOperator() {
+      gum::CliqueGraph g1, g2, g3;
+      fillG1( g1 );
+      fillG2( g2 );
+      fillG3( g3 );
+
+      gum::CliqueGraph copy1,copy2,copy3;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( copy1 = g1);
+      TS_GUM_ASSERT_THROWS_NOTHING( copy2 = g2);
+      TS_GUM_ASSERT_THROWS_NOTHING( copy3 = g3);
+
+      TS_ASSERT_EQUALS( g1, copy1 );
+      TS_ASSERT_EQUALS( g2, copy2 );
+      TS_ASSERT_EQUALS( g3, copy3 );
+
+      copy1.clear();
+      copy2.clearEdges();
+
+      TS_ASSERT_DIFFERS( g1, copy1 );
+      TS_ASSERT_DIFFERS( g2, copy2 );
+    }
 };
 

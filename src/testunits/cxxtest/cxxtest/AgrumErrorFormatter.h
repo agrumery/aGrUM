@@ -95,7 +95,8 @@ namespace CxxTest {
         gum::debug::__atexit();
 #endif // NDEBUG
         if ( !tracker().failedTests() ) {
-          ( *_o ) << endl << "=================================="<<endl
+          ( *_o ) << endl
+          << "=================================="<<endl
           << "Agrum Test Unit Module: 100% OK !"<<endl
           <<"=================================="<<endl<<endl;
           return;
