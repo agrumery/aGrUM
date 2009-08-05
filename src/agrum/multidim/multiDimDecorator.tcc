@@ -142,7 +142,7 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  const DiscreteVariable& MultiDimDecorator<T_DATA>::variable( Idx i ) const {
+  const DiscreteVariable& MultiDimDecorator<T_DATA>::variable( const Idx i ) const {
     return (( MultiDimContainer<T_DATA> * ) _content )->variable( i );
   }
 

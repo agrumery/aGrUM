@@ -118,7 +118,7 @@ namespace gum {
        * @throws NotFound Raised if the index doesn't exist.
        */
       // ============================================================================
-      virtual const DiscreteVariable& variable( Idx ) const;
+      virtual const DiscreteVariable& variable( const Idx ) const;
 
       // ============================================================================
       /**

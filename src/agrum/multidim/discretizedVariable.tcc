@@ -21,8 +21,6 @@
 
 
 namespace gum {
-
-
 #define INC_TICKS_ARRAY 4
 
 #define LESS_THAN_FIRST_RANGE "less than first range"

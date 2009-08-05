@@ -75,7 +75,7 @@ namespace gum
 	}
 
 	// ==============================================================================
-	// Default constructor
+	/// Default constructor
 	// ==============================================================================
 	INLINE LabelizedVariable::LabelizedVariable
 	( const std::string&  aName,const std::string&  aDesc,const int nbrLabel ) :
@@ -144,8 +144,7 @@ namespace gum
 	}
 
 	// ==============================================================================
-	/// returns the ith label#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
+	/// returns the ith label
 	// ==============================================================================
 	INLINE const std::string LabelizedVariable::label ( const Idx i ) const
 	{

@@ -21,87 +21,98 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-namespace gum {
+namespace gum
+{
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                         GUM_DISCRETE_VARIABLE                        === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+	/* ============================================================================ */
+	/* ============================================================================ */
+	/* ===                         GUM_DISCRETE_VARIABLE                        === */
+	/* ============================================================================ */
+	/* ============================================================================ */
 
-  // ==============================================================================
-  /// Default constructor
-  // ==============================================================================
-  INLINE DiscreteVariable::DiscreteVariable( const std::string& aName,
-      const std::string& aDesc )  :
-      Variable( aName, aDesc ) {
-    GUM_CONSTRUCTOR( DiscreteVariable );
-  }
+	// ==============================================================================
+	/// Default constructor
+	// ==============================================================================
+	INLINE DiscreteVariable::DiscreteVariable ( const std::string& aName,
+	        const std::string& aDesc )  :
+			Variable ( aName, aDesc )
+	{
+		GUM_CONSTRUCTOR ( DiscreteVariable );
+	}
 
-  // ==============================================================================
-  /// Copy constructor
-  // ==============================================================================
-  INLINE DiscreteVariable::DiscreteVariable( const DiscreteVariable& aDRV ) :
-      Variable( aDRV ) {
-    GUM_CONSTRUCTOR( DiscreteVariable );
-  }
+	// ==============================================================================
+	/// Copy constructor
+	// ==============================================================================
+	INLINE DiscreteVariable::DiscreteVariable ( const DiscreteVariable& aDRV ) :
+			Variable ( aDRV )
+	{
+		GUM_CONSTRUCTOR ( DiscreteVariable );
+	}
 
-  // ==============================================================================
-  /// destructor
-  // ==============================================================================
-  INLINE DiscreteVariable::~DiscreteVariable() {
-    GUM_DESTRUCTOR( DiscreteVariable );
-  }
+	// ==============================================================================
+	/// destructor
+	// ==============================================================================
+	INLINE DiscreteVariable::~DiscreteVariable()
+	{
+		GUM_DESTRUCTOR ( DiscreteVariable );
+	}
 
-  // ==============================================================================
-  /// Overload of Variable::setName
-  // ==============================================================================
-  INLINE void DiscreteVariable::setName( const std::string& theValue ) {
-    Variable::setName( theValue );
-  }
+	// ==============================================================================
+	/// Overload of Variable::setName
+	// ==============================================================================
+	INLINE void DiscreteVariable::setName ( const std::string& theValue )
+	{
+		Variable::setName ( theValue );
+	}
 
-  // ==============================================================================
-  /// Overload of Variable::setDescription
-  // ==============================================================================
-  INLINE void DiscreteVariable::setDescription( const std::string& theValue ) {
-    Variable::setDescription( theValue );
-  }
+	// ==============================================================================
+	/// Overload of Variable::setDescription
+	// ==============================================================================
+	INLINE void DiscreteVariable::setDescription ( const std::string& theValue )
+	{
+		Variable::setDescription ( theValue );
+	}
 
-  // ==============================================================================
-  /// Copy operator
-  // ==============================================================================
-  INLINE DiscreteVariable&
-  DiscreteVariable::operator= ( const DiscreteVariable& aRV ) {
-    if ( &aRV != this ) {
-      Variable::operator= ( aRV );
-    }
+	// ==============================================================================
+	/// Copy operator
+	// ==============================================================================
+	INLINE DiscreteVariable&
+	DiscreteVariable::operator= ( const DiscreteVariable& aRV )
+	{
+		if ( &aRV != this )
+		{
+			Variable::operator= ( aRV );
+		}
 
-    return *this;
-  }
+		return *this;
+	}
 
-  // ==============================================================================
-  /// equality operator
-  // ==============================================================================
-  INLINE bool DiscreteVariable::operator== ( const DiscreteVariable& aRV )
-  const  {
-    return ( Variable::operator==( aRV ) && ( domainSize() == aRV.domainSize() ) );
-  }
+	// ==============================================================================
+	/// equality operator
+	// ==============================================================================
+	INLINE bool DiscreteVariable::operator== ( const DiscreteVariable& aRV )
+	const
+	{
+		return ( Variable::operator== ( aRV ) && ( domainSize() == aRV.domainSize() ) );
+	}
 
-  // ==============================================================================
-  /// inequality operator
-  // ==============================================================================
-  INLINE bool DiscreteVariable::operator!= ( const DiscreteVariable& aRV )
-  const  {
-    return ( ! operator== ( aRV ) );
-  }
+	// ==============================================================================
+	/// inequality operator
+	// ==============================================================================
+	INLINE bool DiscreteVariable::operator!= ( const DiscreteVariable& aRV )
+	const
+	{
+		return ( ! operator== ( aRV ) );
+	}
 
-  // ==============================================================================
-  /// empty() <==> domainSize()<2
-  // ==============================================================================
-  INLINE bool DiscreteVariable::empty() const {
-    return domainSize()<2;
-  }
+	// ==============================================================================
+	/// empty() <==> domainSize()<2
+	// ==============================================================================
+	INLINE bool DiscreteVariable::empty() const
+	{
+		return domainSize() <2;
+	}
 } /* namespace gum */
 
 
