@@ -139,7 +139,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name Variable declaration methods (NETWORK -> VARIABLE)
+      /// @name Variable declaration methods (NONE -> VARIABLE)
       // ==========================================================================
       /// @{
 
@@ -182,7 +182,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name Parents declaration methods (NETWORK -> PARENTS)
+      /// @name Parents declaration methods (NONE -> PARENTS)
       // ==========================================================================
       /// @{
 
@@ -207,7 +207,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name Raw Probability table declaration methods (NETWORK -> RAW_CPT)
+      /// @name Raw Probability table declaration methods (NONE -> RAW_CPT)
       // ==========================================================================
       /// @{
 
@@ -249,7 +249,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name factorized probability table declaration methods (NETWORK -> RAW_CPT)
+      /// @name factorized probability table declaration methods (NONE -> RAW_CPT)
       // ==========================================================================
       /// @{
 

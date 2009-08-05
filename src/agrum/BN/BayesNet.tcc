@@ -424,5 +424,31 @@ BayesNet<T_DATA>::__getNextTopologyLevel(NodeSet& uncheckedNodes) const {
   }
 }
 
+template<typename T_DATA> INLINE
+std::ostream&
+operator<<(std::ostream& output, const BayesNet<T_DATA>& map) {
+  output << "digraph \"";
+  try {
+    output << map.property("name") << "\" {" << std::endl;
+  } catch (NotFound&) {
+    output << "no_name\" {" << std::endl;
+  }
+  std::string tab = "  ";
+  for (gum::NodeSetIterator node_iter = map.dag().beginNodes();
+       node_iter != map.dag().endNodes(); ++node_iter) {
+    if (map.dag().children(*node_iter).size() > 0) {
+      for (gum::ArcSetIterator arc_iter = map.dag().children(*node_iter).begin();
+          arc_iter != map.dag().children(*node_iter).end(); ++arc_iter) {
+        output << tab << "\"" << map.variable(*node_iter).name() << "\" -> "
+                  << "\"" << map.variable(arc_iter->head()).name() << "\";" << std::endl;
+      }
+    } else if (map.dag().parents(*node_iter).size() == 0) {
+      output << tab << "\"" << map.variable(*node_iter).name() << "\";" << std::endl;
+    }
+  }
+  return output;
+}
+
+
 } /* namespace gum */
 // ============================================================================

@@ -681,7 +681,7 @@ BayesNetFactory<T_DATA>::variable(const std::string& name) const {
 // state.
 // The variable is added by copy.
 // @param var The pointer over a DiscreteVariable used to define a new
-//            varialbe in the built BayesNet.
+//            variable in the built BayesNet.
 // @throw DuplicateElement Raised if a variable with the same name already
 //                         exists.
 // @throw OperationNotAllowed Raised if redefineParents == false and if table
@@ -690,12 +690,16 @@ BayesNetFactory<T_DATA>::variable(const std::string& name) const {
     template<typename T_DATA> INLINE
     void
     BayesNetFactory<T_DATA>::setVariable ( const DiscreteVariable& var ) {
-        if ( (state() != BayesNetFactory<T_DATA>::NONE) &&
-             (state() != BayesNetFactory<T_DATA>::NETWORK) ) {
+        if ( (state() != BayesNetFactory<T_DATA>::NONE) ) {
             __illegalStateError ( "setVariable" );
         } else {
+          try {
             __checkVariableName ( var.name() );
+            GUM_ERROR(DuplicateElement, var.name());
+          } catch (NotFound&) {
+            // The var name is unused
             __varNameMap.insert ( var.name(), __bn->addVariable ( var ) );
+          }
         }
     }
 

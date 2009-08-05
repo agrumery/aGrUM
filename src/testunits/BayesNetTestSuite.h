@@ -477,6 +477,15 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT( ! bn.cpt( idList[3] ).contains( bn.variable( idList[1] ) ) );
       TS_ASSERT( bn.cpt( idList[3] ).contains( bn.variable( idList[3] ) ) );
     }
+
+    void testStreamOperator() {
+      gum::BayesNet<float> bn;
+      gum::List<gum::NodeId> idList;
+
+      fill( bn, idList );
+      std::stringstream sBuff;
+      TS_GUM_ASSERT_THROWS_NOTHING(sBuff << bn);
+    }
 };
 
 

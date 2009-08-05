@@ -51,11 +51,10 @@ class BayesNetFactory;
  * After a variable is added to the BN, if it's domain size changes, then the
  * data in it's CPT is lost.
  *
- * For simplicity, building should follow these steps:
+ * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
  *
- * 1) Instanciate your variables and add them to the BN
- * 2) Add all arcs needed
- * 3) Fill the variable's CPT table
+ * Don't forget that you can print a BayesNet using
+ * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
  */
 template<typename T_DATA>
 class BayesNet: protected VariableNodeMap {
@@ -321,6 +320,12 @@ class BayesNet: protected VariableNodeMap {
     // Add the next level of nodes in the topological order
     void __getNextTopologyLevel(NodeSet& uncheckedNodes) const;
 };
+
+/// Prints map's DAG in output using the Graphviz-dot format.
+template <typename T_DATA>
+std::ostream&
+operator<<(std::ostream& output, const BayesNet<T_DATA>& map);
+
 } /* namespace gum */
 // ============================================================================
 #include <agrum/BN/BayesNet.tcc>
