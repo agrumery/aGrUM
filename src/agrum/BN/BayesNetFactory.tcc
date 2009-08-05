@@ -232,20 +232,20 @@ BayesNetFactory<T_DATA>::variable(const std::string& name) const {
     template<typename T_DATA> INLINE
     void
     BayesNetFactory<T_DATA>::setVariableCPTImplementation ( MultiDimAdressable *adressable ) {
-        MultiDimImplementation<T_DATA>* impl=dynamic_cast<MultiDimImplementation<T_DATA>*> ( adressable );
+      MultiDimImplementation<T_DATA>* impl=dynamic_cast<MultiDimImplementation<T_DATA>*> ( adressable );
 
-        if ( state() != VARIABLE ) {
-            __illegalStateError ( "setVariableCPTImplementation" );
-        } else {
-            if ( __impl != 0 ) {
-                GUM_ERROR ( OperationNotAllowed, "An implementation for this variable is already "
-                            "defined." );
-            } else if ( __impl->nbrDim() > 0 ) {
-                GUM_ERROR ( OperationNotAllowed, "This implementation is not empty." );
-            }
-
-            __impl = impl;
+      if ( state() != VARIABLE ) {
+        __illegalStateError ( "setVariableCPTImplementation" );
+      } else {
+        if ( impl == 0 ) {
+          GUM_ERROR ( OperationNotAllowed, "An implementation for this variable is already "
+              "defined." );
+        } else if ( impl->nbrDim() > 0 ) {
+          GUM_ERROR ( OperationNotAllowed, "This implementation is not empty." );
         }
+
+        __impl = impl;
+      }
     }
 
 // Tells the factory that we're out of a variable declaration.
