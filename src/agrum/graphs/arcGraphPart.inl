@@ -28,13 +28,14 @@
 namespace gum {
 
   INLINE  ArcGraphPart& ArcGraphPart::operator=( const ArcGraphPart& s ) {
-		if (this!=&s) {
-			__arcs=s.__arcs;
-			__parents=s.__parents;
-			__children=s.__children;
-		}
-		return *this;
-	}
+    // avoid self assignment
+    if (this!=&s) {
+      __arcs=s.__arcs;
+      __parents=s.__parents;
+      __children=s.__children;
+    }
+    return *this;
+  }
 
   INLINE bool ArcGraphPart::emptyArcs() const {
     return __arcs.empty();
@@ -48,12 +49,25 @@ namespace gum {
     return __arcs;
   }
 
-  INLINE bool ArcGraphPart::existsArc( const Arc arc ) const {
+  INLINE bool ArcGraphPart::existsArc( const Arc& arc ) const {
     return __arcs.contains( arc );
   }
 
-  INLINE bool ArcGraphPart::existsArc( const NodeId tail,const NodeId head ) const {
+  INLINE bool ArcGraphPart::existsArc( const NodeId tail,
+                                       const NodeId head ) const {
     return __arcs.contains( Arc( tail,head ) );
+  }
+  
+  INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
+    if ( ! __parents.exists( id ) ) {
+      __parents.insert( id,__empty_arc_set );
+    }
+  }
+
+  INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
+    if ( ! __children.exists( id ) ) {
+      __children.insert( id,__empty_arc_set );
+    }
   }
 
   INLINE const ArcSet& ArcGraphPart::parents( const NodeId id ) const {
@@ -74,19 +88,7 @@ namespace gum {
     return __arcs.end();
   }
 
-  INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
-    if ( ! __parents.exists( id ) ) {
-      __parents.insert( id,__empty_arc_set );
-    }
-  }
-
-  INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
-    if ( ! __children.exists( id ) ) {
-      __children.insert( id,__empty_arc_set );
-    }
-  }
-
-  INLINE void ArcGraphPart::insertArc( const Arc arc ) {
+  INLINE void ArcGraphPart::insertArc( const Arc& arc ) {
     __arcs.insert( arc );
     __checkParents( arc.head() );
     __checkChildren( arc.tail() );
@@ -99,7 +101,7 @@ namespace gum {
     insertArc( Arc( tail,head ) );
   }
 
-  INLINE void ArcGraphPart::eraseArc( const Arc arc ) {
+  INLINE void ArcGraphPart::eraseArc( const Arc& arc ) {
     // ASSUMING tail and head exists in __parents anf __children
     // (if not, it is an error)
     if ( existsArc( arc ) ) {
@@ -118,17 +120,16 @@ namespace gum {
     ArcSet tmp=__arcs;
 
     __arcs.clear();
-
     __parents.clear();
-
     __children.clear();
 
-    for ( ArcSetIterator iter=tmp.begin();iter!=tmp.end();++iter ) GUM_EMIT2( onArcDeleted, iter->tail(),iter->head() );
+    for ( ArcSetIterator iter=tmp.begin();iter!=tmp.end();++iter )
+      GUM_EMIT2( onArcDeleted, iter->tail(),iter->head() );
   }
 
-
   INLINE void ArcGraphPart::_eraseSetOfArcs( const ArcSet& set ) {
-    for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter ) eraseArc( *iter );
+    for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter )
+      eraseArc( *iter );
   }
 
   INLINE void ArcGraphPart::eraseParents( const NodeId id ) {

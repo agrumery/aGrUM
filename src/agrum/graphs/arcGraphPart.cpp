@@ -57,10 +57,11 @@ namespace gum {
     bool first=true;
     s<<"{";
 
-    for ( ArcSetIterator it=__arcs.begin();it!=__arcs.end();++it ) {
+    for ( ArcSetConstIterator it=__arcs.begin();it!=__arcs.end();++it ) {
       if ( first ) {
         first=false;
-      } else {
+      }
+      else {
         s<<",";
       }
 
@@ -75,70 +76,87 @@ namespace gum {
 
   const std::vector<NodeId>
   ArcGraphPart::directedPath( const NodeId n1,const NodeId n2 ) const {
-    // not recursive version ...
-    List<NodeId> nodeFile;
-    // mark[node] contains 0 if not visited
-    // mark[node]=predecessor if visited
-    Property<NodeId>::onNodes mark;
-    mark[n1]=n1;
-    nodeFile.pushBack( n1 );
-    NodeId current;
+    // not recursive version => use a FIFO for simulating the recursion
+    List<NodeId> nodeFIFO;
+    nodeFIFO.pushBack( n1 );
 
-    while ( ! nodeFile.empty() ) {
-      current=nodeFile.front();nodeFile.popFront();
+    // mark[node] = predecessor if visited, else mark[node] does not exist
+    Property<NodeId>::onNodes mark;
+    mark.insert (n1,n1);
+    
+    NodeId current;
+    
+    while ( ! nodeFIFO.empty() ) {
+      current=nodeFIFO.front();
+      nodeFIFO.popFront();
+
       // check the children  //////////////////////////////////////////////
       const ArcSet& set=children( current );
 
       for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
         NodeId new_one=ite->head();
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists(new_one) ) // if this node is already marked, stop
+          continue;
 
-        mark[new_one]=current;
+        mark.insert(new_one, current);
 
-        if ( new_one==n2 ) break;
+        if ( new_one == n2 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current = n2; current != n1; current = mark[current] )
+            v.push_back( current );
+          v.push_back( n1 );
+
+          return v;
+        }
+        
+        nodeFIFO.pushBack( new_one );
       }
     }
 
-    if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
-
-    std::vector<NodeId> v;
-
-    for ( current=n2;current!=n1;current=mark[current] )  v.push_back( current );
-
-    v.push_back( n1 );
-
-    return v;
+    GUM_ERROR( NotFound,"no path found" );
   }
 
   const std::vector<NodeId>
   ArcGraphPart::directedUnorientedPath( const NodeId n1,const NodeId n2 ) const {
-    // not recursive version ...
-    List<NodeId> nodeFile;
-    // mark[node] contains 0 if not visited
-    // mark[node]=predecessor if visited
-    Property<NodeId>::onNodes mark;//=nodes().hashMapNodes(( NodeId )0 );
-    mark[n1]=n1;
-    nodeFile.pushBack( n1 );
-    NodeId current;
+    // not recursive version => use a FIFO for simulating the recursion
+    List<NodeId> nodeFIFO;
+    nodeFIFO.pushBack( n1 );
+    
+    // mark[node] = predecessor if visited, else mark[node] does not exist
+    Property<NodeId>::onNodes mark;
+    mark.insert ( n1,n1 );
 
-    while ( ! nodeFile.empty() ) {
-      current=nodeFile.front();nodeFile.popFront();
+    NodeId current;
+    
+    while ( ! nodeFIFO.empty() ) {
+      current=nodeFIFO.front();
+      nodeFIFO.popFront();
+
       // check the children //////////////////////////////////////////////
       const ArcSet& set_children=children( current );
 
-      for ( ArcSetIterator ite=set_children.begin();ite!=set_children.end();++ite ) {
+      for ( ArcSetIterator ite=set_children.begin();
+            ite!=set_children.end();++ite ) {
         NodeId new_one=ite->head();
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists ( new_one ) ) // the node has already been visited
+          continue; 
 
-        mark[new_one]=current;
+        mark.insert( new_one, current );
 
-        if ( new_one==n2 ) break;
+        if ( new_one == n2 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current=n2; current!=n1; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n1 );
+
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
       }
 
       // check the parent //////////////////////////////////////////////
@@ -147,25 +165,26 @@ namespace gum {
       for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
         NodeId new_one=ite->tail();
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists ( new_one ) ) // the node has already been visited
+          continue; 
 
-        mark[new_one]=current;
+        mark.insert( new_one, current );
 
-        if ( new_one==n2 ) break;
+        if ( new_one==n2 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current=n2; current!=n1; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n1 );
+
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
       }
     }
 
-    if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
-
-    std::vector<NodeId> v;
-
-    for ( current=n2;current!=n1;current=mark[current] )  v.push_back( current );
-
-    v.push_back( n1 );
-
-    return v;
+    GUM_ERROR( NotFound,"no path found" );
   }
 
 

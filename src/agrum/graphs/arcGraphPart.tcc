@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr                                                  *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *   test $Id: $                                                           *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,19 +31,21 @@
 namespace gum {
   
 
-  template <typename ASSENT> INLINE
-  typename Property< ASSENT >::onArcs ArcGraphPart::arcsProperty( ASSENT( *f )( const Arc& ), Size size ) const {
+  template <typename VAL> INLINE
+  typename Property< VAL >::onArcs
+  ArcGraphPart::arcsProperty( VAL( *f )( const Arc& ), Size size ) const {
     return __arcs.hashMap( f,size );
   }
 
-  template <typename ASSENT> INLINE
-  typename Property< ASSENT >::onArcs ArcGraphPart::arcsProperty( const ASSENT& val, Size size ) const {
+  template <typename VAL> INLINE
+  typename Property< VAL >::onArcs
+  ArcGraphPart::arcsProperty( const VAL& val, Size size ) const {
     return __arcs.hashMap( val,size );
   }
 
   /// a method to create a list of Assent from a node list
-  template <typename ASSENT> INLINE
-  List<ASSENT> ArcGraphPart::listMapArcs( ASSENT( *f )( const Arc& ) ) const {
+  template <typename VAL> INLINE
+  List<VAL> ArcGraphPart::listMapArcs( VAL( *f )( const Arc& ) ) const {
     return __arcs.listMap( f );
   }
 

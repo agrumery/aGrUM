@@ -75,87 +75,218 @@ namespace gum {
    */
 
   class ArcGraphPart {
-    private:
-      static ArcSet __empty_arc_set;
-    public:
-      Signaler2<NodeId,NodeId> onArcAdded;  // onArcAdded(tail,head)
-      Signaler2<NodeId,NodeId> onArcDeleted;  // onArcAdded(tail,head)
+  private:
+    static ArcSet __empty_arc_set;
+  public:
+    Signaler2<NodeId,NodeId> onArcAdded;  // onArcAdded(tail,head)
+    Signaler2<NodeId,NodeId> onArcDeleted;  // onArcAdded(tail,head)
 
-      /**
-       * @param arcs_size the size of the hash table used to store all the edges
-       * @param arcs_resize_policy the resizing policy of this hash table*/
-      explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                             bool arcs_resize_policy    = true );
-      ArcGraphPart( const ArcGraphPart& s );
-      ArcGraphPart& operator=( const ArcGraphPart& s );
-      virtual ~ArcGraphPart();
-      virtual void insertArc( const Arc arc );
-      virtual void insertArc( const NodeId tail,const NodeId head );
-      virtual void eraseArc( const Arc arc );
-      virtual void eraseArc( NodeId tail,NodeId head );
-      bool existsArc( const Arc arc ) const;
-      bool existsArc( const NodeId tail,const NodeId head ) const;
-      bool emptyArcs() const;
-      void clearArcs();
-      Size sizeArcs() const;
-      const ArcSet& arcs() const;
-      const ArcSet& parents( const NodeId id ) const;
-      const ArcSet& children( const NodeId id ) const;
-      void eraseParents( const NodeId id );
-      void eraseChildren( const NodeId id );
-      const ArcSetIterator beginArcs() const;
-      const ArcSetIterator& endArcs() const;
-      bool operator==( const ArcGraphPart& p ) const;
-      bool operator!=( const ArcGraphPart& p ) const;
-      const std::string toString() const;
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /** @brief a method to create a hashMap of Assent from a node list
-       * (using for all node x, the ASSENT f(x)) */
-      template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( ASSENT( *f )( const Arc& ), Size size = 0 ) const;
+    /// default constructor
+    /** @param arcs_size the size of the hash table used to store all the edges
+     * @param arcs_resize_policy the resizing policy of this hash table*/
+    explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                           bool arcs_resize_policy    = true );
 
-      /** @brief a method to create a hashMap of Assent from a node list
-       * (using for all node x, the ASSENT a) */
-      template <typename ASSENT> typename Property< ASSENT >::onArcs arcsProperty( const ASSENT& a, Size size = 0 ) const;
+    /// copy constructor
+    /** @param s the ArcGraphPart to copy */
+    ArcGraphPart( const ArcGraphPart& s );
 
-      template <typename ASSENT> List<ASSENT> listMapArcs( ASSENT( *f )( const Arc& ) ) const;
+    /// destructor
+    virtual ~ArcGraphPart();
+
+    /// @}
 
 
-      // ============================================================================
-      /// returns a directed path from node1 to node2 in the edge set
-      /** @param node1 the id from which the path begins
-       * @param node2 the id to which the path ends
-       * @throw NotFound
-       */
-      // ============================================================================
-      const std::vector<NodeId>
-      directedPath( const NodeId node1, const NodeId node2 ) const;
 
-      // ============================================================================
-      /// returns an unoriented (directed) path from node1 to node2 in the edge set
-      /** @param node1 the id from which the path begins
-       * @param node2 the id to which the path ends
-       * @throw NotFound
-       */
-      // ============================================================================
-      const std::vector<NodeId>
-      directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
+    /// copy operator
+    /** @param s the ArcGraphPart to copy */
+    ArcGraphPart& operator=( const ArcGraphPart& s );
 
-    protected:
-      void _eraseSetOfArcs( const ArcSet& set );
+    /// tests whether to ArcGraphParts contain the same arcs
+    /** @param p the ArcGraphPart that we compare with this */
+    bool operator==( const ArcGraphPart& p ) const;
+
+    ///  tests whether to ArcGraphParts contain different arcs
+    /** @param p the ArcGraphPart that we compare with this */
+    bool operator!=( const ArcGraphPart& p ) const;
+
+    /// @}
 
 
-    private:
-      Set<Arc> __arcs;
-      mutable Property<ArcSet>::onNodes __parents;
-      mutable Property<ArcSet>::onNodes __children;
-      void __checkParents( const NodeId id ) const;
-      void __checkChildren( const NodeId id ) const;
+    
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// insert a new arc into the ArcGraphPart
+    /** @param arc the new arc to be added. Actually, this is a copy of the
+     * arc that is inserted into the ArcGraphPart
+     * @warning if the arc already exists, nothing is done. In particular, no
+     * exception is raised. */
+    virtual void insertArc( const Arc& arc );
+
+    /// insert a new arc into the ArcGraphPart
+    /** @param tail the id of the tail of the new arc to be inserted
+     * @param head the id of the head of the new arc to be inserted
+     * @warning if the arc already exists, nothing is done. In particular, no
+     * exception is raised. */
+    virtual void insertArc( const NodeId tail,const NodeId head );
+
+    /// removes an arc from the ArcGraphPart
+    /** @param arc the arc to be removed
+     * @warning if the arc does not exist, nothing is done. In particular, no
+     * exception is thrown. */
+    virtual void eraseArc( const Arc& arc );
+   
+    /// removes an arc from the ArcGraphPart
+    /** @param tail the tail of the arc to be removed
+     * @param head the head of the arc to be removed
+     * @warning if the arc does not exist, nothing is done. In particular, no
+     * exception is thrown. */
+    virtual void eraseArc( const NodeId tail, const NodeId head );
+
+    /// indicates whether a given arc exists
+    /** @param arc the arc we test whether or not it belongs to the ArcGraphPart */
+    bool existsArc( const Arc& arc ) const;
+
+    /// indicates whether a given arc exists
+    /** @param tail the tail of the arc we test the existence in the ArcGraphPart
+     * @param head the head of the arc we test the existence in the ArcGraphPart */
+    bool existsArc( const NodeId tail,const NodeId head ) const;
+
+    /// indicates wether the ArcGraphPart contains any node
+    bool emptyArcs() const;
+
+    /// removes all the nodes from the ArcGraphPart
+    void clearArcs();
+
+    /// indicates the number of arcs stored within the ArcGraphPart
+    Size sizeArcs() const;
+
+    /// returns the set of arcs stored within the ArcGraphPart
+    const ArcSet& arcs() const;
+
+    /// returns the set of arcs ingoing to a given node
+    /** Note that the set of arcs returned may be empty if node arc within the
+     * ArcGraphPart is ingoing into the given node.
+     * @param id the node toward which the arcs returned are pointing */
+    const ArcSet& parents( const NodeId id ) const;
+
+    /// returns the set of arcs outgoing from a given node
+    /** Note that the set of arcs returned may be empty if node arc within the
+     * ArcGraphPart is outgoing from the given node.
+     * @param id the node which is the tail of the arcs returned */
+    const ArcSet& children( const NodeId id ) const;
+
+    /// erase all the parents of a given node
+    /** @param id the node all the parents of which will be removed
+     * @warning if no arc is a parent of id, nothing is done. In particular, no
+     * exception is thrown. */
+    void eraseParents( const NodeId id );
+
+    /// removes all the children of a given node
+    /** @param id the node all the children of which will be removed
+     * @warning if no arc is a parent of id, nothing is done. In particular, no
+     * exception is thrown. */        
+    void eraseChildren( const NodeId id );
+
+    /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
+    const ArcSetIterator beginArcs() const;
+
+    /// returns the end iterator to parse the set of arcs
+    const ArcSetIterator& endArcs() const;
+
+    /// to friendly display the content of the ArcGraphPart
+    const std::string toString() const;
+
+    /** @brief a method to create a hashMap of VAL from a set of arcs
+     * (using for every arc, say x, the VAL f(x))
+     * @param f a function assigning a VAL to any arc
+     * @param size an optional parameter enabling to fine-tune the returned
+     * Property. Roughly speaking, it is a good practice to have a size equal to
+     * half the number of arcs. If you do not specify this parameter, the method
+     * will assign it for you. */
+    template <typename VAL>
+    typename Property< VAL >::onArcs
+    arcsProperty( VAL( *f )( const Arc& ), Size size = 0 ) const;
+
+    /** @brief a method to create a hashMap of VAL from a set of arcs
+     * (using for every arc, say x, the VAL a)
+     * @param a the default value assigned to each arc in the returned Property 
+     * @param size an optional parameter enabling to fine-tune the returned
+     * Property. Roughly speaking, it is a good practice to have a size equal to
+     * half the number of arcs. If you do not specify this parameter, the method
+     * will assign it for you. */
+    template <typename VAL>
+    typename Property< VAL >::onArcs
+    arcsProperty( const VAL& a, Size size = 0 ) const;
+
+    /** @brief a method to create a list of VAL from a set of arcs
+     * (using for every arc, say x, the VAL f(x))
+     * @param f a function assigning a VAL to any arc */
+    template <typename VAL> List<VAL>
+    listMapArcs( VAL( *f )( const Arc& ) ) const;
+
+    /// returns a directed path from node1 to node2 belonging to the set of arcs
+    /** @param node1 the id from which the path begins
+     * @param node2 the id to which the path ends
+     * @throw NotFound */
+    const std::vector<NodeId>
+    directedPath( const NodeId node1, const NodeId node2 ) const;
+
+    /// returns an unoriented (directed) path from node1 to node2 in the edge set
+    /** @param node1 the id from which the path begins
+     * @param node2 the id to which the path ends
+     * @throw NotFound */
+    const std::vector<NodeId>
+    directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
+
+    /// @}
+    
+
+  protected:
+    void _eraseSetOfArcs( const ArcSet& set );
+
+
+  private:
+    /// the set of all the arcs contained within the ArcGraphPart
+    Set<Arc> __arcs;
+
+    /// for each arc, the sets of its parents
+    mutable Property<ArcSet>::onNodes __parents;
+
+    /// for each arc, the set of its children
+    mutable Property<ArcSet>::onNodes __children;
+
+
+    
+    /** @brief when the ArCGraphPart contains no arc ingoing into a given node,
+     * this function adds an empty set entry to __parents[id]
+     * @param id the node whose __parents[id] is checked */
+    void __checkParents( const NodeId id ) const;
+
+    /** @brief when the ArCGraphPart contains no arc outgoing from a given node,
+     * this function adds an empty set entry to __children[id]
+     * @param id the node whose __children[id] is checked */
+    void __checkChildren( const NodeId id ) const;
   };
 
 
   /// for friendly displaying the content of arc set
-  std::ostream& operator<< ( std::ostream&, const ArcGraphPart& );
+  /** @param s the stream to which we display the content of a
+   * @param a the ArcGraphPart to be displayed */
+  std::ostream& operator<< ( std::ostream& s, const ArcGraphPart& a);
 
 
 } /* namespace gum */
