@@ -217,6 +217,16 @@ namespace gum {
     sum << "[" << left.str() << " |" << right.str() << "]";
     return sum.str();
   }
+
+
+  template <typename T_DATA> INLINE
+  MultiDimContainer<T_DATA>* CPF<T_DATA>::newFactory() const {
+    return new Potential<T_DATA>(
+				 static_cast<MultiDimImplementation<T_DATA>*>(
+									      this->getContent()->newFactory()
+									      )
+				 );
+  }
       
 
 } /* namespace gum */

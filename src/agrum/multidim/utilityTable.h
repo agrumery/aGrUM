@@ -102,7 +102,7 @@ namespace gum {
      *
      * @param toAdd table to add in this table (B in the description)
      */
-    //    void sumBy(const UtilityTable<T_DATA>& toAdd);
+    void sumBy(const UtilityTable<T_DATA>& toAdd);
 
   protected:
 

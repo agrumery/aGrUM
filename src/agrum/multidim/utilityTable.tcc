@@ -60,21 +60,21 @@ namespace gum {
     return new UtilityTable<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
   }
 
-template <typename T_DATA> INLINE
-void UtilityTable<T_DATA>::sum(const UtilityTable<T_DATA>& p1,
-			       const UtilityTable<T_DATA>& p2) {
-  this->beginMultipleChanges();
-  // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
+  template <typename T_DATA> INLINE
+  void UtilityTable<T_DATA>::sum(const UtilityTable<T_DATA>& p1,
+				 const UtilityTable<T_DATA>& p2) {
+    this->beginMultipleChanges();
+    // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
     const Sequence<const DiscreteVariable *> seq0=this->variablesSequence() ;
-
+    
     for ( Sequence<const DiscreteVariable *>::iterator iter = seq0.begin();
           iter!=seq0.end();++iter ) {
       this->erase( **iter );
     }
-
+    
     // adding vars in p1
     const Sequence<const DiscreteVariable *>& seq1=p1.variablesSequence() ;
-
+    
     for ( Sequence<const DiscreteVariable *>::iterator iter = seq1.begin();
           iter!=seq1.end();++iter ) {
       this->add( **iter );
@@ -96,15 +96,19 @@ void UtilityTable<T_DATA>::sum(const UtilityTable<T_DATA>& p1,
     // it looks like we don't need much more optimization (all the sums & prods
     // have to be made once at least) ...
     // remember that p1[i] means p1[just the part of i that concerns p1]
-
+    
     for ( i.setFirst();! i.end(); ++i ) this->set( i ,p1[i]+p2[i]);
-
-}
-
-//   template <typename T_DATA> 
-//   void UtilityTable<T_DATA>::sumBy(const UtilityTable<T_DATA>& toAdd) {
-   
-//   }
+    
+  }
+  
+  template <typename T_DATA> 
+  void UtilityTable<T_DATA>::sumBy(const UtilityTable<T_DATA>& toAdd) {
+    UtilityTable<T_DATA> tab(this->newFactory());
+    tab.sum(*this, toAdd);
+    MultiDimImplementation<T_DATA>* swap = _content;
+    _content = tab._content;
+    tab._content = swap;
+  }
 
 } /* namespace gum */
 
