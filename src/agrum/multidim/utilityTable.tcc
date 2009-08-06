@@ -108,7 +108,6 @@ namespace gum {
     MultiDimImplementation<T_DATA>* swap = this->_content;
     this->_content = tab._content;
     tab._content = swap;
-    Instantiation i(this->_content);
   }
 
 } /* namespace gum */
