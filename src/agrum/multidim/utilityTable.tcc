@@ -103,11 +103,12 @@ namespace gum {
   
   template <typename T_DATA> 
   void UtilityTable<T_DATA>::sumBy(const UtilityTable<T_DATA>& toAdd) {
-    UtilityTable<T_DATA> tab(this->newFactory());
+    UtilityTable<T_DATA> tab(static_cast<MultiDimImplementation<T_DATA>*>(this->_content->newFactory()));
     tab.sum(*this, toAdd);
-    MultiDimImplementation<T_DATA>* swap = _content;
-    _content = tab._content;
+    MultiDimImplementation<T_DATA>* swap = this->_content;
+    this->_content = tab._content;
     tab._content = swap;
+    Instantiation i(this->_content);
   }
 
 } /* namespace gum */
