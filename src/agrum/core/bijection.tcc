@@ -300,7 +300,7 @@ namespace gum {
     // insert copies of first and second
     HashTableBucket<T1,T2*>* bucket1 =
       __firstToSecond.__insertAndGetBucket ( first, 0 );
-    HashTableBucket<T1,T2*>* bucket2;
+    HashTableBucket<T2,T1*>* bucket2;
     try { bucket2 = __secondToFirst.__insertAndGetBucket ( second, 0 ); }
     catch (...) { __firstToSecond.erase ( first ); throw; }
     bucket1->val = &(bucket2->key);
