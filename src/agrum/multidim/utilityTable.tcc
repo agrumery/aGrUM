@@ -41,7 +41,7 @@ namespace gum {
   
   template <typename T_DATA> INLINE
   UtilityTable<T_DATA>::UtilityTable(const UtilityTable<T_DATA>& toCopy) :
-    MultiDimDecorator<T_DATA>(toCopy.getContent()->newFactory())
+    MultiDimDecorator<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(toCopy.getContent()->newFactory()))
   {
     const Sequence<const DiscreteVariable*>& varSeq = 
       toCopy.variablesSequence();
