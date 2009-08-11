@@ -41,10 +41,22 @@ namespace gum {
   
   template <typename T_DATA> INLINE
   UtilityTable<T_DATA>::UtilityTable(const UtilityTable<T_DATA>& toCopy) :
-    MultiDimDecorator<T_DATA>(0)
+    MultiDimDecorator<T_DATA>(toCopy.getContent()->newFactory())
   {
-    GUM_ERROR( OperationNotAllowed,
-	       "No copy for UtilityTable : how to choose the implementation ?" );
+    const Sequence<const DiscreteVariable*>& varSeq = 
+      toCopy.variablesSequence();
+    for(Sequence<const DiscreteVariable*>::iterator iter =
+	  varSeq.begin();
+	iter != varSeq.end(); ++iter) {
+      this->add(**iter);
+    }
+    Instantiation i1(toCopy);
+    Instantiation i2(*this);
+    for(i1.setFirst(), i2.setFirstIn(i1); 
+	! i1.end(); 
+	++i1, i2.incIn(i1)) {
+      this->set(i2, toCopy[i1]);
+    }
     GUM_CONS_CPY( UtilityTable ); 
   }
 
