@@ -96,10 +96,20 @@ public:
 protected:
 
   /**
-   * Returns the probability of the variable.
+   * @brief READ FULL DOCUMENTATION (THAT MEANS CLICK ON ME!!)
+   *
+   * This method is called when a BayesNetInference user ask for the marginal of
+   * a given variable.
+   *
+   * The reference "marginal" is a reference over an empty Potential, it doesn't
+   * even contains a reference over the variable's DiscreteVariable (don't forget
+   * to add it!).
+   *
+   * TODO Change this method and either return a pointer or delegate marginal
+   *      handling to subclasses.
    *
    * @param id The variable's id.
-   * @param marginal the potential to fill
+   * @param marginal The completely empty potential to fill.
    * @throw ElementNotFound Raised if no variable matches id.
    */
   virtual void _fillMarginal(NodeId id, Potential<T_DATA>& marginal)=0;

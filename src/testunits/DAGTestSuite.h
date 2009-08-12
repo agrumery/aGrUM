@@ -182,7 +182,7 @@ class DAGTestSuite: public CxxTest::TestSuite {
       TS_ASSERT( ! graph.existsArc( id5,id2 ) );
     }
 
-    void testRemoveNodesFunky_1() {
+    void testRemoveNodes_1() {
       gum::DAG graph=buildGraph();
 
       gum::Size nodeCount = graph.size();

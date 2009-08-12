@@ -29,6 +29,7 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/valueElimination.h>
+#include <agrum/graphs/incrementalTriangulation.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -167,7 +168,7 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
       inf_gibbs.setMinEpsilonRate( 1e-5 );
       inf_gibbs.makeInference();
 
-      gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
+      gum::ShaferShenoyInference<double> inf_ShaShe(*bn);
       inf_ShaShe.makeInference();
 
       gum::LazyPropagation<double> inf_LazyProp( *bn );

@@ -446,6 +446,7 @@ operator<<(std::ostream& output, const BayesNet<T_DATA>& map) {
       output << tab << "\"" << map.variable(*node_iter).name() << "\";" << std::endl;
     }
   }
+  output << "}" << std::endl;
   return output;
 }
 

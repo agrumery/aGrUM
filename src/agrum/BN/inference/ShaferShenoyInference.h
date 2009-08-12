@@ -17,179 +17,262 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+// ============================================================================
 /**
  * @file
  * @brief Implementation of the Shafer-Shenoy alogorithm for inference in
- * Bayesian Networks.
+ *        gum::BayesNet.
  */
+// ============================================================================
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
 #define GUM_SHAFER_SHENOY_INFERENCE_H
-
+// ============================================================================
 #include <vector>
 #include <utility>
 #include <iostream>
 #include <string>
-#include <agrum/BN/inference/BayesNetInference.h>
+// ============================================================================
 #include <agrum/core/debug.h>
+// ============================================================================
 #include <agrum/graphs/defaultTriangulation.h>
-
-
+// ============================================================================
+#include <agrum/multidim/multiDimBucket.h>
+#include <agrum/multidim/multiDimSparse.h>
+// ============================================================================
+#include <agrum/BN/inference/BayesNetInference.h>
+// ============================================================================
 namespace gum {
+// ============================================================================
+template <typename T_DATA> class CliqueProp;
+// ============================================================================
+/**
+ * @class ShaferShenoyInference
+ * @brief This class implements the Shafer-Shenoy alogorithm for inference
+ * in Bayesian Networks.
+ * @ingroup bn_group
+ *
+ * The class used for the triangulation is DefaultTriangulation.
+ * @todo Make it generic to Triangulation.
+ * @todo Gestion of multiple connected components
+ * @todo generalize joint law of two variables into n variables
+ *
+ * @warning : this class doesn't seem to infer bayesian network with multiple
+ *           connected components
+ */
+template<typename T_DATA>
+class ShaferShenoyInference: public BayesNetInference<T_DATA> {
 
-
-  /**
-   * @class ShaferShenoyInference
-   * @brief This class implements the Shafer-Shenoy alogorithm for inference
-   * in Bayesian Networks.
-   * @ingroup bn_group
-   *
-   * The class used for the triangulation is DefaultTriangulation.
-   * @todo Make it generic to Triangulation.
-   * @todo Gestion of multiple connected components
-   * @todo generalize joint law of two variables into n variables
-   *
-   * @warning : this class doesn't seem to infer bayesian network with multiple
-   *           connected components
-   */
-  template<typename T_DATA>
-  class ShaferShenoyInference: public BayesNetInference<T_DATA> {
   public:
+
+    // ====================================================================
+    /// @name Constructor & destructor
+    // ====================================================================
+    /// @{
+
     /**
      * Default constructor.
-     *
      * @param bayesNet The Bayesian Network used for the inference.
      */
-    ShaferShenoyInference( const BayesNet<T_DATA>& bayesNet );
+    ShaferShenoyInference(const BayesNet<T_DATA>& bayesNet);
 
     /**
      * Destructor.
      */
     virtual ~ShaferShenoyInference();
 
-    /**
-     * Makes the inference.
-     */
+    /// @}
+    // ====================================================================
+    /// @name Inference and evidence management
+    // ====================================================================
+    /// @{
+
+    /// @see gum::BayesNetInference::makeInference().
     virtual void makeInference();
 
-    /**
-     * Insert new evidence in the graph.
-     * @warning if an evidence already w.r.t. a given node and a new
-     * evidence w.r.t. this node is onserted, the old evidence is removed.
-     */
+    /// @see gum::BayesNetInference::insertEvidence().
     virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list );
 
-    /**
-     * Remove a given evidence from the graph.
-     */
+    /// @see gum::BayesNetInference::eraseEvidence().
     virtual void eraseEvidence( const Potential<T_DATA>* );
 
-    /**
-     * Remove all evidence from the graph.
-     */
+    /// @see gum::BayesNetInference::eraseAllEvidence().
     virtual void eraseAllEvidence();
+
+    /// @}
+    // ====================================================================
+    /// @name Getters & setters
+    // ====================================================================
+    /// @{
+
+    /// Returns the Triangulation used by this class.
+    Triangulation& triangulation();
 
 
   protected:
-    /**
-     * Returns the probability of the variable.
-     *
-     * @param id The variable's id.
-     * @param marginal the potential to fill
-     * @throw ElementNotFound Raised if no variable matches id.
-     */
-    virtual void _fillMarginal( Id id ,Potential<T_DATA>& marginal );
 
+    /// @see gum::BayesNetInference::_fillMarginal().
+    virtual void _fillMarginal( NodeId id ,Potential<T_DATA>& marginal );
 
   private:
-    /*****************************************************************************
-     *                              USEFUL ALIAS                                 *
-     ****************************************************************************/
-    // Alias for the neighbours list
-    typedef EdgeSet __neighbourList;
 
-    // Alias for separators
-    typedef NodeSet __Separator;
+    // ====================================================================
+    /// @name Private members
+    // ====================================================================
+    /// @{
 
-    /*****************************************************************************
-     *                           PRIVATE MEMBERS                                 *
-     ****************************************************************************/
-    // The triangulation algorithm.
-    DefaultTriangulation *__triangulation;
+    /// The triangulation algorithm.
+    Triangulation* __triangulation;
 
-    /*****************************************************************************
-     *                       USEFUL COMPUTATION MEMBERS                          *
-     ****************************************************************************/
-    // Mapping of the nodes with the clique used to put their CPT
-    Property<NodeId>::onNodes __node2CliqueMap;
+    /// The set of dummies sparse matrix created.
+    Set< Potential<T_DATA>* > __dummies;
 
-    // Lit of the evidences in a clique
-    typename Property< List<const Potential<T_DATA>*>*>::onNodes __clique_evidences;
+    /// @}
+    // ====================================================================
+    /// @name Useful computation members
+    // ====================================================================
+    /// @{
 
-    // Mapping of an arc and the message which transited from pair.first to
-    // pair.second
-    typename Property<Potential<T_DATA>*>::onArcs __messagesMap;
+    /// Mapping of the nodes with the clique used to put their CPT
+    typename Property<NodeId>::onNodes __node2CliqueMap;
 
-    // Flags on cliques to collect and diffuse in every connexe composent
-    Property< bool>::onNodes __collected_cliques;
+    typename Property< CliqueProp<T_DATA>* >::onNodes __clique_prop;
 
-    // Mapping between the variable's id and their domain size
-    Property< unsigned int>::onNodes __modalitiesMap;
+    /// Mapping of an arc and the message which transited from pair.first to
+    /// pair.second
+    typename Property< MultiDimBucket<T_DATA>* >::onArcs __messagesMap;
 
-    // Mapping of the cliques with the tables associated with them
-    typename Property< Potential<T_DATA>*>::onNodes __cliqueMap;
+    /// @}
+    // ====================================================================
+    /// @name Private getters & setters
+    // ====================================================================
+    /// @{
 
-    // @return Returns the number of neighbours of a given clique
-    Size __getNbrneighbours( Id cliqueId );
+    /// @return Returns the list of neighbours of a given clique
+    const EdgeSet& __getNeighbours( NodeId cliqueId );
 
-    // @return Returns the list of neighbours of a given clique
-    const EdgeSet& __getneighbours( Id cliqueId );
+    /// @return Returns a separator given two adjacent cliques
+    const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
-    // @return Returns a separator given two adjacent cliques
-    const __Separator& __getSeparator( Id clique_1, Id clique_2 );
+    /// @return Returns the clique in which the node's cpt must be stored
+    NodeId __getClique( const std::vector<NodeId> &eliminationOrder, NodeId id );
 
-    // @return Returns the clique in which the node's cpt must be stored
-    Id __getClique( const std::vector<Id> &eliminationOrder, Id id );
+    /// @}
+    // ====================================================================
+    /// @name Inference sub-methods
+    // ====================================================================
+    /// @{
 
-
-    /*****************************************************************************
-     *                          INFERENCE SUB METHODS                            *
-     ****************************************************************************/
-    // Builds the cliques tables
-    // Uses __getCliquesTable to initialize the cliques table, and multiply
-    // the tables with the adequate CPT.
+    /// Builds the cliques tables
+    /// Uses __getCliquesTable to initialize the cliques table, and multiply
+    /// the tables with the adequate CPT.
     void __buildCliquesTables();
 
-    // Add the evidences to the clique's table
+    /// Add the evidences to the clique's table
     void __addEvidences();
 
-    // Starting collect w.r.t. a clique
-    void __collectFromClique( Id source );
+    /// Starting collect w.r.t. a clique
+    void __collectFromClique( NodeId source );
 
-    // Collecting phase of the inference
-    bool __collect( Id source, Id current );
+    /// Collecting phase of the inference
+    bool __collect( NodeId source, NodeId current );
 
-    // Starting diffusion w.r.t. a clique
-    void __diffuseFromClique( Id source );
+    /// Starting diffusion w.r.t. a clique
+    void __diffuseFromClique( NodeId source );
 
-    // Diffusing phase of the inference
-    void __diffuse( Id source, Id current, bool recompute );
+    /// Diffusing phase of the inference
+    void __diffuse( NodeId source, NodeId current, bool recompute );
 
-    // Create and saves the message from key.first to key.second in the
-    // __messagesMap.
-    void __sendMessage( Id tail, Id head );
+    /// Create and saves the message from key.first to key.second in the
+    /// __messagesMap.
+    void __sendMessage( NodeId tail, NodeId head );
 
-    // Return true if the message from source to dest exists
-    bool __messageExists( Id source, Id dest );
+    /// Return true if the message from source to dest exists
+    bool __messageExists( NodeId source, NodeId dest );
 
-    // Removes all diffused message sent by cliqueId
-    void __removeDiffusedMessages( Id cliqueId );
-  };
+    /// Removes all diffused message sent by cliqueId
+    void __removeDiffusedMessages( NodeId cliqueId );
 
+    /// Returns a pointer over a "dummy" potential, which is a CPT filled with
+    /// one MultiDimSparse filled with 1. This is used by empty cliques.
+    /// @param cliqueId The NodeId of the cliqueId for which we build a dummy potential.
+    /// @return A pointer over the dummy bucket.
+    Potential<T_DATA>* __makeDummyPotential(NodeId cliqueId);
 
+    /// @}
+};
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/// @class CliqueProp
+/// Private class to keep clique's properties.
+/// It used MultiDimBucket to compute the cliques potentials.
+template <typename T_DATA>
+class CliqueProp
+{
+  public:
+
+    /// Default constructor.
+    /// @param id the id of this clique on which this properties holds.
+    CliqueProp(NodeId id);
+
+    /// Destructor.
+    ~CliqueProp();
+
+    /// Returns the name of this clique.
+    const std::string& name() const;
+
+    /// Add a variable to this clique
+    /// @param v The variable added.
+    void addVariable(const DiscreteVariable& v);
+
+    /// Add a potential to this clique
+    /// @param cpt v's cpt.
+    void addPotential(const Potential<T_DATA>& cpt);
+
+    /// @brief Add an evidence on a variable in this clique.
+    /// This method will remove any previous evidence on the given variable.
+    /// This method will raise an OperationNotAllowed if evidence contains not
+    /// exactly one variable.
+    /// @throw NotFound Raised if the evidence is on a variable not present
+    ///        in this clique.
+    /// @throw OperationNotAllowed If the evidence isn't valid.
+    void addEvidence(const Potential<T_DATA>& evidence);
+
+    /// Removes all the evidences containing v
+    void removeEvidence(const DiscreteVariable& v);
+
+    /// Remove all the evidences
+    void removeAllEvidence();
+
+    /// @return Returns the mapping of evidences on the variables in this clique.
+    const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >& evidences() const;
+
+    /// @return Returns the bucket of this Clique
+    MultiDimBucket<T_DATA>& bucket();
+
+    /// @return Returns the bucket of this Clique
+    const MultiDimBucket<T_DATA>& bucket() const;
+
+    /// Flag to know if this clique has been collected.
+    bool isCollected;
+
+  private:
+    /// Evidences on the variables in this clique
+    HashTable<const DiscreteVariable*, const Potential<T_DATA>* > __evidences;
+
+    /// The bucket of this clique with evidences
+    MultiDimBucket<T_DATA>* __potential;
+
+    /// The bucket of the variables without the evidences
+    MultiDimBucket<T_DATA>* __varsPotential;
+
+    /// The name of the clique.
+    std::string __name;
+
+};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+// ============================================================================
 } /* namespace gum */
-
-
+// ============================================================================
 #include <agrum/BN/inference/ShaferShenoyInference.tcc>
-
-
+// ============================================================================
 #endif /* GUM_SHAFER_SHENOY_INFERENCE_H */
+// ============================================================================

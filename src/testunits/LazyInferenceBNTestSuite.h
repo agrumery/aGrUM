@@ -79,219 +79,58 @@ class LazyInferenceTestSuite: public CxxTest::TestSuite {
       delete e_i4;
     }
 
-    void testFill() {
-      const gum::Potential<float>& p1 = bn->cpt( i1 );
-      TS_ASSERT( p1.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<float>& p2 = bn->cpt( i2 );
-      TS_ASSERT( p2.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<float>& p3 = bn->cpt( i3 );
-      TS_ASSERT( p3.nbrDim() == 2 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 );
-        p.marginalize( p3 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p4 = bn->cpt( i4 );
-      TS_ASSERT( p4.nbrDim() == 3 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 ) << bn->variable( i2 ) ;
-        p.marginalize( p4 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p5 = bn->cpt( i5 );
-      TS_ASSERT( p5.nbrDim() == 4 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                             0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-                            };
-        int n = 24;const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
-        p.marginalize( p5 );
-
-        for ( gum::Instantiation j( p ); ! j.end(); ++j ) {
-          TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-        }
-      }
-    }
-
     // Testing when there is no evidence
-    void testShaferShenoyInf_1() {
-      try {
-        fill( *bn );
-        // Testing the inference
-        gum::LazyPropagation<float> inf( *bn );
-        inf.makeInference();
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-        std::cerr << std::endl << e.getContent() << std::endl;
-        throw e;
+    void testCreationAndInference() {
+      fill( *bn );
+      // Testing the inference
+      gum::LazyPropagation<float>* inf = 0;
+      TS_ASSERT_THROWS_NOTHING(inf = new gum::LazyPropagation<float>(*bn));
+      TS_ASSERT_THROWS_NOTHING(inf->makeInference());
+      if (inf != 0) {
+        TS_ASSERT_THROWS_NOTHING(delete inf);
       }
     }
 
-    void testShaferShenoyInf_2() {
-      fill( *bn );
+    void testMarginal() {
+      fill(*bn);
       gum::LazyPropagation<float> inf( *bn );
 
-      try {
-        // Testing the inference
-        inf.makeInference();
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i1 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-      const gum::Potential<float>& marginal = inf.marginal( i2 );
-      printProba( marginal );
-      } catch ( gum::Exception e ) {
-        std::cerr << e.getContent() << std::endl;
-        TS_ASSERT( false );
-      }
-
-//
-//       try {
-//         marginal = inf.marginal( i3 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i4 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i5 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
     }
 
-    void testShaferShenoyInf_3() {
-      fill( *bn );
+    void testMarginalWithEvidence() {
+      fill(*bn);
       gum::List< const gum::Potential<float>* > e_list;
       e_list.insert( e_i1 );
       e_list.insert( e_i4 );
 
       gum::LazyPropagation<float> inf( *bn );
 
-      try {
-        inf.insertEvidence( e_list );
-      } catch ( gum::Exception e ) {
-        std::cerr << std::endl << e.getContent() << std::endl;
-        TS_ASSERT( false );
-      }
+      TS_ASSERT_THROWS_NOTHING(inf.insertEvidence(e_list));
 
-//       try {
-//         // Testing the inference
-//         inf.makeInference();
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       const gum::Potential<float> *marginal;
-//
-//       try {
-//         marginal = inf.marginal( i1 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i2 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i3 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i4 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
-//
-//       try {
-//         marginal = inf.marginal( i5 );
-//         printProba( *marginal );
-//       } catch ( gum::Exception e ) {
-//         TS_ASSERT( false );
-//       }
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
     }
 
     // Testing when there is no evidence
     void testJoint() {
-      try {
-        fill( *bn );
-        // Testing the inference
-        gum::LazyPropagation<float> inf( *bn );
-        gum::NodeSet nodeset;
-        nodeset.insert (3);
-        nodeset.insert (5);
-        inf.joint (nodeset);
-      }
-      catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-        std::cerr << std::endl << e.getContent() << std::endl;
-        throw e;
-      }
+      fill(*bn);
+      // Testing the inference
+      gum::LazyPropagation<float> inf(*bn);
+      gum::NodeSet nodeset;
+      nodeset.insert (3);
+      nodeset.insert (5);
+
+      TS_ASSERT_THROWS_NOTHING(inf.joint(nodeset));
     }
 
   private:

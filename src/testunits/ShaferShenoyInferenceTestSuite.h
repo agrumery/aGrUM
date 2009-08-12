@@ -141,12 +141,16 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
     }
 
     // Testing when there is no evidence
-    void testShaferShenoyInf_1() {
+    void testCreationAndInference() {
       try {
         fill( *bn );
         // Testing the inference
-        gum::ShaferShenoyInference<float> inf( *bn );
-        inf.makeInference();
+        gum::ShaferShenoyInference<float>* inf = 0;
+        TS_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>(*bn));
+        TS_ASSERT_THROWS_NOTHING(inf->makeInference());
+        if (inf != 0) {
+          TS_ASSERT_THROWS_NOTHING(delete inf);
+        }
       } catch ( gum::Exception e ) {
         TS_ASSERT( false );
         std::cerr << std::endl << e.getContent() << std::endl;
@@ -154,172 +158,55 @@ class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
       }
     }
 
-    void testShaferShenoyInf_2() {
-      fill( *bn );
-      gum::ShaferShenoyInference<float> inf( *bn );
+    void testMarginal() {
+      fill(*bn);
+      gum::ShaferShenoyInference<float> inf(*bn);
 
-      try {
-        // Testing the inference
-        inf.makeInference();
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i1 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i2 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        std::cerr << e.getContent() << std::endl;
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i3 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i4 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i5 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
     }
 
-    void testShaferShenoyInf_3() {
+    void testMarginalWithEvidence() {
       fill( *bn );
       gum::List<const gum::Potential<float>* > e_list;
       e_list.insert( &(bn->cpt(i1)) );
-			e_list.insert( &(bn->cpt(i2)));
+      e_list.insert( &(bn->cpt(i2)));
 
       gum::ShaferShenoyInference<float> inf( *bn );
 
-      try {
-        inf.insertEvidence( e_list );
-      } catch ( gum::Exception e ) {
-        std::cerr << std::endl << e.getContent() << std::endl;
-        TS_ASSERT( false );
-      }
+      TS_ASSERT_THROWS_NOTHING(inf.insertEvidence(e_list));
 
-      try {
-        // Testing the inference
-        inf.makeInference();
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i1 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i2 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i3 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i4 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
-
-      try {
-        const gum::Potential<float>& marginal = inf.marginal( i5 );
-        printProba( marginal );
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-      }
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
+      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
     }
 
-    void testBlackSheep() {
+    void testWithGenerator() {
       gum::BayesNetGenerator bnGen;
       float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
-      bool error = false;
+      int trial_nb=10;
 
-      int nbr_essai=10;
+      for (int i = 0; i < trial_nb; ++i) {
+        gum::BayesNet<float>* bayesNet = bnGen.generateBNF(10, density[i]);
+        gum::ShaferShenoyInference<float>* inf = 0;
 
-      for ( int i = 0; i < nbr_essai; ++i ) {
-        gum::BayesNet<float>* bn = bnGen.generateBNF( 10, density[i] );
-        gum::ShaferShenoyInference<float>* inf = NULL;
-       try {
-          //GUM_TRACE_VAR( i )
-          inf = new gum::ShaferShenoyInference<float>(*bn);
-        } catch ( std::bad_alloc ) {
-          std::cout << bn->dag().toDot() << std::endl;
-          error = true;
-          break;
+        TS_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>(*bayesNet));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
+
+        if (inf != 0) {
+          TS_ASSERT_THROWS_NOTHING(delete inf);
         }
-
-        //try {
-          inf->makeInference();
-          //delete inf;
-        /*} catch ( gum::Exception e ) {
-          error = true;
-          std::cout << bn->dag().toDot() << std::endl;
-          break;
-					}
-					*/
-
-				if (inf) delete inf;
-        delete bn;
+        delete bayesNet;
       }
     }
-
-    // void tstWithBNGen_1() {
-    //   gum::BayesNetGenerator bnGen;
-    //   float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
-    //   for (int count = 0; count < 100; ++count) {
-    //     bool error = false;
-    //     while (!error) {
-    //       for (int i = 0; i < 10; ++i) {
-    //         gum::BayesNet<float> bn = bnGen.generateBNF(10, density[i]);
-    //         gum::ShaferShenoyInference<float> inf(bn);
-    //         TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference());
-    //       }
-    //     }
-    //   }
-    // }
-
-    // void tstWithBNGen_2() {
-    //   gum::BayesNetGenerator bnGen;
-    //   float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
-    //   for (int count = 0; count < 100; ++count) {
-    //     for (int i = 0; i < 10; ++i) {
-    //       gum::BayesNet<double> bn = bnGen.generateBND(10, density[i]);
-    //       gum::ShaferShenoyInference<double> inf(bn);
-    //       TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference());
-    //     }
-    //   }
-    // }
 
   private:
     // Builds a BN to tst the inference
