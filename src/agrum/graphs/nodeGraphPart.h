@@ -90,150 +90,150 @@ namespace gum {
    */
 
   class NodeGraphPart {
-    public:
-      Signaler1<NodeId> onNodeAdded;
-      Signaler1<NodeId> onNodeDeleted;
+  public:
+    Signaler1<NodeId> onNodeAdded;
+    Signaler1<NodeId> onNodeDeleted;
 
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** @param nodes_size the size of the hash table used to store all the nodes
-       * @param nodes_resize_policy the resizing policy of this hash table**/
-      explicit NodeGraphPart( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                              bool nodes_resize_policy    = true );
+    /// default constructor
+    /** @param nodes_size the size of the hash table used to store all the nodes
+     * @param nodes_resize_policy the resizing policy of this hash table**/
+    explicit NodeGraphPart( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                            bool nodes_resize_policy    = true );
 
-      /// copy constructor
-      NodeGraphPart( const NodeGraphPart& s );
+    /// copy constructor
+    NodeGraphPart( const NodeGraphPart& s );
 
-      /// destructor
-      virtual ~NodeGraphPart();
+    /// destructor
+    virtual ~NodeGraphPart();
 
-      /// @}
-
-
-
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
-			/// operator=
-			NodeGraphPart& operator=(const NodeGraphPart& p);
-
-      /// check whether two NodeGraphParts contain the same nodes
-      bool operator==( const NodeGraphPart& p ) const;
-
-      /// check whether two NodeGraphParts contain different nodes
-      bool operator!=( const NodeGraphPart& p ) const;
-
-      /// @}
+    /// @}
 
 
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    /// operator=
+    NodeGraphPart& operator=(const NodeGraphPart& p);
 
-      /// populateNodes clears *this and fills it with the same nodes as "s"
-      /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
-       * internal idFactory. */
-      void populateNodes( const NodeGraphPart& s );
+    /// check whether two NodeGraphParts contain the same nodes
+    bool operator==( const NodeGraphPart& p ) const;
 
-      /// populateNodesFromProperty clears *this and fills it with the keys of "h"
-      /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
-       * internal idFactory. */
-      template<typename T>
-      void populateNodesFromProperty( const typename Property<T>::onNodes& h );
+    /// check whether two NodeGraphParts contain different nodes
+    bool operator!=( const NodeGraphPart& p ) const;
 
-      /** next id (by using insertNode)
-			 * @warning a code like @code id=nextId();insertNode(id); @endcode is basically not thread safe !!
-       * @return the next id
-       */
-      NodeId nextNodeId( ) const;
-
-			/// insert a new node and return the new id
-       /** @return the id chosen by the internal idFactory
-       */
-      virtual NodeId insertNode( );
-
-      /// try to insert a node with the given id
-			 /** @warning This method should be carefully used. Please prefere @ref populateNodes or @ref populateNodesFromProperty
-       * @throws DuplicateElement exception is thrown if the id already exists
-       * @return the id chosen by the internal idFactory
-       */
-      virtual void insertNode( const NodeId id );
-
-      /// erase the node with the given id
-      /** If the NodeGraphPart does not contain the nodeId, then nothing is done. In
-       * particular, no exception is raised. */
-      virtual void eraseNode( const NodeId id );
-
-      /// returns true iff the NodeGraphPart contains the given nodeId
-      bool exists( const NodeId id ) const;
-
-      /// indicates whether there exists nodes in the NodeGraphPart
-      bool empty() const;
-
-      /// remove all the nodes from the NodeGraphPart
-      virtual void clear();
-
-      /// returns the number of nodes in the NodeGraphPart
-      Size size() const;
-
-      /// returns a number such that all node ids are less than or equal to it
-      NodeId maxId() const;
-
-      /// returns the set of nodes contained in the NodeGraphPart
-      const NodeSet& nodes()  const;
-
-      /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
-      const NodeSetIterator beginNodes() const;
-
-      /// the end iterator to parse the set of nodes contained in the NodeGraphPart
-      const NodeSetIterator& endNodes() const;
-
-      /// a function to display the set of nodes
-      std::string toString() const;
-
-
-      /// a method to create a HashTable with key:NodeId and value:VAL
-      /** VAL are computed from the nodes using for all node x, VAL f(x).
-       * This method is a wrapper of the same method in HashTable.
-       * @see HashTable::map.
-       */
-      template <typename VAL>
-      typename Property<VAL>::onNodes
-      nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
-
-      /// a method to create a hashMap with key:NodeId and value:VAL
-      /** for all nodes, the value stored is a. This method is a wrapper of the same
-       * method in HashTable.
-       * @see HashTable::map.
-       */
-      template <typename VAL>
-      typename Property<VAL>::onNodes
-      nodesProperty( const VAL& a, Size size = 0 ) const;
-
-      /// a method to create a list of VAL from the set of nodes
-      template <typename VAL>
-      List<VAL>
-      listMapNodes( VAL( *f )( const NodeId& ) ) const;
+    /// @}
 
 
 
-    private:
-      /// internal idFactory
-      NodeId __nextNodeId();
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
-      /// the set of nodes contained in the NodeGraphPart
-      Set<NodeId> __nodes;
+    /// populateNodes clears *this and fills it with the same nodes as "s"
+    /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
+     * internal idFactory. */
+    void populateNodes( const NodeGraphPart& s );
 
-      /** @brief the id above which nodes ids are guaranteed to not belong yet to
-       * the NodeGraphPart */
-      NodeId __max;
+    /// populateNodesFromProperty clears *this and fills it with the keys of "h"
+    /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
+     * internal idFactory. */
+    template<typename T>
+    void populateNodesFromProperty( const typename Property<T>::onNodes& h );
+
+    /** next id (by using insertNode)
+     * @warning a code like @code id=nextId();insertNode(id); @endcode is basically not thread safe !!
+     * @return the next id
+     */
+    NodeId nextNodeId( ) const;
+
+    /// insert a new node and return the new id
+    /** @return the id chosen by the internal idFactory
+     */
+    virtual NodeId insertNode( );
+
+    /// try to insert a node with the given id
+    /** @warning This method should be carefully used. Please prefere @ref populateNodes or @ref populateNodesFromProperty
+     * @throws DuplicateElement exception is thrown if the id already exists
+     * @return the id chosen by the internal idFactory
+     */
+    virtual void insertNode( const NodeId id );
+
+    /// erase the node with the given id
+    /** If the NodeGraphPart does not contain the nodeId, then nothing is done. In
+     * particular, no exception is raised. */
+    virtual void eraseNode( const NodeId id );
+
+    /// returns true iff the NodeGraphPart contains the given nodeId
+    bool exists( const NodeId id ) const;
+
+    /// indicates whether there exists nodes in the NodeGraphPart
+    bool empty() const;
+
+    /// remove all the nodes from the NodeGraphPart
+    virtual void clear();
+
+    /// returns the number of nodes in the NodeGraphPart
+    Size size() const;
+
+    /// returns a number such that all node ids are less than or equal to it
+    NodeId maxId() const;
+
+    /// returns the set of nodes contained in the NodeGraphPart
+    const NodeSet& nodes()  const;
+
+    /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
+    const NodeSetIterator beginNodes() const;
+
+    /// the end iterator to parse the set of nodes contained in the NodeGraphPart
+    const NodeSetIterator& endNodes() const;
+
+    /// a function to display the set of nodes
+    std::string toString() const;
+
+
+    /// a method to create a HashTable with key:NodeId and value:VAL
+    /** VAL are computed from the nodes using for all node x, VAL f(x).
+     * This method is a wrapper of the same method in HashTable.
+     * @see HashTable::map.
+     */
+    template <typename VAL>
+    typename Property<VAL>::onNodes
+    nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
+
+    /// a method to create a hashMap with key:NodeId and value:VAL
+    /** for all nodes, the value stored is a. This method is a wrapper of the same
+     * method in HashTable.
+     * @see HashTable::map.
+     */
+    template <typename VAL>
+    typename Property<VAL>::onNodes
+    nodesProperty( const VAL& a, Size size = 0 ) const;
+
+    /// a method to create a list of VAL from the set of nodes
+    template <typename VAL>
+    List<VAL>
+    listMapNodes( VAL( *f )( const NodeId& ) ) const;
+
+
+
+  private:
+    /// internal idFactory
+    NodeId __nextNodeId();
+
+    /// the set of nodes contained in the NodeGraphPart
+    Set<NodeId> __nodes;
+
+    /** @brief the id above which nodes ids are guaranteed to not belong yet to
+     * the NodeGraphPart */
+    NodeId __max;
   };
 
 

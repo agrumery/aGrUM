@@ -37,10 +37,10 @@ namespace gum {
 
 
   /* =========================================================================== */
-  /* ===     BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
+  /* ===           BASE CLASS FOR MANIPULATING ALL DIRECTED GRAPHS           === */
   /* =========================================================================== */
   /** @class DiGraph
-   * @brief Base class for all graphs
+   * @brief Base class for all oriented graphs
    *
    * \ingroup graph_group
    *
@@ -49,10 +49,10 @@ namespace gum {
    * *
    * @par Usage example:
    * @code
-   *  // creating empty graphs
+   * // creating empty graphs
    * DiGraph g1,g2;
    *
-   * // adding nodes, edges and arcs to g1
+   * // adding nodes and arcs to g1
    * NodeId i1=g1.insertNode();
    * NodeId i2=g1.insertNode();
    * NodeId i3=g1.insertNode();
@@ -60,7 +60,7 @@ namespace gum {
    * g1.insertArc( i1,i3 );
    * g1.insertArc( i2,i3 );
    *
-   * //throw a InvalidNode
+   * //throw an InvalidNode
    * // g1.insertArc( i1+i2+i3,i1 );
    *
    * // copying graphs
@@ -70,7 +70,6 @@ namespace gum {
    *
    * // check if a graph has no node
    * if ( g1.empty() ) cerr << "graph g1 is empty" << endl;
-   *
    *
    * // remove all the nodes (as well as their adjacent arcs)
    * g1.clear();
@@ -97,13 +96,18 @@ namespace gum {
    *
    * cerr<<endl;
    *
-   * // remove all the arcs parent to a given node
-   *  g3.eraseParents( 2
+   * // remove all the arcs that are parent of a given node
+   * g3.eraseParents( 2
    * @endcode
    */
   /* =========================================================================== */
   class DiGraph : public ArcGraphPart,public virtual NodeGraphPart {
   public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
     /** @param nodes_size the size of the hash table used to store all the nodes
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param arcs_size the size of the hash table used to store all the arcs
@@ -112,26 +116,74 @@ namespace gum {
                       bool nodes_resize_policy    = true,
                       Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                       bool arcs_resize_policy    = true );
+  
+    /// copy constructor
+    /** @param g the DiGraph to copy */
     DiGraph( const DiGraph& g );
-    DiGraph& operator=( const DiGraph& g );
+
+    /// destructor
     virtual ~DiGraph();
 
-    /// @throw InvalidNode if head or tail does not belong to the graph nodes
-    virtual void insertArc( const Arc& arc );
+    /// @}
 
-    /// @throw InvalidNode if head or tail does not belong to the graph nodes
-    virtual void insertArc( const NodeId& tail,const NodeId& head );
-    virtual void eraseNode( const NodeId id );
-    virtual void clear();
+    
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
+    /// copy operator
+    /** @param g the DiGraph to copy */
+    DiGraph& operator=( const DiGraph& g );
+
+    /// tests whether two DiGraphs are identical (same nodes, same arcs)
+    /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
     bool operator==( const DiGraph& g ) const;
+
+    /// tests whether two DiGraphs are different 
+    /** @param g the DiGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
     bool operator!=( const DiGraph& g ) const;
+
+    /// @}
+
+
+    
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// insert a new arc into the directed graph
+    /** @param arc the new arc inserted (actually by copy)
+     * @warning if the arc already exists, nothing is done. In particular, no
+     * exception is raised.
+     * @throw InvalidNode if head or tail does not belong to the graph nodes */
+    virtual void insertArc( const Arc& arc );
+
+    /// insert a new arc into the directed graph
+    /** @param tail the id of the tail of the new inserted arc
+     * @param head the id of the head of the new inserted arc
+     * @warning if the arc already exists, nothing is done. In particular, no
+     * exception is raised.
+     * @throw InvalidNode if head or tail does not belong to the graph nodes */
+    virtual void insertArc( const NodeId tail,const NodeId head );
+
+    /// remove a node and its adjacent arcs from the graph
+    /** @param id the id of the node to be removed */
+    virtual void eraseNode( const NodeId id );
+
+    /// removes all the nodes and edges from the graph
+    virtual void clear();
+
+    /// to friendly display the content of the graph
     virtual const std::string toString() const;
 
-    /// @param name The graph name in the dot syntax. Default is G.
-    /// @return Returns a string describing the graph in the dot syntax
-    virtual const std::string toDot(std::string name="G") const;
+    /// to friendly display the content of the graph in the DOT syntax
+    /** @param name The graph name in the dot syntax. Default is G.
+     * @return Returns a string describing the graph in the dot syntax */
+    virtual const std::string toDot(const std::string& name="G") const;
   };
 
 

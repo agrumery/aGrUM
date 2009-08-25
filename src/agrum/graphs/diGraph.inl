@@ -26,28 +26,29 @@
 
 
 namespace gum {
-	INLINE DiGraph& DiGraph::operator=( const DiGraph& g ) {
-		if (this!=&g) {
-			NodeGraphPart::operator=(g);
-			ArcGraphPart::operator=(g);
-		}
-		return *this;
-	}
+
+  
+  INLINE DiGraph& DiGraph::operator=( const DiGraph& g ) {
+    // avoid self assigment
+    if (this!=&g) {
+      NodeGraphPart::operator=(g);
+      ArcGraphPart::operator=(g);
+    }
+    return *this;
+  }
 
   INLINE void DiGraph::insertArc( const Arc& arc ) {
     if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );
-
     if ( ! exists( arc.tail() ) ) GUM_ERROR( InvalidNode,"tail node" );
-
     ArcGraphPart::insertArc( arc );
   }
 
-  INLINE void DiGraph::insertArc( const NodeId& tail,const NodeId& head ) {
+  INLINE void DiGraph::insertArc( const NodeId tail,const NodeId head ) {
     if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-
     if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    ArcGraphPart::insertArc( tail,head );
+    // warning: use insertArc( Arc (tail,head ) ) and not insertArc( tail,head )
+    // as the later calls a virtual function insertArc
+    ArcGraphPart::insertArc( Arc (tail,head ) );
   }
 
   INLINE void DiGraph::clear() {

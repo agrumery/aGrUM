@@ -78,11 +78,11 @@ namespace gum {
   ArcGraphPart::directedPath( const NodeId n1,const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack( n1 );
+    nodeFIFO.pushBack( n2 );
 
-    // mark[node] = predecessor if visited, else mark[node] does not exist
+    // mark[node] = successor if visited, else mark[node] does not exist
     Property<NodeId>::onNodes mark;
-    mark.insert (n1,n1);
+    mark.insert (n2,n2);
     
     NodeId current;
     
@@ -90,23 +90,23 @@ namespace gum {
       current=nodeFIFO.front();
       nodeFIFO.popFront();
 
-      // check the children  //////////////////////////////////////////////
-      const ArcSet& set=children( current );
+      // check the parents  //////////////////////////////////////////////
+      const ArcSet& set = parents( current );
 
       for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        NodeId new_one=ite->head();
+        NodeId new_one=ite->tail();
 
-        if ( mark.exists(new_one) ) // if this node is already marked, stop
-          continue;
+        if ( mark.exists(new_one) ) // if this node is already marked, do not
+          continue;                 // check it again
 
         mark.insert(new_one, current);
 
-        if ( new_one == n2 ) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for ( current = n2; current != n1; current = mark[current] )
+          for ( current = n1; current != n2; current = mark[current] )
             v.push_back( current );
-          v.push_back( n1 );
+          v.push_back( n2 );
 
           return v;
         }
@@ -122,11 +122,11 @@ namespace gum {
   ArcGraphPart::directedUnorientedPath( const NodeId n1,const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack( n1 );
+    nodeFIFO.pushBack( n2 );
     
-    // mark[node] = predecessor if visited, else mark[node] does not exist
+    // mark[node] = successor if visited, else mark[node] does not exist
     Property<NodeId>::onNodes mark;
-    mark.insert ( n1,n1 );
+    mark.insert ( n2,n2 );
 
     NodeId current;
     
@@ -134,8 +134,32 @@ namespace gum {
       current=nodeFIFO.front();
       nodeFIFO.popFront();
 
+      // check the parents //////////////////////////////////////////////
+      const ArcSet& set_parent = parents( current );
+
+      for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
+        NodeId new_one=ite->tail();
+
+        if ( mark.exists ( new_one ) ) // the node has already been visited
+          continue; 
+
+        mark.insert( new_one, current );
+
+        if ( new_one==n1 ) {
+          std::vector<NodeId> v;
+
+          for ( current=n1; current!=n2; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
+      }
+
       // check the children //////////////////////////////////////////////
-      const ArcSet& set_children=children( current );
+      const ArcSet& set_children = children( current );
 
       for ( ArcSetIterator ite=set_children.begin();
             ite!=set_children.end();++ite ) {
@@ -146,12 +170,12 @@ namespace gum {
 
         mark.insert( new_one, current );
 
-        if ( new_one == n2 ) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for ( current=n2; current!=n1; current=mark[current] )
+          for ( current=n1; current!=n2; current=mark[current] )
             v.push_back( current );
-          v.push_back( n1 );
+          v.push_back( n2 );
 
           return v;
         }
@@ -159,29 +183,6 @@ namespace gum {
         nodeFIFO.pushBack( new_one );
       }
 
-      // check the parent //////////////////////////////////////////////
-      const ArcSet& set_parent=parents( current );
-
-      for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
-        NodeId new_one=ite->tail();
-
-        if ( mark.exists ( new_one ) ) // the node has already been visited
-          continue; 
-
-        mark.insert( new_one, current );
-
-        if ( new_one==n2 ) {
-          std::vector<NodeId> v;
-
-          for ( current=n2; current!=n1; current=mark[current] )
-            v.push_back( current );
-          v.push_back( n1 );
-
-          return v;
-        }
-
-        nodeFIFO.pushBack( new_one );
-      }
     }
 
     GUM_ERROR( NotFound,"no path found" );
@@ -197,7 +198,7 @@ namespace gum {
 
   // STATIC OBJECT
   // static definition of __empty_arc_set
-  ArcSet ArcGraphPart::__empty_arc_set;
+  const ArcSet ArcGraphPart::__empty_arc_set;
 
 
 } /* namespace gum */

@@ -76,7 +76,7 @@ namespace gum {
 
   class ArcGraphPart {
   private:
-    static ArcSet __empty_arc_set;
+    static const ArcSet __empty_arc_set;
   public:
     Signaler2<NodeId,NodeId> onArcAdded;  // onArcAdded(tail,head)
     Signaler2<NodeId,NodeId> onArcDeleted;  // onArcAdded(tail,head)
@@ -87,7 +87,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @param arcs_size the size of the hash table used to store all the edges
+    /** @param arcs_size the size of the hash table used to store all the arcs
      * @param arcs_resize_policy the resizing policy of this hash table*/
     explicit ArcGraphPart( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                            bool arcs_resize_policy    = true );
@@ -112,11 +112,11 @@ namespace gum {
     /** @param s the ArcGraphPart to copy */
     ArcGraphPart& operator=( const ArcGraphPart& s );
 
-    /// tests whether to ArcGraphParts contain the same arcs
+    /// tests whether two ArcGraphParts contain the same arcs
     /** @param p the ArcGraphPart that we compare with this */
     bool operator==( const ArcGraphPart& p ) const;
 
-    ///  tests whether to ArcGraphParts contain different arcs
+    ///  tests whether two ArcGraphParts contain different arcs
     /** @param p the ArcGraphPart that we compare with this */
     bool operator!=( const ArcGraphPart& p ) const;
 
@@ -140,8 +140,11 @@ namespace gum {
     /** @param tail the id of the tail of the new arc to be inserted
      * @param head the id of the head of the new arc to be inserted
      * @warning if the arc already exists, nothing is done. In particular, no
-     * exception is raised. */
-    virtual void insertArc( const NodeId tail,const NodeId head );
+     * exception is raised.
+     * @warning although this method is not virtual, it calls method
+     * insertArc( const Arc& arc ) and, as such, has a "virtual" behaviour */
+    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
+    void insertArc( const NodeId tail,const NodeId head );
 
     /// removes an arc from the ArcGraphPart
     /** @param arc the arc to be removed
@@ -153,8 +156,11 @@ namespace gum {
     /** @param tail the tail of the arc to be removed
      * @param head the head of the arc to be removed
      * @warning if the arc does not exist, nothing is done. In particular, no
-     * exception is thrown. */
-    virtual void eraseArc( const NodeId tail, const NodeId head );
+     * exception is thrown.
+     * @warning although this method is not virtual, it calls method
+     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour */
+    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
+    void eraseArc( const NodeId tail, const NodeId head );
 
     /// indicates whether a given arc exists
     /** @param arc the arc we test whether or not it belongs to the ArcGraphPart */
@@ -165,10 +171,10 @@ namespace gum {
      * @param head the head of the arc we test the existence in the ArcGraphPart */
     bool existsArc( const NodeId tail,const NodeId head ) const;
 
-    /// indicates wether the ArcGraphPart contains any node
+    /// indicates wether the ArcGraphPart contains any arc
     bool emptyArcs() const;
 
-    /// removes all the nodes from the ArcGraphPart
+    /// removes all the arcs from the ArcGraphPart
     void clearArcs();
 
     /// indicates the number of arcs stored within the ArcGraphPart
@@ -178,13 +184,13 @@ namespace gum {
     const ArcSet& arcs() const;
 
     /// returns the set of arcs ingoing to a given node
-    /** Note that the set of arcs returned may be empty if node arc within the
+    /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
      * @param id the node toward which the arcs returned are pointing */
     const ArcSet& parents( const NodeId id ) const;
 
     /// returns the set of arcs outgoing from a given node
-    /** Note that the set of arcs returned may be empty if node arc within the
+    /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is outgoing from the given node.
      * @param id the node which is the tail of the arcs returned */
     const ArcSet& children( const NodeId id ) const;
@@ -241,14 +247,16 @@ namespace gum {
     /// returns a directed path from node1 to node2 belonging to the set of arcs
     /** @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
-     * @throw NotFound */
+     * @throw NotFound exception is raised if no path can be found between the
+     * two nodes */
     const std::vector<NodeId>
     directedPath( const NodeId node1, const NodeId node2 ) const;
 
-    /// returns an unoriented (directed) path from node1 to node2 in the edge set
+    /// returns an unoriented (directed) path from node1 to node2 in the arc set
     /** @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
-     * @throw NotFound */
+     * @throw NotFound exception is raised if no path can be found between the
+     * two nodes */
     const std::vector<NodeId>
     directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
 
@@ -271,12 +279,12 @@ namespace gum {
 
 
     
-    /** @brief when the ArCGraphPart contains no arc ingoing into a given node,
+    /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
      * this function adds an empty set entry to __parents[id]
      * @param id the node whose __parents[id] is checked */
     void __checkParents( const NodeId id ) const;
 
-    /** @brief when the ArCGraphPart contains no arc outgoing from a given node,
+    /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
      * this function adds an empty set entry to __children[id]
      * @param id the node whose __children[id] is checked */
     void __checkChildren( const NodeId id ) const;

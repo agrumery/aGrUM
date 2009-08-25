@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Implementation of the gumArcGraphPart
+ * @brief Implementation of the EdgeGraphPart
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -31,22 +31,20 @@
 namespace gum {
 
 
-  template <typename ASSENT> INLINE
-  typename Property< ASSENT >::onEdges
-    EdgeGraphPart::edgesProperty( ASSENT( *f )( const Edge& ), Size size ) const {
+  template <typename VAL> INLINE
+  typename Property< VAL >::onEdges
+    EdgeGraphPart::edgesProperty( VAL( *f )( const Edge& ), Size size ) const {
     return __edges.hashMap( f,size );
   }
 
-  template <typename ASSENT> INLINE
-  typename Property< ASSENT >::onEdges
-    EdgeGraphPart::edgesProperty( const ASSENT& val, Size size ) const {
+  template <typename VAL> INLINE
+  typename Property< VAL >::onEdges
+    EdgeGraphPart::edgesProperty( const VAL& val, Size size ) const {
     return __edges.hashMap( val,size );
   }
 
-  /// a method to create a list of Assent from a node list
-  // ================================================================================
-  template <typename ASSENT> INLINE
-  List<ASSENT> EdgeGraphPart::listMapEdges( ASSENT( *f )( const Edge& ) ) const {
+  template <typename VAL> INLINE
+  List<VAL> EdgeGraphPart::listMapEdges( VAL( *f )( const Edge& ) ) const {
     return __edges.listMap( f );
   }
 

@@ -360,11 +360,18 @@ public:
 
     std::vector<gum::NodeId> path = graph.directedPath ( 1, 2);
     TS_ASSERT_EQUALS( path.size(), 4U );
+    TS_ASSERT_EQUALS( path[0], 1U );
+    TS_ASSERT_EQUALS( path[1], 3U );
+    TS_ASSERT_EQUALS( path[2], 5U );
+    TS_ASSERT_EQUALS( path[3], 2U );
     
     TS_ASSERT_THROWS( graph.directedPath ( 2, 3), gum::NotFound );
     
     std::vector<gum::NodeId> path2 = graph.directedUnorientedPath ( 2, 3);
     TS_ASSERT_EQUALS( path2.size(), 3U );
+    TS_ASSERT_EQUALS( path2[0], 2U );
+    TS_ASSERT_EQUALS( path2[1], 5U );
+    TS_ASSERT_EQUALS( path2[2], 3U );
   }
 
   // void testToDot() {

@@ -60,18 +60,18 @@ namespace gum {
   // ==============================================================================
   /// removes an edge (and its separator) from the clique graph
   // ==============================================================================
-  INLINE void CliqueGraph::eraseEdge( const NodeId &id1, const NodeId &id2 ) {
-    if ( existsEdge( id1,id2 ) ) {
-      UndiGraph::eraseEdge( id1,id2 );
-      __separators.erase( Edge( id1,id2 ) );
+  INLINE void CliqueGraph::eraseEdge( const Edge &edge ) {
+    if ( existsEdge( edge ) ) {
+      __separators.erase( edge );
+      UndiGraph::eraseEdge( edge );
     }
   }
 
   // ==============================================================================
   /// removes an edge (and its separator) from the clique graph
   // ==============================================================================
-  INLINE void CliqueGraph::eraseEdge( const Edge &edge ) {
-    eraseEdge( edge.first(), edge.second() );
+  INLINE void CliqueGraph::eraseEdge( const NodeId &id1, const NodeId &id2 ) {
+    eraseEdge( Edge (id1,id2) );
   }
 
   // ==============================================================================
@@ -104,9 +104,8 @@ namespace gum {
 
     // remove the separators
     const EdgeSet& set=neighbours( id );
-
     for ( EdgeSetIterator iter =set.begin();iter!=set.end();++iter ) {
-      __separators.erase( *iter );
+      eraseEdge( *iter );
     }
 
     // erase the clique set

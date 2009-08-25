@@ -33,333 +33,358 @@
 
 class UndiGraphTestSuite: public CxxTest::TestSuite {
 
-  private:
-    static gum::Size simpleDoubleFunction( const gum::NodeId& aNodeId ) {
-      return aNodeId*2;
-    }
+private:
+  static gum::Size simpleDoubleFunction( const gum::NodeId& aNodeId ) {
+    return aNodeId*2;
+  }
 
-    static gum::Size simpleEdgeMapFunction( const gum::Edge& anEdge ) {
-      return anEdge.first()+anEdge.second();
-    }
+  static gum::Size simpleEdgeMapFunction( const gum::Edge& anEdge ) {
+    return anEdge.first()+anEdge.second();
+  }
 
-    static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
-      throw( aNode );
-    }
+  static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
+    throw( aNode );
+  }
 
-    gum::UndiGraph buildGraph() {
-      gum::UndiGraph g;
-      id1=g.insertNode();
-      id2=g.insertNode();
-      id3=g.insertNode();
-      id4=g.insertNode();
-      id5=g.insertNode();
+  gum::UndiGraph buildGraph() {
+    gum::UndiGraph g;
+    id1=g.insertNode();
+    id2=g.insertNode();
+    id3=g.insertNode();
+    id4=g.insertNode();
+    id5=g.insertNode();
 
-      g.insertEdge( id1,id3 );
-      g.insertEdge( id3,id5 );
-      g.insertEdge( id2,id4 );
-      g.insertEdge( id1,id4 );
-      g.insertEdge( id4,id5 );
-      g.insertEdge( id5,id2 );
+    g.insertEdge( id1,id3 );
+    g.insertEdge( id3,id5 );
+    g.insertEdge( id2,id4 );
+    g.insertEdge( id1,id4 );
+    g.insertEdge( id4,id5 );
+    g.insertEdge( id5,id2 );
 
-      return g;
-    }
+    return g;
+  }
 
-  public:
+public:
+  gum::NodeId id1,id2,id3,id4,id5;
+
+  void testConstructor1() {
+    gum::UndiGraph *graph=NULL;
+    TS_GUM_ASSERT_THROWS_NOTHING(( graph = new gum::UndiGraph() ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( delete( graph ) );
+  }
+
+  void testInsert1() {
+    gum::UndiGraph graph;
     gum::NodeId id1,id2,id3,id4,id5;
 
-    void testConstructor1() {
-      gum::UndiGraph *graph=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING(( graph = new gum::UndiGraph() ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( delete( graph ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode( ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode( ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode( ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode( ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode( ) );
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,3 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 3,5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 2,4 ) );
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 4,5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 5,2 ) );
+  }
+
+  void testCopyConstructor() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::UndiGraph *copy=NULL;
+    TS_GUM_ASSERT_THROWS_NOTHING(( copy = new gum::UndiGraph( graph ) ) );
+    TS_ASSERT( graph== *copy );
+    delete( copy );
+
+    TS_GUM_ASSERT_THROWS_NOTHING( gum::UndiGraph copy2=graph );
+    TS_GUM_ASSERT_THROWS_NOTHING( gum::UndiGraph copy3( graph ) );
+  }
+
+  void testCopyOperator() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::UndiGraph g2=buildGraph();
+    g2.insertNode();
+
+    gum::UndiGraph g3;
+
+    g2=g3=graph;
+
+    TS_ASSERT_EQUALS(g2,graph);	
+    TS_ASSERT_EQUALS(g3,graph);
+
+    g2.clear();
+    g3.clearEdges();
+
+    TS_ASSERT_DIFFERS(g2,graph);
+    TS_ASSERT_DIFFERS(g3,graph);
+  }
+
+  void testEmptyNodes() {
+    gum::UndiGraph graph;
+    TS_ASSERT( graph.empty() );
+    graph=buildGraph();
+    TS_ASSERT( ! graph.empty() );
+  }
+
+  void testEmptyEdges() {
+    gum::UndiGraph graph;
+    TS_ASSERT( graph.emptyEdges() );
+    graph=buildGraph();
+    TS_ASSERT( ! graph.emptyEdges() );
+  }
+
+  void testClearNodes() {
+    gum::UndiGraph graph=buildGraph();
+    TS_ASSERT( ! graph.empty() );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.clear() );
+    TS_ASSERT( graph.empty() );
+  }
+
+  void testClearEdges() {
+    gum::UndiGraph graph=buildGraph();
+    TS_ASSERT( ! graph.emptyEdges() );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.clearEdges() );
+    TS_ASSERT( graph.emptyEdges() );
+    TS_ASSERT( ! graph.empty() );
+  }
+
+  void testAddDelNodes_2() {
+    gum::UndiGraph graph=buildGraph();
+
+    TS_ASSERT( graph.exists( id1 ) );
+    TS_ASSERT( graph.exists( id2 ) );
+    TS_ASSERT( graph.exists( id3 ) );
+    TS_ASSERT( graph.exists( id4 ) );
+    TS_ASSERT( graph.exists( id5 ) );
+    TS_ASSERT( ! graph.exists( id5+id4+id3+id2+id1 ) );
+
+    TS_ASSERT( graph.existsEdge( id3,id5 ) );
+    TS_ASSERT( graph.existsEdge( id5,id3 ) );
+    TS_ASSERT( ! graph.existsEdge( id1,id1 ) );
+
+    gum::Size nodeCount   = graph.size();
+    gum::Size edgeCount   = graph.sizeEdges();
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
+
+    TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
+    TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 2 );
+
+    TS_ASSERT( ! graph.exists( id2 ) );
+    TS_ASSERT( ! graph.existsEdge( id2,id4 ) );
+    TS_ASSERT( ! graph.existsEdge( id5,id2 ) );
+    TS_ASSERT( ! graph.existsEdge( id2,id5 ) );
+  }
+
+  void testRemoveNodesFunky_1() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::Size nodeCount = graph.size();
+    gum::Size edgeCount = graph.sizeEdges();
+
+    TS_ASSERT_EQUALS( nodeCount, (gum::Size)5 );
+    TS_ASSERT_EQUALS( edgeCount, (gum::Size)6 );
+
+    for ( int i = 0; i < 10; i++ ) {
+      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
     }
 
-    void testInsert1() {
-      gum::UndiGraph graph;
-      gum::NodeId id1,id2,id3,id4,id5;
+    TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode( ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode( ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode( ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode( ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode( ) );
+    TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 3 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,3 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 3,5 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 2,4 ) );
+    TS_ASSERT( ! graph.existsEdge( 3,5 ) );
+    TS_ASSERT( ! graph.existsEdge( 4,5 ) );
+    TS_ASSERT( ! graph.existsEdge( 5,2 ) );
+  }
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 4,5 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 5,2 ) );
+  void testAddDelEdges_1() {
+    gum::UndiGraph graph=buildGraph();
+
+    TS_ASSERT( graph.existsEdge( 1,3 ) );
+    TS_ASSERT( graph.existsEdge( 3,5 ) );
+    TS_ASSERT( graph.existsEdge( 2,4 ) );
+
+    gum::Size nodeCount   = graph.size();
+    gum::Size edgeCount   = graph.sizeEdges();
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( 5,3 ) );
+
+    TS_ASSERT_EQUALS( nodeCount, graph.size() );
+    TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
+
+    TS_ASSERT( ! graph.existsEdge( 3,5 ) );
+  }
+
+  void testAddDelEdges_2() {
+    gum::UndiGraph graph=buildGraph();
+
+    TS_ASSERT( graph.existsEdge( id1, id3 ) );
+    TS_ASSERT( graph.existsEdge( id3, id5 ) );
+    TS_ASSERT( graph.existsEdge( id2, id4 ) );
+
+    gum::Size nodeCount   = graph.size();
+    gum::Size edgeCount   = graph.sizeEdges();
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( id3, id5 ) );
+
+    TS_ASSERT_EQUALS( nodeCount, graph.size() );
+    TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
+
+    TS_ASSERT( ! graph.existsEdge( id3, id5 ) );
+  }
+
+  void testGetNodes() {
+    gum::UndiGraph graph=buildGraph();
+
+    const gum::NodeSet nodeset = graph.nodes();
+    TS_ASSERT_EQUALS( nodeset.size(), graph.size() );
+    gum::Size nodeCount = graph.size();
+
+    for ( gum::NodeSet::iterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+      graph.eraseNode( *iter );
     }
 
-    void testCopyConstructor() {
-      gum::UndiGraph graph=buildGraph();
+    TS_ASSERT( graph.empty() );
 
-      gum::UndiGraph *copy=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING(( copy = new gum::UndiGraph( graph ) ) );
-      TS_ASSERT( graph== *copy );
-      delete( copy );
+    TS_ASSERT_EQUALS( nodeCount, nodeset.size() );
+  }
 
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::UndiGraph copy2=graph );
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::UndiGraph copy3( graph ) );
+  void testGetEdges() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::EdgeSet edgeset = graph.edges();
+    TS_ASSERT_EQUALS( edgeset.size(), graph.sizeEdges() );
+    gum::Size edgeCount = graph.sizeEdges();
+
+    for ( gum::EdgeSet::iterator iter = edgeset.begin(); iter != edgeset.end(); ++iter ) {
+      graph.eraseEdge( *iter );
     }
 
-		void testCopyOperator() {
-      gum::UndiGraph graph=buildGraph();
+    TS_ASSERT( graph.emptyEdges() );
 
-			gum::UndiGraph g2=buildGraph();
-			g2.insertNode();
+    TS_ASSERT_EQUALS( edgeCount, edgeset.size() );
+  }
 
-			gum::UndiGraph g3;
 
-			g2=g3=graph;
+  void testNodeListMapNodes() {
+    gum::UndiGraph graph=buildGraph();
 
-			TS_ASSERT_EQUALS(g2,graph);	
-			TS_ASSERT_EQUALS(g3,graph);
+    gum::List<gum::Size> list = graph.listMapNodes( &simpleDoubleFunction );
+    TS_ASSERT_EQUALS( list.size(), graph.size() );
 
-			g2.clear();
-			g3.clearEdges();
+    gum::Size s=0;
 
-			TS_ASSERT_DIFFERS(g2,graph);
-			TS_ASSERT_DIFFERS(g3,graph);
-		}
-
-    void testEmptyNodes() {
-      gum::UndiGraph graph;
-      TS_ASSERT( graph.empty() );
-      graph=buildGraph();
-      TS_ASSERT( ! graph.empty() );
+    for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+      s+=*iter;
     }
 
-    void testEmptyEdges() {
-      gum::UndiGraph graph;
-      TS_ASSERT( graph.emptyEdges() );
-      graph=buildGraph();
-      TS_ASSERT( ! graph.emptyEdges() );
+    TS_ASSERT_EQUALS( s,2*( id1+id2+id3+id4+id5 ) );
+  }
+
+  void testTwistedNodeListMapNodes() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::List<gum::Size> list;
+    TS_ASSERT_THROWS_ANYTHING( list=graph.listMapNodes( &twistedMapFunction ) );
+
+    TS_ASSERT_EQUALS( list.size(),(gum::Size) 0 );
+  }
+
+  void testHashMapNodes() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
+    TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
+
+    gum::Size sk=0;
+    gum::Size sv=0;
+
+    for (
+         gum::Property<gum::Size>::onNodes::iterator iter = hashmap.begin();
+         iter != hashmap.end();
+         ++iter
+         ) {
+      sk+=iter.key();
+      sv+=*iter;
     }
 
-    void testClearNodes() {
-      gum::UndiGraph graph=buildGraph();
-      TS_ASSERT( ! graph.empty() );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.clear() );
-      TS_ASSERT( graph.empty() );
+    TS_ASSERT_EQUALS( sk*2,sv );
+  }
+
+  void testTwistedHashMapNodes() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::Property<gum::Size>::onNodes hashmap;
+    TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
+
+    TS_ASSERT_EQUALS( hashmap.size(), (gum::Size)0 );
+  }
+
+  void testListMapEdges() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::List<gum::Size> list = graph.listMapEdges( &simpleEdgeMapFunction );
+    TS_ASSERT_EQUALS( list.size(), graph.sizeEdges() );
+
+    gum::Size s=0;
+
+    for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+      s+=*iter;
     }
 
-    void testClearEdges() {
-      gum::UndiGraph graph=buildGraph();
-      TS_ASSERT( ! graph.emptyEdges() );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.clearEdges() );
-      TS_ASSERT( graph.emptyEdges() );
-      TS_ASSERT( ! graph.empty() );
+    TS_ASSERT_EQUALS( s, (gum::Size)(1+1+3+4+2+5+3+4+5+5+4+2) );
+  }
+
+  void testHashMapEdges() {
+    gum::UndiGraph graph=buildGraph();
+
+    gum::Property<gum::Size>::onEdges hashmap = graph.edgesProperty( &simpleEdgeMapFunction );
+    TS_ASSERT_EQUALS( hashmap.size(), graph.sizeEdges() );
+
+    gum::Size sk=0;
+    gum::Size sv=0;
+
+    for (
+         gum::Property<gum::Size>::onEdges::iterator iter = hashmap.begin();
+         iter != hashmap.end();
+         ++iter
+         ) {
+      sv+=*iter;
+      sk+=iter.key().first()+iter.key().second();
     }
 
-    void testAddDelNodes_2() {
-      gum::UndiGraph graph=buildGraph();
+    TS_ASSERT_EQUALS( sk,sv );
+  }
 
-      TS_ASSERT( graph.exists( id1 ) );
-      TS_ASSERT( graph.exists( id2 ) );
-      TS_ASSERT( graph.exists( id3 ) );
-      TS_ASSERT( graph.exists( id4 ) );
-      TS_ASSERT( graph.exists( id5 ) );
-      TS_ASSERT( ! graph.exists( id5+id4+id3+id2+id1 ) );
+  void testUndirectedPaths() {
+    gum::UndiGraph graph=buildGraph();
+    gum::NodeId id6 = graph.insertNode();
+    gum::NodeId id7 = graph.insertNode();
+    graph.insertEdge( id6,id7 );
+    
+    std::vector<gum::NodeId> path = graph.undirectedPath ( 1, 2);
+    TS_ASSERT_EQUALS( path.size(), 3U );
+    TS_ASSERT_EQUALS( path[0], 1U );
+    TS_ASSERT_EQUALS( path[1], 4U );
+    TS_ASSERT_EQUALS( path[2], 2U );
+    
+    std::vector<gum::NodeId> path2 = graph.undirectedPath ( 2, 3);
+    TS_ASSERT_EQUALS( path2.size(), 3U );
+    TS_ASSERT_EQUALS( path2[0], 2U );
+    TS_ASSERT_EQUALS( path2[1], 5U );
+    TS_ASSERT_EQUALS( path2[2], 3U );
 
-      TS_ASSERT( graph.existsEdge( id3,id5 ) );
-      TS_ASSERT( graph.existsEdge( id5,id3 ) );
-      TS_ASSERT( ! graph.existsEdge( id1,id1 ) );
-
-      gum::Size nodeCount   = graph.size();
-      gum::Size edgeCount   = graph.sizeEdges();
-
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
-      TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 2 );
-
-      TS_ASSERT( ! graph.exists( id2 ) );
-      TS_ASSERT( ! graph.existsEdge( id2,id4 ) );
-      TS_ASSERT( ! graph.existsEdge( id5,id2 ) );
-      TS_ASSERT( ! graph.existsEdge( id2,id5 ) );
-    }
-
-    void testRemoveNodesFunky_1() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::Size nodeCount = graph.size();
-      gum::Size edgeCount = graph.sizeEdges();
-
-      TS_ASSERT_EQUALS( nodeCount, (gum::Size)5 );
-      TS_ASSERT_EQUALS( edgeCount, (gum::Size)6 );
-
-      for ( int i = 0; i < 10; i++ ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
-      }
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
-
-      TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 3 );
-
-      TS_ASSERT( ! graph.existsEdge( 3,5 ) );
-      TS_ASSERT( ! graph.existsEdge( 4,5 ) );
-      TS_ASSERT( ! graph.existsEdge( 5,2 ) );
-    }
-
-    void testAddDelEdges_1() {
-      gum::UndiGraph graph=buildGraph();
-
-      TS_ASSERT( graph.existsEdge( 1,3 ) );
-      TS_ASSERT( graph.existsEdge( 3,5 ) );
-      TS_ASSERT( graph.existsEdge( 2,4 ) );
-
-      gum::Size nodeCount   = graph.size();
-      gum::Size edgeCount   = graph.sizeEdges();
-
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( 5,3 ) );
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() );
-      TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
-
-      TS_ASSERT( ! graph.existsEdge( 3,5 ) );
-    }
-
-    void testAddDelEdges_2() {
-      gum::UndiGraph graph=buildGraph();
-
-      TS_ASSERT( graph.existsEdge( id1, id3 ) );
-      TS_ASSERT( graph.existsEdge( id3, id5 ) );
-      TS_ASSERT( graph.existsEdge( id2, id4 ) );
-
-      gum::Size nodeCount   = graph.size();
-      gum::Size edgeCount   = graph.sizeEdges();
-
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( id3, id5 ) );
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() );
-      TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
-
-      TS_ASSERT( ! graph.existsEdge( id3, id5 ) );
-    }
-
-    void testGetNodes() {
-      gum::UndiGraph graph=buildGraph();
-
-      const gum::NodeSet nodeset = graph.nodes();
-      TS_ASSERT_EQUALS( nodeset.size(), graph.size() );
-      gum::Size nodeCount = graph.size();
-
-      for ( gum::NodeSet::iterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
-        graph.eraseNode( *iter );
-      }
-
-      TS_ASSERT( graph.empty() );
-
-      TS_ASSERT_EQUALS( nodeCount, nodeset.size() );
-    }
-
-    void testGetEdges() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::EdgeSet edgeset = graph.edges();
-      TS_ASSERT_EQUALS( edgeset.size(), graph.sizeEdges() );
-      gum::Size edgeCount = graph.sizeEdges();
-
-      for ( gum::EdgeSet::iterator iter = edgeset.begin(); iter != edgeset.end(); ++iter ) {
-        graph.eraseEdge( *iter );
-      }
-
-      TS_ASSERT( graph.emptyEdges() );
-
-      TS_ASSERT_EQUALS( edgeCount, edgeset.size() );
-    }
-
-
-    void testNodeListMapNodes() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::List<gum::Size> list = graph.listMapNodes( &simpleDoubleFunction );
-      TS_ASSERT_EQUALS( list.size(), graph.size() );
-
-      gum::Size s=0;
-
-      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
-        s+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( s,2*( id1+id2+id3+id4+id5 ) );
-    }
-
-    void testTwistedNodeListMapNodes() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::List<gum::Size> list;
-      TS_ASSERT_THROWS_ANYTHING( list=graph.listMapNodes( &twistedMapFunction ) );
-
-      TS_ASSERT_EQUALS( list.size(),(gum::Size) 0 );
-    }
-
-    void testHashMapNodes() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
-      TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
-
-      gum::Size sk=0;
-      gum::Size sv=0;
-
-      for (
-        gum::Property<gum::Size>::onNodes::iterator iter = hashmap.begin();
-        iter != hashmap.end();
-        ++iter
-      ) {
-        sk+=iter.key();
-        sv+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( sk*2,sv );
-    }
-
-    void testTwistedHashMapNodes() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::Property<gum::Size>::onNodes hashmap;
-      TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
-
-      TS_ASSERT_EQUALS( hashmap.size(), (gum::Size)0 );
-    }
-
-    void testListMapEdges() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::List<gum::Size> list = graph.listMapEdges( &simpleEdgeMapFunction );
-      TS_ASSERT_EQUALS( list.size(), graph.sizeEdges() );
-
-      gum::Size s=0;
-
-      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
-        s+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( s, (gum::Size)(1+1+3+4+2+5+3+4+5+5+4+2) );
-    }
-
-    void testHashMapEdges() {
-      gum::UndiGraph graph=buildGraph();
-
-      gum::Property<gum::Size>::onEdges hashmap = graph.edgesProperty( &simpleEdgeMapFunction );
-      TS_ASSERT_EQUALS( hashmap.size(), graph.sizeEdges() );
-
-      gum::Size sk=0;
-      gum::Size sv=0;
-
-      for (
-        gum::Property<gum::Size>::onEdges::iterator iter = hashmap.begin();
-        iter != hashmap.end();
-        ++iter
-      ) {
-        sv+=*iter;
-        sk+=iter.key().first()+iter.key().second();
-      }
-
-      TS_ASSERT_EQUALS( sk,sv );
-    }
+    std::vector<gum::NodeId> path3 = graph.undirectedPath ( 6, 7);
+    TS_ASSERT_EQUALS( path3.size(), 2U );
+    
+    TS_ASSERT_THROWS( graph.undirectedPath ( 2, 6), gum::NotFound );
+    
+  }
 };
 
