@@ -47,7 +47,7 @@ file(GLOB AGRUM_TESTS
       CliqueGraphTestSuite.h
       CompareInferencesTestSuite.h
       CrossMultiDimTestSuite.h
-      DAGTestSuite.h
+       DAGTestSuite.h
   #    DatabaseTestSuite.h  # <------------------------- Memory leak : faire qqchose pour XML with missing value
   #    DefaultTriangulationTestSuite.h # <---- ERROR
       DiGraphTestSuite.h

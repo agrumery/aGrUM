@@ -105,10 +105,11 @@ namespace gum {
     // ASSUMING tail and head exists in __parents anf __children
     // (if not, it is an error)
     if ( existsArc( arc ) ) {
-      __parents[arc.head()].erase( arc );
-      __children[arc.tail()].erase( arc );
-      __arcs.erase( arc );
-      GUM_EMIT2( onArcDeleted,arc.tail(),arc.head() );
+			Arc arc1=arc;
+      __parents[arc.head()].erase( arc1 );
+      __children[arc.tail()].erase( arc1 );
+      __arcs.erase( arc1 );
+      GUM_EMIT2( onArcDeleted,arc1.tail(),arc1.head() );
     }
   }
 
