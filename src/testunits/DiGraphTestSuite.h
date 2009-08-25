@@ -75,7 +75,11 @@ public:
 
   void testInsert1() {
     gum::DiGraph graph;
-    gum::NodeId id1,id2,id3,id4,id5;
+    gum::NodeId id1 = 0;
+    gum::NodeId id2 = 0;
+    gum::NodeId id3 = 0;
+    gum::NodeId id4 = 0;
+    gum::NodeId id5 = 0;
 
     TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
     TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );

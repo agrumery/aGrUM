@@ -187,13 +187,13 @@ namespace gum {
   // ==============================================================================
   // @name Various methods
   // ==============================================================================
-      
+
   // Used by operator<< for displaying the content of CPF.
-  // 
+  //
   // The result differs from the one of a MultiDimDecorator since
   // conditioned variables will be places at the left and conditioning variables
   // at the right.
-  // 
+  //
   // @return Returns a string with the content of this CPF.
   template <typename T_DATA> INLINE
   const std::string
@@ -221,12 +221,7 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* CPF<T_DATA>::newFactory() const {
-    return new Potential<T_DATA>(
-				 static_cast<MultiDimImplementation<T_DATA>*>(
-									      this->getContent()->newFactory()
-									      )
-				 );
+    return new CPF<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
   }
-      
 
 } /* namespace gum */
