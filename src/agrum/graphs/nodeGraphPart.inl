@@ -24,97 +24,124 @@
  *
  */
 
-namespace gum {
+namespace gum
+{
 
 
-	INLINE NodeGraphPart& NodeGraphPart::operator=(const NodeGraphPart& p) {	
-    if ( this != &p ) {
+	INLINE NodeGraphPart& NodeGraphPart::operator= ( const NodeGraphPart& p )
+	{
+		if ( this != &p )
+		{
 			__nodes=p.__nodes;
 			__max=p.__max;
 		}
 		return *this;
 	}
 
-  INLINE  void NodeGraphPart::insertNode( const NodeId id ) {
-    if ( __max < id ) {
+	INLINE  void NodeGraphPart::insertNode ( const NodeId id )
+	{
+		if ( __max < id )
+		{
 			__max = id;
 		}
-		else {
-			if (exists(id)) GUM_ERROR(DuplicateElement,"This id is already used");
+		else
+		{
+			if ( exists ( id ) ) GUM_ERROR ( DuplicateElement,"This id is already used" );
 		}
 
-    __nodes.insert( id );
-    GUM_EMIT1( onNodeAdded,id );
-  }
+		__nodes.insert ( id );
+		GUM_EMIT1 ( onNodeAdded,id );
+	}
 
-  INLINE NodeId NodeGraphPart::__nextNodeId() {
-    return ( ++__max );
-  }
+	INLINE NodeId NodeGraphPart::__nextNodeId()
+	{
+		return ( ++__max );
+	}
 
-	INLINE NodeId NodeGraphPart::nextNodeId() const {
+	INLINE NodeId NodeGraphPart::nextNodeId() const
+	{
 		return 1+__max;
 	}
 
-  INLINE  NodeId NodeGraphPart::insertNode() {
-    // only one tmp
-    NodeId newNode=__nextNodeId();
-    __nodes.insert( newNode );
-    GUM_EMIT1( onNodeAdded,newNode );
+	INLINE  NodeId NodeGraphPart::insertNode()
+	{
+		// only one tmp
+		NodeId newNode=__nextNodeId();
+		__nodes.insert ( newNode );
+		GUM_EMIT1 ( onNodeAdded,newNode );
 
-    return newNode;
-  }
+		return newNode;
+	}
 
-  INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
-    __nodes.erase( node );
-    GUM_EMIT1( onNodeDeleted,node );
-  }
+	INLINE void NodeGraphPart::eraseNode ( const NodeId node )
+	{
+		__nodes.erase ( node );
+		GUM_EMIT1 ( onNodeDeleted,node );
+	}
 
-  INLINE bool NodeGraphPart::empty() const {
-    return __nodes.empty();
-  }
+	INLINE bool NodeGraphPart::empty() const
+	{
+		return __nodes.empty();
+	}
 
-  INLINE bool NodeGraphPart::exists( const NodeId node ) const {
-    return __nodes.contains( node );
-  }
+	INLINE bool NodeGraphPart::exists ( const NodeId node ) const
+	{
+		return __nodes.contains ( node );
+	}
 
-  INLINE Size NodeGraphPart::size( ) const {
-    return __nodes.size();
-  }
+	INLINE Size NodeGraphPart::size( ) const
+	{
+		return __nodes.size();
+	}
 
-  INLINE NodeId NodeGraphPart::maxId( ) const {
-    return __max;
-  }
+	INLINE NodeId NodeGraphPart::maxId( ) const
+	{
+		return __max;
+	}
 
-  INLINE void NodeGraphPart::clear() {
-    NodeSet tmp=__nodes;
-    __nodes.clear();
+	INLINE void NodeGraphPart::clear()
+	{
+		if ( onNodeDeleted.hasListener() )
+		{
+			NodeSet tmp=__nodes;
+			__nodes.clear();
 
-    for ( NodeSet::iterator n=tmp.begin();n!=tmp.end();++n ) {
-      GUM_EMIT1( onNodeDeleted,*n );
-    }
+			for ( NodeSet::iterator n=tmp.begin();n!=tmp.end();++n )
+			{
+				GUM_EMIT1 ( onNodeDeleted,*n );
+			}
+		}
+		else
+		{
+			__nodes.clear();
+		}
+		__max = 0;
+	}
 
-    __max = 0;
-  }
+	INLINE const NodeSetIterator NodeGraphPart::beginNodes() const
+	{
+		return __nodes.begin();
+	}
 
-  INLINE const NodeSetIterator NodeGraphPart::beginNodes() const {
-    return __nodes.begin();
-  }
+	INLINE const NodeSetIterator& NodeGraphPart::endNodes() const
+	{
+		return __nodes.end();
+	}
 
-  INLINE const NodeSetIterator& NodeGraphPart::endNodes() const {
-    return __nodes.end();
-  }
+	INLINE const NodeSet& NodeGraphPart::nodes() const
+	{
+		return __nodes;
+	}
 
-  INLINE const NodeSet& NodeGraphPart::nodes() const {
-    return __nodes;
-  }
+	INLINE bool NodeGraphPart::operator== ( const NodeGraphPart& p ) const
+	{
+		return __nodes==p.__nodes;
+	}
 
-  INLINE bool NodeGraphPart::operator==( const NodeGraphPart& p ) const {
-    return __nodes==p.__nodes;
-  }
-
-  INLINE bool NodeGraphPart::operator!=( const NodeGraphPart& p ) const {
-    return __nodes!=p.__nodes;
-  }
+	INLINE bool NodeGraphPart::operator!= ( const NodeGraphPart& p ) const
+	{
+		return __nodes!=p.__nodes;
+	}
 
 
 } /* namespace gum */

@@ -56,7 +56,7 @@ file(GLOB AGRUM_TESTS
       EdgeTestSuite.h
       EliminationSequenceTriangulationTestSuite.h
       GibbsInferenceBNTestSuite.h
-      GraphListenerTestSuite.h
+       GraphListenerTestSuite.h
       HashTableTestSuite.h
       InstantiationTestSuite.h
   #    LabelizedVariableListenerTestSuite.h

@@ -45,6 +45,7 @@ namespace gum {
       public:
         virtual void detachFromTarget( Listener* target ) = 0;
         virtual void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) = 0;
+				virtual bool hasListener(void) = 0;
     };
   } //namespace sig
 

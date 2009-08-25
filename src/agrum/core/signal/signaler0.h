@@ -67,6 +67,10 @@ namespace gum {
 
           _connectors.clear();
         }
+				
+				bool hasListener(void) {
+					return (!( _connectors.empty()));
+				}
 
         void detach( Listener* target ) {
           for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )

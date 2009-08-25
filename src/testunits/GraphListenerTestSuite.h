@@ -409,12 +409,30 @@ public:
 // g2 has 1 listener
 // c1 listens to 1 graph
 // c2 listens to 2 graphs
+        
+        TS_ASSERT(! g1.onNodeAdded.hasListener());
         GUM_CONNECT( g1,onNodeAdded,c1,Counter::whenNodeAdded );
+        TS_ASSERT(g1.onNodeAdded.hasListener());        
+        
+        TS_ASSERT(! g1.onNodeDeleted.hasListener());
         GUM_CONNECT( g1,onNodeDeleted,c1,Counter::whenNodeDeleted );
+        TS_ASSERT(g1.onNodeDeleted.hasListener());        
+        
+        TS_ASSERT(! g1.onEdgeAdded.hasListener());
         GUM_CONNECT( g1,onEdgeAdded,c1,Counter::whenEdgeAdded );
+        TS_ASSERT(g1.onEdgeAdded.hasListener());        
+        
+        TS_ASSERT(! g1.onEdgeDeleted.hasListener());
         GUM_CONNECT( g1,onEdgeDeleted,c1,Counter::whenEdgeDeleted );
+        TS_ASSERT(g1.onEdgeDeleted.hasListener());        
+        
+        TS_ASSERT(! g1.onArcAdded.hasListener());
         GUM_CONNECT( g1,onArcAdded,c1,Counter::whenArcAdded );
+        TS_ASSERT(g1.onArcAdded.hasListener());        
+        
+        TS_ASSERT(! g1.onArcDeleted.hasListener());
         GUM_CONNECT( g1,onArcDeleted,c1,Counter::whenArcDeleted );
+        TS_ASSERT(g1.onArcDeleted.hasListener());        
 
         GUM_CONNECT( g1,onNodeAdded,c2,Counter::whenNodeAdded );
         GUM_CONNECT( g1,onNodeDeleted,c2,Counter::whenNodeDeleted );
