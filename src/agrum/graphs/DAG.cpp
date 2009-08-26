@@ -1,24 +1,24 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /** @file
- * @brief Source implementation of Base classes for oriented graphs
+ * @brief Source implementation of Base classes for directed acyclic graphs
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
@@ -54,20 +54,22 @@ namespace gum {
 
   /// we prefer to re-implement this (instead of using ArcGraphPart::directedPath)
   /// for optimisation
-  /// @warning : this version is optimized for the searc of a directedPath
-  /// in a dag !
-  bool DAG::hasDirectedPath( const NodeId& from, const NodeId& to ) {
+  /// @warning : this version is optimized for the search of a directedPath
+  /// in a DAG !
+  bool DAG::__hasDirectedPath( const NodeId from, const NodeId to ) {
+    if ( ! exists( from ) ) return false;
     if ( from==to ) return true;
 
-    // not recursive version ...
-    List<NodeId> nodeFile;
-
-    nodeFile.pushBack( from );
+    // not recursive version => use a FIFO for simulating the recursion
+    List<NodeId> nodeFIFO;
+    nodeFIFO.pushBack( from );
 
     NodeId new_one;
 
-    while ( ! nodeFile.empty() ) {
-      new_one=nodeFile.front();nodeFile.popFront();
+    while ( ! nodeFIFO.empty() ) {
+      new_one=nodeFIFO.front();
+      nodeFIFO.popFront();
+
       const ArcSet& set=children( new_one );
 
       for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
@@ -75,7 +77,7 @@ namespace gum {
 
         if ( new_one==to ) return true;
 
-        nodeFile.pushBack( new_one );
+        nodeFIFO.pushBack( new_one );
       }
     }
 

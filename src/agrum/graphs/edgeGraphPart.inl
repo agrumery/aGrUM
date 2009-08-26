@@ -105,6 +105,16 @@ namespace gum {
     }
   }
 
+  INLINE void EdgeGraphPart::unvirtualizedEraseNeighbours( const NodeId id ) {
+    if ( __neighbours.exists( id ) ) {
+      const EdgeSet& set=neighbours( id );
+      
+      for ( EdgeSetIterator iter=set.begin();iter!=set.end();++iter ) {
+        EdgeGraphPart::eraseEdge( *iter );
+      }
+    }
+  }
+
   INLINE void EdgeGraphPart::clearEdges() {
     if ( onEdgeDeleted.hasListener() ) {
       EdgeSet tmp=__edges;

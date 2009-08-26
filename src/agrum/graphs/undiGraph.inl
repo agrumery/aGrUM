@@ -28,28 +28,30 @@
 namespace gum {
 
 	
-	INLINE UndiGraph& UndiGraph::operator=(const UndiGraph& g ) {
-		if (this!=&g) {
-			NodeGraphPart::operator=(g);
-			EdgeGraphPart::operator=(g);
-		}
-		return *this;
-	}
-
-  INLINE void UndiGraph::insertEdge( const NodeId& first,const NodeId& second ) {
+  INLINE void UndiGraph::insertEdge( const NodeId first,const NodeId second ) {
     if ( ! exists( first ) ) GUM_ERROR( InvalidNode,"first node" );
     if ( ! exists( second ) ) GUM_ERROR( InvalidNode,"second node" );
-
     EdgeGraphPart::insertEdge( second,first );
   }
 
   INLINE void UndiGraph::clear() {
-    clearEdges();
-    NodeGraphPart::clear();
+    EdgeGraphPart::clearEdges();
+    NodeGraphPart::clearNodes();
+  }
+
+  INLINE UndiGraph& UndiGraph::operator=(const UndiGraph& g ) {
+    if (this!=&g) {
+      UndiGraph::clear ();
+      NodeGraphPart::operator=(g);
+      EdgeGraphPart::operator=(g);
+    }
+    return *this;
   }
 
   INLINE void UndiGraph::eraseNode( const NodeId id ) {
-    eraseNeighbours( id );
+    // warning: to remove the edges adjacent to id, use the unvirtualized versions
+    // of edge removals
+    EdgeGraphPart::unvirtualizedEraseNeighbours( id );
     NodeGraphPart::eraseNode( id );
   }
 

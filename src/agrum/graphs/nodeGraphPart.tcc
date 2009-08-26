@@ -59,8 +59,6 @@ namespace gum {
         GUM_ERROR( DuplicateElement,"in the graph" );
 
       insertNode(new_one);
-
-      if ( new_one>__max ) __max=new_one;
     }
   }
 

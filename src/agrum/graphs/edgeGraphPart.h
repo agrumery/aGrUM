@@ -176,6 +176,10 @@ namespace gum {
      * eraseEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
     void eraseNeighbours( const NodeId id );
    
+    /// same function as eraseNeighbours but without any virtual call to an erase
+    /** @param id the node whose ingoing arcs will be removed */
+    void unvirtualizedEraseNeighbours( const NodeId id );
+
     /// returns an iterator to parse the set of edges of the EdgeGraphPart
     const EdgeSetIterator beginEdges() const;
 

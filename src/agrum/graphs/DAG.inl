@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation of Base classes for dag
+ * @brief Inline implementation of Base classes for directed acylic graphs
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
@@ -28,20 +28,20 @@
 namespace gum {
 
   INLINE DAG& DAG::operator=( const DAG& g ) {
-		if (this!=&g) {
-			DiGraph::operator=(g);
-		}
-		return *this;
-	}
+    // avoid self assignment
+    if (this!=&g) {
+      DiGraph::operator=(g);
+    }
+    return *this;
+  }
 
-  INLINE void DAG::insertArc( const NodeId& tail,const NodeId& head ) {
-    if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-    if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( head, tail ) ) {
+  INLINE void DAG::insertArc( const NodeId tail,const NodeId head ) {
+    if ( __hasDirectedPath( head, tail ) ) {
       GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
     }
 
+    // checking whether tail and head do belong to the graph is performed
+    // within class DiGraph
     DiGraph::insertArc( tail,head );
   }
 

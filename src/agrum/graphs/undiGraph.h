@@ -36,7 +36,7 @@ namespace gum {
 
 
   /* =========================================================================== */
-  /* ===     BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     === */
+  /* ===          BASE CLASS FOR MANIPULATING ALL UNDIRECTED GRAPHS          === */
   /* =========================================================================== */
   /** @class UndiGraph
    * @brief Base class for undirected graphs
@@ -49,12 +49,66 @@ namespace gum {
    *
    * @par Usage example:
    * @code
+   * // creating empty graphs
+   * UndiGraph g1,g2;
    *
+   * // adding nodes and edges to g1
+   * NodeId i1=g1.insertNode();
+   * NodeId i2=g1.insertNode();
+   * NodeId i3=g1.insertNode();
+   * g1.insertEdge( i1,i2 );
+   * g1.insertEdge( i1,i3 );
+   * g1.insertEdge( i2,i3 );
+   *
+   * //throw an InvalidNode
+   * // g1.insertEdge( i1+i2+i3,i1 );
+   *
+   * // copying graphs
+   * UndiGraph g3 = g1;
+   * g2 = g1;
+   * UndiGraph g4=g1;
+   *
+   * // check if a graph has no node
+   * if ( g1.empty() ) cerr << "graph g1 is empty" << endl;
+   *
+   * // remove all the nodes (as well as their adjacent edges)
+   * g1.clear();
+   *
+   * // remove some edge
+   * g4.eraseEdge( Edge ( i1,i3 ) );
+   *
+   * // remove node
+   * g2.eraseNode( i2 );
+   *
+   * // parse a graph
+   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
+   *       iter != g3.endNodes(); ++iter )
+   *   cerr << *iter << endl;
+   *
+   * for ( EdgeGraphPart::iterator iter = g3.beginEdges();
+   *       iter != g3.endEdges(); ++iter )
+   *   cerr << *iter << endl;
+   *
+   * const EdgeSet& a=g3.neighbours( 3 );
+   *
+   * for ( EdgeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   *   cerr << "  -  "<<*iter;
+   *
+   * cerr<<endl;
+   *
+   * // remove all the edges that are adjacent to a given node
+   * g3.eraseNeighbours( 2 );
    * @endcode
    */
   /* =========================================================================== */
   class UndiGraph : public virtual NodeGraphPart,public EdgeGraphPart {
   public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// default constructor
     /** @param nodes_size the size of the hash table used to store all the nodes
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param edges_size the size of the hash table used to store all the edges
@@ -63,21 +117,72 @@ namespace gum {
                         bool nodes_resize_policy    = true,
                         Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
                         bool edges_resize_policy    = true );
-    UndiGraph( const UndiGraph& g );
-	UndiGraph& operator=(const UndiGraph& g );
-    virtual ~UndiGraph();
-    
-    /// @throw InvalidNode if head or tail does not belong to the graph nodes
-    virtual void insertEdge( const NodeId& first,const NodeId& second );
-    virtual void eraseNode( const NodeId id );
-    virtual void clear();
 
+    /// copy constructor
+    /** @param g the UndiGraph to copy */
+    UndiGraph( const UndiGraph& g );
+    
+    /// destructor
+    virtual ~UndiGraph();
+
+    /// @}
+
+    
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// copy operator
+    /** @param g the DiGraph to copy */
+    UndiGraph& operator=(const UndiGraph& g );
+
+    /// tests whether two UndiGraphs are identical (same nodes, same edges)
+    /** @param g the UndiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
     bool operator==( const UndiGraph& g ) const;
+
+    /// tests whether two UndiGraphs are different 
+    /** @param g the UndiGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
     bool operator!=( const UndiGraph& g ) const;
+
+    /// @}
+
+    
+        
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// insert a new edge into the undirected graph
+    /** The order in which the extremal nodes are specified is not important.
+     * @param first the id of one extremal node of the new inserted edge
+     * @param second the id of the other extremal node of the new inserted edge
+     * @warning if the edge already exists, nothing is done. In particular, no
+     * exception is raised.
+     * @throw InvalidNode if first and/or second do not belong to the
+     * graph nodes */
+    virtual void insertEdge( const NodeId first,const NodeId second );
+
+    /// remove a node and its adjacent edges from the graph
+    /** @param id the id of the node to be removed
+     * @warning if the node does not exist, nothing is done. In particular, no
+     * exception is raised.*/
+    virtual void eraseNode( const NodeId id );
+    
+    /// removes all the nodes and edges from the graph
+    virtual void clear();
+
+    /// to friendly display the content of the graph
+    virtual const std::string toString() const;
+
+    /// checks whether the graph contains cycles
     bool hasUndirectedCycle() const;
 
-    virtual const std::string toString() const;
+    /// @}
+    
   };
 
 

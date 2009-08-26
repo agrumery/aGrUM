@@ -108,6 +108,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
+    /// default constructor
     /** @param nodes_size the size of the hash table used to store all the nodes
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param arcs_size the size of the hash table used to store all the arcs
@@ -164,10 +165,12 @@ namespace gum {
     virtual void insertArc( const NodeId tail, const NodeId head );
 
     /// remove a node and its adjacent arcs from the graph
-    /** @param id the id of the node to be removed */
+    /** @param id the id of the node to be removed
+     * @warning if the node does not exist, nothing is done. In particular, no
+     * exception is raised.*/
     virtual void eraseNode( const NodeId id );
 
-    /// removes all the nodes and edges from the graph
+    /// removes all the nodes and arcs from the graph
     virtual void clear();
 
     /// to friendly display the content of the graph

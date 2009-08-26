@@ -65,7 +65,8 @@ namespace gum {
     for ( NodeSetIterator it=__nodes.begin();it!=__nodes.end();++it ) {
       if ( first ) {
         first=false;
-      } else {
+      }
+      else {
         s<<",";
       }
 

@@ -27,25 +27,32 @@
 
 namespace gum {
 
-	INLINE MixedGraph& MixedGraph::operator=( const MixedGraph& g ) {
-		if (this!=&g) {
-			NodeGraphPart::operator=(g);
-			EdgeGraphPart::operator=(g);
-			ArcGraphPart::operator=(g);
-		}
-		return *this;
-	}
+  INLINE MixedGraph& MixedGraph::operator=( const MixedGraph& g ) {
+    // avoid self assigment
+    if (this!=&g) {
+      // remove the old graph properly
+      EdgeGraphPart::clearEdges();
+      ArcGraphPart::clearArcs();
+      NodeGraphPart::clearNodes();
+
+      // fill the new graph
+      NodeGraphPart::operator=(g);
+      EdgeGraphPart::operator=(g);
+      ArcGraphPart::operator=(g);
+    }
+    return *this;
+  }
 
   INLINE void MixedGraph::clear() {
-    clearEdges();
-    clearArcs();
-    NodeGraphPart::clear();
+    EdgeGraphPart::clearEdges();
+    ArcGraphPart::clearArcs();
+    NodeGraphPart::clearNodes();
   }
 
   INLINE void MixedGraph::eraseNode( const NodeId id ) {
-    eraseNeighbours( id );
-    eraseParents( id );
-    eraseChildren( id );
+    EdgeGraphPart::unvirtualizedEraseNeighbours( id );
+    ArcGraphPart::unvirtualizedEraseParents( id );
+    ArcGraphPart::unvirtualizedEraseChildren( id );
     NodeGraphPart::eraseNode( id );
   }
 

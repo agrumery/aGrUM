@@ -176,15 +176,31 @@ namespace gum {
 
     /// erase all the parents of a given node
     /** @param id the node all the parents of which will be removed
+     * @warning although this method is not virtual, it calls method
+     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
+     * you do not wish it to have this "virtual" behaviour, call instead
+     * method @ref unvirtualizedEraseParents
      * @warning if no arc is a parent of id, nothing is done. In particular, no
      * exception is thrown. */
     void eraseParents( const NodeId id );
 
+    /// same function as eraseParents but without any virtual call to an erase
+    /** @param id the node whose ingoing arcs will be removed */
+    void unvirtualizedEraseParents( const NodeId id );
+
     /// removes all the children of a given node
     /** @param id the node all the children of which will be removed
+     * @warning although this method is not virtual, it calls method
+     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
+     * you do not wish it to have this "virtual" behaviour, call instead
+     * method @ref unvirtualizedEraseChildren
      * @warning if no arc is a parent of id, nothing is done. In particular, no
      * exception is thrown. */        
     void eraseChildren( const NodeId id );
+
+    /// same function as eraseChildren but without any virtual call to an erase
+    /** @param id the node whose outgoing arcs will be removed */
+    void unvirtualizedEraseChildren( const NodeId id );
 
     /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
     const ArcSetIterator beginArcs() const;
@@ -243,7 +259,17 @@ namespace gum {
     
 
   protected:
+    /// a (virtualized) function to remove a given set of arcs
+    /** @warning this function uses eraseArc, which is a virtual function. Hence
+     * the behaviour of this function is that of a virtual function */
     void _eraseSetOfArcs( const ArcSet& set );
+
+    /// similar to @ref _eraseSetOfArcs except that it is unvirtualized
+    /** @warning this function uses ArcGraphPart::eraseArc, hence, as compared
+     * with _eraseSetOfArcs, it removes the arcs without calling a virtual
+     * eraseArc */
+    void _unvirtualizedEraseSetOfArcs( const ArcSet& set );
+
 
 
   private:

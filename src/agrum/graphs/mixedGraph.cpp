@@ -65,129 +65,166 @@ namespace gum {
 
   const std::vector<NodeId>
   MixedGraph::mixedOrientedPath( const NodeId n1,const NodeId n2 ) const {
-    // not recursive version ...
-    List<NodeId> nodeFile;
-    // mark[node] contains 0 if not visited
-    // mark[node]=predecessor if visited
-    Property<NodeId>::onNodes mark; //=nodes().hashMapNodes(( NodeId )0 );
-    mark[n1]=n1;
-    nodeFile.pushBack( n1 );
+    // not recursive version => use a FIFO for simulating the recursion
+    List<NodeId> nodeFIFO;
+    nodeFIFO.pushBack( n2 );
+    
+    // mark[node] = successor if visited, else mark[node] does not exist
+    Property<NodeId>::onNodes mark;
+    mark.insert ( n2,n2 );
+   
     NodeId current;
 
-    while ( ! nodeFile.empty() ) {
-      current=nodeFile.front();nodeFile.popFront();
+    while ( ! nodeFIFO.empty() ) {
+      current=nodeFIFO.front();
+      nodeFIFO.popFront();
+
+      // check the neighbours //////////////////////////////////////////////
       const EdgeSet& set_neighbour=neighbours( current );
 
       for ( EdgeSetIterator ite=set_neighbour.begin();
             ite!=set_neighbour.end();++ite ) {
         NodeId new_one=ite->other( current );
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists ( new_one ) ) // if the node has already been visited
+          continue;                    // do not check it again
 
-        mark[new_one]=current;
+        mark.insert( new_one, current );
 
-        if ( new_one==n2 ) break;
+        if ( new_one == n1 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current=n1; current!=n2; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+          
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
       }
 
-      const ArcSet& set_children=children( current );
+      // check the parents  //////////////////////////////////////////////
+      const ArcSet& set = parents( current );
 
-      for ( ArcSetIterator ite = set_children.begin();
-            ite != set_children.end(); ++ite ) {
-        NodeId new_one=ite->head();
+      for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
+        NodeId new_one=ite->tail();
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists(new_one) ) // if this node is already marked, do not
+          continue;                 // check it again
 
-        mark[new_one]=current;
+        mark.insert(new_one, current);
 
-        if ( new_one==n2 ) break;
+        if ( new_one == n1 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+
+          return v;
+        }
+  
+        nodeFIFO.pushBack( new_one );
       }
     }
 
-    if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
-
-    std::vector<NodeId> v;
-
-    for ( current=n2;current!=n1;current=mark[current] )  v.push_back( current );
-
-    v.push_back( n1 );
-
-    return v;
+    GUM_ERROR( NotFound,"no path found" );
   }
 
   const std::vector<NodeId>
   MixedGraph::mixedUnorientedPath( const NodeId n1,const NodeId n2 ) const {
-    // not recursive version ...
-    List<NodeId> nodeFile;
-    // mark[node] contains 0 if not visited
-    // mark[node]=predecessor if visited
-    Property<NodeId>::onNodes mark; //=nodes().hashMapNodes(( NodeId )0 );
-    mark[n1]=n1;
-    nodeFile.pushBack( n1 );
+    // not recursive version => use a FIFO for simulating the recursion
+    List<NodeId> nodeFIFO;
+    nodeFIFO.pushBack( n2 );
+
+    // mark[node] = successor if visited, else mark[node] does not exist
+    Property<NodeId>::onNodes mark;
+    mark.insert ( n2,n2 );
+
     NodeId current;
 
-    while ( ! nodeFile.empty() ) {
-      current=nodeFile.front();nodeFile.popFront();
-      // check the neighbour //////////////////////////////////////////////
+    while ( ! nodeFIFO.empty() ) {
+      current=nodeFIFO.front();
+      nodeFIFO.popFront();
+
+      // check the neighbours //////////////////////////////////////////////
       const EdgeSet& set_neighbour=neighbours( current );
 
       for ( EdgeSetIterator ite=set_neighbour.begin();
             ite!=set_neighbour.end();++ite ) {
         NodeId new_one=ite->other( current );
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists ( new_one ) ) // if the node has already been visited
+          continue;                    // do not check it again
 
-        mark[new_one]=current;
+        mark.insert( new_one, current );
 
-        if ( new_one==n2 ) break;
+        if ( new_one == n1 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current=n1; current!=n2; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+          
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
       }
 
-      // check the children //////////////////////////////////////////////
-      const ArcSet& set_children=children( current );
-
-      for ( ArcSetIterator ite = set_children.begin();
-            ite!=set_children.end();++ite ) {
-        NodeId new_one=ite->head();
-
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
-
-        mark[new_one]=current;
-
-        if ( new_one==n2 ) break;
-
-        nodeFile.pushBack( new_one );
-      }
-
-      // check the parent //////////////////////////////////////////////
-      const ArcSet& set_parent=parents( current );
+      // check the parents //////////////////////////////////////////////
+      const ArcSet& set_parent = parents( current );
 
       for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
         NodeId new_one=ite->tail();
 
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, stop
+        if ( mark.exists ( new_one ) ) // the node has already been visited
+          continue; 
 
-        mark[new_one]=current;
+        mark.insert( new_one, current );
 
-        if ( new_one==n2 ) break;
+        if ( new_one==n1 ) {
+          std::vector<NodeId> v;
 
-        nodeFile.pushBack( new_one );
+          for ( current=n1; current!=n2; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
       }
+
+      // check the children //////////////////////////////////////////////
+      const ArcSet& set_children = children( current );
+
+      for ( ArcSetIterator ite=set_children.begin();
+            ite!=set_children.end();++ite ) {
+        NodeId new_one=ite->head();
+
+        if ( mark.exists ( new_one ) ) // the node has already been visited
+          continue; 
+
+        mark.insert( new_one, current );
+
+        if ( new_one == n1 ) {
+          std::vector<NodeId> v;
+
+          for ( current=n1; current!=n2; current=mark[current] )
+            v.push_back( current );
+          v.push_back( n2 );
+
+          return v;
+        }
+
+        nodeFIFO.pushBack( new_one );
+      }
+
     }
 
-    if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
-
-    std::vector<NodeId> v;
-
-    for ( current=n2;current!=n1;current=mark[current] )  v.push_back( current );
-
-    v.push_back( n1 );
-
-    return v;
+    GUM_ERROR( NotFound,"no path found" );
   }
 
 

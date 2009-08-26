@@ -106,6 +106,7 @@ namespace gum {
                             bool nodes_resize_policy    = true );
 
     /// copy constructor
+    /** @param s the NodeGraphPart to be copied */
     NodeGraphPart( const NodeGraphPart& s );
 
     /// destructor
@@ -119,13 +120,17 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
-    /// operator=
+    
+    /// copy operator
+    /** @param p the NodeGraphPart to be copied */
     NodeGraphPart& operator=(const NodeGraphPart& p);
 
     /// check whether two NodeGraphParts contain the same nodes
+    /** @param p the NodeGraphPart to be compared with "this" */
     bool operator==( const NodeGraphPart& p ) const;
 
     /// check whether two NodeGraphParts contain different nodes
+    /** @param p the NodeGraphPart to be compared with "this" */
     bool operator!=( const NodeGraphPart& p ) const;
 
     /// @}
@@ -138,32 +143,31 @@ namespace gum {
     /// @{
 
     /// populateNodes clears *this and fills it with the same nodes as "s"
-    /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
-     * internal idFactory. */
+    /** populateNodes should basically be the preferred way to insert nodes with
+     * IDs not selected by the internal idFactory.
+     * @param s the NodeGraphPart to be copied */
     void populateNodes( const NodeGraphPart& s );
 
     /// populateNodesFromProperty clears *this and fills it with the keys of "h"
-    /** populateNodes should basically be the only way to insert nodes with IDs not selected by the
-     * internal idFactory. */
+    /** populateNodes should basically be the preferred way to insert nodes with
+     * IDs not selected by the internal idFactory. */
     template<typename T>
     void populateNodesFromProperty( const typename Property<T>::onNodes& h );
 
-    /** next id (by using insertNode)
-     * @warning a code like @code id=nextId();insertNode(id); @endcode is basically not thread safe !!
-     * @return the next id
-     */
+    /** returns a new node id, not yet used by any node
+     * @warning a code like @code id=nextId();insertNode(id); @endcode is
+     * basically not thread safe !!
+     * @return a node id not yet used by any node within the NodeGraphPart */
     NodeId nextNodeId( ) const;
 
-    /// insert a new node and return the new id
-    /** @return the id chosen by the internal idFactory
-     */
+    /// insert a new node and return its id
+    /** @return the id chosen by the internal idFactory */
     virtual NodeId insertNode( );
 
     /// try to insert a node with the given id
-    /** @warning This method should be carefully used. Please prefere @ref populateNodes or @ref populateNodesFromProperty
-     * @throws DuplicateElement exception is thrown if the id already exists
-     * @return the id chosen by the internal idFactory
-     */
+    /** @warning This method should be carefully used. Please prefer
+     * @ref populateNodes or @ref populateNodesFromProperty when possible
+     * @throws DuplicateElement exception is thrown if the id already exists */
     virtual void insertNode( const NodeId id );
 
     /// erase the node with the given id
@@ -172,15 +176,27 @@ namespace gum {
     virtual void eraseNode( const NodeId id );
 
     /// returns true iff the NodeGraphPart contains the given nodeId
+    bool existsNode( const NodeId id ) const;
+
+    /// alias for @ref existsNode
     bool exists( const NodeId id ) const;
 
     /// indicates whether there exists nodes in the NodeGraphPart
+    bool emptyNodes() const;
+
+    /// alias for @ref emptyNodes
     bool empty() const;
 
     /// remove all the nodes from the NodeGraphPart
-    virtual void clear();
+    virtual void clearNodes();
+
+    /// alias for @ref clearNodes
+    virtual void clear ();
 
     /// returns the number of nodes in the NodeGraphPart
+    Size sizeNodes() const;
+
+    /// alias for @ref sizeNodes
     Size size() const;
 
     /// returns a number such that all node ids are less than or equal to it
@@ -198,12 +214,15 @@ namespace gum {
     /// a function to display the set of nodes
     std::string toString() const;
 
-
     /// a method to create a HashTable with key:NodeId and value:VAL
     /** VAL are computed from the nodes using for all node x, VAL f(x).
      * This method is a wrapper of the same method in HashTable.
      * @see HashTable::map.
-     */
+     * @param f a function assigning a VAL to any node
+     * @param size an optional parameter enabling to fine-tune the returned
+     * Property. Roughly speaking, it is a good practice to have a size equal to
+     * half the number of nodes. If you do not specify this parameter, the method
+     * will assign it for you. */
     template <typename VAL>
     typename Property<VAL>::onNodes
     nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
@@ -212,20 +231,27 @@ namespace gum {
     /** for all nodes, the value stored is a. This method is a wrapper of the same
      * method in HashTable.
      * @see HashTable::map.
-     */
+     * @param a the default value assigned to each edge in the returned Property 
+     * @param size an optional parameter enabling to fine-tune the returned
+     * Property. Roughly speaking, it is a good practice to have a size equal to
+     * half the number of nodes. If you do not specify this parameter, the method
+     * will assign it for you. */
     template <typename VAL>
     typename Property<VAL>::onNodes
     nodesProperty( const VAL& a, Size size = 0 ) const;
 
-    /// a method to create a list of VAL from the set of nodes
+    /** @brief a method to create a list of VAL from a set of nodes
+     * (using for every nodee, say x, the VAL f(x))
+     * @param f a function assigning a VAL to any node */
     template <typename VAL>
     List<VAL>
     listMapNodes( VAL( *f )( const NodeId& ) ) const;
 
-
+    /// @}
+    
 
   private:
-    /// internal idFactory
+    /// internal idFactory (produces a new id for each new node)
     NodeId __nextNodeId();
 
     /// the set of nodes contained in the NodeGraphPart

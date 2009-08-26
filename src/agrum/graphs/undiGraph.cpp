@@ -64,13 +64,16 @@ namespace gum {
         // indicates that we are examining a new node
         examined_nodes[*iter] = true;
 
-        // check recursively all the nodes of the connected component
-        thePair.first = *iter; thePair.second = *iter; 
+        // check recursively all the nodes of *iter's connected component
+        thePair.first = *iter;
+        thePair.second = *iter; 
         open_nodes.insert ( thePair );
 
         while ( ! open_nodes.empty() ) {
           // get a node to propagate
-          thePair = open_nodes.front(); open_nodes.popFront();
+          thePair = open_nodes.front();
+          open_nodes.popFront();
+
           current = thePair.first;
           from_current = thePair.second;
 
@@ -87,7 +90,7 @@ namespace gum {
                 examined_nodes[new_node] = true;
                 thePair.first = new_node;
                 thePair.second = current;
-                open_nodes.insert ( std::pair<NodeId,NodeId>(thePair) );
+                open_nodes.insert ( thePair );
               } 
             }
           }

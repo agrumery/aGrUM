@@ -28,15 +28,6 @@
 namespace gum {
 
   
-  INLINE DiGraph& DiGraph::operator=( const DiGraph& g ) {
-    // avoid self assigment
-    if (this!=&g) {
-      NodeGraphPart::operator=(g);
-      ArcGraphPart::operator=(g);
-    }
-    return *this;
-  }
-
   INLINE void DiGraph::insertArc( const NodeId tail, const NodeId head ) {
     if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
     if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
@@ -44,13 +35,26 @@ namespace gum {
   }
 
   INLINE void DiGraph::clear() {
-    clearArcs();
-    NodeGraphPart::clear();
+    ArcGraphPart::clearArcs();
+    NodeGraphPart::clearNodes();
+  }
+
+  INLINE DiGraph& DiGraph::operator=( const DiGraph& g ) {
+    // avoid self assigment
+    if (this!=&g) {
+      DiGraph::clear();
+      NodeGraphPart::operator=(g);
+      ArcGraphPart::operator=(g);
+    }
+    return *this;
   }
 
   INLINE void DiGraph::eraseNode( const NodeId id ) {
-    eraseParents( id );
-    eraseChildren( id );
+    // warning: to remove the arcs adjacent to id, use the unvirtualized versions
+    // of arc removals
+    ArcGraphPart::unvirtualizedEraseParents( id );
+    ArcGraphPart::unvirtualizedEraseChildren( id );
+
     NodeGraphPart::eraseNode( id );
   }
 

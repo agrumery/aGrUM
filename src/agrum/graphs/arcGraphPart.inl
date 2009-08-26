@@ -147,6 +147,19 @@ namespace gum {
     if ( __children.exists( id ) ) _eraseSetOfArcs( __children[id] );
   }
 
+  INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs( const ArcSet& set ) {
+    for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter )
+      ArcGraphPart::eraseArc( *iter );
+  }
+
+  INLINE void ArcGraphPart::unvirtualizedEraseParents( const NodeId id ) {
+    if ( __parents.exists( id ) ) _unvirtualizedEraseSetOfArcs( __parents[id] );
+  }
+
+  INLINE void ArcGraphPart::unvirtualizedEraseChildren( const NodeId id ) {
+    if ( __children.exists( id ) ) _unvirtualizedEraseSetOfArcs( __children[id] );
+  }
+
   INLINE bool ArcGraphPart::operator==( const ArcGraphPart& p ) const {
     return __arcs==p.__arcs;
   }
