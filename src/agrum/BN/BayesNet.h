@@ -201,15 +201,6 @@ class BayesNet: protected VariableNodeMap {
     /**
      * Add an arc in the BN, and update arc.head's CPT.
      *
-     * @param arc The arc added.
-     * @return Returns a reference on the real copy added.
-     * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
-     */
-    void insertArc(const Arc& arc);
-
-    /**
-     * Add an arc in the BN, and update arc.head's CPT.
-     *
      * @param head and
      * @param tail as NodeId
      * @return Returns a reference on the real copy added.
@@ -224,15 +215,6 @@ class BayesNet: protected VariableNodeMap {
      * @param arc The arc removed.
      */
     void eraseArc(const Arc& arc);
-
-    /**
-     * Removes an arc in the BN, and update head's CTP.
-     *
-     * If (tail, head) doesn't exist, the nothing happens.
-     * @param tail The id of the node (variable) at the tail of the arc.
-     * @param head The id of the node (variable) at the head of the arc.
-     */
-    void eraseArc(NodeId tail, NodeId head);
 
     /**
      * Shortcut for this->dag().beginArcs().

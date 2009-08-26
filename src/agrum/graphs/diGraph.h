@@ -75,7 +75,7 @@ namespace gum {
    * g1.clear();
    *
    * // remove some arc
-   * g4.eraseArc( i1,i3 );
+   * g4.eraseArc( Arc ( i1,i3 ) );
    *
    * // remove node
    * g2.eraseNode( i2 );
@@ -97,7 +97,7 @@ namespace gum {
    * cerr<<endl;
    *
    * // remove all the arcs that are parent of a given node
-   * g3.eraseParents( 2
+   * g3.eraseParents( 2 );
    * @endcode
    */
   /* =========================================================================== */
@@ -156,19 +156,12 @@ namespace gum {
     /// @{
 
     /// insert a new arc into the directed graph
-    /** @param arc the new arc inserted (actually by copy)
-     * @warning if the arc already exists, nothing is done. In particular, no
-     * exception is raised.
-     * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    virtual void insertArc( const Arc& arc );
-
-    /// insert a new arc into the directed graph
     /** @param tail the id of the tail of the new inserted arc
      * @param head the id of the head of the new inserted arc
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    virtual void insertArc( const NodeId tail,const NodeId head );
+    virtual void insertArc( const NodeId tail, const NodeId head );
 
     /// remove a node and its adjacent arcs from the graph
     /** @param id the id of the node to be removed */

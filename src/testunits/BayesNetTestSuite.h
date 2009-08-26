@@ -114,15 +114,15 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       gum::UndiGraph graph;
       graph.populateNodes( bn.dag() );
 
-      graph.insertEdge( gum::Edge( idList[0], idList[2] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[1] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[3], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[2] ) );
+      graph.insertEdge( idList[0], idList[2] );
+      graph.insertEdge( idList[0], idList[3] );
+      graph.insertEdge( idList[0], idList[1] );
+      graph.insertEdge( idList[2], idList[4] );
+      graph.insertEdge( idList[3], idList[4] );
+      graph.insertEdge( idList[2], idList[3] );
+      graph.insertEdge( idList[1], idList[3] );
+      graph.insertEdge( idList[1], idList[4] );
+      graph.insertEdge( idList[1], idList[2] );
 
       return graph;
     }
@@ -357,12 +357,12 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( bn.dag().size(), ( gum::Size ) 5 );
       TS_ASSERT_EQUALS( bn.dag().sizeArcs(), ( gum::Size ) 6 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[0], idList[2] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[2], idList[4] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[1], idList[3] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[0], idList[3] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[3], idList[4] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[1], idList[4] ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[0], idList[2] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[2], idList[4] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[1], idList[3] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[0], idList[3] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[3], idList[4] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[1], idList[4] ) ) );
 
       TS_ASSERT( ! bn.empty() );
       TS_ASSERT( bn.dag().emptyArcs() );
@@ -463,7 +463,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT( bn.cpt( idList[3] ).contains( bn.variable( idList[1] ) ) );
       TS_ASSERT( bn.cpt( idList[3] ).contains( bn.variable( idList[3] ) ) );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( idList[1], idList[3] ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.eraseArc( gum::Arc( idList[1], idList[3] ) ) );
 
       TS_ASSERT_EQUALS( bn.dag().parents( idList[3] ).size(), ( gum::Size ) 1 );
       TS_ASSERT( bn.dag().existsArc( idList[0], idList[3] ) );

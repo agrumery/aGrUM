@@ -63,17 +63,14 @@ namespace gum {
     }
   }
 
-  INLINE void EdgeGraphPart::insertEdge( const Edge& edge ) {
-    __edges.insert( edge );
-    __checkNeighbours( edge.first() );
-    __checkNeighbours( edge.second() );
-    __neighbours[edge.first()].insert( edge );
-    __neighbours[edge.second()].insert( edge );
-    GUM_EMIT2( onEdgeAdded,edge.first(),edge.second() );
-  }
-
   INLINE void EdgeGraphPart::insertEdge( const NodeId first,const NodeId second ) {
-    insertEdge( Edge( first,second ) );
+    Edge edge ( first,second );
+    __edges.insert( edge );
+    __checkNeighbours( first );
+    __checkNeighbours( second );
+    __neighbours[first].insert( edge );
+    __neighbours[second].insert( edge );
+    GUM_EMIT2( onEdgeAdded,first,second );
   }
 
   INLINE void EdgeGraphPart::eraseEdge( const Edge& edge ) {
@@ -91,10 +88,6 @@ namespace gum {
       __edges.erase( edge1 );
       GUM_EMIT2( onEdgeDeleted,edge1.first(),edge1.second() );
     }
-  }
-
-  INLINE void EdgeGraphPart::eraseEdge( const NodeId first,const NodeId second ) {
-    eraseEdge( Edge( first,second ) );
   }
 
   INLINE const EdgeSet& EdgeGraphPart::neighbours( const NodeId id ) const {

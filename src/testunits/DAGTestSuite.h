@@ -215,7 +215,7 @@ class DAGTestSuite: public CxxTest::TestSuite {
       gum::Size nodeCount   = graph.size();
       gum::Size arcCount    = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( id2, id5 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc (id2, id5 ) ) );
 
       TS_ASSERT_EQUALS( nodeCount, graph.size() );
       TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 1 );

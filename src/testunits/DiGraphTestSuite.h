@@ -219,7 +219,7 @@ public:
     gum::Size nodeCount   = graph.size();
     gum::Size arcCount    = graph.sizeArcs();
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( id5, id2 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc ( id5, id2 ) ) );
 
     TS_ASSERT_EQUALS( nodeCount, graph.size() );
     TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 1 );

@@ -192,7 +192,7 @@ namespace gum {
 	  Edge edge = *iter;
 	  NodeId otherClique = edge.other(cliqueId);
 	  if(otherClique != idToAbsorb) {
-	    __junctionTree->insertEdge(Edge(otherClique, idToAbsorb));
+	    __junctionTree->insertEdge( otherClique, idToAbsorb );
 	    if(__cliqueOrder[otherClique] < order) {
 	      flag.insert(Edge(otherClique, idToAbsorb));
 	    }

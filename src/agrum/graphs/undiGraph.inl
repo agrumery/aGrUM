@@ -36,17 +36,8 @@ namespace gum {
 		return *this;
 	}
 
-  INLINE void UndiGraph::insertEdge( const Edge& edge ) {
-    if ( ! exists( edge.first() ) ) GUM_ERROR( InvalidNode,"first node" );
-
-    if ( ! exists( edge.second() ) ) GUM_ERROR( InvalidNode,"second node" );
-
-    EdgeGraphPart::insertEdge( edge );
-  }
-
   INLINE void UndiGraph::insertEdge( const NodeId& first,const NodeId& second ) {
     if ( ! exists( first ) ) GUM_ERROR( InvalidNode,"first node" );
-
     if ( ! exists( second ) ) GUM_ERROR( InvalidNode,"second node" );
 
     EdgeGraphPart::insertEdge( second,first );

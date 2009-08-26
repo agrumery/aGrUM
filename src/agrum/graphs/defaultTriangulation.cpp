@@ -71,7 +71,7 @@ namespace gum {
     // copy the edges
     for ( EdgeSetIterator iter = theGraph.edges().begin();
           iter != theGraph.edges().end(); ++iter )
-      __original_graph.insertEdge( *iter );
+      __original_graph.insertEdge( iter->first(), iter->second() );
   }
 
   // ==============================================================================
@@ -104,7 +104,7 @@ namespace gum {
     // copy the arcs
     for ( ArcSetIterator iter = theGraph.arcs().begin();
           iter != theGraph.arcs().end(); ++iter )
-      __original_graph.insertEdge( Edge( iter->first(),iter->second() ) );
+      __original_graph.insertEdge( iter->first(),iter->second() );
   }
 
   // ==============================================================================
@@ -136,12 +136,12 @@ namespace gum {
     // copy the edges
     for ( ArcSetIterator iter = theGraph.arcs().begin();
           iter != theGraph.arcs().end(); ++iter )
-      __original_graph.insertEdge( Edge( iter->first(),iter->second() ) );
+      __original_graph.insertEdge( iter->first(),iter->second() );
 
     // copy the edges
     for ( EdgeSetIterator iter = theGraph.edges().begin();
           iter != theGraph.edges().end(); ++iter )
-      __original_graph.insertEdge( *iter );
+      __original_graph.insertEdge( iter->first(), iter->second() );
   }
 
   // ==============================================================================
@@ -258,7 +258,7 @@ namespace gum {
 
     // copy the edges
     for ( EdgeSetIterator iter=gr.beginEdges(); iter!=gr.endEdges(); ++iter )
-      __original_graph.insertEdge( Edge( iter->first(),iter->second() ) );
+      __original_graph.insertEdge( iter->first(),iter->second() );
 
     // indicate that no triangulation was performed for this graph
     __has_triangulation = false;
@@ -362,7 +362,7 @@ namespace gum {
 
             if ( !tmp_graph.existsEdge( node1,node2 ) ) {
               current_fill.insert( Edge( node1,node2 ) );
-              __triangulated_graph.insertEdge( Edge( node1,node2 ) );
+              __triangulated_graph.insertEdge( node1,node2 );
             }
           }
         }
@@ -583,7 +583,7 @@ namespace gum {
       }
 
       if ( child < __original_graph.size() ) {
-        __elim_tree.insertEdge( Edge( i+1, child+1 ) );// node number>0
+        __elim_tree.insertEdge( i+1, child+1 );// node number>0
       }
     }
 
@@ -641,7 +641,7 @@ namespace gum {
             ( __junction_tree.clique( C_jj ).size() == card_C_i + 1 ) ) {
           // ok, here we found a parent such that |C_jj| = [C_i| + 1
           C_j = C_jj;
-          __junction_tree.eraseEdge( C_i,C_j );
+          __junction_tree.eraseEdge( Edge (C_i,C_j) );
           break;
         }
       }
@@ -652,7 +652,7 @@ namespace gum {
 
         for ( iter = nei.begin();iter != nei.end(); ++iter ) {
           Edge new_edge( C_j,iter->other( C_i ) );
-          __junction_tree.insertEdge( new_edge );
+          __junction_tree.insertEdge( C_j,iter->other( C_i ) );
           mark.insert( new_edge, true );
         }
 
@@ -790,7 +790,8 @@ namespace gum {
 
       if ( node1 != node2 ) {
         try {
-          __max_prime_junction_tree.insertEdge( *iter_edge );
+          __max_prime_junction_tree.insertEdge( iter_edge->first(),
+                                                iter_edge->second() );
         } catch ( DuplicateElement& ) { }
       }
     }
@@ -842,7 +843,7 @@ namespace gum {
           for ( it2=++it1;it2!=clique.end();++it2 ) {
             //for ( i = 0; i < clique_nodes.size(); ++i ) {
             //  for ( unsigned int j = i+1; j < clique_nodes.size(); ++j ) {
-            try { __triangulated_graph.insertEdge( Edge( *it1,*it2 ) ); }
+            try { __triangulated_graph.insertEdge( *it1,*it2 ); }
             catch ( DuplicateElement& ) { }
           }
         }

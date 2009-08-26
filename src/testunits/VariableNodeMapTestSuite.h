@@ -163,12 +163,12 @@ class VariableNodeMapTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( topo.dag().size(), (gum::Size)5 );
       TS_ASSERT_EQUALS( topo.dag().sizeArcs(), (gum::Size)6 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[0], idList[2] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[2], idList[4] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[1], idList[3] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[0], idList[3] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[3], idList[4] ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( idList[1], idList[4] ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[0], idList[2] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[2], idList[4] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[1], idList[3] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[0], idList[3] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[3], idList[4] ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[1], idList[4] ) ) );
 
       TS_ASSERT( ! topo.empty() );
       TS_ASSERT( ! topo.dag().empty() );
@@ -251,15 +251,15 @@ class VariableNodeMapTestSuite: public CxxTest::TestSuite {
 
       graph.populateNodes( topo.dag() );
 
-      graph.insertEdge( gum::Edge( idList[0], idList[2] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[1] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[3], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[2] ) );
+      graph.insertEdge( idList[0], idList[2] );
+      graph.insertEdge( idList[0], idList[3] );
+      graph.insertEdge( idList[0], idList[1] );
+      graph.insertEdge( idList[2], idList[4] );
+      graph.insertEdge( idList[3], idList[4] );
+      graph.insertEdge( idList[2], idList[3] );
+      graph.insertEdge( idList[1], idList[3] );
+      graph.insertEdge( idList[1], idList[4] );
+      graph.insertEdge( idList[1], idList[2] );
 
       return graph;
     }

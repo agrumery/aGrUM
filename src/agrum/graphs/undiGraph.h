@@ -68,9 +68,6 @@ namespace gum {
     virtual ~UndiGraph();
     
     /// @throw InvalidNode if head or tail does not belong to the graph nodes
-    virtual void insertEdge( const Edge& edge );
-
-    /// @throw InvalidNode if head or tail does not belong to the graph nodes
     virtual void insertEdge( const NodeId& first,const NodeId& second );
     virtual void eraseNode( const NodeId id );
     virtual void clear();

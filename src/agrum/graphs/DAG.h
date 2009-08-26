@@ -33,7 +33,7 @@
  *
  * g1.insertArc( i1,i2 );
  * g1.insertArc( i1,i3 );
- *  g1.insertArc( i2,i3 );
+ * g1.insertArc( i2,i3 );
  *
  * @endcode
  */
@@ -73,11 +73,6 @@ namespace gum {
     DAG& operator=( const DAG& g );
 
     virtual ~DAG();
-    
-    /// @throw Circuit if any (directed) cycle is created by this arc.
-    /// @warning Unfortunately, this means that insertNode is not in constant
-    /// time anymore.
-    virtual void insertArc( const Arc& arc );
     
     /// @throw Circuit if any (directed) cycle is created by this arc.
     /// @warning Unfortunately, this means that insertNode is not in constant

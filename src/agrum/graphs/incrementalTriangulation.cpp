@@ -237,7 +237,7 @@ namespace gum {
     __require_update = true;
 
     // remove the edge (X,Y) from the graph
-    __graph.eraseEdge( X,Y );
+    __graph.eraseEdge( Edge (X,Y ) );
   }
 
 
@@ -266,7 +266,7 @@ namespace gum {
       for ( EdgeSetIterator neighbour = neighbours.begin ();
             neighbour != neighbours.end (); ++neighbour )
         if ( __T_mpd.separator( *iter,neighbour->other( *iter ) ).size()==0 )
-          __T_mpd.eraseEdge( *iter,neighbour->other( *iter ) );
+          __T_mpd.eraseEdge( Edge ( *iter,neighbour->other( *iter ) ) );
     }
 
     // remove X from the cliques containing X
@@ -284,8 +284,8 @@ namespace gum {
               neighbour != neighbours.end (); ++neighbour )
           if ( __junction_tree.separator
                ( cliques_of_X[i], neighbour->other( cliques_of_X[i] ) ).size()==0 )
-            __junction_tree.eraseEdge( cliques_of_X[i],
-                                       neighbour->other( cliques_of_X[i] ) );
+            __junction_tree.eraseEdge
+              ( Edge ( cliques_of_X[i],neighbour->other( cliques_of_X[i] ) ) );
       }
     }
 
@@ -352,7 +352,7 @@ namespace gum {
   // ==============================================================================
   void IncrementalTriangulation::insertEdge ( NodeId X, NodeId Y ) {
     // add the edge to the graph
-    __graph.insertEdge( Edge( X,Y ) );
+    __graph.insertEdge( X,Y );
 
     // take any MPS containing X and search its tree to find Y
     NodeId& mps_X = __mps_of_node[X][0];
@@ -388,8 +388,8 @@ namespace gum {
       nodes.insert( X );
       nodes.insert( Y );
       NodeId newNode = __junction_tree.insertNode( nodes );
-      __junction_tree.insertEdge( Edge( newNode, c_X ) );
-      __junction_tree.insertEdge( Edge( newNode, c_Y ) );
+      __junction_tree.insertEdge( newNode, c_X );
+      __junction_tree.insertEdge( newNode, c_Y );
       __T_mpd.insertNode( newNode, nodes );
       __T_mpd.insertEdge( newNode, mps_X );
       __T_mpd.insertEdge( newNode, mps_Y );
@@ -728,7 +728,7 @@ namespace gum {
         // insert the edges in tmp_graph
         for ( EdgeSetIterator iter_edge = __graph.beginEdges();
               iter_edge != __graph.endEdges(); ++iter_edge ) {
-          try { tmp_graph.insertEdge( *iter_edge ); }
+          try { tmp_graph.insertEdge( iter_edge->first(), iter_edge->second() ); }
           catch ( InvalidEdge& ) { } // both extremities must be in tmp_graph
         }
 
@@ -766,8 +766,8 @@ namespace gum {
         for ( EdgeSetIterator iter_edge = tmp_junction_tree.beginEdges();
               iter_edge != tmp_junction_tree.endEdges(); ++iter_edge )
           __junction_tree.insertEdge
-            ( Edge( tmp2global_junction_tree[iter_edge->first()],
-                    tmp2global_junction_tree[iter_edge->second()] ) );
+            ( tmp2global_junction_tree[iter_edge->first()],
+              tmp2global_junction_tree[iter_edge->second()] );
 
         // second get the edges in __junction_tree that have an extremal clique R
         // in the affected clique set and the other one S not in the affected set
@@ -805,28 +805,28 @@ namespace gum {
             notAffectedneighbourCliques[i].second() :
             notAffectedneighbourCliques[i].first();
 
-          __junction_tree.insertEdge( Edge( not_affected,to_connect ) );
+          __junction_tree.insertEdge( not_affected,to_connect );
 
           if ( to_connect <= max_old_id )
-            __T_mpd.insertEdge( Edge( __mps_of_clique[to_connect],
-                                      __mps_of_clique[not_affected] ) );
+            __T_mpd.insertEdge( __mps_of_clique[to_connect],
+                                __mps_of_clique[not_affected] );
 
           // check that the separator created by the new edge is not equal to
           // to_connect. If this is the case, then to_connect is included in
           // not_affected and, hence, should be removed from the graph
           if ( __junction_tree.separator( not_affected,to_connect ).size() ==
                __junction_tree.clique( to_connect ).size() ) {
-            __junction_tree.eraseEdge( not_affected,to_connect );
+            __junction_tree.eraseEdge( Edge ( not_affected,to_connect ) );
             const EdgeSet& neighbours = __junction_tree.neighbours( to_connect );
             for ( EdgeSetIterator iter_neighbour = neighbours.begin();
                   iter_neighbour != neighbours.end(); ++iter_neighbour ) {
               __junction_tree.insertEdge
-                ( Edge( iter_neighbour->other( to_connect ), not_affected ) );
+                ( iter_neighbour->other( to_connect ), not_affected );
               
               if ( iter_neighbour->other( to_connect ) <= max_old_id )
                 __T_mpd.insertEdge
-                  ( Edge( __mps_of_clique[iter_neighbour->other( to_connect )],
-                          __mps_of_clique[not_affected] ) );
+                  ( __mps_of_clique[iter_neighbour->other( to_connect )],
+                    __mps_of_clique[not_affected] );
             }
 
             __junction_tree.eraseNode( to_connect );
@@ -951,11 +951,11 @@ namespace gum {
           // avoid adding the same edge several times
 
           if ( clique > otherClique ) {
-            __T_mpd.insertEdge( Edge( clique, otherClique ) );
+            __T_mpd.insertEdge( clique, otherClique );
           }
         }
         else {
-          __T_mpd.insertEdge( Edge( clique, __mps_of_clique[othernode] ) );
+          __T_mpd.insertEdge( clique, __mps_of_clique[othernode] );
         }
       }
     }

@@ -434,9 +434,9 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
 
       int countEdgeG1 = g1.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( 1,2 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( 1,2 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( 19,33 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( gum::Edge( 1,2 ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( gum::Edge( 1,2 ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseEdge( gum::Edge( 19,33 ) ) );
 
       TS_ASSERT_EQUALS( g1.sizeEdges(), gum::Size(countEdgeG1 - 1 ));
 
@@ -449,8 +449,8 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
 
       int countEdgeG2 = g2.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING( g2.eraseEdge( 2,4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( g2.eraseEdge( 1,3 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g2.eraseEdge( gum::Edge( 2,4 ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g2.eraseEdge( gum::Edge( 1,3 ) ) );
 
       TS_ASSERT_EQUALS( g2.sizeEdges(), gum::Size(countEdgeG2 - 2 ));
     }
@@ -461,7 +461,7 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
 
       int countEdgeG3 = g3.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING( g3.eraseEdge( 2,4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( g3.eraseEdge( gum::Edge( 2,4 ) ) );
 
       TS_ASSERT_EQUALS( g3.sizeEdges(), gum::Size(countEdgeG3 - 1) );
     }
@@ -623,7 +623,7 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
       /* From A, must pass throught B or C. */
 
       if ( vec[1] == 2 ) {
-        graph.eraseEdge( 1,2 );
+        graph.eraseEdge( gum::Edge( 1,2 ) );
       } else if ( vec[1] == 3 ) {
         /** Paths from A to D  still goes threw 3 or 4 cliques.*/
         TS_ASSERT(( vec.size() == 3 ) || ( vec.size() == 4 ) );
@@ -631,9 +631,9 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
         /** Deleting an edge to force A -> B -> C -> D or A -> C -> B -> D.  */
 
         if ( vec[1] == 2 ) {
-          graph.eraseEdge( 2,4 );
+          graph.eraseEdge( gum::Edge( 2,4 ) );
         } else if ( vec[1] == 3 ) {
-          graph.eraseEdge( 3,4 );
+          graph.eraseEdge( gum::Edge( 3,4 ) );
         }
 
         TS_GUM_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
@@ -641,7 +641,7 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
         /** Now can only have 3 nodes in the path. */
         TS_ASSERT_EQUALS( vec.size(), (gum::Size)3 );
 
-        graph.eraseEdge( 2,3 );
+        graph.eraseEdge( gum::Edge( 2,3 ) );
 
         TS_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
       }

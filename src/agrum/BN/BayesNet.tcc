@@ -266,13 +266,6 @@ BayesNet<T_DATA>::erase(NodeId varId) {
 // Add an arc in the BN, and update arc.head's CPT
 template<typename T_DATA> INLINE
 void
-BayesNet<T_DATA>::insertArc(const Arc& arc) {
-  insertArc(arc.tail(), arc.head());
-}
-
-// Add an arc in the BN, and update arc.head's CPT
-template<typename T_DATA> INLINE
-void
 BayesNet<T_DATA>::insertArc(NodeId tail, NodeId head) {
   __dag.insertArc(tail, head);
   // Add parent in the child's CPT
@@ -283,15 +276,10 @@ BayesNet<T_DATA>::insertArc(NodeId tail, NodeId head) {
 template<typename T_DATA> INLINE
 void
 BayesNet<T_DATA>::eraseArc(const Arc& arc) {
-  eraseArc(arc.tail(), arc.head());
-}
-
-// Removes an arc in the BN, and update head's CTP
-template<typename T_DATA> INLINE
-void
-BayesNet<T_DATA>::eraseArc(NodeId tail, NodeId head) {
-  if ( VariableNodeMap::exists(tail) && VariableNodeMap::exists(head) ) {
-    __dag.eraseArc(tail, head);
+  if ( VariableNodeMap::exists(arc.tail()) &&
+       VariableNodeMap::exists(arc.head()) ) {
+    NodeId head = arc.head(), tail = arc.tail();
+    __dag.eraseArc( arc );
     // Remove parent froms child's CPT
     ( *(__probaMap[head]) ) >> VariableNodeMap::get(tail);
   }

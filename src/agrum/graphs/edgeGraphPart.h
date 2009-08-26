@@ -44,17 +44,16 @@ namespace gum {
    * EdgeGraphPart edges1,edges2;
    *
    * // insert elements into edges1
-   * edges1.insertEdge( Edge( 2,3 ) );
-   *
+   * edges1.insertEdge( 2,3 );
    * Edge edge( 5,3 );
-   * edges1.insertEdge( edge );
+   * edges1.insertEdge( 5,3 );
    *
    * // copy edges1 into edges2
    * edges2=edges1;
    * std::cerr<<"edges2:"<<edges2.toString()<<std::endl;
    *
    * // remove some elements from edges1
-   * edges1.eraseEdge( 2,3 );
+   * edges1.eraseEdge( Edge (2,3) );
    * edges1.eraseEdge( edge );
    *
    * if ( edges1.empty() ) std::cerr<<" edges1 is empty"<<std::endl;
@@ -127,21 +126,11 @@ namespace gum {
     /// @{
     
     /// insert a new edge into the EdgeGraphPart
-    /** @param edge the new edge to be added. Actually, this is a copy of the
-     * edge that is inserted into the EdgeGraphPart
-     * @warning if the edge already exists, nothing is done. In particular, no
-     * exception is raised. */
-    virtual void insertEdge( const Edge& edge );
-
-    /// insert a new edge into the EdgeGraphPart
     /** @param n1 the id of one extremity of the new edge to be inserted
      * @param n2 the id of the other extremity of the new edge to be inserted
      * @warning if the edge already exists, nothing is done. In particular, no
-     * exception is raised.
-     * @warning although this method is not virtual, it calls method
-     * insertEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
-    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
-    void insertEdge( const NodeId n1,const NodeId n2 );
+     * exception is raised. */
+    virtual void insertEdge( const NodeId n1,const NodeId n2 );
 
     /// removes an edge from the EdgeGraphPart
     /** @param edge the edge to be removed
@@ -149,16 +138,6 @@ namespace gum {
      * exception is thrown. */    
     virtual void eraseEdge( const Edge& edge );
 
-    /// removes an edge from the EdgeGraphPart
-    /** @param n1 the id of one extremity of the edge to be removed
-     * @param n2 the id of the other extremity of the edge to be removed
-     * @warning if the edge does not exist, nothing is done. In particular, no
-     * exception is thrown. 
-     * @warning although this method is not virtual, it calls method
-     * eraseEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
-    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
-    void eraseEdge( const NodeId n1,const NodeId n2 );
-    
     /// indicates whether a given edge exists
     /** @param edge the edge we test whether or not it belongs to the
      * EdgeGraphPart */

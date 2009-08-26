@@ -98,8 +98,7 @@ namespace gum {
      * @throw DuplicateElement exception is thrown if the edge list already
      * contains an edge with the same extremities */
     // ============================================================================
-    virtual void insertEdge( const Edge& edge );
-    virtual void insertEdge( const NodeId& first,const NodeId& second );
+    virtual void insertEdge( const NodeId first,const NodeId second );
     
     // ============================================================================
     /// removes an edge (and its separator) from the clique graph
@@ -107,13 +106,6 @@ namespace gum {
      * nothing. In particular, it does not throw any exception. */
     // ============================================================================
     virtual void eraseEdge( const Edge &edge );
-    
-    // ============================================================================
-    /// removes an edge (and its separator) from the clique graph
-    /** If the clique graph does not contain the edge, then the function does
-     * nothing. In particular, it does not throw any exception. */
-    // ============================================================================
-    virtual void eraseEdge( const NodeId &id1, const NodeId &id2 );
     
     // ============================================================================
     /// adds a new clique to the graph

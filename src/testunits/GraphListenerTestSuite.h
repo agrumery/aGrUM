@@ -310,7 +310,7 @@ public:
         TS_ASSERT_EQUALS( c2.nodes(),6+5 );
         TS_ASSERT_EQUALS( c2.arcs(),4+6 );
 
-        g1.eraseArc( id1,id3 ); // 6 nodes, 3 arcs
+        g1.eraseArc( gum::Arc ( id1,id3 ) ); // 6 nodes, 3 arcs
 
         TS_ASSERT_EQUALS( c1.nodes(),6 );
         TS_ASSERT_EQUALS( c1.arcs(),3 );
@@ -376,7 +376,7 @@ public:
         TS_ASSERT_EQUALS( c2.nodes(),6+5 );
         TS_ASSERT_EQUALS( c2.edges(),4+6 );
 
-        g1.eraseEdge( id1,id3 ); // 6 nodes, 3 edges
+        g1.eraseEdge( gum::Edge (id1,id3 ) ); // 6 nodes, 3 edges
 
         TS_ASSERT_EQUALS( c1.nodes(),6 );
         TS_ASSERT_EQUALS( c1.edges(),3 );
@@ -470,7 +470,7 @@ public:
         TS_ASSERT_EQUALS( c2.edges(),2+3 );
         TS_ASSERT_EQUALS( c2.arcs(),2+3 );
 
-        g1.eraseEdge( id1,id3 ); // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
+        g1.eraseEdge( gum::Edge (id1,id3 ) ); // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
 
         TS_ASSERT_EQUALS( c1.nodes(),6 );
         TS_ASSERT_EQUALS( c1.edges(),2);
@@ -520,7 +520,7 @@ public:
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.edges(),3 );
 
-        g.eraseEdge( id1,id3 ); // -1 edges
+        g.eraseEdge( gum::Edge (id1,id3 ) ); // -1 edges
 
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.edges(),2 );
@@ -546,7 +546,7 @@ public:
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.arcs(),3 );
 
-        g.eraseArc( id1,id3 ); // -1 arcs
+        g.eraseArc( gum::Arc ( id1,id3 ) ); // -1 arcs
 
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.arcs(),2 );
@@ -574,7 +574,7 @@ public:
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.arcs(),3 );
 
-        g.eraseArc( id1,id3 ); // -1 arcs
+        g.eraseArc( gum::Arc ( id1,id3 ) ); // -1 arcs
 
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.arcs(),2 );
@@ -603,7 +603,7 @@ public:
         TS_ASSERT_EQUALS( c.edges(),1 );
         TS_ASSERT_EQUALS( c.arcs(),2 );
 
-        g.eraseArc( id1,id3 ); // -1 arcs
+        g.eraseArc( gum::Arc ( id1,id3 ) ); // -1 arcs
 
         TS_ASSERT_EQUALS( c.nodes(),4 );
         TS_ASSERT_EQUALS( c.edges(),1 );

@@ -34,21 +34,8 @@ namespace gum {
 		return *this;
 	}
 
-  INLINE void DAG::insertArc( const Arc& arc ) {
-    if ( ! exists( arc.head() ) ) GUM_ERROR( InvalidNode,"head node" );
-
-    if ( ! exists( arc.tail() ) ) GUM_ERROR( InvalidNode,"tail node" );
-
-    if ( hasDirectedPath( arc.head(), arc.tail() ) ) {
-      GUM_ERROR( InvalidCircuit, "Add a directed cycle in a dag !" );
-    }
-
-    DiGraph::insertArc( arc );
-  }
-
   INLINE void DAG::insertArc( const NodeId& tail,const NodeId& head ) {
     if ( ! exists( head ) ) GUM_ERROR( InvalidNode,"head node" );
-
     if ( ! exists( tail ) ) GUM_ERROR( InvalidNode,"tail node" );
 
     if ( hasDirectedPath( head, tail ) ) {

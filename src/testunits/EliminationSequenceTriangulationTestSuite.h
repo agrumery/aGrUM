@@ -61,14 +61,14 @@ public:
     markovGraph.insertNode(e);
     markovGraph.insertNode(f);
     markovGraph.insertNode(g);
-    markovGraph.insertEdge( gum::Edge(a,b));
-    markovGraph.insertEdge( gum::Edge(b,d));
-    markovGraph.insertEdge( gum::Edge(b,e));
-    markovGraph.insertEdge( gum::Edge(d,f));
-    markovGraph.insertEdge( gum::Edge(e,f));
-    markovGraph.insertEdge( gum::Edge(a,c));
-    markovGraph.insertEdge( gum::Edge(c,g));
-    markovGraph.insertEdge( gum::Edge(g,f));
+    markovGraph.insertEdge( a,b);
+    markovGraph.insertEdge( b,d);
+    markovGraph.insertEdge( b,e);
+    markovGraph.insertEdge( d,f);
+    markovGraph.insertEdge( e,f);
+    markovGraph.insertEdge( a,c);
+    markovGraph.insertEdge( c,g);
+    markovGraph.insertEdge( g,f);
     return markovGraph;
   }
 

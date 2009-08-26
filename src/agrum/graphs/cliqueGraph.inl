@@ -41,20 +41,16 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
-  /// adds a copy of \e arc to the list of edges of the graph.
-  // ==============================================================================
-  INLINE void CliqueGraph::insertEdge( const Edge& edge ) {
+  INLINE void CliqueGraph::insertEdge( const NodeId first,const NodeId second ) {
+    Edge edge ( first,second );
+    
     if ( ! existsEdge( edge ) ) {
       // create the edge in the graph
-      UndiGraph::insertEdge( edge );
+      UndiGraph::insertEdge( first,second );
+
       // create the separator
       __separators.insert( edge,__cliques[edge.first()]*__cliques[edge.second()] );
     }
-  }
-
-  INLINE void CliqueGraph::insertEdge( const NodeId& first,const NodeId& second ) {
-    insertEdge( Edge( first,second ) );
   }
 
   // ==============================================================================
@@ -65,13 +61,6 @@ namespace gum {
       __separators.erase( edge );
       UndiGraph::eraseEdge( edge );
     }
-  }
-
-  // ==============================================================================
-  /// removes an edge (and its separator) from the clique graph
-  // ==============================================================================
-  INLINE void CliqueGraph::eraseEdge( const NodeId &id1, const NodeId &id2 ) {
-    eraseEdge( Edge (id1,id2) );
   }
 
   // ==============================================================================

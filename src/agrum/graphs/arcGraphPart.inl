@@ -88,17 +88,16 @@ namespace gum {
     return __arcs.end();
   }
 
-  INLINE void ArcGraphPart::insertArc( const Arc& arc ) {
-    __arcs.insert( arc );
-    __checkParents( arc.head() );
-    __checkChildren( arc.tail() );
-    __parents[arc.head()].insert( arc );
-    __children[arc.tail()].insert( arc );
-    GUM_EMIT2( onArcAdded,arc.tail(),arc.head() );
-  }
-
   INLINE void ArcGraphPart::insertArc( const NodeId tail,const NodeId head ) {
-    insertArc( Arc( tail,head ) );
+    Arc arc ( tail,head );
+    
+    __arcs.insert( arc );
+    __checkParents( head );
+    __checkChildren( tail );
+    __parents[head].insert( arc );
+    __children[tail].insert( arc );
+
+    GUM_EMIT2( onArcAdded, tail, head );
   }
 
   INLINE void ArcGraphPart::eraseArc( const Arc& arc ) {
@@ -114,10 +113,6 @@ namespace gum {
       __arcs.erase( arc1 );
       GUM_EMIT2( onArcDeleted,arc1.tail(),arc1.head() );
     }
-  }
-
-  INLINE void ArcGraphPart::eraseArc( NodeId tail,NodeId head ) {
-    eraseArc( Arc( tail,head ) );
   }
 
   INLINE void ArcGraphPart::clearArcs() {

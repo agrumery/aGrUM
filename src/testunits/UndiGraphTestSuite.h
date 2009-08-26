@@ -213,7 +213,7 @@ public:
     gum::Size nodeCount   = graph.size();
     gum::Size edgeCount   = graph.sizeEdges();
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( 5,3 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( gum::Edge (5,3 ) ) );
 
     TS_ASSERT_EQUALS( nodeCount, graph.size() );
     TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
@@ -231,7 +231,7 @@ public:
     gum::Size nodeCount   = graph.size();
     gum::Size edgeCount   = graph.sizeEdges();
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( id3, id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( gum::Edge (id3, id5 ) ) );
 
     TS_ASSERT_EQUALS( nodeCount, graph.size() );
     TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );

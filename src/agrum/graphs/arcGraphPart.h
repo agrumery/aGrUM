@@ -42,15 +42,14 @@ namespace gum {
    * ArcGraphPart arcs1,arcs2,arcs3;
    *
    * // insert elements into arcs1
-   * arcs1.insertArc( Arc( 2,3 ) );
-   * Arc arc( 5,3 );
-   * arcs1.insertArc( arc );
+   * arcs1.insertArc( 2,3 );
+   * arcs1.insertArc( 5,3 );
    *
    * // copy arcs1 into arcs2
    * arcs2=arcs1;
    *
    * // remove some elements from arcs1
-   * arcs1.eraseArc( 2,3 );
+   * arcs1.eraseArc( Arc( 5,3 ) );
    * arcs1.eraseArc( arc );
    *
    * if ( arcs1.empty() ) std::cerr<<" arcs1 is empty"<<std::endl;
@@ -130,21 +129,11 @@ namespace gum {
     /// @{
 
     /// insert a new arc into the ArcGraphPart
-    /** @param arc the new arc to be added. Actually, this is a copy of the
-     * arc that is inserted into the ArcGraphPart
-     * @warning if the arc already exists, nothing is done. In particular, no
-     * exception is raised. */
-    virtual void insertArc( const Arc& arc );
-
-    /// insert a new arc into the ArcGraphPart
     /** @param tail the id of the tail of the new arc to be inserted
      * @param head the id of the head of the new arc to be inserted
      * @warning if the arc already exists, nothing is done. In particular, no
-     * exception is raised.
-     * @warning although this method is not virtual, it calls method
-     * insertArc( const Arc& arc ) and, as such, has a "virtual" behaviour */
-    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
-    void insertArc( const NodeId tail,const NodeId head );
+     * exception is raised. */
+    virtual void insertArc( const NodeId tail,const NodeId head );
 
     /// removes an arc from the ArcGraphPart
     /** @param arc the arc to be removed
@@ -152,16 +141,6 @@ namespace gum {
      * exception is thrown. */
     virtual void eraseArc( const Arc& arc );
    
-    /// removes an arc from the ArcGraphPart
-    /** @param tail the tail of the arc to be removed
-     * @param head the head of the arc to be removed
-     * @warning if the arc does not exist, nothing is done. In particular, no
-     * exception is thrown.
-     * @warning although this method is not virtual, it calls method
-     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour */
-    // ####### NEVER MAKE THIS METHOD VIRTUAL (see above)
-    void eraseArc( const NodeId tail, const NodeId head );
-
     /// indicates whether a given arc exists
     /** @param arc the arc we test whether or not it belongs to the ArcGraphPart */
     bool existsArc( const Arc& arc ) const;

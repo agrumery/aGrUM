@@ -213,7 +213,7 @@ namespace gum {
         if (( node2 != node1 ) && !__graph.existsEdge( node1,node2 ) ) {
           // add the edge
           Edge e1_2 ( node1, node2 );
-          __graph.insertEdge( e1_2 );
+          __graph.insertEdge( node1,node2 );
           if ( __we_want_fill_ins )
             __fill_ins_list.insert( Edge( node1,node2 ) );
 
@@ -303,7 +303,7 @@ namespace gum {
 
           if ( !__graph.existsEdge( e1_2 ) ) {
             // add the edge
-            __graph.insertEdge( e1_2 );
+            __graph.insertEdge( node1,node2 );
             if ( __we_want_fill_ins )
               __fill_ins_list.insert( e1_2 );
 
@@ -587,7 +587,7 @@ namespace gum {
     __nb_adjacent_neighbours[node2] += nb_neigh_n1_n2;
     
     // add the edge
-    __graph.insertEdge( edge );
+    __graph.insertEdge( node1,node2 );
     __nb_triangles.insert( edge, nb_triangle_in_new_edge );
 
     if ( !__changed_status.contains( node1 ) )
