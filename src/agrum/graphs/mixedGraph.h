@@ -46,6 +46,76 @@ namespace gum {
    *
    * @par Usage example:
    * @code
+   * // creating empty graphs
+   * MixedGraph g1,g2;
+   *
+   * // adding nodes, arcs and edges to g1
+   * NodeId i1=g1.insertNode();
+   * NodeId i2=g1.insertNode();
+   * NodeId i3=g1.insertNode();
+   * g1.insertArc( i1,i2 );
+   * g1.insertArc( i1,i3 );
+   * g1.insertArc( i2,i3 );
+   * g1.insertEdge( i1,i2 );
+   * g1.insertEdge( i1,i3 );
+   * g1.insertEdge( i2,i3 );
+   *
+   * //throw an InvalidNode
+   * // g1.insertArc( i1+i2+i3,i1 );
+   * // g1.insertEdge( i1+i2+i3,i1 );
+   *
+   * // copying graphs
+   * MixedGraph g3 = g1;
+   * g2 = g1;
+   * MixedGraph g4=g1;
+   *
+   * // check if a graph has no node
+   * if ( g1.empty() ) cerr << "graph g1 is empty" << endl;
+   *
+   * // remove all the nodes (as well as their adjacent arcs and edges)
+   * g1.clear();
+   *
+   * // remove some arc
+   * g4.eraseArc( Arc ( i1,i3 ) );
+   *
+   * // remove some edge
+   * g4.eraseEdge( Edge ( i1,i3 ) );
+   *
+   * // remove node
+   * g2.eraseNode( i2 );
+   *
+   * // parse a graph
+   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
+   *       iter != g3.endNodes(); ++iter )
+   *   cerr << *iter << endl;
+   *
+   * for ( ArcGraphPart::iterator iter = g3.beginArcs();
+   *       iter != g3.endArcs(); ++iter )
+   *   cerr << *iter << endl;
+   *
+   * for ( EdgeGraphPart::iterator iter = g3.beginEdges();
+   *       iter != g3.endEdges(); ++iter )
+   *   cerr << *iter << endl;
+   *   
+   * const ArcSet& a=g3.parents( 3 );
+   *
+   * for ( ArcSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   *   cerr << "  -  "<<*iter;
+   *
+   * cerr<<endl;
+   *
+   * const EdgeSet& a=g3.neighbours( 3 );
+   *
+   * for ( EdgeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   *   cerr << "  -  "<<*iter;
+   *
+   * cerr<<endl;
+   *
+   * // remove all the arcs that are parent of a given node
+   * g3.eraseParents( 2 );
+   *
+   * // remove all the edges that are adjacent to a given node
+   * g3.eraseNeighbours( 2 );   
    * @endcode
    */
   /* =========================================================================== */

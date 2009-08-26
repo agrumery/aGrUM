@@ -18,12 +18,49 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief source file for virtual Base classes for oriented graphs listener
+ * @brief source file for virtual Base classes for mixed graphs listener
  *
  * @author Pierre-Henri WUILLEMIN
  */
+
+#include <agrum/graphs/mixedGraphListener.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/mixedGraphListener.inl>
 #endif //GUM_NOINLINE
 
+namespace gum {
+
+  MixedGraphListener::MixedGraphListener(const MixedGraphListener& d) {
+    GUM_CONS_CPY(MixedGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy constructor for MixedGraphListener");
+  }
+
+  MixedGraphListener& MixedGraphListener::operator=(const MixedGraphListener& d) {
+    GUM_OP_CPY(MixedGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy operator for MixedGraphListener");
+  }
+
+  MixedGraphListener::MixedGraphListener(MixedGraph& g) {
+    GUM_CONSTRUCTOR(MixedGraphListener);
+    _graph=&g;
+    
+    GUM_CONNECT( (*_graph),onNodeAdded,(*this),
+                 MixedGraphListener::whenNodeAdded );
+    GUM_CONNECT( (*_graph),onNodeDeleted,(*this),
+                 MixedGraphListener::whenNodeDeleted );
+    GUM_CONNECT( (*_graph),onArcAdded ,(*this),
+                 MixedGraphListener::whenArcAdded );
+    GUM_CONNECT( (*_graph),onArcDeleted,(*this),
+                 MixedGraphListener::whenArcDeleted );
+    GUM_CONNECT( (*_graph),onEdgeAdded ,(*this),
+                 MixedGraphListener::whenEdgeAdded );
+    GUM_CONNECT( (*_graph),onEdgeDeleted,(*this),
+                 MixedGraphListener::whenEdgeDeleted );
+  }
+  
+  MixedGraphListener::~MixedGraphListener() {
+    GUM_DESTRUCTOR(MixedGraphListener);
+  }
+
+} // namespace gum

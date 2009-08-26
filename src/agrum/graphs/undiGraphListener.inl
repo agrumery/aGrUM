@@ -18,35 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Inline implementation fo base classes for oriented graphs listener
+ * @brief Inline implementation fo base classes for undirected graphs listener
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/graphs/undiGraphListener.h>
 
-namespace gum {
-
-UndiGraphListener::UndiGraphListener(const UndiGraphListener& d) {
-    GUM_CONS_CPY(UndiGraphListener);
-    GUM_ERROR(OperationNotAllowed,"No copy constructor for UndiGraphListener");
-}
-
-UndiGraphListener& UndiGraphListener::operator=(const UndiGraphListener& d) {
-    GUM_OP_CPY(UndiGraphListener);
-    GUM_ERROR(OperationNotAllowed,"No copy operator for UndiGraphListener");
-}
-
-UndiGraphListener::UndiGraphListener(UndiGraph* g) {
-    GUM_CONSTRUCTOR(UndiGraphListener);
-    if (! g) GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
-    _digraph=g;
-    GUM_CONNECT( (*_digraph),onNodeAdded,(*this),UndiGraphListener::whenNodeAdded );
-    GUM_CONNECT( (*_digraph),onNodeDeleted,(*this),UndiGraphListener::whenNodeDeleted );
-    GUM_CONNECT( (*_digraph),onEdgeAdded ,(*this),UndiGraphListener::whenEdgeAdded );
-    GUM_CONNECT( (*_digraph),onEdgeDeleted,(*this),UndiGraphListener::whenEdgeDeleted );
-}
-UndiGraphListener::~UndiGraphListener() {
-    GUM_DESTRUCTOR(UndiGraphListener);
-}
-
-} // namespace gum

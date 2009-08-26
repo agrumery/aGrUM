@@ -27,9 +27,8 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/mixedGraph.h>
 
-#include <agrum/core/signal/listener.h>
-#include <agrum/graphs/undiGraphListener.h>
 #include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/undiGraphListener.h>
 #include <agrum/graphs/mixedGraphListener.h>
 
 // The graph used for the tests:
@@ -105,7 +104,7 @@ class GraphListenerTestSuite: public CxxTest::TestSuite {
     private:
         int __nbrNode,__nbrArcs;
     public:
-        DiGraphCounter(gum::DiGraph *g) : gum::DiGraphListener(g) {
+        DiGraphCounter(gum::DiGraph& g) : gum::DiGraphListener(g) {
             __nbrNode=__nbrArcs=0;
         }
 
@@ -138,7 +137,7 @@ class GraphListenerTestSuite: public CxxTest::TestSuite {
     private:
         int __nbrNode,__nbrEdges;
     public:
-        UndiGraphCounter(gum::UndiGraph *g) : gum::UndiGraphListener(g) {
+        UndiGraphCounter(gum::UndiGraph& g) : gum::UndiGraphListener(g) {
             __nbrNode=__nbrEdges=0;
         }
 
@@ -171,7 +170,7 @@ class GraphListenerTestSuite: public CxxTest::TestSuite {
     private:
         int __nbrNode,__nbrArcs,__nbrEdges;
     public:
-        MixedGraphCounter(gum::MixedGraph *g) : gum::MixedGraphListener(g) {
+        MixedGraphCounter(gum::MixedGraph& g) : gum::MixedGraphListener(g) {
             __nbrNode=__nbrArcs=__nbrEdges=0;
         }
 
@@ -508,7 +507,7 @@ public:
     void testUndiGraphWithGraphListener() {
         gum::UndiGraph g;
 
-        UndiGraphCounter c(&g);
+        UndiGraphCounter c(g);
 
         buildUndiGraph( g ); // 5 nodes/6 edges for g
 
@@ -534,7 +533,7 @@ public:
     void testDiGraphWithGraphListener() {
         gum::DiGraph g;
 
-        DiGraphCounter c(&g);
+        DiGraphCounter c(g);
 
         buildDAG( g ); // 5 nodes/6 arcs for g
 
@@ -560,7 +559,7 @@ public:
     void testDAGWithGraphListener() {
         gum::DAG g;
 
-        DiGraphCounter c(&g);
+        DiGraphCounter c(g);
 
         buildDAG( g ); // 5 nodes/6 arcs for g
 
@@ -589,7 +588,7 @@ public:
 
         gum::MixedGraph g;
 
-        MixedGraphCounter c(&g);
+        MixedGraphCounter c(g);
 
         buildMixedGraph( g ); // 5 nodes/3 arcs/3 edges for g
 

@@ -23,7 +23,41 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/graphs/diGraphListener.h>
+
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/diGraphListener.inl>
 #endif //GUM_NOINLINE
 
+
+namespace gum {
+
+  DiGraphListener::DiGraphListener(const DiGraphListener& d) {
+    GUM_CONS_CPY(DiGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy constructor for DiGraphListener");
+  }
+
+  DiGraphListener& DiGraphListener::operator=(const DiGraphListener& d) {
+    GUM_OP_CPY(DiGraphListener);
+    GUM_ERROR(OperationNotAllowed,"No copy operator for DiGraphListener");
+  }
+
+  DiGraphListener::DiGraphListener(DiGraph& g) {
+    GUM_CONSTRUCTOR(DiGraphListener);
+    _graph=&g;
+    
+    GUM_CONNECT( (*_graph),onNodeAdded,(*this),
+                 DiGraphListener::whenNodeAdded );
+    GUM_CONNECT( (*_graph),onNodeDeleted,(*this),
+                 DiGraphListener::whenNodeDeleted );
+    GUM_CONNECT( (*_graph),onArcAdded ,(*this),
+                 DiGraphListener::whenArcAdded );
+    GUM_CONNECT( (*_graph),onArcDeleted,(*this),
+                 DiGraphListener::whenArcDeleted );
+  }
+  
+  DiGraphListener::~DiGraphListener() {
+    GUM_DESTRUCTOR(DiGraphListener);
+  }
+
+} // namespace gum
