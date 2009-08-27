@@ -289,7 +289,7 @@ namespace gum {
 
     // create a simplicial instance that will find the simplicial,
     // almost simplicial and quasi simplicial nodes
-    SimplicialSet simplicial( tmp_graph, __log_modalities, log_weights,
+    SimplicialSet simplicial( &tmp_graph, &__log_modalities, &log_weights,
                               __quasi_ratio, __threshold );
 
     simplicial.setFillIns( __we_want_fill_ins );

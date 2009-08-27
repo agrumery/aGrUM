@@ -47,13 +47,14 @@ namespace gum {
   /// constructor. initialize the simplicial set w.r.t. a given __graph
   // ==============================================================================
   SimplicialSet::SimplicialSet
-  ( UndiGraph& theGraph,
-    const Property<float>::onNodes& theModalities,
-    Property<float>::onNodes& theLogWeights,
-    float theRatio, float theThreshold ) :
-    __graph( theGraph ),
-    __log_weights( theLogWeights ),
-    __log_modalities( theModalities ),
+  ( UndiGraph* theGraph,
+    const Property<float>::onNodes* theModalities,
+    Property<float>::onNodes* theLogWeights,
+    float theRatio,
+    float theThreshold ) :
+    __graph( *theGraph ),
+    __log_weights( *theLogWeights ),
+    __log_modalities( *theModalities ),
     __simplicial_nodes( std::less<float>(), false, __graph.nodes().size() ),
     __almost_simplicial_nodes( std::less<float>(), false, __graph.nodes().size() ),
     __quasi_simplicial_nodes( std::less<float>(), false, __graph.nodes().size() ),
@@ -61,7 +62,12 @@ namespace gum {
     __nb_triangles( __graph.nodes().size() * __graph.nodes().size() / 2 ),
     __nb_adjacent_neighbours( __graph.nodes().size() ),
     __quasi_ratio( theRatio ),
-    __log_threshold( log( 1 + theThreshold ) ) {
+    __log_threshold( log( 1 + theThreshold ) ),
+    __we_want_fill_ins ( false ) {
+    // check that the pointers passed in argument are all different from 0
+    if ( ! theGraph || ! theModalities || ! theLogWeights )
+      GUM_ERROR(OperationNotAllowed, "SimplicialSet requires non-zero pointers");
+    
     // for debugging purposes
     GUM_CONSTRUCTOR( SimplicialSet );
     
@@ -144,7 +150,7 @@ namespace gum {
   // ==============================================================================
   /// adds the necessary edges so that node 'id' and its neighbours form a clique
   // ==============================================================================
-  void SimplicialSet::makeClique( NodeId id ) {
+  void SimplicialSet::makeClique( const NodeId id ) {
     // to make id be a clique, we may have to add edges. Hence, this will create
     // new triangles and we should update the number of triangles passing through
     // the new edges. Moreover, we should also update the number of adjacent
@@ -215,7 +221,7 @@ namespace gum {
           Edge e1_2 ( node1, node2 );
           __graph.insertEdge( node1,node2 );
           if ( __we_want_fill_ins )
-            __fill_ins_list.insert( Edge( node1,node2 ) );
+            __fill_ins_list.insert( e1_2 );
 
           if ( !__changed_status.contains( node2 ) )
             __changed_status.insert( node2 );
@@ -319,7 +325,7 @@ namespace gum {
             // triangles as well as the number of adjacent neighbours
             unsigned int nb_n2 = 0;
 
-           if ( __graph.neighbours( node1 ).size() <=
+            if ( __graph.neighbours( node1 ).size() <=
                  __graph.neighbours( node2 ).size() ) {
               const EdgeSet& nei1 = __graph.neighbours( node1 );
 
@@ -465,7 +471,7 @@ namespace gum {
   // ==============================================================================
   /// removes a node and its adjacent edges from the underlying __graph
   // ==============================================================================
-  void SimplicialSet::eraseNode( NodeId id ) {
+  void SimplicialSet::eraseNode( const NodeId id ) {
     // check if the node we wish to remove actually belongs to the __graph
     if ( !__graph.exists( id ) )
       GUM_ERROR( NotFound, "the node does not belong to the graph" );
@@ -550,13 +556,14 @@ namespace gum {
   // ==============================================================================
   /// adds a new edge to the __graph and recomputes the simplicial set
   // ==============================================================================
-  void SimplicialSet::insertEdge( const Edge& edge ) {
+  void SimplicialSet::insertEdge( NodeId node1, NodeId node2 ) {
     // if the edge already exists, do nothing
+    Edge edge( node1,node2 );
     if ( __graph.existsEdge( edge ) ) return;
 
     // get the extremal nodes of the edge
-    NodeId node1 = edge.first();
-    NodeId node2 = edge.second();
+    node1 = edge.first();
+    node2 = edge.second();
 
     // update the __log_weights of both nodes
     __log_weights[node1] += __log_modalities[node2];
@@ -600,7 +607,7 @@ namespace gum {
   // ==============================================================================
   /// put node id in the correct simplicial/almost simplicial/quasi simplicial list
   // ==============================================================================
-  void SimplicialSet::__updateList( NodeId id ) {
+  void SimplicialSet::__updateList( const NodeId id ) {
     // check if the node belongs to the __graph
     if ( !__graph.exists( id ) )
       GUM_ERROR( NotFound, "the node could not be found" );
@@ -687,11 +694,11 @@ namespace gum {
   bool SimplicialSet::hasAlmostSimplicialNode() {
     // set the limit weight value
     double limit = __log_tree_width + __log_threshold;
+
     // update the elements currently in the almost simplicial list that may
     // now be contained in another list
-
     for ( NodeSetIterator iter = __changed_status.begin();
-          iter !=  __changed_status.end(); ++iter ) {
+          iter != __changed_status.end(); ++iter ) {
       if ( __almost_simplicial_nodes.contains ( *iter ) )
         __updateList( *iter );
     }
@@ -721,9 +728,9 @@ namespace gum {
   bool SimplicialSet::hasQuasiSimplicialNode() {
     // set the limit weight value
     double limit = __log_tree_width + __log_threshold;
+
     // update the elements currently in the quasi simplicial list that may
     // now be contained in another list
-
     for ( NodeSetIterator iter = __changed_status.begin();
           iter != __changed_status.end(); ++iter ) {
       if ( __quasi_simplicial_nodes.contains ( *iter ) )

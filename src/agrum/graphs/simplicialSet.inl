@@ -42,7 +42,7 @@ namespace gum {
   /// indicates whether a given node is a simplicial node
   // ==============================================================================
   INLINE
-  bool SimplicialSet::isSimplicial( NodeId id ) {
+  bool SimplicialSet::isSimplicial( const NodeId id ) {
     // update the list to which the node belongs if needed
     if ( __changed_status.contains( id ) )  __updateList( id );
 
