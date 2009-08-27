@@ -42,9 +42,12 @@ namespace gum {
     GUM_ERROR(OperationNotAllowed,"No copy operator for DiGraphListener");
   }
 
-  DiGraphListener::DiGraphListener(DiGraph& g) {
+  DiGraphListener::DiGraphListener(DiGraph* g) {
+    if ( !g )
+      GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+
     GUM_CONSTRUCTOR(DiGraphListener);
-    _graph=&g;
+    _graph=g;
     
     GUM_CONNECT( (*_graph),onNodeAdded,(*this),
                  DiGraphListener::whenNodeAdded );

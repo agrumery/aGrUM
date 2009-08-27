@@ -43,9 +43,12 @@ namespace gum {
     GUM_ERROR(OperationNotAllowed,"No copy operator for UndiGraphListener");
   }
 
-  UndiGraphListener::UndiGraphListener(UndiGraph& g) {
+  UndiGraphListener::UndiGraphListener(UndiGraph* g) {
+    if ( !g )
+      GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+
     GUM_CONSTRUCTOR(UndiGraphListener);
-    _graph=&g;
+    _graph=g;
     
     GUM_CONNECT( (*_graph),onNodeAdded,(*this),
                  UndiGraphListener::whenNodeAdded );

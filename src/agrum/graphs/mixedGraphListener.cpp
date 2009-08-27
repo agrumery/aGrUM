@@ -41,9 +41,12 @@ namespace gum {
     GUM_ERROR(OperationNotAllowed,"No copy operator for MixedGraphListener");
   }
 
-  MixedGraphListener::MixedGraphListener(MixedGraph& g) {
+  MixedGraphListener::MixedGraphListener(MixedGraph* g) {
+    if ( !g )
+      GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+
     GUM_CONSTRUCTOR(MixedGraphListener);
-    _graph=&g;
+    _graph=g;
     
     GUM_CONNECT( (*_graph),onNodeAdded,(*this),
                  MixedGraphListener::whenNodeAdded );

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for fast retrielval of (quasi) simplicial nodes
+ * @brief Class for fast retrieval of simplicial and quasi/almost simplicial nodes
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -44,7 +44,8 @@ namespace gum {
   /* ===  CLASS FOR RETRIEVING SIMPLICIAL, ALMOST AND QUASI SIMPLICIAL NODES === */
   /* =========================================================================== */
   /** @class SimplicialSet
-   * @brief Class enabling fast retrieval of (quasi) simplicial nodes
+   * @brief Class enabling fast retrieval of simplicial, quasi and almost
+   * simplicial nodes
    *
    * \ingroup graph_group
    *
@@ -71,7 +72,7 @@ namespace gum {
      * and ii) it enables to compute and update the weight of the cliques
      * containing the nodes (the weight of a clique is the sum of the
      * log_modalities of its nodes).
-     * @param log_weights The logarithm of the wieghts of cliques.
+     * @param log_weights The logarithm of the weights of cliques.
      * @param theRatio Let L be the number of edges between neighbours of a
      * given node and let L' be the number of all the possible edges between these
      * neighbours (n * (n+1) / 2). If L/L' >= theRatio, then we consider that
@@ -80,8 +81,8 @@ namespace gum {
      * @param theThreshold for a safe triangulation (see Bodlaender), almost and
      * quasi-simplicial nodes should not be eliminated, unless their weight is
      * lower than the highest weight of the cliques created so far. Here, we
-     * consider it safe if the wieight of a new clique is lower than
-     * (1+theThreshold) * this highest weight. This enables so flexibility. */
+     * consider it safe if the weight of a new clique is lower than
+     * (1+theThreshold) * this highest weight. This enables flexibility. */
     // ============================================================================
     explicit SimplicialSet( UndiGraph& graph,
                             const Property<float>::onNodes& log_modalities,

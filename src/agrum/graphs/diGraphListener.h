@@ -51,8 +51,11 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @param g the graph to listen to */
-    DiGraphListener(DiGraph& g);
+    /** @param g the graph to listen to.
+     * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
+     * that g is passed as a pointer means that g is not copied, but only
+     * referenced by the listener. */
+    DiGraphListener(DiGraph* g);
 
     /// destructor
     ~DiGraphListener();
