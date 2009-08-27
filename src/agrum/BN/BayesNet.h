@@ -58,12 +58,12 @@ class BayesNetFactory;
  */
 template<typename T_DATA>
 class BayesNet: protected VariableNodeMap {
-  friend class BayesNetFactory<T_DATA>;
+    friend class BayesNetFactory<T_DATA>;
 
-  public:
-  // ===========================================================================
-  /// @name Constructors / Destructors
-  // ===========================================================================
+public:
+    // ===========================================================================
+    /// @name Constructors / Destructors
+    // ===========================================================================
     /// @{
 
     /**
@@ -87,9 +87,9 @@ class BayesNet: protected VariableNodeMap {
     BayesNet<T_DATA>& operator=(const BayesNet<T_DATA>& source);
 
     /// @}
-  // ===========================================================================
-  /// @name Getter and setters
-  // ===========================================================================
+    // ===========================================================================
+    /// @name Getter and setters
+    // ===========================================================================
     /// @{
 
     /**
@@ -104,9 +104,9 @@ class BayesNet: protected VariableNodeMap {
     void setProperty(const std::string& name, const std::string& value);
 
     /// @}
-  // ===========================================================================
-  /// @name Variable manipulation methods.
-  // ===========================================================================
+    // ===========================================================================
+    /// @name Variable manipulation methods.
+    // ===========================================================================
     /// @{
 
     /**
@@ -193,9 +193,9 @@ class BayesNet: protected VariableNodeMap {
     const NodeSetIterator endNodes() const;
 
     /// @}
-  // ===========================================================================
-  /// @name Arc manipulation methods.
-  // ===========================================================================
+    // ===========================================================================
+    /// @name Arc manipulation methods.
+    // ===========================================================================
     /// @{
 
     /**
@@ -214,7 +214,16 @@ class BayesNet: protected VariableNodeMap {
      * If (tail, head) doesn't exist, the nothing happens.
      * @param arc The arc removed.
      */
-    void eraseArc(const Arc& arc);
+		void eraseArc(const Arc& arc);
+		
+		/**
+		* Removes an arc in the BN, and update head's CTP.
+		*
+		* If (tail, head) doesn't exist, the nothing happens.
+		* @param head and
+		* @param tail as NodeId
+		*/
+    void eraseArc(NodeId tail, NodeId head);
 
     /**
      * Shortcut for this->dag().beginArcs().
@@ -227,9 +236,9 @@ class BayesNet: protected VariableNodeMap {
     const ArcSetIterator& endArcs() const;
 
     /// @}
-  // ===========================================================================
-  /// @name Graphical methods
-  // ===========================================================================
+    // ===========================================================================
+    /// @name Graphical methods
+    // ===========================================================================
     /// @{
 
     /**
@@ -246,9 +255,9 @@ class BayesNet: protected VariableNodeMap {
     const Sequence<NodeId>& getTopologicalOrder(bool clear=true) const;
 
     /// @}
-  // ===========================================================================
-  /// @name Deprecated methods
-  // ===========================================================================
+    // ===========================================================================
+    /// @name Deprecated methods
+    // ===========================================================================
     /// @{
 
     /**
@@ -269,7 +278,7 @@ class BayesNet: protected VariableNodeMap {
 
     /// @}
 
-  private:
+private:
 
     /// The properties of this BayesNet.
     /// Initialized using a lazy instantiation.
@@ -314,3 +323,4 @@ operator<<(std::ostream& output, const BayesNet<T_DATA>& map);
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

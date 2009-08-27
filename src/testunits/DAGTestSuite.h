@@ -76,6 +76,7 @@ class DAGTestSuite: public CxxTest::TestSuite {
     void testInsert1() {
       gum::DAG graph;
       gum::NodeId id1,id2,id3,id4,id5;
+      id1=id2=id3=id4=id5=0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
       TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
@@ -96,8 +97,9 @@ class DAGTestSuite: public CxxTest::TestSuite {
 
     void testInsert2() {
       gum::DAG graph;
-      gum::NodeId id1,id2,id3,id4,id5;
-
+      gum::NodeId id1,id2,id3,id4,id5;      
+      id1=id2=id3=id4=id5=0;
+      
       TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
       TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
       TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode() );
@@ -109,7 +111,10 @@ class DAGTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
+			
       TS_ASSERT_THROWS( graph.insertArc( id5,id2 ) ,gum::InvalidCircuit );
+			TS_ASSERT_THROWS( graph.insertArc( 1000,id2 ) ,gum::InvalidNode );
+			TS_ASSERT_THROWS( graph.insertArc( id2,1000 ) ,gum::InvalidNode );
 
     }
 

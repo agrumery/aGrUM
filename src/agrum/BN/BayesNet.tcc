@@ -284,6 +284,12 @@ BayesNet<T_DATA>::eraseArc(const Arc& arc) {
     ( *(__probaMap[head]) ) >> VariableNodeMap::get(tail);
   }
 }
+// Removes an arc in the BN, and update head's CTP
+template<typename T_DATA> INLINE
+void
+BayesNet<T_DATA>::eraseArc(NodeId tail,NodeId head) {
+  eraseArc(Arc(tail,head));
+}
 
 // Shortcut for this->dag().beginNodes().
 template<typename T_DATA> INLINE

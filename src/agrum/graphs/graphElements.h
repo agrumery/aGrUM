@@ -529,10 +529,10 @@ namespace gum {
     // ############################################################################
     /// @{
     // ============================================================================
-    /// basic constructor. Creates aN1 -> aN2.
+    /// basic constructor. Creates tail -> head.
     /** @warning the order in which the nodes are passed is important */
     // ============================================================================
-    Arc( NodeId aN1, NodeId aN2 ) ;
+    Arc( NodeId tail, NodeId head ) ;
 
     // ============================================================================
     /// copy constructor

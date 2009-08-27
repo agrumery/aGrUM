@@ -207,8 +207,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor.
   // ==============================================================================
-  INLINE Arc::Arc( NodeId aN1, NodeId aN2 )  :
-    Link( aN1,aN2 ) {
+  INLINE Arc::Arc( NodeId tail, NodeId head )  : Link( tail,head ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Arc );
   }

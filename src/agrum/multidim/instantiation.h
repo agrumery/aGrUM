@@ -26,7 +26,7 @@
 
 /*!
  * @ingroup multidim_group
- \page instantiation_page How to use a Instatiation.
+ \page instantiation_page How to use a Instatiation ?
  @todo check this (near-automatically translated) english.
 
  \section inst_sec_1 Basic principles

@@ -38,12 +38,14 @@
     - \ref graph_page "How to use graph classes ?"
     - \ref multidim_page "How to use the MultiDim hierarchy ?"
     - \ref instantiation_page "How to use a Instantiation ?"
+		- \ref signal_page "How to use signaler/listener in aGrUM ?"
 
     \defgroup basicstruct_group Basic data structures
     \defgroup graph_group Graph representation
     \defgroup multidim_group Multidimensional data
     \defgroup bn_group Bayesian Networks
     \defgroup learning_group Tools for learning
+		\defgroup signal_group Signaler and Listener
 
   \page install_and_use Installing and using the aGrUM library
     \section Installation
