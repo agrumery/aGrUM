@@ -41,17 +41,17 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===              BASIC TRIANGULATION ALGORITHM USED BY AGRUM             === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===             BASIC TRIANGULATION ALGORITHM USED BY AGRUM             === */
+  /* =========================================================================== */
   /** @class DefaultTriangulation
    * @brief The default triangulation algorithm used by aGrUM
    *
    * \ingroup graph_group
    *
    *
-   * By default, this is the very class used by aGrUM for performing triangulations.
-   * The algorithm used is the following:
+   * By default, this is the very class used by aGrUM for performing
+   * triangulations. The algorithm used is the following:
    * # the graph passed in argument is completed by fill-ins until it becomes
    *   triangulated
    * # then an elimination tree is computed from this triangulated graph
@@ -60,7 +60,7 @@ namespace gum {
    * The triangulation step first tries to remove simplicial nodes, that is, nodes
    * that belong to only one clique. Then almost simplicial nodes of low width are
    * removed (almost simplicial nodes are nodes such that all but one of their
-   * neighbours form a clique. Then quasi simplicial nodes are removed, that is,
+   * neighbours form a clique). Then quasi simplicial nodes are removed, that is,
    * nodes such that the ratio of the number of fill-ins to add to form a clique
    * by the number of edges in a clique is small. Then nodes that create cliques
    * of small weight are removed.
@@ -70,7 +70,7 @@ namespace gum {
    * sub-clique, it is removed and all of its parents but one are linked to the
    * latter. The identification of sub-cliques is very fast (comparison of 2 ints).
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class DefaultTriangulation : public Triangulation {
   public:
     // ############################################################################
@@ -79,9 +79,6 @@ namespace gum {
     /// @{
     // ============================================================================
     /// basic constructor. initialize the triangulation
-    /** Note that, in the graph passed in argument, the type of the edges may differ
-     * from Edge. However, the junction trees and triangulated graphs produced
-     * by the triangulation algorithm will all have edges of type Edge. */
     // ============================================================================
     explicit DefaultTriangulation( const UndiGraph& graph,
                                    const Property<unsigned int>::onNodes& modal,
@@ -91,9 +88,6 @@ namespace gum {
     
     // ============================================================================
     /// basic constructor. initialize the triangulation
-    /** Note that, in the graph passed in argument, the type of the edges differ
-     * from Edge. However, the junction trees and triangulated graphs produced
-     * by the triangulation algorithm will all have edges of type Edge. */
     // ============================================================================
     explicit DefaultTriangulation( const DiGraph& graph,
                                    const Property<unsigned int>::onNodes& modal,
@@ -103,9 +97,6 @@ namespace gum {
 
     // ============================================================================
     /// basic constructor. initialize the triangulation
-    /** Note that, in the graph passed in argument, the type of the arcs/edges differ
-     * from Edge. However, the junction trees and triangulated graphs produced
-     * by the triangulation algorithm will all have edges of type Edge. */
     // ============================================================================
     explicit DefaultTriangulation( const MixedGraph& graph,
                                    const Property<unsigned int>::onNodes& modal,
@@ -116,9 +107,9 @@ namespace gum {
     // ============================================================================
     /// default constructor: initialize the triangulation for an empty graph
     // ============================================================================
-    DefaultTriangulation( bool minimality = false,
-                          double theRatio = GUM_QUASI_RATIO,
-                          double theThreshold = GUM_WEIGHT_THRESHOLD );
+    explicit DefaultTriangulation( bool minimality = false,
+                                   double theRatio = GUM_QUASI_RATIO,
+                                   double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     // ============================================================================
     /// copy constructor (deep copy)
@@ -211,6 +202,11 @@ namespace gum {
     // ============================================================================
     void setFillIns( bool );
 
+    // ============================================================================
+    /// virtual copy constructor
+    // ============================================================================
+    virtual DefaultTriangulation* copyFactory () const;
+
     /// @}
 
 
@@ -223,11 +219,6 @@ namespace gum {
     // ============================================================================
     DefaultTriangulation& operator= ( const DefaultTriangulation& );
     
-    // ============================================================================
-    /// virtual copy constructor
-    // ============================================================================
-    virtual DefaultTriangulation* copyFactory () const;
-
     /// @}
 
 
@@ -282,14 +273,15 @@ namespace gum {
     /// a boolean indicating whether the junction tree has been constructed
     bool __has_junction_tree;
 
-    /// indicates whether a maximal prime subgraph junction tree has been constructed
+    /** @brief indicates whether a maximal prime subgraph junction tree has
+     * been constructed */
     bool __has_max_prime_junction_tree;
 
     /// the ratio above which we consider nodes to be quasi simplicial
     float __quasi_ratio;
 
-    /** @brief threshold under which almost and quasi simplicial nodes can be chosen
-     * to be eliminated */
+    /** @brief threshold under which almost and quasi simplicial nodes can be
+     * chosen to be eliminated */
     float __threshold;
 
     /// indicates whether the triangulation must be minimal

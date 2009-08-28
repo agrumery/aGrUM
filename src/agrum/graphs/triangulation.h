@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for computing triangulations of graphs
+ * @brief Abstract base class for computing triangulations of graphs
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -37,16 +37,16 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ===               BASIC INTERFACE TO PERFORM TRIANGULATIONS              === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===               BASIC INTERFACE TO PERFORM TRIANGULATIONS             === */
+  /* =========================================================================== */
   /** @class Triangulation
    * @brief Interface for all triangulation methods
    *
    * \ingroup graph_group
    *
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   struct Triangulation {
     // ============================================================================
     /// returns the fill-ins added by the triangulation algorithm
