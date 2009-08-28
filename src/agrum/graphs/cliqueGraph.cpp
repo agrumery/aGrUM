@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief source of basic __clique graphs
+ * @brief source of basic clique graphs (join trees, etc)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -36,14 +36,14 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH                  === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH                 === */
+  /* =========================================================================== */
+  /* =========================================================================== */
 
   // ==============================================================================
-  /// basic constructor: creates an empty __clique graph
+  /// basic constructor: creates an empty xsclique graph
   // ==============================================================================
   CliqueGraph::CliqueGraph( Size nodes_size,
                             bool nodes_resize_policy,
@@ -60,21 +60,12 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   CliqueGraph::CliqueGraph( const CliqueGraph& from ) :
-    NodeGraphPart( from ),UndiGraph( from ) {
+    NodeGraphPart( from ), // needed because NodeGraphPart is a virtual inherited
+    UndiGraph( from ),     // class (see C++ FAQ Lite #25.12 for details)
+    __cliques ( from.__cliques ),
+    __separators ( from.__separators ) {
     // for debugging purposes
     GUM_CONS_CPY( CliqueGraph );
-    // fill the __cliques sets
-
-    for ( Property<NodeSet>::onNodes::const_iterator iter=from.__cliques.begin();
-          iter!=from.__cliques.end();
-          ++iter )
-      __cliques.insert( iter.key(), *iter );
-
-    // fill the __separators sets
-    for ( Property< NodeSet >::onEdges::const_iterator iter=from.__separators.begin();
-          iter!=from.__separators.end();
-          ++iter )
-      __separators.insert( iter.key(), *iter );
   }
 
   // ==============================================================================
@@ -86,27 +77,23 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// returns a path from a __clique containing node1 to a __clique containing node2
+  /// returns a path from a clique containing node1 to a clique containing node2
   // ==============================================================================
   std::vector<NodeId>
   CliqueGraph::containerPath( const NodeId node1,const NodeId node2 ) const  {
     // get a path from a __clique containing node1 to a __clique containing node2
     std::vector<NodeId> path = undirectedPath( container( node1 ),
                                                container( node2 ) );
+    
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
+    while ( ( path.size() >= 2 ) &&
+            ( clique( path[path.size()-2] ).contains( node2 ) ) )
+      path.pop_back();
 
-    while ( path.size() >= 2 )
-      if ( clique( path[path.size()-2] ).contains( node2 ) )
-        path.pop_back();
-      else
-        break;
-
-    while ( path.size() >= 2 )
-      if ( clique( path[1] ).contains( node1 ) )
-        path.erase( path.begin() );
-      else
-        break;
+    while ( ( path.size() >= 2 ) &&
+            ( clique( path[1] ).contains( node1 ) ) )
+      path.erase( path.begin() );
 
     return path;
   }
@@ -119,8 +106,8 @@ namespace gum {
                                  const NodeId node_id ) {
     // get the current clique set
     NodeSet& clique = __cliques[clique_id];
+    
     // check if the node already exists, in which case throw an exception
-
     if ( clique.contains( node_id ) )
       GUM_ERROR( DuplicateElement, "the clique set already contains the node" );
 
@@ -131,7 +118,6 @@ namespace gum {
 
     for ( EdgeSetIterator ite=set.begin();ite!=set.end();++ite ) {
       NodeId other_clique=ite->other( clique_id );
-
       if ( __cliques[other_clique].contains( node_id ) )
         __separators[*ite].insert( node_id );
     }
@@ -140,13 +126,12 @@ namespace gum {
   // ==============================================================================
   /// remove a node from a __clique
   // ==============================================================================
-  void
-  CliqueGraph::eraseFromClique( const NodeId clique_id,
-                                const NodeId node_id ) {
+  void CliqueGraph::eraseFromClique( const NodeId clique_id,
+                                     const NodeId node_id ) {
     // get the current __clique set
     NodeSet& clique = __cliques[clique_id];
-    // check if the node does not exist, in which case throw an exception
 
+    // check if the node does not exist, in which case throw an exception
     if ( clique.contains( node_id ) ) {
       clique.erase( node_id );
       // update the __separators adjacent to __clique 'id'
@@ -168,10 +153,8 @@ namespace gum {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];
-
     for ( NodeSetIterator iter = nodes_clique.begin();
-          iter != nodes_clique.end();
-          ++iter )
+          iter != nodes_clique.end(); ++iter )
       if ( infos_DFS.nodes_other_components.contains( *iter ) )
         return false;
 
@@ -195,24 +178,24 @@ namespace gum {
         infos_DFS.nodes_DFS_seen.insert( *iter );
     }
 
-    // update the fact that the __clique has been visited
+    // update the fact that the clique has been visited
     infos_DFS.visited_cliques.insert( clique );
 
     // check the neighbours that are different from "from" and that have not
     // been visited yet
     const EdgeSet& neighbour=neighbours( clique );
 
-    for ( EdgeSetIterator iter=neighbour.begin();iter != neighbour.end(); ++iter ) {
+    for ( EdgeSetIterator iter=neighbour.begin();
+          iter != neighbour.end(); ++iter ) {
       const NodeId otherID = iter->other( clique );
 
       if ( otherID != from ) {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
-        // belong to the __clique but not to the separator
+        // belong to the clique but not to the separator
         const NodeSet& from_separ = __separators[*iter];
 
         for ( NodeSetIterator iter_clique = nodes_clique.begin();
-              iter_clique != nodes_clique.end();
-              ++iter_clique ) {
+              iter_clique != nodes_clique.end(); ++iter_clique ) {
           if ( !from_separ.contains( *iter_clique ) )
             infos_DFS.nodes_DFS_forbidden.insert( *iter_clique );
         }
@@ -225,12 +208,21 @@ namespace gum {
         for ( NodeSetIterator iter_clique = nodes_clique.begin();
               iter_clique != nodes_clique.end(); ++iter_clique )
           infos_DFS.nodes_DFS_forbidden.erase( *iter_clique );
+
+        // check again the structure that keeps track of the cliques that still
+        // require chains to access some of their nodes: the chain may be
+        // the neighbour we just encountered
+        for ( NodeSetIterator iter = nodes_clique.begin();
+              iter != nodes_clique.end(); ++iter ) {
+          if ( !infos_DFS.nodes_DFS_forbidden.contains( *iter ) )
+            infos_DFS.cliques_DFS_chain[clique].erase( *iter );
+        }
       }
     }
 
     // when a node is terminal, i.e., it has at most one neighbour, add its nodes
     // to the nodes forbidden by the DFS. It will prevent non adjacent extremal
-    // __cliques to contain the same node while this one does not belong to any
+    // cliques to contain the same node while this one does not belong to any
     // separator
     if ( neighbours( clique ).size() <= 1 )
       for ( NodeSetIterator iter_clique = nodes_clique.begin();
@@ -248,22 +240,19 @@ namespace gum {
   bool CliqueGraph::hasRunningIntersection() const  {
     // create a RunningIntersect structure and initialize it
     __RunningIntersect infos_DFS;
-    // while there exist unvisited __cliques, perform a DFS on them
-    infos_DFS.cliques_DFS_chain=__cliques;
-    /*for ( GUM_NODE_PROPERTY::iterator iter = __cliques.begin();
-      iter != __cliques.end(); ++iter ) {
-      infos_DFS.cliques_DFS_chain.insert( *iter,__cliques[iter]);
-      }*/
-
+    infos_DFS.cliques_DFS_chain = __cliques;
+    
+    // while there exist unvisited cliques, perform a DFS on them
     for ( NodeSetIterator iter_DFS=nodes().begin();
           iter_DFS != nodes().end(); ++iter_DFS )
       if ( ! infos_DFS.visited_cliques.contains( *iter_DFS ) ) {
         // no nodes are forbidden a priori in the DFS
         infos_DFS.nodes_DFS_forbidden.clear();
+
         // no node has already been seen in the DFS
         infos_DFS.nodes_DFS_seen.clear();
-        // here iter_DFS points on a __clique that has not been visited yet
 
+        // here iter_DFS points on a clique that has not been visited yet
         if ( ! __runningIntersectionDFS( *iter_DFS, *iter_DFS, infos_DFS ) )
           return false;
 
@@ -276,7 +265,7 @@ namespace gum {
             infos_DFS.nodes_other_components.insert( *iter_seen );
       }
 
-    // check that no clique requires an additional chain to guarrantee the
+    // check that no clique requires an additional chain to guarantee the
     // running intersection property
     for (Property<NodeSet>::onNodes::const_iterator iter =
             infos_DFS.cliques_DFS_chain.begin();
@@ -295,8 +284,7 @@ namespace gum {
 
     // check if the __cliques are identical
     for ( Property<NodeSet>::onNodes::const_iterator iter = __cliques.begin();
-          iter != __cliques.end();
-          ++iter )
+          iter != __cliques.end(); ++iter )
       if ( *iter != from.__cliques[iter.key()] ) return false;
 
     return true;

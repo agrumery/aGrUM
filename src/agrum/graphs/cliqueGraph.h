@@ -33,26 +33,27 @@
 namespace gum {
   
 
-  /* ============================================================================ */
-  /* ===                           GRAPHS OF CLIQUES                          === */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* ===                           GRAPHS OF CLIQUES                         === */
+  /* =========================================================================== */
   /** @class CliqueGraph
    * @brief Basic graph of cliques
    *
    * \ingroup graph_group
    *
    *
-   * CliqueGraph is a undirected graph the nodes of which are Cliques, i.e.,
+   * A CliqueGraph is an undirected graph the nodes of which are Cliques, i.e.,
    * sets of NodeIds. Cliques are linked by Edges, edges support separators
    * which are intersection of Cliques.
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   class CliqueGraph : public UndiGraph {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
+    
     // ============================================================================
     /// basic constructor: creates an empty clique graph
     /** @param nodes_size the size of the hash table used to store all the nodes
@@ -66,18 +67,8 @@ namespace gum {
                           bool edges_resize_policy    = true );
     
     // ============================================================================
-    /// copy constructor (by default, deep copy of nodes and edges lists)
-    /** This copy constructor has two different behaviors, depending on the value of
-     * parameter copy_type. If it is equal to GUM_DEEP_COPY (the default), a
-     * deep copy is performed, that is, new Edge and NodeId instances are created
-     * and inserted into the newly created CliqueGraph. Thus, the latter and the
-     * copied CliqueGraph (from) are completely distinct in terms of memory
-     * locations. If, on the contrary, copy_type is equal to GUM_SHALLOW_COPY, only
-     * Edge and NodeId pointers are copied. As a result, all the edges/nodes
-     * in the new CliqueGraph are shared with those of \e from. Thus, modifying the
-     * content of an edge/node in one graph will also modify it in the other
-     * graph. However, both graphs are distinct in the sense that removing an
-     * edge or node from one graph does not remove it from the other one. */
+    /// copy constructor
+    /** @param from the CliqueGraph that will be copied into \e this */
     // ============================================================================
     CliqueGraph( const CliqueGraph& from );
     
@@ -89,91 +80,126 @@ namespace gum {
     /// @}
 
 
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
     // ============================================================================
-    /// adds a copy of \e edge to the list of edges of the graph.
-    /** @return As this is a copy that is inserted into the list, the method
-     * returns a reference to this new copy. The insertion is achieved only if it
-     * does not break the running intersection property. In this case, it throws an
-     * exception
-     * @throw DuplicateElement exception is thrown if the edge list already
-     * contains an edge with the same extremities */
+    /// inserts a new edge between two cliques
+    /** @param first the id of one extremity of the new edge to be inserted
+     * @param second the id of the other extremity of the new edge to be inserted
+     * @warning if the edge already exists, nothing is done. In particular, no
+     * exception is raised.
+     * @throw InvalidNode if first and/or second do not belong to the
+     * graph nodes */
     // ============================================================================
     virtual void insertEdge( const NodeId first,const NodeId second );
     
     // ============================================================================
     /// removes an edge (and its separator) from the clique graph
-    /** If the clique graph does not contain the edge, then the function does
-     * nothing. In particular, it does not throw any exception. */
+    /** @param edge the edge to be removed
+     * @warning if the edge does not exist, nothing is done. In particular, no
+     * exception is thrown. */    
     // ============================================================================
     virtual void eraseEdge( const Edge &edge );
     
     // ============================================================================
-    /// adds a new clique to the graph
+    /// removes all edges and their separators
     // ============================================================================
-    NodeId insertNode( const NodeSet& clique );
+    virtual void clearEdges();
 
     // ============================================================================
     /// adds a new clique to the graph
+    /** @return the id chosen for the new clique */
     // ============================================================================
-    void insertNode( const NodeId id,  const NodeSet& clique );
+    virtual NodeId insertNode( const NodeSet& clique );
+
+    // ============================================================================
+    /// try to add a new clique to the graph
+    /** @throws DuplicateElement exception is thrown if the id of the clique
+     * already exists within the clique graph */
+    // ============================================================================
+    virtual void insertNode( const NodeId id,  const NodeSet& clique );
 
     // ============================================================================
     /// removes a given clique from the clique graph
+    /** If the CliqueGraph does not contain the node, then nothing is done. In
+     * particular, no exception is raised. */
     // ============================================================================
     virtual void eraseNode( const NodeId node );
 
     // ============================================================================
+    /** @brief removes all the cliques and separators from the graph (as well as
+     * their adjacent edges) */
+    // ============================================================================
+    virtual void clear();
+
+    // ============================================================================
     /// returns the set of nodes included into a given clique
-    /**
-     * @throw NotFound
-     */
+    /** @throw NotFound exception is raised if the clique does not belong to
+     * the clique graph */
     // ============================================================================
     const NodeSet& clique( const NodeId idClique ) const;
 
     // ============================================================================
-    /// returns the id of a clique containing the node the id of which is in argument
+    /** @brief returns the id of a clique containing the node the id of which is
+     * in argument 
+     * @warning note that this method is time consuming as the clique graph does
+     * not contain a priori information about which clique could contain idNode.
+     * As a consequence, it searches the cliques until it finds one that actually
+     * contains idNode.
+     * @throws NotFound exception is thrown if no clique contains idNode */
     // ============================================================================
     NodeId container( const NodeId idNode ) const;
 
     // ============================================================================
-    /// changes the set of nodes included into a given clique and returns the new set
+    /** @brief changes the set of nodes included into a given clique and returns
+     * the new set
+     * @throws NotFound exception is thrown if idClique is not a clique of
+     * the clique graph */
     // ============================================================================
-    void setClique( const NodeId idClique,const NodeSet& new_clique );
+    virtual void setClique( const NodeId idClique,const NodeSet& new_clique );
 
     // ============================================================================
-    /// changes the set of nodes included into a given clique and returns the new set
-    /** @throw DuplicateElement exception is thrown if the clique set already
-     * contains the node (i.e., it already contains a node with the same ID) */
+    /** @brief changes the set of nodes included into a given clique and returns
+     * the new set
+     *
+     * @throws NotFound exception is thrown if clique_id does not exist
+     * @throw DuplicateElement exception is thrown if clique_id set already
+     * contains the node */
     // ============================================================================
-    void addToClique( const NodeId clique_id,const NodeId node_id );
+    virtual void addToClique( const NodeId clique_id,const NodeId node_id );
 
     // ============================================================================
     /// remove a node from a clique
-    /** If the node cannot be found in the clique set, then the function does
-     * nothing. In particular, it does not throw any exception. */
+    /** If node_id cannot be found in the clique set, then the function does
+     * nothing. In particular, it does not throw any exception.
+     * @throws NotFound exception is thrown if clique_id does not exist */
     // ============================================================================
-    void eraseFromClique( const NodeId clique_id,const NodeId node_id );
+    virtual void eraseFromClique( const NodeId clique_id,const NodeId node_id );
 
     // ============================================================================
     /// returns the separator included in a given edge
-    /**
-     * @throw NotFound
-     */
+    /** @throw NotFound exception is thrown if the edge does not belong to the
+     * clique graph */
     // ============================================================================
     const NodeSet& separator( const Edge& edge )  const;
 
     // ============================================================================
     /// returns the separator included in an edge specified by its extremities
-    /**
-     * @throw NotFound
-     */
+    /** @throw NotFound exception is thrown if the edge does not belong to the
+     * clique graph */
     // ============================================================================
     const NodeSet& separator( const NodeId clique1, const NodeId clique ) const;
 
     // ============================================================================
     /// returns a path from a clique containing node1 to a clique containing node2
+    /** @throws NotFound such path cannot be found */
     // ============================================================================
-    std::vector<NodeId> containerPath( const NodeId node1, const NodeId node2 ) const;
+    std::vector<NodeId>
+    containerPath( const NodeId node1, const NodeId node2 ) const;
+
     // ============================================================================
     /// indicates whether the running intersection property holds
     /** The function works properly even if the graph contains cycles. */
@@ -186,14 +212,14 @@ namespace gum {
     bool isJoinTree() const ;
 
     // ============================================================================
-    /// removes all the nodes from the graph (as well as their adjacent edges/arcs)
+    /// friendly displays the content of the CliqueGraph
     // ============================================================================
-    virtual void clear();
+    virtual const std::string toString() const;
 
     // ============================================================================
-    /// removes all edges and separators
+    /// friendly displays the content of the CliqueGraph in DOT format
     // ============================================================================
-    virtual void clearEdges();
+    virtual const std::string toDot() const;
 
     /// @}
 
@@ -203,11 +229,7 @@ namespace gum {
     // ############################################################################
     /// @{
     // ============================================================================
-    /// copy operator (deep copy)
-    /** The copy performed is a deep one, i.e., new Edge/NodeId instances are
-     * created and inserted into the newly created CliqueGraph. Thus, the latter
-     * and the copied CliqueGraph (from) are completely distinct in terms of
-     * memory locations. */
+    /// copy operator
     // ============================================================================
     CliqueGraph&  operator= ( const CliqueGraph& from );
 
@@ -224,10 +246,6 @@ namespace gum {
     /// @}
 
 
-    virtual const std::string toString() const;
-    virtual const std::string toDot() const;
-
-
   private:
     /// the set of nodes contained into the cliques
     Property<NodeSet>::onNodes __cliques;
@@ -239,8 +257,9 @@ namespace gum {
     /// function used to update the separators when a clique is modified
     // ============================================================================
     void __updateSeparators( const NodeId clique1 );
-    /// structure used for the computation of the running intersection property
 
+    
+    /// structure used for the computation of the running intersection property
     struct __RunningIntersect {
       /** @brief structure indicating for each clique whether it has been
        * examined by a DFS (Depth First Search) */
@@ -253,22 +272,23 @@ namespace gum {
 
       /// the nodes that are currently forbidden by separators in the DFS
       NodeSet nodes_DFS_forbidden;
+      
       /// set of the nodes examined during the current DFS
-
       NodeSet nodes_DFS_seen;
+      
       /** @brief for each clique, the list of its nodes that require accessing the
        * clique through a chain
        *
        * At the beginning, all nodes in a clique require a chain to be accessed.
-       * In a DFS, when a chain reaches a clique, we remove from \c cliques_DFS_chain
-       * the nodes that are are not forbidden by the DFS, i.e., the nodes that are
-       * reachable by the chain starting from the root of the DFS. These are the
-       * nodes that belong to the separators. Hence, after completing all the DFS,
-       * there remain in \c cliques_DFS_chain only the nodes that are accessible by
-       * no chain but that are found in several parts of the clique graph. In such
-       * a case, this is a violation of the running intersection property. Hence,
-       * for the latter to hold, after completion of all the DFS,
-       * \c cliques_DFS_chain must contain only empty sets. */
+       * In a DFS, when a chain reaches a clique, we remove from
+       * \c cliques_DFS_chain the nodes that are not forbidden by the DFS,
+       * i.e., the nodes that are reachable by the chain starting from the root of
+       * the DFS. These are the nodes that belong to the separators. Hence, after
+       * completing all the DFS, there remain in \c cliques_DFS_chain only the
+       * nodes that are accessible by no chain but that are found in several parts
+       * of the clique graph. In such a case, this is a violation of the running
+       * intersection property. Hence, for the latter to hold, after completion of
+       * all the DFS, \c cliques_DFS_chain must contain only empty sets. */
       Property<NodeSet>::onNodes cliques_DFS_chain;
     };
 

@@ -69,22 +69,26 @@ namespace gum {
     /// @{
 
     /// the action to take when a new node is inserted into the graph
-    /** @param id the id of the new node inserted into the graph */
-    virtual void whenNodeAdded( const void *x,NodeId id)=0;
+    /** @param src the object that sent the signal
+     * @param id the id of the new node inserted into the graph */
+    virtual void whenNodeAdded( const void *src,NodeId id)=0;
 
     /// the action to take when a node has just been removed from the graph
-    /** @param id the id of the node has just been removed from the graph */    
-    virtual void whenNodeDeleted( const void *x,NodeId id)=0;
+    /** @param src the object that sent the signal
+     * @param id the id of the node has just been removed from the graph */    
+    virtual void whenNodeDeleted( const void *src,NodeId id)=0;
 
     /// the action to take when a new arc is inserted into the graph
-    /** @param from the id of tail of the new arc inserted into the graph
+    /** @param src the object that sent the signal
+     * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
-    virtual void whenArcAdded( const void *x,NodeId from,NodeId to)=0;
+    virtual void whenArcAdded( const void *src,NodeId from,NodeId to)=0;
 
     /// the action to take when an arc has just been removed from the graph
-    /** @param from the id of tail of the arc removed from the graph
+    /** @param src the object that sent the signal
+     * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
-    virtual void whenArcDeleted( const void *x,NodeId from,NodeId to)=0;
+    virtual void whenArcDeleted( const void *src,NodeId from,NodeId to)=0;
 
     /// @}
 

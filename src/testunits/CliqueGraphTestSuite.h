@@ -670,5 +670,49 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_DIFFERS( g1, copy1 );
       TS_ASSERT_DIFFERS( g2, copy2 );
     }
+
+
+  void testRunningIntProp () {
+    gum::CliqueGraph g;
+
+    gum::NodeSet n1; // ABC
+    n1.insert ((gum::NodeId) 1);
+    n1.insert ((gum::NodeId) 2);
+    n1.insert ((gum::NodeId) 3); 
+    g.insertNode ((gum::NodeId) 1, n1);
+
+    gum::NodeSet n2; // BCD
+    n2.insert ((gum::NodeId) 2);
+    n2.insert ((gum::NodeId) 3);
+    n2.insert ((gum::NodeId) 4); 
+    g.insertNode ((gum::NodeId) 2, n2);
+
+    gum::NodeSet n3; // CDE
+    n3.insert ((gum::NodeId) 3);
+    n3.insert ((gum::NodeId) 4);
+    n3.insert ((gum::NodeId) 5); 
+    g.insertNode ((gum::NodeId) 3, n3);
+
+    gum::NodeSet n4; // ADE
+    n4.insert ((gum::NodeId) 4);
+    n4.insert ((gum::NodeId) 5);
+    n4.insert ((gum::NodeId) 1); 
+    g.insertNode ((gum::NodeId) 4, n4);
+
+    gum::NodeSet n5; // ABE
+    n5.insert ((gum::NodeId) 5);
+    n5.insert ((gum::NodeId) 1);
+    n5.insert ((gum::NodeId) 2); 
+    g.insertNode ((gum::NodeId) 5, n5);
+
+    g.insertEdge ( 1,2 );
+    g.insertEdge ( 2,3 );
+    g.insertEdge ( 3,4 );
+    g.insertEdge ( 4,5 );
+    g.insertEdge ( 5,1 );
+
+    TS_ASSERT( g.hasRunningIntersection() == true );
+    
+  }
 };
 

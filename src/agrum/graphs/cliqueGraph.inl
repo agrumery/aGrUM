@@ -69,6 +69,7 @@ namespace gum {
   INLINE NodeId CliqueGraph::insertNode( const NodeSet& clique ) {
     // create the new node in the graph
     NodeId new_node = UndiGraph::insertNode();
+
     // update the set of nodes of the clique
     __cliques.insert( new_node, clique );
     return new_node;
@@ -80,6 +81,7 @@ namespace gum {
   INLINE void CliqueGraph::insertNode( const NodeId id,  const NodeSet& clique ) {
     // create the new node in the graph
     UndiGraph::insertNode( id );
+
     // update the set of nodes of the clique
     __cliques.insert( id, clique );
   }
@@ -118,11 +120,22 @@ namespace gum {
   INLINE NodeId
   CliqueGraph::container( const NodeId id ) const  {
     for ( Property<NodeSet>::onNodes::const_iterator iter = __cliques.begin();
-          iter != __cliques.end();
-          ++iter )
+          iter != __cliques.end(); ++iter )
       if ( iter->contains( id ) ) return iter.key();
 
     GUM_ERROR( NotFound, "This node belongs to no clique" );
+  }
+
+  // ==============================================================================
+  /// function used to update the __separators when __clique/edges are modified
+  // ==============================================================================
+  INLINE void
+  CliqueGraph::__updateSeparators( const NodeId id1 ) {
+    const EdgeSet& nei=neighbours( id1 );
+
+    for ( EdgeSetIterator ite=nei.begin();ite!=nei.end();++ite ) {
+      __separators[*ite]=__cliques[id1]*__cliques[ite->other( id1 )];
+    }
   }
 
   // ==============================================================================
@@ -185,17 +198,6 @@ namespace gum {
     return ( !operator== ( from ) );
   }
 
-  // ==============================================================================
-  /// function used to update the __separators when __clique/edges are modified
-  // ==============================================================================
-  INLINE void
-  CliqueGraph::__updateSeparators( const NodeId id1 ) {
-    const EdgeSet& nei=neighbours( id1 );
-
-    for ( EdgeSetIterator ite=nei.begin();ite!=nei.end();++ite ) {
-      __separators[*ite]=__cliques[id1]*__cliques[ite->other( id1 )];
-    }
-  }
 
 
 } /* namespace gum */

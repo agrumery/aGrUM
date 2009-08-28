@@ -70,22 +70,26 @@ namespace gum {
     /// @{
 
     /// the action to take when a new node is inserted into the graph
-    /** @param id the id of the new node inserted into the graph */
-    virtual void whenNodeAdded( const void *x,NodeId id)=0;
+    /** @param src the object that sent the signal
+     * @param id the id of the new node inserted into the graph */
+    virtual void whenNodeAdded( const void *src,NodeId id)=0;
 
     /// the action to take when a node has just been removed from the graph
-    /** @param id the id of the node has just been removed from the graph */    
-    virtual void whenNodeDeleted( const void *x,NodeId id)=0;
+    /** @param src the object that sent the signal
+     * @param id the id of the node has just been removed from the graph */    
+    virtual void whenNodeDeleted( const void *src,NodeId id)=0;
 
     /// the action to take when a new edge is inserted into the graph
-    /** @param id1 the id of one node of the edge inserted into the graph
+    /** @param src the object that sent the signal
+     * @param id1 the id of one node of the edge inserted into the graph
      * @param id2 the id of the other node of the edge inserted into the graph */
-    virtual void whenEdgeAdded( const void *x,NodeId id1,NodeId id2)=0;
+    virtual void whenEdgeAdded( const void *src,NodeId id1,NodeId id2)=0;
 
     /// the action to take when an edge has just been removed from the graph
-    /** @param id1 the id of one node of the edge removed from the graph
+    /** @param src the object that sent the signal
+     * @param id1 the id of one node of the edge removed from the graph
      * @param id2 the id of the other node of the edge removed from the graph */
-    virtual void whenEdgeDeleted( const void *x,NodeId from,NodeId to)=0;
+    virtual void whenEdgeDeleted( const void *src,NodeId from,NodeId to)=0;
 
     /// @}
 

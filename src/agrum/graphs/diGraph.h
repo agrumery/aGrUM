@@ -101,7 +101,7 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  class DiGraph : public ArcGraphPart,public virtual NodeGraphPart {
+  class DiGraph : public virtual NodeGraphPart, public ArcGraphPart {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
