@@ -39,6 +39,7 @@ namespace CxxTest {
   class AgrumErrorFormatter : public TestListener {
     private:
     gum::Timer *clock;
+    double totalTime;
     public:
       AgrumErrorFormatter( OutputStream *o, const char *preLine = ":", const char *postLine = "" ) :
           _dotting( true ),
@@ -55,6 +56,7 @@ namespace CxxTest {
 
       void enterWorld( const WorldDescription & /*desc*/ ) {
         clock=new gum::Timer();
+        totalTime=0.0;
         ( *_o ) << endl << "======================"<<endl << "Agrum Test Unit Module"<<endl<<"======================"<<endl<<endl<<"Running " << totalTests<<endl;
         _o->flush();
         _dotting = true;
@@ -74,7 +76,9 @@ namespace CxxTest {
       }
 
       void leaveSuite( const SuiteDescription & ) {
-        (( *_o ) <<" ["<<1000.0*clock->step()<<" ms]" ).flush();
+        double step=clock->step();
+        totalTime+=step;
+        (( *_o ) <<" ["<<1000.0*step<<" ms]" ).flush();
       }
 
       void enterTest( const TestDescription & ) {
@@ -93,7 +97,9 @@ namespace CxxTest {
    	newLine();
 #ifndef NDEBUG
         gum::debug::__atexit();
-#endif // NDEBUG
+        #endif // NDEBUG
+        
+        ( *_o ) << endl<<"## Profiling : "<<1000.0*totalTime<<" ms ##"<<endl;
         if ( !tracker().failedTests() ) {
           ( *_o ) << endl
           << "=================================="<<endl
@@ -106,7 +112,6 @@ namespace CxxTest {
         ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests << endl;
         unsigned numPassed = desc.numTotalTests() - tracker().failedTests();
         ( *_o ) << "Success rate: " << ( numPassed * 100 / desc.numTotalTests() ) << "%" << endl;
-
       }
 
       void trace( const char *file, unsigned line, const char *expression ) {
