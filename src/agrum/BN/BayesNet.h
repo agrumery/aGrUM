@@ -149,9 +149,12 @@ public:
      * The implementation of the Potential is by default a MultiDimArray.
      *
      * @param variable The variable added by copy.
+     * @param id The chosen id. If 0, the NodeGraphPart will choose.
+     * @warning give an id (not 0) should be reserved for rare and specific situations !!!
      * @return the id of the added variable.
+     * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId add(const DiscreteVariable& variable);
+    NodeId add(const DiscreteVariable& variable,NodeId id=0);
 
     /**
      * Add a variable, it's associate node and it's CPT. The id of the new
@@ -159,10 +162,13 @@ public:
      *
      * @param variable The variable added by copy.
      * @param aContent The content used for the variable potential.
+     * @param id The chosen id. If 0, the NodeGraphPart will choose.
+     * @warning give an id (not 0) should be reserved for rare and specific situations !!!
      * @return the id of the added variable.
+     * @throws DuplicateElement if id(<>0) is already used
      */
     NodeId add(const DiscreteVariable& variable,
-               MultiDimImplementation<T_DATA> *aContent);
+               MultiDimImplementation<T_DATA> *aContent,NodeId id=0);
 
     /**
      * Erase a Variable from the network and remove the variable from
