@@ -91,7 +91,7 @@ For a graph <tt>gr</tt> of type <tt>G</tt> (<tt>G</tt> is @ref gum::DiGraph, @re
   }
  
   // iterate on arcs (if possible)
-  for(G::NodeIterator it=gr.beginArcs();it != gr.endArcs() ; ++g) {
+  for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++g) {
     ...
   }
   @endcode
