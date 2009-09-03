@@ -205,15 +205,15 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
             idList.insert(graph.insertNode());
             idList.insert(graph.insertNode());*/
 
-      graph.insertEdge( gum::Edge( idList[0], idList[2] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[0], idList[1] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[3], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[2], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[3] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[4] ) );
-      graph.insertEdge( gum::Edge( idList[1], idList[2] ) );
+      graph.insertEdge( idList[0], idList[2] ) ;
+      graph.insertEdge( idList[0], idList[3] ) ;
+      graph.insertEdge( idList[0], idList[1] ) ;
+      graph.insertEdge( idList[2], idList[4] ) ;
+      graph.insertEdge( idList[3], idList[4] ) ;
+      graph.insertEdge( idList[2], idList[3] ) ;
+      graph.insertEdge( idList[1], idList[3] ) ;
+      graph.insertEdge( idList[1], idList[4] ) ;
+      graph.insertEdge( idList[1], idList[2] ) ;
 
       return graph;
     }

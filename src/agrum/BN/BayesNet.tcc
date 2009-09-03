@@ -348,7 +348,7 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
       }
 
       // mary the parents
-      for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
+      for ( NodeSetIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
         //const ArcSet& parentsList = __dag.parents(*iter);
         for ( ArcSetIterator it1 = __dag.parents( *iter ).begin(); it1 != __dag.parents( *iter ).end(); ++it1 ) {
           ArcSetIterator it2 = it1;
@@ -372,7 +372,7 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
     if ( clear or( __topologicalOrder->empty() ) ) {
       __topologicalOrder->clear();
       // Add all root nodes in the list
-      NodeSet nodeList = __dag.asNodeSet();
+      NodeSet nodeList = __dag.nodes();
       __getRootTopologyLevel( nodeList );
       // Check if the graph has at least one root node
 
@@ -461,7 +461,7 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
 
     std::string tab = "  ";
 
-    for ( gum::DAG::NodeIterator node_iter = map.dag().beginNodes();
+    for ( gum::NodeSetIterator node_iter = map.dag().beginNodes();
           node_iter != map.dag().endNodes(); ++node_iter ) {
       if ( map.dag().children( *node_iter ).size() > 0 ) {
         for ( gum::ArcSetIterator arc_iter = map.dag().children( *node_iter ).begin();
