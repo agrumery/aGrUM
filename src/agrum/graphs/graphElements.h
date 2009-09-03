@@ -81,18 +81,18 @@ For a graph <tt>gr</tt> of type <tt>G</tt> (<tt>G</tt> is @ref gum::DiGraph, @re
   G gr;
 
   // iterate on nodes
-  for(G::NodeIterator it=gr.beginNodes();it != gr.endNodes() ; ++g) {
-    ...
+  for(G::NodeIterator it=gr.beginNodes();it != gr.endNodes() ; ++it) {
+    ... // *it is a gum::NodeId
     }
     
   // iterate on edges (if possible)
-  for(G::EdgeIterator it=gr.beginEdges();it != gr.endEdges() ; ++g) {
-    ...
+  for(G::EdgeIterator it=gr.beginEdges();it != gr.endEdges() ; ++it) {
+    ... // *it is a gum::Edge
   }
  
   // iterate on arcs (if possible)
-  for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++g) {
-    ...
+  for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++it) {
+    ... // *it is a gum::Arc
   }
   @endcode
   
