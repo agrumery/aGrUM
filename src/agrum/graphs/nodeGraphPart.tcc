@@ -25,25 +25,26 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parsing by IDE
+#include <agrum/graphs/nodeGraphPart.h>
 
 namespace gum {
 
-
   template <typename VAL> INLINE
   typename Property<VAL>::onNodes
-    NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
-    return __nodes.hashMap( f,size );
+  NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
+    return nodes().hashMap( f, size );
   }
 
   template <typename VAL> INLINE
   typename Property<VAL>::onNodes
-    NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
-    return __nodes.hashMap( val,size );
+  NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
+    return nodes().hashMap( val, size );
   }
 
   template <typename VAL> INLINE
   List<VAL> NodeGraphPart::listMapNodes( VAL( *f )( const NodeId& ) ) const {
-    return __nodes.listMap( f );
+    return nodes().listMap( f );
   }
 
   template<typename T> void
@@ -53,12 +54,12 @@ namespace gum {
 
     for ( typename Property<T>::onNodes::const_iterator iter = h.begin();
           iter != h.end(); ++iter ) {
-      NodeId new_one=iter.key();
+      NodeId new_one = iter.key();
 
-      if ( __nodes.contains( new_one ) )
-        GUM_ERROR( DuplicateElement,"in the graph" );
+      if ( existsNode( new_one ) )
+        GUM_ERROR( DuplicateElement, "in the graph" );
 
-      insertNode(new_one);
+      insertNode( new_one );
     }
   }
 
@@ -67,3 +68,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

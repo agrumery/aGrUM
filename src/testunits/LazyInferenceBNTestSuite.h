@@ -91,7 +91,7 @@ class LazyInferenceTestSuite: public CxxTest::TestSuite {
       }
     }
 
-    void testMarginal() {
+    void Marginal() {
       fill(*bn);
       gum::LazyPropagation<float> inf( *bn );
 

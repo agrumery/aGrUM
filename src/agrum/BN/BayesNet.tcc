@@ -312,23 +312,23 @@ namespace gum {
   }
 
 // Shortcut for this->dag().beginNodes().
-template<typename T_DATA> INLINE
-const NodeSetIterator
-BayesNet<T_DATA>::beginNodes() const { return __dag.beginNodes(); }
+  template<typename T_DATA> INLINE
+  const DAG::NodeIterator
+  BayesNet<T_DATA>::beginNodes() const { return __dag.beginNodes(); }
 
 // Shortcut for this->dag().endNodes().
-template<typename T_DATA> INLINE
-const NodeSetIterator
-BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
+  template<typename T_DATA> INLINE
+  const DAG::NodeIterator
+  BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
 
 // Shortcut for this->dag().beginArcs().
   template<typename T_DATA> INLINE
-  const ArcSetIterator
+  const DAG::ArcIterator
   BayesNet<T_DATA>::beginArcs() const { return __dag.beginArcs(); }
 
 // Shortcut for this->dag().endArcs().
   template<typename T_DATA> INLINE
-  const ArcSetIterator&
+  const DAG::ArcIterator&
   BayesNet<T_DATA>::endArcs() const { return __dag.endArcs(); }
 
 // The node's id are coherent with the variables and nodes of the topology.
@@ -343,12 +343,12 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
       __moralGraph->populateNodes( __dag );
 
       // transform the arcs into edges
-      for ( ArcSetIterator iter = __dag.beginArcs(); iter != __dag.endArcs(); ++iter ) {
+      for ( DAG::ArcIterator iter = __dag.beginArcs(); iter != __dag.endArcs(); ++iter ) {
         __moralGraph->insertEdge( iter->first(), iter->second() );
       }
 
       // mary the parents
-      for ( NodeSetIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
+      for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
         //const ArcSet& parentsList = __dag.parents(*iter);
         for ( ArcSetIterator it1 = __dag.parents( *iter ).begin(); it1 != __dag.parents( *iter ).end(); ++it1 ) {
           ArcSetIterator it2 = it1;
@@ -461,10 +461,10 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
 
     std::string tab = "  ";
 
-    for ( gum::NodeSetIterator node_iter = map.dag().beginNodes();
+    for ( gum::DAG::NodeIterator node_iter = map.dag().beginNodes();
           node_iter != map.dag().endNodes(); ++node_iter ) {
       if ( map.dag().children( *node_iter ).size() > 0 ) {
-        for ( gum::ArcSetIterator arc_iter = map.dag().children( *node_iter ).begin();
+        for ( gum::DAG::ArcIterator arc_iter = map.dag().children( *node_iter ).begin();
               arc_iter != map.dag().children( *node_iter ).end(); ++arc_iter ) {
           output << tab << "\"" << map.variable( *node_iter ).name() << "\" -> "
           << "\"" << map.variable( arc_iter->head() ).name() << "\";" << std::endl;
@@ -483,4 +483,4 @@ BayesNet<T_DATA>::endNodes() const { return __dag.endNodes(); }
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

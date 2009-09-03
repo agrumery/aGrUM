@@ -25,400 +25,408 @@
 // ============================================================================
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // ============================================================================
+
+// to ease parsing by IDE
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+
 namespace gum {
 // ============================================================================
 
 // Default constructor
-template<typename T_DATA>
-ShaferShenoyInference<T_DATA>::ShaferShenoyInference( const BayesNet<T_DATA> &bayesNet):
-  BayesNetInference<T_DATA>( bayesNet ), __triangulation(0)
-{
-  GUM_CONSTRUCTOR( ShaferShenoyInference );
+  template<typename T_DATA>
+  ShaferShenoyInference<T_DATA>::ShaferShenoyInference( const BayesNet<T_DATA> &bayesNet ):
+      BayesNetInference<T_DATA>( bayesNet ), __triangulation( 0 ) {
+    GUM_CONSTRUCTOR( ShaferShenoyInference );
 
-  typename Property<unsigned int>::onNodes __modalitiesMap;
+    typename Property<unsigned int>::onNodes __modalitiesMap;
 
-  for (NodeSetIterator iter = this->bn().beginNodes();
-       iter != this->bn().endNodes(); ++iter) {
-    __modalitiesMap.insert(*iter,  this->bn().variable(*iter).domainSize());
+    for ( DAG::NodeIterator iter = this->bn().beginNodes();
+          iter != this->bn().endNodes(); ++iter ) {
+      __modalitiesMap.insert( *iter,  this->bn().variable( *iter ).domainSize() );
+    }
+
+    __triangulation = new DefaultTriangulation( this->bn().moralGraph(), __modalitiesMap );
+
+    __triangulation->junctionTree();
+    __buildCliquesTables();
   }
-
-  __triangulation = new DefaultTriangulation(this->bn().moralGraph(), __modalitiesMap);
-  __triangulation->junctionTree();
-  __buildCliquesTables();
-}
 
 // Destructor
-template<typename T_DATA>
-ShaferShenoyInference<T_DATA>::~ShaferShenoyInference()
-{
-  GUM_DESTRUCTOR( ShaferShenoyInference );
+  template<typename T_DATA>
+  ShaferShenoyInference<T_DATA>::~ShaferShenoyInference() {
+    GUM_DESTRUCTOR( ShaferShenoyInference );
 
-  delete __triangulation;
+    delete __triangulation;
 
-  for (typename Property< MultiDimBucket<T_DATA>* >::onArcs::iterator
-       iter = __messagesMap.begin(); iter != __messagesMap.end(); ++iter ) {
-    delete *iter;
+    for ( typename Property< MultiDimBucket<T_DATA>* >::onArcs::iterator
+          iter = __messagesMap.begin(); iter != __messagesMap.end(); ++iter ) {
+      delete *iter;
+    }
+
+    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+      delete *iter;
+    }
+
+    for ( SetIterator< Potential<T_DATA>* > iter = __dummies.begin();
+          iter != __dummies.end(); ++iter ) {
+      delete *iter;
+    }
+
   }
-
-  for (typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
-       iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter) {
-    delete *iter;
-  }
-
-  for (SetIterator< Potential<T_DATA>* > iter = __dummies.begin();
-       iter != __dummies.end(); ++iter) {
-    delete *iter;
-  }
-
-}
 
 // Returns the Triangulation used by this class.
-template <typename T_DATA> INLINE
-Triangulation&
-ShaferShenoyInference<T_DATA>::triangulation()
-{
-  return *__triangulation;
-}
+  template <typename T_DATA> INLINE
+  Triangulation&
+  ShaferShenoyInference<T_DATA>::triangulation() {
+    return *__triangulation;
+  }
 
 // Makes the inference
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::makeInference() {
-  // Setting all collect flags at false
-  for (typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
-       iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-    (*iter)->isCollected = false;
-  }
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::makeInference() {
+    // Setting all collect flags at false
+    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+      ( *iter )->isCollected = false;
+    }
 
-  for (typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
-       iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-    if (not (*iter)->isCollected) {
-      __collectFromClique(iter.key());
-      __diffuseFromClique(iter.key() );
+    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+      if ( not( *iter )->isCollected ) {
+        __collectFromClique( iter.key() );
+        __diffuseFromClique( iter.key() );
+      }
     }
   }
-}
 
 // Returns the probability of the variable.
 // @param id The variable's id.
 // @throw NotFound Raised if no variable matches id.
 // @throw OperationNotAllowed Raised if the inference haven't be done.
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::_fillMarginal(NodeId id,
-                                             Potential<T_DATA>& marginal)
-{
-  NodeId cliqueId = __triangulation->createdClique(id);
-  // First we find the smallest clique containing id
-  for (NodeSetIterator iter = __triangulation->junctionTree().beginNodes();
-       iter != __triangulation->junctionTree().endNodes(); ++iter) {
-    if ( (__triangulation->junctionTree().clique(*iter).contains(id)) and
-         (__clique_prop[*iter]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize())
-       ) {
-      cliqueId = *iter;
-    }
-  }
-  // Second we launch a collect starting from cliqueId
-  __collectFromClique( cliqueId );
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::_fillMarginal( NodeId id,
+      Potential<T_DATA>& marginal ) {
+    NodeId cliqueId = __triangulation->createdClique( id );
+    // First we find the smallest clique containing id
 
-  // Third we fill the marginal with the good values using a bucket
-  MultiDimBucket<T_DATA> bucket;
-  bucket.add(this->bn().variable(id));
-  bucket.add(__clique_prop[cliqueId]->bucket());
-  for (EdgeSetIterator iter = __getNeighbours(cliqueId).begin();
-       iter != __getNeighbours(cliqueId).end(); ++iter) {
-    bucket.add(__messagesMap[Arc(iter->other(cliqueId), cliqueId)]);
+    for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
+          iter != __triangulation->junctionTree().endNodes(); ++iter ) {
+      if (( __triangulation->junctionTree().clique( *iter ).contains( id ) ) and
+          ( __clique_prop[*iter]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
+         ) {
+        cliqueId = *iter;
+      }
+    }
+
+    // Second we launch a collect starting from cliqueId
+    __collectFromClique( cliqueId );
+
+    // Third we fill the marginal with the good values using a bucket
+    MultiDimBucket<T_DATA> bucket;
+
+    bucket.add( this->bn().variable( id ) );
+
+    bucket.add( __clique_prop[cliqueId]->bucket() );
+
+    for ( EdgeSetIterator iter = __getNeighbours( cliqueId ).begin();
+          iter != __getNeighbours( cliqueId ).end(); ++iter ) {
+      bucket.add( __messagesMap[Arc( iter->other( cliqueId ), cliqueId )] );
+    }
+
+    marginal.add( this->bn().variable( id ) ); // marginal is empty, this is stupid... (I know I'm the guy who did it...)
+
+    Instantiation inst( marginal );
+
+    for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+      marginal.set( inst, bucket.get( inst ) );
+    }
+
+    marginal.normalize();
   }
-  marginal.add(this->bn().variable(id)); // marginal is empty, this is stupid... (I know I'm the guy who did it...)
-  Instantiation inst(marginal);
-  for (inst.setFirst(); not inst.end(); inst.inc()) {
-    marginal.set(inst, bucket.get(inst));
-  }
-  marginal.normalize();
-}
 
 // insert new evidence in the graph
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::insertEvidence(
-                                const List<const Potential<T_DATA>*>& pot_list)
-{
-  for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
-        iter != pot_list.end(); ++iter ) {
-    __clique_prop[__node2CliqueMap[
-                                    this->bn().nodeId((*iter)->variable(0))]
-                                  ]->addEvidence(**iter);
-    // don't forget that the next line won't be executed if the previous one
-    // raised an exception because the evidence isn't valid.
-    __removeDiffusedMessages(
-        __node2CliqueMap[ this->bn().nodeId((*iter)->variable(0))]
-                            );
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::insertEvidence(
+    const List<const Potential<T_DATA>*>& pot_list ) {
+    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+          iter != pot_list.end(); ++iter ) {
+      __clique_prop[__node2CliqueMap[
+                      this->bn().nodeId(( *iter )->variable( 0 ) )]
+                   ]->addEvidence( **iter );
+      // don't forget that the next line won't be executed if the previous one
+      // raised an exception because the evidence isn't valid.
+      __removeDiffusedMessages(
+        __node2CliqueMap[ this->bn().nodeId(( *iter )->variable( 0 ) )]
+      );
+    }
   }
-}
 
 // remove a given evidence from the graph
-template <typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::eraseEvidence(const Potential<T_DATA>* e)
-{
-  if (not (e->variablesSequence().size() != 1) ) {
-    __clique_prop[
-                  __node2CliqueMap[this->bn().nodeId(e->variable(0))]
-                 ]->removeEvidence(e->variable(0));
-    __removeDiffusedMessages(__node2CliqueMap[
-                                          this->bn().nodeId(e->variable(0))
-                                             ]);
+  template <typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
+    if ( not( e->variablesSequence().size() != 1 ) ) {
+      __clique_prop[
+        __node2CliqueMap[this->bn().nodeId( e->variable( 0 ) )]
+      ]->removeEvidence( e->variable( 0 ) );
+      __removeDiffusedMessages( __node2CliqueMap[
+                                  this->bn().nodeId( e->variable( 0 ) )
+                                ] );
+    }
   }
-}
 
 // remove all evidence from the graph
-template <typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::eraseAllEvidence() {
-  for (typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
-       iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter) {
-    __removeDiffusedMessages(iter.key());
-    (*iter)->removeAllEvidence();
+  template <typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::eraseAllEvidence() {
+    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+      __removeDiffusedMessages( iter.key() );
+      ( *iter )->removeAllEvidence();
+    }
   }
-}
 
 // @return Returns the list of neighbours of a given clique
-template<typename T_DATA> INLINE
-const EdgeSet&
-ShaferShenoyInference<T_DATA>::__getNeighbours( NodeId cliqueId ) {
-  return __triangulation->junctionTree().neighbours( cliqueId );
-}
+  template<typename T_DATA> INLINE
+  const EdgeSet&
+  ShaferShenoyInference<T_DATA>::__getNeighbours( NodeId cliqueId ) {
+    return __triangulation->junctionTree().neighbours( cliqueId );
+  }
 
 // @return Returns a separator given two adjacent cliques
-template<typename T_DATA> INLINE
-const NodeSet&
-ShaferShenoyInference<T_DATA>::__getSeparator(NodeId clique_1, NodeId clique_2) {
-  return __triangulation->junctionTree().separator( clique_1, clique_2 );
-}
+  template<typename T_DATA> INLINE
+  const NodeSet&
+  ShaferShenoyInference<T_DATA>::__getSeparator( NodeId clique_1, NodeId clique_2 ) {
+    return __triangulation->junctionTree().separator( clique_1, clique_2 );
+  }
 
 // @return Returns the clique in which the node's cpt must be stored
-template<typename T_DATA>
-NodeId
-ShaferShenoyInference<T_DATA>::__getClique
-  (const std::vector<NodeId> &eliminationOrder, NodeId id)
-{
-  Set<NodeId> idSet;
-  idSet.insert(id);
+  template<typename T_DATA>
+  NodeId
+  ShaferShenoyInference<T_DATA>::__getClique
+  ( const std::vector<NodeId> &eliminationOrder, NodeId id ) {
+    Set<NodeId> idSet;
+    idSet.insert( id );
 
-  const ArcSet& parents = this->bn().dag().parents(id);
-  for (ArcSetIterator iter = parents.begin(); iter != parents.end(); ++iter) {
-    idSet.insert(iter->tail());
-  }
+    const ArcSet& parents = this->bn().dag().parents( id );
 
-  for (size_t i = 0; i < eliminationOrder.size(); ++i) {
-    if (idSet.contains(eliminationOrder[i])) {
-      return __triangulation->createdClique(eliminationOrder[i]);
+    for ( ArcSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+      idSet.insert( iter->tail() );
     }
-  }
 
-  std::stringstream msg;
-  msg << "No clique found for node " << id;
-  GUM_ERROR(FatalError, msg.str());
-}
+    for ( size_t i = 0; i < eliminationOrder.size(); ++i ) {
+      if ( idSet.contains( eliminationOrder[i] ) ) {
+        return __triangulation->createdClique( eliminationOrder[i] );
+      }
+    }
+
+    std::stringstream msg;
+
+    msg << "No clique found for node " << id;
+    GUM_ERROR( FatalError, msg.str() );
+  }
 
 // Builds the cliques tables
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__buildCliquesTables()
-{
-  const std::vector<NodeId> &elim = __triangulation->eliminationOrder();
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__buildCliquesTables() {
+    const std::vector<NodeId> &elim = __triangulation->eliminationOrder();
 
-  NodeSet cliquesSet;
-  // First pass to create the clique's table
-  for (NodeSetIterator iter = __triangulation->junctionTree().beginNodes();
-       iter != __triangulation->junctionTree().endNodes(); ++iter) {
-    __clique_prop.insert(*iter, new CliqueProp<T_DATA>(*iter));
-    cliquesSet.insert(*iter);
-    for (NodeSetIterator jter = __triangulation->junctionTree().clique(*iter).begin();
-         jter != __triangulation->junctionTree().clique(*iter).end(); ++jter) {
-      __clique_prop[*iter]->addVariable(this->bn().variable(*jter));
+    NodeSet cliquesSet;
+    // First pass to create the clique's table
+
+    for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
+          iter != __triangulation->junctionTree().endNodes(); ++iter ) {
+      __clique_prop.insert( *iter, new CliqueProp<T_DATA>( *iter ) );
+      cliquesSet.insert( *iter );
+
+      for ( NodeSetIterator jter = __triangulation->junctionTree().clique( *iter ).begin();
+            jter != __triangulation->junctionTree().clique( *iter ).end(); ++jter ) {
+        __clique_prop[*iter]->addVariable( this->bn().variable( *jter ) );
+      }
+    }
+
+    // Second pass to add the potentials in the good cliques
+    for ( size_t i = 0; i < elim.size(); i++ ) {
+      NodeId cliqueId = __getClique( elim, elim[i] );
+      __node2CliqueMap.insert( elim[i], cliqueId );
+      __clique_prop[cliqueId]->addPotential( this->bn().cpt( elim[i] ) );
+      cliquesSet.erase( cliqueId );
+    }
+
+    // Second pass to fill empty cliques with "one" matrices.
+    for ( NodeSetIterator iter = cliquesSet.begin(); iter != cliquesSet.end(); ++iter ) {
+      __clique_prop[*iter]->addPotential( *__makeDummyPotential( *iter ) );
     }
   }
-
-  // Second pass to add the potentials in the good cliques
-  for (size_t i = 0; i < elim.size(); i++) {
-    NodeId cliqueId = __getClique(elim, elim[i]);
-    __node2CliqueMap.insert(elim[i], cliqueId);
-    __clique_prop[cliqueId]->addPotential(this->bn().cpt(elim[i]));
-    cliquesSet.erase(cliqueId);
-  }
-
-  // Second pass to fill empty cliques with "one" matrices.
-  for (NodeSetIterator iter = cliquesSet.begin(); iter != cliquesSet.end(); ++iter) {
-      __clique_prop[*iter]->addPotential(*__makeDummyPotential(*iter));
-  }
-}
 
 // Calls a collect with a node as source
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__collectFromClique(NodeId source) {
-  __clique_prop[source]->isCollected = true;
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__collectFromClique( NodeId source ) {
+    __clique_prop[source]->isCollected = true;
 
-  try {
-    for ( EdgeSetIterator iter = __getNeighbours(source).begin();
-          iter != __getNeighbours(source).end(); ++iter ) {
-      __collect(source, iter->other(source));
+    try {
+      for ( EdgeSetIterator iter = __getNeighbours( source ).begin();
+            iter != __getNeighbours( source ).end(); ++iter ) {
+        __collect( source, iter->other( source ) );
+      }
+    } catch ( NotFound& ) {
+      // Raised if source has no neighbours
     }
-  } catch (NotFound&) {
-    // Raised if source has no neighbours
   }
-}
 
 // Collecting phase of the inference
-template<typename T_DATA>
-bool
-ShaferShenoyInference<T_DATA>::__collect(NodeId source, NodeId current) {
-  __clique_prop[current]->isCollected = true;
-  bool newMsg = false; // Flag used to know if we must recompute the message current -> source
+  template<typename T_DATA>
+  bool
+  ShaferShenoyInference<T_DATA>::__collect( NodeId source, NodeId current ) {
+    __clique_prop[current]->isCollected = true;
+    bool newMsg = false; // Flag used to know if we must recompute the message current -> source
 
-  for (EdgeSetIterator iter = __getNeighbours(current).begin();
-       iter != __getNeighbours(current).end(); ++iter) {
-    if (iter->other(current) != source) {
-      bool retVal = __collect(current, iter->other(current));
-      newMsg = newMsg or retVal;
-    }
-  }
-
-  if (newMsg) {
-    // I need to recompute current's message, so no need to check for new
-    // evidence
-    __removeDiffusedMessages(current);
-    __sendMessage(current, source);
-    return true;
-  }
-  else if (not __messageExists(current, source)) {
-    // There is new evidence (or first call)
-    __sendMessage(current, source);
-    return true;
-  } else {
-    // The message was already computed
-    return false;
-  }
-}
-
-// Diffusing phase of the inference
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__diffuseFromClique(NodeId source) {
-  try {
-    for (EdgeSetIterator iter = __getNeighbours(source).begin();
-         iter != __getNeighbours(source).end(); ++iter ) {
-      if (__messageExists(source, iter->other(source))) {
-        // No new evidence and msg already computed
-        __diffuse(source, iter->other(source), false);
-      } else {
-        // New evidence or first call
-        __sendMessage(source, iter->other(source));
-        __diffuse(source, iter->other(source), true);
+    for ( EdgeSetIterator iter = __getNeighbours( current ).begin();
+          iter != __getNeighbours( current ).end(); ++iter ) {
+      if ( iter->other( current ) != source ) {
+        bool retVal = __collect( current, iter->other( current ) );
+        newMsg = newMsg or retVal;
       }
     }
-  } catch (NotFound&) {
-    // Raised if source has no neighbours
+
+    if ( newMsg ) {
+      // I need to recompute current's message, so no need to check for new
+      // evidence
+      __removeDiffusedMessages( current );
+      __sendMessage( current, source );
+      return true;
+    } else if ( not __messageExists( current, source ) ) {
+      // There is new evidence (or first call)
+      __sendMessage( current, source );
+      return true;
+    } else {
+      // The message was already computed
+      return false;
+    }
   }
-}
 
 // Diffusing phase of the inference
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__diffuse(NodeId source, NodeId current,
-                                         bool recompute)
-{
-  for (EdgeSetIterator iter = __getNeighbours(current).begin();
-       iter != __getNeighbours( current ).end(); ++iter) {
-    if (iter->other(current) != source) {
-      if ( recompute or (not __messageExists(current, iter->other(current))) ) {
-        // New evidence or first call
-        __sendMessage(current, iter->other(current));
-        __diffuse(current, iter->other(current), true);
-      } else {
-        // No new evidence and msg already computed
-        __diffuse(current, iter->other(current), false);
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__diffuseFromClique( NodeId source ) {
+    try {
+      for ( EdgeSetIterator iter = __getNeighbours( source ).begin();
+            iter != __getNeighbours( source ).end(); ++iter ) {
+        if ( __messageExists( source, iter->other( source ) ) ) {
+          // No new evidence and msg already computed
+          __diffuse( source, iter->other( source ), false );
+        } else {
+          // New evidence or first call
+          __sendMessage( source, iter->other( source ) );
+          __diffuse( source, iter->other( source ), true );
+        }
+      }
+    } catch ( NotFound& ) {
+      // Raised if source has no neighbours
+    }
+  }
+
+// Diffusing phase of the inference
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__diffuse( NodeId source, NodeId current,
+      bool recompute ) {
+    for ( EdgeSetIterator iter = __getNeighbours( current ).begin();
+          iter != __getNeighbours( current ).end(); ++iter ) {
+      if ( iter->other( current ) != source ) {
+        if ( recompute or( not __messageExists( current, iter->other( current ) ) ) ) {
+          // New evidence or first call
+          __sendMessage( current, iter->other( current ) );
+          __diffuse( current, iter->other( current ), true );
+        } else {
+          // No new evidence and msg already computed
+          __diffuse( current, iter->other( current ), false );
+        }
       }
     }
   }
-}
 
 // Create and saves the message from key.first to key.second in the
 // __messagesMap.
-template<typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__sendMessage(NodeId tail, NodeId head)
-{
-  // Building the message's table held by the separator
-  MultiDimBucket<T_DATA> *message = new MultiDimBucket<T_DATA>();
+  template<typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__sendMessage( NodeId tail, NodeId head ) {
+    // Building the message's table held by the separator
+    MultiDimBucket<T_DATA> *message = new MultiDimBucket<T_DATA>();
 
-  for (NodeSet::iterator iter = __getSeparator(tail, head).begin();
-       iter != __getSeparator(tail, head).end(); ++iter ) {
-    message->add(this->bn().variable(*iter));
+    for ( NodeSet::iterator iter = __getSeparator( tail, head ).begin();
+          iter != __getSeparator( tail, head ).end(); ++iter ) {
+      message->add( this->bn().variable( *iter ) );
+    }
+
+    // Check if the clique was initialized
+    try {
+      message->add( __clique_prop[tail]->bucket() );
+    } catch ( NotFound& ) {
+      std::stringstream msg; msg << ": missing CliqueProp on clique " << tail;
+      GUM_ERROR( FatalError, msg.str() );
+    }
+
+    // Second, add message from tail's neighbours
+    for ( EdgeSetIterator iter = __getNeighbours( tail ).begin();
+          iter != __getNeighbours( tail ).end(); ++iter ) {
+      if ( iter->other( tail ) != head ) {
+        try {
+          message->add( __messagesMap[Arc( iter->other( tail ), tail )] );
+        } catch ( NotFound& ) {
+          std::stringstream msg;
+          msg << ": missing message (" << iter->other( tail ) << ", " << tail << ")";
+          msg << " to compute message (" << tail << ", " << head << ")";
+          GUM_ERROR( FatalError, msg.str() );
+        }
+      }
+    }
+
+    try { delete __messagesMap[Arc( tail,head )]; }
+    catch ( NotFound& ) { /* Nothing to delete */ }
+
+    __messagesMap.insert( Arc( tail, head ), message );
   }
 
-  // Check if the clique was initialized
-  try {
-    message->add(__clique_prop[tail]->bucket());
-  } catch (NotFound&) {
-    std::stringstream msg; msg << ": missing CliqueProp on clique " << tail;
-    GUM_ERROR(FatalError, msg.str());
+  template <typename T_DATA> INLINE
+  bool
+  ShaferShenoyInference<T_DATA>::__messageExists( NodeId source, NodeId dest ) {
+    return __messagesMap.exists( Arc( source , dest ) );
   }
 
-  // Second, add message from tail's neighbours
-  for (EdgeSetIterator iter = __getNeighbours(tail).begin();
-       iter != __getNeighbours(tail).end(); ++iter) {
-    if (iter->other(tail) != head) {
-      try {
-        message->add(__messagesMap[Arc(iter->other(tail), tail)]);
-      } catch (NotFound&) {
-        std::stringstream msg;
-        msg << ": missing message (" << iter->other(tail) << ", " << tail << ")";
-        msg << " to compute message (" << tail << ", " << head << ")";
-        GUM_ERROR(FatalError, msg.str());
+  template <typename T_DATA>
+  void
+  ShaferShenoyInference<T_DATA>::__removeDiffusedMessages( NodeId cliqueId ) {
+    for ( SetIterator<Edge> iter = __getNeighbours( cliqueId ).begin();
+          iter != __getNeighbours( cliqueId ).end(); ++iter ) {
+      if ( __messagesMap.exists( Arc( cliqueId, iter->other( cliqueId ) ) ) ) {
+        delete __messagesMap[Arc( cliqueId, iter->other( cliqueId ) )];
+        __messagesMap.erase( Arc( cliqueId, iter->other( cliqueId ) ) );
       }
     }
   }
 
-  try { delete __messagesMap[Arc(tail,head)]; }
-  catch (NotFound&) { /* Nothing to delete */ }
-
-  __messagesMap.insert(Arc(tail, head), message);
-}
-
-template <typename T_DATA> INLINE
-bool
-ShaferShenoyInference<T_DATA>::__messageExists(NodeId source, NodeId dest) {
-  return __messagesMap.exists(Arc(source ,dest));
-}
-
-template <typename T_DATA>
-void
-ShaferShenoyInference<T_DATA>::__removeDiffusedMessages(NodeId cliqueId) {
-  for (SetIterator<Edge> iter = __getNeighbours(cliqueId).begin();
-       iter != __getNeighbours(cliqueId).end(); ++iter) {
-    if (__messagesMap.exists(Arc(cliqueId, iter->other(cliqueId)))) {
-      delete __messagesMap[Arc(cliqueId, iter->other(cliqueId))];
-      __messagesMap.erase(Arc(cliqueId, iter->other(cliqueId)));
-    }
-  }
-}
-
 // @param cliqueId The clique for which the dummy bucket is made.
 // @return A pointer over the dummy bucket.
-template <typename T_DATA> INLINE
-Potential<T_DATA>*
-ShaferShenoyInference<T_DATA>::__makeDummyPotential(NodeId cliqueId)
-{
-  Potential<T_DATA>* pot = new Potential<T_DATA>(new MultiDimSparse<T_DATA>((T_DATA) 1));
-  __dummies.insert(pot);
-  for (Set<NodeId>::const_iterator iter = __triangulation->junctionTree().clique(cliqueId).begin();
-       iter != __triangulation->junctionTree().clique(cliqueId).end(); ++iter) {
-    pot->add(this->bn().variable(*iter));
+  template <typename T_DATA> INLINE
+  Potential<T_DATA>*
+  ShaferShenoyInference<T_DATA>::__makeDummyPotential( NodeId cliqueId ) {
+    Potential<T_DATA>* pot = new Potential<T_DATA>( new MultiDimSparse<T_DATA>(( T_DATA ) 1 ) );
+    __dummies.insert( pot );
+
+    for ( Set<NodeId>::const_iterator iter = __triangulation->junctionTree().clique( cliqueId ).begin();
+          iter != __triangulation->junctionTree().clique( cliqueId ).end(); ++iter ) {
+      pot->add( this->bn().variable( *iter ) );
+    }
+
+    return pot;
   }
-  return pot;
-}
 
 // ============================================================================
 //                                CLIQUEPROP
@@ -426,141 +434,141 @@ ShaferShenoyInference<T_DATA>::__makeDummyPotential(NodeId cliqueId)
 
 // Default constructor.
 // @param id the id of this clique on which this properties holds.
-template <typename T_DATA>
-CliqueProp<T_DATA>::CliqueProp(NodeId id):
-  isCollected(false), __potential(new MultiDimBucket<T_DATA>()),
-  __varsPotential(0), __name("")
-{
-  GUM_CONSTRUCTOR( CliqueProp );
-  std::stringstream name;
-  name << id;
-  __name = name.str();
-}
+  template <typename T_DATA>
+  CliqueProp<T_DATA>::CliqueProp( NodeId id ):
+      isCollected( false ), __potential( new MultiDimBucket<T_DATA>() ),
+      __varsPotential( 0 ), __name( "" ) {
+    GUM_CONSTRUCTOR( CliqueProp );
+    std::stringstream name;
+    name << id;
+    __name = name.str();
+  }
 
 // Destructor.
-template <typename T_DATA>
-CliqueProp<T_DATA>::~CliqueProp()
-{
-  GUM_DESTRUCTOR( CliqueProp );
-  delete __potential;
-  if (__varsPotential != 0) {
-    delete __varsPotential;
+  template <typename T_DATA>
+  CliqueProp<T_DATA>::~CliqueProp() {
+    GUM_DESTRUCTOR( CliqueProp );
+    delete __potential;
+
+    if ( __varsPotential != 0 ) {
+      delete __varsPotential;
+    }
   }
-}
+
 // Returns the name of this clique.
-template <typename T_DATA> INLINE
-const std::string&
-CliqueProp<T_DATA>::name() const
-{
-  return __name;
-}
+  template <typename T_DATA> INLINE
+  const std::string&
+  CliqueProp<T_DATA>::name() const {
+    return __name;
+  }
 
 // Add a variable to this clique
 // @param v The added variable.
-template <typename T_DATA> INLINE
-void
-CliqueProp<T_DATA>::addVariable(const DiscreteVariable& v)
-{
-  __potential->add(v);
-  if (__varsPotential != 0) {
-    __varsPotential->add(v);
+  template <typename T_DATA> INLINE
+  void
+  CliqueProp<T_DATA>::addVariable( const DiscreteVariable& v ) {
+    __potential->add( v );
+
+    if ( __varsPotential != 0 ) {
+      __varsPotential->add( v );
+    }
   }
-}
 
 // Add a Potential to this clique
 // @param cpt The added CPT.
-template <typename T_DATA> INLINE
-void
-CliqueProp<T_DATA>::addPotential(const Potential<T_DATA>& cpt)
-{
-  if (__varsPotential != 0) {
-    __varsPotential->add(cpt);
-  } else {
-    __potential->add(cpt);
+  template <typename T_DATA> INLINE
+  void
+  CliqueProp<T_DATA>::addPotential( const Potential<T_DATA>& cpt ) {
+    if ( __varsPotential != 0 ) {
+      __varsPotential->add( cpt );
+    } else {
+      __potential->add( cpt );
+    }
   }
-}
 
 // Add an evidence on a variable in this clique.
 // @throw NotFound Raised if the evidence is on a variable not present
 //                 in this clique.
-template <typename T_DATA>
-void
-CliqueProp<T_DATA>::addEvidence(const Potential<T_DATA>& evidence)
-{
-  if (evidence.variablesSequence().size() != 1) {
-    std::stringstream msg;
-    msg << ": expected evidence on 1 variable, found on ";
-    msg  << evidence.variablesSequence().size();
-    GUM_ERROR(OperationNotAllowed, msg.str());
+  template <typename T_DATA>
+  void
+  CliqueProp<T_DATA>::addEvidence( const Potential<T_DATA>& evidence ) {
+    if ( evidence.variablesSequence().size() != 1 ) {
+      std::stringstream msg;
+      msg << ": expected evidence on 1 variable, found on ";
+      msg  << evidence.variablesSequence().size();
+      GUM_ERROR( OperationNotAllowed, msg.str() );
+    }
+
+    if ( not __potential->variablesSequence().exists(
+           evidence.variablesSequence().atPos( 0 )
+         ) ) {
+      std::stringstream msg;
+      msg << ": " << evidence.variablesSequence().atPos( 0 )->name();
+      msg << " not found in this clique " << __name;
+      GUM_ERROR( NotFound, msg.str() );
+    }
+
+    if ( __varsPotential == 0 ) {
+      __varsPotential = __potential;
+      __potential = new MultiDimBucket<T_DATA>( *__varsPotential );
+      __potential->add( __varsPotential );
+    }
+
+    __evidences.set( evidence.variablesSequence().atPos( 0 ), &evidence );
+
+    __potential->add( evidence );
   }
-  if (not __potential->variablesSequence().exists(
-                                          evidence.variablesSequence().atPos(0)
-                                                 )) {
-    std::stringstream msg;
-    msg << ": " << evidence.variablesSequence().atPos(0)->name();
-    msg << " not found in this clique " << __name;
-    GUM_ERROR(NotFound, msg.str());
-  }
-  if (__varsPotential == 0) {
-    __varsPotential = __potential;
-    __potential = new MultiDimBucket<T_DATA>(*__varsPotential);
-    __potential->add(__varsPotential);
-  }
-  __evidences.set(evidence.variablesSequence().atPos(0), &evidence);
-  __potential->add(evidence);
-}
 
 // Removes all the evidences containing v
-template <typename T_DATA> INLINE
-void
-CliqueProp<T_DATA>::removeEvidence(const DiscreteVariable& v)
-{
-  __evidences.erase(&v);
-  if (__evidences.size() == 0) {
-    delete __potential;
-    __potential = __varsPotential;
-    __varsPotential = 0;
+  template <typename T_DATA> INLINE
+  void
+  CliqueProp<T_DATA>::removeEvidence( const DiscreteVariable& v ) {
+    __evidences.erase( &v );
+
+    if ( __evidences.size() == 0 ) {
+      delete __potential;
+      __potential = __varsPotential;
+      __varsPotential = 0;
+    }
   }
-}
 
 // Remove all the evidences
-template <typename T_DATA> INLINE
-void
-CliqueProp<T_DATA>::removeAllEvidence()
-{
-  if (__evidences.size() != 0) {
-    delete __potential;
-    __potential = __varsPotential;
-    __varsPotential = 0;
-    __evidences.clear();
+  template <typename T_DATA> INLINE
+  void
+  CliqueProp<T_DATA>::removeAllEvidence() {
+    if ( __evidences.size() != 0 ) {
+      delete __potential;
+      __potential = __varsPotential;
+      __varsPotential = 0;
+      __evidences.clear();
+    }
   }
-}
 
 // @return Returns the mapping of evidences on the variables in this clique.
-template <typename T_DATA> INLINE
-const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >&
-CliqueProp<T_DATA>::evidences() const
-{
-  return __evidences;
-}
+  template <typename T_DATA> INLINE
+  const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >&
+  CliqueProp<T_DATA>::evidences() const {
+    return __evidences;
+  }
 
 /// @return Returns the bucket of this Clique
-template <typename T_DATA> INLINE
-MultiDimBucket<T_DATA>&
-CliqueProp<T_DATA>::bucket()
-{
-  return *__potential;
-}
+  template <typename T_DATA> INLINE
+  MultiDimBucket<T_DATA>&
+  CliqueProp<T_DATA>::bucket() {
+    return *__potential;
+  }
 
 /// @return Returns the bucket of this Clique
-template <typename T_DATA> INLINE
-const MultiDimBucket<T_DATA>&
-CliqueProp<T_DATA>::bucket() const
-{
-  return *__potential;
-}
+  template <typename T_DATA> INLINE
+  const MultiDimBucket<T_DATA>&
+  CliqueProp<T_DATA>::bucket() const {
+    return *__potential;
+  }
+
 // ============================================================================
 } /* namespace gum */
+
 // ============================================================================
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

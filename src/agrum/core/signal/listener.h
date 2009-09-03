@@ -51,7 +51,7 @@ namespace gum {
 
   /** @class Listener
      * @brief every class who would catch signal from signaler should derive from Listener
-     * @ingroup signal
+     * @ingroup signal_group
      */
 
   class Listener {

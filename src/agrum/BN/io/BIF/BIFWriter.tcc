@@ -21,6 +21,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parsing in IDE
+#include <agrum/BN/io/BIF/BIFWriter.h>
 
 namespace gum {
 
@@ -53,11 +55,11 @@ namespace gum {
 
     output << __header( bn ) << std::endl;
 
-    for ( NodeSetIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       output << __variableBloc( bn.variable( *iter ) ) << std::endl;
     }
 
-    for ( NodeSetIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       const Potential<T_DATA>& proba = bn.cpt( *iter );
       output << __variableCPT( proba );
     }
@@ -87,11 +89,11 @@ namespace gum {
 
     output << __header( bn ) << std::endl;
 
-    for ( NodeSetIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       output << __variableBloc( bn.variable( *iter ) ) << std::endl;
     }
 
-    for ( NodeSetIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       const Potential<T_DATA>& proba = bn.cpt( *iter );
       output << __variableCPT( proba );
     }
@@ -212,3 +214,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

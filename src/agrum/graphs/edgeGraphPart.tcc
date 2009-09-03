@@ -25,22 +25,21 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parsing by IDE
 #include <agrum/graphs/edgeGraphPart.h>
-
 
 namespace gum {
 
-
   template <typename VAL> INLINE
   typename Property< VAL >::onEdges
-    EdgeGraphPart::edgesProperty( VAL( *f )( const Edge& ), Size size ) const {
-    return __edges.hashMap( f,size );
+  EdgeGraphPart::edgesProperty( VAL( *f )( const Edge& ), Size size ) const {
+    return __edges.hashMap( f, size );
   }
 
   template <typename VAL> INLINE
   typename Property< VAL >::onEdges
-    EdgeGraphPart::edgesProperty( const VAL& val, Size size ) const {
-    return __edges.hashMap( val,size );
+  EdgeGraphPart::edgesProperty( const VAL& val, Size size ) const {
+    return __edges.hashMap( val, size );
   }
 
   template <typename VAL> INLINE
@@ -51,5 +50,6 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

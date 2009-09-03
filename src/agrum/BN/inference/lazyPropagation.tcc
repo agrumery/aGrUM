@@ -38,15 +38,15 @@ namespace gum {
     // domain sizes
     HashTable<NodeId, unsigned int> modalities;
     const DAG& dag = this->bn().dag();
-    const NodeSet& nodes = dag.nodes();
+    //const NodeSet& nodes = dag.nodes();
 
-    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
+    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       const DiscreteVariable& var = this->bn().variable( *iter );
       modalities.insert( *iter, var.domainSize() );
     }
 
     // initialize the __triangulation algorithm
-    __triangulation.setGraph( this->bn().moralGraph(),modalities );
+    __triangulation.setGraph( this->bn().moralGraph(), modalities );
 
     __JT = &( __triangulation.junctionTree() );
 
@@ -54,12 +54,12 @@ namespace gum {
     // conditional probability table
     const std::vector <NodeId>& JT_elim_order = __triangulation.eliminationOrder();
 
-    HashTable <NodeId,unsigned int> elim_order( JT_elim_order.size() );
+    HashTable <NodeId, unsigned int> elim_order( JT_elim_order.size() );
 
     for ( unsigned int i = 0; i < JT_elim_order.size(); ++i )
       elim_order.insert( JT_elim_order[i], i );
 
-    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
+    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       // get the variables in the potential of iter_node
       NodeId first_var_eliminated = *iter;
       unsigned int elim_number = elim_order[*iter];
@@ -78,43 +78,39 @@ namespace gum {
       // first_var_eliminated contains the first var (iter or one of its parents)
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
-      __node_to_clique.insert(*iter,
-                              __triangulation.createdClique(first_var_eliminated));
+      __node_to_clique.insert( *iter,
+                               __triangulation.createdClique( first_var_eliminated ) );
     }
 
     // create empty potential lists into the cliques of the joint tree as well
     // as empty lists of evidence
     List <const Potential<T_DATA>*> empty_list;
 
-    const NodeSet& jt_cliques = __JT->nodes();
-
-    for ( NodeSetIterator iter = jt_cliques.begin();
-          iter != jt_cliques.end(); ++iter ) {
+    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
+          iter != __JT->endNodes(); ++iter ) {
       __clique_potentials.insert( *iter, empty_list );
       __clique_evidence.insert( *iter, empty_list );
     }
 
     // put all the CPT's of the Bayes net nodes into the cliques
-    for ( NodeSetIterator iter=nodes.begin(); iter!=nodes.end(); ++iter ) {
-      const Potential<T_DATA>& cpt =this->bn().cpt( *iter ) ;
+    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+      const Potential<T_DATA>& cpt = this->bn().cpt( *iter ) ;
       __clique_potentials[__node_to_clique[*iter]].insert( &cpt );
     }
 
     // create empty messages on the separators
     __PotentialSet empty_set;
 
-    const EdgeSet& jt_edges = __JT->edges();
-
-    for ( EdgeSetIterator iter = jt_edges.begin();iter != jt_edges.end(); ++iter ) {
-      __sep_potentials.insert( Arc( iter->first(),iter->second() ), empty_set );
-      __sep_potentials.insert( Arc( iter->second(),iter->first() ), empty_set );
+    for ( JunctionTree::EdgeIterator iter = __JT->beginEdges();iter != __JT->endEdges(); ++iter ) {
+      __sep_potentials.insert( Arc( iter->first(), iter->second() ), empty_set );
+      __sep_potentials.insert( Arc( iter->second(), iter->first() ), empty_set );
     }
 
     // indicate that __collect and __diffusion passed through no clique yet
-    for ( NodeSetIterator iter = jt_cliques.begin();
-          iter != jt_cliques.end(); ++iter ) {
-      __collected_cliques.insert( *iter,false );
-      __diffused_cliques.insert( *iter,false );
+    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
+          iter != __JT->endNodes(); ++iter ) {
+      __collected_cliques.insert( *iter, false );
+      __diffused_cliques.insert( *iter, false );
     }
   }
 
@@ -156,7 +152,7 @@ namespace gum {
 
       if ( other != from ) {
         // remove the potentials sent on clique id's adjacent separators
-        Arc sep( other,id );
+        Arc sep( other, id );
         __PotentialSet& del_pots = __sep_potentials[sep];
 
         for ( __PotentialSetIterator iter2 = del_pots.begin();
@@ -165,7 +161,7 @@ namespace gum {
 
         __sep_potentials[sep].clear();
 
-        sep=Arc( id,other );
+        sep = Arc( id, other );
 
         del_pots = __sep_potentials[sep];
 
@@ -193,7 +189,7 @@ namespace gum {
     // @todo : elle n'est pas que dans une seule clique ?
     // (donc utiliser pot_clique ligne 204)
     for ( HashTableIterator< NodeId, List <const Potential<T_DATA>*> >
-            iter=__clique_evidence.begin();
+          iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter ) {
       iter->eraseByVal( pot );
     }
@@ -207,7 +203,7 @@ namespace gum {
 
     NodeId pot_clique = __node_to_clique[this->bn().nodeId( *vars.atPos( 0 ) )];
 
-    __setRequiredInference( pot_clique,pot_clique );
+    __setRequiredInference( pot_clique, pot_clique );
   }
 
   // ==============================================================================
@@ -216,8 +212,8 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::eraseAllEvidence() {
     // remove the evidence store in the cliques
-    for ( HashTableIterator<NodeId,List<const Potential<T_DATA>*> >
-            iter = __clique_evidence.begin();
+    for ( HashTableIterator<NodeId, List<const Potential<T_DATA>*> >
+          iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter )
       iter->clear();
 
@@ -238,11 +234,11 @@ namespace gum {
     __created_potentials.clear();
 
     // indicate that, now, new inference is required
-    for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+    for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
           iter != __collected_cliques.end(); ++iter )
       *iter = false;
 
-    for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+    for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
           iter != __diffused_cliques.end(); ++iter )
       *iter = false;
   }
@@ -258,7 +254,7 @@ namespace gum {
     for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
-      const Sequence<const DiscreteVariable *>& vars=( *iter )->variablesSequence();
+      const Sequence<const DiscreteVariable *>& vars = ( *iter )->variablesSequence();
 
       if ( vars.size() != 1 )
         GUM_ERROR( IdError, "" );
@@ -285,7 +281,7 @@ namespace gum {
       __clique_evidence[clique_id].insert( *iter );
 
       // indicate that, now, new inference is required
-      __setRequiredInference( clique_id,clique_id );
+      __setRequiredInference( clique_id, clique_id );
     }
   }
 
@@ -308,14 +304,14 @@ namespace gum {
     // the potentials containing X (actually, we count the number of potentials
     // containing the variable. This is more efficient for computing and updating
     // the product_size priority queue when some potentials are removed)
-    HashTable<const DiscreteVariable *,  HashTable<const DiscreteVariable *,
-      unsigned int> > pot_vars_per_var;
+    HashTable < const DiscreteVariable *,  HashTable < const DiscreteVariable *,
+    unsigned int > > pot_vars_per_var;
     // initialize pot_vars_per_var and pot_per_var
     List<const Potential<T_DATA>*> empty_list;
     HashTable<const DiscreteVariable *, unsigned int>
-      empty_hash( 16 ); // @todo why 16 ?
+    empty_hash( 16 ); // @todo why 16 ?
 
-    for ( SetIterator<const DiscreteVariable*> iter=del_vars.begin();
+    for ( SetIterator<const DiscreteVariable*> iter = del_vars.begin();
           iter != del_vars.end(); ++iter ) {
       pot_per_var.insert( *iter, empty_list );
       pot_vars_per_var.insert( *iter, empty_hash );
@@ -344,16 +340,16 @@ namespace gum {
     }
 
     // initialize properly product_size
-    for ( HashTableIterator<const DiscreteVariable *,
-            HashTable<const DiscreteVariable *, unsigned int> >
-            iter = pot_vars_per_var.begin();
+    for ( HashTableIterator < const DiscreteVariable *,
+          HashTable<const DiscreteVariable *, unsigned int> >
+          iter = pot_vars_per_var.begin();
           iter != pot_vars_per_var.end(); ++iter ) {
       double size = 1.0;
       HashTable<const DiscreteVariable *, unsigned int>& vars = *iter;
 
       if ( vars.size() ) {
         for ( HashTableIterator<const DiscreteVariable *, unsigned int>
-                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 )
+              iter2 = vars.begin(); iter2 != vars.end(); ++iter2 )
           size *= iter2.key()->domainSize();
 
         product_size.insert( size, iter.key() );
@@ -393,7 +389,7 @@ namespace gum {
 
       // compute the table resulting from marginalizing out del_var from joint
       Potential<T_DATA>* marginal = new Potential<T_DATA>
-        ( new MultiDimArray<T_DATA>() );
+      ( new MultiDimArray<T_DATA>() );
 
       const Sequence<const DiscreteVariable*>& joint_vars =
         joint.variablesSequence();
@@ -410,6 +406,7 @@ namespace gum {
       // update accordingly pot_per_vars : remove these potentials
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
+
       for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
             iter != pot_to_mult.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& pot_vars =
@@ -420,7 +417,7 @@ namespace gum {
             // ok, here we have a variable that needed to be removed => update
             // product_size, pot_per_var and pot_vars_per_var
             HashTable<const DiscreteVariable *, unsigned int>&
-              pot_vars_of_var_i = pot_vars_per_var[pot_vars[i]];
+            pot_vars_of_var_i = pot_vars_per_var[pot_vars[i]];
             double div_size = 1;
 
             for ( unsigned int j = 0; j < pot_vars.size(); ++j ) {
@@ -436,8 +433,8 @@ namespace gum {
 
             if ( div_size != 1 ) {
               product_size.setPriorityByVal
-                ( pot_vars[i], product_size.priorityByVal( pot_vars[i] ) /
-                  div_size );
+              ( pot_vars[i], product_size.priorityByVal( pot_vars[i] ) /
+                div_size );
             }
           }
         }
@@ -476,8 +473,8 @@ namespace gum {
 
           if ( mult_size != 1 ) {
             product_size.setPriorityByVal
-              ( marginal_vars[i],
-                product_size.priorityByVal( marginal_vars[i] ) * mult_size );
+            ( marginal_vars[i],
+              product_size.priorityByVal( marginal_vars[i] ) * mult_size );
           }
         }
       }
@@ -523,7 +520,7 @@ namespace gum {
       NodeId other = iter->other( from_id );
 
       if ( other != to_id ) {
-        Arc sep( other,from_id );
+        Arc sep( other, from_id );
         const __PotentialSet& sep_pot_list = __sep_potentials[sep];
 
         for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
@@ -549,7 +546,7 @@ namespace gum {
     // => now, combine the messages
     __marginalizeOut( pot_list, del_vars );
 
-    Arc sep( from_id,to_id );
+    Arc sep( from_id, to_id );
 
     __sep_potentials[sep] = pot_list;
   }
@@ -654,7 +651,7 @@ namespace gum {
       // remove all the separator potentials, if any
       //for ( HashTableIterator< Arc,__PotentialSet >
       for ( typename Property< __PotentialSet >::onArcs::iterator
-              iter = __sep_potentials.begin();
+            iter = __sep_potentials.begin();
             iter != __sep_potentials.end(); ++iter )
         iter->clear();
 
@@ -665,27 +662,27 @@ namespace gum {
       __created_potentials.clear();
 
       // indicate that __collect and __diffusion passed through no clique yet
-      for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+      for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
             iter != __collected_cliques.end(); ++iter )
         *iter = false;
 
-      for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+      for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
             iter != __diffused_cliques.end(); ++iter )
         *iter = false;
     }
 
     // perform the __collect in all connected components of the junction tree
-    for ( HashTableIterator<NodeId,bool> iter = __collected_cliques.begin();
+    for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
           iter != __collected_cliques.end(); ++iter ) {
       if ( *iter == false )
-        __collect( iter.key(),iter.key() );
+        __collect( iter.key(), iter.key() );
     }
 
     // perform the __diffusion in all connected components of the junction tree
-    for ( HashTableIterator<NodeId,bool> iter = __diffused_cliques.begin();
+    for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
           iter != __diffused_cliques.end(); ++iter ) {
       if ( *iter == false )
-        __diffusion( iter.key(),iter.key() );
+        __diffusion( iter.key(), iter.key() );
     }
 
     // indicate that we performed the inference with root =
@@ -701,7 +698,7 @@ namespace gum {
   // ==============================================================================
   template <typename T_DATA> void
   LazyPropagation<T_DATA>::__aPosterioriMarginal( NodeId id,
-                                                  Potential<T_DATA>& marginal ) {
+      Potential<T_DATA>& marginal ) {
     // check if we performed a __collect on id, else we need some
     NodeId clique_of_id = __node_to_clique[id];
 
@@ -724,14 +721,14 @@ namespace gum {
     // containing id with the messages received by this clique and
     // marginalize out all variables except id
     NodeId myclique = last_collect_clique_contains_id ?
-      __last_collect_clique : clique_of_id;
+                      __last_collect_clique : clique_of_id;
 
     const List <const Potential<T_DATA>*>& clique_pot =
       __clique_potentials[myclique];
 
     // get the potentials of the clique
-    __PotentialSet pot_list(clique_pot.size() +
-                            __clique_evidence[myclique].size());
+    __PotentialSet pot_list( clique_pot.size() +
+                             __clique_evidence[myclique].size() );
 
     for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
@@ -751,9 +748,9 @@ namespace gum {
     for ( EdgeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       NodeId other = iter->other( myclique );
-      Arc sep( other,myclique );
+      Arc sep( other, myclique );
       const __PotentialSet&
-        sep_pot_list = __sep_potentials[sep];
+      sep_pot_list = __sep_potentials[sep];
 
       for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
             iter2 != sep_pot_list.end(); ++iter2 )
@@ -777,7 +774,7 @@ namespace gum {
 
     __PotentialSetIterator iter = pot_list.begin();
 
-    marginal= **iter;
+    marginal = **iter;
 
     for ( ++iter; iter != pot_list.end(); ++iter )
       marginal.multiplicateBy( **iter );
@@ -789,25 +786,28 @@ namespace gum {
   // ==============================================================================
   template <typename T_DATA> void
   LazyPropagation<T_DATA>::__aPosterioriJoint( const NodeSet& ids,
-                                               Potential<T_DATA>& marginal ) {
+      Potential<T_DATA>& marginal ) {
     // find a clique that contains all the nodes in ids. To do so, we loop over
     // all the cliques and check wheither there exists one with this feature
-    NodeId clique_of_ids=0;
+    NodeId clique_of_ids = 0;
     bool clique_found = false;
-    for (NodeSetIterator iter = __JT->beginNodes();
-         iter != __JT->endNodes(); ++iter) {
+
+    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
+          iter != __JT->endNodes(); ++iter ) {
       // get the nodes contained in the clique
-      const NodeSet& clique = __JT->clique (*iter);
+      const NodeSet& clique = __JT->clique( *iter );
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
-      for (NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2) {
-        if ( !clique.contains (*iter2) ) {
+
+      for ( NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2 ) {
+        if ( !clique.contains( *iter2 ) ) {
           clique_ok = false;
           break;
         }
       }
+
       // check if we found the clique we wanted
-      if (clique_ok) {
+      if ( clique_ok ) {
         clique_of_ids = *iter;
         clique_found = true;
         break;
@@ -816,8 +816,8 @@ namespace gum {
 
     // check if we actually found the clique we were interested in
     if ( !clique_found )
-      GUM_ERROR (OperationNotAllowed,
-                 "no clique was found to compute the joint probability");
+      GUM_ERROR( OperationNotAllowed,
+                 "no clique was found to compute the joint probability" );
 
     /*
     // check if we performed a __collect on the set of ids, else we need some
@@ -861,8 +861,8 @@ namespace gum {
       __clique_potentials[myclique];
 
     // get the potentials of the clique
-    __PotentialSet pot_list(clique_pot.size() +
-                            __clique_evidence[myclique].size());
+    __PotentialSet pot_list( clique_pot.size() +
+                             __clique_evidence[myclique].size() );
 
     for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
@@ -882,9 +882,9 @@ namespace gum {
     for ( EdgeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       NodeId other = iter->other( myclique );
-      Arc sep( other,myclique );
+      Arc sep( other, myclique );
       const __PotentialSet&
-        sep_pot_list = __sep_potentials[sep];
+      sep_pot_list = __sep_potentials[sep];
 
       for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
             iter2 != sep_pot_list.end(); ++iter2 )
@@ -898,7 +898,7 @@ namespace gum {
 
     for ( NodeSetIterator iter = nodes.begin();
           iter != nodes.end(); ++iter ) {
-      if ( ! ids.contains (*iter ))
+      if ( ! ids.contains( *iter ) )
         del_vars.insert( &( this->bn().variable( *iter ) ) );
     }
 
@@ -908,7 +908,7 @@ namespace gum {
 
     __PotentialSetIterator iter = pot_list.begin();
 
-    marginal= **iter;
+    marginal = **iter;
 
     for ( ++iter; iter != pot_list.end(); ++iter )
       marginal.multiplicateBy( **iter );
@@ -926,14 +926,14 @@ namespace gum {
   // ==============================================================================
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::_fillMarginal( NodeId id,
-                                               Potential<T_DATA>& marginal ) {
-    __aPosterioriMarginal (id, marginal);
+      Potential<T_DATA>& marginal ) {
+    __aPosterioriMarginal( id, marginal );
     marginal.normalize();
   }
 
 
   template <typename T_DATA> INLINE
-  T_DATA LazyPropagation<T_DATA>::evidenceMarginal () {
+  T_DATA LazyPropagation<T_DATA>::evidenceMarginal() {
     // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
     // noeud X sur lequel je fais une collecte, et je calcule P(e) comme etant
     // P(e) = sum_X P(X,e). Mais s'il y a plusieurs composantes connexes dans
@@ -945,10 +945,13 @@ namespace gum {
     __aPosterioriMarginal( id, *tmp );
 
     T_DATA sum = 0;
-    Instantiation iter (*tmp);
-    for (iter.setFirst(); !iter.end(); ++iter)
-      sum += tmp->get(iter);
+    Instantiation iter( *tmp );
+
+    for ( iter.setFirst(); !iter.end(); ++iter )
+      sum += tmp->get( iter );
+
     delete tmp;
+
     return sum;
   }
 
@@ -959,9 +962,9 @@ namespace gum {
    * properly this task, it will raise a OperationNotAllowed exception. */
   // ============================================================================
   template <typename T_DATA> INLINE
-  Potential<T_DATA>* LazyPropagation<T_DATA>::joint ( const NodeSet& nodes ) {
+  Potential<T_DATA>* LazyPropagation<T_DATA>::joint( const NodeSet& nodes ) {
     Potential<T_DATA> *res = new Potential<T_DATA>();
-    __aPosterioriJoint( nodes, *res);
+    __aPosterioriJoint( nodes, *res );
     res->normalize();
 
     return res;
@@ -972,3 +975,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

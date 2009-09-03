@@ -179,7 +179,7 @@ class VariableNodeMapTestSuite: public CxxTest::TestSuite {
       gum::BayesNet<float> topo;
       gum::List<gum::Id> idList;
 
-      for ( gum::NodeSetIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter ) {
+      for ( gum::DAG::NodeIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter ) {
         TS_ASSERT( idList.exists(*iter) );
       }
     }

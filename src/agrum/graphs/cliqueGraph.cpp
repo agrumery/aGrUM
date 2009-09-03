@@ -49,9 +49,9 @@ namespace gum {
                             bool nodes_resize_policy,
                             Size edges_size,
                             bool edges_resize_policy ) :
-    NodeGraphPart( nodes_size, nodes_resize_policy ),
-    UndiGraph( nodes_size, nodes_resize_policy,
-               edges_size, edges_resize_policy ) {
+      NodeGraphPart( nodes_size, nodes_resize_policy ),
+      UndiGraph( nodes_size, nodes_resize_policy,
+                 edges_size, edges_resize_policy ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( CliqueGraph );
   }
@@ -60,10 +60,10 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   CliqueGraph::CliqueGraph( const CliqueGraph& from ) :
-    NodeGraphPart( from ), // needed because NodeGraphPart is a virtual inherited
-    UndiGraph( from ),     // class (see C++ FAQ Lite #25.12 for details)
-    __cliques ( from.__cliques ),
-    __separators ( from.__separators ) {
+      NodeGraphPart( from ), // needed because NodeGraphPart is a virtual inherited
+      UndiGraph( from ),     // class (see C++ FAQ Lite #25.12 for details)
+      __cliques( from.__cliques ),
+      __separators( from.__separators ) {
     // for debugging purposes
     GUM_CONS_CPY( CliqueGraph );
   }
@@ -80,19 +80,20 @@ namespace gum {
   /// returns a path from a clique containing node1 to a clique containing node2
   // ==============================================================================
   std::vector<NodeId>
-  CliqueGraph::containerPath( const NodeId node1,const NodeId node2 ) const  {
+  CliqueGraph::containerPath( const NodeId node1, const NodeId node2 ) const  {
     // get a path from a __clique containing node1 to a __clique containing node2
     std::vector<NodeId> path = undirectedPath( container( node1 ),
-                                               container( node2 ) );
-    
+                               container( node2 ) );
+
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
-    while ( ( path.size() >= 2 ) &&
-            ( clique( path[path.size()-2] ).contains( node2 ) ) )
+
+    while (( path.size() >= 2 ) &&
+           ( clique( path[path.size()-2] ).contains( node2 ) ) )
       path.pop_back();
 
-    while ( ( path.size() >= 2 ) &&
-            ( clique( path[1] ).contains( node1 ) ) )
+    while (( path.size() >= 2 ) &&
+           ( clique( path[1] ).contains( node1 ) ) )
       path.erase( path.begin() );
 
     return path;
@@ -106,18 +107,20 @@ namespace gum {
                                  const NodeId node_id ) {
     // get the current clique set
     NodeSet& clique = __cliques[clique_id];
-    
+
     // check if the node already exists, in which case throw an exception
+
     if ( clique.contains( node_id ) )
       GUM_ERROR( DuplicateElement, "the clique set already contains the node" );
 
     clique.insert( node_id );
 
     // update the __separators adjacent to clique 'id'
-    const EdgeSet& set=neighbours( clique_id );
+    const EdgeSet& set = neighbours( clique_id );
 
-    for ( EdgeSetIterator ite=set.begin();ite!=set.end();++ite ) {
-      NodeId other_clique=ite->other( clique_id );
+    for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
+      NodeId other_clique = ite->other( clique_id );
+
       if ( __cliques[other_clique].contains( node_id ) )
         __separators[*ite].insert( node_id );
     }
@@ -132,12 +135,13 @@ namespace gum {
     NodeSet& clique = __cliques[clique_id];
 
     // check if the node does not exist, in which case throw an exception
+
     if ( clique.contains( node_id ) ) {
       clique.erase( node_id );
       // update the __separators adjacent to __clique 'id'
-      const EdgeSet& set=neighbours( clique_id );
+      const EdgeSet& set = neighbours( clique_id );
 
-      for ( EdgeSetIterator ite=set.begin();ite!=set.end();++ite ) {
+      for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
         if ( __separators[*ite].contains( node_id ) )
           __separators[*ite].erase( node_id );
       }
@@ -153,6 +157,7 @@ namespace gum {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];
+
     for ( NodeSetIterator iter = nodes_clique.begin();
           iter != nodes_clique.end(); ++iter )
       if ( infos_DFS.nodes_other_components.contains( *iter ) )
@@ -183,9 +188,9 @@ namespace gum {
 
     // check the neighbours that are different from "from" and that have not
     // been visited yet
-    const EdgeSet& neighbour=neighbours( clique );
+    const EdgeSet& neighbour = neighbours( clique );
 
-    for ( EdgeSetIterator iter=neighbour.begin();
+    for ( EdgeSetIterator iter = neighbour.begin();
           iter != neighbour.end(); ++iter ) {
       const NodeId otherID = iter->other( clique );
 
@@ -241,10 +246,11 @@ namespace gum {
     // create a RunningIntersect structure and initialize it
     __RunningIntersect infos_DFS;
     infos_DFS.cliques_DFS_chain = __cliques;
-    
+
     // while there exist unvisited cliques, perform a DFS on them
-    for ( NodeSetIterator iter_DFS=nodes().begin();
-          iter_DFS != nodes().end(); ++iter_DFS )
+
+    for ( CliqueGraph::NodeIterator iter_DFS = beginNodes();
+          iter_DFS != endNodes(); ++iter_DFS )
       if ( ! infos_DFS.visited_cliques.contains( *iter_DFS ) ) {
         // no nodes are forbidden a priori in the DFS
         infos_DFS.nodes_DFS_forbidden.clear();
@@ -253,6 +259,7 @@ namespace gum {
         infos_DFS.nodes_DFS_seen.clear();
 
         // here iter_DFS points on a clique that has not been visited yet
+
         if ( ! __runningIntersectionDFS( *iter_DFS, *iter_DFS, infos_DFS ) )
           return false;
 
@@ -267,7 +274,7 @@ namespace gum {
 
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
-    for (Property<NodeSet>::onNodes::const_iterator iter =
+    for ( Property<NodeSet>::onNodes::const_iterator iter =
             infos_DFS.cliques_DFS_chain.begin();
           iter != infos_DFS.cliques_DFS_chain.end(); ++iter )
       if ( ! iter->empty() ) return false;
@@ -293,61 +300,61 @@ namespace gum {
   const std::string
   CliqueGraph::toString() const {
     std::stringstream stream;
-    stream << "list of nodes:"<<std::endl;
+    stream << "list of nodes:" << std::endl;
 
-    for ( NodeSetIterator iter_node = nodes().begin();
-          iter_node != nodes().end(); ++iter_node ) {
-      stream << " -- node: " << *iter_node <<std::endl
-             << "    clique:";
+    for ( NodeIterator iter_node = beginNodes();
+          iter_node != endNodes(); ++iter_node ) {
+      stream << " -- node: " << *iter_node << std::endl
+      << "    clique:";
       const NodeSet& cl = clique( *iter_node );
 
       for ( NodeSetIterator iter = cl.begin();iter != cl.end(); ++iter )
         stream << "  " << *iter;
 
-      stream <<std::endl;
+      stream << std::endl;
     }
 
     stream << "\n\nlist of edges:\n";
 
-    for ( EdgeSetIterator iter_edge = edges().begin();
-          iter_edge != edges().end(); ++iter_edge )
+    for ( EdgeIterator iter_edge = beginEdges();
+          iter_edge != endEdges(); ++iter_edge )
       stream << *iter_edge << "  ";
- 
+
     return stream.str();
   }
 
   const std::string
   CliqueGraph::toDot() const {
     std::stringstream stream;
-    stream << "graph {"<<std::endl;
-    stream << "  edge [fontsize=8 fontcolor=red];"<<std::endl<<std::endl;
+    stream << "graph {" << std::endl;
+    stream << "  edge [fontsize=8 fontcolor=red];" << std::endl << std::endl;
 
-    for ( NodeSetIterator iter_node = nodes().begin();iter_node != nodes().end();
+    for ( NodeIterator iter_node = beginNodes();iter_node != endNodes();
           ++iter_node ) {
-      stream << "  " << *iter_node <<" [ label=\"";
+      stream << "  " << *iter_node << " [ label=\"";
       const NodeSet& cl = clique( *iter_node );
 
       for ( NodeSetIterator iter = cl.begin();iter != cl.end(); ++iter )
         stream << "  " << *iter;
 
-      stream <<"\"];"<<std::endl;
+      stream << "\"];" << std::endl;
     }
 
-    stream <<std::endl;
+    stream << std::endl;
 
-    for ( EdgeSetIterator iter_edge = edges().begin();
-          iter_edge != edges().end(); ++iter_edge ) {
-      stream << *iter_edge <<" [ label=\"";
- 
+    for ( EdgeIterator iter_edge = beginEdges();
+          iter_edge != endEdges(); ++iter_edge ) {
+      stream << *iter_edge << " [ label=\"";
+
       const NodeSet& sep = separator( *iter_edge );
 
       for ( NodeSetIterator iter = sep.begin();iter != sep.end(); ++iter )
         stream << "  " << *iter;
 
-      stream <<"\"];"<<std::endl;
+      stream << "\"];" << std::endl;
     }
 
-    stream<<std::endl<<"}"<<std::endl;
+    stream << std::endl << "}" << std::endl;
 
     return stream.str();
   }
@@ -368,3 +375,4 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

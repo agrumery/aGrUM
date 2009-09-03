@@ -69,7 +69,7 @@ class BayesNetGeneratorTestSuite: public CxxTest::TestSuite {
       std::vector<gum::NodeId> stack;
       gum::Set<gum::NodeId> passed;
       const gum::DAG& dag = bn->dag();
-      for (gum::NodeSet::iterator iter = dag.beginNodes();
+      for (gum::DAG::NodeIterator iter = dag.beginNodes();
            iter != dag.endNodes();
            ++iter)
       {
@@ -126,7 +126,7 @@ class BayesNetGeneratorTestSuite: public CxxTest::TestSuite {
       std::vector<gum::NodeId> stack;
       gum::Set<gum::NodeId> passed;
       const gum::DAG& dag = bn->dag();
-      for (gum::NodeSet::iterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter) {
+      for (gum::DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter) {
         TS_ASSERT_THROWS(dag.directedPath(*iter, *iter), gum::NotFound);
       }
       if (bn != 0) delete bn;

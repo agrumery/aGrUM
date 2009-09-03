@@ -40,293 +40,298 @@
 // ============================================================================
 #include <agrum/BN/variableNodeMap.h>
 // ============================================================================
+
 namespace gum {
-template<typename T_DATA>
-class BayesNetFactory;
-/**
- * @class BayesNet
- * @brief Class representing a Bayesian Network.
- * @ingroup bn_group
- *
- * After a variable is added to the BN, if it's domain size changes, then the
- * data in it's CPT is lost.
- *
- * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
- *
- * Don't forget that you can print a BayesNet using
- * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
- */
-template<typename T_DATA>
-class BayesNet: protected VariableNodeMap {
-    friend class BayesNetFactory<T_DATA>;
+  template<typename T_DATA>
 
-public:
-    // ===========================================================================
-    /// @name Constructors / Destructors
-    // ===========================================================================
-    /// @{
+  class BayesNetFactory;
+  /**
+   * @class BayesNet
+   * @brief Class representing a Bayesian Network.
+   * @ingroup bn_group
+   *
+   * After a variable is added to the BN, if it's domain size changes, then the
+   * data in it's CPT is lost.
+   *
+   * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
+   *
+   * Don't forget that you can print a BayesNet using
+   * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
+   */
+  template<typename T_DATA>
 
-    /**
-     * Default constructor.
-     */
-    BayesNet();
+  class BayesNet: protected VariableNodeMap {
 
-    /**
-     * Destructor.
-     */
-    ~BayesNet();
+      friend class BayesNetFactory<T_DATA>;
 
-    /**
-     * Copy constructor.
-     */
-    BayesNet(const BayesNet<T_DATA>& source);
+    public:
+      // ===========================================================================
+      /// @name Constructors / Destructors
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Copy operator.
-     */
-    BayesNet<T_DATA>& operator=(const BayesNet<T_DATA>& source);
+      /**
+       * Default constructor.
+       */
+      BayesNet();
 
-    /// @}
-    // ===========================================================================
-    /// @name Getter and setters
-    // ===========================================================================
-    /// @{
+      /**
+       * Destructor.
+       */
+      ~BayesNet();
 
-    /**
-     * Return the value of the property "name" of this BayesNet.
-     * @throw NotFound Raised if no "name" property is found.
-     */
-    const std::string& property(const std::string& name) const;
+      /**
+       * Copy constructor.
+       */
+      BayesNet( const BayesNet<T_DATA>& source );
 
-    /**
-     * Add or change a property of this BayesNet.
-     */
-    void setProperty(const std::string& name, const std::string& value);
+      /**
+       * Copy operator.
+       */
+      BayesNet<T_DATA>& operator=( const BayesNet<T_DATA>& source );
 
-    /// @}
-    // ===========================================================================
-    /// @name Variable manipulation methods.
-    // ===========================================================================
-    /// @{
+      /// @}
+      // ===========================================================================
+      /// @name Getter and setters
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Returns a constant reference over a variabe given it's node id.
-     * @throw NotFound If no variable's id matches varId.
-     */
-    virtual const DiscreteVariable& variable(NodeId id) const;
+      /**
+       * Return the value of the property "name" of this BayesNet.
+       * @throw NotFound Raised if no "name" property is found.
+       */
+      const std::string& property( const std::string& name ) const;
 
-    /**
-     * Return id node from discrete var pointer.
-     * @throw NotFound If no variable matches var.
-     */
-    virtual NodeId nodeId(const DiscreteVariable &var) const;
+      /**
+       * Add or change a property of this BayesNet.
+       */
+      void setProperty( const std::string& name, const std::string& value );
 
-    /**
-     * Returns the CPT of a variable.
-     * @throw NotFound If no variable's id matches varId.
-     */
-    const Potential<T_DATA>& cpt(NodeId varId) const;
+      /// @}
+      // ===========================================================================
+      /// @name Variable manipulation methods.
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Returns a constant reference over the dag of this Bayes Net.
-     */
-    const DAG& dag() const;
+      /**
+       * Returns a constant reference over a variabe given it's node id.
+       * @throw NotFound If no variable's id matches varId.
+       */
+      virtual const DiscreteVariable& variable( NodeId id ) const;
 
-    /**
-     * Returns the number of variables in this bayes net.
-     */
-    Idx size() const;
+      /**
+       * Return id node from discrete var pointer.
+       * @throw NotFound If no variable matches var.
+       */
+      virtual NodeId nodeId( const DiscreteVariable &var ) const;
 
-    /**
-     * Retursn true if this bayes net is empty.
-     */
-    bool empty() const;
+      /**
+       * Returns the CPT of a variable.
+       * @throw NotFound If no variable's id matches varId.
+       */
+      const Potential<T_DATA>& cpt( NodeId varId ) const;
 
-    /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
-     *
-     * The implementation of the Potential is by default a MultiDimArray.
-     *
-     * @param variable The variable added by copy.
-     * @param id The chosen id. If 0, the NodeGraphPart will choose.
-     * @warning give an id (not 0) should be reserved for rare and specific situations !!!
-     * @return the id of the added variable.
-     * @throws DuplicateElement if id(<>0) is already used
-     */
-    NodeId add(const DiscreteVariable& variable,NodeId id=0);
+      /**
+       * Returns a constant reference over the dag of this Bayes Net.
+       */
+      const DAG& dag() const;
 
-    /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
-     *
-     * @param variable The variable added by copy.
-     * @param aContent The content used for the variable potential.
-     * @param id The chosen id. If 0, the NodeGraphPart will choose.
-     * @warning give an id (not 0) should be reserved for rare and specific situations !!!
-     * @return the id of the added variable.
-     * @throws DuplicateElement if id(<>0) is already used
-     */
-    NodeId add(const DiscreteVariable& variable,
-               MultiDimImplementation<T_DATA> *aContent,NodeId id=0);
+      /**
+       * Returns the number of variables in this bayes net.
+       */
+      Idx size() const;
 
-    /**
-     * Erase a Variable from the network and remove the variable from
-     * all childs of id.
-     * If no variable matches the id, then nothing is done.
-     *
-     * @param id The id of the variable to erase.
-     */
-    void erase(NodeId id);
+      /**
+       * Retursn true if this bayes net is empty.
+       */
+      bool empty() const;
 
-    /**
-     * Erase a Variable from the network and remove the variable from
-     * all childs of var.
-     * If no variable matches, then nothing is done.
-     *
-     * @param var The reference on the variable to remove.
-     */
-    void erase(const DiscreteVariable& var);
+      /**
+       * Add a variable, it's associate node and it's CPT. The id of the new
+       * variable is automatically generated.
+       *
+       * The implementation of the Potential is by default a MultiDimArray.
+       *
+       * @param variable The variable added by copy.
+       * @param id The chosen id. If 0, the NodeGraphPart will choose.
+       * @warning give an id (not 0) should be reserved for rare and specific situations !!!
+       * @return the id of the added variable.
+       * @throws DuplicateElement if id(<>0) is already used
+       */
+      NodeId add( const DiscreteVariable& variable, NodeId id = 0 );
 
-    /**
-     * Shortcut for this->dag().beginNodes().
-     */
-    const NodeSetIterator beginNodes() const;
+      /**
+       * Add a variable, it's associate node and it's CPT. The id of the new
+       * variable is automatically generated.
+       *
+       * @param variable The variable added by copy.
+       * @param aContent The content used for the variable potential.
+       * @param id The chosen id. If 0, the NodeGraphPart will choose.
+       * @warning give an id (not 0) should be reserved for rare and specific situations !!!
+       * @return the id of the added variable.
+       * @throws DuplicateElement if id(<>0) is already used
+       */
+      NodeId add( const DiscreteVariable& variable,
+                  MultiDimImplementation<T_DATA> *aContent, NodeId id = 0 );
 
-    /**
-     * Shortcut for this->dag().endNodes().
-     */
-    const NodeSetIterator endNodes() const;
+      /**
+       * Erase a Variable from the network and remove the variable from
+       * all childs of id.
+       * If no variable matches the id, then nothing is done.
+       *
+       * @param id The id of the variable to erase.
+       */
+      void erase( NodeId id );
 
-    /// @}
-    // ===========================================================================
-    /// @name Arc manipulation methods.
-    // ===========================================================================
-    /// @{
+      /**
+       * Erase a Variable from the network and remove the variable from
+       * all childs of var.
+       * If no variable matches, then nothing is done.
+       *
+       * @param var The reference on the variable to remove.
+       */
+      void erase( const DiscreteVariable& var );
 
-    /**
-     * Add an arc in the BN, and update arc.head's CPT.
-     *
-     * @param head and
-     * @param tail as NodeId
-     * @return Returns a reference on the real copy added.
-     * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
-     */
-    void insertArc(NodeId tail, NodeId head);
+      /**
+       * Shortcut for this->dag().beginNodes().
+       */
+      const DAG::NodeIterator beginNodes() const;
 
-    /**
-     * Removes an arc in the BN, and update head's CTP.
-     *
-     * If (tail, head) doesn't exist, the nothing happens.
-     * @param arc The arc removed.
-     */
-		void eraseArc(const Arc& arc);
-		
-		/**
-		* Removes an arc in the BN, and update head's CTP.
-		*
-		* If (tail, head) doesn't exist, the nothing happens.
-		* @param head and
-		* @param tail as NodeId
-		*/
-    void eraseArc(NodeId tail, NodeId head);
+      /**
+       * Shortcut for this->dag().endNodes().
+       */
+      const DAG::NodeIterator endNodes() const;
 
-    /**
-     * Shortcut for this->dag().beginArcs().
-     */
-    const ArcSetIterator beginArcs() const;
+      /// @}
+      // ===========================================================================
+      /// @name Arc manipulation methods.
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Shortcut for this->dag().endArcs().
-     */
-    const ArcSetIterator& endArcs() const;
+      /**
+       * Add an arc in the BN, and update arc.head's CPT.
+       *
+       * @param head and
+       * @param tail as NodeId
+       * @return Returns a reference on the real copy added.
+       * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
+       */
+      void insertArc( NodeId tail, NodeId head );
 
-    /// @}
-    // ===========================================================================
-    /// @name Graphical methods
-    // ===========================================================================
-    /// @{
+      /**
+       * Removes an arc in the BN, and update head's CTP.
+       *
+       * If (tail, head) doesn't exist, the nothing happens.
+       * @param arc The arc removed.
+       */
+      void eraseArc( const Arc& arc );
 
-    /**
-     * The node's id are coherent with the variables and nodes of the topology.
-     * @param clear If false returns the previously created moral graph.
-     */
-    const UndiGraph& moralGraph(bool clear=true) const;
+      /**
+      * Removes an arc in the BN, and update head's CTP.
+      *
+      * If (tail, head) doesn't exist, the nothing happens.
+      * @param head and
+      * @param tail as NodeId
+      */
+      void eraseArc( NodeId tail, NodeId head );
 
-    /**
-     * The topological order stays the same as long as no variable or arcs are
-     * added or erased from the topology.
-     * @param clear If false returns the previously created topology.
-     */
-    const Sequence<NodeId>& getTopologicalOrder(bool clear=true) const;
+      /**
+       * Shortcut for this->dag().beginArcs().
+       */
+      const DAG::ArcIterator beginArcs() const;
 
-    /// @}
-    // ===========================================================================
-    /// @name Deprecated methods
-    // ===========================================================================
-    /// @{
+      /**
+       * Shortcut for this->dag().endArcs().
+       */
+      const DAG::ArcIterator& endArcs() const;
 
-    /**
-     * @warning Deprecated: use add(const DiscreteVariable&).
-     */
-    virtual NodeId addVariable(const DiscreteVariable& variable);
+      /// @}
+      // ===========================================================================
+      /// @name Graphical methods
+      // ===========================================================================
+      /// @{
 
-    /**
-     * @warning Deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
-     */
-    virtual NodeId addVariable(const DiscreteVariable& variable,
-                               MultiDimImplementation<T_DATA> *aContent);
+      /**
+       * The node's id are coherent with the variables and nodes of the topology.
+       * @param clear If false returns the previously created moral graph.
+       */
+      const UndiGraph& moralGraph( bool clear = true ) const;
 
-    /**
-     * @warning Deprecated: use erase(NodeId) instead.
-     */
-    virtual void eraseVariable(NodeId id);
+      /**
+       * The topological order stays the same as long as no variable or arcs are
+       * added or erased from the topology.
+       * @param clear If false returns the previously created topology.
+       */
+      const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
 
-    /// @}
+      /// @}
+      // ===========================================================================
+      /// @name Deprecated methods
+      // ===========================================================================
+      /// @{
 
-private:
+      /**
+       * @warning Deprecated: use add(const DiscreteVariable&).
+       */
+      virtual NodeId addVariable( const DiscreteVariable& variable );
 
-    /// The properties of this BayesNet.
-    /// Initialized using a lazy instantiation.
-    mutable HashTable<std::string, std::string>* __propertiesMap;
+      /**
+       * @warning Deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
+       */
+      virtual NodeId addVariable( const DiscreteVariable& variable,
+                                  MultiDimImplementation<T_DATA> *aContent );
 
-    /// The DAG of this bayes net.
-    DAG __dag;
+      /**
+       * @warning Deprecated: use erase(NodeId) instead.
+       */
+      virtual void eraseVariable( NodeId id );
 
-    /// Mapping between the variable's id and their CPT.
-    /// Property< Potential< T_DATA >* >::onNodes __probaMap;
-    HashTable<NodeId, Potential<T_DATA>* > __probaMap;
+      /// @}
 
-    /// The moral graph of this bayes net.
-    mutable UndiGraph* __moralGraph;
+    private:
 
-    /// The topology sequence of this bayes net.
-    mutable Sequence<NodeId>* __topologicalOrder;
+      /// The properties of this BayesNet.
+      /// Initialized using a lazy instantiation.
+      mutable HashTable<std::string, std::string>* __propertiesMap;
 
-    /// Return the properties of this BayesNet and initialize the hash table is
-    /// necessary.
-    HashTable<std::string, std::string>& __properties();
+      /// The DAG of this bayes net.
+      DAG __dag;
 
-    /// Return the properties of this BayesNet and initialize the hash table is
-    /// necessary.
-    const HashTable<std::string, std::string>& __properties() const;
+      /// Mapping between the variable's id and their CPT.
+      /// Property< Potential< T_DATA >* >::onNodes __probaMap;
+      HashTable<NodeId, Potential<T_DATA>* > __probaMap;
 
-    /// Add all the dag's root nodes in __topologicalOrder
-    void __getRootTopologyLevel(NodeSet& uncheckedNodes) const;
+      /// The moral graph of this bayes net.
+      mutable UndiGraph* __moralGraph;
 
-    // Add the next level of nodes in the topological order
-    void __getNextTopologyLevel(NodeSet& uncheckedNodes) const;
-};
+      /// The topology sequence of this bayes net.
+      mutable Sequence<NodeId>* __topologicalOrder;
+
+      /// Return the properties of this BayesNet and initialize the hash table is
+      /// necessary.
+      HashTable<std::string, std::string>& __properties();
+
+      /// Return the properties of this BayesNet and initialize the hash table is
+      /// necessary.
+      const HashTable<std::string, std::string>& __properties() const;
+
+      /// Add all the dag's root nodes in __topologicalOrder
+      void __getRootTopologyLevel( NodeSet& uncheckedNodes ) const;
+
+      // Add the next level of nodes in the topological order
+      void __getNextTopologyLevel( NodeSet& uncheckedNodes ) const;
+  };
 
 /// Prints map's DAG in output using the Graphviz-dot format.
-template <typename T_DATA>
-std::ostream&
-operator<<(std::ostream& output, const BayesNet<T_DATA>& map);
+  template <typename T_DATA>
+  std::ostream&
+  operator<<( std::ostream& output, const BayesNet<T_DATA>& map );
 
 } /* namespace gum */
+
 // ============================================================================
 #include <agrum/BN/BayesNet.tcc>
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 0; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

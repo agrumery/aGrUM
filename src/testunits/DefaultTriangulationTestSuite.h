@@ -72,10 +72,10 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
 
-      for ( gum::NodeSetIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
-        modalities.insert(*iter, topo.variable(*iter).domainSize());
+      for ( gum::DAG::NodeIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
+        modalities.insert( *iter, topo.variable( *iter ).domainSize() );
 
-      gum::DefaultTriangulation *triangle=NULL;
+      gum::DefaultTriangulation *triangle = NULL;
 
       TS_GUM_ASSERT_THROWS_NOTHING( triangle = new gum::DefaultTriangulation( undiGraph, modalities ) );
 
@@ -102,10 +102,10 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
 
-      for ( gum::NodeSetIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
-        modalities.insert(*iter, topo.variable(*iter).domainSize());
+      for ( gum::DAG::NodeIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
+        modalities.insert( *iter, topo.variable( *iter ).domainSize() );
 
-      gum::DefaultTriangulation *triangle=NULL;
+      gum::DefaultTriangulation *triangle = NULL;
 
       TS_GUM_ASSERT_THROWS_NOTHING( triangle = new gum::DefaultTriangulation( undiGraph, modalities ) );
 
@@ -115,68 +115,69 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
 
       TS_GUM_ASSERT_THROWS_NOTHING( triangle->junctionTree() );
 
-			/// TODO : problem here !!
+      /// TODO : problem here !!
 //      TS_ASSERT( triangle->junctionTree().hasRunningIntersection() );
 
       TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
     };
 
-  
+
     void xxtestBIFtriangulation1( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Barley.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Barley.bif ) ) );
     };
+
     void xxtestBIFtriangulation1bis( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( alarm.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( alarm.bif ) ) );
     };
 
     void xxtestBIFtriangulation2( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( carpo.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( carpo.bif ) ) );
     };
 
     void xxtestBIFtriangulation3( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Pigs.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Pigs.bif ) ) );
     };
 
     void xxtestBIFtriangulation4( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Water.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Water.bif ) ) );
     };
 
     void xxtestBIFtriangulation5( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Link.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Link.bif ) ) );
     };
 
     void xxtestBIFtriangulation6( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Mildew.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Mildew.bif ) ) );
     };
 
     void xxtestBIFtriangulation7( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Munin1.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Munin1.bif ) ) );
     };
 
     void xxtestBIFtriangulation8( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( hailfinder.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( hailfinder.bif ) ) );
     };
 
     void xxtestBIFtriangulation9( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( Diabetes.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Diabetes.bif ) ) );
     };
 
     void xxtestBIFtriangulation10( void ) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif( GET_PATH_STR( insurance.bif ) ));
+      TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( insurance.bif ) ) );
     };
 
   private:
 
     void __triangulate_bif( std::string file ) {
       gum::BayesNet<float> *bn = new gum::BayesNet<float>();
-      gum::BIFReader<float> reader( bn,file );
+      gum::BIFReader<float> reader( bn, file );
       reader.trace( false );
-      bool isOK=false;
-      TS_GUM_ASSERT_THROWS_NOTHING( isOK=reader.proceed() );
+      bool isOK = false;
+      TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
 
       gum::LazyPropagation<float> inf( *bn );
 
-      if (bn != 0) delete( bn );
+      if ( bn != 0 ) delete( bn );
     };
 
     void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId> &idList ) {
@@ -205,18 +206,19 @@ class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
             idList.insert(graph.insertNode());
             idList.insert(graph.insertNode());*/
 
-      graph.insertEdge( idList[0], idList[2] ) ;
-      graph.insertEdge( idList[0], idList[3] ) ;
-      graph.insertEdge( idList[0], idList[1] ) ;
-      graph.insertEdge( idList[2], idList[4] ) ;
-      graph.insertEdge( idList[3], idList[4] ) ;
-      graph.insertEdge( idList[2], idList[3] ) ;
-      graph.insertEdge( idList[1], idList[3] ) ;
-      graph.insertEdge( idList[1], idList[4] ) ;
-      graph.insertEdge( idList[1], idList[2] ) ;
+      graph.insertEdge( idList[0], idList[2] );
+      graph.insertEdge( idList[0], idList[3] );
+      graph.insertEdge( idList[0], idList[1] );
+      graph.insertEdge( idList[2], idList[4] );
+      graph.insertEdge( idList[3], idList[4] );
+      graph.insertEdge( idList[2], idList[3] );
+      graph.insertEdge( idList[1], idList[3] );
+      graph.insertEdge( idList[1], idList[4] );
+      graph.insertEdge( idList[1], idList[2] );
 
       return graph;
     }
 
 };
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

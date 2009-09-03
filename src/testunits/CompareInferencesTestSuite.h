@@ -178,7 +178,7 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
       inf_ValElim.makeInference();
 
       {
-        for ( gum::NodeSetIterator it=bn->beginNodes(); it!=bn->endNodes(); ++it ) {
+        for ( gum::DAG::NodeIterator it=bn->beginNodes(); it!=bn->endNodes(); ++it ) {
           gum::NodeId i=*it;
           const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal( i );
           const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.marginal( i );

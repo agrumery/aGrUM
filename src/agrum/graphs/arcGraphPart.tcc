@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parsing by IDE
 #include <agrum/graphs/arcGraphPart.h>
-
 
 namespace gum {
   

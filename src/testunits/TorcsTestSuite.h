@@ -26,6 +26,7 @@
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 class TorcsTestSuite: public CxxTest::TestSuite {
   public:
@@ -113,8 +114,7 @@ class TorcsTestSuite: public CxxTest::TestSuite {
 
 
     void testInference() {
-
-      gum::ShaferShenoyInference<float> inf(*bn);
+      gum::LazyPropagation<float> inf(*bn);
 
       try {
         inf.makeInference();

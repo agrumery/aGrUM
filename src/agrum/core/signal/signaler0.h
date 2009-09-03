@@ -67,10 +67,10 @@ namespace gum {
 
           _connectors.clear();
         }
-				
-				bool hasListener(void) {
-					return (!( _connectors.empty()));
-				}
+
+        bool hasListener( void ) {
+          return ( !( _connectors.empty() ) );
+        }
 
         void detach( Listener* target ) {
           for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
@@ -154,6 +154,13 @@ namespace gum {
     };
   } // namespace sig
 
+  /**
+  * @class Signaler0
+  * @ingroup signal_group
+  * @brief class for signal with 0 args
+  * @warning Due to the too-smart-way-for-DOXYGEN of building classes Signaler1,...,Signaler_n, these classes are not documented.
+  */
+
   class Signaler0 : public __sig__::BasicSignaler0 {
     public:
       Signaler0() {
@@ -183,7 +190,9 @@ namespace gum {
 
 } // namespace gum
 
+/// this macro is the good way of emitting a signal.
 #define GUM_EMIT0(signal) this->signal(this)
 
 #endif // SIGNALER0_H__
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

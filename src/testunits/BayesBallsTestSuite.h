@@ -47,7 +47,7 @@ class BayesBallsTestSuite: public CxxTest::TestSuite {
       gum::Sequence<gum::NodeId>* requisite = 0;
 
       gum::Sequence<gum::NodeId> query, softEvidence, hardEvidence, nodes_seq;
-      for (gum::NodeSetIterator iter = bn->dag().nodes().begin(); iter != bn->dag().nodes().end(); ++iter) nodes_seq.insert(*iter);
+      for (gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter) nodes_seq.insert(*iter);
       for (gum::Idx i = 0; i < 5; ++i) hardEvidence.insert(nodes_seq.atPos(i));
       for (gum::Idx j = 24; j > 19; --j) query.insert(nodes_seq.atPos(j));
       TS_ASSERT_THROWS_NOTHING(requisite = balls.requisiteNodes(*bn, query, softEvidence, hardEvidence));

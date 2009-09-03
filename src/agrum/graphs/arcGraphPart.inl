@@ -24,16 +24,19 @@
  *
  */
 
+// to ease parsing by IDE
+#include <agrum/graphs/arcGraphPart.h>
 
 namespace gum {
 
   INLINE  ArcGraphPart& ArcGraphPart::operator=( const ArcGraphPart& s ) {
     // avoid self assignment
-    if (this!=&s) {
-      __arcs=s.__arcs;
-      __parents=s.__parents;
-      __children=s.__children;
+    if ( this != &s ) {
+      __arcs = s.__arcs;
+      __parents = s.__parents;
+      __children = s.__children;
     }
+
     return *this;
   }
 
@@ -45,7 +48,7 @@ namespace gum {
     return __arcs.size();
   }
 
-  INLINE const ArcSet& ArcGraphPart::arcs() const {
+  INLINE const ArcSet& ArcGraphPart::asArcs() const {
     return __arcs;
   }
 
@@ -55,18 +58,18 @@ namespace gum {
 
   INLINE bool ArcGraphPart::existsArc( const NodeId tail,
                                        const NodeId head ) const {
-    return __arcs.contains( Arc( tail,head ) );
+    return __arcs.contains( Arc( tail, head ) );
   }
-  
+
   INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
     if ( ! __parents.exists( id ) ) {
-      __parents.insert( id,__empty_arc_set );
+      __parents.insert( id, __empty_arc_set );
     }
   }
 
   INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
     if ( ! __children.exists( id ) ) {
-      __children.insert( id,__empty_arc_set );
+      __children.insert( id, __empty_arc_set );
     }
   }
 
@@ -80,17 +83,17 @@ namespace gum {
     return __children[id];
   }
 
-  INLINE const ArcSetIterator ArcGraphPart::beginArcs() const {
+  INLINE const ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
     return __arcs.begin();
   }
 
-  INLINE const ArcSetIterator& ArcGraphPart::endArcs() const {
+  INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
     return __arcs.end();
   }
 
-  INLINE void ArcGraphPart::insertArc( const NodeId tail,const NodeId head ) {
-    Arc arc ( tail,head );
-    
+  INLINE void ArcGraphPart::insertArc( const NodeId tail, const NodeId head ) {
+    Arc arc( tail, head );
+
     __arcs.insert( arc );
     __checkParents( head );
     __checkChildren( tail );
@@ -107,67 +110,71 @@ namespace gum {
       // here we need to create a copy of arc because when function eraseParents
       // is called, after __parents.erase is called, the arc does not exist
       // anymore. Hence, the following erases and GUM_EMIT2 may segfault.
-     Arc arc1 = arc;
+      Arc arc1 = arc;
       __parents[arc1.head()].erase( arc1 );
       __children[arc1.tail()].erase( arc1 );
       __arcs.erase( arc1 );
-      GUM_EMIT2( onArcDeleted,arc1.tail(),arc1.head() );
+      GUM_EMIT2( onArcDeleted, arc1.tail(), arc1.head() );
     }
   }
 
   INLINE void ArcGraphPart::clearArcs() {
     // we need this copy only if at least one onArcDeleted listener exists
     if ( onArcDeleted.hasListener() ) {
-      ArcSet tmp=__arcs;
+      ArcSet tmp = __arcs;
 
       __arcs.clear();
       __parents.clear();
       __children.clear();
-      
-      for ( ArcSetIterator iter=tmp.begin();iter!=tmp.end();++iter )
-        GUM_EMIT2( onArcDeleted, iter->tail(),iter->head() );
-    }
-    else {
+
+      for ( ArcSetIterator iter = tmp.begin();iter != tmp.end();++iter )
+        GUM_EMIT2( onArcDeleted, iter->tail(), iter->head() );
+    } else {
       __arcs.clear();
       __parents.clear();
       __children.clear();
     }
-  }  
+  }
 
   INLINE void ArcGraphPart::_eraseSetOfArcs( const ArcSet& set ) {
-    for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter )
+    for ( ArcSetIterator iter = set.begin();iter != set.end();++iter )
       eraseArc( *iter );
   }
 
   INLINE void ArcGraphPart::eraseParents( const NodeId id ) {
-    if ( __parents.exists( id ) ) _eraseSetOfArcs( __parents[id] );
+    if ( __parents.exists( id ) )
+      _eraseSetOfArcs( __parents[id] );
   }
 
   INLINE void ArcGraphPart::eraseChildren( const NodeId id ) {
-    if ( __children.exists( id ) ) _eraseSetOfArcs( __children[id] );
+    if ( __children.exists( id ) )
+      _eraseSetOfArcs( __children[id] );
   }
 
   INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs( const ArcSet& set ) {
-    for ( ArcSetIterator iter=set.begin();iter!=set.end();++iter )
+    for ( ArcSetIterator iter = set.begin();iter != set.end();++iter )
       ArcGraphPart::eraseArc( *iter );
   }
 
   INLINE void ArcGraphPart::unvirtualizedEraseParents( const NodeId id ) {
-    if ( __parents.exists( id ) ) _unvirtualizedEraseSetOfArcs( __parents[id] );
+    if ( __parents.exists( id ) )
+      _unvirtualizedEraseSetOfArcs( __parents[id] );
   }
 
   INLINE void ArcGraphPart::unvirtualizedEraseChildren( const NodeId id ) {
-    if ( __children.exists( id ) ) _unvirtualizedEraseSetOfArcs( __children[id] );
+    if ( __children.exists( id ) )
+      _unvirtualizedEraseSetOfArcs( __children[id] );
   }
 
   INLINE bool ArcGraphPart::operator==( const ArcGraphPart& p ) const {
-    return __arcs==p.__arcs;
+    return __arcs == p.__arcs;
   }
 
   INLINE bool ArcGraphPart::operator!=( const ArcGraphPart& p ) const {
-    return __arcs!=p.__arcs;
+    return __arcs != p.__arcs;
   }
 
 
 
 } /* namespace gum */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

@@ -71,9 +71,9 @@ namespace gum {
    */
 
   class EdgeGraphPart {
-  private:
-    static const EdgeSet __empty_edge_set;
   public:
+    typedef EdgeSetConstIterator EdgeIterator;
+    
     Signaler2<NodeId,NodeId> onEdgeAdded;
     Signaler2<NodeId,NodeId> onEdgeDeleted;
 
@@ -135,7 +135,8 @@ namespace gum {
     /// removes an edge from the EdgeGraphPart
     /** @param edge the edge to be removed
      * @warning if the edge does not exist, nothing is done. In particular, no
-     * exception is thrown. */    
+     * exception is thrown. However, the signal onEdgeDeleted is fired
+     * only if a node is effectively removed. */    
     virtual void eraseEdge( const Edge& edge );
 
     /// indicates whether a given edge exists
@@ -181,10 +182,10 @@ namespace gum {
     void unvirtualizedEraseNeighbours( const NodeId id );
 
     /// returns an iterator to parse the set of edges of the EdgeGraphPart
-    const EdgeSetIterator beginEdges() const;
+    const EdgeGraphPart::EdgeIterator beginEdges() const;
 
     /// returns the end iterator to parse the set of edges
-    const EdgeSetIterator& endEdges() const;
+    const EdgeGraphPart::EdgeIterator& endEdges() const;
 
     /// to friendly display the content of the EdgeGraphPart
     const std::string toString() const;
@@ -229,7 +230,8 @@ namespace gum {
 
     
 
-  private:
+    private:
+      static const EdgeSet __empty_edge_set;
     /// the set of all the edges contained within the EdgeGraphPart
     EdgeSet __edges;
 

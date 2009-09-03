@@ -102,8 +102,7 @@ class DatabaseTestSuite: public CxxTest::TestSuite {
 
     void testParseMissingXML() {
       std::string db1_name( GET_PATH_STR( database_missingvalue.xml ) );
-      TS_ASSERT_THROWS( gum::Database d=gum::Database::createFromXmlCSV( db1_name ),
-                        gum::Exception );
+      TS_ASSERT_THROWS( gum::Database d=gum::Database::createFromXmlCSV( db1_name ),gum::Exception );
     }
 
     void testDatabase_with_newline() {

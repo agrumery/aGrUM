@@ -61,7 +61,7 @@ namespace gum {
     std::stringstream strBuff;
     strBuff << "digraph " << name << " {" << std::endl;
     std::string tab = "     ";
-    for (ArcSetIterator iter = beginArcs(); iter != endArcs(); ++iter) {
+    for (DiGraph::ArcIterator iter = beginArcs(); iter != endArcs(); ++iter) {
       strBuff << tab << iter->tail() << " -> " << iter->head() << ";" << std::endl;
     }
     strBuff << "}" << std::endl << std::endl;

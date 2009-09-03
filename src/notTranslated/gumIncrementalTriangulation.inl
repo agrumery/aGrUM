@@ -1536,7 +1536,7 @@ void gumIncrementalTriangulation<gumNodeId,Triangulation>::check() {
     }
 
     for ( gumHashTableIterator<gumNodeId,bool> iter = nodes.begin();
-          iter != nodes.end(); ++iter )
+          iter != endNodes(); ++iter )
       if ( !*iter ) {
         std::cerr << "check nodes" << std::endl
         << graph << std::endl << __junction_tree << std::endl;
@@ -1589,7 +1589,7 @@ void gumIncrementalTriangulation<gumNodeId,Triangulation>::check() {
     }
 
     for ( gumHashTableIterator<gumNodeId,bool> iter = nodes.begin();
-          iter != nodes.end(); ++iter )
+          iter != endNodes(); ++iter )
       if ( !*iter ) {
         std::cerr << "check nodes" << std::endl
         << graph << std::endl << T_mpd << std::endl;
@@ -1940,7 +1940,7 @@ void gumIncrementalTriangulation<gumNodeId,Triangulation>::updateTriangulation()
       const gumNodeList<gumNodeId>& nodes = T_mpd.getClique( *iter );
 
       for ( gumNodeListIterator<gumNodeId> iter_node = nodes.begin();
-            iter_node != nodes.end(); ++iter_node )
+            iter_node != endNodes(); ++iter_node )
         mps_of_node[iter_node.getID()].insert( *iter );
     }
   }

@@ -37,13 +37,13 @@ namespace gum {
                         bool nodes_resize_policy,
                         Size edges_size ,
                         bool edges_resize_policy ) :
-    NodeGraphPart( nodes_size,nodes_resize_policy ),
-    EdgeGraphPart( edges_size,edges_resize_policy ) {
+      NodeGraphPart( nodes_size, nodes_resize_policy ),
+      EdgeGraphPart( edges_size, edges_resize_policy ) {
     GUM_CONSTRUCTOR( UndiGraph );
   }
 
   UndiGraph::UndiGraph( const UndiGraph& g ) :
-    NodeGraphPart( g ),EdgeGraphPart( g ) {
+      NodeGraphPart( g ), EdgeGraphPart( g ) {
     GUM_CONS_CPY( UndiGraph );
   }
 
@@ -52,12 +52,12 @@ namespace gum {
   }
 
   bool UndiGraph::hasUndirectedCycle() const {
-    List< std::pair<NodeId,NodeId> > open_nodes;
+    List< std::pair<NodeId, NodeId> > open_nodes;
     Property<bool>::onNodes examined_nodes = nodesProperty( false );
-    std::pair<NodeId,NodeId> thePair;
+    std::pair<NodeId, NodeId> thePair;
     NodeId current, from_current, new_node;
 
-    for ( NodeSetIterator iter = nodes().begin(); iter != nodes().end(); ++iter ) {
+    for ( UndiGraph::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
       if ( ! examined_nodes[*iter] ) {
@@ -66,8 +66,8 @@ namespace gum {
 
         // check recursively all the nodes of *iter's connected component
         thePair.first = *iter;
-        thePair.second = *iter; 
-        open_nodes.insert ( thePair );
+        thePair.second = *iter;
+        open_nodes.insert( thePair );
 
         while ( ! open_nodes.empty() ) {
           // get a node to propagate
@@ -79,10 +79,12 @@ namespace gum {
 
           // check the neighbours
           const EdgeSet& set = neighbours( current );
+
           for ( EdgeSetIterator iter_neigh = set.begin();
                 iter_neigh != set.end(); ++iter_neigh ) {
             new_node = iter_neigh->other( current );
             // avoid to check the node we are coming from
+
             if ( new_node != from_current ) {
               if ( examined_nodes[new_node] )
                 return true;
@@ -90,8 +92,8 @@ namespace gum {
                 examined_nodes[new_node] = true;
                 thePair.first = new_node;
                 thePair.second = current;
-                open_nodes.insert ( thePair );
-              } 
+                open_nodes.insert( thePair );
+              }
             }
           }
         }
@@ -102,19 +104,20 @@ namespace gum {
   }
 
   const std::string UndiGraph::toString() const {
-    std::string s=NodeGraphPart::toString();
-    s+=" , ";
-    s+=EdgeGraphPart::toString();
+    std::string s = NodeGraphPart::toString();
+    s += " , ";
+    s += EdgeGraphPart::toString();
     return s;
   }
 
   /// for friendly displaying the content of directed graphs
   std::ostream& operator<< ( std::ostream& stream, const UndiGraph& g ) {
-    stream<<g.toString();
+    stream << g.toString();
     return stream;
   }
 
 
 } /* namespace gum */
 
-  
+
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

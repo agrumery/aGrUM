@@ -26,6 +26,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease parser in IDE
+#include <agrum/graphs/cliqueGraph.h>
 
 namespace gum {
 
@@ -34,22 +36,22 @@ namespace gum {
   INLINE CliqueGraph& CliqueGraph::operator=( const CliqueGraph& g ) {
     if ( this != &g ) {
       UndiGraph::operator=( g );
-      __cliques=g.__cliques;
-      __separators=g.__separators;
+      __cliques = g.__cliques;
+      __separators = g.__separators;
     }
 
     return *this;
   }
 
-  INLINE void CliqueGraph::insertEdge( const NodeId first,const NodeId second ) {
-    Edge edge ( first,second );
-    
+  INLINE void CliqueGraph::insertEdge( const NodeId first, const NodeId second ) {
+    Edge edge( first, second );
+
     if ( ! existsEdge( edge ) ) {
       // create the edge in the graph
-      UndiGraph::insertEdge( first,second );
+      UndiGraph::insertEdge( first, second );
 
       // create the separator
-      __separators.insert( edge,__cliques[edge.first()]*__cliques[edge.second()] );
+      __separators.insert( edge, __cliques[edge.first()]*__cliques[edge.second()] );
     }
   }
 
@@ -94,8 +96,9 @@ namespace gum {
     if ( !exists( id ) ) return;
 
     // remove the separators
-    const EdgeSet& set=neighbours( id );
-    for ( EdgeSetIterator iter =set.begin();iter!=set.end();++iter ) {
+    const EdgeSet& set = neighbours( id );
+
+    for ( EdgeSetIterator iter = set.begin();iter != set.end();++iter ) {
       eraseEdge( *iter );
     }
 
@@ -131,10 +134,10 @@ namespace gum {
   // ==============================================================================
   INLINE void
   CliqueGraph::__updateSeparators( const NodeId id1 ) {
-    const EdgeSet& nei=neighbours( id1 );
+    const EdgeSet& nei = neighbours( id1 );
 
-    for ( EdgeSetIterator ite=nei.begin();ite!=nei.end();++ite ) {
-      __separators[*ite]=__cliques[id1]*__cliques[ite->other( id1 )];
+    for ( EdgeSetIterator ite = nei.begin();ite != nei.end();++ite ) {
+      __separators[*ite] = __cliques[id1] * __cliques[ite->other( id1 )];
     }
   }
 
@@ -161,8 +164,8 @@ namespace gum {
   /// returns the separator included in an edge specified by its extremities
   // ==============================================================================
   INLINE const NodeSet&
-  CliqueGraph::separator( const NodeId node1,const NodeId node2 ) const  {
-    return separator( Edge( node1,node2 ) );
+  CliqueGraph::separator( const NodeId node1, const NodeId node2 ) const  {
+    return separator( Edge( node1, node2 ) );
   }
 
   // ==============================================================================
@@ -202,5 +205,6 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

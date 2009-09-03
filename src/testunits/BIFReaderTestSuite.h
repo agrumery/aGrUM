@@ -110,7 +110,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         gum::NodeId node_1=0, node_2=0;
 
 
-        for ( gum::NodeSet::iterator iter = net->dag().beginNodes();iter != net->dag().endNodes(); ++iter ) {
+        for ( gum::DAG::NodeIterator iter = net->dag().beginNodes();iter != net->dag().endNodes(); ++iter ) {
           if ( net->variable( *iter ).name() == "n1" )
             node_1 = *iter;
           else
@@ -192,7 +192,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         gum::NodeId node_1=0, node_2=0;
 
 
-        for ( gum::NodeSet::iterator iter = net->dag().beginNodes();iter != net->dag().endNodes();++iter ) {
+        for ( gum::DAG::NodeIterator iter = net->dag().beginNodes();iter != net->dag().endNodes();++iter ) {
           if ( net->variable( *iter ).name() == "n1" ) {
             node_1 = *iter;
 
@@ -275,7 +275,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
         gum::HashTable<std::string, gum::Id> idMap;
 
 
-        for ( gum::NodeSetIterator iter = net->beginNodes();iter != net->endNodes();++iter ) {
+        for ( gum::DAG::NodeIterator iter = net->beginNodes();iter != net->endNodes();++iter ) {
           idMap.insert( net->variable( *iter ).name(), *iter );
 
         }
@@ -633,7 +633,7 @@ class BIFReaderTestSuite: public CxxTest::TestSuite {
       gum::HashTable<std::string, gum::Id> idMap;
 
 
-      for ( gum::NodeSetIterator iter = net->beginNodes();iter != net->endNodes();++iter ) {
+      for ( gum::DAG::NodeIterator iter = net->beginNodes();iter != net->endNodes();++iter ) {
         idMap.insert( net->variable( *iter ).name(), *iter );
 
       }

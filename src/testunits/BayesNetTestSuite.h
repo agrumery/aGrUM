@@ -163,10 +163,11 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
 
       TS_ASSERT_EQUALS( source.dag().size(), copy->dag().size() );
       TS_ASSERT_EQUALS( source.dag().sizeArcs(), copy->dag().sizeArcs() );
-      const gum::NodeSet& nodes=source.dag().nodes();
+      //const gum::NodeSet& nodes=source.dag().nodes();
+      const gum::DAG dag=source.dag();
 
-      for ( gum::NodeSet::iterator nodeIter = nodes.begin();
-            nodeIter != nodes.end();
+      for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();
+            nodeIter != dag.endNodes();
             ++nodeIter ) {
         TS_ASSERT( copy->dag().exists( *nodeIter ) );
 
@@ -372,7 +373,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       gum::BayesNet<float> bn;
       gum::List<gum::NodeId> idList;
 
-      for (gum::NodeSetIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter) {
+      for (gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter) {
         TS_ASSERT( idList.exists(*iter) );
       }
     }

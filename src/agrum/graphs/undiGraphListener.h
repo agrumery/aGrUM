@@ -87,8 +87,8 @@ namespace gum {
 
     /// the action to take when an edge has just been removed from the graph
     /** @param src the object that sent the signal
-     * @param id1 the id of one node of the edge removed from the graph
-     * @param id2 the id of the other node of the edge removed from the graph */
+     * @param from the id of one node of the edge removed from the graph
+     * @param to the id of the other node of the edge removed from the graph */
     virtual void whenEdgeDeleted( const void *src,NodeId from,NodeId to)=0;
 
     /// @}

@@ -36,13 +36,13 @@ namespace gum {
   ///////////////////// EdgeGraphPart
   EdgeGraphPart::EdgeGraphPart( Size edges_size ,
                                 bool edges_resize_policy ) :
-    __edges( edges_size ,edges_resize_policy ) {
+      __edges( edges_size , edges_resize_policy ) {
     GUM_CONSTRUCTOR( EdgeGraphPart );
   }
 
   EdgeGraphPart::EdgeGraphPart( const EdgeGraphPart& s ):
-    __edges( s.__edges ),
-    __neighbours( s.__neighbours ) {
+      __edges( s.__edges ),
+      __neighbours( s.__neighbours ) {
     GUM_CONS_CPY( EdgeGraphPart );
   }
 
@@ -53,58 +53,58 @@ namespace gum {
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
     std::string res;
-    bool first=true;
-    s<<"{";
+    bool first = true;
+    s << "{";
 
-    for ( EdgeSetIterator it=__edges.begin();it!=__edges.end();++it ) {
+    for ( EdgeIterator it = __edges.begin();it != __edges.end();++it ) {
       if ( first ) {
-        first=false;
-      }
-      else {
-        s<<",";
+        first = false;
+      } else {
+        s << ",";
       }
 
-      s<<*it;
+      s << *it;
     }
 
-    s<<"}";
+    s << "}";
 
     s >> res;
     return res;
   }
-  
+
   const std::vector<NodeId>
-  EdgeGraphPart::undirectedPath( const NodeId n1,const NodeId n2 ) const {
+  EdgeGraphPart::undirectedPath( const NodeId n1, const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = predecessor if visited, else mark[node] does not exist
     Property<NodeId>::onNodes mark;
-    mark.insert( n2,n2 );
+    mark.insert( n2, n2 );
 
     NodeId current;
 
     while ( ! nodeFIFO.empty() ) {
-      current=nodeFIFO.front();
+      current = nodeFIFO.front();
       nodeFIFO.popFront();
 
       // check the neighbour //////////////////////////////////////////////
-      const EdgeSet& set=neighbours( current );
+      const EdgeSet& set = neighbours( current );
 
-      for ( EdgeSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        NodeId new_one=ite->other( current );
+      for ( EdgeIterator ite = set.begin();ite != set.end();++ite ) {
+        NodeId new_one = ite->other( current );
 
-        if ( mark.exists(new_one) ) // if this node is already marked, stop
+        if ( mark.exists( new_one ) ) // if this node is already marked, stop
           continue;
 
-        mark.insert (new_one, current);
+        mark.insert( new_one, current );
 
-        if ( new_one==n1 ) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for ( current=n1; current != n2; current=mark[current] )
+          for ( current = n1; current != n2; current = mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
 
           return v;
@@ -114,12 +114,12 @@ namespace gum {
       }
     }
 
-    GUM_ERROR( NotFound,"no path found" );
-    
+    GUM_ERROR( NotFound, "no path found" );
+
   }
 
   std::ostream& operator<< ( std::ostream& stream, const EdgeGraphPart& set ) {
-    stream<<set.toString();
+    stream << set.toString();
     return stream;
   }
 
@@ -132,3 +132,4 @@ namespace gum {
 } /* namespace gum */
 
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

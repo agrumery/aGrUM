@@ -35,11 +35,11 @@ Let's say that <tt>class A</tt> has a method <tt>f(int i,char ch)</tt> and would
 #include <agrum/core/signal/signaler2.h> // Note the '2' because the signal we want will send 2 args (i and ch)
 class A {
  public:
-	 gum::signaler2<int,ch> onF; // Note that whenF is public !
-	
-	void f(int i,char ch) {
+  gum::signaler2<int,ch> onF; // Note that onF is public !
+
+ void f(int i,char ch) {
     //do something
-		GUM_EMIT2(onF,i,ch); // a signal (with 2 args i and ch) is emitted via onF.
+  GUM_EMIT2(onF,i,ch); // a signal (with 2 args i and ch) is emitted via onF.
   }
 }
 @endcode
@@ -52,7 +52,7 @@ Now, how to listen to such a signal ?
 
 class B : gum::listener {
  public:
-	 void whenF(void *src,int i, char ch) {std::cout<<"f on "<<i<<" and "<<ch<<std::endl;}
+  void whenF(const void *src,int i, char ch) {std::cout<<"object "<<src<<"run f on "<<i<<" and "<<ch<<std::endl;}
 };
 
 A a;
@@ -68,12 +68,18 @@ a.f(3,'a');
 
 class C : gum::listener {
  public:
-	   void dummy(void *src,int i,char ch) {};
+    void dummy(void *src,int i,char ch) {};
 };
 
-C c;
-GUM_CONNECT( a,onF,c,C::dummy );
-//c.dummy(), b1.whenF and b2.whenF has been executed.
+{
+  C c;
+  GUM_CONNECT( a,onF,c,C::dummy );
+  a.f(4,'x');
+  //c.dummy(), b1.whenF and b2.whenF has been executed.
+} // c is destroyed...
+
+a.f(5,'y');
+//b1.whenF and b2.whenF has been executed.
 @endcode
 */
 #ifndef __SIGNALER_H
@@ -88,6 +94,7 @@ GUM_CONNECT( a,onF,c,C::dummy );
 #include <agrum/core/signal/signaler4.h>
 #include <agrum/core/signal/signaler5.h>
 #include <agrum/core/signal/signaler6.h>
-
+#include <agrum/core/signal/signaler7.h>
 #endif // __SIGNALER_H
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

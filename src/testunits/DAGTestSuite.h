@@ -247,7 +247,7 @@ class DAGTestSuite: public CxxTest::TestSuite {
     void testGetArcs() {
       gum::DAG graph=buildGraph();
 
-      gum::ArcSet arclist = graph.arcs();
+      gum::ArcSet arclist = graph.asArcs();
       TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
       gum::Size arcCount = graph.sizeArcs();
 

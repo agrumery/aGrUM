@@ -34,56 +34,155 @@ namespace gum {
 
 
   ///////////////////// NodeGraphPart
-  NodeGraphPart::NodeGraphPart( Size nodes_size ,
-                                bool nodes_resize_policy ) :
-    __nodes( nodes_size,nodes_resize_policy ),
-    __max( 0 ) {
+  NodeGraphPart::NodeGraphPart( Size holes_size ,
+                                bool holes_resize_policy ) :
+      __holes_size( holes_size ),
+      __holes_resize_policy( holes_resize_policy ),
+      __endIterator( this ),
+      __max( 0 ) {
+    __holes = 0;
     GUM_CONSTRUCTOR( NodeGraphPart );
+    __updateEndIterator();
   }
 
   NodeGraphPart::NodeGraphPart( const NodeGraphPart& s ) :
-    __nodes( s.__nodes ),__max( s.__max ) {
+      __holes_size( s.__holes_size ), __holes_resize_policy( s.__holes_resize_policy ), __endIterator( this ), __max( s.__max ) {
+    __holes = 0;
+
+    if ( s.__holes )
+      __holes = new NodeSet( *s.__holes );
+
+    __updateEndIterator();
+
     GUM_CONS_CPY( NodeGraphPart );
   }
 
   NodeGraphPart::~NodeGraphPart() {
+    if ( __holes ) delete __holes;
+
     GUM_DESTRUCTOR( NodeGraphPart );
   }
 
   void NodeGraphPart::populateNodes( const NodeGraphPart& s ) {
-    clear();
-    __nodes=s.__nodes;
-    __max=s.__max;
+    clear();// "virtual" flush of the nodes set
+    __holes_size = s.__holes_size;
+    __holes_resize_policy = s.__holes_resize_policy;
+
+    if ( s.__holes )
+      __holes = new NodeSet( *s.__holes );
+
+    __max = s.__max;
+
+    __updateEndIterator();
+  }
+
+  // id is assumed not to be already a hole
+  void NodeGraphPart::__addHole( NodeId node ) {
+
+    // the node exists
+    if ( node == __max ) {  // we remove the max : no new hole and maybe a bunch of holes to remove
+      __max--;
+
+      if ( __holes ) {
+        while ( __holes->contains( __max ) ) { // a bunch of holes to remove. We do not use inHoles for optimisation : not to repeat the test if (__holes) each time
+          __holes->erase( __max );
+          __max--;
+        }
+
+        if ( __holes->empty() ) {
+          __holes->resize( __holes_size );
+        }
+      }
+
+      __updateEndIterator();
+    } else {
+      if ( !__holes )
+        __holes = new NodeSet( __holes_size, __holes_resize_policy );
+
+      __holes->insert( node );
+    }
   }
 
   std::string NodeGraphPart::toString() const {
     std::stringstream s;
     std::string res;
-    bool first=true;
-    s<<"{";
+    bool first = true;
+    s << "{";
 
-    for ( NodeSetIterator it=__nodes.begin();it!=__nodes.end();++it ) {
+    for ( NodeId id = 1;id <= __max;id++ ) {
+      if ( inHoles( id ) ) continue;
+
       if ( first ) {
-        first=false;
-      }
-      else {
-        s<<",";
+        first = false;
+      } else {
+        s << ",";
       }
 
-      s<<*it;
+      s << id;
     }
 
-    s<<"}";
+    s << "}";
 
     s >> res;
     return res;
   }
 
   std::ostream& operator<< ( std::ostream& stream, const NodeGraphPart& set ) {
-    stream<<set.toString();
+    stream << set.toString();
     return stream;
   }
 
+  void NodeGraphPart::insertNode( const NodeId id ) {
+    bool isOK = false;
 
+    if (id==(NodeId)0)
+      GUM_ERROR(OutOfLowerBound,"id cannot be 0");
+    
+    if ( __max < id ) {
+      if ( __max + 1 < id ) { // we have to add holes
+        if ( ! __holes )
+          __holes = new NodeSet();
+
+        for ( NodeId i = __max + 1; i < id;i++ )
+          __holes->insert( i );
+      }
+
+      __max = id;
+
+      __updateEndIterator();
+
+      isOK = true;
+    } else {
+      if ( inHoles( id ) ) {  // we fill a hole
+        __eraseHole( id );
+
+        isOK = true;
+      }
+    }
+
+    if ( ! isOK ) {
+      GUM_ERROR( DuplicateElement, "This id is already used" );
+    } else {
+      GUM_EMIT1( onNodeAdded, id );
+    }
+  }
+
+  void NodeGraphPart::__clearNodes( void ) {
+    if ( onNodeDeleted.hasListener() ) {
+      for ( NodeId n = 1;n <= __max;n++ ) {
+        if ( inHoles( n ) ) continue;
+
+        GUM_EMIT1( onNodeDeleted, n );
+      }
+    }
+
+__max = 0;
+__updateEndIterator();
+
+    delete( __holes );
+
+    __holes = 0;
+  }
 } /* namespace gum */
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
