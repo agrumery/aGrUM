@@ -57,7 +57,7 @@ namespace gum {
     bool first=true;
     s<<"{";
 
-    for ( ArcSetConstIterator it=__arcs.begin();it!=__arcs.end();++it ) {
+    for ( ArcSetIterator it=__arcs.begin();it!=__arcs.end();++it ) {
       if ( first ) {
         first=false;
       }
