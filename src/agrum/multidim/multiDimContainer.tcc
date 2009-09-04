@@ -19,7 +19,7 @@
  ***************************************************************************/
 namespace gum {
   // ==============================================================================
-  /// Default constructor
+  // Default constructor
   // ==============================================================================
   template<typename T_DATA> INLINE
   MultiDimContainer<T_DATA>::MultiDimContainer() : MultiDimAdressable() {
@@ -27,7 +27,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Copy constructor
+  // Copy constructor
   // ==============================================================================
   template<typename T_DATA>
   INLINE
@@ -37,7 +37,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// destructor
+  // destructor
   // ==============================================================================
   template<typename T_DATA>
   INLINE
@@ -46,7 +46,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// an [] operator using a Instantiation as argument
+  // an [] operator using a Instantiation as argument
   // ==============================================================================
   template<typename T_DATA>
   INLINE
@@ -55,7 +55,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// an [] operator using a Instantiation as argument
+  // an [] operator using a Instantiation as argument
   // ==============================================================================
   template<typename T_DATA>
   INLINE void MultiDimContainer<T_DATA>::set( const Instantiation& i,const T_DATA& value ) const {
@@ -63,7 +63,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// an [] operator using a Instantiation as argument
+  // an [] operator using a Instantiation as argument
   // ==============================================================================
   template<typename T_DATA>
   INLINE T_DATA MultiDimContainer<T_DATA>::get( const Instantiation& i ) const {
@@ -71,7 +71,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// display the content of an array
+  // display the content of an array
   // ==============================================================================
   template<typename T_DATA>
   const std::string MultiDimContainer<T_DATA>::toString() const {
@@ -96,7 +96,58 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// automation fill with vector.
+  // Test if this potential is equal to p.
+  // ==============================================================================
+  template<typename T_DATA>
+  bool MultiDimContainer<T_DATA>::operator==(const MultiDimContainer<T_DATA>& p) const {
+    if ((nbrDim() == p.nbrDim()) and (domainSize() == p.domainSize())) {
+      typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
+      for (var_iterator iter = variablesSequence().begin();
+           iter != variablesSequence().end(); ++iter) {
+        if (not p.variablesSequence().exists(*iter)) {
+          return false;
+        }
+      }
+      Instantiation i(*this);
+      for (i.setFirst(); not i.end(); ++i) {
+        if (std::pow( (get(i) - p.get(i)), (T_DATA) 2) > (T_DATA) 0.000001) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // ==============================================================================
+  // Test if this potential is different of p.
+  // ==============================================================================
+  template<typename T_DATA>
+  bool MultiDimContainer<T_DATA>::operator!=(const MultiDimContainer<T_DATA>& p) const {
+    if ((nbrDim() == p.nbrDim()) and (domainSize() == p.domainSize())) {
+      typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
+      for (var_iterator iter = variablesSequence().begin();
+           iter != variablesSequence().end(); ++iter) {
+        if (not p.variablesSequence().exists(*iter)) {
+          return true;
+        }
+      }
+      Instantiation i(*this);
+      for (i.setFirst(); not i.end(); ++i) {
+        if (std::pow( (get(i) - p.get(i)), (T_DATA) 2) > (T_DATA) 0.000001) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
+  // ==============================================================================
+  // automation fill with vector.
   // ==============================================================================
   template<typename T_DATA>
   void MultiDimContainer<T_DATA>::fillWith( const std::vector<T_DATA>& v ) const {
@@ -113,7 +164,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// copyFrom
+  // copyFrom
   // ==============================================================================
   template<typename T_DATA>
   void MultiDimContainer<T_DATA>::copyFrom
@@ -139,7 +190,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// copy
+  // copy
   // ==============================================================================
   template<typename T_DATA>
   void MultiDimContainer<T_DATA>::copy( const MultiDimContainer<T_DATA>& from ) {
@@ -159,7 +210,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// display the content of an array
+  // display the content of an array
   // ==============================================================================
   template<typename T_DATA>
   std::ostream& operator<< ( std::ostream& out,

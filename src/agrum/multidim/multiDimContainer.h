@@ -29,6 +29,7 @@
 // ============================================================================
 #include <iostream>
 #include <vector>
+#include <cmath>
 // ============================================================================
 #include <agrum/core/utils.h>
 // ============================================================================
@@ -232,6 +233,16 @@ namespace gum {
       /// Display the internal representation of i.
       // ============================================================================
       virtual const std::string toString( const Instantiation *i ) const=0;
+
+      // ============================================================================
+      /// Test if this potential is equal to p.
+      // ============================================================================
+      bool operator==(const MultiDimContainer<T_DATA>& p) const;
+
+      // ============================================================================
+      /// Test if this potential is different of p.
+      // ============================================================================
+      bool operator!=(const MultiDimContainer<T_DATA>& p) const;
 
       /// @}
 
