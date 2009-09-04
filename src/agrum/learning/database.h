@@ -31,6 +31,7 @@
 #include <agrum/core/utils.h>
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/BN/BayesNet.h>
 
 
 namespace gum {
@@ -255,6 +256,23 @@ namespace gum {
                                      char field_separator = ';',
                                      char field_delimiter = '"',
                                      char escape_char = '\\' );
+// ============================================================================
+      /// creates a new database by using a BN to find variables and labels.
+      /** The assumed format of the CSV file is the following: the first line contains
+       * the names of the nodes/fields, and the following lines contain the content
+       * of the database.
+       *
+       * Missing values are just empty fields ",,"
+       * @warning Missing values are represented by a label "?". Thus, if there are missing
+       * values, the number of modalities take into account this "?" label.
+      * @ throws IOError
+       */
+      // ============================================================================
+      static Database createFromCSVAndBN( BayesNet<float> *bn,
+                                          const std::string& filename,
+                                          char separator_separator = ';',
+                                          char field_delimiter = '"',
+                                          char escape_char = '\\' );
 
       // ============================================================================
       /// creates a new database from a mixed XML/CSV file
@@ -430,7 +448,7 @@ namespace gum {
       std::vector<std::string> __node_names;
 
       /// a hashtable indicating for each node name its field index (ID)
-      HashTable<std::string,unsigned int> __node_name_per_id;
+      HashTable<std::string, unsigned int> __node_name_per_id;
 
       /// the number of modalities of the nodes
       std::vector<unsigned int> __nb_modalities;
@@ -452,7 +470,7 @@ namespace gum {
       DatabaseIterator __iter_rbegin;
       DatabaseIterator __iter_rend;
 
-			/// name of the file
+      /// name of the file
       std::string __filename;
 
       /// the list of iterators pointing toward the current database
@@ -483,3 +501,4 @@ namespace gum {
 
 
 #endif /* GUM_DATABASE_H */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

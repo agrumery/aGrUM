@@ -693,10 +693,6 @@ namespace gum {
   typedef Set<Edge> EdgeSet;
   typedef Set<Arc> ArcSet;
 
-//   typedef ArcSet::iterator  ArcSetIterator;
-//   typedef EdgeSet::iterator EdgeSetIterator;
-//   typedef NodeSet::iterator NodeSetIterator;
-
   typedef ArcSet::const_iterator  ArcSetIterator;
   typedef EdgeSet::const_iterator EdgeSetIterator;
   typedef NodeSet::const_iterator NodeSetIterator;
