@@ -95,7 +95,6 @@ private:
 	
 	int ReadNextStreamChunk();
 	bool CanSeek();     // true if stream can be seeked otherwise false
-	
 public:
 	int GetPercent(void);
 
@@ -221,7 +220,8 @@ private:
 	int charSetSize;
 	StartStates start;
 	KeywordMap keywords;
-
+	int percent;
+	
 	Token *t;         // current token
 	wchar_t *tval;    // text of current token
 	int tvalLength;   // length of text of current token

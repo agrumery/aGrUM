@@ -120,7 +120,6 @@ private:
 	
 	int ReadNextStreamChunk();
 	bool CanSeek();     // true if stream can be seeked otherwise false
-	
 public:
 	int GetPercent(void);
 
@@ -246,7 +245,8 @@ private:
 	int charSetSize;
 	StartStates start;
 	KeywordMap keywords;
-
+	int percent;
+	
 	Token *t;         // current token
 	wchar_t *tval;    // text of current token
 	int tvalLength;   // length of text of current token
@@ -756,6 +756,7 @@ Scanner::~Scanner() {
 }
 
 void Scanner::Init() {
+	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
 -->declarations
@@ -795,8 +796,6 @@ void Scanner::Init() {
 }
 
 void Scanner::NextCh() {
-	static int percent=-1;
-
 	if (oldEols > 0) { ch = EOL; oldEols--; }
 	else {
 		pos = buffer->GetPos();

@@ -429,6 +429,7 @@ Scanner::~Scanner() {
 }
 
 void Scanner::Init() {
+	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
 	maxT = 25;
@@ -498,8 +499,6 @@ void Scanner::Init() {
 }
 
 void Scanner::NextCh() {
-	static int percent=-1;
-
 	if (oldEols > 0) { ch = EOL; oldEols--; }
 	else {
 		pos = buffer->GetPos();

@@ -27,29 +27,29 @@
 class aSimpleListener : public gum::Listener {
 public:
   void whenLoading(const void *buffer,int percent) {
-		// percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
+  // percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
     // percent=200 recieved when End Of File.
-	}
+ }
 };
 // END OF OPTIONAL LISTENER
 
-	gum::BayesNet<double> bn;
+ gum::BayesNet<double> bn;
 
-	try {
-		gum::BIFReader<double> reader(&bn,std::string(args[1]));
+ try {
+  gum::BIFReader<double> reader(&bn,std::string(args[1]));
 
-		// OPTIONAL SECTION
-		aSimpleListener l;
-		GUM_CONNECT(reader.scanner(),onLoad,l,aSimpleListener::whenLoading);
-		// END OF OPTIONNAL SECTION
+  // OPTIONAL SECTION
+  aSimpleListener l;
+  GUM_CONNECT(reader.scanner(),onLoad,l,aSimpleListener::whenLoading);
+  // END OF OPTIONNAL SECTION
 
-		if (reader.proceed()==0) {
-			std::cerr<<"Well done !"<<std::endl;
-		} else {
-			reader.showElegantErrorsAndWarnings();
-			reader.showErrorCounts();
-		}
-	} catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+  if (reader.proceed()==0) {
+   std::cerr<<"Well done !"<<std::endl;
+  } else {
+   reader.showElegantErrorsAndWarnings();
+   reader.showErrorCounts();
+  }
+ } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
 
   return 0;
 
@@ -82,29 +82,29 @@ namespace gum {
   class aSimpleListener : public gum::Listener {
   public:
     void whenLoading(const void *buffer,int percent) {
-  		// percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
+    // percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
       // percent=200 recieved when End Of File.
-  	}
+   }
   };
   // END OF OPTIONAL LISTENER
 
-  	gum::BayesNet<double> bn;
+   gum::BayesNet<double> bn;
 
-  	try {
-  		gum::BIFReader<double> reader(&bn,std::string(args[1]));
+   try {
+    gum::BIFReader<double> reader(&bn,std::string(args[1]));
 
-  		// OPTIONAL SECTION
-  		aSimpleListener l;
-  		GUM_CONNECT(reader.scanner(),onLoad,l,aSimpleListener::whenLoading);
-  		// END OF OPTIONNAL SECTION
+    // OPTIONAL SECTION
+    aSimpleListener l;
+    GUM_CONNECT(reader.scanner(),onLoad,l,aSimpleListener::whenLoading);
+    // END OF OPTIONNAL SECTION
 
-  		if (reader.proceed()==0) {
-  			std::cerr<<"Well done !"<<std::endl;
-  		} else {
-  			reader.showElegantErrorsAndWarnings();
-  			reader.showErrorCounts();
-  		}
-  	} catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+    if (reader.proceed()==0) {
+     std::cerr<<"Well done !"<<std::endl;
+    } else {
+     reader.showElegantErrorsAndWarnings();
+     reader.showErrorCounts();
+    }
+   } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
 
     return 0;
 
@@ -116,11 +116,11 @@ namespace gum {
 
   class BIFReader : public BNReader<T_DATA> {
     public:
-      BIFReader( BayesNet<T_DATA>* bn,const std::string& filename );
+      BIFReader( BayesNet<T_DATA>* bn, const std::string& filename );
       ~BIFReader();
 
       /// Direct access to BIF scanner (mandatory for listener connection)
-			/// @throws IOError if file not exists
+      /// @throws IOError if file not exists
       BIF::Scanner& scanner();
 
       /// name of readen file
@@ -132,25 +132,25 @@ namespace gum {
 
       /// parse.
       /// @return the number of detected errors
-			/// @throws IOError if file not exists
+      /// @throws IOError if file not exists
       int proceed( void );
 
       /// @{
       /// publishing Errors API
 
-			/// # of errors
-			Size errors();
-			/// # of errors
-			Size warnings();
+      /// # of errors
+      Size errors();
+      /// # of errors
+      Size warnings();
 
       /// line of ith error or warning
-      unsigned int errLine(unsigned int i );
+      unsigned int errLine( unsigned int i );
       /// col of ith error or warning
-      unsigned int errCol(unsigned int i );
+      unsigned int errCol( unsigned int i );
       /// type of ith error or warning
-      bool errIsError(unsigned int i );
+      bool errIsError( unsigned int i );
       /// message of ith error or warning
-      std::string errMsg(unsigned int i );
+      std::string errMsg( unsigned int i );
 
       /// send on std::cerr the list of errors
       void showElegantErrors();
@@ -172,8 +172,8 @@ namespace gum {
       bool __traceScanning;
       bool __parseDone;
 
-			// a boolean to throw the ioerror not in the constructor but in the proceed()
-			bool __ioerror;
+      // a boolean to throw the ioerror not in the constructor but in the proceed()
+      bool __ioerror;
   };
 } // namespace gum
 
@@ -181,3 +181,4 @@ namespace gum {
 
 #endif // BIF_READER_H
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
