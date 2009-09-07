@@ -33,42 +33,80 @@
 class MultiDimNoisyORTestSuite: public CxxTest::TestSuite {
   public:
     void testCreationNoisyOr() {
-      gum::LabelizedVariable a( "a","",2 ),b( "b","",2 ),c( "c","",2),d( "d","",2);
-      gum::MultiDimNoisyOR<float> p(0.2);
-			p.causalWeight(b,0.4);
-			p.causalWeight(d,0.7);
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-			TS_ASSERT_EQUALS( p.toString(),"a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 2 ), c( "c", "", 2 ), d( "d", "", 2 );
+      gum::MultiDimNoisyOR<float> p( 0.2 );
+      p.causalWeight( b, 0.4 );
+      p.causalWeight( d, 0.7 );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
 
-			gum::MultiDimNoisyOR<float> q(p);
-			TS_ASSERT_EQUALS( q.toString(),"a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      gum::MultiDimNoisyOR<float> q( p );
+      TS_ASSERT_EQUALS( q.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
     }
 
-		void testComputationInNoisyOR() {
-			gum::LabelizedVariable cold("Cold","",2);
-			gum::LabelizedVariable flu("Flu","",2);
-			gum::LabelizedVariable malaria("Malaria","",2);
-			gum::LabelizedVariable fever("Fever","",2);
+    void testComputationInNoisyOR() {
+      gum::LabelizedVariable cold( "Cold", "", 2 );
+      gum::LabelizedVariable flu( "Flu", "", 2 );
+      gum::LabelizedVariable malaria( "Malaria", "", 2 );
+      gum::LabelizedVariable fever( "Fever", "", 2 );
 
-			gum::MultiDimNoisyOR<float> p(0.0);
-			p.causalWeight(cold,0.4);
-			p.causalWeight(flu,0.8);
-			p.causalWeight(malaria,0.9);
-			p<<fever<<malaria<<flu<<cold;
+      gum::MultiDimNoisyOR<float> p( 0.0 );
+      p.causalWeight( cold, 0.4 );
+      p.causalWeight( flu, 0.8 );
+      p.causalWeight( malaria, 0.9 );
+      p << fever << malaria << flu << cold;
 
-			gum::Instantiation i(p);
-			float witness[]={1,0,0.1,0.9,0.2,0.8,0.02,0.98,0.6,0.4,0.06,0.94,0.12,0.88,0.012,0.988};
+      gum::Instantiation i( p );
+      float witness[] = {1, 0, 0.1, 0.9, 0.2, 0.8, 0.02, 0.98, 0.6, 0.4, 0.06, 0.94, 0.12, 0.88, 0.012, 0.988};
 
-			int j=0;
-			for(i.setFirst();! i.end(); ++i,j++) {
-				TS_ASSERT_DELTA(p[i],witness[j],1e-6);
-			}
-			
-			gum::MultiDimNoisyOR<float> q(p);
-			j=0;
-			for(i.setFirst();! i.end(); ++i,j++) {
-				TS_ASSERT_DELTA(q[i],witness[j],1e-6);
-			}
-		}
+      int j = 0;
+
+      for ( i.setFirst();! i.end(); ++i, j++ ) {
+        TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
+      }
+
+      gum::MultiDimNoisyOR<float> q( p );
+
+      j = 0;
+
+      for ( i.setFirst();! i.end(); ++i, j++ ) {
+        TS_ASSERT_DELTA( q[i], witness[j], 1e-6 );
+      }
+    }
+
+    void testNoisyORInBN() {
+      gum::BayesNet<float> bn;
+
+      gum::LabelizedVariable cold( "Cold", "", 2 );
+      gum::LabelizedVariable flu( "Flu", "", 2 );
+      gum::LabelizedVariable malaria( "Malaria", "", 2 );
+      gum::LabelizedVariable fever( "Fever", "", 2 );
+
+      gum::NodeId idCold = bn.add( cold );
+      gum::NodeId idFlu = bn.add( flu );
+      gum::NodeId idMalaria = bn.add( malaria );
+      gum::NodeId idFever = bn.addNoisyOR( fever, 0.0 );
+
+      bn.insertArcNoisyOR( idMalaria, idFever, 0.9 );
+      bn.insertArcNoisyOR( idFlu, idFever, 0.8 );
+      bn.insertArcNoisyOR( idCold, idFever, 0.4 );
+
+			TS_ASSERT_THROWS(bn.insertArcNoisyOR(idMalaria,idCold,0.8),gum::InvalidArc);
+
+      const gum::Potential<float>&p = bn.cpt( idFever );
+
+      gum::Instantiation i( p );
+      float witness[] = {1.0, 0.0, 0.1, 0.9, 0.2, 0.8, 0.02, 0.98, 0.6, 0.4, 0.06, 0.94, 0.12, 0.88, 0.012, 0.988};
+
+      int j = 0;
+
+      for ( i.setFirst();! i.end(); ++i, j++ ) {
+        TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
+      }
+
+      gum::LazyPropagation<float> inf_LazyProp( bn );
+
+      inf_LazyProp.makeInference();
+    }
 };
-// kate: indent-mode cstyle; replace-tabs off; tab-width 2;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs off;

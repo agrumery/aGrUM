@@ -448,6 +448,30 @@ namespace gum {
     }
   }
 
+  // Add a noisyOR variable
+  template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyOR( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
+    return add( var, new MultiDimNoisyOR<T_DATA>( external_weight ) , id );
+  }
+
+  // Add an arc in the BN, and update arc.head's CPT.
+  template<typename T_DATA> INLINE
+  void
+  BayesNet<T_DATA>::insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight ) {
+    const MultiDimAdressable& content=cpt( head ).getMasterRef();
+    const MultiDimNoisyOR<T_DATA>* noisy = dynamic_cast<const MultiDimNoisyOR<T_DATA>*>( &content );
+
+    if ( noisy == 0 ) {
+      GUM_ERROR( InvalidArc, "This head is not a noisyOR variable !" );
+    }
+
+    // or is OK
+    insertArc( tail, head );
+
+    noisy->causalWeight( variable( tail ), causalWeight );
+  }
+
   template<typename T_DATA>
   std::ostream&
   operator<<( std::ostream& output, const BayesNet<T_DATA>& map ) {
@@ -483,4 +507,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

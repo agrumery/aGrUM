@@ -86,6 +86,8 @@ namespace gum {
   template<typename T_DATA>
   void
   ShaferShenoyInference<T_DATA>::makeInference() {
+    this->_invalidateMarginals();
+    
     // Setting all collect flags at false
     for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
@@ -571,4 +573,4 @@ namespace gum {
 // ============================================================================
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

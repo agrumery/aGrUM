@@ -150,7 +150,11 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
     void testConstructor() {
       gum::BayesNet<float> *topology=NULL;
       TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::BayesNet<float>() );
+      
+      TS_ASSERT_THROWS(topology->insertArc(1,2),gum::InvalidNode)
+      
       TS_GUM_ASSERT_THROWS_NOTHING( delete topology );
+
     }
 
     void testCopyConstructor() {

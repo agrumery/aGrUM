@@ -182,7 +182,9 @@ namespace gum {
   // ==============================================================================
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
+    this->_invalidateMarginals();
     // if the evidence does not exist, do nothing
+
     if ( !__evidences.contains( pot ) ) return;
 
     // remove the potential from the list of evidence of the cliques
@@ -211,7 +213,9 @@ namespace gum {
   // ==============================================================================
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::eraseAllEvidence() {
+    this->_invalidateMarginals();
     // remove the evidence store in the cliques
+
     for ( HashTableIterator<NodeId, List<const Potential<T_DATA>*> >
           iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter )
@@ -249,6 +253,7 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::insertEvidence
   ( const List<const Potential<T_DATA>*>& pot_list ) {
+    this->_invalidateMarginals();
     List <const Potential<T_DATA>*> empty_list;
 
     for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
@@ -647,6 +652,7 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::makeInference( bool force_inference ) {
     // prepare a new inference from scratch
+
     if ( force_inference ) {
       // remove all the separator potentials, if any
       //for ( HashTableIterator< Arc,__PotentialSet >
@@ -975,4 +981,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

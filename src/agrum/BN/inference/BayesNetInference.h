@@ -32,107 +32,112 @@
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
+
 namespace gum {
-/**
- * @class BayesNetInference
- * @brief Abstract class for making inference in bayesian networks.
- * @ingroup bn_group
- *
- */
-template <typename T_DATA>
-class BayesNetInference {
-public:
   /**
-   * Default constructor
-   */
-  BayesNetInference( const BayesNet<T_DATA>& bn );
-
-  /**
-   * Destructor.
-   */
-  virtual ~BayesNetInference();
-
-  /**
-   * Makes the inference
-   */
-  virtual void makeInference() =0;
-
-  /**
-   * @brief Returns the probability of the variable.
+   * @class BayesNetInference
+   * @brief Abstract class for making inference in bayesian networks.
+   * @ingroup bn_group
    *
-   * If makeInference() wasn't called yet, then only the marginal
-   * of the given variable will be computed.
-   *
-   * @param id The variable's id.
-   * @return The probability of the variable.
-   * @throw NotFound Raised if no variable matches id.
-   * @throw OperationNotAllowed Raised if the inference can not be done.
    */
-  virtual const Potential<T_DATA>& marginal( Id id );
+  template <typename T_DATA>
 
-  /**
-   * Insert new evidence in the graph.
-   * @warning if an evidence already w.r.t. a given node and a new
-   * evidence w.r.t. this node is onserted, the old evidence is removed.
-   * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
-   */
-  virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) =0;
+  class BayesNetInference {
+    public:
+      /**
+       * Default constructor
+       */
+      BayesNetInference( const BayesNet<T_DATA>& bn );
 
-  /**
-   * Remove a given evidence from the graph.
-   */
-  virtual void eraseEvidence( const Potential<T_DATA>* e ) =0;
+      /**
+       * Destructor.
+       */
+      virtual ~BayesNetInference();
 
-  /**
-   * Remove all evidence from the graph.
-   */
-  virtual void eraseAllEvidence() =0;
+      /**
+       * Makes the inference
+       */
+      virtual void makeInference() = 0;
 
-  /**
-   * Returns a constant reference over the BayesNet on which this class work.
-   */
-  const BayesNet<T_DATA>& bn() const;
+      /**
+       * @brief Returns the probability of the variable.
+       *
+       * If makeInference() wasn't called yet, then only the marginal
+       * of the given variable will be computed.
+       *
+       * @param id The variable's id.
+       * @return The probability of the variable.
+       * @throw NotFound Raised if no variable matches id.
+       * @throw OperationNotAllowed Raised if the inference can not be done.
+       */
+      virtual const Potential<T_DATA>& marginal( Id id );
 
-protected:
+      /**
+       * Insert new evidence in the graph.
+       * @warning if an evidence already w.r.t. a given node and a new
+       * evidence w.r.t. this node is onserted, the old evidence is removed.
+       * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
+       */
+      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) = 0;
 
-  /**
-   * @brief READ FULL DOCUMENTATION (THAT MEANS CLICK ON ME!!)
-   *
-   * This method is called when a BayesNetInference user ask for the marginal of
-   * a given variable.
-   *
-   * The reference "marginal" is a reference over an empty Potential, it doesn't
-   * even contains a reference over the variable's DiscreteVariable (don't forget
-   * to add it!).
-   *
-   * TODO Change this method and either return a pointer or delegate marginal
-   *      handling to subclasses.
-   *
-   * @param id The variable's id.
-   * @param marginal The completely empty potential to fill.
-   * @throw ElementNotFound Raised if no variable matches id.
-   */
-  virtual void _fillMarginal(NodeId id, Potential<T_DATA>& marginal)=0;
+      /**
+       * Remove a given evidence from the graph.
+       */
+      virtual void eraseEvidence( const Potential<T_DATA>* e ) = 0;
 
-  /**
-   * Invalidate the set of marginals kept here.
-   */
-  void _invalidateMarginals();
+      /**
+       * Remove all evidence from the graph.
+       */
+      virtual void eraseAllEvidence() = 0;
 
-  /**
-   * Mapping between marginals and __bayesNet's nodes.
-   */
-  typename Property<Potential<T_DATA>*>::onNodes _marginals;
+      /**
+       * Returns a constant reference over the BayesNet on which this class work.
+       */
+      const BayesNet<T_DATA>& bn() const;
 
-  /**
-   * The Bayes net we wish to perform inference on.
-   */
-  const BayesNet<T_DATA>& __bayesNet;
-};
+    protected:
+
+      /**
+       * @brief READ FULL DOCUMENTATION (THAT MEANS CLICK ON ME!!)
+       *
+       * This method is called when a BayesNetInference user ask for the marginal of
+       * a given variable.
+       *
+       * The reference "marginal" is a reference over an empty Potential, it doesn't
+       * even contains a reference over the variable's DiscreteVariable (don't forget
+       * to add it!).
+       *
+       * TODO Change this method and either return a pointer or delegate marginal
+       *      handling to subclasses.
+       *
+       * @param id The variable's id.
+       * @param marginal The completely empty potential to fill.
+       * @throw ElementNotFound Raised if no variable matches id.
+       */
+      virtual void _fillMarginal( NodeId id, Potential<T_DATA>& marginal ) = 0;
+
+      /**
+       * Invalidate the set of marginals kept here.
+       */
+      void _invalidateMarginals();
+
+      /**
+       * Mapping between marginals and __bayesNet's nodes.
+       */
+      typename Property<Potential<T_DATA>*>::onNodes _marginals;
+
+      /**
+       * The Bayes net we wish to perform inference on.
+       */
+      const BayesNet<T_DATA>& __bayesNet;
+  };
+
 // ============================================================================
 } /* namespace gum */
+
 // ============================================================================
 #include <agrum/BN/inference/BayesNetInference.tcc>
 // ============================================================================
 #endif /* GUM_INFERENCE_H */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

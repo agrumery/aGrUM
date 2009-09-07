@@ -36,6 +36,7 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 // ============================================================================
+#include <agrum/multidim/multiDimNoisyOR.h>
 #include <agrum/multidim/potential.h>
 // ============================================================================
 #include <agrum/BN/variableNodeMap.h>
@@ -200,8 +201,38 @@ namespace gum {
       /**
        * Shortcut for this->dag().endNodes().
        */
-      const DAG::NodeIterator endNodes() const;
-
+      const DAG::NodeIterator endNodes() const;      
+      
+      /// @}
+      
+      /// @name Accessor for node with NoisyOR implementation
+      /// @{
+      
+        /**
+        * Add a variable, it's associate node and a noisyOR implementation. The id of the new
+        * variable is automatically generated.
+        *
+        * @param variable The variable added by copy.
+        * @param externalWeight @see gum::MultiDimNoisyOR
+        * @param id The chosen id. If 0, the NodeGraphPart will choose.
+        * @warning give an id (not 0) should be reserved for rare and specific situations !!!
+        * @return the id of the added variable.
+        * @throws DuplicateElement if id(<>0) is already used
+        */
+        NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight,NodeId id = 0 );
+        
+        /**
+        * Add an arc in the BN, and update arc.head's CPT.
+        *
+        * @param head and
+        * @param tail as NodeId
+        * @param causalWeight @see gum::MultiDimNoisyOR
+        * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
+        * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
+        */
+        void insertArcNoisyOR( NodeId tail, NodeId head,T_DATA causalWeight );
+        
+        
       /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.
@@ -213,7 +244,6 @@ namespace gum {
        *
        * @param head and
        * @param tail as NodeId
-       * @return Returns a reference on the real copy added.
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
        */
       void insertArc( NodeId tail, NodeId head );
@@ -287,6 +317,8 @@ namespace gum {
       virtual void eraseVariable( NodeId id );
 
       /// @}
+
+      //std::string toString(void);
 
     private:
 

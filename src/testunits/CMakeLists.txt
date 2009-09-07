@@ -45,7 +45,7 @@ file(GLOB AGRUM_TESTS
       BinTreeNode4AVLTestSuite.h
       BinSearchTreeTestSuite.h
        CliqueGraphTestSuite.h
-      CompareInferencesTestSuite.h
+        CompareInferencesTestSuite.h
       CrossMultiDimTestSuite.h
        DAGTestSuite.h
       DatabaseTestSuite.h  # <------------------------- Memory leak : in testParseMissingXML
@@ -67,7 +67,7 @@ file(GLOB AGRUM_TESTS
        MixedGraphTestSuite.h
       MultiDimAggregatorTestSuite.h
       MultiDimBucketTestSuite.h
-      MultiDimNoisyORTestSuite.h
+       MultiDimNoisyORTestSuite.h
       MultiDimTestSuite.h
         NodeGraphPartTestSuite.h
       PotentialTestSuite.h

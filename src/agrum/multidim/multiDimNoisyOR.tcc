@@ -22,14 +22,14 @@
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-
+#include<agrum/multidim/multiDimNoisyOR.h>
 
 namespace gum {
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimNoisyOR<T_DATA>::MultiDimNoisyOR( T_DATA external_weight,T_DATA default_weight ): MultiDimReadOnly<T_DATA>(),__external_weight( external_weight ),__default_weight( default_weight ) {
+  MultiDimNoisyOR<T_DATA>::MultiDimNoisyOR( T_DATA external_weight, T_DATA default_weight ): MultiDimReadOnly<T_DATA>(), __external_weight( external_weight ), __default_weight( default_weight ) {
     GUM_CONSTRUCTOR( MultiDimNoisyOR ) ;
   }
 
@@ -39,9 +39,9 @@ namespace gum {
   template<typename T_DATA> INLINE
   MultiDimNoisyOR<T_DATA>::MultiDimNoisyOR( const MultiDimNoisyOR<T_DATA>& from ) : MultiDimReadOnly<T_DATA>( from ) {
     GUM_CONS_CPY( MultiDimNoisyOR );
-    __default_weight=from.__default_weight;
-    __external_weight=from.__external_weight;
-    __causal_weights=from.__causal_weights;
+    __default_weight = from.__default_weight;
+    __external_weight = from.__external_weight;
+    __causal_weights = from.__causal_weights;
   }
 
 // ==============================================================================
@@ -54,49 +54,49 @@ namespace gum {
 
   template<typename T_DATA>
   T_DATA MultiDimNoisyOR<T_DATA>::get( const Instantiation& i ) const {
-    if ( this->nbrDim()<1 ) {
-      GUM_ERROR( OperationNotAllowed,"Not enough variable for a NoisyOr " );
+    if ( this->nbrDim() < 1 ) {
+      GUM_ERROR( OperationNotAllowed, "Not enough variable for a NoisyOr " );
     }
 
-    const DiscreteVariable& C=this->variable(( Idx )0 );
+    const DiscreteVariable& C = this->variable(( Idx )0 );
 
-    if ( i.val( C )>1 ) return ( T_DATA )0.0;
+    if ( i.val( C ) > 1 ) return ( T_DATA )0.0;
 
-    T_DATA ratio=( T_DATA )1.0-externalWeight();
+    T_DATA ratio = ( T_DATA )1.0 - externalWeight();
 
-    T_DATA fact=( T_DATA )ratio;
+    T_DATA fact = ( T_DATA )ratio;
 
-    if ( fact!=( T_DATA )0 ) {
-      for ( Idx j=1;j<this->nbrDim();j++ ) {
-        const DiscreteVariable& v=this->variable( j );
+    if ( fact != ( T_DATA )0 ) {
+      for ( Idx j = 1;j < this->nbrDim();j++ ) {
+        const DiscreteVariable& v = this->variable( j );
 
-        if ( i.val( v )==1 ) {
-          T_DATA pr=causalWeight( v );
+        if ( i.val( v ) == 1 ) {
+          T_DATA pr = causalWeight( v );
 
-          if ( pr==( T_DATA )1.0 ) {
-            fact=( T_DATA )0.0;
+          if ( pr == ( T_DATA )1.0 ) {
+            fact = ( T_DATA )0.0;
             break;
           } else {
-            fact*=(( T_DATA )1.0-pr )/ratio;
+            fact *= (( T_DATA )1.0 - pr ) / ratio;
           }
         }
       }
     }
 
-    return ( i.val( C )==0 )?fact:( T_DATA )1.0-fact;
+    return ( i.val( C ) == 0 ) ? fact : ( T_DATA )1.0 - fact;
   }
 
 
   template<typename T_DATA> INLINE
   T_DATA MultiDimNoisyOR<T_DATA>::causalWeight( const DiscreteVariable& v ) const {
-    return ( __causal_weights.exists( &v ) )?__causal_weights[&v]:__default_weight;
+    return ( __causal_weights.exists( &v ) ) ? __causal_weights[&v] : __default_weight;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimNoisyOR<T_DATA>::causalWeight( const DiscreteVariable& v,T_DATA w ) {
-    if ( w==( T_DATA )0 ) GUM_ERROR( OperationNotAllowed,"No 0.0 as causal weight in noisyOR" );
+  void MultiDimNoisyOR<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
+    if ( w == ( T_DATA )0 ) GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
 
-    __causal_weights.set( &v,w );
+    __causal_weights.set( &v, w );
   }
 
   template<typename T_DATA> INLINE
@@ -105,20 +105,20 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimNoisyOR<T_DATA>::externalWeight( T_DATA w ) {
-    __external_weight=w;
+  void MultiDimNoisyOR<T_DATA>::externalWeight( T_DATA w ) const {
+    __external_weight = w;
   }
 
   template<typename T_DATA>
   const std::string MultiDimNoisyOR<T_DATA>::toString() const {
     std::stringstream s;
-    s<<MultiDimImplementation<T_DATA>::variable( 0 )<<"=noisyOR(["<<externalWeight()<<"],";
+    s << MultiDimImplementation<T_DATA>::variable( 0 ) << "=noisyOR([" << externalWeight() << "],";
 
-    for ( Idx i=1;i<MultiDimImplementation<T_DATA>::nbrDim();i++ ) {
-      s<<MultiDimImplementation<T_DATA>::variable( i )<<"["<<causalWeight( MultiDimImplementation<T_DATA>::variable( i ) )<<"]";
+    for ( Idx i = 1;i < MultiDimImplementation<T_DATA>::nbrDim();i++ ) {
+      s << MultiDimImplementation<T_DATA>::variable( i ) << "[" << causalWeight( MultiDimImplementation<T_DATA>::variable( i ) ) << "]";
     }
 
-    s<<")";
+    s << ")";
 
     std::string res;
     s >> res;
@@ -137,10 +137,11 @@ namespace gum {
   template<typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* MultiDimNoisyOR<T_DATA>::newFactory() const {
     GUM_ERROR( OperationNotAllowed,
-	       "This class doesn't contain an empty constructor" );
+               "This class doesn't contain an empty constructor" );
     return 0;
   }
 
 
 // ==================================================
 } /* namespace gum */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

@@ -22,6 +22,8 @@
  * @brief Implementation of the non pure virtual methods of
  * BayesNetInference.
  */
+
+// to ease parsers in IDE
 #include <agrum/BN/inference/BayesNetInference.h>
 
 
@@ -34,7 +36,7 @@ namespace gum {
   // Default Constructor
   template <typename T_DATA>
   BayesNetInference<T_DATA>::BayesNetInference( const BayesNet<T_DATA>& bn ):
-    __bayesNet( bn ) {
+      __bayesNet( bn ) {
     GUM_CONSTRUCTOR( BayesNetInference );
   }
 
@@ -47,29 +49,29 @@ namespace gum {
 
   template <typename T_DATA>
   void BayesNetInference<T_DATA>::_invalidateMarginals() {
-    for ( typename Property< Potential<T_DATA> * >::onNodes::iterator it=
-            _marginals.begin();it!=_marginals.end();++it ) {
+    for ( typename Property< Potential<T_DATA> * >::onNodes::iterator it =
+            _marginals.begin();it != _marginals.end();++it ) {
       if ( *it )delete( *it );
     }
-
     _marginals.clear();
   }
 
   template <typename T_DATA>
   const Potential<T_DATA>& BayesNetInference<T_DATA>::marginal( NodeId id ) {
     if ( ! _marginals.exists( id ) ) {
-      _marginals.insert(id, new Potential<T_DATA>());
-      _fillMarginal( id,*_marginals[id] );
+      _marginals.insert( id, new Potential<T_DATA>() );
+      _fillMarginal( id, *_marginals[id] );
     }
 
     return *_marginals[id];
   }
 
   template <typename T_DATA>
-    const BayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
+  const BayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
 
 
 } /* namespace gum */
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

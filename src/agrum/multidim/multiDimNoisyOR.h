@@ -112,21 +112,21 @@ namespace gum {
       virtual Size realSize() const {return 0;};
 
       T_DATA causalWeight( const DiscreteVariable& v ) const;
-      void causalWeight( const DiscreteVariable& v,T_DATA w );
+      void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
       T_DATA externalWeight() const;
-      void externalWeight( T_DATA w );
+      void externalWeight( T_DATA w ) const;
 
 
       /// @}
     protected:
       /// \f$ p_0 \f$ in Henrion (89).
-      T_DATA __external_weight;
+      mutable T_DATA __external_weight;
 
       /// @name causal weights
       /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
       /// @{
       T_DATA __default_weight;
-      HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
+      mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
       /// @}
   };
 

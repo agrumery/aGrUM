@@ -166,6 +166,7 @@ namespace gum {
   /// setter/getter for __inference_is_required
   template <typename T_DATA> INLINE
   void Gibbs<T_DATA>::setRequiredInference() {
+    this->_invalidateMarginals();
     __inference_is_required = true;
   }
 
@@ -263,6 +264,7 @@ namespace gum {
   template <typename T_DATA>
   void Gibbs<T_DATA>::insertEvidence
   ( const List<const Potential<T_DATA>*>& pot_list ) {
+    this->_invalidateMarginals();
     __evidences.clear();
     __hard_evidences.clear();
 
@@ -351,7 +353,7 @@ namespace gum {
       GUM_ERROR( FatalError, str.str() );
     }
 
-    // draw valueÂ²
+    // draw value
     for ( I.setFirst(); ! I.end(); I.inc( ) ) {
       if ( proba[I] == ( T_DATA )0 ) continue;
 

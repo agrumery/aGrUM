@@ -24,6 +24,8 @@
  *
  */
 
+// to ease parser in IDEs
+#include <agrum/graphs/diGraph.h>
 
 namespace gum {
 

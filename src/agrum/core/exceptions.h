@@ -130,8 +130,10 @@ namespace gum {
   GUM_MAKE_ERROR( NoParent, GraphError,"No parent can be found w.r.t the given node" )
   /// Exception : no child for a given node was found
   GUM_MAKE_ERROR( NoChild, GraphError,"No child can be found w.r.t the given node" )
-  /// Exception : there is something wrong with an edge/arc
+  /// Exception : there is something wrong with an edge
   GUM_MAKE_ERROR( InvalidEdge, GraphError,"the edge is not correct" )
+  /// Exception : there is something wrong with an arc
+  GUM_MAKE_ERROR( InvalidArc, GraphError,"the arc is not correct" )
   /// Exception : node does not exist
   GUM_MAKE_ERROR( InvalidNode, GraphError,"the node does not exist" )
   /// Exception : the binary search tree is empty
