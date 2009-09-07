@@ -200,7 +200,7 @@ namespace gum {
           iter != f2s.end(); ++iter ) {
       HashTableBucket<T1,T2*>* bucket1 =  
         __firstToSecond.__insertAndGetBucket ( iter.key(), 0 );
-      HashTableBucket<T1,T2*>* bucket2;
+      HashTableBucket<T2,T1*>* bucket2;
       try { bucket2 = __secondToFirst.__insertAndGetBucket ( **iter, 0 ); }
       catch (...) { __firstToSecond.erase ( iter.key() ); throw; }
       bucket1->val = &(bucket2->key);

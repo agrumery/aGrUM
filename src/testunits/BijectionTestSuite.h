@@ -298,20 +298,21 @@ public:
     
   }
 
- //  void testcopyConstructor() {
- //    gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> b;
- //    b.insert(1, new gum::LabelizedVariable("A"));
- //    b.insert(2, new gum::LabelizedVariable("B"));
- //    b.insert(3, new gum::LabelizedVariable("C"));
- //    b.insert(4, new gum::LabelizedVariable("D"));
- //    b.insert(5, new gum::LabelizedVariable("E"));
+  void testcopyConstructor() {
+    gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> b;
+    b.insert(1, new gum::LabelizedVariable("A"));
+    b.insert(2, new gum::LabelizedVariable("B"));
+    b.insert(3, new gum::LabelizedVariable("C"));
+    b.insert(4, new gum::LabelizedVariable("D"));
+    b.insert(5, new gum::LabelizedVariable("E"));
 
- //    gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> copy(b);
-
- //    for (gum::Bijection<gum::NodeId, const gum::LabelizedVariable*>::iterator iter = b.begin(); iter != b.end(); ++iter) {
- //      delete iter.second();
- //    }
- //  }
+    gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> copy(b);
+    
+    for (gum::Bijection<gum::NodeId, const gum::LabelizedVariable*>::iterator iter = b.begin();
+         iter != b.end(); ++iter) {
+      delete iter.second();
+    }
+  }
 
 };
 
