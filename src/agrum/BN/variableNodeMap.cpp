@@ -30,61 +30,67 @@
 #include <agrum/BN/variableNodeMap.inl>
 #endif /* GUM_NO_INLINE */
 // ============================================================================
+
 namespace gum {
 
 // Default constructor.
-VariableNodeMap::VariableNodeMap() {
-  GUM_CONSTRUCTOR( VariableNodeMap );
-}
+  VariableNodeMap::VariableNodeMap() {
+    GUM_CONSTRUCTOR( VariableNodeMap );
+  }
 
 // Copy constructor.
-VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
-  GUM_CONS_CPY( VariableNodeMap );
-  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = source.__nodes2vars.begin();
-       iter != source.__nodes2vars.end();
-       ++iter)
-  {
-    __nodes2vars.insert(iter.key(), (*iter)->copyFactory());
-    __vars2nodes.insert(__nodes2vars[iter.key()], iter.key());
+  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
+    GUM_CONS_CPY( VariableNodeMap );
+
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end();
+          ++iter ) {
+      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() ); // copy factory is used inside insert
+    }
+
+    __names2nodes = source.__names2nodes;
   }
-}
 
 // Destructor
-VariableNodeMap::~VariableNodeMap() {
-  GUM_DESTRUCTOR( VariableNodeMap );
-  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = __nodes2vars.begin();
-       iter != __nodes2vars.end();
-       ++iter)
-  {
-    delete *iter;
+  VariableNodeMap::~VariableNodeMap() {
+    GUM_DESTRUCTOR( VariableNodeMap );
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = __nodes2vars.begin();
+          iter != __nodes2vars.end();
+          ++iter ) {
+      delete iter.second();
+    }
+    
+    __nodes2vars.clear();
+    
+    __names2nodes.clear();
   }
-  __nodes2vars.clear();
-  __vars2nodes.clear();
-}
 
 // Copy operator.
-INLINE
-VariableNodeMap&
-VariableNodeMap::operator=(const VariableNodeMap& source) {
-  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = __nodes2vars.begin();
-       iter != __nodes2vars.end();
-       ++iter)
-  {
-    delete *iter;
-  }
-  __nodes2vars.clear();
-  __vars2nodes.clear();
+  INLINE
+  VariableNodeMap&
+  VariableNodeMap::operator=( const VariableNodeMap& source ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = __nodes2vars.begin();
+          iter != __nodes2vars.end();
+          ++iter ) {
+      delete iter.second();
+    }
 
-  for (HashTable<NodeId, DiscreteVariable*>::const_iterator iter = source.__nodes2vars.begin();
-       iter != source.__nodes2vars.end();
-       ++iter)
-  {
-    __nodes2vars.insert(iter.key(), (*iter)->copyFactory());
-    __vars2nodes.insert(__nodes2vars[iter.key()], iter.key());
+    __nodes2vars.clear();
+
+
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end();
+          ++iter ) {
+      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() );
+    }
+
+    __names2nodes = source.__names2nodes;
+
+    return *this;
   }
-  return *this;
-}
 
 
 } /* namespace gum */
+
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

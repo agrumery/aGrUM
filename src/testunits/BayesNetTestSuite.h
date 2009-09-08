@@ -59,7 +59,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
     }
 
     void fill( gum::BayesNet<float> &bn, gum::List<gum::NodeId> &idList ) {
-      fillTopo( bn,idList );
+      fillTopo( bn, idList );
 
       try {
         const gum::Potential<float>& p1 = bn.cpt( idList[0] );
@@ -97,8 +97,8 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
         const gum::Potential<float>& p5 = bn.cpt( idList[4] );
         {
           // FILLING PARAMS
-          const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                               0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
+          const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                               0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
                               };
           int n = 24;const std::vector<float> v( t, t + n );
           p5.fillWith( v );
@@ -110,7 +110,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       }
     }
 
-    gum::UndiGraph getRealMoralGraph( const gum::BayesNet<float>& bn,const gum::List<gum::NodeId> &idList ) {
+    gum::UndiGraph getRealMoralGraph( const gum::BayesNet<float>& bn, const gum::List<gum::NodeId> &idList ) {
       gum::UndiGraph graph;
       graph.populateNodes( bn.dag() );
 
@@ -148,14 +148,17 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
     }
 
     void testConstructor() {
-      gum::BayesNet<float> *topology=NULL;
+      gum::BayesNet<float> *topology = NULL;
       TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::BayesNet<float>() );
-      
-      TS_ASSERT_THROWS(topology->insertArc(1,2),gum::InvalidNode);
-      
+
+      TS_ASSERT_THROWS( topology->insertArc( 1, 2 ), gum::InvalidNode );
+
       gum::List<gum::NodeId> idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology,idList));
-      TS_ASSERT_EQUALS(topology->toString(),"BN{nodes: 5, arcs: 6, domainSize: 48, parameters: 40, compression ratio: 16% }");
+      TS_GUM_ASSERT_THROWS_NOTHING( fill( *topology, idList ) );
+
+      TS_ASSERT_THROWS( topology->add( *var1 ), gum::DuplicateLabel );
+
+      TS_ASSERT_EQUALS( topology->toString(), "BN{nodes: 5, arcs: 6, domainSize: 48, parameters: 40, compression ratio: 16% }" );
 
       TS_GUM_ASSERT_THROWS_NOTHING( delete topology );
 
@@ -166,13 +169,13 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING( fill( source, idList ) );
 
-      gum::BayesNet<float> *copy=NULL;
+      gum::BayesNet<float> *copy = NULL;
       TS_GUM_ASSERT_THROWS_NOTHING( copy = new gum::BayesNet<float>( source ) );
 
       TS_ASSERT_EQUALS( source.dag().size(), copy->dag().size() );
       TS_ASSERT_EQUALS( source.dag().sizeArcs(), copy->dag().sizeArcs() );
       //const gum::NodeSet& nodes=source.dag().nodes();
-      const gum::DAG dag=source.dag();
+      const gum::DAG dag = source.dag();
 
       for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();
             nodeIter != dag.endNodes();
@@ -191,7 +194,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
           TS_ASSERT( false );
         }
 
-        const gum::ArcSet& parentList=source.dag().parents( *nodeIter );
+        const gum::ArcSet& parentList = source.dag().parents( *nodeIter );
 
         for ( gum::ArcSet::iterator arcIter = parentList.begin();
               arcIter != parentList.end();
@@ -245,9 +248,9 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
         }
       }
 
-      gum::LabelizedVariable *varPtr=NULL;
+      gum::LabelizedVariable *varPtr = NULL;
 
-      TS_GUM_ASSERT_THROWS_NOTHING( varPtr = ( gum::LabelizedVariable* ) &bn.variable( idList[0] ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( varPtr = ( gum::LabelizedVariable* ) & bn.variable( idList[0] ) );
       TS_ASSERT_EQUALS( *varPtr, *var1 );
 
       TS_ASSERT_EQUALS( *(( gum::LabelizedVariable* ) &bn.variable( idList[0] ) ), *var1 );
@@ -270,8 +273,8 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( bn.size(), ( gum::Size ) 5 );
       TS_ASSERT_EQUALS( bn.dag().size(), ( gum::Size ) 5 );
 
-      gum::LabelizedVariable *varPtr=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING( varPtr = ( gum::LabelizedVariable* ) &bn.variable( idList[0] ) );
+      gum::LabelizedVariable *varPtr = NULL;
+      TS_GUM_ASSERT_THROWS_NOTHING( varPtr = ( gum::LabelizedVariable* ) & bn.variable( idList[0] ) );
       TS_ASSERT_EQUALS( *varPtr, *var1 );
 
       TS_ASSERT_EQUALS( *(( gum::LabelizedVariable* ) &bn.variable( idList[0] ) ), *var1 );
@@ -381,8 +384,8 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       gum::BayesNet<float> bn;
       gum::List<gum::NodeId> idList;
 
-      for (gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter) {
-        TS_ASSERT( idList.exists(*iter) );
+      for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        TS_ASSERT( idList.exists( *iter ) );
       }
     }
 
@@ -394,7 +397,7 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
 
       gum::UndiGraph graph;
       TS_GUM_ASSERT_THROWS_NOTHING( graph = bn.moralGraph() );
-      TS_ASSERT_EQUALS( graph, getRealMoralGraph( bn,idList ) );
+      TS_ASSERT_EQUALS( graph, getRealMoralGraph( bn, idList ) );
     }
 
     void testTopologicalOrder() {
@@ -493,8 +496,25 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
 
       fill( bn, idList );
       std::stringstream sBuff;
-      TS_GUM_ASSERT_THROWS_NOTHING(sBuff << bn);
+      TS_GUM_ASSERT_THROWS_NOTHING( sBuff << bn );
+    }
+
+    void testAccessorByName() {
+      gum::BayesNet<float> bn;
+      gum::List<gum::NodeId> idList;
+
+      fill( bn, idList );
+
+      for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        TS_ASSERT_EQUALS( bn.idFromName( bn.variable( *iter ).name() ), *iter );
+        TS_ASSERT_EQUALS( &bn.variableFromName( bn.variable( *iter ).name() ), &bn.variable( *iter ) );
+      }
+
+      TS_ASSERT_THROWS( bn.idFromName( "choucroute" ), gum::NotFound );
+
+      TS_ASSERT_THROWS( bn.variableFromName( "choucroute" ), gum::NotFound );
     }
 };
 
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

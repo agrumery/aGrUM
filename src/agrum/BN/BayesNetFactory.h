@@ -104,7 +104,9 @@ namespace gum {
        *                            than NONE.
        */
       BayesNet<T_DATA>* bayesNet();
-      const VariableNodeMap* variableNodeMap( void );
+
+      /* short-cut accessor for a DiscreveVariable in the BN */
+      const DiscreteVariable& varInBN( NodeId id );
 
       /// Returns the current state of the factory.
       factory_state state() const;

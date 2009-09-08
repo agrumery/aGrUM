@@ -61,7 +61,7 @@ namespace gum {
    */
   template<typename T_DATA>
 
-  class BayesNet: protected VariableNodeMap {
+  class BayesNet {
 
       friend class BayesNetFactory<T_DATA>;
 
@@ -113,18 +113,6 @@ namespace gum {
       /// @name Variable manipulation methods.
       // ===========================================================================
       /// @{
-
-      /**
-       * Returns a constant reference over a variabe given it's node id.
-       * @throw NotFound If no variable's id matches varId.
-       */
-      virtual const DiscreteVariable& variable( NodeId id ) const;
-
-      /**
-       * Return id node from discrete var pointer.
-       * @throw NotFound If no variable matches var.
-       */
-      virtual NodeId nodeId( const DiscreteVariable &var ) const;
 
       /**
        * Returns the CPT of a variable.
@@ -201,39 +189,59 @@ namespace gum {
       /**
        * Shortcut for this->dag().endNodes().
        */
-      const DAG::NodeIterator endNodes() const;      
-      
+      const DAG::NodeIterator endNodes() const;
+
       /// @}
-      
+
       /// @name Accessor for node with NoisyOR implementation
       /// @{
-      
-        /**
-        * Add a variable, it's associate node and a noisyOR implementation. The id of the new
-        * variable is automatically generated.
-        *
-        * @param variable The variable added by copy.
-        * @param externalWeight @see gum::MultiDimNoisyOR
-        * @param id The chosen id. If 0, the NodeGraphPart will choose.
-        * @warning give an id (not 0) should be reserved for rare and specific situations !!!
-        * @return the id of the added variable.
-        * @throws DuplicateElement if id(<>0) is already used
-        */
-        NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight,NodeId id = 0 );
-        
-        /**
-        * Add an arc in the BN, and update arc.head's CPT.
-        *
-        * @param head and
-        * @param tail as NodeId
-        * @param causalWeight @see gum::MultiDimNoisyOR
-        * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
-        * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
-        */
-        void insertArcNoisyOR( NodeId tail, NodeId head,T_DATA causalWeight );
-        
-        
+
+      /**
+      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
+      * variable is automatically generated.
+      *
+      * @param variable The variable added by copy.
+      * @param externalWeight @see gum::MultiDimNoisyOR
+      * @param id The chosen id. If 0, the NodeGraphPart will choose.
+      * @warning give an id (not 0) should be reserved for rare and specific situations !!!
+      * @return the id of the added variable.
+      * @throws DuplicateElement if id(<>0) is already used
+      */
+      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
+
+      /**
+      * Add an arc in the BN, and update arc.head's CPT.
+      *
+      * @param head and
+      * @param tail as NodeId
+      * @param causalWeight @see gum::MultiDimNoisyOR
+      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
+      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
+      */
+      void insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight );
+
+      /**
+      * Returns a constant reference over a variabe given it's node id.
+      * @throw NotFound If no variable's id matches varId.
+      */
+      const DiscreteVariable& variable( NodeId id ) const ;
+
+      /**
+      * Return id node from discrete var pointer.
+      * @throw NotFound If no variable matches var.
+      */
+      NodeId nodeId( const DiscreteVariable &var ) const ;
       /// @}
+
+
+      /// @name Accessor by name
+      /// @throw NotFound if no such name exists in the graph.
+      /// @{
+      ///
+      NodeId idFromName( const std::string& name ) const;
+      const DiscreteVariable& variableFromName( const std::string& name ) const;
+      /// @}
+
       // ===========================================================================
       /// @name Arc manipulation methods.
       // ===========================================================================
@@ -303,23 +311,23 @@ namespace gum {
       /**
        * @warning Deprecated: use add(const DiscreteVariable&).
        */
-      virtual NodeId addVariable( const DiscreteVariable& variable );
+      NodeId addVariable( const DiscreteVariable& variable );
 
       /**
        * @warning Deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
        */
-      virtual NodeId addVariable( const DiscreteVariable& variable,
-                                  MultiDimImplementation<T_DATA> *aContent );
+      NodeId addVariable( const DiscreteVariable& variable,
+                          MultiDimImplementation<T_DATA> *aContent );
 
       /**
        * @warning Deprecated: use erase(NodeId) instead.
        */
-      virtual void eraseVariable( NodeId id );
+      void eraseVariable( NodeId id );
 
       /// @}
 
-      std::string toString(void) const;
-      std::string toDot(void) const;
+      std::string toString( void ) const;
+      std::string toDot( void ) const;
 
     private:
 
@@ -330,8 +338,11 @@ namespace gum {
       /// The DAG of this bayes net.
       DAG __dag;
 
+      /// the map between variable and id
+      VariableNodeMap __varMap;
+
       /// Mapping between the variable's id and their CPT.
-      /// Property< Potential< T_DATA >* >::onNodes __probaMap;
+      //Property< Potential< T_DATA >* >::onNodes __probaMap;
       HashTable<NodeId, Potential<T_DATA>* > __probaMap;
 
       /// The moral graph of this bayes net.
@@ -367,4 +378,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

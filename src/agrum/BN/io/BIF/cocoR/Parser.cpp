@@ -117,7 +117,7 @@ void Parser::VARIABLE() {
 		LABELIZE_VAR(nbrMod);
 		TRY(factory().endVariableDeclaration());
 		int nbr=0;
-		TRY(nbr=factory().variableNodeMap()->variable(factory().variableId(name_of_var)).domainSize());
+		TRY(nbr=factory().varInBN(factory().variableId(name_of_var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+name_of_var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+name_of_var);
 		             

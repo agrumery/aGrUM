@@ -32,16 +32,18 @@ namespace gum {
 // Default constructor
   template<typename T_DATA> INLINE
   BayesNet<T_DATA>::BayesNet():
-      VariableNodeMap(), __propertiesMap( 0 ), __moralGraph( 0 ), __topologicalOrder( 0 ) {
+      __propertiesMap( 0 ), __moralGraph( 0 ), __topologicalOrder( 0 ) {
     GUM_CONSTRUCTOR( BayesNet );
     __topologicalOrder = new Sequence<NodeId>();
     __moralGraph = new UndiGraph();
   }
 
 // Copy constructor
-  template<typename T_DATA>
-  BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ):
-      VariableNodeMap( source ), __propertiesMap( 0 ), __dag( source.dag() ), __moralGraph( 0 ), __topologicalOrder( 0 ) {
+  template<typename T_DATA> BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ) :
+      __propertiesMap( 0 ),
+      __dag( source.__dag ),
+      __varMap( source.__varMap ),
+      __moralGraph( 0 ), __topologicalOrder( 0 ) {
     GUM_CONSTRUCTOR( BayesNet );
 
     if ( source.__propertiesMap != 0 ) {
@@ -105,6 +107,8 @@ namespace gum {
       delete *iter;
     }
 
+    __varMap = source.__varMap;
+
     __probaMap.clear();
 
     Potential<T_DATA> *sourcePtr, *copyPtr;
@@ -144,6 +148,18 @@ namespace gum {
     delete __topologicalOrder;
   }
 
+  // Returns a constant reference over a variabe given it's node id.
+  template<typename T_DATA> INLINE
+  const DiscreteVariable&  BayesNet<T_DATA>::variable( NodeId id ) const {
+    return __varMap.get( id );
+  }
+
+  // Return id node from discrete var pointer.
+  template<typename T_DATA> INLINE
+  NodeId BayesNet<T_DATA>::nodeId( const DiscreteVariable &var ) const {
+    return __varMap.get( var );
+  }
+
 // Return the value of the property "name" of this BayesNet.
 // @throw NotFound Raised if no "name" property is found.
   template<typename T_DATA> INLINE
@@ -172,14 +188,23 @@ namespace gum {
   template<typename T_DATA> INLINE
   NodeId
   BayesNet<T_DATA>::add( const DiscreteVariable& var , NodeId id ) {
-    return add( var, new MultiDimArray<T_DATA>() , id );
+    MultiDimArray<T_DATA>* ptr = new MultiDimArray<T_DATA>();
+    NodeId res = 0;
+
+    try {
+      res = add( var, ptr, id );
+    } catch ( Exception& e ) {
+      delete ptr;
+      throw;
+    }
+
+    return res;
   }
 
 // Add a variable, it's associate node and it's CPT
   template<typename T_DATA>
   NodeId
-  BayesNet<T_DATA>::add( const DiscreteVariable& var,
-                         MultiDimImplementation<T_DATA> *aContent , NodeId id ) {
+  BayesNet<T_DATA>::add( const DiscreteVariable& var, MultiDimImplementation<T_DATA> *aContent , NodeId id ) {
     // this code is not thread safe !!!!
     NodeId proposedId;
 
@@ -188,7 +213,7 @@ namespace gum {
     else
       proposedId = id;
 
-    VariableNodeMap::_set( proposedId, var );
+    __varMap.insert( proposedId, var );
 
     __dag.insertNode( proposedId );
 
@@ -218,21 +243,17 @@ namespace gum {
     return add( var, aContent );
   }
 
-// Returns a constant reference over a variabe given it's node id.
   template<typename T_DATA> INLINE
-  const DiscreteVariable&
-  BayesNet<T_DATA>::variable( NodeId id ) const {
-    return VariableNodeMap::get( id );
+  NodeId BayesNet<T_DATA>::idFromName( const std::string& name ) const {
+    return __varMap.idFromName(name);
   }
 
-// Return id node from discrete var pointer.
   template<typename T_DATA> INLINE
-  NodeId
-  BayesNet<T_DATA>::nodeId( const DiscreteVariable &var ) const {
-    return VariableNodeMap::get( var );
+  const DiscreteVariable& BayesNet<T_DATA>::variableFromName( const std::string& name ) const {
+    return __varMap.variableFromName(name);
   }
 
-// Returns the CPT of a variable
+  // Returns the CPT of a variable
   template<typename T_DATA> INLINE
   const Potential<T_DATA>&
   BayesNet<T_DATA>::cpt( NodeId varId ) const { return *( __probaMap[varId] ); }
@@ -268,16 +289,16 @@ namespace gum {
   template<typename T_DATA>
   void
   BayesNet<T_DATA>::erase( NodeId varId ) {
-    if ( VariableNodeMap::exists( varId ) ) {
+    if ( __varMap.exists( varId ) ) {
       // Reduce the variable child's CPT
       for ( ArcSetIterator iter = __dag.children( varId ).begin(); iter != __dag.children( varId ).end(); ++iter ) {
-        __probaMap[iter->head()]->erase( get( varId ) );
+        __probaMap[iter->head()]->erase( variable( varId ) );
       }
 
       delete __probaMap[varId];
 
       __probaMap.erase( varId );
-      VariableNodeMap::_erase( varId );
+      __varMap.erase( varId );
       __dag.eraseNode( varId );
     }
   }
@@ -288,19 +309,18 @@ namespace gum {
   BayesNet<T_DATA>::insertArc( NodeId tail, NodeId head ) {
     __dag.insertArc( tail, head );
     // Add parent in the child's CPT
-    ( *( __probaMap[head] ) ) << VariableNodeMap::get( tail );
+    ( *( __probaMap[head] ) ) << variable( tail );
   }
 
 // Removes an arc in the BN, and update head's CTP
   template<typename T_DATA> INLINE
   void
   BayesNet<T_DATA>::eraseArc( const Arc& arc ) {
-    if ( VariableNodeMap::exists( arc.tail() ) &&
-         VariableNodeMap::exists( arc.head() ) ) {
+    if ( __varMap.exists( arc.tail() ) && __varMap.exists( arc.head() ) ) {
       NodeId head = arc.head(), tail = arc.tail();
       __dag.eraseArc( arc );
       // Remove parent froms child's CPT
-      ( *( __probaMap[head] ) ) >> VariableNodeMap::get( tail );
+      ( *( __probaMap[head] ) ) >> variable( tail );
     }
   }
 
@@ -482,7 +502,7 @@ namespace gum {
       param += (( const MultiDimImplementation<T_DATA> & )cpt( *it ).getMasterRef() ).realSize();
     }
 
-    int compressionRatio = 100*((float)1.0-(( float )param ) / (( float )dSize ));
+    int compressionRatio = 100 * (( float )1.0 - (( float )param ) / (( float )dSize ) );
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", domainSize: " << dSize << ", parameters: " << param << ", compression ratio: " << compressionRatio << "% }";
@@ -534,4 +554,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

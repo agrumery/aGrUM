@@ -56,7 +56,7 @@ namespace gum {
 
       /// @{
       /// @brief Please @see BayesNetFactory<T_DATA> for documentation.
-      virtual const VariableNodeMap* variableNodeMap( void ) =0;
+      virtual const DiscreteVariable& varInBN( NodeId id ) =0;
       virtual factory_state state() const =0;
       virtual NodeId variableId( const std::string& name ) const =0;
 			virtual Size cptDomainSize(const NodeId n) const =0;

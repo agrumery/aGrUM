@@ -87,8 +87,8 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  const VariableNodeMap* BayesNetFactory<T_DATA>::variableNodeMap( void ) {
-    return static_cast<VariableNodeMap *>( __bn );
+  const DiscreteVariable& BayesNetFactory<T_DATA>::varInBN( NodeId id ) {
+    return __bn->variable( id );
   }
 
 // Returns the current state of the factory.
@@ -885,4 +885,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

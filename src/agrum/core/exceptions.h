@@ -121,6 +121,8 @@ namespace gum {
   GUM_MAKE_ERROR( OutOfUpperBound, OutOfBounds , "Out of bound" )
   /// Exception : a similar element already exists
   GUM_MAKE_ERROR( DuplicateElement, ReferenceError , "A similar element already exists" )
+  /// Exception : a similar label already exists
+  GUM_MAKE_ERROR( DuplicateLabel, ReferenceError , "A similar label already exists" )
   ///////////////////////////////////
   /// Exception base for graph error
   GUM_MAKE_ERROR( GraphError, Exception, "Graph error" )

@@ -187,7 +187,7 @@ void Warning(std::string s) {
 
 void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
 	gum::Size s=(gum::Size)0;
-	TRY(s=factory().variableNodeMap()->variable(factory().variableId(var)).domainSize());
+  TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
 	if (v.size()<s)
 		Warning("Not enough data in probability assignation for node "+var);
 	if (v.size()>s)

@@ -27,129 +27,120 @@
 #ifndef GUM_VARIABLENODEMAP_H
 #define GUM_VARIABLENODEMAP_H
 // ============================================================================
-#include <agrum/core/hashTable.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
 #include <agrum/multidim/discreteVariable.h>
 // ============================================================================
+
 namespace gum {
-/**
- * @class VariableNodeMap
- * @brief Container used to map discrete variables with nodes.
- */
-class VariableNodeMap {
-  public:
-  // ===========================================================================
-  /// @name Constructors / Destructors
-  // ===========================================================================
-    /// @{
+  /**
+   * @class VariableNodeMap
+   * @brief Container used to map discrete variables with nodes.
+   * @warning VariableNodeMap ensures that every name of variable is unique in the container.
+   */
 
-    /// Default constructor
-    VariableNodeMap();
+  class VariableNodeMap {
+    public:
+      // ===========================================================================
+      /// @name Constructors / Destructors
+      // ===========================================================================
+      /// @{
 
-    /// Copy constructor
-    /// Proceed a deep copy: all variables are copied but keep the same node id.
-    VariableNodeMap( const VariableNodeMap& source );
+      /// Default constructor
+      VariableNodeMap();
 
-    /// Destructor
-    ~VariableNodeMap();
+      /// Copy constructor
+      /// Proceed a deep copy: all variables are copied but keep the same node id.
+      VariableNodeMap( const VariableNodeMap& source );
 
-    // @}
-  // ===========================================================================
-  /// @name Getters and setters.
-  // ===========================================================================
-    /// @{
+      /// Destructor
+      ~VariableNodeMap();
 
-    /**
-     * Returns a discrete variable given it's node id.
-     * @throws NotFound Raised if no nodes matches id.
-     */
-    const DiscreteVariable& get(NodeId id) const;
+      /**
+      * Copy operator.
+      */
+      VariableNodeMap& operator=( const VariableNodeMap& source );
+      // @}
+      // ===========================================================================
+      /// @name Getters and setters.
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Returns a node id given it's variable.
-     * @throws NotFound Raised if no nodes matches var.
-     */
-    virtual NodeId get(const DiscreteVariable& var) const;
+      /**
+       * Returns a discrete variable given it's node id.
+       * @throws NotFound Raised if no nodes matches id.
+       */
+      const DiscreteVariable& get( NodeId id ) const;
 
-    /**
-     * Return true if id matches a node.
-     */
-    virtual bool exists(NodeId id) const;
+      /**
+       * Returns a node id given it's variable.
+       * @throws NotFound Raised if no nodes matches var.
+       */
+      NodeId get( const DiscreteVariable& var ) const;
 
-    /**
-     * Return true if var matches a node.
-     */
-    virtual bool exists(const DiscreteVariable& var) const;
+      /**
+       * Return true if id matches a node.
+       */
+      bool exists( NodeId id ) const;
 
-    // @}
-  // ===========================================================================
-  /// @name Operators.
-  // ===========================================================================
-    /// @{
+      /**
+       * Return true if var matches a node.
+       */
+      bool exists( const DiscreteVariable& var ) const;
 
-    /**
-     * Returns a discrete variable given it's node id.
-     * @throws NotFound Raised if no nodes matches id.
-     */
-    virtual const DiscreteVariable& operator[](NodeId id) const;
+      // @}
+      // ===========================================================================
+      /// @name Operators.
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Returns a node id given it's variable.
-     * @throws NotFound Raised if no nodes matches var.
-     */
-    virtual NodeId operator[](const DiscreteVariable& var) const;
+      /**
+       * Returns a discrete variable given it's node id.
+       * @throws NotFound Raised if no nodes matches id.
+       */
+      const DiscreteVariable& operator[]( NodeId id ) const;
 
-    /**
-     * Returns a constant reference over a variabe given it's node id.
-     * @throw NotFound If no variable's id matches varId.
-     */
-    virtual const DiscreteVariable& variable(NodeId id) const = 0;
+      /**
+       * Returns a node id given it's variable.
+       * @throws NotFound Raised if no nodes matches var.
+       */
+      NodeId operator[]( const DiscreteVariable& var ) const;
 
-    /**
-     * Return id node from discrete var pointer.
-     * @throw NotFound If no variable matches var.
-     */
-    virtual NodeId nodeId(const DiscreteVariable &var) const = 0;
+      /// Maps id with var. Var is added by copy.
+      /// @warning If the map already exist it will delete the precedent var!
+      /// @throws DuplicateLabel if this name already exists
+      /// @return Returns id (usefull in some case);
+      NodeId insert( NodeId id, const DiscreteVariable& var );
 
-    /**
-     * Copy operator.
-     */
-    virtual VariableNodeMap& operator=(const VariableNodeMap& source);
+      /// Removes a var and it's id of this mapping. The pointer is deleted.
+      void erase( NodeId id );
 
-    // @}
+      /// Removes a var and it's id of this mapping. The pointer is deleted.
+      void erase( const DiscreteVariable& var );
+      /// @}
 
-  protected:
 
-  // ===========================================================================
-  /// @name Protected methods.
-  // ===========================================================================
-    /// @{
+      /// @name Accessor by name
+      /// @throw NotFound if no such name exists in the graph.
+      /// @{
+      ///
+      NodeId idFromName( const std::string& name ) const;
+      const DiscreteVariable& variableFromName( const std::string& name ) const;
+      /// @}
 
-    /// Maps id with var. Var is added by copy.
-    /// @warning If the map already exist it will delete the precedent var!
-    /// @return Returns id (usefull in some case);
-    NodeId _set(NodeId id, const DiscreteVariable& var);
+    private:
 
-    /// Removes a var and it's id of this mapping. The pointer is deleted.
-    void _erase(NodeId id);
+      /// Bijection between the node's NodeIds and the variables.
+      Bijection<NodeId, const DiscreteVariable*> __nodes2vars;
 
-    /// Removes a var and it's id of this mapping. The pointer is deleted.
-    void _erase(const DiscreteVariable& var);
-
-    /// @}
-
-  private:
-
-    /// Mapping between the node's NodeIds and the variables.
-    HashTable<NodeId, DiscreteVariable*> __nodes2vars;
-
-    /// Mapping between in the other sense for fast access.
-    HashTable<DiscreteVariable*, NodeId> __vars2nodes;
-};
+      /// HashTable for easely find an id from a name
+      HashTable<std::string, NodeId> __names2nodes;
+  };
 } /* namespace gum */
+
 // ============================================================================
 #ifndef GUM_NO_INLINE
 #include <agrum/BN/variableNodeMap.inl>
@@ -157,3 +148,4 @@ class VariableNodeMap {
 // ============================================================================
 #endif /* GUM_VARIABLENODEMAP_H*/
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

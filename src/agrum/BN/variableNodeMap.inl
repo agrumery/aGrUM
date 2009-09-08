@@ -23,99 +23,104 @@
  *
  * @author Lionel Torti
  */
+
+// to ease parsers in IDE
+#include <agrum/BN/variableNodeMap.h>
+
 // ============================================================================
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // ============================================================================
+
 namespace gum {
 
 // Returns a discrete variable given it's node id.
 // @throws NotFound Raised if no nodes matches id.
-INLINE
-const DiscreteVariable&
-VariableNodeMap::get(NodeId id) const
-{
-  return *( __nodes2vars[id] );
-}
+  INLINE
+  const DiscreteVariable& VariableNodeMap::get( NodeId id ) const {
+    return *( __nodes2vars.second( id ) );
+  }
 
 // Returns a node id given it's variable.
 // @throws NotFound Raised if no nodes matches var.
-INLINE
-NodeId
-VariableNodeMap::get(const DiscreteVariable& var) const
-{
-  return __vars2nodes[&(const_cast<DiscreteVariable&>(var))];
-}
+  INLINE
+  NodeId VariableNodeMap::get( const DiscreteVariable& var ) const {
+    return __nodes2vars.first( & var );
+  }
 
 // Return true if id matches a node
-INLINE
-bool
-VariableNodeMap::exists( NodeId id ) const {
-  return __nodes2vars.exists(id);
-}
+  INLINE
+  bool VariableNodeMap::exists( NodeId id ) const {
+    return __nodes2vars.existsFirst( id );
+  }
 
 // Return true if var matches a node
-INLINE
-bool
-VariableNodeMap::exists(const DiscreteVariable& var) const {
-  return __vars2nodes.exists(const_cast<DiscreteVariable*>(&var));
-}
+  INLINE
+  bool VariableNodeMap::exists( const DiscreteVariable& var ) const {
+    return __nodes2vars.existsSecond( &var );
+  }
 
 // Returns a node id given it's variable.
 // @throws NotFound Raised if no nodes matches var.
-INLINE
-const DiscreteVariable&
-VariableNodeMap::operator[](NodeId varId) const {
-  return get(varId);
-}
+  INLINE
+  const DiscreteVariable& VariableNodeMap::operator[]( NodeId varId ) const {
+    return get( varId );
+  }
 
 // Returns a node id given it's variable.
 // @throws NotFound Raised if no nodes matches var.
-INLINE
-NodeId
-VariableNodeMap::operator[](const DiscreteVariable& var) const {
-  return get(var);
-}
+  INLINE
+  NodeId VariableNodeMap::operator[]( const DiscreteVariable& var ) const {
+    return get( var );
+  }
 
 // Maps id with var. Var is added by copy.
 // @warning If the map already exist it will delete the precedent var!
-INLINE
-NodeId
-VariableNodeMap::_set(NodeId id, const DiscreteVariable& var)
-{
-  if (__nodes2vars.exists(id)) {
-    __vars2nodes.erase(__nodes2vars[id]);
-    delete __nodes2vars[id];
-    __nodes2vars[id] = var.copyFactory();
-    __vars2nodes.insert(__nodes2vars[id], id);
-  } else {
-    __nodes2vars.insert(id, var.copyFactory());
-    __vars2nodes.insert(__nodes2vars[id], id);
+  INLINE
+  NodeId VariableNodeMap::insert( NodeId id, const DiscreteVariable& var ) {
+    if ( __names2nodes.exists( var.name() ) ) {
+      GUM_ERROR( DuplicateLabel,"Unable to insert var with this name." );
+    }
+
+    if ( exists( id ) ) {
+      erase( id );
+    }
+
+    __nodes2vars.insert( id, var.copyFactory() );
+
+    __names2nodes.insert( var.name(), id );
+
+    return id;
   }
-  return id;
-}
 
 // Removes a var and it's id of this mapping. The pointer is deleted.
-INLINE
-void
-VariableNodeMap::_erase(NodeId id)
-{
-  __vars2nodes.erase(__nodes2vars[id]);
-  delete __nodes2vars[id];
-  __nodes2vars.erase(id);
-}
+  INLINE
+  void VariableNodeMap::erase( NodeId id ) {
+    const DiscreteVariable* var = __nodes2vars.second( id );
+    __names2nodes.erase( var->name() );
+    delete( var ),
+    __nodes2vars.eraseFirst( id );
+  }
 
 // Removes a var and it's id of this mapping. The pointer is deleted.
-INLINE
-void
-VariableNodeMap::_erase(const DiscreteVariable& var)
-{
-  NodeId id = __vars2nodes[const_cast<DiscreteVariable*>(&var)];
-  __vars2nodes.erase(__nodes2vars[id]);
-  delete __nodes2vars[id];
-  __nodes2vars.erase(id);
-}
+  INLINE
+  void VariableNodeMap::erase( const DiscreteVariable& var ) {
+    NodeId id = __nodes2vars.first( &var );
+    erase( id );
+  }
+  
+  INLINE
+  NodeId VariableNodeMap::idFromName( const std::string& name ) const {
+    return __names2nodes[name];
+  }
+  
+  INLINE
+  const DiscreteVariable& VariableNodeMap::variableFromName( const std::string& name ) const {
+    return *__nodes2vars.second(idFromName(name));
+  }
 
 } /* namespace gum */
+
 // ============================================================================
 #endif /*DOXYGEN_SHOULD_SKIP_THIS*/
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
