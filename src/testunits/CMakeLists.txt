@@ -33,56 +33,56 @@ link_directories(${AGRUM_BINARY_DIR}/lib})
 
 # file(GLOB AGRUM_TESTS *Suite.h)
 file(GLOB AGRUM_TESTS
-       ArcTestSuite.h
-      AVLSearchTreeTestSuite.h
-      BayesBallsTestSuite.h
-      BayesNetGeneratorTestSuite.h
-       BayesNetTestSuite.h
-      BijectionTestSuite.h
-       BIFReaderTestSuite.h
-      BIFWriterTestSuite.h
-      BinTreeNodeTestSuite.h
-      BinTreeNode4AVLTestSuite.h
-      BinSearchTreeTestSuite.h
-       CliqueGraphTestSuite.h
-        CompareInferencesTestSuite.h
-      CrossMultiDimTestSuite.h
-       DAGTestSuite.h
-      DatabaseTestSuite.h  # <------------------------- Memory leak : in testParseMissingXML
-       DefaultTriangulationTestSuite.h
-       DiGraphTestSuite.h
-      DiscretizedVariableListenerTestSuite.h
-      DiscretizedVariableTestSuite.h
-       EdgeTestSuite.h
-         EliminationSequenceTriangulationTestSuite.h
-      GibbsInferenceBNTestSuite.h
-        GraphListenerTestSuite.h
-      HashTableTestSuite.h
-      InstantiationTestSuite.h
-      LabelizedVariableListenerTestSuite.h
-      LabelizedVariableTestSuite.h
-      LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
-      ListBaseTestSuite.h
-      ListTestSuite.h
-       MixedGraphTestSuite.h
-      MultiDimAggregatorTestSuite.h
-      MultiDimBucketTestSuite.h
-       MultiDimNoisyORTestSuite.h
-      MultiDimTestSuite.h
-        NodeGraphPartTestSuite.h
-      PotentialTestSuite.h
-      RangeVariableTestSuite.h
-      RefPtrTestSuite.h
-      SequenceTestSuite.h
-      SetTestSuite.h
-      ShaferShenoyInferenceTestSuite.h
-      SimpleCPTGeneratorTestSuite.h
-      TorcsTestSuite.h   #<-----------------------MEMORY LEAK
-       UndiGraphTestSuite.h
-      UtilityTestSuite.h
-       ValueEliminationTestSuite.h
-      VariableNodeMapTestSuite.h
-  )
+  ArcTestSuite.h
+  AVLSearchTreeTestSuite.h
+  BayesBallsTestSuite.h
+  BayesNetGeneratorTestSuite.h
+  BayesNetTestSuite.h
+  BijectionTestSuite.h
+  BIFReaderTestSuite.h
+  BIFWriterTestSuite.h
+  BinTreeNodeTestSuite.h
+  BinTreeNode4AVLTestSuite.h
+  BinSearchTreeTestSuite.h
+  CliqueGraphTestSuite.h
+  CompareInferencesTestSuite.h
+  CrossMultiDimTestSuite.h
+  DAGTestSuite.h
+  DatabaseTestSuite.h  # <------------------------- Memory leak : in testParseMissingXML
+  DefaultTriangulationTestSuite.h
+  DiGraphTestSuite.h
+  DiscretizedVariableListenerTestSuite.h
+  DiscretizedVariableTestSuite.h
+  EdgeTestSuite.h
+  EliminationSequenceTriangulationTestSuite.h
+  GibbsInferenceBNTestSuite.h
+  GraphListenerTestSuite.h
+  HashTableTestSuite.h
+  InstantiationTestSuite.h
+  LabelizedVariableListenerTestSuite.h
+  LabelizedVariableTestSuite.h
+  LazyInferenceBNTestSuite.h     #<-----------------------MEMORY LEAK
+  ListBaseTestSuite.h
+  ListTestSuite.h
+  MixedGraphTestSuite.h
+  MultiDimAggregatorTestSuite.h
+  MultiDimBucketTestSuite.h
+  MultiDimNoisyORTestSuite.h
+  MultiDimTestSuite.h
+  NodeGraphPartTestSuite.h
+  PotentialTestSuite.h
+  RangeVariableTestSuite.h
+  RefPtrTestSuite.h
+  SequenceTestSuite.h
+  SetTestSuite.h
+  ShaferShenoyInferenceTestSuite.h
+  SimpleCPTGeneratorTestSuite.h
+  TorcsTestSuite.h   #<-----------------------MEMORY LEAK
+  UndiGraphTestSuite.h
+  UtilityTestSuite.h
+  ValueEliminationTestSuite.h
+  VariableNodeMapTestSuite.h
+)
 
 add_cxxtest(test ${AGRUM_TESTS})
 
