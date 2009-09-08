@@ -52,7 +52,6 @@ namespace gum {
 
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
-    std::string res;
     bool first = true;
     s << "{";
 
@@ -68,8 +67,7 @@ namespace gum {
 
     s << "}";
 
-    s >> res;
-    return res;
+    return s.str();
   }
 
   const std::vector<NodeId>
@@ -132,4 +130,4 @@ namespace gum {
 } /* namespace gum */
 
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr   *
- *                                                                         *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *   test $Id: $                                                           *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -17,51 +17,4 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <sstream>
-#include <agrum/multidim/discreteVariable.h>
-
-#ifdef GUM_NO_INLINE
-#include <agrum/multidim/discreteVariable.inl>
-#endif /* GUM_NO_INLINE */
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-
-namespace gum {
-
-
-  const std::string DiscreteVariable::toString() const {
-    std::stringstream s;
-    s<<name()<<"<";
-    bool notZeFirst=false;
-
-    for ( Idx i=0;i<domainSize();++i ) {
-      if ( notZeFirst )
-        s<<",";
-      else
-        notZeFirst=true;
-
-      s<<label( i );
-    }
-
-    s<<">";
-
-    return s.str();
-  }
-
-  // ===============================================================================
-  /// for friendly displaying the content of the variable
-  // ===============================================================================
-  std::ostream& operator<< ( std::ostream& s, const DiscreteVariable& DRV ) {
-    s << DRV.toString();
-    return s;
-  }
-
-
-} /* namespace gum */
-
-
-
-#endif    // DOXYGEN_SHOULD_SKIP_THIS
-
+#include <agrum/BN/BayesNet.h>

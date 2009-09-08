@@ -23,54 +23,56 @@
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
+// to ease parser in IDEs
+#include<agrum/multidim/aggregators/forall.h>
 
 namespace gum {
-namespace aggregator {
-  template<typename T_DATA> INLINE
-  Forall<T_DATA>::Forall( Idx value ): MultiDimAggregator<T_DATA>(),__value( value ) {
-    GUM_CONSTRUCTOR( Forall )
-  }
 
-  template<typename T_DATA> INLINE
-  Forall<T_DATA>::Forall( const Forall<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
-    __value=from.__value;
-    GUM_CONS_CPY( Forall );
-  }
-
-  template<typename T_DATA> INLINE
-  Forall<T_DATA>::~Forall() {
-    GUM_DESTRUCTOR( Forall );
-  }
-
-  template<typename T_DATA> INLINE
-  Idx Forall<T_DATA>::_neutralElt() const { return ( Idx )1;}
-
-  template<typename T_DATA> INLINE
-  Idx Forall<T_DATA>::_folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const {
-    if ( i1==__value ) {
-      return ( Idx )1;
-    } else {
-      stop_iteration=true;
-      return ( Idx )0;
+  namespace aggregator {
+    template<typename T_DATA> INLINE
+    Forall<T_DATA>::Forall( Idx value ): MultiDimAggregator<T_DATA>(), __value( value ) {
+      GUM_CONSTRUCTOR( Forall )
     }
-  }
 
-  template<typename T_DATA> INLINE
+    template<typename T_DATA> INLINE
+    Forall<T_DATA>::Forall( const Forall<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+      __value = from.__value;
+      GUM_CONS_CPY( Forall );
+    }
 
-  std::string Forall<T_DATA>::aggregatorName( void ) const {
-    std::stringstream ss;
-    std::string s;
-    ss<<"forall["<<__value<<"]";
-    ss>>s;
-    return s;
-  }
+    template<typename T_DATA> INLINE
+    Forall<T_DATA>::~Forall() {
+      GUM_DESTRUCTOR( Forall );
+    }
+
+    template<typename T_DATA> INLINE
+    Idx Forall<T_DATA>::_neutralElt() const { return ( Idx )1;}
+
+    template<typename T_DATA> INLINE
+    Idx Forall<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
+      if ( i1 == __value ) {
+        return ( Idx )1;
+      } else {
+        stop_iteration = true;
+        return ( Idx )0;
+      }
+    }
+
+    template<typename T_DATA> INLINE
+
+    std::string Forall<T_DATA>::aggregatorName( void ) const {
+      std::stringstream ss;
+      ss << "forall[" << __value << "]";
+      return ss.str();
+    }
 
     template<typename T_DATA> INLINE
     MultiDimContainer<T_DATA>* Forall<T_DATA>::newFactory() const {
       GUM_ERROR( OperationNotAllowed,
-		 "This class doesn't contain an empty constructor" );
+                 "This class doesn't contain an empty constructor" );
       return 0;
     }
 
-}// aggregator
+  }// aggregator
 } // namespace gum
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

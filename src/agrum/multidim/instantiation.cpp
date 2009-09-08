@@ -176,9 +176,7 @@ namespace gum {
 
     sstr  << ">";
 
-    std::string res;
-    sstr >> res;
-    return res;
+    return sstr.str();
   }
 
   /// give a Id value for Hamming distance

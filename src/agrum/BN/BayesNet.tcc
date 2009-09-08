@@ -39,7 +39,7 @@ namespace gum {
   }
 
 // Copy constructor
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   BayesNet<T_DATA>::BayesNet( const BayesNet<T_DATA>& source ):
       VariableNodeMap( source ), __propertiesMap( 0 ), __dag( source.dag() ), __moralGraph( 0 ), __topologicalOrder( 0 ) {
     GUM_CONSTRUCTOR( BayesNet );
@@ -88,7 +88,7 @@ namespace gum {
   }
 
 // Copy Operator
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   BayesNet<T_DATA>&
   BayesNet<T_DATA>::operator=( const BayesNet<T_DATA>& source ) {
     // Removing previous properties
@@ -125,7 +125,7 @@ namespace gum {
   }
 
 // Destructor
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   BayesNet<T_DATA>::~BayesNet() {
     GUM_DESTRUCTOR( BayesNet );
 
@@ -176,7 +176,7 @@ namespace gum {
   }
 
 // Add a variable, it's associate node and it's CPT
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   NodeId
   BayesNet<T_DATA>::add( const DiscreteVariable& var,
                          MultiDimImplementation<T_DATA> *aContent , NodeId id ) {
@@ -265,7 +265,7 @@ namespace gum {
   }
 
 // Erase a variable and update dependent CPTs.
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   void
   BayesNet<T_DATA>::erase( NodeId varId ) {
     if ( VariableNodeMap::exists( varId ) ) {
@@ -332,7 +332,7 @@ namespace gum {
   BayesNet<T_DATA>::endArcs() const { return __dag.endArcs(); }
 
 // The node's id are coherent with the variables and nodes of the topology.
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   const UndiGraph&
   BayesNet<T_DATA>::moralGraph( bool clear ) const {
     if ( clear or __moralGraph == 0 ) {
@@ -366,7 +366,7 @@ namespace gum {
 
 // The topological order stays the same as long as no variable or arcs are
 // added or erased from the topology.
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   const Sequence<NodeId>&
   BayesNet<T_DATA>::getTopologicalOrder( bool clear ) const {
     if ( clear or( __topologicalOrder->empty() ) ) {
@@ -425,7 +425,7 @@ namespace gum {
   }
 
 // Add the next level of nodes in the topological order
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   void
   BayesNet<T_DATA>::__getNextTopologyLevel( NodeSet& uncheckedNodes ) const {
     bool add;
@@ -456,10 +456,10 @@ namespace gum {
   }
 
   // Add an arc in the BN, and update arc.head's CPT.
-  template<typename T_DATA> INLINE
+  template<typename T_DATA>
   void
   BayesNet<T_DATA>::insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight ) {
-    const MultiDimAdressable& content=cpt( head ).getMasterRef();
+    const MultiDimAdressable& content = cpt( head ).getMasterRef();
     const MultiDimNoisyOR<T_DATA>* noisy = dynamic_cast<const MultiDimNoisyOR<T_DATA>*>( &content );
 
     if ( noisy == 0 ) {
@@ -472,34 +472,61 @@ namespace gum {
     noisy->causalWeight( variable( tail ), causalWeight );
   }
 
-  template<typename T_DATA>
-  std::ostream&
-  operator<<( std::ostream& output, const BayesNet<T_DATA>& map ) {
+  template<typename T_DATA> INLINE
+  std::string BayesNet<T_DATA>::toString( void ) const {
+    Size dSize = 1;
+    Size param = 0;
+
+    for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
+      dSize *= variable( *it ).domainSize();
+      param += (( const MultiDimImplementation<T_DATA> & )cpt( *it ).getMasterRef() ).realSize();
+    }
+
+    int compressionRatio = 100*((float)1.0-(( float )param ) / (( float )dSize ));
+
+    std::stringstream s;
+    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", domainSize: " << dSize << ", parameters: " << param << ", compression ratio: " << compressionRatio << "% }";
+
+    return s.str();
+  }
+
+
+  template<typename T_DATA> INLINE
+  std::string BayesNet<T_DATA>::toDot( void ) const {
+    std::stringstream output;
+
     output << "digraph \"";
 
     try {
-      output << map.property( "name" ) << "\" {" << std::endl;
+      output << property( "name" ) << "\" {" << std::endl;
     } catch ( NotFound& ) {
       output << "no_name\" {" << std::endl;
     }
 
     std::string tab = "  ";
 
-    for ( gum::DAG::NodeIterator node_iter = map.dag().beginNodes();
-          node_iter != map.dag().endNodes(); ++node_iter ) {
-      if ( map.dag().children( *node_iter ).size() > 0 ) {
-        for ( gum::DAG::ArcIterator arc_iter = map.dag().children( *node_iter ).begin();
-              arc_iter != map.dag().children( *node_iter ).end(); ++arc_iter ) {
-          output << tab << "\"" << map.variable( *node_iter ).name() << "\" -> "
-          << "\"" << map.variable( arc_iter->head() ).name() << "\";" << std::endl;
+    for ( gum::DAG::NodeIterator node_iter = dag().beginNodes();
+          node_iter != dag().endNodes(); ++node_iter ) {
+      if ( dag().children( *node_iter ).size() > 0 ) {
+        for ( gum::DAG::ArcIterator arc_iter = dag().children( *node_iter ).begin();
+              arc_iter != dag().children( *node_iter ).end(); ++arc_iter ) {
+          output << tab << "\"" << variable( *node_iter ).name() << "\" -> "
+          << "\"" << variable( arc_iter->head() ).name() << "\";" << std::endl;
         }
-      } else if ( map.dag().parents( *node_iter ).size() == 0 ) {
-        output << tab << "\"" << map.variable( *node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents( *node_iter ).size() == 0 ) {
+        output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
       }
     }
 
     output << "}" << std::endl;
 
+    return output.str();
+  }
+
+  template<typename T_DATA>
+  std::ostream&
+  operator<<( std::ostream& output, const BayesNet<T_DATA>& map ) {
+    output << map.toString();
     return output;
   }
 
@@ -507,4 +534,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

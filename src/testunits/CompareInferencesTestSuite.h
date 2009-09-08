@@ -161,7 +161,7 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
       delete( bn );
     }
 
-    void InferencesWithNoEvidence() {
+    void testInferencesWithNoEvidence() {
       gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
       inf_ShaShe.makeInference();
 
@@ -345,9 +345,15 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
         }
       }
 
+      for ( gum::List< gum::Potential< float > const * >::iterator it = list_pot.begin();it != list_pot.end();++it ) {
+        delete *it;
+      }
 
+      delete e_i1;
+
+      delete e_i4;
       delete bn;
     }
 };
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

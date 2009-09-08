@@ -23,6 +23,8 @@
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 
+// to ease parser in IDEs
+#include<agrum/multidim/aggregators/min.h>
 
 namespace gum {
 
@@ -55,10 +57,12 @@ namespace gum {
     Idx Min<T_DATA>::_neutralElt() const { return ( Idx )100000;} //clearly arbitrary choosen
 
     template<typename T_DATA> INLINE
-    Idx Min<T_DATA>::_folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const { return ( i1<i2 )?i1:i2;}
+    Idx Min<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 < i2 ) ? i1 : i2;}
 
     template<typename T_DATA> INLINE
-    std::string Min<T_DATA>::aggregatorName( void ) const { return "min";}
+    std::string Min<T_DATA>::aggregatorName( void ) const {
+      return "min";
+    }
 
     template<typename T_DATA> INLINE
     MultiDimContainer<T_DATA>* Min<T_DATA>::newFactory() const {
@@ -67,3 +71,4 @@ namespace gum {
 
   } // aggregator
 } // namespace gum
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

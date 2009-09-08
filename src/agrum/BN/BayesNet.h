@@ -318,7 +318,8 @@ namespace gum {
 
       /// @}
 
-      //std::string toString(void);
+      std::string toString(void) const;
+      std::string toDot(void) const;
 
     private:
 

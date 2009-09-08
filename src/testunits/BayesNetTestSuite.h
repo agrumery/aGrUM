@@ -151,8 +151,12 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       gum::BayesNet<float> *topology=NULL;
       TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::BayesNet<float>() );
       
-      TS_ASSERT_THROWS(topology->insertArc(1,2),gum::InvalidNode)
+      TS_ASSERT_THROWS(topology->insertArc(1,2),gum::InvalidNode);
       
+      gum::List<gum::NodeId> idList;
+      TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology,idList));
+      TS_ASSERT_EQUALS(topology->toString(),"BN{nodes: 5, arcs: 6, domainSize: 48, parameters: 40, compression ratio: 16% }");
+
       TS_GUM_ASSERT_THROWS_NOTHING( delete topology );
 
     }

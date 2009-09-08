@@ -105,7 +105,6 @@ namespace gum {
 
   std::string NodeGraphPart::toString() const {
     std::stringstream s;
-    std::string res;
     bool first = true;
     s << "{";
 
@@ -123,8 +122,7 @@ namespace gum {
 
     s << "}";
 
-    s >> res;
-    return res;
+    return s.str();
   }
 
   std::ostream& operator<< ( std::ostream& stream, const NodeGraphPart& set ) {

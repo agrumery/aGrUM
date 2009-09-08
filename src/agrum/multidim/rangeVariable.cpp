@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** 
+/**
  * @file
  * @brief Implementation of gumRangeVariable.
  *
@@ -37,23 +37,23 @@ namespace gum {
   // ==========================================================================
   // Default constructor
   // ==========================================================================
-  RangeVariable::RangeVariable( const std::string& aName, 
-                                const std::string& aDesc, 
+  RangeVariable::RangeVariable( const std::string& aName,
+                                const std::string& aDesc,
                                 Idx minVal, Idx maxVal ):
-    DiscreteVariable(aName, aDesc), __min(minVal), __max(maxVal) {
+      DiscreteVariable( aName, aDesc ), __min( minVal ), __max( maxVal ) {
     GUM_CONSTRUCTOR( RangeVariable );
   }
-  
+
   // ==========================================================================
   // Copy Constructor.
   // If aDRV haves any listener, it will not be copied.
   // @param aDRV the variable we copy
   // ==========================================================================
   RangeVariable::RangeVariable( const RangeVariable& aDRV ):
-    DiscreteVariable(aDRV), __min(aDRV.__min), __max(aDRV.__max) {
+      DiscreteVariable( aDRV ), __min( aDRV.__min ), __max( aDRV.__max ) {
     GUM_CONS_CPY( RangeVariable );
   }
-  
+
   // ==========================================================================
   // destructor
   // ==========================================================================
@@ -63,12 +63,10 @@ namespace gum {
 
 
   const std::string RangeVariable::toString() const {
-  
     std::stringstream s;
-    s<<name() << " [" << min() << ", " << max() << "]";
-    std::string res;
-    s >> res;
-    return res;
+    s << name() << " [" << min() << ", " << max() << "]";
+    return s.str();
   }
 } /* namespace gum */
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

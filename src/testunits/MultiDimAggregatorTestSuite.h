@@ -37,163 +37,163 @@
 
 class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
   private:
-    float __is_min( gum::Idx a,gum::Idx b,gum::Idx c,gum::Idx d ) {
+    float __is_min( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
       gum::Idx tmp;
-      tmp=b;
+      tmp = b;
 
-      if ( tmp>c ) tmp=c;
+      if ( tmp > c ) tmp = c;
 
-      if ( tmp>d ) tmp=d;
+      if ( tmp > d ) tmp = d;
 
-      return ( tmp==a )?( float )1:( float )0;
+      return ( tmp == a ) ? ( float )1 : ( float )0;
     }
 
-    float __is_max( gum::Idx a,gum::Idx b,gum::Idx c,gum::Idx d ) {
+    float __is_max( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
       gum::Idx tmp;
-      tmp=b;
+      tmp = b;
 
-      if ( tmp<c ) tmp=c;
+      if ( tmp < c ) tmp = c;
 
-      if ( tmp<d ) tmp=d;
+      if ( tmp < d ) tmp = d;
 
-      return ( tmp==a )?( float )1:( float )0;
+      return ( tmp == a ) ? ( float )1 : ( float )0;
     }
 
-    float __is_count_2( gum::Idx a,gum::Idx b,gum::Idx c,gum::Idx d ) {
+    float __is_count_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
       gum::Idx tmp;
-      tmp=( gum::Idx )0;
+      tmp = ( gum::Idx )0;
 
-      if ( b==( gum::Idx )2 ) tmp++;
+      if ( b == ( gum::Idx )2 ) tmp++;
 
-      if ( c==( gum::Idx )2 ) tmp++;
+      if ( c == ( gum::Idx )2 ) tmp++;
 
-      if ( d==( gum::Idx )2 ) tmp++;
+      if ( d == ( gum::Idx )2 ) tmp++;
 
-      return ( tmp==a )?( float )1:( float )0;
+      return ( tmp == a ) ? ( float )1 : ( float )0;
     }
 
-    float __is_forall_2( gum::Idx a,gum::Idx b,gum::Idx c,gum::Idx d ) {
+    float __is_forall_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
       gum::Idx tmp;
 
-      tmp=(( b==( gum::Idx )2 ) && ( c==( gum::Idx )2 ) && ( d==( gum::Idx )2 ) )?( gum::Idx )1:( gum::Idx )0;
+      tmp = (( b == ( gum::Idx )2 ) && ( c == ( gum::Idx )2 ) && ( d == ( gum::Idx )2 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
 
-      return ( tmp==a )?( float )1:( float )0;
+      return ( tmp == a ) ? ( float )1 : ( float )0;
     }
-		
-		float __is_exists_2( gum::Idx a,gum::Idx b,gum::Idx c,gum::Idx d ) {
-			gum::Idx tmp;
 
-			tmp=(( b==( gum::Idx )2 ) || ( c==( gum::Idx )2 ) || ( d==( gum::Idx )2 ) )?( gum::Idx )1:( gum::Idx )0;
+    float __is_exists_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+      gum::Idx tmp;
 
-			return ( tmp==a )?( float )1:( float )0;
-		}
+      tmp = (( b == ( gum::Idx )2 ) || ( c == ( gum::Idx )2 ) || ( d == ( gum::Idx )2 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+
+      return ( tmp == a ) ? ( float )1 : ( float )0;
+    }
 
   public:
     void testCreationMin() {
-      gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
       gum::aggregator::Min<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-      TS_ASSERT_EQUALS( p.toString(),"a=min(b,c,d)" );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=min(b [0, 3],c [0, 3],d [0, 3])" );
 
       gum::Instantiation i( p );
 
       for ( i.setFirst();! i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i],__is_min( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
+        TS_ASSERT_EQUALS( p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
     void testCreationMax() {
-      gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
-			gum::aggregator::Max<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-      TS_ASSERT_EQUALS( p.toString(),"a=max(b,c,d)" );
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+      gum::aggregator::Max<float> p;
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=max(b [0, 3],c [0, 3],d [0, 3])" );
 
       gum::Instantiation i( p );
 
       for ( i.setFirst();! i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i],__is_max( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
+        TS_ASSERT_EQUALS( p[i], __is_max( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
     void testCreationCount() {
-      gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
-			gum::aggregator::Count<float> p(( gum::Idx )2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-      TS_ASSERT_EQUALS( p.toString(),"a=count[2](b,c,d)" );
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+      gum::aggregator::Count<float> p(( gum::Idx )2 );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=count[2](b [0, 3],c [0, 3],d [0, 3])" );
 
       gum::Instantiation i( p );
 
       for ( i.setFirst();! i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i],__is_count_2( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
+        TS_ASSERT_EQUALS( p[i], __is_count_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
     void testCreationForall() {
-      gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
-			gum::aggregator::Forall<float> p(( gum::Idx )2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-      TS_ASSERT_EQUALS( p.toString(),"a=forall[2](b,c,d)" );
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+      gum::aggregator::Forall<float> p(( gum::Idx )2 );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=forall[2](b [0, 3],c [0, 3],d [0, 3])" );
 
       gum::Instantiation i( p );
 
       for ( i.setFirst();! i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i],__is_forall_2( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
+        TS_ASSERT_EQUALS( p[i], __is_forall_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
-		}
-		
-		void testCreationExists() {
-			gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
-			gum::aggregator::Exists<float> p(( gum::Idx )2 );
-			TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
-			TS_ASSERT_EQUALS( p.toString(),"a=exists[2](b,c,d)" );
+    }
 
-			gum::Instantiation i( p );
+    void testCreationExists() {
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+      gum::aggregator::Exists<float> p(( gum::Idx )2 );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=exists[2](b [0, 3],c [0, 3],d [0, 3])" );
 
-			for ( i.setFirst();! i.end(); ++i ) {
-				TS_ASSERT_EQUALS( p[i],__is_exists_2( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
-			}
-		}
+      gum::Instantiation i( p );
+
+      for ( i.setFirst();! i.end(); ++i ) {
+        TS_ASSERT_EQUALS( p[i], __is_exists_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      }
+    }
 
     void testPotentialMin() {
-      gum::RangeVariable a( "a","",0,3 ),b( "b","",0,3 ),c( "c","",0,3 ),d( "d","",0,3 );
+      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
 
-			gum::Potential<int> p( new gum::aggregator::Min<int>() );
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c<<d );
+      gum::Potential<int> p( new gum::aggregator::Min<int>() );
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
 
       gum::Instantiation i( p );
 
       for ( i.setFirst();! i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i],__is_min( i.val( a ),i.val( b ),i.val( c ),i.val( d ) ) );
+        TS_ASSERT_EQUALS( p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
 
       //it is not allowed to change a value but can only be detected at the next access
       i.setFirst();
 
-			TS_ASSERT_THROWS( p.set(i,3.0),gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( p.set( i, 3.0 ), gum::OperationNotAllowed );
 
-      TS_ASSERT_THROWS( p.fill(( double )0 ),gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( p.fill(( double )0 ), gum::OperationNotAllowed );
     }
 
     void testBNwithMin() {
       gum::List<gum::NodeId> idList;
       gum::BayesNet<double> bn;
 
-      int nbr=6; // nbr=nbr of parents
+      int nbr = 6; // nbr=nbr of parents
 
       std::string str;
-      const double t[4] = {0.1, 0.1,0.1,0.7};
+      const double t[4] = {0.1, 0.1, 0.1, 0.7};
       int n = 4;const std::vector<double> v( t, t + n );
 
-      for ( int i=0;i<=nbr;i++ ) {
-        str="";
+      for ( int i = 0;i <= nbr;i++ ) {
+        str = "";
         std::stringstream ss;
-        ss << "var"<<( i+1 );
+        ss << "var" << ( i + 1 );
         ss >> str;
 
-        gum::LabelizedVariable var( str,str,4 ) ;
+        gum::LabelizedVariable var( str, str, 4 ) ;
 
-        if ( i==0 ) {
-					idList.insert( bn.addVariable( var,new gum::aggregator::Min<double>() ) );
+        if ( i == 0 ) {
+          idList.insert( bn.addVariable( var, new gum::aggregator::Min<double>() ) );
         } else {
           idList.insert( bn.addVariable( var ) );
           bn.insertArc( idList[i], idList[0] );
@@ -204,13 +204,13 @@ class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
           gum::Idx res;
 
           for ( i.setFirst( ) ; ! i.end() ; ++i ) {
-            res=( gum::Idx )10000; //clearly arbitraty choosen
+            res = ( gum::Idx )10000; //clearly arbitraty choosen
 
-            for ( gum::Idx j=1; j<i.nbrDim();j++ ) {
-              if ( res>i.val( j ) ) res=i.val( j );
+            for ( gum::Idx j = 1; j < i.nbrDim();j++ ) {
+              if ( res > i.val( j ) ) res = i.val( j );
             }
 
-            TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i], ( res==i.val(( gum::Idx )0 ) )?( float )1:( float )0 );
+            TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i], ( res == i.val(( gum::Idx )0 ) ) ? ( float )1 : ( float )0 );
 
           }
         }
@@ -228,8 +228,8 @@ class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
         }
 
         try {
-          TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() ,"<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
-          TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() ,"<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
+          TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() , "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
+          TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() , "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
         } catch ( gum::Exception e ) {
           TS_ASSERT( false );
         }
@@ -246,12 +246,12 @@ class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
         }
 
         try {
-          TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() ,"<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
-          TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() ,"<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
+          TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() , "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
+          TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() , "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
         } catch ( gum::Exception e ) {
           TS_ASSERT( false );
         }
       }
     }
 };
-// kate: indent-mode cstyle; replace-tabs off; tab-width 2;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs off;

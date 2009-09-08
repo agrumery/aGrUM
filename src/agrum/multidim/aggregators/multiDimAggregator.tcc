@@ -23,6 +23,8 @@
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 
+// to ease parser in IDEs
+#include<agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
   // ==============================================================================
@@ -51,45 +53,43 @@ namespace gum {
 
   template<typename T_DATA>
   T_DATA MultiDimAggregator<T_DATA>::get( const Instantiation& i ) const {
-    if ( this->nbrDim()<2 ) {
-      GUM_ERROR( OperationNotAllowed,"Not enough variable for an aggregator" );
+    if ( this->nbrDim() < 2 ) {
+      GUM_ERROR( OperationNotAllowed, "Not enough variable for an aggregator" );
     }
 
-    const DiscreteVariable& agg=this->variable(( Idx )0 );
+    const DiscreteVariable& agg = this->variable(( Idx )0 );
 
     //is i equal to f(f(f(f...(j_,,neutral_elt))))
-    Idx current=_neutralElt();
+    Idx current = _neutralElt();
 
-    bool stop_iteration=false;
+    bool stop_iteration = false;
 
-    for ( Idx j=1;j<this->nbrDim();j++ ) {
-      current=_folder( this->variable( j ),i.val( this->variable( j ) ),current ,stop_iteration );
+    for ( Idx j = 1;j < this->nbrDim();j++ ) {
+      current = _folder( this->variable( j ), i.val( this->variable( j ) ), current , stop_iteration );
 
       if ( stop_iteration ) break;
     }
 
     // truncate to fit in aggreegator domain size
-    if ( current>=agg.domainSize() ) current=agg.domainSize()-1;
+    if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
 
-    return ( i.val( agg ) ==current )?( T_DATA )1:( T_DATA )0;
+    return ( i.val( agg ) == current ) ? ( T_DATA )1 : ( T_DATA )0;
   }
 
   template<typename T_DATA>
   const std::string MultiDimAggregator<T_DATA>::toString() const {
     std::stringstream s;
-    s<<MultiDimImplementation<T_DATA>::variable( 0 )<<"="<<aggregatorName()<<"(";
+    s << MultiDimImplementation<T_DATA>::variable( 0 ) << "=" << aggregatorName() << "(";
 
-    for ( Idx i=1;i<MultiDimImplementation<T_DATA>::nbrDim();i++ ) {
-      if ( i>1 ) s<<",";
+    for ( Idx i = 1;i < MultiDimImplementation<T_DATA>::nbrDim();i++ ) {
+      if ( i > 1 ) s << ",";
 
-      s<<MultiDimImplementation<T_DATA>::variable( i );
+      s << MultiDimImplementation<T_DATA>::variable( i );
     }
 
-    s<<")";
+    s << ")";
 
-    std::string res;
-    s >> res;
-    return res;
+    return s.str();
   }
 
 
@@ -103,3 +103,4 @@ namespace gum {
 
 // ==================================================
 } /* namespace gum */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

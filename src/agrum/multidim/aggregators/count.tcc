@@ -23,18 +23,20 @@
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
+// to ease parser in IDEs
+#include<agrum/multidim/aggregators/count.h>
 
-namespace gum {  
-  
+namespace gum {
+
   namespace aggregator {
     template<typename T_DATA> INLINE
-    Count<T_DATA>::Count( Idx value ): MultiDimAggregator<T_DATA>(),__value( value ) {
+    Count<T_DATA>::Count( Idx value ): MultiDimAggregator<T_DATA>(), __value( value ) {
       GUM_CONSTRUCTOR( Count )
     }
 
     template<typename T_DATA> INLINE
     Count<T_DATA>::Count( const Count<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
-      __value=from.__value;
+      __value = from.__value;
       GUM_CONS_CPY( Count );
     }
 
@@ -47,23 +49,22 @@ namespace gum {
     Idx Count<T_DATA>::_neutralElt() const { return ( Idx )0;}
 
     template<typename T_DATA> INLINE
-    Idx Count<T_DATA>::_folder( const DiscreteVariable& v,Idx i1,Idx i2 ,bool& stop_iteration ) const { return ( i1==__value )?1+i2:i2;}
+    Idx Count<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2 , bool& stop_iteration ) const { return ( i1 == __value ) ? 1 + i2 : i2;}
 
     template<typename T_DATA> INLINE
     std::string Count<T_DATA>::aggregatorName( void ) const {
       std::stringstream ss;
-      std::string s;
-      ss<<"count["<<__value<<"]";
-      ss>>s;
-      return s;
+      ss << "count[" << __value << "]";
+      return ss.str();
     }
 
     template<typename T_DATA> INLINE
     MultiDimContainer<T_DATA>* Count<T_DATA>::newFactory() const {
       GUM_ERROR( OperationNotAllowed,
-		 "This class doesn't contain an empty constructor" );
+                 "This class doesn't contain an empty constructor" );
       return 0;
     }
 
   } // aggregator
 } // namespace gum
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

@@ -53,7 +53,6 @@ namespace gum {
 
   const std::string ArcGraphPart::toString() const {
     std::stringstream s;
-    std::string res;
     bool first=true;
     s<<"{";
 
@@ -69,9 +68,8 @@ namespace gum {
     }
 
     s<<"}";
-
-    s >> res;
-    return res;
+    
+    return s.str();
   }
 
   const std::vector<NodeId>

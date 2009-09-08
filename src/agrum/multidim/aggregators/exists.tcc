@@ -23,18 +23,20 @@
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
+// to ease parser in IDEs
+#include<agrum/multidim/aggregators/exists.h>
 
 namespace gum {
 
   namespace aggregator {
     template<typename T_DATA> INLINE
-    Exists<T_DATA>::Exists( Idx value ): MultiDimAggregator<T_DATA>(),__value( value ) {
+    Exists<T_DATA>::Exists( Idx value ): MultiDimAggregator<T_DATA>(), __value( value ) {
       GUM_CONSTRUCTOR( Exists )
     }
 
     template<typename T_DATA> INLINE
     Exists<T_DATA>::Exists( const Exists<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
-      __value=from.__value;
+      __value = from.__value;
       GUM_CONS_CPY( Exists );
     }
 
@@ -47,11 +49,11 @@ namespace gum {
     Idx Exists<T_DATA>::_neutralElt() const { return ( Idx )0;}
 
     template<typename T_DATA> INLINE
-    Idx Exists<T_DATA>::_folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const {
-      if ( i1!=__value ) {
+    Idx Exists<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
+      if ( i1 != __value ) {
         return ( Idx )0;
       } else {
-        stop_iteration=true;
+        stop_iteration = true;
         return ( Idx )1;
       }
     }
@@ -60,18 +62,17 @@ namespace gum {
 
     std::string Exists<T_DATA>::aggregatorName( void ) const {
       std::stringstream ss;
-      std::string s;
-      ss<<"exists["<<__value<<"]";
-      ss>>s;
-      return s;
+      ss << "exists[" << __value << "]";
+      return ss.str();
     }
 
     template<typename T_DATA> INLINE
     MultiDimContainer<T_DATA>* Exists<T_DATA>::newFactory() const {
       GUM_ERROR( OperationNotAllowed,
-		 "This class doesn't contain an empty constructor" );
+                 "This class doesn't contain an empty constructor" );
       return 0;
     }
 
   } // namespace aggregator
 } // namespace gum
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
