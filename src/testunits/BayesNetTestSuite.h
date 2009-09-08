@@ -513,8 +513,12 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_THROWS( bn.idFromName( "choucroute" ), gum::NotFound );
 
       TS_ASSERT_THROWS( bn.variableFromName( "choucroute" ), gum::NotFound );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.idFromName( "var1" ) );
+      bn.erase(bn.idFromName( "var1" ));
+      TS_ASSERT_THROWS( bn.idFromName( "var1" ), gum::NotFound );
     }
 };
 
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

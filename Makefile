@@ -1,5 +1,5 @@
-OPTION_VERBOSE =
-#OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
+#OPTION_VERBOSE =
+OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
 OPTION_NBR_PROCESSOR =
 
 # which version will be used for "install" and "pack" rules ?
@@ -22,6 +22,11 @@ test: current
 windows: ready_for_windows
 	cmake -E time cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR)
 
+testwindows: windows
+	cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR) test
+
+runwindows: windows
+	cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR) agrumDemo
 #############################################################################
 release: ready
 	cmake -E time cmake -E chdir build/release make -j $(OPTION_NBR_PROCESSOR) 
@@ -101,4 +106,4 @@ ready: build src/CMakeLists.txt src/agrum/CMakeLists.txt src/run/CMakeLists.txt 
 	cmake -E chdir build/debug cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=DEBUG ../../src ${OPTION_VERBOSE}
 
 ready_for_windows: build src/CMakeLists.txt src/agrum/CMakeLists.txt src/run/CMakeLists.txt src/testunits/CMakeLists.txt
-  cmake -E chdir build/windows cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX==. -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE}
+	cmake -E chdir build/windows cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX==. -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE}

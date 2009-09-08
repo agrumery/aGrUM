@@ -23,6 +23,8 @@
 #define coco_swprintf swprintf_s
 #elif _MSC_VER >= 1300
 #define coco_swprintf _snwprintf
+#elif defined __MINGW32__
+#define coco_swprintf _snwprintf
 #elif defined __GNUC__
 #define coco_swprintf swprintf
 #else 
