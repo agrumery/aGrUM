@@ -78,7 +78,7 @@ namespace CxxTest {
       void leaveSuite( const SuiteDescription & ) {
         double step=clock->step();
         totalTime+=step;
-        (( *_o ) <<" ["<<1000.0*step<<" ms]" ).flush();
+        (( *_o ) <<" ["<<(unsigned int)(1000.0*step)<<" ms]" ).flush();
       }
 
       void enterTest( const TestDescription & ) {
@@ -99,7 +99,7 @@ namespace CxxTest {
         gum::debug::__atexit();
         #endif // NDEBUG
         
-        ( *_o ) << endl<<"## Profiling : "<<1000.0*totalTime<<" ms ##"<<endl;
+        ( *_o ) << endl<<"## Profiling : "<<(unsigned int)(1000.0*totalTime)<<" ms ##"<<endl;
         if ( !tracker().failedTests() ) {
           ( *_o ) << endl
           << "=================================="<<endl

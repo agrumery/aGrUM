@@ -502,7 +502,7 @@ namespace gum {
       param += (( const MultiDimImplementation<T_DATA> & )cpt( *it ).getMasterRef() ).realSize();
     }
 
-    int compressionRatio = 100 * (( float )1.0 - (( float )param ) / (( float )dSize ) );
+    int compressionRatio = (int)(100.0 * (( float )1.0 - (( float )param ) / (( float )dSize )) );
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", domainSize: " << dSize << ", parameters: " << param << ", compression ratio: " << compressionRatio << "% }";
