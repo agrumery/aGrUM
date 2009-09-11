@@ -54,6 +54,9 @@ namespace gum {
       typedef enum { NONE, NETWORK, VARIABLE, PARENTS, RAW_CPT, FACT_CPT, FACT_ENTRY}
       factory_state;
 
+// just to make some compilers happy
+	virtual ~AbstractBayesNetFactory() {};
+
       /// @{
       /// @brief Please @see BayesNetFactory<T_DATA> for documentation.
       virtual const DiscreteVariable& varInBN( NodeId id ) =0;
