@@ -3,15 +3,15 @@ cmake_minimum_required(VERSION 2.6)
 
 set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include(CPack)
-
 ## allow gcc compilation on Windows (jw)
 if(WIN32)
   set(WIN32_STYLE_FLAGS 1)
+  set(CMAKE_INSTALL_PREFIX "")
 endif(WIN32)
 if(MINGW)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
+  set(CMAKE_INSTALL_PREFIX /usr)
 endif(MINGW)
 
 if(UNIX)
@@ -42,12 +42,16 @@ if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
   set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
   set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
+
+	set(AGRUM_PROCESSOR "64")
 else("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
   set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
   set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
 
   set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
   set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+
+	set(AGRUM_PROCESSOR "32")
 endif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
 subdirs(agrum EXCLUDE_FROM_ALL run testunits)
@@ -110,3 +114,7 @@ configure_file(
   "${CMAKE_CURRENT_CMAKE_DIR}/agrum.pc.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/agrum.pc"
 )
+
+## pack module ##############################################################################
+include("cmake/CPackAgrum.cmake")
+include(CPack)

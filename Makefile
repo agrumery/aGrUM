@@ -1,86 +1,94 @@
-#OPTION_VERBOSE =
-OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
-OPTION_NBR_PROCESSOR =
+OPTION_VERBOSE =
+#OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
+OPTION_NBR_PROCESSOR = 
 
 # which version will be used for "install" and "pack" rules ?
-PUBLIC_VERSION= "release"
+PUBLIC_VERSION= release
 default: release
 
 current: ready
-	cmake -E chdir build/current make -j $(OPTION_NBR_PROCESSOR) 
+	(cd build/current ; make -j $(OPTION_NBR_PROCESSOR))
 
 run: current
-	cmake -E chdir build/current make -j $(OPTION_NBR_PROCESSOR) agrumDemo
+	(cd build/current ; make -j $(OPTION_NBR_PROCESSOR)agrumDemo )
 	cmake -E time build/current/run/agrumDemo
 
 test: current
-	cmake -E chdir build/current make -j $(OPTION_NBR_PROCESSOR) test
-	cmake -E time cmake -E chdir build/current/testunits ./test
+	(cd build/current ; make -j $(OPTION_NBR_PROCESSOR) test )
+	(cd build/current/testunits ; ./test)
 
 
 #############################################################################
 windows: ready_for_windows
-	cmake -E time cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR)
+	(cd build/windows ; make -j $(OPTION_NBR_PROCESSOR))
 
 testwindows: windows
-	cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR) test
+	(cd build/windows ; make -j $(OPTION_NBR_PROCESSOR) test )
 
 runwindows: windows
-	cmake -E chdir build/windows make -j $(OPTION_NBR_PROCESSOR) agrumDemo
+	(cd build/windows ; make -j $(OPTION_NBR_PROCESSOR) agrumDemo )
 #############################################################################
 release: ready
-	cmake -E time cmake -E chdir build/release make -j $(OPTION_NBR_PROCESSOR) 
+	(cd build/release ; make -j $(OPTION_NBR_PROCESSOR))
 
 runrelease: release
-	cmake -E chdir build/release make -j $(OPTION_NBR_PROCESSOR) agrumDemo
-	cmake -E time build/release/run/agrumDemo
+	(cd build/release ; make -j $(OPTION_NBR_PROCESSOR) agrumDemo )
+	( cd build/release/run ; ./agrumDemo)
 
 testrelease: release
-	cmake -E chdir build/release make -j $(OPTION_NBR_PROCESSOR) test
-	cmake -E time cmake -E chdir build/release/testunits ./test
+	(cd build/release ; make -j $(OPTION_NBR_PROCESSOR) test )
+	(cd build/release/testunits ; ./test)
 
 #############################################################################
 debug: ready
-	cmake -E time cmake -E chdir build/debug make -j $(OPTION_NBR_PROCESSOR)
+	(cd build/debug ; make -j $(OPTION_NBR_PROCESSOR))
 
 rundebug: debug
-	cmake -E chdir build/debug make -j $(OPTION_NBR_PROCESSOR) agrumDemo
-	cmake -E time build/debug/run/agrumDemo
+	(cd build/debug ; make -j $(OPTION_NBR_PROCESSOR) agrumDemo )
+	(cd build/debug/run ; ./agrumDemo)
 
 testdebug: debug
-	cmake -E chdir build/debug make -j $(OPTION_NBR_PROCESSOR) test
-	cmake -E time cmake -E chdir build/debug/testunits ./test
+	(cd build/debug ; make -j $(OPTION_NBR_PROCESSOR) test )
+	(cd build/debug/testunits ; ./test)
 
 #############################################################################
 all: current debug release doc
 
 everything: all
-	cmake -E chdir build/current make -j  $(OPTION_NBR_PROCESSOR) agrumDemo
-	cmake -E chdir build/release make -j  $(OPTION_NBR_PROCESSOR) agrumDemo
-	cmake -E chdir build/debug make -j  $(OPTION_NBR_PROCESSOR) agrumDemo
-	cmake -E chdir build/current make -j  $(OPTION_NBR_PROCESSOR) test
-	cmake -E chdir build/release make -j  $(OPTION_NBR_PROCESSOR) test
-	cmake -E chdir build/debug make -j  $(OPTION_NBR_PROCESSOR) test
+	(cd build/current ; make -j  $(OPTION_NBR_PROCESSOR) agrumDemo )
+	(cd build/release ; make -j  $(OPTION_NBR_PROCESSOR) agrumDemo )
+	(cd build/debug ; make -j  $(OPTION_NBR_PROCESSOR) agrumDemo )
+	(cd build/current ; make -j  $(OPTION_NBR_PROCESSOR) test )
+	(cd build/release ; make -j  $(OPTION_NBR_PROCESSOR) test )
+	(cd build/debug ; make -j  $(OPTION_NBR_PROCESSOR) test )
 
 doc:
 	cmake -E time doxygen
 ############################################################################
 install:
 	make ${PUBLIC_VERSION}
-	cmake -E chdir build/${PUBLIC_VERSION} make install
+	(cd build/${PUBLIC_VERSION} ; make install)
 
 uninstall:
-	make ${PUBLIC_VERSION}
-	cmake -E chdir build/${PUBLIC_VERSION} make uninstall
+	(cd build/${PUBLIC_VERSION} ; make uninstall)
 
-pack: install
-	cmake -E chdir build/${PUBLIC_VERSION} make package
+pack: ${PUBLIC_VERSION}
+	(cd build/${PUBLIC_VERSION} ; make package)
+
+pack_windows: windows
+	(cd build/windows; make package)
 
 rpm: pack
-	cmake -E chdir build/${PUBLIC_VERSION} cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -D CPACK_RPM_SPEC_INSTALL_POST="/bin/true" -G RPM
+	(cd build/${PUBLIC_VERSION} ; cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -D CPACK_RPM_SPEC_INSTALL_POST="/bin/true" -G RPM)
 
 deb: pack
-	cmake -E chdir build/${PUBLIC_VERSION} cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -D CPACK_DEB_SPEC_INSTALL_POST="/bin/true" -G DEB
+	(cd build/${PUBLIC_VERSION} ; cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -D CPACK_DEB_SPEC_INSTALL_POST="/bin/true" -G DEB)
+
+tgz: pack
+	(cd build/${PUBLIC_VERSION} ; cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -D CPACK_DEB_SPEC_INSTALL_POST="/bin/true" -G TGZ)
+
+distrib: pack pack_windows
+
 #############################################################################
 clean_build:
 	cmake -E remove_directory build
@@ -101,9 +109,9 @@ build:
 	cmake -E make_directory build/windows
 
 ready: build src/CMakeLists.txt src/agrum/CMakeLists.txt src/run/CMakeLists.txt src/testunits/CMakeLists.txt
-	cmake -E chdir build/current cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=CURRENT ../../src ${OPTION_VERBOSE}
-	cmake -E chdir build/release cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE}
-	cmake -E chdir build/debug cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=DEBUG ../../src ${OPTION_VERBOSE}
+	(cd build/current ; cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=CURRENT ../../src ${OPTION_VERBOSE})
+	(cd build/release ; cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE})
+	(cd build/debug ; cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=DEBUG ../../src ${OPTION_VERBOSE})
 
 ready_for_windows: build src/CMakeLists.txt src/agrum/CMakeLists.txt src/run/CMakeLists.txt src/testunits/CMakeLists.txt
-	cmake -E chdir build/windows cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX==. -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE}
+	(cd build/windows ; cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=build/windows/_CPack_Packages/win32/TGZ/agrum-0.6.0-win32 -DCMAKE_BUILD_TYPE=RELEASE ../../src ${OPTION_VERBOSE})

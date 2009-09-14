@@ -169,9 +169,9 @@ class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
       //it is not allowed to change a value but can only be detected at the next access
       i.setFirst();
 
-      TS_ASSERT_THROWS( p.set( i, 3.0 ), gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( p.set( i, 3 ), gum::OperationNotAllowed );
 
-      TS_ASSERT_THROWS( p.fill(( double )0 ), gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( p.fill(0 ), gum::OperationNotAllowed );
     }
 
     void testBNwithMin() {
