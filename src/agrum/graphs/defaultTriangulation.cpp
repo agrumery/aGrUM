@@ -367,6 +367,8 @@ namespace gum {
         }
       }
 
+
+
       // update the simplicial structure (this will also update the temporary
       // graph and the weights hashtable
       simplicial.makeClique( removable_node );

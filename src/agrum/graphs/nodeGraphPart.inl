@@ -78,6 +78,7 @@ namespace gum {
     __addHole( node );
 
     GUM_EMIT1( onNodeDeleted, node );
+
   }
 
   INLINE bool NodeGraphPart::emptyNodes() const {

@@ -167,6 +167,43 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( __testBigNodeGrapPart() );
     }
 
+    void testIteratorEnd() {
+      gum::NodeGraphPart nodeset;
+      nodeset.insertNode();
+      unsigned int cpt = 0;
+      for(gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+	  iter != nodeset.endNodes(); ++iter) {
+	if(cpt == 0) {
+	  nodeset.eraseNode(*iter);
+	  cpt++;
+	} else {
+	  // If false : infinite loop spotted
+	  TS_ASSERT(false);
+	  break;
+	}
+      }
+    }
+
+  void testIteratorEraseNode() {
+    gum::NodeGraphPart nodeset;
+    const unsigned int max_cpt = 100;
+    for(unsigned int i = 0; i < max_cpt; ++i) {
+      nodeset.insertNode();
+    }
+    unsigned int cpt = 0;
+    for(gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+	iter != nodeset.endNodes(); ++iter, ++cpt) {
+      TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));
+      if(cpt > max_cpt) {
+	// If false : infinite loop spotted
+	TS_ASSERT(false);
+	break;
+      }
+    }
+    TS_ASSERT_EQUALS(cpt, max_cpt);
+  }
+
+
   private:
 #define NBR_PROFILING_NODES 50000
     void __testBigNodeGrapPart() {
@@ -224,6 +261,7 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
         }
       }
     }
+
 
     void __ForTestCopy( gum::NodeGraphPart& ngp ) {
       gum::NodeGraphPart ngp2( ngp );

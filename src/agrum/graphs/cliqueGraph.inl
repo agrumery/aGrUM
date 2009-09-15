@@ -92,6 +92,7 @@ namespace gum {
   /// removes a given clique from the clique graph
   // ============================================================================
   INLINE void CliqueGraph::eraseNode( const NodeId id ) {
+
     // check if the node belongs to the graph
     if ( !exists( id ) ) return;
 
