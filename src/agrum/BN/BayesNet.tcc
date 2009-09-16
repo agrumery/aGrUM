@@ -282,7 +282,7 @@ namespace gum {
   template<typename T_DATA> INLINE
   void
   BayesNet<T_DATA>::erase( const DiscreteVariable& var ) {
-    erase( VariableNodeMap::get( var ) );
+    erase( __varMap.get( var ) );
   }
 
 // Erase a variable and update dependent CPTs.
