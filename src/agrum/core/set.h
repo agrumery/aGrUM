@@ -197,6 +197,9 @@ namespace gum {
     /// indicates whether a given elements belong to the set
     bool contains( const KEY& k ) const;
 
+    /// indicates whether a given elements belong to the set
+    bool exists( const KEY& k ) const;
+
     /// indicates whether the set is the empty set
     bool empty() const;
 

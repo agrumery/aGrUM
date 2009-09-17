@@ -263,6 +263,11 @@ namespace gum {
     return __inside.exists( k );
   }
 
+  /// indicates whether a given elements belong to the set
+  template<typename KEY> INLINE
+  bool Set<Key>::exists( const KEY& k ) const {
+    return __inside.exists(k);
+  }
 
   /// inserts a new element in the set
   template<typename KEY> INLINE
