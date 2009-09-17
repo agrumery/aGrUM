@@ -265,7 +265,7 @@ namespace gum {
 
   /// indicates whether a given elements belong to the set
   template<typename KEY> INLINE
-  bool Set<Key>::exists( const KEY& k ) const {
+  bool Set<KEY>::exists( const KEY& k ) const {
     return __inside.exists(k);
   }
 
