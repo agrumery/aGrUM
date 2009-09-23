@@ -125,7 +125,6 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// Returns the sequence of all the variables contained in the bucket.
     const Set<const DiscreteVariable*>& allVariables() const;
 
-
     /// Returns the number of gum::MultiDimContainer in in this bukcet.
     Size bucketSize() const;
 

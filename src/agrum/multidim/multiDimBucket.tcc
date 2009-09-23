@@ -28,8 +28,7 @@
 // ============================================================================
 namespace gum {
 
-// Default constructor.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
   MultiDimReadOnly<T_DATA>(), __bufferSize(bufferSize),
   __instantiations(0), __bucket(0), __changed(false)
@@ -37,8 +36,7 @@ MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
   GUM_CONSTRUCTOR( MultiDimBucket );
 }
 
-// Copy constructor.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 MultiDimBucket<T_DATA>::MultiDimBucket(const MultiDimBucket<T_DATA>& source):
   MultiDimReadOnly<T_DATA>(source), __bufferSize(source.__bufferSize),
   __instantiations(0), __bucket(0), __multiDims(source.__multiDims),
@@ -47,17 +45,18 @@ MultiDimBucket<T_DATA>::MultiDimBucket(const MultiDimBucket<T_DATA>& source):
   GUM_CONS_CPY( MultiDimBucket );
 }
 
-// Destructor.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 MultiDimBucket<T_DATA>::~MultiDimBucket()
 {
   GUM_DESTRUCTOR( MultiDimBucket );
-  if (__bucket != 0) delete __bucket;
-  if (__instantiations != 0) delete __instantiations;
+  if (__bucket != 0) {
+    delete __bucket;
+  }
+  if (__instantiations != 0) {
+    delete __instantiations;
+  }
 }
 
-// Add a gum::MultiDimContainer in the bucket.
-// @throw DuplicateElement Raised if impl is already in the bucket.
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::add(const MultiDimContainer<T_DATA>& impl)
@@ -65,22 +64,19 @@ MultiDimBucket<T_DATA>::add(const MultiDimContainer<T_DATA>& impl)
   this->add(&impl);
 }
 
-// Add a gum::MultiDimContainer in the bucket.
-// @throw DuplicateElement Raised if impl is already in the bucket.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::add(const MultiDimContainer<T_DATA>* impl)
 {
   __multiDims.insert(impl);
-  __changed = true;
   if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
     for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
       __addVariable(*iter);
     }
   }
+  __changed = true;
 }
 
-// Remove a gum::MultiDimContainer from this bucket.
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::erase(const MultiDimContainer<T_DATA>& impl)
@@ -88,21 +84,19 @@ MultiDimBucket<T_DATA>::erase(const MultiDimContainer<T_DATA>& impl)
   this->erase(&impl);
 }
 
-// Remove a gum::MultiDimContainer from this bucket.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::erase(const MultiDimContainer<T_DATA>* impl)
 {
   __multiDims.erase(impl);
-  __changed = true;
   if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
     for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
       __eraseVariable(*iter);
     }
   }
+  __changed = true;
 }
 
-// Returns true if the gum::MultiDimContainer is in this bucket.
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::contains(const MultiDimContainer<T_DATA>& impl) const
@@ -110,7 +104,6 @@ MultiDimBucket<T_DATA>::contains(const MultiDimContainer<T_DATA>& impl) const
   return __multiDims.contains(&impl);
 }
 
-// Returns the sequence of all the variables contained in the bucket.
 template<typename T_DATA> INLINE
 const Set<const DiscreteVariable*>&
 MultiDimBucket<T_DATA>::allVariables() const
@@ -118,7 +111,6 @@ MultiDimBucket<T_DATA>::allVariables() const
   return __allVariables;
 }
 
-// Returns the number of gum::MultiDimContainer in in this bukcet.
 template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::bucketSize() const
@@ -127,8 +119,6 @@ MultiDimBucket<T_DATA>::bucketSize() const
 }
 
 
-// Returns true if this bucket is empty.
-// Which mean thath there is no gum::MultiDimContainer in this bucket.
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::isBucketEmpty() const
@@ -136,8 +126,6 @@ MultiDimBucket<T_DATA>::isBucketEmpty() const
   return __multiDims.empty();
 }
 
-// Returns true if the bucket need re-computation since the last
-// computation.
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::bucketChanged() const
@@ -145,7 +133,6 @@ MultiDimBucket<T_DATA>::bucketChanged() const
   return __changed;
 }
 
-// Returns the amount of memory allowed for this bucket.
 template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::bufferSize() const
@@ -153,9 +140,6 @@ MultiDimBucket<T_DATA>::bufferSize() const
   return __bufferSize;
 }
 
-// @brief Changes the amount of memory allowed for this bucket.
-// If the new amount is not enough for the current size of this bucket, then
-// internal buffer is deleted.
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setBufferSize(Size ammount)
@@ -168,77 +152,59 @@ MultiDimBucket<T_DATA>::setBufferSize(Size ammount)
   }
 }
 
-// @brief This method computes the final table of this bucket.
-// A flag is used to prevent unnecessary computation if the table has
-// already been computed.
-// If the size of the final table is above the amount of authorized memory,
-// an gum::OperationNotAllowed is raised.
-// Remember that this method is constant because the content of a
-// multidimensional table is mutable.
-// @param force If true (default set at false) then the final table is
-//              re-computed.
-// @throw OperationNotAllowed Raised if the size of the final table is above
-//                            the authorized amount of memory.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::compute(bool force) const
 {
-  if ( (__bucket != 0) && (__changed || force) ) {
+  if ( (__bucket != 0) and (__changed or force) ) {
     Instantiation values(*__bucket);
     for (values.setFirst(); ! values.end(); values.inc()) {
       __bucket->set(values, __computeValue(values));
     }
+  } else if ( (__bucket == 0) and __changed) {
+      __slavesValue.clear();
+      __changed = false;
   }
   __changed = false;
 }
 
-// See gum::MultiDimInterface::add().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::add (const DiscreteVariable &v)
 {
   MultiDimImplementation<T_DATA>::add(v);
-  if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
-    if (this->domainSize() <= __bufferSize) {
-      if (__bucket == 0) {
-        __initializeBuffer();
-      } else {
-        __bucket->add(v);
-      }
+  if ( (not MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) and
+       (this->domainSize() <= __bufferSize) ) {
+    if (__bucket == 0) {
+      __initializeBuffer();
+    } else {
+      __bucket->add(v);
     }
   }
 }
 
-// See gum::MultiDimInterface::erase().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::erase (const DiscreteVariable &v)
 {
   MultiDimImplementation<T_DATA>::erase(v);
-  if (! MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
-    if (this->domainSize() <= __bufferSize) {
-      if (__bucket == 0) {
-        __initializeBuffer();
-      } else {
-        __bucket->erase(v);
-      }
+  if ( (not MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) and
+       (this->domainSize() <= __bufferSize) ) {
+    if (__bucket == 0) {
+      __initializeBuffer();
+    } else {
+      __bucket->erase(v);
     }
   }
 }
 
-// See gum::MultiDimImplementation::realSize().
 template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::realSize() const
 {
-  if (__bucket != 0) {
-    return __bucket->realSize();
-  } else {
-    return (Size) 0;
-  }
+  return (__bucket != 0)?__bucket->realSize():(Size) 0;
 }
 
-// See gum::MultiDimImplementation::contains(const DiscreteVariable& v).
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::contains (const DiscreteVariable &v) const
@@ -246,7 +212,6 @@ MultiDimBucket<T_DATA>::contains (const DiscreteVariable &v) const
   return MultiDimImplementation<T_DATA>::contains(v);
 }
 
-// See gum::MultiDimContainer::get().
 template<typename T_DATA> INLINE
 T_DATA
 MultiDimBucket<T_DATA>::get(const Instantiation &i) const
@@ -264,7 +229,6 @@ MultiDimBucket<T_DATA>::get(const Instantiation &i) const
   }
 }
 
-// See gum::MultiDimAdressable::changeNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::changeNotification (Instantiation &i,
@@ -278,7 +242,6 @@ MultiDimBucket<T_DATA>::changeNotification (Instantiation &i,
   }
 }
 
-// See gum::MultiDimAdressable::setFirstNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setFirstNotification(Instantiation &i)
@@ -290,7 +253,6 @@ MultiDimBucket<T_DATA>::setFirstNotification(Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::setLastNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setLastNotification(Instantiation &i)
@@ -302,7 +264,6 @@ MultiDimBucket<T_DATA>::setLastNotification(Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::setIncNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setIncNotification(Instantiation &i)
@@ -314,7 +275,6 @@ MultiDimBucket<T_DATA>::setIncNotification(Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::setDecNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setDecNotification(Instantiation &i)
@@ -326,7 +286,6 @@ MultiDimBucket<T_DATA>::setDecNotification(Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::setFirstNotification().
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setChangeNotification(Instantiation &i)
@@ -338,7 +297,6 @@ MultiDimBucket<T_DATA>::setChangeNotification(Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::registerSlave().
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
@@ -356,7 +314,6 @@ MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::unregisterSlave().
 template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
@@ -373,25 +330,28 @@ MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
   }
 }
 
-// See gum::MultiDimAdressable::getMasterRef().
 template<typename T_DATA> INLINE
 MultiDimAdressable&
 MultiDimBucket<T_DATA>::getMasterRef (void)
 {
-  if (__bucket != 0) return *__bucket;
-  else return *this;
+  if (__bucket != 0) {
+    return *__bucket;
+  } else {
+    return *this;
+  }
 }
 
-// See gum::MultiDimAdressable::getMasterRef().
 template<typename T_DATA> INLINE
 const MultiDimAdressable&
 MultiDimBucket<T_DATA>::getMasterRef (void) const
 {
-  if (__bucket != 0) return *__bucket;
-  else return *this;
+  if (__bucket != 0) {
+    return *__bucket;
+  } else {
+    return *this;
+  }
 }
 
-// String representation of internal data about i in this.
 template<typename T_DATA> INLINE
 const std::string
 MultiDimBucket<T_DATA>::toString(const Instantiation *i) const
@@ -401,8 +361,7 @@ MultiDimBucket<T_DATA>::toString(const Instantiation *i) const
   return sBuff.str();
 }
 
-// See gum::MultiDimImplementation::_commitMultipleChanges().
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::_commitMultipleChanges()
 {
@@ -421,8 +380,6 @@ MultiDimBucket<T_DATA>::_commitMultipleChanges()
   __changed = true;
 }
 
-/// This will raise en exception, you should directly use the get() and
-/// operator[]() methods.
 template<typename T_DATA> INLINE
 T_DATA&
 MultiDimBucket<T_DATA>::_get(const Instantiation &i) const
@@ -430,8 +387,6 @@ MultiDimBucket<T_DATA>::_get(const Instantiation &i) const
   GUM_ERROR(OperationNotAllowed, "You should call this method in a MultiDimBucket.");
 }
 
-// Add a variable to __allVariables, and do nothing if var is already in
-// the set.
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::__addVariable(const DiscreteVariable* var)
@@ -443,24 +398,25 @@ MultiDimBucket<T_DATA>::__addVariable(const DiscreteVariable* var)
   }
 }
 
-// Erase a variable from __allVariables if no other multidimensional table
-// uses it in this bucket.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::__eraseVariable(const DiscreteVariable* var)
 {
   bool found = false;
-  for (SetIterator< const MultiDimContainer<T_DATA>* > iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
+  typedef SetIterator<const MultiDimContainer<T_DATA>* > SetIter;
+  for (SetIter iter = __multiDims.begin(); iter != __multiDims.end(); ++iter) {
     if ((*iter)->contains(*var)) {
       found = true;
       break;
     }
   }
-  if (! found) __allVariables.erase(var);
+  // No one use it, we can safely remove it
+  if (! found) {
+    __allVariables.erase(var);
+  }
 }
 
-// Initialize the internal buffer.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::__initializeBuffer()
 {
@@ -490,8 +446,7 @@ MultiDimBucket<T_DATA>::__initializeBuffer()
   __changed = true;
 }
 
-// Clean the buffer and switch it's instantiation to this bucket.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::__eraseBuffer()
 {
@@ -512,11 +467,7 @@ MultiDimBucket<T_DATA>::__eraseBuffer()
   }
 }
 
-// Compute the value of the final table of this bucket given i.
-// If i variables are a subset of this bucket, then the missing values are
-// supposed to be at 0.
-// @throw SizeError Raised if the bucket is empty.
-template<typename T_DATA> INLINE
+template<typename T_DATA>
 T_DATA
 MultiDimBucket<T_DATA>::__computeValue(const Instantiation& value) const
 {
@@ -543,7 +494,8 @@ MultiDimBucket<T_DATA>::__computeValue(const Instantiation& value) const
 }
 
 template <typename T_DATA> INLINE
-MultiDimContainer<T_DATA>* MultiDimBucket<T_DATA>::newFactory() const {
+MultiDimContainer<T_DATA>*
+MultiDimBucket<T_DATA>::newFactory() const {
   return new MultiDimBucket<T_DATA>;
 }
 

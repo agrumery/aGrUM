@@ -77,14 +77,12 @@ namespace gum {
   template<typename T_DATA> INLINE
   void
   ValueElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {
-    NodeId varId;
-
     for ( ListConstIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
       if (( *iter )->nbrDim() != 1 ) {
         GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
       }
 
-      varId = BayesNetInference<T_DATA>::__bayesNet.nodeId(( *iter )->variable( 0 ) );
+      NodeId varId = BayesNetInference<T_DATA>::__bayesNet.nodeId(( *iter )->variable( 0 ) );
 
       try {
         __evidences[varId] = *iter;
@@ -92,6 +90,7 @@ namespace gum {
         __evidences.insert( varId, *iter );
       }
     }
+    BayesNetInference<T_DATA>::_invalidateMarginals();
   }
 
 // Remove a given evidence from the graph.
@@ -174,10 +173,9 @@ namespace gum {
   template<typename T_DATA> INLINE
   void
   ValueElimination<T_DATA>::__createInitialPool() {
-    if ( __pool.empty() ) {
-      for ( DAG::NodeIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter ) {
-        __pool.insert( const_cast< Potential<T_DATA>* >( &BayesNetInference<T_DATA>::__bayesNet.cpt( *iter ) ) );
-      }
+    __pool.clear();
+    for ( DAG::NodeIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter ) {
+      __pool.insert( const_cast< Potential<T_DATA>* >( &BayesNetInference<T_DATA>::__bayesNet.cpt( *iter ) ) );
     }
   }
 
@@ -191,11 +189,19 @@ namespace gum {
       Set< Potential<T_DATA>* >& pool ) {
     Set< Potential<T_DATA>* > toRemove;
 
+    int count = 0;
     for ( SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter ) {
       if (( *iter )->contains( BayesNetInference<T_DATA>::__bayesNet.variable( id ) ) ) {
         bucket.add( **iter );
         toRemove.insert( *iter );
+        count++;
       }
+    }
+    try {
+      bucket.add(__evidences[id]);
+      count++;
+    } catch (NotFound&) {
+      // No evidence on id
     }
 
     for ( SetIterator< Potential<T_DATA>* > iter = toRemove.begin(); iter != toRemove.end(); ++iter ) {

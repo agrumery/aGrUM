@@ -344,6 +344,29 @@ class CompareInferencesTestSuite: public CxxTest::TestSuite {
           TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
         }
       }
+      {
+        gum::ValueElimination<float> inf( *bn );
+        inf.makeInference();
+        {
+          const gum::Potential<float>& p = inf.marginal( w ) ;
+          gum::Instantiation I( p );
+          TS_ASSERT_DELTA( p[I], 0.3529, 1e-5 );
+          ++I;
+          TS_ASSERT_DELTA( p[I], 0.6471, 1e-5 );
+        }
+
+        inf.eraseAllEvidence();
+        inf.insertEvidence( list_pot );
+        inf.makeInference();
+        {
+          const gum::Potential<float>& p = inf.marginal( w ) ;
+          gum::Instantiation I( p );
+          TS_ASSERT_DELTA( p[I], 0.082, 1e-7 );
+          ++I;
+          TS_ASSERT_DELTA( p[I], 0.918, 1e-7 );
+        }
+      }
+
 
       for ( gum::List< gum::Potential< float > const * >::iterator it = list_pot.begin();it != list_pot.end();++it ) {
         delete *it;
