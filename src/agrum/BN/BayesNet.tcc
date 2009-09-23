@@ -153,7 +153,13 @@ namespace gum {
   const DiscreteVariable&  BayesNet<T_DATA>::variable( NodeId id ) const {
     return __varMap.get( id );
   }
-
+  
+  // we allow the user to change the name of a variable
+  template<typename T_DATA> INLINE
+  void BayesNet<T_DATA>::changeVariableName(NodeId id,const std::string& new_name) {
+    __varMap.changeName(id,new_name);
+  }
+  
   // Return id node from discrete var pointer.
   template<typename T_DATA> INLINE
   NodeId BayesNet<T_DATA>::nodeId( const DiscreteVariable &var ) const {
@@ -262,6 +268,11 @@ namespace gum {
   template<typename T_DATA> INLINE
   const DAG&
   BayesNet<T_DATA>::dag() const { return __dag; }
+  
+  // Returns the variableNodeMap of this bayes net
+  template<typename T_DATA> INLINE
+  const VariableNodeMap&
+  BayesNet<T_DATA>::variableNodeMap() const { return __varMap; }
 
 // Returns the number of variables in this bayes net.
   template<typename T_DATA> INLINE

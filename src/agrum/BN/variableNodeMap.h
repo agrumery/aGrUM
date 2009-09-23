@@ -109,17 +109,28 @@ namespace gum {
        */
       NodeId operator[]( const DiscreteVariable& var ) const;
 
-      /// Maps id with var. Var is added by copy.
-      /// @warning If the map already exist it will delete the precedent var!
-      /// @throws DuplicateLabel if this name already exists
-      /// @return Returns id (usefull in some case);
+      /** Maps id with var. Var is added by copy.
+      * @warning If the map id already exist it will delete the precedent var!
+      * @throws DuplicateLabel if this name already exists
+      * @return Returns id (usefull in some case);
+      */
       NodeId insert( NodeId id, const DiscreteVariable& var );
 
-      /// Removes a var and it's id of this mapping. The pointer is deleted.
+      /** Removes a var and it's id of this mapping. The pointer is deleted.
+      * @throws NotFound Raised if no nodes matches id.
+      */
       void erase( NodeId id );
 
-      /// Removes a var and it's id of this mapping. The pointer is deleted.
+      /** Removes a var and it's id of this mapping. The pointer is deleted.
+      * @throws NotFound Raised if no nodes matches id.
+      */
       void erase( const DiscreteVariable& var );
+
+      /** we allow the user to change the name of a variable
+      * @throws DuplicateLabel if this name already exists
+      * @throws NotFound Raised if no nodes matches id.
+      */
+      void changeName(NodeId id,const std::string& new_name);
       /// @}
 
 

@@ -21,7 +21,7 @@
  * @file
  * @brief Class representing Bayesian networks
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  *
  */
 #ifndef GUM_BAYES_NET_H
@@ -60,7 +60,6 @@ namespace gum {
    * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
    */
   template<typename T_DATA>
-
   class BayesNet {
 
       friend class BayesNetFactory<T_DATA>;
@@ -121,9 +120,13 @@ namespace gum {
       const Potential<T_DATA>& cpt( NodeId varId ) const;
 
       /**
-       * Returns a constant reference over the dag of this Bayes Net.
+       * Returns a constant reference to the dag of this Bayes Net.
        */
       const DAG& dag() const;
+      /**
+      * Returns a constant reference to the VariableNodeMap of thisBN
+      */
+      const VariableNodeMap& variableNodeMap() const;
 
       /**
        * Returns the number of variables in this bayes net.
@@ -225,6 +228,12 @@ namespace gum {
       * @throw NotFound If no variable's id matches varId.
       */
       const DiscreteVariable& variable( NodeId id ) const ;
+      
+      /** we allow the user to change the name of a variable
+      * @throws DuplicateLabel if this name already exists
+      * @throws NotFound Raised if no nodes matches id.
+      */
+      void changeVariableName(NodeId id,const std::string& new_name);
 
       /**
       * Return id node from discrete var pointer.
@@ -378,4 +387,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

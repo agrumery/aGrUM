@@ -78,7 +78,7 @@ namespace gum {
   INLINE
   NodeId VariableNodeMap::insert( NodeId id, const DiscreteVariable& var ) {
     if ( __names2nodes.exists( var.name() ) ) {
-      GUM_ERROR( DuplicateLabel,"Unable to insert var with this name." );
+      GUM_ERROR( DuplicateLabel, "Unable to insert var with this name." );
     }
 
     if ( exists( id ) ) {
@@ -107,15 +107,31 @@ namespace gum {
     NodeId id = __nodes2vars.first( &var );
     erase( id );
   }
-  
+
   INLINE
   NodeId VariableNodeMap::idFromName( const std::string& name ) const {
     return __names2nodes[name];
   }
-  
+
   INLINE
   const DiscreteVariable& VariableNodeMap::variableFromName( const std::string& name ) const {
-    return *__nodes2vars.second(idFromName(name));
+    return *__nodes2vars.second( idFromName( name ) );
+  }
+
+  // we allow the user to change the name of a variable
+  // @throws DuplicateLabel if this name already exists
+  // @throws NotFound Raised if no nodes matches id.
+  INLINE
+  void VariableNodeMap::changeName( NodeId id, const std::string& new_name ) {
+    if ( __names2nodes.exists( new_name ) ) {
+      GUM_ERROR( DuplicateLabel, "Unable to insert var with this name." );
+    }
+
+    DiscreteVariable* var = const_cast<DiscreteVariable*>( __nodes2vars.second( id ) );
+
+    __names2nodes.erase( var->name() );
+    var->setName( new_name );
+    __names2nodes.insert( new_name, id );
   }
 
 } /* namespace gum */
@@ -123,4 +139,4 @@ namespace gum {
 // ============================================================================
 #endif /*DOXYGEN_SHOULD_SKIP_THIS*/
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

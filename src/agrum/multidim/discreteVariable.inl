@@ -57,20 +57,6 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Overload of Variable::setName
-  // ==============================================================================
-  INLINE void DiscreteVariable::setName( const std::string& theValue ) {
-    Variable::setName( theValue );
-  }
-
-  // ==============================================================================
-  /// Overload of Variable::setDescription
-  // ==============================================================================
-  INLINE void DiscreteVariable::setDescription( const std::string& theValue ) {
-    Variable::setDescription( theValue );
-  }
-
-  // ==============================================================================
   /// Copy operator
   // ==============================================================================
   INLINE DiscreteVariable&

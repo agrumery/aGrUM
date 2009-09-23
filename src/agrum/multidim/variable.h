@@ -98,9 +98,10 @@ namespace gum {
 
     // ============================================================================
     /// sets the description of the variable
+    /// @warning since __description is mutable, setDescription() is const
     /** @param theValue */
     // ============================================================================
-    void setDescription( const std::string& theValue );
+    void setDescription( const std::string& theValue ) const;
 
     // ============================================================================
     /// returns the description of the variable
@@ -152,7 +153,8 @@ namespace gum {
     std::string __name;
 
     /// the description of the variable
-    std::string __description;
+    /// since description is not a characteristic of a variable, we allow the description to be changed even in a const reference.
+    mutable std::string __description;
   };
 
 

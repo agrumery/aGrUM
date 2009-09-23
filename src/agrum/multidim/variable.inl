@@ -86,7 +86,7 @@ namespace gum {
   // ==============================================================================
   /// sets the __description of the variable
   // ==============================================================================
-  INLINE void Variable::setDescription( const std::string& theValue ) {
+  INLINE void Variable::setDescription( const std::string& theValue ) const {
     __description = theValue;
   }
 
