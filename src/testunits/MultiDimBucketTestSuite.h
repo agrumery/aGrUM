@@ -21,6 +21,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
@@ -318,6 +319,167 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS(inBucket + outBucket, (gum::Size) 10);
         delete bucket;
       }
+    }
+
+    void testWithSmallBN() {
+      gum::BayesNet<float> *bn = new gum::BayesNet<float>();
+      gum::LabelizedVariable vc( "c", "cloudy", 2 ), vs( "s", "sprinklet", 2 );
+      gum::LabelizedVariable vr( "r", "rain", 2 ), vw( "w", "wet grass", 2 );
+      gum::Id c = bn->add( vc );
+      gum::Id s = bn->add( vs );
+      gum::Id r = bn->add( vr );
+      gum::Id w = bn->add( vw );
+      bn->insertArc( c, s );
+      bn->insertArc( c, r );
+      bn->insertArc( s, w );
+      bn->insertArc( r, w );
+      {
+        const float t[2] = {0.5, 0.5};
+        const std::vector<float> ca( t, t + 2 );
+        bn->cpt( c ).fillWith( ca );
+      }
+      {
+        const float t[4] = {0.5, 0.5, 0.9, 0.1};
+        const std::vector<float> sa( t, t + 4 );
+        bn->cpt( s ).fillWith( sa );
+      }
+      {
+        const float t[4] = {0.8, 0.2, 0.2, 0.8};
+        const std::vector<float> ra( t, t + 4 );
+        bn->cpt( r ).fillWith( ra );
+      }
+      {
+        const float t[8] = {1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99};
+        const std::vector<float> wa( t, t + 8 );
+        bn->cpt( w ).fillWith( wa );
+      }
+      gum::Potential<float> *e_s = new gum::Potential<float>();
+      {
+        e_s->add( bn->variable( s ) );
+        const float t[2] = {0., 1.};
+        const std::vector<float> sa( t, t + 2 );
+        e_s->fillWith( sa );
+      }
+      gum::Potential<float> *e_c = new gum::Potential<float>();
+      {
+        e_c->add( bn->variable( c ) );
+        const float t[2] = {1., 0.};
+        const std::vector<float> ca( t, t + 2 );
+        e_c->fillWith( ca );
+      }
+
+      gum::Potential<float> clique_csr;           gum::MultiDimBucket<float> bucket_csr;
+      clique_csr.add(bn->variable(c));            bucket_csr.add(bn->variable(c));
+      clique_csr.add(bn->variable(r));            bucket_csr.add(bn->variable(s));
+      clique_csr.add(bn->variable(s));            bucket_csr.add(bn->variable(r));
+      clique_csr.fill((float) 1);                 bucket_csr.add(bn->cpt(c));
+      clique_csr.multiplicateBy(bn->cpt(c));      bucket_csr.add(bn->cpt(s));
+      clique_csr.multiplicateBy(bn->cpt(r));      bucket_csr.add(bn->cpt(r));
+      clique_csr.multiplicateBy(bn->cpt(s));      bucket_csr.add(e_s);
+      clique_csr.multiplicateBy(*e_s);            bucket_csr.add(e_c);
+      clique_csr.multiplicateBy(*e_c);
+
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(c));
+        i.add(bn->variable(r));
+        i.add(bn->variable(s));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          TS_ASSERT_DELTA(clique_csr.get(i), bucket_csr.get(i), 1e-7);
+        }
+      }
+
+      gum::Potential<float> sep_sr;           gum::MultiDimBucket<float> bucket_sr;
+      sep_sr.add(bn->variable(s));            bucket_sr.add(bn->variable(s));
+      sep_sr.add(bn->variable(r));            bucket_sr.add(bn->variable(r));
+      sep_sr.marginalize(clique_csr);         bucket_sr.add(bucket_csr);
+
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(r));
+        i.add(bn->variable(s));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          TS_ASSERT_DELTA(sep_sr.get(i), bucket_sr.get(i), 1e-7);
+        }
+      }
+
+      gum::Potential<float> clique_wsr;           gum::MultiDimBucket<float> bucket_wsr;
+      clique_wsr.add(bn->variable(w));            bucket_wsr.add(bn->variable(w));
+      clique_wsr.add(bn->variable(s));            bucket_wsr.add(bn->variable(s));
+      clique_wsr.add(bn->variable(r));            bucket_wsr.add(bn->variable(r));
+      clique_wsr.fill((float) 1);                 bucket_wsr.add(bn->cpt(w));
+      clique_wsr.multiplicateBy(bn->cpt(w));
+
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(w));
+        i.add(bn->variable(r));
+        i.add(bn->variable(s));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          TS_ASSERT_DELTA(clique_wsr.get(i), bucket_wsr.get(i), 1e-7);
+        }
+      }
+
+      gum::Potential<float> tmp;          gum::MultiDimBucket<float> bucket_marg_w;
+      tmp.add(bn->variable(w));           bucket_marg_w.add(bn->variable(w));
+      tmp.add(bn->variable(s));           bucket_marg_w.add(bucket_wsr);
+      tmp.add(bn->variable(r));           bucket_marg_w.add(bucket_sr);
+      tmp.fill((float) 1);
+      tmp.multiplicateBy(clique_wsr);
+      tmp.multiplicateBy(sep_sr);
+      gum::Potential<float> marg_w;
+      marg_w.add(bn->variable(w));
+      marg_w.marginalize(tmp);
+
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(w));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          TS_ASSERT_DELTA(marg_w.get(i), bucket_marg_w.get(i), 1e-7);
+        }
+      }
+
+      gum::Potential<float> norm_b_m_w;
+      norm_b_m_w.add(bn->variable(w));
+      {
+        gum::Instantiation i(norm_b_m_w);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          norm_b_m_w.set(i, bucket_marg_w.get(i));
+        }
+      }
+
+      gum::MultiDimBucket<float> false_sep_sr;
+      false_sep_sr.add(bn->variable(s));
+      false_sep_sr.add(bn->variable(r));
+      false_sep_sr.add(bucket_wsr);
+
+      gum::MultiDimBucket<float> false_marg_w;
+      false_marg_w.add(bn->variable(w));
+      false_marg_w.add(false_sep_sr);
+      false_marg_w.add(bucket_wsr);
+      gum::Potential<float> fnw;
+      fnw.add(bn->variable(w));
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(w));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          fnw.set(i, false_marg_w.get(i));
+        }
+      }
+      fnw.normalize();
+      marg_w.normalize();
+      norm_b_m_w.normalize();
+      {
+        gum::Instantiation i;
+        i.add(bn->variable(w));
+        for (i.setFirst(); not i.end(); i.inc()) {
+          TS_ASSERT_DELTA(marg_w.get(i), norm_b_m_w.get(i), 1e-7);
+        }
+      }
+
+      delete bn;
+      delete e_s;
+      delete e_c;
     }
 };
 

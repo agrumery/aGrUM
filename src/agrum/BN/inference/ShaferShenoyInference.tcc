@@ -512,7 +512,10 @@ namespace gum {
 
     if ( __varsPotential == 0 ) {
       __varsPotential = __potential;
-      __potential = new MultiDimBucket<T_DATA>( *__varsPotential );
+      __potential = new MultiDimBucket<T_DATA>();
+      for (gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter) {
+        __potential->add(**iter);
+      }
       __potential->add( __varsPotential );
     }
 
