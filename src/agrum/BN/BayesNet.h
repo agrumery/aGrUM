@@ -46,24 +46,13 @@ namespace gum {
   template<typename T_DATA>
 
   class BayesNetFactory;
+
   /**
-   * @class BayesNet
-   * @brief Class representing a Bayesian Network.
-   * @ingroup bn_group
-   *
-   * After a variable is added to the BN, if it's domain size changes, then the
-   * data in it's CPT is lost.
-   *
-   * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
-   *
-   * Don't forget that you can print a BayesNet using
-   * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
+   * @class AbstractBayesNet BayesNet.h <agrum/BN/BayesNet.h>
+   * Abstract class for representing a BayesNet.
    */
   template<typename T_DATA>
-  class BayesNet {
-
-      friend class BayesNetFactory<T_DATA>;
-
+  class AbstractBayesNet {
     public:
       // ===========================================================================
       /// @name Constructors / Destructors
@@ -73,22 +62,17 @@ namespace gum {
       /**
        * Default constructor.
        */
-      BayesNet();
+      AbstractBayesNet();
 
       /**
        * Destructor.
        */
-      ~BayesNet();
+      virtual ~AbstractBayesNet();
 
       /**
-       * Copy constructor.
+       * Copy constructor. Do nothing.
        */
-      BayesNet( const BayesNet<T_DATA>& source );
-
-      /**
-       * Copy operator.
-       */
-      BayesNet<T_DATA>& operator=( const BayesNet<T_DATA>& source );
+      AbstractBayesNet( const AbstractBayesNet<T_DATA>& source );
 
       /// @}
       // ===========================================================================
@@ -117,26 +101,204 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      const Potential<T_DATA>& cpt( NodeId varId ) const;
+      virtual const Potential<T_DATA>& cpt( NodeId varId ) const =0;
 
       /**
        * Returns a constant reference to the dag of this Bayes Net.
        */
-      const DAG& dag() const;
+      virtual const DAG& dag() const =0;
+
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-      const VariableNodeMap& variableNodeMap() const;
+      virtual const VariableNodeMap& variableNodeMap() const =0;
 
       /**
        * Returns the number of variables in this bayes net.
        */
-      Idx size() const;
+      virtual Idx size() const =0;
 
       /**
        * Retursn true if this bayes net is empty.
        */
-      bool empty() const;
+      virtual bool empty() const =0;
+
+      /**
+       * Shortcut for this->dag().beginNodes().
+       */
+      const DAG::NodeIterator beginNodes() const;
+
+      /**
+       * Shortcut for this->dag().endNodes().
+       */
+      const DAG::NodeIterator endNodes() const;
+
+      /**
+      * Returns a constant reference over a variabe given it's node id.
+      * @throw NotFound If no variable's id matches varId.
+      */
+      virtual const DiscreteVariable& variable( NodeId id ) const =0;
+
+      /**
+      * Return id node from discrete var pointer.
+      * @throw NotFound If no variable matches var.
+      */
+      virtual NodeId nodeId( const DiscreteVariable &var ) const =0;
+
+      /// Getter by name
+      /// @throw NotFound if no such name exists in the graph.
+      virtual NodeId idFromName( const std::string& name ) const =0;
+
+      /// Getter by name
+      /// @throw NotFound if no such name exists in the graph.
+      virtual const DiscreteVariable& variableFromName( const std::string& name ) const =0;
+
+      /// @}
+      // ===========================================================================
+      /// @name Arc manipulation methods.
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Shortcut for this->dag().beginArcs().
+       */
+      const DAG::ArcIterator beginArcs() const;
+
+      /**
+       * Shortcut for this->dag().endArcs().
+       */
+      const DAG::ArcIterator& endArcs() const;
+
+      /// @}
+      // ===========================================================================
+      /// @name Graphical methods
+      // ===========================================================================
+      /// @{
+
+      /**
+       * The node's id are coherent with the variables and nodes of the topology.
+       * @param clear If false returns the previously created moral graph.
+       */
+      virtual const UndiGraph& moralGraph( bool clear = true ) const =0;
+
+      /**
+       * The topological order stays the same as long as no variable or arcs are
+       * added or erased from the topology.
+       * @param clear If false returns the previously created topology.
+       */
+      virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const =0;
+
+      /// @}
+
+      /// @return Returns a string representation of this BayesNet.
+      std::string toString( void ) const;
+
+      /// @return Returns a dot representation of this BayesNet.
+      std::string toDot( void ) const;
+
+      /// @return Returns true if the from and this are equal.
+      bool operator==(const AbstractBayesNet<T_DATA>& from) const;
+
+      /// @return Returns false if the from and this are equal.
+      bool operator!=(const AbstractBayesNet<T_DATA>& from) const;
+
+    protected:
+      /**
+       * Private copy operator.
+       */
+      AbstractBayesNet<T_DATA>& operator=( const AbstractBayesNet<T_DATA>& source );
+
+      /// Returns the moral graph of this BayesNet.
+      void _moralGraph(UndiGraph& graph) const;
+
+      /// Returns a topological order of this BayesNet.
+      void _topologicalOrder(Sequence<NodeId>& order) const;
+
+    private:
+      /// The properties of this BayesNet.
+      /// Initialized using a lazy instantiation.
+      mutable HashTable<std::string, std::string>* __propertiesMap;
+
+      /// Return the properties of this BayesNet and initialize the hash table is
+      /// necessary.
+      HashTable<std::string, std::string>& __properties() const;
+  };
+
+  /**
+   * @class BayesNet BayesNet.h <agrum/BN/BayesNet.h>
+   * @brief Class representing a Bayesian Network.
+   * @ingroup bn_group
+   *
+   * After a variable is added to the BN, if it's domain size changes, then the
+   * data in it's CPT is lost.
+   *
+   * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
+   *
+   * Don't forget that you can print a BayesNet using
+   * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
+   */
+  template<typename T_DATA>
+  class BayesNet: public AbstractBayesNet<T_DATA> {
+
+      friend class BayesNetFactory<T_DATA>;
+
+    public:
+      // ===========================================================================
+      /// @name Constructors / Destructors
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Default constructor.
+       */
+      BayesNet();
+
+      /**
+       * Destructor.
+       */
+      virtual ~BayesNet();
+
+      /**
+       * Copy constructor.
+       */
+      BayesNet( const BayesNet<T_DATA>& source );
+
+      /**
+       * Copy operator.
+       */
+      BayesNet<T_DATA>& operator=( const BayesNet<T_DATA>& source );
+
+      /// @}
+      // ===========================================================================
+      /// @name Variable manipulation methods.
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Returns the CPT of a variable.
+       * @throw NotFound If no variable's id matches varId.
+       */
+      virtual const Potential<T_DATA>& cpt( NodeId varId ) const;
+
+      /**
+       * Returns a constant reference to the dag of this Bayes Net.
+       */
+      virtual const DAG& dag() const;
+
+      /**
+      * Returns a constant reference to the VariableNodeMap of thisBN
+      */
+      virtual const VariableNodeMap& variableNodeMap() const;
+
+      /**
+       * Returns the number of variables in this bayes net.
+       */
+      virtual Idx size() const;
+
+      /**
+       * Retursn true if this bayes net is empty.
+       */
+      virtual bool empty() const;
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -185,50 +347,11 @@ namespace gum {
       void erase( const DiscreteVariable& var );
 
       /**
-       * Shortcut for this->dag().beginNodes().
-       */
-      const DAG::NodeIterator beginNodes() const;
-
-      /**
-       * Shortcut for this->dag().endNodes().
-       */
-      const DAG::NodeIterator endNodes() const;
-
-      /// @}
-
-      /// @name Accessor for node with NoisyOR implementation
-      /// @{
-
-      /**
-      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
-      * variable is automatically generated.
-      *
-      * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyOR
-      * @param id The chosen id. If 0, the NodeGraphPart will choose.
-      * @warning give an id (not 0) should be reserved for rare and specific situations !!!
-      * @return the id of the added variable.
-      * @throws DuplicateElement if id(<>0) is already used
-      */
-      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
-
-      /**
-      * Add an arc in the BN, and update arc.head's CPT.
-      *
-      * @param head and
-      * @param tail as NodeId
-      * @param causalWeight @see gum::MultiDimNoisyOR
-      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
-      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
-      */
-      void insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight );
-
-      /**
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
-      const DiscreteVariable& variable( NodeId id ) const ;
-      
+      virtual const DiscreteVariable& variable( NodeId id ) const;
+
       /** we allow the user to change the name of a variable
       * @throws DuplicateLabel if this name already exists
       * @throws NotFound Raised if no nodes matches id.
@@ -239,18 +362,17 @@ namespace gum {
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      NodeId nodeId( const DiscreteVariable &var ) const ;
-      /// @}
+      virtual NodeId nodeId( const DiscreteVariable &var ) const ;
 
-
-      /// @name Accessor by name
+      /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      /// @{
-      ///
-      NodeId idFromName( const std::string& name ) const;
-      const DiscreteVariable& variableFromName( const std::string& name ) const;
-      /// @}
+      virtual NodeId idFromName( const std::string& name ) const;
 
+      /// Getter by name
+      /// @throw NotFound if no such name exists in the graph.
+      virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+
+      /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.
       // ===========================================================================
@@ -282,16 +404,6 @@ namespace gum {
       */
       void eraseArc( NodeId tail, NodeId head );
 
-      /**
-       * Shortcut for this->dag().beginArcs().
-       */
-      const DAG::ArcIterator beginArcs() const;
-
-      /**
-       * Shortcut for this->dag().endArcs().
-       */
-      const DAG::ArcIterator& endArcs() const;
-
       /// @}
       // ===========================================================================
       /// @name Graphical methods
@@ -302,14 +414,44 @@ namespace gum {
        * The node's id are coherent with the variables and nodes of the topology.
        * @param clear If false returns the previously created moral graph.
        */
-      const UndiGraph& moralGraph( bool clear = true ) const;
+      virtual const UndiGraph& moralGraph( bool clear = true ) const;
 
       /**
        * The topological order stays the same as long as no variable or arcs are
        * added or erased from the topology.
        * @param clear If false returns the previously created topology.
        */
-      const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+      virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+
+      /// @}
+      // ===========================================================================
+      /// @name Accessor for node with NoisyOR implementation
+      // ===========================================================================
+      /// @{
+
+      /**
+      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
+      * variable is automatically generated.
+      *
+      * @param variable The variable added by copy.
+      * @param externalWeight @see gum::MultiDimNoisyOR
+      * @param id The chosen id. If 0, the NodeGraphPart will choose.
+      * @warning give an id (not 0) should be reserved for rare and specific situations !!!
+      * @return the id of the added variable.
+      * @throws DuplicateElement if id(<>0) is already used
+      */
+      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
+
+      /**
+      * Add an arc in the BN, and update arc.head's CPT.
+      *
+      * @param head and
+      * @param tail as NodeId
+      * @param causalWeight @see gum::MultiDimNoisyOR
+      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
+      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
+      */
+      void insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight );
 
       /// @}
       // ===========================================================================
@@ -335,14 +477,7 @@ namespace gum {
 
       /// @}
 
-      std::string toString( void ) const;
-      std::string toDot( void ) const;
-
     private:
-
-      /// The properties of this BayesNet.
-      /// Initialized using a lazy instantiation.
-      mutable HashTable<std::string, std::string>* __propertiesMap;
 
       /// The DAG of this bayes net.
       DAG __dag;
@@ -360,28 +495,14 @@ namespace gum {
       /// The topology sequence of this bayes net.
       mutable Sequence<NodeId>* __topologicalOrder;
 
-      /// Return the properties of this BayesNet and initialize the hash table is
-      /// necessary.
-      HashTable<std::string, std::string>& __properties();
-
-      /// Return the properties of this BayesNet and initialize the hash table is
-      /// necessary.
-      const HashTable<std::string, std::string>& __properties() const;
-
-      /// Add all the dag's root nodes in __topologicalOrder
-      void __getRootTopologyLevel( NodeSet& uncheckedNodes ) const;
-
-      // Add the next level of nodes in the topological order
-      void __getNextTopologyLevel( NodeSet& uncheckedNodes ) const;
   };
 
-/// Prints map's DAG in output using the Graphviz-dot format.
+  /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename T_DATA>
   std::ostream&
-  operator<<( std::ostream& output, const BayesNet<T_DATA>& map );
+  operator<<( std::ostream& output, const AbstractBayesNet<T_DATA>& map );
 
 } /* namespace gum */
-
 // ============================================================================
 #include <agrum/BN/BayesNet.tcc>
 // ============================================================================

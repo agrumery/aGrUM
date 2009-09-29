@@ -37,7 +37,7 @@
 namespace gum {
 
   /**
-   * @class BayesNetFactory
+   * @class BayesNetFactory BayesNetFactory.h <agrum/BN/BayesNetFactory.h>
    * @brief A factory class to ease BayesNet construction.
    *
    * A BayesNetFactory will never create a BayesNet and works on only one

@@ -66,7 +66,6 @@ namespace gum {
   }
 
 // Copy operator.
-  INLINE
   VariableNodeMap&
   VariableNodeMap::operator=( const VariableNodeMap& source ) {
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = __nodes2vars.begin();

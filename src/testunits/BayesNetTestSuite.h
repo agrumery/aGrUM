@@ -24,6 +24,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/generator/BayesNetGenerator.h>
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/labelizedVariable.h>
@@ -517,6 +518,55 @@ class BayesNetTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING( bn.idFromName( "var1" ) );
       bn.erase(bn.idFromName( "var1" ));
       TS_ASSERT_THROWS( bn.idFromName( "var1" ), gum::NotFound );
+    }
+
+    void testCopyAndEqualityOperators() {
+      gum::BayesNetGenerator generator;
+      gum::BayesNet<float>* bn_1 = generator.generateBNF(50, 0.1, 4);
+      gum::BayesNet<float>* bn_2 = generator.generateBNF(25, 0.01, 10);
+      gum::BayesNet<float> bn_cpy_1 = *bn_1;
+      gum::BayesNet<float> bn_cpy_2 = *bn_2;
+      TS_ASSERT(bn_cpy_1 == bn_cpy_1);
+      TS_ASSERT(bn_cpy_1 == (*bn_1));
+      TS_ASSERT(bn_cpy_2 == bn_cpy_2);
+      TS_ASSERT(bn_cpy_2 == (*bn_2));
+      TS_ASSERT((*bn_1) != (*bn_2));
+      TS_ASSERT(bn_cpy_1 != bn_cpy_2);
+
+      TS_ASSERT_EQUALS(bn_cpy_1, bn_cpy_1);
+      TS_ASSERT_EQUALS(bn_cpy_1, (*bn_1));
+      TS_ASSERT_EQUALS(bn_cpy_2, bn_cpy_2);
+      TS_ASSERT_EQUALS(bn_cpy_2, (*bn_2));
+      TS_ASSERT_DIFFERS((*bn_1), (*bn_2));
+      TS_ASSERT_DIFFERS(bn_cpy_1, bn_cpy_2);
+
+      gum::BayesNet<float> cpy = *bn_1;
+      TS_ASSERT(cpy == (*bn_1));
+      TS_ASSERT(cpy != (*bn_2));
+      try {
+        cpy = *bn_2;
+      } catch (gum::Exception& e) {
+        TS_GUM_ASSERT_THROWS_NOTHING(throw e);
+      }
+      TS_ASSERT_EQUALS(cpy, (*bn_2));
+      TS_ASSERT(cpy == (*bn_2));
+      TS_ASSERT_DIFFERS(cpy, (*bn_1));
+      TS_ASSERT(cpy != (*bn_1));
+      try {
+        cpy = cpy;
+      } catch (gum::Exception& e) {
+        TS_ASSERT_THROWS_NOTHING(throw e);
+      }
+      TS_ASSERT_EQUALS(cpy, (*bn_2));
+      TS_ASSERT(cpy == (*bn_2));
+      TS_ASSERT_DIFFERS(cpy, (*bn_1));
+      TS_ASSERT(cpy != (*bn_1));
+
+      std::string s1 = cpy.toString();
+      delete bn_2;
+      delete bn_1;
+      std::string s2 = cpy.toString();
+      TS_ASSERT_EQUALS(s1, s2);
     }
 };
 
