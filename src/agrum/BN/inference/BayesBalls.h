@@ -59,7 +59,7 @@ public:
    *
    * @return Returns a pointer over a sequence, delete it after use.
    */
-  Sequence<NodeId>* requisiteNodes(const BayesNet<T_DATA>& bayesNet,
+  Sequence<NodeId>* requisiteNodes(const AbstractBayesNet<T_DATA>& bayesNet,
                                    const Sequence<NodeId>& query,
                                    const Sequence<NodeId>& softEvidence,
                                    const Sequence<NodeId>& hardEvidence);
@@ -84,7 +84,7 @@ private:
 
   /// Pointer on a constant bayes net, the one passed as argument of
   /// requisiteNodes().
-  const BayesNet<T_DATA>* __bayesNet;
+  const AbstractBayesNet<T_DATA>* __bayesNet;
 
   /// Pointer on a constant sequence, the one passed as argument of
   /// requisiteNodes().

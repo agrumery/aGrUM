@@ -48,7 +48,7 @@ namespace gum {
   template <typename T_DATA> class CliqueProp;
 // ============================================================================
   /**
-   * @class ShaferShenoyInference
+   * @class ShaferShenoyInference ShaferShenoyInference.h <agrum/BN/inference/ShaferShenoyInference.h>
    * @brief This class implements the Shafer-Shenoy alogorithm for inference
    * in Bayesian Networks.
    * @ingroup bn_group
@@ -62,7 +62,6 @@ namespace gum {
    *           connected components
    */
   template<typename T_DATA>
-
   class ShaferShenoyInference: public BayesNetInference<T_DATA> {
 
     public:
@@ -76,7 +75,7 @@ namespace gum {
        * Default constructor.
        * @param bayesNet The Bayesian Network used for the inference.
        */
-      ShaferShenoyInference( const BayesNet<T_DATA>& bayesNet );
+      ShaferShenoyInference( const AbstractBayesNet<T_DATA>& bayesNet );
 
       /**
        * Destructor.

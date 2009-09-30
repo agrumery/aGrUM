@@ -35,7 +35,7 @@ namespace gum {
 
   // Default Constructor
   template <typename T_DATA>
-  BayesNetInference<T_DATA>::BayesNetInference( const BayesNet<T_DATA>& bn ):
+  BayesNetInference<T_DATA>::BayesNetInference( const AbstractBayesNet<T_DATA>& bn ):
       __bayesNet( bn ) {
     GUM_CONSTRUCTOR( BayesNetInference );
   }
@@ -67,7 +67,7 @@ namespace gum {
   }
 
   template <typename T_DATA>
-  const BayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
+  const AbstractBayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
 
 
 } /* namespace gum */

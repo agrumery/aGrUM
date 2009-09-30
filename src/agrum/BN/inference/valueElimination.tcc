@@ -29,7 +29,7 @@
 namespace gum {
 
 template<typename T_DATA> INLINE
-ValueElimination<T_DATA>::ValueElimination( const BayesNet<T_DATA>& bn ):
+ValueElimination<T_DATA>::ValueElimination( const AbstractBayesNet<T_DATA>& bn ):
     BayesNetInference<T_DATA>( bn ) {
   GUM_CONSTRUCTOR( ValueElimination );
 }

@@ -33,7 +33,7 @@ namespace gum {
 
 
   /**
-   * @class Gibbs
+   * @class Gibbs Gibbs. <agrum/BN/inference/Gibbs.h>
    * @brief class for making Gibbs sampling inference in bayesian networks.
    * @ingroup bn_group
    *
@@ -45,7 +45,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    Gibbs( const BayesNet<T_DATA>& BN );
+    Gibbs( const AbstractBayesNet<T_DATA>& BN );
 
     /**
      * Destructor.

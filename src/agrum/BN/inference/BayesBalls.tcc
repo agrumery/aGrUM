@@ -45,7 +45,7 @@ BayesBalls<T_DATA>::~BayesBalls()
 // @return Returns a pointer over a sequence, delete it after use.
 template<typename T_DATA> INLINE
 Sequence<NodeId>*
-BayesBalls<T_DATA>::requisiteNodes(const BayesNet<T_DATA>& bayesNet,
+BayesBalls<T_DATA>::requisiteNodes(const AbstractBayesNet<T_DATA>& bayesNet,
                                    const Sequence<NodeId>& query,
                                    const Sequence<NodeId>& softEvidence,
                                    const Sequence<NodeId>& hardEvidence)

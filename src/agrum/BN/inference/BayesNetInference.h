@@ -35,7 +35,7 @@
 
 namespace gum {
   /**
-   * @class BayesNetInference
+   * @class BayesNetInference BayesNetInference.h <agrum/BN/inference/BayesNetInference.h>
    * @brief Abstract class for making inference in bayesian networks.
    * @ingroup bn_group
    *
@@ -47,7 +47,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      BayesNetInference( const BayesNet<T_DATA>& bn );
+      BayesNetInference( const AbstractBayesNet<T_DATA>& bn );
 
       /**
        * Destructor.
@@ -93,7 +93,7 @@ namespace gum {
       /**
        * Returns a constant reference over the BayesNet on which this class work.
        */
-      const BayesNet<T_DATA>& bn() const;
+      const AbstractBayesNet<T_DATA>& bn() const;
 
     protected:
 
@@ -129,7 +129,7 @@ namespace gum {
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const BayesNet<T_DATA>& __bayesNet;
+      const AbstractBayesNet<T_DATA>& __bayesNet;
   };
 
 // ============================================================================

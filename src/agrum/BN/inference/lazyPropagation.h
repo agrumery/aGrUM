@@ -29,12 +29,11 @@
 
 namespace gum {
   /**
-   * @class BayesNetInference
+   * @class LazyPropagation lazyPropagation.h <agrum/BN/inference/lazyPropagation.h>
    * @brief Implementation of lazy propagation for inference in Bayesian Networks
    * @ingroup bn_group
    */
   template<typename T_DATA>
-
   class LazyPropagation: public BayesNetInference<T_DATA> {
     public:
       // ############################################################################
@@ -44,7 +43,7 @@ namespace gum {
       // ============================================================================
       /// default constructor
       // ============================================================================
-      LazyPropagation( const BayesNet<T_DATA>& BN );
+      LazyPropagation( const AbstractBayesNet<T_DATA>& BN );
 
       // ============================================================================
       /// destructor

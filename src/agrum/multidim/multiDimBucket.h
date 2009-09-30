@@ -33,6 +33,7 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 // ============================================================================
+#include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimReadOnly.h>
 // ============================================================================
 namespace gum {

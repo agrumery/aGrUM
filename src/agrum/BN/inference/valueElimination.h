@@ -57,7 +57,7 @@ public:
   /**
    * Default constructor.
    */
-  ValueElimination(const BayesNet<T_DATA>& bn);
+  ValueElimination(const AbstractBayesNet<T_DATA>& bn);
 
   /**
    * Destructor.

@@ -31,7 +31,7 @@ namespace gum {
   /// default constructor
   // ==============================================================================
   template <typename T_DATA> INLINE
-  LazyPropagation<T_DATA>::LazyPropagation( const BayesNet<T_DATA>& BN ) :  BayesNetInference<T_DATA>( BN ) {
+  LazyPropagation<T_DATA>::LazyPropagation( const AbstractBayesNet<T_DATA>& BN ) :  BayesNetInference<T_DATA>( BN ) {
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
     // set the correspondance between variables and their id and get the variables

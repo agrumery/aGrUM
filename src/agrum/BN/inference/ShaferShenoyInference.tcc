@@ -34,7 +34,7 @@ namespace gum {
 
 // Default constructor
   template<typename T_DATA>
-  ShaferShenoyInference<T_DATA>::ShaferShenoyInference( const BayesNet<T_DATA> &bayesNet ):
+  ShaferShenoyInference<T_DATA>::ShaferShenoyInference( const AbstractBayesNet<T_DATA> &bayesNet ):
       BayesNetInference<T_DATA>( bayesNet ), __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 

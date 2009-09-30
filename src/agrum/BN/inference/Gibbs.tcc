@@ -41,7 +41,7 @@
 namespace gum {
   /// default constructor
   template <typename T_DATA>
-  Gibbs<T_DATA>::Gibbs( const BayesNet<T_DATA>& BN ) :
+  Gibbs<T_DATA>::Gibbs( const AbstractBayesNet<T_DATA>& BN ) :
       BayesNetInference<T_DATA>( BN ),
       __eps( DEFAULT_EPSILON ),
       __min_rate_eps( DEFAULT_MIN_EPSILON_RATE ),
