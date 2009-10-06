@@ -57,9 +57,16 @@ class RangeVariableTestSuite: public CxxTest::TestSuite {
       TS_ASSERT( ! var1.belongs(( gum::Idx ) 0 ) );
       TS_ASSERT( ! var1.belongs(( gum::Idx ) 10 ) );
 
+      var1.setMin( 3 );
 
-      TS_ASSERT_EQUALS( var1.label( 1 ), "2" );
-      TS_ASSERT_EQUALS( var1["2"], ( gum::Idx ) 1 );
+      TS_ASSERT_EQUALS( var1.label( 1 ), "4" );
+      TS_ASSERT_EQUALS( var1["4"], ( gum::Idx ) 1 );
+
+	gum::DiscreteVariable& v=var1;
+
+      TS_ASSERT_EQUALS( v.label( 1 ), "4" );
+      TS_ASSERT_EQUALS( v["4"], ( gum::Idx ) 1 );
+	
     }
 };
 // kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

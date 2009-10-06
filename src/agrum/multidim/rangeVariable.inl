@@ -60,7 +60,7 @@ namespace gum
 	const std::string
 	RangeVariable::label ( const Idx indice ) const
 	{
-		if ( belongs ( indice ) )
+		if ( belongs ( indice  + __min) )
 		{
 			std::stringstream strBuff;
 			strBuff << indice+__min;
