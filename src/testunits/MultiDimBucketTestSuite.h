@@ -284,8 +284,8 @@ class MultiDimBucketTestSuite: public CxxTest::TestSuite {
           TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
           TS_ASSERT(! bucket->bucketChanged());
 
-          TS_ASSERT(!inst->isMaster(bucket));
-          TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
+          TS_ASSERT(inst->isMaster(bucket));
+          TS_ASSERT(inst->isMaster(bucket));
           for (inst->setFirst(); ! inst->end(); inst->inc()) {
             TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double) 0.01);
           }

@@ -32,6 +32,7 @@
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
+#include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimReadOnly.h>
@@ -258,7 +259,11 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     Size __bufferSize;
 
     /// The list of instantiations registered on __bucket.
-    List<Instantiation*>* __instantiations;
+    // List<Instantiation*>* __instantiations;
+
+    /// Bijection between instantiations registered on this and
+    /// their equivalent on __bucket
+    Bijection<Instantiation*, Instantiation*> __instantiations;
 
     /// The result table of this bucket.
     MultiDimArray<T_DATA>* __bucket;

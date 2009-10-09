@@ -31,7 +31,7 @@ namespace gum {
 template<typename T_DATA>
 MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
   MultiDimReadOnly<T_DATA>(), __bufferSize(bufferSize),
-  __instantiations(0), __bucket(0), __changed(false)
+  __bucket(0), __changed(false)
 {
   GUM_CONSTRUCTOR( MultiDimBucket );
 }
@@ -39,7 +39,7 @@ MultiDimBucket<T_DATA>::MultiDimBucket(Size bufferSize):
 template<typename T_DATA>
 MultiDimBucket<T_DATA>::MultiDimBucket(const MultiDimBucket<T_DATA>& source):
   MultiDimReadOnly<T_DATA>(source), __bufferSize(source.__bufferSize),
-  __instantiations(0), __bucket(0), __multiDims(source.__multiDims),
+  __bucket(0), __multiDims(source.__multiDims),
   __allVariables(source.__allVariables), __changed(source.__changed)
 {
   GUM_CONS_CPY( MultiDimBucket );
@@ -49,11 +49,12 @@ template<typename T_DATA>
 MultiDimBucket<T_DATA>::~MultiDimBucket()
 {
   GUM_DESTRUCTOR( MultiDimBucket );
+  typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+  for (BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
+    delete iter.second();
+  }
   if (__bucket != 0) {
     delete __bucket;
-  }
-  if (__instantiations != 0) {
-    delete __instantiations;
   }
 }
 
@@ -162,8 +163,8 @@ MultiDimBucket<T_DATA>::compute(bool force) const
       __bucket->set(values, __computeValue(values));
     }
   } else if ( (__bucket == 0) and __changed) {
-      __slavesValue.clear();
-      __changed = false;
+    __slavesValue.clear();
+    __changed = false;
   }
   __changed = false;
 }
@@ -218,7 +219,11 @@ MultiDimBucket<T_DATA>::get(const Instantiation &i) const
 {
   compute();
   if (__bucket != 0) {
-    return __bucket->get(i);
+    try {
+      return __bucket->get(*(__instantiations.second(const_cast<Instantiation*>(&i))));
+    } catch (NotFound&) {
+      return __bucket->get(i);
+    }
   } else if (i.isMaster(this)) {
     if (! __slavesValue.exists(&i)) {
       __slavesValue.insert(&i, __computeValue(i));
@@ -232,12 +237,16 @@ MultiDimBucket<T_DATA>::get(const Instantiation &i) const
 template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::changeNotification (Instantiation &i,
-    const DiscreteVariable *const var,
-    const Idx &oldval, const Idx &newval)
+                                            const DiscreteVariable *const var,
+                                            const Idx &oldval, const Idx &newval)
 {
   if (__bucket != 0) {
-    __bucket->changeNotification(i, var, oldval, newval);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->changeNotification(*(__instantiations).second(&i), var, oldval, newval);
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -247,8 +256,12 @@ void
 MultiDimBucket<T_DATA>::setFirstNotification(Instantiation &i)
 {
   if (__bucket != 0) {
-    __bucket->setFirstNotification(i);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->setFirstNotification(*(__instantiations).second(&i));
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -258,8 +271,12 @@ void
 MultiDimBucket<T_DATA>::setLastNotification(Instantiation &i)
 {
   if (__bucket != 0) {
-    __bucket->setLastNotification(i);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->setLastNotification(*(__instantiations).second(&i));
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -269,8 +286,12 @@ void
 MultiDimBucket<T_DATA>::setIncNotification(Instantiation &i)
 {
   if (__bucket != 0) {
-    __bucket->setIncNotification(i);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->setIncNotification(*(__instantiations.second(&i)));
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -280,8 +301,12 @@ void
 MultiDimBucket<T_DATA>::setDecNotification(Instantiation &i)
 {
   if (__bucket != 0) {
-    __bucket->setDecNotification(i);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->setDecNotification(*(__instantiations.second(&i)));
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -291,8 +316,12 @@ void
 MultiDimBucket<T_DATA>::setChangeNotification(Instantiation &i)
 {
   if (__bucket != 0) {
-    __bucket->setChangeNotification(i);
-  } else if (i.isMaster(this)) {
+    try {
+      __bucket->setChangeNotification(*(__instantiations.second(&i)));
+    } catch (NotFound&) {
+      // Then i is not a slave of this
+    }
+  } else {
     __slavesValue.erase(&i);
   }
 }
@@ -302,16 +331,13 @@ bool
 MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
 {
   if (__bucket != 0) {
-    i.forgetMaster();
-    if (i.actAsSlave(*__bucket)) {
-      __instantiations->insert(&i);
-      return true;
-    } else {
+    try {
+      __instantiations.insert(&i, new Instantiation(*__bucket));
+    } catch (DuplicateElement&) {
       return false;
     }
-  } else {
-    return MultiDimImplementation<T_DATA>::registerSlave(i);
   }
+  return MultiDimImplementation<T_DATA>::registerSlave(i);
 }
 
 template<typename T_DATA> INLINE
@@ -320,13 +346,20 @@ MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
 {
   MultiDimReadOnly<T_DATA>::unregisterSlave(i);
   if (__bucket != 0) {
-    __bucket->unregisterSlave(i);
-    __instantiations->eraseByVal(&i);
-    return true;
+    try {
+      delete __instantiations.second(&i);
+      __instantiations.eraseFirst(&i);
+      return true;
+    } catch (NotFound&) {
+      return false;
+    }
   } else {
-    MultiDimImplementation<T_DATA>::unregisterSlave(i);
-    __slavesValue.erase(&i);
-    return true;
+    if (__slavesValue.exists(&i)) {
+      __slavesValue.erase(&i);
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
@@ -384,7 +417,7 @@ template<typename T_DATA> INLINE
 T_DATA&
 MultiDimBucket<T_DATA>::_get(const Instantiation &i) const
 {
-  GUM_ERROR(OperationNotAllowed, "You should call this method in a MultiDimBucket.");
+  GUM_ERROR(OperationNotAllowed, "a MultiDimBucket is a read only MultiDim");
 }
 
 template<typename T_DATA> INLINE
@@ -421,6 +454,11 @@ void
 MultiDimBucket<T_DATA>::__initializeBuffer()
 {
   if (__bucket != 0) {
+    typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+    for (BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
+      delete iter.second();
+    }
+    __instantiations.clear();
     delete __bucket;
     __bucket = 0;
   }
@@ -429,20 +467,11 @@ MultiDimBucket<T_DATA>::__initializeBuffer()
   for (MultiDimInterface::iterator iter = this->begin(); iter != this->end(); ++iter) {
     __bucket->add(**iter);
   }
-  if (__instantiations == 0) {
-    __instantiations = new List<Instantiation*>(this->_slaves());
-  }
-  // Associating the instantiations to the new table.
-  Instantiation* inst = 0;
-  while (__instantiations->size() > 0) {
-    inst =  __instantiations->back();
-    inst->forgetMaster();
-    if (! inst->actAsSlave(*__bucket)) {
-      (*inst) = Instantiation(*__bucket);
+  if (not this->_slaves().empty()) {
+    for (List<Instantiation*>::const_iterator iter = this->_slaves().begin(); iter != this->_slaves().end(); ++iter) {
+      __instantiations.insert(*iter, new Instantiation(*__bucket));
     }
   }
-  delete __instantiations;
-  __instantiations = 0;
   __changed = true;
 }
 
@@ -451,19 +480,13 @@ void
 MultiDimBucket<T_DATA>::__eraseBuffer()
 {
   if (__bucket != 0) {
+    typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+    for(BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
+      delete iter.second();
+    }
+    __instantiations.clear();
     delete __bucket;
     __bucket = 0;
-  }
-  // Moving the instantiations on this bucket.
-  if (__instantiations != 0) {
-    for (List<Instantiation*>::iterator iter = __instantiations->begin(); iter != __instantiations->end(); ++iter) {
-      (*iter)->forgetMaster();
-      if (! (*iter)->actAsSlave(*this)) {
-        (**iter) = Instantiation(*this);
-      }
-    }
-    delete __instantiations;
-    __instantiations = 0;
   }
 }
 
