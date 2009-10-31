@@ -35,9 +35,10 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( ngp.size(), ( gum::Size )0 );
       TS_ASSERT( ngp.empty() );
 
-      ngp.insertNode();
+      gum::NodeId firstId=ngp.insertNode();
       TS_ASSERT( ! ngp.empty() );
       TS_ASSERT_EQUALS( ngp.size(), ( gum::Size )1 );
+      TS_ASSERT_EQUALS( firstId, ( gum::NodeId)0 );
 
       ngp.insertNode();
       TS_ASSERT_EQUALS( ngp.size(), ( gum::Size )2 );
@@ -77,15 +78,15 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       ngp.insertNode();
       ngp.insertNode();
       __ForTestCopy( ngp );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size )0 );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size )0 );
       gum::NodeId id3 = ngp.insertNode();
       gum::NodeId id4 = ngp.insertNode();
       ngp.eraseNode( id3 );
       __ForTestCopy( ngp );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size )1 );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size )1 );
       ngp.eraseNode( id4 );
       __ForTestCopy( ngp );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size )0 ); // 2 last hole has vanished
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size )0 ); // 2 last hole has vanished
     }
 
     void testInsertionForcee() {
@@ -97,37 +98,47 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       gum::NodeId e = 5;
       gum::NodeId f = 6;
       gum::NodeId g = 7;
-      TS_ASSERT_THROWS( ngp.insertNode( 0 ), gum::OutOfLowerBound );
 
       ngp.insertNode( c );
-      TS_ASSERT( ngp.inHoles( a ) );
-      TS_ASSERT( ngp.inHoles( b ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 2 ) ) );
+      TS_ASSERT( ngp.__inHoles( a ) );
+      TS_ASSERT( ngp.__inHoles( b ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 3 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),c+1);
 
       ngp.insertNode( a );
-      TS_ASSERT( ngp.inHoles( b ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 1 ) ) );
+      TS_ASSERT( ngp.__inHoles( b ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 2 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),c+1);
 
       ngp.insertNode( f );
-      TS_ASSERT( ngp.inHoles( b ) );
-      TS_ASSERT( ngp.inHoles( d ) );
-      TS_ASSERT( ngp.inHoles( e ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 3 ) ) );
+      TS_ASSERT( ngp.__inHoles( b ) );
+      TS_ASSERT( ngp.__inHoles( d ) );
+      TS_ASSERT( ngp.__inHoles( e ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 4 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),f+1);
 
       ngp.insertNode( e );
-      TS_ASSERT( ngp.inHoles( b ) );
-      TS_ASSERT( ngp.inHoles( d ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 2 ) ) );
+      TS_ASSERT( ngp.__inHoles( b ) );
+      TS_ASSERT( ngp.__inHoles( d ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 3 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),f+1);
 
       ngp.insertNode( b );
-      TS_ASSERT( ngp.inHoles( d ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 1 ) ) );
+      TS_ASSERT( ngp.__inHoles( d ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 2 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),f+1);
 
       ngp.insertNode( d );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 1 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),f+1);
 
       ngp.insertNode( g );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 1 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),g+1);
+      
+      ngp.insertNode( gum::NodeId (0) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS(ngp.bound(),g+1);
 
       TS_ASSERT_THROWS( ngp.insertNode( f ), gum::DuplicateElement );
     }
@@ -136,30 +147,34 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       gum::NodeGraphPart ngp;
       gum::NodeId node = 6;
 
-      TS_ASSERT_EQUALS( *( ngp.endNodes() ), ( gum::NodeId )( 1 ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 0 ) ) );
-      TS_ASSERT_EQUALS( ngp.nextNodeId(), ( gum::Size( 1 ) ) );
+      TS_ASSERT_EQUALS( ngp.bound(), ( gum::NodeId )( 0 ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS( ngp.nextNodeId(), ( gum::Size( 0 ) ) );
       ngp.insertNode( node );
-      TS_ASSERT_EQUALS( *( ngp.endNodes() ), ( gum::NodeId )( node + 1 ) );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( node - 1 ) ) );
+      TS_ASSERT_EQUALS( ngp.bound(), ( gum::NodeId )( node + 1 ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( node ) ) );
       TS_ASSERT( ngp.nextNodeId() < node ); // we fill one of the holes
       ngp.eraseNode( node );
-      TS_ASSERT_EQUALS( ngp.sizeHoles(), ( gum::Size( 0 ) ) );
-      TS_ASSERT_EQUALS( ngp.nextNodeId(), ( gum::Size( 1 ) ) );
-      TS_ASSERT_EQUALS( *( ngp.endNodes() ), ( gum::NodeId )( 1 ) );
+      TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS( ngp.nextNodeId(), ( gum::Size( 0 ) ) );
+      TS_ASSERT_EQUALS( ngp.bound(), ( gum::NodeId )( 0 ) );
 
-      // do we fill all the holes ?
+      // do we fill all the holes?
       gum::NodeGraphPart ngp2;
       ngp2.insertNode( node );
 
       for ( gum::Size i = 1;i < node; i++ ) {
-        TS_ASSERT_EQUALS( ngp2.sizeHoles(), ( gum::Size( node ) - i ) );
+        TS_ASSERT_EQUALS( ngp2.__sizeHoles(), ( gum::Size( node )+1-i  ) );
         TS_ASSERT( ngp2.insertNode() < node );
       }
 
-      TS_ASSERT_EQUALS( ngp2.sizeHoles(), gum::Size( 0 ) );
+      TS_ASSERT_EQUALS( ngp2.__sizeHoles(), gum::Size( 1 ) );
+      TS_ASSERT_EQUALS( ngp2.nextNodeId(), gum::NodeId( node - 1 ) );
 
-      TS_ASSERT_EQUALS( ngp2.nextNodeId(), gum::Size( node + 1 ) );
+      ngp2.insertNode();
+      
+      TS_ASSERT_EQUALS( ngp2.__sizeHoles(), gum::Size( 0 ) );
+      TS_ASSERT_EQUALS( ngp2.nextNodeId(), gum::NodeId( node + 1 ) );
     }
 
 
@@ -171,37 +186,45 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
       gum::NodeGraphPart nodeset;
       nodeset.insertNode();
       unsigned int cpt = 0;
-      for(gum::NodeGraphPartIterator iter = nodeset.beginNodes();
-	  iter != nodeset.endNodes(); ++iter) {
-	if(cpt == 0) {
-	  nodeset.eraseNode(*iter);
-	  cpt++;
-	} else {
-	  // If false : infinite loop spotted
-	  TS_ASSERT(false);
-	  break;
-	}
+
+      for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+            iter != nodeset.endNodes(); ++iter ) {
+        if ( cpt == 0 ) {
+          nodeset.eraseNode( *iter );
+          cpt++;
+        } else {
+          // If false : infinite loop spotted
+          TS_ASSERT( false );
+          break;
+        }
       }
     }
 
-  void testIteratorEraseNode() {
-    gum::NodeGraphPart nodeset;
-    const unsigned int max_cpt = 100;
-    for(unsigned int i = 0; i < max_cpt; ++i) {
-      nodeset.insertNode();
-    }
-    unsigned int cpt = 0;
-    for(gum::NodeGraphPartIterator iter = nodeset.beginNodes();
-	iter != nodeset.endNodes(); ++iter, ++cpt) {
-      TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));
-      if(cpt > max_cpt) {
-	// If false : infinite loop spotted
-	TS_ASSERT(false);
-	break;
+    void testIteratorEraseNode() {
+      gum::NodeGraphPart nodeset;
+      const unsigned int max_cpt = 100;
+
+      for ( unsigned int i = 0; i < max_cpt; ++i ) {
+        nodeset.insertNode();
       }
+
+      unsigned int cpt = 0;
+
+      for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+            iter != nodeset.endNodes(); ++iter, ++cpt ) {
+        TS_GUM_ASSERT_THROWS_NOTHING(*iter);
+        TS_GUM_ASSERT_THROWS_NOTHING( nodeset.eraseNode( *iter ) );
+        TS_ASSERT_THROWS( *iter, gum::UndefinedIteratorValue );
+
+        if ( cpt > max_cpt ) {
+          // If false : infinite loop spotted
+          TS_ASSERT( false );
+          break;
+        }
+      }
+
+      TS_ASSERT_EQUALS( cpt, max_cpt );
     }
-    TS_ASSERT_EQUALS(cpt, max_cpt);
-  }
 
 
   private:
@@ -277,4 +300,3 @@ class NodeGraphPartTestSuite: public CxxTest::TestSuite {
     }
 };
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

@@ -43,9 +43,9 @@ namespace gum {
    *
    *
    * A CliqueGraph is an undirected graph the nodes of which are Cliques, i.e.,
-   * sets of NodeIds. Cliques are linked by Edges, edges support separators
-   * which are intersection of Cliques.
-   */
+   * sets of NodeIds. Cliques are linked by Edges. These edges contain separators
+   * that are actually the intersection of the two Cliques at the extermities of
+   * the edge. */
   /* =========================================================================== */
   class CliqueGraph : public UndiGraph {
   public:
@@ -113,14 +113,14 @@ namespace gum {
     /// adds a new clique to the graph
     /** @return the id chosen for the new clique */
     // ============================================================================
-    virtual NodeId insertNode( const NodeSet& clique );
+    virtual NodeId insertNode( const NodeSet& clique = NodeSet() );
 
     // ============================================================================
     /// try to add a new clique to the graph
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
     // ============================================================================
-    virtual void insertNode( const NodeId id,  const NodeSet& clique );
+    virtual void insertNode( const NodeId id,  const NodeSet& clique = NodeSet() );
 
     // ============================================================================
     /// removes a given clique from the clique graph

@@ -29,7 +29,7 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/valueElimination.h>
-#include <agrum/graphs/incrementalTriangulation.h>
+//#include <agrum/graphs/incrementalTriangulation.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

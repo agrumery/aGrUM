@@ -104,6 +104,24 @@ namespace gum {
      */
     void sumBy(const UtilityTable<T_DATA>& toAdd);
 
+    /**
+     * This method modifies the current table A in order to compute the
+     * result of the addition with all tables in B (A <- A + \sum_{u \in B} u)
+     *
+     * @param utilitiesList tables to add in this table (B in the description)
+     * @warning we assume that every table in B contains a subset of variables in A
+     */
+    void sumBy(const List<UtilityTable<T_DATA>*>& utilitiesList);
+
+
+    /**
+     * This method reduces the current table by maximization
+     *
+     * @param varList list of variables in the result
+     * @return an utility table
+     */
+    UtilityTable<T_DATA> reduceBy(const List<const DiscreteVariable*>& varList) const;
+
   protected:
 
   private:

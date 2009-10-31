@@ -29,34 +29,12 @@
 namespace gum {
 
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===            DEFAULT TRIANGULATION ALGORITHM USED BY AGRUM            === */
-  /* =========================================================================== */
-  /* =========================================================================== */
-
-  // ==============================================================================
-  /// returns the fill-ins added by the triangulation algorithm
-  // ==============================================================================
-  INLINE
-  const EdgeSet& DefaultTriangulation::fillIns() {
-    if ( !__has_triangulation )  __triangulate();
-
-    if ( __minimality_required || ( ! __we_want_fill_ins ) ) {
-      return __fill_ins;
-    }
-    else {
-      return __fill_ins_list_standard;
-    }
-  }
-
   // ==============================================================================
   /// returns an elimination ordering compatible with the triangulated graph
   // ==============================================================================
   INLINE
-  const std::vector<NodeId>& DefaultTriangulation::eliminationOrder() {
+  const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
     if ( !__has_triangulation )  __triangulate();
-
     return __elim_order;
   }
 
@@ -65,10 +43,20 @@ namespace gum {
    * (0 = first node eliminated) */
   // ==============================================================================
   INLINE
-  unsigned int DefaultTriangulation::eliminationOrder( const NodeId id ) {
+  unsigned int StaticTriangulation::eliminationOrder( const NodeId id ) {
     if ( !__has_triangulation )  __triangulate();
-
     return __reverse_elim_order[id];
+  }
+
+  // ==============================================================================
+  /** @brief returns the number of a given node in the elimination order
+   * (0 = first node eliminated) */
+  // ==============================================================================
+  INLINE
+  const Property<unsigned int>::onNodes&
+  StaticTriangulation::reverseEliminationOrder( ) {
+    if ( !__has_triangulation )  __triangulate();
+    return __reverse_elim_order;
   }
 
   // ==============================================================================
@@ -76,9 +64,8 @@ namespace gum {
   // ==============================================================================
   INLINE
   const CliqueGraph&
-  DefaultTriangulation::eliminationTree() {
+  StaticTriangulation::eliminationTree() {
     if ( !__has_elimination_tree )  __computeEliminationTree();
-
     return __elim_tree;
   }
 
@@ -87,9 +74,14 @@ namespace gum {
   // ==============================================================================
   INLINE
   const CliqueGraph&
-  DefaultTriangulation::junctionTree() {
-    __computeJunctionTree(); // checks if junctionTree already exists
-    return __junction_tree;
+  StaticTriangulation::junctionTree() {
+    // checks if junctionTree already exists
+    if ( !__has_junction_tree ) {
+      __junction_tree = &(_junction_tree_strategy->junctionTree ());
+      __has_junction_tree = true;
+    }
+
+    return *__junction_tree;
   }
 
   // ==============================================================================
@@ -97,9 +89,8 @@ namespace gum {
   // ==============================================================================
   INLINE
   const CliqueGraph&
-  DefaultTriangulation::maxPrimeSubgraphTree() {
+  StaticTriangulation::maxPrimeSubgraphTree() {
     if ( !__has_max_prime_junction_tree )  __computeMaxPrimeJunctionTree();
-
     return __max_prime_junction_tree;
   }
 
@@ -108,9 +99,8 @@ namespace gum {
    * elimination of a given node during the triangulation process */
   // ============================================================================
   INLINE
-  NodeId DefaultTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
+  NodeId StaticTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
     if ( !__has_max_prime_junction_tree )  __computeMaxPrimeJunctionTree();
-
     return __node_2_max_prime_clique[id];
   }
 
@@ -119,19 +109,49 @@ namespace gum {
    * elimination of a given node during the triangulation process */
   // ==============================================================================
   INLINE
-  NodeId DefaultTriangulation::createdClique( const NodeId id ) {
-    if ( !__has_junction_tree )  __computeJunctionTree();
-
-    return __node_2_junction_clique[id];
+  NodeId StaticTriangulation::createdJunctionTreeClique( const NodeId id ) {
+    return _junction_tree_strategy->createdClique ( id );
   }
+
+
+  // ==============================================================================
+  /** @brief returns the Ids of the cliques of the junction tree created by the
+   * elimination of the nodes */
+  // ==============================================================================
+  INLINE
+  const Property<NodeId>::onNodes&
+  StaticTriangulation::createdJunctionTreeCliques () {
+    return _junction_tree_strategy->createdCliques ();
+  }
+  
 
   // ==============================================================================
   /// sets/unset the fill-ins storage in the standard triangulation procedure
   // ==============================================================================
   INLINE
-  void DefaultTriangulation::setFillIns( bool b ) {
+  void StaticTriangulation::setFillIns( bool b ) {
     __we_want_fill_ins = b;
+    _elimination_sequence_strategy->askFillIns ( b );
   }
+
+  
+  // ==============================================================================
+  /// returns the graph to be triangulated
+  // ==============================================================================
+  INLINE
+  const UndiGraph* StaticTriangulation::originalGraph () const {
+    return __original_graph;
+  }
+
+  
+  // ==============================================================================
+  /// returns the modalities of the variables of the graph to be triangulated
+  // ==============================================================================
+  INLINE
+  const Property<unsigned int>::onNodes* StaticTriangulation::modalities() const {
+    return __modalities;
+  }
+    
 
 
 } /* namespace gum */

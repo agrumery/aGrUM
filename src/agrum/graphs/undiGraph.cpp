@@ -57,7 +57,8 @@ namespace gum {
     std::pair<NodeId, NodeId> thePair;
     NodeId current, from_current, new_node;
 
-    for ( UndiGraph::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
+    for ( UndiGraph::NodeIterator iter = beginNodes();
+          iter != endNodes(); ++iter ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
       if ( ! examined_nodes[*iter] ) {
@@ -83,8 +84,8 @@ namespace gum {
           for ( EdgeSetIterator iter_neigh = set.begin();
                 iter_neigh != set.end(); ++iter_neigh ) {
             new_node = iter_neigh->other( current );
+            
             // avoid to check the node we are coming from
-
             if ( new_node != from_current ) {
               if ( examined_nodes[new_node] )
                 return true;
@@ -119,5 +120,3 @@ namespace gum {
 
 } /* namespace gum */
 
-
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

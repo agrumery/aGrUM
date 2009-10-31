@@ -311,7 +311,8 @@ int GUM_PARSE_XML_CSV_error(gum::Database& database, const char* s) {
   if (database.__cases) {
     delete database.__cases;
     database.__cases = 0;
-  }
+    }                
+
   GUM_ERROR(gum::IOError, s);
   return 1;
 }
@@ -355,11 +356,27 @@ bool GUM_PARSE_XML_CSV_parser (gum::Database& database,
     GUM_PARSE_XML_CSV_parse (database);
   }
   catch (gum::Exception& e) {
+  
     if (database.__cases) {
       delete[] database.__cases;
       database.__cases = 0;
     }
-    //std::cerr << std::endl << "erreur"; //e.getContent() << std::endl;
+
+  // reset the parser
+  for (unsigned int i = 0; i < GUM_PARSE_XML_CSV_database_cases->size(); ++i)
+    if ((*GUM_PARSE_XML_CSV_database_cases)[i])
+      delete[] (*GUM_PARSE_XML_CSV_database_cases)[i];
+  delete GUM_PARSE_XML_CSV_database_cases;  
+  delete GUM_PARSE_XML_CSV_words;
+  delete GUM_PARSE_XML_CSV_modality_name;
+  delete GUM_PARSE_XML_CSV_modality_id2index;
+  delete GUM_PARSE_XML_CSV_modality_id2index_per_var;
+  GUM_PARSE_XML_CSV_current_variable_name.clear ();
+
+  // close the file
+  fclose (GUM_PARSE_XML_CSV_in);
+
+  //std::cerr << std::endl << "erreur"; //e.getContent() << std::endl;
     result = false;
     throw e;
   }

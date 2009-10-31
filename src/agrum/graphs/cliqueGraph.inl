@@ -51,7 +51,7 @@ namespace gum {
       UndiGraph::insertEdge( first, second );
 
       // create the separator
-      __separators.insert( edge, __cliques[edge.first()]*__cliques[edge.second()] );
+      __separators.insert( edge, __cliques[first] * __cliques[second] );
     }
   }
 
@@ -92,13 +92,11 @@ namespace gum {
   /// removes a given clique from the clique graph
   // ============================================================================
   INLINE void CliqueGraph::eraseNode( const NodeId id ) {
-
     // check if the node belongs to the graph
     if ( !exists( id ) ) return;
 
     // remove the separators
     const EdgeSet& set = neighbours( id );
-
     for ( EdgeSetIterator iter = set.begin();iter != set.end();++iter ) {
       eraseEdge( *iter );
     }
@@ -208,4 +206,3 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

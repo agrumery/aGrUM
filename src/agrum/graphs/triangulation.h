@@ -25,13 +25,8 @@
 #ifndef GUM_TRIANGULATION_H
 #define GUM_TRIANGULATION_H
 
-#include <iostream>
-#include <utility>
-#include <agrum/core/utils.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <vector>
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/core/heap.h>
 
 
 namespace gum {
@@ -47,7 +42,18 @@ namespace gum {
    *
    */
   /* =========================================================================== */
-  struct Triangulation {
+  class Triangulation {
+  public:
+    // ============================================================================
+    /// constructor
+    // ============================================================================
+    Triangulation();
+
+    // ============================================================================
+    /// destructor
+    // ============================================================================
+    virtual ~Triangulation();
+
     // ============================================================================
     /// returns the fill-ins added by the triangulation algorithm
     // ============================================================================
@@ -84,7 +90,13 @@ namespace gum {
     /** @brief returns the Id of the clique created by the
      * elimination of a given node during the triangulation process */
     // ============================================================================
-    virtual NodeId createdClique( const NodeId id ) = 0;
+    virtual NodeId createdJunctionTreeClique( const NodeId id ) = 0;
+
+    // ============================================================================
+    /** @brief returns the Ids of the cliques of the junction tree created by the
+     * elimination of the nodes */
+    // ============================================================================
+    virtual const Property<NodeId>::onNodes& createdJunctionTreeCliques () = 0;
 
     // ============================================================================
     /// returns a junction tree of maximal prime subgraphs
@@ -108,24 +120,22 @@ namespace gum {
     virtual void clear() = 0;
 
     // ============================================================================
-    /// initialize the triangulation algorithm for a new graph
-    // ============================================================================
-    virtual void setGraph ( const UndiGraph& theGraph,
-                            const Property<unsigned int>::onNodes& modal ) = 0;
-
-    // ============================================================================
-    /// virtual copy constructor
-    /** Function clone returns a "true" copy of the current Triangulation class.
+    /** @brief returns a fresh triangulation (over an empty graph) of the same
+     * type as the current object
+     *
      * note that we return a pointer as it enables subclasses to return
-     * pointers to their types, not Trianuglation pointers. See item 25 of the
+     * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
     // ============================================================================
-    virtual Triangulation* copyFactory () const = 0;
-    
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    virtual ~Triangulation() { }
+    virtual Triangulation* newFactory () const = 0;
+
+  private:
+    /// prevent copy constructor
+    Triangulation( const Triangulation& );
+
+    /// prevent copy operator
+    Triangulation& operator= ( const Triangulation& );
+
   };
 
 

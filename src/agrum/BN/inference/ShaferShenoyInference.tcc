@@ -45,7 +45,7 @@ namespace gum {
       __modalitiesMap.insert( *iter,  this->bn().variable( *iter ).domainSize() );
     }
 
-    __triangulation = new DefaultTriangulation( this->bn().moralGraph(), __modalitiesMap );
+    __triangulation = new DefaultTriangulation( &(this->bn().moralGraph()), &__modalitiesMap );
 
     __triangulation->junctionTree();
     __buildCliquesTables();
@@ -111,7 +111,7 @@ namespace gum {
   void
   ShaferShenoyInference<T_DATA>::_fillMarginal( NodeId id,
       Potential<T_DATA>& marginal ) {
-    NodeId cliqueId = __triangulation->createdClique( id );
+    NodeId cliqueId = __triangulation->createdJunctionTreeClique( id );
     // First we find the smallest clique containing id
 
     for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
@@ -222,7 +222,7 @@ namespace gum {
 
     for ( size_t i = 0; i < eliminationOrder.size(); ++i ) {
       if ( idSet.contains( eliminationOrder[i] ) ) {
-        return __triangulation->createdClique( eliminationOrder[i] );
+        return __triangulation->createdJunctionTreeClique( eliminationOrder[i] );
       }
     }
 

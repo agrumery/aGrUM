@@ -27,7 +27,8 @@ class DatabaseTestSuite: public CxxTest::TestSuite {
   public:
     void testCreationCSV() {
       std::string db1_name( GET_PATH_STR( database1.csv ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::Database d=gum::Database::createFromCSV( db1_name,',' ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( gum::Database d =
+                                    gum::Database::createFromCSV( db1_name,',' ) );
 
       gum::Database d=gum::Database::createFromCSV( db1_name,',' );
       TS_ASSERT_EQUALS( d.nbrNodes(),( gum::Idx )6 );
@@ -102,7 +103,12 @@ class DatabaseTestSuite: public CxxTest::TestSuite {
 
     void testParseMissingXML() {
       std::string db1_name( GET_PATH_STR( database_missingvalue.xml ) );
-      TS_ASSERT_THROWS( gum::Database d=gum::Database::createFromXmlCSV( db1_name ),gum::Exception );
+      TS_ASSERT_THROWS( gum::Database d=
+                        gum::Database::createFromXmlCSV( db1_name ),
+                        gum::Exception );
+      TS_ASSERT_THROWS( gum::Database d=
+                        gum::Database::createFromXmlCSV( db1_name ),
+                        gum::Exception );
     }
 
     void testDatabase_with_newline() {

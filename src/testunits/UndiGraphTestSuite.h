@@ -24,12 +24,12 @@
 #include <agrum/graphs/undiGraph.h>
 
 // The graph used for the tests:
-//          1   2_          1 -- 3
-//         / \ / /          1 -- 4
-//        3   4 /           3 -- 5
-//         \ / /            4 -- 5
-//          5_/             2 -- 4
-//                          5 -- 2
+//          0   1_          0 -- 2
+//         / \ / /          0 -- 3
+//        2   3 /           2 -- 4
+//         \ / /            3 -- 4
+//          4_/             1 -- 3
+//                          4 -- 1
 
 class UndiGraphTestSuite: public CxxTest::TestSuite {
 
@@ -83,13 +83,13 @@ public:
     TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode( ) );
     TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode( ) );
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,3 ) );
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 3,5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 0,2 ) );
     TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 2,4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,3 ) );
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 1,4 ) );
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 4,5 ) );
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 5,2 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 0,3 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 3,4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 4,1 ) );
   }
 
   void testCopyConstructor() {
@@ -198,27 +198,27 @@ public:
 
     TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 3 );
 
-    TS_ASSERT( ! graph.existsEdge( 3,5 ) );
-    TS_ASSERT( ! graph.existsEdge( 4,5 ) );
-    TS_ASSERT( ! graph.existsEdge( 5,2 ) );
+    TS_ASSERT( ! graph.existsEdge( 2,4 ) );
+    TS_ASSERT( ! graph.existsEdge( 3,4 ) );
+    TS_ASSERT( ! graph.existsEdge( 4,1 ) );
   }
 
   void testAddDelEdges_1() {
     gum::UndiGraph graph=buildGraph();
 
-    TS_ASSERT( graph.existsEdge( 1,3 ) );
-    TS_ASSERT( graph.existsEdge( 3,5 ) );
+    TS_ASSERT( graph.existsEdge( 0,2 ) );
     TS_ASSERT( graph.existsEdge( 2,4 ) );
+    TS_ASSERT( graph.existsEdge( 1,3 ) );
 
     gum::Size nodeCount   = graph.size();
     gum::Size edgeCount   = graph.sizeEdges();
 
-    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( gum::Edge (5,3 ) ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseEdge( gum::Edge (4,2 ) ) );
 
     TS_ASSERT_EQUALS( nodeCount, graph.size() );
     TS_ASSERT_EQUALS( edgeCount, graph.sizeEdges() + 1 );
 
-    TS_ASSERT( ! graph.existsEdge( 3,5 ) );
+    TS_ASSERT( ! graph.existsEdge( 2,4 ) );
   }
 
   void testAddDelEdges_2() {
@@ -338,7 +338,7 @@ public:
       s+=*iter;
     }
 
-    TS_ASSERT_EQUALS( s, (gum::Size)(1+1+3+4+2+5+3+4+5+5+4+2) );
+    TS_ASSERT_EQUALS( s, (gum::Size)(0+0+2+3+1+4+2+3+4+4+3+1) );
   }
 
   void testHashMapEdges() {
@@ -368,22 +368,22 @@ public:
     gum::NodeId id7 = graph.insertNode();
     graph.insertEdge( id6,id7 );
     
-    std::vector<gum::NodeId> path = graph.undirectedPath ( 1, 2);
+    std::vector<gum::NodeId> path = graph.undirectedPath ( 0, 1);
     TS_ASSERT_EQUALS( path.size(), 3U );
-    TS_ASSERT_EQUALS( path[0], 1U );
-    TS_ASSERT_EQUALS( path[1], 4U );
-    TS_ASSERT_EQUALS( path[2], 2U );
+    TS_ASSERT_EQUALS( path[0], 0U );
+    TS_ASSERT_EQUALS( path[1], 3U );
+    TS_ASSERT_EQUALS( path[2], 1U );
     
-    std::vector<gum::NodeId> path2 = graph.undirectedPath ( 2, 3);
+    std::vector<gum::NodeId> path2 = graph.undirectedPath ( 1, 2);
     TS_ASSERT_EQUALS( path2.size(), 3U );
-    TS_ASSERT_EQUALS( path2[0], 2U );
-    TS_ASSERT_EQUALS( path2[1], 5U );
-    TS_ASSERT_EQUALS( path2[2], 3U );
+    TS_ASSERT_EQUALS( path2[0], 1U );
+    TS_ASSERT_EQUALS( path2[1], 4U );
+    TS_ASSERT_EQUALS( path2[2], 2U );
 
-    std::vector<gum::NodeId> path3 = graph.undirectedPath ( 6, 7);
+    std::vector<gum::NodeId> path3 = graph.undirectedPath ( 5, 6);
     TS_ASSERT_EQUALS( path3.size(), 2U );
     
-    TS_ASSERT_THROWS( graph.undirectedPath ( 2, 6), gum::NotFound );
+    TS_ASSERT_THROWS( graph.undirectedPath ( 1, 5), gum::NotFound );
     
   }
 };

@@ -28,6 +28,24 @@
 #include <agrum/graphs/nodeGraphPart.h>
 
 namespace gum {
+
+  INLINE void NodeGraphPartIterator::__validate( void ) {
+    __valid = false;
+
+    if ( __pos > __nodes->bound() ) {
+      __pos = __nodes->bound();
+    }
+
+    while ( __pos < __nodes->bound() ) {
+      if ( ! __nodes->__inHoles( __pos ) ) {
+        __valid = true;
+        return;
+      }
+
+      ++__pos;
+    }
+  }
+
   INLINE NodeGraphPart& NodeGraphPart::operator= ( const NodeGraphPart& p ) {
     // avoid self assignment
     if ( this != &p ) {
@@ -37,52 +55,78 @@ namespace gum {
     return *this;
   }
 
-  INLINE NodeId NodeGraphPart::__nextNodeId() {
-    //fill the first hole if holes exist
-    if ( __holes && ( ! __holes->empty() ) ) {
-      NodeId id = *( __holes->begin() );
-      __eraseHole( id );
-      return id;
-    }
-
-    __max += 1;
-
-    __updateEndIterator();
-    return ( __max );
-  }
-
   INLINE NodeId NodeGraphPart::nextNodeId() const {
+    NodeId next = 0;
+
     //return the first hole if holes exist
     if ( __holes && ( ! __holes->empty() ) )
-      return *( __holes->begin() );
+      next = *( __holes->begin() );
+    else// in other case
+      next = __bound;
 
-    // in other case
-    return 1 + __max;
+    return next;
   }
 
-// warning: do not try to use function insertNode ( const NodeId id ) within
-// function insertNode(): as both functions are virtual, this may create
-// bugs within the graphs hierarchy (i.e., virtual functions calling recursively
-// each other along the hierarchy) that are not easy to debug.
+  // __holes is assumed to be not NULL and id is assumed to be in __holes
+  INLINE void NodeGraphPart::__eraseHole( NodeId id ) {
+    __holes->erase( id );
+
+    if ( __holes->empty() ) {
+      __holes->resize( __holes_size );
+    }
+  }
+
+  // warning: do not try to use function insertNode ( const NodeId id ) within
+  // function insertNode(): as both functions are virtual, this may create
+  // bugs within the graphs hierarchy (i.e., virtual functions calling recursively
+  // each other along the hierarchy) that are not easy to debug.
   INLINE  NodeId NodeGraphPart::insertNode() {
-    // only one tmp
-    NodeId newNode = __nextNodeId();
+    NodeId newNode;
+
+    //fill the first hole if holes exist
+    if ( __holes && ( ! __holes->empty() ) ) {
+      newNode = *( __holes->begin() );
+      __eraseHole( newNode );
+    }
+    else {
+      newNode = __bound;
+      ++__bound;
+      __updateEndIterator();
+    }
+    
     GUM_EMIT1( onNodeAdded, newNode );
 
     return newNode;
   }
+  
+  INLINE Size NodeGraphPart::sizeNodes( ) const {
+    return ( __holes ) ? ( __bound - __holes->size() ) : __bound;
+  }
 
+  INLINE Size NodeGraphPart::size( ) const {
+    return sizeNodes();
+  }
+
+  INLINE bool NodeGraphPart::existsNode( const NodeId node ) const {
+    if ( node >= __bound )
+      return false;
+    
+    return ( ! __inHoles( node ) );
+  }
+
+  INLINE bool NodeGraphPart::exists( const NodeId node ) const {
+    return existsNode( node );
+  }
+  
   INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
     if ( ! existsNode( node ) ) return;
 
     __addHole( node );
 
     GUM_EMIT1( onNodeDeleted, node );
-
   }
 
   INLINE bool NodeGraphPart::emptyNodes() const {
-
     return ( sizeNodes() == 0 );
   }
 
@@ -90,50 +134,31 @@ namespace gum {
     return emptyNodes();
   }
 
-  INLINE bool NodeGraphPart::existsNode( const NodeId node ) const {
-    if ( node > __max )
-      return false;
-
-    return ( ! inHoles( node ) );
-  }
-
-  INLINE bool NodeGraphPart::exists( const NodeId node ) const {
-    return existsNode( node );
-  }
-
-  INLINE Size NodeGraphPart::sizeNodes( ) const {
-    return ( __holes ) ? ( __max - __holes->size() ) : __max;
-  }
-
-  INLINE Size NodeGraphPart::size( ) const {
-    return sizeNodes();
-  }
-
-  INLINE NodeId NodeGraphPart::maxId( ) const {
-    return __max;
+  INLINE NodeId NodeGraphPart::bound( ) const {
+    return __bound;
   }
 
   INLINE void NodeGraphPart::clearNodes() {
     __clearNodes();
   }
 
-// warning: clear is an alias for clearNodes but it should never be the case
-// that the code of clear is just a call to clearNodes: as both methods are
-// virtual, this could induce bugs within the graphs hierarchy (i.e., virtual
-// functions calling recursively each other along the hierarchy) that are not
-// easy to debug. Hence, the code of clearNodes should be duplicated here.
+  // warning: clear is an alias for clearNodes but it should never be the case
+  // that the code of clear is just a call to clearNodes: as both methods are
+  // virtual, this could induce bugs within the graphs hierarchy (i.e., virtual
+  // functions calling recursively each other along the hierarchy) that are not
+  // easy to debug. Hence, the code of clearNodes should be duplicated here.
   INLINE void NodeGraphPart::clear() {
     __clearNodes();
   }
 
   INLINE NodeGraphPartIterator NodeGraphPart::beginNodes() const {
     NodeGraphPartIterator it( this );
-    ++it; // stop the iterator at the first not-in-holes
+    it.__validate(); // stop the iterator at the first not-in-holes
     return it;
   }
 
   INLINE void NodeGraphPart::__updateEndIterator() {
-    __endIterator.__setPos( __max + 1 );
+    __endIterator.__setPos( __bound );
   }
 
   INLINE const NodeGraphPartIterator& NodeGraphPart::endNodes() const {
@@ -141,7 +166,7 @@ namespace gum {
   }
 
   INLINE bool NodeGraphPart::operator== ( const NodeGraphPart& p ) const {
-    if ( __max != p.__max )
+    if ( __bound != p.__bound )
       return false;
 
     if ( __holes )
@@ -165,40 +190,43 @@ namespace gum {
     NodeSet son( sizeNodes() );
 
     if ( ! empty() ) {
-      for ( NodeId n = 1;n <= __max;n++ ) {
-        if ( inHoles( n ) ) continue;
-
-        son.insert( n );
+      for ( NodeId n = 0;n < __bound; ++n ) {
+        if ( ! __inHoles( n ) )
+          son.insert( n );
       }
     }
 
     return son;
   }
 
-  // __holes is assumed to be not NULL and id is assumed to be in __holes
-  INLINE void NodeGraphPart::__eraseHole( NodeId id ) {
-    __holes->erase( id );
-
-    if ( __holes->empty() ) {
-      __holes->resize( __holes_size );
-    }
-  }
-
-  INLINE bool NodeGraphPart::inHoles( NodeId id ) const {
+  INLINE bool NodeGraphPart::__inHoles( NodeId id ) const {
     return __holes && __holes->contains( id );
   }
 
   /// @return the size of __holes
-  INLINE Size NodeGraphPart::sizeHoles() const {
+  INLINE Size NodeGraphPart::__sizeHoles() const {
     return __holes ? __holes->size() : ( Size )0;
   }
 
-//=================NODEGRAPHPARTITERATOR============================
-  INLINE NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPart* nodes ) : __nodes( nodes ), __pos( 0 ) {
+
+
+  
+  //=================NODEGRAPHPARTITERATOR============================
+
+
+
+  INLINE
+  NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPart* nodes ) :
+    __nodes( nodes ), __pos( 0 ), __valid( false ) {
+
+    GUM_CONNECT( *const_cast<NodeGraphPart *>( nodes ),
+                 onNodeDeleted, *this, NodeGraphPartIterator::whenNodeDeleted );
     GUM_CONSTRUCTOR( NodeGraphPartIterator );
   }
 
-  INLINE NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPartIterator& it ): __nodes( it.__nodes ), __pos( it.__pos ) {
+  INLINE
+  NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPartIterator& it ):
+    __nodes( it.__nodes ), __pos( it.__pos ), __valid( it.__valid ) {
     GUM_CONS_CPY( NodeGraphPartIterator );
   }
 
@@ -206,37 +234,59 @@ namespace gum {
     GUM_DESTRUCTOR( NodeGraphPartIterator );
   }
 
-  INLINE NodeGraphPartIterator& NodeGraphPartIterator::operator=( const NodeGraphPartIterator& it ) {
-    __nodes = it.__nodes;
-    __pos = it.__pos;
-    GUM_OP_CPY( NodeGraphPartIterator );
-
+  INLINE NodeGraphPartIterator&
+  NodeGraphPartIterator::operator=( const NodeGraphPartIterator& it ) {
+    //  avoid self assignment
+    if (&it != this ) {
+      __nodes = it.__nodes;
+      __pos = it.__pos;
+      __valid = it.__valid;
+      
+      Listener::operator=( it );
+      GUM_OP_CPY( NodeGraphPartIterator );
+    }
     return *this;
   }
 
-  INLINE bool NodeGraphPartIterator::operator==( const NodeGraphPartIterator& it ) const {
-    return (( __pos == it.__pos ) && ( __nodes == it.__nodes ) );
+  INLINE
+  bool NodeGraphPartIterator::operator==( const NodeGraphPartIterator& it ) const {
+    if ( __pos != it.__pos ) return false;
+    if ( __valid != it.__valid ) return false;
+    if ( __nodes != it.__nodes ) return false;
+
+    return true;
   }
 
-  INLINE bool NodeGraphPartIterator::operator!=( const NodeGraphPartIterator& it ) const {
+  INLINE
+  bool NodeGraphPartIterator::operator!=( const NodeGraphPartIterator& it ) const {
     return !( operator==( it ) );
   }
 
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::operator++( void ) {
-    __pos++;
-
-    while ( __nodes->inHoles( __pos ) ) __pos++; // we are sure that at least inHoles(__nodes->__max+1) is false
-
+    ++__pos;
+    __validate();
     return *this;
   }
 
   INLINE NodeId NodeGraphPartIterator::operator*( void ) const {
+    if ( !__valid )
+      GUM_ERROR( UndefinedIteratorValue, "This iterator is not valid !" );
+
     return __pos;
   }
 
-// unsafe private method
+  // unsafe private method
   INLINE void NodeGraphPartIterator::__setPos( NodeId id ) {
     __pos = id;
+
+    if ( __pos >= __nodes->bound() ) {
+      __pos = __nodes->bound();
+      __valid = false;
+    }
+    else {
+      __valid = __nodes->exists( __pos );
+    }
   }
+
+
 } /* namespace gum */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

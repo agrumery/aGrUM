@@ -31,16 +31,16 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===            CLASS FOR COMPUTING INCREMENTAL TRIANGULATIONS            === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===            CLASS FOR COMPUTING INCREMENTAL TRIANGULATIONS           === */
+  /* =========================================================================== */
+  /* =========================================================================== */
 
 
-  // ================================================================================
+  // ==============================================================================
   /// returns a junction tree corresponding to the current graph
-  // ================================================================================
+  // ==============================================================================
   INLINE
   const CliqueGraph& IncrementalTriangulation::junctionTree() {
     updateTriangulation();
@@ -48,9 +48,9 @@ namespace gum {
   }
 
 
-  // ================================================================================
+  // ==============================================================================
   /// returns the junction tree of the maximal prime subgraphs
-  // ================================================================================
+  // ==============================================================================
   INLINE
   const CliqueGraph&
   IncrementalTriangulation::maxPrimeSubgraphTree() {
@@ -59,28 +59,20 @@ namespace gum {
   }
 
 
-  // ================================================================================
+  // ==============================================================================
   /// returns the triangulation algorithm (useful for fine tuning it)
-  // ================================================================================
-  INLINE const Triangulation&
-  IncrementalTriangulation::getTriangulationAlgo() const  {
+  // ==============================================================================
+  INLINE const UnconstrainedTriangulation&
+  IncrementalTriangulation::triangulationAlgo() const  {
     return *__triangulation;
   }
 
 
-  // ================================================================================
-  /// returns a clique containing a given node of the triangulated graph
-  // ================================================================================
-  INLINE NodeId
-  IncrementalTriangulation::getContainerClique ( NodeId id ) const {
-    const std::vector<NodeId>& contain_cliques =
-      __cliques_of_mps[__mps_of_node[id][0]];
-
-    for ( unsigned int i = 0; i < contain_cliques.size(); ++i )
-      if ( __junction_tree.clique(contain_cliques[i]).contains( id ) )
-        return contain_cliques[i];
-
-    GUM_ERROR( NotFound, "no container clique" );
+  // ==============================================================================
+  /// returns the current graph (that which is incrementally triangulated)
+  // ==============================================================================
+  const UndiGraph& IncrementalTriangulation::graph () const {
+    return __graph;
   }
 
 

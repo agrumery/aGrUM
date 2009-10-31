@@ -24,350 +24,350 @@
 #include <agrum/graphs/DAG.h>
 
 // The graph used for the tests:
-//          1   2_          1 -> 3
-//         / \ / /          1 -> 4
-//        3   4 /           3 -> 5
-//         \ / /            4 -> 5
-//          5_/             2 -> 4
-//                          2 -> 5
+//          0   1_          0 -> 2
+//         / \ / /          0 -> 3
+//        2   3 /           2 -> 4
+//         \ / /            3 -> 5
+//          4_/             1 -> 3
+//                          1 -> 4
 
 class DAGTestSuite: public CxxTest::TestSuite {
 
-  private:
-    static gum::Size simpleDoubleFunction( const gum::NodeId& aNodeId ) {
-      return aNodeId*2;
-    }
+private:
+  static gum::Size simpleDoubleFunction( const gum::NodeId& aNodeId ) {
+    return aNodeId*2;
+  }
 
-    static gum::Size simpleArcMapFunction( const gum::Arc& anArc ) {
-      return anArc.tail()+anArc.head();
-    }
+  static gum::Size simpleArcMapFunction( const gum::Arc& anArc ) {
+    return anArc.tail()+anArc.head();
+  }
 
-    static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
-      throw( aNode );
-    }
+  static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
+    throw( aNode );
+  }
 
-    gum::DAG buildGraph() {
-      gum::DAG g;
-      id1=g.insertNode();
-      id2=g.insertNode();
-      id3=g.insertNode();
-      id4=g.insertNode();
-      id5=g.insertNode();
+  gum::DAG buildGraph() {
+    gum::DAG g;
+    id1=g.insertNode();
+    id2=g.insertNode();
+    id3=g.insertNode();
+    id4=g.insertNode();
+    id5=g.insertNode();
 
-      g.insertArc( id1,id3 );
-      g.insertArc( id3,id5 );
-      g.insertArc( id2,id4 );
-      g.insertArc( id1,id4 );
-      g.insertArc( id4,id5 );
-      g.insertArc( id2,id5 );
+    g.insertArc( id1,id3 );
+    g.insertArc( id3,id5 );
+    g.insertArc( id2,id4 );
+    g.insertArc( id1,id4 );
+    g.insertArc( id4,id5 );
+    g.insertArc( id2,id5 );
 
-      return g;
-    }
+    return g;
+  }
 
-  public:
+public:
+  gum::NodeId id1,id2,id3,id4,id5;
+
+  void testConstructor1() {
+    gum::DAG *graph=NULL;
+    TS_GUM_ASSERT_THROWS_NOTHING(( graph = new gum::DAG() ) );
+    TS_GUM_ASSERT_THROWS_NOTHING(( delete( graph ) ) );
+  }
+
+  void testInsert1() {
+    gum::DAG graph;
     gum::NodeId id1,id2,id3,id4,id5;
+    id1=id2=id3=id4=id5=0;
 
-    void testConstructor1() {
-      gum::DAG *graph=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING(( graph = new gum::DAG() ) );
-      TS_GUM_ASSERT_THROWS_NOTHING(( delete( graph ) ) );
-    }
-
-    void testInsert1() {
-      gum::DAG graph;
-      gum::NodeId id1,id2,id3,id4,id5;
-      id1=id2=id3=id4=id5=0;
-
-      TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode() );
 
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id3 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id3,id5 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id3 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id3,id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id5 ) );
 
 
-    }
+  }
 
-    void testInsert2() {
-      gum::DAG graph;
-      gum::NodeId id1,id2,id3,id4,id5;      
-      id1=id2=id3=id4=id5=0;
+  void testInsert2() {
+    gum::DAG graph;
+    gum::NodeId id1,id2,id3,id4,id5;      
+    id1=id2=id3=id4=id5=0;
       
-      TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode() );
-      TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id1=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id2=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id3=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id4=graph.insertNode() );
+    TS_GUM_ASSERT_THROWS_NOTHING( id5=graph.insertNode() );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id3 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id3,id5 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id3 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id3,id5 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id2,id4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1,id4 ) );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4,id5 ) );
 			
-      TS_ASSERT_THROWS( graph.insertArc( id5,id2 ) ,gum::InvalidCircuit );
-			TS_ASSERT_THROWS( graph.insertArc( 1000,id2 ) ,gum::InvalidNode );
-			TS_ASSERT_THROWS( graph.insertArc( id2,1000 ) ,gum::InvalidNode );
+    TS_ASSERT_THROWS( graph.insertArc( id5,id2 ) ,gum::InvalidCircuit );
+    TS_ASSERT_THROWS( graph.insertArc( 1000,id2 ) ,gum::InvalidNode );
+    TS_ASSERT_THROWS( graph.insertArc( id2,1000 ) ,gum::InvalidNode );
 
+  }
+
+  void testCopyConstructor() {
+    gum::DAG graph=buildGraph();
+
+    gum::DAG *copy=NULL;
+    TS_GUM_ASSERT_THROWS_NOTHING( copy = new gum::DAG( graph ) ) ;
+    TS_ASSERT( graph== *copy );
+    delete( copy );
+
+    TS_GUM_ASSERT_THROWS_NOTHING( gum::DAG copy2=graph );
+    TS_GUM_ASSERT_THROWS_NOTHING( gum::DAG copy3( graph ) );
+  }
+
+  void testEmptyNodes() {
+    gum::DAG graph;
+
+    TS_ASSERT( graph.empty() );
+    graph=buildGraph();
+    TS_ASSERT( ! graph.empty() );
+  }
+
+  void testEmptyArcs() {
+    gum::DAG graph;
+    TS_ASSERT( graph.emptyArcs() );
+    graph=buildGraph();
+    TS_ASSERT( ! graph.emptyArcs() );
+  }
+
+  void testClearNodes() {
+    gum::DAG graph=buildGraph();
+    TS_ASSERT( ! graph.empty() );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.clear() );
+    TS_ASSERT( graph.empty() && graph.emptyArcs() );
+  }
+
+  void testClearArcs() {
+    gum::DAG graph=buildGraph();
+    TS_ASSERT( ! graph.emptyArcs() );
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.clearArcs() );
+    TS_ASSERT( graph.emptyArcs() );
+    TS_ASSERT( ! graph.empty() );
+  }
+
+  void testAddDelNodes_2() {
+    gum::DAG graph=buildGraph();
+
+    TS_ASSERT( graph.exists( id1 ) );
+    TS_ASSERT( graph.exists( id2 ) );
+    TS_ASSERT( graph.exists( id3 ) );
+    TS_ASSERT( graph.exists( id4 ) );
+    TS_ASSERT( graph.exists( id5 ) );
+    TS_ASSERT( ! graph.exists( id5+id4+id3+id2+id1 ) );
+
+    TS_ASSERT( graph.existsArc( id3,id5 ) );
+    TS_ASSERT( ! graph.existsArc( id5,id3 ) );
+    TS_ASSERT( ! graph.existsArc( id1,id1 ) );
+
+    gum::Size nodeCount   = graph.size();
+    gum::Size arcCount    = graph.sizeArcs();
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
+
+    TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
+    TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 2 );
+
+    TS_ASSERT( ! graph.exists( id2 ) );
+    TS_ASSERT( ! graph.existsArc( id2,id4 ) );
+    TS_ASSERT( ! graph.existsArc( id5,id2 ) );
+  }
+
+  void testRemoveNodes_1() {
+    gum::DAG graph=buildGraph();
+
+    gum::Size nodeCount = graph.size();
+    gum::Size arcCount = graph.sizeArcs();
+
+    TS_ASSERT_EQUALS( nodeCount, ( gum::Size )5 );
+    TS_ASSERT_EQUALS( arcCount, ( gum::Size )6 );
+
+    for ( int i = 0; i < 10; i++ ) {
+      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
     }
 
-    void testCopyConstructor() {
-      gum::DAG graph=buildGraph();
+    TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
 
-      gum::DAG *copy=NULL;
-      TS_GUM_ASSERT_THROWS_NOTHING( copy = new gum::DAG( graph ) ) ;
-      TS_ASSERT( graph== *copy );
-      delete( copy );
+    TS_ASSERT_EQUALS( arcCount,  graph.sizeArcs() + 3 );
 
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::DAG copy2=graph );
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::DAG copy3( graph ) );
+    TS_ASSERT( ! graph.existsArc( id3,id5 ) );
+    TS_ASSERT( ! graph.existsArc( id4,id5 ) );
+    TS_ASSERT( ! graph.existsArc( id5,id2 ) );
+  }
+
+
+  void testAddDelArcs_2() {
+    gum::DAG graph=buildGraph();
+
+    TS_ASSERT( graph.existsArc( id1, id4 ) );
+    TS_ASSERT( graph.existsArc( id4, id5 ) );
+    TS_ASSERT( graph.existsArc( id2, id5 ) );
+
+    gum::Size nodeCount   = graph.size();
+    gum::Size arcCount    = graph.sizeArcs();
+
+    TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc (id2, id5 ) ) );
+
+    TS_ASSERT_EQUALS( nodeCount, graph.size() );
+    TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 1 );
+
+    TS_ASSERT( ! graph.existsArc( id2, id5 ) );
+  }
+
+  void testGetNodes() {
+    gum::DAG graph=buildGraph();
+
+    gum::NodeSet nodelist = graph.nodes();
+    TS_ASSERT_EQUALS( nodelist.size(), graph.size() );
+    gum::Size nodeCount = graph.size();
+
+    for ( gum::NodeSet::iterator iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+      graph.eraseNode( *iter );
     }
 
-    void testEmptyNodes() {
-      gum::DAG graph;
+    TS_ASSERT( graph.empty() );
 
-      TS_ASSERT( graph.empty() );
-      graph=buildGraph();
-      TS_ASSERT( ! graph.empty() );
+    TS_ASSERT_EQUALS( nodeCount, nodelist.size() );
+  }
+
+  void testGetArcs() {
+    gum::DAG graph=buildGraph();
+
+    gum::ArcSet arclist = graph.asArcs();
+    TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
+    gum::Size arcCount = graph.sizeArcs();
+
+    for ( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+      graph.eraseArc( *iter );
     }
 
-    void testEmptyArcs() {
-      gum::DAG graph;
-      TS_ASSERT( graph.emptyArcs() );
-      graph=buildGraph();
-      TS_ASSERT( ! graph.emptyArcs() );
+    TS_ASSERT( graph.emptyArcs() );
+
+    TS_ASSERT_EQUALS( arcCount, arclist.size() );
+  }
+
+  void testNodeListMapNodes() {
+    gum::DAG graph=buildGraph();
+
+    gum::List<gum::Size> list = graph.listMapNodes( &simpleDoubleFunction );
+    TS_ASSERT_EQUALS( list.size(), graph.size() );
+
+    gum::Size s=0;
+
+    for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+      s+=*iter;
     }
 
-    void testClearNodes() {
-      gum::DAG graph=buildGraph();
-      TS_ASSERT( ! graph.empty() );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.clear() );
-      TS_ASSERT( graph.empty() && graph.emptyArcs() );
+    TS_ASSERT_EQUALS( s,2*( id1+id2+id3+id4+id5 ) );
+  }
+
+  void testTwistedNodeListMapNodes() {
+    gum::DAG graph=buildGraph();
+
+    gum::List<gum::Size> list;
+    TS_ASSERT_THROWS_ANYTHING( list=graph.listMapNodes( &twistedMapFunction ) );
+
+    TS_ASSERT_EQUALS( list.size(), ( gum::Size )0 );
+  }
+
+  void testHashMapNodes() {
+    gum::DAG graph=buildGraph();
+
+    gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
+    TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
+
+    gum::Size sk=0;
+    gum::Size sv=0;
+
+    for (
+         gum::Property<gum::Size>::onNodes::iterator iter = hashmap.begin();
+         iter != hashmap.end();
+         ++iter
+         ) {
+      sk+=iter.key();
+      sv+=*iter;
     }
 
-    void testClearArcs() {
-      gum::DAG graph=buildGraph();
-      TS_ASSERT( ! graph.emptyArcs() );
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.clearArcs() );
-      TS_ASSERT( graph.emptyArcs() );
-      TS_ASSERT( ! graph.empty() );
+    TS_ASSERT_EQUALS( sk*2,sv );
+  }
+
+  void testTwistedHashMapNodes() {
+    gum::DAG graph=buildGraph();
+
+    gum::Property<gum::Size>::onNodes hashmap;
+    TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
+
+    TS_ASSERT_EQUALS( hashmap.size(), ( gum::Size )0 );
+  }
+
+  void testListMapArcs() {
+    gum::DAG graph=buildGraph();
+
+    gum::List<gum::Size> list = graph.listMapArcs( &simpleArcMapFunction );
+    TS_ASSERT_EQUALS( list.size(), graph.sizeArcs() );
+
+    gum::Size s=0;
+
+    for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+      s+=*iter;
     }
 
-    void testAddDelNodes_2() {
-      gum::DAG graph=buildGraph();
+    TS_ASSERT_EQUALS( s, ( gum::Size )( 0+0+2+3+1+4+2+3+4+4+3+1 ) );
+  }
 
-      TS_ASSERT( graph.exists( id1 ) );
-      TS_ASSERT( graph.exists( id2 ) );
-      TS_ASSERT( graph.exists( id3 ) );
-      TS_ASSERT( graph.exists( id4 ) );
-      TS_ASSERT( graph.exists( id5 ) );
-      TS_ASSERT( ! graph.exists( id5+id4+id3+id2+id1 ) );
+  void testHashMapArcs() {
+    gum::DAG graph=buildGraph();
 
-      TS_ASSERT( graph.existsArc( id3,id5 ) );
-      TS_ASSERT( ! graph.existsArc( id5,id3 ) );
-      TS_ASSERT( ! graph.existsArc( id1,id1 ) );
+    gum::Property<gum::Size>::onArcs hashmap = graph.arcsProperty( &simpleArcMapFunction );
+    TS_ASSERT_EQUALS( hashmap.size(), graph.sizeArcs() );
 
-      gum::Size nodeCount   = graph.size();
-      gum::Size arcCount    = graph.sizeArcs();
+    gum::Size sk=0;
+    gum::Size sv=0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
-      TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 2 );
-
-      TS_ASSERT( ! graph.exists( id2 ) );
-      TS_ASSERT( ! graph.existsArc( id2,id4 ) );
-      TS_ASSERT( ! graph.existsArc( id5,id2 ) );
+    for (
+         gum::Property<gum::Size>::onArcs::iterator iter = hashmap.begin();
+         iter != hashmap.end();
+         ++iter
+         ) {
+      sv+=*iter;
+      sk+=iter.key().head()+iter.key().tail();
     }
 
-    void testRemoveNodes_1() {
-      gum::DAG graph=buildGraph();
+    TS_ASSERT_EQUALS( sk,sv );
+  }
 
-      gum::Size nodeCount = graph.size();
-      gum::Size arcCount = graph.sizeArcs();
+  void testCopyOperator() {
+    gum::DAG graph=buildGraph();
+      
+    gum::DAG g2=buildGraph();
+    g2.insertNode();
 
-      TS_ASSERT_EQUALS( nodeCount, ( gum::Size )5 );
-      TS_ASSERT_EQUALS( arcCount, ( gum::Size )6 );
+    gum::DAG g3;
 
-      for ( int i = 0; i < 10; i++ ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
-      }
+    g2=g3=graph;
 
-      TS_ASSERT_EQUALS( nodeCount, graph.size() + 1 );
+    TS_ASSERT_EQUALS(g2,graph);	
+    TS_ASSERT_EQUALS(g3,graph);
 
-      TS_ASSERT_EQUALS( arcCount,  graph.sizeArcs() + 3 );
+    g2.clear();
+    g3.clearArcs();
 
-      TS_ASSERT( ! graph.existsArc( id3,id5 ) );
-      TS_ASSERT( ! graph.existsArc( id4,id5 ) );
-      TS_ASSERT( ! graph.existsArc( id5,id2 ) );
-    }
-
-
-    void testAddDelArcs_2() {
-      gum::DAG graph=buildGraph();
-
-      TS_ASSERT( graph.existsArc( id1, id4 ) );
-      TS_ASSERT( graph.existsArc( id4, id5 ) );
-      TS_ASSERT( graph.existsArc( id2, id5 ) );
-
-      gum::Size nodeCount   = graph.size();
-      gum::Size arcCount    = graph.sizeArcs();
-
-      TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc (id2, id5 ) ) );
-
-      TS_ASSERT_EQUALS( nodeCount, graph.size() );
-      TS_ASSERT_EQUALS( arcCount, graph.sizeArcs() + 1 );
-
-      TS_ASSERT( ! graph.existsArc( id2, id5 ) );
-    }
-
-    void testGetNodes() {
-      gum::DAG graph=buildGraph();
-
-      gum::NodeSet nodelist = graph.nodes();
-      TS_ASSERT_EQUALS( nodelist.size(), graph.size() );
-      gum::Size nodeCount = graph.size();
-
-      for ( gum::NodeSet::iterator iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
-        graph.eraseNode( *iter );
-      }
-
-      TS_ASSERT( graph.empty() );
-
-      TS_ASSERT_EQUALS( nodeCount, nodelist.size() );
-    }
-
-    void testGetArcs() {
-      gum::DAG graph=buildGraph();
-
-      gum::ArcSet arclist = graph.asArcs();
-      TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
-      gum::Size arcCount = graph.sizeArcs();
-
-      for ( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
-        graph.eraseArc( *iter );
-      }
-
-      TS_ASSERT( graph.emptyArcs() );
-
-      TS_ASSERT_EQUALS( arcCount, arclist.size() );
-    }
-
-    void testNodeListMapNodes() {
-      gum::DAG graph=buildGraph();
-
-      gum::List<gum::Size> list = graph.listMapNodes( &simpleDoubleFunction );
-      TS_ASSERT_EQUALS( list.size(), graph.size() );
-
-      gum::Size s=0;
-
-      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
-        s+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( s,2*( id1+id2+id3+id4+id5 ) );
-    }
-
-    void testTwistedNodeListMapNodes() {
-      gum::DAG graph=buildGraph();
-
-      gum::List<gum::Size> list;
-      TS_ASSERT_THROWS_ANYTHING( list=graph.listMapNodes( &twistedMapFunction ) );
-
-      TS_ASSERT_EQUALS( list.size(), ( gum::Size )0 );
-    }
-
-    void testHashMapNodes() {
-      gum::DAG graph=buildGraph();
-
-     gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
-      TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
-
-      gum::Size sk=0;
-      gum::Size sv=0;
-
-      for (
-        gum::Property<gum::Size>::onNodes::iterator iter = hashmap.begin();
-        iter != hashmap.end();
-        ++iter
-      ) {
-        sk+=iter.key();
-        sv+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( sk*2,sv );
-    }
-
-    void testTwistedHashMapNodes() {
-      gum::DAG graph=buildGraph();
-
-      gum::Property<gum::Size>::onNodes hashmap;
-      TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
-
-      TS_ASSERT_EQUALS( hashmap.size(), ( gum::Size )0 );
-    }
-
-    void testListMapArcs() {
-      gum::DAG graph=buildGraph();
-
-      gum::List<gum::Size> list = graph.listMapArcs( &simpleArcMapFunction );
-      TS_ASSERT_EQUALS( list.size(), graph.sizeArcs() );
-
-      gum::Size s=0;
-
-      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
-        s+=*iter;
-      }
-
-      TS_ASSERT_EQUALS( s, ( gum::Size )( 1+1+3+4+2+5+3+4+5+5+4+2 ) );
-    }
-
-    void testHashMapArcs() {
-      gum::DAG graph=buildGraph();
-
-      gum::Property<gum::Size>::onArcs hashmap = graph.arcsProperty( &simpleArcMapFunction );
-      TS_ASSERT_EQUALS( hashmap.size(), graph.sizeArcs() );
-
-      gum::Size sk=0;
-      gum::Size sv=0;
-
-      for (
-        gum::Property<gum::Size>::onArcs::iterator iter = hashmap.begin();
-        iter != hashmap.end();
-        ++iter
-      ) {
-        sv+=*iter;
-        sk+=iter.key().head()+iter.key().tail();
-      }
-
-      TS_ASSERT_EQUALS( sk,sv );
-    }
-
-		void testCopyOperator() {
-      gum::DAG graph=buildGraph();
-
-			gum::DAG g2=buildGraph();
-			g2.insertNode();
-
-			gum::DAG g3;
-
-			g2=g3=graph;
-
-			TS_ASSERT_EQUALS(g2,graph);	
-			TS_ASSERT_EQUALS(g3,graph);
-
-			g2.clear();
-			g3.clearArcs();
-
-			TS_ASSERT_DIFFERS(g2,graph);
-			TS_ASSERT_DIFFERS(g3,graph);
-		}
+    TS_ASSERT_DIFFERS(g2,graph);
+    TS_ASSERT_DIFFERS(g3,graph);
+  }
 };
 

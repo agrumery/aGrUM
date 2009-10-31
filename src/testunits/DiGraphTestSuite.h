@@ -24,12 +24,12 @@
 #include <agrum/graphs/diGraph.h>
 
 // The graph used for the tests:
-//          1   2_          1 -> 3
-//         / \ / /          1 -> 4
-//        3   4 /           3 -> 5
-//         \ / /            4 -> 5
-//          5_/             2 -> 4
-//                          5 -> 2
+//          0   1_          0 -> 2
+//         / \ / /          0 -> 3
+//        2   3 /           2 -> 4
+//         \ / /            3 -> 4
+//          4_/             1 -> 3
+//                          4 -> 1
 
 class DiGraphTestSuite: public CxxTest::TestSuite {
 
@@ -325,7 +325,7 @@ public:
       s+=*iter;
     }
 
-    TS_ASSERT_EQUALS( s, (gum::Size)(1+1+3+4+2+5+3+4+5+5+4+2) );
+    TS_ASSERT_EQUALS( s, (gum::Size)(0+0+2+3+1+4+2+3+4+4+3+1) );
   }
 
   void testHashMapArcs() {
@@ -362,20 +362,20 @@ public:
   void testDirectedPaths() {
     gum::DiGraph graph=buildGraph();
 
-    std::vector<gum::NodeId> path = graph.directedPath ( 1, 2);
+    std::vector<gum::NodeId> path = graph.directedPath ( 0, 1);
     TS_ASSERT_EQUALS( path.size(), 4U );
-    TS_ASSERT_EQUALS( path[0], 1U );
+    TS_ASSERT_EQUALS( path[0], 0U );
     TS_ASSERT_EQUALS( path[1], 3U );
-    TS_ASSERT_EQUALS( path[2], 5U );
-    TS_ASSERT_EQUALS( path[3], 2U );
+    TS_ASSERT_EQUALS( path[2], 4U );
+    TS_ASSERT_EQUALS( path[3], 1U );
     
-    TS_ASSERT_THROWS( graph.directedPath ( 2, 3), gum::NotFound );
+    TS_ASSERT_THROWS( graph.directedPath ( 1, 2), gum::NotFound );
     
-    std::vector<gum::NodeId> path2 = graph.directedUnorientedPath ( 2, 3);
+    std::vector<gum::NodeId> path2 = graph.directedUnorientedPath ( 1, 2);
     TS_ASSERT_EQUALS( path2.size(), 3U );
-    TS_ASSERT_EQUALS( path2[0], 2U );
-    TS_ASSERT_EQUALS( path2[1], 5U );
-    TS_ASSERT_EQUALS( path2[2], 3U );
+    TS_ASSERT_EQUALS( path2[0], 1U );
+    TS_ASSERT_EQUALS( path2[1], 4U );
+    TS_ASSERT_EQUALS( path2[2], 2U );
   }
 
   // void testToDot() {

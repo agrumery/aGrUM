@@ -30,7 +30,6 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-
 /* ############################################################################# */
 /* #                           WARNING:  DEPENDENCIES                          # */
 /* ############################################################################# */
@@ -183,7 +182,7 @@ namespace gum {
   // ==============================================================================
   // destructor
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableList<Key,Val>::~HashTableList() {
     HashTableBucket<Key, Val> *ptr, *next_ptr;
 
@@ -324,7 +323,8 @@ namespace gum {
     return ( __nb_elements == 0 );
   }
 
-  
+
+
 
 
   /* =========================================================================== */
@@ -482,7 +482,7 @@ namespace gum {
   // ==============================================================================
   /// destructor
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableConstIterator<Key,Val>::~HashTableConstIterator()  {
     // remove the iterator from the table's iterator list
     if ( __prev )
@@ -652,7 +652,6 @@ namespace gum {
 
 
 
-
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===              GENERIC HASH TABLE ITERATORS IMPLEMENTATION            === */
@@ -676,7 +675,7 @@ namespace gum {
   ( const HashTableIterator<Key, Val>& from ) :
     HashTableConstIterator<Key,Val> ( from ) {
     GUM_CONS_CPY( HashTableIterator );
-}
+  }
 
   // ==============================================================================
   /// constructor for an iterator pointing to the nth element of a hashtable
@@ -702,7 +701,7 @@ namespace gum {
   // ==============================================================================
   /// destructor
   // ==============================================================================
-  template <typename Key, typename Val> INLINE
+  template <typename Key, typename Val>
   HashTableIterator<Key,Val>::~HashTableIterator()  {
     GUM_DESTRUCTOR( HashTableIterator );
   }
@@ -765,8 +764,6 @@ namespace gum {
   const Val* HashTableIterator<Key,Val>::operator->() const {
     return HashTableConstIterator<Key,Val>::operator->();
   }
-
-
 
 
 

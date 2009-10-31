@@ -51,42 +51,42 @@ class CliqueGraphTestSuite: public CxxTest::TestSuite {
     void fillG1( gum::CliqueGraph& graph ) {
       gum::NodeSet A,B,C,D,E;fillSets( A,B,C,D,E );
 
-      gum::NodeId nA=graph.insertNode( A );
-      gum::NodeId nB=graph.insertNode( B );
-      gum::NodeId nC=graph.insertNode( C );
-      gum::NodeId nD=graph.insertNode( D );
+      graph.insertNode( 1, A );
+      graph.insertNode( 2, B );
+      graph.insertNode( 3, C );
+      graph.insertNode( 4, D );
 
-      graph.insertEdge( nA,nB );
-      graph.insertEdge( nB,nC );
-      graph.insertEdge( nB,nD );
+      graph.insertEdge( 1,2 );
+      graph.insertEdge( 2,3 );
+      graph.insertEdge( 2,4 );
     }
 
     void fillG2( gum::CliqueGraph& graph ) {
       gum::NodeSet A,B,C,D,E;fillSets( A,B,C,D,E );
 
-      gum::NodeId nA=graph.insertNode( A );
-      gum::NodeId nB=graph.insertNode( B );
-      gum::NodeId nC=graph.insertNode( C );
-      gum::NodeId nD=graph.insertNode( D );
+      graph.insertNode( 1, A );
+      graph.insertNode( 2, B );
+      graph.insertNode( 3, C );
+      graph.insertNode( 4, D );
 
-      graph.insertEdge( nA,nB );
-      graph.insertEdge( nB,nC );
-      graph.insertEdge( nB,nD );
-      graph.insertEdge( nD,nC );
-      graph.insertEdge( nA,nC );
+      graph.insertEdge( 1,2 );
+      graph.insertEdge( 2,3 );
+      graph.insertEdge( 2,4 );
+      graph.insertEdge( 4,3 );
+      graph.insertEdge( 1,3 );
     }
 
     void fillG3( gum::CliqueGraph& graph ) {
       gum::NodeSet A,B,C,D,E;fillSets( A,B,C,D,E );
 
-      gum::NodeId nA=graph.insertNode( A );
-      gum::NodeId nB=graph.insertNode( B );
-      gum::NodeId nC=graph.insertNode( C );
-      gum::NodeId nE=graph.insertNode( E );
+      graph.insertNode( 1, A );
+      graph.insertNode( 2, B );
+      graph.insertNode( 3, C );
+      graph.insertNode( 4, E );
 
-      graph.insertEdge( nA,nB );
-      graph.insertEdge( nB,nC );
-      graph.insertEdge( nB,nE );
+      graph.insertEdge( 1,2 );
+      graph.insertEdge( 2,3 );
+      graph.insertEdge( 2,4 );
     }
 
   public:

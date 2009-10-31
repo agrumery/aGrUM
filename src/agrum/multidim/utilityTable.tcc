@@ -122,6 +122,94 @@ namespace gum {
     tab._content = swap;
   }
 
+  template <typename T_DATA> 
+  void UtilityTable<T_DATA>::sumBy(const List<UtilityTable<T_DATA>*>& utilitiesList) {
+    if(! utilitiesList.empty()) {
+      Instantiation globalInst(*this);
+      Instantiation partialInst;
+      for(typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+	  iter != utilitiesList.end(); ++iter) {
+	const Sequence<const DiscreteVariable*>& varSeq = (*iter)->variablesSequence();
+	for(typename Sequence<const DiscreteVariable*>::iterator varIter = varSeq.begin();
+	    varIter != varSeq.end(); ++varIter) {
+	  try {
+	    partialInst.add(**varIter);
+	  } catch(DuplicateElement&) {
+	  }
+	}
+      }
+      if(partialInst.nbrDim()  != globalInst.nbrDim()) {
+
+	// Now partialInst contains all values of subutilities
+	for(globalInst.setFirstIn(partialInst),
+	      partialInst.setFirst();
+	    ! partialInst.end();
+	    globalInst.incIn(partialInst),
+	      ++partialInst) {
+
+	  T_DATA sumData = (T_DATA) 0;
+	  for(typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+	      iter != utilitiesList.end(); ++iter) {
+	    sumData += (**iter)[partialInst];
+	  }
+	  for(globalInst.setFirstOut(partialInst);
+	      ! globalInst.end();
+	      globalInst.incOut(partialInst)) {
+	    this->set(globalInst, this->get(globalInst) + sumData);
+	  }
+	  globalInst.unsetOverflow();
+	}
+      } else {
+
+	for(globalInst.setFirst(); ! globalInst.end(); ++globalInst) {
+	  T_DATA sumData = (T_DATA) 0;
+	  for(typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+	      iter != utilitiesList.end(); ++iter) {
+	    sumData += (*iter)->get(globalInst);
+	  }
+	  this->set(globalInst, this->get(globalInst) + sumData);
+	}
+      }
+    }
+//     for(typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+// 	iter != utilitiesList.end(); ++iter) {
+//       this->sumBy(**iter);
+//     }
+  }
+
+  template <typename T_DATA>
+  UtilityTable<T_DATA> UtilityTable<T_DATA>::reduceBy(const List<const DiscreteVariable*>& varList) const {
+    UtilityTable<T_DATA> result(new MultiDimArray<T_DATA>);
+    for(List<const DiscreteVariable*>::const_iterator iter = varList.begin();
+	iter != varList.end(); ++iter) {
+      const DiscreteVariable& var = **iter;
+      if(this->contains(var)) {
+	result.add(var);
+      } else {
+	GUM_ERROR(NotFound, "a variable isn't contained by the utility");
+      }
+    }
+    Instantiation resultI(result);
+    Instantiation inst(*this);
+    for(resultI.setFirst(), inst.setFirstIn(resultI);
+	! resultI.end(); 
+	++resultI, inst.incIn(resultI)) {
+      inst.setFirstOut(resultI);
+      T_DATA currentMax = this->get(inst);
+      for(inst.incOut(resultI);
+	  ! inst.end();
+	  inst.incOut(resultI)) {
+	T_DATA val = this->get(inst);
+	if(val > currentMax) {
+	  currentMax = val;
+	}
+      }
+      result.set(resultI, currentMax);
+      inst.unsetOverflow();
+    }
+    return result;
+  }
+
 } /* namespace gum */
 
 

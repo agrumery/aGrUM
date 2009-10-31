@@ -132,7 +132,7 @@ ValueElimination<T_DATA>::__computeEliminationOrder() {
     for ( DAG::NodeIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter ) {
       modalities.insert( *iter, BayesNetInference<T_DATA>::__bayesNet.variable( *iter ).domainSize() );
     }
-    DefaultTriangulation triang(( const DiGraph& ) BayesNetInference<T_DATA>::__bayesNet.dag(), modalities );
+    DefaultTriangulation triang(&(BayesNetInference<T_DATA>::__bayesNet.moralGraph()), &modalities );
     __eliminationOrder = triang.eliminationOrder();
   }
 }

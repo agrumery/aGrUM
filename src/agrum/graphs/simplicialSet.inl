@@ -50,33 +50,13 @@ namespace gum {
     return __simplicial_nodes.contains( id );
   }
 
-  // ==============================================================================
-  /// indicates whether there exists a simplicial node
-  // ==============================================================================
-  INLINE
-  bool SimplicialSet::hasSimplicialNode() {
-    if ( !__simplicial_nodes.empty() )
-      return true;
-    else {
-      // check if a node can enter the simplicial list
-      for ( NodeSetIterator iter = __changed_status.begin();
-            iter != __changed_status.end(); ++iter ) {
-        __updateList( *iter );
-
-        if ( !__simplicial_nodes.empty() )
-          return true;
-      }
-    }
-
-    return false;
-  }
 
   // ==============================================================================
   /// gets a simplicial node
   // ==============================================================================
   INLINE
   NodeId SimplicialSet::bestSimplicialNode() {
-    if ( !hasSimplicialNode() )
+    if ( ! hasSimplicialNode() )
       GUM_ERROR( NotFound, "No simplicial node could be found" );
 
     return __simplicial_nodes.top();
@@ -87,7 +67,7 @@ namespace gum {
   // ==============================================================================
   INLINE
   NodeId SimplicialSet::bestAlmostSimplicialNode() {
-    if ( !hasAlmostSimplicialNode() )
+    if ( ! hasAlmostSimplicialNode() )
       GUM_ERROR( NotFound, "no almost simplicial node could be found" );
 
     return __almost_simplicial_nodes.top();
@@ -98,7 +78,7 @@ namespace gum {
   // ==============================================================================
   INLINE
   NodeId SimplicialSet::bestQuasiSimplicialNode() {
-    if ( !hasQuasiSimplicialNode() )
+    if ( ! hasQuasiSimplicialNode() )
       GUM_ERROR( NotFound, "no quasi simplicial node could be found" );
 
     return __quasi_simplicial_nodes.top();

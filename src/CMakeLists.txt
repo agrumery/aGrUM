@@ -45,11 +45,11 @@ if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
 	set(AGRUM_PROCESSOR "64")
 else("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
-  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
-  set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic")
+  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
+  set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
 
-  set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
-  set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -pedantic -fno-inline-small-functions")
+  set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -pedantic -fno-inline-small-functions")
 
 	set(AGRUM_PROCESSOR "32")
 endif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")

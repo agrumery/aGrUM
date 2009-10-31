@@ -40,42 +40,48 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  Database::Database() : __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ), __filename( "" ) {
+  Database::Database() :
+    __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ), __filename( "" ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Database );
 
     // initialize the __iterators begin/rbegin/end/rend
-    __iter_begin.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-    __iter_rbegin.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
-    __iter_end.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
-    __iter_rend.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    __iter_begin.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    __iter_rbegin.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    __iter_end.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    __iter_rend.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
   }
 
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
   Database::Database( const Database& from ) :
-      __nb_nodes( from.__nb_nodes ), __nb_cases( from.__nb_cases ),
-      __node_names( from.__node_names ), __node_name_per_id( from.__node_name_per_id ),
-      __nb_modalities( from.__nb_modalities ), __modalities_names( from.__modalities_names ),
-      __cases( new unsigned int [__nb_nodes * __nb_cases] ), __filename( from.__filename ) {
+    __nb_nodes( from.__nb_nodes ),
+    __nb_cases( from.__nb_cases ),
+    __node_names( from.__node_names ),
+    __node_name_per_id( from.__node_name_per_id ),
+    __nb_modalities( from.__nb_modalities ),
+    __modalities_names( from.__modalities_names ),
+    __cases( new unsigned int [__nb_nodes * __nb_cases] ),
+    __filename( from.__filename ) {
     // for debugging purposes
     GUM_CONS_CPY( Database );
     // copy the __cases
-    memcpy( __cases, from.__cases, __nb_nodes * __nb_cases * sizeof( unsigned int ) );
+    memcpy( __cases, from.__cases,
+            __nb_nodes * __nb_cases * sizeof( unsigned int ) );
     // initialize the __iterators begin/rbegin/end/rend
-    __iter_begin.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-    __iter_rbegin.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
-    __iter_end.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
-    __iter_rend.initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    __iter_begin.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    __iter_rbegin.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    __iter_end.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    __iter_rend.__initializeIterator
+      ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
   }
 
   // ==============================================================================
@@ -86,8 +92,8 @@ namespace gum {
     if ( this != &from ) {
       // for debugging purposes
       GUM_OP_CPY( Database );
+      
       // remove the old content
-
       if ( __cases ) delete[] __cases;
 
       // detach the __iterators pointing to this
@@ -97,33 +103,24 @@ namespace gum {
 
       // set the new content
       __nb_nodes = from.__nb_nodes;
-
       __nb_cases = from.__nb_cases;
-
       __node_names = from.__node_names;
-
       __node_name_per_id = from.__node_name_per_id;
-
       __nb_modalities = from.__nb_modalities;
-
       __filename = from.__filename;
-
       __cases = new unsigned int [__nb_nodes * __nb_cases];
-
-      memcpy( __cases, from.__cases, __nb_nodes * __nb_cases * sizeof( unsigned int ) );
+      memcpy( __cases, from.__cases,
+              __nb_nodes * __nb_cases * sizeof( unsigned int ) );
 
       // initialize the __iterators begin/rbegin/end/rend
-      __iter_begin.initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-
-      __iter_end.initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
-
-      __iter_rend.initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
-
-      __iter_rbegin.initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+      __iter_begin.__initializeIterator
+        ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+      __iter_end.__initializeIterator
+        ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+      __iter_rend.__initializeIterator
+        ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+      __iter_rbegin.__initializeIterator
+        ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
     }
 
     return *this;
@@ -131,7 +128,7 @@ namespace gum {
 
   // ==============================================================================
   /// destructor
-  //== ==============================================================================
+  // ==============================================================================
   Database::~Database() {
     // for debugging purposes
     GUM_DESTRUCTOR( Database );
@@ -143,8 +140,9 @@ namespace gum {
           iter != __iterators.end(); ++iter )
       ( *iter )->clear();
   }
+  
 
-// local function which checks if a line is empty or is a comment line.
+  // local function which checks if a line is empty or is a comment line.
   bool isValidLine( std::string s ) {
     unsigned int l = s.length();
 
@@ -170,6 +168,7 @@ namespace gum {
                                     char escape_char ) {
     // create a new empty database, to be filled later
     Database database;
+    
     // create, for each node, a hashtable associating to its modalities names
     // the index (ID) of the modality
     std::vector< HashTable<std::string, unsigned int> > modal_names;
@@ -189,7 +188,6 @@ namespace gum {
 
       // get the header line, its number of fields, and fill the nodes names
       std::string str;
-
       getline( inFile, str );
 
       if ( !inFile.good() )
@@ -197,14 +195,15 @@ namespace gum {
 
       database.__node_names =
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
-
       database.__nb_nodes = database.__node_names.size();
 
       for ( unsigned int i = 0; i < database.__nb_nodes; ++i )
         database.__node_name_per_id.insert( database.__node_names[i], i );
 
       // get the number of __cases
-      for ( database.__nb_cases = 0; getline( inFile, str ); database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 ); // we do not count empty lines
+      for ( database.__nb_cases = 0; getline( inFile, str );
+            database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 );
+            // we do not count empty lines
     }
 
     // open the file to fill the __cases and skip the header
@@ -218,16 +217,15 @@ namespace gum {
     getline( inFile, str );
 
     // fill the __cases and get the modalities names
-    modal_names.resize( database.__nb_nodes, HashTable<std::string, unsigned int>() );
-
+    modal_names.resize( database.__nb_nodes,
+                        HashTable<std::string, unsigned int>() );
     database.__nb_modalities.resize( database.__nb_nodes, 0 );
-
     database.__missing_value.resize( database.__nb_nodes, false );
-
-    database.__cases = new unsigned int [database.__nb_cases * database.__nb_nodes];
+    database.__cases =
+      new unsigned int [database.__nb_cases * database.__nb_nodes];
 
     unsigned int *ptrcases = database.__cases;
-
+    
     while ( ! inFile.eof() ) {
       // get the content of the new line
       getline( inFile, str );
@@ -262,7 +260,7 @@ namespace gum {
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
       for ( HashTableConstIterator<std::string, unsigned int>
-            iter = modals.begin(); iter != modals.end(); ++iter ) {
+              iter = modals.begin(); iter != modals.end(); ++iter ) {
         database.__modalities_names[i][*iter] = iter.key();
       }
 
@@ -270,24 +268,21 @@ namespace gum {
     }
 
     // create the __iterators begin/rbegin/end/rend
-    database.__iter_begin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-
-    database.__iter_rbegin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
-
-    database.__iter_end.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
-
-    database.__iter_rend.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    database.__iter_begin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    database.__iter_rbegin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    database.__iter_end.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    database.__iter_rend.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
 
     // return the newly constructed database
     return database;
   }
 
-//=============================================================================
-
+  
+  //=============================================================================
   Database Database::createFromCSVAndBN( BayesNet<float> *bn,
                                          const std::string& filename,
                                          char separator_separator,
@@ -326,12 +321,15 @@ namespace gum {
       database.__nb_nodes = database.__node_names.size();
 
       for ( unsigned int i = 0; i < database.__nb_nodes; ++i )
-        database.__node_name_per_id.insert( database.__node_names[i], i );//Attention il faut garder l'ordre du fichier csv
+        database.__node_name_per_id.insert( database.__node_names[i], i );
+      //Attention il faut garder l'ordre du fichier csv
 
       //
 
       // get the number of __cases
-      for ( database.__nb_cases = 0; getline( inFile, str ); database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 ); // we do not count empty lines
+      for ( database.__nb_cases = 0; getline( inFile, str );
+            database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 );
+            // we do not count empty lines
     }
 
     // open the file to fill the __cases and skip the header
@@ -345,13 +343,12 @@ namespace gum {
     getline( inFile, str );
 
     // fill the __cases and get the modalities names
-    modal_names.resize( database.__nb_nodes, HashTable<std::string, unsigned int>() );
-
+    modal_names.resize( database.__nb_nodes,
+                        HashTable<std::string, unsigned int>() );
     database.__nb_modalities.resize( database.__nb_nodes, 0 );
-
     database.__missing_value.resize( database.__nb_nodes, false );
-
-    database.__cases = new unsigned int [database.__nb_cases * database.__nb_nodes];
+    database.__cases =
+      new unsigned int [database.__nb_cases * database.__nb_nodes];
 
     unsigned int *ptrcases = database.__cases;
 
@@ -368,7 +365,9 @@ namespace gum {
         }
       }
 
-      if ( not_exist != "" )GUM_ERROR( IOError, "CSV is missing a variable of Bayesian Network " + not_exist );
+      if ( not_exist != "" )
+        GUM_ERROR( IOError, "CSV is missing a variable of Bayesian Network " +
+                   not_exist );
 
       inBN.push_back( i );
 
@@ -398,10 +397,11 @@ namespace gum {
         if ( ! modal_names[i].exists( line[i] ) ) {
           for ( unsigned int j = 0 ; j < inBN.size(); j++ )
             if ( i == inBN[j] )
-              GUM_ERROR( IOError, "CSV file has a modality of " + database.__node_names[i] + " that does not concurre with the Bayesian Network" );
+              GUM_ERROR( IOError, "CSV file has a modality of " +
+                         database.__node_names[i] +
+                         " that does not concurre with the Bayesian Network" );
 
           modal_names[i].insert( line[i], database.__nb_modalities[i] );
-
           ++database.__nb_modalities[i];
         }
 
@@ -417,7 +417,8 @@ namespace gum {
       database.__modalities_names[i].resize( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableConstIterator<std::string, unsigned int>  iter = modals.begin(); iter != modals.end(); ++iter ) {
+      for ( HashTableConstIterator<std::string, unsigned int>
+              iter = modals.begin(); iter != modals.end(); ++iter ) {
         database.__modalities_names[i][*iter] = iter.key();
       }
 
@@ -425,17 +426,14 @@ namespace gum {
     }
 
     // create the __iterators begin/rbegin/end/rend
-    database.__iter_begin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-
-    database.__iter_rbegin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
-
-    database.__iter_end.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
-
-    database.__iter_rend.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    database.__iter_begin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    database.__iter_rbegin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    database.__iter_end.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    database.__iter_rend.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
 
     // return the newly constructed database
     return database;
@@ -458,17 +456,14 @@ namespace gum {
     database.__filename = filename;
 
     // create the __iterators begin/rbegin/end/rend
-    database.__iter_begin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
-
-    database.__iter_rbegin.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
-
-    database.__iter_end.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
-
-    database.__iter_rend.initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    database.__iter_begin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    database.__iter_rbegin.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    database.__iter_end.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    database.__iter_rend.__initializeIterator
+      ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
 
     // return the newly constructed database
     return database;
@@ -477,4 +472,3 @@ namespace gum {
 
 } /* namespace gum */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

@@ -46,7 +46,7 @@ namespace gum {
     }
 
     // initialize the __triangulation algorithm
-    __triangulation.setGraph( this->bn().moralGraph(), modalities );
+    __triangulation.setGraph( &(this->bn().moralGraph()), &modalities );
 
     __JT = &( __triangulation.junctionTree() );
 
@@ -79,7 +79,7 @@ namespace gum {
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
       __node_to_clique.insert( *iter,
-                               __triangulation.createdClique( first_var_eliminated ) );
+                               __triangulation.createdJunctionTreeClique( first_var_eliminated ) );
     }
 
     // create empty potential lists into the cliques of the joint tree as well

@@ -127,8 +127,8 @@ class LazyInferenceTestSuite: public CxxTest::TestSuite {
       // Testing the inference
       gum::LazyPropagation<float> inf(*bn);
       gum::NodeSet nodeset;
-      nodeset.insert (3);
-      nodeset.insert (5);
+      nodeset.insert (2);
+      nodeset.insert (4);
 
       TS_ASSERT_THROWS_NOTHING(inf.joint(nodeset));
     }
