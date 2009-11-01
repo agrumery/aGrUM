@@ -286,11 +286,11 @@ namespace gum {
     // ============================================================================
     Val& operator*() ;
 
-		/// const dereferencing operator
-		/** This operator is provided for convenience but you should prefer using
-		* operator -> as this is the syntax you would use with the dumb pointer. Note
-		* however that it might be useful for built-in types such as int.
-		* @throw NullElement exception is thrown whenever the RefPtr points to 0 */
+    /// const dereferencing operator
+    /** This operator is provided for convenience but you should prefer using
+     * operator -> as this is the syntax you would use with the dumb pointer. Note
+     * however that it might be useful for built-in types such as int.
+     * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
     const Val& operator*() const ;
 
     /// @}

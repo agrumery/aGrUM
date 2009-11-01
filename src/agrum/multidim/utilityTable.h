@@ -84,7 +84,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<T_DATA>* newFactory() const;
+    virtual UtilityTable<T_DATA>* newFactory() const;
 
     /**
      * This method modifies the current table in order to store the
