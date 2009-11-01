@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cstdio>
 #include <iostream>
 #include <sstream>
+
 
 #ifndef NDEBUG
 #include <execinfo.h>
