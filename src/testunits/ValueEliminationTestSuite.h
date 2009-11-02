@@ -38,480 +38,508 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 // ============================================================================
-class ValueEliminationTestSuite: public CxxTest::TestSuite {
-  public:
-    gum::BayesNet<float> *bn;
-    gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
-    std::string base_dir;
 
-    void setUp() {
-      bn = new gum::BayesNet<float>();
+namespace gum {
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+  namespace tests {
 
-      i1 = bn->addVariable( n1 );
-      i2 = bn->addVariable( n2 );
-      i3 = bn->addVariable( n3 );
-      i4 = bn->addVariable( n4 );
-      i5 = bn->addVariable( n5 );
+    class ValueEliminationTestSuite: public CxxTest::TestSuite {
+      public:
+        gum::BayesNet<float> *bn;
+        gum::Id i1, i2, i3, i4, i5;
+        gum::Potential<float> *e_i1, *e_i4;
+        std::string base_dir;
 
-      bn->insertArc( i1, i3 );
-      bn->insertArc( i1, i4 );
-      bn->insertArc( i3, i5 );
-      bn->insertArc( i4, i5 );
-      bn->insertArc( i2, i4 );
-      bn->insertArc( i2, i5 );
+        void setUp() {
+          bn = new gum::BayesNet<float>();
 
-      e_i1 = new gum::Potential<float>();
-      ( *e_i1 ) << bn->variable( i1 );
-      e_i1->fill(( float ) 0 );
-      gum::Instantiation inst_1( *e_i1 );
-      inst_1.chgVal( bn->variable( i1 ), 0 );
-      e_i1->set(inst_1,( float ) 1);
+          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-      e_i4 = new gum::Potential<float>();
-      ( *e_i4 ) << bn->variable( i4 );
-      e_i4->fill(( float ) 0 );
-      gum::Instantiation inst_4( *e_i4 );
-      inst_4.chgVal( bn->variable( i4 ), 1 );
-      e_i4->set(inst_4,( float ) 1);
+          i1 = bn->addVariable( n1 );
+          i2 = bn->addVariable( n2 );
+          i3 = bn->addVariable( n3 );
+          i4 = bn->addVariable( n4 );
+          i5 = bn->addVariable( n5 );
 
-      base_dir = "../../../";
-    }
+          bn->insertArc( i1, i3 );
+          bn->insertArc( i1, i4 );
+          bn->insertArc( i3, i5 );
+          bn->insertArc( i4, i5 );
+          bn->insertArc( i2, i4 );
+          bn->insertArc( i2, i5 );
 
-    void tearDown() {
-      delete bn;
-      delete e_i1;
-      delete e_i4;
-    }
+          e_i1 = new gum::Potential<float>();
+          ( *e_i1 ) << bn->variable( i1 );
+          e_i1->fill(( float ) 0 );
+          gum::Instantiation inst_1( *e_i1 );
+          inst_1.chgVal( bn->variable( i1 ), 0 );
+          e_i1->set( inst_1, ( float ) 1 );
 
-    void testFill() {
-      const gum::Potential<float>& p1 = bn->cpt( i1 );
-      TS_ASSERT( p1.nbrDim() == 1 );
+          e_i4 = new gum::Potential<float>();
+          ( *e_i4 ) << bn->variable( i4 );
+          e_i4->fill(( float ) 0 );
+          gum::Instantiation inst_4( *e_i4 );
+          inst_4.chgVal( bn->variable( i4 ), 1 );
+          e_i4->set( inst_4, ( float ) 1 );
 
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<float>& p2 = bn->cpt( i2 );
-      TS_ASSERT( p2.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<float>& p3 = bn->cpt( i3 );
-      TS_ASSERT( p3.nbrDim() == 2 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 );
-        p.marginalize( p3 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p4 = bn->cpt( i4 );
-      TS_ASSERT( p4.nbrDim() == 3 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i1 ) << bn->variable( i2 ) ;
-        p.marginalize( p4 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p5 = bn->cpt( i5 );
-      TS_ASSERT( p5.nbrDim() == 4 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                             0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-                            };
-        int n = 24;const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p;
-        p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
-        p.marginalize( p5 );
-
-        for ( gum::Instantiation j( p ); ! j.end(); ++j ) {
-          TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
+          base_dir = "../../../";
         }
-      }
-    }
 
-    // Testing when there is no evidence
-    void testMakeInference() {
-      fill( *bn );
-      // Testing the inference
-      gum::ValueElimination<float>* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ValueElimination<float>(*bn));
-      if (inf != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
-      }
-    }
+        void tearDown() {
+          delete bn;
+          delete e_i1;
+          delete e_i4;
+        }
 
-    void testValueElim() {
-      fill( *bn );
-      gum::ValueElimination<float>* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ValueElimination<float>(*bn));
-      if (inf != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
+        void testFill() {
+          const gum::Potential<float>& p1 = bn->cpt( i1 );
+          TS_ASSERT( p1.nbrDim() == 1 );
 
-        const gum::Potential<float>* marginal_1 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_1 = &(inf->marginal(i1)));
-        if (marginal_1 != 0) printProba(*marginal_1);
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.2, 0.8};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p1.fillWith( v );
+          }
 
-        const gum::Potential<float>* marginal_2 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_2 = &(inf->marginal(i2)));
-        if (marginal_2 != 0) printProba(*marginal_2);
+          const gum::Potential<float>& p2 = bn->cpt( i2 );
+          TS_ASSERT( p2.nbrDim() == 1 );
 
-        const gum::Potential<float>* marginal_3 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_3 = &(inf->marginal(i3)));
-        if (marginal_3 != 0) printProba(*marginal_3);
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p2.fillWith( v );
+          }
 
-        const gum::Potential<float>* marginal_4 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_4 = &(inf->marginal(i4)));
-        if (marginal_4 != 0) printProba(*marginal_4);
+          const gum::Potential<float>& p3 = bn->cpt( i3 );
+          TS_ASSERT( p3.nbrDim() == 2 );
+          {
+            // FILLING PARAMS
+            const float t[4] = {0.1, 0.9, 0.9, 0.1};
+            int n = 4;const std::vector<float> v( t, t + n );
+            p3.fillWith( v );
 
-        const gum::Potential<float>* marginal_5 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_5 = &(inf->marginal(i5)));
-        if (marginal_5 != 0) printProba(*marginal_5);
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p;
+            p << bn->variable( i1 );
+            p.marginalize( p3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
-      }
-    }
+            for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+          }
 
-    void testShaferShenoyInf_3() {
-      fill( *bn );
-      gum::List< const gum::Potential<float>* > e_list;
-      e_list.insert( e_i1 );
-      e_list.insert( e_i4 );
+          const gum::Potential<float>& p4 = bn->cpt( i4 );
+          TS_ASSERT( p4.nbrDim() == 3 );
+          {
+            // FILLING PARAMS
+            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+            int n = 8;const std::vector<float> v( t, t + n );
+            p4.fillWith( v );
 
-      gum::ValueElimination<float>* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ValueElimination<float>(*bn));
-      if (inf != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->insertEvidence(e_list));
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p;
+            p << bn->variable( i1 ) << bn->variable( i2 ) ;
+            p.marginalize( p4 );
 
-        const gum::Potential<float>* marginal_1 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_1 = &(inf->marginal(i1)));
-        if (marginal_1 != 0) printProba(*marginal_1);
+            for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+          }
 
-        const gum::Potential<float>* marginal_2 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_2 = &(inf->marginal(i2)));
-        if (marginal_2 != 0) printProba(*marginal_2);
+          const gum::Potential<float>& p5 = bn->cpt( i5 );
+          TS_ASSERT( p5.nbrDim() == 4 );
+          {
+            // FILLING PARAMS
+            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+                                };
+            int n = 24;const std::vector<float> v( t, t + n );
+            p5.fillWith( v );
 
-        const gum::Potential<float>* marginal_3 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_3 = &(inf->marginal(i3)));
-        if (marginal_3 != 0) printProba(*marginal_3);
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p;
+            p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
+            p.marginalize( p5 );
 
-        const gum::Potential<float>* marginal_4 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_4 = &(inf->marginal(i4)));
-        if (marginal_4 != 0) printProba(*marginal_4);
+            for ( gum::Instantiation j( p ); ! j.end(); ++j ) {
+              TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+            }
+          }
+        }
 
-        const gum::Potential<float>* marginal_5 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(marginal_5 = &(inf->marginal(i5)));
-        if (marginal_5 != 0) printProba(*marginal_5);
+        // Testing when there is no evidence
+        void testMakeInference() {
+          fill( *bn );
+          // Testing the inference
+          gum::ValueElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
-      }
-    }
+          if ( inf != 0 ) {
+            TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
+            TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
+          }
+        }
 
-    // void testAlarm() {
-    //   std::string file_name = "src/testunits/resources/alarm.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> alarm;
-    //   gum::BIFReader<float> reader(&alarm, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(alarm);
-    //   gum::ShaferShenoyInference<float> shafer(alarm);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = alarm.dag().beginNodes(); iter != alarm.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+        void testValueElim() {
+          fill( *bn );
+          gum::ValueElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
 
-    // void testDiabetes() {
-    //   std::string file_name = "src/testunits/resources/Diabetes.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> diabetes;
-    //   gum::BIFReader<float> reader(&diabetes, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(diabetes);
-    //   gum::ShaferShenoyInference<float> shafer(diabetes);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = diabetes.dag().beginNodes(); iter != diabetes.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+          if ( inf != 0 ) {
+            TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
-    // void testLink() {
-    //   std::string file_name = "src/testunits/resources/Link.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> link;
-    //   gum::BIFReader<float> reader(&link, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(link);
-    //   gum::ShaferShenoyInference<float> shafer(link);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = link.dag().beginNodes(); iter != link.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            const gum::Potential<float>* marginal_1 = 0;
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_1 = &( inf->marginal( i1 ) ) );
 
-    // void testWater() {
-    //   std::string file_name = "src/testunits/resources/Water.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> water;
-    //   gum::BIFReader<float> reader(&water, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(water);
-    //   gum::ShaferShenoyInference<float> shafer(water);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = water.dag().beginNodes(); iter != water.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            if ( marginal_1 != 0 ) printProba( *marginal_1 );
 
-    // void testCarpo() {
-    //   std::string file_name = "src/testunits/resources/carpo.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> carpo;
-    //   gum::BIFReader<float> reader(&carpo, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(carpo);
-    //   gum::ShaferShenoyInference<float> shafer(carpo);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = carpo.dag().beginNodes(); iter != carpo.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            const gum::Potential<float>* marginal_2 = 0;
 
-    // void testMildew() {
-    //   std::string file_name = "src/testunits/resources/Mildew.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> mildew;
-    //   gum::BIFReader<float> reader(&mildew, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(mildew);
-    //   gum::ShaferShenoyInference<float> shafer(mildew);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = mildew.dag().beginNodes(); iter != mildew.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_2 = &( inf->marginal( i2 ) ) );
 
-    // void testHailfinder() {
-    //   std::string file_name = "src/testunits/resources/hailfinder.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> hailfinder;
-    //   gum::BIFReader<float> reader(&hailfinder, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(hailfinder);
-    //   gum::ShaferShenoyInference<float> shafer(hailfinder);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = hailfinder.dag().beginNodes(); iter != hailfinder.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            if ( marginal_2 != 0 ) printProba( *marginal_2 );
 
-    // void testMunin1() {
-    //   std::string file_name = "src/testunits/resources/Munin1.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> munin1;
-    //   gum::BIFReader<float> reader(&munin1, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(munin1);
-    //   gum::ShaferShenoyInference<float> shafer(munin1);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = munin1.dag().beginNodes(); iter != munin1.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            const gum::Potential<float>* marginal_3 = 0;
 
-    // void testInsurance() {
-    //   std::string file_name = "src/testunits/resources/insurance.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> insurance;
-    //   gum::BIFReader<float> reader(&insurance, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(insurance);
-    //   gum::ShaferShenoyInference<float> shafer(insurance);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = insurance.dag().beginNodes(); iter != insurance.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_3 = &( inf->marginal( i3 ) ) );
 
-    // void testPigs() {
-    //   std::string file_name = "src/testunits/resources/Pigs.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> pigs;
-    //   gum::BIFReader<float> reader(&pigs, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(pigs);
-    //   gum::ShaferShenoyInference<float> shafer(pigs);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = pigs.dag().beginNodes(); iter != pigs.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            if ( marginal_3 != 0 ) printProba( *marginal_3 );
 
-    // void testBarley() {
-    //   std::string file_name = "src/testunits/resources/Barley.bif";
-    //   std::string file_path = base_dir + file_name;
-    //   gum::BayesNet<float> barley;
-    //   gum::BIFReader<float> reader(&barley, file_path);
-    //   reader.proceed();
-    //   gum::ValueElimination<float> ve(barley);
-    //   gum::ShaferShenoyInference<float> shafer(barley);
-    //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
-    //   for (gum::DAG::NodeIterator iter = barley.dag().beginNodes(); iter != barley.dag().endNodes(); ++iter) {
-    //     const gum::Potential<float>* pot_1 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
-    //     const gum::Potential<float>* pot_2 = 0;
-    //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
-    //     if ((*pot_1) != (*pot_2)) {
-    //       TS_ASSERT(false);
-    //     }
-    //   }
-    // }
+            const gum::Potential<float>* marginal_4 = 0;
 
-  private:
-    // Builds a BN to test the inference
-    void fill( gum::BayesNet<float> &bn ) {
-      const gum::Potential<float>& p1 = bn.cpt( i1 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_4 = &( inf->marginal( i4 ) ) );
 
-      const gum::Potential<float>& p2 = bn.cpt( i2 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
+            if ( marginal_4 != 0 ) printProba( *marginal_4 );
 
-      const gum::Potential<float>& p3 = bn.cpt( i3 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-      }
+            const gum::Potential<float>* marginal_5 = 0;
 
-      const gum::Potential<float>& p4 = bn.cpt( i4 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-      }
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_5 = &( inf->marginal( i5 ) ) );
 
-      const gum::Potential<float>& p5 = bn.cpt( i5 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                             0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-                            };
-        int n = 24;const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-      }
-    }
+            if ( marginal_5 != 0 ) printProba( *marginal_5 );
 
-    // Uncomment this to have some outputs.
-    void printProba(const gum::Potential<float>& p) {
-      //gum::Instantiation inst(p);
-      //for (inst.setFirst(); !inst.end(); ++inst) {
-      //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-      //}
-      //std::cerr << std::endl;
-    }
-};
-// ============================================================================
+            TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
+          }
+        }
+
+        void testShaferShenoyInf_3() {
+          fill( *bn );
+          gum::List< const gum::Potential<float>* > e_list;
+          e_list.insert( e_i1 );
+          e_list.insert( e_i4 );
+
+          gum::ValueElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
+
+          if ( inf != 0 ) {
+            TS_GUM_ASSERT_THROWS_NOTHING( inf->insertEvidence( e_list ) );
+
+            const gum::Potential<float>* marginal_1 = 0;
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_1 = &( inf->marginal( i1 ) ) );
+
+            if ( marginal_1 != 0 ) printProba( *marginal_1 );
+
+            const gum::Potential<float>* marginal_2 = 0;
+
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_2 = &( inf->marginal( i2 ) ) );
+
+            if ( marginal_2 != 0 ) printProba( *marginal_2 );
+
+            const gum::Potential<float>* marginal_3 = 0;
+
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_3 = &( inf->marginal( i3 ) ) );
+
+            if ( marginal_3 != 0 ) printProba( *marginal_3 );
+
+            const gum::Potential<float>* marginal_4 = 0;
+
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_4 = &( inf->marginal( i4 ) ) );
+
+            if ( marginal_4 != 0 ) printProba( *marginal_4 );
+
+            const gum::Potential<float>* marginal_5 = 0;
+
+            TS_GUM_ASSERT_THROWS_NOTHING( marginal_5 = &( inf->marginal( i5 ) ) );
+
+            if ( marginal_5 != 0 ) printProba( *marginal_5 );
+
+            TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
+          }
+        }
+
+        // void testAlarm() {
+        //   std::string file_name = "src/testunits/resources/alarm.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> alarm;
+        //   gum::BIFReader<float> reader(&alarm, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(alarm);
+        //   gum::ShaferShenoyInference<float> shafer(alarm);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = alarm.dag().beginNodes(); iter != alarm.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testDiabetes() {
+        //   std::string file_name = "src/testunits/resources/Diabetes.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> diabetes;
+        //   gum::BIFReader<float> reader(&diabetes, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(diabetes);
+        //   gum::ShaferShenoyInference<float> shafer(diabetes);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = diabetes.dag().beginNodes(); iter != diabetes.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testLink() {
+        //   std::string file_name = "src/testunits/resources/Link.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> link;
+        //   gum::BIFReader<float> reader(&link, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(link);
+        //   gum::ShaferShenoyInference<float> shafer(link);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = link.dag().beginNodes(); iter != link.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testWater() {
+        //   std::string file_name = "src/testunits/resources/Water.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> water;
+        //   gum::BIFReader<float> reader(&water, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(water);
+        //   gum::ShaferShenoyInference<float> shafer(water);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = water.dag().beginNodes(); iter != water.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testCarpo() {
+        //   std::string file_name = "src/testunits/resources/carpo.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> carpo;
+        //   gum::BIFReader<float> reader(&carpo, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(carpo);
+        //   gum::ShaferShenoyInference<float> shafer(carpo);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = carpo.dag().beginNodes(); iter != carpo.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testMildew() {
+        //   std::string file_name = "src/testunits/resources/Mildew.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> mildew;
+        //   gum::BIFReader<float> reader(&mildew, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(mildew);
+        //   gum::ShaferShenoyInference<float> shafer(mildew);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = mildew.dag().beginNodes(); iter != mildew.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testHailfinder() {
+        //   std::string file_name = "src/testunits/resources/hailfinder.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> hailfinder;
+        //   gum::BIFReader<float> reader(&hailfinder, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(hailfinder);
+        //   gum::ShaferShenoyInference<float> shafer(hailfinder);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = hailfinder.dag().beginNodes(); iter != hailfinder.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testMunin1() {
+        //   std::string file_name = "src/testunits/resources/Munin1.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> munin1;
+        //   gum::BIFReader<float> reader(&munin1, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(munin1);
+        //   gum::ShaferShenoyInference<float> shafer(munin1);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = munin1.dag().beginNodes(); iter != munin1.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testInsurance() {
+        //   std::string file_name = "src/testunits/resources/insurance.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> insurance;
+        //   gum::BIFReader<float> reader(&insurance, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(insurance);
+        //   gum::ShaferShenoyInference<float> shafer(insurance);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = insurance.dag().beginNodes(); iter != insurance.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testPigs() {
+        //   std::string file_name = "src/testunits/resources/Pigs.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> pigs;
+        //   gum::BIFReader<float> reader(&pigs, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(pigs);
+        //   gum::ShaferShenoyInference<float> shafer(pigs);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = pigs.dag().beginNodes(); iter != pigs.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+        // void testBarley() {
+        //   std::string file_name = "src/testunits/resources/Barley.bif";
+        //   std::string file_path = base_dir + file_name;
+        //   gum::BayesNet<float> barley;
+        //   gum::BIFReader<float> reader(&barley, file_path);
+        //   reader.proceed();
+        //   gum::ValueElimination<float> ve(barley);
+        //   gum::ShaferShenoyInference<float> shafer(barley);
+        //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+        //   for (gum::DAG::NodeIterator iter = barley.dag().beginNodes(); iter != barley.dag().endNodes(); ++iter) {
+        //     const gum::Potential<float>* pot_1 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+        //     const gum::Potential<float>* pot_2 = 0;
+        //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+        //     if ((*pot_1) != (*pot_2)) {
+        //       TS_ASSERT(false);
+        //     }
+        //   }
+        // }
+
+      private:
+        // Builds a BN to test the inference
+        void fill( gum::BayesNet<float> &bn ) {
+          const gum::Potential<float>& p1 = bn.cpt( i1 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.2, 0.8};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p1.fillWith( v );
+          }
+
+          const gum::Potential<float>& p2 = bn.cpt( i2 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p2.fillWith( v );
+          }
+
+          const gum::Potential<float>& p3 = bn.cpt( i3 );
+          {
+            // FILLING PARAMS
+            const float t[4] = {0.1, 0.9, 0.9, 0.1};
+            int n = 4;const std::vector<float> v( t, t + n );
+            p3.fillWith( v );
+          }
+
+          const gum::Potential<float>& p4 = bn.cpt( i4 );
+          {
+            // FILLING PARAMS
+            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+            int n = 8;const std::vector<float> v( t, t + n );
+            p4.fillWith( v );
+          }
+
+          const gum::Potential<float>& p5 = bn.cpt( i5 );
+          {
+            // FILLING PARAMS
+            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+                                };
+            int n = 24;const std::vector<float> v( t, t + n );
+            p5.fillWith( v );
+          }
+        }
+
+        // Uncomment this to have some outputs.
+        void printProba( const gum::Potential<float>& p ) {
+          //gum::Instantiation inst(p);
+          //for (inst.setFirst(); !inst.end(); ++inst) {
+          //  std::cerr << inst<<" : " <<p[inst] << std::endl;
+          //}
+          //std::cerr << std::endl;
+        }
+    };
+  }
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

@@ -37,231 +37,240 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 
-class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
-  public:
-    gum::BayesNet<float> *bn;
-    gum::Id i1, i2, i3, i4, i5;
+namespace gum {
 
-    void setUp() {
-      bn = new gum::BayesNet<float>();
+  namespace tests {
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+    class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
+      public:
+        gum::BayesNet<float> *bn;
+        gum::Id i1, i2, i3, i4, i5;
 
-      i1 = bn->addVariable( n1 );
-      i2 = bn->addVariable( n2 );
-      i3 = bn->addVariable( n3 );
-      i4 = bn->addVariable( n4 );
-      i5 = bn->addVariable( n5 );
+        void setUp() {
+          bn = new gum::BayesNet<float>();
 
-      bn->insertArc( i1, i3 );
-      bn->insertArc( i1, i4 );
-      bn->insertArc( i3, i5 );
-      bn->insertArc( i4, i5 );
-      bn->insertArc( i2, i4 );
-      bn->insertArc( i2, i5 );
-    }
+          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-    void tearDown() {
-      delete bn;
-    }
+          i1 = bn->addVariable( n1 );
+          i2 = bn->addVariable( n2 );
+          i3 = bn->addVariable( n3 );
+          i4 = bn->addVariable( n4 );
+          i5 = bn->addVariable( n5 );
 
-    void testFill() {
-      const gum::Potential<float>& p1 = bn->cpt( i1 );
-      TS_ASSERT( p1.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
-
-      const gum::Potential<float>& p2 = bn->cpt( i2 );
-      TS_ASSERT( p2.nbrDim() == 1 );
-
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
-
-      const gum::Potential<float>& p3 = bn->cpt( i3 );
-      TS_ASSERT( p3.nbrDim() == 2 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p( new gum::MultiDimArray<float>() );
-        p << bn->variable( i1 );
-        p.marginalize( p3 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p4 = bn->cpt( i4 );
-      TS_ASSERT( p4.nbrDim() == 3 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p( new gum::MultiDimArray<float>() );
-        p << bn->variable( i1 ) << bn->variable( i2 ) ;
-        p.marginalize( p4 );
-
-        for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
-      }
-
-      const gum::Potential<float>& p5 = bn->cpt( i5 );
-      TS_ASSERT( p5.nbrDim() == 4 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                             0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-                            };
-        int n = 24;const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-
-        // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p( new gum::MultiDimArray<float>() );
-        p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
-        p.marginalize( p5 );
-
-        for ( gum::Instantiation j( p ); ! j.end(); ++j ) {
-          TS_ASSERT_DELTA( p[j], 1.0 ,1e-5 );
+          bn->insertArc( i1, i3 );
+          bn->insertArc( i1, i4 );
+          bn->insertArc( i3, i5 );
+          bn->insertArc( i4, i5 );
+          bn->insertArc( i2, i4 );
+          bn->insertArc( i2, i5 );
         }
-      }
-    }
 
-    // Testing when there is no evidence
-    void testCreationAndInference() {
-      try {
-        fill( *bn );
-        // Testing the inference
-        gum::ShaferShenoyInference<float>* inf = 0;
-        TS_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>(*bn));
-        TS_ASSERT_THROWS_NOTHING(inf->makeInference());
-        if (inf != 0) {
-          TS_ASSERT_THROWS_NOTHING(delete inf);
+        void tearDown() {
+          delete bn;
         }
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
-        std::cerr << std::endl << e.getContent() << std::endl;
-        throw e;
-      }
-    }
 
-    void testMarginal() {
-      fill(*bn);
-      gum::ShaferShenoyInference<float> inf(*bn);
+        void testFill() {
+          const gum::Potential<float>& p1 = bn->cpt( i1 );
+          TS_ASSERT( p1.nbrDim() == 1 );
 
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
-    }
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.2, 0.8};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p1.fillWith( v );
+          }
 
-    void testMarginalWithEvidence() {
-      fill( *bn );
-      gum::List<const gum::Potential<float>* > e_list;
-      e_list.insert( &(bn->cpt(i1)) );
-      e_list.insert( &(bn->cpt(i2)));
+          const gum::Potential<float>& p2 = bn->cpt( i2 );
+          TS_ASSERT( p2.nbrDim() == 1 );
 
-      gum::ShaferShenoyInference<float> inf( *bn );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p2.fillWith( v );
+          }
 
-      TS_ASSERT_THROWS_NOTHING(inf.insertEvidence(e_list));
+          const gum::Potential<float>& p3 = bn->cpt( i3 );
+          TS_ASSERT( p3.nbrDim() == 2 );
+          {
+            // FILLING PARAMS
+            const float t[4] = {0.1, 0.9, 0.9, 0.1};
+            int n = 4;const std::vector<float> v( t, t + n );
+            p3.fillWith( v );
 
-      TS_ASSERT_THROWS_NOTHING(inf.makeInference());
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p( new gum::MultiDimArray<float>() );
+            p << bn->variable( i1 );
+            p.marginalize( p3 );
 
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i1));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i2));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i3));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i4));
-      TS_ASSERT_THROWS_NOTHING(inf.marginal(i5));
-    }
+            for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+          }
 
-    void testWithGenerator() {
-      gum::BayesNetGenerator bnGen;
-      float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
-      int trial_nb=10;
+          const gum::Potential<float>& p4 = bn->cpt( i4 );
+          TS_ASSERT( p4.nbrDim() == 3 );
+          {
+            // FILLING PARAMS
+            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+            int n = 8;const std::vector<float> v( t, t + n );
+            p4.fillWith( v );
 
-      for (int i = 0; i < trial_nb; ++i) {
-        gum::BayesNet<float>* bayesNet = bnGen.generateBNF(10, density[i]);
-        gum::ShaferShenoyInference<float>* inf = 0;
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p( new gum::MultiDimArray<float>() );
+            p << bn->variable( i1 ) << bn->variable( i2 ) ;
+            p.marginalize( p4 );
 
-        TS_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>(*bayesNet));
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
+            for ( gum::Instantiation j( p );! j.end();++j ) TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+          }
 
-        if (inf != 0) {
-          TS_ASSERT_THROWS_NOTHING(delete inf);
+          const gum::Potential<float>& p5 = bn->cpt( i5 );
+          TS_ASSERT( p5.nbrDim() == 4 );
+          {
+            // FILLING PARAMS
+            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+                                };
+            int n = 24;const std::vector<float> v( t, t + n );
+            p5.fillWith( v );
+
+            // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+            gum::Potential<float> p( new gum::MultiDimArray<float>() );
+            p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
+            p.marginalize( p5 );
+
+            for ( gum::Instantiation j( p ); ! j.end(); ++j ) {
+              TS_ASSERT_DELTA( p[j], 1.0 , 1e-5 );
+            }
+          }
         }
-        delete bayesNet;
-      }
-    }
 
-  private:
-    // Builds a BN to tst the inference
-    void fill( gum::BayesNet<float> &bn ) {
-      const gum::Potential<float>& p1 = bn.cpt( i1 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.2, 0.8};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p1.fillWith( v );
-      }
+        // Testing when there is no evidence
+        void testCreationAndInference() {
+          try {
+            fill( *bn );
+            // Testing the inference
+            gum::ShaferShenoyInference<float>* inf = 0;
+            TS_ASSERT_THROWS_NOTHING( inf = new gum::ShaferShenoyInference<float>( *bn ) );
+            TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
-      const gum::Potential<float>& p2 = bn.cpt( i2 );
-      {
-        // FILLING PARAMS
-        const float t[2] = {0.3, 0.7};
-        int n = 2;const std::vector<float> v( t, t + n );
-        p2.fillWith( v );
-      }
+            if ( inf != 0 ) {
+              TS_ASSERT_THROWS_NOTHING( delete inf );
+            }
+          } catch ( gum::Exception e ) {
+            TS_ASSERT( false );
+            std::cerr << std::endl << e.getContent() << std::endl;
+            throw e;
+          }
+        }
 
-      const gum::Potential<float>& p3 = bn.cpt( i3 );
-      {
-        // FILLING PARAMS
-        const float t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n = 4;const std::vector<float> v( t, t + n );
-        p3.fillWith( v );
-      }
+        void testMarginal() {
+          fill( *bn );
+          gum::ShaferShenoyInference<float> inf( *bn );
 
-      const gum::Potential<float>& p4 = bn.cpt( i4 );
-      {
-        // FILLING PARAMS
-        const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n = 8;const std::vector<float> v( t, t + n );
-        p4.fillWith( v );
-      }
+          TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+        }
 
-      const gum::Potential<float>& p5 = bn.cpt( i5 );
-      {
-        // FILLING PARAMS
-        const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0, 0.0,
-                             0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
-                            };
-        int n = 24;const std::vector<float> v( t, t + n );
-        p5.fillWith( v );
-        //printProba(p5);
-      }
-    }
+        void testMarginalWithEvidence() {
+          fill( *bn );
+          gum::List<const gum::Potential<float>* > e_list;
+          e_list.insert( &( bn->cpt( i1 ) ) );
+          e_list.insert( &( bn->cpt( i2 ) ) );
 
-    // Uncomment this to have some outputs.
-    void printProba( const gum::Potential<float> & ) {
-      //for (inst.setFirst(); !inst.end(); ++inst)
-      //{
-      //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-      //}
-      //std::cerr << std::endl;
-    }
-};
+          gum::ShaferShenoyInference<float> inf( *bn );
 
+          TS_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
+
+          TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
+          TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+        }
+
+        void testWithGenerator() {
+          gum::BayesNetGenerator bnGen;
+          float density[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
+          int trial_nb = 10;
+
+          for ( int i = 0; i < trial_nb; ++i ) {
+            gum::BayesNet<float>* bayesNet = bnGen.generateBNF( 10, density[i] );
+            gum::ShaferShenoyInference<float>* inf = 0;
+
+            TS_ASSERT_THROWS_NOTHING( inf = new gum::ShaferShenoyInference<float>( *bayesNet ) );
+            TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
+
+            if ( inf != 0 ) {
+              TS_ASSERT_THROWS_NOTHING( delete inf );
+            }
+
+            delete bayesNet;
+          }
+        }
+
+      private:
+        // Builds a BN to tst the inference
+        void fill( gum::BayesNet<float> &bn ) {
+          const gum::Potential<float>& p1 = bn.cpt( i1 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.2, 0.8};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p1.fillWith( v );
+          }
+
+          const gum::Potential<float>& p2 = bn.cpt( i2 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<float> v( t, t + n );
+            p2.fillWith( v );
+          }
+
+          const gum::Potential<float>& p3 = bn.cpt( i3 );
+          {
+            // FILLING PARAMS
+            const float t[4] = {0.1, 0.9, 0.9, 0.1};
+            int n = 4;const std::vector<float> v( t, t + n );
+            p3.fillWith( v );
+          }
+
+          const gum::Potential<float>& p4 = bn.cpt( i4 );
+          {
+            // FILLING PARAMS
+            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+            int n = 8;const std::vector<float> v( t, t + n );
+            p4.fillWith( v );
+          }
+
+          const gum::Potential<float>& p5 = bn.cpt( i5 );
+          {
+            // FILLING PARAMS
+            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+                                };
+            int n = 24;const std::vector<float> v( t, t + n );
+            p5.fillWith( v );
+            //printProba(p5);
+          }
+        }
+
+        // Uncomment this to have some outputs.
+        void printProba( const gum::Potential<float> & ) {
+          //for (inst.setFirst(); !inst.end(); ++inst)
+          //{
+          //  std::cerr << inst<<" : " <<p[inst] << std::endl;
+          //}
+          //std::cerr << std::endl;
+        }
+    };
+
+  }
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

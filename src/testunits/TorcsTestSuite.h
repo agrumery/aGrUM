@@ -28,113 +28,119 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
-class TorcsTestSuite: public CxxTest::TestSuite {
-  public:
-    gum::BayesNet<float> *bn;
+namespace gum {
 
-    gum::LabelizedVariable* node1;
-    gum::LabelizedVariable* node2;
-    gum::LabelizedVariable* node3;
-    gum::LabelizedVariable* node4;
-    gum::LabelizedVariable* node5;
+  namespace tests {
 
-    gum::List< gum::Potential<float>* > *evidence;
+    class TorcsTestSuite: public CxxTest::TestSuite {
+      public:
+        gum::BayesNet<float> *bn;
 
-    gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
+        gum::LabelizedVariable* node1;
+        gum::LabelizedVariable* node2;
+        gum::LabelizedVariable* node3;
+        gum::LabelizedVariable* node4;
+        gum::LabelizedVariable* node5;
 
-    void setUp() {
-      bn = new gum::BayesNet<float>();
+        gum::List< gum::Potential<float>* > *evidence;
 
-      node1 = new gum::LabelizedVariable("TgR", "", 72);
-      node2 = new gum::LabelizedVariable("DirV", "", 72);
-      node3 = new gum::LabelizedVariable("Angle 1", "", 72);
-      node4 = new gum::LabelizedVariable("DistM", "", 100);
-      node5 = new gum::LabelizedVariable("Angle 2", "", 72);
+        gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
 
-      gum::Id tempId;
+        void setUp() {
+          bn = new gum::BayesNet<float>();
 
-      tempId = bn->addVariable(*node1);
-      idMap.insert(node1, tempId );
-      tempId = bn->addVariable(*node2);
-      idMap.insert(node2, tempId );
-      tempId = bn->addVariable(*node3);
-      idMap.insert(node3, tempId );
-      tempId = bn->addVariable(*node4);
-      idMap.insert(node4, tempId );
-      tempId = bn->addVariable(*node5);
-      idMap.insert(node5, tempId );
+          node1 = new gum::LabelizedVariable( "TgR", "", 72 );
+          node2 = new gum::LabelizedVariable( "DirV", "", 72 );
+          node3 = new gum::LabelizedVariable( "Angle 1", "", 72 );
+          node4 = new gum::LabelizedVariable( "DistM", "", 100 );
+          node5 = new gum::LabelizedVariable( "Angle 2", "", 72 );
 
-      bn->insertArc(idMap[node1], idMap[node3]);
-      bn->insertArc(idMap[node2], idMap[node3]);
-      bn->insertArc(idMap[node3], idMap[node5]);
-      bn->insertArc(idMap[node4], idMap[node5]);
+          gum::Id tempId;
 
-      evidence = new gum::List< gum::Potential<float>* >();
+          tempId = bn->addVariable( *node1 );
+          idMap.insert( node1, tempId );
+          tempId = bn->addVariable( *node2 );
+          idMap.insert( node2, tempId );
+          tempId = bn->addVariable( *node3 );
+          idMap.insert( node3, tempId );
+          tempId = bn->addVariable( *node4 );
+          idMap.insert( node4, tempId );
+          tempId = bn->addVariable( *node5 );
+          idMap.insert( node5, tempId );
 
-      gum::Potential<float> *e1 = new gum::Potential<float>(new gum::MultiDimArray<float>());
-      (*e1) << bn->variable(idMap[node1]);
-      e1->fill((float) 0);
-      gum::Instantiation inst1(*e1);
-      inst1.chgVal(bn->variable(idMap[node1]), 4);
-      e1->set(inst1,(float) 1);
+          bn->insertArc( idMap[node1], idMap[node3] );
+          bn->insertArc( idMap[node2], idMap[node3] );
+          bn->insertArc( idMap[node3], idMap[node5] );
+          bn->insertArc( idMap[node4], idMap[node5] );
 
-      gum::Potential<float> *e2 = new gum::Potential<float>(new gum::MultiDimArray<float>());
-      (*e2) << bn->variable(idMap[node2]);
-      e2->fill((float) 0);
-      gum::Instantiation inst2(*e2);
-      inst2.chgVal(bn->variable(idMap[node2]), 4);
-      e2->set(inst1, (float) 1);
+          evidence = new gum::List< gum::Potential<float>* >();
 
-      gum::Potential<float> *e3 = new gum::Potential<float>(new gum::MultiDimArray<float>());
-      (*e3) << bn->variable(idMap[node3]);
-      e3->fill((float) 0);
-      gum::Instantiation inst3(*e3);
-      inst3.chgVal(bn->variable(idMap[node3]), 4);
-      e3->set(inst1, (float) 1);
+          gum::Potential<float> *e1 = new gum::Potential<float>( new gum::MultiDimArray<float>() );
+          ( *e1 ) << bn->variable( idMap[node1] );
+          e1->fill(( float ) 0 );
+          gum::Instantiation inst1( *e1 );
+          inst1.chgVal( bn->variable( idMap[node1] ), 4 );
+          e1->set( inst1, ( float ) 1 );
 
-      evidence->insert(e1);
-      evidence->insert(e2);
-      evidence->insert(e3);
-    }
+          gum::Potential<float> *e2 = new gum::Potential<float>( new gum::MultiDimArray<float>() );
+          ( *e2 ) << bn->variable( idMap[node2] );
+          e2->fill(( float ) 0 );
+          gum::Instantiation inst2( *e2 );
+          inst2.chgVal( bn->variable( idMap[node2] ), 4 );
+          e2->set( inst1, ( float ) 1 );
 
-    void tearDown() {
-      delete bn;
+          gum::Potential<float> *e3 = new gum::Potential<float>( new gum::MultiDimArray<float>() );
+          ( *e3 ) << bn->variable( idMap[node3] );
+          e3->fill(( float ) 0 );
+          gum::Instantiation inst3( *e3 );
+          inst3.chgVal( bn->variable( idMap[node3] ), 4 );
+          e3->set( inst1, ( float ) 1 );
 
-      delete node1;
-      delete node2;
-      delete node3;
-      delete node4;
-      delete node5;
+          evidence->insert( e1 );
+          evidence->insert( e2 );
+          evidence->insert( e3 );
+        }
 
-      delete (*evidence)[0];
-      delete (*evidence)[1];
-      delete (*evidence)[2];
-      delete evidence;
-    }
+        void tearDown() {
+          delete bn;
+
+          delete node1;
+          delete node2;
+          delete node3;
+          delete node4;
+          delete node5;
+
+          delete( *evidence )[0];
+          delete( *evidence )[1];
+          delete( *evidence )[2];
+          delete evidence;
+        }
 
 
-    void testInference() {
-      gum::LazyPropagation<float> inf(*bn);
+        void testInference() {
+          gum::LazyPropagation<float> inf( *bn );
 
-      try {
-        inf.makeInference();
-      } catch (gum::Exception e) {
-        //std::cerr << std::endl << e.getContent() << std::endl;
-        throw e;
-      }
-    }
+          try {
+            inf.makeInference();
+          } catch ( gum::Exception e ) {
+            //std::cerr << std::endl << e.getContent() << std::endl;
+            throw e;
+          }
+        }
 
-  private:
-    // Uncomment this to have some outputs.
-    void printProba(const gum::Potential<double> &)
-    {
-      //gum::Instantiation inst(p);
+      private:
+        // Uncomment this to have some outputs.
+        void printProba( const gum::Potential<double> & ) {
+          //gum::Instantiation inst(p);
 
-      //for (inst.setFirst(); !inst.end(); ++inst)
-      //{
-      //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-      //}
-      //std::cerr << std::endl;
-    }
-};
+          //for (inst.setFirst(); !inst.end(); ++inst)
+          //{
+          //  std::cerr << inst<<" : " <<p[inst] << std::endl;
+          //}
+          //std::cerr << std::endl;
+        }
+    };
 
+  }
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

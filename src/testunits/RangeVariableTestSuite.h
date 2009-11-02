@@ -24,49 +24,55 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/rangeVariable.h>
 
-class RangeVariableTestSuite: public CxxTest::TestSuite {
+namespace gum {
 
-  public:
+  namespace tests {
 
-    void testCopy() {
-      gum::RangeVariable var1( "var1", "this is var1" );
-      gum::RangeVariable var2( "var2", "this is var2", 1, 4 );
+    class RangeVariableTestSuite: public CxxTest::TestSuite {
 
-      gum::RangeVariable var3( var1 );
-      gum::RangeVariable var4( "var4", "this is var4" );
-      TS_GUM_ASSERT_THROWS_NOTHING( var4 = var2 );
+      public:
 
-      TS_ASSERT_EQUALS( var4.min(), var2.min() );
-      TS_ASSERT_EQUALS( var1.max(), var3.max() );
-      TS_ASSERT_DIFFERS( var4.min(), var1.min() );
-    }
+        void testCopy() {
+          gum::RangeVariable var1( "var1", "this is var1" );
+          gum::RangeVariable var2( "var2", "this is var2", 1, 4 );
 
-    void testLabels() {
-      gum::RangeVariable var1( "var1", "this is var1" );
-      TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size )2 );
-      TS_ASSERT( ! var1.empty() );
+          gum::RangeVariable var3( var1 );
+          gum::RangeVariable var4( "var4", "this is var4" );
+          TS_GUM_ASSERT_THROWS_NOTHING( var4 = var2 );
 
-      var1.setMin( 1 );
-      var1.setMax( 0 );
-      TS_ASSERT( var1.empty() );
+          TS_ASSERT_EQUALS( var4.min(), var2.min() );
+          TS_ASSERT_EQUALS( var1.max(), var3.max() );
+          TS_ASSERT_DIFFERS( var4.min(), var1.min() );
+        }
 
-      var1.setMax( 9 );
-      TS_ASSERT( ! var1.empty() );
-      TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size )9 );
-      TS_ASSERT( var1.belongs(( gum::Idx ) 3 ) );
-      TS_ASSERT( ! var1.belongs(( gum::Idx ) 0 ) );
-      TS_ASSERT( ! var1.belongs(( gum::Idx ) 10 ) );
+        void testLabels() {
+          gum::RangeVariable var1( "var1", "this is var1" );
+          TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size )2 );
+          TS_ASSERT( ! var1.empty() );
 
-      var1.setMin( 3 );
+          var1.setMin( 1 );
+          var1.setMax( 0 );
+          TS_ASSERT( var1.empty() );
 
-      TS_ASSERT_EQUALS( var1.label( 1 ), "4" );
-      TS_ASSERT_EQUALS( var1["4"], ( gum::Idx ) 1 );
+          var1.setMax( 9 );
+          TS_ASSERT( ! var1.empty() );
+          TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size )9 );
+          TS_ASSERT( var1.belongs(( gum::Idx ) 3 ) );
+          TS_ASSERT( ! var1.belongs(( gum::Idx ) 0 ) );
+          TS_ASSERT( ! var1.belongs(( gum::Idx ) 10 ) );
 
-	gum::DiscreteVariable& v=var1;
+          var1.setMin( 3 );
 
-      TS_ASSERT_EQUALS( v.label( 1 ), "4" );
-      TS_ASSERT_EQUALS( v["4"], ( gum::Idx ) 1 );
-	
-    }
-};
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;
+          TS_ASSERT_EQUALS( var1.label( 1 ), "4" );
+          TS_ASSERT_EQUALS( var1["4"], ( gum::Idx ) 1 );
+
+          gum::DiscreteVariable& v = var1;
+
+          TS_ASSERT_EQUALS( v.label( 1 ), "4" );
+          TS_ASSERT_EQUALS( v["4"], ( gum::Idx ) 1 );
+
+        }
+    };
+  }
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

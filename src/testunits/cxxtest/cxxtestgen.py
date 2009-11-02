@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 '''Usage: %s [OPTIONS] <input file(s)>
 Generate test source file for CxxTest.
 
@@ -19,6 +20,10 @@ Generate test source file for CxxTest.
   --part                 Don\'t write CxxTest globals
   --no-static-init       Don\'t rely on static initialization
 '''
+
+###################################################################################
+# WARNING : VERSION MODIFIED FOR AGRUM NAMESPACES (cf. PH Wuillemin if needed)
+###################################################################################
 
 import re
 import sys
@@ -495,13 +500,13 @@ def generateSuite( output, suite ):
 def writeSuitePointer( output, suite ):
     '''Create static suite pointer object for dynamic suites'''
     if noStaticInit:
-        output.write( 'static %s *%s;\n\n' % (suite['name'], suite['object']) )
+        output.write( 'static gum::tests::%s *%s;\n\n' % (suite['name'], suite['object']) )
     else:
-        output.write( 'static %s *%s = 0;\n\n' % (suite['name'], suite['object']) )
+        output.write( 'static gum::tests::%s *%s = 0;\n\n' % (suite['name'], suite['object']) )
 
 def writeSuiteObject( output, suite ):
     '''Create static suite object for non-dynamic suites'''
-    output.writelines( [ "static ", suite['name'], " ", suite['object'], ";\n\n" ] )
+    output.writelines( [ "static gum::tests::", suite['name'], " ", suite['object'], ";\n\n" ] )
 
 def writeTestList( output, suite ):
     '''Write the head of the test linked list for a suite'''

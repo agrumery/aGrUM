@@ -25,115 +25,122 @@
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/utilityTable.h>
 
-class UtilityTestSuite: public CxxTest::TestSuite {
-public:
+namespace gum {
 
-    void testCreation() {
-      gum::UtilityTable<double> p( new gum::MultiDimArray<double>() );
-      TS_ASSERT( p.empty() );
+  namespace tests {
 
-      gum::LabelizedVariable a( "a","first var",2 ), b( "b","second var",4 ),
-        c( "c","third var",5 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p<<a<<b<<c );
-    }
+    class UtilityTestSuite: public CxxTest::TestSuite {
+      public:
 
-    void testSumBy() {
-      gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
-      gum::UtilityTable<double> p2( new gum::MultiDimArray<double>() );
-      gum::UtilityTable<double> p3( new gum::MultiDimArray<double>() );
-      gum::LabelizedVariable a( "a","first var",2 ),
-	b( "b","second var",2 ),
-	c( "c","third var",2 ),
-	d( "d","fourth var",2 );
-      p1 << c << a;
-      p2 << d << b;
-      p3 << a << b;
+        void testCreation() {
+          gum::UtilityTable<double> p( new gum::MultiDimArray<double>() );
+          TS_ASSERT( p.empty() );
 
-      gum::Instantiation i;
-      i<<a<<b<<c<<d;
-      
-      for ( i.setFirst();! i.end() ; ++i ) {
-	p1.set( i,i.val( c ) );
-	p2.set( i,i.val( d ) );
-	p3.set( i,i.val( a ) );
-      }
-      
-      p1.sumBy(p2);
-
-      p1.sumBy(p3);
-
-      gum::Instantiation j(p1);
-
-      int nbr_err = 0;
-
-      for ( j.setFirst();! j.end();++j )
-	if ( p1[j]!=j.val( c )+j.val( a ) + j.val(d) ) {  
-	  nbr_err++;
-	}
-      
-      TS_ASSERT_EQUALS( nbr_err,0 );
-      
-    }
-
-
-    void testSum() {
-      gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
-      gum::UtilityTable<double> p2( new gum::MultiDimArray<double>() );
-      gum::UtilityTable<double> p3( new gum::MultiDimArray<double>() );
-      gum::LabelizedVariable a( "a","first var",2 ),
-	b( "b","second var",4 ),
-	c( "c","third var",5 ),
-	d( "d","fourth var",5 );
-      
-
-      try {
-        p1<< c;
-        p2<<b<<c<<d;
-        p3<<a<<d;
-
-
-        gum::UtilityTable<double> res;
-
-        gum::Instantiation i;i<<a<<b<<c<<d;
-
-        for ( i.setFirst();! i.end() ; ++i ) {
-          p1.set( i,i.val( c ) );
-          p2.set( i,i.val( d ) );
-          p3.set( i,i.val( a ) );
+          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
+          TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c );
         }
 
-	res.sum(p1, p2);
-	
+        void testSumBy() {
+          gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
+          gum::UtilityTable<double> p2( new gum::MultiDimArray<double>() );
+          gum::UtilityTable<double> p3( new gum::MultiDimArray<double>() );
+          gum::LabelizedVariable a( "a", "first var", 2 ),
+          b( "b", "second var", 2 ),
+          c( "c", "third var", 2 ),
+          d( "d", "fourth var", 2 );
+          p1 << c << a;
+          p2 << d << b;
+          p3 << a << b;
 
-        TS_ASSERT_EQUALS( res.nbrDim(),( gum::Size )3 );
+          gum::Instantiation i;
+          i << a << b << c << d;
 
-        gum::Instantiation j2( res );
+          for ( i.setFirst();! i.end() ; ++i ) {
+            p1.set( i, i.val( c ) );
+            p2.set( i, i.val( d ) );
+            p3.set( i, i.val( a ) );
+          }
 
-        TS_ASSERT_EQUALS( j2.toString(),"<c:0|b:0|d:0>" );
+          p1.sumBy( p2 );
 
-        int nbr_err=0;
+          p1.sumBy( p3 );
 
-	gum::UtilityTable<double> res2;
+          gum::Instantiation j( p1 );
 
-        gum::Instantiation j( res2 );
-	res2.sum(res, p3);
+          int nbr_err = 0;
 
-        for ( j.setFirst();! j.end();++j )
-          if ( res2[j]!=j.val( c )+j.val( a ) + j.val(d) ) {
-	
-	    nbr_err++;
-	  }
+          for ( j.setFirst();! j.end();++j )
+            if ( p1[j] != j.val( c ) + j.val( a ) + j.val( d ) ) {
+              nbr_err++;
+            }
 
-        TS_ASSERT_EQUALS( nbr_err,0 );
+          TS_ASSERT_EQUALS( nbr_err, 0 );
 
-      } catch ( gum::Exception e ) {
-        GUM_SHOWERROR( e );
-      }
-    }
+        }
 
-  void testFactory() {
-    gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
-    TS_GUM_ASSERT_THROWS_NOTHING(delete p1.newFactory());
+
+        void testSum() {
+          gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
+          gum::UtilityTable<double> p2( new gum::MultiDimArray<double>() );
+          gum::UtilityTable<double> p3( new gum::MultiDimArray<double>() );
+          gum::LabelizedVariable a( "a", "first var", 2 ),
+          b( "b", "second var", 4 ),
+          c( "c", "third var", 5 ),
+          d( "d", "fourth var", 5 );
+
+
+          try {
+            p1 << c;
+            p2 << b << c << d;
+            p3 << a << d;
+
+
+            gum::UtilityTable<double> res;
+
+            gum::Instantiation i;i << a << b << c << d;
+
+            for ( i.setFirst();! i.end() ; ++i ) {
+              p1.set( i, i.val( c ) );
+              p2.set( i, i.val( d ) );
+              p3.set( i, i.val( a ) );
+            }
+
+            res.sum( p1, p2 );
+
+
+            TS_ASSERT_EQUALS( res.nbrDim(), ( gum::Size )3 );
+
+            gum::Instantiation j2( res );
+
+            TS_ASSERT_EQUALS( j2.toString(), "<c:0|b:0|d:0>" );
+
+            int nbr_err = 0;
+
+            gum::UtilityTable<double> res2;
+
+            gum::Instantiation j( res2 );
+            res2.sum( res, p3 );
+
+            for ( j.setFirst();! j.end();++j )
+              if ( res2[j] != j.val( c ) + j.val( a ) + j.val( d ) ) {
+
+                nbr_err++;
+              }
+
+            TS_ASSERT_EQUALS( nbr_err, 0 );
+
+          } catch ( gum::Exception e ) {
+            GUM_SHOWERROR( e );
+          }
+        }
+
+        void testFactory() {
+          gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
+          TS_GUM_ASSERT_THROWS_NOTHING( delete p1.newFactory() );
+        }
+
+    };
   }
-
-};
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

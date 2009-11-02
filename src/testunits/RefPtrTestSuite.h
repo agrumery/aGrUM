@@ -21,72 +21,80 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/refPtr.h>
 
-class RefPtrTestSuite: public CxxTest::TestSuite {
-  public:
+namespace gum {
 
-  void testConstructors () {
-    gum::RefPtr<int> ptr1 (new int (4));
+  namespace tests {
 
-    TS_ASSERT( ptr1 );
-    
-    gum::RefPtr<int> ptr2 = ptr1, ptr3;
+    class RefPtrTestSuite: public CxxTest::TestSuite {
+      public:
 
-    TS_ASSERT_EQUALS( ptr1, ptr2 );
+        void testConstructors() {
+          gum::RefPtr<int> ptr1( new int ( 4 ) );
 
-    TS_ASSERT_DIFFERS( ptr1, ptr3 ); 
+          TS_ASSERT( ptr1 );
 
-    ptr3 = ptr1;
+          gum::RefPtr<int> ptr2 = ptr1, ptr3;
 
-    TS_ASSERT_EQUALS( ptr1, ptr3 );
+          TS_ASSERT_EQUALS( ptr1, ptr2 );
+
+          TS_ASSERT_DIFFERS( ptr1, ptr3 );
+
+          ptr3 = ptr1;
+
+          TS_ASSERT_EQUALS( ptr1, ptr3 );
+        }
+
+        void testModify() {
+          gum::RefPtr<int> ptr1( new int ( 4 ) );
+          gum::RefPtr<int> ptr2 = ptr1, ptr3;
+          ptr3 = ptr1;
+
+          TS_ASSERT_EQUALS( ptr1, ptr2 );
+
+          ptr2.clear();
+
+          TS_ASSERT_DIFFERS( ptr1, ptr2 );
+
+          *ptr1 = 5;
+
+          TS_ASSERT_EQUALS( *ptr1, 5 );
+
+          ptr1 = 0;
+
+          TS_ASSERT_EQUALS( ptr1.refCount(), 0U );
+
+          ptr2 = ptr1;
+
+          TS_ASSERT_EQUALS( ptr2.refCount(), 0U );
+        }
+
+        struct toto {
+          int xxx;
+          toto() : xxx( 4 ) { };
+
+          int getY() { return xxx; }
+        };
+
+        struct titi : public toto {
+          int yyy;
+          titi() : yyy( 3 ) { };
+
+          int getY() { return yyy; }
+        };
+
+        void testDowncast() {
+          gum::RefPtr<titi> ptr1( new titi );
+
+          TS_ASSERT_EQUALS( ptr1->getY(), 3 );
+
+          gum::RefPtr<toto> ptr2( ptr1 );
+
+          TS_ASSERT_DIFFERS( ptr1->getY(), ptr2->getY() );
+
+        }
+
+    };
+
   }
-
-  void testModify () {
-    gum::RefPtr<int> ptr1 (new int (4));
-    gum::RefPtr<int> ptr2 = ptr1, ptr3;
-    ptr3 = ptr1;
-
-    TS_ASSERT_EQUALS( ptr1, ptr2 );
-
-    ptr2.clear ();
-
-    TS_ASSERT_DIFFERS( ptr1, ptr2 ); 
-    
-    *ptr1 = 5;
-
-    TS_ASSERT_EQUALS( *ptr1, 5 );
-
-    ptr1 = 0;
-
-    TS_ASSERT_EQUALS( ptr1.refCount(), 0U );
-
-    ptr2 = ptr1;
-    
-    TS_ASSERT_EQUALS( ptr2.refCount(), 0U );
-  }
-
-  struct toto {
-    int xxx;
-    toto () : xxx (4) { };
-    int getY () { return xxx; }
-  };
-
-  struct titi : public toto {
-    int yyy;
-    titi () : yyy(3) { };
-    int getY () { return yyy; }
-  };
-
-  void testDowncast () {
-    gum::RefPtr<titi> ptr1 (new titi);
-
-    TS_ASSERT_EQUALS( ptr1->getY(), 3 );
-
-    gum::RefPtr<toto> ptr2 (ptr1);
-
-    TS_ASSERT_DIFFERS( ptr1->getY(), ptr2->getY() );
-    
-  }
-  
-};
-
-
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

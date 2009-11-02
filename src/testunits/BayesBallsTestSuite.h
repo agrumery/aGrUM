@@ -25,38 +25,51 @@
 #include <agrum/BN/generator/BayesNetGenerator.h>
 #include <agrum/BN/inference/BayesBalls.h>
 
-class BayesBallsTestSuite: public CxxTest::TestSuite {
-  public:
+namespace gum {
 
-    void setUp() {
-    }
+  namespace tests {
 
-    void tearDown() {
-    }
+    class BayesBallsTestSuite: public CxxTest::TestSuite {
+      public:
 
-    void testCreation() {
-      gum::BayesBalls<float>* balls = 0;
-      TS_ASSERT_THROWS_NOTHING(balls = new gum::BayesBalls<float>());
-      TS_ASSERT_THROWS_NOTHING(if (balls != 0) delete balls);
-    }
+        void setUp() {
+        }
 
-    void testRequisiteNodes() {
-      gum::BayesBalls<float> balls;
-      gum::BayesNetGenerator gen;
-      gum::BayesNet<float>* bn = gen.generateBNF(50, 0.1, 2);
-      gum::Sequence<gum::NodeId>* requisite = 0;
+        void tearDown() {
+        }
 
-      gum::Sequence<gum::NodeId> query, softEvidence, hardEvidence, nodes_seq;
-      for (gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter) nodes_seq.insert(*iter);
-      for (gum::Idx i = 0; i < 5; ++i) hardEvidence.insert(nodes_seq.atPos(i));
-      for (gum::Idx j = 24; j > 19; --j) query.insert(nodes_seq.atPos(j));
-      TS_ASSERT_THROWS_NOTHING(requisite = balls.requisiteNodes(*bn, query, softEvidence, hardEvidence));
+        void testCreation() {
+          gum::BayesBalls<float>* balls = 0;
+          TS_ASSERT_THROWS_NOTHING( balls = new gum::BayesBalls<float>() );
 
-      TS_ASSERT(requisite->size() >= 5);
+          TS_ASSERT_THROWS_NOTHING( if ( balls != 0 ) delete balls );
+        }
 
-      if (requisite != 0) delete requisite;
-      if (bn != 0) delete bn;
-    }
+        void testRequisiteNodes() {
+          gum::BayesBalls<float> balls;
+          gum::BayesNetGenerator gen;
+          gum::BayesNet<float>* bn = gen.generateBNF( 50, 0.1, 2 );
+          gum::Sequence<gum::NodeId>* requisite = 0;
 
-};
+          gum::Sequence<gum::NodeId> query, softEvidence, hardEvidence, nodes_seq;
 
+          for ( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter ) nodes_seq.insert( *iter );
+
+          for ( gum::Idx i = 0; i < 5; ++i ) hardEvidence.insert( nodes_seq.atPos( i ) );
+
+          for ( gum::Idx j = 24; j > 19; --j ) query.insert( nodes_seq.atPos( j ) );
+
+          TS_ASSERT_THROWS_NOTHING( requisite = balls.requisiteNodes( *bn, query, softEvidence, hardEvidence ) );
+
+          TS_ASSERT( requisite->size() >= 5 );
+
+          if ( requisite != 0 ) delete requisite;
+
+          if ( bn != 0 ) delete bn;
+        }
+
+    };
+
+  }
+}
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

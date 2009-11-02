@@ -25,6 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/graphs/orderedTriangulation.h>
 
+namespace gum {
+  namespace tests{
 
 class OrderedTriangulationTestSuite: public CxxTest::TestSuite {
 public:
@@ -156,3 +158,4 @@ private:
 
   
 };
+  }}

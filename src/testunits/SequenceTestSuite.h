@@ -21,6 +21,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/sequence.h>
 
+namespace gum {
+  namespace tests{
 class SequenceTestSuite: public CxxTest::TestSuite {
   private:
     void fill( gum::Sequence<int>& seq ) {
@@ -216,3 +218,4 @@ class SequenceTestSuite: public CxxTest::TestSuite {
 };
 
 
+  }}

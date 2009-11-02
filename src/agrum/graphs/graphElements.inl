@@ -27,6 +27,9 @@
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
 
+// to facilitate parsing
+#include<agrum/graphs/graphElements.h>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
