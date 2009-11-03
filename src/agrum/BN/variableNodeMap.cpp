@@ -23,73 +23,101 @@
  *
  * @author Lionel Torti
  */
-// ============================================================================
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#include <iostream>
+#include <sstream>
 #include <agrum/BN/variableNodeMap.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/variableNodeMap.inl>
 #endif /* GUM_NO_INLINE */
-// ============================================================================
+
 
 namespace gum {
 
-// Default constructor.
+  
+  // Default constructor.
   VariableNodeMap::VariableNodeMap() {
     GUM_CONSTRUCTOR( VariableNodeMap );
   }
 
-// Copy constructor.
-  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
+  
+  // Copy constructor.
+  VariableNodeMap::VariableNodeMap ( const VariableNodeMap& source ) {
     GUM_CONS_CPY( VariableNodeMap );
 
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end();
-          ++iter ) {
-      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() ); // copy factory is used inside insert
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
+            source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end(); ++iter ) {
+      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() );
+      // copy factory is used inside insert
     }
 
     __names2nodes = source.__names2nodes;
   }
 
-// Destructor
+  
+  // Destructor
   VariableNodeMap::~VariableNodeMap() {
     GUM_DESTRUCTOR( VariableNodeMap );
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = __nodes2vars.begin();
-          iter != __nodes2vars.end();
-          ++iter ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
+            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
       delete iter.second();
     }
     
     __nodes2vars.clear();
-    
     __names2nodes.clear();
   }
+  
 
-// Copy operator.
+  // Copy operator.
   VariableNodeMap&
   VariableNodeMap::operator=( const VariableNodeMap& source ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = __nodes2vars.begin();
-          iter != __nodes2vars.end();
-          ++iter ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
+            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
       delete iter.second();
     }
 
     __nodes2vars.clear();
 
-
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter = source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end();
-          ++iter ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
+            source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end(); ++iter ) {
       __nodes2vars.insert( iter.first(), iter.second()->copyFactory() );
     }
 
     __names2nodes = source.__names2nodes;
-
     return *this;
+  }
+
+  
+  /// friendly displays the content of the VariableNodeMap
+  const std::string VariableNodeMap::toString() const {
+    std::stringstream stream;
+
+    stream << "list of associations:" << std::endl;
+    stream << __nodes2vars << std::endl << std::endl;
+    stream << "list of variable names:" << std::endl;
+    stream <<  __names2nodes << std::endl;
+
+    return stream.str();
+  }
+
+
+
+  // ============================================================================
+  /// for friendly displaying the content of clique graphs
+  // ============================================================================
+  std::ostream& operator<< ( std::ostream& stream, const VariableNodeMap& v ) {
+    stream << v.toString();
+    return stream;
   }
 
 
 } /* namespace gum */
 
-// ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+

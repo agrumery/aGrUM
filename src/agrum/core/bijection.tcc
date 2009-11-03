@@ -414,6 +414,26 @@ namespace gum {
   }
 
 
+  // ==============================================================================
+  /// friendly displays the content of the CliqueGraph
+  // ==============================================================================
+  template <typename T1, typename T2>
+  const std::string Bijection<T1,T2>::toString() const {
+    std::stringstream stream;
+    stream << "{ ";
+    bool first = true;
+
+    for ( iterator iter = begin(); iter != end(); ++iter) {
+      if ( ! first ) stream << ", ";
+      else first = false;
+      stream << '(' << iter.first() << " <-> " << iter.second() << ')';
+    }
+
+    stream << " }";
+    return stream.str();
+  }
+
+  
 
 
 
@@ -807,7 +827,36 @@ namespace gum {
     return __firstToSecond.resizePolicy();
   }
 
+  
+  // ==============================================================================
+  /// friendly displays the content of the CliqueGraph
+  // ==============================================================================
+  template <typename T1, typename T2>
+  const std::string Bijection<T1*,T2*>::toString() const {
+    std::stringstream stream;
+    stream << "{ ";
+    bool first = true;
 
+    for ( iterator iter = begin(); iter != end(); ++iter) {
+      if ( ! first ) stream << ", ";
+      else first = false;
+      stream << '(' << *(iter.first()) << " <-> " << *(iter.second()) << ')';
+    }
+
+    stream << " }";
+    return stream.str();
+  }
+
+  
+  // ============================================================================
+  /// for friendly displaying the content of bijections
+  // ============================================================================
+  template <typename T1, typename T2>
+  std::ostream& operator<< ( std::ostream& stream, const Bijection<T1,T2>& b) {
+    stream << b.toString ();
+    return stream;
+  }
+ 
 } /* namespace gum */
 
 

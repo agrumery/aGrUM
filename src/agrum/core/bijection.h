@@ -31,6 +31,9 @@
 #define GUM_BIJECTION_H
 
 
+#include <iostream>
+#include <string>
+#include <sstream>
 #include <agrum/core/hashTable.h>
 
 
@@ -355,6 +358,11 @@ namespace gum {
     // ============================================================================
     void eraseSecond(const T2& second);
 
+    // ============================================================================
+    /// friendly displays the content of the CliqueGraph
+    // ============================================================================
+    virtual const std::string toString() const;
+    
     /// @}
     
 
@@ -746,6 +754,11 @@ namespace gum {
     // ============================================================================
     void eraseSecond(T2* const second);
 
+    // ============================================================================
+    /// friendly displays the content of the CliqueGraph
+    // ============================================================================
+    virtual const std::string toString() const;
+    
     /// @}
     
 
@@ -807,6 +820,13 @@ namespace gum {
  
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+
+  // ============================================================================
+  /// for friendly displaying the content of bijections
+  // ============================================================================
+  template <typename T1, typename T2>
+  std::ostream& operator<< ( std::ostream&, const Bijection<T1,T2>& );
+  
     
 } /* namespace gum */
 
