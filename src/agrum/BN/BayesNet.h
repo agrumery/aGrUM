@@ -39,7 +39,7 @@
 #include <agrum/multidim/multiDimNoisyOR.h>
 #include <agrum/multidim/potential.h>
 // ============================================================================
-#include <agrum/BN/variableNodeMap.h>
+#include <agrum/graphicalModels/variableNodeMap.h>
 // ============================================================================
 
 namespace gum {

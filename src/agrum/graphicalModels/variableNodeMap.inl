@@ -27,7 +27,7 @@
 
 
 // to ease parsers in IDE
-#include <agrum/BN/variableNodeMap.h>
+#include <agrum/graphicalModels/variableNodeMap.h>
 
 
 namespace gum {

@@ -31,7 +31,7 @@
 
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/multiDimAdressable.h>
-#include <agrum/BN/variableNodeMap.h>
+#include <agrum/graphicalModels/variableNodeMap.h>
 
 namespace gum {
   /**

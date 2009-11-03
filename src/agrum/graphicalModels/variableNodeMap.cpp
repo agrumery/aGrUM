@@ -27,10 +27,10 @@
 
 #include <iostream>
 #include <sstream>
-#include <agrum/BN/variableNodeMap.h>
+#include <agrum/graphicalModels/variableNodeMap.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/variableNodeMap.inl>
+#include <agrum/graphicalModels/variableNodeMap.inl>
 #endif /* GUM_NO_INLINE */
 
 
