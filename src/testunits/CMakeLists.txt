@@ -88,4 +88,4 @@ file(GLOB AGRUM_TESTS
 
 add_cxxtest(test ${AGRUM_TESTS})
 
-target_link_libraries(test agrum)
+target_link_libraries(test ${LIBAGRUM})

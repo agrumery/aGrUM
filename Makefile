@@ -1,6 +1,6 @@
 OPTION_VERBOSE =
 #OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
-OPTION_NBR_PROCESSOR = 
+OPTION_NBR_PROCESSOR =3
 
 # which version will be used for "install" and "pack" rules ?
 PUBLIC_VERSION= release
@@ -69,8 +69,15 @@ install:
 	make ${PUBLIC_VERSION}
 	(cd build/${PUBLIC_VERSION} ; make install)
 
+install_debug:
+	make debug
+	(cd build/debug ; make install)
+
 uninstall:
 	(cd build/${PUBLIC_VERSION} ; make uninstall)
+
+uninstall_debug:
+	(cd build/debug ; make uninstall)
 
 pack: ${PUBLIC_VERSION}
 	(cd build/${PUBLIC_VERSION} ; make package)

@@ -13,11 +13,11 @@ FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
 include_directories(${AGRUM_BINARY_DIR}/agrum)
 
 ###################################################################################
-add_library(agrum SHARED ${AGRUM_SOURCES})
-set_target_properties(agrum PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
+add_library(${LIBAGRUM} SHARED ${AGRUM_SOURCES})
+set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
 install(CODE "MESSAGE(\"\n\n************************\")")
 install(CODE "MESSAGE(\"* Installing Agrum ... *\")")
 install(CODE "MESSAGE(\"************************\n\n\")")
 install(DIRECTORY . DESTINATION include/agrum FILES_MATCHING PATTERN ".svn" EXCLUDE PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh" PATTERN "*.tcc" PATTERN "*.inl")
-install(TARGETS agrum DESTINATION lib)
+install(TARGETS ${LIBAGRUM} DESTINATION lib)

@@ -37,7 +37,7 @@ set(CMAKE_C_FLAGS_DEBUG "-Wall  -pedantic -O0 -pg -DGUM_NO_INLINE")
 
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
     # to detect Intel 64 bits platform : inline tends to be a bug for 64bits (???)
-  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions") 
+  set(CMAKE_CXX_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
   set(CMAKE_C_FLAGS_CURRENT "-O2 -DNDEBUG -Wall -pedantic -fno-inline-small-functions")
 
   set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG -fno-inline-small-functions")
@@ -53,6 +53,12 @@ else("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
 	set(AGRUM_PROCESSOR "32")
 endif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
+  set(LIBAGRUM "agrum-dbg")
+else (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
+  set(LIBAGRUM "agrum")
+endif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
 
 subdirs(agrum EXCLUDE_FROM_ALL run testunits)
 include_directories(${AGRUM_SOURCE_DIR})
