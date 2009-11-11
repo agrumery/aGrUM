@@ -141,6 +141,12 @@ namespace gum {
     return 0;
   }
 
+  // returns the name of the implementation
+  template<typename T_DATA>
+  const std::string& MultiDimNoisyOR<T_DATA>::name () const {
+    static const std::string str = "MultiDimNoisyOR";
+    return str;
+  }
 
 // ==================================================
 } /* namespace gum */

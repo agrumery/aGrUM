@@ -37,13 +37,14 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                         GUM_ALGEBRAIC_ELEMENT                        === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                         GUM_ALGEBRAIC_ELEMENT                       === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class MultiDimDecorator
-   * @brief decorator design pattern in order to separate implementations (array,tree,etc.) for MultiDim concept (potential, CPF, utility Table, etc.)
+   * @brief decorator design pattern in order to separate implementations
+   * (array,tree,etc.) for MultiDim concept (potential, CPF, utility Table, etc.)
    * @ingroup multidim_group
    *
    * A MultiDimDecorator is a virtual class for all encapsulation of
@@ -51,282 +52,282 @@ namespace gum {
    * It implements a decorator design pattern in order to have a array/tree/sparse
    * matrix/... implementation for multiDim<*T_DATA*>
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template<typename T_DATA>
 
   class MultiDimDecorator : public MultiDimContainer<T_DATA> {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Constructor.
-      // ============================================================================
-      MultiDimDecorator( MultiDimImplementation<T_DATA> *aContent );
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Constructor.
+    // ============================================================================
+    MultiDimDecorator( MultiDimImplementation<T_DATA> *aContent );
 
-      // ============================================================================
-      /// Destructor.
-      // ============================================================================
-      ~MultiDimDecorator();
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    ~MultiDimDecorator();
 
-      /// @}
-
-
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Get the size of domains - final method.
-      // ============================================================================
-      Size domainSize() const ;
+    /// @}
 
 
-      // ============================================================================
-      /**
-       * Add a new var to the sequence of vars.
-       * @param v The new var.
-       * @throw DuplicateElement
-       */
-      // ============================================================================
-      virtual void add( const DiscreteVariable& v );
-
-      // ============================================================================
-      /// Give a const ref to the sequence of DiscreteVariable*. final method.
-      // ============================================================================
-      const Sequence<const DiscreteVariable *>& variablesSequence() const ;
-
-      // ============================================================================
-      /// Get the nbr of vars in the sequence. final method.
-      // ============================================================================
-      Idx nbrDim() const ;
-
-      // ============================================================================
-      /**
-       *  Removes a dimension.
-       *  @param var The variable wich is removed.
-       *  @throws NotFound Raised if var isn't in this.
-       *  @throws OperationNotAllowed Raised if var can't be removed.
-       */
-      // ============================================================================
-      virtual void erase( const DiscreteVariable& var );
-
-      // ============================================================================
-      /**
-       * Returns the corresponding variable.
-       * @throws NotFound Raised if the index doesn't exist.
-       */
-      // ============================================================================
-      virtual const DiscreteVariable& variable( const Idx ) const;
-
-      // ============================================================================
-      /**
-       *  Returns the index of the given variable.
-       *  @throws NotFound Raised if the variable does not belong to this
-       */
-      // ============================================================================
-      virtual Idx pos( const DiscreteVariable& ) const;
-
-      // ============================================================================
-      /// Returns true if the variable does not belong to this.
-      // ============================================================================
-      virtual bool contains( const DiscreteVariable& ) const;
-
-      // ============================================================================
-      /// Returns true if this is empty.
-      // ============================================================================
-      virtual bool empty() const;
-
-      // ============================================================================
-      /// Unregister a slave.
-      // ============================================================================
-      virtual bool unregisterSlave( Instantiation& );
-
-      // ============================================================================
-      /// Register a slave.
-      // ============================================================================
-      virtual bool registerSlave( Instantiation& i );
-
-      // ============================================================================
-      /// Fills this with the content of d.
-      // ============================================================================
-      virtual void fill( const T_DATA& d ) const;
-
-      /// @}
-
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Get the size of domains - final method.
+    // ============================================================================
+    Size domainSize() const ;
 
 
-      // ############################################################################
-      /// @name Notification methods
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /**
-       * listen to change in each recorded Instantiation. final method
-       * @param i the Instantiation
-       * @param var the changed dim.
-       * @param oldval the old value
-			 * @param newval the new value
-       */
-      // ============================================================================
-      void changeNotification( Instantiation& i,
-                               const DiscreteVariable* const var,
-                               const Idx& oldval,const Idx& newval );
+    // ============================================================================
+    /**
+     * Add a new var to the sequence of vars.
+     * @param v The new var.
+     * @throw DuplicateElement
+     */
+    // ============================================================================
+    virtual void add( const DiscreteVariable& v );
 
-      // ============================================================================
-      /// listen to an assignment of a value in a Instantiation
-      // ============================================================================
-      void setChangeNotification( Instantiation& i );
+    // ============================================================================
+    /// Give a const ref to the sequence of DiscreteVariable*. final method.
+    // ============================================================================
+    const Sequence<const DiscreteVariable *>& variablesSequence() const ;
 
-      // ============================================================================
-      /**
-       * listen to setFirst in each recorded Instantiation. final method.
-       * @param i the Instantiation
-       */
-      // ============================================================================
-      void setFirstNotification( Instantiation& i );
+    // ============================================================================
+    /// Get the nbr of vars in the sequence. final method.
+    // ============================================================================
+    Idx nbrDim() const ;
 
-      // ============================================================================
-      /**
-       * listen to setLast in each recorded Instantiation. final method.
-       * @param i the Instantiation
-       */
-      // ============================================================================
-      void setLastNotification( Instantiation& i );
+    // ============================================================================
+    /**
+     *  Removes a dimension.
+     *  @param var The variable wich is removed.
+     *  @throws NotFound Raised if var isn't in this.
+     *  @throws OperationNotAllowed Raised if var can't be removed.
+     */
+    // ============================================================================
+    virtual void erase( const DiscreteVariable& var );
 
-      // ============================================================================
-      /**
-       * listen to increment in each recorded Instantiation. final method.
-       * @param i the Instantiation
-       */
-      // ============================================================================
-      void setIncNotification( Instantiation& i );
+    // ============================================================================
+    /**
+     * Returns the corresponding variable.
+     * @throws NotFound Raised if the index doesn't exist.
+     */
+    // ============================================================================
+    virtual const DiscreteVariable& variable( const Idx ) const;
 
-      // ============================================================================
-      /**
-       * listen to increment in each recorded Instantiation. final method.
-       * @param i the Instantiation
-       */
-      // ============================================================================
-      void setDecNotification( Instantiation& i );
+    // ============================================================================
+    /**
+     *  Returns the index of the given variable.
+     *  @throws NotFound Raised if the variable does not belong to this
+     */
+    // ============================================================================
+    virtual Idx pos( const DiscreteVariable& ) const;
 
-      // ============================================================================
-      /** @brief notification modification on vars to all Instantiation listeners.
-       * final method. */
-      // ============================================================================
-      virtual void notifyChange() const;
+    // ============================================================================
+    /// Returns true if the variable does not belong to this.
+    // ============================================================================
+    virtual bool contains( const DiscreteVariable& ) const;
 
-      // ============================================================================
-      /**
-       * Returns the Master reference of this.
-       * A Instantiation who wants to know his *true* master should ask for
-       * master->getMasterRef()
-       */
-      // ============================================================================
-      virtual MultiDimAdressable& getMasterRef( void );
+    // ============================================================================
+    /// Returns true if this is empty.
+    // ============================================================================
+    virtual bool empty() const;
 
-      // ============================================================================
-      /**
-       * Returns the Master reference of this.
-       * A Instantiation who wants to know his *true* master should ask for
-       * master->getMasterRef()
-       */
-      // ============================================================================
-      virtual const MultiDimAdressable& getMasterRef( void ) const;
+    // ============================================================================
+    /// Unregister a slave.
+    // ============================================================================
+    virtual bool unregisterSlave( Instantiation& );
 
-      /// @}
+    // ============================================================================
+    /// Register a slave.
+    // ============================================================================
+    virtual bool registerSlave( Instantiation& i );
 
+    // ============================================================================
+    /// Fills this with the content of d.
+    // ============================================================================
+    virtual void fill( const T_DATA& d ) const;
 
-      // ############################################################################
-      /// @name Fast large modifications in structures.
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      virtual void beginMultipleChanges( void );
-      virtual void endMultipleChanges( void );
+    // ============================================================================
+    /// Protected access to content.
+    // ============================================================================
+    const MultiDimImplementation<T_DATA>* getContent() const;
 
-      /// @}
+    /// @}
 
-
-      // ############################################################################
-      /// @name Various methods.
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// string representation of internal data about i in this.
-      // ============================================================================
-      virtual const std::string toString( const Instantiation *i ) const ;
-
-      /// string representation of this.
-      virtual const std::string toString( ) const ;
-
-      // ============================================================================
-      /**
-       * Perform an homothety on a multiDim container.
-       * @param alpha The ratio.
-       * @param mul The chosen mult operation.
-       */
-      // ============================================================================
-      virtual void
-      homothetic( T_DATA alpha,T_DATA( *mul )( const T_DATA,const T_DATA ) );
-
-      // ============================================================================
-      /**
-       * Iterate add on each element of a multiDim container.
-       * @param add The chosen folded operation.
-       * @return Returns the sum of values contains in the multiDim.
-       */
-      // ============================================================================
-      virtual T_DATA fold( T_DATA( *add )( const T_DATA,const T_DATA ) ) const;
-
-      /// @}
-
-      /// by default, set just calls _get as a r-value
-      virtual void set( const Instantiation& i,const T_DATA& value ) const;
-
-      /// by default, get just calls _get as a l-value
-      virtual T_DATA get( const Instantiation& i ) const ;
-    protected:
-      // ============================================================================
-      /// The true container.
-      // ============================================================================
-      mutable MultiDimImplementation<T_DATA> *_content;
-
-      // ============================================================================
-      /// Protected access to content.
-      // ============================================================================
-      MultiDimImplementation<T_DATA>* getContent();
-
-      // ============================================================================
-      /// Protected access to content.
-      // ============================================================================
-      const MultiDimImplementation<T_DATA>* getContent() const;
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual MultiDimDecorator<T_DATA>* newFactory() const;
 
 
-      // ============================================================================
-      /**
-       * Return a data, given a Insantiation - final method.
-       * @param i The instantiation.
-       * @throw NullElement
-       * @throw NotFound
-       */
-      // ============================================================================
-      T_DATA& _get( const Instantiation& i ) const;
+    // ############################################################################
+    /// @name Notification methods
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /**
+     * listen to change in each recorded Instantiation. final method
+     * @param i the Instantiation
+     * @param var the changed dim.
+     * @param oldval the old value
+     * @param newval the new value
+     */
+    // ============================================================================
+    void changeNotification( Instantiation& i,
+                             const DiscreteVariable* const var,
+                             const Idx& oldval,const Idx& newval );
+
+    // ============================================================================
+    /// listen to an assignment of a value in a Instantiation
+    // ============================================================================
+    void setChangeNotification( Instantiation& i );
+
+    // ============================================================================
+    /**
+     * listen to setFirst in each recorded Instantiation. final method.
+     * @param i the Instantiation
+     */
+    // ============================================================================
+    void setFirstNotification( Instantiation& i );
+
+    // ============================================================================
+    /**
+     * listen to setLast in each recorded Instantiation. final method.
+     * @param i the Instantiation
+     */
+    // ============================================================================
+    void setLastNotification( Instantiation& i );
+
+    // ============================================================================
+    /**
+     * listen to increment in each recorded Instantiation. final method.
+     * @param i the Instantiation
+     */
+    // ============================================================================
+    void setIncNotification( Instantiation& i );
+
+    // ============================================================================
+    /**
+     * listen to increment in each recorded Instantiation. final method.
+     * @param i the Instantiation
+     */
+    // ============================================================================
+    void setDecNotification( Instantiation& i );
+
+    // ============================================================================
+    /** @brief notification modification on vars to all Instantiation listeners.
+     * final method. */
+    // ============================================================================
+    virtual void notifyChange() const;
+
+    // ============================================================================
+    /**
+     * Returns the Master reference of this.
+     * A Instantiation who wants to know his *true* master should ask for
+     * master->getMasterRef()
+     */
+    // ============================================================================
+    virtual MultiDimAdressable& getMasterRef( void );
+
+    // ============================================================================
+    /**
+     * Returns the Master reference of this.
+     * A Instantiation who wants to know his *true* master should ask for
+     * master->getMasterRef()
+     */
+    // ============================================================================
+    virtual const MultiDimAdressable& getMasterRef( void ) const;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Fast large modifications in structures.
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    virtual void beginMultipleChanges( void );
+    virtual void endMultipleChanges( void );
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Various methods.
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// string representation of internal data about i in this.
+    // ============================================================================
+    virtual const std::string toString( const Instantiation *i ) const ;
+
+    /// string representation of this.
+    virtual const std::string toString( ) const ;
+
+    // ============================================================================
+    /**
+     * Perform an homothety on a multiDim container.
+     * @param alpha The ratio.
+     * @param mul The chosen mult operation.
+     */
+    // ============================================================================
+    virtual void
+    homothetic( T_DATA alpha,T_DATA( *mul )( const T_DATA,const T_DATA ) );
+
+    // ============================================================================
+    /**
+     * Iterate add on each element of a multiDim container.
+     * @param add The chosen folded operation.
+     * @return Returns the sum of values contains in the multiDim.
+     */
+    // ============================================================================
+    virtual T_DATA fold( T_DATA( *add )( const T_DATA,const T_DATA ) ) const;
+
+    /// @}
+
+    /// by default, set just calls _get as a r-value
+    virtual void set( const Instantiation& i,const T_DATA& value ) const;
+
+    /// by default, get just calls _get as a l-value
+    virtual T_DATA get( const Instantiation& i ) const ;
+  protected:
+    // ============================================================================
+    /// The true container.
+    // ============================================================================
+    mutable MultiDimImplementation<T_DATA> *_content;
+
+    // ============================================================================
+    /// Protected access to content.
+    // ============================================================================
+    MultiDimImplementation<T_DATA>* getContent();
+
+
+    // ============================================================================
+    /**
+     * Return a data, given a Insantiation - final method.
+     * @param i The instantiation.
+     * @throw NullElement
+     * @throw NotFound
+     */
+    // ============================================================================
+    T_DATA& _get( const Instantiation& i ) const;
 
   };
 

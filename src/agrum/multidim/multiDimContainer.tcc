@@ -100,22 +100,24 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA>
   bool MultiDimContainer<T_DATA>::operator==(const MultiDimContainer<T_DATA>& p) const {
-    if ((nbrDim() == p.nbrDim()) and (domainSize() == p.domainSize())) {
+    if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
       typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
       for (var_iterator iter = variablesSequence().begin();
            iter != variablesSequence().end(); ++iter) {
-        if (not p.variablesSequence().exists(*iter)) {
+        if ( ! p.variablesSequence().exists(*iter)) {
           return false;
         }
       }
       Instantiation i(*this);
-      for (i.setFirst(); not i.end(); ++i) {
-        if (std::pow( (get(i) - p.get(i)), (T_DATA) 2) > (T_DATA) 0.000001) {
+      for (i.setFirst(); ! i.end(); ++i) {
+        if ( ( get(i) > p.get(i) + (T_DATA) 0.000001 ) ||
+             ( p.get(i) > get(i) + (T_DATA) 0.000001 ) ) {
           return false;
         }
       }
       return true;
-    } else {
+    }
+    else {
       return false;
     }
   }
@@ -125,24 +127,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA>
   bool MultiDimContainer<T_DATA>::operator!=(const MultiDimContainer<T_DATA>& p) const {
-    if ((nbrDim() == p.nbrDim()) and (domainSize() == p.domainSize())) {
-      typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
-      for (var_iterator iter = variablesSequence().begin();
-           iter != variablesSequence().end(); ++iter) {
-        if (not p.variablesSequence().exists(*iter)) {
-          return true;
-        }
-      }
-      Instantiation i(*this);
-      for (i.setFirst(); not i.end(); ++i) {
-        if (std::pow( (get(i) - p.get(i)), (T_DATA) 2) > (T_DATA) 0.000001) {
-          return true;
-        }
-      }
-      return false;
-    } else {
-      return true;
-    }
+    return ! operator==( p ); 
   }
 
 

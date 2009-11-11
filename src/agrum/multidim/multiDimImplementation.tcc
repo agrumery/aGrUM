@@ -23,7 +23,7 @@
 
 namespace gum {
 
-
+  
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
@@ -253,6 +253,13 @@ namespace gum {
     return ((float)1)-(float)realSize()/(float)domainSize();
   }
 
+  /// returns a basename to be used for default operators
+  template<typename T_DATA>
+  const std::string& MultiDimImplementation<T_DATA>::basename () const {
+    static const std::string str = "MultiDimImplementation";
+    return str;
+  }
+  
 
   // ==============================================================================
   /// for friendly displaying the content of the array
@@ -262,7 +269,8 @@ namespace gum {
                              const MultiDimImplementation<T_DATA>& array ) {
     return out << static_cast<const MultiDimContainer<T_DATA>&>( array );
   }
-
+  
 } /* namespace gum */
+
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

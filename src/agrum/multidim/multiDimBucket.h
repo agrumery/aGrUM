@@ -194,7 +194,18 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// See gum::MultiDimImplementation::contains(const DiscreteVariable& v).
     bool contains (const DiscreteVariable &v) const;
 
+     /// returns the real name of the multiDimArray
+    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+     * name that describes what they are in reality. For instance, a table stored
+     * in extension is a "MultiDimArray", one that stores only non zero elements
+     * is a "MultiDimSparseArray", and so on. These names are unique for each type
+     * of implementation and is used by the system to determine which is the best
+     * functions to use, say, when we wish to use operators such as operator+ on
+     * two MultiDimImplementations */
+    virtual const std::string& name () const; 
+
     /// @}
+  
     // ========================================================================
     /// @name Accessors over values.
     // ========================================================================

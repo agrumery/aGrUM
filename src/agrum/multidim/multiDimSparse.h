@@ -33,114 +33,127 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                          GUM_MULTI_DIM_ARRAY                         === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                          GUM_MULTI_DIM_ARRAY                        === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class MultiDimSparse
    * @brief Multidimensional matrix stored as an array in memory
    * @ingroup multidim_group
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template<typename T_DATA>
 
   class MultiDimSparse : public MultiDimWithOffset<T_DATA> {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Default constructor: creates an empty null dimensional matrix
-      // ============================================================================
-      MultiDimSparse( const T_DATA& default_value );
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Default constructor: creates an empty null dimensional matrix
+    // ============================================================================
+    MultiDimSparse( const T_DATA& default_value );
 
-      // ============================================================================
-      /// copy constructor
-      /** The newly created matrix contains the same variables and the same values as
-       * from, but no instantiation is associated to it.
-       * @param from the multidimensional matrix we copy into this */
-      // ============================================================================
-      MultiDimSparse( const MultiDimSparse<T_DATA>& from );
+    // ============================================================================
+    /// copy constructor
+    /** The newly created matrix contains the same variables and the same values as
+     * from, but no instantiation is associated to it.
+     * @param from the multidimensional matrix we copy into this */
+    // ============================================================================
+    MultiDimSparse( const MultiDimSparse<T_DATA>& from );
 
-      // ============================================================================
-      /// destructor
-      /** Note that, when the multidimensional array is removed from memory, its
-       * variables are not removed as well. */
-      // ============================================================================
-      virtual ~MultiDimSparse();
+    // ============================================================================
+    /// destructor
+    /** Note that, when the multidimensional array is removed from memory, its
+     * variables are not removed as well. */
+    // ============================================================================
+    virtual ~MultiDimSparse();
 
-      /// @}
+    /// @}
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual MultiDimContainer<T_DATA>* newFactory() const;
 
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// copy operator
-      /** @param from the multidimensional matrix we copy into this */
-      // ============================================================================
-      MultiDimSparse<T_DATA>& operator= ( const MultiDimSparse<T_DATA>& from );
-      /// @}
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// copy operator
+    /** @param from the multidimensional matrix we copy into this */
+    // ============================================================================
+    MultiDimSparse<T_DATA>& operator= ( const MultiDimSparse<T_DATA>& from );
+    /// @}
 
-      // ============================================================================
-      /// add a new dimension
-      /** @param v
-       * @throw DuplicateElement
-       */
-      // ============================================================================
-      void add( const DiscreteVariable& v );
+    // ============================================================================
+    /// add a new dimension
+    /** @param v
+     * @throw DuplicateElement
+     */
+    // ============================================================================
+    void add( const DiscreteVariable& v );
 
-      // ============================================================================
-      /// removes a dimension
-      /** If the variable does not belong to the MultiDimBase, then this method does
-       * nothing.
-       * @param v
-       * @throw NotFound
-       * @throw OperationNotAllowed
-       */
-      // ============================================================================
-      void erase( const DiscreteVariable& v );
+    // ============================================================================
+    /// removes a dimension
+    /** If the variable does not belong to the MultiDimBase, then this method does
+     * nothing.
+     * @param v
+     * @throw NotFound
+     * @throw OperationNotAllowed
+     */
+    // ============================================================================
+    void erase( const DiscreteVariable& v );
 
-      /// fill the table with d
-      virtual void fill( const T_DATA& d ) const;
+    /// fill the table with d
+    virtual void fill( const T_DATA& d ) const;
 
-      virtual T_DATA get( const Instantiation& i ) const;
-      virtual void set( const Instantiation& i,const T_DATA& value ) const;
+    virtual T_DATA get( const Instantiation& i ) const;
+    virtual void set( const Instantiation& i,const T_DATA& value ) const;
 
-      /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
-      virtual Size realSize() const;
-    protected:
-      /// the true data : the values is mutable since we can change the value
-      /// in a const multiDimArray
-      mutable HashTable<Size,T_DATA> _params;
-      mutable T_DATA _default;
+    /// returns the real name of the multiDimArray
+    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+     * name that describes what they are in reality. For instance, a table stored
+     * in extension is a "MultiDimArray", one that stores only non zero elements
+     * is a "MultiDimSparseArray", and so on. These names are unique for each type
+     * of implementation and is used by the system to determine which is the best
+     * functions to use, say, when we wish to use operators such as operator+ on
+     * two MultiDimImplementations */
+    virtual const std::string& name () const;
+    
 
-      /// synchronise content after MultipleChanges
-      virtual void _commitMultipleChanges( void );
+    /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
+    virtual Size realSize() const;
 
-      /// forbiden r/w access to values
-      /** @param i an Instantiation
-       * @throw OperationNotAllowed
-       */
-      virtual T_DATA& _get( const Instantiation& i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
+    
+  protected:
+    /// the true data : the values is mutable since we can change the value
+    /// in a const multiDimArray
+    mutable HashTable<Size,T_DATA> _params;
+    mutable T_DATA _default;
+
+    /// synchronise content after MultipleChanges
+    virtual void _commitMultipleChanges( void );
+
+    /// forbiden r/w access to values
+    /** @param i an Instantiation
+     * @throw OperationNotAllowed
+     */
+    virtual T_DATA& _get( const Instantiation& i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
   };
 
 

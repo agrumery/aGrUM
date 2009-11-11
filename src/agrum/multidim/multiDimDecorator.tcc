@@ -19,6 +19,10 @@
  ***************************************************************************/
 
 
+// include the operators that will be used by the decorators
+#include <agrum/multidim/operators4MultiDim.h>
+
+
 namespace gum {
 
 
@@ -29,6 +33,9 @@ namespace gum {
   MultiDimDecorator<T_DATA>::MultiDimDecorator
   ( MultiDimImplementation<T_DATA> *aContent ) : _content( aContent ) {
     GUM_CONSTRUCTOR( MultiDimDecorator );
+
+    // register the operators that will be used by the decorator
+    operators4MultiDimInit<T_DATA> ();
   }
 
   // ==============================================================================
@@ -57,7 +64,8 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimDecorator<T_DATA>::set( const Instantiation& i, const T_DATA& value ) const {
+  void MultiDimDecorator<T_DATA>::set( const Instantiation& i,
+                                       const T_DATA& value ) const {
     return (( MultiDimContainer<T_DATA> * ) _content )->set( i,value );
   }
 
@@ -142,7 +150,8 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  const DiscreteVariable& MultiDimDecorator<T_DATA>::variable( const Idx i ) const {
+  const DiscreteVariable&
+  MultiDimDecorator<T_DATA>::variable( const Idx i ) const {
     return (( MultiDimContainer<T_DATA> * ) _content )->variable( i );
   }
 
@@ -220,14 +229,16 @@ namespace gum {
 
   /// protected access to _content
   template<typename T_DATA> INLINE
-  const MultiDimImplementation<T_DATA>* MultiDimDecorator<T_DATA>::getContent() const {
+  const MultiDimImplementation<T_DATA>*
+  MultiDimDecorator<T_DATA>::getContent() const {
     return _content;
   }
 
 
   /// string representation of internal data about i in this.
   template<typename T_DATA> INLINE
-  const std::string MultiDimDecorator<T_DATA>::toString( const Instantiation *i ) const {
+  const std::string
+  MultiDimDecorator<T_DATA>::toString( const Instantiation *i ) const {
     return _content->toString( i );
   }
 
@@ -274,6 +285,13 @@ namespace gum {
     }
 
     return res;
+  }
+
+  template <typename T_DATA>
+  MultiDimDecorator<T_DATA>* MultiDimDecorator<T_DATA>::newFactory() const {
+    return new MultiDimDecorator<T_DATA>
+      ( static_cast<MultiDimImplementation<T_DATA>*>
+        ( this->getContent()->newFactory() ) );
   }
 
 

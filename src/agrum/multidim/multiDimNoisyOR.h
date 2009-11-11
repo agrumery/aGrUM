@@ -20,7 +20,7 @@
 /** @file
  * @brief Abstract base class for all multi dimensionnal aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_NOISY_OR_H
 #define GUM_MULTI_DIM_NOISY_OR_H
@@ -30,42 +30,45 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                     GUM_MULTI_DIM_AGGREGATOR                     === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class MultiDimNoisyOR
-  * @brief Noisy OR representation
-  * @ingroup multidim_group
-  *
-  * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
-  *
-  * @warning
-  *   - The first variable is assumed to be the NOISY-OR. The latter are the causes.
-  *   - This code give probabilities for BINARY VARIABLES (other values are assumed to be of probability 0). But for optimization reason, we will never check if it is the case.
-  */
-  /* ============================================================================ */
+   * @brief Noisy OR representation
+   * @ingroup multidim_group
+   *
+   * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+   *
+   * @warning
+   *   - The first variable is assumed to be the NOISY-OR. The latter are
+   *     the causes.
+   *   - This code give probabilities for BINARY VARIABLES (other values are
+   *     assumed to be of probability 0). But for optimization reason, we will
+   *     never check if it is the case.
+   */
+  /* =========================================================================== */
   template<typename T_DATA>
 
   class MultiDimNoisyOR : public MultiDimReadOnly<T_DATA> {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimNoisyOR( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-      MultiDimNoisyOR( const MultiDimNoisyOR<T_DATA>& from );
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimNoisyOR( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
+    MultiDimNoisyOR( const MultiDimNoisyOR<T_DATA>& from );
 
-      // ============================================================================
-      /// Destructor.
-      // ============================================================================
-      virtual ~MultiDimNoisyOR();
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    virtual ~MultiDimNoisyOR();
 
-      /// @}
+    /// @}
 
     /**
      * This method creates a clone of this object, withouth its content
@@ -83,51 +86,60 @@ namespace gum {
     virtual MultiDimContainer<T_DATA>* newFactory() const;
 
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
-      // ============================================================================
-    public:
-      virtual T_DATA get( const Instantiation &i ) const;
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    // ============================================================================
+  public:
+    virtual T_DATA get( const Instantiation &i ) const;
 
-      const std::string toString( void ) const;
+    const std::string toString( void ) const;
 
-      // @todo : optimisation with a always up-to-date value associated to each instantiation
-      virtual void changeNotification( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
+    // @todo : optimisation with a always up-to-date value associated to each instantiation
+    virtual void changeNotification( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
 
-      virtual void setFirstNotification( gum::Instantiation& ) {};
+    virtual void setFirstNotification( gum::Instantiation& ) {};
 
-      virtual void setLastNotification( gum::Instantiation& ) {};
+    virtual void setLastNotification( gum::Instantiation& ) {};
 
-      virtual void setIncNotification( gum::Instantiation& ) {};
+    virtual void setIncNotification( gum::Instantiation& ) {};
 
-      virtual void setDecNotification( gum::Instantiation& ) {};
+    virtual void setDecNotification( gum::Instantiation& ) {};
 
-      virtual void setChangeNotification( gum::Instantiation& ) {};
+    virtual void setChangeNotification( gum::Instantiation& ) {};
 
-      const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
+    const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
 
-      /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
-      virtual Size realSize() const {return 0;};
+    /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
+    virtual Size realSize() const {return 0;};
 
-      T_DATA causalWeight( const DiscreteVariable& v ) const;
-      void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
-      T_DATA externalWeight() const;
-      void externalWeight( T_DATA w ) const;
+    T_DATA causalWeight( const DiscreteVariable& v ) const;
+    void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
+    T_DATA externalWeight() const;
+    void externalWeight( T_DATA w ) const;
 
+    /// returns the real name of the multiDimArray
+    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+     * name that describes what they are in reality. For instance, a table stored
+     * in extension is a "MultiDimArray", one that stores only non zero elements
+     * is a "MultiDimSparseArray", and so on. These names are unique for each type
+     * of implementation and is used by the system to determine which is the best
+     * functions to use, say, when we wish to use operators such as operator+ on
+     * two MultiDimImplementations */
+    virtual const std::string& name () const;
 
-      /// @}
-    protected:
-      /// \f$ p_0 \f$ in Henrion (89).
-      mutable T_DATA __external_weight;
+    /// @}
+  protected:
+    /// \f$ p_0 \f$ in Henrion (89).
+    mutable T_DATA __external_weight;
 
-      /// @name causal weights
-      /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-      /// @{
-      T_DATA __default_weight;
-      mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
-      /// @}
+    /// @name causal weights
+    /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
+    /// @{
+    T_DATA __default_weight;
+    mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
+    /// @}
   };
 
   // ==============================================================================

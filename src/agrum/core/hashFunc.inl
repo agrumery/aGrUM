@@ -23,6 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #include <string>
+#include <utility>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -52,6 +53,24 @@ namespace gum {
     register Size h = 0;
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];
+    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+  }
+
+  
+  // ==============================================================================
+  /// returns a hashed key for hash tables the keys of which are represented
+  /// by strings
+  // ==============================================================================
+  INLINE Size
+  HashFunc< std::pair<std::string, std::string> >::operator()
+    ( const std::pair<std::string, std::string>& key ) const  {
+    register Size h = 0;
+    const std::string& s1 = key.first;
+    for ( size_t i = 0, j = s1.size(); i < j; ++i )
+      h = 19 * h + s1[i];
+    const std::string& s2 = key.second;
+    for ( size_t i = 0, j = s2.size(); i < j; ++i )
+      h = 19 * h + s2[i];
     return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 

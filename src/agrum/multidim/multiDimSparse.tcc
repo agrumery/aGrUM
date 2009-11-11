@@ -133,7 +133,14 @@ namespace gum {
     return new MultiDimSparse<T_DATA>(_default);
   }
 
-// ============================================================================
+
+  // returns the name of the implementation
+  template<typename T_DATA>
+  const std::string& MultiDimSparse<T_DATA>::name () const {
+    static const std::string str = "MultiDimSparse";
+    return str;
+  }
+
 
 } /* namespace gum */
 

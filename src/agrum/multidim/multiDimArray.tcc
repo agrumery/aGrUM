@@ -20,28 +20,26 @@
 
 
 namespace gum {
-  // ==============================================================================
+
+
   /// Default constructor: creates an empty null dimensional matrix
-  // ==============================================================================
   template<typename T_DATA>
   MultiDimArray<T_DATA>::MultiDimArray() : MultiDimWithOffset<T_DATA>() {
     // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimArray );
   }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
   template<typename T_DATA>
   MultiDimArray<T_DATA>::MultiDimArray( const MultiDimArray<T_DATA>& from ) :
-      MultiDimWithOffset<T_DATA> ( from ), _values( from._values ) {
+    MultiDimWithOffset<T_DATA> ( from ), _values( from._values ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiDimArray );
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
   template<typename T_DATA>
   MultiDimArray<T_DATA>::~MultiDimArray() {
     // for debugging purposes
@@ -49,10 +47,9 @@ namespace gum {
     // no need to unregister all slaves as it will be done by MultiDimWithOffset
   }
 
-  // ==============================================================================
+
   /// data access operator
-  // ==============================================================================
-  template<typename T_DATA>
+    template<typename T_DATA>
   INLINE
   T_DATA& MultiDimArray<T_DATA>::_get( const Instantiation& i ) const {
     if ( i.isMaster( this ) ) {
@@ -62,10 +59,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// add a new dimension, needed for updating the _offsets & _gaps
-  // ==============================================================================
-  template<typename T_DATA>
+    template<typename T_DATA>
   INLINE
   void MultiDimArray<T_DATA>::add( const DiscreteVariable& v ) {
     Size lg=MultiDimWithOffset<T_DATA>::domainSize();
@@ -76,10 +72,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
-  /// removes a dimension, needed for updating the _offsets & _gaps
-  // ==============================================================================
-  template<typename T_DATA>
+
+    /// removes a dimension, needed for updating the _offsets & _gaps
+    template<typename T_DATA>
   INLINE
   void MultiDimArray<T_DATA>::erase( const DiscreteVariable& v ) {
     Sequence<const DiscreteVariable *> variables=this->variablesSequence();
@@ -120,6 +115,7 @@ namespace gum {
     MultiDimWithOffset<T_DATA>::erase( v );
   }
 
+  
   template<typename T_DATA> INLINE
   Size MultiDimArray<T_DATA>::realSize( void ) const {
     return this->domainSize();
@@ -135,6 +131,7 @@ namespace gum {
     }
   }
 
+
   // fill the array with the arg
   template<typename T_DATA>
   INLINE
@@ -142,12 +139,52 @@ namespace gum {
     if ( ! this->empty() ) std::fill( _values.begin(),_values.end(),d );
   }
 
+
+  // virtual constructor
   template<typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* MultiDimArray<T_DATA>::newFactory() const {
     return new MultiDimArray<T_DATA>;
   }
 
-// ============================================================================
+
+  /// returns the element stored in the multidimArray at a given offset
+  template<typename T_DATA> INLINE
+  const T_DATA& MultiDimArray<T_DATA>::unsafeGet ( const Idx offset ) const {
+    return _values[offset];
+  }
+  
+  
+  template<typename T_DATA> INLINE
+  void MultiDimArray<T_DATA>::unsafeSet ( const Idx offset, const T_DATA& data ) {
+    _values[offset] = data;
+  }
+
+  
+  /// returns the element stored in the multidimArray at a given offset
+  template<typename T_DATA> INLINE
+  const T_DATA& MultiDimArray<T_DATA>::getByOffset ( const Idx offset ) const {
+    if ( offset >= _values.size() )
+      GUM_ERROR ( OutOfBounds, "offset too large" );
+    return _values[offset];
+  }
+  
+  
+  template<typename T_DATA> INLINE
+  void
+  MultiDimArray<T_DATA>::setByOffset ( const Idx offset, const T_DATA& data ) {
+    if ( offset >= _values.size() )
+      GUM_ERROR ( OutOfBounds, "offset too large" );
+    _values[offset] = data;
+  }
+
+
+  // returns the name of the implementation
+  template<typename T_DATA>
+  const std::string& MultiDimArray<T_DATA>::name () const {
+    static const std::string str = "MultiDimArray";
+    return str;
+  }
+  
 
 } /* namespace gum */
 

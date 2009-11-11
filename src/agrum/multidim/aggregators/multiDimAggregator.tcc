@@ -92,7 +92,13 @@ namespace gum {
     return s.str();
   }
 
-
+  // returns the name of the implementation
+  template<typename T_DATA>
+  const std::string& MultiDimAggregator<T_DATA>::name () const {
+    static const std::string str = "MultiDimAggregator";
+    return str;
+  }
+ 
   // ============================================================================
   // For friendly displaying the content of the variable.
   // ============================================================================
@@ -100,6 +106,7 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s, const MultiDimAggregator<T_DATA>& ag ) {
     return s << ag.toString();
   }
+ 
 
 // ==================================================
 } /* namespace gum */

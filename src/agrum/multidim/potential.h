@@ -36,17 +36,17 @@
 namespace gum {
 
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                          GUM_PROBA                                   === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                          GUM_PROBA                                  === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /** @class Potential
    * @brief Class representing a potential. Using the decorator pattern, this
    * representation is independant from the implementation of the multidimension
    * matrix 
    * @ingroup multidim_group */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template<typename T_DATA>
   class Potential : public MultiDimDecorator<T_DATA> {
   public:
@@ -104,20 +104,20 @@ namespace gum {
 
     /// @}
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual Potential<T_DATA>* newFactory() const;
 
 
 

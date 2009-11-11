@@ -26,6 +26,7 @@
 #define GUM_HASH_FUNC_H
 
 // utility provides the std::pair <> template
+#include <string>
 #include <utility>
 #include <agrum/core/utils.h>
 #include <agrum/core/refPtr.h>
@@ -304,6 +305,13 @@ namespace gum {
   public:
     /// computes the hashed value of a key
     Size operator()( const std::string& key ) const ;
+  };
+
+  template <> class HashFunc< std::pair<std::string, std::string> > :
+    public HashFuncBase< std::pair<std::string, std::string> > {
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<std::string, std::string>& key ) const ;
   };
 
   template <> class HashFunc<Debug> : public HashFuncBase<Debug> {

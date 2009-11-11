@@ -23,22 +23,21 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-// ============================================================================
 #ifndef GUM_MULTI_DIM_IMPLEMENTATION_H
 #define GUM_MULTI_DIM_IMPLEMENTATION_H
-// ============================================================================
+
 #include <vector>
-// ============================================================================
 #include <agrum/core/utils.h>
-// ============================================================================
 #include <agrum/multidim/multiDimContainer.h>
-// ============================================================================
+
+
 namespace gum {
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                     GUM_MULTI_DIM_IMPLEMENTATION                     === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                    GUM_MULTI_DIM_IMPLEMENTATION                     === */
+  /* =========================================================================== */
+  /* =========================================================================== */
   /**
    * @class MultiDimImplementation
    * @brief Abstract base class for all multi dimensionnal implementations
@@ -54,218 +53,234 @@ namespace gum {
    * See operator<<(std::ostream&, const MultiDimImplementation<T_DATA>&) to print
    * a gum::MultiDimImplementation.
    */
-  /* ============================================================================ */
+  /* =========================================================================== */
   template<typename T_DATA>
   class MultiDimImplementation : public MultiDimContainer<T_DATA> {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimImplementation();
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimImplementation();
 
-      // ============================================================================
-      /// Copy constructor.
-      // ============================================================================
-      MultiDimImplementation( const MultiDimImplementation<T_DATA>& from );
+    // ============================================================================
+    /// Copy constructor.
+    // ============================================================================
+    MultiDimImplementation( const MultiDimImplementation<T_DATA>& from );
 
-      // ============================================================================
-      /// Destructor.
-      // ============================================================================
-      virtual ~MultiDimImplementation();
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    virtual ~MultiDimImplementation();
 
-      /// @}
+    /// @}
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
-
-
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
-
-      // ============================================================================
-      using MultiDimContainer<T_DATA>::get;
-
-      // ============================================================================
-      // see gum::MultiDimInterface
-      // ============================================================================
-      virtual const Sequence<const DiscreteVariable *>&
-      variablesSequence( void ) const  ;
-
-      /// @}
-
-      // ############################################################################
-      /// @name Implementation of MultiDimInterface
-      // ############################################################################
-      /// @{
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
-      // ============================================================================
-      virtual void add( const DiscreteVariable& v );
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
-      // ============================================================================
-      virtual void erase( const DiscreteVariable& v );
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::nbrDim()
-      // ============================================================================
-      virtual Idx nbrDim() const ;
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::domainSize()
-      // ============================================================================
-      virtual Size domainSize() const ;
-
-      // ============================================================================
-      /**
-       * Returns the real number of parameters used for this table. This function is
-       * used by the compressionRatio() method.
-       *
-       * @see compressionRatio()
-       */
-      // ============================================================================
-      virtual Size realSize() const =0;
-
-      // ============================================================================
-      /**
-       * The compression ratio of the table (depending on the type of implementation).
-       *
-       * This method uses domainSize() and realSize() to compute the ration,
-       * both methods are virtual and should be surcharge if a subclass has a
-       * special policies about memory management.
-       *
-       * @warning This compression ratio is not exactly the memory compression ratio.
-       *          It is computed in terms of number of parameters.
-       */
-      // ============================================================================
-      float compressionRate() const;
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::variable(const idx i)
-      // ============================================================================
-      const DiscreteVariable& variable( const Idx i ) const ;
-
-      // ============================================================================
-      Idx pos( const DiscreteVariable& v ) const ;
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::contains(const DiscreteVariable& v)
-      // ============================================================================
-      bool contains( const DiscreteVariable& v ) const ;
-
-      // ============================================================================
-      /// See gum::MultiDimInterface::empty()
-      // ============================================================================
-      bool empty() const ;
-
-      /// @}
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
 
 
-      // ############################################################################
-      /// @name Slave management and extension due to slave management
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      virtual MultiDimAdressable& getMasterRef( void );
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      // ============================================================================
-      virtual const MultiDimAdressable& getMasterRef( void ) const;
+    // ============================================================================
+    using MultiDimContainer<T_DATA>::get;
 
-      // ============================================================================
-      virtual bool registerSlave( Instantiation& i );
+    // ============================================================================
+    // see gum::MultiDimInterface
+    // ============================================================================
+    virtual const Sequence<const DiscreteVariable *>&
+    variablesSequence( void ) const  ;
 
-      // ============================================================================
-      virtual bool unregisterSlave( Instantiation& i );
+    /// returns the real name of the multiDim implementation
+    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+     * name that describes what they are in reality. For instance, a table stored
+     * in extension is a "MultiDimArray", one that stores only non zero elements
+     * is a "MultiDimSparseArray", and so on. These names are unique for each type
+     * of implementation and is used by the system to determine which is the best
+     * functions to use, say, when we wish to use operators such as operator+ on
+     * two MultiDimImplementations */
+    virtual const std::string& name () const = 0;
 
-      /// @}
+    /** @brief the "basename" used by default when no specialized operator has been
+     * defined for a given pair of MultiDims */
+    const std::string& basename () const;
+
+    /// @}
+    
+
+    // ############################################################################
+    /// @name Implementation of MultiDimInterface
+    // ############################################################################
+    /// @{
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
+    // ============================================================================
+    virtual void add( const DiscreteVariable& v );
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
+    // ============================================================================
+    virtual void erase( const DiscreteVariable& v );
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::nbrDim()
+    // ============================================================================
+    virtual Idx nbrDim() const ;
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::domainSize()
+    // ============================================================================
+    virtual Size domainSize() const ;
+
+    // ============================================================================
+    /**
+     * Returns the real number of parameters used for this table. This function is
+     * used by the compressionRatio() method.
+     *
+     * @see compressionRatio()
+     */
+    // ============================================================================
+    virtual Size realSize() const =0;
+
+    // ============================================================================
+    /**
+     * The compression ratio of the table (depending on the type of
+     * implementation).
+     *
+     * This method uses domainSize() and realSize() to compute the ration,
+     * both methods are virtual and should be surcharge if a subclass has a
+     * special policies about memory management.
+     *
+     * @warning This compression ratio is not exactly the memory compression ratio.
+     *          It is computed in terms of number of parameters.
+     */
+    // ============================================================================
+    float compressionRate() const;
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::variable(const idx i)
+    // ============================================================================
+    const DiscreteVariable& variable( const Idx i ) const ;
+
+    // ============================================================================
+    Idx pos( const DiscreteVariable& v ) const ;
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::contains(const DiscreteVariable& v)
+    // ============================================================================
+    bool contains( const DiscreteVariable& v ) const ;
+
+    // ============================================================================
+    /// See gum::MultiDimInterface::empty()
+    // ============================================================================
+    bool empty() const ;
+
+    /// @}
 
 
-      // ############################################################################
-      /// @name fast large modifications in structures
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Slave management and extension due to slave management
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    virtual MultiDimAdressable& getMasterRef( void );
 
-      // ============================================================================
-      /// See gum::MultiDimContainer::beginMultipleChanges().
-      // ============================================================================
-      virtual void beginMultipleChanges( void );
+    // ============================================================================
+    virtual const MultiDimAdressable& getMasterRef( void ) const;
 
-      // ============================================================================
-      /// See gum::MultiDimContainer::endMultipleChanges().
-      // ============================================================================
-      virtual void endMultipleChanges( void );
+    // ============================================================================
+    virtual bool registerSlave( Instantiation& i );
 
-    protected:
-      // ============================================================================
-      /// Synchronize content after MultipleChanges.
-      // ============================================================================
-      virtual void _commitMultipleChanges( void );
+    // ============================================================================
+    virtual bool unregisterSlave( Instantiation& i );
 
-      // ============================================================================
-      /// Get the actual change method of *this.
-      // ============================================================================
-      bool _isInMultipleChangeMethod() const;
+    /// @}
 
-      // ============================================================================
-      /// Get the actual state of *this.
-      // ============================================================================
-      bool _isCommitNeeded() const;
 
-      // ============================================================================
-      /// Returns a constant reference over the list of slaved instantiations.
-      // ============================================================================
-      const List<Instantiation*>& _slaves() const;
+    // ############################################################################
+    /// @name fast large modifications in structures
+    // ############################################################################
+    /// @{
 
-      /// @}
+    // ============================================================================
+    /// See gum::MultiDimContainer::beginMultipleChanges().
+    // ============================================================================
+    virtual void beginMultipleChanges( void );
 
-    private:
-      // ============================================================================
-      // list of discrete variables (dimensions)
-      // ============================================================================
-      Sequence<const DiscreteVariable *> __vars;
+    // ============================================================================
+    /// See gum::MultiDimContainer::endMultipleChanges().
+    // ============================================================================
+    virtual void endMultipleChanges( void );
 
-      // ============================================================================
-      // list of instantiations of the tuples (sequences) of variables
-      // ============================================================================
-      List<Instantiation*> __slaveInstantiations;
+  protected:
+    // ============================================================================
+    /// Synchronize content after MultipleChanges.
+    // ============================================================================
+    virtual void _commitMultipleChanges( void );
 
-      // ============================================================================
-      enum __ENUM_InternalChangeMethod { DIRECT_CHANGE, MULTIPLE_CHANGE};
+    // ============================================================================
+    /// Get the actual change method of *this.
+    // ============================================================================
+    bool _isInMultipleChangeMethod() const;
 
-      // ============================================================================
-      enum __ENUM_InternalChangeState { NO_CHANGE, NOT_COMMITTED_CHANGE};
+    // ============================================================================
+    /// Get the actual state of *this.
+    // ============================================================================
+    bool _isCommitNeeded() const;
 
-      // ============================================================================
-      __ENUM_InternalChangeMethod __internalChangeMethod;
+    // ============================================================================
+    /// Returns a constant reference over the list of slaved instantiations.
+    // ============================================================================
+    const List<Instantiation*>& _slaves() const;
 
-      // ============================================================================
-      __ENUM_InternalChangeState __internalChangeState;
+    /// @}
 
-      // ============================================================================
-      void __setNotCommitedChange();
+  private:
+    // ============================================================================
+    // list of discrete variables (dimensions)
+    // ============================================================================
+    Sequence<const DiscreteVariable *> __vars;
 
-      // ============================================================================
-      Size __domainSize;
+    // ============================================================================
+    // list of instantiations of the tuples (sequences) of variables
+    // ============================================================================
+    List<Instantiation*> __slaveInstantiations;
+
+    // ============================================================================
+    enum __ENUM_InternalChangeMethod { DIRECT_CHANGE, MULTIPLE_CHANGE};
+
+    // ============================================================================
+    enum __ENUM_InternalChangeState { NO_CHANGE, NOT_COMMITTED_CHANGE};
+
+    // ============================================================================
+    __ENUM_InternalChangeMethod __internalChangeMethod;
+
+    // ============================================================================
+    __ENUM_InternalChangeState __internalChangeState;
+
+    // ============================================================================
+    void __setNotCommitedChange();
+
+    // ============================================================================
+    Size __domainSize;
 
 
   };
@@ -279,8 +294,10 @@ namespace gum {
                              const MultiDimImplementation<T_DATA>& );
 
 } /* namespace gum */
-// ============================================================================
+
+
 #include <agrum/multidim/multiDimImplementation.tcc>
-// ============================================================================
+
+
 #endif /* GUM_MULTI_DIM_IMPLEMENTATION_H */
-// ============================================================================
+
