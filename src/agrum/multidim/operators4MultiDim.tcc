@@ -58,7 +58,7 @@ namespace gum {
   #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
   #undef GUM_MULTI_DIM_OPERATOR
-
+  
 
   // ==============================================================================
   /// a specialized function for subtracting two multiDimArrays
@@ -169,7 +169,39 @@ namespace gum {
   /// the function to be used to divide two MultiDimDecorators
   GUM_MULTI_DIM_DECORATOR_OP( operator/, / )
 
-    
+
+
+
+  // ==============================================================================
+  /// default "basename" functions for combining two MultiDimImplementations 
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimImplementations
+  #define GUM_MULTI_DIM_OPERATOR(x,y) (x) + (y)
+  #include <agrum/multidim/patterns/operatorPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_OPERATOR_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimImplementations
+  #define GUM_MULTI_DIM_OPERATOR(x,y) (x) - (y)
+  #include <agrum/multidim/patterns/operatorPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_OPERATOR_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimImplementations
+  #define GUM_MULTI_DIM_OPERATOR(x,y) (x) * (y)
+  #include <agrum/multidim/patterns/operatorPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_OPERATOR_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimImplementations
+  #define GUM_MULTI_DIM_OPERATOR(x,y) (x) / (y)
+  #include <agrum/multidim/patterns/operatorPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_OPERATOR_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+
+  
 
   // ==============================================================================
   // ==============================================================================
@@ -188,6 +220,7 @@ namespace gum {
       first_init = false;
       
       std::string MultiDimArrayString ("MultiDimArray");
+      std::string BaseNameString ("MultiDimImplementation");
     
       // register base functions for multiDimArrays
       registerOperator<T_DATA> ( "+", MultiDimArrayString, MultiDimArrayString,
@@ -198,6 +231,16 @@ namespace gum {
                                  &multiply2MultiDimArrays);
       registerOperator<T_DATA> ( "/", MultiDimArrayString, MultiDimArrayString,
                                  &divide2MultiDimArrays);
+
+      // register default basename functions 
+      registerOperator<T_DATA> ( "+", BaseNameString, BaseNameString,
+                                 &add2MultiDimImplementations);
+      registerOperator<T_DATA> ( "-", BaseNameString, BaseNameString,
+                                 &subtract2MultiDimImplementations);
+      registerOperator<T_DATA> ( "*", BaseNameString, BaseNameString,
+                                 &multiply2MultiDimImplementations);
+      registerOperator<T_DATA> ( "/", BaseNameString, BaseNameString,
+                                 &divide2MultiDimImplementations);
     }
   }
   
