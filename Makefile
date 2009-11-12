@@ -1,6 +1,6 @@
 OPTION_VERBOSE =
 #OPTION_VERBOSE = "-DCMAKE_VERBOSE_MAKEFILE=ON"
-OPTION_NBR_PROCESSOR =3
+OPTION_NBR_PROCESSOR =
 
 # which version will be used for "install" and "pack" rules ?
 PUBLIC_VERSION= release

@@ -32,7 +32,7 @@
 #define GUM_EMIT1(signal,arg1) this->signal(this,arg1)
 
 #define SIGNALER_PATRON_ACCEPTED
-#include "signaler_with_args.patron.h"
+#include "signaler_with_args.pattern.h"
 
 #endif // SIGNALER1_H__
 
