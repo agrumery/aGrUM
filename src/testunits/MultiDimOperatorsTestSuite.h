@@ -247,27 +247,27 @@ namespace gum {
         randomInitP ( t2 );
         randomInitP ( t3 );
 
-        MultiDimDecorator<double>* t4, *t6;
+        Potential<double>* t4, *t6;
         Potential<double> *t5, *t7;
 
-        t4 = t1 + t2;
+        t4 = new Potential<double> ( t1 + t2 );
         t5 = add_test_potentials ( t1, t2 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
         delete t5;
-        t4 = t3 + t2;
+        t4 = new Potential<double> ( t3 + t2 );
         t5 = add_test_potentials ( t3, t2 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
-        t4 = t2 + t3;
+        t4 = new Potential<double> ( t2 + t3 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
         delete t5;
  
-        t4 = t1 - t2;
+        t4 = new Potential<double> ( t1 - t2 );
         t5 = sub_test_potentials ( t1, t2 );
         TS_ASSERT (*t4 == *t5);
-        t6 = t2 - t1;
+        t6 = new Potential<double> ( t2 - t1 );
         t7 = sub_test_potentials ( t2, t1 );
         TS_ASSERT (*t6 == *t7);
         TS_ASSERT (*t5 != *t7);
@@ -277,24 +277,24 @@ namespace gum {
         delete t6;
         delete t7;
 
-        t4 = t1 * t2;
+        t4 = new Potential<double> ( t1 * t2 );
         t5 = mult_test_potentials ( t1, t2 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
         delete t5;
-        t4 = t3 * t2;
+        t4 = new Potential<double> ( t3 * t2 );
         t5 = mult_test_potentials ( t3, t2 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
-        t4 = t2 * t3;
+        t4 = new Potential<double> ( t2 * t3 );
         TS_ASSERT (*t4 == *t5);
         delete t4;
         delete t5;
 
-        t4 = t1 / t2;
+        t4 = new Potential<double> ( t1 / t2 );
         t5 = div_test_potentials ( t1, t2 );
         TS_ASSERT (*t4 == *t5);
-        t6 = t2 / t1;
+        t6 = new Potential<double> ( t2 / t1 );
         t7 = div_test_potentials ( t2, t1 );
         TS_ASSERT (*t6 == *t7);
         TS_ASSERT (*t5 != *t7);

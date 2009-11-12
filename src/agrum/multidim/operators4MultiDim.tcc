@@ -30,6 +30,15 @@
 
 #include <agrum/multidim/operatorRegister4MultiDim.h>
 
+#define GUM_MULTI_DIM_DECORATOR_OP(NAME,OP)       \
+  template<typename T> \
+  MultiDimImplementation<T>* \
+  NAME ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) { \
+    const MultiDimImplementation<T>* impl1 = t1.getContent (); \
+    const MultiDimImplementation<T>* impl2 = t2.getContent (); \
+    return ( *impl1 OP *impl2 ); \
+  }
+ 
 
 namespace gum {
 
@@ -125,15 +134,9 @@ namespace gum {
   #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
   /// the function to be used to add two MultiDimDecorators
-  template<typename T>
-  MultiDimDecorator<T>*
-  operator+ ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) {
-    const MultiDimImplementation<T>* impl1 = t1.getContent ();
-    const MultiDimImplementation<T>* impl2 = t2.getContent ();
-    return new MultiDimDecorator<T> ( *impl1 + *impl2 );
-  }
-  
+  GUM_MULTI_DIM_DECORATOR_OP( operator+, + )
 
+  
   /// the function to be used to multiply two MultiDimImplementations
   #define GUM_MULTI_DIM_OPERATOR_NAME operator*
   #define GUM_MULTI_DIM_OPERATOR_FUNC_NAME "*"
@@ -144,14 +147,7 @@ namespace gum {
   #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
   /// the function to be used to multiply two MultiDimDecorators
-  template<typename T>
-  MultiDimDecorator<T>*
-  operator* ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) {
-    const MultiDimImplementation<T>* impl1 = t1.getContent ();
-    const MultiDimImplementation<T>* impl2 = t2.getContent ();
-    return new MultiDimDecorator<T> ( ( *impl1 ) * ( *impl2 ) );
-  }
-    
+  GUM_MULTI_DIM_DECORATOR_OP( operator*, * )    
   
   /// the function to be used to subtract two MultiDimImplementations
   #define GUM_MULTI_DIM_OPERATOR_NAME operator-
@@ -161,14 +157,7 @@ namespace gum {
   #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
   /// the function to be used to subtract two MultiDimDecorators
-  template<typename T>
-  MultiDimDecorator<T>*
-  operator- ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) {
-    const MultiDimImplementation<T>* impl1 = t1.getContent ();
-    const MultiDimImplementation<T>* impl2 = t2.getContent ();
-    return new MultiDimDecorator<T> ( ( *impl1 ) - ( *impl2 ) );
-  }
-
+  GUM_MULTI_DIM_DECORATOR_OP( operator-, - )
   
   /// the function to be used to divide two MultiDimImplementations
   #define GUM_MULTI_DIM_OPERATOR_NAME operator/
@@ -178,13 +167,8 @@ namespace gum {
   #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
   /// the function to be used to divide two MultiDimDecorators
-  template<typename T>
-  MultiDimDecorator<T>*
-  operator/ ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) {
-    const MultiDimImplementation<T>* impl1 = t1.getContent ();
-    const MultiDimImplementation<T>* impl2 = t2.getContent ();
-    return new MultiDimDecorator<T> ( ( *impl1 ) / ( *impl2 ) );
-  }
+  GUM_MULTI_DIM_DECORATOR_OP( operator/, / )
+
     
 
   // ==============================================================================

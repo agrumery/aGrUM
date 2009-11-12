@@ -150,7 +150,7 @@ namespace gum {
 
   /// the function to be used to add two MultiDimDecorators
   template<typename T>
-  MultiDimDecorator<T>*
+  MultiDimImplementation<T>*
   operator+ ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
 
 
@@ -161,7 +161,7 @@ namespace gum {
   
   /// the function to be used to subtract two MultiDimDecorators
   template<typename T>
-  MultiDimDecorator<T>*
+  MultiDimImplementation<T>*
   operator- ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
 
   
@@ -172,7 +172,7 @@ namespace gum {
 
   /// the function to be used to multiply two MultiDimDecorators
   template<typename T>
-  MultiDimDecorator<T>*
+  MultiDimImplementation<T>*
   operator* ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
 
 
@@ -183,7 +183,7 @@ namespace gum {
 
   /// the function to be used to divide two MultiDimDecorators
   template<typename T>
-  MultiDimDecorator<T>*
+  MultiDimImplementation<T>*
   operator/ ( const MultiDimDecorator<T>&, const MultiDimDecorator<T>& );
 
   
