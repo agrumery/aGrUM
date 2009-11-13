@@ -98,7 +98,9 @@ namespace gum {
   GUM_MAKE_ERROR( HashSize, Exception, "size not admissible in a HashTable" )
   /// Exception : problem with size
   GUM_MAKE_ERROR( SizeError, Exception, "size not admissible in a HashTable" )
-
+  /// Exception: an empty set is found, where it should not be
+  GUM_MAKE_ERROR( EmptySet, Exception, "an empty set has been found where it should not be" )
+  
   /// Exception : input/output problem
   GUM_MAKE_ERROR( IOError, Exception, "an input/output error occurred" )
   /// Exception : a I/O format was not found
