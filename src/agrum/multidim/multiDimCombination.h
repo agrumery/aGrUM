@@ -20,22 +20,26 @@
 /** @file
  * @brief A generic class to combine efficiently several MultiDim tables
  *
- * MultiDimCombination is a generic class devised to combine efficiently several
- * multidimensional objects. By multidimensional objects, we mean of course
- * MultiDimDecorators, MultiDimImplementations, but also more complex objects such
- * as, for instance, pairs of MultiDimDecorators the first one of which is a
- * utility function and the second one of which is a table of instantiations.
- * Actually, the important point for a multidimensional object to be eligible to
- * be combined by the MultiDimCombination is:
- * # to contain, in one way or another, a sequence of Discrete variables (the
- *   dimensions of the multidimensional object)
- * # to have a function taking in arguments two such object and producing a new
- *   object of the same type, which is the so-called combined result of these
- *   two objects.
+ * MultiDimCombination is a generic class designed to combine efficiently several
+ * multidimensional objects, that is, to compute expressions like
+ * T1 op T2 op T3 op .... op Tn, where the ti's are the multidimensional objects
+ * and op is an operator or a function taking in argument two such objects and
+ * producing a new (combined) Ti object. Note that the MultiDimCombination
+ * determines itself in which order the objects should be combined. As such, the
+ * combination operation to perform should thus be COMMUTATIVE and ASSOCIATIVE.
  *
- * Note that the MultiDimCombination determines itself in which order the
- * the objects objects should be combined. As such, the combination operation to
- * perform should thus be COMMUTATIVE.
+ * By multidimensional objects, we mean of course MultiDimDecorators,
+ * MultiDimImplementations, but also more complex objects such as, for instance,
+ * pairs of MultiDimDecorators the first one of which being a utility function and
+ * the second one being a table of instantiations (useful, e.g., for computing
+ * MPE's) but this can also be a pair (Utility,Potential) for the inference in
+ * an Influence Diagram. Actually, the important point for a multidimensional
+ * object to be eligible to be combined by the MultiDimCombination is:
+ * # that the object contains, in one way or another, a sequence of Discrete
+ *   variables (the dimensions of the multidimensional object)
+ * # that there exists a function taking in arguments two such multidimensional
+ *   objects and producing a new object of the same type, which is the so-called
+ *   combined result of these two objects.
  *
  * To be quite generic, the MultiDimCombination takes in argument the function
  * that produces the result of the combination of two multidimensional objects,
@@ -44,11 +48,16 @@
  * MultiDimCombinations:
  * @code
  * // a function used to combine two Potential<float>'s:
- * Potential<float>* combinePotential ( const Potential<float>& t1,
- *                                      const Potential<float>& t2 ) {
+ * Potential<float>* addPotential ( const Potential<float>& t1,
+ *                                  const Potential<float>& t2 ) {
  *   return new Potential<float> (t1 + t2);
  * }
  *
+ * // another function used to combine two Potential<float>'s:
+ * Potential<float>* multPotential ( const Potential<float>& t1,
+ *                                   const Potential<float>& t2 ) {
+ *   return new Potential<float> (t1 * t2);
+ * }
  *   
  * /// the function used to extract the variables sequence from a potential
  * const Sequence<const DiscreteVariable *>*
@@ -60,8 +69,13 @@
  * Potential<float> t1, t2, t3;
  * Set<const Potential<float>*> set;
  * set << &table1 << &table2 << &table3;
- * MultiDimCombination<float,Potential> Adds ( combinePotential, extractVars );
- * Potential<float>* combined_table = Adds.combine ( set );
+ * MultiDimCombination<float,Potential> Comb ( addPotential, extractVars );
+ * Potential<float>* combined_table = Comb.combine ( set );
+ *
+ * // change the operator to apply
+ * Comb.setCombinator ( multPotential );
+ * Potential<float>* combined_table2 = Comb.combine ( set );
+ *
  * @endcode
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
