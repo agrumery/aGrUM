@@ -27,29 +27,57 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/multidim/labelizedVariable.h>
+#include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimCombination.h>
+
 
 
 namespace gum {
 
-  
+
+#define GUM_OPERATOR_PATTERN_ALLOWED
+
+#define GUM_PROJECTION_CREATION(result_varSequence,neutral_element) \
+  MultiDimArray<T>* result = new MultiDimArray<T>; \
+  result->beginMultipleChanges (); \
+  for ( Sequence<const DiscreteVariable *>::const_iterator iter = \
+          result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) { \
+    *result << **iter; \
+  } \
+  result->endMultipleChanges (); \
+  result->fill ( neutral_element );
+
+
+#define GUM_PROJECTION_OPERATION(table_offset,result_offset) \
+  result->unsafeSet \
+    ( result_offset, \
+      GUM_MULTI_DIM_OPERATOR( result->unsafeGet ( result_offset ), \
+                              table->unsafeGet ( table_offset ) ) );
+ 
+
+
+#define GUM_MULTI_DIM_OPERATOR_NAME glurps
+#define GUM_MULTI_DIM_OPERATOR(x,y) (x > y ? x : y)
+#include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+#undef GUM_MULTI_DIM_OPERATOR_NAME
+#undef GUM_MULTI_DIM_OPERATOR
+
+
+
   namespace tests {
 
-    
-    class MultiDimCombinationTestSuite: public CxxTest::TestSuite {
+    class MultiDimProjectionTestSuite: public CxxTest::TestSuite {
     private:
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
-      void randomInitP ( Potential<float>& t ) {
+      void randomInit ( MultiDimArray<float>* t ) {
         Instantiation i (t);
         srand ( time ( NULL) );
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
+          t->set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
       }
 
-      
       // the function used to combine two tables
       static Potential<float>* addPotential ( const Potential<float>& t1,
                                               const Potential<float>& t2 ) {
@@ -71,8 +99,33 @@ namespace gum {
         return &( p.variablesSequence () );
       }
 
+
+      // projection of a table over a set
+      MultiDimArray<float>* proj ( const MultiDimArray<float>& table,
+                                   const Set<const DiscreteVariable *>& set,
+                                   float neutral_elt ) {
+        MultiDimArray<float>* result = new MultiDimArray<float>;
+        result->beginMultipleChanges ();
+        for ( Set<const DiscreteVariable *>::const_iterator iter =
+                set.begin(); iter != set.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        result->fill ( neutral_elt );
+
+        Instantiation inst ( table );
+        for ( inst.setFirst (); ! inst.end(); ++inst ) {
+          float xxx = result->get (inst );
+          float yyy = table[inst];
+          result->set ( inst, xxx > yyy ? xxx : yyy );
+        }
+
+        return result;
+      }
+
+    
     public:
-      void test_op_multidimArray () {
+      void test1 () {
         std::vector<LabelizedVariable*> vars ( 10 );
         for (unsigned int i = 0; i < 10; ++i) {
           std::stringstream str;
@@ -81,48 +134,30 @@ namespace gum {
           vars[i] = new LabelizedVariable (s, s, 4);
         }
         
-        Potential<float> t1, t2, t3;
-        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-
-        randomInitP ( t1 );
-        randomInitP ( t2 );
-        randomInitP ( t3 );
-
-        Potential<float>* t4, *t5, *t6;
-        t4 = new Potential<float> ( t1 + t2 );
-        t5 = new Potential<float> ( t3 + *t4 );
-
-        Set<const Potential<float>*> set;
-        set << &t1 << &t2 << &t3;
+        MultiDimArray<float> t1;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3])
+           << *(vars[4]) << *(vars[5]) << *(vars[6]) << *(vars[7])
+           << *(vars[8]) << *(vars[9]);
+        randomInit ( &t1 );
+        Set<const DiscreteVariable *> proj_set;
+        proj_set.insert ( vars[2] );
+        proj_set.insert ( vars[3] );
+        proj_set.insert ( vars[6] );
+        proj_set.insert ( vars[7] );
+        proj_set.insert ( vars[4] );
+        proj_set.insert ( vars[5] );
+        proj_set.insert ( vars[8] );
         
-        MultiDimCombination<float,Potential> xxx ( addPotential,extractVars );
-        t6 = xxx.combine ( set );
-        TS_ASSERT ( t6 );
-        TS_ASSERT (*t6 == *t5);
+        MultiDimArray<float>* t2 =
+          glurps ( &t1, t1.variablesSequence (), proj_set, 0.0f );
 
-        delete t4;
-        delete t5;
-        delete t6;
-
-        t4 = new Potential<float> ( t1 * t2 );
-        t5 = new Potential<float> ( t3 * (*t4) );
-        xxx.setCombinator ( multPotential );
-        t6 = xxx.combine ( set );
-        TS_ASSERT ( t6 );
-        TS_ASSERT (*t6 == *t5);
-
-        delete t4;
-        delete t5;
-        delete t6;        
+        MultiDimArray<float>* t3 = proj ( t1, proj_set, 0.0f );
+        TS_ASSERT ( *t2 == *t3 );
         
-        for (unsigned int i = 0; i < vars.size(); ++i)
-          delete vars[i];
       }
 
-
     };
+
 
   } /* namespace tests */
 
