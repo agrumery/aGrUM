@@ -38,18 +38,9 @@ namespace gum {
 
 #define GUM_OPERATOR_PATTERN_ALLOWED
 
-#define GUM_PROJECTION_CREATION(result_varSequence,neutral_element) \
-  MultiDimArray<T>* result = new MultiDimArray<T>; \
-  result->beginMultipleChanges (); \
-  for ( Sequence<const DiscreteVariable *>::const_iterator iter = \
-          result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) { \
-    *result << **iter; \
-  } \
-  result->endMultipleChanges (); \
-  result->fill ( neutral_element );
 
 
-#define GUM_PROJECTION_OPERATION(table_offset,result_offset) \
+#define GUM_PROJECTION_OPERATION(table,table_offset,result,result_offset) \
   result->unsafeSet \
     ( result_offset, \
       GUM_MULTI_DIM_OPERATOR( result->unsafeGet ( result_offset ), \
@@ -58,9 +49,11 @@ namespace gum {
 
 
 #define GUM_MULTI_DIM_OPERATOR_NAME glurps
+#define GUM_MULTI_DIM_OPERATOR_TYPE MultiDimArray
 #define GUM_MULTI_DIM_OPERATOR(x,y) (x > y ? x : y)
 #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
+#undef GUM_MULTI_DIM_OPERATOR_TYPE
 #undef GUM_MULTI_DIM_OPERATOR
 
 

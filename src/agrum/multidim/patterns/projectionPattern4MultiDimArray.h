@@ -26,21 +26,32 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
 
-#warning To use projectionPattern.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
+#warning To use projectionPattern, you must define GUM_OPERATOR_PATTERN_ALLOWED
 
 #else
+
+#ifndef GUM_PROJECTION_OPERATION
+#warning to use projectionPattern, you must define GUM_PROJECTION_OPERATION
+#endif
+#ifndef GUM_MULTI_DIM_OPERATOR_TYPE
+#warning to use projectionPattern, you must define GUM_MULTI_DIM_OPERATOR_TYPE
+#endif
+#ifndef GUM_MULTI_DIM_OPERATOR_NAME
+#warning to use projectionPattern, you must define GUM_MULTI_DIM_OPERATOR_NAME
+#endif
+
 
 
 // ================================================================================
 /// a specialized function for combining two multiDimArrays
 // ================================================================================
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
-  template<typename T>
-  MultiDimArray<T>*
+  template<typename T_DATA>
+  GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>*
   GUM_MULTI_DIM_OPERATOR_NAME
-     ( const MultiDimArray<T>* table,
+     ( const GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>* table,
        const Set<const DiscreteVariable *>& proj_set,
-       const T& neutral_element ) {
+       const T_DATA& neutral_element ) {
 #endif
 
   // first, compute whether we should loop over table or over the projected
@@ -103,8 +114,15 @@
     // the variables are stored in the order in which they appear in "table"
     // Hence, ++ operations on an instantiation on table will more or less 
     // correspond to a ++ operation on an instantiation on result
-
-    GUM_PROJECTION_CREATION(result_varSeq,neutral_element);
+    GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>* result =
+      new GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>;
+    result->beginMultipleChanges ();
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) {
+      *result << **iter; 
+    } 
+    result->endMultipleChanges ();
+    result->fill ( neutral_element );
     
     
     // compute the projection: first loop over the variables X's in table that do
@@ -123,7 +141,8 @@
       Idx result_offset = 0;
       for (Idx i = 0; i < table_alone_domain_size; ++i ) {
         for (Idx j = 0; j < result_domain_size; ++j ) {
-          { GUM_PROJECTION_OPERATION(table_offset,result_offset); }
+          { GUM_PROJECTION_OPERATION ( table, table_offset,
+                                       result, result_offset ); }
           
           // update the offset of table and result
           ++table_offset;
@@ -140,7 +159,8 @@
       Idx table_offset = 0;
       Idx result_offset = 0;
       for (Idx i = 0; i < table_domain_size; ++i ) {
-          { GUM_PROJECTION_OPERATION(table_offset,result_offset); }
+        { GUM_PROJECTION_OPERATION ( table, table_offset,
+                                     result, result_offset ); }
           
         // update the offset of table
         ++table_offset;
@@ -236,9 +256,16 @@
     // the variables are stored in the order in which they appear in "table"
     // Hence, ++ operations on an instantiation on table will more or less 
     // correspond to a ++ operation on an instantiation on result
-
-    GUM_PROJECTION_CREATION(result_varSeq,neutral_element);
-    
+    GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>* result =
+      new GUM_MULTI_DIM_OPERATOR_TYPE<T_DATA>;
+    result->beginMultipleChanges ();
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) {
+      *result << **iter; 
+    } 
+    result->endMultipleChanges ();
+    result->fill ( neutral_element );
+     
     
     // compute the sum: first loop over the variables X's both in table and in
     // result and, for each value of these X's, loop over the variables that are
@@ -260,7 +287,8 @@
       Idx result_offset = 0;
       for (Idx i = 0; i < result_domain_size; ++i ) {
         for (Idx j = 0; j < table_alone_domain_size; ++j ) {
-          { GUM_PROJECTION_OPERATION(table_offset,result_offset); }
+          { GUM_PROJECTION_OPERATION ( table, table_offset,
+                                       result, result_offset ); }
           
           // update the offset of table
           ++table_offset;
@@ -277,7 +305,8 @@
       Idx result_offset = 0;
       for (Idx j = 0; j < result_domain_size; ++j ) {
         for (Idx i = 0; i < table_alone_domain_size; ++i ) {
-          { GUM_PROJECTION_OPERATION(table_offset,result_offset); }         
+          { GUM_PROJECTION_OPERATION ( table, table_offset,
+                                       result, result_offset ); }
           
           // update the increment of table for the inner loop
           for ( unsigned int k = 0; k < table_alone_value.size(); ++k ) {
