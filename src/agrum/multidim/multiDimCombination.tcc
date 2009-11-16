@@ -37,10 +37,8 @@ namespace gum {
   /// constructor
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimCombination<T_DATA,TABLE>::MultiDimCombination
-  (TABLE<T_DATA>* (*combine) ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ),
-   const Sequence<const DiscreteVariable *>* (*Table2Seq)(const TABLE<T_DATA>&) ) :
-    __combine ( combine ),
-    __extract_sequence ( Table2Seq ) {
+  (TABLE<T_DATA>* (*combine) ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ) ) :
+    __combine ( combine ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR ( MultiDimCombination );
   }
@@ -50,8 +48,7 @@ namespace gum {
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimCombination<T_DATA,TABLE>::MultiDimCombination
   ( const MultiDimCombination<T_DATA,TABLE>& from ) :
-    __combine ( from.__combine ),
-    __extract_sequence ( from.__extract_sequence ) {
+    __combine ( from.__combine ) {
     /// for debugging purposes
     GUM_CONS_CPY ( MultiDimCombination );
   }
@@ -69,7 +66,7 @@ namespace gum {
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimCombination<T_DATA,TABLE>*
   MultiDimCombination<T_DATA,TABLE>::newFactory () const {
-    return new MultiDimCombination<T_DATA,TABLE> ( __combine, __extract_sequence );
+    return new MultiDimCombination<T_DATA,TABLE> ( __combine );
   }
 
   
@@ -117,13 +114,11 @@ namespace gum {
     
     // create a vector with all the tables to combine
     std::vector< const TABLE<T_DATA>* > tables ( set.size() );
-    std::vector<const Sequence<const DiscreteVariable *>*> varSeq ( set.size() );
     {
       unsigned int i = 0;
       for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         tables[i] = *iter;
-        varSeq[i] = __extract_sequence ( **iter );
       }
     }
     
@@ -137,15 +132,14 @@ namespace gum {
     // priorityQueue
     std::pair<unsigned int,unsigned int> pair;
     PriorityQueue<std::pair<unsigned int,unsigned int>,Size> queue;
-    {
-      const Sequence<const DiscreteVariable *> *seq1;
-      for ( unsigned int i = 0; i < tables.size(); ++i ) {
-        pair.first = i;
-        seq1 = varSeq[i];
-        for ( unsigned int j = i+1; j < tables.size(); ++j ) {
-          pair.second = j;
-          queue.insert ( __combined_size ( *seq1,*(varSeq[j]) ), pair );
-        }
+    for ( unsigned int i = 0; i < tables.size(); ++i ) {
+      pair.first = i;
+      const Sequence<const DiscreteVariable *>& seq1 =
+        tables[i]->variablesSequence();
+      for ( unsigned int j = i+1; j < tables.size(); ++j ) {
+        pair.second = j;
+        queue.insert
+          ( __combined_size ( seq1, tables[j]->variablesSequence() ), pair );
       }
     }
 
@@ -185,14 +179,14 @@ namespace gum {
 
       // update the "combinated" size of all the pairs involving "result"
       {
-        const Sequence<const DiscreteVariable *> *seq1;
-        seq1 = varSeq[ti];
+        const Sequence<const DiscreteVariable *>& seq1 =
+          tables[ti]->variablesSequence ();
         pair.second = ti;
         Size newsize;
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = __combined_size ( *seq1, *(varSeq[ind]) ); 
+            newsize = __combined_size ( seq1, tables[ind]->variablesSequence () ); 
             queue.setPriorityByVal ( pair, newsize );
           }
         }
@@ -200,7 +194,7 @@ namespace gum {
         for ( unsigned int ind = ti+1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = __combined_size ( *seq1, *(varSeq[ind]) ); 
+            newsize = __combined_size ( seq1, tables[ind]->variablesSequence () ); 
             queue.setPriorityByVal ( pair, newsize );
           }
         }

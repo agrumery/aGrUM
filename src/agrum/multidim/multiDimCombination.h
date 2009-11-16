@@ -22,7 +22,7 @@
  *
  * MultiDimCombination is a generic class designed to combine efficiently several
  * multidimensional objects, that is, to compute expressions like
- * T1 op T2 op T3 op .... op Tn, where the ti's are the multidimensional objects
+ * T1 op T2 op T3 op .... op Tn, where the Ti's are the multidimensional objects
  * and op is an operator or a function taking in argument two such objects and
  * producing a new (combined) Ti object. Note that the MultiDimCombination
  * determines itself in which order the objects should be combined. As such, the
@@ -35,17 +35,16 @@
  * MPE's) but this can also be a pair (Utility,Potential) for the inference in
  * an Influence Diagram. Actually, the important point for a multidimensional
  * object to be eligible to be combined by the MultiDimCombination is:
- * # that the object contains, in one way or another, a sequence of Discrete
- *   variables (the dimensions of the multidimensional object)
+ * # that the object contains a method variablesSequence that returns a 
+ *   sequence of Discrete variables that represent the dimensions of the
+ *   multidimensional object
  * # that there exists a function taking in arguments two such multidimensional
  *   objects and producing a new object of the same type, which is the so-called
  *   combined result of these two objects.
  *
  * To be quite generic, the MultiDimCombination takes in argument the function
- * that produces the result of the combination of two multidimensional objects,
- * and one function that enables the extraction of the variables sequence from
- * a given object. The following code gives an example of the usage of
- * MultiDimCombinations:
+ * that produces the result of the combination of two multidimensional objects.
+ * The following code gives an example of the usage of MultiDimCombinations:
  * @code
  * // a function used to combine two Potential<float>'s:
  * Potential<float>* addPotential ( const Potential<float>& t1,
@@ -59,17 +58,11 @@
  *   return new Potential<float> (t1 * t2);
  * }
  *   
- * /// the function used to extract the variables sequence from a potential
- * const Sequence<const DiscreteVariable *>*
- * extractVars ( const Potential<float>& p) {
- *   return &( p.variablesSequence () );
- * }
- *
  *
  * Potential<float> t1, t2, t3;
  * Set<const Potential<float>*> set;
  * set << &table1 << &table2 << &table3;
- * MultiDimCombination<float,Potential> Comb ( addPotential, extractVars );
+ * MultiDimCombination<float,Potential> Comb ( addPotential );
  * Potential<float>* combined_table = Comb.combine ( set );
  *
  * // change the operator to apply
@@ -104,13 +97,9 @@ namespace gum {
     /// default constructor
     /** @param combine a function that takes two tables in input and produces a
      * new table which is the result of the combination of the two tables
-     * passed in argument.
-     * @param Table2varSequence a function that, given a table, returns the
-     * sequence of its associated variables */
-    MultiDimCombination ( TABLE<T_DATA>*
-                          (*combine) ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ),
-                          const Sequence<const DiscreteVariable *>*
-                          (*Table2varSequence) ( const TABLE<T_DATA>& ) );
+     * passed in argument. */
+    MultiDimCombination ( TABLE<T_DATA>* (*combine)
+                          ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ) );
 
     /// copy constructor
     MultiDimCombination ( const MultiDimCombination<T_DATA,TABLE>& );
@@ -119,8 +108,8 @@ namespace gum {
     virtual ~MultiDimCombination ();
 
     /// virtual constructor
-    /** @return a new fresh MultiDimCombinator with the same combination and
-     * variable extraction functions. */
+    /** @return a new fresh MultiDimCombinator with the same combination
+     * function. */
     virtual MultiDimCombination<T_DATA,TABLE>* newFactory () const;
 
     /// @}
@@ -150,11 +139,6 @@ namespace gum {
     TABLE<T_DATA>* (*__combine) ( const TABLE<T_DATA>& t1,
                                   const TABLE<T_DATA>& t2 );
     
-     /** @brief the function used to extract from a TABLE a sequence of variables
-      * that will be used in __combined_size */
-    const Sequence<const DiscreteVariable *>*
-    (*__extract_sequence) ( const TABLE<T_DATA>& );
-
     
     /** @brief returns the domain size of the Cartesian product of the union of
      * all the variables in seq1 and seq2 */

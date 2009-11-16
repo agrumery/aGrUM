@@ -63,14 +63,7 @@ namespace gum {
         return new Potential<float> (t1 * t2);
       }
 
-    
-      /** @brief the function used to extract from a TABLE a decorator that will be
-       * used in __combined_size */
-      static const Sequence<const DiscreteVariable *>*
-      extractVars ( const Potential<float>& p) {
-        return &( p.variablesSequence () );
-      }
-
+      
     public:
       void test_op_multidimArray () {
         std::vector<LabelizedVariable*> vars ( 10 );
@@ -97,7 +90,7 @@ namespace gum {
         Set<const Potential<float>*> set;
         set << &t1 << &t2 << &t3;
         
-        MultiDimCombination<float,Potential> xxx ( addPotential,extractVars );
+        MultiDimCombination<float,Potential> xxx ( addPotential );
         t6 = xxx.combine ( set );
         TS_ASSERT ( t6 );
         TS_ASSERT (*t6 == *t5);
