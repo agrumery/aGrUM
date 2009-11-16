@@ -26,6 +26,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/core/set.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
@@ -92,14 +93,6 @@ namespace gum {
       }
 
     
-      /** @brief the function used to extract from a TABLE a decorator that will be
-       * used in __combined_size */
-      static const Sequence<const DiscreteVariable *>*
-      extractVars ( const Potential<float>& p) {
-        return &( p.variablesSequence () );
-      }
-
-
       // projection of a table over a set
       MultiDimArray<float>* proj ( const MultiDimArray<float>& table,
                                    const Set<const DiscreteVariable *>& set,
@@ -148,11 +141,16 @@ namespace gum {
         proj_set.insert ( vars[5] );
         proj_set.insert ( vars[8] );
         
-        MultiDimArray<float>* t2 =
-          glurps ( &t1, t1.variablesSequence (), proj_set, 0.0f );
+        MultiDimArray<float>* t2 = glurps ( &t1, proj_set, 0.0f );
 
         MultiDimArray<float>* t3 = proj ( t1, proj_set, 0.0f );
         TS_ASSERT ( *t2 == *t3 );
+
+        delete t2;
+        delete t3;
+
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
         
       }
 

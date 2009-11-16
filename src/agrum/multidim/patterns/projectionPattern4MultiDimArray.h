@@ -39,14 +39,15 @@
   MultiDimArray<T>*
   GUM_MULTI_DIM_OPERATOR_NAME
      ( const MultiDimArray<T>* table,
-       const Sequence<const DiscreteVariable *>& table_vars,
        const Set<const DiscreteVariable *>& proj_set,
        const T& neutral_element ) {
 #endif
 
   // first, compute whether we should loop over table or over the projected
   // table first to get a faster algorithm.
-  bool need_swapping = table_vars.size() <= 2 * proj_set.size();
+    const Sequence<const DiscreteVariable *>& table_vars =
+      table->variablesSequence ();
+    bool need_swapping = table_vars.size() <= 2 * proj_set.size();
 
   
   if ( ! need_swapping ) {
@@ -308,9 +309,6 @@
     
     return result;
   }
-
-
-  GUM_ERROR (EmptySet, "xxx");
 }
   
 
