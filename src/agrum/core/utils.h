@@ -43,8 +43,8 @@
 namespace std {
 
   // used ,e.g., for hashtables
-  template <typename T>
-  ostream& operator<< ( ostream& stream, const pair<T,T>& val );
+  template <typename T1, typename T2>
+  ostream& operator<< ( ostream& stream, const pair<T1, T2>& val );
 
   template <typename T>
   ostream& operator<< ( ostream& stream, const vector<T>& val );
