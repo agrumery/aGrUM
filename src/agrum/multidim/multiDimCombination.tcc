@@ -109,8 +109,9 @@ namespace gum {
   MultiDimCombination<T_DATA,TABLE>::combine
   ( const Set<const TABLE<T_DATA>*>& set ) {
     // check if the set passed in argument is empty. If so, raise an exception
-    if ( set.empty() )
-      GUM_ERROR ( EmptySet, "the set of tables should not be empty" );
+    if ( set.size() < 2 )
+      GUM_ERROR ( InvalidArgumentsNumber, "the set passed to a MultiDimCombination"
+                  " should at least contain two elements" );
     
     // create a vector with all the tables to combine
     std::vector< const TABLE<T_DATA>* > tables ( set.size() );

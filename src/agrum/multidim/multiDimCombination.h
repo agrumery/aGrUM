@@ -123,8 +123,8 @@ namespace gum {
     /// creates and returns the result of the combination of the tables within set 
     /** @return a new freshly created TABLE which is the result of the combination
      * of all the TABLES passed in argument
-     * @throws EmptySet exception is thrown if the set passed in argument is
-     * empty. */
+     * @throws InvalidArgumentsNumber exception is thrown if the set passed in
+     * argument contains less than two elements */
     virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set );
 
     /// changes the function used for combining two TABLES

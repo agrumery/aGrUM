@@ -100,6 +100,9 @@ namespace gum {
   GUM_MAKE_ERROR( SizeError, Exception, "size not admissible in a HashTable" )
   /// Exception: an empty set is found, where it should not be
   GUM_MAKE_ERROR( EmptySet, Exception, "an empty set has been found where it should not be" )
+
+  /// Exception: the number of arguments passed to a function is not what was expected
+  GUM_MAKE_ERROR( InvalidArgumentsNumber, Exception, "the number of arguments passed differs from what was expected" )
   
   /// Exception : input/output problem
   GUM_MAKE_ERROR( IOError, Exception, "an input/output error occurred" )
