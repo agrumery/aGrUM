@@ -35,13 +35,25 @@
 /// a specialized function for combining two multiDimArrays
 // ================================================================================
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
+#define GUM_MULTI_DIM_OPERATOR_TYPE T
   template<typename T>
   MultiDimArray<T>*
   GUM_MULTI_DIM_OPERATOR_NAME ( const MultiDimArray<T>* t1,
                                 const MultiDimArray<T>* t2 ) {
 #endif
+    
+
+#ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
+#define GUM_MULTI_DIM_OPERATOR_TYPE T*
+  template<typename T>
+  MultiDimArray<T*>*
+  GUM_MULTI_DIM_OPERATOR_POINTER_NAME ( const MultiDimArray<T*>* t1,
+                                        const MultiDimArray<T*>* t2 ) {
+#endif
+    
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME_F
+#define GUM_MULTI_DIM_OPERATOR_TYPE T
   template<typename T>
   MultiDimArray<T>*
   GUM_MULTI_DIM_OPERATOR_NAME_F ( const MultiDimArray<T>* t1,
@@ -49,13 +61,37 @@
                                   const T (*f) ( const T&, const T&) ) {
 #endif
 
+    
+#ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F
+#define GUM_MULTI_DIM_OPERATOR_TYPE T*
+  template<typename T>
+  MultiDimArray<T*>*
+  GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F ( const MultiDimArray<T*>* t1,
+                                          const MultiDimArray<T*>* t2,
+                                          const T* (*f) ( const T*, const T*) ) {
+#endif
+
+    
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
+#define GUM_MULTI_DIM_OPERATOR_TYPE T
   template<typename T>
   MultiDimImplementation<T>*
   GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME ( const MultiDimImplementation<T>* tt1,
                                            const MultiDimImplementation<T>* tt2 ) {
     const MultiDimArray<T>* t1 = reinterpret_cast<const MultiDimArray<T>*> (tt1);
     const MultiDimArray<T>* t2 = reinterpret_cast<const MultiDimArray<T>*> (tt2);
+#endif
+
+    
+#ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
+#define GUM_MULTI_DIM_OPERATOR_TYPE T*
+  template<typename T>
+  MultiDimImplementation<T*>*
+  GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
+    ( const MultiDimImplementation<T*>* tt1,
+      const MultiDimImplementation<T*>* tt2 ) {
+    const MultiDimArray<T*>* t1 = reinterpret_cast<const MultiDimArray<T*>*> (tt1);
+    const MultiDimArray<T*>* t2 = reinterpret_cast<const MultiDimArray<T*>*> (tt2);
 #endif
 
   // first, compute whether we should swap t1 and t2 to get a faster algorithm.
@@ -161,7 +197,8 @@
     // are those of t1, in the order of t1, the others are the remaining variables
     // belonging to t2. Hence, making a ++ operation on an instantiation on T will
     // correspond to a ++ operation on an instantiation on t1
-    MultiDimArray<T>* result = new MultiDimArray<T>;
+    MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
+      new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
     result->beginMultipleChanges ();
     for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
           iter != seq1.end(); ++iter ) {
@@ -378,7 +415,8 @@
     // are those of t2, in the order of t2, the others are the remaining variables
     // belonging to t1. Hence, making a ++ operation on an instantiation on T will
     // correspond to a ++ operation on an instantiation on t2
-    MultiDimArray<T>* result = new MultiDimArray<T>;
+    MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
+      new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
     result->beginMultipleChanges ();
     for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq2.begin();
           iter != seq2.end(); ++iter ) {
@@ -522,5 +560,6 @@
   }
 }
   
-
+#undef GUM_MULTI_DIM_OPERATOR_TYPE
+  
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

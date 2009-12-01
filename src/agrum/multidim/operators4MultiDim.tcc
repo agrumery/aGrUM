@@ -59,6 +59,18 @@ namespace gum {
   #undef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
   #undef GUM_MULTI_DIM_OPERATOR
   
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_NAME add2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) + (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME add2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) + (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+  
 
   // ==============================================================================
   /// a specialized function for subtracting two multiDimArrays
@@ -73,6 +85,18 @@ namespace gum {
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) - (y)
   #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_NAME subtract2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) - (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME subtract2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) - (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
   #undef GUM_MULTI_DIM_OPERATOR
 
   
@@ -91,7 +115,19 @@ namespace gum {
   #undef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
   #undef GUM_MULTI_DIM_OPERATOR
 
-  
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_NAME multiply2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) * (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME multiply2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) * (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+   
   // ==============================================================================
   /// a specialized function for dividing two multiDimArrays
   // ==============================================================================
@@ -105,6 +141,18 @@ namespace gum {
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) / (y)
   #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_NAME divide2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) / (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
+  #undef GUM_MULTI_DIM_OPERATOR
+ 
+  #define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME divide2MultiDimArrays4Pointers
+  #define GUM_MULTI_DIM_OPERATOR(x,y) new T ( (*x) / (*y) )
+  #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
   #undef GUM_MULTI_DIM_OPERATOR
 
   
@@ -245,6 +293,30 @@ namespace gum {
   }
   
   
+  /// the function used to register all the above functions
+  template<typename T_DATA>
+  void pointerOperators4MultiDimInit () {
+    static bool first_init = true;
+    
+    if ( first_init ) {
+      first_init = false;
+      
+      std::string MultiDimArrayString ("MultiDimArray");
+      std::string BaseNameString ("MultiDimImplementation");
+
+      // register base functions for multiDimArrays
+      registerOperator<T_DATA*> ( "+", MultiDimArrayString, MultiDimArrayString,
+                                  &add2MultiDimArrays4Pointers);
+      registerOperator<T_DATA*> ( "-", MultiDimArrayString, MultiDimArrayString,
+                                  &subtract2MultiDimArrays4Pointers);
+      registerOperator<T_DATA*> ( "*", MultiDimArrayString, MultiDimArrayString,
+                                  &multiply2MultiDimArrays4Pointers);
+      registerOperator<T_DATA*> ( "/", MultiDimArrayString, MultiDimArrayString,
+                                  &divide2MultiDimArrays4Pointers);
+    }
+  }
+  
+
 } /* namespace gum */
 
 

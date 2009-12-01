@@ -55,6 +55,16 @@ namespace gum {
   add2MultiDimArrays ( const MultiDimImplementation<T>* t1,
                        const MultiDimImplementation<T>* t2 );
 
+  template<typename T>
+  MultiDimArray<T*>*
+  add2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
+                                const MultiDimArray<T*>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T*>*
+  add2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
+                                const MultiDimImplementation<T*>* t2 );
+
   
   /// a specialized function for subtracting two multiDimArrays
   /** The function produces a tensorial subtraction of t2 from t1, that is, if t1
@@ -75,6 +85,16 @@ namespace gum {
   MultiDimImplementation<T>*
   subtract2MultiDimArrays ( const MultiDimImplementation<T>* t1,
                             const MultiDimImplementation<T>* t2 );
+
+  template<typename T>
+  MultiDimArray<T*>*
+  subtract2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
+                                     const MultiDimArray<T*>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T*>*
+  subtract2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
+                                     const MultiDimImplementation<T*>* t2 );
 
 
   /// a specialized function for multiplying two multiDimArrays
@@ -97,6 +117,17 @@ namespace gum {
   multiply2MultiDimArrays ( const MultiDimImplementation<T>* t1,
                             const MultiDimImplementation<T>* t2 );
 
+  template<typename T>
+  MultiDimArray<T*>*
+  multiply2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
+                                     const MultiDimArray<T*>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T*>*
+  multiply2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
+                                     const MultiDimImplementation<T*>* t2 );
+
+  
   /// a specialized function for dividing two multiDimArrays
   /** The function produces a tensorial division of t1 by t2, that is, if t1
    * and t2 are multiDimArrays over variables A,B,C,D and D,B,E respectively,
@@ -116,6 +147,16 @@ namespace gum {
   MultiDimImplementation<T>*
   divide2MultiDimArrays ( const MultiDimImplementation<T>* t1,
                           const MultiDimImplementation<T>* t2 );
+
+  template<typename T>
+  MultiDimArray<T*>*
+  divide2MultiDimArrays4Pointers ( const MultiDimArray<T*>* t1,
+                                   const MultiDimArray<T*>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T*>*
+  divide2MultiDimArrays4Pointers ( const MultiDimImplementation<T*>* t1,
+                                   const MultiDimImplementation<T*>* t2 );
 
   
   /// a specialized function for functionally combining two multiDimArrays
@@ -197,9 +238,46 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
-  /// the function used to register all the operators on multidimImplementations
+  /** @brief the function used to register all the operators on
+   * multidimImplementations over non-pointers types */
   template<typename T_DATA>
   void operators4MultiDimInit ();
+
+  /** @brief the function used to register all the operators on
+   * multidimImplementations over pointers types */
+  template<typename T_DATA>
+  void pointerOperators4MultiDimInit ();
+
+  
+  /// a class used to register operators over non-pointers types
+  /** This class is of course completely redundant with function
+   * operators4MultiDimInit. Its aim is to enable specialization of function
+   * operators4MultiDimInit for pointer types: C++ allows partial specialization
+   * of templated classes (e.g., create different implementations for C<T> and
+   * C<T*>) but it does not allows partial specialization for functions. Hence,
+   * by creating a class the primary purpose of which is to run function
+   * operators4MultiDimInit, we allow this partial specialization. This is
+   * most effective to produce different codes for pointer types and non-pointer
+   * types. */
+  template<typename T_DATA>
+  struct Operators4MultiDimInitialize {
+    void init () { operators4MultiDimInit<T_DATA> (); };
+  };
+
+  /// a class used to register operators over pointers types
+  /** This class is of course completely redundant with function
+   * pointerOperators4MultiDimInit. Its aim is to enable different implementations
+   * of the operators for multidims depending in whether these multidim contain
+   * pointers or not. Actually, C++ allows partial specialization
+   * of templated classes (e.g., create different implementations for C<T> and
+   * C<T*>) but it does not allows partial specialization for functions. Hence,
+   * by creating a class the primary purpose of which is to run function
+   * operators4MultiDimInit or pointerOperators4MultiDimInit, we allow this
+   * partial specialization to obtain. */
+  template<typename T_DATA>
+  struct Operators4MultiDimInitialize<T_DATA*> {
+    void init () { pointerOperators4MultiDimInit<T_DATA> (); };
+  };
 
  
 } /* namespace gum */

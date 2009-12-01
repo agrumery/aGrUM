@@ -17,7 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <agrum/core/utils.h>
+
+
 namespace gum {
+
+  
   // ==============================================================================
   // Default constructor
   // ==============================================================================
@@ -99,7 +105,8 @@ namespace gum {
   // Test if this potential is equal to p.
   // ==============================================================================
   template<typename T_DATA>
-  bool MultiDimContainer<T_DATA>::operator==(const MultiDimContainer<T_DATA>& p) const {
+  bool
+  MultiDimContainer<T_DATA>::operator==(const MultiDimContainer<T_DATA>& p) const {
     if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
       typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
       for (var_iterator iter = variablesSequence().begin();
@@ -109,9 +116,9 @@ namespace gum {
         }
       }
       Instantiation i(*this);
+      AlmostDifferent<T_DATA> cmp;
       for (i.setFirst(); ! i.end(); ++i) {
-        if ( ( get(i) > p.get(i) + (T_DATA) 0.000001 ) ||
-             ( p.get(i) > get(i) + (T_DATA) 0.000001 ) ) {
+        if (  cmp ( get(i), p.get(i) ) ) {
           return false;
         }
       }
@@ -122,15 +129,17 @@ namespace gum {
     }
   }
 
+  
   // ==============================================================================
   // Test if this potential is different of p.
   // ==============================================================================
-  template<typename T_DATA>
-  bool MultiDimContainer<T_DATA>::operator!=(const MultiDimContainer<T_DATA>& p) const {
-    return ! operator==( p ); 
+  template<typename T_DATA> INLINE
+  bool
+  MultiDimContainer<T_DATA>::operator!=(const MultiDimContainer<T_DATA>& p) const {
+    return ! operator== ( p );
   }
 
-
+  
   // ==============================================================================
   // automation fill with vector.
   // ==============================================================================

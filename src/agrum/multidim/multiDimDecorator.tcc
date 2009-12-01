@@ -35,7 +35,8 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimDecorator );
 
     // register the operators that will be used by the decorator
-    operators4MultiDimInit<T_DATA> ();
+    Operators4MultiDimInitialize<T_DATA> op;
+    op.init ();
   }
 
   // ==============================================================================

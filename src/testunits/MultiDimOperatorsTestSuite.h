@@ -110,7 +110,7 @@ namespace gum {
           delete vars[i];
       }
       
-      void test_op_multidimImplantationOfMultiDimArray () {
+      void test_op_multidimImplementationOfMultiDimArray () {
         std::vector<LabelizedVariable*> vars ( 10 );
         for (unsigned int i = 0; i < 10; ++i) {
           std::stringstream str;
@@ -308,7 +308,363 @@ namespace gum {
           delete vars[i];
       }
 
+      void test_op_multidimArray4Pointers () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+
+        MultiDimArray<float*> t1, t2, t3, *t4, *t5, *t6, *t7;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+        randomInitPointer ( &t1 );
+        randomInitPointer ( &t2 );
+        randomInitPointer ( &t3 );
+
+        t4 = add2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = add_test_arrays4Pointers ( &t1, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = add2MultiDimArrays4Pointers ( &t3, &t2 );
+        t5 = add_test_arrays4Pointers ( &t3, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5 ) );
+        mydelete ( t4 );
+        t4 = add2MultiDimArrays4Pointers ( &t2, &t3 );
+        TS_ASSERT ( equal ( *t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = subtract2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = sub_test_arrays4Pointers ( &t1, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        t6 = subtract2MultiDimArrays4Pointers ( &t2, &t1 );
+        t7 = sub_test_arrays4Pointers ( &t2, &t1 );
+        TS_ASSERT ( equal ( *t6,*t7) );
+        TS_ASSERT ( ! equal ( *t5,*t7) );
+        TS_ASSERT ( ! equal ( *t6,*t4) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+
+        t4 = multiply2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = mult_test_arrays4Pointers ( &t1, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = multiply2MultiDimArrays4Pointers ( &t3, &t2 );
+        t5 = mult_test_arrays4Pointers ( &t3, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        t4 = multiply2MultiDimArrays4Pointers ( &t2, &t3 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = divide2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = div_test_arrays4Pointers ( &t1, &t2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        t6 = divide2MultiDimArrays4Pointers ( &t2, &t1 );
+        t7 = div_test_arrays4Pointers ( &t2, &t1 );
+        TS_ASSERT ( equal ( *t6,*t7) );
+        TS_ASSERT ( ! equal ( *t5,*t7) );
+        TS_ASSERT ( ! equal ( *t6,*t4) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+        
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+      
+      void test_op_multidimImplementationOfMultiDimArray4Pointers () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+
+        MultiDimArray<float*> tt1, tt2, tt3;
+        MultiDimImplementation<float*> *t4, *t5, *t6, *t7;
+        tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+        randomInitPointer ( &tt1 );
+        randomInitPointer ( &tt2 );
+        randomInitPointer ( &tt3 );
+        MultiDimImplementation<float*>& t1 = tt1;
+        MultiDimImplementation<float*>& t2 = tt2;
+        MultiDimImplementation<float*>& t3 = tt3;
+
+        t4 = add2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = add_test_arrays4Pointers ( &tt1, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = add2MultiDimArrays4Pointers ( &t3, &t2 );
+        t5 = add_test_arrays4Pointers ( &tt3, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5 ) );
+        mydelete ( t4 );
+        t4 = add2MultiDimArrays4Pointers ( &t2, &t3 );
+        TS_ASSERT ( equal ( *t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = subtract2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = sub_test_arrays4Pointers ( &tt1, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        t6 = subtract2MultiDimArrays4Pointers ( &t2, &t1 );
+        t7 = sub_test_arrays4Pointers ( &tt2, &tt1 );
+        TS_ASSERT ( equal ( *t6,*t7) );
+        TS_ASSERT ( ! equal ( *t5,*t7) );
+        TS_ASSERT ( ! equal ( *t6,*t4) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+
+        t4 = multiply2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = mult_test_arrays4Pointers ( &tt1, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = multiply2MultiDimArrays4Pointers ( &t3, &t2 );
+        t5 = mult_test_arrays4Pointers ( &tt3, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        t4 = multiply2MultiDimArrays4Pointers ( &t2, &t3 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = divide2MultiDimArrays4Pointers ( &t1, &t2 );
+        t5 = div_test_arrays4Pointers ( &tt1, &tt2 );
+        TS_ASSERT ( equal ( *t4,*t5) );
+        t6 = divide2MultiDimArrays4Pointers ( &t2, &t1 );
+        t7 = div_test_arrays4Pointers ( &tt2, &tt1 );
+        TS_ASSERT ( equal ( *t6,*t7) );
+        TS_ASSERT ( ! equal ( *t5,*t7) );
+        TS_ASSERT ( ! equal ( *t6,*t4) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
+      
+      void test_operators_init4Pointers () {
+        pointerOperators4MultiDimInit<float> ();
+        pointerOperators4MultiDimInit<float> ();
+        pointerOperators4MultiDimInit<float> ();
+
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+
+        MultiDimArray<float*> t1, t2, t3;
+        MultiDimImplementation<float*> *t4, *t5;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+        randomInitPointer ( &t1 );
+        randomInitPointer ( &t2 );
+        randomInitPointer ( &t3 );
+
+        t4 = t1 + t2;
+        t5 = add_test_arrays4Pointers ( &t1, &t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = t3 + t2;
+        t5 = add_test_arrays4Pointers ( &t3, &t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        t4 = t2 + t3;
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
+      
+      void test_potentials4Pointers () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+
+        Potential<double*> t1, t2, t3;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+        randomInitPPointer ( t1 );
+        randomInitPPointer ( t2 );
+        randomInitPPointer ( t3 );
+
+        Potential<double*> *t4, *t6;
+        Potential<double*> *t5, *t7;
+
+        t4 = new Potential<double*> ( t1 + t2 );
+        t5 = add_test_potentials4Pointers ( t1, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = new Potential<double*> ( t3 + t2 );
+        t5 = add_test_potentials4Pointers ( t3, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        t4 = new Potential<double*> ( t2 + t3 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = new Potential<double*> ( t1 - t2 );
+        t5 = sub_test_potentials4Pointers ( t1, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        t6 = new Potential<double*> ( t2 - t1 );
+        t7 = sub_test_potentials4Pointers ( t2, t1 );
+        TS_ASSERT ( equal (*t6,*t7 ) );
+        TS_ASSERT ( ! equal (*t5,*t7 ) );
+        TS_ASSERT ( ! equal (*t6,*t4 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+
+        t4 = new Potential<double*> ( t1 * t2 );
+        t5 = mult_test_potentials4Pointers ( t1, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        t4 = new Potential<double*> ( t3 * t2 );
+        t5 = mult_test_potentials4Pointers ( t3, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        t4 = new Potential<double*> ( t2 * t3 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+
+        t4 = new Potential<double*> ( t1 / t2 );
+        t5 = div_test_potentials4Pointers ( t1, t2 );
+        TS_ASSERT ( equal (*t4,*t5 ) );
+        t6 = new Potential<double*> ( t2 / t1 );
+        t7 = div_test_potentials4Pointers ( t2, t1 );
+        TS_ASSERT ( equal (*t6,*t7 ) );
+        TS_ASSERT ( ! equal (*t5,*t7 ) );
+        TS_ASSERT ( ! equal (*t6,*t4 ) );
+        mydelete ( t4 );
+        mydelete ( t5 );
+        mydelete ( t6 );
+        mydelete ( t7 );
+        
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
     private:
+
+      // ==========================================================================
+      // ==========================================================================
+      template <typename T>
+      void mydelete ( MultiDimImplementation<T*>* t ) {
+        Instantiation inst (*t);
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          delete (*t)[inst];
+        }
+        
+        delete t;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      template <typename T>
+      void mydelete ( Potential<T*>* t ) {
+        Instantiation inst (*t);
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          delete (*t)[inst];
+        }
+        
+        delete t;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      template <typename T>
+      bool equal ( const MultiDimImplementation<T*>& t1,
+                   const MultiDimImplementation<T*>& t2 ) {
+        if ( ( t1.nbrDim() == t2.nbrDim()) &&
+             ( t1.domainSize() == t2.domainSize() ) ) {
+          typedef Sequence< const DiscreteVariable * >::const_iterator
+            var_iterator;
+          for (var_iterator iter = t1.variablesSequence().begin();
+               iter != t1.variablesSequence().end(); ++iter) {
+            if ( ! t2.variablesSequence().exists(*iter)) {
+              return false;
+            }
+          }
+          Instantiation i( t1 );
+          for (i.setFirst(); ! i.end(); ++i) {
+            if ( *( t1.get(i) ) != *(t2.get(i) ) ) {
+              return false;
+            }
+          }
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      
+      // ==========================================================================
+      // ==========================================================================
+      template <typename T>
+      bool equal ( const Potential<T*>& t1,
+                   const Potential<T*>& t2 ) {
+        if ( ( t1.nbrDim() == t2.nbrDim()) &&
+             ( t1.domainSize() == t2.domainSize() ) ) {
+          typedef Sequence< const DiscreteVariable * >::const_iterator
+            var_iterator;
+          for (var_iterator iter = t1.variablesSequence().begin();
+               iter != t1.variablesSequence().end(); ++iter) {
+            if ( ! t2.variablesSequence().exists(*iter)) {
+              return false;
+            }
+          }
+          Instantiation i( t1 );
+          for (i.setFirst(); ! i.end(); ++i) {
+            if ( *( t1.get(i) ) != *(t2.get(i) ) ) {
+              return false;
+            }
+          }
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      
       
       // ==========================================================================
       /// initialize randomly a table
@@ -323,6 +679,16 @@ namespace gum {
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
+      void randomInitPointer ( MultiDimArray<float*>* t ) {
+        Instantiation i (t);
+        srand ( time ( NULL) );
+        for ( i.setFirst(); ! i.end(); ++i )
+          t->set (i, new float ( (int)( ( (float)rand()/RAND_MAX ) * 100000 ) ) );
+      }
+
+      // ==========================================================================
+      /// initialize randomly a table
+      // ==========================================================================
       void randomInitP ( Potential<double>& t ) {
         Instantiation i (t);
         srand ( time ( NULL) );
@@ -331,6 +697,17 @@ namespace gum {
       }
 
       
+      // ==========================================================================
+      /// initialize randomly a table
+      // ==========================================================================
+      void randomInitPPointer ( Potential<double*>& t ) {
+        Instantiation i (t);
+        srand ( time ( NULL) );
+        for ( i.setFirst(); ! i.end(); ++i )
+          t.set (i, new double ( (int) ( ((double)rand()/RAND_MAX) * 100000 ) ) );
+      }
+      
+       
       // ==========================================================================
       // ==========================================================================
       MultiDimArray<float>* add_test_arrays ( const MultiDimArray<float>* t1,
@@ -361,7 +738,6 @@ namespace gum {
           
         return result;
       }
-
       
       // ==========================================================================
       // ==========================================================================
@@ -457,6 +833,136 @@ namespace gum {
       }
 
 
+      // ==========================================================================
+      // ==========================================================================
+      MultiDimArray<float*>*
+      add_test_arrays4Pointers ( const MultiDimArray<float*>* t1,
+                                 const MultiDimArray<float*>* t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1->variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2->variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        MultiDimArray<float*>* result = new MultiDimArray<float*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new float (*((*t1)[inst]) + *((*t2)[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      
+      // ==========================================================================
+      // ==========================================================================
+      MultiDimArray<float*>*
+      sub_test_arrays4Pointers ( const MultiDimArray<float*>* t1,
+                                 const MultiDimArray<float*>* t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1->variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2->variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        MultiDimArray<float*>* result = new MultiDimArray<float*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new float (*((*t1)[inst]) - *((*t2)[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      MultiDimArray<float*>*
+      mult_test_arrays4Pointers ( const MultiDimArray<float*>* t1,
+                                  const MultiDimArray<float*>* t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1->variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2->variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        MultiDimArray<float*>* result = new MultiDimArray<float*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new float (*((*t1)[inst]) * *((*t2)[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      MultiDimArray<float*>*
+      div_test_arrays4Pointers ( const MultiDimArray<float*>* t1,
+                                 const MultiDimArray<float*>* t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1->variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2->variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        MultiDimArray<float*>* result = new MultiDimArray<float*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new float (*((*t1)[inst]) / *((*t2)[inst]) ) );
+        }
+          
+        return result;
+      }
+
+            
       // ==========================================================================
       // ==========================================================================
       Potential<double>* add_test_potentials ( const Potential<double>& t1,
@@ -580,6 +1086,136 @@ namespace gum {
           
         return result;
       }
+
+      
+      // ==========================================================================
+      // ==========================================================================
+      Potential<double*>*
+      add_test_potentials4Pointers ( const Potential<double*>& t1,
+                                     const Potential<double*>& t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1.variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2.variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        Potential<double*>* result = new Potential<double*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new double ( *(t1[inst]) + *(t2[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      Potential<double*>*
+      sub_test_potentials4Pointers ( const Potential<double*>& t1,
+                                     const Potential<double*>& t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1.variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2.variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        Potential<double*>* result = new Potential<double*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new double ( *(t1[inst]) - *(t2[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      Potential<double*>*
+      mult_test_potentials4Pointers ( const Potential<double*>& t1,
+                                      const Potential<double*>& t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1.variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2.variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        Potential<double*>* result = new Potential<double*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new double ( *(t1[inst]) * *(t2[inst]) ) );
+        }
+          
+        return result;
+      }
+
+      // ==========================================================================
+      // ==========================================================================
+      Potential<double*>*
+      div_test_potentials4Pointers ( const Potential<double*>& t1,
+                                     const Potential<double*>& t2 ) {
+        // creation of the resulting variable list
+        Sequence<const DiscreteVariable *> seq = t1.variablesSequence();
+        const Sequence<const DiscreteVariable *>& seq2 = t2.variablesSequence();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq2.begin(); iter != seq2.end(); ++iter ) {
+          if ( ! seq.exists ( *iter ) )
+            seq << *iter;
+        }
+
+        // creation of the resulting table
+        Potential<double*>* result = new Potential<double*>;
+        result->beginMultipleChanges ();
+        for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+                seq.begin(); iter != seq.end(); ++iter ) {
+          *result << **iter;
+        }
+        result->endMultipleChanges ();
+        Instantiation inst (*result);
+
+        // compute the addition
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          result->set ( inst, new double ( *(t1[inst]) / *(t2[inst]) ) );
+        }
+          
+        return result;
+      }
+
       
     };
 
