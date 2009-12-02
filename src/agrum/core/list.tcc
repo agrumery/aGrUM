@@ -117,6 +117,21 @@ namespace gum {
     return __val;
   }
 
+  // ==============================================================================
+  /// returns the bucket toward the next element
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListBucket<Val>* ListBucket<Val>::next () const {
+    return __next;
+  }
+
+  // ==============================================================================
+  /// returns the bucket toward the preceding element
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListBucket<Val>* ListBucket<Val>::previous () const {
+    return __prev;
+  }
 
 
 
@@ -199,6 +214,14 @@ namespace gum {
       delete bucket;
       --__nb_elements;
     }
+  }
+
+  // ==============================================================================
+  /// erases the bucket from the List
+  // ==============================================================================
+  template <typename Val> INLINE
+  void ListBase<Val>::erase ( const ListBucket<Val>& bucket ) {
+    __erase ( const_cast<ListBucket<Val>*> ( &bucket ) );
   }
 
   // ==============================================================================
@@ -467,6 +490,22 @@ namespace gum {
   template <typename Val> INLINE
   bool ListBase<Val>::empty() const  {
     return ( __nb_elements == 0 );
+  }
+  
+  // ==============================================================================
+  /// returns a bucket pointing to the first element of the list
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListBucket<Val>* ListBase<Val>::frontBucket () const {
+    return __deb_list;
+  }
+    
+  // ==============================================================================
+  /// returns a bucket pointing to the last element of the list
+  // ==============================================================================
+  template <typename Val> INLINE
+  const ListBucket<Val>* ListBase<Val>::backBucket () const {
+    return __end_list;
   }
 
   // ==============================================================================
