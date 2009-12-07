@@ -94,472 +94,203 @@
     const MultiDimArray<T*>* t2 = reinterpret_cast<const MultiDimArray<T*>*> (tt2);
 #endif
 
-  // first, compute whether we should swap t1 and t2 to get a faster algorithm.
-  // here is the idea: look at the for loops at the end of this function that
-  // actually compute the result of t1 + t2. It can be seen that the overall
-  // complexity is O( |t2\t1| x #(t2\t1) + |t1 cup t2| x #(t1  cap t2) ) where
-  // |t| is the domain size of matrix t and #t is the number of variables in t.
-  // As a consequence, the algorithm will be slightly faster if we minimize
-  // the product |t2\t1| x #(t2\t1). So we compute A = |t2\t1| x #(t2\t1) and
-  // B = |t1\t2| x #(t1\t2) and if B < A, we swap t1 and t2. If B < A, then
-  // alpha x B < alpha x A, hence, it is sufficient to compare
-  // A = |t2| x #(t2\t1) and B = |t1| x #(t1\t2) (using alpha = |t1 cap t2|)
-  bool need_swapping = false; 
-
-  // get the variables in both tables
-  const Sequence<const DiscreteVariable *>& seq1 = t1->variablesSequence();
-  const Sequence<const DiscreteVariable *>& seq2 = t2->variablesSequence();
-
-  // compute the variables that are in t1 but not t2, and in t2 but not t1
-  unsigned int nb_elt_t1_cup_t2 = 0;
-  for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
-        iter != seq1.end(); ++iter ) {
-    if ( seq2.exists ( *iter ) ) ++nb_elt_t1_cup_t2;
-  }
+  // get the variables of the tables
+  const Sequence<const DiscreteVariable *>& t1_vars = t1->variablesSequence ();
+  const Sequence<const DiscreteVariable *>& t2_vars = t2->variablesSequence ();
   
-  float A = (float) t2->domainSize() * ( t2->nbrDim() - nb_elt_t1_cup_t2 );
-  float B = (float) t1->domainSize() * ( t1->nbrDim() - nb_elt_t1_cup_t2 );
-    
-  if ( B < A ) need_swapping = true;
-  
-  
-  if ( ! need_swapping ) {
-    // Compute the variables that are in t2 but not in t1. For these variables,
-    // get the increment in the offset of t2 that would result from an increment
-    // in one of these variables (vector t2_alone_offset). Also store the domain
-    // size of these variables (vector t2_alone_domain) and, for the computation
-    // loops at the end of this function, |variable| - the current values of these
-    // variables (vector t2_alone_value). All these vectors reference the variables
-    // of t2 \ t1 in the order in which they appear in seq2. Keep as well the size
-    // of the Cartesian product of these variables.
-    std::vector<Idx> t2_alone_offset;
-    std::vector<Idx> t2_alone_domain;
-    Idx offset = 1;
-    Idx t2_alone_domain_size = 1;
-    HashTable<const DiscreteVariable*,Idx> var2offset ( seq2.size() );
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq2.begin();
-          iter != seq2.end(); ++iter ) {
-      if ( ! seq1.exists ( *iter ) ) {
-        t2_alone_domain.push_back ( (*iter)->domainSize() );
-        t2_alone_offset.push_back ( offset );
-        t2_alone_domain_size *= (*iter)->domainSize();
-      }
-      var2offset.insert ( *iter, offset );
-      offset *= (*iter)->domainSize();
+  // get the domain size of the tables' variables
+  HashTable<const DiscreteVariable *,Idx> t1_offsets;
+  {
+    Idx current_offset = 1;
+    for ( typename Sequence<const DiscreteVariable *>::const_iterator iter =
+            t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+      t1_offsets.insert ( *iter, current_offset );
+      current_offset *= (*iter)->domainSize();
     }
-    std::vector<Idx> t2_alone_value = t2_alone_domain;
-    std::vector<Idx> t2_alone_down = t2_alone_offset;
-    for ( unsigned int i = 0; i < t2_alone_down.size(); ++i )
-      t2_alone_down[i] *= ( t2_alone_domain[i] - 1 );
-
-    // Compute the same vectors for the variables that belong to both t1 and t2.
-    // In this case, All these vectors reference the variables in the order in
-    // which they appear in seq1. In addition, store the number of increments in
-    // the computation loops at the end of the function before which the variables
-    // of t1 cap t2 need be incremented (vector t1_and_t2_before incr). Similarly,
-    // store the number of such increments currently still needed before the next
-    // incrementation of the variables of t1 cap t2. Keep as well the size of the
-    // Cartesian product of these variables.
-    std::vector<Idx> t1_and_t2_offset;
-    std::vector<Idx> t1_and_t2_domain;
-    std::vector<Idx> t1_and_t2_before_incr;
-    Idx before_incr = 1;
-    bool has_before_incr = false;
-    unsigned int nb_positive_before_incr = 0;
-    Idx t1_domain_size = t1->domainSize();
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
-          iter != seq1.end(); ++iter ) {
-      if ( seq2.exists ( *iter ) ) {
+  }
+  HashTable<const DiscreteVariable *,Idx> t2_offsets;
+  {
+    Idx current_offset = 1;
+    for ( typename Sequence<const DiscreteVariable *>::const_iterator iter =
+            t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+      t2_offsets.insert ( *iter, current_offset );
+      current_offset *= (*iter)->domainSize();
+    }
+  }
+ 
+  
+  // we divide the variables of t1 and t2 into 3 separate sets: those that
+  // belong only to t1 (variables t1_alone_xxx), those that belong only to t2
+  // (variables t2_alone_xxx) and those that belong to both tables
+  // (variables t1_and_t2_xxx). For each set, we define how an increment of a
+  // given variable of the set changes the offset in the corresponding table
+  // (variable txxx_offset) and what is the domain size of the variable
+  // (txxx_domain). In addition, we compute the domain size of the Cartesian
+  // product of the variables in each of the 3 sets. Given these data, we will
+  // be able to parse both t1, t2 and the result table t1+t2 without resorting
+  // to instantiations.
+  std::vector<Idx> t1_alone_offset;
+  std::vector<Idx> t1_alone_domain;
+  Idx t1_alone_domain_size = 1;
+     
+  std::vector<Idx> t2_alone_offset;
+  std::vector<Idx> t2_alone_domain;
+  Idx t2_alone_domain_size = 1;
+     
+  std::vector<Idx> t1_and_t2_1_offset;
+  std::vector<Idx> t1_and_t2_2_offset;
+  std::vector<Idx> t1_and_t2_domain;
+  Idx t1_and_t2_domain_size = 1;
+      
+  {
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+      if ( t2_vars.exists ( *iter ) ) {
         t1_and_t2_domain.push_back ( (*iter)->domainSize() );
-        t1_and_t2_offset.push_back ( var2offset[*iter] );
-        if ( has_before_incr ) {
-          t1_and_t2_before_incr.push_back ( before_incr - 1 );
-          has_before_incr = false;
-          ++nb_positive_before_incr;
-        }
-        else
-          t1_and_t2_before_incr.push_back ( 0 );
-        before_incr = 1;
+        t1_and_t2_1_offset.push_back ( t1_offsets[*iter] );
+        t1_and_t2_2_offset.push_back ( t2_offsets[*iter] );
+        t1_and_t2_domain_size *= (*iter)->domainSize();
       }
       else {
-        before_incr *= (*iter)->domainSize();
-        has_before_incr = true;
-      }
-    }
-    std::vector<Idx> t1_and_t2_value = t1_and_t2_domain;
-    std::vector<Idx> t1_and_t2_current_incr = t1_and_t2_before_incr;
-    std::vector<Idx> t1_and_t2_down = t1_and_t2_offset;
-    for ( unsigned int i = 0; i < t1_and_t2_down.size(); ++i ) {
-      t1_and_t2_down[i] *= (t1_and_t2_domain[i] - 1);
-    }
-
-    // create a table "result" containing all the variables: the first variables
-    // are those of t1, in the order of t1, the others are the remaining variables
-    // belonging to t2. Hence, making a ++ operation on an instantiation on T will
-    // correspond to a ++ operation on an instantiation on t1
-    MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
-      new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
-    result->beginMultipleChanges ();
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
-          iter != seq1.end(); ++iter ) {
-      *result << **iter;
-    }
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq2.begin();
-          iter != seq2.end(); ++iter ) {
-      if ( ! seq1.exists ( *iter ) ) {
-        *result << **iter;
-      }
-    }
-    result->endMultipleChanges ();
-
-    
-    // check if t1 and t2 are disjoint => we can optimize: parse all the variables
-    // of t1, then all variables in t2
-    if ( ! t1_and_t2_domain.size() ) {
-      Idx result_offset = 0;
-      for (Idx t2_offset = 0; t2_offset < t2_alone_domain_size; ++t2_offset ) {
-        for (Idx t1_offset = 0; t1_offset < t1_domain_size; ++t1_offset ) {
-          result->unsafeSet
-            ( result_offset,
-              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                      t2->unsafeGet ( t2_offset ) ) );
-          ++result_offset;
-        }
-      }
-    }
-    else {
-      // compute the sum: first loop over the variables X's in t2 but not in t1
-      // and, for each value of these X's, loop over the variables in both t1 and
-      // t2. As such, in the internal loop, the offsets of "result" and t1 need
-      // only be incremented as usually to parse appropriately these two tables.
-      // For t2, the problem is slightly more complicated: in the outer for loop,
-      // we shall increment the variables of t2 \ t1 according to vectors
-      // t2_alone_xxx. Each time a variable of these vectors has been incremented
-      // up to its max, we shall put it down to 0 and increment the next one, and
-      // so on. For the inner loop, this is similar except that we shall do these
-      // operations only when t1_and_t2_before_incr[xxx] steps in the loop have
-      // already been made.
-      
-      // but before doing so, check whether there exist positive_before_incr. If
-      // this is not the case, optimize by not using before_incr at all
-      if ( ! nb_positive_before_incr ) {
-        Idx t1_offset = 0;
-        Idx t2_offset = 0;
-        Idx result_offset = 0;
-        for (Idx i = 0; i < t2_alone_domain_size; ++i ) {
-          for (Idx j = 0; j < t1_domain_size; ++j ) {
-            result->unsafeSet
-              ( result_offset,
-                GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                        t2->unsafeGet ( t2_offset ) ) );
-            
-            // update the offsets of result and t1
-            ++result_offset;
-            ++t1_offset;
-            
-            // update the offset of t2
-            for ( unsigned int k = 0; k < t1_and_t2_current_incr.size(); ++k ) {
-              --t1_and_t2_value[k];
-              if ( t1_and_t2_value[k] ) {
-                t2_offset += t1_and_t2_offset[k];
-                break;
-              }
-              t1_and_t2_value[k] = t1_and_t2_domain[k];
-              t2_offset -= t1_and_t2_down[k];
-            }
-          }
-      
-          // update the offset for t1
-          t1_offset = 0;
-          
-          // update the increment of t2 for the outer loop
-          for ( unsigned int k = 0; k < t2_alone_value.size(); ++ k ) {
-            --t2_alone_value[k];
-            if ( t2_alone_value[k] ) {
-              t2_offset += t2_alone_offset[k];
-              break;
-            }
-            t2_alone_value[k] = t2_alone_domain[k];
-            t2_offset -= t2_alone_down[k];
-          }
-        }
-      }
-      else {
-        // here there are positive before_incr and we should use them to know
-        // when t2_offset needs be changed
-        Idx t1_offset = 0;
-        Idx t2_offset = 0;
-        Idx result_offset = 0;
-        for (Idx i = 0; i < t2_alone_domain_size; ++i ) {
-          for (Idx j = 0; j < t1_domain_size; ++j ) {
-            result->unsafeSet
-              ( result_offset,
-                GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                        t2->unsafeGet ( t2_offset ) ) );
-            
-            // update the offsets of result and t1
-            ++result_offset;
-            ++t1_offset;
-
-            // update the offset of t2
-            for ( unsigned int k = 0; k < t1_and_t2_current_incr.size(); ++k ) {
-              // check if we need modify t2_offset
-              if ( t1_and_t2_current_incr[k] ) {
-                --t1_and_t2_current_incr[k];
-                break;
-              }
-              t1_and_t2_current_incr[k] = t1_and_t2_before_incr[k];
-              
-              // here we shall modify t2_offset
-              --t1_and_t2_value[k];
-              if ( t1_and_t2_value[k] ) {
-                t2_offset += t1_and_t2_offset[k];
-                break;
-              }
-              t1_and_t2_value[k] = t1_and_t2_domain[k];
-              t2_offset -= t1_and_t2_down[k];
-            }
-          }
-      
-          // update the offset for t1
-          t1_offset = 0;
-      
-          // update the increment of t2 for the outer loop
-          for ( unsigned int k = 0; k < t2_alone_value.size(); ++ k ) {
-            --t2_alone_value[k];
-            if ( t2_alone_value[k] ) {
-              t2_offset += t2_alone_offset[k];
-              break;
-            }
-            t2_alone_value[k] = t2_alone_domain[k];
-            t2_offset -= t2_alone_down[k];
-          }
-        }
-      }
-    }
-  
-    return result;
-  }
-  else { // need_swapping = true
-    
-    // Compute the variables that are in t1 but not in t2. For these variables,
-    // get the increment in the offset of t1 that would result from an increment
-    // in one of these variables (vector t1_alone_offset). Also store the domain
-    // size of these variables (vector t1_alone_domain) and, for the computation
-    // loops at the end of this function, |variable| - the current values of these
-    // variables (vector t1_alone_value). All these vectors reference the variables
-    // of t1 \ t2 in the order in which they appear in seq1. Keep as well the size
-    // of the Cartesian product of these variables.
-    std::vector<Idx> t1_alone_offset;
-    std::vector<Idx> t1_alone_domain;
-    Idx offset = 1;
-    Idx t1_alone_domain_size = 1;
-    HashTable<const DiscreteVariable*,Idx> var1offset ( seq1.size() );
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
-          iter != seq1.end(); ++iter ) {
-      if ( ! seq2.exists ( *iter ) ) {
         t1_alone_domain.push_back ( (*iter)->domainSize() );
-        t1_alone_offset.push_back ( offset );
+        t1_alone_offset.push_back ( t1_offsets[*iter] );
         t1_alone_domain_size *= (*iter)->domainSize();
       }
-      var1offset.insert ( *iter, offset );
-      offset *= (*iter)->domainSize();
     }
-    std::vector<Idx> t1_alone_value = t1_alone_domain;
-    std::vector<Idx> t1_alone_down = t1_alone_offset;
-    for ( unsigned int i = 0; i < t1_alone_down.size(); ++i )
-      t1_alone_down[i] *= ( t1_alone_domain[i] - 1 );
-
-    // Compute the same vectors for the variables that belong to both t1 and t2.
-    // In this case, All these vectors reference the variables in the order in
-    // which they appear in seq2. In addition, store the number of increments in
-    // the computation loops at the end of the function before which the variables
-    // of t1 cap t2 need be incremented (vector t1_and_t2_before incr). Similarly,
-    // store the number of such increments currently still needed before the next
-    // incrementation of the variables of t1 cap t2. Keep as well the size of the
-    // Cartesian product of these variables.
-    std::vector<Idx> t1_and_t2_offset;
-    std::vector<Idx> t1_and_t2_domain;
-    std::vector<Idx> t1_and_t2_before_incr;
-    Idx before_incr = 1;
-    bool has_before_incr = false;
-    unsigned int nb_positive_before_incr = 0;
-    Idx t2_domain_size = t2->domainSize();
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq2.begin();
-          iter != seq2.end(); ++iter ) {
-      if ( seq1.exists ( *iter ) ) {
-        t1_and_t2_domain.push_back ( (*iter)->domainSize() );
-        t1_and_t2_offset.push_back ( var1offset[*iter] );
-        if ( has_before_incr ) {
-          t1_and_t2_before_incr.push_back ( before_incr - 1 );
-          has_before_incr = false;
-          ++nb_positive_before_incr;
-        }
-        else
-          t1_and_t2_before_incr.push_back ( 0 );
-        before_incr = 1;
-      }
-      else {
-        before_incr *= (*iter)->domainSize();
-        has_before_incr = true;
+    
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+      if ( ! t1_vars.exists ( *iter ) ) {
+        t2_alone_domain.push_back ( (*iter)->domainSize() );
+        t2_alone_offset.push_back ( t2_offsets[*iter] );
+        t2_alone_domain_size *= (*iter)->domainSize();
       }
     }
-    std::vector<Idx> t1_and_t2_value = t1_and_t2_domain;
-    std::vector<Idx> t1_and_t2_current_incr = t1_and_t2_before_incr;
-    std::vector<Idx> t1_and_t2_down = t1_and_t2_offset;
-    for ( unsigned int i = 0; i < t1_and_t2_down.size(); ++i ) {
-      t1_and_t2_down[i] *= (t1_and_t2_domain[i] - 1);
-    }
+  }
 
-    // create a table "result" containing all the variables: the first variables
-    // are those of t2, in the order of t2, the others are the remaining variables
-    // belonging to t1. Hence, making a ++ operation on an instantiation on T will
-    // correspond to a ++ operation on an instantiation on t2
-    MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
-      new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
-    result->beginMultipleChanges ();
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq2.begin();
-          iter != seq2.end(); ++iter ) {
+
+  // when we will parse t1 and t2 to fill the result table t1+t2, we will use
+  // variables txxx_value : at the beginning they are initialized to the domain
+  // size of the variables (which are, themselves initialized to 0). Each time we
+  // increment a variable (that is, we increase the offset of the table by
+  // txxx_offset), its corresponding txxx_value is decreased by 1. When the latter
+  // is equal to 0, this means that the variable itself should be reinitialized to
+  // 0 as well and that the next variable of the table should be increased (that
+  // is, this is similar to increasing 9 to 10). As such the offset of txxx should
+  // be decreased by txxx_offset * the domain size of the variable. This quantity
+  // is precisely what is stored into variables txxx_down.
+  std::vector<Idx> t1_and_t2_value  = t1_and_t2_domain;
+  std::vector<Idx> t1_and_t2_1_down = t1_and_t2_1_offset;
+  std::vector<Idx> t1_and_t2_2_down = t1_and_t2_2_offset;
+  for ( unsigned int i = 0; i < t1_and_t2_domain.size(); ++i ) {
+    t1_and_t2_1_down[i] *= (t1_and_t2_domain[i] - 1);
+    t1_and_t2_2_down[i] *= (t1_and_t2_domain[i] - 1);
+  }
+  std::vector<Idx> t1_alone_value = t1_alone_domain;
+  std::vector<Idx> t1_alone_down = t1_alone_offset;
+  for ( unsigned int i = 0; i < t1_alone_domain.size(); ++i ) {
+    t1_alone_down[i] *= (t1_alone_domain[i] - 1);
+  }
+  std::vector<Idx> t2_alone_value = t2_alone_domain;
+  std::vector<Idx> t2_alone_down = t2_alone_offset;
+  for ( unsigned int i = 0; i < t2_alone_domain.size(); ++i ) {
+    t2_alone_down[i] *= (t2_alone_domain[i] - 1);
+  }
+
+
+  // create a table "result" containing all the variables: the first variables
+  // are those that belong to both t1 and t2. The next variables are those that
+  // belong to t2 but not to t1. Finally, the last variables are those that
+  // belong to t1 but not t2. This order will be used in the next for loops.
+  MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
+    new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
+  result->beginMultipleChanges ();
+  for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+          t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+    if ( t1_vars.exists ( *iter ) )
+      *result << **iter;
+  }
+  for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+          t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+    if ( ! t1_vars.exists ( *iter ) )
+      *result << **iter;
+  }
+  for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+          t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+    if ( ! t2_vars.exists ( *iter ) ) {
       *result << **iter;
     }
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter = seq1.begin();
-          iter != seq1.end(); ++iter ) {
-      if ( ! seq2.exists ( *iter ) ) {
-        *result << **iter;
-      }
-    }
-    result->endMultipleChanges ();
-
-    
-    // check if t1 and t2 are disjoint => we can optimize: parse all the variables
-    // of t2, then all variables in t1
-    if ( ! t1_and_t2_domain.size() ) {
-      Idx result_offset = 0;
-      for (Idx t1_offset = 0; t1_offset < t1_alone_domain_size; ++t1_offset ) {
-        for (Idx t2_offset = 0; t2_offset < t2_domain_size; ++t2_offset ) {
-          result->unsafeSet
-            ( result_offset,
-              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                      t2->unsafeGet ( t2_offset ) ) );
-          ++result_offset;
-        }
-      }
-    }
-    else {
-      // compute the sum: first loop over the variables X's in t1 but not in t2
-      // and, for each value of these X's, loop over the variables in both t1 and
-      // t2. As such, in the internal loop, the offsets of "result" and t2 need
-      // only be incremented as usually to parse appropriately these two tables.
-      // For t1, the problem is slightly more complicated: in the outer for loop,
-      // we shall increment the variables of t1 \ t2 according to vectors
-      // t1_alone_xxx. Each time a variable of these vectors has been incremented
-      // up to its max, we shall put it down to 0 and increment the next one, and
-      // so on. For the inner loop, this is similar except that we shall do these
-      // operations only when t1_and_t2_before_incr[xxx] steps in the loop have
-      // already been made.
-      
-      // but before doing so, check whether there exist positive_before_incr. If
-      // this is not the case, optimize by not using before_incr at all
-      if ( ! nb_positive_before_incr ) {
-        Idx t2_offset = 0;
-        Idx t1_offset = 0;
-        Idx result_offset = 0;
-        for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
-          for (Idx j = 0; j < t2_domain_size; ++j ) {
-            result->unsafeSet
-              ( result_offset,
-                GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                        t2->unsafeGet ( t2_offset ) ) );
-            
-            // update the offsets of result and t2
-            ++result_offset;
-            ++t2_offset;
-            
-            // update the offset of t1
-            for ( unsigned int k = 0; k < t1_and_t2_current_incr.size(); ++k ) {
-              --t1_and_t2_value[k];
-              if ( t1_and_t2_value[k] ) {
-                t1_offset += t1_and_t2_offset[k];
-                break;
-              }
-              t1_and_t2_value[k] = t1_and_t2_domain[k];
-              t1_offset -= t1_and_t2_down[k];
-            }
-          }
-      
-          // update the offset for t2 for the outer loop
-          t2_offset = 0;
-          
-          // update the increment of t1 for the outer loop
-          for ( unsigned int k = 0; k < t1_alone_value.size(); ++ k ) {
-            --t1_alone_value[k];
-            if ( t1_alone_value[k] ) {
-              t1_offset += t1_alone_offset[k];
-              break;
-            }
-            t1_alone_value[k] = t1_alone_domain[k];
-            t1_offset -= t1_alone_down[k];
-          }
-        }
-      }
-      else {
-        // here there are positive before_incr and we should use them to know
-        // when t1_offset needs be changed
-        Idx t2_offset = 0;
-        Idx t1_offset = 0;
-        Idx result_offset = 0;
-        for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
-          for (Idx j = 0; j < t2_domain_size; ++j ) {
-            result->unsafeSet
-              ( result_offset,
-                GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                        t2->unsafeGet ( t2_offset ) ) );
-            
-            // update the offsets of result and t2
-            ++result_offset;
-            ++t2_offset;
-           
-            // update the offset of t1
-            for ( unsigned int k = 0; k < t1_and_t2_current_incr.size(); ++k ) {
-              // check if we need modify t2_offset
-              if ( t1_and_t2_current_incr[k] ) {
-                --t1_and_t2_current_incr[k];
-                break;
-              }
-              t1_and_t2_current_incr[k] = t1_and_t2_before_incr[k];
-              
-              // here we shall modify t2_offset
-              --t1_and_t2_value[k];
-              if ( t1_and_t2_value[k] ) {
-                t1_offset += t1_and_t2_offset[k];
-                break;
-              }
-              t1_and_t2_value[k] = t1_and_t2_domain[k];
-              t1_offset -= t1_and_t2_down[k];
-            }
-          }
-      
-          // update the offset for t2 for the outer loop
-          t2_offset = 0;
-
-          // update the increment of t1 for the outer loop
-          for ( unsigned int k = 0; k < t1_alone_value.size(); ++ k ) {
-            --t1_alone_value[k];
-            if ( t1_alone_value[k] ) {
-              t1_offset += t1_alone_offset[k];
-              break;
-            }
-            t1_alone_value[k] = t1_alone_domain[k];
-            t1_offset -= t1_alone_down[k];
-          }
-        }
-      }
-    }
-  
-    return result;
   }
-}
+  result->endMultipleChanges ();
+
+
+  // here we fill result. The idea is to use 3 loops. The innermost loop
+  // corresponds to the variables that belongs both to t1 and t2. The middle
+  // loop to the variables that belong to t2 but not to t1. Finally, the
+  // outer loop corresponds to the variables that belong to t1 but not t2.
+  Idx result_offset = 0;
+  Idx t1_offset = 0;
+  Idx t2_offset = 0;
+  Idx t1_alone_begin_offset = 0;
   
+  for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
+    t2_offset = 0;
+    t1_alone_begin_offset = t1_offset;
+    
+    for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
+      t1_offset = t1_alone_begin_offset;
+        
+      for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+        result->unsafeSet
+          ( result_offset,
+            GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
+                                    t2->unsafeGet ( t2_offset ) ) );
+
+        ++result_offset;
+          
+        // update the offset of both t1 and t2
+        for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
+          --t1_and_t2_value[k];
+          if ( t1_and_t2_value[k] ) {
+            t1_offset += t1_and_t2_1_offset[k];
+            t2_offset += t1_and_t2_2_offset[k];
+            break;
+          }
+          t1_and_t2_value[k] = t1_and_t2_domain[k];
+          t1_offset -= t1_and_t2_1_down[k];
+          t2_offset -= t1_and_t2_2_down[k];
+        }
+      }
+
+      // update the offset of t2 alone
+      for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
+        --t2_alone_value[k];
+        if ( t2_alone_value[k] ) {
+          t2_offset += t2_alone_offset[k];
+          break;
+        }
+        t2_alone_value[k] = t2_alone_domain[k];
+        t2_offset -= t2_alone_down[k];
+      }
+    }
+
+    // update the offset of t1 alone
+    for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
+      --t1_alone_value[k];
+      if ( t1_alone_value[k] ) {
+        t1_offset += t1_alone_offset[k];
+        break;
+      }
+      t1_alone_value[k] = t1_alone_domain[k];
+      t1_offset -= t1_alone_down[k];
+    }
+  }
+
+  return result;
+}           
+
+
 #undef GUM_MULTI_DIM_OPERATOR_TYPE
+
   
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */
