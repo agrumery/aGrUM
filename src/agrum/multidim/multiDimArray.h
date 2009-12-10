@@ -29,8 +29,10 @@
 #include <agrum/core/utils.h>
 #include <agrum/multidim/multiDimWithOffset.h>
 
-
 namespace gum {
+
+  template<typename T_DATA>
+  class MultiDimBijArray;
 
 
   /* =========================================================================== */
@@ -47,6 +49,8 @@ namespace gum {
 
   class MultiDimArray : public MultiDimWithOffset<T_DATA> {
   public:
+    template <typename T_DATABIS>
+    friend class MultiDimBijArray;
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################

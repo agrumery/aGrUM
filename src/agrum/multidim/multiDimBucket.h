@@ -143,6 +143,12 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      */
     bool bucketChanged() const;
 
+    /**
+     * Returns the MultiDimArray used by this MultiDimBucket.
+     * @throw OperationNotAllowed If it'not built.
+     */
+    const MultiDimArray<T_DATA>& bucket() const;
+
     /// Returns the amount of memory allowed for this bucket.
     Size bufferSize() const;
 
@@ -175,6 +181,8 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      */
     void compute(bool force=false) const;
 
+    const std::string& name() const;
+
     /// @}
 
     // ========================================================================
@@ -194,18 +202,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// See gum::MultiDimImplementation::contains(const DiscreteVariable& v).
     bool contains (const DiscreteVariable &v) const;
 
-     /// returns the real name of the multiDimArray
-    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
-     * name that describes what they are in reality. For instance, a table stored
-     * in extension is a "MultiDimArray", one that stores only non zero elements
-     * is a "MultiDimSparseArray", and so on. These names are unique for each type
-     * of implementation and is used by the system to determine which is the best
-     * functions to use, say, when we wish to use operators such as operator+ on
-     * two MultiDimImplementations */
-    virtual const std::string& name () const; 
-
     /// @}
-  
     // ========================================================================
     /// @name Accessors over values.
     // ========================================================================
@@ -280,10 +277,13 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     MultiDimArray<T_DATA>* __bucket;
 
     /// The set of gum::MultiDimContainer in this bucket.
-    Set<const MultiDimContainer<T_DATA>* > __multiDims;
+    mutable HashTable<const MultiDimContainer<T_DATA>*, Instantiation* > __multiDims;
 
     /// The set of all variables of the multidims in this bucket.
     Set<const DiscreteVariable*> __allVariables;
+
+    /// Instantiation over all variable in this
+    mutable Instantiation __allVarsInst;
 
     /// Add a variable to __allVariables, and do nothing if var is already in
     /// the set.
@@ -314,6 +314,8 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
     mutable HashTable<const Instantiation*, T_DATA> __slavesValue;
+
+    std::string __name;
 
 };
 // ============================================================================

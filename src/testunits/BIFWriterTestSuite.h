@@ -25,7 +25,9 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 
+#ifndef GET_PATH_STR
 #define GET_PATH_STR(x) ("../../../src/testunits/resources/" #x)
+#endif
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

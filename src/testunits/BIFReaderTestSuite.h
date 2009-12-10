@@ -26,7 +26,9 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 
-#define GET_PATH_STR(x) ("../../../src/testunits/resources/" #x)
+#ifndef GET_PATH_STR
+#define GET_PATH_STR(x) ("../../../src/testunits/ressources/" #x)
+#endif
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

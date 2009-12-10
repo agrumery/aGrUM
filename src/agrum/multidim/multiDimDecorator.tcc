@@ -288,12 +288,12 @@ namespace gum {
     return res;
   }
 
-  template <typename T_DATA>
-  MultiDimDecorator<T_DATA>* MultiDimDecorator<T_DATA>::newFactory() const {
-    return new MultiDimDecorator<T_DATA>
-      ( static_cast<MultiDimImplementation<T_DATA>*>
-        ( this->getContent()->newFactory() ) );
-  }
+  // template <typename T_DATA>
+  // MultiDimDecorator<T_DATA>* MultiDimDecorator<T_DATA>::newFactory() const {
+  //   return new MultiDimDecorator<T_DATA>
+  //     ( static_cast<MultiDimImplementation<T_DATA>*>
+  //       ( this->getContent()->newFactory() ) );
+  // }
 
 
 } /* namespace gum */

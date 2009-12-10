@@ -19,44 +19,34 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the ValueElimination class.
+ * @brief Header of the VEWithBB class.
  *
  * @author Lionel Torti
  */
 // ============================================================================
-#ifndef GUM_VALUE_ELIMINATION_H
-#define GUM_VALUE_ELIMINATION_H
+#ifndef GUM_VE_WITH_BB_H
+#define GUM_VE_WITH_BB_H
 // ============================================================================
 #include <vector>
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
-#include <agrum/graphs/defaultTriangulation.h>
-// ============================================================================
 #include <agrum/BN/inference/BayesNetInference.h>
-// ============================================================================
-#include <agrum/multidim/multiDimBucket.h>
+#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/BayesBalls.h>
 // ============================================================================
 namespace gum {
-
-template <typename T_DATA> class VEWithBB;
 /**
- * @class ValueElimination valueElimination.h <agrum/BN/inference/valueElimination.h>
- * @brief Implementation of the state of the art Value Elimination algorithm.
- *
- * The elimination order used by this algorithm is computed with the
- * gum::DefaultTriangulation class. However the order is computed only
- * when the makeInference() or marginal() method is called, so you can
- * give an other order without any unnecessary computation.
+ * @class VEWithBB VEWithBB.h <agrum/BN/inference/VEWithBB.h>
+ * @brief Implementation of the state of the art Value Elimination algorithm
+ *        using the BayesBalls algorithm to prune the BayesNet.
  *
  * @ingroup bn_group
  *
  */
 template<typename T_DATA>
-class ValueElimination: public BayesNetInference<T_DATA> {
+class VEWithBB: public BayesNetInference<T_DATA> {
 public:
-
-  friend class VEWithBB<T_DATA>;
   // ============================================================================
   /// @name Constructor & destructor
   // ============================================================================
@@ -65,12 +55,12 @@ public:
   /**
    * Default constructor.
    */
-  ValueElimination(const AbstractBayesNet<T_DATA>& bn);
+  VEWithBB(const AbstractBayesNet<T_DATA>& bn);
 
   /**
    * Destructor.
    */
-  virtual ~ValueElimination();
+  virtual ~VEWithBB();
 
   /// @}
   // ============================================================================
@@ -110,39 +100,6 @@ public:
   virtual void eraseAllEvidence();
 
   /// @}
-  // ============================================================================
-  /// @name Specific ValueElimination's methods
-  // ============================================================================
-  /// @{
-
-  /**
-   * Returns a constant reference over the sequence used as order elimination.
-   * @throw OperationNotAllowed Raised if the elimination order has not been
-   *        computed yet.
-   */
-  const std::vector<NodeId>& eliminationOrder() const;
-
-  /**
-   * @brief Getter on the elimination order used.
-   *
-   * This method checks that all nodes present in the BN are in elim.
-   */
-  void setEliminiationOrder(const std::vector<NodeId>& elim);
-
-  /**
-   * @brief Eliminate nodes in elim_order using pool as initial potential pool.        potentials.
-   * @param elim_order An elimination order, which must be a subset of nodes in
-   *                   the class BayesNet.
-   * @param pool Set of Potential used as initial pool for the elimination.
-   *             Results are stored in it also.
-   * @param trash The Set of Potential to delete after use of those in pool.
-   */
-  void eliminateNodes(const std::vector<NodeId>& elim_order,
-                      Set< Potential<T_DATA>* >& pool,
-                      Set< Potential<T_DATA>* >& trash);
-
-  /// @}
-
 protected:
 
   /**
@@ -157,40 +114,23 @@ protected:
 private:
 
   /// Private copy constructor.
-  ValueElimination(const ValueElimination<T_DATA>& source);
+  VEWithBB(const VEWithBB<T_DATA>& source);
 
   /// Private copy operator.
-  ValueElimination& operator=(const ValueElimination<T_DATA>& source);
+  VEWithBB<T_DATA>& operator=(const VEWithBB<T_DATA>& source);
 
   /// Mapping between nodes and their evidences.
-  typename Property< const Potential<T_DATA>* >::onNodes __evidences;
+  typename Property<const Potential<T_DATA>*>::onNodes __hardEvidence;
 
-  /// The elimination order used by this algorithm.
-  std::vector<NodeId> __eliminationOrder;
+  /// The ValueElimination algorithm as the inference engine
+  ValueElimination<T_DATA> __ve;
 
-  /// The initial pool of potentials.
-  Set< Potential<T_DATA>* > __pool;
-
-  /// Garbage collector over the buckets created during inference
-  Set< Potential<T_DATA>* > __trash;
-
-  /// Compute the elimination order if __eliminationOrder is empty.
-  void __computeEliminationOrder();
-
-  /// Fills the pool with all the potentials in __bayesNet.
-  void __createInitialPool();
-
-  /// Fills the bucket with all the potentials in pool containing id and
-  /// insert it in pool as a Potential after removing all the potentials
-  /// already in it. If you don't understand, read the code...
-  void __eliminateNode(NodeId id,
-                       Set< Potential<T_DATA>* >& pool,
-                       Set< Potential<T_DATA>* >& trash);
+  void __fillRequisiteNode(NodeId id, Set<NodeId>& requisite_nodes);
 
 };
 } /* namespace gum */
 // ============================================================================
-#include <agrum/BN/inference/valueElimination.tcc>
+#include <agrum/BN/inference/VEWithBB.tcc>
 // ============================================================================
-#endif /* GUM_VALUE_ELIMINATION_H */
+#endif /* GUM_VE_WITH_BB_H */
 // ============================================================================

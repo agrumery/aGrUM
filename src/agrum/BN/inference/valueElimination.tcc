@@ -40,6 +40,18 @@ ValueElimination<T_DATA>::~ValueElimination() {
 }
 
 template<typename T_DATA> INLINE
+ValueElimination<T_DATA>::ValueElimination(const ValueElimination<T_DATA>& source) {
+  GUM_CONS_CPY( ValueElimination );
+  GUM_ERROR(FatalError, "illegal call to ValueElimination copy constructor.");
+}
+
+template<typename T_DATA> INLINE
+ValueElimination<T_DATA>&
+ValueElimination<T_DATA>::operator=(const ValueElimination& source) {
+  GUM_ERROR(FatalError, "illegal call to ValueElimination copy operator.");
+}
+
+template<typename T_DATA> INLINE
 const std::vector<NodeId>&
 ValueElimination<T_DATA>::eliminationOrder() const {
   if ( __eliminationOrder.size() != 0 ) {
@@ -69,14 +81,14 @@ ValueElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& 
     if (( *iter )->nbrDim() != 1 ) {
       GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
     }
-    NodeId varId = BayesNetInference<T_DATA>::__bayesNet.nodeId(( *iter )->variable( 0 ) );
+    NodeId varId = this->bn().nodeId(( *iter )->variable( 0 ) );
     try {
       __evidences[varId] = *iter;
     } catch ( NotFound& ) {
       __evidences.insert( varId, *iter );
     }
   }
-  BayesNetInference<T_DATA>::_invalidateMarginals();
+  this->_invalidateMarginals();
 }
 
 template<typename T_DATA> INLINE
@@ -85,15 +97,25 @@ ValueElimination<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
   if ( e->nbrDim() != 1 ) {
     GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
   }
-  __evidences.erase( BayesNetInference<T_DATA>::__bayesNet.nodeId( e->variable( 0 ) ) );
-  BayesNetInference<T_DATA>::_invalidateMarginals();
+  __evidences.erase( this->bn().nodeId( e->variable( 0 ) ) );
+  this->_invalidateMarginals();
 }
 
 template<typename T_DATA> INLINE
 void
 ValueElimination<T_DATA>::eraseAllEvidence() {
   __evidences.clear();
-  BayesNetInference<T_DATA>::_invalidateMarginals();
+  this->_invalidateMarginals();
+}
+
+template <typename T_DATA>
+void
+ValueElimination<T_DATA>::eliminateNodes(const std::vector<NodeId>& elim_order,
+                                         Set< Potential<T_DATA>* >& pool,
+                                         Set< Potential<T_DATA>* >& trash) {
+  for ( size_t i = 0; i < elim_order.size(); ++i ) {
+    __eliminateNode( elim_order[i], pool, trash );
+  }
 }
 
 template<typename T_DATA>
@@ -102,16 +124,20 @@ ValueElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal 
   __computeEliminationOrder();
   __createInitialPool();
   Set< Potential<T_DATA>* > pool( __pool );
-  for ( typename Property< const Potential<T_DATA>* >::onNodes::iterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
-    pool.insert( const_cast< Potential<T_DATA>* >( *iter ) );
-  }
+  // for ( typename Property< const Potential<T_DATA>* >::onNodes::iterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
+  //   pool.insert( const_cast< Potential<T_DATA>* >( *iter ) );
+  // }
   for ( size_t i = 0; i < __eliminationOrder.size(); ++i ) {
     if ( __eliminationOrder[i] != id ) {
-      MultiDimBucket<T_DATA>* bucket = new MultiDimBucket<T_DATA>();
-      __eliminateNode( __eliminationOrder[i], *bucket, pool );
+      __eliminateNode( __eliminationOrder[i], pool, __trash );
     }
   }
-  marginal.add( BayesNetInference<T_DATA>::__bayesNet.variable( id ) );
+  try {
+    pool.insert(const_cast<Potential<T_DATA>*>(__evidences[id]));
+  } catch (NotFound&) {
+    // No evidence on query
+  }
+  marginal.add( this->bn().variable( id ) );
   marginal.fill(( T_DATA ) 1 );
   for ( SetIterator< Potential<T_DATA>* > iter = pool.begin(); iter != pool.end(); ++iter ) {
     marginal.multiplicateBy( **iter );
@@ -129,10 +155,10 @@ void
 ValueElimination<T_DATA>::__computeEliminationOrder() {
   if ( __eliminationOrder.empty() ) {
     typename Property<unsigned int>::onNodes modalities;
-    for ( DAG::NodeIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter ) {
-      modalities.insert( *iter, BayesNetInference<T_DATA>::__bayesNet.variable( *iter ).domainSize() );
+    for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
+      modalities.insert( *iter, this->bn().variable( *iter ).domainSize() );
     }
-    DefaultTriangulation triang(&(BayesNetInference<T_DATA>::__bayesNet.moralGraph()), &modalities );
+    DefaultTriangulation triang(&(this->bn().moralGraph()), &modalities );
     __eliminationOrder = triang.eliminationOrder();
   }
 }
@@ -141,39 +167,49 @@ template<typename T_DATA>
 void
 ValueElimination<T_DATA>::__createInitialPool() {
   __pool.clear();
-  for ( DAG::NodeIterator iter = BayesNetInference<T_DATA>::__bayesNet.beginNodes(); iter != BayesNetInference<T_DATA>::__bayesNet.endNodes(); ++iter ) {
-    __pool.insert( const_cast< Potential<T_DATA>* >( &BayesNetInference<T_DATA>::__bayesNet.cpt( *iter ) ) );
+  for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
+    __pool.insert( const_cast< Potential<T_DATA>* >( &(this->bn().cpt(*iter)) ) );
   }
 }
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::__eliminateNode( NodeId id, MultiDimBucket<T_DATA>& bucket, Set< Potential<T_DATA>* >& pool ) {
+ValueElimination<T_DATA>::__eliminateNode( NodeId id,
+                                           Set< Potential<T_DATA>* >& pool,
+                                           Set< Potential<T_DATA>* >& trash ) {
+  MultiDimBucket<T_DATA>* bucket = new MultiDimBucket<T_DATA>();
   Set< Potential<T_DATA>* > toRemove;
-  int count = 0;
   for ( SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter ) {
-    if (( *iter )->contains( BayesNetInference<T_DATA>::__bayesNet.variable( id ) ) ) {
-      bucket.add( **iter );
+    if (( *iter )->contains( this->bn().variable( id ) ) ) {
+      bucket->add( **iter );
       toRemove.insert( *iter );
-      count++;
     }
   }
   try {
-    bucket.add(__evidences[id]);
-    count++;
+    bucket->add(__evidences[id]);
   } catch (NotFound&) {
     // No evidence on id
   }
-  for ( SetIterator< Potential<T_DATA>* > iter = toRemove.begin(); iter != toRemove.end(); ++iter ) {
-    pool.erase( *iter );
-  }
-  Potential<T_DATA>* bucket_pot = new Potential<T_DATA>( &bucket );
-  __trash.insert( bucket_pot );
-  pool.insert( bucket_pot );
-  for ( Set<const DiscreteVariable*>::iterator jter = bucket.allVariables().begin(); jter != bucket.allVariables().end(); ++jter ) {
-    if ( BayesNetInference<T_DATA>::__bayesNet.nodeId( **jter ) != id ) {
-      bucket_pot->add( **jter );
+  if (not toRemove.empty()) {
+    for ( SetIterator< Potential<T_DATA>* > iter = toRemove.begin(); iter != toRemove.end(); ++iter ) {
+      pool.erase( *iter );
     }
+    for (Set<const DiscreteVariable*>::iterator jter = bucket->allVariables().begin();
+         jter != bucket->allVariables().end(); ++jter ) {
+      try {
+        if ( this->bn().nodeId( **jter ) != id ) {
+          bucket->add( **jter );
+        }
+      } catch (NotFound&) {
+        // This can happen if bn is a HollowBayesNet...
+        bucket->add(**jter);
+      }
+    }
+    Potential<T_DATA>* bucket_pot = new Potential<T_DATA>( bucket );
+    trash.insert( bucket_pot );
+    pool.insert( bucket_pot );
+  } else {
+    delete bucket;
   }
 }
 

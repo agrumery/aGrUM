@@ -266,7 +266,7 @@ namespace gum {
         }
 
         // void testAlarm() {
-        //   std::string file_name = "src/testunits/resources/alarm.bif";
+        //   std::string file_name = "src/testunits/ressources/alarm.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> alarm;
         //   gum::BIFReader<float> reader(&alarm, file_path);
@@ -286,7 +286,7 @@ namespace gum {
         // }
 
         // void testDiabetes() {
-        //   std::string file_name = "src/testunits/resources/Diabetes.bif";
+        //   std::string file_name = "src/testunits/ressources/Diabetes.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> diabetes;
         //   gum::BIFReader<float> reader(&diabetes, file_path);
@@ -306,7 +306,7 @@ namespace gum {
         // }
 
         // void testLink() {
-        //   std::string file_name = "src/testunits/resources/Link.bif";
+        //   std::string file_name = "src/testunits/ressources/Link.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> link;
         //   gum::BIFReader<float> reader(&link, file_path);
@@ -326,7 +326,7 @@ namespace gum {
         // }
 
         // void testWater() {
-        //   std::string file_name = "src/testunits/resources/Water.bif";
+        //   std::string file_name = "src/testunits/ressources/Water.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> water;
         //   gum::BIFReader<float> reader(&water, file_path);
@@ -346,7 +346,7 @@ namespace gum {
         // }
 
         // void testCarpo() {
-        //   std::string file_name = "src/testunits/resources/carpo.bif";
+        //   std::string file_name = "src/testunits/ressources/carpo.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> carpo;
         //   gum::BIFReader<float> reader(&carpo, file_path);
@@ -366,7 +366,7 @@ namespace gum {
         // }
 
         // void testMildew() {
-        //   std::string file_name = "src/testunits/resources/Mildew.bif";
+        //   std::string file_name = "src/testunits/ressources/Mildew.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> mildew;
         //   gum::BIFReader<float> reader(&mildew, file_path);
@@ -386,7 +386,7 @@ namespace gum {
         // }
 
         // void testHailfinder() {
-        //   std::string file_name = "src/testunits/resources/hailfinder.bif";
+        //   std::string file_name = "src/testunits/ressources/hailfinder.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> hailfinder;
         //   gum::BIFReader<float> reader(&hailfinder, file_path);
@@ -406,7 +406,7 @@ namespace gum {
         // }
 
         // void testMunin1() {
-        //   std::string file_name = "src/testunits/resources/Munin1.bif";
+        //   std::string file_name = "src/testunits/ressources/Munin1.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> munin1;
         //   gum::BIFReader<float> reader(&munin1, file_path);
@@ -426,7 +426,7 @@ namespace gum {
         // }
 
         // void testInsurance() {
-        //   std::string file_name = "src/testunits/resources/insurance.bif";
+        //   std::string file_name = "src/testunits/ressources/insurance.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> insurance;
         //   gum::BIFReader<float> reader(&insurance, file_path);
@@ -446,7 +446,7 @@ namespace gum {
         // }
 
         // void testPigs() {
-        //   std::string file_name = "src/testunits/resources/Pigs.bif";
+        //   std::string file_name = "src/testunits/ressources/Pigs.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> pigs;
         //   gum::BIFReader<float> reader(&pigs, file_path);
@@ -466,7 +466,7 @@ namespace gum {
         // }
 
         // void testBarley() {
-        //   std::string file_name = "src/testunits/resources/Barley.bif";
+        //   std::string file_name = "src/testunits/ressources/Barley.bif";
         //   std::string file_path = base_dir + file_name;
         //   gum::BayesNet<float> barley;
         //   gum::BIFReader<float> reader(&barley, file_path);

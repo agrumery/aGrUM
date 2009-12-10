@@ -1,0 +1,171 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES et Pierre-Henri WUILLEMIN   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of lazy propagation for inference Bayesian Networks.
+ *
+ * @author Lionel Torti
+ */
+// ============================================================================
+#include <agrum/BN/inference/VEWithBB.h>
+// ============================================================================
+namespace gum {
+
+template<typename T_DATA> INLINE
+VEWithBB<T_DATA>::VEWithBB( const AbstractBayesNet<T_DATA>& bn ):
+    BayesNetInference<T_DATA>( bn ), __ve(bn) {
+  GUM_CONSTRUCTOR( VEWithBB );
+  __ve.makeInference();
+}
+
+template<typename T_DATA> INLINE
+VEWithBB<T_DATA>::~VEWithBB() {
+  GUM_DESTRUCTOR( VEWithBB );
+}
+
+template<typename T_DATA> INLINE
+VEWithBB<T_DATA>::VEWithBB(const VEWithBB<T_DATA>& source) {
+  GUM_CONS_CPY( VEWithBB );
+  GUM_ERROR(FatalError, "illegal call to VEWithBB copy constructor.");
+}
+
+template<typename T_DATA> INLINE
+VEWithBB<T_DATA>&
+VEWithBB<T_DATA>::operator=(const VEWithBB& source) {
+  GUM_ERROR(FatalError, "illegal call to VEWithBB copy operator.");
+}
+
+template<typename T_DATA> INLINE
+void
+VEWithBB<T_DATA>::makeInference() {
+
+}
+
+template<typename T_DATA>
+void
+VEWithBB<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {
+  for ( ListConstIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
+    if (( *iter )->nbrDim() != 1 ) {
+      GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
+    }
+    NodeId varId = this->bn().nodeId(*((*iter)->variablesSequence().atPos(0)));
+    size_t count = 0;
+    Instantiation i(**iter);
+    for (i.setFirst(); not i.end(); i.inc()) {
+      if ((**iter).get(i) == (T_DATA) 1) {
+        ++count;
+      }
+      if (count > 2) {
+        break;
+      }
+    }
+    if (count == 1) {
+      __hardEvidence.insert(varId, *iter);
+    }
+  }
+  __ve.insertEvidence(pot_list);
+  this->_invalidateMarginals();
+}
+
+template<typename T_DATA> INLINE
+void
+VEWithBB<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
+  if ( e->nbrDim() != 1 ) {
+    GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
+  }
+  __hardEvidence.erase((this->bn().nodeId(*(e->variablesSequence().atPos(0)))));
+  __ve.eraseEvidence(e);
+  this->_invalidateMarginals();
+}
+
+template<typename T_DATA> INLINE
+void
+VEWithBB<T_DATA>::eraseAllEvidence() {
+  __hardEvidence.clear();
+  __ve.eraseAllEvidence();
+  this->_invalidateMarginals();
+}
+
+template<typename T_DATA> INLINE
+void
+VEWithBB<T_DATA>::__fillRequisiteNode(NodeId id, Set<NodeId>& requisite_nodes)
+{
+  Set<NodeId> query;
+  query.insert(id);
+  Set<NodeId> hardEvidence;
+  for (typename Property<const Potential<T_DATA>*>::onNodes::iterator iter = __hardEvidence.begin();
+       iter != __hardEvidence.end(); ++iter) {
+    hardEvidence.insert(iter.key());
+  }
+  BayesBalls bb;
+  bb.requisiteNodes(this->bn().dag(), query, hardEvidence, requisite_nodes);
+}
+
+template<typename T_DATA>
+void
+VEWithBB<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
+  Set<NodeId> requisite_nodes;
+  __fillRequisiteNode(id, requisite_nodes);
+  Set<Potential<T_DATA>*> pool;
+  Set<NodeId> elim_set;
+  for (Set<NodeId>::iterator node = requisite_nodes.begin(); node != requisite_nodes.end(); ++node) {
+    pool.insert(const_cast<Potential<T_DATA>*>(&(this->bn().cpt(*node))));
+    elim_set.insert(*node);
+    for (DAG::ArcIterator parent = this->bn().dag().parents(*node).begin(); parent != this->bn().dag().parents(*node).end(); ++parent) {
+      if (__hardEvidence.exists(parent->tail())) {
+        elim_set.insert(parent->tail());
+      }
+    }
+  }
+  elim_set.erase(id);
+
+  std::vector<NodeId> elim_order;
+  for (size_t idx = 0; idx < __ve.eliminationOrder().size(); ++idx) {
+    if (elim_set.contains(__ve.eliminationOrder()[idx])) {
+      elim_order.push_back(__ve.eliminationOrder()[idx]);
+    }
+  }
+  Set<Potential<T_DATA>*> trash;
+  __ve.eliminateNodes(elim_order, pool, trash);
+  marginal.add(this->bn().variable(id));
+  try {
+    pool.insert(const_cast<Potential<T_DATA>*>(__ve.__evidences[id]));
+  } catch (NotFound&) {
+    // No evidence on query
+  }
+  MultiDimBucket<T_DATA> bucket;
+  for (SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter) {
+    bucket.add(**iter);
+  }
+  bucket.add(this->bn().variable(id));
+  Instantiation i(marginal);
+  Instantiation j(bucket);
+  for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc()) {
+    marginal.set(i, bucket.get(j));
+  }
+  marginal.normalize();
+  for (SetIterator<Potential<T_DATA>*> iter = trash.begin();
+       iter != trash.end(); ++iter) {
+    delete *iter;
+  }
+}
+
+} /* namespace gum */
+// ============================================================================

@@ -220,7 +220,7 @@ namespace gum {
 
 
   template <typename T_DATA> INLINE
-  MultiDimContainer<T_DATA>* CPF<T_DATA>::newFactory() const {
+  CPF<T_DATA>* CPF<T_DATA>::newFactory() const {
     return new CPF<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
   }
 

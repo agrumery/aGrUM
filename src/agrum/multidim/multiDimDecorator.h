@@ -174,7 +174,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimDecorator<T_DATA>* newFactory() const;
+    virtual MultiDimDecorator<T_DATA>* newFactory() const =0;
 
 
     // ############################################################################

@@ -43,7 +43,6 @@ namespace gum {
  * @ingroup bn_group
  *
  */
-template<typename T_DATA>
 class BayesBalls {
 public:
 
@@ -54,54 +53,32 @@ public:
   ~BayesBalls();
 
   /**
-   * Returns the sequence of requisite nodes for a Bayes Net given a set of
-   * query nodes, the list of nodes with soft and hard evidences.
-   *
-   * @return Returns a pointer over a sequence, delete it after use.
+   * Fill requisite with the requisite nodes in dag given a query and hard
+   * evidences.
    */
-  Sequence<NodeId>* requisiteNodes(const AbstractBayesNet<T_DATA>& bayesNet,
-                                   const Sequence<NodeId>& query,
-                                   const Sequence<NodeId>& softEvidence,
-                                   const Sequence<NodeId>& hardEvidence);
+  void requisiteNodes(const DAG& dag,
+                      const Set<NodeId>& query,
+                      const Set<NodeId>& hardEvidence,
+                      Set<NodeId>& requisite);
 
 private:
 
   /// Call this when a node receive the ball from one of his child.
-  void __fromChild(NodeId node);
+  void __fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
 
   /// Call this when a node reveive the ball from one of this parents.
-  void __fromParent(NodeId node);
+  void __fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
 
   /// Top and bottom flags for each nodes.
   //HashTable< NodeId, std::pair<bool, bool> > __marks;
   Property< std::pair<bool, bool> >::onNodes __marks;
 
-  /// Sequence of visited nodes.
-  Sequence<NodeId>* __visited;
-
-  /// List of nodes yet to be visited.
-  List<NodeId> __toBeVisited;
-
-  /// Pointer on a constant bayes net, the one passed as argument of
-  /// requisiteNodes().
-  const AbstractBayesNet<T_DATA>* __bayesNet;
-
-  /// Pointer on a constant sequence, the one passed as argument of
-  /// requisiteNodes().
-  const Sequence<NodeId>* __query;
-
-  /// Pointer on a constant sequence, the one passed as argument of
-  /// requisiteNodes().
-  const Sequence<NodeId>* __softEvidence;
-
-  /// Pointer on a constant sequence, the one passed as argument of
-  /// requisiteNodes().
-  const Sequence<NodeId>* __hardEvidence;
-
 };
 } /* namespace gum */
 // ============================================================================
-#include <agrum/BN/inference/BayesBalls.tcc>
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/inference/BayesBalls.inl>
+#endif // GUM_NO_INLINE
 // ============================================================================
 #endif /* GUM_BAYESBALLS_H */
 // ============================================================================
