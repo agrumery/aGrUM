@@ -31,8 +31,7 @@
 
 #include <agrum/BN/inference/lazyPropagation.h>
 
-#define GET_PATH_STR(x) ("../../../src/testunits/ressources/" #x)
-
+#include "testsuite_utils.h"
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

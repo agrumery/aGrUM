@@ -1,6 +1,5 @@
 enable_testing()
 find_package(PythonInterp)
-
 set(CXXTESTGEN ${CMAKE_SOURCE_DIR}/testunits/cxxtest/cxxtestgen.py)
 
 MACRO(ADD_CXXTEST NAME)
@@ -25,7 +24,7 @@ ENDMACRO(ADD_CXXTEST)
 
 include_directories(cxxtest)
 include_directories(classes)
-include_directories(${AGRUM_SRC_DIR})
+
 include_directories(${AGRUM_BINARY_DIR}/agrum)
 
 link_directories(${AGRUM_BINARY_DIR}/lib})
@@ -89,6 +88,9 @@ file(GLOB AGRUM_TESTS
        VariableNodeMapTestSuite.h
 )
 
+
 add_cxxtest(test ${AGRUM_TESTS})
+
+add_definitions("-DAGRUM_SRC_PATH=${AGRUM_SOURCE_DIR}")
 
 target_link_libraries(test ${LIBAGRUM})

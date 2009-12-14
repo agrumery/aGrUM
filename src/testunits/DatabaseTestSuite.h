@@ -21,7 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/learning/database.h>
 
-#define GET_PATH_STR(x) ("../../../src/testunits/ressources/" #x)
+#include "testsuite_utils.h"
 
 namespace gum {
 
