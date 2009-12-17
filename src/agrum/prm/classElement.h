@@ -1,0 +1,202 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of gum::ClassElement.
+ *
+ * @author Lionel TORTI
+ */
+// ============================================================================
+#ifndef GUM_CLASS_ELEMENT_H
+#define GUM_CLASS_ELEMENT_H
+// ============================================================================
+#include <agrum/graphs/graphElements.h>
+// ============================================================================
+#include <agrum/multidim/potential.h>
+// ============================================================================
+#include <agrum/prm/utils_prm.h>
+#include <agrum/prm/PRMObject.h>
+#include <agrum/prm/type.h>
+// ============================================================================
+namespace gum {
+// ============================================================================
+/**
+ * @class ClassElement classElementContainer.h <agrum/prm/classElementContainer.h>
+ * @brief Abstract class representing an element of PRM class.
+ *
+ * All class elements are nodes in the class's DAG and a unique name in their
+ * class.
+ */
+class ClassElement: public PRMObject {
+  public:
+  // ========================================================================
+  /// @name Constructor & Destructor.
+  // ========================================================================
+    /// @{
+
+    /**
+     * @brief Default constructor of a ClassElement.
+     *
+     * The ClassElement will automatically add itself to c.
+     *
+     * @param c The class in which this element belongs.
+     * @param name The name of this element, must be unique in it's class.
+     * @throw DupplicateElement Raised if c contains already an element with
+     *                          the same name.
+     */
+    ClassElement(const std::string& name);
+
+    /**
+     * Copy constructor.
+     */
+    ClassElement(const ClassElement& source);
+
+    /**
+     * Destructor of this class.
+     */
+    virtual ~ClassElement();
+
+    /// @}
+  // ========================================================================
+  /// @name Built-in type
+  // ========================================================================
+    /// @{
+
+    enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
+                            prm_slotchain };
+
+    static std::string enum2str(ClassElementType type)
+    {
+      switch (type) {
+        case prm_attribute:
+          return "prm_attribute";
+        case prm_aggregate:
+          return "prm_aggregate";
+        case prm_refslot:
+          return "prm_refslot";
+        case prm_slotchain:
+          return "prm_slotchain";
+        default:
+          return "unknown";
+      }
+    }
+
+    /// Returns true if obj_ptr is of type ReferenceSlot.
+    static INLINE bool isReferenceSlot(const ClassElement& elt) {
+      return elt.elt_type() == prm_refslot;
+    }
+
+    /// Returns true if obj_ptr is of type Attribute.
+    static INLINE bool isAttribute(const ClassElement& elt) {
+      return elt.elt_type() == prm_attribute;
+    }
+
+    /// Return true if obj is of type Aggregate
+    static INLINE bool isAggregate(const ClassElement& elt) {
+      return elt.elt_type() == prm_aggregate;
+    }
+
+    /// Return true if obj is of type SlotChain
+    static INLINE bool isSlotChain(const ClassElement& elt) {
+      return elt.elt_type() == prm_slotchain;
+    }
+
+    /// @}
+  // ========================================================================
+  /// @name Getters & setters
+  // ========================================================================
+    /// @{
+
+    /// Returns the NodeId of this element in it's class DAG.
+    NodeId id() const;
+
+    /// Used to assign the id of this element.
+    void setId(NodeId id);
+
+    /**
+     * @brief Add a parent to this element.
+     *
+     * This method is called by gum::Class when en parent is added
+     * to this elememnt.
+     */
+    virtual void addParent(const ClassElement& elt) =0;
+
+    /**
+     * @brief Add a child to this element.
+     *
+     * This methos is called by gum::Class when a child is added
+     * to this element.
+     */
+    virtual void addChild(const ClassElement& elt) =0;
+
+    /// @see gum::PRMObject::obj_type().
+    virtual ObjectType obj_type() const;
+
+    /// Return the type of class element this object is.
+    virtual ClassElementType elt_type() const =0;
+
+    /// @}
+  // ========================================================================
+  /// @name Fast access to random variable's properties
+  // ========================================================================
+    /// @{
+
+    /**
+     * Return a reference over the gum::Type of this class element.
+     * @throw OperationNotAllowed Raised if this class element doesn't have
+     *                            any gum::Potential (like a gum::ReferenceSlot).
+     */
+    virtual Type& type() =0;
+
+    /**
+     * Return a constant reference over the gum::Type of this class element.
+     * @throw OperationNotAllowed Raised if this class element doesn't have
+     *                            any gum::Potential (like a gum::ReferenceSlot).
+     */
+    virtual const Type& type() const =0;
+
+    /**
+     * Return a reference over the gum::Potential of this class element.
+     * @throw OperationNotAllowed Raised if this class element doesn't have
+     *                            any gum::Potential (like a gum::ReferenceSlot).
+     */
+    virtual Potential<prm_float>& cpf() =0;
+
+    /**
+     * Return a constant reference over the gum::Potential of this class element.
+     * @throw OperationNotAllowed Raised if the class element doesn't have
+     *                            any gum::Potential (like a gum::ReferenceSlot).
+     */
+    virtual const Potential<prm_float>& cpf() const =0;
+
+    /// @}
+  private:
+    /// The node's id of this element
+    NodeId __id;
+};
+// ============================================================================
+} // namespace gum
+// ============================================================================
+#ifndef GUM_NO_INLINE
+#include <agrum/prm/classElement.inl>
+#endif // GUM_NO_INLINE
+// ============================================================================
+#endif /* GUM_CLASS_ELEMENT_H */
+// ============================================================================

@@ -1,0 +1,284 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** 
+ * @file
+ * @brief Headers of Class.
+ *
+ * @author Lionel TORTI
+ */
+// ============================================================================
+#ifndef GUM_RANDOM_VARIABLE_TYPE_H
+#define GUM_RANDOM_VARIABLE_TYPE_H
+// ============================================================================
+#include <vector>
+// ============================================================================
+#include <agrum/multidim/discreteVariable.h>
+#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/multidim/multidimImplementation.h>
+#include <agrum/multidim/multidimArray.h>
+// ============================================================================
+#include <agrum/prm/PRMObject.h>
+#include <agrum/prm/utils_prm.h>
+// ============================================================================
+namespace gum {
+  // ==========================================================================
+  //                        GUM_RANDOM_VARIABLE_TYPE_H
+  // ==========================================================================
+  /**
+   * @class type
+   * @brief This is a decoration of the DiscreteVariable class.
+   * The name of the DiscreteVariable will be the name of the type (i.e. of
+   * the PRMObject).
+   * As for all PRMObject, a type's name is unique in a given PRM, so equality
+   * tests will be based on the types names.
+   *
+   * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
+   * to create a new instance of a type for each Attribute.
+   */
+  // ==========================================================================
+  class Type: public PRMObject
+  // ==========================================================================
+  {
+  // ==========================================================================
+    public:
+  // ==========================================================================
+      /// @name Friends of Type
+  // ==========================================================================
+      /// @{
+      friend class PRMFactory;
+      /// @}
+  // ==========================================================================
+      /// @name Static methods for primitive types
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Returns a pointer on type boolean.
+       */
+      // ======================================================================
+      static Type* boolean()
+      {
+        LabelizedVariable var("boolean", "Boolean variable", 0);
+        var.addLabel("false");
+        var.addLabel("true");
+        return new Type(var);
+      }
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+      /// @name Constructors & destructor
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Default Constructor.
+       * A copy is made of var.
+       */
+      // ======================================================================
+      Type(const DiscreteVariable& var);
+      // ======================================================================
+      /**
+       * Sub type constructor.
+       * A copy is made of var.
+       * @throw OperationNotAllowed Raised if label_map is invalid.
+       */
+      // ======================================================================
+      Type(const Type& super_type, const std::vector<Idx>& label_map,
+           const DiscreteVariable& var);
+      // ======================================================================
+      /**
+       * Copy constructor.
+       * The DiscreteVariable is copied.
+       */
+      // ======================================================================
+      Type(const Type& from);
+      // ======================================================================
+      /**
+       * Destructor.
+       */
+      // ======================================================================
+      virtual ~Type();
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+      /// @name Getters & setters
+  // ==========================================================================
+      /// @{
+
+      /// Return a reference on the DiscreteVariable contained in this.
+      const DiscreteVariable& variable() const;
+
+      /// @}
+  // ==========================================================================
+      /// @name Operators
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Dereference on the DiscreteVariable contained in this.
+       */
+      // ======================================================================
+      DiscreteVariable& operator*();
+      // ======================================================================
+      /**
+       * Constant dereference on the DiscreteVariable contained in this.
+       */
+      // ======================================================================
+      const DiscreteVariable& operator*() const;
+      // ======================================================================
+      /**
+       * Dereference the DiscreteVariable contained in this.
+       */
+      // ======================================================================
+      DiscreteVariable* operator->() const;
+      // ======================================================================
+      /**
+       * Equality operator.
+       */
+      // ======================================================================
+      bool operator==(const Type& from) const;
+      // ======================================================================
+      /**
+       * Difference operator.
+       */
+      // ======================================================================
+      bool operator!=(const Type& from) const;
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+      /// @name Getters & setters
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Implementation of the pure virtual method of PRMObject.
+       */
+      // ======================================================================
+      virtual ObjectType obj_type() const;
+      // ======================================================================
+      /**
+       * Returns the name of this object.
+       */
+      // ======================================================================
+      const std::string& name() const;
+      // ======================================================================
+      /**
+       * Returns true if this type is a sub-type.
+       */
+      // ======================================================================
+      bool isSubType() const;
+      // ======================================================================
+      /**
+       * Returns the super type of this type.
+       * @throw NotFound Raised if this type has no super type.
+       */
+      // ======================================================================
+      const Type& super() const;
+      // ======================================================================
+      /**
+       * Returns the vector in which the i-th element is the Idx of the super
+       * type's label for the i-th label of this.
+       * @throw NotFound Raised if this type has no super type.
+       */
+      const std::vector<Idx>& label_map() const;
+      // ======================================================================
+      /**
+       * Returns the MultiDimImplementation which can be use to cast this type
+       * in its super type.
+       * @throw OperationNotAllowed If this type has no super type.
+       */
+      // ======================================================================
+      MultiDimImplementation<prm_float>* cast_CPT() const;
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+      /// @name Operators
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Returns true if this is a sub-type of from.
+       */
+      // ======================================================================
+      bool operator<(const Type& from) const;
+      // ======================================================================
+      /**
+       * Returns true if this is a sub-type of from or the same type as from.
+       */
+      // ======================================================================
+      bool operator<=(const Type& from) const;
+      // ======================================================================
+      /**
+       * Returns true if this is a super type of from.
+       */
+      // ======================================================================
+      bool operator>(const Type& from) const;
+      // ======================================================================
+      /**
+       * Returns true if this is a super type of from or the same type as from.
+       */
+      // ======================================================================
+      bool operator>=(const Type& from) const;
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+    private:
+  // ==========================================================================
+      /// @name Private methods
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /**
+       * Copy operator. Not implemented.
+       */
+      // ======================================================================
+      Type& operator=(const Type& from);
+      // ======================================================================
+      /// @}
+  // ==========================================================================
+      /// @name Private members.
+  // ==========================================================================
+      /// @{
+      // ======================================================================
+      /// The discrete variable
+      // ======================================================================
+      DiscreteVariable* __var;
+      // ======================================================================
+      /// The super type of this, if any.
+      // ======================================================================
+      const Type* __super;
+      // ======================================================================
+      /// A vector in which the i-th element is the Idx of the super
+      /// type's label for the i-th label of this.
+      // ======================================================================
+      std::vector<Idx>* __label_map;
+
+      /// @}
+  // ==========================================================================
+  };
+  // ==========================================================================
+} /* namespace gum */
+// ============================================================================
+#ifndef GUM_NO_INLINE
+#include <agrum/prm/type.inl>
+#endif // GUM_NO_INLINE
+// ============================================================================
+#endif /* GUM_CLASS_H */
+// ============================================================================
