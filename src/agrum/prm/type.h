@@ -31,8 +31,8 @@
 // ============================================================================
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/multidimImplementation.h>
-#include <agrum/multidim/multidimArray.h>
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/multiDimArray.h>
 // ============================================================================
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/utils_prm.h>
