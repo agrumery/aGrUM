@@ -63,7 +63,7 @@ Class::add(Attribute* attr) {
   try {
     _add(attr);
   } catch (DuplicateElement& e) {
-    if (_exists(get(attr->name()).id())) {
+    if (not _exists(get(attr->name()).id())) {
       __overload(attr, get(attr->name()));
     } else {
       throw e;
@@ -80,7 +80,17 @@ Class::add(Aggregate* agg) { _add(agg); }
 
 INLINE
 void
-Class::add(ReferenceSlot* ref) { _add(ref); }
+Class::add(ReferenceSlot* ref) {
+  try {
+    _add(ref);
+  } catch (DuplicateElement& e) {
+    if (not _exists(get(ref->name()).id())) {
+      __overload(ref, get(ref->name()));
+    } else {
+      throw e;
+    }
+  }
+}
 
 INLINE
 void

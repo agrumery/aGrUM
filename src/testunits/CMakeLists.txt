@@ -88,7 +88,6 @@ file(GLOB AGRUM_TESTS
        VariableNodeMapTestSuite.h
 )
 
-
 add_cxxtest(test ${AGRUM_TESTS})
 
 add_definitions("-DAGRUM_SRC_PATH=${AGRUM_SOURCE_DIR}")

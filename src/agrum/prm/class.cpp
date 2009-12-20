@@ -113,6 +113,21 @@ Class::__overload(Attribute* attr, ClassElement& elt) {
   }
 }
 
+
+void
+Class::__overload(ReferenceSlot* ref, ClassElement& elt) {
+  if (elt.elt_type() == ClassElement::prm_refslot) {
+    ReferenceSlot& source = static_cast<ReferenceSlot&>(elt);
+    if (ref->slotType() <= source.slotType()) {
+      _add(ref, source.id());
+    } else {
+      GUM_ERROR(OperationNotAllowed, "Invalid overload slot type.");
+    }
+  } else {
+    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
+  }
+}
+
 void
 Class::__addSuperType(Attribute* attr) {
   try {

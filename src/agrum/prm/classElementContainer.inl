@@ -154,8 +154,7 @@ ClassElementContainer::_add(Attribute* attr, NodeId id, bool overload)
                                           break;
                                         }
       default: {
-                 GUM_TRACE_VAR(_alternate().get(id).name());
-                 GUM_ERROR(FatalError, "abnormal call");
+                 GUM_ERROR(OperationNotAllowed, "Can replace an Attribute with only an Attribute or an Aggregate.");
                }
     }
   } catch (NotFound&) {
@@ -183,6 +182,29 @@ void
 ClassElementContainer::_add(ReferenceSlot* ref)
 {
   __add(ref);
+  __referenceSlots.insert(ref);
+}
+
+INLINE
+void
+ClassElementContainer::_add(ReferenceSlot* ref, NodeId id)
+{
+  try {
+    switch (_alternate().get(id).elt_type()) {
+      case ClassElement::prm_refslot: {
+                                        __referenceSlots.erase(static_cast<ReferenceSlot*>(&(_alternate().get(id))));
+                                        break;
+                                      }
+      default: {
+                 GUM_ERROR(OperationNotAllowed, "Can replace a ReferenceSlot with only a ReferenceSlot.");
+               }
+    }
+  } catch (NotFound&) {
+    // No alternate
+  }
+  ref->setId(id);
+  __nameMap.insert(ref->name(), ref);
+  __nodeIdMap.insert(id, ref);
   __referenceSlots.insert(ref);
 }
 

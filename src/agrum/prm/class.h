@@ -219,6 +219,10 @@ class Class: public ClassElementContainer {
     /// @throw OperationNotAllowed Raised if the overload is invalid.
     void __overload(Attribute* attr, ClassElement& elt);
 
+    /// Add an reference overloading an inherited reference.
+    /// @throw OperationNotAllowed Raised if the overload is invalid.
+    void __overload(ReferenceSlot* ref, ClassElement& elt);
+
   // ========================================================================
   /// @name Private members
   // ========================================================================

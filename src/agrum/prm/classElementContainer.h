@@ -225,19 +225,22 @@ class ClassElementContainer: public PRMObject {
 
     /// @}
   protected:
-    /// Copy operator. Don't use it.
-    ClassElementContainer& operator=(const ClassElementContainer& source);
-
-    /// Copy constructor. Don't use it.
-    ClassElementContainer(const ClassElementContainer& source);
-
   // ========================================================================
-  /// @name Protected methods to add gum::ClassElement.
+  /// @name Protected methods.
   // ========================================================================
     /// @{
 
-    /// Returns true if id is defined here, return false even if _alternate().get(id)
-    /// returns something.
+    /// Returns the alternate ClassElementContainer searched for elements
+    /// defined in this.
+    ClassElementContainer& _alternate();
+
+    /// Returns the alternate ClassElementContainer searched for elements
+    /// defined in this.
+    const ClassElementContainer& _alternate() const;
+
+
+    /// Returns true if id is defined here, return false even if
+    /// _alternate().get(id) returns something.
     bool _exists(NodeId id) const;
 
     /**
@@ -259,6 +262,7 @@ class ClassElementContainer: public PRMObject {
      *
      * This is used mostly when a gum::Instance instantiate gum::Aggregate.
      * @param overload If true the in going arcs of attr are erased.
+     * @throw OperationNotAllowed Raised if attr can not replace the ClassElement pointed by id.
      */
     void _add(Attribute* attr, NodeId id, bool overload = false);
 
@@ -287,6 +291,14 @@ class ClassElementContainer: public PRMObject {
     void _add(ReferenceSlot* ref);
 
     /**
+     * @brief Add a ReferenceSlot which will overloas an existing one in __alternate.
+     * The given NodeId must either belong to a ReferenceSlot in __alternate or not be affected
+     * to a ClassElement yet.
+     * @throw OperationNotAllowed Raised if ref can not replace the ClassElement pointed by id.
+     */
+    void _add(ReferenceSlot* ref, NodeId id);
+
+    /**
      * @brief Add gum::SlotChain to this class.
      *
      * A gum::SlotChain is a reference node, it reference one or several nodes defined
@@ -305,24 +317,16 @@ class ClassElementContainer: public PRMObject {
      */
     void _insertArc(const std::string& tail, const std::string& head);
 
-    /// @}
-  // ========================================================================
-  /// @name Protected getters.
-  // ========================================================================
-    /// @{
+    /// Copy operator. Don't use it.
+    ClassElementContainer& operator=(const ClassElementContainer& source);
 
-    /// Returns the alternate ClassElementContainer searched for elements
-    /// defined in this.
-    ClassElementContainer& _alternate();
-
-    /// Returns the alternate ClassElementContainer searched for elements
-    /// defined in this.
-    const ClassElementContainer& _alternate() const;
+    /// Copy constructor. Don't use it.
+    ClassElementContainer(const ClassElementContainer& source);
 
     /// @}
   private:
   // ========================================================================
-  /// @name Private members used for the mapping gum::ClassElement <=> gum::DAG
+  /// @name Private members
   // ========================================================================
     /// @{
 
@@ -349,12 +353,6 @@ class ClassElementContainer: public PRMObject {
 
     /// The set of gum::SlotChains
     Set<SlotChain*> __slotChains;
-
-    /// @}
-  // ========================================================================
-  /// @name Private members
-  // ========================================================================
-    /// @{
 
     /// @brief The alternate ClassElementContainer searched for elements defined in
     ///        this.
