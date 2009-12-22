@@ -19,8 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::ClassElementContainer and
- *        gum::ClassElement hierarchies.
+ * @brief Headers of gum::ClassElementContainer.
  *
  * @author Lionel TORTI
  */
@@ -224,11 +223,53 @@ class ClassElementContainer: public PRMObject {
     const ClassElement& operator[](const std::string& name) const;
 
     /// @}
+  // ========================================================================
+  /// @name Inheritance operators
+  // ========================================================================
+    /// @{
+
+
+    /**
+     * @brief Returns true if this shares cec's type.
+     *
+     * To share cec's type either this is of the same type, or there exists
+     * a super type of this which is of the same type.
+     *
+     * this->isSubTypeOf(*this) returns true.
+     *
+     * @param cec The searched type.
+     * @return true if this shares cec's type.
+     */
+    bool isSubTypeOf(const ClassElementContainer& cec) const;
+
+    /**
+     * @brief Returns true if this is a super type of cec.
+     *
+     * This is an equivalent call to cec.isSubTypeOf(*this).
+     *
+     * this->isSuperTypeOf(*this) returns true.
+     *
+     * @return true if this is a super type of cec.
+     */
+    bool isSuperTypeOf(const ClassElementContainer& cec) const;
+
+    /// @}
   protected:
   // ========================================================================
   /// @name Protected methods.
   // ========================================================================
     /// @{
+
+    /**
+     * @brief Returns true if and only if this is a sub type of cec.
+     *
+     * Unlike isSubTypeOf(), this->_isSubTypeOf(*this) returns false.
+     *
+     * Since there can be different cases regarding inheritance
+     * (specialisation vs implementation) each subclass of
+     * ClassElementContainer must define this method.
+     */
+    virtual bool _isSubTypeOf(const ClassElementContainer& cec) const =0;
 
     /// Returns the alternate ClassElementContainer searched for elements
     /// defined in this.
@@ -267,6 +308,12 @@ class ClassElementContainer: public PRMObject {
     void _add(Attribute* attr, NodeId id, bool overload = false);
 
     /**
+     * Add an attribute overloading an inherited attribute.
+     * @throw OperationNotAllowed Raised if the overload is invalid.
+     */
+    void _overload(Attribute* attr, ClassElement& elt);
+
+    /**
      * @brief Add an aggregate to this ClassElementContainer.
      *
      * The pointer is "given" to this ClassElementContainer, which will delete when
@@ -289,6 +336,12 @@ class ClassElementContainer: public PRMObject {
      * @throw DuplicateElement Raised if an element in this has the same name.
      */
     void _add(ReferenceSlot* ref);
+
+    /**
+     * Add an reference overloading an inherited reference.
+     * @throw OperationNotAllowed Raised if the overload is invalid.
+     */
+    void _overload(ReferenceSlot* ref, ClassElement& elt);
 
     /**
      * @brief Add a ReferenceSlot which will overloas an existing one in __alternate.

@@ -27,6 +27,8 @@
 #ifndef GUM_INSTANCE_H
 #define GUM_INSTANCE_H
 // ============================================================================
+#include <utility>
+// ============================================================================
 #include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/multidim/multiDimBijArray.h>
@@ -144,22 +146,11 @@ class Instance: public ClassElementContainer {
     const PSISCIterator& endPSISC() const;
 
     /// @}
-  // ========================================================================
-  /// @name Operators.
-  // ========================================================================
-    /// @{
+  protected:
 
-    /**
-     * Returns true if this Instance is of type c.
-     */
-    bool operator==(const Class& c) const;
+    /// See ClassElementContainer::_isSubTypeOf().
+    virtual bool _isSubTypeOf(const ClassElementContainer& cec) const;
 
-    /**
-     * Returns true if this Instance is not of type c.
-     */
-    bool operator!=(const Class& c) const;
-
-    /// @}
   private:
     /// Copy constructor. Don't use it.
     Instance(const Instance& from);
@@ -187,6 +178,7 @@ class Instance: public ClassElementContainer {
     /// Instantiate chain starting from instance. This will add all resulting
     /// Instance in the Set associated with chain and instantiate all nodes
     /// pointed by the chain.
+    /// The private member __slotChainMap must be correctly initialized.
     void __instantiateSlotChain(NodeId id);
 
     /// Add the given instance in the set of instances belong to the inverse
@@ -206,9 +198,16 @@ class Instance: public ClassElementContainer {
   // ========================================================================
     /// @{
 
-    /// Mapping between the gum::ReferenceSlot and gum::SlotChain in __type
+    /// Mapping between the gum::ReferenceSlot in __type
     /// and the gum::Instance associated with it.
     Property< Set< Instance* >* >::onNodes __referenceMap;
+
+    /// Code alias
+    typedef HashTable<Instance*, NodeId> INMap;
+
+    /// Mapping between the gum::SlotChain in __type
+    /// and the gum::Instance associated with it.
+    Property< INMap* >::onNodes __slotChainMap;
 
     /// Set used to know which node has been instantiated
     Set<NodeId> __instantiated_nodes;
@@ -216,6 +215,7 @@ class Instance: public ClassElementContainer {
     /// Mapping between nodes and there inverse slot chains instantiations.
     Property< Set< InverseSC* >* >::onNodes __inverseSC;
 
+    /// A bijection used for MultiDim handling.
     mutable Bijection<const DiscreteVariable*, const DiscreteVariable*>* __bijection;
 
     /// @}

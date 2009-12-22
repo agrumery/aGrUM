@@ -388,6 +388,48 @@ ClassElementContainer::slotChains() const {
   return __slotChains;
 }
 
+INLINE
+void
+ClassElementContainer::_overload(Attribute* attr, ClassElement& elt) {
+  try {
+    if (attr->type().isSubTypeOf(elt.type())) {
+      _add(attr, elt.id(), true);
+    } else {
+      GUM_ERROR(OperationNotAllowed, "Invalid overload type.");
+    }
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
+  }
+}
+
+INLINE
+void
+ClassElementContainer::_overload(ReferenceSlot* ref, ClassElement& elt) {
+  if (elt.elt_type() == ClassElement::prm_refslot) {
+    ReferenceSlot& source = static_cast<ReferenceSlot&>(elt);
+    ClassElementContainer* ref_type = (ClassElementContainer*) &(ref->slotType());
+    if (ref_type->isSubTypeOf((const ClassElementContainer&) source.slotType())) {
+      _add(ref, source.id());
+    } else {
+      GUM_ERROR(OperationNotAllowed, "Invalid overload slot type.");
+    }
+  } else {
+    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
+  }
+}
+
+INLINE
+bool
+ClassElementContainer::isSubTypeOf(const ClassElementContainer& cec) const {
+  return ((*this) == cec) or _isSubTypeOf(cec);
+}
+
+INLINE
+bool
+ClassElementContainer::isSuperTypeOf(const ClassElementContainer& cec) const {
+  return ((*this) == cec) or cec._isSubTypeOf(*this);
+}
+
 // ============================================================================
 } /* namespace gum */
 // ============================================================================

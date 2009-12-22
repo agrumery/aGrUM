@@ -1,4 +1,4 @@
-/***************************************************************************
+/**************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
@@ -19,79 +19,15 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of type.
+ * @brief Inline implementation of gum::Interfance.
  *
  * @author Lionel TORTI
- *
  */
 // ============================================================================
 namespace gum {
-
-  INLINE
-  const DiscreteVariable&
-  Type::variable() const { return *__var; }
-
-  INLINE
-  DiscreteVariable&
-  Type::operator*() { return *__var; }
-
-  INLINE
-  const DiscreteVariable&
-  Type::operator*() const { return *__var; }
-
-  INLINE
-  DiscreteVariable*
-  Type::operator->() const { return __var; }
-
-  INLINE
-  PRMObject::ObjectType
-  Type::obj_type() const { return prm_type; }
-
-  INLINE
-  const std::string&
-  Type::name() const { return PRMObject::name(); }
-
-  INLINE
-  const Type&
-  Type::super() const {
-    if (not __super) {
-      return *__super;
-    } else {
-      GUM_ERROR(NotFound, "No super type for this type.");
-    }
-  }
-
-  INLINE
-  const std::vector<Idx>&
-  Type::label_map() const {
-    if (not __label_map) {
-      return *__label_map;
-    } else {
-      GUM_ERROR(NotFound, "No super type for this type.");
-    }
-  }
-
-  INLINE
-  bool
-  Type::isSubType() const { return __super; }
-
-  INLINE
-  bool
-  Type::isSuperTypeOf(const Type& t) const {
-    return t.isSubTypeOf(*this);
-  }
-
-  INLINE
-  bool
-  Type::operator==(const PRMObject& obj) const {
-    return name() == obj.name();
-  }
-
-  INLINE
-  bool
-  Type::operator!=(const PRMObject& obj) const {
-    return name() != obj.name();
-  }
-
-} /* namespace gum */
 // ============================================================================
+
+// ============================================================================
+} // namespace gum
+// ============================================================================
+

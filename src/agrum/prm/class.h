@@ -33,6 +33,7 @@
 #include <agrum/core/sequence.h>
 // ============================================================================
 #include <agrum/prm/classElementContainer.h>
+#include <agrum/prm/interface.h>
 // ============================================================================
 namespace gum {
 // ============================================================================
@@ -69,11 +70,43 @@ class Class: public ClassElementContainer {
     Class(const std::string& name);
 
     /**
-     * Constructor for building a sub class of mother.
-     * @param name The sub class name.
-     * @param mother The class which this is an extension.
+     * Constructor for building a subclass of super.
+     * @param name The subclass name.
+     * @param super The super Class of this.
      */
-    Class(const std::string& name, Class& mother);
+    Class(const std::string& name, Class& super);
+
+    /**
+     * Constructor for building a Class implementing an Interface.
+     * @param name The Class name.
+     * @param i The implemented Interface.
+     */
+    Class(const std::string& name, Interface& i);
+
+    /**
+     * Constructor for building a Class implementing several each Interface
+     * in set.
+     * @param name The sub class name.
+     * @param set The Set of implemented interfaces.
+     */
+    Class(const std::string& name, Set<Interface*>& set);
+
+    /**
+     * Constructor for building a subclass of super and implementing i.
+     * @param name The sub class name.
+     * @param super The super Class of this.
+     * @param i The implemented Interface.
+     */
+    Class(const std::string& name, Class& super, Interface& i);
+
+    /**
+     * Constructor for building a subclass of super and implementing each
+     * Interface in set.
+     * @param name The sub class name.
+     * @param super The super Class of this.
+     * @param set The Set of implemented interfaces.
+     */
+    Class(const std::string& name, Class& super, Set<Interface*>& set);
 
     /**
      * Destructor.
@@ -92,16 +125,16 @@ class Class: public ClassElementContainer {
     virtual ObjectType obj_type() const;
 
     /**
-     * Returns the mother of this class.
-     * @throw NotFound Raised if this has no mother.
+     * Returns the super of this class.
+     * @throw NotFound Raised if this has no super.
      */
-    Class& mother();
+    Class& super();
 
     /**
-     * Returns the mother of this class.
-     * @throw NotFound Raised if this has no mother.
+     * Returns the super of this class.
+     * @throw NotFound Raised if this has no super.
      */
-    const Class& mother() const;
+    const Class& super() const;
 
     /**
      * @brief Add an attribute to this class.
@@ -185,25 +218,22 @@ class Class: public ClassElementContainer {
     /// the class is fully filled.
     void buildInstantiationSequence() const;
 
-    /// @}
-  // ========================================================================
-  /// @name Inheritance operators
-  // ========================================================================
-    /// @{
+    /// The Set of Interface implemented by this.
+    /// @throws NotFound Raised if this class does not implement any
+    /// Interface.
+    const Set<Interface*>& implements() const;
 
-    /// Returns true if daughter is a sub class of this.
-    bool operator>(const Class& daughter) const;
+    /// Returns true if this respect all its implemented Interface.
+    bool isValid() const;
 
-    /// Returns true if daughter is subclass of this or is this.
-    bool operator>=(const Class& daughter) const;
-
-    /// Returns true if this is a subclass of mother.
-    bool operator<(const Class& mother) const;
-
-    /// Returns true if this is a subclass of mother or is mother.
-    bool operator<=(const Class& mother) const;
+    /// Returns true if this is a valid implementation of i.
+    bool isValid(const Interface& i) const;
 
     /// @}
+  protected:
+
+    /// See ClassElementContainer::_isSubTypeOf().
+    virtual bool _isSubTypeOf(const ClassElementContainer& cec) const;
 
   private:
     /// Copy constructor. Don't use it.
@@ -211,17 +241,6 @@ class Class: public ClassElementContainer {
 
     /// Copy operator. Don't use it.
     Class& operator=(const Class& source);
-
-    /// Add the super types of the given attribute.
-    void __addSuperType(Attribute* attr);
-
-    /// Add an attribute overloading an inherited attribute.
-    /// @throw OperationNotAllowed Raised if the overload is invalid.
-    void __overload(Attribute* attr, ClassElement& elt);
-
-    /// Add an reference overloading an inherited reference.
-    /// @throw OperationNotAllowed Raised if the overload is invalid.
-    void __overload(ReferenceSlot* ref, ClassElement& elt);
 
   // ========================================================================
   /// @name Private members
@@ -240,6 +259,12 @@ class Class: public ClassElementContainer {
     /// This is used to remember if a ClassElement is an input or output node.
     /// first is for the input flag, second is for the output flag.
     Property<std::pair<bool, bool>*>::onNodes __IOFlags;
+
+    /// Add the super types of the given attribute.
+    void __addSuperType(Attribute* attr);
+
+    /// The Set of implemented Interface of this.
+    Set<Interface*>* __implements;
 
     /// @}
 // ==========================================================================

@@ -28,31 +28,53 @@ namespace gum {
 // ============================================================================
 
 INLINE
+Class::Class(const std::string& name):
+  ClassElementContainer(name), __implements(0)
+{
+  GUM_CONSTRUCTOR( Class );
+}
+
+INLINE
+Class::Class(const std::string& name, Interface& i):
+  ClassElementContainer(name), __implements(new Set<Interface*>())
+{
+  GUM_CONSTRUCTOR( Class );
+  __implements->insert(&i);
+}
+
+INLINE
+Class::Class(const std::string& name, Set<Interface*>& set):
+  ClassElementContainer(name), __implements(new Set<Interface*>(set))
+{
+  GUM_CONSTRUCTOR( Class );
+}
+
+INLINE
 PRMObject::ObjectType
 Class::obj_type() const { return prm_class; }
 
 INLINE
 Class&
-Class::mother()
+Class::super()
 {
   try {
     return static_cast<Class&>(_alternate());;
   } catch (NotFound&) {
     std::stringstream msg;
-    msg << ": no mother class in " << this->name();
+    msg << ": no super class in " << this->name();
     GUM_ERROR(NotFound, msg.str());
   }
 }
 
 INLINE
 const Class&
-Class::mother() const
+Class::super() const
 {
   try {
     return static_cast<const Class&>(_alternate());;
   } catch (NotFound&) {
     std::stringstream msg;
-    msg << ": no mother class in " << this->name();
+    msg << ": no super class in " << this->name();
     GUM_ERROR(NotFound, msg.str());
   }
 }
@@ -64,7 +86,7 @@ Class::add(Attribute* attr) {
     _add(attr);
   } catch (DuplicateElement& e) {
     if (not _exists(get(attr->name()).id())) {
-      __overload(attr, get(attr->name()));
+      _overload(attr, get(attr->name()));
     } else {
       throw e;
     }
@@ -85,7 +107,7 @@ Class::add(ReferenceSlot* ref) {
     _add(ref);
   } catch (DuplicateElement& e) {
     if (not _exists(get(ref->name()).id())) {
-      __overload(ref, get(ref->name()));
+      _overload(ref, get(ref->name()));
     } else {
       throw e;
     }
@@ -106,42 +128,6 @@ Class::insertArc(const std::string& tail, const std::string& head)
     sc.end().setOutputNode(sc.lastElt().id(), true);
     setInputNode(get(head).id(), true);
   }
-}
-
-INLINE
-bool
-Class::operator>(const Class& daughter) const
-{
-  try {
-    return (*this >= daughter.mother());
-  } catch (NotFound&) {
-    return false;
-  }
-}
-
-INLINE
-bool
-Class::operator>=(const Class& daughter) const
-{
-  try {
-    return ((*this == daughter) || (*this >= daughter.mother()));
-  } catch (NotFound&) {
-    return false;
-  }
-}
-
-INLINE
-bool
-Class::operator<(const Class& mother) const
-{
-  return (mother > *this);
-}
-
-INLINE
-bool
-Class::operator<=(const Class& mother) const
-{
-  return (mother >= *this);
 }
 
 INLINE
@@ -192,6 +178,21 @@ INLINE
 bool
 Class::isInnerNode(NodeId id) const {
   return (not __IOFlags.exists(id));
+}
+
+INLINE
+bool
+Class::_isSubTypeOf(const ClassElementContainer& cec) const {
+  GUM_ERROR(FatalError, "Not implemented!");
+}
+
+INLINE
+const Set<Interface*>&
+Class::implements() const {
+  if (__implements) {
+    return *__implements;
+  }
+  GUM_ERROR(NotFound, "This Class does not implement any Interface.");
 }
 
 // ============================================================================

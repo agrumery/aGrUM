@@ -60,7 +60,7 @@ class PRMObject {
      * (useful with iterators for example). No PRMObject will ever have
      * "all" as type.
      */
-    enum ObjectType { all, prm_class, prm_class_elt,
+    enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
                       prm_type, prm_model, prm_instance };
 
     /// Returns the string representation of a PRMObject.
@@ -77,6 +77,8 @@ class PRMObject {
           return "prm_model";
         case prm_instance:
           return "prm_instance";
+        case prm_interface:
+          return "prm_interface";
         default:
           return "unknown";
       }
@@ -85,6 +87,16 @@ class PRMObject {
     /// Returns true if obj_ptr is of type Class.
     static INLINE bool isClass(const PRMObject& obj) {
       return obj.obj_type() == prm_class;
+    }
+
+    /// Returns true if obj_ptr is of type Interface.
+    static INLINE bool isInterface(const PRMObject& obj) {
+      return obj.obj_type() == prm_interface;
+    }
+
+    /// Returns true if obj_ptr is of type Instance.
+    static INLINE bool isInstance(const PRMObject& obj) {
+      return obj.obj_type() == prm_instance;
     }
 
     /// @}

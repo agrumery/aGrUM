@@ -49,6 +49,10 @@ Instance::~Instance()
     (*iter)->clear();
     delete *iter;
   }
+  typedef Property< INMap* >::onNodes::iterator map_iterator;
+  for (map_iterator iter = __slotChainMap.begin(); iter != __slotChainMap.end(); ++iter) {
+    delete *iter;
+  }
   // Deleting set of inverse slot chains
   typedef Property< Set< InverseSC* >* >::onNodes::iterator PropIter;
   for (PropIter set = __inverseSC.begin(); set != __inverseSC.end(); ++set) {
@@ -78,8 +82,8 @@ Instance::add(NodeId id, Instance& instance)
 {
   if (get(id).elt_type() == ClassElement::prm_refslot) {
     const ReferenceSlot& ref = static_cast<const ReferenceSlot&>(get(id));
-    if (not (ref.slotType() >= instance.type())) {
-      GUM_ERROR(OperationNotAllowed, ref.name() + ".slotType() != " + instance.name() + " are not of the same type");
+    if (instance.type().isSubTypeOf(ref.slotType())) {
+      GUM_ERROR(OperationNotAllowed, "illegal instance type for this reference slot.");
     }
     if (not __referenceMap.exists(id)) {
       __referenceMap.insert(id, new Set< Instance* >());
@@ -133,7 +137,10 @@ void
 Instance::__instantiateParent(NodeId child, NodeId parent) {
   switch (type().get(parent).elt_type()) {
     case ClassElement::prm_slotchain: {
-                                        __instantiateSlotChain(parent);
+                                        if (not __slotChainMap.exists(parent)) {
+                                          __slotChainMap.insert(parent, new Instance::INMap());
+                                          __instantiateSlotChain(parent);
+                                        }
                                         break;
                                       }
     case ClassElement::prm_attribute:
@@ -268,55 +275,48 @@ Instance::__instantiateChildren(NodeId child, NodeId parent)
 void
 Instance::__instantiateSlotChain(NodeId id)
 {
-  // Since the model can contains loop (but not cycle) point this chain can
-  // be already instantiated
-  if (not __referenceMap.exists(id)) {
-    SlotChain& chain = static_cast<SlotChain&>(get(id));
-    // An instantiated slot chain is a tree, to find all leaves we proceed
-    // with a deep run.
-    std::vector< std::pair<Instance*, Size> > stack;
-    stack.push_back(std::pair<Instance*, Size>(this, 0));
-    // Last element is an attribute, and we only want the instance
-    // containing it.
-    Size depth_stop = chain.chain().size();
-    while (not stack.empty()) {
-      Instance* current = stack.back().first;
-      Size depth = stack.back().second;
-      stack.pop_back();
+  SlotChain& chain = static_cast<SlotChain&>(get(id));
+  // If there is type specialisation we need to know which type to use
+  const Type& type = chain.type();
+  std::stringstream cast;
+  cast << "<" << type.name() << ">" << chain.lastElt().name();
+  // An instantiated slot chain is a tree, to find all leaves we proceed
+  // with a deep run.
+  std::vector< std::pair<Instance*, Size> > stack;
+  stack.push_back(std::pair<Instance*, Size>(this, 0));
+  Set<Instance*> visited;
+  // Last element is an attribute, and we only want the instance
+  // containing it.
+  Size depth_stop = chain.chain().size();
+  // Loop variables
+  NodeId lastElt_id = 0;
+  Size depth = 0;
+  Instance* current = 0;
+  Set<Instance*>* instances = 0;
+  // Let's go!
+  while (not stack.empty()) {
+    current = stack.back().first;
+    depth = stack.back().second;
+    stack.pop_back();
+    if (not visited.exists(current)) {
+      visited.insert(current);
       if ( depth < depth_stop) {
         try {
-          Set<Instance*>* instances =
-            current->__referenceMap[chain.chain().atPos(depth)->id()];
+          instances = current->__referenceMap[chain.chain().atPos(depth)->id()];
           for (Set<Instance*>::iterator iter = instances->begin();
-               iter != instances->end(); ++iter)
-          {
-            stack.push_back(std::pair<Instance*, Size>(*iter, depth + 1));
+              iter != instances->end(); ++iter) {
+            stack.push_back(std::make_pair(*iter, depth + 1));
           }
         } catch (NotFound&) {
-          std::stringstream msg;
-          msg << "reference " << chain.chain().atPos(depth)->name();
-          msg << " not instantiated in instance ";
-          msg << current->name();
-          GUM_ERROR(NotFound, msg.str());
+          GUM_ERROR(NotFound, "Uninstantiated reference.");
         }
       } else {
-        try {
-          __referenceMap[chain.id()]->insert(current);
-        } catch (NotFound&) {
-          __referenceMap.insert(chain.id(), new Set<Instance*>());
-          __referenceMap[chain.id()]->insert(current);
-        }
-        current->instantiate(chain.lastElt().id());
+        lastElt_id = current->get(chain.id()).type() == type?
+          chain.id():current->get(cast.str()).id();
+        __slotChainMap[chain.id()]->insert(current, lastElt_id);
+        current->instantiate(lastElt_id);
+        current->__addAsInverseSC(lastElt_id, this, id);
       }
-    }
-    // Now we fill Reverse slot chain
-    if (chain.isMultiple()) {
-      for (Set<Instance*>::iterator iter = getInstances(id).begin();
-           iter != getInstances(id).end(); ++iter) {
-        (**iter).__addAsInverseSC(chain.lastElt().id(), this, id);
-      }
-    } else {
-      getInstance(id).__addAsInverseSC(chain.lastElt().id(), this, id);
     }
   }
 }

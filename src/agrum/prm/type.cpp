@@ -102,5 +102,18 @@ namespace gum {
     }
   }
 
+  bool
+  Type::isSubTypeOf(const Type& super) const {
+    if (__super) {
+      const Type* tmp = __super;
+      while ( (super != (*tmp)) and (tmp) ) {
+        tmp = tmp->__super;
+      }
+      return tmp;
+    } else {
+      return ((*this) == super);
+    }
+  }
+
 } /* namespace gum */
 // ============================================================================

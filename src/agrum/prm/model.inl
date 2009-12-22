@@ -93,7 +93,7 @@ Model::add(const std::string& array, Instance* i)
     GUM_ERROR(DuplicateElement, i->name());
   }
   try {
-    if (*(__arrayMap[array].first) >= i->type()) {
+    if (i->type().isSubTypeOf(*(__arrayMap[array].first))) {
       __arrayMap[array].second->insert(i);
       add(i);
     } else {

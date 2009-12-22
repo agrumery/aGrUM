@@ -133,20 +133,18 @@ Instance::endPSISC() const {
 }
 
 INLINE
-bool
-Instance::operator==(const Class& c) const { return (type() == c); }
-
-INLINE
-bool
-Instance::operator!=(const Class& c) const { return (type() != c); }
-
-INLINE
 const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
 Instance::bijection() const {
   if (__bijection == 0) {
     __init_bijection();
   }
   return *__bijection;
+}
+
+INLINE
+bool
+Instance::_isSubTypeOf(const ClassElementContainer& cec) const {
+  return _alternate().isSubTypeOf(cec);
 }
 
 // ============================================================================
