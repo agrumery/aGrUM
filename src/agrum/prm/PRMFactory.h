@@ -44,6 +44,7 @@
 #include <agrum/prm/classElementContainer.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 /**
  * @class PRMFactory
  * @brief Factory which builds a PRM.
@@ -577,6 +578,7 @@ class PRMFactory {
 
     /// @}
 };
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

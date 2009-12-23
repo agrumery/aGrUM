@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 StructuredBayesBall::StructuredBayesBall(const PRMInference& inference):
@@ -120,5 +121,6 @@ StructuredBayesBall::__getMark(InstanceMap& marks, const Instance* i, NodeId n) 
 }
 
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

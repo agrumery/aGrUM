@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 
 SVED::~SVED() {
@@ -424,5 +425,6 @@ SVED::__initReqSets(const Instance* i)
                    std::pair<Set<NodeId>*, Set<NodeId>*>(attr_set, sc_set));
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

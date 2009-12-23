@@ -36,6 +36,8 @@
 #ifndef GUM_IBAL_BRIDGE_H
 #define GUM_IBAL_BRIDGE_H
 namespace gum {
+namespace prm {
+
 /**
  * @class IBALBridge IBALBridge.h <agrum/prm/ibal/IBALBridge.h>
  * @brief This class writes a PRM in the IBAL formalism.
@@ -160,6 +162,7 @@ class IBALBridge {
     std::string __print_agg_parents_list(const Model& m, const Instance& i, NodeId id);
 
     /// @}
+  #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // ========================================================================
   /// @name Private class.
   // ========================================================================
@@ -175,6 +178,7 @@ class IBALBridge {
     };
 
     /// @}
+  #endif // DOXYGEN_SHOULD_SKIP_THIS
   // ========================================================================
   /// @name Private members.
   // ========================================================================
@@ -186,6 +190,8 @@ class IBALBridge {
 
     /// @}
 };
+
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/bridges/IbalBridge.inl>

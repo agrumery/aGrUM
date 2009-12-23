@@ -44,6 +44,7 @@
 #ifndef GUM_SVED_H
 #define GUM_SVED_H
 namespace gum {
+namespace prm {
 
 /**
  * @class SVED SVED.h <agrum/prm/SVED.h>
@@ -170,6 +171,7 @@ class SVED: public PRMInference{
     /// @}
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/SVED.inl>

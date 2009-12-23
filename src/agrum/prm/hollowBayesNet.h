@@ -31,6 +31,7 @@
 #ifndef GUM_HOLLOW_BAYESNET_H
 #define GUM_HOLLOW_BAYESNET_H
 namespace gum {
+namespace prm {
 
 /**
  * @class HollowBayesNet hollowBayesNet.h <agrum/prm/hollowBayesNet.h>
@@ -148,6 +149,7 @@ class HollowBayesNet: public AbstractBayesNet<prm_float> {
     void __init(const ClassElementContainer& cec);
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/hollowBayesNet.inl>

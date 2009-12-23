@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 ClassElement::ClassElementType
@@ -87,5 +88,6 @@ bool
 SlotChain::isMultiple() const { return __isMultiple; }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

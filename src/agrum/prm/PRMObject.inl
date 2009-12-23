@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 // Returns the name of this object.
 INLINE
@@ -47,5 +48,6 @@ PRMObject::operator!=(const PRMObject& obj) const
   return __name != obj.name();
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

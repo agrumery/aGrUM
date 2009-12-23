@@ -32,6 +32,7 @@
 #include <agrum/prm/classElement.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class Attribute attribute.h <agrum/prm/attribute.h>
@@ -166,6 +167,7 @@ class Attribute: public ClassElement {
     /// @}
 };
 // ============================================================================
+} /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

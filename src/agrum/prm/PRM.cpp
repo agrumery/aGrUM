@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 // Default constructor.
 PRM::PRM()
@@ -70,5 +71,6 @@ PRM::__addBuiltInTypes()
   __typeMap.insert("boolean", boolean);
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

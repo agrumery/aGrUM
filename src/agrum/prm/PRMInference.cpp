@@ -32,6 +32,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 PRMInference::PRMInference(const PRM& prm, const Model& model):
  _prm(prm), _model(model)
@@ -62,5 +63,6 @@ PRMInference::clearEvidence() {
 }
 
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

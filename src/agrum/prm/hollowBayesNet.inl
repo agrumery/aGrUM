@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 HollowBayesNet::~HollowBayesNet() {
@@ -135,5 +136,6 @@ HollowBayesNet::modalities() const {
   return __modalities;
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

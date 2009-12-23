@@ -37,6 +37,7 @@
 #include <agrum/prm/classElement.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
@@ -212,6 +213,7 @@ class Aggregate: public ClassElement {
     /// @}
 };
 // ============================================================================
+} /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

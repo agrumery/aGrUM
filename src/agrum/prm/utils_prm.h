@@ -77,6 +77,7 @@
 
 */
 namespace gum {
+namespace prm {
 
   /// Type for real numbers
   typedef float prm_float;
@@ -84,6 +85,7 @@ namespace gum {
   /// Decompose a string in a vector of strings using "." as separators.
   void decomposePath(const std::string& path, std::vector<std::string>& v);
 
+} /* namespace prm */
 } /* namespace gum */
 
 #endif // GUM_UTILS_PRM_H

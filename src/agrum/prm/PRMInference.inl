@@ -26,6 +26,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 PRMInference::EMap&
@@ -234,5 +235,6 @@ PRMInference::joint(const Set<std::string> chains, Potential<prm_float>& j) {
 }
 
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

@@ -43,6 +43,7 @@
 #ifndef GUM_SVE_H
 #define GUM_SVE_H
 namespace gum {
+namespace prm {
 
 /**
  * @class SVE SVE.h <agrum/prm/SVE.h>
@@ -147,6 +148,7 @@ class SVE: public PRMInference{
     /// @}
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/SVE.inl>

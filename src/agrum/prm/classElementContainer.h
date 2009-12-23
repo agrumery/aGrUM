@@ -42,6 +42,7 @@
 #include <agrum/prm/aggregate.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class ClassElementContainer classElementContainer.h <agrum/prm/classElementContainer.h>
@@ -308,7 +309,7 @@ class ClassElementContainer: public PRMObject {
     void _add(Attribute* attr, NodeId id, bool overload = false);
 
     /**
-     * Add an attribute overloading an inherited attribute.
+     * Add an Attribute overloading an inherited Attribute or Aggregate.
      * @throw OperationNotAllowed Raised if the overload is invalid.
      */
     void _overload(Attribute* attr, ClassElement& elt);
@@ -326,6 +327,21 @@ class ClassElementContainer: public PRMObject {
      * @throw DuplicateElement Raised if an element in this has the same name.
      */
     void _add(Aggregate* agg);
+
+    /**
+     * @brief Add an Aggregate which will overload an existing one in __alternate.
+     *
+     * This is used mostly when a gum::Instance instantiate gum::Aggregate.
+     * @param overload If true the in going arcs of attr are erased.
+     * @throw OperationNotAllowed Raised if attr can not replace the ClassElement pointed by id.
+     */
+    void _add(Aggregate* agg, NodeId id, bool overload);
+
+    /**
+     * Add an Aggregate overloading an inherited Aggregate or Attribute.
+     * @throw OperationNotAllowed Raised if the overload is invalid.
+     */
+    void _overload(Aggregate* agg, ClassElement& elt);
 
     /**
      * @brief Add a ReferenceSlot to this ClassElementContainer.
@@ -449,6 +465,7 @@ class ClassElementContainer: public PRMObject {
 std::ostream& operator<<(std::ostream& output, const ClassElementContainer& container);
 // ============================================================================
 
+} /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

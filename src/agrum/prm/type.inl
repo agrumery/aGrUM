@@ -26,6 +26,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
   INLINE
   const DiscreteVariable&
@@ -93,5 +94,6 @@ namespace gum {
     return name() != obj.name();
   }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

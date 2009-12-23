@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 SVED::SVED(const PRM& prm, const Model& model):
@@ -149,5 +150,6 @@ SVED::__reduceElimList(const Instance* i, List<const Instance*>& elim_list,
 }
 
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

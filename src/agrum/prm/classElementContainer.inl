@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 
 INLINE
@@ -154,7 +155,7 @@ ClassElementContainer::_add(Attribute* attr, NodeId id, bool overload)
                                           break;
                                         }
       default: {
-                 GUM_ERROR(OperationNotAllowed, "Can replace an Attribute with only an Attribute or an Aggregate.");
+                 GUM_ERROR(OperationNotAllowed, "An Attribute can only replace an Attribute or an Aggregate.");
                }
     }
   } catch (NotFound&) {
@@ -167,6 +168,36 @@ ClassElementContainer::_add(Attribute* attr, NodeId id, bool overload)
   __nameMap.insert(attr->name(), attr);
   __nodeIdMap.insert(id, attr);
   __attributes.insert(attr);
+}
+
+INLINE
+void
+ClassElementContainer::_add(Aggregate* agg, NodeId id, bool overload)
+{
+  try {
+    switch (_alternate().get(id).elt_type()) {
+      case ClassElement::prm_attribute: {
+                                          __attributes.erase(static_cast<Attribute*>(&(_alternate().get(id))));
+                                          break;
+                                        }
+      case ClassElement::prm_aggregate: {
+                                          __aggregates.erase(static_cast<Aggregate*>(&(_alternate().get(id))));
+                                          break;
+                                        }
+      default: {
+                 GUM_ERROR(OperationNotAllowed, "An Aggregate can only replace an Attribute or an Aggregate.");
+               }
+    }
+  } catch (NotFound&) {
+    // No alternate
+  }
+  if (overload) {
+    __dag->eraseParents(id);
+  }
+  agg->setId(id);
+  __nameMap.insert(agg->name(), agg);
+  __nodeIdMap.insert(id, agg);
+  __aggregates.insert(agg);
 }
 
 INLINE
@@ -419,6 +450,20 @@ ClassElementContainer::_overload(ReferenceSlot* ref, ClassElement& elt) {
 }
 
 INLINE
+void
+ClassElementContainer::_overload(Aggregate* agg, ClassElement& elt) {
+  try {
+    if (agg->type().isSubTypeOf(elt.type())) {
+      _add(agg, elt.id(), true);
+    } else {
+      GUM_ERROR(OperationNotAllowed, "Invalid overload type.");
+    }
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
+  }
+}
+
+INLINE
 bool
 ClassElementContainer::isSubTypeOf(const ClassElementContainer& cec) const {
   return ((*this) == cec) or _isSubTypeOf(cec);
@@ -431,5 +476,6 @@ ClassElementContainer::isSuperTypeOf(const ClassElementContainer& cec) const {
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

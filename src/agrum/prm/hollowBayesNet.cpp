@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 HollowBayesNet::HollowBayesNet(const ClassElementContainer& cec):
   AbstractBayesNet<prm_float>(), __cec(&cec), __moralGraph(0), __topo(0)
@@ -102,5 +103,6 @@ HollowBayesNet::operator=(const HollowBayesNet& from) {
   return *this;
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

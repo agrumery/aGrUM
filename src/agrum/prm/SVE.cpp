@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 
 SVE::~SVE() {
@@ -420,5 +421,6 @@ SVE::_joint(const Set<InstAttrPair>& queries, Potential<prm_float>& j) {
   GUM_ERROR(FatalError, "Not implemented.");
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

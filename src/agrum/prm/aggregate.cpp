@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 Aggregate::Aggregate(const std::string& name, AggregateType aggType, const Type& rvType):
   ClassElement(name), __agg_type(aggType),  __type(rvType),
@@ -66,5 +67,6 @@ Aggregate::operator=(const Aggregate& source) {
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 StructuredBayesBall::~StructuredBayesBall() {
   GUM_DESTRUCTOR( StructuredBayesBall );
@@ -260,5 +261,6 @@ StructuredBayesBall::__buildHashKey(const Instance* i, Set<NodeId>& req_nodes) {
   return sBuff.str();
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

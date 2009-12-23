@@ -30,6 +30,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 // Destructor.
 CDG::~CDG()
@@ -87,5 +88,6 @@ CDG::__addArcs(const Class& c, NodeId node,
   }
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

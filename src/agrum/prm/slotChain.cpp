@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 SlotChain::SlotChain(const std::string& name, Class& start, Class& end,
                      Sequence<ReferenceSlot*>& chain, ClassElement& lastElt):
@@ -69,5 +70,6 @@ SlotChain::operator=(const SlotChain& source)
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 ClassElement::ClassElement(const std::string& name):
   PRMObject(name) {
@@ -48,5 +49,6 @@ ClassElement::~ClassElement() {
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

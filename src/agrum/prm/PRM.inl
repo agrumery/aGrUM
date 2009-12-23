@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 Type&
@@ -62,5 +63,6 @@ INLINE
 const Sequence<Model*>&
 PRM::models() const { return __models; }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

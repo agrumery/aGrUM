@@ -30,6 +30,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 PRMFactory::PRMFactory()
 {
@@ -339,5 +340,6 @@ PRMFactory::__buildSlotChain(Class* start, const std::string& name)
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // = ==========================================================================

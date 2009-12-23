@@ -21,6 +21,7 @@
 #include <agrum/prm/utils_prm.h>
 
 namespace gum {
+namespace prm {
 
 // Decompose a string in a vector of strings using "." as separators.
 void
@@ -38,4 +39,5 @@ decomposePath(const std::string& path, std::vector<std::string>& v)
   v.push_back(path.substr(prev, std::string::npos));
 }
 
+} /* namespace prm */
 }

@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 CDG::CDG(const PRM& prm)
@@ -79,5 +80,6 @@ CDG::__addNode(const Class* c, const ClassElement& elt)
   }
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

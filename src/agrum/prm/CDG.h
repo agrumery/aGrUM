@@ -30,6 +30,7 @@
 #define GUM_CDG_H
 
 namespace gum {
+namespace prm {
 
 /**
  * @class CDG CDG.h <agrum/prm/CDG.h>
@@ -115,6 +116,7 @@ class CDG {
     NodeMap __node_map;
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/CDG.inl>

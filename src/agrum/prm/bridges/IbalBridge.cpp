@@ -31,6 +31,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
   // Default constructor.
   IBALBridge::IBALBridge()
@@ -540,5 +541,6 @@ namespace gum {
     return strToConvert;
   }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

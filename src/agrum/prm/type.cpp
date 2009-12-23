@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
   Type::Type(const DiscreteVariable& var):
     PRMObject(var.name()), __var(var.copyFactory()),
@@ -115,5 +116,6 @@ namespace gum {
     }
   }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

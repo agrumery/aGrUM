@@ -34,6 +34,7 @@
 #include <agrum/prm/utils_prm.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 /**
  * @class PRMObject
  *
@@ -173,6 +174,7 @@ class PRMObject {
 };
 /// For printing ObjectType easily.
 std::ostream& operator<<(std::ostream& out, PRMObject::ObjectType obj_type);
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

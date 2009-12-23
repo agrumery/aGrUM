@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 Attribute::Attribute(const std::string& name, const Type& type,
                      MultiDimImplementation<prm_float>* impl):
@@ -84,5 +85,6 @@ Attribute::operator=(const Attribute& from)
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

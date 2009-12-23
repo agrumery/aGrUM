@@ -36,6 +36,7 @@
 #include <agrum/prm/interface.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class Class class.h <agrum/prm/class.h>
@@ -146,9 +147,14 @@ class Class: public ClassElementContainer {
      * then an DuplicateElement is raised and attr is not added to this class
      * which implies that you should handle yourself it's memory deallocation.
      *
+     * Mutable Attribute can't have parents.
+     *
+     * @param isMutable If true the Attribute is mutable and it must be initialized
+     *                  at instantiation time.
+     *
      * @throw DuplicateElement Raised if an element in this has the same name.
      */
-    void add(Attribute* attr);
+    void add(Attribute* attr, bool isMutable = false);
 
     /**
      * @brief Add an aggregate to this class.
@@ -188,9 +194,9 @@ class Class: public ClassElementContainer {
      * This method insert an arc in the class's dag and do the proper
      * methods call to insert the parent in head.
      *
-     * @throw OperationNotAllowed Raised if tail or head is a
-     *                            gum::ReferenceSlot, or if head is a
-     *                            gum::SlotChain.
+     * @throw OperationNotAllowed Raised if tail or head is a ReferenceSlot,
+     *                            if head is a SlotChain or a mutable
+     *                            Attribute.
      */
     void insertArc(const std::string& tail, const std::string& head);
 
@@ -229,6 +235,10 @@ class Class: public ClassElementContainer {
     /// Returns true if this is a valid implementation of i.
     bool isValid(const Interface& i) const;
 
+    /// Returns the set of mutable Attribute.
+    /// A mutable Attribute must be initialized at instantiation time.
+    const Set<const Attribute*>& mutables() const;
+
     /// @}
   protected:
 
@@ -266,9 +276,13 @@ class Class: public ClassElementContainer {
     /// The Set of implemented Interface of this.
     Set<Interface*>* __implements;
 
+    /// The Set of mutable Attribute in this.
+    Set<const Attribute*> __mutables;
+
     /// @}
 // ==========================================================================
 };
+} /* namespace prm */
 } // namespace gum
 // ==========================================================================
 #ifndef GUM_NO_INLINE

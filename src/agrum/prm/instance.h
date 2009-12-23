@@ -37,6 +37,7 @@
 #include <agrum/prm/class.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class Instance instance.h <agrum/prm/instance.h>
@@ -86,6 +87,14 @@ class Instance: public ClassElementContainer {
 
     /// Returns bijection between variables in this Instance and it's type.
     const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bijection() const;
+
+    /// Initialize a mutable Attribute
+    /// @throw OperationNotAllowed Raised if a is not mutable.
+    void initialize(NodeId id, const Potential<prm_float>& value);
+
+    /// Returns the Set of initialized mutable Attribute in this.
+    /// @throw NotFound Raised if there is no mutable Attribute in this.
+    const Set<const Attribute*>& mutables() const;
 
     /// @}
   // ========================================================================
@@ -218,9 +227,13 @@ class Instance: public ClassElementContainer {
     /// A bijection used for MultiDim handling.
     mutable Bijection<const DiscreteVariable*, const DiscreteVariable*>* __bijection;
 
+    /// The Set of initialized mutable Attribute
+    Set<const Attribute*>* __mutables;
+
     /// @}
 };
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

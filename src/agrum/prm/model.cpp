@@ -32,6 +32,7 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 Model::Model(const std::string& name):
   PRMObject(name)
@@ -244,5 +245,6 @@ Model::__groundPotential(const Instance& instance, NodeId node, BayesNetFactory<
   factory.setVariableCPT(var_name.str(), p, false);
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

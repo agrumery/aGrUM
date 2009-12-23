@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 
 ReferenceSlot::ReferenceSlot(const std::string& name, Class& type,
                              bool isArray):
@@ -61,5 +62,6 @@ ReferenceSlot::operator=(const ReferenceSlot& from)
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

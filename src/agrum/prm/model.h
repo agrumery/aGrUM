@@ -38,6 +38,7 @@
 #include <agrum/prm/PRM.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 class ModelIterator;
 class ModelConstIterator;
 
@@ -434,6 +435,7 @@ class ModelConstIterator
 
     /// @}
 };
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

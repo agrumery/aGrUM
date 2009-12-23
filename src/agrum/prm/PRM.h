@@ -42,6 +42,7 @@
 #ifndef GUM_PRM_H
 #define GUM_PRM_H
 namespace gum {
+namespace prm {
 
 class PRM;
 class Model;
@@ -174,6 +175,7 @@ class PRM {
     /// @}
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRM.inl>

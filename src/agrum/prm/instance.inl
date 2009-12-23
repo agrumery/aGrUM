@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 
 INLINE
@@ -147,6 +148,43 @@ Instance::_isSubTypeOf(const ClassElementContainer& cec) const {
   return _alternate().isSubTypeOf(cec);
 }
 
+INLINE
+void
+Instance::initialize(NodeId id, const Potential<prm_float>& value) {
+  if (type().get(id).elt_type() == ClassElement::prm_attribute) {
+    const Attribute* a = static_cast<const Attribute*>(&(type().get(id)));
+    if (type().mutables().exists(a)) {
+      if (not isInstantiated(a->id())) {
+        instantiate(a->id());
+      }
+      Instantiation inst(get(a->id()).cpf());
+      for (inst.setFirst(); not inst.end(); inst.inc()) {
+        get(a->id()).cpf().set(inst, value.get(inst));
+      }
+      if (not __mutables) {
+        __mutables = new Set<const Attribute*>();
+      }
+      __mutables->insert(static_cast<Attribute*>(&(get(a->id()))));
+    } else {
+      GUM_ERROR(OperationNotAllowed, "Given attribute is not mutable.");
+    }
+  } else {
+    GUM_ERROR(OperationNotAllowed, "Given NodeId is not a mutable "
+                                   "Attribute.");
+  }
+}
+
+INLINE
+const Set<const Attribute*>&
+Instance::mutables() const {
+  if (__mutables) {
+    return *__mutables;
+  } else {
+    GUM_ERROR(NotFound, "No mutable Attribute in this Instance.");
+  }
+}
+
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

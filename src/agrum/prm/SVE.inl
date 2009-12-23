@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 SVE::SVE(const PRM& prm, const Model& model):
@@ -83,5 +84,6 @@ SVE::_evidenceRemoved(const Instance* i, NodeId elt_id) {
   // Do nothing
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

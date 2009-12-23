@@ -37,6 +37,7 @@
 #ifndef GUM_STRUCTURED_BB_H
 #define GUM_STRUCTURED_BB_H
 namespace gum {
+namespace prm {
 
 /**
  * @class StructuredBayesBall structuredBayesBall.h <agrum/prm/structuredBayesBall.h>
@@ -149,6 +150,7 @@ class StructuredBayesBall {
 
 };
 
+} /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/structuredBayesBall.inl>

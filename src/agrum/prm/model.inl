@@ -26,6 +26,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 
 INLINE
 PRMObject::ObjectType
@@ -320,5 +321,6 @@ ModelConstIterator::isEnd() const
   return (__iter == __model->__nameMap.end());
 }
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

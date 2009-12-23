@@ -32,6 +32,7 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 
 ClassElementContainer::ClassElementContainer(const std::string& name):
@@ -136,5 +137,6 @@ operator<<(std::ostream& output, const ClassElementContainer& container)
 }
 
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

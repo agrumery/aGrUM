@@ -30,6 +30,7 @@
 #include <agrum/prm/classElementContainer.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 
 class Interface: public ClassElementContainer {
   public:
@@ -123,6 +124,7 @@ class Interface: public ClassElementContainer {
     Interface& operator=(const Interface& source);
 };
 
+} /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

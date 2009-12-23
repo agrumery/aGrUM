@@ -38,10 +38,11 @@
 #include <agrum/prm/utils_prm.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 
 /**
- * @class type
+ * @class Type
  * @brief This is a decoration of the DiscreteVariable class.
  * The name of the DiscreteVariable will be the name of the type (i.e. of
  * the PRMObject).
@@ -229,6 +230,7 @@ class Type: public PRMObject {
 
     /// @}
 };
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

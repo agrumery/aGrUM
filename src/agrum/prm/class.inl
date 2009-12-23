@@ -25,6 +25,7 @@
  */
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 
 INLINE
@@ -81,7 +82,7 @@ Class::super() const
 
 INLINE
 void
-Class::add(Attribute* attr) {
+Class::add(Attribute* attr, bool isMutable) {
   try {
     _add(attr);
   } catch (DuplicateElement& e) {
@@ -91,6 +92,9 @@ Class::add(Attribute* attr) {
       throw e;
     }
   }
+  if (isMutable) {
+    __mutables.insert(attr);
+  }
   if (attr->type().isSubType()) {
     __addSuperType(attr);
   }
@@ -98,7 +102,17 @@ Class::add(Attribute* attr) {
 
 INLINE
 void
-Class::add(Aggregate* agg) { _add(agg); }
+Class::add(Aggregate* agg) {
+  try {
+    _add(agg);
+  } catch (DuplicateElement& e) {
+    if (not _exists(get(agg->name()).id())) {
+      _overload(agg, get(agg->name()));
+    } else {
+      throw e;
+    }
+  }
+}
 
 INLINE
 void
@@ -195,6 +209,11 @@ Class::implements() const {
   GUM_ERROR(NotFound, "This Class does not implement any Interface.");
 }
 
+INLINE
+const Set<const Attribute*>&
+Class::mutables() const { return __mutables; }
+
 // ============================================================================
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================

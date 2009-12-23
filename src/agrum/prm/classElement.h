@@ -36,6 +36,7 @@
 #include <agrum/prm/type.h>
 // ============================================================================
 namespace gum {
+namespace prm {
 // ============================================================================
 /**
  * @class ClassElement classElementContainer.h <agrum/prm/classElementContainer.h>
@@ -192,6 +193,7 @@ class ClassElement: public PRMObject {
     NodeId __id;
 };
 // ============================================================================
+} /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

@@ -37,6 +37,7 @@
 // ============================================================================
 
 namespace gum {
+namespace prm {
 /**
  * @class PRMInference PRMInference.h <agrum/prm/PRMInference.h>
  * @brief This abstract class is used as base class for all inference class
@@ -290,6 +291,7 @@ class PRMInference {
     /// @}
 };
 
+} /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE
