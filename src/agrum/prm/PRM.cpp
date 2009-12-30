@@ -39,6 +39,7 @@ PRM::PRM()
   GUM_CONSTRUCTOR( PRM );
   __addBuiltInTypes();
 }
+
 // Destructor.
 PRM::~PRM() {
   GUM_DESTRUCTOR( PRM );
@@ -51,6 +52,10 @@ PRM::~PRM() {
   }
   for (Sequence<Class*>::iterator iter = __classes.begin();
        iter != __classes.end(); ++iter) {
+    delete *iter;
+  }
+  for (Sequence<Class*>::iterator iter = __interfaces.begin();
+       iter != __interfaces.end(); ++iter) {
     delete *iter;
   }
   for (Sequence<Type*>::iterator iter = __types.begin();

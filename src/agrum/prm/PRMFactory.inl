@@ -83,36 +83,55 @@ PRMFactory::addType(const DiscreteVariable& var)
 
 INLINE
 void
-PRMFactory::startClass(const std::string& name, const std::string& extends)
+PRMFactory::endClass()
 {
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Class* c = 0;
-  Class* mother = 0;
-  if (extends != "") {
-    // Retrieving the mother class
-    if (__prm->__classMap.exists(extends)) {
-      mother = __prm->__classMap[extends];
-    } else if (__prm->__classMap.exists(__addPrefix(extends))) {
-      mother = __prm->__classMap[__addPrefix(extends)];
-    } else {
-      __throwNotDeclared(PRMObject::prm_class, extends);
+  __checkStackClass(1)->buildInstantiationSequence();
+  Class* c = __checkStackClass(1);
+  c->buildInstantiationSequence();
+  if (not c->isValid()) {
+    for (Set<Class*>::iterator iter = c->implements().begin();
+         iter != c->implements().end(); ++iter) {
+      if (not c->isValid(**iter)) {
+        GUM_ERROR(OperationNotAllowed, "interface wrongly implemented");
+      }
     }
-    c = new Class(real_name, *mother);
-  } else {
-    // No use of hierarchy here
-    c = new Class(real_name);
   }
-  __prm->__classMap.insert(c->name(), c);
-  __prm->__classes.insert(c);
-  __stack.push_back(c);
+  __stack.pop_back();
 }
 
 INLINE
 void
-PRMFactory::endClass()
+PRMFactory::startInterface(const std::string& name, const std::string& extends)
 {
-  __checkStackClass(1)->buildInstantiationSequence();
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Class* i = 0;
+  Class* super = 0;
+  if (extends != "") {
+    try {
+      super = __prm->__interfaceMap[extends];
+    } catch (NotFound&) {
+      try {
+        super = __prm->__interfaceMap[extends];
+      } catch (NotFound&) {
+        __throwNotDeclared(PRMObject::prm_interface, extends);
+      }
+    }
+  }
+  if (super != 0) {
+    i = new Class(real_name, *super);
+  } else {
+    i = new Class(real_name);
+  }
+  __prm->__interfaceMap.insert(i->name(), i);
+  __prm->__interfaces.insert(i);
+  __stack.push_back(i);
+}
+
+INLINE
+void
+PRMFactory::endInterface() {
+  __checkStackInterface(1);
   __stack.pop_back();
 }
 
@@ -120,7 +139,7 @@ INLINE
 void
 PRMFactory::startAttribute(const std::string& type, const std::string& name)
 {
-  Class* c = __checkStackClass(1);
+  Class* c = __checkStackClassOrInterface(1);
   Attribute* a = new Attribute(name, *__retrieveType(type));
   c->add(a);
   __stack.push_back(a);
@@ -188,8 +207,13 @@ PRMFactory::addReferenceSlot(const std::string& type,
   else
     __throwNotDeclared(PRMObject::prm_class, type);
   // Now we can proceed
-  Class* owner = __checkStackClass(1);
-  Class* slotType = __prm->__classMap[type_full_name];
+  Class* owner = __checkStackClassOrInterface(1);
+  Class* slotType = 0;
+  try {
+    slotType = __prm->__classMap[type_full_name];
+  } catch (NotFound&) {
+    slotType = __prm->__interfaceMap[type_full_name];
+  }
   ReferenceSlot* ref = new ReferenceSlot(name, *slotType, isArray);
   try {
     owner->add(ref);
@@ -249,7 +273,11 @@ INLINE
 void
 PRMFactory::__checkDuplicateName(const std::string& name)
 {
-  if (__prm->__classMap.exists(name) || __prm->__typeMap.exists(name)) {
+  if (__prm->__classMap.exists(name)     ||
+      __prm->__typeMap.exists(name)      ||
+      __prm->__interfaceMap.exists(name) ||
+      __prm->__modelMap.exists(name))
+  {
     std::stringstream msg;
     msg << "\"" << name << "\" is already used.";
     GUM_ERROR(DuplicateElement, msg.str());
@@ -322,9 +350,33 @@ PRMFactory::__checkStack(Idx i, PRMObject::ObjectType obj_type)
 
 INLINE
 Class*
-PRMFactory::__checkStackClass(Idx i)
+PRMFactory::__checkStackClassOrInterface(Idx i)
 {
   return static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
+}
+
+INLINE
+Class*
+PRMFactory::__checkStackClass(Idx i)
+{
+  Class* c = static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
+  if (__prm->__classMap.exists(c->name())) {
+    return c;
+  } else {
+    GUM_ERROR(FactoryInvalidState, "Not a class.");
+  }
+}
+
+INLINE
+Class*
+PRMFactory::__checkStackInterface(Idx i)
+{
+  Class* c = static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
+  if (__prm->__interfaceMap.exists(c->name())) {
+    return c;
+  } else {
+    GUM_ERROR(FactoryInvalidState, "Not an interface.");
+  }
 }
 
 INLINE

@@ -36,16 +36,8 @@ Class::Class(const std::string& name):
 }
 
 INLINE
-Class::Class(const std::string& name, Interface& i):
-  ClassElementContainer(name), __implements(new Set<Interface*>())
-{
-  GUM_CONSTRUCTOR( Class );
-  __implements->insert(&i);
-}
-
-INLINE
-Class::Class(const std::string& name, Set<Interface*>& set):
-  ClassElementContainer(name), __implements(new Set<Interface*>(set))
+Class::Class(const std::string& name, Set<Class*>& set):
+  ClassElementContainer(name), __implements(new Set<Class*>(set))
 {
   GUM_CONSTRUCTOR( Class );
 }
@@ -93,7 +85,7 @@ Class::add(Attribute* attr, bool isMutable) {
     }
   }
   if (isMutable) {
-    __mutables.insert(attr);
+    __params.insert(attr, false);
   }
   if (attr->type().isSubType()) {
     __addSuperType(attr);
@@ -201,17 +193,17 @@ Class::_isSubTypeOf(const ClassElementContainer& cec) const {
 }
 
 INLINE
-const Set<Interface*>&
+const Set<Class*>&
 Class::implements() const {
   if (__implements) {
     return *__implements;
   }
-  GUM_ERROR(NotFound, "This Class does not implement any Interface.");
+  GUM_ERROR(NotFound, "This Class does not implement any interface.");
 }
 
 INLINE
-const Set<const Attribute*>&
-Class::mutables() const { return __mutables; }
+const HashTable<const Attribute*, bool>&
+Class::parameters() const { return __params; }
 
 // ============================================================================
 } /* namespace prm */

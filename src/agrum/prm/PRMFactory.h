@@ -147,15 +147,48 @@ class PRMFactory {
 
     /**
      * Tells the factory that we start a class declaration.
+     * @brief Tells the factory that we start a class declaration.
+     *
+     * Use the default values if you do not want c to be a subclass or to
+     * implement interfaces.
+     *
+     * @param c The class name.
+     * @param extends The name of the super class of c.
+     * @param implements The list of interface implemented by c.
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
-    void startClass(const std::string& name, const std::string& extends="");
+    void startClass(const std::string& c, const std::string& extends="",
+                    const Set<std::string>* implements=0);
 
     /**
      * Tells the factory that we finished a class declaration.
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
     void endClass();
+
+    /// @}
+    // ======================================================================
+    /// @name Interface construction models.
+    // ======================================================================
+    /// @{
+
+    /**
+     * @brief Tells the factory that we start an interface declaration.
+     *
+     * Use the default values if you do not want c to be a subclass or to
+     * implement interfaces.
+     *
+     * @param i The interface name.
+     * @param extends The name of the super interface of i.
+     * @throw OperationNotAllowed Raised if the given operation is illegal.
+     */
+    void startInterface(const std::string& i, const std::string& extends="");
+
+    /**
+     * Tells the factory that we finished an interface declaration.
+     * @throw OperationNotAllowed Raised if the given operation is illegal.
+     */
+    void endInterface();
 
     /// @}
     // ======================================================================
@@ -187,13 +220,13 @@ class PRMFactory {
      * PRM implementation.
      *
      * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {false, true}, the order is
+     * with A, B and C boolean variables ( {f, t}, the order is
      * important), then the following array is valid:
      * @code
-     * [0.20, 0.80, // P(false|false, false) = 0.20 and P(true|false, false) = 0.80
-     *  0.50, 0.50, // P(false|true, false)  = 0.50 and P(true|true, false)  = 0.50
-     *  0.70, 0.30, // P(false|false, true)  = 0.70 and P(true|false, true)  = 0.30
-     *  0.01, 0.99] // P(false|true, true)   = 0.01 and P(true|true, true)   = 0.99
+     * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+     *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+     *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+     *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
      * @endcode
      *
      * @throw OperationNotAllowed Raised if the given operation is illegal.
@@ -210,13 +243,13 @@ class PRMFactory {
      * PRM implementation.
      *
      * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {false, true}, the order is
+     * with A, B and C boolean variables ( {f, t}, the order is
      * important), then the following array is valid:
      * @code
-     * [0.20, 0.80, // P(false|false, false) = 0.20 and P(true|false, false) = 0.80
-     *  0.50, 0.50, // P(false|true, false)  = 0.50 and P(true|true, false)  = 0.50
-     *  0.70, 0.30, // P(false|false, true)  = 0.70 and P(true|false, true)  = 0.30
-     *  0.01, 0.99] // P(false|true, true)   = 0.01 and P(true|true, true)   = 0.99
+     * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+     *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+     *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+     *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
      * @endcode
      *
      * @throw OperationNotAllowed Raised if the given operation is illegal.
@@ -233,11 +266,12 @@ class PRMFactory {
      * PRM implementation.
      *
      * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {false, true}, the order is
+     * with A, B and C boolean variables ( {f, t}, the order is
      * important), then the following array is valid:
      * @code
-     * [0.2, 0.7, 0.5, 0.01,
-     *  0.8, 0.3, 0.5, 0.99]
+     * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+     * [ 0.2,     0.7,     0.5,     0.01,
+     *   0.8,     0.3,     0.5,     0.99]
      * @endcode
      *
      * See PRMFactory::setRawCPFByLines() for more details.
@@ -254,11 +288,12 @@ class PRMFactory {
      * PRM implementation.
      *
      * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {false, true}, the order is
+     * with A, B and C boolean variables ( {f, t}, the order is
      * important), then the following array is valid:
      * @code
-     * [0.2, 0.7, 0.5, 0.01,
-     *  0.8, 0.3, 0.5, 0.99]
+     * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+     * [ 0.2,     0.7,     0.5,     0.01,
+     *   0.8,     0.3,     0.5,     0.99]
      * @endcode
      *
      * See PRMFactory::setRawCPFByLines() for more details.
@@ -268,10 +303,71 @@ class PRMFactory {
     void setRawCPFByColumns(const std::vector<double>& array);
 
     /**
+     * Fills the CPF using a rule.
+     *
+     * The labels vector is filled with one of each parent's labels or
+     * with a wildcard ("*"). If a wildcard is used then all values of the
+     * corresponding parents are used. The sequence of parents must be the
+     * declaration order used when adding the current attribute's parents.
+     * 
+     * @param labels The value of each parents.
+     * @param values The probability values of the current attribute given
+     *               the values in parenst.
+     */
+    void setCPFByRule(const std::vector<std::string>& labels,
+                      const std::vector<float>& values);
+
+    /**
+     * Fills the CPF using a rule.
+     *
+     * The labels vector is filled with one of each parent's labels or
+     * with a wildcard ("*"). If a wildcard is used then all values of the
+     * corresponding parents are used. The sequence of parents must be the
+     * declaration order used when adding the current attribute's parents.
+     * 
+     * @param labels The value of each parents.
+     * @param values The probability values of the current attribute given
+     *               the values in parenst.
+     */
+    void setCPFByRule(const std::vector<std::string>& labels,
+                      const std::vector<double>& values);
+
+    /**
      * Tells the factory that we finished declaring an attribute.
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
     void endAttribute();
+
+    /// @}
+    // ======================================================================
+    /// @name Parameters construction methods.
+    // ======================================================================
+    /// @{
+
+    /**
+     * Add a parameter to the current class.
+     *
+     * A parameter is an Attribute (aka mutable Attribute) with no parents
+     * and with a CPF filled with 1.
+     *
+     * @param type The type of this parameter.
+     * @param name The name of this parameter.
+     */
+    void addParameter(const std::string& type, const std::string& name);
+
+    /**
+     * Add a parameter to the current class with a default value.
+     *
+     * A parameter with a default value is an Attribute (aka mutable Attribute)
+     * with no parents and with a CPF filled with 1.
+     *
+     * @param type The type of this parameter.
+     * @param name The name of this parameter.
+     * @param value The label used as default value for this parameter.
+     */
+    void addParameter(const std::string& type,
+                      const std::string& name,
+                      std::string value);
 
     /// @}
     // ======================================================================
@@ -413,7 +509,15 @@ class PRMFactory {
 
     /// Shortcut for casting a PRMObject in a Class from the stack with type
     /// checking.
+    Class* __checkStackClassOrInterface(Idx i);
+
+    /// Shortcut for casting a PRMObject in a Class from the stack with type
+    /// checking.
     Class* __checkStackClass(Idx i);
+
+    /// Shortcut for casting a PRMObject in an interface (aka Class) from the stack
+    /// with type checking.
+    Class* __checkStackInterface(Idx i);
 
     // Shortcut for casting a PRMObject in a ReferenceSlot from the stack with 
     // type checking.

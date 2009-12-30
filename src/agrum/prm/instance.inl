@@ -153,7 +153,7 @@ void
 Instance::initialize(NodeId id, const Potential<prm_float>& value) {
   if (type().get(id).elt_type() == ClassElement::prm_attribute) {
     const Attribute* a = static_cast<const Attribute*>(&(type().get(id)));
-    if (type().mutables().exists(a)) {
+    if (type().parameters().exists(a)) {
       if (not isInstantiated(a->id())) {
         instantiate(a->id());
       }
@@ -161,24 +161,23 @@ Instance::initialize(NodeId id, const Potential<prm_float>& value) {
       for (inst.setFirst(); not inst.end(); inst.inc()) {
         get(a->id()).cpf().set(inst, value.get(inst));
       }
-      if (not __mutables) {
-        __mutables = new Set<const Attribute*>();
+      if (not __params) {
+        __params = new Set<const Attribute*>();
       }
-      __mutables->insert(static_cast<Attribute*>(&(get(a->id()))));
+      __params->insert(static_cast<Attribute*>(&(get(a->id()))));
     } else {
-      GUM_ERROR(OperationNotAllowed, "Given attribute is not mutable.");
+      GUM_ERROR(OperationNotAllowed, "Given attribute is not a parameter.");
     }
   } else {
-    GUM_ERROR(OperationNotAllowed, "Given NodeId is not a mutable "
-                                   "Attribute.");
+    GUM_ERROR(OperationNotAllowed, "Given NodeId is not a parameter.");
   }
 }
 
 INLINE
 const Set<const Attribute*>&
-Instance::mutables() const {
-  if (__mutables) {
-    return *__mutables;
+Instance::parameters() const {
+  if (__params) {
+    return *__params;
   } else {
     GUM_ERROR(NotFound, "No mutable Attribute in this Instance.");
   }

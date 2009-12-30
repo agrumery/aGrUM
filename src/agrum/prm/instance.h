@@ -88,13 +88,13 @@ class Instance: public ClassElementContainer {
     /// Returns bijection between variables in this Instance and it's type.
     const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bijection() const;
 
-    /// Initialize a mutable Attribute
+    /// Initialize a parameter.
     /// @throw OperationNotAllowed Raised if a is not mutable.
     void initialize(NodeId id, const Potential<prm_float>& value);
 
-    /// Returns the Set of initialized mutable Attribute in this.
+    /// Returns the Set of initialized parameters in this.
     /// @throw NotFound Raised if there is no mutable Attribute in this.
-    const Set<const Attribute*>& mutables() const;
+    const Set<const Attribute*>& parameters() const;
 
     /// @}
   // ========================================================================
@@ -228,7 +228,7 @@ class Instance: public ClassElementContainer {
     mutable Bijection<const DiscreteVariable*, const DiscreteVariable*>* __bijection;
 
     /// The Set of initialized mutable Attribute
-    Set<const Attribute*>* __mutables;
+    Set<const Attribute*>* __params;
 
     /// @}
 };

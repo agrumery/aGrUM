@@ -44,12 +44,12 @@ Class::Class(const std::string& name, Class& super):
     __IOFlags.insert(iter.key(), new std::pair<bool, bool>(**iter));
   }
   if (super.__implements) {
-    __implements = new Set<Interface*>(*(super.__implements));
+    __implements = new Set<Class*>(*(super.__implements));
   }
 }
 
-Class::Class(const std::string& name, Class& super, Interface& i):
-  ClassElementContainer(name, super, false), __implements(0)
+Class::Class(const std::string& name, Class& super, Set<Class*>& set):
+  ClassElementContainer(name, super, false), __implements(new Set<Class*>(set))
 {
   GUM_CONSTRUCTOR( Class );
   typedef Property<std::pair<bool, bool>*>::onNodes::iterator FlagIterator;
@@ -57,24 +57,7 @@ Class::Class(const std::string& name, Class& super, Interface& i):
     __IOFlags.insert(iter.key(), new std::pair<bool, bool>(**iter));
   }
   if (super.__implements) {
-    delete __implements;
-    __implements = new Set<Interface*>(*(super.__implements));
-  } else {
-    __implements = new Set<Interface*>();
-  }
-  __implements->insert(&i);
-}
-
-Class::Class(const std::string& name, Class& super, Set<Interface*>& set):
-  ClassElementContainer(name, super, false), __implements(new Set<Interface*>(set))
-{
-  GUM_CONSTRUCTOR( Class );
-  typedef Property<std::pair<bool, bool>*>::onNodes::iterator FlagIterator;
-  for (FlagIterator iter = super.__IOFlags.begin(); iter != super.__IOFlags.end(); ++iter) {
-    __IOFlags.insert(iter.key(), new std::pair<bool, bool>(**iter));
-  }
-  if (super.__implements) {
-    for (Set<Interface*>::iterator i = super.__implements->begin();
+    for (Set<Class*>::iterator i = super.__implements->begin();
          i != super.__implements->end(); ++i) {
       __implements->insert(*i);
     }
@@ -158,7 +141,7 @@ bool
 Class::isValid() const {
   if (__implements) {
     bool retVal = true;
-    for (Set<Interface*>::iterator iter = __implements->begin();
+    for (Set<Class*>::iterator iter = __implements->begin();
          iter != __implements->end(); ++iter) {
       retVal = retVal or isValid(**iter);
       if (not retVal) {
@@ -171,7 +154,7 @@ Class::isValid() const {
 }
 
 bool
-Class::isValid(const Interface& i) const {
+Class::isValid(const Class& i) const {
   for (DAG::NodeIterator node = i.dag().beginNodes();
        node != i.dag().endNodes(); ++node) {
     switch (i.get(*node).elt_type()) {
@@ -195,7 +178,7 @@ Class::isValid(const Interface& i) const {
                                         break;
                                       }
       default: {
-                 GUM_ERROR(FatalError, "unexpected ClassElement in Interface.");
+                 GUM_ERROR(FatalError, "unexpected ClassElement in interface.");
                }
     }
   }

@@ -36,7 +36,7 @@ namespace prm {
 // ============================================================================
 
 Instance::Instance(const std::string& name, Class& type):
-  ClassElementContainer(name, type, true), __bijection(0)
+  ClassElementContainer(name, type, true), __bijection(0), __params(0)
 {
   GUM_CONSTRUCTOR( Instance );
 }
@@ -63,6 +63,9 @@ Instance::~Instance()
     delete *set;
   }
   delete __bijection;
+  if (__params) {
+    delete __params;
+  }
 }
 
 Instance::Instance(const Instance& from):

@@ -160,6 +160,12 @@ class PRM {
     /// Sequence of all Class in this PRM.
     Sequence<Class*> __classes;
 
+    /// Mapping of all Class given their name.
+    HashTable<std::string, Class*> __interfaceMap;
+
+    /// Sequence of all Class in this PRM.
+    Sequence<Class*> __interfaces;
+
     /// Mapping of all Type given their name.
     HashTable<std::string, Type*> __typeMap;
 

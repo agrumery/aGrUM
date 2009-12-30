@@ -44,9 +44,59 @@ PRMFactory::~PRMFactory()
 }
 
 void
+PRMFactory::startClass(const std::string& name, const std::string& extends,
+                       const Set<std::string>* implements)
+{
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Class* c = 0;
+  Class* mother = 0;
+  Set<Class*> impl;
+  if (implements != 0) {
+    for (Set<std::string>::iterator iter = implements->begin();
+         iter != implements->end(); ++iter) {
+      try {
+        impl.insert(__prm->__interfaceMap[*iter]);
+      } catch (NotFound&) {
+        try {
+          impl.insert(__prm->__interfaceMap[__addPrefix(*iter)]);
+        } catch (NotFound&) {
+          __throwNotDeclared(PRMObject::prm_interface, *iter);
+        }
+      }
+    }
+  }
+  if (extends != "") {
+    // Retrieving the mother class
+    try {
+      mother = __prm->__classMap[extends];
+    } catch (NotFound&) {
+      try {
+      mother = __prm->__classMap[__addPrefix(extends)];
+      } catch (NotFound&) {
+        __throwNotDeclared(PRMObject::prm_class, extends);
+      }
+    }
+  }
+  if ((extends == "") and impl.empty()) {
+    c = new Class(real_name);
+  } else if ((extends != "") and impl.empty()) {
+    c = new Class(real_name, *mother);
+  } else if ((extends == "") and (not impl.empty())) {
+    c = new Class(real_name, impl);
+  } else if ((extends != "") and (not impl.empty())) {
+    c = new Class(real_name, *mother, impl);
+  }
+  __prm->__classMap.insert(c->name(), c);
+  __prm->__classes.insert(c);
+  __stack.push_back(c);
+}
+
+void
 PRMFactory::setRawCPFByLines(const std::vector<float>& array)
 {
   Attribute* a = __checkStackAttr(1);
+  __checkStackClass(2);
   if (a->cpf().domainSize() != array.size()) {
     std::stringstream sBuff;
     sBuff << "found domain size of " << array.size();
@@ -64,6 +114,7 @@ void
 PRMFactory::setRawCPFByLines(const std::vector<double>& array)
 {
   Attribute* a = __checkStackAttr(1);
+  __checkStackClass(2);
   if (a->cpf().domainSize() != array.size()) {
     std::stringstream sBuff;
     sBuff << "found domain size of " << array.size();
@@ -80,13 +131,131 @@ PRMFactory::setRawCPFByLines(const std::vector<double>& array)
 void
 PRMFactory::setRawCPFByColumns(const std::vector<float>& array)
 {
-  GUM_ERROR(FatalError, "not implemented");
+  Attribute* a = __checkStackAttr(1);
+  if (a->cpf().nbrDim() == 1) {
+    setRawCPFByLines(array);
+  } else {
+    Instantiation inst(a->cpf());
+    Instantiation jnst;
+    typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
+    for (Iterator iter = a->cpf().variablesSequence().rbegin();
+         iter != a->cpf().variablesSequence().rend(); ++iter) {
+      if (a->type().variable() != (**iter)) {
+        jnst.add(**iter);
+      }
+    }
+    size_t idx = 0;
+    for (Size i = 0; i < a->type()->domainSize(); ++i) {
+      inst.chgVal(a->type().variable(), i);
+      for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
+        inst.chgValIn(jnst);
+        a->cpf().set(jnst, array[idx]);
+        ++idx;
+      }
+    }
+  }
 }
 
 void
 PRMFactory::setRawCPFByColumns(const std::vector<double>& array)
 {
-  GUM_ERROR(FatalError, "not implemented");
+  Attribute* a = __checkStackAttr(1);
+  if (a->cpf().nbrDim() == 1) {
+    setRawCPFByLines(array);
+  } else {
+    Instantiation inst(a->cpf());
+    Instantiation jnst;
+    typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
+    for (Iterator iter = a->cpf().variablesSequence().rbegin();
+         iter != a->cpf().variablesSequence().rend(); ++iter) {
+      if (a->type().variable() != (**iter)) {
+        jnst.add(**iter);
+      }
+    }
+    size_t idx = 0;
+    for (Size i = 0; i < a->type()->domainSize(); ++i) {
+      inst.chgVal(a->type().variable(), i);
+      for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
+        inst.chgValIn(jnst);
+        a->cpf().set(jnst, array[idx]);
+        ++idx;
+      }
+    }
+  }
+}
+
+void
+PRMFactory::setCPFByRule(const std::vector<std::string>& parents,
+                         const std::vector<float>& values)
+{
+  Attribute* a = __checkStackAttr(1);
+  Instantiation inst(a->cpf());
+  Instantiation jnst, knst;
+  const DiscreteVariable* var = 0;
+  Size pos = 0;
+  bool found = false;
+  for (size_t i = 0; i < parents.size(); ++i) {
+    var = a->cpf().variablesSequence().atPos(1+i);
+    if (parents[i] == "*") {
+      knst.add(*var);
+    } else {
+      jnst.add(*var);
+      pos = 0;
+      found = false;
+      for (Size j = 0; j < var->domainSize(); ++j) {
+        if (var->label(j) == parents[i]) {
+          jnst.chgVal(*var, j);
+          found = true;
+          break;
+        }
+      }
+      if (not found) GUM_ERROR(NotFound, "no label with this name.");
+    }
+  }
+  inst.chgValIn(jnst);
+  for (Size i = 0; i < a->type()->domainSize(); ++i) {
+    inst.chgVal(a->type().variable(), i);
+    for (inst.setFirstIn(knst); not inst.end(); inst.incIn(knst)) {
+      a->cpf().set(inst, values[i]);
+    }
+  }
+}
+
+void
+PRMFactory::setCPFByRule(const std::vector<std::string>& labels,
+                         const std::vector<double>& values)
+{
+  Attribute* a = __checkStackAttr(1);
+  Instantiation inst(a->cpf());
+  Instantiation jnst, knst;
+  const DiscreteVariable* var = 0;
+  Size pos = 0;
+  bool found = false;
+  for (size_t i = 0; i < labels.size(); ++i) {
+    var = a->cpf().variablesSequence().atPos(1+i);
+    if (labels[i] == "*") {
+      knst.add(*var);
+    } else {
+      jnst.add(*var);
+      pos = 0;
+      found = false;
+      for (Size j = 0; j < var->domainSize(); ++j) {
+        if (var->label(j) == labels[i]) {
+          jnst.chgVal(*var, j);
+          found = true;
+          break;
+        }
+      }
+      if (not found) GUM_ERROR(NotFound, "no label with this name.");
+    }
+  }
+  inst.chgValIn(jnst);
+  for (Size i = 0; i < a->type()->domainSize(); ++i) {
+    inst.chgVal(a->type().variable(), i);
+    for (inst.setFirstIn(knst); not inst.end(); inst.incIn(knst)) {
+      a->cpf().set(inst, values[i]);
+    }
+  }
 }
 
 void

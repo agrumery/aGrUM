@@ -33,7 +33,6 @@
 #include <agrum/core/sequence.h>
 // ============================================================================
 #include <agrum/prm/classElementContainer.h>
-#include <agrum/prm/interface.h>
 // ============================================================================
 namespace gum {
 namespace prm {
@@ -78,36 +77,21 @@ class Class: public ClassElementContainer {
     Class(const std::string& name, Class& super);
 
     /**
-     * Constructor for building a Class implementing an Interface.
-     * @param name The Class name.
-     * @param i The implemented Interface.
-     */
-    Class(const std::string& name, Interface& i);
-
-    /**
-     * Constructor for building a Class implementing several each Interface
+     * Constructor for building a Class implementing several each interface
      * in set.
      * @param name The sub class name.
      * @param set The Set of implemented interfaces.
      */
-    Class(const std::string& name, Set<Interface*>& set);
-
-    /**
-     * Constructor for building a subclass of super and implementing i.
-     * @param name The sub class name.
-     * @param super The super Class of this.
-     * @param i The implemented Interface.
-     */
-    Class(const std::string& name, Class& super, Interface& i);
+    Class(const std::string& name, Set<Class*>& set);
 
     /**
      * Constructor for building a subclass of super and implementing each
-     * Interface in set.
+     * interface in set.
      * @param name The sub class name.
      * @param super The super Class of this.
      * @param set The Set of implemented interfaces.
      */
-    Class(const std::string& name, Class& super, Set<Interface*>& set);
+    Class(const std::string& name, Class& super, Set<Class*>& set);
 
     /**
      * Destructor.
@@ -147,14 +131,20 @@ class Class: public ClassElementContainer {
      * then an DuplicateElement is raised and attr is not added to this class
      * which implies that you should handle yourself it's memory deallocation.
      *
-     * Mutable Attribute can't have parents.
-     *
-     * @param isMutable If true the Attribute is mutable and it must be initialized
-     *                  at instantiation time.
+     * @param isParam If true the Attribute is parameter and it must be
+     *                initialized at instantiation time.
      *
      * @throw DuplicateElement Raised if an element in this has the same name.
      */
-    void add(Attribute* attr, bool isMutable = false);
+    void add(Attribute* attr, bool isParam = false);
+
+    /**
+     * If true the initialization flag indicated that the given parameter is
+     * already initialized and does not require initialization at
+     * instantiation.
+     * @throw NotFound Raised if attr is not a parameter.
+     */
+    void setInitializationFlag(Attribute* attr, bool f);
 
     /**
      * @brief Add an aggregate to this class.
@@ -224,20 +214,21 @@ class Class: public ClassElementContainer {
     /// the class is fully filled.
     void buildInstantiationSequence() const;
 
-    /// The Set of Interface implemented by this.
+    /// The Set of interface implemented by this.
     /// @throws NotFound Raised if this class does not implement any
-    /// Interface.
-    const Set<Interface*>& implements() const;
+    ///         interface.
+    const Set<Class*>& implements() const;
 
-    /// Returns true if this respect all its implemented Interface.
+    /// Returns true if this respect all its implemented interface.
     bool isValid() const;
 
     /// Returns true if this is a valid implementation of i.
-    bool isValid(const Interface& i) const;
+    bool isValid(const Class& i) const;
 
-    /// Returns the set of mutable Attribute.
-    /// A mutable Attribute must be initialized at instantiation time.
-    const Set<const Attribute*>& mutables() const;
+    /// Returns a HashTable in which the keys are this class parameters and
+    /// its values the parameters initialization flag.
+    /// See setInitializationFlag().
+    const HashTable<const Attribute*, bool>& parameters() const;
 
     /// @}
   protected:
@@ -273,11 +264,12 @@ class Class: public ClassElementContainer {
     /// Add the super types of the given attribute.
     void __addSuperType(Attribute* attr);
 
-    /// The Set of implemented Interface of this.
-    Set<Interface*>* __implements;
+    /// The Set of implemented interface of this.
+    Set<Class*>* __implements;
 
-    /// The Set of mutable Attribute in this.
-    Set<const Attribute*> __mutables;
+    /// The HashTable of parameters in this.
+    /// The value correspond to the initialization flag.
+    HashTable<const Attribute*, bool> __params;
 
     /// @}
 // ==========================================================================
