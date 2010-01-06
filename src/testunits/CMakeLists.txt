@@ -80,6 +80,7 @@ file(GLOB AGRUM_TESTS
        SetTestSuite.h
        ShaferShenoyInferenceTestSuite.h
        SimpleCPTGeneratorTestSuite.h
+       SkoolTestSuite.h
        SpanningForestPrimTestSuite.h
        TorcsTestSuite.h   #<-----------------------MEMORY LEAK
        UndiGraphTestSuite.h

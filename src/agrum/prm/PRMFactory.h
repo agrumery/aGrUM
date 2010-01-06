@@ -116,22 +116,42 @@ class PRMFactory {
     /// @{
 
     /**
-     * Tells the factory that we entered a package.
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
+     * Define the current package.
      */
-    void startPackage(const std::string& name);
-
-    /**
-     * Tells the factory that we left a package.
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
-     */
-    void endPackage();
+    void setPackage(const std::string& name);
 
     /// @}
     // ======================================================================
     /// @name Type construction methods.
     // ======================================================================
     /// @{
+
+    /**
+     * Start a discrete type declaration.
+     */
+    void startDiscreteType(const std::string& name);
+
+    /**
+     * Start a discrete subtype declaration.
+     */
+    void startDiscreteType(const std::string& name,
+                           const std::string& super);
+
+    /**
+     * Add a label to the current discrete type.
+     */
+    void addLabel(const std::string& l);
+
+    /**
+     * Add a label to the current discrete type.
+     * @param extends The super type label for which l is an extension.
+     */
+    void addLabel(const std::string& l, std::string& extends);
+
+    /**
+     * End the current discrete type declaration.
+     */
+    void endDiscreteType();
 
     /**
      * Add a type in the given namespace.
@@ -506,6 +526,10 @@ class PRMFactory {
     /// @throw FactoryInvalidState Raised if the stack isn't consistent with the 
     //                             current declaration.
     PRMObject* __checkStack(Idx i, PRMObject::ObjectType obj_type);
+
+    /// Shortcut for casting a PRMObject in a Class from the stack with type
+    /// checking.
+    Type* __checkStackType(Idx i);
 
     /// Shortcut for casting a PRMObject in a Class from the stack with type
     /// checking.

@@ -218,6 +218,9 @@ class Type: public PRMObject {
     // ==========================================================================
     /// @{
 
+    /// Returns true if this is a valid type or subtype.
+    bool __isValid() const;
+
     /// The discrete variable
     DiscreteVariable* __var;
 

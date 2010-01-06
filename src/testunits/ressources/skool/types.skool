@@ -1,0 +1,31 @@
+package agrum.test;
+
+type t_state extends boolean
+  OK: true,
+  NOK: false;
+
+type t_ink extends t_state
+  NotEmpty: OK,
+  Empty:    NOK;
+
+type t_degraded extends t_state
+  OK: OK,
+  Dysfunctional: NOK,
+  Degraded: NOK;
+
+// The state of a black & white printer
+type t_bw_p extends t_degraded
+  CanPrint:   OK,
+  PaperJam:   Dysfunctional,
+  NoInk:      Dysfunctional,
+  CantPrint:  Dysfunctional;
+
+// The state of color printer
+type t_color_p extends t_degraded
+  CanPrint:   OK,
+  PaperJam:   Dysfunctional,
+  NoInk:      Dysfunctional,
+  // One of the four inks is depleted (black, magenta, cyan or yellow)
+  MissingInk: Degraded,
+  CantPrint:  Dysfunctional;
+

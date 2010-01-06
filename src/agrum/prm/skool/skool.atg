@@ -1,0 +1,143 @@
+#include <string>
+
+#include <agrum/prm/PRMFactory.h>
+
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
+COMPILER Skool;
+
+gum::prm::PRMFactory* __factory;
+
+void setFactory(gum::prm::PRMFactory* f) {
+  __factory = f;
+}
+
+gum::prm::PRMFactory& factory() {
+  if (__factory) {
+    return *__factory;
+  }
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+}
+
+bool isPath() {
+  return (la->kind == _word) and (scanner->Peek()->kind == _dot);
+}
+
+bool isBaseType() {
+  Token* n1 = scanner->Peek();
+  Token* n2 = scanner->Peek();
+  return (la->kind == _type) and (n1->kind == _word) and (n2->kind != _extends);
+}
+
+//=====================
+CHARACTERS
+  letter = 'A'..'Z' + 'a'..'z'+ '_' .
+  digit  = '0'..'9'.
+  eol    = '\n'.
+
+//=====================
+TOKENS
+  integer   = ['+'|'-'] digit {digit}.
+  float     = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
+  word      = letter {(letter | digit)}.
+  eol       = '\n'.
+  dot       = '.'.
+  comma     = ','.
+  colon     = ':'.
+  semicolon = ';'.
+  type      = "type".
+  extends   = "extends".
+
+//=====================
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO eol
+
+IGNORE '\r' + eol + '\t'
+
+//=====================
+PRODUCTIONS
+
+//=====================
+Skool = {Header} { Unit }.
+
+//=====================
+Header  = (Package | Import).
+
+Package = "package"         (. std::string name; .)
+          Ident<name> ';'   (. factory().setPackage(name); .).
+
+Import  = "import"          (. std::string name; .)
+          Ident<name> ';'   (. std::cerr << "Import disabled."; .).
+
+//=====================
+Unit = Type. //| Class | System.
+
+//=====================
+Type =   IF(isBaseType())
+         BaseType
+       | SuperType
+       .
+
+//=====================
+BaseType =                      (. std::string l; .)
+           "type" word          (. factory().startDiscreteType(narrow(t->val)); .)
+           Label<l> ','         (. factory().addLabel(l); .)
+           Label<l>             (. factory().addLabel(l); .)
+           {
+             ',' Label<l>       (. factory().addLabel(l); .)
+           }
+           ';'                  (. factory().endDiscreteType(); .)
+           .
+
+//=====================
+SuperType   = "type" word                   (. std::string s, l, name, super; name = narrow(t->val); .)
+              "extends" Ident<super>        (. factory().startDiscreteType(name, super); .)
+              Label<l> ':' Label<s> ','     (. factory().addLabel(l, s); .)
+              Label<l> ':' Label<s>         (. factory().addLabel(l, s); .)
+              {
+                ',' Label<l> ':' Label<s>   (. factory().addLabel(l, s); .)
+              }
+              ';'                           (. factory().endDiscreteType(); .)
+              .
+
+//=====================
+// Class = BaseClass | SuperClass.
+// 
+// BaseClass =                                                   (. gum::Set<std::string> set; .)
+//             "class" word<name> "implements" Implements<set>   (. factory.startClass(name, "", set); .)
+//             "{" ClassBody "}"                                 (. factory.endClass(); .)
+//             .
+// 
+// SuperClass = "class" word<name> "extends" (
+//                  word<super> (. factory.startClass(name, super); .)
+//                | Path<super> (. factory.startClass(name, super); .)
+//              ) "implements" StringSet<set> "{" ClassBody "}"  (. factory.endClass(); .)
+//              .
+// 
+// Implements<. gum::Set<std::string>& set .> =   Ident<name>                        (. set.insert(name); .)
+//                                              | Implements<set> ',' Ident<name>    (. set.insert(name); .)
+//                                              .
+// 
+
+//=====================
+Path<std::string& s>  = word      (. s += narrow(t->val); .)
+                        '.'       (. s += '.'; .)
+                        word      (. s += narrow(t->val); .)
+                        {
+                          '.'     (. s += '.'; .)
+                          word    (. s+= narrow(t->val); .)
+                        }
+                        .
+
+Ident<std::string& s> =   IF(isPath())    (. std::string val; .)
+                          Path<val>       (. s = val; .)
+                        | word            (. s = narrow(t->val); .)
+                        .
+
+Label<std::string& s> =                 (. std::string val; .)
+                          Ident<val>    (. s = val; .)
+                        | integer       (. s = narrow(t->val); .)
+                        | float         (. s = narrow(t->val); .)
+                        .
+
+
+END Skool.

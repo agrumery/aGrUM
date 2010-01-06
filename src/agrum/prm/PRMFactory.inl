@@ -55,16 +55,8 @@ PRMFactory::currentPackage() const { return __prefix; }
 
 INLINE
 void
-PRMFactory::startPackage(const std::string& name)
-{
+PRMFactory::setPackage(const std::string& name) {
   __prefix = name;
-}
-
-INLINE
-void
-PRMFactory::endPackage()
-{
-  __prefix = "";
 }
 
 INLINE
@@ -349,6 +341,12 @@ PRMFactory::__checkStack(Idx i, PRMObject::ObjectType obj_type)
 }
 
 INLINE
+Type*
+PRMFactory::__checkStackType(Idx i) {
+  return static_cast<Type*>(__checkStack(i, PRMObject::prm_type));
+}
+
+INLINE
 Class*
 PRMFactory::__checkStackClassOrInterface(Idx i)
 {
@@ -446,11 +444,7 @@ PRMFactory::__retrieveType(const std::string& name)
   try {
     return __prm->__typeMap[name];
   } catch (NotFound&) {
-    try {
-      return  __prm->__typeMap[__addPrefix(name)];
-    } catch (NotFound&) {
-      GUM_ERROR(NotFound, name);
-    }
+    return  __prm->__typeMap[__addPrefix(name)];
   }
   return 0;
 }
@@ -544,6 +538,77 @@ PRMFactory::__setReferenceSlotWithInstance(const std::string& left_instance,
     GUM_ERROR(OperationNotAllowed, left_instance + " is not a ReferenceSlot");
   }
 }
+
+INLINE
+void
+PRMFactory::startDiscreteType(const std::string& name) {
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Type* t = new Type(LabelizedVariable(real_name, "", 0));
+  __stack.push_back(t);
+}
+
+INLINE
+void
+PRMFactory::addLabel(const std::string& l) {
+  Type* t = __checkStackType(1);
+  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+  if (not var) {
+    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+  } else if (t->__super) {
+    GUM_ERROR(OperationNotAllowed, "current type is a subtype.");
+  }
+  var->addLabel(l);
+}
+
+INLINE
+void
+PRMFactory::startDiscreteType(const std::string& name,
+                              const std::string& super) {
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Type* t = new Type(LabelizedVariable(real_name, "", 0));
+  t->__super = __retrieveType(super);
+  t->__label_map = new std::vector<Idx>();
+  __stack.push_back(t);
+}
+
+INLINE
+void
+PRMFactory::addLabel(const std::string& l, std::string& extends) {
+  Type* t = __checkStackType(1);
+  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+  if (not var) {
+    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+  } else if (not t->__super) {
+    GUM_ERROR(OperationNotAllowed, "current type is not a subtype.");
+  }
+  bool found = false;
+  for (Idx i = 0; i < t->__super->__var->domainSize(); ++i) {
+    if (t->__super->__var->label(i) == extends) {
+      var->addLabel(l);
+      t->__label_map->push_back(i);
+      found = true;
+      break;
+    }
+  }
+  if (not found) {
+    GUM_ERROR(OperationNotAllowed, "inexistent label in super type.");
+  }
+}
+
+INLINE
+void
+PRMFactory::endDiscreteType() {
+  Type* t = __checkStackType(1);
+  if (not t->__isValid()) {
+    GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype.");
+  }
+  __prm->__typeMap.insert(t->name(), t);
+  __prm->__types.insert(t);
+  __stack.pop_back();
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

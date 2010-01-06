@@ -47,18 +47,7 @@ namespace prm {
     __super(&super_type), __label_map(new std::vector<Idx>(label_map))
   {
     GUM_CONSTRUCTOR( Type );
-    bool invalid = false;
-    if (__label_map->size() == __var->domainSize()) {
-      for (size_t i = 0; i < __label_map->size(); ++i) {
-        if (__label_map->at(i) >= (**__super).domainSize()) {
-          invalid = true;
-          break;
-        }
-      }
-    } else {
-      invalid = true;
-    }
-    if (invalid) {
+    if (__isValid()) {
       delete __label_map;
       GUM_ERROR(OperationNotAllowed, "Invalid label map.");
     }
@@ -114,6 +103,23 @@ namespace prm {
     } else {
       return ((*this) == super);
     }
+  }
+
+  bool
+  Type::__isValid() const
+  {
+    if (not __super) {
+      return __var->domainSize() > 1;
+    }
+    if (__label_map->size() == __var->domainSize()) {
+      for (size_t i = 0; i < __label_map->size(); ++i) {
+        if (__label_map->at(i) >= (**__super).domainSize()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
 } /* namespace prm */
