@@ -30,6 +30,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define COCO_R_H
 // ============================================================================
 #include <iostream>
+#include <cstring>
 #include <climits>
 #include <locale>
 #include <sstream>
