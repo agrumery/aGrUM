@@ -97,24 +97,7 @@ PRMFactory::setRawCPFByLines(const std::vector<float>& array)
 {
   Attribute* a = __checkStackAttr(1);
   __checkStackClass(2);
-  if (a->cpf().domainSize() != array.size()) {
-    std::stringstream sBuff;
-    sBuff << "found domain size of " << array.size();
-    sBuff << " expected " << a->cpf().domainSize();
-    GUM_ERROR(OperationNotAllowed, sBuff.str());
-  }
-  std::vector<prm_float> ugly;
-  for (size_t i = 0; i < array.size(); ++i) {
-    ugly.push_back((prm_float) array[i]);
-  }
-  a->cpf().fillWith(ugly);
-}
-
-void
-PRMFactory::setRawCPFByLines(const std::vector<double>& array)
-{
-  Attribute* a = __checkStackAttr(1);
-  __checkStackClass(2);
+  __checkArraySize(a, array);
   if (a->cpf().domainSize() != array.size()) {
     std::stringstream sBuff;
     sBuff << "found domain size of " << array.size();
@@ -135,18 +118,20 @@ PRMFactory::setRawCPFByColumns(const std::vector<float>& array)
   if (a->cpf().nbrDim() == 1) {
     setRawCPFByLines(array);
   } else {
+    __checkArraySize(a, array);
     Instantiation inst(a->cpf());
     Instantiation jnst;
     typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
-    for (Iterator iter = a->cpf().variablesSequence().rbegin();
-         iter != a->cpf().variablesSequence().rend(); ++iter) {
-      if (a->type().variable() != (**iter)) {
-        jnst.add(**iter);
+    Size pos = a->cpf().variablesSequence().size();
+    do {
+      --pos;
+      if (&(a->type().variable()) != a->cpf().variablesSequence().atPos(pos)) {
+        jnst.add(*(a->cpf().variablesSequence().atPos(pos)));
       }
-    }
+    } while(pos != 0);
     size_t idx = 0;
-    for (Size i = 0; i < a->type()->domainSize(); ++i) {
-      inst.chgVal(a->type().variable(), i);
+    for (pos = 0; pos < a->type()->domainSize(); ++pos) {
+      inst.chgVal(a->type().variable(), pos);
       for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
         inst.chgValIn(jnst);
         a->cpf().set(jnst, array[idx]);
@@ -157,30 +142,15 @@ PRMFactory::setRawCPFByColumns(const std::vector<float>& array)
 }
 
 void
-PRMFactory::setRawCPFByColumns(const std::vector<double>& array)
-{
-  Attribute* a = __checkStackAttr(1);
-  if (a->cpf().nbrDim() == 1) {
-    setRawCPFByLines(array);
-  } else {
-    Instantiation inst(a->cpf());
-    Instantiation jnst;
-    typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
-    for (Iterator iter = a->cpf().variablesSequence().rbegin();
-         iter != a->cpf().variablesSequence().rend(); ++iter) {
-      if (a->type().variable() != (**iter)) {
-        jnst.add(**iter);
-      }
-    }
-    size_t idx = 0;
-    for (Size i = 0; i < a->type()->domainSize(); ++i) {
-      inst.chgVal(a->type().variable(), i);
-      for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
-        inst.chgValIn(jnst);
-        a->cpf().set(jnst, array[idx]);
-        ++idx;
-      }
-    }
+PRMFactory::__checkArraySize(Attribute* a, const std::vector<float>& array) const {
+  typedef Sequence<const DiscreteVariable*>::iterator Iterator;
+  size_t size = 1;
+  for (Iterator iter = a->cpf().variablesSequence().begin();
+       iter != a->cpf().variablesSequence().end(); ++iter) {
+    size *= (*iter)->domainSize();
+  }
+  if (size != array.size()) {
+    GUM_ERROR(OperationNotAllowed, "illegal CPT size");
   }
 }
 
@@ -204,43 +174,6 @@ PRMFactory::setCPFByRule(const std::vector<std::string>& parents,
       found = false;
       for (Size j = 0; j < var->domainSize(); ++j) {
         if (var->label(j) == parents[i]) {
-          jnst.chgVal(*var, j);
-          found = true;
-          break;
-        }
-      }
-      if (not found) GUM_ERROR(NotFound, "no label with this name.");
-    }
-  }
-  inst.chgValIn(jnst);
-  for (Size i = 0; i < a->type()->domainSize(); ++i) {
-    inst.chgVal(a->type().variable(), i);
-    for (inst.setFirstIn(knst); not inst.end(); inst.incIn(knst)) {
-      a->cpf().set(inst, values[i]);
-    }
-  }
-}
-
-void
-PRMFactory::setCPFByRule(const std::vector<std::string>& labels,
-                         const std::vector<double>& values)
-{
-  Attribute* a = __checkStackAttr(1);
-  Instantiation inst(a->cpf());
-  Instantiation jnst, knst;
-  const DiscreteVariable* var = 0;
-  Size pos = 0;
-  bool found = false;
-  for (size_t i = 0; i < labels.size(); ++i) {
-    var = a->cpf().variablesSequence().atPos(1+i);
-    if (labels[i] == "*") {
-      knst.add(*var);
-    } else {
-      jnst.add(*var);
-      pos = 0;
-      found = false;
-      for (Size j = 0; j < var->domainSize(); ++j) {
-        if (var->label(j) == labels[i]) {
           jnst.chgVal(*var, j);
           found = true;
           break;

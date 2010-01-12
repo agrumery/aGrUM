@@ -58,7 +58,7 @@ namespace prm {
     __super(from.__super), __label_map(0)
   {
     GUM_CONS_CPY( Type );
-    if (not __super) {
+    if (__super) {
       __label_map = new std::vector<Idx>(from.label_map());
     }
   }
@@ -94,14 +94,12 @@ namespace prm {
 
   bool
   Type::isSubTypeOf(const Type& super) const {
-    if (__super) {
-      const Type* tmp = __super;
-      while ( (super != (*tmp)) and (tmp) ) {
-        tmp = tmp->__super;
-      }
-      return tmp;
+    if ((*this) == super) {
+      return true;
+    } else if (__super) {
+      return __super->isSubTypeOf(super);
     } else {
-      return ((*this) == super);
+      return false;
     }
   }
 

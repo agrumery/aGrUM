@@ -18,43 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 // ============================================================================
-// Tis file contains PRM types for testing purpose.
+// Tis file contains basic PRM classes for testing purpose.
 // Author: Lionel Torti.
 // ============================================================================
 package agrum.test;
 
-type t_state extends boolean
-  OK: true,
-  NOK: false;
+type t_state OK, NOK;
 
-type t_ink extends t_state
-  NotEmpty: OK,
-  Empty:    NOK;
+class PowerSupply {
+  t_state state { [ 0.99, 0.01 ] };
+}
 
-type t_paper extends t_state
-  Ready:    OK,
-  Jammed:   NOK,
-  Empty:    NOK;
+class Room {
+  PowerSupply power;
+}
 
+class Equipment {
 
-type t_degraded extends t_state
-  OK: OK,
-  Dysfunctional: NOK,
-  Degraded: NOK;
+  Room room;
 
-// The state of a black & white printer
-type t_bw_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  CantPrint:  Dysfunctional;
+  t_state state dependson room.power.state {
+    [ 0.80, 0,
+      0.20, 1 ]
+  };
 
-// The state of color printer
-type t_color_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  // One of the four inks is depleted (black, magenta, cyan or yellow)
-  MissingInk: Degraded,
-  CantPrint:  Dysfunctional;
+}
+
+class Printer extends Equipment {
+
+  boolean hasPaper { [ 0.1, 0.9 ] };
+
+  boolean hasInk   { [ 0.3, 0.7 ] };
+
+  t_state state dependson room.power.state, hasPaper, hasInk {
+    *, *, *:          0.00, 1.00;
+    OK, true, true:   0.80, 0.20;
+  };
+}
+
+class Computer extends Equipment {
+
+  Printer printers[];
+
+  boolean exists_printer = exists([printers.state], OK);
+
+  boolean can_print dependson state, exists_printer {
+    // exists_printer |   false  | |   true   |
+    // state          | OK | NOK | | OK | NOK |
+    /* false */       [1.00, 1.00,  0.00, 1.00,
+    /* true  */        0.00, 1.00,  1.00, 0.00]
+  };
+
+}
 

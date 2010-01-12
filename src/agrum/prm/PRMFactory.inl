@@ -50,6 +50,28 @@ PRMFactory::closeCurrent()
 }
 
 INLINE
+bool
+PRMFactory::isClass(const std::string& type) const {
+  try {
+    __retrieveClass(type);
+    return true;
+  } catch (OperationNotAllowed&) {
+    return false;
+  }
+}
+
+INLINE
+bool
+PRMFactory::isInterface(const std::string& type) const {
+  try {
+    __retrieveInterface(type);
+    return true;
+  } catch (OperationNotAllowed&) {
+    return false;
+  }
+}
+
+INLINE
 const std::string&
 PRMFactory::currentPackage() const { return __prefix; }
 
@@ -61,32 +83,13 @@ PRMFactory::setPackage(const std::string& name) {
 
 INLINE
 void
-PRMFactory::addType(const DiscreteVariable& var)
-{
-  std::string name = __addPrefix(var.name());
-  __checkDuplicateName(name);
-  DiscreteVariable* temp = var.copyFactory();
-  temp->setName(name);
-  Type* type = new Type(*temp);
-  __prm->__typeMap.insert(name, type);
-  __prm->__types.insert(type);
-  delete temp;
-}
-
-INLINE
-void
 PRMFactory::endClass()
 {
   __checkStackClass(1)->buildInstantiationSequence();
   Class* c = __checkStackClass(1);
   c->buildInstantiationSequence();
   if (not c->isValid()) {
-    for (Set<Class*>::iterator iter = c->implements().begin();
-         iter != c->implements().end(); ++iter) {
-      if (not c->isValid(**iter)) {
-        GUM_ERROR(OperationNotAllowed, "interface wrongly implemented");
-      }
-    }
+    GUM_ERROR(OperationNotAllowed, "interface wrongly implemented");
   }
   __stack.pop_back();
 }
@@ -104,7 +107,7 @@ PRMFactory::startInterface(const std::string& name, const std::string& extends)
       super = __prm->__interfaceMap[extends];
     } catch (NotFound&) {
       try {
-        super = __prm->__interfaceMap[extends];
+        super = __prm->__interfaceMap[__addPrefix(extends)];
       } catch (NotFound&) {
         __throwNotDeclared(PRMObject::prm_interface, extends);
       }
@@ -133,6 +136,7 @@ PRMFactory::startAttribute(const std::string& type, const std::string& name)
 {
   Class* c = __checkStackClassOrInterface(1);
   Attribute* a = new Attribute(name, *__retrieveType(type));
+  std::string dot = ".";
   c->add(a);
   __stack.push_back(a);
 }
@@ -186,25 +190,56 @@ PRMFactory::endAttribute()
 
 INLINE
 void
+PRMFactory::addParameter(const std::string& type, const std::string& name) {
+  Class* c = __checkStackClassOrInterface(1);
+  MultiDimSparse<prm_float>* impl =
+    new MultiDimSparse<prm_float>(
+        std::numeric_limits<prm_float>::signaling_NaN());
+  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
+  c->add(a, true);
+  c->setInitializationFlag(a, false);
+}
+
+INLINE
+void
+PRMFactory::addParameter(const std::string& type, const std::string& name,
+                         std::string value)
+{
+  Class* c = __checkStackClassOrInterface(1);
+  MultiDimSparse<prm_float>* impl = new MultiDimSparse<prm_float>(0);
+  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
+  Instantiation inst(a->cpf());
+  bool found = false;
+  for (inst.setFirst(); not inst.end(); inst.inc()) {
+    if (a->type()->label(inst.pos(*(a->type()))) == value) {
+      a->cpf().set(inst, 1);
+      found = true;
+      break;
+    }
+  }
+  if (not found) {
+    GUM_ERROR(NotFound, "illegal default value.");
+  }
+  c->add(a, true);
+  c->setInitializationFlag(a, true);
+}
+
+INLINE
+void
 PRMFactory::addReferenceSlot(const std::string& type,
                              const std::string& name,
                              bool isArray)
 {
-  // Checking possible names
-  std::string type_full_name;
-  if (__prm->__classMap.exists(type))
-    type_full_name = type;
-  else if (__prm->__classMap.exists(__addPrefix(type)))
-    type_full_name = __addPrefix(type);
-  else
-    __throwNotDeclared(PRMObject::prm_class, type);
-  // Now we can proceed
   Class* owner = __checkStackClassOrInterface(1);
   Class* slotType = 0;
   try {
-    slotType = __prm->__classMap[type_full_name];
-  } catch (NotFound&) {
-    slotType = __prm->__interfaceMap[type_full_name];
+    slotType = __retrieveClass(type);
+  } catch (OperationNotAllowed&) {
+    try {
+      slotType = __retrieveInterface(type);
+    } catch (OperationNotAllowed&) {
+      GUM_ERROR(NotFound, "unknown reference type");
+    }
   }
   ReferenceSlot* ref = new ReferenceSlot(name, *slotType, isArray);
   try {
@@ -236,7 +271,7 @@ PRMFactory::addAggregator(const std::string& name,
                                break;
                              }
     case Aggregate::agg_exists:
-    case Aggregate::agg_count: {
+    case Aggregate::agg_forall: {
                                  Idx label = __checkAggType_exists_count(c, chains, params);
                                  __addAggregatorOneParam(name, agg_type, chains, label);
                                  break;
@@ -279,7 +314,7 @@ PRMFactory::__checkDuplicateName(const std::string& name)
 INLINE
 void
 PRMFactory::__throwNotDeclared(PRMObject::ObjectType obj_type,
-                               const std::string& name)
+                               const std::string& name) const
 {
   std::stringstream msg;
   msg << PRMObject::enum2str(obj_type) << " not declared: ";
@@ -290,7 +325,7 @@ PRMFactory::__throwNotDeclared(PRMObject::ObjectType obj_type,
 INLINE
 void
 PRMFactory::__throwNotDeclared(ClassElement::ClassElementType obj_type,
-                               const std::string& name)
+                               const std::string& name) const
 {
   std::stringstream msg;
   msg << ClassElement::enum2str(obj_type) << " not declared: ";
@@ -302,7 +337,7 @@ INLINE
 void
 PRMFactory::__throwWrongType(PRMObject::ObjectType wrong_type,
                              const std::string& name,
-                             PRMObject::ObjectType in)
+                             PRMObject::ObjectType in) const
 {
   std::stringstream msg;
   msg << "Wrong element in slot chain " << name << " which is of type ";
@@ -314,7 +349,7 @@ INLINE
 void
 PRMFactory::__throwWrongType(ClassElement::ClassElementType wrong_type,
                              const std::string& name,
-                             ClassElement::ClassElementType in)
+                             ClassElement::ClassElementType in) const
 {
   std::stringstream msg;
   msg << "Wrong element in slot chain " << name << " which is of type ";
@@ -439,7 +474,7 @@ PRMFactory::__checkStackSC(Idx i)
 
 INLINE
 Type*
-PRMFactory::__retrieveType(const std::string& name)
+PRMFactory::__retrieveType(const std::string& name) const
 {
   try {
     return __prm->__typeMap[name];
@@ -451,13 +486,30 @@ PRMFactory::__retrieveType(const std::string& name)
 
 INLINE
 Class*
-PRMFactory::__retrieveClass(const std::string& name)
+PRMFactory::__retrieveClass(const std::string& name) const
 {
   try {
     return __prm->__classMap[name];
   } catch (NotFound&) {
     try {
       return __prm->__classMap[__addPrefix(name)];
+    } catch (NotFound&) {
+      __throwNotDeclared(PRMObject::prm_class, name);
+    }
+  }
+  // Just for compilation warnings
+  return 0;
+}
+
+INLINE
+Class*
+PRMFactory::__retrieveInterface(const std::string& name) const
+{
+  try {
+    return __prm->__interfaceMap[name];
+  } catch (NotFound&) {
+    try {
+      return __prm->__interfaceMap[__addPrefix(name)];
     } catch (NotFound&) {
       __throwNotDeclared(PRMObject::prm_class, name);
     }

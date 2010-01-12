@@ -144,7 +144,7 @@ class Class: public ClassElementContainer {
      * instantiation.
      * @throw NotFound Raised if attr is not a parameter.
      */
-    void setInitializationFlag(Attribute* attr, bool f);
+    void setInitializationFlag(Attribute* attr, bool flag);
 
     /**
      * @brief Add an aggregate to this class.

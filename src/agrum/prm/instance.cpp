@@ -190,7 +190,7 @@ Instance::__instantiateAttribute(NodeId id) {
     = dynamic_cast<const MultiDimArray<prm_float>*>(const_cast<const Potential<prm_float>&>(type().get(id).cpf()).getContent());
   if (array != 0) {
     Potential<prm_float>* cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection, *array));
-    Attribute* attr = new Attribute(type().get(id).name(), t, cpf);
+    Attribute* attr = new Attribute(type().get(id).name(), t, cpf, true);
     _add(attr, id);
   } else {
     GUM_ERROR(FatalError, "Unhandle Potential implementation.");
@@ -266,7 +266,7 @@ Instance::__instantiateChildren(NodeId child, NodeId parent)
         const MultiDimArray<prm_float>* array = dynamic_cast<const MultiDimArray<prm_float>*>(cpf.getContent());
         if (array != 0) {
           Potential<prm_float>* p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection, *array));
-          Attribute* attr = new Attribute(type().get(child).name(), type().get(child).type(), p);
+          Attribute* attr = new Attribute(type().get(child).name(), &(type().get(child).type()), p, false);
           _add(attr, child);
         } else {
           GUM_ERROR(OperationNotAllowed, "Unusable MultiDimImplementation.");

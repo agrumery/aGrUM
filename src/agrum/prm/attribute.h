@@ -79,21 +79,22 @@ class Attribute: public ClassElement {
      * @param name The name of this Attribute.
      * @param cpf The Potential of this Attribute, it will be deleted after the call of
      *            ~Attribute.
+     * @param delete_type If true, the type is deleted with this instance.
      */
-    Attribute(const std::string& name, Type* type, Potential<prm_float>* cpf);
+    Attribute(const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type);
 
-    /**
-     * @brief Constructor used by gum::Instance.
-     * This will create an Attribute with a ready Potential, however it will check the existence
-     * of type in cpf and raise an exception if it is not found.
-     * Here type is not given to this attribute: it will not be deleted after a call to
-     * ~Attribute().
-     * @param name The name of this Attribute.
-     * @param type The type of this attribute.
-     * @param cpf The Potential of this Attribute, it will be deleted after the call of
-     *            ~Attribute.
-     */
-    Attribute(const std::string& name, Type& type, Potential<prm_float>* cpf);
+    // /**
+    //  * @brief Constructor used by gum::Instance.
+    //  * This will create an Attribute with a ready Potential, however it will check the existence
+    //  * of type in cpf and raise an exception if it is not found.
+    //  * Here type is not given to this attribute: it will not be deleted after a call to
+    //  * ~Attribute().
+    //  * @param name The name of this Attribute.
+    //  * @param type The type of this attribute.
+    //  * @param cpf The Potential of this Attribute, it will be deleted after the call of
+    //  *            ~Attribute.
+    //  */
+    // Attribute(const std::string& name, Type& type, Potential<prm_float>* cpf);
 
     // /**
     //  * @brief Constructor of instantiating gum::Aggregate.

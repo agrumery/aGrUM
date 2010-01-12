@@ -300,9 +300,14 @@ ClassElementContainer::__add(ClassElement* elt) {
     msg << ": can not add gum::ClassElement " << elt->name() << " in " << this->name();
     GUM_ERROR(OperationNotAllowed, msg.str());
   }
-  __nameMap.insert(elt->name(), elt);
-  elt->setId(__dag->insertNode());
-  __nodeIdMap.insert(elt->id(), elt);
+  try {
+    this->get(elt->name());
+    GUM_ERROR(DuplicateElement, "name already used");
+  } catch (NotFound&) {
+    __nameMap.insert(elt->name(), elt);
+    elt->setId(__dag->insertNode());
+    __nodeIdMap.insert(elt->id(), elt);
+  }
 }
 
 INLINE

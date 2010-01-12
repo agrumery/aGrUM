@@ -31,11 +31,13 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <limits>
 // ============================================================================
 #include <agrum/core/utils.h>
 #include <agrum/core/exceptions.h>
 // ============================================================================
 #include <agrum/multidim/discreteVariable.h>
+#include <agrum/multidim/multiDimSparse.h>
 // ============================================================================
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
@@ -97,6 +99,12 @@ class PRMFactory {
      */
     PRMObject::ObjectType current() const;
 
+    /// Returns true if type is a class.
+    bool isClass(const std::string& type) const;
+
+    /// Returns true if type is a class.
+    bool isInterface(const std::string& type) const;
+
     /**
      * Close current object beegin built.
      * The object is remove from any ohter object containing it and delete
@@ -152,12 +160,6 @@ class PRMFactory {
      * End the current discrete type declaration.
      */
     void endDiscreteType();
-
-    /**
-     * Add a type in the given namespace.
-     * @throw DupplicateElement Raised if type's name is already used.
-     */
-    void addType(const DiscreteVariable& type);
 
     /// @}
     // ======================================================================
@@ -266,29 +268,6 @@ class PRMFactory {
      * with A, B and C boolean variables ( {f, t}, the order is
      * important), then the following array is valid:
      * @code
-     * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
-     *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
-     *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
-     *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
-     * @endcode
-     *
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
-     */
-    void setRawCPFByLines(const std::vector<double>& array);
-
-    /**
-     * @brief Not implemented!
-     *
-     * Gives the factory the CPF in its raw form.
-     *
-     * The creation of the CPF is left to the factory because we do not know 
-     * what level of complexity for CPF implementation can be handled by the
-     * PRM implementation.
-     *
-     * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {f, t}, the order is
-     * important), then the following array is valid:
-     * @code
      * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
      * [ 0.2,     0.7,     0.5,     0.01,
      *   0.8,     0.3,     0.5,     0.99]
@@ -299,28 +278,6 @@ class PRMFactory {
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
     void setRawCPFByColumns(const std::vector<float>& array);
-
-    /**
-     * Gives the factory the CPF in its raw form.
-     *
-     * The creation of the CPF is left to the factory because we do not know 
-     * what level of complexity for CPF implementation can be handled by the
-     * PRM implementation.
-     *
-     * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
-     * with A, B and C boolean variables ( {f, t}, the order is
-     * important), then the following array is valid:
-     * @code
-     * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
-     * [ 0.2,     0.7,     0.5,     0.01,
-     *   0.8,     0.3,     0.5,     0.99]
-     * @endcode
-     *
-     * See PRMFactory::setRawCPFByLines() for more details.
-     *
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
-     */
-    void setRawCPFByColumns(const std::vector<double>& array);
 
     /**
      * Fills the CPF using a rule.
@@ -336,21 +293,6 @@ class PRMFactory {
      */
     void setCPFByRule(const std::vector<std::string>& labels,
                       const std::vector<float>& values);
-
-    /**
-     * Fills the CPF using a rule.
-     *
-     * The labels vector is filled with one of each parent's labels or
-     * with a wildcard ("*"). If a wildcard is used then all values of the
-     * corresponding parents are used. The sequence of parents must be the
-     * declaration order used when adding the current attribute's parents.
-     * 
-     * @param labels The value of each parents.
-     * @param values The probability values of the current attribute given
-     *               the values in parenst.
-     */
-    void setCPFByRule(const std::vector<std::string>& labels,
-                      const std::vector<double>& values);
 
     /**
      * Tells the factory that we finished declaring an attribute.
@@ -499,11 +441,11 @@ class PRMFactory {
 
     /// Raise a OperationNotAllowed for a undeclared Object.
     void __throwNotDeclared(PRMObject::ObjectType obj_type,
-                            const std::string& name);
+                            const std::string& name) const;
 
     /// Raise a OperationNotAllowed for a undeclared Object.
     void __throwNotDeclared(ClassElement::ClassElementType obj_type,
-                            const std::string& name);
+                            const std::string& name) const;
 
     // Raise a OperationNotAllowed for a wrong type in a given object.
     // @param wrong_type The misused type.
@@ -511,7 +453,7 @@ class PRMFactory {
     // @param in The object's type in the wrong_type is misused.
     void __throwWrongType(PRMObject::ObjectType wrong_type,
                           const std::string& name,
-                          PRMObject::ObjectType in);
+                          PRMObject::ObjectType in) const;
 
     // Raise a OperationNotAllowed for a wrong type in a given object.
     // @param wrong_type The misused type.
@@ -519,7 +461,7 @@ class PRMFactory {
     // @param in The object's type in the wrong_type is misused.
     void __throwWrongType(ClassElement::ClassElementType wrong_type,
                           const std::string& name,
-                          ClassElement::ClassElementType in);
+                          ClassElement::ClassElementType in) const;
 
     /// Return a pointer on a PRMObject at __stack.size() - i position after
     /// checking the type of the object given obj_type.
@@ -597,14 +539,21 @@ class PRMFactory {
     /// In the case a local name is used multiple time, it's preferable to
     /// use it's full name.
     /// @throw OperationNotAllowed If the type is undeclared.
-    Type* __retrieveType(const std::string& name);
+    Type* __retrieveType(const std::string& name) const;
 
     /// Returns a pointer on a class given it's name. Used when building 
     /// models, meaning that the class name can either be local (need to
     /// add the current prefix) or global (no prefix needed).
     /// @throw NotFound If no class matching the name is found.
     /// @see PRMFactory::__retrieveType 
-    Class* __retrieveClass(const std::string& name);
+    Class* __retrieveClass(const std::string& name) const;
+
+    /// Returns a pointer on an interface given it's name. Used when building 
+    /// models, meaning that the interface name can either be local (need to
+    /// add the current prefix) or global (no prefix needed).
+    /// @throw NotFound If no class matching the name is found.
+    /// @see PRMFactory::__retrieveType 
+    Class* __retrieveInterface(const std::string& name) const;
 
     /// @}
     // ======================================================================
@@ -687,6 +636,10 @@ class PRMFactory {
     void __setReferenceSlotWithArray(const std::string& left_instance,
                                      const std::string& left_reference,
                                      const std::string& right_instance);
+
+    /// Raise an OperationNotAllowed if array is not of the good size for
+    /// a->cpf().
+    void __checkArraySize(Attribute* a, const std::vector<float>& array) const;
 
     /// @}
     // ======================================================================

@@ -4,6 +4,7 @@
 #define SKOOL_COCO_PARSER_H__
 
 #include <string>
+#include <sstream>
 
 #include <agrum/prm/PRMFactory.h>
 
@@ -44,7 +45,9 @@ private:
 		_colon=7,
 		_semicolon=8,
 		_type=9,
-		_extends=10
+		_class=10,
+		_interface=11,
+		_extends=12
 	};
 	int maxT;
 
@@ -89,6 +92,22 @@ bool isBaseType() {
   return (la->kind == _type) and (n1->kind == _word) and (n2->kind != _extends);
 }
 
+bool isBaseClass() {
+  Token* n1 = scanner->Peek();
+  Token* n2 = scanner->Peek();
+  return (la->kind == _class) and (n1->kind == _word) and (n2->kind != _extends);
+}
+
+bool isBaseInterface() {
+  Token* n1 = scanner->Peek();
+  Token* n2 = scanner->Peek();
+  return (la->kind == _interface) and (n1->kind == _word) and (n2->kind != _extends);
+}
+
+bool isClassOrInterface(std::string type) {
+  return factory().isClass(type) or factory().isInterface(type);
+}
+
 //=====================
 
 
@@ -103,9 +122,32 @@ bool isBaseType() {
 	void Import();
 	void Ident(std::string& s);
 	void Type();
+	void Interface();
+	void Class();
 	void BaseType();
 	void SuperType();
 	void Label(std::string& s);
+	void InterfaceBody();
+	void InterfaceStatement();
+	void RefOrAttr(std::string& type, std::string& name);
+	void Reference(std::string type, std::string name);
+	void IdentSet(gum::Set<std::string>& set );
+	void ClassBody();
+	void ClassStatement();
+	void RefOrParam(std::string type, std::string name);
+	void Attribute(std::string type, std::string name);
+	void Aggregate(std::string type, std::string name);
+	void Parameter(std::string type, std::string name);
+	void Dependecies();
+	void FloatList(std::vector<float>& list );
+	void FactorizedCPT();
+	void IdentList(std::vector<std::string>& set );
+	void CPTRule();
+	void LabelList(std::vector<std::string>& list );
+	void Function(std::string& name,
+std::vector<std::string>& chains,
+std::vector<std::string>& params );
+	void Number(float& val);
 	void Path(std::string& s);
 
 	void Parse();

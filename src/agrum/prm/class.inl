@@ -75,6 +75,7 @@ Class::super() const
 INLINE
 void
 Class::add(Attribute* attr, bool isMutable) {
+  std::string dot = ".";
   try {
     _add(attr);
   } catch (DuplicateElement& e) {
@@ -88,8 +89,15 @@ Class::add(Attribute* attr, bool isMutable) {
     __params.insert(attr, false);
   }
   if (attr->type().isSubType()) {
+    std::string dot = ".";
     __addSuperType(attr);
   }
+}
+
+INLINE
+void
+Class::setInitializationFlag(Attribute* attr, bool flag) {
+  __params[attr] = flag;
 }
 
 INLINE

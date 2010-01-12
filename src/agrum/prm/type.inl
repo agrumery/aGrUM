@@ -65,7 +65,7 @@ namespace prm {
   INLINE
   const std::vector<Idx>&
   Type::label_map() const {
-    if (not __label_map) {
+    if (__label_map) {
       return *__label_map;
     } else {
       GUM_ERROR(NotFound, "No super type for this type.");

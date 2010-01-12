@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}@lip6.fr   *
+ *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -59,6 +59,9 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_ASSERT(prm->getType("agrum.test.t_ink").isSubType());
       TS_ASSERT(prm->getType("agrum.test.t_ink").isSubTypeOf(prm->getType("boolean")));
       TS_ASSERT(prm->getType("agrum.test.t_ink").isSubTypeOf(prm->getType("agrum.test.t_state")));
+      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubType());
+      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubTypeOf(prm->getType("agrum.test.t_state")));
       TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubType());
       TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubTypeOf(prm->getType("boolean")));
       TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubTypeOf(prm->getType("agrum.test.t_state")));
@@ -70,10 +73,94 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("boolean")));
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_state")));
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_degraded")));
-      TS_ASSERT_EQUALS(prm->types().size(), 6);
+      TS_ASSERT_EQUALS(prm->types().size(), 7);
       delete prm;
     }
 
+    void testClasses() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_ASSERT_EQUALS(prm->classes().size(), 5);
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Printer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
+      delete prm;
+    }
+
+    void testPrintersPowerSupply() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
+      Class& c = prm->getClass("agrum.test.PowerSupply");
+      TS_ASSERT_EQUALS(c.attributes().size(), 1);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), 0);
+      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), 0);
+      delete prm;
+    }
+
+    void testPrintersRoom() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
+      Class& c = prm->getClass("agrum.test.Room");
+      TS_ASSERT_EQUALS(c.attributes().size(), 0);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), 0);
+      delete prm;
+    }
+
+    void testPrintersEquipment() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
+      Class& c = prm->getClass("agrum.test.Equipment");
+      TS_ASSERT_EQUALS(c.attributes().size(), 1);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), 1);
+      delete prm;
+    }
+
+    void testPrintersPrinter() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Printer"));
+      Class& c = prm->getClass("agrum.test.Printer");
+      TS_ASSERT_EQUALS(c.attributes().size(), 3);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), 1);
+      delete prm;
+    }
+
+    void testPrintersComputer() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
+      Class& c = prm->getClass("agrum.test.Computer");
+      TS_ASSERT_EQUALS(c.attributes().size(), 2);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), 2);
+      TS_ASSERT_EQUALS(c.aggregates().size(), 1);
+      TS_ASSERT_EQUALS(c.slotChains().size(), 2);
+      delete prm;
+    }
+
+    void testComplexPrinters() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      delete prm;
+    }
 };
 
 } // namespace tests

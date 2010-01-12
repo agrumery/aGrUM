@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 // ============================================================================
-// Tis file contains PRM types for testing purpose.
+// Tis file contains basic PRM classes for testing purpose.
 // Author: Lionel Torti.
 // ============================================================================
 package agrum.test;
@@ -36,25 +36,69 @@ type t_paper extends t_state
   Jammed:   NOK,
   Empty:    NOK;
 
-
 type t_degraded extends t_state
   OK: OK,
   Dysfunctional: NOK,
   Degraded: NOK;
 
-// The state of a black & white printer
-type t_bw_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  CantPrint:  Dysfunctional;
+class PowerSupply {
+  t_state state { [ 0.99, 0.01 ] };
+}
 
-// The state of color printer
-type t_color_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  // One of the four inks is depleted (black, magenta, cyan or yellow)
-  MissingInk: Degraded,
-  CantPrint:  Dysfunctional;
+class Room {
+  PowerSupply power;
+}
+
+interface Equipment {
+  Room room;
+  t_degraded state;
+}
+
+interface Printer extends Equipment {
+  boolean hasPaper;
+  boolean hasInk;
+}
+
+class BWPrinter implements Printer {
+  Room room;
+  t_ink hasInk { [0.8, 0.2] };
+  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_degraded state dependson room.power.state, hasInk, hasPaper {
+    *, *, *:             0.0, 1.0, 0.0;
+    OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+  };
+}
+
+class ColorPrinter implements Printer {
+  Room room;
+  t_ink black   { [0.8, 0.2] };
+  t_ink magenta { [0.8, 0.2] };
+  t_ink yellow  { [0.8, 0.2] };
+  t_ink cyan    { [0.8, 0.2] };
+  boolean hasInk = forall([black, magenta, yellow, cyan], NotEmpty);
+  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_degraded state dependson room.power.state, hasPaper, hasInk, black {
+    *, *, *, *:             0.00, 1.00, 0.00;
+    *, *, false, NotEmpty:  0.00, 0.00, 1.00;
+    OK, Ready, true, *:  0.99, 0.01, 0.00;
+  };
+}
+
+class Computer implements Equipment {
+  Room room;
+  Printer printers[];
+  boolean functional_printer = exists(printers.state, OK);
+  boolean degraded_printer = exists(printers.state, Degraded);
+  boolean working_printer = exists([functional_printer, degraded_printer], true);
+  t_degraded state dependson room.power.state {
+    OK:  0.90, 0.09, 0.01;
+    NOK: 0.00, 1.00, 0.00;
+  };
+  boolean can_print dependson state, working_printer {
+    // working_printer |              false            | |              true             |
+    // state           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+  };
+}
 

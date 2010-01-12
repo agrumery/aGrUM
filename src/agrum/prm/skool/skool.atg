@@ -1,4 +1,5 @@
 #include <string>
+#include <sstream>
 
 #include <agrum/prm/PRMFactory.h>
 
@@ -28,6 +29,22 @@ bool isBaseType() {
   return (la->kind == _type) and (n1->kind == _word) and (n2->kind != _extends);
 }
 
+bool isBaseClass() {
+  Token* n1 = scanner->Peek();
+  Token* n2 = scanner->Peek();
+  return (la->kind == _class) and (n1->kind == _word) and (n2->kind != _extends);
+}
+
+bool isBaseInterface() {
+  Token* n1 = scanner->Peek();
+  Token* n2 = scanner->Peek();
+  return (la->kind == _interface) and (n1->kind == _word) and (n2->kind != _extends);
+}
+
+bool isClassOrInterface(std::string type) {
+  return factory().isClass(type) or factory().isInterface(type);
+}
+
 //=====================
 CHARACTERS
   letter = 'A'..'Z' + 'a'..'z'+ '_' .
@@ -45,6 +62,8 @@ TOKENS
   colon     = ':'.
   semicolon = ';'.
   type      = "type".
+  class     = "class".
+  interface = "interface".
   extends   = "extends".
 
 //=====================
@@ -69,7 +88,7 @@ Import  = "import"          (. std::string name; .)
           Ident<name> ';'   (. std::cerr << "Import disabled."; .).
 
 //=====================
-Unit = Type. //| Class | System.
+Unit = Type|  Interface| Class . // | System.
 
 //=====================
 Type =   IF(isBaseType())
@@ -100,25 +119,112 @@ SuperType   = "type" word                   (. std::string s, l, name, super; na
               .
 
 //=====================
-// Class = BaseClass | SuperClass.
-// 
-// BaseClass =                                                   (. gum::Set<std::string> set; .)
-//             "class" word<name> "implements" Implements<set>   (. factory.startClass(name, "", set); .)
-//             "{" ClassBody "}"                                 (. factory.endClass(); .)
-//             .
-// 
-// SuperClass = "class" word<name> "extends" (
-//                  word<super> (. factory.startClass(name, super); .)
-//                | Path<super> (. factory.startClass(name, super); .)
-//              ) "implements" StringSet<set> "{" ClassBody "}"  (. factory.endClass(); .)
-//              .
-// 
-// Implements<. gum::Set<std::string>& set .> =   Ident<name>                        (. set.insert(name); .)
-//                                              | Implements<set> ',' Ident<name>    (. set.insert(name); .)
-//                                              .
-// 
+
+Interface = "interface" word              (. std::string name, extends; name = narrow(t->val); .)
+            [ "extends" Ident<extends> ]  (. factory().startInterface(name, extends); .)
+            InterfaceBody                 (. factory().endInterface(); .)
+            .
+
+InterfaceBody = '{' { InterfaceStatement } '}'.
+
+InterfaceStatement =                      (. std::string type, name; .)
+                      Ident<type> word    (. name = narrow(t->val); .)
+                      RefOrAttr<type, name>
+                      .
+
+RefOrAttr<std::string& type, std::string& name> =   IF(isClassOrInterface(type))
+                                                    Reference<type, name>
+                                                  | ';' (. factory().startAttribute(type, name); factory().endAttribute(); .)
+                                                  .
 
 //=====================
+Class = "class" word                      (. std::string name, super; name = narrow(t->val); .)
+        [ "extends" Ident<super> ]        (. gum::Set<std::string> set; .)
+        [ "implements" IdentSet<set> ]    (. factory().startClass(name, super, (set.empty()?0:&set)); .)
+        ClassBody                         (. factory().endClass(); .)
+        .
+
+//=====================
+ClassBody = '{' { ClassStatement } '}'.
+
+ClassStatement =                                                     (. std::string name, type; .)
+                  Ident<type> word                                   (. name = narrow(t->val); .)
+                  (
+                      RefOrParam<type, name>
+                    | Attribute<type, name>
+                    | Aggregate<type, name>
+                  )
+                  .
+
+//=====================
+RefOrParam<std::string type, std::string name> =    IF(isClassOrInterface(type))
+                                                    Reference<type, name>
+                                                 |  Parameter<type, name>
+                                                 .
+
+Reference<std::string type, std::string name> =   ';'           (. factory().addReferenceSlot(type, name, false); .)
+                                                | '[' ']' ';'   (. factory().addReferenceSlot(type, name, true); .)
+                                                .
+
+Parameter<std::string type, std::string name> =   ';'                    (. factory().addParameter(type, name); .)
+                                                |                        (. std::string l; .) 
+                                                  "default" Label<l> ';' (. factory().addParameter(type, name, l); .)
+                                                .
+
+//=====================
+Attribute<std::string type, std::string name> =                           (. factory().startAttribute(type, name); .)
+                                                [Dependecies] '{'
+                                                (                         (. std::vector<float> cpt; .)
+                                                   '[' FloatList<cpt> ']' (. factory().setRawCPFByColumns(cpt); .)
+                                                 | FactorizedCPT
+                                                ) '}' ';'                 (. factory().endAttribute(); .)
+                                                .
+
+Dependecies =                               (. std::vector<std::string> prnts; .)
+              "dependson" IdentList<prnts>  (. for (size_t i = 0; i < prnts.size(); ++i) factory().addParent(prnts[i]); .)
+              .
+
+FactorizedCPT = CPTRule {CPTRule}.
+
+CPTRule = (. std::vector<std::string> labels; std::vector<float> values; .)
+          LabelList<labels> ':' FloatList<values> ';'
+          (. factory().setCPFByRule(labels, values); .)
+          .
+
+Aggregate<std::string type, std::string name> =                                         (. std::string func; std::vector<std::string> chains, params; .)
+                                                '=' Function<func, chains, params> ';'  (. factory().addAggregator(name, func, chains, params); .)
+                                                .
+
+Function<. std::string& name,
+           std::vector<std::string>& chains,
+           std::vector<std::string>& params .> = word                                                   (. name = narrow(t->val); .)
+                                                 '(' ( '[' IdentList<chains> ']' ',' LabelList<params>
+                                                            |                                           (. std::vector<std::string> vec; .)
+                                                              IdentList<vec>                            (. chains.push_back(vec.front());
+                                                                                                           for (size_t idx = 1; idx < vec.size(); ++idx) params.push_back(vec[idx]); .)
+                                                     ) ')' .
+
+
+//=====================
+LabelList<. std::vector<std::string>& list .> = ( word                  (. list.push_back(narrow(t->val)); .)
+                                                  | '*'                 (. list.push_back(narrow(t->val)); .)
+                                                ) [ ',' LabelList<list> ]
+                                                .
+
+IdentSet<. gum::Set<std::string>& set .> =                          (. std::string ident; .)
+                                             Ident<ident>           (. set.insert(ident); .)
+                                             [',' IdentSet<set> ]
+                                             .
+
+IdentList<. std::vector<std::string>& set .> =                          (. std::string interface; .)
+                                                Ident<interface>        (. set.push_back(interface); .)
+                                                [',' IdentList<set> ]
+                                                .
+FloatList<. std::vector<float>& list .> =                          (. float f; .)
+                                          Number<f>                (. list.push_back(f); .)
+                                          [ ',' FloatList<list> ]
+                                          .
+
 Path<std::string& s>  = word      (. s += narrow(t->val); .)
                         '.'       (. s += '.'; .)
                         word      (. s += narrow(t->val); .)
@@ -133,11 +239,13 @@ Ident<std::string& s> =   IF(isPath())    (. std::string val; .)
                         | word            (. s = narrow(t->val); .)
                         .
 
-Label<std::string& s> =                 (. std::string val; .)
-                          Ident<val>    (. s = val; .)
-                        | integer       (. s = narrow(t->val); .)
-                        | float         (. s = narrow(t->val); .)
+Label<std::string& s> =   word        (. s = narrow(t->val); .)
+                        |             (. float val; .)
+                          Number<val> (. std::stringstream sBuff; sBuff << val; s = sBuff.str(); .)
                         .
 
+Number<float& val> =    integer (. swscanf(t->val, L"%f", &val); .)
+                      | float   (. swscanf(t->val, L"%f", &val); .)
+                      .
 
 END Skool.

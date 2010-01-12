@@ -36,27 +36,19 @@ namespace prm {
 
 Attribute::Attribute(const std::string& name, const Type& type,
                      MultiDimImplementation<prm_float>* impl):
-  ClassElement(name),  __type(new Type(*type)),
+  ClassElement(name),  __type(new Type(type)),
   __cpf(new Potential<prm_float>(impl)), __delete_type(true)
 {
   GUM_CONSTRUCTOR( Attribute );
   __cpf->add(**__type);
 }
 
-Attribute::Attribute(const std::string& name, Type* type, Potential<prm_float>* cpf):
-  ClassElement(name), __type(type), __cpf(cpf), __delete_type(true)
+Attribute::Attribute(const std::string& name, Type* type, Potential<prm_float>* cpf,
+                     bool delete_type):
+  ClassElement(name), __type(type), __cpf(cpf), __delete_type(delete_type)
 {
   GUM_CONSTRUCTOR( Attribute );
   if (not __cpf->variablesSequence().exists(&(type->variable()))) {
-    GUM_ERROR(OperationNotAllowed, "the given Potential does not contain the type of this Attribute.");
-  }
-}
-
-Attribute::Attribute(const std::string& name, Type& type, Potential<prm_float>* cpf):
-  ClassElement(name), __type(&type), __cpf(cpf), __delete_type(false)
-{
-  GUM_CONSTRUCTOR( Attribute );
-  if (not __cpf->variablesSequence().exists(&(type.variable()))) {
     GUM_ERROR(OperationNotAllowed, "the given Potential does not contain the type of this Attribute.");
   }
 }

@@ -99,19 +99,23 @@ Class::buildInstantiationSequence() const {
       l.push_back(*node);
     }
   }
+  Set<NodeId> visited_node;
   while (not l.empty()) {
-    switch (get(l.front()).elt_type()) {
-      case ClassElement::prm_aggregate:
-      case ClassElement::prm_attribute: {
-                                          if (not isInnerNode(l.front())) {
-                                            __instantiations.insert(l.front());
+    if (not visited_node.exists(l.front())) {
+      visited_node.insert(l.front());
+      switch (get(l.front()).elt_type()) {
+        case ClassElement::prm_aggregate:
+        case ClassElement::prm_attribute: {
+                                            if (not isInnerNode(l.front())) {
+                                              __instantiations.insert(l.front());
+                                            }
                                           }
-                                        }
-      default: {
-                 for (DAG::ArcIterator child = children(l.front()).begin(); child != children(l.front()).end(); ++child) {
-                   l.push_back(child->head());
+        default: {
+                   for (DAG::ArcIterator child = children(l.front()).begin(); child != children(l.front()).end(); ++child) {
+                     l.push_back(child->head());
+                   }
                  }
-               }
+      }
     }
     l.pop_front();
   }
@@ -140,47 +144,57 @@ Class::__addSuperType(Attribute* attr) {
 bool
 Class::isValid() const {
   if (__implements) {
-    bool retVal = true;
     for (Set<Class*>::iterator iter = __implements->begin();
          iter != __implements->end(); ++iter) {
-      retVal = retVal or isValid(**iter);
-      if (not retVal) {
+      if (not isValid(**iter)) {
         return false;
       }
     }
-    return true;
   }
-  return false;
+  return true;
 }
 
 bool
 Class::isValid(const Class& i) const {
-  for (DAG::NodeIterator node = i.dag().beginNodes();
-       node != i.dag().endNodes(); ++node) {
-    switch (i.get(*node).elt_type()) {
-      case ClassElement::prm_aggregate:
-      case ClassElement::prm_attribute: {
-                                          if (not get(*node).type().isSubTypeOf(i.get(*node).type())) {
+  std::string foo = " - ";
+  std::string name;
+  try {
+    for (DAG::NodeIterator node = i.dag().beginNodes();
+        node != i.dag().endNodes(); ++node) {
+      name = i.get(*node).name();
+      switch (i.get(*node).elt_type()) {
+        case ClassElement::prm_aggregate:
+        case ClassElement::prm_attribute: {
+                                            if ( (get(name).elt_type() == ClassElement::prm_attribute) or
+                                                (get(name).elt_type() == ClassElement::prm_aggregate) )
+                                            {
+                                              if (not get(name).type().isSubTypeOf(i.get(name).type())) {
+                                                return false;
+                                              }
+                                            } else {
+                                              return false;
+                                            }
+                                            break;
+                                          }
+        case ClassElement::prm_refslot: {
+                                          if (get(name).elt_type() == ClassElement::prm_refslot) {
+                                            const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>(i.get(name));
+                                            const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>(get(name));
+                                            if (not ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
+                                              return false;
+                                            }
+                                          } else {
                                             return false;
                                           }
                                           break;
                                         }
-      case ClassElement::prm_refslot: {
-                                        if (get(*node).elt_type() == ClassElement::prm_refslot) {
-                                          const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>(i.get(*node));
-                                          const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>(get(*node));
-                                          if (not ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
-                                            return false;
-                                          }
-                                        } else {
-                                          return false;
-                                        }
-                                        break;
-                                      }
-      default: {
-                 GUM_ERROR(FatalError, "unexpected ClassElement in interface.");
-               }
+        default: {
+                   GUM_ERROR(FatalError, "unexpected ClassElement in interface.");
+                 }
+      }
     }
+  } catch (NotFound&) {
+    return false;
   }
   return true;
 }

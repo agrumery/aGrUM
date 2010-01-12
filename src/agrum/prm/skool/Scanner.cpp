@@ -237,8 +237,8 @@ Scanner::~Scanner() {
 void Scanner::Init() {
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 13;
-	noSym = 13;
+	maxT = 26;
+	noSym = 26;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 12);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -251,11 +251,24 @@ void Scanner::Init() {
 	start.set(44, 9);
 	start.set(58, 10);
 	start.set(59, 11);
+	start.set(123, 14);
+	start.set(125, 15);
+	start.set(91, 16);
+	start.set(93, 17);
+	start.set(61, 18);
+	start.set(40, 19);
+	start.set(41, 20);
+	start.set(42, 21);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"type", 9);
-	keywords.set(L"extends", 10);
-	keywords.set(L"package", 11);
-	keywords.set(L"import", 12);
+	keywords.set(L"class", 10);
+	keywords.set(L"interface", 11);
+	keywords.set(L"extends", 12);
+	keywords.set(L"package", 13);
+	keywords.set(L"import", 14);
+	keywords.set(L"implements", 17);
+	keywords.set(L"default", 20);
+	keywords.set(L"dependson", 21);
 
 
 	tvalLength = 128;
@@ -471,6 +484,22 @@ Token* Scanner::NextToken() {
 		case 13:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_12;}
 			else {t->kind = noSym; break;}
+		case 14:
+			{t->kind = 15; break;}
+		case 15:
+			{t->kind = 16; break;}
+		case 16:
+			{t->kind = 18; break;}
+		case 17:
+			{t->kind = 19; break;}
+		case 18:
+			{t->kind = 22; break;}
+		case 19:
+			{t->kind = 23; break;}
+		case 20:
+			{t->kind = 24; break;}
+		case 21:
+			{t->kind = 25; break;}
 
 	}
 	AppendVal(t);
