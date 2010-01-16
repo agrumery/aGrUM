@@ -36,6 +36,10 @@ const Type&
 PRM::getType(const std::string& name) const { return *(__typeMap[name]); }
 
 INLINE
+const Sequence<Type*>&
+PRM::types() const { return __types; }
+
+INLINE
 Class&
 PRM::getClass(const std::string& name) { return *(__classMap[name]); }
 
@@ -48,8 +52,16 @@ const Sequence<Class*>&
 PRM::classes() const { return __classes; }
 
 INLINE
-const Sequence<Type*>&
-PRM::types() const { return __types; }
+Class&
+PRM::getInterface(const std::string& name) { return *__interfaceMap[name]; }
+
+INLINE
+const Class&
+PRM::getInterface(const std::string& name) const { return *__interfaceMap[name]; }
+
+INLINE
+const Sequence<Class*>&
+PRM::interfaces() const { return __interfaces; }
 
 INLINE
 Model&

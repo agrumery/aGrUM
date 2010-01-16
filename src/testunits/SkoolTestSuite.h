@@ -155,12 +155,84 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       delete prm;
     }
 
-    void testComplexPrinters() {
+    /// Testing classes and interfaces
+    void testComplexPrinters_1() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
+      TS_ASSERT_EQUALS(prm->classes().size(), 5);
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.ColorPrinter"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
+      TS_ASSERT_EQUALS(prm->interfaces().size(), 2);
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Equipment"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Printer"));
       delete prm;
     }
+
+    // /// Testing classes and interfaces inheritance with subtypes methods
+    // void testComplexPrinters_2() {
+    //   SkoolReader reader;
+    //   TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+    //   PRM* prm = reader.prm();
+    //   // Classes
+    //   Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
+    //   Class& Room = prm->getClass("agrum.test.Room");
+    //   Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
+    //   Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
+    //   Class& Computer = prm->getClass("agrum.test.Computer");
+    //   // Interfaces
+    //   Interface& Equipment = prm->getInterface("agrum.test.Equipment");
+    //   Interface& Printer = prm->getInterface("agrum.test.Printer");
+    //   // Testing PowerSupply
+    //   TS_ASSERT(PowerSupply.isSubTypeOf(PowerSupply));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Room));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Equipment));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Printer));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(BWPrinter));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(ColorPrinter));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Computer));
+    //   GUM_CHECKPOINT;
+    //   // Testing Room
+    //   TS_ASSERT(not Room.isSubTypeOf(PowerSupply));
+    //   TS_ASSERT(Room.isSubTypeOf(Room));
+    //   TS_ASSERT(not Room.isSubTypeOf(Equipment));
+    //   TS_ASSERT(not Room.isSubTypeOf(Printer));
+    //   TS_ASSERT(not Room.isSubTypeOf(BWPrinter));
+    //   TS_ASSERT(not Room.isSubTypeOf(ColorPrinter));
+    //   TS_ASSERT(not Room.isSubTypeOf(Computer));
+    //   GUM_CHECKPOINT;
+    //   // Testing Printer
+    //   TS_ASSERT(not Printer.isSubTypeOf(PowerSupply));
+    //   TS_ASSERT(not Printer.isSubTypeOf(Room));
+    //   TS_ASSERT(not Printer.isSubTypeOf(Equipment));
+    //   TS_ASSERT(Printer.isSubTypeOf(Printer));
+    //   TS_ASSERT(not Printer.isSubTypeOf(BWPrinter));
+    //   TS_ASSERT(not Printer.isSubTypeOf(ColorPrinter));
+    //   TS_ASSERT(not Printer.isSubTypeOf(Computer));
+    //   GUM_CHECKPOINT;
+    //   // Testing BWPrinter
+    //   TS_ASSERT(not BWPrinter.isSubTypeOf(PowerSupply));
+    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Room));
+    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Equipment));
+    //   TS_ASSERT(BWPrinter.isSubTypeOf(Printer));
+    //   TS_ASSERT(BWPrinter.isSubTypeOf(BWPrinter));
+    //   TS_ASSERT(not BWPrinter.isSubTypeOf(ColorPrinter));
+    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Computer));
+    //   GUM_CHECKPOINT;
+    //   // Testing ColorPrinter
+    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(PowerSupply));
+    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Room));
+    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Equipment));
+    //   TS_ASSERT(ColorPrinter.isSubTypeOf(Printer));
+    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(BWPrinter));
+    //   TS_ASSERT(ColorPrinter.isSubTypeOf(ColorPrinter));
+    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Computer));
+    //   GUM_CHECKPOINT;
+    //   delete prm;
+    // }
 };
 
 } // namespace tests

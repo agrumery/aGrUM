@@ -197,7 +197,7 @@ Class::isInnerNode(NodeId id) const {
 INLINE
 bool
 Class::_isSubTypeOf(const ClassElementContainer& cec) const {
-  GUM_ERROR(FatalError, "Not implemented!");
+  GUM_ERROR(FatalError, "Not implemented.");
 }
 
 INLINE

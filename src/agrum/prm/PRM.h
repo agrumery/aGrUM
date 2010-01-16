@@ -85,6 +85,11 @@ class PRM {
     const Type& getType(const std::string& name) const;
 
     /**
+     * Returns the Sequence of all Type in this PRM.
+     */
+    const Sequence<Type*>& types() const;
+
+    /**
      * Returns a constant reference on a Class given it's name.
      * @throw NotFound Raised if no class is found with the given name.
      */
@@ -102,9 +107,21 @@ class PRM {
     const Sequence<Class*>& classes() const;
 
     /**
-     * Returns the Sequence of all Type in this PRM.
+     * Returns a constant reference on a Class given it's name.
+     * @throw NotFound Raised if no class is found with the given name.
      */
-    const Sequence<Type*>& types() const;
+    Class& getInterface(const std::string& name);
+
+    /**
+     * Returns a constant reference on a Class given it's name.
+     * @throw NotFound Raised if no class is found with the given name.
+     */
+    const Class& getInterface(const std::string& name) const;
+
+    /**
+     * Returns the Sequence of all Class in this PRM.
+     */
+    const Sequence<Class*>& interfaces() const;
 
     /**
      * Returns a constant reference on a Model given it's name.

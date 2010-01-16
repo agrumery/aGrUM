@@ -274,6 +274,9 @@ class Class: public ClassElementContainer {
     /// @}
 // ==========================================================================
 };
+
+typedef Class Interface;
+
 } /* namespace prm */
 } // namespace gum
 // ==========================================================================
