@@ -172,67 +172,151 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       delete prm;
     }
 
-    // /// Testing classes and interfaces inheritance with subtypes methods
-    // void testComplexPrinters_2() {
-    //   SkoolReader reader;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
-    //   PRM* prm = reader.prm();
-    //   // Classes
-    //   Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
-    //   Class& Room = prm->getClass("agrum.test.Room");
-    //   Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
-    //   Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
-    //   Class& Computer = prm->getClass("agrum.test.Computer");
-    //   // Interfaces
-    //   Interface& Equipment = prm->getInterface("agrum.test.Equipment");
-    //   Interface& Printer = prm->getInterface("agrum.test.Printer");
-    //   // Testing PowerSupply
-    //   TS_ASSERT(PowerSupply.isSubTypeOf(PowerSupply));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Room));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Equipment));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Printer));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(BWPrinter));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(ColorPrinter));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(not PowerSupply.isSubTypeOf(Computer));
-    //   GUM_CHECKPOINT;
-    //   // Testing Room
-    //   TS_ASSERT(not Room.isSubTypeOf(PowerSupply));
-    //   TS_ASSERT(Room.isSubTypeOf(Room));
-    //   TS_ASSERT(not Room.isSubTypeOf(Equipment));
-    //   TS_ASSERT(not Room.isSubTypeOf(Printer));
-    //   TS_ASSERT(not Room.isSubTypeOf(BWPrinter));
-    //   TS_ASSERT(not Room.isSubTypeOf(ColorPrinter));
-    //   TS_ASSERT(not Room.isSubTypeOf(Computer));
-    //   GUM_CHECKPOINT;
-    //   // Testing Printer
-    //   TS_ASSERT(not Printer.isSubTypeOf(PowerSupply));
-    //   TS_ASSERT(not Printer.isSubTypeOf(Room));
-    //   TS_ASSERT(not Printer.isSubTypeOf(Equipment));
-    //   TS_ASSERT(Printer.isSubTypeOf(Printer));
-    //   TS_ASSERT(not Printer.isSubTypeOf(BWPrinter));
-    //   TS_ASSERT(not Printer.isSubTypeOf(ColorPrinter));
-    //   TS_ASSERT(not Printer.isSubTypeOf(Computer));
-    //   GUM_CHECKPOINT;
-    //   // Testing BWPrinter
-    //   TS_ASSERT(not BWPrinter.isSubTypeOf(PowerSupply));
-    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Room));
-    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Equipment));
-    //   TS_ASSERT(BWPrinter.isSubTypeOf(Printer));
-    //   TS_ASSERT(BWPrinter.isSubTypeOf(BWPrinter));
-    //   TS_ASSERT(not BWPrinter.isSubTypeOf(ColorPrinter));
-    //   TS_ASSERT(not BWPrinter.isSubTypeOf(Computer));
-    //   GUM_CHECKPOINT;
-    //   // Testing ColorPrinter
-    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(PowerSupply));
-    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Room));
-    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Equipment));
-    //   TS_ASSERT(ColorPrinter.isSubTypeOf(Printer));
-    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(BWPrinter));
-    //   TS_ASSERT(ColorPrinter.isSubTypeOf(ColorPrinter));
-    //   TS_ASSERT(not ColorPrinter.isSubTypeOf(Computer));
-    //   GUM_CHECKPOINT;
-    //   delete prm;
-    // }
+    /// Testing classes and interfaces inheritance with subtypes methods
+    void testComplexPrinters_2() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      // Classes
+      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
+      Class& Room = prm->getClass("agrum.test.Room");
+      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
+      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
+      Class& Computer = prm->getClass("agrum.test.Computer");
+      // Interfaces
+      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
+      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      // Testing PowerSupply
+      TS_ASSERT(PowerSupply.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(Room));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(Equipment));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(Printer));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not PowerSupply.isSubTypeOf(Computer));
+      // Testing Room
+      TS_ASSERT(not Room.isSubTypeOf(PowerSupply));
+      TS_ASSERT(Room.isSubTypeOf(Room));
+      TS_ASSERT(not Room.isSubTypeOf(Equipment));
+      TS_ASSERT(not Room.isSubTypeOf(Printer));
+      TS_ASSERT(not Room.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not Room.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not Room.isSubTypeOf(Computer));
+      // Testing Equipment
+      TS_ASSERT(not Equipment.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not Equipment.isSubTypeOf(Room));
+      TS_ASSERT(Equipment.isSubTypeOf(Equipment));
+      TS_ASSERT(not Equipment.isSubTypeOf(Printer));
+      TS_ASSERT(not Equipment.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not Equipment.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not Equipment.isSubTypeOf(Computer));
+      // Testing Printer
+      TS_ASSERT(not Printer.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not Printer.isSubTypeOf(Room));
+      TS_ASSERT(Printer.isSubTypeOf(Equipment));
+      TS_ASSERT(Printer.isSubTypeOf(Printer));
+      TS_ASSERT(not Printer.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not Printer.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not Printer.isSubTypeOf(Computer));
+      // Testing BWPrinter
+      TS_ASSERT(not BWPrinter.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not BWPrinter.isSubTypeOf(Room));
+      TS_ASSERT(BWPrinter.isSubTypeOf(Equipment));
+      TS_ASSERT(BWPrinter.isSubTypeOf(Printer));
+      TS_ASSERT(BWPrinter.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not BWPrinter.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not BWPrinter.isSubTypeOf(Computer));
+      // Testing ColorPrinter
+      TS_ASSERT(not ColorPrinter.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not ColorPrinter.isSubTypeOf(Room));
+      TS_ASSERT(ColorPrinter.isSubTypeOf(Equipment));
+      TS_ASSERT(ColorPrinter.isSubTypeOf(Printer));
+      TS_ASSERT(not ColorPrinter.isSubTypeOf(BWPrinter));
+      TS_ASSERT(ColorPrinter.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(not ColorPrinter.isSubTypeOf(Computer));
+      // Testing Computer
+      TS_ASSERT(not Computer.isSubTypeOf(PowerSupply));
+      TS_ASSERT(not Computer.isSubTypeOf(Room));
+      TS_ASSERT(Computer.isSubTypeOf(Equipment));
+      TS_ASSERT(not Computer.isSubTypeOf(Printer));
+      TS_ASSERT(not Computer.isSubTypeOf(BWPrinter));
+      TS_ASSERT(not Computer.isSubTypeOf(ColorPrinter));
+      TS_ASSERT(Computer.isSubTypeOf(Computer));
+      delete prm;
+    }
+
+    /// Testing classes and interfaces inheritance with supertypes methods
+    void testComplexPrinters_3() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      // Classes
+      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
+      Class& Room = prm->getClass("agrum.test.Room");
+      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
+      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
+      Class& Computer = prm->getClass("agrum.test.Computer");
+      // Interfaces
+      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
+      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      // Testing PowerSupply
+      TS_ASSERT(PowerSupply.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(Room));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(Equipment));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(Printer));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(not PowerSupply.isSuperTypeOf(Computer));
+      // Testing Room
+      TS_ASSERT(not Room.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(Room.isSuperTypeOf(Room));
+      TS_ASSERT(not Room.isSuperTypeOf(Equipment));
+      TS_ASSERT(not Room.isSuperTypeOf(Printer));
+      TS_ASSERT(not Room.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(not Room.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(not Room.isSuperTypeOf(Computer));
+      // Testing Equipment
+      TS_ASSERT(not Equipment.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not Equipment.isSuperTypeOf(Room));
+      TS_ASSERT(Equipment.isSuperTypeOf(Equipment));
+      TS_ASSERT(Equipment.isSuperTypeOf(Printer));
+      TS_ASSERT(Equipment.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(Equipment.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(Equipment.isSuperTypeOf(Computer));
+      // Testing Printer
+      TS_ASSERT(not Printer.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not Printer.isSuperTypeOf(Room));
+      TS_ASSERT(not Printer.isSuperTypeOf(Equipment));
+      TS_ASSERT(Printer.isSuperTypeOf(Printer));
+      TS_ASSERT(Printer.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(Printer.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(not Printer.isSuperTypeOf(Computer));
+      // Testing BWPrinter
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(Room));
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(Equipment));
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(Printer));
+      TS_ASSERT(BWPrinter.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(not BWPrinter.isSuperTypeOf(Computer));
+      // Testing ColorPrinter
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(Room));
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(Equipment));
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(Printer));
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(ColorPrinter.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(not ColorPrinter.isSuperTypeOf(Computer));
+      // Testing Computer
+      TS_ASSERT(not Computer.isSuperTypeOf(PowerSupply));
+      TS_ASSERT(not Computer.isSuperTypeOf(Room));
+      TS_ASSERT(not Computer.isSuperTypeOf(Equipment));
+      TS_ASSERT(not Computer.isSuperTypeOf(Printer));
+      TS_ASSERT(not Computer.isSuperTypeOf(BWPrinter));
+      TS_ASSERT(not Computer.isSuperTypeOf(ColorPrinter));
+      TS_ASSERT(Computer.isSuperTypeOf(Computer));
+      delete prm;
+    }
 };
 
 } // namespace tests

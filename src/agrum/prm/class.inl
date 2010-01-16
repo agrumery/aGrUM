@@ -197,7 +197,22 @@ Class::isInnerNode(NodeId id) const {
 INLINE
 bool
 Class::_isSubTypeOf(const ClassElementContainer& cec) const {
-  GUM_ERROR(FatalError, "Not implemented.");
+  try {
+    if (_alternate().isSubTypeOf(cec)) {
+      return true;
+    }
+  } catch (NotFound&) {
+    // Don't care
+  }
+  if (__implements) {
+    for (Set<Class*>::iterator iter = __implements->begin();
+         iter != __implements->end(); ++iter) {
+      if ((**iter).isSubTypeOf(cec)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 INLINE
