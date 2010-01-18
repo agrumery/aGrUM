@@ -42,11 +42,11 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/types.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_state").variable().domainSize(), 2);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_ink").variable().domainSize(), 2);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_degraded").variable().domainSize(), 3);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_bw_p").variable().domainSize(), 4);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_color_p").variable().domainSize(), 5);
+      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_state").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_ink").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_degraded").variable().domainSize(), (gum::Size)3);
+      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_bw_p").variable().domainSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_color_p").variable().domainSize(), (gum::Size)5);
       delete prm;
     }
 
@@ -73,7 +73,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("boolean")));
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_state")));
       TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_degraded")));
-      TS_ASSERT_EQUALS(prm->types().size(), 7);
+      TS_ASSERT_EQUALS(prm->types().size(), (gum::Size)7);
       delete prm;
     }
 
@@ -81,7 +81,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->classes().size(), 5);
+      TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
@@ -96,10 +96,10 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = reader.prm();
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
       Class& c = prm->getClass("agrum.test.PowerSupply");
-      TS_ASSERT_EQUALS(c.attributes().size(), 1);
-      TS_ASSERT_EQUALS(c.referenceSlots().size(), 0);
-      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
-      TS_ASSERT_EQUALS(c.slotChains().size(), 0);
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0);
       delete prm;
     }
 
@@ -109,10 +109,10 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = reader.prm();
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
       Class& c = prm->getClass("agrum.test.Room");
-      TS_ASSERT_EQUALS(c.attributes().size(), 0);
-      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
-      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
-      TS_ASSERT_EQUALS(c.slotChains().size(), 0);
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0);
       delete prm;
     }
 
@@ -122,10 +122,10 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = reader.prm();
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
       Class& c = prm->getClass("agrum.test.Equipment");
-      TS_ASSERT_EQUALS(c.attributes().size(), 1);
-      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
-      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
-      TS_ASSERT_EQUALS(c.slotChains().size(), 1);
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1);
       delete prm;
     }
 
@@ -135,10 +135,10 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = reader.prm();
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Printer"));
       Class& c = prm->getClass("agrum.test.Printer");
-      TS_ASSERT_EQUALS(c.attributes().size(), 3);
-      TS_ASSERT_EQUALS(c.referenceSlots().size(), 1);
-      TS_ASSERT_EQUALS(c.aggregates().size(), 0);
-      TS_ASSERT_EQUALS(c.slotChains().size(), 1);
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1);
       delete prm;
     }
 
@@ -148,10 +148,10 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = reader.prm();
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
       Class& c = prm->getClass("agrum.test.Computer");
-      TS_ASSERT_EQUALS(c.attributes().size(), 2);
-      TS_ASSERT_EQUALS(c.referenceSlots().size(), 2);
-      TS_ASSERT_EQUALS(c.aggregates().size(), 1);
-      TS_ASSERT_EQUALS(c.slotChains().size(), 2);
+      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)2);
       delete prm;
     }
 
@@ -160,13 +160,13 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->classes().size(), 5);
+      TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.ColorPrinter"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
-      TS_ASSERT_EQUALS(prm->interfaces().size(), 2);
+      TS_ASSERT_EQUALS(prm->interfaces().size(), (gum::Size)2);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Equipment"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Printer"));
       delete prm;
