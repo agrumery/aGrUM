@@ -198,10 +198,6 @@ def checkConstraints(parser,options,args):
 			parser.print_help()
 			parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <option>='"+current['option']+"'")
 
-	if current['rule']=='test':
-		if not os.path.exists('src/testunits/testList.cmake'):
-			writeTestList(allTests())
-
 
 ##########################################################################################################################
 def proceed(options):
@@ -340,6 +336,10 @@ for key in current:
 	persistent[key]=current[key]
 shlv['persistent']=persistent
 shlv.close()
+
+#needed for cmake
+if not os.path.exists('src/testunits/testList.cmake'):
+	writeTestList(allTests())
 
 global sh
 sh="";
