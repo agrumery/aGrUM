@@ -122,9 +122,11 @@ namespace CxxTest {
   const char *RealSuiteDescription::file() const {
     const char *s=_file+strlen( _file );
 
-    while ( s!=_file && *s!='/' && *s!='\\' ) s--;
-
-    return s+1;
+    while ( s!=_file) {
+			if (*s=='/' || *s=='\\' )  return s+1;
+			s--;
+		}
+    return _file;
   }
 
   unsigned RealSuiteDescription::line() const { return _line; }
