@@ -216,8 +216,8 @@ namespace gum {
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
   };
-} // gum
 
 #include <agrum/BN/AbstractBayesNet.tcc>
 
 #endif /* GUM_ABSTRACT_BAYES_NET_H */
+} // gum
