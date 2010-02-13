@@ -40,7 +40,7 @@ namespace gum {
   class BayesNetFactory;
 
   /**
-  * @class AbstractBayesNet AbstractBayesNet.h <agrum/BN/AbstractBayesNet.h>
+  * @class AbstractBayesNet abstractBayesNet.h <agrum/BN/abstractBayesNet.h>
    * Abstract class for representing a BayesNet.
    */
   template<typename T_DATA>
@@ -218,6 +218,6 @@ namespace gum {
   };
 } // gum
 
-#include <agrum/BN/AbstractBayesNet.tcc>
+#include <agrum/BN/abstractBayesNet.tcc>
 
 #endif /* GUM_ABSTRACT_BAYES_NET_H */

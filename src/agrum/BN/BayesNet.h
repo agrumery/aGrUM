@@ -34,7 +34,7 @@
 #include <agrum/core/hashTable.h>
 // ============================================================================
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/BN/AbstractBayesNet.h>
+#include <agrum/BN/abstractBayesNet.h>
 // ============================================================================
 
 namespace gum {
