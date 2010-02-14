@@ -583,6 +583,244 @@ namespace gum {
           delete vars[i];
       }
 
+
+      void test_op_optimizeArrays () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+        
+        MultiDimArray<float> t1, t2, t3, t4, *t5, *t6;
+        t1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+        t4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+        randomInit ( &t1 );
+        randomInit ( &t2 );
+        randomInit ( &t3 );
+        randomInit ( &t4 );
+        t5 = add2MultiDimArrays ( &t1, &t2 );
+        t6 = add_test_arrays ( &t1, &t2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t3, &t4 );
+        t6 = add_test_arrays ( &t3, &t4 );
+        TS_ASSERT (*t6 == *t5);
+        delete t6;
+        t6 = add2MultiDimArrays ( &t4, &t3 );
+        TS_ASSERT (*t6 == *t5);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t1, &t2 );
+        t6 = add_test_arrays ( &t1, &t2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t3, &t2 );
+        t6 = add_test_arrays ( &t3, &t2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        MultiDimArray<float> t7, t8, t9;
+        t7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        t8 << *(vars[0]) << *(vars[2]);
+        t9 << *(vars[0]);
+        randomInit ( &t7 );
+        randomInit ( &t8 );
+        randomInit ( &t9 );
+        
+        t5 = add2MultiDimArrays ( &t7, &t8 );
+        t6 = add_test_arrays ( &t7, &t8 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t8, &t7 );
+        t6 = add_test_arrays ( &t8, &t7 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        t5 = add2MultiDimArrays ( &t7, &t9 );
+        t6 = add_test_arrays ( &t7, &t9 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t9, &t7 );
+        t6 = add_test_arrays ( &t9, &t7 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+ 
+        t5 = add2MultiDimArrays ( &t8, &t9 );
+        t6 = add_test_arrays ( &t8, &t9 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t9, &t8 );
+        t6 = add_test_arrays ( &t9, &t8 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        MultiDimArray<float> t10, t11, t12;
+        t10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        t11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
+        t12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
+        randomInit ( &t10 );
+        randomInit ( &t11 );
+        randomInit ( &t12 );
+
+        t5 = add2MultiDimArrays ( &t10, &t11 );
+        t6 = add_test_arrays ( &t10, &t11 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t10, &t12 );
+        t6 = add_test_arrays ( &t10, &t12 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t11, &t12 );
+        t6 = add_test_arrays ( &t11, &t12 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+         
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
+      
+      void test_op_optimizeMultiDimImplementations () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+        
+        MultiDimArray<float> tt1, tt2, tt3, tt4;
+        MultiDimImplementation<float> *t5, *t6;
+        tt1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        tt2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        tt3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+        tt4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+        randomInit ( &tt1 );
+        randomInit ( &tt2 );
+        randomInit ( &tt3 );
+        randomInit ( &tt4 );
+        MultiDimImplementation<float>& t1 = tt1;
+        MultiDimImplementation<float>& t2 = tt2;
+        MultiDimImplementation<float>& t3 = tt3;
+        MultiDimImplementation<float>& t4 = tt4;
+        
+        t5 = add2MultiDimArrays ( &t1, &t2 );
+        t6 = add_test_arrays ( &tt1, &tt2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t3, &t4 );
+        t6 = add_test_arrays ( &tt3, &tt4 );
+        TS_ASSERT (*t6 == *t5);
+        delete t6;
+        t6 = add2MultiDimArrays ( &t4, &t3 );
+        TS_ASSERT (*t6 == *t5);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t1, &t2 );
+        t6 = add_test_arrays ( &tt1, &tt2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t3, &t2 );
+        t6 = add_test_arrays ( &tt3, &tt2 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        MultiDimArray<float> tt7, tt8, tt9;
+        tt7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        tt8 << *(vars[0]) << *(vars[2]);
+        tt9 << *(vars[0]);
+        randomInit ( &tt7 );
+        randomInit ( &tt8 );
+        randomInit ( &tt9 );
+        MultiDimImplementation<float>& t7 = tt7;
+        MultiDimImplementation<float>& t8 = tt8;
+        MultiDimImplementation<float>& t9 = tt9;
+        
+        t5 = add2MultiDimArrays ( &t7, &t8 );
+        t6 = add_test_arrays ( &tt7, &tt8 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t8, &t7 );
+        t6 = add_test_arrays ( &tt8, &tt7 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        t5 = add2MultiDimArrays ( &t7, &t9 );
+        t6 = add_test_arrays ( &tt7, &tt9 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t9, &t7 );
+        t6 = add_test_arrays ( &tt9, &tt7 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+ 
+        t5 = add2MultiDimArrays ( &t8, &t9 );
+        t6 = add_test_arrays ( &tt8, &tt9 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t9, &t8 );
+        t6 = add_test_arrays ( &tt9, &tt8 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+
+        MultiDimArray<float> tt10, tt11, tt12;
+        tt10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+        tt11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
+        tt12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
+        randomInit ( &tt10 );
+        randomInit ( &tt11 );
+        randomInit ( &tt12 );
+        MultiDimImplementation<float>& t10 = tt10;
+        MultiDimImplementation<float>& t11 = tt11;
+        MultiDimImplementation<float>& t12 = tt12;
+        
+        t5 = add2MultiDimArrays ( &t10, &t11 );
+        t6 = add_test_arrays ( &tt10, &tt11 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t10, &t12 );
+        t6 = add_test_arrays ( &tt10, &tt12 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+        t5 = add2MultiDimArrays ( &t11, &t12 );
+        t6 = add_test_arrays ( &tt11, &tt12 );
+        TS_ASSERT (*t5 == *t6);
+        delete t6;
+        delete t5;
+ 
+ 
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
+      
     private:
 
       // ==========================================================================

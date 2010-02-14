@@ -140,8 +140,9 @@
   std::vector<Idx> t1_and_t2_1_offset;
   std::vector<Idx> t1_and_t2_2_offset;
   std::vector<Idx> t1_and_t2_domain;
+  std::vector<const DiscreteVariable *> t1_and_t2_vars;
   Idx t1_and_t2_domain_size = 1;
-      
+
   {
     for ( Sequence<const DiscreteVariable *>::const_iterator iter =
             t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
@@ -149,6 +150,7 @@
         t1_and_t2_domain.push_back ( (*iter)->domainSize() );
         t1_and_t2_1_offset.push_back ( t1_offsets[*iter] );
         t1_and_t2_2_offset.push_back ( t2_offsets[*iter] );
+        t1_and_t2_vars.push_back ( *iter );
         t1_and_t2_domain_size *= (*iter)->domainSize();
       }
       else {
@@ -168,6 +170,32 @@
     }
   }
 
+  
+  // a Boolean indicating whether the variables that t1 and t2 have in common
+  // are the first variables and are in the same order. When this is true,
+  // computations can be performed faster
+  bool t1_and_t2_begin_vars = false;
+  if ( t1_and_t2_vars.size() ) {
+    unsigned int nb_t1_t2_vars = 0;
+    for ( Sequence<const DiscreteVariable *>::const_iterator
+            iter = t1_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_vars.size();
+          ++iter, ++nb_t1_t2_vars ) {
+      if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] ) break;
+    }
+    if ( nb_t1_t2_vars ==  t1_and_t2_vars.size() ) {
+      nb_t1_t2_vars = 0;
+      for ( Sequence<const DiscreteVariable *>::const_iterator
+              iter = t2_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_vars.size();
+            ++iter, ++nb_t1_t2_vars ) {
+        if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] ) break;
+      }
+      if ( nb_t1_t2_vars ==  t1_and_t2_vars.size() ) {
+        t1_and_t2_begin_vars = true;
+      }
+    }
+  }
+
+  
 
   // when we will parse t1 and t2 to fill the result table t1+t2, we will use
   // variables txxx_value : at the beginning they are initialized to the domain
@@ -206,8 +234,8 @@
     new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
   result->beginMultipleChanges ();
   for ( Sequence<const DiscreteVariable *>::const_iterator iter =
-          t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
-    if ( t1_vars.exists ( *iter ) )
+          t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+    if ( t2_vars.exists ( *iter ) )
       *result << **iter;
   }
   for ( Sequence<const DiscreteVariable *>::const_iterator iter =
@@ -232,57 +260,85 @@
   Idx t1_offset = 0;
   Idx t2_offset = 0;
   Idx t1_alone_begin_offset = 0;
-  
-  for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
-    t2_offset = 0;
-    t1_alone_begin_offset = t1_offset;
-    
-    for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
-      t1_offset = t1_alone_begin_offset;
+
+  // test if all the variables in common in t1 and t2 are the first variables
+  // and are in the same order. In this case, we can speed-up the incrementation
+  // processes
+  if ( t1_and_t2_begin_vars ) {
+    for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
+      t2_offset = 0;
+      t1_alone_begin_offset = t1_offset;
+      
+      for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
+        t1_offset = t1_alone_begin_offset;
         
-      for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-        result->unsafeSet
-          ( result_offset,
-            GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                    t2->unsafeGet ( t2_offset ) ) );
-
-        ++result_offset;
+        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          result->unsafeSet
+            ( result_offset,
+              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
+                                      t2->unsafeGet ( t2_offset ) ) );
           
-        // update the offset of both t1 and t2
-        for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
-          --t1_and_t2_value[k];
-          if ( t1_and_t2_value[k] ) {
-            t1_offset += t1_and_t2_1_offset[k];
-            t2_offset += t1_and_t2_2_offset[k];
-            break;
-          }
-          t1_and_t2_value[k] = t1_and_t2_domain[k];
-          t1_offset -= t1_and_t2_1_down[k];
-          t2_offset -= t1_and_t2_2_down[k];
+          ++result_offset;
+          
+          // update the offset of both t1 and t2
+          ++t1_offset;
+          ++t2_offset;
         }
-      }
-
-      // update the offset of t2 alone
-      for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
-        --t2_alone_value[k];
-        if ( t2_alone_value[k] ) {
-          t2_offset += t2_alone_offset[k];
-          break;
-        }
-        t2_alone_value[k] = t2_alone_domain[k];
-        t2_offset -= t2_alone_down[k];
       }
     }
-
-    // update the offset of t1 alone
-    for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
-      --t1_alone_value[k];
-      if ( t1_alone_value[k] ) {
-        t1_offset += t1_alone_offset[k];
-        break;
+  }
+  else {
+    for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
+      t2_offset = 0;
+      t1_alone_begin_offset = t1_offset;
+      
+      for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
+        t1_offset = t1_alone_begin_offset;
+        
+        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          result->unsafeSet
+            ( result_offset,
+              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
+                                      t2->unsafeGet ( t2_offset ) ) );
+          
+          ++result_offset;
+          
+          // update the offset of both t1 and t2
+          for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
+            --t1_and_t2_value[k];
+            if ( t1_and_t2_value[k] ) {
+              t1_offset += t1_and_t2_1_offset[k];
+              t2_offset += t1_and_t2_2_offset[k];
+              break;
+            }
+            t1_and_t2_value[k] = t1_and_t2_domain[k];
+            t1_offset -= t1_and_t2_1_down[k];
+            t2_offset -= t1_and_t2_2_down[k];
+          }
+        }
+        
+        // update the offset of t2 alone
+        for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
+          --t2_alone_value[k];
+          if ( t2_alone_value[k] ) {
+            t2_offset += t2_alone_offset[k];
+            break;
+          }
+          t2_alone_value[k] = t2_alone_domain[k];
+          t2_offset -= t2_alone_down[k];
+        }
       }
-      t1_alone_value[k] = t1_alone_domain[k];
-      t1_offset -= t1_alone_down[k];
+      
+      // update the offset of t1 alone
+      for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
+        --t1_alone_value[k];
+        if ( t1_alone_value[k] ) {
+          t1_offset += t1_alone_offset[k];
+          break;
+        }
+        t1_alone_value[k] = t1_alone_domain[k];
+        t1_offset -= t1_alone_down[k];
+      }
     }
   }
 

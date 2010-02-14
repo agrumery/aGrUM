@@ -146,6 +146,31 @@
     }
   }
 
+  
+  // a Boolean indicating whether the variables that t1 and t2 have in common
+  // are the first variables and are in the same order. When this is true,
+  // computations can be performed faster
+  bool t1_and_t2_begin_vars = false;
+  if ( t1_and_t2_var.size() ) {
+    unsigned int nb_t1_t2_vars = 0;
+    for ( Sequence<const DiscreteVariable *>::const_iterator
+            iter = t1_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_var.size();
+          ++iter, ++nb_t1_t2_vars ) {
+      if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
+    }
+    if ( nb_t1_t2_vars ==  t1_and_t2_var.size() ) {
+      nb_t1_t2_vars = 0;
+      for ( Sequence<const DiscreteVariable *>::const_iterator
+              iter = t2_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_var.size();
+            ++iter, ++nb_t1_t2_vars ) {
+        if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
+      }
+      if ( nb_t1_t2_vars ==  t1_and_t2_var.size() ) {
+        t1_and_t2_begin_vars = true;
+      }
+    }
+  }
+
 
   // when we will parse t1 and t2 to fill the result table t1+t2, we will use
   // variables txxx_value : at the beginning they are initialized to the domain
@@ -167,8 +192,8 @@
     new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
   result->beginMultipleChanges ();
   for ( Sequence<const DiscreteVariable *>::const_iterator iter =
-          t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
-    if ( t1_vars.exists ( *iter ) )
+          t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+    if ( t2_vars.exists ( *iter ) )
       *result << **iter;
   }
   for ( Sequence<const DiscreteVariable *>::const_iterator iter =
@@ -195,58 +220,85 @@
   Instantiation t1_inst ( t1 );
   Instantiation t1_alone_begin_inst ( t1 );
 
-  for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
-    t2_inst.setFirst();
-    t1_alone_begin_inst = t1_inst;
-    
-    for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
-      t1_inst = t1_alone_begin_inst;
+  // test if all the variables in common in t1 and t2 are the first variables
+  // and are in the same order. In this case, we can speed-up the incrementation
+  // processes
+  if ( t1_and_t2_begin_vars ) {
+    for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
+      t2_inst.setFirst();
+      t1_alone_begin_inst = t1_inst;
+      
+      for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
+        t1_inst = t1_alone_begin_inst;
         
-      for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-        result->set ( result_inst,
-                      GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
-                                              t2->get ( t2_inst ) ) );
-
-        ++result_inst;
+        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          result->set ( result_inst,
+                        GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
+                                                t2->get ( t2_inst ) ) );
           
-        // update the offset of both t1 and t2
-        for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
-          --t1_and_t2_value[k];
-          if ( t1_and_t2_value[k] ) {
-            t1_inst.incVar ( *(t1_and_t2_var[k]) );
-            t2_inst.incVar ( *(t1_and_t2_var[k]) );
-            break;
-          }
-          t1_and_t2_value[k] = t1_and_t2_domain[k];
-          t1_inst.setFirstVar ( *(t1_and_t2_var[k]) );
-          t2_inst.setFirstVar ( *(t1_and_t2_var[k]) );
+          ++result_inst;
+          
+          // update the offset of both t1 and t2
+          ++t1_inst;
+          ++t2_inst;
         }
       }
-
-      // update the offset of t2 alone
-      for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
-        --t2_alone_value[k];
-        if ( t2_alone_value[k] ) {
-          t2_inst.incVar ( *(t2_alone_var[k]) );
-          break;
-        }
-        t2_alone_value[k] = t2_alone_domain[k];
-        t2_inst.setFirstVar ( *(t2_alone_var[k]) );
-      }
-    }
-
-    // update the offset of t1 alone
-    for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
-      --t1_alone_value[k];
-      if ( t1_alone_value[k] ) {
-        t1_inst.incVar ( *(t1_alone_var[k]) );
-        break;
-      }
-      t1_alone_value[k] = t1_alone_domain[k];
-      t1_inst.setFirstVar ( *(t1_alone_var[k]) );
     }
   }
-
+  else {
+    for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
+      t2_inst.setFirst();
+      t1_alone_begin_inst = t1_inst;
+    
+      for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
+        t1_inst = t1_alone_begin_inst;
+        
+        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          result->set ( result_inst,
+                        GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
+                                                t2->get ( t2_inst ) ) );
+          
+          ++result_inst;
+          
+          // update the offset of both t1 and t2
+          for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
+            --t1_and_t2_value[k];
+            if ( t1_and_t2_value[k] ) {
+              t1_inst.incVar ( *(t1_and_t2_var[k]) );
+              t2_inst.incVar ( *(t1_and_t2_var[k]) );
+              break;
+            }
+            t1_and_t2_value[k] = t1_and_t2_domain[k];
+            t1_inst.setFirstVar ( *(t1_and_t2_var[k]) );
+            t2_inst.setFirstVar ( *(t1_and_t2_var[k]) );
+          }
+        }
+        
+        // update the offset of t2 alone
+        for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
+          --t2_alone_value[k];
+          if ( t2_alone_value[k] ) {
+            t2_inst.incVar ( *(t2_alone_var[k]) );
+            break;
+          }
+          t2_alone_value[k] = t2_alone_domain[k];
+          t2_inst.setFirstVar ( *(t2_alone_var[k]) );
+        }
+      }
+      
+      // update the offset of t1 alone
+      for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
+        --t1_alone_value[k];
+        if ( t1_alone_value[k] ) {
+          t1_inst.incVar ( *(t1_alone_var[k]) );
+          break;
+        }
+        t1_alone_value[k] = t1_alone_domain[k];
+        t1_inst.setFirstVar ( *(t1_alone_var[k]) );
+      }
+    }
+  }
+  
   return result;
 }
   
