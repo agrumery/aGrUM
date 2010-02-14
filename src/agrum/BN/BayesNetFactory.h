@@ -31,7 +31,6 @@
 #include <vector>
 
 // ============================================================================
-#include <agrum/BN/AbstractBayesNetFactory.h>
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
