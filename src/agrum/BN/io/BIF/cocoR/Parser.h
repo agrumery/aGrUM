@@ -6,7 +6,7 @@
 #include "cast_unicode.h"
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/BayesNetFactory.h>
+#include <agrum/BN/abstractBayesNetFactory.h>
 
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
 

@@ -32,6 +32,7 @@
 
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/abstractBayesNetFactory.h>
 
 namespace gum {
 
