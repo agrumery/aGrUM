@@ -35,9 +35,6 @@
 #include <agrum/multidim/potential.h>
 
 namespace gum {
-  template<typename T_DATA>
-
-  class BayesNetFactory;
 
   /**
   * @class AbstractBayesNet abstractBayesNet.h <agrum/BN/abstractBayesNet.h>

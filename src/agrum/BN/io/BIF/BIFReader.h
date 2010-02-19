@@ -65,6 +65,7 @@ public:
 #include <fstream>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

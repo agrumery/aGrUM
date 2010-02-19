@@ -39,6 +39,9 @@
 
 namespace gum {
 
+  template<typename T_DATA> class BayesNetFactory;
+
+
   /**
    * @class BayesNet BayesNet.h <agrum/BN/BayesNet.h>
    * @brief Class representing a Bayesian Network.
