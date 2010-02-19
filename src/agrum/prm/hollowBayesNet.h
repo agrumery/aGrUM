@@ -120,6 +120,9 @@ class HollowBayesNet: public AbstractBayesNet<prm_float> {
 
     /// See gum::AbstractBayesNet::getTopologicalOrder().
     virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+    
+    /// @return Returns a dot representation of this BayesNet.
+    virtual std::string toDot( void ) const;
 
     /// @}
   private:

@@ -190,33 +190,6 @@ AbstractBayesNet<T_DATA>::toString( void ) const {
   return s.str();
 }
 
-template<typename T_DATA> INLINE
-std::string
-AbstractBayesNet<T_DATA>::toDot( void ) const {
-  std::stringstream output;
-  output << "digraph \"";
-  try {
-    output << property( "name" ) << "\" {" << std::endl;
-  } catch ( NotFound& ) {
-    output << "no_name\" {" << std::endl;
-  }
-  std::string tab = "  ";
-  for ( gum::DAG::NodeIterator node_iter = dag().beginNodes();
-        node_iter != dag().endNodes(); ++node_iter ) {
-    if ( dag().children( *node_iter ).size() > 0 ) {
-      for ( gum::DAG::ArcIterator arc_iter = dag().children( *node_iter ).begin();
-            arc_iter != dag().children( *node_iter ).end(); ++arc_iter ) {
-        output << tab << "\"" << variable( *node_iter ).name() << "\" -> "
-        << "\"" << variable( arc_iter->head() ).name() << "\";" << std::endl;
-      }
-    } else if ( dag().parents( *node_iter ).size() == 0 ) {
-      output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
-    }
-  }
-  output << "}" << std::endl;
-  return output.str();
-}
-
 template <typename T_DATA>
 bool
 AbstractBayesNet<T_DATA>::operator==(const AbstractBayesNet<T_DATA>& from) const

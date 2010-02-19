@@ -136,6 +136,32 @@ HollowBayesNet::modalities() const {
   return __modalities;
 }
 
+INLINE std::string
+HollowBayesNet::toDot( void ) const {
+  std::stringstream output;
+  output << "digraph \"";
+  try {
+    output << this->property( "name" ) << "\" {" << std::endl;
+  } catch ( NotFound& ) {
+    output << "no_name\" {" << std::endl;
+  }
+  std::string tab = "  ";
+  for ( gum::DAG::NodeIterator node_iter = dag().beginNodes();
+  node_iter != dag().endNodes(); ++node_iter ) {
+    if ( dag().children( *node_iter ).size() > 0 ) {
+      for ( gum::DAG::ArcIterator arc_iter = dag().children( *node_iter ).begin();
+      arc_iter != dag().children( *node_iter ).end(); ++arc_iter ) {
+        output << tab << "\"" << variable( *node_iter ).name() << "\" -> "
+        << "\"" << variable( arc_iter->head() ).name() << "\";" << std::endl;
+      }
+    } else if ( dag().parents( *node_iter ).size() == 0 ) {
+      output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
+    }
+  }
+  output << "}" << std::endl;
+  return output.str();
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

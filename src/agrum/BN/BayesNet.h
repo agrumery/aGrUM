@@ -109,6 +109,9 @@ namespace gum {
        * Returns the number of variables in this bayes net.
        */
       virtual Idx size() const;
+      
+      /// @return Returns a dot representation of this BayesNet.
+      virtual std::string toDot( void ) const;
 
       /**
        * Retursn true if this bayes net is empty.

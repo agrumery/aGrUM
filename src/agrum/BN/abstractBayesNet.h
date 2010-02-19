@@ -187,7 +187,7 @@ namespace gum {
       std::string toString( void ) const;
 
       /// @return Returns a dot representation of this BayesNet.
-      std::string toDot( void ) const;
+      virtual std::string toDot( void ) const=0;
 
       /// @return Returns true if the from and this are equal.
       bool operator==( const AbstractBayesNet<T_DATA>& from ) const;

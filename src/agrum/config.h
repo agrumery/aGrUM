@@ -65,25 +65,29 @@
     - in the project folder, a sub-folder <tt> src</tt>,
     - in <tt>src</tt> folder, your <tt>*.{cpp|h|etc.}</tt> files
     - in <tt>src</tt> folder, a file named <tt>CMakeLists.txt</tt> like this one :
-    @code
-    project(FOO)
-    cmake_minimum_required(VERSION 2.6)
+    <tt>
+project(FOO)
+cmake_minimum_required(VERSION 2.8)
 
-    find_package(aGrUM)
-    if (aGrUM_FOUND)
-      include(${aGrUM_USE_FILE})
-    else (aGrUM_FOUND)
-      message(FATAL_ERROR "Please install aGrUM")
-    endif (aGrUM_FOUND)
+# do not forget to change this line if needed ("act install -d...")
+set(AGRUM_INSTALLATION_DIRECTORY "/usr")
+set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
 
-    file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
-    file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
+find_package(aGrUM)
 
-    include_directories(${FOO_SOURCE_DIR})
+if (aGrUM_FOUND)
+	include_directories(${AGRUM_INCLUDE_DIR})
+	link_directories(${AGRUM_LIB_DIR})
+else (aGrUM_FOUND)
+  message(FATAL_ERROR "Please install aGrUM")
+endif (aGrUM_FOUND)
 
-    add_executable (foo ${FOO_SOURCE})
-    target_link_libraries(foo agrum)
-    @endcode
+file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
+file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
+
+add_executable (foo ${FOO_SOURCE})
+target_link_libraries(foo agrum)
+    </tt>
 
     - to compile the project (from the project folder)
     @code
