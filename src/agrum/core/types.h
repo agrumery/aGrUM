@@ -24,19 +24,19 @@
 
 
 namespace gum {
-  
 
-  /// how copies should be performed (usual or shallow copies)
-  /// @todo default is ?
+
+/// how copies should be performed (usual or shallow copies)
+/// @todo default is ?
   enum CopyType {
     GUM_DEEP_COPY,
     GUM_SHALLOW_COPY
   };
 
-  /// type for indexes
+/// type for indexes
   typedef unsigned int Idx;
 
-  /// type for ids
+/// type for ids
   typedef unsigned int Id;
 
   /** in aGrUM, hashed values are unsigned long int. This is sufficient to deal
@@ -47,6 +47,7 @@ namespace gum {
 
 
 } /* namespace gum */
-  
+
 
 #endif /* GUM_TYPES_H */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; 

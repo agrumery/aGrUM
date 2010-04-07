@@ -23,6 +23,10 @@
  *
  * @author Lionel TORTI
  */
+
+// to ease IDE parser
+#include <agrum/prm/hollowBayesNet.h>
+
 // ============================================================================
 namespace gum {
 namespace prm {

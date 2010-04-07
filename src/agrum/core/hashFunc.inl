@@ -25,6 +25,10 @@
 #include <string>
 #include <utility>
 
+// to ease parsing in IDE
+#include <agrum/core/types.h>
+#include <agrum/core/hashFunc.h>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -37,56 +41,67 @@ namespace gum {
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
   // ==============================================================================
-  INLINE unsigned int __hashTableLog2( const Size& nb ) {
+  INLINE unsigned int __hashTableLog2 ( const Size& nb ) {
     unsigned int i = 0;
-    for ( Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1 ) {}; 
-    return (( 1UL << i ) < nb ? i + 1UL : i );
+
+    for ( Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1 ) {};
+
+    return ( ( 1UL << i ) < nb ? i + 1UL : i );
   }
 
-  
+
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented
   /// by strings
   // ==============================================================================
   INLINE Size
-  HashFunc<std::string>::operator()( const std::string& key ) const  {
+  HashFunc<std::string>::operator() ( const std::string& key ) const  {
     register Size h = 0;
+
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];
-    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+
+    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 
-  
+
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented
   /// by strings
   // ==============================================================================
   INLINE Size
   HashFunc< std::pair<std::string, std::string> >::operator()
-    ( const std::pair<std::string, std::string>& key ) const  {
+  ( const std::pair<std::string, std::string>& key ) const  {
     register Size h = 0;
     const std::string& s1 = key.first;
+
     for ( size_t i = 0, j = s1.size(); i < j; ++i )
       h = 19 * h + s1[i];
+
     const std::string& s2 = key.second;
+
     for ( size_t i = 0, j = s2.size(); i < j; ++i )
       h = 19 * h + s2[i];
-    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+
+    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 
-  
+
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented
   /// by Debugs
   // ==============================================================================
   INLINE Size
-  HashFunc<Debug>::operator()( const Debug& key ) const  {
+  HashFunc<Debug>::operator() ( const Debug& key ) const  {
     register Size h = 0;
+
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];
-    return (( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+
+    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
   }
 
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; 
