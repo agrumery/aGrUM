@@ -132,7 +132,7 @@
 %include <agrum/core/list.h>
 
 %import <agrum/graphicalModels/variableNodeMap.h>
-%import <agrum/BN/AbstractBayesNet.h>
+%import <agrum/BN/abstractBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
