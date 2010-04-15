@@ -65,7 +65,7 @@
     - in the project folder, a sub-folder <tt> src</tt>,
     - in <tt>src</tt> folder, your <tt>*.{cpp|h|etc.}</tt> files
     - in <tt>src</tt> folder, a file named <tt>CMakeLists.txt</tt> like this one :
-    <tt>
+@verbatim
 project(FOO)
 cmake_minimum_required(VERSION 2.8)
 
@@ -87,7 +87,7 @@ file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
 
 add_executable (foo ${FOO_SOURCE})
 target_link_libraries(foo agrum)
-    </tt>
+@endverbatim
 
     - to compile the project (from the project folder)
     @code
