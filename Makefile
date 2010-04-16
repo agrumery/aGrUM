@@ -1,26 +1,34 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
+ACT=./act
+JOBS=4
 
 library:
-	act agrum release -p linux -j 4
+	$(ACT) agrum release -p linux -j $(JOBS)
+
+install:
+	$(ACT) release install -p linux -j $(JOBS)
 
 debug:
-	act agrum debug -p linux -j 4
+	$(ACT) agrum debug -p linux -j $(JOBS)
 
 test:
-	act test release -t all -p linux -j 4
+	$(ACT) test release -t all -p linux -j $(JOBS)
 
 testdebug:
-	act test debug -t all -p linux -j 4
+	$(ACT) test debug -t all -p linux -j $(JOBS)
 
 run:
-	act run release -p linux -j 4
+	$(ACT) run release -p linux -j $(JOBS)
 
 rundebug:
-	act run debug -p linux -j 4
+	$(ACT) run debug -p linux -j $(JOBS)
 
 windows:
-	act agrum release -p windows -j 4
+	$(ACT) agrum release -p windows -j $(JOBS)
 
 pyAgrum:
-	act wrapper pyAgrum -p linux -j 4
+	$(ACT) wrapper pyAgrum -p linux -j $(JOBS)
+
+clean:
+	$(ACT) clean
