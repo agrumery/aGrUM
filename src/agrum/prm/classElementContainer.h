@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::ClassElementContainer.
+ * @brief Headers of gum::prm::ClassElementContainer.
  *
  * @author Lionel TORTI
  */
@@ -36,41 +36,28 @@
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/classElement.h>
-#include <agrum/prm/attribute.h>
 #include <agrum/prm/referenceSlot.h>
 #include <agrum/prm/slotChain.h>
-#include <agrum/prm/aggregate.h>
 // ============================================================================
 namespace gum {
 namespace prm {
+// ============================================================================
+class Class;
+class Interface;
 // ============================================================================
 /**
  * @class ClassElementContainer classElementContainer.h <agrum/prm/classElementContainer.h>
  * @brief Abstract class for classes containing gum::ClassElement.
  *
- * A ClassElementContainer is a mapping between nodes in gum::DAG and
- * gum::ClassElement.
- *
- * This ClassElementContainer handles basic adding and getting of
- * gum::ClassElementgiven their names and ids.
- *
- * Another particularity of the ClassElementContainer is to enable delagation
- * for containing gum::ClassElement: it is possible to define an instance
- * of ClassElementContainer to be another possible holder of ClassElement.
- *
- * This is useful in inheritance in gum::Class and instance redefinition in
- * gum::Instance.
- *
- * Another tweak possible is to prevent the creation of a gum::DAG for this
- * ClassElementContainer. This is useful when the subclass is read-only
- * on it's gum::DAG.
- *
  * To print a ClassElementContainer you can use the following operator:
  * gum::operator<<(std::ostream&, const ClassElementContainer&) which print
  * the ClassElementContainer in the graphviz-dot format.
  *
+ * @ingroup prm_group
  */
 class ClassElementContainer: public PRMObject {
+  friend class Class;
+  friend class Interface;
   public:
   // ========================================================================
   /// @name Protected constructors & destructor.
@@ -79,19 +66,6 @@ class ClassElementContainer: public PRMObject {
 
     /// Default constructor.
     ClassElementContainer(const std::string& name);
-
-    /**
-     * Constructor with alternate ClassElementContainer for searching
-     * elements.
-     *
-     * @param name The name of this ClassElementContainer.
-     * @param alternate The alternate ClassElementContainer.
-     * @param delegateDAG If true, no gum::DAG is created for this
-     *                    ClassElementContainer if will used the alternate's one.
-     */
-    ClassElementContainer(const std::string& name,
-                          ClassElementContainer& alternate,
-                          bool delegateDAG);
 
     /// Destructor.
     virtual ~ClassElementContainer();
@@ -103,31 +77,19 @@ class ClassElementContainer: public PRMObject {
     /// @{
 
     /// Returns the gum::DAG of this ClassElementContainer.
-    const DAG& dag() const;
-
-    /// Shortcut to dag().children(node).
-    const ArcSet& children(NodeId node) const;
-
-    /// Shortcut to dag().children(elt.id()).
-    const ArcSet& children(const ClassElement& elt) const;
-
-    /// Shortcut to dag().parents(node).
-    const ArcSet& parents(NodeId node) const;
-
-    /// Shortcut to dag().parents(elt.id()).
-    const ArcSet& parents(const ClassElement& elt) const;
+    virtual const DAG& dag() const =0;
 
     /**
      * Returns true if a member with the given id exists in this ClassElementContainer or
      * in the ClassElementContainer hierarchy.
      */
-    bool exists(NodeId id) const;
+    virtual bool exists(NodeId id) const =0;
 
     /**
      * Returns true if a member with the given name exists in this ClassElementContainer or
      * in the ClassElementContainer hierarchy.
      */
-    bool exists(const std::string& name) const;
+    virtual bool exists(const std::string& name) const =0;
 
     /**
      * Getter on a member of this ClassElementContainer.
@@ -135,7 +97,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    ClassElement& get(NodeId id);
+    virtual ClassElement& get(NodeId id) =0;
 
     /**
      * Constant getter on a member of this ClassElementContainer.
@@ -143,7 +105,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    const ClassElement& get(NodeId id) const;
+    virtual const ClassElement& get(NodeId id) const =0;
 
     /**
      * Getter on a member of this ClassElementContainer.
@@ -151,7 +113,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    ClassElement& get(const std::string& name);
+    virtual ClassElement& get(const std::string& name) =0;
 
     /**
      * Constant getter on a member of this ClassElementContainer.
@@ -159,31 +121,104 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    const ClassElement& get(const std::string& name) const;
+    virtual const ClassElement& get(const std::string& name) const =0;
 
-    /// @return Returns the Set of Attribute in this ClassElementContainer.
-    Set< Attribute* >& attributes();
+    /**
+     * Add a ClassElement to this ClassElementContainer.
+     *
+     * @param elt The ClassElement added.
+     * @return Returns the NodeId given to elt.
+     */
+    virtual NodeId add(ClassElement* elt) =0;
 
-    /// @return Returns the Set of Attribute in this ClassElementContainer.
-    const Set< Attribute* >& attributes() const;
+    /**
+     * Overload an inherited ClassElement with elt.
+     * 
+     * @param elt The ClassElement overloading an inherited ClassElement
+     *            sharing the same name.
+     * @return Returns the NodeId given to elt.
+     */
+    virtual NodeId overload(ClassElement* elt) =0;
 
-    /// @return Returns the Set of Aggregate in this ClassElementContainer.
-    Set< Aggregate* >& aggregates();
+    /**
+     * @brief Returns true if the node is an input node.
+     *
+     * Attribute or Aggregate can either be input, output, both
+     * or internal nodes.
+     *
+     * @param id The NodeId of a ClassElement in this ClassElementContainer.
+     * @return Returns true if id is an input node.
+     *
+     * @throw NotFound Raised if NodeId does'nt match any ClassElement in this.
+     * @throw WrongClassElement Raised if id is neither an Attribute nor
+     *                          an Aggregate.
+     */
+    bool isInputNode(NodeId id) const;
 
-    /// @return Returns the Set of Aggregate in this ClassElementContainer.
-    const Set< Aggregate* >& aggregates() const;
+    /**
+     * @brief Set the input flag value of id at b.
+     *
+     * Attribute or Aggregate can either be input, output, both
+     * or internal nodes.
+     *
+     * @param id The NodeId of a ClassElement in this ClassElementContainer.
+     * @param b The flag value.
+     *
+     * @throw NotFound Raised if id does'nt match any ClassElement in this.
+     * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+     *                          an Aggregate.
+     */
+    void setInputNode(NodeId id, bool b);
 
-    /// @return Returns the Set of ReferenceSlot in this ClassElementContainer.
-    Set< ReferenceSlot* >& referenceSlots();
+    /**
+     * @brief Returns true if the node is an output node.
+     *
+     * Attribute or Aggregate can either be input, output, both
+     * or internal nodes.
+     *
+     * @param id The NodeId of a ClassElement in this ClassElementContainer.
+     * @return Returns true if id is an input node.
+     *
+     * @throw NotFound Raised if id does'nt match any ClassElement in this.
+     * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+     *                          an Aggregate.
+     */
+    bool isOutputNode(NodeId id) const;
 
-    /// @return Returns the Set of ReferenceSlot in this ClassElementContainer.
-    const Set< ReferenceSlot* >& referenceSlots() const;
+    /**
+     * @brief Set the output flag value of id at b.
+     *
+     * Attribute or Aggregate can either be input, output, both
+     * or internal nodes.
+     *
+     * @param id The NodeId of a ClassElement in this ClassElementContainer.
+     * @param b The flag value.
+     *
+     * @throw NotFound Raised if id does'nt match any ClassElement in this.
+     * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+     *                          an Aggregate.
+     */
+    void setOutputNode(NodeId id, bool b);
 
-    /// @return Returns the Set of SlotChain in this ClassElementContainer.
-    Set< SlotChain* >& slotChains();
+    /**
+     * @brief Returns true if the node is an inner node.
+     *
+     * Attribute or Aggregate can either be input, output, both
+     * or internal nodes.
+     *
+     * @param id The NodeId of a ClassElement in this ClassElementContainer.
+     * @return Returns true if id is an input node.
+     *
+     * @throw NotFound Raised if NodeId does'nt match any ClassElement in this.
+     * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
+     *                          an Aggregate.
+     */
+    bool isInnerNode(NodeId id) const;
 
-    /// @return Returns the Set of SlotChain in this ClassElementContainer.
-    const Set< SlotChain* >& slotChains() const;
+    /**
+     * Add an arc between two ClassElement.
+     */
+    virtual void insertArc(const std::string& tail, const std::string& head) =0;
 
     /// @}
   // ========================================================================
@@ -197,7 +232,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    ClassElement& operator[](NodeId id);
+    virtual ClassElement& operator[](NodeId id) =0;
 
     /**
      * Constant getter on a member of this ClassElementContainer.
@@ -205,7 +240,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    const ClassElement& operator[](NodeId id) const;
+    virtual const ClassElement& operator[](NodeId id) const =0;
 
     /**
      * Getter on a member of this ClassElementContainer.
@@ -213,7 +248,7 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    ClassElement& operator[](const std::string& name);
+    virtual ClassElement& operator[](const std::string& name) =0;
 
     /**
      * Constant getter on a member of this ClassElementContainer.
@@ -221,244 +256,68 @@ class ClassElementContainer: public PRMObject {
      * @return Returns a constant reference on the member.
      * @throw NotFound Raised if no attribute matches name.
      */
-    const ClassElement& operator[](const std::string& name) const;
+    virtual const ClassElement& operator[](const std::string& name) const =0;
 
     /// @}
   // ========================================================================
-  /// @name Inheritance operators
+  /// @name Inheritance getters and setters
   // ========================================================================
     /// @{
 
-
     /**
-     * @brief Returns true if this shares cec's type.
+     * @brief Test if this ClassElementContainer is a subtype of cec.
      *
-     * To share cec's type either this is of the same type, or there exists
-     * a super type of this which is of the same type.
-     *
-     * this->isSubTypeOf(*this) returns true.
-     *
-     * @param cec The searched type.
-     * @return true if this shares cec's type.
+     * @param cec
+     * @return return true if this ClassElementContainer is a subtype of cec.
      */
-    bool isSubTypeOf(const ClassElementContainer& cec) const;
+    virtual bool isSubTypeOf(const ClassElementContainer& cec) const =0;
 
     /**
-     * @brief Returns true if this is a super type of cec.
+     * @brief Test if this ClassElementContainer is a super type of cec.
      *
-     * This is an equivalent call to cec.isSubTypeOf(*this).
+     * This returns cec.isSubTypeOf(*this).
      *
-     * this->isSuperTypeOf(*this) returns true.
-     *
-     * @return true if this is a super type of cec.
+     * @param cec
+     * @return return true if this ClassElementContainer is a super type of cec.
      */
     bool isSuperTypeOf(const ClassElementContainer& cec) const;
 
     /// @}
   protected:
-  // ========================================================================
-  /// @name Protected methods.
-  // ========================================================================
-    /// @{
-
-    /**
-     * @brief Returns true if and only if this is a sub type of cec.
-     *
-     * Unlike isSubTypeOf(), this->_isSubTypeOf(*this) returns false.
-     *
-     * Since there can be different cases regarding inheritance
-     * (specialisation vs implementation) each subclass of
-     * ClassElementContainer must define this method.
-     */
-    virtual bool _isSubTypeOf(const ClassElementContainer& cec) const =0;
-
-    /// Returns the alternate ClassElementContainer searched for elements
-    /// defined in this.
-    ClassElementContainer& _alternate();
-
-    /// Returns the alternate ClassElementContainer searched for elements
-    /// defined in this.
-    const ClassElementContainer& _alternate() const;
-
-
-    /// Returns true if id is defined here, return false even if
-    /// _alternate().get(id) returns something.
-    bool _exists(NodeId id) const;
-
-    /**
-     * @brief Add an attribute to this ClassElementContainer.
-     *
-     * The pointer is "given" to this ClassElementContainer, which will delete when
-     * this->~Class() is called.
-     *
-     * If there is already an element in this ClassElementContainer with the same than attr,
-     * then an DuplicateElement is raised and attr is not added to this ClassElementContainer
-     * which implies that you should handle yourself it's memory deallocation.
-     *
-     * @throw DuplicateElement Raised if an element in this has the same name.
-     */
-    void _add(Attribute* attr);
-
-    /**
-     * @brief Add an attribute which will overload an existing one in __alternate.
-     *
-     * This is used mostly when a gum::Instance instantiate gum::Aggregate.
-     * @param overload If true the in going arcs of attr are erased.
-     * @throw OperationNotAllowed Raised if attr can not replace the ClassElement pointed by id.
-     */
-    void _add(Attribute* attr, NodeId id, bool overload = false);
-
-    /**
-     * Add an Attribute overloading an inherited Attribute or Aggregate.
-     * @throw OperationNotAllowed Raised if the overload is invalid.
-     */
-    void _overload(Attribute* attr, ClassElement& elt);
-
-    /**
-     * @brief Add an aggregate to this ClassElementContainer.
-     *
-     * The pointer is "given" to this ClassElementContainer, which will delete when
-     * this->~Class() is called.
-     *
-     * If there is already an element in this ClassElementContainer with the same than agg,
-     * then an DuplicateElement is raised and agg is not added to this ClassElementContainer
-     * which implies that you should handle yourself it's memory deallocation.
-     *
-     * @throw DuplicateElement Raised if an element in this has the same name.
-     */
-    void _add(Aggregate* agg);
-
-    /**
-     * @brief Add an Aggregate which will overload an existing one in __alternate.
-     *
-     * This is used mostly when a gum::Instance instantiate gum::Aggregate.
-     * @param overload If true the in going arcs of attr are erased.
-     * @throw OperationNotAllowed Raised if attr can not replace the ClassElement pointed by id.
-     */
-    void _add(Aggregate* agg, NodeId id, bool overload);
-
-    /**
-     * Add an Aggregate overloading an inherited Aggregate or Attribute.
-     * @throw OperationNotAllowed Raised if the overload is invalid.
-     */
-    void _overload(Aggregate* agg, ClassElement& elt);
-
-    /**
-     * @brief Add a ReferenceSlot to this ClassElementContainer.
-     *
-     * The pointer is "given" to this ClassElementContainer, which will delete when
-     * this->~Class() is called.
-     *
-     * @throw DuplicateElement Raised if an element in this has the same name.
-     */
-    void _add(ReferenceSlot* ref);
-
-    /**
-     * Add an reference overloading an inherited reference.
-     * @throw OperationNotAllowed Raised if the overload is invalid.
-     */
-    void _overload(ReferenceSlot* ref, ClassElement& elt);
-
-    /**
-     * @brief Add a ReferenceSlot which will overloas an existing one in __alternate.
-     * The given NodeId must either belong to a ReferenceSlot in __alternate or not be affected
-     * to a ClassElement yet.
-     * @throw OperationNotAllowed Raised if ref can not replace the ClassElement pointed by id.
-     */
-    void _add(ReferenceSlot* ref, NodeId id);
-
-    /**
-     * @brief Add gum::SlotChain to this class.
-     *
-     * A gum::SlotChain is a reference node, it reference one or several nodes defined
-     * in another ClassElementContainer.
-     */
-    void _add(SlotChain* sc);
-
-    /**
-     * @brief Add a parent to an element in this ClassElementContainer.
-     *
-     * This method insert an arc in the ClassElementContainer's dag and do the proper
-     * methods call to insert the parent in head.
-     *
-     * @throw OperationNotAllowed Raised if tail or head is a gum::ReferenceSlot, or
-     *                            if head is a gum::SlotChain.
-     */
-    void _insertArc(const std::string& tail, const std::string& head);
-
     /// Copy operator. Don't use it.
     ClassElementContainer& operator=(const ClassElementContainer& source);
 
     /// Copy constructor. Don't use it.
     ClassElementContainer(const ClassElementContainer& source);
 
-    /// @}
+    /// Returns a non constant reference over this ClassElementContainer's DAG.
+    virtual DAG& _dag() =0;
+
+    /// This method finds an unused NodeId in this ClassElementContainer and all
+    /// of it's subtypes (returned by ClassElementContainer::_findAllSubtypes()).
+    /// The NodeId is added to this ClassElementContainer's DAG.
+    ///
+    /// @return The NodeId founded and added to this ClassElementContainer's DAG.
+    ///
+    /// @throw FatalError If no common NodeId could be found.
+    NodeId _findNodeId();
+
+    /// Fills set with all the subtypes of this Interface, this includes extensions
+    /// and implementations.
+    virtual void _findAllSubtypes(Set<ClassElementContainer*>& set) =0;
+
+    /// Returns the input / output flags, useful when inheriting or copying.
+    Property<std::pair<bool, bool>*>::onNodes& _IOFlags();
+
+    /// Returns the input / output flags, useful when inheriting or copying.
+    const Property<std::pair<bool, bool>*>::onNodes& _IOFlags() const;
+
   private:
-  // ========================================================================
-  /// @name Private members
-  // ========================================================================
-    /// @{
+    /// This is used to remember if a ClassElement is an input or output node.
+    /// first is for the input flag, second is for the output flag.
+    Property<std::pair<bool, bool>*>::onNodes __IOFlags;
 
-    /// The dag representing dependencies between formal attributes and 
-    /// slots.
-    DAG* __dag;
-
-    /// Mapping between node's id and their name (being an attribute or a 
-    /// slot). Used for fast access to a member given it's node id.
-    Property<ClassElement*>::onNodes __nodeIdMap;
-
-    /// Mapping between a member's name and itself.
-    /// Used for fast access to a member given it's name.
-    HashTable<std::string, ClassElement*> __nameMap;
-
-    /// The sequence of Attributes.
-    Set<Attribute*> __attributes;
-
-    /// The sequence of ReferenceSlot.
-    Set<ReferenceSlot*> __referenceSlots;
-
-    /// The sequence of aggregate.
-    Set<Aggregate*> __aggregates;
-
-    /// The set of gum::SlotChains
-    Set<SlotChain*> __slotChains;
-
-    /// @brief The alternate ClassElementContainer searched for elements defined in
-    ///        this.
-    /// Note that this is first searched for gum::ClassElement.
-    ClassElementContainer* __alternate;
-
-    /// If true, then this->__dag is a pointer over this->__alternate->__dag;
-    bool __delegateDAG;
-
-    /// @}
-  // ========================================================================
-  /// @name Private methods
-  // ========================================================================
-    /// @{
-
-    /// Generic processing when adding an element.
-    void __add(ClassElement* elt);
-
-    /// Pointer version of operator[]. We need this because of inheritance.
-    /// For friends only.
-    ClassElement* __get(const std::string& name);
-
-    /// Constant version.
-    /// @see Class::__get(const std::string&)
-    const ClassElement* __get(const std::string& name) const;
-
-    /// Pointer version of operator[]. We need this because of inheritance.
-    /// For friends only.
-    ClassElement* __get(NodeId id);
-
-    /// Constant version.
-    /// @see Class::__get(NodeId)
-    const ClassElement* __get(NodeId id) const;
-
-    /// @}
 };
-
 // ============================================================================
 /// @brief An << operator for ClassElementContainer.
 /// Output in the graphviz-dot format.

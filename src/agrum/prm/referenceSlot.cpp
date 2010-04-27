@@ -34,11 +34,12 @@
 namespace gum {
 namespace prm {
 
-ReferenceSlot::ReferenceSlot(const std::string& name, Class& type,
+ReferenceSlot::ReferenceSlot(const std::string& name, ClassElementContainer& type,
                              bool isArray):
   ClassElement(name), __slotType(type), __isArray(isArray)
 {
   GUM_CONSTRUCTOR( ReferenceSlot );
+  _safeName = ClassElement::LEFT_CAST() + ((PRMObject&)__slotType).name() + ClassElement::RIGHT_CAST() + name;
 }
 
 // Destructor.

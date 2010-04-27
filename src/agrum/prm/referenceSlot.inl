@@ -33,11 +33,11 @@ ClassElement::ClassElementType
 ReferenceSlot::elt_type() const { return prm_refslot; }
 
 INLINE
-Class&
+ClassElementContainer&
 ReferenceSlot::slotType() { return __slotType; }
 
 INLINE
-const Class&
+const ClassElementContainer&
 ReferenceSlot::slotType() const { return __slotType; }
 
 INLINE

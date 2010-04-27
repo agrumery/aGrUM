@@ -19,73 +19,94 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of gum::SlotChain
+ * @brief Inline implementation of gum::prm::Interface
  *
  * @author Lionel TORTI
  */
 // ============================================================================
 namespace gum {
 namespace prm {
+// ============================================================================
 
 INLINE
-ClassElement::ClassElementType
-SlotChain::elt_type() const { return prm_slotchain; }
-
-INLINE
-Type&
-SlotChain::type() { return __chain->back()->type(); }
-
-INLINE
-const Type&
-SlotChain::type() const { return __chain->back()->type(); }
-
-INLINE
-Potential<prm_float>&
-SlotChain::cpf() { return __chain->back()->cpf(); }
-
-INLINE
-const Potential<prm_float>&
-SlotChain::cpf() const { return __chain->back()->cpf(); }
-
-INLINE
-ClassElementContainer&
-SlotChain::end() {
-  return static_cast<ReferenceSlot*>(__chain->atPos(__chain->size() - 2))->slotType();
+Interface::ClassEltIterator
+Interface::begin() {
+  return __nodeIdMap.begin();
 }
 
 INLINE
-const ClassElementContainer&
-SlotChain::end() const {
-  return static_cast<ReferenceSlot*>(__chain->atPos(__chain->size() - 2))->slotType();
+const Interface::ClassEltIterator&
+Interface::end() {
+  return __nodeIdMap.end();
+}
+
+INLINE
+Interface::const_ClassEltIterator
+Interface::begin() const {
+  return __nodeIdMap.begin();
+}
+
+INLINE
+const Interface::const_ClassEltIterator&
+Interface::end() const {
+  return __nodeIdMap.end();
+}
+
+INLINE
+void
+Interface::insertArc(const std::string& tail, const std::string& head) {
+  GUM_ERROR(OperationNotAllowed, "an Interface does not have arcs");
+}
+
+INLINE
+Interface&
+Interface::super() {
+  if (__super)  return *__super;
+  else          GUM_ERROR(NotFound, "this Interface is not a sub interface");
+}
+
+INLINE
+const Interface&
+Interface::super() const {
+  if (__super)  return *__super;
+  else          GUM_ERROR(NotFound, "this Interface is not a sub interface");
+}
+
+INLINE
+void
+Interface::__addImplementation(Class* c) {
+  __implementations.insert(c);
+}
+
+INLINE
+void
+Interface::__addExtension(Interface* i) {
+  __extensions.insert(i);
 }
 
 INLINE
 ClassElement&
-SlotChain::lastElt() {return *(__chain->back()); }
+Interface::operator[](NodeId id) {
+  return get(id);
+}
 
 INLINE
 const ClassElement&
-SlotChain::lastElt() const {return *(__chain->back()); }
+Interface::operator[](NodeId id) const {
+  return get(id);
+}
 
 INLINE
-Sequence<ClassElement*>&
-SlotChain::chain() { return *__chain; }
+ClassElement&
+Interface::operator[](const std::string& name) {
+  return get(name);
+}
 
 INLINE
-const Sequence<ClassElement*>&
-SlotChain::chain() const { return *__chain; }
-
-INLINE
-void
-SlotChain::addParent(const ClassElement& elt) { }
-
-INLINE
-void
-SlotChain::addChild(const ClassElement& elt) { }
-
-INLINE
-bool
-SlotChain::isMultiple() const { return __isMultiple; }
+const ClassElement&
+Interface::operator[](const std::string& name) const {
+  return get(name);
+}
 
 // ============================================================================
 } /* namespace prm */

@@ -153,9 +153,12 @@ namespace gum {
   GUM_MAKE_ERROR( InvalidCircuit, GraphError,"the graph contains a directed cycle" )
 
   /// Exception base for factory error
-  GUM_MAKE_ERROR( FactoryError, Exception, "Factory error")
-  GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "Invalid state error")
-  GUM_MAKE_ERROR( WrongType, FactoryError, "Wrong type for this operation")
+  GUM_MAKE_ERROR( FactoryError, Exception, "factory error")
+  GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error")
+  GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation")
+  GUM_MAKE_ERROR( WrongClassElement, FactoryError, "wrong ClassElement for this operation")
+  GUM_MAKE_ERROR( TypeError, FactoryError, "wrong subtype or subclass")
+
 } /* namespace gum */
 
 

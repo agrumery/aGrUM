@@ -39,6 +39,8 @@
 namespace gum {
 namespace prm {
 // ============================================================================
+class Class;
+// ============================================================================
 /**
  * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
  * @brief Defines an aggregate in a PRM.
@@ -55,8 +57,10 @@ namespace prm {
  * relations.
  *
  * @see PRM PRMFactory Class SlotChain
+ * @ingroup prm_group
  */
 class Aggregate: public ClassElement {
+  friend class Class;
   public:
   // ========================================================================
   /// @name Built-in types.
@@ -203,7 +207,7 @@ class Aggregate: public ClassElement {
 
     /// The random variable type of this aggregate
     /// It is deleted with the aggregate.
-    Type __type;
+    Type* __type;
 
     /// Some aggregators applies only on a given label. This attribute must
     /// have the concerned Idx. If not initialized the pointer equals 0.

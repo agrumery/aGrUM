@@ -36,11 +36,12 @@ namespace prm {
 
 Attribute::Attribute(const std::string& name, const Type& type,
                      MultiDimImplementation<prm_float>* impl):
-  ClassElement(name),  __type(new Type(type)),
+  ClassElement(name), __type(new Type(type)),
   __cpf(new Potential<prm_float>(impl)), __delete_type(true)
 {
   GUM_CONSTRUCTOR( Attribute );
   __cpf->add(**__type);
+  _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
 }
 
 Attribute::Attribute(const std::string& name, Type* type, Potential<prm_float>* cpf,
@@ -48,9 +49,9 @@ Attribute::Attribute(const std::string& name, Type* type, Potential<prm_float>* 
   ClassElement(name), __type(type), __cpf(cpf), __delete_type(delete_type)
 {
   GUM_CONSTRUCTOR( Attribute );
-  if (not __cpf->variablesSequence().exists(&(type->variable()))) {
+  if (not __cpf->variablesSequence().exists(&(type->variable())))
     GUM_ERROR(OperationNotAllowed, "the given Potential does not contain the type of this Attribute.");
-  }
+  _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
 }
 
 Attribute::Attribute(const Attribute &source):
@@ -69,11 +70,57 @@ Attribute::~Attribute()
   }
 }
 
-// Copy operator. Not implemented.
 Attribute&
 Attribute::operator=(const Attribute& from)
 {
   GUM_ERROR(FatalError, "Illegal call to the copy operator of gum::Attribute");
+}
+
+Attribute*
+Attribute::getCastDescendant() const {
+  Attribute* cast = 0;
+  try {
+    cast = new Attribute(name(), type().super());
+  } catch (NotFound&) {
+    GUM_ERROR(OperationNotAllowed, "this Attribute can not have cast descendant");
+  }
+  cast->cpf().add(type().variable());
+  const DiscreteVariable& my_var = type().variable();
+  DiscreteVariable& cast_var = cast->type().variable();
+  Instantiation inst(cast->cpf());
+  for (inst.setFirst(); not inst.end(); inst.inc()) {
+    if (type().label_map()[inst.pos(my_var)] == inst.pos(cast_var)) {
+      cast->cpf().set(inst, 1);
+    } else {
+      cast->cpf().set(inst, 0);
+    }
+  }
+  return cast;
+}
+
+void
+Attribute::setAsCastDescendant(Attribute* cast) {
+  try {
+    type().setSuper(cast->type());
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(OperationNotAllowed, "this Attribute can not have cast descendant");
+  } catch (WrongType&) {
+    GUM_ERROR(WrongType, "the cast descendant Type is not a direct subtype of this Attribute super Type");
+  }
+  MultiDimArray<prm_float> cpf;
+  cpf.add(cast->type().variable());
+  cpf.add(type().variable());
+  DiscreteVariable& my_var = type().variable();
+  DiscreteVariable& cast_var = cast->type().variable();
+  Instantiation inst(cpf);
+  for (inst.setFirst(); not inst.end(); inst.inc()) {
+    if (type().label_map()[inst.pos(my_var)] == inst.pos(cast_var)) {
+      cast->cpf().set(inst, 1);
+    } else {
+      cast->cpf().set(inst, 0);
+    }
+  }
+  cast->cpf().copy(cpf);
 }
 
 // ============================================================================

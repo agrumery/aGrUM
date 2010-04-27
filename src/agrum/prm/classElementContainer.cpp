@@ -35,84 +35,36 @@ namespace gum {
 namespace prm {
 // ============================================================================
 
-ClassElementContainer::ClassElementContainer(const std::string& name):
-  PRMObject(name), __alternate(0), __delegateDAG(false)
-{
-  GUM_CONSTRUCTOR( ClassElementContainer );
-  __dag = new DAG();
-}
-
-ClassElementContainer::ClassElementContainer(const std::string& name,
-                                             ClassElementContainer& alternate,
-                                             bool delegateDAG):
-  PRMObject(name), __alternate(&alternate), __delegateDAG(delegateDAG)
-{
-  GUM_CONSTRUCTOR( ClassElementContainer );
-  if (delegateDAG) {
-    __dag = alternate.__dag;
-  } else {
-    __dag = new DAG(* (alternate.__dag));
-  }
-  {
-    typedef Set<Attribute*>::iterator SetIter;
-    for (SetIter iter = alternate.__attributes.begin();
-         iter != alternate.__attributes.end(); ++iter) {
-      __attributes.insert(*iter);
+NodeId
+ClassElementContainer::_findNodeId() {
+  Set<ClassElementContainer*> set;
+  std::vector<NodeId> candidates;
+  set.insert(this);
+  _findAllSubtypes(set);
+  candidates.push_back(_dag().insertNode());
+  bool found = false;
+  for (short count = 0; count < 1000; ++count) {
+    for (Set<ClassElementContainer*>::iterator iter = set.begin();
+         iter != set.end(); ++iter) {
+      if ((**iter).exists(candidates.back())) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      candidates.push_back(_dag().insertNode());
+      found = false;
+    } else {
+      NodeId id = candidates.back();
+      candidates.pop_back();
+      for (std::vector<NodeId>::iterator iter = candidates.begin();
+           iter != candidates.end(); ++iter) {
+        _dag().eraseNode(*iter);
+      }
+      return id;
     }
   }
-  {
-    typedef Set<Aggregate*>::iterator SetIter;
-    for (SetIter iter = alternate.__aggregates.begin();
-         iter != alternate.__aggregates.end(); ++iter) {
-      __aggregates.insert(*iter);
-    }
-  }
-  {
-    typedef Set<ReferenceSlot*>::iterator SetIter;
-    for (SetIter iter = alternate.__referenceSlots.begin();
-         iter != alternate.__referenceSlots.end(); ++iter) {
-      __referenceSlots.insert(*iter);
-    }
-  }
-  {
-    typedef Set<SlotChain*>::iterator SetIter;
-    for (SetIter iter = alternate.__slotChains.begin();
-         iter != alternate.__slotChains.end(); ++iter) {
-      __slotChains.insert(*iter);
-    }
-  }
-}
-
-ClassElementContainer::~ClassElementContainer()
-{
-  GUM_DESTRUCTOR( ClassElementContainer );
-
-  __attributes.clear();
-  __referenceSlots.clear();
-  __aggregates.clear();
-  __nameMap.clear();
-
-  // Deleting __nodeIdMap
-  typedef Property< ClassElement* >::onNodes::iterator node_iterator;
-  for (node_iterator iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter) {
-    delete *iter;
-  }
-  if (not __delegateDAG) {
-    delete __dag;
-  }
-}
-
-ClassElementContainer&
-ClassElementContainer::operator=(const ClassElementContainer& source)
-{
-  GUM_ERROR(FatalError, "illegal call to gum::ClassElementContainer copy operator.");
-}
-
-ClassElementContainer::ClassElementContainer(const ClassElementContainer& source):
-  PRMObject(source), __alternate(source.__alternate), __delegateDAG(source.__delegateDAG)
-{
-  GUM_CONS_CPY( ClassElementContainer );
-  GUM_ERROR(FatalError, "illegal call to gum::ClassElementContainer copy operator.");
+  GUM_ERROR(FatalError, "could not find a common NodeId");
 }
 
 std::ostream&

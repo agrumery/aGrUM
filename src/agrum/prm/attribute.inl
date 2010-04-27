@@ -69,6 +69,7 @@ INLINE
 void
 Attribute::addChild(const ClassElement& elt) { }
 
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

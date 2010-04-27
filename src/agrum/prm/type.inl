@@ -29,6 +29,14 @@ namespace gum {
 namespace prm {
 
   INLINE
+  Type&
+  Type::super() { return *__super; }
+
+  INLINE
+  DiscreteVariable&
+  Type::variable() { return *__var; }
+
+  INLINE
   const DiscreteVariable&
   Type::variable() const { return *__var; }
 
@@ -55,11 +63,24 @@ namespace prm {
   INLINE
   const Type&
   Type::super() const {
-    if (not __super) {
+    if (__super) {
       return *__super;
     } else {
       GUM_ERROR(NotFound, "No super type for this type.");
     }
+  }
+
+  INLINE
+  void
+  Type::setSuper(Type& t) {
+    try {
+      if (t != super()) {
+        GUM_ERROR(WrongType, "the given Type is not equal to this Type super.");
+      }
+    } catch (NotFound&) {
+      GUM_ERROR(OperationNotAllowed, "this Type has no super Type");
+    }
+    __super = &t;
   }
 
   INLINE

@@ -38,20 +38,20 @@ namespace prm {
 // ============================================================================
 class Class;
 // ============================================================================
+
 /**
  * @class SlotChain slotChain.h <agrum/prm/slotChain.h>
- * @brief SlotChain represent a path between two formal attributes.
  *
- * A formal attribute is either an Attribute or an Aggregate.
+ * @brief A SlotChain represents a sequence of gum::prm::ClassElement where
+ *        the n-1 first gum::prm::ClassElement are gum::prm::ReferenceSlot and
+ *        the last gum::prm::ClassElement an gum::prm::Attribute or an
+ *        gum::prm::Aggregate.
  *
- * A SlotChain delegates it's ClassElement's method to the formal attribute pointed
- * by the slot chain. However be careful to remember that the formal attribute used
- * is always at Class-level: in an Instance formal attributes with SlotChains
- * parents hold in their Potential pointers on the instantiated formal attributes
- * DiscreteVariable. The good pointers are found when the Model is created and
- * helps with the fact that MultiDim don't allow duplicated variables.
+ * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::Aggregate
+ * (depending the gum::prm::ClassElement type of it's last element) regarding
+ * the following methods: gum::prm::ClassElement::type() and
+ * gum::prm::ClassElement::cpf().
  *
- * @see Class Instance Attribute ReferenceSlot Aggregate
  */
 // ==========================================================================
 class SlotChain: public ClassElement
@@ -62,17 +62,41 @@ class SlotChain: public ClassElement
   // ========================================================================
     /// @{
 
-    /**
-     * Default constructor.
+    /** @brief Default constructor.
+     *
+     * Chain's n-1 first elements must be ReferenceSlot and the last element
+     * must either be an Attribute or an Aggregate.
      *
      * @param name The name of this SlotChain.
-     * @param start The Class where this SlotChain starts.
-     * @param end The Class where this SlotChain ends.
-     * @param chain The chain of ClassElement in the SlotChain.
-     * @param lastElt The element on which this SlotChain points.
+     * @param chain The chain of gum::prm::ClassElement in this SlotChain.
+     *
+     * @throw OperationNotAllowed Raised if the chain contains less than two
+     *        ClassElement.
+     * @throw WrongClassElement Raised contains invalid ClassElement.
      */
-    SlotChain(const std::string& name, Class& start, Class& end,
-              Sequence< ReferenceSlot* >& chain, ClassElement& lastElt);
+    SlotChain(const std::string& name, const Sequence< ClassElement* >& chain);
+
+    /** @brief Tweak constructor.
+     *
+     * Chain's n-1 first elements must be ReferenceSlot and the last element
+     * must either be an Attribute or an Aggregate.
+     *
+     * @param name The name of this SlotChain.
+     * @param chain The chain given to this SlotChain, it is deleted
+     *              when SlotChain::~SlotChain() is called.
+     *
+     * @throw OperationNotAllowed Raised if the chain contains less than two
+     *        ClassElement.
+     * @throw WrongClassElement Raised contains invalid ClassElement.
+     */
+    SlotChain(Sequence<ClassElement*>* chain, const std::string& name);
+
+    /**
+     * Copy constructor.
+     *
+     * This creates a copy of the slot chain.
+     */
+    SlotChain(const SlotChain& source);
 
     /// Destructor.
     virtual ~SlotChain();
@@ -102,17 +126,11 @@ class SlotChain: public ClassElement
     /// reference slot.
     bool isMultiple() const;
 
-    /// Returns the T_DATA over which this slot chain starts.
-    Class& start();
+    /// Returns the ClassElementContainer over which this slot chain ends.
+    ClassElementContainer& end();
 
-    /// Returns the T_DATA over which this slot chain starts.
-    const Class& start() const;
-
-    /// Returns the T_DATA over which this slot chain ends.
-    Class& end();
-
-    /// Returns the T_DATA over which this slot chain ends.
-    const Class& end() const;
+    /// Returns the ClassElementContainer over which this slot chain ends.
+    const ClassElementContainer& end() const;
 
     /// Returns the last element of the slot chain, typically this is an
     /// gum::Attribute or a gum::Aggregate.
@@ -124,7 +142,11 @@ class SlotChain: public ClassElement
 
     /// Return the sequence representing the chain of elements in this
     /// SlotChain.
-    const Sequence<ReferenceSlot*>& chain() const;
+    Sequence<ClassElement*>& chain();
+
+    /// Return the sequence representing the chain of elements in this
+    /// SlotChain.
+    const Sequence<ClassElement*>& chain() const;
 
     /// See gum::ClassElement::_addParent().
     virtual void addParent(const ClassElement& elt);
@@ -135,9 +157,6 @@ class SlotChain: public ClassElement
     /// @}
   private:
 
-    /// Copy constructor. Don't use it.
-    SlotChain(const SlotChain& source);
-
     /// Copy operator. Don't use it.
     SlotChain& operator=(const SlotChain& source);
 
@@ -146,17 +165,8 @@ class SlotChain: public ClassElement
   // ========================================================================
     /// @{
 
-    /// The T_DATA over which the SlotChain starts.
-    Class& __start;
-
-    /// The T_DATA over which the SlotChain ends.
-    Class& __end;
-
     /// The sequence of ClassElement composing the slot chain
-    Sequence<ReferenceSlot*> __seq;
-
-    /// The element pointed by the slot chain.
-    ClassElement& __lastElt;
+    Sequence<ClassElement*>* __chain;
 
     /// Flag indicating if this slot chain is multiple or not.
     bool __isMultiple;

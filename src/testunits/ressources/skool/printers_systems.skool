@@ -71,3 +71,44 @@ class Computer extends Equipment {
 
 }
 
+system smallSys {
+
+  PowerSupply pow;
+
+  Room r;
+
+  Printer[2] printers;
+
+  Printer another_printer;
+
+  Computer[4] computers;
+
+  Computer another_computer;
+
+  r.power = pow;
+
+  printers[0].room = r;
+  printers[1].room = r;
+
+  another_printer.room = r;
+
+  computers[0].room = r;
+  computers[1].room = r;
+  computers[2].room = r;
+  computers[3].room = r;
+
+  another_computer.room = r;
+
+  computers[0].printers = printers;
+  computers[0].printers += another_printer;
+  computers[1].printers = printers;
+  computers[1].printers += another_printer;
+  computers[2].printers = printers;
+  computers[2].printers += another_printer;
+  computers[3].printers = printers;
+  computers[3].printers += another_printer;
+
+  another_computer.printers = printers;
+  another_computer.printers += another_printer;
+}
+

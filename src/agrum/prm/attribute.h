@@ -34,6 +34,9 @@
 namespace gum {
 namespace prm {
 // ============================================================================
+class Class;
+class Instance;
+// ============================================================================
 /**
  * @class Attribute attribute.h <agrum/prm/attribute.h>
  * @brief Attribute is a member of a Class in a PRM.
@@ -51,8 +54,14 @@ namespace prm {
  * various problems raised by redondant information.
  *
  * @see PRM PRMFactory Class ClassElement Type Potential
+ * @ingroup prm_group
  */
 class Attribute: public ClassElement {
+  // ========================================================================
+  friend class Class;
+  friend class Interface;
+  friend class Instance;
+  // ========================================================================
   public:
   // ========================================================================
   /// @name Constructor & destructor.
@@ -141,6 +150,49 @@ class Attribute: public ClassElement {
 
     /// See gum::ClassElement::_addChild().
     virtual void addChild(const ClassElement& elt);
+
+    /**
+     * @brief Returns a proper cast descendant of this Attribute.
+     *
+     * A cast descendant is an Attribute depending on this one which
+     * cast it in this->type().super().
+     *
+     * The pointer is not deleted by this Attribute, so delete it yourself
+     * after use.
+     *
+     * A new cast descendant is created for each call of this method.
+     *
+     * @return The cast descendant of this Attribute.
+     *
+     * @throw OperationNotAllowed Raised if it is not possible to create a
+     *                            cast descendant for this Attribute.
+     */
+    Attribute* getCastDescendant() const;
+
+    /**
+     * @brief Define attr as a cast descendant of this Attribute.
+     *
+     * When overloading an inherited Attribute using of subtype of it,
+     * it is necessary to change the inherited Attribute CPF to make it
+     * a proper cast descendant.
+     *
+     * Furthermore it is necessary to change the DiscreteVariable used
+     * by this Attribute's super Type in order to have the same pointers in
+     * both super Type (i.e. this->type().super().variable()) and the
+     * cast descendant CPF (i.e. attr->cpf()).
+     *
+     * This can only be done if attr Type is a direct subtype of this
+     * Attribute Type (i.e. this->type().super() == attr->type()).
+     *
+     * @param attr The Attribute which is transformed to be this Attribute
+     *             cast descendant.
+     *
+     * @throw OperationNotAllowed Raised if this Attribute can not have any
+     *                            cast descendant.
+     * @throw TypeError Raised if attr's Type is not a direct descendant of
+     *                  this Attribute's Type.
+     */
+    void setAsCastDescendant(Attribute* attr);
 
     /// @}
   private:

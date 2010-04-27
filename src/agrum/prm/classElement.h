@@ -27,6 +27,8 @@
 #ifndef GUM_CLASS_ELEMENT_H
 #define GUM_CLASS_ELEMENT_H
 // ============================================================================
+#include <sstream>
+// ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
 #include <agrum/multidim/potential.h>
@@ -44,6 +46,8 @@ namespace prm {
  *
  * All class elements are nodes in the class's DAG and a unique name in their
  * class.
+ *
+ * @ingroup prm_group
  */
 class ClassElement: public PRMObject {
   public:
@@ -82,6 +86,9 @@ class ClassElement: public PRMObject {
 
     enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
                             prm_slotchain };
+
+    static std::string LEFT_CAST()  { return "<"; }
+    static std::string RIGHT_CAST() { return ">"; }
 
     static std::string enum2str(ClassElementType type)
     {
@@ -173,6 +180,17 @@ class ClassElement: public PRMObject {
      */
     virtual const Type& type() const =0;
 
+
+    /**
+     * @brief Returns the safe name of this ClassElement, if any.
+     *
+     * This will only work if this ClassElement is an Attribute or an Aggregate.
+     * @return Returns the safe name of this ClassElement.
+     *
+     * @throw NotFound& Raised if this ClassElement does not have any safe name.
+     */
+    const std::string& safeName() const;
+
     /**
      * Return a reference over the gum::Potential of this class element.
      * @throw OperationNotAllowed Raised if this class element doesn't have
@@ -188,7 +206,12 @@ class ClassElement: public PRMObject {
     virtual const Potential<prm_float>& cpf() const =0;
 
     /// @}
+  protected:
+    /// The safe name of this ClassElement.
+    std::string _safeName;
+
   private:
+
     /// The node's id of this element
     NodeId __id;
 };

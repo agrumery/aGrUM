@@ -94,7 +94,7 @@ class Type: public PRMObject {
      * A copy is made of var.
      * @throw OperationNotAllowed Raised if label_map is invalid.
      */
-    Type(const Type& super_type, const std::vector<Idx>& label_map,
+    Type(Type& super_type, const std::vector<Idx>& label_map,
          const DiscreteVariable& var);
 
     /**
@@ -113,6 +113,9 @@ class Type: public PRMObject {
     /// @name Getters & setters
     // ==========================================================================
     /// @{
+
+    /// Return a reference on the DiscreteVariable contained in this.
+    DiscreteVariable& variable();
 
     /// Return a reference on the DiscreteVariable contained in this.
     const DiscreteVariable& variable() const;
@@ -183,7 +186,30 @@ class Type: public PRMObject {
      * Returns the super type of this type.
      * @throw NotFound Raised if this type has no super type.
      */
+    Type& super();
+
+    /**
+     * Returns the super type of this type.
+     * @throw NotFound Raised if this type has no super type.
+     */
     const Type& super() const;
+
+    /**
+     * @brief Changes the Type of this Type super.
+     *
+     * You can only change this Type super only if t and this->super() are
+     * equal. Thus you should use this method only if you want to change the
+     * DiscreteVariable pointer of this Type super.
+     *
+     * This is useful to maintain consistence between Attribute's Type and
+     * their CPF.
+     *
+     * @param t The Type to replace this Type super.
+     *
+     * @throw OperationNotAllowed If this Type has no super.
+     * @throw TypeError If t is not equal to this Type super.
+     */
+    void setSuper(Type& t);
 
     /**
      * Returns the vector in which the i-th element is the Idx of the super
@@ -191,13 +217,6 @@ class Type: public PRMObject {
      * @throw NotFound Raised if this type has no super type.
      */
     const std::vector<Idx>& label_map() const;
-
-    /**
-     * Returns the MultiDimImplementation which can be use to cast this type
-     * in its super type.
-     * @throw OperationNotAllowed If this type has no super type.
-     */
-    MultiDimImplementation<prm_float>* cast_CPT() const;
 
     /// @}
     // ==========================================================================
@@ -225,7 +244,7 @@ class Type: public PRMObject {
     DiscreteVariable* __var;
 
     /// The super type of this, if any.
-    const Type* __super;
+    Type* __super;
 
     /// A vector in which the i-th element is the Idx of the super
     /// type's label for the i-th label of this.

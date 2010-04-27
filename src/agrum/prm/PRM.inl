@@ -28,6 +28,22 @@ namespace gum {
 namespace prm {
 
 INLINE
+bool
+PRM::isType(const std::string name) const { return __typeMap.exists(name); }
+
+INLINE
+bool
+PRM::isClass(const std::string name) const { return __classMap.exists(name); }
+
+INLINE
+bool
+PRM::isInterface(const std::string name) const { return __interfaceMap.exists(name); }
+
+INLINE
+bool
+PRM::isSystem(const std::string name) const { return __systemMap.exists(name); }
+
+INLINE
 Type&
 PRM::getType(const std::string& name) { return *(__typeMap[name]); }
 
@@ -36,7 +52,7 @@ const Type&
 PRM::getType(const std::string& name) const { return *(__typeMap[name]); }
 
 INLINE
-const Sequence<Type*>&
+const Set<Type*>&
 PRM::types() const { return __types; }
 
 INLINE
@@ -48,32 +64,32 @@ const Class&
 PRM::getClass(const std::string& name) const { return *(__classMap[name]); }
 
 INLINE
-const Sequence<Class*>&
+const Set<Class*>&
 PRM::classes() const { return __classes; }
 
 INLINE
-Class&
+Interface&
 PRM::getInterface(const std::string& name) { return *__interfaceMap[name]; }
 
 INLINE
-const Class&
+const Interface&
 PRM::getInterface(const std::string& name) const { return *__interfaceMap[name]; }
 
 INLINE
-const Sequence<Class*>&
+const Set<Interface*>&
 PRM::interfaces() const { return __interfaces; }
 
 INLINE
-Model&
-PRM::getModel(const std::string& name) { return *(__modelMap[name]); }
+System&
+PRM::getSystem(const std::string& name) { return *(__systemMap[name]); }
 
 INLINE
-const Model&
-PRM::getModel(const std::string& name) const { return *(__modelMap[name]); }
+const System&
+PRM::getSystem(const std::string& name) const { return *(__systemMap[name]); }
 
 INLINE
-const Sequence<Model*>&
-PRM::models() const { return __models; }
+const Set<System*>&
+PRM::systems() const { return __systems; }
 
 } /* namespace prm */
 } /* namespace gum */

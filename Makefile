@@ -3,6 +3,8 @@
 ACT=./act
 JOBS=4
 
+MY_TEST=Skool
+
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)
 
@@ -29,6 +31,13 @@ windows:
 
 pyAgrum:
 	$(ACT) wrapper pyAgrum -p linux -j $(JOBS)
+
+mytest:
+	$(ACT) test release -t $(MY_TEST) -p linux -j 4
+
+mytestdebug:
+	$(ACT) test debug -t $(MY_TEST) -p linux -j 4
+
 
 clean:
 	$(ACT) clean

@@ -45,20 +45,20 @@ PRM::~PRM() {
   GUM_DESTRUCTOR( PRM );
   __classMap.clear();
   __typeMap.clear();
-  __modelMap.clear();
-  for (Sequence<Model*>::iterator iter = __models.begin();
-       iter != __models.end(); ++iter) {
+  __systemMap.clear();
+  for (Set<System*>::iterator iter = __systems.begin();
+       iter != __systems.end(); ++iter) {
     delete *iter;
   }
-  for (Sequence<Class*>::iterator iter = __classes.begin();
+  for (Set<Class*>::iterator iter = __classes.begin();
        iter != __classes.end(); ++iter) {
     delete *iter;
   }
-  for (Sequence<Class*>::iterator iter = __interfaces.begin();
+  for (Set<Interface*>::iterator iter = __interfaces.begin();
        iter != __interfaces.end(); ++iter) {
     delete *iter;
   }
-  for (Sequence<Type*>::iterator iter = __types.begin();
+  for (Set<Type*>::iterator iter = __types.begin();
        iter != __types.end(); ++iter) {
     delete *iter;
   }

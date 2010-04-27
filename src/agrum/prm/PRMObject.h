@@ -47,6 +47,7 @@ namespace prm {
  * Furthermore we use an enumeration to know the concrete type of a given
  * PRMObject preventing faster type checking.
  *
+ * @ingroup prm_group
  */
 class PRMObject {
   public:
@@ -62,7 +63,7 @@ class PRMObject {
      * "all" as type.
      */
     enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
-                      prm_type, prm_model, prm_instance };
+                      prm_type, prm_system, prm_instance };
 
     /// Returns the string representation of a PRMObject.
     static std::string enum2str(ObjectType type) 
@@ -74,8 +75,8 @@ class PRMObject {
           return "prm_class_elt";
         case prm_type:
           return "prm_type";
-        case prm_model:
-          return "prm_model";
+        case prm_system:
+          return "prm_system";
         case prm_instance:
           return "prm_instance";
         case prm_interface:

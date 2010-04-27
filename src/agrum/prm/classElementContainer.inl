@@ -29,455 +29,134 @@ namespace prm {
 // ============================================================================
 
 INLINE
-const DAG&
-ClassElementContainer::dag() const { return *__dag; }
-
-INLINE
-const ArcSet&
-ClassElementContainer::children(NodeId node) const { return dag().children(node); }
-
-INLINE
-const ArcSet&
-ClassElementContainer::children(const ClassElement& elt) const { return dag().children(elt.id()); }
-
-INLINE
-const ArcSet&
-ClassElementContainer::parents(NodeId node) const { return dag().parents(node); }
-
-INLINE
-const ArcSet&
-ClassElementContainer::parents(const ClassElement& elt) const { return dag().parents(elt.id()); }
-
-INLINE
-bool
-ClassElementContainer::exists(NodeId id) const
+ClassElementContainer::ClassElementContainer(const std::string& name):
+  PRMObject(name)
 {
-  try {
-    __get(id);
-    return true;
-  } catch (NotFound&) {
-    return false;
+  GUM_CONSTRUCTOR( ClassElementContainer );
+}
+
+INLINE
+ClassElementContainer::~ClassElementContainer() {
+  GUM_DESTRUCTOR( ClassElementContainer );
+  typedef Property<std::pair<bool, bool>*>::onNodes::iterator Iterator;
+  for (Iterator iter = __IOFlags.begin(); iter != __IOFlags.end(); ++iter) {
+    delete *iter;
   }
-}
-
-INLINE
-bool
-ClassElementContainer::exists(const std::string& name) const
-{
-  try {
-    __get(name);
-    return true;
-  } catch (NotFound&) {
-    return false;
-  }
-}
-
-INLINE
-ClassElement&
-ClassElementContainer::get(NodeId id)
-{
-  return *__get(id);
-}
-
-INLINE
-const ClassElement&
-ClassElementContainer::get(NodeId id) const
-{
-  return *__get(id);
-}
-
-INLINE
-ClassElement&
-ClassElementContainer::get(const std::string& name)
-{
-  return *__get(name);
-}
-
-INLINE
-const ClassElement&
-ClassElementContainer::get(const std::string& name) const
-{
-  return *__get(name);
-}
-
-INLINE
-ClassElement&
-ClassElementContainer::operator[](NodeId id)
-{
-  return *(__get(id));
-}
-
-INLINE
-const ClassElement&
-ClassElementContainer::operator[](NodeId id) const
-{
-  return *(__get(id));
-}
-
-INLINE
-ClassElement&
-ClassElementContainer::operator[](const std::string& name)
-{
-  return *(__get(name));
-}
-
-INLINE
-const ClassElement&
-ClassElementContainer::operator[](const std::string& name) const
-{
-  return *(__get(name));
-}
-
-INLINE
-bool
-ClassElementContainer::_exists(NodeId id) const { return __nodeIdMap.exists(id); }
-
-INLINE
-void
-ClassElementContainer::_add(Attribute* attr)
-{
-  __add(attr);
-  __attributes.insert(attr);
-}
-
-INLINE
-void
-ClassElementContainer::_add(Attribute* attr, NodeId id, bool overload)
-{
-  try {
-    switch (_alternate().get(id).elt_type()) {
-      case ClassElement::prm_attribute: {
-                                          __attributes.erase(static_cast<Attribute*>(&(_alternate().get(id))));
-                                          break;
-                                        }
-      case ClassElement::prm_aggregate: {
-                                          __aggregates.erase(static_cast<Aggregate*>(&(_alternate().get(id))));
-                                          break;
-                                        }
-      default: {
-                 GUM_ERROR(OperationNotAllowed, "An Attribute can only replace an Attribute or an Aggregate.");
-               }
-    }
-  } catch (NotFound&) {
-    // No alternate
-  }
-  if (overload) {
-    __dag->eraseParents(id);
-  }
-  attr->setId(id);
-  __nameMap.insert(attr->name(), attr);
-  __nodeIdMap.insert(id, attr);
-  __attributes.insert(attr);
-}
-
-INLINE
-void
-ClassElementContainer::_add(Aggregate* agg, NodeId id, bool overload)
-{
-  try {
-    switch (_alternate().get(id).elt_type()) {
-      case ClassElement::prm_attribute: {
-                                          __attributes.erase(static_cast<Attribute*>(&(_alternate().get(id))));
-                                          break;
-                                        }
-      case ClassElement::prm_aggregate: {
-                                          __aggregates.erase(static_cast<Aggregate*>(&(_alternate().get(id))));
-                                          break;
-                                        }
-      default: {
-                 GUM_ERROR(OperationNotAllowed, "An Aggregate can only replace an Attribute or an Aggregate.");
-               }
-    }
-  } catch (NotFound&) {
-    // No alternate
-  }
-  if (overload) {
-    __dag->eraseParents(id);
-  }
-  agg->setId(id);
-  __nameMap.insert(agg->name(), agg);
-  __nodeIdMap.insert(id, agg);
-  __aggregates.insert(agg);
-}
-
-INLINE
-void
-ClassElementContainer::_add(Aggregate* agg)
-{
-  __add(agg);
-  __aggregates.insert(agg);
-}
-
-INLINE
-void
-ClassElementContainer::_add(ReferenceSlot* ref)
-{
-  __add(ref);
-  __referenceSlots.insert(ref);
-}
-
-INLINE
-void
-ClassElementContainer::_add(ReferenceSlot* ref, NodeId id)
-{
-  try {
-    switch (_alternate().get(id).elt_type()) {
-      case ClassElement::prm_refslot: {
-                                        __referenceSlots.erase(static_cast<ReferenceSlot*>(&(_alternate().get(id))));
-                                        break;
-                                      }
-      default: {
-                 GUM_ERROR(OperationNotAllowed, "Can replace a ReferenceSlot with only a ReferenceSlot.");
-               }
-    }
-  } catch (NotFound&) {
-    // No alternate
-  }
-  ref->setId(id);
-  __nameMap.insert(ref->name(), ref);
-  __nodeIdMap.insert(id, ref);
-  __referenceSlots.insert(ref);
-}
-
-INLINE
-void
-ClassElementContainer::_add(SlotChain* sc)
-{
-  __add(sc);
-  __slotChains.insert(sc);
-}
-
-INLINE
-void
-ClassElementContainer::_insertArc(const std::string& tail, const std::string& head)
-{
-  ClassElement* parent = __get(tail);
-  ClassElement* child  = __get(head);
-  if ( (parent->elt_type() == ClassElement::prm_refslot) or
-       (child->elt_type() == ClassElement::prm_refslot) or
-       (child->elt_type() == ClassElement::prm_slotchain) )
-  {
-    std::stringstream msg;
-    msg << ": illegal arc insertion (" << tail << " -> " << head << ") in " << this->name();
-    GUM_ERROR(OperationNotAllowed, msg.str());
-  }
-  __dag->insertArc(parent->id(), child->id());
-  parent->addChild(*child);
-  child->addParent(*parent);
 }
 
 INLINE
 ClassElementContainer&
-ClassElementContainer::_alternate()
+ClassElementContainer::operator=(const ClassElementContainer& source) {
+  GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator");
+}
+
+INLINE
+ClassElementContainer::ClassElementContainer(const ClassElementContainer& source):
+  PRMObject(source)
 {
-  if (__alternate != 0) {
-    return *__alternate;
+  GUM_CONS_CPY( ClassElementContainer );
+  GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy constructor");
+}
+
+INLINE
+Property<std::pair<bool, bool>*>::onNodes&
+ClassElementContainer::_IOFlags() { return __IOFlags; }
+
+INLINE
+const Property<std::pair<bool, bool>*>::onNodes&
+ClassElementContainer::_IOFlags() const { return __IOFlags; }
+
+INLINE
+bool
+ClassElementContainer::isInputNode(NodeId id) const {
+  if (exists(id) and (ClassElement::isAttribute(get(id)) or
+                      ClassElement::isAggregate(get(id))) )
+  {
+    try {
+      return __IOFlags[id]->first;
+    } catch (NotFound&) {
+      return false;
+    }
+  } else if (not exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
   } else {
-    std::stringstream msg;
-    msg << ": no alternate class in " << this->name();
-    GUM_ERROR(NotFound, msg.str());
+    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
   }
 }
 
-
 INLINE
-const ClassElementContainer&
-ClassElementContainer::_alternate() const
-{
-  if (__alternate != 0) {
-    return *__alternate;
+void
+ClassElementContainer::setInputNode(NodeId id, bool b) {
+  if (exists(id) and (ClassElement::isAttribute(get(id)) or
+                      ClassElement::isAggregate(get(id))) )
+  {
+    try {
+      __IOFlags[id]->first = b;
+    } catch (NotFound&) {
+      __IOFlags.insert(id, new std::pair<bool, bool>(b, false));
+    }
+  } else if (not exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
   } else {
-    std::stringstream msg;
-    msg << ": no alternate class in " << this->name();
-    GUM_ERROR(NotFound, msg.str());
-  }
-}
-INLINE
-void
-ClassElementContainer::__add(ClassElement* elt) {
-  if (__delegateDAG) {
-    std::stringstream msg;
-    msg << ": can not add gum::ClassElement " << elt->name() << " in " << this->name();
-    GUM_ERROR(OperationNotAllowed, msg.str());
-  }
-  try {
-    this->get(elt->name());
-    GUM_ERROR(DuplicateElement, "name already used");
-  } catch (NotFound&) {
-    __nameMap.insert(elt->name(), elt);
-    elt->setId(__dag->insertNode());
-    __nodeIdMap.insert(elt->id(), elt);
-  }
-}
-
-INLINE
-ClassElement*
-ClassElementContainer::__get(const std::string& name) {
-  try {
-    return __nameMap[name];
-  } catch (NotFound&) {
-    if (__alternate != 0)
-      return __alternate->__get(name);
-    else {
-      std::stringstream msg;
-      msg << ": gum::ClassElement with name " << name << " in " << this->name();
-      GUM_ERROR(NotFound, msg.str());
-    }
-  }
-}
-
-INLINE
-const ClassElement*
-ClassElementContainer::__get(const std::string& name) const {
-  try {
-    return __nameMap[name];
-  } catch (NotFound& e) {
-    if (__alternate != 0)
-      return __alternate->__get(name);
-    else {
-      std::stringstream msg;
-      msg << ": gum::ClassElement with name " << name << " in " << this->name();
-      GUM_ERROR(NotFound, msg.str());
-    }
-  }
-}
-
-INLINE
-ClassElement*
-ClassElementContainer::__get(NodeId id)
-{
-  try {
-    return __nodeIdMap[id];
-  } catch (NotFound& e) {
-    if (__alternate != 0)
-      return __alternate->__get(id);
-    else {
-      std::stringstream msg;
-      msg << ": gum::ClassElement with id " << id << " in " << this->name();
-      GUM_ERROR(NotFound, msg.str());
-    }
-  }
-}
-
-INLINE
-const ClassElement*
-ClassElementContainer::__get(NodeId id) const
-{
-  try {
-    return __nodeIdMap[id];
-  } catch (NotFound& e) {
-    if (__alternate != 0)
-      return __alternate->__get(id);
-    else {
-      std::stringstream msg;
-      msg << ": gum::ClassElement with id " << id << " in " << this->name();
-      GUM_ERROR(NotFound, msg.str());
-    }
-  }
-}
-
-INLINE
-Set< Attribute* >&
-ClassElementContainer::attributes() {
-  return __attributes;
-}
-
-INLINE
-const Set< Attribute* >&
-ClassElementContainer::attributes() const {
-  return __attributes;
-}
-
-INLINE
-Set< Aggregate* >&
-ClassElementContainer::aggregates() {
-  return __aggregates;
-}
-
-INLINE
-const Set< Aggregate* >&
-ClassElementContainer::aggregates() const {
-  return __aggregates;
-}
-
-INLINE
-Set< ReferenceSlot* >&
-ClassElementContainer::referenceSlots() {
-  return __referenceSlots;
-}
-
-INLINE
-const Set< ReferenceSlot* >&
-ClassElementContainer::referenceSlots() const {
-  return __referenceSlots;
-}
-
-INLINE
-Set< SlotChain* >&
-ClassElementContainer::slotChains() {
-  return __slotChains;
-}
-
-INLINE
-const Set< SlotChain* >&
-ClassElementContainer::slotChains() const {
-  return __slotChains;
-}
-
-INLINE
-void
-ClassElementContainer::_overload(Attribute* attr, ClassElement& elt) {
-  try {
-    if (attr->type().isSubTypeOf(elt.type())) {
-      _add(attr, elt.id(), true);
-    } else {
-      GUM_ERROR(OperationNotAllowed, "Invalid overload type.");
-    }
-  } catch (OperationNotAllowed&) {
-    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
-  }
-}
-
-INLINE
-void
-ClassElementContainer::_overload(ReferenceSlot* ref, ClassElement& elt) {
-  if (elt.elt_type() == ClassElement::prm_refslot) {
-    ReferenceSlot& source = static_cast<ReferenceSlot&>(elt);
-    ClassElementContainer* ref_type = (ClassElementContainer*) &(ref->slotType());
-    if (ref_type->isSubTypeOf((const ClassElementContainer&) source.slotType())) {
-      _add(ref, source.id());
-    } else {
-      GUM_ERROR(OperationNotAllowed, "Invalid overload slot type.");
-    }
-  } else {
-    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
-  }
-}
-
-INLINE
-void
-ClassElementContainer::_overload(Aggregate* agg, ClassElement& elt) {
-  try {
-    if (agg->type().isSubTypeOf(elt.type())) {
-      _add(agg, elt.id(), true);
-    } else {
-      GUM_ERROR(OperationNotAllowed, "Invalid overload type.");
-    }
-  } catch (OperationNotAllowed&) {
-    GUM_ERROR(OperationNotAllowed, "Invalid overload element.");
+    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
   }
 }
 
 INLINE
 bool
-ClassElementContainer::isSubTypeOf(const ClassElementContainer& cec) const {
-  return ((*this) == cec) or _isSubTypeOf(cec);
+ClassElementContainer::isOutputNode(NodeId id) const {
+  if (exists(id) and (ClassElement::isAttribute(get(id)) or
+                      ClassElement::isAggregate(get(id))) )
+  {
+    try {
+      return __IOFlags[id]->second;
+    } catch (NotFound&) {
+      return false;
+    }
+  } else if (not exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  } else {
+    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+  }
+}
+
+INLINE
+void
+ClassElementContainer::setOutputNode(NodeId id, bool b) {
+  if (exists(id) and (ClassElement::isAttribute(get(id)) or
+                      ClassElement::isAggregate(get(id))) )
+  {
+    try {
+      __IOFlags[id]->second = b;
+    } catch (NotFound&) {
+      __IOFlags.insert(id, new std::pair<bool, bool>(false, b));
+    }
+  } else if (not exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  } else {
+    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+  }
+}
+
+INLINE
+bool
+ClassElementContainer::isInnerNode(NodeId id) const {
+  if (exists(id) and (ClassElement::isAttribute(get(id)) or
+                      ClassElement::isAggregate(get(id))) )
+  {
+    return (__IOFlags.exists(id))?not(__IOFlags[id]->first or __IOFlags[id]->second)
+                                 :true;
+  } else if (not exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  } else {
+    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+  }
 }
 
 INLINE
 bool
 ClassElementContainer::isSuperTypeOf(const ClassElementContainer& cec) const {
-  return ((*this) == cec) or cec._isSubTypeOf(*this);
+  return cec.isSubTypeOf(*this);
 }
 
 // ============================================================================

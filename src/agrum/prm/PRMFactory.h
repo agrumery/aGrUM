@@ -41,7 +41,7 @@
 // ============================================================================
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
-#include <agrum/prm/model.h>
+#include <agrum/prm/system.h>
 #include <agrum/prm/PRM.h>
 #include <agrum/prm/classElementContainer.h>
 // ============================================================================
@@ -51,17 +51,18 @@ namespace prm {
  * @class PRMFactory
  * @brief Factory which builds a PRM.
  *
- * Follows the "Don't call me, I'll call you" paradigm. You just need to call
- * the methods in the right order to build your PRM.
- *
  * The Factory always create one PRM which is not deleted with the factory, so
  * be very careful to delete the PRM built by this factory.
  *
  * The factory does not allow any sequence of calls, if you call a method when
- * the factory is an incoherent state it will raise a FactoryInvalidState
+ * the factory is in an incoherent state it will raise a FactoryInvalidState
  * exception.
  *
+ * Keep in mind that most methods could raise gum::FatalError if something
+ * unexpected happens, since the framework is meant to evolve it is possible.
+ *
  * @see PRM PRMObject
+ * @ingroup prm_group
  */
 // ==========================================================================
 class PRMFactory {
@@ -90,30 +91,32 @@ class PRMFactory {
     /**
      * Returns a pointer on the PRM created by this factory.
      * This pointer will not be deleted when the factory is destroyed.
+     *
+     * @return Returns the PRM created by this factory.
      */
     PRM* prm();
 
     /**
-     * Returns the type of the object begin built.
+     * @return Returns the PRMObject type of the object begin built.
      * @throw NotFound if no type is being built.
      */
     PRMObject::ObjectType current() const;
 
-    /// Returns true if type is a class.
-    bool isClass(const std::string& type) const;
-
-    /// Returns true if type is a class.
-    bool isInterface(const std::string& type) const;
-
     /**
-     * Close current object beegin built.
-     * The object is remove from any ohter object containing it and delete
-     * its.
+     * @brief Close current object being built.
+     *
+     * Nothing is done in particular except removing the current object from
+     * the factory's stack. If the object was not added to a container it will
+     * not be deleted properly, so you might want to delete it yourself (at
+     * your own risks!).
+     *
+     * @return Returns the top most object removed in this factory's stack
+     *         before. If their is no such object, 0 is returned.
      */
-    void closeCurrent();
+    PRMObject* closeCurrent();
 
     /**
-     * Return the current package name.
+     * @return Returns the current package name.
      */
     const std::string& currentPackage() const;
 
@@ -124,7 +127,11 @@ class PRMFactory {
     /// @{
 
     /**
-     * Define the current package.
+     * @brief Define the current package.
+     *
+     * If you want to switch to default use an empty string.
+     *
+     * @param name The name of the package for all further objects.
      */
     void setPackage(const std::string& name);
 
@@ -136,28 +143,58 @@ class PRMFactory {
 
     /**
      * Start a discrete type declaration.
+     *
+     * @param name The discrete type's name.
+     *
+     * @throw DuplicateElement Raised if an object with the same name
+     *                         already exists.
      */
     void startDiscreteType(const std::string& name);
 
     /**
      * Start a discrete subtype declaration.
+     *
+     * @param name The discrete type's name.
+     * @param super The super type of the declared discrete type.
+     *
+     * @throw DuplicateElement Raised if an object with the same name
+     *                         already exists.
      */
     void startDiscreteType(const std::string& name,
                            const std::string& super);
 
     /**
      * Add a label to the current discrete type.
+     *
+     * @param l The label value.
+     *
+     * @throw OperationNotAllowed Raised if the current type has a super
+     *                            type, see PRMFactory::addLabel(const std::string&, const std::string&).
+     * @throw DuplicateElement Raised if a label with the same value
+     *                         already exists.
      */
     void addLabel(const std::string& l);
 
     /**
      * Add a label to the current discrete type.
+     *
+     * @param l The label value.
      * @param extends The super type label for which l is an extension.
+     *
+     * @throw OperationNotAllowed Raised if the current type does not have a super
+     *                            type, see PRMFactory::addLabel(const std::string&).
+     * @throw DuplicateElement Raised if a label with the same value
+     *                         already exists.
+     * @throw NotFound Raised if extends does not match any label in the current
+     *                 type's super type.
      */
-    void addLabel(const std::string& l, std::string& extends);
+    void addLabel(const std::string& l, const std::string& extends);
 
     /**
      * End the current discrete type declaration.
+     *
+     * @throw OperationNotAllowed Raised if the current type is not a valid
+     *                            discrete type.
      */
     void endDiscreteType();
 
@@ -168,7 +205,6 @@ class PRMFactory {
     /// @{
 
     /**
-     * Tells the factory that we start a class declaration.
      * @brief Tells the factory that we start a class declaration.
      *
      * Use the default values if you do not want c to be a subclass or to
@@ -177,6 +213,7 @@ class PRMFactory {
      * @param c The class name.
      * @param extends The name of the super class of c.
      * @param implements The list of interface implemented by c.
+     *
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
     void startClass(const std::string& c, const std::string& extends="",
@@ -184,7 +221,9 @@ class PRMFactory {
 
     /**
      * Tells the factory that we finished a class declaration.
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
+     *
+     * @throw TypeError Raised if the current Class does not respect one of
+     *                  it's Interface.
      */
     void endClass();
 
@@ -202,13 +241,14 @@ class PRMFactory {
      *
      * @param i The interface name.
      * @param extends The name of the super interface of i.
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
+     *
+     * @throw NotFound Raised if extends does not match any declared
+     *                 Interface.
      */
     void startInterface(const std::string& i, const std::string& extends="");
 
     /**
      * Tells the factory that we finished an interface declaration.
-     * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
     void endInterface();
 
@@ -253,7 +293,7 @@ class PRMFactory {
      *
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
-    void setRawCPFByLines(const std::vector<float>& array);
+    void setRawCPFByLines(const std::vector<prm_float>& array);
 
     /**
      * @brief Not implemented!
@@ -277,7 +317,7 @@ class PRMFactory {
      *
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
-    void setRawCPFByColumns(const std::vector<float>& array);
+    void setRawCPFByColumns(const std::vector<prm_float>& array);
 
     /**
      * Fills the CPF using a rule.
@@ -292,7 +332,7 @@ class PRMFactory {
      *               the values in parenst.
      */
     void setCPFByRule(const std::vector<std::string>& labels,
-                      const std::vector<float>& values);
+                      const std::vector<prm_float>& values);
 
     /**
      * Tells the factory that we finished declaring an attribute.
@@ -371,7 +411,7 @@ class PRMFactory {
 
     /// @}
     // ======================================================================
-    /// @name Models constructions methods.
+    /// @name Systems constructions methods.
     // ======================================================================
     /// @{
 
@@ -379,13 +419,19 @@ class PRMFactory {
      * Tells the factory that we started declaring a model.
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
-    void startModel(const std::string& name);
+    void startSystem(const std::string& name);
 
     /**
      * Tells the factory that we finished declaring a model.
      * @throw OperationNotAllowed Raised if the given operation is illegal.
      */
-    void endModel();
+    void endSystem();
+
+    /**
+     * @return Returns the current system, if any.
+     * @throw FactoryInvalidState Raised if the current element is not a System.
+     */
+    System& getCurrentSystem();
 
     /**
      * Add an instance to the model.
@@ -417,6 +463,17 @@ class PRMFactory {
                           const std::string& left_reference,
                           const std::string& right_instance);
 
+    /**
+     * @brief define the value of a parameter.
+     *
+     * @param i An instance defined in the current system.
+     * @param p A parameter of instance.
+     * @param v A label of p's type.
+     *
+     * @throw NotFound Raised if i, p or v is not found.
+     */
+    void setParameter(const std::string& i, const std::string& p, const std::string& v);
+
     /// @}
   private:
     /// Copy constructor. Don't use it.
@@ -439,84 +496,15 @@ class PRMFactory {
     /// Raise a DuplicateElement if the name already exists.
     void __checkDuplicateName(const std::string& name);
 
-    /// Raise a OperationNotAllowed for a undeclared Object.
-    void __throwNotDeclared(PRMObject::ObjectType obj_type,
-                            const std::string& name) const;
-
-    /// Raise a OperationNotAllowed for a undeclared Object.
-    void __throwNotDeclared(ClassElement::ClassElementType obj_type,
-                            const std::string& name) const;
-
-    // Raise a OperationNotAllowed for a wrong type in a given object.
-    // @param wrong_type The misused type.
-    // @param name The name of the misused type.
-    // @param in The object's type in the wrong_type is misused.
-    void __throwWrongType(PRMObject::ObjectType wrong_type,
-                          const std::string& name,
-                          PRMObject::ObjectType in) const;
-
-    // Raise a OperationNotAllowed for a wrong type in a given object.
-    // @param wrong_type The misused type.
-    // @param name The name of the misused type.
-    // @param in The object's type in the wrong_type is misused.
-    void __throwWrongType(ClassElement::ClassElementType wrong_type,
-                          const std::string& name,
-                          ClassElement::ClassElementType in) const;
-
     /// Return a pointer on a PRMObject at __stack.size() - i position after
     /// checking the type of the object given obj_type.
     /// @throw FactoryInvalidState Raised if the stack isn't consistent with the 
     //                             current declaration.
     PRMObject* __checkStack(Idx i, PRMObject::ObjectType obj_type);
 
-    /// Shortcut for casting a PRMObject in a Class from the stack with type
-    /// checking.
-    Type* __checkStackType(Idx i);
+    ClassElement* __checkStack(Idx i, ClassElement::ClassElementType obj_type);
 
-    /// Shortcut for casting a PRMObject in a Class from the stack with type
-    /// checking.
-    Class* __checkStackClassOrInterface(Idx i);
-
-    /// Shortcut for casting a PRMObject in a Class from the stack with type
-    /// checking.
-    Class* __checkStackClass(Idx i);
-
-    /// Shortcut for casting a PRMObject in an interface (aka Class) from the stack
-    /// with type checking.
-    Class* __checkStackInterface(Idx i);
-
-    // Shortcut for casting a PRMObject in a ReferenceSlot from the stack with 
-    // type checking.
-    ReferenceSlot* __checkStackRefSlot(Idx i);
-
-    /// Shortcut for casting an PRMObject in an Attribute from the stack with
-    /// type checking.
-    Attribute* __checkStackAttr(Idx i);
-
-    // Shortcut for casting an PRMObject in an Aggregate from the stack with 
-    // type checking.
-    Aggregate* __checkStackAgg(Idx i);
-
-    // Shortcut for casting an PRMObject in an Model from the stack with 
-    // type checking.
-    Model* __checkStackModel(Idx i);
-
-    // Shortcut for casting an PRMObject in an SlotChain from the stack with 
-    // type checking.
-    SlotChain* __checkStackSC(Idx i);
-
-    /// @brief check the type of an aggregate's parameters.
-    /// @throw WrongType Raised if the aggregate's parameters or not of the good type.
-    void __checkAggType_or_and(Class* c, const std::vector<std::string>& chains,
-                                         const std::vector<std::string>& params);
-
-    /// @brief check the type of an aggregate's parameters.
-    /// @return the label on which the aggregate applies.
-    /// @throw WrongType Raised if the aggregate's parameters or not of the good type.
-    /// @throw OperationNotAllowed Raised if the label on which must be applied the
-    ///                            aggregate is unusable.
-    Idx __checkAggType_exists_count(Class* c, const std::vector<std::string>& chains,
-                                              const std::vector<std::string>& params);
+    ClassElementContainer* __checkStackContainter(Idx i);
 
     /// @}
     // ======================================================================
@@ -553,7 +541,7 @@ class PRMFactory {
     /// add the current prefix) or global (no prefix needed).
     /// @throw NotFound If no class matching the name is found.
     /// @see PRMFactory::__retrieveType 
-    Class* __retrieveInterface(const std::string& name) const;
+    Interface* __retrieveInterface(const std::string& name) const;
 
     /// @}
     // ======================================================================
@@ -561,50 +549,73 @@ class PRMFactory {
     // ======================================================================
     /// @{
 
-    /// @brief This methods build a SlotChain given a starting element and a chain (name)
-    SlotChain* __buildSlotChain(Class* start, const std::string& name);
+    /// This methods build a SlotChain given a starting element and a string.
+    ///
+    /// @return Return a pointer over a SlotChain or 0 if no SlotChain could
+    ///         be built.
+    ///
+    SlotChain* __buildSlotChain(ClassElementContainer* start, const std::string& name);
 
-    /// @brief Add an aggregator taking no parameters.
+    /// @brief Retrieve inputs for an Aggregate.
     ///
-    /// This method is used for "min", "max", "or" and "and" aggregators.
-    /// We suppose that the type has been already checked for "and" and "or" (it must
-    /// be boolean).
-    /// @throw WrongType Raised if one of the chain is not of the good type.
-    void __addAggregatorNoParam(const std::string& name,
-                                const std::string& agg_type,
-                                const std::vector<std::string>& chains);
+    /// The vector chains contains names of the Aggregate inputs. If a name
+    /// does not match an existing ClassElement in c, then a call to
+    /// PRMFactory::__buildSlotChains() is made. Such created SlotChain are
+    /// added to c.
+    ///
+    /// @param c The class in which the Aggregate is defined.
+    /// @param chains Vector of the Aggregate inputs names.
+    /// @param inputs Vector filled with the ClassElement matching the names
+    ///               in chains.
+    ///
+    /// @throw NotFound Raised if a name in chains does not match a legal
+    ///                 SlotChain or an existing ClassElement in c.
+    void __retrieveInputs(Class* c, const std::vector<std::string>& chains,
+                          std::vector<ClassElement*>& inputs);
 
-    /// @brief Add an aggregator taking one parameters.
+    /// @brief Retrieve the common Type of a vector of ClassElement.
     ///
-    /// This method is used for "exists", and "forall" aggregators.
+    /// The vector elts must only contains ClassElement with a Type, i.e.
+    /// Attribute, Aggregate and SlotChain. If not a WrongClassElement is
+    /// raised.
     ///
-    /// @param rv_type The random variable type of this aggregator.
-    /// @param name The name of this aggregator.
-    /// @param agg_type The type of this aggregator.
-    /// @param chains The list of slot chains on which this aggregator applies.
-    /// @param label The label on which this aggregator applies.
-    /// @throw WrongType Raised if one of the chain is not of the good type.
-    void __addAggregatorOneParam(const std::string& name,
-                                 const std::string& agg_type,
-                                 const std::vector<std::string>& chains,
-                                 Idx label);
+    /// A common Type is Type t such as t.isSuperTypeOf(elts[i]) for
+    /// 0 < i < elts.size().
+    ///
+    /// @param elts A vector of ClassElement.
+    /// @return Returns the common super Type of all ClassElement un elts.
+    //
+    /// @throw WrongClassElement Raised if elts contains a ClassElement
+    ///                          without a Type.
+    /// @throw NotFound Raised if there exists no common super type of all
+    ///                 ClassElement in elts.
+    Type* __retrieveCommonType(std::vector<ClassElement*>& elts);
+
+    /// @brief Returns the inheritance depth of a Type.
+    ///
+    /// This used by PRMFactory::__retrieveCommonType.
+    /// This returns 0 if t does not have a super type.
+    ///
+    /// @param t The Type for which we compute its depth.
+    /// @return Returns the depth of t.
+    int __typeDepth(Type* t);
 
     /// @}
     // ======================================================================
-    ///  @name Private methods handling Model and Instance creation.
+    ///  @name Private methods handling System and Instance creation.
     // ======================================================================
     /// @{
 
     /// Builds all SlotChain<Instance> in the given model.
     /// @throw OperationNotAllowed If reference slots are left un affected
-    void __buildSlotChains(Model* model);
+    void __buildSlotChains(System* model);
 
     /// Builds all Aggregates CPF in the given model.
     /// This must be called after all the slot chains have been generated.
-    void __buildAggregateCPF(Model* model);
+    void __buildAggregateCPF(System* model);
 
     /// Instantiate a slot chain in the given instance
-    void __instantiateSlotChain(Model* model,
+    void __instantiateSlotChain(System* model,
                                 Instance* inst,
                                 ReferenceSlot* ref,
                                 SlotChain* sc);
@@ -616,30 +627,6 @@ class PRMFactory {
     std::string __retrieveInstanceSequence(Instance* inst,
                                            Sequence<Instance*>& seq,
                                            SlotChain* sc);
-
-    /// @brief Set a reference between two instances.
-    /// We suppose that right_instance has been checked to be an Instance
-    /// in the current Model.
-    ///
-    /// @throw OperationNotAllowed Raised if the operation isn't possible.
-    /// @throw NotFound Raised if on of the left elements is missing.
-    void __setReferenceSlotWithInstance(const std::string& left_instance,
-                                        const std::string& left_reference,
-                                        const std::string& right_instance);
-
-    /// @brief Set a reference between an Instance and an Array of Instance.
-    /// We suppose that right_instance has been checked to be an array
-    /// in the current Model.
-    ///
-    /// @throw OperationNotAllowed Raised if the operation isn't possible.
-    /// @throw NotFound Raised if on of the left elements is missing.
-    void __setReferenceSlotWithArray(const std::string& left_instance,
-                                     const std::string& left_reference,
-                                     const std::string& right_instance);
-
-    /// Raise an OperationNotAllowed if array is not of the good size for
-    /// a->cpf().
-    void __checkArraySize(Attribute* a, const std::vector<float>& array) const;
 
     /// @}
     // ======================================================================

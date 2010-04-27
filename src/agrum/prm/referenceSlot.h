@@ -32,26 +32,23 @@
 namespace gum {
 namespace prm {
 // ============================================================================
-class Class;
+class ClassElementContainer;
 // ============================================================================
 /**
  * @class ReferenceSlot referenceSlot.h <agrum/prm/referenceSlot.h>
- * @brief Class used as a placeholder of properties on a slot.
+ * @brief A ReferenceSlot represent a relation between two
+ *        ClassElementContainer.
  *
- * A reference slot is a relation between two classes in a PRM. A
- * ReferenceSlot is considered as an element of a class which
- * type is a class. It is the only class element wich does not represent
- * a random variable, which implies that any call to random variables related
- * methods will raise an OperationNotAllowed.
+ * A reference slot is a relation between two ClassElementContainer in a PRM. A
+ * ReferenceSlot is considered as an element of a ClassElementContainer which
+ * slot type is a ClassElementContainer.
  *
- * Four type of information defines a ReferenceSlot: it's type, the class
- * in which it is defined, it's name in that class and finally if it represent
- * a multiple relationship.
+ * A ReferenceSlot is defined by it's slot type (i.e. it's range), it's
+ * ClassElementContainer (it's domain), it's name and if it is a multiple
+ * reference (the isArray() flag).
  *
- * A ReferenceSlot is built by a gum::PRMFactory and is delted by it's
- * gum::Class.
- *
- * @see PRM PRMFactory Class ClassElement
+ * @see PRM PRMFactory ClassElementContainer ClassElement
+ * @ingroup prm_group
  */
 // ==========================================================================
 class ReferenceSlot: public ClassElement {
@@ -68,7 +65,8 @@ class ReferenceSlot: public ClassElement {
      * @param type The type of this reference slot.
      * @param isArray Determine if this reference slot is multiple or not.
      */
-    ReferenceSlot(const std::string& name, Class& type, bool isArray=false);
+    ReferenceSlot(const std::string& name, ClassElementContainer& type,
+                  bool isArray=false);
 
     /**
      * Destructor.
@@ -87,16 +85,16 @@ class ReferenceSlot: public ClassElement {
     virtual ClassElementType elt_type() const;
 
     /**
-     * Returns the type of this slot, which is a Class (it is not the type
-     * of PRMObject).
+     * Returns the type of this slot, which is a ClassElementContainer
+     * (it is not the type of PRMObject).
      */
-    Class& slotType();
+    ClassElementContainer& slotType();
 
     /**
-     * Returns the type of this slot, which is a Class (it is not the type
-     * of PRMObject).
+     * Returns the type of this slot, which is a ClassElementContainer
+     * (it is not the type of PRMObject).
      */
-    const Class& slotType() const;
+    const ClassElementContainer& slotType() const;
 
     /**
      * Returns true if this reference slot is an array.
@@ -150,10 +148,10 @@ class ReferenceSlot: public ClassElement {
   // ========================================================================
     // @{
 
-    /// The type of this ReferenceSlot
-    Class& __slotType;
+    /// The type of this ReferenceSlot.
+    ClassElementContainer& __slotType;
 
-    /// Flag indicating if this slot is an array
+    /// Flag indicating if this slot is an array.
     bool __isArray;
 
     /// @}

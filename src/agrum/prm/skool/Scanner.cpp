@@ -237,15 +237,14 @@ Scanner::~Scanner() {
 void Scanner::Init() {
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 26;
-	noSym = 26;
+	maxT = 30;
+	noSym = 30;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 12);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
 	for (i = 95; i <= 95; ++i) start.set(i, 6);
 	for (i = 97; i <= 122; ++i) start.set(i, 6);
-	for (i = 43; i <= 43; ++i) start.set(i, 13);
-	for (i = 45; i <= 45; ++i) start.set(i, 13);
+	start.set(45, 13);
 	start.set(10, 7);
 	start.set(46, 8);
 	start.set(44, 9);
@@ -259,16 +258,20 @@ void Scanner::Init() {
 	start.set(40, 19);
 	start.set(41, 20);
 	start.set(42, 21);
+	start.set(60, 22);
+	start.set(62, 23);
+	start.set(43, 24);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"type", 9);
 	keywords.set(L"class", 10);
 	keywords.set(L"interface", 11);
 	keywords.set(L"extends", 12);
-	keywords.set(L"package", 13);
-	keywords.set(L"import", 14);
-	keywords.set(L"implements", 17);
-	keywords.set(L"default", 20);
-	keywords.set(L"dependson", 21);
+	keywords.set(L"system", 13);
+	keywords.set(L"package", 14);
+	keywords.set(L"import", 15);
+	keywords.set(L"implements", 18);
+	keywords.set(L"default", 21);
+	keywords.set(L"dependson", 22);
 
 
 	tvalLength = 128;
@@ -485,21 +488,28 @@ Token* Scanner::NextToken() {
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_12;}
 			else {t->kind = noSym; break;}
 		case 14:
-			{t->kind = 15; break;}
-		case 15:
 			{t->kind = 16; break;}
+		case 15:
+			{t->kind = 17; break;}
 		case 16:
-			{t->kind = 18; break;}
-		case 17:
 			{t->kind = 19; break;}
+		case 17:
+			{t->kind = 20; break;}
 		case 18:
-			{t->kind = 22; break;}
-		case 19:
 			{t->kind = 23; break;}
-		case 20:
+		case 19:
 			{t->kind = 24; break;}
-		case 21:
+		case 20:
 			{t->kind = 25; break;}
+		case 21:
+			{t->kind = 26; break;}
+		case 22:
+			{t->kind = 27; break;}
+		case 23:
+			{t->kind = 28; break;}
+		case 24:
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_12;}
+			else {t->kind = 29; break;}
 
 	}
 	AppendVal(t);

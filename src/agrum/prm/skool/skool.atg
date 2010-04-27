@@ -42,7 +42,9 @@ bool isBaseInterface() {
 }
 
 bool isClassOrInterface(std::string type) {
-  return factory().isClass(type) or factory().isInterface(type);
+  std::string dot = ".";
+  return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
+         factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
 }
 
 //=====================
@@ -65,6 +67,7 @@ TOKENS
   class     = "class".
   interface = "interface".
   extends   = "extends".
+  system    = "system".
 
 //=====================
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -88,7 +91,7 @@ Import  = "import"          (. std::string name; .)
           Ident<name> ';'   (. std::cerr << "Import disabled."; .).
 
 //=====================
-Unit = Type|  Interface| Class . // | System.
+Unit = Type|  Interface| Class | System.
 
 //=====================
 Type =   IF(isBaseType())
@@ -216,8 +219,9 @@ IdentSet<. gum::Set<std::string>& set .> =                          (. std::stri
                                              [',' IdentSet<set> ]
                                              .
 
-IdentList<. std::vector<std::string>& set .> =                          (. std::string interface; .)
-                                                Ident<interface>        (. set.push_back(interface); .)
+IdentList<. std::vector<std::string>& set .> =                    (. std::string ident; .)
+                                                SlotChain<ident>
+                                                                  (. set.push_back(ident); .)
                                                 [',' IdentList<set> ]
                                                 .
 FloatList<. std::vector<float>& list .> =                          (. float f; .)
@@ -225,19 +229,23 @@ FloatList<. std::vector<float>& list .> =                          (. float f; .
                                           [ ',' FloatList<list> ]
                                           .
 
-Path<std::string& s>  = word      (. s += narrow(t->val); .)
-                        '.'       (. s += '.'; .)
-                        word      (. s += narrow(t->val); .)
-                        {
-                          '.'     (. s += '.'; .)
-                          word    (. s+= narrow(t->val); .)
-                        }
+
+Ident<std::string& s> = word        (. s = narrow(t->val); .)
+                        { '.' word  (. s += '.'; s += narrow(t->val); .) }
                         .
 
-Ident<std::string& s> =   IF(isPath())    (. std::string val; .)
-                          Path<val>       (. s = val; .)
-                        | word            (. s = narrow(t->val); .)
-                        .
+SlotChain<std::string& s> = [ '<'           (. s += '<'; std::string val; .)
+                              Ident<val>    (. s += val; .)
+                              '>'           (. s += narrow(t->val); .)
+                            ] word          (. s += narrow(t->val); .)
+                            {
+                              '.'             (. s += '.'; .)
+                              [ '<'           (. s += '<'; std::string val; .)
+                                Ident<val>    (. s += val; .)
+                                '>'           (. s += narrow(t->val); .)
+                              ] word          (. s += narrow(t->val); .)
+                            }
+                            .
 
 Label<std::string& s> =   word        (. s = narrow(t->val); .)
                         |             (. float val; .)
@@ -247,5 +255,54 @@ Label<std::string& s> =   word        (. s = narrow(t->val); .)
 Number<float& val> =    integer (. swscanf(t->val, L"%f", &val); .)
                       | float   (. swscanf(t->val, L"%f", &val); .)
                       .
+
+// ====================================
+System = system word            (. factory().startSystem(narrow(t->val)); .)
+         '{' { SystemDecl } '}' (. factory().endSystem(); .)
+         .
+
+SystemDecl =  (. std::string left, last; std::string dot = "."; .)
+              SysLeftValue<left, last>
+              (. std::string tmp = left; tmp += (last.size())?dot + last:""; .)
+              ( SysInstDecl<tmp> | SysArray<tmp> | SysAffect<left, last> )
+              .
+
+SysInstDecl<std::string type> = word (. factory().addInstance(type, narrow(t->val)); .) ';'.
+
+SysArray<std::string array> =
+  (. int size = 0; .)
+  '[' integer (. swscanf(t->val, L"%d", &size); .) ']'
+  (
+    word (. factory().addArray(array, narrow(t->val), size); .) ';'
+  | '.' word (. std::string ref = narrow(t->val); std::stringstream sBuff; sBuff << '[' << size << ']'; std::string inst = array + sBuff.str(); .)
+    SysAffect<inst, ref>
+  )
+  .
+
+SysAffect<std::string inst, std::string ref> =
+    (. bool ref_inc = false; .)
+    [ '+' (. ref_inc = true; .)] '=' word 
+    (.
+       gum::prm::System& sys = factory().getCurrentSystem();
+       if (sys.isInstance(inst) or sys.isArray(inst)) {
+         gum::prm::Class& c = (sys.isInstance(inst))?sys.get(inst).type():sys.getArray(inst).front()->type();
+         if (c.get(ref).elt_type() == ClassElement::prm_refslot) {
+           factory().setReferenceSlot(inst, ref, narrow(t->val));
+         } else if (c.get(ref).elt_type() == ClassElement::prm_attribute) {
+           factory().setParameter(inst, ref, narrow(t->val));
+         } else {
+           GUM_ERROR(NotFound, "unfound class element");
+         }
+       } else {
+         GUM_ERROR(NotFound, "unknown instance");
+       }
+     .)
+    ';'
+    .
+
+SysLeftValue<std::string& left, std::string& last> =
+  word (. left = narrow(t->val); .)
+  { '.' word (. if (last != "") {left += '.'; left += last;} last = narrow(t->val); .) }
+  .
 
 END Skool.

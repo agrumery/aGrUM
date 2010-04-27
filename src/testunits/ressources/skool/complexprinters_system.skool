@@ -120,3 +120,41 @@ class SafeComputer implements Equipment {
   };
 }
 
+class ParamClass {
+  boolean aBoolParam;
+  boolean aBoolParamWithDefault default false;
+  t_state aParameter;
+  t_state anotherParameter default OK;
+}
+
+system aSys {
+  PowerSupply pow;
+  Room r;
+
+  BWPrinter[10] bw_printers;
+
+  ColorPrinter[2] color_printers;
+
+  bw_printers.room = r;
+  color_printers.room = r;
+
+  r.power = pow;
+
+  Computer c1;
+  Computer c2;
+
+  c1.room = r;
+  c2.room = r;
+
+  c1.printers = bw_printers;
+  c2.printers = bw_printers;
+
+  c1.printers += color_printers;
+  c2.printers += color_printers;
+
+  ParamClass param;
+  param.aBoolParam = true;
+  param.aParameter = NOK;
+
+}
+

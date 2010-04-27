@@ -47,7 +47,8 @@ private:
 		_type=9,
 		_class=10,
 		_interface=11,
-		_extends=12
+		_extends=12,
+		_system=13
 	};
 	int maxT;
 
@@ -105,7 +106,9 @@ bool isBaseInterface() {
 }
 
 bool isClassOrInterface(std::string type) {
-  return factory().isClass(type) or factory().isInterface(type);
+  std::string dot = ".";
+  return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
+         factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
 }
 
 //=====================
@@ -124,6 +127,7 @@ bool isClassOrInterface(std::string type) {
 	void Type();
 	void Interface();
 	void Class();
+	void System();
 	void BaseType();
 	void SuperType();
 	void Label(std::string& s);
@@ -147,8 +151,13 @@ bool isClassOrInterface(std::string type) {
 	void Function(std::string& name,
 std::vector<std::string>& chains,
 std::vector<std::string>& params );
+	void SlotChain(std::string& s);
 	void Number(float& val);
-	void Path(std::string& s);
+	void SystemDecl();
+	void SysLeftValue(std::string& left, std::string& last);
+	void SysInstDecl(std::string type);
+	void SysArray(std::string array);
+	void SysAffect(std::string inst, std::string ref);
 
 	void Parse();
 

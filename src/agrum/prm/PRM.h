@@ -37,7 +37,7 @@
 #include <agrum/prm/aggregate.h>
 #include <agrum/prm/referenceSlot.h>
 #include <agrum/prm/slotChain.h>
-#include <agrum/prm/model.h>
+#include <agrum/prm/system.h>
 // ============================================================================
 #ifndef GUM_PRM_H
 #define GUM_PRM_H
@@ -45,12 +45,13 @@ namespace gum {
 namespace prm {
 
 class PRM;
-class Model;
+class System;
 
 /**
  * @class PRM PRM.h <agrum/prm/PRM.h>
- * @brief This class represents a Probabilistic Relational Model.
+ * @brief This class represents a Probabilistic Relational System.
  *
+ * @ingroup prm_group
  */
 class PRM {
   public:
@@ -73,6 +74,30 @@ class PRM {
     /// @{
 
     /**
+     * @param name The name of a possible Type in this PRM.
+     * @return Returns true if name names a Type in this PRM.
+     */
+    bool isType(const std::string name) const;
+
+    /**
+     * @param name The name of a possible Class in this PRM.
+     * @return Returns true if name names a Class in this PRM.
+     */
+    bool isClass(const std::string name) const;
+
+    /**
+     * @param name The name of a possible Interface in this PRM.
+     * @return Returns true if name names a Interface in this PRM.
+     */
+    bool isInterface(const std::string name) const;
+
+    /**
+     * @param name The name of a possible System in this PRM.
+     * @return Returns true if name names a System in this PRM.
+     */
+    bool isSystem(const std::string name) const;
+
+    /**
      * Returns a constant reference on a Type given it's name.
      * @throw NotFound Raised if no type is found with the given name.
      */
@@ -85,9 +110,9 @@ class PRM {
     const Type& getType(const std::string& name) const;
 
     /**
-     * Returns the Sequence of all Type in this PRM.
+     * Returns the Set of all Type in this PRM.
      */
-    const Sequence<Type*>& types() const;
+    const Set<Type*>& types() const;
 
     /**
      * Returns a constant reference on a Class given it's name.
@@ -102,43 +127,43 @@ class PRM {
     const Class& getClass(const std::string& name) const;
 
     /**
-     * Returns the Sequence of all Class in this PRM.
+     * Returns the Set of all Class in this PRM.
      */
-    const Sequence<Class*>& classes() const;
+    const Set<Class*>& classes() const;
 
     /**
      * Returns a constant reference on a Class given it's name.
      * @throw NotFound Raised if no class is found with the given name.
      */
-    Class& getInterface(const std::string& name);
+    Interface& getInterface(const std::string& name);
 
     /**
      * Returns a constant reference on a Class given it's name.
      * @throw NotFound Raised if no class is found with the given name.
      */
-    const Class& getInterface(const std::string& name) const;
+    const Interface& getInterface(const std::string& name) const;
 
     /**
-     * Returns the Sequence of all Class in this PRM.
+     * Returns the Set of all Class in this PRM.
      */
-    const Sequence<Class*>& interfaces() const;
+    const Set<Interface*>& interfaces() const;
 
     /**
-     * Returns a constant reference on a Model given it's name.
+     * Returns a constant reference on a System given it's name.
      * @throw NotFound Raised if no model is found with the given name.
      */
-    Model& getModel(const std::string& name);
+    System& getSystem(const std::string& name);
 
     /**
-     * Returns a constant reference on a Model given it's name.
+     * Returns a constant reference on a System given it's name.
      * @throw NotFound Raised if no model is found with the given name.
      */
-    const Model& getModel(const std::string& name) const;
+    const System& getSystem(const std::string& name) const;
 
     /**
-     * Returns the Sequence of all Models in this PRM.
+     * Returns the Set of all Systems in this PRM.
      */
-    const Sequence<Model*>& models() const;
+    const Set<System*>& systems() const;
 
     /// @}
   private:
@@ -174,26 +199,26 @@ class PRM {
     /// Mapping of all Class given their name.
     HashTable<std::string, Class*> __classMap;
 
-    /// Sequence of all Class in this PRM.
-    Sequence<Class*> __classes;
+    /// Set of all Class in this PRM.
+    Set<Class*> __classes;
 
     /// Mapping of all Class given their name.
-    HashTable<std::string, Class*> __interfaceMap;
+    HashTable<std::string, Interface*> __interfaceMap;
 
-    /// Sequence of all Class in this PRM.
-    Sequence<Class*> __interfaces;
+    /// Set of all Class in this PRM.
+    Set<Interface*> __interfaces;
 
     /// Mapping of all Type given their name.
     HashTable<std::string, Type*> __typeMap;
 
-    /// Sequence of all Type in this PRM.
-    Sequence<Type*> __types;
+    /// Set of all Type in this PRM.
+    Set<Type*> __types;
 
-    /// Mapping of all Models given their name.
-    HashTable<std::string, Model*> __modelMap;
+    /// Mapping of all Systems given their name.
+    HashTable<std::string, System*> __systemMap;
 
-    /// Sequence of all Models in this PRM.
-    Sequence<Model*> __models;
+    /// Set of all Systems in this PRM.
+    Set<System*> __systems;
 
     /// @}
 };

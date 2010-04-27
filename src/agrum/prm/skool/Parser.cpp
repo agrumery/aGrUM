@@ -65,20 +65,20 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::Skool() {
-		while (la->kind == 13 || la->kind == 14) {
+		while (la->kind == 14 || la->kind == 15) {
 			Header();
 		}
-		while (la->kind == 9 || la->kind == 10 || la->kind == 11) {
+		while (StartOf(1)) {
 			Unit();
 		}
 }
 
 void Parser::Header() {
-		if (la->kind == 13) {
+		if (la->kind == 14) {
 			Package();
-		} else if (la->kind == 14) {
+		} else if (la->kind == 15) {
 			Import();
-		} else SynErr(27);
+		} else SynErr(31);
 }
 
 void Parser::Unit() {
@@ -88,11 +88,13 @@ void Parser::Unit() {
 			Interface();
 		} else if (la->kind == 10) {
 			Class();
-		} else SynErr(28);
+		} else if (la->kind == 13) {
+			System();
+		} else SynErr(32);
 }
 
 void Parser::Package() {
-		Expect(13);
+		Expect(14);
 		std::string name; 
 		Ident(name);
 		Expect(8);
@@ -100,7 +102,7 @@ void Parser::Package() {
 }
 
 void Parser::Import() {
-		Expect(14);
+		Expect(15);
 		std::string name; 
 		Ident(name);
 		Expect(8);
@@ -108,14 +110,13 @@ void Parser::Import() {
 }
 
 void Parser::Ident(std::string& s) {
-		if (isPath()) {
-			std::string val; 
-			Path(val);
-			s = val; 
-		} else if (la->kind == 3) {
+		Expect(3);
+		s = narrow(t->val); 
+		while (la->kind == 5) {
 			Get();
-			s = narrow(t->val); 
-		} else SynErr(29);
+			Expect(3);
+			s += '.'; s += narrow(t->val); 
+		}
 }
 
 void Parser::Type() {
@@ -123,7 +124,7 @@ void Parser::Type() {
 			BaseType();
 		} else if (la->kind == 9) {
 			SuperType();
-		} else SynErr(30);
+		} else SynErr(33);
 }
 
 void Parser::Interface() {
@@ -148,13 +149,25 @@ void Parser::Class() {
 			Ident(super);
 		}
 		gum::Set<std::string> set; 
-		if (la->kind == 17) {
+		if (la->kind == 18) {
 			Get();
 			IdentSet(set);
 		}
 		factory().startClass(name, super, (set.empty()?0:&set)); 
 		ClassBody();
 		factory().endClass(); 
+}
+
+void Parser::System() {
+		Expect(13);
+		Expect(3);
+		factory().startSystem(narrow(t->val)); 
+		Expect(16);
+		while (la->kind == 3) {
+			SystemDecl();
+		}
+		Expect(17);
+		factory().endSystem(); 
 }
 
 void Parser::BaseType() {
@@ -211,15 +224,15 @@ void Parser::Label(std::string& s) {
 			float val; 
 			Number(val);
 			std::stringstream sBuff; sBuff << val; s = sBuff.str(); 
-		} else SynErr(31);
+		} else SynErr(34);
 }
 
 void Parser::InterfaceBody() {
-		Expect(15);
+		Expect(16);
 		while (la->kind == 3) {
 			InterfaceStatement();
 		}
-		Expect(16);
+		Expect(17);
 }
 
 void Parser::InterfaceStatement() {
@@ -236,19 +249,19 @@ void Parser::RefOrAttr(std::string& type, std::string& name) {
 		} else if (la->kind == 8) {
 			Get();
 			factory().startAttribute(type, name); factory().endAttribute(); 
-		} else SynErr(32);
+		} else SynErr(35);
 }
 
 void Parser::Reference(std::string type, std::string name) {
 		if (la->kind == 8) {
 			Get();
 			factory().addReferenceSlot(type, name, false); 
-		} else if (la->kind == 18) {
+		} else if (la->kind == 19) {
 			Get();
-			Expect(19);
+			Expect(20);
 			Expect(8);
 			factory().addReferenceSlot(type, name, true); 
-		} else SynErr(33);
+		} else SynErr(36);
 }
 
 void Parser::IdentSet(gum::Set<std::string>& set ) {
@@ -262,11 +275,11 @@ void Parser::IdentSet(gum::Set<std::string>& set ) {
 }
 
 void Parser::ClassBody() {
-		Expect(15);
+		Expect(16);
 		while (la->kind == 3) {
 			ClassStatement();
 		}
-		Expect(16);
+		Expect(17);
 }
 
 void Parser::ClassStatement() {
@@ -274,46 +287,46 @@ void Parser::ClassStatement() {
 		Ident(type);
 		Expect(3);
 		name = narrow(t->val); 
-		if (la->kind == 8 || la->kind == 18 || la->kind == 20) {
+		if (la->kind == 8 || la->kind == 19 || la->kind == 21) {
 			RefOrParam(type, name);
-		} else if (la->kind == 15 || la->kind == 21) {
+		} else if (la->kind == 16 || la->kind == 22) {
 			Attribute(type, name);
-		} else if (la->kind == 22) {
+		} else if (la->kind == 23) {
 			Aggregate(type, name);
-		} else SynErr(34);
+		} else SynErr(37);
 }
 
 void Parser::RefOrParam(std::string type, std::string name) {
 		if (isClassOrInterface(type)) {
 			Reference(type, name);
-		} else if (la->kind == 8 || la->kind == 20) {
+		} else if (la->kind == 8 || la->kind == 21) {
 			Parameter(type, name);
-		} else SynErr(35);
+		} else SynErr(38);
 }
 
 void Parser::Attribute(std::string type, std::string name) {
 		factory().startAttribute(type, name); 
-		if (la->kind == 21) {
+		if (la->kind == 22) {
 			Dependecies();
 		}
-		Expect(15);
-		if (la->kind == 18) {
+		Expect(16);
+		if (la->kind == 19) {
 			std::vector<float> cpt; 
 			Get();
 			FloatList(cpt);
-			Expect(19);
+			Expect(20);
 			factory().setRawCPFByColumns(cpt); 
-		} else if (la->kind == 3 || la->kind == 25) {
+		} else if (la->kind == 3 || la->kind == 26) {
 			FactorizedCPT();
-		} else SynErr(36);
-		Expect(16);
+		} else SynErr(39);
+		Expect(17);
 		Expect(8);
 		factory().endAttribute(); 
 }
 
 void Parser::Aggregate(std::string type, std::string name) {
 		std::string func; std::vector<std::string> chains, params; 
-		Expect(22);
+		Expect(23);
 		Function(func, chains, params);
 		Expect(8);
 		factory().addAggregator(name, func, chains, params); 
@@ -323,18 +336,18 @@ void Parser::Parameter(std::string type, std::string name) {
 		if (la->kind == 8) {
 			Get();
 			factory().addParameter(type, name); 
-		} else if (la->kind == 20) {
+		} else if (la->kind == 21) {
 			std::string l; 
 			Get();
 			Label(l);
 			Expect(8);
 			factory().addParameter(type, name, l); 
-		} else SynErr(37);
+		} else SynErr(40);
 }
 
 void Parser::Dependecies() {
 		std::vector<std::string> prnts; 
-		Expect(21);
+		Expect(22);
 		IdentList(prnts);
 		for (size_t i = 0; i < prnts.size(); ++i) factory().addParent(prnts[i]); 
 }
@@ -351,15 +364,15 @@ void Parser::FloatList(std::vector<float>& list ) {
 
 void Parser::FactorizedCPT() {
 		CPTRule();
-		while (la->kind == 3 || la->kind == 25) {
+		while (la->kind == 3 || la->kind == 26) {
 			CPTRule();
 		}
 }
 
 void Parser::IdentList(std::vector<std::string>& set ) {
-		std::string interface; 
-		Ident(interface);
-		set.push_back(interface); 
+		std::string ident; 
+		SlotChain(ident);
+		set.push_back(ident); 
 		if (la->kind == 6) {
 			Get();
 			IdentList(set);
@@ -379,10 +392,10 @@ void Parser::LabelList(std::vector<std::string>& list ) {
 		if (la->kind == 3) {
 			Get();
 			list.push_back(narrow(t->val)); 
-		} else if (la->kind == 25) {
+		} else if (la->kind == 26) {
 			Get();
 			list.push_back(narrow(t->val)); 
-		} else SynErr(38);
+		} else SynErr(41);
 		if (la->kind == 6) {
 			Get();
 			LabelList(list);
@@ -394,20 +407,47 @@ std::vector<std::string>& chains,
 std::vector<std::string>& params ) {
 		Expect(3);
 		name = narrow(t->val); 
-		Expect(23);
-		if (la->kind == 18) {
+		Expect(24);
+		if (la->kind == 19) {
 			Get();
 			IdentList(chains);
-			Expect(19);
+			Expect(20);
 			Expect(6);
 			LabelList(params);
-		} else if (la->kind == 3) {
+		} else if (la->kind == 3 || la->kind == 27) {
 			std::vector<std::string> vec; 
 			IdentList(vec);
 			chains.push_back(vec.front());
 			for (size_t idx = 1; idx < vec.size(); ++idx) params.push_back(vec[idx]); 
-		} else SynErr(39);
-		Expect(24);
+		} else SynErr(42);
+		Expect(25);
+}
+
+void Parser::SlotChain(std::string& s) {
+		if (la->kind == 27) {
+			Get();
+			s += '<'; std::string val; 
+			Ident(val);
+			s += val; 
+			Expect(28);
+			s += narrow(t->val); 
+		}
+		Expect(3);
+		s += narrow(t->val); 
+		while (la->kind == 5) {
+			Get();
+			s += '.'; 
+			if (la->kind == 27) {
+				Get();
+				s += '<'; std::string val; 
+				Ident(val);
+				s += val; 
+				Expect(28);
+				s += narrow(t->val); 
+			}
+			Expect(3);
+			s += narrow(t->val); 
+		}
 }
 
 void Parser::Number(float& val) {
@@ -417,22 +457,79 @@ void Parser::Number(float& val) {
 		} else if (la->kind == 2) {
 			Get();
 			swscanf(t->val, L"%f", &val); 
-		} else SynErr(40);
+		} else SynErr(43);
 }
 
-void Parser::Path(std::string& s) {
+void Parser::SystemDecl() {
+		std::string left, last; std::string dot = "."; 
+		SysLeftValue(left, last);
+		std::string tmp = left; tmp += (last.size())?dot + last:""; 
+		if (la->kind == 3) {
+			SysInstDecl(tmp);
+		} else if (la->kind == 19) {
+			SysArray(tmp);
+		} else if (la->kind == 23 || la->kind == 29) {
+			SysAffect(left, last);
+		} else SynErr(44);
+}
+
+void Parser::SysLeftValue(std::string& left, std::string& last) {
 		Expect(3);
-		s += narrow(t->val); 
-		Expect(5);
-		s += '.'; 
-		Expect(3);
-		s += narrow(t->val); 
+		left = narrow(t->val); 
 		while (la->kind == 5) {
 			Get();
-			s += '.'; 
 			Expect(3);
-			s+= narrow(t->val); 
+			if (last != "") {left += '.'; left += last;} last = narrow(t->val); 
 		}
+}
+
+void Parser::SysInstDecl(std::string type) {
+		Expect(3);
+		factory().addInstance(type, narrow(t->val)); 
+		Expect(8);
+}
+
+void Parser::SysArray(std::string array) {
+		int size = 0; 
+		Expect(19);
+		Expect(1);
+		swscanf(t->val, L"%d", &size); 
+		Expect(20);
+		if (la->kind == 3) {
+			Get();
+			factory().addArray(array, narrow(t->val), size); 
+			Expect(8);
+		} else if (la->kind == 5) {
+			Get();
+			Expect(3);
+			std::string ref = narrow(t->val); std::stringstream sBuff; sBuff << '[' << size << ']'; std::string inst = array + sBuff.str(); 
+			SysAffect(inst, ref);
+		} else SynErr(45);
+}
+
+void Parser::SysAffect(std::string inst, std::string ref) {
+		bool ref_inc = false; 
+		if (la->kind == 29) {
+			Get();
+			ref_inc = true; 
+		}
+		Expect(23);
+		Expect(3);
+		gum::prm::System& sys = factory().getCurrentSystem();
+		if (sys.isInstance(inst) or sys.isArray(inst)) {
+		  gum::prm::Class& c = (sys.isInstance(inst))?sys.get(inst).type():sys.getArray(inst).front()->type();
+		  if (c.get(ref).elt_type() == ClassElement::prm_refslot) {
+		    factory().setReferenceSlot(inst, ref, narrow(t->val));
+		  } else if (c.get(ref).elt_type() == ClassElement::prm_attribute) {
+		    factory().setParameter(inst, ref, narrow(t->val));
+		  } else {
+		    GUM_ERROR(NotFound, "unfound class element");
+		  }
+		} else {
+		  GUM_ERROR(NotFound, "unknown instance");
+		}
+		
+		Expect(8);
 }
 
 
@@ -448,7 +545,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser(Scanner *scanner) {
-	maxT = 26;
+	maxT = 30;
 
 	dummyToken = NULL;
 	t = la = NULL;
@@ -462,8 +559,9 @@ bool Parser::StartOf(int s) {
 	const bool T = true;
 	const bool x = false;
 
-	static bool set[1][28] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
+	static bool set[2][32] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
 	};
 
 
@@ -496,34 +594,39 @@ void Errors::SynErr(int line, int col, int n) {
 			case 10: s = coco_string_create(L"class expected"); break;
 			case 11: s = coco_string_create(L"interface expected"); break;
 			case 12: s = coco_string_create(L"extends expected"); break;
-			case 13: s = coco_string_create(L"\"package\" expected"); break;
-			case 14: s = coco_string_create(L"\"import\" expected"); break;
-			case 15: s = coco_string_create(L"\"{\" expected"); break;
-			case 16: s = coco_string_create(L"\"}\" expected"); break;
-			case 17: s = coco_string_create(L"\"implements\" expected"); break;
-			case 18: s = coco_string_create(L"\"[\" expected"); break;
-			case 19: s = coco_string_create(L"\"]\" expected"); break;
-			case 20: s = coco_string_create(L"\"default\" expected"); break;
-			case 21: s = coco_string_create(L"\"dependson\" expected"); break;
-			case 22: s = coco_string_create(L"\"=\" expected"); break;
-			case 23: s = coco_string_create(L"\"(\" expected"); break;
-			case 24: s = coco_string_create(L"\")\" expected"); break;
-			case 25: s = coco_string_create(L"\"*\" expected"); break;
-			case 26: s = coco_string_create(L"??? expected"); break;
-			case 27: s = coco_string_create(L"invalid Header"); break;
-			case 28: s = coco_string_create(L"invalid Unit"); break;
-			case 29: s = coco_string_create(L"invalid Ident"); break;
-			case 30: s = coco_string_create(L"invalid Type"); break;
-			case 31: s = coco_string_create(L"invalid Label"); break;
-			case 32: s = coco_string_create(L"invalid RefOrAttr"); break;
-			case 33: s = coco_string_create(L"invalid Reference"); break;
-			case 34: s = coco_string_create(L"invalid ClassStatement"); break;
-			case 35: s = coco_string_create(L"invalid RefOrParam"); break;
-			case 36: s = coco_string_create(L"invalid Attribute"); break;
-			case 37: s = coco_string_create(L"invalid Parameter"); break;
-			case 38: s = coco_string_create(L"invalid LabelList"); break;
-			case 39: s = coco_string_create(L"invalid Function"); break;
-			case 40: s = coco_string_create(L"invalid Number"); break;
+			case 13: s = coco_string_create(L"system expected"); break;
+			case 14: s = coco_string_create(L"\"package\" expected"); break;
+			case 15: s = coco_string_create(L"\"import\" expected"); break;
+			case 16: s = coco_string_create(L"\"{\" expected"); break;
+			case 17: s = coco_string_create(L"\"}\" expected"); break;
+			case 18: s = coco_string_create(L"\"implements\" expected"); break;
+			case 19: s = coco_string_create(L"\"[\" expected"); break;
+			case 20: s = coco_string_create(L"\"]\" expected"); break;
+			case 21: s = coco_string_create(L"\"default\" expected"); break;
+			case 22: s = coco_string_create(L"\"dependson\" expected"); break;
+			case 23: s = coco_string_create(L"\"=\" expected"); break;
+			case 24: s = coco_string_create(L"\"(\" expected"); break;
+			case 25: s = coco_string_create(L"\")\" expected"); break;
+			case 26: s = coco_string_create(L"\"*\" expected"); break;
+			case 27: s = coco_string_create(L"\"<\" expected"); break;
+			case 28: s = coco_string_create(L"\">\" expected"); break;
+			case 29: s = coco_string_create(L"\"+\" expected"); break;
+			case 30: s = coco_string_create(L"??? expected"); break;
+			case 31: s = coco_string_create(L"invalid Header"); break;
+			case 32: s = coco_string_create(L"invalid Unit"); break;
+			case 33: s = coco_string_create(L"invalid Type"); break;
+			case 34: s = coco_string_create(L"invalid Label"); break;
+			case 35: s = coco_string_create(L"invalid RefOrAttr"); break;
+			case 36: s = coco_string_create(L"invalid Reference"); break;
+			case 37: s = coco_string_create(L"invalid ClassStatement"); break;
+			case 38: s = coco_string_create(L"invalid RefOrParam"); break;
+			case 39: s = coco_string_create(L"invalid Attribute"); break;
+			case 40: s = coco_string_create(L"invalid Parameter"); break;
+			case 41: s = coco_string_create(L"invalid LabelList"); break;
+			case 42: s = coco_string_create(L"invalid Function"); break;
+			case 43: s = coco_string_create(L"invalid Number"); break;
+			case 44: s = coco_string_create(L"invalid SystemDecl"); break;
+			case 45: s = coco_string_create(L"invalid SysArray"); break;
 
 		default:
 		{

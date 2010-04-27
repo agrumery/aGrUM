@@ -34,33 +34,74 @@
 namespace gum {
 namespace prm {
 
-SlotChain::SlotChain(const std::string& name, Class& start, Class& end,
-                     Sequence<ReferenceSlot*>& chain, ClassElement& lastElt):
-  ClassElement(name), __start(start), __end(end), __seq(chain), __lastElt(lastElt),
-  __isMultiple(false)
+SlotChain::SlotChain(const std::string& name, const Sequence< ClassElement* >& chain):
+  ClassElement(name), __chain(new Sequence<ClassElement*>(chain)), __isMultiple(false)
 {
   GUM_CONSTRUCTOR( SlotChain );
-  for (Size i = 0; i < __seq.size(); ++i) {
-    if (__seq.atPos(i)->elt_type() == ClassElement::prm_refslot) {
-      if (__seq.atPos(i)->isArray()) {
-        __isMultiple = true;
+  _safeName = name;
+  if (__chain->size() < 2) {
+    GUM_ERROR(OperationNotAllowed, "chain must containt at least two ClassElement");
+  }
+  for (Size i = 0; i < __chain->size() - 1; ++i) {
+    if (__chain->atPos(i)->elt_type() != ClassElement::prm_refslot) {
+      GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
+    } else {
+      __isMultiple = __isMultiple or static_cast<ReferenceSlot*>(__chain->atPos(i))->isArray();
+    }
+  }
+  switch (__chain->atPos(__chain->size() - 1)->elt_type()) {
+    case prm_attribute:
+    case prm_aggregate:
+      {
         break;
       }
+    default:
+      {
+        GUM_ERROR(WrongClassElement, "last element of chain is not valid");
+      }
+  }
+}
+
+// Parameters are inverse to prevent unwanted constructors calls (it happened)
+SlotChain::SlotChain(Sequence<ClassElement*>* chain, const std::string& name):
+  ClassElement(name), __chain(chain), __isMultiple(false)
+{
+  GUM_CONSTRUCTOR( SlotChain );
+  _safeName = name;
+  if (__chain->size() < 2) {
+    GUM_ERROR(OperationNotAllowed, "chain must containt at least two ClassElement");
+  }
+  for (Size i = 0; i < __chain->size() - 1; ++i) {
+    if (not (__chain->atPos(i)->elt_type() != ClassElement::prm_refslot) ) {
+      GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
+    } else {
+      __isMultiple = __isMultiple or static_cast<ReferenceSlot*>(__chain->atPos(i))->isArray();
     }
+  }
+  switch (__chain->atPos(__chain->size() - 1)->elt_type()) {
+    case prm_attribute:
+    case prm_aggregate:
+      {
+        break;
+      }
+    default:
+      {
+        GUM_ERROR(WrongClassElement, "last element of chain is not valid");
+      }
   }
 }
 
 SlotChain::~SlotChain()
 {
   GUM_DESTRUCTOR( SlotChain );
+  delete __chain;
 }
 
 SlotChain::SlotChain(const SlotChain& source):
-  ClassElement(source), __start(source.__start), __end(source.__end),
-  __seq(source.__seq), __lastElt(source.__lastElt), __isMultiple(source.__isMultiple)
+  ClassElement(source.name()), __chain(new Sequence<ClassElement*>(source.chain())),
+  __isMultiple(source.isMultiple())
 {
   GUM_CONS_CPY( SlotChain );
-  GUM_ERROR(FatalError, "Illegal call to gum::SlotChain copy constructor.");
 }
 
 SlotChain&

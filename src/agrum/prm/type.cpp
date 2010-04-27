@@ -41,7 +41,7 @@ namespace prm {
     GUM_CONSTRUCTOR( Type );
   }
 
-  Type::Type(const Type& super_type, const std::vector<Idx>& label_map,
+  Type::Type(Type& super_type, const std::vector<Idx>& label_map,
              const DiscreteVariable& var):
     PRMObject(var.name()), __var(var.copyFactory()),
     __super(&super_type), __label_map(new std::vector<Idx>(label_map))
@@ -69,26 +69,6 @@ namespace prm {
     delete __var;
     if (not __label_map) {
       delete __label_map;
-    }
-  }
-
-  MultiDimImplementation<prm_float>*
-  Type::cast_CPT() const {
-    if (__super) {
-      MultiDimArray<prm_float>* cpt = new MultiDimArray<prm_float>();
-      cpt->add(*__var);
-      cpt->add(*(__super->__var));
-      Instantiation inst(*cpt);
-      for (Idx i = 0; i < __var->domainSize(); ++i) {
-        for (Idx j = 0; j < __super->__var->domainSize(); ++j) {
-          inst.chgVal(*__var, i);
-          inst.chgVal(*(__super->__var), j);
-          cpt->set(inst, (__label_map->at(i) == j)?1:0);
-        }
-      }
-      return cpt;
-    } else {
-      GUM_ERROR(OperationNotAllowed, "No super type for this type.");
     }
   }
 

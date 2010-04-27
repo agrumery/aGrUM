@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::Class
+ * @brief Headers of gum::prm::Class
  *
  * @author Lionel TORTI
  *
@@ -35,169 +35,621 @@ namespace gum {
 namespace prm {
 // ============================================================================
 
-Class::Class(const std::string& name, Class& super):
-  ClassElementContainer(name, super, false), __implements(0)
+Class::Class(const std::string& name):
+  ClassElementContainer(name), __super(0), __implements(0)
 {
   GUM_CONSTRUCTOR( Class );
-  typedef Property<std::pair<bool, bool>*>::onNodes::iterator FlagIterator;
-  for (FlagIterator iter = super.__IOFlags.begin(); iter != super.__IOFlags.end(); ++iter) {
-    __IOFlags.insert(iter.key(), new std::pair<bool, bool>(**iter));
-  }
-  if (super.__implements) {
-    __implements = new Set<Class*>(*(super.__implements));
+}
+
+Class::Class(const std::string& name, Class& super):
+  ClassElementContainer(name), __dag(super.dag()),
+  __super(&super), __implements(0), __instantiations(super.__instantiations)
+{
+  GUM_CONSTRUCTOR( Class );
+  super.__addExtension(this);
+  __inheritClass(super);
+}
+
+Class::Class(const std::string& name, const Set<Interface*>& set):
+  ClassElementContainer(name), __super(0),
+  __implements(new Set<Interface*>(set))
+{
+  GUM_CONSTRUCTOR( Class );
+  typedef Set<Interface*>::iterator Iterator;
+  for (Iterator iter = __implements->begin(); iter != __implements->end(); ++iter) {
+    (**iter).__addImplementation(this);
   }
 }
 
-Class::Class(const std::string& name, Class& super, Set<Class*>& set):
-  ClassElementContainer(name, super, false), __implements(new Set<Class*>(set))
+Class::Class(const std::string& name, Class& super, const Set<Interface*>& set):
+  ClassElementContainer(name), __dag(super.dag()),
+  __super(&super), __implements(0), __instantiations(super.__instantiations)
 {
   GUM_CONSTRUCTOR( Class );
-  typedef Property<std::pair<bool, bool>*>::onNodes::iterator FlagIterator;
-  for (FlagIterator iter = super.__IOFlags.begin(); iter != super.__IOFlags.end(); ++iter) {
-    __IOFlags.insert(iter.key(), new std::pair<bool, bool>(**iter));
-  }
-  if (super.__implements) {
-    for (Set<Class*>::iterator i = super.__implements->begin();
-         i != super.__implements->end(); ++i) {
-      __implements->insert(*i);
+  super.__addExtension(this);
+  __inheritClass(super);
+  // Adding other implementation
+  if (not __implements) {
+    __implements = new Set<Interface*>(set);
+  } else {
+    typedef Set<Interface*>::iterator Iterator;
+    for (Iterator iter = set.begin(); iter != set.end(); ++iter) {
+      __implements->insert(*iter);
     }
   }
-}
-
-Class::~Class()
-{
-  GUM_DESTRUCTOR( Class );
-  typedef Property<std::pair<bool, bool>*>::onNodes::iterator FlagIterator;
-  for (FlagIterator iter = __IOFlags.begin(); iter != __IOFlags.end(); ++iter) {
-    delete *iter;
-  }
-  if (__implements) {
-    delete __implements;
+  typedef Set<Interface*>::iterator Iterator;
+  for (Iterator iter = __implements->begin(); iter != __implements->end(); ++iter) {
+    (**iter).__addImplementation(this);
   }
 }
 
 Class::Class(const Class& source):
-  ClassElementContainer(source)
+  ClassElementContainer(source.name()), __dag(source.dag()),
+  __super(source.__super), __implements(0), __instantiations(source.__instantiations)
 {
   GUM_CONS_CPY( Class );
-  GUM_ERROR(FatalError, "illegal call of gum::Class copy constructor.");
+  GUM_ERROR(FatalError, "don't copy classes");
 }
 
-Class&
-Class::operator=(const Class& source)
-{
-  GUM_ERROR(FatalError, "illegal call of gum::Class copy operator.");
-}
-
-void
-Class::buildInstantiationSequence() const {
-  // We clear this to prevent duplicate elements if this is called multiple times
-  __instantiations.clear();
-  std::list<NodeId> l;
-  for (DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node) {
-    if (parents(*node).empty()) {
-      l.push_back(*node);
-    }
-  }
-  Set<NodeId> visited_node;
-  while (not l.empty()) {
-    if (not visited_node.exists(l.front())) {
-      visited_node.insert(l.front());
-      switch (get(l.front()).elt_type()) {
-        case ClassElement::prm_aggregate:
-        case ClassElement::prm_attribute: {
-                                            if (not isInnerNode(l.front())) {
-                                              __instantiations.insert(l.front());
-                                            }
-                                          }
-        default: {
-                   for (DAG::ArcIterator child = children(l.front()).begin(); child != children(l.front()).end(); ++child) {
-                     l.push_back(child->head());
-                   }
-                 }
-      }
-    }
-    l.pop_front();
-  }
+Class::~Class() {
+  GUM_DESTRUCTOR( Class );
+  typedef Property<ClassElement*>::onNodes::iterator Iterator;
+  for (Iterator iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter)
+    delete *iter;
+  if (__implements)
+    delete __implements;
 }
 
 void
-Class::__addSuperType(Attribute* attr) {
+Class::__inheritClass(const Class& c) {
+  // Adding implemented interfaces of c, if any
+  __implements = (c.__implements)?new Set<Interface*>(*(c.__implements)):0;
+  // Copying attributes
+  for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
+    Attribute* attr = new Attribute((*iter)->name(), (*iter)->type());
+    attr->setId((*iter)->id());
+    __nodeIdMap.insert(attr->id(), attr);
+    __attributes.insert(attr);
+    if (c.__parameters.exists(const_cast<Attribute*>(*iter))) {
+      __parameters.insert(attr);
+      __paramValueFlags.insert(attr, c.__paramValueFlags[*iter]);
+    }
+    if (c.__nameMap[(*iter)->name()] == c.__nameMap[(*iter)->safeName()])
+      __nameMap.insert(attr->name(), attr);
+    __nameMap.insert(attr->safeName(), attr);
+  }
+  // Copying aggregates
+  for (Set<Aggregate*>::iterator iter = c.__aggregates.begin(); iter != c.__aggregates.end(); ++iter) {
+    Aggregate* agg = 0;
+    try {
+      agg = new Aggregate((*iter)->name(), (*iter)->agg_type(), (*iter)->type(), (*iter)->label());
+    } catch (OperationNotAllowed&) {
+      agg = new Aggregate((*iter)->name(), (*iter)->agg_type(), (*iter)->type());
+    }
+    agg->setId((*iter)->id());
+    __nodeIdMap.insert(agg->id(), agg);
+    __aggregates.insert(agg);
+    if (c.__nameMap[(*iter)->name()] == c.__nameMap[(*iter)->safeName()])
+      __nameMap.insert(agg->name(), agg);
+    __nameMap.insert(agg->safeName(), agg);
+  }
+  // Copying reference slots
+  for (Set<ReferenceSlot*>::iterator iter = c.__referenceSlots.begin(); iter != c.__referenceSlots.end(); ++iter) {
+    ReferenceSlot* ref = new ReferenceSlot((*iter)->name(), const_cast<ClassElementContainer&>((*iter)->slotType()), (*iter)->isArray());
+    ref->setId((*iter)->id());
+    __nodeIdMap.insert(ref->id(), ref);
+    __referenceSlots.insert(ref);
+    if (c.__nameMap[(*iter)->name()] == c.__nameMap[(*iter)->safeName()])
+      __nameMap.insert(ref->name(), ref);
+    __nameMap.insert(ref->safeName(), ref);
+  }
+  // Copying slot chains
+  for (Set<SlotChain*>::iterator iter = c.__slotChains.begin(); iter != c.__slotChains.end(); ++iter) {
+    // We just need to change the first ReferenceSlot in the chain
+    Sequence<ClassElement*> chain((*iter)->chain());
+    chain.setAtPos(0, __nameMap[(*iter)->chain().front()->name()]);
+    SlotChain* sc = new SlotChain((*iter)->name(), chain);
+    sc->setId((*iter)->id());
+    __nodeIdMap.insert(sc->id(), sc);
+    __slotChains.insert(sc);
+    // Slot chains do not have safe names
+    __nameMap.insert(sc->name(), sc);
+  }
+  // Copying dependencies yield by arcs
+  for(DAG::ArcIterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc) {
+    __nodeIdMap[arc->tail()]->addChild(*(__nodeIdMap[arc->head()]));
+    __nodeIdMap[arc->head()]->addParent(*(__nodeIdMap[arc->tail()]));
+  }
+  // Copying the IO flag
+  typedef Property<std::pair<bool, bool>*>::onNodes::const_iterator IOIterator;
+  for (IOIterator iter = c._IOFlags().begin(); iter != c._IOFlags().end(); ++iter) {
+    _IOFlags().insert(iter.key(), new std::pair<bool, bool>(**iter));
+  }
+  // Copying content of CPF
+  for (Set<Attribute*>::iterator iter = __attributes.begin(); iter != __attributes.end(); ++iter) {
+    static bool b = true;
+    if (b) {
+      b = false;
+    }
+  }
+}
+
+PRMObject::ObjectType
+Class::obj_type() const {
+  return PRMObject::prm_class;
+}
+
+const DAG&
+Class::dag() const {
+  return __dag;
+}
+
+DAG&
+Class::_dag() {
+  return __dag;
+}
+
+bool
+Class::exists(NodeId id) const {
+  return __nodeIdMap.exists(id);
+}
+
+ClassElement&
+Class::get(NodeId id) {
   try {
-    Attribute* previous = attr;
-    const Type* super = 0;
-    while (true) {
-      super = &(previous->type().super());
-      std::stringstream sBuff;
-      sBuff << "<" << super->name() << ">" << attr->name();
-      Attribute* current
-        = new Attribute(sBuff.str(), *super, attr->type().cast_CPT());
-      _add(current);
-      insertArc(previous->name(), current->name());
-      previous = current;
-    }
+    return *(__nodeIdMap[id]);
   } catch (NotFound&) {
-    // No or no more super types
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  }
+}
+
+const ClassElement&
+Class::get(NodeId id) const {
+  try {
+    return *(__nodeIdMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  }
+}
+
+short
+Class::isParameter(NodeId id) const {
+  if (__nodeIdMap.exists(id) and (ClassElement::isAttribute(get(id)))) {
+    return __parameters.exists(&(static_cast<Attribute&>(const_cast<ClassElement&>(get(id)))));
+  } else if (not __nodeIdMap.exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  } else {
+    GUM_ERROR(WrongClassElement, "given id is not a potential parameter");
   }
 }
 
 bool
-Class::isValid() const {
-  if (__implements) {
-    for (Set<Class*>::iterator iter = __implements->begin();
-         iter != __implements->end(); ++iter) {
-      if (not isValid(**iter)) {
+Class::exists(const std::string& n) const {
+  return __nameMap.exists(n);
+}
+
+ClassElement&
+Class::get(const std::string& name) {
+  try {
+    return *(__nameMap[name]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given name");
+  }
+}
+
+const ClassElement&
+Class::get(const std::string& name) const {
+  try {
+    return *(__nameMap[name]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given name");
+  }
+}
+
+const Set< Attribute* >&
+Class::attributes() const {
+  return __attributes;
+}
+
+const Set< Attribute* >&
+Class::parameters() const {
+  return __parameters;
+}
+
+const Set< Aggregate* >&
+Class::aggregates() const {
+  return __aggregates;
+}
+
+const Set< ReferenceSlot* >&
+Class::referenceSlots() const {
+  return __referenceSlots;
+}
+
+const Set< SlotChain* >&
+Class::slotChains() const {
+  return __slotChains;
+}
+
+const Sequence<NodeId>&
+Class::toInstantiate() const {
+  return __instantiations;
+}
+
+bool
+Class::isSubTypeOf(const ClassElementContainer& cec) const {
+  switch (cec.obj_type()) {
+    case PRMObject::prm_class:
+      {
+        const Class* current = this;
+        while (current != 0) {
+          if (current == &(cec)) return true;
+          current = current->__super;
+        }
         return false;
       }
-    }
+    case PRMObject::prm_interface:
+      {
+        if (__implements) {
+          const Interface& i = static_cast<const Interface&>(cec);
+          if (__implements->exists(const_cast<Interface*>(&i)))
+            return true;
+          for (Set<Interface*>::iterator iter = __implements->begin(); iter != __implements->end(); ++iter)
+            if ((*iter)->isSubTypeOf(i))
+              return true;
+        }
+        return false;
+      }
+    default:
+      { GUM_ERROR(FatalError, "unknown ClassElementContainer"); }
   }
-  return true;
 }
 
-bool
-Class::isValid(const Class& i) const {
-  std::string foo = " - ";
-  std::string name;
+const Class&
+Class::super() const {
+  if (__super) {
+    return *__super;
+  } else {
+    GUM_ERROR(NotFound, "this Class is not a subclass");
+  }
+}
+
+const Set<Interface*>&
+Class::implements() const {
+  if (__implements) {
+    return *__implements;
+  } else {
+    GUM_ERROR(NotFound, "this Class does not implement any Interface");
+  }
+}
+
+ClassElement&
+Class::operator[](NodeId id) {
+  return get(id);
+}
+
+const ClassElement&
+Class::operator[](NodeId id) const {
+  return get(id);
+}
+
+ClassElement&
+Class::operator[](const std::string& name) {
+  return get(name);
+}
+
+const ClassElement&
+Class::operator[](const std::string& name) const {
+  return get(name);
+}
+
+void
+Class::insertArc(const std::string& tail_name, const std::string& head_name) {
+  ClassElement* tail = 0;
+  ClassElement* head = 0;
   try {
-    for (DAG::NodeIterator node = i.dag().beginNodes();
-        node != i.dag().endNodes(); ++node) {
-      name = i.get(*node).name();
-      switch (i.get(*node).elt_type()) {
-        case ClassElement::prm_aggregate:
-        case ClassElement::prm_attribute: {
-                                            if ( (get(name).elt_type() == ClassElement::prm_attribute) or
-                                                (get(name).elt_type() == ClassElement::prm_aggregate) )
-                                            {
-                                              if (not get(name).type().isSubTypeOf(i.get(name).type())) {
-                                                return false;
-                                              }
-                                            } else {
-                                              return false;
-                                            }
-                                            break;
-                                          }
-        case ClassElement::prm_refslot: {
-                                          if (get(name).elt_type() == ClassElement::prm_refslot) {
-                                            const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>(i.get(name));
-                                            const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>(get(name));
-                                            if (not ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
-                                              return false;
-                                            }
-                                          } else {
-                                            return false;
-                                          }
-                                          break;
-                                        }
-        default: {
-                   GUM_ERROR(FatalError, "unexpected ClassElement in interface.");
-                 }
+    tail = __nameMap[tail_name];
+    head = __nameMap[head_name];
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "tail and/or head of arc does not exists in this Class");
+  }
+  if ( (tail->elt_type() == ClassElement::prm_refslot) or
+       (head->elt_type() == ClassElement::prm_refslot) ) {
+    GUM_ERROR(OperationNotAllowed, "a ReferenceSlot can not on neither side of an arc");
+  }
+  if ( (tail->elt_type() == ClassElement::prm_slotchain) and
+       (head->elt_type() == ClassElement::prm_slotchain) ) {
+    GUM_ERROR(OperationNotAllowed, "illegal insertion of an arc between two SlotChain");
+  }
+  if (not __dag.existsArc(Arc(tail->id(), head->id()))) {
+    __dag.insertArc(tail->id(), head->id());
+  } else {
+    GUM_ERROR(DuplicateElement, "duplicate arc");
+  }
+  get(tail->id()).addChild(get(head->id()));
+  get(head->id()).addParent(get(tail->id()));
+  // Defining input / output nodes
+  if (tail->elt_type() == ClassElement::prm_slotchain) {
+    SlotChain* sc = static_cast<SlotChain*>(tail);
+    setInputNode(head->id(), true);
+    sc->end().setOutputNode(sc->lastElt().id(), true);
+  }
+}
+
+NodeId
+Class::add(ClassElement* elt) {
+  if (__nameMap.exists(elt->name())) {
+    GUM_ERROR(DuplicateElement, "name already used by another ClassElement");
+  }
+  elt->setId(__dag.insertNode());
+  __nodeIdMap.insert(elt->id(), elt);
+  __nameMap.insert(elt->name(), elt);
+  try {
+    __nameMap.insert(elt->safeName(), elt);
+  } catch (DuplicateElement&) {
+    // happens when elt is a slot chain
+    GUM_ASSERT(elt->elt_type() == ClassElement::prm_slotchain);
+  }
+  switch (elt->elt_type()) {
+    case ClassElement::prm_attribute:
+      {
+        __attributes.insert(static_cast<Attribute*>(elt));
+        __addCastDescendants(static_cast<Attribute*>(elt));
+        break;
       }
+    case ClassElement::prm_aggregate:
+      {
+        __aggregates.insert(static_cast<Aggregate*>(elt));
+        break;
+      }
+    case ClassElement::prm_refslot:
+      {
+        ReferenceSlot* ref = static_cast<ReferenceSlot*>(elt);
+        __referenceSlots.insert(ref);
+        break;
+      }
+    case ClassElement::prm_slotchain:
+      {
+        __slotChains.insert(static_cast<SlotChain*>(elt));
+        break;
+      }
+    default:
+      {
+        GUM_ERROR(FatalError, "unknown ClassElement type");
+      }
+  }
+  return elt->id();
+}
+
+void
+Class::__addCastDescendants(Attribute* attr)
+{
+  Attribute* parent = attr;
+  Attribute* child = 0;
+  while (parent->type().isSubType()) {
+    child = parent->getCastDescendant();
+    child->setId(__dag.insertNode());
+    __nodeIdMap.insert(child->id(), child);
+    // Only use child's safe name when adding to the name map!
+    __nameMap.insert(child->safeName(), child);
+    __attributes.insert(child);
+    // Do not use Class::insertArc(), child's CPF is already initialized properly
+    __dag.insertArc(parent->id(), child->id());
+    parent = child;
+  }
+}
+
+NodeId
+Class::overload(ClassElement* overloader) {
+  try {
+    if (not super().exists(overloader->name())) {
+      GUM_ERROR(OperationNotAllowed, "found no ClassElement to overload");
     }
   } catch (NotFound&) {
-    return false;
+    GUM_ERROR(OperationNotAllowed, "overload is possible only with subclasses");
   }
-  return true;
+  ClassElement* overloaded = __nameMap[overloader->name()];
+  // Checking overload legality
+  __checkOverloadLegality(overloaded, overloader);
+  switch (overloader->elt_type()) {
+    case ClassElement::prm_attribute:
+      {
+        __overloadAttribute(static_cast<Attribute*>(overloader), static_cast<Attribute*>(overloaded));
+        break;
+      }
+    case ClassElement::prm_aggregate:
+      {
+        __overloadAggregate(static_cast<Aggregate*>(overloader), overloaded);
+        break;
+      }
+    case ClassElement::prm_refslot:
+      {
+        // __checkOverloadLegality guaranties that overloaded is a ReferenceSlot
+        __overloadReference(static_cast<ReferenceSlot*>(overloader),
+                            static_cast<ReferenceSlot*>(overloaded));
+        break;
+      }
+    case ClassElement::prm_slotchain:
+      {
+        GUM_ERROR(WrongClassElement, "SlotChain can not be overloaded");
+        break;
+      }
+    default:
+      {
+        GUM_ERROR(FatalError, "unknown ClassElement type");
+      }
+  }
+  return overloader->id();
 }
+
+void
+Class::__overloadAttribute(Attribute* overloader, Attribute* overloaded) {
+  __dag.eraseParents(overloaded->id());
+  // Checking if we have to add cast descendant
+  if (overloader->type() != overloaded->type()) {
+    overloader->setId(__dag.insertNode());
+    __nodeIdMap.insert(overloader->id(), overloader);
+    __nameMap[overloader->name()] = overloader;
+    __nameMap.insert(overloader->safeName(), overloader);
+    __attributes.insert(overloader);
+    __addCastDescendants(overloader, overloaded);
+  } else {
+    overloader->setId(overloaded->id());
+    __nodeIdMap[overloader->id()] = overloader;
+    __nameMap[overloader->name()] = overloader;
+    __nameMap[overloader->safeName()] = overloader;
+    __attributes.erase(overloaded);
+    __attributes.insert(overloader);
+    // Swapping types, ugly but necessary to preserve the Type pointer of overloaded
+    __swap_types(overloader, overloaded);
+  }
+}
+
+void
+Class::__overloadAggregate(Aggregate* overloader, ClassElement* overloaded) {
+  __nameMap.insert(overloader->safeName(), overloader);
+  __aggregates.insert(overloader);
+}
+
+void
+Class::__overloadReference(ReferenceSlot* overloader, ReferenceSlot* overloaded) {
+  // Adding overloading reference
+  overloader->setId(overloaded->id());
+  __nodeIdMap[overloader->id()] = overloader;
+  __nameMap[overloader->name()] = overloader;
+  __referenceSlots.insert(overloader);
+  // Updating SlotChain which started with overloaded
+  for (Set<SlotChain*>::iterator iter = __slotChains.begin();
+      iter != __slotChains.end(); ++iter) {
+    if ((**iter).chain().atPos(0) == overloaded) {
+      // THIS IS INCOMPLETE, update ALL the slot chain
+      GUM_CHECKPOINT;
+      const_cast<SlotChain*>(*iter)->chain().setAtPos(0, overloader);
+    }
+  }
+  // Removing overloaded ReferenceSlot
+  __referenceSlots.erase(overloaded);
+  delete overloaded;
+}
+
+void
+Class::__swap_types(ClassElement* overloader, ClassElement* overloaded) {
+  if (overloader->elt_type() == ClassElement::prm_attribute) {
+    Attribute* loader = static_cast<Attribute*>(overloader);
+    if (overloaded->elt_type() == ClassElement::prm_attribute) {
+      Attribute* loaded = static_cast<Attribute*>(overloaded);
+      Type* tmp = loader->__type;
+      loader->__type = loaded->__type;
+      loaded->__type = tmp;
+      loader->__cpf->erase(tmp->variable());
+      loader->__cpf->add(loader->__type->variable());
+    } else if (overloaded->elt_type() == ClassElement::prm_aggregate) {
+      Aggregate* loaded = static_cast<Aggregate*>(overloaded);
+      Type* tmp = loader->__type;
+      loader->__type = loaded->__type;
+      loaded->__type = tmp;
+    } else {
+      GUM_ERROR(FatalError, "swapping types impossible");
+    }
+  } else if (overloader->elt_type() == ClassElement::prm_aggregate) {
+    Aggregate* loader = static_cast<Aggregate*>(overloader);
+    if (overloaded->elt_type() == ClassElement::prm_attribute) {
+      Attribute* loaded = static_cast<Attribute*>(overloaded);
+      Type* tmp = loader->__type;
+      loader->__type = loaded->__type;
+      loaded->__type = tmp;
+    } else if (overloaded->elt_type() == ClassElement::prm_aggregate) {
+      Aggregate* loaded = static_cast<Aggregate*>(overloaded);
+      Type* tmp = loader->__type;
+      loader->__type = loaded->__type;
+      loaded->__type = tmp;
+    } else {
+      GUM_ERROR(FatalError, "swapping types impossible");
+    }
+  }
+  delete overloaded;
+}
+
+void
+Class::__addCastDescendants(Attribute* start, Attribute* end)
+{
+  Attribute* parent = start;
+  Attribute* child = 0;
+  while (parent->type().super() != end->type()) {
+    child = parent->getCastDescendant();
+    child->setId(__dag.insertNode());
+    __nodeIdMap.insert(child->id(), child);
+    // Only use child's safe name when adding to the name map!
+    __nameMap.insert(child->safeName(), child);
+    __attributes.insert(child);
+    // Do not use Class::insertArc(), child's CPF is already initialized properly
+    __dag.insertArc(parent->id(), child->id());
+    parent = child;
+  }
+  parent->setAsCastDescendant(end);
+  __dag.insertArc(parent->id(), end->id());
+}
+
+void
+Class::__checkOverloadLegality(const ClassElement* overloaded, const ClassElement* overloader) {
+  if (overloaded->elt_type() != overloader->elt_type())
+    GUM_ERROR(TypeError, "invalid overload");
+  if (overloaded->elt_type() == ClassElement::prm_attribute) {
+    if (not overloader->type().isSubTypeOf(overloaded->type()))
+      GUM_ERROR(TypeError, "the overloading ClassElement Type is illegal");
+  } else if (overloaded->elt_type() == ClassElement::prm_refslot) {
+    if (not static_cast<const ReferenceSlot*>(overloader)->slotType().isSubTypeOf(static_cast<const ReferenceSlot*>(overloaded)->slotType()))
+      GUM_ERROR(TypeError, "the overloading ReferenceSlot slot type is illegal");
+  } else {
+    GUM_ERROR(TypeError, "illegal type to overload");
+  }
+}
+
+void
+Class::_findAllSubtypes(Set<ClassElementContainer*>& set) {
+  for (Set<Class*>::iterator iter = __extensions.begin();
+       iter != __extensions.end(); ++iter) {
+    set.insert(*iter);
+    (**iter)._findAllSubtypes(set);
+  }
+}
+
+const Set<Class*>&
+Class::extensions() const { return __extensions; }
+
+void
+Class::__addExtension(Class* c) {
+  __extensions.insert(c);
+}
+
+void
+Interface::_findAllSubtypes(Set<ClassElementContainer*>& set) {
+  for (Set<Class*>::iterator iter = __implementations.begin();
+       iter != __implementations.end(); ++iter) {
+    set.insert(*iter);
+    (**iter)._findAllSubtypes(set);
+  }
+  for (Set<Interface*>::iterator iter = __extensions.begin();
+       iter != __extensions.end(); ++iter) {
+    set.insert(*iter);
+    (**iter)._findAllSubtypes(set);
+  }
+}
+
+NodeId
+Class::addParameter(Attribute* param, bool flag) {
+  if (__nameMap.exists(param->name())) {
+    GUM_ERROR(DuplicateElement, "name already used by another ClassElement");
+  }
+  param->setId(__dag.insertNode());
+  __nodeIdMap.insert(param->id(), param);
+  __nameMap.insert(param->name(), param);
+  __parameters.insert(param);
+  __paramValueFlags.insert(param, flag);
+  return param->id();
+}
+
+//  ClassElement* remove(NodeId id);
 
 // ============================================================================
 } /* namespace prm */

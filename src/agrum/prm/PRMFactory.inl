@@ -27,6 +27,19 @@ namespace gum {
 namespace prm {
 
 INLINE
+PRMFactory::PRMFactory()
+{
+  GUM_CONSTRUCTOR( PRMFactory );
+  __prm = new PRM();
+}
+
+INLINE
+PRMFactory::~PRMFactory()
+{
+  GUM_DESTRUCTOR( PRMFactory );
+}
+
+INLINE
 PRM*
 PRMFactory::prm() { return __prm; }
 
@@ -41,33 +54,15 @@ PRMFactory::current() const
 }
 
 INLINE
-void
+PRMObject*
 PRMFactory::closeCurrent()
 {
   if (__stack.size() > 0) {
+    PRMObject* obj = __stack.back();
     __stack.pop_back();
-  }
-}
-
-INLINE
-bool
-PRMFactory::isClass(const std::string& type) const {
-  try {
-    __retrieveClass(type);
-    return true;
-  } catch (OperationNotAllowed&) {
-    return false;
-  }
-}
-
-INLINE
-bool
-PRMFactory::isInterface(const std::string& type) const {
-  try {
-    __retrieveInterface(type);
-    return true;
-  } catch (OperationNotAllowed&) {
-    return false;
+    return obj;
+  } else {
+    return 0;
   }
 }
 
@@ -83,50 +78,60 @@ PRMFactory::setPackage(const std::string& name) {
 
 INLINE
 void
-PRMFactory::endClass()
-{
-  __checkStackClass(1)->buildInstantiationSequence();
-  Class* c = __checkStackClass(1);
-  c->buildInstantiationSequence();
-  if (not c->isValid()) {
-    GUM_ERROR(OperationNotAllowed, "interface wrongly implemented");
+PRMFactory::startDiscreteType(const std::string& name) {
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Type* t = new Type(LabelizedVariable(real_name, "", 0));
+  __stack.push_back(t);
+}
+
+INLINE
+void
+PRMFactory::startDiscreteType(const std::string& name,
+                              const std::string& super) {
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Type* t = new Type(LabelizedVariable(real_name, "", 0));
+  t->__super = __retrieveType(super);
+  t->__label_map = new std::vector<Idx>();
+  __stack.push_back(t);
+}
+
+INLINE
+void
+PRMFactory::addLabel(const std::string& l) {
+  Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
+  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+  if (not var) {
+    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+  } else if (t->__super) {
+    GUM_ERROR(OperationNotAllowed, "current type is a subtype.");
   }
+  try {
+    var->addLabel(l);
+  } catch (DuplicateElement&) {
+    GUM_ERROR(DuplicateElement, "a label with the same value already exists");
+  }
+}
+
+INLINE
+void
+PRMFactory::endDiscreteType() {
+  Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
+  if (not t->__isValid()) {
+    GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype");
+  } else if (t->variable().domainSize() < 2) {
+    GUM_ERROR(OperationNotAllowed, "current tyoe is not a valid discrete type");
+  }
+  __prm->__typeMap.insert(t->name(), t);
+  __prm->__types.insert(t);
   __stack.pop_back();
 }
 
 INLINE
 void
-PRMFactory::startInterface(const std::string& name, const std::string& extends)
-{
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Class* i = 0;
-  Class* super = 0;
-  if (extends != "") {
-    try {
-      super = __prm->__interfaceMap[extends];
-    } catch (NotFound&) {
-      try {
-        super = __prm->__interfaceMap[__addPrefix(extends)];
-      } catch (NotFound&) {
-        __throwNotDeclared(PRMObject::prm_interface, extends);
-      }
-    }
-  }
-  if (super != 0) {
-    i = new Class(real_name, *super);
-  } else {
-    i = new Class(real_name);
-  }
-  __prm->__interfaceMap.insert(i->name(), i);
-  __prm->__interfaces.insert(i);
-  __stack.push_back(i);
-}
-
-INLINE
-void
 PRMFactory::endInterface() {
-  __checkStackInterface(1);
+  static_cast<Interface*>(__checkStack(1, PRMObject::prm_interface));
   __stack.pop_back();
 }
 
@@ -134,151 +139,85 @@ INLINE
 void
 PRMFactory::startAttribute(const std::string& type, const std::string& name)
 {
-  Class* c = __checkStackClassOrInterface(1);
+  ClassElementContainer* c = __checkStackContainter(1);
   Attribute* a = new Attribute(name, *__retrieveType(type));
   std::string dot = ".";
-  c->add(a);
+  try {
+    c->add(a);
+  } catch (DuplicateElement&) {
+    c->overload(a);
+  }
   __stack.push_back(a);
 }
 
 INLINE
 void
-PRMFactory::addParent(const std::string& name)
+PRMFactory::setRawCPFByLines(const std::vector<prm_float>& array)
 {
-  // Retrieving pointers
-  Attribute* a = __checkStackAttr(1);
-  Class*     c = __checkStackClass(2);
-  try {
-    ClassElement& elt = c->get(name);
-    switch(elt.elt_type()) {
-      case ClassElement::prm_refslot:
-        GUM_ERROR(OperationNotAllowed, "Cannot add a gum::ReferenceSlot as a parent of a gum::Attribute.");
-        break;
-      case ClassElement::prm_slotchain:
-        if (static_cast<SlotChain&>(elt).isMultiple()) {
-          GUM_ERROR(OperationNotAllowed, "Impossible to add a multiple reference slot as"
-                                         " direct parent of an Attribute.");
-        }
-      case ClassElement::prm_attribute:
-      case ClassElement::prm_aggregate:
-        c->insertArc(name, a->name());
-        break;
-      default:
-        GUM_ERROR(FatalError, "Unknown gum::ClassElement type.");
-    }
-  } catch (NotFound&) {
-    // Check if name is a slot chain
-    SlotChain* sc = __buildSlotChain(c, name);
-    if (not sc->isMultiple()) {
-      c->add(sc);
-      c->insertArc(sc->name(), a->name());
-    } else {
-      delete sc;
-      GUM_ERROR(OperationNotAllowed, "Impossible to add a multiple reference slot as"
-                                     " direct parent of an Attribute.");
-    }
-  }
+  Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
+  __checkStack(2, PRMObject::prm_class);
+  if (a->cpf().domainSize() != array.size())
+    GUM_ERROR(OperationNotAllowed, "illegal CPF size");
+  a->cpf().fillWith(array);
 }
 
 INLINE
 void
 PRMFactory::endAttribute()
 {
-  __checkStackAttr(1);
+  __checkStack(1, ClassElement::prm_attribute);
   __stack.pop_back();
 }
 
 INLINE
 void
 PRMFactory::addParameter(const std::string& type, const std::string& name) {
-  Class* c = __checkStackClassOrInterface(1);
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
   MultiDimSparse<prm_float>* impl =
     new MultiDimSparse<prm_float>(
         std::numeric_limits<prm_float>::signaling_NaN());
   Attribute* a = new Attribute(name, *__retrieveType(type), impl);
-  c->add(a, true);
-  c->setInitializationFlag(a, false);
+  c->addParameter(a, false);
 }
 
 INLINE
 void
-PRMFactory::addParameter(const std::string& type, const std::string& name,
-                         std::string value)
+PRMFactory::startSystem(const std::string& name)
 {
-  Class* c = __checkStackClassOrInterface(1);
-  MultiDimSparse<prm_float>* impl = new MultiDimSparse<prm_float>(0);
-  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
-  Instantiation inst(a->cpf());
-  bool found = false;
-  for (inst.setFirst(); not inst.end(); inst.inc()) {
-    if (a->type()->label(inst.pos(*(a->type()))) == value) {
-      a->cpf().set(inst, 1);
-      found = true;
-      break;
-    }
-  }
-  if (not found) {
-    GUM_ERROR(NotFound, "illegal default value.");
-  }
-  c->add(a, true);
-  c->setInitializationFlag(a, true);
+  __checkDuplicateName(__addPrefix(name));
+  System* model = new System(__addPrefix(name));
+  __stack.push_back(model);
 }
 
 INLINE
 void
-PRMFactory::addReferenceSlot(const std::string& type,
-                             const std::string& name,
-                             bool isArray)
+PRMFactory::endSystem()
 {
-  Class* owner = __checkStackClassOrInterface(1);
-  Class* slotType = 0;
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
+  __stack.pop_back();
+  model->instantiate();
+  __prm->__systemMap.insert(model->name(), model);
+  __prm->__systems.insert(model);
+}
+
+INLINE
+System&
+PRMFactory::getCurrentSystem() {
+  return *(static_cast<System*>(__checkStack(1, PRMObject::prm_system)));
+}
+
+INLINE
+void
+PRMFactory::addInstance(const std::string& type, const std::string& name)
+{
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
+  Class* c = __retrieveClass(type);
+  Instance* inst = new Instance(name, *c);
   try {
-    slotType = __retrieveClass(type);
-  } catch (OperationNotAllowed&) {
-    try {
-      slotType = __retrieveInterface(type);
-    } catch (OperationNotAllowed&) {
-      GUM_ERROR(NotFound, "unknown reference type");
-    }
-  }
-  ReferenceSlot* ref = new ReferenceSlot(name, *slotType, isArray);
-  try {
-    owner->add(ref);
-  } catch (DuplicateElement& e) {
-    delete ref;
+    model->add(inst);
+  } catch (OperationNotAllowed& e) {
+    delete inst;
     throw e;
-  }
-}
-
-INLINE
-void
-PRMFactory::addAggregator(const std::string& name,
-                          const std::string& agg_type,
-                          const std::vector<std::string>& chains,
-                          const std::vector<std::string>& params)
-{
-  Class* c = __checkStackClass(1);
-  // Different treatments for different types of aggregator.
-  switch (Aggregate::str2enum(agg_type)) {
-    case Aggregate::agg_or:
-    case Aggregate::agg_and: {
-                               __checkAggType_or_and(c, chains, params);
-                               // No break
-                             }
-    case Aggregate::agg_min:
-    case Aggregate::agg_max: {
-                               __addAggregatorNoParam(name, agg_type, chains);
-                               break;
-                             }
-    case Aggregate::agg_exists:
-    case Aggregate::agg_forall: {
-                                 Idx label = __checkAggType_exists_count(c, chains, params);
-                                 __addAggregatorOneParam(name, agg_type, chains, label);
-                                 break;
-                               }
-    default: {
-               GUM_ERROR(FatalError, "Unknown aggregator.");
-             }
   }
 }
 
@@ -303,7 +242,7 @@ PRMFactory::__checkDuplicateName(const std::string& name)
   if (__prm->__classMap.exists(name)     ||
       __prm->__typeMap.exists(name)      ||
       __prm->__interfaceMap.exists(name) ||
-      __prm->__modelMap.exists(name))
+      __prm->__systemMap.exists(name))
   {
     std::stringstream msg;
     msg << "\"" << name << "\" is already used.";
@@ -312,164 +251,52 @@ PRMFactory::__checkDuplicateName(const std::string& name)
 }
 
 INLINE
-void
-PRMFactory::__throwNotDeclared(PRMObject::ObjectType obj_type,
-                               const std::string& name) const
-{
-  std::stringstream msg;
-  msg << PRMObject::enum2str(obj_type) << " not declared: ";
-  msg << name;
-  GUM_ERROR(OperationNotAllowed, msg.str());
-}
-
-INLINE
-void
-PRMFactory::__throwNotDeclared(ClassElement::ClassElementType obj_type,
-                               const std::string& name) const
-{
-  std::stringstream msg;
-  msg << ClassElement::enum2str(obj_type) << " not declared: ";
-  msg << name;
-  GUM_ERROR(OperationNotAllowed, msg.str());
-}
-
-INLINE
-void
-PRMFactory::__throwWrongType(PRMObject::ObjectType wrong_type,
-                             const std::string& name,
-                             PRMObject::ObjectType in) const
-{
-  std::stringstream msg;
-  msg << "Wrong element in slot chain " << name << " which is of type ";
-  msg << PRMObject::enum2str(wrong_type) << " in " << PRMObject::enum2str(in);
-  GUM_ERROR(OperationNotAllowed, msg.str());
-}
-
-INLINE
-void
-PRMFactory::__throwWrongType(ClassElement::ClassElementType wrong_type,
-                             const std::string& name,
-                             ClassElement::ClassElementType in) const
-{
-  std::stringstream msg;
-  msg << "Wrong element in slot chain " << name << " which is of type ";
-  msg << ClassElement::enum2str(wrong_type) << " in " << ClassElement::enum2str(in);
-  GUM_ERROR(OperationNotAllowed, msg.str());
-}
-
-
-INLINE
 PRMObject*
 PRMFactory::__checkStack(Idx i, PRMObject::ObjectType obj_type)
 {
   // Don't forget that Idx are unsigned int
   if (__stack.size() - i > __stack.size()) {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
   PRMObject* obj = __stack[__stack.size() - i];
   if (obj->obj_type() != obj_type) {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
   return obj;
 }
 
 INLINE
-Type*
-PRMFactory::__checkStackType(Idx i) {
-  return static_cast<Type*>(__checkStack(i, PRMObject::prm_type));
-}
-
-INLINE
-Class*
-PRMFactory::__checkStackClassOrInterface(Idx i)
-{
-  return static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
-}
-
-INLINE
-Class*
-PRMFactory::__checkStackClass(Idx i)
-{
-  Class* c = static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
-  if (__prm->__classMap.exists(c->name())) {
-    return c;
+ClassElementContainer*
+PRMFactory::__checkStackContainter(Idx i) {
+  // Don't forget that Idx are unsigned int
+  if (__stack.size() - i > __stack.size()) {
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
+  }
+  PRMObject* obj = __stack[__stack.size() - i];
+  if ( (obj->obj_type() == PRMObject::prm_class) or
+       (obj->obj_type() == PRMObject::prm_interface) ) {
+    return static_cast<ClassElementContainer*>(obj);
   } else {
-    GUM_ERROR(FactoryInvalidState, "Not a class.");
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
 }
 
 INLINE
-Class*
-PRMFactory::__checkStackInterface(Idx i)
+ClassElement*
+PRMFactory::__checkStack(Idx i, ClassElement::ClassElementType elt_type)
 {
-  Class* c = static_cast<Class*>(__checkStack(i, PRMObject::prm_class));
-  if (__prm->__interfaceMap.exists(c->name())) {
-    return c;
-  } else {
-    GUM_ERROR(FactoryInvalidState, "Not an interface.");
+  // Don't forget that Idx are unsigned int
+  if (__stack.size() - i > __stack.size()) {
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
-}
-
-INLINE
-ReferenceSlot*
-PRMFactory::__checkStackRefSlot(Idx i)
-{
-  ClassElement* elt = static_cast<ClassElement*>(__checkStack(i, PRMObject::prm_class_elt));
-  if (elt->elt_type() == ClassElement::prm_refslot) {
-    return static_cast<ReferenceSlot*>(elt);
-  } else {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
+  ClassElement* obj = dynamic_cast<ClassElement*>(__stack[__stack.size() - i]);
+  if (obj == 0) {
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
-}
-
-INLINE
-Attribute*
-PRMFactory::__checkStackAttr(Idx i)
-{
-  ClassElement* elt = static_cast<ClassElement*>(__checkStack(i, PRMObject::prm_class_elt));
-  if (elt->elt_type() == ClassElement::prm_attribute) {
-    return static_cast<Attribute*>(elt);
-  } else {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
+  if (obj->elt_type() != elt_type) {
+    GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
   }
-}
-
-INLINE
-Aggregate*
-PRMFactory::__checkStackAgg(Idx i)
-{
-  ClassElement* elt = static_cast<ClassElement*>(__checkStack(i, PRMObject::prm_class_elt));
-  if (elt->elt_type() == ClassElement::prm_aggregate) {
-    return static_cast<Aggregate*>(elt);
-  } else {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
-  }
-}
-
-INLINE
-Model*
-PRMFactory::__checkStackModel(Idx i)
-{
-  return static_cast<Model*>(__checkStack(i, PRMObject::prm_model));
-}
-
-INLINE
-SlotChain*
-PRMFactory::__checkStackSC(Idx i)
-{
-  ClassElement* elt = static_cast<ClassElement*>(__checkStack(i, PRMObject::prm_class_elt));
-  SlotChain* sc = dynamic_cast< SlotChain* >(elt);
-  if (elt != 0) {
-    return sc;
-  } else {
-    GUM_ERROR(FactoryInvalidState, "Stack not consistent with the "
-                                   "current declaration.");
-  }
+  return obj;
 }
 
 INLINE
@@ -494,7 +321,8 @@ PRMFactory::__retrieveClass(const std::string& name) const
     try {
       return __prm->__classMap[__addPrefix(name)];
     } catch (NotFound&) {
-      __throwNotDeclared(PRMObject::prm_class, name);
+      std::string msg = "could not found Class: ";
+      GUM_ERROR(NotFound, msg + name);
     }
   }
   // Just for compilation warnings
@@ -502,7 +330,7 @@ PRMFactory::__retrieveClass(const std::string& name) const
 }
 
 INLINE
-Class*
+Interface*
 PRMFactory::__retrieveInterface(const std::string& name) const
 {
   try {
@@ -511,7 +339,8 @@ PRMFactory::__retrieveInterface(const std::string& name) const
     try {
       return __prm->__interfaceMap[__addPrefix(name)];
     } catch (NotFound&) {
-      __throwNotDeclared(PRMObject::prm_class, name);
+      std::string msg = "could not found Interface: ";
+      GUM_ERROR(NotFound, msg + name);
     }
   }
   // Just for compilation warnings
@@ -519,146 +348,15 @@ PRMFactory::__retrieveInterface(const std::string& name) const
 }
 
 INLINE
-void
-PRMFactory::startModel(const std::string& name)
-{
-  __checkDuplicateName(__addPrefix(name));
-  // Telling all classes to build their "nodes to be instantiated" set
-  for (Sequence<Class*>::iterator iter = __prm->__classes.begin(); iter != __prm->__classes.end(); ++iter) {
-    (*iter)->buildInstantiationSequence();
+int
+PRMFactory::__typeDepth(Type* t) {
+  int depth = 0;
+  Type* current = t;
+  while (current->isSubType()) {
+    ++depth;
+    current = &(current->super());
   }
-  Model* model = new Model(__addPrefix(name));
-  __stack.push_back(model);
-}
-
-INLINE
-void
-PRMFactory::endModel()
-{
-  Model* model = __checkStackModel(1);
-  __stack.pop_back();
-  model->instantiate();
-  __prm->__modelMap.insert(model->name(), model);
-  __prm->__models.insert(model);
-}
-
-INLINE
-void
-PRMFactory::addInstance(const std::string& type, const std::string& name)
-{
-  Model* model = __checkStackModel(1);
-  Class* c = __retrieveClass(type);
-  Instance* inst = new Instance(name, *c);
-  try {
-    model->add(inst);
-  } catch (OperationNotAllowed& e) {
-    delete inst;
-    throw e;
-  }
-}
-
-INLINE
-void
-PRMFactory::setReferenceSlot(const std::string& left_instance,
-                             const std::string& left_reference,
-                             const std::string& right_instance)
-{
-  Model* model = __checkStackModel(1);
-  if (model->isInstance(right_instance)) {
-    __setReferenceSlotWithInstance(left_instance, left_reference, right_instance);
-  } else if (model->isArray(right_instance)) {
-    __setReferenceSlotWithArray(left_instance, left_reference, right_instance);
-  } else {
-    GUM_ERROR(NotFound, right_instance);
-  }
-}
-
-INLINE
-void
-PRMFactory::__setReferenceSlotWithInstance(const std::string& left_instance,
-                                           const std::string& left_reference,
-                                           const std::string& right_instance)
-{
-  Model* model = __checkStackModel(1);
-  Instance& left = model->get(left_instance);
-  Instance& right = model->get(right_instance);
-
-  ClassElement& elt = left.get(left_reference);
-  if (elt.elt_type() == ClassElement::prm_refslot) {
-    left.add(elt.id(), right);
-  } else {
-    GUM_ERROR(OperationNotAllowed, left_instance + " is not a ReferenceSlot");
-  }
-}
-
-INLINE
-void
-PRMFactory::startDiscreteType(const std::string& name) {
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Type* t = new Type(LabelizedVariable(real_name, "", 0));
-  __stack.push_back(t);
-}
-
-INLINE
-void
-PRMFactory::addLabel(const std::string& l) {
-  Type* t = __checkStackType(1);
-  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
-  if (not var) {
-    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
-  } else if (t->__super) {
-    GUM_ERROR(OperationNotAllowed, "current type is a subtype.");
-  }
-  var->addLabel(l);
-}
-
-INLINE
-void
-PRMFactory::startDiscreteType(const std::string& name,
-                              const std::string& super) {
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Type* t = new Type(LabelizedVariable(real_name, "", 0));
-  t->__super = __retrieveType(super);
-  t->__label_map = new std::vector<Idx>();
-  __stack.push_back(t);
-}
-
-INLINE
-void
-PRMFactory::addLabel(const std::string& l, std::string& extends) {
-  Type* t = __checkStackType(1);
-  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
-  if (not var) {
-    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
-  } else if (not t->__super) {
-    GUM_ERROR(OperationNotAllowed, "current type is not a subtype.");
-  }
-  bool found = false;
-  for (Idx i = 0; i < t->__super->__var->domainSize(); ++i) {
-    if (t->__super->__var->label(i) == extends) {
-      var->addLabel(l);
-      t->__label_map->push_back(i);
-      found = true;
-      break;
-    }
-  }
-  if (not found) {
-    GUM_ERROR(OperationNotAllowed, "inexistent label in super type.");
-  }
-}
-
-INLINE
-void
-PRMFactory::endDiscreteType() {
-  Type* t = __checkStackType(1);
-  if (not t->__isValid()) {
-    GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype.");
-  }
-  __prm->__typeMap.insert(t->name(), t);
-  __prm->__types.insert(t);
-  __stack.pop_back();
+  return depth;
 }
 
 // ============================================================================

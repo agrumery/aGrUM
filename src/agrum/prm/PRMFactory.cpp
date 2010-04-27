@@ -32,15 +32,31 @@
 namespace gum {
 namespace prm {
 
-PRMFactory::PRMFactory()
-{
-  GUM_CONSTRUCTOR( PRMFactory );
-  __prm = new PRM();
-}
-
-PRMFactory::~PRMFactory()
-{
-  GUM_DESTRUCTOR( PRMFactory );
+void
+PRMFactory::addLabel(const std::string& l, const std::string& extends) {
+  Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
+  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+  if (not var) {
+    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+  } else if (not t->__super) {
+    GUM_ERROR(OperationNotAllowed, "current type is not a subtype.");
+  }
+  bool found = false;
+  for (Idx i = 0; i < t->__super->__var->domainSize(); ++i) {
+    if (t->__super->__var->label(i) == extends) {
+      try {
+        var->addLabel(l);
+      } catch (DuplicateElement&) {
+        GUM_ERROR(DuplicateElement, "a label with the same value already exists");
+      }
+      t->__label_map->push_back(i);
+      found = true;
+      break;
+    }
+  }
+  if (not found) {
+    GUM_ERROR(NotFound, "inexistent label in super type.");
+  }
 }
 
 void
@@ -51,7 +67,7 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
   __checkDuplicateName(real_name);
   Class* c = 0;
   Class* mother = 0;
-  Set<Class*> impl;
+  Set<Interface*> impl;
   if (implements != 0) {
     for (Set<std::string>::iterator iter = implements->begin();
          iter != implements->end(); ++iter) {
@@ -61,7 +77,8 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
         try {
           impl.insert(__prm->__interfaceMap[__addPrefix(*iter)]);
         } catch (NotFound&) {
-          __throwNotDeclared(PRMObject::prm_interface, *iter);
+          std::string msg = "no interface named: ";
+          GUM_ERROR(NotFound, msg + *iter);
         }
       }
     }
@@ -74,7 +91,8 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
       try {
       mother = __prm->__classMap[__addPrefix(extends)];
       } catch (NotFound&) {
-        __throwNotDeclared(PRMObject::prm_class, extends);
+        std::string msg = "no class named: ";
+        GUM_ERROR(NotFound, msg + extends);
       }
     }
   }
@@ -93,32 +111,160 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
 }
 
 void
-PRMFactory::setRawCPFByLines(const std::vector<float>& array)
+PRMFactory::endClass()
 {
-  Attribute* a = __checkStackAttr(1);
-  __checkStackClass(2);
-  __checkArraySize(a, array);
-  if (a->cpf().domainSize() != array.size()) {
-    std::stringstream sBuff;
-    sBuff << "found domain size of " << array.size();
-    sBuff << " expected " << a->cpf().domainSize();
-    GUM_ERROR(OperationNotAllowed, sBuff.str());
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+  Interface* i = 0;
+  std::string name;
+  std::stringstream msg;
+  msg << "class " << c->name() << " does not respect interface ";
+  try {
+    for (Set<Interface*>::iterator iter = c->implements().begin();
+         iter != c->implements().end(); ++iter) {
+      i = *iter;
+      try {
+        for (DAG::NodeIterator node = i->dag().beginNodes();
+            node != i->dag().endNodes(); ++node) {
+          name = i->get(*node).name();
+          switch (i->get(*node).elt_type()) {
+            case ClassElement::prm_aggregate:
+            case ClassElement::prm_attribute:
+              {
+                if ( (c->get(name).elt_type() == ClassElement::prm_attribute) or
+                    (c->get(name).elt_type() == ClassElement::prm_aggregate) )
+                {
+                  if (not c->get(name).type().isSubTypeOf(i->get(name).type())) {
+                    GUM_ERROR(TypeError, msg.str() + i->name());
+                  }
+                } else {
+                  GUM_ERROR(TypeError, msg.str() + i->name());
+                }
+                break;
+              }
+            case ClassElement::prm_refslot:
+              {
+                if (c->get(name).elt_type() == ClassElement::prm_refslot) {
+                  const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>(i->get(name));
+                  const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>(c->get(name));
+                  if (not ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
+                    GUM_ERROR(TypeError, msg.str() + i->name());
+                  }
+                } else {
+                  GUM_ERROR(TypeError, msg.str() + i->name());
+                }
+                break;
+              }
+            case ClassElement::prm_slotchain:
+              {
+                // Nothing to check: they are automatically inherited
+                break;
+              }
+            default:
+              {
+                std::string msg = "unexpected ClassElement in interface ";
+                GUM_ERROR(FatalError, msg + i->name());
+              }
+          }
+        }
+      } catch (NotFound&) {
+        GUM_ERROR(TypeError, msg.str() + i->name());
+      }
+    }
+  } catch (NotFound&) {
+    // this Class does not implement any Interface
   }
-  std::vector<prm_float> ugly;
-  for (size_t i = 0; i < array.size(); ++i) {
-    ugly.push_back((prm_float) array[i]);
-  }
-  a->cpf().fillWith(ugly);
+  __stack.pop_back();
 }
 
 void
-PRMFactory::setRawCPFByColumns(const std::vector<float>& array)
+PRMFactory::startInterface(const std::string& name, const std::string& extends)
 {
-  Attribute* a = __checkStackAttr(1);
+  std::string real_name = __addPrefix(name);
+  __checkDuplicateName(real_name);
+  Interface* i = 0;
+  Interface* super = 0;
+  if (extends != "") {
+    try {
+      super = __prm->__interfaceMap[extends];
+    } catch (NotFound&) {
+      try {
+        super = __prm->__interfaceMap[__addPrefix(extends)];
+      } catch (NotFound&) {
+        std::string msg = "unknown interface: ";
+        GUM_ERROR(NotFound, msg + extends);
+      }
+    }
+  }
+  if (super != 0) {
+    i = new Interface(real_name, *super);
+  } else {
+    i = new Interface(real_name);
+  }
+  __prm->__interfaceMap.insert(i->name(), i);
+  __prm->__interfaces.insert(i);
+  __stack.push_back(i);
+}
+
+void
+PRMFactory::addParent(const std::string& name)
+{
+  // Retrieving pointers
+  Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
+  ClassElementContainer* c = __checkStackContainter(2);
+  try {
+    ClassElement& elt = c->get(name);
+    switch(elt.elt_type()) {
+      case ClassElement::prm_refslot:
+        {
+          GUM_ERROR(OperationNotAllowed, "can not add a reference slot as a parent of an attribute");
+          break;
+        }
+      case ClassElement::prm_slotchain:
+        {
+          if (static_cast<SlotChain&>(elt).isMultiple()) {
+            GUM_ERROR(OperationNotAllowed, "can not add a multiple slot chain to an attribute");
+          }
+          c->insertArc(name, a->name());
+          break;
+        }
+      case ClassElement::prm_attribute:
+      case ClassElement::prm_aggregate:
+        {
+          c->insertArc(name, a->name());
+          break;
+        }
+      default:
+        {
+          GUM_ERROR(FatalError, "unknown ClassElement");
+        }
+    }
+  } catch (NotFound&) {
+    // Check if name is a slot chain
+    SlotChain* sc = __buildSlotChain(c, name);
+    if (sc == 0) {
+      std::string msg = "found no ClassElement with the given name ";
+      GUM_ERROR(NotFound, msg + name);
+    } else if (not sc->isMultiple()) {
+      c->add(sc);
+      c->insertArc(sc->name(), a->name());
+    } else {
+      delete sc;
+      GUM_ERROR(OperationNotAllowed, "Impossible to add a multiple reference slot as"
+                                     " direct parent of an Attribute.");
+    }
+  }
+}
+
+void
+PRMFactory::setRawCPFByColumns(const std::vector<prm_float>& array)
+{
+  Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
   if (a->cpf().nbrDim() == 1) {
     setRawCPFByLines(array);
   } else {
-    __checkArraySize(a, array);
+    if (a->cpf().domainSize() != array.size()) {
+      GUM_ERROR(OperationNotAllowed, "illegal CPF size");
+    }
     Instantiation inst(a->cpf());
     Instantiation jnst;
     typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
@@ -142,24 +288,19 @@ PRMFactory::setRawCPFByColumns(const std::vector<float>& array)
 }
 
 void
-PRMFactory::__checkArraySize(Attribute* a, const std::vector<float>& array) const {
-  typedef Sequence<const DiscreteVariable*>::iterator Iterator;
-  size_t size = 1;
-  for (Iterator iter = a->cpf().variablesSequence().begin();
-       iter != a->cpf().variablesSequence().end(); ++iter) {
-    size *= (*iter)->domainSize();
-  }
-  if (size != array.size()) {
-    GUM_ERROR(OperationNotAllowed, "illegal CPT size");
-  }
-}
-
-void
 PRMFactory::setCPFByRule(const std::vector<std::string>& parents,
-                         const std::vector<float>& values)
+                         const std::vector<prm_float>& values)
 {
-  Attribute* a = __checkStackAttr(1);
+  Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
+  if ((parents.size() + 1) != a->cpf().variablesSequence().size()) {
+    GUM_ERROR(OperationNotAllowed, "wrong number of parents");
+  }
+  if (values.size() != a->type().variable().domainSize()) {
+    GUM_ERROR(OperationNotAllowed, "wrong number of values");
+  }
   Instantiation inst(a->cpf());
+  // jnst holds parents with a specific value (not "*")
+  // knst holds parents without a specific value ("*")
   Instantiation jnst, knst;
   const DiscreteVariable* var = 0;
   Size pos = 0;
@@ -179,7 +320,10 @@ PRMFactory::setCPFByRule(const std::vector<std::string>& parents,
           break;
         }
       }
-      if (not found) GUM_ERROR(NotFound, "no label with this name.");
+      if (not found) {
+        std::string msg = "could not find label ";
+        GUM_ERROR(NotFound, msg + parents[i]);
+      }
     }
   }
   inst.chgValIn(jnst);
@@ -192,69 +336,118 @@ PRMFactory::setCPFByRule(const std::vector<std::string>& parents,
 }
 
 void
-PRMFactory::__checkAggType_or_and(Class* c, const std::vector<std::string>& chains,
-                                            const std::vector<std::string>& params)
+PRMFactory::addParameter(const std::string& type, const std::string& name,
+                         std::string value)
 {
-  Type* type = __retrieveType("boolean"); // The type on which the aggregator applies
-  for (size_t i = 0; i < chains.size(); ++i) {
-    ClassElement* elt = 0;
-    try {
-      elt = &(c->get(chains[i]));
-    } catch (NotFound&) {
-      // a new slot chain?
-      c->add(__buildSlotChain(c, chains[i]));
-      elt = &(c->get(chains[i]));
-    }
-    if ( (*type) != elt->type() ) {
-      std::stringstream sBuff;
-      sBuff << "slot chain " << chains[i] << " type is ";
-      sBuff << elt->type().name() << " expecting " << type->name();
-      GUM_ERROR(WrongType, sBuff.str());
+  Class* c = static_cast<Class*>(__checkStackContainter(1));
+  MultiDimSparse<prm_float>* impl = new MultiDimSparse<prm_float>(0);
+  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
+  Instantiation inst(a->cpf());
+  bool found = false;
+  for (inst.setFirst(); not inst.end(); inst.inc()) {
+    if (a->type()->label(inst.pos(*(a->type()))) == value) {
+      a->cpf().set(inst, 1);
+      found = true;
+      break;
     }
   }
+  if (not found) {
+    GUM_ERROR(NotFound, "illegal default value.");
+  }
+  c->addParameter(a, true);
 }
 
-Idx
-PRMFactory::__checkAggType_exists_count(Class* c, const std::vector<std::string>& chains,
-                                                  const std::vector<std::string>& params)
+void
+PRMFactory::addAggregator(const std::string& name,
+                          const std::string& agg_type,
+                          const std::vector<std::string>& chains,
+                          const std::vector<std::string>& params)
 {
-  Type* type = 0; // The type on which the aggregator applies
-  for (size_t i = 0; i < chains.size(); ++i) {
-    ClassElement* elt = 0;
-    try {
-      elt = &(c->get(chains[i]));
-    } catch (NotFound&) {
-      // a new slot chain?
-      c->add(__buildSlotChain(c, chains[i]));
-      elt = &(c->get(chains[i]));
-    }
-    if (type == 0) {
-      type = &(elt->type());
-    } else if ( (*type) != elt->type() ) {
-      std::stringstream sBuff;
-      sBuff << "slot chain " << chains[i] << " type is ";
-      sBuff << elt->type().name() << " expecting " << type->name();
-      GUM_ERROR(WrongType, sBuff.str());
-    }
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+  // Checking call legality
+  if (chains.size() == 0)
+    GUM_ERROR(OperationNotAllowed, "an Aggregate requires at least one parent");
+  // Retrieving the parents of the aggregate
+  std::vector<ClassElement*> inputs;
+  __retrieveInputs(c, chains, inputs);
+  // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
+  try {
+    if (inputs.size() > 1)
+      for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter)
+        if ((**(iter - 1)).type() != (**iter).type())
+          GUM_ERROR(WrongType, "found different types");
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
   }
-  Idx label = 0;
-  if (params.size() == 1) {
-    label = type->variable().domainSize() + 1;
-    for (Idx i = 0; i < type->variable().domainSize(); ++i) {
-      if (type->variable().label(i) == params[0]) {
-        label = i;
+  // Different treatments for different types of aggregate.
+  Aggregate* agg = 0;
+  switch (Aggregate::str2enum(agg_type)) {
+    case Aggregate::agg_or:
+    case Aggregate::agg_and:
+      {
+        if (inputs.front()->type() != *(__retrieveType("boolean")))
+          GUM_ERROR(WrongType, "expected booleans");
+      }
+    case Aggregate::agg_min:
+    case Aggregate::agg_max:
+      {
+        if (params.size() != 0)
+          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
+        agg = new Aggregate(name, Aggregate::str2enum(agg_type), inputs.front()->type());
         break;
       }
+    case Aggregate::agg_exists:
+    case Aggregate::agg_forall:
+      {
+        if (params.size() != 1)
+          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
+        Idx label_idx = 0;
+        while (label_idx < inputs.front()->type()->domainSize()) {
+          if (inputs.front()->type()->label(label_idx) == params.front()) {
+            break;
+          }
+          ++label_idx;
+        }
+        if (label_idx == inputs.front()->type()->domainSize())
+          GUM_ERROR(NotFound, "could not find label");
+        // Creating and adding the Aggregate
+        agg = new Aggregate(name, Aggregate::str2enum(agg_type), *(__retrieveType("boolean")), label_idx);
+        break;
+      }
+    default:
+      { GUM_ERROR(FatalError, "Unknown aggregator."); }
+  }
+  try {
+    c->add(agg);
+  } catch (DuplicateElement& e) {
+    delete agg;
+    throw e;
+  }
+  for (std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter)
+    c->insertArc((*iter)->name(), name);
+}
+
+void
+PRMFactory::addReferenceSlot(const std::string& type,
+                             const std::string& name,
+                             bool isArray)
+{
+  ClassElementContainer* owner = __checkStackContainter(1);
+  ClassElementContainer* slotType = 0;
+  try {
+    slotType = __retrieveClass(type);
+  } catch (NotFound&) {
+    try {
+      slotType = __retrieveInterface(type);
+    } catch (NotFound&) {
+      GUM_ERROR(NotFound, "unknown ReferenceSlot slot type");
     }
-    if (label > type->variable().domainSize()) {
-      GUM_ERROR(OperationNotAllowed, "Invalide parameter");
-    }
-    // The parameter is the label on which the aggregator applies.
-    return label;
-  } else {
-    std::stringstream sBuff;
-    sBuff << " aggregator requiring at lest one parameter";
-    GUM_ERROR(OperationNotAllowed, sBuff.str());
+  }
+  ReferenceSlot* ref = new ReferenceSlot(name, *slotType, isArray);
+  try {
+    owner->add(ref);
+  } catch (DuplicateElement& e) {
+    owner->overload(ref);
   }
 }
 
@@ -262,7 +455,7 @@ void
 PRMFactory::addArray(const std::string& type,
                      const std::string& name, Size size)
 {
-  Model* model = __checkStackModel(1);
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
   Class* c = __retrieveClass(type);
   Instance* inst = 0;
   try {
@@ -271,174 +464,187 @@ PRMFactory::addArray(const std::string& type,
       std::stringstream elt_name;
       elt_name << name << "[" << i << "]";
       inst = new Instance(elt_name.str(), *c);
-      //model->add(inst);
       model->add(name, inst);
-      inst = 0;
     }
-  } catch (OperationNotAllowed& e) {
-    if (inst != 0) {
-      delete inst;
-    }
+  } catch (TypeError& e) {
+    delete inst;
+    throw e;
+  } catch (NotFound& e) {
+    delete inst;
     throw e;
   }
 }
 
 void
-PRMFactory::__setReferenceSlotWithArray(const std::string& left_instance,
-                                        const std::string& left_reference,
-                                        const std::string& right_instance)
+PRMFactory::setReferenceSlot(const std::string& l_i,
+                             const std::string& l_ref,
+                             const std::string& r_i)
 {
-  Model* model = __checkStackModel(1);
-  Instance& left = model->get(left_instance);
-  const Sequence<Instance*>& right = model->getArray(right_instance);
-
-  ClassElement& elt = left.get(left_reference);
-  if (elt.elt_type() == ClassElement::prm_refslot) {
-    for (Sequence<Instance*>::iterator iter = right.begin(); iter != right.end(); ++iter) {
-      __setReferenceSlotWithInstance(left_instance, left_reference, (*iter)->name());
-    }
+  typedef Sequence<Instance*>::iterator Iter;
+  typedef std::vector<Instance*>::iterator Jter;
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
+  std::vector<Instance*> lefts;
+  std::vector<Instance*> rights;
+  if (model->isInstance(l_i)) {
+    lefts.push_back(&(model->get(l_i)));
+  } else if (model->isArray(l_i)) {
+    for (Iter iter = model->getArray(l_i).begin(); iter != model->getArray(l_i).end(); ++iter)
+      lefts.push_back(*iter);
   } else {
-    GUM_ERROR(OperationNotAllowed, left_instance + " is not a ReferenceSlot");
+    GUM_ERROR(NotFound, "left value does not name an instance or an array");
+  }
+  if (model->isInstance(r_i)) {
+    rights.push_back(&(model->get(r_i)));
+  } else if (model->isArray(r_i)) {
+    for (Iter iter = model->getArray(r_i).begin(); iter != model->getArray(r_i).end(); ++iter)
+      rights.push_back(*iter);
+  } else {
+    GUM_ERROR(NotFound, "left value does not name an instance or an array");
+  }
+  for (Jter l = lefts.begin(); l != lefts.end(); ++l) {
+    for (Jter r = rights.begin(); r != rights.end(); ++r) {
+      if ((**l).type().get(l_ref).elt_type() == ClassElement::prm_refslot) {
+        (**l).add((**l).type().get(l_ref).id(), **r);
+      } else {
+        GUM_ERROR(NotFound, "unfound reference slot");
+      }
+    }
   }
 }
 
 void
-PRMFactory::__addAggregatorNoParam(const std::string& name,
-                                   const std::string& agg_type,
-                                   const std::vector<std::string>& chains)
-{
-  Class* c = __checkStackClass(1);
-  Type* type = 0; // The type on which the aggregator applies
-  Sequence<ClassElement*> chains_seq;
-  for (size_t i = 0; i < chains.size(); ++i) {
-    ClassElement* elt = 0;
-    try {
-      elt = &(c->get(chains[i]));
-    } catch (NotFound&) {
-      // a new slot chain?
-      c->add(__buildSlotChain(c, chains[i]));
-      elt = &(c->get(chains[i]));
-    }
-    if (type == 0) {
-      type = &(elt->type());
-      chains_seq.insert(elt);
-    } else if ( (*type) == elt->type() ) {
-      chains_seq.insert(elt);
-    } else {
-      std::stringstream sBuff;
-      sBuff << "slot chain " << chains[i] << " type is ";
-      sBuff << elt->type().name() << " expecting " << type->name();
-      GUM_ERROR(WrongType, sBuff.str());
-    }
-  }
-  Aggregate* agg = 0;
-  switch (Aggregate::str2enum(agg_type)) {
-    case Aggregate::agg_min:
-    case Aggregate::agg_max:
-      agg = new Aggregate(name, Aggregate::str2enum(agg_type), *type);
-      break;
-    case Aggregate::agg_or:
-    case Aggregate::agg_and:
-      agg = new Aggregate(name, Aggregate::str2enum(agg_type), *__retrieveType("boolean"));
-      break;
-    default:
-      GUM_ERROR(WrongType, agg_type);
-  }
+PRMFactory::setParameter(const std::string& instance, const std::string& param, const std::string& value) {
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
+  Instance* i = 0;
   try {
-    c->add(agg);
-    for (Sequence<ClassElement*>::iterator iter = chains_seq.begin(); iter != chains_seq.end(); ++iter) {
-      c->insertArc((*iter)->name(), name);
-    }
-  } catch (DuplicateElement& e) {
-    delete agg;
-    throw e;
+    i = &(model->get(instance));
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "instance not found in current system");
   }
-}
-
-void
-PRMFactory::__addAggregatorOneParam(const std::string& name,
-                                    const std::string& agg_type,
-                                    const std::vector<std::string>& chains,
-                                    Idx label)
-{
-  Class* c = __checkStackClass(1);
-  Type* type = 0; // The type on which the aggregator applies
-  Sequence<ClassElement*> chains_seq;
-  for (size_t i = 0; i < chains.size(); ++i) {
-    ClassElement* elt = 0;
-    try {
-      elt = &(c->get(chains[i]));
-    } catch (NotFound&) {
-      // a new slot chain?
-      c->add(__buildSlotChain(c, chains[i]));
-      elt = &(c->get(chains[i]));
-    }
-    if (type == 0) {
-      type = &(elt->type());
-      chains_seq.insert(elt);
-    } else if ( (*type) == elt->type() ) {
-      chains_seq.insert(elt);
-    } else {
-      std::stringstream sBuff;
-      sBuff << "slot chain " << chains[i] << " type is ";
-      sBuff << elt->type().name() << " expecting " << type->name();
-      GUM_ERROR(WrongType, sBuff.str());
-    }
-  }
-  Aggregate* agg = 0;
-  switch(Aggregate::str2enum(agg_type)) {
-    case Aggregate::agg_exists:
-    case Aggregate::agg_forall:
-      agg = new Aggregate(name, Aggregate::str2enum(agg_type), *__retrieveType("boolean"), label);
-      break;
-    default:
-      GUM_ERROR(WrongType, agg_type);
-  }
+  Attribute* a = 0;
   try {
-    c->add(agg);
-    for (Sequence<ClassElement*>::iterator iter = chains_seq.begin(); iter != chains_seq.end(); ++iter) {
-      c->insertArc((*iter)->name(), name);
+    a = &(i->get(param));
+    if (not i->type().isParameter(a->id())) {
+      GUM_ERROR(OperationNotAllowed, "given attribute is not a parameter");
     }
-  } catch (DuplicateElement& e) {
-    delete agg;
-    throw e;
+  } catch (NotFound&) {
+    GUM_TRACE(instance);
+    GUM_TRACE(param);
+    GUM_TRACE(value);
+    GUM_TRACE(i->type().exists(param));
+    GUM_ERROR(NotFound, "no such parameter in the given instance");
   }
+  Size label = a->type()->domainSize();
+  for (Size idx = 0; idx < a->type()->domainSize(); ++idx) {
+    if (value == a->type()->label(idx)) {
+      label = idx;
+      break;
+    }
+  }
+  if (label == a->type()->domainSize()) {
+    GUM_TRACE(instance);
+    GUM_TRACE(param);
+    GUM_TRACE(value);
+    GUM_ERROR(NotFound, "no such label in the given parameter");
+  }
+  Potential<prm_float> pot;
+  pot.add(a->type().variable());
+  pot.fill((prm_float) 0);
+  Instantiation inst(pot);
+  inst.chgVal(a->type().variable(), label);
+  pot.set(inst, (prm_float) 1);
+  i->setParameterValue(a->id(), pot);
 }
 
 SlotChain*
-PRMFactory::__buildSlotChain(Class* start, const std::string& name)
+PRMFactory::__buildSlotChain(ClassElementContainer* start, const std::string& name)
 {
   std::vector<std::string> v;
   decomposePath(name, v);
-  Class* previous = start;
-  ClassElement* last = 0;
+  ClassElementContainer* previous = start;
   ReferenceSlot* ref = 0;
-  Sequence<ReferenceSlot*> elts;
+  Sequence<ClassElement*> elts;
   for (size_t i = 0; i < v.size(); ++i) {
     try {
       switch (previous->get(v[i]).elt_type()) {
         case ClassElement::prm_refslot:
           ref = &(static_cast<ReferenceSlot&>(previous->get(v[i])));
           elts.insert(ref);
-          previous = &(const_cast<Class &>(ref->slotType()));
+          previous = &(const_cast<ClassElementContainer&>(ref->slotType()));
           break;
         case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute:
           if (i == v.size() - 1) {
-            last = &(previous->get(v[i]));
+            elts.insert(&(previous->get(v[i])));
             break;
           }
         default:
-          std::string msg = " in ";
-          GUM_ERROR(WrongType, v[i] + msg + name);
+          return 0;
       }
     } catch (NotFound&) {
-      std::string msg = " in ";
-      GUM_ERROR(NotFound, v[i] + msg + name);
+      return 0;
     }
   }
-  GUM_ASSERT(v.size() == (elts.size() + 1));
-  return new SlotChain(name, *start, *previous, elts, *last);
+  GUM_ASSERT(v.size() == elts.size());
+  return new SlotChain(name, elts);
+}
+
+void
+PRMFactory::__retrieveInputs(Class* c, const std::vector<std::string>& chains,
+                             std::vector<ClassElement*>& inputs)
+{
+  for (size_t i = 0; i < chains.size(); ++i) {
+    try {
+      inputs.push_back(&(c->get(chains[i])));
+    } catch (NotFound&) {
+      inputs.push_back(__buildSlotChain(c, chains[i]));
+      if (inputs.back()) {
+        c->add(inputs.back());
+      } else {
+        GUM_ERROR(NotFound, "unknown slot chain");
+      }
+    }
+  }
+}
+
+Type*
+PRMFactory::__retrieveCommonType(std::vector<ClassElement*>& elts)
+{
+  Type* current = 0;
+  HashTable<Type*, Size> counters;
+  // Finding all types and super types
+  for (std::vector<ClassElement*>::iterator iter = elts.begin();
+       iter != elts.end(); ++iter)  {
+    try {
+      current = &((**iter).type());
+      while (current != 0) {
+        // Filling counters
+        if (counters.exists(current)) ++(counters[current]);
+        else                          counters.insert(current, 1);
+        // Loop guard
+        if (current->isSubType()) current = &(current->super());
+        else                      current = 0;
+      }
+    } catch (OperationNotAllowed&) {
+       GUM_ERROR(WrongClassElement, "found a ClassElement without a type");
+    }
+  }
+  // We need to find the most specialized (i.e. max depth) common type
+  current = 0;
+  int depth = -1;
+  int current_depth = 0;
+  for (HashTable<Type*, Size>::iterator iter = counters.begin();
+       iter != counters.end(); ++iter) {
+    if ( (*iter) == elts.size() ) {
+      current_depth = __typeDepth(iter.key());
+      if (depth < current_depth) {
+        depth = current_depth;
+        current = iter.key();
+      }
+    }
+  }
+  if (current) return current;
+  GUM_ERROR(NotFound, "could not find a common type");
 }
 
 // ============================================================================

@@ -55,19 +55,24 @@ namespace gum {
   // ==============================================================================
   INLINE Instantiation& Instantiation::chgVal( const DiscreteVariable& v,
                                                const Idx newVal ) {
-    // check that the variable does belong to the instantiation and that the new
-    // value is possible.
-    Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+    try {
+      // check that the variable does belong to the instantiation and that the new
+      // value is possible.
+      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-    if ( newVal >= v.domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v.domainSize() )
+        GUM_ERROR( OutOfBounds, "" );
 
-    // if we were in overflow, indicate that we are not anymore
-    __overflow = false;
+      // if we were in overflow, indicate that we are not anymore
+      __overflow = false;
 
-    __chgVal( varPos, newVal );
+      __chgVal( varPos, newVal );
 
-    return *this;
+      return *this;
+    } catch (NotFound&) {
+      std::string name = "instantiation does not contain this DiscreteVariable: ";
+      GUM_ERROR(NotFound, name + v.name());
+    }
   }
 
   // ==============================================================================

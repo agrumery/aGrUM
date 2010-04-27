@@ -25,7 +25,7 @@
  */
 /*!
 * @ingroup signal_group
-\page  signal_page "How to use signaler/listener in aGrUM ?"
+\page  signal_page How to use signaler/listener in aGrUM ?
 
 aGrUM has its own implementation of signalers/listeners.
 

@@ -19,13 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Instance
+ * @brief Source implementation of gum::prm::Instance
  *
  * @author Lionel TORTI
  *
  */
 // ============================================================================
 #include <agrum/prm/instance.h>
+#include <agrum/multidim/multiDimSparse.h>
 // ============================================================================
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/instance.inl>
@@ -35,326 +36,552 @@ namespace gum {
 namespace prm {
 // ============================================================================
 
+Size Instance::__end_counter = 0;
+
+Instance::RefIterator* Instance::__end = 0;
+
+Instance::ConstRefIterator* Instance::__const_end = 0;
+
+
 Instance::Instance(const std::string& name, Class& type):
-  ClassElementContainer(name, type, true), __bijection(0), __params(0)
+  PRMObject(name), __type(&type), __params(0)
 {
   GUM_CONSTRUCTOR( Instance );
-}
-
-Instance::~Instance()
-{
-  GUM_DESTRUCTOR( Instance );
-  // Deleting set of instances (but not the instances)
-  typedef Property< Set< Instance* >* >::onNodes::iterator set_iterator;
-  for (set_iterator iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter) {
-    (*iter)->clear();
-    delete *iter;
+  // First we create attributes for each aggregate in type
+  for (Set<Aggregate*>::iterator iter = __type->aggregates().begin(); iter != __type->aggregates().end(); ++iter) {
+    __copyAggregates(*iter);
   }
-  typedef Property< INMap* >::onNodes::iterator map_iterator;
-  for (map_iterator iter = __slotChainMap.begin(); iter != __slotChainMap.end(); ++iter) {
-    delete *iter;
-  }
-  // Deleting set of inverse slot chains
-  typedef Property< Set< InverseSC* >* >::onNodes::iterator PropIter;
-  for (PropIter set = __inverseSC.begin(); set != __inverseSC.end(); ++set) {
-    for (Set< InverseSC* >::iterator iter = (*set)->begin(); iter != (*set)->end(); ++iter) {
-      delete *iter;
+  // Then we instantiate each parameters in type
+  for (Set<Attribute*>::iterator iter = __type->attributes().begin(); iter != __type->attributes().end(); ++iter) {
+    if (type.isOutputNode((*iter)->id())) {
+      __copyAttribute(*iter);
+    } else {
+      __nodeIdMap.insert((*iter)->id(), *iter);
+      __bijection.insert(&((*iter)->type().variable()), &((*iter)->type().variable()));
     }
-    delete *set;
   }
-  delete __bijection;
-  if (__params) {
-    delete __params;
+  if (__type->parameters().size())
+    __params = new Set<NodeId>();
+  for (Set<Attribute*>::iterator iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter)
+    __copyParameter(*iter);
+  // Initialising static iterators if not yet done
+  if (not Instance::__end_counter) {
+    Set<Instance*> set;
+    Instance::__end = new Instance::RefIterator(set.end());
+    Instance::__const_end = new Instance::ConstRefIterator(set.end());
   }
-}
-
-Instance::Instance(const Instance& from):
-  ClassElementContainer(from)
-{
-  GUM_CONS_CPY( Instance );
-  GUM_ERROR(FatalError, "illegal call of gum::Instance copy constructor.");
-}
-
-Instance&
-Instance::operator=(const Class& from)
-{
-  GUM_ERROR(FatalError, "illegal call of gum::Instance copy operator.");
+  ++Instance::__end_counter;
 }
 
 void
-Instance::add(NodeId id, Instance& instance)
+Instance::__copyAggregates(Aggregate* source) {
+  Attribute* attr = new Attribute(source->name(), source->type(), source->buildImpl());
+  attr->setId(source->id());
+  __nodeIdMap.insert(attr->id(), attr);
+  __trash.insert(attr);
+  __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
+}
+
+void
+Instance::__copyAttribute(Attribute* source) {
+  Attribute* attr = new Attribute(source->name(), source->type());
+  attr->cpf().fill((prm_float) 0);
+  attr->setId(source->id());
+  __trash.insert(attr);
+  __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
+  __nodeIdMap.insert(attr->id(), attr);
+}
+
+void
+Instance::__copyParameter(Attribute* source) {
+  Attribute* attr = new Attribute(source->name(), source->type());
+  Instantiation i(attr->cpf());
+  Instantiation j(source->cpf());
+  for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
+    attr->cpf().set(i, source->cpf().get(j));
+  attr->setId(source->id());
+  __nodeIdMap.insert(attr->id(), attr);
+  __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
+  __trash.insert(attr);
+}
+
+Instance::Instance(const Instance& source):
+  PRMObject(source), __type(source.__type), __params(0)
 {
-  if (get(id).elt_type() == ClassElement::prm_refslot) {
-    const ReferenceSlot& ref = static_cast<const ReferenceSlot&>(get(id));
-    if (instance.type().isSubTypeOf(ref.slotType())) {
-      GUM_ERROR(OperationNotAllowed, "illegal instance type for this reference slot.");
+  GUM_CONS_CPY( Instance );
+  GUM_ERROR(FatalError, "do not copy Instance");
+}
+
+Instance&
+Instance::operator=(const Class& from) {
+  GUM_ERROR(FatalError, "do not copy Instance");
+}
+
+Instance::~Instance() {
+  GUM_DESTRUCTOR( Instance );
+  for (Set<Attribute*>::iterator iter = __trash.begin(); iter != __trash.end(); ++iter) {
+    delete *iter;
+  }
+  typedef Property< Set< Instance* >* >::onNodes::iterator TmpIterator;
+  for (TmpIterator iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter) {
+    delete *iter;
+  }
+  typedef Property< std::vector<pair>* >::onNodes::iterator Foo;
+  for (Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter)
+    delete *iter;
+  if (__params)
+    delete __params;
+  --Instance::__end_counter;
+  if (Instance::__end_counter == 0) {
+    delete Instance::__end;
+    Instance::__end = 0;
+    delete Instance::__const_end;
+    Instance::__const_end = 0;
+  }
+}
+
+PRMObject::ObjectType
+Instance::obj_type() const { return PRMObject::prm_instance; }
+
+Class&
+Instance::type() { return *__type; }
+
+const Class&
+Instance::type() const { return *__type; }
+
+bool
+Instance::exists(NodeId id) {
+  return __nodeIdMap.exists(id);
+}
+
+Attribute&
+Instance::get(NodeId id) {
+  try {
+    return *(__nodeIdMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no Attribute with the given NodeId");
+  }
+}
+
+const Attribute&
+Instance::get(NodeId id) const {
+  try {
+    return *(__nodeIdMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no Attribute with the given NodeId");
+  }
+}
+
+Attribute&
+Instance::get(const std::string& name) {
+  try {
+    return *(__nodeIdMap[type().get(name).id()]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no Attribute with the given name");
+  }
+}
+
+const Attribute&
+Instance::get(const std::string& name) const {
+  try {
+    return *(__nodeIdMap[type().get(name).id()]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no Attribute with the given name");
+  }
+}
+
+bool
+Instance::isInitialised(NodeId id) const {
+  return (__params)?__params->exists(id):false;
+}
+
+void
+Instance::setParameterValue(NodeId id, const Potential<prm_float>& value) {
+  Attribute* attr = 0;
+  try {
+    attr = __nodeIdMap[id];
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no Attribute with the given NodeId");
+  }
+  if (not __type->isParameter(id)) {
+    GUM_ERROR(WrongClassElement, "the given NodeId is not a parameter");
+  }
+  if (attr->cpf().nbrDim() > 1) {
+    GUM_ERROR(FatalError, "found a parameter's potential with more than one dimension");
+  }
+  if (not value.contains(attr->type().variable())) {
+    GUM_ERROR(OperationNotAllowed, "the given value is invalid for this parameter");
+  }
+  // Assigning value
+  attr->cpf().copy(value);
+  if (not __params) {
+    __params = new Set<NodeId>();
+  }
+  __params->insert(id);
+}
+
+bool
+Instance::isInstantiated(NodeId id) const {
+  try {
+    return &(get(id).type().variable()) != &(type().get(id).type().variable());
+  } catch (NotFound&) {
+    return __referenceMap.exists(id);
+  }
+}
+
+void
+Instance::__instantiateSlotChain(SlotChain* sc) {
+  __referenceMap.insert(sc->id(), new Set<Instance*>());
+  // An instantiated slot chain is a tree, to find all leaves we proceed with a deep run
+  std::vector< std::pair<Instance*, Size> > stack;
+  stack.push_back(std::pair<Instance*, Size>(this, 0));
+  Set<Instance*> visited;
+  // Last element is an attribute, and we only want the instance containing it
+  Size depth_stop = sc->chain().size() -1;
+  // Let's go!
+  while (not stack.empty()) {
+    Instance* current = stack.back().first;
+    Size depth = stack.back().second;
+    stack.pop_back();
+    if (not visited.exists(current)) {
+      visited.insert(current);
+      if ( depth < depth_stop) {
+        try {
+          NodeId refId = sc->chain().atPos(depth)->id();
+          Set<Instance*>* instances = current->__referenceMap[refId];
+          for (Set<Instance*>::iterator iter = instances->begin(); iter != instances->end(); ++iter)
+            stack.push_back(std::make_pair(*iter, depth + 1));
+        } catch (NotFound&) {
+          GUM_ERROR(NotFound, "found an uninstantiated reference");
+        }
+      } else {
+        try {
+          __referenceMap[sc->id()]->insert(current);
+          __addReferingInstance(sc, current);
+          // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
+          // to __bijection for CPF initialisation
+          if (not sc->isMultiple())
+            __bijection.insert(&(current->get(sc->lastElt().safeName()).type().variable()), &(sc->type().variable()));
+        } catch (DuplicateElement&) {
+          // This happens if instantiate() is called more than one time
+        }
+      }
     }
-    if (not __referenceMap.exists(id)) {
-      __referenceMap.insert(id, new Set< Instance* >());
-      __referenceMap[id]->insert(&instance);
-    } else if (ref.isArray()) {
-      __referenceMap[id]->insert(&instance);
-    } else {
-      GUM_ERROR(OperationNotAllowed, "This single reference has been already instantiated.");
+  }
+}
+
+void
+Instance::__addReferingInstance(SlotChain* sc, Instance* i) {
+  NodeId id = i->get(sc->lastElt().safeName()).id();
+  std::string name = sc->lastElt().safeName();
+  try {
+    i->__referenceMap[id]->insert(this);
+    i->__referingAttr[id]->push_back(std::make_pair(i, name));
+  } catch (NotFound&) {
+    i->__referenceMap.insert(id, new Set< Instance* >());
+    i->__referenceMap[id]->insert(i);
+    i->__referingAttr.insert(id, new std::vector<pair>());
+    i->__referingAttr[id]->push_back(std::make_pair(i, name));
+  }
+}
+
+void
+Instance::instantiate() {
+  // First retrieving any referenced instance
+  for (Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain)
+    __instantiateSlotChain(*chain);
+  // Now we need to add referred instance to each input node
+  // For Aggregate we add parents
+  for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
+    for (ArcSet::iterator arc = type().dag().parents((*iter)->id()).begin(); arc != type().dag().parents((*iter)->id()).end(); ++arc) {
+      try {
+        (*iter)->addParent(get(arc->tail()));
+      } catch (NotFound&) {
+        SlotChain& sc = static_cast<SlotChain&>(type().get(arc->tail()));
+        for (Set<Instance*>::iterator i = getInstances(sc.id()).begin(); i != getInstances(sc.id()).end(); ++i)
+          (*iter)->addParent((*i)->get(sc.lastElt().safeName()));
+      }
     }
-  } else {
-    GUM_ERROR(NotFound, "No gum::ReferenceSlot with the given id.");
+  }
+  // For Attributes we first add parents, then we initialize CPF
+  for (Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter) {
+    if (not type().isParameter((*iter)->id())) {
+      if (isInstantiated((*iter)->id())) {
+        Attribute* class_attr = const_cast<Attribute*>(*iter);
+        Attribute* my_attr = __nodeIdMap[(*iter)->id()];
+        MultiDimArray<prm_float>* array = dynamic_cast< MultiDimArray<prm_float>* >(class_attr->cpf().getContent());
+        if (array) {
+          delete (my_attr->__cpf);
+          my_attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
+        } else {
+          // Just need to make the copy using the bijection but we only use multidim array
+          GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
+        }
+      } else {
+        bool init = false;
+        for (DAG::ArcIterator arc = type().dag().parents((*iter)->id()).begin();(not init) and (arc != type().dag().parents((*iter)->id()).end()); ++arc)
+          init = init or isInstantiated(arc->tail());
+        if (init) {
+          Attribute* class_attr = const_cast<Attribute*>(*iter);
+          MultiDimArray<prm_float>* array = dynamic_cast< MultiDimArray<prm_float>* >(class_attr->cpf().getContent());
+          if (array) {
+            Potential<prm_float>* cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
+            Attribute* a = new Attribute(class_attr->name(), class_attr->__type, cpf, false);
+            a->setId(class_attr->id());
+            __nodeIdMap[a->id()] = a;
+            __trash.insert(a);
+          } else {
+            // Just need to make the copy using the bijection but we only use multidim array
+            GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
+          }
+        }
+      }
+    }
   }
 }
 
 void
 Instance::instantiate(NodeId id)
 {
-  if (not type().instantiations().exists(id)) {
-    GUM_ERROR(OperationNotAllowed, "can't instantiate this node.");
-  } else if (not __instantiated_nodes.contains(id)) {
-    __instantiated_nodes.insert(id);
-    // first instantiate parents if necessary
-    for (DAG::ArcIterator parent = parents(id).begin(); parent != parents(id).end(); ++parent) {
-      __instantiateParent(id, parent->tail());
-    }
-    // Since the model can contains loop (but not cycle) point this node can be already instantiated
-    if (not _exists(id)) {
-      // second we instantiate the node
-      switch (type().get(id).elt_type()) {
-        case ClassElement::prm_attribute: {
-                                            __instantiateAttribute(id);
-                                            break;
-                                          }
-        case ClassElement::prm_aggregate: {
-                                            __instantiateAggregate(id);
-                                            break;
-                                          }
-        default: {
-                   GUM_ERROR(FatalError, "invalid context to instantiate given node.");
-                 }
-      }
-      // third tell to this node's children to instantiate themselves
-      for (DAG::ArcIterator child = children(id).begin(); child != children(id).end(); ++child) {
-        __instantiateChildren(child->head(), id);
-      }
-    }
+  if (not type().exists(id)) {
+    GUM_ERROR(NotFound, "no ClassElement matches the given id");
+  } else if (__nodeIdMap.exists(id)) {
+    GUM_ERROR(WrongClassElement, "can not instantiate the given ClassElement");
+  }
+  if (not __instantiated_nodes.exists(id)) {
+    __copyAttribute(__nodeIdMap[id]);
+    // Could be optimised
+    instantiate();
   }
 }
 
+
+const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
+Instance::bijection() const {
+  return __bijection;
+}
+
 void
-Instance::__instantiateParent(NodeId child, NodeId parent) {
-  switch (type().get(parent).elt_type()) {
-    case ClassElement::prm_slotchain: {
-                                        if (not __slotChainMap.exists(parent)) {
-                                          __slotChainMap.insert(parent, new Instance::INMap());
-                                          __instantiateSlotChain(parent);
-                                        }
-                                        break;
-                                      }
-    case ClassElement::prm_attribute:
-    case ClassElement::prm_aggregate: {
-                                        try {
-                                          instantiate(parent);
-                                        } catch (OperationNotAllowed&) {
-                                          // it's ok, parent don't need to be instantiated
-                                        }
-                                        break;
-                                      }
+Instance::add(NodeId id, Instance& instance) {
+  ClassElement* elt = 0;
+  try {
+    elt = &(type().get(id));
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement matches the given id");
+  }
+  switch (elt->elt_type()) {
+    case ClassElement::prm_refslot:
+      {
+        ReferenceSlot* ref = static_cast<ReferenceSlot*>(elt);
+        // Checking if instance's type is legal
+        if (not instance.type().isSubTypeOf(ref->slotType())) {
+          GUM_ERROR(TypeError, "given Instance type is not a proper "
+              "subclass of the ReferenceSlot slot type");
+        }
+        // Checking the reference's size limit
+        if ( __referenceMap.exists(id) and
+            (not static_cast<ReferenceSlot&>(type().get(id)).isArray()) and
+            (__referenceMap[id]->size() == 1) )
+        {
+          GUM_ERROR(OutOfUpperBound, "ReferenceSlot size limit reached");
+        }
+        break;
+      }
+    case ClassElement::prm_slotchain:
+      {
+        SlotChain& sc = static_cast<SlotChain&>(type().get(id));
+        // Checking if instance's type is legal
+        if (not instance.type().isSubTypeOf(sc.end())) {
+          GUM_ERROR(TypeError, "given Instance type is not a proper "
+              "subclass of the ClassElementContainer pointed"
+              " by the SlotChain");
+        }
+        // Checking the reference's size limit
+        if ( __referenceMap.exists(id) and
+            (not static_cast<SlotChain&>(type().get(id)).isMultiple()) and
+            (__referenceMap[id]->size() == 1) )
+        {
+          GUM_ERROR(OutOfUpperBound, "SlotChain size limit reached");
+        }
+        // We need to plug this to the referred instance.
+        GUM_CHECKPOINT;
+        break;
+      }
     default: {
-               GUM_ERROR(FatalError, "can't instantiate this node.");
+               if (not type().isOutputNode(elt->id()))
+                 GUM_ERROR(WrongClassElement, "given ClassElement is not an output node");
              }
   }
+  if (not __referenceMap.exists(id)) {
+    __referenceMap.insert(id, new Set<Instance*>());
+  }
+  __referenceMap[id]->insert(&instance);
 }
 
-void
-Instance::__instantiateAttribute(NodeId id) {
-  Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
-  Type* t = new Type(type().get(id).type());
-  bijection.insert(&(t->variable()), &(type().get(id).type().variable()));
-  for (DAG::ArcIterator parent = parents(id).begin(); parent != parents(id).end(); ++parent) {
-    switch (get(parent->tail()).elt_type()) {
-      case ClassElement::prm_attribute: {
-                                          bijection.insert(&(get(parent->tail()).type().variable()),
-                                                           &(type().get(parent->tail()).type().variable()));
-                                          break;
-                                        }
-      case ClassElement::prm_slotchain: {
-                                          const SlotChain& sc = static_cast<const SlotChain&>(get(parent->tail()));
-                                          bijection.insert(&(getInstance(sc.id()).get(sc.lastElt().id()).type().variable()),
-                                                           &(sc.lastElt().type().variable()));
-                                          break;
-                                        }
-      default: {
-                 GUM_ERROR(FatalError, "invalid ClassElement type as parent.");
-                 break;
-               }
+const Instance&
+Instance::getInstance(NodeId id) const {
+  try {
+    if (__referenceMap[id]->size() > 0) {
+      return **(__referenceMap[id]->begin());
+    } else {
+      GUM_ERROR(UndefinedElement, "no Instance associated with the given NodeId");
     }
-  }
-  const MultiDimArray<prm_float>* array
-    = dynamic_cast<const MultiDimArray<prm_float>*>(const_cast<const Potential<prm_float>&>(type().get(id).cpf()).getContent());
-  if (array != 0) {
-    Potential<prm_float>* cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection, *array));
-    Attribute* attr = new Attribute(type().get(id).name(), t, cpf, true);
-    _add(attr, id);
-  } else {
-    GUM_ERROR(FatalError, "Unhandle Potential implementation.");
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ReferenceSlot or SlotChain matches the given NodeId");
   }
 }
 
-void
-Instance::__instantiateAggregate(NodeId id) {
-  Attribute* attr = new Attribute(type().get(id).name(), type().get(id).type(), static_cast<Aggregate&>(type().get(id)).buildImpl());
-  for (DAG::ArcIterator parent = parents(id).begin(); parent != parents(id).end(); ++parent) {
-    switch (get(parent->tail()).elt_type()) {
-      case ClassElement::prm_slotchain: {
-                                          SlotChain& sc = static_cast<SlotChain&>(get(parent->tail()));
-                                          for (Set< Instance* >::iterator i = __referenceMap[parent->tail()]->begin(); i != __referenceMap[parent->tail()]->end(); ++i) {
-                                            attr->addParent((**i).get(sc.lastElt().id()));
-                                          }
-                                          break;
-                                        }
-      case ClassElement::prm_attribute: {
-                                          attr->addParent(get(parent->tail()));
-                                          break;
-                                        }
-      default: {
-                 GUM_ERROR(FatalError, "invalid context to instantiate aggregate.");
-               }
-    }
+const Set<Instance*>&
+Instance::getInstances(NodeId id) const {
+  try {
+    return *(__referenceMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ReferenceSlot or SlotChain matches the given NodeId");
   }
-  _add(attr, id);
 }
 
-void
-Instance::__instantiateChildren(NodeId child, NodeId parent)
+Instance::iterator
+Instance::begin() { return __nodeIdMap.begin(); }
+
+const Instance::iterator&
+Instance::end() { return __nodeIdMap.end(); }
+
+Instance::const_iterator
+Instance::begin() const { return __nodeIdMap.begin(); }
+
+const Instance::const_iterator&
+Instance::end() const { return __nodeIdMap.end(); }
+
+Instance::RefIterator
+Instance::begin(NodeId id) {
+  try {
+    return Instance::RefIterator(__referenceMap[id]->begin());
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no referred instances from this NodeId");
+  }
+}
+
+const Instance::RefIterator&
+Instance::end(NodeId id) {
+  try {
+    return *(Instance::__end);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no referred instances from this NodeId");
+  }
+}
+
+Instance::ConstRefIterator
+Instance::begin(NodeId id) const {
+  try {
+    return Instance::ConstRefIterator(__referenceMap[id]->begin());
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no referred instances from this NodeId");
+  }
+}
+
+const Instance::ConstRefIterator&
+Instance::end(NodeId id) const {
+  try {
+    return *(Instance::__const_end);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no referred instances from this NodeId");
+  }
+}
+
+Instance::RefIterator::RefIterator(const Set<Instance*>::iterator& iter):
+  __iter(iter)
 {
-  // check if this needs to be instantiated
-  if (type().instantiations().exists(child) and (not __instantiated_nodes.contains(child))) {
-    instantiate(child);
-  } else {
-    // check if other parents of child to instantiate them if necessary
-    for (DAG::ArcIterator parent = parents(child).begin(); parent != parents(child).end(); ++parent) {
-      try {
-        instantiate(parent->tail());
-      } catch (OperationNotAllowed&) {
-        // it's ok, parent don't need to be instantiated
-      }
-    }
-    // Since the model can contains loop (but not cycle) point this node can be already instantiated
-    if (not _exists(child)) {
-      MultiDimBijArray<prm_float>::VarBijection bijection;
-      for (DAG::ArcIterator parent = parents(child).begin(); parent != parents(child).end(); ++parent) {
-        if (__instantiated_nodes.contains(parent->tail())) {
-          switch (get(parent->tail()).elt_type()) {
-            case ClassElement::prm_attribute: {
-                                                bijection.insert(&(get(parent->tail()).type().variable()),
-                                                    &(type().get(parent->tail()).type().variable()));
-                                                break;
-                                              }
-            case ClassElement::prm_slotchain: {
-                                                const SlotChain& sc = static_cast<const SlotChain&>(get(parent->tail()));
-                                                bijection.insert(&(getInstance(sc.id()).get(sc.lastElt().id()).type().variable()),
-                                                    &(sc.lastElt().type().variable()));
-                                                break;
-                                              }
-            default: {
-                       GUM_ERROR(FatalError, "invalid ClassElement type as parent.");
-                       break;
-                     }
-          }
-        }
-      }
-      if (not bijection.empty()) {
-        // Adding instantiated parent's variables
-        const Potential<prm_float>& cpf = type().get(child).cpf();
-        const MultiDimArray<prm_float>* array = dynamic_cast<const MultiDimArray<prm_float>*>(cpf.getContent());
-        if (array != 0) {
-          Potential<prm_float>* p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection, *array));
-          Attribute* attr = new Attribute(type().get(child).name(), &(type().get(child).type()), p, false);
-          _add(attr, child);
-        } else {
-          GUM_ERROR(OperationNotAllowed, "Unusable MultiDimImplementation.");
-        }
-      }
-    }
-  }
+  GUM_CONSTRUCTOR( RefIterator );
 }
 
-void
-Instance::__instantiateSlotChain(NodeId id)
+Instance::RefIterator::RefIterator( const RefIterator& from ):
+  __iter(from.__iter)
 {
-  SlotChain& chain = static_cast<SlotChain&>(get(id));
-  // If there is type specialisation we need to know which type to use
-  const Type& type = chain.type();
-  std::stringstream cast;
-  cast << "<" << type.name() << ">" << chain.lastElt().name();
-  // An instantiated slot chain is a tree, to find all leaves we proceed
-  // with a deep run.
-  std::vector< std::pair<Instance*, Size> > stack;
-  stack.push_back(std::pair<Instance*, Size>(this, 0));
-  Set<Instance*> visited;
-  // Last element is an attribute, and we only want the instance
-  // containing it.
-  Size depth_stop = chain.chain().size();
-  // Loop variables
-  NodeId lastElt_id = 0;
-  Size depth = 0;
-  Instance* current = 0;
-  Set<Instance*>* instances = 0;
-  // Let's go!
-  while (not stack.empty()) {
-    current = stack.back().first;
-    depth = stack.back().second;
-    stack.pop_back();
-    if (not visited.exists(current)) {
-      visited.insert(current);
-      if ( depth < depth_stop) {
-        try {
-          instances = current->__referenceMap[chain.chain().atPos(depth)->id()];
-          for (Set<Instance*>::iterator iter = instances->begin();
-              iter != instances->end(); ++iter) {
-            stack.push_back(std::make_pair(*iter, depth + 1));
-          }
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "Uninstantiated reference.");
-        }
-      } else {
-        lastElt_id = current->get(chain.id()).type() == type?
-          chain.id():current->get(cast.str()).id();
-        __slotChainMap[chain.id()]->insert(current, lastElt_id);
-        current->instantiate(lastElt_id);
-        current->__addAsInverseSC(lastElt_id, this, id);
-      }
-    }
-  }
+  GUM_CONS_CPY( RefIterator );
 }
 
-void
-Instance::__addAsInverseSC(NodeId id, Instance* i, NodeId sc_id) {
-  Instance::InverseSC* inv = new Instance::InverseSC(i, sc_id);
-  // try {
-    try {
-      __inverseSC[id]->insert(inv);
-    } catch (NotFound&) {
-      __inverseSC.insert(id, new Set< Instance::InverseSC* >());
-      __inverseSC[id]->insert(inv);
-    }
-  // } catch (DuplicateElement&) {
-  //   // That could happen but will trace it in debug mode just in case
-  // }
+Instance::RefIterator::~RefIterator() {
+  GUM_DESTRUCTOR( RefIterator );
 }
 
-void
-Instance::__init_bijection() const {
-  __bijection = new Bijection<const DiscreteVariable*, const DiscreteVariable*>();
-  for (Set<Attribute*>::iterator attr = attributes().begin();
-       attr != attributes().end(); ++attr) {
-    __bijection->insert(&((**attr).type().variable()),
-                        &(type().get((**attr).id()).type().variable()));
-  }
-  for (Set<SlotChain*>::iterator sc = slotChains().begin();
-       sc != slotChains().end(); ++sc) {
-    if (not (**sc).isMultiple()) {
-      __bijection->insert(&(getInstance((**sc).id()).get((**sc).lastElt().id()).type().variable()),
-                          &((**sc).lastElt().type().variable()));
-    }
-  }
+Instance::RefIterator&
+Instance::RefIterator::operator=( const RefIterator& from ) {
+  __iter = from.__iter;
+  return *this;
+}
+
+Instance::RefIterator&
+Instance::RefIterator::operator++() {
+  ++__iter;
+  return *this;
+}
+
+bool
+Instance::RefIterator::operator!=(const RefIterator& from) const {
+  return __iter != from.__iter;
+}
+
+bool
+Instance::RefIterator::operator==(const RefIterator& from) const {
+  return __iter == from.__iter;
+}
+
+Instance&
+Instance::RefIterator::operator*() const {
+  return **__iter;
+}
+
+Instance*
+Instance::RefIterator::operator->() const {
+  return *__iter;
+}
+
+Instance::ConstRefIterator::ConstRefIterator(const Set<Instance*>::const_iterator& iter):
+  __iter(iter)
+{
+  GUM_CONSTRUCTOR( ConstRefIterator );
+}
+
+Instance::ConstRefIterator::ConstRefIterator( const ConstRefIterator& from ):
+  __iter(from.__iter)
+{
+  GUM_CONS_CPY( ConstRefIterator );
+}
+
+Instance::ConstRefIterator::~ConstRefIterator() {
+  GUM_DESTRUCTOR( ConstRefIterator );
+}
+
+Instance::ConstRefIterator&
+Instance::ConstRefIterator::operator=( const ConstRefIterator& from ) {
+  __iter = from.__iter;
+  return *this;
+}
+
+Instance::ConstRefIterator&
+Instance::ConstRefIterator::operator++() {
+  ++__iter;
+  return *this;
+}
+
+bool
+Instance::ConstRefIterator::operator!=(const ConstRefIterator& from) const {
+  return __iter != from.__iter;
+}
+
+bool
+Instance::ConstRefIterator::operator==(const ConstRefIterator& from) const {
+  return __iter == from.__iter;
+}
+
+const Instance&
+Instance::ConstRefIterator::operator*() const {
+  return **__iter;
+}
+
+const Instance*
+Instance::ConstRefIterator::operator->() const {
+  return *__iter;
 }
 
 // ============================================================================

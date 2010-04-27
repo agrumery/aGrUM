@@ -79,6 +79,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
 
     void testClasses() {
       SkoolReader reader;
+      //reader.readFile("../../../src/testunits/ressources/skool/printers.skool");
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
@@ -160,7 +161,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)6);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
@@ -317,6 +318,221 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_ASSERT(Computer.isSuperTypeOf(Computer));
       delete prm;
     }
+
+    // Testing class PowerSupply
+    void testComplexPrinters_4() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      // Classes
+      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
+      TS_ASSERT_EQUALS(PowerSupply.attributes().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(PowerSupply.dag().sizeArcs(), (gum::Size)1);
+      TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["<boolean>state"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["state"]);
+      TS_ASSERT(PowerSupply["state"].type().isSubTypeOf(PowerSupply["<boolean>state"].type()));
+      NodeId n1 = 0;
+      NodeId n2 = 0;
+      NodeId n3 = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(n1 = PowerSupply["<boolean>state"].id());
+      TS_GUM_ASSERT_THROWS_NOTHING(n2 = PowerSupply["state"].id());
+      TS_GUM_ASSERT_THROWS_NOTHING(n3 = PowerSupply["<agrum.test.t_state>state"].id());
+      TS_ASSERT_EQUALS(n2, n3);
+      TS_ASSERT(PowerSupply.dag().existsArc(n2, n1));
+      TS_ASSERT_EQUALS(PowerSupply.referenceSlots().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(PowerSupply.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(PowerSupply.slotChains().size(), (gum::Size)0);
+      delete prm;
+    }
+
+    // Testing class Room
+    void testComplexPrinters_5() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      Class& Room = prm->getClass("agrum.test.Room");
+      TS_ASSERT_EQUALS(Room.attributes().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(Room.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(Room.aggregates().size(), (gum::Size)0);
+      TS_ASSERT_EQUALS(Room.slotChains().size(), (gum::Size)0);
+      delete prm;
+    }
+
+    // Testing interface Equipment
+    void testComplexPrinters_6() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
+      TS_ASSERT_EQUALS(Equipment.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(Equipment.attributes().size(), (gum::Size)3);
+      TS_GUM_ASSERT_THROWS_NOTHING(Equipment["equipState"]);
+      TS_ASSERT_EQUALS(Equipment["equipState"].type().name(), "agrum.test.t_degraded");
+      delete prm;
+    }
+
+    // Testing interface Printer
+    void testComplexPrinters_7() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Printer"));
+      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      TS_ASSERT_EQUALS(Printer.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(Printer.attributes().size(), (gum::Size)5);
+      TS_GUM_ASSERT_THROWS_NOTHING(Printer["room"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Printer["equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Printer["hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Printer["hasInk"]);
+      TS_ASSERT_EQUALS(Printer["equipState"].type().name(), "agrum.test.t_degraded");
+      TS_ASSERT_EQUALS(Printer["hasPaper"].type().name(), "boolean");
+      TS_ASSERT_EQUALS(Printer["hasInk"].type().name(), "boolean");
+      delete prm;
+    }
+
+    // Testing class BWPrinter
+    void testComplexPrinters_8() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
+      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
+      TS_ASSERT_EQUALS(BWPrinter.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(BWPrinter.attributes().size(), (gum::Size)9);
+      TS_ASSERT_EQUALS(BWPrinter.slotChains().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(BWPrinter.aggregates().size(), (gum::Size)0);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["room"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<boolean>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_state>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_degraded>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<boolean>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_state>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_paper>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<boolean>hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_state>hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["<agrum.test.t_ink>hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["hasInk"]);
+      delete prm;
+    }
+
+    // Testing class ColorPrinter
+    void testComplexPrinters_9() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.ColorPrinter"));
+      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
+      TS_ASSERT_EQUALS(ColorPrinter.referenceSlots().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(ColorPrinter.attributes().size(), (gum::Size)18);
+      TS_ASSERT_EQUALS(ColorPrinter.aggregates().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(ColorPrinter.slotChains().size(), (gum::Size)1);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["room"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_degraded>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_paper>hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_ink>black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_ink>magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_ink>yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<boolean>cyan"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_state>cyan"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["<agrum.test.t_ink>cyan"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["cyan"]);
+      delete prm;
+    }
+
+    // Testing class Computer
+    void testComplexPrinters_10() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      Class& Computer = prm->getClass("agrum.test.Computer");
+      TS_ASSERT_EQUALS(Computer.attributes().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(Computer.referenceSlots().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(Computer.aggregates().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(Computer.slotChains().size(), (gum::Size)2);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<boolean>functional_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["functional_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<boolean>degraded_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["degraded_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<boolean>working_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["working_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<boolean>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<agrum.test.t_state>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<agrum.test.t_degraded>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["<boolean>can_print"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["can_print"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["printers.equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["room.power.state"]);
+      delete prm;
+    }
+
+    // Testing class Computer
+    void testComplexPrinters_11() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      PRM* prm = reader.prm();
+      Class& SafeComputer = prm->getClass("agrum.test.SafeComputer");
+      TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(SafeComputer.referenceSlots().size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(SafeComputer.slotChains().size(), (gum::Size)3);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<boolean>functional_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["functional_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<boolean>degraded_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["degraded_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<boolean>working_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["working_printer"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<boolean>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<agrum.test.t_state>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<agrum.test.t_degraded>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["<boolean>can_print"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["can_print"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.<agrum.test.t_state>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.<agrum.test.t_degraded>equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["room.power.<agrum.test.t_state>state"]);
+      delete prm;
+    }
+
+    void testPrintersSystems1() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool"));
+      PRM* prm = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
+      if (prm) {
+        delete prm;
+      }
+    }
+
+    void testComplexPrintersSystems1() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool"));
+      PRM* prm = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
+      if (prm) {
+        delete prm;
+      }
+    }
+
+
 };
 
 } // namespace tests

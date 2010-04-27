@@ -39,6 +39,12 @@ INLINE
 void
 ClassElement::setId(NodeId id) { __id = id; }
 
+INLINE
+const std::string&
+ClassElement::safeName() const {
+  return _safeName;
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

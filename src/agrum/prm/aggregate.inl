@@ -41,11 +41,11 @@ Aggregate::label() const { return __label; }
 
 INLINE
 Type&
-Aggregate::type() { return __type; }
+Aggregate::type() { return *__type; }
 
 INLINE
 const Type&
-Aggregate::type() const { return __type; }
+Aggregate::type() const { return *__type; }
 
 INLINE
 Potential<prm_float>&
@@ -77,22 +77,10 @@ Aggregate::buildImpl() const
     //  }
     //  break;
     case agg_exists:
-      if (__label < __type.variable().domainSize()) {
-        impl = new aggregator::Exists<prm_float>(__label);
-      } else {
-        std::string msg = "This aggregator of type agg_exists isn't initialized "
-          "properly.";
-        GUM_ERROR(FatalError, msg);
-      }
+      impl = new aggregator::Exists<prm_float>(__label);
       break;
     case agg_forall:
-      if (__label < __type.variable().domainSize()) {
-        impl = new aggregator::Forall<prm_float>(__label);
-      } else {
-        std::string msg = "This aggregator of type agg_forall isn't initialized "
-          "properly.";
-        GUM_ERROR(FatalError, msg);
-      }
+      impl = new aggregator::Forall<prm_float>(__label);
       break;
     case agg_count:
     case agg_mean:
