@@ -1,7 +1,7 @@
 project(AGRUM)
 cmake_minimum_required(VERSION 2.6)
 
-include("agrum_version.txt")
+include("version.txt")
 
 set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
