@@ -1,7 +1,7 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
 ACT=./act
-JOBS=4
+JOBS=7
 
 SKOOL_TEST=Skool
 
@@ -41,3 +41,6 @@ skooltestdebug:
 
 clean:
 	$(ACT) clean
+
+last:
+	$(ACT)

@@ -22,6 +22,7 @@
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/core/signal/signaler.h>
+#include <agrum/BN/BayesNet.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -99,6 +100,7 @@ namespace run_demo {
       std::cout << std::endl << "******" << std::endl;
     } // here signaler are destroyed before listener
   }
+  
 }
 
 int main( void ) {

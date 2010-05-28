@@ -192,7 +192,21 @@ namespace gum {
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+      /// @}
+      
+      // ===========================================================================
+      /// @name Joint Probability manipulation methods
+      // ===========================================================================
+      /// @{
+      
+      /// Get an instantiation over all the variables of the BN
+      Instantiation completeInstantiation() const;
+      
+      /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
+      /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
+      T_DATA jointProbability(const Instantiation& i) const;
 
+      /// 
       /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.

@@ -25,6 +25,7 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/core/refPtr.h>
 
 
 namespace gum {
