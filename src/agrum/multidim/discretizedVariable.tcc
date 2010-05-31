@@ -19,6 +19,7 @@
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/multidim/discretizedVariable.h>
 
 namespace gum {
 #define INC_TICKS_ARRAY 4
@@ -228,6 +229,10 @@ namespace gum {
     return __ticks_size<2?0:__ticks_size-1;
   }
 
+	template<typename T_TICKS> 
+  INLINE DiscreteVariable::Type DiscretizedVariable<T_TICKS>::type(void) const {
+    return Range;
+  }
 
 } /* namespace gum */
   

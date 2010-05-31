@@ -117,6 +117,11 @@ namespace gum {
 
 		/// a virtual copyFactory
     virtual DiscreteVariable* copyFactory() const;
+		
+    // ============================================================================
+    /// returns the type of variable
+    // ============================================================================
+    virtual Type type(void) const;
 
     /**
      * operator =

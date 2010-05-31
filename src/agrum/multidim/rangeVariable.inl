@@ -162,5 +162,9 @@ namespace gum
 	}
 
 
+  INLINE DiscreteVariable::Type RangeVariable::type(void) const {
+    return Range;
+  }
+
 } /* namespace gum */
 

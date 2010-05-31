@@ -49,6 +49,8 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
   public:
+    enum Type {Discretized,Labelized,Range};
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -106,6 +108,11 @@ namespace gum {
      */
     // ============================================================================
     virtual const std::string label( const Idx indice ) const = 0;
+    
+    // ============================================================================
+    /// returns the type of variable
+    // ============================================================================
+    virtual Type type(void) const =0;
     /// @}
 
 

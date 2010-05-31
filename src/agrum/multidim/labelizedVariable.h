@@ -155,6 +155,11 @@ namespace gum {
     /// returns the set of labels of the variable
     // ============================================================================
     const Sequence<std::string>& labels() const;
+		
+    // ============================================================================
+    /// returns the type of variable
+    // ============================================================================
+    virtual Type type(void) const;
 
     /// @}
 

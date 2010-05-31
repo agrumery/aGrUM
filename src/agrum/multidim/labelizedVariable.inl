@@ -30,152 +30,139 @@
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/core/hashTable.h>
 
+// to ease IDE parsers
+#include <agrum/multidim/labelizedVariable.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-namespace gum
-{
+namespace gum {
 
 
-	// ==============================================================================
-	/// erase all the labels
-	// ==============================================================================
-	INLINE void LabelizedVariable::eraseLabels ( void )
-	{
-		zeLabels.clear();
-	}
+  // ==============================================================================
+  /// erase all the labels
+  // ==============================================================================
+  INLINE void LabelizedVariable::eraseLabels ( void ) {
+    zeLabels.clear();
+  }
 
-	// ==============================================================================
-	/// copies the content of aLDRV
-	// ==============================================================================
-	INLINE void LabelizedVariable::_copy ( const LabelizedVariable& aLDRV )
-	{
-		DiscreteVariable::_copy ( aLDRV );
-		zeLabels.clear();
-		zeLabels=aLDRV.labels();
-	}
+  // ==============================================================================
+  /// copies the content of aLDRV
+  // ==============================================================================
+  INLINE void LabelizedVariable::_copy ( const LabelizedVariable& aLDRV ) {
+    DiscreteVariable::_copy ( aLDRV );
+    zeLabels.clear();
+    zeLabels = aLDRV.labels();
+  }
 
-	// ==============================================================================
-	/// returns the set of labels of the variable
-	// ==============================================================================
-	INLINE const Sequence<std::string>& LabelizedVariable::labels() const
-	{
-		return zeLabels;
-	}
+  // ==============================================================================
+  /// returns the set of labels of the variable
+  // ==============================================================================
+  INLINE const Sequence<std::string>& LabelizedVariable::labels() const {
+    return zeLabels;
+  }
 
-	// ==============================================================================
-	/// add a label with a new index (we assume that we will NEVER remove a label)
-	// ==============================================================================
-	INLINE LabelizedVariable& LabelizedVariable::addLabel ( const std::string aLabel )
-	{
-		zeLabels.insert ( aLabel );
+  // ==============================================================================
+  /// add a label with a new index (we assume that we will NEVER remove a label)
+  // ==============================================================================
+  INLINE LabelizedVariable& LabelizedVariable::addLabel ( const std::string aLabel ) {
+    zeLabels.insert ( aLabel );
 
-		return *this;
-	}
+    return *this;
+  }
 
-	// ==============================================================================
-	/// Default constructor
-	// ==============================================================================
-	INLINE LabelizedVariable::LabelizedVariable
-	( const std::string&  aName,const std::string&  aDesc,const int nbrLabel ) :
-			DiscreteVariable ( aName, aDesc )
-	{
-		// for debugging purposes
-		GUM_CONSTRUCTOR ( LabelizedVariable );
+  // ==============================================================================
+  /// Default constructor
+  // ==============================================================================
+  INLINE LabelizedVariable::LabelizedVariable
+  ( const std::string&  aName, const std::string&  aDesc, const int nbrLabel ) :
+      DiscreteVariable ( aName, aDesc ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR ( LabelizedVariable );
 
-		for ( int i=0; i<nbrLabel; ++i )
-		{
-			std::ostringstream oss;
-			oss << i;
-			addLabel ( oss.str() );
-		}
-	}
+    for ( int i = 0; i < nbrLabel; ++i ) {
+      std::ostringstream oss;
+      oss << i;
+      addLabel ( oss.str() );
+    }
+  }
 
-	// ==============================================================================
-	/// Copy constructor
-	// ==============================================================================
-	INLINE
-	LabelizedVariable::LabelizedVariable ( const LabelizedVariable& aLDRV ) :
-			DiscreteVariable ( aLDRV ),zeLabels ( aLDRV.labels() )
-	{
-		// for debugging purposes
-		GUM_CONSTRUCTOR ( LabelizedVariable );
-	}
+  // ==============================================================================
+  /// Copy constructor
+  // ==============================================================================
+  INLINE
+  LabelizedVariable::LabelizedVariable ( const LabelizedVariable& aLDRV ) :
+      DiscreteVariable ( aLDRV ), zeLabels ( aLDRV.labels() ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR ( LabelizedVariable );
+  }
 
-	// ==============================================================================
-	/// destructor
-	// ==============================================================================
-	INLINE LabelizedVariable::~LabelizedVariable()
-	{
-		eraseLabels();
-		GUM_DESTRUCTOR ( LabelizedVariable );
-	}
+  // ==============================================================================
+  /// destructor
+  // ==============================================================================
+  INLINE LabelizedVariable::~LabelizedVariable() {
+    eraseLabels();
+    GUM_DESTRUCTOR ( LabelizedVariable );
+  }
 
-	INLINE
-	DiscreteVariable*
-	LabelizedVariable::copyFactory() const
-	{
-		LabelizedVariable* varPtr = new LabelizedVariable ( *this );
-		return ( DiscreteVariable* ) varPtr;
-	}
+  INLINE
+  DiscreteVariable*
+  LabelizedVariable::copyFactory() const {
+    LabelizedVariable* varPtr = new LabelizedVariable ( *this );
+    return ( DiscreteVariable* ) varPtr;
+  }
 
-	// ==============================================================================
-	/// copy operator
-	// ==============================================================================
-	INLINE const LabelizedVariable& LabelizedVariable::operator=
-	( const LabelizedVariable& aLDRV )
-	{
-		// avoid self assignment
-		if ( &aLDRV != this )
-		{
-			_copy ( aLDRV );
-		}
+  // ==============================================================================
+  /// copy operator
+  // ==============================================================================
+  INLINE const LabelizedVariable& LabelizedVariable::operator=
+  ( const LabelizedVariable& aLDRV ) {
+    // avoid self assignment
+    if ( &aLDRV != this ) {
+      _copy ( aLDRV );
+    }
 
-		return *this;
-	}
+    return *this;
+  }
 
-	// ==============================================================================
-	/// indicates whether the variable already has the label passed in argument
-	// ==============================================================================
-	INLINE bool LabelizedVariable::isLabel ( const std::string & aLabel ) const
-	{
-		return zeLabels.exists ( aLabel );
-	}
+  // ==============================================================================
+  /// indicates whether the variable already has the label passed in argument
+  // ==============================================================================
+  INLINE bool LabelizedVariable::isLabel ( const std::string & aLabel ) const {
+    return zeLabels.exists ( aLabel );
+  }
 
-	// ==============================================================================
-	/// returns the ith label
-	// ==============================================================================
-	INLINE const std::string LabelizedVariable::label ( const Idx i ) const
-	{
-		return zeLabels.atPos ( i );
-	}
+  // ==============================================================================
+  /// returns the ith label
+  // ==============================================================================
+  INLINE const std::string LabelizedVariable::label ( const Idx i ) const {
+    return zeLabels.atPos ( i );
+  }
 
-	// ==============================================================================
-	/// returns the index of a given label
-	// ==============================================================================
-	INLINE Idx LabelizedVariable::operator[] ( const std::string& aLabel ) const
-	{
-		try
-		{
-			return zeLabels[aLabel];
-		}
-		catch ( ... )
-		{
-			GUM_ERROR ( OutOfBounds, "inexisting label" );
-		}
-	}
+  // ==============================================================================
+  /// returns the index of a given label
+  // ==============================================================================
+  INLINE Idx LabelizedVariable::operator[] ( const std::string& aLabel ) const {
+    try {
+      return zeLabels[aLabel];
+    } catch ( ... ) {
+      GUM_ERROR ( OutOfBounds, "inexisting label" );
+    }
+  }
 
-	// ==============================================================================
-	/// returns the size of the random discrete variable domain
-	// ==============================================================================
-	INLINE Size LabelizedVariable::domainSize() const
-	{
-		return zeLabels.size();
-	}
+  // ==============================================================================
+  /// returns the size of the random discrete variable domain
+  // ==============================================================================
+  INLINE Size LabelizedVariable::domainSize() const {
+    return zeLabels.size();
+  }
 
+  INLINE DiscreteVariable::Type LabelizedVariable::type(void) const {
+    return Labelized;
+  }
 
 } /* namespace gum */
 
 
 #endif /* DOXYGEN SHOULD SKIP THIS */
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
