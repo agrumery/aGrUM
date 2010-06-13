@@ -20,91 +20,77 @@
 
 #include <iostream>
 
-#include <agrum/core/signal/listener.h>
-#include <agrum/core/signal/signaler.h>
+#define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
+
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+//#include <agrum/BN/inference/FastSSInference.h>
+#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+//#include <agrum/BN/inference/fastLazyPropagation.h>
+
+#include <agrum/core/timer.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#define TEST_INFERENCE(x,i) {                                     \
+std::cout<<"==================="<<std::endl<<#x<<std::endl;     \
+    t.reset();                                                  \
+    gum::x<float> inf( *net );                                  \
+    inf.makeInference();                                        \
+    std::cout<<(inf.marginal(i))<<std::endl                     \
+             <<"Timing : "<<t.step()<<std::endl                 \
+             <<"==================="<<std::endl<<std::endl;     \
+    }
+    
 namespace run_demo {
+  void f() {    
+    std::cout<<"\n\n==========\nAlarm.bif\n";
+    gum::Timer t;
+    std::string file = GET_PATH_STR( alarm.bif );
+    gum::BayesNet<float> *net = new gum::BayesNet<float>();
+    gum::BIFReader<float> reader( net, file );
+    
+    t.reset();
+    reader.proceed();
+    GUM_TRACE_VAR(*net);
+    std::cout<<"reading BN : "<<t.step()<<std::endl;
 
-  class A {
-      std::string _label;
-
-    public:
-      gum::Signaler0 onAddNode;
-      gum::Signaler6<int, std::string, float, char, char, char> onChangeLabel;
-
-
-      A( std::string s ) : _label( s ) {}
-
-      const std::string& label() const { return _label;}
-
-      void addNode() { GUM_EMIT0( onAddNode );}
-
-      void changeLabel( int id, std::string s ) { GUM_EMIT6( onChangeLabel, id, s, 3.1415, 'h', 'e', 'l' );_label = s;}
-  };
-
-  class B : public gum::Listener {
-    public:
-      void nodeAdded( const void* v ) {
-        const A* source = static_cast<const A*>( v );
-        std::cout << "in " << source->label() << ": node  added ..." << std::endl;
-      }
-
-      void labelChanged( const void* v, int i, std::string s, float f , char , char , char ) {
-        const A* source = static_cast<const A*>( v );
-        std::cout << "in " << source->label() << ": label '" << s << "' changed  for id " << i << "..." << f << std::endl;
-      }
-  };
-
-  class C : public gum::Listener {
-    public:
-      void f( const void* v, int i, std::string s, float f , char , char , char ) {
-        std::cout << v << " " << i << " " << s << " " << f << std::endl;
-      }
-  };
-
-  void f( void ) {
-
-    B gui;
-    {
-      A x( "x" );
-      A Y( "y" );
-      //  GUM_CONNECT(sender,signal,receiver,target)
-      GUM_CONNECT( x, onAddNode, gui, B::nodeAdded );
-      GUM_CONNECT( x, onChangeLabel, gui, B::labelChanged );
-
-      std::cout << std::endl << "******" << std::endl;
-      x.addNode();
-
-      {
-        C anonymous;
-        GUM_CONNECT( x, onChangeLabel, anonymous, C::f );
-
-        std::cout << std::endl << "******" << std::endl;
-        x.changeLabel( 1, "my new label" );
-      }
-
-      // anonymous has been destroyed. He should not listen anymore.
-
-      std::cout << std::endl << "******" << std::endl;
-      x.addNode();
-
-      std::cout << std::endl << "******" << std::endl;
-
-      // is not validate
-      // x.GUM_EMIT2( onChangeLabel,1,"toto" );
-
-
-      std::cout << std::endl << "******" << std::endl;
-    } // here signaler are destroyed before listener
+    int i=0;
+    //TEST_INFERENCE(Gibbs);
+//    for(gum::NodeId i=0;i<10;++i) {
+      TEST_INFERENCE(Gibbs,i);
+      TEST_INFERENCE(LazyPropagation,i);
+      TEST_INFERENCE(ShaferShenoyInference,i);
+//    }
   }
-  
+  void g() {    
+    std::cout<<"\n\n========\nLink.bif\n";
+    gum::Timer t;
+    std::string file = GET_PATH_STR( Link.bif );
+    gum::BayesNet<float> *net = new gum::BayesNet<float>();
+    gum::BIFReader<float> reader( net, file );
+    
+    t.reset();
+    reader.proceed();
+    GUM_TRACE_VAR(*net);
+    std::cout<<"reading BN : "<<t.step()<<std::endl;
+
+    int i=0;
+    //TEST_INFERENCE(Gibbs);
+//    for(gum::NodeId i=0;i<10;++i) {
+      TEST_INFERENCE(Gibbs,i);
+      TEST_INFERENCE(LazyPropagation,i);
+      TEST_INFERENCE(ShaferShenoyInference,i);
+//    }
+  }
 }
 
 int main( void ) {
   run_demo::f();
+  run_demo::g();
 
   gum::__atexit();
 }
