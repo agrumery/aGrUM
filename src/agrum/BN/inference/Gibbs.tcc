@@ -31,9 +31,9 @@
 #define DEFAULT_BURNIN 3000
 #define DEFAULT_MAXITER 10000000
 #define DEFAULT_EPSILON 1e-4*log(2)
-#define DEFAULT_MIN_EPSILON_RATE 5e-4
+#define DEFAULT_MIN_EPSILON_RATE 1e-4
 #define DEFAULT_PERIODE_SIZE 500
-#define DEFAULT_VERBOSITY true
+#define DEFAULT_VERBOSITY false
 
 // to ease parsing for IDE
 #include <agrum/BN/inference/Gibbs.h>
