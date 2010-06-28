@@ -33,7 +33,7 @@
 #define GUM_ERROR(type,msg) throw(type(msg))
 #define GUM_SHOWERROR(e) {std::cerr << (e).getContent() << std::endl;}
 #else
-#define GUM_ERROR(type,msg) throw(gum::type(gum::__createMsg(__FILE__,__FUNCTION__,__LINE__,(msg))))
+#define GUM_ERROR(type,msg) throw(type(gum::__createMsg(__FILE__,__FUNCTION__,__LINE__,(msg))))
 #define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << ": Exception " << (e).getContent() << std::endl;std::cerr<<(e).getCallStack()<<std::endl;}
 #endif //NDEBUG
 

@@ -31,6 +31,7 @@ namespace skool {
 INLINE
 SkoolReader::SkoolReader() {
   GUM_CONSTRUCTOR( SkoolReader );
+  __class_path.push_back(".");
 }
 
 
@@ -42,9 +43,10 @@ SkoolReader::~SkoolReader() {
 INLINE
 void
 SkoolReader::readFile(const std::string& file) {
-  Scanner s(gum::widen(file).c_str());
+  Scanner s(file);
   Parser p(&s);
   p.setFactory(&__factory);
+  p.setClassPath(__class_path);
   p.Parse();
 }
 

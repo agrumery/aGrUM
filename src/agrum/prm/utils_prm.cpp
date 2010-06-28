@@ -20,6 +20,7 @@
 
 #include <agrum/core/debug.h>
 #include <agrum/prm/utils_prm.h>
+#include <agrum/prm/classElement.h>
 
 namespace gum {
 namespace prm {
@@ -30,7 +31,7 @@ decomposePath(const std::string& path, std::vector<std::string>& v) {
   size_t prev = 0;
   size_t length = 0;
   size_t idx_1 = path.find(".");
-  size_t idx_2 = path.find("<");
+  size_t idx_2 = path.find(ClassElement::LEFT_CAST());
   if (idx_2 == std::string::npos) {
     // ignore safe names
     size_t idx = idx_1;
@@ -49,9 +50,9 @@ decomposePath(const std::string& path, std::vector<std::string>& v) {
         prev = idx_1 + 1;
         idx_1 = path.find(".", prev);
       } else if (idx_2 < idx_1) {
-        tmp = path.find(">", idx_2);
+        tmp = path.find(ClassElement::RIGHT_CAST(), idx_2);
         idx_1 = path.find(".", tmp);
-        idx_2 = path.find("<", tmp);
+        idx_2 = path.find(ClassElement::LEFT_CAST(), tmp);
       }
     }
   }

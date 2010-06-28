@@ -69,6 +69,50 @@ INLINE
 void
 Attribute::addChild(const ClassElement& elt) { }
 
+INLINE
+FuncAttribute::FuncAttribute(const std::string& name,
+                             const Type& type,
+                             MultiDimImplementation<prm_float>* impl):
+  Attribute(name, type, impl)
+{
+  GUM_CONSTRUCTOR( FuncAttribute );
+}
+
+INLINE
+FuncAttribute::FuncAttribute(const std::string& name,
+                             Type* type, Potential<prm_float>* cpf,
+                             bool delete_type):
+  Attribute(name, type, cpf, delete_type)
+{
+  GUM_CONSTRUCTOR( FuncAttribute );
+}
+
+INLINE
+FuncAttribute::~FuncAttribute() {
+  GUM_DESTRUCTOR( FuncAttribute );
+}
+
+INLINE
+void
+FuncAttribute::addParent(const ClassElement& elt) { }
+
+INLINE
+void
+FuncAttribute::addChild(const ClassElement& elt) { }
+
+INLINE
+FuncAttribute::FuncAttribute(const FuncAttribute &source):
+  Attribute(source)
+{
+  GUM_CONS_CPY( FuncAttribute );
+  GUM_ERROR(FatalError, "illegal call to copy constructor");
+}
+
+INLINE
+FuncAttribute&
+FuncAttribute::operator=(const FuncAttribute& from) {
+  GUM_ERROR(FatalError, "illegal call to copy operator");
+}
 
 // ============================================================================
 } /* namespace prm */

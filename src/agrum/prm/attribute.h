@@ -195,7 +195,7 @@ class Attribute: public ClassElement {
     void setAsCastDescendant(Attribute* attr);
 
     /// @}
-  private:
+  protected:
 
     /// Copy constructor. Don't use it.
     Attribute(const Attribute &source);
@@ -203,6 +203,7 @@ class Attribute: public ClassElement {
     /// Copy operator. Don't use it.
     Attribute& operator=(const Attribute& from);
 
+  private:
   // ========================================================================
   /// @name Private members
   // ========================================================================
@@ -218,6 +219,63 @@ class Attribute: public ClassElement {
     bool __delete_type;
 
     /// @}
+};
+// ============================================================================
+/**
+ * @class FuncAttribute attribute.h <agrum/prm/attribute.h>
+ * @brief This class overload gum::prm::ClassElement::_addParent() and
+ *        gum::prm::ClassElement::_addChild with empty methods.
+ *
+ * This class should be used when dealing with functions such as Noisy-Or which
+ * require special method calls to add parents. See
+ * gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
+ */
+class FuncAttribute: public Attribute {
+  public:
+    /**
+     * @brief Constructor used by gum::Class.
+     * This will create an FuncAttribute with only one variable: type and with the given
+     * implementation.
+     *
+     * @param name The name of this FuncAttribute.
+     * @param type The type of this FuncAttribute, it is copied.
+     * @param impl The MultiDimImplementation used by the internal Potential of this FuncAttribute.
+     *             it will be deleted after the call of ~FuncAttribute.
+     */
+    FuncAttribute(const std::string& name, const Type& type,
+                  MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>());
+
+    /**
+     * @brief Constructor used by gum::Instance.
+     * This will create an FuncAttribute with a ready Potential, however it will check the existence
+     * of type in cpf and raise an exception if it is not found.
+     *
+     * @param type The type of this attribute, it will be deleted after a call to ~FuncAttribute.
+     * @param name The name of this FuncAttribute.
+     * @param cpf The Potential of this FuncAttribute, it will be deleted after the call of
+     *            ~FuncAttribute.
+     * @param delete_type If true, the type is deleted with this instance.
+     */
+    FuncAttribute(const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type);
+
+    /// Destructor.
+    virtual ~FuncAttribute();
+
+    /// See gum::ClassElement::_addParent().
+    virtual void addParent(const ClassElement& elt);
+
+    /// See gum::ClassElement::_addChild().
+    virtual void addChild(const ClassElement& elt);
+
+  private:
+
+    /// Copy constructor. Don't use it.
+    FuncAttribute(const FuncAttribute &source);
+
+    /// Copy operator. Don't use it.
+    FuncAttribute& operator=(const FuncAttribute& from);
+
+
 };
 // ============================================================================
 } /* namespace prm */

@@ -1,5 +1,11 @@
 #include <string>
 #include <sstream>
+#include <algorithm>
+#include <fstream>
+
+namespace std {
+  #include<dirent.h>
+}
 
 #include <agrum/prm/PRMFactory.h>
 
@@ -7,44 +13,184 @@
 COMPILER Skool;
 
 gum::prm::PRMFactory* __factory;
+std::vector<std::string> __class_path;
+gum::Set<std::string> __imports;
+std::string __file_name;
+
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
 
 void setFactory(gum::prm::PRMFactory* f) {
   __factory = f;
+}
+
+void setClassPath(const std::vector<std::string>& class_path) {
+  __class_path = class_path;
+}
+
+void setImports(const gum::Set<std::string>& imports) {
+  __imports = imports;
+}
+
+const gum::Set<std::string>& getImports() const {
+  return __imports;
+}
+
+void addImports(const gum::Set<std::string>& imports) {
+  for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
+    if (not __imports.exists(*iter)) {
+      __imports.insert(*iter);
+    }
+  }
+}
+
+void setFileName(const std::string& file) {
+  __file_name = file;
+}
+
+void import(std::string s) {
+  if (not __imports.exists(s)) {
+    __imports.insert(s);
+    std::string sep = "/";
+    std::string ext = ".skool";
+    std::string import;
+    std::ifstream file_test;
+    std::replace(s.begin(), s.end(), '.', '/');
+    bool found = false;
+    for (std::vector<std::string>::iterator iter = __class_path.begin(); iter != __class_path.end(); ++iter) {
+      import = (*iter) + sep + s + ext;
+      file_test.open(import.c_str());
+      if (file_test.is_open()) {
+        file_test.close();
+        found = true;
+        Scanner s(import);
+        Parser p(&s);
+        p.setFactory(__factory);
+        p.setClassPath(__class_path);
+        p.setImports(__imports);
+        p.setFileName(import);
+        p.Parse();
+        addImports(p.getImports());
+        break;
+      }
+    }
+    if (not found) {
+      GUM_ERROR(gum::NotFound, "import not found");
+    }
+  }
+}
+
+void addNoisyOr(std::string type, std::string name, std::vector<std::string>& chains,
+                std::vector<float>& numbers, float leak, std::vector<std::string>& labels)
+{
+  if (factory().currentType() != gum::prm::PRMObject::prm_class)
+    GUM_ERROR(gum::FactoryInvalidState, "invalid state to add a noisy-or");
+  gum::prm::Class* c = dynamic_cast<gum::prm::Class*>(factory().getCurrent());
+
+  if (numbers.size() == 1) {
+    gum::prm::Attribute* attr = new gum::prm::Attribute(name, factory().retrieveType(type), new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak, numbers.front()));
+    for (std::vector<std::string>::iterator iter = chains.begin(); iter != chains.end(); ++iter) {
+      attr->addParent(c->get(*iter));
+    }
+    factory().addAttribute(attr);
+  } else if (numbers.size() == chains.size()) {
+    gum::MultiDimNoisyOR<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak);
+    gum::prm::FuncAttribute* attr = new gum::prm::FuncAttribute(name, factory().retrieveType(type), noisy);
+    for (size_t idx = 0; idx < numbers.size(); ++idx) {
+      noisy->causalWeight(c->get(chains[idx]).type().variable(), numbers[idx]);
+    }
+    factory().addAttribute(attr);
+  } else {
+    GUM_ERROR(OperationNotAllowed, "invalid paramters for a noisy or");
+  }
+  if (not labels.empty()) {
+    SemErr("ignored modalities in noisy-or");
+  }
 }
 
 gum::prm::PRMFactory& factory() {
   if (__factory) {
     return *__factory;
   }
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+  GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
 }
 
-bool isPath() {
-  return (la->kind == _word) and (scanner->Peek()->kind == _dot);
-}
-
-bool isBaseType() {
-  Token* n1 = scanner->Peek();
-  Token* n2 = scanner->Peek();
-  return (la->kind == _type) and (n1->kind == _word) and (n2->kind != _extends);
-}
-
-bool isBaseClass() {
-  Token* n1 = scanner->Peek();
-  Token* n2 = scanner->Peek();
-  return (la->kind == _class) and (n1->kind == _word) and (n2->kind != _extends);
-}
-
-bool isBaseInterface() {
-  Token* n1 = scanner->Peek();
-  Token* n2 = scanner->Peek();
-  return (la->kind == _interface) and (n1->kind == _word) and (n2->kind != _extends);
+bool isClass(std::string type) {
+  std::string dot = ".";
+  return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type);
 }
 
 bool isClassOrInterface(std::string type) {
   std::string dot = ".";
   return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
          factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
+}
+
+void setRefOrParam(std::string s, std::string r) {
+  size_t dot = s.find_first_of('.');
+  if (dot != std::string::npos) {
+    std::string instance = s.substr(0, dot);
+    std::string member = s.substr(dot+1);
+    gum::prm::System& sys = static_cast<gum::prm::System&>(*(factory().getCurrent()));
+    gum::prm::ClassElementContainer* c = 0;
+    if (sys.isInstance(instance)) {
+      c = &(sys.get(instance).type());
+    } else if (sys.isArray(instance)) {
+      c = &(sys.getArrayType(instance));
+    } else {
+      GUM_ERROR(gum::NotFound, "unknown instance in system");
+    }
+    if (not c->exists(member)) {
+      GUM_ERROR(gum::NotFound, "unknown member in instance");
+    }
+    if (c->obj_type() == gum::prm::PRMObject::prm_interface) {
+      factory().setReferenceSlot(instance, member, r);
+    } else {
+      switch (c->get(member).elt_type()) {
+        case gum::prm::ClassElement::prm_refslot:
+          {
+            factory().setReferenceSlot(instance, member, r);
+            break;
+          }
+        case gum::prm::ClassElement::prm_attribute:
+          {
+            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member).id())) {
+              factory().setParameter(instance, member, r);
+              break;
+            } // If it is not a parameter goto to the default case
+          }
+        default: {
+                   GUM_ERROR(WrongClassElement, "wrong ClassElement for this operation");
+                 }
+      }
+    }
+  } else {
+    GUM_ERROR(gum::SyntaxError, "invalid right value");
+  }
+}
+
+void setReferenceSlot(std::string s, std::string r) {
+  size_t dot = s.find_first_of('.');
+  if (dot != std::string::npos) {
+    std::string instance = s.substr(0, dot);
+    std::string member = s.substr(dot+1);
+    gum::prm::System& sys = static_cast<gum::prm::System&>(*(factory().getCurrent()));
+    gum::prm::ClassElementContainer* c = 0;
+    if (sys.isInstance(instance)) {
+      c = &(sys.get(instance).type());
+    } else if (sys.isArray(instance)) {
+      c = &(sys.getArrayType(instance));
+    } else {
+      GUM_ERROR(NotFound, "unknown instance in system");
+    }
+    if (not c->exists(member)) {
+      GUM_ERROR(NotFound, "unknown member in instance");
+    }
+    factory().setReferenceSlot(instance, member, r);
+  } else {
+    GUM_ERROR(gum::SyntaxError, "invalid right value");
+  }
 }
 
 //=====================
@@ -55,19 +201,24 @@ CHARACTERS
 
 //=====================
 TOKENS
-  integer   = ['+'|'-'] digit {digit}.
-  float     = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
-  word      = letter {(letter | digit)}.
-  eol       = '\n'.
-  dot       = '.'.
-  comma     = ','.
-  colon     = ':'.
-  semicolon = ';'.
-  type      = "type".
-  class     = "class".
-  interface = "interface".
-  extends   = "extends".
-  system    = "system".
+  integer    = ['+'|'-'] digit {digit}.
+  float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
+  word       = letter {(letter | digit)}.
+  eol        = '\n'.
+  dot        = '.'.
+  comma      = ','.
+  colon      = ':'.
+  semicolon  = ';'.
+  type       = "type".
+  class      = "class".
+  interface  = "interface".
+  extends    = "extends".
+  system     = "system".
+  dependson  = "dependson".
+  default    = "default".
+  implements = "implements".
+  LEFT_CAST  = "(".
+  RIGHT_CAST = ")".
 
 //=====================
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -79,85 +230,64 @@ IGNORE '\r' + eol + '\t'
 PRODUCTIONS
 
 //=====================
-Skool = {Header} { Unit }.
+Skool = [Package] {Import} {Unit} (. factory().popPackage(); .) .
 
 //=====================
-Header  = (Package | Import).
-
 Package = "package"         (. std::string name; .)
-          Ident<name> ';'   (. factory().setPackage(name); .).
+          Ident<name> ';'   (. factory().pushPackage(name); .).
 
 Import  = "import"          (. std::string name; .)
-          Ident<name> ';'   (. std::cerr << "Import disabled."; .).
+          Ident<name> ';'   (. TRY(import(name)) .).
 
 //=====================
-Unit = Type|  Interface| Class | System.
+Unit = Type | Interface | Class | System.
 
 //=====================
-Type =   IF(isBaseType())
-         BaseType
-       | SuperType
+Type = type word                                (. std::string name, extends, l, s; name = narrow(t->val); .)
+       [ extends Ident<extends> ]               (. TRY(factory().startDiscreteType(name, extends)) .)
+       Label<l> [ ':' Label<s> ]                (. TRY(factory().addLabel(l, s)) .)
+       {                                        (. s = ""; .)
+         ',' Label<l> [ ':' Label<s> ]          (. TRY(factory().addLabel(l, s)) .)
+       }
+       ';'                                      (. TRY(factory().endDiscreteType()) .)
        .
 
 //=====================
-BaseType =                      (. std::string l; .)
-           "type" word          (. factory().startDiscreteType(narrow(t->val)); .)
-           Label<l> ','         (. factory().addLabel(l); .)
-           Label<l>             (. factory().addLabel(l); .)
-           {
-             ',' Label<l>       (. factory().addLabel(l); .)
-           }
-           ';'                  (. factory().endDiscreteType(); .)
-           .
-
-//=====================
-SuperType   = "type" word                   (. std::string s, l, name, super; name = narrow(t->val); .)
-              "extends" Ident<super>        (. factory().startDiscreteType(name, super); .)
-              Label<l> ':' Label<s> ','     (. factory().addLabel(l, s); .)
-              Label<l> ':' Label<s>         (. factory().addLabel(l, s); .)
-              {
-                ',' Label<l> ':' Label<s>   (. factory().addLabel(l, s); .)
-              }
-              ';'                           (. factory().endDiscreteType(); .)
-              .
-
-//=====================
-
-Interface = "interface" word              (. std::string name, extends; name = narrow(t->val); .)
-            [ "extends" Ident<extends> ]  (. factory().startInterface(name, extends); .)
-            InterfaceBody                 (. factory().endInterface(); .)
+Interface = interface word              (. std::string interface, extends; interface = narrow(t->val); .)
+            [ extends Ident<extends> ]  (. TRY(factory().startInterface(interface, extends)) .)
+            '{'
+            {                             (. std::string type, name; .)
+              Ident<type> word            (. name = narrow(t->val); .)
+              (
+                IF(isClassOrInterface(type))
+                  Reference<type, name>
+                | ';'                     (. TRY(factory().addAttribute(type, name)) .)
+              )
+            }
+            '}'                           (. TRY(factory().endInterface()) .)
             .
 
-InterfaceBody = '{' { InterfaceStatement } '}'.
-
-InterfaceStatement =                      (. std::string type, name; .)
-                      Ident<type> word    (. name = narrow(t->val); .)
-                      RefOrAttr<type, name>
-                      .
-
-RefOrAttr<std::string& type, std::string& name> =   IF(isClassOrInterface(type))
-                                                    Reference<type, name>
-                                                  | ';' (. factory().startAttribute(type, name); factory().endAttribute(); .)
-                                                  .
-
 //=====================
-Class = "class" word                      (. std::string name, super; name = narrow(t->val); .)
-        [ "extends" Ident<super> ]        (. gum::Set<std::string> set; .)
-        [ "implements" IdentSet<set> ]    (. factory().startClass(name, super, (set.empty()?0:&set)); .)
-        ClassBody                         (. factory().endClass(); .)
+Class = class word                      (. std::string c, super; c = narrow(t->val); .)
+        [ extends Ident<super> ]        (. gum::Set<std::string> set; .)
+        [                                 (. std::string i; .)
+          implements Ident<i>           (. set.insert(i); .)
+          {
+            ',' Ident<i>                  (. set.insert(i); .)
+          }
+        ]                                 (. TRY(factory().startClass(c, super, (set.empty()?0:&set))) .)
+        '{'
+        {                                 (. std::string type, name; .)
+          Ident<type> word                (. name = narrow(t->val); .)
+          (
+              RefOrParam<type, name>
+            | Attribute<type, name>
+            | Aggregate<type, name>
+            | Functions<type, name>
+          )
+        }
+        '}'                               (. TRY(factory().endClass()) .)
         .
-
-//=====================
-ClassBody = '{' { ClassStatement } '}'.
-
-ClassStatement =                                                     (. std::string name, type; .)
-                  Ident<type> word                                   (. name = narrow(t->val); .)
-                  (
-                      RefOrParam<type, name>
-                    | Attribute<type, name>
-                    | Aggregate<type, name>
-                  )
-                  .
 
 //=====================
 RefOrParam<std::string type, std::string name> =    IF(isClassOrInterface(type))
@@ -165,87 +295,153 @@ RefOrParam<std::string type, std::string name> =    IF(isClassOrInterface(type))
                                                  |  Parameter<type, name>
                                                  .
 
-Reference<std::string type, std::string name> =   ';'           (. factory().addReferenceSlot(type, name, false); .)
-                                                | '[' ']' ';'   (. factory().addReferenceSlot(type, name, true); .)
+Reference<std::string type, std::string name> =           (. bool array = false; .)
+                                                [
+                                                  '[' ']' (. array = true; .)
+                                                ]
+                                                ';'       (. TRY(factory().addReferenceSlot(type, name, array)) .)
                                                 .
 
-Parameter<std::string type, std::string name> =   ';'                    (. factory().addParameter(type, name); .)
-                                                |                        (. std::string l; .) 
-                                                  "default" Label<l> ';' (. factory().addParameter(type, name, l); .)
+Parameter<std::string type, std::string name> =                         (. std::string l; .)
+                                                [ default Label<l> ]
+                                                ';'                     (. TRY(factory().addParameter(type, name, l)) .)
                                                 .
 
 //=====================
-Attribute<std::string type, std::string name> =                           (. factory().startAttribute(type, name); .)
-                                                [Dependecies] '{'
-                                                (                         (. std::vector<float> cpt; .)
-                                                   '[' FloatList<cpt> ']' (. factory().setRawCPFByColumns(cpt); .)
-                                                 | FactorizedCPT
-                                                ) '}' ';'                 (. factory().endAttribute(); .)
+Attribute<std::string type, std::string name> =                           (. TRY(factory().startAttribute(type, name)) .)
+                                                [                         (. std::string p; .)
+                                                  dependson CastIdent<p>  (. TRY(factory().addParent(p)) .)
+                                                  {
+                                                    ',' CastIdent<p>      (. TRY(factory().addParent(p)) .)
+                                                  }
+                                                ]
+                                                '{'
+                                                (
+                                                   '['                    (. std::vector<float> cpt; float f; .)
+                                                      Number<f>           (. cpt.push_back(f); .)
+                                                      {
+                                                        ',' Number<f>     (. cpt.push_back(f); .)
+                                                      }
+                                                   ']'                    (. TRY(factory().setRawCPFByColumns(cpt)) .)
+                                                 |
+                                                   CPTRule { CPTRule }
+                                                )
+                                                '}'
+                                                ';'                       (. TRY(factory().endAttribute()) .)
                                                 .
 
-Dependecies =                               (. std::vector<std::string> prnts; .)
-              "dependson" IdentList<prnts>  (. for (size_t i = 0; i < prnts.size(); ++i) factory().addParent(prnts[i]); .)
-              .
-
-FactorizedCPT = CPTRule {CPTRule}.
-
-CPTRule = (. std::vector<std::string> labels; std::vector<float> values; .)
-          LabelList<labels> ':' FloatList<values> ';'
-          (. factory().setCPFByRule(labels, values); .)
+CPTRule =                                             (. std::vector<std::string> labels; std::vector<float> values; .)
+                                                      (. std::string s; float f; .)
+          CPTRuleValue<s>                             (. labels.push_back(s); .)
+          {
+            ',' CPTRuleValue<s>                       (. labels.push_back(s); .)
+          }
+          ':'
+          Number<f>                                   (. values.push_back(f); .)
+          {
+            ',' Number<f>                             (. values.push_back(f); .)
+          }
+          ';'                                         (. TRY(factory().setCPFByRule(labels, values)) .)
           .
 
-Aggregate<std::string type, std::string name> =                                         (. std::string func; std::vector<std::string> chains, params; .)
-                                                '=' Function<func, chains, params> ';'  (. factory().addAggregator(name, func, chains, params); .)
+CPTRuleValue<. std::string& s .> =    word   (. s = narrow(t->val); .)
+                                   |  '*'    (. s = "*"; .)
+                                   .
+
+Aggregate<std::string type, std::string name> =                                                 (. std::string func, s; std::vector<std::string> chains, labels; .)
+                                                '=' word                                        (. func = narrow(t->val); .)
+                                                '(' AggChains<chains> ',' AggLabels<labels> ')'
+                                                ';'                                             (. TRY(factory().addAggregator(name, func, chains, labels)) .)
                                                 .
 
-Function<. std::string& name,
-           std::vector<std::string>& chains,
-           std::vector<std::string>& params .> = word                                                   (. name = narrow(t->val); .)
-                                                 '(' ( '[' IdentList<chains> ']' ',' LabelList<params>
-                                                            |                                           (. std::vector<std::string> vec; .)
-                                                              IdentList<vec>                            (. chains.push_back(vec.front());
-                                                                                                           for (size_t idx = 1; idx < vec.size(); ++idx) params.push_back(vec[idx]); .)
-                                                     ) ')' .
+AggChains<. std::vector<std::string>& chains .> =                       (. std::string s; .)
+                                                    CastIdent<s>        (. chains.push_back(s); .)
+                                                  | '['                 (. std::string s; .)
+                                                    CastIdent<s>        (. chains.push_back(s); .)
+                                                    {
+                                                      ',' CastIdent<s>  (. chains.push_back(s); .)
+                                                    }
+                                                    ']'
+                                                  .
 
+AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.push_back(narrow(t->val)); .)
+                                                  | '['
+                                                    word            (. labels.push_back(narrow(t->val)); .)
+                                                    {
+                                                      ',' word      (. labels.push_back(narrow(t->val)); .)
+                                                    }
+                                                    ']'
+                                                  .
+
+Functions<std::string type, std::string name> = '~' "noisyOr" '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
+                                                AggChains<chains> ',' NumberList<numbers> [ ',' Number<leak> [ ',' AggLabels<labels> ] ]
+                                                ')' ';'           (. TRY(addNoisyOr(type, name, chains, numbers, leak, labels)) .)
+                                                .
+
+NumberList<. std::vector<float>& numbers .> =                 (. float f; .)
+                                              Number<f>       (. numbers.push_back(f); .)
+                                            | '['             (. float f; .)
+                                              Number<f>       (. numbers.push_back(f); .)
+                                              {
+                                                ',' Number<f> (. numbers.push_back(f); .)
+                                              }
+                                              ']'
+                                            .
 
 //=====================
-LabelList<. std::vector<std::string>& list .> = ( word                  (. list.push_back(narrow(t->val)); .)
-                                                  | '*'                 (. list.push_back(narrow(t->val)); .)
-                                                ) [ ',' LabelList<list> ]
-                                                .
+System = system word                  (. TRY(factory().startSystem(narrow(t->val))) .)
+         '{'
+         {                                            (. std::string l1, r1; .)
+           Ident<l1> (   ArrayDecl<l1>
+                       | word                         (. TRY(factory().addInstance(l1, narrow(t->val))) .)
+                       | "+=" Ident<r1>               (. if (static_cast<gum::prm::System*>(factory().getCurrent())->isArray(l1))
+                                                         { TRY(factory().incArray(l1, r1)) }
+                                                         else
+                                                         { TRY(factory().setReferenceSlot(l1, r1)) } .)
+                       | '='  Ident<r1>               (. TRY( try {factory().setReferenceSlot(l1, r1);}
+                                                              catch (gum::Exception& e) {
+                                                                size_t pos = l1.find_last_of('.');
+                                                                if (pos != std::string::npos) {
+                                                                  std::string i = l1.substr(0, pos);
+                                                                  std::string p = l1.substr(pos+1, std::string::npos);
+                                                                  factory().setParameter(i, p, r1);
+                                                                }
+                                                              }) .)
+           ) ';'
+         }
+         '}' (. TRY(factory().endSystem()) .)
+         .
 
-IdentSet<. gum::Set<std::string>& set .> =                          (. std::string ident; .)
-                                             Ident<ident>           (. set.insert(ident); .)
-                                             [',' IdentSet<set> ]
-                                             .
+ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; .)
+                            '[' [ integer (. sBuff << '[' << narrow(t->val) << ']'; swscanf(t->val, L"%d", &size); .) ] ']'
+                            (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
+                              | '.' word            (. std::string l2 = narrow(t->val); .)
+                                (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
+                                  | '='  Ident<r1>  (. TRY(try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
+                                                       catch (gum::Exception& e) {factory().setParameter(sBuff.str(), l2, r1);}) .) )
+                            )
+                            .
 
-IdentList<. std::vector<std::string>& set .> =                    (. std::string ident; .)
-                                                SlotChain<ident>
-                                                                  (. set.push_back(ident); .)
-                                                [',' IdentList<set> ]
-                                                .
-FloatList<. std::vector<float>& list .> =                          (. float f; .)
-                                          Number<f>                (. list.push_back(f); .)
-                                          [ ',' FloatList<list> ]
-                                          .
-
-
-Ident<std::string& s> = word        (. s = narrow(t->val); .)
-                        { '.' word  (. s += '.'; s += narrow(t->val); .) }
+//=====================
+Ident<std::string& s> =             (. std::stringstream sBuff; .)
+                        word        (. sBuff << narrow(t->val); .)
+                        {
+                          '.' word  (. sBuff << "." << narrow(t->val); .)
+                        }           (. s = sBuff.str(); .)
                         .
 
-SlotChain<std::string& s> = [ '<'           (. s += '<'; std::string val; .)
-                              Ident<val>    (. s += val; .)
-                              '>'           (. s += narrow(t->val); .)
-                            ] word          (. s += narrow(t->val); .)
-                            {
-                              '.'             (. s += '.'; .)
-                              [ '<'           (. s += '<'; std::string val; .)
-                                Ident<val>    (. s += val; .)
-                                '>'           (. s += narrow(t->val); .)
-                              ] word          (. s += narrow(t->val); .)
-                            }
+CastIdent<std::string& s> = (. std::string cast, open(gum::prm::ClassElement::LEFT_CAST()), close(gum::prm::ClassElement::RIGHT_CAST()); std::stringstream sBuff; .)
+                            [
+                              LEFT_CAST Ident<cast> RIGHT_CAST            (. sBuff << open << cast << close; .)
+                            ] word                                        (. sBuff << narrow(t->val); .)
+                            {                                             (. cast = ""; .)
+                              '.'                                         (. sBuff << '.'; .)
+                              [
+                                LEFT_CAST Ident<cast> RIGHT_CAST          (. sBuff << open << cast << close; .)
+                              ] word                                      (. sBuff << narrow(t->val); .)
+                            }                                             (. s = sBuff.str(); .)
                             .
+
 
 Label<std::string& s> =   word        (. s = narrow(t->val); .)
                         |             (. float val; .)
@@ -256,53 +452,5 @@ Number<float& val> =    integer (. swscanf(t->val, L"%f", &val); .)
                       | float   (. swscanf(t->val, L"%f", &val); .)
                       .
 
-// ====================================
-System = system word            (. factory().startSystem(narrow(t->val)); .)
-         '{' { SystemDecl } '}' (. factory().endSystem(); .)
-         .
-
-SystemDecl =  (. std::string left, last; std::string dot = "."; .)
-              SysLeftValue<left, last>
-              (. std::string tmp = left; tmp += (last.size())?dot + last:""; .)
-              ( SysInstDecl<tmp> | SysArray<tmp> | SysAffect<left, last> )
-              .
-
-SysInstDecl<std::string type> = word (. factory().addInstance(type, narrow(t->val)); .) ';'.
-
-SysArray<std::string array> =
-  (. int size = 0; .)
-  '[' integer (. swscanf(t->val, L"%d", &size); .) ']'
-  (
-    word (. factory().addArray(array, narrow(t->val), size); .) ';'
-  | '.' word (. std::string ref = narrow(t->val); std::stringstream sBuff; sBuff << '[' << size << ']'; std::string inst = array + sBuff.str(); .)
-    SysAffect<inst, ref>
-  )
-  .
-
-SysAffect<std::string inst, std::string ref> =
-    (. bool ref_inc = false; .)
-    [ '+' (. ref_inc = true; .)] '=' word 
-    (.
-       gum::prm::System& sys = factory().getCurrentSystem();
-       if (sys.isInstance(inst) or sys.isArray(inst)) {
-         gum::prm::Class& c = (sys.isInstance(inst))?sys.get(inst).type():sys.getArray(inst).front()->type();
-         if (c.get(ref).elt_type() == ClassElement::prm_refslot) {
-           factory().setReferenceSlot(inst, ref, narrow(t->val));
-         } else if (c.get(ref).elt_type() == ClassElement::prm_attribute) {
-           factory().setParameter(inst, ref, narrow(t->val));
-         } else {
-           GUM_ERROR(NotFound, "unfound class element");
-         }
-       } else {
-         GUM_ERROR(NotFound, "unknown instance");
-       }
-     .)
-    ';'
-    .
-
-SysLeftValue<std::string& left, std::string& last> =
-  word (. left = narrow(t->val); .)
-  { '.' word (. if (last != "") {left += '.'; left += last;} last = narrow(t->val); .) }
-  .
 
 END Skool.

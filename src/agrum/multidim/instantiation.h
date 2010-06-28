@@ -118,6 +118,7 @@
 #include <ostream>
 
 #include <agrum/core/utils.h>
+#include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimInterface.h>
 
 namespace gum {
@@ -427,6 +428,26 @@ class Instantiation : public MultiDimInterface {
      */
     // ============================================================================
     Instantiation& chgVal( const DiscreteVariable& v, const Idx newval );
+
+    // ============================================================================
+    /**
+     * @brief Assign newval to variable v in the Instantiation.
+     *
+     * In addition to modifying the value of the variable, the Instantiation
+     * informs its master of the modification. This function also unsets the
+     * overflow flag.
+     *
+     * @param v The variable whose value is assigned.
+     * @param newval The index of the value assigned (consider the values of v as
+     *               an array indexed from 0 to n of values (which might be anything
+     *               from real numbers to strings, etc). Parameter newval indicates
+     *               the index in this array of the new value taken by v.
+     * @return Returns a reference to *this in order to chain the chgVal.
+     * @throw NotFound Raised if variable v does not belong to the instantiation.
+     * @throw OutOfBound Raised if newval is not a possible value for v.
+     */
+    // ============================================================================
+    Instantiation& chgVal( const DiscreteVariable* v, const Idx newval );
 
     // ============================================================================
     /**
@@ -1082,6 +1103,35 @@ class Instantiation : public MultiDimInterface {
 
     /// @}
 
+    // ############################################################################
+    /// @name Static methods
+    // ############################################################################
+    /// @{
+
+    /**
+     * @brief Assign the values of i in j, using bij as a bijection between i and
+     *        j variables.
+     *
+     * @param bij Firsts are variables in i and seconds are variables in j.
+     * @param i An instantiation used to change the values in j.
+     * @param j An instantiation which receives new values from i using bij.
+     *
+     * @throw NotFound Raised if a variable in i does not point to a variable in j
+     *                 or if a variable in i is missing in bij.
+     */
+    static void assign_values(Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                              const Instantiation& i, Instantiation& j) {
+      try {
+        for (Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
+            iter != i.variablesSequence().end(); ++iter) {
+          j.chgVal(bij.second(*iter), i.val(*iter));
+        }
+      } catch (NotFound&) {
+        GUM_ERROR(NotFound, "missing variable in bijection or instantiation");
+      }
+    }
+    /// @}
+
   private:
 
     // ============================================================================
@@ -1184,6 +1234,7 @@ class Instantiation : public MultiDimInterface {
 std::ostream& operator<< ( std::ostream&, const Instantiation& );
 
 } /* namespace gum */
+
 // ============================================================================
 #ifndef GUM_NO_INLINE
 // #include <agrum/multidim/instantiation.inl>

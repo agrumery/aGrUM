@@ -100,7 +100,13 @@ class PRMFactory {
      * @return Returns the PRMObject type of the object begin built.
      * @throw NotFound if no type is being built.
      */
-    PRMObject::ObjectType current() const;
+    PRMObject::ObjectType currentType() const;
+
+    /**
+     * @return the current PRMObject being built by this factory.
+     * @throw NotFound if nothing is being built.
+     */
+    PRMObject* getCurrent();
 
     /**
      * @brief Close current object being built.
@@ -118,7 +124,28 @@ class PRMFactory {
     /**
      * @return Returns the current package name.
      */
-    const std::string& currentPackage() const;
+    std::string currentPackage() const;
+
+    /**
+     * @brief Returns a reference over a Class given its name.
+     *
+     * This methods adds if necessary the current package as a prefix to name.
+     * @param name The name of the Class.
+     * @return the Class with the given name.
+     * @throw NotFound if no Class matches the given name.
+     */
+    Class& retrieveClass(const std::string& name);
+
+    /**
+     * @brief Returns a reference over a Type given its name.
+     *
+     * This methods adds if necessary the current package as a prefix to name.
+     * @param name The name of the Type.
+     * @return the Type with the given name.
+     * @throw NotFound if no Type matches the given name.
+     */
+    Type& retrieveType(const std::string& name);
+
 
     ///@}
     // ======================================================================
@@ -129,27 +156,25 @@ class PRMFactory {
     /**
      * @brief Define the current package.
      *
-     * If you want to switch to default use an empty string.
+     * A stack is used to keep track of packages given the different
+     * imports.
      *
      * @param name The name of the package for all further objects.
      */
-    void setPackage(const std::string& name);
+    void pushPackage(const std::string& name);
+
+    /**
+     * @brief Pop the current package from the package stack.
+     * @return the popped package or an empty string if there was
+     *         nothing to pop.
+     */
+    std::string popPackage();
 
     /// @}
     // ======================================================================
     /// @name Type construction methods.
     // ======================================================================
     /// @{
-
-    /**
-     * Start a discrete type declaration.
-     *
-     * @param name The discrete type's name.
-     *
-     * @throw DuplicateElement Raised if an object with the same name
-     *                         already exists.
-     */
-    void startDiscreteType(const std::string& name);
 
     /**
      * Start a discrete subtype declaration.
@@ -160,20 +185,7 @@ class PRMFactory {
      * @throw DuplicateElement Raised if an object with the same name
      *                         already exists.
      */
-    void startDiscreteType(const std::string& name,
-                           const std::string& super);
-
-    /**
-     * Add a label to the current discrete type.
-     *
-     * @param l The label value.
-     *
-     * @throw OperationNotAllowed Raised if the current type has a super
-     *                            type, see PRMFactory::addLabel(const std::string&, const std::string&).
-     * @throw DuplicateElement Raised if a label with the same value
-     *                         already exists.
-     */
-    void addLabel(const std::string& l);
+    void startDiscreteType(const std::string& name, std::string super="");
 
     /**
      * Add a label to the current discrete type.
@@ -188,7 +200,7 @@ class PRMFactory {
      * @throw NotFound Raised if extends does not match any label in the current
      *                 type's super type.
      */
-    void addLabel(const std::string& l, const std::string& extends);
+    void addLabel(const std::string& l, std::string extends="");
 
     /**
      * End the current discrete type declaration.
@@ -248,6 +260,12 @@ class PRMFactory {
     void startInterface(const std::string& i, const std::string& extends="");
 
     /**
+     * @brief Add an attribute to an interface.
+     *
+     */
+    void addAttribute(const std::string& type, const std::string& name);
+
+    /**
      * Tells the factory that we finished an interface declaration.
      */
     void endInterface();
@@ -257,6 +275,27 @@ class PRMFactory {
     /// @name  Attributes construction methods.
     // ======================================================================
     /// @{
+
+    /** @brief Add an already created attribute to the current class.
+     *
+     * Use this method when you must add functions, such as Noisy-Or.
+     *
+     * Use this method when you need to add functions, such as Noisy-Or.
+     * The attribute CPT is checked for parents and arcs will be added using
+     * the DiscreteVariable pointers, thus be careful to use those of the
+     * attributes, aggregates and slotchains of the current class.
+     * gum::prm::Class::insertArc() will be called for each found parent of
+     * attr, so you should overload gum::prm::Attribute::addParent() to prevent
+     * duplication errors. Such class exists: gum::prm::FuncAttribute .
+     *
+     * The pointer is given to the class, so do not worry about deleting it.
+     *
+     * @param attr The attribute added to the current class.
+     *
+     * @throw NotFound Raised if one of the DiscreteVariable in attr CPT does
+     *                 not match any ClassElement in this.
+     */
+    void addAttribute(Attribute* attr);
 
     /**
      * Tells the factory that we start an attribute declaration.
@@ -347,17 +386,6 @@ class PRMFactory {
     /// @{
 
     /**
-     * Add a parameter to the current class.
-     *
-     * A parameter is an Attribute (aka mutable Attribute) with no parents
-     * and with a CPF filled with 1.
-     *
-     * @param type The type of this parameter.
-     * @param name The name of this parameter.
-     */
-    void addParameter(const std::string& type, const std::string& name);
-
-    /**
      * Add a parameter to the current class with a default value.
      *
      * A parameter with a default value is an Attribute (aka mutable Attribute)
@@ -369,7 +397,7 @@ class PRMFactory {
      */
     void addParameter(const std::string& type,
                       const std::string& name,
-                      std::string value);
+                      std::string value="");
 
     /// @}
     // ======================================================================
@@ -428,12 +456,6 @@ class PRMFactory {
     void endSystem();
 
     /**
-     * @return Returns the current system, if any.
-     * @throw FactoryInvalidState Raised if the current element is not a System.
-     */
-    System& getCurrentSystem();
-
-    /**
      * Add an instance to the model.
      */
     void addInstance(const std::string& type, const std::string& name);
@@ -444,6 +466,11 @@ class PRMFactory {
      * with "i" being the position of the instance in the array.
      */
     void addArray(const std::string& type, const std::string& name, Size size);
+
+    /**
+     * Add an instance to an array.
+     */
+    void incArray(const std::string& l_i, const std::string& r_i);
 
     /**
      * @brief Instantiate a reference in the current model.
@@ -462,6 +489,21 @@ class PRMFactory {
     void setReferenceSlot(const std::string& left_instance,
                           const std::string& left_reference,
                           const std::string& right_instance);
+
+    /**
+     * @brief Instantiate a reference in the current model.
+     *
+     * This is equivalent to the following SKOOL instruction:
+     * left_instance.left_reference = right_instance;
+     *
+     * right_instance's type must be compatible with the slot type of
+     * left_reference.
+     *
+     * @param l_i A slot chain starting from an instance and ending over a
+     *            reference slot.
+     * @param r_i The name of an instance or an array of instances in the model.
+     */
+    void setReferenceSlot(const std::string& l_i, const std::string& r_i);
 
     /**
      * @brief define the value of a parameter.
@@ -636,7 +678,7 @@ class PRMFactory {
 
     /// The prefix used for classes and types names. It is normally the
     /// namespace of the corresponding compilation unit.
-    std::string __prefix;
+    std::vector<std::string> __packages;
 
     /// The pointer on the PRM built by this factory.
     PRM* __prm;

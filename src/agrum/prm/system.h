@@ -188,6 +188,12 @@ class System: public PRMObject {
     /// @throw DuplicateElement Raised if an Instance with same name already exists.
     NodeId add(const std::string& array, Instance* i);
 
+    /// @brief Add an Instance to an array in this system.
+    /// If the array doesn't exists it is created.
+    /// @throw TypeError Raised if i is not of the good type.
+    /// @throw DuplicateElement Raised if an Instance with same name already exists.
+    NodeId add(const std::string& array, Instance& i);
+
     /// @brief Add an array of instances in this system.
     /// If the array doesn't exists it is created.
     /// @throw DuplicateElement Raised if an existing array with the same name

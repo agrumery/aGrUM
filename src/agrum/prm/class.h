@@ -32,6 +32,8 @@
 // ============================================================================
 #include <agrum/core/sequence.h>
 // ============================================================================
+#include <agrum/core/bijection.h>
+// ============================================================================
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/interface.h>
 #include <agrum/prm/attribute.h>

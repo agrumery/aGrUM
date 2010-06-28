@@ -104,9 +104,12 @@ void
 Class::__inheritClass(const Class& c) {
   // Adding implemented interfaces of c, if any
   __implements = (c.__implements)?new Set<Interface*>(*(c.__implements)):0;
-  // Copying attributes
+  // Copying attributes, the bijection's firsts are attributes in this and its seconds are attributes
+  // in c.
+  Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
   for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
     Attribute* attr = new Attribute((*iter)->name(), (*iter)->type());
+    bij.insert(&(attr->type().variable()), &((*iter)->type().variable()));
     attr->setId((*iter)->id());
     __nodeIdMap.insert(attr->id(), attr);
     __attributes.insert(attr);
@@ -126,6 +129,7 @@ Class::__inheritClass(const Class& c) {
     } catch (OperationNotAllowed&) {
       agg = new Aggregate((*iter)->name(), (*iter)->agg_type(), (*iter)->type());
     }
+    bij.insert(&(agg->type().variable()), &((*iter)->type().variable()));
     agg->setId((*iter)->id());
     __nodeIdMap.insert(agg->id(), agg);
     __aggregates.insert(agg);
@@ -149,6 +153,7 @@ Class::__inheritClass(const Class& c) {
     Sequence<ClassElement*> chain((*iter)->chain());
     chain.setAtPos(0, __nameMap[(*iter)->chain().front()->name()]);
     SlotChain* sc = new SlotChain((*iter)->name(), chain);
+    bij.insert(&(sc->type().variable()), &((*iter)->type().variable()));
     sc->setId((*iter)->id());
     __nodeIdMap.insert(sc->id(), sc);
     __slotChains.insert(sc);
@@ -166,10 +171,14 @@ Class::__inheritClass(const Class& c) {
     _IOFlags().insert(iter.key(), new std::pair<bool, bool>(**iter));
   }
   // Copying content of CPF
-  for (Set<Attribute*>::iterator iter = __attributes.begin(); iter != __attributes.end(); ++iter) {
-    static bool b = true;
-    if (b) {
-      b = false;
+  for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
+    Potential<prm_float>& child_cpf = get((*iter)->safeName()).cpf();
+    const Potential<prm_float>& prnt_cpf = (*iter)->cpf();
+    Instantiation i(child_cpf);
+    Instantiation j(prnt_cpf);
+    for (i.setFirst(); not i.end(); i.inc()) {
+      Instantiation::assign_values(bij, i, j);
+      child_cpf.set(i, prnt_cpf.get(j));
     }
   }
 }

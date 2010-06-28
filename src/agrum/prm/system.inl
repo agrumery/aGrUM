@@ -28,6 +28,12 @@
 namespace gum {
 namespace prm {
 
+INLINE
+NodeId
+System::add(const std::string& array, Instance& i) {
+  return add(array, &i);
+}
+
 
 } /* namespace prm */
 } /* namespace gum */

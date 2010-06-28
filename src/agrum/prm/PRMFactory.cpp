@@ -33,29 +33,44 @@ namespace gum {
 namespace prm {
 
 void
-PRMFactory::addLabel(const std::string& l, const std::string& extends) {
-  Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
-  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
-  if (not var) {
-    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
-  } else if (not t->__super) {
-    GUM_ERROR(OperationNotAllowed, "current type is not a subtype.");
-  }
-  bool found = false;
-  for (Idx i = 0; i < t->__super->__var->domainSize(); ++i) {
-    if (t->__super->__var->label(i) == extends) {
-      try {
-        var->addLabel(l);
-      } catch (DuplicateElement&) {
-        GUM_ERROR(DuplicateElement, "a label with the same value already exists");
-      }
-      t->__label_map->push_back(i);
-      found = true;
-      break;
+PRMFactory::addLabel(const std::string& l, std::string extends) {
+  if (extends == "") {
+    Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
+    LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+    if (not var) {
+      GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+    } else if (t->__super) {
+      GUM_ERROR(OperationNotAllowed, "current type is a subtype.");
     }
-  }
-  if (not found) {
-    GUM_ERROR(NotFound, "inexistent label in super type.");
+    try {
+      var->addLabel(l);
+    } catch (DuplicateElement&) {
+      GUM_ERROR(DuplicateElement, "a label with the same value already exists");
+    }
+  } else {
+    Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
+    LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
+    if (not var) {
+      GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
+    } else if (not t->__super) {
+      GUM_ERROR(OperationNotAllowed, "current type is not a subtype.");
+    }
+    bool found = false;
+    for (Idx i = 0; i < t->__super->__var->domainSize(); ++i) {
+      if (t->__super->__var->label(i) == extends) {
+        try {
+          var->addLabel(l);
+        } catch (DuplicateElement&) {
+          GUM_ERROR(DuplicateElement, "a label with the same value already exists");
+        }
+        t->__label_map->push_back(i);
+        found = true;
+        break;
+      }
+    }
+    if (not found) {
+      GUM_ERROR(NotFound, "inexistent label in super type.");
+    }
   }
 }
 
@@ -78,7 +93,7 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
           impl.insert(__prm->__interfaceMap[__addPrefix(*iter)]);
         } catch (NotFound&) {
           std::string msg = "no interface named: ";
-          GUM_ERROR(NotFound, msg + *iter);
+          GUM_ERROR(NotFound, msg + __addPrefix(*iter));
         }
       }
     }
@@ -203,6 +218,27 @@ PRMFactory::startInterface(const std::string& name, const std::string& extends)
   __prm->__interfaceMap.insert(i->name(), i);
   __prm->__interfaces.insert(i);
   __stack.push_back(i);
+}
+
+void
+PRMFactory::addAttribute(Attribute* attr) {
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+  c->add(attr);
+  Size count = 0;
+  const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
+  for (DAG::NodeIterator node = c->dag().beginNodes(); node != c->dag().endNodes(); ++node) {
+    try {
+      if (vars.exists(&(c->get(*node).type().variable()))) {
+        ++count;
+        if (&(attr->type().variable()) != &(c->get(*node).type().variable())) {
+          c->insertArc(c->get(*node).safeName(), attr->safeName());
+        }
+      }
+    } catch (OperationNotAllowed&) { }
+  }
+  if (count != attr->cpf().variablesSequence().size()) {
+    GUM_ERROR(NotFound, "unable to found all parents of this attribute");
+  }
 }
 
 void
@@ -339,22 +375,30 @@ void
 PRMFactory::addParameter(const std::string& type, const std::string& name,
                          std::string value)
 {
-  Class* c = static_cast<Class*>(__checkStackContainter(1));
-  MultiDimSparse<prm_float>* impl = new MultiDimSparse<prm_float>(0);
-  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
-  Instantiation inst(a->cpf());
-  bool found = false;
-  for (inst.setFirst(); not inst.end(); inst.inc()) {
-    if (a->type()->label(inst.pos(*(a->type()))) == value) {
-      a->cpf().set(inst, 1);
-      found = true;
-      break;
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+  if (value == "") {
+    MultiDimSparse<prm_float>* impl =
+      new MultiDimSparse<prm_float>(
+          std::numeric_limits<prm_float>::signaling_NaN());
+    Attribute* a = new Attribute(name, *__retrieveType(type), impl);
+    c->addParameter(a, false);
+  } else {
+    MultiDimSparse<prm_float>* impl = new MultiDimSparse<prm_float>(0);
+    Attribute* a = new Attribute(name, *__retrieveType(type), impl);
+    Instantiation inst(a->cpf());
+    bool found = false;
+    for (inst.setFirst(); not inst.end(); inst.inc()) {
+      if (a->type()->label(inst.pos(*(a->type()))) == value) {
+        a->cpf().set(inst, 1);
+        found = true;
+        break;
+      }
     }
+    if (not found) {
+      GUM_ERROR(NotFound, "illegal default value.");
+    }
+    c->addParameter(a, true);
   }
-  if (not found) {
-    GUM_ERROR(NotFound, "illegal default value.");
-  }
-  c->addParameter(a, true);
 }
 
 void
@@ -363,68 +407,83 @@ PRMFactory::addAggregator(const std::string& name,
                           const std::vector<std::string>& chains,
                           const std::vector<std::string>& params)
 {
-  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
-  // Checking call legality
-  if (chains.size() == 0)
-    GUM_ERROR(OperationNotAllowed, "an Aggregate requires at least one parent");
-  // Retrieving the parents of the aggregate
-  std::vector<ClassElement*> inputs;
-  __retrieveInputs(c, chains, inputs);
-  // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
-  try {
-    if (inputs.size() > 1)
-      for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter)
-        if ((**(iter - 1)).type() != (**iter).type())
-          GUM_ERROR(WrongType, "found different types");
-  } catch (OperationNotAllowed&) {
-    GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
+  std::string space = " ";
+  std::stringstream sBuff;
+  sBuff << std::endl << "chains: ";
+  for (std::vector<std::string>::const_iterator iter = chains.begin(); iter != chains.end(); ++iter) {
+    sBuff << *iter << " ";
   }
-  // Different treatments for different types of aggregate.
-  Aggregate* agg = 0;
-  switch (Aggregate::str2enum(agg_type)) {
-    case Aggregate::agg_or:
-    case Aggregate::agg_and:
-      {
-        if (inputs.front()->type() != *(__retrieveType("boolean")))
-          GUM_ERROR(WrongType, "expected booleans");
-      }
-    case Aggregate::agg_min:
-    case Aggregate::agg_max:
-      {
-        if (params.size() != 0)
-          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
-        agg = new Aggregate(name, Aggregate::str2enum(agg_type), inputs.front()->type());
-        break;
-      }
-    case Aggregate::agg_exists:
-    case Aggregate::agg_forall:
-      {
-        if (params.size() != 1)
-          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
-        Idx label_idx = 0;
-        while (label_idx < inputs.front()->type()->domainSize()) {
-          if (inputs.front()->type()->label(label_idx) == params.front()) {
-            break;
-          }
-          ++label_idx;
+  sBuff << std::endl << "params: ";
+  for (std::vector<std::string>::const_iterator iter = params.begin(); iter != params.end(); ++iter) {
+    sBuff << *iter << " ";
+  }
+  try {
+    Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+    // Checking call legality
+    if (chains.size() == 0)
+      GUM_ERROR(OperationNotAllowed, "an Aggregate requires at least one parent");
+    // Retrieving the parents of the aggregate
+    std::vector<ClassElement*> inputs;
+    __retrieveInputs(c, chains, inputs);
+    // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
+    try {
+      if (inputs.size() > 1)
+        for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter)
+          if ((**(iter - 1)).type() != (**iter).type())
+            GUM_ERROR(WrongType, "found different types");
+    } catch (OperationNotAllowed&) {
+      GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
+    }
+    // Different treatments for different types of aggregate.
+    Aggregate* agg = 0;
+    switch (Aggregate::str2enum(agg_type)) {
+      case Aggregate::agg_or:
+      case Aggregate::agg_and:
+        {
+          if (inputs.front()->type() != *(__retrieveType("boolean")))
+            GUM_ERROR(WrongType, "expected booleans");
         }
-        if (label_idx == inputs.front()->type()->domainSize())
-          GUM_ERROR(NotFound, "could not find label");
-        // Creating and adding the Aggregate
-        agg = new Aggregate(name, Aggregate::str2enum(agg_type), *(__retrieveType("boolean")), label_idx);
-        break;
-      }
-    default:
-      { GUM_ERROR(FatalError, "Unknown aggregator."); }
-  }
-  try {
-    c->add(agg);
-  } catch (DuplicateElement& e) {
-    delete agg;
+      case Aggregate::agg_min:
+      case Aggregate::agg_max:
+        {
+          if (params.size() != 0)
+            GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
+          agg = new Aggregate(name, Aggregate::str2enum(agg_type), inputs.front()->type());
+          break;
+        }
+      case Aggregate::agg_exists:
+      case Aggregate::agg_forall:
+        {
+          if (params.size() != 1)
+            GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
+          Idx label_idx = 0;
+          while (label_idx < inputs.front()->type()->domainSize()) {
+            if (inputs.front()->type()->label(label_idx) == params.front()) {
+              break;
+            }
+            ++label_idx;
+          }
+          if (label_idx == inputs.front()->type()->domainSize())
+            GUM_ERROR(NotFound, "could not find label");
+          // Creating and adding the Aggregate
+          agg = new Aggregate(name, Aggregate::str2enum(agg_type), *(__retrieveType("boolean")), label_idx);
+          break;
+        }
+      default:
+        { GUM_ERROR(FatalError, "Unknown aggregator."); }
+    }
+    try {
+      c->add(agg);
+    } catch (DuplicateElement& e) {
+      delete agg;
+      throw e;
+    }
+    for (std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter)
+      c->insertArc((*iter)->name(), name);
+  } catch (Exception& e) {
+    std::cerr << std::endl;
     throw e;
   }
-  for (std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter)
-    c->insertArc((*iter)->name(), name);
 }
 
 void
@@ -472,6 +531,21 @@ PRMFactory::addArray(const std::string& type,
   } catch (NotFound& e) {
     delete inst;
     throw e;
+  }
+}
+
+void
+PRMFactory::incArray(const std::string& l_i, const std::string& r_i)
+{
+  System* model = static_cast<System*>(__checkStack(1, PRMObject::prm_system));
+  if (model->isArray(l_i)) {
+    if (model->isInstance(r_i)) {
+      model->add(l_i, model->get(r_i));
+    } else {
+      GUM_ERROR(NotFound, "right value is not an instance");
+    }
+  } else {
+    GUM_ERROR(NotFound, "left value is no an array");
   }
 }
 
@@ -528,10 +602,6 @@ PRMFactory::setParameter(const std::string& instance, const std::string& param, 
       GUM_ERROR(OperationNotAllowed, "given attribute is not a parameter");
     }
   } catch (NotFound&) {
-    GUM_TRACE(instance);
-    GUM_TRACE(param);
-    GUM_TRACE(value);
-    GUM_TRACE(i->type().exists(param));
     GUM_ERROR(NotFound, "no such parameter in the given instance");
   }
   Size label = a->type()->domainSize();
@@ -542,9 +612,6 @@ PRMFactory::setParameter(const std::string& instance, const std::string& param, 
     }
   }
   if (label == a->type()->domainSize()) {
-    GUM_TRACE(instance);
-    GUM_TRACE(param);
-    GUM_TRACE(value);
     GUM_ERROR(NotFound, "no such label in the given parameter");
   }
   Potential<prm_float> pot;

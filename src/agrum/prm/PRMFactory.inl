@@ -45,12 +45,21 @@ PRMFactory::prm() { return __prm; }
 
 INLINE
 PRMObject::ObjectType
-PRMFactory::current() const
+PRMFactory::currentType() const
 {
   if (__stack.size() == 0) {
-    GUM_ERROR(NotFound, "No object being built.");
+    GUM_ERROR(NotFound, "no object being built");
   }
   return __stack.back()->obj_type();
+}
+
+INLINE
+PRMObject*
+PRMFactory::getCurrent() {
+  if (__stack.size() == 0) {
+    GUM_ERROR(NotFound, "no object being built");
+  }
+  return __stack.back();
 }
 
 INLINE
@@ -67,50 +76,25 @@ PRMFactory::closeCurrent()
 }
 
 INLINE
-const std::string&
-PRMFactory::currentPackage() const { return __prefix; }
-
-INLINE
-void
-PRMFactory::setPackage(const std::string& name) {
-  __prefix = name;
-}
-
-INLINE
-void
-PRMFactory::startDiscreteType(const std::string& name) {
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Type* t = new Type(LabelizedVariable(real_name, "", 0));
-  __stack.push_back(t);
-}
+std::string
+PRMFactory::currentPackage() const { return (__packages.empty())?"":__packages.back(); }
 
 INLINE
 void
 PRMFactory::startDiscreteType(const std::string& name,
-                              const std::string& super) {
-  std::string real_name = __addPrefix(name);
-  __checkDuplicateName(real_name);
-  Type* t = new Type(LabelizedVariable(real_name, "", 0));
-  t->__super = __retrieveType(super);
-  t->__label_map = new std::vector<Idx>();
-  __stack.push_back(t);
-}
-
-INLINE
-void
-PRMFactory::addLabel(const std::string& l) {
-  Type* t = static_cast<Type*>(__checkStack(1, PRMObject::prm_type));
-  LabelizedVariable* var = dynamic_cast<LabelizedVariable*>(t->__var);
-  if (not var) {
-    GUM_ERROR(FatalError, "the current type's variable is not a LabelizedVariable.");
-  } else if (t->__super) {
-    GUM_ERROR(OperationNotAllowed, "current type is a subtype.");
-  }
-  try {
-    var->addLabel(l);
-  } catch (DuplicateElement&) {
-    GUM_ERROR(DuplicateElement, "a label with the same value already exists");
+                              std::string super) {
+  if (super == "") {
+    std::string real_name = __addPrefix(name);
+    __checkDuplicateName(real_name);
+    Type* t = new Type(LabelizedVariable(real_name, "", 0));
+    __stack.push_back(t);
+  } else {
+    std::string real_name = __addPrefix(name);
+    __checkDuplicateName(real_name);
+    Type* t = new Type(LabelizedVariable(real_name, "", 0));
+    t->__super = __retrieveType(super);
+    t->__label_map = new std::vector<Idx>();
+    __stack.push_back(t);
   }
 }
 
@@ -131,8 +115,16 @@ PRMFactory::endDiscreteType() {
 INLINE
 void
 PRMFactory::endInterface() {
-  static_cast<Interface*>(__checkStack(1, PRMObject::prm_interface));
+  __checkStack(1, PRMObject::prm_interface);
   __stack.pop_back();
+}
+
+INLINE
+void
+PRMFactory::addAttribute(const std::string& type, const std::string& name) {
+  __checkStack(1, PRMObject::prm_interface);
+  startAttribute(type, name);
+  endAttribute();
 }
 
 INLINE
@@ -171,17 +163,6 @@ PRMFactory::endAttribute()
 
 INLINE
 void
-PRMFactory::addParameter(const std::string& type, const std::string& name) {
-  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
-  MultiDimSparse<prm_float>* impl =
-    new MultiDimSparse<prm_float>(
-        std::numeric_limits<prm_float>::signaling_NaN());
-  Attribute* a = new Attribute(name, *__retrieveType(type), impl);
-  c->addParameter(a, false);
-}
-
-INLINE
-void
 PRMFactory::startSystem(const std::string& name)
 {
   __checkDuplicateName(__addPrefix(name));
@@ -198,12 +179,6 @@ PRMFactory::endSystem()
   model->instantiate();
   __prm->__systemMap.insert(model->name(), model);
   __prm->__systems.insert(model);
-}
-
-INLINE
-System&
-PRMFactory::getCurrentSystem() {
-  return *(static_cast<System*>(__checkStack(1, PRMObject::prm_system)));
 }
 
 INLINE
@@ -225,8 +200,8 @@ INLINE
 std::string
 PRMFactory::__addPrefix(const std::string& str) const
 {
-  if (! __prefix.empty()) {
-    std::string full_name = __prefix;
+  if (not __packages.empty()) {
+    std::string full_name = __packages.back();
     full_name.append(".");
     full_name.append(str);
     return full_name;
@@ -357,6 +332,49 @@ PRMFactory::__typeDepth(Type* t) {
     current = &(current->super());
   }
   return depth;
+}
+
+INLINE
+void
+PRMFactory::pushPackage(const std::string& name) {
+  __packages.push_back(name);
+}
+
+INLINE
+std::string
+PRMFactory::popPackage() {
+  if (not __packages.empty()) {
+    std::string s = __packages.back();
+    __packages.pop_back();
+    return s;
+  }
+  return "";
+}
+
+INLINE
+void
+PRMFactory::setReferenceSlot(const std::string& l_i,
+                             const std::string& r_i)
+{
+  size_t pos = l_i.find_last_of('.');
+  if (pos != std::string::npos) {
+    std::string l_ref = l_i.substr(pos + 1, std::string::npos);
+    setReferenceSlot(l_i.substr(0, pos), l_ref, r_i);
+  } else {
+    GUM_ERROR(NotFound, "left value does not name an instance or an array");
+  }
+}
+
+INLINE
+Class&
+PRMFactory::retrieveClass(const std::string& name) {
+  return *__retrieveClass(name);
+}
+
+INLINE
+Type&
+PRMFactory::retrieveType(const std::string& name) {
+  return *__retrieveType(name);
 }
 
 // ============================================================================

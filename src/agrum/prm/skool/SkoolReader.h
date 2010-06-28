@@ -44,6 +44,14 @@ namespace skool {
 
       void readFile(const std::string& file);
 
+      /**
+       * @brief This methods defines the list of paths to look for skool files.
+       * Use / for path separator ! Even on Windows !
+       *
+       * @param class_path A semicolon separated list of paths.
+       */
+      void setClassPath(const std::string& class_path);
+
       gum::prm::PRM* prm();
 
     private:
@@ -52,6 +60,8 @@ namespace skool {
       SkoolReader& operator=(const SkoolReader& source);
 
       gum::prm::PRMFactory __factory;
+
+      std::vector<std::string> __class_path;
   };
 
 } /* namespace skool */

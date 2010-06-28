@@ -87,8 +87,8 @@ class ClassElement: public PRMObject {
     enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
                             prm_slotchain };
 
-    static std::string LEFT_CAST()  { return "<"; }
-    static std::string RIGHT_CAST() { return ">"; }
+    static std::string LEFT_CAST()  { return "("; }
+    static std::string RIGHT_CAST() { return ")"; }
 
     static std::string enum2str(ClassElementType type)
     {
