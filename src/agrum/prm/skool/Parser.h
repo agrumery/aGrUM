@@ -14,7 +14,7 @@ namespace std {
 
 #include <agrum/prm/PRMFactory.h>
 
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent());}
 
 
 #include <agrum/prm/skool/Scanner.h>
@@ -75,7 +75,9 @@ class Parser {
     Errors  *errors;
 
     Token *t;   // last recognized token
-    Token *la;  // lookahead token
+    Token *la//; he adds a ;   // lookahead token
+
+    ;
 
 gum::prm::PRMFactory* __factory;
 std::vector<std::string> __class_path;
@@ -143,34 +145,6 @@ void import(std::string s) {
     if (not found) {
       GUM_ERROR(gum::NotFound, "import not found");
     }
-  }
-}
-
-void addNoisyOr(std::string type, std::string name, std::vector<std::string>& chains,
-                std::vector<float>& numbers, float leak, std::vector<std::string>& labels)
-{
-  if (factory().currentType() != gum::prm::PRMObject::prm_class)
-    GUM_ERROR(gum::FactoryInvalidState, "invalid state to add a noisy-or");
-  gum::prm::Class* c = dynamic_cast<gum::prm::Class*>(factory().getCurrent());
-
-  if (numbers.size() == 1) {
-    gum::prm::Attribute* attr = new gum::prm::Attribute(name, factory().retrieveType(type), new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak, numbers.front()));
-    for (std::vector<std::string>::iterator iter = chains.begin(); iter != chains.end(); ++iter) {
-      attr->addParent(c->get(*iter));
-    }
-    factory().addAttribute(attr);
-  } else if (numbers.size() == chains.size()) {
-    gum::MultiDimNoisyOR<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak);
-    gum::prm::FuncAttribute* attr = new gum::prm::FuncAttribute(name, factory().retrieveType(type), noisy);
-    for (size_t idx = 0; idx < numbers.size(); ++idx) {
-      noisy->causalWeight(c->get(chains[idx]).type().variable(), numbers[idx]);
-    }
-    factory().addAttribute(attr);
-  } else {
-    GUM_ERROR(OperationNotAllowed, "invalid paramters for a noisy or");
-  }
-  if (not labels.empty()) {
-    SemErr("ignored modalities in noisy-or");
   }
 }
 
@@ -260,7 +234,7 @@ void setReferenceSlot(std::string s, std::string r) {
 
 //=====================
 
-      Parser(Scanner *scanner);
+    Parser(Scanner *scanner);
     ~Parser();
     void SemErr(const wchar_t* msg);
 

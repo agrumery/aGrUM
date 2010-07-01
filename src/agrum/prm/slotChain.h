@@ -154,6 +154,20 @@ class SlotChain: public ClassElement
     /// See gum::ClassElement::_addChild().
     virtual void addChild(const ClassElement& elt);
 
+    virtual std::string cast(const Type& t) {
+      if (lastElt().type().isSubTypeOf(t)) {
+        std::stringstream sBuff;
+        for (Size i = 0; i < chain().size() - 1; ++i) {
+          sBuff << chain().atPos(i) << ".";
+        }
+        sBuff << ClassElement::LEFT_CAST() << t.name() << ClassElement::RIGHT_CAST();
+        sBuff << lastElt().name();
+        return sBuff.str();
+      } else {
+        GUM_ERROR(OperationNotAllowed, "no possible safe name for this ClassElement");
+      }
+    }
+
     /// @}
   private:
 

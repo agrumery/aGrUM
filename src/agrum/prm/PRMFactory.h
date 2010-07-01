@@ -147,6 +147,25 @@ class PRMFactory {
     Type& retrieveType(const std::string& name);
 
 
+    /* @brief Retrieve the common Type of a vector of ClassElement.
+     *
+     * The vector elts must only contains ClassElement with a Type, i.e.
+     * Attribute, Aggregate and SlotChain. If not, a WrongClassElement is
+     * raised.
+     *
+     * A common Type is Type t such as t.isSuperTypeOf(elts[i]) for
+     * 0 < i < elts.size(), where elts is a Type container.
+     *
+     * @param elts A vector of ClassElement.
+     * @return the common super Type of all ClassElement un elts.
+     *
+     * @throw WrongClassElement Raised if elts contains a ClassElement
+     *                          without a Type.
+     * @throw NotFound Raised if there exists no common super type of all
+     *                 ClassElement in elts.
+     */
+    Type& retrieveCommonType(const std::vector<ClassElement*>& elts);
+
     ///@}
     // ======================================================================
     /// @name Package construction methods.
@@ -401,7 +420,7 @@ class PRMFactory {
 
     /// @}
     // ======================================================================
-    /// @name Aggregator construction methods.
+    /// @name Aggregator and function construction methods.
     // ======================================================================
     /// @{
 
@@ -423,6 +442,28 @@ class PRMFactory {
                        const std::vector<std::string>& chains,
                        const std::vector<std::string>& params);
 
+    /**
+     * @brief Add a noisy-or as an Attribute to the current Class.
+     *
+     * The type of a noisy-or must be a boolean.
+     *
+     * @param name the name of the Attribute added as a noisy-or.
+     * @param chains the list of parents of the noisy-or.
+     * @param numbers the list of weights for each parent. Can consist of only
+     *                one value which will be applied to all the parents.
+     * @param label the label on which the noisy-or applies, can be an empty
+     *              string (the noisy-or will behave as if chains are all booleans).
+     *
+     * @throw NotFound Raised if one of the chains or the label is not found.
+     * @throw FactoryInvalidState Raised if a Class is not the current declared
+     *                            PRMObject.
+     * @throw OperationNotAllowed Raised if for some reasons the parameters are
+     *                            invalid.
+     */
+    void addNoisyOr(const std::string& name,
+                    const std::vector<std::string>& chains,
+                    const std::vector<float>& numbers, float leak,
+                    const std::vector<std::string>& label);
     /// @}
     // ======================================================================
     /// @name ReferenceSlot construction methods.
@@ -622,7 +663,7 @@ class PRMFactory {
     /// raised.
     ///
     /// A common Type is Type t such as t.isSuperTypeOf(elts[i]) for
-    /// 0 < i < elts.size().
+    /// 0 < i < elts.size(), where elts is a Type container.
     ///
     /// @param elts A vector of ClassElement.
     /// @return Returns the common super Type of all ClassElement un elts.
@@ -631,7 +672,7 @@ class PRMFactory {
     ///                          without a Type.
     /// @throw NotFound Raised if there exists no common super type of all
     ///                 ClassElement in elts.
-    Type* __retrieveCommonType(std::vector<ClassElement*>& elts);
+    Type* __retrieveCommonType(const std::vector<ClassElement*>& elts);
 
     /// @brief Returns the inheritance depth of a Type.
     ///
@@ -640,7 +681,7 @@ class PRMFactory {
     ///
     /// @param t The Type for which we compute its depth.
     /// @return Returns the depth of t.
-    int __typeDepth(Type* t);
+    int __typeDepth(const Type* t);
 
     /// @}
     // ======================================================================

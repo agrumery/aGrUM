@@ -66,10 +66,10 @@ class Parser {
     Errors  *errors;
 
     Token *t;   // last recognized token
-    Token *la;  // lookahead token
+    Token *la//; he adds a ;   // lookahead token
 
     -->declarations
-      Parser(Scanner *scanner);
+    Parser(Scanner *scanner);
     ~Parser();
     void SemErr(const wchar_t* msg);
 

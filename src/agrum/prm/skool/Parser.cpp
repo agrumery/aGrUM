@@ -334,6 +334,7 @@ void Parser::Aggregate(std::string type, std::string name) {
 }
 
 void Parser::Functions(std::string type, std::string name) {
+		if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} 
 		Expect(27);
 		Expect(28);
 		Expect(17);
@@ -351,7 +352,7 @@ void Parser::Functions(std::string type, std::string name) {
 		}
 		Expect(18);
 		Expect(8);
-		TRY(addNoisyOr(type, name, chains, numbers, leak, labels)) 
+		TRY(factory().addNoisyOr(name, chains, numbers, leak, labels)) 
 }
 
 void Parser::Parameter(std::string type, std::string name) {

@@ -45,6 +45,16 @@ ClassElement::safeName() const {
   return _safeName;
 }
 
+INLINE
+std::string
+ClassElement::cast(const Type& t) const {
+  if (type().isSubTypeOf(t)) {
+    return ClassElement::LEFT_CAST() + t.name() + ClassElement::RIGHT_CAST() + name();
+  } else {
+    GUM_ERROR(OperationNotAllowed, "illegal cast");
+  }
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

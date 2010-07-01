@@ -324,9 +324,9 @@ PRMFactory::__retrieveInterface(const std::string& name) const
 
 INLINE
 int
-PRMFactory::__typeDepth(Type* t) {
+PRMFactory::__typeDepth(const Type* t) {
   int depth = 0;
-  Type* current = t;
+  const Type* current = t;
   while (current->isSubType()) {
     ++depth;
     current = &(current->super());
@@ -375,6 +375,12 @@ INLINE
 Type&
 PRMFactory::retrieveType(const std::string& name) {
   return *__retrieveType(name);
+}
+
+INLINE
+Type&
+PRMFactory::retrieveCommonType(const std::vector<ClassElement*>& elts) {
+  return *(__retrieveCommonType(elts));
 }
 
 // ============================================================================

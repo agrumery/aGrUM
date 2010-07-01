@@ -192,6 +192,14 @@ class ClassElement: public PRMObject {
     const std::string& safeName() const;
 
     /**
+     * @brief Returns the name of the cast descendant with Type t of this
+     *        ClassElement.
+     * @param t The type in which we want to cast this ClassElement.
+     * @throw OperationNotAllowed If the cast is impossible.
+     */
+    virtual std::string cast(const Type& t) const;
+
+    /**
      * Return a reference over the gum::Potential of this class element.
      * @throw OperationNotAllowed Raised if this class element doesn't have
      *                            any gum::Potential (like a gum::ReferenceSlot).

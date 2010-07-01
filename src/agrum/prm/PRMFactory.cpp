@@ -675,22 +675,27 @@ PRMFactory::__retrieveInputs(Class* c, const std::vector<std::string>& chains,
 }
 
 Type*
-PRMFactory::__retrieveCommonType(std::vector<ClassElement*>& elts)
+PRMFactory::__retrieveCommonType(const std::vector<ClassElement*>& elts)
 {
-  Type* current = 0;
-  HashTable<Type*, Size> counters;
+  const Type* current = 0;
+  HashTable<std::string, Size> counters;
   // Finding all types and super types
-  for (std::vector<ClassElement*>::iterator iter = elts.begin();
-       iter != elts.end(); ++iter)  {
+  for (std::vector<ClassElement*>::const_iterator iter = elts.begin(); iter != elts.end(); ++iter)  {
     try {
       current = &((**iter).type());
       while (current != 0) {
         // Filling counters
-        if (counters.exists(current)) ++(counters[current]);
-        else                          counters.insert(current, 1);
+        if (counters.exists(current->name())) {
+          ++(counters[current->name()]);
+        } else {
+          counters.insert(current->name(), 1);
+        }
         // Loop guard
-        if (current->isSubType()) current = &(current->super());
-        else                      current = 0;
+        if (current->isSubType()) {
+          current = &(current->super());
+        } else {
+          current = 0;
+        }
       }
     } catch (OperationNotAllowed&) {
        GUM_ERROR(WrongClassElement, "found a ClassElement without a type");
@@ -698,20 +703,73 @@ PRMFactory::__retrieveCommonType(std::vector<ClassElement*>& elts)
   }
   // We need to find the most specialized (i.e. max depth) common type
   current = 0;
-  int depth = -1;
+  int max_depth = -1;
   int current_depth = 0;
-  for (HashTable<Type*, Size>::iterator iter = counters.begin();
-       iter != counters.end(); ++iter) {
+  for (HashTable<std::string, Size>::iterator iter = counters.begin(); iter != counters.end(); ++iter) {
     if ( (*iter) == elts.size() ) {
-      current_depth = __typeDepth(iter.key());
-      if (depth < current_depth) {
-        depth = current_depth;
-        current = iter.key();
+      current_depth = __typeDepth(__retrieveType(iter.key()));
+      if (current_depth > max_depth) {
+        max_depth = current_depth;
+        current = __retrieveType(iter.key());
       }
     }
   }
-  if (current) return current;
+  if (current) {
+    return const_cast<Type*>(current);
+  }
   GUM_ERROR(NotFound, "could not find a common type");
+}
+
+void
+PRMFactory::addNoisyOr(const std::string& name,
+                       const std::vector<std::string>& chains,
+                       const std::vector<float>& numbers, float leak,
+                       const std::vector<std::string>& labels)
+{
+  if (currentType() != PRMObject::prm_class) {
+    GUM_ERROR(gum::FactoryInvalidState, "invalid state to add a noisy-or");
+  }
+  Class* c = dynamic_cast<gum::prm::Class*>(getCurrent());
+  std::vector<ClassElement*> parents;
+  for (std::vector<std::string>::const_iterator iter = chains.begin(); iter != chains.end(); ++iter) {
+    parents.push_back(&(c->get(*iter)));
+  }
+  Type* common_type = __retrieveCommonType(parents);
+  for (size_t idx = 0; idx < parents.size(); ++idx) {
+    if (parents[idx]->type() != (*common_type)) {
+      ClassElement* parent = parents[idx];
+      // Either safe_name is an non existing slot chain or an existing cast descendant
+      std::string safe_name = parent->cast(*common_type);
+      if (not c->exists(safe_name)) {
+        if (ClassElement::isSlotChain(*parent)) {
+          parents[idx] = __buildSlotChain(c, safe_name);
+          c->add(parents[idx]);
+        } else {
+          GUM_TRACE(safe_name);
+          GUM_ERROR(NotFound, "unable to find parent");
+        }
+      } else {
+        parents[idx] = &(c->get(safe_name));
+      }
+    }
+  }
+  if (numbers.size() == 1) {
+    gum::prm::Attribute* attr = new gum::prm::Attribute(name, retrieveType("boolean"),
+        new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak, numbers.front()));
+    addAttribute(attr);
+  } else if (numbers.size() == parents.size()) {
+    gum::MultiDimNoisyOR<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak);
+    gum::prm::FuncAttribute* attr = new gum::prm::FuncAttribute(name, retrieveType("boolean"), noisy);
+    for (size_t idx = 0; idx < numbers.size(); ++idx) {
+      noisy->causalWeight(parents[idx]->type().variable(), numbers[idx]);
+    }
+    addAttribute(attr);
+  } else {
+    GUM_ERROR(OperationNotAllowed, "invalid parameters for a noisy or");
+  }
+  if (not labels.empty()) {
+    GUM_ERROR(OperationNotAllowed, "labels definitions not handle for noisy-or");
+  }
 }
 
 // ============================================================================

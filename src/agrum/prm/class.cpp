@@ -653,6 +653,7 @@ Class::addParameter(Attribute* param, bool flag) {
   param->setId(__dag.insertNode());
   __nodeIdMap.insert(param->id(), param);
   __nameMap.insert(param->name(), param);
+  __nameMap.insert(param->safeName(), param);
   __parameters.insert(param);
   __paramValueFlags.insert(param, flag);
   return param->id();
