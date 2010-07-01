@@ -656,6 +656,7 @@ Class::addParameter(Attribute* param, bool flag) {
   __nameMap.insert(param->safeName(), param);
   __parameters.insert(param);
   __paramValueFlags.insert(param, flag);
+  __addCastDescendants(param);
   return param->id();
 }
 
