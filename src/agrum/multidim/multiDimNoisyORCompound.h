@@ -1,0 +1,159 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief Abstract base class for all multi dimensionnal aggregator
+ *
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ */
+#ifndef GUM_MULTI_DIM_NOISY_OR_COMPUND_H
+#define GUM_MULTI_DIM_NOISY_OR_COMPUND_H
+
+#include <agrum/multidim/multiDimReadOnly.h>
+
+
+namespace gum {
+
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /** @class MultiDimNoisyORCompound
+   * @brief Noisy OR representation
+   * @ingroup multidim_group
+   *
+   * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+   *
+   * @warning
+   *   - The first variable is assumed to be the NOISY-OR. The latter are
+   *     the causes.
+   *   - This code give probabilities for BINARY VARIABLES (other values are
+   *     assumed to be of probability 0). But for optimization reason, we will
+   *     never check if it is the case.
+   */
+  /* =========================================================================== */
+  template<typename T_DATA>
+
+  class MultiDimNoisyORCompound : public MultiDimReadOnly<T_DATA> {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimNoisyORCompound( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
+    MultiDimNoisyORCompound( const MultiDimNoisyORCompound<T_DATA>& from );
+
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    virtual ~MultiDimNoisyORCompound();
+
+    /// @}
+
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual MultiDimContainer<T_DATA>* newFactory() const;
+
+
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+    // ============================================================================
+  public:
+    virtual T_DATA get( const Instantiation &i ) const;
+
+    const std::string toString( void ) const;
+
+    // @todo : optimisation with a always up-to-date value associated to each instantiation
+    virtual void changeNotification( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
+
+    virtual void setFirstNotification( gum::Instantiation& ) {};
+
+    virtual void setLastNotification( gum::Instantiation& ) {};
+
+    virtual void setIncNotification( gum::Instantiation& ) {};
+
+    virtual void setDecNotification( gum::Instantiation& ) {};
+
+    virtual void setChangeNotification( gum::Instantiation& ) {};
+
+    const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
+
+    /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
+    virtual Size realSize() const {return 0;};
+
+    T_DATA causalWeight( const DiscreteVariable& v ) const;
+    void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
+    T_DATA externalWeight() const;
+    void externalWeight( T_DATA w ) const;
+
+    /// returns the real name of the multiDimArray
+    /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
+     * name that describes what they are in reality. For instance, a table stored
+     * in extension is a "MultiDimArray", one that stores only non zero elements
+     * is a "MultiDimSparseArray", and so on. These names are unique for each type
+     * of implementation and is used by the system to determine which is the best
+     * functions to use, say, when we wish to use operators such as operator+ on
+     * two MultiDimImplementations */
+    virtual const std::string& name () const;
+
+    /// @}
+  protected:
+    /// \f$ p_0 \f$ in Henrion (89).
+    mutable T_DATA __external_weight;
+
+    /// @name causal weights
+    /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
+    /// @{
+    T_DATA __default_weight;
+    mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
+    /// @}
+  };
+
+  // ==============================================================================
+  /// For friendly displaying the content of the array.
+  // ==============================================================================
+  template<typename T_DATA>
+  std::ostream& operator<< ( std::ostream& s,
+                             const MultiDimNoisyORCompound<T_DATA>& ag );
+
+
+} /* namespace gum */
+
+#include <agrum/multidim/multiDimNoisyORCompound.tcc>
+
+
+#endif /* GUM_MULTI_DIM_NOISY_OR_COMPUND_H */
+

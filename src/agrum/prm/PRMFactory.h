@@ -443,7 +443,7 @@ class PRMFactory {
                        const std::vector<std::string>& params);
 
     /**
-     * @brief Add a noisy-or as an Attribute to the current Class.
+     * @brief Add a compound noisy-or as an Attribute to the current Class.
      *
      * The type of a noisy-or must be a boolean.
      *
@@ -460,7 +460,7 @@ class PRMFactory {
      * @throw OperationNotAllowed Raised if for some reasons the parameters are
      *                            invalid.
      */
-    void addNoisyOr(const std::string& name,
+    void addNoisyOrCompound(const std::string& name,
                     const std::vector<std::string>& chains,
                     const std::vector<float>& numbers, float leak,
                     const std::vector<std::string>& label);

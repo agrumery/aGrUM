@@ -101,7 +101,16 @@ namespace gum {
     return size;
   }
 
-  
+   /// returns the result of the combination
+   /// @todo This implementation is very improvable : we need a way for decorators to swap contents instead of copying it...
+  template< typename T_DATA, template<typename> class TABLE >
+  INLINE void
+  MultiDimCombination<T_DATA,TABLE>::combine
+  ( TABLE<T_DATA>& container, const Set<const TABLE<T_DATA>*>& set ) {
+    TABLE<T_DATA>* res=combine(set);
+    container=*res;
+    delete(res);
+  }
 
   /// returns the result of the combination
   template< typename T_DATA, template<typename> class TABLE >

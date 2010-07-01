@@ -1,5 +1,3 @@
-
-
 #if !defined(SKOOL_COCO_PARSER_H__)
 #define SKOOL_COCO_PARSER_H__
 
@@ -14,8 +12,9 @@ namespace std {
 
 #include <agrum/prm/PRMFactory.h>
 
+#ifndef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent());}
-
+#endif // TRY
 
 #include <agrum/prm/skool/Scanner.h>
 using namespace std;

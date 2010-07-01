@@ -31,7 +31,7 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 // ============================================================================
-#include <agrum/multidim/multiDimNoisyOR.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {

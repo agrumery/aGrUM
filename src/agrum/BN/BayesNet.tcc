@@ -347,14 +347,14 @@ namespace gum {
   template<typename T_DATA> INLINE
   NodeId
   BayesNet<T_DATA>::addNoisyOR ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
-    return add ( var, new MultiDimNoisyOR<T_DATA> ( external_weight ) , id );
+    return add ( var, new MultiDimNoisyORCompound<T_DATA> ( external_weight ) , id );
   }
 
   template<typename T_DATA>
   void
   BayesNet<T_DATA>::insertArcNoisyOR ( NodeId tail, NodeId head, T_DATA causalWeight ) {
     const MultiDimAdressable& content = cpt ( head ).getMasterRef();
-    const MultiDimNoisyOR<T_DATA>* noisy = dynamic_cast<const MultiDimNoisyOR<T_DATA>*> ( &content );
+    const MultiDimNoisyORCompound<T_DATA>* noisy = dynamic_cast<const MultiDimNoisyORCompound<T_DATA>*> ( &content );
 
     if ( noisy == 0 ) {
       GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );

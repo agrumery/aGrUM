@@ -352,7 +352,7 @@ void Parser::Functions(std::string type, std::string name) {
 		}
 		Expect(18);
 		Expect(8);
-		TRY(factory().addNoisyOr(name, chains, numbers, leak, labels)) 
+		TRY(factory().addNoisyOrCompound(name, chains, numbers, leak, labels)) 
 }
 
 void Parser::Parameter(std::string type, std::string name) {

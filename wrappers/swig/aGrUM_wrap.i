@@ -35,7 +35,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimReadOnly.h>
-#include <agrum/multidim/multiDimNoisyOR.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
 
 #include <agrum/core/sequence.h>
@@ -100,6 +100,7 @@
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
+%include <agrum/core/bijection.h>
 
 %include <agrum/multidim/variable.h>
 %include <agrum/multidim/discreteVariable.h>
@@ -124,7 +125,7 @@
 %include <agrum/multidim/multiDimImplementation.h>
 %include <agrum/multidim/multiDimWithOffset.h>
 %import <agrum/multidim/multiDimReadOnly.h>
-%include <agrum/multidim/multiDimNoisyOR.h>
+%include <agrum/multidim/multiDimNoisyORCompound.h>
 %include <agrum/multidim/potential.h>
 %include <agrum/multidim/multiDimArray.h>
 

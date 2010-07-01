@@ -126,6 +126,7 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
     virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set );
+    virtual void combine ( TABLE<T_DATA>& container ,const Set<const TABLE<T_DATA>*>& set );
 
     /// changes the function used for combining two TABLES
     void setCombinator( TABLE<T_DATA>*

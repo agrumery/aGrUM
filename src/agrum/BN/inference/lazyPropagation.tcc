@@ -25,8 +25,16 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/multidim/multiDimCombination.h>
 
 namespace gum {
+  
+  // the function used to combine two tables
+  template <typename T_DATA> INLINE
+  static Potential<T_DATA>* multiPotential ( const Potential<T_DATA>& t1,const Potential<T_DATA>& t2 ) {
+    return new Potential<T_DATA> (t1 * t2);
+  }
+  
   // ==============================================================================
   /// default constructor
   // ==============================================================================
@@ -383,18 +391,28 @@ namespace gum {
 
       if ( pot_to_mult.size() == 1 ) {
         joint = *pot_to_mult[0];
-      } else {
+      } else {/*
         ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
         joint = **iter;
 
         for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
-          joint.multiplicateBy( **iter );
+          joint=multiplicateBy( **iter );
+        }*/
+        
+      if (pot_to_mult.size()==1) {
+        ListConstIterator<const Potential<T_DATA>*> iter=pot_to_mult.begin();
+        joint=**iter;
+      } else {
+          Set<const Potential<T_DATA>*> set;
+          for(ListConstIterator<const Potential<T_DATA>*>iter=pot_to_mult.begin();iter != pot_to_mult.end(); ++iter ) 
+            set<<*iter;        
+          MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+          fast_combination.combine ( joint,set );
         }
       }
 
       // compute the table resulting from marginalizing out del_var from joint
-      Potential<T_DATA>* marginal = new Potential<T_DATA>
-      ( new MultiDimArray<T_DATA>() );
+      Potential<T_DATA>* marginal = new Potential<T_DATA>( new MultiDimArray<T_DATA>() );
 
       const Sequence<const DiscreteVariable*>& joint_vars =
         joint.variablesSequence();
@@ -703,8 +721,7 @@ namespace gum {
   /// returns the marginal a posteriori proba of a given node
   // ==============================================================================
   template <typename T_DATA> void
-  LazyPropagation<T_DATA>::__aPosterioriMarginal( NodeId id,
-      Potential<T_DATA>& marginal ) {
+  LazyPropagation<T_DATA>::__aPosterioriMarginal( NodeId id, Potential<T_DATA>& marginal ) {
     // check if we performed a __collect on id, else we need some
     NodeId clique_of_id = __node_to_clique[id];
 
@@ -777,13 +794,23 @@ namespace gum {
     // ok, now, pot_list contains all the potentials to multiply and marginalize
     // => now, combine the messages
     __marginalizeOut( pot_list, del_vars );
-
+    /*
     __PotentialSetIterator iter = pot_list.begin();
-
     marginal = **iter;
-
     for ( ++iter; iter != pot_list.end(); ++iter )
       marginal.multiplicateBy( **iter );
+    */
+    
+    if (pot_list.size()==1) {
+      __PotentialSetIterator iter=pot_list.begin();
+      marginal=**iter;
+    } else {
+      Set<const Potential<T_DATA>*> set;
+      for(__PotentialSetIterator iter=pot_list.begin();iter != pot_list.end(); ++iter ) 
+        set<<*iter;        
+      MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+      fast_combination.combine ( marginal,set );
+    }
   }
 
 
@@ -911,13 +938,23 @@ namespace gum {
     // ok, now, pot_list contains all the potentials to multiply and marginalize
     // => now, combine the messages
     __marginalizeOut( pot_list, del_vars );
-
+    
+    /*
     __PotentialSetIterator iter = pot_list.begin();
-
     marginal = **iter;
-
     for ( ++iter; iter != pot_list.end(); ++iter )
       marginal.multiplicateBy( **iter );
+    */    
+    if (pot_list.size()==1) {
+      __PotentialSetIterator iter=pot_list.begin();
+      marginal=**iter;
+    } else {
+      Set<const Potential<T_DATA>*> set;
+      for(SetIterator<const Potential<T_DATA>*>iter=pot_list.begin();iter != pot_list.end(); ++iter ) 
+        set<<*iter;        
+      MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+      fast_combination.combine ( marginal,set );
+    }
   }
 
 

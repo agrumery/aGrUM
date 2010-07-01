@@ -232,7 +232,6 @@ def proceed(options):
 			run_cde="./"+options['rule']
 		else:
 			make_options=options['rule']
-			run_cde=""
 
 	if (options['platform'] != "windows"):
 		cmake_option=cmake_option+" -DCMAKE_INSTALL_PREFIX="+options['destination']

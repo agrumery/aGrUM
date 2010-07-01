@@ -22,23 +22,23 @@
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#include<agrum/multidim/multiDimNoisyOR.h>
+#include<agrum/multidim/multiDimNoisyORNet.h>
 
 namespace gum {
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimNoisyOR<T_DATA>::MultiDimNoisyOR( T_DATA external_weight, T_DATA default_weight ): MultiDimReadOnly<T_DATA>(), __external_weight( external_weight ), __default_weight( default_weight ) {
-    GUM_CONSTRUCTOR( MultiDimNoisyOR ) ;
+  MultiDimNoisyORNet<T_DATA>::MultiDimNoisyORNet( T_DATA external_weight, T_DATA default_weight ): MultiDimReadOnly<T_DATA>(), __external_weight( external_weight ), __default_weight( default_weight ) {
+    GUM_CONSTRUCTOR( MultiDimNoisyORNet ) ;
   }
 
 // ==============================================================================
 /// Default constructor
 // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimNoisyOR<T_DATA>::MultiDimNoisyOR( const MultiDimNoisyOR<T_DATA>& from ) : MultiDimReadOnly<T_DATA>( from ) {
-    GUM_CONS_CPY( MultiDimNoisyOR );
+  MultiDimNoisyORNet<T_DATA>::MultiDimNoisyORNet( const MultiDimNoisyORNet<T_DATA>& from ) : MultiDimReadOnly<T_DATA>( from ) {
+    GUM_CONS_CPY( MultiDimNoisyORNet );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
     __causal_weights = from.__causal_weights;
@@ -48,12 +48,12 @@ namespace gum {
 /// destructor
 // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimNoisyOR<T_DATA>::~MultiDimNoisyOR() {
-    GUM_DESTRUCTOR( MultiDimNoisyOR );
+  MultiDimNoisyORNet<T_DATA>::~MultiDimNoisyORNet() {
+    GUM_DESTRUCTOR( MultiDimNoisyORNet );
   }
 
   template<typename T_DATA>
-  T_DATA MultiDimNoisyOR<T_DATA>::get( const Instantiation& i ) const {
+  T_DATA MultiDimNoisyORNet<T_DATA>::get( const Instantiation& i ) const {
     if ( this->nbrDim() < 1 ) {
       GUM_ERROR( OperationNotAllowed, "Not enough variable for a NoisyOr " );
     }
@@ -61,7 +61,7 @@ namespace gum {
     const DiscreteVariable& C = this->variable(( Idx )0 );
 
     if ( i.val( C ) > 1 ) return ( T_DATA )0.0;
-
+    
     T_DATA ratio = ( T_DATA )1.0 - externalWeight();
 
     T_DATA fact = ( T_DATA )ratio;
@@ -71,46 +71,46 @@ namespace gum {
         const DiscreteVariable& v = this->variable( j );
 
         if ( i.val( v ) == 1 ) {
-          T_DATA pr = causalWeight( v );
+          T_DATA pr = (1-causalWeight( v ));
 
-          if ( pr == ( T_DATA )1.0 ) {
+          if ( pr == ( T_DATA )0.0 ) {
             fact = ( T_DATA )0.0;
             break;
           } else {
-            fact *= (( T_DATA )1.0 - pr ) / ratio;
+            fact *= pr;
           }
         }
       }
     }
 
-    return ( i.val( C ) == 0 ) ? fact : ( T_DATA )1.0 - fact;
+    return ( i.val( C ) != 1 ) ? fact : ( T_DATA )1.0 - fact;
   }
 
 
   template<typename T_DATA> INLINE
-  T_DATA MultiDimNoisyOR<T_DATA>::causalWeight( const DiscreteVariable& v ) const {
+  T_DATA MultiDimNoisyORNet<T_DATA>::causalWeight( const DiscreteVariable& v ) const {
     return ( __causal_weights.exists( &v ) ) ? __causal_weights[&v] : __default_weight;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimNoisyOR<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
+  void MultiDimNoisyORNet<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
     if ( w == ( T_DATA )0 ) GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
 
     __causal_weights.set( &v, w );
   }
 
   template<typename T_DATA> INLINE
-  T_DATA MultiDimNoisyOR<T_DATA>::externalWeight() const {
+  T_DATA MultiDimNoisyORNet<T_DATA>::externalWeight() const {
     return __external_weight;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimNoisyOR<T_DATA>::externalWeight( T_DATA w ) const {
+  void MultiDimNoisyORNet<T_DATA>::externalWeight( T_DATA w ) const {
     __external_weight = w;
   }
 
   template<typename T_DATA>
-  const std::string MultiDimNoisyOR<T_DATA>::toString() const {
+  const std::string MultiDimNoisyORNet<T_DATA>::toString() const {
     std::stringstream s;
     s << MultiDimImplementation<T_DATA>::variable( 0 ) << "=noisyOR([" << externalWeight() << "],";
 
@@ -130,12 +130,12 @@ namespace gum {
   // For friendly displaying the content of the variable.
   // ============================================================================
   template<typename T_DATA> INLINE
-  std::ostream& operator<<( std::ostream& s, const MultiDimNoisyOR<T_DATA>& ag ) {
+  std::ostream& operator<<( std::ostream& s, const MultiDimNoisyORNet<T_DATA>& ag ) {
     return s << ag.toString();
   }
 
   template<typename T_DATA> INLINE
-  MultiDimContainer<T_DATA>* MultiDimNoisyOR<T_DATA>::newFactory() const {
+  MultiDimContainer<T_DATA>* MultiDimNoisyORNet<T_DATA>::newFactory() const {
     GUM_ERROR( OperationNotAllowed,
                "This class doesn't contain an empty constructor" );
     return 0;
@@ -143,8 +143,8 @@ namespace gum {
 
   // returns the name of the implementation
   template<typename T_DATA>
-  const std::string& MultiDimNoisyOR<T_DATA>::name () const {
-    static const std::string str = "MultiDimNoisyOR";
+  const std::string& MultiDimNoisyORNet<T_DATA>::name () const {
+    static const std::string str = "MultiDimNoisyORNet";
     return str;
   }
 

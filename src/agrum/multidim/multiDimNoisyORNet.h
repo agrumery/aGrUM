@@ -22,8 +22,8 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_MULTI_DIM_NOISY_OR_H
-#define GUM_MULTI_DIM_NOISY_OR_H
+#ifndef GUM_MULTI_DIM_NOISY_OR_NET_H
+#define GUM_MULTI_DIM_NOISY_OR_NET_H
 
 #include <agrum/multidim/multiDimReadOnly.h>
 
@@ -35,7 +35,7 @@ namespace gum {
   /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /** @class MultiDimNoisyOR
+  /** @class MultiDimNoisyORNet
    * @brief Noisy OR representation
    * @ingroup multidim_group
    *
@@ -51,7 +51,7 @@ namespace gum {
   /* =========================================================================== */
   template<typename T_DATA>
 
-  class MultiDimNoisyOR : public MultiDimReadOnly<T_DATA> {
+  class MultiDimNoisyORNet : public MultiDimReadOnly<T_DATA> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -60,13 +60,13 @@ namespace gum {
     // ============================================================================
     /// Default constructor.
     // ============================================================================
-    MultiDimNoisyOR( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-    MultiDimNoisyOR( const MultiDimNoisyOR<T_DATA>& from );
+    MultiDimNoisyORNet( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
+    MultiDimNoisyORNet( const MultiDimNoisyORNet<T_DATA>& from );
 
     // ============================================================================
     /// Destructor.
     // ============================================================================
-    virtual ~MultiDimNoisyOR();
+    virtual ~MultiDimNoisyORNet();
 
     /// @}
 
@@ -147,13 +147,13 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA>
   std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyOR<T_DATA>& ag );
+                             const MultiDimNoisyORNet<T_DATA>& ag );
 
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimNoisyOR.tcc>
+#include <agrum/multidim/multiDimNoisyORNet.tcc>
 
 
-#endif /* GUM_MULTI_DIM_NOISY_OR_H */
+#endif /* GUM_MULTI_DIM_NOISY_OR_NET_H */
 

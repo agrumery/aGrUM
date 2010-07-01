@@ -721,7 +721,7 @@ PRMFactory::__retrieveCommonType(const std::vector<ClassElement*>& elts)
 }
 
 void
-PRMFactory::addNoisyOr(const std::string& name,
+PRMFactory::addNoisyOrCompound(const std::string& name,
                        const std::vector<std::string>& chains,
                        const std::vector<float>& numbers, float leak,
                        const std::vector<std::string>& labels)
@@ -755,10 +755,10 @@ PRMFactory::addNoisyOr(const std::string& name,
   }
   if (numbers.size() == 1) {
     gum::prm::Attribute* attr = new gum::prm::Attribute(name, retrieveType("boolean"),
-        new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak, numbers.front()));
+        new gum::MultiDimNoisyORCompound<gum::prm::prm_float>(leak, numbers.front()));
     addAttribute(attr);
   } else if (numbers.size() == parents.size()) {
-    gum::MultiDimNoisyOR<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyOR<gum::prm::prm_float>(leak);
+    gum::MultiDimNoisyORCompound<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyORCompound<gum::prm::prm_float>(leak);
     gum::prm::FuncAttribute* attr = new gum::prm::FuncAttribute(name, retrieveType("boolean"), noisy);
     for (size_t idx = 0; idx < numbers.size(); ++idx) {
       noisy->causalWeight(parents[idx]->type().variable(), numbers[idx]);
