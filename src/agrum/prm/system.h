@@ -308,9 +308,9 @@ class System: public PRMObject {
     /// @brief Method which copy node's Potential of an Instance to the grounded
     ///        Bayesian Network.
     /// @param instance The Instance currently grounded.
-    /// @param node     The node currently being grounded.
+    /// @param attr     The Attribute for which the Potential is grounded.
     /// @param factory  The factory used to build the grounded BayesNet.
-    void __groundPotential(const Instance& instance, NodeId node,
+    void __groundPotential(const Instance& instance, const Attribute& attr,
                      BayesNetFactory<prm_float>& factory) const;
 
     /// @brief Ground an aggregator with the given name in the grounded

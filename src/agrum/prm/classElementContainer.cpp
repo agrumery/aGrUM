@@ -35,36 +35,44 @@ namespace gum {
 namespace prm {
 // ============================================================================
 
-NodeId
-ClassElementContainer::_findNodeId() {
-  Set<ClassElementContainer*> set;
-  std::vector<NodeId> candidates;
-  set.insert(this);
-  _findAllSubtypes(set);
-  candidates.push_back(_dag().insertNode());
-  bool found = false;
-  for (short count = 0; count < 1000; ++count) {
-    for (Set<ClassElementContainer*>::iterator iter = set.begin();
-         iter != set.end(); ++iter) {
-      if ((**iter).exists(candidates.back())) {
-        found = true;
-        break;
-      }
-    }
-    if (found) {
-      candidates.push_back(_dag().insertNode());
-      found = false;
-    } else {
-      NodeId id = candidates.back();
-      candidates.pop_back();
-      for (std::vector<NodeId>::iterator iter = candidates.begin();
-           iter != candidates.end(); ++iter) {
-        _dag().eraseNode(*iter);
-      }
-      return id;
-    }
+// NodeId
+// ClassElementContainer::_findNodeId() {
+//   Set<ClassElementContainer*> set;
+//   std::vector<NodeId> candidates;
+//   set.insert(this);
+//   _findAllSubtypes(set);
+//   candidates.push_back(_dag().insertNode());
+//   bool found = false;
+//   for (short count = 0; count < 1000; ++count) {
+//     for (Set<ClassElementContainer*>::iterator iter = set.begin();
+//          iter != set.end(); ++iter) {
+//       if ((**iter).exists(candidates.back())) {
+//         found = true;
+//         break;
+//       }
+//     }
+//     if (found) {
+//       candidates.push_back(_dag().insertNode());
+//       found = false;
+//     } else {
+//       NodeId id = candidates.back();
+//       candidates.pop_back();
+//       for (std::vector<NodeId>::iterator iter = candidates.begin();
+//            iter != candidates.end(); ++iter) {
+//         _dag().eraseNode(*iter);
+//       }
+//       return id;
+//     }
+//   }
+//   GUM_ERROR(FatalError, "could not find a common NodeId");
+// }
+
+void
+ClassElementContainer::_copyIOFlags(const ClassElementContainer& c) {
+  typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator Iter;
+  for (Iter iter = c.__IOFlags.begin(); iter != c.__IOFlags.end(); ++iter) {
+    _setIOFlag(get(iter.key()), *iter);
   }
-  GUM_ERROR(FatalError, "could not find a common NodeId");
 }
 
 std::ostream&

@@ -33,6 +33,7 @@ using namespace gum::prm::skool;
 class SkoolTestSuite: public CxxTest::TestSuite {
   public:
     void setUp() {
+      //std::cerr << std::endl;
     }
 
     void tearDown() {
@@ -42,11 +43,11 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/types.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_state").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_ink").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_degraded").variable().domainSize(), (gum::Size)3);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_bw_p").variable().domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(prm->getType("agrum.test.t_color_p").variable().domainSize(), (gum::Size)5);
+      TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->getType("t_degraded").variable().domainSize(), (gum::Size)3);
+      TS_ASSERT_EQUALS(prm->getType("t_bw_p").variable().domainSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(prm->getType("t_color_p").variable().domainSize(), (gum::Size)5);
       delete prm;
     }
 
@@ -54,25 +55,25 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/types.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT(prm->getType("agrum.test.t_state").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_state").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_ink").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_ink").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_ink").isSubTypeOf(prm->getType("agrum.test.t_state")));
-      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_paper").isSubTypeOf(prm->getType("agrum.test.t_state")));
-      TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_degraded").isSubTypeOf(prm->getType("agrum.test.t_state")));
-      TS_ASSERT(prm->getType("agrum.test.t_bw_p").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_bw_p").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_bw_p").isSubTypeOf(prm->getType("agrum.test.t_state")));
-      TS_ASSERT(prm->getType("agrum.test.t_bw_p").isSubTypeOf(prm->getType("agrum.test.t_degraded")));
-      TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubType());
-      TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_state")));
-      TS_ASSERT(prm->getType("agrum.test.t_color_p").isSubTypeOf(prm->getType("agrum.test.t_degraded")));
+      TS_ASSERT(prm->getType("t_state").isSubType());
+      TS_ASSERT(prm->getType("t_state").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_ink").isSubType());
+      TS_ASSERT(prm->getType("t_ink").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_ink").isSubTypeOf(prm->getType("t_state")));
+      TS_ASSERT(prm->getType("t_paper").isSubType());
+      TS_ASSERT(prm->getType("t_paper").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_paper").isSubTypeOf(prm->getType("t_state")));
+      TS_ASSERT(prm->getType("t_degraded").isSubType());
+      TS_ASSERT(prm->getType("t_degraded").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_degraded").isSubTypeOf(prm->getType("t_state")));
+      TS_ASSERT(prm->getType("t_bw_p").isSubType());
+      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("t_state")));
+      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("t_degraded")));
+      TS_ASSERT(prm->getType("t_color_p").isSubType());
+      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("boolean")));
+      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("t_state")));
+      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("t_degraded")));
       TS_ASSERT_EQUALS(prm->types().size(), (gum::Size)7);
       delete prm;
     }
@@ -83,11 +84,11 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Printer"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Room"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Printer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
       delete prm;
     }
 
@@ -95,8 +96,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
-      Class& c = prm->getClass("agrum.test.PowerSupply");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
+      Class& c = prm->getClass("PowerSupply");
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
@@ -108,8 +109,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
-      Class& c = prm->getClass("agrum.test.Room");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Room"));
+      Class& c = prm->getClass("Room");
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
@@ -121,8 +122,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Equipment"));
-      Class& c = prm->getClass("agrum.test.Equipment");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"));
+      Class& c = prm->getClass("Equipment");
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
@@ -134,8 +135,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Printer"));
-      Class& c = prm->getClass("agrum.test.Printer");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Printer"));
+      Class& c = prm->getClass("Printer");
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)3);
       TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
@@ -147,8 +148,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
-      Class& c = prm->getClass("agrum.test.Computer");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
+      Class& c = prm->getClass("Computer");
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)1);
@@ -162,14 +163,14 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)6);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.PowerSupply"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Room"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.ColorPrinter"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.Computer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Room"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("BWPrinter"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("ColorPrinter"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
       TS_ASSERT_EQUALS(prm->interfaces().size(), (gum::Size)2);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Equipment"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Printer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Equipment"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Printer"));
       delete prm;
     }
 
@@ -179,14 +180,14 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       // Classes
-      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
-      Class& Room = prm->getClass("agrum.test.Room");
-      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
-      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
-      Class& Computer = prm->getClass("agrum.test.Computer");
+      Class& PowerSupply = prm->getClass("PowerSupply");
+      Class& Room = prm->getClass("Room");
+      Class& BWPrinter = prm->getClass("BWPrinter");
+      Class& ColorPrinter = prm->getClass("ColorPrinter");
+      Class& Computer = prm->getClass("Computer");
       // Interfaces
-      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
-      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      Interface& Equipment = prm->getInterface("Equipment");
+      Interface& Printer = prm->getInterface("Printer");
       // Testing PowerSupply
       TS_ASSERT(PowerSupply.isSubTypeOf(PowerSupply));
       TS_ASSERT(not PowerSupply.isSubTypeOf(Room));
@@ -252,14 +253,14 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       // Classes
-      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
-      Class& Room = prm->getClass("agrum.test.Room");
-      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
-      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
-      Class& Computer = prm->getClass("agrum.test.Computer");
+      Class& PowerSupply = prm->getClass("PowerSupply");
+      Class& Room = prm->getClass("Room");
+      Class& BWPrinter = prm->getClass("BWPrinter");
+      Class& ColorPrinter = prm->getClass("ColorPrinter");
+      Class& Computer = prm->getClass("Computer");
       // Interfaces
-      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
-      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      Interface& Equipment = prm->getInterface("Equipment");
+      Interface& Printer = prm->getInterface("Printer");
       // Testing PowerSupply
       TS_ASSERT(PowerSupply.isSuperTypeOf(PowerSupply));
       TS_ASSERT(not PowerSupply.isSuperTypeOf(Room));
@@ -325,7 +326,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       // Classes
-      Class& PowerSupply = prm->getClass("agrum.test.PowerSupply");
+      Class& PowerSupply = prm->getClass("PowerSupply");
       TS_ASSERT_EQUALS(PowerSupply.attributes().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(PowerSupply.dag().sizeArcs(), (gum::Size)1);
       TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["(boolean)state"]);
@@ -336,12 +337,22 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       NodeId n3 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(n1 = PowerSupply["(boolean)state"].id());
       TS_GUM_ASSERT_THROWS_NOTHING(n2 = PowerSupply["state"].id());
-      TS_GUM_ASSERT_THROWS_NOTHING(n3 = PowerSupply["(agrum.test.t_state)state"].id());
+      TS_GUM_ASSERT_THROWS_NOTHING(n3 = PowerSupply["(t_state)state"].id());
       TS_ASSERT_EQUALS(n2, n3);
       TS_ASSERT(PowerSupply.dag().existsArc(n2, n1));
       TS_ASSERT_EQUALS(PowerSupply.referenceSlots().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(PowerSupply.aggregates().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(PowerSupply.slotChains().size(), (gum::Size)0);
+      // Testing interfaces for the state attribute and its cast descendant
+      TS_ASSERT(not PowerSupply.isOutputNode(PowerSupply["(boolean)state"]));
+      TS_ASSERT(not PowerSupply.isInputNode(PowerSupply["(boolean)state"]));
+      TS_ASSERT(PowerSupply.isInnerNode(PowerSupply["(boolean)state"]));
+      TS_ASSERT(PowerSupply.isOutputNode(PowerSupply["state"]));
+      TS_ASSERT(not PowerSupply.isInputNode(PowerSupply["state"]));
+      TS_ASSERT(not PowerSupply.isInnerNode(PowerSupply["state"]));
+      TS_ASSERT(PowerSupply.isOutputNode(PowerSupply["(t_state)state"]));
+      TS_ASSERT(not PowerSupply.isInputNode(PowerSupply["(t_state)state"]));
+      TS_ASSERT(not PowerSupply.isInnerNode(PowerSupply["(t_state)state"]));
       delete prm;
     }
 
@@ -350,7 +361,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      Class& Room = prm->getClass("agrum.test.Room");
+      Class& Room = prm->getClass("Room");
       TS_ASSERT_EQUALS(Room.attributes().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(Room.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(Room.aggregates().size(), (gum::Size)0);
@@ -363,11 +374,36 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      Interface& Equipment = prm->getInterface("agrum.test.Equipment");
+      Interface& Equipment = prm->getInterface("Equipment");
       TS_ASSERT_EQUALS(Equipment.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(Equipment.attributes().size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(Equipment["equipState"]);
-      TS_ASSERT_EQUALS(Equipment["equipState"].type().name(), "agrum.test.t_degraded");
+      TS_ASSERT_EQUALS(Equipment["equipState"].type().name(), "t_degraded");
+      TS_GUM_ASSERT_THROWS_NOTHING(Equipment["(t_state)equipState"]);
+      TS_ASSERT_EQUALS(Equipment["(t_state)equipState"].type().name(), "t_state");
+      TS_GUM_ASSERT_THROWS_NOTHING(Equipment["(boolean)equipState"]);
+      TS_ASSERT_EQUALS(Equipment["(boolean)equipState"].type().name(), "boolean");
+      // Testing NodeId, inputs and outputs
+      NodeId st = Equipment["equipState"].id();
+      NodeId deg_st = Equipment["(t_degraded)equipState"].id();
+      NodeId st_st = Equipment["(t_state)equipState"].id();
+      NodeId bool_st = Equipment["(boolean)equipState"].id();
+      TS_ASSERT_EQUALS(st, deg_st);
+      TS_ASSERT_DIFFERS(st, st_st);
+      TS_ASSERT_DIFFERS(st, bool_st);
+      TS_ASSERT_DIFFERS(st_st, bool_st);
+      // t_degraded equipState
+      TS_ASSERT(not Equipment.isOutputNode(Equipment["equipState"]));
+      TS_ASSERT(not Equipment.isInputNode(Equipment["equipState"]));
+      TS_ASSERT(Equipment.isInnerNode(Equipment["equipState"]));
+      // t_state equipState
+      TS_ASSERT(not Equipment.isOutputNode(Equipment["(t_state)equipState"]));
+      TS_ASSERT(not Equipment.isInputNode(Equipment["(t_state)equipState"]));
+      TS_ASSERT(Equipment.isInnerNode(Equipment["(t_state)equipState"]));
+      // boolean equipState
+      TS_ASSERT(not Equipment.isOutputNode(Equipment["(boolean)equipState"]));
+      TS_ASSERT(not Equipment.isInputNode(Equipment["(boolean)equipState"]));
+      TS_ASSERT(Equipment.isInnerNode(Equipment["(boolean)equipState"]));
       delete prm;
     }
 
@@ -376,17 +412,52 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("agrum.test.Printer"));
-      Interface& Printer = prm->getInterface("agrum.test.Printer");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Printer"));
+      Interface& Printer = prm->getInterface("Printer");
       TS_ASSERT_EQUALS(Printer.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(Printer.attributes().size(), (gum::Size)5);
       TS_GUM_ASSERT_THROWS_NOTHING(Printer["room"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Printer["equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Printer["hasPaper"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Printer["hasInk"]);
-      TS_ASSERT_EQUALS(Printer["equipState"].type().name(), "agrum.test.t_degraded");
+      TS_ASSERT_EQUALS(Printer["equipState"].type().name(), "t_degraded");
       TS_ASSERT_EQUALS(Printer["hasPaper"].type().name(), "boolean");
       TS_ASSERT_EQUALS(Printer["hasInk"].type().name(), "boolean");
+      // Testing NodeId, inputs and outputs
+      NodeId st = Printer["equipState"].id();
+      NodeId deg_st = Printer["(t_degraded)equipState"].id();
+      NodeId st_st = Printer["(t_state)equipState"].id();
+      NodeId bool_st = Printer["(boolean)equipState"].id();
+      NodeId hp = Printer["hasPaper"].id();
+      NodeId bool_hp = Printer["(boolean)hasPaper"].id();
+      NodeId hi = Printer["hasInk"].id();
+      NodeId bool_hi = Printer["(boolean)hasInk"].id();
+      TS_ASSERT_EQUALS(st, deg_st);
+      TS_ASSERT_DIFFERS(st, st_st);
+      TS_ASSERT_DIFFERS(st, bool_st);
+      TS_ASSERT_DIFFERS(st_st, bool_st);
+      TS_ASSERT_EQUALS(hp, bool_hp);
+      TS_ASSERT_EQUALS(hi, bool_hi);
+      // t_degraded equipState
+      TS_ASSERT(Printer.isOutputNode(Printer["(t_degraded)equipState"]));
+      TS_ASSERT(not Printer.isInputNode(Printer["(t_degraded)equipState"]));
+      TS_ASSERT(not Printer.isInnerNode(Printer["(t_degraded)equipState"]));
+      // t_state equipState
+      TS_ASSERT(Printer.isOutputNode(Printer["(t_state)equipState"]));
+      TS_ASSERT(not Printer.isInputNode(Printer["(t_state)equipState"]));
+      TS_ASSERT(not Printer.isInnerNode(Printer["(t_state)equipState"]));
+      // boolean equipState
+      TS_ASSERT(not Printer.isOutputNode(Printer["(boolean)equipState"]));
+      TS_ASSERT(not Printer.isInputNode(Printer["(boolean)equipState"]));
+      TS_ASSERT(Printer.isInnerNode(Printer["(boolean)equipState"]));
+      // Boolean hasPaper
+      TS_ASSERT(not Printer.isOutputNode(Printer["hasPaper"]));
+      TS_ASSERT(not Printer.isInputNode(Printer["hasPaper"]));
+      TS_ASSERT(Printer.isInnerNode(Printer["hasPaper"]));
+      // Boolean hasInk
+      TS_ASSERT(not Printer.isOutputNode(Printer["hasInk"]));
+      TS_ASSERT(not Printer.isInputNode(Printer["hasInk"]));
+      TS_ASSERT(Printer.isInnerNode(Printer["hasInk"]));
       delete prm;
     }
 
@@ -395,25 +466,76 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.BWPrinter"));
-      Class& BWPrinter = prm->getClass("agrum.test.BWPrinter");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("BWPrinter"));
+      Class& BWPrinter = prm->getClass("BWPrinter");
       TS_ASSERT_EQUALS(BWPrinter.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(BWPrinter.attributes().size(), (gum::Size)9);
       TS_ASSERT_EQUALS(BWPrinter.slotChains().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(BWPrinter.aggregates().size(), (gum::Size)0);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["room"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(boolean)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_state)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_degraded)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_state)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_degraded)equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(boolean)hasPaper"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_state)hasPaper"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_paper)hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_state)hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_paper)hasPaper"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["hasPaper"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(boolean)hasInk"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_state)hasInk"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(agrum.test.t_ink)hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_state)hasInk"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["(t_ink)hasInk"]);
       TS_GUM_ASSERT_THROWS_NOTHING(BWPrinter["hasInk"]);
+      // Testing NodeId, inputs and outputs
+      NodeId st       = BWPrinter["equipState"].id();
+      NodeId deg_st   = BWPrinter["(t_degraded)equipState"].id();
+      NodeId st_st    = BWPrinter["(t_state)equipState"].id();
+      NodeId bool_st  = BWPrinter["(boolean)equipState"].id();
+      NodeId hp       = BWPrinter["hasPaper"].id();
+      NodeId bool_hp  = BWPrinter["(boolean)hasPaper"].id();
+      NodeId st_hp    = BWPrinter["(t_state)hasPaper"].id();
+      NodeId p_hp     = BWPrinter["(t_paper)hasPaper"].id();
+      NodeId hi       = BWPrinter["hasInk"].id();
+      NodeId bool_hi  = BWPrinter["(boolean)hasInk"].id();
+      NodeId st_hi    = BWPrinter["(t_state)hasInk"].id();
+      NodeId i_hi     = BWPrinter["(t_ink)hasInk"].id();
+      TS_ASSERT_EQUALS(st, deg_st);
+      TS_ASSERT_DIFFERS(st, st_st);
+      TS_ASSERT_DIFFERS(st, bool_st);
+      TS_ASSERT_DIFFERS(st_st, bool_st);
+      TS_ASSERT_EQUALS(hp, p_hp);
+      TS_ASSERT_DIFFERS(hp, st_hp);
+      TS_ASSERT_DIFFERS(hp, bool_hp);
+      TS_ASSERT_EQUALS(hi, i_hi);
+      TS_ASSERT_DIFFERS(hi, st_hi);
+      TS_ASSERT_DIFFERS(hi, bool_hi);
+      // t_degraded equipState
+      TS_ASSERT(BWPrinter.isOutputNode(BWPrinter["(t_degraded)equipState"]));
+      TS_ASSERT(BWPrinter.isInputNode(BWPrinter["(t_degraded)equipState"]));
+      TS_ASSERT(not BWPrinter.isInnerNode(BWPrinter["(t_degraded)equipState"]));
+      // t_state equipState
+      TS_ASSERT(BWPrinter.isOutputNode(BWPrinter["(t_state)equipState"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["(t_state)equipState"]));
+      TS_ASSERT(not BWPrinter.isInnerNode(BWPrinter["(t_state)equipState"]));
+      // boolean equipState
+      TS_ASSERT(not BWPrinter.isOutputNode(BWPrinter["(boolean)equipState"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["(boolean)equipState"]));
+      TS_ASSERT(BWPrinter.isInnerNode(BWPrinter["(boolean)equipState"]));
+      // t_paper hasPaper
+      TS_ASSERT(not BWPrinter.isOutputNode(BWPrinter["(t_paper)hasPaper"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["(t_paper)hasPaper"]));
+      TS_ASSERT(BWPrinter.isInnerNode(BWPrinter["(t_paper)hasPaper"]));
+      // t_state hasPaper
+      TS_ASSERT(not BWPrinter.isOutputNode(BWPrinter["(t_state)hasPaper"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["(t_state)hasPaper"]));
+      TS_ASSERT(BWPrinter.isInnerNode(BWPrinter["(t_state)hasPaper"]));
+      // Boolean hasPaper
+      TS_ASSERT(not BWPrinter.isOutputNode(BWPrinter["(boolean)hasPaper"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["(boolean)hasPaper"]));
+      TS_ASSERT(BWPrinter.isInnerNode(BWPrinter["(boolean)hasPaper"]));
+      // Boolean hasInk
+      TS_ASSERT(not BWPrinter.isOutputNode(BWPrinter["hasInk"]));
+      TS_ASSERT(not BWPrinter.isInputNode(BWPrinter["hasInk"]));
+      TS_ASSERT(BWPrinter.isInnerNode(BWPrinter["hasInk"]));
       delete prm;
     }
 
@@ -422,38 +544,165 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("agrum.test.ColorPrinter"));
-      Class& ColorPrinter = prm->getClass("agrum.test.ColorPrinter");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("ColorPrinter"));
+      Class& ColorPrinter = prm->getClass("ColorPrinter");
       TS_ASSERT_EQUALS(ColorPrinter.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(ColorPrinter.attributes().size(), (gum::Size)18);
       TS_ASSERT_EQUALS(ColorPrinter.aggregates().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(ColorPrinter.slotChains().size(), (gum::Size)1);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["room"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_degraded)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_degraded)equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)hasPaper"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)hasPaper"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_paper)hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)hasPaper"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_paper)hasPaper"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["hasPaper"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)hasInk"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)black"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)black"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_ink)black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)black"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_ink)black"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["black"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)magenta"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)magenta"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_ink)magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)magenta"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_ink)magenta"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["magenta"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)yellow"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)yellow"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_ink)yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)yellow"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_ink)yellow"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["yellow"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)cyan"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_state)cyan"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(agrum.test.t_ink)cyan"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_state)cyan"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(t_ink)cyan"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["cyan"]);
+      // Testing NodeId, inputs and outputs
+      NodeId st       = ColorPrinter["equipState"].id();
+      NodeId deg_st   = ColorPrinter["(t_degraded)equipState"].id();
+      NodeId st_st    = ColorPrinter["(t_state)equipState"].id();
+      NodeId bool_st  = ColorPrinter["(boolean)equipState"].id();
+      NodeId hp       = ColorPrinter["hasPaper"].id();
+      NodeId bool_hp  = ColorPrinter["(boolean)hasPaper"].id();
+      NodeId st_hp    = ColorPrinter["(t_state)hasPaper"].id();
+      NodeId p_hp     = ColorPrinter["(t_paper)hasPaper"].id();
+      NodeId hi       = ColorPrinter["hasInk"].id();
+      NodeId bool_hi  = ColorPrinter["(boolean)hasInk"].id();
+      NodeId bl       = ColorPrinter["black"].id();
+      NodeId bool_bl  = ColorPrinter["(boolean)black"].id();
+      NodeId st_bl    = ColorPrinter["(t_state)black"].id();
+      NodeId i_bl     = ColorPrinter["(t_ink)black"].id();
+      NodeId ma       = ColorPrinter["magenta"].id();
+      NodeId bool_ma  = ColorPrinter["(boolean)magenta"].id();
+      NodeId st_ma    = ColorPrinter["(t_state)magenta"].id();
+      NodeId i_ma     = ColorPrinter["(t_ink)magenta"].id();
+      NodeId ye       = ColorPrinter["yellow"].id();
+      NodeId bool_ye  = ColorPrinter["(boolean)yellow"].id();
+      NodeId st_ye    = ColorPrinter["(t_state)yellow"].id();
+      NodeId i_ye     = ColorPrinter["(t_ink)yellow"].id();
+      NodeId ce       = ColorPrinter["cyan"].id();
+      NodeId bool_ce  = ColorPrinter["(boolean)cyan"].id();
+      NodeId st_ce    = ColorPrinter["(t_state)cyan"].id();
+      NodeId i_ce     = ColorPrinter["(t_ink)cyan"].id();
+      TS_ASSERT_EQUALS(st, deg_st);
+      TS_ASSERT_DIFFERS(st, st_st);
+      TS_ASSERT_DIFFERS(st, bool_st);
+      TS_ASSERT_DIFFERS(st_st, bool_st);
+      TS_ASSERT_EQUALS(hp, p_hp);
+      TS_ASSERT_DIFFERS(hp, st_hp);
+      TS_ASSERT_DIFFERS(hp, bool_hp);
+      TS_ASSERT_EQUALS(hi, bool_hi);
+      TS_ASSERT_EQUALS(bl, i_bl);
+      TS_ASSERT_DIFFERS(bl, st_bl);
+      TS_ASSERT_DIFFERS(bl, bool_bl);
+      TS_ASSERT_DIFFERS(st_bl, bool_bl);
+      TS_ASSERT_EQUALS(ma, i_ma);
+      TS_ASSERT_DIFFERS(ma, st_ma);
+      TS_ASSERT_DIFFERS(ma, bool_ma);
+      TS_ASSERT_DIFFERS(st_ma, bool_ma);
+      TS_ASSERT_EQUALS(ye, i_ye);
+      TS_ASSERT_DIFFERS(ye, st_ye);
+      TS_ASSERT_DIFFERS(ye, bool_ye);
+      TS_ASSERT_DIFFERS(st_ye, bool_ye);
+      TS_ASSERT_EQUALS(ce, i_ce);
+      TS_ASSERT_DIFFERS(ce, st_ce);
+      TS_ASSERT_DIFFERS(ce, bool_ce);
+      TS_ASSERT_DIFFERS(st_ce, bool_ce);
+      // t_degraded equipState
+      TS_ASSERT(ColorPrinter.isOutputNode(ColorPrinter["(t_degraded)equipState"]));
+      TS_ASSERT(ColorPrinter.isInputNode(ColorPrinter["(t_degraded)equipState"]));
+      TS_ASSERT(not ColorPrinter.isInnerNode(ColorPrinter["(t_degraded)equipState"]));
+      // t_state equipState
+      TS_ASSERT(ColorPrinter.isOutputNode(ColorPrinter["(t_state)equipState"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)equipState"]));
+      TS_ASSERT(not ColorPrinter.isInnerNode(ColorPrinter["(t_state)equipState"]));
+      // boolean equipState
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)equipState"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)equipState"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)equipState"]));
+      // t_paper hasPaper
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_paper)hasPaper"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_paper)hasPaper"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_paper)hasPaper"]));
+      // t_state hasPaper
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_state)hasPaper"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)hasPaper"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_state)hasPaper"]));
+      // Boolean hasPaper
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)hasPaper"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)hasPaper"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)hasPaper"]));
+      // Boolean hasInk
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)hasInk"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)hasInk"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)hasInk"]));
+      // t_ink black
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_ink)black"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_ink)black"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_ink)black"]));
+      // t_state black
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_state)black"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)black"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_state)black"]));
+      // boolean black
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)black"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)black"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)black"]));
+      // t_ink magenta
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_ink)magenta"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_ink)magenta"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_ink)magenta"]));
+      // t_state magenta
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_state)magenta"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)magenta"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_state)magenta"]));
+      // boolean magenta
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)magenta"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)magenta"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)magenta"]));
+      // t_ink yellow
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_ink)yellow"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_ink)yellow"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_ink)yellow"]));
+      // t_state yellow
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_state)yellow"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)yellow"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_state)yellow"]));
+      // boolean yellow
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)yellow"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)yellow"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)yellow"]));
+      // t_ink cyan
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_ink)cyan"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_ink)cyan"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_ink)cyan"]));
+      // t_state cyan
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(t_state)cyan"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(t_state)cyan"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(t_state)cyan"]));
+      // boolean cyan
+      TS_ASSERT(not ColorPrinter.isOutputNode(ColorPrinter["(boolean)cyan"]));
+      TS_ASSERT(not ColorPrinter.isInputNode(ColorPrinter["(boolean)cyan"]));
+      TS_ASSERT(ColorPrinter.isInnerNode(ColorPrinter["(boolean)cyan"]));
       delete prm;
     }
 
@@ -462,7 +711,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      Class& Computer = prm->getClass("agrum.test.Computer");
+      Class& Computer = prm->getClass("Computer");
       TS_ASSERT_EQUALS(Computer.attributes().size(), (gum::Size)4);
       TS_ASSERT_EQUALS(Computer.referenceSlots().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(Computer.aggregates().size(), (gum::Size)3);
@@ -474,8 +723,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)working_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["working_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(Computer["(agrum.test.t_state)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(Computer["(agrum.test.t_degraded)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["(t_state)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(Computer["(t_degraded)equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)can_print"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["can_print"]);
@@ -489,7 +738,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      Class& SafeComputer = prm->getClass("agrum.test.SafeComputer");
+      Class& SafeComputer = prm->getClass("SafeComputer");
       TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
       TS_ASSERT_EQUALS(SafeComputer.referenceSlots().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), (gum::Size)3);
@@ -501,14 +750,14 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)working_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["working_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(agrum.test.t_state)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(agrum.test.t_degraded)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(t_state)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(t_degraded)equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["equipState"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)can_print"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["can_print"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.(agrum.test.t_state)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.(agrum.test.t_degraded)equipState"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["room.power.(agrum.test.t_state)state"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.(t_state)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["printers.(t_degraded)equipState"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["room.power.(t_state)state"]);
       delete prm;
     }
 
@@ -527,11 +776,41 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool"));
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
+      System* sys = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
+      Class& power = prm->getClass("PowerSupply");
+      Class& room = prm->getClass("Room");
+      Class& BWPrinter = prm->getClass("BWPrinter");
+      Class& ColorPrinter = prm->getClass("ColorPrinter");
+      Class& Computer = prm->getClass("Computer");
+      TS_ASSERT_EQUALS(sys->get(power).size(), (Size) 1);
+      TS_ASSERT_EQUALS(sys->get(room).size(), (Size) 1);
+      TS_ASSERT_EQUALS(sys->get(BWPrinter).size(), (Size) 10);
+      TS_ASSERT_EQUALS(sys->get(ColorPrinter).size(), (Size) 2);
+      TS_ASSERT_EQUALS(sys->get(Computer).size(), (Size) 2);
+      int count = 0;
+      for (System::iterator iter = sys->begin(); iter != sys->end(); ++iter) {
+        ++count;
+        for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
+          if ((**jter).cpf().nbrDim() == 0) {
+            std::stringstream sBuff;
+            sBuff << (**iter).name() << "." << (**jter).safeName();
+            GUM_TRACE(sBuff.str());
+          }
+          if (ClassElement::isAggregate((**iter).type().get((**jter).id()))) {
+            if ((**jter).cpf().nbrDim() == 1) {
+              std::stringstream sBuff;
+              sBuff << (**iter).name() << "." << (**jter).safeName();
+              GUM_TRACE(sBuff.str());
+            }
+          }
+        }
+      }
+      TS_ASSERT_EQUALS(count, 17);
       if (prm) {
         delete prm;
       }
     }
-
 
 };
 

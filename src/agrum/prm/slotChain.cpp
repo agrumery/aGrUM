@@ -40,7 +40,7 @@ SlotChain::SlotChain(const std::string& name, const Sequence< ClassElement* >& c
   GUM_CONSTRUCTOR( SlotChain );
   _safeName = name;
   if (__chain->size() < 2) {
-    GUM_ERROR(OperationNotAllowed, "chain must containt at least two ClassElement");
+    GUM_ERROR(OperationNotAllowed, "chain must contain at least two ClassElement");
   }
   for (Size i = 0; i < __chain->size() - 1; ++i) {
     if (__chain->atPos(i)->elt_type() != ClassElement::prm_refslot) {

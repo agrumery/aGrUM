@@ -108,6 +108,72 @@ Interface::operator[](const std::string& name) const {
   return get(name);
 }
 
+INLINE
+PRMObject::ObjectType
+Interface::obj_type() const {
+  return PRMObject::prm_interface;
+}
+
+INLINE
+const DAG&
+Interface::_dag() const { return __dag; }
+
+INLINE
+DAG&
+Interface::_dag() { return __dag; }
+
+INLINE
+ClassElement&
+Interface::get(NodeId id) {
+  try {
+    return *(__nodeIdMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  }
+}
+
+INLINE
+const ClassElement&
+Interface::get(NodeId id) const {
+  try {
+    return *(__nodeIdMap[id]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+  }
+}
+
+INLINE
+ClassElement&
+Interface::get(const std::string& name) {
+  try {
+    return *(__nameMap[name]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given name");
+  }
+}
+
+INLINE
+const ClassElement&
+Interface::get(const std::string& name) const {
+  try {
+    return *(__nameMap[name]);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no ClassElement with the given name");
+  }
+}
+
+INLINE
+const Set< Attribute* >&
+Interface::attributes() const {
+  return __attributes;
+}
+
+INLINE
+const Set< ReferenceSlot* >&
+Interface::referenceSlots() const {
+  return __referenceSlots;
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

@@ -102,7 +102,7 @@ class Instance: public PRMObject {
     /**
      * Returns true if id matches an Attribute in this Instance.
      */
-    bool exists(NodeId id);
+    bool exists(NodeId id) const;
 
     /**
      * @brief Getter on an Attribute of this Instance.
@@ -152,6 +152,11 @@ class Instance: public PRMObject {
      */
     const Attribute& get(const std::string& name) const;
 
+    /**
+     * Returns the number of attributes in this Instance.
+     * @return the number of attributes in this Instance.
+     */
+    Size size() const;
 
     /// @}
   // ========================================================================
@@ -190,14 +195,14 @@ class Instance: public PRMObject {
      * it must also contain k-1 0 and one 1, where k is the domain of id's
      * DiscreteVariable.
      *
-     * @param id The NodeId of the parameter.
+     * @param name The Attribute's name.
      * @param value The MultiDim used to assign the value of the parameter.
      *
      * @throw NotFound Raised if no gum::prm::Attribute matches id.
      * @throw WrongClassElement Raised if id is not a parameter.
      * @throw OperationNotAllowed Raised if value is invalid.
      */
-    void setParameterValue(NodeId id, const Potential<prm_float>& value);
+    void setParameterValue(const std::string& name, const Potential<prm_float>& value);
 
     /// @}
   // ========================================================================

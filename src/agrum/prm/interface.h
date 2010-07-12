@@ -89,36 +89,11 @@ class Interface: public ClassElementContainer {
     /// Implementation of pure virtual method of PRMObject.
     virtual ObjectType obj_type() const;
 
-    /// Returns the gum::DAG of this ClassElementContainer.
-    const DAG& dag() const;
+    /// See gum::prm::ClassElementContainer::get(NodeId).
+    virtual ClassElement& get(NodeId id);
 
-    /**
-     * @brief Test the existence of a given NodeId.
-     *
-     * @param id The NodeId used for the existence test.
-     * @return Returns true if there exists a ClassElement which NodeId is id.
-     */
-    bool exists(NodeId id) const;
-
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
-    ClassElement& get(NodeId id);
-
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
-    const ClassElement& get(NodeId id) const;
+    /// Se gum::prm::ClassElementContainer::get(NodeId).
+    virtual const ClassElement& get(NodeId id) const;
 
     /**
      * @brief An Interfance doesn't have any arc, this will raise an
@@ -136,33 +111,11 @@ class Interface: public ClassElementContainer {
   // ========================================================================
     /// @{
 
-    /**
-     * @brief Test the existence of a given name.
-     *
-     * @param n The name used for the existence test.
-     * @return Returns true if there exists a ClassElement which name is n.
-     */
-    bool exists(const std::string& name) const;
+    /// See gum::prm::ClassElementContainer::get(const std::string&).
+    virtual ClassElement& get(const std::string& name);
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
-    ClassElement& get(const std::string& name);
-
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
-    const ClassElement& get(const std::string& name) const;
+    /// See gum::prm::ClassElementContainer::get(const std::string&).
+    virtual const ClassElement& get(const std::string& name) const;
 
     /**
      * Returns the set of Attribute of this Class.
@@ -176,21 +129,7 @@ class Interface: public ClassElementContainer {
      */
     const Set< ReferenceSlot* >& referenceSlots() const;
 
-    /**
-     * @brief Add a new ClassElement to this Class.
-     *
-     * The pointer is "given" to this class, which will delete it when
-     * ~Class() is called.
-     *
-     * The NodeId of elt is defined when it is added to this, discarding any
-     * previous value.
-     *
-     * If you want to overload an inherited ClassElement call Class::overload().
-     *
-     * @param elt The new ClassElement added to this Class.
-     * @return the NodeId assigned to elt.
-     * @throw DuplicateElement Raised if elt's name is already used in this class.
-     */
+    /// See gum::prm::ClassElementContainer::add(ClassElement*).
     NodeId add(ClassElement* elt);
 
     /**
@@ -276,44 +215,16 @@ class Interface: public ClassElementContainer {
   // ========================================================================
     /// @{
 
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](NodeId).
     ClassElement& operator[](NodeId id);
 
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](NodeId).
     const ClassElement& operator[](NodeId id) const;
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](const std::string&).
     ClassElement& operator[](const std::string& name);
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](const std::string&).
     const ClassElement& operator[](const std::string& name) const;
 
     /// @}
@@ -333,12 +244,18 @@ class Interface: public ClassElementContainer {
     /// @}
   protected:
 
+    /// Returns a constant reference over this Interface's DAG.
+    const DAG& _dag() const;
+
     /// Returns a non constant reference over this Interface's DAG.
     DAG& _dag();
 
     /// Fills set with all the subtypes of this Interface, this includes extensions
     /// and implementations.
     void _findAllSubtypes(Set<ClassElementContainer*>& set);
+
+    /// See gum::prm::ClassElementContainer(const ClassElement&).
+    void _updateDescendants(const ClassElement& elt);
 
   private:
 

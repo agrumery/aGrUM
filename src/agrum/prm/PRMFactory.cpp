@@ -134,19 +134,17 @@ PRMFactory::endClass()
   std::stringstream msg;
   msg << "class " << c->name() << " does not respect interface ";
   try {
-    for (Set<Interface*>::iterator iter = c->implements().begin();
-         iter != c->implements().end(); ++iter) {
+    for (Set<Interface*>::iterator iter = c->implements().begin(); iter != c->implements().end(); ++iter) {
       i = *iter;
       try {
-        for (DAG::NodeIterator node = i->dag().beginNodes();
-            node != i->dag().endNodes(); ++node) {
+        for (DAG::NodeIterator node = i->dag().beginNodes(); node != i->dag().endNodes(); ++node) {
           name = i->get(*node).name();
           switch (i->get(*node).elt_type()) {
             case ClassElement::prm_aggregate:
             case ClassElement::prm_attribute:
               {
                 if ( (c->get(name).elt_type() == ClassElement::prm_attribute) or
-                    (c->get(name).elt_type() == ClassElement::prm_aggregate) )
+                     (c->get(name).elt_type() == ClassElement::prm_aggregate) )
                 {
                   if (not c->get(name).type().isSubTypeOf(i->get(name).type())) {
                     GUM_ERROR(TypeError, msg.str() + i->name());
@@ -598,7 +596,7 @@ PRMFactory::setParameter(const std::string& instance, const std::string& param, 
   Attribute* a = 0;
   try {
     a = &(i->get(param));
-    if (not i->type().isParameter(a->id())) {
+    if (not i->type().isParameter(*a)) {
       GUM_ERROR(OperationNotAllowed, "given attribute is not a parameter");
     }
   } catch (NotFound&) {
@@ -620,7 +618,7 @@ PRMFactory::setParameter(const std::string& instance, const std::string& param, 
   Instantiation inst(pot);
   inst.chgVal(a->type().variable(), label);
   pot.set(inst, (prm_float) 1);
-  i->setParameterValue(a->id(), pot);
+  i->setParameterValue(a->safeName(), pot);
 }
 
 SlotChain*
@@ -628,31 +626,36 @@ PRMFactory::__buildSlotChain(ClassElementContainer* start, const std::string& na
 {
   std::vector<std::string> v;
   decomposePath(name, v);
-  ClassElementContainer* previous = start;
+  ClassElementContainer* current = start;
   ReferenceSlot* ref = 0;
   Sequence<ClassElement*> elts;
   for (size_t i = 0; i < v.size(); ++i) {
     try {
-      switch (previous->get(v[i]).elt_type()) {
+      switch (current->get(v[i]).elt_type()) {
         case ClassElement::prm_refslot:
-          ref = &(static_cast<ReferenceSlot&>(previous->get(v[i])));
+          ref = &(static_cast<ReferenceSlot&>(current->get(v[i])));
           elts.insert(ref);
-          previous = &(const_cast<ClassElementContainer&>(ref->slotType()));
+          current = &(const_cast<ClassElementContainer&>(ref->slotType()));
           break;
         case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute:
           if (i == v.size() - 1) {
-            elts.insert(&(previous->get(v[i])));
+            elts.insert(&(current->get(v[i])));
             break;
+          } else {
+            return 0;
           }
-        default:
-          return 0;
+        default: { return 0; }
       }
     } catch (NotFound&) {
       return 0;
     }
   }
   GUM_ASSERT(v.size() == elts.size());
+  current->setOutputNode(*(elts.back()), true);
+  // std::stringstream sBuff;
+  // sBuff << current->name() << "." << elts.back()->name() << " : " << current->isOutputNode(elts.back()->id());
+  // GUM_TRACE(sBuff.str());
   return new SlotChain(name, elts);
 }
 

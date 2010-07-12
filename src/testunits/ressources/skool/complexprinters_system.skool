@@ -21,7 +21,6 @@
 // Tis file contains basic PRM classes for testing purpose.
 // Author: Lionel Torti.
 // ============================================================================
-package agrum.test;
 
 type t_state extends boolean
   OK: true,
@@ -105,10 +104,10 @@ class Computer implements Equipment {
 class SafeComputer implements Equipment {
   Room room;
   Printer printers[];
-  boolean functional_printer = exists(printers.(agrum.test.t_state)equipState, OK);
-  boolean degraded_printer = exists(printers.(agrum.test.t_degraded)equipState, Degraded);
+  boolean functional_printer = exists(printers.(t_state)equipState, OK);
+  boolean degraded_printer = exists(printers.(t_degraded)equipState, Degraded);
   boolean working_printer = exists([functional_printer, degraded_printer], true);
-  t_degraded equipState dependson room.power.(agrum.test.t_state)state {
+  t_degraded equipState dependson room.power.(t_state)state {
     OK:  0.90, 0.09, 0.01;
     NOK: 0.00, 1.00, 0.00;
   };

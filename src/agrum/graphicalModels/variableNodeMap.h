@@ -112,6 +112,22 @@ namespace gum {
     /// friendly displays the content of the VariableNodeMap
     const std::string toString() const;
 
+    /**
+     * Returns the name of a variable given its id.
+     * @param id The variable's id.
+     * @return id's name.
+     * @throw NotFound Raised if no variable matches id.
+     */
+    const std::string& name(NodeId id) const;
+
+    /**
+     * Returns the name of a variable.
+     * @param var The variable.
+     * @return var's name.
+     * @throw NotFound Raised if var is not in this VariableNodeMap.
+     */
+    const std::string& name(const DiscreteVariable& var) const;
+
     /// @}
 
     
@@ -148,7 +164,7 @@ namespace gum {
     Bijection<NodeId, const DiscreteVariable*> __nodes2vars;
 
     /// HashTable for easely find an id from a name
-    HashTable<std::string, NodeId> __names2nodes;
+    Bijection<std::string, NodeId> __names2nodes;
   };
 
 

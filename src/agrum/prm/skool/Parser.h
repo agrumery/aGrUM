@@ -193,7 +193,7 @@ void setRefOrParam(std::string s, std::string r) {
           }
         case gum::prm::ClassElement::prm_attribute:
           {
-            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member).id())) {
+            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member))) {
               factory().setParameter(instance, member, r);
               break;
             } // If it is not a parameter goto to the default case

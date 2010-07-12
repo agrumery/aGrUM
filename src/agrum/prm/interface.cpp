@@ -88,73 +88,6 @@ Interface::__inheritInterface(const Interface& i) {
   }
 }
 
-PRMObject::ObjectType
-Interface::obj_type() const {
-  return PRMObject::prm_interface;
-}
-
-const DAG&
-Interface::dag() const { return __dag; }
-
-DAG&
-Interface::_dag() { return __dag; }
-
-bool
-Interface::exists(NodeId id) const {
-  return __nodeIdMap.exists(id);
-}
-
-ClassElement&
-Interface::get(NodeId id) {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  }
-}
-
-const ClassElement&
-Interface::get(NodeId id) const {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  }
-}
-
-bool
-Interface::exists(const std::string& name) const {
-  return __nameMap.exists(name);
-}
-
-ClassElement&
-Interface::get(const std::string& name) {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given name");
-  }
-}
-
-const ClassElement&
-Interface::get(const std::string& name) const {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given name");
-  }
-}
-
-const Set< Attribute* >&
-Interface::attributes() const {
-  return __attributes;
-}
-
-const Set< ReferenceSlot* >&
-Interface::referenceSlots() const {
-  return __referenceSlots;
-}
-
 NodeId
 Interface::add(ClassElement* elt) {
   if (__nameMap.exists(elt->name())) {
@@ -168,10 +101,11 @@ Interface::add(ClassElement* elt) {
       __nodeIdMap.insert(attr->id(), attr);
       __nameMap.insert(attr->safeName(), attr);
       __attributes.insert(attr);
-      if (attr->type().isSubType())
+      if (attr->type().isSubType()) {
         attr = attr->getCastDescendant();
-      else
+      } else {
         break;
+      }
     }
   } else if (ClassElement::isReferenceSlot(*elt)) {
     elt->setId(__dag.insertNode());
@@ -194,12 +128,9 @@ Interface::overload(ClassElement* overloader) {
   } catch (NotFound&) {
     GUM_ERROR(OperationNotAllowed, "overload is possible only with sub interfaces");
   }
-  GUM_CHECKPOINT;
   ClassElement* overloaded = __nameMap[overloader->name()];
-  GUM_CHECKPOINT;
   // __checkOverloadLegality garanties that overloader->type() is a subtype of overloaded->type()
   __checkOverloadLegality(overloaded, overloader);
-  GUM_CHECKPOINT;
   switch (overloader->elt_type()) {
     case ClassElement::prm_attribute:
       {
@@ -312,6 +243,25 @@ Interface::isSubTypeOf(const ClassElementContainer& cec) const {
       { GUM_ERROR(FatalError, "unknown ClassElementContainer"); }
   }
 }
+
+void
+Interface::_updateDescendants(const ClassElement& elt) {
+  typedef Set<Interface*>::iterator Iter;
+  for (Iter iter = __extensions.begin(); iter != __extensions.end(); ++iter) {
+    if (not (**iter).isOutputNode(elt)) {
+      (**iter).setOutputNode(elt, true);
+    }
+  }
+  typedef Set<Class*>::iterator Jter;
+  for (Jter iter = __implementations.begin(); iter != __implementations.end(); ++iter) {
+    // Because of cyclic dependencies we must use a reinterpret cast.
+    ClassElementContainer* c = reinterpret_cast<ClassElementContainer*>(*iter);
+    if (not c->isOutputNode(elt)) {
+      c->setOutputNode(elt, true);
+    }
+  }
+}
+
 
 // ============================================================================
 } /* namespace prm */

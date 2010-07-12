@@ -136,7 +136,7 @@ class ClassElement: public PRMObject {
     NodeId id() const;
 
     /// Used to assign the id of this element.
-    void setId(NodeId id);
+    virtual void setId(NodeId id);
 
     /**
      * @brief Add a parent to this element.

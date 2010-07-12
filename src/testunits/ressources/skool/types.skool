@@ -21,7 +21,6 @@
 // Tis file contains PRM types for testing purpose.
 // Author: Lionel Torti.
 // ============================================================================
-package agrum.test;
 
 type t_state extends boolean
   OK: true,

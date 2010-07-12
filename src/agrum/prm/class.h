@@ -91,8 +91,7 @@ class Class: public ClassElementContainer {
      * @param super The super Class of this.
      * @param set The Set of implemented interfaces.
      */
-    Class(const std::string& name, Class& super,
-          const Set<Interface*>& set);
+    Class(const std::string& name, Class& super, const Set<Interface*>& set);
 
     /// Copy constructor.
     Class(const Class& source);
@@ -100,64 +99,19 @@ class Class: public ClassElementContainer {
     /// Destructor.
     virtual ~Class();
 
+    /// Implementation of pure virtual method of PRMObject.
+    virtual ObjectType obj_type() const;
     /// @}
   // ========================================================================
-  /// @name Graphical model getters and setters
+  /// @name Graphical operator
   // ========================================================================
     /// @{
 
-    /// Implementation of pure virtual method of PRMObject.
-    virtual ObjectType obj_type() const;
-
-
-    /// Returns the gum::DAG of this ClassElementContainer.
-    const DAG& dag() const;
-
-    /**
-     * @brief Test the existence of a given NodeId.
-     *
-     * @param id The NodeId used for the existence test.
-     * @return Returns true if there exists a ClassElement which NodeId is id.
-     */
-    bool exists(NodeId id) const;
-
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::get(NodeId).
     ClassElement& get(NodeId id);
 
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::get(NodeId).
     const ClassElement& get(NodeId id) const;
-
-    /**
-     * @brief Add a parent to an element in this class.
-     *
-     * This method insert an arc in the class's dag and do the proper
-     * methods call to insert the parent in head.
-     *
-     * Remark that if you try to add an arc where tail is an Attribute and head
-     * neither an Attribute nor an Aggregate a WrongClassElement will be raised.
-     * A WrongClassElement will also be raised if you try to add a parent to
-     * a parameter.
-     *
-     * @throw WrongClassElement Raised if the given arc is illegal
-     * @throw NotFound Raised either tail, head or both are not ClassElement
-     *                 in this Class.
-     * @throw DuplicateElement Raised if the given arc already exists.
-     */
-    void insertArc(const std::string& tail, const std::string& head);
 
     /// @}
   // ========================================================================
@@ -165,14 +119,21 @@ class Class: public ClassElementContainer {
   // ========================================================================
     /// @{
 
-    /**
-     * @brief Test the existence of a given name.
-     *
-     * @param n The name used for the existence test.
-     * @return Returns true if there exists a ClassElement which name is n.
-     */
-    bool exists(const std::string& n) const;
-
+    // /**
+    //  * @brief returns the state of a parameter.
+    //  *
+    //  * Parameters are Attribute without any dependencies and for which a value
+    //  * (i.e. observation) must be assigned at instantiation if no default
+    //  * value is defined.
+    //  *
+    //  * Default values are assigned using the parameter's CPF. If there is
+    //  * no default values, it's CPF is filled with invasive nan (i.e. Not A
+    //  * Number).
+    //  *
+    //  * @param elt A ClassElement.
+    //  * @return Returns 0 if n is not a parameter, 1 if it is a
+    //  *         parameter and 2 if it haves a default value.
+    //  */
     /**
      * @brief returns the state of a parameter.
      *
@@ -184,35 +145,46 @@ class Class: public ClassElementContainer {
      * no default values, it's CPF is filled with invasive nan (i.e. Not A
      * Number).
      *
-     * @param n The name of the parameter.
-     * @return Returns 0 if n is not a parameter, 1 if it is a
-     *         parameter and 2 if it haves a default value.
-     *
-     * @throw NotFound Raised if NodeId does'nt match any ClassElement in this.
-     * @throw WrongClassElement Raised if the given ClassElement is not
-     *                          a parameter.
+     * @param elt A ClassElement.
+     * @return true if elt is a parameter.
      */
-    short isParameter(NodeId id) const;
+    bool isParameter(const ClassElement& elt) const;
 
     /**
-     * @brief Given a name returns the related ClassElement.
+     * @brief Add a parameter to this Class.
      *
-     * @param n The ClassElement's name.
-     * @return Returns a reference over the ClassElement.
+     * Parameters are Attribute without any dependencies and for which a value
+     * (i.e. observation) must be assigned at instantiation if no default
+     * value is defined.
      *
-     * @throw NotFound Raised if there is no ClassElement named n.
+     * Default values are assigned using the parameter's CPF. If there is
+     * no default values, it's CPF is filled with invasive nan (i.e. Not A
+     * Number).
+     *
+     * @param param The Attribute added as a Parameter of this Class.
+     * @param flag If true the initialization flag indicated that the given
+     *             parameter is already initialized and does not require
+     *             initialization at instantiation.
+     * @return Returns the NodeId assigned to the added parameter.
+     *
+     * @throw DuplicateElement Raised if elt's name is already used in this class.
      */
+    NodeId addParameter(Attribute* param, bool flag);
+
+    /// See gum::prm::ClassElementContainer::get(const std::string&).
     ClassElement& get(const std::string& name);
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
+    /// See gum::prm::ClassElementContainer::get(const std::string&).
     const ClassElement& get(const std::string& name) const;
+
+    /// See gum::prm::add(ClassElement*).
+    virtual NodeId add(ClassElement* elt);
+
+    /// See gum::prm::overload(ClassElement*).
+    virtual NodeId overload(ClassElement* elt);
+
+    /// See gum::prm::ClassElementContainer::insertArc().
+    virtual void insertArc(const std::string& tail, const std::string& head);
 
     /**
      * Returns the set of Attribute of this Class.
@@ -245,104 +217,33 @@ class Class: public ClassElementContainer {
     const Set< SlotChain* >& slotChains() const;
 
     /**
-     * @brief Returns the Set of ClassElement's NodeId which must be instantiated
-     *        at Instance level.
-     * @return Returns the Set of ClassElement's NodeId which must be instantiated
+     * Returns the Set of ClassElement's which must be instantiated
+     * at Instance level.
+     * @return the Set of ClassElement's which must be instantiated
      *        at Instance level.
      */
     const Sequence<NodeId>& toInstantiate() const;
 
-    /**
-     * @brief Add a ClassElement to this Class.
-     *
-     * The pointer is "given" to this class, which will delete it when
-     * ~Class() is called.
-     *
-     * The NodeId of elt is defined when it is added to this, discarding any
-     * previous value.
-     *
-     * If you want to overload an inherited ClassElement call Class::overload().
-     *
-     * When adding an Attribute or an Aggregate its type safe name is automatically
-     * added, the syntax is <type>name. So you can either use its type safe name or
-     * its real name. See the \ref prm_typ_inh "type inheritance section" for
-     * further details.
-     *
-     * @param elt The ClassElement added to this Class.
-     * @return Returns the NodeId assigned to elt.
-     *
-     * @throw DuplicateElement Raised if elt's name is already used in this class.
-     */
-    NodeId add(ClassElement* elt);
-
-    /**
-     * @brief Add a parameter to this Class.
-     *
-     * Parameters are Attribute without any dependencies and for which a value
-     * (i.e. observation) must be assigned at instantiation if no default
-     * value is defined.
-     *
-     * Default values are assigned using the parameter's CPF. If there is
-     * no default values, it's CPF is filled with invasive nan (i.e. Not A
-     * Number).
-     *
-     * @param param The Attribute added as a Parameter of this Class.
-     * @param flag If true the initialization flag indicated that the given
-     *             parameter is already initialized and does not require
-     *             initialization at instantiation.
-     * @return Returns the NodeId assigned to the added parameter.
-     *
-     * @throw DuplicateElement Raised if elt's name is already used in this class.
-     */
-    NodeId addParameter(Attribute* param, bool flag);
-
-    /**
-     * @brief Add a ClassElement which overload an inherited ClassElement.
-     *
-     * The pointer is "given" to this class, which will delete it when
-     * ~Class() is called.
-     *
-     * The NodeId of elt is defined when it is added to this, discarding any
-     * previous value. There is no guaranty that elt will have the same NodeId
-     * than the ClassElement it overloaded.
-     *
-     * You can only overload inherited ClassElement and only if elt is a subtype
-     * of the inherited ClassElement. Thus you can only overload ReferenceSlot and
-     * Attribute. In the case of Attribute you can overload an inherited Attribute
-     * even if they are of the same type: this is useful when you want to redefine
-     * the dependencies of an Attribute or its CPF. You can also overload an
-     * Attribute with an Aggregate, as long as their respective Type allow it.
-     *
-     * @param elt The ClassElement overloading an inherited ClassElement
-     *            in this Class.
-     * @return the NodeId assigned to elt.
-     *
-     * @throw OperationNotAllowed Raised if there is no ClassElement to overload.
-     * @throw WrongClassElement Raised if the overloading is illegal.
-     * @throw TypeError Raised if elt isn't a legal subtype of this->get(elt->name()).
-     */
-    NodeId overload(ClassElement* elt);
-
-    /**
-     * @brief Remove a ClassElement from this Class.
-     *
-     * When removing a ClassElement it will not be deleted by this Class, thus
-     * you should delete it yourself.
-     *
-     * All dependencies among the removed ClassElement and ClassElement defined
-     * in and outside of this class are deleted also. You must update the
-     * corresponding CPF yourself.
-     *
-     * Futhermore if there exists Instance of this Class you should be very
-     * careful at what you are doing (for instance do not delete the
-     * ClassElement before deleting the concerned Instance).
-     *
-     * @param id The ClassElement's NodeId.
-     * @return the pointer over the removed ClassElement.
-     *
-     * @throw NotFound If no ClassElement matches id.
-     */
-    ClassElement* remove(NodeId id);
+//    /**
+//     * @brief Remove a ClassElement from this Class.
+//     *
+//     * When removing a ClassElement it will not be deleted by this Class, thus
+//     * you should delete it yourself.
+//     *
+//     * All dependencies among the removed ClassElement and ClassElement defined
+//     * in and outside of this class are deleted also. You must update the
+//     * corresponding CPF yourself.
+//     *
+//     * Futhermore if there exists Instance of this Class you should be very
+//     * careful at what you are doing (for instance do not delete the
+//     * ClassElement before deleting the concerned Instance).
+//     *
+//     * @param id The ClassElement's NodeId.
+//     * @return the pointer over the removed ClassElement.
+//     *
+//     * @throw NotFound If no ClassElement matches id.
+//     */
+//    ClassElement* remove(NodeId id);
 
     /// @}
   // ========================================================================
@@ -383,59 +284,22 @@ class Class: public ClassElementContainer {
     /// Returns the set of Class which are direct sub-Class of this Class.
     const Set<Class*>& extensions() const;
 
-    /// Returns true if this respect all its implemented interface.
-    /// TODO Move this to PRMFactory
-    bool isValid() const;
-
-    /// Returns true if this is a valid implementation of i.
-    /// TODO Move this to PRMFactory
-    bool isValid(const Class& i) const;
-
-
     /// @}
   // ========================================================================
   /// @name Getters & setters operators
   // ========================================================================
     /// @{
 
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](NodeId).
     ClassElement& operator[](NodeId id);
 
-    /**
-     * @brief Given a NodeId returns the related ClassElement.
-     *
-     * @param id The ClassElement's id.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if no ClassElement matches id.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](NodeId).
     const ClassElement& operator[](NodeId id) const;
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](const std::string&).
     ClassElement& operator[](const std::string& name);
 
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param n The ClassElement's name.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
+    /// See gum::prm::ClassElementContainer::operator[](const std::string&).
     const ClassElement& operator[](const std::string& name) const;
 
     /// @}
@@ -446,18 +310,22 @@ class Class: public ClassElementContainer {
 
     /// Code alias for iterators over ClassElement in this Class.
     typedef Property<ClassElement*>::onNodes::iterator ClassEltIterator;
+
     /// Returns an iterator at the begin of the node map of the ClassElement
     /// in this Class
     ClassEltIterator begin();
+
     /// Returns an interator at the end of the node map of the ClassElement
     /// in this Class
     const ClassEltIterator& end();
 
     /// Code alias for constant iterators over ClassElement in this Class.
     typedef Property<ClassElement*>::onNodes::const_iterator const_ClassEltIterator;
+
     /// Returns a constant iterator at the begin of the node map of
     /// ClassElement in this Class
     const_ClassEltIterator begin() const;
+
     /// Returns an interator at the end of the node map of the ClassElement
     /// in this Class
     const const_ClassEltIterator& end() const;
@@ -465,11 +333,17 @@ class Class: public ClassElementContainer {
     /// @}
   protected:
 
+    /// returns a constant reference over this interface's dag.
+    virtual const DAG& _dag() const;
+
     /// Returns a non constant reference over this Interface's DAG.
-    DAG& _dag();
+    virtual DAG& _dag();
 
     /// Fills set with all the subtypes of this Class.
     void _findAllSubtypes(Set<ClassElementContainer*>& set);
+
+    /// See gum::prm::ClassElementContainer(const ClassElement&).
+    void _updateDescendants(const ClassElement& elt);
 
   private:
     /// Copy operator. Don't use it.
@@ -477,9 +351,6 @@ class Class: public ClassElementContainer {
 
     /// Proceed with the copy of c in this.
     // void __copyClass(const Class& c);
-
-    /// Proceed with the copy when this inherits c.
-    void __inheritClass(const Class& c);
 
   // ========================================================================
   /// @name Graphical model members
@@ -545,6 +416,13 @@ class Class: public ClassElementContainer {
     /// The set of Class which are extension of this Class (i.e. direct
     /// subtypes).
     Set<Class*> __extensions;
+
+    /// Proceed with the copy when this inherits c.
+    void __inheritClass(const Class& c);
+
+    /// Check if elt is present in an implementation. If it is, its IO flags
+    /// are updated.
+    void __addIOInterfaceFlags(ClassElement* elt);
 
     /// This method is called when a sub-Class of this Class is created.
     /// @param c The Class added as a direct sub-Class of this.

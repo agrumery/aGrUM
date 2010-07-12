@@ -49,11 +49,11 @@ Aggregate::type() const { return *__type; }
 
 INLINE
 Potential<prm_float>&
-Aggregate::cpf() { GUM_ERROR(OperationNotAllowed, "This an aggregate."); }
+Aggregate::cpf() { GUM_ERROR(OperationNotAllowed, "This is an aggregate."); }
 
 INLINE
 const Potential<prm_float>&
-Aggregate::cpf() const { GUM_ERROR(OperationNotAllowed, "This an aggregate."); }
+Aggregate::cpf() const { GUM_ERROR(OperationNotAllowed, "This is an aggregate."); }
 
 INLINE
 MultiDimImplementation<prm_float>*

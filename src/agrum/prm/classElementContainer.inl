@@ -38,10 +38,6 @@ ClassElementContainer::ClassElementContainer(const std::string& name):
 INLINE
 ClassElementContainer::~ClassElementContainer() {
   GUM_DESTRUCTOR( ClassElementContainer );
-  typedef Property<std::pair<bool, bool>*>::onNodes::iterator Iterator;
-  for (Iterator iter = __IOFlags.begin(); iter != __IOFlags.end(); ++iter) {
-    delete *iter;
-  }
 }
 
 INLINE
@@ -58,45 +54,35 @@ ClassElementContainer::ClassElementContainer(const ClassElementContainer& source
   GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy constructor");
 }
 
-INLINE
-Property<std::pair<bool, bool>*>::onNodes&
-ClassElementContainer::_IOFlags() { return __IOFlags; }
-
-INLINE
-const Property<std::pair<bool, bool>*>::onNodes&
-ClassElementContainer::_IOFlags() const { return __IOFlags; }
-
+// INLINE
+// Property<std::pair<bool, bool>*>::onNodes&
+// ClassElementContainer::_IOFlags() { return _IOFlags; }
+// 
+// INLINE
+// const Property<std::pair<bool, bool>*>::onNodes&
+// ClassElementContainer::_IOFlags() const { return _IOFlags; }
+// 
 INLINE
 bool
-ClassElementContainer::isInputNode(NodeId id) const {
-  if (exists(id) and (ClassElement::isAttribute(get(id)) or
-                      ClassElement::isAggregate(get(id))) )
-  {
-    try {
-      return __IOFlags[id]->first;
-    } catch (NotFound&) {
-      return false;
-    }
-  } else if (not exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  } else {
-    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+ClassElementContainer::isInputNode(const ClassElement& elt) const {
+  try {
+    return _getIOFlag(elt).first;
+  } catch (NotFound&) {
+    return false;
   }
 }
 
 INLINE
 void
-ClassElementContainer::setInputNode(NodeId id, bool b) {
-  if (exists(id) and (ClassElement::isAttribute(get(id)) or
-                      ClassElement::isAggregate(get(id))) )
-  {
+ClassElementContainer::setInputNode(const ClassElement& elt, bool b) {
+  if (not exists(elt.safeName())) {
+    GUM_ERROR(NotFound, "this ClassElement is not in this ClassElementContainer");
+  } else if (ClassElement::isAttribute(elt) or ClassElement::isAggregate(elt)) {
     try {
-      __IOFlags[id]->first = b;
+      _getIOFlag(elt).second = b;
     } catch (NotFound&) {
-      __IOFlags.insert(id, new std::pair<bool, bool>(b, false));
+      _setIOFlag(elt, std::make_pair(b, false));
     }
-  } else if (not exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
   } else {
     GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
   }
@@ -104,52 +90,40 @@ ClassElementContainer::setInputNode(NodeId id, bool b) {
 
 INLINE
 bool
-ClassElementContainer::isOutputNode(NodeId id) const {
-  if (exists(id) and (ClassElement::isAttribute(get(id)) or
-                      ClassElement::isAggregate(get(id))) )
-  {
-    try {
-      return __IOFlags[id]->second;
-    } catch (NotFound&) {
-      return false;
-    }
-  } else if (not exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  } else {
-    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+ClassElementContainer::isOutputNode(const ClassElement& elt) const {
+  try {
+    return _getIOFlag(elt).second;
+  } catch (NotFound&) {
+    return false;
   }
 }
 
 INLINE
 void
-ClassElementContainer::setOutputNode(NodeId id, bool b) {
-  if (exists(id) and (ClassElement::isAttribute(get(id)) or
-                      ClassElement::isAggregate(get(id))) )
-  {
+ClassElementContainer::setOutputNode(const ClassElement& elt, bool b) {
+  if (not exists(elt.safeName())) {
+    GUM_ERROR(NotFound, "this ClassElement is not in this ClassElementContainer");
+  } else if (ClassElement::isAttribute(elt) or ClassElement::isAggregate(elt)) {
     try {
-      __IOFlags[id]->second = b;
+      _getIOFlag(elt).second = b;
     } catch (NotFound&) {
-      __IOFlags.insert(id, new std::pair<bool, bool>(false, b));
+      _setIOFlag(elt, std::make_pair(false, b));
     }
-  } else if (not exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
+    if (b) {
+      _updateDescendants(elt);
+    }
   } else {
-    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+    GUM_ERROR(WrongClassElement, "given ClassElement is not an Attribute or an Aggregate");
   }
 }
 
 INLINE
 bool
-ClassElementContainer::isInnerNode(NodeId id) const {
-  if (exists(id) and (ClassElement::isAttribute(get(id)) or
-                      ClassElement::isAggregate(get(id))) )
-  {
-    return (__IOFlags.exists(id))?not(__IOFlags[id]->first or __IOFlags[id]->second)
-                                 :true;
-  } else if (not exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  } else {
-    GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+ClassElementContainer::isInnerNode(const ClassElement& elt) const {
+  try {
+    return not (_getIOFlag(elt).first or _getIOFlag(elt).second);
+  } catch (NotFound&) {
+    return true;
   }
 }
 
@@ -157,6 +131,69 @@ INLINE
 bool
 ClassElementContainer::isSuperTypeOf(const ClassElementContainer& cec) const {
   return cec.isSubTypeOf(*this);
+}
+
+INLINE
+std::pair<bool, bool>&
+ClassElementContainer::_getIOFlag(const ClassElement& elt) {
+  try {
+    return __IOFlags[elt.safeName()];
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "this ClassElement does not have any IO flags");
+  }
+}
+
+INLINE
+const std::pair<bool, bool>&
+ClassElementContainer::_getIOFlag(const ClassElement& elt) const {
+  try {
+    return __IOFlags[elt.safeName()];
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "this ClassElement does not have any IO flags");
+  }
+}
+
+INLINE
+void
+ClassElementContainer::_setIOFlag(const ClassElement& elt, const std::pair<bool, bool>& flags) {
+  try {
+    __IOFlags[elt.safeName()] = flags;
+  } catch (NotFound&) {
+    __IOFlags.insert(elt.safeName(), flags);
+  }
+}
+
+INLINE
+bool
+ClassElementContainer::exists(NodeId id) const {
+  return dag().exists(id);
+}
+
+INLINE
+bool
+ClassElementContainer::exists(const std::string& name) const {
+  try {
+    get(name);
+    return true;
+  } catch (NotFound&) {
+    return false;
+  }
+}
+
+INLINE
+bool
+ClassElementContainer::belongsTo(const ClassElement& elt) const {
+  try {
+    return &elt == &(get(elt.safeName()));
+  } catch (NotFound&) {
+    return false;
+  }
+}
+
+INLINE
+const DAG&
+ClassElementContainer::dag() const {
+  return _dag();
 }
 
 // ============================================================================

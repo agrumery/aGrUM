@@ -19,16 +19,16 @@
 ***************************************************************************/
 /**
  * @file
- * @brief Implementation of PRMInference.
+ * @brief Implementation of GroundedInference.
  *
  * @author Lionel TORTI
  *
  */
 // ============================================================================
-#include <agrum/prm/PRMInference.h>
+#include <agrum/prm/groundedInference.h>
 // ============================================================================
 #ifdef GUM_NO_INLINE
-#include <agrum/prm/PRMInference.inl>
+#include <agrum/prm/groundedInference.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
