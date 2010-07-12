@@ -200,9 +200,11 @@ Instance::instantiate() {
   for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
     const ArcSet& parents = type().dag().parents((*iter)->id());
     Attribute& attr = get((**iter).safeName());
+    GUM_TRACE_VAR(attr.name());
     for (ArcSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc) {
       try {
         attr.addParent(get(arc->tail()));
+        GUM_TRACE_VAR(get(arc->tail()).name());
       } catch (NotFound&) {
         SlotChain& sc = static_cast<SlotChain&>(type().get(arc->tail()));
         const Set<Instance*>& instances = getInstances(sc.id());

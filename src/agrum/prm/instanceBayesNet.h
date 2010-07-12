@@ -146,7 +146,7 @@ class InstanceBayesNet: public AbstractBayesNet<prm_float> {
 } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
-#include <agrum/prm/hollowBayesNet.inl>
+#include <agrum/prm/instanceBayesNet.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 #endif /* GUM_INSTANCE_BAYESNET_H */

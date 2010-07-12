@@ -200,15 +200,15 @@ PRMInference::marginal(const std::string& chain, Potential<prm_float>& m) {
   if (m.nbrDim() > 0) {
     GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
-  try {
+  // try {
     size_t idx = chain.find(".");
     const Instance& i = _sys->get(chain.substr(0, idx));
     const Attribute& elt = i.get(chain.substr(idx + 1));
     m.add(elt.type().variable());
     _marginal(std::make_pair(&i, &elt), m);
-  } catch (NotFound&) {
-    GUM_ERROR(WrongType, "the given element is not an Attribute.");
-  }
+  // } catch (NotFound&) {
+  //   GUM_ERROR(WrongType, "the given element is not an Attribute.");
+  // }
 }
 
 INLINE

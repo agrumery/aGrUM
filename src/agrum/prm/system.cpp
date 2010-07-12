@@ -57,27 +57,6 @@ System::~System()
   }
 }
 
-const DiGraph&
-System::skeleton() const { return __skeleton; }
-
-Instance&
-System::get(NodeId id) {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no Instance matching the given id");
-  }
-}
-
-const Instance&
-System::get(NodeId id) const {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no Instance matching the given id");
-  }
-}
-
 void
 System::insertArc(const std::string& u_name, const std::string& v_name,
                   const std::string& ref_name)
@@ -105,61 +84,6 @@ System::insertArc(const std::string& u_name, const std::string& v_name,
   __skeleton.insertArc(__nodeIdMap.keyByVal(u), __nodeIdMap.keyByVal(v));
 }
 
-PRMObject::ObjectType
-System::obj_type() const { return PRMObject::prm_system; }
-
-Size
-System::size() const { return __nodeIdMap.size(); }
-
-bool
-System::isInstantiated(const Class& c) const {
-  return __instanceMap.exists(const_cast<Class*>(&c));
-}
-
-bool
-System::isInstance(const std::string& name) const {
-  return __nameMap.exists(name);
-}
-
-bool
-System::isArray(const std::string& name) const {
-  return __arrayMap.exists(name);
-}
-
-void
-System::instantiate() {
-  for (System::iterator iter = begin(); iter != end(); ++iter) {
-    (**iter).instantiate();
-  }
-}
-
-Instance&
-System::get(const std::string& name) {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no Instance matching the given name");
-  }
-}
-
-const Instance&
-System::get(const std::string& name) const {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no Instance matching the given name");
-  }
-}
-
-const Set<Instance*>&
-System::get(const Class& type) const {
-  try {
-    return *(__instanceMap[const_cast<Class*>(&type)]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "the given Class has no instantiation in this System");
-  }
-}
-
 NodeId
 System::add(Instance* i) {
   if (__nameMap.exists(i->name())) {
@@ -175,104 +99,6 @@ System::add(Instance* i) {
     __instanceMap[&(i->type())]->insert(i);
   }
   return id;
-}
-
-const Sequence<Instance*>&
-System::getArray(const std::string& name) const {
-  try {
-    return *(__arrayMap[name].second);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-ClassElementContainer&
-System::getArrayType(const std::string& name) {
-  try {
-    return *(__arrayMap[name].first);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-const ClassElementContainer&
-System::getArrayType(const std::string& name) const {
-  try {
-    return *(__arrayMap[name].first);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-NodeId
-System::add(const std::string& array, Instance* i) {
-  try {
-    if (i->type().isSubTypeOf(*(__arrayMap[array].first))) {
-      NodeId id = add(i);
-      __arrayMap[array].second->insert(i);
-      return id;
-    } else {
-      GUM_ERROR(TypeError, "the given Instance is of an incorrect Class type");
-    }
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-void
-System::addArray(const std::string& array, ClassElementContainer& type) {
-  if (__arrayMap.exists(array)) {
-    GUM_ERROR(DuplicateElement, "an array with the same is already in this System");
-  }
-  __arrayMap.insert(array, System::model_pair(&type, new Sequence<Instance*>()));
-}
-
-System::iterator
-System::begin() { return __nodeIdMap.begin(); }
-
-const System::iterator&
-System::end() { return __nodeIdMap.end(); }
-
-System::const_iterator
-System::begin() const { return __nodeIdMap.begin(); }
-
-const System::const_iterator&
-System::end() const { return __nodeIdMap.end(); }
-
-System::array_iterator
-System::begin(const std::string& a) {
-  try {
-    return __arrayMap[a].second->begin();
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-const System::array_iterator&
-System::end(const std::string& a) {
-  try {
-    return __arrayMap[a].second->end();
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-System::const_array_iterator
-System::begin(const std::string& a) const {
-  try {
-    return __arrayMap[a].second->begin();
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
-}
-
-const System::const_array_iterator&
-System::end(const std::string& a) const {
-  try {
-    return __arrayMap[a].second->end();
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "found no array matching the given name");
-  }
 }
 
 void
@@ -360,6 +186,7 @@ System::__groundRef(const Instance& instance, BayesNetFactory<prm_float>& factor
     const ArcSet& parents = instance.type().dag().parents((**iter).id());
     for (DAG::ArcIterator arc = parents.begin(); arc != parents.end(); ++arc) {
       switch (instance.type().get(arc->tail()).elt_type()) {
+        case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute:
           {
             std::stringstream parent_name;
