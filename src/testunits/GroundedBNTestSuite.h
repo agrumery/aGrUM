@@ -47,7 +47,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool");
       prm = reader.prm();
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
     }
 
     void tearDown() {
