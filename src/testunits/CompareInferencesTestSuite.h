@@ -28,7 +28,7 @@
 #include <agrum/BN/inference/Gibbs.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/variableElimination.h>
 //#include <agrum/graphs/incrementalTriangulation.h>
 
 // The graph used for the tests:
@@ -173,7 +173,7 @@ namespace gum {
 //       gum::LazyPropagation<double> inf_LazyProp( *bn );
 //       inf_LazyProp.makeInference();
 //
-//       gum::ValueElimination<double> inf_ValElim( *bn );
+//       gum::VariableElimination<double> inf_ValElim( *bn );
 //       inf_ValElim.makeInference();
 //
 //       gum::Gibbs<double> inf_gibbs( *bn );
@@ -351,7 +351,7 @@ namespace gum {
           }
 
           {
-            gum::ValueElimination<float> inf( *bn );
+            gum::VariableElimination<float> inf( *bn );
             inf.makeInference();
             {
               const gum::Potential<float>& p = inf.marginal( w ) ;

@@ -19,7 +19,7 @@
 //  ***************************************************************************/
 // /**
 //  * @file
-//  * @brief Headers of SVE (Structured Value Elimination).
+//  * @brief Headers of SVE (Structured Variable Elimination).
 //  *
 //  * @author Lionel TORTI
 //  */
@@ -47,7 +47,7 @@
 // 
 // /**
 //  * @class SVE SVE.h <agrum/prm/SVE.h>
-//  * @brief This class is an implementation of the Structured Value Elimination
+//  * @brief This class is an implementation of the Structured Variable Elimination
 //  *        algorithm on PRM.
 //  *
 //  */

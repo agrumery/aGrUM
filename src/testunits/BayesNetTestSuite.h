@@ -602,13 +602,13 @@ namespace gum {
             
             TS_ASSERT_EQUALS(i.domainSize(),(gum::Size)(2*2*2*2*3));
             
-            float a;
+            float a = 0.0;
             TS_ASSERT_THROWS_NOTHING(a= bn.jointProbability ( i ));
             
             TS_ASSERT_DELTA(a,0.00072,1e-4);
             
             gum::Instantiation j;
-            float b;
+            float b = 0.0;
             TS_ASSERT_THROWS_NOTHING(b = bn.jointProbability (j ));
       
             TS_ASSERT_EQUALS(a,b);

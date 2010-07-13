@@ -20,7 +20,7 @@
 // ============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 // ============================================================================
-#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 // ============================================================================
@@ -141,12 +141,12 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
     void testInference() {
       GroundedInference* g_ve = 0;
       GroundedInference* g_ss = 0;
-      ValueElimination<prm_float>* ve = 0;
+      VariableElimination<prm_float>* ve = 0;
       ShaferShenoyInference<prm_float>* ss = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
-      TS_GUM_ASSERT_THROWS_NOTHING(ve = new ValueElimination<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));

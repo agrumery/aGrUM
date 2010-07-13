@@ -24,36 +24,36 @@
  * @author Lionel Torti
  */
 // ============================================================================
-#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/variableElimination.h>
 // ============================================================================
 namespace gum {
 
 template<typename T_DATA> INLINE
-ValueElimination<T_DATA>::ValueElimination( const AbstractBayesNet<T_DATA>& bn ):
+VariableElimination<T_DATA>::VariableElimination( const AbstractBayesNet<T_DATA>& bn ):
     BayesNetInference<T_DATA>( bn ) {
-  GUM_CONSTRUCTOR( ValueElimination );
+  GUM_CONSTRUCTOR( VariableElimination );
 }
 
 template<typename T_DATA> INLINE
-ValueElimination<T_DATA>::~ValueElimination() {
-  GUM_DESTRUCTOR( ValueElimination );
+VariableElimination<T_DATA>::~VariableElimination() {
+  GUM_DESTRUCTOR( VariableElimination );
 }
 
 template<typename T_DATA> INLINE
-ValueElimination<T_DATA>::ValueElimination(const ValueElimination<T_DATA>& source) {
-  GUM_CONS_CPY( ValueElimination );
-  GUM_ERROR(FatalError, "illegal call to ValueElimination copy constructor.");
+VariableElimination<T_DATA>::VariableElimination(const VariableElimination<T_DATA>& source) {
+  GUM_CONS_CPY( VariableElimination );
+  GUM_ERROR(FatalError, "illegal call to VariableElimination copy constructor.");
 }
 
 template<typename T_DATA> INLINE
-ValueElimination<T_DATA>&
-ValueElimination<T_DATA>::operator=(const ValueElimination& source) {
-  GUM_ERROR(FatalError, "illegal call to ValueElimination copy operator.");
+VariableElimination<T_DATA>&
+VariableElimination<T_DATA>::operator=(const VariableElimination& source) {
+  GUM_ERROR(FatalError, "illegal call to VariableElimination copy operator.");
 }
 
 template<typename T_DATA> INLINE
 const std::vector<NodeId>&
-ValueElimination<T_DATA>::eliminationOrder() const {
+VariableElimination<T_DATA>::eliminationOrder() const {
   if ( __eliminationOrder.size() != 0 ) {
     return __eliminationOrder;
   } else {
@@ -63,20 +63,20 @@ ValueElimination<T_DATA>::eliminationOrder() const {
 
 template<typename T_DATA> INLINE
 void
-ValueElimination<T_DATA>::setEliminiationOrder( const std::vector<NodeId>& elim ) {
+VariableElimination<T_DATA>::setEliminiationOrder( const std::vector<NodeId>& elim ) {
   __eliminationOrder = elim;
 }
 
 template<typename T_DATA> INLINE
 void
-ValueElimination<T_DATA>::makeInference() {
+VariableElimination<T_DATA>::makeInference() {
   __computeEliminationOrder();
   __createInitialPool();
 }
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {
+VariableElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {
   for ( ListConstIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
     if (( *iter )->nbrDim() != 1 ) {
       GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
@@ -93,7 +93,7 @@ ValueElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& 
 
 template<typename T_DATA> INLINE
 void
-ValueElimination<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
+VariableElimination<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
   if ( e->nbrDim() != 1 ) {
     GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
   }
@@ -103,14 +103,14 @@ ValueElimination<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
 
 template<typename T_DATA> INLINE
 void
-ValueElimination<T_DATA>::eraseAllEvidence() {
+VariableElimination<T_DATA>::eraseAllEvidence() {
   __evidences.clear();
   this->_invalidateMarginals();
 }
 
 template <typename T_DATA>
 void
-ValueElimination<T_DATA>::eliminateNodes(const std::vector<NodeId>& elim_order,
+VariableElimination<T_DATA>::eliminateNodes(const std::vector<NodeId>& elim_order,
                                          Set< Potential<T_DATA>* >& pool,
                                          Set< Potential<T_DATA>* >& trash) {
   for ( size_t i = 0; i < elim_order.size(); ++i ) {
@@ -120,7 +120,7 @@ ValueElimination<T_DATA>::eliminateNodes(const std::vector<NodeId>& elim_order,
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
+VariableElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
   __computeEliminationOrder();
   __createInitialPool();
   Set< Potential<T_DATA>* > pool( __pool );
@@ -140,7 +140,9 @@ ValueElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal 
   marginal.add( this->bn().variable( id ) );
   marginal.fill(( T_DATA ) 1 );
   for ( SetIterator< Potential<T_DATA>* > iter = pool.begin(); iter != pool.end(); ++iter ) {
-    marginal.multiplicateBy( **iter );
+    if ((**iter).nbrDim() > 0) {
+      marginal.multiplicateBy( **iter );
+    }
   }
   marginal.normalize();
   // Cleaning up the mess
@@ -152,7 +154,7 @@ ValueElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal 
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::__computeEliminationOrder() {
+VariableElimination<T_DATA>::__computeEliminationOrder() {
   if ( __eliminationOrder.empty() ) {
     typename Property<unsigned int>::onNodes modalities;
     for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
@@ -165,7 +167,7 @@ ValueElimination<T_DATA>::__computeEliminationOrder() {
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::__createInitialPool() {
+VariableElimination<T_DATA>::__createInitialPool() {
   __pool.clear();
   for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
     __pool.insert( const_cast< Potential<T_DATA>* >( &(this->bn().cpt(*iter)) ) );
@@ -174,7 +176,7 @@ ValueElimination<T_DATA>::__createInitialPool() {
 
 template<typename T_DATA>
 void
-ValueElimination<T_DATA>::__eliminateNode( NodeId id,
+VariableElimination<T_DATA>::__eliminateNode( NodeId id,
                                            Set< Potential<T_DATA>* >& pool,
                                            Set< Potential<T_DATA>* >& trash ) {
   MultiDimBucket<T_DATA>* bucket = new MultiDimBucket<T_DATA>();

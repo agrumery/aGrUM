@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the ValueElimination class.
+ * @brief Header of the VariableElimination class.
  *
  * @author Lionel Torti
  */
@@ -41,7 +41,7 @@ namespace gum {
 
 template <typename T_DATA> class VEWithBB;
 /**
- * @class ValueElimination valueElimination.h <agrum/BN/inference/valueElimination.h>
+ * @class VariableElimination variableElimination.h <agrum/BN/inference/variableElimination.h>
  * @brief Implementation of the state of the art Value Elimination algorithm.
  *
  * The elimination order used by this algorithm is computed with the
@@ -53,7 +53,7 @@ template <typename T_DATA> class VEWithBB;
  *
  */
 template<typename T_DATA>
-class ValueElimination: public BayesNetInference<T_DATA> {
+class VariableElimination: public BayesNetInference<T_DATA> {
 public:
 
   friend class VEWithBB<T_DATA>;
@@ -65,12 +65,12 @@ public:
   /**
    * Default constructor.
    */
-  ValueElimination(const AbstractBayesNet<T_DATA>& bn);
+  VariableElimination(const AbstractBayesNet<T_DATA>& bn);
 
   /**
    * Destructor.
    */
-  virtual ~ValueElimination();
+  virtual ~VariableElimination();
 
   /// @}
   // ============================================================================
@@ -88,7 +88,7 @@ public:
    * BayesNet, then this method will eliminate all nodes present in the elimination
    * order. Thus computing a joint probability over a set of variables.
    * 
-   * Use the ValueElimination::pool() method to access the set of created potentials.
+   * Use the VariableElimination::pool() method to access the set of created potentials.
    */
   virtual void makeInference();
 
@@ -111,7 +111,7 @@ public:
 
   /// @}
   // ============================================================================
-  /// @name Specific ValueElimination's methods
+  /// @name Specific VariableElimination's methods
   // ============================================================================
   /// @{
 
@@ -157,10 +157,10 @@ protected:
 private:
 
   /// Private copy constructor.
-  ValueElimination(const ValueElimination<T_DATA>& source);
+  VariableElimination(const VariableElimination<T_DATA>& source);
 
   /// Private copy operator.
-  ValueElimination& operator=(const ValueElimination<T_DATA>& source);
+  VariableElimination& operator=(const VariableElimination<T_DATA>& source);
 
   /// Mapping between nodes and their evidences.
   typename Property< const Potential<T_DATA>* >::onNodes __evidences;
@@ -190,7 +190,7 @@ private:
 };
 } /* namespace gum */
 // ============================================================================
-#include <agrum/BN/inference/valueElimination.tcc>
+#include <agrum/BN/inference/variableElimination.tcc>
 // ============================================================================
 #endif /* GUM_VALUE_ELIMINATION_H */
 // ============================================================================

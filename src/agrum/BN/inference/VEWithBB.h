@@ -32,7 +32,7 @@
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBalls.h>
 // ============================================================================
 namespace gum {
@@ -78,7 +78,7 @@ public:
    * BayesNet, then this method will eliminate all nodes present in the elimination
    * order. Thus computing a joint probability over a set of variables.
    * 
-   * Use the ValueElimination::pool() method to access the set of created potentials.
+   * Use the VariableElimination::pool() method to access the set of created potentials.
    */
   virtual void makeInference();
 
@@ -122,8 +122,8 @@ private:
   /// Mapping between nodes and their evidences.
   typename Property<const Potential<T_DATA>*>::onNodes __hardEvidence;
 
-  /// The ValueElimination algorithm as the inference engine
-  ValueElimination<T_DATA> __ve;
+  /// The VariableElimination algorithm as the inference engine
+  VariableElimination<T_DATA> __ve;
 
   void __fillRequisiteNode(NodeId id, Set<NodeId>& requisite_nodes);
 

@@ -27,7 +27,7 @@
 #include <agrum/multidim/multiDimArray.h>
 // ============================================================================
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/BN/inference/valueElimination.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 // ============================================================================
 // The graph used for the tests:
@@ -43,7 +43,7 @@ namespace gum {
 
   namespace tests {
 
-    class ValueEliminationTestSuite: public CxxTest::TestSuite {
+    class VariableElimination: public CxxTest::TestSuite {
       public:
         gum::BayesNet<float> *bn;
         gum::Id i1, i2, i3, i4, i5;
@@ -170,8 +170,8 @@ namespace gum {
         void testMakeInference() {
           fill( *bn );
           // Testing the inference
-          gum::ValueElimination<float>* inf = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
+          gum::VariableElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::VariableElimination<float>( *bn ) );
 
           if ( inf != 0 ) {
             TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
@@ -181,8 +181,8 @@ namespace gum {
 
         void testValueElim() {
           fill( *bn );
-          gum::ValueElimination<float>* inf = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
+          gum::VariableElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::VariableElimination<float>( *bn ) );
 
           if ( inf != 0 ) {
             TS_GUM_ASSERT_THROWS_NOTHING( inf->makeInference() );
@@ -226,8 +226,8 @@ namespace gum {
           e_list.insert( e_i1 );
           e_list.insert( e_i4 );
 
-          gum::ValueElimination<float>* inf = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::ValueElimination<float>( *bn ) );
+          gum::VariableElimination<float>* inf = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( inf = new gum::VariableElimination<float>( *bn ) );
 
           if ( inf != 0 ) {
             TS_GUM_ASSERT_THROWS_NOTHING( inf->insertEvidence( e_list ) );
@@ -271,7 +271,7 @@ namespace gum {
         //   gum::BayesNet<float> alarm;
         //   gum::BIFReader<float> reader(&alarm, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(alarm);
+        //   gum::VariableElimination<float> ve(alarm);
         //   gum::ShaferShenoyInference<float> shafer(alarm);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = alarm.dag().beginNodes(); iter != alarm.dag().endNodes(); ++iter) {
@@ -291,7 +291,7 @@ namespace gum {
         //   gum::BayesNet<float> diabetes;
         //   gum::BIFReader<float> reader(&diabetes, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(diabetes);
+        //   gum::VariableElimination<float> ve(diabetes);
         //   gum::ShaferShenoyInference<float> shafer(diabetes);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = diabetes.dag().beginNodes(); iter != diabetes.dag().endNodes(); ++iter) {
@@ -311,7 +311,7 @@ namespace gum {
         //   gum::BayesNet<float> link;
         //   gum::BIFReader<float> reader(&link, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(link);
+        //   gum::VariableElimination<float> ve(link);
         //   gum::ShaferShenoyInference<float> shafer(link);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = link.dag().beginNodes(); iter != link.dag().endNodes(); ++iter) {
@@ -331,7 +331,7 @@ namespace gum {
         //   gum::BayesNet<float> water;
         //   gum::BIFReader<float> reader(&water, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(water);
+        //   gum::VariableElimination<float> ve(water);
         //   gum::ShaferShenoyInference<float> shafer(water);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = water.dag().beginNodes(); iter != water.dag().endNodes(); ++iter) {
@@ -351,7 +351,7 @@ namespace gum {
         //   gum::BayesNet<float> carpo;
         //   gum::BIFReader<float> reader(&carpo, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(carpo);
+        //   gum::VariableElimination<float> ve(carpo);
         //   gum::ShaferShenoyInference<float> shafer(carpo);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = carpo.dag().beginNodes(); iter != carpo.dag().endNodes(); ++iter) {
@@ -371,7 +371,7 @@ namespace gum {
         //   gum::BayesNet<float> mildew;
         //   gum::BIFReader<float> reader(&mildew, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(mildew);
+        //   gum::VariableElimination<float> ve(mildew);
         //   gum::ShaferShenoyInference<float> shafer(mildew);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = mildew.dag().beginNodes(); iter != mildew.dag().endNodes(); ++iter) {
@@ -391,7 +391,7 @@ namespace gum {
         //   gum::BayesNet<float> hailfinder;
         //   gum::BIFReader<float> reader(&hailfinder, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(hailfinder);
+        //   gum::VariableElimination<float> ve(hailfinder);
         //   gum::ShaferShenoyInference<float> shafer(hailfinder);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = hailfinder.dag().beginNodes(); iter != hailfinder.dag().endNodes(); ++iter) {
@@ -411,7 +411,7 @@ namespace gum {
         //   gum::BayesNet<float> munin1;
         //   gum::BIFReader<float> reader(&munin1, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(munin1);
+        //   gum::VariableElimination<float> ve(munin1);
         //   gum::ShaferShenoyInference<float> shafer(munin1);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = munin1.dag().beginNodes(); iter != munin1.dag().endNodes(); ++iter) {
@@ -431,7 +431,7 @@ namespace gum {
         //   gum::BayesNet<float> insurance;
         //   gum::BIFReader<float> reader(&insurance, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(insurance);
+        //   gum::VariableElimination<float> ve(insurance);
         //   gum::ShaferShenoyInference<float> shafer(insurance);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = insurance.dag().beginNodes(); iter != insurance.dag().endNodes(); ++iter) {
@@ -451,7 +451,7 @@ namespace gum {
         //   gum::BayesNet<float> pigs;
         //   gum::BIFReader<float> reader(&pigs, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(pigs);
+        //   gum::VariableElimination<float> ve(pigs);
         //   gum::ShaferShenoyInference<float> shafer(pigs);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = pigs.dag().beginNodes(); iter != pigs.dag().endNodes(); ++iter) {
@@ -471,7 +471,7 @@ namespace gum {
         //   gum::BayesNet<float> barley;
         //   gum::BIFReader<float> reader(&barley, file_path);
         //   reader.proceed();
-        //   gum::ValueElimination<float> ve(barley);
+        //   gum::VariableElimination<float> ve(barley);
         //   gum::ShaferShenoyInference<float> shafer(barley);
         //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
         //   for (gum::DAG::NodeIterator iter = barley.dag().beginNodes(); iter != barley.dag().endNodes(); ++iter) {
