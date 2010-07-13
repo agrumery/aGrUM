@@ -167,7 +167,7 @@ class PRMInference {
     /// @}
   protected:
   // ========================================================================
-  /// @name Private evidence handling methods and members.
+  /// @name Protected members.
   // ========================================================================
     /// @{
 

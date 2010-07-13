@@ -30,14 +30,15 @@
 // // ============================================================================
 // #include <agrum/graphs/defaultTriangulation.h>
 // // ============================================================================
-// #include <agrum/BN/inference/valueElimination.h>
+// #include <agrum/BN/inference/variableElimination.h>
 // // ============================================================================
 // #include <agrum/multidim/multiDimBucket.h>
 // #include <agrum/multidim/potential.h>
 // #include <agrum/multidim/multiDimArray.h>
 // // ============================================================================
 // #include <agrum/prm/PRMInference.h>
-// #include <agrum/prm/hollowBayesNet.h>
+// #include <agrum/prm/classBayesNet.h>
+// #include <agrum/prm/instanceBayesNet.h>
 // #include <agrum/prm/CDG.h>
 // // ============================================================================
 // #ifndef GUM_SVE_H
@@ -59,10 +60,7 @@
 //     /// @{
 // 
 //     /// Default Constructor.
-//     SVE(const PRM& prm, const Model& model);
-// 
-//     /// Default Constructor.
-//     SVE(const PRM& prm, const std::string& model);
+//     SVE(const PRM& prm, const System& system);
 // 
 //     /// Destructor.
 //     ~SVE();
@@ -74,18 +72,20 @@
 //   // ========================================================================
 //     /// @{
 // 
+//     /// Code alias.
+//     typedef PRMInference::Chain Chain;
+// 
 //     /// See PRMInference::_evidenceAdded().
-//     virtual void _evidenceAdded(const Instance* i, NodeId elt_id);
+//     virtual void _evidenceAdded(const Chain& chain);
 // 
 //     /// See PRMInference::_evidenceRemoved().
-//     virtual void _evidenceRemoved(const Instance* i, NodeId elt_id);
+//     virtual void _evidenceRemoved(const Chain& chain);
 // 
 //     /// See PRMInference::_marginal().
-//     virtual void _marginal(const Instance* i, const Attribute* elt,
-//                            Potential<prm_float>& m);
+//     virtual void _marginal(const Chain& chain, Potential<prm_float>& m);
 // 
 //     /// See PRMInference::_joint().
-//     virtual void _joint(const Set<InstAttrPair>& queries, Potential<prm_float>& j);
+//     virtual void _joint(const std::vector< Chain >& queries, Potential<prm_float>& j);
 // 
 //     /// @}
 //   private:
@@ -140,8 +140,7 @@
 // 
 //     std::vector<NodeId>& __getElimOrder(const Class& c);
 // 
-//     Potential<prm_float>* __getAggPotential(const Instance* i,
-//                                         const Aggregate* agg);
+//     Potential<prm_float>* __getAggPotential(const Instance* i, const Aggregate* agg);
 // 
 //     void __initLiftedNodes(const Class& c);
 // 

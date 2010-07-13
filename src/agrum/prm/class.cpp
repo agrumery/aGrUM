@@ -238,7 +238,7 @@ Class::insertArc(const std::string& tail_name, const std::string& head_name) {
   if (tail->elt_type() == ClassElement::prm_slotchain) {
     SlotChain* sc = static_cast<SlotChain*>(tail);
     setInputNode(*head, true);
-    sc->end().setOutputNode(sc->lastElt(), true);
+    sc->end().setOutputNode(sc->end().get(sc->lastElt().safeName()), true);
   }
 }
 

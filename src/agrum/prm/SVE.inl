@@ -28,15 +28,8 @@
 // namespace prm {
 // 
 // INLINE
-// SVE::SVE(const PRM& prm, const Model& model):
-//   PRMInference(prm, model), __class_elim_order(0)
-// {
-//   GUM_CONSTRUCTOR(SVE);
-// }
-// 
-// INLINE
-// SVE::SVE(const PRM& prm, const std::string& model):
-//   PRMInference(prm, model), __class_elim_order(0)
+// SVE::SVE(const PRM& prm, const System& system):
+//   PRMInference(prm, system), __class_elim_order(0)
 // {
 //   GUM_CONSTRUCTOR(SVE);
 // }

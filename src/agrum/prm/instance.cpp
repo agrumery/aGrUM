@@ -100,10 +100,12 @@ Instance::~Instance() {
     delete *iter;
   }
   typedef Property< std::vector<pair>* >::onNodes::iterator Foo;
-  for (Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter)
+  for (Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter) {
     delete *iter;
-  if (__params)
+  }
+  if (__params) {
     delete __params;
+  }
   --Instance::__end_counter;
   if (Instance::__end_counter == 0) {
     delete Instance::__end;

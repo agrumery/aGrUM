@@ -44,6 +44,26 @@ namespace gum {
     __causal_weights = from.__causal_weights;
   }
 
+  // ============================================================================
+  /// Copy constructor using a bijection to swap variables from source.
+  // ============================================================================
+  template<typename T_DATA> INLINE
+  MultiDimNoisyORCompound<T_DATA>::MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                                            const MultiDimNoisyORCompound<T_DATA>& from ):
+    MultiDimReadOnly<T_DATA>()
+  {
+    GUM_CONSTRUCTOR( MultiDimNoisyORCompound );
+    __default_weight = from.__default_weight;
+    __external_weight = from.__external_weight;
+    for (HashTableConstIterator< const DiscreteVariable *, T_DATA > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter) {
+      try {
+        causalWeight(*(bij.first(iter.key())), *iter);
+      } catch (NotFound&) {
+        causalWeight(*(iter.key()), *iter);
+      }
+    }
+  }
+
 // ==============================================================================
 /// destructor
 // ==============================================================================

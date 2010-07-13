@@ -29,8 +29,13 @@
 // ============================================================================
 #include <agrum/core/sequence.h>
 // ============================================================================
+#include <agrum/multidim/multiDimBijArray.h>
+#include <agrum/multidim/multiDimNoisyORNet.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
+// ============================================================================
 #include <agrum/prm/classElement.h>
 #include <agrum/prm/attribute.h>
+#include <agrum/prm/aggregate.h>
 #include <agrum/prm/referenceSlot.h>
 // ============================================================================
 namespace gum {
@@ -67,6 +72,8 @@ class SlotChain: public ClassElement
      * Chain's n-1 first elements must be ReferenceSlot and the last element
      * must either be an Attribute or an Aggregate.
      *
+     * Warning: the last element in chain is copied !
+     *
      * @param name The name of this SlotChain.
      * @param chain The chain of gum::prm::ClassElement in this SlotChain.
      *
@@ -80,6 +87,8 @@ class SlotChain: public ClassElement
      *
      * Chain's n-1 first elements must be ReferenceSlot and the last element
      * must either be an Attribute or an Aggregate.
+     *
+     * Warning: the last element in chain is copied !
      *
      * @param name The name of this SlotChain.
      * @param chain The chain given to this SlotChain, it is deleted
@@ -184,6 +193,9 @@ class SlotChain: public ClassElement
 
     /// Flag indicating if this slot chain is multiple or not.
     bool __isMultiple;
+
+    /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
+    void __copyLastElt();
 
     /// @}
 };

@@ -363,7 +363,7 @@ class Instance: public PRMObject {
     /// Alias to iterate over the gum::prm::Attribute in this Instance.
     typedef Property<Attribute*>::onNodes::const_iterator const_iterator;
 
-    /// Returns an iterator at the begining of the list of gum::prm::Attribute in
+    /// Returns an iterator at the beginning of the list of gum::prm::Attribute in
     /// this Instance.
     const_iterator begin() const;
 
@@ -566,8 +566,11 @@ class Instance: public PRMObject {
     /// __type / and the Instance associated with it.
     Property< Set< Instance* >* >::onNodes __referenceMap;
 
+    /// Code alias.
     typedef std::pair<Instance*, std::string> pair;
 
+    /// The set of pair (instance, attribute) referring an attribute of
+    /// this instance.
     Property< std::vector<pair>* >::onNodes __referingAttr;
 
     /// gum::Set used to know which node is instantiated. Nodes with instantiated
@@ -584,10 +587,13 @@ class Instance: public PRMObject {
     /// A Set over pointers to delete when gum::prm::~Instance() is called.
     Set<Attribute*> __trash;
 
+    /// Used by iterators.
     static Size __end_counter;
 
+    /// Used by iterators.
     static RefIterator* __end;
 
+    /// Used by iterators.
     static ConstRefIterator* __const_end;
 
     /// @}

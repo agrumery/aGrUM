@@ -251,6 +251,7 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
                }
     }
   }
+  // This should be optimized (using MultiDimBijArray and handling noisy-or)
   Potential<prm_float>* p = new Potential<prm_float>();
   typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
   const Sequence<const DiscreteVariable*>& var_seq = attr.cpf().variablesSequence();

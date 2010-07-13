@@ -67,13 +67,10 @@
 //   // Downward elimination
 //   List<const Instance*> elim_list;
 //   ignore.insert(query);
-//   for (Instance::PSISCIterator child = query->beginPSISC();
-//        child != query->endPSISC(); ++child) {
-//     for (Set< Instance::InverseSC* >::iterator inv_sc = (*child)->begin();
-//          inv_sc != (*child)->end(); ++inv_sc) {
+//   for (Instance::PSISCIterator child = query->beginPSISC(); child != query->endPSISC(); ++child) {
+//     for (Set< Instance::InverseSC* >::iterator inv_sc = (*child)->begin(); inv_sc != (*child)->end(); ++inv_sc) {
 //       if (not ignore.exists((*inv_sc)->first)) {
-//         __eliminateNodesDownward(query, (*inv_sc)->first, pool,
-//                                  trash, elim_list, ignore);
+//         __eliminateNodesDownward(query, (*inv_sc)->first, pool, trash, elim_list, ignore);
 //       }
 //     }
 //   }
@@ -81,12 +78,11 @@
 //   HollowBayesNet bn(*query);
 //   DefaultTriangulation t(&(bn.moralGraph()), &(bn.modalities()));
 //   std::vector<NodeId> elim_order;
-//   ValueElimination<prm_float> inf(bn);
+//   VariableElimination<prm_float> inf(bn);
 //   if (hasEvidence(query)) {
 //     __insertEvidence(query, pool);
 //   }
-//   for (Set<Attribute*>::iterator attr = query->attributes().begin();
-//        attr != query->attributes().end(); ++attr) {
+//   for (Set<Attribute*>::iterator attr = query->attributes().begin(); attr != query->attributes().end(); ++attr) {
 //     pool.insert(&(const_cast<Potential<prm_float>&>((**attr).cpf())));
 //   }
 //   for (size_t idx = 0; idx < t.eliminationOrder().size(); ++idx) {
@@ -100,8 +96,7 @@
 //   while (not elim_list.empty()) {
 //     if (__checkElimOrder(query, elim_list.front())) {
 //       if (not ignore.exists(elim_list.front())) {
-//         __eliminateNodesDownward(query, elim_list.front(), pool,
-//                                  trash, elim_list, ignore);
+//         __eliminateNodesDownward(query, elim_list.front(), pool, trash, elim_list, ignore);
 //       }
 //     } else {
 //       tmp_list.insert(elim_list.front());
@@ -109,12 +104,8 @@
 //     elim_list.popFront();
 //   }
 //   // Upward elimination
-//   for (Set<SlotChain*>::iterator sc = query->slotChains().begin();
-//        sc != query->slotChains().end(); ++sc) {
-//     for (Set<Instance*>::iterator parent =
-//          query->getInstances((**sc).id()).begin();
-//          parent != query->getInstances((**sc).id()).end(); ++parent)
-//     {
+//   for (Set<SlotChain*>::iterator sc = query->slotChains().begin(); sc != query->slotChains().end(); ++sc) {
+//     for (Set<Instance*>::iterator parent = query->getInstances((**sc).id()).begin(); parent != query->getInstances((**sc).id()).end(); ++parent) {
 //       if (not ignore.exists(*parent)) {
 //         __eliminateNodesUpward(*parent, pool, trash, tmp_list, ignore);
 //       }
@@ -143,7 +134,7 @@
 //   }
 //   // Eliminating all nodes in current instance
 //   HollowBayesNet bn(*i);
-//   ValueElimination<prm_float> inf(bn);
+//   VariableElimination<prm_float> inf(bn);
 //   if (hasEvidence(i)) {
 //     __eliminatNodesWithEvidence(i, pool, trash);
 //   } else {
@@ -202,7 +193,7 @@
 //   }
 //   // Eliminating all nodes in i instance
 //   HollowBayesNet bn(*i);
-//   ValueElimination<prm_float> inf(bn);
+//   VariableElimination<prm_float> inf(bn);
 //   if (hasEvidence(i)) {
 //     __eliminatNodesWithEvidence(i, pool, trash);
 //   } else {
@@ -263,7 +254,7 @@
 //     HollowBayesNet bn(*i);
 //     DefaultTriangulation t(&(bn.moralGraph()), &(bn.modalities()));
 //     const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
-//     ValueElimination<prm_float> inf(bn);
+//     VariableElimination<prm_float> inf(bn);
 //     // Removing Output nodes of elimination order
 //     std::vector<NodeId> inner_elim_order;
 //     std::vector<NodeId> output_elim_order;
@@ -284,7 +275,7 @@
 //     }
 //   } else {
 //     HollowBayesNet bn(*i);
-//     ValueElimination<prm_float> inf(bn);
+//     VariableElimination<prm_float> inf(bn);
 //     __insertEvidence(i, pool);
 //     __insertLiftedNodes(i, pool, trash);
 //     for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin();
@@ -331,7 +322,7 @@
 //   HollowBayesNet bn(c);
 //   DefaultTriangulation t(&(bn.moralGraph()), &(bn.modalities()));
 //   const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
-//   ValueElimination<prm_float> inf(bn);
+//   VariableElimination<prm_float> inf(bn);
 //   // Removing Output nodes of elimination order
 //   std::vector<NodeId> inner_elim_order;
 //   std::vector<NodeId>* output_elim_order = new std::vector<NodeId>();
