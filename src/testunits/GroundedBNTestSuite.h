@@ -45,7 +45,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
   public:
     void setUp() {
       SkoolReader reader;
-      reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool");
+      reader.readFile("../../../src/testunits/ressources/skool/inference.skool");
       prm = reader.prm();
       //std::cerr << std::endl;
     }
@@ -139,24 +139,35 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
     }
 
     void testInference() {
-      GroundedInference* inf = 0;
-      LazyPropagation<prm_float>* lazy = 0;
+      GroundedInference* g_ve = 0;
+      GroundedInference* g_ss = 0;
+      ValueElimination<prm_float>* ve = 0;
+      ShaferShenoyInference<prm_float>* ss = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
-      TS_GUM_ASSERT_THROWS_NOTHING(lazy = new LazyPropagation<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new GroundedInference(*prm, prm->getSystem("aSys")));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf->setBNInference(lazy));
+      TS_GUM_ASSERT_THROWS_NOTHING(ve = new ValueElimination<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m;
+        Potential<prm_float> m_ve, m_ss;
         try {
-          inf->marginal(bn.variableNodeMap().name(*node), m);
+          g_ve->marginal(bn.variableNodeMap().name(*node), m_ve);
+          g_ss->marginal(bn.variableNodeMap().name(*node), m_ss);
+          Instantiation inst(m_ve);
+          for (inst.setFirst(); not inst.end(); inst.inc()) {
+            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
+          }
         } catch (Exception& e) {
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }
       }
-      delete inf;
+      delete g_ve;
+      delete g_ss;
     }
 
 };

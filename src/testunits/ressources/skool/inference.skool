@@ -134,7 +134,7 @@ system aSys {
   PowerSupply pow;
   Room r;
 
-  BWPrinter[10] bw_printers;
+  BWPrinter[2] bw_printers;
 
   ColorPrinter[2] color_printers;
 
@@ -154,6 +154,10 @@ system aSys {
 
   c1.printers += color_printers;
   c2.printers += color_printers;
+
+  ParamClass param;
+  param.aBoolParam = true;
+  param.aParameter = NOK;
 
 }
 
