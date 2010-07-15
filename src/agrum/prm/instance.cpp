@@ -120,15 +120,12 @@ Instance::__instantiateSlotChain(SlotChain* sc) {
           GUM_ERROR(NotFound, "found an uninstantiated reference");
         }
       } else {
-        try {
-          __referenceMap[sc->id()]->insert(current);
-          __addReferingInstance(sc, current);
-          // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
-          // to __bijection for CPF initialisation
-          if (not sc->isMultiple())
-            __bijection.insert(&(current->get(sc->lastElt().safeName()).type().variable()), &(sc->type().variable()));
-        } catch (DuplicateElement&) {
-          // This happens if instantiate() is called more than one time
+        __referenceMap[sc->id()]->insert(current);
+        __addReferingInstance(sc, current);
+        // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
+        // to __bijection for CPF initialisation
+        if (not sc->isMultiple()) {
+          __bijection.insert(&(current->get(sc->lastElt().safeName()).type().variable()), &(sc->type().variable()));
         }
       }
     }
@@ -158,8 +155,12 @@ Instance::instantiate() {
         }
       } else {
         bool init = false;
-        for (DAG::ArcIterator arc = type().dag().parents((*iter)->id()).begin();(not init) and (arc != type().dag().parents((*iter)->id()).end()); ++arc)
-          init = init or isInstantiated(arc->tail());
+        for (DAG::ArcIterator arc = type().dag().parents((*iter)->id()).begin();(not init) and (arc != type().dag().parents((*iter)->id()).end()); ++arc) {
+          init = isInstantiated(arc->tail());
+          if (init) {
+            break;
+          }
+        }
         if (init) {
           Attribute* class_attr = const_cast<Attribute*>(*iter);
           MultiDimArray<prm_float>* array = dynamic_cast< MultiDimArray<prm_float>* >(class_attr->cpf().getContent());

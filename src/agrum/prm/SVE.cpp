@@ -57,6 +57,11 @@ SVE::~SVE() {
 
 void
 SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash) {
+  // {
+  //   std::stringstream sBuff;
+  //   sBuff << "__eliminateNodes: " << query->name() << ", " << query->get(node).safeName();
+  //   sBuff << ", " << pool.size() << ", " << trash.size();
+  // }
   Set<const Instance*> ignore;
   // Downward elimination
   List<const Instance*> elim_list;
@@ -109,11 +114,14 @@ SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, Bucke
 }
 
 void
-SVE::__eliminateNodesDownward(const Instance* from, const Instance* i,
-                                 BucketSet& pool, BucketSet& trash,
-                                 List<const Instance*>& elim_list,
-                                 Set<const Instance*>& ignore)
+SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore)
 {
+  // {
+  //   std::stringstream sBuff;
+  //   sBuff << "__eliminateNodesDownward: " << from->name() << ", " << i->name();
+  //   sBuff << ", " << pool.size() << ", " << trash.size();
+  //   GUM_TRACE(sBuff.str());
+  // }
   ignore.insert(i);
   // Calling elimination over child instance
   List<const Instance*> my_list;
@@ -132,8 +140,7 @@ SVE::__eliminateNodesDownward(const Instance* from, const Instance* i,
     __eliminateNodesWithEvidence(i, pool, trash);
   } else {
     __insertLiftedNodes(i, pool, trash);
-    for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin();
-        agg != i->type().aggregates().end(); ++agg) {
+    for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg) {
       pool.insert(__getAggPotential(i, *agg));
     }
     try {
@@ -163,10 +170,14 @@ SVE::__eliminateNodesDownward(const Instance* from, const Instance* i,
 }
 
 void
-SVE::__eliminateNodesUpward(const Instance* i,
-                               BucketSet& pool, BucketSet& trash,
-                               List<const Instance*>& elim_list,
-                               Set<const Instance*>& ignore) {
+SVE::__eliminateNodesUpward(const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore)
+{
+  // {
+  //   std::stringstream sBuff;
+  //   sBuff << "__eliminateNodesUpward: " << i->name();
+  //   sBuff << ", " << pool.size() << ", " << trash.size();
+  //   GUM_TRACE(sBuff.str());
+  // }
   // Downward elimination
   ignore.insert(i);
   for (Instance::InvRefConstIterator iter = i->beginInvRef(); iter != i->endInvRef(); ++iter) {
@@ -279,11 +290,8 @@ SVE::__insertLiftedNodes(const Instance* i, BucketSet& pool,
     __initLiftedNodes(i->type());
     lifted_pool = __lifted_pools[&(i->type())];
   }
-  for (SVE::ArraySetIterator iter = lifted_pool->begin();
-       iter != lifted_pool->end(); ++iter) {
-    Potential<prm_float>* pot = new Potential<prm_float>(
-        new MultiDimBijArray<prm_float>(i->bijection(), **iter)
-                                            );
+  for (SVE::ArraySetIterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter) {
+    Potential<prm_float>* pot = new Potential<prm_float>( new MultiDimBijArray<prm_float>(i->bijection(), **iter));
     pool.insert(pot);
     trash.insert(pot);
   }
@@ -294,8 +302,7 @@ SVE::__initLiftedNodes(const Class& c)
 {
   BucketSet lifted_pool;
   __lifted_pools.insert(&c, new SVE::ArraySet());
-  for (Set<Attribute*>::iterator attr = c.attributes().begin();
-      attr != c.attributes().end(); ++attr) {
+  for (Set<Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr) {
     lifted_pool.insert(&((**attr).cpf()));
   }
   ClassBayesNet bn(c);
@@ -306,8 +313,10 @@ SVE::__initLiftedNodes(const Class& c)
   std::vector<NodeId> inner_elim_order;
   std::vector<NodeId>* output_elim_order = new std::vector<NodeId>();
   for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
-    if ((not c.isOutputNode(c.get(full_elim_order[idx]))) and
-        (not ClassElement::isAggregate(c.get(full_elim_order[idx])))) {
+    if (not (c.isOutputNode(c.get(full_elim_order[idx])) or
+             ClassElement::isAggregate(c.get(full_elim_order[idx]))))// or
+             //c.isParameter(c.get(full_elim_order[idx]))))
+    {
       inner_elim_order.push_back(full_elim_order[idx]);
     } else {
       output_elim_order->push_back(full_elim_order[idx]);
@@ -324,7 +333,11 @@ SVE::__initLiftedNodes(const Class& c)
     b = dynamic_cast<const MultiDimBucket<prm_float>* >(impl);
     if (b != 0) {
       b->compute(true);
-      __lifted_pools[&c]->insert(new MultiDimArray<prm_float>(b->bucket()));
+      try {
+        __lifted_pools[&c]->insert(new MultiDimArray<prm_float>(b->bucket()));
+      } catch (OperationNotAllowed& e) {
+        // Empty bucket
+      }
     } else {
       const MultiDimArray<prm_float>* a = dynamic_cast<const MultiDimArray<prm_float>*>(impl);
       if (a != 0) {

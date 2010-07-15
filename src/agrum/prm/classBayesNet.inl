@@ -124,19 +124,19 @@ ClassBayesNet::variable( NodeId id ) const {
 INLINE
 NodeId
 ClassBayesNet::nodeId( const DiscreteVariable &var ) const {
-  return __varNodeMap.get(var);
+  return __varNodeMap[&var]->id();
 }
 
 INLINE
 NodeId
 ClassBayesNet::idFromName( const std::string& name ) const {
-  return __varNodeMap.idFromName(name);
+  return __get(name).id();
 }
 
 INLINE
 const DiscreteVariable&
 ClassBayesNet::variableFromName( const std::string& name ) const {
-  return __varNodeMap.variableFromName(name);
+  return __get(name).type().variable();
 }
 
 INLINE
@@ -163,8 +163,18 @@ INLINE
 const ClassElement&
 ClassBayesNet::__get(NodeId id) const {
   if (__dag.exists(id)) {
-    return __class->get(__varNodeMap.name(id));
+    return __class->get(id);
   } else {
+    GUM_ERROR(NotFound, "no element found with that id.");
+  }
+}
+
+INLINE
+const ClassElement&
+ClassBayesNet::__get(const std::string& name) const {
+  try {
+    return __class->get(name);
+  } catch (NotFound&) {
     GUM_ERROR(NotFound, "no element found with that id.");
   }
 }

@@ -228,48 +228,101 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       delete g_ve;
     }
 
-    // void testInference() {
-    //   GroundedInference* g_ve = 0;
-    //   GroundedInference* g_ss = 0;
-    //   VariableElimination<prm_float>* ve = 0;
-    //   ShaferShenoyInference<prm_float>* ss = 0;
-    //   BayesNet<prm_float> bn;
-    //   BayesNetFactory<prm_float> bn_factory(&bn);
-    //   TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
-    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
-    //   for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-    //     Potential<prm_float> m_ve, m_ss; //, m_sve;
-    //     try {
-    //       //GUM_CHECKPOINT;
-    //       size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
-    //       const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
-    //       const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
-    //       PRMInference::Chain chain = std::make_pair(&instance, &attribute);
-    //       g_ve->marginal(chain, m_ve);
-    //       //GUM_TRACE("VE done");
-    //       g_ss->marginal(chain, m_ss);
-    //       // GUM_TRACE("SS done");
-    //       // SVE sve(*prm, prm->getSystem("aSys"));
-    //       // sve.marginal(bn.variableNodeMap().name(*node), m_sve);
-    //       // GUM_TRACE("SVE done");
-    //       Instantiation inst(m_ve);//, jnst(m_sve);
-    //       for (inst.setFirst(); not inst.end(); inst.inc()) {
-    //         TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
-    //         //TS_ASSERT_DELTA(m_sve.get(inst), m_ss.get(inst), 1.0e-3);
-    //       }
-    //     } catch (Exception& e) {
-    //       TS_GUM_ASSERT_THROWS_NOTHING(throw e);
-    //       break;
-    //     }
-    //   }
-    //   delete g_ve;
-    //   delete g_ss;
-    // }
+    void testSmallSVEInference() {
+      // Creating the inference engine
+      SVE* sve = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(sve = new SVE(*small, small->getSystem("microSys")));
+      // Building query
+      {
+        const Instance& instance = small->getSystem("microSys").get("c");
+        const Attribute& attribute = instance.get("can_print");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
+      std::cerr << std::endl;
+      {
+        const Instance& instance = small->getSystem("microSys").get("p");
+        const Attribute& attribute = instance.get("equipState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
+      std::cerr << std::endl;
+      {
+        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Attribute& attribute = instance.get("powState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
+      delete sve;
+    }
+
+    void testInference() {
+      GUM_TRACE_VAR(UINT_MAX);
+      GroundedInference* g_ve = 0;
+      GroundedInference* g_ss = 0;
+      VariableElimination<prm_float>* ve = 0;
+      ShaferShenoyInference<prm_float>* ss = 0;
+      BayesNet<prm_float> bn;
+      BayesNetFactory<prm_float> bn_factory(&bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
+      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
+        Potential<prm_float> m_ve, m_ss, m_sve;
+        try {
+          size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
+          const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
+          const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
+          if (instance.type().isParameter(attribute)) {
+            PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+            std::string dot = ".";
+            GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
+            g_ve->marginal(chain, m_ve);
+            GUM_TRACE("VE done");
+            g_ss->marginal(chain, m_ss);
+            GUM_TRACE("SS done");
+            SVE sve(*prm, prm->getSystem("aSys"));
+            sve.marginal(chain, m_sve);
+            GUM_TRACE("SVE done");
+            Instantiation inst(m_ve);//, jnst(m_sve);
+            for (inst.setFirst(); not inst.end(); inst.inc()) {
+              TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
+              TS_ASSERT_DELTA(m_sve.get(inst), m_ss.get(inst), 1.0e-3);
+            }
+          }
+        } catch (Exception& e) {
+          TS_GUM_ASSERT_THROWS_NOTHING(throw e);
+          break;
+        }
+      }
+      delete g_ve;
+      delete g_ss;
+    }
 
 };
 

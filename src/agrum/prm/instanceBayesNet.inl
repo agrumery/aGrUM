@@ -101,7 +101,7 @@ InstanceBayesNet::dag() const {
 INLINE
 const VariableNodeMap&
 InstanceBayesNet::variableNodeMap() const {
-  return __varNodeMap;
+  GUM_ERROR(NotFound, "no VariableNodeMap in an InstanceBayesNet");
 }
 
 INLINE
@@ -125,19 +125,19 @@ InstanceBayesNet::variable( NodeId id ) const {
 INLINE
 NodeId
 InstanceBayesNet::nodeId( const DiscreteVariable &var ) const {
-  return __varNodeMap.get(var);
+  return __varNodeMap[&var]->id();
 }
 
 INLINE
 NodeId
 InstanceBayesNet::idFromName( const std::string& name ) const {
-  return __varNodeMap.idFromName(name);
+  return __get(name).id();
 }
 
 INLINE
 const DiscreteVariable&
 InstanceBayesNet::variableFromName( const std::string& name ) const {
-  return __varNodeMap.variableFromName(name);
+  return __get(name).type().variable();
 }
 
 INLINE
@@ -163,7 +163,17 @@ InstanceBayesNet::getTopologicalOrder( bool clear ) const {
 INLINE
 const ClassElement&
 InstanceBayesNet::__get(NodeId id) const {
-  return __inst->get(__varNodeMap.name(id));
+  return __inst->get(id);
+}
+
+INLINE
+const ClassElement&
+InstanceBayesNet::__get(const std::string& name) const {
+  try {
+    return __inst->get(name);
+  } catch (NotFound&) {
+    GUM_ERROR(NotFound, "no element found with that name");
+  }
 }
 
 INLINE

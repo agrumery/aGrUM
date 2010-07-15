@@ -118,11 +118,13 @@ class InstanceBayesNet: public AbstractBayesNet<prm_float> {
     /// @}
   private:
     /// Mapping between DiscreteVariable and their NodeId
-    VariableNodeMap __varNodeMap;
+    HashTable<const DiscreteVariable*, const Attribute*> __varNodeMap;
 
     /// Private getter with type checking in case the id is not a formal Attribute.
     /// @throw NotFound Raised if id is not a formal attribute.
     const ClassElement& __get(NodeId id) const;
+
+    const ClassElement& __get(const std::string& name) const;
 
     /// The ClassElementContainer decorated by this.
     const Instance* __inst;

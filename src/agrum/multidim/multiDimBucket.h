@@ -28,6 +28,7 @@
 #define GUM_MULTIDIM_BUCKET_H
 // ============================================================================
 #include <sstream>
+#include <climits>
 // ============================================================================
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
@@ -76,7 +77,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      * elements in the table.
      * @param bufferSize The amount of memory allowed for this bucket.
      */
-    MultiDimBucket(Size bufferSize=65536);
+    MultiDimBucket(Size bufferSize=UINT_MAX);
 
     /// Copy constructor.
     MultiDimBucket(const MultiDimBucket<T_DATA>& source);

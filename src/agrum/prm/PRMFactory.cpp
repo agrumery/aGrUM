@@ -318,26 +318,6 @@ PRMFactory::setRawCPFByColumns(const std::vector<prm_float>& array)
       }
     }
   }
-  //   Instantiation inst(a->cpf());
-  //   Instantiation jnst;
-  //   typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
-  //   Size pos = a->cpf().variablesSequence().size();
-  //   do {
-  //     --pos;
-  //     if (&(a->type().variable()) != a->cpf().variablesSequence().atPos(pos)) {
-  //       jnst.add(*(a->cpf().variablesSequence().atPos(pos)));
-  //     }
-  //   } while(pos != 0);
-  //   size_t idx = 0;
-  //   for (pos = 0; pos < a->type()->domainSize(); ++pos) {
-  //     inst.chgVal(a->type().variable(), pos);
-  //     for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
-  //       inst.chgValIn(jnst);
-  //       a->cpf().set(jnst, array[idx]);
-  //       ++idx;
-  //     }
-  //   }
-  // }
 }
 
 void

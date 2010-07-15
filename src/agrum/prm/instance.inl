@@ -177,12 +177,12 @@ Instance::__addReferingInstance(SlotChain* sc, Instance* i) {
   std::string name = sc->lastElt().safeName();
   try {
     i->__referenceMap[id]->insert(this);
-    i->__referingAttr[id]->push_back(std::make_pair(i, name));
+    i->__referingAttr[id]->push_back(std::make_pair(this, sc->name()));
   } catch (NotFound&) {
     i->__referenceMap.insert(id, new Set< Instance* >());
-    i->__referenceMap[id]->insert(i);
+    i->__referenceMap[id]->insert(this);
     i->__referingAttr.insert(id, new std::vector<pair>());
-    i->__referingAttr[id]->push_back(std::make_pair(i, name));
+    i->__referingAttr[id]->push_back(std::make_pair(this, sc->name()));
   }
 }
 
