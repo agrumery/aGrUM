@@ -119,7 +119,7 @@ InstanceBayesNet::empty() const {
 INLINE
 const DiscreteVariable&
 InstanceBayesNet::variable( NodeId id ) const {
-  return __inst->get(id).type().variable();
+  return __get(id).type().variable();
 }
 
 INLINE
@@ -169,6 +169,11 @@ InstanceBayesNet::__get(NodeId id) const {
 INLINE
 const Property<unsigned int>::onNodes&
 InstanceBayesNet::modalities() const {
+  if (__modalities.empty()) {
+    for (DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node) {
+      __modalities.insert(*node, (unsigned int) variable(*node).domainSize());
+    }
+  }
   return __modalities;
 }
 

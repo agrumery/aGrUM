@@ -49,6 +49,11 @@ GroundedInference::~GroundedInference() {
   if (__inf != 0) {
     delete __inf;
   }
+  if (not __obs.empty()) {
+    for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
+      delete *iter;
+    }
+  }
 }
 
 INLINE
@@ -79,7 +84,12 @@ GroundedInference::setBNInference(BayesNetInference<prm_float>* bn_inf) {
 INLINE
 void
 GroundedInference::_evidenceAdded(const Chain& chain) {
-  Potential<prm_float>* e = new Potential<prm_float>(*(evidence(chain.first)[chain.second->id()]));
+  Potential<prm_float>* e = new Potential<prm_float>();
+  e->add(chain.second->type().variable());
+  Instantiation i(*e);
+  for (i.setFirst(); not i.end(); i.inc()) {
+    e->set(i, evidence(chain.first)[chain.second->id()]->get(i));
+  }
   __obs.insert(e);
 }
 

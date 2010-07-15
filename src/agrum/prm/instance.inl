@@ -252,59 +252,39 @@ INLINE
 Instance::RefIterator
 Instance::begin(NodeId id) {
   try {
-    return Instance::RefIterator(__referenceMap[id]->begin());
+    return Instance::RefIterator(*(__referenceMap[id]));
   } catch (NotFound&) {
     GUM_ERROR(NotFound, "no referred instances from this NodeId");
   }
 }
 
 INLINE
-const Instance::RefIterator&
-Instance::end(NodeId id) {
-  try {
-    return *(Instance::__end);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no referred instances from this NodeId");
-  }
-}
-
-INLINE
-Instance::ConstRefIterator
+Instance::RefConstIterator
 Instance::begin(NodeId id) const {
   try {
-    return Instance::ConstRefIterator(__referenceMap[id]->begin());
+    return Instance::RefConstIterator(*(__referenceMap[id]));
   } catch (NotFound&) {
     GUM_ERROR(NotFound, "no referred instances from this NodeId");
   }
 }
 
 INLINE
-const Instance::ConstRefIterator&
-Instance::end(NodeId id) const {
-  try {
-    return *(Instance::__const_end);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no referred instances from this NodeId");
-  }
-}
-
-INLINE
-Instance::RefIterator::RefIterator(const Set<Instance*>::iterator& iter):
-  __iter(iter)
+Instance::RefIterator::RefIterator(Set<Instance*>& set):
+  __set(set), __iter(set.begin())
 {
-  GUM_CONSTRUCTOR( RefIterator );
+  GUM_CONSTRUCTOR( Instance::RefIterator );
 }
 
 INLINE
 Instance::RefIterator::RefIterator( const RefIterator& from ):
-  __iter(from.__iter)
+  __set(const_cast< Set<Instance*>& >(from.__set)), __iter(from.__iter)
 {
-  GUM_CONS_CPY( RefIterator );
+  GUM_CONS_CPY( Instance::RefIterator );
 }
 
 INLINE
 Instance::RefIterator::~RefIterator() {
-  GUM_DESTRUCTOR( RefIterator );
+  GUM_DESTRUCTOR( Instance::RefIterator );
 }
 
 INLINE
@@ -319,6 +299,12 @@ Instance::RefIterator&
 Instance::RefIterator::operator++() {
   ++__iter;
   return *this;
+}
+
+INLINE
+bool
+Instance::RefIterator::isEnd() const {
+  return __iter == __set.end();
 }
 
 INLINE
@@ -346,60 +332,90 @@ Instance::RefIterator::operator->() const {
 }
 
 INLINE
-Instance::ConstRefIterator::ConstRefIterator(const Set<Instance*>::const_iterator& iter):
-  __iter(iter)
+Instance::RefConstIterator::RefConstIterator(const Set<Instance*>& set):
+  __set(set), __iter(set.begin())
 {
-  GUM_CONSTRUCTOR( ConstRefIterator );
+  GUM_CONSTRUCTOR( Instance::RefConstIterator );
 }
 
 INLINE
-Instance::ConstRefIterator::ConstRefIterator( const ConstRefIterator& from ):
-  __iter(from.__iter)
+Instance::RefConstIterator::RefConstIterator( const RefConstIterator& from ):
+  __set(from.__set), __iter(from.__iter)
 {
-  GUM_CONS_CPY( ConstRefIterator );
+  GUM_CONS_CPY( Instance::RefConstIterator );
 }
 
 INLINE
-Instance::ConstRefIterator::~ConstRefIterator() {
-  GUM_DESTRUCTOR( ConstRefIterator );
+Instance::RefConstIterator::~RefConstIterator() {
+  GUM_DESTRUCTOR( Instance::RefConstIterator );
 }
 
 INLINE
-Instance::ConstRefIterator&
-Instance::ConstRefIterator::operator=( const ConstRefIterator& from ) {
+Instance::RefConstIterator&
+Instance::RefConstIterator::operator=( const RefConstIterator& from ) {
   __iter = from.__iter;
   return *this;
 }
 
 INLINE
-Instance::ConstRefIterator&
-Instance::ConstRefIterator::operator++() {
+Instance::RefConstIterator&
+Instance::RefConstIterator::operator++() {
   ++__iter;
   return *this;
 }
 
 INLINE
 bool
-Instance::ConstRefIterator::operator!=(const ConstRefIterator& from) const {
+Instance::RefConstIterator::isEnd() const {
+  return __iter == __set.end();
+}
+
+INLINE
+bool
+Instance::RefConstIterator::operator!=(const RefConstIterator& from) const {
   return __iter != from.__iter;
 }
 
 INLINE
 bool
-Instance::ConstRefIterator::operator==(const ConstRefIterator& from) const {
+Instance::RefConstIterator::operator==(const RefConstIterator& from) const {
   return __iter == from.__iter;
 }
 
 INLINE
 const Instance&
-Instance::ConstRefIterator::operator*() const {
+Instance::RefConstIterator::operator*() const {
   return **__iter;
 }
 
 INLINE
 const Instance*
-Instance::ConstRefIterator::operator->() const {
+Instance::RefConstIterator::operator->() const {
   return *__iter;
+}
+
+INLINE
+Instance::InvRefIterator
+Instance::beginInvRef() {
+  return __referingAttr.begin();
+}
+
+INLINE
+const Instance::InvRefIterator&
+Instance::endInvRef() {
+  return __referingAttr.end();
+}
+
+INLINE
+Instance::InvRefConstIterator
+Instance::beginInvRef() const {
+  return __referingAttr.begin();
+}
+
+INLINE
+const Instance::InvRefConstIterator&
+Instance::endInvRef() const {
+  return __referingAttr.end();
 }
 
 // ============================================================================

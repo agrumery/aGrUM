@@ -86,7 +86,7 @@ class ColorPrinter implements Printer {
 
 class Computer implements Equipment {
   Room room;
-  Printer printers[];
+  Printer[] printers;
   boolean functional_printer = exists(printers.equipState, OK);
   boolean degraded_printer = exists(printers.equipState, Degraded);
   //boolean working_printer = exists([functional_printer, degraded_printer], true);
@@ -108,7 +108,7 @@ class Computer implements Equipment {
 
 class SafeComputer implements Equipment {
   Room room;
-  Printer printers[];
+  Printer[] printers;
   boolean functional_printer = exists(printers.(t_state)equipState, OK);
   boolean degraded_printer = exists(printers.(t_degraded)equipState, Degraded);
   boolean working_printer = exists([functional_printer, degraded_printer], true);
@@ -244,7 +244,7 @@ class ColorPrinter implements Printer {
 
 class Computer implements Equipment {
   Room room;
-  Printer printers[];
+  Printer[] printers;
   boolean functional_printer = exists(printers.equipState, OK);
   boolean degraded_printer = exists(printers.equipState, Degraded);
   boolean working_printer = exists([functional_printer, degraded_printer], true);
@@ -262,7 +262,7 @@ class Computer implements Equipment {
 
 class SafeComputer implements Equipment {
   Room room;
-  Printer printers[];
+  Printer[] printers;
   boolean functional_printer = exists(printers.(t_state)equipState, OK);
   boolean degraded_printer = exists(printers.(t_degraded)equipState, Degraded);
   boolean working_printer = exists([functional_printer, degraded_printer], true);

@@ -34,6 +34,75 @@
 namespace gum {
 namespace prm {
 
+void
+PRMInference::clearEvidence() {
+  for (EvidenceIterator iter = __evidences.begin(); iter != __evidences.end(); ++iter) {
+    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
+      delete *jter;
+    }
+    delete *iter;
+  }
+  __evidences.clear();
+}
+
+PRMInference::PRMInference(const PRMInference& source):
+  _prm(source._prm), _sys(source._sys)
+{
+  GUM_CONS_CPY( PRMInference );
+  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
+    __evidences.insert(iter.key(), new PRMInference::EMap());
+    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
+      Potential<prm_float>* e = new Potential<prm_float>();
+      e->add(*((**jter).variablesSequence().front()));
+      Instantiation i(*e);
+      for (i.setFirst(); not i.end(); i.inc()) {
+        e->set(i, (**jter).get(i));
+      }
+      __evidences[iter.key()]->insert(jter.key(), e);
+    }
+  }
+}
+
+PRMInference&
+PRMInference::operator=(const PRMInference& source) {
+  clearEvidence();
+  _prm = source._prm;
+  _sys = source._sys;
+  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
+    __evidences.insert(iter.key(), new PRMInference::EMap());
+    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
+      Potential<prm_float>* e = new Potential<prm_float>();
+      e->add(*((**jter).variablesSequence().front()));
+      Instantiation i(*e);
+      for (i.setFirst(); not i.end(); i.inc()) {
+        e->set(i, (**jter).get(i));
+      }
+      __evidences[iter.key()]->insert(jter.key(), e);
+    }
+  }
+  return *this;
+}
+
+
+void
+PRMInference::__addEvidence(const Chain& chain, const Potential<prm_float>& p) {
+  if ( (p.nbrDim() != 1) and (p.contains(chain.second->type().variable())) ) {
+    GUM_ERROR(OperationNotAllowed, "illegal evidence for the given Attribute.");
+  }
+  Potential<prm_float>* e = new Potential<prm_float>();
+  e->add(chain.second->type().variable());
+  Instantiation i(*e);
+  for (i.setFirst(); not i.end(); i.inc()) {
+    e->set(i, p.get(i));
+  }
+  try {
+    delete __EMap(chain.first)[chain.second->id()];
+    __EMap(chain.first)[chain.second->id()] = e;
+  } catch (NotFound&) {
+    __EMap(chain.first).insert(chain.second->id(), e);
+  }
+  _evidenceAdded(chain);
+}
 
 } /* namespace prm */
 } /* namespace gum */

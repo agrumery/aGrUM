@@ -39,14 +39,14 @@ InstanceBayesNet::__init(const Instance& i) {
     try {
       // Adding the attribute
       const Attribute& attr = i.get(*node);
-      NodeId id = __dag.insertNode();
-      __varNodeMap.insert(id, attr.type().variable());
-      __varNodeMap.changeName(id, attr.safeName());
+      __dag.insertNode(attr.id());
+      __varNodeMap.insert(attr.id(), attr.type().variable());
+      __varNodeMap.changeName(attr.id(), attr.safeName());
       // Adding in-going arcs of this Attribute
       const ArcSet* set = &(i.type().dag().parents(*node));
       for (ArcSet::iterator arc = set->begin(); arc != set->end(); ++arc) {
         try {
-          __dag.insertArc(__varNodeMap.idFromName(i.get(arc->tail()).safeName()), id);
+          __dag.insertArc(__varNodeMap.idFromName(i.get(arc->tail()).safeName()), attr.id());
         } catch (NotFound&) {
           // Either not an Attribute or not yet added
         }
@@ -55,7 +55,7 @@ InstanceBayesNet::__init(const Instance& i) {
       set = &(i.type().dag().children(*node));
       for (ArcSet::iterator arc = set->begin(); arc != set->end(); ++arc) {
         try {
-          __dag.insertArc(id, __varNodeMap.idFromName(i.get(arc->head()).safeName()));
+          __dag.insertArc(attr.id(), __varNodeMap.idFromName(i.get(arc->head()).safeName()));
         } catch (NotFound&) {
           // Either not an Attribute or not yet added
         }

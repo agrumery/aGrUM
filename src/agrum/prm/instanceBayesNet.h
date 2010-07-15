@@ -134,7 +134,7 @@ class InstanceBayesNet: public AbstractBayesNet<prm_float> {
     /// InstanceBayesNet are a read-only structure, no need to update the moral graph.
     mutable UndiGraph* __moralGraph;
 
-    Property<unsigned int>::onNodes __modalities;
+    mutable Property<unsigned int>::onNodes __modalities;
 
     /// InstanceBayesNet are a read-only structure, no need to update the
     /// topological order.

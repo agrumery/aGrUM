@@ -245,9 +245,9 @@ void Scanner::Init() {
 	start.set(40, 12);
 	start.set(41, 13);
 	start.set(123, 16);
-	start.set(125, 17);
-	start.set(91, 18);
-	start.set(93, 19);
+	start.set(91, 17);
+	start.set(93, 18);
+	start.set(125, 19);
 	start.set(42, 20);
 	start.set(61, 21);
 	start.set(126, 22);

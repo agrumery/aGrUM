@@ -378,7 +378,7 @@ class Instance: public PRMObject {
     class RefIterator {
 
       public:
-        RefIterator(const Set<Instance*>::iterator& iter) ;
+        RefIterator(Set<Instance*>& set) ;
 
         RefIterator( const RefIterator& from ) ;
 
@@ -388,6 +388,8 @@ class Instance: public PRMObject {
 
         RefIterator& operator++() ;
 
+        bool isEnd() const;
+
         bool operator!=(const RefIterator& from) const;
 
         bool operator==(const RefIterator& from) const;
@@ -396,6 +398,7 @@ class Instance: public PRMObject {
         Instance* operator->() const;
 
       private:
+        Set<Instance*>& __set;
         Set<Instance*>::iterator __iter;
     };
 
@@ -414,43 +417,32 @@ class Instance: public PRMObject {
     RefIterator begin(NodeId id);
 
     /**
-     * Returns an iterator at the end of the set of Instance associated
-     * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
-     *
-     * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-     *           Instance type.
-     *
-     * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
-     * type matches id.
-     * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-     * SlotChain.
-     */
-    const RefIterator& end(NodeId id);
-
-    /**
      * Nested class to iterate over ReferenceSlot and SlotChain
      * instantiations.
      */
-    class ConstRefIterator {
+    class RefConstIterator {
       public:
-        ConstRefIterator(const Set<Instance*>::const_iterator& iter);
+        RefConstIterator(const Set<Instance*>& set);
 
-        ConstRefIterator( const ConstRefIterator& from );
+        RefConstIterator( const RefConstIterator& from );
 
-        ~ConstRefIterator();
+        ~RefConstIterator();
 
-        ConstRefIterator& operator=( const ConstRefIterator& from );
+        RefConstIterator& operator=( const RefConstIterator& from );
 
-        ConstRefIterator& operator++();
+        RefConstIterator& operator++();
 
-        bool operator!=(const ConstRefIterator& from) const;
+        bool isEnd() const;
 
-        bool operator==(const ConstRefIterator& from) const;
+        bool operator!=(const RefConstIterator& from) const;
+
+        bool operator==(const RefConstIterator& from) const;
 
         const Instance& operator*() const;
         const Instance* operator->() const;
 
       private:
+        const Set<Instance*>& __set;
         Set<Instance*>::const_iterator __iter;
     };
 
@@ -466,21 +458,16 @@ class Instance: public PRMObject {
      * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
      * SlotChain.
      */
-    ConstRefIterator begin(NodeId id) const;
+    RefConstIterator begin(NodeId id) const;
 
-    /**
-     * Returns an iterator at the end of the set of Instance associated
-     * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
-     *
-     * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-     *           Instance type.
-     *
-     * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
-     * type matches id.
-     * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-     * SlotChain.
-     */
-    const ConstRefIterator& end(NodeId id) const;
+    typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::iterator InvRefIterator;
+    typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
+
+    InvRefIterator beginInvRef();
+    const InvRefIterator& endInvRef();
+
+    InvRefConstIterator beginInvRef() const;
+    const InvRefConstIterator& endInvRef() const;
 
     /// @}
   private:
@@ -586,15 +573,6 @@ class Instance: public PRMObject {
 
     /// A Set over pointers to delete when gum::prm::~Instance() is called.
     Set<Attribute*> __trash;
-
-    /// Used by iterators.
-    static Size __end_counter;
-
-    /// Used by iterators.
-    static RefIterator* __end;
-
-    /// Used by iterators.
-    static ConstRefIterator* __const_end;
 
     /// @}
 };

@@ -36,49 +36,9 @@ PRMInference::PRMInference(const PRM& prm, const System& system):
 }
 
 INLINE
-PRMInference::PRMInference(const PRMInference& source):
-  _prm(source._prm), _sys(source._sys)
-{
-  GUM_CONS_CPY( PRMInference );
-  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
-    __evidences.insert(iter.key(), new PRMInference::EMap());
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      __evidences[iter.key()]->insert(jter.key(), new Potential<prm_float>(**jter));
-    }
-  }
-}
-
-INLINE
 PRMInference::~PRMInference() {
   GUM_DESTRUCTOR( PRMInference );
   clearEvidence();
-}
-
-INLINE
-PRMInference&
-PRMInference::operator=(const PRMInference& source) {
-  clearEvidence();
-  _prm = source._prm;
-  _sys = source._sys;
-  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
-    __evidences.insert(iter.key(), new PRMInference::EMap());
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      __evidences[iter.key()]->insert(jter.key(), new Potential<prm_float>(**jter));
-    }
-  }
-  return *this;
-}
-
-INLINE
-void
-PRMInference::clearEvidence() {
-  for (EvidenceIterator iter = __evidences.begin(); iter != __evidences.end(); ++iter) {
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      delete *jter;
-    }
-    delete *iter;
-  }
-  __evidences.clear();
 }
 
 INLINE
@@ -161,20 +121,6 @@ PRMInference::removeEvidence(const Chain& chain) {
 
 INLINE
 void
-PRMInference::__addEvidence(const Chain& chain, const Potential<prm_float>& p) {
-  if ( (p.nbrDim() != 1) and (p.contains(chain.second->type().variable())) ) {
-    GUM_ERROR(OperationNotAllowed, "illegal evidence for the given Attribute.");
-  }
-  try {
-    __EMap(chain.first)[chain.second->id()] = new Potential<prm_float>(p);
-  } catch (NotFound&) {
-    __EMap(chain.first).insert(chain.second->id(), new Potential<prm_float>(p));
-  }
-  _evidenceAdded(chain);
-}
-
-INLINE
-void
 PRMInference::__removeEvidence(const Chain& chain) {
   if (__EMap(chain.first).exists(chain.second->id())) {
     _evidenceRemoved(chain);
@@ -196,37 +142,24 @@ PRMInference::__EMap(const Instance* i) {
 
 INLINE
 void
-PRMInference::marginal(const std::string& chain, Potential<prm_float>& m) {
+PRMInference::marginal(const PRMInference::Chain& chain, Potential<prm_float>& m) {
   if (m.nbrDim() > 0) {
     GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
-  // try {
-    size_t idx = chain.find(".");
-    const Instance& i = _sys->get(chain.substr(0, idx));
-    const Attribute& elt = i.get(chain.substr(idx + 1));
-    m.add(elt.type().variable());
-    _marginal(std::make_pair(&i, &elt), m);
-  // } catch (NotFound&) {
-  //   GUM_ERROR(WrongType, "the given element is not an Attribute.");
-  // }
+  m.add(chain.second->type().variable());
+  _marginal(chain, m);
 }
 
 INLINE
 void
-PRMInference::joint(const Set<std::string> chains, Potential<prm_float>& j) {
-  std::vector< Chain > queries;
-  try {
-    for (Set<std::string>::const_iterator chain = chains.begin(); chain != chains.end(); ++chain) {
-      size_t idx = chain->find(".");
-      const Instance& i = _sys->get(chain->substr(0, idx));
-      const Attribute& elt = i.get(chain->substr(idx + 1));
-      j.add(elt.type().variable());
-      queries.push_back(std::make_pair(&i, &elt));
-    }
-  } catch (NotFound&) {
-    GUM_ERROR(WrongType, "the given element is not an Attribute.");
+PRMInference::joint(const std::vector< PRMInference::Chain >& chains, Potential<prm_float>& j) {
+  if (j.nbrDim() > 0) {
+    GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
-  _joint(queries, j);
+  for (std::vector< PRMInference::Chain >::const_iterator chain = chains.begin(); chain != chains.end(); ++chain) {
+    j.add(chain->second->type().variable());
+  }
+  _joint(chains, j);
 }
 
 } /* namespace prm */

@@ -40,14 +40,14 @@ ClassBayesNet::__init(const Class& c) {
       // Adding the attribute
       if (ClassElement::isAttribute(c.get(*node)) or ClassElement::isAggregate(c.get(*node))) {
         const ClassElement& elt = c.get(*node);
-        NodeId id = __dag.insertNode();
-        __varNodeMap.insert(id, elt.type().variable());
-        __varNodeMap.changeName(id, elt.safeName());
+        __dag.insertNode(elt.id());
+        __varNodeMap.insert(elt.id(), elt.type().variable());
+        __varNodeMap.changeName(elt.id(), elt.safeName());
         // Adding in-going arcs of this ClassElement
         const ArcSet* set = &(c.dag().parents(*node));
         for (ArcSet::iterator arc = set->begin(); arc != set->end(); ++arc) {
           try {
-            __dag.insertArc(__varNodeMap.idFromName(c.get(arc->tail()).safeName()), id);
+            __dag.insertArc(__varNodeMap.idFromName(c.get(arc->tail()).safeName()), elt.id());
           } catch (NotFound&) {
             // Either not an Attribtue / Aggregate or not yet added
           }
@@ -56,7 +56,7 @@ ClassBayesNet::__init(const Class& c) {
         set = &(c.dag().children(*node));
         for (ArcSet::iterator arc = set->begin(); arc != set->end(); ++arc) {
           try {
-            __dag.insertArc(id, __varNodeMap.idFromName(c.get(arc->head()).safeName()));
+            __dag.insertArc(elt.id(), __varNodeMap.idFromName(c.get(arc->head()).safeName()));
           } catch (NotFound&) {
             // Either not an Attribtue / Aggregate or not yet added
           }

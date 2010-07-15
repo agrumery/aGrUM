@@ -36,13 +36,6 @@ namespace gum {
 namespace prm {
 // ============================================================================
 
-Size Instance::__end_counter = 0;
-
-Instance::RefIterator* Instance::__end = 0;
-
-Instance::ConstRefIterator* Instance::__const_end = 0;
-
-
 Instance::Instance(const std::string& name, Class& type):
   PRMObject(name), __type(&type), __params(0)
 {
@@ -67,13 +60,6 @@ Instance::Instance(const std::string& name, Class& type):
   for (Set<Attribute*>::iterator iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter) {
     __copyParameter(*iter);
   }
-  // Initialising static iterators if not yet done
-  if (not Instance::__end_counter) {
-    Set<Instance*> set;
-    Instance::__end = new Instance::RefIterator(set.end());
-    Instance::__const_end = new Instance::ConstRefIterator(set.end());
-  }
-  ++Instance::__end_counter;
 }
 
 void
@@ -105,13 +91,6 @@ Instance::~Instance() {
   }
   if (__params) {
     delete __params;
-  }
-  --Instance::__end_counter;
-  if (Instance::__end_counter == 0) {
-    delete Instance::__end;
-    Instance::__end = 0;
-    delete Instance::__const_end;
-    Instance::__const_end = 0;
   }
 }
 

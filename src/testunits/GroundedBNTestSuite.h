@@ -27,6 +27,7 @@
 #include <agrum/prm/instanceBayesNet.h>
 #include <agrum/prm/classBayesNet.h>
 #include <agrum/prm/groundedInference.h>
+#include <agrum/prm/SVE.h>
 // ============================================================================
 #include <agrum/prm/skool/SkoolReader.h>
 // ============================================================================
@@ -77,6 +78,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS((**attr).cpf().nbrDim(), bn->cpt(id).nbrDim());
         TS_ASSERT_EQUALS((**attr).cpf().domainSize(), bn->cpt(id).domainSize());
       }
+      TS_ASSERT(bn->modalities().size() > 0);
       TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
     }
 
@@ -93,6 +95,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_EQUALS((**attr).cpf().nbrDim(), bn->cpt(id).nbrDim());
         TS_ASSERT_EQUALS((**attr).cpf().domainSize(), bn->cpt(id).domainSize());
       }
+      TS_ASSERT(bn->modalities().size() > 0);
       TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
     }
 
@@ -138,37 +141,71 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       }
     }
 
-    void testInference() {
+    void testEvidence() {
       GroundedInference* g_ve = 0;
-      GroundedInference* g_ss = 0;
       VariableElimination<prm_float>* ve = 0;
-      ShaferShenoyInference<prm_float>* ss = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
-      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m_ve, m_ss;
-        try {
-          g_ve->marginal(bn.variableNodeMap().name(*node), m_ve);
-          g_ss->marginal(bn.variableNodeMap().name(*node), m_ss);
-          Instantiation inst(m_ve);
-          for (inst.setFirst(); not inst.end(); inst.inc()) {
-            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
-          }
-        } catch (Exception& e) {
-          TS_GUM_ASSERT_THROWS_NOTHING(throw e);
-          break;
-        }
-      }
+      const Instance& instance = prm->getSystem("aSys").get("c1");
+      const Attribute& attribute = instance.get("can_print");
+      Potential<prm_float> e;
+      e.add(attribute.type().variable());
+      e.fill( (prm_float) 0.0);
+      Instantiation inst(e);
+      inst.setFirst();
+      e.set(inst, (prm_float) 1.0);
+      PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+      TS_ASSERT(g_ve->hasEvidence(chain));
       delete g_ve;
-      delete g_ss;
     }
+
+    // void testInference() {
+    //   GroundedInference* g_ve = 0;
+    //   GroundedInference* g_ss = 0;
+    //   VariableElimination<prm_float>* ve = 0;
+    //   ShaferShenoyInference<prm_float>* ss = 0;
+    //   BayesNet<prm_float> bn;
+    //   BayesNetFactory<prm_float> bn_factory(&bn);
+    //   TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
+    //   for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
+    //     Potential<prm_float> m_ve, m_ss; //, m_sve;
+    //     try {
+    //       //GUM_CHECKPOINT;
+    //       size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
+    //       const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
+    //       const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
+    //       PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+    //       g_ve->marginal(chain, m_ve);
+    //       //GUM_TRACE("VE done");
+    //       g_ss->marginal(chain, m_ss);
+    //       // GUM_TRACE("SS done");
+    //       // SVE sve(*prm, prm->getSystem("aSys"));
+    //       // sve.marginal(bn.variableNodeMap().name(*node), m_sve);
+    //       // GUM_TRACE("SVE done");
+    //       Instantiation inst(m_ve);//, jnst(m_sve);
+    //       for (inst.setFirst(); not inst.end(); inst.inc()) {
+    //         TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
+    //         //TS_ASSERT_DELTA(m_sve.get(inst), m_ss.get(inst), 1.0e-3);
+    //       }
+    //     } catch (Exception& e) {
+    //       TS_GUM_ASSERT_THROWS_NOTHING(throw e);
+    //       break;
+    //     }
+    //   }
+    //   delete g_ve;
+    //   delete g_ss;
+    // }
 
 };
 

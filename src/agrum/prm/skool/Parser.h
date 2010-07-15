@@ -1,3 +1,5 @@
+
+
 #if !defined(SKOOL_COCO_PARSER_H__)
 #define SKOOL_COCO_PARSER_H__
 
@@ -12,9 +14,8 @@ namespace std {
 
 #include <agrum/prm/PRMFactory.h>
 
-#ifndef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent());}
-#endif // TRY
+
 
 #include <agrum/prm/skool/Scanner.h>
 using namespace std;
@@ -247,8 +248,8 @@ void setReferenceSlot(std::string s, std::string r) {
 	void Class();
 	void System();
 	void Label(std::string& s);
-	void Reference(std::string type, std::string name);
-	void RefOrParam(std::string type, std::string name);
+	void Reference(std::string type, std::string name, bool array);
+	void RefOrParam(std::string type, std::string name, bool array);
 	void Attribute(std::string type, std::string name);
 	void Aggregate(std::string type, std::string name);
 	void Functions(std::string type, std::string name);

@@ -48,6 +48,19 @@ namespace prm {
  */
 class PRMInference {
   public:
+    /// Code alias.
+    typedef std::pair<const Instance*, const Attribute*> Chain;
+
+    /// Code alias.
+    typedef Property<const Potential<prm_float>*>::onNodes EMap;
+
+    /// Code alias.
+    typedef Property<const Potential<prm_float>*>::onNodes::iterator EMapIterator;
+
+    /// Code alias.
+    typedef Property<const Potential<prm_float>*>::onNodes::const_iterator
+            EMapConstIterator;
+
   // ========================================================================
   /// @name Constructor & destructor.
   // ========================================================================
@@ -81,7 +94,7 @@ class PRMInference {
      * @throw WrongType Raised if chain does not point to an Attribute.
      * @throw OperationNotAllowed Raise if m is not empty.
      */
-    void marginal(const std::string& chain, Potential<prm_float>& m);
+    void marginal(const Chain& chain, Potential<prm_float>& m);
 
     /**
      * Compute the joint probability of the formals attributes pointed by
@@ -94,26 +107,13 @@ class PRMInference {
      *                 formal attribute.
      * @throw OperationNotAllowed Raise if m is not empty.
      */
-    void joint(const Set<std::string> chains, Potential<prm_float>& j);
+    void joint(const std::vector< Chain >& chains, Potential<prm_float>& j);
 
     /// @}
   // ========================================================================
   /// @name Evidence handling.
   // ========================================================================
     /// @{
-
-    /// Code alias.
-    typedef std::pair<const Instance*, const Attribute*> Chain;
-
-    /// Code alias.
-    typedef Property<const Potential<prm_float>*>::onNodes EMap;
-
-    /// Code alias.
-    typedef Property<const Potential<prm_float>*>::onNodes::iterator EMapIterator;
-
-    /// Code alias.
-    typedef Property<const Potential<prm_float>*>::onNodes::const_iterator
-            EMapConstIterator;
 
     /// Returns EMap of evidences over i.
     /// @throw NotFound if i has no evidence.

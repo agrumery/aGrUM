@@ -118,7 +118,7 @@ ClassBayesNet::empty() const {
 INLINE
 const DiscreteVariable&
 ClassBayesNet::variable( NodeId id ) const {
-  return __class->get(id).type().variable();
+  return __get(id).type().variable();
 }
 
 INLINE
@@ -172,6 +172,11 @@ ClassBayesNet::__get(NodeId id) const {
 INLINE
 const Property<unsigned int>::onNodes&
 ClassBayesNet::modalities() const {
+  if (__modalities.empty()) {
+    for (DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node) {
+      __modalities.insert(*node, (unsigned int) variable(*node).domainSize());
+    }
+  }
   return __modalities;
 }
 

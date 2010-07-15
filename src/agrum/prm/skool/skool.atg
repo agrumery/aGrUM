@@ -127,7 +127,7 @@ void setRefOrParam(std::string s, std::string r) {
           }
         case gum::prm::ClassElement::prm_attribute:
           {
-            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member).id())) {
+            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member))) {
               factory().setParameter(instance, member, r);
               break;
             } // If it is not a parameter goto to the default case
@@ -225,54 +225,56 @@ Type = type word                                (. std::string name, extends, l,
        .
 
 //=====================
-Interface = interface word              (. std::string interface, extends; interface = narrow(t->val); .)
-            [ extends Ident<extends> ]  (. TRY(factory().startInterface(interface, extends)) .)
+Interface = interface word                                    (. std::string interface, extends; interface = narrow(t->val); .)
+            [ extends Ident<extends> ]                        (. TRY(factory().startInterface(interface, extends)) .)
             '{'
-            {                             (. std::string type, name; .)
-              Ident<type> word            (. name = narrow(t->val); .)
-              (
-                IF(isClassOrInterface(type))
-                  Reference<type, name>
-                | ';'                     (. TRY(factory().addAttribute(type, name)) .)
-              )
+            {                                                 (. std::string type, name; .)
+              Ident<type> (
+                            '[' ']' word                      (. name = narrow(t->val); bool array = true; .)
+                            Reference<type, name, array>
+                           | word                             (. name = narrow(t->val); bool array = false; .)
+                             (
+                              IF(isClassOrInterface(type))
+                                Reference<type, name, array>
+                              | ';'                           (. TRY(factory().addAttribute(type, name)) .)
+                             )
+                          )
             }
-            '}'                           (. TRY(factory().endInterface()) .)
+            '}'                                               (. TRY(factory().endInterface()) .)
             .
 
 //=====================
-Class = class word                      (. std::string c, super; c = narrow(t->val); .)
-        [ extends Ident<super> ]        (. gum::Set<std::string> set; .)
-        [                                 (. std::string i; .)
-          implements Ident<i>           (. set.insert(i); .)
+Class = class word                                            (. std::string c, super; c = narrow(t->val); .)
+        [ extends Ident<super> ]                              (. gum::Set<std::string> set; .)
+        [                                                     (. std::string i; .)
+          implements Ident<i>                                 (. set.insert(i); .)
           {
-            ',' Ident<i>                  (. set.insert(i); .)
+            ',' Ident<i>                                      (. set.insert(i); .)
           }
-        ]                                 (. TRY(factory().startClass(c, super, (set.empty()?0:&set))) .)
+        ]                                                     (. TRY(factory().startClass(c, super, (set.empty()?0:&set))) .)
         '{'
-        {                                 (. std::string type, name; .)
-          Ident<type> word                (. name = narrow(t->val); .)
-          (
-              RefOrParam<type, name>
-            | Attribute<type, name>
-            | Aggregate<type, name>
-            | Functions<type, name>
-          )
+        {                                                     (. std::string type, name; bool array = false; .)
+          Ident<type> ( '[' ']' word                          (. name = narrow(t->val); array = true; .)
+                         Reference<type, name, array>
+                       | word                                 (. name = narrow(t->val); array = false; .)
+                         (
+                            RefOrParam<type, name, array>
+                          | Attribute<type, name>
+                          | Aggregate<type, name>
+                          | Functions<type, name>
+                         )
+                      )
         }
         '}'                               (. TRY(factory().endClass()) .)
         .
 
 //=====================
-RefOrParam<std::string type, std::string name> =    IF(isClassOrInterface(type))
-                                                    Reference<type, name>
-                                                 |  Parameter<type, name>
-                                                 .
+RefOrParam<std::string type, std::string name, bool array> =    IF(isClassOrInterface(type))
+                                                                     Reference<type, name, array>
+                                                                  |  Parameter<type, name>
+                                                                  .
 
-Reference<std::string type, std::string name> =           (. bool array = false; .)
-                                                [
-                                                  '[' ']' (. array = true; .)
-                                                ]
-                                                ';'       (. TRY(factory().addReferenceSlot(type, name, array)) .)
-                                                .
+Reference<std::string type, std::string name, bool array> =  ';' (. TRY(factory().addReferenceSlot(type, name, array)) .) .
 
 Parameter<std::string type, std::string name> =                         (. std::string l; .)
                                                 [ default Label<l> ]
@@ -348,7 +350,7 @@ AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.pu
 Functions<std::string type, std::string name> =                   (. if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} .)
                                                 '~' "noisyOr" '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
                                                 AggChains<chains> ',' NumberList<numbers> [ ',' Number<leak> [ ',' AggLabels<labels> ] ]
-                                                ')' ';'           (. TRY(factory().addNoisyOr(name, chains, numbers, leak, labels)) .)
+                                                ')' ';'           (. TRY(factory().addNoisyOrCompound(name, chains, numbers, leak, labels)) .)
                                                 .
 
 NumberList<. std::vector<float>& numbers .> =                 (. float f; .)
