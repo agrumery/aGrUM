@@ -171,8 +171,7 @@ Class::__inheritClass(const Class& c) {
   for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
     Potential<prm_float>& child_cpf = get((*iter)->safeName()).cpf();
     const Potential<prm_float>& prnt_cpf = (*iter)->cpf();
-    Instantiation i(child_cpf);
-    Instantiation j(prnt_cpf);
+    Instantiation i(child_cpf), j(prnt_cpf);
     for (i.setFirst(); not i.end(); i.inc()) {
       Instantiation::assign_values(bij, i, j);
       child_cpf.set(i, prnt_cpf.get(j));

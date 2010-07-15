@@ -42,17 +42,26 @@ using namespace gum::prm::skool;
 class GroundedBNTestSuite: public CxxTest::TestSuite {
   private:
     PRM* prm;
+    PRM* small;
 
   public:
     void setUp() {
-      SkoolReader reader;
-      reader.readFile("../../../src/testunits/ressources/skool/inference.skool");
-      prm = reader.prm();
-      //std::cerr << std::endl;
+      {
+        SkoolReader reader;
+        reader.readFile("../../../src/testunits/ressources/skool/inference.skool");
+        prm = reader.prm();
+      }
+      {
+        SkoolReader reader;
+        reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool");
+        small = reader.prm();
+      }
+      std::cerr << std::endl;
     }
 
     void tearDown() {
       delete prm;
+      delete small;
     }
 
     void testCreation() {
@@ -161,6 +170,61 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       PRMInference::Chain chain = std::make_pair(&instance, &attribute);
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
       TS_ASSERT(g_ve->hasEvidence(chain));
+      delete g_ve;
+    }
+
+    void testSmallGrdInference() {
+      // Creating the inference engine
+      GroundedInference* g_ve = 0;
+      VariableElimination<prm_float>* ve = 0;
+      BayesNet<prm_float> bn;
+      BayesNetFactory<prm_float> bn_factory(&bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(small->getSystem("microSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*small, small->getSystem("microSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+      // Building query
+      {
+        const Instance& instance = small->getSystem("microSys").get("c");
+        const Attribute& attribute = instance.get("can_print");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
+      std::cerr << std::endl;
+      {
+        const Instance& instance = small->getSystem("microSys").get("p");
+        const Attribute& attribute = instance.get("equipState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
+      std::cerr << std::endl;
+      {
+        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Attribute& attribute = instance.get("powState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        Instantiation i(m);
+        for (i.setFirst(); not i.end(); i.inc()) {
+          std::stringstream sBuff;
+          sBuff << i << ": " << m.get(i);
+          GUM_TRACE(sBuff.str());
+        }
+      }
       delete g_ve;
     }
 

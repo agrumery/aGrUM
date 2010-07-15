@@ -293,32 +293,51 @@ void
 PRMFactory::setRawCPFByColumns(const std::vector<prm_float>& array)
 {
   Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
+  if (a->cpf().domainSize() != array.size()) {
+    GUM_ERROR(OperationNotAllowed, "illegal CPF size");
+  }
   if (a->cpf().nbrDim() == 1) {
     setRawCPFByLines(array);
   } else {
-    if (a->cpf().domainSize() != array.size()) {
-      GUM_ERROR(OperationNotAllowed, "illegal CPF size");
-    }
+    std::vector<Size> pos(a->cpf().nbrDim(), 0);
     Instantiation inst(a->cpf());
-    Instantiation jnst;
-    typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
-    Size pos = a->cpf().variablesSequence().size();
-    do {
-      --pos;
-      if (&(a->type().variable()) != a->cpf().variablesSequence().atPos(pos)) {
-        jnst.add(*(a->cpf().variablesSequence().atPos(pos)));
-      }
-    } while(pos != 0);
-    size_t idx = 0;
-    for (pos = 0; pos < a->type()->domainSize(); ++pos) {
-      inst.chgVal(a->type().variable(), pos);
-      for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
-        inst.chgValIn(jnst);
-        a->cpf().set(jnst, array[idx]);
-        ++idx;
+    inst.setFirst();
+    for (std::vector<prm_float>::const_iterator value = array.begin(); value != array.end(); ++value) {
+      a->cpf().set(inst, *value);
+      for (size_t idx = pos.size(); idx > 0; --idx) {
+        bool stop = true;
+        ++(pos[idx-1]);
+        if (pos[idx-1] == a->cpf().variablesSequence().atPos(idx-1)->domainSize()) {
+          pos[idx-1] = 0;
+          stop = false;
+        }
+        inst.chgVal(a->cpf().variablesSequence().atPos(idx-1), pos[idx-1]);
+        if (stop) {
+          break;
+        }
       }
     }
   }
+  //   Instantiation inst(a->cpf());
+  //   Instantiation jnst;
+  //   typedef Sequence<const DiscreteVariable*>::const_iterator Iterator;
+  //   Size pos = a->cpf().variablesSequence().size();
+  //   do {
+  //     --pos;
+  //     if (&(a->type().variable()) != a->cpf().variablesSequence().atPos(pos)) {
+  //       jnst.add(*(a->cpf().variablesSequence().atPos(pos)));
+  //     }
+  //   } while(pos != 0);
+  //   size_t idx = 0;
+  //   for (pos = 0; pos < a->type()->domainSize(); ++pos) {
+  //     inst.chgVal(a->type().variable(), pos);
+  //     for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
+  //       inst.chgValIn(jnst);
+  //       a->cpf().set(jnst, array[idx]);
+  //       ++idx;
+  //     }
+  //   }
+  // }
 }
 
 void

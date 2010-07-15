@@ -62,12 +62,34 @@ class Computer extends Equipment {
   boolean exists_printer = exists([printers.equipState], OK);
 
   boolean can_print dependson equipState, exists_printer {
-    // exists_printer |   false  | |   true   |
-    // state          | OK | NOK | | OK | NOK |
-    /* false */       [1.00, 1.00,  0.00, 1.00,
-    /* true  */        0.00, 1.00,  1.00, 0.00]
+    // state          |       OK     | |       NOK    |
+    // exists_printer | false | true | | false | true |
+    /* false */       [1.00,    0.00,    1.00,   1.00,
+    /* true  */        0.00,    1.00,    0.00,   0.00]
   };
 
+}
+
+system microSys {
+
+  PowerSupply pow;
+
+  Room r;
+
+  Printer p;
+
+  Computer c;
+
+  r.power = pow;
+
+  p.room = r;
+
+  c.room = r;
+  c.printers = p;
+
+  Equipment e;
+
+  e.room = r;
 }
 
 system smallSys {

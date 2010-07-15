@@ -98,7 +98,7 @@ class Computer implements Equipment {
     OK:  0.90, 0.09, 0.01;
     NOK: 0.00, 1.00, 0.00;
   };
-  boolean can_print dependson equipState, working_printer {
+  boolean can_print dependson working_printer, equipState {
     // working_printer |              false                 | |              true             |
     // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
     /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
@@ -116,7 +116,7 @@ class SafeComputer implements Equipment {
     OK:  0.90, 0.09, 0.01;
     NOK: 0.00, 1.00, 0.00;
   };
-  boolean can_print dependson equipState, working_printer {
+  boolean can_print dependson working_printer, equipState {
     // working_printer |              false                 | |              true             |
     // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
     /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
