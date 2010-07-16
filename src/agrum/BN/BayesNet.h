@@ -112,7 +112,7 @@ namespace gum {
        * Returns the number of variables in this bayes net.
        */
       virtual Idx size() const;
-      
+
       /// @return Returns a dot representation of this BayesNet.
       virtual std::string toDot( void ) const;
 
@@ -193,20 +193,20 @@ namespace gum {
       /// @throw NotFound if no such name exists in the graph.
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
       /// @}
-      
+
       // ===========================================================================
       /// @name Joint Probability manipulation methods
       // ===========================================================================
       /// @{
-      
+
       /// Get an instantiation over all the variables of the BN
       Instantiation completeInstantiation() const;
-      
+
       /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
       T_DATA jointProbability(const Instantiation& i) const;
 
-      /// 
+      ///
       /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.
@@ -266,23 +266,26 @@ namespace gum {
 
       /**
       * Add a variable, it's associate node and a noisyOR implementation. The id of the new
-      * variable is automatically generated.
+      * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
+      * the addNoisyOR as an alias for addNoisyORCompound
       *
       * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyOR
+      * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
       * @param id The chosen id. If 0, the NodeGraphPart will choose.
       * @warning give an id (not 0) should be reserved for rare and specific situations !!!
       * @return the id of the added variable.
       * @throws DuplicateElement if id(<>0) is already used
       */
       NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
 
       /**
       * Add an arc in the BN, and update arc.head's CPT.
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight @see gum::MultiDimNoisyOR
+      * @param causalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */

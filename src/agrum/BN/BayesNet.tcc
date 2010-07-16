@@ -347,23 +347,45 @@ namespace gum {
   template<typename T_DATA> INLINE
   NodeId
   BayesNet<T_DATA>::addNoisyOR ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
+    return addNoisyORCompound(var,external_weight,id);
+  }
+
+template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyORCompound ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
     return add ( var, new MultiDimNoisyORCompound<T_DATA> ( external_weight ) , id );
+  }
+
+template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyORNet( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
+    return add ( var, new MultiDimNoisyORNet<T_DATA> ( external_weight ) , id );
   }
 
   template<typename T_DATA>
   void
   BayesNet<T_DATA>::insertArcNoisyOR ( NodeId tail, NodeId head, T_DATA causalWeight ) {
     const MultiDimAdressable& content = cpt ( head ).getMasterRef();
-    const MultiDimNoisyORCompound<T_DATA>* noisy = dynamic_cast<const MultiDimNoisyORCompound<T_DATA>*> ( &content );
 
-    if ( noisy == 0 ) {
-      GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );
+    const MultiDimNoisyORCompound<T_DATA>* noisyCompound = dynamic_cast<const MultiDimNoisyORCompound<T_DATA>*> ( &content );
+    if ( noisyCompound!= 0 ) {
+      // or is OK
+      insertArc ( tail, head );
+
+      noisyCompound->causalWeight ( variable ( tail ), causalWeight );
+      return;
     }
 
-    // or is OK
-    insertArc ( tail, head );
+    const MultiDimNoisyORNet<T_DATA>* noisyNet = dynamic_cast<const MultiDimNoisyORNet<T_DATA>*> ( &content );
+    if ( noisyNet!= 0 ) {
+      // or is OK
+      insertArc ( tail, head );
 
-    noisy->causalWeight ( variable ( tail ), causalWeight );
+      noisyNet->causalWeight ( variable ( tail ), causalWeight );
+      return;
+    }
+
+     GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );
   }
 
   template<typename T_DATA> INLINE

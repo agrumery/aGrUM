@@ -3,6 +3,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
+#undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
 COMPILER BIF
 

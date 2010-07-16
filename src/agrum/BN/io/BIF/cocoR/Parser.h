@@ -8,6 +8,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/abstractBayesNetFactory.h>
 
+#undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
 
 #include <iostream>
@@ -60,7 +61,7 @@ private:
 public:
 	int error_count;			// number of errors detected
 	int warning_count;
-  
+
 
 	Errors();
 	void SynErr(const std::wstring& filename,int line, int col, int n);
@@ -72,7 +73,7 @@ public:
 	int count(void) const {return error_count+warning_count;}
 
   void add_error(const bool is_error,const std::wstring& filename,int lig,int col,const std::wstring& s) const;
-  
+
 	const std::wstring filename(int i) const {
 		return storer.filename(i);
 	};

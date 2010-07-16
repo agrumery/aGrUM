@@ -114,7 +114,7 @@ namespace gum {
             TS_ASSERT_DELTA( q[i], witness[j], 1e-6 );
           }
         }
-        
+
         void testNoisyORCompoundInBN() {
           gum::BayesNet<float> bn;
 
@@ -122,17 +122,51 @@ namespace gum {
           gum::LabelizedVariable flu( "Flu", "", 2 );
           gum::LabelizedVariable malaria( "Malaria", "", 2 );
           gum::LabelizedVariable fever( "Fever", "", 2 );
+          gum::LabelizedVariable oneMore( "OneMore", "", 2 );
+          gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
+          gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
           gum::NodeId idCold = bn.add( cold );
           gum::NodeId idFlu = bn.add( flu );
           gum::NodeId idMalaria = bn.add( malaria );
           gum::NodeId idFever = bn.addNoisyOR( fever, 0.0 );
+          gum::NodeId idOneMore = bn.add(oneMore);
+          gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
+          gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
 
           bn.insertArcNoisyOR( idMalaria, idFever, 0.9 );
           bn.insertArcNoisyOR( idFlu, idFever, 0.8 );
           bn.insertArcNoisyOR( idCold, idFever, 0.4 );
 
           TS_ASSERT_THROWS( bn.insertArcNoisyOR( idMalaria, idCold, 0.8 ), gum::InvalidArc );
+
+
+          const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.2, 0.8};
+            int n = 2;const std::vector<float> v( t, t + n );
+            pOneMoreParent1.fillWith( v );
+          }
+
+          const gum::Potential<float>& pOneMoreParent2 = bn.cpt( idOneMoreParent2 );
+          {
+            // FILLING PARAMS
+            const float t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<float> v( t, t + n );
+            pOneMoreParent2.fillWith( v );
+          }
+
+          bn.insertArc(idOneMoreParent1,idOneMore);
+          bn.insertArc(idFever,idOneMore);
+          bn.insertArc(idOneMoreParent2,idOneMore);
+          const gum::Potential<float>& pOneMore = bn.cpt( idOneMore );
+          {
+            // FILLING PARAMS
+            const float t[16] = {0.1, 0.9, 0.8, 0.2,0.1, 0.9, 0.8, 0.2,0.1, 0.9, 0.8, 0.2,0.1, 0.9, 0.8, 0.2};
+            int n = 16;const std::vector<float> v( t, t + n );
+            pOneMore.fillWith( v );
+          }
 
           const gum::Potential<float>&p = bn.cpt( idFever );
 
@@ -152,4 +186,4 @@ namespace gum {
     };
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
