@@ -146,8 +146,15 @@ PRMInference::marginal(const PRMInference::Chain& chain, Potential<prm_float>& m
   if (m.nbrDim() > 0) {
     GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
-  m.add(chain.second->type().variable());
-  _marginal(chain, m);
+  if (chain.second != &(chain.first->get(chain.second->safeName()))) {
+    PRMInference::Chain good_chain = std::make_pair(chain.first,
+        &(chain.first->get(chain.second->safeName())));
+    m.add(good_chain.second->type().variable());
+    _marginal(good_chain, m);
+  } else {
+    m.add(chain.second->type().variable());
+    _marginal(chain, m);
+  }
 }
 
 INLINE

@@ -35,7 +35,7 @@ namespace gum {
   /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /** @class MultiDimAggregator
+  /** @class MultiDimAggregator multiDimAggregator.h <agrum/multidim/aggregators/multiDimAggregator.h>
    * @brief Abstract base class for all multi dimensionnal aggregator
    * @ingroup multidim_group
    *

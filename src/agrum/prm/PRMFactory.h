@@ -427,6 +427,11 @@ class PRMFactory {
     /**
      * @brief Add an aggregator in the current declared class.
      *
+     * If at least one parent of an aggregator is a SlotChain, then all of
+     * it's parents must be SlotChain. When an aggregator parents are only
+     * composed of Attribute and Aggregate, then it is directly added as an
+     * Attribute to it's Class.
+     *
      * @param name The name of this aggregator.
      * @param agg_type The name of the aggregator type of this aggregator.
      * @param chains The set of chains on which this aggregate applies.

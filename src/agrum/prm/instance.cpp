@@ -64,10 +64,14 @@ Instance::Instance(const std::string& name, Class& type):
 
 void
 Instance::__copyParameter(Attribute* source) {
-  Attribute* attr = new Attribute(source->name(), source->type());
-  Instantiation i(attr->cpf());
-  Instantiation j(source->cpf());
-  for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc()) {
+  Attribute* attr = 0;
+  if (__type->isOutputNode(*source)) {
+    attr = __nodeIdMap[source->id()];
+  } else {
+    attr = new Attribute(source->name(), source->type());
+  }
+  Instantiation i(attr->cpf()), j(source->cpf());
+  for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
     attr->cpf().set(i, source->cpf().get(j));
   }
   attr->setId(source->id());
@@ -91,6 +95,53 @@ Instance::~Instance() {
   }
   if (__params) {
     delete __params;
+  }
+}
+
+void
+Instance::instantiate() {
+  // First retrieving any referenced instance
+  for (Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain) {
+    __instantiateSlotChain(*chain);
+  }
+  // Now we need to add referred instance to each input node
+  // For Attributes we first add parents, then we initialize CPF
+  for (Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter) {
+    if (not type().isParameter(**iter)) {
+      if (isInstantiated((*iter)->id())) {
+        __copyAttributeCPF(__nodeIdMap[(**iter).id()]);
+      } else {
+        for (DAG::ArcIterator arc = type().dag().parents((**iter).id()).begin();arc != type().dag().parents((**iter).id()).end(); ++arc) {
+          if (isInstantiated(arc->tail())) {
+            Attribute* old_attr = __nodeIdMap[(**iter).id()];
+            Potential<prm_float>* pot = new Potential<prm_float>();
+            pot->add(old_attr->type().variable());
+            Attribute* new_attr = new Attribute(old_attr->name(), &(old_attr->type()), pot, false);
+            __trash.insert(new_attr);
+            new_attr->setId(old_attr->id());
+            __nodeIdMap[new_attr->id()] = new_attr;
+            __copyAttributeCPF(new_attr);
+            break;
+          }
+        }
+      }
+    }
+  }
+  // For Aggregate we add parents
+  for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
+    const ArcSet& parents = type().dag().parents((*iter)->id());
+    Attribute& attr = get((**iter).safeName());
+    for (ArcSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc) {
+      try {
+        attr.addParent(get(arc->tail()));
+      } catch (NotFound&) {
+        SlotChain& sc = static_cast<SlotChain&>(type().get(arc->tail()));
+        const Set<Instance*>& instances = getInstances(sc.id());
+        for (Set<Instance*>::iterator i = instances.begin(); i != instances.end(); ++i) {
+          attr.addParent((*i)->get(sc.lastElt().safeName()));
+        }
+      }
+    }
   }
 }
 
@@ -133,65 +184,42 @@ Instance::__instantiateSlotChain(SlotChain* sc) {
 }
 
 void
-Instance::instantiate() {
-  // First retrieving any referenced instance
-  for (Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain) {
-    __instantiateSlotChain(*chain);
-  }
-  // Now we need to add referred instance to each input node
-  // For Attributes we first add parents, then we initialize CPF
-  for (Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter) {
-    if (not type().isParameter(**iter)) {
-      if (isInstantiated((*iter)->id())) {
-        Attribute* class_attr = const_cast<Attribute*>(*iter);
-        Attribute* my_attr = __nodeIdMap[(*iter)->id()];
-        MultiDimArray<prm_float>* array = dynamic_cast< MultiDimArray<prm_float>* >(class_attr->cpf().getContent());
-        if (array) {
-          delete (my_attr->__cpf);
-          my_attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
-        } else {
-          // Just need to make the copy using the bijection but we only use multidim array
-          GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
-        }
-      } else {
-        bool init = false;
-        for (DAG::ArcIterator arc = type().dag().parents((*iter)->id()).begin();(not init) and (arc != type().dag().parents((*iter)->id()).end()); ++arc) {
-          init = isInstantiated(arc->tail());
-          if (init) {
-            break;
-          }
-        }
-        if (init) {
-          Attribute* class_attr = const_cast<Attribute*>(*iter);
-          MultiDimArray<prm_float>* array = dynamic_cast< MultiDimArray<prm_float>* >(class_attr->cpf().getContent());
-          if (array) {
-            Potential<prm_float>* cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
-            Attribute* a = new Attribute(class_attr->name(), class_attr->__type, cpf, false);
-            a->setId(class_attr->id());
-            __nodeIdMap[a->id()] = a;
-            __trash.insert(a);
-          } else {
-            // Just need to make the copy using the bijection but we only use multidim array
-            GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
-          }
-        }
+Instance::__copyAttributeCPF(Attribute* attr) {
+  const MultiDimImplementation<prm_float>* impl = type().get(attr->safeName()).cpf().getContent();
+  delete (attr->__cpf);
+  attr->__cpf = 0;
+  if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {
+    if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
+      attr->__cpf->add(attr->type().variable());
+      for (ArcSet::iterator arc = type().dag().parents(attr->id()).begin(); arc != type().dag().parents(attr->id()).end(); ++arc) {
+        attr->addParent(get(arc->tail()));
       }
+    } else if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(__bijection, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
+    } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(__bijection, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
+    } else {
+      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
-  }
-  // For Aggregate we add parents
-  for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
-    const ArcSet& parents = type().dag().parents((*iter)->id());
-    Attribute& attr = get((**iter).safeName());
-    for (ArcSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc) {
-      try {
-        attr.addParent(get(arc->tail()));
-      } catch (NotFound&) {
-        SlotChain& sc = static_cast<SlotChain&>(type().get(arc->tail()));
-        const Set<Instance*>& instances = getInstances(sc.id());
-        for (Set<Instance*>::iterator i = instances.begin(); i != instances.end(); ++i) {
-          attr.addParent((*i)->get(sc.lastElt().safeName()));
-        }
+  } else {
+    delete (attr->__cpf);
+    if (dynamic_cast< const MultiDimArray<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), static_cast< const MultiDimArray<prm_float>& >(*impl)));
+    } else if (dynamic_cast< const MultiDimSparse<prm_float>* >(impl)) {
+      // Copy the sparse array in a MultiDimArray, this is sloppy but fast
+      // Still there is no real use of MultiDimSparse so this is not really a problem
+      MultiDimArray<prm_float>* array = new MultiDimArray<prm_float>();
+      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
+        array->add(**iter);
       }
+      for (Instantiation i(*impl); not i.end(); i.inc()) {
+        array->set(i, impl->get(i));
+      }
+      attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
+    } else {
+      // Just need to make the copy using the bijection but we only use multidim array
+      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
   }
 }

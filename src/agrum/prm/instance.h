@@ -33,6 +33,10 @@
 #include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/multidim/multiDimBijArray.h>
+#include <agrum/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/multiDimNoisyORNet.h>
 // ============================================================================
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/class.h>
@@ -530,6 +534,11 @@ class Instance: public PRMObject {
     /// @param sc A slot chain of this instance's type.
     /// @throw NotFound Raised if a reference in sc is not instantiated.
     void __instantiateSlotChain(SlotChain* sc);
+
+    /// @brief Copy the content of an Attribute from its Class counterpart.
+    /// @param attr An Attribute of this Instance.
+    /// @throw OperationNotAllowed If the MultiDimImplementation is of an unknown type.
+    void __copyAttributeCPF(Attribute* attr);
 
     /// @brief Add this as a referring instance over the attribute pointed by sc
     ///        in i.

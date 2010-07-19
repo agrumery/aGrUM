@@ -35,6 +35,7 @@
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimSparse.h>
 // ============================================================================
 #include <agrum/prm/PRMInference.h>
 #include <agrum/prm/classBayesNet.h>

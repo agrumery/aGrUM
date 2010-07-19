@@ -49,6 +49,7 @@ INLINE
 void
 Instance::__copyAttribute(Attribute* source) {
   Attribute* attr = new Attribute(source->name(), source->type());
+  // The potential is copied when instantiation is called
   attr->cpf().fill((prm_float) 0);
   attr->setId(source->id());
   __trash.insert(attr);

@@ -68,9 +68,7 @@ namespace gum {
 
     template<typename T_DATA> INLINE
     MultiDimContainer<T_DATA>* Exists<T_DATA>::newFactory() const {
-      GUM_ERROR( OperationNotAllowed,
-                 "This class doesn't contain an empty constructor" );
-      return 0;
+      return new Exists<T_DATA>(__value);
     }
 
   } // namespace aggregator

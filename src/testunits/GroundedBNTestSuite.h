@@ -56,7 +56,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool");
         small = reader.prm();
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
     }
 
     void tearDown() {
@@ -194,10 +194,10 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
       {
         const Instance& instance = small->getSystem("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
@@ -208,10 +208,10 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
       {
         const Instance& instance = small->getSystem("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
@@ -222,7 +222,7 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
       delete g_ve;
@@ -243,10 +243,10 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
       {
         const Instance& instance = small->getSystem("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
@@ -257,10 +257,10 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
       {
         const Instance& instance = small->getSystem("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
@@ -271,14 +271,14 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
         for (i.setFirst(); not i.end(); i.inc()) {
           std::stringstream sBuff;
           sBuff << i << ": " << m.get(i);
-          GUM_TRACE(sBuff.str());
+          //GUM_TRACE(sBuff.str());
         }
       }
       delete sve;
     }
 
     void testInference() {
-      GUM_TRACE_VAR(UINT_MAX);
+      //GUM_TRACE_VAR(UINT_MAX);
       GroundedInference* g_ve = 0;
       GroundedInference* g_ss = 0;
       VariableElimination<prm_float>* ve = 0;
@@ -298,23 +298,27 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
           size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
           const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
           const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
-          if (instance.type().isParameter(attribute)) {
+          // if (attribute.safeName() == "(t_state)state") {
             PRMInference::Chain chain = std::make_pair(&instance, &attribute);
             std::string dot = ".";
-            GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
             g_ve->marginal(chain, m_ve);
-            GUM_TRACE("VE done");
+            // GUM_TRACE("VE done");
             g_ss->marginal(chain, m_ss);
-            GUM_TRACE("SS done");
+            // GUM_TRACE("SS done");
             SVE sve(*prm, prm->getSystem("aSys"));
             sve.marginal(chain, m_sve);
-            GUM_TRACE("SVE done");
-            Instantiation inst(m_ve);//, jnst(m_sve);
-            for (inst.setFirst(); not inst.end(); inst.inc()) {
+            // GUM_TRACE("SVE done");
+            Instantiation inst(m_ve), jnst(m_sve);
+            for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+              TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
+              TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim());
+              TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
+              TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
+              // std::cerr << inst << ": " << m_ve.get(inst) << " / " << m_sve.get(jnst) << std::endl;
               TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
-              TS_ASSERT_DELTA(m_sve.get(inst), m_ss.get(inst), 1.0e-3);
+              TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3);
             }
-          }
+          // }
         } catch (Exception& e) {
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
@@ -323,7 +327,6 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       delete g_ve;
       delete g_ss;
     }
-
 };
 
 } // namespace tests

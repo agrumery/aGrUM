@@ -281,8 +281,7 @@ SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet&
 }
 
 void
-SVE::__insertLiftedNodes(const Instance* i, BucketSet& pool,
-                            BucketSet& trash) {
+SVE::__insertLiftedNodes(const Instance* i, BucketSet& pool, BucketSet& trash) {
   SVE::ArraySet* lifted_pool = 0;
   try {
     lifted_pool = __lifted_pools[&(i->type())];
@@ -313,13 +312,11 @@ SVE::__initLiftedNodes(const Class& c)
   std::vector<NodeId> inner_elim_order;
   std::vector<NodeId>* output_elim_order = new std::vector<NodeId>();
   for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
-    if (not (c.isOutputNode(c.get(full_elim_order[idx])) or
-             ClassElement::isAggregate(c.get(full_elim_order[idx]))))// or
-             //c.isParameter(c.get(full_elim_order[idx]))))
-    {
-      inner_elim_order.push_back(full_elim_order[idx]);
-    } else {
+    if (c.isOutputNode(c.get(full_elim_order[idx])) or
+        ClassElement::isAggregate(c.get(full_elim_order[idx]))) {
       output_elim_order->push_back(full_elim_order[idx]);
+    } else {
+      inner_elim_order.push_back(full_elim_order[idx]);
     }
   }
   // If there is only output nodes and Aggregate we can't lift anything
@@ -391,7 +388,7 @@ SVE::_marginal(const Chain& chain, Potential<prm_float>& m)
   __eliminateNodes(i, elt->id(), pool, trash);
   m.fill((prm_float) 1);
   for (SVE::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter) {
-    if ((**iter).contains(*(m.variablesSequence().atPos(0)))) {
+    if ((**iter).contains(elt->type().variable())) {
       m.multiplicateBy(**iter);
     }
   }

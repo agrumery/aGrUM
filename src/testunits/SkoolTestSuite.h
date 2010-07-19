@@ -547,8 +547,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("ColorPrinter"));
       Class& ColorPrinter = prm->getClass("ColorPrinter");
       TS_ASSERT_EQUALS(ColorPrinter.referenceSlots().size(), (gum::Size)1);
-      TS_ASSERT_EQUALS(ColorPrinter.attributes().size(), (gum::Size)18);
-      TS_ASSERT_EQUALS(ColorPrinter.aggregates().size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(ColorPrinter.attributes().size(), (gum::Size)19);
+      TS_ASSERT_EQUALS(ColorPrinter.aggregates().size(), (gum::Size)0);
       TS_ASSERT_EQUALS(ColorPrinter.slotChains().size(), (gum::Size)1);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["room"]);
       TS_GUM_ASSERT_THROWS_NOTHING(ColorPrinter["(boolean)equipState"]);
@@ -712,9 +712,9 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       Class& Computer = prm->getClass("Computer");
-      TS_ASSERT_EQUALS(Computer.attributes().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(Computer.attributes().size(), (gum::Size)5);
       TS_ASSERT_EQUALS(Computer.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(Computer.aggregates().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(Computer.aggregates().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(Computer.slotChains().size(), (gum::Size)2);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)functional_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(Computer["functional_printer"]);
@@ -739,9 +739,9 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
       Class& SafeComputer = prm->getClass("SafeComputer");
-      TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
+      TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)5);
       TS_ASSERT_EQUALS(SafeComputer.referenceSlots().size(), (gum::Size)2);
-      TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(SafeComputer.slotChains().size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)functional_printer"]);
       TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["functional_printer"]);
@@ -807,6 +807,64 @@ class SkoolTestSuite: public CxxTest::TestSuite {
         }
       }
       TS_ASSERT_EQUALS(count, 17);
+      if (prm) {
+        delete prm;
+      }
+    }
+
+    void testParameters() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool"));
+      PRM* prm = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
+      System* sys = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
+      Class& param_class = prm->getClass("ParamClass");
+      Instance& param = sys->get("param");
+      std::string attr = "(boolean)aBoolParam";
+      Attribute* class_attr = &(static_cast<Attribute&>(param_class.get(attr)));
+      Attribute* inst_attr = &(param.get(attr));
+      {
+        TS_ASSERT_EQUALS(class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim());
+        TS_ASSERT_EQUALS(class_attr->cpf().domainSize(), inst_attr->cpf().domainSize());
+        Instantiation i(class_attr->cpf()), j(inst_attr->cpf());
+        for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
+          TS_ASSERT_DIFFERS(class_attr->cpf().get(i), inst_attr->cpf().get(j));
+        }
+      }
+      attr = "(t_state)aParameter";
+      class_attr = &(static_cast<Attribute&>(param_class.get(attr)));
+      inst_attr = &(param.get(attr));
+      {
+        TS_ASSERT_EQUALS(class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim());
+        TS_ASSERT_EQUALS(class_attr->cpf().domainSize(), inst_attr->cpf().domainSize());
+        Instantiation i(class_attr->cpf()), j(inst_attr->cpf());
+        for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
+          TS_ASSERT_DIFFERS(class_attr->cpf().get(i), inst_attr->cpf().get(j));
+        }
+      }
+      attr = "(boolean)aBoolParamWithDefault";
+      class_attr = &(static_cast<Attribute&>(param_class.get(attr)));
+      inst_attr = &(param.get(attr));
+      {
+        TS_ASSERT_EQUALS(class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim());
+        TS_ASSERT_EQUALS(class_attr->cpf().domainSize(), inst_attr->cpf().domainSize());
+        Instantiation i(class_attr->cpf()), j(inst_attr->cpf());
+        for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
+          TS_ASSERT_EQUALS(class_attr->cpf().get(i), inst_attr->cpf().get(j));
+        }
+      }
+      attr = "(t_state)anotherParameter";
+      class_attr = &(static_cast<Attribute&>(param_class.get(attr)));
+      inst_attr = &(param.get(attr));
+      {
+        TS_ASSERT_EQUALS(class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim());
+        TS_ASSERT_EQUALS(class_attr->cpf().domainSize(), inst_attr->cpf().domainSize());
+        Instantiation i(class_attr->cpf()), j(inst_attr->cpf());
+        for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
+          TS_ASSERT_EQUALS(class_attr->cpf().get(i), inst_attr->cpf().get(j));
+        }
+      }
       if (prm) {
         delete prm;
       }

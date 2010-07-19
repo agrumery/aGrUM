@@ -375,8 +375,7 @@ PRMFactory::addParameter(const std::string& type, const std::string& name,
   Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
   if (value == "") {
     MultiDimSparse<prm_float>* impl =
-      new MultiDimSparse<prm_float>(
-          std::numeric_limits<prm_float>::signaling_NaN());
+      new MultiDimSparse<prm_float>(std::numeric_limits<prm_float>::signaling_NaN());
     Attribute* a = new Attribute(name, *__retrieveType(type), impl);
     c->addParameter(a, false);
   } else {
@@ -404,82 +403,91 @@ PRMFactory::addAggregator(const std::string& name,
                           const std::vector<std::string>& chains,
                           const std::vector<std::string>& params)
 {
-  std::string space = " ";
-  std::stringstream sBuff;
-  sBuff << std::endl << "chains: ";
-  for (std::vector<std::string>::const_iterator iter = chains.begin(); iter != chains.end(); ++iter) {
-    sBuff << *iter << " ";
+  Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
+  // Checking call legality
+  if (chains.size() == 0) {
+    GUM_ERROR(OperationNotAllowed, "an Aggregate requires at least one parent");
   }
-  sBuff << std::endl << "params: ";
-  for (std::vector<std::string>::const_iterator iter = params.begin(); iter != params.end(); ++iter) {
-    sBuff << *iter << " ";
-  }
+  // Retrieving the parents of the aggregate
+  std::vector<ClassElement*> inputs;
+  __retrieveInputs(c, chains, inputs);
+  // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
+  Size sc_count = 0;
   try {
-    Class* c = static_cast<Class*>(__checkStack(1, PRMObject::prm_class));
-    // Checking call legality
-    if (chains.size() == 0)
-      GUM_ERROR(OperationNotAllowed, "an Aggregate requires at least one parent");
-    // Retrieving the parents of the aggregate
-    std::vector<ClassElement*> inputs;
-    __retrieveInputs(c, chains, inputs);
-    // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
-    try {
-      if (inputs.size() > 1)
-        for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter)
-          if ((**(iter - 1)).type() != (**iter).type())
-            GUM_ERROR(WrongType, "found different types");
-    } catch (OperationNotAllowed&) {
-      GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
+    if (inputs.size() > 1) {
+      for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter) {
+        if ((**(iter - 1)).type() != (**iter).type()) {
+          GUM_ERROR(WrongType, "found different types");
+        }
+        if (ClassElement::isSlotChain(**iter)) { ++sc_count; }
+      }
+      if ( (sc_count > 0) and (sc_count != inputs.size()) ) {
+        GUM_ERROR(OperationNotAllowed, "aggregators cannot have different sort of parents");
+      }
+    } else if (ClassElement::isSlotChain(*(inputs.front()))) {
+      ++sc_count;
     }
-    // Different treatments for different types of aggregate.
-    Aggregate* agg = 0;
-    switch (Aggregate::str2enum(agg_type)) {
-      case Aggregate::agg_or:
-      case Aggregate::agg_and:
-        {
-          if (inputs.front()->type() != *(__retrieveType("boolean")))
-            GUM_ERROR(WrongType, "expected booleans");
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
+  }
+  // Different treatments for different types of aggregate.
+  Aggregate* agg = 0;
+  switch (Aggregate::str2enum(agg_type)) {
+    case Aggregate::agg_or:
+    case Aggregate::agg_and:
+      {
+        if (inputs.front()->type() != *(__retrieveType("boolean"))) {
+          GUM_ERROR(WrongType, "expected booleans");
         }
-      case Aggregate::agg_min:
-      case Aggregate::agg_max:
-        {
-          if (params.size() != 0)
-            GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
-          agg = new Aggregate(name, Aggregate::str2enum(agg_type), inputs.front()->type());
-          break;
+      }
+    case Aggregate::agg_min:
+    case Aggregate::agg_max:
+      {
+        if (params.size() != 0) {
+          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
         }
-      case Aggregate::agg_exists:
-      case Aggregate::agg_forall:
-        {
-          if (params.size() != 1)
-            GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
-          Idx label_idx = 0;
-          while (label_idx < inputs.front()->type()->domainSize()) {
-            if (inputs.front()->type()->label(label_idx) == params.front()) {
-              break;
-            }
-            ++label_idx;
+        agg = new Aggregate(name, Aggregate::str2enum(agg_type), inputs.front()->type());
+        break;
+      }
+    case Aggregate::agg_exists:
+    case Aggregate::agg_forall:
+      {
+        if (params.size() != 1) {
+          GUM_ERROR(OperationNotAllowed, "invalid number of paramaters");
+        }
+        Idx label_idx = 0;
+        while (label_idx < inputs.front()->type()->domainSize()) {
+          if (inputs.front()->type()->label(label_idx) == params.front()) {
+            break;
           }
-          if (label_idx == inputs.front()->type()->domainSize())
-            GUM_ERROR(NotFound, "could not find label");
-          // Creating and adding the Aggregate
-          agg = new Aggregate(name, Aggregate::str2enum(agg_type), *(__retrieveType("boolean")), label_idx);
-          break;
+          ++label_idx;
         }
-      default:
-        { GUM_ERROR(FatalError, "Unknown aggregator."); }
-    }
-    try {
+        if (label_idx == inputs.front()->type()->domainSize()) {
+          GUM_ERROR(NotFound, "could not find label");
+        }
+        // Creating and adding the Aggregate
+        agg = new Aggregate(name, Aggregate::str2enum(agg_type), *(__retrieveType("boolean")), label_idx);
+        break;
+      }
+    default:
+      { GUM_ERROR(FatalError, "Unknown aggregator."); }
+  }
+  std::string safe_name = agg->safeName();
+  try {
+    if (sc_count > 0) {
       c->add(agg);
-    } catch (DuplicateElement& e) {
+    } else {
+      // Inner aggregators can be directly used has attributes
+      Attribute* attr = new Attribute(agg->name(), agg->type(), agg->buildImpl());
+      c->add(attr);
       delete agg;
-      throw e;
     }
-    for (std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter)
-      c->insertArc((*iter)->name(), name);
-  } catch (Exception& e) {
-    std::cerr << std::endl;
+  } catch (DuplicateElement& e) {
+    delete agg;
     throw e;
+  }
+  for (std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter) {
+    c->insertArc((*iter)->safeName(), safe_name);
   }
 }
 
