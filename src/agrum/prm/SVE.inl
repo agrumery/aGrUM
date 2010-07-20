@@ -75,6 +75,25 @@ SVE::_evidenceRemoved(const Chain& chain) {
   // Do nothing
 }
 
+INLINE
+void
+SVE::__addDelayedVariable(const Instance* i, const Instance* j, NodeId id) {
+  try {
+    __delayedVariables[i]->insert(&(j->get(id).type().variable()));
+  } catch (NotFound&) {
+    __delayedVariables.insert(i, new Set<const DiscreteVariable*>());
+    __delayedVariables[i]->insert(&(j->get(id).type().variable()));
+  } catch (DuplicateElement&) {
+    // happends if j->get(id) is parent of more than one variable in i
+  }
+  static std::string dot = ".";
+  try {
+    __delayedVariablesCounters[i->name() + dot + i->get(id).safeName()] += 1;
+  } catch (NotFound&) {
+    __delayedVariablesCounters.insert(i->name() + dot + i->get(id).safeName(), 1);
+  }
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

@@ -57,12 +57,8 @@ SVE::~SVE() {
 
 void
 SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash) {
-  // {
-  //   std::stringstream sBuff;
-  //   sBuff << "__eliminateNodes: " << query->name() << ", " << query->get(node).safeName();
-  //   sBuff << ", " << pool.size() << ", " << trash.size();
-  // }
-  Set<const Instance*> ignore;
+  Set<const Instance*> ignore, eliminated;
+  Set<NodeId> delayedVars;
   // Downward elimination
   List<const Instance*> elim_list;
   ignore.insert(query);
@@ -70,7 +66,10 @@ SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, Bucke
     typedef std::vector< std::pair<Instance*, std::string> >::const_iterator pair_iter;
     for (pair_iter child = (**iter).begin(); child != (**iter).end(); ++child) {
       if (not ignore.exists(child->first)) {
-        __eliminateNodesDownward(query, child->first, pool, trash, elim_list, ignore);
+        __eliminateNodesDownward(query, child->first, pool, trash, elim_list, ignore, eliminated);
+      } else if (not eliminated.exists(child->first)) {
+        __addDelayedVariable(child->first, query, iter.key());
+        delayedVars.insert(iter.key());
       }
     }
   }
@@ -86,17 +85,22 @@ SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, Bucke
     pool.insert(&(const_cast<Potential<prm_float>&>((**attr).cpf())));
   }
   for (size_t idx = 0; idx < t.eliminationOrder().size(); ++idx) {
-    if (t.eliminationOrder()[idx] != node) {
+    if ( (t.eliminationOrder()[idx] != node) and (not delayedVars.exists(t.eliminationOrder()[idx]))) {
       elim_order.push_back(t.eliminationOrder()[idx]);
     }
   }
   inf.eliminateNodes(elim_order, pool, trash);
+  // Eliminating delayed variables, if any
+  if (__delayedVariables.exists(query)) {
+    __eliminateDelayedVariables(query, pool, trash);
+  }
+  eliminated.insert(query);
   // Eliminating instance in elim_list
   List<const Instance*> tmp_list;
   while (not elim_list.empty()) {
     if (__checkElimOrder(query, elim_list.front())) {
       if (not ignore.exists(elim_list.front())) {
-        __eliminateNodesDownward(query, elim_list.front(), pool, trash, elim_list, ignore);
+        __eliminateNodesDownward(query, elim_list.front(), pool, trash, elim_list, ignore, eliminated);
       }
     } else {
       tmp_list.insert(elim_list.front());
@@ -107,21 +111,43 @@ SVE::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, Bucke
   for (Set<SlotChain*>::iterator sc = query->type().slotChains().begin(); sc != query->type().slotChains().end(); ++sc) {
     for (Set<Instance*>::iterator parent = query->getInstances((**sc).id()).begin(); parent != query->getInstances((**sc).id()).end(); ++parent) {
       if (not ignore.exists(*parent)) {
-        __eliminateNodesUpward(*parent, pool, trash, tmp_list, ignore);
+        __eliminateNodesUpward(*parent, pool, trash, tmp_list, ignore, eliminated);
       }
     }
   }
 }
 
 void
-SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore)
+SVE::__eliminateDelayedVariables(const Instance* i, BucketSet& pool, BucketSet& trash) {
+  Set<Potential<prm_float>*> toRemove;
+  typedef Set< const DiscreteVariable* >::iterator DelayedIter;
+  for (DelayedIter iter = __delayedVariables[i]->begin(); iter != __delayedVariables[i]->end(); ++iter) {
+    MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
+    for (SetIterator<Potential<prm_float>*> jter = pool.begin(); jter != pool.end(); ++jter) {
+      if (( *jter )->contains(**iter)) {
+        bucket->add( **jter );
+        toRemove.insert( *jter );
+      }
+    }
+    for (SetIterator< Potential<prm_float>* > jter = toRemove.begin(); jter != toRemove.end(); ++jter) {
+      pool.erase( *jter );
+    }
+    typedef Set<const DiscreteVariable*>::iterator VarIter;
+    for (VarIter jter = bucket->allVariables().begin(); jter != bucket->allVariables().end(); ++jter ) {
+      if (*jter != *iter) {
+        bucket->add(**jter);
+      }
+    }
+    Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
+    trash.insert( bucket_pot );
+    pool.insert( bucket_pot );
+  }
+}
+
+void
+SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore, Set<const Instance*>& eliminated)
 {
-  // {
-  //   std::stringstream sBuff;
-  //   sBuff << "__eliminateNodesDownward: " << from->name() << ", " << i->name();
-  //   sBuff << ", " << pool.size() << ", " << trash.size();
-  //   GUM_TRACE(sBuff.str());
-  // }
+  Set<NodeId> delayedVars;
   ignore.insert(i);
   // Calling elimination over child instance
   List<const Instance*> my_list;
@@ -129,31 +155,21 @@ SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet
     typedef std::vector< std::pair<Instance*, std::string> >::const_iterator pair_iter;
     for (pair_iter child = (**iter).begin(); child != (**iter).end(); ++child) {
       if (not ignore.exists(child->first)) {
-        __eliminateNodesDownward(i, child->first, pool, trash, my_list, ignore);
+        __eliminateNodesDownward(i, child->first, pool, trash, my_list, ignore, eliminated);
+      } else if (not eliminated.exists(child->first)) {
+        __addDelayedVariable(child->first, i, iter.key());
+        delayedVars.insert(iter.key());
       }
     }
   }
   // Eliminating all nodes in current instance
-  InstanceBayesNet bn(*i);
-  VariableElimination<prm_float> inf(bn);
-  if (hasEvidence(i)) {
-    __eliminateNodesWithEvidence(i, pool, trash);
-  } else {
-    __insertLiftedNodes(i, pool, trash);
-    for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg) {
-      pool.insert(__getAggPotential(i, *agg));
-    }
-    try {
-      inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
-    } catch (NotFound&) {
-      // Raised if there is no inner nodes to eliminate
-    }
-  }
+  __variableElimination(i, pool, trash, (delayedVars.empty()?0:&delayedVars));
+  eliminated.insert(i);
   // Calling elimination over child's parents
   for (List<const Instance*>::iterator iter = my_list.begin(); iter != my_list.end(); ++iter) {
     if (__checkElimOrder(i, *iter) and (*iter != from)) {
       if (not ignore.exists(*iter)) {
-        __eliminateNodesDownward(i, *iter, pool, trash, elim_list, ignore);
+        __eliminateNodesDownward(i, *iter, pool, trash, elim_list, ignore, eliminated);
       }
     } else if (*iter != from) {
       elim_list.insert(*iter);
@@ -170,46 +186,60 @@ SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet
 }
 
 void
-SVE::__eliminateNodesUpward(const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore)
-{
-  // {
-  //   std::stringstream sBuff;
-  //   sBuff << "__eliminateNodesUpward: " << i->name();
-  //   sBuff << ", " << pool.size() << ", " << trash.size();
-  //   GUM_TRACE(sBuff.str());
-  // }
-  // Downward elimination
-  ignore.insert(i);
-  for (Instance::InvRefConstIterator iter = i->beginInvRef(); iter != i->endInvRef(); ++iter) {
-    typedef std::vector< std::pair<Instance*, std::string> >::const_iterator pair_iter;
-    for (pair_iter child = (**iter).begin(); child != (**iter).end(); ++child) {
-      if (not ignore.exists(child->first)) {
-        __eliminateNodesDownward(i, child->first, pool, trash, elim_list, ignore);
-      }
-    }
-  }
-  // Eliminating all nodes in i instance
+SVE::__variableElimination(const Instance* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars) {
   InstanceBayesNet bn(*i);
   VariableElimination<prm_float> inf(bn);
   if (hasEvidence(i)) {
-    __eliminateNodesWithEvidence(i, pool, trash);
+    __eliminateNodesWithEvidence(i, pool, trash, delayedVars);
   } else {
     __insertLiftedNodes(i, pool, trash);
     for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg) {
       pool.insert(__getAggPotential(i, *agg));
     }
     try {
-      inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
+      if (delayedVars) {
+        std::vector<NodeId> elim;
+        for (std::vector<NodeId>::iterator iter = __getElimOrder(i->type()).begin(); iter != __getElimOrder(i->type()).end(); ++iter) {
+          if (not delayedVars->exists(*iter)) {
+            elim.push_back(*iter);
+          }
+        }
+        inf.eliminateNodes(elim, pool, trash);
+      } else {
+        inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
+      }
     } catch (NotFound&) {
       // Raised if there is no inner nodes to eliminate
     }
   }
+  // Eliminating delayed variables, if any
+  if (__delayedVariables.exists(i)) {
+    __eliminateDelayedVariables(i, pool, trash);
+  }
+}
+
+void
+SVE::__eliminateNodesUpward(const Instance* i, BucketSet& pool, BucketSet& trash, List<const Instance*>& elim_list, Set<const Instance*>& ignore, Set<const Instance*>& eliminated)
+{
+  // Downward elimination
+  ignore.insert(i);
+  for (Instance::InvRefConstIterator iter = i->beginInvRef(); iter != i->endInvRef(); ++iter) {
+    typedef std::vector< std::pair<Instance*, std::string> >::const_iterator pair_iter;
+    for (pair_iter child = (**iter).begin(); child != (**iter).end(); ++child) {
+      if (not ignore.exists(child->first)) {
+        __eliminateNodesDownward(i, child->first, pool, trash, elim_list, ignore, eliminated);
+      }
+    }
+  }
+  // Eliminating all nodes in i instance
+  __variableElimination(i, pool, trash);
+  eliminated.insert(i);
   // Eliminating instance in elim_list
   List<const Instance*> tmp_list;
   while (not elim_list.empty()) {
     if (__checkElimOrder(i, elim_list.front())) {
       if (not ignore.exists(elim_list.front())) {
-        __eliminateNodesDownward(i, elim_list.front(), pool, trash, elim_list, ignore);
+        __eliminateNodesDownward(i, elim_list.front(), pool, trash, elim_list, ignore, eliminated);
       }
     } else {
       tmp_list.insert(elim_list.front());
@@ -220,24 +250,25 @@ SVE::__eliminateNodesUpward(const Instance* i, BucketSet& pool, BucketSet& trash
   for (Set<SlotChain*>::iterator sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc) {
     for (Set<Instance*>::iterator parent = i->getInstances((**sc).id()).begin(); parent != i->getInstances((**sc).id()).end(); ++parent) {
       if (not ignore.exists(*parent)) {
-        __eliminateNodesUpward(*parent, pool, trash, tmp_list, ignore);
+        __eliminateNodesUpward(*parent, pool, trash, tmp_list, ignore, eliminated);
       }
     }
   }
 }
 
 void
-SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet& trash) {
+SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars) {
   // First we check if evidences are on inner nodes
   bool inner = false;
   for (EMapIterator e = evidence(i).begin(); e != evidence(i).end(); ++e) {
-    inner = inner or i->type().isInputNode(i->get(e.key())) or i->type().isInnerNode(i->get(e.key()));
+    inner = i->type().isInputNode(i->get(e.key())) or i->type().isInnerNode(i->get(e.key()));
     if (inner) { break; }
   }
+  // Evidence on inner nodes
   if (inner) {
     BucketSet tmp_pool;
     __insertEvidence(i, tmp_pool);
-    // We need a local to not eliminat queried inner nodes of the same class
+    // We need a local to not eliminate queried inner nodes of the same class
     for (Instance::const_iterator attr = i->begin(); attr != i->end(); ++attr) {
       tmp_pool.insert(&((**attr).cpf()));
     }
@@ -248,11 +279,21 @@ SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet&
     // Removing Output nodes of elimination order
     std::vector<NodeId> inner_elim_order;
     std::vector<NodeId> output_elim_order;
-    for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
-      if (not i->type().isOutputNode(i->get(full_elim_order[idx]))) {
-        inner_elim_order.push_back(full_elim_order[idx]);
-      } else {
-        output_elim_order.push_back(full_elim_order[idx]);
+    if (delayedVars) {
+      for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
+        if (not i->type().isOutputNode(i->get(full_elim_order[idx]))) {
+          inner_elim_order.push_back(full_elim_order[idx]);
+        } else if (not delayedVars->exists(full_elim_order[idx])) {
+          output_elim_order.push_back(full_elim_order[idx]);
+        }
+      }
+    } else {
+      for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
+        if (not i->type().isOutputNode(i->get(full_elim_order[idx]))) {
+          inner_elim_order.push_back(full_elim_order[idx]);
+        } else {
+          output_elim_order.push_back(full_elim_order[idx]);
+        }
       }
     }
     inf.eliminateNodes(inner_elim_order, tmp_pool, trash);
@@ -273,7 +314,17 @@ SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet&
       pool.insert(__getAggPotential(i, *agg));
     }
     try {
-      inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
+      if (delayedVars) {
+        std::vector<NodeId> elim;
+        for (std::vector<NodeId>::iterator iter = __getElimOrder(i->type()).begin(); iter != __getElimOrder(i->type()).end(); ++iter) {
+          if (not delayedVars->exists(*iter)) {
+            elim.push_back(*iter);
+          }
+        }
+        inf.eliminateNodes(elim, pool, trash);
+      } else {
+        inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
+      }
     } catch (NotFound&) {
       GUM_ERROR(FatalError, "there should be at least one node here.");
     }

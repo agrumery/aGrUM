@@ -106,6 +106,12 @@ class SVE: public PRMInference{
 
     Sequence<const Class*>* __class_elim_order;
 
+    HashTable<const Instance*, Set< const DiscreteVariable* >* > __delayedVariables;
+
+    /// Some variable must be delayed for more than one Instance, when the delayed
+    /// variable counter reach 0 it can be eliminated.
+    HashTable<std::string, Size> __delayedVariablesCounters;
+
     BucketSet __lifted_trash;
 
     // ============================================================================
@@ -119,18 +125,25 @@ class SVE: public PRMInference{
     void __eliminateNodesDownward(const Instance* from, const Instance* i,
                                   BucketSet& pool, BucketSet& trash,
                                   List<const Instance*>& elim_list,
-                                  Set<const Instance*>& ignore);
+                                  Set<const Instance*>& ignore,
+                                  Set<const Instance*>& eliminated);
 
     void __eliminateNodesUpward(const Instance* i,
                                 BucketSet& pool, BucketSet& trash,
                                 List<const Instance*>& elim_list,
-                                Set<const Instance*>& ignore);
+                                Set<const Instance*>& ignore,
+                                Set<const Instance*>& eliminated);
 
     void __eliminateNodesWithEvidence(const Instance* i,
-                                      BucketSet& pool, BucketSet& trash);
+                                      BucketSet& pool, BucketSet& trash,
+                                      Set<NodeId>* delayedVars=0);
+
+    void __eliminateDelayedVariables(const Instance* i, BucketSet& pool, BucketSet& trash);
 
     void __insertLiftedNodes(const Instance* i, BucketSet& pool,
                              BucketSet& trash);
+
+    void __variableElimination(const Instance* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars=0);
 
     /// Returns true if second can be eliminated before first.
     bool __checkElimOrder(const Instance* first, const Instance* second);
@@ -138,6 +151,14 @@ class SVE: public PRMInference{
     void __initElimOrder();
 
     void __insertEvidence(const Instance* i, BucketSet& pool);
+
+    /// When there is a loop in the references some variable elimination
+    /// must be delayed, this methods add such variable to __delayedVariables
+    /// to keep track of them.
+    /// @param i An Instance with a child of j->get(id).
+    /// @param j The Instance with the delayed variable.
+    /// @param id The NodeId of the delayed variable.
+    void __addDelayedVariable(const Instance* i, const Instance* j, NodeId id);
 
     std::vector<NodeId>& __getElimOrder(const Class& c);
 
