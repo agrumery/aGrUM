@@ -347,6 +347,16 @@ class Instance: public PRMObject {
      */
     const Set<Instance*>& getInstances(NodeId id) const;
 
+    /**
+     * @brief Returns a vector of pairs of refering attributes of id.
+     */
+    std::vector< std::pair<Instance*, std::string> >& getRefAttr(NodeId id);
+
+    /**
+     * @brief Returns a vector of pairs of refering attributes of id.
+     */
+    const std::vector< std::pair<Instance*, std::string> >& getRefAttr(NodeId id) const;
+
     /// @}
   // ========================================================================
   /// @name Iterators

@@ -356,14 +356,8 @@
 //   __bb.compute(i, elt->id());
 //   __eliminateNodes(i, elt->id(), pool, trash);
 //   m.fill((prm_float) 1);
-//   //GUM_TRACE_VAR(pool.size());
 //   for (SVED::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter) {
 //     if ((**iter).contains(*(m.variablesSequence().atPos(0)))) {
-//       //GUM_TRACE_VAR((**iter).variablesSequence().size());
-//       // for (Sequence<const DiscreteVariable*>::iterator var = (**iter).variablesSequence().begin();
-//       //      var != (**iter).variablesSequence().end(); ++var) {
-//       //   //GUM_TRACE_VAR((**var).name());
-//       // }
 //       m.multiplicateBy(**iter);
 //     }
 //   }

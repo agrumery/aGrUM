@@ -38,7 +38,8 @@
 // // ============================================================================
 // #include <agrum/prm/PRMInference.h>
 // #include <agrum/prm/structuredBayesBall.h>
-// #include <agrum/prm/hollowBayesNet.h>
+// #include <agrum/prm/classBayesNet.h>
+// #include <agrum/prm/instanceBayesNet.h>
 // #include <agrum/prm/CDG.h>
 // // ============================================================================
 // #ifndef GUM_SVED_H
@@ -157,25 +158,25 @@
 // 
 //     Set<NodeId>& __getAttrSet(const Instance* i);
 // 
-    Set<NodeId>& __getSCSet(const Instance* i);
-
-    void __callDownwardElimination(const Instance* i, NodeId attr,
-                                   BucketSet& pool, BucketSet& trash,
-                                   List<const Instance*>& elim_list,
-                                   Set<const Instance*>& ignore);
-
-    void __reduceElimList(const Instance* i, List<const Instance*>& elim_list,
-                          List<const Instance*>& reduced_list,
-                          Set<const Instance*>& ignore,
-                          BucketSet& pool, BucketSet& trash);
-    /// @}
-};
-
-} /* namespace prm */
-} /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/SVED.inl>
-#endif // GUM_NO_INLINE
-// ============================================================================
-#endif /* GUM_SVED_H */
-// ============================================================================
+//     Set<NodeId>& __getSCSet(const Instance* i);
+// 
+//     void __callDownwardElimination(const Instance* i, NodeId attr,
+//                                    BucketSet& pool, BucketSet& trash,
+//                                    List<const Instance*>& elim_list,
+//                                    Set<const Instance*>& ignore);
+// 
+//     void __reduceElimList(const Instance* i, List<const Instance*>& elim_list,
+//                           List<const Instance*>& reduced_list,
+//                           Set<const Instance*>& ignore,
+//                           BucketSet& pool, BucketSet& trash);
+//     /// @}
+// };
+// 
+// } /* namespace prm */
+// } /* namespace gum */
+// #ifndef GUM_NO_INLINE
+// #include <agrum/prm/SVED.inl>
+// #endif // GUM_NO_INLINE
+// // ============================================================================
+// #endif /* GUM_SVED_H */
+// // ============================================================================

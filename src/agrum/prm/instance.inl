@@ -419,6 +419,18 @@ Instance::endInvRef() const {
   return __referingAttr.end();
 }
 
+INLINE
+std::vector< std::pair<Instance*, std::string> >&
+Instance::getRefAttr(NodeId id) {
+  return *(__referingAttr[id]);
+}
+
+INLINE
+const std::vector< std::pair<Instance*, std::string> >&
+Instance::getRefAttr(NodeId id) const {
+  return *(__referingAttr[id]);
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

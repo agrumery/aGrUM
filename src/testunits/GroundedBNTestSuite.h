@@ -28,6 +28,7 @@
 #include <agrum/prm/classBayesNet.h>
 #include <agrum/prm/groundedInference.h>
 #include <agrum/prm/SVE.h>
+#include <agrum/prm/structuredBayesBall.h>
 // ============================================================================
 #include <agrum/prm/skool/SkoolReader.h>
 // ============================================================================
@@ -277,56 +278,66 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       delete sve;
     }
 
-    void testInference() {
-      //GUM_TRACE_VAR(UINT_MAX);
-      GroundedInference* g_ve = 0;
-      GroundedInference* g_ss = 0;
-      VariableElimination<prm_float>* ve = 0;
-      ShaferShenoyInference<prm_float>* ss = 0;
-      BayesNet<prm_float> bn;
-      BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
-      TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
-      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m_ve, m_ss, m_sve;
-        try {
-          size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
-          const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
-          const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
-          // if (attribute.safeName() == "(t_state)state") {
-            PRMInference::Chain chain = std::make_pair(&instance, &attribute);
-            std::string dot = ".";
-            g_ve->marginal(chain, m_ve);
-            // GUM_TRACE("VE done");
-            g_ss->marginal(chain, m_ss);
-            // GUM_TRACE("SS done");
-            SVE sve(*prm, prm->getSystem("aSys"));
-            sve.marginal(chain, m_sve);
-            // GUM_TRACE("SVE done");
-            Instantiation inst(m_ve), jnst(m_sve);
-            for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
-              TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
-              TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim());
-              TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
-              TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
-              // std::cerr << inst << ": " << m_ve.get(inst) << " / " << m_sve.get(jnst) << std::endl;
-              TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
-              TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3);
-            }
-          // }
-        } catch (Exception& e) {
-          TS_GUM_ASSERT_THROWS_NOTHING(throw e);
-          break;
-        }
-      }
-      delete g_ve;
-      delete g_ss;
+    //void testInference() {
+    //  //GUM_TRACE_VAR(UINT_MAX);
+    //  GroundedInference* g_ve = 0;
+    //  GroundedInference* g_ss = 0;
+    //  VariableElimination<prm_float>* ve = 0;
+    //  ShaferShenoyInference<prm_float>* ss = 0;
+    //  BayesNet<prm_float> bn;
+    //  BayesNetFactory<prm_float> bn_factory(&bn);
+    //  TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
+    //  TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
+    //  for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
+    //    Potential<prm_float> m_ve, m_ss, m_sve;
+    //    try {
+    //      size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
+    //      const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
+    //      const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
+    //      // if (attribute.safeName() == "(t_state)state") {
+    //        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+    //        std::string dot = ".";
+    //        g_ve->marginal(chain, m_ve);
+    //        // GUM_TRACE("VE done");
+    //        g_ss->marginal(chain, m_ss);
+    //        // GUM_TRACE("SS done");
+    //        SVE sve(*prm, prm->getSystem("aSys"));
+    //        sve.marginal(chain, m_sve);
+    //        // GUM_TRACE("SVE done");
+    //        Instantiation inst(m_ve), jnst(m_sve);
+    //        for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+    //          TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
+    //          TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim());
+    //          TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
+    //          TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
+    //          // std::cerr << inst << ": " << m_ve.get(inst) << " / " << m_sve.get(jnst) << std::endl;
+    //          TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
+    //          TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3);
+    //        }
+    //      // }
+    //    } catch (Exception& e) {
+    //      TS_GUM_ASSERT_THROWS_NOTHING(throw e);
+    //      break;
+    //    }
+    //  }
+    //  delete g_ve;
+    //  delete g_ss;
+    //}
+
+    void testStructuredBB() {
+      SVE sve(*prm, prm->getSystem("aSys"));
+      StructuredBayesBall* bb = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(sve));
+      Instance& i = prm->getSystem("aSys").get("pow");
+      TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i, i.get("(t_state)state").id()));
+      TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
     }
+
 };
 
 } // namespace tests
