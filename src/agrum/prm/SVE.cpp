@@ -187,8 +187,6 @@ SVE::__eliminateNodesDownward(const Instance* from, const Instance* i, BucketSet
 
 void
 SVE::__variableElimination(const Instance* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars) {
-  InstanceBayesNet bn(*i);
-  VariableElimination<prm_float> inf(bn);
   if (hasEvidence(i)) {
     __eliminateNodesWithEvidence(i, pool, trash, delayedVars);
   } else {
@@ -197,6 +195,8 @@ SVE::__variableElimination(const Instance* i, BucketSet& pool, BucketSet& trash,
       pool.insert(__getAggPotential(i, *agg));
     }
     try {
+      InstanceBayesNet bn(*i);
+      VariableElimination<prm_float> inf(bn);
       if (delayedVars) {
         std::vector<NodeId> elim;
         for (std::vector<NodeId>::iterator iter = __getElimOrder(i->type()).begin(); iter != __getElimOrder(i->type()).end(); ++iter) {

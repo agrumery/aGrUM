@@ -84,12 +84,12 @@ Attribute::getCastDescendant() const {
   } catch (NotFound&) {
     GUM_ERROR(OperationNotAllowed, "this Attribute can not have cast descendant");
   }
-  cast->cpf().add(type().variable());
+  cast->addParent(*this);
   const DiscreteVariable& my_var = type().variable();
   DiscreteVariable& cast_var = cast->type().variable();
   Instantiation inst(cast->cpf());
   for (inst.setFirst(); not inst.end(); inst.inc()) {
-    if (type().label_map()[inst.pos(my_var)] == inst.pos(cast_var)) {
+    if (type().label_map()[inst.val(my_var)] == inst.val(cast_var)) {
       cast->cpf().set(inst, 1);
     } else {
       cast->cpf().set(inst, 0);

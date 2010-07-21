@@ -103,7 +103,8 @@ StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks
         if (not __getMark(marks, i, n).first) {
           __getMark(marks, i, n).first = true;
           for (Set<Instance*>::iterator iter = i->getInstances(n).begin(); iter != i->getInstances(n).end(); ++iter) {
-            __fromChild(*iter, __getSC(i, n).lastElt().id(), marks);
+            NodeId id = (**iter).get(__getSC(i,n).lastElt().safeName()).id();
+            __fromChild(*iter, id, marks);
           }
         }
         if (not __getMark(marks, i, n).second) {
