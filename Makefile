@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=DFSCode
+SKOOL_TEST=GroundedBN
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

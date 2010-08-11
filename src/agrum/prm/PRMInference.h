@@ -210,9 +210,11 @@ class PRMInference {
 
     /// Code alias.
     typedef HashTable<const Instance*, EMap*>::iterator EvidenceIterator;
+    /// Code alias.
+    typedef HashTable<const Instance*, EMap*>::const_iterator EvidenceConstIterator;
 
     /// Mapping of evidence over Instance's nodes.
-    mutable HashTable<const Instance*, EMap*> __evidences;
+    HashTable<const Instance*, EMap*> __evidences;
 
     /// @brief Generic method to add evidence over a ClassElement in an
     ///        Instance.

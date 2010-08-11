@@ -106,25 +106,6 @@ SVED::__getSCSet(const Instance* i) {
 
 INLINE
 void
-SVED::__callDownwardElimination(const Instance* i, NodeId attr,
-                                BucketSet& pool, BucketSet& trash,
-                                List<const Instance*>& elim_list,
-                                Set<const Instance*>& ignore)
-{
-  // try {
-  //   typedef Set< Instance::InverseSC* >::iterator InvIter;
-  //   for (InvIter inv_sc = i->inverseSC(attr).begin(); inv_sc != i->inverseSC(attr).end(); ++inv_sc) {
-  //     if ( (not ignore.exists((*inv_sc)->first)) and (__bb.exists((*inv_sc)->first)) ) {
-  //       __eliminateNodesDownward(i, (*inv_sc)->first, pool, trash, elim_list, ignore);
-  //     }
-  //   }
-  // } catch (NotFound&) {
-  //   // Ok
-  // }
-}
-
-INLINE
-void
 SVED::__reduceElimList(const Instance* i, List<const Instance*>& elim_list,
                        List<const Instance*>& reduced_list, Set<const Instance*>& ignore,
                        BucketSet& pool, BucketSet& trash)

@@ -49,7 +49,7 @@ PRMInference::PRMInference(const PRMInference& source):
   _prm(source._prm), _sys(source._sys)
 {
   GUM_CONS_CPY( PRMInference );
-  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
+  for (PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
     __evidences.insert(iter.key(), new PRMInference::EMap());
     for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
       Potential<prm_float>* e = new Potential<prm_float>();
@@ -68,7 +68,7 @@ PRMInference::operator=(const PRMInference& source) {
   clearEvidence();
   _prm = source._prm;
   _sys = source._sys;
-  for (PRMInference::EvidenceIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
+  for (PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
     __evidences.insert(iter.key(), new PRMInference::EMap());
     for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
       Potential<prm_float>* e = new Potential<prm_float>();
@@ -83,6 +83,15 @@ PRMInference::operator=(const PRMInference& source) {
   return *this;
 }
 
+PRMInference::EMap&
+PRMInference::__EMap(const Instance* i) {
+  if (__evidences.exists(i)) {
+    return *(__evidences[i]);
+  } else {
+    __evidences.insert(i, new PRMInference::EMap());
+    return *(__evidences[i]);
+  }
+}
 
 void
 PRMInference::__addEvidence(const Chain& chain, const Potential<prm_float>& p) {
@@ -95,12 +104,19 @@ PRMInference::__addEvidence(const Chain& chain, const Potential<prm_float>& p) {
   for (i.setFirst(); not i.end(); i.inc()) {
     e->set(i, p.get(i));
   }
-  try {
-    delete __EMap(chain.first)[chain.second->id()];
-    __EMap(chain.first)[chain.second->id()] = e;
-  } catch (NotFound&) {
-    __EMap(chain.first).insert(chain.second->id(), e);
+  PRMInference::EMap& emap = __EMap(chain.first);
+  if (emap.exists(chain.second->id())) {
+    delete emap[chain.second->id()];
+    emap[chain.second->id()] = e;
+  } else {
+    emap.insert(chain.second->id(), e);
   }
+  // try {
+  //   delete &(__EMap(chain.first)[chain.second->id()]);
+  //   __EMap(chain.first)[chain.second->id()] = e;
+  // } catch (NotFound&) {
+  //   __EMap(chain.first).insert(chain.second->id(), e);
+  // }
   _evidenceAdded(chain);
 }
 

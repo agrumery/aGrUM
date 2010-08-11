@@ -48,6 +48,7 @@ SVED::~SVED() {
 void
 SVED::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash)
 {
+  GUM_TRACE(query->name());
   Set<const Instance*> ignore;
   ignore.insert(query);
   // Extracting required attributes and slotchains
@@ -55,10 +56,15 @@ SVED::__eliminateNodes(const Instance* query, NodeId node, BucketSet& pool, Buck
   Set<NodeId>& sc_set = __getSCSet(query);
   // Downward elimination
   List<const Instance*> elim_list;
+  GUM_TRACE_VAR(attr_set.size());
   for (Set<NodeId>::iterator attr = attr_set.begin(); attr != attr_set.end(); ++attr) {
     try {
       typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
+      GUM_CHECKPOINT;
       for (Iter iter = query->getRefAttr(*attr).begin(); iter != query->getRefAttr(*attr).end(); ++iter) {
+        GUM_CHECKPOINT;
+        GUM_TRACE_VAR(not ignore.exists(iter->first));
+        GUM_TRACE_VAR(__bb.exists(iter->first));
         if ( (not ignore.exists(iter->first)) and (__bb.exists(iter->first)) ) {
           __eliminateNodesDownward(query, iter->first, pool, trash, elim_list, ignore);
         }
@@ -113,6 +119,7 @@ SVED::__eliminateNodesDownward(const Instance* from, const Instance* i,
                                List<const Instance*>& elim_list,
                                Set<const Instance*>& ignore)
 {
+  GUM_TRACE(i->name());
   ignore.insert(i);
   // Extracting required attributes and slotchains
   Set<NodeId>& attr_set = __getAttrSet(i);
@@ -175,6 +182,7 @@ SVED::__eliminateNodesUpward(const Instance* i,
                              List<const Instance*>& elim_list,
                              Set<const Instance*>& ignore)
 {
+  GUM_TRACE(i->name());
   ignore.insert(i);
   // Extracting required attributes and slotchains
   Set<NodeId>& attr_set = __getAttrSet(i);
@@ -233,6 +241,9 @@ SVED::__eliminateNodesUpward(const Instance* i,
 void
 SVED::__eliminatNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet& trash)
 {
+  {
+    GUM_TRACE(i->name());
+  }
   // First we check if evidences are on inner nodes
   bool inner = false;
   for (EMapIterator e = evidence(i).begin(); e != evidence(i).end(); ++e) {
@@ -393,6 +404,13 @@ SVED::_marginal(const Chain& chain, Potential<prm_float>& m)
   const Attribute* elt = chain.second;
   SVED::BucketSet pool, trash;
   __bb.compute(i, elt->id());
+  {
+    try {
+      GUM_TRACE(__bb.requisiteNodes(chain.first).exists(chain.second->id()));
+    } catch (NotFound&) {
+      GUM_TRACE("not found");
+    }
+  }
   __eliminateNodes(i, elt->id(), pool, trash);
   m.fill((prm_float) 1);
   for (SVED::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter) {
@@ -413,8 +431,7 @@ SVED::_marginal(const Chain& chain, Potential<prm_float>& m)
     delete *iter;
   }
   __lifted_pools.clear();
-  typedef HashTable< const Set<NodeId>*, std::pair<Set<NodeId>*, Set<NodeId>*> >::iterator
-          ReqIter;
+  typedef HashTable< const Set<NodeId>*, std::pair<Set<NodeId>*, Set<NodeId>*> >::iterator ReqIter;
   for (ReqIter iter = __req_set.begin(); iter != __req_set.end(); ++iter) {
     delete iter->first;
     delete iter->second;

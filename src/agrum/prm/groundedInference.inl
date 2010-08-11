@@ -44,19 +44,6 @@ GroundedInference::GroundedInference(const GroundedInference& source):
 }
 
 INLINE
-GroundedInference::~GroundedInference() {
-  GUM_DESTRUCTOR( GroundedInference );
-  if (__inf != 0) {
-    delete __inf;
-  }
-  if (not __obs.empty()) {
-    for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
-      delete *iter;
-    }
-  }
-}
-
-INLINE
 GroundedInference&
 GroundedInference::operator=(const GroundedInference& source) {
   GUM_ERROR(FatalError, "illegal call to copy operator");
@@ -83,36 +70,14 @@ GroundedInference::setBNInference(BayesNetInference<prm_float>* bn_inf) {
 
 INLINE
 void
-GroundedInference::_evidenceAdded(const Chain& chain) {
-  Potential<prm_float>* e = new Potential<prm_float>();
-  e->add(chain.second->type().variable());
-  Instantiation i(*e);
-  for (i.setFirst(); not i.end(); i.inc()) {
-    e->set(i, evidence(chain.first)[chain.second->id()]->get(i));
-  }
-  __obs.insert(e);
-}
-
-INLINE
-void
-GroundedInference::_evidenceRemoved(const Chain& chain) {
-  for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
-    if ((**iter).contains(chain.second->type().variable())) {
-      __inf->eraseEvidence(*iter);
-      __obs.erase(iter);
-      delete *iter;
-      break;
-    }
-  }
-}
-
-INLINE
-void
 GroundedInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
   if (__inf == 0) {
     GUM_ERROR(OperationNotAllowed, "no inference engine defined");
   }
   std::stringstream sBuff;
+  if (not __obs.empty()) {
+    __inf->insertEvidence(reinterpret_cast< const List< const Potential<prm_float>* >& >(__obs));
+  }
   sBuff << chain.first->name() << "." << chain.second->safeName();
   m = __inf->marginal(__inf->bn().idFromName(sBuff.str()));
 }

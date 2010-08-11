@@ -162,11 +162,6 @@ class SVED: public PRMInference{
 
     Set<NodeId>& __getSCSet(const Instance* i);
 
-    void __callDownwardElimination(const Instance* i, NodeId attr,
-                                   BucketSet& pool, BucketSet& trash,
-                                   List<const Instance*>& elim_list,
-                                   Set<const Instance*>& ignore);
-
     void __reduceElimList(const Instance* i, List<const Instance*>& elim_list,
                           List<const Instance*>& reduced_list,
                           Set<const Instance*>& ignore,

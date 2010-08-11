@@ -249,9 +249,11 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Val> INLINE
   bool HashTableList<Key,Val>::exists( const Key& key ) const  {
-    for ( HashTableBucket<Key, Val> *ptr = __deb_list; ptr; ptr = ptr->next )
-      if ( ptr->key == key ) return true;
-
+    for ( HashTableBucket<Key, Val> *ptr = __deb_list; ptr; ptr = ptr->next ) {
+      if ( ptr->key == key ) {
+        return true;
+      }
+    }
     return false;
   }
 

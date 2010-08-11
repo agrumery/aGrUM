@@ -130,25 +130,13 @@ PRMInference::__removeEvidence(const Chain& chain) {
 }
 
 INLINE
-PRMInference::EMap&
-PRMInference::__EMap(const Instance* i) {
-  try {
-    return *(__evidences[i]);
-  } catch (NotFound&) {
-    __evidences.insert(i, new PRMInference::EMap());
-    return *(__evidences[i]);
-  }
-}
-
-INLINE
 void
 PRMInference::marginal(const PRMInference::Chain& chain, Potential<prm_float>& m) {
   if (m.nbrDim() > 0) {
     GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
   if (chain.second != &(chain.first->get(chain.second->safeName()))) {
-    PRMInference::Chain good_chain = std::make_pair(chain.first,
-        &(chain.first->get(chain.second->safeName())));
+    PRMInference::Chain good_chain = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
     m.add(good_chain.second->type().variable());
     _marginal(good_chain, m);
   } else {
