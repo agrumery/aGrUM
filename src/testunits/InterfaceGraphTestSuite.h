@@ -61,7 +61,7 @@ class InterfaceGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
 
-    void testTopologie() {
+    void testMicroTopologie() {
       InterfaceGraph* ig = 0;
       System& m = __prm->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
@@ -81,7 +81,7 @@ class InterfaceGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
 
-    void testLabelsOnNodes() {
+    void testMicroLabelsOnNodes() {
       InterfaceGraph* ig = 0;
       System& m = __prm->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
@@ -106,19 +106,108 @@ class InterfaceGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
 
-    void testLabelsOnEdges() {
+    void testMicroLabelsOnEdges() {
       InterfaceGraph* ig = 0;
       System& m = __prm->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
       // Test difference
-      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")),               ig->id(m.get("p"))).l,
-                        ig->edge(ig->id(m.get("pow")),               ig->id(m.get("c"))).l);
-      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")),               ig->id(m.get("p"))).l,
-                        ig->edge(ig->id(m.get("p")),                 ig->id(m.get("c"))).l);
-      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")),               ig->id(m.get("c"))).l,
-                        ig->edge(ig->id(m.get("p")),                 ig->id(m.get("c"))).l);
+      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l,
+                        ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l);
+      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l,
+                        ig->edge(ig->id(m.get("p")),   ig->id(m.get("c"))).l);
+      TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l,
+                        ig->edge(ig->id(m.get("p")),   ig->id(m.get("c"))).l);
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
+
+    std::string getPrinter(int i) const {
+      std::stringstream sBuff;
+      sBuff << "printers[" << i << "]";
+      return sBuff.str();
+    }
+
+    std::string getComputer(int i) const {
+      std::stringstream sBuff;
+      sBuff << "computers[" << i << "]";
+      return sBuff.str();
+    }
+
+    void testSmallTopologie() {
+      InterfaceGraph* ig = 0;
+      System& m = __prm->getSystem("smallSys");
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
+      // Checking existing nodes
+      int node_count = 0;
+      TS_ASSERT(ig->graph().existsNode(ig->id(m.get("pow"))));
+      TS_ASSERT(ig->graph().existsNode(ig->id(m.get("r"))));
+      node_count += 2;
+      for (int i = 0; i < 2; ++i, ++node_count) {
+        TS_ASSERT(ig->graph().existsNode(ig->id(m.get(getPrinter(i)))));
+      }
+      TS_ASSERT(ig->graph().existsNode(ig->id(m.get("another_printer"))));
+      ++node_count;
+      for (int i = 0; i < 4; ++i, ++node_count) {
+        TS_ASSERT(ig->graph().existsNode(ig->id(m.get(getComputer(i)))));
+      }
+      TS_ASSERT(ig->graph().existsNode(ig->id(m.get("another_computer"))));
+      ++node_count;
+      TS_ASSERT_EQUALS(ig->graph().size(), (Size) node_count);
+      // Checking existing edges from pow
+      int edge_count = 0;
+      for (int i = 0; i < 2; ++i, ++edge_count) {
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getPrinter(i)))));
+      }
+      TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))));
+      ++edge_count;
+      for (int i = 0; i < 4; ++i, ++edge_count) {
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getComputer(i)))));
+      }
+      TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))));
+      ++edge_count;
+      // Checking existing edges from printers
+      for (int i = 0; i < 2; ++i, ++edge_count) {
+        for (int j = 0; j < 4; ++j, ++edge_count) {
+          TS_ASSERT(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
+        }
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
+      }
+      for (int i = 0; i < 4; ++i, ++edge_count) {
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
+      }
+      TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))));
+      ++edge_count;
+      TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (Size) edge_count);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+    }
+
+    void testSmallLabelsOnNodes() {
+      InterfaceGraph* ig = 0;
+      System& m = __prm->getSystem("smallSys");
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
+      // Testing each labels size (the number of nodes with the given label)
+      TS_ASSERT_EQUALS (ig->size(ig->node(ig->id(m.get("pow"))).l), (Size) 1);
+      TS_ASSERT_EQUALS (ig->size(ig->node(ig->id(m.get("r"))).l), (Size) 1);
+      TS_ASSERT_EQUALS (ig->size(ig->node(ig->id(m.get("another_printer"))).l), (Size) 3);
+      TS_ASSERT_EQUALS (ig->size(ig->node(ig->id(m.get("another_computer"))).l), (Size) 5);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+    }
+
+    void testSmallLabelsOnEdges() {
+      InterfaceGraph* ig = 0;
+      System& m = __prm->getSystem("smallSys");
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new InterfaceGraph(m));
+      // Test difference
+      int edge_count = 0;
+      TS_ASSERT_EQUALS(ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))).l), (Size) 3);
+      edge_count += 3;
+      TS_ASSERT_EQUALS(ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))).l), (Size) 5);
+      edge_count += 5;
+      TS_ASSERT_EQUALS(ig->size(ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l), (Size) 15);
+      edge_count += 15;
+      TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (Size) edge_count);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+    }
+
 };
 
 } /* namespace test */
