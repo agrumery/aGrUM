@@ -39,10 +39,11 @@
 // ============================================================================
 namespace gum {
 namespace prm {
+class GSpan;
 namespace gspan {
 
 /**
- * @struct LabelData interfaceGraph.h <agrum/prm/interfaceGraph.h>
+ * @struct LabelData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
  * Inner class to handle data about labels in this interface graph.
  */
 struct LabelData {
@@ -78,7 +79,7 @@ struct LabelData {
 std::ostream& operator<<(std::ostream& out, const LabelData& data);
 
 /**
- * @struct NodeData interfaceGraph.h <agrum/prm/interfaceGraph.h>
+ * @struct NodeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
  * Inner class to handle data about nodes in __graph.
  */
 struct NodeData {
@@ -112,7 +113,7 @@ struct NodeData {
 std::ostream& operator<<(std::ostream& out, const NodeData& data);
 
 /**
- * @struct NodeData interfaceGraph.h <agrum/prm/interfaceGraph.h>
+ * @struct NodeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
  * Inner class to handle data about edges in __graph.
  */
 struct EdgeData {
@@ -153,10 +154,8 @@ struct EdgeData {
  */
 std::ostream& operator<<(std::ostream& out, const EdgeData& data);
 
-class GSpan;
-
 /**
- * @class InterfaceGraph interfaceGraph.h <agrum/prm/interfaceGraph.h>
+ * @class InterfaceGraph interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
  *
  * @brief This class represent the interface graph of a given gum::prm::System.
  *

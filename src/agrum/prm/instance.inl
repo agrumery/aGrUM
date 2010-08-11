@@ -431,6 +431,12 @@ Instance::getRefAttr(NodeId id) const {
   return *(__referingAttr[id]);
 }
 
+INLINE
+bool
+Instance::hasRefAttr(NodeId id) const {
+  return __referingAttr.exists(id) and (not __referingAttr[id]->empty());
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

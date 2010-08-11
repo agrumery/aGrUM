@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=InterfaceGraph
+SKOOL_TEST=DFSCode
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

@@ -348,6 +348,13 @@ class Instance: public PRMObject {
     const Set<Instance*>& getInstances(NodeId id) const;
 
     /**
+     * Returns true if id has at least one referring Attribute.
+     * @param id A NodeId.
+     * @retun returns true if is has at least one referring Attribute.
+     */
+    bool hasRefAttr(NodeId id) const;
+
+    /**
      * @brief Returns a vector of pairs of refering attributes of id.
      */
     std::vector< std::pair<Instance*, std::string> >& getRefAttr(NodeId id);
