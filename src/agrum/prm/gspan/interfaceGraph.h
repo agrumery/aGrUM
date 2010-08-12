@@ -48,12 +48,11 @@ namespace gspan {
  */
 struct LabelData {
   /// Constructor.
-  LabelData(): id(0) { GUM_CONSTRUCTOR( LabelData ); }
+  LabelData();
   /// Copy constructor.
-  LabelData(const LabelData& from): id(from.id), l(from.l)
-  { GUM_CONS_CPY( LabelData ); }
+  LabelData(const LabelData& from);
   /// Destructor.
-  ~LabelData() { GUM_DESTRUCTOR( LabelData ); }
+  ~LabelData();
   /// An unique identifier for this label.
   Idx id;
   /// The string version of this label.
@@ -61,13 +60,9 @@ struct LabelData {
   /// The size in terms of tree width of the given label.
   unsigned long size;
   /// Equality operator.
-  bool operator==(const LabelData& from) const {
-    return (id == from.id) and (l == from.l) and (size == from.size);
-  }
+  bool operator==(const LabelData& from) const;
   /// Difference operator.
-  bool operator!=(const LabelData& from) const {
-    return (id != from.id) and (l != from.l) and (size != from.size);
-  }
+  bool operator!=(const LabelData& from) const;
 };
 
 /**
@@ -84,24 +79,19 @@ std::ostream& operator<<(std::ostream& out, const LabelData& data);
  */
 struct NodeData {
   /// Constructor.
-  NodeData(): n(0), l(0) { GUM_CONSTRUCTOR( NodeData ); }
+  NodeData();
   /// Copy Constructor.
-  NodeData(const NodeData& from): n(from.n), l(from.l)
-  { GUM_CONS_CPY( NodeData ); }
+  NodeData(const NodeData& from);
   /// Destructor.
-  ~NodeData() { GUM_DESTRUCTOR( NodeData ); }
+  ~NodeData();
   /// The instance represented by this node.
   Instance* n;
   /// The label of this node.
   LabelData* l;
   /// Equality operator.
-  bool operator==(const NodeData& from) const {
-    return (n == from.n) and (l == from.l);
-  }
+  bool operator==(const NodeData& from) const;
   /// Difference operator.
-  bool operator!=(const NodeData& from) const {
-    return (n != from.n) and (l != from.l);
-  }
+  bool operator!=(const NodeData& from) const;
 };
 
 /**
@@ -118,12 +108,11 @@ std::ostream& operator<<(std::ostream& out, const NodeData& data);
  */
 struct EdgeData {
   /// Constructor.
-  EdgeData(): u(0), v(0), l(0) { GUM_CONSTRUCTOR( EdgeData ); }
+  EdgeData();
   /// Copy constructor.
-  EdgeData(const EdgeData& from): u(from.u), v(from.v), l(from.l)
-  { GUM_CONS_CPY( EdgeData ); }
+  EdgeData(const EdgeData& from);
   /// Destructor.
-  ~EdgeData() { GUM_DESTRUCTOR( EdgeData ); }
+  ~EdgeData();
   /// One of the two instance represented by this edge.
   Instance* u;
   /// The label data of u.
@@ -135,15 +124,9 @@ struct EdgeData {
   /// The labal data of this edge.
   LabelData* l;
   /// Equality operator.
-  bool operator==(const EdgeData& from) const {
-    return (u == from.u) and (l_u == from.l_u) and (v == from.v) and
-           (l_v == from.l_v) and (l == from.l);
-  }
+  bool operator==(const EdgeData& from) const;
   /// Difference operator.
-  bool operator!=(const EdgeData& from) const {
-    return (u != from.u) and (l_u != from.l_u) and (v != from.v) and
-           (l_v != from.l_v) and (l != from.l);
-  }
+  bool operator!=(const EdgeData& from) const;
 };
 
 /**
@@ -169,7 +152,7 @@ std::ostream& operator<<(std::ostream& out, const EdgeData& data);
  *
  */
 class InterfaceGraph {
-  friend class GSpan;
+  friend class gum::prm::GSpan;
 
   public:
 
@@ -258,8 +241,10 @@ class InterfaceGraph {
     /// Bijection between labels and their ids.
     Bijection<Idx, LabelData*>* __labels;
 
+    /// Mapping between a LabelData and the set of NodeData with that label.
     HashTable<LabelData*, Set<NodeData*>*> __nodeMap;
 
+    /// Mapping between a LabelData and the set of EdgeData with that label.
     HashTable<LabelData*, Set<EdgeData*>*> __edgeMap;
 
     /// A counter used of assigning ids to labels.

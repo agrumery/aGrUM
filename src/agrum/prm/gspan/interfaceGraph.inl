@@ -28,6 +28,110 @@ namespace gum {
 namespace prm {
 namespace gspan {
 
+// ============================================================================
+// LabelData
+// ============================================================================
+
+INLINE
+LabelData::LabelData(): id(0) { GUM_CONSTRUCTOR( LabelData ); }
+
+INLINE
+LabelData::LabelData(const LabelData& from): id(from.id), l(from.l)
+{ GUM_CONS_CPY( LabelData ); }
+
+INLINE
+LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
+
+INLINE
+bool
+LabelData::operator==(const LabelData& from) const {
+  return (id == from.id) and (l == from.l) and (size == from.size);
+}
+
+INLINE
+bool
+LabelData::operator!=(const LabelData& from) const {
+  return (id != from.id) and (l != from.l) and (size != from.size);
+}
+
+// ============================================================================
+// NodeData
+// ============================================================================
+
+INLINE
+NodeData::NodeData():
+  n(0), l(0)
+{
+  GUM_CONSTRUCTOR( NodeData );
+}
+
+INLINE
+NodeData::NodeData(const NodeData& from):
+  n(from.n), l(from.l)
+{
+  GUM_CONS_CPY( NodeData );
+}
+
+INLINE
+NodeData::~NodeData()
+{
+  GUM_DESTRUCTOR( NodeData );
+}
+
+INLINE
+bool
+NodeData::operator==(const NodeData& from) const {
+  return (n == from.n) and (l == from.l);
+}
+
+INLINE
+bool
+NodeData::operator!=(const NodeData& from) const {
+  return (n != from.n) and (l != from.l);
+}
+
+// ============================================================================
+// EdgeData
+// ============================================================================
+
+INLINE
+EdgeData::EdgeData():
+  u(0), v(0), l(0)
+{
+  GUM_CONSTRUCTOR( EdgeData );
+}
+
+INLINE
+EdgeData::EdgeData(const EdgeData& from):
+  u(from.u), v(from.v), l(from.l)
+{
+  GUM_CONS_CPY( EdgeData );
+}
+
+INLINE
+EdgeData::~EdgeData()
+{
+  GUM_DESTRUCTOR( EdgeData );
+}
+
+INLINE
+bool
+EdgeData::operator==(const EdgeData& from) const {
+  return (u == from.u) and (l_u == from.l_u) and (v == from.v) and
+         (l_v == from.l_v) and (l == from.l);
+}
+
+INLINE
+bool
+EdgeData::operator!=(const EdgeData& from) const {
+  return (u != from.u) and (l_u != from.l_u) and (v != from.v) and
+         (l_v != from.l_v) and (l != from.l);
+}
+
+// ============================================================================
+// InterfaceGraph
+// ============================================================================
+
 INLINE
 UndiGraph&
 InterfaceGraph::graph() { return __graph; }

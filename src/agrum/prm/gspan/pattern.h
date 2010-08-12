@@ -106,7 +106,6 @@ class Pattern: private DiGraph {
     /// Returns the LabelData assigned to arc.
     const LabelData& label(const Arc& arc) const;
 
-
     /**
      * @brief Add an arc to this Pattern.
      *
@@ -205,16 +204,32 @@ class Pattern: private DiGraph {
 
   private:
 
+    /// The DFSCode of this Pattern.
     DFSCode __code;
 
+    /// Mapping between nodes in this Pattern and their respective LabelData.
     Property<LabelData*>::onNodes __node_map;
 
+    /// Mapping between edges in this Pattern and their respective LabelData.
     Property<std::pair<LabelData*, EdgeCode*> >::onArcs __arc_map;
 
+    /// Returns true if the expand code by adding and edge betwenne u and v is minimal
+    /// with respect to __code.
+    /// @param u A node in this Pattern.
+    /// @param v A node in this Pattern.
+    /// @returns true if the expand code by adding and edge betwenne u and v is minimal
+    ///          with respect to __code.
     bool __expandCodeIsMinimal(NodeId u, NodeId v);
 
+    /// Recurisve method used by __expandCodeIsMinimal.
+    /// @param p A Pattern.
+    /// @param node_amp A bijection.
+    /// @param u A node in this Pattern.
+    /// @param v A node in this Pattern.
+    /// @return true if the expansion is minimal.
     bool __rec(Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v);
 
+    /// A non recursive bugged version of __rec.
     bool __not_rec(Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v);
 };
 

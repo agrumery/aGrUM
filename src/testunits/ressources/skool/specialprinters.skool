@@ -1,0 +1,160 @@
+type state_type ok, nok;
+
+class powersupply {
+  state_type state { [0.2, 0.8] };
+}
+
+class room {
+  powersupply power;
+}
+
+class equipment {
+  room r;
+  state_type state dependson r.power.state {
+    [0.8 , 0.2,
+     0.01, 0.99]
+  };
+}
+
+class printer extends equipment {
+
+}
+
+class computer extends equipment {
+  printer[] printers;
+
+  boolean exists = exists(printers.state, ok);
+
+  state_type canprint dependson state, exists {
+    [0.0, 1.0,
+     0.0, 1.0,
+     1.0, 0.0,
+     0.0, 1.0]
+  };
+}
+
+
+system m {
+
+powersupply pow;
+
+room s1;
+s1.power = pow;
+printer[1] s1_p1;
+s1_p1[0].r = s1;
+computer s1_c1;
+s1_c1.printers = s1_p1;
+s1_c1.r = s1;
+
+room s2;
+s2.power = pow;
+printer[1] s2_p1;
+s2_p1[0].r = s2;
+computer s2_c1;
+s2_c1.printers = s2_p1;
+s2_c1.r = s2;
+
+room s3;
+s3.power = pow;
+printer[1] s3_p1;
+s3_p1[0].r = s3;
+computer s3_c1;
+s3_c1.printers = s3_p1;
+s3_c1.r = s3;
+
+room s4;
+s4.power = pow;
+printer[1] s4_p1;
+s4_p1[0].r = s4;
+computer s4_c1;
+s4_c1.printers = s4_p1;
+s4_c1.r = s4;
+
+room s5;
+s5.power = pow;
+printer[1] s5_p1;
+s5_p1[0].r = s5;
+computer s5_c1;
+s5_c1.printers = s5_p1;
+s5_c1.r = s5;
+
+room v1;
+v1.power = pow;
+printer[1] v1_p1;
+v1_p1[0].r = v1;
+computer v1_c1;
+v1_c1.r = v1;
+v1_c1.printers = v1_p1;
+computer v1_c2;
+v1_c2.r = v1;
+v1_c2.printers = v1_p1;
+computer v1_c3;
+v1_c3.r = v1;
+v1_c3.printers = v1_p1;
+
+room v2;
+v2.power = pow;
+printer[1] v2_p1;
+v2_p1[0].r = v2;
+computer v2_c1;
+v2_c1.r = v2;
+v2_c1.printers = v2_p1;
+computer v2_c2;
+v2_c2.r = v2;
+v2_c2.printers = v2_p1;
+computer v2_c3;
+v2_c3.r = v2;
+v2_c3.printers = v2_p1;
+
+room v3;
+v3.power = pow;
+printer[1] v3_p1;
+v3_p1[0].r = v3;
+computer v3_c1;
+v3_c1.r = v3;
+v3_c1.printers = v3_p1;
+computer v3_c2;
+v3_c2.r = v3;
+v3_c2.printers = v3_p1;
+computer v3_c3;
+v3_c3.r = v3;
+v3_c3.printers = v3_p1;
+
+room x1;
+x1.power = pow;
+printer[2] x1_p;
+x1_p[0].r = x1;
+x1_p[1].r = x1;
+computer x1_c1;
+x1_c1.r = x1;
+x1_c1.printers = x1_p;
+
+room x2;
+x2.power = pow;
+printer[2] x2_p;
+x2_p[0].r = x2;
+x2_p[1].r = x2;
+computer x2_c1;
+x2_c1.r = x2;
+x2_c1.printers = x2_p;
+
+room x3;
+x3.power = pow;
+printer[2] x3_p;
+x3_p[0].r = x3;
+x3_p[1].r = x3;
+computer x3_c1;
+x3_c1.r = x3;
+x3_c1.printers = x3_p;
+
+room x4;
+x4.power = pow;
+printer[2] x4_p;
+x4_p[0].r = x4;
+x4_p[1].r = x4;
+computer x4_c1;
+x4_c1.r = x4;
+x4_c1.printers = x4_p;
+
+}
+

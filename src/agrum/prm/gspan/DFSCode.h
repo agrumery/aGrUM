@@ -59,22 +59,7 @@ class DFSCode {
      * @return Returns true of e2 is a valid neighbor for e1 (i.e. it respect
      *         the neighborhood restriction) if e1 precedes e2 in a DFSCode.
      */
-    static bool validNeighbors(EdgeCode* e1, EdgeCode* e2) {
-      if (e1->isBackward()) {
-        if (e2->isForward()) {
-          return (e2->i <= e1->i) and (e2->j = (e1->i + 1));
-        } else {
-          return (e2->i == e1->i) and (e1->j < e2->j);
-        }
-      } else {
-        // e1 is a forward edge
-        if (e2->isForward()) {
-          return (e2->i <= e1->j) and (e2->j == (e1->j + 1));
-        } else {
-          return (e2->i == e1->j) and (e2->j < e1->i);
-        }
-      }
-    }
+    static bool validNeighbors(EdgeCode* e1, EdgeCode* e2);
 
     /**
      * Default constructor.
@@ -149,6 +134,25 @@ class DFSCode {
  * @return Returns out after printing code in it.
  */
 std::ostream& operator<<(std::ostream& out, const DFSCode& code);
+
+inline
+bool
+DFSCode::validNeighbors(EdgeCode* e1, EdgeCode* e2) {
+  if (e1->isBackward()) {
+    if (e2->isForward()) {
+      return (e2->i <= e1->i) and (e2->j = (e1->i + 1));
+    } else {
+      return (e2->i == e1->i) and (e1->j < e2->j);
+    }
+  } else {
+    // e1 is a forward edge
+    if (e2->isForward()) {
+      return (e2->i <= e1->j) and (e2->j == (e1->j + 1));
+    } else {
+      return (e2->i == e1->j) and (e2->j < e1->i);
+    }
+  }
+}
 
 } /* namespace gspan */
 } /* namespace prm */

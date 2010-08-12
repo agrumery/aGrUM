@@ -38,8 +38,8 @@ void
 DFSTree::addRoot(LabelData& label) {
   HashTable<Pattern*, std::pair<Idx, Idx> > roots;
   HashTable<Pattern*, Sequence<EdgeData*>* > roots_edges;
-  Set<EdgeData*>& edges = __graph->edges(&label);
-  for (Set<EdgeData*>::iterator iter = edges.begin(); iter != edges.end(); ++iter) {
+  const Set<EdgeData*>& edges = __graph->edges(&label);
+  for (Set<EdgeData*>::const_iterator iter = edges.begin(); iter != edges.end(); ++iter) {
     bool u_first = ((*iter)->l_u->id < (*iter)->l_v->id)?true:false;
     Idx u_idx = (u_first)?(*iter)->l_u->id:(*iter)->l_v->id;
     Idx v_idx = (not u_first)?(*iter)->l_u->id:(*iter)->l_v->id;
@@ -158,7 +158,7 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
       /// Adding the isomorphism in the iso_graph and building the iso_map.
       if (child->code().codes.back()->isForward()) {
         if ((*seq)->exists(match->first) and (not (*seq)->exists(match->second))) {
-          // Let's see if the new match is on already matched
+          // Let's see if the new match is already matched
           Sequence<Instance*>* new_seq = new Sequence<Instance*>(**seq);
           new_seq->insert(match->second);
           if (__is_new_seq(*new_seq, data->iso_map)) {
@@ -237,7 +237,7 @@ DFSTree::frequency(const Pattern& p) const {
 }
 
 double
-DFSTree::cost(const Pattern& p) {
+DFSTree::cost(const Pattern& p) const {
   if (__data[const_cast<Pattern*>(&p)]->cost == 0) {
     Size cost = 1;
     Sequence<Instance*>& seq = **(__data[const_cast<Pattern*>(&p)]->iso_map.begin());
@@ -276,7 +276,7 @@ DFSTree::cost(const Pattern& p) {
 }
 
 double
-DFSTree::gain(const Pattern& p) {
+DFSTree::gain(const Pattern& p) const {
   if (__data[const_cast<Pattern*>(&p)]->gain == 0) {
     Size gain = 0;
     Sequence<Instance*>& seq = **(__data[const_cast<Pattern*>(&p)]->iso_map.begin());
@@ -297,6 +297,62 @@ DFSTree::gain(const Pattern& p) {
     __data[const_cast<Pattern*>(&p)]->gain = gain;
   }
   return (double) __data[const_cast<Pattern*>(&p)]->gain;
+}
+
+INLINE
+void
+DFSTree::__find_sub_pattern(Pattern& p, NodeId iso_map) {
+  // PatternData& data = *(__data[&p]);
+  // Sequence<Instance*>& seq = *(data.iso_map[iso_map]);
+  // HashTable<ClassElement*, Size>* elt_map = new HashTable<ClassElement*, Size>();
+  // ClassElement* elt = 0;
+  // for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
+  //   for (Set<SlotChain*>::iterator sc = (*iter)->slotChains().begin();
+  //        sc != (*iter)->slotChains().end(); ++sc) {
+  //     elt = const_cast<ClassElement*>(&((*sc)->lastElt()));
+  //     if (not elt_map->exists(elt)) {
+  //       elt_map->insert(elt, 0);
+  //     }
+  //     for (Set<Instance*>::iterator i = (*iter)->getInstances((*sc)->id()).begin();
+  //          i != (*iter)->getInstances((*sc)->id()).end(); ++i) {
+  //       if (not seq.exists(*i)) {
+  //         ++((*elt_map)[elt]);
+  //       }
+  //     }
+  //     if ((*elt_map)[elt] == 0) {
+  //       elt_map->erase(elt);
+  //     }
+  //   }
+  // }
+  // typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
+  // for (SubPatIter iter = data.sub_patterns.begin(); iter != data.sub_patterns.end(); ++iter) {
+  //   if (__test_equality(**iter, *elt_map)) {
+  //     data.sub_patterns_map.insert(iso_map, data.sub_patterns.pos(*iter));
+  //     ++(data.sub_patterns_count[data.sub_patterns.pos(*iter)]);
+  //     break;
+  //   }
+  // }
+  // if (data.sub_patterns_map.exists(iso_map)) {
+  //   delete elt_map;
+  // } else {
+  //   data.sub_patterns_map.insert(iso_map, data.sub_patterns.size());
+  //   data.sub_patterns.insert(elt_map);
+  //   data.sub_patterns_count.push_back((Size) 1);
+  // }
+}
+
+INLINE
+bool
+DFSTree::__test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y) {
+  for (HashTable<ClassElement*, Size>::iterator iter = x.begin(); iter != x.end(); ++iter) {
+    try {
+      if (y[iter.key()] != (*iter))
+        return false;
+    } catch (NotFound&) {
+      return false;
+    }
+  }
+  return true;
 }
 
 } /* namespace gspan */

@@ -59,10 +59,11 @@ class DFSTree: private DiGraph {
     // ==========================================================================
     /// @{
 
-    // Default constructor.
-    DFSTree(InterfaceGraph* graph);
+    /// Default constructor.
+    //DFSTree(InterfaceGraph* graph);
+    DFSTree(const InterfaceGraph& graph);
 
-    // Destructor.
+    /// Destructor.
     ~DFSTree();
 
     /// @}
@@ -133,11 +134,7 @@ class DFSTree: private DiGraph {
       /// The mapping between the u and v for each match in the interface graph.
       Property< std::pair<Instance*, Instance*> >::onNodes matches;
       /// Return a string representation of this
-      std::string toString() {
-        std::stringstream str;
-        str << u << "-" << edge << "-" << l_v << "-" << v;
-        return str.str();
-      }
+      std::string toString();
       private:
       /// The iso graph for computing the maximum independent set of matches.
       UndiGraph iso_graph;
@@ -213,46 +210,44 @@ class DFSTree: private DiGraph {
      */
     Set<NodeId>& max_indep_set(const Pattern& p);
 
+    /**
+     * Returns the sub_patterns member of the PatternData associated to p.
+     * @param p A Pattern.
+     * @return the sub_patterns member of the PatternData associated to p.
+     */
     Sequence< HashTable<ClassElement*, Size>* >& sub_patterns(const Pattern& p);
 
+    /**
+     * Returns the sub_patterns_map member of the PatternData associated to p.
+     * @param p A Pattern.
+     * @return the sub_patterns_map member of the PatternData associated to p.
+     */
     HashTable<NodeId, Idx>& sub_patterns_map(const Pattern& p);
 
     /// Returns the frequency of p respecting it's maximal independent set.
     double frequency(const Pattern& p) const;
 
     /// Returns the cost induced by p.
-    double cost(const Pattern& p);
+    double cost(const Pattern& p) const;
 
     /// Returns the gain induced by p.
-    double gain(const Pattern& p);
+    double gain(const Pattern& p) const;
 
     /// Returns the score of p.
-    double score(const Pattern& p);
+    double score(const Pattern& p) const;
 
     /// @class This is used to generate the max_indep_set of a Pattern.
     struct NeighborDegreeSort {
       /// Constructor
-      NeighborDegreeSort(UndiGraph& graph):
-        g(graph)
-      {
-        GUM_CONSTRUCTOR( DFSTree::NeighborDegreeSort );
-      }
+      NeighborDegreeSort(UndiGraph& graph);
       /// Copy constructor.
-      NeighborDegreeSort(const NeighborDegreeSort& source):
-        g(source.g)
-      {
-        GUM_CONS_CPY( DFSTree::NeighborDegreeSort );
-      }
+      NeighborDegreeSort(const NeighborDegreeSort& source);
       /// Destructor.
-      ~NeighborDegreeSort() {
-        GUM_DESTRUCTOR( DFSTree::NeighborDegreeSort );
-      }
+      ~NeighborDegreeSort();
+      /// The operator used to sort stuff.
+      bool operator() (NodeId i, NodeId j);
       /// The isomorphism graph.
       UndiGraph& g;
-      /// The operator used to sort stuff.
-      bool operator() (NodeId i, NodeId j) {
-        return g.neighbours(i).size() < g.neighbours(j).size();
-      }
     };
 
     /// @}
@@ -261,34 +256,11 @@ class DFSTree: private DiGraph {
     /// Stuff we want to know about patterns in this DFSTree.
     struct PatternData {
       /// Constructor.
-      PatternData(Pattern* p):
-        pattern(p), cost(0), gain(0)
-      {
-        GUM_CONSTRUCTOR( DFSTree::PatternData );
-      }
+      PatternData(Pattern* p);
       /// Copy constructor.
-      PatternData(const PatternData& from):
-        pattern(from.pattern), children(from.children), iso_graph(from.iso_graph),
-        max_indep_set(from.max_indep_set), cost(from.cost), gain(from.gain)
-      {
-        GUM_CONS_CPY( DFSTree::PatternData );
-        typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
-        for (Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter) {
-          iso_map.insert(iter.key(), new Sequence<Instance*>(**iter));
-        }
-      }
+      PatternData(const PatternData& from);
       /// Destructor.
-      ~PatternData() {
-        GUM_DESTRUCTOR( DFSTree::PatternData );
-        typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
-        for (Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter) {
-          delete *iter;
-        }
-        typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
-        for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
-          delete *iter;
-        }
-      }
+      ~PatternData();
       /// The pattern.
       Pattern* pattern;
       /// The list of the pattern's children, sorted lexicographically.
@@ -312,7 +284,7 @@ class DFSTree: private DiGraph {
     };
 
     /// The interface graph on which this DFSTree applies.
-    InterfaceGraph* __graph;
+    const InterfaceGraph* __graph;
 
     /// The list of root patterns in this DFSTree.
     std::list<NodeId> __roots;
@@ -329,13 +301,19 @@ class DFSTree: private DiGraph {
     /// Add a child to this DFSTree.
     void __addChild(Pattern& p, Pattern* child, EdgeGrowth& edge_growth);
 
-    void __find_sub_pattern(Pattern& p, NodeId iso_map);
-
-    bool __test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y);
-
+    /// Check if an instance match is redundant.
     bool __is_new_seq(Sequence<Instance*>& seq, Property<Sequence<Instance*>*>::onNodes& iso_map);
 
+    /// This initialize the DSFTree with a new root.
+    /// @param p A Pattern.
+    /// @param seq A sequence of EdgeData.
     void __initialiaze_root(Pattern* p, Sequence<EdgeData*>& seq);
+
+    // Can't remember the use of this method.
+    void __find_sub_pattern(Pattern& p, NodeId iso_map);
+
+    // Used by __find_sub_pattern.
+    bool __test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y);
 
 };
 

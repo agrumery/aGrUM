@@ -29,8 +29,8 @@ namespace prm {
 namespace gspan {
 
 INLINE
-DFSTree::DFSTree(InterfaceGraph* graph):
-  __graph(graph)
+DFSTree::DFSTree(const InterfaceGraph& graph):
+  __graph(&graph)
 {
   GUM_CONSTRUCTOR( DFSTree );
 }
@@ -210,9 +210,32 @@ DFSTree::__addChild(Pattern& p, Pattern* child, EdgeGrowth& edge_growth) {
 
 INLINE
 double
-DFSTree::score(const Pattern& p) {
+DFSTree::score(const Pattern& p)  const {
   return frequency(p) * (gain(p) / cost(p));
 }
+
+INLINE
+std::ostream&
+operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge) {
+  out << edge.u << ", " << *(edge.edge) << ", " << *(edge.l_v) << ", " << edge.v;
+  return out;
+}
+
+INLINE
+Sequence< HashTable<ClassElement*, Size>* >&
+DFSTree::sub_patterns(const Pattern& p) {
+  return __data[const_cast<Pattern*>(&p)]->sub_patterns;
+}
+
+INLINE
+HashTable<NodeId, Idx>&
+DFSTree::sub_patterns_map(const Pattern& p) {
+  return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
+}
+
+// ============================================================================
+// EdgeGrowth
+// ============================================================================
 
 INLINE
 DFSTree::EdgeGrowth::EdgeGrowth(NodeId a_u, LabelData* an_edge,
@@ -259,80 +282,77 @@ DFSTree::EdgeGrowth::insert(Instance* u, Instance* v) {
 }
 
 INLINE
-std::ostream&
-operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge) {
-  out << edge.u << ", " << *(edge.edge) << ", " << *(edge.l_v) << ", " << edge.v;
-  return out;
+std::string
+DFSTree::EdgeGrowth::toString() {
+  std::stringstream str;
+  str << u << "-" << edge << "-" << l_v << "-" << v;
+  return str.str();
+}
+
+// ============================================================================
+// NeighborDegreeSort
+// ============================================================================
+
+INLINE
+DFSTree::NeighborDegreeSort::NeighborDegreeSort(UndiGraph& graph):
+  g(graph)
+{
+  GUM_CONSTRUCTOR( DFSTree::NeighborDegreeSort );
+}
+
+INLINE
+DFSTree::NeighborDegreeSort::NeighborDegreeSort(const NeighborDegreeSort& source):
+  g(source.g)
+{
+  GUM_CONS_CPY( DFSTree::NeighborDegreeSort );
+}
+
+INLINE
+DFSTree::NeighborDegreeSort::~NeighborDegreeSort() {
+  GUM_DESTRUCTOR( DFSTree::NeighborDegreeSort );
 }
 
 INLINE
 bool
-DFSTree::__test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y) {
-  for (HashTable<ClassElement*, Size>::iterator iter = x.begin(); iter != x.end(); ++iter) {
-    try {
-      if (y[iter.key()] != (*iter))
-        return false;
-    } catch (NotFound&) {
-      return false;
-    }
+DFSTree::NeighborDegreeSort::operator() (NodeId i, NodeId j) {
+  return g.neighbours(i).size() < g.neighbours(j).size();
+}
+
+// ============================================================================
+// PatternData
+// ============================================================================
+
+INLINE
+DFSTree::PatternData::PatternData(Pattern* p):
+  pattern(p), cost(0), gain(0)
+{
+  GUM_CONSTRUCTOR( DFSTree::PatternData );
+}
+
+INLINE
+DFSTree::PatternData::PatternData(const PatternData& from):
+  pattern(from.pattern), children(from.children), iso_graph(from.iso_graph),
+  max_indep_set(from.max_indep_set), cost(from.cost), gain(from.gain)
+{
+  GUM_CONS_CPY( DFSTree::PatternData );
+  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
+  for (Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter) {
+    iso_map.insert(iter.key(), new Sequence<Instance*>(**iter));
   }
-  return true;
 }
 
 INLINE
-Sequence< HashTable<ClassElement*, Size>* >&
-DFSTree::sub_patterns(const Pattern& p) {
-  return __data[const_cast<Pattern*>(&p)]->sub_patterns;
+DFSTree::PatternData::~PatternData() {
+  GUM_DESTRUCTOR( DFSTree::PatternData );
+  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
+  for (Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter) {
+    delete *iter;
+  }
+  typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
+  for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
+    delete *iter;
+  }
 }
-
-INLINE
-HashTable<NodeId, Idx>&
-DFSTree::sub_patterns_map(const Pattern& p) {
-  return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
-}
-
-INLINE
-void
-DFSTree::__find_sub_pattern(Pattern& p, NodeId iso_map) {
-  // PatternData& data = *(__data[&p]);
-  // Sequence<Instance*>& seq = *(data.iso_map[iso_map]);
-  // HashTable<ClassElement*, Size>* elt_map = new HashTable<ClassElement*, Size>();
-  // ClassElement* elt = 0;
-  // for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-  //   for (Set<SlotChain*>::iterator sc = (*iter)->slotChains().begin();
-  //        sc != (*iter)->slotChains().end(); ++sc) {
-  //     elt = const_cast<ClassElement*>(&((*sc)->lastElt()));
-  //     if (not elt_map->exists(elt)) {
-  //       elt_map->insert(elt, 0);
-  //     }
-  //     for (Set<Instance*>::iterator i = (*iter)->getInstances((*sc)->id()).begin();
-  //          i != (*iter)->getInstances((*sc)->id()).end(); ++i) {
-  //       if (not seq.exists(*i)) {
-  //         ++((*elt_map)[elt]);
-  //       }
-  //     }
-  //     if ((*elt_map)[elt] == 0) {
-  //       elt_map->erase(elt);
-  //     }
-  //   }
-  // }
-  // typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
-  // for (SubPatIter iter = data.sub_patterns.begin(); iter != data.sub_patterns.end(); ++iter) {
-  //   if (__test_equality(**iter, *elt_map)) {
-  //     data.sub_patterns_map.insert(iso_map, data.sub_patterns.pos(*iter));
-  //     ++(data.sub_patterns_count[data.sub_patterns.pos(*iter)]);
-  //     break;
-  //   }
-  // }
-  // if (data.sub_patterns_map.exists(iso_map)) {
-  //   delete elt_map;
-  // } else {
-  //   data.sub_patterns_map.insert(iso_map, data.sub_patterns.size());
-  //   data.sub_patterns.insert(elt_map);
-  //   data.sub_patterns_count.push_back((Size) 1);
-  // }
-}
-
 
 } /* namespace gspan */
 } /* namespace prm */
