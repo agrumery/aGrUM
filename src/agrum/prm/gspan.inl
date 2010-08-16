@@ -45,6 +45,7 @@ GSpan::~GSpan() {
   for (BNIter iter = __bn_map.begin(); iter != __bn_map.end(); ++iter) {
     delete *iter;
   }
+  delete __graph;
 }
 
 INLINE

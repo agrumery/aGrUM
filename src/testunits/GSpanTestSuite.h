@@ -55,9 +55,9 @@ class GSpanTestSuite: public CxxTest::TestSuite {
     }
 
     void tearDown() {
-      delete __driver;
-      if (__driver->prm() != 0) delete __driver->prm();
       delete ig;
+      if (__driver->prm() != 0) delete __driver->prm();
+      delete __driver;
     }
 
     void testInterfaceGraph() {
@@ -66,10 +66,12 @@ class GSpanTestSuite: public CxxTest::TestSuite {
     }
 
     void testTree() {
-      // GSpan* gspan = 0;
-      // TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->getSystem("m"), 2, 5));
-      // if (gspan != 0) {
-      //   TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
+      GSpan* gspan = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->getSystem("m"), 2, 5));
+      if (gspan != 0) {
+        TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
+        TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);
+      }
       //   // DFSTree& tree = gspan->tree();
       //   // std::vector<NodeId> stack;
       //   // int count = 0;
@@ -134,8 +136,6 @@ class GSpanTestSuite: public CxxTest::TestSuite {
       //   //GUM_TRACE_VAR(bn.toDot());
       //   //BIFWriter<prm_float> writer;
       //   //TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-      //   TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);
-      // }
     }
 
 };

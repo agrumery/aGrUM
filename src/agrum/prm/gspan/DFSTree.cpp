@@ -66,17 +66,17 @@ DFSTree::addRoot(LabelData& label) {
     }
   }
   // This is used to compute the max independent set of p->max_indep_set
-  for (HashTable<Pattern*, Sequence<EdgeData*>*>::iterator root = roots_edges.begin();
-       root != roots_edges.end(); ++root) {
+  for (HashTable<Pattern*, Sequence<EdgeData*>*>::iterator root = roots_edges.begin(); root != roots_edges.end(); ++root) {
     __initialiaze_root(root.key(), **root);
+    delete *root;
   }
 }
 
 void
-DFSTree::__initialiaze_root(Pattern* p, Sequence<EdgeData*>& seq) {
+DFSTree::__initialiaze_root(Pattern* p, Sequence<EdgeData*>& edge_seq) {
   DFSTree::PatternData* data = __data[p];
   std::vector<NodeId> degree_list;
-  for (Sequence<EdgeData*>::iterator edge = seq.begin(); edge != seq.end(); ++edge) {
+  for (Sequence<EdgeData*>::iterator edge = edge_seq.begin(); edge != edge_seq.end(); ++edge) {
     bool u_first = ((*edge)->l_u->id < (*edge)->l_v->id)?true:false;
     Sequence<Instance*>* seq = new Sequence<Instance*>();
     // Creating the multiset of instances matching p
@@ -164,6 +164,8 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
           if (__is_new_seq(*new_seq, data->iso_map)) {
             id = data->iso_graph.insertNode();
             data->iso_map.insert(id, new_seq);
+          } else {
+            delete new_seq;
           }
           break;
         }
@@ -173,6 +175,8 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
           if (__is_new_seq(*new_seq, data->iso_map)) {
             id = data->iso_graph.insertNode();
             data->iso_map.insert(id, new_seq);
+          } else {
+            delete new_seq;
           }
           break;
         }
@@ -245,19 +249,17 @@ DFSTree::cost(const Pattern& p) const {
     for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
       for (Set<SlotChain*>::iterator input = (*iter)->type().slotChains().begin(); input != (*iter)->type().slotChains().end(); ++input) {
         for (Set<Instance*>::iterator jter = (*iter)->getInstances((*input)->id()).begin(); jter != (*iter)->getInstances((*input)->id()).end(); ++jter) {
-          if ((not seq.exists(*jter)) and (not input_set.exists(&((*jter)->get((*input)->lastElt().id())))) ) {
+          if ((not seq.exists(*jter)) and (not input_set.exists(&((*jter)->get((*input)->lastElt().safeName())))) ) {
             cost *= (*input)->type().variable().domainSize();
-            input_set.insert(&((*jter)->get((*input)->lastElt().id())));
+            input_set.insert(&((*jter)->get((*input)->lastElt().safeName())));
           }
         }
       }
-      for (DAG::NodeIterator node = (*iter)->type().dag().beginNodes(); node != (*iter)->type().dag().endNodes(); ++node) {
-        for (Instance::InvRefIterator vec = (**iter).beginInvRef(); vec != (**iter).endInvRef(); ++vec) {
-          for (std::vector< std::pair<Instance*, std::string> >::iterator inverse = (**vec).begin(); inverse != (**vec).end(); ++inverse) {
-            if (not seq.exists(inverse->first)) {
-              cost *= (*iter)->get(*node).type().variable().domainSize();
-              break;
-            }
+      for (Instance::InvRefIterator vec = (**iter).beginInvRef(); vec != (**iter).endInvRef(); ++vec) {
+        for (std::vector< std::pair<Instance*, std::string> >::iterator inverse = (**vec).begin(); inverse != (**vec).end(); ++inverse) {
+          if (not seq.exists(inverse->first)) {
+            cost *= (*iter)->get(vec.key()).type().variable().domainSize();
+            break;
           }
         }
         // if ( (*iter)->type().isOutputNode((*iter)->type().get(*node)) and (*iter)->hasRefAttr(*node) ) {
@@ -354,6 +356,34 @@ DFSTree::__test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassEleme
   }
   return true;
 }
+
+// ============================================================================
+// PatternData
+// ============================================================================
+
+DFSTree::PatternData::PatternData(const PatternData& from):
+  pattern(from.pattern), children(from.children), iso_graph(from.iso_graph),
+  max_indep_set(from.max_indep_set), cost(from.cost), gain(from.gain)
+{
+  GUM_CONS_CPY( DFSTree::PatternData );
+  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
+  for (Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter) {
+    iso_map.insert(iter.key(), new Sequence<Instance*>(**iter));
+  }
+}
+
+DFSTree::PatternData::~PatternData() {
+  GUM_DESTRUCTOR( DFSTree::PatternData );
+  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
+  for (Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter) {
+    delete *iter;
+  }
+  typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
+  for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
+    delete *iter;
+  }
+}
+
 
 } /* namespace gspan */
 } /* namespace prm */

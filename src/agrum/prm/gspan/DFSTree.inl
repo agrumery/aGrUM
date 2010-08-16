@@ -329,31 +329,6 @@ DFSTree::PatternData::PatternData(Pattern* p):
   GUM_CONSTRUCTOR( DFSTree::PatternData );
 }
 
-INLINE
-DFSTree::PatternData::PatternData(const PatternData& from):
-  pattern(from.pattern), children(from.children), iso_graph(from.iso_graph),
-  max_indep_set(from.max_indep_set), cost(from.cost), gain(from.gain)
-{
-  GUM_CONS_CPY( DFSTree::PatternData );
-  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
-  for (Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter) {
-    iso_map.insert(iter.key(), new Sequence<Instance*>(**iter));
-  }
-}
-
-INLINE
-DFSTree::PatternData::~PatternData() {
-  GUM_DESTRUCTOR( DFSTree::PatternData );
-  typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
-  for (Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter) {
-    delete *iter;
-  }
-  typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
-  for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
-    delete *iter;
-  }
-}
-
 } /* namespace gspan */
 } /* namespace prm */
 } /* namespace gum */

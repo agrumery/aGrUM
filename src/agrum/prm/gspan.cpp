@@ -94,46 +94,52 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
     gspan::Pattern& p = *(stack.back());
     stack.pop_back();
     if (p.code().codes.size() < __depth_stop) {
-      //GUM_TRACE_VAR(p.code());
       // We need the rightmost path of p
       std::list<NodeId> r_path;
       p.rightmostPath(r_path);
       // Mapping used to count each possible child of p, the position in the vector
       // matches the one in the rightmost path
       std::vector< HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* > count_vector;
-      for (std::list<NodeId>::iterator plop = r_path.begin(); plop != r_path.end(); ++plop) {
+      for (size_t i = 0; i < r_path.size(); ++i) {
         count_vector.push_back(new HashTable<std::string, gspan::DFSTree::EdgeGrowth*>());
       }
-      // For each subgraph represented by p, we look for a valid edge growth
-      UndiGraph& iso_graph = __tree.iso_graph(p);
-      for (UndiGraph::NodeIterator iso_node = iso_graph.beginNodes(); iso_node != iso_graph.endNodes(); ++iso_node)
-      {
-        Sequence<Instance*>* seq = &(__tree.iso_map(p, *iso_node));
-        size_t idx = 0;
+      // Pointers used in the following for
+      HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* edge_count = 0;
+      gspan::DFSTree::EdgeGrowth* edge_growth = 0;
+      Sequence<Instance*>* seq = 0; Instance* current = 0; Instance* neighbor = 0;
+      // Neighbor_id is the neighbor's id in the interface graph and neighbor_node is its id in the rightmost path in the case
+      // of a backward edge growth
+      NodeId current_id = 0; NodeId neighbor_id = 0; NodeId neighbor_node =0;
+      gspan::LabelData* neighbor_label = 0; gspan::EdgeData* edge_data = 0;
+      size_t idx;
+      // For each subgraph represented by p, we look for a valid edge growth for each instance match of p in its isomorphism graph.
+      for (UndiGraph::NodeIterator iso_node = __tree.iso_graph(p).beginNodes(); iso_node != __tree.iso_graph(p).endNodes(); ++iso_node) {
+        seq = &(__tree.iso_map(p, *iso_node));
+        idx = 0;
         for (std::list<NodeId>::iterator node = r_path.begin(); node != r_path.end(); ++node, ++idx) {
-          HashTable<std::string, gspan::DFSTree::EdgeGrowth*>& edge_count = *(count_vector[idx]);
+          edge_count = count_vector[idx];
           // Retrieving the equivalent instance in the current match
-          Instance* current = seq->atPos((Idx) ((*node) - 1));
-          NodeId current_id = ig.id(current);
+          current = seq->atPos((Idx) ((*node) - 1));
+          current_id = ig.id(current);
           // Checking for edges not in p
           for (EdgeSet::iterator edge = ig.graph().neighbours(current_id).begin(); edge != ig.graph().neighbours(current_id).end(); ++edge) {
-            NodeId neighbor_id = edge->other(current_id);
-            Instance* neighbor = ig.node(neighbor_id).n;
+            neighbor_id = edge->other(current_id);
+            neighbor = ig.node(neighbor_id).n;
             // We want a forward edge in any case or a backward edge if current is the rightmost vertex
             if ( (not seq->exists(neighbor)) or ((*node) == r_path.back()) ) {
-              // Things we need to know
-              gspan::EdgeData& edge_data = ig.edge(current_id, neighbor_id);
-              gspan::LabelData* neighbor_label = (neighbor == edge_data.u)?edge_data.l_u:edge_data.l_v;
-              NodeId neighbor_node = (seq->exists(neighbor))?seq->pos(neighbor) + 1:0;
-              // The temp_growth
-              gspan::DFSTree::EdgeGrowth temp_growth(*node, edge_data.l, neighbor_label, neighbor_node);
+              // Things we need to know: the LabelData data of the neighbour and, if it's a backward edge, its node id in the rightmost path
+              edge_data = &(ig.edge(current_id, neighbor_id));
+              neighbor_label = (neighbor == edge_data->u)?edge_data->l_u:edge_data->l_v;
+              neighbor_node = (seq->exists(neighbor))?seq->pos(neighbor) + 1:0;
+              // Adding the edge growth to the edge_growth hashtable
+              gspan::DFSTree::EdgeGrowth temp_growth(*node, edge_data->l, neighbor_label, neighbor_node);
               try {
-                gspan::DFSTree::EdgeGrowth* edge_growth = edge_count[temp_growth.toString()];
+                edge_growth = (*edge_count)[temp_growth.toString()];
                 edge_growth->insert(current, neighbor);
               } catch (NotFound&) {
-                gspan::DFSTree::EdgeGrowth* edge_growth = new gspan::DFSTree::EdgeGrowth(*node, edge_data.l, neighbor_label, neighbor_node);
+                edge_growth = new gspan::DFSTree::EdgeGrowth(*node, edge_data->l, neighbor_label, neighbor_node);
                 edge_growth->insert(current, neighbor);
-                edge_count.insert(edge_growth->toString(), edge_growth);
+                edge_count->insert(edge_growth->toString(), edge_growth);
               }
             }
           }
@@ -165,30 +171,20 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
 }
 
 void
-GSpan::__printIsoMap(gspan::Pattern& p) {
-  Sequence<Instance*>& seq = __tree.iso_map(p, *(__tree.iso_graph(p).beginNodes()));
-  std::stringstream sBuff;
-  for (Size i = 0; i < seq.size(); ++i) {
-    sBuff << seq.atPos(i)->name() << " ";
-  }
-  std::cerr << std::endl << sBuff.str() << std::endl;
-}
-
-void
 GSpan::__sortPatterns() {
   // First we put all the patterns in __patterns.
   std::vector<NodeId> stack;
-  for (std::list<NodeId>::reverse_iterator root = tree().roots().rbegin();
-       root != tree().roots().rend(); ++root) {
+  for (std::list<NodeId>::reverse_iterator root = tree().roots().rbegin(); root != tree().roots().rend(); ++root) {
     stack.push_back(*root);
   }
   NodeId id = 0;
+  std::list<NodeId>* children = 0;
   while (not stack.empty()) {
     id = stack.back();
     stack.pop_back();
     __patterns.push_back(&(tree().pattern(id)));
-    for (std::list<NodeId>::reverse_iterator child = tree().children(tree().pattern(id)).rbegin();
-         child != tree().children(tree().pattern(id)).rend(); ++child) {
+    children = &(tree().children(tree().pattern(id)));
+    for (std::list<NodeId>::reverse_iterator child = children->rbegin(); child != children->rend(); ++child) {
       stack.push_back(*child);
     }
   }
@@ -199,24 +195,30 @@ GSpan::__sortPatterns() {
   GSpan::PatternSort my_sort(this);
   std::sort(__patterns.begin(), __patterns.end(), my_sort);
   // Now we need to find all the matches we can, using __patterns.
-  // We start by the best Pattern and add it's maximal independent set to chosen
+  // We start by the best Pattern and add it's maximal independent set to __chosen
   GSpan::MatchedInstances* matches = new GSpan::MatchedInstances();
-  for (Set<NodeId>::iterator node = tree().max_indep_set(*(__patterns.front())).begin();
-       node != tree().max_indep_set(*(__patterns.front())).end(); ++node) {
-    for (Sequence<Instance*>::iterator i = tree().iso_map(*(__patterns.front()), *node).begin();
-         i != tree().iso_map(*(__patterns.front()), *node).end(); ++i) {
+  Set<NodeId>& max_indep_set = tree().max_indep_set(*(__patterns.front()));
+  Sequence<Instance*>* match = 0;
+  for (Set<NodeId>::iterator node = max_indep_set.begin(); node != max_indep_set.end(); ++node) {
+    match = &(tree().iso_map(*(__patterns.front()), *node));
+    for (Sequence<Instance*>::iterator i = match->begin(); i != match->end(); ++i) {
       __chosen.insert(*i);
     }
-    matches->insert(&(tree().iso_map(*(__patterns.front()), *node)));
+    matches->insert(match);
   }
   __matched_instances.insert(__patterns.front(), matches);
   // Now we see what kind of pattern we can still use
+  bool found;
+  UndiGraph* iso_graph = 0;
+  const EdgeSet* neighbours = 0;
   for (std::vector<gspan::Pattern*>::iterator p = __patterns.begin() + 1; p != __patterns.end(); ++p) {
-    UndiGraph iso_graph;
+    UndiGraph reduced_iso_graph;
     std::vector<NodeId> degree_list;
-    for (UndiGraph::NodeIterator node = tree().iso_graph(**p).beginNodes(); node != tree().iso_graph(**p).endNodes(); ++node) {
-      bool found = false;
-      for (Sequence<Instance*>::iterator i = tree().iso_map(**p, *node).begin(); i != tree().iso_map(**p, *node).end(); ++i) {
+    iso_graph = &(tree().iso_graph(**p));
+    for (UndiGraph::NodeIterator node = iso_graph->beginNodes(); node != iso_graph->endNodes(); ++node) {
+      found = false;
+      match = &(tree().iso_map(**p, *node));
+      for (Sequence<Instance*>::iterator i = match->begin(); i != match->end(); ++i) {
         if (__chosen.exists(*i)) {
           found = true;
           break;
@@ -225,28 +227,28 @@ GSpan::__sortPatterns() {
       if (not found) {
         // We add stuff to compute the max independent set over the remaining
         // matches of p
-        iso_graph.insertNode(*node);
-        for (UndiGraph::NodeIterator iso = iso_graph.beginNodes(); iso != iso_graph.endNodes(); ++iso) {
-          if (tree().iso_graph(**p).existsEdge(*node, *iso)) {
-            iso_graph.insertEdge(*node, *iso);
+        reduced_iso_graph.insertNode(*node);
+        for (UndiGraph::NodeIterator iso = reduced_iso_graph.beginNodes(); iso != reduced_iso_graph.endNodes(); ++iso) {
+          if (iso_graph->existsEdge(*node, *iso)) {
+            reduced_iso_graph.insertEdge(*node, *iso);
           }
         }
         degree_list.push_back(*node);
       }
     }
     // We can compute the max independent set
-    matches = new GSpan::MatchedInstances();
-    gspan::DFSTree::NeighborDegreeSort my_sort(iso_graph);
+    gspan::DFSTree::NeighborDegreeSort my_sort(reduced_iso_graph);
     std::sort(degree_list.begin(), degree_list.end(), my_sort);
     Set<NodeId> removed;
     for (std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node) {
       if (not removed.exists(*node)) {
         removed.insert(*node);
-        for (EdgeSet::const_iterator neighbor = iso_graph.neighbours(*node).begin(); neighbor != iso_graph.neighbours(*node).end(); ++neighbor) {
+        neighbours = &(reduced_iso_graph.neighbours(*node));
+        for (EdgeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor) {
           removed.insert(((*node) != neighbor->first())?neighbor->first():neighbor->second());
         }
-        matches->insert(&(tree().iso_map(**p, *node)));
-        for (Sequence<Instance*>::iterator iter = tree().iso_map(**p, *node).begin(); iter != tree().iso_map(**p, *node).end(); ++iter) {
+        match = &(tree().iso_map(**p, *node));
+        for (Sequence<Instance*>::iterator iter = match->begin(); iter != match->end(); ++iter) {
           __chosen.insert(*iter);
         }
       }
@@ -519,6 +521,16 @@ GSpan::__fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq) {
   //     }
   //   }
   // }
+}
+
+void
+GSpan::__printIsoMap(gspan::Pattern& p) {
+  Sequence<Instance*>& seq = __tree.iso_map(p, *(__tree.iso_graph(p).beginNodes()));
+  std::stringstream sBuff;
+  for (Size i = 0; i < seq.size(); ++i) {
+    sBuff << seq.atPos(i)->name() << " ";
+  }
+  std::cerr << std::endl << sBuff.str() << std::endl;
 }
 
 } /* namespace prm */

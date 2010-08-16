@@ -49,6 +49,10 @@ namespace prm {
  * This class is not an inference algorithm for PRM, however it can be used to
  * speed up structured inference as it will discover repeated patterns including
  * more than one Instance.
+ *
+ * This algorithm proceeds in three main steps represented by the private
+ * methods GSpan::__sortNodesAndEdges(), GSpan::__subgraph_mining() and
+ * GSpan::__sortPatterns().
  */
 class GSpan {
 
