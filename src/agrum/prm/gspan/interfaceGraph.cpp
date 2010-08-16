@@ -181,7 +181,7 @@ InterfaceGraph::__label(NodeData* node, HashTable<std::string, LabelData*>& labe
     LabelData* label = new LabelData();
     label_map.insert(sBuff.str(), label);
     label->id = ++__counter;
-    label->size = size;
+    label->tree_width = size;
     label->l = sBuff.str();
     __labels->insert(label->id, label);
     __nodeMap.insert(label, new Set<NodeData*>());
@@ -217,7 +217,7 @@ InterfaceGraph::__label(EdgeData* edge, HashTable<std::string, LabelData*>& labe
     label_map.insert(sBuff.str(), label);
     label->id = ++__counter;
     label->l = sBuff.str();
-    label->size = size;
+    label->tree_width = size;
     __labels->insert(label->id, label);
     __edgeMap.insert(label, new Set<EdgeData*>());
   }

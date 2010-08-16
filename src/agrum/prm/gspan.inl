@@ -121,11 +121,18 @@ GSpan::interfaceGraph() const {
   return *__graph;
 }
 
-
 INLINE
 BayesNet<prm_float>&
 GSpan::baseBN(gspan::Pattern& p) {
   return *(__bn_map[&p]);
+}
+
+INLINE
+bool
+GSpan::__isEdgeEligible(gspan::EdgeData* e) {
+  return (__graph->edges(e->l).size() >= __min_freq) and
+         (__graph->nodes(e->l_u).size() >= __min_freq) and
+         (__graph->nodes(e->l_v).size() >= __min_freq);
 }
 
 // ============================================================================

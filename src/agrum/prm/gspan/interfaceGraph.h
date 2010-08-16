@@ -58,7 +58,7 @@ struct LabelData {
   /// The string version of this label.
   std::string l;
   /// The size in terms of tree width of the given label.
-  unsigned long size;
+  unsigned long tree_width;
   /// Equality operator.
   bool operator==(const LabelData& from) const;
   /// Difference operator.
@@ -103,7 +103,7 @@ struct NodeData {
 std::ostream& operator<<(std::ostream& out, const NodeData& data);
 
 /**
- * @struct NodeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
+ * @struct EdgeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
  * Inner class to handle data about edges in __graph.
  */
 struct EdgeData {

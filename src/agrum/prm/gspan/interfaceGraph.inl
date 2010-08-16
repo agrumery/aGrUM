@@ -45,13 +45,13 @@ LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
 INLINE
 bool
 LabelData::operator==(const LabelData& from) const {
-  return (id == from.id) and (l == from.l) and (size == from.size);
+  return (id == from.id) and (l == from.l) and (tree_width == from.tree_width);
 }
 
 INLINE
 bool
 LabelData::operator!=(const LabelData& from) const {
-  return (id != from.id) and (l != from.l) and (size != from.size);
+  return (id != from.id) and (l != from.l) and (tree_width != from.tree_width);
 }
 
 // ============================================================================

@@ -53,24 +53,17 @@ GSpan::discoverPatterns() {
 void
 GSpan::__sortNodesAndEdges() {
   typedef Bijection<Idx, gspan::LabelData*>::iterator BijIterator;
-  int count = 0;
   for (BijIterator iter = __graph->labels().begin(); iter != __graph->labels().end(); ++iter) {
     try {
-      if (__graph->nodes(iter.second()).size() > __min_freq) {
-        __cost.insert(iter.second(), __cost_func(iter.second()->size, __graph->nodes(iter.second()).size()));
+      if (__graph->nodes(iter.second()).size() >= __min_freq) {
+        __cost.insert(iter.second(), __cost_func(iter.second()->tree_width, __graph->nodes(iter.second()).size()));
         __nodes.push_back(const_cast<gspan::LabelData*>(iter.second()));
       }
     } catch (NotFound&) {
-      ++count;
       // It's a label over edges
-      gspan::EdgeData* e = *(__graph->edges(iter.second()).begin());
-      if ( (__graph->edges(iter.second()).size() >= __min_freq) and
-           (__graph->nodes(e->l_u).size() >= __min_freq) and
-           (__graph->nodes(e->l_v).size() >= __min_freq) )
-      {
-        __cost.insert(iter.second(), __cost_func(iter.second()->size, __graph->edges(iter.second()).size()));
+      if (__isEdgeEligible(*(__graph->edges(iter.second()).begin()))) {
+        __cost.insert(iter.second(), __cost_func(iter.second()->tree_width, __graph->edges(iter.second()).size()));
         __edges.push_back(iter.second());
-      } else {
       }
     }
   }

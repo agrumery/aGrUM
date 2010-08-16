@@ -285,6 +285,11 @@ class GSpan {
     /// Print an iso map. For debug purpose.
     void __printIsoMap(gspan::Pattern& p);
 
+    /// Returns true if e is an eligible root edge.
+    /// @param e An EdgeData.
+    /// @return true if e is an eligible root edge.
+    bool __isEdgeEligible(gspan::EdgeData* e);
+
     /// @}
     // ========================================================================
     /// @name Private junk code
