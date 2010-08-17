@@ -256,6 +256,9 @@ class GSpan {
     /// Contains all instance which belongs to a discovered and used pattern.
     Set<Instance*> __chosen;
 
+    /// The mapping between patterns and instances which can be used
+    HashTable<gspan::Pattern*, MatchedInstances* > __choosed_patterns;
+
     /// @}
     // ========================================================================
     /// @name Private Methods

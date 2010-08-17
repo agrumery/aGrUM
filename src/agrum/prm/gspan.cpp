@@ -225,8 +225,8 @@ GSpan::__sortPatterns() {
         }
       }
       if (not found) {
-        // We add stuff to compute the max independent set over the remaining
-        // matches of p
+        // We add the pattern to the reduced isomorphism graph to compute the max independent set
+        // over the remaining matches
         reduced_iso_graph.insertNode(*node);
         for (UndiGraph::NodeIterator iso = reduced_iso_graph.beginNodes(); iso != reduced_iso_graph.endNodes(); ++iso) {
           if (iso_graph->existsEdge(*node, *iso)) {
@@ -236,23 +236,29 @@ GSpan::__sortPatterns() {
         degree_list.push_back(*node);
       }
     }
-    // We can compute the max independent set
+    // We create a new set to hold all the chosen matches of p
+    matches = new GSpan::MatchedInstances();
+    // We can compute the max independent set and the matches belonging to it
     gspan::DFSTree::NeighborDegreeSort my_sort(reduced_iso_graph);
     std::sort(degree_list.begin(), degree_list.end(), my_sort);
     Set<NodeId> removed;
     for (std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node) {
       if (not removed.exists(*node)) {
+        // First we update removed to follow the max independent set algorithm
         removed.insert(*node);
         neighbours = &(reduced_iso_graph.neighbours(*node));
         for (EdgeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor) {
           removed.insert(((*node) != neighbor->first())?neighbor->first():neighbor->second());
         }
+        // Second we update match and matches to keep track of the current match
         match = &(tree().iso_map(**p, *node));
+        matches->insert(match);
         for (Sequence<Instance*>::iterator iter = match->begin(); iter != match->end(); ++iter) {
           __chosen.insert(*iter);
         }
       }
     }
+    __matched_instances.insert(*p, matches);
   }
 }
 
