@@ -151,6 +151,15 @@ class Class: public ClassElementContainer {
     bool isParameter(const ClassElement& elt) const;
 
     /**
+     * @brief Return true if the attribute named safe_name is a cast descendant.
+     * Cast descendant are automatically added Attribute for type casting.
+     * @param safe_name The safe name of an Attribute of this class.
+     * @return true if safe_name is a cast descendant.
+     * @throw NotFound Raised if safe_name does not name an Attribute in this Class.
+     */
+    bool isCastDescendant(const std::string& safe_name) const;
+
+    /**
      * @brief Add a parameter to this Class.
      *
      * Parameters are Attribute without any dependencies and for which a value

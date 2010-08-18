@@ -41,10 +41,10 @@ GSpan::~GSpan() {
   for (HashIterator match = __matched_instances.begin(); match != __matched_instances.end(); ++match) {
     delete *match;
   }
-  typedef HashTable<gspan::Pattern*, BayesNet<prm_float>*>::iterator BNIter;
-  for (BNIter iter = __bn_map.begin(); iter != __bn_map.end(); ++iter) {
-    delete *iter;
-  }
+  // typedef HashTable<gspan::Pattern*, BayesNet<prm_float>*>::iterator BNIter;
+  // for (BNIter iter = __bn_map.begin(); iter != __bn_map.end(); ++iter) {
+  //   delete *iter;
+  // }
   delete __graph;
 }
 
@@ -99,15 +99,15 @@ GSpan::patterns() const {
 }
 
 INLINE
-HashTable<gspan::Pattern*, GSpan::MatchedInstances*>&
-GSpan::matches() {
-  return __matched_instances;
+GSpan::MatchedInstances&
+GSpan::matches(const gspan::Pattern& p) {
+  return *(__matched_instances[const_cast<gspan::Pattern*>(&p)]);
 }
 
 INLINE
-const HashTable<gspan::Pattern*, GSpan::MatchedInstances*>&
-GSpan::matches() const {
-  return __matched_instances;
+const GSpan::MatchedInstances&
+GSpan::matches(const gspan::Pattern& p) const {
+  return *(__matched_instances[const_cast<gspan::Pattern*>(&p)]);
 }
 
 INLINE
@@ -122,11 +122,11 @@ GSpan::interfaceGraph() const {
   return *__graph;
 }
 
-INLINE
-BayesNet<prm_float>&
-GSpan::baseBN(gspan::Pattern& p) {
-  return *(__bn_map[&p]);
-}
+// INLINE
+// BayesNet<prm_float>&
+// GSpan::baseBN(gspan::Pattern& p) {
+//   return *(__bn_map[&p]);
+// }
 
 INLINE
 bool

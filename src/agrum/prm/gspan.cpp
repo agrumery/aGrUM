@@ -307,237 +307,357 @@ GSpan::__instance_cost(Instance* i) const {
   return cost;
 }
 
-void
-GSpan::generateBN(size_t number) {
-  for (size_t i = 0; i < number; ++i) {
-    NodeId id = *(__tree.iso_graph(*(__patterns[i])).beginNodes());
-    Sequence<Instance*>& seq = __tree.iso_map(*(__patterns[i]), id);
-    BayesNet<prm_float>* bn = __generateBNTopology(seq);
-    __bn_map.insert(__patterns[i], bn);
-  }
-}
-
-void
-GSpan::infer(size_t number) {
-  for (size_t i = 0; i < number; ++i) {
-    // First we list the base bn
-    BayesNet<prm_float>& bn = *(__bn_map[__patterns[i]]);
-    VariableElimination<prm_float> ve(bn);
-    ve.makeInference();
-    const std::vector<NodeId>& elim = ve.eliminationOrder();
-    Set<Potential<prm_float>*> pool;
-    for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-      pool.insert(const_cast<Potential<prm_float>*>(&(bn.cpt(*node))));
-    }
-    Set<Potential<prm_float>*> trash;
-    ve.eliminateNodes(elim, pool, trash);
-  }
-}
-
-void
-GSpan::__declare_variables(BayesNetFactory<prm_float>& factory, Sequence<Instance*>& seq) {
-  std::string sep = ".";
-  for (Sequence<Instance*>::iterator i = seq.begin(); i != seq.end(); ++i) {
-    std::stringstream i_pos;
-    i_pos << seq.pos(*i);
-    for (DAG::NodeIterator node = (*i)->type().dag().beginNodes(); node != (*i)->type().dag().endNodes(); ++node) {
-      ClassElement& elt = (*i)->get(*node);
-      /// Aggregates are instantiated !
-      switch ((*i)->type().get(elt.id()).elt_type()) {
-        case ClassElement::prm_attribute:
-          {
-            factory.startVariableDeclaration();
-            factory.variableName(i_pos.str() + sep + elt.name());
-            for (Size idx = 0; idx < elt.type()->domainSize(); ++idx) {
-              factory.addModality(elt.type()->label(idx));
-            }
-            factory.endVariableDeclaration();
-            break;
-          }
-        case ClassElement::prm_aggregate:
-          {
-            Aggregate& agg = static_cast<Aggregate&>((*i)->type().get(elt.id()));
-            factory.startVariableDeclaration();
-            factory.variableName(i_pos.str() + sep + elt.name());
-            switch (agg.agg_type()) {
-              case Aggregate::agg_exists:
-                {
-                  factory.setVariableCPTImplementation(new aggregator::Exists<prm_float>(agg.label()));
-                  break;
-                }
-              case Aggregate::agg_forall:
-                {
-                  factory.setVariableCPTImplementation(new aggregator::Forall<prm_float>(agg.label()));
-                  break;
-                }
-              default: { GUM_ERROR(OperationNotAllowed, "unknonw aggregator"); }
-            }
-            for (Size idx = 0; idx < elt.type()->domainSize(); ++idx) {
-              factory.addModality(elt.type()->label(idx));
-            }
-            factory.endVariableDeclaration();
-            break;
-          }
-        default: { /* Do nothing */ }
-      }
-    }
-  }
-}
-
-void
-GSpan::__declare_parents(BayesNetFactory<prm_float>& factory, Sequence<Instance*>& seq) {
-  std::string sep = ".";
-  for (Sequence<Instance*>::iterator i = seq.begin(); i != seq.end(); ++i) {
-    std::stringstream i_pos;
-    i_pos << seq.pos(*i);
-    for (DAG::NodeIterator node = (*i)->type().dag().beginNodes(); node != (*i)->type().dag().endNodes(); ++node) {
-      ClassElement& elt = (*i)->get(*node);
-      switch (elt.elt_type()) {
-        case ClassElement::prm_attribute:
-          {
-            factory.startParentsDeclaration(i_pos.str() + sep + elt.name());
-            for (ArcSet::iterator parent = (*i)->type().dag().parents(elt.id()).begin(); parent != (*i)->type().dag().parents(elt.id()).end(); ++parent) {
-              ClassElement& tail = (*i)->get(parent->tail());
-              switch (tail.elt_type()) {
-                case ClassElement::prm_attribute:
-                  {
-                    factory.addParent(i_pos.str() + sep + tail.name());
-                    break;
-                  }
-                case ClassElement::prm_slotchain:
-                  {
-                    for (Set<Instance*>::iterator prnt = (*i)->getInstances(tail.id()).begin(); prnt != (*i)->getInstances(tail.id()).end(); ++prnt) {
-                      if (seq.exists(*prnt)) {
-                        std::stringstream prnt_pos;
-                        prnt_pos << seq.pos(*prnt);
-                        factory.addParent(prnt_pos.str() + sep + static_cast<SlotChain&>(tail).lastElt().name());
-                      }
-                    }
-                    break;
-                  }
-                default: { /* do nothing */ }
-              }
-            }
-            factory.endParentsDeclaration();
-            break;
-          }
-        default: { /* Do nothing */ }
-      }
-    }
-  }
-}
-
-BayesNet<prm_float>*
-GSpan::__generateBNTopology(Sequence<Instance*>& seq) {
-  BayesNet<prm_float>* bn = new BayesNet<prm_float>();
-  BayesNetFactory<prm_float> factory(bn);
-  // First we declare all the variables
-  __declare_variables(factory, seq);
-  // Second we add parents in the pattern
-  __declare_parents(factory, seq);
-  // The BN contains all the inner and output nodes of the pattern
-  __fill_inner_nodes(*bn, seq);
-  // Now we add the input nodes with a bijection to keep track of them
-  //__fill_input_nodes(*bn, seq);
-  return bn;
-}
-
-void
-GSpan::__fill_input_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq) {
+// void
+// GSpan::generateBN(size_t number) {
+//   for (size_t i = 0; i < number; ++i) {
+//     NodeId id = *(__tree.iso_graph(*(__patterns[i])).beginNodes());
+//     Sequence<Instance*>& seq = __tree.iso_map(*(__patterns[i]), id);
+//     BayesNet<prm_float>* bn = __generateBNTopology(seq);
+//     __bn_map.insert(__patterns[i], bn);
+//   }
+// }
+// 
+// void
+// GSpan::infer(size_t number) {
+//   for (size_t i = 0; i < number; ++i) {
+//     // First we list the base bn
+//     BayesNet<prm_float>& bn = *(__bn_map[__patterns[i]]);
+//     VariableElimination<prm_float> ve(bn);
+//     ve.makeInference();
+//     const std::vector<NodeId>& elim = ve.eliminationOrder();
+//     Set<Potential<prm_float>*> pool;
+//     for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
+//       pool.insert(const_cast<Potential<prm_float>*>(&(bn.cpt(*node))));
+//     }
+//     Set<Potential<prm_float>*> trash;
+//     ve.eliminateNodes(elim, pool, trash);
+//   }
+// }
+// 
+// void
+// GSpan::__declare_variables(BayesNetFactory<prm_float>& factory, Sequence<Instance*>& seq) {
 //   std::string sep = ".";
-//   for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-//     std::stringstream iter_pos;
-//     iter_pos << seq.pos(*iter);
-//     for (DAG::NodeIterator node = (*iter)->dag().beginNodes(); node != (*iter)->dag().endNodes(); ++node) {
-//       ClassElement& elt = (*iter)->get(*node);
-//       switch (elt.elt_type()) {
+//   for (Sequence<Instance*>::iterator i = seq.begin(); i != seq.end(); ++i) {
+//     std::stringstream i_pos;
+//     i_pos << seq.pos(*i);
+//     for (DAG::NodeIterator node = (*i)->type().dag().beginNodes(); node != (*i)->type().dag().endNodes(); ++node) {
+//       ClassElement& elt = (*i)->get(*node);
+//       /// Aggregates are instantiated !
+//       switch ((*i)->type().get(elt.id()).elt_type()) {
 //         case ClassElement::prm_attribute:
 //           {
-//             if ((*iter)->type().isInputNode(elt.id())) {
-//               CPFBijection<prm_float>::VarBijection* bij = new CPFBijection<prm_float>::VarBijection();
-//               bij->insert(&(bn.variableFromName(iter_pos.str() + sep + elt.name())),
-//                           &(elt.type().variable()));
-//               for (ArcSet::iterator prnt = (*iter)->dag().parents(elt.id()).begin();
-//                    prnt != (*iter)->dag().parents(elt.id()).end(); ++prnt) {
-//                 ClassElement& tail = (*iter)->get(prnt->tail());
-//                 switch (tail.elt_type()) {
-//                   case ClassElement::prm_attribute:
-//                   case ClassElement::prm_aggregate:
-//                     {
-//                       bij->insert(&(bn.variableFromName(iter_pos.str() + sep + tail.name())),
-//                                   &(tail.type().variable()));
-//                       break;
-//                     }
-//                   default: { GUM_ERROR(FatalError, "this is not an inner or output node"); }
-//                 }
-//               }
-//               CPFBijection<prm_float>* cpf = new CPFBijection<prm_float>(elt.cpf(), bij);
-//               delete bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())];
-//               bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())] = cpf;
+//             factory.startVariableDeclaration();
+//             factory.variableName(i_pos.str() + sep + elt.name());
+//             for (Size idx = 0; idx < elt.type()->domainSize(); ++idx) {
+//               factory.addModality(elt.type()->label(idx));
 //             }
+//             factory.endVariableDeclaration();
 //             break;
 //           }
-//         default: { /* do nothing */ }
+//         case ClassElement::prm_aggregate:
+//           {
+//             Aggregate& agg = static_cast<Aggregate&>((*i)->type().get(elt.id()));
+//             factory.startVariableDeclaration();
+//             factory.variableName(i_pos.str() + sep + elt.name());
+//             switch (agg.agg_type()) {
+//               case Aggregate::agg_exists:
+//                 {
+//                   factory.setVariableCPTImplementation(new aggregator::Exists<prm_float>(agg.label()));
+//                   break;
+//                 }
+//               case Aggregate::agg_forall:
+//                 {
+//                   factory.setVariableCPTImplementation(new aggregator::Forall<prm_float>(agg.label()));
+//                   break;
+//                 }
+//               default: { GUM_ERROR(OperationNotAllowed, "unknonw aggregator"); }
+//             }
+//             for (Size idx = 0; idx < elt.type()->domainSize(); ++idx) {
+//               factory.addModality(elt.type()->label(idx));
+//             }
+//             factory.endVariableDeclaration();
+//             break;
+//           }
+//         default: { /* Do nothing */ }
 //       }
 //     }
 //   }
-}
+// }
+// 
+// void
+// GSpan::__declare_parents(BayesNetFactory<prm_float>& factory, Sequence<Instance*>& seq) {
+//   std::string sep = ".";
+//   for (Sequence<Instance*>::iterator i = seq.begin(); i != seq.end(); ++i) {
+//     std::stringstream i_pos;
+//     i_pos << seq.pos(*i);
+//     for (DAG::NodeIterator node = (*i)->type().dag().beginNodes(); node != (*i)->type().dag().endNodes(); ++node) {
+//       ClassElement& elt = (*i)->get(*node);
+//       switch (elt.elt_type()) {
+//         case ClassElement::prm_attribute:
+//           {
+//             factory.startParentsDeclaration(i_pos.str() + sep + elt.name());
+//             for (ArcSet::iterator parent = (*i)->type().dag().parents(elt.id()).begin(); parent != (*i)->type().dag().parents(elt.id()).end(); ++parent) {
+//               ClassElement& tail = (*i)->get(parent->tail());
+//               switch (tail.elt_type()) {
+//                 case ClassElement::prm_attribute:
+//                   {
+//                     factory.addParent(i_pos.str() + sep + tail.name());
+//                     break;
+//                   }
+//                 case ClassElement::prm_slotchain:
+//                   {
+//                     for (Set<Instance*>::iterator prnt = (*i)->getInstances(tail.id()).begin(); prnt != (*i)->getInstances(tail.id()).end(); ++prnt) {
+//                       if (seq.exists(*prnt)) {
+//                         std::stringstream prnt_pos;
+//                         prnt_pos << seq.pos(*prnt);
+//                         factory.addParent(prnt_pos.str() + sep + static_cast<SlotChain&>(tail).lastElt().name());
+//                       }
+//                     }
+//                     break;
+//                   }
+//                 default: { /* do nothing */ }
+//               }
+//             }
+//             factory.endParentsDeclaration();
+//             break;
+//           }
+//         default: { /* Do nothing */ }
+//       }
+//     }
+//   }
+// }
+// 
+// BayesNet<prm_float>*
+// GSpan::__generateBNTopology(Sequence<Instance*>& seq) {
+//   BayesNet<prm_float>* bn = new BayesNet<prm_float>();
+//   BayesNetFactory<prm_float> factory(bn);
+//   // First we declare all the variables
+//   __declare_variables(factory, seq);
+//   // Second we add parents in the pattern
+//   __declare_parents(factory, seq);
+//   // The BN contains all the inner and output nodes of the pattern
+//   __fill_inner_nodes(*bn, seq);
+//   // Now we add the input nodes with a bijection to keep track of them
+//   //__fill_input_nodes(*bn, seq);
+//   return bn;
+// }
+// 
+// void
+// GSpan::__fill_input_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq) {
+// //   std::string sep = ".";
+// //   for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
+// //     std::stringstream iter_pos;
+// //     iter_pos << seq.pos(*iter);
+// //     for (DAG::NodeIterator node = (*iter)->dag().beginNodes(); node != (*iter)->dag().endNodes(); ++node) {
+// //       ClassElement& elt = (*iter)->get(*node);
+// //       switch (elt.elt_type()) {
+// //         case ClassElement::prm_attribute:
+// //           {
+// //             if ((*iter)->type().isInputNode(elt.id())) {
+// //               CPFBijection<prm_float>::VarBijection* bij = new CPFBijection<prm_float>::VarBijection();
+// //               bij->insert(&(bn.variableFromName(iter_pos.str() + sep + elt.name())),
+// //                           &(elt.type().variable()));
+// //               for (ArcSet::iterator prnt = (*iter)->dag().parents(elt.id()).begin();
+// //                    prnt != (*iter)->dag().parents(elt.id()).end(); ++prnt) {
+// //                 ClassElement& tail = (*iter)->get(prnt->tail());
+// //                 switch (tail.elt_type()) {
+// //                   case ClassElement::prm_attribute:
+// //                   case ClassElement::prm_aggregate:
+// //                     {
+// //                       bij->insert(&(bn.variableFromName(iter_pos.str() + sep + tail.name())),
+// //                                   &(tail.type().variable()));
+// //                       break;
+// //                     }
+// //                   default: { GUM_ERROR(FatalError, "this is not an inner or output node"); }
+// //                 }
+// //               }
+// //               CPFBijection<prm_float>* cpf = new CPFBijection<prm_float>(elt.cpf(), bij);
+// //               delete bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())];
+// //               bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())] = cpf;
+// //             }
+// //             break;
+// //           }
+// //         default: { /* do nothing */ }
+// //       }
+// //     }
+// //   }
+// }
+// 
+// void
+// GSpan::__fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq) {
+//   // std::string sep = ".";
+//   // for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
+//   //   std::stringstream iter_pos;
+//   //   iter_pos << seq.pos(*iter);
+//   //   for (DAG::NodeIterator node = (*iter)->type().dag().beginNodes(); node != (*iter)->type().dag().endNodes(); ++node) {
+//   //     ClassElement& elt = (*iter)->get(*node);
+//   //     switch ((*iter)->type().get(elt.id()).elt_type()) {
+//   //       case ClassElement::prm_attribute:
+//   //         {
+//   //           //if (not (*iter)->type().isInputNode(elt.id())) {
+//   //           CPFBijection<prm_float>::VarBijection* bij = new CPFBijection<prm_float>::VarBijection();
+//   //           bij->insert(&(bn.variableFromName(iter_pos.str() + sep + elt.name())), &(elt.type().variable()));
+//   //           for (ArcSet::iterator prnt = (*iter)->type().dag().parents(elt.id()).begin(); prnt != (*iter)->type().dag().parents(elt.id()).end(); ++prnt) {
+//   //             ClassElement& tail = (*iter)->get(prnt->tail());
+//   //             switch (tail.elt_type()) {
+//   //               case ClassElement::prm_attribute:
+//   //               case ClassElement::prm_aggregate:
+//   //                 {
+//   //                   bij->insert(&(bn.variableFromName(iter_pos.str() + sep + tail.name())),
+//   //                               &(tail.type().variable()));
+//   //                   break;
+//   //                 }
+//   //               case ClassElement::prm_slotchain:
+//   //                 {
+//   //                   SlotChain& sc = static_cast<SlotChain&>(tail);
+//   //                   bij->insert(&((*iter)->getInstance(tail.id()).get(sc.lastElt().id()).type().variable()),
+//   //                               &((*iter)->getInstance(tail.id()).get(sc.lastElt().id()).type().variable()));
+//   //                   break;
+//   //                 }
+//   //               default: { GUM_ERROR(FatalError, "this is not an inner or output node"); }
+//   //             }
+//   //           }
+//   //           CPFBijection<prm_float>* cpf = new CPFBijection<prm_float>(elt.cpf(), bij);
+//   //           delete bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())];
+//   //           bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())] = cpf;
+//   //           //}
+//   //           break;
+//   //         }
+//   //       default: { /* do nothing */ }
+//   //     }
+//   //   }
+//   // }
+// }
 
-void
-GSpan::__fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq) {
-  // std::string sep = ".";
-  // for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-  //   std::stringstream iter_pos;
-  //   iter_pos << seq.pos(*iter);
-  //   for (DAG::NodeIterator node = (*iter)->type().dag().beginNodes(); node != (*iter)->type().dag().endNodes(); ++node) {
-  //     ClassElement& elt = (*iter)->get(*node);
-  //     switch ((*iter)->type().get(elt.id()).elt_type()) {
-  //       case ClassElement::prm_attribute:
-  //         {
-  //           //if (not (*iter)->type().isInputNode(elt.id())) {
-  //           CPFBijection<prm_float>::VarBijection* bij = new CPFBijection<prm_float>::VarBijection();
-  //           bij->insert(&(bn.variableFromName(iter_pos.str() + sep + elt.name())), &(elt.type().variable()));
-  //           for (ArcSet::iterator prnt = (*iter)->type().dag().parents(elt.id()).begin(); prnt != (*iter)->type().dag().parents(elt.id()).end(); ++prnt) {
-  //             ClassElement& tail = (*iter)->get(prnt->tail());
-  //             switch (tail.elt_type()) {
-  //               case ClassElement::prm_attribute:
-  //               case ClassElement::prm_aggregate:
-  //                 {
-  //                   bij->insert(&(bn.variableFromName(iter_pos.str() + sep + tail.name())),
-  //                               &(tail.type().variable()));
-  //                   break;
-  //                 }
-  //               case ClassElement::prm_slotchain:
-  //                 {
-  //                   SlotChain& sc = static_cast<SlotChain&>(tail);
-  //                   bij->insert(&((*iter)->getInstance(tail.id()).get(sc.lastElt().id()).type().variable()),
-  //                               &((*iter)->getInstance(tail.id()).get(sc.lastElt().id()).type().variable()));
-  //                   break;
-  //                 }
-  //               default: { GUM_ERROR(FatalError, "this is not an inner or output node"); }
-  //             }
-  //           }
-  //           CPFBijection<prm_float>* cpf = new CPFBijection<prm_float>(elt.cpf(), bij);
-  //           delete bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())];
-  //           bn.__probaMap[bn.idFromName(iter_pos.str() + sep + elt.name())] = cpf;
-  //           //}
-  //           break;
-  //         }
-  //       default: { /* do nothing */ }
-  //     }
-  //   }
-  // }
-}
+// void
+// GSpan::__printIsoMap(gspan::Pattern& p) {
+//   Sequence<Instance*>& seq = __tree.iso_map(p, *(__tree.iso_graph(p).beginNodes()));
+//   std::stringstream sBuff;
+//   for (Size i = 0; i < seq.size(); ++i) {
+//     sBuff << seq.atPos(i)->name() << " ";
+//   }
+//   std::cerr << std::endl << sBuff.str() << std::endl;
+// }
 
-void
-GSpan::__printIsoMap(gspan::Pattern& p) {
-  Sequence<Instance*>& seq = __tree.iso_map(p, *(__tree.iso_graph(p).beginNodes()));
-  std::stringstream sBuff;
-  for (Size i = 0; i < seq.size(); ++i) {
-    sBuff << seq.atPos(i)->name() << " ";
-  }
-  std::cerr << std::endl << sBuff.str() << std::endl;
-}
+// void
+// GSpan::__flushReferences(gspan::Pattern* p, std::ostream& out) const {
+//   std::string sep = "_";
+//   std::stringstream sBuff;
+//   const Sequence<Instance*>& match = **(__matched_instances[p]->begin());
+//   // The order used to declare references is unimportant, so lets do it
+//   for (Sequence<Instance*>::const_iterator iter = match.begin(); iter != match.end(); ++iter) {
+//     std::string prefix = (**iter).name() + sep;
+//     for (Set<ReferenceSlot*>::const_iterator ref = (**iter).type().referenceSlots().begin(); ref != (**iter).type().referenceSlots().end(); ++ref) {
+//       if ((**ref).isArray()) {
+//         Size count = 0;
+//         const Set<Instance*>* ref_set = &((**iter).getInstances((**ref).id()));
+//         // Checking if more than one instance is not in match
+//         for (Set<Instance*>::const_iterator jter = ref_set->begin(); (jter != ref_set->end()) and count < 2; ++jter)
+//           if (not match.exists(*jter)) ++count;
+//         if (count == 1)     // Not an array
+//           sBuff << (**ref).slotType().name() << " " << prefix + (**ref).name() << ";" << std::endl;
+//         else if (count > 1) // Is an array
+//           sBuff << (**ref).slotType().name() << "[] " << prefix + (**ref).name() << ";" << std::endl;
+//       } else {
+//         if (not match.exists(const_cast<Instance*>(&((**iter).getInstance((**ref).id())))))
+//           sBuff << (**ref).slotType().name() << " " << prefix + (**ref).name() << ";" << std::endl;
+//       }
+//     }
+//   }
+//   out << sBuff.str() << std::endl;
+// }
+// 
+// void
+// GSpan::__flushVariables(gspan::Pattern* p, std::ostream& out) const {
+//   std::string sep = "_";
+//   Set<std::string> flushed, canBeFlushed;
+//   std::list< std::pair<const Instance*, const Attribute*> > queue;
+//   const Sequence<Instance*>& match = **(__matched_instances[p]->begin());
+//   for (Sequence<Instance*>::const_iterator iter = match.begin(); iter != match.end(); ++iter) {
+//     for (Instance::const_iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
+//       if (not flushed.exists((**iter).name() + sep + (**jter).safeName())) {
+//         queue.push_front(std::make_pair(*iter, *jter));
+//         while (not queue.empty()) {
+//           const Instance* inst = queue.front().first;
+//           const Attribute* attr = queue.front().second;
+//           if (canBeFlushed.exists(inst->name() + sep + attr->safeName())) {
+//             __flushAttribute(p, out, queue.front().first, queue.front().second);
+//             flushed.insert(inst->name() + sep + attr->safeName());
+//             queue.pop_front();
+//           } else {
+//             const ArcSet* parents = &(inst->type().dag().parents(attr->id()));
+//             for (ArcSet::const_iterator arc = parents->begin(); arc != parents->end(); ++arc) {
+//               switch (inst->type().get(arc->tail()).elt_type()) {
+//                 case ClassElement::prm_attribute:
+//                 case ClassElement::prm_aggregate:
+//                   {
+//                     if (not flushed.exists(inst->name() + sep + inst->get(arc->tail()).safeName()))
+//                       queue.push_front(std::make_pair(inst, &(inst->get(arc->tail()))));
+//                     break;
+//                   }
+//                 case ClassElement::prm_slotchain:
+//                   {
+//                     std::string safe_name = static_cast<const SlotChain&>(inst->type().get(arc->tail())).lastElt().safeName();
+//                     const Set<Instance*>* ref_set = &(inst->getInstances(arc->tail()));
+//                     for (Set<Instance*>::const_iterator ref = ref_set->begin(); ref != ref_set->end(); ++ref)
+//                       if ( (match.exists(*ref)) and (not flushed.exists((**ref).name() + sep + safe_name)) )
+//                         queue.push_front(std::make_pair(*ref, &((**ref).get(safe_name))));
+//                     break;
+//                   }
+//                 default: { /* do nothing */ }
+//               }
+//             }
+//             canBeFlushed.insert(inst->name() + sep + attr->safeName());
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// 
+// void
+// GSpan::__flushAttribute(gspan::Pattern* p, std::ostream& out,
+//                         const Instance* inst, const Attribute* attr) const
+// {
+//   // First we must check if attr is not a cast descendant
+//   if (not inst->type().isCastDescendant(attr->safeName())) {
+//     std::string sep = "_";
+//     std::stringstream sBuff;
+//     // Adding the attributes type and name
+//     sBuff << attr->type().name() << " " << attr->name() << " ";
+//     const Sequence<Instance*>& match = **(__matched_instances[p]->begin());
+//     if (ClassElement::isAttribute(inst->type().get(attr->safeName()))) {
+//       // Check if it is a Noisy or
+//       if (dynamic_cast<const MultiDimArray<prm_float>*>(attr->cpf().getContent())) {
+//         sBuff << "depensdon ";
+//         std::vector<std::string> parents;
+//         for (ArcSet::const_iterator arc = inst->type().dag().parents(attr->id()).begin(); arc != inst->type().dag().parents(attr->id()).end(); ++attr) {
+//           switch (inst->type().get(arc->tail()).elt_type()) {
+//             case ClassElement::prm_attribute:
+//             case ClassElement::prm_aggregate:
+//               {
+//                 parents.push_back(inst->type().get(arc->tail()).safeName());
+//                 break;
+//               }
+//             case ClassElement::prm_slotchain:
+//               {
+//                 const SlotChain& sc = static_cast<const SlotChain&>(inst->type().get(arc->tail()));
+//                 break;
+//               }
+//             default: { /* do nothing */ }
+//           }
+//         }
+//       } else if (dynamic_cast<const MultiDimNoisyORCompound*>(attr->cpf().getContent())) {
+// 
+//       } else if (dynamic_cast<const MultiDimNoisyORNet*>(attr->cpf().getContent())) {
+// 
+//       }
+//     } else { // its an aggregate
+// 
+//     }
+//   }
+//   out << sBuff.str() << std::endl;
+// }
 
 } /* namespace prm */
 } /* namespace gum */

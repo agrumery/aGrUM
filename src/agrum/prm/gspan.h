@@ -27,6 +27,7 @@
 #include <string>
 #include <ostream>
 #include <vector>
+#include <list>
 #include <algorithm>
 // ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
@@ -175,7 +176,7 @@ class GSpan {
      * @returns a mapping between patterns and the sequence of instance in the
      *          interface graph matching them.
      */
-    HashTable<gspan::Pattern*, MatchedInstances*>& matches();
+    MatchedInstances& matches(const gspan::Pattern& p);
 
     /**
      * Returns a mapping between patterns and the sequence of instance in the
@@ -183,7 +184,7 @@ class GSpan {
      * @returns a mapping between patterns and the sequence of instance in the
      *          interface graph matching them.
      */
-    const HashTable<gspan::Pattern*, MatchedInstances*>& matches() const;
+    const MatchedInstances& matches(const gspan::Pattern& p) const;
 
     /**
      * Returns the cumulative sum of all the cliques size created after lifting
@@ -202,22 +203,6 @@ class GSpan {
     double sve_cost() const;
 
     ///@}
-  // ========================================================================
-  /// @name Private Members.
-  // ========================================================================
-    /// @{
-
-    /// Junk code.
-    void generateBN(size_t number);
-
-    /// Junk code.
-    BayesNet<prm_float>& baseBN(gspan::Pattern& p);
-
-    /// Junk code.
-    void infer(size_t number);
-
-    ///@}
-
   private:
 
   // ========================================================================
@@ -298,31 +283,48 @@ class GSpan {
     bool __isEdgeEligible(gspan::EdgeData* e);
 
     /// @}
-    // ========================================================================
-    /// @name Private junk code
-    // ========================================================================
-    /// @{
-
-    /// This is junk code and will be erased.
-    HashTable<gspan::Pattern*, BayesNet<prm_float>*> __bn_map;
-
-    /// This is junk code and will be erased.
-    BayesNet<prm_float>* __generateBNTopology(Sequence<Instance*>& seq);
-
-    /// This is junk code and will be erased.
-    void __declare_variables(BayesNetFactory<prm_float>& factory,
-                             Sequence<Instance*>& seq);
-
-    /// This is junk code and will be erased.
-    void __declare_parents(BayesNetFactory<prm_float>& factory,
-                           Sequence<Instance*>& seq);
-
-    /// This is junk code and will be erased.
-    void __fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
-
-    /// This is junk code and will be erased.
-    void __fill_input_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
-
+//    // ========================================================================
+//    /// @name Private junk code
+//    // ========================================================================
+//    /// @{
+//    /// Junk code.
+//    void generateBN(size_t number);
+//
+//    /// Junk code.
+//    BayesNet<prm_float>& baseBN(gspan::Pattern& p);
+//
+//    /// Junk code.
+//    void infer(size_t number);
+//
+//    /// Print in out all the references in p.
+//    void __flushReferences(gspan::Pattern* p, std::ostream& out) const;
+//
+//    void __flushVariables(gspan::Pattern* p, std::ostream& out) const;
+//
+//    void __flushAttribute(gspan::Pattern* p, std::ostream& out,
+//                          const Instance* inst, const Attribute* attr) const;
+//
+//    /// This is junk code and will be erased.
+//    HashTable<gspan::Pattern*, BayesNet<prm_float>*> __bn_map;
+//
+//    /// This is junk code and will be erased.
+//    BayesNet<prm_float>* __generateBNTopology(Sequence<Instance*>& seq);
+//
+//    /// This is junk code and will be erased.
+//    void __declare_variables(BayesNetFactory<prm_float>& factory,
+//                             Sequence<Instance*>& seq);
+//
+//    /// This is junk code and will be erased.
+//    void __declare_parents(BayesNetFactory<prm_float>& factory,
+//                           Sequence<Instance*>& seq);
+//
+//    /// This is junk code and will be erased.
+//    void __fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
+//
+//    /// This is junk code and will be erased.
+//    void __fill_input_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
+//
+//    /// @}
     // ========================================================================
     /// @name Private classes
     // ========================================================================

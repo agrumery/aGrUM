@@ -256,6 +256,17 @@ Class::addParameter(Attribute* param, bool flag) {
   return param->id();
 }
 
+INLINE
+bool
+Class::isCastDescendant(const std::string& safe_name) const {
+  const ClassElement& elt = get(safe_name);
+  try {
+    return elt.type().name() == get(elt.name()).type().name();
+  } catch (OperationNotAllowed&) {
+    GUM_ERROR(NotFound, "no attribute with the given name");
+  }
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */
