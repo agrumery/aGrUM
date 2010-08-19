@@ -41,7 +41,6 @@ Instance::__copyAggregates(Aggregate* source) {
   GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
   attr->setId(source->id());
   __nodeIdMap.insert(attr->id(), attr);
-  __trash.insert(attr);
   __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
 }
 
@@ -52,7 +51,6 @@ Instance::__copyAttribute(Attribute* source) {
   // The potential is copied when instantiation is called
   attr->cpf().fill((prm_float) 0);
   attr->setId(source->id());
-  __trash.insert(attr);
   __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
   __nodeIdMap.insert(attr->id(), attr);
 }
@@ -164,11 +162,7 @@ Instance::setParameterValue(const std::string& name, const Potential<prm_float>&
 INLINE
 bool
 Instance::isInstantiated(NodeId id) const {
-  try {
-    return &(get(id).type().variable()) != &(type().get(id).type().variable());
-  } catch (NotFound&) {
-    return __referenceMap.exists(id);
-  }
+  return __nodeIdMap.exists(id);
 }
 
 INLINE
@@ -191,16 +185,7 @@ INLINE
 void
 Instance::instantiate(NodeId id)
 {
-  if (not type().exists(id)) {
-    GUM_ERROR(NotFound, "no ClassElement matches the given id");
-  } else if (__nodeIdMap.exists(id)) {
-    GUM_ERROR(WrongClassElement, "can not instantiate the given ClassElement");
-  }
-  if (not __instantiated_nodes.exists(id)) {
-    __copyAttribute(__nodeIdMap[id]);
-    // Could be optimised
-    instantiate();
-  }
+  // Do nothing
 }
 
 INLINE

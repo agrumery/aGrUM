@@ -157,7 +157,7 @@ class InterfaceGraph {
   public:
 
     /// Default constructor.
-    InterfaceGraph(System& sys);
+    InterfaceGraph(const System& sys);
 
     /// Destructor.
     ~InterfaceGraph();
@@ -224,7 +224,7 @@ class InterfaceGraph {
 
   private:
     /// The gum::prm::System represented by this interface graph.
-    System* __sys;
+    const System* __sys;
 
     /// The interface graph.
     UndiGraph __graph;

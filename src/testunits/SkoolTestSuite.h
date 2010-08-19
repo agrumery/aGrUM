@@ -892,7 +892,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
           }
         }
       }
-
+      if (prm)
+        delete prm;
     }
 
 };

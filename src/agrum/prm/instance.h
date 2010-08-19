@@ -215,64 +215,23 @@ class Instance: public PRMObject {
     /// @{
 
     /**
-     * @brief An instantiated attribute has a different DiscreteVariable than
-     *        the Class level version of it and in other instance.
-     *
-     * MultiDims require distinctive DiscreteVariable pointers, thus
-     * interface Attributes are always instantiated to prevent multiple
-     * insertion of the same DiscreteVariable pointer in a MultiDim.
-     *
-     * Be careful ! This does not check if the attribute's parents are
-     * instantiated. An attribute could not be instantiated and still have
-     * instatitiated parents, thus it's CPF will not hold the same pointers
-     * than it's class version.
-     *
-     * If the NodeId does not match an existing ClassElement in this Instance,
-     * isInstantiated() returns false.
-     *
-     * @param NodeId The ClassElement on which we test if it is instantiated.
-     * @return Returns true if the ClassElement is instantiated.
+     * Deprecated: all attribute are now instantiated.
+     * TODO remove this one day.
      */
     bool isInstantiated(NodeId) const;
 
     /**
-     * @brief Instantiate the given node and update it's dependencies.
-     *
-     * This method can be used to instantiate manually nodes in this Instance.
-     * It is also useful for inference: by instantiating queried nodes their
-     * respective gum::prm::DiscreteVariable becomes unique and can safely be
-     * used in MultiDims.
-     *
-     * MultiDims require distinctive gum::prm::DiscreteVariable pointers, thus
-     * interface attributes are always instantiated to prevent multiple
-     * insertion of the same gum::prm::DiscreteVariable pointer in a MultiDim.
-     *
-     * When an Attribute is instantiated it automatically adds
-     * its gum::prm::DiscreteVariable and its equivalent Class level
-     * gum::prm::DiscreteVariable to Instance::__bijection.
-     *
-     * @warning Be aware that this will make a call to instantiate(), thus
-     *          deleting a large part of attribute's CPF. Furthermore, the
-     *          instantiated attribute's type will change (but will not be
-     *          deleted).
-     *
-     * @param NodeId The node to be instantiated.
-     *
-     * @throw NotFound Raised if id does not match any gum::prm::Attribute
-     *                 in this.
+     * Deprecated: all attribute are now instantiated.
+     * TODO remove this one day.
      */
     void instantiate(NodeId id);
 
     /**
      * @brief Instantiate all nodes which requires it.
      *
-     * MultiDims require distinctive gum::prm::DiscreteVariable pointers, thus
-     * interface attributes are always instantiated to prevent multiple
-     * insertion of the same gum::prm::DiscreteVariable pointer in a MultiDim.
-     *
-     * When an Attribute or an Aggregate is instantiated it automatically adds
-     * its gum::prm::DiscreteVariable and its equivalent Class level
-     * gum::prm::DiscreteVariable to Instance::__bijection.
+     * All attributes are now instantiated, which means they have
+     * a different DiscreteVariable pointer. This methods however still
+     * connects attributes of different instance together.
      *
      * @warning Be aware that this method will delete a large part of
      *          this instance attribute's CPF. Furthermore, the
@@ -586,19 +545,11 @@ class Instance: public PRMObject {
     /// this instance.
     Property< std::vector<pair>* >::onNodes __referingAttr;
 
-    /// gum::Set used to know which node is instantiated. Nodes with instantiated
-    /// parents are not considerer as instantiated (they share the gum::prm::Type
-    /// with their class-level equivalent).
-    Set<NodeId> __instantiated_nodes;
-
     /// The gum::Set of initialised parameters.
     Set<NodeId>* __params;
 
     /// A bijection used for MultiDim handling.
     Bijection<const DiscreteVariable*, const DiscreteVariable*> __bijection;
-
-    /// A Set over pointers to delete when gum::prm::~Instance() is called.
-    Set<Attribute*> __trash;
 
     /// @}
 };

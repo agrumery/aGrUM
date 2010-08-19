@@ -156,9 +156,10 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* MultiDimNoisyORCompound<T_DATA>::newFactory() const {
-    GUM_ERROR( OperationNotAllowed,
-               "This class doesn't contain an empty constructor" );
-    return 0;
+    return new MultiDimNoisyORCompound<T_DATA>(__external_weight, __default_weight);
+    // GUM_ERROR( OperationNotAllowed,
+    //            "This class doesn't contain an empty constructor" );
+    // return 0;
   }
 
   // returns the name of the implementation

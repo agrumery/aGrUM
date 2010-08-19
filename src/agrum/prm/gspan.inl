@@ -28,7 +28,7 @@ namespace gum {
 namespace prm {
 
 INLINE
-GSpan::GSpan(PRM& prm, System& sys, Size min_freq, Size depth_stop):
+GSpan::GSpan(const PRM& prm, const System& sys, Size min_freq, Size depth_stop):
   __graph(new gspan::InterfaceGraph(sys)), __tree(*__graph), __min_freq(min_freq), __depth_stop(depth_stop)
 {
   GUM_CONSTRUCTOR( GSpan );

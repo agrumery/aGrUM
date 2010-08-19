@@ -34,14 +34,14 @@ namespace gum {
 namespace prm {
 namespace gspan {
 
-InterfaceGraph::InterfaceGraph(System& sys):
+InterfaceGraph::InterfaceGraph(const System& sys):
   __sys(&sys), __labels(new Bijection<Idx, LabelData*>()),
   __counter(0), __erase_flag(true)
 {
   GUM_CONSTRUCTOR( InterfaceGraph );
   HashTable<std::string, LabelData*> label_map;
   // We need to add each instance in __graph
-  for (System::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
+  for (System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter) {
     NodeData* node = new NodeData();
     node->n = *iter;
     __label(node, label_map);

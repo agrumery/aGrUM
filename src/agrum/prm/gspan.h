@@ -42,7 +42,7 @@ namespace gum {
 namespace prm {
 
 /**
- * @class gspan gspan.h <agrum/prm/gspan.h>
+ * @class GSpan gspan.h <agrum/prm/gspan.h>
  *
  * @brief This class discovers pattern in a PRM's System to speed up structured
  *        inference.
@@ -71,7 +71,8 @@ class GSpan {
      * @param depth_stop The maximal depth of the gspan::DFSTree used by
      *                   this class.
      */
-    GSpan(PRM& prm, System& sys, Size min_freq=2, Size depth_stop=10);
+    GSpan(const PRM& prm, const System& sys,
+          Size min_freq=2, Size depth_stop=10);
 
     /// Destructor.
     ~GSpan();

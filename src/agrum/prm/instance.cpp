@@ -41,92 +41,53 @@ Instance::Instance(const std::string& name, Class& type):
 {
   GUM_CONSTRUCTOR( Instance );
   // First we create attributes for each aggregate in type
-  for (Set<Aggregate*>::iterator agg = __type->aggregates().begin(); agg != __type->aggregates().end(); ++agg) {
+  for (Set<Aggregate*>::iterator agg = __type->aggregates().begin(); agg != __type->aggregates().end(); ++agg)
     __copyAggregates(*agg);
-  }
   // We add attributes in type by reference for inner ones and by copy for output ones
-  for (Set<Attribute*>::iterator attr = __type->attributes().begin(); attr != __type->attributes().end(); ++attr) {
-    if (type.isOutputNode(**attr)) {
-      __copyAttribute(*attr);
-    } else {
-      __nodeIdMap.insert((*attr)->id(), *attr);
-      __bijection.insert(&((*attr)->type().variable()), &((*attr)->type().variable()));
-    }
-  }
+  for (Set<Attribute*>::iterator attr = __type->attributes().begin(); attr != __type->attributes().end(); ++attr)
+    __copyAttribute(*attr);
   // Then we instantiate each parameters in type
-  if (__type->parameters().size()) {
+  if (__type->parameters().size())
     __params = new Set<NodeId>();
-  }
-  for (Set<Attribute*>::iterator iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter) {
+  for (Set<Attribute*>::iterator iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter)
     __copyParameter(*iter);
-  }
 }
 
 void
 Instance::__copyParameter(Attribute* source) {
-  Attribute* attr = 0;
-  if (__type->isOutputNode(*source)) {
-    attr = __nodeIdMap[source->id()];
-  } else {
-    attr = new Attribute(source->name(), source->type());
-  }
+  Attribute* attr = new Attribute(source->name(), source->type());
   Instantiation i(attr->cpf()), j(source->cpf());
-  for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc()) {
+  for (i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc())
     attr->cpf().set(i, source->cpf().get(j));
-  }
   attr->setId(source->id());
   __nodeIdMap.insert(attr->id(), attr);
   __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
-  __trash.insert(attr);
 }
 
 Instance::~Instance() {
   GUM_DESTRUCTOR( Instance );
-  for (Set<Attribute*>::iterator iter = __trash.begin(); iter != __trash.end(); ++iter) {
+  typedef Property<Attribute*>::onNodes::iterator AttrIter;
+  for (AttrIter iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter)
     delete *iter;
-  }
   typedef Property< Set< Instance* >* >::onNodes::iterator TmpIterator;
-  for (TmpIterator iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter) {
+  for (TmpIterator iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter)
     delete *iter;
-  }
   typedef Property< std::vector<pair>* >::onNodes::iterator Foo;
-  for (Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter) {
+  for (Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter)
     delete *iter;
-  }
-  if (__params) {
-    delete __params;
-  }
+  if (__params) delete __params;
 }
 
 void
 Instance::instantiate() {
   // First retrieving any referenced instance
-  for (Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain) {
+  for (Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain)
     __instantiateSlotChain(*chain);
-  }
   // Now we need to add referred instance to each input node
   // For Attributes we first add parents, then we initialize CPF
-  for (Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter) {
-    if (not type().isParameter(**iter)) {
-      if (isInstantiated((*iter)->id())) {
-        __copyAttributeCPF(__nodeIdMap[(**iter).id()]);
-      } else {
-        for (DAG::ArcIterator arc = type().dag().parents((**iter).id()).begin();arc != type().dag().parents((**iter).id()).end(); ++arc) {
-          if (isInstantiated(arc->tail())) {
-            Attribute* old_attr = __nodeIdMap[(**iter).id()];
-            Potential<prm_float>* pot = new Potential<prm_float>();
-            pot->add(old_attr->type().variable());
-            Attribute* new_attr = new Attribute(old_attr->name(), &(old_attr->type()), pot, false);
-            __trash.insert(new_attr);
-            new_attr->setId(old_attr->id());
-            __nodeIdMap[new_attr->id()] = new_attr;
-            __copyAttributeCPF(new_attr);
-            break;
-          }
-        }
-      }
-    }
-  }
+  for (Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter)
+    if (not type().isParameter(**iter))
+      __copyAttributeCPF(__nodeIdMap[(**iter).id()]);
   // For Aggregate we add parents
   for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
     const ArcSet& parents = type().dag().parents((*iter)->id());
@@ -189,35 +150,34 @@ Instance::__copyAttributeCPF(Attribute* attr) {
   delete (attr->__cpf);
   attr->__cpf = 0;
   if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {
-    if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
+    if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(__bijection, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
+    } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
+      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(__bijection, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
+    } else if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
       attr->__cpf = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
       attr->__cpf->add(attr->type().variable());
       for (ArcSet::iterator arc = type().dag().parents(attr->id()).begin(); arc != type().dag().parents(attr->id()).end(); ++arc) {
         attr->addParent(get(arc->tail()));
       }
-    } else if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(__bijection, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
-    } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(__bijection, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
     } else {
+      GUM_CHECKPOINT;
       GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
   } else {
-    delete (attr->__cpf);
     if (dynamic_cast< const MultiDimArray<prm_float>* >(impl)) {
       attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), static_cast< const MultiDimArray<prm_float>& >(*impl)));
     } else if (dynamic_cast< const MultiDimSparse<prm_float>* >(impl)) {
       // Copy the sparse array in a MultiDimArray, this is sloppy but fast
-      // Still there is no real use of MultiDimSparse so this is not really a problem
+      // Still MultiDimSparse are not yet used so you this is only in case someone add them without reading the code first
       MultiDimArray<prm_float>* array = new MultiDimArray<prm_float>();
-      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter) {
+      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter)
         array->add(**iter);
-      }
-      for (Instantiation i(*impl); not i.end(); i.inc()) {
+      for (Instantiation i(*impl); not i.end(); i.inc())
         array->set(i, impl->get(i));
-      }
       attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
     } else {
+      GUM_CHECKPOINT;
       // Just need to make the copy using the bijection but we only use multidim array
       GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
