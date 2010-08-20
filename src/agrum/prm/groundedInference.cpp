@@ -70,8 +70,9 @@ GroundedInference::_evidenceRemoved(const Chain& chain) {
   for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
     if ((**iter).contains(var)) {
       __inf->eraseEvidence(*iter);
+      Potential<prm_float>* e = *iter;
       __obs.erase(iter);
-      delete *iter;
+      delete e;
       break;
     }
   }
