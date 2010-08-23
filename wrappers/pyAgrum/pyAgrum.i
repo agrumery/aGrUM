@@ -171,13 +171,25 @@ from numpy import *
 }
 
 
+/* remove __disown__() since it causes an error (str has no __disown__ method)...
 %pythonprepend gum::LabelizedVariable::addLabel %{
         args = tuple([args[0].__disown__()]) + args[1:]
 %}
 %pythonprepend gum::DiscretizedVariable::addTick %{
         args = tuple([args[0].__disown__()]) + args[1:]
 %}
+*/
+%feature("shadow") gum::LabelizedVariable::addLabel(const std::string aLabel) %{
+def addLabel(self,*args):
+  $action(self,*args)
+  return self
+%}
 
+%feature("shadow") gum::DiscretizedVariable<float>::addTick(const float& aTick) %{
+def addTick(self,*args):
+  $action(self,*args)
+  return self
+%}
 
 %extend gum::BayesNet {
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
@@ -246,7 +258,7 @@ def variablesSequence(self):
 
 
 %pythonappend gum::MultiDimDecorator::add %{
-        args[0].__fill_distrib__()
+        self.__fill_distrib__()
 %}
 
 
@@ -397,7 +409,7 @@ def variablesSequence(self):
 
 
 %pythonprepend gum::List::append %{
-        args[1].__disown__() #lets c++ take care of deleting it
+        args[0].__disown__() #lets c++ take care of deleting it
 %}
 
 
@@ -416,16 +428,14 @@ def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be dict, not %s"
                         %(type(evidces)))
-    # load variables
-    vars = {}
+
     bn = self.bn()
-    for i in range(0, len(bn)):
-        vars.update({bn.variable(i).name(): bn.variable(i)})
+
     # set evidences
     list_pot = ListPotentials_float()
     for var_name, evidce in evidces.iteritems():
         pot = Potential_float()
-        var = vars[var_name]
+        var = bn.variableFromName(var_name) 
         pot.add(var)
         if isinstance(evidce, (int, float, str)):
             pot[:] = 0
@@ -472,16 +482,13 @@ def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be dict, not %s"
                         %(type(evidces)))
-    # load variables
-    vars = {}
     bn = self.bn()
-    for i in range(0, len(bn)):
-        vars.update({bn.variable(i).name(): bn.variable(i)})
+
     # set evidences
     list_pot = ListPotentials_double() #M
     for var_name, evidce in evidces.iteritems():
         pot = Potential_double() #M
-        var = vars[var_name]
+        var = bn.variableFromName(var_name)
         pot.add(var)
         if isinstance(evidce, (int, float, str)):
             pot[:] = 0
