@@ -102,15 +102,16 @@ PRMInference::hasEvidence(const Chain& chain) const {
 INLINE
 void
 PRMInference::removeEvidence(const Chain& chain) {
-  try {
-    if (__EMap(chain.first).exists(chain.second->id())) {
-      _evidenceRemoved(chain);
-      delete __EMap(chain.first)[chain.second->id()];
-      __EMap(chain.first).erase(chain.second->id());
-    }
-  } catch (NotFound&) {
-    // Ok, we are only removing
-  }
+	try {
+		if (__EMap(chain.first).exists(chain.second->id())) {
+			_evidenceRemoved(chain);
+			delete __EMap(chain.first)[chain.second->id()];
+			__EMap(chain.first).erase(chain.second->id());
+		}
+	} catch (NotFound&) {
+		// Ok, we are only removing
+		GUM_CHECKPOINT;
+	}
 }
 
 INLINE

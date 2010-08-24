@@ -93,7 +93,6 @@ PRMInference::__EMap(const Instance* i) {
   }
 }
 
-INLINE
 void
 PRMInference::addEvidence(const Chain& chain, const Potential<prm_float>& p) {
   if (chain.first->exists(chain.second->id())) {

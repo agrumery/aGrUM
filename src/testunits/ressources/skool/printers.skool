@@ -64,7 +64,7 @@ class Computer extends Equipment {
   boolean can_print dependson equipState, exists_printer {
     // exists_printer |   false  | |   true   |
     // state          | OK | NOK | | OK | NOK |
-    /* false */       [1.00, 1.00,  0.00, 1.00,
+    /* false */       [1.00, 0.00,  0.00, 1.00,
     /* true  */        0.00, 1.00,  1.00, 0.00]
   };
 
