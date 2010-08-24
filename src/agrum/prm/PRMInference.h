@@ -216,23 +216,6 @@ class PRMInference {
     /// Mapping of evidence over Instance's nodes.
     HashTable<const Instance*, EMap*> __evidences;
 
-    /// @brief Generic method to add evidence over a ClassElement in an
-    ///        Instance.
-    /// The Potential is added by copy and this method checks if it only
-    /// contains elt's variable.
-    /// @param i The instance in which an evidence is added.
-    /// @param elt The ClassElement of i on which an evidence is observed.
-    /// @param p The Potential representing the evidence.
-    /// @throw OperationNotAllowed Raised if p isn't consistent with elt.
-    void __addEvidence(const Chain& chain, const Potential<prm_float>& p);
-
-    /// @brief Generic method to remove an evidence over a ClassElement in
-    ///        an Instance.
-    /// The concerned Instance is updated with the suppression of the
-    /// evidence (if any). If there is no evidence over elt, than nothing is
-    /// done.
-    void __removeEvidence(const Chain& chain);
-
     /// Private getter over __evidences, if necessary creates an EMap for i.
     EMap& __EMap(const Instance* i);
 

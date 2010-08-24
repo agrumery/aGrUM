@@ -101,31 +101,15 @@ PRMInference::hasEvidence(const Chain& chain) const {
 
 INLINE
 void
-PRMInference::addEvidence(const Chain& chain, const Potential<prm_float>& p) {
-  if (chain.first->exists(chain.second->id())) {
-    __addEvidence(chain, p);
-  } else {
-    GUM_ERROR(NotFound, "the given Attribute does not belong to this Instance.");
-  }
-}
-
-INLINE
-void
 PRMInference::removeEvidence(const Chain& chain) {
-  if (chain.first->exists(chain.second->id())) {
-    __removeEvidence(chain);
-  } else {
-    GUM_ERROR(NotFound, "the given Attribute does not belong to this Instance.");
-  }
-}
-
-INLINE
-void
-PRMInference::__removeEvidence(const Chain& chain) {
-  if (__EMap(chain.first).exists(chain.second->id())) {
-    _evidenceRemoved(chain);
-    delete __EMap(chain.first)[chain.second->id()];
-    __EMap(chain.first).erase(chain.second->id());
+  try {
+    if (__EMap(chain.first).exists(chain.second->id())) {
+      _evidenceRemoved(chain);
+      delete __EMap(chain.first)[chain.second->id()];
+      __EMap(chain.first).erase(chain.second->id());
+    }
+  } catch (NotFound&) {
+    // Ok, we are only removing
   }
 }
 
