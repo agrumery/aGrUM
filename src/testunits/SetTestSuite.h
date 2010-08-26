@@ -376,7 +376,7 @@ namespace gum {
           set.insert( 5 );
         }
 
-        gum::Set<int> getIntersection( gum::Set<int> set ) {
+        gum::Set<int> getIntersection( gum::Set<int>& set ) {
           gum::Set<int> full;
           fill( full );
           gum::Set<int> inter;
@@ -390,7 +390,7 @@ namespace gum {
           return inter;
         }
 
-        gum::Set<int> getUnion( gum::Set<int> set ) {
+        gum::Set<int> getUnion( gum::Set<int>& set ) {
           gum::Set<int> full;
           fill( full );
           gum::Set<int> unionSet;

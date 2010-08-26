@@ -49,8 +49,8 @@ namespace CxxTest
 
     template<class X, class Y>
     void doAssertEquals( const char *file, unsigned line,
-                         const char *xExpr, X x,
-                         const char *yExpr, Y y,
+                         const char *xExpr, const X& x,
+                         const char *yExpr, const Y& y,
                          const char *message )
     {
         if ( !equals( x, y ) ) {
@@ -75,8 +75,8 @@ namespace CxxTest
 
     template<class X, class Y>
     void doAssertDiffers( const char *file, unsigned line,
-                          const char *xExpr, X x,
-                          const char *yExpr, Y y,
+                          const char *xExpr, const X& x,
+                          const char *yExpr, const Y& y,
                           const char *message )
     {
         if ( !differs( x, y ) ) {
@@ -470,14 +470,14 @@ namespace CxxTest
     // This takes care of "signed <-> unsigned" warnings
     //
 #   define CXXTEST_COMPARISONS(CXXTEST_X, CXXTEST_Y, CXXTEST_T) \
-    inline bool equals( CXXTEST_X x, CXXTEST_Y y ) { return (((CXXTEST_T)x) == ((CXXTEST_T)y)); } \
-    inline bool equals( CXXTEST_Y y, CXXTEST_X x ) { return (((CXXTEST_T)y) == ((CXXTEST_T)x)); } \
-    inline bool differs( CXXTEST_X x, CXXTEST_Y y ) { return (((CXXTEST_T)x) != ((CXXTEST_T)y)); } \
-    inline bool differs( CXXTEST_Y y, CXXTEST_X x ) { return (((CXXTEST_T)y) != ((CXXTEST_T)x)); } \
-    inline bool lessThan( CXXTEST_X x, CXXTEST_Y y ) { return (((CXXTEST_T)x) < ((CXXTEST_T)y)); } \
-    inline bool lessThan( CXXTEST_Y y, CXXTEST_X x ) { return (((CXXTEST_T)y) < ((CXXTEST_T)x)); } \
-    inline bool lessThanEquals( CXXTEST_X x, CXXTEST_Y y ) { return (((CXXTEST_T)x) <= ((CXXTEST_T)y)); } \
-    inline bool lessThanEquals( CXXTEST_Y y, CXXTEST_X x ) { return (((CXXTEST_T)y) <= ((CXXTEST_T)x)); }
+    inline bool equals( const CXXTEST_X& x, const CXXTEST_Y& y ) { return (((CXXTEST_T)x) == ((CXXTEST_T)y)); } \
+    inline bool equals( const CXXTEST_Y& y, const CXXTEST_X& x ) { return (((CXXTEST_T)y) == ((CXXTEST_T)x)); } \
+    inline bool differs( const CXXTEST_X& x, const CXXTEST_Y& y ) { return (((CXXTEST_T)x) != ((CXXTEST_T)y)); } \
+    inline bool differs( const CXXTEST_Y& y, const CXXTEST_X& x ) { return (((CXXTEST_T)y) != ((CXXTEST_T)x)); } \
+    inline bool lessThan( const CXXTEST_X& x, const CXXTEST_Y& y ) { return (((CXXTEST_T)x) < ((CXXTEST_T)y)); } \
+    inline bool lessThan( const CXXTEST_Y& y, const CXXTEST_X& x ) { return (((CXXTEST_T)y) < ((CXXTEST_T)x)); } \
+    inline bool lessThanEquals( const CXXTEST_X& x, const CXXTEST_Y& y ) { return (((CXXTEST_T)x) <= ((CXXTEST_T)y)); } \
+    inline bool lessThanEquals( const CXXTEST_Y& y, const CXXTEST_X& x ) { return (((CXXTEST_T)y) <= ((CXXTEST_T)x)); }
 
 #   define CXXTEST_INTEGRAL(CXXTEST_T) \
     CXXTEST_COMPARISONS( signed CXXTEST_T, unsigned CXXTEST_T, unsigned CXXTEST_T )
