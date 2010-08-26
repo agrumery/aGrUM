@@ -406,26 +406,17 @@ SVE::__initLiftedNodes(const Class& c)
 void
 SVE::__initElimOrder() {
   CDG cdg(*_prm);
-  __class_elim_order = new Sequence<const Class*>();
+  __class_elim_order = new Sequence<const ClassElementContainer*>();
   std::list<NodeId> l;
-  for (DAG::NodeIterator node = cdg.dag().beginNodes();
-      node != cdg.dag().endNodes(); ++node) {
-    if (cdg.dag().parents(*node).empty()) {
-      l.push_back(*node);
-    }
-  }
+  for (DAG::NodeIterator node = cdg.dag().beginNodes(); node != cdg.dag().endNodes(); ++node)
+    if (cdg.dag().parents(*node).empty()) l.push_back(*node);
   Set<NodeId> visited_node;
   while (not l.empty()) {
     visited_node.insert(l.front());
-    if (not __class_elim_order->exists(cdg.get(l.front()).first)) {
+    if (not __class_elim_order->exists(cdg.get(l.front()).first))
       __class_elim_order->insert(cdg.get(l.front()).first);
-    }
-    for (DAG::ArcIterator child = cdg.dag().children(l.front()).begin();
-        child != cdg.dag().children(l.front()).end(); ++child) {
-      if (not visited_node.contains(child->head())) {
-        l.push_back(child->head());
-      }
-    }
+    for (DAG::ArcIterator child = cdg.dag().children(l.front()).begin(); child != cdg.dag().children(l.front()).end(); ++child)
+      if (not visited_node.contains(child->head())) l.push_back(child->head());
     l.pop_front();
   }
 }

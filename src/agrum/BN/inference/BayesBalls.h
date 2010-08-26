@@ -38,7 +38,7 @@
 // ============================================================================
 namespace gum {
 /**
- * @class BayesBalls
+ * @class BayesBalls BayesBall.h <agrum/BN/inference/BayesBall.h>
  * @brief Implementation of Shachter's Bayes Balls algorithm.
  * @ingroup bn_group
  *

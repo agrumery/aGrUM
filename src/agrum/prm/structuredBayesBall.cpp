@@ -60,11 +60,10 @@ StructuredBayesBall::__isHardEvidence(const Instance* i, NodeId n) {
       Instantiation inst(e);
       Size count = 0;
       for (inst.setFirst(); not inst.end(); inst.inc()) {
-        if ( (e->get(inst) == (prm_float) 1) ) {
+        if ( (e->get(inst) == (prm_float) 1.0) )
           ++count;
-        } else if (e->get(inst) != (prm_float) 0) {
+        else if (e->get(inst) != (prm_float) 0.0)
           return false;
-        }
       }
       return (count == 1);
     }
@@ -90,6 +89,10 @@ StructuredBayesBall::__compute(const Instance* i, NodeId n) {
 
 void
 StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks) {
+  // std::stringstream sBuff;
+  // sBuff << i->name() << "." << i->type().get(n).safeName();
+  // std::string in = "in __fromChild ";
+  // GUM_TRACE(in + sBuff.str());
   if (not marks.exists(i)) {
     marks.insert(i, new StructuredBayesBall::MarkMap());
   }
@@ -102,39 +105,42 @@ StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks
       {
         if (not __getMark(marks, i, n).first) {
           __getMark(marks, i, n).first = true;
-          for (Set<Instance*>::iterator iter = i->getInstances(n).begin(); iter != i->getInstances(n).end(); ++iter) {
+          const Set<Instance*>& set = i->getInstances(n);
+          for (Set<Instance*>::const_iterator iter = set.begin(); iter != set.end(); ++iter) {
             NodeId id = (**iter).get(__getSC(i,n).lastElt().safeName()).id();
             __fromChild(*iter, id, marks);
           }
         }
         if (not __getMark(marks, i, n).second) {
           __getMark(marks, i, n).second = true;
-          for (ArcSetIterator child = i->type().dag().children(n).begin(); child != i->type().dag().children(n).end(); ++child) {
+          const ArcSet& children = i->type().dag().children(n);
+          for (ArcSetIterator child = children.begin(); child != children.end(); ++child)
             __fromParent(i, child->head(), marks);
-          }
         }
         break;
       }
     case ClassElement::prm_aggregate:
     case ClassElement::prm_attribute:
       {
-        if ( (not __getMark(marks, i, n).first) and (not __isHardEvidence(i, n)) ) {
+        if (not __getMark(marks, i, n).first) {
           __getMark(marks, i, n).first = true;
-          for (ArcSetIterator prnt = i->type().dag().parents(n).begin(); prnt != i->type().dag().parents(n).end(); ++prnt) {
-            __fromChild(i, prnt->tail(), marks);
+          if (not __isHardEvidence(i, n)) {
+            const ArcSet& parents = i->type().dag().parents(n);
+            for (ArcSetIterator prnt = parents.begin(); prnt != parents.end(); ++prnt)
+              __fromChild(i, prnt->tail(), marks);
           }
         }
         if (not __getMark(marks, i, n).second) {
           __getMark(marks, i, n).second = true;
           // In i.
-          for (ArcSetIterator child = i->type().dag().children(n).begin(); child != i->type().dag().children(n).end(); ++child) {
+          const ArcSet& children = i->type().dag().children(n);
+          for (ArcSetIterator child = children.begin(); child != children.end(); ++child)
             __fromParent(i, child->head(), marks);
-          }
           // Out of i.
           try {
             typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
             for (Iter iter = i->getRefAttr(n).begin(); iter != i->getRefAttr(n).end(); ++iter) {
-              __fromParent(iter->first, iter->first->get(iter->second).id(), marks);
+              __fromParent(iter->first, iter->first->type().get(iter->second).id(), marks);
             }
           } catch (NotFound&) {
             // Not an inverse sc
@@ -148,10 +154,16 @@ StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks
         GUM_ERROR(FatalError, "This case is impossible.");
       }
   }
+  // std::string out = "out of __fromChild ";
+  // GUM_TRACE(out + sBuff.str());
 }
 
 void
 StructuredBayesBall::__fromParent(const Instance* i, NodeId n, InstanceMap& marks) {
+  // std::stringstream sBuff;
+  // sBuff << i->name() << "." << i->type().get(n).safeName();
+  // std::string in = "in __fromParent ";
+  // GUM_TRACE(in + sBuff.str());
   if (not marks.exists(i)) {
     marks.insert(i, new StructuredBayesBall::MarkMap());
   }
@@ -161,25 +173,26 @@ StructuredBayesBall::__fromParent(const Instance* i, NodeId n, InstanceMap& mark
   // Concerns only Attribute (because of the hard evidence)
   if ( (__isHardEvidence(i, n)) and (not __getMark(marks, i, n).first) ) {
     __getMark(marks, i, n).first = true;
-    for (ArcSetIterator iter = i->type().dag().parents(n).begin(); iter != i->type().dag().parents(n).end(); ++iter) {
+    const ArcSet& parents = i->type().dag().parents(n);
+    for (ArcSetIterator iter = parents.begin(); iter != parents.end(); ++iter)
       __fromChild(i, iter->tail(), marks);
-    }
   } else if (not __getMark(marks, i, n).second) {
     __getMark(marks, i, n).second = true;
     // In i.
-    for (ArcSetIterator iter = i->type().dag().children(n).begin(); iter != i->type().dag().children(n).end(); ++iter) {
+    const ArcSet& children = i->type().dag().children(n);
+    for (ArcSetIterator iter = children.begin(); iter != children.end(); ++iter)
       __fromParent(i, iter->head(), marks);
-    }
     // Out of i.
     try {
       typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
-      for (Iter iter = i->getRefAttr(n).begin(); iter != i->getRefAttr(n).end(); ++iter) {
-        __fromParent(iter->first, iter->first->get(iter->second).id(), marks);
-      }
+      for (Iter iter = i->getRefAttr(n).begin(); iter != i->getRefAttr(n).end(); ++iter)
+        __fromParent(iter->first, iter->first->type().get(iter->second).id(), marks);
     } catch (NotFound&) {
       // Not an inverse sc
     }
   }
+  // std::string out = "out of __fromParent ";
+  // GUM_TRACE(out + sBuff.str());
 }
 
 void

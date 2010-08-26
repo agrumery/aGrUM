@@ -104,7 +104,7 @@ class SVE: public PRMInference{
 
     HashTable<const Class*, ArraySet*> __lifted_pools;
 
-    Sequence<const Class*>* __class_elim_order;
+    Sequence<const ClassElementContainer*>* __class_elim_order;
 
     HashTable<const Instance*, Set< const DiscreteVariable* >* > __delayedVariables;
 

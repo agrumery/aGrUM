@@ -42,7 +42,7 @@ class CDG {
 
   public:
     /// Association between a class element and it's holding class.
-    typedef std::pair<const Class*, const ClassElement*> EltPair;
+    typedef std::pair<const ClassElementContainer*, const ClassElement*> EltPair;
 
   // ========================================================================
   /// @name Constructors and Destructor.
@@ -78,7 +78,7 @@ class CDG {
     ///        given Class.
     /// Is is necessary to give both Class and ClassElement because
     /// inherited ClassElement are shared in the inheritance hierarchy.
-    NodeId get(const Class& c, const ClassElement& elt) const;
+    NodeId get(const ClassElementContainer& c, const ClassElement& elt) const;
 
     /// Returns a mapping between the CDG's nodes and their
     /// modalities.
@@ -91,10 +91,10 @@ class CDG {
     void __buildGraph(const PRM& prm);
 
     /// Add nodes in __graph while updating consequently all the mappings.
-    void __addNode(const Class* c, const ClassElement& elt);
+    void __addNode(const ClassElementContainer* c, const ClassElement& elt);
 
     /// Add arcs in __graph.
-    void __addArcs(const Class& c, NodeId node,
+    void __addArcs(const ClassElementContainer& c, NodeId node,
                    HashTable<const ClassElement*, NodeId>& map);
 
     /// The graph itself.

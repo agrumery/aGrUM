@@ -100,6 +100,8 @@ class StructuredBayesBall {
     /// Discard previous computations.
     void compute(const Instance& i, NodeId n);
 
+    /// Returns true if there is a hard evidence on i->get(n).
+    bool __isHardEvidence(const Instance* i, NodeId n);
   private:
     /// Copy constructor.
     StructuredBayesBall(const StructuredBayesBall& source);
@@ -119,8 +121,6 @@ class StructuredBayesBall {
     /// Cleans this before a new computation.
     void __clean();
 
-    /// Returns true if there is a hard evidence on i->get(n).
-    bool __isHardEvidence(const Instance* i, NodeId n);
 
     /// The real compute method.
     void __compute(const Instance* i, NodeId n);

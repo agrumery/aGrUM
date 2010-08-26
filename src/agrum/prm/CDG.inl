@@ -55,7 +55,7 @@ CDG::get(NodeId id) const { return *(__elt_map[id]); }
 
 INLINE
 NodeId
-CDG::get(const Class& c, const ClassElement& elt) const {
+CDG::get(const ClassElementContainer& c, const ClassElement& elt) const {
   return (*(__node_map[&c]))[&elt];
 }
 
@@ -65,7 +65,7 @@ CDG::modalities() const { return __modalitites; }
 
 INLINE
 void
-CDG::__addNode(const Class* c, const ClassElement& elt)
+CDG::__addNode(const ClassElementContainer* c, const ClassElement& elt)
 {
   switch (elt.elt_type()) {
     case ClassElement::prm_attribute:

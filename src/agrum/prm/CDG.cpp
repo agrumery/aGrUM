@@ -51,39 +51,40 @@ CDG::__buildGraph(const PRM& prm) {
   // First we add all nodes
   for (Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter) {
     __node_map.insert(*iter, new HashTable<const ClassElement*, NodeId>());
-    for (DAG::NodeIterator jter = (*iter)->dag().beginNodes(); jter != (*iter)->dag().endNodes(); ++jter) {
+    for (DAG::NodeIterator jter = (*iter)->dag().beginNodes(); jter != (*iter)->dag().endNodes(); ++jter)
       __addNode(*iter, (*iter)->get(*jter));
-    }
+  }
+  for (Set<Interface*>::const_iterator iter = prm.interfaces().begin(); iter != prm.interfaces().end(); ++iter) {
+    __node_map.insert(*iter, new HashTable<const ClassElement*, NodeId>());
+    for (DAG::NodeIterator jter = (*iter)->dag().beginNodes(); jter != (*iter)->dag().endNodes(); ++jter)
+      __addNode(*iter, (*iter)->get(*jter));
   }
   // Then we add the arcs
-  for (Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter) {
-    for (DAG::NodeIterator jter = (*iter)->dag().beginNodes(); jter != (*iter)->dag().endNodes(); ++jter) {
+  for (Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter)
+    for (DAG::NodeIterator jter = (*iter)->dag().beginNodes(); jter != (*iter)->dag().endNodes(); ++jter)
       __addArcs(**iter, *jter, *(__node_map[*iter]));
-    }
-  }
 }
 
 // Add arcs in __graph.
 void
-CDG::__addArcs(const Class& c, NodeId node,
+CDG::__addArcs(const ClassElementContainer& c, NodeId node,
                HashTable<const ClassElement*, NodeId>& map)
 {
   switch (c.get(node).elt_type()) {
-    case ClassElement::prm_slotchain: {
-                                        const SlotChain& sc = static_cast<const SlotChain&>(c.get(node));
-                                        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc) {
-                                          __graph.insertArc((*(__node_map[&(sc.end())]))[&(sc.lastElt())],
-                                                            map[&(c.get(arc->head()))]);
-                                        }
-                                        break;
-                                      }
+    case ClassElement::prm_slotchain:
+      {
+        const SlotChain& sc = static_cast<const SlotChain&>(c.get(node));
+        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc)
+          __graph.insertArc((*(__node_map[&(sc.end())]))[&(sc.end().get(sc.lastElt().safeName()))], map[&(c.get(arc->head()))]);
+        break;
+      }
     case ClassElement::prm_aggregate:
-    case ClassElement::prm_attribute: {
-                                        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc) {
-                                          __graph.insertArc(map[&(c.get(node))], map[&(c.get(arc->head()))]);
-                                        }
-                                        break;
-                                      }
+    case ClassElement::prm_attribute:
+      {
+        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc)
+          __graph.insertArc(map[&(c.get(node))], map[&(c.get(arc->head()))]);
+        break;
+      }
     default: { /* do nothing */ break; }
   }
 }
