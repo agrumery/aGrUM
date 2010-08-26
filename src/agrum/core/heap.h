@@ -32,7 +32,7 @@
  * Heap<int> heap1;
  *
  * // create a heap of floats, the top element is the greatest
- * Heap<float> heap2 (std::greater<float>());
+ * Heap< float,std::greater<float> > heap2;
  *
  * // insert elements into the heap
  * heap1.insert (8);
