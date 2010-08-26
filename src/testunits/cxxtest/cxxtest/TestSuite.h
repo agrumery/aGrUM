@@ -42,7 +42,7 @@ namespace CxxTest
     void doFailAssert( const char *file, unsigned line, const char *expression, const char *message );
 
     template<class X, class Y>
-    bool equals( X x, Y y )
+    bool equals( const X& x, const Y& y )
     {
         return (x == y);
     }
@@ -68,7 +68,7 @@ namespace CxxTest
                            const char *message );
 
     template<class X, class Y>
-    bool differs( X x, Y y )
+    bool differs( const X& x, const Y& y )
     {
         return !(x == y);
     }
@@ -88,15 +88,15 @@ namespace CxxTest
     }
 
     template<class X, class Y>
-    bool lessThan( X x, Y y )
+    bool lessThan( const X& x, const Y& y )
     {
         return (x < y);
     }
 
     template<class X, class Y>
     void doAssertLessThan( const char *file, unsigned line,
-                           const char *xExpr, X x,
-                           const char *yExpr, Y y,
+                           const char *xExpr, const X& x,
+                           const char *yExpr, const Y& y,
                            const char *message )
     {
         if ( !lessThan(x, y) ) {
@@ -108,7 +108,7 @@ namespace CxxTest
     }
 
     template<class X, class Y>
-    bool lessThanEquals( X x, Y y )
+    bool lessThanEquals( const X& x, const Y& y )
     {
         return (x <= y);
     }
@@ -130,7 +130,7 @@ namespace CxxTest
     template<class X, class P>
     void doAssertPredicate( const char *file, unsigned line,
                             const char *pExpr, const P &p,
-                            const char *xExpr, X x,
+                            const char *xExpr, const X& x,
                             const char *message )
     {
         if ( !p( x ) ) {
@@ -144,8 +144,8 @@ namespace CxxTest
     template<class X, class Y, class R>
     void doAssertRelation( const char *file, unsigned line,
                            const char *rExpr, const R &r, 
-                           const char *xExpr, X x,
-                           const char *yExpr, Y y,
+                           const char *xExpr, const X& x,
+                           const char *yExpr, const Y& y,
                            const char *message )
     {
         if ( !r( x, y ) ) {
