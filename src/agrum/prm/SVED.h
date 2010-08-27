@@ -110,7 +110,7 @@ class SVED: public PRMInference{
     /// potentials).
     HashTable<const Set<NodeId>*, ArraySet*> __lifted_pools;
 
-    Sequence<const Class*>* __class_elim_order;
+    Sequence<const ClassElementContainer*>* __class_elim_order;
 
     StructuredBayesBall __bb;
 

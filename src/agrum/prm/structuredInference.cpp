@@ -50,6 +50,11 @@ StructuredInference::StructuredInference(const StructuredInference& source):
 StructuredInference::~StructuredInference() {
   GUM_DESTRUCTOR( StructuredInference );
   delete __gspan;
+  typedef HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*>::iterator Iter;
+  for (Iter iter = __elim_map.begin(); iter != __elim_map.end(); ++iter)
+    delete (*iter);
+  for (Set<Potential<prm_float>*>::iterator iter = __trash.begin(); iter != __trash.end(); ++iter)
+    delete (*iter);
 }
 
 StructuredInference&
@@ -86,7 +91,6 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   std::string dot = ".";
   // const gspan::InterfaceGraph& ig = __gspan->interfaceGraph();
   Set<Potential<prm_float>*> pool;
-  Set<Potential<prm_float>*> trash;
   // We'll use the first match for computations
   const GSpan::MatchedInstances& matches = __gspan->matches(*p);
   const Sequence<Instance*>& match = **(matches.begin());
@@ -109,10 +113,11 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   // Now we can triangulate graph
   PartialOrderedTriangulation t(graph, &mod, &partial_order);
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
-  // We eliminate inner variables and we translate the variable for each match
+  // We eliminate inner variables and then we eliminate observed nodes w.r.t. each match observation set
   for (size_t i = 0; i < inners.size(); ++i)
-    __eliminateNode(vars.second(elim_order[i]), pool, trash );
-
+    __eliminateNode(vars.second(elim_order[i]), pool);
+  for (GSpan::MatchedInstances::const_iterator iter = matches.begin(); iter != matches.end(); ++iter)
+    __elim_map.insert(*iter, __eliminateObservedNodes(vars, pool, match, **iter, elim_order, inners.size(), obs.size()));
 }
 
 void
@@ -121,7 +126,7 @@ StructuredInference::__buildPatternGraph(UndiGraph& graph, const Sequence<Instan
                                          Property<unsigned int>::onNodes& mod,
                                          Bijection<NodeId, const DiscreteVariable*>& vars,
                                          Bijection<NodeId, std::string>& node2attr,
-                                         StructuredInference::ReduceSet& set)
+                                         Set<Potential<prm_float>*>& set)
 {
   std::string dot = ".";
   for (Sequence<Instance*>::const_iterator inst = match.begin(); inst != match.end(); ++inst) {
@@ -213,8 +218,7 @@ StructuredInference::__buildObsSet(const GSpan::MatchedInstances& matches, const
 
 void
 StructuredInference::__eliminateNode(const DiscreteVariable* var,
-                                     Set<Potential<prm_float>*>& pool,
-                                     Set<Potential<prm_float>*>& trash)
+                                     Set<Potential<prm_float>*>& pool)
 {
   MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
   Set< Potential<prm_float>* > toRemove;
@@ -239,11 +243,107 @@ StructuredInference::__eliminateNode(const DiscreteVariable* var,
       }
     }
     Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
-    trash.insert( bucket_pot );
+    __trash.insert( bucket_pot );
     pool.insert( bucket_pot );
   }
 }
 
+Set<Potential<prm_float>*>*
+StructuredInference::__eliminateObservedNodes(const Bijection<NodeId, const DiscreteVariable*>& vars,
+                                              const Set<Potential<prm_float>*>& pool,
+                                              const Sequence<Instance*>& source,
+                                              const Sequence<Instance*>& match,
+                                              const std::vector<NodeId>& elim_order,
+                                              Size start, Size end)
+{
+  Set<Potential<prm_float>*> set(pool);
+  for (Sequence<Instance*>::const_iterator iter = match.begin(); iter != match.end(); ++iter) {
+    if (hasEvidence(*iter)) {
+      const PRMInference::EMap& e_map = evidence(*iter);
+      for (PRMInference::EMap::const_iterator obs = e_map.begin(); obs != e_map.end(); ++obs) {
+        Potential<prm_float>* pot = 0;
+        if (dynamic_cast<const MultiDimArray<prm_float>*>((**obs).getContent())) {
+          Bijection<const gum::DiscreteVariable*, const gum::DiscreteVariable*> bij;
+          bij.insert(&((**iter).get(obs.key()).type().variable()), &( match.atPos(iter.pos())->get(obs.key()).type().variable()));
+          pot = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimArray<prm_float>&>(*((**obs).getContent()))));
+          set.insert(pot);
+          __trash.insert(pot);
+        } else {
+          pot = new Potential<prm_float>();
+          pot->add((**iter).get(obs.key()).type().variable());
+          Instantiation inst(*pot), jnst(**obs);
+          for (inst.setFirst(), jnst.setFirst(); not inst.end(); inst.inc(), jnst.inc())
+            pot->set(inst, (**obs).get(jnst));
+        }
+        set.insert(pot);
+        __trash.insert(pot);
+      }
+    }
+  }
+  for (size_t idx = start; idx < end; ++idx)
+    __eliminateNode(vars.second(elim_order[idx]), set);
+  return __translatePotSet(set, source, match);
+}
+
+Set<Potential<prm_float>*>*
+StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
+                                       const Sequence<Instance*>& source,
+                                       const Sequence<Instance*>& match)
+{
+  Set<Potential<prm_float>*>* retVal = new Set<Potential<prm_float>*>();
+  Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
+  for (Sequence<Instance*>::const_iterator iter = source.begin(); iter != source.end(); ++iter) {
+    // First we translate each attribute pointed by a SlotChain
+    for (Set<SlotChain*>::const_iterator sc = (**iter).type().slotChains().begin(); sc != (**iter).type().slotChains().end(); ++sc) {
+      if ((**sc).isMultiple()) {
+        const Set<Instance*>& refs = (**iter).getInstances((**sc).id());
+        Set<Instance*>::const_iterator ref = refs.begin();
+        const Set<Instance*>& tefs = match.atPos(iter.pos())->getInstances((**sc).id());
+        Set<Instance*>::const_iterator tef = tefs.begin();
+        GUM_ASSERT(refs.size() == tefs.size());
+        for (; ref != refs.end(); ++ref, ++tef)
+          bij.insert(&((**ref).get((**sc).lastElt().safeName()).type().variable()),
+                     &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+      } else {
+        bij.insert(&((**iter).getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()),
+                   &(match.atPos(iter.pos())->getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()));
+      }
+    }
+    // Second we translate referred attributes
+    for (Instance::InvRefConstIterator inv = (**iter).beginInvRef(); inv != (**iter).endInvRef(); ++inv) {
+      typedef std::vector< std::pair< Instance*, std::string> >::const_iterator Iter;
+      for (Iter pair = (**inv).begin(); pair != (**inv).end(); ++pair) {
+        if (not source.exists(pair->first)) {
+          Size size = bij.size();
+          for (Iter mair = match.atPos(iter.pos())->getRefAttr(inv.key()).begin(); mair != match.atPos(iter.pos())->getRefAttr(inv.key()).end(); ++mair) {
+            if ( (mair->first->type() == pair->first->type()) and (not match.exists(mair->first)) ) {
+              try {
+                bij.insert(&(pair->first->get(pair->second).type().variable()),
+                           &(mair->first->get(mair->second).type().variable()));
+                break;
+              } catch (DuplicateElement&) {
+                // Lets search for the next possible occurrence
+              }
+            }
+          }
+          if (size != (bij.size() + 1)) {
+            GUM_ERROR(NotFound, "could not translate a referring attribute");
+          }
+        }
+      }
+    }
+  }
+  return retVal;
+}
+
+// void
+// StructuredInference::__translateInnerNodesElimination(const Set<Potential<prm_float>*>& pool,
+//                                                       const Set<Potential<prm_float>*>& trash,
+//                                                       const Sequence<Instance*>& source,
+//                                                       const Sequence<Instance*>& match)
+// {
+// 
+// }
 
 } /* namespace prm */
 } /* namespace gum */

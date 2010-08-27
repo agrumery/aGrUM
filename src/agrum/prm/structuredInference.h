@@ -92,9 +92,9 @@ class StructuredInference: public PRMInference {
     /// Pointer over th GSpan instance used by this class.
     GSpan* __gspan;
 
-    typedef Set< Potential<prm_float>* > ReduceSet;
-    /// Mapping between a pattern and its reduced potentials.
-    HashTable<const gspan::Pattern*, ReduceSet* > __reducedPatterns;
+    HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*> __elim_map;
+
+    Set<Potential<prm_float>*> __trash;
 
     void __reducePattern(const gspan::Pattern* p);
 
@@ -104,15 +104,27 @@ class StructuredInference: public PRMInference {
                              Property<unsigned int>::onNodes& mod,
                              Bijection<NodeId, const DiscreteVariable*>& vars,
                              Bijection<NodeId, std::string>& node2attr,
-                             ReduceSet& set);
+                             Set<Potential<prm_float>*>& set);
 
     void __buildObsSet(const GSpan::MatchedInstances& matches,
                        const Sequence<Instance*>& match, NodeSet& obs,
                        Bijection<NodeId, std::string>& node2attr);
 
     void __eliminateNode(const DiscreteVariable* var,
-                         Set<Potential<prm_float>*>& pool,
-                         Set<Potential<prm_float>*>& trash);
+                         Set<Potential<prm_float>*>& pool);
+
+    Set<Potential<prm_float>*>*
+    __eliminateObservedNodes(const Bijection<NodeId, const DiscreteVariable*>& vars,
+                             const Set<Potential<prm_float>*>& pool,
+                             const Sequence<Instance*>& source,
+                             const Sequence<Instance*>& match,
+                             const std::vector<NodeId>& elim_order,
+                             Size start, Size end);
+
+    Set<Potential<prm_float>*>*
+    __translatePotSet(Set<Potential<prm_float>*>& set,
+                      const Sequence<Instance*>& source,
+                      const Sequence<Instance*>& match);
 
 };
 
