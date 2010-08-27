@@ -44,9 +44,8 @@ namespace gum {
 
         gum::List< gum::Potential<float>* > *evidence;
 
-        gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
-
         void setUp() {
+          gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
           bn = new gum::BayesNet<float>();
 
           node1 = new gum::LabelizedVariable( "TgR", "", 72 );

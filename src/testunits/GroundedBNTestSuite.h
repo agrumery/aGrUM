@@ -429,156 +429,240 @@ namespace tests {
 //        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
 //      }
 
-//       void testEvidenceSioux() {
-//         GroundedInference* g_ve = 0;
-//         VariableElimination<prm_float>* ve = 0;
-//         BayesNet<prm_float> bn;
-//         BayesNetFactory<prm_float> bn_factory(&bn);
-//         TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
-//         TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-//         // Adding evidence
-//         const Instance& instance = prm->getSystem("aSys").get("c1");
-//         const Attribute& attribute = instance.get("can_print");
-//         Potential<prm_float> e;
-//         e.add(attribute.type().variable());
-//         e.fill( (prm_float) 0.0);
-//         Instantiation inst(e);
-//         inst.setFirst();
-//         e.set(inst, (prm_float) 1.0);
-//         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-//         TS_ASSERT(g_ve->hasEvidence(chain));
-//         TS_ASSERT(g_ve->hasEvidence(chain.first));
-//         // making a first inference without evidence
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           g_ve->marginal(q_chain, m);
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         GUM_CHECKPOINT;
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           g_ve->marginal(q_chain, m);
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         delete g_ve;
-//       }
-// 
-//       void testEvidenceSioux2() {
-//         SVE* g_ve = 0;
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVE(*prm, prm->getSystem("aSys")));
-//         // making a first inference without evidence
-//         // Adding evidence
-//         const Instance& instance = prm->getSystem("aSys").get("c1");
-//         const Attribute& attribute = instance.get("can_print");
-//         Potential<prm_float> e;
-//         e.add(attribute.type().variable());
-//         e.fill( (prm_float) 0.0);
-//         Instantiation inst(e);
-//         inst.setFirst();
-//         e.set(inst, (prm_float) 1.0);
-//         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-//         TS_ASSERT(g_ve->hasEvidence(chain));
-//         TS_ASSERT(g_ve->hasEvidence(chain.first));
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           g_ve->marginal(q_chain, m);
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
-//         GUM_CHECKPOINT;
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           g_ve->marginal(q_chain, m);
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         delete g_ve;
-//       }
-// 
-// 
-//       void testEvidenceSioux3() {
-//         SVED* g_ve = 0;
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVED(*prm, prm->getSystem("aSys")));
-//         // Adding evidence
-//         const Instance& instance = prm->getSystem("aSys").get("c1");
-//         const Attribute& attribute = instance.get("can_print");
-//         Potential<prm_float> e;
-//         e.add(attribute.type().variable());
-//         e.fill( (prm_float) 0.0);
-//         Instantiation inst(e);
-//         inst.setFirst();
-//         e.set(inst, (prm_float) 1.0);
-//         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
-//         TS_ASSERT(g_ve->hasEvidence(chain));
-//         TS_ASSERT(g_ve->hasEvidence(chain.first));
-//         // making a first inference without evidence
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(q_chain, m));
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         GUM_CHECKPOINT;
-//         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
-//         {
-//           const Instance& q_i = prm->getSystem("aSys").get("pow");
-//           const Attribute& q_a = q_i.get("state");
-//           PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
-//           Potential<prm_float> m;
-//           g_ve->marginal(q_chain, m);
-//           {
-//             Instantiation inst(m);
-//             for (inst.setFirst(); not inst.end(); inst.inc()) {
-//               GUM_TRACE(m.get(inst));
-//             }
-//           }
-//         }
-//         delete g_ve;
-//       }
+//      void testEvidenceSioux() {
+//        GroundedInference* g_ve = 0;
+//        VariableElimination<prm_float>* ve = 0;
+//        BayesNet<prm_float> bn;
+//        BayesNetFactory<prm_float> bn_factory(&bn);
+//        TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+//        TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
+//        TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+//        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
+//        // Adding evidence
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        // making a first inference with evidence
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        // Removing evidences
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        // Inference without evidences
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        delete g_ve;
+//      }
+//
+//      void testEvidenceSioux2() {
+//        SVE* g_ve = 0;
+//        TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVE(*prm, prm->getSystem("aSys")));
+//        // Adding evidence
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        // making a first inference with evidence
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        // Removing evidences
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        // Inference without evidences
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        delete g_ve;
+//      }
+//
+//
+//      void testEvidenceSioux3() {
+//        SVED* g_ve = 0;
+//        TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVED(*prm, prm->getSystem("aSys")));
+//        // Adding evidence
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          Potential<prm_float> e;
+//          e.add(attribute.type().variable());
+//          e.fill( (prm_float) 0.0);
+//          Instantiation inst(e);
+//          inst.setFirst();
+//          e.set(inst, (prm_float) 1.0);
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e));
+//          TS_ASSERT(g_ve->hasEvidence(chain));
+//          TS_ASSERT(g_ve->hasEvidence(chain.first));
+//        }
+//        // making a first inference with evidence
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        // Removing evidences
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("c1");
+//          const Attribute& attribute = instance.get("can_print");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        {
+//          const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+//          const Attribute& attribute = instance.get("(t_degraded)equipState");
+//          PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+//          TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
+//        }
+//        // Inference without evidences
+//        {
+//          const Instance& q_i = prm->getSystem("aSys").get("pow");
+//          const Attribute& q_a = q_i.get("state");
+//          PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
+//          Potential<prm_float> m;
+//          g_ve->marginal(q_chain, m);
+//          {
+//            Instantiation inst(m);
+//            for (inst.setFirst(); not inst.end(); inst.inc()) {
+//              GUM_TRACE(m.get(inst));
+//            }
+//          }
+//        }
+//        delete g_ve;
+//      }
 
   };
 

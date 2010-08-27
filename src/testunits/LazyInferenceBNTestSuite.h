@@ -135,10 +135,12 @@ namespace gum {
           nodeset.insert( 2 );
           nodeset.insert( 4 );
 
-          TS_ASSERT_THROWS_NOTHING( inf.joint( nodeset ) );
+          gum::Potential<float>* pot = 0;
+          TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
+          if (pot) delete pot;
         }
 
-      private:
+        private:
         // Builds a BN to test the inference
         void fill( gum::BayesNet<float> &bn ) {
           const gum::Potential<float>& p1 = bn.cpt( i1 );

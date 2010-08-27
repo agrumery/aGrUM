@@ -41,7 +41,7 @@ type t_degraded extends t_state
   Degraded: NOK;
 
 class PowerSupply {
-  t_state state { [ 0.99, 0.01 ] };
+  t_state state { [ 0.5, 0.5 ] };
 }
 
 class Room {
@@ -98,10 +98,10 @@ class Computer implements Equipment {
     NOK: 0.00, 1.00, 0.00;
   };
   boolean can_print dependson working_printer, equipState {
-    // working_printer |              false                 | |              true             |
-    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
-    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
-    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+    // working_printer |              false            | |              true             |
+    // equipState      | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      0.00,     1.00,         1.00,
+    /* true  */         0.00,    0.00,         0.00,      1.00,     0.00,         0.00]
   };
 }
 
@@ -116,10 +116,10 @@ class SafeComputer implements Equipment {
     NOK: 0.00, 1.00, 0.00;
   };
   boolean can_print dependson working_printer, equipState {
-    // working_printer |              false                 | |              true             |
-    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
-    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
-    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+    // working_printer |              false            | |              true             |
+    // equipState      | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      0.00,     1.00,         1.00,
+    /* true  */         0.00,    0.00,         0.00,      1.00,     0.00,         0.00]
   };
 }
 

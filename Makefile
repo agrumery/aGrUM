@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=GroundedBN
+SKOOL_TEST=Torcs
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)
