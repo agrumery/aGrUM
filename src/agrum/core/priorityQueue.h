@@ -222,7 +222,9 @@ namespace gum {
     // ============================================================================
     /// inserts a new (a copy) element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
-     * method erase for more details about the index) */
+     * method erase for more details about the index)
+     * @throw DuplicateElement exception is thrown if the uniqueness property is
+     * set to true and the element already exists */
     // ============================================================================
     Size insert( const Priority& priority, const Val& val );
 
