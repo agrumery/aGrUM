@@ -1,0 +1,158 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/** @file
+ * @brief Templates implementation of bns/io/gumBNWriter.h classes.
+ *
+ * @author Lionel Torti & Pierre-Henri Wuillemin
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+#include "DSLWriter.h"
+
+
+namespace gum {
+
+
+/* ============================================================================ */
+/* ===                           GUM_DSL_WRITTER                             === */
+/* ============================================================================ */
+// Default constructor.
+template<typename T_DATA> INLINE
+DSLWriter<T_DATA>::DSLWriter() {
+    GUM_CONSTRUCTOR( DSLWriter );
+}
+
+// Default destructor.
+template<typename T_DATA> INLINE
+DSLWriter<T_DATA>::~DSLWriter() {
+    GUM_DESTRUCTOR( DSLWriter );
+}
+
+//
+// Writes a Bayesian Network in the output stream using the DSL format.
+//
+// @param ouput The output stream.
+// @param bn The Bayesian Network writen in output.
+// @throws Raised if an I/O error occurs.
+template<typename T_DATA>
+void DSLWriter<T_DATA>::write(std::ostream &output, const BayesNet<T_DATA>& bn ) {
+    if ( ! output.good() )
+        GUM_ERROR( IOError, "Stream states flags are not all unset." );
+
+    output << "net Unnamed\n{\n";
+
+    for (SequenceIterator<NodeId> iter = bn.getTopologicalOrder().begin(); iter != bn.getTopologicalOrder().end(); ++iter) {
+        output << __variableBloc(bn, bn.variable(*iter));
+    }
+
+    output << "};";
+    output.flush();
+
+    if ( output.fail() )
+        GUM_ERROR( IOError, "Writting in the ostream failed." );
+
+}
+
+// Writes a Bayesian Network in the referenced file using the DSL format.
+// If the file doesn't exists, it is created.
+// If the file exists, it's content will be erased.
+//
+// @param filePath The path to the file used to write the Bayesian Network.
+// @param bn The Bayesian Network writed in the file.
+// @throws Raised if an I/O error occurs.
+template<typename T_DATA>
+void DSLWriter<T_DATA>::write(std::string filePath, const BayesNet<T_DATA>& bn ) {
+    std::filebuf fb;
+    fb.open(filePath.c_str(),std::ios::out);
+    std::ostream output(&fb);
+
+    write(output, bn);
+
+    fb.close();
+}
+
+// Returns a bloc defining a variable in the DSL format.
+template<typename T_DATA>
+std::string DSLWriter<T_DATA>::__variableBloc(const BayesNet<T_DATA>& bn , const DiscreteVariable& var ) {
+    NodeId id;
+    gum::Size i = 0;
+    std::ostringstream oss;
+
+    std::string val("");
+
+    id = bn.idFromName(var.name());
+
+    oss << "\tnode " << var.name() << "\n\t{\n";
+
+    oss << "\t\tTYPE = CPT;\n";
+
+    oss << "\t\tHEADER =\n\t\t{\n";
+    oss << "\t\t\tID = " << var.name() << ";\n";
+    oss << "\t\t\tNAME = \"" << var.name() << "\";\n";
+    oss << "\t\t};\n";
+
+    oss << "\t\tPARENTS = (";
+
+    for (ArcSetIterator iter = bn.dag().parents(id).begin(); iter != bn.dag().parents(id).end(); ++iter) {
+        if (i != 0) oss << ", ";
+        oss << bn.variable(iter->tail()).name();
+        i++;
+    }
+    oss << ");\n";
+
+    oss << "\t\tDEFINITION =\n\t\t{\n";
+
+    ////////////////////////////
+    oss << "\t\t\tNAMESTATES = (";
+    for (i = 0; i < var.domainSize(); i++) {
+        if (i != 0) oss << ", ";
+        oss << var.label(i);
+    }
+    oss << ");\n";
+    ////////////////////////////
+
+    ////////////////////////////
+    oss << "\t\t\tPROBABILITIES = (";
+    i = 0;
+    for (Instantiation iter = bn.cpt(id).getMasterRef(); i < bn.cpt(id).domainSize(); ++iter) {
+        if (i != 0) oss << ", ";
+        oss << bn.cpt(id)[iter];
+        i++;
+    }
+
+    oss << ");\n";
+    ///////////////////////////
+
+    oss << "\t\t};\n";
+
+    oss << "\t};\n\n";
+
+    return oss.str();
+
+}
+
+
+} /* namespace gum */
+
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

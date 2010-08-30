@@ -120,7 +120,7 @@ void Parser::VARIABLE() {
 		TRY(nbr=factory().varInBN(factory().variableId(name_of_var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+name_of_var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+name_of_var);
-		             
+		
 		while (la->kind == 23) {
 			PROPERTY();
 		}
@@ -152,13 +152,13 @@ void Parser::PROBA() {
 		if (la->kind == 20) {
 			RAW_PROBA(proba);
 			if (! error_on_variable) {
-			TRY(factory().startRawProbabilityDeclaration(var));
-			gum::Size s=(gum::Size)0;
-			TRY(s=factory().cptDomainSize(factory().variableId(var)));
-			if (proba.size()<s) Warning("Not enough data for cpt of node "+var);
-			if (proba.size()>s) Warning("Too many data for cpt of node "+var);
-			TRY(factory().rawConditionalTable(proba));
-			TRY(factory().endRawProbabilityDeclaration());
+			 TRY(factory().startRawProbabilityDeclaration(var));
+			 gum::Size s=(gum::Size)0;
+			 TRY(s=factory().cptDomainSize(factory().variableId(var)));
+			 if (proba.size()<s) Warning("Not enough data for cpt of node "+var);
+			 if (proba.size()>s) Warning("Too many data for cpt of node "+var);
+			 TRY(factory().rawConditionalTable(proba));
+			 TRY(factory().endRawProbabilityDeclaration());
 			}
 			
 			Expect(14);

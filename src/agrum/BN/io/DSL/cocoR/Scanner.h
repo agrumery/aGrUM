@@ -1,7 +1,7 @@
 
 
-#if !defined(BIF_COCO_SCANNER_H__)
-#define BIF_COCO_SCANNER_H__
+#if !defined(DSL_COCO_SCANNER_H__)
+#define DSL_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -13,7 +13,7 @@
 #include <agrum/core/cocoR.h>
 
 namespace gum {
-namespace BIF {
+namespace DSL {
 
 
 class Token  
@@ -231,5 +231,5 @@ public:
 } // namespace
 
 
-#endif // !defined(BIF_COCO_SCANNER_H__)
+#endif // !defined(DSL_COCO_SCANNER_H__)
 

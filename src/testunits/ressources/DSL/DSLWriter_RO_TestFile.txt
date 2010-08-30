@@ -1,0 +1,83 @@
+net Unnamed
+{
+	node 2
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = 2;
+			NAME = "2";
+		};
+		PARENTS = ();
+		DEFINITION =
+		{
+			NAMESTATES = (0, 1);
+			PROBABILITIES = (0.3, 0.7);
+		};
+	};
+
+	node 1
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = 1;
+			NAME = "1";
+		};
+		PARENTS = ();
+		DEFINITION =
+		{
+			NAMESTATES = (0, 1);
+			PROBABILITIES = (0.2, 0.8);
+		};
+	};
+
+	node 4
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = 4;
+			NAME = "4";
+		};
+		PARENTS = (2, 1);
+		DEFINITION =
+		{
+			NAMESTATES = (0, 1);
+			PROBABILITIES = (0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1, 0);
+		};
+	};
+
+	node 3
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = 3;
+			NAME = "3";
+		};
+		PARENTS = (1);
+		DEFINITION =
+		{
+			NAMESTATES = (0, 1);
+			PROBABILITIES = (0.1, 0.9, 0.9, 0.1);
+		};
+	};
+
+	node 5
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = 5;
+			NAME = "5";
+		};
+		PARENTS = (4, 2, 3);
+		DEFINITION =
+		{
+			NAMESTATES = (0, 1, 2);
+			PROBABILITIES = (0.3, 0.6, 0.1, 0.5, 0.5, 0, 0.5, 0.5, 0, 1, 0, 0, 0.4, 0.6, 0, 0.5, 0.5, 0, 0.5, 0.5, 0, 0, 0, 1);
+		};
+	};
+
+};

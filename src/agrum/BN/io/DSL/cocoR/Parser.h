@@ -1,14 +1,13 @@
 
 
-#if !defined(BIF_COCO_PARSER_H__)
-#define BIF_COCO_PARSER_H__
+#if !defined(DSL_COCO_PARSER_H__)
+#define DSL_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
-#undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
 
 #include <iostream>
@@ -17,7 +16,7 @@
 #include "Scanner.h"
 
 namespace gum {
-namespace BIF {
+namespace DSL {
 
 
 class Errors {
@@ -175,7 +174,7 @@ void setFactory(gum::AbstractBayesNetFactory* f) {
 
 gum::AbstractBayesNetFactory& factory(void) {
   if (__factory) return *__factory;
-  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
 }
 
 void SemErr(std::string s) {
@@ -186,12 +185,10 @@ void Warning(std::string s) {
   Warning(widen("Warning : "+s).c_str());
 }
 
-void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
-  gum::Size s=(gum::Size)0;
-  TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
-  if (v.size()<s)
+void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
+  if ((int) v.size()<res)
     Warning("Not enough data in probability assignation for node "+var);
-  if (v.size()>s)
+  if ((int) v.size()>res)
     Warning("Too many data in probability assignation for node "+var);
 }
 
@@ -205,23 +202,20 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 	void SemErr(const wchar_t* msg);
 	void Warning(const wchar_t* msg);
 
-	void BIF();
+	void DSL();
 	void NETWORK();
-	void VARIABLE();
-	void PROBA();
+	void NODE();
 	void IDENT(std::string& name);
 	void STRING(std::string& str);
-	void PROPERTY();
-	void LABELIZE_VAR(int& nbrMod);
-	void NBR(int& val);
-	void MODALITY_LIST();
+	void HEADER();
+	void PARENTS(std::vector<std::string>& parents );
+	void VARIABLE_DEFINITION(int& nbrMod, std::string& var );
+	void PROBA(const std::string& var, const std::vector<std::string>& parents );
+	void PARENTS_LIST(std::vector<std::string>& parents );
+	void MODALITY_LIST(int& nbrMod);
 	void IDENT_OR_INTEGER(std::string& name);
-	void LISTE_PARENTS(std::vector<std::string>& parents );
-	void RAW_PROBA(std::vector<float>& v );
-	void FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& parents );
-	void LISTE_FLOAT(std::vector<float>& v );
-	void ASSIGNATION(const std::string& var,const std::vector<std::string>& parents,bool is_first );
-	void LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label );
+	void RAW_PROBA(const std::string& var, const std::vector<std::string>& parents );
+	void FLOAT_LIST(std::vector<float>& v );
 	void FLOAT(float& val);
 
 	void Parse();
@@ -232,5 +226,5 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 } // namespace
 
 
-#endif // !defined(BIF_COCO_PARSER_H__)
+#endif // !defined(DSL_COCO_PARSER_H__)
 
