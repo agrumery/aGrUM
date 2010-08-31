@@ -55,7 +55,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for ( EdgeIterator it = __edges.begin();it != __edges.end();++it ) {
+    for ( EdgeSetIterator it = __edges.begin();it != __edges.end();++it ) {
       if ( first ) {
         first = false;
       } else {
@@ -89,7 +89,7 @@ namespace gum {
       // check the neighbour //////////////////////////////////////////////
       const EdgeSet& set = neighbours( current );
 
-      for ( EdgeIterator ite = set.begin();ite != set.end();++ite ) {
+      for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
         NodeId new_one = ite->other( current );
 
         if ( mark.exists( new_one ) ) // if this node is already marked, stop
