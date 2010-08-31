@@ -21,174 +21,219 @@
 #ifndef SIGNALER0_H__
 #define SIGNALER0_H__
 
+
 #include "signaler.h"
+#include <agrum/core/list.h>
+
 
 namespace gum {
 
+  
   namespace __sig__ {
 
+    
     class IConnector0 {
-      public:
-        virtual ~IConnector0() { };
+    public:
+      virtual ~IConnector0() { };
 
-        virtual Listener* target() const = 0;
-        virtual void notify( const void * ) = 0;
-        virtual IConnector0* clone() = 0;
-        virtual IConnector0* duplicate( Listener* target ) = 0;
+      virtual Listener* target() const = 0;
+      virtual void notify( const void * ) = 0;
+      virtual IConnector0* clone() = 0;
+      virtual IConnector0* duplicate( Listener* target ) = 0;
     };
+    
 
     class BasicSignaler0 : public ISignaler {
-      public:
-        typedef List<IConnector0 *>  ConnectorList;
-        typedef ConnectorList::const_iterator constConnectors_iterator;
+    protected:
+      typedef ListBase<IConnector0 *>   ConnectorList;
+      typedef ListBucket<IConnector0 *> ConnectorBucket;
 
-      protected:
-        BasicSignaler0() {
-          GUM_CONSTRUCTOR( BasicSignaler0 );
+      BasicSignaler0() {
+        GUM_CONSTRUCTOR( BasicSignaler0 );
+      }
+
+      
+      BasicSignaler0( const BasicSignaler0& s ) : ISignaler( s ) {
+        GUM_CONS_CPY( BasicSignaler0 );
+
+        for ( const ConnectorBucket *it = _connectors.frontBucket ();
+              it; it = it->next() ) {
+          ( **it )->target()->attachSignal__( this );
+          _connectors.pushBack(( **it )->clone() );
+        }
+      }
+      
+
+    public:
+      virtual ~BasicSignaler0() {
+        GUM_DESTRUCTOR( BasicSignaler0 );
+
+        for ( const ConnectorBucket *it = _connectors.backBucket ();
+              it; it = it->previous() ) {
+          ( **it )->target()->detachSignal__( this );
+          delete **it;
         }
 
-        BasicSignaler0( const BasicSignaler0& s ) : ISignaler( s ) {
-          GUM_CONS_CPY( BasicSignaler0 );
+        _connectors.clear();
+      }
+      
 
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
-            ( *it )->target()->attachSignal__( this );
-            _connectors.pushBack(( *it )->clone() );
+      bool hasListener( void ) {
+        return ( !( _connectors.empty() ) );
+      }
+
+      
+      void detach( Listener* target ) {
+        for ( const ConnectorBucket *it = _connectors.backBucket ();
+              it; it = it->previous() ) {
+          if (( **it )->target() == target ) {
+            delete **it;
+            _connectors.erase( *it );
+            target->detachSignal__( this );
+            return;
           }
         }
+      }
+      
 
-      public:
-        virtual ~BasicSignaler0() {
-          GUM_DESTRUCTOR( BasicSignaler0 );
+    protected:
 
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it ) {
-            ( *it )->target()->detachSignal__( this );
-            delete *it;
-          }
+      friend class Listener;
 
-          _connectors.clear();
-        }
-
-        bool hasListener( void ) {
-          return ( !( _connectors.empty() ) );
-        }
-
-        void detach( Listener* target ) {
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
-            if (( *it )->target() == target ) {
-              delete *it;
-              _connectors.erase( it );
-              target->detachSignal__( this );
-              return;
-            }
-        }
-
-      protected:
-
-        void detachFromTarget( Listener* target ) {
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ) {
-            constConnectors_iterator itNext = it;
-            ++itNext;
-
-            if (( *it )->target() == target ) {
-              delete *it;
-              _connectors.erase( it );
-            }
-
-            it = itNext;
+      void detachFromTarget( Listener* target ) {
+        const ConnectorBucket *itprev;
+        for ( const ConnectorBucket *it = _connectors.backBucket ();
+              it; it = itprev ) {
+          if (( **it )->target() == target ) {
+            delete **it;
+            _connectors.erase( *it );
           }
         }
+      }
+      
 
-        void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) {
-          for ( constConnectors_iterator it = _connectors.begin(); it != _connectors.end(); ++it )
-            if (( *it )->target() == oldtarget ) {
-              _connectors.pushBack(( *it )->duplicate( newtarget ) );
-            }
-        }
+      void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) {
+        for ( const ConnectorBucket *it = _connectors.frontBucket ();
+              it; it = it->next() ) {
+          if (( **it )->target() == oldtarget ) {
+            _connectors.pushBack(( **it )->duplicate( newtarget ) );
+          }
+        } 
+      }
 
-        ConnectorList _connectors;
+      
+      ConnectorList _connectors;
     };
+
+      
 
     template<class TargetClass>
 
     class Connector0 : public IConnector0 {
-      public:
-        Connector0() {
-          GUM_CONSTRUCTOR( Connector0 );
-          __target = NULL;
-          __action = NULL;
-        }
+    public:
+      Connector0() {
+        GUM_CONSTRUCTOR( Connector0 );
+        __target = NULL;
+        __action = NULL;
+      }
 
-        Connector0( TargetClass* target, void ( TargetClass::*action )( const void * ) ) {
-          GUM_CONSTRUCTOR( Connector0 );
-          __target = target;
-          __action = action;
-        }
+      
+      Connector0( TargetClass* target,
+                  void ( TargetClass::*action )( const void * ) ) {
+        GUM_CONSTRUCTOR( Connector0 );
+        __target = target;
+        __action = action;
+      }
 
-        Connector0( const Connector0<TargetClass>* src ) : IConnector0( src ) {
-          GUM_CONS_CPY( Connector0 );
-        }
+      
+      Connector0( const Connector0<TargetClass>* src ) : IConnector0( src ) {
+        GUM_CONS_CPY( Connector0 );
+      }
 
-        virtual ~Connector0() {
-          GUM_DESTRUCTOR( Connector0 );
-        }
+      
+      virtual ~Connector0() {
+        GUM_DESTRUCTOR( Connector0 );
+      }
 
-        INLINE virtual IConnector0* clone() {
-          return new Connector0<TargetClass>( *this );
-        }
+      
+      INLINE virtual IConnector0* clone() {
+        return new Connector0<TargetClass>( *this );
+      }
 
-        INLINE virtual IConnector0* duplicate( Listener* target ) {
-          return new Connector0<TargetClass>(( TargetClass * )target, __action );
-        }
+      
+      INLINE virtual IConnector0* duplicate( Listener* target ) {
+        return new Connector0<TargetClass>(( TargetClass * )target, __action );
+      }
 
-        INLINE virtual void notify( const void * src ) {
-          ( __target->*__action )( src );
-        }
+      
+      INLINE virtual void notify( const void * src ) {
+        ( __target->*__action )( src );
+      }
 
-        INLINE virtual Listener* target() const {
-          return __target;
-        }
+      
+      INLINE virtual Listener* target() const {
+        return __target;
+      }
 
-      private:
-        TargetClass* __target;
-        void ( TargetClass::* __action )( const void * );
+      
+    private:
+      TargetClass* __target;
+      void ( TargetClass::* __action )( const void * );
     };
+
+    
   } // namespace sig
 
+
+
+
+  
   /**
-  * @class Signaler0
-  * @ingroup signal_group
-  * @brief class for signal with 0 args
-  * @warning Due to the too-smart-way-for-DOXYGEN of building classes Signaler1,...,Signaler_n, these classes are not documented.
-  */
+   * @class Signaler0
+   * @ingroup signal_group
+   * @brief class for signal with 0 args
+   * @warning Due to the too-smart-way-for-DOXYGEN of building classes Signaler1,...,Signaler_n, these classes are not documented.
+   */
 
   class Signaler0 : public __sig__::BasicSignaler0 {
-    public:
-      Signaler0() {
-        GUM_CONSTRUCTOR( Signaler0 );
-      }
+  public:
+    Signaler0() {
+      GUM_CONSTRUCTOR( Signaler0 );
+    }
 
-      Signaler0( const Signaler0& s ) : __sig__::BasicSignaler0( s ) {
-        GUM_CONS_CPY( Signaler0 );
-      }
+    
+    Signaler0( const Signaler0& s ) : __sig__::BasicSignaler0( s ) {
+      GUM_CONS_CPY( Signaler0 );
+    }
 
-      virtual ~Signaler0() {
-        GUM_DESTRUCTOR( Signaler0 );
-      }
 
-      template<class TargetClass>
-      void attach( TargetClass* target, void ( TargetClass::*action )( const void * ) ) {
-        __sig__::Connector0<TargetClass>* conn = new __sig__::Connector0<TargetClass>( target, action );
-        this->_connectors.pushBack( conn );
-        target->attachSignal__( this );
-      }
+    virtual ~Signaler0() {
+      GUM_DESTRUCTOR( Signaler0 );
+    }
 
-      INLINE void operator()( const void *src ) {
-        for ( constConnectors_iterator it = this->_connectors.begin(); it != this->_connectors.end(); ++it )
-          ( *it )->notify( src );
+
+    template<class TargetClass>
+    void attach( TargetClass* target,
+                 void ( TargetClass::*action )( const void * ) ) {
+      __sig__::Connector0<TargetClass>* conn =
+        new __sig__::Connector0<TargetClass>( target, action );
+      this->_connectors.pushBack( conn );
+      target->attachSignal__( this );
+    }
+    
+
+    INLINE void operator()( const void *src ) {
+      for ( const ConnectorBucket *it = this->_connectors.frontBucket();
+            it; it = it->next() ) {
+        ( **it )->notify( src );
       }
+    }
+    
   };
 
+  
 } // namespace gum
+
 
 /// this macro is the good way of emitting a signal.
 #define GUM_EMIT0(signal) this->signal(this)

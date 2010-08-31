@@ -23,11 +23,12 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#ifndef LISTENER_H__
-#define LISTENER_H__
+#ifndef GUM_LISTENER_H__
+#define GUM_LISTENER_H__
 
-#include <agrum/core/set.h>
+
 #include <agrum/core/list.h>
+
 
 namespace gum {
 
@@ -37,66 +38,80 @@ namespace gum {
   namespace __sig__ {
 
     /** @class ISignaler
-       * @brief minimum specification of signaler in order to be contained in a listener
-       * @ingroup signal
-       */
-
+     * @brief minimum specification of signaler in order to be contained
+     * in a listener
+     * @ingroup signal
+     */
     class ISignaler {
-      public:
-	virtual ~ISignaler() {};
-        virtual void detachFromTarget( Listener* target ) = 0;
-        virtual void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) = 0;
-				virtual bool hasListener(void) = 0;
+    public:
+      virtual ~ISignaler() {};
+      virtual void detachFromTarget( Listener* target ) = 0;
+      virtual void duplicateTarget( const Listener* oldtarget,
+                                    Listener* newtarget ) = 0;
+      virtual bool hasListener(void) = 0;
     };
   } //namespace sig
 
+
+
+
   /** @class Listener
-     * @brief every class who would catch signal from signaler should derive from Listener
-     * @ingroup signal_group
-     */
-
+   * @brief every class who would catch signal from signaler should derive
+   * from Listener
+   * @ingroup signal_group
+   */
   class Listener {
-    private:
-      typedef Set<__sig__::ISignaler *> Senders_set;
-      typedef Senders_set::const_iterator const_iterator;
+  private:
+    typedef ListBase<__sig__::ISignaler*> Senders_list;
+    typedef ListBucket<__sig__::ISignaler*> Senders_bucket;
 
-    public:
-      Listener() {
-        GUM_CONSTRUCTOR( Listener );
+  public:
+    Listener() {
+      GUM_CONSTRUCTOR( Listener );
+    }
+
+    
+    Listener( const Listener& l ) {
+      GUM_CONS_CPY( Listener );
+
+      for ( const Senders_bucket* it = l.__senders.frontBucket ();
+            it ; it = it->next() ) {
+        ( **it )->duplicateTarget( &l, this );
+        __senders.pushBack( **it );
       }
+    }
 
-      Listener( const Listener& l ) {
-        GUM_CONS_CPY( Listener );
+    
+    virtual ~Listener() {
+      GUM_DESTRUCTOR( Listener );
 
-        for ( const_iterator it = l.__senders.begin(); it != l.__senders.end() ; ++it ) {
-          ( *it )->duplicateTarget( &l, this );
-          __senders.insert( *it );
-        }
+      for ( const Senders_bucket* it = __senders.frontBucket ();
+            it; it = it->next() ) {
+        ( **it )->detachFromTarget( this );
       }
+      __senders.clear();
+    }
+    
 
-      virtual ~Listener() {
-        GUM_DESTRUCTOR( Listener );
+    INLINE void attachSignal__( __sig__::ISignaler* sender ) {
+      __senders.pushBack( sender );
+    }
+    
 
-        for ( const_iterator it = __senders.begin(); it != __senders.end() ; ++it )
-          ( *it )->detachFromTarget( this );
+    INLINE void detachSignal__( __sig__::ISignaler* sender ) {
+      __senders.eraseByVal ( sender );
+    }
 
-        __senders.clear();
-      }
-
-      INLINE void attachSignal__( __sig__::ISignaler* sender ) {
-        __senders.insert( sender );
-      }
-
-      INLINE void detachSignal__( __sig__::ISignaler* sender ) {
-        __senders.erase( sender );
-      }
-
-    private:
-      Senders_set __senders;
+  private:
+    Senders_list __senders;
   };
 } // namespace gum
 
+
+
 #define GUM_CONNECT(sender,signal,receiver,target) (sender).signal.attach(&(receiver),&target)
 
-#endif // LISTENER_H__
+
+
+#endif // GUM_LISTENER_H__
 
