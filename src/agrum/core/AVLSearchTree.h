@@ -126,7 +126,7 @@ namespace gum {
     /** in addition to removing the node, this method updates appropriately
      * its parent and children */
     // ============================================================================
-    virtual ~BinTreeNode4AVL();
+    ~BinTreeNode4AVL();
 
     /// @}
     
@@ -362,7 +362,7 @@ namespace gum {
     // ============================================================================
     /// destructor
     // ============================================================================
-    virtual ~AVLSearchTree();
+    ~AVLSearchTree();
 
     ///@}
 

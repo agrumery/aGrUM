@@ -164,7 +164,7 @@ namespace gum {
     /** in addition to removing the node, this method updates appropriately
      * its parent and children */
     // ============================================================================
-    virtual ~BinTreeNode();
+    ~BinTreeNode();
 
     /// @}
     

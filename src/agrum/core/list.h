@@ -324,7 +324,7 @@ namespace gum {
     /// Destructor
     /** The destructor runs in linear time in the size of the list. */
     // ============================================================================
-    virtual ~ListBase();
+    ~ListBase();
 
     /// @}
 
@@ -555,7 +555,7 @@ namespace gum {
     // ============================================================================
     /// displays the content of a chained list
     // ============================================================================
-    virtual std::string toString() const;
+    std::string toString() const;
 
 
   private:
@@ -773,7 +773,7 @@ namespace gum {
      * it is removed. The destructor runs in linear time, both in the size of the
      * list and in the number of iterators on the list. */
     // ============================================================================
-    virtual ~List();
+    ~List();
 
     /// @}
 
@@ -1344,7 +1344,7 @@ namespace gum {
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~ListIterator() ;
+    ~ListIterator() ;
 
     /// @}
 

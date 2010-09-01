@@ -78,13 +78,6 @@ namespace gum {
     return ( stream << arc.first()<<"->"<<arc.second() );
   }
 
-  // ==============================================================================
-  /// A \c << operator for basic edges
-  // ==============================================================================
-  std::ostream& operator<< ( std::ostream& stream, const Link& edge ) {
-    return ( stream << edge.first()<<"~~"<<edge.second() );
-  }
-
 
 } /* namespace gum */
 

@@ -35,106 +35,6 @@
 
 namespace gum {
 
-
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                      GENERIC LINKS IMPLEMENTATION                   === */
-  /* =========================================================================== */
-  /* =========================================================================== */
-
-  // ==============================================================================
-  /// basic constructor
-  // ==============================================================================
-  INLINE Link::Link( NodeId aN1, NodeId aN2 )  :
-    n1( aN1 ), n2( aN2 ) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( Link );
-  }
-
-  // ==============================================================================
-  /// copy constructor
-  // ==============================================================================
-  INLINE Link::Link( const Link& from )  :
-    n1( from.n1 ), n2( from.n2 ) {
-    // for debugging purposes
-    GUM_CONS_CPY( Link );
-  }
-
-  // ==============================================================================
-  /// Copy operator.
-  // ==============================================================================
-  INLINE Link& Link::operator= ( const Link& from )  {
-    // for debugging purposes
-    GUM_OP_CPY( Link );
-    n1 = from.n1;
-    n2 = from.n2;
-    return *this;
-  }
-
-  // ==============================================================================
-  /// destructor
-  // ==============================================================================
-  INLINE Link::~Link() {
-    // for debugging purposes
-    GUM_DESTRUCTOR( Link );
-  }
-
-  // ============================================================================
-  /// returns an extremal node of an edge given the ID of the other one
-  // ============================================================================
-  INLINE NodeId Link::other( NodeId id ) const {
-    if ( id == n1 ) return n2;
-    else if ( id == n2 ) return n1;
-    else GUM_ERROR( IdError, "" );
-  }
-
-  // ==============================================================================
-  /// returns one extremal node ID (whichever one it is is unspecified)
-  // ==============================================================================
-  INLINE NodeId Link::first() const  {
-    return n1;
-  }
-
-  // ==============================================================================
-  /// modifies one extremal node ID (whichever one it is is unspecified)
-  // ==============================================================================
-  INLINE void Link::__setFirst( NodeId id )  {
-    n1 = id;
-  }
-
-  // ==============================================================================
-  /// returns the second extremal node
-  // ==============================================================================
-  INLINE NodeId Link::second() const  {
-    return n2;
-  }
-
-  // ==============================================================================
-  /// modifies the second extremal node
-  // ==============================================================================
-  INLINE void Link::__setSecond( NodeId id )  {
-    n2 = id;
-  }
-
-  // ============================================================================
-  /// check if two basic edges are equal
-  // ============================================================================
-  INLINE bool Link::operator==( const Link& from ) const  {
-    return (( isDirected() == from.isDirected() ) &&
-            ( n1 == from.n1 ) && ( n2 == from.n2 ) );
-  }
-
-  // ============================================================================
-  /// check if two basic edges are different
-  // ============================================================================
-  INLINE bool Link::operator!=( const Link& from ) const  {
-    return (( isDirected() != from.isDirected() ) ||
-            ( n1 != from.n1 ) || ( n2 != from.n2 ) );
-  }
-
-
-
-
   
   /* =========================================================================== */
   /* =========================================================================== */
@@ -146,7 +46,7 @@ namespace gum {
   /// basic constructor
   // ==============================================================================
   INLINE Edge::Edge( NodeId aN1, NodeId aN2 )  :
-    Link( std::min( aN1,aN2 ),std::max( aN1,aN2 ) ) {
+    n1 ( std::min( aN1,aN2 ) ), n2 ( std::max( aN1,aN2 ) ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Edge );
   }
@@ -154,7 +54,8 @@ namespace gum {
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
-  INLINE Edge::Edge( const Edge& from )  : Link( from ) {
+  INLINE Edge::Edge( const Edge& from )  :
+    n1( from.n1 ), n2( from.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Edge );
   }
@@ -165,7 +66,8 @@ namespace gum {
   INLINE Edge& Edge::operator= ( const Edge& from )  {
     // for debugging purposes
     GUM_OP_CPY( Edge );
-    Link::operator= ( from );
+    n1 = from.n1;
+    n2 = from.n2;
     return *this;
   }
 
@@ -184,6 +86,29 @@ namespace gum {
     return false;
   }
 
+  // ============================================================================
+  /// returns an extremal node of an edge given the ID of the other one
+  // ============================================================================
+  INLINE NodeId Edge::other( NodeId id ) const {
+    if ( id == n1 ) return n2;
+    else if ( id == n2 ) return n1;
+    else GUM_ERROR( IdError, "" );
+  }
+
+  // ==============================================================================
+  /// returns one extremal node ID (whichever one it is is unspecified)
+  // ==============================================================================
+  INLINE NodeId Edge::first() const  {
+    return n1;
+  }
+
+  // ==============================================================================
+  /// returns the second extremal node
+  // ==============================================================================
+  INLINE NodeId Edge::second() const  {
+    return n2;
+  }
+  
   // ==============================================================================
   /// check if two undirected edges are equal
   // ==============================================================================
@@ -210,7 +135,8 @@ namespace gum {
   // ==============================================================================
   /// basic constructor.
   // ==============================================================================
-  INLINE Arc::Arc( NodeId tail, NodeId head )  : Link( tail,head ) {
+  INLINE Arc::Arc( NodeId tail, NodeId head )  :
+    n1 ( tail ), n2 ( head ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Arc );
   }
@@ -218,7 +144,8 @@ namespace gum {
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
-  INLINE Arc::Arc( const Arc& from )  : Link( from ) {
+  INLINE Arc::Arc( const Arc& from )  :
+    n1( from.n1 ), n2( from.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Arc );
   }
@@ -229,7 +156,8 @@ namespace gum {
   INLINE Arc& Arc::operator= ( const Arc& from )  {
     // for debugging purposes
     GUM_OP_CPY( Arc );
-    Link::operator= ( from );
+    n1 = from.n1;
+    n2 = from.n2;
     return *this;
   }
 
@@ -275,6 +203,30 @@ namespace gum {
   INLINE bool Arc::isDirected() const  {
     return true;
   }
+
+  // ============================================================================
+  /// returns an extremal node of an edge given the ID of the other one
+  // ============================================================================
+  INLINE NodeId Arc::other( NodeId id ) const {
+    if ( id == n1 ) return n2;
+    else if ( id == n2 ) return n1;
+    else GUM_ERROR( IdError, "" );
+  }
+
+  // ==============================================================================
+  /// returns one extremal node ID (whichever one it is is unspecified)
+  // ==============================================================================
+  INLINE NodeId Arc::first() const  {
+    return n1;
+  }
+
+  // ==============================================================================
+  /// returns the second extremal node
+  // ==============================================================================
+  INLINE NodeId Arc::second() const  {
+    return n2;
+  }
+  
 
   // ==============================================================================
   /// check if two arcs are equal
