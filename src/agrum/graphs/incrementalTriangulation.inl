@@ -71,7 +71,7 @@ namespace gum {
   // ==============================================================================
   /// returns the current graph (that which is incrementally triangulated)
   // ==============================================================================
-  const UndiGraph& IncrementalTriangulation::graph () const {
+  INLINE const UndiGraph& IncrementalTriangulation::graph () const {
     return __graph;
   }
 
