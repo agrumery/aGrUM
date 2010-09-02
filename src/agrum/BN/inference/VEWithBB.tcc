@@ -128,9 +128,11 @@ VEWithBB<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
   for (Set<NodeId>::iterator node = requisite_nodes.begin(); node != requisite_nodes.end(); ++node) {
     pool.insert(const_cast<Potential<T_DATA>*>(&(this->bn().cpt(*node))));
     elim_set.insert(*node);
-    for (DAG::ArcIterator parent = this->bn().dag().parents(*node).begin(); parent != this->bn().dag().parents(*node).end(); ++parent) {
-      if (__hardEvidence.exists(parent->tail())) {
-        elim_set.insert(parent->tail());
+    const NodeSet& parents = this->bn().dag().parents(*node);
+    for (NodeSetIterator parent = parents.begin();
+         parent != parents.end(); ++parent) {
+      if (__hardEvidence.exists( *parent )) {
+        elim_set.insert(*parent);
       }
     }
   }

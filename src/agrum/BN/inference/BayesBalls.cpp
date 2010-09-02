@@ -59,14 +59,16 @@ BayesBalls::__fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvid
   }
   if ((not hardEvidence.exists(node)) and (not __marks[node].first)) {
     __marks[node].first = true;
-    for (ArcSetIterator iter = dag.parents(node).begin(); iter != dag.parents(node).end(); ++iter) {
-      __fromChild(iter->tail(), dag, hardEvidence);
+    const NodeSet& parents =  dag.parents(node);
+    for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+      __fromChild( *iter, dag, hardEvidence);
     }
   }
   if (not __marks[node].second) {
     __marks[node].second = true;
-    for (ArcSetIterator iter = dag.children(node).begin(); iter != dag.children(node).end(); ++iter) {
-      __fromParent(iter->head(), dag, hardEvidence);
+    const NodeSet& children = dag.children(node);
+    for (NodeSetIterator iter = children.begin(); iter != children.end(); ++iter) {
+      __fromParent( *iter, dag, hardEvidence);
     }
   }
 }
@@ -79,13 +81,15 @@ BayesBalls::__fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvi
   }
   if (hardEvidence.exists(node) and (not __marks[node].first)) {
     __marks[node].first = true;
-    for (ArcSetIterator iter = dag.parents(node).begin(); iter != dag.parents(node).end(); ++iter) {
-      __fromChild(iter->tail(), dag, hardEvidence);
+    const NodeSet& parents = dag.parents(node);
+    for (NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter) {
+      __fromChild( *iter, dag, hardEvidence);
     }
   } else if (!__marks[node].second) {
     __marks[node].second = true;
-    for (ArcSetIterator iter = dag.children(node).begin(); iter != dag.children(node).end(); ++iter) {
-      __fromParent(iter->head(), dag, hardEvidence);
+    const NodeSet& children = dag.children(node);
+    for (NodeSetIterator iter = children.begin(); iter != children.end(); ++iter) {
+      __fromParent( *iter, dag, hardEvidence);
     }
   }
 }

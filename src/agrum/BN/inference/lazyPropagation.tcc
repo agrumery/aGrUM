@@ -71,11 +71,11 @@ namespace gum {
       // get the variables in the potential of iter_node
       NodeId first_var_eliminated = *iter;
       unsigned int elim_number = elim_order[*iter];
-      const ArcSet& parents = dag.parents( *iter );
+      const NodeSet& parents = dag.parents( *iter );
 
-      for ( ArcSetIterator parent = parents.begin();
+      for ( NodeSetIterator parent = parents.begin();
             parent != parents.end(); ++parent ) {
-        NodeId theParent = parent->tail();
+        NodeId theParent = *parent;
 
         if ( elim_order[theParent] < elim_number ) {
           elim_number = elim_order[theParent];

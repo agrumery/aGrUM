@@ -196,9 +196,11 @@ InstanceBayesNet::toDot() const {
   output << __inst->name() << "\" {" << std::endl;
   for (DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     if ( dag().children( *node_iter ).size() > 0 ) {
-      for (DAG::ArcIterator arc_iter = dag().children( *node_iter ).begin(); arc_iter != dag().children( *node_iter ).end(); ++arc_iter ) {
+      const NodeSet& children = dag().children( *node_iter );
+      for (NodeSetIterator arc_iter = children.begin();
+           arc_iter != children.end(); ++arc_iter ) {
         output << tab << "\"" << variable( *node_iter ).name() << "\" -> ";
-        output << "\"" << variable( arc_iter->head() ).name() << "\";" << std::endl;
+        output << "\"" << variable( *arc_iter ).name() << "\";" << std::endl;
       }
     } else if ( dag().parents( *node_iter ).size() == 0 ) {
       output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;

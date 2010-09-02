@@ -167,13 +167,13 @@ namespace gum {
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
      * @param id the node toward which the arcs returned are pointing */
-    const ArcSet& parents( const NodeId id ) const;
+    const NodeSet& parents( const NodeId id ) const;
 
     /// returns the set of arcs outgoing from a given node
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is outgoing from the given node.
      * @param id the node which is the tail of the arcs returned */
-    const ArcSet& children( const NodeId id ) const;
+    const NodeSet& children( const NodeId id ) const;
 
     /// erase all the parents of a given node
     /** @param id the node all the parents of which will be removed
@@ -274,15 +274,14 @@ namespace gum {
 
 
   private:
-    static const ArcSet __empty_arc_set;
     /// the set of all the arcs contained within the ArcGraphPart
     Set<Arc> __arcs;
 
     /// for each arc, the sets of its parents
-    mutable Property<ArcSet>::onNodes __parents;
+    mutable Property<NodeSet*>::onNodes __parents;
 
     /// for each arc, the set of its children
-    mutable Property<ArcSet>::onNodes __children;
+    mutable Property<NodeSet*>::onNodes __children;
 
 
 

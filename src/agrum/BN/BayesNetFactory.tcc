@@ -620,9 +620,11 @@ namespace gum {
         Instantiation inst_default;
         inst_default << var;
 
-        for ( ArcSet::iterator iter = __bn->dag().parents( varId ).begin(); iter != __bn->dag().parents( varId ).end(); ++iter ) {
-          if ( ! __parents->contains( __bn->variable( iter->tail() ) ) ) {
-            inst_default << __bn->variable( iter->tail() );
+        const NodeSet& parents = __bn->dag().parents( varId );
+        for ( NodeSet::iterator iter = parents.begin();
+              iter != parents.end(); ++iter ) {
+          if ( ! __parents->contains( __bn->variable( *iter ) ) ) {
+            inst_default << __bn->variable( *iter );
           }
         }
 
@@ -741,8 +743,10 @@ namespace gum {
       if ( redefineParents ) {
         __setCPTAndParents( var, table );
       } else if ( table->contains( var ) ) {
-        for ( ArcSet::iterator iter = __bn->dag().parents( varId ).begin(); iter != __bn->dag().parents( varId ).end(); ++iter ) {
-          if ( ! table->contains( __bn->variable( iter->tail() ) ) )
+        const NodeSet& parents = __bn->dag().parents( varId );
+        for ( NodeSetIterator iter = parents.begin();
+              iter != parents.end(); ++iter ) {
+          if ( ! table->contains( __bn->variable( *iter ) ) )
             GUM_ERROR( OperationNotAllowed, "The CPT is not valid in the current BayesNet." );
         }
 

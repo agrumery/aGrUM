@@ -151,11 +151,12 @@ void
 Pattern::rightmostPath(std::list<NodeId>& r_path) const {
   r_path.push_back(size());
   while (r_path.front() != 1) {
-    for (ArcIterator arc = DiGraph::parents(r_path.front()).begin();
-         arc != DiGraph::parents(r_path.front()).end(); ++arc)
+    const NodeSet& parents = DiGraph::parents(r_path.front());
+      for (NodeSetIterator arc = parents.begin();
+         arc != parents.end(); ++arc)
     {
-      if (arc->tail() < r_path.front()) {
-        r_path.push_front(arc->tail());
+      if ( *arc < r_path.front()) {
+        r_path.push_front(*arc);
         break;
       }
     }
@@ -265,11 +266,12 @@ Pattern::remove(NodeId node) {
 // ============================================================================
 
 INLINE
-NeighborIterator::NeighborIterator(const ArcSet& parents, const ArcSet& children):
-  __parents(&parents), __children(&children), __parent_iterator(__parents->begin()),
+NeighborIterator::NeighborIterator(const NodeSet& parents,
+                                   const NodeSet& children):
+  __parents(&parents), __children(&children),
+  __parent_iterator(__parents->begin()),
   __children_iterator(__children->begin()),
-  __iterator(0), __end_iterator(0)
-{
+  __iterator(0), __end_iterator(0) {
   GUM_CONSTRUCTOR( NeighborIterator );
   if (__parents->empty()) {
     __iterator = &__children_iterator;
@@ -350,12 +352,9 @@ NeighborIterator::operator=(const NeighborIterator& from) {
 }
 
 INLINE
-const Arc&
+NodeId
 NeighborIterator::operator*() const { return **__iterator; }
 
-INLINE
-const Arc*
-NeighborIterator::operator->() const { return &(**__iterator); }
 
 } /* namespace gspan */
 } /* namespace prm */

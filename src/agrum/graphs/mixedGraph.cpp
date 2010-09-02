@@ -110,10 +110,10 @@ namespace gum {
       }
 
       // check the parents  //////////////////////////////////////////////
-      const ArcSet& set = parents( current );
+      const NodeSet& set = parents( current );
 
-      for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        NodeId new_one=ite->tail();
+      for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
+        NodeId new_one = *ite;
 
         if ( mark.exists(new_one) ) // if this node is already marked, do not
           continue;                 // check it again
@@ -179,10 +179,10 @@ namespace gum {
       }
 
       // check the parents //////////////////////////////////////////////
-      const ArcSet& set_parent = parents( current );
+      const NodeSet& set_parent = parents( current );
 
-      for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
-        NodeId new_one=ite->tail();
+      for ( NodeSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
+        NodeId new_one = *ite;
 
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue; 
@@ -203,11 +203,11 @@ namespace gum {
       }
 
       // check the children //////////////////////////////////////////////
-      const ArcSet& set_children = children( current );
+      const NodeSet& set_children = children( current );
 
-      for ( ArcSetIterator ite=set_children.begin();
+      for ( NodeSetIterator ite=set_children.begin();
             ite!=set_children.end();++ite ) {
-        NodeId new_one=ite->head();
+        NodeId new_one = *ite;
 
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue; 

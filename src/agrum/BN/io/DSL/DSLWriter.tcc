@@ -112,9 +112,11 @@ std::string DSLWriter<T_DATA>::__variableBloc(const BayesNet<T_DATA>& bn , const
 
     oss << "\t\tPARENTS = (";
 
-    for (ArcSetIterator iter = bn.dag().parents(id).begin(); iter != bn.dag().parents(id).end(); ++iter) {
+    const NodeSet& parents = bn.dag().parents(id);
+    for (NodeSetIterator iter = parents.begin();
+         iter != parents.end(); ++iter) {
         if (i != 0) oss << ", ";
-        oss << bn.variable(iter->tail()).name();
+        oss << bn.variable(*iter).name();
         i++;
     }
     oss << ");\n";

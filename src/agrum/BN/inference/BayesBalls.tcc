@@ -73,14 +73,18 @@ BayesBalls<T_DATA>::__fromChild(NodeId node)
   if (!__hardEvidence->exists(node)) {
     if (!__marks[node].first) {
       __marks[node].first = true;
-      for (ArcSetIterator iter = __bayesNet->dag().parents(node).begin(); iter != __bayesNet->dag().parents(node).end(); ++iter) {
-        __fromChild(iter->tail());
+      const NodeSet& parents = __bayesNet->dag().parents(node);
+      for (NodeSetIterator iter = parents.begin();
+           iter != parents.end(); ++iter) {
+        __fromChild( *iter );
       }
     }
     if (!__marks[node].second) {
       __marks[node].second = true;
-      for (ArcSetIterator iter = __bayesNet->dag().children(node).begin(); iter != __bayesNet->dag().children(node).end(); ++iter) {
-        __fromParent(iter->head());
+      const NodeSet& children = __bayesNet->dag().children(node);
+      for (NodeSetIterator iter = children.begin();
+           iter != children.end(); ++iter) {
+        __fromParent( *iter );
       }
     }
   }
@@ -95,13 +99,17 @@ BayesBalls<T_DATA>::__fromParent(NodeId node)
   if (!__marks.exists(node)) __marks.insert(node, std::pair<bool, bool>(false, false));
   if (__hardEvidence->exists(node) and (!__marks[node].first)) {
     __marks[node].first = true;
-    for (ArcSetIterator iter = __bayesNet->dag().parents(node).begin(); iter != __bayesNet->dag().parents(node).end(); ++iter) {
-      __fromChild(iter->tail());
+    const NodeSet& parents = __bayesNet->dag().parents(node);
+    for (NodeSetIterator iter = parents.begin();
+         iter != parents.end(); ++iter) {
+      __fromChild( *iter );
     }
   } else if (!__marks[node].second) {
     __marks[node].second = true;
-    for (ArcSetIterator iter = __bayesNet->dag().children(node).begin(); iter != __bayesNet->dag().children(node).end(); ++iter) {
-      __fromParent(iter->head());
+    const NodeSet& children = __bayesNet->dag().children(node);
+    for (NodeSetIterator iter = children.begin();
+         iter != children.end(); ++iter) {
+      __fromParent( *iter );
     }
   }
 }

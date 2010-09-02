@@ -214,10 +214,10 @@ namespace gum {
     Set<NodeId> idSet;
     idSet.insert( id );
 
-    const ArcSet& parents = this->bn().dag().parents( id );
+    const NodeSet& parents = this->bn().dag().parents( id );
 
-    for ( ArcSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
-      idSet.insert( iter->tail() );
+    for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+      idSet.insert( *iter );
     }
 
     for ( size_t i = 0; i < eliminationOrder.size(); ++i ) {

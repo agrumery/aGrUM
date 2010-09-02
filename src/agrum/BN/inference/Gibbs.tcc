@@ -72,12 +72,11 @@ namespace gum {
       __sampling_posterior.insert( *iter, tmp2 );
       // feed the children
       std::vector<NodeId>* tmp3 = new std::vector<NodeId>();
-      const ArcSet& arcs = dag.children( *iter );
+      const NodeSet& arcs = dag.children( *iter );
 
-      for ( ArcSetIterator iter2 = arcs.begin();
+      for ( NodeSetIterator iter2 = arcs.begin();
             iter2 != arcs.end(); ++iter2 ) {
-        NodeId idChild = ( *iter2 ).other( *iter ) ;
-        tmp3->push_back( idChild );
+        tmp3->push_back( *iter2 );
       }
 
       __node_children.insert( *iter, tmp3 );

@@ -70,14 +70,12 @@ namespace gum {
       new_one=nodeFIFO.front();
       nodeFIFO.popFront();
 
-      const ArcSet& set=children( new_one );
+      const NodeSet& set=children( new_one );
 
-      for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        NodeId new_one=ite->head();
+      for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
+        if ( *ite == to ) return true;
 
-        if ( new_one==to ) return true;
-
-        nodeFIFO.pushBack( new_one );
+        nodeFIFO.pushBack( *ite );
       }
     }
 

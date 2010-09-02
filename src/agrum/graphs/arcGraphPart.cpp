@@ -40,17 +40,106 @@ namespace gum {
     GUM_CONSTRUCTOR( ArcGraphPart );
   }
 
+  
   ArcGraphPart::ArcGraphPart( const ArcGraphPart& s ):
-    __arcs( s.__arcs ),
-    __parents( s.__parents ),
-    __children( s.__children ) {
+    __arcs( s.__arcs ) {
     GUM_CONS_CPY( ArcGraphPart );
+
+    // copy the sets of parents
+    const Property<NodeSet*>::onNodes& pars = s.__parents;
+    __parents.resize ( pars.capacity () );
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = pars.begin();
+          iter != pars.end(); ++iter ) {
+      NodeSet* newpar = new NodeSet ( **iter );
+      __parents.insert ( iter.key (), newpar );
+    }
+
+    // copy the sets of children
+    const Property<NodeSet*>::onNodes& children = s.__children;
+    __children.resize ( children.capacity () );
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = children.begin();
+          iter != children.end(); ++iter ) {
+      NodeSet* newchildren = new NodeSet ( **iter );
+      __children.insert ( iter.key (), newchildren );
+    }
+
+    if ( onArcAdded.hasListener() ) {
+      for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
+        GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
+      }
+    }
   }
+
 
   ArcGraphPart::~ArcGraphPart() {
     GUM_DESTRUCTOR( ArcGraphPart );
+    // be sure to deallocate all the parents and children sets
+    clearArcs ();
   }
 
+  
+  void ArcGraphPart::clearArcs() {
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = __parents.begin();
+          iter != __parents.end(); ++iter ) {
+      delete *iter;
+    }
+    __parents.clear();
+
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = __children.begin();
+          iter != __children.end(); ++iter ) {
+      delete *iter;
+    }
+    __children.clear();
+
+    // we need this copy only if at least one onArcDeleted listener exists
+    if ( onArcDeleted.hasListener() ) {
+      ArcSet tmp = __arcs;
+      __arcs.clear();
+      for ( ArcSetIterator iter = tmp.begin();iter != tmp.end();++iter )
+        GUM_EMIT2( onArcDeleted, iter->tail(), iter->head() );
+    }
+    else {
+      __arcs.clear();
+    }
+  }
+
+
+  ArcGraphPart& ArcGraphPart::operator=( const ArcGraphPart& s ) {
+    // avoid self assignment
+    if ( this != &s ) {
+      clearArcs ();
+
+      __arcs = s.__arcs;
+
+      // copy the sets of parents
+      const Property<NodeSet*>::onNodes& pars = s.__parents;
+      __parents.resize ( pars.capacity () );
+      for ( Property<NodeSet*>::onNodes::const_iterator iter = pars.begin();
+            iter != pars.end(); ++iter ) {
+        NodeSet* newpar = new NodeSet ( **iter );
+        __parents.insert ( iter.key (), newpar );
+      }
+
+      // copy the sets of children
+      const Property<NodeSet*>::onNodes& children = s.__children;
+      __children.resize ( children.capacity () );
+      for ( Property<NodeSet*>::onNodes::const_iterator iter = children.begin();
+            iter != children.end(); ++iter ) {
+        NodeSet* newchildren = new NodeSet ( **iter );
+        __children.insert ( iter.key (), newchildren );
+      }
+
+      if ( onArcAdded.hasListener() ) {
+        for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
+          GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
+        }
+      }
+    }
+
+    return *this;
+  }
+
+  
   const std::string ArcGraphPart::toString() const {
     std::stringstream s;
     bool first=true;
@@ -71,6 +160,7 @@ namespace gum {
     
     return s.str();
   }
+  
 
   const std::vector<NodeId>
   ArcGraphPart::directedPath( const NodeId n1,const NodeId n2 ) const {
@@ -89,10 +179,10 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the parents  //////////////////////////////////////////////
-      const ArcSet& set = parents( current );
+      const NodeSet& set = parents( current );
 
-      for ( ArcSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        NodeId new_one=ite->tail();
+      for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
+        NodeId new_one = *ite;
 
         if ( mark.exists(new_one) ) // if this node is already marked, do not
           continue;                 // check it again
@@ -116,6 +206,7 @@ namespace gum {
     GUM_ERROR( NotFound,"no path found" );
   }
 
+  
   const std::vector<NodeId>
   ArcGraphPart::directedUnorientedPath( const NodeId n1,const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
@@ -133,10 +224,10 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the parents //////////////////////////////////////////////
-      const ArcSet& set_parent = parents( current );
+      const NodeSet& set_parent = parents( current );
 
-      for ( ArcSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
-        NodeId new_one=ite->tail();
+      for ( NodeSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
+        NodeId new_one = *ite;
 
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue; 
@@ -157,11 +248,11 @@ namespace gum {
       }
 
       // check the children //////////////////////////////////////////////
-      const ArcSet& set_children = children( current );
+      const NodeSet& set_children = children( current );
 
-      for ( ArcSetIterator ite=set_children.begin();
+      for ( NodeSetIterator ite=set_children.begin();
             ite!=set_children.end();++ite ) {
-        NodeId new_one=ite->head();
+        NodeId new_one = *ite;
 
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue; 
@@ -191,12 +282,6 @@ namespace gum {
     stream<<set.toString();
     return stream;
   }
-
-
-
-  // STATIC OBJECT
-  // static definition of __empty_arc_set
-  const ArcSet ArcGraphPart::__empty_arc_set;
 
 
 } /* namespace gum */

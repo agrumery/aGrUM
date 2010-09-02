@@ -415,8 +415,10 @@ SVE::__initElimOrder() {
     visited_node.insert(l.front());
     if (not __class_elim_order->exists(cdg.get(l.front()).first))
       __class_elim_order->insert(cdg.get(l.front()).first);
-    for (DAG::ArcIterator child = cdg.dag().children(l.front()).begin(); child != cdg.dag().children(l.front()).end(); ++child)
-      if (not visited_node.contains(child->head())) l.push_back(child->head());
+    const NodeSet& children = cdg.dag().children(l.front());
+    for (NodeSetIterator child = children.begin();
+         child != children.end(); ++child)
+      if (not visited_node.contains(*child)) l.push_back(*child);
     l.pop_front();
   }
 }

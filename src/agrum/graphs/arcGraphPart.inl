@@ -28,148 +28,161 @@
 #include <agrum/graphs/arcGraphPart.h>
 
 namespace gum {
-
-  INLINE  ArcGraphPart& ArcGraphPart::operator=( const ArcGraphPart& s ) {
-    // avoid self assignment
-    if ( this != &s ) {
-      __arcs = s.__arcs;
-      __parents = s.__parents;
-      __children = s.__children;
-    }
-
-    return *this;
-  }
-
+  
   INLINE bool ArcGraphPart::emptyArcs() const {
     return __arcs.empty();
   }
 
+  
   INLINE Size ArcGraphPart::sizeArcs() const {
     return __arcs.size();
   }
 
+  
   INLINE const ArcSet& ArcGraphPart::asArcs() const {
     return __arcs;
   }
 
+  
   INLINE bool ArcGraphPart::existsArc( const Arc& arc ) const {
     return __arcs.contains( arc );
   }
 
+  
   INLINE bool ArcGraphPart::existsArc( const NodeId tail,
                                        const NodeId head ) const {
-    return __arcs.contains( Arc( tail, head ) );
+    return __parents.exists ( head ) &&
+      __parents[head]->exists ( tail );
   }
+
 
   INLINE void ArcGraphPart::__checkParents( const NodeId id ) const {
     if ( ! __parents.exists( id ) ) {
-      __parents.insert( id, __empty_arc_set );
+      __parents.insert( id, new NodeSet );
     }
   }
+  
 
   INLINE void ArcGraphPart::__checkChildren( const NodeId id ) const {
     if ( ! __children.exists( id ) ) {
-      __children.insert( id, __empty_arc_set );
+      __children.insert( id, new NodeSet );
     }
   }
+  
 
-  INLINE const ArcSet& ArcGraphPart::parents( const NodeId id ) const {
+  INLINE const NodeSet& ArcGraphPart::parents( const NodeId id ) const {
     __checkParents( id );
-    return __parents[id];
+    return *( __parents[id] );
   }
 
-  INLINE const ArcSet& ArcGraphPart::children( const NodeId id ) const {
+  
+  INLINE const NodeSet& ArcGraphPart::children( const NodeId id ) const {
     __checkChildren( id );
-    return __children[id];
+    return *( __children[id] );
   }
+  
 
   INLINE const ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
     return __arcs.begin();
   }
+  
 
   INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
     return __arcs.end();
   }
 
+  
   INLINE void ArcGraphPart::insertArc( const NodeId tail, const NodeId head ) {
     Arc arc( tail, head );
 
     __arcs.insert( arc );
     __checkParents( head );
     __checkChildren( tail );
-    __parents[head].insert( arc );
-    __children[tail].insert( arc );
+    __parents[head]->insert( tail );
+    __children[tail]->insert( head );
 
     GUM_EMIT2( onArcAdded, tail, head );
   }
+  
 
   INLINE void ArcGraphPart::eraseArc( const Arc& arc ) {
     // ASSUMING tail and head exists in __parents anf __children
     // (if not, it is an error)
     if ( existsArc( arc ) ) {
-      // here we need to create a copy of arc because when function eraseParents
-      // is called, after __parents.erase is called, the arc does not exist
-      // anymore. Hence, the following erases and GUM_EMIT2 may segfault.
-      Arc arc1 = arc;
-      __parents[arc1.head()].erase( arc1 );
-      __children[arc1.tail()].erase( arc1 );
-      __arcs.erase( arc1 );
-      GUM_EMIT2( onArcDeleted, arc1.tail(), arc1.head() );
+      NodeId tail = arc.tail (), head = arc.head ();
+      __parents[head]->erase( tail );
+      __children[tail]->erase( head );
+      __arcs.erase( arc );
+      GUM_EMIT2( onArcDeleted, tail, head );
     }
   }
-
-  INLINE void ArcGraphPart::clearArcs() {
-    // we need this copy only if at least one onArcDeleted listener exists
-    if ( onArcDeleted.hasListener() ) {
-      ArcSet tmp = __arcs;
-
-      __arcs.clear();
-      __parents.clear();
-      __children.clear();
-
-      for ( ArcSetIterator iter = tmp.begin();iter != tmp.end();++iter )
-        GUM_EMIT2( onArcDeleted, iter->tail(), iter->head() );
-    } else {
-      __arcs.clear();
-      __parents.clear();
-      __children.clear();
-    }
-  }
+  
 
   INLINE void ArcGraphPart::_eraseSetOfArcs( const ArcSet& set ) {
     for ( ArcSetIterator iter = set.begin();iter != set.end();++iter )
       eraseArc( *iter );
   }
 
+  
   INLINE void ArcGraphPart::eraseParents( const NodeId id ) {
-    if ( __parents.exists( id ) )
-      _eraseSetOfArcs( __parents[id] );
+    if ( __parents.exists( id ) ) {
+      NodeSet& parents = * ( __parents[id] );
+      for ( NodeSetIterator iter = parents.begin ();
+            iter != parents.end(); ++iter ) {
+        // warning: use this erase so that you actually use the vritualized
+        // arc removal function
+        eraseArc ( Arc ( *iter, id ) );
+      }
+    }
   }
+  
 
   INLINE void ArcGraphPart::eraseChildren( const NodeId id ) {
-    if ( __children.exists( id ) )
-      _eraseSetOfArcs( __children[id] );
+    if ( __children.exists( id ) ) {
+      NodeSet& children = * ( __children[id] );
+      for ( NodeSetIterator iter = children.begin ();
+            iter != children.end(); ++iter ) {
+        // warning: use this erase so that you actually use the vritualized
+        // arc removal function
+        eraseArc ( Arc ( id, *iter ) );
+      }
+    }
   }
+  
 
   INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs( const ArcSet& set ) {
     for ( ArcSetIterator iter = set.begin();iter != set.end();++iter )
       ArcGraphPart::eraseArc( *iter );
   }
+  
 
   INLINE void ArcGraphPart::unvirtualizedEraseParents( const NodeId id ) {
-    if ( __parents.exists( id ) )
-      _unvirtualizedEraseSetOfArcs( __parents[id] );
+    if ( __parents.exists( id ) ) {
+      NodeSet& parents = * ( __parents[id] );
+      for ( NodeSetIterator iter = parents.begin ();
+            iter != parents.end(); ++iter ) {
+        ArcGraphPart::eraseArc ( Arc ( *iter, id ) );
+      }
+    }
   }
+  
 
   INLINE void ArcGraphPart::unvirtualizedEraseChildren( const NodeId id ) {
-    if ( __children.exists( id ) )
-      _unvirtualizedEraseSetOfArcs( __children[id] );
+    if ( __children.exists( id ) ) {
+      NodeSet& children = * ( __children[id] );
+      for ( NodeSetIterator iter = children.begin ();
+            iter != children.end(); ++iter ) {
+        ArcGraphPart::eraseArc ( Arc ( id, *iter ) );
+      }
+    }
   }
+
 
   INLINE bool ArcGraphPart::operator==( const ArcGraphPart& p ) const {
     return __arcs == p.__arcs;
   }
 
+  
   INLINE bool ArcGraphPart::operator!=( const ArcGraphPart& p ) const {
     return __arcs != p.__arcs;
   }

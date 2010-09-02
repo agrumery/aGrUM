@@ -83,10 +83,11 @@ operator<<(std::ostream& output, const ClassElementContainer& container)
   for (DAG::NodeIterator node_iter = container.dag().beginNodes();
        node_iter != container.dag().endNodes(); ++node_iter) {
     if (container.dag().children(*node_iter).size() > 0) {
-      for (DAG::ArcIterator child_iter = container.dag().children(*node_iter).begin();
-          child_iter != container.dag().children(*node_iter).end(); ++child_iter) {
+      const NodeSet& children = container.dag().children(*node_iter);
+      for (NodeSetIterator child_iter = children.begin();
+          child_iter != children.end(); ++child_iter) {
         output << tab << "\"" << container.get(*node_iter).name() << "\" -> "
-               << "\"" << container.get(child_iter->head()).name() << "\";" << std::endl;
+               << "\"" << container.get(*child_iter).name() << "\";" << std::endl;
       }
     } else if (container.dag().parents(*node_iter).size() == 0) {
       output << tab << "\"" << container.get(*node_iter).name() << "\";" << std::endl;

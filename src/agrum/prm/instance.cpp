@@ -90,13 +90,13 @@ Instance::instantiate() {
       __copyAttributeCPF(__nodeIdMap[(**iter).id()]);
   // For Aggregate we add parents
   for (Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter) {
-    const ArcSet& parents = type().dag().parents((*iter)->id());
+    const NodeSet& parents = type().dag().parents((*iter)->id());
     Attribute& attr = get((**iter).safeName());
-    for (ArcSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc) {
+    for (NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc) {
       try {
-        attr.addParent(get(arc->tail()));
+        attr.addParent(get(*arc));
       } catch (NotFound&) {
-        SlotChain& sc = static_cast<SlotChain&>(type().get(arc->tail()));
+        SlotChain& sc = static_cast<SlotChain&>(type().get(*arc));
         const Set<Instance*>& instances = getInstances(sc.id());
         for (Set<Instance*>::iterator i = instances.begin(); i != instances.end(); ++i) {
           attr.addParent((*i)->get(sc.lastElt().safeName()));
@@ -157,8 +157,9 @@ Instance::__copyAttributeCPF(Attribute* attr) {
     } else if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
       attr->__cpf = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
       attr->__cpf->add(attr->type().variable());
-      for (ArcSet::iterator arc = type().dag().parents(attr->id()).begin(); arc != type().dag().parents(attr->id()).end(); ++arc) {
-        attr->addParent(get(arc->tail()));
+      const NodeSet& parents = type().dag().parents(attr->id());
+      for (NodeSet::iterator arc = parents.begin(); arc != parents.end(); ++arc) {
+        attr->addParent(get(*arc));
       }
     } else {
       GUM_CHECKPOINT;

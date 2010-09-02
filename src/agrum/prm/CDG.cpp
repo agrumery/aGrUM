@@ -74,15 +74,17 @@ CDG::__addArcs(const ClassElementContainer& c, NodeId node,
     case ClassElement::prm_slotchain:
       {
         const SlotChain& sc = static_cast<const SlotChain&>(c.get(node));
-        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc)
-          __graph.insertArc((*(__node_map[&(sc.end())]))[&(sc.end().get(sc.lastElt().safeName()))], map[&(c.get(arc->head()))]);
+        const NodeSet& children = c.dag().children(node);
+        for (NodeSetIterator arc = children.begin(); arc != children.end(); ++arc)
+          __graph.insertArc((*(__node_map[&(sc.end())]))[&(sc.end().get(sc.lastElt().safeName()))], map[&(c.get(*arc))]);
         break;
       }
     case ClassElement::prm_aggregate:
     case ClassElement::prm_attribute:
       {
-        for (DAG::ArcIterator arc = c.dag().children(node).begin(); arc != c.dag().children(node).end(); ++arc)
-          __graph.insertArc(map[&(c.get(node))], map[&(c.get(arc->head()))]);
+        const NodeSet& children = c.dag().children(node);
+        for (NodeSetIterator arc = children.begin(); arc != children.end(); ++arc)
+          __graph.insertArc(map[&(c.get(node))], map[&(c.get(*arc))]);
         break;
       }
     default: { /* do nothing */ break; }

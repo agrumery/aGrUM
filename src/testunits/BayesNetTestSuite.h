@@ -208,12 +208,12 @@ namespace gum {
               TS_ASSERT ( false );
             }
 
-            const gum::ArcSet& parentList = source.dag().parents ( *nodeIter );
+            const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
 
-            for ( gum::ArcSet::iterator arcIter = parentList.begin();
+            for ( gum::NodeSet::iterator arcIter = parentList.begin();
                   arcIter != parentList.end();
                   ++arcIter ) {
-              TS_ASSERT ( copy->dag().existsArc ( *arcIter ) );
+              TS_ASSERT ( copy->dag().existsArc ( Arc ( *arcIter, *nodeIter ) ) );
             }
 
             const gum::Potential<float> &srcCPT = source.cpt ( *nodeIter );

@@ -57,7 +57,7 @@ INLINE
 Pattern&
 DFSTree::parent(const Pattern& p) {
   try {
-    return *(__node_map.second(DiGraph::parents(__node_map.first(const_cast<Pattern*>(&p))).begin()->tail()));
+    return *(__node_map.second(*(DiGraph::parents(__node_map.first(const_cast<Pattern*>(&p))).begin())));
   } catch (NotFound&) {
     if (__node_map.existsSecond(const_cast<Pattern*>(&p))) {
       GUM_ERROR(NotFound, "the given pattern is a root node");
@@ -71,7 +71,7 @@ INLINE
 const Pattern&
 DFSTree::parent(const Pattern& p) const {
   try {
-    return *(__node_map.second(DiGraph::parents(__node_map.first(const_cast<Pattern*>(&p))).begin()->tail()));
+    return *(__node_map.second(*(DiGraph::parents(__node_map.first(const_cast<Pattern*>(&p))).begin())));
   } catch (NotFound&) {
     if (__node_map.existsSecond(const_cast<Pattern*>(&p))) {
       GUM_ERROR(NotFound, "the given pattern is a root node");

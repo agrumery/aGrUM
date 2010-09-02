@@ -113,9 +113,9 @@ StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks
         }
         if (not __getMark(marks, i, n).second) {
           __getMark(marks, i, n).second = true;
-          const ArcSet& children = i->type().dag().children(n);
-          for (ArcSetIterator child = children.begin(); child != children.end(); ++child)
-            __fromParent(i, child->head(), marks);
+          const NodeSet& children = i->type().dag().children(n);
+          for (NodeSetIterator child = children.begin(); child != children.end(); ++child)
+            __fromParent(i, *child, marks);
         }
         break;
       }
@@ -125,17 +125,17 @@ StructuredBayesBall::__fromChild(const Instance* i, NodeId n, InstanceMap& marks
         if (not __getMark(marks, i, n).first) {
           __getMark(marks, i, n).first = true;
           if (not __isHardEvidence(i, n)) {
-            const ArcSet& parents = i->type().dag().parents(n);
-            for (ArcSetIterator prnt = parents.begin(); prnt != parents.end(); ++prnt)
-              __fromChild(i, prnt->tail(), marks);
+            const NodeSet& parents = i->type().dag().parents(n);
+            for (NodeSetIterator prnt = parents.begin(); prnt != parents.end(); ++prnt)
+              __fromChild(i, *prnt, marks);
           }
         }
         if (not __getMark(marks, i, n).second) {
           __getMark(marks, i, n).second = true;
           // In i.
-          const ArcSet& children = i->type().dag().children(n);
-          for (ArcSetIterator child = children.begin(); child != children.end(); ++child)
-            __fromParent(i, child->head(), marks);
+          const NodeSet& children = i->type().dag().children(n);
+          for (NodeSetIterator child = children.begin(); child != children.end(); ++child)
+            __fromParent(i, *child, marks);
           // Out of i.
           try {
             typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
@@ -173,15 +173,15 @@ StructuredBayesBall::__fromParent(const Instance* i, NodeId n, InstanceMap& mark
   // Concerns only Attribute (because of the hard evidence)
   if ( (__isHardEvidence(i, n)) and (not __getMark(marks, i, n).first) ) {
     __getMark(marks, i, n).first = true;
-    const ArcSet& parents = i->type().dag().parents(n);
-    for (ArcSetIterator iter = parents.begin(); iter != parents.end(); ++iter)
-      __fromChild(i, iter->tail(), marks);
+    const NodeSet& parents = i->type().dag().parents(n);
+    for (NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter)
+      __fromChild(i, *iter, marks);
   } else if (not __getMark(marks, i, n).second) {
     __getMark(marks, i, n).second = true;
     // In i.
-    const ArcSet& children = i->type().dag().children(n);
-    for (ArcSetIterator iter = children.begin(); iter != children.end(); ++iter)
-      __fromParent(i, iter->head(), marks);
+    const NodeSet& children = i->type().dag().children(n);
+    for (NodeSetIterator iter = children.begin(); iter != children.end(); ++iter)
+      __fromParent(i, *iter, marks);
     // Out of i.
     try {
       typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;

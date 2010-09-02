@@ -58,11 +58,12 @@ namespace gum {
       // First we build the node's CPT
       copyPtr = new Potential<T_DATA>();
       ( *copyPtr ) << variable ( cptIter.key() );
-      // Add it's parents
-      const ArcSet& parentArcs = __dag.parents ( cptIter.key() );
 
-      for ( ArcSetIterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter ) {
-        ( *copyPtr ) << variable ( ( *arcIter ).tail() );
+      // Add it's parents
+      const NodeSet& parents = __dag.parents ( cptIter.key() );
+      for ( NodeSetIterator arcIter = parents.begin();
+            arcIter != parents.end(); ++arcIter ) {
+        ( *copyPtr ) << variable ( *arcIter );
       }
 
       // Second, we fill the CPT
@@ -107,18 +108,20 @@ namespace gum {
         // First we build the node's CPT
         Potential<T_DATA>* copyPtr = new Potential<T_DATA>();
         ( *copyPtr ) << variable ( cptIter.key() );
-        // Add it's parents
-        const ArcSet& parentArcs = __dag.parents ( cptIter.key() );
 
-        for ( ArcSetIterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter ) {
-          ( *copyPtr ) << variable ( ( *arcIter ).tail() );
+        // Add it's parents
+        const NodeSet& parents = __dag.parents ( cptIter.key() );
+
+        for ( NodeSetIterator arcIter = parents.begin();
+              arcIter != parents.end(); ++arcIter ) {
+          ( *copyPtr ) << variable ( *arcIter );
         }
 
         // Second, we fill the CPT
         Instantiation srcInst ( **cptIter );
 
         Instantiation cpyInst ( *copyPtr );
-
+        
         // Slowest but safest
         for ( cpyInst.setFirst(); !cpyInst.end(); cpyInst.inc() ) {
           for ( Idx i = 0; i < cpyInst.nbrDim(); i++ ) {
@@ -280,8 +283,10 @@ namespace gum {
   BayesNet<T_DATA>::erase ( NodeId varId ) {
     if ( __varMap.exists ( varId ) ) {
       // Reduce the variable child's CPT
-      for ( ArcSetIterator iter = __dag.children ( varId ).begin(); iter != __dag.children ( varId ).end(); ++iter ) {
-        __probaMap[iter->head() ]->erase ( variable ( varId ) );
+      const NodeSet& children = __dag.children ( varId );
+      for ( NodeSetIterator iter = children.begin();
+            iter != children.end(); ++iter ) {
+        __probaMap[ *iter ]->erase ( variable ( varId ) );
       }
 
       delete __probaMap[varId];
@@ -414,10 +419,11 @@ template<typename T_DATA> INLINE
     for ( DAG::NodeIterator node_iter = dag().beginNodes();
           node_iter != dag().endNodes(); ++node_iter ) {
       if ( dag().children ( *node_iter ).size() > 0 ) {
-        for ( DAG::ArcIterator arc_iter = dag().children ( *node_iter ).begin();
-              arc_iter != dag().children ( *node_iter ).end(); ++arc_iter ) {
+        const NodeSet& children =  dag().children ( *node_iter );
+        for ( NodeSetIterator arc_iter = children.begin();
+              arc_iter != children.end(); ++arc_iter ) {
           output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
-          << "\"" << variable ( arc_iter->head() ).name() << "\";" << std::endl;
+                 << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }
 
       } else if ( dag().parents ( *node_iter ).size() == 0 ) {

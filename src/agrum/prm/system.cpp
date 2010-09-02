@@ -183,14 +183,14 @@ System::__groundRef(const Instance& instance, BayesNetFactory<prm_float>& factor
     std::stringstream elt_name;
     elt_name << instance.name() << "." << (*iter)->safeName();
     factory.startParentsDeclaration(elt_name.str());
-    const ArcSet& parents = instance.type().dag().parents((**iter).id());
-    for (DAG::ArcIterator arc = parents.begin(); arc != parents.end(); ++arc) {
-      switch (instance.type().get(arc->tail()).elt_type()) {
+    const NodeSet& parents = instance.type().dag().parents((**iter).id());
+    for (NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc) {
+      switch (instance.type().get(*arc).elt_type()) {
         case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute:
           {
             std::stringstream parent_name;
-            parent_name << instance.name() << "." << instance.get(arc->tail()).safeName();
+            parent_name << instance.name() << "." << instance.get(*arc).safeName();
             factory.addParent(parent_name.str());
             break;
           }
@@ -198,8 +198,8 @@ System::__groundRef(const Instance& instance, BayesNetFactory<prm_float>& factor
           {
             // No need to check if iter is an aggregate or not since parsing will raise an error
             std::string parent_name =
-              static_cast<const SlotChain&>(instance.type().get(arc->tail())).lastElt().safeName();
-            const Set<Instance*>& refs = instance.getInstances(arc->tail());
+              static_cast<const SlotChain&>(instance.type().get(*arc)).lastElt().safeName();
+            const Set<Instance*>& refs = instance.getInstances(*arc);
             for (Set<Instance*>::iterator iter = refs.begin(); iter != refs.end(); ++iter) {
               std::stringstream sBuff;
               sBuff << (*iter)->name() << "." << parent_name;
@@ -226,21 +226,21 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
   var_name << instance.name() << "." << attr.safeName();
   bijection.insert(&(factory.variable(var_name.str())), &(attr.type().variable()));
   const DAG& dag = instance.type().dag();
-  const ArcSet& parents = dag.parents(attr.id());
-  for (DAG::ArcIterator parent = parents.begin(); parent != parents.end(); ++parent) {
-    switch (instance.type().get(parent->tail()).elt_type()) {
+  const NodeSet& parents = dag.parents(attr.id());
+  for (NodeSetIterator parent = parents.begin(); parent != parents.end(); ++parent) {
+    switch (instance.type().get(*parent).elt_type()) {
       case ClassElement::prm_aggregate:
       case ClassElement::prm_attribute:
         {
           std::stringstream parent_name;
-          parent_name << instance.name() << "." << instance.get(parent->tail()).safeName();
-          bijection.insert(&(factory.variable(parent_name.str())), &(instance.get(parent->tail()).type().variable()));
+          parent_name << instance.name() << "." << instance.get(*parent).safeName();
+          bijection.insert(&(factory.variable(parent_name.str())), &(instance.get(*parent).type().variable()));
           break;
         }
       case ClassElement::prm_slotchain:
         {
           std::stringstream parent_name;
-          const SlotChain& sc = static_cast<const SlotChain&>(instance.type().get(parent->tail()));
+          const SlotChain& sc = static_cast<const SlotChain&>(instance.type().get(*parent));
           parent_name << instance.getInstance(sc.id()).name() << "." << sc.lastElt().safeName();
           bijection.insert(&(factory.variable(parent_name.str())), &(instance.getInstance(sc.id()).get(sc.lastElt().id()).type().variable()));
           break;

@@ -147,28 +147,28 @@ StructuredInference::__buildPatternGraph(UndiGraph& graph, const Sequence<Instan
       std::string tail, head;
       bool found = false; // If this is set at true, then node is an outer node
       // Children existing in the instance type's DAG
-      const ArcSet& chldrn = (**inst).type().dag().children((**attr).id());
-      for (ArcSet::const_iterator chld = chldrn.begin(); chld != chldrn.end(); ++chld) {
-        head = (**inst).name() + dot + (**inst).get(chld->head()).safeName();
+      const NodeSet& chldrn = (**inst).type().dag().children((**attr).id());
+      for (NodeSetIterator chld = chldrn.begin(); chld != chldrn.end(); ++chld) {
+        head = (**inst).name() + dot + (**inst).get(*chld).safeName();
         graph.insertEdge(node, node2attr.first(head));
       }
       // Parents existing in the instance type's DAG
-      const ArcSet& prnts  = (**inst).type().dag().parents((**attr).id());
-      for (ArcSet::const_iterator prnt = prnts.begin(); prnt != prnts.end(); ++prnt) {
-        switch ((**inst).type().get(prnt->tail()).elt_type()) {
+      const NodeSet& prnts  = (**inst).type().dag().parents((**attr).id());
+      for (NodeSetIterator prnt = prnts.begin(); prnt != prnts.end(); ++prnt) {
+        switch ((**inst).type().get(*prnt).elt_type()) {
           case ClassElement::prm_attribute:
           case ClassElement::prm_aggregate:
             {
-              tail = (**inst).name() + dot + (**inst).get(prnt->tail()).safeName();
+              tail = (**inst).name() + dot + (**inst).get(*prnt).safeName();
               graph.insertEdge(node, node2attr.first(tail));
               break;
             }
           case ClassElement::prm_slotchain:
             {
-              const Set<Instance*>& ref = (**inst).getInstances(prnt->tail());
+              const Set<Instance*>& ref = (**inst).getInstances(*prnt);
               for (Set<Instance*>::const_iterator jnst = ref.begin(); jnst != ref.end(); ++jnst) {
                 if (match.exists(*jnst)) {
-                  tail = (**jnst).name() + dot + static_cast<const SlotChain&>((**inst).type().get(prnt->tail())).lastElt().safeName();
+                  tail = (**jnst).name() + dot + static_cast<const SlotChain&>((**inst).type().get(*prnt)).lastElt().safeName();
                   graph.insertEdge(node, node2attr.first(tail));
                 } else {
                   found = true;

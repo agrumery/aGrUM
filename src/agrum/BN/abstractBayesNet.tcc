@@ -121,11 +121,12 @@ AbstractBayesNet<T_DATA>::_moralGraph(UndiGraph& graph) const
   }
   // mary the parents
   for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
-    for ( ArcSetIterator it1 = dag().parents( *iter ).begin(); it1 != dag().parents( *iter ).end(); ++it1 ) {
-      ArcSetIterator it2 = it1;
-      for ( ++it2; it2 != dag().parents( *iter ).end(); ++it2 ) {
+    const NodeSet& parents = dag().parents( *iter );
+    for ( NodeSetIterator it1 = parents.begin(); it1 != parents.end(); ++it1 ) {
+      NodeSetIterator it2 = it1;
+      for ( ++it2; it2 != parents.end(); ++it2 ) {
         // will automatically check if this edge already exists
-        graph.insertEdge( it1->tail(), it2->tail() );
+        graph.insertEdge( *it1, *it2 );
       }
     }
   }
@@ -154,8 +155,9 @@ AbstractBayesNet<T_DATA>::_topologicalOrder(Sequence<NodeId>& order) const
     for ( NodeSetIterator node = nodeList.begin(); node != nodeList.end(); ++node ) {
       add = true;
       // Parsing all parents of current node
-      for ( ArcSetIterator arc = dag().parents(*node).begin(); arc != dag().parents(*node).end(); ++arc ) {
-        add = add && order.exists(arc->tail() );
+      const NodeSet& parents = dag().parents(*node);
+      for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
+        add = add && order.exists( *arc );
       }
       // If current node's parent are all in order. then we add it
       if ( add ) {
@@ -200,8 +202,9 @@ AbstractBayesNet<T_DATA>::operator==(const AbstractBayesNet<T_DATA>& from) const
       // DiscreteVariable's pointers.
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
       bijection.insert(&(variable(*node)), &(from.variable(*node)));
-      for (DAG::ArcIterator arc = dag().parents(*node).begin(); arc != dag().parents(*node).end(); ++arc) {
-        bijection.insert(&(variable(arc->tail())), &(from.variable(arc->tail())));
+      const NodeSet& parents = dag().parents(*node);
+      for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc) {
+        bijection.insert(&(variable(*arc)), &(from.variable(*arc)));
       }
       Instantiation i(cpt(*node));
       Instantiation j(from.cpt(*node));

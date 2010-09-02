@@ -52,18 +52,46 @@ Pattern::Pattern(const Pattern& source):
 bool
 Pattern::isMinimal() {
   for (Pattern::NodeIterator node = beginNodes(); node != endNodes(); ++node) {
-    for (NeighborIterator next = beginNeighbors(*node); not next.isEnd(); ++next) {
+    const NodeSet& parents = DiGraph::parents ( *node );
+    for (NodeSetIterator next = parents.begin(); next != parents.end(); ++next) {
       Size u = label(*node).id;
-      Size v = label(next->tail() == (*node)?next->head():next->tail()).id;
-      EdgeCode edge_code(1, 2, u, label(next->tail(), next->head()).id, v);
+      Size v = label(*next).id;
+      EdgeCode edge_code(1, 2, u, label(*next, *node).id, v);
       if (edge_code < *(code().codes.front())) {
         return false;
       } else if ( edge_code == (*code().codes.front())) {
-        if (__expandCodeIsMinimal(*node, next->other(*node))) {
+        if (__expandCodeIsMinimal(*node, *next)) {
           return false;
         }
       }
     }
+
+    const NodeSet& children = DiGraph::children ( *node );
+    for (NodeSetIterator next = children.begin(); next != children.end(); ++next) {
+      Size u = label(*node).id;
+      Size v = label(*next).id;
+      EdgeCode edge_code(1, 2, u, label(*node, *next).id, v);
+      if (edge_code < *(code().codes.front())) {
+        return false;
+      } else if ( edge_code == (*code().codes.front())) {
+        if (__expandCodeIsMinimal(*node, *next)) {
+          return false;
+        }
+      }
+    }
+    
+//     for (NeighborIterator next = beginNeighbors(*node); not next.isEnd(); ++next) {
+//       Size u = label(*node).id;
+//       Size v = label(*next).id;
+//       EdgeCode edge_code(1, 2, u, label(next->tail(), next->head()).id, v);
+//       if (edge_code < *(code().codes.front())) {
+//         return false;
+//       } else if ( edge_code == (*code().codes.front())) {
+//         if (__expandCodeIsMinimal(*node, next->other(*node))) {
+//           return false;
+//         }
+//       }
+//     }
   }
   return true;
 }
@@ -93,15 +121,15 @@ Pattern::__expandCodeIsMinimal(NodeId u, NodeId v)
     p.insertArc(1, 2, label(v, u));
   }
   for (NeighborIterator iter = beginNeighbors(u); not iter.isEnd(); ++iter) {
-    if (iter->other(u) != v) {
-      if (__rec(p, node_map, u, iter->other(u))) {
+    if ( *iter != v) {
+      if (__rec(p, node_map, u, *iter )) {
         return true;
       }
     }
   }
   for (NeighborIterator iter = beginNeighbors(v); not iter.isEnd(); ++iter) {
-    if (iter->other(v) != u) {
-      if (__rec(p, node_map, v, iter->other(v))) {
+    if (*iter != u) {
+      if (__rec(p, node_map, v, *iter)) {
         return true;
       }
     }
@@ -152,7 +180,7 @@ Pattern::__rec(Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId
     p.rightmostPath(r_path);
     for (std::list<NodeId>::iterator iter = r_path.begin(); iter != r_path.end(); ++iter) {
       for (NeighborIterator jter = beginNeighbors(node_map.first(*iter)); not jter.isEnd(); ++jter) {
-        if (__rec(p, node_map, node_map.first(*iter), jter->other(node_map.first(*iter)))) {
+        if (__rec(p, node_map, node_map.first(*iter), *jter)) {
           return true;
         }
       }
@@ -243,7 +271,7 @@ Pattern::__not_rec(Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId a_u, 
             stack.push_back(std::make_pair((NodeId) 0, (NodeId) 0));
             for (std::list<NodeId>::iterator iter = r_path.begin(); iter != r_path.end(); ++iter) {
               for (NeighborIterator jter = beginNeighbors(node_map.first(*iter)); not jter.isEnd(); ++jter) {
-                stack.push_back(std::make_pair(node_map.first(*iter), jter->other(node_map.first(*iter))));
+                stack.push_back(std::make_pair(node_map.first(*iter), *jter ));
                 ++(rec_call.back());
               }
             }
