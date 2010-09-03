@@ -150,7 +150,7 @@ namespace gum {
       /// @{
 
       /// @return Returns the list of neighbours of a given clique
-      const EdgeSet& __getNeighbours( NodeId cliqueId );
+      const NodeSet& __getNeighbours( NodeId cliqueId );
 
       /// @return Returns a separator given two adjacent cliques
       const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );

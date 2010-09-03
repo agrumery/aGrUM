@@ -230,13 +230,14 @@ namespace gum {
     __mps_affected[My] = true;
     
     // mark all the neighbour MPS that contain edge
-    for ( EdgeSetIterator iter = __T_mpd.neighbours( My ).begin();
-          iter != __T_mpd.endEdges(); ++iter ) {
-      if ( iter->other( My ) != Mz ) {
-        const NodeSet& Syk = __T_mpd.separator( *iter );
+    const NodeSet& neighbours = __T_mpd.neighbours( My );
+    for ( NodeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      if ( *iter != Mz ) {
+        const NodeSet& Syk = __T_mpd.separator( Edge ( *iter, My ) );
 
         if ( Syk.contains( edge.first() ) && Syk.contains( edge.second() ) )
-          __markAffectedMPSsByRemoveLink( iter->other( My ), My, edge );
+          __markAffectedMPSsByRemoveLink( *iter, My, edge );
       }
     }
   }
@@ -295,10 +296,10 @@ namespace gum {
 
     // remove all the edges adjacent to the node
     {
-      const EdgeSet& neighbours = __graph.neighbours( X );
-      for ( EdgeSetIterator neighbour_edge = neighbours.begin();
+      const NodeSet& neighbours = __graph.neighbours( X );
+      for ( NodeSetIterator neighbour_edge = neighbours.begin();
             neighbour_edge != neighbours.end(); ++neighbour_edge ) {
-        eraseEdge( *neighbour_edge );
+        eraseEdge( Edge ( *neighbour_edge, X ) );
       }
     }
 
@@ -310,11 +311,12 @@ namespace gum {
       
       // if the intersection between *iter and one of its neighbour is empty,
       // remove the edge linking them
-      const EdgeSet& neighbours = __T_mpd.neighbours( *iter );
-      for ( EdgeSetIterator neighbour = neighbours.begin();
+      const NodeSet& neighbours = __T_mpd.neighbours( *iter );
+      for ( NodeSetIterator neighbour = neighbours.begin();
             neighbour != neighbours.end(); ++neighbour ) {
-        if ( __T_mpd.separator( *neighbour ).size() == 0 )
-          __T_mpd.eraseEdge( *neighbour );
+        Edge neigh ( *neighbour, *iter );
+        if ( __T_mpd.separator( neigh ).size() == 0 )
+          __T_mpd.eraseEdge( neigh );
       }
     }
       
@@ -329,16 +331,17 @@ namespace gum {
         // if the intersection between *iter and one of its neighbour is empty,
         // remove the edge linking them only if, in addition, there is no
         // edge in __graph between a node of *iter and a node in the neighbour
-        const EdgeSet& neighbours = __junction_tree.neighbours( cliques_of_X[i] );
-        for ( EdgeSetIterator neighbour = neighbours.begin();
+        const NodeSet& neighbours = __junction_tree.neighbours( cliques_of_X[i] );
+        for ( NodeSetIterator neighbour = neighbours.begin();
               neighbour != neighbours.end(); ++neighbour ) {
-          if ( __junction_tree.separator( *neighbour ).size() == 0 ) {
+          Edge neigh ( *neighbour, cliques_of_X[i] );
+          if ( __junction_tree.separator( neigh ).size() == 0 ) {
             // try to see if there is an edge between the nodes of one extremity
             // of *neighbour and those of the other extremity
             const NodeSet& clique1 =
-              __junction_tree.clique ( neighbour->first() );
+              __junction_tree.clique ( neigh.first() );
             const NodeSet& clique2 =
-              __junction_tree.clique ( neighbour->second() );
+              __junction_tree.clique ( neigh.second() );
             bool hasCommonEdge = false;
             for ( NodeSetIterator iter1 = clique1.begin();
                   ! hasCommonEdge && iter1 != clique1.end(); ++iter1 ) {
@@ -351,7 +354,7 @@ namespace gum {
               }
             }
             if ( ! hasCommonEdge ) {
-              __junction_tree.eraseEdge ( *neighbour );
+              __junction_tree.eraseEdge ( neigh );
             }
           }
         }
@@ -404,10 +407,10 @@ namespace gum {
     }
 
     // parse Mx's neighbours until we find Y
-    const EdgeSet& neighbours = __T_mpd.neighbours( Mx );
-    for ( EdgeSetIterator neighbour = neighbours.begin();
+    const NodeSet& neighbours = __T_mpd.neighbours( Mx );
+    for ( NodeSetIterator neighbour = neighbours.begin();
           neighbour != neighbours.end(); ++neighbour ) {
-      NodeId other_node = neighbour->other( Mx );
+      NodeId other_node = *neighbour;
       
       if ( other_node != Mz ) {
         int neighbourStatus = __markAffectedMPSsByAddLink( other_node, Mx, X, Y );
@@ -804,10 +807,10 @@ namespace gum {
         theGraph.insertNode( *iter_node );
 
     // go on with the neighbour cliques in the junction tree
-    const EdgeSet& neighbours =  __junction_tree.neighbours( Mx );
-    for ( EdgeSetIterator neighbour = neighbours.begin();
+    const NodeSet& neighbours =  __junction_tree.neighbours( Mx );
+    for ( NodeSetIterator neighbour = neighbours.begin();
           neighbour != neighbours.end(); ++neighbour ) {
-      NodeId othernode = neighbour->other( Mx );
+      NodeId othernode = *neighbour;
 
       if ( othernode != Mfrom ) {
         if ( cliques_affected.exists( othernode ) ) {
@@ -818,7 +821,7 @@ namespace gum {
         else {
           // indicate that we have a clique not affected that is adjacent
           // to an affected one
-          notAffectedneighbourCliques.push_back( *neighbour );
+          notAffectedneighbourCliques.push_back( Edge ( *neighbour, Mx ) );
         }
       }
     }
@@ -971,17 +974,14 @@ namespace gum {
                  __junction_tree.clique( to_connect ).size() ) {
               __junction_tree.eraseEdge( Edge( not_affected, to_connect ) );
               
-              const EdgeSet& neighbours = __junction_tree.neighbours( to_connect );
-              for ( EdgeSetIterator iter_neighbour = neighbours.begin();
+              const NodeSet& neighbours = __junction_tree.neighbours( to_connect );
+              for ( NodeSetIterator iter_neighbour = neighbours.begin();
                     iter_neighbour != neighbours.end(); ++iter_neighbour ) {
-                __junction_tree.insertEdge
-                  ( iter_neighbour->other( to_connect ), not_affected );
+                __junction_tree.insertEdge ( *iter_neighbour, not_affected );
                 
-                if ( ! new_nodes_in_junction_tree.contains
-                     ( iter_neighbour->other( to_connect ) ) )
-                  __T_mpd.insertEdge
-                    ( __mps_of_clique[iter_neighbour->other( to_connect )],
-                      __mps_of_clique[not_affected] );
+                if ( ! new_nodes_in_junction_tree.contains ( *iter_neighbour ) )
+                  __T_mpd.insertEdge ( __mps_of_clique[*iter_neighbour],
+                                       __mps_of_clique[not_affected] );
               }
               
               __junction_tree.eraseNode( to_connect );
@@ -1022,14 +1022,15 @@ namespace gum {
     NodeSetIterator iter_sep2;
 
     // check the separators on all the adjacent edges of Mx
-    const EdgeSet& neighbours = __junction_tree.neighbours( node );
-    for ( EdgeSetIterator iter_sep = neighbours.begin();
+    const NodeSet& neighbours = __junction_tree.neighbours( node );
+    for ( NodeSetIterator iter_sep = neighbours.begin();
           iter_sep != neighbours.end(); ++iter_sep ) {
-      NodeId other_node = iter_sep->other( node );
+      NodeId other_node = *iter_sep;
 
       if ( other_node != from ) {
-        const NodeSet& separator = __junction_tree.separator( *iter_sep );
-
+        const NodeSet& separator =
+          __junction_tree.separator( Edge ( *iter_sep, node ) );
+        
         // check that the separator between node and other_node is complete
         bool complete = true;
         for ( NodeSetIterator iter_sep1 = separator.begin();
@@ -1159,16 +1160,16 @@ namespace gum {
           iter != T_mpd_cliques.end(); ++iter ) {
       NodeId clique = clique2MPS[*iter];
 
-      const EdgeSet& neighbours = __junction_tree.neighbours( iter.key() );
-      for ( EdgeSetIterator iter_neighbour = neighbours.begin();
+      const NodeSet& neighbours = __junction_tree.neighbours( iter.key() );
+      for ( NodeSetIterator iter_neighbour = neighbours.begin();
             iter_neighbour != neighbours.end(); ++iter_neighbour ) {
-        NodeId othernode = iter_neighbour->other( iter.key() );
-
+        NodeId othernode = *iter_neighbour;
+        
         if ( T_mpd_cliques.exists( othernode ) ) {
           // here iter is linked to another node that has been created during
           // the triangulation
           NodeId otherClique =  clique2MPS[T_mpd_cliques[othernode]];
-
+          
           // avoid adding the same edge several times
           if ( clique > otherClique ) {
             __T_mpd.insertEdge( clique, otherClique );
@@ -1249,10 +1250,10 @@ namespace gum {
   ( const NodeId clique, const NodeId from, 
     Property<bool>::onNodes& examined ) {
     // apply collect to all the neighbours except from
-    for ( EdgeSetIterator neighbour =
-            __junction_tree.neighbours ( clique ).begin();
-          neighbour != __junction_tree.endEdges (); ++neighbour ) {
-      NodeId otherclique = neighbour->other ( clique );
+    const NodeSet& neighbours =  __junction_tree.neighbours ( clique );
+    for ( NodeSetIterator neighbour = neighbours.begin();
+          neighbour != neighbours.end (); ++neighbour ) {
+      NodeId otherclique = *neighbour;
       if ( otherclique != from )
         __collectJTCliques ( otherclique, clique, examined );
     }
@@ -1360,9 +1361,10 @@ namespace gum {
     Property<bool>::onNodes& examined,
     unsigned int& index ) {
     // apply collect to all the neighbours except from
-    for ( EdgeSetIterator neighbour = __junction_tree.neighbours ( node ).begin();
-          neighbour != __junction_tree.endEdges (); ++neighbour ) {
-      NodeId othernode = neighbour->other ( node );
+    const NodeSet& neighbours =  __junction_tree.neighbours ( node );
+    for ( NodeSetIterator neighbour = neighbours.begin();
+          neighbour != neighbours.end (); ++neighbour ) {
+      NodeId othernode = *neighbour;
       if ( othernode != from )
         __collectEliminationOrder ( othernode, node, examined, index );
     }

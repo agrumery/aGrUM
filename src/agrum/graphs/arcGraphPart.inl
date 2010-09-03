@@ -129,7 +129,7 @@ namespace gum {
       NodeSet& parents = * ( __parents[id] );
       for ( NodeSetIterator iter = parents.begin ();
             iter != parents.end(); ++iter ) {
-        // warning: use this erase so that you actually use the vritualized
+        // warning: use this erase so that you actually use the virtualized
         // arc removal function
         eraseArc ( Arc ( *iter, id ) );
       }

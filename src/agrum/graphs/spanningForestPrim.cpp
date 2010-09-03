@@ -148,11 +148,11 @@ namespace gum {
   void SpanningForestPrim::__exploreNode ( const NodeId id ) {
     // add its neighbors __edgesToExplore to indicate that they are
     // potential next nodes to explore
-    const Set<Edge>& neighbours = __graph.neighbours ( id );
-    for ( Set<Edge>::const_iterator iter = neighbours.begin();
+    const NodeSet& neighbours = __graph.neighbours ( id );
+    for ( NodeSet::const_iterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      const Edge& edge = *iter;
-      if ( ! __spanning_tree.existsNode ( edge.other( id ) ) ) {
+      if ( ! __spanning_tree.existsNode ( *iter ) ) {
+        Edge edge ( *iter, id );
         __edgesToExplore.insert ( __costTable[edge], edge );
       }
     }

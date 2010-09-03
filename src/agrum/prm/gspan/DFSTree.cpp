@@ -105,9 +105,10 @@ DFSTree::__initialiaze_root(Pattern* p, Sequence<EdgeData*>& edge_seq) {
   for (std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node) {
     if (not removed.exists(*node)) {
       removed.insert(*node);
-      for (EdgeSet::const_iterator neighbor = data->iso_graph.neighbours(*node).begin();
-          neighbor != data->iso_graph.neighbours(*node).end(); ++neighbor) {
-        removed.insert(((*node) != neighbor->first())?neighbor->first():neighbor->second());
+      const NodeSet& neighbours = data->iso_graph.neighbours(*node);
+      for (NodeSet::const_iterator neighbor = neighbours.begin();
+           neighbor != neighbours.end(); ++neighbor) {
+        removed.insert(*neighbor);
       }
       data->max_indep_set.insert(*node);
     }
@@ -210,9 +211,10 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
   for (std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node) {
     if (not removed.exists(*node)) {
       removed.insert(*node);
-      for (EdgeSet::const_iterator neighbor = data->iso_graph.neighbours(*node).begin();
-           neighbor != data->iso_graph.neighbours(*node).end(); ++neighbor) {
-        removed.insert(((*node) != neighbor->first())?neighbor->first():neighbor->second());
+      const NodeSet& neighbours =  data->iso_graph.neighbours(*node);
+      for (NodeSet::const_iterator neighbor = neighbours.begin();
+           neighbor != neighbours.end(); ++neighbor) {
+        removed.insert(*neighbor);
       }
       data->max_indep_set.insert(*node);
     }

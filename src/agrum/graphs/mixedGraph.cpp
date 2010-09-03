@@ -85,12 +85,12 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbours //////////////////////////////////////////////
-      const EdgeSet& set_neighbour=neighbours( current );
+      const NodeSet& set_neighbour = neighbours( current );
 
-      for ( EdgeSetIterator ite=set_neighbour.begin();
+      for ( NodeSetIterator ite=set_neighbour.begin();
             ite!=set_neighbour.end();++ite ) {
-        NodeId new_one=ite->other( current );
-
+        NodeId new_one = *ite;
+        
         if ( mark.exists ( new_one ) ) // if the node has already been visited
           continue;                    // do not check it again
 
@@ -111,7 +111,6 @@ namespace gum {
 
       // check the parents  //////////////////////////////////////////////
       const NodeSet& set = parents( current );
-
       for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
         NodeId new_one = *ite;
 
@@ -154,11 +153,10 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbours //////////////////////////////////////////////
-      const EdgeSet& set_neighbour=neighbours( current );
-
-      for ( EdgeSetIterator ite=set_neighbour.begin();
+      const NodeSet& set_neighbour=neighbours( current );
+      for ( NodeSetIterator ite=set_neighbour.begin();
             ite!=set_neighbour.end();++ite ) {
-        NodeId new_one=ite->other( current );
+        NodeId new_one = *ite;
 
         if ( mark.exists ( new_one ) ) // if the node has already been visited
           continue;                    // do not check it again

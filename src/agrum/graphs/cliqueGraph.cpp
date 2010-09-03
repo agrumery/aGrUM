@@ -114,12 +114,10 @@ namespace gum {
     clique.insert( node_id );
 
     // update the __separators adjacent to clique 'id'
-    const EdgeSet& set = neighbours( clique_id );
-    for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
-      NodeId other_clique = ite->other( clique_id );
-
-      if ( __cliques[other_clique].contains( node_id ) )
-        __separators[*ite].insert( node_id );
+    const NodeSet& set = neighbours( clique_id );
+    for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
+      if ( __cliques[*ite].contains( node_id ) )
+        __separators[Edge ( *ite, clique_id )].insert( node_id );
     }
   }
 
@@ -136,10 +134,11 @@ namespace gum {
       clique.erase( node_id );
 
       // update the __separators adjacent to __clique 'id'
-      const EdgeSet& set = neighbours( clique_id );
-      for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
-        if ( __separators[*ite].contains( node_id ) )
-          __separators[*ite].erase( node_id );
+      const NodeSet& set = neighbours( clique_id );
+      for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
+        Edge edge ( *ite, clique_id );
+        if ( __separators[edge].contains( node_id ) )
+          __separators[edge].erase( node_id );
       }
     }
   }
@@ -183,15 +182,16 @@ namespace gum {
 
     // check the neighbours that are different from "from" and that have not
     // been visited yet
-    const EdgeSet& neighbour = neighbours( clique );
-    for ( EdgeSetIterator iter = neighbour.begin();
+    const NodeSet& neighbour = neighbours( clique );
+    for ( NodeSetIterator iter = neighbour.begin();
           iter != neighbour.end(); ++iter ) {
-      const NodeId otherID = iter->other( clique );
+      const NodeId otherID = *iter;
 
       if ( otherID != from ) {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
-        const NodeSet& from_separ = __separators[*iter];
+        const Edge edge ( otherID, clique ); 
+        const NodeSet& from_separ = __separators[edge];
         for ( NodeSetIterator iter_clique = nodes_clique.begin();
               iter_clique != nodes_clique.end(); ++iter_clique ) {
           if ( !from_separ.contains( *iter_clique ) )

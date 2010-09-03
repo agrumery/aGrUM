@@ -167,7 +167,7 @@ namespace gum {
     /** Note that the set of edges returned may be empty if no edge within the
      * EdgeGraphPart is adjacent the given node.
      * @param id the node to which the edges are adjacent */    
-    const EdgeSet& neighbours( const NodeId id ) const;
+    const NodeSet& neighbours( const NodeId id ) const;
 
     /// erase all the edges adjacent to a given node
     /** @param id the node the adjacent edges of which will be removed
@@ -230,13 +230,12 @@ namespace gum {
 
     
 
-    private:
-      static const EdgeSet __empty_edge_set;
+  private:
     /// the set of all the edges contained within the EdgeGraphPart
     EdgeSet __edges;
 
     /// for each node, the set of its adjacent edges
-    mutable Property<EdgeSet>::onNodes __neighbours;
+    mutable Property<NodeSet*>::onNodes __neighbours;
 
     
     /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,

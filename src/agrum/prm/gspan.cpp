@@ -122,8 +122,10 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
           current = seq->atPos((Idx) ((*node) - 1));
           current_id = ig.id(current);
           // Checking for edges not in p
-          for (EdgeSet::iterator edge = ig.graph().neighbours(current_id).begin(); edge != ig.graph().neighbours(current_id).end(); ++edge) {
-            neighbor_id = edge->other(current_id);
+          const NodeSet& neighbours = ig.graph().neighbours(current_id);
+          for (NodeSet::iterator edge = neighbours.begin();
+               edge != neighbours.end(); ++edge) {
+            neighbor_id = *edge;
             neighbor = ig.node(neighbor_id).n;
             // We want a forward edge in any case or a backward edge if current is the rightmost vertex
             if ( (not seq->exists(neighbor)) or ((*node) == r_path.back()) ) {
@@ -210,7 +212,7 @@ GSpan::__sortPatterns() {
   // Now we see what kind of pattern we can still use
   bool found;
   UndiGraph* iso_graph = 0;
-  const EdgeSet* neighbours = 0;
+  const NodeSet* neighbours = 0;
   for (std::vector<gspan::Pattern*>::iterator p = __patterns.begin() + 1; p != __patterns.end(); ++p) {
     UndiGraph reduced_iso_graph;
     std::vector<NodeId> degree_list;
@@ -247,8 +249,8 @@ GSpan::__sortPatterns() {
         // First we update removed to follow the max independent set algorithm
         removed.insert(*node);
         neighbours = &(reduced_iso_graph.neighbours(*node));
-        for (EdgeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor) {
-          removed.insert(((*node) != neighbor->first())?neighbor->first():neighbor->second());
+        for (NodeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor) {
+          removed.insert(*neighbor);
         }
         // Second we update match and matches to keep track of the current match
         match = &(tree().iso_map(**p, *node));

@@ -144,7 +144,8 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::__setRequiredInference( NodeId id, NodeId from ) {
     // check if an inference has already happened through clique id
-    if (( __collected_cliques[id] == false ) && ( __diffused_cliques[id] == false ) )
+    if (( __collected_cliques[id] == false ) &&
+        ( __diffused_cliques[id] == false ) )
       return;
 
     // indicates that clique "id" needs an inference
@@ -153,11 +154,10 @@ namespace gum {
     __diffused_cliques[id]  = false;
 
     // propagate this requirement to id's neighbours
-    const EdgeSet& nei = __JT->neighbours( id );
-
-    for ( EdgeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
-      NodeId other = iter->other( id );
-
+    const NodeSet& nei = __JT->neighbours( id );
+    for ( NodeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
+      NodeId other = *iter;
+      
       if ( other != from ) {
         // remove the potentials sent on clique id's adjacent separators
         Arc sep( other, id );
@@ -537,10 +537,9 @@ namespace gum {
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to from_id
-    const EdgeSet& nei = __JT->neighbours( from_id );
-
-    for ( EdgeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
-      NodeId other = iter->other( from_id );
+    const NodeSet& nei = __JT->neighbours( from_id );
+    for ( NodeSetIterator iter = nei.begin();iter != nei.end(); ++iter ) {
+      NodeId other = *iter;
 
       if ( other != to_id ) {
         Arc sep( other, from_id );
@@ -580,11 +579,10 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::__collect( NodeId id, NodeId from ) {
     __collected_cliques[id] = true;
-    const EdgeSet& neighbours = __JT->neighbours( id );
-
-    for ( EdgeSetIterator iter = neighbours.begin();
+    const NodeSet& neighbours = __JT->neighbours( id );
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      NodeId other = iter->other( id );
+      NodeId other = *iter;
 
       if ( other != from ) {
         __collect( other, id );
@@ -622,13 +620,13 @@ namespace gum {
   template <typename T_DATA> INLINE
   void LazyPropagation<T_DATA>::__diffusion( NodeId id, NodeId from ) {
     __diffused_cliques[id] = true;
-    const EdgeSet& neighbours = __JT->neighbours( id );
+    const NodeSet& neighbours = __JT->neighbours( id );
     // #### TODO: make a more efficient inference using a stack of
     // of partial computations (see Gonzales, Mellouli, Mourali (2007))
 
-    for ( EdgeSetIterator iter = neighbours.begin();
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      NodeId other = iter->other( id );
+      NodeId other = *iter;
 
       if ( other != from ) {
         __produceMessage( id, other );
@@ -766,11 +764,11 @@ namespace gum {
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to myclique
-    const EdgeSet& neighbours = __JT->neighbours( myclique );
+    const NodeSet& neighbours = __JT->neighbours( myclique );
 
-    for ( EdgeSetIterator iter = neighbours.begin();
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      NodeId other = iter->other( myclique );
+      NodeId other = *iter;
       Arc sep( other, myclique );
       const __PotentialSet&
       sep_pot_list = __sep_potentials[sep];
@@ -910,11 +908,11 @@ namespace gum {
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to myclique
-    const EdgeSet& neighbours = __JT->neighbours( myclique );
+    const NodeSet& neighbours = __JT->neighbours( myclique );
 
-    for ( EdgeSetIterator iter = neighbours.begin();
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      NodeId other = iter->other( myclique );
+      NodeId other = *iter;
       Arc sep( other, myclique );
       const __PotentialSet&
       sep_pot_list = __sep_potentials[sep];

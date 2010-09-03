@@ -63,6 +63,7 @@ namespace gum {
       __children.insert ( iter.key (), newchildren );
     }
 
+    // send signals to indicate that there are new arcs
     if ( onArcAdded.hasListener() ) {
       for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
         GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
@@ -130,7 +131,8 @@ namespace gum {
       }
 
       if ( onArcAdded.hasListener() ) {
-        for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
+        for ( ArcSetIterator iter = __arcs.begin();
+              iter != __arcs.end(); ++iter ) {
           GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
         }
       }

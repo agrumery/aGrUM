@@ -96,9 +96,9 @@ namespace gum {
     if ( !exists( id ) ) return;
 
     // remove the separators
-    const EdgeSet& set = neighbours( id );
-    for ( EdgeSetIterator iter = set.begin();iter != set.end();++iter ) {
-      eraseEdge( *iter );
+    const NodeSet& set = neighbours( id );
+    for ( NodeSetIterator iter = set.begin();iter != set.end();++iter ) {
+      eraseEdge( Edge ( *iter,id ) );
     }
 
     // erase the clique set
@@ -133,10 +133,9 @@ namespace gum {
   // ==============================================================================
   INLINE void
   CliqueGraph::__updateSeparators( const NodeId id1 ) {
-    const EdgeSet& nei = neighbours( id1 );
-
-    for ( EdgeSetIterator ite = nei.begin();ite != nei.end();++ite ) {
-      __separators[*ite] = __cliques[id1] * __cliques[ite->other( id1 )];
+    const NodeSet& nei = neighbours( id1 );
+    for ( NodeSetIterator ite = nei.begin();ite != nei.end();++ite ) {
+      __separators[Edge(*ite,id1)] = __cliques[id1] * __cliques[*ite];
     }
   }
 

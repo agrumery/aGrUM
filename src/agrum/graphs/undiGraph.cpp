@@ -79,11 +79,10 @@ namespace gum {
           from_current = thePair.second;
 
           // check the neighbours
-          const EdgeSet& set = neighbours( current );
-
-          for ( EdgeSetIterator iter_neigh = set.begin();
+          const NodeSet& set = neighbours( current );
+          for ( NodeSetIterator iter_neigh = set.begin();
                 iter_neigh != set.end(); ++iter_neigh ) {
-            new_node = iter_neigh->other( current );
+            new_node = *iter_neigh;
             
             // avoid to check the node we are coming from
             if ( new_node != from_current ) {

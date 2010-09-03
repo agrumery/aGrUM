@@ -133,9 +133,10 @@ namespace gum {
 
     bucket.add( __clique_prop[cliqueId]->bucket() );
 
-    for ( EdgeSetIterator iter = __getNeighbours( cliqueId ).begin();
-          iter != __getNeighbours( cliqueId ).end(); ++iter ) {
-      bucket.add( __messagesMap[Arc( iter->other( cliqueId ), cliqueId )] );
+    const NodeSet& neighbours = __getNeighbours( cliqueId );
+    for ( NodeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      bucket.add( __messagesMap[Arc( *iter, cliqueId )] );
     }
 
     marginal.add( this->bn().variable( id ) ); // marginal is empty, this is stupid... (I know I'm the guy who did it...)
@@ -194,7 +195,7 @@ namespace gum {
 
 // @return Returns the list of neighbours of a given clique
   template<typename T_DATA> INLINE
-  const EdgeSet&
+  const NodeSet&
   ShaferShenoyInference<T_DATA>::__getNeighbours( NodeId cliqueId ) {
     return __triangulation->junctionTree().neighbours( cliqueId );
   }
@@ -273,9 +274,10 @@ namespace gum {
     __clique_prop[source]->isCollected = true;
 
     try {
-      for ( EdgeSetIterator iter = __getNeighbours( source ).begin();
-            iter != __getNeighbours( source ).end(); ++iter ) {
-        __collect( source, iter->other( source ) );
+      const NodeSet& neighbours =  __getNeighbours( source );
+      for ( NodeSetIterator iter = neighbours.begin();
+            iter != neighbours.end(); ++iter ) {
+        __collect( source, *iter );
       }
     } catch ( NotFound& ) {
       // Raised if source has no neighbours
@@ -289,10 +291,11 @@ namespace gum {
     __clique_prop[current]->isCollected = true;
     bool newMsg = false; // Flag used to know if we must recompute the message current -> source
 
-    for ( EdgeSetIterator iter = __getNeighbours( current ).begin();
-          iter != __getNeighbours( current ).end(); ++iter ) {
-      if ( iter->other( current ) != source ) {
-        bool retVal = __collect( current, iter->other( current ) );
+    const NodeSet& neighbours = __getNeighbours( current );
+    for ( NodeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      if ( *iter != source ) {
+        bool retVal = __collect( current, *iter );
         newMsg = newMsg or retVal;
       }
     }
@@ -318,15 +321,16 @@ namespace gum {
   void
   ShaferShenoyInference<T_DATA>::__diffuseFromClique( NodeId source ) {
     try {
-      for ( EdgeSetIterator iter = __getNeighbours( source ).begin();
-            iter != __getNeighbours( source ).end(); ++iter ) {
-        if ( __messageExists( source, iter->other( source ) ) ) {
+      const NodeSet& neighbours = __getNeighbours( source );
+      for ( NodeSetIterator iter = neighbours.begin();
+            iter != neighbours.end(); ++iter ) {
+        if ( __messageExists( source, *iter ) ) {
           // No new evidence and msg already computed
-          __diffuse( source, iter->other( source ), false );
+          __diffuse( source, *iter, false );
         } else {
           // New evidence or first call
-          __sendMessage( source, iter->other( source ) );
-          __diffuse( source, iter->other( source ), true );
+          __sendMessage( source, *iter );
+          __diffuse( source, *iter, true );
         }
       }
     } catch ( NotFound& ) {
@@ -339,16 +343,17 @@ namespace gum {
   void
   ShaferShenoyInference<T_DATA>::__diffuse( NodeId source, NodeId current,
       bool recompute ) {
-    for ( EdgeSetIterator iter = __getNeighbours( current ).begin();
+    const NodeSet& neighbours =  __getNeighbours( current );
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != __getNeighbours( current ).end(); ++iter ) {
-      if ( iter->other( current ) != source ) {
-        if ( recompute or( not __messageExists( current, iter->other( current ) ) ) ) {
+      if ( *iter != source ) {
+        if ( recompute or( not __messageExists( current, *iter ) ) ) {
           // New evidence or first call
-          __sendMessage( current, iter->other( current ) );
-          __diffuse( current, iter->other( current ), true );
+          __sendMessage( current, *iter );
+          __diffuse( current, *iter, true );
         } else {
           // No new evidence and msg already computed
-          __diffuse( current, iter->other( current ), false );
+          __diffuse( current, *iter, false );
         }
       }
     }
@@ -376,14 +381,15 @@ namespace gum {
     }
 
     // Second, add message from tail's neighbours
-    for ( EdgeSetIterator iter = __getNeighbours( tail ).begin();
+    const NodeSet& neighbours = __getNeighbours( tail );
+    for ( NodeSetIterator iter = neighbours.begin();
           iter != __getNeighbours( tail ).end(); ++iter ) {
-      if ( iter->other( tail ) != head ) {
+      if ( *iter != head ) {
         try {
-          message->add( __messagesMap[Arc( iter->other( tail ), tail )] );
+          message->add( __messagesMap[Arc( *iter, tail )] );
         } catch ( NotFound& ) {
           std::stringstream msg;
-          msg << ": missing message (" << iter->other( tail ) << ", " << tail << ")";
+          msg << ": missing message (" << *iter << ", " << tail << ")";
           msg << " to compute message (" << tail << ", " << head << ")";
           GUM_ERROR( FatalError, msg.str() );
         }
@@ -405,11 +411,12 @@ namespace gum {
   template <typename T_DATA>
   void
   ShaferShenoyInference<T_DATA>::__removeDiffusedMessages( NodeId cliqueId ) {
-    for ( SetIterator<Edge> iter = __getNeighbours( cliqueId ).begin();
-          iter != __getNeighbours( cliqueId ).end(); ++iter ) {
-      if ( __messagesMap.exists( Arc( cliqueId, iter->other( cliqueId ) ) ) ) {
-        delete __messagesMap[Arc( cliqueId, iter->other( cliqueId ) )];
-        __messagesMap.erase( Arc( cliqueId, iter->other( cliqueId ) ) );
+    const NodeSet& neighbours = __getNeighbours( cliqueId );
+    for ( NodeSetIterator iter = neighbours.begin();
+          iter != neighbours.end(); ++iter ) {
+      if ( __messagesMap.exists( Arc( cliqueId, *iter ) ) ) {
+        delete __messagesMap[Arc( cliqueId, *iter )];
+        __messagesMap.erase( Arc( cliqueId, *iter ) );
       }
     }
   }

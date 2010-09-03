@@ -36,20 +36,90 @@ namespace gum {
   ///////////////////// EdgeGraphPart
   EdgeGraphPart::EdgeGraphPart( Size edges_size ,
                                 bool edges_resize_policy ) :
-      __edges( edges_size , edges_resize_policy ) {
+    __edges( edges_size , edges_resize_policy ) {
     GUM_CONSTRUCTOR( EdgeGraphPart );
   }
 
+  
   EdgeGraphPart::EdgeGraphPart( const EdgeGraphPart& s ):
-      __edges( s.__edges ),
-      __neighbours( s.__neighbours ) {
+    __edges( s.__edges ) {
     GUM_CONS_CPY( EdgeGraphPart );
+
+    // copy the set of neighbours
+    const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
+    __neighbours.resize ( neigh.capacity () );
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+          iter != neigh.end(); ++iter ) {
+      NodeSet* newneigh = new NodeSet ( **iter );
+      __neighbours.insert ( iter.key (), newneigh );
+    }
+
+    // send signals to indicate that there are new edges
+    if ( onEdgeAdded.hasListener() ) {
+      for ( EdgeSetIterator iter = __edges.begin();
+            iter != __edges.end(); ++iter ) {
+        GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
+      }
+    }
   }
+  
 
   EdgeGraphPart::~EdgeGraphPart() {
     GUM_DESTRUCTOR( EdgeGraphPart );
+    // be sure to deallocate all the neighbours sets
+    clearEdges ();
   }
 
+  
+  void EdgeGraphPart::clearEdges() {
+    for ( Property<NodeSet*>::onNodes::const_iterator iter = __neighbours.begin();
+          iter != __neighbours.end(); ++iter ) {
+      delete *iter;
+    }
+    __neighbours.clear();
+
+    if ( onEdgeDeleted.hasListener() ) {
+      EdgeSet tmp = __edges;
+
+      __edges.clear();
+
+      for ( EdgeSetIterator iter = tmp.begin();iter != tmp.end();++iter )
+        GUM_EMIT2( onEdgeDeleted, iter->first(), iter->second() );
+    }
+    else {
+      __edges.clear();
+    }
+  }
+  
+
+  EdgeGraphPart& EdgeGraphPart::operator=( const EdgeGraphPart& s ) {
+    // avoid self assignment
+    if ( this != &s ) {
+      clearEdges ();
+      
+      __edges = s.__edges;
+      
+      // copy the set of neighbours
+      const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
+      __neighbours.resize ( neigh.capacity () );
+      for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+            iter != neigh.end(); ++iter ) {
+        NodeSet* newneigh = new NodeSet ( **iter );
+        __neighbours.insert ( iter.key (), newneigh );
+      }
+
+      if ( onEdgeAdded.hasListener() ) {
+        for ( EdgeSetIterator iter = __edges.begin();
+              iter != __edges.end(); ++iter ) {
+          GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
+        }
+      }
+    }
+
+    return *this;
+  }
+
+  
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
     bool first = true;
@@ -58,7 +128,8 @@ namespace gum {
     for ( EdgeSetIterator it = __edges.begin();it != __edges.end();++it ) {
       if ( first ) {
         first = false;
-      } else {
+      }
+      else {
         s << ",";
       }
 
@@ -69,6 +140,7 @@ namespace gum {
 
     return s.str();
   }
+
 
   const std::vector<NodeId>
   EdgeGraphPart::undirectedPath( const NodeId n1, const NodeId n2 ) const {
@@ -87,10 +159,10 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbour //////////////////////////////////////////////
-      const EdgeSet& set = neighbours( current );
+      const NodeSet& set = neighbours( current );
 
-      for ( EdgeSetIterator ite = set.begin();ite != set.end();++ite ) {
-        NodeId new_one = ite->other( current );
+      for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
+        NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, stop
           continue;
@@ -115,16 +187,12 @@ namespace gum {
     GUM_ERROR( NotFound, "no path found" );
 
   }
+  
 
   std::ostream& operator<< ( std::ostream& stream, const EdgeGraphPart& set ) {
     stream << set.toString();
     return stream;
   }
-
-
-  // STATIC OBJECT
-  // static definition of __empty_edge_set
-  const EdgeSet EdgeGraphPart::__empty_edge_set;
 
 
 } /* namespace gum */
