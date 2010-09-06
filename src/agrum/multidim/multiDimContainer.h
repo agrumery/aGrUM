@@ -36,260 +36,261 @@
 #include <agrum/multidim/multiDimAdressable.h>
 // ============================================================================
 namespace gum {
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                             GUM_MULTI_DIM                            === */
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /**
-   * @class MultiDimContainer
-   * @brief Abstract base class for all multi dimensionnal containers.
-   * @ingroup multidim_group
-   *
-   * The gum::MultiDimContainer is an abstract base class for all multi
-   * dimensionnal container of T_DATA. Its purpose is to deal with T_DATA access
-   * with no regard to how the storage is done (tree, matrix...).
-   *
-   * MultiDimContainer is considered as const if its dimension does not change.
-   * Contained values may change even in a const MultiDimContainer :
-   * @code
-   MultiDimArray<char> t;
-   LabelizedVariable v( "v" ,"v" , 3);
-   LabelizedVariable w( "w" ,"w" , 3);
-   {
-   t<<v;
-   Instantiation I( t );I.setFirst();
-   t[I]='a';
-   }
-   {
-   MultiDimContainer<char>& notconst_t=t;
-   notconst_t<<w;
-   Instantiation I( notconst_t );I.setFirst();
-   notconst_t[I]='b';
-   }
-   {
-   const MultiDimContainer<char>& const_t=t;
-   Instantiation I( const_t );I.setFirst();
-   // const_t<<w; : ******************** DOES NOT COMPILE : YOU CANNOT DO THIS !!!!
-   const_t[I]='c';
-   }
-   * @endcode
-   */
-  /* ============================================================================ */
-  template<typename T_DATA>
-  class MultiDimContainer : public MultiDimAdressable {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimContainer();
+/* ============================================================================ */
+/* ============================================================================ */
+/* ===                             GUM_MULTI_DIM                            === */
+/* ============================================================================ */
+/* ============================================================================ */
+/**
+ * @class MultiDimContainer
+ * @brief Abstract base class for all multi dimensionnal containers.
+ * @ingroup multidim_group
+ *
+ * The gum::MultiDimContainer is an abstract base class for all multi
+ * dimensionnal container of T_DATA. Its purpose is to deal with T_DATA access
+ * with no regard to how the storage is done (tree, matrix...).
+ *
+ * MultiDimContainer is considered as const if its dimension does not change.
+ * Contained values may change even in a const MultiDimContainer :
+ * @code
+ MultiDimArray<char> t;
+ LabelizedVariable v( "v" ,"v" , 3);
+ LabelizedVariable w( "w" ,"w" , 3);
+ {
+ t<<v;
+ Instantiation I( t );I.setFirst();
+ t[I]='a';
+ }
+ {
+ MultiDimContainer<char>& notconst_t=t;
+ notconst_t<<w;
+ Instantiation I( notconst_t );I.setFirst();
+ notconst_t[I]='b';
+ }
+ {
+ const MultiDimContainer<char>& const_t=t;
+ Instantiation I( const_t );I.setFirst();
+ // const_t<<w; : ******************** DOES NOT COMPILE : YOU CANNOT DO THIS !!!!
+ const_t[I]='c';
+ }
+ * @endcode
+ */
+/* ============================================================================ */
+template<typename T_DATA>
+class MultiDimContainer : public MultiDimAdressable {
+public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /// Default constructor.
+    // ============================================================================
+    MultiDimContainer();
 
-      // ============================================================================
-      /// Copy constructor.
-      // ============================================================================
-      MultiDimContainer( const MultiDimContainer<T_DATA>& from );
+    // ============================================================================
+    /// Copy constructor.
+    // ============================================================================
+    MultiDimContainer( const MultiDimContainer<T_DATA>& src );
 
-      // ============================================================================
-      /// Destructor.
-      // ============================================================================
-      virtual ~MultiDimContainer();
+    // ============================================================================
+    /// Destructor.
+    // ============================================================================
+    virtual ~MultiDimContainer();
 
-      /// @}
+    /// @}
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
-    public:
-      // ============================================================================
-      /**
-       * Changes the value pointed by i.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       */
-      // ============================================================================
-      virtual void set( const Instantiation& i,const T_DATA& value ) const;
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+public:
+    // ============================================================================
+    /**
+     * Changes the value pointed by i.
+     *
+     * @warning If i variables set is disjoint with this gum::MultiDimContainer
+     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * instantiation.
+     */
+    // ============================================================================
+    virtual void set( const Instantiation& i,const T_DATA& value ) const;
 
-      // ============================================================================
-      /**
-       * Returns the value pointed by i.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       */
-      // ============================================================================
-      virtual T_DATA get( const Instantiation& i ) const ;
+    // ============================================================================
+    /**
+     * Returns the value pointed by i.
+     *
+     * @warning If i variables set is disjoint with this gum::MultiDimContainer
+     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * instantiation.
+     */
+    // ============================================================================
+    virtual T_DATA get( const Instantiation& i ) const ;
 
-      // ============================================================================
-      /**
-       * An [] operator using a Instantiation as argument.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       *
-       * @param i An Instantiation.
-       * @return Returns the adressed (T_DATA) value.
-       */
-      // ============================================================================
-      T_DATA operator[]( const Instantiation& i ) const;
+    // ============================================================================
+    /**
+     * An [] operator using a Instantiation as argument.
+     *
+     * @warning If i variables set is disjoint with this gum::MultiDimContainer
+     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * instantiation.
+     *
+     * @param i An Instantiation.
+     * @return Returns the adressed (T_DATA) value.
+     */
+    // ============================================================================
+    T_DATA operator[]( const Instantiation& i ) const;
 
-      // ============================================================================
-      /**
-       * Fill the table with d.
-       * @param d The value used to fill this gum::MultiDimContainer.
-       */
-      // ============================================================================
-      virtual void fill( const T_DATA& d ) const =0;
+    // ============================================================================
+    /**
+     * Fill the table with d.
+     * @param d The value used to fill this gum::MultiDimContainer.
+     */
+    // ============================================================================
+    virtual void fill( const T_DATA& d ) const =0;
 
-      // ==============================================================================
-      /**
-       * @brief Automatically fills this gum::MultiDimContainer with the values in v.
-       *
-       * The order used to fill this gum::MultiDimContainer is the same as with an
-       * instantiation over it.
-       * @code
-       Size cpt = 0;
-       Instantiation i( *this );
-       for (i.setFirst(); !i.end(); ++i, ++cpt) {
-         set(i, v[cpt]);
-       }
-       @endcode
-       *
-       * @param v Vector of values.
-       * @throw SizeError If v size's does not matches this gum::MultiDimContainer
-       *                  domain size.
-       */
-      // ==============================================================================
-      virtual void fillWith( const std::vector<T_DATA>& v ) const;
+    // ==============================================================================
+    /**
+     * @brief Automatically fills this gum::MultiDimContainer with the values in v.
+     *
+     * The order used to fill this gum::MultiDimContainer is the same as with an
+     * instantiation over it.
+     * @code
+     Size cpt = 0;
+     Instantiation i( *this );
+     for (i.setFirst(); !i.end(); ++i, ++cpt) {
+       set(i, v[cpt]);
+     }
+     @endcode
+     *
+     * @param v Vector of values.
+     * @throw SizeError If v size's does not matches this gum::MultiDimContainer
+     *                  domain size.
+     */
+    // ==============================================================================
+    virtual void fillWith( const std::vector<T_DATA>& v ) const;
 
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Copy methods.
-      // ############################################################################
-      /// @{
-      /**
-       * @brief Basic copy from a gum::MultiDimContainer.
-       * This method is virtual because it should be optimized in certain
-       * gum::MultiDimContainer.
-       *
-       * @todo specific versions for decorator and for MultiDimArray
-       *
-       * @param from The gum::MultiDimContainer from which values are copied.
-       * @param p_i Give the order to iterate in this gum::MultiDimContainer during
-       *            the copy (natural order if null).
-       * @throw OperationNotAllowed Raised if from does not have the same domain size
-       *                            than this gum::MultiDimContainer.
-       */
-      // ============================================================================
-      virtual void copyFrom( const MultiDimContainer<T_DATA>& from,
-                             Instantiation* p_i=( Instantiation * )0 ) const;
+    // ############################################################################
+    /// @name Copy methods.
+    // ############################################################################
+    /// @{
+    /**
+     * @brief Basic copy src a gum::MultiDimContainer.
+     * This method is virtual because it should be optimized in certain
+     * gum::MultiDimContainer.
+     *
+     * @todo specific versions for decorator and for MultiDimArray
+     *
+     * @param src The gum::MultiDimContainer src which values are copied.
+     * @param p_i Give the order to iterate in this gum::MultiDimContainer during
+     *            the copy (natural order if null).
+     * @throw OperationNotAllowed Raised if src does not have the same domain size
+     *                            than this gum::MultiDimContainer.
+     */
+    // ============================================================================
+    virtual void copyFrom( const MultiDimContainer<T_DATA>& src,
+                           Instantiation* p_i=( Instantiation * )0 ) const;
 
-      // ============================================================================
-      /**
-       * Removes all variables in this gum::MultiDimContainer and copy the content
-       * of from, variables included.
-       */
-      // ============================================================================
-      virtual void copy( const MultiDimContainer<T_DATA>& from );
+    // ============================================================================
+    /**
+     * Removes all variables in this gum::MultiDimContainer and copy the content
+     * of src, variables included.
+     */
+    // ============================================================================
+    virtual void copy( const MultiDimContainer<T_DATA>& src );
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+    /**
+     * This method creates a clone of this object, withouth its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type than the object containing
+     * the called newFactory()
+     * For example :
+     *   MultiDimArray<double> y;
+     *   MultiDimContainer<double>* x = y.newFactory();
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must desallocate by yourself the memory
+     * @return an empty clone of this object with the same type
+     */
+    virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
 
-      /// @}
+    /// @}
 
-      // ############################################################################
-      /// @name Various methods.
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Various methods.
+    // ############################################################################
+    /// @{
 
-      // ============================================================================
-      /// Display the content of the array.
-      // ============================================================================
-      virtual const std::string toString() const;
+    // ============================================================================
+    /// Display the content of the array.
+    // ============================================================================
+    virtual const std::string toString() const;
 
-      // ============================================================================
-      /// Display the internal representation of i.
-      // ============================================================================
-      virtual const std::string toString( const Instantiation *i ) const=0;
+    // ============================================================================
+    /// Display the internal representation of i.
+    // ============================================================================
+    virtual const std::string toString( const Instantiation *i ) const=0;
 
-      // ============================================================================
-      /// Test if this potential is equal to p.
-      // ============================================================================
-      bool operator==(const MultiDimContainer<T_DATA>& p) const;
+    // ============================================================================
+    /// Test if this potential is equal to p.
+    // ============================================================================
+    bool operator==(const MultiDimContainer<T_DATA>& p) const;
 
-      // ============================================================================
-      /// Test if this potential is different of p.
-      // ============================================================================
-      bool operator!=(const MultiDimContainer<T_DATA>& p) const;
+    // ============================================================================
+    /// Test if this potential is different of p.
+    // ============================================================================
+    bool operator!=(const MultiDimContainer<T_DATA>& p) const;
 
-      /// @}
+    /// @}
 
-      // ############################################################################
-      /// @name Fast large modifications in structures.
-      // ############################################################################
-      /// @{
-      // ============================================================================
-      /**
-       * @brief Call this method before doing important changes in this
-       *        gum::MultiDimContainer.
-       * @warning Remember to call endMultipleChanges() when you finish your changes.
-       */
-      // ============================================================================
-      virtual void beginMultipleChanges( void ) = 0 ;
+    // ############################################################################
+    /// @name Fast large modifications in structures.
+    // ############################################################################
+    /// @{
+    // ============================================================================
+    /**
+     * @brief Call this method before doing important changes in this
+     *        gum::MultiDimContainer.
+     * @warning Remember to call endMultipleChanges() when you finish your changes.
+     */
+    // ============================================================================
+    virtual void beginMultipleChanges( void ) = 0 ;
 
-      // ============================================================================
-      /**
-       * @brief Call this method after doing important changes in this
-       *        gum::MultiDimContainer.
-       */
-      // ============================================================================
-      virtual void endMultipleChanges( void ) = 0 ;
-      // ============================================================================
+    // ============================================================================
+    /**
+     * @brief Call this method after doing important changes in this
+     *        gum::MultiDimContainer.
+     */
+    // ============================================================================
+    virtual void endMultipleChanges( void ) = 0 ;
+    // ============================================================================
 
-      /// @}
+    /// @}
 
-    protected:
-      // ============================================================================
-      /**
-       * @brief Return a data, given a Instantiation.
-       *
-       * Note that get allows to change a value in the container.
-       * The method is still tagged as const.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       *
-       * @param i The instantiation used to find the data.
-       */
-      // ============================================================================
-      virtual T_DATA& _get( const Instantiation& i ) const =0;
-  };
+protected:
+    // ============================================================================
+    /**
+     * @brief Return a data, given a Instantiation.
+     *
+     * Note that get allows to change a value in the container.
+     * The method is still tagged as const.
+     *
+     * @warning If i variables set is disjoint with this gum::MultiDimContainer
+     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * instantiation.
+     *
+     * @param i The instantiation used to find the data.
+     */
+    // ============================================================================
+    virtual T_DATA& _get( const Instantiation& i ) const =0;
+};
 } /* namespace gum */
 // ============================================================================
 #include <agrum/multidim/multiDimContainer.tcc>
 // ============================================================================
 #endif /* GUM_MULTIDIM_H */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

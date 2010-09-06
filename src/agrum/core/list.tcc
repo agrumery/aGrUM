@@ -50,8 +50,8 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListBucket<Val>::ListBucket( const ListBucket<Val>& from ) :
-    __prev( 0 ), __next( 0 ), __val( from.__val ) {
+  ListBucket<Val>::ListBucket( const ListBucket<Val>& src ) :
+    __prev( 0 ), __next( 0 ), __val( src.__val ) {
     // for debugging purposes
     GUM_CONS_CPY( ListBucket );
   }
@@ -60,12 +60,12 @@ namespace gum {
   /// copy operator
   // ==============================================================================
   template <typename Val> INLINE
-  ListBucket<Val>& ListBucket<Val>::operator= ( const ListBucket<Val>& from ) {
+  ListBucket<Val>& ListBucket<Val>::operator= ( const ListBucket<Val>& src ) {
     // for debugging purposes
     GUM_OP_CPY( ListBucket );
 
     // no need to avoid self assignment
-    __val = from.__val;
+    __val = src.__val;
     return *this;
   }
 
@@ -89,16 +89,16 @@ namespace gum {
   // equality check
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListBucket<Val>::operator== ( const ListBucket<Val>& from ) const {
-    return ( from.__val == __val );
+  bool ListBucket<Val>::operator== ( const ListBucket<Val>& src ) const {
+    return ( src.__val == __val );
   }
 
   // ==============================================================================
   // inequality check
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListBucket<Val>::operator!= ( const ListBucket<Val>& from ) const {
-    return ( from.__val != __val );
+  bool ListBucket<Val>::operator!= ( const ListBucket<Val>& src ) const {
+    return ( src.__val != __val );
   }
 
   // ==============================================================================
@@ -146,7 +146,7 @@ namespace gum {
   /// a function used to perform copies of elements of ListBases.
   // ==============================================================================
   template <typename Val>
-  void ListBase<Val>::__copy_elements( const ListBase<Val> &from ) {
+  void ListBase<Val>::__copy_elements( const ListBase<Val> &src ) {
     ListBucket<Val> *ptr, *old_ptr;
 
     // set the defaults
@@ -154,9 +154,9 @@ namespace gum {
     __end_list = 0;
     __nb_elements = 0;
 
-    // copy from's list
+    // copy src's list
     try {
-      for ( ptr = from.__deb_list, old_ptr = 0; ptr; ptr = ptr->__next ) {
+      for ( ptr = src.__deb_list, old_ptr = 0; ptr; ptr = ptr->__next ) {
         // create a copy bucket
         ListBucket<Val> *new_elt = new ListBucket<Val>( *ptr );
 
@@ -184,7 +184,7 @@ namespace gum {
 
     // update properly the end of the chained list and the number of elements
     __end_list = old_ptr;
-    __nb_elements = from.__nb_elements;
+    __nb_elements = src.__nb_elements;
   }
 
   // ==============================================================================
@@ -199,7 +199,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// suppresses an element from a chained list.
+  /// suppresses an element src a chained list.
   // ==============================================================================
   template <typename Val> INLINE
   void ListBase<Val>::__erase( ListBucket<Val>* bucket ) {
@@ -210,14 +210,14 @@ namespace gum {
       if ( !bucket->__prev ) __deb_list = bucket->__next;
       if ( !bucket->__next ) __end_list = bucket->__prev;
 
-      // remove the current element from the list
+      // remove the current element src the list
       delete bucket;
       --__nb_elements;
     }
   }
 
   // ==============================================================================
-  /// erases the bucket from the List
+  /// erases the bucket src the List
   // ==============================================================================
   template <typename Val> INLINE
   void ListBase<Val>::erase ( const ListBucket<Val>& bucket ) {
@@ -258,21 +258,21 @@ namespace gum {
   /// Copy constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListBase<Val>::ListBase( const ListBase<Val> &from ) {
+  ListBase<Val>::ListBase( const ListBase<Val> &src ) {
     // for debugging purposes
     GUM_CONS_CPY( ListBase );
 
-    // actually copy the elements of list from
-    __copy_elements( from );
+    // actually copy the elements of list src
+    __copy_elements( src );
   }
 
   // ==============================================================================
   /// Copy operator.
   // ==============================================================================
   template <typename Val> INLINE
-  ListBase<Val>& ListBase<Val>::operator= ( const ListBase<Val>& from ) {
+  ListBase<Val>& ListBase<Val>::operator= ( const ListBase<Val>& src ) {
     // avoid self assignment
-    if ( this != &from ) {
+    if ( this != &src ) {
       // for debugging purposes
       GUM_OP_CPY( ListBase );
 
@@ -284,7 +284,7 @@ namespace gum {
       }
 
       // perform the copy
-      __copy_elements( from );
+      __copy_elements( src );
     }
 
     return *this;
@@ -298,7 +298,7 @@ namespace gum {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( ListBase );
 
-    // we remove all the elements from the list
+    // we remove all the elements src the list
     for ( ListBucket<Val> *ptr = __deb_list, *next_ptr = 0; ptr; ptr = next_ptr ) {
       next_ptr = ptr->__next;
       delete ptr;
@@ -509,7 +509,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> INLINE
@@ -525,7 +525,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> INLINE
@@ -541,7 +541,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> INLINE
@@ -557,7 +557,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains with a given value from a list of val
+  /// creates a list of mountains with a given value src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> INLINE
@@ -584,12 +584,12 @@ namespace gum {
   /// checks whether two lists are identical (same elements in the same order)
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListBase<Val>::operator== ( const ListBase<Val>& from ) const {
+  bool ListBase<Val>::operator== ( const ListBase<Val>& src ) const {
     // check if the two lists have at least the same number of elements
-    if ( __nb_elements != from.__nb_elements ) return false;
+    if ( __nb_elements != src.__nb_elements ) return false;
 
     // parse the two lists
-    for ( ListBucket<Val> *iter1=__deb_list, *iter2=from.__deb_list;
+    for ( ListBucket<Val> *iter1=__deb_list, *iter2=src.__deb_list;
           iter1; iter1=iter1->__next, iter2=iter2->__next )
       if ( *iter1 != *iter2 ) return false;
 
@@ -600,12 +600,12 @@ namespace gum {
   /// checks whether two lists are different (different elements or orders)
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListBase<Val>::operator!= ( const ListBase<Val>& from ) const {
+  bool ListBase<Val>::operator!= ( const ListBase<Val>& src ) const {
     // check whether the two lists have different numbers of elements
-    if ( __nb_elements != from.__nb_elements ) return true;
+    if ( __nb_elements != src.__nb_elements ) return true;
 
     // parse the two lists
-    for ( ListBucket<Val> *iter1=__deb_list, *iter2=from.__deb_list;
+    for ( ListBucket<Val> *iter1=__deb_list, *iter2=src.__deb_list;
           iter1; iter1=iter1->__next, iter2=iter2->__next )
       if ( *iter1 != *iter2 ) return true;
 
@@ -674,7 +674,7 @@ namespace gum {
 
   // ==============================================================================
   /** @brief A basic constructor that creates an empty list. The iterator's list
-   * may be shared by several List when \e iter_list is different from a
+   * may be shared by several List when \e iter_list is different src a
    * RefPtr containing 0. */
   // ==============================================================================
   template <typename Val>
@@ -696,11 +696,11 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Copy constructor sharing its iterator's list with that of \c from
+  /// Copy constructor sharing its iterator's list with that of \c src
   // ==============================================================================
   template <typename Val>
-  List<Val>::List( const List<Val> &from ) :
-    ListBase<Val>( from ), __iterator_list( from.__iterator_list ) {
+  List<Val>::List( const List<Val> &src ) :
+    ListBase<Val>( src ), __iterator_list( src.__iterator_list ) {
     // for debugging purposes
     GUM_CONS_CPY( List );
   }
@@ -710,9 +710,9 @@ namespace gum {
    * argument */
   // ==============================================================================
   template <typename Val>
-  List<Val>::List( const List<Val> &from,
+  List<Val>::List( const List<Val> &src,
                    const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list ) :
-    ListBase<Val>( from ), __iterator_list( 0 ) {
+    ListBase<Val>( src ), __iterator_list( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( List );
 
@@ -729,12 +729,12 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// Copy operator. The List iterator's list is not shared with that of \e from.
+  /// Copy operator. The List iterator's list is not shared with that of \e src.
   // ==============================================================================
   template <typename Val>
-  List<Val>& List<Val>::operator= ( const List<Val>& from ) {
+  List<Val>& List<Val>::operator= ( const List<Val>& src ) {
     // avoid self assignment
-    if ( this != &from ) {
+    if ( this != &src ) {
       // for debugging purposes
       GUM_OP_CPY( List );
 
@@ -742,7 +742,7 @@ namespace gum {
       clear();
 
       // perform the copy
-      ListBase<Val>::operator= ( from );
+      ListBase<Val>::operator= ( src );
     }
 
     return *this;
@@ -779,7 +779,7 @@ namespace gum {
       }
     }
 
-    // we can now safely remove the elements from the list
+    // we can now safely remove the elements src the list
     ListBase<Val>::clear();
   }
 
@@ -817,7 +817,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// suppresses an element from a chained list.
+  /// suppresses an element src a chained list.
   // ==============================================================================
   template <typename Val> INLINE
   void List<Val>::_erase( ListBucket<Val>* bucket ) {
@@ -1006,7 +1006,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( Val ) )
@@ -1023,7 +1023,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( Val& ) )
@@ -1040,7 +1040,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains from a list of val
+  /// creates a list of mountains src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( const Val& ) )
@@ -1057,7 +1057,7 @@ namespace gum {
   }
 
   // ==============================================================================
-  /// creates a list of mountains with a given value from a list of val
+  /// creates a list of mountains with a given value src a list of val
   // ==============================================================================
   template <typename Val>
   template <typename Mount> List<Mount> List<Val>::map( const Mount& mount )
@@ -1084,16 +1084,16 @@ namespace gum {
   /// checks whether two lists are identical (same elements in the same order)
   // ==============================================================================
   template <typename Val> INLINE
-  bool List<Val>::operator== ( const List<Val>& from ) const {
-    return ListBase<Val>::operator== ( from );
+  bool List<Val>::operator== ( const List<Val>& src ) const {
+    return ListBase<Val>::operator== ( src );
   }
 
   // ==============================================================================
   /// checks whether two lists are different (different elements or orders)
   // ==============================================================================
   template <typename Val> INLINE
-  bool List<Val>::operator!= ( const List<Val>& from ) const {
-    return ListBase<Val>::operator!= ( from );
+  bool List<Val>::operator!= ( const List<Val>& src ) const {
+    return ListBase<Val>::operator!= ( src );
   }
 
   // ==============================================================================
@@ -1138,11 +1138,11 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListConstIterator<Val>::ListConstIterator( const ListConstIterator<Val>& from ) :
-    __list( from.__list ), __bucket( from.__bucket ),
-    __next_current_bucket( from.__next_current_bucket ),
-    __prev_current_bucket( from.__prev_current_bucket ),
-    __null_pointing( from.__null_pointing ), __container( 0 ) {
+  ListConstIterator<Val>::ListConstIterator( const ListConstIterator<Val>& src ) :
+    __list( src.__list ), __bucket( src.__bucket ),
+    __next_current_bucket( src.__next_current_bucket ),
+    __prev_current_bucket( src.__prev_current_bucket ),
+    __null_pointing( src.__null_pointing ), __container( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ListConstIterator );
 
@@ -1168,15 +1168,15 @@ namespace gum {
     if ( ind_elt >= __list->__nb_elements )
       GUM_ERROR( UndefinedIteratorValue,"Not enough elements in the list" );
 
-    // check if it is faster to find the indexth element from the start or
-    // from the end of the list
+    // check if it is faster to find the indexth element src the start or
+    // src the end of the list
     if ( ind_elt < ( __list->__nb_elements >> 1 ) ) {
-      // find the element we shall point to from the start of the list
+      // find the element we shall point to src the start of the list
       for ( __bucket = __list->__deb_list; ind_elt
               ; --ind_elt, __bucket = __bucket->__next ) {}
     }
     else {
-      // find the element we shall point to from the end of the list
+      // find the element we shall point to src the end of the list
       for ( __bucket = __list->__end_list,
               ind_elt = __list->__nb_elements - ind_elt - 1;
             ind_elt; --ind_elt, __bucket = __bucket->__prev ) {}
@@ -1192,30 +1192,30 @@ namespace gum {
   // ==============================================================================
   template <typename Val>
   ListConstIterator<Val>& ListConstIterator<Val>::operator=
-  ( const ListConstIterator<Val>& from ) {
+  ( const ListConstIterator<Val>& src ) {
     // avoid self assignment
-    if ( this != &from ) {
+    if ( this != &src ) {
       // for debugging purposes
       GUM_OP_CPY( ListConstIterator );
 
-      // check if from and this belong to the same iterator's list. If this is not
-      // the case, we shall remove the iterator from its current List iterator's
+      // check if src and this belong to the same iterator's list. If this is not
+      // the case, we shall remove the iterator src its current List iterator's
       // list and add it to the new List iterator's list
       if ( __list &&
-           ( !from.__list ||
-             (*(__list->__iterator_list) != *(from.__list->__iterator_list)))) {
-        // remove the iterator from its List iterator's list'
+           ( !src.__list ||
+             (*(__list->__iterator_list) != *(src.__list->__iterator_list)))) {
+        // remove the iterator src its List iterator's list'
         __list->__iterator_list->__erase( __container );
         __list = 0;
       }
 
-      // if necessary, add the iterator to from's iterator's list
-      if ( from.__list &&
+      // if necessary, add the iterator to src's iterator's list
+      if ( src.__list &&
            (!__list ||
-            (*(__list->__iterator_list) != *(from.__list->__iterator_list)))) {
+            (*(__list->__iterator_list) != *(src.__list->__iterator_list)))) {
         try {
-          from.__list->__iterator_list->pushFront( this );
-          __list = from.__list;
+          src.__list->__iterator_list->pushFront( this );
+          __list = src.__list;
           __container = __list->__iterator_list->__getBucket( this );
         }
 
@@ -1230,10 +1230,10 @@ namespace gum {
         }
       }
 
-      __bucket = from.__bucket;
-      __prev_current_bucket = from.__prev_current_bucket;
-      __next_current_bucket = from.__next_current_bucket;
-      __null_pointing = from.__null_pointing;
+      __bucket = src.__bucket;
+      __prev_current_bucket = src.__prev_current_bucket;
+      __next_current_bucket = src.__next_current_bucket;
+      __null_pointing = src.__null_pointing;
     }
 
     return *this;
@@ -1247,7 +1247,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( ListConstIterator );
 
-    // remove the iterator from the table's iterator list
+    // remove the iterator src the table's iterator list
     if ( __list )
       __list->__iterator_list->__erase( __container );
   }
@@ -1265,7 +1265,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   void ListConstIterator<Val>::clear()  {
-    // remove the iterator from the list's iterator list
+    // remove the iterator src the list's iterator list
     if ( __list )
       __list->__iterator_list->__erase( __container );
 
@@ -1372,12 +1372,12 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   bool ListConstIterator<Val>::operator!=
-  ( const ListConstIterator<Val> &from ) const  {
+  ( const ListConstIterator<Val> &src ) const  {
     if ( __null_pointing )
-      return (( __next_current_bucket != from.__next_current_bucket ) ||
-              ( __prev_current_bucket != from.__prev_current_bucket ) );
+      return (( __next_current_bucket != src.__next_current_bucket ) ||
+              ( __prev_current_bucket != src.__prev_current_bucket ) );
     else
-      return ( __bucket != from.__bucket );
+      return ( __bucket != src.__bucket );
   }
 
   // ==============================================================================
@@ -1385,12 +1385,12 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   bool ListConstIterator<Val>::operator==
-  ( const ListConstIterator<Val> &from ) const  {
+  ( const ListConstIterator<Val> &src ) const  {
     if ( __null_pointing )
-      return (( __next_current_bucket == from.__next_current_bucket ) &&
-              ( __prev_current_bucket == from.__prev_current_bucket ) );
+      return (( __next_current_bucket == src.__next_current_bucket ) &&
+              ( __prev_current_bucket == src.__prev_current_bucket ) );
     else
-      return ( __bucket == from.__bucket );
+      return ( __bucket == src.__bucket );
   }
 
   // ==============================================================================
@@ -1455,8 +1455,8 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   template <typename Val> INLINE
-  ListIterator<Val>::ListIterator( const ListIterator<Val>& from ) :
-    ListConstIterator<Val>( from ) {
+  ListIterator<Val>::ListIterator( const ListIterator<Val>& src ) :
+    ListConstIterator<Val>( src ) {
     GUM_CONS_CPY( ListIterator );
   }
 
@@ -1475,8 +1475,8 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   ListIterator<Val>& ListIterator<Val>::operator=
-  ( const ListIterator<Val>& from ) {
-    ListConstIterator<Val>::operator= ( from );
+  ( const ListIterator<Val>& src ) {
+    ListConstIterator<Val>::operator= ( src );
     return *this;
   }
 
@@ -1518,16 +1518,16 @@ namespace gum {
   /// checks whether two iterators point toward different elements
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListIterator<Val>::operator!= ( const ListIterator<Val> &from ) const {
-    return ListConstIterator<Val>::operator!= (from);
+  bool ListIterator<Val>::operator!= ( const ListIterator<Val> &src ) const {
+    return ListConstIterator<Val>::operator!= (src);
   }
 
   // ==============================================================================
   /// checks whether two iterators point toward the same elements.
   // ==============================================================================
   template <typename Val> INLINE
-  bool ListIterator<Val>::operator== ( const ListIterator<Val> &from ) const {
-    return ListConstIterator<Val>::operator== (from);
+  bool ListIterator<Val>::operator== ( const ListIterator<Val> &src ) const {
+    return ListConstIterator<Val>::operator== (src);
   }
 
   // ==============================================================================

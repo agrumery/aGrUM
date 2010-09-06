@@ -131,7 +131,7 @@ namespace gum {
       virtual const DiscreteVariable& variable( NodeId id ) const = 0;
 
       /**
-      * Return id node from discrete var pointer.
+      * Return id node src discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
       virtual NodeId nodeId( const DiscreteVariable &var ) const = 0;
@@ -174,7 +174,7 @@ namespace gum {
 
       /**
        * The topological order stays the same as long as no variable or arcs are
-       * added or erased from the topology.
+       * added or erased src the topology.
        * @param clear If false returns the previously created topology.
        */
       virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const = 0;
@@ -187,11 +187,11 @@ namespace gum {
       /// @return Returns a dot representation of this BayesNet.
       virtual std::string toDot( void ) const=0;
 
-      /// @return Returns true if the from and this are equal.
-      bool operator==( const AbstractBayesNet<T_DATA>& from ) const;
+      /// @return Returns true if the src and this are equal.
+      bool operator==( const AbstractBayesNet<T_DATA>& src ) const;
 
-      /// @return Returns false if the from and this are equal.
-      bool operator!=( const AbstractBayesNet<T_DATA>& from ) const;
+      /// @return Returns false if the src and this are equal.
+      bool operator!=( const AbstractBayesNet<T_DATA>& src ) const;
 
     protected:
       /**

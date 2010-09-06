@@ -331,7 +331,7 @@ namespace gum {
     Edge( NodeId aN1, NodeId aN2 ) ;
 
     /// copy constructor
-    Edge( const Edge& from ) ;
+    Edge( const Edge& src ) ;
 
     /// destructor
     ~Edge();
@@ -365,17 +365,17 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Edge& operator= ( const Edge& from ) ;
+    Edge& operator= ( const Edge& src ) ;
 
     /// checks whether two undirected edges are equal
     /** Two Edge are equal if they have the same extremal nodes, whetever their
      * order. For instance (3,4) == (4,3). */
-    bool operator== ( const Edge& from ) const ;
+    bool operator== ( const Edge& src ) const ;
 
     /// checks whether two undirected edges are different
     /** Two Edge are different if at least one extremal node of an edge is not
      * an extremal node of the other edge. For instance, (4,5) != (5,6). */
-    bool operator!= ( const Edge& from ) const ;
+    bool operator!= ( const Edge& src ) const ;
 
     /// @}
 
@@ -438,7 +438,7 @@ namespace gum {
     Arc( NodeId tail, NodeId head ) ;
 
     /// copy constructor
-    Arc( const Arc& from ) ;
+    Arc( const Arc& src ) ;
 
     /// destructor
     ~Arc();
@@ -478,17 +478,17 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Arc& operator= ( const Arc& from ) ;
+    Arc& operator= ( const Arc& src ) ;
 
     /// checks whether two arcs are equal
     /** Two arcs are considered equal if they have the same head and tail
      * (by same we mean they have the same ID). */
-    bool operator== ( const Arc& from ) const ;
+    bool operator== ( const Arc& src ) const ;
 
     /// check if two arcs are different
     /** Two arcs are considered different if they have different head and/or tail
      * (by different we mean they have different ID). */
-    bool operator!= ( const Arc& from ) const ;
+    bool operator!= ( const Arc& src ) const ;
 
     /// @}
 

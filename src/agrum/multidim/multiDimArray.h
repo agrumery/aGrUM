@@ -61,12 +61,12 @@ namespace gum {
 
     /// copy constructor
     /** The newly created matrix contains the same variables and the same values as
-     * from, but no instantiation is associated to it.
-     * @param from the multidimensional matrix we copy into this */
-    MultiDimArray( const MultiDimArray<T_DATA>& from );
+     * src, but no instantiation is associated to it.
+     * @param src the multidimensional matrix we copy into this */
+    MultiDimArray( const MultiDimArray<T_DATA>& src );
 
     /// destructor
-    /** Note that, when the multidimensional array is removed from memory, its
+    /** Note that, when the multidimensional array is removed src memory, its
      * variables are not removed as well. */
     virtual ~MultiDimArray();
 
@@ -94,8 +94,8 @@ namespace gum {
     /// @{
 
     /// copy operator
-    /** @param from the multidimensional matrix we copy into this */
-    MultiDimArray<T_DATA>& operator= ( const MultiDimArray<T_DATA>& from );
+    /** @param src the multidimensional matrix we copy into this */
+    MultiDimArray<T_DATA>& operator= ( const MultiDimArray<T_DATA>& src );
 
     /// @}
 

@@ -54,8 +54,8 @@ namespace gum {
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
-  INLINE Edge::Edge( const Edge& from )  :
-    n1( from.n1 ), n2( from.n2 ) {
+  INLINE Edge::Edge( const Edge& src )  :
+    n1( src.n1 ), n2( src.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Edge );
   }
@@ -63,11 +63,11 @@ namespace gum {
   // ==============================================================================
   /// copy operator
   // ==============================================================================
-  INLINE Edge& Edge::operator= ( const Edge& from )  {
+  INLINE Edge& Edge::operator= ( const Edge& src )  {
     // for debugging purposes
     GUM_OP_CPY( Edge );
-    n1 = from.n1;
-    n2 = from.n2;
+    n1 = src.n1;
+    n2 = src.n2;
     return *this;
   }
 
@@ -112,15 +112,15 @@ namespace gum {
   // ==============================================================================
   /// check if two undirected edges are equal
   // ==============================================================================
-  INLINE bool Edge::operator== ( const Edge& from ) const  {
-    return (( n1 == from.n1 ) && ( n2 == from.n2 ) );
+  INLINE bool Edge::operator== ( const Edge& src ) const  {
+    return (( n1 == src.n1 ) && ( n2 == src.n2 ) );
   }
 
   // ==============================================================================
   /// check if two undirected edges are different
   // ==============================================================================
-  INLINE bool Edge::operator!= ( const Edge& from ) const  {
-    return (( n1 != from.n1 ) || ( n2 != from.n2 ) );
+  INLINE bool Edge::operator!= ( const Edge& src ) const  {
+    return (( n1 != src.n1 ) || ( n2 != src.n2 ) );
   }
 
 
@@ -144,8 +144,8 @@ namespace gum {
   // ==============================================================================
   /// copy constructor
   // ==============================================================================
-  INLINE Arc::Arc( const Arc& from )  :
-    n1( from.n1 ), n2( from.n2 ) {
+  INLINE Arc::Arc( const Arc& src )  :
+    n1( src.n1 ), n2( src.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Arc );
   }
@@ -153,11 +153,11 @@ namespace gum {
   // ==============================================================================
   /// copy operator
   // ==============================================================================
-  INLINE Arc& Arc::operator= ( const Arc& from )  {
+  INLINE Arc& Arc::operator= ( const Arc& src )  {
     // for debugging purposes
     GUM_OP_CPY( Arc );
-    n1 = from.n1;
-    n2 = from.n2;
+    n1 = src.n1;
+    n2 = src.n2;
     return *this;
   }
 
@@ -231,15 +231,15 @@ namespace gum {
   // ==============================================================================
   /// check if two arcs are equal
   // ==============================================================================
-  INLINE bool Arc::operator== ( const Arc& from ) const  {
-    return (( n1 == from.n1 ) && ( n2 == from.n2 ) );
+  INLINE bool Arc::operator== ( const Arc& src ) const  {
+    return (( n1 == src.n1 ) && ( n2 == src.n2 ) );
   }
 
   // ==============================================================================
   /// check if two arcs are different
   // ==============================================================================
-  INLINE bool Arc::operator!= ( const Arc& from ) const  {
-    return (( n1 != from.n1 ) || ( n2 != from.n2 ) );
+  INLINE bool Arc::operator!= ( const Arc& src ) const  {
+    return (( n1 != src.n1 ) || ( n2 != src.n2 ) );
   }
 
   // ==============================================================================

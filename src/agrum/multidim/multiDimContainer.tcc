@@ -38,7 +38,7 @@ namespace gum {
   template<typename T_DATA>
   INLINE
   MultiDimContainer<T_DATA>::MultiDimContainer
-  ( const MultiDimContainer<T_DATA>& from ) : MultiDimAdressable( from ) {
+  ( const MultiDimContainer<T_DATA>& src ) : MultiDimAdressable( src ) {
     GUM_CONS_CPY( MultiDimContainer );
   }
 
@@ -162,23 +162,23 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA>
   void MultiDimContainer<T_DATA>::copyFrom
-  ( const MultiDimContainer<T_DATA>& from ,Instantiation* p_i ) const {
-    if ( from.domainSize()!=domainSize() )
+  ( const MultiDimContainer<T_DATA>& src ,Instantiation* p_i ) const {
+    if ( src.domainSize()!=domainSize() )
       GUM_ERROR( OperationNotAllowed,"Domain size do not fit" );
 
     Instantiation i_dest( *this );
 
-    Instantiation i_from( from );
+    Instantiation i_src( src );
 
     if ( p_i==( Instantiation * )0 ) {
-      for ( i_dest.setFirst(),i_from.setFirst();! i_dest.end() ;
-            ++i_dest,++i_from ) {
-        set(i_dest,from[i_from]);
+      for ( i_dest.setFirst(),i_src.setFirst();! i_dest.end() ;
+            ++i_dest,++i_src ) {
+        set(i_dest,src[i_src]);
       }
     } else {
-      for ( i_dest.setFirst(),i_from.setFirst();! i_dest.end() ;
-            i_dest.incIn( *p_i ),++i_from ) {
-        set(i_dest,from[i_from]);
+      for ( i_dest.setFirst(),i_src.setFirst();! i_dest.end() ;
+            i_dest.incIn( *p_i ),++i_src ) {
+        set(i_dest,src[i_src]);
       }
     }
   }
@@ -187,20 +187,20 @@ namespace gum {
   // copy
   // ==============================================================================
   template<typename T_DATA>
-  void MultiDimContainer<T_DATA>::copy( const MultiDimContainer<T_DATA>& from ) {
+  void MultiDimContainer<T_DATA>::copy( const MultiDimContainer<T_DATA>& src ) {
     this->beginMultipleChanges();
 
     for ( Idx i=0;i<this->nbrDim();i++ ) {
       this->erase( this->variable( i ) );
     }
 
-    for ( Idx i=0;i<from.nbrDim();i++ ) {
-      this->add( from.variable( i ) );
+    for ( Idx i=0;i<src.nbrDim();i++ ) {
+      this->add( src.variable( i ) );
     }
 
     this->endMultipleChanges();
 
-    this->copyFrom( from );
+    this->copyFrom( src );
   }
 
   // ==============================================================================

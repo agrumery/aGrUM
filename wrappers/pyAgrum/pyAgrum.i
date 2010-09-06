@@ -118,6 +118,9 @@ from numpy import *
 /* MAKE OPERATIONS MORE PYTHONIC */
 %ignore gum::operator<<;
 %ignore *::operator=;
+%ignore *::operator++;
+%ignore *::operator--;
+%ignore *::operator[];
 
 %ignore gum::Sequence::operator<<;
 %ignore gum::Sequence::operator>>;

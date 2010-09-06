@@ -170,12 +170,12 @@ namespace gum {
     // ============================================================================
     /// copy constructor
     // ============================================================================
-    ListBucket (const ListBucket<Val>& from);
+    ListBucket (const ListBucket<Val>& src);
 
     // ============================================================================
     /// copy operator
     // ============================================================================
-    ListBucket<Val>& operator= (const ListBucket<Val>& from);
+    ListBucket<Val>& operator= (const ListBucket<Val>& src);
 
     // ============================================================================
     /// destructor
@@ -189,12 +189,12 @@ namespace gum {
     // ============================================================================
     /// equality check
     // ============================================================================
-    bool operator== (const ListBucket<Val>& from) const;
+    bool operator== (const ListBucket<Val>& src) const;
 
     // ============================================================================
     /// inequality check
     // ============================================================================
-    bool operator!= (const ListBucket<Val>& from) const;
+    bool operator!= (const ListBucket<Val>& src) const;
 
     // ============================================================================
     /// dereferencing operator
@@ -318,7 +318,7 @@ namespace gum {
      * @param from the list the contents of which is copied into the current one.
      */
     // ============================================================================
-    ListBase (const ListBase<Val> &from);
+    ListBase (const ListBase<Val> &src);
 
     // ============================================================================
     /// Destructor
@@ -521,13 +521,13 @@ namespace gum {
     /// checks whether two lists are identical (same elements in the same order)
     /** this method runs in time linear in the number of elements of the list */
     // ============================================================================
-    bool operator== (const ListBase<Val>& from) const;
+    bool operator== (const ListBase<Val>& src) const;
 
     // ============================================================================
     /// checks whether two lists are different (different elements or orders)
     /** this method runs in time linear in the number of elements of the list */
     // ============================================================================
-    bool operator!= (const ListBase<Val>& from) const;
+    bool operator!= (const ListBase<Val>& src) const;
 
     // ============================================================================
     /// returns the ith element in the current chained list
@@ -586,7 +586,7 @@ namespace gum {
     /** before performing the copy, we assume in this function that the current
      * list (this) is empty (else there would be memory leak). */
     // ============================================================================
-    void __copy_elements (const ListBase<Val> &from);
+    void __copy_elements (const ListBase<Val> &src);
 
     // ============================================================================
     /// returns the bucket corresponding to a given value
@@ -746,7 +746,7 @@ namespace gum {
      * @param from the list the contents of which is copied into the current one.
      */
     // ============================================================================
-    List (const List<Val> &from);
+    List (const List<Val> &src);
 
     // ============================================================================
     /** @brief Copy constructor. The iterator's list is shared with that passed in
@@ -761,7 +761,7 @@ namespace gum {
      * will be referenced. When equal to 0, a new iterator's list is created for
      * the current List. */
     // ============================================================================
-    List (const List<Val> &from,
+    List (const List<Val> &src,
           const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list);
 
     // ============================================================================
@@ -998,7 +998,7 @@ namespace gum {
      * @param from the list the content of which will be copied into the
      * current List */
     // ============================================================================
-    List<Val>& operator= (const List<Val>& from);
+    List<Val>& operator= (const List<Val>& src);
 
     // ============================================================================
     /// inserts a new element at the end of the list (alias of pushBack).
@@ -1014,13 +1014,13 @@ namespace gum {
     /// checks whether two lists are identical (same elements in the same order)
     /** this method runs in time linear in the number of elements of the list */
     // ============================================================================
-    bool operator== (const List<Val>& from) const;
+    bool operator== (const List<Val>& src) const;
 
     // ============================================================================
     /// checks whether two lists are different (different elements or orders)
     /** this method runs in time linear in the number of elements of the list */
     // ============================================================================
-    bool operator!= (const List<Val>& from) const;
+    bool operator!= (const List<Val>& src) const;
 
     // ============================================================================
     /// returns the ith element in the current chained list.
@@ -1136,7 +1136,7 @@ namespace gum {
     // ============================================================================
     /// copy constructor
     // ============================================================================
-    ListConstIterator (const ListConstIterator<Val>& from);
+    ListConstIterator (const ListConstIterator<Val>& src);
 
     // ============================================================================
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
@@ -1189,7 +1189,7 @@ namespace gum {
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
     // ============================================================================
-    ListConstIterator<Val>& operator= (const ListConstIterator<Val>& from);
+    ListConstIterator<Val>& operator= (const ListConstIterator<Val>& src);
 
     // ============================================================================
     /// makes the iterator point to the next element in the List
@@ -1214,14 +1214,14 @@ namespace gum {
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
     // ============================================================================
-    bool operator!= (const ListConstIterator<Val> &from) const ;
+    bool operator!= (const ListConstIterator<Val> &src) const ;
 
     // ============================================================================
     /// checks whether two iterators point toward the same elements.
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
     // ============================================================================
-    bool operator== (const ListConstIterator<Val> &from) const ;
+    bool operator== (const ListConstIterator<Val> &src) const ;
 
     // ============================================================================
     /// gives access to the content of the iterator
@@ -1334,7 +1334,7 @@ namespace gum {
     // ============================================================================
     /// copy constructor
     // ============================================================================
-    ListIterator (const ListIterator<Val>& from);
+    ListIterator (const ListIterator<Val>& src);
 
     // ============================================================================
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
@@ -1387,7 +1387,7 @@ namespace gum {
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
     // ============================================================================
-    ListIterator<Val>& operator= (const ListIterator<Val>& from);
+    ListIterator<Val>& operator= (const ListIterator<Val>& src);
 
     // ============================================================================
     /// makes the iterator point to the next element in the List
@@ -1412,14 +1412,14 @@ namespace gum {
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
     // ============================================================================
-    bool operator!= (const ListIterator<Val> &from) const ;
+    bool operator!= (const ListIterator<Val> &src) const ;
 
     // ============================================================================
     /// checks whether two iterators point toward the same elements.
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
     // ============================================================================
-    bool operator== (const ListIterator<Val> &from) const ;
+    bool operator== (const ListIterator<Val> &src) const ;
 
     // ============================================================================
     /// gives access to the content of the iterator
