@@ -96,6 +96,8 @@ class StructuredInference: public PRMInference {
 
     Set<Potential<prm_float>*> __trash;
 
+    HashTable< const gspan::Pattern*, std::vector<Chain>* > __q;
+
     void __reducePattern(const gspan::Pattern* p);
 
     void __buildPatternGraph(UndiGraph& graph,

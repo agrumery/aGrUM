@@ -1,0 +1,2 @@
+/Users/torti/Projets/agrum-trunk/apps/skool/CMakeFiles/prm_run.dir
+/Users/torti/Projets/agrum-trunk/apps/skool/CMakeFiles/uninstall.dir

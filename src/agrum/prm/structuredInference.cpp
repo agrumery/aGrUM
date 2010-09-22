@@ -78,12 +78,14 @@ StructuredInference::_evidenceRemoved(const Chain& chain) {
 
 void
 StructuredInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
-
+  // __q.clear();
+  // __q.push_back(chain);
 }
 
 void
 StructuredInference::_joint(const std::vector< Chain >& queries, Potential<prm_float>& j) {
-
+  // __q.clear();
+  // __q = queries;
 }
 
 void
@@ -97,16 +99,17 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   // We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
   // with children outside the pattern and the other nodes
   List<NodeSet> partial_order;
-  for (int i = 0; i < 3; ++i) partial_order.push_front(NodeSet());
+  for (int i = 0; i < 4; ++i) partial_order.push_front(NodeSet());
   NodeSet& inners = partial_order[0];
   NodeSet& obs = partial_order[1];
   NodeSet& outputs = partial_order[2];
+  //NodeSet& queries = partial_order[3];
   UndiGraph* graph = new UndiGraph();   // A yet to be triangulated undigraph
   Property<unsigned int>::onNodes mod;  // The undigraph node's modalities
   Bijection<NodeId, const DiscreteVariable*> vars;
   // Finally we declared a bijection to easily keep track  bettween graph and attributes
   Bijection<NodeId, std::string> node2attr; // its of the form instance_name DOT attr_name
-  // First we add nodes to graph and fill set, mod
+  // First we add nodes to graph and fill set and mod
   __buildPatternGraph(*graph, match, outputs, inners, mod, vars, node2attr, pool);
   // Second we add observed nodes in all matches to obs
   __buildObsSet(matches, match, obs, node2attr);
@@ -303,7 +306,7 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
         GUM_ASSERT(refs.size() == tefs.size());
         for (; ref != refs.end(); ++ref, ++tef)
           bij.insert(&((**ref).get((**sc).lastElt().safeName()).type().variable()),
-                     &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+              &((**tef).get((**sc).lastElt().safeName()).type().variable()));
       } else {
         bij.insert(&((**iter).getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()),
                    &(match.atPos(iter.pos())->getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()));
@@ -312,10 +315,15 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
     // Second we translate referred attributes
     for (Instance::InvRefConstIterator inv = (**iter).beginInvRef(); inv != (**iter).endInvRef(); ++inv) {
       typedef std::vector< std::pair< Instance*, std::string> >::const_iterator Iter;
+      const std::vector< std::pair<Instance*, std::string> >* v = 0;
       for (Iter pair = (**inv).begin(); pair != (**inv).end(); ++pair) {
+        // Checking the existence of the refered instance in the match set source
         if (not source.exists(pair->first)) {
           Size size = bij.size();
-          for (Iter mair = match.atPos(iter.pos())->getRefAttr(inv.key()).begin(); mair != match.atPos(iter.pos())->getRefAttr(inv.key()).end(); ++mair) {
+          v = &(match.atPos(iter.pos())->getRefAttr(inv.key()));
+          for (Iter mair = v->begin(); mair != v->end(); ++mair) {
+            // Where looking for a not yet added refered instance, maybe not optimal but suppose
+            // very few things about the refered instance ordering
             if ( (mair->first->type() == pair->first->type()) and (not match.exists(mair->first)) ) {
               try {
                 bij.insert(&(pair->first->get(pair->second).type().variable()),
@@ -331,6 +339,24 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
           }
         }
       }
+    }
+  }
+  // Third we translate the potentials
+  for (Set<Potential<prm_float>*>::const_iterator iter = set.begin(); iter != set.end(); ++iter) {
+    if (dynamic_cast<const MultiDimArray<prm_float>*>((**iter).getContent())) {
+      retVal->insert(new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij,
+                                              *(static_cast<const MultiDimArray<prm_float>*>((**iter).getContent())))));
+    } else if (dynamic_cast<const MultiDimBucket<prm_float>*>((**iter).getContent())) {
+      retVal->insert(new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij,
+                                              static_cast<const MultiDimBucket<prm_float>*>((**iter).getContent())->bucket())));
+    } else {
+      MultiDimArray<prm_float>* array = new MultiDimArray<prm_float>();
+      for (Sequence<const DiscreteVariable*>::const_iterator var = (**iter).variablesSequence().begin(); var != (**iter).variablesSequence().end(); ++var)
+        array->add(*(bij.second(*var)));
+      Instantiation inst(**iter), jnst(*array);
+      for (inst.setFirst(), jnst.setFirst(); not inst.end(); inst.inc(), jnst.inc())
+        array->set(jnst, (**iter).get(inst));
+      retVal->insert(new Potential<prm_float>(array));
     }
   }
   return retVal;
