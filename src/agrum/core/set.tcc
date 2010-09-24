@@ -25,6 +25,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <sstream>
 
+#include <agrum/core/set.h>
 
 namespace gum {
 
@@ -35,56 +36,56 @@ namespace gum {
   /// default constructor: the iterator points toward nothing
   template<typename KEY> INLINE
   SetIterator<KEY>::SetIterator( ) : __ht_iter() {
-    GUM_CONSTRUCTOR( SetIterator );
+    GUM_CONSTRUCTOR ( SetIterator );
   }
 
-  
+
   /// creates an iterator for a given set
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( const Set<KEY>& set, Position pos ) :
-    __ht_iter ( pos == GUM_SET_ITERATOR_END ?
-                set.__inside.end() : set.__inside.begin() ) {
-    GUM_CONSTRUCTOR( SetIterator );
+  SetIterator<KEY>::SetIterator ( const Set<KEY>& set, Position pos ) :
+      __ht_iter ( pos == GUM_SET_ITERATOR_END ?
+                  set.__inside.end() : set.__inside.begin() ) {
+    GUM_CONSTRUCTOR ( SetIterator );
   }
 
-  
+
   /// copy constructor
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( const SetIterator<KEY>& iter ) :
-    __ht_iter( iter.__ht_iter ) {
-    GUM_CONS_CPY( SetIterator );
+  SetIterator<KEY>::SetIterator ( const SetIterator<KEY>& iter ) :
+      __ht_iter ( iter.__ht_iter ) {
+    GUM_CONS_CPY ( SetIterator );
   }
 
-  
+
   /// destructor
   template<typename KEY> INLINE
   SetIterator<KEY>::~SetIterator() {
-    GUM_DESTRUCTOR( SetIterator );
+    GUM_DESTRUCTOR ( SetIterator );
   }
 
 
   /// indicates whether two iterators point to different elements or sets
   template<typename KEY> INLINE
   bool SetIterator<KEY>::operator!= ( const SetIterator<KEY> &from ) const {
-    return __ht_iter!=from.__ht_iter;
+    return __ht_iter != from.__ht_iter;
   }
-  
+
 
   /// indicates whether two iterators point toward the same element of a same set
   template<typename KEY> INLINE
   bool SetIterator<KEY>::operator== ( const SetIterator<KEY> &from ) const {
-    return __ht_iter==from.__ht_iter;
+    return __ht_iter == from.__ht_iter;
   }
 
-  
+
   /// assignment operator
   template<typename KEY> INLINE
   SetIterator<KEY>& SetIterator<KEY>::operator= ( const SetIterator<KEY> &from ) {
-    __ht_iter=from.__ht_iter;
+    __ht_iter = from.__ht_iter;
     return *this;
   }
 
-  
+
   /// returns the element pointed to by the iterator
   template<typename KEY> INLINE
   const KEY& SetIterator<KEY>::operator*() const {
@@ -93,16 +94,16 @@ namespace gum {
     return __ht_iter.key();
   }
 
-  
+
   /// returns aointer to the element pointed to by the iterator
   template<typename KEY> INLINE
   const KEY* SetIterator<KEY>::operator->() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
-    return &( __ht_iter.key() );
+    return & ( __ht_iter.key() );
   }
 
-  
+
   /// increments the iterator
   template<typename KEY> INLINE
   SetIterator<KEY>& SetIterator<KEY>::operator++() {
@@ -124,53 +125,53 @@ namespace gum {
   /* ===                                 SETS                                === */
   /* =========================================================================== */
   /* =========================================================================== */
-  
+
   // returns the end iterator for other classes' statics
   template <typename KEY>
   const SetIterator<KEY>& Set<KEY>::end4Statics() {
-    return *(reinterpret_cast<const SetIterator<KEY>*>
-             (SetIteratorStaticEnd::end4Statics ())); 
+    return * ( reinterpret_cast<const SetIterator<KEY>*>
+               ( SetIteratorStaticEnd::end4Statics () ) );
   }
 
   // returns the end iterator for other classes' statics
   template <typename KEY>
   const SetIterator<KEY>& Set<KEY>::constEnd4Statics() {
-    return *(reinterpret_cast<const SetIterator<KEY>*>
-             (SetIteratorStaticEnd::constEnd4Statics ())); 
+    return * ( reinterpret_cast<const SetIterator<KEY>*>
+               ( SetIteratorStaticEnd::constEnd4Statics () ) );
   }
 
   /// default constructor
   template<typename KEY>
-  Set<KEY>::Set( Size capacity ,  bool resize_policy ):
-    // create the hash table without key uniqueness policy (as we will check
-    // ourselves the uniqueness of KEYs before inserting new elements)
-    __inside( capacity, resize_policy, false ) {
-    GUM_CONSTRUCTOR( Set );
-    
+  Set<KEY>::Set ( Size capacity ,  bool resize_policy ) :
+      // create the hash table without key uniqueness policy (as we will check
+      // ourselves the uniqueness of KEYs before inserting new elements)
+      __inside ( capacity, resize_policy, false ) {
+    GUM_CONSTRUCTOR ( Set );
+
     // make sure the end() iterator is constructed properly
     end4Statics ();
   }
-  
+
 
   /// convert a hashtable into a set of keys
   template<typename KEY>
-  Set<KEY>::Set( const HashTable<KEY,bool>& h ):
-    __inside( h ) {
-    GUM_CONSTRUCTOR( Set );
+  Set<KEY>::Set ( const HashTable<KEY, bool>& h ) :
+      __inside ( h ) {
+    GUM_CONSTRUCTOR ( Set );
     // ensure that __inside's uniqueness policy is set to false as this
     // will speed-up insertions of new elements
-    __inside.setKeyUniquenessPolicy (false);
+    __inside.setKeyUniquenessPolicy ( false );
 
     // make sure the end() iterator is constructed properly
     end4Statics ();
   }
 
-  
+
   /// copy constructor
   template<typename KEY>
-  Set<KEY>::Set( const Set<KEY>& s ) :
-    __inside( s.__inside ) {
-    GUM_CONS_CPY( Set );
+  Set<KEY>::Set ( const Set<KEY>& s ) :
+      __inside ( s.__inside ) {
+    GUM_CONS_CPY ( Set );
 
     // make sure the end() iterator is constructed properly
     end4Statics ();
@@ -180,40 +181,40 @@ namespace gum {
   /// destructor
   template<typename KEY>
   Set<KEY>::Set::~Set() {
-    GUM_DESTRUCTOR( Set );
+    GUM_DESTRUCTOR ( Set );
   }
 
 
   /// the usual begin iterator to parse the set
   template<typename KEY> INLINE
   typename Set<KEY>::const_iterator Set<KEY>::begin() const {
-    return SetIterator<KEY>( *this );
+    return SetIterator<KEY> ( *this );
   }
-  
-  
+
+
   /// the usual begin iterator to parse the set
   template<typename KEY> INLINE
   SetIterator<KEY> Set<KEY>::begin() {
-    return SetIterator<KEY>( *this );
+    return SetIterator<KEY> ( *this );
   }
 
-  
+
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
   const typename Set<KEY>::const_iterator& Set<KEY>::end() const {
-    return *(reinterpret_cast<const SetIterator<KEY>*>
-             (SetIteratorStaticEnd::__SetIterEnd)); 
+    return * ( reinterpret_cast<const SetIterator<KEY>*>
+               ( SetIteratorStaticEnd::__SetIterEnd ) );
   }
 
-  
+
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
   const SetIterator<KEY>& Set<KEY>::end() {
-    return *(reinterpret_cast<const SetIterator<KEY>*>
-             (SetIteratorStaticEnd::__SetIterEnd)); 
+    return * ( reinterpret_cast<const SetIterator<KEY>*>
+               ( SetIteratorStaticEnd::__SetIterEnd ) );
   }
 
-  
+
   /// removes all the elements, if any, from the set
   template<typename KEY> INLINE
   void Set<KEY>::clear( ) {
@@ -228,12 +229,12 @@ namespace gum {
     // Hence, for speedup, we do not update the end iterator
   }
 
-  
+
   /// copy operator
   template<typename KEY>
-  Set<KEY>& Set<KEY>::operator=( const Set<KEY>& s ) {
+  Set<KEY>& Set<KEY>::operator= ( const Set<KEY>& s ) {
     // avoid self assignment
-    if (&s != this) {
+    if ( &s != this ) {
       // remove the old content of the set. Actually, we remove all the elements
       // from the underlying hashtable. Note that, doing so, all the hashtable
       // iterators will be updated as well. In turn, this will imply that, whenever
@@ -242,86 +243,86 @@ namespace gum {
       clear();
 
       // prepare the set for its new data
-      resize( s.capacity() );
-      setResizePolicy( s.resizePolicy() );
+      resize ( s.capacity() );
+      setResizePolicy ( s.resizePolicy() );
 
       // copy the set
       __inside = s.__inside;
-    
+
       // Note that actually there is no need to update the end iterator as this one
       // is not affected by changes within hashtables (adding/deleting elements).
       // Hence, for speedup, we do not update the end iterator
     }
-    
+
     return *this;
   }
 
-  
+
   /// indicates whether a given elements belong to the set
   template<typename KEY> INLINE
-  bool Set<KEY>::contains( const KEY& k ) const {
-    return __inside.exists( k );
+  bool Set<KEY>::contains ( const KEY& k ) const {
+    return __inside.exists ( k );
   }
 
   /// indicates whether a given elements belong to the set
   template<typename KEY> INLINE
-  bool Set<KEY>::exists( const KEY& k ) const {
-    return __inside.exists(k);
+  bool Set<KEY>::exists ( const KEY& k ) const {
+    return __inside.exists ( k );
   }
 
   /// inserts a new element in the set
   template<typename KEY> INLINE
-  void Set<KEY>::insert( const KEY& k ) {
+  void Set<KEY>::insert ( const KEY& k ) {
     // WARNING: we shall always test whether k already belongs to the set before
     // trying to insert it because we set __inside's key uniqueness policy to
     // false
-    if ( ! contains( k ) ) {
+    if ( ! contains ( k ) ) {
       // insert the element
-      __inside.insert( k, true );
-      
+      __inside.insert ( k, true );
+
       // Note that actually there is no need to update the end iterator as this one
       // is not affected by changes within hashtables (adding/deleting elements).
       // Hence, for speedup, we do not update the end iterator
     }
   }
 
-  
+
   /// erases an element from the set
   template<typename KEY> INLINE
-  void Set<KEY>::erase( const KEY& k ) {
+  void Set<KEY>::erase ( const KEY& k ) {
     // erase the element (if it exists)
-    __inside.erase( k );
-      
+    __inside.erase ( k );
+
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).
     // Hence, for speedup, we do not update the end iterator
   }
 
-  
+
   /// erases an element from the set
   template<typename KEY> INLINE
-  void Set<KEY>::erase( const SetIterator<KEY>& iter ) {
+  void Set<KEY>::erase ( const SetIterator<KEY>& iter ) {
     // erase the element
-    __inside.erase( iter.__ht_iter );
-      
+    __inside.erase ( iter.__ht_iter );
+
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).
     // Hence, for speedup, we do not update the end iterator
   }
 
-  
+
   /// adds a new element to the set
   template<typename KEY> INLINE
-  Set<KEY>& Set<KEY>::operator<<( const KEY& k ) {
-    insert( k );
+  Set<KEY>& Set<KEY>::operator<< ( const KEY& k ) {
+    insert ( k );
     return ( *this );
   }
 
-  
+
   /// removes an element from the set
   template<typename KEY> INLINE
-  Set<KEY>& Set<KEY>::operator>>( const KEY& k ) {
-    erase( k );
+  Set<KEY>& Set<KEY>::operator>> ( const KEY& k ) {
+    erase ( k );
     return ( *this );
   }
 
@@ -339,113 +340,112 @@ namespace gum {
     return __inside.empty();
   }
 
-  
+
   /// mathematical equality between two sets
   template<typename KEY>
-  bool Set<KEY>::operator==( const Set<KEY>& s2 ) const {
-    const HashTable<KEY, bool>& h2=s2.__inside;
+  bool Set<KEY>::operator== ( const Set<KEY>& s2 ) const {
+    const HashTable<KEY, bool>& h2 = s2.__inside;
 
     // check whether both sets have the same number of elements
+
     if ( size() != h2.size() ) return false;
 
     // check the content of the sets
     for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
-      if ( ! h2.exists( iter.key() ) )
+      if ( ! h2.exists ( iter.key() ) )
         return false;
     }
 
     return true;
   }
 
-  
+
   /// mathematical inequality between two sets
   template<typename KEY> INLINE
-  bool Set<KEY>::operator!=( const Set<KEY>& s2 ) const {
-    return !( operator==( s2 ) );
+  bool Set<KEY>::operator!= ( const Set<KEY>& s2 ) const {
+    return ! ( operator== ( s2 ) );
   }
 
 
   /// Intersection operator
   template<typename KEY>
-  Set<KEY> Set<KEY>::operator*( const Set<KEY>& s2 ) const {
+  Set<KEY> Set<KEY>::operator* ( const Set<KEY>& s2 ) const {
     Set<KEY> res;
-    const HashTable<KEY, bool>& h2=s2.__inside;
-    HashTable<KEY, bool>& h_r=res.__inside;
+    const HashTable<KEY, bool>& h2 = s2.__inside;
+    HashTable<KEY, bool>& h_r = res.__inside;
 
     if ( size() < h2.size() ) {
       for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
             iter != __inside.end(); ++iter ) {
-        if ( h2.exists( iter.key() ) )
-          h_r.insert( iter.key(), true );
+        if ( h2.exists ( iter.key() ) )
+          h_r.insert ( iter.key(), true );
       }
-    }
-    else {
-      for ( HashTableConstIterator<KEY, bool> iter=h2.begin();
-            iter!=h2.end(); ++iter ) {        
-        if ( __inside.exists( iter.key() ) )
-          h_r.insert( iter.key(), true );
+    } else {
+      for ( HashTableConstIterator<KEY, bool> iter = h2.begin();
+            iter != h2.end(); ++iter ) {
+        if ( __inside.exists ( iter.key() ) )
+          h_r.insert ( iter.key(), true );
       }
     }
 
     return res;
   }
 
-  
+
   /// Union operator
   template<typename KEY>
-  Set<KEY> Set<KEY>::operator+( const Set<KEY>& s2 ) const {
+  Set<KEY> Set<KEY>::operator+ ( const Set<KEY>& s2 ) const {
     Set<KEY> res = *this;
-    const HashTable<KEY, bool>& h2=s2.__inside;
-    HashTable<KEY, bool>& h_r=res.__inside;
+    const HashTable<KEY, bool>& h2 = s2.__inside;
+    HashTable<KEY, bool>& h_r = res.__inside;
 
-    for ( HashTableConstIterator<KEY,bool> iter=h2.begin();
-          iter!=h2.end(); ++iter ) {
-      if ( ! h_r.exists( iter.key() ) )
-        h_r.insert( iter.key(), true );
+    for ( HashTableConstIterator<KEY, bool> iter = h2.begin();
+          iter != h2.end(); ++iter ) {
+      if ( ! h_r.exists ( iter.key() ) )
+        h_r.insert ( iter.key(), true );
     }
-    
+
     return res;
   }
 
 
   /// Disjunction operator
   template<typename KEY>
-  Set<KEY> Set<KEY>::operator-( const Set<KEY>& s2 ) const {
+  Set<KEY> Set<KEY>::operator- ( const Set<KEY>& s2 ) const {
     Set<KEY> res;
-    const HashTable<KEY, bool>& h2=s2.__inside;
-    HashTable<KEY, bool>& h_r=res.__inside;
+    const HashTable<KEY, bool>& h2 = s2.__inside;
+    HashTable<KEY, bool>& h_r = res.__inside;
 
-    for ( HashTableConstIterator<KEY,bool> iter = __inside.begin();
+    for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
           iter != __inside.end();++iter )
-      if ( ! h2.exists( iter.key() ) )
-        h_r.insert( iter.key(), true );
+      if ( ! h2.exists ( iter.key() ) )
+        h_r.insert ( iter.key(), true );
 
     return res;
   }
-  
+
 
   /// to display the content of the set
   template<typename KEY> INLINE
   std::string Set<KEY>::toString() const {
     std::stringstream out;
-    bool first=true;
-    out<<"{";
+    bool first = true;
+    out << "{";
 
-    for ( iterator iter=begin();iter!=end();++iter ) {
+    for ( iterator iter = begin();iter != end();++iter ) {
       if ( first ) {
-        out<<*iter;
-        first=false;
-      }
-      else {
-        out<<","<<*iter;
+        out << *iter;
+        first = false;
+      } else {
+        out << "," << *iter;
       }
     }
 
-    out<<"}";
+    out << "}";
 
     std::string res;
-    out>>res;
+    out >> res;
     return res;
   }
 
@@ -453,7 +453,7 @@ namespace gum {
   /// to friendly display the content of the set
   template <typename Key> std::ostream& operator<<
   ( std::ostream& stream, const Set<Key>& set ) {
-    stream<<set.toString();
+    stream << set.toString();
     return stream;
   }
 
@@ -464,78 +464,78 @@ namespace gum {
     return __inside.capacity();
   }
 
-  
+
   /// changes the size of the underlying hashtable
   template<typename KEY> INLINE
-  void Set<KEY>::resize( Size new_size ) {
-    __inside.resize( new_size );
+  void Set<KEY>::resize ( Size new_size ) {
+    __inside.resize ( new_size );
 
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).
     // Hence, for speedup, we do not update the end iterator
   }
 
-  
+
   /// enables the user to change dynamically the resizing policy of the
   /// underlying hashtable
   template<typename KEY> INLINE
-  void Set<KEY>::setResizePolicy( const bool new_policy ) {
-    __inside.setResizePolicy( new_policy );
+  void Set<KEY>::setResizePolicy ( const bool new_policy ) {
+    __inside.setResizePolicy ( new_policy );
 
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).
     // Hence, for speedup, we do not update the end iterator
-   }
+  }
 
-  
+
   /// returns the current resizing policy of the underlying hashtable
   template<typename KEY> INLINE
   bool Set<KEY>::resizePolicy() const {
     return __inside.resizePolicy();
   }
 
-  
+
   /// creates a hashtable of NEWKEY from the set
   template<typename KEY>
   template <typename NEWKEY>
-  HashTable<KEY,NEWKEY>
-  Set<KEY>::hashMap( NEWKEY( *f )( const KEY& ), Size size ) const {
+  HashTable<KEY, NEWKEY>
+  Set<KEY>::hashMap ( NEWKEY ( *f ) ( const KEY& ), Size size ) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
     if ( size == 0 )
-      size = std::max( 2UL, __inside.size() / 2 );
+      size = std::max ( 2UL, __inside.size() / 2 );
 
     // create a new table
-    HashTable<KEY,NEWKEY> table( size );
+    HashTable<KEY, NEWKEY> table ( size );
 
     // fill the new hash table
-    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
+    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
-      table.insert( iter.key(), f( iter.key() ) );
+      table.insert ( iter.key(), f ( iter.key() ) );
     }
 
     return table;
   }
 
-  
+
   /// creates a hashtable of NEWKEY from the set
   template<typename KEY>
   template <typename NEWKEY>
-  HashTable<KEY,NEWKEY> Set<KEY>::hashMap( const NEWKEY& val, Size size ) const {
+  HashTable<KEY, NEWKEY> Set<KEY>::hashMap ( const NEWKEY& val, Size size ) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
     if ( size == 0 )
-      size = std::max( 2UL, __inside.size() / 2 );
+      size = std::max ( 2UL, __inside.size() / 2 );
 
     // create a new table
-    HashTable<KEY,NEWKEY> table( size );
+    HashTable<KEY, NEWKEY> table ( size );
 
     // fill the new hash table
-    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
+    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
-      table.insert( iter.key(), val );
+      table.insert ( iter.key(), val );
     }
 
     return table;
@@ -545,14 +545,15 @@ namespace gum {
   /// a method to create a list of NEWKEY from the set
   template<typename KEY>
   template <typename NEWKEY>
-  List<NEWKEY> Set<KEY>::listMap( NEWKEY( *f )( const KEY& ) ) const {
+  List<NEWKEY> Set<KEY>::listMap ( NEWKEY ( *f ) ( const KEY& ) ) const {
     // create a new list
     List<NEWKEY> list;
 
     // fill the new list
-    for ( HashTableConstIterator<KEY,bool > iter = __inside.begin();
+
+    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
           iter != __inside.end(); ++iter ) {
-      list.pushBack( f( iter.key() ) );
+      list.pushBack ( f ( iter.key() ) );
     }
 
     return list;
@@ -562,5 +563,6 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

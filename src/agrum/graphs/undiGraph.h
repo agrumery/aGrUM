@@ -177,9 +177,15 @@ namespace gum {
 
     /// to friendly display the content of the graph
     virtual const std::string toString() const;
+    
+    /// to friendly display graph in DOT format
+    virtual const std::string toDot() const;
 
     /// checks whether the graph contains cycles
     bool hasUndirectedCycle() const;
+    
+    /// returns the partial graph formed by the nodes given in parameter
+    virtual UndiGraph getPartialUndiGraph( NodeSet nodesSet );
 
     /// @}
     

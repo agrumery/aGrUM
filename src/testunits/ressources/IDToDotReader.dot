@@ -1,0 +1,21 @@
+digraph "no_name" {
+node [shape = box];
+  decisionVar1;  decisionVar2;  decisionVar3;  decisionVar4;
+node [shape = diamond];
+  utilityVar1;  utilityVar2;
+node [shape = ellipse];
+  chanceVar1;  chanceVar2;  chanceVar3;  chanceVar4;  chanceVar5;
+  decisionVar1 -> chanceVar1;
+  decisionVar2 -> utilityVar1;
+  decisionVar2 -> chanceVar4;
+  decisionVar3 -> chanceVar3;
+  decisionVar4 -> utilityVar2;
+  chanceVar1 -> utilityVar1;
+  chanceVar1 -> chanceVar2;
+  chanceVar2 -> decisionVar2;
+  chanceVar2 -> decisionVar3;
+  chanceVar3 -> chanceVar5;
+  chanceVar4 -> chanceVar5;
+  chanceVar5 -> utilityVar2;
+
+}

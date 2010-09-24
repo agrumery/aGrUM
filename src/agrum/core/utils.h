@@ -53,6 +53,10 @@ namespace std {
 
 
 namespace gum {
+  /// Implements a stream with the same behaviour as /dev/null
+  struct NullStream : std::ostream {
+    NullStream() : std::ios ( 0 ), std::ostream ( 0 ) {}
+  };
 
   /// cross-platform replacement for memcmp. returns true if OK
   bool Memcmp( const void * const _in,
