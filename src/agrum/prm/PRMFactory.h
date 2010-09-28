@@ -655,10 +655,11 @@ class PRMFactory {
     /// @param chains Vector of the Aggregate inputs names.
     /// @param inputs Vector filled with the ClassElement matching the names
     ///               in chains.
+    /// @return true if there was at least one slotchain in chains.
     ///
     /// @throw NotFound Raised if a name in chains does not match a legal
     ///                 SlotChain or an existing ClassElement in c.
-    void __retrieveInputs(Class* c, const std::vector<std::string>& chains,
+    bool __retrieveInputs(Class* c, const std::vector<std::string>& chains,
                           std::vector<ClassElement*>& inputs);
 
     /// @brief Retrieve the common Type of a vector of ClassElement.
@@ -725,6 +726,9 @@ class PRMFactory {
     /// The prefix used for classes and types names. It is normally the
     /// namespace of the corresponding compilation unit.
     std::vector<std::string> __packages;
+
+    /// Set of all declared namespaces.
+    Set<std::string> __namespaces;
 
     /// The pointer on the PRM built by this factory.
     PRM* __prm;

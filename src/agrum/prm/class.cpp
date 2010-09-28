@@ -381,14 +381,53 @@ Class::__overloadReference(ReferenceSlot* overloader, ReferenceSlot* overloaded)
   __nodeIdMap[overloader->id()] = overloader;
   __nameMap[overloader->name()] = overloader;
   __referenceSlots.insert(overloader);
+  SlotChain* sc = 0;
+  ReferenceSlot* ref = 0;
+  ClassElement* next = 0;
+  std::vector<SlotChain*> toRemove, toAdd;
   // Updating SlotChain which started with overloaded
-  for (Set<SlotChain*>::iterator iter = __slotChains.begin();
-      iter != __slotChains.end(); ++iter) {
-    if ((**iter).chain().atPos(0) == overloaded) {
-      // THIS IS INCOMPLETE, update ALL the slot chain
-      GUM_CHECKPOINT;
-      const_cast<SlotChain*>(*iter)->chain().setAtPos(0, overloader);
+  for (Set<SlotChain*>::iterator iter = __slotChains.begin(); iter != __slotChains.end(); ++iter) {
+    // If the attribute pointed by this slotchain is overloaded, we need to change the slotchain
+    // names to it's safename version: ref.attr is replaced by ref.(type)attr.
+    if ( ((**iter).chain().atPos(0) == overloaded)) {
+      Sequence<ClassElement*> seq;
+      Sequence<ClassElement*>::iterator elt = ++((**iter).chain().begin());
+      seq.insert(overloader);
+      while (elt != (**iter).chain().end()) {
+        ref = static_cast<ReferenceSlot*>(seq.back());
+        next = &(ref->slotType().get((**elt).name()));
+        seq.insert(next);
+        ++elt;
+      }
+      // If the slotchain last element type changes, we change the slotchain to point towards the cast decendant
+      // with the correct type
+      if (seq.back()->type() != (**iter).lastElt().type()) {
+        seq.erase(seq.back());
+        seq.insert(&(static_cast<ReferenceSlot*>(seq.back())->slotType().get((**iter).lastElt().safeName())));
+        std::string sc_name; std::string dot = ".";
+        for (Size i = 0; i < seq.size() - 1; ++i) { sc_name += seq.atPos(i)->name() + dot; }
+        sc_name += seq.back()->safeName();
+        sc = new SlotChain(sc_name, seq);
+        sc->setId((**iter).id());
+        for (NodeSet::const_iterator child = dag().children(sc->id()).begin(); child != dag().children(sc->id()).end(); ++child)
+          get(*child).cpf().swap((**iter).lastElt().type().variable(), sc->lastElt().type().variable());
+        toAdd.push_back(sc);
+        toRemove.push_back(*iter);
+      } else {
+        // Types are identical, we just need to change the first reference
+        (**iter).chain().setAtPos(0, overloader);
+      }
     }
+  }
+  for (std::vector<SlotChain*>::iterator iter = toRemove.begin(); iter != toRemove.end(); ++iter) {
+    __nameMap.erase((**iter).name());
+    __slotChains.erase(*iter);
+    delete *iter;
+  }
+  for (std::vector<SlotChain*>::iterator iter = toAdd.begin(); iter != toAdd.end(); ++iter) {
+    __nameMap.insert(sc->name(), sc);
+    __nodeIdMap[sc->id()] = sc;
+    __slotChains.insert(sc);
   }
   // Removing overloaded ReferenceSlot
   __referenceSlots.erase(overloaded);

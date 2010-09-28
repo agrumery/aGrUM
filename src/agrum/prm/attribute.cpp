@@ -107,20 +107,20 @@ Attribute::setAsCastDescendant(Attribute* cast) {
   } catch (WrongType&) {
     GUM_ERROR(WrongType, "the cast descendant Type is not a direct subtype of this Attribute super Type");
   }
-  MultiDimArray<prm_float> cpf;
-  cpf.add(cast->type().variable());
-  cpf.add(type().variable());
+  Potential<prm_float>* cpf = new Potential<prm_float>();
+  cpf->add(cast->type().variable());
+  cpf->add(type().variable());
   DiscreteVariable& my_var = type().variable();
   DiscreteVariable& cast_var = cast->type().variable();
-  Instantiation inst(cpf);
+  Instantiation inst(*cpf);
   for (inst.setFirst(); not inst.end(); inst.inc()) {
-    if (type().label_map()[inst.pos(my_var)] == inst.pos(cast_var)) {
-      cast->cpf().set(inst, 1);
-    } else {
-      cast->cpf().set(inst, 0);
-    }
+    if (type().label_map()[inst.pos(my_var)] == inst.pos(cast_var))
+      cpf->set(inst, 1);
+    else
+      cpf->set(inst, 0);
   }
-  cast->cpf().copy(cpf);
+  delete cast->__cpf;
+  cast->__cpf = cpf;
 }
 
 // ============================================================================

@@ -294,7 +294,9 @@ PRMFactory::setRawCPFByColumns(const std::vector<prm_float>& array)
 {
   Attribute* a = static_cast<Attribute*>(__checkStack(1, ClassElement::prm_attribute));
   if (a->cpf().domainSize() != array.size()) {
-    GUM_ERROR(OperationNotAllowed, "illegal CPF size");
+    std::stringstream s;
+    s << "illegal CPF size, found " << array.size() << " and expected " << a->cpf().domainSize();
+    GUM_ERROR(OperationNotAllowed, s.str());
   }
   if (a->cpf().nbrDim() == 1) {
     setRawCPFByLines(array);
@@ -410,25 +412,15 @@ PRMFactory::addAggregator(const std::string& name,
   }
   // Retrieving the parents of the aggregate
   std::vector<ClassElement*> inputs;
-  __retrieveInputs(c, chains, inputs);
+  // This helps knowing if the aggregate has parents outside the current class (see below)
+  bool hasSC = __retrieveInputs(c, chains, inputs);
   // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
-  Size sc_count = 0;
-  try {
-    if (inputs.size() > 1) {
-      for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter) {
-        if ((**(iter - 1)).type() != (**iter).type()) {
-          GUM_ERROR(WrongType, "found different types");
-        }
-        if (ClassElement::isSlotChain(**iter)) { ++sc_count; }
+  if (inputs.size() > 1) {
+    for (std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter) {
+      if ((**(iter - 1)).type() != (**iter).type()) {
+        GUM_ERROR(WrongType, "found different types");
       }
-      if ( (sc_count > 0) and (sc_count != inputs.size()) ) {
-        GUM_ERROR(OperationNotAllowed, "aggregators cannot have different sort of parents");
-      }
-    } else if (ClassElement::isSlotChain(*(inputs.front()))) {
-      ++sc_count;
     }
-  } catch (OperationNotAllowed&) {
-    GUM_ERROR(WrongClassElement, "expected an attribute, an aggregate or a slot chain");
   }
   // Different treatments for different types of aggregate.
   Aggregate* agg = 0;
@@ -474,12 +466,20 @@ PRMFactory::addAggregator(const std::string& name,
   }
   std::string safe_name = agg->safeName();
   try {
-    if (sc_count > 0) {
-      c->add(agg);
+    if (hasSC) {
+      try {
+        c->add(agg);
+      } catch (DuplicateElement&) {
+        c->overload(agg);
+      }
     } else {
       // Inner aggregators can be directly used has attributes
       Attribute* attr = new Attribute(agg->name(), agg->type(), agg->buildImpl());
-      c->add(attr);
+      try {
+        c->add(attr);
+      } catch (DuplicateElement&) {
+        c->overload(attr);
+      }
       delete agg;
     }
   } catch (DuplicateElement& e) {
@@ -660,21 +660,21 @@ PRMFactory::__buildSlotChain(ClassElementContainer* start, const std::string& na
   }
   GUM_ASSERT(v.size() == elts.size());
   current->setOutputNode(*(elts.back()), true);
-  // std::stringstream sBuff;
-  // sBuff << current->name() << "." << elts.back()->name() << " : " << current->isOutputNode(elts.back()->id());
-  // GUM_TRACE(sBuff.str());
   return new SlotChain(name, elts);
 }
 
-void
+bool
 PRMFactory::__retrieveInputs(Class* c, const std::vector<std::string>& chains,
                              std::vector<ClassElement*>& inputs)
 {
+  bool retVal = false;
   for (size_t i = 0; i < chains.size(); ++i) {
     try {
       inputs.push_back(&(c->get(chains[i])));
+      retVal = retVal or ClassElement::isSlotChain(*(inputs.back()));
     } catch (NotFound&) {
       inputs.push_back(__buildSlotChain(c, chains[i]));
+      retVal = true;
       if (inputs.back()) {
         c->add(inputs.back());
       } else {
@@ -682,6 +682,30 @@ PRMFactory::__retrieveInputs(Class* c, const std::vector<std::string>& chains,
       }
     }
   }
+  Type* t = __retrieveCommonType(inputs);
+  std::vector< std::pair<ClassElement*, ClassElement*> > toAdd;
+  for (std::vector<ClassElement*>::iterator elt = inputs.begin(); elt != inputs.end(); ++elt) {
+    if ((**elt).type() != (*t)) {
+      if (ClassElement::isSlotChain(**elt)) {
+        SlotChain* sc = static_cast<SlotChain*>(*elt);
+        std::stringstream name;
+        for (Size idx = 0; idx < sc->chain().size() - 1; ++idx) {
+          name << sc->chain().atPos(idx)->name() << ".";
+        }
+        name << ".(" << t->name() << ")" << sc->lastElt().name();
+        try {
+          toAdd.push_back(std::make_pair(*elt, &(c->get(name.str()))));
+        } catch (NotFound&) {
+          toAdd.push_back(std::make_pair(*elt, __buildSlotChain(c, name.str())));
+        }
+      } else {
+        std::stringstream name;
+        name << "(" << t->name() << ")" << (**elt).name();
+        toAdd.push_back(std::make_pair(*elt, &(c->get(name.str()))));
+      }
+    }
+  }
+  return retVal;
 }
 
 Type*
@@ -755,7 +779,6 @@ PRMFactory::addNoisyOrCompound(const std::string& name,
           parents[idx] = __buildSlotChain(c, safe_name);
           c->add(parents[idx]);
         } else {
-          GUM_TRACE(safe_name);
           GUM_ERROR(NotFound, "unable to find parent");
         }
       } else {
@@ -781,6 +804,87 @@ PRMFactory::addNoisyOrCompound(const std::string& name,
     GUM_ERROR(OperationNotAllowed, "labels definitions not handle for noisy-or");
   }
 }
+
+Type*
+PRMFactory::__retrieveType(const std::string& name) const
+{
+  try {
+    return __prm->__typeMap[name];
+  } catch (NotFound&) {
+    try {
+      return  __prm->__typeMap[__addPrefix(name)];
+    } catch (NotFound&) {
+      // Looking for the type using all declared namespaces
+      std::string prefix;
+      std::string dot = ".";
+      for (Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter) {
+        if (__prm->__typeMap.exists((*iter) + dot + name)) {
+          if (prefix != "") {
+            GUM_ERROR(NotFound, "ambiguous type name, specify full name");
+          }
+          prefix = *iter;
+        }
+      }
+      return __prm->__typeMap[prefix + dot + name];
+    }
+  }
+  return 0;
+}
+
+Class*
+PRMFactory::__retrieveClass(const std::string& name) const
+{
+  try {
+    return __prm->__classMap[name];
+  } catch (NotFound&) {
+    try {
+      return __prm->__classMap[__addPrefix(name)];
+    } catch (NotFound&) {
+      // Looking for the class using all declared namespaces
+      std::string prefix;
+      std::string dot = ".";
+      for (Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter) {
+        if (__prm->__classMap.exists((*iter) + dot + name)) {
+          if (prefix != "") {
+            GUM_ERROR(NotFound, "ambiguous class name, specify full name");
+          }
+          prefix = *iter;
+        }
+      }
+      return __prm->__classMap[prefix + dot + name];
+    }
+  }
+  // Just for compilation warnings
+  return 0;
+}
+
+Interface*
+PRMFactory::__retrieveInterface(const std::string& name) const
+{
+  try {
+    return __prm->__interfaceMap[name];
+  } catch (NotFound&) {
+    try {
+      return __prm->__interfaceMap[__addPrefix(name)];
+    } catch (NotFound&) {
+      // Looking for the interface using all declared namespaces
+      std::string prefix;
+      std::string dot = ".";
+      for (Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter) {
+        if (__prm->__interfaceMap.exists((*iter) + dot + name)) {
+          if (prefix != "") {
+            GUM_ERROR(NotFound, "ambiguous class name, specify full name");
+          }
+          prefix = *iter;
+        }
+      }
+      return __prm->__interfaceMap[prefix + dot + name];
+    }
+  }
+  // Just for compilation warnings
+  return 0;
+}
+
 
 // ============================================================================
 } /* namespace prm */

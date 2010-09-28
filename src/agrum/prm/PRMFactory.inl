@@ -275,54 +275,6 @@ PRMFactory::__checkStack(Idx i, ClassElement::ClassElementType elt_type)
 }
 
 INLINE
-Type*
-PRMFactory::__retrieveType(const std::string& name) const
-{
-  try {
-    return __prm->__typeMap[name];
-  } catch (NotFound&) {
-    return  __prm->__typeMap[__addPrefix(name)];
-  }
-  return 0;
-}
-
-INLINE
-Class*
-PRMFactory::__retrieveClass(const std::string& name) const
-{
-  try {
-    return __prm->__classMap[name];
-  } catch (NotFound&) {
-    try {
-      return __prm->__classMap[__addPrefix(name)];
-    } catch (NotFound&) {
-      std::string msg = "could not found Class: ";
-      GUM_ERROR(NotFound, msg + name);
-    }
-  }
-  // Just for compilation warnings
-  return 0;
-}
-
-INLINE
-Interface*
-PRMFactory::__retrieveInterface(const std::string& name) const
-{
-  try {
-    return __prm->__interfaceMap[name];
-  } catch (NotFound&) {
-    try {
-      return __prm->__interfaceMap[__addPrefix(name)];
-    } catch (NotFound&) {
-      std::string msg = "could not found Interface: ";
-      GUM_ERROR(NotFound, msg + name);
-    }
-  }
-  // Just for compilation warnings
-  return 0;
-}
-
-INLINE
 int
 PRMFactory::__typeDepth(const Type* t) {
   int depth = 0;
@@ -338,6 +290,7 @@ INLINE
 void
 PRMFactory::pushPackage(const std::string& name) {
   __packages.push_back(name);
+  __namespaces.insert(name);
 }
 
 INLINE
