@@ -40,7 +40,7 @@ namespace gum {
    * Default destructor.
    */
    template<typename T_DATA> INLINE
-   BIFXMLBNReader<T_DATA>::~BNReader()
+   BIFXMLBNReader<T_DATA>::~BIFXMLBNReader()
    {
      GUM_DESTRUCTOR( BIFXMLBNReader );
    }
