@@ -1132,6 +1132,11 @@ class Instantiation : public MultiDimInterface {
     }
     /// @}
 
+  protected:
+
+    /// Replace x by y.
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+
   private:
 
     // ============================================================================

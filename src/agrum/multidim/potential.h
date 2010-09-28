@@ -154,6 +154,8 @@ namespace gum {
 
       /// sum of all elements in this
       const T_DATA getSum() const ;
+
+      virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 

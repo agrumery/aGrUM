@@ -924,6 +924,12 @@ namespace gum {
     return __vals.empty();
   }
 
+  /// Replace x by y.
+  INLINE void Instantiation::_swap(const DiscreteVariable* x,
+                                   const DiscreteVariable* y) {
+    __vars.setAtPos(__vars.pos(x), y);
+  }
+
 
 } /* namespace gum */
 

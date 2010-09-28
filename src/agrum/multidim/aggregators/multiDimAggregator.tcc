@@ -107,6 +107,10 @@ namespace gum {
     return s << ag.toString();
   }
  
+  template<typename T_DATA> INLINE
+  void MultiDimAggregator<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+    MultiDimImplementation<T_DATA>::_swap(x,y);
+  }
 
 // ==================================================
 } /* namespace gum */

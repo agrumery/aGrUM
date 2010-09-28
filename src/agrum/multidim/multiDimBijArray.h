@@ -165,6 +165,8 @@ namespace gum {
       /// synchronise content after MultipleChanges
       virtual void _commitMultipleChanges( void );
 
+      virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+
     private:
       /// the true data.
       const MultiDimArray<T_DATA>& __array;

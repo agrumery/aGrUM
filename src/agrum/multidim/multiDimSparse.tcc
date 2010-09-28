@@ -135,12 +135,18 @@ namespace gum {
 
 
   // returns the name of the implementation
-  template<typename T_DATA>
+  template<typename T_DATA> INLINE
   const std::string& MultiDimSparse<T_DATA>::name () const {
     static const std::string str = "MultiDimSparse";
     return str;
   }
 
+  template<typename T_DATA> INLINE
+  void MultiDimSparse<T_DATA>::_swap(const DiscreteVariable* x,
+                                     const DiscreteVariable* y)
+  {
+    MultiDimImplementation<T_DATA>::_swap(x,y);
+  }
 
 } /* namespace gum */
 

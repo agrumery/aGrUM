@@ -210,6 +210,11 @@ namespace gum {
     return result;
   }
 
+  template<typename T_DATA> INLINE
+  void UtilityTable<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+    MultiDimDecorator<T_DATA>::getContent()->swap(*x,*y);
+  }
+
 } /* namespace gum */
 
 

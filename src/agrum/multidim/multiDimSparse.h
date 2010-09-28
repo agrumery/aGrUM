@@ -154,6 +154,8 @@ namespace gum {
      * @throw OperationNotAllowed
      */
     virtual T_DATA& _get( const Instantiation& i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
+
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 

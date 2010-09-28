@@ -224,4 +224,11 @@ namespace gum {
     return new CPF<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
   }
 
+  template<typename T_DATA> INLINE
+  void CPF<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+    __condMap->insert(y, (*__condMap)[x]);
+    __condMap->erase(x);
+    MultiDimDecorator<T_DATA>::getContent()._swap(x, y);
+  }
+
 } /* namespace gum */

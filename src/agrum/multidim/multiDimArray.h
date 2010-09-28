@@ -197,6 +197,8 @@ namespace gum {
      * @throw NullElement
      */
     virtual T_DATA& _get( const Instantiation& i ) const;
+
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 

@@ -251,6 +251,13 @@ namespace gum {
     // ============================================================================
     const List<Instantiation*>& _slaves() const;
 
+    // ============================================================================
+    /// @brief Replace variable x by y.
+    /// Technically this should be call by any subclass overloading this method
+    /// to proceed with the changes in this class containers.
+    // ============================================================================
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) =0;
+
     /// @}
 
   private:

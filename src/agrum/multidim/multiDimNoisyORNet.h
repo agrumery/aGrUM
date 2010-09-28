@@ -147,6 +147,8 @@ namespace gum {
     T_DATA __default_weight;
     mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
     /// @}
+
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
   // ==============================================================================

@@ -153,6 +153,19 @@ class MultiDimInterface {
     // ============================================================================
     virtual bool empty( void ) const  =0;
 
+    /**
+     * @brief Swap two variables in this multidim.
+     * If x is in this MultiDim and y has the same domain size,
+     * then x will be replace by y in this MultiDim.
+     *
+     * @param x The variable in this which will be replaced.
+     * @param y The variable replacing y.
+     * @throw NotFound Raised if x does not belong to this MultiDim.
+     * @throw OperationNotAllowed If y and x are not interchangeable.
+     * @throw DuplicateElement If y is already in this MultiDim.
+     */
+    void swap(const DiscreteVariable& x, const DiscreteVariable& y);
+
     /// @}
 
     // ############################################################################
@@ -183,6 +196,14 @@ class MultiDimInterface {
     const iterator& rend() const;
 
     /// @}
+  protected:
+
+    /**
+     * @brief This is called by MultiDimContainer::swap() to proceed with the
+     *        swapping between x and y.
+     * This is called only when everything have been checked.
+     */
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) =0;
 };
 
 // ==============================================================================

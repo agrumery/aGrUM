@@ -558,5 +558,21 @@ MultiDimBucket<T_DATA>::bucket() const {
   }
 }
 
+template <typename T_DATA> INLINE
+void
+MultiDimBucket<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+  MultiDimImplementation<T_DATA>::_swap(x, y);
+  typedef Bijection<Instantiation*, Instantiation*>::iterator Iter;
+  for (Iter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
+    iter.first()->swap(*x, *y);
+    iter.second()->swap(*x, *y);
+  }
+  if (__bucket) __bucket->swap(*x, *y);
+  __allVariables.erase(x);
+  __allVariables.insert(y);
+  __allVarsInst.swap(*x, *y);
+}
+
+
 } /* namespace gum */
 // ============================================================================

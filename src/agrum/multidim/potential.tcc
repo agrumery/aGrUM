@@ -252,6 +252,11 @@ namespace gum {
              ( this->getContent()->newFactory() ) );
   }
 
+  template<typename T_DATA> INLINE
+  void Potential<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+    MultiDimDecorator<T_DATA>::getContent()->swap(*x, *y);
+  }
+
 } /* namespace gum */
 
 // kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

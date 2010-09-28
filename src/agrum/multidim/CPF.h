@@ -213,6 +213,9 @@ namespace gum {
 
     /// @}
 
+  protected:
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+
   private:
     // Used to no if a given is conditioned or not (if _cond[var] == true then
     // var is a conditioned variable).

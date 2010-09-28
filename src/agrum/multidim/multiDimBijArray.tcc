@@ -128,5 +128,13 @@ MultiDimBijArray<T_DATA>::_get (const Instantiation &i) const {
   GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<T_DATA> are read only.");
 }
 
+template<typename T_DATA> INLINE
+void
+MultiDimBijArray<T_DATA>::_swap(const DiscreteVariable* x,
+                                const DiscreteVariable* y)
+{
+  MultiDimImplementation<T_DATA>::_swap(x,y);
+}
+
 } // namespace gum
 // ============================================================================

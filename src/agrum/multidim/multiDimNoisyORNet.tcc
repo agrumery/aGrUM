@@ -163,11 +163,21 @@ namespace gum {
   }
 
   // returns the name of the implementation
-  template<typename T_DATA>
+  template<typename T_DATA> INLINE
   const std::string& MultiDimNoisyORNet<T_DATA>::name () const {
     static const std::string str = "MultiDimNoisyORNet";
     return str;
   }
+
+  template<typename T_DATA> INLINE
+  void MultiDimNoisyORNet<T_DATA>::_swap(const DiscreteVariable* x,
+                                         const DiscreteVariable* y)
+  {
+    MultiDimImplementation<T_DATA>::_swap(x, y);
+    __causal_weights.insert(y, __causal_weights[x]);
+    __causal_weights.erase(x);
+  }
+
 
 // ==================================================
 } /* namespace gum */

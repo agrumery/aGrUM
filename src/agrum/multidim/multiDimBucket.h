@@ -263,6 +263,8 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// operator[]() methods.
     virtual T_DATA& _get(const Instantiation &i) const;
 
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+
   private:
     /// The number of element allowed in __bucket.
     Size __bufferSize;

@@ -259,7 +259,16 @@ namespace gum {
     static const std::string str = "MultiDimImplementation";
     return str;
   }
-  
+
+  template<typename T_DATA> INLINE
+  void MultiDimImplementation<T_DATA>::_swap(const DiscreteVariable* x,
+                                             const DiscreteVariable* y)
+  {
+    __vars.setAtPos(__vars.pos(x), y);
+    for (List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter) {
+      (**iter).swap(*x, *y);
+    }
+  }
 
   // ==============================================================================
   /// for friendly displaying the content of the array

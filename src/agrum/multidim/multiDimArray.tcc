@@ -181,12 +181,18 @@ MultiDimArray<T_DATA>::setByOffset ( const Idx offset, const T_DATA& data ) {
 
 
 // returns the name of the implementation
-template<typename T_DATA>
+template<typename T_DATA> INLINE
 const std::string& MultiDimArray<T_DATA>::name () const {
     static const std::string str = "MultiDimArray";
     return str;
 }
 
+template<typename T_DATA> INLINE
+void MultiDimArray<T_DATA>::_swap(const DiscreteVariable* x,
+                                  const DiscreteVariable* y)
+{
+  MultiDimImplementation<T_DATA>::_swap(x,y);
+}
 
 } /* namespace gum */
 
