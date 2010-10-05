@@ -46,6 +46,21 @@ MultiDimBijArray<T_DATA>::MultiDimBijArray(const VarBijection& bijection,
   }
 }
 
+template<typename T_DATA>
+MultiDimBijArray<T_DATA>::MultiDimBijArray(const VarBijection& bijection,
+                                           const MultiDimBijArray<T_DATA>& array):
+  MultiDimWithOffset<T_DATA>(), __array(array.__array), __name("MultiDimBijArray")
+{
+  GUM_CONSTRUCTOR( MultiDimBijArray );
+  for (MultiDimInterface::iterator iter = array.begin(); iter != array.end(); ++iter) {
+    try {
+      MultiDimWithOffset<T_DATA>::add(*(bijection.first(*iter)));
+    } catch (NotFound&) {
+      MultiDimWithOffset<T_DATA>::add(**iter);
+    }
+  }
+}
+
 template<typename T_DATA> INLINE
 MultiDimBijArray<T_DATA>::~MultiDimBijArray() {
   GUM_DESTRUCTOR( MultiDimBijArray );

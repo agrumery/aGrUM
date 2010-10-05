@@ -80,6 +80,7 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
         throw e;
       }
     } else {
+      GUM_CHECKPOINT;
       GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
   } else {
@@ -94,8 +95,11 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
       for (Instantiation i(*impl); not i.end(); i.inc())
         array->set(i, impl->get(i));
       p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, *array));
+    } else if (dynamic_cast<const MultiDimBijArray<prm_float>*>(impl)) {
+      p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBijArray<prm_float>&>(*impl)));
     } else {
       // Just need to make the copy using the bijection but we only use multidim array
+      GUM_CHECKPOINT;
       GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
   }

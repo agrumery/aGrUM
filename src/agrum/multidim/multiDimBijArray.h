@@ -58,6 +58,14 @@ namespace gum {
                        const MultiDimArray<T_DATA>& array);
 
       // ============================================================================
+      /// Gets the content of decorator and uses its implementation.
+      /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
+      ///                            raise an OperationNotAllowed
+      // ============================================================================
+      MultiDimBijArray(const VarBijection& bijection,
+                       const MultiDimBijArray<T_DATA>& array);
+
+      // ============================================================================
       /// copy constructor
       /** The newly created matrix contains the same variables and the same values as
        * from, but no instantiation is associated to it.
@@ -157,7 +165,6 @@ namespace gum {
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
       virtual void fillWith (const std::vector< T_DATA > &v) const;
-
 
     protected:
       virtual T_DATA & _get (const Instantiation &i) const;
