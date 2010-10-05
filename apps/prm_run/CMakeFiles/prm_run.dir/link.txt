@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wl,-search_paths_first -headerpad_max_install_names  CMakeFiles/prm_run.dir/Parser.cpp.o CMakeFiles/prm_run.dir/prm_run.cpp.o CMakeFiles/prm_run.dir/Scanner.cpp.o  -o prm_run  -lagrum 
