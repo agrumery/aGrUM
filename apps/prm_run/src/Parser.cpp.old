@@ -284,26 +284,21 @@ std::string Parser::findAttributeName(const std::string& s, const prm::Instance&
 }
 
 void Parser::addObservation(const std::string& left_val, const std::string& right_val) {
-  GUM_CHECKPOINT;
   const prm::System& sys = reader.prm()->getSystem (findSystemName(left_val));
   const prm::Instance& instance = sys.get(findInstanceName(left_val, sys.name()));
   const prm::Attribute& attr = instance.get(findAttributeName(left_val, instance));
   prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
-  GUM_CHECKPOINT;
   if (not inf) {
     generateInfEngine(sys);
   }
-  GUM_CHECKPOINT;
   if (inf->hasEvidence(chain)) {
     std::string msg = " is already observed";
     warning(left_val + msg);
   }
-  GUM_CHECKPOINT;
   Potential<prm::prm_float> e;
   e.add(chain.second->type().variable());
   Instantiation i(e);
   bool found = false;
-  GUM_CHECKPOINT;
   for (i.setFirst(); not i.end(); i.inc()) {
     if (chain.second->type().variable().label(i.val(chain.second->type().variable())) == right_val) {
       e.set(i, (prm::prm_float) 1.0);
@@ -312,27 +307,24 @@ void Parser::addObservation(const std::string& left_val, const std::string& righ
       e.set(i, (prm::prm_float) 0.0);
     }
   }
-  GUM_CHECKPOINT;
   if (not found) {
     std::string msg = " is not a label of ";
     error(right_val + msg + left_val);
     throw right_val + msg + left_val;
   }
-  GUM_CHECKPOINT;
   try {
     inf->addEvidence(chain, e);
     //affichage en demande
     if (verbose) {
       log << "Added evidence " << right_val << " over attribute " << left_val << std::endl;
     }
-  } catch (OperationNotAllowed& ex) {
+  } catch (OperationNotAllowed & ex) {
     std::stringstream sBuff;
     sBuff << " someting went wrong when adding evidence " << right_val;
     sBuff << " over " << left_val;
     error(sBuff.str());
     throw sBuff.str();
   }
-  GUM_CHECKPOINT;
 }
 
 void Parser::removeObervation(const std::string name) {
@@ -363,11 +355,11 @@ void Parser::generateInfEngine(const prm::System& sys) {
     BayesNetInference<p_f>* bn_inf = 0;
     BayesNet<p_f>* bn = new BayesNet<p_f>();
     BayesNetFactory<p_f> bn_factory(bn);
-    if (option_comment) {
+    if (verbose) {
       log << "Grounding the network... " << std::flush;
     }
     sys.groundedBN(bn_factory);
-    if (option_comment) {
+    if (verbose) {
       log << "Finished." << std::endl;
     }
     if (bn_engine == "VE") {

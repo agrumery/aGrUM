@@ -261,7 +261,7 @@ class Scanner {
   -------------------------------------------------------------------------*/
 -->begin
 
-#include "scanner.h"
+#include "Scanner.h"
 
 -->namespace_open
 
