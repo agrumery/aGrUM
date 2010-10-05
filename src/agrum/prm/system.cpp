@@ -224,7 +224,7 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
   Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
   std::stringstream var_name;
   var_name << instance.name() << "." << attr.safeName();
-  bijection.insert(&(factory.variable(var_name.str())), &(attr.type().variable()));
+  bijection.insert(&(attr.type().variable()), &(factory.variable(var_name.str())));
   const DAG& dag = instance.type().dag();
   const NodeSet& parents = dag.parents(attr.id());
   for (NodeSetIterator parent = parents.begin(); parent != parents.end(); ++parent) {
@@ -234,7 +234,7 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
         {
           std::stringstream parent_name;
           parent_name << instance.name() << "." << instance.get(*parent).safeName();
-          bijection.insert(&(factory.variable(parent_name.str())), &(instance.get(*parent).type().variable()));
+          bijection.insert(&(instance.get(*parent).type().variable()), &(factory.variable(parent_name.str())));
           break;
         }
       case ClassElement::prm_slotchain:
@@ -242,7 +242,7 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
           std::stringstream parent_name;
           const SlotChain& sc = static_cast<const SlotChain&>(instance.type().get(*parent));
           parent_name << instance.getInstance(sc.id()).name() << "." << sc.lastElt().safeName();
-          bijection.insert(&(factory.variable(parent_name.str())), &(instance.getInstance(sc.id()).get(sc.lastElt().id()).type().variable()));
+          bijection.insert(&(instance.getInstance(sc.id()).get(sc.lastElt().id()).type().variable()), &(factory.variable(parent_name.str())));
           break;
         }
       default: {
@@ -251,22 +251,23 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
                }
     }
   }
-  // This should be optimized (using MultiDimBijArray and handling noisy-or)
-  Potential<prm_float>* p = new Potential<prm_float>();
-  typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
-  const Sequence<const DiscreteVariable*>& var_seq = attr.cpf().variablesSequence();
-  for (VarSeqIterator iter = var_seq.begin(); iter != var_seq.end(); ++iter) {
-    p->add(*(bijection.first(*iter)));
-  }
-  Instantiation i(p);
-  Instantiation j(attr.cpf());
-  for (j.setFirst(); not j.end(); j.inc()) {
-    typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
-    for (VarSeqIterator iter = j.variablesSequence().begin(); iter != j.variablesSequence().end(); ++iter) {
-      i.chgVal(*(bijection.first(*iter)), j.val(*iter));
-    }
-    p->set(i, attr.cpf().get(j));
-  }
+  // This should be optimized (using MultiDimBijArray and by handling noisy-or)
+  Potential<prm_float>* p = copyPotential(bijection, attr.cpf());
+  // Potential<prm_float>* p = new Potential<prm_float>();
+  // typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
+  // const Sequence<const DiscreteVariable*>& var_seq = attr.cpf().variablesSequence();
+  // for (VarSeqIterator iter = var_seq.begin(); iter != var_seq.end(); ++iter) {
+  //   p->add(*(bijection.first(*iter)));
+  // }
+  // Instantiation i(p);
+  // Instantiation j(attr.cpf());
+  // for (j.setFirst(); not j.end(); j.inc()) {
+  //   typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
+  //   for (VarSeqIterator iter = j.variablesSequence().begin(); iter != j.variablesSequence().end(); ++iter) {
+  //     i.chgVal(*(bijection.first(*iter)), j.val(*iter));
+  //   }
+  //   p->set(i, attr.cpf().get(j));
+  // }
   factory.setVariableCPT(var_name.str(), p, false);
 }
 

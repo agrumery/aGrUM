@@ -19,9 +19,17 @@
  ***************************************************************************/
 #ifndef GUM_UTILS_PRM_H
 #define GUM_UTILS_PRM_H
-
+// ============================================================================
 #include <string>
 #include <vector>
+// ============================================================================
+#include <agrum/multidim/potential.h>
+#include <agrum/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/multiDimNoisyORNet.h>
+#include <agrum/multidim/multiDimBijArray.h>
+// ============================================================================
 
 /*!  @ingroup prm_group
  *
@@ -144,6 +152,19 @@ namespace gum { namespace prm {
 
   /// Decompose a string in a vector of strings using "." as separators.
   void decomposePath(const std::string& path, std::vector<std::string>& v);
+
+  /**
+   * @brief Returns a copy of a Potential after applying a bijection over the variables in source.
+   * This copies the Potential source in a new Potential by permuting all variables in source with respect
+   * to bij.
+   * @param bij A Bijection of DiscreteVariable where firsts are variables in source and seconds variables
+   *            added in the returned Potential.
+   * @param source The copied Potential.
+   * @return a pointer over a Potential which is a copy of source.
+   * @throw FatalError raised if an unknown MultiDimImplementation is encountered.
+   */
+  Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                      const Potential<prm_float>& source);
 
 } /* namespace prm */
 } /* namespace gum */

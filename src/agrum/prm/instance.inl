@@ -48,7 +48,7 @@ INLINE
 void
 Instance::__copyAttribute(Attribute* source) {
   Attribute* attr = new Attribute(source->name(), source->type());
-  // The potential is copied when instantiation is called
+  // The potential is copied when instantiate() is called
   attr->cpf().fill((prm_float) 0);
   attr->setId(source->id());
   __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
@@ -426,6 +426,30 @@ INLINE
 bool
 Instance::hasRefAttr(NodeId id) const {
   return __referingAttr.exists(id) and (not __referingAttr[id]->empty());
+}
+
+INLINE
+void
+Instance::__copyAttributeCPF(Attribute* attr) {
+  try {
+    Potential<prm_float>* p = copyPotential(bijection(), type().get(attr->safeName()).cpf());
+    delete (attr->__cpf);
+    attr->__cpf = p;
+  } catch (NotFound& e) {
+    // Internal Aggregator, we must add attr parents (we still check the Potential implementation)
+    if (dynamic_cast<const MultiDimAggregator<prm_float>*>(type().get(attr->safeName()).cpf().getContent())) {
+      delete attr->__cpf;
+      attr->__cpf = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(type().get(attr->safeName()).cpf().getContent()->newFactory()));
+      attr->__cpf->add(attr->type().variable());
+      const NodeSet& parents = type().dag().parents(attr->id());
+      for (NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc)
+        attr->addParent(get(type().get(*arc).safeName()));
+    } else {
+      GUM_TRACE_VAR(name());
+      GUM_TRACE_VAR(attr->safeName());
+      throw e;
+    }
+  }
 }
 
 // ============================================================================

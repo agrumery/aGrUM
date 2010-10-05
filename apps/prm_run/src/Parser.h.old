@@ -55,7 +55,9 @@ class Parser {
 		_import=6,
 		_request=7,
 		_query=8,
-		_unobserve=9
+		_unobserve=9,
+		_engine=10,
+		_grd_engine=11
 	};
 	int maxT;
 
@@ -92,6 +94,8 @@ class Parser {
 	void Observe();
 	void Unobserve();
 	void Query();
+	void SetEngine();
+	void SetGrdEngine();
 
 
     void Parse();

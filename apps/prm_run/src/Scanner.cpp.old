@@ -226,8 +226,8 @@ Scanner::~Scanner() {
 void Scanner::Init() {
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 14;
-	noSym = 14;
+  	maxT = 16;
+	noSym = 16;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 9);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -246,6 +246,8 @@ void Scanner::Init() {
 	keywords.set(L"import", 6);
 	keywords.set(L"request", 7);
 	keywords.set(L"unobserve", 9);
+	keywords.set(L"engine", 10);
+	keywords.set(L"grd_engine", 11);
 
 
     tvalLength = 128;
@@ -456,13 +458,13 @@ Token* Scanner::NextToken() {
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_9;}
 			else {t->kind = noSym; break;}
 		case 11:
-			{t->kind = 10; break;}
-		case 12:
-			{t->kind = 11; break;}
-		case 13:
 			{t->kind = 12; break;}
-		case 14:
+		case 12:
 			{t->kind = 13; break;}
+		case 13:
+			{t->kind = 14; break;}
+		case 14:
+			{t->kind = 15; break;}
 
   }
   AppendVal(t);

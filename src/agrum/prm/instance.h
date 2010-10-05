@@ -32,12 +32,6 @@
 // ============================================================================
 #include <agrum/core/bijection.h>
 // ============================================================================
-#include <agrum/multidim/multiDimBijArray.h>
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/multiDimSparse.h>
-#include <agrum/multidim/multiDimNoisyORCompound.h>
-#include <agrum/multidim/multiDimNoisyORNet.h>
-// ============================================================================
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/class.h>
 // ============================================================================

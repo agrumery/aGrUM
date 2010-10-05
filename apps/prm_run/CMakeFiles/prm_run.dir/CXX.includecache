@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/Users/torti/Projets/agrum-trunk/apps/prm_run/src/Parser.cpp
-wchar.h
--
-Parser.h
-/Users/torti/Projets/agrum-trunk/apps/prm_run/src/Parser.h
-Scanner.h
-/Users/torti/Projets/agrum-trunk/apps/prm_run/src/Scanner.h
-
 /Users/torti/Projets/agrum-trunk/apps/prm_run/src/Parser.h
 string
 -
@@ -56,7 +48,27 @@ agrum/prm/skool/SkoolReader.h
 Scanner.h
 /Users/torti/Projets/agrum-trunk/apps/prm_run/src/Scanner.h
 
+/Users/torti/Projets/agrum-trunk/apps/prm_run/src/Scanner.cpp
+scanner.h
+/Users/torti/Projets/agrum-trunk/apps/prm_run/src/scanner.h
+
 /Users/torti/Projets/agrum-trunk/apps/prm_run/src/Scanner.h
+agrum/core/cocoR.h
+-
+
+/Users/torti/Projets/agrum-trunk/apps/prm_run/src/prm_run.cpp
+string
+-
+sstream
+-
+vector
+-
+algorithm
+-
+Parser.h
+/Users/torti/Projets/agrum-trunk/apps/prm_run/src/Parser.h
+
+/Users/torti/Projets/agrum-trunk/apps/prm_run/src/scanner.h
 agrum/core/cocoR.h
 -
 

@@ -137,50 +137,9 @@ Instance::__instantiateSlotChain(SlotChain* sc) {
         // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
         // to __bijection for CPF initialisation
         if (not sc->isMultiple()) {
-          __bijection.insert(&(current->get(sc->lastElt().safeName()).type().variable()), &(sc->type().variable()));
+          __bijection.insert(&(sc->type().variable()), &(current->get(sc->lastElt().safeName()).type().variable()));
         }
       }
-    }
-  }
-}
-
-void
-Instance::__copyAttributeCPF(Attribute* attr) {
-  const MultiDimImplementation<prm_float>* impl = type().get(attr->safeName()).cpf().getContent();
-  delete (attr->__cpf);
-  attr->__cpf = 0;
-  if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {
-    if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(__bijection, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
-    } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(__bijection, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
-    } else if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
-      attr->__cpf->add(attr->type().variable());
-      const NodeSet& parents = type().dag().parents(attr->id());
-      for (NodeSet::iterator arc = parents.begin(); arc != parents.end(); ++arc) {
-        attr->addParent(get(*arc));
-      }
-    } else {
-      GUM_CHECKPOINT;
-      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
-    }
-  } else {
-    if (dynamic_cast< const MultiDimArray<prm_float>* >(impl)) {
-      attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), static_cast< const MultiDimArray<prm_float>& >(*impl)));
-    } else if (dynamic_cast< const MultiDimSparse<prm_float>* >(impl)) {
-      // Copy the sparse array in a MultiDimArray, this is sloppy but fast
-      // Still MultiDimSparse are not yet used so you this is only in case someone add them without reading the code first
-      MultiDimArray<prm_float>* array = new MultiDimArray<prm_float>();
-      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter)
-        array->add(**iter);
-      for (Instantiation i(*impl); not i.end(); i.inc())
-        array->set(i, impl->get(i));
-      attr->__cpf = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bijection(), *array));
-    } else {
-      GUM_CHECKPOINT;
-      // Just need to make the copy using the bijection but we only use multidim array
-      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
     }
   }
 }

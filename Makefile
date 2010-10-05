@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=BayesNetGenerator
+SKOOL_TEST=Skool
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

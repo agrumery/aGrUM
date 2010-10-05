@@ -418,6 +418,13 @@ void Parser::generateInfEngine(const prm::System& sys) {
     BayesNetInference<p_f>* bn_inf = 0;
     BayesNet<p_f>* bn = new BayesNet<p_f>();
     BayesNetFactory<p_f> bn_factory(bn);
+    if (verbose) {
+      log << "Grounding the network... " << std::flush;
+    }
+    sys.groundedBN(bn_factory);
+    if (verbose) {
+      log << "Finished." << std::endl;
+    }
     if (bn_engine == "VE") {
       bn_inf = new VariableElimination<p_f>(*bn);
     } else if (bn_engine == "VEBB") {
