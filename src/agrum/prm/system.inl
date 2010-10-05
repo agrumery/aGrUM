@@ -233,6 +233,12 @@ System::end(const std::string& a) const {
   }
 }
 
+INLINE
+bool
+System::exists(const std::string& name) const {
+  return __nameMap.exists(name) or __arrayMap.exists(name);
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

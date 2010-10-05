@@ -109,6 +109,11 @@ class Instance: public PRMObject {
     bool exists(NodeId id) const;
 
     /**
+     * Returns true if name matches an Attribute in this Instance.
+     */
+    bool exists(const std::string& name) const;
+
+    /**
      * @brief Getter on an Attribute of this Instance.
      *
      * Recall that Aggregate are instantiated has Attribute

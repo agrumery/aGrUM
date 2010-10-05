@@ -30,6 +30,8 @@
 #if !defined(SKOOL_COCO_SCANNER_H__)
 #define SKOOL_COCO_SCANNER_H__
 
+-->headerdef
+
 #include <agrum/core/cocoR.h>
 using namespace std;
 

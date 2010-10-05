@@ -122,6 +122,9 @@ class System: public PRMObject {
     /// Returns the number of Instance in this System.
     Size size() const;
 
+    /// Retruns true either if name is an instance or an array in this System.
+    bool exists(const std::string& name) const;
+
     /// Returns true if the given Class has at least one Instance in this
     /// System.
     bool isInstantiated(const Class& c) const;

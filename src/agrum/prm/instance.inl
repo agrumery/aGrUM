@@ -88,6 +88,12 @@ Instance::exists(NodeId id) const {
 }
 
 INLINE
+bool
+Instance::exists(const std::string& name) const {
+  return __type->exists(name) and exists(__type->get(name).id());
+}
+
+INLINE
 Attribute&
 Instance::get(NodeId id) {
   try {
