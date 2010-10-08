@@ -108,8 +108,8 @@ Class::__inheritClass(const Class& c) {
   // in c.
   Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
   for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
-    Attribute* attr = new Attribute((*iter)->name(), (*iter)->type());
-    bij.insert(&(attr->type().variable()), &((*iter)->type().variable()));
+    Attribute* attr = new Attribute((*iter)->name(), (*iter)->type(), static_cast<MultiDimImplementation<prm_float>*>((**iter).cpf().getContent()->newFactory()));
+    bij.insert(&((*iter)->type().variable()), &(attr->type().variable()));
     attr->setId((*iter)->id());
     __nodeIdMap.insert(attr->id(), attr);
     __attributes.insert(attr);
@@ -129,7 +129,7 @@ Class::__inheritClass(const Class& c) {
     } catch (OperationNotAllowed&) {
       agg = new Aggregate((*iter)->name(), (*iter)->agg_type(), (*iter)->type());
     }
-    bij.insert(&(agg->type().variable()), &((*iter)->type().variable()));
+    bij.insert(&((*iter)->type().variable()), &(agg->type().variable()));
     agg->setId((*iter)->id());
     __nodeIdMap.insert(agg->id(), agg);
     __aggregates.insert(agg);
@@ -153,7 +153,7 @@ Class::__inheritClass(const Class& c) {
     Sequence<ClassElement*> chain((*iter)->chain());
     chain.setAtPos(0, __nameMap[(*iter)->chain().front()->name()]);
     SlotChain* sc = new SlotChain((*iter)->name(), chain);
-    bij.insert(&(sc->type().variable()), &((*iter)->type().variable()));
+    bij.insert(&((*iter)->type().variable()), &(sc->type().variable()));
     sc->setId((*iter)->id());
     __nodeIdMap.insert(sc->id(), sc);
     __slotChains.insert(sc);
@@ -168,14 +168,11 @@ Class::__inheritClass(const Class& c) {
   // Copying the IO flag
   _copyIOFlags(c);
   // Copying content of CPF
+  Attribute* a = 0;
   for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
-    Potential<prm_float>& child_cpf = get((*iter)->safeName()).cpf();
-    const Potential<prm_float>& prnt_cpf = (*iter)->cpf();
-    Instantiation i(child_cpf), j(prnt_cpf);
-    for (i.setFirst(); not i.end(); i.inc()) {
-      Instantiation::assign_values(bij, i, j);
-      child_cpf.set(i, prnt_cpf.get(j));
-    }
+    a = static_cast<Attribute*>(__nameMap[(**iter).safeName()]);
+    delete a->__cpf;
+    a->__cpf = copyPotential(bij, (**iter).cpf());
   }
 }
 

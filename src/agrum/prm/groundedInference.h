@@ -121,7 +121,7 @@ class GroundedInference: public PRMInference {
     /// The bayesnet inference engine used by this class.
     BayesNetInference<prm_float>* __inf;
 
-    List< Potential<prm_float>* > __obs;
+    List< const Potential<prm_float>* > __obs;
 };
 
 } /* namespace prm */

@@ -15,8 +15,12 @@ namespace std {
 #include <agrum/prm/PRMFactory.h>
 
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent());}
-
+#ifdef GUM_NO_INLINE
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); std::cerr << e.getCallStack() << std::endl; }
+#endif
+#ifndef GUM_NO_INLINE
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
+#endif
 
 #include <agrum/prm/skool/Scanner.h>
 using namespace std;

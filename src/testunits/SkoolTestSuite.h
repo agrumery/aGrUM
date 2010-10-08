@@ -879,15 +879,14 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
       for (System::iterator iter = sys->begin(); iter != sys->end(); ++iter) {
         for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-          Instantiation var;
+          Instantiation i((**jter).cpf()), var;
           var.add((**jter).type().variable());
-          Instantiation i((**jter).cpf());
           for (i.setFirstOut(var); not i.end(); i.incOut(var)) {
             prm_float f = 0.0;
             for (i.setFirstIn(var); not i.end(); i.incIn(var)) {
               f += (**jter).cpf().get(i);
             }
-            TS_ASSERT_DELTA(f, (prm_float) 1, 10e-3);
+            TS_ASSERT_DELTA(f, 1.0, 1e-9);
             i.unsetOverflow();
           }
         }

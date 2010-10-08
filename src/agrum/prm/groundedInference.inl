@@ -76,7 +76,7 @@ GroundedInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
   }
   std::stringstream sBuff;
   if (not __obs.empty()) {
-    __inf->insertEvidence(reinterpret_cast< const List< const Potential<prm_float>* >& >(__obs));
+    __inf->insertEvidence(__obs);
   }
   sBuff << chain.first->name() << "." << chain.second->safeName();
   m = __inf->marginal(__inf->bn().idFromName(sBuff.str()));

@@ -64,46 +64,36 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
 {
   const MultiDimImplementation<prm_float>* impl = source.getContent();
   Potential<prm_float>* p = 0;
-  if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {
-    if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
-      p = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(bij, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
-    } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
-      p = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(bij, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
-    } else if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
-      try {
+  try {
+    if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {
+      if (dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >(impl)) {
+        p = new Potential<prm_float>(new MultiDimNoisyORCompound<prm_float>(bij, static_cast<const MultiDimNoisyORCompound<prm_float>&>(*impl)));
+      } else if (dynamic_cast< const MultiDimNoisyORNet<prm_float>* >(impl)) {
+        p = new Potential<prm_float>(new MultiDimNoisyORNet<prm_float>(bij, static_cast<const MultiDimNoisyORNet<prm_float>&>(*impl)));
+      } else if (dynamic_cast< const MultiDimAggregator<prm_float>* >(impl)) {
         p = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
         for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter)
           p->add(*(bij.second(*iter)));
-      } catch (NotFound& e) {
-        // Can happen when attr is an internal aggregator
-        delete p;
-        throw e;
+      } else {
+        GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
       }
     } else {
-      GUM_CHECKPOINT;
-      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
+      if (dynamic_cast< const MultiDimArray<prm_float>* >(impl)) {
+        p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast< const MultiDimArray<prm_float>& >(*impl)));
+      } else if (dynamic_cast<const MultiDimBijArray<prm_float>*>(impl)) {
+        p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBijArray<prm_float>&>(*impl)));
+      } else if (dynamic_cast< const MultiDimSparse<prm_float>* >(impl)) {
+        GUM_ERROR(FatalError, "There is no MultiDimSparse in PRMs, normally...");
+      } else {
+        // Just need to make the copy using the bijection but we only use multidim array
+        GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
+      }
     }
-  } else {
-    if (dynamic_cast< const MultiDimArray<prm_float>* >(impl)) {
-      p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast< const MultiDimArray<prm_float>& >(*impl)));
-    } else if (dynamic_cast< const MultiDimSparse<prm_float>* >(impl)) {
-      // Copy the sparse array in a MultiDimArray, this is sloppy but fast
-      // Still MultiDimSparse are not yet used so you this is only in case someone add them without reading the code first
-      MultiDimArray<prm_float>* array = new MultiDimArray<prm_float>();
-      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter)
-        array->add(**iter);
-      for (Instantiation i(*impl); not i.end(); i.inc())
-        array->set(i, impl->get(i));
-      p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, *array));
-    } else if (dynamic_cast<const MultiDimBijArray<prm_float>*>(impl)) {
-      p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBijArray<prm_float>&>(*impl)));
-    } else {
-      // Just need to make the copy using the bijection but we only use multidim array
-      GUM_CHECKPOINT;
-      GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
-    }
+    return p;
+  } catch (Exception& e) {
+    if (p) delete p;
+    throw e;
   }
-  return p;
 }
 
 

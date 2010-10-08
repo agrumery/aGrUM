@@ -77,27 +77,15 @@ SlotChain::__copyLastElt() {
   switch (__chain->back()->elt_type()) {
     case prm_attribute:
       {
-        const Attribute* c_attr = static_cast<const Attribute*>(__chain->back());
-        Attribute* attr = 0;
-        Type* type = new Type(c_attr->type());
+        const Attribute* old_attr = static_cast<const Attribute*>(__chain->back());
+        Type* t = new Type(old_attr->type());
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
-        bij.insert(&(type->variable()), &(c_attr->type().variable()));
-        if (reinterpret_cast<const MultiDimArray<prm_float>* >(c_attr->cpf().getContent())) {
-          MultiDimBijArray<prm_float>* multidim =
-            new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimArray<prm_float>& >(*(c_attr->cpf().getContent())));
-          attr = new Attribute(c_attr->name(), type, new Potential<prm_float>(multidim), true);
-        } else if (reinterpret_cast<const MultiDimNoisyORCompound<prm_float>* >(c_attr->cpf().getContent())) {
-          MultiDimNoisyORCompound<prm_float>* noisy =
-            new MultiDimNoisyORCompound<prm_float>(bij, static_cast<const MultiDimNoisyORCompound<prm_float>& >(*(c_attr->cpf().getContent())));
-          attr = new Attribute(c_attr->name(), type, new Potential<prm_float>(noisy), true);
-        } else if (reinterpret_cast<const MultiDimNoisyORNet<prm_float>* >(c_attr->cpf().getContent())) {
-          MultiDimNoisyORNet<prm_float>* noisy =
-            new MultiDimNoisyORNet<prm_float>(bij, static_cast<const MultiDimNoisyORNet<prm_float>& >(*(c_attr->cpf().getContent())));
-          attr = new Attribute(c_attr->name(), type, new Potential<prm_float>(noisy), true);
-        } else {
-          GUM_ERROR(FatalError, "unknown multidim implementation");
-        }
-        new_elt = attr;
+        bij.insert(&(old_attr->type().variable()), &(t->variable()));
+        for (MultiDimInterface::iterator iter = __chain->back()->cpf().begin(); iter != __chain->back()->cpf().end(); ++iter)
+          if ((*iter) != &(old_attr->type().variable()))
+            bij.insert(*iter, *iter);
+        Potential<prm_float>* p = copyPotential(bij, __chain->back()->cpf());
+        new_elt = new Attribute(__chain->back()->name(), t, p, true);
         break;
       }
     case prm_aggregate:

@@ -40,8 +40,9 @@ GroundedInference::~GroundedInference() {
     delete __inf;
   }
   if (not __obs.empty()) {
-    for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
-      delete *iter;
+    for (List<const Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
+      // We used const ptrs only because of BayesNetInference::addEvidence() requires it
+      delete const_cast<Potential<prm_float>*>(*iter);
     }
   }
 }
@@ -67,10 +68,10 @@ GroundedInference::_evidenceRemoved(const Chain& chain) {
   std::stringstream var_name;
   var_name << chain.first->name() << "." << chain.second->safeName();
   const DiscreteVariable& var = __inf->bn().variableFromName(var_name.str());
-  for (List< Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
+  for (List<const Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter) {
     if ((**iter).contains(var)) {
       __inf->eraseEvidence(*iter);
-      Potential<prm_float>* e = *iter;
+      const Potential<prm_float>* e = *iter;
       __obs.erase(iter);
       delete e;
       break;

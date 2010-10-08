@@ -196,7 +196,6 @@ System::__groundRef(const Instance& instance, BayesNetFactory<prm_float>& factor
           }
         case ClassElement::prm_slotchain:
           {
-            // No need to check if iter is an aggregate or not since parsing will raise an error
             std::string parent_name =
               static_cast<const SlotChain&>(instance.type().get(*arc)).lastElt().safeName();
             const Set<Instance*>& refs = instance.getInstances(*arc);
@@ -211,9 +210,9 @@ System::__groundRef(const Instance& instance, BayesNetFactory<prm_float>& factor
       }
     }
     factory.endParentsDeclaration();
-    // Checking if we need to ground the Potential (only for attributes at the class level since
-    // aggregate's Potential are generated)
-    if (ClassElement::isAttribute(instance.type().get((**iter).id()))) {
+    // Checking if we need to ground the Potential (only for class level attributes since
+    // aggregates Potentials are generated)
+    if (ClassElement::isAttribute(instance.type().get((**iter).safeName()))) {
       __groundPotential(instance, **iter, factory);
     }
   }
@@ -253,21 +252,6 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
   }
   // This should be optimized (using MultiDimBijArray and by handling noisy-or)
   Potential<prm_float>* p = copyPotential(bijection, attr.cpf());
-  // Potential<prm_float>* p = new Potential<prm_float>();
-  // typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
-  // const Sequence<const DiscreteVariable*>& var_seq = attr.cpf().variablesSequence();
-  // for (VarSeqIterator iter = var_seq.begin(); iter != var_seq.end(); ++iter) {
-  //   p->add(*(bijection.first(*iter)));
-  // }
-  // Instantiation i(p);
-  // Instantiation j(attr.cpf());
-  // for (j.setFirst(); not j.end(); j.inc()) {
-  //   typedef Sequence<const DiscreteVariable*>::const_iterator VarSeqIterator;
-  //   for (VarSeqIterator iter = j.variablesSequence().begin(); iter != j.variablesSequence().end(); ++iter) {
-  //     i.chgVal(*(bijection.first(*iter)), j.val(*iter));
-  //   }
-  //   p->set(i, attr.cpf().get(j));
-  // }
   factory.setVariableCPT(var_name.str(), p, false);
 }
 

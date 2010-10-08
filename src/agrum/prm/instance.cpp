@@ -61,7 +61,7 @@ Instance::__copyParameter(Attribute* source) {
     attr->cpf().set(i, source->cpf().get(j));
   attr->setId(source->id());
   __nodeIdMap.insert(attr->id(), attr);
-  __bijection.insert(&(attr->type().variable()), &(source->type().variable()));
+  __bijection.insert(&(source->type().variable()), &(attr->type().variable()));
 }
 
 Instance::~Instance() {
