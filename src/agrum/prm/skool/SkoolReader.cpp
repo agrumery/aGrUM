@@ -45,9 +45,6 @@ SkoolReader::setClassPath(const std::string& class_path) {
   }
   if (i != std::string::npos)
     __class_path.push_back(class_path.substr(i, j));
-  for (size_t idx = 0; idx < __class_path.size(); ++idx) {
-    std::cout << __class_path[idx] << std::endl;
-  }
 }
 
 } /* namespace skool */
