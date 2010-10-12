@@ -409,6 +409,7 @@ def variablesSequence(self):
     PyObject * __indexfromdict__(PyObject *id_dict) { return NULL; }
     const char * __str__() { return NULL; }
     PyObject *tolist() { return NULL; }
+    PyObject *toarray() { return NULL; }
     void __getitem__(PyObject *id) {}
     void __setitem__(PyObject *id, PyObject *value) {}
     void var_names() {}
