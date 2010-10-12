@@ -315,10 +315,10 @@ def variablesSequence(self):
 %feature("shadow") gum::Potential::__indexfromdict__ %{
     def __indexfromdict__(self, id_dict):
         index = []
-        for id in id_dict:
-            if not id in self._var_names:
-                raise IndexError("\"%s\" is not a variable of this table !"
-                                 %(id))
+        #for id in id_dict:
+        #    if not id in self._var_names:
+        #        raise IndexError("\"%s\" is not a variable of this table !"
+        #                         %(id))
         for name, dim in zip(self._var_names, self._var_dims):
             if name in id_dict:
                 id_value = id_dict[name]
@@ -347,6 +347,11 @@ def variablesSequence(self):
     def tolist(self):
         self.__fill_distrib__()
         return self.__distrib__.tolist()
+%}
+
+%feature("shadow") gum::Potential::toarray %{
+    def toarray(self):
+        return array(self.tolist())
 %}
 
 

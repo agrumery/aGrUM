@@ -169,9 +169,14 @@ class TestIndexs(PotentialTestCase):
         list2[{'r': 'carrement'}] = [0.6, 0.4]
         self.assertListsAlmostEqual(list2[{'r': 'bof'}].tolist(), [0.1, 0.9])
         self.assertListsAlmostEqual(list2[{'r': 1}].tolist(), [0.6, 0.4])
+        
+        self.assertListsAlmostEqual(list2[{'c': 0}].tolist(), [0.1, 0.6])
+        self.assertListsAlmostEqual(list2[{'c': 1}].tolist(), [0.9, 0.4])
+        
+        self.assertListsAlmostEqual(list2[{'r': 'bof','existepas':0}].tolist(), [0.1, 0.9])
+        self.assertListsAlmostEqual(list2[{'r': 1,'existepas':'et non'}].tolist(), [0.6, 0.4])
 
-        self.assertRaises(IndexError, list2.__getitem__,{'existepas':0})
-        self.assertRaises(IndexError, list2.__getitem__,{'s':99})
+        self.assertRaises(IndexError, list2.__getitem__,{'r':99})
 
 
 
