@@ -27,6 +27,24 @@
 namespace gum {
 namespace prm {
 
+INLINE
+std::string
+StructuredInference::__str(const Instance* i, const Attribute* a) const {
+  return i->name() + __dot + a->safeName();
+}
+
+INLINE
+std::string
+StructuredInference::__str(const Instance* i, const Attribute& a) const {
+  return i->name() + __dot + a.safeName();
+}
+
+INLINE
+std::string
+StructuredInference::__str(const Instance* i, const SlotChain& a) const {
+  return i->name() + __dot + a.lastElt().safeName();
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

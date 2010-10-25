@@ -34,14 +34,14 @@ namespace gum {
 namespace prm {
 
 StructuredInference::StructuredInference(const PRM& prm, const System& system):
-  PRMInference(prm, system), __gspan(0)
+  PRMInference(prm, system), __gspan(0), __dot(".")
 {
   GUM_CONSTRUCTOR( StructuredInference );
   __gspan = new GSpan(prm, system);
 }
 
 StructuredInference::StructuredInference(const StructuredInference& source):
-  PRMInference(source), __gspan(0)
+  PRMInference(source), __gspan(0), __dot(".")
 {
   GUM_CONS_CPY( StructuredInference );
   __gspan = new GSpan(*_prm, *_sys);
@@ -93,67 +93,46 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   std::string dot = ".";
   // const gspan::InterfaceGraph& ig = __gspan->interfaceGraph();
   Set<Potential<prm_float>*> pool;
-  // We'll use the first match for computations
-  const GSpan::MatchedInstances& matches = __gspan->matches(*p);
-  const Sequence<Instance*>& match = **(matches.begin());
-  // We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
-  // with children outside the pattern and the other nodes
-  List<NodeSet> partial_order;
-  for (int i = 0; i < 4; ++i) partial_order.push_front(NodeSet());
-  NodeSet& inners = partial_order[0];
-  NodeSet& obs = partial_order[1];
-  NodeSet& outputs = partial_order[2];
-  //NodeSet& queries = partial_order[3];
-  UndiGraph* graph = new UndiGraph();   // A yet to be triangulated undigraph
-  Property<unsigned int>::onNodes mod;  // The undigraph node's modalities
-  Bijection<NodeId, const DiscreteVariable*> vars;
-  // Finally we declared a bijection to easily keep track  bettween graph and attributes
-  Bijection<NodeId, std::string> node2attr; // its of the form instance_name DOT attr_name
-  // First we add nodes to graph and fill set and mod
-  __buildPatternGraph(*graph, match, outputs, inners, mod, vars, node2attr, pool);
+  StructuredInference::PData data(*p, __gspan->matches(*p));
+  // First we add nodes to graph and fill mod, outputs, inners, vars, node2attr and pool
+  __buildPatternGraph(data, pool);
   // Second we add observed nodes in all matches to obs
-  __buildObsSet(matches, match, obs, node2attr);
+  __buildObsSet(data);
   // Now we can triangulate graph
-  PartialOrderedTriangulation t(graph, &mod, &partial_order);
+  PartialOrderedTriangulation t(&(data.graph), &(data.mod), &(data.partial_order));
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
-  // We eliminate inner variables and then we eliminate observed nodes w.r.t. each match observation set
-  for (size_t i = 0; i < inners.size(); ++i)
-    __eliminateNode(vars.second(elim_order[i]), pool);
-  for (GSpan::MatchedInstances::const_iterator iter = matches.begin(); iter != matches.end(); ++iter)
-    __elim_map.insert(*iter, __eliminateObservedNodes(vars, pool, match, **iter, elim_order, inners.size(), obs.size()));
+  // We eliminate inner variables and then we eliminate observed nodes w.r.t.
+  // each match's observation set
+  for (size_t i = 0; i < data.inners().size(); ++i)
+    __eliminateNode(data.vars.second(elim_order[i]), pool);
+  for (GSpan::MatchedInstances::const_iterator iter = data.matches.begin(); iter != data.matches.end(); ++iter)
+    __elim_map.insert(*iter, __eliminateObservedNodes(data, pool, **iter, elim_order));
 }
 
 void
-StructuredInference::__buildPatternGraph(UndiGraph& graph, const Sequence<Instance*>& match,
-                                         NodeSet& outputs, NodeSet& inners,
-                                         Property<unsigned int>::onNodes& mod,
-                                         Bijection<NodeId, const DiscreteVariable*>& vars,
-                                         Bijection<NodeId, std::string>& node2attr,
-                                         Set<Potential<prm_float>*>& set)
+StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
+                                         Set<Potential<prm_float>*>& pool)
 {
-  std::string dot = ".";
-  for (Sequence<Instance*>::const_iterator inst = match.begin(); inst != match.end(); ++inst) {
+  for (Sequence<Instance*>::const_iterator inst = data.match().begin(); inst != data.match().end(); ++inst) {
     for (Instance::const_iterator attr = (**inst).begin(); attr != (**inst).end(); ++attr) {
-      std::string name = (**inst).name() + dot + (**attr).safeName();
       // Adding the node
-      NodeId id = graph.insertNode();
-      node2attr.insert(id, name);
-      mod.insert(id, (**attr).type()->domainSize());
-      vars.insert(id, &((**attr).type().variable()));
-      set.insert(const_cast<Potential<prm_float>*>(&((**attr).cpf())));
+      NodeId id = data.graph.insertNode();
+      data.node2attr.insert(id, __str(*inst, *attr));
+      data.mod.insert(id, (**attr).type()->domainSize());
+      data.vars.insert(id, &((**attr).type().variable()));
+      pool.insert(const_cast<Potential<prm_float>*>(&((**attr).cpf())));
     }
   }
   // Second we add edges and nodes to inners or outputs
-  for (Sequence<Instance*>::const_iterator inst = match.begin(); inst != match.end(); ++inst) {
+  for (Sequence<Instance*>::const_iterator inst = data.match().begin(); inst != data.match().end(); ++inst) {
     for (Instance::const_iterator attr = (**inst).begin(); attr != (**inst).end(); ++attr) {
-      NodeId node = node2attr.first((**inst).name() + dot + (**attr).safeName());
-      std::string tail, head;
-      bool found = false; // If this is set at true, then node is an outer node
+      NodeId node = data.node2attr.first(__str(*inst, *attr));
+      bool found = false; // If this is pool at true, then node is an outer node
       // Children existing in the instance type's DAG
       const NodeSet& chldrn = (**inst).type().dag().children((**attr).id());
       for (NodeSetIterator chld = chldrn.begin(); chld != chldrn.end(); ++chld) {
-        head = (**inst).name() + dot + (**inst).get(*chld).safeName();
-        graph.insertEdge(node, node2attr.first(head));
+        data.graph.insertEdge(node,
+            data.node2attr.first(__str(*inst, (**inst).get(*chld))));
       }
       // Parents existing in the instance type's DAG
       const NodeSet& prnts  = (**inst).type().dag().parents((**attr).id());
@@ -162,19 +141,18 @@ StructuredInference::__buildPatternGraph(UndiGraph& graph, const Sequence<Instan
           case ClassElement::prm_attribute:
           case ClassElement::prm_aggregate:
             {
-              tail = (**inst).name() + dot + (**inst).get(*prnt).safeName();
-              graph.insertEdge(node, node2attr.first(tail));
+              data.graph.insertEdge(node,
+                  data.node2attr.first(__str(*inst, (**inst).get(*prnt))));
               break;
             }
           case ClassElement::prm_slotchain:
             {
               const Set<Instance*>& ref = (**inst).getInstances(*prnt);
               for (Set<Instance*>::const_iterator jnst = ref.begin(); jnst != ref.end(); ++jnst) {
-                if (match.exists(*jnst)) {
-                  tail = (**jnst).name() + dot + static_cast<const SlotChain&>((**inst).type().get(*prnt)).lastElt().safeName();
-                  graph.insertEdge(node, node2attr.first(tail));
-                } else {
-                  found = true;
+                if (data.match().exists(*jnst)) {
+                  data.graph.insertEdge(node,
+                      data.node2attr.first(__str(*jnst,
+                          static_cast<const SlotChain&>((**inst).type().get(*prnt)))));
                 }
               }
               break;
@@ -186,30 +164,28 @@ StructuredInference::__buildPatternGraph(UndiGraph& graph, const Sequence<Instan
       const std::vector< std::pair<Instance*, std::string> >& ref_attr = (**inst).getRefAttr((**attr).id());
       typedef std::vector< std::pair<Instance*, std::string> >::const_iterator VecIter;
       for (VecIter pair = ref_attr.begin(); pair != ref_attr.end(); ++pair) {
-        if (match.exists(pair->first)) {
-          head = pair->first->name() + dot + pair->second;
-          graph.insertEdge(node, node2attr.first(head));
+        if (data.match().exists(pair->first)) {
+          data.graph.insertEdge(node, data.node2attr.first(pair->first->name() + __dot + pair->second));
         } else {
           found = true;
         }
       }
-      if (found)  outputs.insert(node);
-      else        inners.insert(node);
+      if (found)  data.outputs().insert(node);
+      else        data.inners().insert(node);
     }
   }
 }
 
 void
-StructuredInference::__buildObsSet(const GSpan::MatchedInstances& matches, const Sequence<Instance*>& match, NodeSet& obs,
-                                   Bijection<NodeId, std::string>& node2attr)
+StructuredInference::__buildObsSet(StructuredInference::PData& data)
 {
   std::string dot = ".";
-  for (GSpan::MatchedInstances::const_iterator iter = matches.begin(); iter != matches.end(); ++iter) {
+  for (GSpan::MatchedInstances::const_iterator iter = data.matches.begin(); iter != data.matches.end(); ++iter) {
     for (Sequence<Instance*>::const_iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
       if (hasEvidence(*jter)) {
         for (PRMInference::EMap::const_iterator node = evidence(*jter).begin(); node != evidence(*jter).end(); ++node) {
           try {
-            obs.insert(node2attr.first(match.atPos(jter.pos())->name() + dot + (**jter).get(node.key()).safeName()));
+            data.obs().insert(data.node2attr.first(data.match().atPos(jter.pos())->name() + dot + (**jter).get(node.key()).safeName()));
           } catch (DuplicateElement&) {
             // Do nothing
           }
@@ -252,12 +228,10 @@ StructuredInference::__eliminateNode(const DiscreteVariable* var,
 }
 
 Set<Potential<prm_float>*>*
-StructuredInference::__eliminateObservedNodes(const Bijection<NodeId, const DiscreteVariable*>& vars,
+StructuredInference::__eliminateObservedNodes(StructuredInference::PData& data,
                                               const Set<Potential<prm_float>*>& pool,
-                                              const Sequence<Instance*>& source,
                                               const Sequence<Instance*>& match,
-                                              const std::vector<NodeId>& elim_order,
-                                              Size start, Size end)
+                                              const std::vector<NodeId>& elim_order)
 {
   Set<Potential<prm_float>*> set(pool);
   for (Sequence<Instance*>::const_iterator iter = match.begin(); iter != match.end(); ++iter) {
@@ -283,9 +257,9 @@ StructuredInference::__eliminateObservedNodes(const Bijection<NodeId, const Disc
       }
     }
   }
-  for (size_t idx = start; idx < end; ++idx)
-    __eliminateNode(vars.second(elim_order[idx]), set);
-  return __translatePotSet(set, source, match);
+  for (size_t idx = data.inners().size(); idx < data.obs().size(); ++idx)
+    __eliminateNode(data.vars.second(elim_order[idx]), set);
+  return __translatePotSet(set, data.match(), match);
 }
 
 Set<Potential<prm_float>*>*
@@ -360,6 +334,14 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
     }
   }
   return retVal;
+}
+
+StructuredInference::PData::PData(const gspan::Pattern& p, const GSpan::MatchedInstances& m):
+  pattern(p), matches(m)
+{
+  GUM_CONSTRUCTOR(PData);
+  for (int i = 0; i < 4; ++i)
+    partial_order.push_front(NodeSet());
 }
 
 // void

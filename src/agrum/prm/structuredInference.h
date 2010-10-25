@@ -89,6 +89,39 @@ class StructuredInference: public PRMInference {
 
   private:
 
+    /// Private structure to reprensent data about a pattern.
+    struct PData {
+      /// The pattern for which this represents data about it
+      const gspan::Pattern& pattern;
+      /// A reference over the usable matches of pattern
+      const GSpan::MatchedInstances& matches;
+      /// A yet to be triangulated undigraph
+      UndiGraph graph;
+      /// The undigraph node's modalities
+      Property<unsigned int>::onNodes mod;
+      /// We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
+      /// with children outside the pattern and the other nodes
+      List<NodeSet> partial_order;
+      /// A bijection to easily keep track  between graph and attributes, its of the
+      /// form instance_name DOT attr_name
+      Bijection<NodeId, std::string> node2attr;
+      /// Bijection between graph's nodes and their corresponding DiscreteVariable, for
+      /// inference purpose
+      Bijection<NodeId, const DiscreteVariable*> vars;
+      /// Default constructor.
+      PData(const gspan::Pattern& p, const GSpan::MatchedInstances& m);
+      /// Returns the set of inner nodes
+      inline NodeSet& inners() { return partial_order[0]; }
+      /// Returns the set of inner and observed nodes given all the matches of pattern
+      inline NodeSet& obs() { return partial_order[1]; }
+      /// Returns the set of outputs nodes given all the matches of pattern
+      inline NodeSet& outputs() { return partial_order[3]; }
+      /// Returns the set of queried nodes given all the matches of pattern
+      inline NodeSet& queries() { return partial_order[4]; }
+      // We use the first match for computations
+      inline const Sequence<Instance*>& match() const { return **(matches.begin());}
+    };
+
     /// Pointer over th GSpan instance used by this class.
     GSpan* __gspan;
 
@@ -100,33 +133,29 @@ class StructuredInference: public PRMInference {
 
     void __reducePattern(const gspan::Pattern* p);
 
-    void __buildPatternGraph(UndiGraph& graph,
-                             const Sequence<Instance*>& match,
-                             NodeSet& outputs, NodeSet& inners,
-                             Property<unsigned int>::onNodes& mod,
-                             Bijection<NodeId, const DiscreteVariable*>& vars,
-                             Bijection<NodeId, std::string>& node2attr,
-                             Set<Potential<prm_float>*>& set);
+    void __buildPatternGraph(PData& data, Set<Potential<prm_float>*>& pool);
 
-    void __buildObsSet(const GSpan::MatchedInstances& matches,
-                       const Sequence<Instance*>& match, NodeSet& obs,
-                       Bijection<NodeId, std::string>& node2attr);
+    void __buildObsSet(PData& data);
 
     void __eliminateNode(const DiscreteVariable* var,
                          Set<Potential<prm_float>*>& pool);
 
     Set<Potential<prm_float>*>*
-    __eliminateObservedNodes(const Bijection<NodeId, const DiscreteVariable*>& vars,
+    __eliminateObservedNodes(StructuredInference::PData& data,
                              const Set<Potential<prm_float>*>& pool,
-                             const Sequence<Instance*>& source,
                              const Sequence<Instance*>& match,
-                             const std::vector<NodeId>& elim_order,
-                             Size start, Size end);
+                             const std::vector<NodeId>& elim_order);
 
     Set<Potential<prm_float>*>*
     __translatePotSet(Set<Potential<prm_float>*>& set,
                       const Sequence<Instance*>& source,
                       const Sequence<Instance*>& match);
+
+    /// Used to create strings
+    std::string __dot;
+    std::string __str(const Instance* i, const Attribute* a) const;
+    std::string __str(const Instance* i, const Attribute& a) const;
+    std::string __str(const Instance* i, const SlotChain& a) const;
 
 };
 
