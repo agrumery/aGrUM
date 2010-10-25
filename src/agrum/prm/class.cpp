@@ -108,7 +108,8 @@ Class::__inheritClass(const Class& c) {
   // in c.
   Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
   for (Set<Attribute*>::iterator iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter) {
-    Attribute* attr = new Attribute((*iter)->name(), (*iter)->type(), static_cast<MultiDimImplementation<prm_float>*>((**iter).cpf().getContent()->newFactory()));
+    // using multiDimSparse to prevent unecessary memory allocation for large arrays
+    Attribute* attr = new Attribute((*iter)->name(), (*iter)->type(), new MultiDimSparse<prm_float>(0.0));
     bij.insert(&((*iter)->type().variable()), &(attr->type().variable()));
     attr->setId((*iter)->id());
     __nodeIdMap.insert(attr->id(), attr);

@@ -34,6 +34,8 @@
 // ============================================================================
 #include <agrum/core/bijection.h>
 // ============================================================================
+#include <agrum/multidim/multiDimSparse.h>
+// ============================================================================
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/interface.h>
 #include <agrum/prm/attribute.h>
