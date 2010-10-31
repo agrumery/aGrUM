@@ -74,6 +74,10 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
         p = new Potential<prm_float>(static_cast<MultiDimImplementation<prm_float>*>(impl->newFactory()));
         for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter)
           p->add(*(bij.second(*iter)));
+      } else if (dynamic_cast<const MultiDimBucket<prm_float>*>(impl)) {
+        // This is necessary just to prevent non initialized arrays
+        const_cast<MultiDimBucket<prm_float>*>(static_cast<const MultiDimBucket<prm_float>*>(impl))->compute();
+        p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBucket<prm_float>*>(impl)->bucket()));
       } else {
         GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
       }

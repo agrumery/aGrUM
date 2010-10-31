@@ -102,16 +102,16 @@ PRMInference::hasEvidence(const Chain& chain) const {
 INLINE
 void
 PRMInference::removeEvidence(const Chain& chain) {
-	try {
-		if (__EMap(chain.first).exists(chain.second->id())) {
-			_evidenceRemoved(chain);
-			delete __EMap(chain.first)[chain.second->id()];
-			__EMap(chain.first).erase(chain.second->id());
-		}
-	} catch (NotFound&) {
-		// Ok, we are only removing
-		GUM_CHECKPOINT;
-	}
+  try {
+    if (__EMap(chain.first).exists(chain.second->id())) {
+      _evidenceRemoved(chain);
+      delete __EMap(chain.first)[chain.second->id()];
+      __EMap(chain.first).erase(chain.second->id());
+    }
+  } catch (NotFound&) {
+    // Ok, we are only removing
+    GUM_CHECKPOINT;
+  }
 }
 
 INLINE
@@ -120,13 +120,21 @@ PRMInference::marginal(const PRMInference::Chain& chain, Potential<prm_float>& m
   if (m.nbrDim() > 0) {
     GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
   }
-  if (chain.second != &(chain.first->get(chain.second->safeName()))) {
-    PRMInference::Chain good_chain = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
-    m.add(good_chain.second->type().variable());
-    _marginal(good_chain, m);
-  } else {
+  if (hasEvidence(chain)) {
     m.add(chain.second->type().variable());
-    _marginal(chain, m);
+    const Potential<prm_float>& e = *(evidence(chain.first)[chain.second->id()]);
+    Instantiation i(m), j(e);
+    for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
+      m.set(i, e.get(j));
+  } else {
+    if (chain.second != &(chain.first->get(chain.second->safeName()))) {
+      PRMInference::Chain good_chain = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
+      m.add(good_chain.second->type().variable());
+      _marginal(good_chain, m);
+    } else {
+      m.add(chain.second->type().variable());
+      _marginal(chain, m);
+    }
   }
 }
 

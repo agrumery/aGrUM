@@ -89,7 +89,28 @@ class StructuredInference: public PRMInference {
 
   private:
 
-    /// Private structure to reprensent data about a pattern.
+    /// Private structure to represent data about a reduced graph.
+    struct RGData {
+      /// The reduced graph.
+      UndiGraph reducedGraph;
+      /// Mapping between NodeId and modalities.
+      Property<unsigned int>::onNodes mods;
+      /// Mapping between DiscreteVariable and NodeId.
+      Bijection<const DiscreteVariable*, NodeId> var2node;
+      /// The pool of potentials matching the reduced graph
+      Set<Potential<prm_float>*> pool;
+      /// Partial order used for triangulation, first is outputs nodes, second
+      /// query nodes.
+      List< NodeSet > partial_order;
+      /// Default constructor
+      RGData();
+      /// Returns the set of outputs nodes (which will be eliminated).
+      inline NodeSet& outputs() { return partial_order[0]; }
+      /// Returns the set of query nodes (which will not be eliminated).
+      inline NodeSet& queries() { return partial_order[1]; }
+    };
+
+    /// Private structure to represent data about a pattern.
     struct PData {
       /// The pattern for which this represents data about it
       const gspan::Pattern& pattern;
@@ -97,7 +118,7 @@ class StructuredInference: public PRMInference {
       const GSpan::MatchedInstances& matches;
       /// A yet to be triangulated undigraph
       UndiGraph graph;
-      /// The undigraph node's modalities
+      /// The pattern's variables modalities
       Property<unsigned int>::onNodes mod;
       /// We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
       /// with children outside the pattern and the other nodes
@@ -110,6 +131,8 @@ class StructuredInference: public PRMInference {
       Bijection<NodeId, const DiscreteVariable*> vars;
       /// Default constructor.
       PData(const gspan::Pattern& p, const GSpan::MatchedInstances& m);
+      /// Copy constructor.
+      PData(const PData& source);
       /// Returns the set of inner nodes
       inline NodeSet& inners() { return partial_order[0]; }
       /// Returns the set of inner and observed nodes given all the matches of pattern
@@ -122,35 +145,117 @@ class StructuredInference: public PRMInference {
       inline const Sequence<Instance*>& match() const { return **(matches.begin());}
     };
 
+    /// Private structure to represent data about a Class.
+    struct CData {
+      /// The class about what this data is about.
+      const Class& c;
+      /// The class moral graph. NodeId matches those in c.
+      UndiGraph moral_graph;
+      /// The class variables modalities.
+      Property<unsigned int>::onNodes mods;
+      /// The partial order used of variable elimination.
+      List<NodeSet> partial_order;
+      /// The Set of Instances reduces at class level.
+      Set<const Instance*> instances;
+      /// The potential pool obtained by C elimination of inner nodes.
+      Set<Potential<prm_float>*> pool;
+      /// Default constructor.
+      CData(const Class& c);
+      /// Returns the set of inner nodes.
+      inline NodeSet& inners() { return partial_order[0]; }
+      /// Returns the set of aggregators and their parents.
+      inline NodeSet& aggregators() { return partial_order[1]; }
+      /// Returns the set of outputs nodes.
+      inline NodeSet& outputs() { return partial_order[2]; }
+      /// The elimination order for nodes of this class
+      inline std::vector<NodeId>& elim_order() {
+        if (not __elim_order) {
+          PartialOrderedTriangulation t(&(moral_graph), &(mods), &(partial_order));
+          __elim_order = new std::vector<NodeId>(t.eliminationOrder());
+        }
+        return *__elim_order;
+      }
+      private:
+      std::vector<NodeId>* __elim_order;
+    };
+
     /// Pointer over th GSpan instance used by this class.
     GSpan* __gspan;
 
+    /// Mapping between a Pattern's match and its potential pool after inner variables
+    /// were eliminated.
     HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*> __elim_map;
 
+    /// Mapping between a Class and data about instances reduced using only Class level
+    /// information.
+    HashTable<const Class*, CData*> __cdata_map;
+
+    /// Keeping track of create potentials to delete them after inference.
     Set<Potential<prm_float>*> __trash;
 
-    HashTable< const gspan::Pattern*, std::vector<Chain>* > __q;
+    HashTable< const Class*, std::vector<NodeId>* > __outputs;
 
+    /// This keeps track of reduced instances.
+    Set<const Instance*> __reducedInstances;
+
+    /// The query
+    PRMInference::Chain __query;
+
+    /// The pattern data of the pattern which one of its matches contains the query
+    PData* __pdata;
+
+    /// This calls __reducePattern() over each pattern and then build the reduced graph
+    /// which is used for inference.
+    /// The reduce graph is a triangulated instance graph.
+    void __buildReduceGraph(RGData& data);
+
+    /// Add the nodes in the reduced graph.
+    void __addNodesInReducedGraph(RGData& data);
+
+    /// Add edges in the reduced graph.
+    void __addEdgesInReducedGraph(RGData& data);
+
+    /// Add the reduced potentials of instances not in any used patterns.
+    void __reduceAloneInstances(RGData& data);
+
+    /// Proceed with the elimination of all inner variables (observed or not) of all
+    /// usable matches of Pattern p.
+    /// Inner variables which are part of the query are not eliminated.
     void __reducePattern(const gspan::Pattern* p);
 
+    /// Build the DAG corresponding to Pattern data.pattern, initialize pool with
+    /// all the Potentials of all variables in data.pattern. The first match of
+    /// data.pattern (aka data.match) is used.
     void __buildPatternGraph(PData& data, Set<Potential<prm_float>*>& pool);
 
+    /// Add in data.obs() all observed variable (output or not).
     void __buildObsSet(PData& data);
 
+    /// Add in data.queries() any queried variable in one of data.pattern matches.
+    void __buildQuerySet(PData& data);
+
+    /// Proceeds with the elimination of var in pool.
     void __eliminateNode(const DiscreteVariable* var,
                          Set<Potential<prm_float>*>& pool);
 
+    /// Proceeds with the elimination of observed variables in math and then
+    /// call __translatePotSet().
     Set<Potential<prm_float>*>*
     __eliminateObservedNodes(StructuredInference::PData& data,
                              const Set<Potential<prm_float>*>& pool,
                              const Sequence<Instance*>& match,
                              const std::vector<NodeId>& elim_order);
 
+    /// Translate a given Potential Set into one w.r.t. variables in match.
     Set<Potential<prm_float>*>*
     __translatePotSet(Set<Potential<prm_float>*>& set,
                       const Sequence<Instance*>& source,
                       const Sequence<Instance*>& match);
 
+    /// Unreduce the match containing the query.
+    void __unreduceMatchWithQuery();
+
+    std::vector<NodeId>* __getClassOutputs(const Class* c);
     /// Used to create strings
     std::string __dot;
     std::string __str(const Instance* i, const Attribute* a) const;
