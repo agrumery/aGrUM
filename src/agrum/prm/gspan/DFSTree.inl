@@ -29,20 +29,12 @@ namespace prm {
 namespace gspan {
 
 INLINE
-DFSTree::DFSTree(const InterfaceGraph& graph):
-  __graph(&graph)
+DFSTree::DFSTree(const InterfaceGraph& graph, gspan::SearchStrategy* strategy):
+  __graph(&graph), __strategy(strategy)
 {
   GUM_CONSTRUCTOR( DFSTree );
-}
-
-INLINE
-DFSTree::~DFSTree() {
-  GUM_DESTRUCTOR( DFSTree );
-  typedef HashTable<Pattern*, PatternData*>::iterator Iter;
-  for (Iter iter = __data.begin(); iter != __data.end(); ++iter) {
-    delete iter.key();
-    delete *iter;
-  }
+  if (not __strategy)
+    __strategy = new FrequenceSearch(2);
 }
 
 INLINE
@@ -156,59 +148,6 @@ DFSTree::max_indep_set(const Pattern& p) {
 }
 
 INLINE
-void
-DFSTree::__checkGrowth(Pattern& p, Pattern* child, EdgeGrowth& edge_growth) {
-  NodeId v = edge_growth.v;
-  // First we check if the edge is legal
-  if (v == 0) {
-    v = child->insertNode(*(edge_growth.l_v));
-  }
-  child->insertArc(edge_growth.u, v, *(edge_growth.edge));
-  // Neighborhood restriction is checked by the Pattern class
-  EdgeCode& edge = child->edgeCode(edge_growth.u, v);
-  // Then we check if the edge we added is valid
-  if (edge < *(child->code().codes.front())) {
-    GUM_ERROR(OperationNotAllowed, "added edge code is lesser than the first one in the pattern's DFSCode");
-  }
-  if (edge.isBackward()) {
-    typedef std::vector<EdgeCode*>::iterator EdgeIter;
-    for (EdgeIter iter = child->code().codes.begin(); (iter + 1) != child->code().codes.end(); ++iter) {
-      if ( (((**iter).i == v) or ((**iter).j == v)) and edge < (**iter) ) {
-        GUM_ERROR(OperationNotAllowed, "added backward edge is lesser than an existing edge on v");
-      }
-    }
-  }
-  // Finally we check if child is minimal.
-  if (not child->isMinimal()) {
-    GUM_ERROR(OperationNotAllowed, "the DFSCode for this growth is not minimal");
-  }
-}
-
-INLINE
-void
-DFSTree::__addChild(Pattern& p, Pattern* child, EdgeGrowth& edge_growth) {
-  // Adding child to the tree
-  NodeId node = DiGraph::insertNode();
-  __node_map.insert(node, child);
-  // Adding child in p's children list
-  std::list<NodeId>& children = __data[&p]->children;
-  if (children.empty()) {
-    children.push_back(node);
-  } else {
-    size_t size = children.size();
-    for (std::list<NodeId>::iterator iter = children.begin(); iter != children.end(); ++iter) {
-      if (child->code() < pattern(*iter).code()) {
-        children.insert(iter, node);
-        break;
-      }
-    }
-    if (size == children.size()) {
-      children.push_back(node);
-    }
-  }
-}
-
-INLINE
 double
 DFSTree::score(const Pattern& p)  const {
   return frequency(p) * (gain(p) / cost(p));
@@ -221,17 +160,17 @@ operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge) {
   return out;
 }
 
-INLINE
-Sequence< HashTable<ClassElement*, Size>* >&
-DFSTree::sub_patterns(const Pattern& p) {
-  return __data[const_cast<Pattern*>(&p)]->sub_patterns;
-}
-
-INLINE
-HashTable<NodeId, Idx>&
-DFSTree::sub_patterns_map(const Pattern& p) {
-  return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
-}
+// INLINE
+// Sequence< HashTable<ClassElement*, Size>* >&
+// DFSTree::sub_patterns(const Pattern& p) {
+//   return __data[const_cast<Pattern*>(&p)]->sub_patterns;
+// }
+// 
+// INLINE
+// HashTable<NodeId, Idx>&
+// DFSTree::sub_patterns_map(const Pattern& p) {
+//   return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
+// }
 
 // ============================================================================
 // EdgeGrowth
@@ -266,27 +205,23 @@ DFSTree::EdgeGrowth::~EdgeGrowth() {
 }
 
 INLINE
-void
-DFSTree::EdgeGrowth::insert(Instance* u, Instance* v) {
-  NodeId id = iso_graph.insertNode();
-  degree_list->push_back(id);
-  typedef Property< std::pair<Instance*, Instance*> >::onNodes::iterator MatchIterator;
-  for (MatchIterator iter = matches.begin(); iter != matches.end(); ++iter) {
-    if ( (iter->first == u) or (iter->second == u) or
-         (iter->first == v) or (iter->second == v) ) {
-      iso_graph.insertEdge(iter.key(), id);
-    }
-  }
-  // The order between u and v is important ! DO NOT INVERSE IT !
-  matches.insert(id, std::make_pair(u, v));
-}
-
-INLINE
 std::string
 DFSTree::EdgeGrowth::toString() {
   std::stringstream str;
   str << u << "-" << edge << "-" << l_v << "-" << v;
   return str.str();
+}
+
+INLINE
+Size
+DFSTree::EdgeGrowth::count() const {
+  return matches.size();
+}
+
+INLINE
+double
+DFSTree::frequency(const Pattern& p) const {
+  return (double) __data[const_cast<Pattern*>(&p)]->max_indep_set.size();
 }
 
 // ============================================================================

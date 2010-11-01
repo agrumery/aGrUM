@@ -28,11 +28,22 @@
 // ============================================================================
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/gspan/DFSTree.inl>
+#include <agrum/prm/gspan/searchStrategy.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
 namespace prm {
 namespace gspan {
+
+DFSTree::~DFSTree() {
+  GUM_DESTRUCTOR( DFSTree );
+  typedef HashTable<Pattern*, PatternData*>::iterator Iter;
+  for (Iter iter = __data.begin(); iter != __data.end(); ++iter) {
+    delete iter.key();
+    delete *iter;
+  }
+  delete __strategy;
+}
 
 void
 DFSTree::addRoot(LabelData& label) {
@@ -135,6 +146,57 @@ DFSTree::__is_new_seq(Sequence<Instance*>& seq,
   return true;
 }
 
+void
+DFSTree::__addChild(Pattern& p, Pattern* child, EdgeGrowth& edge_growth) {
+  // Adding child to the tree
+  NodeId node = DiGraph::insertNode();
+  __node_map.insert(node, child);
+  // Adding child in p's children list
+  std::list<NodeId>& children = __data[&p]->children;
+  if (children.empty()) {
+    children.push_back(node);
+  } else {
+    size_t size = children.size();
+    for (std::list<NodeId>::iterator iter = children.begin(); iter != children.end(); ++iter) {
+      if (child->code() < pattern(*iter).code()) {
+        children.insert(iter, node);
+        break;
+      }
+    }
+    if (size == children.size()) {
+      children.push_back(node);
+    }
+  }
+}
+
+void
+DFSTree::__checkGrowth(Pattern& p, Pattern* child, EdgeGrowth& edge_growth) {
+  NodeId v = edge_growth.v;
+  // First we check if the edge is legal
+  if (v == 0) {
+    v = child->insertNode(*(edge_growth.l_v));
+  }
+  child->insertArc(edge_growth.u, v, *(edge_growth.edge));
+  // Neighborhood restriction is checked by the Pattern class
+  EdgeCode& edge = child->edgeCode(edge_growth.u, v);
+  // Then we check if the edge we added is valid
+  if (edge < *(child->code().codes.front())) {
+    GUM_ERROR(OperationNotAllowed, "added edge code is lesser than the first one in the pattern's DFSCode");
+  }
+  if (edge.isBackward()) {
+    typedef std::vector<EdgeCode*>::iterator EdgeIter;
+    for (EdgeIter iter = child->code().codes.begin(); (iter + 1) != child->code().codes.end(); ++iter) {
+      if ( (((**iter).i == v) or ((**iter).j == v)) and edge < (**iter) ) {
+        GUM_ERROR(OperationNotAllowed, "added backward edge is lesser than an existing edge on v");
+      }
+    }
+  }
+  // Finally we check if child is minimal.
+  if (not child->isMinimal()) {
+    GUM_ERROR(OperationNotAllowed, "the DFSCode for this growth is not minimal");
+  }
+}
+
 Pattern&
 DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
   Pattern* child = new Pattern(p);
@@ -212,35 +274,40 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
     if (not removed.exists(*node)) {
       removed.insert(*node);
       const NodeSet& neighbours =  data->iso_graph.neighbours(*node);
-      for (NodeSet::const_iterator neighbor = neighbours.begin();
-           neighbor != neighbours.end(); ++neighbor) {
+      for (NodeSet::const_iterator neighbor = neighbours.begin(); neighbor != neighbours.end(); ++neighbor)
         removed.insert(*neighbor);
-      }
       data->max_indep_set.insert(*node);
     }
   }
-  if (data->max_indep_set.size() < min_freq) {
+  if (not __strategy->accept_growth(&p, child, &edge_growth)) {
     delete data;
     delete child;
     GUM_ERROR(OperationNotAllowed, "child is not frequent enough");
   }
   __addChild(p, child, edge_growth);
   __data.insert(child, data);
-  for (UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node) {
-    __find_sub_pattern(*child, *node);
-  }
+  // Uncomment this if you want to debug it
+  // for (UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node) {
+  //   __find_sub_pattern(*child, *node);
+  // }
   return *child;
 }
 
-Size
-DFSTree::EdgeGrowth::count() {
-  return matches.size();
+void
+DFSTree::EdgeGrowth::insert(Instance* u, Instance* v) {
+  NodeId id = iso_graph.insertNode();
+  degree_list->push_back(id);
+  typedef Property< std::pair<Instance*, Instance*> >::onNodes::iterator MatchIterator;
+  for (MatchIterator iter = matches.begin(); iter != matches.end(); ++iter) {
+    if ( (iter->first == u) or (iter->second == u) or
+         (iter->first == v) or (iter->second == v) ) {
+      iso_graph.insertEdge(iter.key(), id);
+    }
+  }
+  // The order between u and v is important ! DO NOT INVERSE IT !
+  matches.insert(id, std::make_pair(u, v));
 }
 
-double
-DFSTree::frequency(const Pattern& p) const {
-  return (double) __data[const_cast<Pattern*>(&p)]->max_indep_set.size();
-}
 
 double
 DFSTree::cost(const Pattern& p) const {
@@ -264,14 +331,6 @@ DFSTree::cost(const Pattern& p) const {
             break;
           }
         }
-        // if ( (*iter)->type().isOutputNode((*iter)->type().get(*node)) and (*iter)->hasRefAttr(*node) ) {
-        //   for (Set<Instance::InverseSC*>::iterator inverse = (*iter)->inverseSC(*node).begin(); inverse != (*iter)->inverseSC(*node).end(); ++inverse) {
-        //     if (not seq.exists((*inverse)->first)) {
-        //       cost *= (*iter)->get(*node).type().variable().domainSize();
-        //       break;
-        //     }
-        //   }
-        // }
       }
     }
     __data[const_cast<Pattern*>(&p)]->cost = cost;
@@ -303,7 +362,6 @@ DFSTree::gain(const Pattern& p) const {
   return (double) __data[const_cast<Pattern*>(&p)]->gain;
 }
 
-INLINE
 void
 DFSTree::__find_sub_pattern(Pattern& p, NodeId iso_map) {
   // PatternData& data = *(__data[&p]);
@@ -345,7 +403,6 @@ DFSTree::__find_sub_pattern(Pattern& p, NodeId iso_map) {
   // }
 }
 
-INLINE
 bool
 DFSTree::__test_equality(HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y) {
   for (HashTable<ClassElement*, Size>::iterator iter = x.begin(); iter != x.end(); ++iter) {
@@ -381,9 +438,9 @@ DFSTree::PatternData::~PatternData() {
     delete *iter;
   }
   typedef Sequence< HashTable<ClassElement*, Size>* >::iterator SubPatIter;
-  for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
-    delete *iter;
-  }
+  // for (SubPatIter iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {
+  //   delete *iter;
+  // }
 }
 
 

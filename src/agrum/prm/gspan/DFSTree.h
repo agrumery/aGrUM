@@ -24,8 +24,10 @@
  * @author Lionel TORTI
  */
 // ============================================================================
-#include <list>
 #include <utility>
+#include <cmath>
+#include <list>
+#include <vector>
 #include <ostream>
 // ============================================================================
 #include <agrum/core/sequence.h>
@@ -44,6 +46,8 @@ namespace gum {
 namespace prm {
 namespace gspan {
 
+class SearchStrategy;
+
 /**
  * @class DFSTree DFSTree.h <agrum/prm/gspan/DFSTree.h>
  *
@@ -61,7 +65,7 @@ class DFSTree: private DiGraph {
 
     /// Default constructor.
     //DFSTree(InterfaceGraph* graph);
-    DFSTree(const InterfaceGraph& graph);
+    DFSTree(const InterfaceGraph& graph, SearchStrategy* strategy = 0);
 
     /// Destructor.
     ~DFSTree();
@@ -121,7 +125,7 @@ class DFSTree: private DiGraph {
       NodeId u;
       /// Returns the number of matches in the interface graph
       /// for this edge growth.
-      Size count();
+      Size count() const;
       /// The LabelData over the edge of this edge growth.
       LabelData* edge;
       /// The LabelData over the node of this edge growth.
@@ -210,19 +214,19 @@ class DFSTree: private DiGraph {
      */
     Set<NodeId>& max_indep_set(const Pattern& p);
 
-    /**
-     * Returns the sub_patterns member of the PatternData associated to p.
-     * @param p A Pattern.
-     * @return the sub_patterns member of the PatternData associated to p.
-     */
-    Sequence< HashTable<ClassElement*, Size>* >& sub_patterns(const Pattern& p);
+    // /**
+    //  * Returns the sub_patterns member of the PatternData associated to p.
+    //  * @param p A Pattern.
+    //  * @return the sub_patterns member of the PatternData associated to p.
+    //  */
+    // Sequence< HashTable<ClassElement*, Size>* >& sub_patterns(const Pattern& p);
 
-    /**
-     * Returns the sub_patterns_map member of the PatternData associated to p.
-     * @param p A Pattern.
-     * @return the sub_patterns_map member of the PatternData associated to p.
-     */
-    HashTable<NodeId, Idx>& sub_patterns_map(const Pattern& p);
+    // /**
+    //  * Returns the sub_patterns_map member of the PatternData associated to p.
+    //  * @param p A Pattern.
+    //  * @return the sub_patterns_map member of the PatternData associated to p.
+    //  */
+    // HashTable<NodeId, Idx>& sub_patterns_map(const Pattern& p);
 
     /// Returns the frequency of p respecting it's maximal independent set.
     double frequency(const Pattern& p) const;
@@ -275,12 +279,12 @@ class DFSTree: private DiGraph {
       Size cost;
       /// The gain of this Pattern
       Size gain;
-      /// The different sub_patterns of p given the iso_map.
-      Sequence< HashTable<ClassElement*, Size>* > sub_patterns;
-      /// The mapping between an iso_map and the given sub pattern.
-      HashTable<NodeId, Idx> sub_patterns_map;
-      /// The number of each sub pattern
-      std::vector<Size> sub_patterns_count;
+      // /// The different sub_patterns of p given the iso_map.
+      // Sequence< HashTable<ClassElement*, Size>* > sub_patterns;
+      // /// The mapping between an iso_map and the given sub pattern.
+      // HashTable<NodeId, Idx> sub_patterns_map;
+      // /// The number of each sub pattern
+      // std::vector<Size> sub_patterns_count;
     };
 
     /// The interface graph on which this DFSTree applies.
@@ -294,6 +298,9 @@ class DFSTree: private DiGraph {
 
     /// Data about patterns in this DFSTree.
     HashTable<Pattern*, PatternData*> __data;
+
+    /// The strategy used to prune the search tree.
+    SearchStrategy* __strategy;
 
     /// Raise different exceptions if child is invalid or illegal
     void __checkGrowth(Pattern& p, Pattern* child, EdgeGrowth& edge_growth);
@@ -309,7 +316,8 @@ class DFSTree: private DiGraph {
     /// @param seq A sequence of EdgeData.
     void __initialiaze_root(Pattern* p, Sequence<EdgeData*>& seq);
 
-    // Can't remember the use of this method.
+    /// This can be used to decompose a pattern in sub patter, which could be useful
+    /// in some scenarios.
     void __find_sub_pattern(Pattern& p, NodeId iso_map);
 
     // Used by __find_sub_pattern.
@@ -319,11 +327,128 @@ class DFSTree: private DiGraph {
 
 std::ostream& operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge);
 
+/**
+ * @class SearchStrategy searchStrategy.h <agrum/prm/gspan/DFSTree.h>
+ *
+ * This is an abstract class used to tune search strategies in the gspan
+ * algorithm. Since GSpan uses a DFS to expand the search tree, this class
+ * works as a stack regarding adding and removing informations about the growths.
+ */
+class SearchStrategy {
+
+  public:
+
+    // =========================================================================
+    /// @name Constructor and destructor.
+    // ==========================================================================
+    /// @{
+
+    /// Default constructor.
+    SearchStrategy();
+
+    /// Destructor.
+    virtual ~SearchStrategy();
+
+    /// @}
+    // =========================================================================
+    /// @name Search methods.
+    // ==========================================================================
+    /// @{
+
+    virtual bool accept_growth(const Pattern* parent,
+                               const Pattern* child,
+                               const DFSTree::EdgeGrowth* growth) =0;
+
+    /// @}
+
+};
+
+/**
+ * @class FrequenceSearch frequenceSearch.h <agrum/prm/gspan/DFSTree.h>
+ *
+ * This is class is an implementation of a simple serach strategy for the gspan
+ * algorithm: it accept a growth if its frequency is above a user defined value.
+ */
+class FrequenceSearch : public SearchStrategy {
+
+  public:
+
+    // =========================================================================
+    /// @name Constructor and destructor.
+    // ==========================================================================
+    /// @{
+
+    /// Default constructor.
+    FrequenceSearch(Size freq);
+
+    /// Destructor.
+    virtual ~FrequenceSearch();
+
+    /// @}
+    // =========================================================================
+    /// @name Search methods.
+    // ==========================================================================
+    /// @{
+
+    virtual bool accept_growth(const Pattern* parent,
+                               const Pattern* child,
+                               const DFSTree::EdgeGrowth* growth);
+
+    /// @}
+
+  private:
+    Size __freq;
+
+};
+
+
+/**
+ * @class StrictSearch strictSearch.h <agrum/prm/gspan/DFSTree.h>
+ *
+ * This is class is an implementation of a strict strategy for the GSpan
+ * algorithm. This will force early cuts in the DFSTree and should help
+ * not spending much time searching for new patterns.
+ *
+ * A new growth is accepted if it is at least better than its predecessor.
+ */
+class StrictSearch : public SearchStrategy {
+
+
+  public:
+
+    // =========================================================================
+    /// @name Constructor and destructor.
+    // ==========================================================================
+    /// @{
+
+    /// Default constructor.
+    StrictSearch(DFSTree* tree);
+
+    /// Destructor.
+    virtual ~StrictSearch();
+
+    /// @}
+    // =========================================================================
+    /// @name Search methods.
+    // ==========================================================================
+    /// @{
+
+    virtual bool accept_growth(const Pattern* parent,
+                               const Pattern* child,
+                               const DFSTree::EdgeGrowth* growth);
+
+    /// @}
+  private:
+    DFSTree* __tree;
+
+};
+
 } /* namespace gspan */
 } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/gspan/DFSTree.inl>
+#include <agrum/prm/gspan/searchStrategy.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 #endif /* GUM_DFS_TREE_H */

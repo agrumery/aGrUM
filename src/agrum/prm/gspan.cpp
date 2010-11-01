@@ -89,32 +89,33 @@ void
 GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
   std::vector<gspan::Pattern*> stack;
   stack.push_back(&pat);
+  // Pointers used in the following while
+  gspan::Pattern* p = 0;
+  HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* edge_count = 0;
+  gspan::DFSTree::EdgeGrowth* edge_growth = 0;
+  Sequence<Instance*>* seq = 0; Instance* current = 0; Instance* neighbor = 0;
+  // Neighbor_id is the neighbor's id in the interface graph and neighbor_node
+  // is its id in the rightmost path in the case of a backward edge growth
+  NodeId current_id = 0; NodeId neighbor_id = 0; NodeId neighbor_node =0;
+  gspan::LabelData* neighbor_label = 0; gspan::EdgeData* edge_data = 0;
+  size_t idx;
+  const std::list<NodeId>* children = 0;
   while (not stack.empty()) {
     // Getting next pattern
-    gspan::Pattern& p = *(stack.back());
+    p = stack.back();
     stack.pop_back();
-    if (p.code().codes.size() < __depth_stop) {
+    if (p->code().codes.size() < __depth_stop) {
       // We need the rightmost path of p
       std::list<NodeId> r_path;
-      p.rightmostPath(r_path);
+      p->rightmostPath(r_path);
       // Mapping used to count each possible child of p, the position in the vector
       // matches the one in the rightmost path
       std::vector< HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* > count_vector;
-      for (size_t i = 0; i < r_path.size(); ++i) {
+      for (size_t i = 0; i < r_path.size(); ++i)
         count_vector.push_back(new HashTable<std::string, gspan::DFSTree::EdgeGrowth*>());
-      }
-      // Pointers used in the following for
-      HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* edge_count = 0;
-      gspan::DFSTree::EdgeGrowth* edge_growth = 0;
-      Sequence<Instance*>* seq = 0; Instance* current = 0; Instance* neighbor = 0;
-      // Neighbor_id is the neighbor's id in the interface graph and neighbor_node is its id in the rightmost path in the case
-      // of a backward edge growth
-      NodeId current_id = 0; NodeId neighbor_id = 0; NodeId neighbor_node =0;
-      gspan::LabelData* neighbor_label = 0; gspan::EdgeData* edge_data = 0;
-      size_t idx;
       // For each subgraph represented by p, we look for a valid edge growth for each instance match of p in its isomorphism graph.
-      for (UndiGraph::NodeIterator iso_node = __tree.iso_graph(p).beginNodes(); iso_node != __tree.iso_graph(p).endNodes(); ++iso_node) {
-        seq = &(__tree.iso_map(p, *iso_node));
+      for (UndiGraph::NodeIterator iso_node = __tree.iso_graph(*p).beginNodes(); iso_node != __tree.iso_graph(*p).endNodes(); ++iso_node) {
+        seq = &(__tree.iso_map(*p, *iso_node));
         idx = 0;
         for (std::list<NodeId>::iterator node = r_path.begin(); node != r_path.end(); ++node, ++idx) {
           edge_count = count_vector[idx];
@@ -123,8 +124,7 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
           current_id = ig.id(current);
           // Checking for edges not in p
           const NodeSet& neighbours = ig.graph().neighbours(current_id);
-          for (NodeSet::iterator edge = neighbours.begin();
-               edge != neighbours.end(); ++edge) {
+          for (NodeSet::iterator edge = neighbours.begin(); edge != neighbours.end(); ++edge) {
             neighbor_id = *edge;
             neighbor = ig.node(neighbor_id).n;
             // We want a forward edge in any case or a backward edge if current is the rightmost vertex
@@ -150,24 +150,21 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
       // Removing any infrequent child
       typedef HashTable<std::string, gspan::DFSTree::EdgeGrowth*>::iterator EdgeCountIter;
       for (size_t node = 0; node < count_vector.size(); ++node) {
-        HashTable<std::string, gspan::DFSTree::EdgeGrowth*>* edge_count = count_vector[node];
+        edge_count = count_vector[node];
         for (EdgeCountIter growth = edge_count->begin(); growth != edge_count->end(); ++growth) {
-          if ((**growth).count() >= __min_freq) {
-            try {
-              __tree.growPattern(p, **growth, __min_freq);
-            } catch (OperationNotAllowed& e) {
-              // The child was not minimal.
-            }
+          try {
+            __tree.growPattern(*p, **growth, __min_freq);
+          } catch (OperationNotAllowed& e) {
+            // The child was not minimal or was not worth considering
           }
           delete *growth;
         }
         delete edge_count;
       }
       // Calling __subgraph_mining over children of p
-      const std::list<NodeId>& children = __tree.children(p);
-      for (std::list<NodeId>::const_reverse_iterator child = children.rbegin(); child != children.rend(); ++child) {
+      children = &(__tree.children(*p));
+      for (std::list<NodeId>::const_reverse_iterator child = children->rbegin(); child != children->rend(); ++child)
         stack.push_back(&(__tree.pattern(*child)));
-      }
     }
   }
 }
