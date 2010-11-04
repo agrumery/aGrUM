@@ -573,6 +573,12 @@ MultiDimBucket<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable*
   __allVarsInst.swap(*x, *y);
 }
 
+template <typename T_DATA> INLINE
+const HashTable<const MultiDimContainer<T_DATA>*, Instantiation*>&
+MultiDimBucket<T_DATA>::multidims() const
+{
+  return __multiDims;
+}
 
 } /* namespace gum */
 // ============================================================================

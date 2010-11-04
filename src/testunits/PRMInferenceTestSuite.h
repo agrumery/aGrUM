@@ -31,6 +31,7 @@
 #include <agrum/prm/SVE.h>
 #include <agrum/prm/SVED.h>
 #include <agrum/prm/structuredBayesBall.h>
+#include <agrum/prm/structuredInference.h>
 // ============================================================================
 #include <agrum/prm/skool/SkoolReader.h>
 // ============================================================================
@@ -42,7 +43,7 @@ using namespace gum;
 using namespace gum::prm;
 using namespace gum::prm::skool;
 
-class GroundedBNTestSuite: public CxxTest::TestSuite {
+class PRMInferenceTestSuite: public CxxTest::TestSuite {
   private:
     PRM* prm;
     PRM* small;
@@ -338,6 +339,48 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       delete sved;
     }
 
+    void testSmallStructInference() {
+      StructuredInference* inf = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf = new StructuredInference(*small, small->getSystem("microSys")));
+      {
+        const Instance& instance = small->getSystem("microSys").get("c");
+        const Attribute& attribute = instance.get("can_print");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        Instantiation i(m);
+        i.setFirst();
+        TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
+        i.inc();
+        TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
+      }
+      {
+        const Instance& instance = small->getSystem("microSys").get("p");
+        const Attribute& attribute = instance.get("equipState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        Instantiation i(m);
+        i.setFirst();
+        TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
+        i.inc();
+        TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
+      }
+      {
+        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Attribute& attribute = instance.get("powState");
+        PRMInference::Chain chain = std::make_pair(&instance, &attribute);
+        Potential<prm_float> m;
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        Instantiation i(m);
+        i.setFirst();
+        TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
+        i.inc();
+        TS_ASSERT_DELTA(m.get(i), 0.01, 1e-6);
+      }
+      delete inf;
+    }
+
     void testInference() {
       //GUM_TRACE_VAR(UINT_MAX);
       GroundedInference* g_ve = 0;
@@ -359,12 +402,11 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb->setBNInference(vebb));
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m_ve, m_ss, m_sve, m_sved, m_vebb;
+        Potential<prm_float> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
         try {
           size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
           const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
           const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
-          //if ((instance.name() == "c1") and (attribute.safeName() == "(boolean)can_print")) {
           PRMInference::Chain chain = std::make_pair(&instance, &attribute);
           std::string dot = ".";
           g_ve->marginal(chain, m_ve);
@@ -378,30 +420,31 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
           // GUM_TRACE("SVE done");
           SVED sved(*prm, prm->getSystem("aSys"));
           sved.marginal(chain, m_sved);
+          // GUM_TRACE("SVED done");
+          StructuredInference structinf(*prm, prm->getSystem("aSys"));
+          structinf.marginal(chain, m_struct);
+          // GUM_TRACE("StructInf done");
+          // We need two instantiations, one for the grounded potentials and one
+          // for the PRM-level ones
           Instantiation inst(m_ve), jnst(m_sve);
-          Set<std::string> plop;
           std::string foo = instance.name() + dot + attribute.safeName();
-          for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+          for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc())
+          {
             TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
             TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sve.nbrDim());
             TS_ASSERT_EQUALS(m_ve.nbrDim(), m_sved.nbrDim());
             TS_ASSERT_EQUALS(m_ve.nbrDim(), m_vebb.nbrDim());
+            TS_ASSERT_EQUALS(m_ve.nbrDim(), m_struct.nbrDim());
             TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
             TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
             TS_ASSERT_EQUALS(m_ve.domainSize(), m_sved.domainSize());
             TS_ASSERT_EQUALS(m_ve.domainSize(), m_vebb.domainSize());
-            float bar = (m_ve.get(inst) - m_sved.get(jnst));
-            bar = (bar>0?bar:-bar);
-            if (  bar > 10e-4 ) {
-              if (not plop.exists(foo)) {
-                plop.insert(foo);
-                GUM_TRACE(foo);
-              }
-            }
+            TS_ASSERT_EQUALS(m_ve.domainSize(), m_struct.domainSize());
             TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
             TS_ASSERT_DELTA(m_sve.get(jnst), m_ss.get(inst), 1.0e-3);
             TS_ASSERT_DELTA(m_vebb.get(inst), m_ss.get(inst), 1.0e-3);
             TS_ASSERT_DELTA(m_sved.get(jnst), m_sve.get(jnst), 1.0e-3);
+            TS_ASSERT_DELTA(m_sved.get(jnst), m_struct.get(jnst), 1.0e-3);
           }
           bool zero = true;
           for (jnst.setFirst(); not jnst.end(); jnst.inc()) {
@@ -413,8 +456,8 @@ class GroundedBNTestSuite: public CxxTest::TestSuite {
           if (zero) {
             GUM_TRACE(foo);
           }
-          //}
         } catch (Exception& e) {
+          GUM_TRACE_VAR(bn.variableNodeMap().name(*node));
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }

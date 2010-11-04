@@ -45,6 +45,16 @@ StructuredInference::__str(const Instance* i, const SlotChain& a) const {
   return i->name() + __dot + a.lastElt().safeName();
 }
 
+INLINE
+StructuredInference::RGData::~RGData() {
+  GUM_DESTRUCTOR(StructuredInference::RGData);
+}
+
+INLINE
+StructuredInference::PData::~PData() {
+  GUM_DESTRUCTOR(StructuredInference::PData);
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

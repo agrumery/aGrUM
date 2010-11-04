@@ -77,7 +77,12 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
       } else if (dynamic_cast<const MultiDimBucket<prm_float>*>(impl)) {
         // This is necessary just to prevent non initialized arrays
         const_cast<MultiDimBucket<prm_float>*>(static_cast<const MultiDimBucket<prm_float>*>(impl))->compute();
-        p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBucket<prm_float>*>(impl)->bucket()));
+        try {
+          p = new Potential<prm_float>(new MultiDimBijArray<prm_float>(bij, static_cast<const MultiDimBucket<prm_float>*>(impl)->bucket()));
+        } catch (OperationNotAllowed& e) {
+          // This is an empty bucket, it happens if all variables were eliminated
+          return new Potential<prm_float>();
+        }
       } else {
         GUM_ERROR(FatalError, "encountered an unexpected MultiDim implementation");
       }
@@ -100,6 +105,44 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
   }
 }
 
+void
+eliminateNode(const DiscreteVariable* var,
+              Set<Potential<prm_float>*>& pool,
+              Set<Potential<prm_float>*>& trash)
+{
+  MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
+  Set< Potential<prm_float>* > toRemove;
+  for (SetIterator<Potential<prm_float>*> iter = pool.begin();
+       iter != pool.end(); ++iter )
+  {
+    if ((*iter)->contains(*var)) {
+      bucket->add(**iter);
+      toRemove.insert(*iter);
+    }
+  }
+  if (toRemove.empty()) {
+    delete bucket;
+  } else {
+    for (SetIterator<Potential<prm_float>*> iter = toRemove.begin();
+         iter != toRemove.end(); ++iter)
+      pool.erase( *iter );
+    for (Set<const DiscreteVariable*>::iterator jter =
+         bucket->allVariables().begin(); jter != bucket->allVariables().end();
+         ++jter )
+    {
+      try {
+        if ((*jter) != var) bucket->add( **jter );
+      } catch (NotFound&) {
+        // This can happen if since some DiscreteVariable are not represented
+        // as nodes in the undigraph (parents of input nodes)
+        bucket->add(**jter);
+      }
+    }
+    Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
+    trash.insert( bucket_pot );
+    pool.insert( bucket_pot );
+  }
+}
 
 } /* namespace prm */
 }

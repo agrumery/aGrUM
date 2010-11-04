@@ -104,6 +104,8 @@ class StructuredInference: public PRMInference {
       List< NodeSet > partial_order;
       /// Default constructor
       RGData();
+      /// Destructor.
+      ~RGData();
       /// Returns the set of outputs nodes (which will be eliminated).
       inline NodeSet& outputs() { return partial_order[0]; }
       /// Returns the set of query nodes (which will not be eliminated).
@@ -133,6 +135,8 @@ class StructuredInference: public PRMInference {
       PData(const gspan::Pattern& p, const GSpan::MatchedInstances& m);
       /// Copy constructor.
       PData(const PData& source);
+      /// Destructor
+      ~PData();
       /// Returns the set of inner nodes
       inline NodeSet& inners() { return partial_order[0]; }
       /// Returns the set of inner and observed nodes given all the matches of pattern
@@ -161,22 +165,22 @@ class StructuredInference: public PRMInference {
       Set<Potential<prm_float>*> pool;
       /// Default constructor.
       CData(const Class& c);
+      /// Destructor.
+      ~CData();
       /// Returns the set of inner nodes.
-      inline NodeSet& inners() { return partial_order[0]; }
+      inline NodeSet& inners() { return __inners; }
       /// Returns the set of aggregators and their parents.
-      inline NodeSet& aggregators() { return partial_order[1]; }
+      inline NodeSet& aggregators() { return __aggregators; }
       /// Returns the set of outputs nodes.
-      inline NodeSet& outputs() { return partial_order[2]; }
+      inline NodeSet& outputs() { return __outputs; }
       /// The elimination order for nodes of this class
-      inline std::vector<NodeId>& elim_order() {
-        if (not __elim_order) {
-          PartialOrderedTriangulation t(&(moral_graph), &(mods), &(partial_order));
-          __elim_order = new std::vector<NodeId>(t.eliminationOrder());
-        }
-        return *__elim_order;
-      }
+      inline std::vector<NodeId>& elim_order() { return __elim_order; }
       private:
-      std::vector<NodeId>* __elim_order;
+      std::vector<NodeId> __elim_order;
+      NodeSet __inners;
+      NodeSet __aggregators;
+      NodeSet __outputs;
+      Set<Potential<prm_float>*> __trash;
     };
 
     /// Pointer over th GSpan instance used by this class.
@@ -201,7 +205,8 @@ class StructuredInference: public PRMInference {
     /// The query
     PRMInference::Chain __query;
 
-    /// The pattern data of the pattern which one of its matches contains the query
+    /// The pattern data of the pattern which one of its matches contains
+    /// the query
     PData* __pdata;
 
     /// This calls __reducePattern() over each pattern and then build the reduced graph
@@ -233,10 +238,6 @@ class StructuredInference: public PRMInference {
 
     /// Add in data.queries() any queried variable in one of data.pattern matches.
     void __buildQuerySet(PData& data);
-
-    /// Proceeds with the elimination of var in pool.
-    void __eliminateNode(const DiscreteVariable* var,
-                         Set<Potential<prm_float>*>& pool);
 
     /// Proceeds with the elimination of observed variables in math and then
     /// call __translatePotSet().

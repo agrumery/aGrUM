@@ -172,6 +172,17 @@ namespace gum { namespace prm {
   Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                       const Potential<prm_float>& source);
 
+  /**
+   * @brief Proceeds with the elimination of var in pool.
+   * @param var The variable eliminated from every potentials in pool.
+   * @param pool A pool of potentials in wich the elimination of var is done.
+   * @param trash All create potentials are inserted in this set, useful to
+   *              delete later.
+   */
+  void eliminateNode(const DiscreteVariable* var,
+                     Set<Potential<prm_float>*>& pool,
+                     Set<Potential<prm_float>*>& trash);
+
 } /* namespace prm */
 } /* namespace gum */
 

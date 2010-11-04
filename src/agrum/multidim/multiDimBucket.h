@@ -255,6 +255,8 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// String representation of internal data about i in this.
     virtual const std::string toString (const Instantiation *i) const;
 
+    const HashTable<const MultiDimContainer<T_DATA>*, Instantiation*>& multidims() const;
+
   protected:
     /// See gum::MultiDimImplementation::_commitMultipleChanges().
     virtual void _commitMultipleChanges();
