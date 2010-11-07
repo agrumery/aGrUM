@@ -174,6 +174,18 @@ Interface::referenceSlots() const {
   return __referenceSlots;
 }
 
+INLINE
+Set<Class*>&
+Interface::implementations() {
+  return __implementations;
+}
+
+INLINE
+const Set<Class*>&
+Interface::implementations() const {
+  return __implementations;
+}
+
 // ============================================================================
 } /* namespace prm */
 } /* namespace gum */

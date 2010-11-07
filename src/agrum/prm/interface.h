@@ -209,6 +209,16 @@ class Interface: public ClassElementContainer {
      */
     const Interface& super() const;
 
+    /**
+     * Returns the set of Class implementing this Interface.
+     */
+    Set<Class*>& implementations();
+
+    /**
+     * Returns the set of Class implementing this Interface.
+     */
+    const Set<Class*>& implementations() const;
+
     /// @}
   // ========================================================================
   /// @name Getters & setters operators
