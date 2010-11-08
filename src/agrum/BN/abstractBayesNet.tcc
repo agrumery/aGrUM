@@ -148,43 +148,45 @@ namespace gum {
 
   template <typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::_topologicalOrder ( Sequence<NodeId>& order ) const {
+  AbstractBayesNet<T_DATA>::_topologicalOrder(Sequence<NodeId>& order) const {
+    std::list<NodeId> l;
+    const NodeSet* parents = 0;
+    const NodeSet* children = 0;
     // Add all root nodes in the list
-    NodeSet nodeList = dag().nodes();
-
-    for ( NodeSetIterator iter = nodeList.begin(); iter != nodeList.end(); ++iter ) {
-      if ( dag().parents ( *iter ).empty() ) {
-        order.insert ( *iter );
-        nodeList.erase ( *iter );
+    for (DAG::NodeIterator root = dag().beginNodes(); root != dag().endNodes(); ++root) {
+      if (dag().parents(*root).empty()) {
+        order.insert(*root);
+        children = &(dag().children(*root));
+        for (NodeSet::const_iterator child = children->begin(); child != children->end(); ++child)
+          l.push_back(*child);
       }
     }
-
-    // Check if the graph has at least one root node
-    if ( order.empty() ) {
-      GUM_ERROR ( OperationNotAllowed, "No root node in DAG." );
-    }
-
-    // Add nodes in topological order
-    while ( not nodeList.empty() ) {
-      bool add;
-      // Parsing all nodes in nodeList
-
-      for ( NodeSetIterator node = nodeList.begin(); node != nodeList.end(); ++node ) {
+    GUM_ASSERT(order.size());
+    // Adding the remaining nodes it all their parents are in order
+    bool add = true;
+    while (l.size()) {
+      if (order.exists(l.front())) {
+        l.pop_front();
+      } else {
+        parents = &(dag().parents(l.front()));
         add = true;
-        // Parsing all parents of current node
-        const NodeSet& parents = dag().parents ( *node );
-
-        for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
-          add = add && order.exists ( *arc );
+        for (NodeSet::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt) {
+          if (not order.exists(*prnt)) {
+            l.push_front(*prnt);
+            add = false;
+            break;
+          }
         }
-
-        // If current node's parent are all in order. then we add it
-        if ( add ) {
-          order.insert ( *node );
-          nodeList.erase ( *node );
+        if (add) {
+          order.insert(l.front());
+          children = &(dag().children(l.front()));
+          for (NodeSet::const_iterator child = children->begin(); child != children->end(); ++child)
+            l.push_back(*child);
+          l.pop_front();
         }
       }
     }
+    GUM_ASSERT(order.size() == dag().size());
   }
 
   template<typename T_DATA> INLINE

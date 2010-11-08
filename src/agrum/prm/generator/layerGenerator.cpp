@@ -33,6 +33,37 @@
 namespace gum {
 namespace prm {
 
+LayerGenerator::LayerGenerator():
+  PRMGenerator(), __domainSize(2)
+{
+  GUM_CONSTRUCTOR(LayerGenerator);
+}
+
+LayerGenerator::LayerGenerator(const LayerGenerator& source):
+  __domainSize(source.__domainSize), __layers(source.__layers)
+{
+  GUM_CONS_CPY(LayerGenerator);
+  for (std::vector<Layer>::iterator iter = __layers.begin(); iter != __layers.end(); ++iter) {
+    iter->interface = "";
+    iter->instances.clear();
+  }
+}
+
+LayerGenerator::~LayerGenerator() {
+  GUM_DESTRUCTOR(LayerGenerator);
+}
+
+LayerGenerator&
+LayerGenerator::operator=(const LayerGenerator& source) {
+  __domainSize = source.__domainSize;
+  __layers = source.__layers;
+  for (std::vector<Layer>::iterator iter = __layers.begin(); iter != __layers.end(); ++iter) {
+    iter->interface = "";
+    iter->instances.clear();
+  }
+  return *this;
+}
+
 void
 LayerGenerator::setLayers(const std::vector<LayerData>& v) {
   for (std::vector<LayerData>::const_iterator data = v.begin(); data != v.end(); ++data) {
@@ -53,28 +84,32 @@ LayerGenerator::generate() {
 void
 LayerGenerator::__generateClasses(PRMFactory& factory) {
   BayesNetGenerator bn_gen;
-  std::vector< Set<std::string> > classes;
+  std::vector< Set<std::string> > classes(__layers.size());
   BayesNet<prm_float>* bn = 0;
   std::string type = __generateType(factory);
   if (__layers.size() == 0)
     GUM_ERROR(OperationNotAllowed, "you must define the layers first");
   // Generating the root level
-  { __generateInterface(0, factory, type);
+  __generateInterface(0, factory, type);
+  for (size_t idx = 0; idx < __layer(0).c_count; ++idx) {
     bn = bn_gen.generateBNF(__layer(0).a_count, __layer(0).density);
     Property<std::string>::onNodes outputs;
     __pickOutputs(__layer(0), factory.prm()->getInterface(__interface(0)), *bn, outputs);
     std::string c = __copyClass(__layer(0), factory, *bn, __interface(0), outputs, type);
     classes[0].insert(c);
-    delete bn; }
+    delete bn;
+  }
   // Generating the remaining levels
   for (size_t lvl = 1; lvl < __layers.size(); ++lvl) {
     __generateInterface(lvl, factory, type);
-    bn = bn_gen.generateBNF(__layer(lvl).a_count, __layer(lvl).density);
-    Property<std::string>::onNodes outputs;
-    __pickOutputs(__layer(lvl), factory.prm()->getInterface(__interface(lvl)), *bn, outputs);
-    std::string c = __copyClass(__layer(lvl), factory, *bn, __interface(lvl), outputs, type);
-    classes[lvl].insert(c);
-    delete bn;
+    for (size_t idx = 0; idx < __layer(0).c_count; ++idx) {
+      bn = bn_gen.generateBNF(__layer(lvl).a_count, __layer(lvl).density);
+      Property<std::string>::onNodes outputs;
+      __pickOutputs(__layer(lvl), factory.prm()->getInterface(__interface(lvl)), *bn, outputs);
+      std::string c = __copyClass(__layer(lvl), factory, *bn, __interface(lvl), outputs, type);
+      classes[lvl].insert(c);
+      delete bn;
+    }
   }
 }
 
@@ -118,14 +153,11 @@ LayerGenerator::__pickOutputs(LayerGenerator::LayerData& data, Interface& i,
   std::vector<NodeId> v;
   for (DAG::NodeIterator n = bn.dag().beginNodes(); n != bn.dag().endNodes(); ++n)
     v.push_back(*n);
-  Set<Attribute*>::iterator attr = i.attributes().begin();
-  size_t count = 0;
-  while ( (count < data.interface_size) and (attr != i.attributes().end()) ) {
+  for (Set<Attribute*>::iterator attr = i.attributes().begin();
+       attr != i.attributes().end(); ++attr) {
     size_t pick = std::rand() % v.size();
     outputs.insert(v[pick], (**attr).safeName());
     v.erase(v.begin() + pick);
-    ++count;
-    ++attr;
   }
 }
 
@@ -139,19 +171,24 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
   std::string name = _name_gen.nextName(PRMObject::prm_class);
   factory.startClass(name, "", &set);
   const Sequence<NodeId>& topo = bn.getTopologicalOrder(true);
-  Set<NodeId> agg = __defineAggSet(data, bn, outputs);
   Interface& interface = factory.prm()->getInterface(i);
+  Set<NodeId> agg;
+  if (interface.referenceSlots().size())
+    agg = __defineAggSet(data, bn, outputs);
   Property<std::string>::onNodes name_map;
   std::vector<ReferenceSlot*> refs;
-  for (Set<ReferenceSlot*>::iterator ref = interface.referenceSlots().begin(); ref != interface.referenceSlots().end(); ++ref)
+  for (Set<ReferenceSlot*>::iterator ref = interface.referenceSlots().begin(); ref != interface.referenceSlots().end(); ++ref) {
     refs.push_back(const_cast<ReferenceSlot*>(*ref));
+    factory.addReferenceSlot((**ref).slotType().name(), (**ref).name(), true);
+  }
   for (Sequence<NodeId>::const_iterator node = topo.begin(); node != topo.end(); ++node) {
     if (agg.exists(*node)) {
-      __addAggregate(refs, bn, factory, *node, name_map);
+      GUM_ASSERT(not outputs.exists(*node));
+      __addAggregate(refs, bn, factory, *node, name_map, agg);
     } else {
       std::string name;
       if (outputs.exists(*node))
-        name = interface.get(*node).name();
+        name = interface.get(outputs[*node]).name();
       else
         name = _name_gen.nextName(PRMObject::prm_class_elt);
       factory.startAttribute(type, name);
@@ -166,55 +203,75 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
       factory.endAttribute();
     }
   }
-  factory.endClass();
+  try {
+    factory.endClass();
+  } catch (FactoryError& e) {
+    std::stringstream inter, cls;
+    for (Interface::ClassEltIterator iter = interface.begin(); iter != interface.end(); ++iter)
+      inter << (**iter).name() << " ";
+    for (Class::ClassEltIterator iter = factory.prm()->getClass(name).begin(); iter != factory.prm()->getClass(name).end(); ++iter)
+      cls << (**iter).name() << " ";
+    typedef Property<std::string>::onNodes::iterator OutputIter;
+    std::stringstream outs;
+    for (OutputIter iter = outputs.begin(); iter != outputs.end(); ++iter)
+      outs << *iter << " ";
+    std::exit(1);
+  }
   return name;
 }
 
 void
 LayerGenerator::__addAggregate(std::vector<ReferenceSlot*>& refs, BayesNet<prm_float>& bn,
                                PRMFactory& factory, NodeId node,
-                               Property<std::string>::onNodes& name_map)
+                               Property<std::string>::onNodes& name_map,
+                               const Set<NodeId>& agg)
 {
-  ReferenceSlot& ref = *(refs[std::rand() % refs.size()]);
-  std::vector<std::string> chains(bn.dag().parents(node).size() + 1);
-  chains[0] = ref.name();
-  chains[0] += ".";
-  std::vector<Attribute*> attrs;
-  const Set<Attribute*>* attr_set = 0;
-  if (ref.slotType().obj_type() == PRMObject::prm_class)
-    attr_set = &(static_cast<Class&>(ref.slotType()).attributes());
-  if (ref.slotType().obj_type() == PRMObject::prm_interface)
-    attr_set = &(static_cast<Interface&>(ref.slotType()).attributes());
-  for (Set<Attribute*>::iterator a = attr_set->begin(); a != attr_set->end(); ++a)
-    attrs.push_back(const_cast<Attribute*>(*a));
-  chains[0] += attrs[std::rand() % attrs.size()]->safeName();
-  size_t idx = 1;
-  for (NodeSet::iterator prnt = bn.dag().parents(node).begin(); prnt != bn.dag().parents(node).end(); ++prnt)
-    chains[idx++] = name_map[*prnt];
-  std::vector<std::string> params(1, "1");
-  factory.addAggregator(_name_gen.nextName(PRMObject::prm_class_elt), "exists", chains, params);
+  if (refs.size()) {
+    ReferenceSlot& ref = *(refs[std::rand() % refs.size()]);
+    std::vector<std::string> chains(bn.dag().parents(node).size() + 1);
+    chains[0] = ref.name();
+    chains[0] += ".";
+    std::vector<Attribute*> attrs;
+    const Set<Attribute*>* attr_set = 0;
+    if (ref.slotType().obj_type() == PRMObject::prm_class)
+      attr_set = &(static_cast<Class&>(ref.slotType()).attributes());
+    else if (ref.slotType().obj_type() == PRMObject::prm_interface)
+      attr_set = &(static_cast<Interface&>(ref.slotType()).attributes());
+    for (Set<Attribute*>::iterator a = attr_set->begin(); a != attr_set->end(); ++a)
+      attrs.push_back(const_cast<Attribute*>(*a));
+    chains[0] += attrs[std::rand() % attrs.size()]->safeName();
+    size_t idx = 1;
+    for (NodeSet::iterator prnt = bn.dag().parents(node).begin(); prnt != bn.dag().parents(node).end(); ++prnt) {
+      if (not agg.exists(*prnt))
+        chains[idx++] = name_map[*prnt];
+      else
+        chains.pop_back();
+    }
+    std::vector<std::string> params(1, "1");
+    name_map.insert(node, _name_gen.nextName(PRMObject::prm_class_elt));
+    factory.addAggregator(name_map[node], "exists", chains, params);
+  }
 }
 
 Set<NodeId>
 LayerGenerator::__defineAggSet(LayerGenerator::LayerData& data, BayesNet<prm_float>& bn,
                                Property<std::string>::onNodes& outputs)
 {
-  Set<NodeId> agg;
   std::vector<NodeId> nodes;
   for (DAG::NodeIterator n = bn.dag().beginNodes(); n != bn.dag().endNodes(); ++n)
     if (not outputs.exists(*n))
       nodes.push_back(*n);
-  for (size_t i = 0; (i < data.agg_size) and nodes.size(); ++i) {
-    size_t pick = nodes[std::rand() % nodes.size()];
-    agg.insert(nodes[pick]);
-    nodes.erase(nodes.begin() + pick);
+  Set<NodeId> agg;
+  for (size_t i = 0; i < data.agg_size; ++i) {
+    size_t idx = std::rand() % nodes.size();
+    agg.insert(nodes[idx]);
+    nodes.erase(nodes.begin() + idx);
   }
   return agg;
 }
 
 std::vector<prm_float>
 LayerGenerator::__generateCPF(size_t size) {
-  GUM_ASSERT( (size % __domainSize) == 0);
   std::vector<prm_float> cpf(size);
   prm_float sum;
   for (size_t idx = 0; idx < size; idx += size) {
@@ -245,18 +302,17 @@ LayerGenerator::__generateSystem(PRMFactory& factory) {
       factory.addInstance(c, name);
       instances[lvl].push_back(name);
       if (lvl) {
-        GUM_ASSERT(factory.prm()->getClass(c).referenceSlots().size());
         std::stringstream chain;
         chain << name << "." << (*(factory.prm()->getClass(c).referenceSlots().begin()))->name();
-        size_t foo = 0;
+        bool check = false;
         for (std::vector<std::string>::iterator iter = instances[lvl-1].begin();
              iter != instances[lvl-1].end(); ++iter)
           if (std::rand() < __layer(lvl).density) {
-            factory.incArray(chain.str(), *iter);
-            ++foo;
+            factory.setReferenceSlot(chain.str(), *iter);
+            check = true;
           }
-        if (not foo)
-          factory.incArray(chain.str(), instances[lvl-1][std::rand() % instances[lvl-1].size()]);
+        if (not check)
+          factory.setReferenceSlot(chain.str(), instances[lvl-1][std::rand() % instances[lvl-1].size()]);
       }
     }
   }

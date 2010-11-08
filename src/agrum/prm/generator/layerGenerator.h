@@ -65,6 +65,8 @@ class LayerGenerator: public PRMGenerator {
     LayerGenerator();
     /// Copy constructor.
     LayerGenerator(const LayerGenerator& source);
+    /// Copy operator.
+    LayerGenerator& operator=(const LayerGenerator& source);
     /// Destructor.
     virtual ~LayerGenerator();
 
@@ -79,7 +81,7 @@ class LayerGenerator: public PRMGenerator {
       /// The number of attributes in each interface.
       size_t interface_size;
       /// The number of input aggregators in each class. This must be lesser
-      /// or equal to interface_size.
+      /// or equal to interface_size of the previous level.
       size_t agg_size;
       /// The odds of an arc existing between an aggregator and a class in the
       /// upper layer.
@@ -93,6 +95,12 @@ class LayerGenerator: public PRMGenerator {
       /// The number of instances in this layer.
       size_t i_count;
     };
+
+    /// Returns the domain size of generated types.
+    Size getDomainSize() const;
+
+    /// Set the domain size of generated types.
+    void setDomainSize(Size s);
 
     /**
      * @brief Defines the structure of each layers.
@@ -150,7 +158,8 @@ class LayerGenerator: public PRMGenerator {
     void __addAggregate(std::vector<ReferenceSlot*>& refs,
                         BayesNet<prm_float>& bn,
                         PRMFactory& factory, NodeId id,
-                        Property<std::string>::onNodes& name_map);
+                        Property<std::string>::onNodes& name_map,
+                        const Set<NodeId>& agg);
 
     Set<NodeId> __defineAggSet(LayerGenerator::LayerData& data,
                                BayesNet<prm_float>& bn,

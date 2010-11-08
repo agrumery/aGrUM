@@ -39,6 +39,19 @@ LayerGenerator::__interface(size_t idx) {
   return __layers[idx].interface;
 }
 
+INLINE
+Size
+LayerGenerator::getDomainSize() const {
+  return __domainSize;
+}
+
+INLINE
+void
+LayerGenerator::setDomainSize(Size s) {
+  __domainSize = s;
+}
+
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================
