@@ -261,7 +261,7 @@ namespace gum {
           }
         }
 
-        void testRead_file3() {
+        void /*test*/Read_file3() {
           std::string file = GET_PATH_STR ( DSL/DSLReader_file3.txt );
 
           gum::BayesNet<float> *net = new gum::BayesNet<float>();
@@ -272,6 +272,39 @@ namespace gum {
 
           TS_GUM_ASSERT_THROWS_NOTHING ( isOK = reader.proceed() );
 
+          TS_ASSERT ( isOK );
+          TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
+          // 0 warnings : no properties
+          TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 );
+
+          TS_ASSERT_EQUALS(net->size(),(gum::Size)6);
+          
+          TS_ASSERT ( net != 0 );
+
+          gum::DSLWriter<float> writer;
+           std::string file2 = GET_PATH_STR(DSL/DSLWriter_TestFile3.txt );
+          TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file2, *net ) );
+          
+          if ( net ) delete net;
+
+        }
+        
+        void /*test*/Read_file_completeDSL() {
+          std::string file = GET_PATH_STR ( DSL/Ling.dsl);
+
+          gum::BayesNet<float> *net = new gum::BayesNet<float>();
+
+          gum::DSLReader<float> reader ( net, file );
+
+          bool isOK = false;
+          reader.trace(true);
+
+          TS_GUM_ASSERT_THROWS_NOTHING ( isOK = reader.proceed() );
+
+          GUM_TRACE_VAR(isOK);
+          GUM_TRACE_VAR(reader.warnings());
+          GUM_TRACE_VAR(reader.errors());
+          
           TS_ASSERT ( isOK );
           TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
           // 0 warnings : no properties
