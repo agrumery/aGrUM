@@ -68,7 +68,15 @@ class StructuredInference: public PRMInference {
     StructuredInference& operator=(const StructuredInference& source);
 
     /// @}
+  // ========================================================================
+  /// @name Getters and setters.
+  // ========================================================================
+    /// @{
 
+    /// Tells this algorithm to use pattern mining or not.
+    void setPaterMining(bool b);
+
+    /// @}
   protected:
   // ========================================================================
   /// @name Protected members.
@@ -122,9 +130,6 @@ class StructuredInference: public PRMInference {
       UndiGraph graph;
       /// The pattern's variables modalities
       Property<unsigned int>::onNodes mod;
-      /// We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
-      /// with children outside the pattern and the other nodes
-      List<NodeSet> partial_order;
       /// A bijection to easily keep track  between graph and attributes, its of the
       /// form instance_name DOT attr_name
       Bijection<NodeId, std::string> node2attr;
@@ -138,15 +143,23 @@ class StructuredInference: public PRMInference {
       /// Destructor
       ~PData();
       /// Returns the set of inner nodes
-      inline NodeSet& inners() { return partial_order[0]; }
+      inline NodeSet& inners() { return __partial_order[0]; }
       /// Returns the set of inner and observed nodes given all the matches of pattern
-      inline NodeSet& obs() { return partial_order[1]; }
+      inline NodeSet& obs() { return __partial_order[1]; }
       /// Returns the set of outputs nodes given all the matches of pattern
-      inline NodeSet& outputs() { return partial_order[3]; }
+      inline NodeSet& outputs() { return __partial_order[2]; }
       /// Returns the set of queried nodes given all the matches of pattern
-      inline NodeSet& queries() { return partial_order[4]; }
+      inline NodeSet& queries() { return __partial_order[3]; }
       // We use the first match for computations
-      inline const Sequence<Instance*>& match() const { return **(matches.begin());}
+      // inline const Sequence<Instance*>& match() const { return **(matches.begin());}
+      // Remove any empty set in partial_order
+      const List<NodeSet>* partial_order();
+      private:
+      /// We'll use a PartialOrderedTriangulation with three sets: output, nodes and obs
+      /// with children outside the pattern and the other nodes
+      List<NodeSet> __partial_order;
+      /// A copy of __partial_order without empty sets
+      List<NodeSet> __real_order;
     };
 
     /// Private structure to represent data about a Class.
@@ -209,6 +222,9 @@ class StructuredInference: public PRMInference {
     /// the query
     PData* __pdata;
 
+    /// Flag which tells to use pattern mining or not
+    bool __mining;
+
     /// This calls __reducePattern() over each pattern and then build the reduced graph
     /// which is used for inference.
     /// The reduce graph is a triangulated instance graph.
@@ -231,10 +247,12 @@ class StructuredInference: public PRMInference {
     /// Build the DAG corresponding to Pattern data.pattern, initialize pool with
     /// all the Potentials of all variables in data.pattern. The first match of
     /// data.pattern (aka data.match) is used.
-    void __buildPatternGraph(PData& data, Set<Potential<prm_float>*>& pool);
+    void __buildPatternGraph(PData& data,
+                             Set<Potential<prm_float>*>& pool,
+                             const Sequence<Instance*>& match);
 
     /// Add in data.obs() all observed variable (output or not).
-    void __buildObsSet(PData& data);
+    void __buildObsSet(PData& data, const Sequence<Instance*>& match);
 
     /// Add in data.queries() any queried variable in one of data.pattern matches.
     void __buildQuerySet(PData& data);

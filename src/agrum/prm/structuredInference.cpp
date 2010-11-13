@@ -34,14 +34,15 @@ namespace gum {
 namespace prm {
 
 StructuredInference::StructuredInference(const PRM& prm, const System& system):
-  PRMInference(prm, system), __gspan(0), __pdata(0), __dot(".")
+  PRMInference(prm, system), __gspan(0), __pdata(0), __mining(false), __dot(".")
 {
   GUM_CONSTRUCTOR( StructuredInference );
   __gspan = new GSpan(prm, system);
 }
 
 StructuredInference::StructuredInference(const StructuredInference& source):
-  PRMInference(source), __gspan(0), __pdata(0), __dot(".")
+  PRMInference(source), __gspan(0), __pdata(0), __mining(source.__mining),
+  __dot(".")
 {
   GUM_CONS_CPY( StructuredInference );
   __gspan = new GSpan(*_prm, *_sys);
@@ -49,15 +50,18 @@ StructuredInference::StructuredInference(const StructuredInference& source):
 
 StructuredInference::~StructuredInference() {
   GUM_DESTRUCTOR( StructuredInference );
-  typedef HashTable<const Class*, StructuredInference::CData*>::iterator CDataIter;
-  for (CDataIter iter = __cdata_map.begin(); iter != __cdata_map.end(); ++iter)
-    delete *iter;
+  delete __gspan;
   typedef HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*>::iterator Iter;
   for (Iter iter = __elim_map.begin(); iter != __elim_map.end(); ++iter)
     delete (*iter);
-  delete __gspan;
+  typedef HashTable<const Class*, StructuredInference::CData*>::iterator CDataIter;
+  for (CDataIter iter = __cdata_map.begin(); iter != __cdata_map.end(); ++iter)
+    delete *iter;
   for (Set<Potential<prm_float>*>::iterator iter = __trash.begin(); iter != __trash.end(); ++iter)
     delete (*iter);
+  typedef HashTable< const Class*, std::vector<NodeId>* >::iterator IterOut;
+  for (IterOut iter = __outputs.begin(); iter != __outputs.end(); ++iter)
+    delete *iter;
   if (__pdata)
     delete __pdata;
 }
@@ -120,6 +124,14 @@ StructuredInference::_joint(const std::vector< Chain >& queries, Potential<prm_f
 
 void
 StructuredInference::__buildReduceGraph(StructuredInference::RGData& data) {
+  // Launch the pattern mining
+  if (__mining) {
+    try {
+      __gspan->discoverPatterns();
+    } catch (NotFound& e) {
+      // No pattern found !
+    }
+  }
   // Reducing each used pattern
   typedef std::vector<gspan::Pattern*>::const_iterator Iter;
   for (Iter p = __gspan->patterns().begin(); p != __gspan->patterns().end(); ++p)
@@ -132,7 +144,16 @@ StructuredInference::__buildReduceGraph(StructuredInference::RGData& data) {
   // Adding edges using the pools
   __addEdgesInReducedGraph(data);
   // Placing the query where it belongs
-  NodeId id = data.var2node.second(&(__query.second->type().variable()));
+  NodeId id = 0;
+  try {
+    id = data.var2node.second(&(__query.second->type().variable()));
+  } catch (NotFound& e) {
+    GUM_TRACE_VAR(__reducedInstances.exists(__query.first));
+    GUM_TRACE_VAR(ClassElement::enum2str(__query.first->type().get(__query.second->id()).elt_type()));
+    GUM_TRACE_VAR(__query.first->type().isOutputNode(*(__query.second)));
+    GUM_TRACE_VAR(__query.first->type().isInputNode(*(__query.second)));
+    throw e;
+  }
   data.outputs().erase(id);
   data.queries().insert(id);
   // Triangulating, then eliminating
@@ -148,12 +169,12 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   Set<Potential<prm_float>*> pool;
   StructuredInference::PData data(*p, __gspan->matches(*p));
   // First we add nodes to graph and fill mod, outputs, inners, vars, node2attr and pool
-  __buildPatternGraph(data, pool);
+  __buildPatternGraph(data, pool, **(data.matches.begin()));
   // Second we add observed nodes in all matches to obs and check for queries
-  __buildObsSet(data);
+  __buildObsSet(data, **(data.matches.begin()));
   // Now we can triangulate graph
   PartialOrderedTriangulation t(&(data.graph), &(data.mod),
-                                &(data.partial_order));
+                                data.partial_order());
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
   // We eliminate inner variables and then we eliminate observed nodes w.r.t.
   // each match's observation set
@@ -165,14 +186,11 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
 
 void
 StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
-                                         Set<Potential<prm_float>*>& pool)
+                                         Set<Potential<prm_float>*>& pool,
+                                         const Sequence<Instance*>& match)
 {
-  for (Sequence<Instance*>::const_iterator inst = data.match().begin();
-       inst != data.match().end(); ++inst)
-  {
-    for (Instance::const_iterator attr = (**inst).begin();
-         attr != (**inst).end(); ++attr)
-    {
+  for (Sequence<Instance*>::const_iterator inst = match.begin(); inst != match.end(); ++inst) {
+    for (Instance::const_iterator attr = (**inst).begin(); attr != (**inst).end(); ++attr) {
       // Adding the node
       NodeId id = data.graph.insertNode();
       data.node2attr.insert(id, __str(*inst, *attr));
@@ -182,12 +200,8 @@ StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
     }
   }
   // Second we add edges and nodes to inners or outputs
-  for (Sequence<Instance*>::const_iterator inst = data.match().begin();
-       inst != data.match().end(); ++inst)
-  {
-    for (Instance::const_iterator attr = (**inst).begin();
-         attr != (**inst).end(); ++attr)
-    {
+  for (Sequence<Instance*>::const_iterator inst = match.begin(); inst != match.end(); ++inst) {
+    for (Instance::const_iterator attr = (**inst).begin(); attr != (**inst).end(); ++attr) {
       NodeId node = data.node2attr.first(__str(*inst, *attr));
       bool found = false; // If this is set at true, then node is an outer node
       // Children existing in the instance type's DAG
@@ -209,9 +223,8 @@ StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
           case ClassElement::prm_slotchain:
             {
               const Set<Instance*>& ref = (**inst).getInstances(*prnt);
-              for (Set<Instance*>::const_iterator jnst = ref.begin();
-                   jnst != ref.end(); ++jnst)
-                if (data.match().exists(*jnst))
+              for (Set<Instance*>::const_iterator jnst = ref.begin(); jnst != ref.end(); ++jnst)
+                if (match.exists(*jnst))
                   data.graph.insertEdge(node, data.node2attr.first( __str(*jnst, static_cast<const SlotChain&>((**inst).type().get(*prnt)))));
               break;
             }
@@ -219,13 +232,18 @@ StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
         }
       }
       // Referring Attribute
-      const std::vector< std::pair<Instance*, std::string> >& ref_attr = (**inst).getRefAttr((**attr).id());
-      typedef std::vector< std::pair<Instance*, std::string> >::const_iterator VecIter;
-      for (VecIter pair = ref_attr.begin(); pair != ref_attr.end(); ++pair) {
-        if (data.match().exists(pair->first)) {
-          data.graph.insertEdge(node, data.node2attr.first(pair->first->name() + __dot + pair->second));
-        } else {
-          found = true;
+      if ((**inst).hasRefAttr((**attr).id())) {
+        const std::vector< std::pair<Instance*, std::string> >& ref_attr = (**inst).getRefAttr((**attr).id());
+        typedef std::vector< std::pair<Instance*, std::string> >::const_iterator VecIter;
+        for (VecIter pair = ref_attr.begin(); pair != ref_attr.end(); ++pair) {
+          if (match.exists(pair->first)) {
+            NodeId id = pair->first->type().get(pair->second).id();
+            const NodeSet& children = pair->first->type().dag().children(id);
+            for (NodeSet::const_iterator child = children.begin(); child != children.end(); ++child)
+              data.graph.insertEdge(node, data.node2attr.first(__str(pair->first, pair->first->get(*child))));
+          } else {
+            found = true;
+          }
         }
       }
       if (found)  data.outputs().insert(node);
@@ -235,7 +253,8 @@ StructuredInference::__buildPatternGraph(StructuredInference::PData& data,
 }
 
 void
-StructuredInference::__buildObsSet(StructuredInference::PData& data)
+StructuredInference::__buildObsSet(StructuredInference::PData& data,
+                                   const Sequence<Instance*>& match)
 {
   NodeId node = 0;
   for (GSpan::MatchedInstances::const_iterator iter = data.matches.begin();
@@ -249,7 +268,7 @@ StructuredInference::__buildObsSet(StructuredInference::PData& data)
              kter != evidence(*jter).end(); ++kter)
         {
           try {
-            std::string name = data.match().atPos(jter.pos())->name() + __dot + (**jter).get(kter.key()).safeName();
+            std::string name = match.atPos(jter.pos())->name() + __dot + (**jter).get(kter.key()).safeName();
             node = data.node2attr.first(name);
             data.obs().insert(node);
             data.inners().erase(node);
@@ -272,14 +291,10 @@ StructuredInference::__eliminateObservedNodes(StructuredInference::PData& data,
   const PRMInference::EMap* e_map = 0;
   Potential<prm_float>* pot = 0;
   Bijection<const gum::DiscreteVariable*, const gum::DiscreteVariable*> bij;
-  for (Sequence<Instance*>::const_iterator iter = match.begin();
-       iter != match.end(); ++iter)
-  {
+  for (Sequence<Instance*>::const_iterator iter = match.begin(); iter != match.end(); ++iter) {
     if (hasEvidence(*iter)) {
       e_map = &(evidence(*iter));
-      for (PRMInference::EMap::const_iterator obs = e_map->begin();
-           obs != e_map->end(); ++obs)
-      {
+      for (PRMInference::EMap::const_iterator obs = e_map->begin(); obs != e_map->end(); ++obs) {
         // We do not need to check the content of the MultiDim,
         // since PRMInference garantees a MultiDimArray
         bij.insert(&((**iter).get(obs.key()).type().variable()),
@@ -301,10 +316,10 @@ StructuredInference::__eliminateObservedNodes(StructuredInference::PData& data,
   if (match.exists(const_cast<Instance*>(__query.first))) {
     // Maybe this test costs more than doing an unnecessary translation (I doubt it,
     // but this should be tested).
-    __pdata = new StructuredInference::PData(data);
+    __pdata = new StructuredInference::PData(data.pattern, data.matches);
     return 0;
   } else {
-    return __translatePotSet(set, data.match(), match);
+    return __translatePotSet(set, **(data.matches.begin()), match);
   }
 }
 
@@ -318,17 +333,10 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
   const Set<Instance*>* refs = 0;
   const Set<Instance*>* tefs = 0;
   typedef std::vector< std::pair< Instance*, std::string> >::const_iterator Iter;
-  const std::vector< std::pair<Instance*, std::string> >* v = 0;
-  Size size = 0;
   // We fill the bijection, then we translate the potentials
-  for (Sequence<Instance*>::const_iterator iter = source.begin();
-      iter != source.end(); ++iter)
-  {
+  for (Sequence<Instance*>::const_iterator iter = source.begin(); iter != source.end(); ++iter) {
     // First we translate each attribute pointed by a SlotChain
-    for (Set<SlotChain*>::const_iterator sc =
-        (**iter).type().slotChains().begin();
-        sc != (**iter).type().slotChains().end(); ++sc)
-    {
+    for (Set<SlotChain*>::const_iterator sc = (**iter).type().slotChains().begin(); sc != (**iter).type().slotChains().end(); ++sc) {
       if ((**sc).isMultiple()) {
         refs = &((**iter).getInstances((**sc).id()));
         tefs = &(match.atPos(iter.pos())->getInstances((**sc).id()));
@@ -336,74 +344,70 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
         Set<Instance*>::const_iterator tef = tefs->begin();
         GUM_ASSERT(refs->size() == tefs->size());
         for (; ref != refs->end(); ++ref, ++tef) {
-          bij.insert(&((**ref).get((**sc).lastElt().safeName()).type().variable()),
-              &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+          try {
+            bij.insert(&((**ref).get((**sc).lastElt().safeName()).type().variable()),
+                &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+          } catch (DuplicateElement& e) {
+            GUM_ASSERT(bij.first(&((**tef).get((**sc).lastElt().safeName()).type().variable())) == &((**ref).get((**sc).lastElt().safeName()).type().variable()));
+            GUM_ASSERT(bij.second(&((**ref).get((**sc).lastElt().safeName()).type().variable())) == &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+          }
         }
       } else {
         bij.insert(&((**iter).getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()),
             &(match.atPos(iter.pos())->getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()));
       }
     }
-    // Second we translate referred attributes
-    for (Instance::InvRefConstIterator inv = (**iter).beginInvRef();
-        inv != (**iter).endInvRef(); ++inv)
-    {
-      for (Iter pair = (**inv).begin(); pair != (**inv).end(); ++pair) {
-        // Checking the existence of the refered instance in the match set
-        // source
-        if (not source.exists(pair->first)) {
-          size = bij.size();
-          v = &(match.atPos(iter.pos())->getRefAttr(inv.key()));
-          for (Iter mair = v->begin(); mair != v->end(); ++mair) {
-            // Where looking for a not yet added refered instance, maybe not
-            // optimal but suppose very few things about the refered instance
-            // ordering
-            if ( (mair->first->type() == pair->first->type()) and
-                (not match.exists(mair->first)) )
-            {
-              try {
-                bij.insert(&(pair->first->get(pair->second).type().variable()),
-                    &(mair->first->get(mair->second).type().variable()));
-                break;
-              } catch (DuplicateElement&) {
-                // Lets search for the next possible occurrence
-              }
-            }
-          }
-          GUM_ASSERT(size == bij.size() + 1);
-        }
+    // Second we translate referred attributes not in the match
+    for (Instance::InvRefConstIterator inv = (**iter).beginInvRef(); inv != (**iter).endInvRef(); ++inv) {
+      try {
+        bij.insert(&((**iter).get(inv.key()).type().variable()), &(match.atPos(iter.pos())->get(inv.key()).type().variable()));
+      } catch (DuplicateElement& e) {
+        GUM_ASSERT(bij.second(&((**iter).get(inv.key()).type().variable())) == &(match.atPos(iter.pos())->get(inv.key()).type().variable()));
+        GUM_ASSERT(bij.first(&(match.atPos(iter.pos())->get(inv.key()).type().variable())) == &((**iter).get(inv.key()).type().variable()));
       }
     }
   }
   // Third we translate the potentials
-  for (Set<Potential<prm_float>*>::const_iterator iter = set.begin();
-      iter != set.end(); ++iter)
-    retVal->insert(copyPotential(bij, **iter));
+  Potential<prm_float>* pot = 0;
+  for (Set<Potential<prm_float>*>::const_iterator iter = set.begin(); iter != set.end(); ++iter) {
+    pot = copyPotential(bij, **iter);
+    retVal->insert(pot);
+    __trash.insert(pot);
+  }
   return retVal;
 }
 
 void
 StructuredInference::__unreduceMatchWithQuery() {
-  GSpan::MatchedInstances& matches = __gspan->matches(__pdata->pattern);
   // First step is to find the match
-  for (GSpan::MatchedInstances::iterator iter = matches.begin();
-       iter != matches.end(); ++iter)
-  {
+  for (GSpan::MatchedInstances::iterator iter = __pdata->matches.begin(); iter != __pdata->matches.end(); ++iter) {
     if ((**iter).exists(const_cast<Instance*>(__query.first))) {
-      Sequence<Instance*>* match = *iter;
-      std::string name = __query.first->name() + __dot + __query.second->safeName();
-      NodeId node = __pdata->node2attr.first(name);
-      __pdata->inners().erase(node);
-      __pdata->outputs().erase(node);
-      __pdata->queries().insert(node);
+      StructuredInference::PData data(__pdata->pattern, __pdata->matches);
       Set<Potential<prm_float>*>* pool = new Set<Potential<prm_float>*>();
+      __buildPatternGraph(data, *pool, **iter);
+      __buildObsSet(data, **iter);
+      NodeId node = 0;
+      try {
+        node = data.node2attr.first(__str(__query.first, __query.second));
+      } catch (NotFound& e) {
+        GUM_TRACE_VAR(ClassElement::enum2str(__query.first->type().get(__query.second->id()).elt_type()));
+        GUM_TRACE_VAR(__query.first->type().isOutputNode(*(__query.second)));
+        GUM_TRACE_VAR(__query.first->type().isInputNode(*(__query.second)));
+        throw e;
+      }
+      data.inners().erase(node);
+      data.outputs().erase(node);
+      data.queries().insert(node);
+      const Sequence<Instance*>* match = *iter;
       for (Sequence<Instance*>::iterator i = match->begin(); i != match->end(); ++i)
-        for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++i)
+        for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a)
           pool->insert(&(**a).cpf());
-      PartialOrderedTriangulation t(&(__pdata->graph), &(__pdata->mod), &(__pdata->partial_order));
-      size_t size = __pdata->inners().size() + __pdata->obs().size();
-      for (size_t idx = 0; idx < size; ++idx)
-        eliminateNode(__pdata->vars.second(t.eliminationOrder()[idx]), *pool, __trash);
+      PartialOrderedTriangulation t(&(data.graph), &(data.mod), data.partial_order());
+      size_t size = data.inners().size() + data.obs().size();
+      for (size_t idx = 0; idx < size; ++idx) {
+        GUM_ASSERT(data.vars.second(t.eliminationOrder()[idx]) != &(__query.second->type().variable()));
+        eliminateNode(data.vars.second(t.eliminationOrder()[idx]), *pool, __trash);
+      }
       __elim_map[match] = pool;
       return;
     }
@@ -433,12 +437,12 @@ StructuredInference::__reduceAloneInstances(StructuredInference::RGData& rg_data
         // Filling up the partial ordering
         List<NodeSet> partial_order;
         if (data->inners().size())
-          partial_order.insert(data->inners());
+          partial_order.push_back(data->inners());
         if (data->aggregators().size())
           for (NodeSet::iterator node = data->aggregators().begin(); node != data->aggregators().end(); ++node)
             partial_order[0].insert(*node);
         if (data->outputs().size())
-          partial_order.insert(data->outputs());
+          partial_order.push_back(data->outputs());
         if (__query.first == inst) {
           // First case, the instance contains the query
           partial_order[0].erase(__query.second->id());
@@ -522,37 +526,46 @@ StructuredInference::__addEdgesInReducedGraph(StructuredInference::RGData& data)
                                      data.var2node.second(vars->atPos(var_2)));
   }
   // Adding potentials obtained from reduced patterns
-  typedef HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*>::iterator Jter;
+  typedef HashTable<const Sequence<Instance*>*, Set<Potential<prm_float>*>*>::iterator ElimIter;
   Set<Potential<prm_float>*>* pool = 0;
   Potential<prm_float>* pot = 0;
   NodeId id = 0;
-  for (Jter iter = __elim_map.begin(); iter != __elim_map.end(); ++iter) {
+  for (ElimIter iter = __elim_map.begin(); iter != __elim_map.end(); ++iter) {
     pool = *iter;
-    // First we add edges between variables in the same reduced patterns
+    // We add edges between variables in the same reduced patterns
     for (Set<Potential<prm_float>*>::iterator jter = pool->begin(); jter != pool->end(); ++jter) {
       pot = *jter;
       vars = &(pot->variablesSequence());
-      for (Size var_1 = 0; var_1 < vars->size(); ++var_1) {
-        for (Size var_2 = var_1 + 1; var_2 < vars->size(); ++var_2) {
-          try {
-            data.reducedGraph.insertEdge(data.var2node.second(vars->atPos(var_1)),
-                                         data.var2node.second(vars->atPos(var_2)));
-          } catch (NotFound&) {
-            // We need to add nodes !
-            if (not data.var2node.existsFirst(vars->atPos(var_1))) {
-              id = data.reducedGraph.insertNode();
-              data.var2node.insert(vars->atPos(var_1), id);
-              data.mods.insert(id, vars->atPos(var_1)->domainSize());
-              data.outputs().insert(id);
+      if (vars->size() == 1) {
+        if (not data.var2node.existsFirst(vars->atPos(0))) {
+          id = data.reducedGraph.insertNode();
+          data.var2node.insert(vars->atPos(0), id);
+          data.mods.insert(id, vars->atPos(0)->domainSize());
+          data.outputs().insert(id);
+        }
+      } else {
+        for (Size var_1 = 0; var_1 < vars->size(); ++var_1) {
+          for (Size var_2 = var_1 + 1; var_2 < vars->size(); ++var_2) {
+            try {
+              data.reducedGraph.insertEdge(data.var2node.second(vars->atPos(var_1)),
+                  data.var2node.second(vars->atPos(var_2)));
+            } catch (NotFound&) {
+              // We need to add nodes !
+              if (not data.var2node.existsFirst(vars->atPos(var_1))) {
+                id = data.reducedGraph.insertNode();
+                data.var2node.insert(vars->atPos(var_1), id);
+                data.mods.insert(id, vars->atPos(var_1)->domainSize());
+                data.outputs().insert(id);
+              }
+              if (not data.var2node.existsFirst(vars->atPos(var_2))) {
+                id = data.reducedGraph.insertNode();
+                data.var2node.insert(vars->atPos(var_2), id);
+                data.mods.insert(id, vars->atPos(var_2)->domainSize());
+                data.outputs().insert(id);
+              }
+              data.reducedGraph.insertEdge(data.var2node.second(vars->atPos(var_1)),
+                  data.var2node.second(vars->atPos(var_2)));
             }
-            if (not data.var2node.existsFirst(vars->atPos(var_2))) {
-              id = data.reducedGraph.insertNode();
-              data.var2node.insert(vars->atPos(var_2), id);
-              data.mods.insert(id, vars->atPos(var_2)->domainSize());
-              data.outputs().insert(id);
-            }
-            data.reducedGraph.insertEdge(data.var2node.second(vars->atPos(var_1)),
-                                         data.var2node.second(vars->atPos(var_2)));
           }
         }
       }
@@ -573,15 +586,23 @@ StructuredInference::PData::PData(const gspan::Pattern& p,
 {
   GUM_CONSTRUCTOR(StructuredInference::PData);
   for (int i = 0; i < 4; ++i)
-    partial_order.push_front(NodeSet());
+    __partial_order.push_front(NodeSet());
 }
 
 StructuredInference::PData::PData(const StructuredInference::PData& source):
   pattern(source.pattern), matches(source.matches), graph(source.graph),
-  mod(source.mod), partial_order(source.partial_order), node2attr(source.node2attr),
-  vars(source.vars)
+  mod(source.mod), node2attr(source.node2attr),
+  vars(source.vars), __partial_order(source.__partial_order)
 {
   GUM_CONS_CPY(StructuredInference::PData);
+}
+
+const List<NodeSet>*
+StructuredInference::PData::partial_order() {
+  __real_order.clear();
+  for (List<NodeSet>::iterator set = __partial_order.begin(); set != __partial_order.end();++set)
+    if (set->size()) __real_order.insert(*set);
+  return &__real_order;
 }
 
 StructuredInference::CData::CData(const Class& a_class):

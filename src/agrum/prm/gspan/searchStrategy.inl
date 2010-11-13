@@ -56,9 +56,9 @@ INLINE
 bool
 FrequenceSearch::accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::EdgeGrowth* growth)
+                               const DFSTree::PatternData* data)
 {
-  return growth->count() >= __freq;
+  return data->max_indep_set.size() >= __freq;
 }
 
 // The StrictSearch class
@@ -78,11 +78,12 @@ INLINE
 bool
 StrictSearch::accept_growth(const Pattern* parent,
                             const Pattern* child,
-                            const DFSTree::EdgeGrowth* growth)
+                            const DFSTree::PatternData* data)
 {
-  double prnt_cost = std::log(growth->count()) +
-   std::log(__tree->cost(*parent) + growth->edge->tree_width);
-  return prnt_cost >= std::log(__tree->cost(*child));
+  // double prnt_cost = std::log(growth->count()) +
+  //  std::log(__tree->cost(*parent) + growth->edge->tree_width);
+  // return prnt_cost >= std::log(__tree->cost(*child));
+  return false;
 }
 
 } /* namespace gspan */

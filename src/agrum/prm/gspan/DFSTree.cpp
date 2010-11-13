@@ -67,6 +67,7 @@ DFSTree::addRoot(LabelData& label) {
       Pattern* p = new Pattern();
       roots.insert(p, std::make_pair(u_idx, v_idx));
       roots_edges.insert(p, new Sequence<EdgeData*>());
+      roots_edges[p]->insert(*iter);
       DFSTree::PatternData* data = new DFSTree::PatternData(p);
       NodeId u = p->insertNode((u_first)?*((*iter)->l_u):*((*iter)->l_v));
       NodeId v = p->insertNode((not u_first)?*((*iter)->l_u):*((*iter)->l_v));
@@ -279,7 +280,7 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
       data->max_indep_set.insert(*node);
     }
   }
-  if (not __strategy->accept_growth(&p, child, &edge_growth)) {
+  if (not __strategy->accept_growth(&p, child, data)) {
     delete data;
     delete child;
     GUM_ERROR(OperationNotAllowed, "child is not frequent enough");

@@ -167,6 +167,7 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
                             Property<std::string>::onNodes& outputs,
                             const std::string& type)
 {
+  __checkForCycles(bn.dag());
   Set<std::string> set; set.insert(i);
   std::string name = _name_gen.nextName(PRMObject::prm_class);
   factory.startClass(name, "", &set);
@@ -186,13 +187,13 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
       GUM_ASSERT(not outputs.exists(*node));
       __addAggregate(refs, bn, factory, *node, name_map, agg);
     } else {
-      std::string name;
+      std::string attr_name;
       if (outputs.exists(*node))
-        name = interface.get(outputs[*node]).name();
+        attr_name = interface.get(outputs[*node]).name();
       else
-        name = _name_gen.nextName(PRMObject::prm_class_elt);
-      factory.startAttribute(type, name);
-      name_map.insert(*node, name);
+        attr_name = _name_gen.nextName(PRMObject::prm_class_elt);
+      factory.startAttribute(type, attr_name);
+      name_map.insert(*node, attr_name);
       size_t size = __domainSize;
       for (NodeSet::iterator prnt = bn.dag().parents(*node).begin(); prnt != bn.dag().parents(*node).end(); ++prnt) {
         factory.addParent(name_map[*prnt]);
@@ -201,6 +202,7 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
       std::vector<prm_float> cpf = __generateCPF(size);
       factory.setRawCPFByLines(cpf);
       factory.endAttribute();
+      factory.prm()->getClass(name).get(attr_name).cpf().normalize();
     }
   }
   try {
@@ -273,16 +275,8 @@ LayerGenerator::__defineAggSet(LayerGenerator::LayerData& data, BayesNet<prm_flo
 std::vector<prm_float>
 LayerGenerator::__generateCPF(size_t size) {
   std::vector<prm_float> cpf(size);
-  prm_float sum;
-  for (size_t idx = 0; idx < size; idx += size) {
-    sum = 0.0;
-    for (size_t mod = 0; mod < __domainSize; ++mod) {
-      cpf[idx + mod] = std::rand();
-      sum += cpf[idx + mod];
-    }
-    for (size_t mod = 0; mod < __domainSize; ++mod)
-      cpf[idx + mod] = cpf[idx + mod] / sum;
-  }
+  for (size_t idx = 0; idx < size; idx += size)
+    cpf[idx] = 1.0 + std::rand();
   return cpf;
 }
 
@@ -317,6 +311,29 @@ LayerGenerator::__generateSystem(PRMFactory& factory) {
     }
   }
   factory.endSystem();
+}
+
+void
+LayerGenerator::__checkForCycles(const DAG& dag) {
+  // First lets find roots
+  for (DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node) {
+    if (dag.parents(*node).empty()) {
+      std::vector<NodeId> stack;
+      stack.push_back(*node);
+      size_t counter = 0;
+      while (stack.size() and (counter < (dag.sizeArcs() * 10))) {
+        ++counter;
+        NodeId id = stack.back();
+        stack.pop_back();
+        for (NodeSet::iterator child = dag.children(id).begin(); child != dag.children(id).end(); ++child)
+          stack.push_back(*child);
+      }
+      if (counter >= (dag.sizeArcs() * 10)) {
+        std::cerr << "Holy shit !" << std::endl;
+        std::exit(1);
+      }
+    }
+  }
 }
 
 } /* namespace prm */

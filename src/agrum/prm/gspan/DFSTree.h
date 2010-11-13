@@ -76,6 +76,37 @@ class DFSTree: private DiGraph {
     // ==========================================================================
     /// @{
 
+    /// Stuff we want to know about patterns in this DFSTree.
+    struct PatternData {
+      /// Constructor.
+      PatternData(Pattern* p);
+      /// Copy constructor.
+      PatternData(const PatternData& from);
+      /// Destructor.
+      ~PatternData();
+      /// The pattern.
+      Pattern* pattern;
+      /// The list of the pattern's children, sorted lexicographically.
+      std::list<NodeId> children;
+      /// The isomorphism graph of the pattern.
+      UndiGraph iso_graph;
+      /// The instances matching p in the interface graph.
+      Property<Sequence<Instance*>*>::onNodes iso_map;
+      /// The maximal independent set of p.
+      Set<NodeId> max_indep_set;
+      /// The cost of this Pattern
+      Size cost;
+      /// The gain of this Pattern
+      Size gain;
+      // /// The different sub_patterns of p given the iso_map.
+      // Sequence< HashTable<ClassElement*, Size>* > sub_patterns;
+      // /// The mapping between an iso_map and the given sub pattern.
+      // HashTable<NodeId, Idx> sub_patterns_map;
+      // /// The number of each sub pattern
+      // std::vector<Size> sub_patterns_count;
+    };
+
+
     /// Returns the list of root patterns in this DFSTree.
     std::list<NodeId>& roots();
 
@@ -257,36 +288,6 @@ class DFSTree: private DiGraph {
     /// @}
   private:
 
-    /// Stuff we want to know about patterns in this DFSTree.
-    struct PatternData {
-      /// Constructor.
-      PatternData(Pattern* p);
-      /// Copy constructor.
-      PatternData(const PatternData& from);
-      /// Destructor.
-      ~PatternData();
-      /// The pattern.
-      Pattern* pattern;
-      /// The list of the pattern's children, sorted lexicographically.
-      std::list<NodeId> children;
-      /// The isomorphism graph of the pattern.
-      UndiGraph iso_graph;
-      /// The instances matching p in the interface graph.
-      Property<Sequence<Instance*>*>::onNodes iso_map;
-      /// The maximal independent set of p.
-      Set<NodeId> max_indep_set;
-      /// The cost of this Pattern
-      Size cost;
-      /// The gain of this Pattern
-      Size gain;
-      // /// The different sub_patterns of p given the iso_map.
-      // Sequence< HashTable<ClassElement*, Size>* > sub_patterns;
-      // /// The mapping between an iso_map and the given sub pattern.
-      // HashTable<NodeId, Idx> sub_patterns_map;
-      // /// The number of each sub pattern
-      // std::vector<Size> sub_patterns_count;
-    };
-
     /// The interface graph on which this DFSTree applies.
     const InterfaceGraph* __graph;
 
@@ -357,7 +358,7 @@ class SearchStrategy {
 
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::EdgeGrowth* growth) =0;
+                               const DFSTree::PatternData* data) =0;
 
     /// @}
 
@@ -392,7 +393,7 @@ class FrequenceSearch : public SearchStrategy {
 
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::EdgeGrowth* growth);
+                               const DFSTree::PatternData* data);
 
     /// @}
 
@@ -435,7 +436,7 @@ class StrictSearch : public SearchStrategy {
 
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::EdgeGrowth* growth);
+                               const DFSTree::PatternData* data);
 
     /// @}
   private:

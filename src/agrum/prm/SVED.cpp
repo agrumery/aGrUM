@@ -370,6 +370,7 @@ namespace prm {
         m.multiplicateBy(**iter);
       }
       if ((**iter).nbrDim() > 1) {
+        GUM_TRACE_VAR((**iter).nbrDim());
         for (System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter) {
           for (Instance::iterator a = (**jter).begin(); a != (**jter).end(); ++a) {
             if ((**iter).contains((**a).type().variable())) {

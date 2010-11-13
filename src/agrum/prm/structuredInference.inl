@@ -28,6 +28,12 @@ namespace gum {
 namespace prm {
 
 INLINE
+void
+StructuredInference::setPaterMining(bool b) {
+  __mining = b;
+}
+
+INLINE
 std::string
 StructuredInference::__str(const Instance* i, const Attribute* a) const {
   return i->name() + __dot + a->safeName();
