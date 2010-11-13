@@ -28,7 +28,7 @@
 #include <agrum/core/exceptions.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimCombination.h>
+#include <agrum/multidim/multiDimCombinationDefault.h>
 
 
 namespace gum {
@@ -90,7 +90,7 @@ namespace gum {
         Set<const Potential<float>*> set;
         set << &t1 << &t2 << &t3;
         
-        MultiDimCombination<float,Potential> xxx ( addPotential );
+        MultiDimCombinationDefault<float,Potential> xxx ( addPotential );
         t6 = xxx.combine ( set );
         TS_ASSERT ( t6 );
         TS_ASSERT (*t6 == *t5);
@@ -99,6 +99,8 @@ namespace gum {
         delete t5;
         delete t6;
 
+        TS_ASSERT ( xxx.nbOperations ( set ) == 16640 );
+        
         t4 = new Potential<float> ( t1 * t2 );
         t5 = new Potential<float> ( t3 * (*t4) );
         xxx.setCombinator ( multPotential );

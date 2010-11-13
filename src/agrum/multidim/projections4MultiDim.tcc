@@ -1,0 +1,387 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief Efficient functionals for projecting multiDimensional tables
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+// allow projectionPatterns to be used
+#define GUM_PROJECTION_PATTERN_ALLOWED
+
+
+#include <agrum/multidim/projectionRegister4MultiDim.h>
+
+
+#define GUM_MULTI_DIM_DECORATOR_PROJ(NAME)                            \
+  template<typename T_DATA>                                           \
+  MultiDimImplementation<T_DATA>*                                     \
+  NAME ( const MultiDimDecorator<T_DATA>& table,                      \
+         const Set<const DiscreteVariable *>& del_vars ) {            \
+    const MultiDimImplementation<T_DATA>* impl = table.getContent (); \
+    return NAME ( *impl, del_vars );                                  \
+  }
+
+
+namespace gum {
+
+  
+  // ==============================================================================
+  /// a specialized max projection function for multiDimArrays
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (x) : (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+  
+
+  #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectMaxMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (x) : (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectMaxMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*x) : (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMaxMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*x) : (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+  // ==============================================================================
+  /// a specialized min projection function for multiDimArrays
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (y) : (x) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+  
+
+  #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectMinMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (y) : (x) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectMinMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*y) : (*x) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMinMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*y) : (*x) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+  // ==============================================================================
+  /// a specialized sum projection function for multiDimArrays
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) + (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+  
+
+  #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectSumMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) + (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectSumMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) + (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectSumMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) + (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  
+  // ==============================================================================
+  /// a specialized product projection function for multiDimArrays
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) * (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+  
+
+  #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectProductMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) * (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectProductMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) * (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectProductMultiDimArray4Pointers
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) * (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+  
+  // ==============================================================================
+  /// a specialized function for functionally projecting a multiDimArray
+  // ==============================================================================
+  /*
+  #define GUM_MULTI_DIM_PROJECTION_NAME_F projectFuncMultiDimArray
+  #define GUM_MULTI_DIM_PROJECTION(x,y) f( (x),(y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME_F
+  #undef GUM_MULTI_DIM_PROJECTION
+  */
+
+  
+  // ==============================================================================
+  // the operators that should be used to select appropriately the functions
+  // to project multiDims
+  // ==============================================================================
+ 
+  /// the function to be used to project a MultiDimImplementation using a Max
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMax
+  #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "max"
+  #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimImplementation.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
+  #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+
+  /// the function to be used to add two MultiDimDecorators
+  GUM_MULTI_DIM_DECORATOR_PROJ( projectMax )
+ 
+
+  /// the function to be used to project a MultiDimImplementation using a Min
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMin
+  #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "min"
+  #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimImplementation.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
+  #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+
+  /// the function to be used to add two MultiDimDecorators
+  GUM_MULTI_DIM_DECORATOR_PROJ( projectMin )
+
+
+  /// the function to be used to project a MultiDimImplementation using a Sum
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectSum
+  #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "sum"
+  #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimImplementation.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
+  #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+
+  /// the function to be used to add two MultiDimDecorators
+  GUM_MULTI_DIM_DECORATOR_PROJ( projectSum )
+  
+
+  /// the function to be used to project a MultiDimImplementation using a Product
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectProduct
+  #define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "product"
+  #define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimImplementation.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_FUNC_NAME
+  #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
+
+  /// the function to be used to add two MultiDimDecorators
+  GUM_MULTI_DIM_DECORATOR_PROJ( projectProduct )
+
+
+
+  // ==============================================================================
+  /// default "basename" functions for projecting MultiDimImplementations 
+  // ==============================================================================
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimImplementation
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (x) : (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
+  #include <agrum/multidim/patterns/projectionPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimImplementation
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (y) : (x) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
+  #include <agrum/multidim/patterns/projectionPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimImplementation
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) + (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
+  #include <agrum/multidim/patterns/projectionPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+  #define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimImplementation
+  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) * (y) )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
+  #include <agrum/multidim/patterns/projectionPattern4BaseName.h>
+  #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+
+
+  // ==============================================================================
+  // ==============================================================================
+  //
+  // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS
+  //
+  // ==============================================================================
+  // ==============================================================================
+
+  /// the function used to register all the above functions
+  template<typename T_DATA>
+  void projections4MultiDimInit () {
+    static bool first_init = true;
+
+    if ( first_init ) {
+      first_init = false;
+      
+      std::string MultiDimArrayString ("MultiDimArray");
+      std::string BaseNameString ("MultiDimImplementation");
+    
+      // register base functions for multiDimArrays
+      registerProjection<T_DATA> ( "max", MultiDimArrayString,
+                                   &projectMaxMultiDimArray);
+      registerProjection<T_DATA> ( "min", MultiDimArrayString,
+                                   &projectMinMultiDimArray);
+      registerProjection<T_DATA> ( "sum", MultiDimArrayString,
+                                   &projectSumMultiDimArray);
+      registerProjection<T_DATA> ( "product", MultiDimArrayString,
+                                   &projectProductMultiDimArray);
+
+      // register default basename functions 
+      registerProjection<T_DATA> ( "max", BaseNameString,
+                                   &projectMaxMultiDimImplementation);
+      registerProjection<T_DATA> ( "min", BaseNameString,
+                                   &projectMinMultiDimImplementation);
+      registerProjection<T_DATA> ( "sum", BaseNameString,
+                                   &projectSumMultiDimImplementation);
+      registerProjection<T_DATA> ( "product", BaseNameString,
+                                   &projectProductMultiDimImplementation);
+    }
+  }
+  
+  
+  /// the function used to register all the above functions
+  template<typename T_DATA>
+  void pointerProjections4MultiDimInit () {
+    static bool first_init = true;
+    
+    if ( first_init ) {
+      first_init = false;
+      
+      std::string MultiDimArrayString ("MultiDimArray");
+      std::string BaseNameString ("MultiDimImplementation");
+
+      // register base functions for multiDimArrays
+      registerProjection<T_DATA*> ( "max", MultiDimArrayString,
+                                    &projectMaxMultiDimArray4Pointers);
+      registerProjection<T_DATA*> ( "min", MultiDimArrayString,
+                                    &projectMinMultiDimArray4Pointers);
+      registerProjection<T_DATA*> ( "sum", MultiDimArrayString,
+                                    &projectSumMultiDimArray4Pointers);
+      registerProjection<T_DATA*> ( "product", MultiDimArrayString,
+                                    &projectProductMultiDimArray4Pointers);
+    }
+  }
+  
+
+} /* namespace gum */
+
+
+// remove permission to use operatorsPatterns
+#undef GUM_PROJECTION_PATTERN_ALLOWED
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

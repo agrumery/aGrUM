@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/multidim/multiDimCombination.h>
+#include <agrum/multidim/multiDimCombinationDefault.h>
 
 namespace gum {
   
@@ -406,7 +406,8 @@ namespace gum {
           Set<const Potential<T_DATA>*> set;
           for(ListConstIterator<const Potential<T_DATA>*>iter=pot_to_mult.begin();iter != pot_to_mult.end(); ++iter ) 
             set<<*iter;        
-          MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+          MultiDimCombinationDefault<T_DATA,Potential>
+            fast_combination ( multiPotential );
           fast_combination.combine ( joint,set );
         }
       }
@@ -806,7 +807,7 @@ namespace gum {
       Set<const Potential<T_DATA>*> set;
       for(__PotentialSetIterator iter=pot_list.begin();iter != pot_list.end(); ++iter ) 
         set<<*iter;        
-      MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+      MultiDimCombinationDefault<T_DATA,Potential> fast_combination ( multiPotential );
       fast_combination.combine ( marginal,set );
     }
   }
@@ -950,7 +951,7 @@ namespace gum {
       Set<const Potential<T_DATA>*> set;
       for(SetIterator<const Potential<T_DATA>*>iter=pot_list.begin();iter != pot_list.end(); ++iter ) 
         set<<*iter;        
-      MultiDimCombination<T_DATA,Potential> fast_combination ( multiPotential );
+      MultiDimCombinationDefault<T_DATA,Potential> fast_combination ( multiPotential );
       fast_combination.combine ( marginal,set );
     }
   }

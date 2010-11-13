@@ -18,14 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A generic interface to combine efficiently several MultiDim tables
+ * @brief A class to combine efficiently several MultiDim tables
  *
- * MultiDimCombination is a generic interface designed to combine efficiently several
+ * MultiDimCombinationDefault is a class designed to combine efficiently several
  * multidimensional objects, that is, to compute expressions like
  * T1 op T2 op T3 op .... op Tn, where the Ti's are the multidimensional objects
  * and op is an operator or a function taking in argument two such objects and
- * producing a new (combined) Ti object. By default, the combination operation "op"
- * is assumed to be COMMUTATIVE and ASSOCIATIVE.
+ * producing a new (combined) Ti object. Note that the MultiDimCombinationDefault
+ * determines itself in which order the objects should be combined. As such, the
+ * combination operation to perform should thus be COMMUTATIVE and ASSOCIATIVE.
  *
  * By multidimensional objects, we mean of course MultiDimDecorators,
  * MultiDimImplementations, but also more complex objects such as, for instance,
@@ -33,12 +34,15 @@
  * the second one being a table of instantiations (useful, e.g., for computing
  * MPE's) but this can also be a pair (Utility,Potential) for the inference in
  * an Influence Diagram. Actually, the important point for a multidimensional
- * object to be eligible to be combined by the MultiDimCombination is:
+ * object to be eligible to be combined by the MultiDimCombinationDefault is:
+ * # that the object contains a method variablesSequence that returns a 
+ *   sequence of Discrete variables that represent the dimensions of the
+ *   multidimensional object
  * # that there exists a function taking in arguments two such multidimensional
  *   objects and producing a new object of the same type, which is the so-called
  *   combined result of these two objects.
  *
- * To be quite generic, the MultiDimCombination takes in argument the function
+ * To be quite generic, the MultiDimCombinationDefault takes in argument the function
  * that produces the result of the combination of two multidimensional objects.
  * The following code gives an example of the usage of MultiDimCombinations:
  * @code
@@ -70,18 +74,20 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_MULTI_DIM_COMBINATION_H
-#define GUM_MULTI_DIM_COMBINATION_H
+#ifndef GUM_MULTI_DIM_COMBINATION_DEFAULT_H
+#define GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 
 
-#include <agrum/core/set.h>
+#include <agrum/core/sequence.h>
+#include <agrum/multidim/multiDimCombination.h>
+#include <agrum/multidim/discreteVariable.h>
 
 
 namespace gum {
 
 
   template< typename T_DATA, template<typename> class TABLE >
-  class MultiDimCombination {
+  class MultiDimCombinationDefault : public MultiDimCombination<T_DATA,TABLE> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -89,18 +95,22 @@ namespace gum {
     /// @{
 
     /// default constructor
-    MultiDimCombination ();
+    /** @param combine a function that takes two tables in input and produces a
+     * new table which is the result of the combination of the two tables
+     * passed in argument. */
+    MultiDimCombinationDefault ( TABLE<T_DATA>* (*combine)
+                                 ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ) );
 
     /// copy constructor
-    MultiDimCombination ( const MultiDimCombination<T_DATA,TABLE>& );
-
+    MultiDimCombinationDefault ( const MultiDimCombinationDefault<T_DATA,TABLE>& );
+    
     /// destructor
-    virtual ~MultiDimCombination ();
+    virtual ~MultiDimCombinationDefault ();
 
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same combination
      * function. */
-    virtual MultiDimCombination<T_DATA,TABLE>* newFactory () const = 0;
+    virtual MultiDimCombinationDefault<T_DATA,TABLE>* newFactory () const;
 
     /// @}
 
@@ -115,27 +125,33 @@ namespace gum {
      * of all the TABLES passed in argument
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
-    virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set ) = 0;
+    virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set );
     virtual void combine ( TABLE<T_DATA>& container ,
-                           const Set<const TABLE<T_DATA>*>& set ) = 0;
+                           const Set<const TABLE<T_DATA>*>& set );
 
     /// changes the function used for combining two TABLES
     virtual void setCombinator( TABLE<T_DATA>*
                                 (*combine) ( const TABLE<T_DATA>&,
-                                             const TABLE<T_DATA>& ) ) = 0;
+                                             const TABLE<T_DATA>& ) );
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
-    virtual float nbOperations ( const Set<const TABLE<T_DATA>*>& set ) = 0;
+    virtual float nbOperations ( const Set<const TABLE<T_DATA>*>& set );
 
     /// @}
+      
 
-
-  private:
-    /// forbid copy operators
-    MultiDimCombination<T_DATA,TABLE>& operator=
-    ( const MultiDimCombination<T_DATA,TABLE>& );
+  protected:
+    /// the function used to combine two tables
+    TABLE<T_DATA>* (*_combine) ( const TABLE<T_DATA>& t1,
+                                 const TABLE<T_DATA>& t2 );
     
+    
+    /** @brief returns the domain size of the Cartesian product of the union of
+     * all the variables in seq1 and seq2 */
+    Size _combined_size ( const Sequence<const DiscreteVariable *>& seq1,
+                          const Sequence<const DiscreteVariable *>& seq2 ) const;
+
  };
 
 
@@ -143,8 +159,8 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/multiDimCombination.tcc>
+#include <agrum/multidim/multiDimCombinationDefault.tcc>
 
 
-#endif /* GUM_MULTI_DIM_COMBINATION_H */
+#endif /* GUM_MULTI_DIM_COMBINATION_DEFAULT_H */
 

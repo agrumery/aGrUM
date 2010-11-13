@@ -215,7 +215,7 @@
   // corresponds to the variables that belongs both to t1 and t2. The middle
   // loop to the variables that belong to t2 but not to t1. Finally, the
   // outer loop corresponds to the variables that belong to t1 but not t2.
-  Instantiation result_inst (result);
+  Idx result_offset = 0;
   Instantiation t2_inst ( t2 );
   Instantiation t1_inst ( t1 );
   Instantiation t1_alone_begin_inst ( t1 );
@@ -232,11 +232,11 @@
         t1_inst = t1_alone_begin_inst;
         
         for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-          result->set ( result_inst,
-                        GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
-                                                t2->get ( t2_inst ) ) );
+          result->unsafeSet ( result_offset,
+                              GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
+                                                      t2->get ( t2_inst ) ) );
           
-          ++result_inst;
+          ++result_offset;
           
           // update the offset of both t1 and t2
           ++t1_inst;
@@ -254,11 +254,11 @@
         t1_inst = t1_alone_begin_inst;
         
         for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-          result->set ( result_inst,
-                        GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
-                                                t2->get ( t2_inst ) ) );
+          result->unsafeSet ( result_offset,
+                              GUM_MULTI_DIM_OPERATOR( t1->get ( t1_inst ),
+                                                      t2->get ( t2_inst ) ) );
           
-          ++result_inst;
+          ++result_offset;
           
           // update the offset of both t1 and t2
           for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {

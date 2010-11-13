@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A container for registering binary functions on multiDimImplementations
+ * @brief A container for registering projection functions on multiDimImplementations
  * 
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -37,80 +37,75 @@ namespace gum {
 
   /// adds a new entry into the register
   template<typename T_DATA>
-  void OperatorRegister4MultiDim<T_DATA>::insert
-  ( const std::string& operation_name,
-    const std::string& type1,
-    const std::string& type2,
-    typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr newFunction ) {
+  void ProjectionRegister4MultiDim<T_DATA>::insert
+  ( const std::string& projection_name,
+    const std::string& type_multidim,
+    typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr newFunction ) {
     // insert the new entry
-    OperatorSet* theset;
-    if ( ! __set.exists ( operation_name ) ) {
-      theset = __set.insert ( operation_name, new OperatorSet );
+    ProjectionSet* theset;
+    if ( ! __set.exists ( projection_name ) ) {
+      theset = __set.insert ( projection_name, new ProjectionSet );
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the OperatorRegister4MultiDim will be
+      // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
       debug::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
                               (void*) theset );
 #endif /* NDEBUG */
     }
     else {
-      theset = __set[operation_name];
+      theset = __set[projection_name];
     }
 
-    std::pair<std::string,std::string> thepair (type1,type2);
-    theset->insert ( thepair, newFunction);
+    theset->insert ( type_multidim, newFunction);
   }
 
   
   /// removes a given entry from the register
   template<typename T_DATA>
-  void OperatorRegister4MultiDim<T_DATA>::erase
-  ( const std::string& operation_name,
-    const std::string& type1,
-    const std::string& type2 ) {
-    if ( ! __set.exists ( operation_name ) ) return;
-    OperatorSet* theset = __set[operation_name];
-    theset->erase (std::pair<std::string,std::string>(type1,type2));
+  void ProjectionRegister4MultiDim<T_DATA>::erase
+  ( const std::string& projection_name,
+    const std::string& type_multidim ) {
+    if ( ! __set.exists ( projection_name ) ) return;
+    ProjectionSet* theset = __set[projection_name];
+    theset->erase ( type_multidim );
   }
 
 
   /// indicates whether a given entry exists in the register
   template<typename T_DATA> INLINE
-  bool OperatorRegister4MultiDim<T_DATA>::exists
-  ( const std::string& operation_name,
-    const std::string& type1,
-    const std::string& type2 ) const {
-    if ( ! __set.exists ( operation_name ) ) return false;
-    return __set[operation_name].exists
-      ( std::pair<std::string,std::string>(type1,type2) );
+  bool ProjectionRegister4MultiDim<T_DATA>::exists
+  ( const std::string& projection_name,
+    const std::string& type_multidim ) const {
+    if ( ! __set.exists ( projection_name ) ) return false;
+    return __set[projection_name].exists ( type_multidim );
   }
     
     
-  /** @brief returns the specialized operator assigned to a given pair of
-   * MultiDimImplementations */
+  /** @brief returns the specialized operator assigned to a given subtype of
+   * MultiDimImplementation */
   template<typename T_DATA> INLINE
-  typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
-  OperatorRegister4MultiDim<T_DATA>::get ( const std::string& operation_name,
-                                           const std::string& type1,
-                                           const std::string& type2 ) const {
-    OperatorSet* theset = __set[operation_name];
-    return (*theset)[std::pair<std::string,std::string>(type1,type2)];
+  typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr
+  ProjectionRegister4MultiDim<T_DATA>::get
+  ( const std::string& projection_name,
+    const std::string& type_multidim ) const {
+    ProjectionSet* theset = __set[projection_name];
+    return theset->operator[] ( type_multidim );
   }
 
 
   /// a named constructor that constructs one and only one Register per data type
   template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>&
-  OperatorRegister4MultiDim<T_DATA>::Register () {
-    static OperatorRegister4MultiDim container;
+  ProjectionRegister4MultiDim<T_DATA>&
+  ProjectionRegister4MultiDim<T_DATA>::Register () {
+    static ProjectionRegister4MultiDim container;
 
 #ifndef NDEBUG
     static bool first = true;
     if ( first ) {
       first = false;
       // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the OperatorRegister4MultiDim will be
+      // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
       debug::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
                               (void*) &container.__set );
@@ -123,30 +118,30 @@ namespace gum {
      
   /// Default constructor: creates an empty register
   template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::OperatorRegister4MultiDim () {
+  ProjectionRegister4MultiDim<T_DATA>::ProjectionRegister4MultiDim () {
   }
   
   
   /// destructor
   template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::~OperatorRegister4MultiDim () {
+  ProjectionRegister4MultiDim<T_DATA>::~ProjectionRegister4MultiDim () {
     // remove all the sets
-    for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
+    for ( typename HashTable<std::string, ProjectionSet*>::iterator iter =
             __set.begin(); iter != __set.end(); ++iter )
       delete *iter;
   }
 
 
-  /// a function to more easily register new operators in MultiDims
+  /// a function to more easily register new projection functions in MultiDims
   template<typename T_DATA>
   void
-  registerOperator ( const std::string& operation_name,
-                     const std::string& type1,
-                     const std::string& type2,
-                     typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
-                     function ) {
-    OperatorRegister4MultiDim<T_DATA>::Register().insert( operation_name,
-                                                          type1, type2, function);
+  registerProjection ( const std::string& projection_name,
+                       const std::string& type_multidim,
+                       typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr
+                       function ) {
+    ProjectionRegister4MultiDim<T_DATA>::Register().insert( projection_name,
+                                                            type_multidim,
+                                                            function);
   }
 
 
