@@ -817,6 +817,68 @@ namespace gum {
         
       }
 
+
+      static Potential<float>*
+      myMax ( const Potential<float>& table,
+              const Set<const DiscreteVariable*>& del_vars ) {
+        return new Potential<float> ( projectMax ( table, del_vars ) );
+      }
+
+
+      void test_MultiDimProjection () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+        
+        Potential<float> t1;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3])
+           << *(vars[4]) << *(vars[5]) << *(vars[6]) << *(vars[7])
+           << *(vars[8]) << *(vars[9]);
+        randomInitP ( t1 );
+        Set<const DiscreteVariable *> proj_set;
+        proj_set.insert ( vars[2] );
+        proj_set.insert ( vars[3] );
+        proj_set.insert ( vars[6] );
+        proj_set.insert ( vars[7] );
+        proj_set.insert ( vars[4] );
+        proj_set.insert ( vars[5] );
+        proj_set.insert ( vars[8] );
+        Set<const DiscreteVariable *> del_vars;
+        del_vars.insert ( vars[0] );
+        del_vars.insert ( vars[9] );
+        del_vars.insert ( vars[1] );
+        MultiDimProjection<float,Potential> Proj ( myMax ); 
+
+        Potential<float>* t2 = new Potential<float> ( projectMax ( t1, del_vars ) );
+        Potential<float>* t3 = Proj.project ( t1, del_vars );
+        TS_ASSERT ( *t2 == *t3 );
+
+        delete t2;
+        delete t3;
+
+
+        t2 = new Potential<float> ( projectMax ( t1, proj_set ) );
+        t3 = Proj.project ( t1, proj_set );
+        TS_ASSERT ( *t2 == *t3 );
+        
+        delete t2;
+        delete t3;
+        
+        proj_set.insert ( vars[0] );
+        proj_set.insert ( vars[9] );
+        proj_set.insert ( vars[1] );
+        Potential<float>* t5 = Proj.project ( t1, proj_set );
+        delete t5;
+        
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+
+      }
+
       
     };
 

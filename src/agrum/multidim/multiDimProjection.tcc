@@ -47,7 +47,8 @@ namespace gum {
   /// copy constructor
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimProjection<T_DATA,TABLE>::MultiDimProjection
-  ( const MultiDimProjection<T_DATA,TABLE>& from ) {
+  ( const MultiDimProjection<T_DATA,TABLE>& from ) :
+    _proj ( from._proj ) {
     /// for debugging purposes
     GUM_CONS_CPY ( MultiDimProjection );
   }
@@ -60,6 +61,14 @@ namespace gum {
     GUM_DESTRUCTOR ( MultiDimProjection );
   }
 
+
+  /// virtual constructor
+  template< typename T_DATA, template<typename> class TABLE >
+  MultiDimProjection<T_DATA,TABLE>*
+  MultiDimProjection<T_DATA,TABLE>::newFactory () const {
+    return new MultiDimProjection<T_DATA,TABLE> ( *this );
+  }
+  
 
   /// creates and returns the projection of the table over a subset of its vars
   template< typename T_DATA, template<typename> class TABLE >
@@ -78,7 +87,7 @@ namespace gum {
   ( TABLE<T_DATA>& container,
     const TABLE<T_DATA>& table,
     const Set<const TABLE<T_DATA>*>& del_vars ) {
-    TABLE<T_DATA>*  res = project ( table, del_vars );
+    TABLE<T_DATA>* res = project ( table, del_vars );
     container = *res;
     delete res;
   }
