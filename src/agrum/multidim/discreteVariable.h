@@ -50,7 +50,7 @@ namespace gum {
   class DiscreteVariable : public Variable {
   public:
     enum Type {Discretized,Labelized,Range};
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -90,7 +90,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-      
+
     // ============================================================================
     /// @return true if the domainSize() < 2;
     // ============================================================================
@@ -108,7 +108,7 @@ namespace gum {
      */
     // ============================================================================
     virtual const std::string label( const Idx indice ) const = 0;
-    
+
     // ============================================================================
     /// returns the type of variable
     // ============================================================================
@@ -168,4 +168,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DISCRETE_VARIABLE_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

@@ -117,7 +117,7 @@ namespace gum {
 
 		/// a virtual copyFactory
     virtual DiscreteVariable* copyFactory() const;
-		
+
     // ============================================================================
     /// returns the type of variable
     // ============================================================================
@@ -173,6 +173,10 @@ namespace gum {
      * @return the size of the random discrete variable domain
      */
     virtual Size domainSize() const;
+
+    /// from the index to the tick.
+    /// @throws NotFound
+    const T_TICKS& tick(const Idx i) const;
   };
 
 

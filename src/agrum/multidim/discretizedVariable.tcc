@@ -107,7 +107,7 @@ namespace gum {
   DiscreteVariable*
   DiscretizedVariable<T_TICKS>::copyFactory() const {
     DiscretizedVariable<T_TICKS>* varPtr = new DiscretizedVariable<T_TICKS>(*this);
-    
+
     return ( DiscreteVariable* ) varPtr;
   }
 
@@ -229,13 +229,19 @@ namespace gum {
     return __ticks_size<2?0:__ticks_size-1;
   }
 
-	template<typename T_TICKS> 
+	template<typename T_TICKS>
   INLINE DiscreteVariable::Type DiscretizedVariable<T_TICKS>::type(void) const {
-    return Range;
+    return Discretized;
   }
 
+  template<typename T_TICKS>
+  INLINE const T_TICKS& DiscretizedVariable<T_TICKS>::tick(const Idx i) const {
+    if (i>=__ticks_size)
+      GUM_ERROR( OutOfBounds, "There is no such tick");
+    return __ticks[i];
+  }
 } /* namespace gum */
-  
-  
+
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -47,27 +47,38 @@ namespace gum {
           v.setDescription( "toto" );
           TS_ASSERT_EQUALS( v.description(), "toto" );
 
+          TS_ASSERT_EQUALS( v.type(),gum::DiscreteVariable::Discretized);
+
           const gum::DiscretizedVariable<int>&  w = v;
           w.setDescription( "Lol" ); // change description does not change a variable
         }
 
         void testAddTicks() {
           gum::DiscretizedVariable<int> v( "var", "a var" ) ;
+
+          TS_ASSERT_THROWS(v.tick((gum::Idx) 1),gum::OutOfBounds)
+
           TS_ASSERT( v.empty() );
-          TS_ASSERT_EQUALS( v.domainSize(), ( unsigned int )0 );
+          TS_ASSERT_EQUALS( v.domainSize(), ( gum::Idx )0 );
           v.addTick( 1 );
           TS_ASSERT( v.empty() );
-          TS_ASSERT_EQUALS( v.domainSize(), ( unsigned int )0 );
+          TS_ASSERT_EQUALS( v.domainSize(), ( gum::Idx )0 );
           v.addTick( 3 );
           TS_ASSERT( v.empty() );
-          TS_ASSERT_EQUALS( v.domainSize(), ( unsigned int )1 );
+          TS_ASSERT_EQUALS( v.domainSize(), ( gum::Idx )1 );
           v.addTick( 2 );
           TS_ASSERT( ! v.empty() );
-          TS_ASSERT_EQUALS( v.domainSize(), ( unsigned int )2 );
+          TS_ASSERT_EQUALS( v.domainSize(), ( gum::Idx )2 );
 
           TS_ASSERT_THROWS( v.addTick( 2 ), gum::DefaultInLabel );
 
           TS_ASSERT_EQUALS( v.toString(), "var<[1;2[,[2;3]>" );
+
+          TS_ASSERT_EQUALS( v.tick((gum::Idx)0),1);
+          TS_ASSERT_EQUALS( v.tick((gum::Idx)1),2);
+          TS_ASSERT_EQUALS( v.tick((gum::Idx)2),3);
+
+          TS_ASSERT_THROWS(v.tick((gum::Idx) 3),gum::OutOfBounds);
         }
 
         void testNormalLimits() {
@@ -142,4 +153,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
