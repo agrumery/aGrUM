@@ -197,31 +197,32 @@ def addTick(self,*args):
 %extend gum::BayesNet {
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
-        int l_size = 1;
-        std::vector<PythonLoadListener> py_listener(l_size);
-        PyObject *item;
-
-        if(l) {
-            if(PySequence_Check(l)) {
-                l_size = PySequence_Size(l);
-                py_listener.resize(l_size);
-                for(int i=0 ; i<l_size ; i++) {
-                    item = PySequence_GetItem(l, i);
-                    if(! py_listener[i].setPythonListener(item))
-                        return false;
-                }
-            } else {
-                if(! py_listener[0].setPythonListener(l))
-                    return false;
-            }
-        }
-
+				std::vector<PythonLoadListener> py_listener(1);
         try {
-            gum::BIFReader<T_DATA> reader($self,name);
+            gum::BIFReader<T_DATA> reader(self,name);
+						
+						if (l) {
+							int l_size = 1;
+							PyObject *item;
 
-            for(int i=0 ; i<l_size ; i++)
-                GUM_CONNECT(reader.scanner(), onLoad,
-                            py_listener[i], PythonLoadListener::whenLoading);
+							if(PySequence_Check(l)) {
+								l_size = PySequence_Size(l);
+								py_listener.resize(l_size);
+								for(int i=0 ; i < l_size ; i++) {
+									item = PySequence_GetItem(l, i);
+									if(! py_listener[i].setPythonListener(item))
+										return false;
+								}
+							} else {
+								if(! py_listener[0].setPythonListener(l))
+									return false;
+							}
+
+							for(int i=0 ; i<l_size ; i++) {
+								GUM_CONNECT(reader.scanner(), onLoad,
+														py_listener[i], PythonLoadListener::whenLoading);
+							}
+						}
 
             if (! reader.proceed()) {
                 reader.showElegantErrorsAndWarnings();
@@ -238,6 +239,47 @@ def addTick(self,*args):
         gum::BIFWriter<T_DATA> writer;
         writer.write( name, *($self) );
     }
+
+    bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
+    {
+				std::vector<PythonLoadListener> py_listener(1);
+        try {
+            gum::DSLReader<T_DATA> reader(self,name);
+						
+						if (l) {
+							int l_size = 1;
+							PyObject *item;
+
+							if(PySequence_Check(l)) {
+								l_size = PySequence_Size(l);
+								py_listener.resize(l_size);
+								for(int i=0 ; i < l_size ; i++) {
+									item = PySequence_GetItem(l, i);
+									if(! py_listener[i].setPythonListener(item))
+										return false;
+								}
+							} else {
+								if(! py_listener[0].setPythonListener(l))
+									return false;
+							}
+
+							for(int i=0 ; i<l_size ; i++) {
+								GUM_CONNECT(reader.scanner(), onLoad,
+														py_listener[i], PythonLoadListener::whenLoading);
+							}
+						}
+
+            if (! reader.proceed()) {
+                reader.showElegantErrorsAndWarnings();
+                reader.showErrorCounts();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        return false;
+    }
+
 }
 
 
@@ -441,9 +483,9 @@ def setEvidence(self, evidces):
     bn = self.bn()
 
     # set evidences
-    list_pot = ListPotentials_float()
+    list_pot = ListPotentials_double()
     for var_name, evidce in evidces.iteritems():
-        pot = Potential_float()
+        pot = Potential_double()
         var = bn.variableFromName(var_name) 
         pot.add(var)
         if isinstance(evidce, (int, float, str)):
@@ -583,9 +625,9 @@ def setEvidence(self, evidces):
 
 
 %pythoncode %{
-Potential = Potential_float
-ListPotentials = ListPotentials_float
-BayesNet = BayesNet_float
-LazyPropagation = LazyPropagation_float
-Gibbs = Gibbs_float
+Potential = Potential_double
+ListPotentials = ListPotentials_double
+BayesNet = BayesNet_double
+LazyPropagation = LazyPropagation_double
+Gibbs = Gibbs_double
 %}
