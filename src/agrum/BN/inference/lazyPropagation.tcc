@@ -34,6 +34,15 @@ namespace gum {
   static Potential<T_DATA>* multiPotential ( const Potential<T_DATA>& t1,const Potential<T_DATA>& t2 ) {
     return new Potential<T_DATA> (t1 * t2);
   }
+
+  // the function used to combine two tables
+  template <typename T_DATA> INLINE
+  static Potential<T_DATA>* projPotential ( const Potential<T_DATA>& t1,
+                                            const Set<const DiscreteVariable *>& del_vars ) {
+    return new Potential<T_DATA> ( projectSum (t1 , del_vars ) );
+  }
+
+  
   
   // ==============================================================================
   /// default constructor
@@ -387,43 +396,58 @@ namespace gum {
         continue;
 
       // compute the product of all the potentials
-      Potential<T_DATA> joint ;
+      Potential<T_DATA>* joint ;
+      bool joint_to_delete = false;
 
       if ( pot_to_mult.size() == 1 ) {
-        joint = *pot_to_mult[0];
-      } else {/*
-        ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
-        joint = **iter;
-
-        for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
+        joint = const_cast<Potential<T_DATA>*> ( pot_to_mult[0] );
+        joint_to_delete = false;
+      }
+      else {
+        /*
+          ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+          joint = **iter;
+          
+          for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
           joint=multiplicateBy( **iter );
-        }*/
+          }*/
         
-      if (pot_to_mult.size()==1) {
-        ListConstIterator<const Potential<T_DATA>*> iter=pot_to_mult.begin();
-        joint=**iter;
-      } else {
+        if (pot_to_mult.size()==1) {
+          ListConstIterator<const Potential<T_DATA>*> iter=pot_to_mult.begin();
+          joint = const_cast<Potential<T_DATA>*> ( *iter );
+          joint_to_delete = false;
+        }
+        else {
           Set<const Potential<T_DATA>*> set;
-          for(ListConstIterator<const Potential<T_DATA>*>iter=pot_to_mult.begin();iter != pot_to_mult.end(); ++iter ) 
-            set<<*iter;        
+          for(ListConstIterator<const Potential<T_DATA>*>iter = pot_to_mult.begin();
+              iter != pot_to_mult.end(); ++iter ) {
+            set<<*iter;
+          }
           MultiDimCombinationDefault<T_DATA,Potential>
             fast_combination ( multiPotential );
-          fast_combination.combine ( joint,set );
+          joint = fast_combination.combine ( set );
+          joint_to_delete = true;
         }
       }
 
       // compute the table resulting from marginalizing out del_var from joint
-      Potential<T_DATA>* marginal = new Potential<T_DATA>( new MultiDimArray<T_DATA>() );
+      Set<const DiscreteVariable*> del_one_var;
+      del_one_var << del_var;
+      Potential<T_DATA>* marginal = projPotential ( *joint, del_one_var );
 
-      const Sequence<const DiscreteVariable*>& joint_vars =
-        joint.variablesSequence();
 
-      for ( unsigned int i = 0; i < joint_vars.size(); ++i ) {
-        if ( joint_vars[i] != del_var )
-          marginal->add( *joint_vars[i] );
-      }
+      // new Potential<T_DATA>( new MultiDimArray<T_DATA>() );
 
-      marginal->marginalize( joint );
+      //   // const Sequence<const DiscreteVariable*>& joint_vars =
+      //   // joint->variablesSequence();
+      // for ( unsigned int i = 0; i < joint_vars.size(); ++i ) {
+      //   if ( joint_vars[i] != del_var )
+      //     marginal->add( *joint_vars[i] );
+      // }
+
+      // marginal->marginalize( *joint );
+      
+      if ( joint_to_delete ) delete joint;
 
       // update pot_vars_per_var : remove the variables of the potential we
       // multiplied from this table
