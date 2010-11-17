@@ -47,7 +47,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
 
   public:
     void setUp() {
-      std::cerr << std::endl;
+      //std::cerr << std::endl;
     }
 
     void tearDown() { }
