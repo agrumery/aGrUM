@@ -280,13 +280,14 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
       data->max_indep_set.insert(*node);
     }
   }
+  __data.insert(child, data);
   if (not __strategy->accept_growth(&p, child, edge_growth)) {
+    __data.erase(child);
     delete data;
     delete child;
     GUM_ERROR(OperationNotAllowed, "child is not frequent enough");
   }
   __addChild(p, child, edge_growth);
-  __data.insert(child, data);
   // Uncomment this if you want to debug it
   // for (UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node) {
   //   __find_sub_pattern(*child, *node);
