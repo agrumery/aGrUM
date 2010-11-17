@@ -262,8 +262,8 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 23;
-	noSym = 23;
+	maxT = 28;
+	noSym = 28;
 	int i;
 	for (i = 65; i <= 90; ++i) start.set(i, 1);
 	for (i = 95; i <= 95; ++i) start.set(i, 1);
@@ -273,24 +273,29 @@ void Scanner::Init() {
 	for (i = 45; i <= 45; ++i) start.set(i, 16);
 	start.set(34, 11);
 	start.set(61, 17);
-	start.set(125, 19);
-	start.set(59, 20);
-	start.set(123, 21);
+	start.set(123, 19);
+	start.set(125, 20);
+	start.set(59, 21);
 	start.set(40, 22);
 	start.set(41, 23);
 	start.set(44, 24);
 	start.set(124, 25);
 		start.set(Buffer::EoF, -1);
-	keywords.set(L"net", 8);
+	keywords.set(L"net", 6);
 	keywords.set(L"node", 10);
 	keywords.set(L"TYPE", 11);
-	keywords.set(L"HEADER", 12);
-	keywords.set(L"ID", 13);
-	keywords.set(L"NAME", 14);
-	keywords.set(L"PARENTS", 15);
-	keywords.set(L"DEFINITION", 19);
-	keywords.set(L"NAMESTATES", 20);
-	keywords.set(L"PROBABILITIES", 21);
+	keywords.set(L"SCREEN", 12);
+	keywords.set(L"USER_PROPERTIES", 13);
+	keywords.set(L"DOCUMENTATION", 14);
+	keywords.set(L"EXTRA_DEFINITION", 15);
+	keywords.set(L"OBSERVATION_COST", 16);
+	keywords.set(L"HEADER", 17);
+	keywords.set(L"ID", 18);
+	keywords.set(L"NAME", 19);
+	keywords.set(L"PARENTS", 20);
+	keywords.set(L"DEFINITION", 24);
+	keywords.set(L"NAMESTATES", 25);
+	keywords.set(L"PROBABILITIES", 26);
 
 
 	tvalLength = 128;
@@ -346,7 +351,7 @@ void Scanner::NextCh() {
 		// replace isolated '\r' by '\n' in order to make
 		// eol handling uniform across Windows, Unix and Mac
 		if (ch == L'\r' && buffer->Peek() != L'\n') ch = EOL;
-		if (ch == EOL) { if (__trace) std::cout<<line<<std::endl;line++; col = 0; }
+		if (ch == EOL) { /*if (__trace) std::cout<<line<<std::endl;*/line++; col = 0; }
 	}
 
 }
@@ -572,19 +577,19 @@ Token* Scanner::NextToken() {
 			else if (ch == L'E' || ch == L'e') {AddCh(); goto case_8;}
 			else {t->kind = 2; break;}
 		case 19:
-			{t->kind = 6; break;}
-		case 20:
 			{t->kind = 7; break;}
+		case 20:
+			{t->kind = 8; break;}
 		case 21:
 			{t->kind = 9; break;}
 		case 22:
-			{t->kind = 16; break;}
+			{t->kind = 21; break;}
 		case 23:
-			{t->kind = 17; break;}
-		case 24:
-			{t->kind = 18; break;}
-		case 25:
 			{t->kind = 22; break;}
+		case 24:
+			{t->kind = 23; break;}
+		case 25:
+			{t->kind = 27; break;}
 
 	}
 	AppendVal(t);

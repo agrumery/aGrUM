@@ -95,8 +95,8 @@ public:
 		int num_msg=0;
 		std::ifstream ifs(narrow(filename(num_msg)).c_str());
 		std::string temp;
-
-		while( getline( ifs, temp ) ) {
+		
+		while( getline( ifs, temp ) ) {			
 			if (nb_err>error_count) break;
 			while (no_line==line(num_msg)) {
 				if (is_error(num_msg)) {
@@ -108,6 +108,17 @@ public:
 				num_msg++;
 			}
 			no_line++;
+		}
+		
+		if (nb_err<=error_count) {
+			std::cerr<<narrow(filename(num_msg))<<":end of file"<<std::endl;
+			while (no_line==line(num_msg)) {
+				if (is_error(num_msg)) {
+					std::cerr<<narrow(msg(num_msg))<<std::endl<<std::endl;
+					nb_err++;
+				}
+				num_msg++;
+			}
 		}
 	}
 	void showElegantErrorsAndWarnings() {
@@ -127,6 +138,15 @@ public:
 				num_msg++;
 			}
 			no_line++;
+		}
+		
+		if (nb_err<error_count+warning_count) {
+			std::cerr<<narrow(filename(num_msg))<<": end of file"<<std::endl;
+			while (nb_err<error_count+warning_count) {
+				std::cerr<<narrow(msg(num_msg))<<std::endl<<std::endl;
+				nb_err++;
+				num_msg++;
+			}
 		}
 	}
 
@@ -203,16 +223,21 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 	void Warning(const wchar_t* msg);
 
 	void DSL();
-	void NETWORK();
-	void NODE();
 	void IDENT(std::string& name);
 	void STRING(std::string& str);
+	void NODE();
+	void OBSERVATION_COST_PART();
 	void HEADER();
+	void SCREEN_PART();
+	void USER_PROPERTIES_PART();
+	void DOCUMENTATION_PART();
 	void PARENTS(std::vector<std::string>& parents );
-	void VARIABLE_DEFINITION(int& nbrMod, std::string& var );
-	void PROBA(const std::string& var, const std::vector<std::string>& parents );
+	void VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents );
+	void EXTRA_DEFINITION_PART();
+	void BLOC_PART();
 	void PARENTS_LIST(std::vector<std::string>& parents );
 	void MODALITY_LIST(int& nbrMod);
+	void PROBA(const std::string& var, const std::vector<std::string>& parents );
 	void IDENT_OR_INTEGER(std::string& name);
 	void RAW_PROBA(const std::string& var, const std::vector<std::string>& parents );
 	void FLOAT_LIST(std::vector<float>& v );

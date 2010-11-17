@@ -78,10 +78,7 @@ IGNORE '\r' + eol + '\t' + '='
 PRODUCTIONS
 
 //==============
-DSL = NETWORK { NODE } '}' ';'.
-
-//==============
-NETWORK = 	(.
+DSL = 	(.
            	 	std::string name_of_network;
            	 	factory().startNetworkDeclaration();
           	.)
@@ -89,6 +86,10 @@ NETWORK = 	(.
   			(. 	factory().addNetworkProperty("name", name_of_network); .)
   '{'
 			(. 	factory().endNetworkDeclaration(); .)
+	{NODE}
+	[OBSERVATION_COST_PART]
+	'}'
+	';'
 .
 
 //==============
@@ -98,42 +99,38 @@ NODE =	(.
 			int nbrMod = 0;
 		.)
 	
-	"node" IDENT<var>
+	"node" IDENT<var> 
+	'{'
+	"TYPE" ident ';'
+
 	HEADER
+
+	[SCREEN_PART]  
+	[USER_PROPERTIES_PART] 
+	[DOCUMENTATION_PART] 
 					
 	PARENTS<parents>
 					
-	VARIABLE_DEFINITION<nbrMod, var>
-					
-	
-	(. 
-		gum::Size i;
-		TRY(factory().startParentsDeclaration(var));
+	VARIABLE_DEFINITION<nbrMod, var,parents>
 		
-		for(i = 0; i < parents.size(); i++){
-		   	TRY(factory().variableId(parents[i]));
-		   	TRY(factory().addParent(parents[i]));
-		}
-	
-		TRY(factory().endParentsDeclaration());
-	.)
-	
-	PROBA<var, parents>
-	
-				(.
-					int nbr=0;
-					TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
-					if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
-					if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
-				.)
-	
+	[EXTRA_DEFINITION_PART]
+	'}'
+	';'
 .
 
+
+//============== IGNORED BLOCS ==================
+BLOC_PART = '{' { ANY | BLOC_PART } '}' ';'.
+
+//============== IGNORED DLS PARTS (for now ?) ===========
+SCREEN_PART = "SCREEN" BLOC_PART.
+USER_PROPERTIES_PART = "USER_PROPERTIES" BLOC_PART. 
+DOCUMENTATION_PART = "DOCUMENTATION" BLOC_PART.
+EXTRA_DEFINITION_PART = "EXTRA_DEFINITION" BLOC_PART.
+OBSERVATION_COST_PART = "OBSERVATION_COST" BLOC_PART.
+
 //==============
-HEADER = (. std::string content; .)
-	'{'
-	"TYPE" ident ';'
-	
+HEADER = (. std::string content; .)	
 	"HEADER" '{'
 		"ID" ident ';'
 		"NAME" string ';'
@@ -149,7 +146,9 @@ PARENTS<. std::vector<std::string>& parents .> =
 
 //==============
 PARENTS_LIST<. std::vector<std::string>& parents .> =
-	(.std::string parent; .)
+	(.
+		std::string parent;
+	.)
 	
 	IDENT<parent> 		(.	parents.push_back(parent);	.)
 		
@@ -157,7 +156,7 @@ PARENTS_LIST<. std::vector<std::string>& parents .> =
 .
 
 //==============
-VARIABLE_DEFINITION< int& nbrMod, std::string& var > =
+VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::string>& parents .> =
 	"DEFINITION" '{'
 		"NAMESTATES" '('
 									(. 
@@ -165,10 +164,29 @@ VARIABLE_DEFINITION< int& nbrMod, std::string& var > =
 										TRY(factory().variableName(var));
 									.)
 
-	MODALITY_LIST<nbrMod>
-	
-		')' ';'
-									(. 	TRY(factory().endVariableDeclaration()); .)								
+			MODALITY_LIST<nbrMod>
+		')' ';' (. 	
+			TRY(factory().endVariableDeclaration());
+			gum::Size i;
+			TRY(factory().startParentsDeclaration(var));
+
+			for(i = 0; i < parents.size(); i++){
+					TRY(factory().variableId(parents[i]));
+					TRY(factory().addParent(parents[i]));
+			}
+		
+			TRY(factory().endParentsDeclaration());
+		.)
+
+		PROBA<var, parents>		
+					(.
+						int nbr=0;
+						TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
+						if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
+						if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
+					.)
+  '}'
+  ';'
 .
 
 //==============
@@ -188,16 +206,9 @@ MODALITY_LIST<int& nbrMod> =
 PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 
 	"PROBABILITIES"
-	
 	'('
-	
-	RAW_PROBA<var, parents>
-	
+		RAW_PROBA<var, parents>
 	')' ';'
-	
-	'}' ';'
-	'}' ';'
-
 .
 
 //==============

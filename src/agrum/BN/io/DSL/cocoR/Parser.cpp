@@ -70,55 +70,26 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::DSL() {
-		NETWORK();
-		while (la->kind == 10) {
-			NODE();
-		}
-		Expect(6);
-		Expect(7);
-}
-
-void Parser::NETWORK() {
 		std::string name_of_network;
 		factory().startNetworkDeclaration();
 		
-		Expect(8);
+		Expect(6);
 		if (la->kind == 1) {
 			IDENT(name_of_network);
 		} else if (la->kind == 4) {
 			STRING(name_of_network);
-		} else SynErr(24);
+		} else SynErr(29);
 		factory().addNetworkProperty("name", name_of_network); 
-		Expect(9);
+		Expect(7);
 		factory().endNetworkDeclaration(); 
-}
-
-void Parser::NODE() {
-		std::string var;
-		std::vector<std::string> parents;
-		int nbrMod = 0;
-		
-		Expect(10);
-		IDENT(var);
-		HEADER();
-		PARENTS(parents);
-		VARIABLE_DEFINITION(nbrMod, var);
-		gum::Size i;
-		TRY(factory().startParentsDeclaration(var));
-		
-		for(i = 0; i < parents.size(); i++){
-		   	TRY(factory().variableId(parents[i]));
-		   	TRY(factory().addParent(parents[i]));
+		while (la->kind == 10) {
+			NODE();
 		}
-		
-			TRY(factory().endParentsDeclaration());
-		
-		PROBA(var, parents);
-		int nbr=0;
-		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
-		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
-		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
-		
+		if (la->kind == 16) {
+			OBSERVATION_COST_PART();
+		}
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::IDENT(std::string& name) {
@@ -131,66 +102,137 @@ void Parser::STRING(std::string& str) {
 		str=narrow(t->val); 
 }
 
-void Parser::HEADER() {
-		std::string content; 
-		Expect(9);
+void Parser::NODE() {
+		std::string var;
+		std::vector<std::string> parents;
+		int nbrMod = 0;
+		
+		Expect(10);
+		IDENT(var);
+		Expect(7);
 		Expect(11);
 		Expect(1);
-		Expect(7);
-		Expect(12);
 		Expect(9);
-		Expect(13);
+		HEADER();
+		if (la->kind == 12) {
+			SCREEN_PART();
+		}
+		if (la->kind == 13) {
+			USER_PROPERTIES_PART();
+		}
+		if (la->kind == 14) {
+			DOCUMENTATION_PART();
+		}
+		PARENTS(parents);
+		VARIABLE_DEFINITION(nbrMod, var,parents);
+		if (la->kind == 15) {
+			EXTRA_DEFINITION_PART();
+		}
+		Expect(8);
+		Expect(9);
+}
+
+void Parser::OBSERVATION_COST_PART() {
+		Expect(16);
+		BLOC_PART();
+}
+
+void Parser::HEADER() {
+		std::string content; 
+		Expect(17);
+		Expect(7);
+		Expect(18);
 		Expect(1);
-		Expect(7);
-		Expect(14);
+		Expect(9);
+		Expect(19);
 		Expect(4);
-		Expect(7);
-		Expect(6);
-		Expect(7);
+		Expect(9);
+		Expect(8);
+		Expect(9);
+}
+
+void Parser::SCREEN_PART() {
+		Expect(12);
+		BLOC_PART();
+}
+
+void Parser::USER_PROPERTIES_PART() {
+		Expect(13);
+		BLOC_PART();
+}
+
+void Parser::DOCUMENTATION_PART() {
+		Expect(14);
+		BLOC_PART();
 }
 
 void Parser::PARENTS(std::vector<std::string>& parents ) {
-		Expect(15);
-		Expect(16);
+		Expect(20);
+		Expect(21);
 		if (la->kind == 1) {
 			PARENTS_LIST(parents);
 		}
-		Expect(17);
-		Expect(7);
+		Expect(22);
+		Expect(9);
 }
 
-void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var ) {
-		Expect(19);
-		Expect(9);
-		Expect(20);
-		Expect(16);
+void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents ) {
+		Expect(24);
+		Expect(7);
+		Expect(25);
+		Expect(21);
 		TRY(factory().startVariableDeclaration());
 		TRY(factory().variableName(var));
 		
 		MODALITY_LIST(nbrMod);
-		Expect(17);
-		Expect(7);
-		TRY(factory().endVariableDeclaration()); 
+		Expect(22);
+		Expect(9);
+		TRY(factory().endVariableDeclaration());
+		gum::Size i;
+		TRY(factory().startParentsDeclaration(var));
+		
+					for(i = 0; i < parents.size(); i++){
+							TRY(factory().variableId(parents[i]));
+							TRY(factory().addParent(parents[i]));
+					}
+				
+					TRY(factory().endParentsDeclaration());
+				
+		PROBA(var, parents);
+		int nbr=0;
+		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
+		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
+		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
+		
+		Expect(8);
+		Expect(9);
 }
 
-void Parser::PROBA(const std::string& var, const std::vector<std::string>& parents ) {
-		Expect(21);
-		Expect(16);
-		RAW_PROBA(var, parents);
-		Expect(17);
+void Parser::EXTRA_DEFINITION_PART() {
+		Expect(15);
+		BLOC_PART();
+}
+
+void Parser::BLOC_PART() {
 		Expect(7);
-		Expect(6);
-		Expect(7);
-		Expect(6);
-		Expect(7);
+		while (StartOf(1)) {
+			if (StartOf(2)) {
+				Get();
+			} else {
+				BLOC_PART();
+			}
+		}
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
-		std::string parent; 
+		std::string parent;
+		
 		IDENT(parent);
 		parents.push_back(parent);	
-		if (la->kind == 18) {
-			ExpectWeak(18, 1);
+		if (la->kind == 23) {
+			ExpectWeak(23, 3);
 			PARENTS_LIST(parents);
 		}
 }
@@ -202,10 +244,18 @@ void Parser::MODALITY_LIST(int& nbrMod) {
 			TRY(factory().addModality(label)); 
 			nbrMod++;
 		
-		if (la->kind == 18) {
+		if (la->kind == 23) {
 			Get();
 			MODALITY_LIST(nbrMod);
 		}
+}
+
+void Parser::PROBA(const std::string& var, const std::vector<std::string>& parents ) {
+		Expect(26);
+		Expect(21);
+		RAW_PROBA(var, parents);
+		Expect(22);
+		Expect(9);
 }
 
 void Parser::IDENT_OR_INTEGER(std::string& name) {
@@ -214,7 +264,7 @@ void Parser::IDENT_OR_INTEGER(std::string& name) {
 		} else if (la->kind == 2) {
 			Get();
 			name=narrow(t->val);
-		} else SynErr(25);
+		} else SynErr(30);
 }
 
 void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& parents ) {
@@ -263,9 +313,9 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		if (StartOf(2)) {
-			if (la->kind == 18 || la->kind == 22) {
-				if (la->kind == 18) {
+		if (StartOf(4)) {
+			if (la->kind == 23 || la->kind == 27) {
+				if (la->kind == 23) {
 					Get();
 				} else {
 					Get();
@@ -282,7 +332,7 @@ void Parser::FLOAT(float& val) {
 		} else if (la->kind == 2) {
 			Get();
 			swscanf(t->val, L"%f", &val); 
-		} else SynErr(26);
+		} else SynErr(31);
 }
 
 
@@ -298,7 +348,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser(Scanner *scanner) {
-	maxT = 23;
+	maxT = 28;
 
 	dummyToken = NULL;
 	t = la = NULL;
@@ -312,10 +362,12 @@ bool Parser::StartOf(int s) {
 	const bool T = true;
 	const bool x = false;
 
-	static bool set[3][25] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{T,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,T,x, x}
+	static bool set[5][30] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,T,T,T, T,T,T,T, x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,x},
+		{x,T,T,T, T,T,T,x, x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,x},
+		{T,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,T, x,x}
 	};
 
 
@@ -342,27 +394,32 @@ void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 3: s = coco_string_create(L"number expected"); break;
 			case 4: s = coco_string_create(L"string expected"); break;
 			case 5: s = coco_string_create(L"largestring expected"); break;
-			case 6: s = coco_string_create(L"\"}\" expected"); break;
-			case 7: s = coco_string_create(L"\";\" expected"); break;
-			case 8: s = coco_string_create(L"\"net\" expected"); break;
-			case 9: s = coco_string_create(L"\"{\" expected"); break;
+			case 6: s = coco_string_create(L"\"net\" expected"); break;
+			case 7: s = coco_string_create(L"\"{\" expected"); break;
+			case 8: s = coco_string_create(L"\"}\" expected"); break;
+			case 9: s = coco_string_create(L"\";\" expected"); break;
 			case 10: s = coco_string_create(L"\"node\" expected"); break;
 			case 11: s = coco_string_create(L"\"TYPE\" expected"); break;
-			case 12: s = coco_string_create(L"\"HEADER\" expected"); break;
-			case 13: s = coco_string_create(L"\"ID\" expected"); break;
-			case 14: s = coco_string_create(L"\"NAME\" expected"); break;
-			case 15: s = coco_string_create(L"\"PARENTS\" expected"); break;
-			case 16: s = coco_string_create(L"\"(\" expected"); break;
-			case 17: s = coco_string_create(L"\")\" expected"); break;
-			case 18: s = coco_string_create(L"\",\" expected"); break;
-			case 19: s = coco_string_create(L"\"DEFINITION\" expected"); break;
-			case 20: s = coco_string_create(L"\"NAMESTATES\" expected"); break;
-			case 21: s = coco_string_create(L"\"PROBABILITIES\" expected"); break;
-			case 22: s = coco_string_create(L"\"|\" expected"); break;
-			case 23: s = coco_string_create(L"??? expected"); break;
-			case 24: s = coco_string_create(L"invalid NETWORK"); break;
-			case 25: s = coco_string_create(L"invalid IDENT_OR_INTEGER"); break;
-			case 26: s = coco_string_create(L"invalid FLOAT"); break;
+			case 12: s = coco_string_create(L"\"SCREEN\" expected"); break;
+			case 13: s = coco_string_create(L"\"USER_PROPERTIES\" expected"); break;
+			case 14: s = coco_string_create(L"\"DOCUMENTATION\" expected"); break;
+			case 15: s = coco_string_create(L"\"EXTRA_DEFINITION\" expected"); break;
+			case 16: s = coco_string_create(L"\"OBSERVATION_COST\" expected"); break;
+			case 17: s = coco_string_create(L"\"HEADER\" expected"); break;
+			case 18: s = coco_string_create(L"\"ID\" expected"); break;
+			case 19: s = coco_string_create(L"\"NAME\" expected"); break;
+			case 20: s = coco_string_create(L"\"PARENTS\" expected"); break;
+			case 21: s = coco_string_create(L"\"(\" expected"); break;
+			case 22: s = coco_string_create(L"\")\" expected"); break;
+			case 23: s = coco_string_create(L"\",\" expected"); break;
+			case 24: s = coco_string_create(L"\"DEFINITION\" expected"); break;
+			case 25: s = coco_string_create(L"\"NAMESTATES\" expected"); break;
+			case 26: s = coco_string_create(L"\"PROBABILITIES\" expected"); break;
+			case 27: s = coco_string_create(L"\"|\" expected"); break;
+			case 28: s = coco_string_create(L"??? expected"); break;
+			case 29: s = coco_string_create(L"invalid DSL"); break;
+			case 30: s = coco_string_create(L"invalid IDENT_OR_INTEGER"); break;
+			case 31: s = coco_string_create(L"invalid FLOAT"); break;
 
 		default:
 		{
