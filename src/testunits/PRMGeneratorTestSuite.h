@@ -58,44 +58,44 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    void testPyramidalGen() {
-      std::vector<LayerGenerator::LayerData> v;
-      size_t interface_size = 3;
-      size_t agg_size = 0;
-      float agg_ratio = 1;
-      size_t c_count = 1;
-      size_t a_count = 10;
-      float density = 0.2;
-      size_t i_count = 1;
-      v.push_back(LayerGenerator::LayerData());
-      v.back().interface_size = interface_size;
-      v.back().agg_size = agg_size;
-      v.back().agg_ratio = agg_ratio;
-      v.back().c_count = c_count;
-      v.back().a_count = a_count;
-      v.back().density = density;
-      v.back().i_count = i_count;
-      agg_size = 2;
-      for (size_t lvl = 1; lvl < 10; ++lvl, ++i_count, ++c_count) {
-        v.push_back(LayerGenerator::LayerData());
-        v.back().interface_size = interface_size;
-        v.back().agg_size = agg_size;
-        v.back().agg_ratio = agg_ratio;
-        v.back().c_count = c_count;
-        v.back().a_count = a_count;
-        v.back().density = density;
-        v.back().i_count = i_count;
-      }
-      for (size_t i = 0; i < 100; ++i) {
-        LayerGenerator* gen = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(gen = new LayerGenerator());
-        TS_GUM_ASSERT_THROWS_NOTHING(gen->setLayers(v));
-        PRM* prm = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
-        TS_GUM_ASSERT_THROWS_NOTHING(delete prm);
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
-      }
-    }
+    // void testPyramidalGen() {
+    //   std::vector<LayerGenerator::LayerData> v;
+    //   size_t interface_size = 3;
+    //   size_t agg_size = 0;
+    //   float agg_ratio = 1;
+    //   size_t c_count = 1;
+    //   size_t a_count = 10;
+    //   float density = 0.2;
+    //   size_t i_count = 1;
+    //   v.push_back(LayerGenerator::LayerData());
+    //   v.back().interface_size = interface_size;
+    //   v.back().agg_size = agg_size;
+    //   v.back().agg_ratio = agg_ratio;
+    //   v.back().c_count = c_count;
+    //   v.back().a_count = a_count;
+    //   v.back().density = density;
+    //   v.back().i_count = i_count;
+    //   agg_size = 2;
+    //   for (size_t lvl = 1; lvl < 10; ++lvl, ++i_count, ++c_count) {
+    //     v.push_back(LayerGenerator::LayerData());
+    //     v.back().interface_size = interface_size;
+    //     v.back().agg_size = agg_size;
+    //     v.back().agg_ratio = agg_ratio;
+    //     v.back().c_count = c_count;
+    //     v.back().a_count = a_count;
+    //     v.back().density = density;
+    //     v.back().i_count = i_count;
+    //   }
+    //   for (size_t i = 0; i < 100; ++i) {
+    //     LayerGenerator* gen = 0;
+    //     TS_GUM_ASSERT_THROWS_NOTHING(gen = new LayerGenerator());
+    //     TS_GUM_ASSERT_THROWS_NOTHING(gen->setLayers(v));
+    //     PRM* prm = 0;
+    //     TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
+    //     TS_GUM_ASSERT_THROWS_NOTHING(delete prm);
+    //     TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+    //   }
+    // }
 
     void testStructuredInference() {
       std::vector<LayerGenerator::LayerData> v;
@@ -110,7 +110,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       Instance& i = **(s.get(c).begin());
       Attribute& a = **(i.begin());
       PRMInference::Chain chain(&i, &a);
-      StructuredInference structinf(*prm, prm->getSystem(s.name()));
+      StructuredInference structinf(*prm, prm->getSystem(s.name()), 2, 10, new gspan::StrictSearch());
       structinf.setPaterMining(true);
       Potential<prm_float> m_struct;
       TS_GUM_ASSERT_THROWS_NOTHING(structinf.marginal(chain, m_struct));
@@ -189,6 +189,9 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }
+#ifdef GUM_NO_INLINE
+        break;
+#endif
       }
       delete g_ve;
       delete g_ss;

@@ -280,7 +280,7 @@ DFSTree::growPattern(Pattern& p, EdgeGrowth& edge_growth, Size min_freq) {
       data->max_indep_set.insert(*node);
     }
   }
-  if (not __strategy->accept_growth(&p, child, data)) {
+  if (not __strategy->accept_growth(&p, child, edge_growth)) {
     delete data;
     delete child;
     GUM_ERROR(OperationNotAllowed, "child is not frequent enough");
@@ -307,60 +307,6 @@ DFSTree::EdgeGrowth::insert(Instance* u, Instance* v) {
   }
   // The order between u and v is important ! DO NOT INVERSE IT !
   matches.insert(id, std::make_pair(u, v));
-}
-
-
-double
-DFSTree::cost(const Pattern& p) const {
-  if (__data[const_cast<Pattern*>(&p)]->cost == 0) {
-    Size cost = 1;
-    Sequence<Instance*>& seq = **(__data[const_cast<Pattern*>(&p)]->iso_map.begin());
-    Sequence<ClassElement*> input_set;
-    for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-      for (Set<SlotChain*>::iterator input = (*iter)->type().slotChains().begin(); input != (*iter)->type().slotChains().end(); ++input) {
-        for (Set<Instance*>::iterator jter = (*iter)->getInstances((*input)->id()).begin(); jter != (*iter)->getInstances((*input)->id()).end(); ++jter) {
-          if ((not seq.exists(*jter)) and (not input_set.exists(&((*jter)->get((*input)->lastElt().safeName())))) ) {
-            cost *= (*input)->type().variable().domainSize();
-            input_set.insert(&((*jter)->get((*input)->lastElt().safeName())));
-          }
-        }
-      }
-      for (Instance::InvRefIterator vec = (**iter).beginInvRef(); vec != (**iter).endInvRef(); ++vec) {
-        for (std::vector< std::pair<Instance*, std::string> >::iterator inverse = (**vec).begin(); inverse != (**vec).end(); ++inverse) {
-          if (not seq.exists(inverse->first)) {
-            cost *= (*iter)->get(vec.key()).type().variable().domainSize();
-            break;
-          }
-        }
-      }
-    }
-    __data[const_cast<Pattern*>(&p)]->cost = cost;
-  }
-  return (double) __data[const_cast<Pattern*>(&p)]->cost;
-}
-
-double
-DFSTree::gain(const Pattern& p) const {
-  if (__data[const_cast<Pattern*>(&p)]->gain == 0) {
-    Size gain = 0;
-    Sequence<Instance*>& seq = **(__data[const_cast<Pattern*>(&p)]->iso_map.begin());
-    for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-      Size current = 1;
-      for (Set<SlotChain*>::iterator input = (*iter)->type().slotChains().begin(); input != (*iter)->type().slotChains().end(); ++input) {
-        for (Set<Instance*>::iterator jter = (*iter)->getInstances((*input)->id()).begin(); jter != (*iter)->getInstances((*input)->id()).end(); ++jter) {
-          current *= (*input)->type().variable().domainSize();
-        }
-      }
-      for (DAG::NodeIterator node = (*iter)->type().dag().beginNodes(); node != (*iter)->type().dag().endNodes(); ++node) {
-        if ( (*iter)->type().isOutputNode((**iter).type().get(*node)) and (*iter)->hasRefAttr(*node) ) {
-          current *= (*iter)->get(*node).type().variable().domainSize();
-        }
-      }
-      gain += current;
-    }
-    __data[const_cast<Pattern*>(&p)]->gain = gain;
-  }
-  return (double) __data[const_cast<Pattern*>(&p)]->gain;
 }
 
 void

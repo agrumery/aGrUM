@@ -35,6 +35,7 @@ DFSTree::DFSTree(const InterfaceGraph& graph, gspan::SearchStrategy* strategy):
   GUM_CONSTRUCTOR( DFSTree );
   if (not __strategy)
     __strategy = new FrequenceSearch(2);
+  __strategy->setTree(this);
 }
 
 INLINE
@@ -148,12 +149,6 @@ DFSTree::max_indep_set(const Pattern& p) {
 }
 
 INLINE
-double
-DFSTree::score(const Pattern& p)  const {
-  return frequency(p) * (gain(p) / cost(p));
-}
-
-INLINE
 std::ostream&
 operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge) {
   out << edge.u << ", " << *(edge.edge) << ", " << *(edge.l_v) << ", " << edge.v;
@@ -212,17 +207,37 @@ DFSTree::EdgeGrowth::toString() {
   return str.str();
 }
 
-INLINE
-Size
-DFSTree::EdgeGrowth::count() const {
-  return matches.size();
-}
+//INLINE
+//Size
+//DFSTree::EdgeGrowth::count() const {
+//  return matches.size();
+//}
 
 INLINE
 double
 DFSTree::frequency(const Pattern& p) const {
   return (double) __data[const_cast<Pattern*>(&p)]->max_indep_set.size();
 }
+
+INLINE
+DFSTree::PatternData&
+DFSTree::data(const Pattern& p) {
+  return *(__data[const_cast<Pattern*>(&p)]);
+}
+
+INLINE
+const DFSTree::PatternData&
+DFSTree::data(const Pattern& p) const {
+  return *(__data[const_cast<Pattern*>(&p)]);
+}
+
+INLINE
+SearchStrategy&
+DFSTree::strategy() { return *__strategy; }
+
+INLINE
+const SearchStrategy&
+DFSTree::strategy() const { return *__strategy; }
 
 // ============================================================================
 // NeighborDegreeSort

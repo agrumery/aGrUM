@@ -169,8 +169,6 @@ class LayerGenerator: public PRMGenerator {
 
     /// Generate a system in a factory.
     void __generateSystem(PRMFactory& factory);
-
-    void __checkForCycles(const DAG& dag);
 };
 
 } /* namespace prm */

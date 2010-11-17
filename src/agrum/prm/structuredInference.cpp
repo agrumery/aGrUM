@@ -33,11 +33,13 @@
 namespace gum {
 namespace prm {
 
-StructuredInference::StructuredInference(const PRM& prm, const System& system):
+StructuredInference::StructuredInference(const PRM& prm, const System& system,
+                                         Size min_freq, Size depth_stop,
+                                         gspan::SearchStrategy* strategy):
   PRMInference(prm, system), __gspan(0), __pdata(0), __mining(false), __dot(".")
 {
   GUM_CONSTRUCTOR( StructuredInference );
-  __gspan = new GSpan(prm, system);
+  __gspan = new GSpan(prm, system, min_freq, depth_stop, strategy);
 }
 
 StructuredInference::StructuredInference(const StructuredInference& source):

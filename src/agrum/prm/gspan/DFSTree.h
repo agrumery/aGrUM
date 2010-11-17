@@ -44,6 +44,7 @@
 // ============================================================================
 namespace gum {
 namespace prm {
+class GSpan;
 namespace gspan {
 
 class SearchStrategy;
@@ -156,7 +157,7 @@ class DFSTree: private DiGraph {
       NodeId u;
       /// Returns the number of matches in the interface graph
       /// for this edge growth.
-      Size count() const;
+      //Size count() const;
       /// The LabelData over the edge of this edge growth.
       LabelData* edge;
       /// The LabelData over the node of this edge growth.
@@ -262,14 +263,10 @@ class DFSTree: private DiGraph {
     /// Returns the frequency of p respecting it's maximal independent set.
     double frequency(const Pattern& p) const;
 
-    /// Returns the cost induced by p.
-    double cost(const Pattern& p) const;
-
-    /// Returns the gain induced by p.
-    double gain(const Pattern& p) const;
-
-    /// Returns the score of p.
-    double score(const Pattern& p) const;
+    PatternData& data(const Pattern& p);
+    const PatternData& data(const Pattern& p) const;
+    SearchStrategy& strategy();
+    const SearchStrategy& strategy() const;
 
     /// @class This is used to generate the max_indep_set of a Pattern.
     struct NeighborDegreeSort {
@@ -356,11 +353,16 @@ class SearchStrategy {
     // ==========================================================================
     /// @{
 
+    void setTree(DFSTree* tree);
+
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::PatternData* data) =0;
+                               const DFSTree::EdgeGrowth& growth) =0;
 
+    virtual bool operator()(Pattern* i, Pattern* j) =0;
     /// @}
+  protected:
+    DFSTree* _tree;
 
 };
 
@@ -393,8 +395,9 @@ class FrequenceSearch : public SearchStrategy {
 
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::PatternData* data);
+                               const DFSTree::EdgeGrowth& growth);
 
+    virtual bool operator()(Pattern* i, Pattern* j);
     /// @}
 
   private:
@@ -423,7 +426,7 @@ class StrictSearch : public SearchStrategy {
     /// @{
 
     /// Default constructor.
-    StrictSearch(DFSTree* tree);
+    StrictSearch();
 
     /// Destructor.
     virtual ~StrictSearch();
@@ -434,14 +437,22 @@ class StrictSearch : public SearchStrategy {
     // ==========================================================================
     /// @{
 
+    double gain(const Pattern& p);
+
+    double cost(const Pattern& p);
+
     virtual bool accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::PatternData* data);
+                               const DFSTree::EdgeGrowth& growth);
 
+    virtual bool operator()(Pattern* i, Pattern* j);
     /// @}
   private:
-    DFSTree* __tree;
-
+    HashTable<const Pattern*, std::pair<double, double> > __map;
+    double __getCost(const Pattern& p);
+    void __setCost(const Pattern& p, double cost);
+    double __getGain(const Pattern& p);
+    void __setGain(const Pattern& p, double gain);
 };
 
 } /* namespace gspan */

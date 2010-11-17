@@ -167,7 +167,6 @@ LayerGenerator::__copyClass(LayerGenerator::LayerData& data, PRMFactory& factory
                             Property<std::string>::onNodes& outputs,
                             const std::string& type)
 {
-  __checkForCycles(bn.dag());
   Set<std::string> set; set.insert(i);
   std::string name = _name_gen.nextName(PRMObject::prm_class);
   factory.startClass(name, "", &set);
@@ -311,29 +310,6 @@ LayerGenerator::__generateSystem(PRMFactory& factory) {
     }
   }
   factory.endSystem();
-}
-
-void
-LayerGenerator::__checkForCycles(const DAG& dag) {
-  // First lets find roots
-  for (DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node) {
-    if (dag.parents(*node).empty()) {
-      std::vector<NodeId> stack;
-      stack.push_back(*node);
-      size_t counter = 0;
-      while (stack.size() and (counter < (dag.sizeArcs() * 10))) {
-        ++counter;
-        NodeId id = stack.back();
-        stack.pop_back();
-        for (NodeSet::iterator child = dag.children(id).begin(); child != dag.children(id).end(); ++child)
-          stack.push_back(*child);
-      }
-      if (counter >= (dag.sizeArcs() * 10)) {
-        std::cerr << "Holy shit !" << std::endl;
-        std::exit(1);
-      }
-    }
-  }
 }
 
 } /* namespace prm */

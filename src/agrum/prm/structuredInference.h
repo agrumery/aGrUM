@@ -56,7 +56,9 @@ class StructuredInference: public PRMInference {
     /// @{
 
     /// Default constructor.
-    StructuredInference(const PRM& prm, const System& system);
+    StructuredInference(const PRM& prm, const System& system,
+                        Size min_freq=2, Size depth_stop=10,
+                        gspan::SearchStrategy* strategy=0);
 
     /// Copy constructor.
     StructuredInference(const StructuredInference& source);

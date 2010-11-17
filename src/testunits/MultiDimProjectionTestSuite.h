@@ -338,6 +338,16 @@ namespace gum {
         del_vars.insert ( vars[1] );
         
         MultiDimArray<float>* t2 = projectSumMultiDimArray ( &t1, del_vars );
+        TS_ASSERT( t2->variablesSequence().exists ( vars[2] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[3] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[6] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[7] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[4] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[5] ));
+        TS_ASSERT( t2->variablesSequence().exists ( vars[8] ));
+        TS_ASSERT( not t2->variablesSequence().exists ( vars[0] ));
+        TS_ASSERT( not t2->variablesSequence().exists ( vars[9] ));
+        TS_ASSERT( not t2->variablesSequence().exists ( vars[1] ));
         delete t2;
 
 

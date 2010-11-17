@@ -70,9 +70,12 @@ class GSpan {
      * @param min_freq The minimal frequency value used by this class.
      * @param depth_stop The maximal depth of the gspan::DFSTree used by
      *                   this class.
+     * @param strategy The search strategy used for pattern mining, the
+     *                 default strategy is gspan::FrequenceSearch.
      */
     GSpan(const PRM& prm, const System& sys,
-          Size min_freq=2, Size depth_stop=10);
+          Size min_freq=2, Size depth_stop=10,
+          gspan::SearchStrategy* strategy = 0);
 
     /// Destructor.
     ~GSpan();
@@ -187,21 +190,21 @@ class GSpan {
      */
     const MatchedInstances& matches(const gspan::Pattern& p) const;
 
-    /**
-     * Returns the cumulative sum of all the cliques size created after lifting
-     * the patterns.
-     * @returns the cumulative sum of all the cliques size created after lifting
-     *          the patterns.
-     */
-    double patterns_cost() const;
+    // /**
+    //  * Returns the cumulative sum of all the cliques size created after lifting
+    //  * the patterns.
+    //  * @returns the cumulative sum of all the cliques size created after lifting
+    //  *          the patterns.
+    //  */
+    // double patterns_cost() const;
 
-    /**
-     * Returns the cumulative sum of all the cliques size created after lifting
-     * the inner attributes.
-     * @returns the cumulative sum of all the cliques size created after lifting
-     *          the inner attributes.
-     */
-    double sve_cost() const;
+    // /**
+    //  * Returns the cumulative sum of all the cliques size created after lifting
+    //  * the inner attributes.
+    //  * @returns the cumulative sum of all the cliques size created after lifting
+    //  *          the inner attributes.
+    //  */
+    // double sve_cost() const;
 
     ///@}
   private:
@@ -267,10 +270,10 @@ class GSpan {
     /// Sort the patterns and compute their respective costs.
     void __sortPatterns();
 
-    /// Returns the cost of an instance.
-    /// @param i An instance.
-    /// @return the cost of an instance.
-    double __instance_cost(Instance* i) const;
+    // /// Returns the cost of an instance.
+    // /// @param i An instance.
+    // /// @return the cost of an instance.
+    // double __instance_cost(Instance* i) const;
 
     /// Print an iso map. For debug purpose.
     void __printIsoMap(gspan::Pattern& p);

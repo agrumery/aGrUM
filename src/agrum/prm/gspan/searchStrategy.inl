@@ -30,13 +30,21 @@ namespace gspan {
 
 // The SearchStrategy class
 INLINE
-SearchStrategy::SearchStrategy() {
+SearchStrategy::SearchStrategy():
+  _tree(0)
+{
   GUM_CONSTRUCTOR(SearchStrategy);
 }
 
 INLINE
 SearchStrategy::~SearchStrategy() {
   GUM_DESTRUCTOR(SearchStrategy);
+}
+
+INLINE
+void
+SearchStrategy::setTree(DFSTree* tree) {
+  _tree = tree;
 }
 
 // The FrequenceSearch class
@@ -56,15 +64,23 @@ INLINE
 bool
 FrequenceSearch::accept_growth(const Pattern* parent,
                                const Pattern* child,
-                               const DFSTree::PatternData* data)
+                               const DFSTree::EdgeGrowth& growh)
 {
-  return data->max_indep_set.size() >= __freq;
+  return _tree->frequency(*child) >= __freq;
 }
+
+INLINE
+bool
+FrequenceSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
+  // We want a descending order
+  return _tree->frequency(*i) > _tree->frequency(*j);
+}
+
 
 // The StrictSearch class
 INLINE
-StrictSearch::StrictSearch(DFSTree* tree):
-  SearchStrategy(), __tree(tree)
+StrictSearch::StrictSearch():
+  SearchStrategy()
 {
   GUM_CONSTRUCTOR(StrictSearch);
 }
@@ -75,15 +91,63 @@ StrictSearch::~StrictSearch() {
 }
 
 INLINE
+double
+StrictSearch::__getCost(const Pattern& p) {
+  try {
+    return __map[&p].first;
+  } catch (NotFound&) {
+    __map.insert(&p, std::make_pair((double) 0.0, (double) 0.0));
+    return (double) 0.0;
+  }
+}
+
+INLINE
+void
+StrictSearch::__setCost(const Pattern& p, double cost) {
+  try {
+    __map[&p].first = cost;
+  } catch (NotFound&) {
+    __map.insert(&p, std::make_pair(cost, (double) 0.0));
+  }
+}
+
+INLINE
+double
+StrictSearch::__getGain(const Pattern& p) {
+  try {
+    return __map[&p].second;
+  } catch (NotFound&) {
+    __map.insert(&p, std::make_pair((double) 0.0, (double) 0.0));
+    return (double) 0.0;
+  }
+}
+
+INLINE
+void
+StrictSearch::__setGain(const Pattern& p, double gain) {
+  try {
+    __map[&p].second = gain;
+  } catch (NotFound&) {
+    __map.insert(&p, std::make_pair((double) 0.0, gain));
+  }
+}
+
+
+INLINE
 bool
 StrictSearch::accept_growth(const Pattern* parent,
                             const Pattern* child,
-                            const DFSTree::PatternData* data)
+                            const DFSTree::EdgeGrowth& growth)
 {
-  // double prnt_cost = std::log(growth->count()) +
-  //  std::log(__tree->cost(*parent) + growth->edge->tree_width);
-  // return prnt_cost >= std::log(__tree->cost(*child));
-  return false;
+  return _tree->frequency(*child) * (cost(*parent) + gain(*child)) > cost(*child);
+}
+
+INLINE
+bool
+StrictSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
+  // We want a descending order
+  return _tree->frequency(*i) * gain(*i) / cost(*i) >
+         _tree->frequency(*j) * gain(*j) / cost(*j);
 }
 
 } /* namespace gspan */

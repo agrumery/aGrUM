@@ -28,8 +28,9 @@ namespace gum {
 namespace prm {
 
 INLINE
-GSpan::GSpan(const PRM& prm, const System& sys, Size min_freq, Size depth_stop):
-  __graph(new gspan::InterfaceGraph(sys)), __tree(*__graph),
+GSpan::GSpan(const PRM& prm, const System& sys, Size min_freq, Size depth_stop,
+             gspan::SearchStrategy* strategy):
+  __graph(new gspan::InterfaceGraph(sys)), __tree(*__graph, strategy),
   __min_freq(min_freq), __depth_stop(depth_stop)
 {
   GUM_CONSTRUCTOR( GSpan );
@@ -193,8 +194,7 @@ INLINE
 bool
 GSpan::PatternSort::operator()(gspan::Pattern* i, gspan::Pattern* j) {
   // We want a descending order
-  return gspan->tree().frequency(*i) * (gspan->tree().gain(*i) / gspan->tree().cost(*i)) >
-         gspan->tree().frequency(*j) * (gspan->tree().gain(*j) / gspan->tree().cost(*j));
+  return gspan->tree().strategy().operator()(i,j);
 }
 
 } /* namespace prm */
