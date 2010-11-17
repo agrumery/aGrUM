@@ -289,7 +289,7 @@ namespace gum {
 
         }
         
-        void /*test*/Read_file_completeDSL() {
+        void testRead_file_completeDSL() {
           std::string file = GET_PATH_STR ( DSL/Ling.dsl);
 
           gum::BayesNet<float> *net = new gum::BayesNet<float>();
@@ -301,16 +301,12 @@ namespace gum {
 
           TS_GUM_ASSERT_THROWS_NOTHING ( isOK = reader.proceed() );
 
-          GUM_TRACE_VAR(isOK);
-          GUM_TRACE_VAR(reader.warnings());
-          GUM_TRACE_VAR(reader.errors());
-          
           TS_ASSERT ( isOK );
           TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
           // 0 warnings : no properties
           TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 );
 
-          TS_ASSERT_EQUALS(net->size(),(gum::Size)6);
+          TS_ASSERT_EQUALS(net->size(),(gum::Size)13);
           
           TS_ASSERT ( net != 0 );
 

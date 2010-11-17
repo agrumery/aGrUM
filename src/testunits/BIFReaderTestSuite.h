@@ -617,21 +617,22 @@ namespace gum {
         }
 
         void testAlarm() {
-          std::string file = GET_PATH_STR( alarm.bif );
+        std::string file = GET_PATH_STR( alarm.bif );
 
-          gum::BayesNet<float> *net = new gum::BayesNet<float>();
+        gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
-          gum::BIFReader<float> reader( net, file );
+        gum::BIFReader<float> reader( net, file );
 
 
 
-          bool isOK = false;
+        bool isOK = false;
 
-          TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
 
-          TS_ASSERT( isOK );TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size )0 );
+        TS_ASSERT( isOK );
 
-          TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
+        TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size )0 );
+        TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
 
 
           gum::HashTable<std::string, gum::Id> idMap;
