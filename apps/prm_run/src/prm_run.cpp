@@ -85,13 +85,14 @@ int main (int argc, char *argv[]) {
   std::ifstream input_stream(file.c_str());
   Scanner* s = 0;
   Parser* p = 0;
+  std::ofstream* output = 0;
   if (input_stream.is_open() and input_stream.good()) {
     try {
       s = new Scanner(file);
       if (option_outputfile) {
-        std::ofstream output(output_file.c_str());
+        output = new std::ofstream(output_file.c_str());
         if (input_stream.is_open() and input_stream.good()) {
-          p = new Parser(s, output);
+          p = new Parser(s, *output);
         } else {
           std::cerr << "Could not open output file, dumping log on the standard output." << std::endl;
           p = new Parser(s);
@@ -112,8 +113,9 @@ int main (int argc, char *argv[]) {
     if (s != 0) delete s;
     print_help_and_exit(EXIT_FAILURE);
   }
-  if (p != 0) delete p;
-  if (s != 0) delete s;
+  if (p) delete p;
+  if (s) delete s;
+  if (output) delete output;
   std::exit(EXIT_SUCCESS);
 }
 

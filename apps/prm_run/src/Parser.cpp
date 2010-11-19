@@ -409,14 +409,13 @@ void Parser::query(const std::string& name) {
     throw msg + e.getContent();
   }
   Instantiation j (m);
-  for (j.setFirst (); not j.end (); j.inc ()) {
-    log << attr.type().variable().label(j.val(attr.type().variable())) << ": " << m.get(j) << std::endl;
-  }
-  for (size_t i = 0; i < 80; ++i) {
+  Size label = 0;
+  // Different DiscreteVariable if we used a grounded inference
+  for (j.setFirst(); not j.end(); ++label, j.inc())
+    log << attr.type().variable().label(label) << ": " << m.get(j) << std::endl;
+  for (size_t i = 0; i < 80; ++i)
     log << "#";
-  }
   log << std::endl << std::endl;
-  delete inf;
 }
 
 
