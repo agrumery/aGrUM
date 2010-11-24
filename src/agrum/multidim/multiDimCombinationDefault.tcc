@@ -29,7 +29,7 @@
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/core/priorityQueue.h>
-#include <agrum/core/timer.h>
+//#include <agrum/core/timer.h>
 
 
 namespace gum {
@@ -163,18 +163,20 @@ namespace gum {
     // to perform. When the result R has been computed, substitute i by R, remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
-    Timer timer;
+    // Timer timer;
     for ( unsigned int k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop ();
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
-      timer.reset ();
+      // timer.reset ();
       TABLE<T_DATA>* result = _combine ( *(tables[ti]), *(tables[tj]) );
+      /*
       std::cout << result << " = " <<  tables[ti] << " + " << tables[tj]
                 << " --- time = " << timer.step () << std::endl;
-        
+      */
+      
       // substitute tables[pair.first] by the result
       if ( tables[ti] && is_t_new[ti] ) delete tables[ti];
       if ( tables[tj] && is_t_new[tj] ) delete tables[tj];
