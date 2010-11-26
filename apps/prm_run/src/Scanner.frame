@@ -142,8 +142,8 @@ class KeywordMap {
         wchar_t *key;
         int val;
         Elem *next;
-        Elem(const wchar_t *key, int val) { this->key = coco_string_create(key); this->val = val; next = NULL; }
-        virtual ~Elem() { coco_string_delete(key); }
+        Elem(const wchar_t *key, int val) { this->key = gum::coco_string_create(key); this->val = val; next = NULL; }
+        virtual ~Elem() { gum::coco_string_delete(key); }
     };
 
     Elem **tab;
@@ -164,13 +164,13 @@ class KeywordMap {
 
     void set(const wchar_t *key, int val) {
       Elem *e = new Elem(key, val);
-      int k = coco_string_hash(key) % 128;
+      int k = gum::coco_string_hash(key) % 128;
       e->next = tab[k]; tab[k] = e;
     }
 
     int get(const wchar_t *key, int defaultVal) {
-      Elem *e = tab[coco_string_hash(key) % 128];
-      while (e != NULL && !coco_string_equal(e->key, key)) e = e->next;
+      Elem *e = tab[gum::coco_string_hash(key) % 128];
+      while (e != NULL && !gum::coco_string_equal(e->key, key)) e = e->next;
       return e == NULL ? defaultVal : e->val;
     }
 };
@@ -275,7 +275,7 @@ Token::Token() {
 }
 
 Token::~Token() {
-  coco_string_delete(val);
+  gum::coco_string_delete(val);
 }
 
 Buffer::Buffer(FILE* s, bool isUserStream) {
@@ -462,12 +462,12 @@ Scanner::Scanner(std::string file):
   filename(file)
 {
   FILE* stream;
-  char *chFileName = coco_string_create_char(widen(file).c_str());
+  char *chFileName = gum::coco_string_create_char(widen(file).c_str());
   if ((stream = fopen(chFileName, "rb")) == NULL) {
     wprintf(L"--- Cannot open file %s\n", file.c_str());
     exit(1);
   }
-  coco_string_delete(chFileName);
+  gum::coco_string_delete(chFileName);
   buffer = new Buffer(stream, false);
   Init();
 }

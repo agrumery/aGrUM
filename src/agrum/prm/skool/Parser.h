@@ -22,13 +22,15 @@ namespace std {
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
 #endif
 
+
 #include <agrum/prm/skool/Scanner.h>
 using namespace std;
+
+
 
 namespace gum {
 namespace prm {
 namespace skool {
-
 
 class Errors {
   public:
@@ -59,8 +61,9 @@ class Parser {
 		_dependson=14,
 		_default=15,
 		_implements=16,
-		_LEFT_CAST=17,
-		_RIGHT_CAST=18
+		_noisyOr=17,
+		_LEFT_CAST=18,
+		_RIGHT_CAST=19
 	};
 	int maxT;
 
@@ -272,9 +275,11 @@ void setReferenceSlot(std::string s, std::string r) {
 
 }; // end Parser
 
-} // namespace
-} // namespace
-} // namespace
+}
+}
+}
+
+
 
 #endif // !defined(SKOOL_COCO_PARSER_H__)
 

@@ -122,6 +122,11 @@ SVED::__reduceElimList(const Instance* i, List<const Instance*>& elim_list,
   }
 }
 
+INLINE
+std::string
+SVED::name() const {
+  return "SVED";
+}
 
 } /* namespace prm */
 } /* namespace gum */

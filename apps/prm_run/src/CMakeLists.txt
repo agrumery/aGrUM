@@ -1,26 +1,41 @@
-project(PRM_RUN)
-cmake_minimum_required(VERSION 2.8)
+PROJECT(PRM_RUN)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 # do not forget to change this line if needed ("act install -d...")
 # set(AGRUM_INSTALLATION_DIRECTORY "/home/nin/agrum")
 # set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
 
-find_package(aGrUM)
+FIND_PACKAGE(aGrUM)
 
-if (aGrUM_FOUND)
-   include_directories(${AGRUM_INCLUDE_DIR})
-   link_directories(${AGRUM_LIB_DIR})
-else (aGrUM_FOUND)
-  message(FATAL_ERROR "Please install aGrUM")
-endif (aGrUM_FOUND)
+IF (aGrUM_FOUND)
+   INCLUDE_DIRECTORIES(${AGRUM_INCLUDE_DIR})
+   LINK_DIRECTORIES(${AGRUM_LIB_DIR})
+ELSE (aGrUM_FOUND)
+  MESSAGE(FATAL_ERROR "Please install aGrUM")
+ENDIF (aGrUM_FOUND)
 
-file(GLOB PRM_RUN_SOURCE ${PRM_RUN_SOURCE_DIR}/*.cpp)
-file(GLOB PRM_RUN_INCLUDE ${PRM_RUN_SOURCE_DIR}/*.h)
+FILE(GLOB PRM_RUN_SOURCE ${PRM_RUN_SOURCE_DIR}/*.cpp)
+FILE(GLOB PRM_RUN_INCLUDE ${PRM_RUN_SOURCE_DIR}/*.h)
 
-add_executable (prm_run ${PRM_RUN_SOURCE})
-target_link_libraries(prm_run agrum)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-install(TARGETS prm_run RUNTIME DESTINATION bin)
+ADD_CUSTOM_COMMAND(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Parser.cpp ${CMAKE_CURRENT_BINARY_DIR}/Parser.h ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp ${CMAKE_CURRENT_BINARY_DIR}/Scanner.h
+  COMMAND cococpp ${PRM_RUN_SOURCE_DIR}/prm_run.atg -o ${CMAKE_CURRENT_BINARY_DIR}
+  DEPENDS ${PRM_RUN_SOURCE_DIR}/prm_run.atg ${PRM_RUN_SOURCE_DIR}/Scanner.frame ${PRM_RUN_SOURCE_DIR}/Parser.frame
+  )
+
+ADD_EXECUTABLE (prm_run ${PRM_RUN_SOURCE}
+                ${CMAKE_CURRENT_BINARY_DIR}/Parser.h
+                ${CMAKE_CURRENT_BINARY_DIR}/Parser.cpp
+                ${CMAKE_CURRENT_BINARY_DIR}/Scanner.h
+                ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp)
+
+SET_TARGET_PROPERTIES(prm_run PROPERTIES LINKER_LANGUAGE CXX)
+
+TARGET_LINK_LIBRARIES(prm_run agrum)
+
+INSTALL(TARGETS prm_run RUNTIME DESTINATION bin)
 
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"

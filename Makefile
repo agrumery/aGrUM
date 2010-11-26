@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=PRMGenerator
+SKOOL_TEST=Soredab
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

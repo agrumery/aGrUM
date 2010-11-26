@@ -8,9 +8,9 @@ include_directories(${AGRUM_SOURCE_DIR}/testunits)
 
 MACRO(ADD_CXXTEST NAME)
   IF(PYTHONINTERP_FOUND)
-		set(PATH_FILES "")
+    set(PATH_FILES "")
     foreach(part ${ARGN})
-			set(PATH_FILES "testunits/${part}" ${PATH_FILES})
+      set(PATH_FILES "testunits/${part}" ${PATH_FILES})
     endforeach(part ${ARGN})
     ADD_CUSTOM_COMMAND(
       OUTPUT ${AGRUM_BINARY_DIR}/${NAME}.cpp
@@ -31,9 +31,9 @@ ENDMACRO(ADD_CXXTEST)
 
 MACRO(add_agrum_test NAME)
   IF(PYTHONINTERP_FOUND)
-		set(PATH_FILES "")
+    set(PATH_FILES "")
     foreach(part ${ARGN})
-			set(PATH_FILES "testunits/${part}" ${PATH_FILES})
+      set(PATH_FILES "testunits/${part}" ${PATH_FILES})
     endforeach(part ${ARGN})
     ADD_CUSTOM_COMMAND(
       OUTPUT ${AGRUM_BINARY_DIR}/${NAME}.cpp

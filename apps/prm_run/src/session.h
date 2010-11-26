@@ -19,54 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of StructuredInference.
  *
- * @author Lionel TORTI
+ * @author Ni NI & Lionel TORTI
  */
-// ============================================================================
-namespace gum {
-namespace prm {
 
-INLINE
-void
-StructuredInference::setPaterMining(bool b) {
-  __mining = b;
-}
+struct Session {
+  bool syntax;
+  bool verbose;
+  bool help;
+  std::string cpaths;
+  std::string output;
+  bool fail;
+  inline Session():
+    syntax(false), verbose(false), help(false), fail(false)
+  { }
+};
 
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const Attribute* a) const {
-  return i->name() + __dot + a->safeName();
-}
-
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const Attribute& a) const {
-  return i->name() + __dot + a.safeName();
-}
-
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const SlotChain& a) const {
-  return i->name() + __dot + a.lastElt().safeName();
-}
-
-INLINE
-StructuredInference::RGData::~RGData() {
-  GUM_DESTRUCTOR(StructuredInference::RGData);
-}
-
-INLINE
-StructuredInference::PData::~PData() {
-  GUM_DESTRUCTOR(StructuredInference::PData);
-}
-
-INLINE
-std::string
-StructuredInference::name() const {
-  return "StructuredInference";
-}
-
-} /* namespace prm */
-} /* namespace gum */
-// ============================================================================

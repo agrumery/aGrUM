@@ -8,10 +8,9 @@ set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(AGRUM_OPTIMIZATION "-O3")
 set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 
-
-
 include("cmake/CompilOptions.agrum.cmake")
 include("cmake/FlexBison.agrum.cmake")
+include("cmake/CocoR.agrum.cmake")
 
 file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)
 file(GLOB_RECURSE AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.h)
@@ -19,6 +18,7 @@ file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}
 file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.tcc)
 
 FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
+CocoRTarget(prm/skool Skool gum::prm::skool)
 
 include_directories(${AGRUM_BINARY_DIR})
 include_directories(${AGRUM_SOURCE_DIR})

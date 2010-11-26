@@ -196,6 +196,7 @@ TOKENS
   dependson  = "dependson".
   default    = "default".
   implements = "implements".
+  noisyOr    = "noisyOr".
   LEFT_CAST  = "(".
   RIGHT_CAST = ")".
 
@@ -343,6 +344,12 @@ AggChains<. std::vector<std::string>& chains .> =                       (. std::
                                                       ',' CastIdent<s>  (. chains.push_back(s); .)
                                                     }
                                                     ']'
+                                                  | '{'                 (. std::string s; .)
+                                                    CastIdent<s>        (. chains.push_back(s); .)
+                                                    {
+                                                      ',' CastIdent<s>  (. chains.push_back(s); .)
+                                                    }
+                                                    '}'
                                                   .
 
 AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.push_back(narrow(t->val)); .)
@@ -352,10 +359,16 @@ AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.pu
                                                       ',' word      (. labels.push_back(narrow(t->val)); .)
                                                     }
                                                     ']'
+                                                  | '{'
+                                                    word            (. labels.push_back(narrow(t->val)); .)
+                                                    {
+                                                      ',' word      (. labels.push_back(narrow(t->val)); .)
+                                                    }
+                                                    '}'
                                                   .
 
 Functions<std::string type, std::string name> =                   (. if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} .)
-                                                '~' "noisyOr" '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
+                                                '~' noisyOr '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
                                                 AggChains<chains> ',' NumberList<numbers> [ ',' Number<leak> [ ',' AggLabels<labels> ] ]
                                                 ')' ';'           (. TRY(factory().addNoisyOrCompound(name, chains, numbers, leak, labels)) .)
                                                 .
@@ -433,6 +446,5 @@ Label<std::string& s> =   word        (. s = narrow(t->val); .)
 Number<float& val> =    integer (. swscanf(t->val, L"%f", &val); .)
                       | float   (. swscanf(t->val, L"%f", &val); .)
                       .
-
 
 END Skool.

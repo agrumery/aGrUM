@@ -2,10 +2,11 @@
 
 #include <agrum/prm/skool/Scanner.h>
 
+
+
 namespace gum {
 namespace prm {
 namespace skool {
-
 
 Token::Token() {
   kind = 0;
@@ -261,9 +262,9 @@ void Scanner::Init() {
 	keywords.set(L"dependson", 14);
 	keywords.set(L"default", 15);
 	keywords.set(L"implements", 16);
-	keywords.set(L"package", 19);
-	keywords.set(L"import", 20);
-	keywords.set(L"noisyOr", 28);
+	keywords.set(L"noisyOr", 17);
+	keywords.set(L"package", 20);
+	keywords.set(L"import", 21);
 
 
     tvalLength = 128;
@@ -472,9 +473,9 @@ Token* Scanner::NextToken() {
 		case 11:
 			{t->kind = 8; break;}
 		case 12:
-			{t->kind = 17; break;}
-		case 13:
 			{t->kind = 18; break;}
+		case 13:
+			{t->kind = 19; break;}
 		case 14:
 			case_14:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
@@ -484,19 +485,19 @@ Token* Scanner::NextToken() {
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
 			else {t->kind = noSym; break;}
 		case 16:
-			{t->kind = 21; break;}
-		case 17:
 			{t->kind = 22; break;}
-		case 18:
+		case 17:
 			{t->kind = 23; break;}
-		case 19:
+		case 18:
 			{t->kind = 24; break;}
-		case 20:
+		case 19:
 			{t->kind = 25; break;}
-		case 21:
+		case 20:
 			{t->kind = 26; break;}
-		case 22:
+		case 21:
 			{t->kind = 27; break;}
+		case 22:
+			{t->kind = 28; break;}
 		case 23:
 			case_23:
 			{t->kind = 29; break;}
@@ -537,8 +538,9 @@ void Scanner::ResetPeek() {
   pt = tokens;
 }
 
-} // namespace
-} // namespace
-} // namespace
+}
+}
+}
+
 
 

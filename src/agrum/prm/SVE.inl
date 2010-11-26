@@ -94,6 +94,12 @@ SVE::__addDelayedVariable(const Instance* i, const Instance* j, NodeId id) {
   }
 }
 
+INLINE
+std::string
+SVE::name() const {
+  return "SVE";
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

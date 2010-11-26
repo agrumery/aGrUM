@@ -80,6 +80,8 @@ class GroundedInference: public PRMInference {
      */
     void setBNInference(BayesNetInference<prm_float>* bn_inf);
 
+    virtual std::string name() const;
+
     /// @}
   protected:
   // ========================================================================

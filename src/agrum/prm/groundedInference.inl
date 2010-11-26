@@ -88,6 +88,12 @@ GroundedInference::_joint(const std::vector< Chain >& queries, Potential<prm_flo
   GUM_ERROR(FatalError, "not yet implemented");
 }
 
+INLINE
+std::string
+GroundedInference::name() const {
+  return "grounded inference";
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

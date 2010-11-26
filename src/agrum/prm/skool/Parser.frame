@@ -38,6 +38,10 @@ using namespace std;
 
 -->namespace_open
 
+namespace gum {
+namespace prm {
+namespace skool {
+
 class Errors {
   public:
     int count;			// number of errors detected
@@ -78,7 +82,12 @@ class Parser {
 
 }; // end Parser
 
+}
+}
+}
+
 -->namespace_close
+
 #endif // !defined(SKOOL_COCO_PARSER_H__)
 
 -->implementation
@@ -115,8 +124,11 @@ class Parser {
 #include "Parser.h"
 #include "Scanner.h"
 
-
 -->namespace_open
+
+namespace gum {
+namespace prm {
+namespace skool {
 
 void Parser::SynErr(int n) {
   if (errDist >= minErrDist) errors->SynErr(scanner->filename, la->line, n);
@@ -231,6 +243,10 @@ void Errors::SynErr(std::string filename, int line, int n) {
 void Errors::Error(std::string filename, int line, const wchar_t *s) {
   wprintf(L"%s|%d| error: %ls\n", filename.c_str(), line, s);
   count++;
+}
+
+}
+}
 }
 
 -->namespace_close

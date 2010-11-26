@@ -70,6 +70,15 @@ class SVED: public PRMInference{
     ~SVED();
 
     /// @}
+  // ========================================================================
+  /// @name Getters & setters.
+  // ========================================================================
+    /// @{
+
+    /// Returns the name of the current inference algorithm
+    virtual std::string name() const;
+
+    /// @}
   protected:
   // ========================================================================
   /// @name Query methods.
