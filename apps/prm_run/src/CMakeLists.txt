@@ -20,16 +20,16 @@ FILE(GLOB PRM_RUN_INCLUDE ${PRM_RUN_SOURCE_DIR}/*.h)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 ADD_CUSTOM_COMMAND(
-  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Parser.cpp ${CMAKE_CURRENT_BINARY_DIR}/Parser.h ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp ${CMAKE_CURRENT_BINARY_DIR}/Scanner.h
-  COMMAND cococpp ${PRM_RUN_SOURCE_DIR}/prm_run.atg -o ${CMAKE_CURRENT_BINARY_DIR}
+  OUTPUT ${PRM_RUN_SOURCE_DIR}/Parser.cpp ${PRM_RUN_SOURCE_DIR}/Parser.h ${PRM_RUN_SOURCE_DIR}/Scanner.cpp ${PRM_RUN_SOURCE_DIR}/Scanner.h
+  COMMAND cococpp ${PRM_RUN_SOURCE_DIR}/prm_run.atg -o ${PRM_RUN_SOURCE_DIR}
   DEPENDS ${PRM_RUN_SOURCE_DIR}/prm_run.atg ${PRM_RUN_SOURCE_DIR}/Scanner.frame ${PRM_RUN_SOURCE_DIR}/Parser.frame
   )
 
 ADD_EXECUTABLE (prm_run ${PRM_RUN_SOURCE}
-                ${CMAKE_CURRENT_BINARY_DIR}/Parser.h
-                ${CMAKE_CURRENT_BINARY_DIR}/Parser.cpp
-                ${CMAKE_CURRENT_BINARY_DIR}/Scanner.h
-                ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp)
+                ${PRM_RUN_SOURCE_DIR}/Parser.h
+                ${PRM_RUN_SOURCE_DIR}/Parser.cpp
+                ${PRM_RUN_SOURCE_DIR}/Scanner.h
+                ${PRM_RUN_SOURCE_DIR}/Scanner.cpp)
 
 SET_TARGET_PROPERTIES(prm_run PROPERTIES LINKER_LANGUAGE CXX)
 
