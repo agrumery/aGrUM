@@ -251,43 +251,47 @@
   }
   result->endMultipleChanges ();
 
-
   // here we fill result. The idea is to use 3 loops. The innermost loop
   // corresponds to the variables that belongs both to t1 and t2. The middle
   // loop to the variables that belong to t2 but not to t1. Finally, the
   // outer loop corresponds to the variables that belong to t1 but not t2.
-  Idx result_offset = 0;
-  Idx t1_offset = 0;
-  Idx t2_offset = 0;
-  Idx t1_alone_begin_offset = 0;
+  register GUM_MULTI_DIM_OPERATOR_TYPE *pt1 =
+    const_cast<GUM_MULTI_DIM_OPERATOR_TYPE*> ( &( t1->unsafeGet ( 0 ) ) );
+  register GUM_MULTI_DIM_OPERATOR_TYPE *pt2 =
+    const_cast<GUM_MULTI_DIM_OPERATOR_TYPE*> ( &( t2->unsafeGet ( 0 ) ) );    
+  register GUM_MULTI_DIM_OPERATOR_TYPE *pres =
+    const_cast<GUM_MULTI_DIM_OPERATOR_TYPE*> ( &( result->unsafeGet ( 0 ) ) );    
+  GUM_MULTI_DIM_OPERATOR_TYPE *pt2_deb = pt2;
+  GUM_MULTI_DIM_OPERATOR_TYPE *pt1_alone_begin;
+  
 
   // test if all the variables in common in t1 and t2 are the first variables
   // and are in the same order. In this case, we can speed-up the incrementation
   // processes
   if ( t1_and_t2_begin_vars ) {
-    for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
-      t2_offset = 0;
-      t1_alone_begin_offset = t1_offset;
+    for (register Idx i = 0; i < t1_alone_domain_size; ++i ) {
+      pt2 = pt2_deb;
+      pt1_alone_begin = pt1;
       
-      for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
-        t1_offset = t1_alone_begin_offset;
+      for (register Idx j = 0; j < t2_alone_domain_size; ++j ) {
+        pt1 = pt1_alone_begin;
         
-        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-          result->unsafeSet
-            ( result_offset,
-              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                      t2->unsafeGet ( t2_offset ) ) );
-          
-          ++result_offset;
+        for (register Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          *pres = GUM_MULTI_DIM_OPERATOR( *pt1, *pt2 );
+          ++pres;
           
           // update the offset of both t1 and t2
-          ++t1_offset;
-          ++t2_offset;
+          ++pt1;
+          ++pt2;
         }
       }
     }
   }
   else {
+    Idx t1_offset = 0;
+    Idx t2_offset = 0;
+    Idx t1_alone_begin_offset = 0;
+    
     for (Idx i = 0; i < t1_alone_domain_size; ++i ) {
       t2_offset = 0;
       t1_alone_begin_offset = t1_offset;
@@ -295,18 +299,13 @@
       for (Idx j = 0; j < t2_alone_domain_size; ++j ) {
         t1_offset = t1_alone_begin_offset;
         
-        for (Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-          result->unsafeSet
-            ( result_offset,
-              GUM_MULTI_DIM_OPERATOR( t1->unsafeGet ( t1_offset ),
-                                      t2->unsafeGet ( t2_offset ) ) );
-          
-          ++result_offset;
+        for (register Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
+          *pres = GUM_MULTI_DIM_OPERATOR( pt1[t1_offset], pt2[t2_offset] );
+          ++pres;
           
           // update the offset of both t1 and t2
-          for ( unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
-            --t1_and_t2_value[k];
-            if ( t1_and_t2_value[k] ) {
+          for ( register unsigned int k = 0; k < t1_and_t2_value.size(); ++k ) {
+            if ( --t1_and_t2_value[k] ) {
               t1_offset += t1_and_t2_1_offset[k];
               t2_offset += t1_and_t2_2_offset[k];
               break;
@@ -318,9 +317,8 @@
         }
         
         // update the offset of t2 alone
-        for ( unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
-          --t2_alone_value[k];
-          if ( t2_alone_value[k] ) {
+        for ( register unsigned int k = 0; k < t2_alone_value.size(); ++k ) {
+          if ( --t2_alone_value[k] ) {
             t2_offset += t2_alone_offset[k];
             break;
           }
@@ -331,8 +329,7 @@
       
       // update the offset of t1 alone
       for ( unsigned int k = 0; k < t1_alone_value.size(); ++k ) {
-        --t1_alone_value[k];
-        if ( t1_alone_value[k] ) {
+        if ( --t1_alone_value[k] ) {
           t1_offset += t1_alone_offset[k];
           break;
         }
@@ -341,7 +338,7 @@
       }
     }
   }
-
+  
   return result;
 }           
 

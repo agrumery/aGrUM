@@ -264,6 +264,11 @@ namespace gum {
     (( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges();
   }
 
+  template<typename T_DATA> INLINE
+  void MultiDimDecorator<T_DATA>::endMultipleChanges( const T_DATA& x ) {
+    (( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges( x );
+  }
+
   /// Perform an homothety on a multiDim container
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::homothetic

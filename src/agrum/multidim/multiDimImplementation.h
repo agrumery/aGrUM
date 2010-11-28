@@ -229,12 +229,14 @@ namespace gum {
     /// See gum::MultiDimContainer::endMultipleChanges().
     // ============================================================================
     virtual void endMultipleChanges( void );
+    virtual void endMultipleChanges( const T_DATA& );
 
   protected:
     // ============================================================================
     /// Synchronize content after MultipleChanges.
     // ============================================================================
     virtual void _commitMultipleChanges( void );
+    virtual void _commitMultipleChanges( const T_DATA& );
 
     // ============================================================================
     /// Get the actual change method of *this.

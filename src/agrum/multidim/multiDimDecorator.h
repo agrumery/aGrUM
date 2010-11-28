@@ -270,6 +270,7 @@ namespace gum {
     // ============================================================================
     virtual void beginMultipleChanges( void );
     virtual void endMultipleChanges( void );
+    virtual void endMultipleChanges( const T_DATA& );
 
     /// @}
 

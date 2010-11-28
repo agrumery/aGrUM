@@ -49,36 +49,44 @@ namespace gum {
   // ==============================================================================
 
   #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (x) : (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( y > x ) x = y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
   
 
   #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectMaxMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (x) : (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( y > x ) x = y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
   #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectMaxMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*x) : (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( *(y) > *(x) ) *(x) = *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMaxMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*x) : (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( *(y) > *(x) ) *(x) = *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::min()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
@@ -88,36 +96,44 @@ namespace gum {
   // ==============================================================================
 
   #define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (y) : (x) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( x > y ) x = y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
   
 
   #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectMinMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) > (y) ? (y) : (x) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( x > y ) x = y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
   #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectMinMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*y) : (*x) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( *(x) > *(y) ) *(x) = *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectMinMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) > (*y) ? (*y) : (*x) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) if ( *(x) > *(y) ) *(x) = *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
@@ -127,36 +143,45 @@ namespace gum {
   // ==============================================================================
 
   #define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) + (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) x += y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
   
 
   #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectSumMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) + (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) x += y
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
   #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectSumMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) + (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) *(x) += *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
+
   #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectSumMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) + (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y)  *(x) += *(y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
@@ -166,36 +191,44 @@ namespace gum {
   // ==============================================================================
 
   #define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) * (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) (x) *= (y) 
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
   
 
   #define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectProductMultiDimArray
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (x) * (y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) (x) *= (y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
   #define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectProductMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) * (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) (*x) *= (*y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   #define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME projectProductMultiDimArray4Pointers
-  #define GUM_MULTI_DIM_PROJECTION(x,y) ( (*x) * (*y) )
+  #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+  #define GUM_MULTI_DIM_PROJECTION(x,y) (*x) *= (*y)
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   #include <agrum/multidim/patterns/projectionPattern4MultiDimArray.h>
   #undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+  #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 

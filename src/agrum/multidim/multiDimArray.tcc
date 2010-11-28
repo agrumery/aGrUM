@@ -133,6 +133,16 @@ void MultiDimArray<T_DATA>::_commitMultipleChanges( void ) {
     }
 }
 
+  
+/// synchronise content after MultipleChanges
+template<typename T_DATA>
+INLINE
+void MultiDimArray<T_DATA>::_commitMultipleChanges( const T_DATA& x ) {
+    if ( MultiDimWithOffset<T_DATA>::domainSize()!=_values.size() ) {
+      _values.resize( MultiDimWithOffset<T_DATA>::domainSize(), x );
+    }
+}
+
 
 // fill the array with the arg
 template<typename T_DATA>

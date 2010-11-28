@@ -20,15 +20,19 @@
 
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
+#include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/scheduleMultiDim.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/scheduleSeparatorStoreMultiDim.h>
+
 
 namespace gum {
 
+  
   namespace tests {
 
-    class ScheduleMultiDimTestSuite: public CxxTest::TestSuite {
+   
+    class ScheduleSeparatorStoreMultiDimTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct () {
         std::vector<LabelizedVariable*> vars ( 10 );
@@ -36,65 +40,52 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 2);
         }
-
-        Sequence<const DiscreteVariable*> seq;
-        seq << vars[0] << vars[2] << vars[4];
         
-        gum::ScheduleMultiDim<float> f1 ( seq );
-        TS_ASSERT ( f1.isAbstract () );
-        TS_ASSERT_THROWS( f1.multiDim(), gum::NotFound );
-
-        std::string s1 = f1.toString();
-        std::stringstream s2;
-        s2 << "<" << f1.id() << ">";
-        TS_ASSERT ( s2.str() == s1 );
-
-        gum::ScheduleMultiDim<float> f2 ( f1 );
-        TS_ASSERT ( f2.isAbstract () );
-        TS_ASSERT_THROWS( f2.multiDim(), gum::NotFound );
-        TS_ASSERT ( f1 == f2 );
-        TS_ASSERT ( f1.id() == f2.id() );
-        TS_ASSERT ( f1.variables () == f2.variables () );
-
-        gum::ScheduleMultiDim<float> f3 ( seq );
-        TS_ASSERT ( f1 != f3 );
-        TS_ASSERT ( f1.id() != f3.id() );
-        TS_ASSERT ( f1.variables () == f3.variables () );
-
-        gum::Potential<float> pot;
-        pot << *(vars[0]) << *(vars[2]) << *(vars[4]);
-        gum::ScheduleMultiDim<float> f4 ( pot );
-        TS_ASSERT ( ! f4.isAbstract () );
-        TS_ASSERT ( f1 != f4 );
-
-        gum::ScheduleMultiDim<float> f5 ( f4 );
-        TS_ASSERT ( ! f5.isAbstract () );
-        TS_ASSERT ( f5 == f4 );
-        TS_ASSERT ( f4.id() == f5.id() );
-        TS_ASSERT ( f4.multiDim() == pot );
-
-        std::string s5 = f5.toString();
-        std::stringstream s6;
-        s6 << "<" << pot.getContent() << ">";
-        TS_ASSERT ( s6.str() == s5 );
-
+        gum::Potential<float> pot1;
+        pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
+        gum::ScheduleMultiDim<float> f1 ( pot1 );
         gum::Potential<float> pot2;
-        pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
-        f4.setMultiDim ( pot2 );
-        TS_ASSERT ( f5.multiDim() == *pot2.getContent() );
-        f3.setMultiDim ( *pot2.getContent() );
-        TS_ASSERT ( f3.multiDim() == *pot2.getContent() );
+        pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
+        gum::ScheduleMultiDim<float> f2 ( pot2 );
 
-        std::string str = f3.toString ();
-        f3 = f5;
-        TS_ASSERT ( f5 == f3 );
+        Property<Set<const MultiDimImplementation<float>*> >::onArcs set;
+        TS_ASSERT ( set.size () == 0 );
+        gum::ScheduleSeparatorStoreMultiDim<float> store1 ( &f1, set, gum::Arc (3,2) );
+        gum::ScheduleSeparatorStoreMultiDim<float> store2 ( &f2, set, gum::Arc (3,2) );
+        gum::ScheduleSeparatorStoreMultiDim<float> store3 ( &f2, set, gum::Arc (2,3) );
+        TS_ASSERT ( store1 != store2 );
+        TS_ASSERT ( store2 != store3 );
+        TS_ASSERT (  ! ( store2 == store3 ) );
+
+        Sequence<const ScheduleMultiDim<float>*> seq = store1.multiDimArgs ();
+        TS_ASSERT ( seq.size() == 1 );
+        TS_ASSERT ( seq.atPos ( 0 ) == &f1 );
+
+        store1.execute ();
+        TS_ASSERT_THROWS_NOTHING ( store1.execute() );
+        store2.execute ();
+        store3.execute ();
+        TS_ASSERT ( set.size() == 2 );
+
+        std::stringstream s;
+        s << "store ( " << f1.toString() << ", separator " << Arc(3,2) << " )";
+        TS_ASSERT ( store1.toString() == s.str() );
+
+        ScheduleSeparatorStoreMultiDim<float> store4 ( store3 );
+        TS_ASSERT ( store4 == store3 );
+        TS_ASSERT ( store4 != store1 );
+        store4 = store1;
+        TS_ASSERT ( store4 == store1 );
+
+        TS_ASSERT ( store4.type() ==
+                    ScheduleOperation<float>::GUM_SEPARATOR_STORE_MULTIDIM );
         
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];
         
-       }
+      }
 
     };
 
@@ -103,4 +94,5 @@ namespace gum {
 
   
 } /* namespace gum */
+
 

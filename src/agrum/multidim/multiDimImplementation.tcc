@@ -218,7 +218,22 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
+  void MultiDimImplementation<T_DATA>::endMultipleChanges( const T_DATA& x ) {
+    if ( __internalChangeState==NOT_COMMITTED_CHANGE ) {
+      _commitMultipleChanges( x );
+      __internalChangeState=NO_CHANGE;
+    }
+
+    __internalChangeMethod=DIRECT_CHANGE;
+  }
+
+  template<typename T_DATA> INLINE
   void MultiDimImplementation<T_DATA>::_commitMultipleChanges( void ) {
+    // empty!
+  }
+
+  template<typename T_DATA> INLINE
+  void MultiDimImplementation<T_DATA>::_commitMultipleChanges( const T_DATA& ) {
     // empty!
   }
 

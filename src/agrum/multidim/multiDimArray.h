@@ -190,6 +190,7 @@ namespace gum {
 
     /// synchronise content after MultipleChanges
     virtual void _commitMultipleChanges( void );
+    virtual void _commitMultipleChanges( const T_DATA& );
 
     /// data access operator
     /** @param i an Instantiation

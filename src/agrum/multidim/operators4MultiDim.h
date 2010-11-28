@@ -30,6 +30,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimDecorator.h>
+#include <agrum/core/timer.h>
 
 
 namespace gum {

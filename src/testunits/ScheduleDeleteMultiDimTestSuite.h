@@ -21,14 +21,18 @@
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/scheduleMultiDim.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/scheduleProject.h>
+#include <agrum/multidim/scheduleDeleteMultiDim.h>
+
 
 namespace gum {
 
+  
   namespace tests {
 
-    class ScheduleMultiDimTestSuite: public CxxTest::TestSuite {
+   
+    class ScheduleDeleteMultiDimTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct () {
         std::vector<LabelizedVariable*> vars ( 10 );
@@ -36,65 +40,57 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 2);
         }
-
-        Sequence<const DiscreteVariable*> seq;
-        seq << vars[0] << vars[2] << vars[4];
         
-        gum::ScheduleMultiDim<float> f1 ( seq );
-        TS_ASSERT ( f1.isAbstract () );
-        TS_ASSERT_THROWS( f1.multiDim(), gum::NotFound );
+        gum::Potential<float> pot1;
+        pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
+        randomInit ( pot1 );
+        gum::ScheduleMultiDim<float> f1 ( pot1 );
+        Set<const DiscreteVariable *> del_vars;
+        del_vars << vars[0] << vars[3];
+        ScheduleProject<float> myproj ( &f1, del_vars, projectMax );
+        const ScheduleMultiDim<float>& res = myproj.result ();
 
-        std::string s1 = f1.toString();
-        std::stringstream s2;
-        s2 << "<" << f1.id() << ">";
-        TS_ASSERT ( s2.str() == s1 );
+        gum::ScheduleDeleteMultiDim<float> del1 ( &f1 );
+        gum::ScheduleDeleteMultiDim<float> del2 ( &res );
+        gum::ScheduleDeleteMultiDim<float> del3 ( del2 );
+        TS_ASSERT ( ! ( del1 == del2 ) );
+        TS_ASSERT ( del1 != del2 );
+        TS_ASSERT_THROWS ( del2.execute (), gum::NotFound );
+        myproj.execute ();
+        TS_GUM_ASSERT_THROWS_NOTHING( del2.execute () );
+        TS_ASSERT_THROWS ( del3.execute (), gum::NotFound );
 
-        gum::ScheduleMultiDim<float> f2 ( f1 );
-        TS_ASSERT ( f2.isAbstract () );
-        TS_ASSERT_THROWS( f2.multiDim(), gum::NotFound );
-        TS_ASSERT ( f1 == f2 );
-        TS_ASSERT ( f1.id() == f2.id() );
-        TS_ASSERT ( f1.variables () == f2.variables () );
+        Sequence<const ScheduleMultiDim<float>*> seq = del2.multiDimArgs ();
+        TS_ASSERT ( seq.size() == 1 );
+        TS_ASSERT ( seq.atPos ( 0 ) == &res );
 
-        gum::ScheduleMultiDim<float> f3 ( seq );
-        TS_ASSERT ( f1 != f3 );
-        TS_ASSERT ( f1.id() != f3.id() );
-        TS_ASSERT ( f1.variables () == f3.variables () );
+        del3 = del1;
+        TS_ASSERT ( del1 == del3 );
+        TS_ASSERT ( del3 != del2 );
 
-        gum::Potential<float> pot;
-        pot << *(vars[0]) << *(vars[2]) << *(vars[4]);
-        gum::ScheduleMultiDim<float> f4 ( pot );
-        TS_ASSERT ( ! f4.isAbstract () );
-        TS_ASSERT ( f1 != f4 );
-
-        gum::ScheduleMultiDim<float> f5 ( f4 );
-        TS_ASSERT ( ! f5.isAbstract () );
-        TS_ASSERT ( f5 == f4 );
-        TS_ASSERT ( f4.id() == f5.id() );
-        TS_ASSERT ( f4.multiDim() == pot );
-
-        std::string s5 = f5.toString();
-        std::stringstream s6;
-        s6 << "<" << pot.getContent() << ">";
-        TS_ASSERT ( s6.str() == s5 );
-
-        gum::Potential<float> pot2;
-        pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
-        f4.setMultiDim ( pot2 );
-        TS_ASSERT ( f5.multiDim() == *pot2.getContent() );
-        f3.setMultiDim ( *pot2.getContent() );
-        TS_ASSERT ( f3.multiDim() == *pot2.getContent() );
-
-        std::string str = f3.toString ();
-        f3 = f5;
-        TS_ASSERT ( f5 == f3 );
-        
+        std::stringstream s;
+        s << "delete ( " << f1.toString() << " )";
+        TS_ASSERT ( s.str() == del1.toString () );
+       
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];
         
        }
+
+
+      
+    private:
+      // ==========================================================================
+      /// initialize randomly a table
+      // ==========================================================================
+      void randomInit ( Potential<float>& t ) {
+        Instantiation i (t);
+        srand ( time ( NULL) );
+        for ( i.setFirst(); ! i.end(); ++i )
+          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
+      }
 
     };
 

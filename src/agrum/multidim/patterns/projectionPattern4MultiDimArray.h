@@ -109,17 +109,18 @@
 
   // first, compute whether we should loop over table or over the projected
   // table first to get a faster algorithm.
-    const Sequence<const DiscreteVariable *>& table_vars =
-      table->variablesSequence ();
-    bool need_swapping = table_vars.size() >= 2 * del_vars.size();
+  const Sequence<const DiscreteVariable *>& table_vars =
+    table->variablesSequence ();
+  bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
   
   if ( ! need_swapping ) {
-    // Compute the variables that belong to both the projection set and table. Store
-    // the domain size of the Cartesian product of these variables
-    // (result_domain_size) as well as the domain size of the Cartesian product of
-    // the variables of table that do not belong to projection set, i.e., those
-    // variables that belong to table but not to del_vars (table_alone_domain_size).
+    // Compute the variables that belong to both the projection set and table.
+    // Store the domain size of the Cartesian product of these variables
+    // (result_domain_size) as well as the domain size of the Cartesian product
+    // of the variables of table that do not belong to projection set, i.e.,
+    // those variables that belong to table but not to del_vars
+    // (table_alone_domain_size).
     // In addition, store the number of increments in the computation loops at the
     // end of the function before which the variables of the projection set
     // need be incremented (vector before incr).
@@ -180,15 +181,15 @@
             result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) {
       *result << **iter; 
     } 
-    result->endMultipleChanges ();
 
     // fill the matrix with the neutral element
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+    result->endMultipleChanges ();
     for (Idx i = 0; i < result_domain_size; ++i ) {
       result->unsafeSet ( i, new T_DATA ( neutral_element ) );
     }
 #else
-    result->fill ( neutral_element );
+    result->endMultipleChanges ( neutral_element );
 #endif
 
     
@@ -203,54 +204,52 @@
       
     // but before doing so, check whether there exist positive_before_incr. If
     // this is not the case, optimize by not using before_incr at all
+    register GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+      const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*> ( &( table->unsafeGet ( 0 ) ) );
+    register GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+      const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*> ( &( result->unsafeGet ( 0 ) ) );
+    GUM_MULTI_DIM_PROJECTION_TYPE* pres_deb = pres;
     if ( ! nb_positive_before_incr ) {
-      Idx table_offset = 0;
-      Idx result_offset = 0;
       for (Idx i = 0; i < table_alone_domain_size; ++i ) {
         for (Idx j = 0; j < result_domain_size; ++j ) {
-          {
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
-            *res = GUM_MULTI_DIM_PROJECTION ( res,
-                                              table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+          GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
 #else
-            GUM_MULTI_DIM_PROJECTION_TYPE& res =
-              const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-              ( result->unsafeGet ( result_offset ) );
-            res = GUM_MULTI_DIM_PROJECTION ( res,
-                                             table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+          **pres = GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
+#else
+          *pres = GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
 #endif
-          }
+#endif
           
           // update the offset of table and result
-          ++table_offset;
-          ++result_offset;
+          ++pt;
+          ++pres;
         }
         
         // update the offset of result
-        result_offset = 0;
+        pres = pres_deb;
       }
     }
     else {
       // here there are positive before_incr and we should use them to know
       // when result_offset needs be changed
-      Idx table_offset = 0;
       Idx result_offset = 0;
       for (Idx i = 0; i < table_domain_size; ++i ) {
-        {
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-          GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
-          *res = GUM_MULTI_DIM_PROJECTION ( res, table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+          GUM_MULTI_DIM_PROJECTION ( pres[result_offset], *pt );
 #else
-          GUM_MULTI_DIM_PROJECTION_TYPE& res =
-            const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-            ( result->unsafeGet ( result_offset ) );
-          res = GUM_MULTI_DIM_PROJECTION ( res, table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+        *( pres[result_offset] ) =
+          GUM_MULTI_DIM_PROJECTION ( pres[result_offset], *pt );
+#else
+        pres[result_offset] =
+          GUM_MULTI_DIM_PROJECTION ( pres[result_offset], *pt );
 #endif
-        }
+#endif
         
         // update the offset of table
-        ++table_offset;
+        ++pt;
 
         // update the offset of result
         for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
@@ -350,15 +349,14 @@
             result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) {
       *result << **iter; 
     } 
-    result->endMultipleChanges ();
-
-    // fill the matrix with the neutral element
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+    result->endMultipleChanges ( );
+    // fill the matrix with the neutral element
     for (Idx i = 0; i < result_domain_size; ++i ) {
       result->unsafeSet ( i, new T_DATA ( neutral_element ) );
     }
 #else
-    result->fill ( neutral_element );
+    result->endMultipleChanges ( neutral_element );
 #endif     
     
     // compute the sum: first loop over the variables X's both in table and in
@@ -373,59 +371,52 @@
     // one, and so on. For the inner loop, this is similar except that we shall do
     // these operations only when before_incr[xxx] steps in the loop have
     // already been made.
+    register GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+      const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*> ( &( table->unsafeGet ( 0 ) ) );
+    register GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+      const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*> ( &( result->unsafeGet ( 0 ) ) );
       
     // but before doing so, check whether there exist positive_before_incr. If
     // this is not the case, optimize by not using before_incr at all
     if ( ! has_before_incr ) {
-      Idx table_offset = 0;
-      Idx result_offset = 0;
-      for (Idx i = 0; i < result_domain_size; ++i ) {
-        for (Idx j = 0; j < table_alone_domain_size; ++j ) {
-          {
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
-            *res = GUM_MULTI_DIM_PROJECTION ( res,
-                                              table->unsafeGet ( table_offset ) );
+      for (register Idx i = 0; i < result_domain_size; ++i ) {
+        for (register Idx j = 0; j < table_alone_domain_size; ++j ) {
+#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+          GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
 #else
-            GUM_MULTI_DIM_PROJECTION_TYPE& res =
-              const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-              ( result->unsafeGet ( result_offset ) );
-            res = GUM_MULTI_DIM_PROJECTION ( res,
-                                             table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+          **pres = GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
+#else
+          *pres = GUM_MULTI_DIM_PROJECTION ( *pres, *pt );
 #endif
-          }
+#endif
           
           // update the offset of table
-          ++table_offset;
+          ++pt;
         }
         
         // update the offset of result
-        ++result_offset;
+        ++pres;
       }
     }
     else {
       // here there are positive before_incr and we should use them to know
       // when result_offset needs be changed
-      Idx table_offset = 0;
-      Idx result_offset = 0;
-      for (Idx j = 0; j < result_domain_size; ++j ) {
-        for (Idx i = 0; i < table_alone_domain_size; ++i ) {
-          {
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
-            *res = GUM_MULTI_DIM_PROJECTION ( res,
-                                              table->unsafeGet ( table_offset ) );
+      register Idx table_offset = 0;
+      for (register Idx j = 0; j < result_domain_size; ++j ) {
+        for (register Idx i = 0; i < table_alone_domain_size; ++i ) {
+#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+          GUM_MULTI_DIM_PROJECTION ( *pres, pt[table_offset] );
 #else
-            GUM_MULTI_DIM_PROJECTION_TYPE& res =
-              const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-              ( result->unsafeGet ( result_offset ) );
-            res = GUM_MULTI_DIM_PROJECTION ( res,
-                                             table->unsafeGet ( table_offset ) );
+#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+          **pres = GUM_MULTI_DIM_PROJECTION ( *pres, pt[table_offset] );
+#else
+          *pres = GUM_MULTI_DIM_PROJECTION ( *pres, pt[table_offset] );
 #endif
-          }
+#endif
           
           // update the increment of table for the inner loop
-          for ( unsigned int k = 0; k < table_alone_value.size(); ++k ) {
+          for ( register unsigned int k = 0; k < table_alone_value.size(); ++k ) {
             --table_alone_value[k];
             if ( table_alone_value[k] ) {
               table_offset += table_alone_offset[k];
@@ -437,7 +428,8 @@
         }
         
         // update the offset of table for the outer loop
-        for ( unsigned int k = 0; k < table_and_result_value.size(); ++k ) {
+        for ( register unsigned int k = 0;
+              k < table_and_result_value.size(); ++k ) {
           --table_and_result_value[k];
           if ( table_and_result_value[k] ) {
             table_offset += table_and_result_offset[k];
@@ -448,7 +440,8 @@
         }
         
         // update the offset of result for the outer loop
-        ++result_offset;
+        //++result_offset;
+        ++pres;
       }
     }
     
@@ -462,6 +455,7 @@
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 #undef GUM_MULTI_DIM_PROJECTION_POINTER
 #endif
+  
 
 
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

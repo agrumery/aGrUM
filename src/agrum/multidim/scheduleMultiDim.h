@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a MultiDimDecorator Wrapper used for scheduling inferences
+ * @brief a MultiDimImplementation Wrapper used for scheduling inferences
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -32,13 +32,22 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 #include <agrum/multidim/discreteVariable.h>
+#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecorator.h>
 
 
-
 namespace gum {
-  
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // we should grant ScheduleDeleteMultiDim the access to the hashtable actually
+  // containing the MultiDimImplementation: thus, when ScheduleDeleteMultiDim
+  // deletes an implementation, it can remove it from the hashtable and, thus,
+  // the ScheduleMultiDims pointing to it will become abstract.
+  template <typename T_DATA> class ScheduleDeleteMultiDim;
+#endif
+
+  
   template <typename T_DATA>
   class ScheduleMultiDim {
   public:
@@ -47,13 +56,16 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// constructs a ScheduleMultiDim containing an already built decorator
+    /// constructs a ScheduleMultiDim containing an already built implementation
+    ScheduleMultiDim ( const MultiDimImplementation<T_DATA>& );
+
+    /// constructs a ScheduleMultiDim containing an already built implementation
     ScheduleMultiDim ( const MultiDimDecorator<T_DATA>& );
 
-    /// construct an (abstract) ScheduleMultiDim for a decorator yet to be built
+    /// construct a ScheduleMultiDim for an implementation yet to be built
     /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
-     * proper MultiDimDecorator yet. However, the variables of the latter need be
-     * known to optimize inference processes
+     * proper MultiDimImplementation yet. However, the variables of the latter
+     * need be known to optimize inference processes
      * @warning the sequence of variables is copied into the wrapper. */
     ScheduleMultiDim ( const Sequence<const DiscreteVariable*>& vars );
 
@@ -77,10 +89,10 @@ namespace gum {
     ScheduleMultiDim<T_DATA>& operator= ( const ScheduleMultiDim<T_DATA>& );
 
     /// checks whether two ScheduleMultiDim are related to the same table
-    INLINE bool operator== ( const ScheduleMultiDim<T_DATA>& );
+    INLINE bool operator== ( const ScheduleMultiDim<T_DATA>& ) const;
     
     /// checks whether two ScheduleMultiDim are related to different tables
-    INLINE bool operator!= ( const ScheduleMultiDim<T_DATA>& );
+    INLINE bool operator!= ( const ScheduleMultiDim<T_DATA>& ) const;
     
     /// @}
 
@@ -91,17 +103,19 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns whether the ScheduleMultiDim contains a real multiDimDecorator
+    /// returns whether the ScheduleMultiDim contains a real multiDimImplementation
     /** @returns true if the ScheduleMultiDim is abstract, i.e., it is does not
-     * actually contains a real MultiDimDecorator but rather a ID indicating that
-     * the real multiDimDecorator is yet to be created as a result of an
-     * operation on other multiDimDecorators. */
+     * actually contains a real MultiDimImplementation but rather a ID indicating
+     * that the real multiDimImplementation is yet to be created as a result of an
+     * operation on other multiDimImplementations. */
     INLINE bool isAbstract () const;
 
-    /// returns the multiDimDecorator actually contained in the ScheduleMultiDim
-    /** @throws NotFound exception is thrown if the multidim decorator does not
+    /** @brief returns the multiDimImplementation actually contained in the
+     * ScheduleMultiDim
+     *
+     * @throws NotFound exception is thrown if the multidimImplementation does not
      * exist yet (because it has not been computed yet) */
-    INLINE const MultiDimDecorator<T_DATA>& multiDim () const;
+    INLINE const MultiDimImplementation<T_DATA>& multiDim () const;
     
     /// returns the id of the ScheduleMultiDim
     INLINE Id id () const;
@@ -109,7 +123,10 @@ namespace gum {
     /// returns the set of variables involved in the multidim
     INLINE const Sequence<const DiscreteVariable*>& variables () const;
 
-    /// sets a new multiDimDecorator inside the wrapper
+    /// sets a new multiDimImplementation inside the wrapper
+    INLINE void setMultiDim ( const MultiDimImplementation<T_DATA>& );
+
+    /// sets a new multiDimImplementation inside the wrapper
     INLINE void setMultiDim ( const MultiDimDecorator<T_DATA>& );
     
     /// displays the content of the multidim
@@ -119,14 +136,17 @@ namespace gum {
 
 
   private:
+    /// grant accesses to ScheduleDeleteMultiDim
+    friend class ScheduleDeleteMultiDim<T_DATA>;
+    
     /// the unique Id of the ScheduleMultiDim
     Id __id;
 
     /// returns a new distinct ID for each abtract scheduleMultiDim
     static Id __newId ();
 
-    /// returns a mapping from id to multidimdecorators
-    static HashTable<Id,const MultiDimDecorator<T_DATA>*>& __id2multidims ();
+    /// returns a mapping from id to multidimImplementations
+    static HashTable<Id,const MultiDimImplementation<T_DATA>*>& __id2multidims ();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
     static HashTable<Id,unsigned int>& __id2refs ();
