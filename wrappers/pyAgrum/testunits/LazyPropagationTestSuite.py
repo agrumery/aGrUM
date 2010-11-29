@@ -82,6 +82,31 @@ class TestDictFeature(LazyPropagationTestCase):
 
     def testDictOfSequences(self):
         ie = LazyPropagation(self.bn)
+        ie.setEvidence({self.s: [0, 1], self.w: (1, 0)})
+        ie.makeInference()
+        result = ie.marginal(self.r)
+
+        ie = LazyPropagation(self.bn)
+        list_pot = ListPotentials()
+        pot = Potential()
+        pot.add(self.bn.variable(self.s))
+        pot[:] = [0, 1]
+        list_pot.append(pot)
+        pot = Potential()
+        pot.add(self.bn.variable(self.w))
+        pot[:] = [1, 0]
+        list_pot.append(pot)
+
+        ie.insertEvidence(list_pot)
+        ie.makeInference()
+        result2 = ie.marginal(self.r)
+
+        result.empty()
+        self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+        
+    def testDictOfSequencesWithId(self):
+				
+        ie = LazyPropagation(self.bn)
         ie.setEvidence({'s': [0, 1], 'w': (1, 0)})
         ie.makeInference()
         result = ie.marginal(self.r)
@@ -107,7 +132,7 @@ class TestDictFeature(LazyPropagationTestCase):
 
     def testDictOfNumbers(self):
         ie = LazyPropagation(self.bn)
-        ie.setEvidence({'s': 1, 'w': 0})
+        ie.setEvidence({'w': 0, 's': 1})
         ie.makeInference()
         result = ie.marginal(self.r)
 
@@ -128,6 +153,28 @@ class TestDictFeature(LazyPropagationTestCase):
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
+    def testDictOfNumbersWithId(self):
+        ie = LazyPropagation(self.bn)
+        ie.setEvidence({self.w: 0, self.s: 1})
+        ie.makeInference()
+        result = ie.marginal(self.r)
+
+        ie = LazyPropagation(self.bn)
+        list_pot = ListPotentials()
+        pot = Potential()
+        pot.add(self.bn.variable(self.s))
+        pot[:] = [0, 1]
+        list_pot.append(pot)
+        pot = Potential()
+        pot.add(self.bn.variable(self.w))
+        pot[:] = [1, 0]
+        list_pot.append(pot)
+
+        ie.insertEvidence(list_pot)
+        ie.makeInference()
+        result2 = ie.marginal(self.r)
+
+        self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
     def testDictOfLabels(self):
         ie = LazyPropagation(self.bn)
@@ -137,6 +184,19 @@ class TestDictFeature(LazyPropagationTestCase):
 
         ie2 = LazyPropagation(self.bn)
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
+        ie2.makeInference()
+        result2 = ie2.marginal(self.r)
+
+        self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+        
+    def testDictOfLabelsWithId(self):
+        ie = LazyPropagation(self.bn)
+        ie.setEvidence({self.s: 0, self.w: 1})
+        ie.makeInference()
+        result = ie.marginal(self.r)
+
+        ie2 = LazyPropagation(self.bn)
+        ie2.setEvidence({self.s: 'no', self.w: 'yes'})
         ie2.makeInference()
         result2 = ie2.marginal(self.r)
 
@@ -160,6 +220,27 @@ class TestDictFeature(LazyPropagationTestCase):
         result = ie.marginal(self.s)
         ie = LazyPropagation(self.bni)
         ie.setEvidence({'ri': 6, 'wi': 0.33})
+        ie.makeInference()
+        result2 = ie.marginal(self.si)
+        self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+        
+    def testWithDifferentVariablesWithId(self):
+        ie = LazyPropagation(self.bn)
+        ie.setEvidence({self.r: [0, 1], self.w: (1, 0)})
+        ie.makeInference()
+        result = ie.marginal(self.s)
+        ie = LazyPropagation(self.bni)
+        ie.setEvidence({self.ri: [0, 1], self.wi: (1, 0)})
+        ie.makeInference()
+        result2 = ie.marginal(self.si)
+        self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+
+        ie = LazyPropagation(self.bn)
+        ie.setEvidence({self.r: 1, self.w: 0})
+        ie.makeInference()
+        result = ie.marginal(self.s)
+        ie = LazyPropagation(self.bni)
+        ie.setEvidence({self.ri: 6, self.wi: 0.33})
         ie.makeInference()
         result2 = ie.marginal(self.si)
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())

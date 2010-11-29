@@ -486,7 +486,14 @@ def setEvidence(self, evidces):
     list_pot = ListPotentials_double()
     for var_name, evidce in evidces.iteritems():
         pot = Potential_double()
-        var = bn.variableFromName(var_name) 
+
+        if isinstance(var_name, int):
+            var = bn.variable(var_name)
+        elif isinstance(var_name, str):
+            var = bn.variableFromName(var_name) 
+        else:
+            raise TypeError('values of the dict must be int or string')
+
         pot.add(var)
         if isinstance(evidce, (int, float, str)):
             pot[:] = 0
@@ -539,7 +546,14 @@ def setEvidence(self, evidces):
     list_pot = ListPotentials_double() #M
     for var_name, evidce in evidces.iteritems():
         pot = Potential_double() #M
-        var = bn.variableFromName(var_name)
+
+        if isinstance(var_name, int):
+            var = bn.variable(var_name)
+        elif isinstance(var_name, str):
+            var = bn.variableFromName(var_name) 
+        else:
+            raise TypeError('values of the dict must be int or string')
+
         pot.add(var)
         if isinstance(evidce, (int, float, str)):
             pot[:] = 0
