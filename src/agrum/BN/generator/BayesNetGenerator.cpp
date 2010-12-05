@@ -84,9 +84,7 @@ namespace gum {
     for ( Size i = 0; i < nbrNodes; ++i ) {
       for ( Size j = i + 1; j < nbrNodes; ++j ) {
         if ( ( ( float ) rand() ) < p ) {
-          int k = ( ( gum::Size ) ( ( nbrNodes * 5 * ( float ) rand() ) / ( ( float ) RAND_MAX ) ) ) % ( nbrNodes - 1 );
-          int l = ( k + 1 ) + ( ( ( gum::Size ) ( ( nbrNodes * 5 * ( float ) rand() ) / ( ( float ) RAND_MAX ) ) ) % ( nbrNodes - k - 1 ) );
-          bayesNet->insertArc ( map[k], map[l] );
+          bayesNet->insertArc ( map[i], map[j] );
         }
       }
     }
