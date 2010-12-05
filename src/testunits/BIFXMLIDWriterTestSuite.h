@@ -199,8 +199,10 @@ namespace gum {
 
         void testWriter_ostream() {
           gum::BIFXMLIDWriter<double> writer;
+					std::stringstream s;
+					
           // Uncomment this to check the ouput
-           TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *id));
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(s/*cerr*/, *id));
         }
 
         void testWriter_file() {

@@ -50,10 +50,16 @@
 namespace gum {
   
   class aSimpleListener : public gum::Listener {
+      private:
+        int __nbr;
+        
       public:
+        aSimpleListener():__nbr(0) {};
         void whenProceeding(const void *buffer,int percent, std::string status) {
-         std::cout << "Progress : " << percent << "%" << " Status : " << status << std::endl;
-      }
+          __nbr=percent;
+         //std::cout << "Progress : " << percent << "%" << " Status : " << status << std::endl;
+        }
+        int getNbr() {return __nbr;};
   };
 
   namespace tests {
@@ -359,6 +365,7 @@ namespace gum {
 
           TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
           
+          TS_ASSERT_EQUALS(asl.getNbr(),100);
           delete net;
         }
     };

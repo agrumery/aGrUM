@@ -38,15 +38,17 @@ namespace CxxTest {
 
   class AgrumErrorFormatter : public TestListener {
     private:
-    gum::Timer *clock;
-    double totalTime;
+    gum::Timer *__clock;
+    double __totalTime;
+		int __nbrTest;
     public:
       AgrumErrorFormatter( OutputStream *o, const char *preLine = ":", const char *postLine = "" ) :
           _dotting( true ),
           _reported( false ),
           _o( o ),
           _preLine( preLine ),
-          _postLine( postLine ) {
+          _postLine( postLine )          
+          {
       }
 
       int run() {
@@ -55,8 +57,8 @@ namespace CxxTest {
       }
 
       void enterWorld( const WorldDescription & /*desc*/ ) {
-        clock=new gum::Timer();
-        totalTime=0.0;
+        __clock=new gum::Timer();
+        __totalTime=0.0;
         ( *_o ) << endl << "======================"<<endl << "Agrum Test Unit Module"<<endl<<"======================"<<endl<<endl<<"Running " << totalTests<<endl;
         _o->flush();
         _dotting = true;
@@ -70,14 +72,15 @@ namespace CxxTest {
       }
 
       void enterSuite( const SuiteDescription & t ) {
+				__nbrTest=0;
         (( *_o ) << "\n" << t.file() << " : " ).flush();
         _reported = false;
-        clock->reset();
+        __clock->reset();
       }
 
       void leaveSuite( const SuiteDescription & ) {
-        double step=clock->step();
-        totalTime+=step;
+        double step=__clock->step();
+        __totalTime+=step;
         (( *_o ) <<" ["<<(unsigned int)(1000.0*step)<<" ms]" ).flush();
       }
 
@@ -86,20 +89,24 @@ namespace CxxTest {
       }
 
       void leaveTest( const TestDescription & ) {
-        if ( !tracker().testFailed() ) {
-          (( *_o ) << "." ).flush();
-          _dotting = true;
+				__nbrTest++;
+        if ( !tracker().testFailed() ) {          
+					if (__nbrTest % 5) 
+						(( *_o ) << "." ).flush();
+					else
+						(( *_o ) << "#" ).flush();
+					_dotting = true;
         }
       }
 
       void leaveWorld( const WorldDescription &desc ) {
-        delete( clock );
+        delete( __clock );
    	newLine();
 #ifndef NDEBUG
         gum::debug::__atexit();
         #endif // NDEBUG
         
-        ( *_o ) << endl<<"## Profiling : "<<(unsigned int)(1000.0*totalTime)<<" ms ##"<<endl;
+        ( *_o ) << endl<<"## Profiling : "<<(unsigned int)(1000.0*__totalTime)<<" ms ##"<<endl;
         if ( !tracker().failedTests() ) {
           ( *_o ) << endl
           << "=================================="<<endl
