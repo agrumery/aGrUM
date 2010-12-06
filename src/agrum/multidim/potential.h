@@ -32,7 +32,6 @@
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>
 
-
 namespace gum {
 
 

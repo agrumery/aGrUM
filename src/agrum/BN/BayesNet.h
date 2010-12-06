@@ -121,6 +121,7 @@ namespace gum {
        */
       virtual bool empty() const;
 
+      
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
        * variable is automatically generated.
@@ -128,12 +129,9 @@ namespace gum {
        * The implementation of the Potential is by default a MultiDimArray.
        *
        * @param variable The variable added by copy.
-       * @param id The chosen id. If 0, the NodeGraphPart will choose.
-       * @warning give an id (not 0) should be reserved for rare and specific situations !!!
        * @return the id of the added variable.
-       * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId add( const DiscreteVariable& variable, NodeId id = 0 );
+      NodeId add( const DiscreteVariable& variable);
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -141,13 +139,35 @@ namespace gum {
        *
        * @param variable The variable added by copy.
        * @param aContent The content used for the variable potential.
-       * @param id The chosen id. If 0, the NodeGraphPart will choose.
-       * @warning give an id (not 0) should be reserved for rare and specific situations !!!
-       * @return the id of the added variable.
-       * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId add( const DiscreteVariable& variable,
-                  MultiDimImplementation<T_DATA> *aContent, NodeId id = 0 );
+      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent);
+      
+      /**
+       * Add a variable, it's associate node and it's CPT. The id of the new
+       * variable is automatically generated.
+       *
+       * The implementation of the Potential is by default a MultiDimArray.
+       *
+       * @param variable The variable added by copy.
+       * @param id The chosen id. 
+       * @warning give an id  should be reserved for rare and specific situations !!!
+       * @return the id of the added variable.
+       * @throws DuplicateElement if id is already used
+       */
+      NodeId add( const DiscreteVariable& variable, NodeId id );
+
+      /**
+       * Add a variable, it's associate node and it's CPT. The id of the new
+       * variable is automatically generated.
+       *
+       * @param variable The variable added by copy.
+       * @param aContent The content used for the variable potential.
+       * @param id The chosen id. 
+       * @warning give an id should be reserved for rare and specific situations !!!
+       * @return the id of the added variable.
+       * @throws DuplicateElement if id is already used
+       */
+      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent, NodeId id );
 
       /**
        * Erase a Variable from the network and remove the variable from
@@ -271,14 +291,28 @@ namespace gum {
       *
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
-      * @param id The chosen id. If 0, the NodeGraphPart will choose.
-      * @warning give an id (not 0) should be reserved for rare and specific situations !!!
       * @return the id of the added variable.
       * @throws DuplicateElement if id(<>0) is already used
       */
-      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
-      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
-      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id = 0 );
+      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight);
+      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight);
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight);
+      
+      /**
+      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
+      * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
+      * the addNoisyOR as an alias for addNoisyORCompound
+      *
+      * @param variable The variable added by copy.
+      * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
+      * @param id The chosen id
+      * @warning give an id should be reserved for rare and specific situations !!!
+      * @return the id of the added variable.
+      * @throws DuplicateElement if id is already used
+      */
+      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
 
       /**
       * Add an arc in the BN, and update arc.head's CPT.

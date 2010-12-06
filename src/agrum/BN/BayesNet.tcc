@@ -61,6 +61,7 @@ namespace gum {
 
       // Add it's parents
       const NodeSet& parents = __dag.parents ( cptIter.key() );
+
       for ( NodeSetIterator arcIter = parents.begin();
             arcIter != parents.end(); ++arcIter ) {
         ( *copyPtr ) << variable ( *arcIter );
@@ -121,7 +122,7 @@ namespace gum {
         Instantiation srcInst ( **cptIter );
 
         Instantiation cpyInst ( *copyPtr );
-        
+
         // Slowest but safest
         for ( cpyInst.setFirst(); !cpyInst.end(); cpyInst.inc() ) {
           for ( Idx i = 0; i < cpyInst.nbrDim(); i++ ) {
@@ -175,6 +176,37 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   NodeId
+  BayesNet<T_DATA>::add ( const DiscreteVariable& var ) {
+    MultiDimArray<T_DATA>* ptr = new MultiDimArray<T_DATA>();
+    NodeId res = 0;
+
+    try {
+      res = add ( var, ptr );
+
+    } catch ( Exception& e ) {
+      delete ptr;
+      throw;
+    }
+
+    return res;
+  }
+
+  template<typename T_DATA>
+  NodeId
+  BayesNet<T_DATA>::add ( const DiscreteVariable& var, MultiDimImplementation<T_DATA> *aContent ) {
+    NodeId proposedId = __dag.nextNodeId();
+    
+    __varMap.insert ( proposedId, var );
+    __dag.insertNode ( proposedId );
+    
+    Potential<T_DATA> *cpt = new Potential<T_DATA> ( aContent );
+    ( *cpt ) << variable ( proposedId );
+    __probaMap.insert ( proposedId, cpt );
+    return proposedId;
+  }
+
+  template<typename T_DATA> INLINE
+  NodeId
   BayesNet<T_DATA>::add ( const DiscreteVariable& var , NodeId id ) {
     MultiDimArray<T_DATA>* ptr = new MultiDimArray<T_DATA>();
     NodeId res = 0;
@@ -193,24 +225,13 @@ namespace gum {
   template<typename T_DATA>
   NodeId
   BayesNet<T_DATA>::add ( const DiscreteVariable& var, MultiDimImplementation<T_DATA> *aContent , NodeId id ) {
-    // this code is not thread safe !!!!
-    NodeId proposedId;
-
-    if ( id == 0 ) {
-      proposedId = __dag.nextNodeId();
-
-    } else {
-      proposedId = id;
-    }
-
-    __varMap.insert ( proposedId, var );
-
-    __dag.insertNode ( proposedId );
-    // end of not thread safe code !!!
+    __varMap.insert ( id, var );
+    __dag.insertNode ( id );
+    
     Potential<T_DATA> *cpt = new Potential<T_DATA> ( aContent );
-    ( *cpt ) << variable ( proposedId );
-    __probaMap.insert ( proposedId, cpt );
-    return proposedId;
+    ( *cpt ) << variable ( id );
+    __probaMap.insert ( id, cpt );
+    return id;
   }
 
   template<typename T_DATA> INLINE
@@ -284,6 +305,7 @@ namespace gum {
     if ( __varMap.exists ( varId ) ) {
       // Reduce the variable child's CPT
       const NodeSet& children = __dag.children ( varId );
+
       for ( NodeSetIterator iter = children.begin();
             iter != children.end(); ++iter ) {
         __probaMap[ *iter ]->erase ( variable ( varId ) );
@@ -351,19 +373,37 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   NodeId
-  BayesNet<T_DATA>::addNoisyOR ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
-    return addNoisyORCompound(var,external_weight,id);
+  BayesNet<T_DATA>::addNoisyOR ( const DiscreteVariable& var , T_DATA external_weight) {
+    return addNoisyORCompound ( var, external_weight);
   }
 
-template<typename T_DATA> INLINE
+  template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyORCompound ( const DiscreteVariable& var , T_DATA external_weight) {
+    return add ( var, new MultiDimNoisyORCompound<T_DATA> ( external_weight )  );
+  }
+
+  template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyORNet ( const DiscreteVariable& var , T_DATA external_weight) {
+    return add ( var, new MultiDimNoisyORNet<T_DATA> ( external_weight ) );
+  }
+
+  template<typename T_DATA> INLINE
+  NodeId
+  BayesNet<T_DATA>::addNoisyOR ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
+    return addNoisyORCompound ( var, external_weight, id );
+  }
+
+  template<typename T_DATA> INLINE
   NodeId
   BayesNet<T_DATA>::addNoisyORCompound ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
     return add ( var, new MultiDimNoisyORCompound<T_DATA> ( external_weight ) , id );
   }
 
-template<typename T_DATA> INLINE
+  template<typename T_DATA> INLINE
   NodeId
-  BayesNet<T_DATA>::addNoisyORNet( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
+  BayesNet<T_DATA>::addNoisyORNet ( const DiscreteVariable& var , T_DATA external_weight, NodeId id ) {
     return add ( var, new MultiDimNoisyORNet<T_DATA> ( external_weight ) , id );
   }
 
@@ -373,7 +413,8 @@ template<typename T_DATA> INLINE
     const MultiDimAdressable& content = cpt ( head ).getMasterRef();
 
     const MultiDimNoisyORCompound<T_DATA>* noisyCompound = dynamic_cast<const MultiDimNoisyORCompound<T_DATA>*> ( &content );
-    if ( noisyCompound!= 0 ) {
+
+    if ( noisyCompound != 0 ) {
       // or is OK
       insertArc ( tail, head );
 
@@ -382,7 +423,8 @@ template<typename T_DATA> INLINE
     }
 
     const MultiDimNoisyORNet<T_DATA>* noisyNet = dynamic_cast<const MultiDimNoisyORNet<T_DATA>*> ( &content );
-    if ( noisyNet!= 0 ) {
+
+    if ( noisyNet != 0 ) {
       // or is OK
       insertArc ( tail, head );
 
@@ -390,7 +432,7 @@ template<typename T_DATA> INLINE
       return;
     }
 
-     GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );
+    GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );
   }
 
   template<typename T_DATA> INLINE
@@ -420,10 +462,11 @@ template<typename T_DATA> INLINE
           node_iter != dag().endNodes(); ++node_iter ) {
       if ( dag().children ( *node_iter ).size() > 0 ) {
         const NodeSet& children =  dag().children ( *node_iter );
+
         for ( NodeSetIterator arc_iter = children.begin();
               arc_iter != children.end(); ++arc_iter ) {
           output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
-                 << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
+          << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }
 
       } else if ( dag().parents ( *node_iter ).size() == 0 ) {
@@ -463,4 +506,4 @@ template<typename T_DATA> INLINE
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;    replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;    replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

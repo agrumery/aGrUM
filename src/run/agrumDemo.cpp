@@ -23,77 +23,33 @@
 #define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-//#include <agrum/BN/inference/FastSSInference.h>
-#include <agrum/BN/inference/Gibbs.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-//#include <agrum/BN/inference/fastLazyPropagation.h>
-
-#include <agrum/core/timer.h>
+#include <agrum/BN/io/DSL/DSLReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#define TEST_INFERENCE(x,i) {                                     \
-std::cout<<"==================="<<std::endl<<#x<<std::endl;     \
-    t.reset();                                                  \
-    gum::x<float> inf( *net );                                  \
-    inf.makeInference();                                        \
-    std::cout<<(inf.marginal(i))<<std::endl                     \
-             <<"Timing : "<<t.step()<<std::endl                 \
-             <<"==================="<<std::endl<<std::endl;     \
+
+
+int main ( void ) {
+  try {
+    gum::BayesNet<float> bn;
+    gum::DSLReader<float> reader ( &bn, "/home/phw/Documents/research/LingChunKong/20101109/J0_GreedyBDeu.dsl" );
+
+    if ( ! reader.proceed() ) {
+      reader.showElegantErrorsAndWarnings();      
+      reader.showErrorCounts();
+      return false;
+    } else {
+      GUM_TRACE ( bn );
+      return true;
     }
     
-namespace run_demo {
-  void f() {    
-    std::cout<<"\n\n==========\nAlarm.bif\n";
-    gum::Timer t;
-    std::string file = GET_PATH_STR( alarm.bif );
-    gum::BayesNet<float> *net = new gum::BayesNet<float>();
-    gum::BIFReader<float> reader( net, file );
-    
-    t.reset();
-    reader.proceed();
-    GUM_TRACE_VAR(*net);
-    std::cout<<"reading BN : "<<t.step()<<std::endl;
 
-    int i=0;
-    //TEST_INFERENCE(Gibbs);
-//    for(gum::NodeId i=0;i<10;++i) {
-      TEST_INFERENCE(Gibbs,i);
-      TEST_INFERENCE(LazyPropagation,i);
-      TEST_INFERENCE(ShaferShenoyInference,i);
-//    }
+  } catch ( gum::IOError& e ) {
+    GUM_SHOWERROR ( e );
   }
-  void g() {    
-    std::cout<<"\n\n========\nLink.bif\n";
-    gum::Timer t;
-    std::string file = GET_PATH_STR( Link.bif );
-    gum::BayesNet<float> *net = new gum::BayesNet<float>();
-    gum::BIFReader<float> reader( net, file );
-    
-    t.reset();
-    reader.proceed();
-    GUM_TRACE_VAR(*net);
-    std::cout<<"reading BN : "<<t.step()<<std::endl;
-
-    int i=0;
-    //TEST_INFERENCE(Gibbs);
-//    for(gum::NodeId i=0;i<10;++i) {
-      TEST_INFERENCE(Gibbs,i);
-      TEST_INFERENCE(LazyPropagation,i);
-      TEST_INFERENCE(ShaferShenoyInference,i);
-//    }
-  }
-}
-
-int main( void ) {
-  run_demo::f();
-  run_demo::g();
 
   gum::__atexit();
 }
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

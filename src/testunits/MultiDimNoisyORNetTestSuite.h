@@ -115,7 +115,7 @@ namespace gum {
           }
         }
 
-        void testNoisyORCompoundInBN() {
+        void testNoisyORNetInBN() {
           gum::BayesNet<float> bn;
 
           gum::LabelizedVariable cold( "Cold", "", 2 );
