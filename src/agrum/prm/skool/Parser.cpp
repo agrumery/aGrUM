@@ -11,12 +11,12 @@ namespace prm {
 namespace skool {
 
 void Parser::SynErr(int n) {
-  if (errDist >= minErrDist) errors->SynErr(scanner->filename, la->line, n);
+  if (errDist >= minErrDist) errors->SynErr(scanner->filename, la->line, la->col, n);
   errDist = 0;
 }
 
 void Parser::SemErr(const wchar_t* msg) {
-  if (errDist >= minErrDist) errors->Error(scanner->filename, t->line, msg);
+  if (errDist >= minErrDist) errors->Error(scanner->filename, t->line, la->col, msg);
   errDist = 0;
 }
 
@@ -590,10 +590,11 @@ Parser::~Parser() {
 }
 
 Errors::Errors() {
-  count = 0;
+	error_count = 0;
+	warning_count=0;
 }
 
-void Errors::SynErr(std::string filename, int line, int n) {
+void Errors::SynErr(const std::string & filename, int line, int col, int n) {
   wchar_t* s;
   switch (n) {
     			case 0: s = coco_string_create(L"EOF expected"); break;
@@ -652,15 +653,40 @@ void Errors::SynErr(std::string filename, int line, int n) {
     }
     break;
   }
-  wprintf(L"%s|%d| syntax error: %ls\n", filename.c_str(), line, s);
+	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+  add_error(true,filename,line,col,L"Syntax error : "+std::wstring(s));
   coco_string_delete(s);
-  count++;
+	error_count++;
 }
 
-void Errors::Error(std::string filename, int line, const wchar_t *s) {
-  wprintf(L"%s|%d| error: %ls\n", filename.c_str(), line, s);
-  count++;
+void Errors::Error(const std::string& filename,int line, int col, const wchar_t *s) {
+	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+  add_error(true,filename,line,col,std::wstring(s));
+	error_count++;
 }
+
+void Errors::Warning(const std::string& filename,int line, int col, const wchar_t *s) {
+	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+  add_error(false,filename,line,col,std::wstring(s));
+	warning_count++;
+}
+
+void Errors::Warning(const std::string& filename,const wchar_t *s) {
+	//wprintf(L"%ls\n", s);
+  add_error(false,filename,0,0,std::wstring(s));
+	warning_count++;
+}
+
+void Errors::Exception(const std::string& filename,const wchar_t* s) {
+	//wprintf(L"%ls", s);
+  add_error(true,filename,0,0,std::wstring(s));
+	exit(1);
+}
+
+void Errors::add_error(const bool is_error,const std::string& filename,int line ,int col,const std::wstring& s) const {
+	storer.add(is_error,filename,s,line,col);
+}
+
 
 }
 }

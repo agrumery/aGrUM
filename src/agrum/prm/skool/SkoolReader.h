@@ -54,6 +54,35 @@ namespace skool {
 
       gum::prm::PRM* prm();
 
+      /// @{
+      /// publishing Errors API
+ 
+      /// # of errors
+      Size errors();
+      /// # of errors
+      Size warnings();
+ 
+      /// line of ith error or warning
+      unsigned int errLine( unsigned int i );
+      /// col of ith error or warning
+      unsigned int errCol( unsigned int i );
+      /// filename of ith error or warning
+      std::string errFilename( unsigned int i );
+      /// type of ith error or warning
+      bool errIsError( unsigned int i );
+      /// message of ith error or warning
+      std::string errMsg( unsigned int i );
+ 
+      /// send on std::cerr the list of errors
+      void showElegantErrors();
+ 
+      /// send on std::cerr the list of errors or warnings
+      void showElegantErrorsAndWarnings();
+ 
+      /// send on std::cerr the number of errors and the number of warnings
+      void showErrorCounts();
+      /// @}
+
     private:
       SkoolReader(const SkoolReader& source);
 
@@ -62,6 +91,9 @@ namespace skool {
       gum::prm::PRMFactory __factory;
 
       std::vector<std::string> __class_path;
+      
+      Parser* __parser;
+      bool __parseDone;
   };
 
 } /* namespace skool */

@@ -33,12 +33,121 @@ namespace prm {
 namespace skool {
 
 class Errors {
-  public:
-    int count;			// number of errors detected
+    
+	class Storing {
+    private:
+			std::vector<bool> is_errors;
+			std::vector<std::string> filenames;
+			std::vector<std::wstring> msgs;
+			std::vector<unsigned int> cols;
+			std::vector<unsigned int> lines;
+	public:
+		Storing() {};
 
-    Errors();
-    void SynErr(std::string file, int line, int n);
-    void Error(std::string file, int line, const wchar_t *s);
+		void add(const bool is_error,const std::string& filename,const std::wstring& msg,int line, int col) {
+			is_errors.push_back(is_error);
+			filenames.push_back(filename);
+			msgs.push_back(msg);
+			lines.push_back(line);
+			cols.push_back(col);
+		}
+		const std::string filename(unsigned int i) {
+			return (i<filenames.size())?filenames[i]:"No filename";
+		};
+		const std::wstring msg(unsigned int i) {
+			return (i<msgs.size())?msgs[i]:L"No error";
+		};
+		unsigned int line(unsigned int i) {
+			return (i<lines.size())?lines[i]:-1;
+		}
+		unsigned int col(unsigned int i) {
+			return (i<cols.size())?cols[i]:-1;
+		}
+		bool is_error(unsigned int i){
+			return (i<is_errors.size())?is_errors[i]:-1;
+		}
+	};
+
+private:
+	mutable Storing storer;
+
+public:
+	int error_count;			// number of errors detected
+	int warning_count;
+  
+
+	Errors();
+	void SynErr(const std::string& filename,int line, int col, int n);
+	void Error(const std::string& filename,int line, int col, const wchar_t *s);
+	void Warning(const std::string& filename,int line, int col, const wchar_t *s);
+	void Warning(const std::string& filename,const wchar_t *s);
+	void Exception(const std::string& filename,const wchar_t *s);
+
+	int count(void) const {return error_count+warning_count;}
+
+  void add_error(const bool is_error,const std::string& filename,int lig,int col,const std::wstring& s) const;
+  
+	const std::string filename(int i) const {
+		return storer.filename(i);
+	};
+	const std::wstring msg(int i) const {
+		return storer.msg(i);
+	};
+	int line(int i) const {
+		return storer.line(i);
+	}
+	int col(int i) const {
+		return storer.col(i);
+	}
+	bool is_error(int i) const {
+		return storer.is_error(i);
+	}
+
+	void showElegantErrors() {
+		int nb_err=0;
+		int no_line=1;
+		int num_msg=0;
+		std::ifstream ifs(filename(num_msg).c_str());
+		std::string temp;
+
+		while( getline( ifs, temp ) ) {
+			if (nb_err>error_count) break;
+			while (no_line==line(num_msg)) {
+				if (is_error(num_msg)) {
+					std::cerr<<filename(num_msg)<<":"<<line(num_msg)<<std::endl;
+					std::cerr<<temp<<std::endl;
+					std::cerr<<std::string(col(num_msg)-1,' ')<<"^"<<" "<<narrow(msg(num_msg))<<std::endl<<std::endl;
+					nb_err++;
+				}
+				num_msg++;
+			}
+			no_line++;
+		}
+	}
+	void showElegantErrorsAndWarnings() {
+		int nb_err=0;
+		int no_line=1;
+		int num_msg=0;
+		std::ifstream ifs(filename(num_msg).c_str());
+		std::string temp;
+
+		while( getline( ifs, temp ) ) {
+			if (nb_err>error_count+warning_count) break;
+			while (no_line==line(num_msg)) {
+				std::cerr<<filename(num_msg)<<":"<<line(num_msg)<<std::endl;
+				std::cerr<<temp<<std::endl;
+				std::cerr<<std::string(col(num_msg)-1,' ')<<"^"<<" "<<narrow(msg(num_msg))<<std::endl<<std::endl;
+				nb_err++;
+				num_msg++;
+			}
+			no_line++;
+		}
+	}
+
+	void showSyntheticResults() {
+		std::cerr<<"Errors : "<<error_count<<std::endl;
+		std::cerr<<"Warnings : "<<warning_count<<std::endl;
+	}
 }; // Errors
 
 class Parser {
@@ -63,7 +172,7 @@ class Parser {
 		_implements=16,
 		_noisyOr=17,
 		_LEFT_CAST=18,
-		_RIGHT_CAST=19
+		_RIGHT_CAST=19,
 	};
 	int maxT;
 

@@ -42,6 +42,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     void testTypes() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/types.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
       TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
@@ -82,6 +84,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       //reader.readFile("../../../src/testunits/ressources/skool/printers.skool");
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
@@ -161,6 +165,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     void testComplexPrinters_1() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = reader.prm();
       TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)6);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
@@ -764,6 +770,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     void testPrintersSystems1() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       if (prm) {
@@ -774,6 +782,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     void testComplexPrintersSystems1() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters_system.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       System* sys = 0;
@@ -873,6 +883,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     void testCPF() {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/inference.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       System* sys = 0;
@@ -894,7 +906,13 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       if (prm)
         delete prm;
     }
-
+    
+    void testErrorsAndWarnings() {
+      SkoolReader reader;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/Printer_with_errors.skool"));
+      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );      
+    }
 };
 
 } // namespace tests
