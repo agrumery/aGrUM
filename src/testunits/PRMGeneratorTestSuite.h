@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <fstream>
 // ============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 // ============================================================================
@@ -146,8 +147,9 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->getSystem(sys)));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb->setBNInference(vebb));
+      std::cout << bn.toDot() << std::flush;
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m_ve, m_ss, m_vebb, m_struct;
+        Potential<prm_float> m_ve, m_ss, m_vebb, m_struct, m_sved, m_sve;
         try {
           size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
           const Instance& instance = prm->getSystem(sys).get(bn.variableNodeMap().name(*node).substr(0, pos));
@@ -164,6 +166,12 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           structinf.setPaterMining(true);
           structinf.marginal(chain, m_struct);
           // GUM_TRACE("StructInf done");
+          SVED sved(*prm, prm->getSystem(sys));
+          sved.marginal(chain, m_sved);
+          // GUM_TRACE("SVED done");
+          SVE sve(*prm, prm->getSystem(sys));
+          sve.marginal(chain, m_sve);
+          // GUM_TRACE("SVE done");
           // We need two instantiations, one for the grounded potentials and one
           // for the PRM-level ones
           Instantiation inst(m_ve), jnst(m_struct);
@@ -174,6 +182,8 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
           TS_ASSERT_EQUALS(m_ve.domainSize(), m_vebb.domainSize());
           TS_ASSERT_EQUALS(m_ve.domainSize(), m_struct.domainSize());
+          TS_ASSERT_EQUALS(m_ve.domainSize(), m_sved.domainSize());
+          TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
           prm_float sum = 0.0;
           for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc())
           // for (inst.setFirst(); not inst.end(); inst.inc())
@@ -182,6 +192,8 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
             TS_ASSERT_DELTA(m_ve.get(inst), m_vebb.get(inst), 1.0e-3);
             TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
             TS_ASSERT_DELTA(m_ve.get(inst), m_struct.get(jnst), 1.0e-3);
+            TS_ASSERT_DELTA(m_ve.get(inst), m_sved.get(jnst), 1.0e-3);
+            //TS_ASSERT_DELTA(m_ve.get(inst), m_sve.get(jnst), 1.0e-3);
           }
           TS_ASSERT_DELTA(sum, (prm_float) 1.0, 1.0e-3);
         } catch (Exception& e) {
@@ -190,7 +202,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           break;
         }
 #ifdef GUM_NO_INLINE
-        break;
+//        break;
 #endif
       }
       delete g_ve;
@@ -217,7 +229,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       v.back().density = density;
       v.back().i_count = i_count;
       agg_size = 2;
-      for (size_t lvl = 1; lvl < 10; ++lvl, ++i_count, ++c_count) {
+      for (size_t lvl = 1; lvl < 3; ++lvl, ++i_count, ++c_count) {
         v.push_back(LayerGenerator::LayerData());
         v.back().interface_size = interface_size;
         v.back().agg_size = agg_size;

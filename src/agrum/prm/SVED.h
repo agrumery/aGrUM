@@ -29,6 +29,7 @@
 #include <agrum/core/set.h>
 // ============================================================================
 #include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/partialOrderedTriangulation.h>
 // ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
 // ============================================================================
@@ -108,8 +109,6 @@ class SVED: public PRMInference{
     typedef Set< Potential<prm_float>* >::iterator BucketSetIterator;
 
     /// Code alias
-    typedef Set< MultiDimArray<prm_float>* > ArraySet;
-    /// Code alias
     typedef Set< MultiDimArray<prm_float>* >::iterator ArraySetIterator;
 
     HashTable<const Class*, std::vector<NodeId>*> __elim_orders;
@@ -117,7 +116,7 @@ class SVED: public PRMInference{
     /// The Set<NodeId> returned by StructuredBayesBall is unique for each
     /// family of instances with the same requisite set (thus the same lifted
     /// potentials).
-    HashTable<const Set<NodeId>*, ArraySet*> __lifted_pools;
+    HashTable<const Set<NodeId>*, BucketSet*> __lifted_pools;
 
     Sequence<const ClassElementContainer*>* __class_elim_order;
 

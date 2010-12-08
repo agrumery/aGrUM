@@ -82,7 +82,7 @@ void readOptions(Session& session, int argc, char *argv[]) {
               optopt);
         std::exit(EXIT_FAILURE);
       default:
-        abort ();
+        std::exit(EXIT_FAILURE);
     }
 }
 
@@ -130,69 +130,4 @@ int main (int argc, char *argv[]) {
   else
     std::exit(EXIT_SUCCESS);
 }
-
-//  bool option_comment = false;
-//  bool option_outputfile = false;
-//  std::string output_file;
-//  std::vector<std::string> args, class_path;
-//  // Checking up arguments
-//  for (int idx = 1; idx < argc; ++idx)
-//    args.push_back(argv[idx]);
-//  if (std::find(args.begin(), args.end(), "-v") != args.end())
-//    option_comment = true;
-//  std::vector<std::string>::iterator it = std::find(args.begin(), args.end(), "-o");
-//  if (it != args.end()) {
-//    if ((it + 1) != args.end()) {
-//      output_file = *(it + 1);
-//      option_outputfile = true;
-//    } else {
-//      print_help_and_exit(EXIT_FAILURE);
-//    }
-//  }
-//  it = std::find(args.begin(), args.end(), "-c");
-//  if (it != args.end()) {
-//    if ((it + 1) != args.end()) fill_class_path(class_path, *(it + 1));
-//    else                        print_help_and_exit(EXIT_FAILURE);
-//  }
-//  it == std::find(args.begin(), args.end(), "-h");
-//  if (it != args.end()) print_help_and_exit(EXIT_SUCCESS);
-//  // Now we can start parsing the request file
-//  std::string file = args.back();
-//  std::ifstream input_stream(file.c_str());
-//  Scanner* s = 0;
-//  Parser* p = 0;
-//  std::ofstream* output = 0;
-//  if (input_stream.is_open() and input_stream.good()) {
-//    try {
-//      s = new Scanner(file);
-//      if (option_outputfile) {
-//        output = new std::ofstream(output_file.c_str());
-//        if (input_stream.is_open() and input_stream.good()) {
-//          p = new Parser(s, *output);
-//        } else {
-//          std::cerr << "Could not open output file, dumping log on the standard output." << std::endl;
-//          p = new Parser(s);
-//        }
-//      } else {
-//        p = new Parser(s);
-//      }
-//      p->verbose = option_comment;
-//      p->Parse();
-//    } catch (gum::Exception& e) {
-//      std::cerr << "Something went wrong: " << e.getContent();
-//      std::exit(EXIT_FAILURE);
-//    } catch (std::string&) { // Syntax error, error message already printed
-//      std::exit(EXIT_FAILURE);
-//    }
-//  } else {
-//    std::cerr << "Could not open input file." << std::endl;
-//    if (p != 0) delete p;
-//    if (s != 0) delete s;
-//    print_help_and_exit(EXIT_FAILURE);
-//  }
-//  if (p) delete p;
-//  if (s) delete s;
-//  if (output) delete output;
-//  std::exit(EXIT_SUCCESS);
-// }
 

@@ -29,6 +29,7 @@
 #include <agrum/core/set.h>
 // ============================================================================
 #include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/partialOrderedTriangulation.h>
 // ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
 // ============================================================================
@@ -105,13 +106,11 @@ class SVE: public PRMInference{
     typedef Set< Potential<prm_float>* >::iterator BucketSetIterator;
 
     /// Code alias
-    typedef Set< MultiDimArray<prm_float>* > ArraySet;
-    /// Code alias
     typedef Set< MultiDimArray<prm_float>* >::iterator ArraySetIterator;
 
     HashTable<const Class*, std::vector<NodeId>*> __elim_orders;
 
-    HashTable<const Class*, ArraySet*> __lifted_pools;
+    HashTable<const Class*, BucketSet*> __lifted_pools;
 
     Sequence<const ClassElementContainer*>* __class_elim_order;
 

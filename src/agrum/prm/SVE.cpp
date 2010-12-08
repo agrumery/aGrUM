@@ -40,11 +40,8 @@ SVE::~SVE() {
   for (ElimIter iter = __elim_orders.begin(); iter != __elim_orders.end(); ++iter) {
     delete *iter;
   }
-  typedef HashTable<const Class*, SVE::ArraySet*>::iterator LiftedIter;
+  typedef HashTable<const Class*, BucketSet*>::iterator LiftedIter;
   for (LiftedIter iter = __lifted_pools.begin(); iter != __lifted_pools.end(); ++iter) {
-    for (SVE::ArraySetIterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-      delete *jter;
-    }
     delete *iter;
   }
   if (__class_elim_order != 0) {
@@ -333,15 +330,15 @@ SVE::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet&
 
 void
 SVE::__insertLiftedNodes(const Instance* i, BucketSet& pool, BucketSet& trash) {
-  SVE::ArraySet* lifted_pool = 0;
+  SVE::BucketSet* lifted_pool = 0;
   try {
     lifted_pool = __lifted_pools[&(i->type())];
   } catch (NotFound&) {
     __initLiftedNodes(i->type());
     lifted_pool = __lifted_pools[&(i->type())];
   }
-  for (SVE::ArraySetIterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter) {
-    Potential<prm_float>* pot = new Potential<prm_float>( new MultiDimBijArray<prm_float>(i->bijection(), **iter));
+  for (SVE::BucketSet::iterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter) {
+    Potential<prm_float>* pot = copyPotential(i->bijection(), **iter);
     pool.insert(pot);
     trash.insert(pot);
   }
@@ -350,56 +347,43 @@ SVE::__insertLiftedNodes(const Instance* i, BucketSet& pool, BucketSet& trash) {
 void
 SVE::__initLiftedNodes(const Class& c)
 {
-  BucketSet lifted_pool;
-  __lifted_pools.insert(&c, new SVE::ArraySet());
-  for (Set<Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr) {
-    lifted_pool.insert(&((**attr).cpf()));
+  BucketSet* lifted_pool = new BucketSet();
+  __lifted_pools.insert(&c, lifted_pool);
+  NodeSet inners, outers;
+  const Set<NodeId>* parents = 0;
+  for (DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node) {
+    if (ClassElement::isAttribute(c.get(*node))) {
+      if (c.isOutputNode(c.get(*node)))
+        outers.insert(*node);
+      else if (not outers.exists(*node))
+        inners.insert(*node);
+      lifted_pool->insert(const_cast<Potential<prm_float>*>(&(c.get(*node).cpf())));
+    } else if (ClassElement::isAggregate(c.get(*node))) {
+      outers.insert(*node);
+      // We need to put in the output_elim_order aggregator's parents which are innner nodes
+      parents = &(c.dag().parents(*node));
+      for (Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt) {
+        if (ClassElement::isAttribute(c.get(*prnt)) and c.isInnerNode(c.get(*prnt))) {
+          inners.erase(*prnt);
+          outers.insert(*prnt);
+        }
+      }
+    }
   }
+  // Now we proceed with the elimination of inner attributes
   ClassBayesNet bn(c);
-  DefaultTriangulation t(&(bn.moralGraph()), &(bn.modalities()));
-  const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
-  VariableElimination<prm_float> inf(bn);
-  // Removing Output nodes of elimination order
-  std::vector<NodeId> inner_elim_order;
-  std::vector<NodeId>* output_elim_order = new std::vector<NodeId>();
-  for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
-    if (c.isOutputNode(c.get(full_elim_order[idx])) or
-        ClassElement::isAggregate(c.get(full_elim_order[idx]))) {
-      output_elim_order->push_back(full_elim_order[idx]);
-    } else {
-      inner_elim_order.push_back(full_elim_order[idx]);
-    }
-  }
-  // If there is only output nodes and Aggregate we can't lift anything
-  if (not inner_elim_order.empty()) {
-    inf.eliminateNodes(inner_elim_order, lifted_pool, __lifted_trash);
-  }
-  // Copying buckets in MultiDimArrays
-  for(SVE::BucketSetIterator iter = lifted_pool.begin(); iter != lifted_pool.end(); ++iter) {
-    const MultiDimBucket<prm_float>* b = 0;
-    const MultiDimImplementation<prm_float>* impl = const_cast<const Potential<prm_float>&>((**iter)).getContent();
-    b = dynamic_cast<const MultiDimBucket<prm_float>* >(impl);
-    if (b != 0) {
-      b->compute(true);
-      try {
-        __lifted_pools[&c]->insert(new MultiDimArray<prm_float>(b->bucket()));
-      } catch (OperationNotAllowed& e) {
-        // Empty bucket
-      }
-    } else {
-      const MultiDimArray<prm_float>* a = dynamic_cast<const MultiDimArray<prm_float>*>(impl);
-      if (a != 0) {
-        __lifted_pools[&c]->insert(new MultiDimArray<prm_float>(*a));
-      } else {
-        GUM_ERROR(FatalError, "unknown content");
-      }
-    }
-  }
+  List<NodeSet> partial_ordering;
+  if (inners.size())
+    partial_ordering.push_back(inners);
+  if (outers.size())
+    partial_ordering.push_back(outers);
+  PartialOrderedTriangulation t(&(bn.moralGraph()), &(bn.modalities()), &partial_ordering);
+  for (size_t idx = 0; idx < inners.size(); ++idx)
+    eliminateNode(&(c.get(t.eliminationOrder()[idx]).type().variable()), *lifted_pool, __lifted_trash);
   // If there is not only inner and input Attributes
-  if (not output_elim_order->empty()) {
-    __elim_orders.insert(&c, output_elim_order);
-  } else {
-    delete output_elim_order;
+  if (outers.size()) {
+    __elim_orders.insert(&c,
+        new std::vector<NodeId>(t.eliminationOrder().begin() + inners.size(), t.eliminationOrder().end()));
   }
 }
 
@@ -434,6 +418,30 @@ SVE::_marginal(const Chain& chain, Potential<prm_float>& m)
   for (SVE::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter) {
     if ((**iter).contains(elt->type().variable())) {
       m.multiplicateBy(**iter);
+    }
+    if ((**iter).nbrDim() > 1) {
+      std::string dot = ".";
+      std::string t = "true";
+      std::string f = "false";
+      std::string none = "NONE";
+      GUM_TRACE_VAR((**iter).nbrDim());
+      GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
+      for (System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter) {
+        for (Instance::iterator a = (**jter).begin(); a != (**jter).end(); ++a) {
+          if ((**iter).contains((**a).type().variable())) {
+            GUM_TRACE((**jter).name() + dot + (**a).safeName());
+            // try {
+            //   std::cerr << "Instance eliminated in:       " << __debug[*jter] << std::endl;
+            // } catch (NotFound&) {
+            //   std::cerr << "Instance eliminated in:       " << none << std::endl;
+            // }
+            std::cerr << "Attribute has refered attr:   " << ((**jter).hasRefAttr((**a).id())) << std::endl;
+            std::cerr << "Attribute has evidence:       " << (hasEvidence(*jter)) << std::endl;
+            std::cerr << "Attribute parents number:     " << ((**jter).type().dag().parents((**a).id()).size()) << std::endl;
+            std::cerr << "Attribute children number:    " << ((**jter).type().dag().children((**a).id()).size()) << std::endl;
+          }
+        }
+      }
     }
   }
   m.normalize();
