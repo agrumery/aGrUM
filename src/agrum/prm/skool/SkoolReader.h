@@ -36,7 +36,7 @@
 //including coco-generated PARSER and SCANNER
 #undef COCO_PARSER_H__
 #undef COCO_SCANNER_H__
-#include <agrum/prm/skool/Parser.h>
+#include <agrum/prm/skool/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 
