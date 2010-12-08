@@ -107,6 +107,8 @@ int Buffer::Peek() {
 	return ch;
 }
 
+// beg .. begin, zero-based, inclusive, in byte
+// end .. end, zero-based, exclusive, in byte
 wchar_t* Buffer::GetString(int beg, int end) {
 	int len = end - beg;
 	wchar_t *buf = new wchar_t[len];
@@ -312,7 +314,7 @@ void Scanner::Init() {
 		exit(1);
 	}
 
-	pos = -1; line = 1; col = 0;
+	pos = -1; line = 1; col = 0; charPos = -1;
 	oldEols = 0;
 	NextCh();
 	if (ch == 0xEF) { // check optional byte order mark for UTF-8
@@ -323,7 +325,7 @@ void Scanner::Init() {
 			exit(1);
 		}
 		Buffer *oldBuf = buffer;
-		buffer = new UTF8Buffer(buffer); col = 0;
+		buffer = new UTF8Buffer(buffer); col = 0; charPos = -1;
 		delete oldBuf; oldBuf = NULL;
 		NextCh();
 	}
@@ -346,7 +348,7 @@ void Scanner::NextCh() {
 				GUM_EMIT1(onLoad,percent);
 			}
 		}
-		col++;
+		col++;charPos++;
 
 		// replace isolated '\r' by '\n' in order to make
 		// eol handling uniform across Windows, Unix and Mac
@@ -372,7 +374,7 @@ void Scanner::AddCh() {
 
 
 bool Scanner::Comment0() {
-	int level = 1, pos0 = pos, line0 = line, col0 = col;
+	int level = 1, pos0 = pos, line0 = line, col0 = col, charPos0 = charPos;
 	NextCh();
 	if (ch == L'/') {
 		NextCh();
@@ -385,13 +387,13 @@ bool Scanner::Comment0() {
 			else NextCh();
 		}
 	} else {
-		buffer->SetPos(pos0); NextCh(); line = line0; col = col0;
+		buffer->SetPos(pos0); NextCh(); line = line0; col = col0; charPos = charPos0;
 	}
 	return false;
 }
 
 bool Scanner::Comment1() {
-	int level = 1, pos0 = pos, line0 = line, col0 = col;
+	int level = 1, pos0 = pos, line0 = line, col0 = col, charPos0 = charPos;
 	NextCh();
 	if (ch == L'*') {
 		NextCh();
@@ -412,7 +414,7 @@ bool Scanner::Comment1() {
 			else NextCh();
 		}
 	} else {
-		buffer->SetPos(pos0); NextCh(); line = line0; col = col0;
+		buffer->SetPos(pos0); NextCh(); line = line0; col = col0; charPos = charPos0;
 	}
 	return false;
 }
@@ -473,7 +475,7 @@ Token* Scanner::NextToken() {
 	int recKind = noSym;
 	int recEnd = pos;
 	t = CreateToken();
-	t->pos = pos; t->col = col; t->line = line;
+	t->pos = pos; t->col = col; t->line = line; t->charPos = charPos;
 	int state = start.state(ch);
 	tlen = 0; AddCh();
 
@@ -599,7 +601,7 @@ Token* Scanner::NextToken() {
 void Scanner::SetScannerBehindT() {
 	buffer->SetPos(t->pos);
 	NextCh();
-	line = t->line; col = t->col;
+	line = t->line; col = t->col; charPos = t->charPos;
 	for (int i = 0; i < tlen; i++) NextCh();
 }
 
@@ -632,5 +634,4 @@ void Scanner::ResetPeek() {
 
 } // namespace
 } // namespace
-
 

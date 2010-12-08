@@ -343,7 +343,6 @@ void Parser::Parse() {
 	la->val = coco_string_create(L"Dummy Token");
 	Get();
 	BIF();
-
 	Expect(0);
 }
 

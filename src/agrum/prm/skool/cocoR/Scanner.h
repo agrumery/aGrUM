@@ -21,7 +21,8 @@ class Token
 {
 public:
 	int kind;     // token kind
-	int pos;      // token position in the source text (starting at 0)
+	int pos;      // token position in bytes in the source text (starting at 0)
+	int charPos;  // token position in characters in the source text (starting at 0)
 	int col;      // token column (starting at 1)
 	int line;     // token line (starting at 1)
 	wchar_t* val; // token value
@@ -188,6 +189,7 @@ private:
 	int ch;           // current input character
 
 	int pos;          // byte position of current character
+	int charPos;      // position by unicode characters starting with 0
 	int line;         // line number of current character
 	int col;          // column number of current character
 	int oldEols;      // EOLs that appeared in a comment;
