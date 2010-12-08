@@ -52,6 +52,9 @@ namespace gum {
     /// copy constructor
     ScheduleDeleteMultiDim ( const ScheduleDeleteMultiDim<T_DATA>& );
 
+    /// virtual copy constructor: creates a clone of the operation
+    virtual ScheduleDeleteMultiDim<T_DATA>* newFactory () const;
+
     /// destructor
     virtual ~ScheduleDeleteMultiDim ();
 

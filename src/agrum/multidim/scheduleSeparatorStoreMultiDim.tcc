@@ -62,6 +62,14 @@ namespace gum {
     GUM_CONS_CPY ( ScheduleSeparatorStoreMultiDim );
   }
 
+  
+  /// virtual copy constructor: creates a clone of the operation
+  template <typename T_DATA>
+  ScheduleSeparatorStoreMultiDim<T_DATA>*
+  ScheduleSeparatorStoreMultiDim<T_DATA>::newFactory () const {
+    return new ScheduleSeparatorStoreMultiDim<T_DATA> ( *this );
+  }
+
 
   /// destructor
   template <typename T_DATA>

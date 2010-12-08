@@ -63,6 +63,14 @@ namespace gum {
     GUM_CONS_CPY ( ScheduleCliqueStoreMultiDim );
   }
 
+  
+  /// virtual copy constructor: creates a clone of the operation
+  template <typename T_DATA>
+  ScheduleCliqueStoreMultiDim<T_DATA>*
+  ScheduleCliqueStoreMultiDim<T_DATA>::newFactory () const {
+    return new ScheduleCliqueStoreMultiDim<T_DATA> ( *this );
+  }
+
 
   /// destructor
   template <typename T_DATA>

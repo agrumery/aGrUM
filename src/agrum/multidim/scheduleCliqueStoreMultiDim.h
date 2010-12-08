@@ -57,6 +57,9 @@ namespace gum {
     /// copy constructor
     ScheduleCliqueStoreMultiDim ( const ScheduleCliqueStoreMultiDim<T_DATA>& );
 
+    /// virtual copy constructor: creates a clone of the operation
+    virtual ScheduleCliqueStoreMultiDim<T_DATA>* newFactory () const;
+
     /// destructor
     virtual ~ScheduleCliqueStoreMultiDim ();
 

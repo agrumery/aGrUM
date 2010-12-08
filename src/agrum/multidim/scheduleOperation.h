@@ -59,6 +59,9 @@ namespace gum {
     // ############################################################################
     /// @{
 
+    /// virtual copy constructor: creates a clone of the operation
+    virtual ScheduleOperation<T_DATA>* newFactory () const = 0;
+
     /// destructor
     virtual ~ScheduleOperation ();
 

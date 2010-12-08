@@ -59,6 +59,9 @@ namespace gum {
     /// copy constructor
     ScheduleProject ( const ScheduleProject<T_DATA>& );
 
+    /// virtual copy constructor: creates a clone of the operation
+    virtual ScheduleProject<T_DATA>* newFactory () const;
+
     /// destructor
     virtual ~ScheduleProject ();
 

@@ -76,6 +76,13 @@ namespace gum {
     GUM_CONS_CPY ( ScheduleCombine );
   }
 
+  
+  /// virtual copy constructor: creates a clone of the operation
+  template <typename T_DATA>
+  ScheduleCombine<T_DATA>* ScheduleCombine<T_DATA>::newFactory () const {
+    return new ScheduleCombine<T_DATA> (*this );
+  }
+
 
   /// destructor
   template <typename T_DATA>

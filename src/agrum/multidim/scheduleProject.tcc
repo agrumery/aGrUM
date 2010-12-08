@@ -71,7 +71,14 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleProject );
   }
+
   
+  /// virtual copy constructor: creates a clone of the operation
+  template <typename T_DATA>
+  ScheduleProject<T_DATA>* ScheduleProject<T_DATA>::newFactory () const {
+    return new ScheduleProject<T_DATA> (*this );
+  }
+
 
   /// destructor
   template <typename T_DATA>

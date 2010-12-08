@@ -55,6 +55,14 @@ namespace gum {
     GUM_CONS_CPY ( ScheduleDeleteMultiDim );
   }
 
+  
+  /// virtual copy constructor: creates a clone of the operation
+  template <typename T_DATA>
+  ScheduleDeleteMultiDim<T_DATA>*
+  ScheduleDeleteMultiDim<T_DATA>::newFactory () const {
+    return new ScheduleDeleteMultiDim<T_DATA> ( *this );
+  }
+
 
   /// destructor
   template <typename T_DATA>

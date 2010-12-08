@@ -58,6 +58,9 @@ namespace gum {
     ScheduleSeparatorStoreMultiDim
     ( const ScheduleSeparatorStoreMultiDim<T_DATA>& );
 
+    /// virtual copy constructor: creates a clone of the operation
+    virtual ScheduleSeparatorStoreMultiDim<T_DATA>* newFactory () const;
+
     /// destructor
     virtual ~ScheduleSeparatorStoreMultiDim ();
 

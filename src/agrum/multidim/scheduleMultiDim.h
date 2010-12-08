@@ -47,7 +47,58 @@ namespace gum {
   template <typename T_DATA> class ScheduleDeleteMultiDim;
 #endif
 
-  
+  /**
+   * @class ScheduleMultiDim
+   * @brief a MultiDimImplementation Wrapper used for scheduling inferences
+   *
+   * A ScheduleMultiDim is a wrapper that contains either a "real" multidim
+   * table or an Id that indicates that the multidim table that should be
+   * contained has not been computed yet (by the scheduler). This Id enables
+   * the scheduler to know which is the operation the result of which will be the
+   * multidim table that will eventually be contained in the ScheduleMultiDim.
+   * Here is a brief piece of code that should highlight the concept:
+   * @code
+   * // some arbitrary potentials (to be initialized before going on)
+   * gum::Potential<float> pot1, pot2, pot3;
+   *
+   * // we wish to schedule ( pot1 + pot2 ) + pot3
+   * // so, first, create ScheduleMultiDims for wrapping these potentials
+   * gum::ScheduleMultiDim<float> f1 ( pot1 ), f2 ( pot2 ), f3 ( pot3 );
+   *
+   * // now schedule a combination (+) between f1 and f2
+   * gum::ScheduleCombine<float> comb1 ( &f1, &f2, add );
+   *
+   * // get the result and schedule it with f3
+   * const ScheduleMultiDim<float>& result1 = comb1.result ();
+   * gum::ScheduleCombine<float> comb2 ( &result2, &f3,add );
+   *
+   * // get the resulting ScheduleMultiDim
+   * const ScheduleMultiDim<float>& result2 = comb2.result ();
+   *
+   * // here, no addition has been performed yet. We just have a structure
+   * // that indicates which operations we wish to do. So, for the moment,
+   * // result1 and result2 do not contain real multidim tables but just ids.
+   * // As such, they are called abstract and trying to get their "real"
+   * // multiDim table (using method multiDim()) would throw a NotFound exception.
+   * std::cout << result1.isAbstract ();
+   * std::cout << result2.isAbstract ();
+   * std::cout << ! f1.isAbstract ();
+   *
+   * // now, we can actually perform the operations
+   * comb1.execute ();
+   * std::cout << ! result1.isAbstract ();
+   * comb2.execute ();
+   *
+   * // here, we can display the content of the real multidim table stored
+   * // into result2
+   * std::cout << result2.multiDim ();   
+   * @endcode
+   *
+   * So, to summarize the key idea underlying Schedule* classes: these classes
+   * encapsulate operations to perform and multidim tables that should be passed
+   * as argument to these operations. But nothing is actually computed until
+   * the execute() methods of the scheduled operations are executed.
+   */
   template <typename T_DATA>
   class ScheduleMultiDim {
   public:
