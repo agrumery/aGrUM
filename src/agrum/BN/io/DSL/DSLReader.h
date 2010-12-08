@@ -28,7 +28,10 @@
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include "cocoR/Parser.h"
+//including coco-generated PARSER and SCANNER
+#undef COCO_PARSER_H__
+#undef COCO_SCANNER_H__
+#include <agrum/BN/io/DSL/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 

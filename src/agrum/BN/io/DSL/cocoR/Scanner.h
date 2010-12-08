@@ -1,7 +1,7 @@
 
 
-#if !defined(DSL_COCO_SCANNER_H__)
-#define DSL_COCO_SCANNER_H__
+#if !defined(COCO_SCANNER_H__)
+#define COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -231,5 +231,5 @@ public:
 } // namespace
 
 
-#endif // !defined(DSL_COCO_SCANNER_H__)
+#endif // !defined(COCO_SCANNER_H__)
 

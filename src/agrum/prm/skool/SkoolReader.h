@@ -24,13 +24,22 @@
  * @author Lionel TORTI
  */
 // ============================================================================
+#ifndef GUM_SKOOL_READER_H
+#define GUM_SKOOL_READER_H
+
+// ============================================================================
 #include <fstream>
 // ============================================================================
 #include <agrum/prm/PRMFactory.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//including coco-generated PARSER and SCANNER
+#undef COCO_PARSER_H__
+#undef COCO_SCANNER_H__
 #include <agrum/prm/skool/Parser.h>
-// ============================================================================
-#ifndef GUM_SKOOL_READER_H
-#define GUM_SKOOL_READER_H
+#endif //DOXYGEN_SHOULD_SKIP_THIS
+
+
 namespace gum {
 namespace prm {
 namespace skool {
@@ -67,7 +76,7 @@ namespace skool {
       /// col of ith error or warning
       unsigned int errCol( unsigned int i );
       /// filename of ith error or warning
-      std::string errFilename( unsigned int i );
+      std::wstring errFilename( unsigned int i );
       /// type of ith error or warning
       bool errIsError( unsigned int i );
       /// message of ith error or warning

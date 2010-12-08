@@ -17,7 +17,7 @@ namespace std {
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
 #endif
 
-COMPILER Skool;
+COMPILER Skool
 
 gum::prm::PRMFactory* __factory;
 std::vector<std::string> __class_path;
@@ -71,7 +71,7 @@ void import(std::string s) {
       if (file_test.is_open()) {
         file_test.close();
         found = true;
-        Scanner s(import);
+        Scanner s(import.c_str());
         Parser p(&s);
         p.setFactory(__factory);
         p.setClassPath(__class_path);

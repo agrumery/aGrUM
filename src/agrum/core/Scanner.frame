@@ -27,8 +27,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 -->begin
 
-#if !defined(DSL_COCO_SCANNER_H__)
-#define DSL_COCO_SCANNER_H__
+#if !defined(COCO_SCANNER_H__)
+#define COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -252,7 +252,7 @@ public:
 
 -->namespace_close
 
-#endif // !defined(DSL_COCO_SCANNER_H__)
+#endif // !defined(COCO_SCANNER_H__)
 
 -->implementation
 /*-------------------------------------------------------------------------
@@ -599,7 +599,7 @@ void Scanner::NextCh() {
 		// replace isolated '\r' by '\n' in order to make
 		// eol handling uniform across Windows, Unix and Mac
 		if (ch == L'\r' && buffer->Peek() != L'\n') ch = EOL;
-		if (ch == EOL) { /*if (__trace) std::cout<<line<<std::endl;*/line++; col = 0; }
+		if (ch == EOL) { /*if (__trace) std::cout<<line<<std::endl;*/ line++; col = 0; }
 	}
 -->casing1
 }

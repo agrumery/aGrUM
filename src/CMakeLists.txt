@@ -18,7 +18,10 @@ file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}
 file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.tcc)
 
 FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
-##CocoRTarget(prm/skool Skool gum::prm::skool)
+
+CocoRTarget(prm/skool Skool gum:prm:skool)
+CocoRTarget(BN/io/BIF/cocoR bif gum:BIF)
+CocoRTarget(BN/io/DSL/cocoR dsl gum:DSL)
 
 include_directories(${AGRUM_BINARY_DIR})
 include_directories(${AGRUM_SOURCE_DIR})

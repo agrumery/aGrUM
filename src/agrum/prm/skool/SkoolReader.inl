@@ -46,7 +46,7 @@ INLINE
 void
 SkoolReader::readFile(const std::string& file) {
   if ( ! __parseDone ) {
-    Scanner s(file);
+    Scanner s(file.c_str());
     __parser = new Parser(&s);
     __parser->setFactory(&__factory);
     __parser->setClassPath(__class_path);
@@ -80,7 +80,7 @@ unsigned int SkoolReader::errCol( unsigned int i ) {
 }
 
 INLINE
-std::string SkoolReader::errFilename( unsigned int i ) {
+std::wstring SkoolReader::errFilename( unsigned int i ) {
   if ( __parseDone ) return __parser->errors->filename( i );
   else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
 }

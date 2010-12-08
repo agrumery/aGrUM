@@ -1,7 +1,7 @@
 
 
-#if !defined(BIF_COCO_PARSER_H__)
-#define BIF_COCO_PARSER_H__
+#if !defined(COCO_PARSER_H__)
+#define COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 
@@ -232,5 +232,5 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 } // namespace
 
 
-#endif // !defined(BIF_COCO_PARSER_H__)
+#endif // !defined(COCO_PARSER_H__)
 

@@ -1,67 +1,73 @@
 
 
+#include <iostream>
 #include <wchar.h>
+
 #include "Parser.h"
 #include "Scanner.h"
-
 
 
 namespace gum {
 namespace prm {
 namespace skool {
 
+
 void Parser::SynErr(int n) {
-  if (errDist >= minErrDist) errors->SynErr(scanner->filename, la->line, la->col, n);
-  errDist = 0;
+	if (errDist >= minErrDist) errors->SynErr(scanner->filename(),la->line, la->col, n);
+	errDist = 0;
 }
 
 void Parser::SemErr(const wchar_t* msg) {
-  if (errDist >= minErrDist) errors->Error(scanner->filename, t->line, la->col, msg);
-  errDist = 0;
+	if (errDist >= minErrDist) errors->Error(scanner->filename(),t->line, t->col, msg);
+	errDist = 0;
+}
+
+void Parser::Warning(const wchar_t* msg) {
+	errors->Warning(scanner->filename(),t->line, t->col, msg);
 }
 
 void Parser::Get() {
-  for (;;) {
-    t = la;
-    la = scanner->Scan();
-    if (la->kind <= maxT) { ++errDist; break; }
-    
-      if (dummyToken != t) {
-        dummyToken->kind = t->kind;
-        dummyToken->pos = t->pos;
-        dummyToken->col = t->col;
-        dummyToken->line = t->line;
-        dummyToken->next = NULL;
-        coco_string_delete(dummyToken->val);
-        dummyToken->val = coco_string_create(t->val);
-        t = dummyToken;
-      }
-    la = t;
-  }
+	for (;;) {
+		t = la;
+		la = scanner->Scan();
+		if (la->kind <= maxT) { ++errDist; break; }
+
+		if (dummyToken != t) {
+			dummyToken->kind = t->kind;
+			dummyToken->pos = t->pos;
+			dummyToken->col = t->col;
+			dummyToken->line = t->line;
+			dummyToken->next = NULL;
+			coco_string_delete(dummyToken->val);
+			dummyToken->val = coco_string_create(t->val);
+			t = dummyToken;
+		}
+		la = t;
+	}
 }
 
 void Parser::Expect(int n) {
-  if (la->kind==n) Get(); else { SynErr(n); }
+	if (la->kind==n) Get(); else { SynErr(n); }
 }
 
 void Parser::ExpectWeak(int n, int follow) {
-  if (la->kind == n) Get();
-  else {
-    SynErr(n);
-    while (!StartOf(follow)) Get();
-  }
+	if (la->kind == n) Get();
+	else {
+		SynErr(n);
+		while (!StartOf(follow)) Get();
+	}
 }
 
 bool Parser::WeakSeparator(int n, int syFol, int repFol) {
-  if (la->kind == n) {Get(); return true;}
-  else if (StartOf(repFol)) {return false;}
-  else {
-    SynErr(n);
-    while (!(StartOf(syFol) || StartOf(repFol) || StartOf(0))) {
-      Get();
-    }
-    return StartOf(syFol);
-  }
+	if (la->kind == n) {Get(); return true;}
+	else if (StartOf(repFol)) {return false;}
+	else {
+		SynErr(n);
+		while (!(StartOf(syFol) || StartOf(repFol) || StartOf(0))) {
+			Get();
+		}
+		return StartOf(syFol);
+	}
 }
 
 void Parser::Skool() {
@@ -550,43 +556,43 @@ void Parser::ArrayDecl(std::string l1) {
 
 
 void Parser::Parse() {
-  t = NULL;
-  la = dummyToken = new Token();
-  la->val = coco_string_create(L"Dummy Token");
-  Get();
-  	Skool();
+	t = NULL;
+	la = dummyToken = new Token();
+	la->val = coco_string_create(L"Dummy Token");
+	Get();
+	Skool();
 
-    Expect(0);
+	Expect(0);
 }
 
 Parser::Parser(Scanner *scanner) {
-  	maxT = 30;
+	maxT = 30;
 
-    dummyToken = NULL;
-  t = la = NULL;
-  minErrDist = 2;
-  errDist = minErrDist;
-  this->scanner = scanner;
-  errors = new Errors();
+	dummyToken = NULL;
+	t = la = NULL;
+	minErrDist = 2;
+	errDist = minErrDist;
+	this->scanner = scanner;
+	errors = new Errors();
 }
 
 bool Parser::StartOf(int s) {
-  const bool T = true;
-  const bool x = false;
+	const bool T = true;
+	const bool x = false;
 
-  	static bool set[2][32] = {
+	static bool set[2][32] = {
 		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
 		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
 	};
 
 
 
-    return set[s][la->kind];
+	return set[s][la->kind];
 }
 
 Parser::~Parser() {
-  delete errors;
-  delete dummyToken;
+	delete errors;
+	delete dummyToken;
 }
 
 Errors::Errors() {
@@ -594,10 +600,10 @@ Errors::Errors() {
 	warning_count=0;
 }
 
-void Errors::SynErr(const std::string & filename, int line, int col, int n) {
-  wchar_t* s;
-  switch (n) {
-    			case 0: s = coco_string_create(L"EOF expected"); break;
+void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
+	wchar_t* s;
+	switch (n) {
+			case 0: s = coco_string_create(L"EOF expected"); break;
 			case 1: s = coco_string_create(L"integer expected"); break;
 			case 2: s = coco_string_create(L"float expected"); break;
 			case 3: s = coco_string_create(L"word expected"); break;
@@ -645,52 +651,49 @@ void Errors::SynErr(const std::string & filename, int line, int col, int n) {
 			case 45: s = coco_string_create(L"invalid ArrayDecl"); break;
 			case 46: s = coco_string_create(L"invalid ArrayDecl"); break;
 
-    default:
-    {
-      wchar_t format[20];
-      coco_swprintf(format, 20, L"error %d", n);
-      s = coco_string_create(format);
-    }
-    break;
-  }
+		default:
+		{
+			wchar_t format[20];
+			coco_swprintf(format, 20, L"error %d", n);
+			s = coco_string_create(format);
+		}
+		break;
+	}
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   add_error(true,filename,line,col,L"Syntax error : "+std::wstring(s));
-  coco_string_delete(s);
+	coco_string_delete(s);
 	error_count++;
 }
 
-void Errors::Error(const std::string& filename,int line, int col, const wchar_t *s) {
+void Errors::Error(const std::wstring& filename,int line, int col, const wchar_t *s) {
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   add_error(true,filename,line,col,std::wstring(s));
 	error_count++;
 }
 
-void Errors::Warning(const std::string& filename,int line, int col, const wchar_t *s) {
+void Errors::Warning(const std::wstring& filename,int line, int col, const wchar_t *s) {
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   add_error(false,filename,line,col,std::wstring(s));
 	warning_count++;
 }
 
-void Errors::Warning(const std::string& filename,const wchar_t *s) {
+void Errors::Warning(const std::wstring& filename,const wchar_t *s) {
 	//wprintf(L"%ls\n", s);
   add_error(false,filename,0,0,std::wstring(s));
 	warning_count++;
 }
 
-void Errors::Exception(const std::string& filename,const wchar_t* s) {
+void Errors::Exception(const std::wstring& filename,const wchar_t* s) {
 	//wprintf(L"%ls", s);
   add_error(true,filename,0,0,std::wstring(s));
 	exit(1);
 }
 
-void Errors::add_error(const bool is_error,const std::string& filename,int line ,int col,const std::wstring& s) const {
+void Errors::add_error(const bool is_error,const std::wstring& filename,int line ,int col,const std::wstring& s) const {
 	storer.add(is_error,filename,s,line,col);
 }
-
-
-}
-}
-}
-
+} // namespace
+} // namespace
+} // namespace
 
 

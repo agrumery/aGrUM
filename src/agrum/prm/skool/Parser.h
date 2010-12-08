@@ -1,7 +1,7 @@
 
 
-#if !defined(SKOOL_COCO_PARSER_H__)
-#define SKOOL_COCO_PARSER_H__
+#if !defined(COCO_PARSER_H__)
+#define COCO_PARSER_H__
 
 #include <string>
 #include <sstream>
@@ -22,37 +22,36 @@ namespace std {
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
 #endif
 
-
-#include <agrum/prm/skool/Scanner.h>
-using namespace std;
-
-
+#include <iostream>
+#include <string>
+#include <fstream>
+#include "Scanner.h"
 
 namespace gum {
 namespace prm {
 namespace skool {
 
+
 class Errors {
-    
 	class Storing {
     private:
 			std::vector<bool> is_errors;
-			std::vector<std::string> filenames;
+			std::vector<std::wstring> filenames;
 			std::vector<std::wstring> msgs;
 			std::vector<unsigned int> cols;
 			std::vector<unsigned int> lines;
 	public:
 		Storing() {};
 
-		void add(const bool is_error,const std::string& filename,const std::wstring& msg,int line, int col) {
+		void add(const bool is_error,const std::wstring& filename,const std::wstring& msg,int line, int col) {
 			is_errors.push_back(is_error);
 			filenames.push_back(filename);
 			msgs.push_back(msg);
 			lines.push_back(line);
 			cols.push_back(col);
 		}
-		const std::string filename(unsigned int i) {
-			return (i<filenames.size())?filenames[i]:"No filename";
+		const std::wstring filename(unsigned int i) {
+			return (i<filenames.size())?filenames[i]:L"No filename";
 		};
 		const std::wstring msg(unsigned int i) {
 			return (i<msgs.size())?msgs[i]:L"No error";
@@ -77,17 +76,17 @@ public:
   
 
 	Errors();
-	void SynErr(const std::string& filename,int line, int col, int n);
-	void Error(const std::string& filename,int line, int col, const wchar_t *s);
-	void Warning(const std::string& filename,int line, int col, const wchar_t *s);
-	void Warning(const std::string& filename,const wchar_t *s);
-	void Exception(const std::string& filename,const wchar_t *s);
+	void SynErr(const std::wstring& filename,int line, int col, int n);
+	void Error(const std::wstring& filename,int line, int col, const wchar_t *s);
+	void Warning(const std::wstring& filename,int line, int col, const wchar_t *s);
+	void Warning(const std::wstring& filename,const wchar_t *s);
+	void Exception(const std::wstring& filename,const wchar_t *s);
 
 	int count(void) const {return error_count+warning_count;}
 
-  void add_error(const bool is_error,const std::string& filename,int lig,int col,const std::wstring& s) const;
+  void add_error(const bool is_error,const std::wstring& filename,int lig,int col,const std::wstring& s) const;
   
-	const std::string filename(int i) const {
+	const std::wstring filename(int i) const {
 		return storer.filename(i);
 	};
 	const std::wstring msg(int i) const {
@@ -107,14 +106,14 @@ public:
 		int nb_err=0;
 		int no_line=1;
 		int num_msg=0;
-		std::ifstream ifs(filename(num_msg).c_str());
+		std::ifstream ifs(narrow(filename(num_msg)).c_str());
 		std::string temp;
 
 		while( getline( ifs, temp ) ) {
 			if (nb_err>error_count) break;
 			while (no_line==line(num_msg)) {
 				if (is_error(num_msg)) {
-					std::cerr<<filename(num_msg)<<":"<<line(num_msg)<<std::endl;
+					std::cerr<<narrow(filename(num_msg))<<":"<<line(num_msg)<<std::endl;
 					std::cerr<<temp<<std::endl;
 					std::cerr<<std::string(col(num_msg)-1,' ')<<"^"<<" "<<narrow(msg(num_msg))<<std::endl<<std::endl;
 					nb_err++;
@@ -128,13 +127,13 @@ public:
 		int nb_err=0;
 		int no_line=1;
 		int num_msg=0;
-		std::ifstream ifs(filename(num_msg).c_str());
+		std::ifstream ifs(narrow(filename(num_msg)).c_str());
 		std::string temp;
 
 		while( getline( ifs, temp ) ) {
 			if (nb_err>error_count+warning_count) break;
 			while (no_line==line(num_msg)) {
-				std::cerr<<filename(num_msg)<<":"<<line(num_msg)<<std::endl;
+				std::cerr<<narrow(filename(num_msg))<<":"<<line(num_msg)<<std::endl;
 				std::cerr<<temp<<std::endl;
 				std::cerr<<std::string(col(num_msg)-1,' ')<<"^"<<" "<<narrow(msg(num_msg))<<std::endl<<std::endl;
 				nb_err++;
@@ -151,8 +150,8 @@ public:
 }; // Errors
 
 class Parser {
-  private:
-    	enum {
+private:
+	enum {
 		_EOF=0,
 		_integer=1,
 		_float=2,
@@ -172,29 +171,27 @@ class Parser {
 		_implements=16,
 		_noisyOr=17,
 		_LEFT_CAST=18,
-		_RIGHT_CAST=19,
+		_RIGHT_CAST=19
 	};
 	int maxT;
 
-      Token *dummyToken;
-    int errDist;
-    int minErrDist;
+	Token *dummyToken;
+	int errDist;
+	int minErrDist;
 
-    void SynErr(int n);
-    void Get();
-    void Expect(int n);
-    bool StartOf(int s);
-    void ExpectWeak(int n, int follow);
-    bool WeakSeparator(int n, int syFol, int repFol);
+	void SynErr(int n);
+	void Get();
+	void Expect(int n);
+	bool StartOf(int s);
+	void ExpectWeak(int n, int follow);
+	bool WeakSeparator(int n, int syFol, int repFol);
 
-  public:
-    Scanner *scanner;
-    Errors  *errors;
+public:
+	Scanner *scanner;
+	Errors  *errors;
 
-    Token *t;   // last recognized token
-    Token *la//; he adds a ;   // lookahead token
-
-    ;
+	Token *t;			// last recognized token
+	Token *la;			// lookahead token
 
 gum::prm::PRMFactory* __factory;
 std::vector<std::string> __class_path;
@@ -248,7 +245,7 @@ void import(std::string s) {
       if (file_test.is_open()) {
         file_test.close();
         found = true;
-        Scanner s(import);
+        Scanner s(import.c_str());
         Parser p(&s);
         p.setFactory(__factory);
         p.setClassPath(__class_path);
@@ -351,11 +348,13 @@ void setReferenceSlot(std::string s, std::string r) {
 
 //=====================
 
-    Parser(Scanner *scanner);
-    ~Parser();
-    void SemErr(const wchar_t* msg);
 
-    	void Skool();
+	Parser(Scanner *scanner);
+	~Parser();
+	void SemErr(const wchar_t* msg);
+	void Warning(const wchar_t* msg);
+
+	void Skool();
 	void Package();
 	void Import();
 	void Unit();
@@ -380,15 +379,14 @@ void setReferenceSlot(std::string s, std::string r) {
 	void NumberList(std::vector<float>& numbers );
 	void ArrayDecl(std::string l1);
 
-      void Parse();
+	void Parse();
 
 }; // end Parser
 
-}
-}
-}
+} // namespace
+} // namespace
+} // namespace
 
 
-
-#endif // !defined(SKOOL_COCO_PARSER_H__)
+#endif // !defined(COCO_PARSER_H__)
 

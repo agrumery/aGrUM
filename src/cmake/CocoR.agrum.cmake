@@ -1,19 +1,27 @@
-## find_program(COCOR_EXECUTABLE cococpp)
-## if(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-##     message(FATAL_ERROR "Please install Coco/R!")
-## endif(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+find_program(COCOR_EXECUTABLE cococpp)
 
-macro(CocoRTarget DIRNAME PREFIX NAMESPACE)
-  ADD_CUSTOM_COMMAND(
-    OUTPUT ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h
-    COMMAND ${COCOR_EXECUTABLE} ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${PREFIX}.atg -o ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/
-    COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h.old
-    COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp.old
-    COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h.old
-    COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp.old
-    DEPENDS ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${PREFIX}.atg ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.frame ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.frame
-    )
+if(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+	find_program(COCOR_EXECUTABLE2 Coco)
+	if(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
+		message(WARNING "Coco/R not found")
+	else(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
+		set(COCOR_EXECUTABLE "${COCOR_EXECUTABLE2}")
+	endif(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
+endif(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 
+
+set(RM cmake -E remove)
+
+macro(CocoRTarget DIRNAME ARG_PREFIX ARG_NAMESPACE)
+	ADD_CUSTOM_COMMAND(
+		OUTPUT ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h
+		COMMAND ${COCOR_EXECUTABLE} -namespace ${ARG_NAMESPACE} -frames ${AGRUM_SOURCE_DIR}/agrum/core/ ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg -o ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/
+		COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h.old
+		COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp.old
+		COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h.old
+		COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp.old
+		DEPENDS ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg ${AGRUM_SOURCE_DIR}/agrum/core/Scanner.frame ${AGRUM_SOURCE_DIR}/agrum/core/Parser.frame
+	)
   SET(AGRUM_SOURCES ${AGRUM_SOURCES} ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h)
 
   # Since parser does not exists yet when cmake is run, mark it as generated

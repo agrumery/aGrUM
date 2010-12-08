@@ -1,7 +1,7 @@
 
 
-#if !defined(DSL_COCO_PARSER_H__)
-#define DSL_COCO_PARSER_H__
+#if !defined(COCO_PARSER_H__)
+#define COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 
@@ -95,8 +95,8 @@ public:
 		int num_msg=0;
 		std::ifstream ifs(narrow(filename(num_msg)).c_str());
 		std::string temp;
-		
-		while( getline( ifs, temp ) ) {			
+
+		while( getline( ifs, temp ) ) {
 			if (nb_err>error_count) break;
 			while (no_line==line(num_msg)) {
 				if (is_error(num_msg)) {
@@ -108,17 +108,6 @@ public:
 				num_msg++;
 			}
 			no_line++;
-		}
-		
-		if (nb_err<=error_count) {
-			std::cerr<<narrow(filename(num_msg))<<":end of file"<<std::endl;
-			while (no_line==line(num_msg)) {
-				if (is_error(num_msg)) {
-					std::cerr<<narrow(msg(num_msg))<<std::endl<<std::endl;
-					nb_err++;
-				}
-				num_msg++;
-			}
 		}
 	}
 	void showElegantErrorsAndWarnings() {
@@ -138,15 +127,6 @@ public:
 				num_msg++;
 			}
 			no_line++;
-		}
-		
-		if (nb_err<error_count+warning_count) {
-			std::cerr<<narrow(filename(num_msg))<<": end of file"<<std::endl;
-			while (nb_err<error_count+warning_count) {
-				std::cerr<<narrow(msg(num_msg))<<std::endl<<std::endl;
-				nb_err++;
-				num_msg++;
-			}
 		}
 	}
 
@@ -251,5 +231,5 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 } // namespace
 
 
-#endif // !defined(DSL_COCO_PARSER_H__)
+#endif // !defined(COCO_PARSER_H__)
 

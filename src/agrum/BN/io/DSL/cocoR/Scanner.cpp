@@ -351,7 +351,7 @@ void Scanner::NextCh() {
 		// replace isolated '\r' by '\n' in order to make
 		// eol handling uniform across Windows, Unix and Mac
 		if (ch == L'\r' && buffer->Peek() != L'\n') ch = EOL;
-		if (ch == EOL) { /*if (__trace) std::cout<<line<<std::endl;*/line++; col = 0; }
+		if (ch == EOL) { /*if (__trace) std::cout<<line<<std::endl;*/ line++; col = 0; }
 	}
 
 }

@@ -1,1 +1,1 @@
-Coco -namespace gum:BIF bif.atg 
+cococpp -namespace gum:BIF -frames ../../../core bif.atg 

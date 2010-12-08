@@ -57,8 +57,8 @@ public:
  *
  * @author Pierre-Henri Wuillemin
  */
-#ifndef BUF_READER_H
-#define BUF_READER_H
+#ifndef BIF_READER_H
+#define BIF_READER_H
 
 #include <iostream>
 #include <string>
@@ -69,6 +69,9 @@ public:
 #include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+//including coco-generated PARSER and SCANNER
+#undef COCO_PARSER_H__
+#undef COCO_SCANNER_H__
 #include <agrum/BN/io/BIF/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
