@@ -19,9 +19,9 @@ file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DI
 
 FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
 
-CocoRTarget(prm/skool SyntaxSKOOL gum:prm:skool)
-CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
-CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
+#CocoRTarget(prm/skool SyntaxSKOOL gum:prm:skool)
+#CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
+#CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
 
 include_directories(${AGRUM_BINARY_DIR})
 include_directories(${AGRUM_SOURCE_DIR})
