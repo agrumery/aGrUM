@@ -81,6 +81,10 @@ namespace gum {
 
         TS_ASSERT ( store4.type() ==
                     ScheduleOperation<float>::GUM_CLIQUE_STORE_MULTIDIM );
+
+        ScheduleCliqueStoreMultiDim<float>* store5 = store4.newFactory ();
+        TS_ASSERT ( *store5 == store4 );
+        delete store5;
         
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];

@@ -73,6 +73,10 @@ namespace gum {
         std::stringstream s;
         s << "delete ( " << f1.toString() << " )";
         TS_ASSERT ( s.str() == del1.toString () );
+
+        gum::ScheduleDeleteMultiDim<float>* del4 = del3.newFactory ();
+        TS_ASSERT ( *del4 == del3 );
+        delete del4;
        
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];

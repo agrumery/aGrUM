@@ -82,6 +82,10 @@ namespace gum {
         myproj3.execute ();
         TS_ASSERT ( res3.multiDim() == res.multiDim () );
                 
+        gum::ScheduleProject<float>* myproj4 = myproj3.newFactory ();
+        TS_ASSERT ( *myproj4 == myproj3 );
+        delete myproj4;
+          
         delete res2;
         delete &(res.multiDim());
        

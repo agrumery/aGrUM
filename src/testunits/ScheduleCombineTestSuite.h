@@ -104,7 +104,11 @@ namespace gum {
         comb3.execute ();
         TS_ASSERT ( comb3.result().multiDim() == *pot4.getContent() );
         delete &(comb3.result().multiDim());
-        
+
+        gum::ScheduleCombine<float>* comb4 = comb3.newFactory ();
+        TS_ASSERT ( *comb4 == comb3 );
+        delete comb4;
+          
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];
      }
