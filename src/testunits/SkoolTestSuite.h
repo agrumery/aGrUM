@@ -911,7 +911,9 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/Printer_with_errors.skool"));
       TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );      
+      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
+      if (reader.prm());
+        delete reader.prm();
     }
 };
 

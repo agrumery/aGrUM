@@ -39,6 +39,7 @@ SkoolReader::SkoolReader() {
 INLINE
 SkoolReader::~SkoolReader() {
   GUM_DESTRUCTOR( SkoolReader );
+  delete __parser;
 }
 
 INLINE
