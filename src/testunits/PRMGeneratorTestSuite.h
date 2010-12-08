@@ -147,7 +147,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->getSystem(sys)));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb->setBNInference(vebb));
-      std::cout << bn.toDot() << std::flush;
+      //std::cout << bn.toDot() << std::flush;
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
         Potential<prm_float> m_ve, m_ss, m_vebb, m_struct, m_sved, m_sve;
         try {
