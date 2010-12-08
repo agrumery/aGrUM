@@ -40,7 +40,7 @@ Scanner.h Specification
 #include <wchar.h>
 
 #include <agrum/core/signal/signaler1.h>
-#include <agrum/core/cocoR.h>
+#include <agrum/core/cocoR/common.h>
 
 -->namespace_open
 
@@ -268,7 +268,7 @@ Scanner.cpp Specification
 #include <memory.h>
 #include <string.h>
 #include "Scanner.h"
-#include <agrum/core/cocoR.h>
+#include <agrum/core/cocoR/common.h>
 
 -->namespace_open
 

@@ -27,18 +27,23 @@ Coco/R itself) does not fall under the GNU General Public License.
 -------------------------------------------------------------------------*/
 
 // ============================================================================
-#include <agrum/core/cocoR.h>
+#include <agrum/core/cocoR/common.h>
 // ============================================================================
 namespace gum {
 
   wchar_t* coco_string_create(const wchar_t* value) {
-    wchar_t* data;
+	return coco_string_create(value, 0);
+}
+
+wchar_t* coco_string_create(const wchar_t *value, int startIndex) {
+	int valueLen = 0;
     int len = 0;
-    if (value) { len = wcslen(value); }
-    data = new wchar_t[len + 1];
-    wcsncpy(data, value, len);
-    data[len] = 0;
-    return data;
+	if (value) {
+		valueLen = wcslen(value);
+		len = valueLen - startIndex;
+	}
+
+	return coco_string_create(value, startIndex, len);
   }
 
   wchar_t* coco_string_create(const wchar_t *value , int startIndex, int length) {
@@ -177,6 +182,7 @@ namespace gum {
     return h;
   }
 
+// string handling, ascii character
   wchar_t* coco_string_create(const char* value) {
     int len = 0;
     if (value) { len = strlen(value); }
