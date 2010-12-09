@@ -98,7 +98,10 @@ namespace gum {
     void execute ();
 
     /// returns the set of multidims passed in argument to the operation
-    Sequence<const ScheduleMultiDim<T_DATA>*> multiDimArgs () const;
+    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs () const;
+
+    /// returns the set of multidims that should be the result of the operation
+    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;
 
     /// displays the content of the operation
     std::string toString () const;
@@ -117,6 +120,9 @@ namespace gum {
     
     // the separator into which the table will be stored
     Arc __separator;
+
+    /// the set of ScheduleMultidims passed in arguments 
+    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
 
   };
   

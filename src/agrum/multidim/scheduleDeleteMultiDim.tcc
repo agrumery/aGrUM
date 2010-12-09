@@ -39,7 +39,8 @@ namespace gum {
   ScheduleDeleteMultiDim<T_DATA>::ScheduleDeleteMultiDim
   ( const ScheduleMultiDim<T_DATA>* table ) :
     ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_DELETE_MULTIDIM ),
-    __table ( table ) {
+    __table ( table ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleDeleteMultiDim );
   }
@@ -49,8 +50,9 @@ namespace gum {
   template <typename T_DATA>
   ScheduleDeleteMultiDim<T_DATA>::ScheduleDeleteMultiDim
   ( const ScheduleDeleteMultiDim<T_DATA>& from ) :
-    ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_DELETE_MULTIDIM ),
-    __table ( from.__table ) {
+    ScheduleOperation<T_DATA> ( from ),
+    __table ( from.__table ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleDeleteMultiDim );
   }
@@ -69,6 +71,7 @@ namespace gum {
   ScheduleDeleteMultiDim<T_DATA>::~ScheduleDeleteMultiDim () {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleDeleteMultiDim );
+    if ( __args ) delete __args;
   }
 
   
@@ -77,7 +80,15 @@ namespace gum {
   ScheduleDeleteMultiDim<T_DATA>&
   ScheduleDeleteMultiDim<T_DATA>::operator=
   ( const ScheduleDeleteMultiDim<T_DATA>& from ) {
-    __table = from.__table;
+    // avoid self assignment
+    if ( &from != this ) {
+      ScheduleOperation<T_DATA>::operator= ( from );
+      __table = from.__table;
+      if ( __args ) {
+        __args->clear ();
+        __args->insert ( __table );
+      }
+    }
     return *this;
   }
 
@@ -117,11 +128,39 @@ namespace gum {
   
   /// returns the multidims to be deleted
   template <typename T_DATA>
-  Sequence<const ScheduleMultiDim<T_DATA>*>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
   ScheduleDeleteMultiDim<T_DATA>::multiDimArgs () const {
-    Sequence<const ScheduleMultiDim<T_DATA>*> seq;
-    seq.insert ( __table );
-    return seq;
+    if ( ! __args ) {
+      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args->insert ( __table );
+    }
+    return *__args;
+  }
+
+  
+  /// returns the set of multidims that should be the result of the operation
+  template <typename T_DATA>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
+  ScheduleDeleteMultiDim<T_DATA>::multiDimResults () const {
+    static Sequence<const ScheduleMultiDim<T_DATA>*> empty_seq;
+    #ifndef NDEBUG
+      // for debugging purposes, we should inform the aGrUM's debugger that
+      // the static sequence used here will be removed at the end of the
+      // program's execution.
+      static bool first_time = true;
+      if ( first_time ) {
+        first_time = false;
+        debug::__inc_deletion ( "Sequence", __FILE__, __LINE__, "destructor of",
+                                (void*) &empty_seq );
+        debug::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
+                                (void*) &empty_seq );
+        debug::__inc_deletion ( "SequenceIterator", __FILE__, __LINE__,
+                                "destructor of", (void*) &empty_seq );
+        debug::__inc_deletion ( "SequenceIterator", __FILE__, __LINE__,
+                                "destructor of", (void*) &empty_seq );
+      }
+    #endif /* NDEBUG */
+    return empty_seq;
   }
 
   

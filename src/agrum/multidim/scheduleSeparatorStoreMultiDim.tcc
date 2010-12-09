@@ -43,7 +43,8 @@ namespace gum {
     ( ScheduleOperation<T_DATA>::GUM_SEPARATOR_STORE_MULTIDIM ),
     __table ( table ),
     __tableSet ( &separator_tables ),
-    __separator ( separator ) {
+    __separator ( separator ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleSeparatorStoreMultiDim );
   }
@@ -53,11 +54,11 @@ namespace gum {
   template <typename T_DATA>
   ScheduleSeparatorStoreMultiDim<T_DATA>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleSeparatorStoreMultiDim<T_DATA>& from ) :
-    ScheduleOperation<T_DATA>
-    ( ScheduleOperation<T_DATA>::GUM_SEPARATOR_STORE_MULTIDIM ),
+    ScheduleOperation<T_DATA> ( from ),
     __table ( from.__table ),
     __tableSet ( from.__tableSet ),
-    __separator ( from.__separator ) {
+    __separator ( from.__separator ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleSeparatorStoreMultiDim );
   }
@@ -76,6 +77,7 @@ namespace gum {
   ScheduleSeparatorStoreMultiDim<T_DATA>::~ScheduleSeparatorStoreMultiDim () {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleSeparatorStoreMultiDim );
+    if ( __args ) delete __args;
   }
 
 
@@ -84,9 +86,17 @@ namespace gum {
   ScheduleSeparatorStoreMultiDim<T_DATA>&
   ScheduleSeparatorStoreMultiDim<T_DATA>::operator=
   ( const ScheduleSeparatorStoreMultiDim<T_DATA>& from ) {
-    __table = from.__table;
-    __tableSet = from.__tableSet;
-    __separator = from.__separator;
+    // avoid self assignment
+    if ( &from != this ) {
+      ScheduleOperation<T_DATA>::operator= ( from );
+      __table = from.__table;
+      __tableSet = from.__tableSet;
+      __separator = from.__separator;
+      if ( __args ) {
+        __args->clear ();
+        __args->insert ( __table );
+      }
+    }
     return *this;
   }
 
@@ -131,11 +141,33 @@ namespace gum {
 
   /// returns the multidim to be stored
   template <typename T_DATA>
-  Sequence<const ScheduleMultiDim<T_DATA>*>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
   ScheduleSeparatorStoreMultiDim<T_DATA>::multiDimArgs () const {
-    Sequence<const ScheduleMultiDim<T_DATA>*> seq;
-    seq.insert ( __table );
-    return seq;
+    if ( ! __args ) {
+      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args->insert ( __table );
+    }
+    return *__args;
+  }
+
+
+  /// returns the set of multidims that should be the result of the operation
+  template <typename T_DATA>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
+  ScheduleSeparatorStoreMultiDim<T_DATA>::multiDimResults () const {
+    static Sequence<const ScheduleMultiDim<T_DATA>*> empty_seq;
+    #ifndef NDEBUG
+      // for debugging purposes, we should inform the aGrUM's debugger that
+      // the static sequence used here will be removed at the end of the
+      // program's execution.
+      static bool first_time = true;
+      if ( first_time ) {
+        first_time = false;
+        debug::__inc_deletion ( "Sequence", __FILE__, __LINE__, "destructor of",
+                                (void*) &empty_seq );
+      }
+    #endif /* NDEBUG */
+    return empty_seq;
   }
 
   

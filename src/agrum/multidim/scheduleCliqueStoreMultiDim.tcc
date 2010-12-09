@@ -44,7 +44,8 @@ namespace gum {
     ( ScheduleOperation<T_DATA>::GUM_CLIQUE_STORE_MULTIDIM ),
     __table ( table ),
     __tableSet ( &clique_tables ),
-    __clique ( clique ) {
+    __clique ( clique ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleCliqueStoreMultiDim );
   }
@@ -54,11 +55,11 @@ namespace gum {
   template <typename T_DATA>
   ScheduleCliqueStoreMultiDim<T_DATA>::ScheduleCliqueStoreMultiDim
   ( const ScheduleCliqueStoreMultiDim<T_DATA>& from ) :
-    ScheduleOperation<T_DATA>
-    ( ScheduleOperation<T_DATA>::GUM_CLIQUE_STORE_MULTIDIM ),
+    ScheduleOperation<T_DATA> ( from ),
     __table ( from.__table ),
     __tableSet ( from.__tableSet ),
-    __clique ( from.__clique ) {
+    __clique ( from.__clique ),
+    __args ( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleCliqueStoreMultiDim );
   }
@@ -77,6 +78,7 @@ namespace gum {
   ScheduleCliqueStoreMultiDim<T_DATA>::~ScheduleCliqueStoreMultiDim () {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleCliqueStoreMultiDim );
+    if ( __args ) delete __args;
   }
 
 
@@ -85,9 +87,17 @@ namespace gum {
   ScheduleCliqueStoreMultiDim<T_DATA>&
   ScheduleCliqueStoreMultiDim<T_DATA>::operator=
   ( const ScheduleCliqueStoreMultiDim<T_DATA>& from ) {
-    __table = from.__table;
-    __tableSet = from.__tableSet;
-    __clique = from.__clique;
+    // avoid self assignment
+    if ( &from != this ) {
+      ScheduleOperation<T_DATA>::operator= ( from );
+      __table = from.__table;
+      __tableSet = from.__tableSet;
+      __clique = from.__clique;
+      if ( __args ) {
+        __args->clear ();
+        __args->insert ( __table );
+      }
+    }
     return *this;
   }
 
@@ -132,13 +142,35 @@ namespace gum {
 
   /// returns the multidim to be stored
   template <typename T_DATA>
-  Sequence<const ScheduleMultiDim<T_DATA>*>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
   ScheduleCliqueStoreMultiDim<T_DATA>::multiDimArgs () const {
-    Sequence<const ScheduleMultiDim<T_DATA>*> seq;
-    seq.insert ( __table );
-    return seq;
+    if ( ! __args ) {
+      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args->insert ( __table );
+    }
+    return *__args;
   }
 
+
+  /// returns the set of multidims that should be the result of the operation
+  template <typename T_DATA>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
+  ScheduleCliqueStoreMultiDim<T_DATA>::multiDimResults () const {
+    static Sequence<const ScheduleMultiDim<T_DATA>*> empty_seq;
+    #ifndef NDEBUG
+      // for debugging purposes, we should inform the aGrUM's debugger that
+      // the static sequence used here will be removed at the end of the
+      // program's execution.
+      static bool first_time = true;
+      if ( first_time ) {
+        first_time = false;
+        debug::__inc_deletion ( "Sequence", __FILE__, __LINE__, "destructor of",
+                                (void*) &empty_seq );
+      }
+    #endif /* NDEBUG */
+    return empty_seq;
+  }
+  
   
   /// displays the content of the operation
   template <typename T_DATA>

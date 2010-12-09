@@ -99,8 +99,11 @@ namespace gum {
     INLINE const ScheduleMultiDim<T_DATA>& result () const;
 
     /// returns the set of multidims passed in argument to the operation
-    Sequence<const ScheduleMultiDim<T_DATA>*> multiDimArgs () const;
+    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs () const;
 
+    /// returns the set of multidims that should be the result of the operation
+    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;
+    
     /// displays the content of the operation
     std::string toString () const;
     
@@ -117,6 +120,12 @@ namespace gum {
     /// the result of the operation
     /** the result is allocated and deallocated by ScheduleCombine */
     ScheduleMultiDim<T_DATA>* __result;
+
+    /// the set of ScheduleMultidims passed in arguments 
+    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
+
+    /// the set of ScheduleMultidims resulting from the operation
+    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __results;
     
     /// the function actually used to perform the combination
     MultiDimImplementation<T_DATA>*

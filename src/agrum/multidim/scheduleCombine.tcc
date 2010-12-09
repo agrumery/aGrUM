@@ -43,6 +43,8 @@ namespace gum {
     ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_COMBINE_MULTIDIM ),
     __table1 ( table1 ),
     __table2 ( table2 ),
+    __args ( 0 ),
+    __results ( 0 ),
     __combine ( combine ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleCombine );
@@ -67,10 +69,12 @@ namespace gum {
   template <typename T_DATA>
   ScheduleCombine<T_DATA>::ScheduleCombine
   ( const ScheduleCombine<T_DATA>& from ) :
-    ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_COMBINE_MULTIDIM ),
+    ScheduleOperation<T_DATA> ( from ),
     __table1 ( from.__table1 ),
     __table2 ( from.__table2 ),
     __result ( new ScheduleMultiDim<T_DATA> ( *(from.__result) ) ),
+    __args ( 0 ),
+    __results ( 0 ),
     __combine ( from.__combine ) {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleCombine );
@@ -80,7 +84,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template <typename T_DATA>
   ScheduleCombine<T_DATA>* ScheduleCombine<T_DATA>::newFactory () const {
-    return new ScheduleCombine<T_DATA> (*this );
+    return new ScheduleCombine<T_DATA> ( *this );
   }
 
 
@@ -90,6 +94,8 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleCombine );
     delete __result;
+    if ( __args ) delete __args;
+    if ( __results ) delete __results;
   }
 
   
@@ -99,10 +105,22 @@ namespace gum {
   ScheduleCombine<T_DATA>::operator= ( const ScheduleCombine<T_DATA>& from ) {
     // avoid self assignment
     if ( this != &from ) {
+      ScheduleOperation<T_DATA>::operator= ( from );
       __table1 = from.__table1;
       __table2 = from.__table2;
       *__result = *( from.__result );
       __combine = from.__combine;
+
+      // update __args and __results if they were already created
+      if ( __args ) {
+        __args->clear ();
+        __args->insert ( __table1 );
+        __args->insert ( __table2 );
+      }
+      if ( __results ) {
+        __results->clear ();
+        __results->insert ( __result );
+      }
     }
     return *this;
   }
@@ -155,15 +173,29 @@ namespace gum {
   
   /// returns the set of multidims passed in argument to the operation
   template <typename T_DATA>
-  Sequence<const ScheduleMultiDim<T_DATA>*>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
   ScheduleCombine<T_DATA>::multiDimArgs () const {
-    Sequence<const ScheduleMultiDim<T_DATA>*> set;
-    set.insert ( __table1 );
-    set.insert ( __table2 );
-    return set;
+    if ( ! __args ) {
+      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args->insert ( __table1 );
+      __args->insert ( __table2 );
+    }
+    return *__args;
   }
 
-  
+
+  /// returns the set of multidims that should be the result of the operation
+  template <typename T_DATA>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
+  ScheduleCombine<T_DATA>::multiDimResults () const {
+    if ( ! __results ) {
+      __results = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __results->insert ( __result );
+    }
+    return *__results;
+  }
+    
+ 
   /// displays the content of the operation
   template <typename T_DATA>
   std::string ScheduleCombine<T_DATA>::toString () const {

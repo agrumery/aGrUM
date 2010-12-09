@@ -28,10 +28,28 @@
 namespace gum {
 
 
+  /// returns a new distinct ID for each ScheduleOperation
+  template <typename T_DATA>
+  Id ScheduleOperation<T_DATA>::__newId () {
+    static Id id = 0;
+    return ++id;
+  }
+
+  
   /// default constructor
   template <typename T_DATA>
   ScheduleOperation<T_DATA>::ScheduleOperation ( Type t) :
-    __type ( t ) {
+    __type ( t ), __id ( __newId() ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR ( ScheduleOperation );
+  }
+  
+
+  /// copy constructor
+  template <typename T_DATA>
+  ScheduleOperation<T_DATA>::ScheduleOperation
+  ( const ScheduleOperation<T_DATA>& from ) :
+    __type ( from.__type ), __id ( from.__id ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleOperation );
   }
@@ -45,12 +63,29 @@ namespace gum {
   }
 
 
+  /// copy operator
+  template <typename T_DATA>
+  INLINE ScheduleOperation<T_DATA>&
+  ScheduleOperation<T_DATA>::operator= ( const ScheduleOperation<T_DATA>& from ) {
+    __type = from.__type;
+    __id = from.__id;
+    return *this;
+  }
+  
+
   /// returns the name of the operation
   template <typename T_DATA>
   INLINE typename ScheduleOperation<T_DATA>::Type
   ScheduleOperation<T_DATA>::type () const {
     return __type;
   }  
+
+
+  /// returns the id of the operation
+  template <typename T_DATA>
+  INLINE Id ScheduleOperation<T_DATA>::id () const {
+    return __id;
+  }
 
 
 } /* namespace gum */

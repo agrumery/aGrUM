@@ -92,10 +92,18 @@ namespace gum {
     /// @{
 
     /// returns the name of the operation
-    INLINE Type type () const;
+    Type type () const;
+
+    /// returns the id of the operation
+    Id id () const;
 
     /// returns the set of multidims passed in argument to the operation
-    virtual Sequence<const ScheduleMultiDim<T_DATA>*> multiDimArgs () const = 0;
+    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    multiDimArgs () const = 0;
+    
+    /// returns the set of multidims that should be the result of the operation
+    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    multiDimResults () const = 0;
     
     /// executes the operation
     virtual void execute () = 0;
@@ -110,18 +118,22 @@ namespace gum {
     /// default constructor
     ScheduleOperation ( Type t );
 
+    /// copy constructor
+    ScheduleOperation ( const ScheduleOperation<T_DATA>& from );
+
+    /// copy operator
+    ScheduleOperation<T_DATA>& operator= ( const ScheduleOperation<T_DATA>& );
+ 
     
   private:
     /// the name of the operation to perform
-    const Type __type;
-    
+    Type __type;
 
-    /// prevent copy constructor
-    ScheduleOperation ( const ScheduleOperation<T_DATA>& );
+    /// the id corresponding to the operation
+    Id __id;
 
-    /// prevent copy operator
-    ScheduleOperation<T_DATA>& operator= ( const ScheduleOperation<T_DATA>& );
-
+   /// returns a new distinct ID for each operation
+    static Id __newId ();
   };
   
 

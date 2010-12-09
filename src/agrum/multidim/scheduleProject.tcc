@@ -43,6 +43,8 @@ namespace gum {
     ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_PROJECT_MULTIDIM ),
     __table ( table ),
     __del_vars ( del_vars ),
+    __args ( 0 ),
+    __results ( 0 ),
     __project ( project ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleProject );
@@ -63,10 +65,12 @@ namespace gum {
   /// copy constructor
   template <typename T_DATA>
   ScheduleProject<T_DATA>::ScheduleProject ( const ScheduleProject<T_DATA>& f ) :
-    ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_PROJECT_MULTIDIM ),
+    ScheduleOperation<T_DATA> ( f ),
     __table ( f.__table ),
     __del_vars ( f.__del_vars ),
     __result ( new ScheduleMultiDim<T_DATA> ( *(f.__result ) ) ),
+    __args ( 0 ),
+    __results ( 0 ),
     __project ( f.__project ) {
     // for debugging purposes
     GUM_CONS_CPY ( ScheduleProject );
@@ -86,6 +90,8 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleProject );
     delete __result;
+    if ( __args ) delete __args;
+    if ( __results ) delete __results;
   }
     
 
@@ -95,10 +101,21 @@ namespace gum {
   ScheduleProject<T_DATA>::operator= ( const ScheduleProject<T_DATA>& from ) {
     // avoid self assignment
     if ( this != &from ) {
+      ScheduleOperation<T_DATA>::operator= ( from );
       __table = from.__table;
       __del_vars = from.__del_vars;
       *__result = *( from.__result );
       __project = from.__project;
+
+      // update __args and __results if they were already created
+      if ( __args ) {
+        __args->clear ();
+        __args->insert ( __table );
+      }
+      if ( __results ) {
+        __results->clear ();
+        __results->insert ( __result );
+      }
     }
     return *this;
   }
@@ -151,11 +168,25 @@ namespace gum {
   
   /// returns the set of multidims passed in argument to the operation
   template <typename T_DATA>
-  Sequence<const ScheduleMultiDim<T_DATA>*>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
   ScheduleProject<T_DATA>::multiDimArgs () const {
-    Sequence<const ScheduleMultiDim<T_DATA>*> set;
-    set.insert ( __table );
-    return set;
+    if ( ! __args ) {
+      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args->insert ( __table );
+    }
+    return *__args;
+  }
+
+
+  /// returns the set of multidims that should be the result of the operation
+  template <typename T_DATA>
+  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
+  ScheduleProject<T_DATA>::multiDimResults () const {
+    if ( ! __results ) {
+      __results = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __results->insert ( __result );
+    }
+    return *__results;
   }
 
   
