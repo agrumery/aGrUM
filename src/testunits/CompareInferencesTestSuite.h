@@ -429,6 +429,8 @@ public:
             }
           }
         }
+
+        delete net;
     }
 };
 
