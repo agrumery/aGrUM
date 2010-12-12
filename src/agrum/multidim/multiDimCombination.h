@@ -20,8 +20,8 @@
 /** @file
  * @brief A generic interface to combine efficiently several MultiDim tables
  *
- * MultiDimCombination is a generic interface designed to combine efficiently several
- * multidimensional objects, that is, to compute expressions like
+ * MultiDimCombination is a generic interface designed to combine efficiently
+ * several multidimensional objects, that is, to compute expressions like
  * T1 op T2 op T3 op .... op Tn, where the Ti's are the multidimensional objects
  * and op is an operator or a function taking in argument two such objects and
  * producing a new (combined) Ti object. By default, the combination operation "op"
@@ -116,7 +116,7 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
     virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set ) = 0;
-    virtual void combine ( TABLE<T_DATA>& container ,
+    virtual void combine ( TABLE<T_DATA>& container,
                            const Set<const TABLE<T_DATA>*>& set ) = 0;
 
     /// changes the function used for combining two TABLES

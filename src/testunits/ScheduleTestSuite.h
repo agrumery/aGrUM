@@ -21,8 +21,8 @@
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/schedule.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/graphicalModels/inference/schedule.h>
 
 namespace gum {
 
@@ -67,22 +67,22 @@ namespace gum {
         randomInit ( pot4 );
         gum::ScheduleMultiDim<float> f4 ( pot4 );
 
-        gum::ScheduleCombine<float> comb1 ( &f1, &f2, schedule_myadd );
+        gum::ScheduleCombine<float> comb1 ( f1, f2, schedule_myadd );
         const ScheduleMultiDim<float>& result1 = comb1.result ();
 
-        gum::ScheduleCombine<float> comb2 ( &f2, &f3, schedule_myadd );
+        gum::ScheduleCombine<float> comb2 ( f2, f3, schedule_myadd );
         const ScheduleMultiDim<float>& result2 = comb2.result ();
        
-        gum::ScheduleCombine<float> comb3 ( &result2, &f4, schedule_myadd );
+        gum::ScheduleCombine<float> comb3 ( result2, f4, schedule_myadd );
         const ScheduleMultiDim<float>& result3 = comb3.result ();
 
-        gum::ScheduleCombine<float> comb4 ( &result1, &result3, schedule_myadd );
+        gum::ScheduleCombine<float> comb4 ( result1, result3, schedule_myadd );
         const ScheduleMultiDim<float>& result4 = comb4.result ();
 
-        gum::ScheduleDeleteMultiDim<float> del1 ( &result1 );
-        gum::ScheduleDeleteMultiDim<float> del2 ( &result2 );
-        gum::ScheduleDeleteMultiDim<float> del3 ( &result3 );
-        gum::ScheduleDeleteMultiDim<float> del4 ( &result4 );
+        gum::ScheduleDeleteMultiDim<float> del1 ( result1 );
+        gum::ScheduleDeleteMultiDim<float> del2 ( result2 );
+        gum::ScheduleDeleteMultiDim<float> del3 ( result3 );
+        gum::ScheduleDeleteMultiDim<float> del4 ( result4 );
 
         gum::Schedule<float> schedule;
 
@@ -130,25 +130,25 @@ namespace gum {
           }
         }
 
-        gum::ScheduleCombine<float> comb11 ( &f1, &f2, schedule_myadd );
+        gum::ScheduleCombine<float> comb11 ( f1, f2, schedule_myadd );
         comb11.execute ();
         const ScheduleMultiDim<float>& result11 = comb11.result ();
-        gum::ScheduleCombine<float> comb12 ( &f2, &f3, schedule_myadd );
+        gum::ScheduleCombine<float> comb12 ( f2, f3, schedule_myadd );
         comb12.execute ();
         const ScheduleMultiDim<float>& result12 = comb12.result ();
-        gum::ScheduleCombine<float> comb13 ( &result12, &f4, schedule_myadd );
+        gum::ScheduleCombine<float> comb13 ( result12, f4, schedule_myadd );
         comb13.execute ();
         const ScheduleMultiDim<float>& result13 = comb13.result ();
-        gum::ScheduleCombine<float> comb14 ( &result11, &result13, schedule_myadd );
+        gum::ScheduleCombine<float> comb14 ( result11, result13, schedule_myadd );
         comb14.execute ();
         const ScheduleMultiDim<float>& result14 = comb14.result ();
 
         TS_ASSERT ( result14.multiDim () == result4.multiDim () );
 
-        gum::ScheduleDeleteMultiDim<float> del11 ( &result11 );
-        gum::ScheduleDeleteMultiDim<float> del12 ( &result12 );
-        gum::ScheduleDeleteMultiDim<float> del13 ( &result13 );
-        gum::ScheduleDeleteMultiDim<float> del14 ( &result14 );
+        gum::ScheduleDeleteMultiDim<float> del11 ( result11 );
+        gum::ScheduleDeleteMultiDim<float> del12 ( result12 );
+        gum::ScheduleDeleteMultiDim<float> del13 ( result13 );
+        gum::ScheduleDeleteMultiDim<float> del14 ( result14 );
         del4.execute  ();
         del11.execute ();
         del12.execute ();
@@ -190,22 +190,22 @@ namespace gum {
         randomInit ( pot4 );
         gum::ScheduleMultiDim<float> f4 ( pot4 );
 
-        gum::ScheduleCombine<float> comb1 ( &f1, &f2, schedule_myadd );
+        gum::ScheduleCombine<float> comb1 ( f1, f2, schedule_myadd );
         const ScheduleMultiDim<float>& result1 = comb1.result ();
 
-        gum::ScheduleCombine<float> comb2 ( &f2, &f3, schedule_myadd );
+        gum::ScheduleCombine<float> comb2 ( f2, f3, schedule_myadd );
         const ScheduleMultiDim<float>& result2 = comb2.result ();
        
-        gum::ScheduleCombine<float> comb3 ( &result2, &f4, schedule_myadd );
+        gum::ScheduleCombine<float> comb3 ( result2, f4, schedule_myadd );
         const ScheduleMultiDim<float>& result3 = comb3.result ();
 
-        gum::ScheduleCombine<float> comb4 ( &result1, &result3, schedule_myadd );
+        gum::ScheduleCombine<float> comb4 ( result1, result3, schedule_myadd );
         const ScheduleMultiDim<float>& result4 = comb4.result ();
 
-        gum::ScheduleDeleteMultiDim<float> del1 ( &result1 );
-        gum::ScheduleDeleteMultiDim<float> del2 ( &result2 );
-        gum::ScheduleDeleteMultiDim<float> del3 ( &result3 );
-        gum::ScheduleDeleteMultiDim<float> del4 ( &result4 );
+        gum::ScheduleDeleteMultiDim<float> del1 ( result1 );
+        gum::ScheduleDeleteMultiDim<float> del2 ( result2 );
+        gum::ScheduleDeleteMultiDim<float> del3 ( result3 );
+        gum::ScheduleDeleteMultiDim<float> del4 ( result4 );
 
         gum::Schedule<float> schedule;
 
@@ -246,25 +246,25 @@ namespace gum {
           }
         }
 
-        gum::ScheduleCombine<float> comb11 ( &f1, &f2, schedule_myadd );
+        gum::ScheduleCombine<float> comb11 ( f1, f2, schedule_myadd );
         comb11.execute ();
         const ScheduleMultiDim<float>& result11 = comb11.result ();
-        gum::ScheduleCombine<float> comb12 ( &f2, &f3, schedule_myadd );
+        gum::ScheduleCombine<float> comb12 ( f2, f3, schedule_myadd );
         comb12.execute ();
         const ScheduleMultiDim<float>& result12 = comb12.result ();
-        gum::ScheduleCombine<float> comb13 ( &result12, &f4, schedule_myadd );
+        gum::ScheduleCombine<float> comb13 ( result12, f4, schedule_myadd );
         comb13.execute ();
         const ScheduleMultiDim<float>& result13 = comb13.result ();
-        gum::ScheduleCombine<float> comb14 ( &result11, &result13, schedule_myadd );
+        gum::ScheduleCombine<float> comb14 ( result11, result13, schedule_myadd );
         comb14.execute ();
         const ScheduleMultiDim<float>& result14 = comb14.result ();
 
         TS_ASSERT ( result14.multiDim () == result4.multiDim () );
 
-        gum::ScheduleDeleteMultiDim<float> del11 ( &result11 );
-        gum::ScheduleDeleteMultiDim<float> del12 ( &result12 );
-        gum::ScheduleDeleteMultiDim<float> del13 ( &result13 );
-        gum::ScheduleDeleteMultiDim<float> del14 ( &result14 );
+        gum::ScheduleDeleteMultiDim<float> del11 ( result11 );
+        gum::ScheduleDeleteMultiDim<float> del12 ( result12 );
+        gum::ScheduleDeleteMultiDim<float> del13 ( result13 );
+        gum::ScheduleDeleteMultiDim<float> del14 ( result14 );
         del4.execute  ();
         del11.execute ();
         del12.execute ();
@@ -294,42 +294,3 @@ namespace gum {
 } /* namespace gum */
 
 
-/*
-
-    /// copy constructor
-    Schedule ( const Schedule<T_DATA>& );
-
-   /// @}
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-
-    /// @{
-
-    /// copy operator
-    Schedule<T_DATA>& operator= ( const Schedule<T_DATA>& );
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
-
-    /// returns a DAG indicating in which order the operations can be performed
-    const DAG& dag () const;
-
-    /// returns the scheduleOperation corresponding to an id in the DAG
-    const ScheduleOperation<T_DATA>& operation ( NodeId ) const;
-
-    /// returns the id of the node corresponding to a given ScheduleOperation
-    NodeId nodeId ( const ScheduleOperation<T_DATA>& ) const;
-
-    /// resturns the association between operations anf nodeIds
-    const typename Property<const ScheduleOperation<T_DATA>*>::onNodes&
-    operations () const;
-
-
-*/

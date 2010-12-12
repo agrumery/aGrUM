@@ -21,8 +21,8 @@
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/scheduleCombine.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/graphicalModels/inference/scheduleCombine.h>
 
 namespace gum {
 
@@ -62,7 +62,7 @@ namespace gum {
         randomInit ( pot3 );
         gum::ScheduleMultiDim<float> f3 ( pot3 );
 
-        gum::ScheduleCombine<float> comb1 ( &f1, &f2, myadd );
+        gum::ScheduleCombine<float> comb1 ( f1, f2, myadd );
         const ScheduleMultiDim<float>& result1 = comb1.result ();
 
         std::stringstream s1;
@@ -70,7 +70,7 @@ namespace gum {
            << f1.toString() << " , " << f2.toString() << " )";
         TS_ASSERT ( s1.str() == comb1.toString () );
         
-        gum::ScheduleCombine<float> comb2 ( &result1, &f3, myadd );
+        gum::ScheduleCombine<float> comb2 ( result1, f3, myadd );
         const ScheduleMultiDim<float>& result2 = comb2.result ();
 
         TS_ASSERT ( result1.isAbstract () );
@@ -87,9 +87,9 @@ namespace gum {
         
         Sequence<const ScheduleMultiDim<float>*> seq = comb2.multiDimArgs ();
         SequenceIterator<const ScheduleMultiDim<float>*> iter = seq.begin();
-        TS_ASSERT ( *iter == &result1 );
+        TS_ASSERT ( **iter == result1 );
         ++iter;
-        TS_ASSERT ( *iter == &f3 );
+        TS_ASSERT ( **iter == f3 );
 
         gum::ScheduleCombine<float> comb3 ( comb2 );
         TS_ASSERT ( comb3 == comb2 );
@@ -135,13 +135,3 @@ namespace gum {
 
 } /* namespace gum */
 
-
-/*
-
-    /// copy operator
-    ScheduleCombine<T_DATA>& operator= ( const ScheduleCombine<T_DATA>& );
-
-    /// @}
-    
-   
-    */

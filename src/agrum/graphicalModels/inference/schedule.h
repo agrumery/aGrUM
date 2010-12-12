@@ -32,12 +32,12 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/graphElements.h>
 
-#include <agrum/multidim/scheduleOperation.h>
-#include <agrum/multidim/scheduleCombine.h>
-#include <agrum/multidim/scheduleProject.h>
-#include <agrum/multidim/scheduleCliqueStoreMultiDim.h>
-#include <agrum/multidim/scheduleSeparatorStoreMultiDim.h>
-#include <agrum/multidim/scheduleDeleteMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleOperation.h>
+#include <agrum/graphicalModels/inference/scheduleCombine.h>
+#include <agrum/graphicalModels/inference/scheduleProject.h>
+#include <agrum/graphicalModels/inference/scheduleCliqueStoreMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleSeparatorStoreMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
 
 
 namespace gum {
@@ -217,7 +217,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/schedule.tcc>
+#include <agrum/graphicalModels/inference/schedule.tcc>
 
 
 #endif /* GUM_SCHEDULE_H */

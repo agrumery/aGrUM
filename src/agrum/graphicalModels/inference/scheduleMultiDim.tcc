@@ -268,7 +268,7 @@ namespace gum {
   /// returns the set of variables involved in the multidim
   template <typename T_DATA>
   INLINE const Sequence<const DiscreteVariable*>&
-  ScheduleMultiDim<T_DATA>::variables () const {
+  ScheduleMultiDim<T_DATA>::variablesSequence () const {
     return * ( __id2vars ().operator[] ( __id ) );
   }
 

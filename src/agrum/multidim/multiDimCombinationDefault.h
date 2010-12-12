@@ -42,9 +42,10 @@
  *   objects and producing a new object of the same type, which is the so-called
  *   combined result of these two objects.
  *
- * To be quite generic, the MultiDimCombinationDefault takes in argument the function
- * that produces the result of the combination of two multidimensional objects.
- * The following code gives an example of the usage of MultiDimCombinations:
+ * To be quite generic, the MultiDimCombinationDefault takes in argument the
+ * function that produces the result of the combination of two multidimensional
+ * objects. The following code gives an example of the usage of
+ * MultiDimCombinations:
  * @code
  * // a function used to combine two Potential<float>'s:
  * Potential<float>* addPotential ( const Potential<float>& t1,

@@ -18,52 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a Projection operator class used for scheduling inferences
+ * @brief the base operation class used to schedule inferences
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
-#ifndef GUM_SCHEDULE_PROJECT_H
-#define GUM_SCHEDULE_PROJECT_H
+#ifndef GUM_SCHEDULE_OPERATION_H
+#define GUM_SCHEDULE_OPERATION_H
 
 
 #include <string>
 #include <agrum/core/inline.h>
-#include <agrum/core/set.h>
+#include <agrum/core/types.h>
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/discreteVariable.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/scheduleMultiDim.h>
-#include <agrum/multidim/scheduleOperation.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 
 
-namespace gum {
+namespace gum {  
 
-  
+
   template <typename T_DATA>
-  class ScheduleProject : public ScheduleOperation<T_DATA> {
+  class ScheduleOperation {
   public:
+    /// the currently supported types of operations
+    enum Type {
+      /// combine 2 ScheduleMultiDims 
+      GUM_COMBINE_MULTIDIM,
+      /// project a ScheduleMultiDim over a subset of its variables
+      GUM_PROJECT_MULTIDIM,
+      /// delete a MultiDim from memory
+      GUM_DELETE_MULTIDIM,
+      /// store a Multidim into a clique
+      GUM_CLIQUE_STORE_MULTIDIM,
+      /// store a multidim into a separator
+      GUM_SEPARATOR_STORE_MULTIDIM
+    };
+
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
-    /// default constructor
-    /** @warning del_vars is passed by copy */
-    ScheduleProject ( const ScheduleMultiDim<T_DATA>* table,
-                      const Set<const DiscreteVariable *>& del_vars,
-                      MultiDimImplementation<T_DATA>*
-                      (*project) ( const MultiDimImplementation<T_DATA>&,
-                                   const Set<const DiscreteVariable *>& ) );
-    
-    /// copy constructor
-    ScheduleProject ( const ScheduleProject<T_DATA>& );
-
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleProject<T_DATA>* newFactory () const;
+    virtual ScheduleOperation<T_DATA>* newFactory () const = 0;
 
     /// destructor
-    virtual ~ScheduleProject ();
+    virtual ~ScheduleOperation ();
 
     /// @}
 
@@ -73,18 +73,15 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// copy operator
-    ScheduleProject<T_DATA>& operator= ( const ScheduleProject<T_DATA>& );
-
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+    virtual bool operator== ( const ScheduleOperation<T_DATA>& ) const = 0;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+    virtual bool operator!= ( const ScheduleOperation<T_DATA>& ) const = 0;
 
     /// @}
     
@@ -94,55 +91,58 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// executes the operation
-    void execute ();
+    /// returns the name of the operation
+    Type type () const;
 
-    /// returns the scheduleMultidim resulting from the execution of the operation
-    INLINE const ScheduleMultiDim<T_DATA>& result () const;
+    /// returns the id of the operation
+    Id id () const;
 
     /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs () const;
-
+    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    multiDimArgs () const = 0;
+    
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;
+    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    multiDimResults () const = 0;
+    
+    /// executes the operation
+    virtual void execute () = 0;
 
     /// displays the content of the operation
-    std::string toString () const;
-    
+    virtual std::string toString () const = 0;
+
     /// @}
 
     
+  protected:
+    /// default constructor
+    ScheduleOperation ( Type t );
+
+    /// copy constructor
+    ScheduleOperation ( const ScheduleOperation<T_DATA>& from );
+
+    /// copy operator
+    ScheduleOperation<T_DATA>& operator= ( const ScheduleOperation<T_DATA>& );
+ 
     
   private:
-    // the table to project
-    const ScheduleMultiDim<T_DATA>* __table;
+    /// the name of the operation to perform
+    Type __type;
 
-    // the set of variables that should be removed from the table
-    Set<const DiscreteVariable *> __del_vars;
-    
-    /// the result of the operation
-    ScheduleMultiDim<T_DATA>* __result;
+    /// the id corresponding to the operation
+    Id __id;
 
-    /// the set of ScheduleMultidims passed in arguments 
-    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
-
-    /// the set of ScheduleMultidims resulting from the operation
-    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __results;
-    
-     /// the projection operator
-    MultiDimImplementation<T_DATA>*
-    (*__project) ( const MultiDimImplementation<T_DATA>&,
-                   const Set<const DiscreteVariable *>& );
-
+   /// returns a new distinct ID for each operation
+    static Id __newId ();
   };
-
+  
 
 } /* namespace gum */
 
 
 // always include the template implementation
-#include <agrum/multidim/scheduleProject.tcc>
+#include <agrum/graphicalModels/inference/scheduleOperation.tcc>
 
 
-#endif /* GUM_SCHEDULE_PROJECTION_H */
+#endif /* GUM_SCHEDULE_OPERATION_H */
 

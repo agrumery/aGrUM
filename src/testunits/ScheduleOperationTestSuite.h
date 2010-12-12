@@ -21,8 +21,8 @@
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/scheduleProject.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/graphicalModels/inference/scheduleProject.h>
 
 
 namespace gum {
@@ -50,13 +50,13 @@ namespace gum {
         del_vars << vars[0] << vars[3];
         
 
-        ScheduleProject<float> real_myproj ( &f1, del_vars, projectMax );
+        ScheduleProject<float> real_myproj ( f1, del_vars, projectMax );
         const ScheduleMultiDim<float>& res = real_myproj.result ();
         ScheduleOperation<float>& myproj = real_myproj;
 
         Sequence<const ScheduleMultiDim<float>*> multidims = myproj.multiDimArgs();
         TS_ASSERT ( multidims.size() == 1 );
-        TS_ASSERT ( multidims.atPos(0) == &f1 );
+        TS_ASSERT ( *( multidims.atPos(0) ) == f1 );
 
         std::stringstream s1;
         s1 << res.toString () << " = project ( " << f1.toString() << " , "

@@ -21,8 +21,8 @@
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/scheduleMultiDim.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 
 namespace gum {
 
@@ -56,12 +56,12 @@ namespace gum {
         TS_ASSERT_THROWS( f2.multiDim(), gum::NotFound );
         TS_ASSERT ( f1 == f2 );
         TS_ASSERT ( f1.id() == f2.id() );
-        TS_ASSERT ( f1.variables () == f2.variables () );
+        TS_ASSERT ( f1.variablesSequence () == f2.variablesSequence () );
 
         gum::ScheduleMultiDim<float> f3 ( seq );
         TS_ASSERT ( f1 != f3 );
         TS_ASSERT ( f1.id() != f3.id() );
-        TS_ASSERT ( f1.variables () == f3.variables () );
+        TS_ASSERT ( f1.variablesSequence () == f3.variablesSequence () );
 
         gum::Potential<float> pot;
         pot << *(vars[0]) << *(vars[2]) << *(vars[4]);

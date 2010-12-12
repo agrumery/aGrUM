@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/scheduleProject.h>
-#include <agrum/multidim/scheduleDeleteMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleProject.h>
+#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
 
 
 namespace gum {
@@ -49,11 +49,11 @@ namespace gum {
         gum::ScheduleMultiDim<float> f1 ( pot1 );
         Set<const DiscreteVariable *> del_vars;
         del_vars << vars[0] << vars[3];
-        ScheduleProject<float> myproj ( &f1, del_vars, projectMax );
+        ScheduleProject<float> myproj ( f1, del_vars, projectMax );
         const ScheduleMultiDim<float>& res = myproj.result ();
 
-        gum::ScheduleDeleteMultiDim<float> del1 ( &f1 );
-        gum::ScheduleDeleteMultiDim<float> del2 ( &res );
+        gum::ScheduleDeleteMultiDim<float> del1 ( f1 );
+        gum::ScheduleDeleteMultiDim<float> del2 ( res );
         gum::ScheduleDeleteMultiDim<float> del3 ( del2 );
         TS_ASSERT ( ! ( del1 == del2 ) );
         TS_ASSERT ( del1 != del2 );
@@ -64,7 +64,7 @@ namespace gum {
 
         Sequence<const ScheduleMultiDim<float>*> seq = del2.multiDimArgs ();
         TS_ASSERT ( seq.size() == 1 );
-        TS_ASSERT ( seq.atPos ( 0 ) == &res );
+        TS_ASSERT ( *( seq.atPos ( 0 ) ) == res );
 
         del3 = del1;
         TS_ASSERT ( del1 == del3 );

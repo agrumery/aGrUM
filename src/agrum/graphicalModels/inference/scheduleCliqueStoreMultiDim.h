@@ -18,28 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a MultiDim Delete operator class used for scheduling inferences
+ * @brief an operator used by scheduling inferences to store tables into cliques
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_SCHEDULE_DELETE_MULTI_DIM_H
-#define GUM_SCHEDULE_DELETE_MULTI_DIM_H
+#ifndef GUM_SCHEDULE_CLIQUE_STORE_MULTI_DIM_H
+#define GUM_SCHEDULE_CLIQUE_STORE_MULTI_DIM_H
 
 
 #include <string>
 #include <agrum/core/inline.h>
 #include <agrum/core/sequence.h>
+#include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/scheduleMultiDim.h>
-#include <agrum/multidim/scheduleOperation.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
+#include <agrum/graphicalModels/inference/scheduleOperation.h>
 
 
 namespace gum {
 
   
   template <typename T_DATA>
-  class ScheduleDeleteMultiDim : public ScheduleOperation<T_DATA> {
+  class ScheduleCliqueStoreMultiDim : public ScheduleOperation<T_DATA> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -47,16 +48,20 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduleDeleteMultiDim ( const ScheduleMultiDim<T_DATA>* table );
+    ScheduleCliqueStoreMultiDim
+    ( const ScheduleMultiDim<T_DATA>& table,
+      typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onNodes&
+      clique_tables,
+      NodeId clique );
     
     /// copy constructor
-    ScheduleDeleteMultiDim ( const ScheduleDeleteMultiDim<T_DATA>& );
+    ScheduleCliqueStoreMultiDim ( const ScheduleCliqueStoreMultiDim<T_DATA>& );
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleDeleteMultiDim<T_DATA>* newFactory () const;
+    virtual ScheduleCliqueStoreMultiDim<T_DATA>* newFactory () const;
 
     /// destructor
-    virtual ~ScheduleDeleteMultiDim ();
+    virtual ~ScheduleCliqueStoreMultiDim ();
 
     /// @}
 
@@ -67,18 +72,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleDeleteMultiDim<T_DATA>& operator=
-    ( const ScheduleDeleteMultiDim<T_DATA>& );
+    ScheduleCliqueStoreMultiDim<T_DATA>& operator=
+    ( const ScheduleCliqueStoreMultiDim<T_DATA>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-     bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+    bool operator== ( const ScheduleOperation<T_DATA>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-     bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+    bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
 
     /// @}
     
@@ -95,8 +100,8 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs () const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;    
-    
+    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;
+
     /// displays the content of the operation
     std::string toString () const;
     
@@ -105,8 +110,15 @@ namespace gum {
     
     
   private:
-    // the table to delete
-    const ScheduleMultiDim<T_DATA>* __table;
+    // the table to store into the clique
+    ScheduleMultiDim<T_DATA> __table;
+
+    // a mapping assigning to each clique a set of tables
+    typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onNodes*
+    __tableSet;
+    
+    // the clique into which the table will be stored
+    NodeId __clique;
 
     /// the set of ScheduleMultidims passed in arguments 
     mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
@@ -118,8 +130,8 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/scheduleDeleteMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleCliqueStoreMultiDim.tcc>
 
 
-#endif /* GUM_SCHEDULE_DELETE_MULTI_DIM_H */
+#endif /* GUM_SCHEDULE_CLIQUE_STORE_MULTI_DIM_H */
 

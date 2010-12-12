@@ -172,7 +172,7 @@ namespace gum {
     INLINE Id id () const;
 
     /// returns the set of variables involved in the multidim
-    INLINE const Sequence<const DiscreteVariable*>& variables () const;
+    INLINE const Sequence<const DiscreteVariable*>& variablesSequence () const;
 
     /// sets a new multiDimImplementation inside the wrapper
     INLINE void setMultiDim ( const MultiDimImplementation<T_DATA>& );
@@ -212,7 +212,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/scheduleMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.tcc>
 
 
 #endif /* GUM_SCHEDULE_MULTI_DIM_H */

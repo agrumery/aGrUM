@@ -35,7 +35,7 @@ namespace gum {
   /// default constructor
   template <typename T_DATA>
   ScheduleProject<T_DATA>::ScheduleProject
-  ( const ScheduleMultiDim<T_DATA>* table,
+  ( const ScheduleMultiDim<T_DATA>& table,
     const Set<const DiscreteVariable *>& del_vars,
     MultiDimImplementation<T_DATA>*
     (*project) ( const MultiDimImplementation<T_DATA>&,
@@ -50,7 +50,7 @@ namespace gum {
     GUM_CONSTRUCTOR ( ScheduleProject );
 
     // compute the variables that shall belong to the result of the projection
-    Sequence<const DiscreteVariable*> vars = __table->variables ();
+    Sequence<const DiscreteVariable*> vars = __table.variablesSequence ();
     for ( typename Set<const DiscreteVariable*>::const_iterator
             iter = del_vars.begin(); iter != del_vars.end(); ++iter ) {
       vars.erase ( *iter );
@@ -110,7 +110,7 @@ namespace gum {
       // update __args and __results if they were already created
       if ( __args ) {
         __args->clear ();
-        __args->insert ( __table );
+        __args->insert ( &__table );
       }
       if ( __results ) {
         __results->clear ();
@@ -128,7 +128,7 @@ namespace gum {
     if ( this->type () != op.type () ) return false;
     const ScheduleProject<T_DATA>& real_op =
       static_cast<const ScheduleProject<T_DATA>&> ( op );
-    return ( ( *__table == *(real_op.__table) ) &&
+    return ( ( __table == real_op.__table ) &&
              ( __del_vars == real_op.__del_vars) &&
              ( __project == real_op.__project ) );
   }
@@ -141,7 +141,7 @@ namespace gum {
     if ( this->type () != op.type () ) return true;
     const ScheduleProject<T_DATA>& real_op =
       static_cast<const ScheduleProject<T_DATA>&> ( op );
-    return ( ( *__table != *(real_op.__table) ) ||
+    return ( ( __table != real_op.__table ) ||
              ( __del_vars != real_op.__del_vars) ||
              ( __project != real_op.__project ) );
   }
@@ -151,7 +151,7 @@ namespace gum {
   template <typename T_DATA>
   void ScheduleProject<T_DATA>::execute () {
     if ( __result->isAbstract () ) {
-      const MultiDimImplementation<T_DATA>& t = __table->multiDim ();
+      const MultiDimImplementation<T_DATA>& t = __table.multiDim ();
       MultiDimImplementation<T_DATA>* res = __project ( t, __del_vars );
       __result->setMultiDim ( *res );
     }
@@ -172,7 +172,7 @@ namespace gum {
   ScheduleProject<T_DATA>::multiDimArgs () const {
     if ( ! __args ) {
       __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
-      __args->insert ( __table );
+      __args->insert ( &__table );
     }
     return *__args;
   }
@@ -194,7 +194,7 @@ namespace gum {
   template <typename T_DATA>
   std::string ScheduleProject<T_DATA>::toString () const {
     return __result->toString() + " = project ( " +
-      __table->toString() + " , " + __del_vars.toString() + " )";
+      __table.toString() + " , " + __del_vars.toString() + " )";
   }
 
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   {prenom.nom}_at_lip6.fr                                               * 
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,10 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A generic class to combine efficiently several MultiDim tables
+ * @brief A class to combine efficiently several ScheduleMultiDims
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -35,56 +36,59 @@ namespace gum {
 
   
   /// constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombinationDefault<T_DATA,TABLE>::MultiDimCombinationDefault
-  (TABLE<T_DATA>* (*combine) ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ) ) :
-    MultiDimCombination<T_DATA,TABLE> (),
+  template<typename T_DATA>
+  ScheduleCombinationBasic<T_DATA>::ScheduleCombinationBasic
+  (MultiDimImplementation<T_DATA>* (*combine)
+   ( const MultiDimImplementation<T_DATA>&,
+     const MultiDimImplementation<T_DATA>& ) ) :
+    ScheduleCombination<T_DATA> (),
     _combine ( combine ) {
     /// for debugging purposes
-    GUM_CONSTRUCTOR ( MultiDimCombinationDefault );
+    GUM_CONSTRUCTOR ( ScheduleCombinationBasic );
   }
 
   
   /// copy constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombinationDefault<T_DATA,TABLE>::MultiDimCombinationDefault
-  ( const MultiDimCombinationDefault<T_DATA,TABLE>& from ) :
-    MultiDimCombination<T_DATA,TABLE> (),
+  template<typename T_DATA>
+  ScheduleCombinationBasic<T_DATA>::ScheduleCombinationBasic
+  ( const ScheduleCombinationBasic<T_DATA>& from ) :
+    ScheduleCombination<T_DATA> (),
     _combine ( from._combine ) {
     /// for debugging purposes
-    GUM_CONS_CPY ( MultiDimCombinationDefault );
+    GUM_CONS_CPY ( ScheduleCombinationBasic );
   }
 
   
   /// destructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombinationDefault<T_DATA,TABLE>::~MultiDimCombinationDefault () {
+  template<typename T_DATA>
+  ScheduleCombinationBasic<T_DATA>::~ScheduleCombinationBasic () {
     /// for debugging purposes
-    GUM_DESTRUCTOR ( MultiDimCombinationDefault );
+    GUM_DESTRUCTOR ( ScheduleCombinationBasic );
   }
 
   
   /// virtual constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombinationDefault<T_DATA,TABLE>*
-  MultiDimCombinationDefault<T_DATA,TABLE>::newFactory () const {
-    return new MultiDimCombinationDefault<T_DATA,TABLE> ( _combine );
+  template<typename T_DATA>
+  ScheduleCombinationBasic<T_DATA>*
+  ScheduleCombinationBasic<T_DATA>::newFactory () const {
+    return new ScheduleCombinationBasic<T_DATA> ( *this );
   }
 
-  
-  /// changes the function used for combining two TABLES
-  template< typename T_DATA, template<typename> class TABLE >
-  void MultiDimCombinationDefault<T_DATA,TABLE>::setCombinator
-  ( TABLE<T_DATA>*
-    (*combine) ( const TABLE<T_DATA>&,const TABLE<T_DATA>& ) ) {
+
+  /// changes the function used for combining two MultiDimImplementations
+  template<typename T_DATA>
+  void ScheduleCombinationBasic<T_DATA>::setCombinator
+  ( MultiDimImplementation<T_DATA>* (*combine)
+    ( const MultiDimImplementation<T_DATA>&,
+      const MultiDimImplementation<T_DATA>& ) ) {
     _combine = combine;
   }
 
   
   /// returns the domain size of the Cartesian product of the union of all the
   /// variables in seq1 and seq2
-  template< typename T_DATA, template<typename> class TABLE >
-  Size MultiDimCombinationDefault<T_DATA,TABLE>::_combined_size
+  template<typename T_DATA>
+  Size ScheduleCombinationBasic<T_DATA>::_combined_size
   ( const Sequence<const DiscreteVariable *>& seq1,
     const Sequence<const DiscreteVariable *>& seq2 ) const {
     if ( seq1.empty() && seq2.empty() ) return 0;
@@ -103,43 +107,33 @@ namespace gum {
     return size;
   }
 
-  
-  /// returns the result of the combination
-  /// @todo This implementation is very improvable : we need a way for decorators to swap contents instead of copying it...
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE void
-  MultiDimCombinationDefault<T_DATA,TABLE>::combine
-  ( TABLE<T_DATA>& container, const Set<const TABLE<T_DATA>*>& set ) {
-    TABLE<T_DATA>* res=combine(set);
-    container=*res;
-    delete(res);
-  }
 
-  
-  /// returns the result of the combination
-  template< typename T_DATA, template<typename> class TABLE >
-  TABLE<T_DATA>*
-  MultiDimCombinationDefault<T_DATA,TABLE>::combine
-  ( const Set<const TABLE<T_DATA>*>& set ) {
+  // adds operations to an already created schedule
+  template< typename T_DATA >
+  const ScheduleMultiDim<T_DATA>&
+  ScheduleCombinationBasic<T_DATA>::combine
+  ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
+    Schedule<T_DATA>& schedule ) {
     // check if the set passed in argument is empty. If so, raise an exception
     if ( set.size() < 2 )
       GUM_ERROR ( InvalidArgumentsNumber,
-                  "the set passed to a MultiDimCombinationDefault"
+                  "the set passed to a ScheduleCombinationBasic"
                   " should at least contain two elements" );
     
     // create a vector with all the tables to combine
-    std::vector< const TABLE<T_DATA>* > tables ( set.size() );
+    std::vector<const ScheduleMultiDim<T_DATA>*> tables ( set.size() );
     {
       unsigned int i = 0;
-      for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
+      for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
     
     // create a vector indicating wether the elements in tables are freshly
-    // created TABLE<T_DATA>* due to the combination of some TABLEs or if they
-    // were added by the user into the combination container
+    // created ScheduleMultiDim<T_DATA>* due to the combination of some
+    // ScheduleMultiDims or if they were added by the user into the
+    // combination container
     std::vector<bool> is_t_new ( tables.size(), false );  
     
     // for each pair of tables (i,j), compute the size of the table that would
@@ -162,22 +156,38 @@ namespace gum {
     // to perform. When the result R has been computed, substitute i by R, remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
+    //Timer timer;
     for ( unsigned int k = 1; k < tables.size(); ++k ) {
       // get the combination to perform and do it
       pair = queue.pop ();
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
-      TABLE<T_DATA>* result = _combine ( *(tables[ti]), *(tables[tj]) );
+      // create the combination that will be performed later on and put it into
+      // the schedule
+      ScheduleCombine<T_DATA> comb ( *( tables[ti] ), *( tables[tj] ), _combine );
+      NodeId comb_id = schedule.insert ( comb );
       
-      // substitute tables[pair.first] by the result
-      if ( tables[ti] && is_t_new[ti] ) delete tables[ti];
-      if ( tables[tj] && is_t_new[tj] ) delete tables[tj];
-      tables[ti] = result;
+      // substitute tables[pair.first] by the result and delete the temporary
+      // multidim tables
+      if ( tables[ti] && is_t_new[ti] ) {
+        ScheduleDeleteMultiDim<T_DATA> del ( *( tables[ti] ) );
+        NodeId del_id = schedule.insert ( del );
+        const NodeSet& set_i = schedule.operationsInvolving ( *( tables[ti] ) );
+        schedule.forceAfter ( del_id, set_i );
+      }
+      if ( tables[tj] && is_t_new[tj] ) {
+        ScheduleDeleteMultiDim<T_DATA> del ( *( tables[tj] ) );
+        NodeId del_id = schedule.insert ( del );
+        const NodeSet& set_j = schedule.operationsInvolving ( *( tables[tj] ) );
+        schedule.forceAfter ( del_id, set_j );
+      }
+      tables[ti] = &( static_cast<const ScheduleCombine<T_DATA>&>
+                      ( schedule.operation ( comb_id ) ).result () );
       is_t_new[ti] = true;
       tables[tj] = 0;
 
-      // remove all the pairs involving tj in the priority queue
+     // remove all the pairs involving tj in the priority queue
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
@@ -201,7 +211,7 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combined_size ( seq1, tables[ind]->variablesSequence () ); 
+            newsize = _combined_size ( seq1, tables[ind]->variablesSequence () );
             queue.setPriorityByVal ( pair, newsize );
           }
         }
@@ -220,15 +230,67 @@ namespace gum {
     // the result of our combination
     unsigned int k = 0;
     while ( ! tables[k] ) ++k;
-    return const_cast<TABLE<T_DATA>*>( tables[k] );
+    return *( tables[k] );
   }
 
 
+  // adds to a given schedule the operations necessary to perform a combination
+  template<typename T_DATA>
+  const ScheduleMultiDim<T_DATA>&
+  ScheduleCombinationBasic<T_DATA>::combine
+  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+    Schedule<T_DATA>& schedule ) {
+    // first wrap the multidimimplementations into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+            iter = set.begin(); iter != set.end(); ++iter ) {
+      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+    }
+
+    // perform the combination
+    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+
+  
+  // adds to a given schedule the operations necessary to perform a combination
+  template <typename T_DATA>
+  template <template<typename> class TABLE>
+  const ScheduleMultiDim<T_DATA>&
+  ScheduleCombinationBasic<T_DATA>::combine ( const Set<const TABLE<T_DATA>*>& set,
+                                              Schedule<T_DATA>& schedule ) {
+    // first wrap the TABLES into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+          iter != set.end(); ++iter ) {
+      sched_set.insert
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+    }
+
+    // perform the combination
+    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+
   
   /// returns the result of the combination
-  template< typename T_DATA, template<typename> class TABLE >
-  float MultiDimCombinationDefault<T_DATA,TABLE>::nbOperations
-  ( const Set<const TABLE<T_DATA>*>& set ) {
+  template<typename T_DATA>
+  float ScheduleCombinationBasic<T_DATA>::nbOperations
+  ( const Set<const ScheduleMultiDim<T_DATA>*>& set ) {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return 0.0f;
 
@@ -238,7 +300,7 @@ namespace gum {
     std::vector< const Sequence<const DiscreteVariable *>* > tables ( set.size() );
     {
       unsigned int i = 0;
-      for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
+      for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         tables[i] = &( (*iter)->variablesSequence () );
       }
@@ -246,7 +308,8 @@ namespace gum {
     
     // create a vector indicating wether the elements in tables are freshly
     // created Sequence<const DiscreteVariable *>* due to the combination of some
-    // TABLEs or if they were added by the user into the combination container
+    // ScheduleMultiDims or if they were added by the user into the combination
+    // container
     std::vector<bool> is_t_new ( tables.size(), false );  
  
     

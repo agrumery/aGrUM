@@ -35,8 +35,8 @@ namespace gum {
   /// default constructor
   template <typename T_DATA>
   ScheduleCombine<T_DATA>::ScheduleCombine
-  ( const ScheduleMultiDim<T_DATA>* table1,
-    const ScheduleMultiDim<T_DATA>* table2,
+  ( const ScheduleMultiDim<T_DATA>& table1,
+    const ScheduleMultiDim<T_DATA>& table2,
     MultiDimImplementation<T_DATA>*
     (*combine) ( const MultiDimImplementation<T_DATA>&,
                  const MultiDimImplementation<T_DATA>& ) ) :
@@ -50,8 +50,8 @@ namespace gum {
     GUM_CONSTRUCTOR ( ScheduleCombine );
 
     // compute the variables of the resulting table
-    Sequence<const DiscreteVariable*> vars = __table1->variables ();
-    const Sequence<const DiscreteVariable*>& vars2 = __table2->variables ();
+    Sequence<const DiscreteVariable*> vars = __table1.variablesSequence ();
+    const Sequence<const DiscreteVariable*>& vars2 = __table2.variablesSequence ();
     for ( typename Sequence<const DiscreteVariable*>::const_iterator
             iter = vars2.begin(); iter != vars2.end(); ++iter ) {
       if ( ! vars.exists ( *iter ) ) {
@@ -114,8 +114,8 @@ namespace gum {
       // update __args and __results if they were already created
       if ( __args ) {
         __args->clear ();
-        __args->insert ( __table1 );
-        __args->insert ( __table2 );
+        __args->insert ( &__table1 );
+        __args->insert ( &__table2 );
       }
       if ( __results ) {
         __results->clear ();
@@ -134,10 +134,10 @@ namespace gum {
     if ( this->type () != op.type () ) return false;
     const ScheduleCombine<T_DATA>& real_op =
       static_cast<const ScheduleCombine<T_DATA>&> ( op );
-    return ( ( ( ( *__table1 == *(real_op.__table1) ) &&
-                 ( *__table2 == *(real_op.__table2) ) ) ||
-               ( ( *__table1 == *(real_op.__table2) ) &&
-                 ( *__table2 == *(real_op.__table1) ) ) ) &&
+    return ( ( ( ( __table1 == real_op.__table1 ) &&
+                 ( __table2 == real_op.__table2 ) ) ||
+               ( ( __table1 == real_op.__table2 ) &&
+                 ( __table2 == real_op.__table1 ) ) ) &&
              ( __combine == real_op.__combine ) );
   }
 
@@ -147,12 +147,7 @@ namespace gum {
   INLINE bool
   ScheduleCombine<T_DATA>::operator!=
   ( const ScheduleOperation<T_DATA>& op ) const {
-    if ( this->type () != op.type () ) return true;
-    const ScheduleCombine<T_DATA>& real_op =
-      static_cast<const ScheduleCombine<T_DATA>&> ( op );
-    return ( ( *__table1 != *(real_op.__table1) ) ||
-             ( *__table2 != *(real_op.__table2) ) ||
-             ( __combine != real_op.__combine ) );
+    return ! operator== ( op );
   }
 
   
@@ -161,8 +156,8 @@ namespace gum {
   void ScheduleCombine<T_DATA>::execute () {
     if (  __result->isAbstract () ) {
       // first, get the multidims to combine
-      const MultiDimImplementation<T_DATA>& t1 = __table1->multiDim ();
-      const MultiDimImplementation<T_DATA>& t2 = __table2->multiDim ();
+      const MultiDimImplementation<T_DATA>& t1 = __table1.multiDim ();
+      const MultiDimImplementation<T_DATA>& t2 = __table2.multiDim ();
 
       // perform the combination and store the result
       MultiDimImplementation<T_DATA>* res = __combine ( t1, t2 );
@@ -177,8 +172,8 @@ namespace gum {
   ScheduleCombine<T_DATA>::multiDimArgs () const {
     if ( ! __args ) {
       __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
-      __args->insert ( __table1 );
-      __args->insert ( __table2 );
+      __args->insert ( &__table1 );
+      __args->insert ( &__table2 );
     }
     return *__args;
   }
@@ -200,7 +195,7 @@ namespace gum {
   template <typename T_DATA>
   std::string ScheduleCombine<T_DATA>::toString () const {
     return __result->toString() + " = combine ( " +
-      __table1->toString() + " , " + __table2->toString() + " )";
+      __table1.toString() + " , " + __table2.toString() + " )";
   }
 
 
