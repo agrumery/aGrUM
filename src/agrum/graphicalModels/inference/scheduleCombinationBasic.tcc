@@ -52,7 +52,7 @@ namespace gum {
   template<typename T_DATA>
   ScheduleCombinationBasic<T_DATA>::ScheduleCombinationBasic
   ( const ScheduleCombinationBasic<T_DATA>& from ) :
-    ScheduleCombination<T_DATA> (),
+    ScheduleCombination<T_DATA> ( from ),
     _combine ( from._combine ) {
     /// for debugging purposes
     GUM_CONS_CPY ( ScheduleCombinationBasic );
@@ -110,7 +110,7 @@ namespace gum {
 
   // adds operations to an already created schedule
   template< typename T_DATA >
-  const ScheduleMultiDim<T_DATA>&
+  ScheduleMultiDim<T_DATA>
   ScheduleCombinationBasic<T_DATA>::combine
   ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
     Schedule<T_DATA>& schedule ) {
@@ -234,63 +234,32 @@ namespace gum {
   }
 
 
-  // adds to a given schedule the operations necessary to perform a combination
+  // adds operations to an already created schedule
   template<typename T_DATA>
-  const ScheduleMultiDim<T_DATA>&
+  INLINE ScheduleMultiDim<T_DATA>
   ScheduleCombinationBasic<T_DATA>::combine
   ( const Set<const MultiDimImplementation<T_DATA>*>& set,
     Schedule<T_DATA>& schedule ) {
-    // first wrap the multidimimplementations into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
-            iter = set.begin(); iter != set.end(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
-    }
-
-    // perform the combination
-    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
-
-    // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
-            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
-      delete *iter;
-    }
-
-    return res;
+    return ScheduleCombination<T_DATA>::combine ( set, schedule );
   }
-
   
-  // adds to a given schedule the operations necessary to perform a combination
-  template <typename T_DATA>
+  
+  // adds operations to an already created schedule
+  template<typename T_DATA>
   template <template<typename> class TABLE>
-  const ScheduleMultiDim<T_DATA>&
-  ScheduleCombinationBasic<T_DATA>::combine ( const Set<const TABLE<T_DATA>*>& set,
-                                              Schedule<T_DATA>& schedule ) {
-    // first wrap the TABLES into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
-          iter != set.end(); ++iter ) {
-      sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
-    }
-
-    // perform the combination
-    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
-
-    // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
-            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
-      delete *iter;
-    }
-
-    return res;
+  INLINE ScheduleMultiDim<T_DATA>
+  ScheduleCombinationBasic<T_DATA>:: combine
+  ( const Set<const TABLE<T_DATA>*>& set,
+    Schedule<T_DATA>& schedule ) {
+    return ScheduleCombination<T_DATA>::combine ( set, schedule );
   }
-
+  
   
   /// returns the result of the combination
   template<typename T_DATA>
   float ScheduleCombinationBasic<T_DATA>::nbOperations
-  ( const Set<const ScheduleMultiDim<T_DATA>*>& set ) {
+  ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return 0.0f;
 
@@ -409,7 +378,25 @@ namespace gum {
     return result;
   }
 
+  
+  /// returns the result of the combination
+  template<typename T_DATA>
+  INLINE float ScheduleCombinationBasic<T_DATA>::nbOperations
+  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    return ScheduleCombination<T_DATA>::nbOperations ( set, schedule );
+  }
 
+  
+  /// returns the result of the combination
+  template<typename T_DATA>
+  template <template<typename> class TABLE>
+  INLINE float ScheduleCombinationBasic<T_DATA>::nbOperations
+  ( const Set<const TABLE<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    return ScheduleCombination<T_DATA>::nbOperations ( set, schedule );
+  }
+    
 
 } /* namespace gum */
 

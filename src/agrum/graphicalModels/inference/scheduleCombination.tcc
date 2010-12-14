@@ -56,6 +56,113 @@ namespace gum {
     GUM_DESTRUCTOR ( ScheduleCombination );
   }
 
+
+  // adds to a given schedule the operations necessary to perform a combination
+  template<typename T_DATA>
+  ScheduleMultiDim<T_DATA>
+  ScheduleCombination<T_DATA>::combine
+  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+    Schedule<T_DATA>& schedule ) {
+    // first wrap the multidimimplementations into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+            iter = set.begin(); iter != set.end(); ++iter ) {
+      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+    }
+
+    // perform the combination
+    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+
+  
+  // adds to a given schedule the operations necessary to perform a combination
+  template <typename T_DATA>
+  template <template<typename> class TABLE>
+  ScheduleMultiDim<T_DATA>
+  ScheduleCombination<T_DATA>::combine ( const Set<const TABLE<T_DATA>*>& set,
+                                         Schedule<T_DATA>& schedule ) {
+    // first wrap the TABLES into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+          iter != set.end(); ++iter ) {
+      sched_set.insert
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+    }
+
+    // perform the combination
+    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+    
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+
+  
+  /** @brief returns a rough estimate of the number of operations that will be
+   * performed to compute the combination */
+  template <typename T_DATA>
+  float ScheduleCombination<T_DATA>::nbOperations
+  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    // first wrap the multidimimplementations into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+            iter = set.begin(); iter != set.end(); ++iter ) {
+      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+    }
+
+    // perform the combination
+    float res = nbOperations ( sched_set, schedule );
+
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+
+  
+  /** @brief returns a rough estimate of the number of operations that will be
+   * performed to compute the combination */
+  template <typename T_DATA>
+  template <template<typename> class TABLE>
+  float ScheduleCombination<T_DATA>::nbOperations
+  ( const Set<const TABLE<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    // first wrap the TABLES into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+          iter != set.end(); ++iter ) {
+      sched_set.insert
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+    }
+
+    // perform the combination
+    float res = nbOperations ( sched_set, schedule );
+    
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }
+  
   
 } /* namespace gum */
 

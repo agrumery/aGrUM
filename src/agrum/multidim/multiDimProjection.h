@@ -151,5 +151,5 @@ namespace gum {
 #include <agrum/multidim/multiDimProjection.tcc>
 
 
-#endif /* GUM_MULTI_DIM_COMBINATION_H */
+#endif /* GUM_MULTI_DIM_PROJECTION_H */
 

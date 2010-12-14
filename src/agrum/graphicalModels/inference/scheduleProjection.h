@@ -1,0 +1,162 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               * 
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief A generic class to project efficiently a ScheduleMultiDim over a subset
+ * of its variables
+ *
+ * ScheduleProjection is a generic wrapper designed to project efficiently a
+ * multidimensional schedule object over a subset of its variables.
+ *
+ * To be quite generic, the ScheduleProjection takes in argument the function
+ * that produces the result of the projection of the multidimensional object.
+ * The following code gives an example of the usage of ScheduleProjection:
+ * @code
+ * // a function used to project a MultiDimImplementation<float>:
+ * MultiDimImplementation<float>*
+ * MinPot ( const MultiDimImplementation<float>& table,
+ *          const Set<const DiscreteVariable*>& del_vars ) {
+ *   return new MultiDimImplementation<float> (...);
+ * }
+ *
+ * // another function used to project a MultiDimImplementation<float>:
+ * MultiDimImplementation<float>*
+ * MaxPot ( const Potential<float>& table,
+ *          const Set<const DiscreteVariable*>& del_vars ) {
+ *   return new Potential<float> (...);
+ * }
+ *   
+ *
+ * Schedule<float> schedule;
+ * ScheduleMultiDim<float> t1, t2;
+ * Set<const DiscreteVariable*> set1, set2;
+ * ScheduleProjectionBasic<float> Proj ( MinPot );
+ * ScheduleMultiDim<float> proj_table1 = Proj.project ( t1, set1, schedule );
+ *
+ * // change the operator to apply
+ * Proj.setProjector ( MaxPot );
+ * ScheduleMultiDim<float> proj_table2 = Proj.project ( t2, set2, schedule );
+ *
+ * @endcode
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
+
+#ifndef GUM_SCHEDULE_PROJECTION_H
+#define GUM_SCHEDULE_PROJECTION_H
+
+
+#include <agrum/core/set.h>
+#include <agrum/multidim/discreteVariable.h>
+#include <agrum/graphicalModels/inference/scheduleMultiDim.h>
+#include <agrum/graphicalModels/inference/schedule.h>
+
+
+namespace gum {
+
+
+  template<typename T_DATA>
+  class ScheduleProjection {
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// default constructor
+    ScheduleProjection ();
+
+    /// copy constructor
+    ScheduleProjection ( const ScheduleProjection<T_DATA>& );
+
+    /// destructor
+    virtual ~ScheduleProjection ();
+
+    /// virtual constructor
+    /** @return a new fresh ScheduleCombinator with the same projection
+     * function. */
+    virtual ScheduleProjection<T_DATA>* newFactory () const = 0;
+
+    /// @}
+
+    
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// creates and returns the projection of the table over a subset of its vars
+    /** @return a new freshly created ScheduleMultiDim which is the result of the
+     * projection of the table passed in argument over the set of variables
+     * NOT IN del_vars
+     * @warning If del_vars is precisely equal to the variables of table, the
+     * result is an empty table. */
+    virtual ScheduleMultiDim<T_DATA>
+    project ( const ScheduleMultiDim<T_DATA>& table,
+              const Set<const DiscreteVariable*>& del_vars,
+              Schedule<T_DATA>& schedule ) = 0;
+    ScheduleMultiDim<T_DATA>
+    project ( const MultiDimImplementation<T_DATA>& table,
+              const Set<const DiscreteVariable*>& del_vars,
+              Schedule<T_DATA>& schedule );
+    template <template<typename> class TABLE>
+    ScheduleMultiDim<T_DATA>
+    project ( const TABLE<T_DATA>& table,
+              const Set<const DiscreteVariable*>& del_vars,
+              Schedule<T_DATA>& schedule );
+    
+
+    /// changes the function used for projecting tables
+    virtual void
+    setProjector ( MultiDimImplementation<T_DATA>*
+                   (*proj) ( const MultiDimImplementation<T_DATA>&,
+                             const Set<const DiscreteVariable*>& ) ) = 0;
+    
+    /** @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the projection */
+    virtual float nbOperations ( const ScheduleMultiDim<T_DATA>& table,
+                                 const Set<const DiscreteVariable*>& del_vars,
+                                 const Schedule<T_DATA>& schedule ) = 0;
+    float nbOperations ( const MultiDimImplementation<T_DATA>& table,
+                         const Set<const DiscreteVariable*>& del_vars,
+                         const Schedule<T_DATA>& schedule );
+    template <template<typename> class TABLE>
+    float nbOperations ( const TABLE<T_DATA>& set,
+                         const Set<const DiscreteVariable*>& del_vars,
+                         const Schedule<T_DATA>& schedule );
+
+    /// @}
+    
+    
+  private:
+    /// to be coherent with combinations, forbid copy operators
+    ScheduleProjection<T_DATA>& operator= ( const ScheduleProjection<T_DATA>& );
+    
+ };
+
+
+} /* namespace gum */
+
+
+// always include the template implementation
+#include <agrum/graphicalModels/inference/scheduleProjection.tcc>
+
+
+#endif /* GUM_SCHEDULE_PROJECTION_H */
+

@@ -75,6 +75,8 @@ namespace gum {
         Schedule<float> schedule;
         const ScheduleMultiDim<float> result = comb.combine ( set, schedule );
 
+        TS_ASSERT ( comb.nbOperations ( set, schedule ) == 120 );
+        
         const NodeSet& available = schedule.availableOperations ();
         while ( ! available.empty () ) {
           for ( NodeSet::const_iterator iter = available.begin();
@@ -147,6 +149,8 @@ namespace gum {
         Schedule<float> schedule;
         const ScheduleMultiDim<float> result = comb.combine ( set, schedule );
 
+        TS_ASSERT ( comb.nbOperations ( set, schedule ) == 112 );
+        
         const NodeSet& available = schedule.availableOperations ();
         while ( ! available.empty () ) {
           for ( NodeSet::const_iterator iter = available.begin();
@@ -200,6 +204,8 @@ namespace gum {
         set << &pot1 << &pot2 << &pot3 << &pot4;
         Schedule<float> schedule;
         const ScheduleMultiDim<float> result = comb.combine ( set, schedule );
+
+        TS_ASSERT ( comb.nbOperations ( set, schedule ) == 112 );
 
         const NodeSet& available = schedule.availableOperations ();
         while ( ! available.empty () ) {

@@ -51,7 +51,7 @@
  * Set<const MultiDimImplementation<float>*> set;
  * set << &t1 << &t2 << &t3;
  * ScheduleCombinationBasic<float> Comb ( add );
- * ScheduleMultiDim<float>* combined_table = Comb.combine ( set );
+ * ScheduleMultiDim<float> combined_table = Comb.combine ( set );
  *
  * // do the same thing only with ScheduleMultiDims
  * MultiDimImplementation<float> tt4, tt5;
@@ -59,11 +59,11 @@
  * Set<const ScheduleMultiDim<float>*> set;
  * set << &t4 << &t5;
  * ScheduleCombinationBasic<float> Comb ( add );
- * ScheduleMultiDim<float>* combined_table2 = Comb.combine ( set );
+ * ScheduleMultiDim<float> combined_table2 = Comb.combine ( set );
  *
  * // change the operator to apply
  * Comb.setCombinator ( mult );
- * ScheduleMultiDim<float>* combined_table3 = Comb.combine ( set );
+ * ScheduleMultiDim<float> combined_table3 = Comb.combine ( set );
  *
  * @endcode
  *
@@ -118,18 +118,16 @@ namespace gum {
     /** @returns the ScheduleMultiDim resulting from the combination
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
-    const ScheduleMultiDim<T_DATA>&
+    virtual ScheduleMultiDim<T_DATA>
     combine ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
-              Schedule<T_DATA>& );
-    const ScheduleMultiDim<T_DATA>&
+              Schedule<T_DATA>& );    
+    ScheduleMultiDim<T_DATA>
     combine ( const Set<const MultiDimImplementation<T_DATA>*>& set,
               Schedule<T_DATA>& );
     template <template<typename> class TABLE>
-    const ScheduleMultiDim<T_DATA>&
+    ScheduleMultiDim<T_DATA>
     combine ( const Set<const TABLE<T_DATA>*>& set,
               Schedule<T_DATA>& );
-    
-    
 
     /// changes the function used for combining two TABLES
     virtual void
@@ -139,8 +137,13 @@ namespace gum {
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
-    virtual float
-    nbOperations ( const Set<const ScheduleMultiDim<T_DATA>*>& set );
+    virtual float nbOperations ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
+                                 const Schedule<T_DATA>& schedule );
+    float nbOperations ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+                         const Schedule<T_DATA>& schedule );
+    template <template<typename> class TABLE>
+    float nbOperations ( const Set<const TABLE<T_DATA>*>& set,
+                         const Schedule<T_DATA>& schedule );
 
     /// @}
 
