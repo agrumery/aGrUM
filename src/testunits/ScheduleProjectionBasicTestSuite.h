@@ -45,7 +45,7 @@ namespace gum {
     }
 
     
-    class ScheduleProjectionTestSuite: public CxxTest::TestSuite {
+    class ScheduleProjectionBasicTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct1 () {
         std::vector<LabelizedVariable*> vars ( 10 );
