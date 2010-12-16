@@ -52,6 +52,7 @@ namespace skool {
       ~SkoolReader();
 
       void readFile(const std::string& file);
+      void readString(const std::string & string);
 
       /**
        * @brief This methods defines the list of paths to look for skool files.

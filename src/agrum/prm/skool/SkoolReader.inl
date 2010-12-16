@@ -60,6 +60,24 @@ SkoolReader::readFile(const std::string& file) {
 }
 
 INLINE
+void
+SkoolReader::readString(const std::string & string) {
+  if ( ! __parseDone ) {
+    Scanner s((unsigned char*) string.c_str(), (int) (string.length() + 1));
+    __parser = new Parser(&s);
+    __parser->setFactory(&__factory);
+    __parser->setClassPath(__class_path);
+    try {
+      __parser->Parse();
+    __parseDone=true;
+    } catch ( gum::Exception &e ) {
+      GUM_SHOWERROR( e );
+    }
+  }
+}
+
+
+INLINE
 gum::prm::PRM*
 SkoolReader::prm() {
   return __factory.prm();
