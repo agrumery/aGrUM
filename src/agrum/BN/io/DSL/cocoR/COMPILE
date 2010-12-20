@@ -1,1 +1,1 @@
-cococpp -namespace gum:DSL  -frames ../../../../core dsl.atg 
+cococpp -namespace gum:DSL  -frames ../../../../core SyntaxDSL.atg 
