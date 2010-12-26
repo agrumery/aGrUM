@@ -232,7 +232,46 @@ namespace gum {
           delete vars[i];
       }
 
+      
+      void test_construct4 () {
+        std::vector<LabelizedVariable*> vars ( 10 );
+        for (unsigned int i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i] = new LabelizedVariable (s, s, 4);
+        }
+        
+        Potential<float> t1, t2, t3;
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
 
+        randomInit ( t1 );
+        randomInit ( t2 );
+        randomInit ( t3 );
+       
+        gum::ScheduleCombinationBasic<float> comb ( schedule_comb_myadd );
+        Set<const Potential<float>*> set;
+        set << &t1 << &t2 << &t3;
+        Set<const MultiDimImplementation<float>*> set2;
+        set2 << t1.getContent() << t2.getContent() << t3.getContent();
+        
+        Schedule<float> schedule;
+
+        TS_ASSERT ( comb.nbOperations ( set, schedule ) == 16640 );
+        std::pair<long,long> yyy = comb.memoryUsage ( set, schedule );
+        TS_ASSERT ( yyy.first == 16640 );
+        TS_ASSERT ( yyy.second == 16384 );
+        std::pair<long,long> zzz = comb.memoryUsage ( set2, schedule );
+        TS_ASSERT ( zzz.first == 16640 );
+        TS_ASSERT ( zzz.second == 16384 );
+        
+        for (unsigned int i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      }
+
+      
     private:
       // ==========================================================================
       /// initialize randomly a table
@@ -241,7 +280,7 @@ namespace gum {
         Instantiation i (t);
         srand ( time ( NULL) );
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
+          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100 ) );
       }
 
     };

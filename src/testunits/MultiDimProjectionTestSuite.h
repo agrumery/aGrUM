@@ -316,7 +316,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float> t1;
@@ -373,7 +373,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float> t1;
@@ -428,7 +428,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float> tt1;
@@ -484,7 +484,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float*>* t1 = new MultiDimArray<float*>;
@@ -543,7 +543,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float*>* tt1 = new MultiDimArray<float*>;
@@ -607,7 +607,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float> t1;
@@ -661,7 +661,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         Potential<float> t1;
@@ -719,7 +719,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         MultiDimArray<float*>* t1 = new MultiDimArray<float*>;
@@ -841,7 +841,7 @@ namespace gum {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new LabelizedVariable (s, s, 3);
         }
         
         Potential<float> t1;
@@ -863,8 +863,10 @@ namespace gum {
         del_vars.insert ( vars[1] );
         MultiDimProjection<float,Potential> Proj ( myMax ); 
 
-        Potential<float>* t2 = new Potential<float> ( projectMax ( t1, del_vars ) );
-        Potential<float>* t3 = Proj.project ( t1, del_vars );
+        Potential<float>* t2 =
+          new Potential<float> ( projectMax ( t1, del_vars ) );
+        Potential<float>* t3 =
+          Proj.project ( t1, del_vars );
         TS_ASSERT ( *t2 == *t3 );
 
         delete t2;
@@ -883,6 +885,13 @@ namespace gum {
         proj_set.insert ( vars[1] );
         Potential<float>* t5 = Proj.project ( t1, proj_set );
         delete t5;
+
+        TS_ASSERT ( Proj.nbOperations ( t1, proj_set ) == 59049 );
+        TS_ASSERT ( Proj.nbOperations (t1.variablesSequence(),proj_set) == 59049 );
+
+        std::pair<long,long> yyy = Proj.memoryUsage ( t1, del_vars );
+        TS_ASSERT ( yyy.first == 2187 );
+        yyy = Proj.memoryUsage ( t1.variablesSequence(), del_vars );
         
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];

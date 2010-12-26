@@ -62,7 +62,7 @@
  * Potential<float>* combined_table = Comb.combine ( set );
  *
  * // change the operator to apply
- * Comb.setCombinator ( multPotential );
+ * Comb.setCombineFunction ( multPotential );
  * Potential<float>* combined_table2 = Comb.combine ( set );
  *
  * @endcode
@@ -74,7 +74,10 @@
 #define GUM_MULTI_DIM_COMBINATION_H
 
 
+#include <utility>
 #include <agrum/core/set.h>
+#include <agrum/core/sequence.h>
+#include <agrum/multidim/discreteVariable.h>
 
 
 namespace gum {
@@ -120,14 +123,37 @@ namespace gum {
                            const Set<const TABLE<T_DATA>*>& set ) = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombinator( TABLE<T_DATA>*
-                                (*combine) ( const TABLE<T_DATA>&,
-                                             const TABLE<T_DATA>& ) ) = 0;
-
+    virtual void setCombineFunction ( TABLE<T_DATA>*
+                                      (*combine) ( const TABLE<T_DATA>&,
+                                                   const TABLE<T_DATA>& ) ) = 0;
+    
+    /// returns the combination function currently used by the combinator
+    virtual TABLE<T_DATA>* (* combineFunction () )
+      ( const TABLE<T_DATA>&, const TABLE<T_DATA>& ) const = 0;
+    
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
-    virtual float nbOperations ( const Set<const TABLE<T_DATA>*>& set ) = 0;
+    virtual float
+    nbOperations ( const Set<const TABLE<T_DATA>*>& set ) const = 0;
+    virtual float
+    nbOperations ( const Set<const Sequence<const DiscreteVariable*>*>& set )
+      const = 0;
 
+    /// returns the memory consumption used during the combination
+    /** Actually, this function does not return a precise account of the memory
+     * used by the multidimCombination but a rough estimate based on the sizes
+     * of the tables involved in the combination.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    virtual std::pair<long,long>
+    memoryUsage ( const Set<const TABLE<T_DATA>*>& set ) const = 0;
+    virtual std::pair<long,long>
+    memoryUsage ( const Set<const Sequence<const DiscreteVariable*>*>& set )
+      const = 0;
+
+    
     /// @}
 
 

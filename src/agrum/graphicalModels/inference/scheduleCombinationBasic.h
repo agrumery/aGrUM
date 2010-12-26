@@ -62,7 +62,7 @@
  * ScheduleMultiDim<float> combined_table2 = Comb.combine ( set );
  *
  * // change the operator to apply
- * Comb.setCombinator ( mult );
+ * Comb.setCombineFunction ( mult );
  * ScheduleMultiDim<float> combined_table3 = Comb.combine ( set );
  *
  * @endcode
@@ -131,9 +131,14 @@ namespace gum {
 
     /// changes the function used for combining two TABLES
     virtual void
-    setCombinator( MultiDimImplementation<T_DATA>*
-                   (*combine) ( const MultiDimImplementation<T_DATA>&,
-                                const MultiDimImplementation<T_DATA>& ) );
+    setCombineFunction( MultiDimImplementation<T_DATA>*
+                        (*combine) ( const MultiDimImplementation<T_DATA>&,
+                                     const MultiDimImplementation<T_DATA>& ) );
+
+    /// returns the combination function currently used by the combinator
+    virtual MultiDimImplementation<T_DATA>* (* combineFunction () )
+      ( const MultiDimImplementation<T_DATA>&,
+        const MultiDimImplementation<T_DATA>& ) const;
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
@@ -144,6 +149,25 @@ namespace gum {
     template <template<typename> class TABLE>
     float nbOperations ( const Set<const TABLE<T_DATA>*>& set,
                          const Schedule<T_DATA>& schedule );
+
+    /// returns the memory consumption used during the combination
+    /** Actually, this function does not return a precise account of the memory
+     * used by the multidimCombination but a rough estimate based on the sizes
+     * of the tables involved in the combination.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    virtual std::pair<long,long>
+    memoryUsage ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
+                  const Schedule<T_DATA>& schedule );
+    std::pair<long,long>
+    memoryUsage ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+                  const Schedule<T_DATA>& schedule );
+    template <template<typename> class TABLE>
+    std::pair<long,long>
+    memoryUsage ( const Set<const TABLE<T_DATA>*>& set,
+                  const Schedule<T_DATA>& schedule );
 
     /// @}
 
@@ -157,8 +181,8 @@ namespace gum {
     
     /** @brief returns the domain size of the Cartesian product of the union of
      * all the variables in seq1 and seq2 */
-    Size _combined_size ( const Sequence<const DiscreteVariable *>& seq1,
-                          const Sequence<const DiscreteVariable *>& seq2 ) const;
+    Size _combinedSize ( const Sequence<const DiscreteVariable *>& seq1,
+                         const Sequence<const DiscreteVariable *>& seq2 ) const;
 
  };
 

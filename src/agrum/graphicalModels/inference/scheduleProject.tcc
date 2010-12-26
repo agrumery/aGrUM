@@ -26,6 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <limits>
 #include <agrum/core/debug.h>
 
 
@@ -156,7 +157,35 @@ namespace gum {
       __result->setMultiDim ( *res );
     }
   }
+
+
+  /** @brief returns an estimation of the number of elementary operations
+   * needed to perform the ScheduleOperation */
+  template <typename T_DATA>
+  INLINE float ScheduleProject<T_DATA>::nbOperations () const {
+    return __table.domainSize ();
+  }
   
+
+  /// returns the memory consumption used during the operation
+  template <typename T_DATA>
+  std::pair<long,long> ScheduleProject<T_DATA>::memoryUsage () const {
+    long size = 1;
+    const Sequence<const DiscreteVariable *>& seq = __table.variablesSequence ();
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            seq.begin(); iter != seq.end(); ++iter ) {
+      if ( ! __del_vars.contains ( *iter ) ) {
+        if ( std::numeric_limits<long>::max() /
+             (long) (*iter)->domainSize() < size ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+        }
+        size *= (*iter)->domainSize();
+      }
+    }
+    
+    return std::pair<long,long> (size,size);
+  }
+
 
   /// returns the scheduleMultidim resulting from the execution of the operation
   template <typename T_DATA>

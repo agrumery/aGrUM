@@ -98,6 +98,20 @@ namespace gum {
     /// executes the operation
     void execute ();
 
+    /** @brief returns an estimation of the number of elementary operations
+     * needed to perform the ScheduleOperation */
+    float nbOperations () const;
+    
+    /// returns the memory consumption used during the operation
+    /** Actually, this function does not return a precise account of the memory
+     * used by the ScheduleOperation but a rough estimate based on the sizes
+     * of the tables involved in the operation.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the operation and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    std::pair<long,long> memoryUsage () const;
+ 
     /// returns the scheduleMultidim resulting from the execution of the operation
     INLINE const ScheduleMultiDim<T_DATA>& result () const;
 

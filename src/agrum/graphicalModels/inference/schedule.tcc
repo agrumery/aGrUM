@@ -475,6 +475,38 @@ namespace gum {
   }
 
 
+  /** @bried returns an estimation of the number of elementary operations needed
+   * to perform a given ScheduleOperation */
+  template <typename T_DATA>
+  INLINE float Schedule<T_DATA>::nbOperations ( NodeId id ) const {
+    return __node2operation[id]->nbOperations ();
+  }
+
+  
+  /** @bried returns an estimation of the number of elementary operations needed
+   * to perform a given ScheduleOperation */
+  template <typename T_DATA>
+  INLINE float
+  Schedule<T_DATA>::nbOperations ( ScheduleOperation<T_DATA>& op )  const {
+    return op.nbOperations ();
+  }
+
+
+  /// returns the memory consumption used during the execution of an operation
+  template <typename T_DATA>
+  INLINE std::pair<long,long> Schedule<T_DATA>::memoryUsage ( NodeId id ) const {
+    return __node2operation[id]->memoryUsage ();
+  }
+
+  
+  /// returns the memory consumption used during the execution of an operation
+  template <typename T_DATA>
+  INLINE std::pair<long,long>
+  Schedule<T_DATA>::memoryUsage ( ScheduleOperation<T_DATA>& op ) const {
+    return op.memoryUsage ();
+  }
+
+
 } /* namespace gum */
 
 

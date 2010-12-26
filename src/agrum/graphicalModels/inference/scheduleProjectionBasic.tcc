@@ -27,6 +27,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <limits>
 #include <agrum/core/debug.h>
 #include <agrum/graphicalModels/inference/scheduleProject.h>
 
@@ -114,14 +115,24 @@ namespace gum {
 
   /// changes the function used for projecting tables
   template<typename T_DATA>
-  void ScheduleProjectionBasic<T_DATA>::setProjector
+  void ScheduleProjectionBasic<T_DATA>::setProjectFunction
   ( MultiDimImplementation<T_DATA>* (*proj)
     ( const MultiDimImplementation<T_DATA>&,
       const Set<const DiscreteVariable*>& ) ) {
     _proj = proj;
   }
-    
 
+  
+  /// returns the projection function currently used by the projector
+  template<typename T_DATA>
+  INLINE MultiDimImplementation<T_DATA>*
+  (* ScheduleProjectionBasic<T_DATA>::projectFunction () )
+    ( const MultiDimImplementation<T_DATA>&,
+      const Set<const DiscreteVariable*>& ) const {
+    return _proj;
+  }
+  
+ 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template<typename T_DATA>
@@ -159,6 +170,53 @@ namespace gum {
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<T_DATA>& schedule ) {
     return ScheduleProjection<T_DATA>::nbOperations ( table, del_vars, schedule );
+  }
+
+  
+  /// returns the memory consumption used during the projection
+  template<typename T_DATA>
+  std::pair<long,long>
+  ScheduleProjectionBasic<T_DATA>::memoryUsage
+  ( const ScheduleMultiDim<T_DATA>& table,
+    const Set<const DiscreteVariable*>& del_vars,
+    const Schedule<T_DATA>& schedule ) {
+    const Sequence<const DiscreteVariable*>& vars = table.variablesSequence ();
+    long res = 1;
+    for ( typename Sequence<const DiscreteVariable*>::const_iterator
+            iter = vars.begin (); iter != vars.end(); ++iter ) {
+      if ( ! del_vars.contains ( *iter ) ) {
+        if ( std::numeric_limits<long>::max() /
+             (long) (*iter)->domainSize() < res ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+        }
+        res *= (*iter)->domainSize ();
+      }
+    }
+   
+    return std::pair<long,long> (res,res);
+  }
+
+  
+  /// returns the memory consumption used during the projection
+  template<typename T_DATA>
+  INLINE std::pair<long,long>
+  ScheduleProjectionBasic<T_DATA>::memoryUsage
+  ( const MultiDimImplementation<T_DATA>& table,
+    const Set<const DiscreteVariable*>& del_vars,
+    const Schedule<T_DATA>& schedule ) {
+    return ScheduleProjection<T_DATA>::memoryUsage ( table, del_vars, schedule );
+  }
+
+
+  /// returns the memory consumption used during the projection
+  template<typename T_DATA>
+  template <template<typename> class TABLE>
+  INLINE std::pair<long,long>
+  ScheduleProjectionBasic<T_DATA>::memoryUsage
+  ( const TABLE<T_DATA>& table,
+    const Set<const DiscreteVariable*>& del_vars,
+    const Schedule<T_DATA>& schedule ) {
+    return ScheduleProjection<T_DATA>::memoryUsage ( table, del_vars, schedule );
   }
 
 

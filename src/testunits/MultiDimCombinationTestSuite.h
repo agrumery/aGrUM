@@ -100,10 +100,13 @@ namespace gum {
         delete t6;
 
         TS_ASSERT ( xxx.nbOperations ( set ) == 16640 );
-        
+        std::pair<long,long> yyy = xxx.memoryUsage ( set );
+        TS_ASSERT ( yyy.first == 16640 );
+        TS_ASSERT ( yyy.second == 16384 );
+
         t4 = new Potential<float> ( t1 * t2 );
         t5 = new Potential<float> ( t3 * (*t4) );
-        xxx.setCombinator ( multPotential );
+        xxx.setCombineFunction ( multPotential );
         t6 = xxx.combine ( set );
         TS_ASSERT ( t6 );
         TS_ASSERT (*t6 == *t5);

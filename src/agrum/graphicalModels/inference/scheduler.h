@@ -27,6 +27,7 @@
 #define GUM_SCHEDULER_H
 
 
+#include <utility>
 #include <agrum/graphicalModels/inference/schedule.h>
 
 
@@ -73,6 +74,46 @@ namespace gum {
      * operations of the schedule) were performed */
     virtual bool execute ( Schedule<T_DATA>&, unsigned int k ) = 0;
     
+
+    /** @bried returns an estimation of the number of elementary operations needed
+     * to perform a given schedule */
+    virtual float
+    nbOperations ( const Schedule<T_DATA>& ) const = 0; 
+
+    /** @bried returns an estimation of the number of elementary operations needed
+     * to perform the k first ScheduleOperations of a given schedule
+     *
+     * If there are fewer than k operations in the schedule, then all those
+     * operations are taken into account */
+    virtual float
+    nbOperations ( const Schedule<T_DATA>&, unsigned int k ) const = 0; 
+
+    /// returns the memory consumption used during the execution of a schedule
+    /** Actually, this function does not return a precise account of the memory
+     * used to perform the schedule but a rough estimate based on the sizes
+     * of the tables involved in the schedule.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the execution of the Schedule and the second
+     * one is the amount of memory still used at the end of the execution of
+     * the schedule */
+    virtual std::pair<long,long>
+    memoryUsage ( const Schedule<T_DATA>& ) const = 0;
+
+    /** @brief returns the memory consumption used during the execution of the
+     * k first ScheduleOperations of a given schedule
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used to perform the schedule but a rough estimate based on the sizes
+     * of the tables involved in the schedule.
+     * If there are fewer than k operations in the schedule, then all those
+     * operations are taken into account.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the execution of the Schedule and the second
+     * one is the amount of memory still used at the end of the execution of
+     * k first operations of the schedule */
+    virtual std::pair<long,long>
+    memoryUsage ( const Schedule<T_DATA>&, unsigned int k ) const = 0;
+
     /// @}
 
   };

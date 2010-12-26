@@ -65,6 +65,10 @@ namespace gum {
         gum::ScheduleCombine<float> comb1 ( f1, f2, myadd );
         const ScheduleMultiDim<float>& result1 = comb1.result ();
 
+        TS_ASSERT ( comb1.nbOperations () == 32 );
+        std::pair<long,long> xxx = comb1.memoryUsage ();
+        TS_ASSERT ( xxx.first == 32 );
+        
         std::stringstream s1;
         s1 << result1.toString() << " = combine ( "
            << f1.toString() << " , " << f2.toString() << " )";

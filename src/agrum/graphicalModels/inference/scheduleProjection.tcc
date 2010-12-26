@@ -114,6 +114,31 @@ namespace gum {
     return nbOperations ( sched_table, del_vars, schedule );
   }
 
+  
+  /// returns the memory consumption used during the projection
+  template<typename T_DATA>
+  INLINE std::pair<long,long>
+  ScheduleProjection<T_DATA>::memoryUsage
+  ( const MultiDimImplementation<T_DATA>& table,
+    const Set<const DiscreteVariable*>& del_vars,
+    const Schedule<T_DATA>& schedule ) {
+    ScheduleMultiDim<T_DATA> sched_table ( table );
+    return memoryUsage ( sched_table, del_vars, schedule );
+  }
+
+  
+  /// returns the memory consumption used during the projection
+  template<typename T_DATA>
+  template <template<typename> class TABLE>
+  INLINE std::pair<long,long>
+  ScheduleProjection<T_DATA>::memoryUsage
+  ( const TABLE<T_DATA>& table,
+    const Set<const DiscreteVariable*>& del_vars,
+    const Schedule<T_DATA>& schedule ) {
+    ScheduleMultiDim<T_DATA> sched_table ( *( table.getContent () ) );
+    return memoryUsage ( sched_table, del_vars, schedule );
+  }
+
 
 } /* namespace gum */
 

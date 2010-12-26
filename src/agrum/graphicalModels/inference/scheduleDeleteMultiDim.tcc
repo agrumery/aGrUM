@@ -26,6 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <limits>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/types.h>
@@ -119,12 +120,30 @@ namespace gum {
   template <typename T_DATA>
   void ScheduleDeleteMultiDim<T_DATA>::execute () {
     const MultiDimImplementation<T_DATA>& multidim = __table.multiDim ();
-    HashTable<Id,const MultiDimImplementation<T_DATA>*>& tables =
-      ScheduleMultiDim<T_DATA>::__id2multidims ();
-    tables.erase ( __table.id() );
+    ScheduleMultiDim<T_DATA>::__multidim2id ().erase ( &multidim );
+    ScheduleMultiDim<T_DATA>::__id2multidim ().erase ( __table.id() );
     delete &multidim;
   }
 
+
+  /** @brief returns an estimation of the number of elementary operations
+   * needed to perform the ScheduleOperation */
+  template <typename T_DATA>
+  INLINE float ScheduleDeleteMultiDim<T_DATA>::nbOperations () const {
+    return 1.0f;
+  }
+
+
+  /// returns the memory consumption used during the operation
+  template <typename T_DATA>
+  INLINE std::pair<long,long>
+  ScheduleDeleteMultiDim<T_DATA>::memoryUsage () const {
+    long size_table = __table.domainSize ();
+    if ( size_table < 0 )
+      GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+    return std::pair<long,long> (-size_table,-size_table);
+  }
+ 
   
   /// returns the multidims to be deleted
   template <typename T_DATA>

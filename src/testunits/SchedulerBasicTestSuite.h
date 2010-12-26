@@ -106,8 +106,16 @@ namespace gum {
         schedule.forceAfter ( del3_id, ops3 );
  
         SchedulerBasic<float> scheduler;
+        TS_ASSERT ( scheduler.nbOperations ( schedule ) == 195 );
+        TS_ASSERT ( scheduler.nbOperations ( schedule, 3 ) == 128 );
+        std::pair<long,long> xxx = scheduler.memoryUsage ( schedule );
+        TS_ASSERT ( xxx.first == 160 );
+        TS_ASSERT ( xxx.second == 64 );
+        xxx = scheduler.memoryUsage ( schedule, 4 );
+        TS_ASSERT ( xxx.first == 128 );
+        TS_ASSERT ( xxx.second == 96 );
+        
         bool ok = scheduler.execute ( schedule );
-
         TS_ASSERT ( ok == true );
   
         gum::ScheduleCombine<float> comb11 ( f1, f2, schedule_sched_myadd );

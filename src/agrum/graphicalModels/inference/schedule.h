@@ -26,6 +26,7 @@
 #define GUM_SCHEDULE_H
 
 
+#include <utility>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/types.h>
 #include <agrum/core/set.h>
@@ -168,7 +169,23 @@ namespace gum {
      * @throws NotFound exception is thrown if the operation cannot be found */
     void execute ( NodeId );
     void execute ( const ScheduleOperation<T_DATA>& );
-    
+
+    /** @bried returns an estimation of the number of elementary operations needed
+     * to perform a given ScheduleOperation */
+    float nbOperations ( NodeId ) const; 
+    float nbOperations ( ScheduleOperation<T_DATA>& ) const; 
+
+    /// returns the memory consumption used during the execution of an operation
+    /** Actually, this function does not return a precise account of the memory
+     * used by the scheduleOperation but a rough estimate based on the sizes
+     * of the tables involved in the operation.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the ScheduleOperation and the second one is the
+     * amount of memory still used at the end of the operation ( the memory used by
+     * the resulting table ) */
+    std::pair<long,long> memoryUsage ( NodeId ) const;
+    std::pair<long,long> memoryUsage ( ScheduleOperation<T_DATA>& ) const;
+
     /// @}
 
 

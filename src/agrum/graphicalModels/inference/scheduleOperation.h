@@ -26,6 +26,7 @@
 #define GUM_SCHEDULE_OPERATION_H
 
 
+#include <utility>
 #include <string>
 #include <agrum/core/inline.h>
 #include <agrum/core/types.h>
@@ -108,6 +109,20 @@ namespace gum {
     /// executes the operation
     virtual void execute () = 0;
 
+    /** @brief returns an estimation of the number of elementary operations
+     * needed to perform the ScheduleOperation */
+    virtual float nbOperations () const = 0;
+
+    /// returns the memory consumption used during the operation
+    /** Actually, this function does not return a precise account of the memory
+     * used by the ScheduleOperation but a rough estimate based on the sizes
+     * of the tables involved in the operation.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the operation and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    virtual std::pair<long,long> memoryUsage () const = 0;
+ 
     /// displays the content of the operation
     virtual std::string toString () const = 0;
 

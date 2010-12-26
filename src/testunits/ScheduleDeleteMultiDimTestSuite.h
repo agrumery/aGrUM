@@ -51,7 +51,7 @@ namespace gum {
         del_vars << vars[0] << vars[3];
         ScheduleProject<float> myproj ( f1, del_vars, projectMax );
         const ScheduleMultiDim<float>& res = myproj.result ();
-
+        
         gum::ScheduleDeleteMultiDim<float> del1 ( f1 );
         gum::ScheduleDeleteMultiDim<float> del2 ( res );
         gum::ScheduleDeleteMultiDim<float> del3 ( del2 );
@@ -62,6 +62,11 @@ namespace gum {
         TS_GUM_ASSERT_THROWS_NOTHING( del2.execute () );
         TS_ASSERT_THROWS ( del3.execute (), gum::NotFound );
 
+        TS_ASSERT ( del1.nbOperations () == 1 );
+        std::pair<long,long> xxx = del1.memoryUsage ();
+        TS_ASSERT ( xxx.first == -16 );
+        TS_ASSERT ( xxx.second == -16 );
+        
         Sequence<const ScheduleMultiDim<float>*> seq = del2.multiDimArgs ();
         TS_ASSERT ( seq.size() == 1 );
         TS_ASSERT ( *( seq.atPos ( 0 ) ) == res );

@@ -140,10 +140,10 @@ namespace gum {
     ScheduleMultiDim<T_DATA>& operator= ( const ScheduleMultiDim<T_DATA>& );
 
     /// checks whether two ScheduleMultiDim are related to the same table
-    INLINE bool operator== ( const ScheduleMultiDim<T_DATA>& ) const;
+    bool operator== ( const ScheduleMultiDim<T_DATA>& ) const;
     
     /// checks whether two ScheduleMultiDim are related to different tables
-    INLINE bool operator!= ( const ScheduleMultiDim<T_DATA>& ) const;
+    bool operator!= ( const ScheduleMultiDim<T_DATA>& ) const;
     
     /// @}
 
@@ -159,26 +159,33 @@ namespace gum {
      * actually contains a real MultiDimImplementation but rather a ID indicating
      * that the real multiDimImplementation is yet to be created as a result of an
      * operation on other multiDimImplementations. */
-    INLINE bool isAbstract () const;
+    bool isAbstract () const;
 
     /** @brief returns the multiDimImplementation actually contained in the
      * ScheduleMultiDim
      *
      * @throws NotFound exception is thrown if the multidimImplementation does not
      * exist yet (because it has not been computed yet) */
-    INLINE const MultiDimImplementation<T_DATA>& multiDim () const;
+    const MultiDimImplementation<T_DATA>& multiDim () const;
     
     /// returns the id of the ScheduleMultiDim
-    INLINE Id id () const;
+    Id id () const;
 
     /// returns the set of variables involved in the multidim
-    INLINE const Sequence<const DiscreteVariable*>& variablesSequence () const;
+    const Sequence<const DiscreteVariable*>& variablesSequence () const;
+
+    /// returns the domain size of the multidim
+    Size domainSize () const;
 
     /// sets a new multiDimImplementation inside the wrapper
-    INLINE void setMultiDim ( const MultiDimImplementation<T_DATA>& );
+    /** @throws DuplicateElement exception is thrown if the MultiDimImplementation
+     * has already been wrapped in a ScheduleMultiDim with another id */
+    void setMultiDim ( const MultiDimImplementation<T_DATA>& );
 
-    /// sets a new multiDimImplementation inside the wrapper
-    INLINE void setMultiDim ( const MultiDimDecorator<T_DATA>& );
+    /// sets a new multiDimDecorator inside the wrapper
+    /** @throws DuplicateElement exception is thrown if the MultiDimDecorator
+     * has already been wrapped in a ScheduleMultiDim with another id */
+    void setMultiDim ( const MultiDimDecorator<T_DATA>& );
     
     /// displays the content of the multidim
     std::string toString () const;
@@ -197,13 +204,21 @@ namespace gum {
     static Id __newId ();
 
     /// returns a mapping from id to multidimImplementations
-    static HashTable<Id,const MultiDimImplementation<T_DATA>*>& __id2multidims ();
+    static HashTable<Id,const MultiDimImplementation<T_DATA>*>& __id2multidim ();
+
+    /// returns the id corresponding to a given multidim
+    /** useful to assign the same id every time a given MultiDimImplementation
+     * is wrapped into a ScheduleMultiDim */
+    static HashTable<const MultiDimImplementation<T_DATA>*,Id>& __multidim2id ();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
     static HashTable<Id,unsigned int>& __id2refs ();
 
     /// returns a table with the variables of the table corresponding to id
     static HashTable<Id,const Sequence<const DiscreteVariable*>*>& __id2vars ();
+
+    /// returns a table with the domain size of the table corresponding to id
+    static HashTable<Id,Size>& __id2size ();
     
   };
 

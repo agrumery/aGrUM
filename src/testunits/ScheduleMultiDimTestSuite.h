@@ -83,10 +83,13 @@ namespace gum {
         gum::Potential<float> pot2;
         pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
         f4.setMultiDim ( pot2 );
+        gum::ScheduleMultiDim<float> f6 ( f4 );
         TS_ASSERT ( f5.multiDim() == *pot2.getContent() );
-        f3.setMultiDim ( *pot2.getContent() );
-        TS_ASSERT ( f3.multiDim() == *pot2.getContent() );
-
+        TS_ASSERT_THROWS ( f3.setMultiDim ( *pot2.getContent() ),
+                           gum::DuplicateElement );
+        TS_ASSERT ( f6.multiDim() == *pot2.getContent() );
+        TS_ASSERT ( f6.multiDim() == *pot2.getContent() );
+        
         std::string str = f3.toString ();
         f3 = f5;
         TS_ASSERT ( f5 == f3 );

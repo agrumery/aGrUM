@@ -50,7 +50,7 @@
  * ScheduleMultiDim<float> proj_table1 = Proj.project ( t1, set1, schedule );
  *
  * // change the operator to apply
- * Proj.setProjector ( MaxPot );
+ * Proj.setProjectFunction ( MaxPot );
  * ScheduleMultiDim<float> proj_table2 = Proj.project ( t2, set2, schedule );
  *
  * @endcode
@@ -121,9 +121,14 @@ namespace gum {
               Schedule<T_DATA>& schedule );
     
     /// changes the function used for projecting tables
-    void setProjector ( MultiDimImplementation<T_DATA>*
-                        (*proj) ( const MultiDimImplementation<T_DATA>&,
-                                  const Set<const DiscreteVariable*>& ) );
+    void setProjectFunction ( MultiDimImplementation<T_DATA>*
+                              (*proj) ( const MultiDimImplementation<T_DATA>&,
+                                        const Set<const DiscreteVariable*>& ) );
+    
+    /// returns the projection function currently used by the projector
+    MultiDimImplementation<T_DATA>* (* projectFunction () )
+      ( const MultiDimImplementation<T_DATA>&,
+        const Set<const DiscreteVariable*>& ) const;
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection */
@@ -137,6 +142,28 @@ namespace gum {
     float nbOperations ( const TABLE<T_DATA>& set,
                          const Set<const DiscreteVariable*>& del_vars,
                          const Schedule<T_DATA>& schedule );
+
+    /// returns the memory consumption used during the projection
+    /** Actually, this function does not return a precise account of the memory
+     * used by the multidimProjection but a rough estimate based on the size
+     * of the table involved in the projection.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    virtual std::pair<long,long>
+    memoryUsage ( const ScheduleMultiDim<T_DATA>& table,
+                  const Set<const DiscreteVariable*>& del_vars,
+                  const Schedule<T_DATA>& schedule );
+    std::pair<long,long>
+    memoryUsage ( const MultiDimImplementation<T_DATA>& table,
+                  const Set<const DiscreteVariable*>& del_vars,
+                  const Schedule<T_DATA>& schedule );
+    template <template<typename> class TABLE>
+    std::pair<long,long>
+    memoryUsage ( const TABLE<T_DATA>& table,
+                  const Set<const DiscreteVariable*>& del_vars,
+                  const Schedule<T_DATA>& schedule );
 
     /// @}
 

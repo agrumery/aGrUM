@@ -26,6 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <limits>
 #include <agrum/core/debug.h>
 
 
@@ -165,6 +166,60 @@ namespace gum {
     }
   }
 
+  
+  /** @brief returns an estimation of the number of elementary operations
+   * needed to perform the ScheduleOperation */
+  template <typename T_DATA>
+  float ScheduleCombine<T_DATA>::nbOperations () const {
+    const Sequence<const DiscreteVariable *>& seq1 = __table1.variablesSequence ();
+    const Sequence<const DiscreteVariable *>& seq2 = __table2.variablesSequence ();
+    if ( seq1.empty() && seq2.empty() ) return 0.0f;
+    
+    float size = 1;
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            seq1.begin(); iter != seq1.end(); ++iter ) {
+      size *= (*iter)->domainSize();
+    }
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            seq2.begin(); iter != seq2.end(); ++iter ) {
+      if ( ! seq1.exists ( *iter ) )
+        size *= (*iter)->domainSize();
+    }
+    
+    return size;
+  }
+  
+    
+  /// returns the memory consumption used during the operation
+  template <typename T_DATA>
+  std::pair<long,long> ScheduleCombine<T_DATA>::memoryUsage () const {
+    const Sequence<const DiscreteVariable *>& seq1 = __table1.variablesSequence ();
+    const Sequence<const DiscreteVariable *>& seq2 = __table2.variablesSequence ();
+    if ( seq1.empty() && seq2.empty() ) return std::pair<long,long> (0,0);
+
+    long size = 1;
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            seq1.begin(); iter != seq1.end(); ++iter ) {
+      if ( std::numeric_limits<long>::max() /
+           (long) (*iter)->domainSize() < size ) {
+        GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+      }
+      size *= (*iter)->domainSize();
+    }
+    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+            seq2.begin(); iter != seq2.end(); ++iter ) {
+      if ( ! seq1.exists ( *iter ) ) {
+        if ( std::numeric_limits<long>::max() /
+             (long) (*iter)->domainSize() < size ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+        }
+        size *= (*iter)->domainSize();
+      }
+    }
+    
+    return std::pair<long,long> (size,size);
+  }
+ 
   
   /// returns the set of multidims passed in argument to the operation
   template <typename T_DATA>

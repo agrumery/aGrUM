@@ -209,8 +209,14 @@ namespace gum {
 
         gum::Schedule<float> schedule;
 
-        schedule.insert ( comb4 );
+        NodeId id = schedule.insert ( comb4 );
         TS_ASSERT ( schedule.availableOperations().size() == 0 );
+        TS_ASSERT ( schedule.nbOperations ( id ) == 64 );
+        TS_ASSERT ( schedule.memoryUsage ( id ).first == 64 );
+        TS_ASSERT ( schedule.memoryUsage ( id ).second == 64 );
+        TS_ASSERT ( schedule.nbOperations ( comb4 ) == 64 );
+        TS_ASSERT ( schedule.memoryUsage ( comb4 ).first == 64 );
+        TS_ASSERT ( schedule.memoryUsage ( comb4 ).second == 64 );
 
         schedule.insert ( comb2 );
         TS_ASSERT ( schedule.availableOperations().size() == 1 );

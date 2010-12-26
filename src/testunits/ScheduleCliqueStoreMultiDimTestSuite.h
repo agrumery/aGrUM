@@ -59,6 +59,10 @@ namespace gum {
         TS_ASSERT ( store2 != store3 );
         TS_ASSERT (  ! ( store2 == store3 ) );
 
+        TS_ASSERT ( store1.nbOperations() == 1 );
+        std::pair<long,long> xxx = store1.memoryUsage ();
+        TS_ASSERT ( xxx.first == 0 );
+        
         Sequence<const ScheduleMultiDim<float>*> seq = store1.multiDimArgs ();
         TS_ASSERT ( seq.size() == 1 );
         TS_ASSERT ( *( seq.atPos ( 0 ) ) == f1 );

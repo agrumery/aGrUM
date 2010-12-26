@@ -139,6 +139,22 @@ namespace gum {
   }
   
 
+  /** @brief returns an estimation of the number of elementary operations
+   * needed to perform the ScheduleOperation */
+  template <typename T_DATA>
+  INLINE float ScheduleSeparatorStoreMultiDim<T_DATA>::nbOperations () const {
+    return 1.0f;
+  }
+
+
+  /// returns the memory consumption used during the operation
+  template <typename T_DATA>
+  INLINE std::pair<long,long>
+  ScheduleSeparatorStoreMultiDim<T_DATA>::memoryUsage () const {
+    return std::pair<long,long> (0,0);
+  }
+ 
+
   /// returns the multidim to be stored
   template <typename T_DATA>
   INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&

@@ -162,6 +162,59 @@ namespace gum {
 
     return res;
   }
+
+  
+  /// returns the memory consumption used during the combination
+  template <typename T_DATA>
+  std::pair<long,long> ScheduleCombination<T_DATA>::memoryUsage
+  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    // first wrap the multidimimplementations into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+            iter = set.begin(); iter != set.end(); ++iter ) {
+      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+    }
+    
+    // compute the memory consumption of the combination
+    std::pair<long,long> res = memoryUsage ( sched_set, schedule );
+    
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+    
+    return res;
+  }
+
+  
+  /** @brief returns a rough estimate of the number of operations that will be
+   * performed to compute the combination */
+  template <typename T_DATA>
+  template <template<typename> class TABLE>
+  std::pair<long,long> ScheduleCombination<T_DATA>::memoryUsage
+  ( const Set<const TABLE<T_DATA>*>& set,
+    const Schedule<T_DATA>& schedule ) {
+    // first wrap the TABLES into ScheduleMultiDims
+    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
+    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+          iter != set.end(); ++iter ) {
+      sched_set.insert
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+    }
+
+    // compute the memory consumption of the combination
+    std::pair<long,long> res = memoryUsage ( sched_set, schedule );
+    
+    // deallocate the wrappers we just constructed
+    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+            iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+      delete *iter;
+    }
+
+    return res;
+  }  
   
   
 } /* namespace gum */

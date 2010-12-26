@@ -54,6 +54,10 @@ namespace gum {
         const ScheduleMultiDim<float>& res = myproj.result ();
         TS_ASSERT ( res.isAbstract () );
 
+        TS_ASSERT ( myproj.nbOperations () == 16 );
+        std::pair<long,long> xxx = myproj.memoryUsage ();
+        TS_ASSERT ( xxx.first == 4 );
+        
         Sequence<const ScheduleMultiDim<float>*> multidims = myproj.multiDimArgs();
         TS_ASSERT ( multidims.size() == 1 );
         TS_ASSERT ( *(multidims.atPos(0)) == f1 );
