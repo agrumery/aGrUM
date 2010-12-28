@@ -84,6 +84,8 @@ LayerGenerator::generate() {
 void
 LayerGenerator::__generateClasses(PRMFactory& factory) {
   BayesNetGenerator bn_gen;
+  bn_gen.setRandomDomainFlag(false);
+  bn_gen.setRandomDomainFlag(getMaxWidth());
   std::vector< Set<std::string> > classes(__layers.size());
   BayesNet<prm_float>* bn = 0;
   std::string type = __generateType(factory);

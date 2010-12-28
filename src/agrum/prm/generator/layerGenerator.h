@@ -114,6 +114,10 @@ class LayerGenerator: public PRMGenerator {
     /// Proceeds with the generation of the PRM.
     virtual PRM* generate();
 
+    unsigned int getMaxWidth() const;
+
+    void setMaxWidth(unsigned int v);
+
     /// @}
   private:
     /// A layer.
@@ -131,6 +135,9 @@ class LayerGenerator: public PRMGenerator {
 
     /// The vector describing each layer.
     std::vector<Layer> __layers;
+
+    /// The max width of generated classes.
+    unsigned int __max_width;
 
     /// Returns the layer of a given level.
     LayerData& __layer(size_t idx);

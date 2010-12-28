@@ -51,6 +51,18 @@ LayerGenerator::setDomainSize(Size s) {
   __domainSize = s;
 }
 
+INLINE
+unsigned int
+LayerGenerator::getMaxWidth() const {
+  return __max_width;
+}
+
+INLINE
+void
+LayerGenerator::setMaxWidth(unsigned int v) {
+  __max_width = v;
+}
+
 
 } /* namespace prm */
 } /* namespace gum */

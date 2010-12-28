@@ -80,6 +80,12 @@ class StructuredInference: public PRMInference {
 
     virtual std::string name() const;
 
+    /// Returns the instance of gspan used to search patterns.
+    GSpan& gspan();
+
+    /// Returns the instance of gspan used to search patterns.
+    const GSpan& gspan() const;
+
     /// @}
   protected:
   // ========================================================================

@@ -67,6 +67,18 @@ StructuredInference::name() const {
   return "StructuredInference";
 }
 
+INLINE
+GSpan&
+StructuredInference::gspan() {
+  return *__gspan;
+}
+
+INLINE
+const GSpan&
+StructuredInference::gspan() const {
+  return *__gspan;
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

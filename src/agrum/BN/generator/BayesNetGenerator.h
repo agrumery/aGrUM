@@ -78,7 +78,7 @@ namespace gum {
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A BNs randomly generated.
      */
-    BayesNet<float>* generateBNF(Size nbrNodes, float density,int max_modality=2);
+    BayesNet<float>* generateBNF(Size nbrNodes, float density, Size max_modality=2);
 
     /**
      * Generates a bayesian network using doubles.
@@ -87,11 +87,28 @@ namespace gum {
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A BNs randomly generated.
      */
-    BayesNet<double>* generateBND(Size nbrNodes, float density,int max_modality=2);
+    BayesNet<double>* generateBND(Size nbrNodes, float density, Size max_modality=2);
+
+    /// Return the max number of parents per node.
+    Size maxWidth() const;
+
+    /// Defines the max number of parents per node.
+    void setMaxWidth(Size value);
+
+    /// If true, then the domain of each node is randomly chosen between 2
+    /// and getMaxModality(), otherwhise each node's modality equals getMaxModality().
+    bool getRandomDomainFlag() const;
+
+    /// If true, then the domain of each node is randomly chosen between 2
+    /// and getMaxModality(), otherwhise each node's modality equals getMaxModality().
+    void setRandomDomainFlag(bool value);
+
     /// @}
   private:
     // The Conditional Probability Table generator
     CPTGenerator* __cptGenerator;
+    unsigned int __max_width;
+    bool __random_flag;
   };
 
 
