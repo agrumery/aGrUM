@@ -44,10 +44,10 @@ namespace prm {
  * @brief This class represent the BayesBall algorithm applied on PRMs.
  */
 class StructuredBayesBall {
-  public:
-  // ========================================================================
-  /// @name Constructors & destructor.
-  // ========================================================================
+public:
+    // ========================================================================
+    /// @name Constructors & destructor.
+    // ========================================================================
     /// @{
 
     /// Default Constructor.
@@ -57,9 +57,9 @@ class StructuredBayesBall {
     ~StructuredBayesBall();
 
     /// @}
-  // ========================================================================
-  /// @name Getters and Setters.
-  // ========================================================================
+    // ========================================================================
+    /// @name Getters and Setters.
+    // ========================================================================
     /// @{
 
     /// Returns a unique key w.r.t. d-separation for i.
@@ -102,7 +102,7 @@ class StructuredBayesBall {
 
     /// Returns true if there is a hard evidence on i->get(n).
     bool __isHardEvidence(const Instance* i, NodeId n);
-  private:
+private:
     /// Copy constructor.
     StructuredBayesBall(const StructuredBayesBall& source);
 
@@ -158,3 +158,4 @@ class StructuredBayesBall {
 // ============================================================================
 #endif /* GUM_STRUCTURED_BB_H */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

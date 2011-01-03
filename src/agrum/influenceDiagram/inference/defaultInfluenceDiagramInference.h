@@ -49,271 +49,271 @@ class List;
 
 // ============================================================================
 
-  template <typename T_DATA> class CliqueProperties;
+template <typename T_DATA> class CliqueProperties;
 // ============================================================================
-  /**
-   * @class defaultInfluenceDiagramInference defaultInfluenceDiagramInference.h <agrum/influenceDiagram/inference/defaultInfluenceDiagramInference.h>
-   * @brief This class implements an algorithm for inference
-   * in influence diagrams based upon  Shaffer-Shenoy's one for bayes net inferences
-   * @ingroup id_group
-   *
-   * The class used for the triangulation is partialOrderedTriangulation.
-   */
-  template<typename T_DATA>
-  class DefaultInfluenceDiagramInference: public InfluenceDiagramInference<T_DATA> {
+/**
+ * @class defaultInfluenceDiagramInference defaultInfluenceDiagramInference.h <agrum/influenceDiagram/inference/defaultInfluenceDiagramInference.h>
+ * @brief This class implements an algorithm for inference
+ * in influence diagrams based upon  Shaffer-Shenoy's one for bayes net inferences
+ * @ingroup id_group
+ *
+ * The class used for the triangulation is partialOrderedTriangulation.
+ */
+template<typename T_DATA>
+class DefaultInfluenceDiagramInference: public InfluenceDiagramInference<T_DATA> {
 
-    public:
+public:
 
-      // ====================================================================
-      /// @name Constructor & destructor
-      // ====================================================================
-      /// @{
+    // ====================================================================
+    /// @name Constructor & destructor
+    // ====================================================================
+    /// @{
 
-      /**
-       * Default constructor.
-       * @param infDiag the influence diagram we want to perform inference upon
-       */
-      DefaultInfluenceDiagramInference( const InfluenceDiagram<T_DATA>& infDiag );
+    /**
+     * Default constructor.
+     * @param infDiag the influence diagram we want to perform inference upon
+     */
+    DefaultInfluenceDiagramInference( const InfluenceDiagram<T_DATA>& infDiag );
 
-      /**
-       * Destructor.
-       */
-      virtual ~DefaultInfluenceDiagramInference();
+    /**
+     * Destructor.
+     */
+    virtual ~DefaultInfluenceDiagramInference();
 
-      /// @}
-      // ====================================================================
-      /// @name Inference and evidence management
-      // ====================================================================
-      /// @{
+    /// @}
+    // ====================================================================
+    /// @name Inference and evidence management
+    // ====================================================================
+    /// @{
 
-      /// @see gum::InfluenceDiagramInference::makeInference().
-      virtual void makeInference();
-      
-      /// @see gum::InfluenceDiagramInference::getMEU().
-      T_DATA getMEU();
-      
-      /// @see gum::InfluenceDiagramInference::getBestDecisionChoice( NodeId decisionId )
-      const Idx getBestDecisionChoice( NodeId decisionId );
-      
-      /// displays the result of an inference
-      void displayResult(std::ostream& stream =std::cout);
+    /// @see gum::InfluenceDiagramInference::makeInference().
+    virtual void makeInference();
 
-      /// @see gum::InfluenceDiagramInference::insertEvidence().
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& evidenceList );
+    /// @see gum::InfluenceDiagramInference::getMEU().
+    T_DATA getMEU();
 
-      /// @see gum::InfluenceDiagramInference::eraseEvidence().
-      virtual void eraseEvidence( const Potential<T_DATA>* evidence);
+    /// @see gum::InfluenceDiagramInference::getBestDecisionChoice( NodeId decisionId )
+    const Idx getBestDecisionChoice( NodeId decisionId );
 
-      /// @see gum::InfluenceDiagramInference::eraseAllEvidence().
-      virtual void eraseAllEvidence();
+    /// displays the result of an inference
+    void displayResult(std::ostream& stream =std::cout);
 
-      /// @}
-      // ====================================================================
-      /// @name Getters & setters
-      // ====================================================================
-      /// @{
+    /// @see gum::InfluenceDiagramInference::insertEvidence().
+    virtual void insertEvidence( const List<const Potential<T_DATA>*>& evidenceList );
 
-      /// Returns the Triangulation used by this class.
-      Triangulation& getTriangulation();
-      
-      /// Displays on terminal the result of strong junction tree computation
-      /// for test purpose only
-      void displayStrongJunctionTree(std::ostream &stream=std::cout);
+    /// @see gum::InfluenceDiagramInference::eraseEvidence().
+    virtual void eraseEvidence( const Potential<T_DATA>* evidence);
 
-    private:
+    /// @see gum::InfluenceDiagramInference::eraseAllEvidence().
+    virtual void eraseAllEvidence();
 
-      // ====================================================================
-      /// @name Private members
-      // ====================================================================
-      /// @{
+    /// @}
+    // ====================================================================
+    /// @name Getters & setters
+    // ====================================================================
+    /// @{
 
-      /// The triangulation algorithm.
-      Triangulation* __triangulation;
+    /// Returns the Triangulation used by this class.
+    Triangulation& getTriangulation();
 
-      /// The set of dummies sparse potential matrix created.
-      Set< Potential<T_DATA>* > __potentialDummies;
-      
-      /// The set of dummies sparse utilities matrix created.
-      Set< UtilityTable<T_DATA>* > __utilityDummies;
-      
-      /// The resulting potential from inference
-      Potential<T_DATA>* __inferencePotential;
-      
-      /// The resulting utility from inference
-      UtilityTable<T_DATA>* __inferenceUtility;
+    /// Displays on terminal the result of strong junction tree computation
+    /// for test purpose only
+    void displayStrongJunctionTree(std::ostream &stream=std::cout);
 
-      /// @}
-      // ====================================================================
-      /// @name Useful computation members
-      // ====================================================================
-      /// @{
+private:
 
-      /// Mapping of the nodes with the clique used to put their CPT
-      typename Property<NodeId>::onNodes __nodeToCliqueMap;
+    // ====================================================================
+    /// @name Private members
+    // ====================================================================
+    /// @{
 
-      typename Property< CliqueProperties<T_DATA>* >::onNodes __cliquePropertiesMap;
-      
-      HashTable< size_t, NodeId > __cliqueEliminationMap;
-      
-      HashTable< NodeId, Idx > __utakenDecisionMap;
-      
-      bool __inferenceMade;
+    /// The triangulation algorithm.
+    Triangulation* __triangulation;
 
-      /// @}
-      // ====================================================================
-      /// @name Private getters & setters
-      // ====================================================================
-      /// @{
+    /// The set of dummies sparse potential matrix created.
+    Set< Potential<T_DATA>* > __potentialDummies;
 
-      /// @return Returns the list of neighbours of a given clique
-      const EdgeSet& __getNeighbours( NodeId cliqueId );
+    /// The set of dummies sparse utilities matrix created.
+    Set< UtilityTable<T_DATA>* > __utilityDummies;
 
-      /// @return Returns a separator given two adjacent cliques
-      const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
+    /// The resulting potential from inference
+    Potential<T_DATA>* __inferencePotential;
 
-      /// @return Returns the clique in which the node's potentials must be stored
-      NodeId __getClique( const std::vector<NodeId> &eliminationOrder, NodeId id );
+    /// The resulting utility from inference
+    UtilityTable<T_DATA>* __inferenceUtility;
 
-      /// @}
-      // ====================================================================
-      /// @name Inference sub-methods
-      // ====================================================================
-      /// @{
+    /// @}
+    // ====================================================================
+    /// @name Useful computation members
+    // ====================================================================
+    /// @{
 
-      /// Builds the cliques tables
-      /// Uses __getCliquesTable to initialize the cliques table, and multiply
-      /// the tables with the adequate CPT.
-      void __makeCliquePropertiesMap();
-      
-      /// Makes a strong junction tree that make easier elimination
-      void __makeStrongJunctionTree();
-      
-      /// Cleans Up remaining stuff due to inference
-      void __cleanUp();
-      
-      /// collect child clique for inferences
-      void __collectChild( NodeId parent, NodeId child );
-      
-      /// Performs the operation of absorption of a clique by another
-      void __absorbClique( NodeId absorbedCliqueId, NodeId absorbingCliqueId );
-      
-      /// Reduces a clique down to her separator from another clique elements
-      void __reduceClique( CliqueProperties<T_DATA>* absorbedClique, NodeSet& separator, Potential<T_DATA>*& potentialMarginal, UtilityTable<T_DATA>*& utilityMarginal );
+    /// Mapping of the nodes with the clique used to put their CPT
+    typename Property<NodeId>::onNodes __nodeToCliqueMap;
 
-      /// Returns a pointer over a "dummy" potential, which is a CPT filled with
-      /// one MultiDimSparse filled with 1. This is used by empty cliques.
-      /// @param cliqueId The NodeId of the cliqueId for which we build a dummy potential.
-      /// @return A pointer over the dummy bucket.
-      Potential<T_DATA>* __makeDummyPotential( NodeId cliqueId );
+    typename Property< CliqueProperties<T_DATA>* >::onNodes __cliquePropertiesMap;
 
-      /// Returns a pointer over a "dummy" utility, which is a utility table filled with
-      /// one MultiDimSparse filled with 0. This is used by empty cliques.
-      /// @param cliqueId The NodeId of the cliqueId for which we build a dummy utility.
-      /// @return A pointer over the dummy bucket.
-      UtilityTable<T_DATA>* __makeDummyUtility( NodeId cliqueId );
+    HashTable< size_t, NodeId > __cliqueEliminationMap;
 
-      /// Returns true if neighboor is eliminated after current node
-      bool __IsValidNeighBoor( NodeId currentNode, NodeId neighboorNode );
+    HashTable< NodeId, Idx > __utakenDecisionMap;
 
-      /// @}
-    };
+    bool __inferenceMade;
+
+    /// @}
+    // ====================================================================
+    /// @name Private getters & setters
+    // ====================================================================
+    /// @{
+
+    /// @return Returns the list of neighbours of a given clique
+    const EdgeSet& __getNeighbours( NodeId cliqueId );
+
+    /// @return Returns a separator given two adjacent cliques
+    const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
+
+    /// @return Returns the clique in which the node's potentials must be stored
+    NodeId __getClique( const std::vector<NodeId> &eliminationOrder, NodeId id );
+
+    /// @}
+    // ====================================================================
+    /// @name Inference sub-methods
+    // ====================================================================
+    /// @{
+
+    /// Builds the cliques tables
+    /// Uses __getCliquesTable to initialize the cliques table, and multiply
+    /// the tables with the adequate CPT.
+    void __makeCliquePropertiesMap();
+
+    /// Makes a strong junction tree that make easier elimination
+    void __makeStrongJunctionTree();
+
+    /// Cleans Up remaining stuff due to inference
+    void __cleanUp();
+
+    /// collect child clique for inferences
+    void __collectChild( NodeId parent, NodeId child );
+
+    /// Performs the operation of absorption of a clique by another
+    void __absorbClique( NodeId absorbedCliqueId, NodeId absorbingCliqueId );
+
+    /// Reduces a clique down to her separator from another clique elements
+    void __reduceClique( CliqueProperties<T_DATA>* absorbedClique, NodeSet& separator, Potential<T_DATA>*& potentialMarginal, UtilityTable<T_DATA>*& utilityMarginal );
+
+    /// Returns a pointer over a "dummy" potential, which is a CPT filled with
+    /// one MultiDimSparse filled with 1. This is used by empty cliques.
+    /// @param cliqueId The NodeId of the cliqueId for which we build a dummy potential.
+    /// @return A pointer over the dummy bucket.
+    Potential<T_DATA>* __makeDummyPotential( NodeId cliqueId );
+
+    /// Returns a pointer over a "dummy" utility, which is a utility table filled with
+    /// one MultiDimSparse filled with 0. This is used by empty cliques.
+    /// @param cliqueId The NodeId of the cliqueId for which we build a dummy utility.
+    /// @return A pointer over the dummy bucket.
+    UtilityTable<T_DATA>* __makeDummyUtility( NodeId cliqueId );
+
+    /// Returns true if neighboor is eliminated after current node
+    bool __IsValidNeighBoor( NodeId currentNode, NodeId neighboorNode );
+
+    /// @}
+};
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /// @class CliqueProperties
 /// Private class to keep clique's properties.
 /// It used MultiDimBucket to compute the cliques potentials.
-  template <typename T_DATA>
+template <typename T_DATA>
 
-  class CliqueProperties {
-    public:
+class CliqueProperties {
+public:
 
-      /// Default constructor.
-      /// @param id the id of this clique on which this properties holds.
-      CliqueProperties();
+    /// Default constructor.
+    /// @param id the id of this clique on which this properties holds.
+    CliqueProperties();
 
-      /// Destructor.
-      ~CliqueProperties();
+    /// Destructor.
+    ~CliqueProperties();
 
-       /// Add a variable to this clique
-      /// @param v The variable added.
-      void addVariable( const DiscreteVariable& v );
-      
-      /// Determines in which order nodes will be eliminated from clique
-      /// @param elim the global elimination order.
-      void makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<T_DATA>& infDiag );
+    /// Add a variable to this clique
+    /// @param v The variable added.
+    void addVariable( const DiscreteVariable& v );
 
-      /// Add a potential to this clique
-      /// @param cpt v's cpt.
-      /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
-      void addPotential( const Potential<T_DATA>& cpt, bool removable = false );
+    /// Determines in which order nodes will be eliminated from clique
+    /// @param elim the global elimination order.
+    void makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<T_DATA>& infDiag );
 
-      /// Add a potential to this clique
-      /// @param cpt v's cpt.
-      /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
-      void addUtility( const UtilityTable<T_DATA>& ut, bool removable = false );
-      
-      /// Removes all potential and utility table added during an inference
-      void cleanFromInference();
+    /// Add a potential to this clique
+    /// @param cpt v's cpt.
+    /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
+    void addPotential( const Potential<T_DATA>& cpt, bool removable = false );
 
-      /// @brief Add an evidence on a variable in this clique.
-      /// This method will remove any previous evidence on the given variable.
-      /// This method will raise an OperationNotAllowed if evidence contains not
-      /// exactly one variable.
-      /// @throw NotFound Raised if the evidence is on a variable not present
-      ///        in this clique.
-      /// @throw OperationNotAllowed If the evidence isn't valid.
-      void addEvidence( const Potential<T_DATA>& evidence );
+    /// Add a potential to this clique
+    /// @param cpt v's cpt.
+    /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
+    void addUtility( const UtilityTable<T_DATA>& ut, bool removable = false );
 
-      /// Removes all the evidences containing v
-      void removeEvidence( const DiscreteVariable& v );
+    /// Removes all potential and utility table added during an inference
+    void cleanFromInference();
 
-      /// Remove all the evidences
-      void removeAllEvidence();
+    /// @brief Add an evidence on a variable in this clique.
+    /// This method will remove any previous evidence on the given variable.
+    /// This method will raise an OperationNotAllowed if evidence contains not
+    /// exactly one variable.
+    /// @throw NotFound Raised if the evidence is on a variable not present
+    ///        in this clique.
+    /// @throw OperationNotAllowed If the evidence isn't valid.
+    void addEvidence( const Potential<T_DATA>& evidence );
 
-      /// @return Returns the mapping of evidences on the variables in this clique.
-      const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >& evidences() const;
+    /// Removes all the evidences containing v
+    void removeEvidence( const DiscreteVariable& v );
 
-      /// @return Returns the bucket of this Clique
-      const HashTable<const Potential<T_DATA>*, Instantiation* >& potentialBucket();
+    /// Remove all the evidences
+    void removeAllEvidence();
 
-      /// @return Returns the bucket of this Clique
-      const HashTable<const UtilityTable<T_DATA>*, Instantiation* >& utilityBucket();
-      
-      /// @return returns the elimination sequence for this clique
-      const Sequence<NodeId>& cliqueEliminationOrder();
-      
-      /// @return returns List containing all variables contained in this clique
-      const Sequence< const DiscreteVariable *> &   cliqueVariables();
-      
-      /// @return returns instanciation on variable within this clique
-      Instantiation& cliqueInstantiation();
+    /// @return Returns the mapping of evidences on the variables in this clique.
+    const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >& evidences() const;
 
-    private:
-      /// Evidences on the variables in this clique
-      HashTable<const DiscreteVariable*, const Potential<T_DATA>* > __evidences;
+    /// @return Returns the bucket of this Clique
+    const HashTable<const Potential<T_DATA>*, Instantiation* >& potentialBucket();
 
-      /// The potential bucket of this clique with evidences
-      HashTable<const Potential<T_DATA>*, Instantiation* > __potentialBucket;
-      
-      /// The utility bucket of this clique
-      HashTable<const UtilityTable<T_DATA>*, Instantiation* > __utilityBucket;
-      
-      /// The sequence of elimination of node in the clique
-      Sequence<NodeId> __eliminationOrder;
-      
-      /// Instantiation on variable in that clique
-      Instantiation __allVarsInst;
-      
-      
-      /// The list of var that have been had during an inference
-      List<const DiscreteVariable*> __removableVarList;
-      
-      /// The list of potentials that have been had during an inference
-      List<const Potential<T_DATA>* > __removablePotentialList;
-      
-      /// The list of utilities that have been had during an inference
-      List<const UtilityTable<T_DATA>* > __removableUtilityList;
-    };
+    /// @return Returns the bucket of this Clique
+    const HashTable<const UtilityTable<T_DATA>*, Instantiation* >& utilityBucket();
+
+    /// @return returns the elimination sequence for this clique
+    const Sequence<NodeId>& cliqueEliminationOrder();
+
+    /// @return returns List containing all variables contained in this clique
+    const Sequence< const DiscreteVariable *> &   cliqueVariables();
+
+    /// @return returns instanciation on variable within this clique
+    Instantiation& cliqueInstantiation();
+
+private:
+    /// Evidences on the variables in this clique
+    HashTable<const DiscreteVariable*, const Potential<T_DATA>* > __evidences;
+
+    /// The potential bucket of this clique with evidences
+    HashTable<const Potential<T_DATA>*, Instantiation* > __potentialBucket;
+
+    /// The utility bucket of this clique
+    HashTable<const UtilityTable<T_DATA>*, Instantiation* > __utilityBucket;
+
+    /// The sequence of elimination of node in the clique
+    Sequence<NodeId> __eliminationOrder;
+
+    /// Instantiation on variable in that clique
+    Instantiation __allVarsInst;
+
+
+    /// The list of var that have been had during an inference
+    List<const DiscreteVariable*> __removableVarList;
+
+    /// The list of potentials that have been had during an inference
+    List<const Potential<T_DATA>* > __removablePotentialList;
+
+    /// The list of utilities that have been had during an inference
+    List<const UtilityTable<T_DATA>* > __removableUtilityList;
+};
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 // ============================================================================
@@ -324,4 +324,4 @@ class List;
 // ============================================================================
 #endif /* GUM_DEFAULT_INFLUENCE_DIAGRAM_INFERENCE_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

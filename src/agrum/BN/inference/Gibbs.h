@@ -19,8 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief This file contains gibbs sampling class definitions Bayesian networks
- * inference classes.
+ * @brief This file contains gibbs sampling (for BNs) class definitions.
  */
 #ifndef GUM_GIBBS_H
 #define GUM_GIBBS_H
@@ -33,7 +32,7 @@ namespace gum {
 
 
   /**
-   * @class Gibbs Gibbs. <agrum/BN/inference/Gibbs.h>
+   * @class Gibbs Gibbs.h <agrum/BN/inference/Gibbs.h>
    * @brief class for making Gibbs sampling inference in bayesian networks.
    * @ingroup bn_group
    *

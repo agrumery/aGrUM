@@ -42,18 +42,18 @@
 namespace gum {
 
 
-  /**
-   * @class InfluenceDiagramGenerator InfluenceDiagramGenerator.h <InfluenceDiagramGenerator.h>
-   * @brief Class for generating influence diagram.
-   * @ingroup id_group
-   *
-   * This class randomly generates an influence diagram given four parameters:
-   * the number of nodes,the probability of adding an arc between two nodes,
-   * the proportion of chance node and the proportion of utility node (the
-   * proportion of decision node is deduce from thos two)
-   */
-  class InfluenceDiagramGenerator {
-  public:
+/**
+ * @class InfluenceDiagramGenerator influenceDiagramGenerator.h <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
+ * @brief Class for generating influence diagram.
+ * @ingroup id_group
+ *
+ * This class randomly generates an influence diagram given four parameters:
+ * the number of nodes,the probability of adding an arc between two nodes,
+ * the proportion of chance node and the proportion of utility node (the
+ * proportion of decision node is deduce from thos two)
+ */
+class InfluenceDiagramGenerator {
+public:
     // ############################################################################
     /// @name Constructors / Destructor
     // ############################################################################
@@ -72,7 +72,7 @@ namespace gum {
      * @param cptGenerator The policy used to generate CPT.
      */
     InfluenceDiagramGenerator(CPTGenerator* cptGenerator);
-    
+
     /**
      * Use this constructor if you want to use a different policy for generating
      * UT than the default one.
@@ -80,7 +80,7 @@ namespace gum {
      * @param utGenerator The policy used to generate UT.
      */
     InfluenceDiagramGenerator(UTGenerator* utGenerator);
-    
+
     /**
      * Use this constructor if you want to use a different policy for generating
      * both CPT & UT than the defaults ones.
@@ -122,7 +122,7 @@ namespace gum {
      */
     InfluenceDiagram<double>* generateIDD(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity,int max_modality=2);
     /// @}
-  private:
+private:
     // Check if a temporal order exists and creates ones if not
     void __checkTemporalOrderf(InfluenceDiagram<float>* infdiag);
     // Check if a temporal order exists and creates ones if not
@@ -131,7 +131,7 @@ namespace gum {
     CPTGenerator* __cptGenerator;
     // The Utility Table generator
     UTGenerator* __utGenerator;
-  };
+};
 
 
 } /* namespace gum */
@@ -139,3 +139,4 @@ namespace gum {
 
 #endif /* GUM_INF_DIAG_GENERATOR_H */
 
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

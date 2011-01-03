@@ -22,97 +22,105 @@
  * @brief Implementation of the BayesBalls class.
  */
 // ============================================================================
+
 namespace gum {
 
 // Default constructor.
-template<typename T_DATA> INLINE
-BayesBalls<T_DATA>::BayesBalls():
-  __bayesNet(0), __query(0), __softEvidence(0), __hardEvidence(0)
-{
-  GUM_CONSTRUCTOR( BayesBalls );
-}
+  template<typename T_DATA> INLINE
+  BayesBalls<T_DATA>::BayesBalls() :
+      __bayesNet ( 0 ), __query ( 0 ), __softEvidence ( 0 ), __hardEvidence ( 0 ) {
+    GUM_CONSTRUCTOR ( BayesBalls );
+  }
 
 // Destructor.
-template<typename T_DATA> INLINE
-BayesBalls<T_DATA>::~BayesBalls()
-{
-  GUM_DESTRUCTOR( BayesBalls );
-}
-
-// Returns the sequence of requisite nodes for a Bayes Net given a set of
-// query nodes, the list of nodes with soft and hard evidences.
-//
-// @return Returns a pointer over a sequence, delete it after use.
-template<typename T_DATA> INLINE
-Sequence<NodeId>*
-BayesBalls<T_DATA>::requisiteNodes(const AbstractBayesNet<T_DATA>& bayesNet,
-                                   const Sequence<NodeId>& query,
-                                   const Sequence<NodeId>& softEvidence,
-                                   const Sequence<NodeId>& hardEvidence)
-{
-  // Initialization.
-  __bayesNet = &bayesNet;
-  __query = &query;
-  __softEvidence = &softEvidence;
-  __hardEvidence = &hardEvidence;
-  __visited = new Sequence<NodeId>();
-  // Initiating Baye's ball propagation.
-  for (Sequence<NodeId>::iterator iter = query.begin(); iter != query.end(); ++iter) {
-    __fromChild(*iter);
+  template<typename T_DATA> INLINE
+  BayesBalls<T_DATA>::~BayesBalls() {
+    GUM_DESTRUCTOR ( BayesBalls );
   }
-  return __visited;
-}
+
+/// Returns the sequence of requisite nodes for a Bayes Net given a set of
+/// query nodes, the list of nodes with soft and hard evidences.
+///
+/// @return Returns a pointer over a sequence, delete it after use.
+  template<typename T_DATA> INLINE
+  Sequence<NodeId>*
+  BayesBalls<T_DATA>::requisiteNodes ( const AbstractBayesNet<T_DATA>& bayesNet,
+                                       const Sequence<NodeId>& query,
+                                       const Sequence<NodeId>& softEvidence,
+                                       const Sequence<NodeId>& hardEvidence ) {
+    // Initialization.
+    __bayesNet = &bayesNet;
+    __query = &query;
+    __softEvidence = &softEvidence;
+    __hardEvidence = &hardEvidence;
+    __visited = new Sequence<NodeId>();
+    // Initiating Baye's ball propagation.
+
+    for ( Sequence<NodeId>::iterator iter = query.begin(); iter != query.end(); ++iter ) {
+      __fromChild ( *iter );
+    }
+
+    return __visited;
+  }
 
 /// Call this when a node receive the ball from one of his child.
-template<typename T_DATA> INLINE
-void
-BayesBalls<T_DATA>::__fromChild(NodeId node)
-{
-  if (!__visited->exists(node)) __visited->insert(node);
-  if (!__marks.exists(node)) __marks.insert(node, std::pair<bool, bool>(false, false));
-  if (!__hardEvidence->exists(node)) {
-    if (!__marks[node].first) {
-      __marks[node].first = true;
-      const NodeSet& parents = __bayesNet->dag().parents(node);
-      for (NodeSetIterator iter = parents.begin();
-           iter != parents.end(); ++iter) {
-        __fromChild( *iter );
+  template<typename T_DATA> INLINE
+  void
+  BayesBalls<T_DATA>::__fromChild ( NodeId node ) {
+    if ( !__visited->exists ( node ) ) __visited->insert ( node );
+
+    if ( !__marks.exists ( node ) ) __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
+
+    if ( !__hardEvidence->exists ( node ) ) {
+      if ( !__marks[node].first ) {
+        __marks[node].first = true;
+        const NodeSet& parents = __bayesNet->dag().parents ( node );
+
+        for ( NodeSetIterator iter = parents.begin();
+              iter != parents.end(); ++iter ) {
+          __fromChild ( *iter );
+        }
       }
-    }
-    if (!__marks[node].second) {
-      __marks[node].second = true;
-      const NodeSet& children = __bayesNet->dag().children(node);
-      for (NodeSetIterator iter = children.begin();
-           iter != children.end(); ++iter) {
-        __fromParent( *iter );
+
+      if ( !__marks[node].second ) {
+        __marks[node].second = true;
+        const NodeSet& children = __bayesNet->dag().children ( node );
+
+        for ( NodeSetIterator iter = children.begin();
+              iter != children.end(); ++iter ) {
+          __fromParent ( *iter );
+        }
       }
     }
   }
-}
 
 /// Call this when a node receive the ball from one of this parents.
-template<typename T_DATA> INLINE
-void
-BayesBalls<T_DATA>::__fromParent(NodeId node)
-{
-  if (!__visited->exists(node)) __visited->insert(node);
-  if (!__marks.exists(node)) __marks.insert(node, std::pair<bool, bool>(false, false));
-  if (__hardEvidence->exists(node) and (!__marks[node].first)) {
-    __marks[node].first = true;
-    const NodeSet& parents = __bayesNet->dag().parents(node);
-    for (NodeSetIterator iter = parents.begin();
-         iter != parents.end(); ++iter) {
-      __fromChild( *iter );
-    }
-  } else if (!__marks[node].second) {
-    __marks[node].second = true;
-    const NodeSet& children = __bayesNet->dag().children(node);
-    for (NodeSetIterator iter = children.begin();
-         iter != children.end(); ++iter) {
-      __fromParent( *iter );
+  template<typename T_DATA> INLINE
+  void
+  BayesBalls<T_DATA>::__fromParent ( NodeId node ) {
+    if ( !__visited->exists ( node ) ) __visited->insert ( node );
+
+    if ( !__marks.exists ( node ) ) __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
+
+    if ( __hardEvidence->exists ( node ) and ( !__marks[node].first ) ) {
+      __marks[node].first = true;
+      const NodeSet& parents = __bayesNet->dag().parents ( node );
+
+      for ( NodeSetIterator iter = parents.begin();
+            iter != parents.end(); ++iter ) {
+        __fromChild ( *iter );
+      }
+    } else if ( !__marks[node].second ) {
+      __marks[node].second = true;
+      const NodeSet& children = __bayesNet->dag().children ( node );
+
+      for ( NodeSetIterator iter = children.begin();
+            iter != children.end(); ++iter ) {
+        __fromParent ( *iter );
+      }
     }
   }
-}
 
 } /* namespace gum */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
