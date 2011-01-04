@@ -76,7 +76,7 @@ class StructuredInference: public PRMInference {
     /// @{
 
     /// Tells this algorithm to use pattern mining or not.
-    void setPaterMining(bool b);
+    void setPatternMining(bool b);
 
     virtual std::string name() const;
 

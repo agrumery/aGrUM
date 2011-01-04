@@ -29,7 +29,7 @@ namespace prm {
 
 INLINE
 void
-StructuredInference::setPaterMining(bool b) {
+StructuredInference::setPatternMining(bool b) {
   __mining = b;
 }
 
