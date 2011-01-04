@@ -45,67 +45,88 @@ InterfaceGraph::InterfaceGraph(const System& sys):
     NodeData* node = new NodeData();
     node->n = *iter;
     __label(node, label_map);
-    __idMap.insert(node->n, __graph.insertNode());
-    __nodes.insert(__idMap[node->n], node);
+    __graph.insertNode(iter.key());
+    __idMap.insert(node->n, iter.key());
+    __nodes.insert(iter.key(), node);
   }
-  // We need to add each edge between instance sharing interface
-  Set<NodeId> visited;
-  std::list<NodeId> list; // For width first search
   NodeData* data = 0;
   NodeData* u = 0;
   NodeData* v = 0;
-  for (Property<NodeData*>::onNodes::iterator node = __nodes.begin();
-       node != __nodes.end(); ++node) {
-    if (not visited.exists(node.key())) {
-      list.push_back(node.key());
-      while (not list.empty()) {
-        data = __nodes[list.front()];
-        visited.insert(list.front());
-        list.pop_front();
-        // We add input edges
-        for (Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter) {
-          for (Set<Instance*>::iterator jter = data->n->getInstances((**iter).id()).begin();
-               jter != data->n->getInstances((**iter).id()).end(); ++jter) {
-            u = (__nodes[__idMap[*jter]]->l < data->l)?__nodes[__idMap[*jter]]:data;
-            v = (u != data)?data:__nodes[__idMap[*jter]];
-            if (not __graph.existsEdge(__idMap[u->n], __idMap[v->n])) {
-              EdgeData* edge = new EdgeData();
-              edge->u = u->n;
-              edge->l_u = u->l;
-              edge->v = v->n;
-              edge->l_v = v->l;
-              __label(edge, label_map);
-              __graph.insertEdge(__idMap[u->n], __idMap[v->n]);
-              __edges.insert(Edge(__idMap[u->n], __idMap[v->n]), edge);
-            }
-            if (not visited.exists(__idMap[*jter])) {
-              list.push_back(__idMap[*jter]);
-            }
-          }
-        }
-        // We add output edges
-        for (Instance::InvRefIterator iter = data->n->beginInvRef(); iter != data->n->endInvRef(); ++iter) {
-          for (std::vector< std::pair<Instance*, std::string> >::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-            u = (__nodes[__idMap[jter->first]]->l < data->l)?__nodes[__idMap[jter->first]]:data;
-            v = (u != data)?data:__nodes[__idMap[jter->first]];
-            if (not __graph.existsEdge(__idMap[u->n], __idMap[v->n])) {
-              EdgeData* edge = new EdgeData();
-              edge->u = u->n;
-              edge->l_u = u->l;
-              edge->v = v->n;
-              edge->l_v = v->l;
-              __label(edge, label_map);
-              __graph.insertEdge(__idMap[u->n], __idMap[v->n]);
-              __edges.insert(Edge(__idMap[u->n], __idMap[v->n]), edge);
-            }
-            if (not visited.exists(__idMap[jter->first])) {
-              list.push_back(__idMap[jter->first]);
-            }
-          }
+  for (Property<NodeData*>::onNodes::iterator node = __nodes.begin(); node != __nodes.end(); ++node) {
+    data = *node;
+    for (Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter) {
+      for (Set<Instance*>::iterator jter = data->n->getInstances((**iter).id()).begin(); jter != data->n->getInstances((**iter).id()).end(); ++jter) {
+        u = (__nodes[__idMap[*jter]]->l < data->l)?__nodes[__idMap[*jter]]:data;
+        v = (u != data)?data:__nodes[__idMap[*jter]];
+        if (not __graph.existsEdge(__idMap[u->n], __idMap[v->n])) {
+          EdgeData* edge = new EdgeData();
+          edge->u = u->n;
+          edge->l_u = u->l;
+          edge->v = v->n;
+          edge->l_v = v->l;
+          __label(edge, label_map);
+          __graph.insertEdge(__idMap[u->n], __idMap[v->n]);
+          __edges.insert(Edge(__idMap[u->n], __idMap[v->n]), edge);
         }
       }
     }
   }
+  // // We need to add each edge between instance sharing interface
+  // Set<NodeId> visited;
+  // std::list<NodeId> list; // For width first search
+  // NodeData* data = 0;
+  // NodeData* u = 0;
+  // NodeData* v = 0;
+  // for (Property<NodeData*>::onNodes::iterator node = __nodes.begin(); node != __nodes.end(); ++node) {
+  //   if (not visited.exists(node.key())) {
+  //     list.push_back(node.key());
+  //     while (not list.empty()) {
+  //       data = __nodes[list.front()];
+  //       visited.insert(list.front());
+  //       list.pop_front();
+  //       // We add input edges
+  //       for (Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter) {
+  //         for (Set<Instance*>::iterator jter = data->n->getInstances((**iter).id()).begin(); jter != data->n->getInstances((**iter).id()).end(); ++jter) {
+  //           u = (__nodes[__idMap[*jter]]->l < data->l)?__nodes[__idMap[*jter]]:data;
+  //           v = (u != data)?data:__nodes[__idMap[*jter]];
+  //           if (not __graph.existsEdge(__idMap[u->n], __idMap[v->n])) {
+  //             EdgeData* edge = new EdgeData();
+  //             edge->u = u->n;
+  //             edge->l_u = u->l;
+  //             edge->v = v->n;
+  //             edge->l_v = v->l;
+  //             __label(edge, label_map);
+  //             __graph.insertEdge(__idMap[u->n], __idMap[v->n]);
+  //             __edges.insert(Edge(__idMap[u->n], __idMap[v->n]), edge);
+  //           }
+  //           if (not visited.exists(__idMap[*jter])) {
+  //             list.push_back(__idMap[*jter]);
+  //           }
+  //         }
+  //       }
+  //       // We add output edges
+  //       for (Instance::InvRefIterator iter = data->n->beginInvRef(); iter != data->n->endInvRef(); ++iter) {
+  //         for (std::vector< std::pair<Instance*, std::string> >::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
+  //           u = (__nodes[__idMap[jter->first]]->l < data->l)?__nodes[__idMap[jter->first]]:data;
+  //           v = (u != data)?data:__nodes[__idMap[jter->first]];
+  //           if (not __graph.existsEdge(__idMap[u->n], __idMap[v->n])) {
+  //             EdgeData* edge = new EdgeData();
+  //             edge->u = u->n;
+  //             edge->l_u = u->l;
+  //             edge->v = v->n;
+  //             edge->l_v = v->l;
+  //             __label(edge, label_map);
+  //             __graph.insertEdge(__idMap[u->n], __idMap[v->n]);
+  //             __edges.insert(Edge(__idMap[u->n], __idMap[v->n]), edge);
+  //           }
+  //           if (not visited.exists(__idMap[jter->first])) {
+  //             list.push_back(__idMap[jter->first]);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 InterfaceGraph::InterfaceGraph(const InterfaceGraph& source):
