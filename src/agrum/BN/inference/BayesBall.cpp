@@ -19,19 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the BayesBalls class.
+ * @brief Implementation of the BayesBall class.
  */
 // ============================================================================
-#include <agrum/BN/inference/BayesBalls.h>
+#include <agrum/BN/inference/BayesBall.h>
 // ============================================================================
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/inference/BayesBalls.inl>
+#include <agrum/BN/inference/BayesBall.inl>
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
 
 void
-BayesBalls::requisiteNodes(const DAG& dag,
+BayesBall::requisiteNodes(const DAG& dag,
                                    const Set<NodeId>& query,
                                    const Set<NodeId>& hardEvidence,
                                    Set<NodeId>& requisite)
@@ -52,7 +52,7 @@ BayesBalls::requisiteNodes(const DAG& dag,
 }
 
 void
-BayesBalls::__fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence)
+BayesBall::__fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence)
 {
   if (not __marks.exists(node)) {
     __marks.insert(node, std::pair<bool, bool>(false, false));
@@ -74,7 +74,7 @@ BayesBalls::__fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvid
 }
 
 void
-BayesBalls::__fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence)
+BayesBall::__fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence)
 {
   if (!__marks.exists(node)) {
     __marks.insert(node, std::pair<bool, bool>(false, false));

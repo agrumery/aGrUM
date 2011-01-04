@@ -114,7 +114,7 @@ VEWithBB<T_DATA>::__fillRequisiteNode(NodeId id, Set<NodeId>& requisite_nodes)
        iter != __hardEvidence.end(); ++iter) {
     hardEvidence.insert(iter.key());
   }
-  BayesBalls bb;
+  BayesBall bb;
   bb.requisiteNodes(this->bn().dag(), query, hardEvidence, requisite_nodes);
 }
 

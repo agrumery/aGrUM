@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the BayesBalls class.
+ * @brief Header of the BayesBall class.
  *
  * @author Lionel Torti
  */
@@ -38,48 +38,47 @@
 // ============================================================================
 namespace gum {
 /**
- * @class BayesBalls BayesBalls.h <agrum/BN/inference/BayesBalls.h>
+ * @class BayesBall BayesBall.h <agrum/BN/inference/BayesBall.h>
  * @brief Implementation of Shachter's Bayes Balls algorithm.
  * @ingroup bn_group
  *
  */
-class BayesBalls {
+class BayesBall {
 public:
 
-    /// Default constructor.
-    BayesBalls();
+  /// Default constructor.
+  BayesBall();
 
-    /// Destructor.
-    ~BayesBalls();
+  /// Destructor.
+  ~BayesBall();
 
-    /**
-     * Fill requisite with the requisite nodes in dag given a query and hard
-     * evidences.
-     */
-    void requisiteNodes(const DAG& dag,
-                        const Set<NodeId>& query,
-                        const Set<NodeId>& hardEvidence,
-                        Set<NodeId>& requisite);
+  /**
+   * Fill requisite with the requisite nodes in dag given a query and hard
+   * evidences.
+   */
+  void requisiteNodes(const DAG& dag,
+                      const Set<NodeId>& query,
+                      const Set<NodeId>& hardEvidence,
+                      Set<NodeId>& requisite);
 
 private:
 
-    /// Call this when a node receive the ball from one of his child.
-    void __fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
+  /// Call this when a node receive the ball from one of his child.
+  void __fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
 
-    /// Call this when a node reveive the ball from one of this parents.
-    void __fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
+  /// Call this when a node reveive the ball from one of this parents.
+  void __fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
 
-    /// Top and bottom flags for each nodes.
-    //HashTable< NodeId, std::pair<bool, bool> > __marks;
-    Property< std::pair<bool, bool> >::onNodes __marks;
+  /// Top and bottom flags for each nodes.
+  //HashTable< NodeId, std::pair<bool, bool> > __marks;
+  Property< std::pair<bool, bool> >::onNodes __marks;
 
 };
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/inference/BayesBalls.inl>
+#include <agrum/BN/inference/BayesBall.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 #endif /* GUM_BAYESBALLS_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 0; 

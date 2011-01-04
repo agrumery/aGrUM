@@ -33,13 +33,13 @@
 // ============================================================================
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/BayesBalls.h>
+#include <agrum/BN/inference/BayesBall.h>
 // ============================================================================
 namespace gum {
 /**
  * @class VEWithBB VEWithBB.h <agrum/BN/inference/VEWithBB.h>
  * @brief Implementation of the state of the art Value Elimination algorithm
- *        using the BayesBalls algorithm to prune the BayesNet.
+ *        using the BayesBall algorithm to prune the BayesNet.
  *
  * @ingroup bn_group
  *
