@@ -112,7 +112,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       Attribute& a = **(i.begin());
       PRMInference::Chain chain(&i, &a);
       StructuredInference structinf(*prm, prm->getSystem(s.name()), 2, 10, new gspan::StrictSearch());
-      structinf.setPaterMining(true);
+      structinf.setPatternMining(true);
       Potential<prm_float> m_struct;
       TS_GUM_ASSERT_THROWS_NOTHING(structinf.marginal(chain, m_struct));
       Instantiation inst(m_struct);
@@ -163,7 +163,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           g_vebb->marginal(chain, m_vebb);
           // GUM_TRACE("VEWithBB done");
           StructuredInference structinf(*prm, prm->getSystem(sys));
-          structinf.setPaterMining(true);
+          structinf.setPatternMining(true);
           structinf.marginal(chain, m_struct);
           // GUM_TRACE("StructInf done");
           SVED sved(*prm, prm->getSystem(sys));

@@ -134,7 +134,7 @@ namespace gum {
     // We add arcs
     float p = density * ( float ) RAND_MAX;
 
-    Size tree_width;
+    Size tree_width=(Size)0;
     for ( Size i = 0; i < nbrNodes; ++i ) {
       for ( Size j = i + 1; (tree_width < __max_width) and (j < nbrNodes); ++j ) {
         if ( ( ( float ) rand() ) < p ) {

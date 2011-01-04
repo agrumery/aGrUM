@@ -77,7 +77,7 @@ namespace gum {
           gum::InfluenceDiagramGenerator gen;
           gum::InfluenceDiagram<float>* id = 0;
 	  
-          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDF( 25, 0.5, 0.6, 0.1, 4 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 ) );
 	  
 	  TS_ASSERT(id->decisionOrderExists());
           if ( id != 0 ) delete id;
@@ -87,7 +87,7 @@ namespace gum {
         void testGenerationFloat_2() {
           gum::InfluenceDiagramGenerator gen;
 
-          gum::InfluenceDiagram<float>* id = gen.generateIDF( 25, 0.5, 0.6, 0.1, 4 );
+          gum::InfluenceDiagram<float>* id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 );
           // Test for cicuits
           std::vector<gum::NodeId> stack;
           gum::Set<gum::NodeId> passed;
@@ -106,7 +106,7 @@ namespace gum {
           gum::InfluenceDiagramGenerator gen;
           gum::InfluenceDiagram<double>* id = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDD( 25, 0.5, 0.6, 0.1, 4 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 ) );
 	  
 	  TS_ASSERT(id->decisionOrderExists());
           if ( id != 0 ) delete id;
@@ -115,7 +115,7 @@ namespace gum {
         void testGenerationDouble_2() {
           gum::InfluenceDiagramGenerator gen;
 
-          gum::InfluenceDiagram<double>* id = gen.generateIDD( 25, 0.5, 0.6, 0.1, 4 );
+          gum::InfluenceDiagram<double>* id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 );
           // Test for cicuits
           std::vector<gum::NodeId> stack;
           gum::Set<gum::NodeId> passed;
