@@ -21,7 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 // ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/BayesBalls.h>
+#include <agrum/BN/inference/BayesBall.h>
 // ============================================================================
 #include <agrum/prm/SVE.h>
 #include <agrum/prm/structuredBayesBall.h>
