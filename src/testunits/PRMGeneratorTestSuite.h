@@ -189,10 +189,10 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           // for (inst.setFirst(); not inst.end(); inst.inc())
           {
             sum += m_ve.get(inst);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_vebb.get(inst), 1.0e-3);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst), 1.0e-3);
+            TS_ASSERT_DELTA(m_ve.get(inst), m_vebb.get(inst),   1.0e-3);
+            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst),     1.0e-3);
             TS_ASSERT_DELTA(m_ve.get(inst), m_struct.get(jnst), 1.0e-3);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_sved.get(jnst), 1.0e-3);
+            TS_ASSERT_DELTA(m_ve.get(inst), m_sved.get(jnst),   1.0e-3);
             //TS_ASSERT_DELTA(m_ve.get(inst), m_sve.get(jnst), 1.0e-3);
           }
           TS_ASSERT_DELTA(sum, (prm_float) 1.0, 1.0e-3);

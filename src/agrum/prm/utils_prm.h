@@ -23,13 +23,17 @@
 #include <string>
 #include <vector>
 // ============================================================================
-#include <agrum/multidim/potential.h>
+#include <agrum/core/debug.h>
+// ============================================================================
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/multiDimSparse.h>
-#include <agrum/multidim/multiDimNoisyORCompound.h>
-#include <agrum/multidim/multiDimNoisyORNet.h>
 #include <agrum/multidim/multiDimBijArray.h>
 #include <agrum/multidim/multiDimBucket.h>
+#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/multiDimNoisyORNet.h>
+#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/multidim/projections4MultiDim.h>
 // ============================================================================
 
 /*!  @ingroup prm_group

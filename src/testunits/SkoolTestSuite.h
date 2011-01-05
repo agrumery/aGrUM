@@ -908,59 +908,59 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       if (prm)
         delete prm;
     }
-    
-    void testErrorsAndWarnings() {
-      SkoolReader reader;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/Printer_with_errors.skool"));
-      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      if (reader.prm());
-        delete reader.prm();
-    }
-    
-    
-    void testReadString1() {
-      ifstream stream("../../../src/testunits/ressources/skool/types.skool");
-      string buffer;
-      char tampon[255];
-      TS_ASSERT(stream.good());
-      while (stream.good()) {
-        stream.getline(tampon,255);
-        buffer += tampon;
-        buffer += "\n";
-      }
-      stream.close();
-      
-      SkoolReader reader;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
-      PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("t_degraded").variable().domainSize(), (gum::Size)3);
-      TS_ASSERT_EQUALS(prm->getType("t_bw_p").variable().domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(prm->getType("t_color_p").variable().domainSize(), (gum::Size)5);
-      delete prm;
-    }
-    
-    void testReadString2() {
-      ifstream stream("../../../src/testunits/ressources/skool/Printer_with_errors.skool");
-      string buffer;
-      char tampon[255];
-      TS_ASSERT(stream.good());
-      while (stream.good()) {
-        stream.getline(tampon,255);
-        buffer += tampon;
-        buffer += "\n";
-      }
-      stream.close();
-      
-      SkoolReader reader;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
-      TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      if (reader.prm());
-        delete reader.prm();
-    }
+
+    // Do not uncommment these unless you want to debug or test with errors
+    // (it dumps a lot of stuff)
+
+    //void testErrorsAndWarnings() {
+    //  SkoolReader reader;
+    //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/Printer_with_errors.skool"));
+    //  TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+    //  TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
+    //  if (reader.prm());
+    //    delete reader.prm();
+    //}
+
+    //void testReadString1() {
+    //  ifstream stream("../../../src/testunits/ressources/skool/types.skool");
+    //  string buffer;
+    //  char tampon[255];
+    //  TS_ASSERT(stream.good());
+    //  while (stream.good()) {
+    //    stream.getline(tampon,255);
+    //    buffer += tampon;
+    //    buffer += "\n";
+    //  }
+    //  stream.close();
+    //  SkoolReader reader;
+    //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
+    //  PRM* prm = reader.prm();
+    //  TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
+    //  TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
+    //  TS_ASSERT_EQUALS(prm->getType("t_degraded").variable().domainSize(), (gum::Size)3);
+    //  TS_ASSERT_EQUALS(prm->getType("t_bw_p").variable().domainSize(), (gum::Size)4);
+    //  TS_ASSERT_EQUALS(prm->getType("t_color_p").variable().domainSize(), (gum::Size)5);
+    //  delete prm;
+    //}
+
+    //void testReadString2() {
+    //  ifstream stream("../../../src/testunits/ressources/skool/Printer_with_errors.skool");
+    //  string buffer;
+    //  char tampon[255];
+    //  TS_ASSERT(stream.good());
+    //  while (stream.good()) {
+    //    stream.getline(tampon,255);
+    //    buffer += tampon;
+    //    buffer += "\n";
+    //  }
+    //  stream.close();
+    //  SkoolReader reader;
+    //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
+    //  TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+    //  TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
+    //  if (reader.prm());
+    //    delete reader.prm();
+    //}
 };
 
 } // namespace tests

@@ -30,7 +30,10 @@
 #include <list>
 #include <algorithm>
 // ============================================================================
+#include <agrum/core/timer.h>
+// ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
+// ============================================================================
 #include <agrum/prm/PRM.h>
 #include <agrum/prm/gspan/interfaceGraph.h>
 #include <agrum/prm/gspan/DFSTree.h>

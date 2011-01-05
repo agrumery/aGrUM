@@ -18,9 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/core/debug.h>
+// ============================================================================
 #include <agrum/prm/utils_prm.h>
+// ============================================================================
 #include <agrum/prm/classElement.h>
+// ============================================================================
 
 namespace gum {
 namespace prm {
@@ -105,44 +107,86 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
   }
 }
 
+// the function used to combine two tables
+Potential<float>* multPotential ( const Potential<float>& t1,
+                                  const Potential<float>& t2 ) {
+  return new Potential<float> (t1 * t2);
+}
+
 void
 eliminateNode(const DiscreteVariable* var,
               Set<Potential<prm_float>*>& pool,
               Set<Potential<prm_float>*>& trash)
 {
-  MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
-  Set< Potential<prm_float>* > toRemove;
-  for (SetIterator<Potential<prm_float>*> iter = pool.begin();
-       iter != pool.end(); ++iter )
-  {
-    if ((*iter)->contains(*var)) {
-      bucket->add(**iter);
-      toRemove.insert(*iter);
+  static Potential<prm_float>* pot = 0;
+  static Potential<prm_float>* tmp = 0;
+  Set<const DiscreteVariable*> var_set;
+  var_set.insert(var);
+  Set<const Potential<prm_float>*> pots;
+  for (SetIterator<Potential<prm_float>*> iter = pool.begin(); iter != pool.end(); ++iter )
+    if ((*iter)->contains(*var))
+      pots.insert(*iter);
+  if (pots.size() == 0) {
+    return;
+  } else if (pots.size() == 1) {
+    pot = const_cast<Potential<prm_float>*>(*(pots.begin()));
+    if (pot->nbrDim() == 1) {
+      // No need to compute anything, this is a leaf node without evidence
+      pool.erase(pot);
+      return;
+    } else {
+      pot = new Potential<prm_float>(projectSum(*pot, var_set));
     }
-  }
-  if (toRemove.empty()) {
-    delete bucket;
   } else {
-    for (SetIterator<Potential<prm_float>*> iter = toRemove.begin();
-         iter != toRemove.end(); ++iter)
-      pool.erase( *iter );
-    for (Set<const DiscreteVariable*>::iterator jter =
-         bucket->allVariables().begin(); jter != bucket->allVariables().end();
-         ++jter )
-    {
-      try {
-        if ((*jter) != var) bucket->add( **jter );
-      } catch (NotFound&) {
-        // This can happen if since some DiscreteVariable are not represented
-        // as nodes in the undigraph (parents of input nodes)
-        bucket->add(**jter);
-      }
-    }
-    Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
-    trash.insert( bucket_pot );
-    pool.insert( bucket_pot );
+    MultiDimCombinationDefault<float,Potential> Comb ( multPotential );
+    tmp = Comb.combine(pots);
+    pot = new Potential<prm_float>(projectSum(*tmp, var_set));
+    delete tmp;
   }
+  for (Set<const Potential<prm_float>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter)
+    pool.erase(const_cast<Potential<prm_float>*>(*iter));
+  pool.insert(pot);
+  trash.insert(pot);
 }
+
+// void
+// eliminateNode(const DiscreteVariable* var,
+//               Set<Potential<prm_float>*>& pool,
+//               Set<Potential<prm_float>*>& trash)
+// {
+//   MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
+//   Set< Potential<prm_float>* > toRemove;
+//   for (SetIterator<Potential<prm_float>*> iter = pool.begin();
+//        iter != pool.end(); ++iter )
+//   {
+//     if ((*iter)->contains(*var)) {
+//       bucket->add(**iter);
+//       toRemove.insert(*iter);
+//     }
+//   }
+//   if (toRemove.empty()) {
+//     delete bucket;
+//   } else {
+//     for (SetIterator<Potential<prm_float>*> iter = toRemove.begin();
+//          iter != toRemove.end(); ++iter)
+//       pool.erase( *iter );
+//     for (Set<const DiscreteVariable*>::iterator jter =
+//          bucket->allVariables().begin(); jter != bucket->allVariables().end();
+//          ++jter )
+//     {
+//       try {
+//         if ((*jter) != var) bucket->add( **jter );
+//       } catch (NotFound&) {
+//         // This can happen if since some DiscreteVariable are not represented
+//         // as nodes in the undigraph (parents of input nodes)
+//         bucket->add(**jter);
+//       }
+//     }
+//     Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
+//     trash.insert( bucket_pot );
+//     pool.insert( bucket_pot );
+//   }
+// }
 
 } /* namespace prm */
 }

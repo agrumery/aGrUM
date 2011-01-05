@@ -26,6 +26,8 @@
 // ============================================================================
 #include <string>
 // ============================================================================
+#include <agrum/core/timer.h>
+// ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
 // ============================================================================
 #include <agrum/multidim/potential.h>
@@ -291,6 +293,8 @@ class StructuredInference: public PRMInference {
     std::string __str(const Instance* i, const Attribute& a) const;
     std::string __str(const Instance* i, const SlotChain& a) const;
 
+    // For debug purpose.
+    Timer timer;
 };
 
 } /* namespace prm */

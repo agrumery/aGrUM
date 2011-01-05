@@ -121,7 +121,7 @@ namespace prm {
     }
     // Eliminating all nodes in current instance
     if (hasEvidence(i)) {
-      __eliminatNodesWithEvidence(i, pool, trash);
+      __eliminateNodesWithEvidence(i, pool, trash);
     } else {
       __insertLiftedNodes(i, pool, trash);
       for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg)
@@ -175,7 +175,7 @@ namespace prm {
     }
     // Eliminating all nodes in i instance
     if (hasEvidence(i)) {
-      __eliminatNodesWithEvidence(i, pool, trash);
+      __eliminateNodesWithEvidence(i, pool, trash);
     } else {
       __insertLiftedNodes(i, pool, trash);
       for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg)
@@ -208,7 +208,7 @@ namespace prm {
   }
 
   void
-  SVED::__eliminatNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet& trash) {
+  SVED::__eliminateNodesWithEvidence(const Instance* i, BucketSet& pool, BucketSet& trash) {
     // Adding required evidences
     for (EMapIterator e = evidence(i).begin(); e != evidence(i).end(); ++e)
       if (__bb.requisiteNodes(i).exists(e.key()))
@@ -222,54 +222,6 @@ namespace prm {
     const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
     for (std::vector<NodeId>::const_iterator var = full_elim_order.begin(); var != full_elim_order.end(); ++var)
       eliminateNode(&(i->get(*var).type().variable()), pool, trash);
-    // // First we check if evidences are on inner nodes
-    // bool inner = false;
-    // for (EMapIterator e = evidence(i).begin(); e != evidence(i).end(); ++e) {
-    //   inner = inner or i->type().isInputNode(i->get(e.key())) or i->type().isInnerNode(i->get(e.key()));
-    //   if (inner) { break; }
-    // }
-    // if (inner) {
-    //   BucketSet tmp_pool;
-    //   __insertEvidence(i, tmp_pool);
-    //   // We need a local to not eliminate queried inner nodes of the same class
-    //   for (Instance::const_iterator attr = i->begin(); attr != i->end(); ++attr) {
-    //     tmp_pool.insert(&((**attr).cpf()));
-    //   }
-    //   InstanceBayesNet bn(*i);
-    //   DefaultTriangulation t(&(bn.moralGraph()), &(bn.modalities()));
-    //   const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
-    //   VariableElimination<prm_float> inf(bn);
-    //   // Removing Output nodes of elimination order
-    //   std::vector<NodeId> inner_elim_order;
-    //   std::vector<NodeId> output_elim_order;
-    //   for (size_t idx = 0; idx < full_elim_order.size(); ++idx) {
-    //     if (not i->type().isOutputNode(i->get(full_elim_order[idx]))) {
-    //       inner_elim_order.push_back(full_elim_order[idx]);
-    //     } else {
-    //       output_elim_order.push_back(full_elim_order[idx]);
-    //     }
-    //   }
-    //   inf.eliminateNodes(inner_elim_order, tmp_pool, trash);
-    //   // Now we add the new potentials in pool and eliminate output nodes
-    //   for (BucketSetIterator iter = tmp_pool.begin(); iter != tmp_pool.end(); ++iter) {
-    //     pool.insert(*iter);
-    //   }
-    //   if (not output_elim_order.empty()) {
-    //     inf.eliminateNodes(output_elim_order, pool, trash);
-    //   }
-    // } else {
-    //   InstanceBayesNet bn(*i);
-    //   VariableElimination<prm_float> inf(bn);
-    //   __insertEvidence(i, pool);
-    //   __insertLiftedNodes(i, pool, trash);
-    //   for (Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg)
-    //     pool.insert(__getAggPotential(i, *agg));
-    //   try {
-    //     inf.eliminateNodes(__getElimOrder(i->type()), pool, trash);
-    //   } catch (NotFound&) {
-    //     GUM_ERROR(FatalError, "there should be at least one node here.");
-    //   }
-    // }
   }
 
   void

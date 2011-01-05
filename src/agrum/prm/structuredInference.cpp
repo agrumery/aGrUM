@@ -127,63 +127,74 @@ StructuredInference::_joint(const std::vector< Chain >& queries, Potential<prm_f
 void
 StructuredInference::__buildReduceGraph(StructuredInference::RGData& data) {
   // Launch the pattern mining
-  if (__mining) {
-    try {
-      __gspan->discoverPatterns();
-    } catch (NotFound& e) {
-      // No pattern found !
-    }
-  }
+  //GUM_TRACE(timer.step());
+  if (__mining)
+    __gspan->discoverPatterns();
+  //GUM_TRACE(timer.step());
   // Reducing each used pattern
   typedef std::vector<gspan::Pattern*>::const_iterator Iter;
   for (Iter p = __gspan->patterns().begin(); p != __gspan->patterns().end(); ++p)
-    if (__gspan->matches(**p).size()) __reducePattern(*p);
+    if (__gspan->matches(**p).size())
+      __reducePattern(*p);
+  //GUM_TRACE(timer.step());
   // Unreducing a matche if it contains the query
   if (__reducedInstances.exists(__query.first))
     __unreduceMatchWithQuery();
+  //GUM_TRACE(timer.step());
   // reducing instance not already reduced in a pattern
   __reduceAloneInstances(data);
+  //GUM_TRACE(timer.step());
   // Adding edges using the pools
   __addEdgesInReducedGraph(data);
+  //GUM_TRACE(timer.step());
   // Placing the query where it belongs
   NodeId id = 0;
   try {
     id = data.var2node.second(&(__query.second->type().variable()));
   } catch (NotFound& e) {
-    GUM_TRACE_VAR(__reducedInstances.exists(__query.first));
-    GUM_TRACE_VAR(ClassElement::enum2str(__query.first->type().get(__query.second->id()).elt_type()));
-    GUM_TRACE_VAR(__query.first->type().isOutputNode(*(__query.second)));
-    GUM_TRACE_VAR(__query.first->type().isInputNode(*(__query.second)));
+    //GUM_TRACE_VAR(__reducedInstances.exists(__query.first));
+    //GUM_TRACE_VAR(ClassElement::enum2str(__query.first->type().get(__query.second->id()).elt_type()));
+    //GUM_TRACE_VAR(__query.first->type().isOutputNode(*(__query.second)));
+    //GUM_TRACE_VAR(__query.first->type().isInputNode(*(__query.second)));
     throw e;
   }
+  //GUM_TRACE(timer.step());
   data.outputs().erase(id);
   data.queries().insert(id);
+  //GUM_TRACE(timer.step());
   // Triangulating, then eliminating
   PartialOrderedTriangulation t(&(data.reducedGraph), &(data.mods), &(data.partial_order));
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
   for (size_t i = 0; i < data.outputs().size(); ++i)
     eliminateNode(data.var2node.first(elim_order[i]), data.pool, __trash);
+  //GUM_TRACE(timer.step());
 }
 
 void
 StructuredInference::__reducePattern(const gspan::Pattern* p) {
+  //GUM_TRACE("reducing patterns !");
   // const gspan::InterfaceGraph& ig = __gspan->interfaceGraph();
   Set<Potential<prm_float>*> pool;
   StructuredInference::PData data(*p, __gspan->matches(*p));
+  //GUM_TRACE(timer.step());
   // First we add nodes to graph and fill mod, outputs, inners, vars, node2attr and pool
   __buildPatternGraph(data, pool, **(data.matches.begin()));
+  //GUM_TRACE(timer.step());
   // Second we add observed nodes in all matches to obs and check for queries
   __buildObsSet(data, **(data.matches.begin()));
+  //GUM_TRACE(timer.step());
   // Now we can triangulate graph
-  PartialOrderedTriangulation t(&(data.graph), &(data.mod),
-                                data.partial_order());
+  PartialOrderedTriangulation t(&(data.graph), &(data.mod), data.partial_order());
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
+  //GUM_TRACE(timer.step());
   // We eliminate inner variables and then we eliminate observed nodes w.r.t.
   // each match's observation set
   for (size_t i = 0; i < data.inners().size(); ++i)
     eliminateNode(data.vars.second(elim_order[i]), pool, __trash);
+  //GUM_TRACE(timer.step());
   for (GSpan::MatchedInstances::const_iterator iter = data.matches.begin(); iter != data.matches.end(); ++iter)
     __elim_map.insert(*iter, __eliminateObservedNodes(data, pool, **iter, elim_order));
+  //GUM_TRACE(timer.step());
 }
 
 void
@@ -285,9 +296,9 @@ StructuredInference::__buildObsSet(StructuredInference::PData& data,
 
 Set<Potential<prm_float>*>*
 StructuredInference::__eliminateObservedNodes(StructuredInference::PData& data,
-                                        const Set<Potential<prm_float>*>& pool,
-                                        const Sequence<Instance*>& match,
-                                        const std::vector<NodeId>& elim_order)
+                                              const Set<Potential<prm_float>*>& pool,
+                                              const Sequence<Instance*>& match,
+                                              const std::vector<NodeId>& elim_order)
 {
   Set<Potential<prm_float>*> set(pool);
   const PRMInference::EMap* e_map = 0;
@@ -370,12 +381,14 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
     }
   }
   // Third we translate the potentials
+  size_t count = 0;
   Potential<prm_float>* pot = 0;
-  for (Set<Potential<prm_float>*>::const_iterator iter = set.begin(); iter != set.end(); ++iter) {
+  for (Set<Potential<prm_float>*>::const_iterator iter = set.begin(); iter != set.end(); ++iter, ++count) {
     pot = copyPotential(bij, **iter);
     retVal->insert(pot);
     __trash.insert(pot);
   }
+  //GUM_TRACE_VAR(count);
   return retVal;
 }
 

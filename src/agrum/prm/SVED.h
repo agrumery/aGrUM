@@ -144,7 +144,7 @@ class SVED: public PRMInference{
                                 List<const Instance*>& elim_list,
                                 Set<const Instance*>& ignore);
 
-    void __eliminatNodesWithEvidence(const Instance* i,
+    void __eliminateNodesWithEvidence(const Instance* i,
                                      BucketSet& pool, BucketSet& trash);
 
     void __insertLiftedNodes(const Instance* i, BucketSet& pool,
