@@ -114,11 +114,11 @@ namespace gum {
       int total_size=0;
 
       std::cerr<<std::setfill( '-' );
-      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|"<<std::endl;
+      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|"<<std::endl;
       std::cerr<<std::setfill( ' ' );
-      std::cerr<<"| "<<std::setw( 50 )<<"   Class Name    "<<" | "<<std::setw( 7 )<<"Size"<<" | "<<std::setw( 5 )<<"#Const"<<"| "<<std::setw( 5 )<<"#Dest"<<" |"<<std::endl;
+      std::cerr<<"| "<<std::setw( 50 )<<"   Class Name    "<<" | "<<std::setw( 7 )<<"Size"<<" | "<<std::setw( 8 )<<"#Const"<<" | "<<std::setw( 8 )<<"#Dest"<<" |"<<std::endl;
       std::cerr<<std::setfill( '-' );
-      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|"<<std::endl;
+      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|"<<std::endl;
       std::cerr<<std::setfill( ' ' );
       // list of created objects
       std::vector<std::string> res;
@@ -128,15 +128,15 @@ namespace gum {
         int zeCreatedObjs=xx->second;
         int zeDeletedObjts=-1;
         int size=__sizeof()[xx->first];
-        stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 5 )<<size<<" o | "<<std::setw( 5 )<<zeCreatedObjs<<" | ";
+        stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 5 )<<size<<" o | "<<std::setw( 8 )<<zeCreatedObjs<<" | ";
 
         if ( size>0 ) total_size+=zeCreatedObjs*size;
 
         try {
           zeDeletedObjts=__deletion()[xx->first];
-          stream<<std::setw( 5 )<<zeDeletedObjts;
+          stream<<std::setw( 8 )<<zeDeletedObjts;
         } catch ( NotFound& ) {
-          stream<<std::setw( 5 )<<"?????";
+          stream<<std::setw( 8 )<<"?????";
         }
 
         stream<<" |";;
@@ -152,7 +152,7 @@ namespace gum {
           __creation()[xx->first];
         } catch ( NotFound& ) {
           std::stringstream stream;
-          stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 7 )<<__sizeof()[xx->first]<<" | "<<std::setw( 5 )<<"?????"<<" | "<<std::setw( 5 )<<xx->second<<" |<--- failed";
+          stream<<"| "<<std::setw( 50 )<<xx->first<<" | "<<std::setw( 7 )<<__sizeof()[xx->first]<<" | "<<std::setw( 8 )<<"?????"<<" | "<<std::setw( 8 )<<xx->second<<" |<--- failed";
           res.push_back( stream.str() );
           nb_err+=xx->second;
         }
@@ -168,21 +168,21 @@ namespace gum {
 
       std::cerr<<std::setfill( '-' );
 
-      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|-"<<std::setw( 5 )<<""<<"-|"<<std::endl;
+      std::cerr<<"|-"<<std::setw( 50 )<<""<<"-|-"<<std::setw( 7 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|-"<<std::setw( 8 )<<""<<"-|"<<std::endl;
 
       std::cerr<<std::setfill( ' ' );
 
       if ( nb_err==0 ) {
-        std::cerr<<"| "<<std::setw( 50 )<<"NO MEMORY LEAK !"<<""<<" | "<<std::setw( 25 )<<"|"<<std::endl;
+        std::cerr<<"| "<<std::setw( 50 )<<"NO MEMORY LEAK !"<<""<<" | "<<std::setw( 31 )<<"|"<<std::endl;
       } else {
-        std::cerr<<"| "<<std::setw( 50 )<<"Memory leaks found : "<<""<<" | "<<std::setw( 11 )<<nb_err<<" object(s) "<<std::setw( 3 )<<"|"<<std::endl;
+        std::cerr<<"| "<<std::setw( 50 )<<"Memory leaks found : "<<""<<" | "<<std::setw( 15 )<<nb_err<<" object(s) "<<std::setw( 3 )<<"|"<<std::endl;
       }
 
-      std::cerr<<"| "<<std::setw( 50 )<<"total "<<""<<" | "<<std::setw( 11 )<<total_size<<" octet(s) "<<std::setw( 4 )<<"|"<<std::endl;
+      std::cerr<<"| "<<std::setw( 50 )<<"total "<<""<<" | "<<std::setw( 17 )<<total_size<<" octet(s) "<<std::setw( 4 )<<"|"<<std::endl;
 
       std::cerr<<std::setfill( '-' );
 
-      std::cerr<<"|"<<std::setw( 79 )<<"|"<<std::endl;
+      std::cerr<<"|"<<std::setw( 85 )<<"|"<<std::endl;
 
 
 #endif //NDEBUG

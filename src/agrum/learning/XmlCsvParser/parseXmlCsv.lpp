@@ -10,14 +10,12 @@
 
 #define YY_DECL int GUM_PARSE_XML_CSV_lex (YYSTYPE* GUM_PARSE_XML_CSV_lval)
 
-
 int  GUM_PARSE_XML_CSV_property_caller_var;
 int  GUM_PARSE_XML_CSV_property_caller_modal;
 int  GUM_PARSE_XML_CSV_property_caller_name;
 int  GUM_PARSE_XML_CSV_property_caller_id;
 int  GUM_PARSE_XML_CSV_property_caller_data;
 int  GUM_PARSE_XML_CSV_property_caller_case;
-
 
 extern unsigned int GUM_PARSE_XML_CSV_words_size;
 extern gum::HashTable<unsigned int,std::string> *GUM_PARSE_XML_CSV_words;

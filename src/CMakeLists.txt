@@ -7,33 +7,28 @@ set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set(AGRUM_OPTIMIZATION "-O3")
 set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
-
 include("cmake/CompilOptions.agrum.cmake")
-include("cmake/FlexBison.agrum.cmake")
-include("cmake/CocoR.agrum.cmake")
 
 file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)
 file(GLOB_RECURSE AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.h)
 file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.inl)
 file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.tcc)
 
-FlexBisonTarget(XmlCsvParser learning parseXmlCsv)
-find_program(COCOR_EXECUTABLE cococpp)
+
+### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
+include("cmake/FlexBison.agrum.cmake")
+if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+	FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
+endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+####################################################################
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
-if(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-	find_program(COCOR_EXECUTABLE2 Coco)
-	if(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
-		message(WARNING "Coco/R not found : you cannot change atg files !")
-	else(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
-		set(COCOR_EXECUTABLE "${COCOR_EXECUTABLE2}")
-	endif(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
-endif(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-
+include("cmake/CocoR.agrum.cmake")
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 	CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
 	CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
 	CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
+#	CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 

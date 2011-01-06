@@ -137,7 +137,7 @@ from numpy import *
                          const std::string& label) const;
 %extend gum::DiscretizedVariable { //XXX hack, rename will be better
     gum::Idx index(const float& aTarget) const {
-        return (*($self))[aTarget];
+        return (*self)[aTarget];
     }
 }
 %rename(DiscreteVar) gum::DiscreteVariable;
@@ -169,7 +169,7 @@ from numpy import *
 %extend gum::Exception {
     const char * __str__()
     {
-        return $self->getContent().c_str();
+        return self->getContent().c_str();
     }
 }
 
@@ -237,7 +237,7 @@ def addTick(self,*args):
 
     void saveBIF(std::string name) {
         gum::BIFWriter<T_DATA> writer;
-        writer.write( name, *($self) );
+        writer.write( name, *self );
     }
 
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
