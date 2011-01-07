@@ -24,128 +24,137 @@
  * @author Lionel TORTI
  */
 // ============================================================================
+
+//to ease automatic parsing
+#include <agrum/prm/skool/SkoolReader.h>
+
 namespace gum {
-namespace prm {
-namespace skool {
 
-INLINE
-SkoolReader::SkoolReader() {
-  GUM_CONSTRUCTOR( SkoolReader );
-  __class_path.push_back(".");
-  __parseDone = false;
-}
+  namespace prm {
 
+    namespace skool {
 
-INLINE
-SkoolReader::~SkoolReader() {
-  GUM_DESTRUCTOR( SkoolReader );
-  delete __parser;
-}
-
-INLINE
-void
-SkoolReader::readFile(const std::string& file) {
-  if ( ! __parseDone ) {
-    Scanner s(file.c_str());
-    __parser = new Parser(&s);
-    __parser->setFactory(&__factory);
-    __parser->setClassPath(__class_path);
-    try {
-      __parser->Parse();
-    __parseDone=true;
-    } catch ( gum::Exception &e ) {
-      GUM_SHOWERROR( e );
-    }
-  }
-}
-
-INLINE
-void
-SkoolReader::readString(const std::string & string) {
-  if ( ! __parseDone ) {
-    Scanner s((unsigned char*) string.c_str(), (int) (string.length() + 1));
-    __parser = new Parser(&s);
-    __parser->setFactory(&__factory);
-    __parser->setClassPath(__class_path);
-    try {
-      __parser->Parse();
-    __parseDone=true;
-    } catch ( gum::Exception &e ) {
-      GUM_SHOWERROR( e );
-    }
-  }
-}
+      INLINE
+      SkoolReader::SkoolReader() {
+        GUM_CONSTRUCTOR ( SkoolReader );
+        __class_path.push_back ( "." );
+        __parseDone = false;
+      }
 
 
-INLINE
-gum::prm::PRM*
-SkoolReader::prm() {
-  return __factory.prm();
-}
+      INLINE
+      SkoolReader::~SkoolReader() {
+        GUM_DESTRUCTOR ( SkoolReader );
+        delete __parser;
+      }
+
+      INLINE
+      void
+      SkoolReader::readFile ( const std::string& file ) {
+        if ( ! __parseDone ) {
+          Scanner s ( file.c_str() );
+          __parser = new Parser ( &s );
+          __parser->setFactory ( &__factory );
+          __parser->setClassPath ( __class_path );
+
+          try {
+            __parser->Parse();
+            __parseDone = true;
+          } catch ( gum::Exception &e ) {
+            GUM_SHOWERROR ( e );
+          }
+        }
+      }
+
+      INLINE
+      void
+      SkoolReader::readString ( const std::string & string ) {
+        if ( ! __parseDone ) {
+          Scanner s ( ( unsigned char* ) string.c_str(), ( int ) ( string.length() + 1 ) );
+          __parser = new Parser ( &s );
+          __parser->setFactory ( &__factory );
+          __parser->setClassPath ( __class_path );
+
+          try {
+            __parser->Parse();
+            __parseDone = true;
+          } catch ( gum::Exception &e ) {
+            GUM_SHOWERROR ( e );
+          }
+        }
+      }
+
+
+      INLINE
+      gum::prm::PRM*
+      SkoolReader::prm() {
+        return __factory.prm();
+      }
 
 /// @{
 /// publishing Errors API
-INLINE
-unsigned int SkoolReader::errLine( unsigned int i ) {
-  if ( __parseDone ) return __parser->errors->line( i );
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      unsigned int SkoolReader::errLine ( unsigned int i ) {
+        if ( __parseDone ) return __parser->errors->line ( i );
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-unsigned int SkoolReader::errCol( unsigned int i ) {
-  if ( __parseDone ) return __parser->errors->col( i );
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      unsigned int SkoolReader::errCol ( unsigned int i ) {
+        if ( __parseDone ) return __parser->errors->col ( i );
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-std::wstring SkoolReader::errFilename( unsigned int i ) {
-  if ( __parseDone ) return __parser->errors->filename( i );
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      std::wstring SkoolReader::errFilename ( unsigned int i ) {
+        if ( __parseDone ) return __parser->errors->filename ( i );
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-bool SkoolReader::errIsError( unsigned int i ) {
-  if ( __parseDone ) return __parser->errors->is_error( i );
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      bool SkoolReader::errIsError ( unsigned int i ) {
+        if ( __parseDone ) return __parser->errors->is_error ( i );
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-std::string SkoolReader::errMsg( unsigned int i ) {
-  if ( __parseDone ) return std::string( narrow( __parser->errors->msg( i ) ) );
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      std::string SkoolReader::errMsg ( unsigned int i ) {
+        if ( __parseDone ) return std::string ( narrow ( __parser->errors->msg ( i ) ) );
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-void SkoolReader::showElegantErrors() {
-  if ( __parseDone ) __parser->errors->showElegantErrors();
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      void SkoolReader::showElegantErrors() {
+        if ( __parseDone ) __parser->errors->showElegantErrors();
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-void SkoolReader::showElegantErrorsAndWarnings() {
-  if ( __parseDone ) __parser->errors->showElegantErrorsAndWarnings();
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      void SkoolReader::showElegantErrorsAndWarnings() {
+        if ( __parseDone ) __parser->errors->showElegantErrorsAndWarnings();
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-void SkoolReader::showErrorCounts() {
-  if ( __parseDone ) __parser->errors->showSyntheticResults();
-  else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
-}
+      INLINE
+      void SkoolReader::showErrorCounts() {
+        if ( __parseDone ) __parser->errors->showSyntheticResults();
+        else GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
+      }
 
-INLINE
-Size  SkoolReader::errors() {
-  return (! __parseDone )?( Size )0:__parser->errors->error_count;
-}
+      INLINE
+      Size  SkoolReader::errors() {
+        return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors->error_count;
+      }
 
-INLINE
-Size  SkoolReader::warnings() {
-  return (! __parseDone )?( Size )0:__parser->errors->warning_count;
-}
+      INLINE
+      Size  SkoolReader::warnings() {
+        return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors->warning_count;
+      }
 
 /// @}
 
-} /* namespace skool */
-} /* namespace prm */
+    } /* namespace skool */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

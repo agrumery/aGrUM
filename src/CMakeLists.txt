@@ -25,9 +25,9 @@ endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include("cmake/CocoR.agrum.cmake")
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-	CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
 	CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
 	CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
+	CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
 #	CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################

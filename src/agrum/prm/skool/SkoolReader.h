@@ -44,74 +44,77 @@ namespace gum {
 namespace prm {
 namespace skool {
 
-  class SkoolReader {
-    public:
+class SkoolReader {
+public:
 
-      SkoolReader();
+    SkoolReader();
 
-      ~SkoolReader();
+    ~SkoolReader();
 
-      void readFile(const std::string& file);
-      void readString(const std::string & string);
+    void readFile(const std::string& file);
+    void readString(const std::string & string);
 
-      /**
-       * @brief This methods defines the list of paths to look for skool files.
-       * Use / for path separator ! Even on Windows !
-       *
-       * @param class_path A semicolon separated list of paths.
-       */
-      void setClassPath(const std::string& class_path);
+    /**
+     * @brief This methods defines the list of paths to look for skool files.
+     * Use / for path separator ! Even on Windows !
+     *
+     * @param class_path A semicolon separated list of paths.
+     */
+    void setClassPath(const std::string& class_path);
 
-      gum::prm::PRM* prm();
+    gum::prm::PRM* prm();
 
-      /// @{
-      /// publishing Errors API
- 
-      /// # of errors
-      Size errors();
-      /// # of errors
-      Size warnings();
- 
-      /// line of ith error or warning
-      unsigned int errLine( unsigned int i );
-      /// col of ith error or warning
-      unsigned int errCol( unsigned int i );
-      /// filename of ith error or warning
-      std::wstring errFilename( unsigned int i );
-      /// type of ith error or warning
-      bool errIsError( unsigned int i );
-      /// message of ith error or warning
-      std::string errMsg( unsigned int i );
- 
-      /// send on std::cerr the list of errors
-      void showElegantErrors();
- 
-      /// send on std::cerr the list of errors or warnings
-      void showElegantErrorsAndWarnings();
- 
-      /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts();
-      /// @}
+    /// @{
+    /// publishing Errors API
 
-    private:
-      SkoolReader(const SkoolReader& source);
+    /// # of errors
+    Size errors();
+    /// # of errors
+    Size warnings();
 
-      SkoolReader& operator=(const SkoolReader& source);
+    /// line of ith error or warning
+    unsigned int errLine( unsigned int i );
+    /// col of ith error or warning
+    unsigned int errCol( unsigned int i );
+    /// filename of ith error or warning
+    std::wstring errFilename( unsigned int i );
+    /// type of ith error or warning
+    bool errIsError( unsigned int i );
+    /// message of ith error or warning
+    std::string errMsg( unsigned int i );
 
-      gum::prm::PRMFactory __factory;
+    /// send on std::cerr the list of errors
+    void showElegantErrors();
 
-      std::vector<std::string> __class_path;
-      
-      Parser* __parser;
-      bool __parseDone;
-  };
+    /// send on std::cerr the list of errors or warnings
+    void showElegantErrorsAndWarnings();
+
+    /// send on std::cerr the number of errors and the number of warnings
+    void showErrorCounts();
+    /// @}
+
+private:
+    SkoolReader(const SkoolReader& source);
+
+    SkoolReader& operator=(const SkoolReader& source);
+
+    gum::prm::PRMFactory __factory;
+
+    std::vector<std::string> __class_path;
+
+    Parser* __parser;
+    bool __parseDone;
+};
 
 } /* namespace skool */
 } /* namespace prm */
 } /* namespace gum */
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/skool/SkoolReader.inl>
 #endif // GUM_NO_INLINE
+
 // ============================================================================
 #endif /* GUM_SKOOL_READER_H */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 0; 

@@ -151,17 +151,17 @@
 %extend gum::DiscreteVariable {
     gum::LabelizedVariable& toLabelizedVar()
     {
-        return dynamic_cast<gum::LabelizedVariable &>(*($self));
+        return dynamic_cast<gum::LabelizedVariable &>(*(self));
     }
 
     gum::RangeVariable& toRangeVar()
     {
-        return dynamic_cast<gum::RangeVariable &>(*($self));
+        return dynamic_cast<gum::RangeVariable &>(*(self));
     }
 
     gum::DiscretizedVariable<float>& toDiscretizedVar()
     {
-        return dynamic_cast<gum::DiscretizedVariable<float> &>(*($self));
+        return dynamic_cast<gum::DiscretizedVariable<float> &>(*(self));
     }
 }
 
@@ -178,37 +178,37 @@
 %extend gum::List {
     void append(Val val)
     {
-        $self->insert(val);
+        self->insert(val);
     }
 
     void push_front(Val val)
     {
-        $self->push_front(val);
+        self->push_front(val);
     }
 
     void push_back(Val val)
     {
-        $self->push_back(val);
+        self->push_back(val);
     }
 
     void remove(Val val)
     {
-        $self->eraseByVal(val);
+        self->eraseByVal(val);
     }
 
     void eradicate(Val val)
     {
-        $self->eraseAllVal(val);
+        self->eraseAllVal(val);
     }
 
     const Val __getitem__(unsigned int i)
     {
-        return (*($self))[i];
+        return (*(self))[i];
     }
 
     bool exists(Val val) const
     {
-        return $self->exists(val);
+        return self->exists(val);
     }
 }
 

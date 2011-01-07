@@ -30,24 +30,30 @@
 #include <agrum/prm/skool/SkoolReader.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
+
 namespace gum {
-namespace prm {
-namespace skool {
 
-void
-SkoolReader::setClassPath(const std::string& class_path) {
-  size_t i = 0;
-  size_t j = class_path.find(';');
-  while (j != std::string::npos) {
-    __class_path.push_back(class_path.substr(i, j - i));
-    i = j + 1;
-    j = class_path.find(';', i);
-  }
-  if (i != std::string::npos)
-    __class_path.push_back(class_path.substr(i, j));
-}
+  namespace prm {
 
-} /* namespace skool */
-} /* namespace prm */
+    namespace skool {
+
+      void
+      SkoolReader::setClassPath ( const std::string& class_path ) {
+        size_t i = 0;
+        size_t j = class_path.find ( ';' );
+
+        while ( j != std::string::npos ) {
+          __class_path.push_back ( class_path.substr ( i, j - i ) );
+          i = j + 1;
+          j = class_path.find ( ';', i );
+        }
+
+        if ( i != std::string::npos )
+          __class_path.push_back ( class_path.substr ( i, j ) );
+      }
+
+    } /* namespace skool */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
