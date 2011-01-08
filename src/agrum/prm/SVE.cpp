@@ -419,30 +419,30 @@ SVE::_marginal(const Chain& chain, Potential<prm_float>& m)
     if ((**iter).contains(elt->type().variable())) {
       m.multiplicateBy(**iter);
     }
-    if ((**iter).nbrDim() > 1) {
-      std::string dot = ".";
-      std::string t = "true";
-      std::string f = "false";
-      std::string none = "NONE";
-      GUM_TRACE_VAR((**iter).nbrDim());
-      GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
-      for (System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter) {
-        for (Instance::iterator a = (**jter).begin(); a != (**jter).end(); ++a) {
-          if ((**iter).contains((**a).type().variable())) {
-            GUM_TRACE((**jter).name() + dot + (**a).safeName());
-            // try {
-            //   std::cerr << "Instance eliminated in:       " << __debug[*jter] << std::endl;
-            // } catch (NotFound&) {
-            //   std::cerr << "Instance eliminated in:       " << none << std::endl;
-            // }
-            std::cerr << "Attribute has refered attr:   " << ((**jter).hasRefAttr((**a).id())) << std::endl;
-            std::cerr << "Attribute has evidence:       " << (hasEvidence(*jter)) << std::endl;
-            std::cerr << "Attribute parents number:     " << ((**jter).type().dag().parents((**a).id()).size()) << std::endl;
-            std::cerr << "Attribute children number:    " << ((**jter).type().dag().children((**a).id()).size()) << std::endl;
-          }
-        }
-      }
-    }
+    // if ((**iter).nbrDim() > 1) {
+    //   std::string dot = ".";
+    //   std::string t = "true";
+    //   std::string f = "false";
+    //   std::string none = "NONE";
+    //   GUM_TRACE_VAR((**iter).nbrDim());
+    //   GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
+    //   for (System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter) {
+    //     for (Instance::iterator a = (**jter).begin(); a != (**jter).end(); ++a) {
+    //       if ((**iter).contains((**a).type().variable())) {
+    //         GUM_TRACE((**jter).name() + dot + (**a).safeName());
+    //         // try {
+    //         //   std::cerr << "Instance eliminated in:       " << __debug[*jter] << std::endl;
+    //         // } catch (NotFound&) {
+    //         //   std::cerr << "Instance eliminated in:       " << none << std::endl;
+    //         // }
+    //         std::cerr << "Attribute has refered attr:   " << ((**jter).hasRefAttr((**a).id())) << std::endl;
+    //         std::cerr << "Attribute has evidence:       " << (hasEvidence(*jter)) << std::endl;
+    //         std::cerr << "Attribute parents number:     " << ((**jter).type().dag().parents((**a).id()).size()) << std::endl;
+    //         std::cerr << "Attribute children number:    " << ((**jter).type().dag().children((**a).id()).size()) << std::endl;
+    //       }
+    //     }
+    //   }
+    // }
   }
   m.normalize();
   for (SVE::BucketSetIterator iter = trash.begin(); iter != trash.end(); ++iter) {

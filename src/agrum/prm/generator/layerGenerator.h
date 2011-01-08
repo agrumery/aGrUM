@@ -43,14 +43,7 @@ namespace prm {
 
 /**
  * @class LayerGenerator layerGenerator.h <agrum/prm/generator/layerGenerator.h>
- * @brief This class generates PRMs with a pyramidal structure.
- *
- * The pyramidal structures is composed of layers containing the classes
- * sharing * the same interface. The firs layer, called the root layer,
- * contains classes with no references. The second layer is composed of
- * classes with references over the interface of the classes in the first
- * layer. This schema is reproduced in all the generated system: classes in
- * the nth layer depends on classes in the (n-1)th layer.
+ * @brief This class generates PRMs with a layer structure.
  *
  * @ingroup prm_group
  */
@@ -78,22 +71,19 @@ class LayerGenerator: public PRMGenerator {
 
     /// Inner structure used to describe a Layer of the generated PRM.
     struct LayerData {
-      /// The number of attributes in each interface.
-      size_t interface_size;
-      /// The number of input aggregators in each class. This must be lesser
-      /// or equal to interface_size of the previous level.
-      size_t agg_size;
-      /// The odds of an arc existing between an aggregator and a class in the
-      /// upper layer.
-      float agg_ratio;
-      /// The number of classes in this layer.
-      size_t c_count;
-      /// The number if attributes in each class.
-      size_t a_count;
-      /// The arc density in this class.
-      float density;
-      /// The number of instances in this layer.
-      size_t i_count;
+      // Number of attributes for the layer's interface.
+      Size a;
+      // Number of aggregates for the layer's interface.
+      Size g;
+      // Number of classes for this layer.
+      Size c;
+      // Number of instances for this layer.
+      Size o;
+      // Density of arcs between attributes of the same classe in this layer.
+      float inner_density;
+      // The odds of an instance of the precedent layer to be added to a
+      // reference slot of a class of this layer.
+      float outter_density;
     };
 
     /// Returns the domain size of generated types.
@@ -101,6 +91,12 @@ class LayerGenerator: public PRMGenerator {
 
     /// Set the domain size of generated types.
     void setDomainSize(Size s);
+
+    /// Returns the max number of parents allowed for any attribute or aggregator
+    unsigned int getMaxParents() const;
+
+    /// Returns the max number of parents allowed for any attribute or aggregator
+    void setMaxParents(Size s);
 
     /**
      * @brief Defines the structure of each layers.
@@ -111,71 +107,41 @@ class LayerGenerator: public PRMGenerator {
      */
     void setLayers(const std::vector<LayerData>& v);
 
+    std::vector<LayerData>& getLayer();
+    const std::vector<LayerData>& getLayer() const;
+
     /// Proceeds with the generation of the PRM.
     virtual PRM* generate();
 
-    unsigned int getMaxWidth() const;
-
-    void setMaxWidth(unsigned int v);
-
     /// @}
   private:
-    /// A layer.
-    struct Layer {
-      /// Data about the layer.
-      LayerData data;
-      /// The interface abstracting all classes at this layer.
-      std::string interface;
-      /// The set of instances at this layer.
-      Set<std::string> instances;
+    std::vector<LayerData> __layers;
+    Size __domain_size;
+    Size __max_parents;
+
+    struct MyData {
+      // interface name
+      std::string i;
+      std::vector<std::string> a;
+      std::vector<std::string> g;
+      std::string r;
+      std::vector<std::string> c;
     };
 
-    /// The domain size of the Type used in the generation.
-    Size __domainSize;
+    std::string __generateType(PRMFactory& f);
 
-    /// The vector describing each layer.
-    std::vector<Layer> __layers;
+    void __generateInterfaces(PRMFactory& f,
+                              const std::string& type,
+                              std::vector<MyData>& l);
 
-    /// The max width of generated classes.
-    unsigned int __max_width;
+    void __generateClasses(PRMFactory& f, const std::string& type,
+                           std::vector<LayerGenerator::MyData>& l);
 
-    /// Returns the layer of a given level.
-    LayerData& __layer(size_t idx);
-
-    /// Returns the interface abstracting the classes at layer idx.
-    std::string& __interface(size_t idx);
-
-    /// Generate classes in a factory.
-    void __generateClasses(PRMFactory& factory);
-
-    std::string __generateType(PRMFactory& factory);
-
-    std::string __generateInterface(size_t lvl, PRMFactory& factory,
-                                    const std::string& type);
-
-    void __pickOutputs(LayerData& data, Interface& i, BayesNet<prm_float>& bn,
-                       Property<std::string>::onNodes& outputs);
-
-    std::string __copyClass(LayerGenerator::LayerData& data,
-                            PRMFactory& factory, BayesNet<prm_float>& bn,
-                            const std::string& i,
-                            Property<std::string>::onNodes& outputs,
-                            const std::string& type);
-
-    void __addAggregate(std::vector<ReferenceSlot*>& refs,
-                        BayesNet<prm_float>& bn,
-                        PRMFactory& factory, NodeId id,
-                        Property<std::string>::onNodes& name_map,
-                        const Set<NodeId>& agg);
-
-    Set<NodeId> __defineAggSet(LayerGenerator::LayerData& data,
-                               BayesNet<prm_float>& bn,
-                               Property<std::string>::onNodes& outputs);
-
-    std::vector<prm_float> __generateCPF(size_t size);
-
-    /// Generate a system in a factory.
-    void __generateSystem(PRMFactory& factory);
+    void __generateClassDag(Size lvl, DAG& dag,
+                            Bijection<std::string, NodeId>& names,
+                            std::vector<LayerGenerator::MyData>& l);
+    void __generateSystem(PRMFactory& factory,
+                          std::vector<LayerGenerator::MyData>& l);
 };
 
 } /* namespace prm */

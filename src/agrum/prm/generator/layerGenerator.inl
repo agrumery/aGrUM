@@ -28,41 +28,75 @@ namespace gum {
 namespace prm {
 
 INLINE
-LayerGenerator::LayerData&
-LayerGenerator::__layer(size_t idx) {
-  return __layers[idx].data;
+LayerGenerator::LayerGenerator():
+  __layers(), __domain_size(2), __max_parents(INT_MAX) {
+  GUM_CONSTRUCTOR(LayerGenerator);
+  std::srand(std::time(NULL));
 }
 
 INLINE
-std::string&
-LayerGenerator::__interface(size_t idx) {
-  return __layers[idx].interface;
+LayerGenerator::LayerGenerator(const LayerGenerator& source):
+  __layers(source.__layers), __domain_size(source.__domain_size),
+  __max_parents(source.__max_parents)
+{
+  GUM_CONS_CPY(LayerGenerator);
+}
+
+INLINE
+LayerGenerator::~LayerGenerator() {
+  GUM_DESTRUCTOR(LayerGenerator);
+}
+
+INLINE
+LayerGenerator&
+LayerGenerator::operator=(const LayerGenerator& source) {
+  __layers = source.__layers;
+  __domain_size = source.__domain_size;
+  __max_parents = source.__max_parents;
+  return *this;
 }
 
 INLINE
 Size
 LayerGenerator::getDomainSize() const {
-  return __domainSize;
+  return __domain_size;
 }
 
 INLINE
 void
 LayerGenerator::setDomainSize(Size s) {
-  __domainSize = s;
+  __domain_size = s;
 }
 
 INLINE
 unsigned int
-LayerGenerator::getMaxWidth() const {
-  return __max_width;
+LayerGenerator::getMaxParents() const {
+  return __max_parents;
 }
 
 INLINE
 void
-LayerGenerator::setMaxWidth(unsigned int v) {
-  __max_width = v;
+LayerGenerator::setMaxParents(Size s) {
+  __max_parents = s;
 }
 
+INLINE
+void
+LayerGenerator::setLayers(const std::vector<LayerGenerator::LayerData>& v) {
+  __layers = v;
+}
+
+INLINE
+std::vector<LayerGenerator::LayerData>&
+LayerGenerator::getLayer() {
+  return __layers;
+}
+
+INLINE
+const std::vector<LayerGenerator::LayerData>&
+LayerGenerator::getLayer() const {
+  return __layers;
+}
 
 } /* namespace prm */
 } /* namespace gum */

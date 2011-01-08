@@ -112,7 +112,7 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       Attribute& a = **(i.begin());
       PRMInference::Chain chain(&i, &a);
       StructuredInference structinf(*prm, prm->getSystem(s.name()), 2, 10, new gspan::StrictSearch());
-      structinf.setPatternMining(true);
+      structinf.setPatternMining(false);
       Potential<prm_float> m_struct;
       TS_GUM_ASSERT_THROWS_NOTHING(structinf.marginal(chain, m_struct));
       Instantiation inst(m_struct);
@@ -129,71 +129,37 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
       std::string sys = (**(prm->systems().begin())).name();
-      GroundedInference* g_ve = 0;
-      GroundedInference* g_ss = 0;
       GroundedInference* g_vebb = 0;
-      VariableElimination<prm_float>* ve = 0;
-      ShaferShenoyInference<prm_float>* ss = 0;
       VEWithBB<prm_float>* vebb = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem(sys).groundedBN(bn_factory));
-      TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(vebb = new VEWithBB<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem(sys)));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem(sys)));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->getSystem(sys)));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb->setBNInference(vebb));
       //std::cout << bn.toDot() << std::flush;
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        Potential<prm_float> m_ve, m_ss, m_vebb, m_struct, m_sved, m_sve;
+        Potential<prm_float> m_vebb, m_struct;
         try {
           size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
           const Instance& instance = prm->getSystem(sys).get(bn.variableNodeMap().name(*node).substr(0, pos));
           const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
           PRMInference::Chain chain = std::make_pair(&instance, &attribute);
           std::string dot = ".";
-          g_ve->marginal(chain, m_ve);
-          // GUM_TRACE("VE done");
-          g_ss->marginal(chain, m_ss);
-          // GUM_TRACE("SS done");
           g_vebb->marginal(chain, m_vebb);
-          // GUM_TRACE("VEWithBB done");
           StructuredInference structinf(*prm, prm->getSystem(sys));
-          structinf.setPatternMining(true);
+          structinf.setPatternMining(false);
           structinf.marginal(chain, m_struct);
-          // GUM_TRACE("StructInf done");
-          SVED sved(*prm, prm->getSystem(sys));
-          sved.marginal(chain, m_sved);
-          // GUM_TRACE("SVED done");
-          SVE sve(*prm, prm->getSystem(sys));
-          sve.marginal(chain, m_sve);
-          // GUM_TRACE("SVE done");
           // We need two instantiations, one for the grounded potentials and one
           // for the PRM-level ones
-          Instantiation inst(m_ve), jnst(m_struct);
+          Instantiation inst(m_vebb), jnst(m_struct);
           std::string foo = instance.name() + dot + attribute.safeName();
-          TS_ASSERT_EQUALS(m_ve.nbrDim(), m_ss.nbrDim());
-          TS_ASSERT_EQUALS(m_ve.nbrDim(), m_vebb.nbrDim());
-          TS_ASSERT_EQUALS(m_ve.nbrDim(), m_struct.nbrDim());
-          TS_ASSERT_EQUALS(m_ve.domainSize(), m_ss.domainSize());
-          TS_ASSERT_EQUALS(m_ve.domainSize(), m_vebb.domainSize());
-          TS_ASSERT_EQUALS(m_ve.domainSize(), m_struct.domainSize());
-          TS_ASSERT_EQUALS(m_ve.domainSize(), m_sved.domainSize());
-          TS_ASSERT_EQUALS(m_ve.domainSize(), m_sve.domainSize());
+          TS_ASSERT_EQUALS(m_vebb.nbrDim(), m_struct.nbrDim());
           prm_float sum = 0.0;
           for (inst.setFirst(), jnst.setFirst(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc())
-          // for (inst.setFirst(); not inst.end(); inst.inc())
           {
-            sum += m_ve.get(inst);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_vebb.get(inst),   1.0e-3);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_ss.get(inst),     1.0e-3);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_struct.get(jnst), 1.0e-3);
-            TS_ASSERT_DELTA(m_ve.get(inst), m_sved.get(jnst),   1.0e-3);
-            //TS_ASSERT_DELTA(m_ve.get(inst), m_sve.get(jnst), 1.0e-3);
+            sum += m_vebb.get(inst);
+            TS_ASSERT_DELTA(m_vebb.get(inst), m_struct.get(jnst), 1.0e-3);
           }
           TS_ASSERT_DELTA(sum, (prm_float) 1.0, 1.0e-3);
         } catch (Exception& e) {
@@ -201,43 +167,108 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }
-#ifdef GUM_NO_INLINE
-//        break;
-#endif
+//#ifdef GUM_NO_INLINE
+        break;
+//#endif
       }
-      delete g_ve;
-      delete g_ss;
       delete g_vebb;
       delete prm;
       delete gen;
     }
 
-    void __generateLayer1(std::vector<LayerGenerator::LayerData>& v) {
-      size_t interface_size = 3;
-      size_t agg_size = 0;
-      float agg_ratio = 1;
-      size_t c_count = 1;
-      size_t a_count = 10;
-      float density = 0.2;
-      size_t i_count = 1;
-      v.push_back(LayerGenerator::LayerData());
-      v.back().interface_size = interface_size;
-      v.back().agg_size = agg_size;
-      v.back().agg_ratio = agg_ratio;
-      v.back().c_count = c_count;
-      v.back().a_count = a_count;
-      v.back().density = density;
-      v.back().i_count = i_count;
-      agg_size = 2;
-      for (size_t lvl = 1; lvl < 3; ++lvl, ++i_count, ++c_count) {
+    void generateLayerLayer(std::vector<LayerGenerator::LayerData>& v, size_t layer_count)
+    {
+      for (size_t lvl = 0; lvl < layer_count; ++lvl) {
         v.push_back(LayerGenerator::LayerData());
-        v.back().interface_size = interface_size;
-        v.back().agg_size = agg_size;
-        v.back().agg_ratio = agg_ratio;
-        v.back().c_count = c_count;
-        v.back().a_count = a_count;
-        v.back().density = density;
-        v.back().i_count = i_count;
+        v[lvl].a = 30;
+        v[lvl].g = 2;
+        v[lvl].c = 1;
+        v[lvl].o = 10;
+        v[lvl].inner_density = 0.2;
+        v[lvl].outter_density = 0.05;
+      }
+    }
+
+    const Instance& pickInstance(const System& sys) {
+      Sequence<const Instance*> seq;
+      for (System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter)
+        seq.insert(*iter);
+      return *(seq.atPos(std::rand() % seq.size()));
+    }
+
+    const Attribute& pickAttribute(const Instance& i) {
+      Sequence<const Attribute*> seq;
+      for (Instance::const_iterator iter = i.begin(); iter != i.end(); ++iter)
+        seq.insert(*iter);
+      return *(seq.atPos(std::rand() % seq.size()));
+    }
+
+    void testLayerGenerator() {
+      LayerGenerator* gen = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new LayerGenerator());
+      gen->setDomainSize(6);
+      gen->setMaxParents(5);
+      std::vector<LayerGenerator::LayerData> v;
+      generateLayerLayer(v, 10);
+      gen->setLayers(v);
+      PRM* prm = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
+      // testing interfaces
+      const Set<Interface*>& i_set = prm->interfaces();
+      TS_ASSERT_EQUALS(i_set.size(), (Size) 10);
+      for (Set<Interface*>::const_iterator iter = i_set.begin(); iter != i_set.end(); ++iter) {
+        const Interface& i = **iter;
+        if (i.referenceSlots().size()) {
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (Size) 1);
+          TS_ASSERT_EQUALS(i.attributes().size(), (Size) 32);
+        } else {
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (Size) 0);
+          TS_ASSERT_EQUALS(i.attributes().size(), (Size) 30);
+        }
+        Size six = 0;
+        Size two = 0;
+        const Set<Attribute*>& attr = i.attributes();
+        for (Set<Attribute*>::const_iterator a = attr.begin(); a != attr.end(); ++a) {
+          if ((**a).type()->domainSize() == (Size) 6) {
+            ++six;
+          } else if ((**a).type()->domainSize() == 2) {
+            ++two;
+          } else {
+            TS_ASSERT(false);
+          }
+        }
+        TS_ASSERT_EQUALS(six, (Size) 30);
+        if (i.referenceSlots().size()) {
+          TS_ASSERT_EQUALS(two, (Size) 2);
+        }
+      }
+      // testing classes
+      const Set<Class*>& c_set = prm->classes();
+      for (Set<Class*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c) {
+        TS_ASSERT_EQUALS((**c).attributes().size(), (Size) 30);
+        for (Set<Attribute*>::const_iterator a = (**c).attributes().begin(); a != (**c).attributes().end(); ++a) {
+          TS_ASSERT((**c).dag().parents((**a).id()).size() < 6);
+        }
+      }
+      // testing instances
+      const System& sys = **(prm->systems().begin());
+      TS_ASSERT_EQUALS(sys.size(), (Size) 100);
+      if (prm)
+        delete prm;
+      if (gen) {
+        TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      }
+    }
+
+    void __generateLayer1(std::vector<LayerGenerator::LayerData>& v) {
+      for (size_t lvl = 0; lvl < 5; ++lvl) {
+        v.push_back(LayerGenerator::LayerData());
+        v[lvl].a = 10;
+        v[lvl].g = 2;
+        v[lvl].c = 1;
+        v[lvl].o = 10;
+        v[lvl].inner_density = 0.2;
+        v[lvl].outter_density = 0.05;
       }
     }
 

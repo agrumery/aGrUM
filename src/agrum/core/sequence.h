@@ -295,7 +295,6 @@ namespace gum {
 
     /// @}
 
-
   private:
     /// keep track of the position of the element in v (for fast retrieval)
     HashTable<KEY,Idx> __h;

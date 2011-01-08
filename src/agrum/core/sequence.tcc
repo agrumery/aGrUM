@@ -1033,7 +1033,6 @@ namespace gum {
     __v.reserve( new_size );
   }
 
-  
 } /* namespace gum */
 
 

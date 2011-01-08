@@ -209,42 +209,25 @@ class InterfaceGraphTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
     }
 
-    void generateLayer(std::vector<LayerGenerator::LayerData>& v, size_t class_count) {
-      size_t interface_size = 5;
-      size_t agg_size = 0;
-      float agg_ratio = 0.33;
-      size_t c_count = class_count;
-      size_t a_count = 30;
-      float density = 0.2;
-      size_t i_count = 1;
-      v.push_back(LayerGenerator::LayerData());
-      v.back().interface_size = interface_size;
-      v.back().agg_size = agg_size;
-      v.back().agg_ratio = agg_ratio;
-      v.back().c_count = c_count;
-      v.back().a_count = a_count;
-      v.back().density = density;
-      v.back().i_count = i_count;
-      agg_size = 2;
-      for (size_t lvl = 1; lvl < 10; ++lvl, ++i_count) {
+    void generateLayer(std::vector<LayerGenerator::LayerData>& v, size_t layer_count) {
+      for (size_t lvl = 0; lvl < layer_count; ++lvl) {
         v.push_back(LayerGenerator::LayerData());
-        v.back().interface_size = interface_size;
-        v.back().agg_size = agg_size;
-        v.back().agg_ratio = agg_ratio;
-        v.back().c_count = c_count;
-        v.back().a_count = a_count;
-        v.back().density = density;
-        v.back().i_count = i_count;
+        v[lvl].a = 30;
+        v[lvl].g = 2;
+        v[lvl].c = 1;
+        v[lvl].o = 10;
+        v[lvl].inner_density = 0.2;
+        v[lvl].outter_density = 0.05;
       }
     }
 
     void testWithLayerGeneration() {
       std::vector<LayerGenerator::LayerData> layers;
-      generateLayer(layers, 2);
+      generateLayer(layers, 10);
       LayerGenerator generator;
       generator.setLayers(layers);
       generator.setDomainSize(2);
-      generator.setMaxWidth(std::pow(2, 10));
+      generator.setMaxParents(5);
       PRM* prm = generator.generate();
       System& sys = prm->getSystem((**(prm->systems().begin())).name());
       InterfaceGraph* g = 0;

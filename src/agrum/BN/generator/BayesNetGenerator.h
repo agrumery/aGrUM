@@ -24,96 +24,84 @@
  */
 #ifndef GUM_BAYES_NET_GENERATOR_H
 #define GUM_BAYES_NET_GENERATOR_H
-
+// ============================================================================
+#include <climits>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+// ============================================================================
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/CPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-
-
+// ============================================================================
+#include <agrum/multidim/labelizedVariable.h>
+// ============================================================================
 namespace gum {
 
+/**
+ * @class BayesNetGenerator BayesNetGenerator.h <agrum/BN/generator/BayesNetGenerator.h>
+ * @brief Class for generating bayesian networks.
+ * @ingroup bn_group
+ *
+ * This class randomly generates a bayesian network given two parameters:
+ * the number of nodes and the probability of adding an arc between two nodes.
+ */
+class BayesNetGenerator {
+public:
+  // ############################################################################
+  /// @name Constructors / Destructor
+  // ############################################################################
+  /// @{
+  /**
+   * Default constructor.
+   * Use the SimpleCPTGenerator for generating the BNs CPT.
+   */
+  BayesNetGenerator();
 
   /**
-   * @class BayesNetGenerator BayesNetGenerator.h <agrum/BN/generator/BayesNetGenerator.h>
-   * @brief Class for generating bayesian networks.
-   * @ingroup bn_group
-   *
-   * This class randomly generates a bayesian network given two parameters:
-   * the number of nodes and the probability of adding an arc between two nodes.
+   * Use this constructor if you want to use a different policy for generating
+   * CPT than the default one.
+   * The cptGenerator will be erased when the destructor is called.
+   * @param cptGenerator The policy used to generate CPT.
    */
-  class BayesNetGenerator {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructor
-    // ############################################################################
-    /// @{
-    /**
-     * Default constructor.
-     * Use the SimpleCPTGenerator for generating the BNs CPT.
-     */
-    BayesNetGenerator();
+  BayesNetGenerator(CPTGenerator* cptGenerator);
 
-    /**
-     * Use this constructor if you want to use a different policy for generating
-     * CPT than the default one.
-     * The cptGenerator will be erased when the destructor is called.
-     * @param cptGenerator The policy used to generate CPT.
-     */
-    BayesNetGenerator(CPTGenerator* cptGenerator);
+  /**
+   * Destructor.
+   */
+  ~BayesNetGenerator();
+  /// @}
 
-    /**
-     * Destructor.
-     */
-    ~BayesNetGenerator();
-    /// @}
+  // ############################################################################
+  /// @name BN generation methods
+  // ############################################################################
+  /// @{
+  /**
+   * Generates a bayesian network using floats.
+   * @param nbrNodes The number of nodes in the generated BN.
+   * @param density The probability of adding an arc between two nodes.
+   * @param max_modality Each DRV has from 2 to max_modality modalities
+   * @return A BNs randomly generated.
+   */
+  BayesNet<float>* generateBNF(Size nbrNodes, float density, Size max_modality=2);
 
-    // ############################################################################
-    /// @name BN generation methods
-    // ############################################################################
-    /// @{
-    /**
-     * Generates a bayesian network using floats.
-     * @param nbrNodes The number of nodes in the generated BN.
-     * @param density The probability of adding an arc between two nodes.
-     * @param max_modality Each DRV has from 2 to max_modality modalities
-     * @return A BNs randomly generated.
-     */
-    BayesNet<float>* generateBNF(Size nbrNodes, float density, Size max_modality=2);
+  /**
+   * Generates a bayesian network using doubles.
+   * @param nbrNodes The number of nodes in the generated BN.
+   * @param density The probability of adding an arc between two nodes.
+   * @param max_modality Each DRV has from 2 to max_modality modalities
+   * @return A BNs randomly generated.
+   */
+  BayesNet<double>* generateBND(Size nbrNodes, float density, Size max_modality=2);
 
-    /**
-     * Generates a bayesian network using doubles.
-     * @param nbrNodes The number of nodes in the generated BN.
-     * @param density The probability of adding an arc between two nodes.
-     * @param max_modality Each DRV has from 2 to max_modality modalities
-     * @return A BNs randomly generated.
-     */
-    BayesNet<double>* generateBND(Size nbrNodes, float density, Size max_modality=2);
-
-    /// Return the max number of parents per node.
-    Size maxWidth() const;
-
-    /// Defines the max number of parents per node.
-    void setMaxWidth(Size value);
-
-    /// If true, then the domain of each node is randomly chosen between 2
-    /// and getMaxModality(), otherwhise each node's modality equals getMaxModality().
-    bool getRandomDomainFlag() const;
-
-    /// If true, then the domain of each node is randomly chosen between 2
-    /// and getMaxModality(), otherwhise each node's modality equals getMaxModality().
-    void setRandomDomainFlag(bool value);
-
-    /// @}
-  private:
-    // The Conditional Probability Table generator
-    CPTGenerator* __cptGenerator;
-    unsigned int __max_width;
-    bool __random_flag;
-  };
-
+  /// @}
+private:
+  // The Conditional Probability Table generator
+  CPTGenerator* __cptGenerator;
+};
 
 } /* namespace gum */
-
-
+// ============================================================================
 #endif /* GUM_BAYES_NET_GENERATOR_H */
-
+// ============================================================================
