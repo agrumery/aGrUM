@@ -430,10 +430,7 @@ namespace gum {
        *
        * A new growth is accepted if it is at least better than its predecessor.
        */
-
       class StrictSearch : public SearchStrategy {
-
-
         public:
 
           // =========================================================================
@@ -470,6 +467,50 @@ namespace gum {
           void __setCost ( const Pattern& p, double cost );
           double __getGain ( const Pattern& p );
           void __setGain ( const Pattern& p, double gain );
+      };
+
+      /**
+       * @class TreeWidthSearch DFSTree.h <agrum/prm/gspan/DFSTree.h>
+       *
+       * A growth is accepted if and only if the new growth has a tree width less large
+       * or equal than its father.
+       */
+      class TreeWidthSearch : public SearchStrategy {
+        public:
+
+          // =========================================================================
+          /// @name Constructor and destructor.
+          // ==========================================================================
+          /// @{
+
+          /// Default constructor.
+          TreeWidthSearch(Size min_freq = 2);
+
+          /// Destructor.
+          virtual ~TreeWidthSearch();
+
+          /// @}
+          // =========================================================================
+          /// @name Search methods.
+          // ==========================================================================
+          /// @{
+
+          double getCost ( const Pattern& p );
+
+          void setCost ( const Pattern& p, double cost );
+
+          double cost ( const Pattern& p );
+
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const DFSTree::EdgeGrowth& growth );
+
+          virtual bool operator() ( Pattern* i, Pattern* j );
+          /// @}
+
+        private:
+          HashTable<const Pattern*, double> __map;
+          Size __min_freq;
       };
 
     } /* namespace gspan */

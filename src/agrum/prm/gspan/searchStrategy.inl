@@ -117,8 +117,8 @@ StrictSearch::__getGain(const Pattern& p) {
   try {
     return __map[&p].second;
   } catch (NotFound&) {
-    __map.insert(&p, std::make_pair((double) 0.0, (double) 0.0));
-    return (double) 0.0;
+    __map.insert(&p, std::make_pair(0.0, 0.0));
+    return __map[&p].second;
   }
 }
 
@@ -131,7 +131,6 @@ StrictSearch::__setGain(const Pattern& p, double gain) {
     __map.insert(&p, std::make_pair((double) 0.0, gain));
   }
 }
-
 
 INLINE
 bool
@@ -149,6 +148,61 @@ StrictSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
   return _tree->frequency(*i) * gain(*i) / cost(*i) >
          _tree->frequency(*j) * gain(*j) / cost(*j);
 }
+
+// ============================================================================
+// TreeWidthSearch
+// ============================================================================
+
+INLINE
+TreeWidthSearch::TreeWidthSearch(Size min_freq):
+  __min_freq(min_freq)
+{
+  GUM_CONSTRUCTOR( TreeWidthSearch );
+}
+
+INLINE
+TreeWidthSearch::~TreeWidthSearch() {
+  GUM_DESTRUCTOR( TreeWidthSearch );
+}
+
+INLINE
+double
+TreeWidthSearch::getCost(const Pattern& p) {
+  try {
+    return __map[&p];
+  } catch (NotFound&) {
+    return cost(p);
+  }
+}
+
+INLINE
+void
+TreeWidthSearch::setCost(const Pattern& p, double cost) {
+  try {
+    __map[&p] = cost;
+  } catch (NotFound&) {
+    __map.insert(&p, cost);
+  }
+}
+
+INLINE
+bool
+TreeWidthSearch::accept_growth(const Pattern* parent,
+                               const Pattern* child,
+                               const DFSTree::EdgeGrowth& growth)
+{
+  return (_tree->frequency(*child) >= __min_freq) and
+         (getCost(*parent) >= getCost(*child));
+}
+
+INLINE
+bool
+TreeWidthSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
+  // We want a descending order
+  return (_tree->frequency(*j) >= __min_freq) and
+         (getCost(*i) >= getCost(*j));
+}
+
 
 } /* namespace gspan */
 } /* namespace prm */

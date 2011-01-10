@@ -144,6 +144,31 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       delete prm;
     }
 
+    void testTreeWidthLayerGeneration() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer(layers, 5);
+      LayerGenerator generator;
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, 2, 2, new gspan::TreeWidthSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+
     // void testCompareSpeed() {
     //   std::cerr << std::endl;
     //   GUM_CHECKPOINT;

@@ -86,6 +86,41 @@ StrictSearch::gain(const Pattern& p) {
   return __getGain(p);
 }
 
+// ============================================================================
+// TreeWidthSearch
+// ============================================================================
+
+double
+TreeWidthSearch::cost(const Pattern& p) {
+  double cost = 0;
+  const Sequence<Instance*>& seq = **(_tree->data(p).iso_map.begin());
+  const Set<SlotChain*>* chains = 0;
+  const Set<Instance*>* instances = 0;
+  Sequence<ClassElement*> input_set;
+  for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
+    chains = &((**iter).type().slotChains());
+    for (Set<SlotChain*>::iterator input = chains->begin(); input != chains->end(); ++input) {
+      instances = &((**iter).getInstances((**input).id()));
+      for (Set<Instance*>::iterator jter = instances->begin(); jter != instances->end(); ++jter) {
+        if ((not seq.exists(*jter)) and (not input_set.exists(&((*jter)->get((*input)->lastElt().safeName())))) ) {
+          cost += std::log((*input)->type().variable().domainSize());
+          input_set.insert(&((*jter)->get((*input)->lastElt().safeName())));
+        }
+      }
+    }
+    for (Instance::InvRefIterator vec = (**iter).beginInvRef(); vec != (**iter).endInvRef(); ++vec) {
+      for (std::vector< std::pair<Instance*, std::string> >::iterator inverse = (**vec).begin(); inverse != (**vec).end(); ++inverse) {
+        if (not seq.exists(inverse->first)) {
+          cost += std::log((*iter)->get(vec.key()).type().variable().domainSize());
+          break;
+        }
+      }
+    }
+  }
+  setCost(p, cost);
+  return cost;
+}
+
 } /* namespace gspan */
 } /* namespace prm */
 } /* namespace gum */
