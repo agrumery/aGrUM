@@ -184,7 +184,7 @@ LayerGenerator::__generateSystem(PRMFactory& factory, std::vector<LayerGenerator
   factory.startSystem(_name_gen.nextName(PRMObject::prm_system));
   std::vector< std::vector<std::string> > o(__layers.size());
   std::string name;
-  bool check = false;
+  size_t idx = 0;
   for (size_t lvl = 0; lvl < __layers.size(); ++lvl) {
     float density = __layers[lvl].outter_density * RAND_MAX;
     for (size_t count = 0; count < __layers[lvl].o; ++count) {
@@ -194,20 +194,24 @@ LayerGenerator::__generateSystem(PRMFactory& factory, std::vector<LayerGenerator
       if (lvl) {
         std::stringstream chain;
         chain << name << "." << l[lvl].r;
-        check = false;
+        std::vector<std::string> ref2add;
         for (std::vector<std::string>::iterator iter = o[lvl-1].begin(); iter != o[lvl-1].end(); ++iter)
-          if (std::rand() <= density) {
-            factory.setReferenceSlot(chain.str(), *iter);
-            check = true;
-          }
-        if (not check)
+          if (std::rand() <= density)
+            ref2add.push_back(*iter);
+        if (ref2add.empty())
           factory.setReferenceSlot(chain.str(), o[lvl-1][std::rand() % o[lvl-1].size()]);
+        while (ref2add.size() > getMaxParents()) {
+          idx = std::rand() % ref2add.size();
+          ref2add[idx] = ref2add.back();
+          ref2add.pop_back();
+        }
+        for (std::vector<std::string>::iterator iter = ref2add.begin(); iter != ref2add.end(); ++iter)
+          factory.setReferenceSlot(chain.str(), *iter);
       }
     }
   }
   factory.endSystem();
 }
-
 
 } /* namespace prm */
 } /* namespace gum */

@@ -35,6 +35,7 @@
 #include <agrum/prm/structuredInference.h>
 // ============================================================================
 #include <agrum/prm/generator/layerGenerator.h>
+#include <agrum/prm/generator/clusteredLayerGenerator.h>
 // ============================================================================
 
 namespace gum {
@@ -253,6 +254,65 @@ class PRMGeneratorTestSuite: public CxxTest::TestSuite {
       // testing instances
       const System& sys = **(prm->systems().begin());
       TS_ASSERT_EQUALS(sys.size(), (Size) 100);
+      if (prm)
+        delete prm;
+      if (gen) {
+        TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      }
+    }
+
+    void testClusterGenerator() {
+      ClusteredLayerGenerator* gen = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new ClusteredLayerGenerator());
+      gen->setDomainSize(6);
+      gen->setMaxParents(5);
+      gen->setClusterRatio(1.0);
+      std::vector<LayerGenerator::LayerData> v;
+      generateLayerLayer(v, 10);
+      gen->setLayers(v);
+      PRM* prm = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
+      // testing interfaces
+      const Set<Interface*>& i_set = prm->interfaces();
+      TS_ASSERT_EQUALS(i_set.size(), (Size) 10);
+      for (Set<Interface*>::const_iterator iter = i_set.begin(); iter != i_set.end(); ++iter) {
+        const Interface& i = **iter;
+        if (i.referenceSlots().size()) {
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (Size) 1);
+          TS_ASSERT_EQUALS(i.attributes().size(), (Size) 32);
+        } else {
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), (Size) 0);
+          TS_ASSERT_EQUALS(i.attributes().size(), (Size) 30);
+        }
+        Size six = 0;
+        Size two = 0;
+        const Set<Attribute*>& attr = i.attributes();
+        for (Set<Attribute*>::const_iterator a = attr.begin(); a != attr.end(); ++a) {
+          if ((**a).type()->domainSize() == (Size) 6) {
+            ++six;
+          } else if ((**a).type()->domainSize() == 2) {
+            ++two;
+          } else {
+            TS_ASSERT(false);
+          }
+        }
+        TS_ASSERT_EQUALS(six, (Size) 30);
+        if (i.referenceSlots().size()) {
+          TS_ASSERT_EQUALS(two, (Size) 2);
+        }
+      }
+      // testing classes
+      const Set<Class*>& c_set = prm->classes();
+      for (Set<Class*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c) {
+        TS_ASSERT_EQUALS((**c).attributes().size(), (Size) 30);
+        for (Set<Attribute*>::const_iterator a = (**c).attributes().begin(); a != (**c).attributes().end(); ++a) {
+          TS_ASSERT((**c).dag().parents((**a).id()).size() < 6);
+        }
+      }
+      // testing instances
+      const System& sys = **(prm->systems().begin());
+      TS_ASSERT(sys.size() > (Size) 100);
+
       if (prm)
         delete prm;
       if (gen) {

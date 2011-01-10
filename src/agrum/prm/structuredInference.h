@@ -293,8 +293,14 @@ class StructuredInference: public PRMInference {
     std::string __str(const Instance* i, const Attribute& a) const;
     std::string __str(const Instance* i, const SlotChain& a) const;
 
-    // For debug purpose.
+  public:
+    // For bench/debug purpose.
     Timer timer;
+    Timer plopTimer;
+    double triang_time;
+    double inner_time;
+    double obs_time;
+    double mining_time;
 };
 
 } /* namespace prm */

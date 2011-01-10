@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of PRMGenerator.
+ * @brief Inline implementation of ClusteredLayerGenerator.
  *
  * @author Lionel TORTI
  */
@@ -28,75 +28,91 @@ namespace gum {
 namespace prm {
 
 INLINE
-PRMGenerator::PRMGenerator() {
-  GUM_CONSTRUCTOR(PRMGenerator);
-}
-
-INLINE
-PRMGenerator::PRMGenerator(const PRMGenerator& source):
-  _name_gen(source._name_gen)
+ClusteredLayerGenerator::ClusteredLayerGenerator():
+  __layers(), __domain_size(2), __max_parents(INT_MAX), __cluster_ratio(0.0)
 {
-  GUM_CONS_CPY(PRMGenerator);
+  GUM_CONSTRUCTOR(ClusteredLayerGenerator);
+  std::srand(std::time(NULL));
 }
 
 INLINE
-PRMGenerator::~PRMGenerator() {
-  GUM_DESTRUCTOR(PRMGenerator);
-}
-
-INLINE
-void
-PRMGenerator::setNameGenerator(const NameGenerator& name_gen) {
-  _name_gen = name_gen;
-}
-
-INLINE
-const NameGenerator&
-PRMGenerator::getNameGenerator() const {
-  return _name_gen;
-}
-
-INLINE
-NameGenerator::NameGenerator():
-  __counters(3, 1)
+ClusteredLayerGenerator::ClusteredLayerGenerator(const ClusteredLayerGenerator& source):
+  __layers(source.__layers), __domain_size(source.__domain_size),
+  __max_parents(source.__max_parents)
 {
-  GUM_CONSTRUCTOR(NameGenerator);
+  GUM_CONS_CPY(ClusteredLayerGenerator);
 }
 
 INLINE
-NameGenerator::NameGenerator(const NameGenerator& source):
-  __counters(source.__counters)
-{
-  GUM_CONS_CPY(NameGenerator);
+ClusteredLayerGenerator::~ClusteredLayerGenerator() {
+  GUM_DESTRUCTOR(ClusteredLayerGenerator);
+  // typedef HashTable<std::string, std::vector<std::string>*>::iterator Iter;
+  // for (Iter iter = __cluster_map.begin(); iter != __cluster_map.end(); ++iter) {
+  //   delete *iter;
+  // }
 }
 
 INLINE
-NameGenerator::~NameGenerator() {
-  GUM_DESTRUCTOR(NameGenerator);
-}
-
-INLINE
-NameGenerator&
-NameGenerator::operator=(const NameGenerator& source) {
-  __counters = source.__counters;
+ClusteredLayerGenerator&
+ClusteredLayerGenerator::operator=(const ClusteredLayerGenerator& source) {
+  __layers = source.__layers;
+  __domain_size = source.__domain_size;
+  __max_parents = source.__max_parents;
   return *this;
 }
 
 INLINE
-std::string
-NameGenerator::nextName(PRMObject::ObjectType type) {
-  std::stringstream s;
-  switch (type) {
-    case PRMObject::all:
-    case PRMObject::prm_class:    { s << "class_" << ++(__counters[0]); break; }
-    case PRMObject::prm_interface:{ s << "iface_" << ++(__counters[0]); break; }
-    case PRMObject::prm_system:   { s << "sys_"   << ++(__counters[0]); break; }
-    case PRMObject::prm_type:     { s << "type_"  << ++(__counters[0]); break; }
-    case PRMObject::prm_class_elt:{ s << "elt_"   << ++(__counters[1]); break; }
-    case PRMObject::prm_instance: { s << "inst_"  << ++(__counters[2]); break; }
-    default: { GUM_ERROR(FatalError, "unknown PRMObject type"); }
-  }
-  return s.str();
+Size
+ClusteredLayerGenerator::getDomainSize() const {
+  return __domain_size;
+}
+
+INLINE
+void
+ClusteredLayerGenerator::setDomainSize(Size s) {
+  __domain_size = s;
+}
+
+INLINE
+unsigned int
+ClusteredLayerGenerator::getMaxParents() const {
+  return __max_parents;
+}
+
+INLINE
+void
+ClusteredLayerGenerator::setMaxParents(Size s) {
+  __max_parents = s;
+}
+
+INLINE
+void
+ClusteredLayerGenerator::setLayers(const std::vector<LayerGenerator::LayerData>& v) {
+  __layers = v;
+}
+
+INLINE
+std::vector<LayerGenerator::LayerData>&
+ClusteredLayerGenerator::getLayer() {
+  return __layers;
+}
+
+INLINE
+const std::vector<LayerGenerator::LayerData>&
+ClusteredLayerGenerator::getLayer() const {
+  return __layers;
+}
+
+INLINE
+double
+ClusteredLayerGenerator::getClusterRatio() const {
+  return __cluster_ratio;
+}
+
+INLINE
+void
+ClusteredLayerGenerator::setClusterRatio(double ratio) {
+  __cluster_ratio = ratio;
 }
 
 } /* namespace prm */

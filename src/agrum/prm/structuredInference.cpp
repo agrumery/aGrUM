@@ -40,6 +40,9 @@ StructuredInference::StructuredInference(const PRM& prm, const System& system,
 {
   GUM_CONSTRUCTOR( StructuredInference );
   __gspan = new GSpan(prm, system, min_freq, depth_stop, strategy);
+  triang_time = 0.0;
+  inner_time = 0.0;
+  obs_time = 0.0;
 }
 
 StructuredInference::StructuredInference(const StructuredInference& source):
@@ -128,8 +131,10 @@ void
 StructuredInference::__buildReduceGraph(StructuredInference::RGData& data) {
   // Launch the pattern mining
   // GUM_TRACE(timer.step());
+  plopTimer.reset();
   if (__mining)
     __gspan->discoverPatterns();
+  mining_time = plopTimer.step();
   // GUM_TRACE(timer.step());
   // Reducing each used pattern
   typedef std::vector<gspan::Pattern*>::const_iterator Iter;
@@ -184,17 +189,22 @@ StructuredInference::__reducePattern(const gspan::Pattern* p) {
   __buildObsSet(data, **(data.matches.begin()));
   // GUM_TRACE(timer.step());
   // Now we can triangulate graph
+  plopTimer.reset();
   PartialOrderedTriangulation t(&(data.graph), &(data.mod), data.partial_order());
   const std::vector<NodeId>& elim_order = t.eliminationOrder();
+  triang_time += plopTimer.step();
   // GUM_TRACE(timer.step());
   // We eliminate inner variables and then we eliminate observed nodes w.r.t.
   // each match's observation set
+  plopTimer.reset();
   for (size_t i = 0; i < data.inners().size(); ++i)
     eliminateNode(data.vars.second(elim_order[i]), pool, __trash);
+  inner_time += plopTimer.step();
   // GUM_TRACE(timer.step());
+  plopTimer.reset();
   for (GSpan::MatchedInstances::const_iterator iter = data.matches.begin(); iter != data.matches.end(); ++iter)
     __elim_map.insert(*iter, __eliminateObservedNodes(data, pool, **iter, elim_order));
-  // GUM_TRACE(timer.step());
+  obs_time += plopTimer.step();
 }
 
 void

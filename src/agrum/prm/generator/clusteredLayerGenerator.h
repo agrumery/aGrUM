@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of LayerGenerator.
+ * @brief Headers of ClusteredLayerGenerator.
  *
  * @author Lionel TORTI
  */
@@ -35,19 +35,20 @@
 // ============================================================================
 #include <agrum/prm/PRMFactory.h>
 #include <agrum/prm/generator/PRMGenerator.h>
+#include <agrum/prm/generator/LayerGenerator.h>
 // ============================================================================
-#ifndef GUM_LAYER_GENERATOR_H
-#define GUM_LAYER_GENERATOR_H
+#ifndef GUM_CLUSTERED_LAYER_GENERATOR_H
+#define GUM_CLUSTERED_LAYER_GENERATOR_H
 namespace gum {
 namespace prm {
 
 /**
- * @class LayerGenerator layerGenerator.h <agrum/prm/generator/layerGenerator.h>
- * @brief This class generates PRMs with a layer structure.
+ * @class ClusteredLayerGenerator clusteredLayerGenerator.h <agrum/prm/generator/clusteredLayerGenerator.h>
+ * @brief This class generates PRMs with a clustered layer structure.
  *
  * @ingroup prm_group
  */
-class LayerGenerator: public PRMGenerator {
+class ClusteredLayerGenerator: public PRMGenerator {
   public:
     // ========================================================================
     /// @name Constructors and destructor.
@@ -55,36 +56,19 @@ class LayerGenerator: public PRMGenerator {
     /// @{
 
     /// Default constructor.
-    LayerGenerator();
+    ClusteredLayerGenerator();
     /// Copy constructor.
-    LayerGenerator(const LayerGenerator& source);
+    ClusteredLayerGenerator(const ClusteredLayerGenerator& source);
     /// Copy operator.
-    LayerGenerator& operator=(const LayerGenerator& source);
+    ClusteredLayerGenerator& operator=(const ClusteredLayerGenerator& source);
     /// Destructor.
-    virtual ~LayerGenerator();
+    virtual ~ClusteredLayerGenerator();
 
     /// @}
     // ========================================================================
     /// Getters and setters.
     // ========================================================================
     /// @{
-
-    /// Inner structure used to describe a Layer of the generated PRM.
-    struct LayerData {
-      // Number of attributes for the layer's interface.
-      Size a;
-      // Number of aggregates for the layer's interface.
-      Size g;
-      // Number of classes for this layer.
-      Size c;
-      // Number of instances for this layer.
-      Size o;
-      // Density of arcs between attributes of the same classe in this layer.
-      float inner_density;
-      // The odds of an instance of the precedent layer to be added to a
-      // reference slot of a class of this layer.
-      float outter_density;
-    };
 
     /// Returns the domain size of generated types.
     Size getDomainSize() const;
@@ -98,6 +82,12 @@ class LayerGenerator: public PRMGenerator {
     /// Returns the max number of parents allowed for any attribute or aggregator
     void setMaxParents(Size s);
 
+    /// Returns the odds of a given class to be replaced by a cluster.
+    double getClusterRatio() const;
+
+    /// Define the odds of a given class to be replaced by a cluster.
+    void setClusterRatio(double ratio);
+
     /**
      * @brief Defines the structure of each layers.
      * Each value in v defines a layer, were v[i].first is the number of
@@ -105,19 +95,21 @@ class LayerGenerator: public PRMGenerator {
      * instances in the i-th layer.
      * @param v A vector describing each layer.
      */
-    void setLayers(const std::vector<LayerData>& v);
+    void setLayers(const std::vector<LayerGenerator::LayerData>& v);
 
-    std::vector<LayerData>& getLayer();
-    const std::vector<LayerData>& getLayer() const;
+    std::vector<LayerGenerator::LayerData>& getLayer();
+    const std::vector<LayerGenerator::LayerData>& getLayer() const;
 
     /// Proceeds with the generation of the PRM.
     virtual PRM* generate();
 
     /// @}
   private:
-    std::vector<LayerData> __layers;
+    std::vector<LayerGenerator::LayerData> __layers;
     Size __domain_size;
     Size __max_parents;
+    double __cluster_ratio;
+    HashTable<std::string, std::vector<std::string>*> __cluster_map;
 
     struct MyData {
       // interface name
@@ -135,21 +127,33 @@ class LayerGenerator: public PRMGenerator {
                               std::vector<MyData>& l);
 
     void __generateClasses(PRMFactory& f, const std::string& type,
-                           std::vector<LayerGenerator::MyData>& l);
+                           std::vector<ClusteredLayerGenerator::MyData>& l);
+
+    void __generateCluster(PRMFactory& f,
+                           const std::string& type,
+                           std::vector<ClusteredLayerGenerator::MyData>& l,
+                           Size lvl,
+                           Set<std::string>& i);
+
+    void __generateClass(PRMFactory& f,
+                         const std::string& type,
+                         std::vector<ClusteredLayerGenerator::MyData>& l,
+                         Size lvl,
+                         Set<std::string>& i);
 
     void __generateClassDag(Size lvl, DAG& dag,
                             Bijection<std::string, NodeId>& names,
-                            std::vector<LayerGenerator::MyData>& l);
+                            std::vector<ClusteredLayerGenerator::MyData>& l);
 
-    void __generateSystem(PRMFactory& factory,
-                          std::vector<LayerGenerator::MyData>& l);
+    void __generateSystem(PRMFactory& factory, std::vector<ClusteredLayerGenerator::MyData>& l);
+
 };
 
 } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
-#include <agrum/prm/generator/layerGenerator.inl>
+#include <agrum/prm/generator/clusteredLayerGenerator.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
-#endif /* GUM_LAYER_GENERATOR_H */
+#endif /* GUM_CLUSTERED_LAYER_GENERATOR_H */
 // ============================================================================
