@@ -35,7 +35,7 @@
 // ============================================================================
 #include <agrum/prm/PRMFactory.h>
 #include <agrum/prm/generator/PRMGenerator.h>
-#include <agrum/prm/generator/LayerGenerator.h>
+#include <agrum/prm/generator/layerGenerator.h>
 // ============================================================================
 #ifndef GUM_CLUSTERED_LAYER_GENERATOR_H
 #define GUM_CLUSTERED_LAYER_GENERATOR_H
