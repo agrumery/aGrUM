@@ -49,7 +49,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     {
       for (size_t lvl = 0; lvl < layer_count; ++lvl) {
         v.push_back(LayerGenerator::LayerData());
-        v[lvl].a = 30;
+        v[lvl].a = 10;
         v[lvl].g = 2;
         v[lvl].c = 1;
         v[lvl].o = 10;
