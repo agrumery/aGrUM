@@ -44,3 +44,7 @@ clean:
 
 last:
 	$(ACT)
+
+cppcheck:
+	cppcheck src --force --enable=all 2>cppcheck.txt
+	wc -l cppcheck.txt

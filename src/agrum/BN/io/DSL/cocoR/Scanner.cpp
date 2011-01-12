@@ -296,8 +296,8 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 28;
-	noSym = 28;
+	maxT = 33;
+	noSym = 33;
 	int i;
 	for (i = 65; i <= 90; ++i) start.set(i, 1);
 	for (i = 95; i <= 95; ++i) start.set(i, 1);
@@ -316,20 +316,25 @@ void Scanner::Init() {
 	start.set(124, 25);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"net", 6);
-	keywords.set(L"node", 10);
-	keywords.set(L"TYPE", 11);
-	keywords.set(L"SCREEN", 12);
-	keywords.set(L"USER_PROPERTIES", 13);
-	keywords.set(L"DOCUMENTATION", 14);
-	keywords.set(L"EXTRA_DEFINITION", 15);
-	keywords.set(L"OBSERVATION_COST", 16);
-	keywords.set(L"HEADER", 17);
-	keywords.set(L"ID", 18);
-	keywords.set(L"NAME", 19);
-	keywords.set(L"PARENTS", 20);
-	keywords.set(L"DEFINITION", 24);
-	keywords.set(L"NAMESTATES", 25);
-	keywords.set(L"PROBABILITIES", 26);
+	keywords.set(L"NUMSAMPLES", 10);
+	keywords.set(L"BKCOLOR", 11);
+	keywords.set(L"SHOWAS", 12);
+	keywords.set(L"node", 13);
+	keywords.set(L"TYPE", 14);
+	keywords.set(L"SCREEN", 15);
+	keywords.set(L"USER_PROPERTIES", 16);
+	keywords.set(L"DOCUMENTATION", 17);
+	keywords.set(L"EXTRA_DEFINITION", 18);
+	keywords.set(L"OBSERVATION_COST", 19);
+	keywords.set(L"HEADER", 20);
+	keywords.set(L"CREATION", 21);
+	keywords.set(L"WINDOWPOSITION", 22);
+	keywords.set(L"ID", 23);
+	keywords.set(L"NAME", 24);
+	keywords.set(L"PARENTS", 25);
+	keywords.set(L"DEFINITION", 29);
+	keywords.set(L"NAMESTATES", 30);
+	keywords.set(L"PROBABILITIES", 31);
 
 
 	tvalLength = 128;
@@ -617,13 +622,13 @@ Token* Scanner::NextToken() {
 		case 21:
 			{t->kind = 9; break;}
 		case 22:
-			{t->kind = 21; break;}
+			{t->kind = 26; break;}
 		case 23:
-			{t->kind = 22; break;}
-		case 24:
-			{t->kind = 23; break;}
-		case 25:
 			{t->kind = 27; break;}
+		case 24:
+			{t->kind = 28; break;}
+		case 25:
+			{t->kind = 32; break;}
 
 	}
 	AppendVal(t);
