@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #include <agrum/BN/io/DSL/DSLReader.h>
@@ -25,160 +25,167 @@
 
 namespace gum {
 
-	template<typename T_DATA>
-	DSLReader<T_DATA>::DSLReader( BayesNet<T_DATA>* bn, const std::string& filename ) : BNReader<T_DATA> ( bn,filename ) {
-		GUM_CONSTRUCTOR( DSLReader );
-		__bn=bn;
-		__streamName=filename;
-    	__parseDone=false;
+  template<typename T_DATA>
+  DSLReader<T_DATA>::DSLReader ( BayesNet<T_DATA>* bn, const std::string& filename ) : BNReader<T_DATA> ( bn, filename ) {
+    GUM_CONSTRUCTOR ( DSLReader );
+    __bn = bn;
+    __streamName = filename;
+    __parseDone = false;
 
-    	__factory=new BayesNetFactory<T_DATA> ( __bn );
+    __factory = new BayesNetFactory<T_DATA> ( __bn );
 
-    	__ioerror=false;
-    	
-
-    	try {
-      		__scanner = new DSL::Scanner( __streamName.c_str() );
-     	 	__parser = new DSL::Parser( __scanner );
-      		__parser->setFactory( (AbstractBayesNetFactory*)__factory );
-    	} catch ( IOError e ) {
-      		__ioerror=true;
-    	}
-    	
-	}
+    __ioerror = false;
 
 
-	template<typename T_DATA>
-	DSLReader<T_DATA>::~DSLReader() {
-    	GUM_DESTRUCTOR( DSLReader );
+    try {
+      __scanner = new DSL::Scanner ( __streamName.c_str() );
+      __parser = new DSL::Parser ( __scanner );
+      __parser->setFactory ( ( AbstractBayesNetFactory* ) __factory );
+    } catch ( IOError e ) {
+      __ioerror = true;
+    }
 
-    	if ( !__ioerror ) {
-			// this could lead to memory leak !!
-      		if ( __parser ) delete( __parser );
-
-      		if ( __scanner ) delete( __scanner );
-    	}
-
-    	if ( __factory ) delete( __factory );
-	}
-	
-
-	template<typename T_DATA> INLINE
-	DSL::Scanner& DSLReader<T_DATA>::scanner() {
-		if ( __ioerror ) {
-			GUM_ERROR( gum::IOError,"No such file "+streamName() );
-		}
-
-		return *__scanner;
-	}
+  }
 
 
-	template<typename T_DATA> INLINE
-	const std::string& DSLReader<T_DATA>::streamName() const {
-		return __streamName;
-	}
+  template<typename T_DATA>
+  DSLReader<T_DATA>::~DSLReader() {
+    GUM_DESTRUCTOR ( DSLReader );
+
+    if ( !__ioerror ) {
+      // this could lead to memory leak !!
+      if ( __parser ) delete ( __parser );
+
+      if ( __scanner ) delete ( __scanner );
+    }
+
+    if ( __factory ) delete ( __factory );
+  }
 
 
-	template<typename T_DATA> INLINE
-	bool DSLReader<T_DATA>::trace( void ) const {
-		return __traceScanning;
-	}
+  template<typename T_DATA> INLINE
+  DSL::Scanner& DSLReader<T_DATA>::scanner() {
+    if ( __ioerror ) {
+      GUM_ERROR ( gum::IOError, "No such file " + streamName() );
+    }
+
+    return *__scanner;
+  }
 
 
-	template<typename T_DATA> INLINE
-	void DSLReader<T_DATA>::trace( bool b ) {
-		__traceScanning=b;
-    	__scanner->setTrace( b );
-  	}
+  template<typename T_DATA> INLINE
+  const std::string& DSLReader<T_DATA>::streamName() const {
+    return __streamName;
+  }
 
 
-  	template<typename T_DATA>
- 	int DSLReader<T_DATA>::proceed( void ) {
- 		FILE* tmpfile();
- 		
-    	if ( __ioerror ) {
-			GUM_ERROR( gum::IOError,"No such file "+streamName() );
-    	}
-
-    	if ( !__parseDone ) {
-			try {
-    	    	__parser->Parse();
-			} catch ( gum::Exception &e ) {
-				GUM_SHOWERROR( e );
- 				return 1+__parser->errors->count();
-     		 }
-
-			__parseDone=true;
-		}
-
-		return (__parser->errors->error_count==0);
-	}
+  template<typename T_DATA> INLINE
+  bool DSLReader<T_DATA>::trace ( void ) const {
+    return __traceScanning;
+  }
 
 
-	/// @{
-	/// publishing Errors API
-	template<typename T_DATA> INLINE
-	unsigned int DSLReader<T_DATA>::errLine( unsigned int i ) {
-		if ( __parseDone ) return __parser->errors->line( i );
-		else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-	}
+  template<typename T_DATA> INLINE
+  void DSLReader<T_DATA>::trace ( bool b ) {
+    __traceScanning = b;
+    __scanner->setTrace ( b );
+  }
 
 
-	template<typename T_DATA> INLINE
-	unsigned int DSLReader<T_DATA>::errCol( unsigned int i ) {
-		if ( __parseDone ) return __parser->errors->col( i );
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  template<typename T_DATA>
+  int DSLReader<T_DATA>::proceed ( void ) {
+    FILE* tmpfile();
+
+    if ( __ioerror ) {
+      GUM_ERROR ( gum::IOError, "No such file " + streamName() );
+    }
+
+    if ( !__parseDone ) {
+      try {
+        __parser->Parse();
+      } catch ( gum::Exception &e ) {
+        GUM_SHOWERROR ( e );
+        return 1 + __parser->errors().count();
+      }
+
+      __parseDone = true;
+    }
+
+    return ( __parser->errors().error_count == 0 );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	bool DSLReader<T_DATA>::errIsError( unsigned int i ) {
-    	if ( __parseDone ) return __parser->errors->is_error( i );
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  /// @{
+  /// publishing Errors API
+  template<typename T_DATA> INLINE
+  unsigned int DSLReader<T_DATA>::errLine ( unsigned int i ) {
+    if ( __parseDone ) return __parser->errors().line ( i );
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	std::string DSLReader<T_DATA>::errMsg( unsigned int i ) {
-    	if ( __parseDone ) return std::string( narrow( __parser->errors->msg( i ) ) );
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  template<typename T_DATA> INLINE
+  unsigned int DSLReader<T_DATA>::errCol ( unsigned int i ) {
+    if ( __parseDone ) return __parser->errors().col ( i );
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	void DSLReader<T_DATA>::showElegantErrors() {
-    	if ( __parseDone ) __parser->errors->showElegantErrors();
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  template<typename T_DATA> INLINE
+  bool DSLReader<T_DATA>::errIsError ( unsigned int i ) {
+    if ( __parseDone ) return __parser->errors().is_error ( i );
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	void DSLReader<T_DATA>::showElegantErrorsAndWarnings() {
-    	if ( __parseDone ) __parser->errors->showElegantErrorsAndWarnings();
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  template<typename T_DATA> INLINE
+  std::string DSLReader<T_DATA>::errMsg ( unsigned int i ) {
+    if ( __parseDone ) return std::string ( narrow ( __parser->errors().msg ( i ) ) );
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	void DSLReader<T_DATA>::showErrorCounts() {
-    	if ( __parseDone ) __parser->errors->showSyntheticResults();
-    	else GUM_ERROR( OperationNotAllowed,"DSL file not parsed yet" );
-  	}
+  template<typename T_DATA> INLINE
+  void DSLReader<T_DATA>::showElegantErrors() {
+    if ( __parseDone ) __parser->errors().showElegantErrors();
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	Size  DSLReader<T_DATA>::errors() {
-    	return (! __parseDone )?( Size )0:__parser->errors->error_count;
-  	}
+  template<typename T_DATA> INLINE
+  void DSLReader<T_DATA>::showElegantErrorsAndWarnings() {
+    if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
+  
+  template<typename T_DATA> INLINE
+  void DSLReader<T_DATA>::showErrorsAndWarnings() {
+    if ( __parseDone ) __parser->errors().showErrorsAndWarnings();
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
 
 
-  	template<typename T_DATA> INLINE
-  	Size  DSLReader<T_DATA>::warnings() {
-    	return (! __parseDone )?( Size )0:__parser->errors->warning_count;
-  	}
+  template<typename T_DATA> INLINE
+  void DSLReader<T_DATA>::showErrorCounts() {
+    if ( __parseDone ) __parser->errors().showSyntheticResults();
+    else GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+  }
+
+
+  template<typename T_DATA> INLINE
+  Size  DSLReader<T_DATA>::errors() {
+    return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().error_count;
+  }
+
+
+  template<typename T_DATA> INLINE
+  Size  DSLReader<T_DATA>::warnings() {
+    return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
+  }
 
   /// @}
 } // namespace
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

@@ -98,11 +98,14 @@ public:
 	/// message of ith error or warning
 	std::string errMsg( unsigned int i );
 
-	/// send on std::cerr the list of errors
+	/// send on std::cerr the list of errorswith contents
 	void showElegantErrors();
 
-	/// send on std::cerr the list of errors or warnings
+	/// send on std::cerr the list of errors or warnings with contents
 	void showElegantErrorsAndWarnings();
+
+  /// send on std::cerr the list of errors or warnings
+  void showErrorsAndWarnings();
 
 	/// send on std::cerr the number of errors and the number of warnings
 	void showErrorCounts();

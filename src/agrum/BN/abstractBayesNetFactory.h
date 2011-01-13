@@ -41,6 +41,7 @@ namespace gum {
    */
 
   class AbstractBayesNetFactory {
+
     public:
       /**
        * @brief The enumeration of states in which the factory can be in.
@@ -55,44 +56,68 @@ namespace gum {
       factory_state;
 
 // just to make some compilers happy
-	virtual ~AbstractBayesNetFactory() {};
+      virtual ~AbstractBayesNetFactory() {};
+
+      /**
+       * @name verbosity control
+       * @{
+       */
+      void setVerbose() {
+        __verbose = true;
+      };
+
+      void resetVerbose() {
+        __verbose = false;
+      };
+
+      bool isVerbose() {
+        return __verbose;
+      };
+
+      /**
+       * @}
+       */
 
       /// @{
       /// @brief Please @see BayesNetFactory<T_DATA> for documentation.
-      virtual const DiscreteVariable& varInBN( NodeId id ) =0;
-      virtual factory_state state() const =0;
-      virtual NodeId variableId( const std::string& name ) const =0;
-			virtual Size cptDomainSize(const NodeId n) const =0;
+      virtual const DiscreteVariable& varInBN ( NodeId id ) = 0;
+      virtual factory_state state() const = 0;
+      virtual NodeId variableId ( const std::string& name ) const = 0;
+      virtual Size cptDomainSize ( const NodeId n ) const = 0;
 
-			virtual void startNetworkDeclaration() =0;
-      virtual void addNetworkProperty( const std::string& propName,const std::string& propValue ) =0;
-      virtual void endNetworkDeclaration() =0;
-      virtual void startVariableDeclaration() =0;
-      virtual void variableName( const std::string& name ) =0;
-      virtual void variableDescription( const std::string& desc ) =0;
-      virtual void addModality( const std::string& name ) =0;
-      virtual void setVariableCPTImplementation( MultiDimAdressable* impl ) =0;
-      virtual NodeId endVariableDeclaration() =0;
-      virtual void startParentsDeclaration( const std::string& var ) =0;
-      virtual void addParent( const std::string& var ) =0;
-      virtual void endParentsDeclaration() =0;
-      virtual void startRawProbabilityDeclaration( const std::string& var ) =0;
-      virtual void rawConditionalTable( const std::vector<std::string>& variables,const std::vector<float>& rawTable ) =0;
-      virtual void rawConditionalTable( const std::vector<float>& rawTable ) =0;
-      virtual void endRawProbabilityDeclaration() =0;
-      virtual void startFactorizedProbabilityDeclaration( const std::string& var ) =0;
-      virtual void startFactorizedEntry() =0;
-      virtual void endFactorizedEntry() =0;
-      virtual void setParentModality( const std::string& parent,const std::string& modality ) =0;
-      virtual void setVariableValuesUnchecked( const std::vector<float>& values ) =0;
-      virtual void setVariableValues( const std::vector<float>& values ) =0;
-      virtual void endFactorizedProbabilityDeclaration() =0;
-      virtual void setVariable( const DiscreteVariable& var ) =0;
-      virtual void setVariableCPT( const std::string& varName, MultiDimAdressable* table,bool redefineParents=false ) =0;
-			/// @}
+      virtual void startNetworkDeclaration() = 0;
+      virtual void addNetworkProperty ( const std::string& propName, const std::string& propValue ) = 0;
+      virtual void endNetworkDeclaration() = 0;
+      virtual void startVariableDeclaration() = 0;
+      virtual void variableName ( const std::string& name ) = 0;
+      virtual void variableDescription ( const std::string& desc ) = 0;
+      virtual void addModality ( const std::string& name ) = 0;
+      virtual void setVariableCPTImplementation ( MultiDimAdressable* impl ) = 0;
+      virtual NodeId endVariableDeclaration() = 0;
+      virtual void startParentsDeclaration ( const std::string& var ) = 0;
+      virtual void addParent ( const std::string& var ) = 0;
+      virtual void endParentsDeclaration() = 0;
+      virtual void startRawProbabilityDeclaration ( const std::string& var ) = 0;
+      virtual void rawConditionalTable ( const std::vector<std::string>& variables, const std::vector<float>& rawTable ) = 0;
+      virtual void rawConditionalTable ( const std::vector<float>& rawTable ) = 0;
+      virtual void endRawProbabilityDeclaration() = 0;
+      virtual void startFactorizedProbabilityDeclaration ( const std::string& var ) = 0;
+      virtual void startFactorizedEntry() = 0;
+      virtual void endFactorizedEntry() = 0;
+      virtual void setParentModality ( const std::string& parent, const std::string& modality ) = 0;
+      virtual void setVariableValuesUnchecked ( const std::vector<float>& values ) = 0;
+      virtual void setVariableValues ( const std::vector<float>& values ) = 0;
+      virtual void endFactorizedProbabilityDeclaration() = 0;
+      virtual void setVariable ( const DiscreteVariable& var ) = 0;
+      virtual void setVariableCPT ( const std::string& varName, MultiDimAdressable* table, bool redefineParents = false ) = 0;
+      /// @}
+
+    private:
+      bool __verbose;
   };
 } /* namespace gum */
 
 // ============================================================================
 #endif // GUM_ASBTRACT_BAYESNET_FACTORY_H
 // ============================================================================
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;

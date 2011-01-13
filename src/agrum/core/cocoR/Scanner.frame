@@ -41,6 +41,7 @@ Scanner.h Specification
 
 #include <agrum/core/signal/signaler1.h>
 #include <agrum/core/cocoR/common.h>
+#include <agrum/core/errorsContainer.h>
 
 -->namespace_open
 

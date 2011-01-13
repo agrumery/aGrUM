@@ -45,17 +45,13 @@ namespace skool {
 
 
 void Parser::SynErr(int n) {
-	if (errDist >= minErrDist) errors->SynErr(scanner->filename(),la->line, la->col, n);
+	if (errDist >= minErrDist) SynErr(scanner->filename(),la->line, la->col, n);
 	errDist = 0;
 }
 
-void Parser::SemErr(const wchar_t* msg) {
-	if (errDist >= minErrDist) errors->Error(scanner->filename(),t->line, t->col, msg);
-	errDist = 0;
-}
 
-void Parser::Warning(const wchar_t* msg) {
-	errors->Warning(scanner->filename(),t->line, t->col, msg);
+const ErrorsContainer& Parser::errors(void) const {
+	return __errors;
 }
 
 void Parser::Get() {
@@ -604,7 +600,6 @@ Parser::Parser(Scanner *scanner) {
 	minErrDist = 2;
 	errDist = minErrDist;
 	this->scanner = scanner;
-	errors = new Errors();
 }
 
 bool Parser::StartOf(int s) {
@@ -622,16 +617,18 @@ bool Parser::StartOf(int s) {
 }
 
 Parser::~Parser() {
-	delete errors;
 	delete dummyToken;
 }
-
-Errors::Errors() {
-	error_count = 0;
-	warning_count=0;
+void Parser::SemErr(const wchar_t* msg) {
+	if (errDist >= minErrDist) __errors.Error(scanner->filename(),t->line, t->col, msg);
+	errDist = 0;
 }
 
-void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
+void Parser::Warning(const wchar_t* msg) {
+	__errors.Warning(scanner->filename(),t->line, t->col, msg);
+}
+
+void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 	wchar_t* s;
 	switch (n) {
 			case 0: s = coco_string_create(L"EOF expected"); break;
@@ -691,38 +688,11 @@ void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
 		break;
 	}
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(true,filename,line,col,L"Syntax error : "+std::wstring(s));
+	wstring ss=L"Syntax error : "+std::wstring(s);
+  __errors.Error(filename,line,col,ss.c_str());
 	coco_string_delete(s);
-	error_count++;
 }
 
-void Errors::Error(const std::wstring& filename,int line, int col, const wchar_t *s) {
-	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(true,filename,line,col,std::wstring(s));
-	error_count++;
-}
-
-void Errors::Warning(const std::wstring& filename,int line, int col, const wchar_t *s) {
-	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(false,filename,line,col,std::wstring(s));
-	warning_count++;
-}
-
-void Errors::Warning(const std::wstring& filename,const wchar_t *s) {
-	//wprintf(L"%ls\n", s);
-  add_error(false,filename,0,0,std::wstring(s));
-	warning_count++;
-}
-
-void Errors::Exception(const std::wstring& filename,const wchar_t* s) {
-	//wprintf(L"%ls", s);
-  add_error(true,filename,0,0,std::wstring(s));
-	exit(1);
-}
-
-void Errors::add_error(const bool is_error,const std::wstring& filename,int line ,int col,const std::wstring& s) const {
-	storer.add(is_error,filename,s,line,col);
-}
 } // namespace
 } // namespace
 } // namespace

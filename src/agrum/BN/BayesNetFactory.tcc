@@ -26,6 +26,12 @@
 // ============================================================================
 #include <agrum/BN/BayesNetFactory.h>
 
+
+#define VERBOSITY(x) {                                                  \
+    if (isVerbose()) \
+      std::cerr << "[BN factory] "<<x<< std::endl; \
+  }
+
 namespace gum {
 
 // Default constructor.
@@ -34,7 +40,7 @@ namespace gum {
 //                         name.
   template<typename T_DATA> INLINE
   BayesNetFactory<T_DATA>::BayesNetFactory ( BayesNet<T_DATA>* bn ) :
-      __parents ( 0 ), __impl ( 0 ), __bn ( bn ) {
+      __parents ( 0 ), __impl ( 0 ), __bn ( bn )  {
     GUM_CONSTRUCTOR ( BayesNetFactory );
     __states.push_back ( BayesNetFactory<T_DATA>::NONE );
 
@@ -45,6 +51,8 @@ namespace gum {
 
       __varNameMap.insert ( bn->variable ( *iter ).name(), *iter );
     }
+
+    resetVerbose();
   }
 
 // Copy constructor.
@@ -141,6 +149,8 @@ namespace gum {
     } else {
       __states.push_back ( BayesNetFactory<T_DATA>::NETWORK );
     }
+
+    VERBOSITY ( "starting network" );
   }
 
 // Tells the factory to add a property to the current network.
@@ -160,6 +170,8 @@ namespace gum {
     } else {
       __states.pop_back();
     }
+
+    VERBOSITY ( "network OK" );
   }
 
 // Tells the factory that we're in a variable declaration.
@@ -173,6 +185,8 @@ namespace gum {
       __stringBag.push_back ( "name" );
       __stringBag.push_back ( "desc" );
     }
+
+    VERBOSITY ( "  starting variable" );
   }
 
 // Tells the factory the current variable's name.
@@ -190,6 +204,7 @@ namespace gum {
       __foo_flag = true;
 
       __stringBag[0] = name;
+      VERBOSITY ( "  -- variable " << name );
     }
   }
 
@@ -275,6 +290,9 @@ namespace gum {
 
       __resetParts();
       __states.pop_back();
+
+
+      VERBOSITY ( "  variable " << var->name() << " OK" );
       return retVal;
     } else {
       std::stringstream msg;
@@ -317,6 +335,8 @@ namespace gum {
       __stringBag.insert ( iter, var );
       __states.push_back ( PARENTS );
     }
+
+    VERBOSITY ( "starting parents for " << var );
   }
 
 // Tells the factory for which variable we're declaring parents.
@@ -350,12 +370,15 @@ namespace gum {
 
       for ( size_t i = __stringBag.size() - 1; i > 0 ; --i ) {
         __bn->insertArc ( __varNameMap[__stringBag[i]], id );
+        VERBOSITY ( "  adding parent " << __stringBag[i] << " for " << __stringBag[0] );
       }
 
       __resetParts();
 
       __states.pop_back();
     }
+
+    VERBOSITY ( "end of parents for " << __stringBag[0] );
   }
 
 // Tells the factory that we're declaring a conditional probability table
@@ -371,6 +394,8 @@ namespace gum {
       __stringBag.push_back ( var );
       __states.push_back ( BayesNetFactory<T_DATA>::RAW_CPT );
     }
+
+    VERBOSITY ( "  cpt starting for " << var );
   }
 
 // @brief Fills the variable's table with the values in rawTable.
@@ -513,6 +538,8 @@ namespace gum {
       __resetParts();
       __states.pop_back();
     }
+
+    VERBOSITY ( "  cpt ending for " << __stringBag[0] );
   }
 
 // Tells the factory that we're starting a factorized declaration.
@@ -892,4 +919,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

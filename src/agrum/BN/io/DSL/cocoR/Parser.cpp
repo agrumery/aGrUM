@@ -44,17 +44,13 @@ namespace DSL {
 
 
 void Parser::SynErr(int n) {
-	if (errDist >= minErrDist) errors->SynErr(scanner->filename(),la->line, la->col, n);
+	if (errDist >= minErrDist) SynErr(scanner->filename(),la->line, la->col, n);
 	errDist = 0;
 }
 
-void Parser::SemErr(const wchar_t* msg) {
-	if (errDist >= minErrDist) errors->Error(scanner->filename(),t->line, t->col, msg);
-	errDist = 0;
-}
 
-void Parser::Warning(const wchar_t* msg) {
-	errors->Warning(scanner->filename(),t->line, t->col, msg);
+const ErrorsContainer& Parser::errors(void) const {
+	return __errors;
 }
 
 void Parser::Get() {
@@ -323,9 +319,10 @@ void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
 		
 		IDENT(parent);
 		parents.push_back(parent);	
-		if (la->kind == 28) {
-			ExpectWeak(28, 3);
-			PARENTS_LIST(parents);
+		while (la->kind == 28) {
+			Get();
+			IDENT(parent);
+			parents.push_back(parent); 
 		}
 }
 
@@ -365,38 +362,45 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 		gum::Size i,j, k;
 		gum::Size res, max, nbLabels;
 		
-		FLOAT_LIST(v);
-		res = factory().varInBN(factory().variableId(var)).domainSize();
-		
-		for(i = 0; i < parents.size(); i++){
-			res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
-		}
-		
-		
-				nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
-				max = res / nbLabels;
+				res = factory().varInBN(factory().variableId(var)).domainSize();
 				
-				j = 0;
-				k = 0;
-				for(i = 0; i < res; i++){
-					if(i%max == 0){
-						prob.push_back(v[k]);
-						k++; j=1;
-					}
-					else{
-						prob.push_back(v[j*nbLabels + k-1]);
-						j++;
-					}
+				for(i = 0; i < parents.size(); i++){
+					res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
 				}
 				
-				
-				TRY(factory().startRawProbabilityDeclaration(var));
-		        gum::Size s=(gum::Size)0;
-		        TRY(s=factory().cptDomainSize(factory().variableId(var)));
-		        if ((int)prob.size()<(int)s) Warning("Not enough data for cpt of node "+var);
-		        if ((int)prob.size()>(int)s) Warning("Too many data for cpt of node "+var);
-		        TRY(factory().rawConditionalTable(prob));
-		        TRY(factory().endRawProbabilityDeclaration());
+				//v.resize(res);
+				//prob	.resize(res);
+		
+			
+		FLOAT_LIST(v);
+		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
+		max = res / nbLabels;
+		
+		j = 0;
+		k = 0;
+		for(i = 0; i < res; i++){
+			if(i%max == 0){
+				prob.push_back(v[k]);
+				k++; j=1;
+			}
+			else{
+				prob.push_back(v[j*nbLabels + k-1]);
+				j++;
+			}
+		}
+		
+		TRY(factory().startRawProbabilityDeclaration(var));
+		      gum::Size s=(gum::Size)0;
+		      TRY(s=factory().cptDomainSize(factory().variableId(var)));
+		      if ((int)prob.size()<(int)s) {
+					Warning("Not enough data for cpt of node "+var);
+				}
+		      if ((int)prob.size()>(int)s) {
+					std::cerr<<var<<" : size="<<prob.size()<<" instead of "<<s<<std::endl;
+					Warning("Too many data for cpt of node "+var);
+				}
+		      TRY(factory().rawConditionalTable(prob));
+		      TRY(factory().endRawProbabilityDeclaration());
 		
 			
 }
@@ -405,7 +409,7 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		if (StartOf(4)) {
+		while (StartOf(3)) {
 			if (la->kind == 28 || la->kind == 32) {
 				if (la->kind == 28) {
 					Get();
@@ -413,7 +417,8 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 					Get();
 				}
 			}
-			FLOAT_LIST(v);
+			FLOAT(value);
+			v.push_back(value); 
 		}
 }
 
@@ -446,18 +451,16 @@ Parser::Parser(Scanner *scanner) {
 	minErrDist = 2;
 	errDist = minErrDist;
 	this->scanner = scanner;
-	errors = new Errors();
 }
 
 bool Parser::StartOf(int s) {
 	const bool T = true;
 	const bool x = false;
 
-	static bool set[5][35] = {
+	static bool set[4][35] = {
 		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x},
 		{x,T,T,T, T,T,T,T, x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x},
 		{x,T,T,T, T,T,T,x, x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,x},
-		{T,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x},
 		{x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, T,x,x}
 	};
 
@@ -467,16 +470,18 @@ bool Parser::StartOf(int s) {
 }
 
 Parser::~Parser() {
-	delete errors;
 	delete dummyToken;
 }
-
-Errors::Errors() {
-	error_count = 0;
-	warning_count=0;
+void Parser::SemErr(const wchar_t* msg) {
+	if (errDist >= minErrDist) __errors.Error(scanner->filename(),t->line, t->col, msg);
+	errDist = 0;
 }
 
-void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
+void Parser::Warning(const wchar_t* msg) {
+	__errors.Warning(scanner->filename(),t->line, t->col, msg);
+}
+
+void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 	wchar_t* s;
 	switch (n) {
 			case 0: s = coco_string_create(L"EOF expected"); break;
@@ -526,38 +531,11 @@ void Errors::SynErr(const std::wstring& filename,int line, int col, int n) {
 		break;
 	}
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(true,filename,line,col,L"Syntax error : "+std::wstring(s));
+	wstring ss=L"Syntax error : "+std::wstring(s);
+  __errors.Error(filename,line,col,ss.c_str());
 	coco_string_delete(s);
-	error_count++;
 }
 
-void Errors::Error(const std::wstring& filename,int line, int col, const wchar_t *s) {
-	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(true,filename,line,col,std::wstring(s));
-	error_count++;
-}
-
-void Errors::Warning(const std::wstring& filename,int line, int col, const wchar_t *s) {
-	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  add_error(false,filename,line,col,std::wstring(s));
-	warning_count++;
-}
-
-void Errors::Warning(const std::wstring& filename,const wchar_t *s) {
-	//wprintf(L"%ls\n", s);
-  add_error(false,filename,0,0,std::wstring(s));
-	warning_count++;
-}
-
-void Errors::Exception(const std::wstring& filename,const wchar_t* s) {
-	//wprintf(L"%ls", s);
-  add_error(true,filename,0,0,std::wstring(s));
-	exit(1);
-}
-
-void Errors::add_error(const bool is_error,const std::wstring& filename,int line ,int col,const std::wstring& s) const {
-	storer.add(is_error,filename,s,line,col);
-}
 } // namespace
 } // namespace
 

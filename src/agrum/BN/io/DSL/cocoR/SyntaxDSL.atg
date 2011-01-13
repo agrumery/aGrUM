@@ -157,7 +157,7 @@ HEADER = (. std::string content; .)
 PARENTS<. std::vector<std::string>& parents .> =
 	"PARENTS" '('
 	[ PARENTS_LIST<parents> ]
-	')' ';'
+	')' ';' 
 .
 
 //==============
@@ -168,7 +168,7 @@ PARENTS_LIST<. std::vector<std::string>& parents .> =
 	
 	IDENT<parent> 		(.	parents.push_back(parent);	.)
 		
-	[ WEAK ',' PARENTS_LIST<parents> ]
+	{ ',' IDENT<parent> (. parents.push_back(parent); .) }
 .
 
 //==============
@@ -234,18 +234,21 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 		std::vector<float> prob;
 		gum::Size i,j, k;
 		gum::Size res, max, nbLabels;
-	.)
 
-	FLOAT_LIST<v>
-                            
-	(. 
 		res = factory().varInBN(factory().variableId(var)).domainSize();
 		
 		for(i = 0; i < parents.size(); i++){
 			res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
 		}
 		
+		//v.resize(res);
+		//prob	.resize(res);
 
+	.)
+
+	FLOAT_LIST<v>
+                            
+	(. 
 		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
 		max = res / nbLabels;
 		
@@ -262,12 +265,16 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 			}
 		}
 		
-		
 		TRY(factory().startRawProbabilityDeclaration(var));
         gum::Size s=(gum::Size)0;
         TRY(s=factory().cptDomainSize(factory().variableId(var)));
-        if ((int)prob.size()<(int)s) Warning("Not enough data for cpt of node "+var);
-        if ((int)prob.size()>(int)s) Warning("Too many data for cpt of node "+var);
+        if ((int)prob.size()<(int)s) {
+					Warning("Not enough data for cpt of node "+var);
+				}
+        if ((int)prob.size()>(int)s) {
+					std::cerr<<var<<" : size="<<prob.size()<<" instead of "<<s<<std::endl;
+					Warning("Too many data for cpt of node "+var);
+				}
         TRY(factory().rawConditionalTable(prob));
         TRY(factory().endRawProbabilityDeclaration());
 
@@ -279,7 +286,8 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 // no "," for proba values
 FLOAT_LIST<. std::vector<float>& v .> =   	(. float value; .)
 	FLOAT<value>  							(. v.push_back(value); .)
-	[ [ (',' | '|' )] FLOAT_LIST<v>]
+	{ [ (',' | '|' )] FLOAT<value> 			(. v.push_back(value); .)
+	}
 .
 
 

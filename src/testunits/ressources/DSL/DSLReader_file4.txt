@@ -1,19 +1,34 @@
 net Unnamed
 {
-
-	node n1
+	node n3
 	{
 		TYPE = CPT;
 		HEADER =
 		{
-			ID = n1;
-			NAME = "n1";
+			ID = n3;
+			NAME = "n3";
 		};
-		PARENTS = ();
+		PARENTS = (n1);
 		DEFINITION =
 		{
 			NAMESTATES = (0, 1);
-			PROBABILITIES = (0.2, 0.8);
+			PROBABILITIES = (0.1, 0.9, 0.9, 0.1);
+		};
+	};
+
+	node n5
+	{
+		TYPE = CPT;
+		HEADER =
+		{
+			ID = n5;
+			NAME = "n5";
+		};
+		PARENTS = (n3, n2);
+		DEFINITION =
+		{
+			NAMESTATES = (space, final, frontiere);
+			PROBABILITIES = (0.3, 0.6, 0.1, 0.5, 0.5, 0, 0.4, 0.6, 0, 0.5, 0.5, 0);
 		};
 	};
 
@@ -33,22 +48,6 @@ net Unnamed
 		};
 	};
 
-	node n3
-	{
-		TYPE = CPT;
-		HEADER =
-		{
-			ID = n3;
-			NAME = "n3";
-		};
-		PARENTS = (n1);
-		DEFINITION =
-		{
-			NAMESTATES = (0, 1);
-			PROBABILITIES = (0.1, 0.9, 0.9, 0.1);
-		};
-	};
-
 	node n4
 	{
 		TYPE = CPT;
@@ -65,19 +64,19 @@ net Unnamed
 		};
 	};
 
-	node n5
+	node n1
 	{
 		TYPE = CPT;
 		HEADER =
 		{
-			ID = n5;
-			NAME = "n5";
+			ID = n1;
+			NAME = "n1";
 		};
-		PARENTS = (n3, n2);
+		PARENTS = ();
 		DEFINITION =
 		{
-			NAMESTATES = (space, final, frontiere);
-			PROBABILITIES = (0.3, 0.6, 0.1, 0.5, 0.5, 0, 0.4, 0.6, 0, 0.5, 0.5, 0);
+			NAMESTATES = (0, 1);
+			PROBABILITIES = (0.2, 0.8);
 		};
 	};
 

@@ -325,7 +325,7 @@ namespace gum {
 } /* namespace gum */
 
 
-  /// include the inlined functions if necessary
+/// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/core/hashFunc.inl>
 #endif /* GUM_NO_INLINE */
