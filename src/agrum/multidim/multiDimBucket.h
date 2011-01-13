@@ -77,7 +77,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      * elements in the table.
      * @param bufferSize The amount of memory allowed for this bucket.
      */
-    MultiDimBucket(Size bufferSize=UINT_MAX);
+    MultiDimBucket(Size bufferSize=INT_MAX);
 
     /// Copy constructor.
     MultiDimBucket(const MultiDimBucket<T_DATA>& source);

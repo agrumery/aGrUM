@@ -54,7 +54,7 @@ MultiDimBucket<T_DATA>::~MultiDimBucket()
   for (BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
     delete iter.second();
   }
-  if (__bucket != 0) {
+  if (__bucket) {
     delete __bucket;
   }
   for (HashTableIterator<const MultiDimContainer<T_DATA>*, Instantiation* > iter =
@@ -156,7 +156,7 @@ void
 MultiDimBucket<T_DATA>::setBufferSize(Size ammount)
 {
   __bufferSize = ammount;
-  if ( (this->domainSize() > __bufferSize) && (__bucket != 0) ) {
+  if ( (this->domainSize() > __bufferSize) and (__bucket != 0) ) {
     __eraseBuffer();
   } else if (__bucket == 0) {
     __initializeBuffer();
@@ -167,7 +167,7 @@ template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::compute(bool force) const
 {
-  if ( (__bucket != 0) and (__changed or force) ) {
+  if ( (__bucket) and (__changed or force) ) {
     Instantiation values(*__bucket);
     for (values.setFirst(); ! values.end(); values.inc()) {
       __bucket->set(values, __computeValue(values));
@@ -189,12 +189,14 @@ void
 MultiDimBucket<T_DATA>::add (const DiscreteVariable &v)
 {
   MultiDimImplementation<T_DATA>::add(v);
-  if ( (not MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) and
-       (this->domainSize() <= __bufferSize) ) {
-    if (__bucket == 0) {
-      __initializeBuffer();
-    } else {
-      __bucket->add(v);
+  if (not MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) {
+    if (this->domainSize() <= __bufferSize) {
+      if (__bucket)
+        __bucket->add(v);
+      else
+        __initializeBuffer();
+    } else if (__bucket) {
+      __eraseBuffer();
     }
   }
 }
@@ -206,10 +208,10 @@ MultiDimBucket<T_DATA>::erase (const DiscreteVariable &v)
   MultiDimImplementation<T_DATA>::erase(v);
   if ( (not MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod()) and
        (this->domainSize() <= __bufferSize) ) {
-    if (__bucket == 0) {
-      __initializeBuffer();
-    } else {
+    if (__bucket) {
       __bucket->erase(v);
+    } else {
+      __initializeBuffer();
     }
   }
 }
@@ -218,7 +220,7 @@ template<typename T_DATA> INLINE
 Size
 MultiDimBucket<T_DATA>::realSize() const
 {
-  return (__bucket != 0)?__bucket->realSize():(Size) 0;
+  return (__bucket)?__bucket->realSize():(Size) 0;
 }
 
 template<typename T_DATA> INLINE
@@ -233,7 +235,7 @@ T_DATA
 MultiDimBucket<T_DATA>::get(const Instantiation &i) const
 {
   compute();
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       return __bucket->get(*(__instantiations.second(const_cast<Instantiation*>(&i))));
     } catch (NotFound&) {
@@ -255,7 +257,7 @@ MultiDimBucket<T_DATA>::changeNotification (Instantiation &i,
                                             const DiscreteVariable *const var,
                                             const Idx &oldval, const Idx &newval)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->changeNotification(*(__instantiations).second(&i), var, oldval, newval);
     } catch (NotFound&) {
@@ -270,7 +272,7 @@ template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setFirstNotification(Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->setFirstNotification(*(__instantiations).second(&i));
     } catch (NotFound&) {
@@ -285,7 +287,7 @@ template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setLastNotification(Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->setLastNotification(*(__instantiations).second(&i));
     } catch (NotFound&) {
@@ -300,7 +302,7 @@ template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setIncNotification(Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->setIncNotification(*(__instantiations.second(&i)));
     } catch (NotFound&) {
@@ -315,7 +317,7 @@ template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setDecNotification(Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->setDecNotification(*(__instantiations.second(&i)));
     } catch (NotFound&) {
@@ -330,7 +332,7 @@ template<typename T_DATA> INLINE
 void
 MultiDimBucket<T_DATA>::setChangeNotification(Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __bucket->setChangeNotification(*(__instantiations.second(&i)));
     } catch (NotFound&) {
@@ -345,7 +347,7 @@ template<typename T_DATA> INLINE
 bool
 MultiDimBucket<T_DATA>::registerSlave (Instantiation &i)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       __instantiations.insert(&i, new Instantiation(*__bucket));
     } catch (DuplicateElement&) {
@@ -360,7 +362,7 @@ bool
 MultiDimBucket<T_DATA>::unregisterSlave (Instantiation &i)
 {
   MultiDimReadOnly<T_DATA>::unregisterSlave(i);
-  if (__bucket != 0) {
+  if (__bucket) {
     try {
       delete __instantiations.second(&i);
       __instantiations.eraseFirst(&i);
@@ -382,7 +384,7 @@ template<typename T_DATA> INLINE
 MultiDimAdressable&
 MultiDimBucket<T_DATA>::getMasterRef (void)
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     return *__bucket;
   } else {
     return *this;
@@ -393,7 +395,7 @@ template<typename T_DATA> INLINE
 const MultiDimAdressable&
 MultiDimBucket<T_DATA>::getMasterRef (void) const
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     return *__bucket;
   } else {
     return *this;
@@ -477,7 +479,7 @@ template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::__initializeBuffer()
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
     for (BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
       delete iter.second();
@@ -503,7 +505,7 @@ template<typename T_DATA>
 void
 MultiDimBucket<T_DATA>::__eraseBuffer()
 {
-  if (__bucket != 0) {
+  if (__bucket) {
     typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
     for(BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter) {
       delete iter.second();
@@ -551,7 +553,7 @@ MultiDimBucket<T_DATA>::newFactory() const {
 template <typename T_DATA> INLINE
 const MultiDimArray<T_DATA>&
 MultiDimBucket<T_DATA>::bucket() const {
-  if (__bucket != 0) {
+  if (__bucket) {
     return *__bucket;
   } else {
     GUM_ERROR(OperationNotAllowed, "bucket not used.");
