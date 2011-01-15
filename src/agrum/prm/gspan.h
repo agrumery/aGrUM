@@ -76,9 +76,7 @@ class GSpan {
      * @param strategy The search strategy used for pattern mining, the
      *                 default strategy is gspan::FrequenceSearch.
      */
-    GSpan(const PRM& prm, const System& sys,
-          Size min_freq=2, Size depth_stop=10,
-          gspan::SearchStrategy* strategy = 0);
+    GSpan(const PRM& prm, const System& sys, gspan::SearchStrategy* strategy = 0);
 
     /// Destructor.
     ~GSpan();
@@ -88,21 +86,6 @@ class GSpan {
   /// @name Getters and setters.
   // ========================================================================
     /// @{
-    /**
-     * Returns the minimal frequency used to choose if a given pattern is
-     * interesting or not.
-     * @return the minimal frequency used to choose if a given pattern is
-     *         interesting or not.
-     */
-    Size getMinFrequency() const;
-
-    /**
-     * Defines the minimal frequency used by this class to discover
-     * interesting patterns.
-     *
-     * @param freq The new minimal frequency value.
-     */
-    void setMinFrequency(Size freq);
 
     /**
      * Returns the maximal depth of the DFSTree used to discover new patterns.
@@ -223,10 +206,7 @@ class GSpan {
     /// The DFSTree used to discover new patters.
     gspan::DFSTree __tree;
 
-    /// The minimal frequency used to choose interesting patterns.
-    Size __min_freq;
-
-    /// The maximal allowed depth of the DFSTree.
+    /// The max depth allowed for the DSF tree
     Size __depth_stop;
 
     /// The vector of discovered patters, in decreasing order of interest.

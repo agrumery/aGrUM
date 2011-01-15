@@ -69,6 +69,22 @@ Pattern::label(NodeId node) const {
 
 INLINE
 LabelData&
+Pattern::lastAdded() {
+  if (__last)
+    return *__last;
+  GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
+}
+
+INLINE
+const LabelData&
+Pattern::lastAdded() const {
+  if (__last)
+    return *__last;
+  GUM_ERROR(OperationNotAllowed, "there are no LabelData yet");
+}
+
+INLINE
+LabelData&
 Pattern::label(NodeId i, NodeId j) {
   try {
     return *(__arc_map[Arc(i, j)].first);
@@ -354,7 +370,6 @@ NeighborIterator::operator=(const NeighborIterator& from) {
 INLINE
 NodeId
 NeighborIterator::operator*() const { return **__iterator; }
-
 
 } /* namespace gspan */
 } /* namespace prm */

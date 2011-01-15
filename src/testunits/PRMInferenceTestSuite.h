@@ -461,6 +461,10 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }
+#ifdef GUM_NO_INLINE
+        // In debug mode we do it for just one node
+        break;
+#endif
       }
       delete g_ve;
       delete g_ss;

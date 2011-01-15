@@ -59,7 +59,6 @@ class StructuredInference: public PRMInference {
 
     /// Default constructor.
     StructuredInference(const PRM& prm, const System& system,
-                        Size min_freq=2, Size depth_stop=10,
                         gspan::SearchStrategy* strategy=0);
 
     /// Copy constructor.
@@ -298,9 +297,12 @@ class StructuredInference: public PRMInference {
     Timer timer;
     Timer plopTimer;
     double triang_time;
+    double mining_time;
+    double pattern_time;
     double inner_time;
     double obs_time;
-    double mining_time;
+    double full_time;
+    std::string info() const;
 };
 
 } /* namespace prm */

@@ -26,6 +26,7 @@
 #include <agrum/prm/structuredInference.h>
 // ============================================================================
 #include <agrum/prm/generator/layerGenerator.h>
+#include <agrum/prm/generator/clusteredLayerGenerator.h>
 // ============================================================================
 #include <agrum/prm/gspan/DFSTree.h>
 // ============================================================================
@@ -45,14 +46,40 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       //std::cerr << std::endl;
     }
 
-    void generateLayer(std::vector<LayerGenerator::LayerData>& v, size_t layer_count)
+    void generateLayer1(size_t nb_class, size_t depth, std::vector<LayerGenerator::LayerData>& v)
     {
-      for (size_t lvl = 0; lvl < layer_count; ++lvl) {
+      for (size_t lvl = 0; lvl < depth; ++lvl) {
         v.push_back(LayerGenerator::LayerData());
         v[lvl].a = 10;
         v[lvl].g = 2;
-        v[lvl].c = 1;
-        v[lvl].o = 10;
+        v[lvl].c = nb_class;
+        v[lvl].o = 20;
+        v[lvl].inner_density = 0.2;
+        v[lvl].outter_density = 0.05;
+      }
+    }
+
+    void generateLayer2(size_t nb_class, size_t depth, std::vector<LayerGenerator::LayerData>& v)
+    {
+      for (size_t lvl = 0; lvl < depth; ++lvl) {
+        v.push_back(LayerGenerator::LayerData());
+        v[lvl].a = 10;
+        v[lvl].g = 2;
+        v[lvl].c = nb_class;
+        v[lvl].o = 1 + lvl;
+        v[lvl].inner_density = 0.2;
+        v[lvl].outter_density = 0.05;
+      }
+    }
+
+    void generateLayer3(size_t nb_class, size_t depth, std::vector<LayerGenerator::LayerData>& v)
+    {
+      for (size_t lvl = 0; lvl < depth; ++lvl) {
+        v.push_back(LayerGenerator::LayerData());
+        v[lvl].a = 10;
+        v[lvl].g = 2;
+        v[lvl].c = nb_class;
+        v[lvl].o = depth - lvl;
         v[lvl].inner_density = 0.2;
         v[lvl].outter_density = 0.05;
       }
@@ -72,40 +99,92 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       return *(seq.atPos(std::rand() % seq.size()));
     }
 
-    // void testStructWithLayerGeneration() {
-    //   std::vector<LayerGenerator::LayerData> layers;
-    //   generateLayer(layers, 5);
-    //   LayerGenerator generator;
-    //   generator.setLayers(layers);
-    //   generator.setDomainSize(2);
-    //   generator.setMaxParents(5);
-    //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
-    //   StructuredInference inf(*prm, sys, 2, 2, new gspan::StrictSearch());
-    //   inf.setPatternMining(false);
-    //   const Instance& i = pickInstance(sys);
-    //   const Attribute& a = pickAttribute(i);
-    //   PRMInference::Chain chain = std::make_pair(&i, &a);
-    //   Potential<prm_float> m;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //   prm_float sum = 0.0;
-    //   Instantiation inst(m);
-    //   for (inst.setFirst(); not inst.end(); inst.inc())
-    //     sum += m.get(inst);
-    //   TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //   delete prm;
-    // }
-
-    void testStrictWithLayerGeneration() {
+    void testStructuredInference_gen1() {
       std::vector<LayerGenerator::LayerData> layers;
-      generateLayer(layers, 5);
-      LayerGenerator generator;
+      generateLayer1(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
       generator.setLayers(layers);
-      generator.setDomainSize(3);
+      generator.setDomainSize(2);
       generator.setMaxParents(5);
       PRM* prm = generator.generate();
       System& sys = prm->getSystem((**(prm->systems().begin())).name());
-      StructuredInference inf(*prm, sys, 2, 10, new gspan::StrictSearch());
+      StructuredInference inf(*prm, sys);
+      inf.setPatternMining(false);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testStructuredInference_gen2() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer2(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys);
+      inf.setPatternMining(false);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testStructuredInference_gen3() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer3(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys);
+      inf.setPatternMining(false);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testFrequenceSearch_gen1() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer1(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
       inf.setPatternMining(true);
       const Instance& i = pickInstance(sys);
       const Attribute& a = pickAttribute(i);
@@ -120,117 +199,205 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       delete prm;
     }
 
-    // void testFreqWithLayerGeneration() {
-    //   std::vector<LayerGenerator::LayerData> layers;
-    //   generateLayer(layers, 5);
-    //   LayerGenerator generator;
-    //   generator.setLayers(layers);
-    //   generator.setDomainSize(2);
-    //   generator.setMaxParents(5);
-    //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
-    //   StructuredInference inf(*prm, sys, 2, 2, new gspan::FrequenceSearch(2));
-    //   inf.setPatternMining(true);
-    //   const Instance& i = pickInstance(sys);
-    //   const Attribute& a = pickAttribute(i);
-    //   PRMInference::Chain chain = std::make_pair(&i, &a);
-    //   Potential<prm_float> m;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //   prm_float sum = 0.0;
-    //   Instantiation inst(m);
-    //   for (inst.setFirst(); not inst.end(); inst.inc())
-    //     sum += m.get(inst);
-    //   TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //   delete prm;
-    // }
+    void testFrequenceSearch_gen2() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer2(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
 
-    // void testTreeWidthLayerGeneration() {
-    //   std::vector<LayerGenerator::LayerData> layers;
-    //   generateLayer(layers, 10);
-    //   LayerGenerator generator;
-    //   generator.setLayers(layers);
-    //   generator.setDomainSize(2);
-    //   generator.setMaxParents(5);
-    //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
-    //   StructuredInference inf(*prm, sys, 2, 2, new gspan::TreeWidthSearch(2));
-    //   inf.setPatternMining(true);
-    //   const Instance& i = pickInstance(sys);
-    //   const Attribute& a = pickAttribute(i);
-    //   PRMInference::Chain chain = std::make_pair(&i, &a);
-    //   Potential<prm_float> m;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //   prm_float sum = 0.0;
-    //   Instantiation inst(m);
-    //   for (inst.setFirst(); not inst.end(); inst.inc())
-    //     sum += m.get(inst);
-    //   TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //   delete prm;
-    // }
+    void testFrequenceSearch_gen3() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer3(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
 
+    void testStrictSearch_gen1() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer1(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
 
-    // void testCompareSpeed() {
-    //   std::cerr << std::endl;
-    //   GUM_CHECKPOINT;
-    //   Timer timer;
-    //   std::vector<LayerGenerator::LayerData> layers;
-    //   generateLayer(layers, 6, 1);
-    //   GUM_CHECKPOINT;
-    //   LayerGenerator generator;
-    //   generator.setLayers(layers);
-    //   generator.setDomainSize(6);
-    //   GUM_TRACE_VAR(std::pow(6,5));
-    //   generator.setMaxParents(5);
-    //   GUM_CHECKPOINT;
-    //   PRM* prm = 0;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(generator.generate());
-    //   GUM_CHECKPOINT;
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
-    //   const Instance& i = pickInstance(sys);
-    //   const Attribute& a = pickAttribute(i);
-    //   PRMInference::Chain chain = std::make_pair(&i, &a);
-    //   GUM_CHECKPOINT;
-    //   {
-    //     timer.reset();
-    //     Potential<prm_float> m;
-    //     StructuredInference inf(*prm, sys, 2, 2, new gspan::StrictSearch());
-    //     inf.setPatternMining(false);
-    //     TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //     prm_float sum = 0.0;
-    //     Instantiation inst(m);
-    //     for (inst.setFirst(); not inst.end(); inst.inc())
-    //       sum += m.get(inst);
-    //     TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //     GUM_TRACE(timer.step());
-    //   }
-    //   {
-    //     timer.reset();
-    //     Potential<prm_float> m;
-    //     StructuredInference inf(*prm, sys, 2, 2, new gspan::StrictSearch());
-    //     inf.setPatternMining(true);
-    //     TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //     prm_float sum = 0.0;
-    //     Instantiation inst(m);
-    //     for (inst.setFirst(); not inst.end(); inst.inc())
-    //       sum += m.get(inst);
-    //     TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //     GUM_TRACE(timer.step());
-    //   }
-    //   {
-    //     timer.reset();
-    //     Potential<prm_float> m;
-    //     StructuredInference inf(*prm, sys, 2, 2, new gspan::FrequenceSearch(2));
-    //     inf.setPatternMining(true);
-    //     TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-    //     prm_float sum = 0.0;
-    //     Instantiation inst(m);
-    //     for (inst.setFirst(); not inst.end(); inst.inc())
-    //       sum += m.get(inst);
-    //     TS_ASSERT_DELTA(sum, 1.0, 1e-6);
-    //     GUM_TRACE(timer.step());
-    //   }
-    //   delete prm;
-    // }
+    void testStrictSearch_gen2() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer2(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testStrictStrategy_gen3() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer3(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testTreeWidthSearch_gen1() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer1(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testTreeWidthSearch_gen2() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer2(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
+
+    void testTreeWidthSearch_gen3() {
+      std::vector<LayerGenerator::LayerData> layers;
+      generateLayer3(5, 2, layers);
+      ClusteredLayerGenerator generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      PRM* prm = generator.generate();
+      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      inf.setPatternMining(true);
+      const Instance& i = pickInstance(sys);
+      const Attribute& a = pickAttribute(i);
+      PRMInference::Chain chain = std::make_pair(&i, &a);
+      Potential<prm_float> m;
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+      prm_float sum = 0.0;
+      Instantiation inst(m);
+      for (inst.setFirst(); not inst.end(); inst.inc())
+        sum += m.get(inst);
+      TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+      delete prm;
+    }
 
 };
 

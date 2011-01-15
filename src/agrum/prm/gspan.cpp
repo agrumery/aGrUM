@@ -61,7 +61,7 @@ GSpan::__sortNodesAndEdges() {
   typedef Bijection<Idx, gspan::LabelData*>::iterator BijIterator;
   for (BijIterator iter = __graph->labels().begin(); iter != __graph->labels().end(); ++iter) {
     try {
-      if (__graph->nodes(iter.second()).size() >= __min_freq) {
+      if (__graph->nodes(iter.second()).size() >= 2) {
         __cost.insert(iter.second(), __cost_func(iter.second()->tree_width, __graph->nodes(iter.second()).size()));
         __nodes.push_back(const_cast<gspan::LabelData*>(iter.second()));
       }
@@ -159,7 +159,7 @@ GSpan::__subgraph_mining(gspan::InterfaceGraph& ig, gspan::Pattern& pat) {
         edge_count = count_vector[node];
         for (EdgeCountIter growth = edge_count->begin(); growth != edge_count->end(); ++growth) {
           try {
-            __tree.growPattern(*p, **growth, __min_freq);
+            __tree.growPattern(*p, **growth, 2);
           } catch (OperationNotAllowed& e) {
             // The child was not minimal or was not worth considering
           }

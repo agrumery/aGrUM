@@ -67,7 +67,7 @@ class GSpanTestSuite: public CxxTest::TestSuite {
 
     void testTree() {
       GSpan* gspan = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->getSystem("m"), 2, 5));
+      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->getSystem("m")));
       if (gspan != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
         TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);

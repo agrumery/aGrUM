@@ -82,7 +82,7 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          /// Stuff we want to know about patterns in this DFSTree.
+          const InterfaceGraph& graph() const;
 
           struct PatternData {
             /// Constructor.
@@ -357,8 +357,14 @@ namespace gum {
           /// Default constructor.
           SearchStrategy();
 
+          /// Copy constructor.
+          SearchStrategy(const SearchStrategy& from);
+
           /// Destructor.
           virtual ~SearchStrategy();
+
+          /// Copy operator.
+          SearchStrategy& operator=(const SearchStrategy& from);
 
           /// @}
           // =========================================================================
@@ -368,16 +374,19 @@ namespace gum {
 
           void setTree ( DFSTree* tree );
 
-          virtual bool accept_growth ( const Pattern* parent,
-                                       const Pattern* child,
-                                       const DFSTree::EdgeGrowth& growth ) = 0;
+          virtual bool accept_root (const Pattern* r) =0;
 
+          virtual bool accept_growth (const Pattern* parent,
+                                      const Pattern* child,
+                                      const DFSTree::EdgeGrowth& growth ) = 0;
+
+          virtual bool operator() ( LabelData* i, LabelData* j ) = 0;
           virtual bool operator() ( Pattern* i, Pattern* j ) = 0;
           /// @}
 
         protected:
           DFSTree* _tree;
-
+          double _computeCost(const Pattern& p);
       };
 
       /**
@@ -399,8 +408,14 @@ namespace gum {
           /// Default constructor.
           FrequenceSearch ( Size freq );
 
+          /// Copy constructor.
+          FrequenceSearch(const FrequenceSearch& from);
+
           /// Destructor.
           virtual ~FrequenceSearch();
+
+          /// Copy operator.
+          FrequenceSearch& operator=(const FrequenceSearch& from);
 
           /// @}
           // =========================================================================
@@ -408,10 +423,13 @@ namespace gum {
           // ==========================================================================
           /// @{
 
+          virtual bool accept_root (const Pattern* r);
+
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
                                        const DFSTree::EdgeGrowth& growth );
 
+          virtual bool operator() ( LabelData* i, LabelData* j );
           virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
@@ -419,7 +437,6 @@ namespace gum {
           Size __freq;
 
       };
-
 
       /**
        * @class StrictSearch DFSTree.h <agrum/prm/gspan/DFSTree.h>
@@ -439,10 +456,16 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          StrictSearch();
+          StrictSearch(Size freq = 2);
+
+          /// Copy constructor.
+          StrictSearch(const StrictSearch& from);
 
           /// Destructor.
           virtual ~StrictSearch();
+
+          /// Copy operator.
+          StrictSearch& operator=(const StrictSearch& from);
 
           /// @}
           // =========================================================================
@@ -450,23 +473,21 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          double gain ( const Pattern& p );
-
           double cost ( const Pattern& p );
+
+          virtual bool accept_root (const Pattern* r);
 
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
                                        const DFSTree::EdgeGrowth& growth );
 
+          virtual bool operator() ( LabelData* i, LabelData* j );
           virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
         private:
-          HashTable<const Pattern*, std::pair<double, double> > __map;
-          double __getCost ( const Pattern& p );
-          void __setCost ( const Pattern& p, double cost );
-          double __getGain ( const Pattern& p );
-          void __setGain ( const Pattern& p, double gain );
+          double __freq;
+          HashTable<const Pattern*, double> __map;
       };
 
       /**
@@ -484,10 +505,16 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          TreeWidthSearch(Size min_freq = 2);
+          TreeWidthSearch();
+
+          /// Copy constructor.
+          TreeWidthSearch(const TreeWidthSearch& from);
 
           /// Destructor.
           virtual ~TreeWidthSearch();
+
+          /// Copy operator.
+          TreeWidthSearch& operator=(const TreeWidthSearch& from);
 
           /// @}
           // =========================================================================
@@ -495,22 +522,20 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          double getCost ( const Pattern& p );
-
-          void setCost ( const Pattern& p, double cost );
-
           double cost ( const Pattern& p );
+
+          virtual bool accept_root (const Pattern* r);
 
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
                                        const DFSTree::EdgeGrowth& growth );
 
+          virtual bool operator() ( LabelData* i, LabelData* j );
           virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
         private:
           HashTable<const Pattern*, double> __map;
-          Size __min_freq;
       };
 
     } /* namespace gspan */

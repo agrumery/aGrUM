@@ -37,8 +37,22 @@ SearchStrategy::SearchStrategy():
 }
 
 INLINE
+SearchStrategy::SearchStrategy(const SearchStrategy& from):
+  _tree(from._tree)
+{
+  GUM_CONS_CPY(SearchStrategy);
+}
+
+INLINE
 SearchStrategy::~SearchStrategy() {
   GUM_DESTRUCTOR(SearchStrategy);
+}
+
+INLINE
+SearchStrategy&
+SearchStrategy::operator=(const SearchStrategy& from) {
+  _tree = from._tree;
+  return *this;
 }
 
 INLINE
@@ -46,6 +60,10 @@ void
 SearchStrategy::setTree(DFSTree* tree) {
   _tree = tree;
 }
+
+// ============================================================================
+// FrequenceSearch
+// ============================================================================
 
 // The FrequenceSearch class
 INLINE
@@ -56,8 +74,28 @@ FrequenceSearch::FrequenceSearch(Size freq):
 }
 
 INLINE
+FrequenceSearch::FrequenceSearch(const FrequenceSearch& from):
+  SearchStrategy(from), __freq(from.__freq)
+{
+  GUM_CONS_CPY(FrequenceSearch);
+}
+
+INLINE
 FrequenceSearch::~FrequenceSearch() {
   GUM_DESTRUCTOR(FrequenceSearch);
+}
+
+INLINE
+FrequenceSearch&
+FrequenceSearch::operator=(const FrequenceSearch& from) {
+  __freq = from.__freq;
+  return *this;
+}
+
+INLINE
+bool
+FrequenceSearch::accept_root(const Pattern* r) {
+  return _tree->frequency(*r) >= __freq;
 }
 
 INLINE
@@ -76,13 +114,29 @@ FrequenceSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
   return _tree->frequency(*i) > _tree->frequency(*j);
 }
 
+INLINE
+bool
+FrequenceSearch::operator() ( LabelData* i, LabelData* j ) {
+  return _tree->graph().size(i) > _tree->graph().size(j);
+}
+
+// ============================================================================
+// StrictSearch
+// ============================================================================
 
 // The StrictSearch class
 INLINE
-StrictSearch::StrictSearch():
-  SearchStrategy()
+StrictSearch::StrictSearch(Size freq):
+  SearchStrategy(), __freq(freq)
 {
   GUM_CONSTRUCTOR(StrictSearch);
+}
+
+INLINE
+StrictSearch::StrictSearch(const StrictSearch& from):
+  SearchStrategy(from), __freq(from.__freq)
+{
+  GUM_CONS_CPY(StrictSearch);
 }
 
 INLINE
@@ -91,45 +145,33 @@ StrictSearch::~StrictSearch() {
 }
 
 INLINE
-double
-StrictSearch::__getCost(const Pattern& p) {
-  try {
-    return __map[&p].first;
-  } catch (NotFound&) {
-    __map.insert(&p, std::make_pair((double) 0.0, (double) 0.0));
-    return (double) 0.0;
-  }
-}
-
-INLINE
-void
-StrictSearch::__setCost(const Pattern& p, double cost) {
-  try {
-    __map[&p].first = cost;
-  } catch (NotFound&) {
-    __map.insert(&p, std::make_pair(cost, (double) 0.0));
-  }
+StrictSearch&
+StrictSearch::operator=(const StrictSearch& from) {
+  __freq = from.__freq;
+  return *this;
 }
 
 INLINE
 double
-StrictSearch::__getGain(const Pattern& p) {
+StrictSearch::cost(const Pattern& p) {
   try {
-    return __map[&p].second;
+    return __map[&p];
   } catch (NotFound&) {
-    __map.insert(&p, std::make_pair(0.0, 0.0));
-    return __map[&p].second;
+    __map.insert(&p, _computeCost(p));
+    return __map[&p];
   }
 }
 
 INLINE
-void
-StrictSearch::__setGain(const Pattern& p, double gain) {
-  try {
-    __map[&p].second = gain;
-  } catch (NotFound&) {
-    __map.insert(&p, std::make_pair((double) 0.0, gain));
+bool
+StrictSearch::accept_root(const Pattern* r) {
+  if (_tree->frequency(*r) >= __freq) {
+    Size tree_width = 0;
+    for (Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n)
+      tree_width += r->label(*n).tree_width;
+    return _tree->frequency(*r) * tree_width >= cost(*r);
   }
+  return false;
 }
 
 INLINE
@@ -138,15 +180,20 @@ StrictSearch::accept_growth(const Pattern* parent,
                             const Pattern* child,
                             const DFSTree::EdgeGrowth& growth)
 {
-  return _tree->frequency(*child) * (cost(*parent) + gain(*child)) > cost(*child);
+  return _tree->frequency(*child) * (cost(*parent) + child->lastAdded().tree_width) >= cost(*child);
 }
 
 INLINE
 bool
 StrictSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
-  // We want a descending order
-  return _tree->frequency(*i) * gain(*i) / cost(*i) >
-         _tree->frequency(*j) * gain(*j) / cost(*j);
+  return _tree->frequency(*i) * cost(*i) < _tree->frequency(*j) * cost(*j);
+}
+
+INLINE
+bool
+StrictSearch::operator() ( LabelData* i, LabelData* j ) {
+  return i->tree_width * _tree->graph().size(i) <
+         j->tree_width * _tree->graph().size(j);
 }
 
 // ============================================================================
@@ -154,10 +201,17 @@ StrictSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
 // ============================================================================
 
 INLINE
-TreeWidthSearch::TreeWidthSearch(Size min_freq):
-  __min_freq(min_freq)
+TreeWidthSearch::TreeWidthSearch():
+  SearchStrategy()
 {
   GUM_CONSTRUCTOR( TreeWidthSearch );
+}
+
+INLINE
+TreeWidthSearch::TreeWidthSearch(const TreeWidthSearch& from):
+  SearchStrategy(from)
+{
+  GUM_CONS_CPY(TreeWidthSearch);
 }
 
 INLINE
@@ -166,23 +220,29 @@ TreeWidthSearch::~TreeWidthSearch() {
 }
 
 INLINE
+TreeWidthSearch&
+TreeWidthSearch::operator=(const TreeWidthSearch& from) {
+  return *this;
+}
+
+INLINE
 double
-TreeWidthSearch::getCost(const Pattern& p) {
+TreeWidthSearch::cost(const Pattern& p) {
   try {
     return __map[&p];
   } catch (NotFound&) {
-    return cost(p);
+    __map.insert(&p, _computeCost(p));
+    return __map[&p];
   }
 }
 
 INLINE
-void
-TreeWidthSearch::setCost(const Pattern& p, double cost) {
-  try {
-    __map[&p] = cost;
-  } catch (NotFound&) {
-    __map.insert(&p, cost);
-  }
+bool
+TreeWidthSearch::accept_root(const Pattern* r) {
+  Size tree_width = 0;
+  for (Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n)
+    tree_width += r->label(*n).tree_width;
+  return tree_width >= cost(*r);
 }
 
 INLINE
@@ -191,18 +251,20 @@ TreeWidthSearch::accept_growth(const Pattern* parent,
                                const Pattern* child,
                                const DFSTree::EdgeGrowth& growth)
 {
-  return (_tree->frequency(*child) >= __min_freq) and
-         (getCost(*parent) >= getCost(*child));
+  return cost(*parent) >= cost(*child);
 }
 
 INLINE
 bool
 TreeWidthSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
-  // We want a descending order
-  return (_tree->frequency(*j) >= __min_freq) and
-         (getCost(*i) >= getCost(*j));
+  return cost(*i) < cost(*j);
 }
 
+INLINE
+bool
+TreeWidthSearch::operator() ( LabelData* i, LabelData* j ) {
+  return i->tree_width < j->tree_width;
+}
 
 } /* namespace gspan */
 } /* namespace prm */

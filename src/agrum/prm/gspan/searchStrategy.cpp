@@ -26,72 +26,16 @@
 // ============================================================================
 #include <agrum/prm/gspan/DFSTree.h>
 // ============================================================================
+#ifdef GUM_NO_INLINE
+#include <agrum/prm/gspan/searchStrategy.inl>
+#endif
+
 namespace gum {
 namespace prm {
 namespace gspan {
 
 double
-StrictSearch::cost(const Pattern& p) {
-  if (__getCost(p) == 0) {
-    double cost = 0;
-    const Sequence<Instance*>& seq = **(_tree->data(p).iso_map.begin());
-    const Set<SlotChain*>* chains = 0;
-    const Set<Instance*>* instances = 0;
-    Sequence<ClassElement*> input_set;
-    for (Sequence<Instance*>::iterator iter = seq.begin(); iter != seq.end(); ++iter) {
-      chains = &((**iter).type().slotChains());
-      for (Set<SlotChain*>::iterator input = chains->begin(); input != chains->end(); ++input) {
-        instances = &((**iter).getInstances((**input).id()));
-        for (Set<Instance*>::iterator jter = instances->begin(); jter != instances->end(); ++jter) {
-          if ((not seq.exists(*jter)) and (not input_set.exists(&((*jter)->get((*input)->lastElt().safeName())))) ) {
-            cost += std::log((*input)->type().variable().domainSize());
-            input_set.insert(&((*jter)->get((*input)->lastElt().safeName())));
-          }
-        }
-      }
-      for (Instance::InvRefIterator vec = (**iter).beginInvRef(); vec != (**iter).endInvRef(); ++vec) {
-        for (std::vector< std::pair<Instance*, std::string> >::iterator inverse = (**vec).begin(); inverse != (**vec).end(); ++inverse) {
-          if (not seq.exists(inverse->first)) {
-            cost += std::log((*iter)->get(vec.key()).type().variable().domainSize());
-            break;
-          }
-        }
-      }
-    }
-    __setCost(p, cost);
-  }
-  return __getCost(p);
-}
-
-double
-StrictSearch::gain(const Pattern& p) {
-  if (__getGain(p) == 0) {
-    double gain = 0;
-    const Sequence<Instance*>& seq = **(_tree->data(p).iso_map.begin());
-    const Instance* instance = 0;
-    const Set<Instance*>* instances = 0;
-    const Instance* last = seq.atPos(seq.size() - 1);
-    for (Size idx = 0; idx < seq.size() - 1; ++idx) {
-      instance = seq.atPos(idx);
-      for (Set<SlotChain*>::iterator input = instance->type().slotChains().begin(); input != instance->type().slotChains().end(); ++input) {
-        instances = &(instance->getInstances((*input)->id()));
-        for (Set<Instance*>::iterator jter = instances->begin(); jter != instances->end(); ++jter) {
-          if (*jter == last)
-            gain += std::log((*input)->type().variable().domainSize());
-        }
-      }
-    }
-    __setGain(p, gain);
-  }
-  return __getGain(p);
-}
-
-// ============================================================================
-// TreeWidthSearch
-// ============================================================================
-
-double
-TreeWidthSearch::cost(const Pattern& p) {
+SearchStrategy::_computeCost(const Pattern& p) {
   double cost = 0;
   const Sequence<Instance*>& seq = **(_tree->data(p).iso_map.begin());
   const Set<SlotChain*>* chains = 0;
@@ -117,7 +61,6 @@ TreeWidthSearch::cost(const Pattern& p) {
       }
     }
   }
-  setCost(p, cost);
   return cost;
 }
 

@@ -186,6 +186,8 @@ eliminateNode(const DiscreteVariable* var,
 //     trash.insert( bucket_pot );
 //     pool.insert( bucket_pot );
 //   }
+//   if (bucket->domainSize() > INT_MAX)
+//     GUM_TRACE_VAR(bucket->domainSize());
 // }
 
 } /* namespace prm */

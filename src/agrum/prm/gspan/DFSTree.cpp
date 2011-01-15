@@ -28,7 +28,6 @@
 // ============================================================================
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/gspan/DFSTree.inl>
-#include <agrum/prm/gspan/searchStrategy.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
@@ -80,6 +79,7 @@ DFSTree::addRoot(LabelData& label) {
   // This is used to compute the max independent set of p->max_indep_set
   for (HashTable<Pattern*, Sequence<EdgeData*>*>::iterator root = roots_edges.begin(); root != roots_edges.end(); ++root) {
     __initialiaze_root(root.key(), **root);
+    strategy().accept_root(root.key());
     delete *root;
   }
 }

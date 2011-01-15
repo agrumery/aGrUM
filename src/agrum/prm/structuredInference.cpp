@@ -34,15 +34,17 @@ namespace gum {
 namespace prm {
 
 StructuredInference::StructuredInference(const PRM& prm, const System& system,
-                                         Size min_freq, Size depth_stop,
                                          gspan::SearchStrategy* strategy):
   PRMInference(prm, system), __gspan(0), __pdata(0), __mining(false), __dot(".")
 {
   GUM_CONSTRUCTOR( StructuredInference );
-  __gspan = new GSpan(prm, system, min_freq, depth_stop, strategy);
+  __gspan = new GSpan(prm, system, strategy);
   triang_time = 0.0;
+  mining_time = 0.0;
+  pattern_time = 0.0;
   inner_time = 0.0;
   obs_time = 0.0;
+  full_time = 0.0;
 }
 
 StructuredInference::StructuredInference(const StructuredInference& source):
@@ -92,6 +94,7 @@ StructuredInference::_evidenceRemoved(const Chain& chain) {
 
 void
 StructuredInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
+  timer.reset();
   __query = chain;
   StructuredInference::RGData data;
   __buildReduceGraph(data);
@@ -120,11 +123,33 @@ StructuredInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
     delete __pdata;
     __pdata = 0;
   }
+  full_time = timer.step();
 }
 
 void
 StructuredInference::_joint(const std::vector< Chain >& queries, Potential<prm_float>& j) {
   GUM_ERROR(FatalError, "not implemented");
+}
+
+std::string
+StructuredInference::info() const {
+  std::stringstream s;
+  s << "Triangulation time: " << triang_time << std::endl;
+  s << "Pattern mining time: " << mining_time << std::endl;
+  s << "Pattern elimination time: " << pattern_time << std::endl;
+  s << "Inner node elimination time: " << inner_time << std::endl;
+  s << "Observed node elimination time: " << obs_time << std::endl;
+  s << "Full inference time: " << full_time << std::endl;
+  s << "#patterns: " << __gspan->patterns().size() << std::endl;
+  Size count = 0;
+  typedef std::vector<gspan::Pattern*>::const_iterator Iter;
+  for (Iter p = __gspan->patterns().begin(); p != __gspan->patterns().end(); ++p) {
+    if (__gspan->matches(**p).size()) {
+      s << "Pattern n°" << count++ << " match count: " << __gspan->matches(**p).size() << std::endl;
+      s << "Pattern n°" << count++ << " instance count: " << (**p).size() << std::endl;
+    }
+  }
+  return s.str();
 }
 
 void
@@ -137,10 +162,12 @@ StructuredInference::__buildReduceGraph(StructuredInference::RGData& data) {
   mining_time = plopTimer.step();
   // GUM_TRACE(timer.step());
   // Reducing each used pattern
+  plopTimer.reset();
   typedef std::vector<gspan::Pattern*>::const_iterator Iter;
   for (Iter p = __gspan->patterns().begin(); p != __gspan->patterns().end(); ++p)
     if (__gspan->matches(**p).size())
       __reducePattern(*p);
+  pattern_time = plopTimer.step();
   // GUM_TRACE(timer.step());
   // Unreducing a matche if it contains the query
   if (__reducedInstances.exists(__query.first))

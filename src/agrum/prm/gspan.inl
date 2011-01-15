@@ -28,10 +28,9 @@ namespace gum {
 namespace prm {
 
 INLINE
-GSpan::GSpan(const PRM& prm, const System& sys, Size min_freq, Size depth_stop,
-             gspan::SearchStrategy* strategy):
+GSpan::GSpan(const PRM& prm, const System& sys, gspan::SearchStrategy* strategy):
   __graph(new gspan::InterfaceGraph(sys)), __tree(*__graph, strategy),
-  __min_freq(min_freq), __depth_stop(depth_stop)
+  __depth_stop(INT_MAX)
 {
   GUM_CONSTRUCTOR( GSpan );
 }
@@ -48,18 +47,6 @@ GSpan::~GSpan() {
   //   delete *iter;
   // }
   delete __graph;
-}
-
-INLINE
-Size
-GSpan::getMinFrequency() const {
-  return __min_freq;
-}
-
-INLINE
-void
-GSpan::setMinFrequency(Size freq) {
-  __min_freq = freq;
 }
 
 INLINE
@@ -133,9 +120,9 @@ GSpan::interfaceGraph() const {
 INLINE
 bool
 GSpan::__isEdgeEligible(gspan::EdgeData* e) {
-  return (__graph->edges(e->l).size() >= __min_freq) and
-         (__graph->nodes(e->l_u).size() >= __min_freq) and
-         (__graph->nodes(e->l_v).size() >= __min_freq);
+  return (__graph->edges(e->l).size() >= 2) and
+         (__graph->nodes(e->l_u).size() >= 2) and
+         (__graph->nodes(e->l_v).size() >= 2);
 }
 
 // ============================================================================
@@ -164,7 +151,8 @@ INLINE
 bool
 GSpan::LabelSort::operator()(gspan::LabelData* i, gspan::LabelData* j) {
   // We want a descending order
-  return gspan->__cost[i] > gspan->__cost[j];
+  //return gspan->__cost[i] > gspan->__cost[j];
+  return gspan->__tree.strategy()(i, j);
 }
 
 // ============================================================================

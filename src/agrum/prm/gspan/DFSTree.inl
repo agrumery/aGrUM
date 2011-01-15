@@ -149,6 +149,12 @@ DFSTree::max_indep_set(const Pattern& p) {
 }
 
 INLINE
+const InterfaceGraph&
+DFSTree::graph() const {
+  return *__graph;
+}
+
+INLINE
 std::ostream&
 operator<<(std::ostream& out, const DFSTree::EdgeGrowth &edge) {
   out << edge.u << ", " << *(edge.edge) << ", " << *(edge.l_v) << ", " << edge.v;

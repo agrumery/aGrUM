@@ -106,6 +106,12 @@ namespace gum {
         /// Returns the LabelData assigned to arc.
         const LabelData& label(const Arc& arc) const;
 
+        // Returns the last added LabelData.
+        LabelData& lastAdded();
+
+        // Returns the last added LabelData.
+        const LabelData& lastAdded() const;
+
         /**
          * @brief Add an arc to this Pattern.
          *
@@ -212,6 +218,9 @@ namespace gum {
 
         /// Mapping between edges in this Pattern and their respective LabelData.
         Property<std::pair<LabelData*, EdgeCode*> >::onArcs __arc_map;
+
+        /// The last LabelData added to this pattern.
+        LabelData* __last;
 
         /// Returns true if the expand code by adding and edge betwenne u and v is minimal
         /// with respect to __code.
