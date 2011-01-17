@@ -3,7 +3,7 @@
 #ifndef PRM_RUN_COCO_SCANNER_H__
 #define PRM_RUN_COCO_SCANNER_H__
 
-#include <agrum/core/cocoR.h>
+#include <agrum/core/cocoR/common.h>
 
 using namespace gum;
 
