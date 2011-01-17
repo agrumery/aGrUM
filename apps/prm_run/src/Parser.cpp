@@ -418,6 +418,7 @@ void Parser::query(const std::string& name) {
     }
     log << std::endl << std::endl;
     delete inf;
+    inf = 0;
   }
 }
 

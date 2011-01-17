@@ -32,6 +32,7 @@
 #define PRM_RUN_COCO_SCANNER_H__
 
 #include <agrum/core/cocoR.h>
+#
 
 using namespace gum;
 
