@@ -3,7 +3,7 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=GSpan
+SKOOL_TEST=StructuredInference
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

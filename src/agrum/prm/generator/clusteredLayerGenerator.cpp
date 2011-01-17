@@ -403,8 +403,8 @@ ClusteredLayerGenerator::__generateSystem(PRMFactory& factory, std::vector<Clust
               GUM_ERROR(OperationNotAllowed, "unexpected vector size");
             }
         }
-        __cluster_map.erase(c);
-        delete v;
+        // __cluster_map.erase(c);
+        // delete v;
         name = first;
       } else {
         name = _name_gen.nextName(PRMObject::prm_instance);

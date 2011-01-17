@@ -250,7 +250,7 @@ class Instance: public PRMObject {
      * insertion of the same DiscreteVariable pointer in a MultiDim.
      *
      * @return Returns a bijection in which first elements are DiscreteVariable
-     *         in this and the second are in this->type().
+     *         in this->type() and the second are in this.
      */
     const Bijection<const DiscreteVariable*,
                     const DiscreteVariable*>& bijection() const;

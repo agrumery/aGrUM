@@ -35,7 +35,7 @@ namespace prm {
 namespace gspan {
 
 Pattern::Pattern(const Pattern& source):
-  DiGraph()
+  DiGraph(), __last(0)
 {
   GUM_CONS_CPY( Pattern );
   Property<NodeId>::onNodes node_map;

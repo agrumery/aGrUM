@@ -37,23 +37,19 @@ void
 GSpan::discoverPatterns() {
   Timer t;
   __sortNodesAndEdges();
-  //GUM_TRACE(t.step());
   gspan::InterfaceGraph graph(*__graph);
   for (std::list<NodeId>::iterator root = __tree.roots().begin(); root != __tree.roots().end(); ++root) {
-    //GUM_TRACE(t.step());
-    gspan::Pattern& p = __tree.pattern(*root);
-    __subgraph_mining(graph, p);
-    /// Removing root from the graph
-    for (UndiGraph::NodeIterator node = __tree.iso_graph(p).beginNodes(); node != __tree.iso_graph(p).endNodes(); ++node) {
-      //GUM_TRACE(t.step());
-      Instance* u = __tree.iso_map(p, *node).atPos(0);
-      Instance* v = __tree.iso_map(p, *node).atPos(1);
-      graph.graph().eraseEdge(Edge(graph.id(u), graph.id(v)));
+    if (__tree.strategy().accept_root(&(__tree.pattern(*root)))) {
+      gspan::Pattern& p = __tree.pattern(*root);
+      __subgraph_mining(graph, p);
+      for (UndiGraph::NodeIterator node = __tree.iso_graph(p).beginNodes(); node != __tree.iso_graph(p).endNodes(); ++node) {
+        Instance* u = __tree.iso_map(p, *node).atPos(0);
+        Instance* v = __tree.iso_map(p, *node).atPos(1);
+        graph.graph().eraseEdge(Edge(graph.id(u), graph.id(v)));
+      }
     }
-    //GUM_TRACE(t.step());
   }
   __sortPatterns();
-  //GUM_TRACE(t.step());
 }
 
 void

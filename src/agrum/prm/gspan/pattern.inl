@@ -29,7 +29,8 @@ namespace prm {
 namespace gspan {
 
 INLINE
-Pattern::Pattern()
+Pattern::Pattern():
+  DiGraph(), __last(0)
 {
   GUM_CONSTRUCTOR( Pattern );
 }
@@ -44,6 +45,7 @@ NodeId
 Pattern::insertNode(LabelData& l) {
   DiGraph::insertNode(size() + 1);
   __node_map.insert(size(), &l);
+  __last = &l;
   return size();
 }
 
