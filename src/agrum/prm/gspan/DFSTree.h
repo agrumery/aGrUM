@@ -36,6 +36,8 @@
 // ============================================================================
 #include <agrum/graphs/diGraph.h>
 // ============================================================================
+#include <agrum/graphs/partialOrderedTriangulation.h>
+// ============================================================================
 #include <agrum/prm/gspan/interfaceGraph.h>
 #include <agrum/prm/gspan/pattern.h>
 // ============================================================================
@@ -473,8 +475,6 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          double cost ( const Pattern& p );
-
           virtual bool accept_root (const Pattern* r);
 
           virtual bool accept_growth ( const Pattern* parent,
@@ -486,8 +486,34 @@ namespace gum {
           /// @}
 
         private:
-          double __freq;
-          HashTable<const Pattern*, double> __map;
+          Size __freq;
+          double  __inner_cost(const Pattern* p);
+          double  __outer_cost(const Pattern* p);
+          void __compute_costs(const Pattern* p);
+          HashTable<const Pattern*, std::pair<double , double > > __map;
+          /// Private structure to represent data about a pattern.
+          struct PData {
+            /// A yet to be triangulated undigraph
+            UndiGraph graph;
+            /// The pattern's variables modalities
+            Property<unsigned int>::onNodes mod;
+            /// A bijection to easily keep track  between graph and attributes, its of the
+            /// form instance_name DOT attr_name
+            Bijection<NodeId, std::string> node2attr;
+            /// Bijection between graph's nodes and their corresponding DiscreteVariable, for
+            /// inference purpose
+            Bijection<NodeId, const DiscreteVariable*> vars;
+            /// Returns the set of inner nodes
+            NodeSet inners;
+            /// Returns the set of outputs nodes given all the matches of pattern
+            NodeSet outputs;
+          };
+          std::string __dot;
+          std::string __str(const Instance* i, const Attribute* a) const;
+          std::string __str(const Instance* i, const Attribute& a) const;
+          std::string __str(const Instance* i, const SlotChain& a) const;
+          void __buildPatternGraph(StrictSearch::PData& data, Set<Potential<prm_float>*>& pool, const Sequence<Instance*>& match);
+          std::pair<Size, Size> __elimination_cost(StrictSearch::PData& data, Set<Potential<prm_float>*>& pool);
       };
 
       /**

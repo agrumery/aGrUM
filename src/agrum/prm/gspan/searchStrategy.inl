@@ -127,7 +127,7 @@ FrequenceSearch::operator() ( LabelData* i, LabelData* j ) {
 // The StrictSearch class
 INLINE
 StrictSearch::StrictSearch(Size freq):
-  SearchStrategy(), __freq(freq)
+  SearchStrategy(), __freq(freq), __dot(".")
 {
   GUM_CONSTRUCTOR(StrictSearch);
 }
@@ -152,26 +152,16 @@ StrictSearch::operator=(const StrictSearch& from) {
 }
 
 INLINE
-double
-StrictSearch::cost(const Pattern& p) {
-  try {
-    return __map[&p];
-  } catch (NotFound&) {
-    __map.insert(&p, _computeCost(p));
-    return __map[&p];
-  }
-}
-
-INLINE
 bool
 StrictSearch::accept_root(const Pattern* r) {
-  if (_tree->frequency(*r) >= __freq) {
-    Size tree_width = 0;
-    for (Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n)
-      tree_width += r->label(*n).tree_width;
-    return _tree->frequency(*r) * tree_width >= cost(*r);
-  }
-  return false;
+  return (_tree->frequency(*r) >= __freq);
+  // if (_tree->frequency(*r) >= __freq) {
+  //   Size tree_width = 0;
+  //   for (Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n)
+  //     tree_width += r->label(*n).tree_width;
+  //   return _tree->frequency(*r) * std::log(tree_width) >= cost(*r);
+  // }
+  // return false;
 }
 
 INLINE
@@ -180,13 +170,15 @@ StrictSearch::accept_growth(const Pattern* parent,
                             const Pattern* child,
                             const DFSTree::EdgeGrowth& growth)
 {
-  return _tree->frequency(*child) * (cost(*parent) + child->lastAdded().tree_width) >= cost(*child);
+  return __inner_cost(child) + _tree->frequency(*child) * __outer_cost(child) <
+         _tree->frequency(*child) * __outer_cost(parent);
 }
 
 INLINE
 bool
 StrictSearch::operator()(gspan::Pattern* i, gspan::Pattern* j) {
-  return _tree->frequency(*i) * cost(*i) < _tree->frequency(*j) * cost(*j);
+  return __inner_cost(i) + _tree->frequency(*i) * __outer_cost(i) <
+         __inner_cost(j) + _tree->frequency(*j) * __outer_cost(j);
 }
 
 INLINE
@@ -194,6 +186,53 @@ bool
 StrictSearch::operator() ( LabelData* i, LabelData* j ) {
   return i->tree_width * _tree->graph().size(i) <
          j->tree_width * _tree->graph().size(j);
+}
+
+INLINE
+double
+StrictSearch::__inner_cost(const Pattern* p) try {
+  return __map[p].first;
+} catch (NotFound&) {
+  __compute_costs(p);
+  return __map[p].first;
+}
+
+INLINE
+double
+StrictSearch::__outer_cost(const Pattern* p) try {
+  return __map[p].second;
+} catch (NotFound&) {
+  __compute_costs(p);
+  return __map[p].second;
+}
+
+INLINE
+std::string
+StrictSearch::__str(const Instance* i, const Attribute* a) const {
+  return i->name() + __dot + a->safeName();
+}
+
+INLINE
+std::string
+StrictSearch::__str(const Instance* i, const Attribute& a) const {
+  return i->name() + __dot + a.safeName();
+}
+
+INLINE
+std::string
+StrictSearch::__str(const Instance* i, const SlotChain& a) const {
+  return i->name() + __dot + a.lastElt().safeName();
+}
+
+INLINE
+void
+StrictSearch::__compute_costs(const Pattern* p) {
+  StrictSearch::PData data;
+  Set<Potential<prm_float>*> pool;
+  __buildPatternGraph(data, pool, **(_tree->data(*p).iso_map.begin()));
+  double inner = std::log(__elimination_cost(data, pool).first);
+  double outer = _computeCost(*p);
+  __map.insert(p, std::make_pair(inner, outer));
 }
 
 // ============================================================================
