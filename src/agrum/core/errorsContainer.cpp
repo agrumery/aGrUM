@@ -34,93 +34,117 @@
 
 namespace gum {
 
-  ErrorsContainer::ErrorsContainer() {
+  ParseError::ParseError(bool is_error, const string& msg, int line) : 
+    is_error(is_error), line(line), colomn(-1), msg(msg), filename(""), code("")
+  {}
+  
+  ParseError::ParseError(bool is_error, const string& msg, const string& filename, int line, int col) : 
+    is_error(is_error), line(line), colomn(col), msg(msg), filename(filename), code("")
+  {}
+  
+  ParseError::ParseError(bool is_error, const string& msg, const string& filename, const string& code, int line, int col) : 
+    is_error(is_error), line(line), colomn(col), msg(msg), filename(filename), code(code)
+  {}
+  
+  ///
+  string ParseError::toString() const
+  {
+    ostringstream s;
+    if ( ! filename.empty() )
+      s << filename << ":" << line << "\n    ";
+    else
+      s << line << " : ";
+    s << ( is_error ? "error" : "warning" ) << " : " << msg << "\n";
+    return s.str();
+  }
+  
+  ///
+  string ParseError::toElegantString() const
+  {
+    if ( filename.empty() )
+      return toString();
+    
+    if ( code.empty() ) {
+      ifstream ifs( filename.c_str() );
+      for ( int i = 0 ; i < line ; i++ ) 
+        getline( ifs, code );
+    }
+    
+    ostringstream s;
+    s << filename << ":" << line << "\n";
+    s << code << "\n";
+    if ( colomn > 0 )
+      s << string(colomn - 1,' ') << "^";
+    s << ( is_error ? "error" : "warning" ) << " : " << msg << "\n";
+    
+    return s.str();
+  }
+  
+  /// Return the i-th error.
+  /// May throw an exception if i >= count().
+  ParseError ErrorsContainer::getError( int i ) const
+  {
+    return errors[i]; // May throw an error if i >= count().
+  }
+  
+  
+/* ************************************************************************** */
+
+  ErrorsContainer::ErrorsContainer()
+  {
     error_count = 0;
     warning_count = 0;
   }
 
-  void ErrorsContainer::showElegantErrors() const {
-    if ( count() == 0 ) return;
+  void ErrorsContainer::showErrors() const
+  {
+    if ( count() == 0 ) 
+      return;
 
-    int nb_err = 0;
-
-    int no_line = 1;
-
-    int num_msg = 0;
-
-    std::ifstream ifs ( narrow ( filename ( num_msg ) ).c_str() );
-
-    std::string temp;
-
-    while ( getline ( ifs, temp ) ) {
-      if ( nb_err > error_count ) break;
-
-      while ( no_line == line ( num_msg ) ) {
-        if ( is_error ( num_msg ) ) {
-          std::cerr << narrow ( filename ( num_msg ) ) << ":" << line ( num_msg ) << std::endl;
-          std::cerr << temp << std::endl;
-          std::cerr << std::string ( col ( num_msg ) - 1, ' ' ) << "^" << " " << narrow ( msg ( num_msg ) ) << std::endl << std::endl;
-          nb_err++;
-        }
-
-        num_msg++;
+    for ( int i = 0 ; i < count() ; i++ ) {
+      if ( getError(i).is_error ) {
+        cerr << getError(i).toString();
+        cerr << endl;
       }
+    }
+  }
+  
+  
+  void ErrorsContainer::showErrorsAndWarnings() const
+  {
+    if ( count() == 0 ) 
+      return;
 
-      no_line++;
+    for ( int i = 0 ; i < count() ; i++ ) {
+      cerr << getError(i).toString();
+      cerr << endl;
+    }
+  }
+  
+      
+  void ErrorsContainer::showElegantErrors() const
+  {
+    if ( count() == 0 ) 
+      return;
+
+    for ( int i = 0 ; i < count() ; i++ ) {
+      if ( getError(i).is_error ) {
+        cerr << getError(i).toElegantString();
+        cerr << endl;
+      }
     }
   }
 
   void ErrorsContainer::showElegantErrorsAndWarnings() const {
-    if ( count() == 0 ) return;
+    if ( count() == 0 ) 
+      return;
 
-    int nb_err = 0;
-
-    int no_line = 1;
-
-    int num_msg = 0;
-
-    std::ifstream ifs ( narrow ( filename ( num_msg ) ).c_str() );
-
-    std::string temp;
-
-    while ( getline ( ifs, temp ) ) {
-      if ( nb_err > error_count + warning_count ) break;
-
-      while ( no_line == line ( num_msg ) ) {
-        std::cerr << narrow ( filename ( num_msg ) ) << ":" << line ( num_msg ) << std::endl;
-        std::cerr << temp << std::endl;
-        std::cerr << std::string ( col ( num_msg ) - 1, ' ' ) << "^" << " " << narrow ( msg ( num_msg ) ) << std::endl << std::endl;
-        nb_err++;
-        num_msg++;
-      }
-
-      no_line++;
+    for ( int i = 0 ; i < count() ; i++ ) {
+      cerr << getError(i).toElegantString();
+      cerr << endl;
     }
-  }
-
-  void ErrorsContainer::showErrorsAndWarnings() const {
-    if ( count() == 0 ) return;
-
-    int nb_err = 0;
-
-    int no_line = 1;
-
-    int num_msg = 0;
-
-    while ( true ) {
-      if ( nb_err > error_count + warning_count ) break;
-
-      while ( no_line == line ( num_msg ) ) {
-        std::cerr << narrow ( filename ( num_msg ) ) << ":" << line ( num_msg ) << ":";
-        std::cerr << ( ( is_error ( num_msg ) ) ? "error" : "warning" ) << ":" << narrow ( msg ( num_msg ) ) << std::endl;
-        nb_err++;
-        num_msg++;
-      }
-
-      no_line++;
-    }
-  }
+  }  
+  
 }//namespace gum
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;

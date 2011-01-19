@@ -28,27 +28,48 @@
 #include <agrum/core/errorsContainer.h>
 
 namespace gum {
+  
   INLINE
-  void ErrorsContainer::Error ( const std::wstring& filename, int line, int col, const wchar_t *s ) {
-    add_error ( true, filename, line, col, std::wstring ( s ) );
-    error_count++;
+  void ErrorsContainer::Error ( const std::wstring& filename, int line, int col, const wchar_t* msg ) {
+    add( ParseError( true, narrow(wstring(msg)), narrow(filename), line, col ) );
   }
 
   INLINE
-  void ErrorsContainer::Warning ( const std::wstring& filename, int line, int col, const wchar_t *s ) {
-    add_error ( false, filename, line, col, std::wstring ( s ) );
-    warning_count++;
+  void ErrorsContainer::Warning ( const std::wstring& filename, int line, int col, const wchar_t* msg ) {
+    add( ParseError( false, narrow(wstring(msg)), narrow(filename), line, col ) );
   }
 
   INLINE
-  void ErrorsContainer::Exception ( const std::wstring& filename, const wchar_t* s ) {
-    add_error ( true, filename, 0, 0, std::wstring (L"Exception : ") + std::wstring ( s ) );
-    error_count++;
+  void ErrorsContainer::Exception ( const std::wstring& filename, const wchar_t* msg ) {
+    add( ParseError( true, "Exception : " + narrow(std::wstring(msg)), narrow(filename), 0, 0 ) );
   }
-
+  
   INLINE
-  void ErrorsContainer::add_error ( const bool is_error, const std::wstring& filename, int line , int col, const std::wstring& s ) const {
-    storer.add ( is_error, filename, s, line, col );
+  void ErrorsContainer::add( ParseError error )
+  {
+    errors.push_back( error );
+    if ( error.is_error )
+      error_count++;
+    else
+      warning_count++;
+  }
+  
+  INLINE
+  void ErrorsContainer::addError ( const std::string& msg, const std::string& filename, int line, int col )
+  {
+    add( ParseError( true, msg, filename, line, col ) );
+  }
+  
+  INLINE
+  void ErrorsContainer::addWarning ( const std::string& msg, const std::string& filename, int line, int col )
+  {
+    add( ParseError( false, msg, filename, line, col ) );
+  }
+  
+  INLINE
+  void ErrorsContainer::addException ( const std::string& msg, const std::string& filename )
+  {
+    add( ParseError( true, msg, filename, 0, 0 ) );
   }
 
   INLINE
@@ -57,35 +78,40 @@ namespace gum {
   }
 
   INLINE
-  const std::wstring ErrorsContainer::filename ( int i ) const {
-    return storer.filename ( i );
-  }
-
-  INLINE
-  const std::wstring ErrorsContainer::msg ( int i ) const {
-    return storer.msg ( i );
-  }
-
-  INLINE
-  int ErrorsContainer::line ( int i ) const {
-    return storer.line ( i );
-  }
-
-  INLINE
-  int ErrorsContainer::col ( int i ) const {
-    return storer.col ( i );
-  }
-
-  INLINE
-  bool ErrorsContainer::is_error ( int i ) const {
-    return storer.is_error ( i );
-  }
-
-  INLINE
   void ErrorsContainer::showSyntheticResults() const {
-    std::cerr << "Errors : " << error_count << std::endl;
-    std::cerr << "Warnings : " << warning_count << std::endl;
+    cerr << "Errors : " << error_count << endl;
+    cerr << "Warnings : " << warning_count << endl;
+  }
+  
+  INLINE
+  bool ErrorsContainer::is_error( int i ) const
+  {
+    return errors[i].is_error;
+  }
+  
+  INLINE
+  int ErrorsContainer::line( int i ) const
+  {
+    return errors[i].line;
+  }
+  
+  INLINE
+  int ErrorsContainer::col( int i ) const
+  {
+    return errors[i].colomn;
+  }
+  
+  INLINE
+  std::wstring ErrorsContainer::msg( int i ) const
+  {
+    return widen(errors[i].msg);
+  }
+  
+  INLINE
+  std::wstring ErrorsContainer::filename( int i ) const
+  {
+    return widen(errors[i].filename);
   }
 
 } //namespace gum
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+
