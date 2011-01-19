@@ -87,17 +87,24 @@ void readOptions(Session& session, int argc, char *argv[]) {
 }
 
 int main (int argc, char *argv[]) {
+  
   Session session;
-  readOptions(session, argc, argv);
+  
   if (argc == 1)
     print_help_and_exit(EXIT_FAILURE);
+    
+  readOptions(session, argc, argv);
+    
   std::ifstream input_stream(argv[argc - 1]);
   Scanner* s = 0;
   Parser* p = 0;
   std::ofstream* output = 0;
+  
   if (input_stream.is_open() and input_stream.good()) {
+    
     try {
       s = new Scanner(argv[argc - 1]);
+      
       if (session.output.size()) {
         output = new std::ofstream(session.output.c_str());
         if (output->is_open() and output->good()) {
@@ -109,22 +116,29 @@ int main (int argc, char *argv[]) {
       } else {
         p = new Parser(s);
       }
+      
       p->verbose = session.verbose;
       p->setSyntaxMode(session.syntax);
       p->Parse();
+      session.fail = false;
+      
     } catch (gum::Exception& e) {
       std::cerr << "Something went wrong: " << e.getContent();
       session.fail = true;
+      
     } catch (std::string&) { // Syntax error, error message already printed
       session.fail = true;
     }
+    
   } else {
     std::cerr << "Could not open input file." << std::endl;
     session.fail = true;
   }
+  
   if (p) delete p;
   if (s) delete s;
   if (output) delete output;
+  
   if (session.fail)
     std::exit(EXIT_FAILURE);
   else
