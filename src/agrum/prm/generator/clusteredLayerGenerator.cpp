@@ -91,15 +91,15 @@ ClusteredLayerGenerator::__generateClasses(PRMFactory& f,
                                            const std::string& type,
                                            std::vector<ClusteredLayerGenerator::MyData>& l)
 {
-  double ratio = getClusterRatio() + RAND_MAX;
+  //double ratio = getClusterRatio() + RAND_MAX;
   Set<std::string> i;
   for (Size lvl = 0; lvl < __layers.size(); ++lvl) {
     i.insert(l[lvl].i);
     for (Size c = 0; c < __layers[lvl].c; ++c) {
-      if (std::rand() < ratio)
-        __generateCluster(f, type, l, lvl, i);
-      else
-        __generateClass(f, type, l, lvl, i);
+      //if (std::rand() < ratio)
+      __generateCluster(f, type, l, lvl, i);
+      //else
+      //  __generateClass(f, type, l, lvl, i);
     }
     i.erase(l[lvl].i);
   }
