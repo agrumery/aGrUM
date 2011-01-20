@@ -39,13 +39,15 @@ namespace gum {
         GUM_CONSTRUCTOR ( SkoolReader );
         __class_path.push_back ( "." );
         __parseDone = false;
+        __parser = 0;
       }
 
 
       INLINE
       SkoolReader::~SkoolReader() {
         GUM_DESTRUCTOR ( SkoolReader );
-        delete __parser;
+        if ( __parseDone )
+          delete __parser;
       }
 
       INLINE
@@ -62,6 +64,7 @@ namespace gum {
             __parseDone = true;
           } catch ( gum::Exception &e ) {
             GUM_SHOWERROR ( e );
+            //cerr << e.getContent();
           }
         }
       }
