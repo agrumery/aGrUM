@@ -148,45 +148,24 @@ namespace gum {
 
   template <typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::_topologicalOrder(Sequence<NodeId>& order) const {
-    std::list<NodeId> l;
-    const NodeSet* parents = 0;
-    const NodeSet* children = 0;
-    // Add all root nodes in the list
-    for (DAG::NodeIterator root = dag().beginNodes(); root != dag().endNodes(); ++root) {
-      if (dag().parents(*root).empty()) {
-        order.insert(*root);
-        children = &(dag().children(*root));
-        for (NodeSet::const_iterator child = children->begin(); child != children->end(); ++child)
-          l.push_back(*child);
+  AbstractBayesNet<T_DATA>::_topologicalOrder(Sequence<NodeId>& topo) const {
+    DAG dag = this->dag();
+    std::vector<NodeId> roots;
+    for (DAG::NodeIterator n = dag.beginNodes(); n != dag.endNodes(); ++n)
+      if (dag.parents(*n).empty())
+        roots.push_back(*n);
+    while (roots.size()) {
+      topo.insert(roots.back());
+      roots.pop_back();
+      while (dag.children(topo.back()).size()) {
+        NodeId child = *(dag.children(topo.back()).begin());
+        dag.eraseArc(Arc(topo.back(), child));
+        if (dag.parents(child).empty())
+          roots.push_back(child);
       }
     }
-    GUM_ASSERT(order.size());
-    // Adding the remaining nodes it all their parents are in order
-    bool add = true;
-    while (l.size()) {
-      if (order.exists(l.front())) {
-        l.pop_front();
-      } else {
-        parents = &(dag().parents(l.front()));
-        add = true;
-        for (NodeSet::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt) {
-          if (not order.exists(*prnt)) {
-            l.push_front(*prnt);
-            add = false;
-            break;
-          }
-        }
-        if (add) {
-          order.insert(l.front());
-          children = &(dag().children(l.front()));
-          for (NodeSet::const_iterator child = children->begin(); child != children->end(); ++child)
-            l.push_back(*child);
-          l.pop_front();
-        }
-      }
-    }
-    GUM_ASSERT(order.size() == dag().size());
+    GUM_ASSERT(dag.sizeArcs() == 0);
+    GUM_ASSERT(topo.size() == dag.size());
   }
 
   template<typename T_DATA> INLINE
