@@ -176,6 +176,8 @@ namespace gum { namespace prm {
   Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                       const Potential<prm_float>& source);
 
+  Potential<float>* multPotential ( const Potential<float>& t1,
+                                    const Potential<float>& t2 );
   /**
    * @brief Proceeds with the elimination of var in pool.
    * @param var The variable eliminated from every potentials in pool.

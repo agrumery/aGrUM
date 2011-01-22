@@ -30,7 +30,12 @@
 // ============================================================================
 #include <agrum/BN/inference/variableElimination.h>
 // ============================================================================
+#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/multiDimNoisyORNet.h>
+#include <agrum/multidim/multiDimSparse.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/projections4MultiDim.h>
 // ============================================================================
 #include <agrum/graphs/partialOrderedTriangulation.h>
 // ============================================================================
