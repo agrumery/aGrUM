@@ -2,7 +2,7 @@
 import pyAgrum as gum
 
 bn=gum.BayesNet()
-bn.loadBIF("empty_bn.bif")
+bn.loadBIF("bn.bif")
 
 seq=bn.getTopologicalOrder()
 
