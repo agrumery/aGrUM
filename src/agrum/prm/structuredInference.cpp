@@ -396,15 +396,17 @@ StructuredInference::__translatePotSet(Set<Potential<prm_float>*>& set,
         for (; ref != refs->end(); ++ref, ++tef) {
           try {
             bij.insert(&((**ref).get((**sc).lastElt().safeName()).type().variable()),
-                &((**tef).get((**sc).lastElt().safeName()).type().variable()));
+                       &((**tef).get((**sc).lastElt().safeName()).type().variable()));
           } catch (DuplicateElement& e) {
             GUM_ASSERT(bij.first(&((**tef).get((**sc).lastElt().safeName()).type().variable())) == &((**ref).get((**sc).lastElt().safeName()).type().variable()));
             GUM_ASSERT(bij.second(&((**ref).get((**sc).lastElt().safeName()).type().variable())) == &((**tef).get((**sc).lastElt().safeName()).type().variable()));
           }
         }
       } else {
-        bij.insert(&((**iter).getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()),
-            &(match.atPos(iter.pos())->getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()));
+        try {
+          bij.insert(&((**iter).getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()),
+              &(match.atPos(iter.pos())->getInstance((**sc).id()).get((**sc).lastElt().safeName()).type().variable()));
+        } catch (DuplicateElement& e) { }
       }
     }
     // Second we translate referred attributes not in the match
