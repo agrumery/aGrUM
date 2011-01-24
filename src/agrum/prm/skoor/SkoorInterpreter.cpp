@@ -105,7 +105,8 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
 SkoorInterpreter::~SkoorInterpreter()
 {
   delete m_context;
-  delete m_reader->prm();
+  if ( m_reader )
+    delete m_reader->prm();
   delete m_reader;
   delete m_inf;
 }
@@ -182,6 +183,13 @@ const gum::prm::PRMInference* SkoorInterpreter::inference()
   return m_inf;
 }
 
+/// Return a vector of pair query/QueryResults.
+/// Each QueryResults is a vector of pair label/value.
+const std::vector< std::pair<std::string,QueryResult> > & SkoorInterpreter::results() const
+{
+  return m_results;
+}
+  
 /**
  * Crée le prm correspondant au contexte courant.
  * Renvoie true en cas de succès, ou false en cas échéant d'échec
@@ -608,8 +616,14 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
   // Show results
   gum::Instantiation j ( m );
   if (m_verbose) m_log << endl;
-  for ( j.setFirst (); not j.end (); j.inc () )
-    if (m_verbose) m_log << attr.type().variable().label ( j.val ( attr.type().variable() ) ) << " : " << m.get ( j ) << endl;
+  QueryResult result;
+  for ( j.setFirst (); not j.end (); j.inc () ) {
+    string label = attr.type().variable().label ( j.val ( attr.type().variable() ) );
+    float value = m.get ( j );
+    result.push_back( make_pair(label, value) );
+    if (m_verbose) m_log << label << " : " << value << endl;
+  }
+  m_results.push_back( make_pair(query,result) );
   if (m_verbose) m_log << endl;
   
 } catch ( gum::Exception& e ) {

@@ -42,6 +42,8 @@ namespace gum {
 
     namespace skoor {
 
+typedef std::vector< std::pair<std::string,float> > QueryResult;
+
 /**
  * Permet de manipuler un contexte skoor
  * et d'interpréter celui-ci.
@@ -100,6 +102,10 @@ public:
   /// Retrieve inference motor object.
   const gum::prm::PRMInference* inference();
   
+  /// Return a vector of pair query/QueryResults.
+  /// Each QueryResults is a vector of pair label/value.
+  const std::vector< std::pair<std::string,QueryResult> > & results() const;
+  
   /**
    * En cas d'échec, l'API de gestion d'erreurs est présente.
    * */
@@ -142,7 +148,7 @@ private:
   gum::prm::PRMInference* m_inf;
   std::string m_engine;
   std::string m_bn_engine;
-  
+  std::vector< std::pair<std::string,QueryResult> > m_results;
   gum::ErrorsContainer m_errors;
   bool m_syntax_flag;
   bool m_verbose;
