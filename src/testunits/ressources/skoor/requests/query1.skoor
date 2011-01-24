@@ -1,0 +1,37 @@
+
+// On précise le package, cela permet de connaître la racine du projet.
+package requests;
+
+// Il faut commencer par l'importation du système que l'on souhaite utiliser
+import systems.MyKickAssSystem;
+//import systems.MyKickAssSystem2;
+
+// Le bloc dans lequel on fait des requêtes d'inférece s'appel "resquest",
+// il faut lui donner un nom
+request MyQuerry {
+  // Il faut spécifier le moteur que l'on souhaite utiliser, ici on veut faire
+  // l'inférence sur le réseau bayésien groundé
+  engine SVED;
+  // Lorsque l'on fait de l'inférence groundé il faut préciser quel algorithme
+  // d'inférence sur les réseaux bayésiens on veut utiliser, ici on choisit
+  // VariableElimination avec BayesBall (dans agrum c'est le plus stable et rapide 
+  // actuellement ;) )
+  //grd_engine VEBB;
+  // On place un nombre quelconque d'observations
+  // Le premier élément de le chaine est le package dans lequel le système que l'on utilise
+  // a été déclaré: systems
+  // Le deuxième élément est le nom du système: MyKickAssSystem
+  // Le troisième est une instance déclarée dans MyKickAssSystem: c1 (un ordinateur)
+  // Le quatrième est un attribut de c1: can_print
+  // Finalement on assigne une observation avec l'opérateur = et une des valeurs possibles
+  // de l'attribut can_print (qui est booléen donc on a le choix entre true et false)
+  systems.MyKickAssSystem.c1.can_print = true;
+  // On fait une première requête
+  ? systems.MyKickAssSystem.c2.can_print;
+  // On peut enlever des observations et faire d'autres requêtes
+  unobserve systems.MyKickAssSystem.c1.can_print;
+  // On met une observation
+  systems.MyKickAssSystem.c2.equipState = Dysfunctional;
+  // On faite une autre requête
+  //? systems.MyKickAssSystem.c1.can_print;
+}

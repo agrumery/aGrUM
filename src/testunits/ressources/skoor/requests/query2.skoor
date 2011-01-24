@@ -1,0 +1,8 @@
+import systems.MyKickAssSystem;
+
+request MyUbberQuerry {
+  engine SVE;
+  c1.can_print = NOK;
+  ? c2.can_print;
+}
+

@@ -51,10 +51,10 @@ namespace gum {
   {
     ostringstream s;
     if ( ! filename.empty() )
-      s << filename << ":" << line << "\n    ";
+      s << filename << ":" << line << ": ";
     else
       s << line << " : ";
-    s << ( is_error ? "error" : "warning" ) << " : " << msg << "\n";
+    s << ( is_error ? "error" : "warning" ) << " : " << msg;
     return s.str();
   }
   
@@ -84,9 +84,19 @@ namespace gum {
   /// May throw an exception if i >= count().
   ParseError ErrorsContainer::getError( int i ) const
   {
-    return errors[i]; // May throw an error if i >= count().
+    if ( count() > i )
+      return errors[i]; // May throw an error if i >= count().
+    else
+      throw "Index out of bound.";
   }
   
+  ParseError ErrorsContainer::last() const
+  {
+    if ( count() > 0 )
+      return errors[count() - 1];
+    else
+      throw "Index out of bound.";
+  }
   
 /* ************************************************************************** */
 
@@ -96,16 +106,44 @@ namespace gum {
     warning_count = 0;
   }
 
+  ErrorsContainer::ErrorsContainer( const ErrorsContainer & cont )
+  {
+    
+    error_count = cont.error_count;
+    warning_count = cont.warning_count;
+    std::copy( cont.errors.begin(), cont.errors.end(), errors.begin() );
+  }
+
+  ErrorsContainer ErrorsContainer::operator+( const ErrorsContainer & cont ) const
+  {
+    ErrorsContainer newCont;
+    
+    newCont.error_count = this->error_count + cont.error_count;
+    newCont.warning_count = this->warning_count + cont.warning_count;
+    std::copy( this->errors.begin(), this->errors.end(), newCont.errors.begin() );
+    std::copy( cont.errors.begin(), cont.errors.end(), newCont.errors.end() );
+    
+    return newCont;
+  }
+  
+  ErrorsContainer ErrorsContainer::operator=( const ErrorsContainer & cont )
+  {
+    /*error_count = cont.error_count;
+    warning_count = cont.warning_count;
+    errors.clear()
+    std::copy( cont.errors.begin(), cont.errors.end(), errors.begin() );*/
+    
+    return *this;
+  }
+      
   void ErrorsContainer::showErrors() const
   {
     if ( count() == 0 ) 
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      if ( getError(i).is_error ) {
-        cerr << getError(i).toString();
-        cerr << endl;
-      }
+      if ( getError(i).is_error )
+        cerr << getError(i).toString() << endl;
     }
   }
   
@@ -115,10 +153,8 @@ namespace gum {
     if ( count() == 0 ) 
       return;
 
-    for ( int i = 0 ; i < count() ; i++ ) {
-      cerr << getError(i).toString();
-      cerr << endl;
-    }
+    for ( int i = 0 ; i < count() ; i++ )
+      cerr << getError(i).toString() << endl;
   }
   
       
@@ -148,3 +184,4 @@ namespace gum {
 }//namespace gum
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
+

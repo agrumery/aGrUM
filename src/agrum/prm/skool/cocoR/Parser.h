@@ -173,8 +173,9 @@ void import(std::string s) {
         break;
       }
     }
+    
     if (not found) {
-      GUM_ERROR(gum::NotFound, "import not found");
+      SemErr("import not found");
     }
   }
 }

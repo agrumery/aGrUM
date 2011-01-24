@@ -28,7 +28,7 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 	CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
 	CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
 	CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
-#	CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
+	CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 

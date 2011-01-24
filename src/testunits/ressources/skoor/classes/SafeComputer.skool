@@ -1,0 +1,46 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+// ============================================================================
+// Tis file contains basic PRM classes for testing purpose.
+// Author: Lionel Torti.
+// ============================================================================
+
+package classes;
+
+import classes.Printer;
+
+class SafeComputer implements Equipment {
+  Room room;
+  Printer[] printers;
+  boolean functional_printer = exists(printers.(classes.t_state)equipState, OK);
+  boolean degraded_printer = exists(printers.(classes.t_degraded)equipState, Degraded);
+  boolean working_printer = exists([functional_printer, degraded_printer], true);
+  t_degraded equipState dependson room.power.(classes.t_state)state {
+    OK:  0.90, 0.09, 0.01;
+    NOK: 0.00, 1.00, 0.00;
+  };
+  boolean can_print dependson equipState, working_printer {
+    // working_printer |              false                 | |              true             |
+    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+  };
+}
+

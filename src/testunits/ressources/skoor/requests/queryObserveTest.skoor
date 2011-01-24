@@ -1,0 +1,14 @@
+
+package requests;
+
+import systems.MyKickAssSystem;
+
+request MyQuerry {
+  engine SVED;
+  //grd_engine VEBB;
+  
+  systems.MyKickAssSystem.c1.can_print = false;
+  systems.MyKickAssSystem.c2.equipState = Dysfunctional;
+  
+  ? systems.MyKickAssSystem.c1.can_print;
+}

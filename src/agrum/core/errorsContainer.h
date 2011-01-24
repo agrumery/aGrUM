@@ -64,6 +64,7 @@ namespace gum {
       int warning_count; // number of warnings detected
 
       ErrorsContainer();
+      ErrorsContainer( const ErrorsContainer & cont );
       
       /// Add an error object to container.
       void add( ParseError error );
@@ -71,6 +72,7 @@ namespace gum {
       /// Return the i-th error.
       /// May throw an exception if i >= count().
       ParseError getError( int i ) const;
+      ParseError last() const;
       
       /// Add an error.
       void addError ( const std::string& msg, const std::string& filename, int line, int col );
@@ -102,7 +104,10 @@ namespace gum {
       std::wstring msg( int i ) const;
       std::wstring filename( int i ) const;
       
-  }; // Errors
+      ErrorsContainer operator+( const ErrorsContainer & cont ) const;
+      ErrorsContainer operator=( const ErrorsContainer & cont );
+      
+  }; // ErrorsContainer
 
 }//namespace gum
 

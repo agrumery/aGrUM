@@ -71,6 +71,9 @@ public:
     Size errors();
     /// # of errors
     Size warnings();
+    
+    /// 
+    const ErrorsContainer & getErrorsContainer() const;
 
     /// line of ith error or warning
     unsigned int errLine( unsigned int i );
@@ -104,6 +107,7 @@ private:
 
     Parser* __parser;
     bool __parseDone;
+    bool __prmTake;
 };
 
 } /* namespace skool */

@@ -39,6 +39,7 @@ namespace gum {
         GUM_CONSTRUCTOR ( SkoolReader );
         __class_path.push_back ( "." );
         __parseDone = false;
+        __prmTake = false;
         __parser = 0;
       }
 
@@ -48,6 +49,8 @@ namespace gum {
         GUM_DESTRUCTOR ( SkoolReader );
         if ( __parseDone )
           delete __parser;
+        if ( ! __prmTake )
+          delete __factory.prm();
       }
 
       INLINE
@@ -90,6 +93,7 @@ namespace gum {
       INLINE
       gum::prm::PRM*
       SkoolReader::prm() {
+        __prmTake = true;
         return __factory.prm();
       }
 
@@ -153,6 +157,11 @@ namespace gum {
         return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
       }
 
+      INLINE
+      const ErrorsContainer & SkoolReader::getErrorsContainer() const
+      {
+        return __parser->errors();
+      }
 /// @}
 
     } /* namespace skool */
