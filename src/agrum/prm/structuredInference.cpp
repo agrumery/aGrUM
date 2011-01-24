@@ -103,12 +103,21 @@ StructuredInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
     for (Set<Potential<prm_float>*>::iterator pot = data.pool.begin(); pot != data.pool.end(); ++pot)
       if ((**pot).contains(__query.second->type().variable()))
         pots.insert(*pot);
-    MultiDimCombinationDefault<prm_float, Potential> Comb(multPotential);
-    Potential<prm_float>* tmp = Comb.combine(pots);
-    Instantiation i(m), j(*tmp);
-    for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
-      m.set(i, tmp->get(j));
-    delete tmp;
+    if (pots.size() == 1) {
+      Potential<prm_float>* pot = const_cast<Potential<prm_float>*>(*(pots.begin()));
+      GUM_ASSERT(pot->contains(__query.second->type().variable()));
+      GUM_ASSERT(pot->variablesSequence().size() == 1);
+      Instantiation i(*pot), j(m);
+      for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
+        m.set(j, pot->get(i));
+    } else {
+      MultiDimCombinationDefault<prm_float, Potential> Comb(multPotential);
+      Potential<prm_float>* tmp = Comb.combine(pots);
+      Instantiation i(m), j(*tmp);
+      for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
+        m.set(i, tmp->get(j));
+      delete tmp;
+    }
   } else {
     Potential<prm_float>* pot = *(data.pool.begin());
     GUM_ASSERT(pot->contains(__query.second->type().variable()));
@@ -117,26 +126,6 @@ StructuredInference::_marginal(const Chain& chain, Potential<prm_float>& m) {
     for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
       m.set(j, pot->get(i));
   }
-  //MultiDimBucket<prm_float> bucket;
-  //if (data.pool.size() > 1) {
-  //  for (Set<Potential<prm_float>*>::iterator pot = data.pool.begin(); pot != data.pool.end(); ++pot)
-  //    if ((**pot).contains(__query.second->type().variable())) {
-  //      Instantiation inst(**pot);
-  //      bucket.add(*pot);
-  //      GUM_ASSERT((**pot).variablesSequence().size() == 1);
-  //    }
-  //  bucket.add(__query.second->type().variable());
-  //  Instantiation i(bucket), j(m);
-  //  for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
-  //    m.set(j, bucket.get(i));
-  //} else {
-  //  Potential<prm_float>* pot = *(data.pool.begin());
-  //  GUM_ASSERT(pot->contains(__query.second->type().variable()));
-  //  GUM_ASSERT(pot->variablesSequence().size() == 1);
-  //  Instantiation i(*pot), j(m);
-  //  for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
-  //    m.set(j, pot->get(i));
-  //}
   m.normalize();
   if (__pdata) {
     delete __pdata;
