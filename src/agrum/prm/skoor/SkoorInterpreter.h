@@ -98,9 +98,9 @@ public:
   void setVerboseMode ( bool f );
   
   /// Retrieve prm object. You must delete it when done.
-  const gum::prm::PRM* prm();
+  const gum::prm::PRM* prm() const;
   /// Retrieve inference motor object.
-  const gum::prm::PRMInference* inference();
+  const gum::prm::PRMInference* inference() const;
   
   /// Return a vector of pair query/QueryResults.
   /// Each QueryResults is a vector of pair label/value.
@@ -110,20 +110,20 @@ public:
    * En cas d'échec, l'API de gestion d'erreurs est présente.
    * */
   /// # of errors + warnings
-  int count();
+  int count() const;
   /// # of errors
-  int errors();
+  int errors() const;
   /// # of warnings
-  int warnings();
+  int warnings() const;
   /// throw a string error if i >= count
-  ParseError getError( int i );
+  ParseError getError( int i ) const;
   
   /// send on std::cerr the list of errors
-  void showElegantErrors();
+  void showElegantErrors() const;
   /// send on std::cerr the list of errors or warnings
-  void showElegantErrorsAndWarnings();
+  void showElegantErrorsAndWarnings() const;
   /// send on std::cerr the number of errors and the number of warnings
-  void showErrorCounts();
+  void showErrorCounts() const;
   
 private:
 

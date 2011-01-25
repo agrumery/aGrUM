@@ -172,13 +172,13 @@ void SkoorInterpreter::setVerboseMode ( bool f )
 }
   
 /// Retrieve prm object.
-const gum::prm::PRM* SkoorInterpreter::prm()
+const gum::prm::PRM* SkoorInterpreter::prm() const
 {
   return m_reader->prm();
 }
 
 /// Retrieve inference motor object.
-const gum::prm::PRMInference* SkoorInterpreter::inference()
+const gum::prm::PRMInference* SkoorInterpreter::inference() const
 {
   return m_inf;
 }
@@ -651,23 +651,23 @@ void SkoorInterpreter::setGndEngine( const SetGndEngineCommand * command )
 /* ************************************************************************** */
 
 /// # of errors + warnings
-int SkoorInterpreter::count()
+int SkoorInterpreter::count() const
 {
   return m_errors.count();
 }
   
 ///
-int SkoorInterpreter::errors() {
+int SkoorInterpreter::errors() const {
   return m_errors.error_count;
 }
 
 ///
-int SkoorInterpreter::warnings() {
+int SkoorInterpreter::warnings() const {
   return m_errors.warning_count;
 }
 
 /// 
-ParseError SkoorInterpreter::getError( int i )
+ParseError SkoorInterpreter::getError( int i ) const
 {
   if ( i >= count() )
     throw "Index out of bound.";
@@ -675,17 +675,17 @@ ParseError SkoorInterpreter::getError( int i )
 }
 
 ///
-void SkoorInterpreter::showElegantErrors() {
+void SkoorInterpreter::showElegantErrors() const {
   m_errors.showElegantErrors();
 }
 
 ///
-void SkoorInterpreter::showElegantErrorsAndWarnings() {
+void SkoorInterpreter::showElegantErrorsAndWarnings() const {
   m_errors.showElegantErrorsAndWarnings();
 }
 
 ///
-void SkoorInterpreter::showErrorCounts() {
+void SkoorInterpreter::showErrorCounts() const {
   cerr << "Errors : "   << m_errors.error_count   << endl;
   cerr << "Warnings : " << m_errors.warning_count << endl;
 }
