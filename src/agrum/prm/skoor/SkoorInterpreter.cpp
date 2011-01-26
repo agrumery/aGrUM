@@ -143,10 +143,18 @@ void SkoorInterpreter::addPath( const std::string & path )
   m_paths.push_back(path);
 }
   
+/// Root paths to search from there packages.
+/// Default are './' and one is calculate from request package if any.
+void SkoorInterpreter::clearPaths()
+{
+  m_paths.clear();
+}
+  
 /// Clear the current context (and errors).
 void SkoorInterpreter::clearContext()
 {
   m_context->clear();
+  m_errors = ErrorsContainer();
 }
 
 /// syntax mode don't process anything, just check syntax.
@@ -304,33 +312,39 @@ bool SkoorInterpreter::interpret()
 // Update le contexte en appelant le Parser () ou pas (donc directement) ?
 void SkoorInterpreter::processCommandLine( const string & commandLine )
 {
-  if (m_verbose) m_log << "# * Going to process command : " << commandLine << endl << flush;
     
-	m_current_line = -1;
-	unsigned int size = commandLine.find(";");
-	if (size == string::npos)
-		addWarning("';' not found. Try to parse anyway, but there may be strange behaviour.");
+  skoor::Scanner s( ( unsigned char* ) commandLine.c_str(), ( int ) commandLine.length() + 1 );  
+  Parser p( &s );
+  p.setSkoorContext( m_context );
+  p.Parse();
+
+  //if (m_verbose) m_log << "# * Going to process command : " << commandLine << endl << flush;
+  
+	//m_current_line = -1;
+	//unsigned int size = commandLine.find(";");
+	//if (size == string::npos)
+		//addWarning("';' not found. Try to parse anyway, but there may be strange behaviour.");
 	
-	unsigned int pos = string::npos;
-	if ( (pos = commandLine.find("=")) != string::npos ) {
-		string leftValue  = commandLine.substr(0, pos);
-		string rightValue = commandLine.substr(pos+1, size);
+	//unsigned int pos = string::npos;
+	//if ( (pos = commandLine.find("=")) != string::npos ) {
+		//string leftValue  = commandLine.substr(0, pos);
+		//string rightValue = commandLine.substr(pos+1, size);
 		
-	} else if ( commandLine.find("unobserve ") != string::npos ) {
-		string value = commandLine.substr(10, size);
+	//} else if ( commandLine.find("unobserve ") != string::npos ) {
+		//string value = commandLine.substr(10, size);
 		
-	} else if ( commandLine.find("engine ") != string::npos ) {
-		string value = commandLine.substr(7, size);
+	//} else if ( commandLine.find("engine ") != string::npos ) {
+		//string value = commandLine.substr(7, size);
 		
-	} else if ( commandLine.find("gnd_engine ") != string::npos ) {
-		string value = commandLine.substr(11, size);
+	//} else if ( commandLine.find("gnd_engine ") != string::npos ) {
+		//string value = commandLine.substr(11, size);
 		
-	} else if ( commandLine.find("? ") != string::npos ) {
-		string value = commandLine.substr(2, size);
+	//} else if ( commandLine.find("? ") != string::npos ) {
+		//string value = commandLine.substr(2, size);
 		
-	} else {
-		addError("Fail to parse command. Did you miss the ';' on previous line ?");
-	}
+	//} else {
+		//addError("Fail to parse command. Did you miss the ';' on previous line ?");
+	//}
 }
 
 

@@ -111,7 +111,8 @@ namespace gum {
     
     error_count = cont.error_count;
     warning_count = cont.warning_count;
-    std::copy( cont.errors.begin(), cont.errors.end(), errors.begin() );
+    errors.clear();
+    errors = cont.errors;
   }
 
   ErrorsContainer ErrorsContainer::operator+( const ErrorsContainer & cont ) const
@@ -128,10 +129,10 @@ namespace gum {
   
   ErrorsContainer ErrorsContainer::operator=( const ErrorsContainer & cont )
   {
-    /*error_count = cont.error_count;
+    error_count = cont.error_count;
     warning_count = cont.warning_count;
-    errors.clear()
-    std::copy( cont.errors.begin(), cont.errors.end(), errors.begin() );*/
+    errors.clear();
+    errors = cont.errors;
     
     return *this;
   }

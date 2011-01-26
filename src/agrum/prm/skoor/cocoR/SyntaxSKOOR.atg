@@ -56,7 +56,7 @@ PRODUCTIONS
 //=====================
 skoor =
           [ package word (. __context->setPackage( gum::narrow(t->val) ); .) ';' ]
-          import word (. __context->addImport( t->line, gum::narrow(t->val) ); .) ';'
+          [ import word (. __context->addImport( t->line, gum::narrow(t->val) ); .) ';']
           { RequestBloc }.
 
 RequestBloc = request word  (. __currentSession = new SkoorSession(gum::narrow(t->val)); .)

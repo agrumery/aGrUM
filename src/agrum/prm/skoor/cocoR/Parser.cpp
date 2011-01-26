@@ -105,10 +105,12 @@ void Parser::skoor() {
 			__context->setPackage( gum::narrow(t->val) ); 
 			Expect(12);
 		}
-		Expect(6);
-		Expect(3);
-		__context->addImport( t->line, gum::narrow(t->val) ); 
-		Expect(12);
+		if (la->kind == 6) {
+			Get();
+			Expect(3);
+			__context->addImport( t->line, gum::narrow(t->val) ); 
+			Expect(12);
+		}
 		while (la->kind == 7) {
 			RequestBloc();
 		}

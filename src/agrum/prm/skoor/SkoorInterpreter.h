@@ -68,6 +68,11 @@ public:
   /// Clear the current context (and errors).
   void clearContext();
   
+  /**
+   * Parse the command line, in the previous context.
+   * Must be a package, import or request-block declaration.
+   * */
+  void processCommandLine( const std::string & commandLine );
   
   /**
    * Crée le prm correspondant au contexte courant.
@@ -77,17 +82,12 @@ public:
    * */
   bool interpret();
   
-  /**
-   * Parse the command line, in the previous context.
-   * Must be a package, import or request-block declaration.
-   * */
-  void processCommandLine( const string & commandLine );
-  
   /// Root paths to search from there packages.
   /// Default are working dir, request file dir if any 
   /// and one is calculate from package if any.
   std::vector<std::string> getPaths() const;
   void addPath( const std::string & path );
+  void clearPaths();
   
   /// syntax mode don't process anything, just check syntax. Default is false.
   bool isInSyntaxMode() const;
