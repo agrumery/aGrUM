@@ -79,6 +79,7 @@ void import(std::string s) {
         p.setFileName(import);
         p.Parse();
         addImports(p.getImports());
+        __errors += p.__errors;
         break;
       }
     }
