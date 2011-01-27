@@ -75,7 +75,7 @@ namespace gum {
       void
       SkoolReader::readString ( const std::string & string ) {
         if ( ! __parseDone ) {
-          Scanner s ( ( unsigned char* ) string.c_str(), ( int ) ( string.length() + 1 ) );
+          Scanner s ( (unsigned char*) string.c_str(), (int) ( string.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
@@ -100,60 +100,60 @@ namespace gum {
 /// @{
 /// publishing Errors API
       INLINE
-      unsigned int SkoolReader::errLine ( unsigned int i ) {
+      unsigned int SkoolReader::errLine ( unsigned int i ) const {
         if ( __parseDone ) return __parser->errors().line ( i );
         else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
       }
 
       INLINE
-      unsigned int SkoolReader::errCol ( unsigned int i ) {
+      unsigned int SkoolReader::errCol ( unsigned int i ) const {
         if ( __parseDone ) return __parser->errors().col ( i );
         else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
       }
 
       INLINE
-      std::wstring SkoolReader::errFilename ( unsigned int i ) {
+      std::wstring SkoolReader::errFilename ( unsigned int i ) const {
         if ( __parseDone ) return __parser->errors().filename ( i );
         else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
       }
 
       INLINE
-      bool SkoolReader::errIsError ( unsigned int i ) {
+      bool SkoolReader::errIsError ( unsigned int i ) const {
         if ( __parseDone ) return __parser->errors().is_error ( i );
         else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
       }
 
       INLINE
-      std::string SkoolReader::errMsg ( unsigned int i ) {
+      std::string SkoolReader::errMsg ( unsigned int i ) const {
         if ( __parseDone ) return std::string ( narrow ( __parser->errors().msg ( i ) ) );
         else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
       }
 
       INLINE
-      void SkoolReader::showElegantErrors() {
+      void SkoolReader::showElegantErrors() const {
         if ( __parseDone ) __parser->errors().showElegantErrors();
         else return;
       }
 
       INLINE
-      void SkoolReader::showElegantErrorsAndWarnings() {
+      void SkoolReader::showElegantErrorsAndWarnings() const {
         if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
         else return;
       }
 
       INLINE
-      void SkoolReader::showErrorCounts() {
+      void SkoolReader::showErrorCounts() const {
         if ( __parseDone ) __parser->errors().showSyntheticResults();
         else return;
       }
 
       INLINE
-      Size  SkoolReader::errors() {
+      Size  SkoolReader::errors() const {
         return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().error_count;
       }
 
       INLINE
-      Size  SkoolReader::warnings() {
+      Size  SkoolReader::warnings() const {
         return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
       }
 

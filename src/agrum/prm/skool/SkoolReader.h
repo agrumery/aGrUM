@@ -68,32 +68,32 @@ public:
     /// publishing Errors API
 
     /// # of errors
-    Size errors();
+    Size errors() const;
     /// # of errors
-    Size warnings();
+    Size warnings() const;
     
     /// 
     const ErrorsContainer & getErrorsContainer() const;
 
     /// line of ith error or warning
-    unsigned int errLine( unsigned int i );
+    unsigned int errLine( unsigned int i ) const;
     /// col of ith error or warning
-    unsigned int errCol( unsigned int i );
+    unsigned int errCol( unsigned int i ) const;
     /// filename of ith error or warning
-    std::wstring errFilename( unsigned int i );
+    std::wstring errFilename( unsigned int i ) const;
     /// type of ith error or warning
-    bool errIsError( unsigned int i );
+    bool errIsError( unsigned int i ) const;
     /// message of ith error or warning
-    std::string errMsg( unsigned int i );
+    std::string errMsg( unsigned int i ) const;
 
     /// send on std::cerr the list of errors
-    void showElegantErrors();
+    void showElegantErrors() const;
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings();
+    void showElegantErrorsAndWarnings() const;
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts();
+    void showErrorCounts() const;
     /// @}
 
 private:
