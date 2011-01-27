@@ -50,6 +50,8 @@ COMMENTS FROM "//" TO eol
 
 IGNORE '\r' + eol + '\t' + ' '
 
+$checkEOF=false // disable the end of file check
+
 //=====================
 PRODUCTIONS
 
