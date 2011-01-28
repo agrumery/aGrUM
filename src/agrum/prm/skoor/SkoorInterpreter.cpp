@@ -99,6 +99,8 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
   Parser p( &s );
   p.setSkoorContext( m_context );
   p.Parse();
+  
+  m_errors += p.errors();
 }
 
 /// Destructor. Delete current context.
@@ -313,10 +315,12 @@ bool SkoorInterpreter::interpret()
 void SkoorInterpreter::processCommandLine( const string & commandLine )
 {
     
-  skoor::Scanner s( ( unsigned char* ) commandLine.c_str(), ( int ) commandLine.length() + 1 );  
+  skoor::Scanner s( ( unsigned char* ) commandLine.c_str(), ( int ) commandLine.length() );  
   Parser p( &s );
   p.setSkoorContext( m_context );
   p.Parse();
+  
+  m_errors += p.errors();
 
   //if (m_verbose) m_log << "# * Going to process command : " << commandLine << endl << flush;
   

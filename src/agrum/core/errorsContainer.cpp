@@ -137,6 +137,15 @@ namespace gum {
     return *this;
   }
       
+  ErrorsContainer ErrorsContainer::operator+=( const ErrorsContainer & cont )
+  {
+    error_count += cont.error_count;
+    warning_count += cont.warning_count;
+    for ( int i = 0 ; i < cont.count() ; i++ )
+        errors.push_back( cont.getError(i) );    
+    return *this;
+  }
+      
   void ErrorsContainer::showErrors() const
   {
     if ( count() == 0 ) 

@@ -106,6 +106,7 @@ namespace gum {
       
       ErrorsContainer operator+( const ErrorsContainer & cont ) const;
       ErrorsContainer operator=( const ErrorsContainer & cont );
+      ErrorsContainer operator+=( const ErrorsContainer & cont );
       
   }; // ErrorsContainer
 
