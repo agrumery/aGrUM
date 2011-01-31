@@ -94,13 +94,21 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
   if ( size != string::npos )
     m_paths.push_back( filename.substr(0, size + 1) ); // take with the '/'
   
-  skoor::Scanner s( filename.c_str() );
+  // Test if filename exist
+  std::ifstream file_test;
+  file_test.open(filename.c_str());
+  if (file_test.is_open()) {
+    file_test.close();
   
-  Parser p( &s );
-  p.setSkoorContext( m_context );
-  p.Parse();
-  
-  m_errors += p.errors();
+    skoor::Scanner s( filename.c_str() );
+    
+    Parser p( &s );
+    p.setSkoorContext( m_context );
+    p.Parse();
+    
+    m_errors += p.errors();
+  } else
+    addError("file not found.");    
 }
 
 /// Destructor. Delete current context.
@@ -207,7 +215,11 @@ const std::vector< std::pair<std::string,QueryResult> > & SkoorInterpreter::resu
  * etc).
  * */
 bool SkoorInterpreter::interpret()
-{  
+{    
+  // Don't parse if any syntax errors.
+  if ( errors() > 0 )
+    return false;
+    
   // Create the reader for this time
   if ( m_reader ) {
     delete m_reader->prm();
@@ -237,11 +249,10 @@ bool SkoorInterpreter::interpret()
     m_paths.push_back( root );
   }
   
+  
   // Set paths to search from.
-  string paths = m_paths[0];
-  for ( size_t i = 1 ; i < m_paths.size() ; i++ )
-    paths += ";" + m_paths[i];
-  m_reader->setClassPath( paths );
+  for ( size_t i = 0 ; i < m_paths.size() ; i++ )
+    m_reader->addClassPath( m_paths[i] );
   
   // On importe tous les systèmes.
   vector<ImportCommand *> imports = m_context->getImports();

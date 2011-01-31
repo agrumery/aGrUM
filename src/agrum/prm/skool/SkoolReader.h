@@ -61,6 +61,7 @@ public:
      * @param class_path A semicolon separated list of paths.
      */
     void setClassPath(const std::string& class_path);
+    void addClassPath(const std::string& class_path);
 
     gum::prm::PRM* prm();
 

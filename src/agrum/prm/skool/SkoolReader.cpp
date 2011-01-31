@@ -45,13 +45,20 @@ namespace gum {
         while ( j != std::string::npos ) {
           __class_path.push_back ( class_path.substr ( i, j - i ) );
           i = j + 1;
-          j = class_path.find ( ';', i );
+          if ( i < class_path.length() )
+            j = class_path.find ( ';', i );
+          else
+            j = std::string::npos;
         }
 
-        if ( i != std::string::npos )
-          __class_path.push_back ( class_path.substr ( i, j ) );
+        if ( i < class_path.length() )
+          __class_path.push_back ( class_path.substr ( i, std::string::npos ) );
       }
 
+    void SkoolReader::addClassPath(const std::string& class_path) {
+      __class_path.push_back( class_path );
+    }
+    
     } /* namespace skool */
   } /* namespace prm */
 } /* namespace gum */
