@@ -11,7 +11,7 @@ namespace std {
 
 #undef TRY
 #ifdef GUM_NO_INLINE
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); std::cerr << e.getCallStack() << std::endl; }
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
 #endif
 #ifndef GUM_NO_INLINE
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }

@@ -67,9 +67,7 @@ namespace prm {
   {
     GUM_DESTRUCTOR( Type );
     delete __var;
-    if (not __label_map) {
-      delete __label_map;
-    }
+    delete __label_map;
   }
 
   bool
