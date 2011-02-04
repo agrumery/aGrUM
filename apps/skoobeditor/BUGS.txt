@@ -1,0 +1,62 @@
+
+Vous pouvez mettre ici les bugs rencontrés (soyez le plus explicite possible) 
+dans la section BUGS, les améliorations des fonctionnalités existantes dans la
+section AMELIORATIONS, et les nouvelles fonctionnalités désirées dans la section TODOS.
+
+Dans tous les cas, laissez votre mail ou vos coordonnées au cas où nous aurions besoin 
+de plus d'informations.
+
+Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
+
+BUGS :
+
+
+AMELIORATIONS :
+
+  * Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
+    ne pas attendre la fermeture (en cas de crash).
+  * Ajouter un splitter pour les docks.
+	* Pour la sauvegarde des raccourcis dans les settings, les mettre dans un dossier à part.
+    => Améliorer l'organisation des settings.
+	* lien entre le nom de la classe ou du system ou des requête et le nom du fichier,
+		à la sauvegarde, ou à la création dans le projet.
+	* A mettre dans les préférences peut être : Quand on commente/décommente : 
+		ne pas juste switcher, si il y a des commentaire dans la sélection, ça les décommente ! -_-"
+    Ou alors à la qt creator : si toutes les lignes sont commentées, on décommente.
+	* Pour la recherche avancée : ne pas mettre le nom  de fichier si
+		c'est une recherche dans le document.
+	* Pour la recherche, même rapide, bouton voir voir/mettre whole word, regexp, casse.
+	* Si, quand on veut ouvrir un projet, il n'y a pas de fichie projet, 
+		demander si on veut le créer.
+  * Pour l'ouverture de projet, plutôt que d'ouvrir un dossier, ouvrir un .skoop.
+  * Ne supprimer le fichier de config qu'avec le purge pour apt-get.
+
+TODOS :
+  
+  * F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
+    crée un fichier requête.
+  * Put skoobeditor in aGrUM/apps and redo windows compilation (make agrum.dll and link *.h)
+	* Drag and drop de fichiers dans l'explorateur => Les déplace en vrai 
+		et change le package dans le fichier.
+	* Pour l'explorateur de projet, icone pour les différents type de fichier.
+	* Dans les préférences, choix des couleurs des différents éléments.
+	* Quand on change d'onglet, sauvegarder les symboles dans le fichier projet 
+		pour l'autocomplétion dans les autres fichier sdu même projet.
+	* icone de programme
+	* Clic droit sur le projet => menu avec
+	   - créer un package;
+	   - créer une classe/système/requête;
+	   - lancer la requête si c'est un fichier requête.
+	* Finir les préférences de l'éditeur.
+	* Faire les propriétés du projet.
+	* Intégrer la table d'édition de CPT.
+	* Auto import des classes/systèmes nécessaires.
+	* Améliorer l'autocomplétion avec en plus les packages, classes du package etc...
+	* Documentation du code.
+	* Manuel utilisateur.
+	* Quand on change le package d'une classe ou d'un système,
+		déplace le fichier dans l'arborescence.
+	* Drag & Drop de fichier dans l'explorateur de projet => change le package.
+	* À propos
+  * Dans SkoolReader, si un type est pas trouvé, chercher dans le même répertoire (voir avec phw).
+  * Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).

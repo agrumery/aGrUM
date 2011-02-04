@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/about.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/cut.png</file>
+        <file>icons/disk.png</file>
+        <file>icons/diskall.png</file>
+        <file>icons/disk_mod.png</file>
+        <file>icons/disk_unmod.png</file>
+        <file>icons/doc.png</file>
+        <file>icons/doc_edit.png</file>
+        <file>icons/find.png</file>
+        <file>icons/font_edit.png</file>
+        <file>icons/font_rem.png</file>
+        <file>icons/gotoline.png</file>
+        <file>icons/new.png</file>
+        <file>icons/open.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/printer.png</file>
+        <file>icons/quit.png</file>
+        <file>icons/recent.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/refresh.png</file>
+        <file>icons/replace.png</file>
+        <file>icons/session.png</file>
+        <file>icons/session_edit.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/warning.png</file>
+        <file>icons/warning2.png</file>
+        <file>icons/x.png</file>
+        <file>icons/zoomdef.png</file>
+        <file>icons/zoomin.png</file>
+        <file>icons/zoomout.png</file>
+        <file>icons/next.png</file>
+        <file>icons/previous.png</file>
+        <file>icons/close.png</file>
+        <file>icons/gear-icon.png</file>
+        <file>icons/execute.png</file>
+        <file>icons/new_class.png</file>
+        <file>icons/new_request.png</file>
+        <file>icons/new_system.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>api/skool.api</file>
+        <file>api/skoor.api</file>
+    </qresource>
+</RCC>

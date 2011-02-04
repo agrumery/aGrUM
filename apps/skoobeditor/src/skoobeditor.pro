@@ -1,0 +1,76 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2010-11-05T11:42:49
+#
+#-------------------------------------------------
+
+TEMPLATE = app
+
+QT     += core gui
+
+CONFIG  += qt thread resources uic windows x11 exceptions stl debug_and_release warn_on
+
+win32 {
+# Pour la dll d'agrum
+	LIBS += -L$${PWD}/../bin/
+	INCLUDEPATH += $${PWD}/../../../src/agrum/
+	TARGET = SkoobEditor
+} else {
+	TARGET = skoobeditor
+}
+
+!win32:debug {
+	LIBS += -lqscintilla2 -lagrum-dbg
+} else {
+	LIBS += -lqscintilla2 -lagrum
+}
+
+DESTDIR = $${PWD}/../bin/
+
+SOURCES += main.cpp\
+        mainwindow.cpp \
+    qscilexerskool.cpp \
+    filecontroller.cpp \
+    qsciscintillaextended.cpp \
+    editcontroller.cpp \
+	searchcontroller.cpp \
+    advancedsearch.cpp \
+    viewcontroller.cpp \
+    projectcontroller.cpp \
+    newprojectdialog.cpp \
+    project.cpp \
+    qscilexerskoor.cpp \
+    buildcontroller.cpp \
+    properties.cpp \
+    qkeysequencewidget.cpp \
+    qscilexerskool2.cpp \
+    skoolsyntaxchecker.cpp \
+    skoorinterpretation.cpp
+    
+HEADERS  += mainwindow.h \
+    qscilexerskool.h \
+    filecontroller.h \
+    qsciscintillaextended.h \
+    editcontroller.h \
+    searchcontroller.h \
+    advancedsearch.h \
+    viewcontroller.h \
+    projectcontroller.h \
+    newprojectdialog.h \
+    project.h \
+    qscilexerskoor.h \
+    buildcontroller.h \
+    properties.h \
+    qkeysequencewidget.h \
+    qscilexerskool2.h \
+    syntaxchecker.h \
+    skoolsyntaxchecker.h \
+    skoorinterpretation.h
+
+FORMS    += mainwindow.ui \
+    advancedsearch.ui \
+    newprojectdialog.ui \
+    properties.ui
+
+RESOURCES += \
+	../rsrc/resources.qrc

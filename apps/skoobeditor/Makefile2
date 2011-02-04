@@ -1,0 +1,48 @@
+# Makefile
+
+# Cette commande fonctionne sur unix, et renvoie le nom de le l'OS,
+# Mais elle ne fonctione pas sous windows, donc elle renvoie une chaine vide.
+OS := $(shell uname)
+ifeq ($(OS),Linux)
+	MAKE=make
+else
+	MAKE=mingw32-make
+endif
+
+default: release
+
+before:
+# On teste si le répertoire n'existe pas déjà.
+# Permet d'éviter les messages d'erreurs sous windows particulièrement.
+ifeq ("$(wildcard build)", "")
+	mkdir build;
+endif
+	
+debug: before
+	(cd build && qmake ../src/skoobeditor.pro CONFIG= && $(MAKE) debug)
+
+release: before
+	(cd build && qmake ../src/skoobeditor.pro CONFIG= && $(MAKE) release)
+
+clean:
+ifeq ($(OS),Linux)
+	rm -rf build/
+	rm -rf bin/skoobeditor
+	rm -rf usr/
+else
+	rmdir /s /q build
+	del bin\SkoobEditor.exe
+endif
+
+installer: release
+	"C:\Program Files\NSIS\makensis.exe" installer_script.nsi
+
+dpkg: release
+	(mkdir -p usr/bin)
+	(mkdir -p usr/share/doc)
+	(cp CHANGELOG.txt usr/share/doc/)
+	(cp LICENSE.txt usr/share/doc/)
+	(cp README.txt usr/share/doc/)
+	(cp bin/skoobeditor usr/bin/)
+	(cd .. && dpkg-deb --build skoobeditor)
+

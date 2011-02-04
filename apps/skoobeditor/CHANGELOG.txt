@@ -1,0 +1,97 @@
+
+03/02/2011
+  * Fix : issues on windows.
+  * Fix : Quand on sauvegarde un fichier qui ne l'était pas encore, 
+    la correction devrait commencer, ce qui n'est pas le cas.
+  * Fix : Quand on clic sur les résultats d'une requête, rien ne devrait se passer.
+  * Fix : Quand on double-clic sur une erreur qui est dans un autre fichier, 
+    ouvre un autre document même si ce fichier est déjà ouvert.
+    => dû au filename qui est différent (absolu != relatif)
+  * Fix : Quand on fait crée un nouveau fichier requête, sélectionne automatiquent 
+    le filtre *.skoor.
+  * Fix : Double fenêtre "sauvegarder sous" si on fait annuler à la première fenêtre,
+    quand on crée un nouveau fichier pour le projet.
+  * Improve : supprime le document nouvellement crée si on fait annuler dans la 
+    fenêtre "sauvegarder sous", quand on crée un nouveau fichier pour le projet.
+  * Fix : à la coloration pour le type si étend boolean, le mot d'après est mal coloré.
+  * Fix : À l'autocomplétion, si il n'y qu'une possibilité elle ne devrait pas s'afficher.
+    => Marchait correctement avant.
+    => Pas trouvé d'où venait le problème. Scintilla ? => Oui. Ils ont inversé la méthode >_<.
+    => A tester sur d'autres machines.
+  
+02/02/2011
+  * Fix issues on windows.
+
+01/02/2011
+  * Resave file after saveAs, when text has been added on createSkool/SkoorFile.
+  
+31/01/2011
+  * Add 'title' property for QsciScintillaExtended and use it in rest of project
+    instead of filename when possible.
+  * Fix : Quand on ferme avec un nouveau fichier pas sauvegarder, 
+    à la réouverture du programme.
+
+28/01/2011
+  * Fix : Avoir le nom du fichier dans l'erreur pour les fichiers skoor.
+
+27/01/2011
+	* Done : Détecton d'erreur à la volée/à la Eclipse.
+  
+26/01/2011
+  * Fix : Show build dock at the beggining of the process.
+  * Improve : Mettre la correction syntaxique et l'exécution dans des threads (pour garder un GUI active).
+  * Fix : Quand on affiche des erreurs, qu'on fait des changements et qu'on recompile, 
+    on devrait réinitialiser les erreurs (surlignage en rouge).
+  * Fix : Ouvrir les anciens fichiers ouverts (et projet) après la création de la fenêtre.
+  
+06/01/2011
+  * Fix : Bug d'utf8 entre la sauvegarde et la lecture d'un fichier (visible dans les meta-données).
+  * Fix : A la création d'un fichier, ne pas mettre de ';' après les accolades.
+  * Fix : "index out of range" when double clic on a error message in the build dock, 
+    when skoor build is called before skool build.
+	* Improve : pour enregistrer sous, met à jour l'extension automatiquement.
+	* Improve : lien entre le nom de la classe (ou du system ou de la requête) et le nom du fichier,
+		à sa création dans le projet.
+  * Improve : Ajout de couleurs dans le search dock 
+    (pour les noms de fichier et alternance de la couleur de fond des lignes).
+  * Improve : Pour la recherche avancée : expand si il n'y a qu'un document.
+  * Improve : Ajout d'icônes pour la création de fichier class/system/request dans la toolbar.
+  
+05/01/2011
+  * Fix : Pour "remplacer tout", prend en compte la casse alors qu'il ne devrait pas.
+    => Changement dans les paramètres => Feature ? 
+  * Fix : À la fin du fichier, '^' + '^' fais planté le programme.
+    Problème dû à l'encodage en utf8/Scintilla et QString dans QsciLexerSkool2.
+  * Fix : Ctrl+D ne doit pas affiché l'explorateur de projet s'il n'y a pas de projet ouvert.
+  * Fix : Incohérence dans l'affichage des marges quand on ouvre un nouveau document.
+  * Fix : Les document enregistrés ne sont pas renvoyés par FileController::openDocuments()
+  * Fix : Pas de mise à jour du lexer quand on change de type de fichier
+  * Fix : Enregistre pas quand on fat 'Sauvegarder sous' alors que le fichier n'est pas modifier.
+  * Fix : Incohérences dans la création de document projets par rapport a newFile.
+
+04/01/2011
+	* Fix : Pas d'affichage des marqueurs de pliage dans QsciLexerSkool2.
+	* Fix : Quand pas de projet actif, désactiver la recherche dans le projet.
+	* Fix : Si il n'y a pas de projet ouvert, pas de création de nouveau fichier classe/système etc.
+	* Fix : Toujours le double "import" dans l'auto completion (avec QScintilla-2.4.6).
+	* Fix : Raccourci undo redo marche pas, ou aléatoirement. 
+    Bug dû à un conflit entre les shortcuts de QScintilla et ceux de SkoobEditor.
+
+23/10/2010
+	* Fix : Au lancement du programme le titre de la fenêtre ne s'affiche pas.
+	* Fix : Supprimer les settings à la désinstallation du programme .
+	* Fix : Quand on fait "tout sauvegarder" ne pas changer d'onglet.
+	* Fix : Dans la recherche rapide, au fur et à mesure qu'on tappe, 
+		la sélection change au lieu de rester sur le même item.
+	* Fix : Quand on fait précédent pour la recherche et que la sélection est entre 
+		deux résultats possible, va sur celui du bas o=au lieu de celui du haut. 
+		En fait passe le premier résulats possible et va au second.
+	* Fix : Pour remplacer, si rien de sélectionné, met quand même le mot.
+	* Fix : Quand on a fait un recherche (Ctrl+F et tapé le mot), le premier 
+		mot trouvé est sélectionné, et quand on fait Remplacer (Ctrl+R)
+		la sélection remplace le champs rechercher, génant quand la casse n'est pas la même.
+	* Fix : Tout remplacer déconne sérieux.
+	* Fix : Les labels Rechercher et Remplacer font pas la même taille sous windows (dépend de la police).
+	* Fix : Doubleclic on directory in the project explorator try to open the file.
+	* Fix : Sous windows, la font est pas bonne.
+	* Fix : Si on est pas sur un fichier skoor, pas d'exécution possible.
