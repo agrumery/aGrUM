@@ -38,8 +38,7 @@ Section "SkoobEditor (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File bin\SkoobEditor.exe
-  File bin\libagrum.dll
+  File bin\Release\skoobeditor.exe
   File $%QTDIR%\lib\qscintilla2.dll
   File $%QTDIR%\bin\QtCore4.dll
   File $%QTDIR%\bin\QtGui4.dll

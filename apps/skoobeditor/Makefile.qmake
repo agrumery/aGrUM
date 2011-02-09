@@ -31,7 +31,7 @@ ifeq ($(OS),Linux)
 	rm -rf usr/
 else
 	rmdir /s /q build
-	del bin\SkoobEditor.exe
+	del bin\skoobeditor.exe
 endif
 
 installer: release

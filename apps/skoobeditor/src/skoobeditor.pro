@@ -11,12 +11,9 @@ QT     += core gui
 CONFIG  += qt thread resources uic windows x11 exceptions stl debug_and_release warn_on
 
 win32 {
-# Pour la dll d'agrum
+	# Pour la dll d'agrum
 	LIBS += -L$${PWD}/../bin/
-	INCLUDEPATH += $${PWD}/../../../src/agrum/
-	TARGET = SkoobEditor
-} else {
-	TARGET = skoobeditor
+	INCLUDEPATH += $${PWD}/../../../src/
 }
 
 !win32:debug {
@@ -25,7 +22,8 @@ win32 {
 	LIBS += -lqscintilla2 -lagrum
 }
 
-DESTDIR = $${PWD}/../bin/
+TARGET = skoobeditor
+DESTDIR = $${PWD}/../bin/Release
 
 SOURCES += main.cpp\
         mainwindow.cpp \
