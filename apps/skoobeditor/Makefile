@@ -61,7 +61,7 @@ dpkg: release
 	(cd .. && dpkg-deb --build skoobeditor)
 
 ## Compile aGrUM. Ne fonctionne pas encore.
-#agrum:
-#	(cd ../../ && $(CMAKE) -E make_directory build/windows/Release)
-#	(cd ../../build/windows/Release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+agrum:
+	(cd ../../ && $(CMAKE) -E make_directory build/windows/Release)
+	(cd ../../build/windows/Release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
 	

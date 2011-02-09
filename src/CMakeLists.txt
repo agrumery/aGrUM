@@ -51,7 +51,6 @@ add_executable(run EXCLUDE_FROM_ALL ${RUN_AGRUM_SOURCES})
 target_link_libraries(run ${LIBAGRUM})
 
 ## TARGET test
-include("testunits/testList.cmake")
 include("cmake/CxxTest.agrum.cmake")
 
 include("cmake/Install.agrum.cmake")
