@@ -1,4 +1,8 @@
 
+08/02/2011
+  * Add : When create a new class/system file, set the corresponding package.
+  * Use cmake instead of qmake, and use agrum source instead of agrum shared library.
+
 03/02/2011
   * Fix : issues on windows.
   * Fix : Quand on sauvegarde un fichier qui ne l'était pas encore, 

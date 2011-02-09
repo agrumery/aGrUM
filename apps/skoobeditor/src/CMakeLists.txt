@@ -22,11 +22,14 @@ endif(QSCINTILLA2)
 
 ## On trouve tous les fichiers sources
 file(GLOB_RECURSE SKOOB_SOURCES *.cpp)
-file(GLOB_RECURSE AGRUM_SOURCES ../../../src/agrum/*.cpp ../../../src/agrum/*.inl ../../../src/agrum/*.tcc)
 file(GLOB_RECURSE SKOOB_INCLUDES *.h)
-file(GLOB_RECURSE AGRUM_INCLUDES ../../../src/agrum/*.h)
 file(GLOB_RECURSE RESOURCES ../rsrc/*.qrc)
 file(GLOB_RECURSE FORMS *.ui)
+
+# TODO : Ajouté les fichiers objects *.o de aGrUM/build/ plutôt que les sources
+# et utiliser set_source_files_properties EXTERNAL_OBJECT pour l'indiquer.
+file(GLOB_RECURSE AGRUM_SOURCES ../../../src/agrum/*.cpp ../../../src/agrum/*.inl ../../../src/agrum/*.tcc)
+file(GLOB_RECURSE AGRUM_INCLUDES ../../../src/agrum/*.h)
 
 # ~~~~~~~~~~~~ INCLUDES ~~~~~~~~~~~~ #
 
