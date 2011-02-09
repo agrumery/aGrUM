@@ -14,7 +14,7 @@ endif
 
 default: release
 
-before:
+before: agrum
 # On teste si le répertoire n'existe pas déjà.
 # Permet d'éviter les messages d'erreurs sous windows particulièrement.
 ifeq ("$(wildcard build)", "")
