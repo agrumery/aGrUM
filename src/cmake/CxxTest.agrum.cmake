@@ -30,7 +30,6 @@ ENDMACRO(ADD_CXXTEST)
 
 
 MACRO(add_agrum_test NAME)
-  IF(PYTHONINTERP_FOUND)
     set(PATH_FILES "")
     foreach(part ${ARGN})
       set(PATH_FILES "testunits/${part}" ${PATH_FILES})
@@ -44,7 +43,13 @@ MACRO(add_agrum_test NAME)
       DEPENDS ${PATH_FILES}
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testunits
     )
-  ENDIF(PYTHONINTERP_FOUND)
 
   ADD_EXECUTABLE(${NAME} EXCLUDE_FROM_ALL ${AGRUM_BINARY_DIR}/${NAME}.cpp ${PATH_FILES})
 ENDMACRO(add_agrum_test NAME)
+
+IF(PYTHONINTERP_FOUND)
+  add_agrum_test(test  ${AGRUM_TESTS})
+  target_link_libraries(test ${LIBAGRUM})
+ELSE(PYTHONINTERP_FOUND)
+    message(WARNING "Python not found : you cannot generate tests !")
+ENDIF(PYTHONINTERP_FOUND)

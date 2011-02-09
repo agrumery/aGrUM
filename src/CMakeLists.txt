@@ -43,7 +43,6 @@ set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION 
 
 ## target docs
 include("cmake/Doxygen.agrum.cmake")
-add_dependencies(doc ${AGRUM_SOURCES})
 
 ## TARGET run
 file(GLOB_RECURSE RUN_AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/run/*.cpp)
@@ -52,10 +51,8 @@ add_executable(run EXCLUDE_FROM_ALL ${RUN_AGRUM_SOURCES})
 target_link_libraries(run ${LIBAGRUM})
 
 ## TARGET test
-include("cmake/CxxTest.agrum.cmake")
 include("testunits/testList.cmake")
-add_agrum_test(test  ${AGRUM_TESTS})
-target_link_libraries(test ${LIBAGRUM})
+include("cmake/CxxTest.agrum.cmake")
 
 include("cmake/Install.agrum.cmake")
 include("cmake/Pack.agrum.cmake")

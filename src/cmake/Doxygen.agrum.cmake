@@ -25,4 +25,7 @@ IF (DOXYGEN_FOUND)
 	 )
 
 	add_custom_target(doc DEPENDS ${DOXYGEN_OUTPUT})
+  add_dependencies(doc ${AGRUM_SOURCES})
+ELSE (DOXYGEN_FOUND)
+    message(WARNING "Doxygen not found : you cannot generate documentation !")
 ENDIF (DOXYGEN_FOUND)

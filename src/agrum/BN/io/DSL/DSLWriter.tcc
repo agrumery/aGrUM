@@ -48,12 +48,11 @@ namespace gum {
     GUM_DESTRUCTOR ( DSLWriter );
   }
 
-//
-// Writes a Bayesian Network in the output stream using the DSL format.
-//
-// @param ouput The output stream.
-// @param bn The Bayesian Network writen in output.
-// @throws Raised if an I/O error occurs.
+  /** Writes a Bayesian Network in the output stream using the DSL format.
+   * @param ouput The output stream.
+   * @param bn The Bayesian Network writen in output.
+   * @throws Raised if an I/O error occurs.
+   */
   template<typename T_DATA>
   void DSLWriter<T_DATA>::write ( std::ostream &output, const BayesNet<T_DATA>& bn ) {
     if ( ! output.good() )
@@ -74,13 +73,13 @@ namespace gum {
 
   }
 
-// Writes a Bayesian Network in the referenced file using the DSL format.
-// If the file doesn't exists, it is created.
-// If the file exists, it's content will be erased.
-//
-// @param filePath The path to the file used to write the Bayesian Network.
-// @param bn The Bayesian Network writed in the file.
-// @throws Raised if an I/O error occurs.
+  /** Writes a Bayesian Network in the referenced file using the DSL format.
+   * If the file doesn't exists, it is created.
+   * If the file exists, it's content will be erased.
+   * @param filePath The path to the file used to write the Bayesian Network.
+   * @param bn The Bayesian Network writed in the file.
+   * @throws Raised if an I/O error occurs.
+   */
   template<typename T_DATA>
   void DSLWriter<T_DATA>::write ( std::string filePath, const BayesNet<T_DATA>& bn ) {
     std::filebuf fb;
@@ -92,7 +91,9 @@ namespace gum {
     fb.close();
   }
 
-// Returns a bloc defining a variable in the DSL format.
+  /**
+   * Returns a bloc defining a variable in the DSL format.
+   */
   template<typename T_DATA>
   std::string DSLWriter<T_DATA>::__variableBloc ( const BayesNet<T_DATA>& bn , const DiscreteVariable& var ) {
     NodeId id;
@@ -113,21 +114,14 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-
-    /*const NodeSet& parents = bn.dag().parents(id);
-    for (NodeSetIterator iter = parents.begin();
-         iter != parents.end(); ++iter) {
-        if (i != 0) oss << ", ";
-        oss << bn.variable(*iter).name();
-        i++;
-    }*/
     const Sequence< const DiscreteVariable * > &tmp_vars = bn.cpt ( id ).variablesSequence();
 
-    for ( Idx i = tmp_vars.size()-1;i >0 ;i-- ) {
-      if ( i < tmp_vars.size()-1) oss << ", ";
+    for ( Idx i = tmp_vars.size() - 1;i > 0 ;i-- ) {
+      if ( i < tmp_vars.size() - 1 ) oss << ", ";
 
       oss << tmp_vars[i]->name();
     }
+
     oss << ");\n";
 
     oss << "\t\tDEFINITION =\n\t\t{\n";
@@ -174,4 +168,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
