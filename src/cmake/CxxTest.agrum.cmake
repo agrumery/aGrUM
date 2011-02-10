@@ -48,7 +48,7 @@ MACRO(add_agrum_test NAME)
 ENDMACRO(add_agrum_test NAME)
 
 IF(PYTHONINTERP_FOUND)
-  include("../testunits/testList.cmake")
+  include("testunits/testList.cmake")
   add_agrum_test(test  ${AGRUM_TESTS})
   target_link_libraries(test ${LIBAGRUM})
 ELSE(PYTHONINTERP_FOUND)
