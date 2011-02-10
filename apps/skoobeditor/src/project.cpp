@@ -32,6 +32,9 @@ Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(p
 	} else
 		d->readSkoopFile();
 
+	setNameFilters( QStringList() << "*.skool" << "*.skoor" );
+	setNameFilterDisables(false);
+
 	setRootPath(d->dir.absolutePath());
 	d->rootIndex = index(d->dir.absolutePath());
 }

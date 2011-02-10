@@ -5,6 +5,7 @@
     => Améliorer l'organisation des settings.
 	* Improve : Si, quand on veut ouvrir un projet, il n'y a pas de fichier projet, 
 		demander si on veut le créer.
+  * Improve : Ne montre que les fichiers skool et skoor dans l'explorateur de projet.
 
 08/02/2011
   * Add : When create a new class/system file, set the corresponding package.

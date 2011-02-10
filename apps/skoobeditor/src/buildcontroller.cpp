@@ -266,6 +266,18 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 			sci = mw->fc->currentDocument();
 	}
 
+	// Create temp file to execute some class or system files.
+//	if ( sci->lexerEnum() == QsciScintillaExtended::Skool ) {
+//		// If file contains a system declaration
+//		if ( sci->text().contains(QRegExp("^\s*system\s+\w+\s+{")) ) {
+
+//		// Else if file contains a class definition
+//		} else if ( sci->text().contains(QRegExp("^\s*class\s+\w+\s+.*{")) ) {
+
+//		}
+//		return;
+//	}
+
 	// Clear build dock and inform start of process
 	d->msg->clear();
 	if ( ! checkSyntaxOnly )
