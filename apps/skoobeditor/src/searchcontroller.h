@@ -37,6 +37,11 @@ private slots:
 	void onQuickReplaceEditTextChanged(QString);
 	void onResultSearchDoubleClick(QTreeWidgetItem * item, int column);
 
+	void onSearchOptionButtonClicked();
+	void onCaseSensitiveOptionChecked(bool checked);
+	void onWholeWordOptionChecked(bool checked);
+	void onUseRegexOptionChecked(bool checked);
+
 private:
 	void parseFiles( const QList<QString> & filePaths, bool isReplaceAll );
 	void parseDocuments( const QList<QsciScintillaExtended *> & documents, bool isReplaceAll );

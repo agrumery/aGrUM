@@ -35,6 +35,11 @@ struct SearchController::PrivateData {
 	AdvancedSearch * as; // Advance Search
 	QTreeWidget * sr;
 	Search cs; // Current Search
+
+	QMenu * searchOptionMenu;
+	QAction * caseSensitiveOptionAction;
+	QAction * wholeWordOptionAction;
+	QAction * useRegexOptionAction;
 };
 
 
@@ -54,6 +59,17 @@ SearchController::SearchController(MainWindow * mw, QObject *parent) :
 	d->qsw = mw->ui->quickSearchWidget;
 	d->qrw = mw->ui->quickReplaceWidget;
 	d->as = new AdvancedSearch(mw);
+
+	d->searchOptionMenu = new QMenu(d->qsw);
+	d->caseSensitiveOptionAction = new QAction(tr("Sensible à la casse"), d->searchOptionMenu);
+	d->caseSensitiveOptionAction->setCheckable(true);
+	d->wholeWordOptionAction = new QAction(tr("Mots entiers seulement"), d->searchOptionMenu);
+	d->wholeWordOptionAction->setCheckable(true);
+	d->useRegexOptionAction = new QAction(tr("Utilisation des expressions régulières"), d->searchOptionMenu);
+	d->useRegexOptionAction->setCheckable(true);
+	d->searchOptionMenu->addAction( d->caseSensitiveOptionAction );
+	d->searchOptionMenu->addAction( d->wholeWordOptionAction );
+	d->searchOptionMenu->addAction( d->useRegexOptionAction );
 
 	// Hide quickSearch and quickReplace widgets.
 	mw->ui->quickSearchWidget->hide();
@@ -81,6 +97,11 @@ SearchController::SearchController(MainWindow * mw, QObject *parent) :
 	connect( mw->ui->actionFindNextMarker, SIGNAL(triggered()), this, SLOT(findNextMarker()) );
 	connect( mw->ui->actionFindPreviousMarker, SIGNAL(triggered()), this, SLOT(findPreviousMarker()) );
 	connect( mw->ui->actionHideDocks, SIGNAL(triggered()), this, SLOT(hideQuickWidgets()) );
+
+	connect( mw->ui->searchOptionsButton, SIGNAL(clicked()), this, SLOT(onSearchOptionButtonClicked()) );
+	connect( d->caseSensitiveOptionAction, SIGNAL(toggled(bool)), this, SLOT(onCaseSensitiveOptionChecked(bool)) );
+	connect( d->wholeWordOptionAction, SIGNAL(toggled(bool)), this, SLOT(onWholeWordOptionChecked(bool)) );
+	connect( d->useRegexOptionAction, SIGNAL(toggled(bool)), this, SLOT(onUseRegexOptionChecked(bool)) );
 }
 
 /* ****************************************************************************** */
@@ -216,8 +237,20 @@ void SearchController::advanceSearch()
 	parseFiles( filesToSearchIn, d->as->isReplaceAll() );
 	parseDocuments( documentsToSearchIn, d->as->isReplaceAll() );
 
+	// If not match
+	if ( d->sr->topLevelItemCount() == 0 ) {
+		QMessageBox::information(mw, tr("Résultat de la recherche"), tr("Aucun résultat trouvé."));
+		return;
+	}
+
 	// Show result
 	if ( ! d->as->isReplaceAll() ) {
+		d->caseSensitiveOptionAction->setChecked( d->cs.cs );
+		d->wholeWordOptionAction->setChecked( d->cs.wo );
+		d->useRegexOptionAction->setChecked( d->cs.regx );
+		d->caseSensitiveOptionAction->setDisabled(true);
+		d->wholeWordOptionAction->setDisabled(true);
+		d->useRegexOptionAction->setDisabled(true);
 		d->qse->setReadOnly(true);
 		d->qre->setReadOnly(true);
 		d->qsw->show();
@@ -396,6 +429,12 @@ void SearchController::hideQuickWidgets()
 	mw->vc->setSearchDockVisibility(false);
 	d->qre->clear();
 	d->qse->clear();
+	d->caseSensitiveOptionAction->setDisabled(false);
+	d->wholeWordOptionAction->setDisabled(false);
+	d->useRegexOptionAction->setDisabled(false);
+	d->caseSensitiveOptionAction->setChecked(false);
+	d->wholeWordOptionAction->setChecked(false);
+	d->useRegexOptionAction->setChecked(false);
 }
 
 /* ****************************************************************************** */
@@ -529,6 +568,34 @@ void SearchController::parseDocuments( const QList<QsciScintillaExtended *> & do
 
 		}
 
-		parent->setText(1, tr("%1 (%2)").arg(sci->title()).arg(searchMatch) );
+		if (parent)
+			parent->setText(1, tr("%1 (%2)").arg(sci->title()).arg(searchMatch) );
 	}
+}
+
+
+void SearchController::onSearchOptionButtonClicked()
+{
+	d->searchOptionMenu->popup( d->qsw->mapToGlobal( mw->ui->searchOptionsButton->pos() ) );
+}
+
+void SearchController::onCaseSensitiveOptionChecked(bool checked)
+{
+	d->cs.cs = checked;
+	mw->fc->currentDocument()->setCurrentIndex( mw->fc->currentDocument()->currentIndex() - d->cs.search.length() - 1);
+	next();
+}
+
+void SearchController::onWholeWordOptionChecked(bool checked)
+{
+	d->cs.wo = checked;
+	mw->fc->currentDocument()->setCurrentIndex( mw->fc->currentDocument()->currentIndex() - d->cs.search.length() - 1);
+	next();
+}
+
+void SearchController::onUseRegexOptionChecked(bool checked)
+{
+	d->cs.regx = checked;
+	mw->fc->currentDocument()->setCurrentIndex( mw->fc->currentDocument()->currentIndex() - d->cs.search.length() - 1);
+	next();
 }

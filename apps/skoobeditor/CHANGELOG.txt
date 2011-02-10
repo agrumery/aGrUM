@@ -6,6 +6,10 @@
 	* Improve : Si, quand on veut ouvrir un projet, il n'y a pas de fichier projet, 
 		demander si on veut le créer.
   * Improve : Ne montre que les fichiers skool et skoor dans l'explorateur de projet.
+  * Add : Ajouter un splitter pour les docks.
+  * Fix : Bug quand il n'y avait aucun résultat.
+  * Improve : Ajout d'un popup informatif quand il n'y a aucun résultat.
+	* Improve : Pour la recherche, même rapide, bouton voir/mettre whole word, regexp, casse.
 
 08/02/2011
   * Add : When create a new class/system file, set the corresponding package.

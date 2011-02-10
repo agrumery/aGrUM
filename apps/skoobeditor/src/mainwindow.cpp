@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	// Expand the tabwidget
 	ui->splitter->setStretchFactor( 1, 128 );
+	ui->splitter2->setStretchFactor( 0, 5 );
+	ui->splitter2->setStretchFactor( 1, 0 );
+	ui->splitter2->setStretchFactor( 2, 0 );
 
 	vc->setSearchDockVisibility(false);
 	vc->setBuildDockVisibility(false);

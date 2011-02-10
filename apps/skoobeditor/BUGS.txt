@@ -15,13 +15,11 @@ AMELIORATIONS :
 
   * Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
     ne pas attendre la fermeture (en cas de crash).
-  * Ajouter un splitter pour les docks.
 	* lien entre le nom de la classe ou du system ou des requête et le nom du fichier,
 		à la sauvegarde, ou à la création dans le projet.
 	* A mettre dans les préférences peut être : Quand on commente/décommente : 
 		ne pas juste switcher, si il y a des commentaire dans la sélection, ça les décommente ! -_-"
     Ou alors à la qt creator : si toutes les lignes sont commentées, on décommente.
-	* Pour la recherche, même rapide, bouton voir voir/mettre whole word, regexp, casse.
   * Ne supprimer le fichier de config qu'avec le purge pour apt-get.
 
 TODOS :
