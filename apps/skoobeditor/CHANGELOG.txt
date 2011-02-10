@@ -1,4 +1,11 @@
 
+10/02/2011
+	* Add : Faire les propriétés du projet (class_path pour le moment).
+	* Improve : Pour la sauvegarde des raccourcis dans les settings, les mettre dans un dossier à part.
+    => Améliorer l'organisation des settings.
+	* Improve : Si, quand on veut ouvrir un projet, il n'y a pas de fichier projet, 
+		demander si on veut le créer.
+
 08/02/2011
   * Add : When create a new class/system file, set the corresponding package.
   * Use cmake instead of qmake, and use agrum source instead of agrum shared library.

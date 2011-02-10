@@ -42,13 +42,17 @@ Properties::Properties(MainWindow * mainw, QWidget *parent) :
 	// ################################################################
 
 	QSettings settings;
+	settings.beginGroup("preferences");
 
+	settings.beginGroup("metadata");
 	ui->auteurPlainText->setPlainText( settings.value("autor").toString() );
 	ui->licencePlainText->setPlainText( settings.value("licence").toString() );
 	ui->dateCheck->setChecked( settings.value("updateDateChecked",true).toBool() );
+	settings.endGroup();
 
 	// ################################################################
 
+	settings.beginGroup("shortcuts");
 	foreach( QTreeWidgetItem * item, d->hash.keys() ) {
 		QString shortcut = settings.value(item->data(3,Qt::DisplayRole).toString()).toString();
 		if ( ! shortcut.isEmpty() ) {
@@ -57,6 +61,7 @@ Properties::Properties(MainWindow * mainw, QWidget *parent) :
 			d->hash[item]->setShortcut(shortcut);
 		}
 	}
+	settings.endGroup();
 }
 
 Properties::~Properties()
@@ -166,15 +171,20 @@ void Properties::accept()
 		 return;
 
 	QSettings settings;
+	settings.beginGroup("preferences");
 
+	settings.beginGroup("metadata");
 	settings.setValue("autor", ui->auteurPlainText->toPlainText());
 	settings.setValue("licence", ui->licencePlainText->toPlainText());
 	settings.setValue("updateDateChecked", ui->dateCheck->isChecked());
+	settings.endGroup();
 
+	settings.beginGroup("shortcuts");
 	foreach( QTreeWidgetItem * item, d->hash.keys() ) {
 		settings.setValue(item->data(3,Qt::DisplayRole).toString(), item->data(1,Qt::DisplayRole));
 		item->setData( 2, Qt::DisplayRole, item->data(1,Qt::DisplayRole) );
 	}
+	settings.endGroup();
 
 	QDialog::accept();
 }

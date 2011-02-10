@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     qkeysequencewidget.cpp \
     qscilexerskool2.cpp \
     skoolsyntaxchecker.cpp \
-    skoorinterpretation.cpp
+    skoorinterpretation.cpp \
+    projectproperties.cpp
     
 HEADERS  += mainwindow.h \
     qscilexerskool.h \
@@ -63,12 +64,14 @@ HEADERS  += mainwindow.h \
     qscilexerskool2.h \
     syntaxchecker.h \
     skoolsyntaxchecker.h \
-    skoorinterpretation.h
+    skoorinterpretation.h \
+    projectproperties.h
 
 FORMS    += mainwindow.ui \
     advancedsearch.ui \
     newprojectdialog.ui \
-    properties.ui
+    properties.ui \
+    projectproperties.ui
 
 RESOURCES += \
 	../rsrc/resources.qrc

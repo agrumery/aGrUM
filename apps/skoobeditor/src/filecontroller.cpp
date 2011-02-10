@@ -71,6 +71,7 @@ FileController::~FileController()
 void FileController::triggerInit()
 {
 	QSettings settings;
+	settings.beginGroup("file");
 
 	//
 	d->numberMaxOfRecentsFiles = settings.value("numberMaxOfRecentsFiles",5).toInt();
@@ -287,6 +288,7 @@ bool FileController::saveFile(QsciScintillaExtended * sci)
 	} else {
 		// Update metadatas ?
 		QSettings settings;
+		settings.beginGroup("preferences/metadata");
 		if ( settings.value("updateDateChecked",false).toBool() )
 			updateMetadata(sci);
 
@@ -503,6 +505,8 @@ void FileController::updateMetadata(QsciScintillaExtended * sci)
 	}
 
 	QSettings settings;
+	settings.beginGroup("preferences/metadata");
+
 	QString metadata("\n");
 
 	if ( mw->pc->isOpenProject() ) {
@@ -591,6 +595,8 @@ bool FileController::quit()
 	// Ask to save
 	// Save the open files in settings
 	QSettings settings;
+	settings.beginGroup("file");
+
 	settings.beginWriteArray("openTabs");
 	for (int i = 0, j = 0 ; i < tabCount ; i++) {
 		QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(i));

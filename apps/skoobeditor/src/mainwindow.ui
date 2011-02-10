@@ -402,7 +402,7 @@
     <addaction name="actionNewModel"/>
     <addaction name="actionNewRequestFile"/>
     <addaction name="separator"/>
-    <addaction name="actionPropri_t_s"/>
+    <addaction name="actionProjectProperties"/>
    </widget>
    <widget class="QMenu" name="menu_Construire">
     <property name="title">
@@ -921,9 +921,9 @@
     <string>Générer la &amp;doc</string>
    </property>
   </action>
-  <action name="actionPropri_t_s">
+  <action name="actionProjectProperties">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Propriétés</string>

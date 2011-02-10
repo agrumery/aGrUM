@@ -60,8 +60,13 @@ dpkg: release
 	(cp bin/Release/skoobeditor usr/bin/)
 	(cd .. && dpkg-deb --build skoobeditor)
 
-## Compile aGrUM. Ne fonctionne pas encore.
+## Compile aGrUM. Ne fonctionne pas encore. voir CMAKE_SYSTEM_NAME
 agrum:
+ifeq ($(OS),Linux)
+	(cd ../../ && $(CMAKE) -E make_directory build/linux/Release)
+	(cd ../../build/linux/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+else
 	(cd ../../ && $(CMAKE) -E make_directory build/windows/Release)
-	(cd ../../build/windows/Release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+endif
 	

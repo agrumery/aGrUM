@@ -29,7 +29,8 @@ file(GLOB_RECURSE FORMS *.ui)
 # TODO : Ajouté les fichiers objects *.o de aGrUM/build/ plutôt que les sources
 # et utiliser set_source_files_properties EXTERNAL_OBJECT pour l'indiquer.
 #file(GLOB_RECURSE AGRUM_SOURCES ../../../src/agrum/*.cpp ../../../src/agrum/*.inl ../../../src/agrum/*.tcc)
-file(GLOB_RECURSE AGRUM_SOURCES ../../../build/*.o ../../../build/*.obj)
+string(TOLOWER ${CMAKE_SYSTEM_NAME} OS)
+file(GLOB_RECURSE AGRUM_SOURCES ../../../build/linux/release/*.o ../../../build/windows/release/*.obj)
 set_source_files_properties( ${AGRUM_SOURCES} PROPERTIES EXTERNAL_OBJECT true )
 file(GLOB_RECURSE AGRUM_INCLUDES ../../../src/agrum/*.h)
 

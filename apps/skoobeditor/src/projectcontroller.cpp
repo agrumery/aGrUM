@@ -10,6 +10,7 @@
 #include "qsciscintillaextended.h"
 
 #include "newprojectdialog.h"
+#include "projectproperties.h"
 
 #include <QFile>
 #include <QDir>
@@ -27,6 +28,7 @@ struct ProjectController::PrivateData {
 	QMenu * recentsProjects;
 	QList<QString> recentsProjectsList;
 	QSignalMapper * recentsProjectsMapper;
+	ProjectProperties * projectProperties;
 };
 
 
@@ -39,10 +41,13 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 {
 	mw->ui->projectExplorator->setVisible(false);
 
+	d->projectProperties = 0;
+	mw->ui->actionProjectProperties->setEnabled(false);
+
 	d->recentsProjects = new QMenu(mw);
 	d->recentsProjectsMapper = new QSignalMapper(mw);
 
-	// Construct "Recent files" menu
+	// Construct "Recent project" menu
 	mw->ui->actionRecentProject->setMenu( d->recentsProjects );
 	connect(d->recentsProjectsMapper,SIGNAL(mapped(QString)),this,SLOT(openProject(QString)));
 
@@ -64,9 +69,12 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 ProjectController::~ProjectController()
 {
 	QSettings settings;
-	if ( currentProj )
+	settings.beginGroup("project");
+
+	if ( currentProj ) {
 		settings.setValue("last project",currentProj->dir());
-	else
+		currentProj->close();
+	} else
 		settings.setValue("last project","");
 
 	// Save the last closed projects in settings
@@ -84,6 +92,7 @@ ProjectController::~ProjectController()
 void ProjectController::triggerInit()
 {
 	QSettings settings;
+	settings.beginGroup("project");
 
 	//
 	d->numberMaxOfRecentsProjects = settings.value("numberMaxOfRecentsProjects",5).toInt();
@@ -142,11 +151,14 @@ void ProjectController::newProject()
 
 	if ( currentProj ) {
 		currentProj->close();
-		delete currentProj;
+		currentProj->deleteLater();
 		currentProj = 0;
 	}
 
 	currentProj = new Project(dial.projectDir(),this);
+	d->projectProperties = new ProjectProperties(currentProj, mw);
+	mw->ui->actionProjectProperties->setEnabled(true);
+	connect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
 
 	// We change current directory to the project directory
 	QDir::setCurrent(dial.projectDir());
@@ -185,7 +197,11 @@ void ProjectController::createNewClassFile()
 	if ( mw->fc->saveAsFile(sci, currentProj->dir() + tr("/classes/empty_file.skool") ) ) {
 
 		// and prefill it.
-		sci->setText("\n//\nclass "+ QFileInfo(sci->filename()).baseName() + " {\n}\n");
+		QFileInfo info(sci->filename());
+		QString className = info.baseName();
+		QString packageName = QDir(currentProj->dir()).relativeFilePath(info.path()).replace("/",".");
+
+		sci->setText("package "+ packageName +";\n\n//\nclass "+ className + " {\n}\n");
 		sci->setCursorPosition(2,6);
 
 		mw->fc->saveFile(sci);
@@ -235,7 +251,11 @@ void ProjectController::createNewSystemFile()
 
 	if ( mw->fc->saveAsFile(sci, currentProj->dir() + tr("/systems/empty_file.skool") ) ) {
 		// and prefill it.
-		sci->setText("\n//\nsystem "+ QFileInfo(sci->filename()).baseName() + " {\n}\n");
+		QFileInfo info(sci->filename());
+		QString systemName = info.baseName();
+		QString packageName = QDir(currentProj->dir()).relativeFilePath(info.path()).replace("/",".");
+
+		sci->setText("package "+ packageName +";\n\n//\nsystem "+ systemName + " {\n}\n");
 		sci->setCursorPosition(2,7);
 
 		mw->fc->saveFile(sci);
@@ -261,14 +281,19 @@ void ProjectController::openProject(QString projectpath)
 
 	QDir qDir(projectpath);
 	if ( ! qDir.exists(qDir.dirName()+".skoop")) {
-		QMessageBox::warning(mw,tr("Attention"),tr("Ce répertoire ne contient pas de fichier projet."));
-		return;
+		int rep = QMessageBox::warning(mw,tr("Attention"),tr("Ce répertoire ne contient pas de fichier projet.\nLe créer ?"),
+							 QMessageBox::Cancel, QMessageBox::Ok);
+		if ( rep == QMessageBox::Cancel )
+			return;
 	}
 
 	if ( currentProj )
 		closeProject();
 
 	currentProj = new Project(qDir.absolutePath(),this);
+	d->projectProperties = new ProjectProperties(currentProj, mw);
+	mw->ui->actionProjectProperties->setEnabled(true);
+	connect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
 
 	// We change current directory to the project directory
 	QDir::setCurrent(currentProj->dir());
@@ -299,9 +324,17 @@ void ProjectController::closeProject()
 {
 	if ( currentProj ) {
 		addToRecentsProjects(currentProj->dir());
+
+		// Tests because can be delete by MainWindow
+		disconnect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
+		d->projectProperties->deleteLater();
+		d->projectProperties = 0;
+
 		currentProj->close();
-		delete currentProj;
+		currentProj->deleteLater();
 		currentProj = 0;
+
+		mw->ui->actionProjectProperties->setEnabled(false);
 		QDir::setCurrent(QDir::homePath());
 	}
 	mw->ui->projectExplorator->setModel(currentProj);

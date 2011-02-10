@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <QList>
+#include <QMessageBox>
 #include <QDebug>
 
 
@@ -15,6 +16,8 @@ struct Project::PrivateData {
 	QModelIndex rootIndex;
 
 	void createProjectTree();
+	void readSkoopFile();
+	void writeSkoopFile();
 };
 
 Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(parent)
@@ -24,10 +27,10 @@ Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(p
 	d->paths << projDir;
 
 	// We create project files
-	if ( ! d->dir.exists(d->dir.dirName()+".skoop") )
+	if ( ! d->dir.exists(d->dir.dirName()+".skoop") ) {
 		d->createProjectTree();
-	else
-		;// TODO : process .skoop file
+	} else
+		d->readSkoopFile();
 
 	setRootPath(d->dir.absolutePath());
 	d->rootIndex = index(d->dir.absolutePath());
@@ -66,6 +69,20 @@ void Project::addPath( const QString & path )
 	d->paths << path;
 }
 
+void Project::addPaths( const QList<QString> & paths )
+{
+	d->paths << paths;
+}
+
+void Project::removePath( const QString & path )
+{
+	d->paths.removeOne( path );
+}
+
+void Project::clearPaths()
+{
+	d->paths.clear();
+}
 
 QList<QString> Project::paths() const
 {
@@ -75,16 +92,7 @@ QList<QString> Project::paths() const
 
 void Project::PrivateData::createProjectTree()
 {
-	QString filename = dir.absolutePath() + QDir::separator() + dir.dirName() + ".skoop";
-
-	QFile projectFile(filename);
-
-	projectFile.open(QIODevice::WriteOnly);
-
-	projectFile.write(tr("Hello !\n").toUtf8());
-
-	projectFile.close();
-
+	writeSkoopFile();
 	dir.mkdir(tr("classes"));
 	dir.mkdir(tr("requests"));
 	dir.mkdir(tr("systems"));
@@ -92,8 +100,39 @@ void Project::PrivateData::createProjectTree()
 
 void Project::close()
 {
-
+	d->writeSkoopFile();
 }
+
+
+void Project::PrivateData::readSkoopFile()
+{
+	QString filename = dir.absolutePath() + QDir::separator() + dir.dirName()+".skoop";
+	QFile file(filename);
+	if ( ! file.open( QFile::ReadOnly ) ) {
+		QMessageBox::warning(0, tr("Erreur non fatal"), tr("Échec lors de l'ouverture du fichier projet %1").arg(filename));
+		return;
+	}
+	QDataStream in(&file);
+	QMultiMap<QString, QString> map;
+	in >> map;
+	paths = map.values("paths");
+}
+
+void Project::PrivateData::writeSkoopFile()
+{
+	QString filename = dir.dirName()+".skoop";
+	QFile file(filename);
+	if ( ! file.open( QFile::WriteOnly ) ) {
+		QMessageBox::warning(0, tr("Erreur non fatal"), tr("Échec lors de l'ouverture du fichier projet %1").arg(filename));
+		return;
+	}
+	QDataStream out(&file);
+	QMultiMap<QString, QString> map;
+	foreach( QString s, paths )
+		map.insertMulti("paths", s);
+	out << map;
+}
+
 
 QModelIndex Project::root() const
 {
