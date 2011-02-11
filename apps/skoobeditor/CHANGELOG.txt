@@ -1,4 +1,9 @@
 
+11/02/2011
+  * Fix : Pour la recherche rapide, incohérence entre le menu option
+    et les options de la recherche.
+  * Add : icone de programme.
+
 10/02/2011
 	* Add : Faire les propriétés du projet (class_path pour le moment).
 	* Improve : Pour la sauvegarde des raccourcis dans les settings, les mettre dans un dossier à part.

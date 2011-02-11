@@ -34,6 +34,7 @@ public:
 
 protected:
 	void closeEvent( QCloseEvent * event );
+	void showAboutDialog();
 
 private:
 	Ui::MainWindow * ui;

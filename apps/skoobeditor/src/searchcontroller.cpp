@@ -117,9 +117,9 @@ void SearchController::quickSearch()
 		return;
 
 	d->cs.rplc = false;
-	d->cs.regx = false;
-	d->cs.cs = false;
-	d->cs.wo = false;
+	d->cs.cs = d->caseSensitiveOptionAction->isChecked();
+	d->cs.wo = d->wholeWordOptionAction->isChecked();
+	d->cs.regx = d->useRegexOptionAction->isChecked();
 	d->cs.wrap = true;
 	d->cs.isQuickSearch = true;
 
@@ -130,6 +130,9 @@ void SearchController::quickSearch()
 		d->cs.search = sci->selectedText();
 	}
 
+	d->caseSensitiveOptionAction->setDisabled(false);
+	d->wholeWordOptionAction->setDisabled(false);
+	d->useRegexOptionAction->setDisabled(false);
 	d->qse->setReadOnly(false);
 	d->qse->setFocus();
 	d->qse->selectAll();
@@ -321,21 +324,10 @@ void SearchController::replace()
 	if (sci == 0)
 		return;
 
+	quickSearch();
+
 	d->cs.rplc = true;
-	d->cs.regx = false;
-	d->cs.cs = false;
-	d->cs.wo = false;
-	d->cs.wrap = true;
-	d->cs.isQuickSearch = true;
-
-	if ( ! d->qsw->isVisible() && sci->hasSelectedText()) {
-		d->qse->setText(sci->selectedText());
-		d->cs.search = sci->selectedText();
-	}
-
-	d->qsw->show();
 	d->qrw->show();
-
 	d->qre->setReadOnly(false);
 	d->qre->setFocus();
 }

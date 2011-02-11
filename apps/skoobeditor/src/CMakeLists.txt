@@ -23,16 +23,16 @@ endif(QSCINTILLA2)
 ## On trouve tous les fichiers sources
 file(GLOB_RECURSE SKOOB_SOURCES *.cpp)
 file(GLOB_RECURSE SKOOB_INCLUDES *.h)
-file(GLOB_RECURSE RESOURCES ../rsrc/*.qrc)
-file(GLOB_RECURSE FORMS *.ui)
+file(GLOB RESOURCES ../rsrc/*.qrc)
+file(GLOB FORMS *.ui)
+file(GLOB RC_FILE ../rsrc/*.rc)
 
 # TODO : Ajouté les fichiers objects *.o de aGrUM/build/ plutôt que les sources
 # et utiliser set_source_files_properties EXTERNAL_OBJECT pour l'indiquer.
 #file(GLOB_RECURSE AGRUM_SOURCES ../../../src/agrum/*.cpp ../../../src/agrum/*.inl ../../../src/agrum/*.tcc)
-string(TOLOWER ${CMAKE_SYSTEM_NAME} OS)
 file(GLOB_RECURSE AGRUM_SOURCES ../../../build/linux/release/*.o ../../../build/windows/release/*.obj)
-set_source_files_properties( ${AGRUM_SOURCES} PROPERTIES EXTERNAL_OBJECT true )
 file(GLOB_RECURSE AGRUM_INCLUDES ../../../src/agrum/*.h)
+set_source_files_properties( ${AGRUM_SOURCES} PROPERTIES EXTERNAL_OBJECT true )
 
 # ~~~~~~~~~~~~ INCLUDES ~~~~~~~~~~~~ #
 
@@ -47,8 +47,16 @@ qt4_wrap_cpp( MOCS ${SKOOB_INCLUDES} )
 qt4_wrap_ui( UIS ${FORMS} )
 qt4_add_resources( QRC ${RESOURCES} )
 
+# Executable icon
+if(MINGW)
+  set(CMAKE_RC_COMPILER_INIT windres)
+  enable_language(RC)
+  #SET(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> <DEFINES> -o <OBJECT> <SOURCE>")
+  set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+endif(MINGW)
+
 # ~~~~~~~~~~~~ PROCESSING ~~~~~~~~~~~~ #
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYPE} )
-add_executable(skoobeditor WIN32 ${SKOOB_SOURCES} ${AGRUM_SOURCES} ${INCLUDES} ${MOCS} ${UIS} ${QRC} ${AGRUM_INCLUDES} )
-set_target_properties( skoobeditor PROPERTIES LINK_FLAGS "-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc" )
+add_executable(skoobeditor WIN32 ${SKOOB_SOURCES} ${AGRUM_SOURCES} ${INCLUDES} ${MOCS} ${UIS} ${QRC} ${AGRUM_INCLUDES} ${RC_FILE})
+set_target_properties( skoobeditor PROPERTIES LINK_FLAGS "--enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc" )
 target_link_libraries( skoobeditor ${QT_LIBRARIES} ${QSCINTILLA2} )

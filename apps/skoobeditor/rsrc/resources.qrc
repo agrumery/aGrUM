@@ -39,6 +39,7 @@
         <file>icons/new_class.png</file>
         <file>icons/new_request.png</file>
         <file>icons/new_system.png</file>
+        <file alias="logo">icons/logo3.png</file>
     </qresource>
     <qresource prefix="/">
         <file>api/skool.api</file>

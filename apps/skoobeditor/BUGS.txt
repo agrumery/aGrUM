@@ -16,7 +16,7 @@ AMELIORATIONS :
   * Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
     ne pas attendre la fermeture (en cas de crash).
 	* lien entre le nom de la classe ou du system ou des requête et le nom du fichier,
-		à la sauvegarde, ou à la création dans le projet.
+		à la sauvegarde.
 	* A mettre dans les préférences peut être : Quand on commente/décommente : 
 		ne pas juste switcher, si il y a des commentaire dans la sélection, ça les décommente ! -_-"
     Ou alors à la qt creator : si toutes les lignes sont commentées, on décommente.
@@ -26,14 +26,12 @@ TODOS :
   
   * F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
     crée un fichier requête.
-  * Put skoobeditor in aGrUM/apps and redo windows compilation (make agrum.dll and link *.h)
 	* Drag and drop de fichiers dans l'explorateur => Les déplace en vrai 
 		et change le package dans le fichier.
 	* Pour l'explorateur de projet, icone pour les différents type de fichier.
 	* Dans les préférences, choix des couleurs des différents éléments.
 	* Quand on change d'onglet, sauvegarder les symboles dans le fichier projet 
 		pour l'autocomplétion dans les autres fichiers du même projet.
-	* icone de programme
 	* Clic droit sur le projet => menu avec
 	   - créer un package;
 	   - créer une classe/système/requête;

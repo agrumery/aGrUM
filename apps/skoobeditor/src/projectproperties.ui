@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Propriétés du projet</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../rsrc/resources.qrc">
+    <normaloff>:/icons/logo</normaloff>:/icons/logo</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">

@@ -9,7 +9,7 @@
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
 
-#include <QFileSystemModel>
+#include <QMessageBox>
 #include <QDebug>
 
 struct MainWindow::PrivateData {
@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//
 	connect( ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()) );
+	connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()) );
 }
 
 
@@ -66,3 +67,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 }
 
+
+void MainWindow::showAboutDialog()
+{
+	QString message;
+	message += tr("SkoobEditor beta 1.0b1\n\n");
+	message += tr("Auteurs : Vincent Renaudineau, Pierre-Henri Wuillemin.\n\n");
+	message += tr("Copyright 2010 Lip6 (Paris, France). Tous droits réservés.");
+	message += tr("Ce logiciel est sous licence GPL v3.");
+	QMessageBox::about( this, tr("À Propos de SkoobEditor"), message );
+}
