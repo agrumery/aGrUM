@@ -9,6 +9,7 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
+	* Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
 
 
 AMELIORATIONS :
