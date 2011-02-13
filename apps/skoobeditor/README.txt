@@ -32,8 +32,8 @@ L'exécutable sera dans le dossier bin/Release.
 (*) sous windows, make peut soit être nmake ou mingw32-make en fonction de la version de Qt installée.
 Seul mingw32-make à été testé.
 Pour exécuté le programme, cf INSTALLATEUR WINDOWS ci-dessous ou
-vérifiez que la variable d'environnement PATH contient bien %QTDIR%\qt\lib; avec %QTDIR% le 
-répertoire ou vous avez installé Qt, pour que l'exécutable trouve les dll nécessaires.
+vérifiez que la variable d'environnement PATH contient bien %QTDIR%\bin;%QTDIR%\qt\bin;%QTDIR%\qt\lib; avec QTDIR le 
+répertoire ou vous avez installé Qt (Ex: C:\Qt\2010.05), pour que l'exécutable trouve les dlls et exécutables nécessaires.
 
 	INSTALLATEUR WINDOWS :
 	
