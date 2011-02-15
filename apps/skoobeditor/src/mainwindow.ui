@@ -1036,7 +1036,7 @@
   </action>
   <action name="actionAide">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>&amp;Aide</string>
@@ -1047,7 +1047,7 @@
   </action>
   <action name="actionAbout">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>À &amp;propos</string>

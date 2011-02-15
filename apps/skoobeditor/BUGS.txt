@@ -9,43 +9,49 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-	* Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
 
 
 AMELIORATIONS :
 
   * Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
     ne pas attendre la fermeture (en cas de crash).
-	* lien entre le nom de la classe ou du system ou des requête et le nom du fichier,
+	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
 		à la sauvegarde.
-	* A mettre dans les préférences peut être : Quand on commente/décommente : 
-		ne pas juste switcher, si il y a des commentaire dans la sélection, ça les décommente ! -_-"
-    Ou alors à la qt creator : si toutes les lignes sont commentées, on décommente.
+  * Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.
+	* Mettre dans les préférences la politique commenter/décommenter : 
+		- soit on fait juste l'inversion, ligne par ligne;
+    - soit si toutes les lignes sont commentées, on décommente, sinon on commente.
   * Ne supprimer le fichier de config qu'avec le purge pour apt-get.
 
 TODOS :
   
   * F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
     crée un fichier requête.
-	* Drag and drop de fichiers dans l'explorateur => Les déplace en vrai 
-		et change le package dans le fichier.
+    
+  * Clic droit sur le projet => menu avec
+   - créer un package;
+   - créer une classe/système/requête;
+   - lancer la requête si c'est un fichier requête.
+	* Drag and drop de fichiers dans l'explorateur => Les déplace en vrai, change
+    le package dans le fichier, et update les import dans les autres fichiers.
 	* Pour l'explorateur de projet, icone pour les différents type de fichier.
+  
+	* Finir les préférences de l'éditeur.
 	* Dans les préférences, choix des couleurs des différents éléments.
+  
+	* Améliorer l'autocomplétion avec en plus les packages, classes du package etc...
+	* Rendre l'autocomplétion contextuel quand on fait "MaClass.unAttribut", 
+    l'autocomplétion ne va chercher que dans les attributs de cette class.
+    Idem pour "system.class".
 	* Quand on change d'onglet, sauvegarder les symboles dans le fichier projet 
 		pour l'autocomplétion dans les autres fichiers du même projet.
-	* Clic droit sur le projet => menu avec
-	   - créer un package;
-	   - créer une classe/système/requête;
-	   - lancer la requête si c'est un fichier requête.
-	* Finir les préférences de l'éditeur.
-	* Intégrer la table d'édition de CPT.
 	* Auto import des classes/systèmes nécessaires.
-	* Améliorer l'autocomplétion avec en plus les packages, classes du package etc...
+	
+	* Intégrer la table d'édition de CPT.
+  
+  * Ajouter l'aide directement dans SkoobEditor (F1).
 	* Documentation du code.
-	* Manuel utilisateur.
-	* Quand on change le package d'une classe ou d'un système,
-		déplace le fichier dans l'arborescence.
-	* Drag & Drop de fichier dans l'explorateur de projet => change le package.
-	* À propos
+  
   * Dans SkoolReader, si un type est pas trouvé, chercher dans le même répertoire (voir avec phw).
+  
   * Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).

@@ -118,7 +118,12 @@ void Project::PrivateData::readSkoopFile()
 	QDataStream in(&file);
 	QMultiMap<QString, QString> map;
 	in >> map;
-	paths = map.values("paths");
+
+	// If file is corrupted
+	if ( map.size() == 0 ) {
+		QMessageBox::warning(0, tr("Erreur non fatal"), tr("Échec lors de la récupération des information : %1 est corrompu.").arg(filename));
+	} else
+		paths = map.values("paths");
 }
 
 void Project::PrivateData::writeSkoopFile()

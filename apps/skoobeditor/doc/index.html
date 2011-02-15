@@ -1,0 +1,145 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" /> 
+  <title>Manuel Utilisateur</title>
+  <style type="text/css"> 
+    .code {
+      font-family: "Courier New"
+    }
+  </style> 
+</head>
+
+<body>
+
+<h1>Manuel Utilisateur</h1>
+
+<h2>Introduction</h2>
+
+<p>SkoobEditor est un logiciel open-source sous licence GPL version 3.</p>
+
+<p>Il a été développé par Vincent Renaudineau et Pierre-Henri Wuillemen dans le cadre du projet SKOOB.</p>
+
+<p>C'est un EDI, un environnement de développement intégré, c'est à dire qu'il a pour but de faciliter à la fois la création et l'édition de fichier SKOOL et SKOOR, et la gestion des projets.</p>
+
+<h2>Installation à partir de l'installateur</h2>
+
+<h3>Windows</h3>
+
+<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers nécessaires à leur place (par défaut C:\Programs File\SkoobEditor). Il créera de plus un raccourci dans le menu démarrer. </p>
+
+<h3>Linux (Debian/Ubuntu)</h3>
+
+<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers nécessaires à leur place. L'exécutable ce trouve dans /usr/bin et se nomme skoobeditor. Il n'y a pour le moment pas de raccourcis, ceux-ci étant différents en fonction de l'OS et du gestionnaire de bureau.</p>
+
+<h2>Installation à partir des sources</h2>
+
+<h3>Windows</h3>
+
+<p>Téléchargez et installez Qt (version >= 4.7). Pour cela téléchargez l'installateur (avec le compilateur mingw32 de préférence) et lancez le. Vérifiez que la variable système QTDIR est bien définie avec l'emplacement où ce trouve Qt, et vérifiez aussi que la variable PATH contient bien :</p>
+<p class="code">%QTDIR%\bin;%QTDIR%\qt\bin;%QTDIR%\qt\lib;</p>
+<p>Installez ensuite QScintilla (version >= 2.4.6). Pour cela téléchargez les sources à partir du site et décompressez-les. Ouvrez un terminal puis rendez-vous dans le dossier Qt4. Ensuite taper les commandes :</p>
+<p class="code">qmake<br />
+mingw32-make release<br /> 
+mingw32-make install</p>
+<p>S'il y a des erreurs, c'est que les variables d'environnement ne sont pas bien définies.</p>
+<p>Téléchargez les sources d'agrum à l'aide d'un client svn :</p>
+<p class="code">svn checkout https://alm.lip6.fr/svn/agrum/trunk</p>
+<p>Rendez vous dans trunk/apps/skoobeditor puis lancez la commande :</p>
+<p class="code">mingw32-make installer</p>
+<p>L'installateur se trouvera dans le dossier bin. </p>
+
+<h3>Linux</h3>
+
+<p>Installez Qt (version >= 4.7) à partir des dépôts de votre distribution. Installez ensuite QScintilla (version >= 2.4.6), soit à partir des dépôts, soit à partir des sources si la version dans les dépôts est trop vieille. Pour cela téléchargez les sources à partir du site et décompressez-les. Ouvrez un terminal puis rendez-vous dans le dossier Qt4. Ensuite taper les commandes :</p>
+<p class="code">qmake<br />
+make release<br />
+sudo make install</p>
+<p>Téléchargez les sources d'agrum à l'aide d'un client svn :</p>
+<p class="code">svn checkout https://alm.lip6.fr/svn/agrum/trunk</p>
+<p>Rendez vous dans trunk/apps/skoobeditor puis lancez la commande </p>
+<p class="code">make</p>
+<p>L'exécutable se trouvera dans le dossier bin/Release. </p>
+
+<h2>Premier lancement</h2>
+<p>Le logiciel se découpe en 7 zones :
+  <ol>
+    <li>Le menu : vous y trouverez toutes les fonctionnalités disponibles, ainsi que les raccourcis clavier.
+      <ol>
+        <li>Fichier : on y trouve toutes les opérations relatives aux fichiers (créer un nouveau fichier, en ouvrir un existant, sauvegarder, fermer, etc) et quitter le programme.</li>
+        <li>Éditer : on y trouve les opérations d'édition ou de modification d'un fichier ouvert (couper, coller, indenter, commenter, etc) et le menu des préférences du programme.</li>
+        <li>Rechercher : on y trouve les fonctionnalités de recherche (simple ou avancée), de remplacement et de déplacement dans le fichier, </li>
+        <li>Affichage : on y trouve les fonctionnalités qui permettent d'afficher ou cacher les éléments de l'interface, et le zoom.</li>
+        <li>Projet : on y trouve les fonctionnalités ayant trait à la gestion de projet (créer un nouveau projet, en ouvrir un déjà existant, créer des fichiers) de même que les propriétés du projet.</li>
+        <li>Construire : on y trouve les fonctionnalités de construction, c'est à dire la vérification de la syntaxe et l'exécution des fichiers de requêtes.</li>
+      </ol>
+    </li>
+    <li>La barre d'outils : ce sont des raccourcis vers les fonctionnalités les plus utilisées.</li>
+    <li>L'explorateur de projet : on y voit les packages et fichiers présents dans le projet ouvert.  Pour plus de détails, consulter 4</li>
+    <li>La barre d'onglet : ce sont tous les fichiers ouverts. Vous pouvez les réordonner par glisser-déposer et les fermer en cliquant sur la croix associée.</li>
+    <li>La zone d'édition du fichier courant. Pour plus de détails, consulter 3</li>
+    <li>Le dock de recherche: celui-ci n'est visible que lorsqu'une recherche est en cours. Il faut appuyé sur la touche « Échap » pour le faire disparaître. Il est lui même décomposé en 3 parties :
+      <ol>
+        <li>une zone pour indiquer le mot ou l'expression à rechercher, avec les boutons pour chercher d'autres résultats ;</li>
+        <li>une zone pour indiquer par quoi il faut remplacer les résultats de la recherche ;</li>
+        <li>une liste avec les résultats de la recherche avancée, contenant le fichier, le numéro de la ligne et la ligne ou un résultat a été trouvé. Il suffit de double cliquer sur un résultat pour s'y rendre.</li>
+      </ol>
+    </li>
+    <li>Le dock de construction, où s'affiche les erreurs de syntaxes s'il y en a, de même que les résultats des requêtes. Il suffit de double cliquer sur une erreur pour s'y rendre. Pour le faire disparaître, appuyer sur « Échap ».</li>
+  </ol>
+</p>
+
+<h2>Édition d'un document</h2>
+
+<p>Lors de l'édition d'un fichier, les raccourcis habituels (couper, copier, coller, tout sélectionner, sélection par mot, jusqu'au début ou à la fin de ligne, etc) sont disponibles, de même que la coloration du code.
+<p>Il y aussi quelques éléments supplémentaires, que l'on peut voir sur la capture d'écran ci-dessous :
+  <ol>
+    <li>La marge des numéros de ligne.</li>
+    <li>La marge des marqueurs, pour se déplacer dans le fichier rapidement. Il suffit de cliquer dessus pour mettre ou retirer un marqueur.</li>
+    <li>La marge de folding. Voir 4. et 5.</li>
+    <li>Lorsqu'un bloc est ouvert, un petit « - » apparaît à coté du début, et une ligne descend jusqu'à la fin. En cliquant sur le « - », tout le contenu du bloc en caché.</li>
+    <li>Lorsqu'un bloc est caché, le « - » se transforme en « + » et une ligne horizontale symbolise le bloc caché. Il suffit de cliquer sur le « + » pour que le bloc réapparaisse.</li>
+    <li>Lorsqu'une erreur est détectée, et que l'utilisateur double clique dessus, la ligne correspondante devient rouge. Pour enlever ces indications, faîtes disparaître le dock en appuyant sur « Échap ».</li>
+    <li>L'erreur indiquée par le bandeau rouge.</li>
+    <li>Ligne des 80 caractères. Corresponds à la taille limite des lignes de code pour une bonne lisibilité.</li>
+    <li>Astérisque à coté du nom du fichier indique qu'il y a eu des modifications non sauvegardées.</li>
+    <li>Lorsqu'un projet est ouvert, la correction syntaxique automatique indique les erreurs trouvées en les soulignant en rouge.</li>
+  </ol>
+</p>
+
+<h2>Gestion d'un projet</h2>
+
+<p>En plus de faciliter l'édition de fichier SKOOL ou SKOOR, SkoobEditor facilite la gestion de projet. </p>
+<p>Le projet permet de vérifier directement dans l'application s'il y a des erreurs, de façon automatique ou non, de même que d'effectuer les requêtes demandées et d'en voir les résultats.</p>
+
+<h3>Création de projet</h3>
+
+<p>Pour créer un projet, rendez-vous dans le menu « Projet » et cliquez sur « Nouveau ».</p>
+<p>Trois packages vides sont créés :
+  <ul>
+    <li>classes : contient tous les fichiers avec des définitions de classes ou de types.</li>
+    <li>systems : contient tous les fichiers avec des définitions de systèmes.</li>
+    <li>requests : contient les fichiers de requêtes.</li>
+  </ul>
+</p>
+<p>Ces packages sont la base du projet. Vous pourrez en créer d'autres vous même. Ils permettent une bonne séparation des différents composants.</p>
+<p>Vous pouvez maintenant créer les structures dont vous avez besoin, en cliquant sur les boutons appropriés dans la barre d'outils (« Créer un nouveau fichier classe », « Créer un nouveau fichier système » ou « Créer un nouveau fichier requête »). Ceux-ci seront mis dans le package adéquat.</p>
+
+<h3>Propriétés du projet</h3>
+
+<p>Si votre projet requière des types, classes ou systèmes créés en dehors du projet et donc présents dans un répertoire différent, vous pouvez préciser l'emplacement de ceux-ci dans les propriétés du projet, afin que l'interpréteur les trouve.</p>
+
+<h2>Recherche rapide, recherche avancée et remplacement</h2>
+
+<p>Vous pouvez à tout moment faire une recherche rapide dans le document en cours d'édition. Les résultats sont surlignés directement dans le document.</p>
+<p>Vous pouvez préciser quelques options :
+si la recherche doit prendre en compte la casse des caractères ;
+si la recherche ne doit prendre en compte que les mots entiers (et donc ne pas chercher à l'intérieur des mots) ;
+si la recherche utilise les expressions régulières (cf la documentation de <a href="http://doc.qt.nokia.com/4.7/qregexp.html#details">Qt [en]</a>, ou celle <a href="http://www.shellunix.com/regexp.html">d'Unix [fr]</a>).
+</p>
+<p>De même, une fois que la recherche est définie, vous pouvez remplacer les résultats concordant de la recherche par autre chose, dans la zone de remplacement. Vous pouvez remplacer tout les résultats en une seule fois, ou au cas par cas. Pour cela, si vous voulez remplacer le résultat actuel, cliquez sur le bouton « Suivant » à coté du champ « Remplacer ». Si vous ne voulez pas remplacer le résultat actuel et passer au suivant, cliquez sur le bouton « Suivant » à coté du champ « Rechercher ».</p>
+<p>Si vous devez faire une recherche sur l'ensemble des fichiers du projet, ou des fichiers ouverts, vous devez alors passer par la recherche avancée. Une fenêtre de dialogue s'ouvre pour vous demander tous les renseignements nécessaires. S'il s'agit d'un remplacement, vous pouvez faire « tout remplacer ». Pensez à sauvegarder les fichiers ouverts ! Sinon faîtes « rechercher », les résultats s'afficheront dans le dock de recherche (cf 3). Double cliquez dessus pour vous y rendre.</p>
+
+</body>
+
+</html>

@@ -1,4 +1,12 @@
 
+15/02/2010
+	* Add : Manuel utilisateur dans le dossier doc.
+  * Fix : Makefile
+  
+14/02/2010
+	* Add : À propos
+	* Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
+
 11/02/2011
   * Fix : Pour la recherche rapide, incohérence entre le menu option
     et les options de la recherche.

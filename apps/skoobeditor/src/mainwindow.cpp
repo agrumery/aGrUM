@@ -71,7 +71,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::showAboutDialog()
 {
 	QString message;
-	message += tr("SkoobEditor beta 1.0b1\n\n");
+	message += tr("SkoobEditor version 1.0b1\n\n");
 	message += tr("Auteurs : Vincent Renaudineau, Pierre-Henri Wuillemin.\n\n");
 	message += tr("Copyright 2010 Lip6 (Paris, France). Tous droits réservés.");
 	message += tr("Ce logiciel est sous licence GPL v3.");
