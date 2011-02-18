@@ -458,16 +458,12 @@
     </property>
     <addaction name="actionBuild"/>
     <addaction name="actionExecute"/>
-    <addaction name="actionG_n_rer_la_doc"/>
    </widget>
    <widget class="QMenu" name="menu_Outils">
     <property name="title">
      <string>&amp;Outils</string>
     </property>
     <addaction name="actionAutoComplete"/>
-    <addaction name="actionIndenter_le_fichier"/>
-    <addaction name="action_diteur_de_CPT"/>
-    <addaction name="actionRefactoring"/>
    </widget>
    <widget class="QMenu" name="menu_Aide">
     <property name="enabled">
@@ -476,7 +472,7 @@
     <property name="title">
      <string>&amp;Aide</string>
     </property>
-    <addaction name="actionAide"/>
+    <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -961,14 +957,6 @@
     <string>Nouveau &amp;système</string>
    </property>
   </action>
-  <action name="actionG_n_rer_la_doc">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Générer la &amp;doc</string>
-   </property>
-  </action>
   <action name="actionProjectProperties">
    <property name="enabled">
     <bool>true</bool>
@@ -1007,36 +995,9 @@
     <string>F6</string>
    </property>
   </action>
-  <action name="actionIndenter_le_fichier">
+  <action name="actionHelp">
    <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Indenter le fichier</string>
-   </property>
-   <property name="shortcut">
-    <string>F7</string>
-   </property>
-  </action>
-  <action name="action_diteur_de_CPT">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Éditeur de &amp;CPT</string>
-   </property>
-  </action>
-  <action name="actionRefactoring">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Refactoring</string>
-   </property>
-  </action>
-  <action name="actionAide">
-   <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>&amp;Aide</string>

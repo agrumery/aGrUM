@@ -7,7 +7,7 @@ set(SKOOBEDITOR_VERSION_PATCH "0")
 # ~~~~~~~~~~~~ LIBRARIES ~~~~~~~~~~~~ #
 
 ## On trouve la librairie Qt
-find_package (Qt4 REQUIRED)
+find_package (Qt4 COMPONENTS QtCore QtGui QtWebkit REQUIRED)
 include(${QT_USE_FILE})
 
 ## On trouve la librairie QScintilla qui doit être installée dans le répertoire de Qt

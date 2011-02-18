@@ -9,10 +9,12 @@
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
 
+#include <QtWebKit/QtWebKit>
 #include <QMessageBox>
 #include <QDebug>
 
 struct MainWindow::PrivateData {
+	QDialog * dial;
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -43,8 +45,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	vc->setSearchDockVisibility(false);
 	vc->setBuildDockVisibility(false);
 
+	d->dial = new QDialog(this);
+	d->dial->setWindowIcon(QIcon("qrc:/logo"));
+	d->dial->setWindowTitle(tr("SkoobEditor -- Aide"));
+	QHBoxLayout * layout = new QHBoxLayout(d->dial);
+	QWebView * view = new QWebView(d->dial);
+	layout->addWidget(view);
+	d->dial->setLayout(layout);
+	Q_ASSERT( QFile::exists("doc/index.html") );
+	view->load( QUrl("file://" + QFileInfo("doc/index.html").absoluteFilePath()) ); //
+	d->dial->resize(1024 + 5, 768 + 5);
+	view->show();
+
 	//
 	connect( ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()) );
+	connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()) );
 	connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()) );
 }
 
@@ -67,6 +82,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 }
 
+void MainWindow::showHelp()
+{
+	d->dial->open();
+}
 
 void MainWindow::showAboutDialog()
 {

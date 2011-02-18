@@ -36,6 +36,7 @@ protected:
 	void closeEvent( QCloseEvent * event );
 
 protected slots:
+	void showHelp();
 	void showAboutDialog();
 
 private:
