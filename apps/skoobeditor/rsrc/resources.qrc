@@ -44,5 +44,8 @@
     <qresource prefix="/">
         <file>api/skool.api</file>
         <file>api/skoor.api</file>
+        <file>doc/capture_skoobeditor_7zones.png</file>
+        <file>doc/index.html</file>
+        <file>doc/capture_skoobeditor_editeur_annote.png</file>
     </qresource>
 </RCC>

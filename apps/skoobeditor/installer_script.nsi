@@ -45,7 +45,6 @@ Section "SkoobEditor (required)"
   File $%QTDIR%\qt\bin\mingwm10.dll
   File $%QTDIR%\qt\bin\libgcc_s_dw2-1.dll
   
-  ;C:\Qt\2010.05\mingw\bin;C:\Qt\2010.05\qt\bin;
   WriteUninstaller "uninstall.exe"
   
 SectionEnd ; end the section

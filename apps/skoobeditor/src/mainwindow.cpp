@@ -48,12 +48,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	d->dial = new QDialog(this);
 	d->dial->setWindowIcon(QIcon("qrc:/logo"));
 	d->dial->setWindowTitle(tr("SkoobEditor -- Aide"));
-	QHBoxLayout * layout = new QHBoxLayout(d->dial);
+	QVBoxLayout * layout = new QVBoxLayout(d->dial);
+	layout->setSpacing(0);
+	layout->setContentsMargins(0,0,0,0);
 	QWebView * view = new QWebView(d->dial);
 	layout->addWidget(view);
 	d->dial->setLayout(layout);
-	Q_ASSERT( QFile::exists("doc/index.html") );
-	view->load( QUrl("file://" + QFileInfo("doc/index.html").absoluteFilePath()) ); //
+	view->load( QUrl("qrc:/doc/index.html") ); //
 	d->dial->resize(1024 + 5, 768 + 5);
 	view->show();
 
