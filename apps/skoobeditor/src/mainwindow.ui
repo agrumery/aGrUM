@@ -64,6 +64,9 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QTreeView" name="projectExplorator">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="rootIsDecorated">
         <bool>true</bool>
        </property>

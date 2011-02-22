@@ -1,4 +1,11 @@
-
+22/02/2011
+	* Add : Drag and drop de fichiers dans l'explorateur 
+		=> Les déplace en vrai, change le package dans le fichier.
+	* Clic droit sur un fichier du projet => menu avec
+		- Renommer;
+		- Supprimer;
+		- Exécuter (un fichier skoor).
+	
 21/02/2011
   * Improve : Pour l'action Nouveau dans fichier, mettre un sous menu avec fichier skool/skoor et projet.
   * Fix : Pour les liens dans la doc, utiliser le navigateur de l'utilisateur.

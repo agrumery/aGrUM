@@ -160,7 +160,6 @@ void QsciScintillaExtended::setFilename(const QString & filename)
 	QFileInfo info(filename);
 	QString old = d->filename;
 	d->filename = filename;
-	append(" "); // We can't do setModified(true). See doc.
 
 	if (info.suffix() == "skool" || info.suffix() == "skl")
 		setLexer(Skool);

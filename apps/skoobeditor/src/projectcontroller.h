@@ -11,7 +11,7 @@ class MainWindow;
 
 class ProjectController : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit ProjectController(MainWindow * mw, QObject *parent = 0);
 	~ProjectController();
@@ -35,6 +35,10 @@ protected:
 protected slots:
 	bool on_projectExplorator_clicked( QModelIndex index );
 	bool on_projectExplorator_doubleClicked( QModelIndex index );
+	void onFileRenamed( const QString & path, const QString & oldName, const QString & newName );
+	void onFileMoved( const QString & oldFilePath, const QString & newPath );
+	void onCustomContextMenuRequested( const QPoint & pos );
+	void onItemRenameFinished();
 
 	void triggerInit();
 

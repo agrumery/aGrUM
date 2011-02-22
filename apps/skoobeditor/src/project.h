@@ -15,6 +15,10 @@ public:
 	QString dir();
 
 	///
+	bool isEditable() const;
+	void setEditable(bool editable);
+
+	///
 	bool isInside( const QString & filePath ) const;
 
 	void addPath( const QString & path );
@@ -23,12 +27,21 @@ public:
 	void clearPaths();
 	QList<QString> paths() const;
 
+	/** Close the project. */
+	void close();
+
+
 	QModelIndex root() const;
 	int columnCount(const QModelIndex &parent) const;
 	QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+	virtual bool dropMimeData ( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
 
-	/** Close the project. */
-	void close();
+signals:
+	/// This signal is emited when a file is moved by drag and drop in the view.
+	/// For constance with fileRenamed, \a oldFilePath is the complete, absolute,
+	/// filename with its path, \a newPath too.
+	void fileMoved( const QString & oldFilePath, const QString & newPath );
 
 private:
 	struct PrivateData;

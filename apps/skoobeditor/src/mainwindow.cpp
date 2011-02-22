@@ -107,7 +107,7 @@ void MainWindow::showAboutDialog()
   */
 void MainWindow::onHelpLinkClicked(const QUrl & url)
 {
-	if ( d->webView->url().scheme() == "file" || d->webView->url().isEmpty() )
+	if ( url.scheme() == "qrc" || d->webView->url().scheme() == "file" || d->webView->url().isEmpty() )
 		return;
 
 	d->webView->back();

@@ -5,6 +5,8 @@
 #include <QDir>
 #include <QList>
 #include <QMessageBox>
+#include <QMimeData>
+#include <QUrl>
 #include <QDebug>
 
 
@@ -12,6 +14,7 @@
 struct Project::PrivateData {
 	QDir dir;
 	QList<QString> paths;
+	bool editable;
 
 	QModelIndex rootIndex;
 
@@ -20,11 +23,14 @@ struct Project::PrivateData {
 	void writeSkoopFile();
 };
 
+
+/// Constructor
 Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(parent)
 {
 	d = new PrivateData;
 	d->dir = QDir(projDir);
 	d->paths << projDir;
+	d->editable = false;
 
 	// We create project files
 	if ( ! d->dir.exists(d->dir.dirName()+".skoop") ) {
@@ -34,30 +40,54 @@ Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(p
 
 	setNameFilters( QStringList() << "*.skool" << "*.skoor" );
 	setNameFilterDisables(false);
-
+	setReadOnly(false);
 	setRootPath(d->dir.absolutePath());
 	d->rootIndex = index(d->dir.absolutePath());
 }
 
+
+/// Destructor
 Project::~Project()
 {
 	delete d;
 }
 
 
+/**
+  Return the project name.
+  */
 QString Project::name()
 {
 	return d->dir.dirName();
 }
 
 
+/**
+  Return the project root directory.
+  */
 QString Project::dir()
 {
 	return d->dir.absolutePath();
 }
 
 
-///
+/**
+  */
+bool Project::isEditable() const
+{
+	return d->editable;
+}
+
+/**
+ */
+void Project::setEditable(bool editable)
+{
+	d->editable = editable;
+}
+
+/**
+  Return true if \a filepath is in the project, false otherwise.
+  */
 bool Project::isInside( const QString & filePath ) const
 {
 	 QFileInfo info(filePath);
@@ -67,32 +97,51 @@ bool Project::isInside( const QString & filePath ) const
 		return false;
 }
 
+
+/**
+  */
 void Project::addPath( const QString & path )
 {
 	d->paths << path;
 }
 
+
+/**
+  */
 void Project::addPaths( const QList<QString> & paths )
 {
 	d->paths << paths;
 }
 
+
+/**
+  */
 void Project::removePath( const QString & path )
 {
 	d->paths.removeOne( path );
 }
 
+
+/**
+  clear all paths.
+  */
 void Project::clearPaths()
 {
 	d->paths.clear();
 }
 
+
+/**
+  Return paths to search for classes or systems.
+  */
 QList<QString> Project::paths() const
 {
 	return d->paths;
 }
 
 
+/**
+  */
 void Project::PrivateData::createProjectTree()
 {
 	writeSkoopFile();
@@ -101,12 +150,19 @@ void Project::PrivateData::createProjectTree()
 	dir.mkdir(tr("systems"));
 }
 
+
+/**
+  Close project.
+  Save project's properties in project skoop file.
+  */
 void Project::close()
 {
 	d->writeSkoopFile();
 }
 
 
+/**
+  */
 void Project::PrivateData::readSkoopFile()
 {
 	QString filename = dir.absolutePath() + QDir::separator() + dir.dirName()+".skoop";
@@ -126,6 +182,9 @@ void Project::PrivateData::readSkoopFile()
 		paths = map.values("paths");
 }
 
+
+/**
+  */
 void Project::PrivateData::writeSkoopFile()
 {
 	QString filename = dir.dirName()+".skoop";
@@ -142,21 +201,51 @@ void Project::PrivateData::writeSkoopFile()
 }
 
 
+/// \reimp
 QModelIndex Project::root() const
 {
 	return d->rootIndex;
 }
 
 
+/// \reimp
 int Project::columnCount(const QModelIndex &) const
 {
 	return 1;
 }
 
+/// \reimp
 QVariant Project::headerData ( int section, Qt::Orientation orientation, int role ) const
 {
 	if ( section == 0 && orientation == Qt::Horizontal && role == Qt::DisplayRole )
 		return d->dir.dirName();
 	else
 		return QFileSystemModel::headerData(section, orientation, role);
+}
+
+
+/// \reimp
+bool Project::dropMimeData ( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
+{
+	bool result = QFileSystemModel::dropMimeData(data, action, row, column, parent);
+
+	if (result && action == Qt::MoveAction && data->hasUrls())
+		foreach( QUrl url, data->urls() ) {
+			QFileInfo info(url.toLocalFile());
+			emit fileMoved( info.absoluteFilePath(), filePath(parent)+"/"+info.fileName() );
+		}
+
+	return result;
+}
+
+
+/// \reimp Remove Qt::ItemIsEditable of default flags
+Qt::ItemFlags Project::flags( const QModelIndex & index ) const
+{
+	Qt::ItemFlags flags = QFileSystemModel::flags(index);
+	if ( isDir(index) ) // A dir can't be edited or dragged.
+		flags &= ~ Qt::ItemIsEditable & ~ Qt::ItemIsDragEnabled;
+	else if ( ! d->editable )
+		flags &= ~ Qt::ItemIsEditable;
+	return flags;
 }

@@ -72,6 +72,7 @@ protected slots:
 	void removeOfRecentFiles( const QString & filename);
 
 	void onTabWidgetCurrentChanged(int index = -1);
+	void onDocumentRenamed(const QString & oldFilename, const QString & newFilename);
 	void triggerInit();
 
 private:

@@ -371,9 +371,6 @@ bool FileController::saveAsFile(QsciScintillaExtended * sci, QString dir)
 	sci->setFilename(filename);
 	d->openFiles.insert(filename,sci);
 
-	// We update the tab title.
-	mw->ui->tabWidget->setTabText(mw->ui->tabWidget->indexOf(sci),QFileInfo(filename).fileName());
-
 	return saveFile(sci);
 }
 
@@ -657,6 +654,68 @@ void FileController::onTabWidgetCurrentChanged(int index)
 
 
 /**
+	When document are rename :
+	- if filename change, change all old filename reference to the new one (filename often represent class/interface/system name);
+	- if path change, change package.
+	TODO : change these references in all files.
+  */
+void FileController::onDocumentRenamed(const QString & oldFilename, const QString & newFilename)
+{
+	QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended *>( sender() );
+	if ( sci == 0 || oldFilename.isEmpty() )
+		return;
+
+	// We update the tab title.
+	mw->ui->tabWidget->setTabText(mw->ui->tabWidget->indexOf(sci),QFileInfo(newFilename).fileName());
+	onTabWidgetCurrentChanged( mw->ui->tabWidget->indexOf(sci) );
+
+	// We update openFiles
+	d->openFiles.remove(oldFilename);
+	d->openFiles.insert( newFilename, sci );
+
+	// ********************************* //
+	// We change all old ref to new ref. //
+	// ********************************* //
+
+	QFileInfo oldInfo(oldFilename), newInfo(newFilename);
+
+	// Si l'extension est différente message
+	if (oldInfo.suffix() != newInfo.suffix()) {
+		QMessageBox::warning( mw, tr("Attention !"), tr("%1 a changé d'extension !").arg(oldFilename) );
+		return;
+	}
+
+	// On vérifie si le nom de fichier a changé (rename)
+	if ( oldInfo.baseName() != newInfo.baseName() ) {
+		// Si oui on change le nom de la classe ou système dans le fichier
+		sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
+
+		// On change le nom du système ou de la classe dans
+			// tous les systèmes ou classes ou requêtes qui font des
+			// imports vers ce fichiers ou qui font un import vers un fichier qui en fait un etc
+	}
+
+	// On vérifie si le répertoire a changé
+	if ( mw->pc->isOpenProject() && oldInfo.absolutePath() != newInfo.absolutePath() ) {
+		QString oldPackage = mw->pc->currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
+		QString newPackage = mw->pc->currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
+		oldPackage.replace("/",".");
+		newPackage.replace("/",".");
+
+		// Si oui on change le nom du package
+		sci->replaceAll("package\\s+"+oldPackage, "package "+newPackage, true, true, true);
+
+		// On change le nom du package des fichiers qui font référence à celui-ci
+	}
+
+	// Il peut y avoir des fichiers avec les mêmes nom dans des répertoires différents.
+	// Question : Comment skool et skoor gère la différence dans un fichier qui contient
+	// des références vers ces fichiers de même nom ?
+
+}
+
+
+/**
   Add the file the "recentFiles" list.
   */
 void FileController::addToRecentFiles( const QString & filename)
@@ -680,7 +739,6 @@ void FileController::addToRecentFiles( const QString & filename)
 	if ( d->recentsFiles->actions().size() > d->numberMaxOfRecentsFiles )
 		d->recentsFiles->removeAction(d->recentsFiles->actions().last());
 }
-
 
 
 /**
@@ -711,6 +769,7 @@ QsciScintillaExtended * FileController::newDocument(const QString & title, QsciS
 	QsciScintillaExtended * sci =  new QsciScintillaExtended( lexer, mw->ui->tabWidget );
 	sci->setTitle( title );
 	connect( sci, SIGNAL(modificationChanged(int)), this, SLOT(onTabWidgetCurrentChanged(int)) );
+	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentRenamed(QString,QString)) );
 	mw->ui->tabWidget->addTab(sci, title);
 
 	// Restore editable menu

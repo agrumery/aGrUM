@@ -16,11 +16,46 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QInputDialog>
 #include <QSettings>
 #include <QSignalMapper>
 #include <QTimer>
 
 #include <QDebug>
+
+
+/*
+ Réflections sur les interactions dans l'explorateur de projet :
+
+ CLIC DROIT
+ - sur un dossier -> menu avec
+   * renommer (renomme dans tout le projet)
+   * supprimer (confirmation, supprime tous les fichiers et dossiers dedans, indique les références dans le projet, source d'erreurs)
+   * nouveau package
+   * nouveau fichier (suivant le package, crée le bon type)
+ - sur un fichier -> menu avec
+   * renommer (renomme dans tout le projet)
+   * déplacer (change le package dans tout le projet)
+   * supprimer (confirmation, indique les références dans le projet, source d'erreurs)
+   * éxécuter (uniquement pour le fichier SKOOR)
+
+  DRAG AND DROP
+  - d'un dossier -> renomme tout.
+  - d'un fichier -> renomme tout.
+
+  Un fichier peut être renommé :
+	1) par l'explorateur de projet;
+	2) par sauvegarder sous.
+
+  Quand un fichier est renommé :
+	On change la référence dans le fichier même (projet ou pas). -> FileController
+	On change la référence dans les autres fichiers que si projet. -> ProjectController
+
+  Quand un fichier est déplacé :
+	On change le package partout que si projet. -> ProjectController
+
+
+ */
 
 // Private data
 struct ProjectController::PrivateData {
@@ -29,6 +64,7 @@ struct ProjectController::PrivateData {
 	QList<QString> recentsProjectsList;
 	QSignalMapper * recentsProjectsMapper;
 	ProjectProperties * projectProperties;
+	QMenu * fileMenu;
 };
 
 
@@ -40,6 +76,7 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 		d(new PrivateData)
 {
 	mw->ui->projectExplorator->setVisible(false);
+	mw->ui->projectExplorator->setDragDropMode(QAbstractItemView::InternalMove);
 
 	d->projectProperties = 0;
 	mw->ui->actionProjectProperties->setEnabled(false);
@@ -51,8 +88,15 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 	mw->ui->actionRecentProject->setMenu( d->recentsProjects );
 	connect(d->recentsProjectsMapper,SIGNAL(mapped(QString)),this,SLOT(openProject(QString)));
 
+	d->fileMenu = new QMenu(mw->ui->projectExplorator);
+	d->fileMenu->addAction(tr("Re&nommer"))->setData("rename");
+	d->fileMenu->addAction(tr("&Supprimer"))->setData("remove");
+	d->fileMenu->addAction(tr("&Éxécuter"))->setData("execute");
+
 	connect( mw->ui->projectExplorator, SIGNAL(clicked(QModelIndex)), this, SLOT(on_projectExplorator_clicked(QModelIndex)) );
 	connect( mw->ui->projectExplorator, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_projectExplorator_doubleClicked(QModelIndex)));
+	connect( mw->ui->projectExplorator, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onCustomContextMenuRequested(QPoint)) );
+	connect( mw->ui->projectExplorator->itemDelegate(), SIGNAL(closeEditor(QWidget*)), this, SLOT(onItemRenameFinished()) );
 
 	connect( mw->ui->actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()) );
 	connect( mw->ui->actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()) );
@@ -156,6 +200,9 @@ void ProjectController::newProject()
 	}
 
 	currentProj = new Project(dial.projectDir(),this);
+	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onFileRenamed(QString,QString,QString)) );
+	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onFileMoved(QString,QString)) );
+
 	d->projectProperties = new ProjectProperties(currentProj, mw);
 	mw->ui->actionProjectProperties->setEnabled(true);
 	connect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
@@ -291,6 +338,9 @@ void ProjectController::openProject(QString projectpath)
 		closeProject();
 
 	currentProj = new Project(qDir.absolutePath(),this);
+	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onFileRenamed(QString,QString,QString)) );
+	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onFileMoved(QString,QString)) );
+
 	d->projectProperties = new ProjectProperties(currentProj, mw);
 	mw->ui->actionProjectProperties->setEnabled(true);
 	connect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
@@ -421,4 +471,79 @@ bool ProjectController::on_projectExplorator_doubleClicked( QModelIndex index )
 	// Else open the file
 	else
 		return mw->fc->openFile(index.data(QFileSystemModel::FilePathRole).toString());
+}
+
+/**
+  When files are renamed, change the document filename if it is open;
+  */
+void ProjectController::onFileRenamed( const QString & path, const QString & oldName, const QString & newName )
+{
+	QsciScintillaExtended * sci = mw->fc->fileToDocument( path + "/" + oldName );
+
+	// If file was open
+	if ( sci != 0) // We change his internal filename
+		sci->setFilename( path + "/" + newName );
+}
+
+/**
+  When files are moved, change the document filename if it is open;
+  */
+void ProjectController::onFileMoved( const QString & oldFilePath, const QString & newFilePath )
+{
+	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldFilePath );
+
+	// If file was open
+	if ( sci != 0) // We change his internal filename
+		sci->setFilename( newFilePath );
+}
+
+
+/**
+  Propose a menu when users ask for it.
+  Users can
+	- remove a package or a file,
+	- add a package or a file,
+	- rename a package or a file.
+	- execute a skoor file.
+  */
+void ProjectController::onCustomContextMenuRequested( const QPoint & pos )
+{
+	QModelIndex index = mw->ui->projectExplorator->indexAt(pos);
+
+	// If it's a dir
+	if ( currentProj->isDir( index ) ) {
+		;
+	} else {
+		QAction * a = d->fileMenu->exec(mw->ui->projectExplorator->viewport()->mapToGlobal(pos));
+		if ( a == 0 )
+			return;
+
+		if ( a->data().toString() == "rename" ) {
+			currentProj->setEditable(true); // setEditable is set to false when editing is finished. See onItemRenameFinished()
+			mw->ui->projectExplorator->edit(index);
+
+		} else if ( a->data().toString() == "remove" ) {
+			int ret = QMessageBox::question(mw, tr("Supprimer le fichier"),
+											tr("Voulez-vous vraiment supprimer définitivement le fichier\n%1 ?").arg(currentProj->fileName(index)), QMessageBox::Ok, QMessageBox::Cancel);
+			if ( ret != QMessageBox::Ok )
+				return;
+
+			currentProj->remove(index);
+
+		} else if ( a->data().toString() == "execute" && currentProj->fileInfo(index).suffix() == "skoor" ) {
+			mw->bc->execute( index.data(Project::FilePathRole).toString() );
+		}
+	}
+}
+
+
+/**
+  This slot is called when user has called "rename" in the project explorator,
+  and the editing is finished.
+  We reset the model to non-editable.
+  \see onCustomContextMenuRequested()
+  */
+void ProjectController::onItemRenameFinished()
+{
+	currentProj->setEditable(false);
 }
