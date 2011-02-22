@@ -38,6 +38,7 @@ protected:
 protected slots:
 	void showHelp();
 	void showAboutDialog();
+	void onHelpLinkClicked(const QUrl & url);
 
 private:
 	Ui::MainWindow * ui;

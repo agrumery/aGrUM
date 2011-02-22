@@ -43,7 +43,8 @@ public:
 	QsciScintillaExtended * newDocument( const QString & title, QsciScintillaExtended::Lexer lexer = QsciScintillaExtended::None );
 
 public slots:
-	void newFile();
+	void newSkoolFile();
+	void newSkoorFile();
 	bool openFile(const QString & file = QString());
 	bool saveFile(QsciScintillaExtended * sci = 0);
 	bool saveAsFile(QsciScintillaExtended * sci = 0, QString dir = "");

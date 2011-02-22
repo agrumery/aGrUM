@@ -301,7 +301,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNewFile"/>
    <addaction name="actionOpenFile"/>
    <addaction name="actionCloseFile"/>
    <addaction name="separator"/>
@@ -340,7 +339,15 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="actionNewFile"/>
+    <widget class="QMenu" name="menuNouveau">
+     <property name="title">
+      <string>Nouveau</string>
+     </property>
+     <addaction name="actionNewSkool"/>
+     <addaction name="actionNewSkoor"/>
+     <addaction name="actionNewFileProject"/>
+    </widget>
+    <addaction name="menuNouveau"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionRecentFiles"/>
     <addaction name="separator"/>
@@ -484,18 +491,6 @@
    <addaction name="menu_Outils"/>
    <addaction name="menu_Aide"/>
   </widget>
-  <action name="actionNewFile">
-   <property name="icon">
-    <iconset resource="../rsrc/resources.qrc">
-     <normaloff>:/icons/icons/new.png</normaloff>:/icons/icons/new.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Nouveau</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+N</string>
-   </property>
-  </action>
   <action name="actionOpenFile">
    <property name="icon">
     <iconset resource="../rsrc/resources.qrc">
@@ -1097,6 +1092,21 @@
    </property>
    <property name="text">
     <string>Les marqueurs de pliage</string>
+   </property>
+  </action>
+  <action name="actionNewSkool">
+   <property name="text">
+    <string>Fichier Skoo&amp;l</string>
+   </property>
+  </action>
+  <action name="actionNewSkoor">
+   <property name="text">
+    <string>Fichier Skoo&amp;r</string>
+   </property>
+  </action>
+  <action name="actionNewFileProject">
+   <property name="text">
+    <string>&amp;Projet</string>
    </property>
   </action>
  </widget>

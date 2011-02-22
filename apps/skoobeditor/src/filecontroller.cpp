@@ -38,8 +38,8 @@ FileController::FileController(MainWindow * mw, QObject * parent) :
 		d(new PrivateData)
 {
 	d->recentsFiles = new QMenu(mw);
-	d->recentsFilesMapper = new QSignalMapper(mw);
-	connect(d->recentsFilesMapper,SIGNAL(mapped(QString)),this,SLOT(openFile(QString)));
+	d->recentsFilesMapper = new QSignalMapper(this);
+	connect( d->recentsFilesMapper,SIGNAL(mapped(QString)),this,SLOT(openFile(QString)) );
 
 	// Construct "Recent files" menu
 	mw->ui->actionRecentFiles->setMenu( d->recentsFiles );
@@ -47,7 +47,8 @@ FileController::FileController(MainWindow * mw, QObject * parent) :
 	d->lastDir = QDir::homePath();
 
 	//
-	connect( mw->ui->actionNewFile, SIGNAL(triggered()), this, SLOT(newFile()) );
+	connect( mw->ui->actionNewSkool, SIGNAL(triggered()), this, SLOT(newSkoolFile()) );
+	connect( mw->ui->actionNewSkoor, SIGNAL(triggered()), this, SLOT(newSkoorFile()) );
 	connect( mw->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(openFile()) );
 	connect( mw->ui->actionSaveFile, SIGNAL(triggered()), this, SLOT(saveFile()) );
 	connect( mw->ui->actionSaveAsFile, SIGNAL(triggered()), this, SLOT(saveAsFile()) );
@@ -70,6 +71,8 @@ FileController::~FileController()
 
 void FileController::triggerInit()
 {
+	connect( mw->ui->actionNewFileProject, SIGNAL(triggered()), mw->pc, SLOT(newProject()) );
+
 	QSettings settings;
 	settings.beginGroup("file");
 
@@ -128,12 +131,9 @@ bool FileController::isOpenFile(const QString & file) const
 
 
 /// Return the document corresponding to \a file, or 0 if this file is not open.
+/// \a file must be an absoltue path.
 QsciScintillaExtended * FileController::fileToDocument(const QString & file) const
 {
-	// Handle absolute and relative file path.
-	QFileInfo info(file);
-	if ( ! info.isFile() )
-		return false;
 	return openFiles().value(file,0);
 }
 
@@ -172,16 +172,29 @@ const QHash<QString, QsciScintillaExtended *> & FileController::openFiles() cons
 /**
   Add a new tab and a new empty file.
   */
-void FileController::newFile()
+void FileController::newSkoolFile()
 {
 	// We add a tab in the tabbar,
-	newDocument(tr("Sans titre"));
+	newDocument(tr("Nouveau Skool"), QsciScintillaExtended::Skool);
 
 	// and give it the focus
 	mw->ui->tabWidget->setCurrentIndex(mw->ui->tabWidget->count() - 1);
 	mw->ui->tabWidget->currentWidget()->setFocus();
 }
 
+
+/**
+  Add a new tab and a new empty file.
+  */
+void FileController::newSkoorFile()
+{
+	// We add a tab in the tabbar,
+	newDocument(tr("Nouveau Skoor"), QsciScintillaExtended::Skoor);
+
+	// and give it the focus
+	mw->ui->tabWidget->setCurrentIndex(mw->ui->tabWidget->count() - 1);
+	mw->ui->tabWidget->currentWidget()->setFocus();
+}
 
 /**
   Open the file specified in argument,
@@ -620,7 +633,8 @@ bool FileController::quit()
 }
 
 
-
+/**
+  */
 void FileController::onTabWidgetCurrentChanged(int index)
 {
 	QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(index));

@@ -1,9 +1,22 @@
 
-15/02/2010
+21/02/2011
+  * Improve : Pour l'action Nouveau dans fichier, mettre un sous menu avec fichier skool/skoor et projet.
+  * Fix : Pour les liens dans la doc, utiliser le navigateur de l'utilisateur.
+
+18/02/2011
+  * Déplace le dossier doc dans rsrc.
+  * Improve : Intègre la doc HTML dans les ressources de l'exécutable.
+
+16/02/2011
+  * Add : Améliore et intègre le manuel utilisateur à SkoobEditor via l'aide.
+  * Add : Drag and drop (interne seulement) des fichiers dans
+    l'explorateur de projet et renommage des fichiers possible.
+
+15/02/2011
 	* Add : Manuel utilisateur dans le dossier doc.
   * Fix : Makefile
   
-14/02/2010
+14/02/2011
 	* Add : À propos
 	* Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
 

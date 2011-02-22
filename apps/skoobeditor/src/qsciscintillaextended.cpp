@@ -158,7 +158,7 @@ void QsciScintillaExtended::setFilename(const QString & filename)
 		return;
 
 	QFileInfo info(filename);
-
+	QString old = d->filename;
 	d->filename = filename;
 	append(" "); // We can't do setModified(true). See doc.
 
@@ -168,6 +168,8 @@ void QsciScintillaExtended::setFilename(const QString & filename)
 		setLexer(Skoor);
 
 	setTitle(d->filename);
+
+	emit filenameChanged(old, filename);
 }
 
 
@@ -379,16 +381,16 @@ void QsciScintillaExtended::next( const QString &  ) const
 
 }
 
-void QsciScintillaExtended::replaceAll( const QString & search, const QString & replaceBy )
+void QsciScintillaExtended::replaceAll( const QString & search, const QString & replaceBy, bool isRegexp, bool isCaseSensitive, bool wholeWordOnly)
 {
 	if ( search.isEmpty() )
 		return;
 
 	beginUndoAction();
-	if ( findFirst(search, false, false, false, false, true, 0, 0, false) ) {
+	if ( findFirst(search, isRegexp, isCaseSensitive, wholeWordOnly, false, true, 0, 0, false) ) {
 		replace(replaceBy);
 		// while (findNext())  // => bug (search MyClass, replaceBy MyClass2 => don't find the last O_o)
-		while (findFirst(search, false, false, false, false, true, -1, -1, false))
+		while (findFirst(search, isRegexp, isCaseSensitive, wholeWordOnly, false, true, -1, -1, false))
 			replace(replaceBy);
 	}
 	endUndoAction();

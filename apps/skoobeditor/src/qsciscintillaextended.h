@@ -48,7 +48,7 @@ public slots:
 	/**
 	  */
 	void next( const QString & search ) const;
-	void replaceAll( const QString & search, const QString & replace );
+	void replaceAll( const QString & search, const QString & replace, bool isRegexp = false, bool isCaseSensitive = true, bool wholeWordOnly = false );
 
 	/**
 	  */
@@ -72,6 +72,7 @@ public slots:
 
 signals:
 	void modificationChanged(int tabIndex);
+	void filenameChanged(const QString & oldFilename, const QString & newFilename);
 
 protected slots:
 	void onModificationChanged(bool);

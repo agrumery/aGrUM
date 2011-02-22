@@ -10,11 +10,14 @@
 #include "qsciscintillaextended.h"
 
 #include <QtWebKit/QtWebKit>
+#include <QDesktopServices>
 #include <QMessageBox>
+#include <QLayout>
 #include <QDebug>
 
 struct MainWindow::PrivateData {
 	QDialog * dial;
+	QWebView * webView;
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -51,17 +54,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	QVBoxLayout * layout = new QVBoxLayout(d->dial);
 	layout->setSpacing(0);
 	layout->setContentsMargins(0,0,0,0);
-	QWebView * view = new QWebView(d->dial);
-	layout->addWidget(view);
+	d->webView = new QWebView(d->dial);
+	layout->addWidget(d->webView);
 	d->dial->setLayout(layout);
-	view->load( QUrl("qrc:/doc/index.html") ); //
+	d->webView->load( QUrl("qrc:/doc/index.html") ); //
 	d->dial->resize(1024 + 5, 768 + 5);
-	view->show();
+	d->webView->show();
 
 	//
 	connect( ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()) );
 	connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()) );
 	connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()) );
+	connect( d->webView, SIGNAL(urlChanged(QUrl)), this, SLOT(onHelpLinkClicked(QUrl)) );
 }
 
 
@@ -96,4 +100,16 @@ void MainWindow::showAboutDialog()
 	message += tr("Copyright 2010 Lip6 (Paris, France). Tous droits réservés.");
 	message += tr("Ce logiciel est sous licence GPL v3.");
 	QMessageBox::about( this, tr("À Propos de SkoobEditor"), message );
+}
+
+
+/**
+  */
+void MainWindow::onHelpLinkClicked(const QUrl & url)
+{
+	if ( d->webView->url().scheme() == "file" || d->webView->url().isEmpty() )
+		return;
+
+	d->webView->back();
+	QDesktopServices::openUrl(url);
 }
