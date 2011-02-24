@@ -22,6 +22,10 @@ public:
 	   Error
 	};
 
+	static bool isComment( int style ) {
+		return style == CommentLine || style == CommentLineDoc || style == CommentBlock || style == CommentBlockDoc;
+	}
+
 	QsciLexerSkool2(QObject * parent = 0);
 	~QsciLexerSkool2();
 

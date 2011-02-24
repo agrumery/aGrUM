@@ -98,7 +98,11 @@ void MainWindow::showAboutDialog()
 	message += tr("SkoobEditor version 1.0b1\n\n");
 	message += tr("Auteurs : Vincent Renaudineau, Pierre-Henri Wuillemin.\n\n");
 	message += tr("Copyright 2010 Lip6 (Paris, France). Tous droits réservés.");
-	message += tr("Ce logiciel est sous licence GPL v3.");
+	message += tr("Ce logiciel est sous licence GPL v3.\n\n");
+	message += tr("Il utilise les librairies :\n");
+	message += tr(" - Qt, de Nokia;\n");
+	message += tr(" - QScintilla, de Riverbank;\n");
+	message += tr(" - aGrUM, du Lip6 (Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti, Vincent Renaudineau).\n");
 	QMessageBox::about( this, tr("À Propos de SkoobEditor"), message );
 }
 

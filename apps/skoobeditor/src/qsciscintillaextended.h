@@ -26,6 +26,11 @@ public:
 	int currentIndex() const;
 	void setCurrentIndex( int index );
 
+	bool isComment(int line, int index) const;
+	bool isComment(int position) const;
+	int getStyleAt( int line, int index ) const;
+	int getStyleAt( int position ) const;
+
 public slots:
 
 	void setTitle(const QString & filename);
@@ -71,11 +76,9 @@ public slots:
 	void resetZoom();
 
 signals:
-	void modificationChanged(int tabIndex);
 	void filenameChanged(const QString & oldFilename, const QString & newFilename);
 
 protected slots:
-	void onModificationChanged(bool);
 	void onMarginClicked(int margin, int line, Qt::KeyboardModifiers state);
 
 private:
@@ -84,7 +87,7 @@ private:
 	struct PrivateData;
 	PrivateData * d;
 
-	void initParameters(QWidget * parent);
+	void initParameters();
 };
 
 #endif // QSCISCINTILLAEXTENDED_H

@@ -8,6 +8,7 @@
 #include "viewcontroller.h"
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
+#include "qscilexerskool2.h"
 
 #include "newprojectdialog.h"
 #include "projectproperties.h"
@@ -323,10 +324,12 @@ void ProjectController::openProject(QString projectpath)
 														tr("Sélectionnez le répertoire du projet"),
 														QDir::homePath());
 
-	if (projectpath.isEmpty())
+	QDir qDir(projectpath);
+
+	// TODO : Warning are not ?
+	if ( ! qDir.exists() )
 		return;
 
-	QDir qDir(projectpath);
 	if ( ! qDir.exists(qDir.dirName()+".skoop")) {
 		int rep = QMessageBox::warning(mw,tr("Attention"),tr("Ce répertoire ne contient pas de fichier projet.\nLe créer ?"),
 							 QMessageBox::Cancel, QMessageBox::Ok);
@@ -478,11 +481,34 @@ bool ProjectController::on_projectExplorator_doubleClicked( QModelIndex index )
   */
 void ProjectController::onFileRenamed( const QString & path, const QString & oldName, const QString & newName )
 {
-	QsciScintillaExtended * sci = mw->fc->fileToDocument( path + "/" + oldName );
+	QFileInfo oldInfo(path + "/" + oldName), newInfo(path + "/" + newName);
+	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldInfo.filePath() );
 
 	// If file was open
 	if ( sci != 0) // We change his internal filename
-		sci->setFilename( path + "/" + newName );
+		sci->setFilename( newInfo.filePath() );
+
+	// ********************************* //
+	// We change all old ref to new ref. //
+	// ********************************* //
+
+	// Si l'extension est différente message
+	if (oldInfo.suffix() != newInfo.suffix()) {
+		QMessageBox::warning( mw, tr("Attention !"), tr("%1 a changé d'extension !").arg(oldInfo.filePath()) );
+		return;
+	}
+
+	// On vérifie si le nom de fichier a changé (rename)
+	if ( sci != 0 && oldInfo.baseName() != newInfo.baseName() ) {
+		// Si oui on change le nom de la classe ou système dans le fichier
+		sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
+	}
+
+	// On actualise le nom dans fichiers qui font référence à celui-ci.
+
+	// Il peut y avoir des fichiers avec les mêmes nom dans des répertoires différents.
+	// Question : Comment skool et skoor gère la différence dans un fichier qui contient
+	// des références vers ces fichiers de même nom ?
 }
 
 /**
@@ -491,10 +517,45 @@ void ProjectController::onFileRenamed( const QString & path, const QString & old
 void ProjectController::onFileMoved( const QString & oldFilePath, const QString & newFilePath )
 {
 	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldFilePath );
-
 	// If file was open
 	if ( sci != 0) // We change his internal filename
 		sci->setFilename( newFilePath );
+
+	QFileInfo oldInfo(oldFilePath), newInfo(newFilePath);
+
+	// On vérifie si le répertoire a changé
+	if ( sci != 0 && oldInfo.absolutePath() != newInfo.absolutePath() ) {
+		// Si oui on change le nom du package
+		QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
+		QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
+		oldPackage.replace("/",".");
+		newPackage.replace("/",".");
+
+		// On vérifie qu'il y a bien un package
+		if ( ! newPackage.isEmpty() )
+			newPackage = "package "+newPackage+";";
+
+		// Si il y avait déjà un package
+		if ( sci->findFirst("package\\s+\\w+\\s*;",true,false,false,false,true,0,0) ) {
+			// On le remplace
+			sci->replaceAll("package\\s+\\w+\\s*;", newPackage, true, true, false);
+
+		// Sinon, si il n'y avait pas de déclaration de package
+		} else if ( ! newPackage.isEmpty() ){
+			// On cherche la fin des commentaires de début de fichier
+			int i = 0;
+			while (  i < sci->lines() && sci->isComment(i,0) )
+				i++;
+
+			if ( i < sci->lines() )
+				sci->insertAt("\n"+newPackage+"\n",i,0);
+			else
+				sci->insertAt("\n"+newPackage+"\n\n",0,0);
+		}
+	}
+
+	// On change le nom du package des fichiers qui font référence à celui-ci
+
 }
 
 

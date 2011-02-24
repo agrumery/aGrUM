@@ -46,7 +46,7 @@ public slots:
 	void newSkoolFile();
 	void newSkoorFile();
 	bool openFile(const QString & file = QString());
-	bool saveFile(QsciScintillaExtended * sci = 0);
+	bool saveFile(QsciScintillaExtended * sci = 0, bool force = false);
 	bool saveAsFile(QsciScintillaExtended * sci = 0, QString dir = "");
 	bool saveAllFiles();
 	bool closeFile(int index = -1);
@@ -71,7 +71,7 @@ protected slots:
 	void addToRecentFiles( const QString & filename);
 	void removeOfRecentFiles( const QString & filename);
 
-	void onTabWidgetCurrentChanged(int index = -1);
+	void onDocumentChanged(int index = -2);
 	void onDocumentRenamed(const QString & oldFilename, const QString & newFilename);
 	void triggerInit();
 

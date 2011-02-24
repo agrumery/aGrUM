@@ -10,16 +10,9 @@ Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
 
-	* Avec le soulignement des fautes : si l'erreur est au début de la ligne (";") et qu'on la supprime, ne désouligne pas le début.
-	* Quand on crée un projet avec un mauvais nom => gérer l'erreur.
-	* Quand on crée un projet, ne pas indiquer si le dossier n'existe pas, mais s'il existe déjà.
 
 AMELIORATIONS :
 
-	* Pour la mise à jour des visualisateurs de modifications, utiliser sender().
-	* Cacher la bar de status pour le moment.
-	* Pour le logo : le faire en petit avec le fond que vert.
-	* Dans la licence : A propos d'aGrUM avec Lionel et Christophe.
 	* Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
     	ne pas attendre la fermeture (en cas de crash).
 	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,

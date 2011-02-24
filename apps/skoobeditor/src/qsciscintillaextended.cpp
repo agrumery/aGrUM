@@ -6,14 +6,12 @@
 
 #include <Qsci/qsciapis.h>
 #include <QFileInfo>
-#include <QTabWidget>
 #include <QTabBar>
 #include <QAction>
 #include <QDebug>
 
 //
 struct QsciScintillaExtended::PrivateData {
-	QTabWidget * tabWidget;
 	QString title;
 	QString filename;
 	QList<int> syntaxErrorOnLine;
@@ -21,12 +19,9 @@ struct QsciScintillaExtended::PrivateData {
 };
 
 
-void QsciScintillaExtended::initParameters(QWidget * parent)
+void QsciScintillaExtended::initParameters()
 {
 	d = new PrivateData;
-	d->tabWidget = qobject_cast<QTabWidget *>(parent); // return 0 if parent is not a QTabWidget
-	if (d->tabWidget != 0)
-		connect(this, SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
 
 	setTitle(tr("Sans titre")); // Default file path show in the window title bar.
 
@@ -90,7 +85,7 @@ void QsciScintillaExtended::initParameters(QWidget * parent)
 QsciScintillaExtended::QsciScintillaExtended(QWidget *parent) :
 		QsciScintilla(parent)
 {
-	initParameters(parent);
+	initParameters();
 }
 
 
@@ -99,7 +94,7 @@ QsciScintillaExtended::QsciScintillaExtended(QWidget *parent) :
 QsciScintillaExtended::QsciScintillaExtended(Lexer lex, QWidget *parent) :
 		QsciScintilla(parent)
 {
-	initParameters(parent);
+	initParameters();
 
 	setLexer(lex);
 }
@@ -110,7 +105,7 @@ QsciScintillaExtended::QsciScintillaExtended(Lexer lex, QWidget *parent) :
 QsciScintillaExtended::QsciScintillaExtended(const QString & filename, QWidget *parent) :
 		QsciScintilla(parent)
 {
-	initParameters(parent);
+	initParameters();
 
 	setFilename(filename);
 }
@@ -166,7 +161,7 @@ void QsciScintillaExtended::setFilename(const QString & filename)
 	else if (info.suffix() == "skoor" || info.suffix() == "skr")
 		setLexer(Skoor);
 
-	setTitle(d->filename);
+	setTitle(info.fileName());
 
 	emit filenameChanged(old, filename);
 }
@@ -233,6 +228,40 @@ void QsciScintillaExtended::setCurrentIndex( int index )
 	getCursorPosition(&line,&i);
 	setCursorPosition(line,index);
 }
+
+
+/**
+  */
+bool QsciScintillaExtended::isComment(int position) const
+{
+	if ( lexerEnum() == Skoor ) {
+		int style = getStyleAt(position);
+		return style == QsciLexerSkoor::Comment || style == QsciLexerSkoor::CommentLine ||
+			style == QsciLexerSkoor::CommentDoc || style == QsciLexerSkoor::CommentLineDoc;
+	} else if ( lexerEnum() == Skool )
+		return qobject_cast<QsciLexerSkool2 *>(lexer())->isComment( getStyleAt(position) );
+	else
+		return false;
+}
+
+/// Overload method.
+bool QsciScintillaExtended::isComment(int line, int index) const
+{
+	return isComment( positionFromLineIndex(line,index) );
+}
+
+/**
+  */
+int QsciScintillaExtended::getStyleAt( int position ) const
+{
+	return QsciScintilla::SendScintilla(SCI_GETSTYLEAT,position);
+}
+/// Overload method.
+int QsciScintillaExtended::getStyleAt( int line, int index ) const
+{
+	getStyleAt( positionFromLineIndex(line,index) );
+}
+
 
 /**
   Switch comments on the selected block.
@@ -510,14 +539,6 @@ void QsciScintillaExtended::clearSyntaxError( int line )
 
 	//
 	int start = positionFromLineIndex(line, 0), len = lineLength(line);
-	// don't set the indicator on whitespace
-	const QString lineText = text(line);
-	int i = 0;
-	while ( i < lineText.length() && isspace( lineText.at(i++).toLatin1() ) ) {
-		start++;
-		len--;
-	}
-
 	SendScintilla( (unsigned int) SCI_INDICATORCLEARRANGE, (long unsigned int) start, (long int) len );
 
 	d->syntaxErrorOnLine.removeAll(line);
@@ -538,29 +559,6 @@ void QsciScintillaExtended::clearAllSyntaxErrors()
 void QsciScintillaExtended::resetZoom()
 {
 	zoomTo(0);
-}
-
-
-/**
-  */
-void QsciScintillaExtended::onModificationChanged(bool isModified)
-{
-	if ( ! d->tabWidget )
-		return;
-
-	int index = d->tabWidget->indexOf(this);
-
-	if (isModified && ! d->tabWidget->tabText(index).endsWith("*")) {
-		QString newText = d->tabWidget->tabText(index) + "*";
-		d->tabWidget->setTabText(index,newText);
-
-	} else if (! isModified && d->tabWidget->tabText(index).endsWith("*")) {
-		QString newText = d->tabWidget->tabText(index);
-		newText.chop(1);
-		d->tabWidget->setTabText(index,newText);
-	}
-
-	emit modificationChanged(index);
 }
 
 

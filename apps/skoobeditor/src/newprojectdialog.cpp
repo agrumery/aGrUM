@@ -1,6 +1,7 @@
 #include "newprojectdialog.h"
 #include "ui_newprojectdialog.h"
 
+#include <QFileSystemModel>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
@@ -34,36 +35,30 @@ void NewProjectDialog::on_selectDirectoryButton_clicked()
 
 void NewProjectDialog::on_buttonBox_accepted()
 {
-	QString dir = QDir::cleanPath( ui->projectDirectory->text() + QDir::separator() + ui->projectName->text() + QDir::separator() );
+	QString name = QDir::cleanPath( ui->projectDirectory->text() + QDir::separator() + ui->projectName->text() + QDir::separator() );
 
-	if ( dir.isEmpty() )
-		return;
+	if ( name.isEmpty() )
+		reject();
 
-	if ( ! QDir(dir).exists() ) {
-
-		int button = QMessageBox::question(this,
+	QDir dir(name);
+	if ( dir.exists() ) {
+		int button = QMessageBox::warning(this,
 						tr("Nouveau projet"),
-						tr("Le répertoire '%1' n'existe pas.\nVoulez-vous créer les répertoires ?").arg(dir),
-						QMessageBox::Ok,
-						QMessageBox::Cancel);
-
-		if ( button == QMessageBox::Ok )
-			QDir(QDir::root()).mkpath(dir);
-		else
-			return;
-	} else {
-
-		int button = QMessageBox::question(this,
-						tr("Nouveau projet"),
-						tr("Le répertoire '%1' existe déjà.\nVoulez-vous l'écraser?").arg(dir),
+						tr("Le répertoire '%1' existe déjà.\nSi vous continuez, le dossier existant sera sauvegardé (ajout de .bak) ?").arg(name),
 						QMessageBox::Ok,
 						QMessageBox::Cancel);
 
 		if ( button == QMessageBox::Ok ) {
-			QDir(QDir::root()).rename(dir,dir+".old");
-			QDir(QDir::root()).mkpath(dir);
+			QDir(QDir::root()).rename(name,name+".old");
 		} else
 			return;
+	}
+
+	// If can't create the directory, warn the user.
+	if ( ! QDir(QDir::root()).mkpath(name) ) {
+		QMessageBox::warning(this,tr("Création du répertoire de projet"),
+			tr("Attention : le répertoire ne peut être créé.\nCela peut être dû à l'utilisation de mauvais caractères."));
+		return;
 	}
 
 	accept();

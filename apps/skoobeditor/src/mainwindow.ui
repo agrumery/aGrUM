@@ -321,11 +321,6 @@
    <addaction name="actionBuild"/>
    <addaction name="actionExecute"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -1227,22 +1222,6 @@
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionStatusBarVisibility</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>statusBar</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>380</x>
-     <y>489</y>
     </hint>
    </hints>
   </connection>

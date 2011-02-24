@@ -56,7 +56,7 @@ FileController::FileController(MainWindow * mw, QObject * parent) :
 	connect( mw->ui->actionCloseFile, SIGNAL(triggered()), this, SLOT(closeFile()) );
 	connect( mw->ui->actionCloseAllFiles, SIGNAL(triggered()), this, SLOT(closeAllFiles()) );
 	connect( mw->ui->actionUpdateMetadata, SIGNAL(triggered()), this, SLOT(updateMetadata()) );
-	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onTabWidgetCurrentChanged(int)) );
+	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onDocumentChanged(int)) );
 	connect( mw->ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
 
 	QTimer::singleShot( 100, this, SLOT(triggerInit()) );
@@ -281,7 +281,7 @@ bool FileController::openFile(const QString & filename)
   Save the file passed in argument, or the current tab.
   If the file has never been save, go to save as.
   */
-bool FileController::saveFile(QsciScintillaExtended * sci)
+bool FileController::saveFile(QsciScintillaExtended * sci, bool force)
 {
 	// If argument is 0, get the current editor
 	if ( sci == 0 )
@@ -290,7 +290,7 @@ bool FileController::saveFile(QsciScintillaExtended * sci)
 	// If there is any editor open
 	if ( sci == 0 )
 		return false;
-	else if ( sci->text().isEmpty() || ! sci->isModified() )
+	else if ( ! force && (sci->text().isEmpty() || ! sci->isModified()) )
 		return true;
 
 	QString filename = sci->filename();
@@ -371,7 +371,7 @@ bool FileController::saveAsFile(QsciScintillaExtended * sci, QString dir)
 	sci->setFilename(filename);
 	d->openFiles.insert(filename,sci);
 
-	return saveFile(sci);
+	return saveFile(sci,true);
 }
 
 
@@ -632,24 +632,32 @@ bool FileController::quit()
 
 /**
   */
-void FileController::onTabWidgetCurrentChanged(int index)
+void FileController::onDocumentChanged(int index)
 {
-	QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(index));
+	QsciScintillaExtended * sci = 0;
+
+	// if index == -2, signal was emit by a QsciScintilla
+	if ( index == -2 ) {
+		sci = qobject_cast<QsciScintillaExtended*>(sender());
+		index = mw->ui->tabWidget->indexOf(sci);
+	// else, by QTabWidget
+	} else
+		sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(index));
 
 	if ( sci != 0 ) {
 		mw->setWindowFilePath( sci->title() );
 		mw->setWindowModified( sci->isModified() );
+		mw->ui->tabWidget->setTabText(index, sci->title() + (sci->isModified()?"*":""));
+		mw->ui->actionBuild->setEnabled( true );
+		// Enabled 'Execute' action only for Skoor files.
+		mw->ui->actionExecute->setEnabled( sci->lexerEnum() == QsciScintillaExtended::Skoor );
+
 	} else {
 		mw->setWindowFilePath( QString() );
 		mw->setWindowModified( false );
+		mw->ui->actionExecute->setEnabled( false );
+		mw->ui->actionBuild->setEnabled( false );
 	}
-
-	// Enabled 'Execute' action only for Skoor files.
-	mw->ui->actionExecute->setEnabled( sci != 0 && sci->lexerEnum() == QsciScintillaExtended::Skoor );
-	// Enabled 'Build' action only for Skoor and Skool files.
-	mw->ui->actionBuild->setEnabled( sci != 0 &&
-								   ( sci->lexerEnum() == QsciScintillaExtended::Skoor ||
-									 sci->lexerEnum() == QsciScintillaExtended::Skool ) );
 }
 
 
@@ -665,53 +673,11 @@ void FileController::onDocumentRenamed(const QString & oldFilename, const QStrin
 	if ( sci == 0 || oldFilename.isEmpty() )
 		return;
 
-	// We update the tab title.
-	mw->ui->tabWidget->setTabText(mw->ui->tabWidget->indexOf(sci),QFileInfo(newFilename).fileName());
-	onTabWidgetCurrentChanged( mw->ui->tabWidget->indexOf(sci) );
+	onDocumentChanged( mw->ui->tabWidget->indexOf(sci) );
 
 	// We update openFiles
 	d->openFiles.remove(oldFilename);
 	d->openFiles.insert( newFilename, sci );
-
-	// ********************************* //
-	// We change all old ref to new ref. //
-	// ********************************* //
-
-	QFileInfo oldInfo(oldFilename), newInfo(newFilename);
-
-	// Si l'extension est différente message
-	if (oldInfo.suffix() != newInfo.suffix()) {
-		QMessageBox::warning( mw, tr("Attention !"), tr("%1 a changé d'extension !").arg(oldFilename) );
-		return;
-	}
-
-	// On vérifie si le nom de fichier a changé (rename)
-	if ( oldInfo.baseName() != newInfo.baseName() ) {
-		// Si oui on change le nom de la classe ou système dans le fichier
-		sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
-
-		// On change le nom du système ou de la classe dans
-			// tous les systèmes ou classes ou requêtes qui font des
-			// imports vers ce fichiers ou qui font un import vers un fichier qui en fait un etc
-	}
-
-	// On vérifie si le répertoire a changé
-	if ( mw->pc->isOpenProject() && oldInfo.absolutePath() != newInfo.absolutePath() ) {
-		QString oldPackage = mw->pc->currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
-		QString newPackage = mw->pc->currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
-		oldPackage.replace("/",".");
-		newPackage.replace("/",".");
-
-		// Si oui on change le nom du package
-		sci->replaceAll("package\\s+"+oldPackage, "package "+newPackage, true, true, true);
-
-		// On change le nom du package des fichiers qui font référence à celui-ci
-	}
-
-	// Il peut y avoir des fichiers avec les mêmes nom dans des répertoires différents.
-	// Question : Comment skool et skoor gère la différence dans un fichier qui contient
-	// des références vers ces fichiers de même nom ?
-
 }
 
 
@@ -768,7 +734,8 @@ QsciScintillaExtended * FileController::newDocument(const QString & title, QsciS
 	// We add a tab in the tabbar,
 	QsciScintillaExtended * sci =  new QsciScintillaExtended( lexer, mw->ui->tabWidget );
 	sci->setTitle( title );
-	connect( sci, SIGNAL(modificationChanged(int)), this, SLOT(onTabWidgetCurrentChanged(int)) );
+	connect( sci, SIGNAL(modificationChanged(bool)), this, SLOT(onDocumentChanged()) );
+	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentChanged()) );
 	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentRenamed(QString,QString)) );
 	mw->ui->tabWidget->addTab(sci, title);
 

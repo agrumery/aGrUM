@@ -187,7 +187,7 @@ void Project::PrivateData::readSkoopFile()
   */
 void Project::PrivateData::writeSkoopFile()
 {
-	QString filename = dir.dirName()+".skoop";
+	QString filename = dir.absolutePath()+"/"+dir.dirName()+".skoop";
 	QFile file(filename);
 	if ( ! file.open( QFile::WriteOnly ) ) {
 		QMessageBox::warning(0, tr("Erreur non fatal"), tr("Échec lors de l'ouverture du fichier projet %1").arg(filename));
