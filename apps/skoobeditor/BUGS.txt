@@ -43,8 +43,6 @@ TODOS :
 		- créer une classe/système/requête;
 		- renommer;
 		- supprimer;
-	* Drag and drop de fichiers dans l'explorateur 
-		=> update les import dans les autres fichiers.
 	* Drag and drop de package dans l'explorateur 
 		=> update les packages des fichiers dedans
 		=> update les import dans les autres fichiers.

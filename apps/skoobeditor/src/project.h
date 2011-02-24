@@ -20,6 +20,7 @@ public:
 
 	///
 	bool isInside( const QString & filePath ) const;
+	QList<QString> files() const;
 
 	void addPath( const QString & path );
 	void addPaths( const QList<QString> & paths );

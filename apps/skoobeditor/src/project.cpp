@@ -99,6 +99,27 @@ bool Project::isInside( const QString & filePath ) const
 
 
 /**
+  Return all skool and skoor files in the project.
+  \note Compute list each time.
+  */
+QList<QString> Project::files() const
+{
+	QList<QString> closeList;
+	QList<QModelIndex> openList;
+	openList << root();
+	while ( ! openList.isEmpty() ) {
+		QModelIndex current = openList.takeFirst();
+		if ( hasChildren(current) ) {
+			for ( int i = 0 ; i < rowCount(current) ; i++ )
+				openList << current.child(i,0);
+		} else
+			closeList << filePath(current);
+	}
+	return closeList;
+}
+
+
+/**
   */
 void Project::addPath( const QString & path )
 {

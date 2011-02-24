@@ -516,46 +516,84 @@ void ProjectController::onFileRenamed( const QString & path, const QString & old
   */
 void ProjectController::onFileMoved( const QString & oldFilePath, const QString & newFilePath )
 {
-	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldFilePath );
-	// If file was open
-	if ( sci != 0) // We change his internal filename
-		sci->setFilename( newFilePath );
-
 	QFileInfo oldInfo(oldFilePath), newInfo(newFilePath);
-
 	// On vérifie si le répertoire a changé
-	if ( sci != 0 && oldInfo.absolutePath() != newInfo.absolutePath() ) {
-		// Si oui on change le nom du package
-		QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
-		QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
-		oldPackage.replace("/",".");
-		newPackage.replace("/",".");
+	if ( oldInfo.absolutePath() == newInfo.absolutePath() )
+		return;
 
-		// On vérifie qu'il y a bien un package
-		if ( ! newPackage.isEmpty() )
-			newPackage = "package "+newPackage+";";
+	// Si oui on change le nom du package
+	QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
+	QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
+	oldPackage.replace("/",".");
+	newPackage.replace("/",".");
 
-		// Si il y avait déjà un package
-		if ( sci->findFirst("package\\s+\\w+\\s*;",true,false,false,false,true,0,0) ) {
-			// On le remplace
-			sci->replaceAll("package\\s+\\w+\\s*;", newPackage, true, true, false);
+	QString oldImportLine;
+	if ( ! oldPackage.isEmpty() )
+		oldImportLine = "import\\s+"+oldPackage+"\\."+oldInfo.baseName()+"\\s*;";
+	else
+		oldImportLine = "import\\s+"+oldInfo.baseName()+"\\s*;";
 
-		// Sinon, si il n'y avait pas de déclaration de package
-		} else if ( ! newPackage.isEmpty() ){
-			// On cherche la fin des commentaires de début de fichier
-			int i = 0;
-			while (  i < sci->lines() && sci->isComment(i,0) )
-				i++;
-
-			if ( i < sci->lines() )
-				sci->insertAt("\n"+newPackage+"\n",i,0);
-			else
-				sci->insertAt("\n"+newPackage+"\n\n",0,0);
-		}
-	}
+	QString newPackageLine, newImportLine;
+	if ( ! newPackage.isEmpty() ) {
+		newPackageLine = "package "+newPackage+";";
+		newImportLine = "import "+newPackage+"."+newInfo.baseName()+";";
+	} else
+		newImportLine = "import "+newInfo.baseName()+";";
 
 	// On change le nom du package des fichiers qui font référence à celui-ci
+	qDebug() << "######### FILE() #########" << oldFilePath << newFilePath;
+	foreach ( QString filename, currentProj->files() ) {
 
+		QsciScintillaExtended * sci = mw->fc->fileToDocument( filename );
+		if ( sci == 0 ) {
+			qDebug() << "open" << filename;
+			// We open the file
+			QFile file(filename);
+
+			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+				continue;
+
+			// We charge the file,
+			sci = new QsciScintillaExtended(filename);
+			QString text(file.readAll());
+			file.close();
+			sci->setText(text);
+			sci->setModified(false);
+		} else
+			qDebug() << filename << "already open";
+
+		if ( filename == oldFilePath ) {
+			// We update the filename
+			sci->setFilename( newFilePath );
+
+			// Si il y avait déjà un package
+			if ( sci->findFirst("package\\s+\\w+\\s*;",true,false,false,false,true,0,0) ) {
+				// On le remplace
+				sci->replaceAll("package\\s+\\w+\\s*;", newPackageLine, true, true, false);
+
+			// Sinon, si il n'y avait pas de déclaration de package et qu'il y en a une nouvelle
+			} else if ( ! newPackage.isEmpty() ){
+				// On cherche la fin des commentaires de début de fichier
+				int i = 0;
+				while (  i < sci->lines() && sci->isComment(i,0) )
+					i++;
+
+				if ( i < sci->lines() )
+					sci->insertAt("\n"+newPackageLine+"\n",i,0);
+				else
+					sci->insertAt("\n"+newPackageLine+"\n\n",0,0);
+			}
+		} else
+			sci->replaceAll(oldImportLine, newImportLine, true, true, false);
+
+		// Si le document n'est pas un document ouvert,
+		if ( mw->ui->tabWidget->indexOf(sci) == -1 ) {
+			qDebug() << "close" << filename;
+			// On le supprime
+			mw->fc->saveFile(sci);
+			sci->deleteLater();
+		}
+	}
 }
 
 
