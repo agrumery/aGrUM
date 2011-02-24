@@ -18,7 +18,8 @@ class SkoorInterpretation : public QThread
 {
 	Q_OBJECT
 
-	QString m_filename;
+	const QsciScintillaExtended * m_sci;
+	QString m_title;
 	QList<QString> m_paths;
 	const bool m_syntaxMode;
 	std::string m_text;
@@ -27,11 +28,12 @@ class SkoorInterpretation : public QThread
 
 public:
 	SkoorInterpretation( QObject * parent, bool syntaxMode = true );
-	SkoorInterpretation( const QString & filename, QObject * parent, bool syntaxMode = true );
+	SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent, bool syntaxMode = true );
 	~SkoorInterpretation();
 
 	bool isSyntaxMode() const;
-	QString filename() const;
+	const QsciScintillaExtended * document() const;
+	QString documentTitle() const;
 	void setDocument( const QString & text );
 	void setPath( const QList<QString> & paths );
 	void addPath( const QString & path );

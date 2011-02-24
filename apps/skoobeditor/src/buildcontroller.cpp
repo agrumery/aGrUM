@@ -190,11 +190,11 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 void BuildController::onSyntaxCheckFinished()
 {
 	// If there was a problem
-	if ( d->skoolThread->reader() == 0 )
+	if ( d->skoolThread->reader() == 0 || mw->fc->currentDocument() != d->skoolThread->document() )
 		return;
 
 	const gum::ErrorsContainer & errors = d->skoolThread->reader()->getErrorsContainer();
-	const QString title = d->skoolThread->filename();
+	const QString title = d->skoolThread->documentTitle();
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
 		const gum::ParseError & e = errors.getError(i);
@@ -298,7 +298,7 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 	}
 
 	// Create thread and set text
-	d->skoorThread = new SkoorInterpretation( sci->title(), mw, checkSyntaxOnly );
+	d->skoorThread = new SkoorInterpretation( sci, mw, checkSyntaxOnly );
 	d->skoorThread->setDocument( sci->text() );
 
 	// Set paths
@@ -323,7 +323,7 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 void BuildController::onInterpretationFinished()
 {
 	const SkoorInterpreter * interpreter = d->skoorThread->interpreter();
-	if ( interpreter == 0 )
+	if ( interpreter == 0 || mw->fc->currentDocument() != d->skoorThread->document() )
 		return;
 
 	// If there was a problem
@@ -351,7 +351,7 @@ void BuildController::onInterpretationFinished()
 
 	} else { //  interpreter->errors() != 0
 
-		QString filename = d->skoorThread->filename();
+		QString documentTitle = d->skoorThread->documentTitle();
 
 		for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
 			const gum::ParseError & err = interpreter->getError(i);
@@ -361,7 +361,7 @@ void BuildController::onInterpretationFinished()
 			QString s = QString::fromStdString( err.toString() );
 
 			if ( errFilename.isEmpty() ) {
-				errFilename = filename;
+				errFilename = documentTitle;
 				s.prepend( errFilename + ":" );
 			}
 
@@ -480,10 +480,10 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 
 	// Check if we are always on the same document
 	if ( d->skoorSyntaxThread != 0 &&
-		 d->skoorSyntaxThread->filename() != mw->fc->currentDocument()->title() )
+		 d->skoorSyntaxThread->document() != mw->fc->currentDocument() )
 		return;
 	else if ( d->skoolSyntaxThread != 0 &&
-		 d->skoolSyntaxThread->filename() != mw->fc->currentDocument()->title() )
+		 d->skoolSyntaxThread->document() != mw->fc->currentDocument() )
 		return;
 
 	QString filename = mw->fc->currentDocument()->filename();
@@ -492,7 +492,7 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 	if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skoor ) {
 		// Create new document and connect it
 		if ( d->skoorSyntaxThread == 0 ) {
-			d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument()->title(), this );
+			d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument(), this );
 			connect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
 
 			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
@@ -546,7 +546,7 @@ void BuildController::onSkoorSyntaxThreadFinished()
 
 	for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
 		const gum::ParseError & err = interpreter->getError(i);
-		if ( err.filename.empty() || mw->fc->currentDocument()->title() == d->skoorSyntaxThread->filename() ) // => == fichier skoor
+		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoorSyntaxThread->document() ) // => == fichier skoor
 			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
 	}
 
@@ -569,7 +569,7 @@ void BuildController::onSkoolSyntaxThreadFinished()
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
 		const gum::ParseError & err = errors.getError(i);
-		if ( err.filename.empty() || mw->fc->currentDocument()->title() == d->skoolSyntaxThread->filename() ) // => == fichier skool
+		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoolSyntaxThread->document() ) // => == fichier skool
 			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
 	}
 

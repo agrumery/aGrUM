@@ -3,15 +3,17 @@
 #include <QDebug>
 
 SkoorInterpretation::SkoorInterpretation( QObject * parent, bool syntaxMode ) :
-				QThread(parent), m_syntaxMode(syntaxMode)
+				QThread(parent), m_sci(0), m_syntaxMode(syntaxMode)
 {
 	m_interpreter = new gum::prm::skoor::SkoorInterpreter();
 }
 
-SkoorInterpretation::SkoorInterpretation( const QString & filename, QObject * parent, bool syntaxMode ) :
-		QThread(parent), m_filename(filename), m_syntaxMode(syntaxMode)
+SkoorInterpretation::SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent, bool syntaxMode ) :
+		QThread(parent), m_sci(sci), m_syntaxMode(syntaxMode)
 {
-	m_interpreter = new gum::prm::skoor::SkoorInterpreter(/*filename.toStdString()*/);
+	m_interpreter = new gum::prm::skoor::SkoorInterpreter();
+	if ( m_sci != 0 )
+		m_title = m_sci->title();
 }
 
 SkoorInterpretation::~SkoorInterpretation()
@@ -21,9 +23,15 @@ SkoorInterpretation::~SkoorInterpretation()
 	delete m_interpreter;
 }
 
-QString SkoorInterpretation::filename() const
+/// Warning : this document may be 0 and it may no longer exists (-> segfault).
+const QsciScintillaExtended * SkoorInterpretation::document() const
 {
-	return m_filename;
+	return m_sci;
+}
+
+QString SkoorInterpretation::documentTitle() const
+{
+	return m_title;
 }
 
 void SkoorInterpretation::setDocument( const QString & text )

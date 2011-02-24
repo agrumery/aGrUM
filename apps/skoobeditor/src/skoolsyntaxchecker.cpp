@@ -10,7 +10,7 @@ SkoolSyntaxChecker::SkoolSyntaxChecker( QObject * parent ) :
 }
 
 SkoolSyntaxChecker::SkoolSyntaxChecker( const QString & skoolFilename, QObject * parent) :
-		QThread(parent), m_filename(skoolFilename), m_reader(0)
+		QThread(parent), m_title(skoolFilename), m_reader(0)
 {
 }
 
@@ -22,9 +22,15 @@ SkoolSyntaxChecker::~SkoolSyntaxChecker()
 }
 
 
-QString SkoolSyntaxChecker::filename() const
+/// Warning : this document may be 0 and it may no longer exists (-> segfault).
+const QsciScintillaExtended * SkoolSyntaxChecker::document() const
 {
-	return m_filename;
+	return m_sci;
+}
+
+QString SkoolSyntaxChecker::documentTitle() const
+{
+	return m_title;
 }
 
 void SkoolSyntaxChecker::setDocument( const QString & text )

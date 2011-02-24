@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QMutex>
 
+#include "qsciscintillaextended.h"
+
 #include <agrum/prm/skool/SkoolReader.h>
 
 /**
@@ -15,7 +17,8 @@ class SkoolSyntaxChecker : public QThread
 {
 	Q_OBJECT
 
-	QString m_filename;
+	const QsciScintillaExtended * m_sci;
+	QString m_title;
 	QString m_paths;
 	std::string m_text;
 	gum::prm::skool::SkoolReader * m_reader;
@@ -26,7 +29,8 @@ public:
 	SkoolSyntaxChecker( const QString & skoolFilename, QObject * parent);
 	~SkoolSyntaxChecker();
 
-	QString filename() const;
+	const QsciScintillaExtended * document() const;
+	QString documentTitle() const;
 	void setDocument( const QString & text );
 	void setPath( const QList<QString> & paths );
 	void addPath( const QString & path );

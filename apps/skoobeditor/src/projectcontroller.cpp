@@ -482,15 +482,9 @@ bool ProjectController::on_projectExplorator_doubleClicked( QModelIndex index )
 void ProjectController::onFileRenamed( const QString & path, const QString & oldName, const QString & newName )
 {
 	QFileInfo oldInfo(path + "/" + oldName), newInfo(path + "/" + newName);
-	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldInfo.filePath() );
 
-	// If file was open
-	if ( sci != 0) // We change his internal filename
-		sci->setFilename( newInfo.filePath() );
-
-	// ********************************* //
-	// We change all old ref to new ref. //
-	// ********************************* //
+	if ( oldName == newName )
+		return;
 
 	// Si l'extension est différente message
 	if (oldInfo.suffix() != newInfo.suffix()) {
@@ -498,17 +492,49 @@ void ProjectController::onFileRenamed( const QString & path, const QString & old
 		return;
 	}
 
-	// On vérifie si le nom de fichier a changé (rename)
-	if ( sci != 0 && oldInfo.baseName() != newInfo.baseName() ) {
+	QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
+	QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
+	oldPackage.replace("/",".");
+	newPackage.replace("/",".");
+
+	foreach ( QString filename, currentProj->files() ) {
+		QsciScintillaExtended * sci;
+
+		if ( filename == newInfo.filePath() ) {
+			sci = mw->fc->fileToDocument( oldInfo.filePath() );
+		} else
+			sci = mw->fc->fileToDocument( filename );
+
+		// If file is not open, we open it.
+		if ( sci == 0 ) {
+			// We open the file
+			QFile file(filename);
+
+			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+				continue;
+
+			// We charge the file,
+			sci = new QsciScintillaExtended(filename);
+			QString text(file.readAll());
+			file.close();
+			sci->setText(text);
+			sci->setModified(false);
+		}
+
+		if ( filename == newInfo.filePath() )
+			// We change his internal filename
+			sci->setFilename( newInfo.filePath() );
+
 		// Si oui on change le nom de la classe ou système dans le fichier
 		sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
+
+		// Si le document n'est pas un document ouvert,
+		if ( mw->ui->tabWidget->indexOf(sci) == -1 ) {
+			// We delete it
+			mw->fc->saveFile(sci);
+			sci->deleteLater();
+		}
 	}
-
-	// On actualise le nom dans fichiers qui font référence à celui-ci.
-
-	// Il peut y avoir des fichiers avec les mêmes nom dans des répertoires différents.
-	// Question : Comment skool et skoor gère la différence dans un fichier qui contient
-	// des références vers ces fichiers de même nom ?
 }
 
 /**
@@ -517,11 +543,11 @@ void ProjectController::onFileRenamed( const QString & path, const QString & old
 void ProjectController::onFileMoved( const QString & oldFilePath, const QString & newFilePath )
 {
 	QFileInfo oldInfo(oldFilePath), newInfo(newFilePath);
+
 	// On vérifie si le répertoire a changé
 	if ( oldInfo.absolutePath() == newInfo.absolutePath() )
 		return;
 
-	// Si oui on change le nom du package
 	QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
 	QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
 	oldPackage.replace("/",".");
@@ -540,13 +566,10 @@ void ProjectController::onFileMoved( const QString & oldFilePath, const QString 
 	} else
 		newImportLine = "import "+newInfo.baseName()+";";
 
-	// On change le nom du package des fichiers qui font référence à celui-ci
-	qDebug() << "######### FILE() #########" << oldFilePath << newFilePath;
 	foreach ( QString filename, currentProj->files() ) {
 
 		QsciScintillaExtended * sci = mw->fc->fileToDocument( filename );
 		if ( sci == 0 ) {
-			qDebug() << "open" << filename;
 			// We open the file
 			QFile file(filename);
 
@@ -559,8 +582,7 @@ void ProjectController::onFileMoved( const QString & oldFilePath, const QString 
 			file.close();
 			sci->setText(text);
 			sci->setModified(false);
-		} else
-			qDebug() << filename << "already open";
+		}
 
 		if ( filename == oldFilePath ) {
 			// We update the filename
@@ -588,8 +610,7 @@ void ProjectController::onFileMoved( const QString & oldFilePath, const QString 
 
 		// Si le document n'est pas un document ouvert,
 		if ( mw->ui->tabWidget->indexOf(sci) == -1 ) {
-			qDebug() << "close" << filename;
-			// On le supprime
+			// We delete it
 			mw->fc->saveFile(sci);
 			sci->deleteLater();
 		}

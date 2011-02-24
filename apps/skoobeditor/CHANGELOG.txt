@@ -3,6 +3,9 @@
     * Fix : Quand on change de package un fichier qui n'en avait pas, ne l'ajoute pas.
     * Add : Drag and drop de fichiers dans l'explorateur 
 		=> update les import dans les autres fichiers du projet.
+    * Add : Renommage de fichiers dans l'explorateur 
+		=> update les import dans les autres fichiers du projet.
+    * Fix : Au changement de nom d'un fichier, la correction syntaxique ne marche plus.
     
 23/02/2011
     * Fix : Quand on renomme un fichier, les indicateurs de modifications 
