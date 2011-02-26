@@ -273,6 +273,8 @@ bool FileController::openFile(const QString & filename)
 
 	}
 
+	saveFilesState();
+
 	return success;
 }
 
@@ -322,6 +324,8 @@ bool FileController::saveFile(QsciScintillaExtended * sci, bool force)
 	}
 
 	emit fileSaved(filename, sci);
+
+	saveFilesState();
 
 	return true;
 }
@@ -465,6 +469,8 @@ bool FileController::closeFile(int index)
 
 	sci->deleteLater();
 
+	saveFilesState();
+
 	return true;
 }
 
@@ -602,30 +608,6 @@ bool FileController::quit()
 		if ( ! saveFile(sci) )
 			return false;
 
-	// Ask to save
-	// Save the open files in settings
-	QSettings settings;
-	settings.beginGroup("file");
-
-	settings.beginWriteArray("openTabs");
-	for (int i = 0, j = 0 ; i < tabCount ; i++) {
-		QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(i));
-		if ( ! sci->filename().isEmpty() ) {
-			settings.setArrayIndex(j++);
-			settings.setValue("file",sci->filename());
-		}
-	}
-	settings.endArray();
-
-	// Save the last closed files in settings
-	int size = d->recentsFiles->actions().size();
-	settings.beginWriteArray("recentsFiles",size);
-	for (int i = 0 ; i < size ; i++) {
-		settings.setArrayIndex(i);
-		settings.setValue("file",d->recentsFiles->actions().at(i)->data());
-	}
-	settings.endArray();
-
 	return true;
 }
 
@@ -723,6 +705,37 @@ void FileController::removeOfRecentFiles( const QString & filename )
 		d->recentsFiles->removeAction(a);
 	}
 
+}
+
+
+/**
+  Save files open and closed in settings.
+  */
+void FileController::saveFilesState()
+{
+	// Save the open files in settings
+	QSettings settings;
+	settings.beginGroup("file");
+
+	settings.beginWriteArray("openTabs");
+	int tabCount = mw->ui->tabWidget->count();
+	for (int i = 0, j = 0 ; i < tabCount ; i++) {
+		QsciScintillaExtended * sci = qobject_cast<QsciScintillaExtended*>(mw->ui->tabWidget->widget(i));
+		if ( ! sci->filename().isEmpty() ) {
+			settings.setArrayIndex(j++);
+			settings.setValue("file",sci->filename());
+		}
+	}
+	settings.endArray();
+
+	// Save the last closed files in settings
+	int size = d->recentsFiles->actions().size();
+	settings.beginWriteArray("recentsFiles",size);
+	for (int i = 0 ; i < size ; i++) {
+		settings.setArrayIndex(i);
+		settings.setValue("file",d->recentsFiles->actions().at(i)->data());
+	}
+	settings.endArray();
 }
 
 

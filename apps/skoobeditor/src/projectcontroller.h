@@ -31,6 +31,7 @@ public slots:
 protected:
 	void addToRecentsProjects( const QString & projectPath );
 	void removeOfRecentsProjects( const QString & projectPath );
+	void saveProjectsState();
 
 protected slots:
 	bool on_projectExplorator_clicked( QModelIndex index );

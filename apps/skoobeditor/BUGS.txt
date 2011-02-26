@@ -13,8 +13,6 @@ BUGS :
 
 AMELIORATIONS :
 
-	* Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
-    	ne pas attendre la fermeture (en cas de crash).
 	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
 		à la sauvegarde.
 	* Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.

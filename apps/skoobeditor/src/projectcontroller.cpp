@@ -112,24 +112,6 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 /// Destructor
 ProjectController::~ProjectController()
 {
-	QSettings settings;
-	settings.beginGroup("project");
-
-	if ( currentProj ) {
-		settings.setValue("last project",currentProj->dir());
-		currentProj->close();
-	} else
-		settings.setValue("last project","");
-
-	// Save the last closed projects in settings
-	int size = d->recentsProjects->actions().size();
-	settings.beginWriteArray("recentsProjects",size);
-	for (int i = 0 ; i < size ; i++) {
-		settings.setArrayIndex(i);
-		settings.setValue("project",d->recentsProjects->actions().at(i)->data());
-	}
-	settings.endArray();
-
 	delete d;
 }
 
@@ -224,6 +206,8 @@ void ProjectController::newProject()
 	mw->ui->actionNewClass->setEnabled(true);
 	mw->ui->actionNewModel->setEnabled(true);
 	mw->ui->actionNewRequestFile->setEnabled(true);
+
+	saveProjectsState();
 }
 
 
@@ -364,6 +348,8 @@ void ProjectController::openProject(QString projectpath)
 	mw->ui->actionNewModel->setEnabled(true);
 	mw->ui->actionNewRequestFile->setEnabled(true);
 
+	saveProjectsState();
+
 	//
 	QTimer::singleShot(200, mw->ui->projectExplorator, SLOT(expandAll()) );
 }
@@ -397,6 +383,8 @@ void ProjectController::closeProject()
 	mw->ui->actionNewModel->setEnabled(false);
 	mw->ui->actionNewRequestFile->setEnabled(false);
 	mw->ui->actionProjectExploratorVisibility->setEnabled(false);
+
+	saveProjectsState();
 }
 
 
@@ -444,6 +432,31 @@ void ProjectController::removeOfRecentsProjects( const QString & projetPath )
 	}
 
 }
+
+
+/**
+  */
+void ProjectController::saveProjectsState()
+{
+	QSettings settings;
+	settings.beginGroup("project");
+
+	if ( currentProj ) {
+		settings.setValue("last project",currentProj->dir());
+		currentProj->close();
+	} else
+		settings.setValue("last project","");
+
+	// Save the last closed projects in settings
+	int size = d->recentsProjects->actions().size();
+	settings.beginWriteArray("recentsProjects",size);
+	for (int i = 0 ; i < size ; i++) {
+		settings.setArrayIndex(i);
+		settings.setValue("project",d->recentsProjects->actions().at(i)->data());
+	}
+	settings.endArray();
+}
+
 
 /**
   Switch to this file if it is open.

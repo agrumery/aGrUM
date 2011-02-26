@@ -2,6 +2,8 @@
 26/02/2011
 	* Add : Pour l'explorateur de projet, icone pour les différents type de fichier.
 		-> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).
+	* Improve : Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
+    	ne pas attendre la fermeture (en cas de crash).
 		
 24/02/2011
     * Fix : Quand on change de package un fichier qui n'en avait pas, ne l'ajoute pas.
