@@ -42,6 +42,7 @@ Section "SkoobEditor (required)"
   File $%QTDIR%\qt\lib\qscintilla2.dll
   File $%QTDIR%\qt\bin\QtCore4.dll
   File $%QTDIR%\qt\bin\QtGui4.dll
+  File $%QTDIR%\qt\bin\QtWebKit4.dll
   File $%QTDIR%\qt\bin\mingwm10.dll
   File $%QTDIR%\qt\bin\libgcc_s_dw2-1.dll
   
