@@ -235,6 +235,19 @@ int Project::columnCount(const QModelIndex &) const
 	return 1;
 }
 
+
+/// \reimp
+QVariant Project::data ( const QModelIndex & index, int role ) const
+{
+	if ( role == Qt::DecorationRole && index.data().toString().endsWith(".skool") ) {
+		return QIcon(":/icons/icons/new.png");
+	} else if ( role == Qt::DecorationRole && index.data().toString().endsWith(".skoor") ) {
+		return QIcon(":/icons/icons/gear-icon.png");
+	}
+
+	return QFileSystemModel::data(index,role);
+}
+
 /// \reimp
 QVariant Project::headerData ( int section, Qt::Orientation orientation, int role ) const
 {

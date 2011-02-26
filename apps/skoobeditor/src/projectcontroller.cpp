@@ -36,7 +36,6 @@
    * nouveau fichier (suivant le package, crée le bon type)
  - sur un fichier -> menu avec
    * renommer (renomme dans tout le projet)
-   * déplacer (change le package dans tout le projet)
    * supprimer (confirmation, indique les références dans le projet, source d'erreurs)
    * éxécuter (uniquement pour le fichier SKOOR)
 

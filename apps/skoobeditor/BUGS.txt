@@ -46,8 +46,6 @@ TODOS :
 	* Drag and drop de package dans l'explorateur 
 		=> update les packages des fichiers dedans
 		=> update les import dans les autres fichiers.
-	* Pour l'explorateur de projet, icone pour les différents type de fichier.
-		-> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).
 	* Ajouter à l'explorateur de projet les répertoires qui ont été ajoutés 
 		dans les propriétés de projet (mais en ReadOnly).
 		=> Avec un autre QTreeView ?
