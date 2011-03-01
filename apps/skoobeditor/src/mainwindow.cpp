@@ -9,15 +9,14 @@
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
 
-#include <QtWebKit/QtWebKit>
-#include <QDesktopServices>
+#include <QTextBrowser>
 #include <QMessageBox>
 #include <QLayout>
 #include <QDebug>
 
 struct MainWindow::PrivateData {
 	QDialog * dial;
-	QWebView * webView;
+	QTextBrowser * browser;
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -54,18 +53,17 @@ MainWindow::MainWindow(QWidget *parent) :
 	QVBoxLayout * layout = new QVBoxLayout(d->dial);
 	layout->setSpacing(0);
 	layout->setContentsMargins(0,0,0,0);
-	d->webView = new QWebView(d->dial);
-	layout->addWidget(d->webView);
+	d->browser = new QTextBrowser(d->dial);
+	d->browser->setSource(QUrl("qrc:/doc/index.html"));
+	d->browser->setOpenExternalLinks(true);
+	layout->addWidget(d->browser);
 	d->dial->setLayout(layout);
-	d->webView->load( QUrl("qrc:/doc/index.html") ); //
 	d->dial->resize(1024 + 5, 768 + 5);
-	d->webView->show();
 
 	//
 	connect( ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()) );
 	connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()) );
 	connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()) );
-	connect( d->webView, SIGNAL(urlChanged(QUrl)), this, SLOT(onHelpLinkClicked(QUrl)) );
 }
 
 
@@ -106,14 +104,3 @@ void MainWindow::showAboutDialog()
 	QMessageBox::about( this, tr("À Propos de SkoobEditor"), message );
 }
 
-
-/**
-  */
-void MainWindow::onHelpLinkClicked(const QUrl & url)
-{
-	if ( url.scheme() == "qrc" || d->webView->url().scheme() == "file" || d->webView->url().isEmpty() )
-		return;
-
-	d->webView->back();
-	QDesktopServices::openUrl(url);
-}
