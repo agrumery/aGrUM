@@ -4,6 +4,8 @@
 import sys
 import os
 import subprocess
+
+from pyAgrum_header import pyAgrum_header 
 import pyAgrum as gum
 
 def pngize(bn,base):
@@ -18,12 +20,14 @@ def pngize(bn,base):
   f.close()
 
   cmd=['dot','-Tpng',dotfile,('-o'+pngfile)]
-  ret=subprocess.call(cmd)
+  return subprocess.call(cmd)
 
 if __name__=="__main__":
-  if len(sys.argv)<2:
-    print os.path.basename(sys.argv[0]),"file.{bif|dsl}"
-  else:
-    bn=gum.loadBN(sys.argv[1])
-    base,ext=os.path.splitext(sys.argv[1])
-    pngize(bn,base)
+    pyAgrum_header()
+    
+    if len(sys.argv)<2:
+        print os.path.basename(sys.argv[0]),"file.{bif|dsl}"
+    else:
+        bn=gum.loadBN(sys.argv[1])
+        base,ext=os.path.splitext(sys.argv[1])
+        pngize(bn,base)
