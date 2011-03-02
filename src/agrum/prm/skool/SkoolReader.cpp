@@ -58,7 +58,7 @@ namespace gum {
     void SkoolReader::addClassPath(const std::string& class_path) {
       __class_path.push_back( class_path );
     }
-    
+
     } /* namespace skool */
   } /* namespace prm */
 } /* namespace gum */

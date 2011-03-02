@@ -86,30 +86,32 @@ PRMFactory::startClass(const std::string& name, const std::string& extends,
   if (implements != 0) {
     for (Set<std::string>::iterator iter = implements->begin();
          iter != implements->end(); ++iter) {
-      try {
-        impl.insert(__prm->__interfaceMap[*iter]);
-      } catch (NotFound&) {
-        try {
-          impl.insert(__prm->__interfaceMap[__addPrefix(*iter)]);
-        } catch (NotFound&) {
-          std::string msg = "no interface named: ";
-          GUM_ERROR(NotFound, msg + __addPrefix(*iter));
-        }
-      }
+      impl.insert(__retrieveInterface(*iter));
+      // try {
+      //   impl.insert(__prm->__interfaceMap[*iter]);
+      // } catch (NotFound&) {
+      //   try {
+      //     impl.insert(__prm->__interfaceMap[__addPrefix(*iter)]);
+      //   } catch (NotFound&) {
+      //     std::string msg = "no interface named: ";
+      //     GUM_ERROR(NotFound, msg + __addPrefix(*iter));
+      //   }
+      // }
     }
   }
   if (extends != "") {
     // Retrieving the mother class
-    try {
-      mother = __prm->__classMap[extends];
-    } catch (NotFound&) {
-      try {
-      mother = __prm->__classMap[__addPrefix(extends)];
-      } catch (NotFound&) {
-        std::string msg = "no class named: ";
-        GUM_ERROR(NotFound, msg + extends);
-      }
-    }
+    mother = __retrieveClass(extends);
+    // try {
+    //   mother = __prm->__classMap[extends];
+    // } catch (NotFound&) {
+    //   try {
+    //   mother = __prm->__classMap[__addPrefix(extends)];
+    //   } catch (NotFound&) {
+    //     std::string msg = "no class named: ";
+    //     GUM_ERROR(NotFound, msg + extends);
+    //   }
+    // }
   }
   if ((extends == "") and impl.empty()) {
     c = new Class(real_name);
@@ -197,16 +199,17 @@ PRMFactory::startInterface(const std::string& name, const std::string& extends)
   Interface* i = 0;
   Interface* super = 0;
   if (extends != "") {
-    try {
-      super = __prm->__interfaceMap[extends];
-    } catch (NotFound&) {
-      try {
-        super = __prm->__interfaceMap[__addPrefix(extends)];
-      } catch (NotFound&) {
-        std::string msg = "unknown interface: ";
-        GUM_ERROR(NotFound, msg + extends);
-      }
-    }
+    super = __retrieveInterface(extends);
+    // try {
+    //   super = __prm->__interfaceMap[extends];
+    // } catch (NotFound&) {
+    //   try {
+    //     super = __prm->__interfaceMap[__addPrefix(extends)];
+    //   } catch (NotFound&) {
+    //     std::string msg = "unknown interface: ";
+    //     GUM_ERROR(NotFound, msg + extends);
+    //   }
+    // }
   }
   if (super != 0) {
     i = new Interface(real_name, *super);
