@@ -99,21 +99,34 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::skoor() {
+		std::string s; 
 		if (la->kind == 5) {
 			Get();
-			Expect(3);
-			__context->setPackage( gum::narrow(t->val) ); 
+			Ident(s);
+			__context->setPackage( s ); 
 			Expect(12);
 		}
 		if (la->kind == 6) {
 			Get();
-			Expect(3);
-			__context->addImport( t->line, gum::narrow(t->val) ); 
+			Ident(s);
+			__context->addImport( t->line, s ); 
 			Expect(12);
 		}
 		while (la->kind == 7) {
 			RequestBloc();
 		}
+}
+
+void Parser::Ident(std::string& s) {
+		std::stringstream sBuff; 
+		Expect(3);
+		sBuff << narrow(t->val); 
+		while (la->kind == 22) {
+			Get();
+			Expect(3);
+			sBuff << "." << narrow(t->val); 
+		}
+		s = sBuff.str(); 
 }
 
 void Parser::RequestBloc() {
@@ -140,39 +153,51 @@ void Parser::RequestBloc() {
 
 void Parser::Observe() {
 		std::string left_value, right_value; 
-		Expect(3);
-		left_value = gum::narrow(t->val); 
+		Ident(left_value);
 		Expect(15);
-		Expect(3);
-		right_value = gum::narrow(t->val); 
+		Ident(right_value);
 		Expect(12);
 		__currentSession->addObserve(t->line, left_value, right_value); 
 }
 
 void Parser::Unobserve() {
 		Expect(9);
-		Expect(3);
-		__currentSession->addUnobserve( t->line, gum::narrow(t->val) ); 
+		std::string s; 
+		Ident(s);
+		__currentSession->addUnobserve( t->line, s ); 
 		Expect(12);
 }
 
 void Parser::Query() {
 		Expect(8);
-		Expect(3);
-		__currentSession->addQuery( t->line, gum::narrow(t->val) ); 
+		std::string s; 
+		Ident(s);
+		__currentSession->addQuery( t->line, s ); 
 		Expect(12);
 }
 
 void Parser::SetEngine() {
 		Expect(10);
-		Expect(3);
+		if (la->kind == 16) {
+			Get();
+		} else if (la->kind == 17) {
+			Get();
+		} else if (la->kind == 18) {
+			Get();
+		} else SynErr(24);
 		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
 		Expect(12);
 }
 
 void Parser::SetGrdEngine() {
 		Expect(11);
-		Expect(3);
+		if (la->kind == 19) {
+			Get();
+		} else if (la->kind == 20) {
+			Get();
+		} else if (la->kind == 21) {
+			Get();
+		} else SynErr(25);
 		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
 		Expect(12);
 }
@@ -189,7 +214,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser(Scanner *scanner) {
-	maxT = 16;
+	maxT = 23;
 
 	dummyToken = NULL;
 	t = la = NULL;
@@ -202,9 +227,9 @@ bool Parser::StartOf(int s) {
 	const bool T = true;
 	const bool x = false;
 
-	static bool set[2][18] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,x,x,T, x,x,x,x, T,T,T,T, x,x,x,x, x,x}
+	static bool set[2][25] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
+		{x,x,x,T, x,x,x,x, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x}
 	};
 
 
@@ -243,7 +268,16 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 13: s = coco_string_create(L"\"{\" expected"); break;
 			case 14: s = coco_string_create(L"\"}\" expected"); break;
 			case 15: s = coco_string_create(L"\"=\" expected"); break;
-			case 16: s = coco_string_create(L"??? expected"); break;
+			case 16: s = coco_string_create(L"\"SVED\" expected"); break;
+			case 17: s = coco_string_create(L"\"SVE\" expected"); break;
+			case 18: s = coco_string_create(L"\"GND\" expected"); break;
+			case 19: s = coco_string_create(L"\"VE\" expected"); break;
+			case 20: s = coco_string_create(L"\"VEBB\" expected"); break;
+			case 21: s = coco_string_create(L"\"lazy\" expected"); break;
+			case 22: s = coco_string_create(L"\".\" expected"); break;
+			case 23: s = coco_string_create(L"??? expected"); break;
+			case 24: s = coco_string_create(L"invalid SetEngine"); break;
+			case 25: s = coco_string_create(L"invalid SetGrdEngine"); break;
 
 		default:
 		{

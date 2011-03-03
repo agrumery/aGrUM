@@ -297,8 +297,8 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 16;
-	noSym = 16;
+	maxT = 23;
+	noSym = 23;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 9);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -312,6 +312,7 @@ void Scanner::Init() {
 	start.set(123, 12);
 	start.set(125, 13);
 	start.set(61, 14);
+	start.set(46, 15);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"package", 5);
 	keywords.set(L"import", 6);
@@ -319,6 +320,12 @@ void Scanner::Init() {
 	keywords.set(L"unobserve", 9);
 	keywords.set(L"engine", 10);
 	keywords.set(L"grd_engine", 11);
+	keywords.set(L"SVED", 16);
+	keywords.set(L"SVE", 17);
+	keywords.set(L"GND", 18);
+	keywords.set(L"VE", 19);
+	keywords.set(L"VEBB", 20);
+	keywords.set(L"lazy", 21);
 
 
 	tvalLength = 128;
@@ -537,7 +544,7 @@ Token* Scanner::NextToken() {
 		case 6:
 			case_6:
 			recEnd = pos; recKind = 3;
-			if (ch == L'.' || (ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_6;}
+			if ((ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_6;}
 			else {t->kind = 3; wchar_t *literal = coco_string_create(tval, 0, tlen); t->kind = keywords.get(literal, t->kind); coco_string_delete(literal); break;}
 		case 7:
 			{t->kind = 4; break;}
@@ -560,6 +567,8 @@ Token* Scanner::NextToken() {
 			{t->kind = 14; break;}
 		case 14:
 			{t->kind = 15; break;}
+		case 15:
+			{t->kind = 22; break;}
 
 	}
 	AppendVal(t);

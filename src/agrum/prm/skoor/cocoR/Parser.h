@@ -115,6 +115,7 @@ void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
 	const ErrorsContainer& errors() const;
 
 	void skoor();
+	void Ident(std::string& s);
 	void RequestBloc();
 	void Observe();
 	void Unobserve();
