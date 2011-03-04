@@ -72,9 +72,8 @@ RequestBloc = request word  (. __currentSession = new SkoorSession(gum::narrow(t
               .
 //=====================
 Observe =   (. std::string left_value, right_value; .)
-          Ident<left_value> '=' Ident<right_value> ';'
-            (. __currentSession->addObserve(t->line, left_value, right_value); .)
-          .
+          Ident<left_value> '=' word (. right_value = gum::narrow(t->val); .)
+          ';' (. __currentSession->addObserve(t->line, left_value, right_value); .) .
 
 //=====================
 Unobserve = unobserve (. std::string s; .)

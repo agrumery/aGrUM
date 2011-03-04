@@ -155,7 +155,8 @@ void Parser::Observe() {
 		std::string left_value, right_value; 
 		Ident(left_value);
 		Expect(15);
-		Ident(right_value);
+		Expect(3);
+		right_value = gum::narrow(t->val); 
 		Expect(12);
 		__currentSession->addObserve(t->line, left_value, right_value); 
 }
