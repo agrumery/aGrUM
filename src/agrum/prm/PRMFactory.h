@@ -94,7 +94,7 @@ class PRMFactory {
      *
      * @return Returns the PRM created by this factory.
      */
-    PRM* prm();
+    PRM* prm() const;
 
     /**
      * @return Returns the PRMObject type of the object begin built.

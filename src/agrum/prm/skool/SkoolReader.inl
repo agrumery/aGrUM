@@ -96,6 +96,12 @@ namespace gum {
         __prmTake = true;
         return __factory.prm();
       }
+      
+      INLINE
+      const gum::prm::PRM* 
+      SkoolReader::prm() const {
+        return __factory.prm();
+      }
 
 /// @{
 /// publishing Errors API

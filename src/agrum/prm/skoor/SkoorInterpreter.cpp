@@ -58,7 +58,8 @@ SkoorInterpreter::SkoorInterpreter() :
   m_syntax_flag(false),
   m_verbose(false),
   m_log(cout),
-  m_current_line(-1)
+  m_current_line(-1),
+  m_prm_taken(false)
 {
   m_paths.push_back("./");
 }
@@ -71,7 +72,8 @@ SkoorInterpreter::SkoorInterpreter( SkoorContext * c ) :
   m_syntax_flag(false),
   m_verbose(false),
   m_log(cout),
-  m_current_line(-1)
+  m_current_line(-1),
+  m_prm_taken(false)
 {
   m_paths.push_back("./");
 }
@@ -84,7 +86,8 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
   m_syntax_flag(false),
   m_verbose(false),
   m_log(cout),
-  m_current_line(-1)
+  m_current_line(-1),
+  m_prm_taken(false)
 {  
   // Add working dir to path
   m_paths.push_back("./");
@@ -115,7 +118,7 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
 SkoorInterpreter::~SkoorInterpreter()
 {
   delete m_context;
-  if ( m_reader )
+  if ( m_reader && ! m_prm_taken )
     delete m_reader->prm();
   delete m_reader;
   delete m_inf;
@@ -189,10 +192,14 @@ void SkoorInterpreter::setVerboseMode ( bool f )
   m_verbose = f;
 }
   
-/// Retrieve prm object.
-const gum::prm::PRM* SkoorInterpreter::prm() const
+/// Retrieve prm object. You must delete it when done.
+gum::prm::PRM* SkoorInterpreter::prm() const
 {
-  return m_reader->prm();
+    if ( m_reader ) {
+        m_prm_taken = true;
+        return m_reader->prm();
+    } else
+        return 0;
 }
 
 /// Retrieve inference motor object.
@@ -222,9 +229,11 @@ bool SkoorInterpreter::interpret()
     
   // Create the reader for this time
   if ( m_reader ) {
-    delete m_reader->prm();
+    if ( ! m_prm_taken )
+        delete m_reader->prm();
     delete m_reader;
   }
+  m_prm_taken = false;
   m_reader = new skool::SkoolReader();
   
   // Deduce root path from package name.

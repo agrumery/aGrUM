@@ -98,7 +98,7 @@ public:
   void setVerboseMode ( bool f );
   
   /// Retrieve prm object. You must delete it when done.
-  const gum::prm::PRM* prm() const;
+  gum::prm::PRM* prm() const;
   /// Retrieve inference motor object.
   const gum::prm::PRMInference* inference() const;
   
@@ -154,6 +154,7 @@ private:
   bool m_verbose;
   std::ostream& m_log;
   int m_current_line;
+  mutable bool m_prm_taken;
   
   //// We need this when using grounded inference
   //gum::BayesNetInference<gum::prm::prm_float>* bn;

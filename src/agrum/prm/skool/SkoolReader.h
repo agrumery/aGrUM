@@ -64,6 +64,7 @@ public:
     void addClassPath(const std::string& class_path);
 
     gum::prm::PRM* prm();
+    const gum::prm::PRM* prm() const;
 
     /// @{
     /// publishing Errors API

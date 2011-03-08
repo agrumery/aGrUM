@@ -41,7 +41,7 @@ PRMFactory::~PRMFactory()
 
 INLINE
 PRM*
-PRMFactory::prm() { return __prm; }
+PRMFactory::prm() const { return __prm; }
 
 INLINE
 PRMObject::ObjectType
