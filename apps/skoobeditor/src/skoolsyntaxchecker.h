@@ -27,6 +27,7 @@ class SkoolSyntaxChecker : public QThread
 public:
 	SkoolSyntaxChecker( QObject * parent );
 	SkoolSyntaxChecker( const QString & skoolFilename, QObject * parent);
+	SkoolSyntaxChecker( const QsciScintillaExtended * sci, QObject * parent );
 	~SkoolSyntaxChecker();
 
 	const QsciScintillaExtended * document() const;

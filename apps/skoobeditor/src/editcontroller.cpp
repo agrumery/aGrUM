@@ -8,11 +8,15 @@
 #include "projectcontroller.h"
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
+#include "prmcompleter.h"
 
+#include <QCompleter>
 #include <QDebug>
 
 //
 struct EditController::PrivateData {
+	PRMCompleter * completer;
+	QSharedPointer<PRMTreeModel> prmModel;
 };
 
 // Constructor
@@ -22,6 +26,8 @@ EditController::EditController( MainWindow * mw, QObject * parent) :
 	d(new PrivateData),
 	pr(new Properties(mw,mw))
 {
+	d->completer = new PRMCompleter(this);
+
 	connect( mw->ui->actionUndo, SIGNAL(triggered()), this, SLOT(undo()) );
 	connect( mw->ui->actionRedo, SIGNAL(triggered()), this, SLOT(redo()) );
 	connect( mw->ui->actionCut, SIGNAL(triggered()), this, SLOT(cut()) );
@@ -105,8 +111,15 @@ void EditController::decreaseIndentation()
 
 void EditController::autoComplete()
 {
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->autoCompleteFromAll();
+	if (mw->fc->hasCurrentDocument()) {
+		d->prmModel.clear();
+		d->prmModel = mw->bc->currentDocumentModel();
+		d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
+
+		d->completer->setModel( d->prmModel.data() );
+		mw->fc->currentDocument()->setCompleter(d->completer);
+		mw->fc->currentDocument()->autoCompleteFromCompleter();
+	}
 }
 
 /**
@@ -115,3 +128,4 @@ void EditController::editPreferences()
 {
 	pr->exec();
 }
+

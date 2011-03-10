@@ -1,4 +1,27 @@
 
+10/03/2011
+    * Add : TreeModel du PRM.
+    * Add : Possibilité de récupérer le TreeModel du PRM quand on check la syntaxe.
+    * Add : Amélioration de l'autocomplétion : elle est basée sur le TreeModel.
+
+07/03/2011
+    * Fix : Coloration syntaxique gère mal les packages.
+
+02/03/2011
+    * Improve : Enlève le refactoring automatique dans l'explorateur de projet.
+        => Je l'ajouterais plus tard dans le menu contextuel.
+    * Fix : Correction syntaxique quand il y a des erreurs ne marche plus pour les skool.
+
+01/03/2011
+    * Add : Clic droit sur un package du projet => menu avec
+		- créer un package;
+		- créer une classe/système/requête;
+		- renommer;
+		- supprimer;
+	* Add : Drag and drop de package dans l'explorateur 
+		=> update les packages des fichiers dedans
+		=> update les import dans les autres fichiers.
+    
 26/02/2011
 	* Add : Pour l'explorateur de projet, icone pour les différents type de fichier.
 		-> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).

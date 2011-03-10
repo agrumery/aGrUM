@@ -1,5 +1,7 @@
 #include "qscilexerskool2.h"
 
+#include "qsciscintillaextended.h"
+
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscistyle.h>
 #include <Qsci/qsciapis.h>
@@ -14,6 +16,7 @@ struct QsciLexerSkool2::PrivateData {
 	QRegExp commentBlockDoc;
 	QRegExp function;
 	QRegExp symbol;
+	QRegExp id;
 	QRegExp number;
 	QRegExp operators;
 	QRegExp keywords;
@@ -52,14 +55,15 @@ QsciLexerSkool2::QsciLexerSkool2(QObject * parent) : QsciLexerCustom(parent), d(
 	d->commentBlockDoc = QRegExp("^/\\*\\*");
 	d->function = QRegExp("^([a-zA-Z_][a-zA-Z_0-9]*)\\s*\\(");
 	d->symbol = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*");
+	d->id = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*(\\.[a-zA-Z_][a-zA-Z_0-9]*)*");
 	d->number = QRegExp("^\\d+(\\.\\d+)?");
 	d->operators = QRegExp("^(\\=|\\+|\\-|\\{|\\}|\\[|\\]|\\.|\\;|\\,|\\:|\\(|\\)|\\*)");
 	d->keywords = QRegExp("^(" + d->keywordsList.join("|") + ")\\s");
 	d->spaces = QRegExp("^\\s+");
 
 	d->assignation = QRegExp("^(([a-zA-Z_][a-zA-Z_0-9]*)(\\.([a-zA-Z_][a-zA-Z_0-9]*))*)(\\s*)((-|\\+)?\\=)");
-	d->declarationReference = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*(\\[\\d*\\])?\\s+[a-zA-Z_][a-zA-Z_0-9]*\\s*;");
-	d->declarationAttribute = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*(\\[\\d*\\])?\\s[^\\{\\;\\=]*\\{");
+	d->declarationReference = QRegExp("^[a-zA-Z_][\\.a-zA-Z_0-9]*(\\[\\d*\\])?\\s+[a-zA-Z_][a-zA-Z_0-9]*\\s*;");
+	d->declarationAttribute = QRegExp("^[a-zA-Z_][\\.a-zA-Z_0-9]*(\\[\\d*\\])?\\s[^\\{\\;\\=]*\\{");
 
 	d->normalFont = QFont("Courier new", 10);
 	d->normalFont.setStyleHint(QFont::Monospace);
@@ -190,7 +194,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 	free(chars);
 
 	int style, previousStyle, lineNb = 0, level = QsciScintilla::SC_FOLDLEVELBASE;
-	bool isWaitingType = false, isImport = false, isClassDeclaration = false;
+	bool isWaitingType = false, isWaitingPackage = false;
 	bool startInComment = false, isNewLine = true, newLineJustMatch = false, startBlock = false;
 	QString line;
 
@@ -318,41 +322,35 @@ void QsciLexerSkool2::styleText (int start, int end)
 										level | QsciScintilla::SC_FOLDLEVELHEADERFLAG);
 				level++;
 				startBlock = true;
-				isClassDeclaration = false;
 
 			} else if (d->operators.cap(0) == "}") {
 				level--;
 				startBlock = false; // au cas où la { et la } sont sur la même ligne.
 
-			} else if (isImport && (d->operators.cap(0) == ";"))
-				isImport = false;
+			}
 
 		// Keyword
 		} else if ( line.contains(d->keywords) ) { // #^(type|class|import|package|...)\s#
 			style = Keyword;
 			len = d->keywords.cap(0).length();
-			if ( d->keywords.cap(1) == "import" )
-				isImport = true;
-			else if ( d->keywords.cap(1) == "class" )
-				isClassDeclaration = true;
-			else if ( isWaitingType && d->typesList.contains(d->keywords.cap(1)) ) // {boolean,float,int}
-				isWaitingType = false;
-			else if ( d->waitTypes.contains(d->keywords.cap(1)) ) // {type,class,system,import}
-				isWaitingType = true;
+
+			//
+			if ( d->keywords.cap(1) == "package" )
+				isWaitingPackage = true;
+			else
+				isWaitingPackage = false;
 
 		// Symbol
-		} else if ( line.contains(d->symbol) ) { // #^[a-zA-Z_]([a-zA-Z0-9_])*#
-			len = d->symbol.cap(0).length();
+		} else if ( line.contains(d->id) ) { // #^[a-zA-Z_]([a-zA-Z0-9_])*#
+			len = d->id.cap(0).length();
+			style = Default;
 
-			if (isClassDeclaration || isWaitingType ||
-				(isNewLine && line.contains(d->declarationReference)) ||
-				(isNewLine && line.contains(d->declarationAttribute)) ||
-				(isImport && (line.indexOf(QRegExp("\\."),len) == -1)) ) {
+			//
+			if ( isWaitingPackage ) {
 				style = Type;
-			} else
-				style = Default;
-
-			isWaitingType = false;
+				editor()->markerAdd(lineNb,QsciScintillaExtended::Package);
+			}
+			isWaitingPackage = false;
 
 		// Sinon
 		} else { // Sais pas ce que c'est

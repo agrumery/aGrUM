@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QUrl>
+#include <QThread>
 #include <QDebug>
 
 
@@ -104,18 +105,76 @@ bool Project::isInside( const QString & filePath ) const
   */
 QList<QString> Project::files() const
 {
+//	QList<QString> closeList;
+//	QList<QModelIndex> openList;
+//	openList << root();
+//	while ( ! openList.isEmpty() ) {
+//		QModelIndex current = openList.takeFirst();
+//		if ( hasChildren(current) ) {
+//			for ( int i = 0 ; i < rowCount(current) ; i++ )
+//				openList << current.child(i,0);
+//		} else
+//			closeList << filePath(current);
+//	}
+//	return closeList;
+
 	QList<QString> closeList;
-	QList<QModelIndex> openList;
-	openList << root();
+	QList<QDir> openList;
+	openList << d->dir;
 	while ( ! openList.isEmpty() ) {
-		QModelIndex current = openList.takeFirst();
-		if ( hasChildren(current) ) {
-			for ( int i = 0 ; i < rowCount(current) ; i++ )
-				openList << current.child(i,0);
-		} else
-			closeList << filePath(current);
+		QDir current = openList.takeFirst();
+		foreach ( QFileInfo info, current.entryInfoList(QDir::AllEntries|QDir::NoDotAndDotDot) ) {
+			if ( info.isDir() )
+				openList << info.absoluteFilePath();
+			else
+				closeList << info.absoluteFilePath();
+		}
 	}
 	return closeList;
+}
+
+
+/**
+  */
+bool Project::rmdirRec( const QModelIndex & parent )
+{
+	qDebug() << "in rmdirRec()" << parent.data().toString();
+
+//	if ( ! isDir(index) )
+//		return false;
+
+//	qDebug() << "rowCount() ==" << rowCount(index) << hasChildren(index);
+//	bool result = true;
+//	for ( int i = rowCount(index) - 1 ; i >= 0 ; i-- ) {
+//		QModelIndex child = index.child(i,0);
+//		qDebug() << "try to remove" << child.data().toString();
+//		if ( isDir(child) && ! rmdirRec(child) ) {
+//			result = false;
+//			qDebug() << "Can't remove dir" << child.data().toString();
+//		} else if ( ! isDir(child) && ! remove(child) ) {
+//			result = false;
+//			qDebug() << "Can't remove file" << child.data().toString();
+//		}
+//	}
+
+//	qDebug() << "try to remove" << index.data().toString();
+//	// if result is false, don't try rmdir
+//	return result && rmdir(index);
+
+	if ( ! isDir(parent) )
+		return false;
+
+	QDir dir( filePath(parent) );
+	bool result = true;
+	foreach ( QFileInfo info, dir.entryInfoList(QDir::AllEntries|QDir::NoDotAndDotDot) ) {
+		if ( info.isDir() )
+			result &= rmdirRec( index( info.absoluteFilePath() ) );
+		else
+			result &= dir.remove( info.absoluteFilePath() );
+	}
+
+	// If result is false, don't try to rmdir.
+	return result && rmdir(parent);
 }
 
 
@@ -277,9 +336,9 @@ bool Project::dropMimeData ( const QMimeData * data, Qt::DropAction action, int 
 Qt::ItemFlags Project::flags( const QModelIndex & index ) const
 {
 	Qt::ItemFlags flags = QFileSystemModel::flags(index);
-	if ( isDir(index) ) // A dir can't be edited or dragged.
-		flags &= ~ Qt::ItemIsEditable & ~ Qt::ItemIsDragEnabled;
-	else if ( ! d->editable )
+//	if ( isDir(index) ) // A dir can't be dragged for moment.
+//		flags &= ~ Qt::ItemIsDragEnabled;
+	if ( ! d->editable )
 		flags &= ~ Qt::ItemIsEditable;
 	return flags;
 }

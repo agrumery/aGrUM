@@ -42,9 +42,11 @@ SOURCES += main.cpp\
     properties.cpp \
     qkeysequencewidget.cpp \
     qscilexerskool2.cpp \
-    skoolsyntaxchecker.cpp \
+	skoolinterpretation.cpp \
     skoorinterpretation.cpp \
-    projectproperties.cpp
+    projectproperties.cpp \
+    prmtreemodel.cpp \
+    prmcompleter.cpp
     
 HEADERS  += mainwindow.h \
     qscilexerskool.h \
@@ -63,9 +65,11 @@ HEADERS  += mainwindow.h \
     qkeysequencewidget.h \
     qscilexerskool2.h \
     syntaxchecker.h \
-    skoolsyntaxchecker.h \
+	skoolinterpretation.h \
     skoorinterpretation.h \
-    projectproperties.h
+    projectproperties.h \
+    prmtreemodel.h \
+    prmcompleter.h
 
 FORMS    += mainwindow.ui \
     advancedsearch.ui \

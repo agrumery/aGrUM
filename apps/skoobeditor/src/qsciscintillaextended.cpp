@@ -6,8 +6,11 @@
 
 #include <Qsci/qsciapis.h>
 #include <QFileInfo>
-#include <QTabBar>
 #include <QAction>
+#include <QCompleter>
+#include <QAbstractItemView>
+#include <QKeyEvent>
+#include <QScrollBar>
 #include <QDebug>
 
 //
@@ -15,13 +18,14 @@ struct QsciScintillaExtended::PrivateData {
 	QString title;
 	QString filename;
 	QList<int> syntaxErrorOnLine;
-	QList<QString> classesImport;
+	QCompleter * completer;
 };
 
 
 void QsciScintillaExtended::initParameters()
 {
 	d = new PrivateData;
+	d->completer = 0;
 
 	setTitle(tr("Sans titre")); // Default file path show in the window title bar.
 
@@ -53,7 +57,9 @@ void QsciScintillaExtended::initParameters()
 	markerDefine(RightArrow,Bookmark);
 	setMarkerBackgroundColor(QColor(0,196,0), Bookmark);
 	markerDefine(Background,Error);
-	setMarkerBackgroundColor(QColor(255,100,100), Error);;
+	setMarkerBackgroundColor(QColor(255,100,100), Error);
+	markerDefine(Invisible,Package);
+	markerDefine(Invisible,Class);
 
 	// TODO : A modifier avec les nouvelles fonctions de QScintilla 2.4.6
 	SendScintilla( (unsigned int) SCI_INDICSETSTYLE,
@@ -190,6 +196,16 @@ void QsciScintillaExtended::setLexer(QsciScintillaExtended::Lexer lex)
 		QsciScintilla::setLexer( new QsciLexerSkoor(this) );
 }
 
+///
+QString QsciScintillaExtended::package() const
+{
+	static QRegExp regex("package\\s+([a-zA-Z_][\\w_]*(\\.[a-zA-Z_][\\w_]*)*)[^\\w_]");
+	int line = markerFindNext(0, 1 << Package);
+	if ( text(line).contains(regex) )
+		return regex.cap(1);
+	else
+		return QString();
+}
 
 /**
   */
@@ -229,6 +245,20 @@ void QsciScintillaExtended::setCurrentIndex( int index )
 	setCursorPosition(line,index);
 }
 
+/**
+  */
+int QsciScintillaExtended::currentPos() const
+{
+	return SendScintilla(SCI_GETCURRENTPOS);
+}
+
+QPoint QsciScintillaExtended::caretPosition() const
+{
+	int x,y,pos = currentPos();
+	x = SendScintilla(SCI_POINTXFROMPOSITION,0,pos);
+	y = SendScintilla(SCI_POINTYFROMPOSITION,0,pos);
+	return QPoint(x,y);
+}
 
 /**
   */
@@ -262,6 +292,32 @@ int QsciScintillaExtended::getStyleAt( int line, int index ) const
 	getStyleAt( positionFromLineIndex(line,index) );
 }
 
+
+/// Set Qt completer for autoCompletion.
+void QsciScintillaExtended::setCompleter( QCompleter * c )
+{
+	if (d->completer)
+		QObject::disconnect(d->completer, 0, this, 0);
+
+	d->completer = c;
+
+	if (!d->completer)
+		return;
+
+	d->completer->setWidget(this);
+	d->completer->setCompletionMode(QCompleter::PopupCompletion);
+	d->completer->setCaseSensitivity(Qt::CaseInsensitive);
+	QObject::connect(d->completer, SIGNAL(activated(QString)),
+					 this, SLOT(insertCompletion(QString)));
+//	QObject::connect(d->completer, SIGNAL(highlighted(QString)),
+//					 this, SLOT(insertCompletion(QString)));
+}
+
+/// Retrieve completer.
+QCompleter * QsciScintillaExtended::completer() const
+{
+	return d->completer;
+}
 
 /**
   Switch comments on the selected block.
@@ -562,9 +618,103 @@ void QsciScintillaExtended::resetZoom()
 }
 
 
+/// Autocomplete from QCompleter and its model.
+void QsciScintillaExtended::autoCompleteFromCompleter()
+{
+	if ( ! d->completer )
+		return;
+
+	QString lineText = text( currentLine() );
+	int caret = currentIndex(), start = caret - 1;
+
+	// Search start of prefix.
+	while ( start >= 0 && ( lineText[start].isLetterOrNumber() ||
+							lineText[start] == QChar('.') ||
+							lineText[start] == QChar('_') ) ) start--;
+	start++;
+	QString prefix = lineText.mid(start, caret - start);
+
+	if ( prefix.size() <= 1 ) {
+		d->completer->popup()->hide();
+		return;
+	}
+
+	d->completer->setCompletionPrefix( prefix );
+	int count = d->completer->completionCount();
+	QRect cr;
+	if ( count == 0 )
+		return;
+	else if ( count == 1 && ! d->completer->popup()->isVisible() ) {
+		// Insert directly the result
+		d->completer->setCurrentRow(0);
+		insertCompletion( d->completer->currentCompletion() );
+	} else {
+		// Compute popup size.
+		cr = QRect( caretPosition(), QSize( d->completer->popup()->sizeHintForColumn(0) +
+											d->completer->popup()->verticalScrollBar()->sizeHint().width(),
+											textHeight(currentLine()) ) );
+		// Select first result
+		d->completer->popup()->setCurrentIndex(d->completer->completionModel()->index(0, 0));
+		// Show popup
+		d->completer->complete( cr );
+	}
+}
+
 /**
   */
 void QsciScintillaExtended::onMarginClicked(int, int line, Qt::KeyboardModifiers)
 {
 	switchMarker(line);
+}
+
+/**
+  */
+void QsciScintillaExtended::insertCompletion(const QString& completion)
+{
+	if (d->completer->widget() != this)
+		return;
+	int extra = completion.length() - d->completer->completionPrefix().length();
+	insert( completion.right(extra) );
+	setCurrentIndex( currentIndex() + extra );
+}
+
+void QsciScintillaExtended::focusInEvent(QFocusEvent *e)
+{
+	if (d->completer)
+		d->completer->setWidget(this);
+	QsciScintilla::focusInEvent(e);
+}
+
+void QsciScintillaExtended::keyPressEvent(QKeyEvent *e)
+{
+	if (d->completer && d->completer->popup()->isVisible()) {
+		// The following keys are forwarded by the completer to the widget
+	   switch (e->key()) {
+	   case Qt::Key_Enter:
+	   case Qt::Key_Return:
+	   case Qt::Key_Escape:
+	   case Qt::Key_Tab:
+	   case Qt::Key_Backtab:
+			e->ignore();
+			return; // let the completer do default behavior
+	   case Qt::Key_Right:
+			QsciScintilla::keyPressEvent(e);
+			autoCompleteFromCompleter();
+			return;
+	   case Qt::Key_Left:
+			QsciScintilla::keyPressEvent(e);
+			autoCompleteFromCompleter();
+			return;
+	   default:
+		   break;
+	   }
+	   if ( e->modifiers() == Qt::ControlModifier )
+		   return;
+
+	   QsciScintilla::keyPressEvent(e);
+	   autoCompleteFromCompleter();
+	   return;
+	}
+
+	QsciScintilla::keyPressEvent(e);
 }

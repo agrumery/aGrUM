@@ -5,12 +5,17 @@
 using namespace gum::prm::skool;
 
 SkoolSyntaxChecker::SkoolSyntaxChecker( QObject * parent ) :
-		QThread(parent), m_reader(0)
+		QThread(parent), m_sci(0), m_reader(0)
 {
 }
 
 SkoolSyntaxChecker::SkoolSyntaxChecker( const QString & skoolFilename, QObject * parent) :
-		QThread(parent), m_title(skoolFilename), m_reader(0)
+		QThread(parent), m_sci(0), m_title(skoolFilename), m_reader(0)
+{
+}
+
+SkoolSyntaxChecker::SkoolSyntaxChecker( const QsciScintillaExtended * sci, QObject * parent ) :
+		QThread(parent), m_sci(sci), m_title(sci->title()), m_reader(0)
 {
 }
 
@@ -25,11 +30,13 @@ SkoolSyntaxChecker::~SkoolSyntaxChecker()
 /// Warning : this document may be 0 and it may no longer exists (-> segfault).
 const QsciScintillaExtended * SkoolSyntaxChecker::document() const
 {
+	QMutexLocker locker(&m_mutex);
 	return m_sci;
 }
 
 QString SkoolSyntaxChecker::documentTitle() const
 {
+	QMutexLocker locker(&m_mutex);
 	return m_title;
 }
 

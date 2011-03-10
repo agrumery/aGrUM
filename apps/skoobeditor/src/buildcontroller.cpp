@@ -8,8 +8,9 @@
 #include "viewcontroller.h"
 #include "projectcontroller.h"
 #include "qsciscintillaextended.h"
-#include "skoolsyntaxchecker.h"
+#include "skoolinterpretation.h"
 #include "skoorinterpretation.h"
+#include "prmtreemodel.h"
 
 #include <agrum/prm/skool/SkoolReader.h>
 #include <agrum/prm/skoor/SkoorInterpreter.h>
@@ -33,14 +34,16 @@ struct BuildController::PrivateData {
 
 	bool isExecution;
 	SkoorInterpretation * skoorThread;
-	SkoolSyntaxChecker  * skoolThread;
+	SkoolInterpretation  * skoolThread;
 
 	QMutex mutex;
 
 	bool autoSyntaxCheck;
 	SkoorInterpretation * skoorSyntaxThread;
-	SkoolSyntaxChecker  * skoolSyntaxThread;
+	SkoolInterpretation  * skoolSyntaxThread;
 	QTimer timer;
+
+	QSharedPointer<PRMTreeModel> prmModel;
 };
 
 
@@ -85,6 +88,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 /// Destructor
 BuildController::~BuildController()
 {
+	d->prmModel.clear();
 	delete d;
 }
 
@@ -110,8 +114,20 @@ void BuildController::setAutoSyntaxCheck( bool isAuto )
 	d->autoSyntaxCheck = isAuto;
 	if ( isAuto )
 		startAutoSyntaxCheckThread(-1);
-	else
+	else {
 		d->timer.stop();
+		d->prmModel.clear();
+	}
+}
+
+QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel()
+{
+	return d->prmModel;
+}
+
+const QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel() const
+{
+	return d->prmModel;
 }
 
 /**
@@ -161,11 +177,7 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 		d->skoolThread = 0;
 	}
 
-	// Create thread ( check if it has been saved )
-	if ( sci->filename().isEmpty() )
-		d->skoolThread = new SkoolSyntaxChecker(this);
-	else
-		d->skoolThread = new SkoolSyntaxChecker(sci->filename(), this);
+	d->skoolThread = new SkoolInterpretation(sci, this);
 
 	// and set text
 	d->skoolThread->setDocument( sci->text() );
@@ -298,7 +310,7 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 	}
 
 	// Create thread and set text
-	d->skoorThread = new SkoorInterpretation( sci, mw, checkSyntaxOnly );
+	d->skoorThread = new SkoorInterpretation( sci, this, checkSyntaxOnly );
 	d->skoorThread->setDocument( sci->text() );
 
 	// Set paths
@@ -512,7 +524,7 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 	} else if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skool ) {
 		if ( d->skoolSyntaxThread == 0 ) {
 			// Create new document and connect it
-			d->skoolSyntaxThread = new SkoolSyntaxChecker( mw->fc->currentDocument()->title(), this );
+			d->skoolSyntaxThread = new SkoolInterpretation( mw->fc->currentDocument(), this );
 			connect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
 
 			// Set paths
@@ -542,6 +554,12 @@ void BuildController::onSkoorSyntaxThreadFinished()
 	if ( interpreter == 0 )
 		return;
 
+	//
+	if ( interpreter->errors()== 0 ) {
+		d->prmModel.clear();
+		d->prmModel = QSharedPointer<PRMTreeModel>(new PRMTreeModel( interpreter->prm(), this ));
+	}
+
 	mw->fc->currentDocument()->clearAllSyntaxErrors();
 
 	for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
@@ -564,6 +582,11 @@ void BuildController::onSkoolSyntaxThreadFinished()
 		return;
 
 	gum::ErrorsContainer errors = d->skoolSyntaxThread->reader()->getErrorsContainer();
+
+	if ( errors.count() == 0 ) {
+		d->prmModel.clear();
+		d->prmModel = QSharedPointer<PRMTreeModel>(new PRMTreeModel( d->skoolSyntaxThread->reader()->prm(), this ));
+	}
 
 	mw->fc->currentDocument()->clearAllSyntaxErrors();
 

@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include <QModelIndex>
+#include <QSharedPointer>
 
 #include "qsciscintillaextended.h"
+#include "prmtreemodel.h"
 
 class MainWindow;
 
@@ -16,6 +18,9 @@ public:
 	~BuildController();
 
 	bool isAutoSyntaxCheck() const;
+
+	QSharedPointer<PRMTreeModel> currentDocumentModel();
+	const QSharedPointer<PRMTreeModel> currentDocumentModel() const;
 
 public slots:
 	void setAutoSyntaxCheck( bool isAuto );

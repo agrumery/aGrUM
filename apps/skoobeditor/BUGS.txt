@@ -9,10 +9,11 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-
+    * Ajouter les mots-clés du langage au model pour les avoir en plus.
 
 AMELIORATIONS :
 
+    * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
 	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
 		à la sauvegarde.
 	* Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.
@@ -36,14 +37,9 @@ TODOS :
 	* Génération de la documentation (style Javadoc ou Doxygen)
 	* Outils de refactoring
     
-	* Clic droit sur un package du projet => menu avec
-		- créer un package;
-		- créer une classe/système/requête;
-		- renommer;
-		- supprimer;
-	* Drag and drop de package dans l'explorateur 
-		=> update les packages des fichiers dedans
-		=> update les import dans les autres fichiers.
+    * Refactoring : ajouter le refactoring pour le fichier et package dans l'explorateur de projet.
+        => Il faut attendre d'avoir un modèle interne complet du projet.
+    
 	* Ajouter à l'explorateur de projet les répertoires qui ont été ajoutés 
 		dans les propriétés de projet (mais en ReadOnly).
 		=> Avec un autre QTreeView ?
@@ -55,7 +51,6 @@ TODOS :
 	* Se souvenir des marqueurs dans les fichiers ouverts quand on relance le programme ?
 		Pour tout les fichiers du projet, dans le .skoop ?
 
-	* Améliorer l'autocomplétion avec en plus les packages, classes du package etc...
 	* Rendre l'autocomplétion contextuel quand on fait "MaClass.unAttribut", 
     	l'autocomplétion ne va chercher que dans les attributs de cette class.
     	Idem pour "system.class".

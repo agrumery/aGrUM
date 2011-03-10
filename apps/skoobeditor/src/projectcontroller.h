@@ -28,6 +28,28 @@ public slots:
 	void createNewRequestFile();
 	void createNewSystemFile();
 
+	/*!
+		This method change a filename, a package in all file in the project.
+		It change package in the file when it is moved,
+		class or system name when it is renamed,
+		and imports in others files in both cases.
+
+		If \a fromFilePath is a file, it can be :
+		- renamed, if only filename change in \a toFilePath;
+		- moved, if only path change in \a toFilePath;
+		- moved and renamed, if both path and filename change;
+		- removed, if \a toFilePath is an empty string;
+
+		If \a fromFilePath is a directory, it can be :
+		- renamed, if only dirname change in \a toFilePath;
+		- moved, if only path change in \a toFilePath;
+		- moved and renamed, if both path and dirname change;
+		- removed, if \a toFilePath is an empty string;
+
+		This method do nothing if fromFilePath is not a valid file in the project.
+	*/
+	void refactor( const QString & fromFilePath, const QString & toFilePath );
+
 protected:
 	void addToRecentsProjects( const QString & projectPath );
 	void removeOfRecentsProjects( const QString & projectPath );
