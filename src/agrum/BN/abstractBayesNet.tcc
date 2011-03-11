@@ -24,6 +24,8 @@
  * @author Lionel Torti and Pierre-Henri Wuillemin
  */
 // ============================================================================
+#include <math.h>
+
 #include <agrum/BN/abstractBayesNet.h>
 // ============================================================================
 
@@ -181,18 +183,33 @@ namespace gum {
   template<typename T_DATA> INLINE
   std::string
   AbstractBayesNet<T_DATA>::toString ( void ) const {
-    Size dSize = 1;
+    float dSize = 0.0;
     Size param = 0;
 
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
-      dSize *= variable ( *it ).domainSize();
+      dSize += log10(variable ( *it ).domainSize());
       param += ( ( const MultiDimImplementation<T_DATA> & ) cpt ( *it ).getMasterRef() ).realSize();
     }
 
-    int compressionRatio = ( int ) ( 100.0 * ( ( float ) 1.0 - ( ( float ) param ) / ( ( float ) dSize ) ) );
+    double compressionRatio = log10(1.0*param)-dSize;
 
     std::stringstream s;
-    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", domainSize: " << dSize << ", parameters: " << param << ", compression ratio: " << compressionRatio << "% }";
+    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
+    
+    if (dSize>6) 
+      s<<"domainSize: 10^" << dSize;
+    else
+      s<<"domainSize: " << trunc(pow(10.0,dSize));
+
+    s<< ", parameters: " << param << ", compression ratio: ";
+    
+    if (compressionRatio>-3) 
+      s<<trunc(100.0-pow(10.0,compressionRatio+2.0));
+    else
+      s<<"100-10^" << compressionRatio+2.0;
+    
+    s<< "% }";
+    
     return s.str();
   }
 
