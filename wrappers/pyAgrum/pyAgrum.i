@@ -210,6 +210,37 @@ def loadBN(s):
 %}
 
 %extend gum::BayesNet {
+    PyObject *names() { return NULL; };
+    PyObject *ids() {return NULL;};
+}
+
+%feature("shadow") gum::BayesNet::names() {
+def names(self):
+    """
+    give the list of names of variable in the bn
+    """
+
+    inst=self.completeInstantiation()
+    l={}
+    for i in range(inst.nbrDim()):
+        l[inst.variable(i).name()]=self.nodeId(inst.variable(i))
+    return l
+}
+
+%feature("shadow") gum::BayesNet::ids() {
+def ids(self):
+    """
+    give a list of ids of variable in the bn
+    """
+
+    inst=self.completeInstantiation()
+    l={}
+    for i in range(inst.nbrDim()):
+        l[self.nodeId(inst.variable(i))]=inst.variable(i).name()
+    return l
+}
+
+%extend gum::BayesNet {
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
 				std::vector<PythonLoadListener> py_listener(1);
