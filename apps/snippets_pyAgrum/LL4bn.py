@@ -21,37 +21,85 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-import sys,os,csv
+import sys,os,csv,math
 
 from progress_bar import ProgressBar
 from pyAgrum_header import pyAgrum_header
 
 import pyAgrum as gum
 
+def lines_count(filename):
+    """ count lines in a file
+    """
+    numlines = 0
+    for line in open(filename): numlines += 1
+    
+    return numlines
+    
 def checkCompatibility(bn,fields,csv_name):
     """check if variables of the bn are in the fields
+    
+    if not : return None
+    if compatibilty : return a list of position for variables in fields
     """
-    isOk=True
+    res={}
+    isOK=True
+    names=bn.names()
     for field in bn.names():
         if not field in fields:
-            print "{0} is missing in {1}".format(field,csv_name)
-            isOk=False
-    return isOk
+            print "** field '{0}' is missing in {1}".format(field,csv_name)
+            isOK=False
+        else:
+            res[names[field]]=fields[field]
+    
+    if not isOK:
+        res=None
+        
+    return res
 
-def computeLL(bn_name,csv_name):
+def computeLL(bn_name,csv_name,visible=False,transforme_label=None):
     bn=gum.loadBN(bn_name)
+    
+    nbr_lines=lines_count(csv_name)-1
 
     batchReader = csv.reader(open(csv_name,'rb'))
 
     titre = batchReader.next()
     fields = {}
     for i,nom in enumerate(titre):
-        fields[nom]=i
+        fields[nom]=i        
 
-    if not checkCompatibility(bn,fields,csv_name):
-         module_help(1)
+    positions=checkCompatibility(bn,fields,csv_name)
+    if positions is None:
+         sys.exit(1)
 
-    return (0,0)
+    inst=bn.completeInstantiation()
+    
+    if visible:
+        prog = ProgressBar(csv_name+' : ',0, nbr_lines, 77,  mode='static', char='#')
+        prog.display()
+        
+    nbr_insignificant=0
+    likelihood=0.0
+    for data in batchReader:
+        for i in range(inst.nbrDim()):
+            try:
+                inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
+            except gum.OutOfBounds:
+                print "out of bounds",i,positions[i],data[positions[i]],inst.variable(i)
+        p=bn.jointProbability(inst)
+        if p==0:
+            nbr_insignificant+=1
+        else:
+            likelihood+=math.log(p,2)
+        if visible:
+            prog.increment_amount()
+            prog.display()
+        
+    if visible:
+        print
+        
+    return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,likelihood)
 
 
 def module_help(exit_value=1):
@@ -61,6 +109,11 @@ def module_help(exit_value=1):
     print os.path.basename(sys.argv[0]),"src.{bif|dsl} [data[.csv]]"
     sys.exit(exit_value)
 
+def getNumLabel(inst,i,label,transforme_label):
+    if transforme_label is not None:
+        label=transforme_label(label)
+    return inst.variable(i)[label]
+
 if __name__=="__main__":
     pyAgrum_header()
 
@@ -69,14 +122,16 @@ if __name__=="__main__":
 
     bn_name=sys.argv[1]
 
-    if len(sys.argv)<=2:
+    if len(sys.argv)<3:
         base,ext=os.path.splitext(bn_name)
         csv_name=base+'.csv'
     else:
         csv_name=sys.argv[2]
-        base,ext=os.path.splitext(bn_name)
-        if ext!=csv:
+        base,ext=os.path.splitext(csv_name)
+        if ext!='.csv':
             csv_name+='.csv'
 
-    (nbr,LL)=computeLL(bn_name,csv_name)
+    print '"{0}" vs "{1}"'.format(bn_name,csv_name)
+    (nbr,LL)=computeLL(bn_name,csv_name,visible=True)
+    print '{0}% of base is significant.\nLogLikelihood : {1}'.format(nbr,LL)
 
