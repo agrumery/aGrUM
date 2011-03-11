@@ -194,13 +194,28 @@ def addTick(self,*args):
   return self
 %}
 
+%pythoncode %{
+def loadBN(s):
+  bn=BayesNet()
+
+  extension=s.split('.')[-1].upper()
+  if extension=="BIF":
+    bn.loadBIF(s)
+  elif extension=="DSL":
+    bn.loadDSL(s)
+  else:
+    raise Exception("extension "+s.split('.')[-1]+" not used")
+
+  return bn
+%}
+
 %extend gum::BayesNet {
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
 				std::vector<PythonLoadListener> py_listener(1);
         try {
             gum::BIFReader<T_DATA> reader(self,name);
-						
+
 						if (l) {
 							int l_size = 1;
 							PyObject *item;
@@ -245,7 +260,7 @@ def addTick(self,*args):
 				std::vector<PythonLoadListener> py_listener(1);
         try {
             gum::DSLReader<T_DATA> reader(self,name);
-						
+
 						if (l) {
 							int l_size = 1;
 							PyObject *item;
@@ -490,7 +505,7 @@ def setEvidence(self, evidces):
         if isinstance(var_name, int):
             var = bn.variable(var_name)
         elif isinstance(var_name, str):
-            var = bn.variableFromName(var_name) 
+            var = bn.variableFromName(var_name)
         else:
             raise TypeError('values of the dict must be int or string')
 
@@ -550,7 +565,7 @@ def setEvidence(self, evidces):
         if isinstance(var_name, int):
             var = bn.variable(var_name)
         elif isinstance(var_name, str):
-            var = bn.variableFromName(var_name) 
+            var = bn.variableFromName(var_name)
         else:
             raise TypeError('values of the dict must be int or string')
 

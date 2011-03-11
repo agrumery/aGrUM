@@ -29,6 +29,7 @@
 #include <fstream>
 #include <vector>
 
+#include <agrum/core/inline.h>
 #include <agrum/core/cocoR/common.h>
 
 namespace gum {

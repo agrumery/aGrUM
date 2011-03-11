@@ -4,22 +4,30 @@
 import sys
  
 class ProgressBar:
-    def __init__(self, min_value = 0, max_value = 100, width=77,**kwargs):
+    def __init__(self, title="",min_value = 0, max_value = 100, width=77,**kwargs):
         self.char = kwargs.get('char', '#')
         self.mode = kwargs.get('mode', 'dynamic') # fixed or dynamic
         if not self.mode in ['fixed', 'dynamic']:
             self.mode = 'fixed'
  
+        self.total_width=width
+        
         self.bar = ''
         self.oldvar = ''
         self.hasChanged = True
+
         self.min = min_value
         self.max = max_value
         self.span = max_value - min_value
-        self.width = width
         self.amount = 0       # When amount == max, we are 100% done 
+        
+        self.change_title(title)
         self.update_amount(0) 
  
+    def change_title(self,new_title):
+        self.title = new_title
+        self.width=self.total_width-len(self.title) 
+        self.build_bar()
  
     def increment_amount(self, add_amount = 1):
         """
@@ -69,7 +77,7 @@ class ProgressBar:
             self.bar = self.char * num_hashes + ' ' * (all_full-num_hashes)
  
         percent_str = str(percent_done) + "%"
-        self.bar = '[ ' + self.bar + ' ] ' + percent_str
+        self.bar = self.title+'[ ' + self.bar + ' ] ' + percent_str
         self.hasChanged=(self.oldbar!=self.bar)
  
  
@@ -81,7 +89,7 @@ class ProgressBar:
         Display bar if needed
         """
         if self.hasChanged:
-            print self.bar, '\r',
+            print '\r', self.bar, '\r', self.title,
             sys.stdout.flush()
             self.hasChanged=False
  
