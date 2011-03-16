@@ -47,12 +47,10 @@ namespace std {
 #include <agrum/prm/PRMFactory.h>
 
 #undef TRY
-#ifdef GUM_NO_INLINE
+// Redefine try / catch to add a semantic error when errors are raised.
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
-#endif
-#ifndef GUM_NO_INLINE
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getContent()); }
-#endif
+#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.getContent()+")."); }
+#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.getContent()+")."); error=true; }
 
 #include <iostream>
 #include <string>
@@ -110,160 +108,124 @@ public:
 	Token *t;			// last recognized token
 	Token *la;			// lookahead token
 
-gum::prm::PRMFactory* __factory;
-std::vector<std::string> __class_path;
-gum::Set<std::string> __imports;
-std::string __file_name;
+private:
+    gum::prm::PRMFactory*       __factory;
+    std::vector<std::string>    __class_path;
+    gum::Set<std::string>       __imports;
 
-void SemErr(std::string s) {
-  SemErr(widen(s).c_str());
-}
-
-void setFactory(gum::prm::PRMFactory* f) {
-  __factory = f;
-}
-
-void setClassPath(const std::vector<std::string>& class_path) {
-  __class_path = class_path;
-}
-
-void setImports(const gum::Set<std::string>& imports) {
-  __imports = imports;
-}
-
-const gum::Set<std::string>& getImports() const {
-  return __imports;
-}
-
-void addImports(const gum::Set<std::string>& imports) {
-  for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
-    if (not __imports.exists(*iter)) {
-      __imports.insert(*iter);
+    // Convert string to wstring.
+    void SemErr(std::string s) {
+      SemErr(widen(s).c_str());
     }
-  }
-}
 
-void setFileName(const std::string& file) {
-  __file_name = file;
-}
+    // Return true if type is a class or an interface.
+    bool isClassOrInterface(std::string type) {
+      std::string dot = ".";
+      return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
+             factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
+    }
+    
+    void import( std::string fileID ) {
+        // If fileID has not yet been imported.
+        if ( ! __imports.exists(fileID) ) {
+            // We add it to file imported (even if import desn't succeed).
+            __imports.insert(fileID);
+                
+            std::string realFilename;
+            std::ifstream file_test;
+            bool fileFound = false;
 
-void import(std::string s) {
-  if (not __imports.exists(s)) {
-    __imports.insert(s);
-    std::string sep = "/";
-    std::string ext = ".skool";
-    std::string import;
-    std::ifstream file_test;
-    std::replace(s.begin(), s.end(), '.', '/');
-    bool found = false;
-    for (std::vector<std::string>::iterator iter = __class_path.begin(); iter != __class_path.end(); ++iter) {
-      import = (*iter) + sep + s + ext;
-      file_test.open(import.c_str());
-      if (file_test.is_open()) {
-        file_test.close();
-        found = true;
-        Scanner s(import.c_str());
-        Parser p(&s);
-        p.setFactory(__factory);
-        p.setClassPath(__class_path);
-        p.setImports(__imports);
-        p.setFileName(import);
-        p.Parse();
-        addImports(p.getImports());
-        __errors += p.__errors;
-        break;
+            std::replace(fileID.begin(), fileID.end(), '.', '/');
+
+            // Search filename in each path stored in __class_path
+            for (std::vector<std::string>::iterator path = __class_path.begin(); path != __class_path.end(); ++path) {
+                // Construct complete filePath
+                realFilename = (*path) + "/" + fileID + ".skool";
+
+                // We try to open it
+                file_test.open(realFilename.c_str());
+                if (file_test.is_open()) {
+                    file_test.close();
+                    fileFound = true;
+                                        
+                    // If we have already import this file, skip it.
+                    if ( __imports.exists( realFilename ) )
+                        break;
+                    
+                    // Remember we have found it.
+                    __imports.insert(realFilename);
+
+                    // We parse it
+                    Scanner s(realFilename.c_str());
+                    Parser p(&s);
+                    p.setFactory(__factory);
+                    p.setClassPath(__class_path);
+                    p.setImports(__imports);
+                    p.Parse();
+
+                    // We add file imported in p to file imported here.
+                    gum::Set<std::string> parserImports = p.getImports();
+                    for (gum::Set<std::string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
+                        if (not __imports.exists(*iter))
+                        __imports.insert(*iter);
+
+                    // We add warnings and errors to this
+                    __errors += p.__errors;
+
+                    // Stop to search
+                    break;
+                }
+            }
+
+            // If import filename has not been found, add an error.
+            if (not fileFound) SemErr("import not found");
+        }
+    }
+
+    // Set files already import in factory.
+    void setImports(const gum::Set<std::string>& imports) {
+      __imports = imports;
+    }
+
+    // Get files imports.
+    const gum::Set<std::string>& getImports() const {
+      return __imports;
+    }
+
+    // Add these import to this parser.
+    void addImports(const gum::Set<std::string>& imports) {
+      for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
+        if (not __imports.exists(*iter)) {
+          __imports.insert(*iter);
+        }
       }
     }
     
-    if (not found) {
-      SemErr("import not found");
+public:
+    // Set the parser factory.
+    void setFactory(gum::prm::PRMFactory* f) {
+      __factory = f;
     }
-  }
-}
 
-gum::prm::PRMFactory& factory() {
-  if (__factory) {
-    return *__factory;
-  }
-  GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
-}
-
-bool isClass(std::string type) {
-  std::string dot = ".";
-  return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type);
-}
-
-bool isClassOrInterface(std::string type) {
-  std::string dot = ".";
-  return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
-         factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
-}
-
-void setRefOrParam(std::string s, std::string r) {
-  size_t dot = s.find_first_of('.');
-  if (dot != std::string::npos) {
-    std::string instance = s.substr(0, dot);
-    std::string member = s.substr(dot+1);
-    gum::prm::System& sys = static_cast<gum::prm::System&>(*(factory().getCurrent()));
-    gum::prm::ClassElementContainer* c = 0;
-    if (sys.isInstance(instance)) {
-      c = &(sys.get(instance).type());
-    } else if (sys.isArray(instance)) {
-      c = &(sys.getArrayType(instance));
-    } else {
-      GUM_ERROR(gum::NotFound, "unknown instance in system");
-    }
-    if (not c->exists(member)) {
-      GUM_ERROR(gum::NotFound, "unknown member in instance");
-    }
-    if (c->obj_type() == gum::prm::PRMObject::prm_interface) {
-      factory().setReferenceSlot(instance, member, r);
-    } else {
-      switch (c->get(member).elt_type()) {
-        case gum::prm::ClassElement::prm_refslot:
-          {
-            factory().setReferenceSlot(instance, member, r);
-            break;
-          }
-        case gum::prm::ClassElement::prm_attribute:
-          {
-            if (static_cast<gum::prm::Class*>(c)->isParameter(c->get(member))) {
-              factory().setParameter(instance, member, r);
-              break;
-            } // If it is not a parameter goto to the default case
-          }
-        default: {
-                   GUM_ERROR(WrongClassElement, "wrong ClassElement for this operation");
-                 }
+    // Retrieve the factory.
+    gum::prm::PRMFactory& factory() {
+      if (__factory) {
+        return *__factory;
       }
+      GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
     }
-  } else {
-    GUM_ERROR(gum::SyntaxError, "invalid right value");
-  }
-}
 
-void setReferenceSlot(std::string s, std::string r) {
-  size_t dot = s.find_first_of('.');
-  if (dot != std::string::npos) {
-    std::string instance = s.substr(0, dot);
-    std::string member = s.substr(dot+1);
-    gum::prm::System& sys = static_cast<gum::prm::System&>(*(factory().getCurrent()));
-    gum::prm::ClassElementContainer* c = 0;
-    if (sys.isInstance(instance)) {
-      c = &(sys.get(instance).type());
-    } else if (sys.isArray(instance)) {
-      c = &(sys.getArrayType(instance));
-    } else {
-      GUM_ERROR(NotFound, "unknown instance in system");
+    // Set the paths to search for imports.
+    void setClassPath(const std::vector<std::string>& class_path) {
+      __class_path = class_path;
     }
-    if (not c->exists(member)) {
-      GUM_ERROR(NotFound, "unknown member in instance");
-    }
-    factory().setReferenceSlot(instance, member, r);
-  } else {
-    GUM_ERROR(gum::SyntaxError, "invalid right value");
-  }
-}
+    
+
+//##############################################################################
+//
+//                              SCANNER RULES
+//
+//##############################################################################
 
 //=====================
 
@@ -292,7 +254,7 @@ void setReferenceSlot(std::string s, std::string r) {
 	void Parameter(std::string type, std::string name);
 	void CastIdent(std::string& s);
 	void Number(float& val);
-	void CPTRule();
+	void CPTRule(bool &error);
 	void CPTRuleValue(std::string& s );
 	void AggChains(std::vector<std::string>& chains );
 	void AggLabels(std::vector<std::string>& labels );
