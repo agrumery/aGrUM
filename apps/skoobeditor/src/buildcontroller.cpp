@@ -374,7 +374,7 @@ void BuildController::onInterpretationFinished()
 			QString line = QString::number( err.line );
 			QString s = QString::fromStdString( err.toString() );
 
-			if ( errFilename.isEmpty() ) {
+			if ( errFilename.isEmpty() || errFilename == "anonymous buffer" ) {
 				errFilename = filename;
 				s.prepend( errFilename + ":" );
 			}
