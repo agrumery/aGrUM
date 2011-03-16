@@ -365,6 +365,7 @@ void BuildController::onInterpretationFinished()
 	} else { //  interpreter->errors() != 0
 
 		QString documentTitle = d->skoorThread->documentTitle();
+		const QString filename = d->skoorThread->document()->filename();
 
 		for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
 			const gum::ParseError & err = interpreter->getError(i);
@@ -374,7 +375,7 @@ void BuildController::onInterpretationFinished()
 			QString s = QString::fromStdString( err.toString() );
 
 			if ( errFilename.isEmpty() ) {
-				errFilename = documentTitle;
+				errFilename = filename;
 				s.prepend( errFilename + ":" );
 			}
 
