@@ -163,6 +163,9 @@ namespace gum {
         void testConstructor() {
           gum::BayesNet<float> *topology = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING ( topology = new gum::BayesNet<float>() );
+          TS_ASSERT_EQUALS(topology->size(),(gum::Idx)0);
+          TS_ASSERT_EQUALS(topology->nbrArcs(),(gum::Idx)0);
+          TS_ASSERT_EQUALS(topology->dim(),(gum::Idx)0);
 
           TS_ASSERT_THROWS ( topology->insertArc ( 1, 2 ), gum::InvalidNode );
 
@@ -172,6 +175,9 @@ namespace gum {
           TS_ASSERT_THROWS ( topology->add ( *var1 ), gum::DuplicateLabel );
 
           TS_ASSERT_EQUALS ( topology->toString(), "BN{nodes: 5, arcs: 6, domainSize: 48, parameters: 40, compression ratio: 16% }" );
+          TS_ASSERT_EQUALS(topology->size(),(gum::Idx)5);
+          TS_ASSERT_EQUALS(topology->nbrArcs(),(gum::Idx)6);
+          TS_ASSERT_EQUALS(topology->dim(),(gum::Idx)24);
 
           TS_GUM_ASSERT_THROWS_NOTHING ( delete topology );
 

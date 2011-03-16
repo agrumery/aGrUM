@@ -42,7 +42,7 @@ namespace prm {
  * This class filters Attribute and Aggregate in a way it can be interpreted as
  * a BayesNet. SlotChains and ReferenceSlot are not represented.
  *
- * Remeber that a ClassBayesNet does not contain input nodes parents and
+ * Remember that a ClassBayesNet does not contain input nodes parents and
  * output nodes children. Thus you should be careful when using one of the
  * BayesNetInference over a ClassBayesNet since some variables are missing in
  * the DAG but not in the nodes CPT.

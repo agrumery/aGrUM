@@ -112,6 +112,19 @@ namespace gum {
        * Returns the number of variables in this bayes net.
        */
       virtual Idx size() const;
+      
+      /**
+       * Returns the number of arcs in this bayes net.
+       */
+      virtual Idx nbrArcs() const;
+      
+      /**
+       * Returns the dimension (the number of free parameters) in this bayes net.
+       * 
+       * $dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i)$ where $r_i$ is the number of instantiations of node $i$ and $q_i$ is the number of instantiations of its parents.
+       */
+      virtual Idx dim() const;
+      
 
       /// @return Returns a dot representation of this BayesNet.
       virtual std::string toDot( void ) const;

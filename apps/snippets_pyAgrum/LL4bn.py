@@ -33,12 +33,12 @@ def lines_count(filename):
     """
     numlines = 0
     for line in open(filename): numlines += 1
-    
+
     return numlines
-    
+
 def checkCompatibility(bn,fields,csv_name):
     """check if variables of the bn are in the fields
-    
+
     if not : return None
     if compatibilty : return a list of position for variables in fields
     """
@@ -51,34 +51,38 @@ def checkCompatibility(bn,fields,csv_name):
             isOK=False
         else:
             res[names[field]]=fields[field]
-    
+
     if not isOK:
         res=None
-        
+
     return res
 
 def computeLL(bn_name,csv_name,visible=False,transforme_label=None):
     bn=gum.loadBN(bn_name)
-    
+
     nbr_lines=lines_count(csv_name)-1
 
-    batchReader = csv.reader(open(csv_name,'rb'))
+    csvfile = open(csv_name, "rb")
+    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+    csvfile.seek(0)
+
+    batchReader = csv.reader(open(csv_name,'rb'),dialect)
 
     titre = batchReader.next()
     fields = {}
     for i,nom in enumerate(titre):
-        fields[nom]=i        
+        fields[nom]=i
 
     positions=checkCompatibility(bn,fields,csv_name)
     if positions is None:
          sys.exit(1)
 
     inst=bn.completeInstantiation()
-    
+
     if visible:
         prog = ProgressBar(csv_name+' : ',0, nbr_lines, 77,  mode='static', char='#')
         prog.display()
-        
+
     nbr_insignificant=0
     likelihood=0.0
     for data in batchReader:
@@ -95,10 +99,10 @@ def computeLL(bn_name,csv_name,visible=False,transforme_label=None):
         if visible:
             prog.increment_amount()
             prog.display()
-        
+
     if visible:
         print
-        
+
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,likelihood)
 
 
@@ -112,6 +116,9 @@ def module_help(exit_value=1):
 def getNumLabel(inst,i,label,transforme_label):
     if transforme_label is not None:
         label=transforme_label(label)
+    elif label.isdigit():
+        label="State_"+str(int(label))
+
     return inst.variable(i)[label]
 
 if __name__=="__main__":

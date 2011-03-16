@@ -280,6 +280,28 @@ namespace gum {
   BayesNet<T_DATA>::size() const {
     return __dag.size();
   }
+  
+  template<typename T_DATA> INLINE
+  Idx
+  BayesNet<T_DATA>::nbrArcs() const {
+    return __dag.sizeArcs();
+  }
+  
+  template<typename T_DATA> 
+  Idx
+  BayesNet<T_DATA>::dim() const {
+    Idx dim=0;
+    for ( DAG::NodeIterator node = dag().beginNodes();node!=dag().endNodes(); ++node) {
+      Idx q=1;
+      Set<NodeId> s=__dag.parents(*node);
+      for(Set<NodeId>::iterator parent=s.begin();parent!=s.end();++parent) {
+        q*=variable(*parent).domainSize();
+      }
+      
+      dim+=(variable(*node).domainSize()-1)*q;
+    }
+    return dim;
+  }
 
   template<typename T_DATA> INLINE
   bool

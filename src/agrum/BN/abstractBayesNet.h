@@ -110,7 +110,7 @@ namespace gum {
        * Returns the number of variables in this bayes net.
        */
       virtual Idx size() const = 0;
-
+      
       /**
        * Retursn true if this bayes net is empty.
        */
