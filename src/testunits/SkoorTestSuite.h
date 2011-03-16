@@ -115,6 +115,7 @@ class SkoorTestSuite: public CxxTest::TestSuite {
         }
       }
       
+      delete si->prm();
       delete si;
     }
     
@@ -136,6 +137,7 @@ class SkoorTestSuite: public CxxTest::TestSuite {
       TS_ASSERT( ! si->inference()->hasEvidence( PRMInference::Chain(&c1, &c1.get("equipState"))) );
       TS_ASSERT( ! si->inference()->hasEvidence( PRMInference::Chain(&c2, &c2.get("can_print"))) );
       
+      delete si->prm();
       delete si;
     }
     
@@ -171,6 +173,7 @@ class SkoorTestSuite: public CxxTest::TestSuite {
         }
       }*/  
       
+      delete si->prm();
       delete si;
     }
 };
