@@ -34,6 +34,7 @@ public:
 	virtual QColor defaultColor(int) const;
 	virtual QFont  defaultFont(int) const;
 	virtual QColor defaultPaper(int) const;
+	virtual const char *keywords(int set) const;
 
 	virtual void styleText (int start, int end);
 

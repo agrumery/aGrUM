@@ -1,4 +1,19 @@
 
+15/03/2011
+    * Improve : la syntax de Skool pour mieux gérer les messages 
+        d'erreurs et les resynchronisations.
+    * Add : Gestion des systems et instances dans l'autocomplétion.
+    * Add : Les résultats sont ordonnés l'autocomplétion.
+    
+14/03/2011
+    * Add : Ajouter les mots-clés du langage au model pour les avoir en plus.
+    * Fix : Quand on auto-complete le mot clé package, problème dans les,
+        folding mark en dessous (elles remontent).
+
+12/03/2011
+	* Add : Agrandir le modèle en ajoutant le contenu de la classe au 
+        référence de celle-ci dans d'autres classes.
+        
 10/03/2011
     * Add : TreeModel du PRM.
     * Add : Possibilité de récupérer le TreeModel du PRM quand on check la syntaxe.

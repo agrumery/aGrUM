@@ -83,8 +83,26 @@ int PRMTreeItem::row() const
 		for ( int i = 0, size = parent->children.size() ; i < size ; i++ )
 			if ( parent->children[i] == this )
 				return i;
-		//return parent->children.indexOf( this ); // don't work ?? cast error
+		//return parent->children.indexOf( this ); // don't work ?? cast error du to const
 	return 0;
+}
+
+void PRMTreeItem::sort( Qt::SortOrder order )
+{
+	if ( order == Qt::AscendingOrder ) {
+		for ( int i = 0 ; i < children.size() - 1 ; i++ )
+			for ( int j = i+1 ; j < children.size() ; j++ )
+				if ( children[i]->localData.compare(children[j]->localData, Qt::CaseInsensitive) > 0 )
+					children.swap(i,j);
+	} else {
+		for ( int i = 0 ; i < children.size() - 1 ; i++ )
+			for ( int j = i+1 ; j < children.size() ; j++ )
+				if ( children[i]->localData.compare(children[j]->localData, Qt::CaseInsensitive) < 0 )
+					children.swap(i,j);
+	}
+
+	foreach ( PRMTreeItem * child, children )
+		child->sort(order);
 }
 
 /*
@@ -112,35 +130,48 @@ PRMTreeModel::PRMTreeModel( PRM * aPrm, QObject * parent )
 {
 	// Construction du PRMTreeModel
 
+	// Foreach type
 	foreach ( Type * type, prm->types() ) {
+		// Create the PRMTreeItem
 		rootItem->createChild( QString::fromStdString( type->name() ).split(".") );
 		const gum::DiscreteVariable & var = type->variable();
+		// Foreach labels
 		for ( int i = 0 ; i < var.domainSize() ; i++ )
+			// Create the PRMTreeItem for the label (at the root)
 			rootItem->createChild( QStringList() << QString::fromStdString( var.label(i) ) );
 	}
 
 	QList< QPair<PRMTreeItem *, ClassElementContainer *> > refList;
 
+	// Foreach interface
 	foreach ( Interface * i, prm->interfaces() ) {
+		// Create the PRMTreeItem
 		PRMTreeItem * interfaceItem = rootItem->createChild( QString::fromStdString( i->name() ).split(".") );
 		if (interfaceItem != 0)
+			// Add it to ref list to be recursively treat later
 			refList << QPair<PRMTreeItem *, ClassElementContainer *>(interfaceItem, i);
 	}
 
+	// Foreach class
 	foreach ( Class * c, prm->classes() ) {
+		// Create the PRMTreeItem
 		PRMTreeItem * classItem = rootItem->createChild( QString::fromStdString( c->name() ).split(".") );
 		if (classItem != 0)
+			// Add it to ref list to be recursively treat later
 			refList << QPair<PRMTreeItem *, ClassElementContainer *>(classItem, c);
 	}
 
+	// Foreach system
 	foreach ( System * s, prm->systems() ) {
+		// Create the PRMTreeItem
 		PRMTreeItem * item = rootItem->createChild( QString::fromStdString( s->name() ).split(".") );
-//		if (item != 0) {
-//			foreach ( Attribute * a, s->attributes() )
-//				item->createChild( QStringList() << QString::fromStdString(a->name()) );
-//			foreach ( ReferenceSlot * r, s->referenceSlots() ) {
-//				item->createChild( QStringList() << QString::fromStdString(r->name()) );
-//		}
+		if (item != 0)
+			for ( System::const_iterator i = s->begin() ; i != s->end() ; ++i ) {
+				// Create the PRMTreeItem
+				PRMTreeItem * inst = item->createChild( QStringList() << QString::fromStdString((*i)->name()) );
+				// Add it to ref list to be recursively treat later
+				refList << QPair<PRMTreeItem *, ClassElementContainer *>(inst, &((*i)->type()));
+			}
 	}
 
 	QPair<PRMTreeItem *, ClassElementContainer *> p;
@@ -170,6 +201,10 @@ PRMTreeModel::PRMTreeModel( PRM * aPrm, QObject * parent )
 			Q_ASSERT( c != 0 );
 			//  Pour chaque attibut
 			foreach ( Attribute * a, c->attributes() )
+				//    je l'ajoute en enfant
+				p.first->createChild( QStringList() << QString::fromStdString(a->name()) );
+			//  Pour chaque aggrégat
+			foreach ( Aggregate * a, c->aggregates() )
 				//    je l'ajoute en enfant
 				p.first->createChild( QStringList() << QString::fromStdString(a->name()) );
 			//  Pour chaque ref
@@ -202,8 +237,11 @@ bool PRMTreeModel::setCurrentPackage( const QString & package )
 	// Delete previous currentPackage
 	if ( currentPackage ) {
 		foreach( PRMTreeItem * item, currentPackage->children ) {
-			rootItem->children.removeOne(item);
-			delete item;
+			PRMTreeItem * child = rootItem->getChild( item->localData.split(QChar('.')) );
+			if ( child ) {
+				rootItem->children.removeOne(child);
+				delete child;
+			}
 		}
 		currentPackage = 0;
 	}
@@ -221,29 +259,45 @@ bool PRMTreeModel::setCurrentPackage( const QString & package )
 }
 
 /// Set the current class, interface or system, to allow direct access of member.
+/// Current package must be set previously.
 bool PRMTreeModel::setCurrentBlock( const QString & block)
 {
+	if ( ! currentPackage )
+		return false;
+
 	// If block is already currentBlock
-	if ( currentBlock && currentBlock->completeData() == block )
+	if ( currentBlock && currentBlock->localData == block )
 		return true;
 
 	// Delete previous currentBlock
 	if ( currentBlock ) {
-		rootItem->children.removeOne(currentBlock);
-		delete currentBlock;
-		currentBlock = 0;
+		foreach( PRMTreeItem * item, currentBlock->children ) {
+			PRMTreeItem * child = rootItem->getChild( item->localData.split(QChar('.')) );
+			if ( child ) {
+				rootItem->children.removeOne(child);
+				delete child;
+			}
+		}
+		currentPackage = 0;
 	}
 
 	// Search new currentBlock
-	PRMTreeItem * item = rootItem->getChild( block.split(QChar('.')) );
-	if ( item == 0 )
+	currentBlock = rootItem->getChild( block.split(QChar('.')) );
+	if ( currentBlock == 0 )
 		return false;
 
 	// Set currentBlock
-	currentBlock = new PRMTreeItem(rootItem, item);
-	rootItem->children.append( currentBlock );
+	foreach( PRMTreeItem * item, currentBlock->children )
+		rootItem->children.append( new PRMTreeItem(rootItem, item) );
 
 	return true;
+}
+
+/// Add keyworsd to model.
+void PRMTreeModel::addKeywords( const QStringList & keywords )
+{
+	foreach( QString word, keywords )
+		rootItem->children.append( new PRMTreeItem(rootItem, word) );
 }
 
 /// \reimp
@@ -296,4 +350,12 @@ QModelIndex PRMTreeModel::index( int row, int column, const QModelIndex & parent
 		return createIndex( row, 0, rootItem->children.at(row) );
 
 	return createIndex( row, 0, static_cast<PRMTreeItem *>( parent.internalPointer() )->children.at(row) );
+}
+
+/// \reimp
+void PRMTreeModel::sort( int column, Qt::SortOrder order )
+{
+	if ( column != 0 )
+		return;
+	rootItem->sort(order);
 }

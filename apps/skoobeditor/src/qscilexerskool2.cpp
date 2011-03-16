@@ -26,7 +26,7 @@ struct QsciLexerSkool2::PrivateData {
 	QRegExp declarationReference;
 	QRegExp declarationAttribute;
 
-	QStringList waitTypes;
+	QStringList waitBlock;
 	QStringList keywordsList;
 	QStringList typesList;
 
@@ -43,7 +43,7 @@ bool isOperator(QChar c) {
 /// Constructor
 QsciLexerSkool2::QsciLexerSkool2(QObject * parent) : QsciLexerCustom(parent), d(new PrivateData)
 {
-	d->waitTypes = QString("extends interface system type").split(" ",QString::SkipEmptyParts);
+	d->waitBlock = QString("class interface system").split(" ",QString::SkipEmptyParts);
 	d->keywordsList = QString(
 			"boolean class default dependson extends float implements import int interface noisyOr package system type"
 			).split(" ",QString::SkipEmptyParts);
@@ -54,8 +54,8 @@ QsciLexerSkool2::QsciLexerSkool2(QObject * parent) : QsciLexerCustom(parent), d(
 	d->commentBlock = QRegExp("^/\\*[^\\*]");
 	d->commentBlockDoc = QRegExp("^/\\*\\*");
 	d->function = QRegExp("^([a-zA-Z_][a-zA-Z_0-9]*)\\s*\\(");
-	d->symbol = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*");
-	d->id = QRegExp("^[a-zA-Z_][a-zA-Z_0-9]*(\\.[a-zA-Z_][a-zA-Z_0-9]*)*");
+	d->symbol = QRegExp("^[a-zA-Z_]\\w*");
+	d->id = QRegExp("^[a-zA-Z_]\\w*(\\.[a-zA-Z_]\\w*)*");
 	d->number = QRegExp("^\\d+(\\.\\d+)?");
 	d->operators = QRegExp("^(\\=|\\+|\\-|\\{|\\}|\\[|\\]|\\.|\\;|\\,|\\:|\\(|\\)|\\*)");
 	d->keywords = QRegExp("^(" + d->keywordsList.join("|") + ")\\s");
@@ -171,9 +171,9 @@ QColor QsciLexerSkool2::defaultPaper(int) const
 	return Qt::white;
 }
 
-QString takePart( const QString & source, int from, int length )
+const char * QsciLexerSkool2::keywords(int set) const
 {
-	return QStringRef(&source,from,length).toString();
+	return d->keywordsList.join(" ").toUtf8().constData();
 }
 
 /**
@@ -194,7 +194,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 	free(chars);
 
 	int style, previousStyle, lineNb = 0, level = QsciScintilla::SC_FOLDLEVELBASE;
-	bool isWaitingType = false, isWaitingPackage = false;
+	bool isWaitingBlock = false, isWaitingPackage = false;
 	bool startInComment = false, isNewLine = true, newLineJustMatch = false, startBlock = false;
 	QString line;
 
@@ -227,9 +227,9 @@ void QsciLexerSkool2::styleText (int start, int end)
 		// On récupère la ligne dans la variable line, avec le retour chariot.
 		len = source.indexOf("\n",i) - i + 1;
 		if ( len < 1 )
-			line = takePart(source,i,source.length());
+			line = source.mid( i, source.length() );
 		else
-			line = takePart(source,i,len);
+			line = source.mid( i, len );
 
 		// Usefull if line == '\0', at the end of the file.
 //		if (line.isEmpty())
@@ -241,7 +241,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 				isNewLine = true;
 				if ( ! startBlock )
 					editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb, level);
-				lineNb++;
+				//lineNb++;
 				startBlock = false;
 			}
 			newLineJustMatch = true;
@@ -256,7 +256,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 			if (len < 2) {
 				len = line.length();
 				editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb, level);
-				lineNb++;
+				//lineNb++;
 			} else {
 				level--;
 				editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb, level);
@@ -268,14 +268,14 @@ void QsciLexerSkool2::styleText (int start, int end)
 			style = CommentLine;
 			len = line.length();
 			editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb, level);
-			lineNb++;
+			//lineNb++;
 
 		// CommentLineDoc
 		} else if (line.contains(d->commentLineDoc)) { // CommentLineDoc
 			style = CommentLineDoc;
 			len = line.length();
 			editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb, level);
-			lineNb++;
+			//lineNb++;
 
 		// CommentBlock
 		} else if (line.contains(d->commentBlock)) { // CommentBlock
@@ -287,7 +287,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 				if ( ! startBlock ) // Si on a pas déjà commencé un bloc
 					editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb,
 										level | QsciScintilla::SC_FOLDLEVELHEADERFLAG);
-				lineNb++;
+				//lineNb++;
 				level++;
 				startInComment = true;
 			}
@@ -301,7 +301,7 @@ void QsciLexerSkool2::styleText (int start, int end)
 				len = line.length(); // With \n
 				editor()->SendScintilla(QsciScintilla::SCI_SETFOLDLEVEL, lineNb,
 										level | QsciScintilla::SC_FOLDLEVELHEADERFLAG);
-				lineNb++;
+				//lineNb++;
 				level++;
 				startInComment = true;
 			}
@@ -335,10 +335,16 @@ void QsciLexerSkool2::styleText (int start, int end)
 			len = d->keywords.cap(0).length();
 
 			//
-			if ( d->keywords.cap(1) == "package" )
+			if ( d->keywords.cap(1) == "package" ) {
 				isWaitingPackage = true;
-			else
+				isWaitingBlock = false;
+			} else if ( d->waitBlock.contains( d->keywords.cap(1) ) ) {
+				isWaitingBlock = true;
 				isWaitingPackage = false;
+			} else {
+				isWaitingBlock = false;
+				isWaitingPackage = false;
+			}
 
 		// Symbol
 		} else if ( line.contains(d->id) ) { // #^[a-zA-Z_]([a-zA-Z0-9_])*#
@@ -349,8 +355,13 @@ void QsciLexerSkool2::styleText (int start, int end)
 			if ( isWaitingPackage ) {
 				style = Type;
 				editor()->markerAdd(lineNb,QsciScintillaExtended::Package);
+			} else if ( isWaitingBlock ) {
+				style = Type;
+				editor()->markerAdd(lineNb,QsciScintillaExtended::Block);
 			}
+
 			isWaitingPackage = false;
+			isWaitingBlock = false;
 
 		// Sinon
 		} else { // Sais pas ce que c'est
@@ -358,14 +369,25 @@ void QsciLexerSkool2::styleText (int start, int end)
 			len = line.length();
 		}
 
+		//
 		if (newLineJustMatch)
 			newLineJustMatch = false;
 		else
 			isNewLine = false;
 
+		//
+		if ( style != Keyword ) {
+			isWaitingBlock = false;
+			isWaitingPackage = false;
+		}
+
+		// If we reach end of line, increment compter
+		if ( len == line.length() )
+			lineNb++;
+
 		// len was calculated in QString
 		// we must translate it in Utf8 bytes length.
-		lenUtf8 = takePart(line,0,len).toUtf8().length();
+		lenUtf8 = line.mid( 0, len ).toUtf8().length();
 
 		Q_ASSERT(lenUtf8 > 0);
 		Q_ASSERT(start+iUtf8+lenUtf8 <= end);

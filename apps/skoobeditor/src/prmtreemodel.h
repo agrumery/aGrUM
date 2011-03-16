@@ -19,6 +19,8 @@ public:
 	bool setCurrentPackage( const QString & package );
 	/// Set the current class, interface or system, to allow direct access of member.
 	bool setCurrentBlock( const QString & block);
+	/// Add keyworsd to model.
+	void addKeywords( const QStringList & keywords );
 
 	/// \reimp
 	virtual QModelIndex parent( const QModelIndex & index ) const;
@@ -26,6 +28,7 @@ public:
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent) const;
+	virtual void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
 private:
 	gum::prm::PRM * prm;
@@ -45,6 +48,7 @@ public:
 	QString completeData() const;
 	PRMTreeItem * getChild( const QStringList & list );
 	int row() const;
+	void sort( Qt::SortOrder order = Qt::AscendingOrder );
 
 	PRMTreeItem * parent;
 	QList<PRMTreeItem *> children;

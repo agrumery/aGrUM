@@ -9,10 +9,11 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-    * Ajouter les mots-clés du langage au model pour les avoir en plus.
 
 AMELIORATIONS :
 
+    * Quand on parse, passer à Skoor ou Skool des nom de fichier relatif, et faire les conversions après.
+        Ou alors faire les conversions en relatif quand on affiche les erreurs.
     * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
 	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
 		à la sauvegarde.
@@ -51,12 +52,7 @@ TODOS :
 	* Se souvenir des marqueurs dans les fichiers ouverts quand on relance le programme ?
 		Pour tout les fichiers du projet, dans le .skoop ?
 
-	* Rendre l'autocomplétion contextuel quand on fait "MaClass.unAttribut", 
-    	l'autocomplétion ne va chercher que dans les attributs de cette class.
-    	Idem pour "system.class".
-	* Quand on change d'onglet, sauvegarder les symboles dans le fichier projet 
-		pour l'autocomplétion dans les autres fichiers du même projet.
-	* Auto import des classes/systèmes nécessaires.
+	* Suggestion d'import des classes/systèmes nécessaires.
 	
 	* Intégrer la table d'édition de CPT.
   
@@ -65,6 +61,7 @@ TODOS :
 	* Si il y a un message d'erreur qui indique qu'un type/classe/système n'est pas trouvé, faire des propositions pour les intégrer.
 	* Bulle avec le message d'erreur quand on reste sur une erreur (soulignement ou surlignement).
 
-	* Dans SkoolReader, si un type est pas trouvé, chercher dans le même répertoire (voir avec phw).
+	* Dans SkoolReader, si un type n'est pas trouvé (ex:déclaration d'une référence dont on a pas importé la classe), 
+        chercher dans le même répertoire/package (voir avec phw).
   
 	* Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).

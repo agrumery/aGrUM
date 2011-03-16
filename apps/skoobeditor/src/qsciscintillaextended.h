@@ -10,7 +10,7 @@ class QsciScintillaExtended : public QsciScintilla
 	Q_OBJECT
 
 public:
-	enum MarkersId {Bookmark, Error, Package, Class};
+	enum MarkersId {Bookmark, Error, Package, Block};
 	enum Lexer {None, Skool, Skoor};
 
 	QsciScintillaExtended( QWidget *parent = 0);
@@ -21,7 +21,8 @@ public:
 	QString title() const;
 	QString filename() const;
 	Lexer lexerEnum() const;
-	QString package() const;
+	QString package();
+	QPair<QString,QString> block();
 
 	int currentLine() const;
 	void setCurrentLine( int line );

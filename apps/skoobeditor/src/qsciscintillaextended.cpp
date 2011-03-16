@@ -59,7 +59,7 @@ void QsciScintillaExtended::initParameters()
 	markerDefine(Background,Error);
 	setMarkerBackgroundColor(QColor(255,100,100), Error);
 	markerDefine(Invisible,Package);
-	markerDefine(Invisible,Class);
+	markerDefine(Invisible,Block);
 
 	// TODO : A modifier avec les nouvelles fonctions de QScintilla 2.4.6
 	SendScintilla( (unsigned int) SCI_INDICSETSTYLE,
@@ -196,16 +196,66 @@ void QsciScintillaExtended::setLexer(QsciScintillaExtended::Lexer lex)
 		QsciScintilla::setLexer( new QsciLexerSkoor(this) );
 }
 
-///
-QString QsciScintillaExtended::package() const
+/// Return current file package name,
+/// or an empty string if it's not define.
+/// \note Work only with QsciLexerSkool2
+QString QsciScintillaExtended::package()
 {
+	/*
+	 To know in what package is this document,
+	 we search for "Package" marker, which is set be the
+	 QsciLexerSkool2 during styling.
+	 */
+
 	static QRegExp regex("package\\s+([a-zA-Z_][\\w_]*(\\.[a-zA-Z_][\\w_]*)*)[^\\w_]");
 	int line = markerFindNext(0, 1 << Package);
-	if ( text(line).contains(regex) )
-		return regex.cap(1);
-	else
+
+	// If not found
+	if ( line == -1 )
 		return QString();
+
+	// If package was moved or delete, update state.
+	while ( line < lines() && ! text(line).contains(regex) ) {
+		markerDelete(line, Package);
+		line = markerFindNext(line + 1, 1 << Package);
+	}
+
+	if ( line >= lines() )
+		return QString();
+	else
+		return regex.cap(1);
 }
+
+/// Return current block style (interface,class or system) and name,
+/// or empty strings if any block is define.
+/// \note Work only with QsciLexerSkool2
+QPair<QString,QString> QsciScintillaExtended::block()
+{
+	/*
+	 To know in what package is this document,
+	 we search for "Block" marker, which is set be the
+	 QsciLexerSkool2 during styling.
+	 */
+
+	static QRegExp regex("(interface|class|system)\\s+([a-zA-Z_][\\w_]*(\\.[a-zA-Z_][\\w_]*)*)[^\\w_]");
+	int line = markerFindPrevious( currentLine(), 1 << Block);
+
+	// If not found
+	if ( line == -1 )
+		return QPair<QString,QString>(QString(),QString());
+
+	// If package was moved or delete, update state.
+	while ( line >= 0 && ! text(line).contains(regex) ) {
+		markerDelete(line, Block);
+		line = markerFindPrevious(line - 1, 1 << Block);
+	}
+
+	if ( line < 0 )
+		return QPair<QString,QString>(QString(),QString());
+	else
+		return QPair<QString,QString>(regex.cap(1),regex.cap(2));
+}
+
 
 /**
   */

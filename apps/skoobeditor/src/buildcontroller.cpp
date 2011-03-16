@@ -206,7 +206,8 @@ void BuildController::onSyntaxCheckFinished()
 		return;
 
 	const gum::ErrorsContainer & errors = d->skoolThread->reader()->getErrorsContainer();
-	const QString title = d->skoolThread->documentTitle();
+	//const QString title = d->skoolThread->documentTitle();
+	const QString filename = d->skoolThread->document()->filename();
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
 		const gum::ParseError & e = errors.getError(i);
@@ -218,11 +219,11 @@ void BuildController::onSyntaxCheckFinished()
 
 		// Handle error filename problem (file not saved, etc)
 		if ( errFilename.isEmpty() ) {
-			errFilename = title;
+			errFilename = filename;
 			s.prepend( errFilename );
 		} else if ( errFilename == "anonymous buffer" ) {
-			errFilename = title;
-			s.replace( "anonymous buffer", title );
+			errFilename = filename;
+			s.replace( "anonymous buffer", filename );
 		}
 
 		QListWidgetItem * item = new QListWidgetItem( s, d->msg) ;
