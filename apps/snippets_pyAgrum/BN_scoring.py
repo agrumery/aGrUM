@@ -57,7 +57,7 @@ def checkCompatibility(bn,fields,csv_name):
 
     return res
 
-def computeLL(bn_name,csv_name,visible=False,transforme_label=None):
+def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     bn=gum.loadBN(bn_name)
 
     nbr_lines=lines_count(csv_name)-1
@@ -103,7 +103,15 @@ def computeLL(bn_name,csv_name,visible=False,transforme_label=None):
     if visible:
         print
 
-    return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,likelihood)
+    nbr_arcs=bn.nbrArcs()
+    dim=bn.dim()
+    
+    aic=likelihood-dim
+    bic=likelihood-dim*math.log(nbr_lines,2)/2.0
+    mdl=likelihood-nbr_arcs*math.log(nbr_lines,2)-32*dim #32=nbr bits for a params
+    
+    return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
+            {'likelihood':likelihood,'aic':aic,'bic':bic,'mdl':mdl})
 
 
 def module_help(exit_value=1):
@@ -116,9 +124,6 @@ def module_help(exit_value=1):
 def getNumLabel(inst,i,label,transforme_label):
     if transforme_label is not None:
         label=transforme_label(label)
-    elif label.isdigit():
-        label="State_"+str(int(label))
-
     return inst.variable(i)[label]
 
 if __name__=="__main__":
@@ -139,6 +144,6 @@ if __name__=="__main__":
             csv_name+='.csv'
 
     print '"{0}" vs "{1}"'.format(bn_name,csv_name)
-    (nbr,LL)=computeLL(bn_name,csv_name,visible=True)
-    print '{0}% of base is significant.\nLogLikelihood : {1}'.format(nbr,LL)
+    (nbr,LL)=computeScores(bn_name,csv_name,visible=True)
+    print '{0}% of base is significant.\nscores : {1}'.format(nbr,LL)
 
