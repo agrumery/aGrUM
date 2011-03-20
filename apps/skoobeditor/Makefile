@@ -10,6 +10,7 @@ else
 	MAKE=mingw32-make
 	CMAKE="C:\Program Files\CMake 2.8\bin\cmake.exe"
 	UNIX= -G "MinGW Makefiles"
+	OS=Windows
 endif
 
 default: release
@@ -37,16 +38,9 @@ minrelease: before
 	(cd build/MinSizeRel && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=MinSizeRel && $(MAKE) -j 4)
 
 clean:
-ifeq ($(OS),Linux)
-	rm -rf build/
-	rm -rf bin/skoobeditor
-	rm -rf usr/
-else
-#	rmdir /s /q build
-#	del bin\SkoobEditor.exe
+	$(CMAKE) -E remove_directory bin
 	$(CMAKE) -E remove_directory build
-	$(CMAKE) -E remove bin/SkoobEditor.exe
-endif
+	$(CMAKE) -E remove_directory usr
 
 installer: release
 	"C:\Program Files\NSIS\makensis.exe" installer_script.nsi

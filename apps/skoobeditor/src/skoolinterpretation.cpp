@@ -5,17 +5,17 @@
 using namespace gum::prm::skool;
 
 SkoolInterpretation::SkoolInterpretation( QObject * parent ) :
-		QThread(parent), m_sci(0), m_reader(0), m_readerTaken(false)
+		QThread(parent), m_sci(0), m_reader(0)
 {
 }
 
 SkoolInterpretation::SkoolInterpretation( const QString & skoolFilename, QObject * parent) :
-		QThread(parent), m_sci(0), m_title(skoolFilename), m_reader(0), m_readerTaken(false)
+		QThread(parent), m_sci(0), m_title(skoolFilename), m_reader(0)
 {
 }
 
 SkoolInterpretation::SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent ) :
-		QThread(parent), m_sci(sci), m_title(sci->title()), m_reader(0), m_readerTaken(false)
+		QThread(parent), m_sci(sci), m_title(sci->title()), m_reader(0)
 {
 }
 
@@ -23,8 +23,9 @@ SkoolInterpretation::~SkoolInterpretation()
 {
 	// Wait the run methods ends.
 	wait();
-	if ( ! m_readerTaken )
-		delete m_reader;
+	if (m_reader)
+		delete m_reader->prm();
+	delete m_reader;
 }
 
 
@@ -63,10 +64,10 @@ void SkoolInterpretation::addPath( const QString & path )
 void SkoolInterpretation::run()
 {
 	QMutexLocker locker( &m_mutex );
-	if ( ! m_readerTaken )
-		delete m_reader;
+	if (m_reader)
+		delete m_reader->prm();
+	delete m_reader;
 	m_reader = new SkoolReader();
-	m_readerTaken = false;
 	m_reader->setClassPath( m_paths.toStdString() );
 	m_reader->readString( m_text );
 }
@@ -74,8 +75,7 @@ void SkoolInterpretation::run()
 /**
   When you take the reader, you must delete it yourself.
   */
-SkoolReader * SkoolInterpretation::reader() {
-	wait();
-	m_readerTaken = true;
+const SkoolReader * SkoolInterpretation::reader() {
+	this->wait();
 	return m_reader;
 }

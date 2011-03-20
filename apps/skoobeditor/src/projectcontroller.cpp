@@ -388,6 +388,9 @@ void ProjectController::newProject()
 	mw->ui->actionNewModel->setEnabled(true);
 	mw->ui->actionNewRequestFile->setEnabled(true);
 
+	// Enable auto syntax check
+	mw->bc->setAutoSyntaxCheck(true);
+
 	saveProjectsState();
 }
 
@@ -412,8 +415,11 @@ void ProjectController::createNewClassFile()
 		QFileInfo info(sci->filename());
 		QString className = info.baseName();
 		QString packageName = QDir(currentProj->dir()).relativeFilePath(info.path()).replace("/",".");
-
-		sci->setText("package "+ packageName +";\n\n//\nclass "+ className + " {\n}\n");
+		QString text;
+		if ( ! packageName.isEmpty() )
+			text += "\npackage "+ packageName +";\n";
+		text += "\n//\nclass "+ className + " {\n}\n";
+		sci->setText(text);
 		sci->setCursorPosition(2,6);
 
 		mw->fc->saveFile(sci);
@@ -437,9 +443,15 @@ void ProjectController::createNewRequestFile()
 	sci->setFocus();
 
 	if ( mw->fc->saveAsFile(sci, currentProj->dir() + tr("/requests/empty_file.skoor") ) ) {
-
 		// and prefill it.
-		sci->setText("\n//\nrequest "+ QFileInfo(sci->filename()).baseName() + " {\n}\n");
+		QFileInfo info(sci->filename());
+		QString blockName = info.baseName();
+		QString packageName = QDir(currentProj->dir()).relativeFilePath(info.path()).replace("/",".");
+		QString text;
+		if ( ! packageName.isEmpty() )
+			text += "\npackage "+ packageName +";\n";
+		text += "\n//\nrequest "+ blockName + " {\n}\n";
+		sci->setText(text);
 		sci->setCursorPosition(2,8);
 
 		mw->fc->saveFile(sci);
@@ -466,8 +478,11 @@ void ProjectController::createNewSystemFile()
 		QFileInfo info(sci->filename());
 		QString systemName = info.baseName();
 		QString packageName = QDir(currentProj->dir()).relativeFilePath(info.path()).replace("/",".");
-
-		sci->setText("package "+ packageName +";\n\n//\nsystem "+ systemName + " {\n}\n");
+		QString text;
+		if ( ! packageName.isEmpty() )
+			text += "\npackage "+ packageName +";\n";
+		text += "\n//\nsystem "+ systemName + " {\n}\n";
+		sci->setText(text);
 		sci->setCursorPosition(2,7);
 
 		mw->fc->saveFile(sci);
@@ -491,7 +506,7 @@ void ProjectController::openProject(QString projectpath)
 	QDir qDir(projectpath);
 
 	// TODO : Warning are not ?
-	if ( ! qDir.exists() )
+	if ( projectpath.isEmpty() || ! qDir.exists() )
 		return;
 
 	if ( ! qDir.exists(qDir.dirName()+".skoop")) {
@@ -522,7 +537,6 @@ void ProjectController::openProject(QString projectpath)
 	mw->ui->projectExplorator->setModel(currentProj);
 	mw->ui->projectExplorator->setRootIndex( currentProj->root() );
 	mw->vc->setProjectExploratorVisibility(true);
-	//return;
 
 	// Enable new specific file creation
 	mw->ui->actionNewClass->setEnabled(true);
@@ -530,6 +544,9 @@ void ProjectController::openProject(QString projectpath)
 	mw->ui->actionNewRequestFile->setEnabled(true);
 
 	saveProjectsState();
+
+	// Enable auto syntax check
+	mw->bc->setAutoSyntaxCheck(true);
 
 	//
 	QTimer::singleShot(200, mw->ui->projectExplorator, SLOT(expandAll()) );
@@ -564,6 +581,9 @@ void ProjectController::closeProject()
 	mw->ui->actionNewModel->setEnabled(false);
 	mw->ui->actionNewRequestFile->setEnabled(false);
 	mw->ui->actionProjectExploratorVisibility->setEnabled(false);
+
+	// Disable auto syntax check
+	mw->bc->setAutoSyntaxCheck(false);
 
 	saveProjectsState();
 }
@@ -669,7 +689,6 @@ void ProjectController::refactor( const QString & fromFilePath, const QString & 
 	// If it's a directory,
 	// we move all its children recursively.
 	if ( newInfo.isDir() ) {
-		qDebug() << "D\tMove" << oldInfo.filePath() << "to" << newInfo.filePath();
 		QModelIndex parent = currentProj->index( toFilePath );
 
 		// Wait until dir is loaded. WARNING !!!!! with loop !!!!!!
@@ -686,8 +705,6 @@ void ProjectController::refactor( const QString & fromFilePath, const QString & 
 		}
 		return;
 	}
-
-	qDebug() << "F\tHas moved" << newInfo.filePath() << "from" << oldPackage << "to" << newPackage;
 
 	QString oldImportLine;
 	if ( ! oldPackage.isEmpty() )
@@ -928,6 +945,9 @@ void ProjectController::onCustomContextMenuRequested( const QPoint & pos )
 		}
 
 	} else if ( index.isValid() ) {
+		// Hide or show execute action (show only with skoor files).
+		d->fileMenu->actions().last()->setVisible( index.data().toString().endsWith(".skoor",Qt::CaseInsensitive) );
+
 		QAction * a = d->fileMenu->exec(mw->ui->projectExplorator->viewport()->mapToGlobal(pos));
 		if ( a == 0 )
 			return;

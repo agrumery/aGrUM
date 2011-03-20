@@ -1,4 +1,11 @@
-
+20/03/2011
+	* Fix : Filtre pour le fichier ouvrir.
+	* Fix : Quand il n'y a pas de projet ouvert, pas de correction automatique.
+	* Fix : Monospace pour les fichiers skoor.
+	* Fix : Quand on ajoute un fichier au projet, si le package est vide, ne pas le mettre.
+	* Fix : Dans l'explorateur de projet, 
+		cacher l'action "Exécuter" si ce n'est pas un fichier skoor.
+	
 15/03/2011
     * Improve : la syntax de Skool pour mieux gérer les messages 
         d'erreurs et les resynchronisations.

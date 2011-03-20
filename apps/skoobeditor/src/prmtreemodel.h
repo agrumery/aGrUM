@@ -12,7 +12,7 @@ class PRMTreeModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	PRMTreeModel( gum::prm::PRM * prm, QObject * parent = 0 );
+	PRMTreeModel( const gum::prm::PRM * prm, QObject * parent = 0 );
 	~PRMTreeModel();
 
 	/// Set the current package to allow direct access of member.
@@ -31,7 +31,6 @@ public:
 	virtual void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
 private:
-	gum::prm::PRM * prm;
 	PRMTreeItem * rootItem;
 	PRMTreeItem * currentPackage;
 	PRMTreeItem * currentBlock;

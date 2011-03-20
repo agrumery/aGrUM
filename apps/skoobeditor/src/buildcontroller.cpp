@@ -96,7 +96,6 @@ void BuildController::triggerInit()
 {
 	// Start it in case there is only one document
 	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startAutoSyntaxCheckThread(int)) );
-	setAutoSyntaxCheck(true);
 }
 
 /* ************************************************************************* */
@@ -549,7 +548,8 @@ void BuildController::startAutoSyntaxCheckThread(int i)
   */
 void BuildController::onSkoorSyntaxThreadFinished()
 {
-	if ( d->skoorSyntaxThread == 0 )
+	if ( d->skoorSyntaxThread == 0 || d->skoorSyntaxThread == 0 ||
+			! mw->fc->hasCurrentDocument() )
 		return;
 
 	const SkoorInterpreter * interpreter = d->skoorSyntaxThread->interpreter();
@@ -583,7 +583,8 @@ void BuildController::onSkoolSyntaxThreadFinished()
 		 ! mw->fc->hasCurrentDocument() )
 		return;
 
-	gum::ErrorsContainer errors = d->skoolSyntaxThread->reader()->getErrorsContainer();
+	const SkoolReader * reader = d->skoolSyntaxThread->reader();
+	const gum::ErrorsContainer & errors = reader->getErrorsContainer();
 
 	if ( errors.count() == 0 ) {
 		d->prmModel.clear();

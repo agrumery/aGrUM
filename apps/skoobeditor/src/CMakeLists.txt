@@ -53,10 +53,11 @@ if(MINGW)
   enable_language(RC)
   #SET(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> <DEFINES> -o <OBJECT> <SOURCE>")
   set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+  set(GUI_TYPE WIN32)
 endif(MINGW)
 
 # ~~~~~~~~~~~~ PROCESSING ~~~~~~~~~~~~ #
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYPE} )
-add_executable(skoobeditor WIN32 ${SKOOB_SOURCES} ${AGRUM_SOURCES} ${INCLUDES} ${MOCS} ${UIS} ${QRC} ${AGRUM_INCLUDES} ${RC_FILE})
+add_executable(skoobeditor ${GUI_TYPE} ${SKOOB_SOURCES} ${AGRUM_SOURCES} ${INCLUDES} ${MOCS} ${UIS} ${QRC} ${AGRUM_INCLUDES} ${RC_FILE})
 set_target_properties( skoobeditor PROPERTIES LINK_FLAGS "--enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc" )
 target_link_libraries( skoobeditor ${QT_LIBRARIES} ${QSCINTILLA2} )

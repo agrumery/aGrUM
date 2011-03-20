@@ -125,8 +125,8 @@ void PRMTreeItem::sort( Qt::SortOrder order )
 */
 
 /// Constructor
-PRMTreeModel::PRMTreeModel( PRM * aPrm, QObject * parent )
-	: QAbstractItemModel(parent), prm(aPrm), rootItem(new PRMTreeItem(0, "")), currentPackage(0), currentBlock(0)
+PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
+	: QAbstractItemModel(parent), rootItem(new PRMTreeItem(0, "")), currentPackage(0), currentBlock(0)
 {
 	// Construction du PRMTreeModel
 
@@ -166,7 +166,7 @@ PRMTreeModel::PRMTreeModel( PRM * aPrm, QObject * parent )
 		// Create the PRMTreeItem
 		PRMTreeItem * item = rootItem->createChild( QString::fromStdString( s->name() ).split(".") );
 		if (item != 0)
-			for ( System::const_iterator i = s->begin() ; i != s->end() ; ++i ) {
+			for ( System::iterator i = s->begin() ; i != s->end() ; ++i ) {
 				// Create the PRMTreeItem
 				PRMTreeItem * inst = item->createChild( QStringList() << QString::fromStdString((*i)->name()) );
 				// Add it to ref list to be recursively treat later
@@ -222,9 +222,7 @@ PRMTreeModel::PRMTreeModel( PRM * aPrm, QObject * parent )
 PRMTreeModel::~PRMTreeModel()
 {
 	delete rootItem;
-	delete prm;
 }
-
 
 
 /// Set the current package to allow direct access of member.

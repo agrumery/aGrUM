@@ -76,11 +76,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	bool oldAutoSyntax = bc->isAutoSyntaxCheck();
 	bc->setAutoSyntaxCheck(false);
 	if (fc->quit()) {
 		event->accept();
 	} else {
-		bc->setAutoSyntaxCheck(true);
+		bc->setAutoSyntaxCheck(oldAutoSyntax);
 		event->ignore();
 	}
 }

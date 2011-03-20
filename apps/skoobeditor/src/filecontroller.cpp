@@ -213,7 +213,7 @@ bool FileController::openFile(const QString & filename)
 	if ( ! filename.isEmpty() )
 		filenameList.append(filename);
 	else
-		filenameList = QFileDialog::getOpenFileNames( mw, tr("Ouvrir le(s) fichier(s)"), d->lastDir );
+		filenameList = QFileDialog::getOpenFileNames( mw, tr("Ouvrir le(s) fichier(s)"), d->lastDir, tr("Skoob Files(*.skool *.skoor)") );
 
 	if (filenameList.isEmpty())
 		return false;

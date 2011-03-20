@@ -138,29 +138,6 @@ QList<QString> Project::files() const
   */
 bool Project::rmdirRec( const QModelIndex & parent )
 {
-	qDebug() << "in rmdirRec()" << parent.data().toString();
-
-//	if ( ! isDir(index) )
-//		return false;
-
-//	qDebug() << "rowCount() ==" << rowCount(index) << hasChildren(index);
-//	bool result = true;
-//	for ( int i = rowCount(index) - 1 ; i >= 0 ; i-- ) {
-//		QModelIndex child = index.child(i,0);
-//		qDebug() << "try to remove" << child.data().toString();
-//		if ( isDir(child) && ! rmdirRec(child) ) {
-//			result = false;
-//			qDebug() << "Can't remove dir" << child.data().toString();
-//		} else if ( ! isDir(child) && ! remove(child) ) {
-//			result = false;
-//			qDebug() << "Can't remove file" << child.data().toString();
-//		}
-//	}
-
-//	qDebug() << "try to remove" << index.data().toString();
-//	// if result is false, don't try rmdir
-//	return result && rmdir(index);
-
 	if ( ! isDir(parent) )
 		return false;
 

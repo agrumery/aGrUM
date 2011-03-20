@@ -12,7 +12,7 @@ QsciLexerSkoor::QsciLexerSkoor(QObject * parent) : QsciLexerJava(parent)
 	setAPIs(api); // application de l'api au lexer
 
 	// Courier new 10pt
-	QFont font("monospace");
+	QFont font("courier new");
 	font.setPointSize(10);
 	font.setStyleHint(QFont::Monospace);
 	setFont(font,QsciLexerJava::Default);

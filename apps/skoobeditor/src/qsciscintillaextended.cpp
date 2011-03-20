@@ -339,7 +339,7 @@ int QsciScintillaExtended::getStyleAt( int position ) const
 /// Overload method.
 int QsciScintillaExtended::getStyleAt( int line, int index ) const
 {
-	getStyleAt( positionFromLineIndex(line,index) );
+	return getStyleAt( positionFromLineIndex(line,index) );
 }
 
 

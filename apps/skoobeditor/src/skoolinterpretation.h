@@ -23,7 +23,6 @@ class SkoolInterpretation : public QThread
 	std::string m_text;
 	gum::prm::skool::SkoolReader * m_reader;
 	mutable QMutex m_mutex;
-	bool m_readerTaken;
 
 public:
 	SkoolInterpretation( QObject * parent );
@@ -37,7 +36,7 @@ public:
 	void setPath( const QList<QString> & paths );
 	void addPath( const QString & path );
 
-	gum::prm::skool::SkoolReader * reader();
+	const gum::prm::skool::SkoolReader * reader();
 
 protected:
 	void run();

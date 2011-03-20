@@ -9,9 +9,16 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-
+	* Refresh des erreurs syntaxiques automatiques pas top
+		(quand on supprime une ligne, etc).
+	
 AMELIORATIONS :
 
+	*************************************
+	* CPACK !!!!!
+	* Imports dans Skool Parser !!!!
+	*************************************
+	
     * Quand on parse, passer à Skoor ou Skool des nom de fichier relatif, et faire les conversions après.
         Ou alors faire les conversions en relatif quand on affiche les erreurs.
     * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
