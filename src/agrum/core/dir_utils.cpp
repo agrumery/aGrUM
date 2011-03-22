@@ -25,7 +25,6 @@
  
 #include "dir_utils.h"
 
-#include <agrum/core/utils.h>
 #include <unistd.h>
 
 using namespace std;
@@ -38,6 +37,12 @@ bool Directory::isDir( const string & directory )
 	return Directory(directory).isValid();
 }
 
+//! Contructor
+Directory::Directory() : m_dirPtr(NULL)
+{
+    GUM_CONSTRUCTOR( Directory );
+}
+	
 //! Contructor
 Directory::Directory( const string & directory ) : m_dirName(directory)
 {
@@ -83,7 +88,7 @@ vector<string> Directory::entries() const
 Directory Directory::parent() const
 {
 	if ( ! isValid() )
-		return Directory(string());
+		return Directory();
 	return Directory(m_dirName+"../");
 }
 
@@ -110,9 +115,19 @@ string Directory::absolutePath() const
 	char absPath[255];
 	if ( getcwd(absPath, 254) != NULL )
 		result = string(absPath)+'/';
-	(void) chdir(oldWD);
+	if ( chdir(oldWD) != 0 )
+		cerr << "Warning : Could not go to previous working directory. (" << __FILE__ << ":" << __LINE__ << ")" << endl;
 	
 	return result;
 }
 
+Directory & Directory::operator=( const Directory & d )
+{
+	if ( m_dirPtr != NULL )
+		closedir(m_dirPtr);
+	m_dirName = d.m_dirName;
+	m_dirPtr = opendir(m_dirName.c_str());
+	return *this;
+}
+	
 } // END NAMESPACE GUM

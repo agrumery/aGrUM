@@ -40,10 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <algorithm>
 #include <fstream>
 
-namespace std {
-  #include<dirent.h>
-}
-
+#include <agrum/core/dir_utils.h>
 #include <agrum/prm/PRMFactory.h>
 
 #undef TRY
@@ -112,6 +109,8 @@ private:
     gum::prm::PRMFactory*       __factory;
     std::vector<std::string>    __class_path;
     gum::Set<std::string>       __imports;
+    std::string                 __package;
+    gum::Directory              __current_directory;
 
     // Convert string to wstring.
     void SemErr(std::string s) {
@@ -126,60 +125,89 @@ private:
     }
     
     void import( std::string fileID ) {
-        // If fileID has not yet been imported.
-        if ( ! __imports.exists(fileID) ) {
-            // We add it to file imported (even if import desn't succeed).
-            __imports.insert(fileID);
-                
-            std::string realFilename;
-            std::ifstream file_test;
-            bool fileFound = false;
+        //
+        using namespace std;
+        
+        string filename = fileID, filepath;
+        ifstream file_test;
+        bool fileFound = false;
 
-            std::replace(fileID.begin(), fileID.end(), '.', '/');
-
-            // Search filename in each path stored in __class_path
-            for (std::vector<std::string>::iterator path = __class_path.begin(); path != __class_path.end(); ++path) {
-                // Construct complete filePath
-                realFilename = (*path) + "/" + fileID + ".skool";
-
-                // We try to open it
-                file_test.open(realFilename.c_str());
+        // Create filename
+        replace(filename.begin(), filename.end(), '.', '/');
+        filename += ".skool";
+        
+        // Search in current directory.
+        if ( __current_directory.isValid() ) {
+            filepath = __current_directory.absolutePath() + filename;
+            file_test.open(filepath.c_str());
+            if (file_test.is_open()) {
+                file_test.close();
+                fileFound = true;
+            }
+        }
+        
+        // Search in root package directory.
+        if ( ! fileFound && ! __package.empty() ) {
+            int cpt = std::count(__package.begin(), __package.end(), '.');
+            string cd = __current_directory.absolutePath();
+            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
+            for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
+                index = cd.find_last_of('/', index - 1);            
+            
+            if ( index != string::npos ) {
+                string rootDir = cd.substr(0, index+1); // with '/' at end
+                filepath = rootDir + filename;
+                file_test.open(filepath.c_str());
                 if (file_test.is_open()) {
                     file_test.close();
                     fileFound = true;
-                                        
-                    // If we have already import this file, skip it.
-                    if ( __imports.exists( realFilename ) )
-                        break;
-                    
-                    // Remember we have found it.
-                    __imports.insert(realFilename);
-
-                    // We parse it
-                    Scanner s(realFilename.c_str());
-                    Parser p(&s);
-                    p.setFactory(__factory);
-                    p.setClassPath(__class_path);
-                    p.setImports(__imports);
-                    p.Parse();
-
-                    // We add file imported in p to file imported here.
-                    gum::Set<std::string> parserImports = p.getImports();
-                    for (gum::Set<std::string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
-                        if (not __imports.exists(*iter))
-                        __imports.insert(*iter);
-
-                    // We add warnings and errors to this
-                    __errors += p.__errors;
-
-                    // Stop to search
-                    break;
                 }
             }
-
-            // If import filename has not been found, add an error.
-            if (not fileFound) SemErr("import not found");
         }
+
+        // Search filename in each path stored in __class_path
+        for (vector<string>::iterator path = __class_path.begin(); ! fileFound && path != __class_path.end(); ++path) {
+            // Construct complete filePath
+            filepath = (*path) + filename;
+
+            // We try to open it
+            file_test.open(filepath.c_str());
+            if (file_test.is_open()) {
+                file_test.close();
+                fileFound = true;
+            }
+        }
+
+        // If it is found, import it.
+        if (fileFound) {
+            // If we have already import this file, skip it.
+            // (like filepath is always absolute, there is no conflict)
+            if ( __imports.exists( filepath ) )
+                return;
+            // Remember we have found it.
+            __imports.insert(filepath);
+
+            // We parse it
+            Scanner s(filepath.c_str());
+            Parser p(&s);
+            p.setFactory(__factory);
+            p.setClassPath(__class_path);
+            p.setImports(__imports);
+            p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
+            p.Parse();
+
+            // We add file imported in p to file imported here.
+            gum::Set<string> parserImports = p.getImports();
+            for (gum::Set<string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
+                if (not __imports.exists(*iter))
+                __imports.insert(*iter);
+
+            // We add warnings and errors to this
+            __errors += p.__errors;
+            
+        // If import filename has not been found, add an error.
+        } else
+            SemErr("import not found");
     }
 
     // Set files already import in factory.
@@ -215,9 +243,16 @@ public:
       GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
     }
 
-    // Set the paths to search for imports.
+    // Set the paths to search for imports. Must ended with a '/'.
     void setClassPath(const std::vector<std::string>& class_path) {
       __class_path = class_path;
+    }
+    
+    // Must be an absolute path
+    void setCurrentDirectory( const std::string & cd ) {
+        __current_directory = Directory(cd);
+        if ( ! __current_directory.isValid() )
+          Warning( widen("gum::skool::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
     }
     
 

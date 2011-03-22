@@ -118,7 +118,7 @@ void Parser::Package() {
 		while (!(la->kind == 0 || la->kind == 20)) {SynErr(33); Get();}
 		Expect(20);
 		Ident(name);
-		factory().pushPackage(name); 
+		factory().pushPackage(name); __package = name; 
 		while (!(la->kind == 0 || la->kind == 8)) {SynErr(34); Get();}
 		Expect(8);
 }

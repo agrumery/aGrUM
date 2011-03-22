@@ -93,7 +93,7 @@ class DirTestSuite: public CxxTest::TestSuite {
 		
 		Directory d1("./");
 		entries = d1.entries();
-		TS_ASSERT( entries.size() == 5 );
+		TS_ASSERT( entries.size() == 6 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
@@ -102,7 +102,7 @@ class DirTestSuite: public CxxTest::TestSuite {
 		
 		Directory d2("../dir/");
 		entries = d2.entries();
-		TS_ASSERT( entries.size() == 5 );
+		TS_ASSERT( entries.size() == 6 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
@@ -111,7 +111,7 @@ class DirTestSuite: public CxxTest::TestSuite {
 		
 		Directory d3("./dir1/../");
 		entries = d3.entries();
-		TS_ASSERT( entries.size() == 5 );
+		TS_ASSERT( entries.size() == 6 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
@@ -120,14 +120,14 @@ class DirTestSuite: public CxxTest::TestSuite {
 		
 		Directory d4("./dir1/");
 		entries = d4.entries();
-		TS_ASSERT( entries.size() == 3 );
+		TS_ASSERT( entries.size() == 4 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) != entries.end() );
 		
 		Directory d5("../dir/dir2/");
 		entries = d5.entries();
-		TS_ASSERT( entries.size() == 4 );
+		TS_ASSERT( entries.size() == 5 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) != entries.end() );
@@ -135,7 +135,7 @@ class DirTestSuite: public CxxTest::TestSuite {
 		
 		Directory d6("./dir1/../dir3/");
 		entries = d6.entries();
-		TS_ASSERT( entries.size() == 5 );
+		TS_ASSERT( entries.size() == 6 ); // => +".svn" !!!
 		TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
 		TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) != entries.end() );

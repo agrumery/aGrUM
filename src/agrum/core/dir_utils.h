@@ -28,7 +28,10 @@
 
 #include <string>
 #include <vector>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
+#include <agrum/core/utils.h>
 #include <dirent.h>
 
 namespace gum {
@@ -39,6 +42,8 @@ public:
 	//! Return true if \a directory is a valid directory, false otherwise.
 	static bool isDir( const std::string & directory );
 
+    //! Contructor
+	Directory();
     //! Contructor
 	Directory( const std::string & directory );
     //! Contructor
@@ -56,6 +61,8 @@ public:
 	std::string path() const;
 	//! Return directory absolute path.
 	std::string absolutePath() const;
+	
+	Directory & operator=( const Directory & d );
 	
 private:
 	std::string m_dirName;

@@ -37,7 +37,6 @@ namespace gum {
       INLINE
       SkoolReader::SkoolReader() {
         GUM_CONSTRUCTOR ( SkoolReader );
-        __class_path.push_back ( "." );
         __parseDone = false;
         __prmTake = false;
         __parser = 0;
@@ -61,7 +60,7 @@ namespace gum {
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
-
+          __parser->setCurrentDirectory( file.substr(0, file.find_last_of('/')+1) );
           try {
             __parser->Parse();
             __parseDone = true;

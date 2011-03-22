@@ -105,7 +105,7 @@ PRMFactory::endDiscreteType() {
   if (not t->__isValid()) {
     GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype");
   } else if (t->variable().domainSize() < 2) {
-    GUM_ERROR(OperationNotAllowed, "current tyoe is not a valid discrete type");
+    GUM_ERROR(OperationNotAllowed, "current type is not a valid discrete type");
   }
   __prm->__typeMap.insert(t->name(), t);
   __prm->__types.insert(t);

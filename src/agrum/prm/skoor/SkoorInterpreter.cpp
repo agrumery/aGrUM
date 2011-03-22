@@ -61,7 +61,6 @@ SkoorInterpreter::SkoorInterpreter() :
   m_current_line(-1),
   m_prm_taken(false)
 {
-  m_paths.push_back("./");
 }
 
 /// This constructor use \a c as context.
@@ -75,7 +74,6 @@ SkoorInterpreter::SkoorInterpreter( SkoorContext * c ) :
   m_current_line(-1),
   m_prm_taken(false)
 {
-  m_paths.push_back("./");
 }
 
 /// This constructor parse \a filename and use it as context.
@@ -88,10 +86,7 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
   m_log(cout),
   m_current_line(-1),
   m_prm_taken(false)
-{  
-  // Add working dir to path
-  m_paths.push_back("./");
-  
+{   
   // Add file directory to path
   size_t size = filename.find_last_of('/');
   if ( size != string::npos )
@@ -234,30 +229,7 @@ bool SkoorInterpreter::interpret()
     delete m_reader;
   }
   m_prm_taken = false;
-  m_reader = new skool::SkoolReader();
-  
-  // Deduce root path from package name.
-  string package = m_context->getPackage();
-  if ( ! package.empty() ) {
-    string root;
-    
-    // if filename is not empty, start from it.
-    string filename = m_context->getFilename();
-    if ( ! filename.empty() ) {
-      size_t size = filename.find_last_of('/');
-      if ( size != string::npos )
-        root += filename.substr(0, size + 1); // take with the '/'
-    }
-    
-    //
-    root += "../";
-    int count = (int) std::count( package.begin(), package.end(), '.' );
-    for ( int i = 0 ; i < count ; i++ )
-      root += "../";
-    
-    m_paths.push_back( root );
-  }
-  
+  m_reader = new skool::SkoolReader();  
   
   // Set paths to search from.
   for ( size_t i = 0 ; i < m_paths.size() ; i++ )
@@ -384,18 +356,58 @@ bool SkoorInterpreter::import ( string import_name ) try {
   std::replace ( import_name.begin(), import_name.end(), '.', '/' );
   import_name += ".skool";
   
-  // Search import in all paths.
   std::ifstream file_test;
   bool found = false;
   string import_abs_filename;
-  for (vector<string>::iterator i = m_paths.begin(); i != m_paths.end(); i++) {
+  
+  // Search in skoor file dir.
+  string skoorFilename = m_context->getFilename();
+  if ( ! skoorFilename.empty() ) {
+    string dir = skoorFilename.substr( 0, skoorFilename.find_last_of('/')+1 );
+    if ( m_verbose ) m_log << "# Search in " << dir << flush;
+    import_abs_filename = dir + import_name;
+    file_test.open(import_abs_filename.c_str());
+    if (file_test.is_open()) {
+      if ( m_verbose ) m_log << " found !" << endl << flush;
+      file_test.close();
+      found = true;      
+    } else if ( m_verbose )
+      m_log << " not found." << endl << flush;
+  }
+  
+  // Deduce root path from package name.
+  string package = m_context->getPackage();
+  if ( ! package.empty() ) {
+    string root;
+    
+    // if filename is not empty, start from it.
+    string filename = m_context->getFilename();
+    if ( ! filename.empty() ) {
+      size_t size = filename.find_last_of('/');
+      if ( size != string::npos )
+        root += filename.substr(0, size + 1); // take with the '/'
+    }
+    
+    //
+    root += "../";
+    int count = (int) std::count( package.begin(), package.end(), '.' );
+    for ( int i = 0 ; i < count ; i++ )
+      root += "../";
+    
+    m_paths.push_back( root );
+  }
+  
+  // Search import in all paths.  
+  for (vector<string>::iterator i = m_paths.begin(); ! found && i != m_paths.end(); i++) {
+    if ( m_verbose ) m_log << "# Search in " << (*i) << flush;
     import_abs_filename = (*i) + import_name;
     file_test.open(import_abs_filename.c_str());
     if (file_test.is_open()) {
+      if ( m_verbose ) m_log << "found !" << endl << flush;
       file_test.close();
-      found = true;      
-      break;
-    }
+      found = true;
+    } else if ( m_verbose ) 
+      m_log << "not found." << endl << flush;
   }
   
   if (not found) {
