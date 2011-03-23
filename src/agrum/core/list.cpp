@@ -25,13 +25,37 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/list.h>
 
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/core/list.inl>
+#endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
 namespace gum {
 
-  
+#define GCC_STR(s) #s
+#define GCC_JOINSTR(x,y) GCC_STR(x ## y)
+
+#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
+# define GCC_DIAG_DO_PRAGMA(x) _Pragma (#x)
+# define GCC_DIAG_PRAGMA(x) GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
+# if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
+#  define GCC_DIAG_OFF(x) GCC_DIAG_PRAGMA(push) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W,x))
+#  define GCC_DIAG_ON(x)  GCC_DIAG_PRAGMA(pop)
+# else
+#  define GCC_DIAG_OFF(x) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W,x))
+#  define GCC_DIAG_ON(x)  GCC_DIAG_PRAGMA(warning GCC_JOINSTR(-W,x))
+# endif
+#else
+# define GCC_DIAG_OFF(x)
+# define GCC_DIAG_ON(x)
+#endif
+
+//GCC_DIAG_OFF(strict-aliasing)
+//GCC_DIAG_ON(strict-aliasing)
+
   // ==============================================================================
   /// Destructor for end/rend
   // ==============================================================================

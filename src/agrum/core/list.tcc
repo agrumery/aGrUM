@@ -491,7 +491,7 @@ namespace gum {
   bool ListBase<Val>::empty() const  {
     return ( __nb_elements == 0 );
   }
-  
+
   // ==============================================================================
   /// returns a bucket pointing to the first element of the list
   // ==============================================================================
@@ -499,7 +499,7 @@ namespace gum {
   const ListBucket<Val>* ListBase<Val>::frontBucket () const {
     return __deb_list;
   }
-    
+
   // ==============================================================================
   /// returns a bucket pointing to the last element of the list
   // ==============================================================================
@@ -847,14 +847,13 @@ namespace gum {
     }
   }
 
+
   // ==============================================================================
   /// the iterator pointing to the end of the List
   // ==============================================================================
   template <typename Val> INLINE
   const ListConstIterator<Val>& List<Val>::end() const  {
-    // ok, the code below is a little bit complicated, but it avoids the
-    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListConstIterator<Val>*>( (void*) &__list_end ) );
+    return *(reinterpret_cast<const ListConstIterator<Val>* >(___get__list_end() ));
   }
 
   // ==============================================================================
@@ -862,9 +861,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   const ListIterator<Val>& List<Val>::end()  {
-    // ok, the code below is a little bit complicated, but it avoids the
-    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListIterator<Val>*>( (void*) &__list_end ) );
+    return *(reinterpret_cast<const ListIterator<Val>* >(___get__list_end() ));
   }
 
   // ==============================================================================
@@ -872,9 +869,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   const ListConstIterator<Val>& List<Val>::rend() const  {
-    // ok, the code below is a little bit complicated, but it avoids the
-    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListConstIterator<Val>*>( (void*) &__list_end ) );
+    return *(reinterpret_cast<const ListConstIterator<Val>* >(___get__list_end() ));
   }
 
   // ==============================================================================
@@ -882,10 +877,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   const ListIterator<Val>& List<Val>::rend()  {
-    // ok, the code below is a little bit complicated, but it avoids the
-    // "Derefencing type-punned pointer will break strict-aliasing rules" warning
-    return *( static_cast<const ListIterator<Val>*>( (void*) &__list_end ) );
+    return *(reinterpret_cast<const ListIterator<Val>* >(___get__list_end() ));
   }
+
 
   // ==============================================================================
   /// the iterator pointing to the beginning of the List

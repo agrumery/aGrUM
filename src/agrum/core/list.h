@@ -144,6 +144,9 @@ namespace gum {
   // be quite inefficient as end and rend are precisely identical for all lists)
   extern const ListConstIterator<Debug> __list_end;
 
+	// a function to get rid of a weird strict-aliasing rule warning
+	const void* ___get__list_end();
+
 #define GUM_LIST_ITERATOR_BEGIN  1
 #define GUM_LIST_ITERATOR_RBEGIN 2
 #define GUM_LIST_ITERATOR_END    3
@@ -216,7 +219,7 @@ namespace gum {
     // ============================================================================
     const ListBucket<Val>* previous () const;
 
-    
+
   private:
 
     template <typename T> friend class List;
@@ -410,7 +413,7 @@ namespace gum {
     /// erases the bucket from the List
     // ============================================================================
     void erase ( const ListBucket<Val>& bucket );
-    
+
     // ============================================================================
     /// erases the first element encountered with a given value
     /** If no element equal to \e val can be found, the function
@@ -459,12 +462,12 @@ namespace gum {
     /// returns a bucket pointing to the first element of the list
     // ============================================================================
     const ListBucket<Val>* frontBucket () const;
-    
+
     // ============================================================================
     /// returns a bucket pointing to the last element of the list
     // ============================================================================
     const ListBucket<Val>* backBucket () const;
-    
+
     // ============================================================================
     /// creates a list of mountains from a list of val
     /** If a problem arises during the mapping, an exception is thrown, but no
@@ -1453,9 +1456,13 @@ namespace gum {
 
 } /* namespace gum */
 
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/core/list.inl>
+#endif /* GUM_NO_INLINE */
 
 /// always include the implementation of the templates
 #include <agrum/core/list.tcc>
 
 #endif  /* GUM_LIST_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
