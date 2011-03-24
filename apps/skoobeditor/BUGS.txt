@@ -1,12 +1,12 @@
+ï»¿
+Vous pouvez mettre ici les bugs rencontrÃ©s (soyez le plus explicite possible) 
+dans la section BUGS, les amÃ©liorations des fonctionnalitÃ©s existantes dans la
+section AMELIORATIONS, et les nouvelles fonctionnalitÃ©s dÃ©sirÃ©es dans la section TODOS.
 
-Vous pouvez mettre ici les bugs rencontrés (soyez le plus explicite possible) 
-dans la section BUGS, les améliorations des fonctionnalités existantes dans la
-section AMELIORATIONS, et les nouvelles fonctionnalités désirées dans la section TODOS.
-
-Dans tous les cas, laissez votre mail ou vos coordonnées au cas où nous aurions besoin 
+Dans tous les cas, laissez votre mail ou vos coordonnÃ©es au cas oÃ¹ nous aurions besoin 
 de plus d'informations.
 
-Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
+Pensez ainsi Ã  commiter les changements fait Ã  ce fichier sur le serveur !
 
 BUGS :
 	* Refresh des erreurs syntaxiques automatiques pas top
@@ -19,56 +19,56 @@ AMELIORATIONS :
 	* Imports dans Skool Parser !!!!
 	*************************************
 	
-    * Quand on parse, passer à Skoor ou Skool des nom de fichier relatif, et faire les conversions après.
+    * Quand on parse, passer Ã  Skoor ou Skool des nom de fichier relatif, et faire les conversions aprÃ¨s.
         Ou alors faire les conversions en relatif quand on affiche les erreurs.
-    * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
-	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
-		à la sauvegarde.
-	* Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.
-	* Mettre dans les préférences la politique commenter/décommenter : 
+    * SÃ©parer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
+	* Lien entre le nom de la classe ou du system ou des requÃªtes et le nom du fichier,
+		Ã  la sauvegarde.
+	* Lien entre le nom du package et le rÃ©pertoire du fichier,	Ã  la sauvegarde.
+	* Mettre dans les prÃ©fÃ©rences la politique commenter/dÃ©commenter : 
 		- soit on fait juste l'inversion, ligne par ligne;
-	    - soit si toutes les lignes sont commentées, on décommente, sinon on commente.
+	    - soit si toutes les lignes sont commentÃ©es, on dÃ©commente, sinon on commente.
 	* Ne supprimer le fichier de config qu'avec le purge pour apt-get.
 
 TODOS :
   
-	* Pour le parser : ajouter un warning si deux classes/systèmes sont définis dans le même fichier.  
+	* Pour le parser : ajouter un warning si deux classes/systÃ¨mes sont dÃ©finis dans le mÃªme fichier.  
 	
-	* Utiliser la barre de status pour mettre différent informations : 
+	* Utiliser la barre de status pour mettre diffÃ©rentes informations : 
 		- Nom complet du fichier (sci->filename);
-		- Numéro de ligne et colonne du curseur;
-		- Indicateur bien visible pour savoir l'état des touches Insert et Verr. Majuscule
-		- Nombre de ligne, de mot, de caractère...
-	* F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
-		crée un fichier requête.
+		- NumÃ©ro de ligne et colonne du curseur;
+		- Indicateur bien visible pour savoir l'Ã©tat des touches Insert et Verr. Majuscule
+		- Nombre de ligne, de mot, de caractÃ¨re...
+	* F6 sur un fichier de classe crÃ©e un fichier system, F6 sur un fichier system
+		crÃ©e un fichier requÃªte.
 	* Indentation automatique du fichier.
-	* Génération de la documentation (style Javadoc ou Doxygen)
+	* GÃ©nÃ©ration de la documentation (style Javadoc ou Doxygen)
 	* Outils de refactoring
     
     * Refactoring : ajouter le refactoring pour le fichier et package dans l'explorateur de projet.
-        => Il faut attendre d'avoir un modèle interne complet du projet.
+        => Il faut attendre d'avoir un modÃ¨le interne complet du projet.
     
-	* Ajouter à l'explorateur de projet les répertoires qui ont été ajoutés 
-		dans les propriétés de projet (mais en ReadOnly).
+	* Ajouter Ã  l'explorateur de projet les rÃ©pertoires qui ont Ã©tÃ© ajoutÃ©s 
+		dans les propriÃ©tÃ©s de projet (mais en ReadOnly).
 		=> Avec un autre QTreeView ?
-	* Couleur différent entre les fichiers ouverts qui appartiennent au projet et les autres.
+	* Couleur diffÃ©rent entre les fichiers ouverts qui appartiennent au projet et les autres.
   
-	* Finir les préférences de l'éditeur.
-	* Dans les préférences, choix des couleurs des différents éléments.
+	* Finir les prÃ©fÃ©rences de l'Ã©diteur.
+	* Dans les prÃ©fÃ©rences, choix des couleurs des diffÃ©rents Ã©lÃ©ments.
   
 	* Se souvenir des marqueurs dans les fichiers ouverts quand on relance le programme ?
 		Pour tout les fichiers du projet, dans le .skoop ?
 
-	* Suggestion d'import des classes/systèmes nécessaires.
+	* Suggestion d'import des classes/systÃ¨mes nÃ©cessaires.
 	
-	* Intégrer la table d'édition de CPT.
+	* IntÃ©grer la table d'Ã©dition de CPT.
   
 	* Documentation du code.
   
-	* Si il y a un message d'erreur qui indique qu'un type/classe/système n'est pas trouvé, faire des propositions pour les intégrer.
+	* Si il y a un message d'erreur qui indique qu'un type/classe/systÃ¨me n'est pas trouvÃ©, faire des propositions pour les intÃ©grer.
 	* Bulle avec le message d'erreur quand on reste sur une erreur (soulignement ou surlignement).
 
-	* Dans SkoolReader, si un type n'est pas trouvé (ex:déclaration d'une référence dont on a pas importé la classe), 
-        chercher dans le même répertoire/package (voir avec phw).
+	* Dans SkoolReader, si un type n'est pas trouvÃ© (ex:dÃ©claration d'une rÃ©fÃ©rence dont on a pas importÃ© la classe), 
+        chercher dans le mÃªme rÃ©pertoire/package (voir avec phw).
   
-	* Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).
+	* Sauvegarde automatique dans un fichier temporaire en cas de crash (de mÃªme que tout un tas d'autres infos).

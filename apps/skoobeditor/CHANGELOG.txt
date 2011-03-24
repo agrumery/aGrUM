@@ -1,43 +1,56 @@
+ï»¿
+23/03/2011
+	* Improve : PrÃ©sentation de la doc.
+	* Add : Les prÃ©fÃ©rences de l'Ã©ditor (tailles des tabulations, indentations, etc).
+
+22/03/2011
+	* Fix : CrÃ©ation de package Ã  la racine dans l'explorateur pas possible.
+	* Improve : Gestion des imports. SkoolReader et SkoorInterpreter vont
+		directement chercher les imports dans le dossier du fichier, puis Ã  la racine
+		du projet (dÃ©finit grÃ¢ce Ã  package) et enfin dans les classPaths, qui ne doivent
+		maintenant contenir que des chemin vers d'autres projets indÃ©pendant 
+		(et peut donc Ãªtre vide).
+		
 20/03/2011
 	* Fix : Filtre pour le fichier ouvrir.
 	* Fix : Quand il n'y a pas de projet ouvert, pas de correction automatique.
 	* Fix : Monospace pour les fichiers skoor.
 	* Fix : Quand on ajoute un fichier au projet, si le package est vide, ne pas le mettre.
 	* Fix : Dans l'explorateur de projet, 
-		cacher l'action "Exécuter" si ce n'est pas un fichier skoor.
+		cacher l'action "ExÃ©cuter" si ce n'est pas un fichier skoor.
 	
 15/03/2011
-    * Improve : la syntax de Skool pour mieux gérer les messages 
+    * Improve : la syntax de Skool pour mieux gÃ©rer les messages 
         d'erreurs et les resynchronisations.
-    * Add : Gestion des systems et instances dans l'autocomplétion.
-    * Add : Les résultats sont ordonnés l'autocomplétion.
+    * Add : Gestion des systems et instances dans l'autocomplÃ©tion.
+    * Add : Les rÃ©sultats sont ordonnÃ©s l'autocomplÃ©tion.
     
 14/03/2011
-    * Add : Ajouter les mots-clés du langage au model pour les avoir en plus.
-    * Fix : Quand on auto-complete le mot clé package, problème dans les,
+    * Add : Ajouter les mots-clÃ©s du langage au model pour les avoir en plus.
+    * Fix : Quand on auto-complete le mot clÃ© package, problÃ¨me dans les,
         folding mark en dessous (elles remontent).
 
 12/03/2011
-	* Add : Agrandir le modèle en ajoutant le contenu de la classe au 
-        référence de celle-ci dans d'autres classes.
+	* Add : Agrandir le modÃ¨le en ajoutant le contenu de la classe au 
+        rÃ©fÃ©rence de celle-ci dans d'autres classes.
         
 10/03/2011
     * Add : TreeModel du PRM.
-    * Add : Possibilité de récupérer le TreeModel du PRM quand on check la syntaxe.
-    * Add : Amélioration de l'autocomplétion : elle est basée sur le TreeModel.
+    * Add : PossibilitÃ© de rÃ©cupÃ©rer le TreeModel du PRM quand on check la syntaxe.
+    * Add : AmÃ©lioration de l'autocomplÃ©tion : elle est basÃ©e sur le TreeModel.
 
 07/03/2011
-    * Fix : Coloration syntaxique gère mal les packages.
+    * Fix : Coloration syntaxique gÃ¨re mal les packages.
 
 02/03/2011
-    * Improve : Enlève le refactoring automatique dans l'explorateur de projet.
+    * Improve : EnlÃ¨ve le refactoring automatique dans l'explorateur de projet.
         => Je l'ajouterais plus tard dans le menu contextuel.
     * Fix : Correction syntaxique quand il y a des erreurs ne marche plus pour les skool.
 
 01/03/2011
     * Add : Clic droit sur un package du projet => menu avec
-		- créer un package;
-		- créer une classe/système/requête;
+		- crÃ©er un package;
+		- crÃ©er une classe/systÃ¨me/requÃªte;
 		- renommer;
 		- supprimer;
 	* Add : Drag and drop de package dans l'explorateur 
@@ -45,9 +58,9 @@
 		=> update les import dans les autres fichiers.
     
 26/02/2011
-	* Add : Pour l'explorateur de projet, icone pour les différents type de fichier.
+	* Add : Pour l'explorateur de projet, icone pour les diffÃ©rents type de fichier.
 		-> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).
-	* Improve : Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
+	* Improve : Faire la sauvegarde des fichiers/projets ouverts/fermÃ©s directement, 
     	ne pas attendre la fermeture (en cas de crash).
 		
 24/02/2011
@@ -60,15 +73,15 @@
     
 23/02/2011
     * Fix : Quand on renomme un fichier, les indicateurs de modifications 
-        ne sont plus consistant entre l'onglet et le titre de la fenêtre.
-	* Fix : Quand on crée un projet, ne pas indiquer si le dossier n'existe pas, mais s'il existe déjà.
-        => Si le dossier existe déjà, on le sauvegarde.
-    * Fix : Quand on change de projet, ne sauvegardait pas le fichier dans le bon répertoire.
-    * Improve : Gestion des visualisateurs de modifications (les passer entièrement dans FileController).
-    * Fix : Quand on crée un nouveau fichier class, le titre ne se mets pas à jour dans l'onglet.
-	* Fix : Quand on crée un projet avec un mauvais nom ou que le projet n'existe plus => gérer l'erreur.
+        ne sont plus consistant entre l'onglet et le titre de la fenÃªtre.
+	* Fix : Quand on crÃ©e un projet, ne pas indiquer si le dossier n'existe pas, mais s'il existe dÃ©jÃ .
+        => Si le dossier existe dÃ©jÃ , on le sauvegarde.
+    * Fix : Quand on change de projet, ne sauvegardait pas le fichier dans le bon rÃ©pertoire.
+    * Improve : Gestion des visualisateurs de modifications (les passer entiÃ¨rement dans FileController).
+    * Fix : Quand on crÃ©e un nouveau fichier class, le titre ne se mets pas Ã  jour dans l'onglet.
+	* Fix : Quand on crÃ©e un projet avec un mauvais nom ou que le projet n'existe plus => gÃ©rer l'erreur.
 	* Fix : Avec le soulignement des fautes : 
-        si l'erreur est au début de la ligne (";") et qu'on la supprime, ne désouligne pas le début.
+        si l'erreur est au dÃ©but de la ligne (";") et qu'on la supprime, ne dÃ©souligne pas le dÃ©but.
 	* Improve : Cacher la bar de status pour le moment.
 	* Improve : Pour le logo : le faire en petit avec le fond que vert.
 	* Improve : Dans la licence : A propos d'aGrUM avec Lionel et Christophe.
@@ -76,22 +89,22 @@
 
 22/02/2011
 	* Add : Drag and drop de fichiers dans l'explorateur 
-		=> Les déplace en vrai, change le package dans le fichier.
+		=> Les dÃ©place en vrai, change le package dans le fichier.
 	* Clic droit sur un fichier du projet => menu avec
 		- Renommer;
 		- Supprimer;
-		- Exécuter (un fichier skoor).
+		- ExÃ©cuter (un fichier skoor).
 	
 21/02/2011
     * Improve : Pour l'action Nouveau dans fichier, mettre un sous menu avec fichier skool/skoor et projet.
     * Fix : Pour les liens dans la doc, utiliser le navigateur de l'utilisateur.
 
 18/02/2011
-    * Déplace le dossier doc dans rsrc.
-    * Improve : Intègre la doc HTML dans les ressources de l'exécutable.
+    * DÃ©place le dossier doc dans rsrc.
+    * Improve : IntÃ¨gre la doc HTML dans les ressources de l'exÃ©cutable.
 
 16/02/2011
-    * Add : Améliore et intègre le manuel utilisateur à SkoobEditor via l'aide.
+    * Add : AmÃ©liore et intÃ¨gre le manuel utilisateur Ã  SkoobEditor via l'aide.
     * Add : Drag and drop (interne seulement) des fichiers dans
     l'explorateur de projet et renommage des fichiers possible.
 
@@ -100,25 +113,25 @@
     * Fix : Makefile
   
 14/02/2011
-	* Add : À propos
-	* Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
+	* Add : Ã€ propos
+	* Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vÃ©rifier et avertir.
 
 11/02/2011
-    * Fix : Pour la recherche rapide, incohérence entre le menu option
+    * Fix : Pour la recherche rapide, incohÃ©rence entre le menu option
         et les options de la recherche.
     * Add : icone de programme.
 
 10/02/2011
-	* Add : Faire les propriétés du projet (class_path pour le moment).
-	* Improve : Pour la sauvegarde des raccourcis dans les settings, les mettre dans un dossier à part.
-        => Améliorer l'organisation des settings.
+	* Add : Faire les propriÃ©tÃ©s du projet (class_path pour le moment).
+	* Improve : Pour la sauvegarde des raccourcis dans les settings, les mettre dans un dossier Ã  part.
+        => AmÃ©liorer l'organisation des settings.
 	* Improve : Si, quand on veut ouvrir un projet, il n'y a pas de fichier projet, 
-		demander si on veut le créer.
+		demander si on veut le crÃ©er.
     * Improve : Ne montre que les fichiers skool et skoor dans l'explorateur de projet.
     * Add : Ajouter un splitter pour les docks.
-    * Fix : Bug quand il n'y avait aucun résultat.
-    * Improve : Ajout d'un popup informatif quand il n'y a aucun résultat.
-	* Improve : Pour la recherche, même rapide, bouton voir/mettre whole word, regexp, casse.
+    * Fix : Bug quand il n'y avait aucun rÃ©sultat.
+    * Improve : Ajout d'un popup informatif quand il n'y a aucun rÃ©sultat.
+	* Improve : Pour la recherche, mÃªme rapide, bouton voir/mettre whole word, regexp, casse.
 
 08/02/2011
     * Add : When create a new class/system file, set the corresponding package.
@@ -126,22 +139,22 @@
 
 03/02/2011
     * Fix : issues on windows.
-    * Fix : Quand on sauvegarde un fichier qui ne l'était pas encore, 
+    * Fix : Quand on sauvegarde un fichier qui ne l'Ã©tait pas encore, 
         la correction devrait commencer, ce qui n'est pas le cas.
-    * Fix : Quand on clic sur les résultats d'une requête, rien ne devrait se passer.
+    * Fix : Quand on clic sur les rÃ©sultats d'une requÃªte, rien ne devrait se passer.
     * Fix : Quand on double-clic sur une erreur qui est dans un autre fichier, 
-        ouvre un autre document même si ce fichier est déjà ouvert.
-        => dû au filename qui est différent (absolu != relatif)
-    * Fix : Quand on fait crée un nouveau fichier requête, sélectionne automatiquent 
+        ouvre un autre document mÃªme si ce fichier est dÃ©jÃ  ouvert.
+        => dÃ» au filename qui est diffÃ©rent (absolu != relatif)
+    * Fix : Quand on fait crÃ©e un nouveau fichier requÃªte, sÃ©lectionne automatiquent 
         le filtre *.skoor.
-    * Fix : Double fenêtre "sauvegarder sous" si on fait annuler à la première fenêtre,
-        quand on crée un nouveau fichier pour le projet.
-    * Improve : supprime le document nouvellement crée si on fait annuler dans la 
-        fenêtre "sauvegarder sous", quand on crée un nouveau fichier pour le projet.
-    * Fix : à la coloration pour le type si étend boolean, le mot d'après est mal coloré.
-    * Fix : À l'autocomplétion, si il n'y qu'une possibilité elle ne devrait pas s'afficher.
+    * Fix : Double fenÃªtre "sauvegarder sous" si on fait annuler Ã  la premiÃ¨re fenÃªtre,
+        quand on crÃ©e un nouveau fichier pour le projet.
+    * Improve : supprime le document nouvellement crÃ©e si on fait annuler dans la 
+        fenÃªtre "sauvegarder sous", quand on crÃ©e un nouveau fichier pour le projet.
+    * Fix : Ã  la coloration pour le type si Ã©tend boolean, le mot d'aprÃ¨s est mal colorÃ©.
+    * Fix : Ã€ l'autocomplÃ©tion, si il n'y qu'une possibilitÃ© elle ne devrait pas s'afficher.
         => Marchait correctement avant.
-        => Pas trouvé d'où venait le problème. Scintilla ? => Oui. Ils ont inversé la méthode >_<.
+        => Pas trouvÃ© d'oÃ¹ venait le problÃ¨me. Scintilla ? => Oui. Ils ont inversÃ© la mÃ©thode >_<.
         => A tester sur d'autres machines.
   
 02/02/2011
@@ -154,69 +167,69 @@
     * Add 'title' property for QsciScintillaExtended and use it in rest of project
         instead of filename when possible.
     * Fix : Quand on ferme avec un nouveau fichier pas sauvegarder, 
-        à la réouverture du programme.
+        Ã  la rÃ©ouverture du programme.
 
 28/01/2011  
     * Fix : Avoir le nom du fichier dans l'erreur pour les fichiers skoor.
 
 27/01/2011
-	* Done : Détecton d'erreur à la volée/à la Eclipse.
+	* Done : DÃ©tecton d'erreur Ã  la volÃ©e/Ã  la Eclipse.
   
 26/01/2011
     * Fix : Show build dock at the beggining of the process.
-    * Improve : Mettre la correction syntaxique et l'exécution dans des threads (pour garder un GUI active).
+    * Improve : Mettre la correction syntaxique et l'exÃ©cution dans des threads (pour garder un GUI active).
     * Fix : Quand on affiche des erreurs, qu'on fait des changements et qu'on recompile, 
-        on devrait réinitialiser les erreurs (surlignage en rouge).
-    * Fix : Ouvrir les anciens fichiers ouverts (et projet) après la création de la fenêtre.
+        on devrait rÃ©initialiser les erreurs (surlignage en rouge).
+    * Fix : Ouvrir les anciens fichiers ouverts (et projet) aprÃ¨s la crÃ©ation de la fenÃªtre.
   
 06/01/2011
-    * Fix : Bug d'utf8 entre la sauvegarde et la lecture d'un fichier (visible dans les meta-données).
-    * Fix : A la création d'un fichier, ne pas mettre de ';' après les accolades.
+    * Fix : Bug d'utf8 entre la sauvegarde et la lecture d'un fichier (visible dans les meta-donnÃ©es).
+    * Fix : A la crÃ©ation d'un fichier, ne pas mettre de ';' aprÃ¨s les accolades.
     * Fix : "index out of range" when double clic on a error message in the build dock, 
         when skoor build is called before skool build.
-    * Improve : pour enregistrer sous, met à jour l'extension automatiquement.
-    * Improve : lien entre le nom de la classe (ou du system ou de la requête) et le nom du fichier,
-        à sa création dans le projet.
+    * Improve : pour enregistrer sous, met Ã  jour l'extension automatiquement.
+    * Improve : lien entre le nom de la classe (ou du system ou de la requÃªte) et le nom du fichier,
+        Ã  sa crÃ©ation dans le projet.
     * Improve : Ajout de couleurs dans le search dock 
         (pour les noms de fichier et alternance de la couleur de fond des lignes).
-    * Improve : Pour la recherche avancée : expand si il n'y a qu'un document.
-    * Improve : Ajout d'icônes pour la création de fichier class/system/request dans la toolbar.
+    * Improve : Pour la recherche avancÃ©e : expand si il n'y a qu'un document.
+    * Improve : Ajout d'icÃ´nes pour la crÃ©ation de fichier class/system/request dans la toolbar.
   
 05/01/2011
     * Fix : Pour "remplacer tout", prend en compte la casse alors qu'il ne devrait pas.
-        => Changement dans les paramètres => Feature ? 
-    * Fix : À la fin du fichier, '^' + '^' fais planté le programme.
-        Problème dû à l'encodage en utf8/Scintilla et QString dans QsciLexerSkool2.
-    * Fix : Ctrl+D ne doit pas affiché l'explorateur de projet s'il n'y a pas de projet ouvert.
-    * Fix : Incohérence dans l'affichage des marges quand on ouvre un nouveau document.
-    * Fix : Les document enregistrés ne sont pas renvoyés par FileController::openDocuments()
-    * Fix : Pas de mise à jour du lexer quand on change de type de fichier
+        => Changement dans les paramÃ¨tres => Feature ? 
+    * Fix : Ã€ la fin du fichier, '^' + '^' fais plantÃ© le programme.
+        ProblÃ¨me dÃ» Ã  l'encodage en utf8/Scintilla et QString dans QsciLexerSkool2.
+    * Fix : Ctrl+D ne doit pas affichÃ© l'explorateur de projet s'il n'y a pas de projet ouvert.
+    * Fix : IncohÃ©rence dans l'affichage des marges quand on ouvre un nouveau document.
+    * Fix : Les document enregistrÃ©s ne sont pas renvoyÃ©s par FileController::openDocuments()
+    * Fix : Pas de mise Ã  jour du lexer quand on change de type de fichier
     * Fix : Enregistre pas quand on fat 'Sauvegarder sous' alors que le fichier n'est pas modifier.
-    * Fix : Incohérences dans la création de document projets par rapport a newFile.
+    * Fix : IncohÃ©rences dans la crÃ©ation de document projets par rapport a newFile.
 
 04/01/2011
 	* Fix : Pas d'affichage des marqueurs de pliage dans QsciLexerSkool2.
-	* Fix : Quand pas de projet actif, désactiver la recherche dans le projet.
-	* Fix : Si il n'y a pas de projet ouvert, pas de création de nouveau fichier classe/système etc.
+	* Fix : Quand pas de projet actif, dÃ©sactiver la recherche dans le projet.
+	* Fix : Si il n'y a pas de projet ouvert, pas de crÃ©ation de nouveau fichier classe/systÃ¨me etc.
 	* Fix : Toujours le double "import" dans l'auto completion (avec QScintilla-2.4.6).
-	* Fix : Raccourci undo redo marche pas, ou aléatoirement. 
-        Bug dû à un conflit entre les shortcuts de QScintilla et ceux de SkoobEditor.
+	* Fix : Raccourci undo redo marche pas, ou alÃ©atoirement. 
+        Bug dÃ» Ã  un conflit entre les shortcuts de QScintilla et ceux de SkoobEditor.
 
 23/10/2010
-	* Fix : Au lancement du programme le titre de la fenêtre ne s'affiche pas.
-	* Fix : Supprimer les settings à la désinstallation du programme .
+	* Fix : Au lancement du programme le titre de la fenÃªtre ne s'affiche pas.
+	* Fix : Supprimer les settings Ã  la dÃ©sinstallation du programme .
 	* Fix : Quand on fait "tout sauvegarder" ne pas changer d'onglet.
-	* Fix : Dans la recherche rapide, au fur et à mesure qu'on tappe, 
-		la sélection change au lieu de rester sur le même item.
-	* Fix : Quand on fait précédent pour la recherche et que la sélection est entre 
-		deux résultats possible, va sur celui du bas o=au lieu de celui du haut. 
-		En fait passe le premier résulats possible et va au second.
-	* Fix : Pour remplacer, si rien de sélectionné, met quand même le mot.
-	* Fix : Quand on a fait un recherche (Ctrl+F et tapé le mot), le premier 
-		mot trouvé est sélectionné, et quand on fait Remplacer (Ctrl+R)
-		la sélection remplace le champs rechercher, génant quand la casse n'est pas la même.
-	* Fix : Tout remplacer déconne sérieux.
-	* Fix : Les labels Rechercher et Remplacer font pas la même taille sous windows (dépend de la police).
+	* Fix : Dans la recherche rapide, au fur et Ã  mesure qu'on tappe, 
+		la sÃ©lection change au lieu de rester sur le mÃªme item.
+	* Fix : Quand on fait prÃ©cÃ©dent pour la recherche et que la sÃ©lection est entre 
+		deux rÃ©sultats possible, va sur celui du bas o=au lieu de celui du haut. 
+		En fait passe le premier rÃ©sulats possible et va au second.
+	* Fix : Pour remplacer, si rien de sÃ©lectionnÃ©, met quand mÃªme le mot.
+	* Fix : Quand on a fait un recherche (Ctrl+F et tapÃ© le mot), le premier 
+		mot trouvÃ© est sÃ©lectionnÃ©, et quand on fait Remplacer (Ctrl+R)
+		la sÃ©lection remplace le champs rechercher, gÃ©nant quand la casse n'est pas la mÃªme.
+	* Fix : Tout remplacer dÃ©conne sÃ©rieux.
+	* Fix : Les labels Rechercher et Remplacer font pas la mÃªme taille sous windows (dÃ©pend de la police).
 	* Fix : Doubleclic on directory in the project explorator try to open the file.
 	* Fix : Sous windows, la font est pas bonne.
-	* Fix : Si on est pas sur un fichier skoor, pas d'exécution possible.
+	* Fix : Si on est pas sur un fichier skoor, pas d'exÃ©cution possible.
