@@ -40,16 +40,27 @@ void SkoorInterpretation::setDocument( const QString & text )
 	m_text = text.toStdString();
 }
 
-void SkoorInterpretation::setPath( const QList<QString> & paths )
+void SkoorInterpretation::setPaths( const QList<QString> & paths )
 {
 	QMutexLocker locker(&m_mutex);
-	m_paths = paths;
+	m_paths.clear();
+	locker.unlock();
+	addPaths(paths);
 }
 
 void SkoorInterpretation::addPath( const QString & path )
 {
 	QMutexLocker locker(&m_mutex);
-	m_paths << path;
+	if ( path.endsWith(QChar('/')) )
+		m_paths += path + ";";
+	else
+		m_paths += path + "/;";
+}
+
+void SkoorInterpretation::addPaths( const QList<QString> & paths )
+{
+	foreach ( QString path, paths )
+		addPath(path);
 }
 
 void SkoorInterpretation::run()

@@ -1,8 +1,10 @@
 # Makefile
+# Define LowerCase function
+lc = $(subst A,a,$(subst B,b,$(subst C,c,$(subst D,d,$(subst E,e,$(subst F,f,$(subst G,g,$(subst H,h,$(subst I,i,$(subst J,j,$(subst K,k,$(subst L,l,$(subst M,m,$(subst N,n,$(subst O,o,$(subst P,p,$(subst Q,q,$(subst R,r,$(subst S,s,$(subst T,t,$(subst U,u,$(subst V,v,$(subst W,w,$(subst X,x,$(subst Y,y,$(subst Z,z,$1))))))))))))))))))))))))))
 
 # Cette commande fonctionne sur unix, et renvoie le nom de le l'OS,
 # Mais elle ne fonctione pas sous windows, donc elle renvoie une chaine vide.
-OS := $(shell uname)
+OS = $(shell uname)
 ifeq ($(OS),Linux)
 	MAKE=make
 	CMAKE=cmake
@@ -15,18 +17,23 @@ endif
 
 default: release
 
+################################################################################
+
 before: agrum
-# On teste si le répertoire n'existe pas déjà.
-# Permet d'éviter les messages d'erreurs sous windows particulièrement.
-ifeq ("$(wildcard build)", "")
-#	mkdir build;
-#	mkdir build/Debug;
-#	mkdir build/Release;
-#	mkdir build/MinSizeRel;
 	$(CMAKE) -E make_directory build/Debug
 	$(CMAKE) -E make_directory build/Release
 	$(CMAKE) -E make_directory build/MinSizeRel
-endif
+
+agrum:
+#ifeq ($(OS),Linux)
+	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/release)
+	(cd ../../build/$(call lc,$(OS))/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#else
+#	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
+#	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#endif
+
+################################################################################
 
 debug: before
 	(cd build/Debug && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Debug && $(MAKE) -j 4)
@@ -37,11 +44,13 @@ release: before
 minrelease: before
 	(cd build/MinSizeRel && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=MinSizeRel && $(MAKE) -j 4)
 
+################################################################################
+
 clean:
 	$(CMAKE) -E remove_directory bin
 	$(CMAKE) -E remove_directory build
-	$(CMAKE) -E remove_directory usr
-
+	$(CMAKE) -E remove_directory usrcda
+	
 installer: release
 	"C:\Program Files\NSIS\makensis.exe" installer_script.nsi
 
@@ -54,13 +63,4 @@ dpkg: release
 	(cp bin/Release/skoobeditor usr/bin/)
 	(cd .. && dpkg-deb --build skoobeditor)
 
-## Compile aGrUM. Ne fonctionne pas encore. voir CMAKE_SYSTEM_NAME
-agrum:
-ifeq ($(OS),Linux)
-	(cd ../../ && $(CMAKE) -E make_directory build/linux/release)
-	(cd ../../build/linux/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
-else
-	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
-	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
-endif
 	

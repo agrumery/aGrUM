@@ -35,8 +35,9 @@ public:
 	const QsciScintillaExtended * document() const;
 	QString documentTitle() const;
 	void setDocument( const QString & text );
-	void setPath( const QList<QString> & paths );
+	void setPaths( const QList<QString> & paths );
 	void addPath( const QString & path );
+	void addPaths( const QList<QString> & paths );
 
 	const gum::prm::skoor::SkoorInterpreter * interpreter();
 

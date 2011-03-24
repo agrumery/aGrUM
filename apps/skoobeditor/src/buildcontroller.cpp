@@ -186,7 +186,7 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 		d->skoolThread->addPath( QFileInfo(sci->filename()).path() );
 
 	if ( mw->pc->isOpenProject() )
-		d->skoolThread->setPath( mw->pc->currentProject()->paths() );
+		d->skoolThread->addPaths( mw->pc->currentProject()->paths() );
 
 	connect( d->skoolThread, SIGNAL(finished()), this, SLOT(onSyntaxCheckFinished()) );
 	d->skoolThread->start();
@@ -318,7 +318,7 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 		d->skoorThread->addPath( QFileInfo(sci->filename()).path() );
 
 	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(sci->filename()) )
-		d->skoorThread->setPath( mw->pc->currentProject()->paths() );
+		d->skoorThread->addPaths( mw->pc->currentProject()->paths() );
 
 	// Connect and start thread.
 	connect( d->skoorThread, SIGNAL(finished()), this, SLOT(onInterpretationFinished()) );
@@ -508,12 +508,12 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 			d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument(), this );
 			connect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
 
-			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-				d->skoorSyntaxThread->setPath( mw->pc->currentProject()->paths() );
-
 			// Set paths
 			if ( ! filename.isEmpty() )
 				d->skoorSyntaxThread->addPath( QFileInfo(filename).path() );
+
+			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
+				d->skoorSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
 		}
 
 		// Set text
@@ -533,7 +533,7 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 				d->skoolSyntaxThread->addPath( QFileInfo(filename).path() );
 
 			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-				d->skoolSyntaxThread->setPath( mw->pc->currentProject()->paths() );
+				d->skoolSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
 		}
 
 		// Set text

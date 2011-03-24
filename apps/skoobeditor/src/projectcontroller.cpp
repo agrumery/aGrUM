@@ -229,6 +229,7 @@ struct ProjectController::PrivateData {
 	ProjectProperties * projectProperties;
 	QMenu * fileMenu;
 	QMenu * dirMenu;
+	QMenu * rootMenu;
 };
 
 
@@ -273,6 +274,10 @@ ProjectController::ProjectController(MainWindow * mw, QObject *parent) :
 //	m->addAction(tr("Re&nommer"))->setData("refact-rename");
 //	m->addAction(tr("&Déplacer"))->setData("refact-move");
 //	m->addAction(tr("&Supprimer"))->setData("refact-remove");
+
+	d->rootMenu = new QMenu(mw->ui->projectExplorator);
+	d->rootMenu->addAction(tr("Ajouter un &package"))->setData("package");
+	d->rootMenu->addAction(tr("Éxecuter"))->setData("execute");
 
 	connect( mw->ui->projectExplorator, SIGNAL(clicked(QModelIndex)), this, SLOT(on_projectExplorator_clicked(QModelIndex)) );
 	connect( mw->ui->projectExplorator, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_projectExplorator_doubleClicked(QModelIndex)));
@@ -912,7 +917,21 @@ void ProjectController::onCustomContextMenuRequested( const QPoint & pos )
 	QModelIndex index = mw->ui->projectExplorator->indexAt(pos);
 
 	// If it's a dir
-	if ( index.isValid() && currentProj->isDir( index ) ) {
+	if ( ! index.isValid() ) {
+		QAction * a = d->rootMenu->exec(mw->ui->projectExplorator->viewport()->mapToGlobal(pos));
+		if ( a == 0 )
+			return;
+
+		if ( a->data().toString() == "package" ) {
+			QModelIndex newPackage = currentProj->mkdir(currentProj->root(),"new_package");
+			currentProj->setEditable(true); // setEditable is set to false when editing is finished. See onItemRenameFinished()
+			mw->ui->projectExplorator->edit(newPackage);
+
+		} else if ( a->data().toString() == "execute" ) {
+			qDebug() << "execute project !";
+		}
+
+	} else if ( currentProj->isDir( index ) ) {
 		QAction * a = d->dirMenu->exec(mw->ui->projectExplorator->viewport()->mapToGlobal(pos));
 		if ( a == 0 )
 			return;
@@ -944,7 +963,7 @@ void ProjectController::onCustomContextMenuRequested( const QPoint & pos )
 			//createNewRequestFile();
 		}
 
-	} else if ( index.isValid() ) {
+	} else {
 		// Hide or show execute action (show only with skoor files).
 		d->fileMenu->actions().last()->setVisible( index.data().toString().endsWith(".skoor",Qt::CaseInsensitive) );
 

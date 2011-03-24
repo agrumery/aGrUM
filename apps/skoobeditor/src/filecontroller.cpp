@@ -773,6 +773,15 @@ QsciScintillaExtended * FileController::newDocument(const QString & title, QsciS
 		sci->setEolVisibility(true);
 	}
 
+	//
+	QSettings settings;
+	sci->setTabWidth(            settings.value("preferences/editor/tabwidth").toInt() );
+	sci->setIndentationWidth(    settings.value("preferences/editor/indentWidth").toInt() );
+	sci->setAutoIndent(          settings.value("preferences/editor/autoIndent").toBool() );
+	sci->setTabIndents(          settings.value("preferences/editor/tabIndents").toBool() );
+	sci->setBackspaceUnindents(  settings.value("preferences/editor/backspaceUnindents").toBool() );
+	sci->setIndentationsUseTabs( settings.value("preferences/editor/indentUseTabs").toBool() );
+
 	d->openDocuments.append(sci);
 
 	return sci;

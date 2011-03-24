@@ -48,17 +48,27 @@ void SkoolInterpretation::setDocument( const QString & text )
 	m_text = text.toStdString();
 }
 
-void SkoolInterpretation::setPath( const QList<QString> & paths )
+void SkoolInterpretation::setPaths( const QList<QString> & paths )
 {
 	QMutexLocker locker(&m_mutex);
-	foreach ( QString path, paths )
-		m_paths += path + "/;";
+	m_paths.clear();
+	locker.unlock();
+	addPaths(paths);
 }
 
 void SkoolInterpretation::addPath( const QString & path )
 {
 	QMutexLocker locker(&m_mutex);
-	m_paths += path + "/;";
+	if ( path.endsWith(QChar('/')) )
+		m_paths += path + ";";
+	else
+		m_paths += path + "/;";
+}
+
+void SkoolInterpretation::addPaths( const QList<QString> & paths )
+{
+	foreach ( QString path, paths )
+		addPath(path);
 }
 
 void SkoolInterpretation::run()

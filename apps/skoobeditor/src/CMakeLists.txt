@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
-project(SKOOBEDITOR)
-set(SKOOBEDITOR_VERSION_MAJOR "0")
-set(SKOOBEDITOR_VERSION_MINOR "1")
-set(SKOOBEDITOR_VERSION_PATCH "0")
+project(skoobeditor)
+set(skoobeditor_VERSION_MAJOR "0")
+set(skoobeditor_VERSION_MINOR "2")
+set(skoobeditor_VERSION_PATCH "0")
 
 # ~~~~~~~~~~~~ LIBRARIES ~~~~~~~~~~~~ #
 
@@ -61,3 +61,4 @@ set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYP
 add_executable(skoobeditor ${GUI_TYPE} ${SKOOB_SOURCES} ${AGRUM_SOURCES} ${INCLUDES} ${MOCS} ${UIS} ${QRC} ${AGRUM_INCLUDES} ${RC_FILE})
 set_target_properties( skoobeditor PROPERTIES LINK_FLAGS "--enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc" )
 target_link_libraries( skoobeditor ${QT_LIBRARIES} ${QSCINTILLA2} )
+

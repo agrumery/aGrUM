@@ -4,6 +4,9 @@
 #include "ui_properties.h"
 #include "ui_mainwindow.h"
 
+#include "qsciscintillaextended.h"
+#include "filecontroller.h"
+
 #include <QMenu>
 #include <QMessageBox>
 #include <QSettings>
@@ -29,6 +32,7 @@ Properties::Properties(MainWindow * mainw, QWidget *parent) :
 
 	// ################################################################
 
+	ui->listIcon->addItem(tr("Éditeur"));
 	ui->listIcon->addItem(tr("Raccourcis clavier"));
 	ui->listIcon->addItem(tr("Méta-données"));
 
@@ -43,6 +47,17 @@ Properties::Properties(MainWindow * mainw, QWidget *parent) :
 
 	QSettings settings;
 	settings.beginGroup("preferences");
+
+	settings.beginGroup("editor");
+	ui->tabWidthSpinBox->setValue( settings.value("tabWidth").toInt() );
+	ui->indentWidthSpinBox->setValue( settings.value("indentWidth").toInt() );
+	ui->autoIndentCheckBox->setChecked( settings.value("autoIndent",true).toBool() );
+	ui->indentUseTabsCheckBox->setChecked( settings.value("indentUseTabs",true).toBool() );
+	ui->tabIndentsCheckBox->setChecked( settings.value("tabIndents",true).toBool() );
+	ui->backspaceUnindentsCheckBox->setChecked( settings.value("backspaceUnindents",true).toBool() );
+	settings.endGroup();
+
+	// ################################################################
 
 	settings.beginGroup("metadata");
 	ui->auteurPlainText->setPlainText( settings.value("autor").toString() );
@@ -173,12 +188,34 @@ void Properties::accept()
 	QSettings settings;
 	settings.beginGroup("preferences");
 
+	//
+	settings.beginGroup("editor");
+	settings.setValue("tabWidth", ui->tabWidthSpinBox->value());
+	settings.setValue("indentWidth", ui->indentWidthSpinBox->value());
+	settings.setValue("autoIndent", ui->autoIndentCheckBox->isChecked());
+	settings.setValue("indentUseTabs", ui->indentUseTabsCheckBox->isChecked());
+	settings.setValue("tabIndents", ui->tabIndentsCheckBox->isChecked());
+	settings.setValue("backspaceUnindents", ui->backspaceUnindentsCheckBox->isChecked());
+	settings.endGroup();
+
+	//
+	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() ) {
+		sci->setTabWidth(            ui->tabWidthSpinBox->value() );
+		sci->setIndentationWidth(    ui->indentWidthSpinBox->value() );
+		sci->setAutoIndent(          ui->autoIndentCheckBox->isChecked() );
+		sci->setTabIndents(          ui->tabIndentsCheckBox->isChecked() );
+		sci->setBackspaceUnindents(  ui->backspaceUnindentsCheckBox->isChecked() );
+		sci->setIndentationsUseTabs( ui->indentUseTabsCheckBox->isChecked() );
+	}
+
+	//
 	settings.beginGroup("metadata");
 	settings.setValue("autor", ui->auteurPlainText->toPlainText());
 	settings.setValue("licence", ui->licencePlainText->toPlainText());
 	settings.setValue("updateDateChecked", ui->dateCheck->isChecked());
 	settings.endGroup();
 
+	//
 	settings.beginGroup("shortcuts");
 	foreach( QTreeWidgetItem * item, d->hash.keys() ) {
 		settings.setValue(item->data(3,Qt::DisplayRole).toString(), item->data(1,Qt::DisplayRole));
