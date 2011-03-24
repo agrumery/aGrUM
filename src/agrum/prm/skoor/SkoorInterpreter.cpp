@@ -113,10 +113,10 @@ SkoorInterpreter::SkoorInterpreter( const string & filename ) :
 SkoorInterpreter::~SkoorInterpreter()
 {
   delete m_context;
-  if ( m_reader && ! m_prm_taken )
+  delete m_inf;
+  if ( m_reader )
     delete m_reader->prm();
   delete m_reader;
-  delete m_inf;
 }
 
 /* ************************************************************************** */
@@ -157,12 +157,19 @@ void SkoorInterpreter::clearPaths()
 {
   m_paths.clear();
 }
-  
+
 /// Clear the current context (and errors).
 void SkoorInterpreter::clearContext()
 {
   m_context->clear();
   m_errors = ErrorsContainer();
+  if ( m_reader ) {
+	delete m_inf;
+	m_inf = 0;
+	delete m_reader->prm();
+	delete m_reader;
+	m_reader = 0;
+  }
 }
 
 /// syntax mode don't process anything, just check syntax.
@@ -186,12 +193,11 @@ void SkoorInterpreter::setVerboseMode ( bool f )
 {
   m_verbose = f;
 }
-  
-/// Retrieve prm object. You must delete it when done.
-gum::prm::PRM* SkoorInterpreter::prm() const
+
+/// Retrieve prm object.
+const gum::prm::PRM* SkoorInterpreter::prm() const
 {
     if ( m_reader ) {
-        m_prm_taken = true;
         return m_reader->prm();
     } else
         return 0;
@@ -217,15 +223,16 @@ const std::vector< std::pair<std::string,QueryResult> > & SkoorInterpreter::resu
  * etc).
  * */
 bool SkoorInterpreter::interpret()
-{    
+{
   // Don't parse if any syntax errors.
   if ( errors() > 0 )
     return false;
-    
+  
   // Create the reader for this time
   if ( m_reader ) {
-    if ( ! m_prm_taken )
-        delete m_reader->prm();
+	delete m_inf;
+	m_inf = 0;
+    delete m_reader->prm();
     delete m_reader;
   }
   m_prm_taken = false;
@@ -307,7 +314,7 @@ bool SkoorInterpreter::interpret()
 void SkoorInterpreter::processCommandLine( const string & commandLine )
 {
     
-  skoor::Scanner s( ( unsigned char* ) commandLine.c_str(), ( int ) commandLine.length() );  
+  skoor::Scanner s( ( unsigned char* ) commandLine.c_str(), ( int ) commandLine.length() );
   Parser p( &s );
   p.setSkoorContext( m_context );
   p.Parse();

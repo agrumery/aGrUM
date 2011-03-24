@@ -97,8 +97,8 @@ public:
   bool isVerboseMode() const;
   void setVerboseMode ( bool f );
   
-  /// Retrieve prm object. You must delete it when done.
-  gum::prm::PRM* prm() const;
+  /// Retrieve prm object.
+  const gum::prm::PRM* prm() const;
   /// Retrieve inference motor object.
   const gum::prm::PRMInference* inference() const;
   
