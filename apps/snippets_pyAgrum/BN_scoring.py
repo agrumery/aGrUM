@@ -124,7 +124,11 @@ def module_help(exit_value=1):
 def getNumLabel(inst,i,label,transforme_label):
     if transforme_label is not None:
         label=transforme_label(label)
-    return inst.variable(i)[label]
+    
+    if label.isdigit(): # an indice
+        return int(label)
+    else:
+        return inst.variable(i)[label]
 
 if __name__=="__main__":
     pyAgrum_header()
