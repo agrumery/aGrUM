@@ -1,23 +1,35 @@
-﻿
+﻿28/03/2011
+    * Fix : Skoor ne trouve pas le import.
+
+25/03/2011
+    * Fix : quand on supprime un class path des propriétés du projet, sauvegarde mal.
+    * Improve : doc.
+    
+24/03/2011
+    * Improve : passage à la version 2.4.6 pour les indicateurs.
+    * Fix : Refresh des erreurs syntaxiques automatiques pas top
+	(quand on supprime une ligne, etc).
+    * Improve : doc.
+    
 23/03/2011
-	* Improve : Présentation de la doc.
-	* Add : Les préférences de l'éditor (tailles des tabulations, indentations, etc).
+    * Improve : Présentation de la doc.
+    * Add : Les préférences de l'éditor (tailles des tabulations, indentations, etc).
 
 22/03/2011
-	* Fix : Création de package à la racine dans l'explorateur pas possible.
-	* Improve : Gestion des imports. SkoolReader et SkoorInterpreter vont
-		directement chercher les imports dans le dossier du fichier, puis à la racine
-		du projet (définit grâce à package) et enfin dans les classPaths, qui ne doivent
-		maintenant contenir que des chemin vers d'autres projets indépendant 
-		(et peut donc être vide).
+    * Fix : Création de package à la racine dans l'explorateur pas possible.
+    * Improve : Gestion des imports. SkoolReader et SkoorInterpreter vont
+	directement chercher les imports dans le dossier du fichier, puis à la racine
+	du projet (définit grâce à package) et enfin dans les classPaths, qui ne doivent
+	maintenant contenir que des chemin vers d'autres projets indépendant 
+	(et peut donc être vide).
 		
 20/03/2011
-	* Fix : Filtre pour le fichier ouvrir.
-	* Fix : Quand il n'y a pas de projet ouvert, pas de correction automatique.
-	* Fix : Monospace pour les fichiers skoor.
-	* Fix : Quand on ajoute un fichier au projet, si le package est vide, ne pas le mettre.
-	* Fix : Dans l'explorateur de projet, 
-		cacher l'action "Exécuter" si ce n'est pas un fichier skoor.
+    * Fix : Filtre pour le fichier ouvrir.
+    * Fix : Quand il n'y a pas de projet ouvert, pas de correction automatique.
+    * Fix : Monospace pour les fichiers skoor.
+    * Fix : Quand on ajoute un fichier au projet, si le package est vide, ne pas le mettre.
+    * Fix : Dans l'explorateur de projet, 
+	cacher l'action "Exécuter" si ce n'est pas un fichier skoor.
 	
 15/03/2011
     * Improve : la syntax de Skool pour mieux gérer les messages 
@@ -31,7 +43,7 @@
         folding mark en dessous (elles remontent).
 
 12/03/2011
-	* Add : Agrandir le modèle en ajoutant le contenu de la classe au 
+    * Add : Agrandir le modèle en ajoutant le contenu de la classe au 
         référence de celle-ci dans d'autres classes.
         
 10/03/2011
@@ -49,18 +61,18 @@
 
 01/03/2011
     * Add : Clic droit sur un package du projet => menu avec
-		- créer un package;
-		- créer une classe/système/requête;
-		- renommer;
-		- supprimer;
-	* Add : Drag and drop de package dans l'explorateur 
-		=> update les packages des fichiers dedans
-		=> update les import dans les autres fichiers.
+	- créer un package;
+	- créer une classe/système/requête;
+	- renommer;
+	- supprimer;
+    * Add : Drag and drop de package dans l'explorateur 
+	=> update les packages des fichiers dedans
+	=> update les import dans les autres fichiers.
     
 26/02/2011
-	* Add : Pour l'explorateur de projet, icone pour les différents type de fichier.
-		-> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).
-	* Improve : Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
+    * Add : Pour l'explorateur de projet, icone pour les différents type de fichier.
+	    -> QAbstractItemModel::data(QModelIndex,Qt::DecorationRole).
+    * Improve : Faire la sauvegarde des fichiers/projets ouverts/fermés directement, 
     	ne pas attendre la fermeture (en cas de crash).
 		
 24/02/2011
@@ -74,26 +86,26 @@
 23/02/2011
     * Fix : Quand on renomme un fichier, les indicateurs de modifications 
         ne sont plus consistant entre l'onglet et le titre de la fenêtre.
-	* Fix : Quand on crée un projet, ne pas indiquer si le dossier n'existe pas, mais s'il existe déjà.
+    * Fix : Quand on crée un projet, ne pas indiquer si le dossier n'existe pas, mais s'il existe déjà.
         => Si le dossier existe déjà, on le sauvegarde.
     * Fix : Quand on change de projet, ne sauvegardait pas le fichier dans le bon répertoire.
     * Improve : Gestion des visualisateurs de modifications (les passer entièrement dans FileController).
     * Fix : Quand on crée un nouveau fichier class, le titre ne se mets pas à jour dans l'onglet.
-	* Fix : Quand on crée un projet avec un mauvais nom ou que le projet n'existe plus => gérer l'erreur.
-	* Fix : Avec le soulignement des fautes : 
+    * Fix : Quand on crée un projet avec un mauvais nom ou que le projet n'existe plus => gérer l'erreur.
+    * Fix : Avec le soulignement des fautes : 
         si l'erreur est au début de la ligne (";") et qu'on la supprime, ne désouligne pas le début.
-	* Improve : Cacher la bar de status pour le moment.
-	* Improve : Pour le logo : le faire en petit avec le fond que vert.
-	* Improve : Dans la licence : A propos d'aGrUM avec Lionel et Christophe.
+    * Improve : Cacher la bar de status pour le moment.
+    * Improve : Pour le logo : le faire en petit avec le fond que vert.
+    * Improve : Dans la licence : A propos d'aGrUM avec Lionel et Christophe.
     * Fix : SaveAs when file was not modified.
 
 22/02/2011
-	* Add : Drag and drop de fichiers dans l'explorateur 
-		=> Les déplace en vrai, change le package dans le fichier.
-	* Clic droit sur un fichier du projet => menu avec
-		- Renommer;
-		- Supprimer;
-		- Exécuter (un fichier skoor).
+    * Add : Drag and drop de fichiers dans l'explorateur 
+	=> Les déplace en vrai, change le package dans le fichier.
+    * Clic droit sur un fichier du projet => menu avec
+	- Renommer;
+	- Supprimer;
+	- Exécuter (un fichier skoor).
 	
 21/02/2011
     * Improve : Pour l'action Nouveau dans fichier, mettre un sous menu avec fichier skool/skoor et projet.
@@ -109,12 +121,12 @@
     l'explorateur de projet et renommage des fichiers possible.
 
 15/02/2011
-	* Add : Manuel utilisateur dans le dossier doc.
+    * Add : Manuel utilisateur dans le dossier doc.
     * Fix : Makefile
   
 14/02/2011
-	* Add : À propos
-	* Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
+    * Add : À propos
+    * Fix : Quand le fichier skoop n'est pas valide (corrompu) -> vérifier et avertir.
 
 11/02/2011
     * Fix : Pour la recherche rapide, incohérence entre le menu option

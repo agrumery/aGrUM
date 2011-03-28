@@ -9,8 +9,6 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-	* Refresh des erreurs syntaxiques automatiques pas top
-		(quand on supprime une ligne, etc).
 	
 AMELIORATIONS :
 
@@ -22,53 +20,54 @@ AMELIORATIONS :
     * Quand on parse, passer à Skoor ou Skool des nom de fichier relatif, et faire les conversions après.
         Ou alors faire les conversions en relatif quand on affiche les erreurs.
     * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
-	* Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
-		à la sauvegarde.
-	* Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.
-	* Mettre dans les préférences la politique commenter/décommenter : 
-		- soit on fait juste l'inversion, ligne par ligne;
-	    - soit si toutes les lignes sont commentées, on décommente, sinon on commente.
-	* Ne supprimer le fichier de config qu'avec le purge pour apt-get.
+    * Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
+	à la sauvegarde.
+    * Lien entre le nom du package et le répertoire du fichier,	à la sauvegarde.
+    * Mettre dans les préférences la politique commenter/décommenter : 
+	- soit on fait juste l'inversion, ligne par ligne;
+	- soit si toutes les lignes sont commentées, on décommente, sinon on commente.
+    * Ne supprimer le fichier de config qu'avec le purge pour apt-get.
+    
 
 TODOS :
   
-	* Pour le parser : ajouter un warning si deux classes/systèmes sont définis dans le même fichier.  
-	
-	* Utiliser la barre de status pour mettre différentes informations : 
-		- Nom complet du fichier (sci->filename);
-		- Numéro de ligne et colonne du curseur;
-		- Indicateur bien visible pour savoir l'état des touches Insert et Verr. Majuscule
-		- Nombre de ligne, de mot, de caractère...
-	* F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
-		crée un fichier requête.
-	* Indentation automatique du fichier.
-	* Génération de la documentation (style Javadoc ou Doxygen)
-	* Outils de refactoring
+    * Pour le parser : ajouter un warning si deux classes/systèmes sont définis dans le même fichier.  
     
+    * Utiliser la barre de status pour mettre différentes informations : 
+	- Nom complet du fichier (sci->filename);
+	- Numéro de ligne et colonne du curseur;
+	- Indicateur bien visible pour savoir l'état des touches Insert et Verr. Majuscule
+	- Nombre de ligne, de mot, de caractère...
+    * F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
+	crée un fichier requête.
+    * Indentation automatique du fichier.
+    * Génération de la documentation (style Javadoc ou Doxygen)
+    * Outils de refactoring
+
     * Refactoring : ajouter le refactoring pour le fichier et package dans l'explorateur de projet.
-        => Il faut attendre d'avoir un modèle interne complet du projet.
+	=> Il faut attendre d'avoir un modèle interne complet du projet.
+
+    * Ajouter à l'explorateur de projet les répertoires qui ont été ajoutés 
+	dans les propriétés de projet (mais en ReadOnly).
+	=> Avec un autre QTreeView ?
+    * Couleur différent entre les fichiers ouverts qui appartiennent au projet et les autres.
+
+    * Finir les préférences de l'éditeur.
+    * Dans les préférences, choix des couleurs des différents éléments.
+
+    * Se souvenir des marqueurs dans les fichiers ouverts quand on relance le programme ?
+	Pour tout les fichiers du projet, dans le .skoop ?
+
+    * Suggestion d'import des classes/systèmes nécessaires.
     
-	* Ajouter à l'explorateur de projet les répertoires qui ont été ajoutés 
-		dans les propriétés de projet (mais en ReadOnly).
-		=> Avec un autre QTreeView ?
-	* Couleur différent entre les fichiers ouverts qui appartiennent au projet et les autres.
-  
-	* Finir les préférences de l'éditeur.
-	* Dans les préférences, choix des couleurs des différents éléments.
-  
-	* Se souvenir des marqueurs dans les fichiers ouverts quand on relance le programme ?
-		Pour tout les fichiers du projet, dans le .skoop ?
+    * Intégrer la table d'édition de CPT.
 
-	* Suggestion d'import des classes/systèmes nécessaires.
-	
-	* Intégrer la table d'édition de CPT.
-  
-	* Documentation du code.
-  
-	* Si il y a un message d'erreur qui indique qu'un type/classe/système n'est pas trouvé, faire des propositions pour les intégrer.
-	* Bulle avec le message d'erreur quand on reste sur une erreur (soulignement ou surlignement).
+    * Documentation du code.
 
-	* Dans SkoolReader, si un type n'est pas trouvé (ex:déclaration d'une référence dont on a pas importé la classe), 
-        chercher dans le même répertoire/package (voir avec phw).
-  
-	* Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).
+    * Si il y a un message d'erreur qui indique qu'un type/classe/système n'est pas trouvé, faire des propositions pour les intégrer.
+    * Bulle avec le message d'erreur quand on reste sur une erreur (soulignement ou surlignement).
+
+    * Dans SkoolReader, si un type n'est pas trouvé (ex:déclaration d'une référence dont on a pas importé la classe), 
+    chercher dans le même répertoire/package (voir avec phw).
+
+    * Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).

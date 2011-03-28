@@ -43,9 +43,10 @@
 
 <p>SkoobEditor est un logiciel open-source sous licence GPL version 3.</p>
 
-<p>Il a été développé par Vincent Renaudineau et Pierre-Henri Wuillemen dans le cadre du projet SKOOB.</p>
+<p>Il a été développé par Vincent Renaudineau et Pierre-Henri Wuillemin dans le cadre du projet SKOOB.</p>
 
-<p>C'est un EDI, un environnement de développement intégré, c'est à dire qu'il a pour but de faciliter à la fois la création et l'édition de fichier SKOOL et SKOOR, et la gestion des projets.</p>
+<p>C'est un EDI, un Environnement de Développement Intégré, c'est à dire qu'il a pour but de faciliter
+ à la fois la création et l'édition de fichier SKOOL et SKOOR, et la gestion des projets.</p>
 
 <p class="goToSommaire"><a href="#sommaire">Retour au menu</a></p>
 
@@ -54,11 +55,15 @@
 
 <h3>Windows</h3>
 
-<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers nécessaires à leur place (par défaut C:\Programs File\SkoobEditor). Il créera de plus un raccourci dans le menu démarrer. </p>
+<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers
+ nécessaires à leur place (par défaut C:\Programs File\SkoobEditor).
+  Il créera de plus un raccourci dans le menu démarrer. </p>
 
 <h3>Linux (Debian/Ubuntu)</h3>
 
-<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers nécessaires à leur place. L'exécutable ce trouve dans /usr/bin et se nomme skoobeditor. Il n'y a pour le moment pas de raccourcis, ceux-ci étant différents en fonction de l'OS et du gestionnaire de bureau.</p>
+<p>Double cliquez sur l'installateur. Ce dernier installera tous les fichiers nécessaires à leur place.
+ L'exécutable ce trouve dans /usr/bin et se nomme skoobeditor. Il n'y a pour le moment pas de raccourcis,
+  ceux-ci étant différents en fonction de l'OS et du gestionnaire de bureau.</p>
 
 <p class="goToSommaire"><a href="#sommaire">Retour au menu</a></p>
 
@@ -66,9 +71,14 @@
 
 <h3>Windows</h3>
 
-<p>Téléchargez et installez Qt (version >= 4.7). Pour cela téléchargez l'installateur (avec le compilateur mingw32 de préférence) et lancez le. Vérifiez que la variable système QTDIR est bien définie avec l'emplacement où ce trouve Qt, et vérifiez aussi que la variable PATH contient bien :</p>
+<p>Téléchargez et installez Qt (version >= 4.7). Pour cela téléchargez l'installateur
+ (avec le compilateur mingw32 de préférence) et lancez le. Vérifiez que la variable
+  système QTDIR est bien définie avec l'emplacement où ce trouve Qt,
+   et vérifiez aussi que la variable PATH contient bien :</p>
 <p class="code">%QTDIR%\bin;%QTDIR%\qt\bin;%QTDIR%\qt\lib;</p>
-<p>Installez ensuite QScintilla (version >= 2.4.6). Pour cela téléchargez les sources à partir du site et décompressez-les. Ouvrez un terminal puis rendez-vous dans le dossier Qt4. Ensuite taper les commandes :</p>
+<p>Installez ensuite QScintilla (version >= 2.4.6). Pour cela téléchargez les
+ sources à partir du site et décompressez-les. Ouvrez un terminal puis rendez-vous
+  dans le dossier Qt4. Ensuite taper les commandes :</p>
 <p class="code">qmake<br />
 mingw32-make release<br /> 
 mingw32-make install</p>
@@ -81,7 +91,11 @@ mingw32-make install</p>
 
 <h3>Linux</h3>
 
-<p>Installez Qt (version >= 4.7) à partir des dépôts de votre distribution. Installez ensuite QScintilla (version >= 2.4.6), soit à partir des dépôts, soit à partir des sources si la version dans les dépôts est trop vieille. Pour cela téléchargez les sources à partir du site et décompressez-les. Ouvrez un terminal puis rendez-vous dans le dossier Qt4. Ensuite taper les commandes :</p>
+<p>Installez Qt (version >= 4.7) à partir des dépôts de votre distribution. 
+Installez ensuite QScintilla (version >= 2.4.6), soit à partir des dépôts, 
+soit à partir des sources si la version dans les dépôts est trop vieille. 
+Pour cela téléchargez les sources à partir du site et décompressez-les. 
+Ouvrez un terminal puis rendez-vous dans le dossier Qt4. Ensuite taper les commandes :</p>
 <p class="code">qmake<br />
 make release<br />
 sudo make install</p>
@@ -98,32 +112,51 @@ sudo make install</p>
 <p>Le logiciel se découpe en 7 zones : <br /><br />
   <img src="./capture_skoobeditor_7zones.png" height="768" />
 </p>
-<p>
-  <ol>
-    <li>Le menu : vous y trouverez toutes les fonctionnalités disponibles, ainsi que les raccourcis clavier.
-      <ol>
-        <li>Fichier : on y trouve toutes les opérations relatives aux fichiers (créer un nouveau fichier, en ouvrir un existant, sauvegarder, fermer, etc) et quitter le programme.</li>
-        <li>Éditer : on y trouve les opérations d'édition ou de modification d'un fichier ouvert (couper, coller, indenter, commenter, etc) et le menu des préférences du programme.</li>
-        <li>Rechercher : on y trouve les fonctionnalités de recherche (simple ou avancée), de remplacement et de déplacement dans le fichier, </li>
-        <li>Affichage : on y trouve les fonctionnalités qui permettent d'afficher ou cacher les éléments de l'interface, et le zoom.</li>
-        <li>Projet : on y trouve les fonctionnalités ayant trait à la gestion de projet (créer un nouveau projet, en ouvrir un déjà existant, créer des fichiers) de même que les propriétés du projet.</li>
-        <li>Construire : on y trouve les fonctionnalités de construction, c'est à dire la vérification de la syntaxe et l'exécution des fichiers de requêtes.</li>
-      </ol>
-    </li>
-    <li>La barre d'outils : ce sont des raccourcis vers les fonctionnalités les plus utilisées.</li>
-    <li>L'explorateur de projet : on y voit les packages et fichiers présents dans le projet ouvert.  Pour plus de détails, consulter 4</li>
-    <li>La barre d'onglet : ce sont tous les fichiers ouverts. Vous pouvez les réordonner par glisser-déposer et les fermer en cliquant sur la croix associée.</li>
-    <li>La zone d'édition du fichier courant. Pour plus de détails, consulter 3</li>
-    <li>Le dock de recherche: celui-ci n'est visible que lorsqu'une recherche est en cours. Il faut appuyé sur la touche « Échap » pour le faire disparaître. Il est lui même décomposé en 3 parties :
-      <ol>
-        <li>une zone pour indiquer le mot ou l'expression à rechercher, avec les boutons pour chercher d'autres résultats ;</li>
-        <li>une zone pour indiquer par quoi il faut remplacer les résultats de la recherche ;</li>
-        <li>une liste avec les résultats de la recherche avancée, contenant le fichier, le numéro de la ligne et la ligne ou un résultat a été trouvé. Il suffit de double cliquer sur un résultat pour s'y rendre.</li>
-      </ol>
-    </li>
-    <li>Le dock de construction, où s'affiche les erreurs de syntaxes s'il y en a, de même que les résultats des requêtes. Il suffit de double cliquer sur une erreur pour s'y rendre. Pour le faire disparaître, appuyer sur « Échap ».</li>
-  </ol>
-</p>
+
+<h3>1 - Le menu</h3>
+
+<p>Vous y trouverez toutes les fonctionnalités disponibles, ainsi que les raccourcis clavier.</p>
+
+<p><b>Fichier</b> : on y trouve toutes les opérations relatives aux fichiers
+ (créer un nouveau fichier, en ouvrir un existant, sauvegarder, fermer, etc) et quitter le programme.</p>
+<p><b>Éditer</b> : on y trouve les opérations d'édition ou de modification
+ d'un fichier ouvert (couper, coller, indenter, commenter, etc) et le menu des préférences du programme.</p>
+<p><b>Rechercher</b> : on y trouve les fonctionnalités de recherche (simple ou avancée),
+ de remplacement et de déplacement dans le fichier, </p>
+<p><b>Affichage</b> : on y trouve les fonctionnalités qui permettent d'afficher
+ ou cacher les éléments de l'interface, et le zoom.</p>
+<p><b>Projet</b> : on y trouve les fonctionnalités ayant trait à la gestion de
+ projet (créer un nouveau projet, en ouvrir un déjà existant, créer des fichiers) de même que les propriétés du projet.</p>
+<p><b>Construire</b> : on y trouve les fonctionnalités de construction, 
+c'est à dire la vérification de la syntaxe et l'exécution des fichiers de requêtes.</p>
+
+<h3>2 - La barre d'outils</h3>
+
+<p>Ce sont des raccourcis vers les fonctionnalités les plus utilisées.</p>
+
+<h3>3 - La barre d'onglet</h3>
+<p>Ce sont tous les fichiers ouverts. Vous pouvez les réordonner par glisser-déposer et les fermer en cliquant sur la croix associée.</p>
+
+<h3>4 - L'explorateur de projet</h3>
+<p>On y voit les packages et fichiers présents dans le projet ouvert. Pour plus de détails, consulter <a href="#projet">Gestion d'un projet</a></p>
+
+<h3>5 - La zone d'édition du fichier courant.</h3>
+<p>On y voit les packages et fichiers présents dans le projet ouvert.  Pour plus de détails, consulter <a href="#edition">Édition d'un document</a></p>
+
+<h3>6 - Le dock de recherche</h3>
+<p>Celui-ci n'est visible que lorsqu'une recherche est en cours. 
+Il faut appuyé sur la touche « Échap » pour le faire disparaître. 
+Il est lui même décomposé en 3 parties :</p>
+<ul>
+  <li>une zone pour indiquer le mot ou l'expression à rechercher, avec les boutons pour chercher d'autres résultats ;</li>
+  <li>une zone pour indiquer par quoi il faut remplacer les résultats de la recherche ;</li>
+  <li>une liste avec les résultats de la recherche avancée, contenant le fichier, le numéro de la ligne et la ligne ou un résultat a été trouvé. Il suffit de double cliquer sur un résultat pour s'y rendre.</li>
+</ul>
+<p>Pour plus de renseignement, consulter <a href="#recherche">Recherche rapide, recherche avancée et remplacement</a>.</p>
+
+<h3>7 - Le dock de construction</h3>
+<p>C'est l'endroit où s'affiche les erreurs de syntaxes s'il y en a, de même que les résultats des requêtes. 
+Il suffit de double cliquer sur une erreur pour s'y rendre. Pour le faire disparaître, appuyer sur « Échap ».</p>
 
 <p class="goToSommaire"><a href="#sommaire">Retour au menu</a></p>
 
@@ -163,12 +196,35 @@ sudo make install</p>
     <li>requests : contient les fichiers de requêtes.</li>
   </ul>
 </p>
-<p>Ces packages sont la base du projet. Vous pourrez en créer d'autres vous même. Ils permettent une bonne séparation des différents composants.</p>
-<p>Vous pouvez maintenant créer les structures dont vous avez besoin, en cliquant sur les boutons appropriés dans la barre d'outils (« Créer un nouveau fichier classe », « Créer un nouveau fichier système » ou « Créer un nouveau fichier requête »). Ceux-ci seront mis dans le package adéquat.</p>
+<p>Ces packages sont la base du projet. Vous pourrez en créer d'autres vous même. 
+Ils permettent une bonne séparation des différents composants.</p>
+<p>Vous pouvez maintenant créer les structures dont vous avez besoin, 
+en cliquant sur les boutons appropriés dans la barre d'outils (« Créer un nouveau fichier classe »,
+ « Créer un nouveau fichier système » ou « Créer un nouveau fichier requête »). 
+ Ceux-ci seront mis dans le package adéquat.</p>
 
 <h3>Propriétés du projet</h3>
 
 <p>Si votre projet requière des types, classes ou systèmes créés en dehors du projet et donc présents dans un répertoire différent, vous pouvez préciser l'emplacement de ceux-ci dans les propriétés du projet, afin que l'interpréteur les trouve.</p>
+
+<h3>Explorateur de projet</h3>
+
+<p>Dans l'explorateur de projet vous pouvez trouver tous les fichiers du projet, de même que leur organisation en package.</p>
+
+<p>Vous pouvez directement y ajouter des packages, des fichiers, les supprimer, 
+les renommer, et exécuter des fichiers de requêtes par le menu contextuel (clic droit), 
+ainsi que les déplacer par drag and drop. Mais attention, ces modifications n'affectent 
+que les fichiers, et ne font pas de changements dans le code de ceux-ci (par exemple, 
+déplacer un fichier ne changera pas son package et ne mettra pas les importations 
+des autres fichiers à jour), c'est à vous de mettre à jour ces informations.</p>
+
+<p>Mais cette tâche peut s'avérer fastidieuse. Vous pouvez à la place utiliser le "refactoring".
+Le refactoring, en plus de faire la modification souhaitée sur le fichier, 
+met à jour les informations dans tout le projet. Ainsi, si un fichier est renommé, 
+le nom de la classe ou du système qu'il contient est renommé de la même façon, 
+et les importations dans les autres fichiers sont mis à jour. Il en va de même 
+pour le déplacement qui met à jour les packages et la suppression. 
+(Cette fonctionnalité sera disponible dans la prochaine version)</p>
 
 <p class="goToSommaire"><a href="#sommaire">Retour au menu</a></p>
 

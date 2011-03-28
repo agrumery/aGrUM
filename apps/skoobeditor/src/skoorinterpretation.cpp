@@ -12,6 +12,7 @@ SkoorInterpretation::SkoorInterpretation( const QsciScintillaExtended * sci, QOb
 		QThread(parent), m_sci(sci), m_syntaxMode(syntaxMode)
 {
 	m_interpreter = new gum::prm::skoor::SkoorInterpreter();
+	m_interpreter->setVerboseMode(true);
 	if ( m_sci != 0 )
 		m_title = m_sci->title();
 }
@@ -51,10 +52,10 @@ void SkoorInterpretation::setPaths( const QList<QString> & paths )
 void SkoorInterpretation::addPath( const QString & path )
 {
 	QMutexLocker locker(&m_mutex);
-	if ( path.endsWith(QChar('/')) )
-		m_paths += path + ";";
+	if ( path.endsWith("/") )
+		m_paths += path;
 	else
-		m_paths += path + "/;";
+		m_paths += path + "/";
 }
 
 void SkoorInterpretation::addPaths( const QList<QString> & paths )
@@ -71,7 +72,7 @@ void SkoorInterpretation::run()
 	QMutexLocker locker(&m_mutex);
 	m_interpreter->setSyntaxMode(m_syntaxMode);
 	foreach ( QString s, m_paths )
-		m_interpreter->addPath( s.toStdString() + "/" );
+		m_interpreter->addPath( s.toStdString() );
 
 	m_interpreter->processCommandLine( m_text );
 	locker.unlock();

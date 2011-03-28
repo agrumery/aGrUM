@@ -50,6 +50,7 @@ Project::Project(const QString & projDir, QObject * parent) : QFileSystemModel(p
 /// Destructor
 Project::~Project()
 {
+	close();
 	delete d;
 }
 

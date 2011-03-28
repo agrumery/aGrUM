@@ -10,7 +10,7 @@ class QsciScintillaExtended : public QsciScintilla
 	Q_OBJECT
 
 public:
-	enum MarkersId {Bookmark, Error, Package, Block};
+	enum MarkersId {Bookmark, Error, Package, Block, SyntaxError};
 	enum Lexer {None, Skool, Skoor};
 
 	QsciScintillaExtended( QWidget *parent = 0);

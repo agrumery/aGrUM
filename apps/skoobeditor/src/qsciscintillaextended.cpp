@@ -17,7 +17,6 @@
 struct QsciScintillaExtended::PrivateData {
 	QString title;
 	QString filename;
-	QList<int> syntaxErrorOnLine;
 	QCompleter * completer;
 };
 
@@ -60,12 +59,10 @@ void QsciScintillaExtended::initParameters()
 	setMarkerBackgroundColor(QColor(255,100,100), Error);
 	markerDefine(Invisible,Package);
 	markerDefine(Invisible,Block);
+	markerDefine(Invisible,SyntaxError);
 
-	// TODO : A modifier avec les nouvelles fonctions de QScintilla 2.4.6
-	SendScintilla( (unsigned int) SCI_INDICSETSTYLE,
-						(unsigned int) Error, (unsigned int) INDIC_SQUIGGLE);
-	SendScintilla( (unsigned int) SCI_INDICSETFORE,
-						(unsigned int) Error, 0x0000FF);
+	indicatorDefine(SquiggleIndicator, SyntaxError);
+	setIndicatorForegroundColor(Qt::red, SyntaxError);
 
 	// Auto-completion
 	QAction * action = new QAction(this);
@@ -620,19 +617,17 @@ void QsciScintillaExtended::setSyntaxError( int line )
 		line = currentLine();
 
 	//
-	int start = positionFromLineIndex(line, 0), len = lineLength(line);
-	/* don't set the indicator on whitespace */
+	int start = 0, len = lineLength(line);
+	// don't set the indicator on whitespace
 	const QString lineText = text(line);
 	int i = 0;
-	while ( i < lineText.length() && isspace( lineText.at(i++).toLatin1() ) ) {
+	Q_ASSERT( len == lineText.length() );
+	while ( i < len && isspace( lineText.at(i++).toLatin1() ) )
 		start++;
-		len--;
-	}
 
-	SendScintilla( (unsigned int) SCI_SETINDICATORCURRENT, (long unsigned int) Error, (long int) 0 );
-	SendScintilla( (unsigned int) SCI_INDICATORFILLRANGE, (long unsigned int) start, (long int) len );
+	fillIndicatorRange(line, start, line, len-start, SyntaxError);
+	markerAdd( line, SyntaxError );
 
-	d->syntaxErrorOnLine << line;
 }
 
 
@@ -642,12 +637,8 @@ void QsciScintillaExtended::clearSyntaxError( int line )
 {
 	if ( line == -1 )
 		line = currentLine();
-
-	//
-	int start = positionFromLineIndex(line, 0), len = lineLength(line);
-	SendScintilla( (unsigned int) SCI_INDICATORCLEARRANGE, (long unsigned int) start, (long int) len );
-
-	d->syntaxErrorOnLine.removeAll(line);
+	clearIndicatorRange(line, 0, line, lineLength(line), SyntaxError);
+	markerDelete(line, SyntaxError);
 }
 
 
@@ -655,7 +646,8 @@ void QsciScintillaExtended::clearSyntaxError( int line )
   */
 void QsciScintillaExtended::clearAllSyntaxErrors()
 {
-	foreach( int line, d->syntaxErrorOnLine )
+	int line = -1;
+	while ( (line = markerFindNext(line+1, 1<<SyntaxError)) != -1 )
 		clearSyntaxError(line);
 }
 

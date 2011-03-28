@@ -571,7 +571,6 @@ void ProjectController::closeProject()
 		d->projectProperties->deleteLater();
 		d->projectProperties = 0;
 
-		currentProj->close();
 		currentProj->deleteLater();
 		currentProj = 0;
 
