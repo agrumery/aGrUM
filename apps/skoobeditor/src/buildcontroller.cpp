@@ -79,6 +79,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 
 	connect( &d->timer, SIGNAL(timeout()), this, SLOT(startAutoSyntaxCheckThread()) );
 	connect( mw->fc, SIGNAL(fileSaved(QString,QsciScintillaExtended*)), this, SLOT(startAutoSyntaxCheckThread()) );
+	connect( mw->fc, SIGNAL(fileClosed(QString)), this, SLOT(onDocumentClosed(QString)) );
 
 	// Must be start after project triggerInit
 	QTimer::singleShot( 500, this, SLOT(triggerInit()) );
@@ -178,19 +179,13 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 
 	d->skoolThread = new SkoolInterpretation(sci, this);
 
-	// and set text
-	d->skoolThread->setDocument( sci->text() );
-
 	// Set paths
-	if ( ! sci->filename().isEmpty() )
-		d->skoolThread->addPath( QFileInfo(sci->filename()).path() );
-
 	if ( mw->pc->isOpenProject() )
 		d->skoolThread->addPaths( mw->pc->currentProject()->paths() );
 
 	connect( d->skoolThread, SIGNAL(finished()), this, SLOT(onSyntaxCheckFinished()) );
-	d->skoolThread->start();
 	d->isExecution = false;
+	d->skoolThread->start();
 
 	mw->vc->setBuildDockVisibility(true);
 }
@@ -311,12 +306,8 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 
 	// Create thread and set text
 	d->skoorThread = new SkoorInterpretation( sci, this, checkSyntaxOnly );
-	d->skoorThread->setDocument( sci->text() );
 
-	// Set paths
-	if ( ! sci->filename().isEmpty() )
-		d->skoorThread->addPath( QFileInfo(sci->filename()).path() );
-
+	// Set classpaths
 	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(sci->filename()) )
 		d->skoorThread->addPaths( mw->pc->currentProject()->paths() );
 
@@ -363,7 +354,6 @@ void BuildController::onInterpretationFinished()
 
 	} else { //  interpreter->errors() != 0
 
-		QString documentTitle = d->skoorThread->documentTitle();
 		const QString filename = d->skoorThread->document()->filename();
 
 		for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
@@ -454,39 +444,38 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 	// Stop timer if running, to prevent multiple thread.
 	d->timer.stop();
 
-	// If current document changed, delete the previous thread
-	if ( i != -2 ) {
+	//////////////////////////////////////////////////////////////
 
-		//////////////////////////////////////////////////////////////
+	// Delete the previous threads
 
-		// If a previous skoor thread is still running
-		if ( d->skoorSyntaxThread ) {
-			// We reconnect it to self delete
-			disconnect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
-			connect( d->skoorSyntaxThread, SIGNAL(finished()), d->skoorSyntaxThread, SLOT(deleteLater()) );
+	// If a previous skoor thread is still running
+	if ( d->skoorSyntaxThread ) {
+		// We reconnect it to self delete
+		disconnect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
+		connect( d->skoorSyntaxThread, SIGNAL(finished()), d->skoorSyntaxThread, SLOT(deleteLater()) );
 
-		// If previous skoor thread is not running, we delete it
-		}
-		if ( d->skoorSyntaxThread && d->skoorSyntaxThread->isFinished()  )
-			d->skoorSyntaxThread->deleteLater();
-
-		d->skoorSyntaxThread = 0;
-
-		//////////////////////////////////////////////////////////////
-
-		// If a previous skool thread is still running
-		if (  d->skoolSyntaxThread ) {
-			// We reconnect it to self delete
-			disconnect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
-			connect( d->skoolSyntaxThread, SIGNAL(finished()), d->skoolSyntaxThread, SLOT(deleteLater()) );
-
-		// If previous skool thread is not running, we delete it
-		}
-		if ( d->skoolSyntaxThread && d->skoolSyntaxThread->isFinished() )
-			d->skoolSyntaxThread->deleteLater();
-
-		d->skoolSyntaxThread = 0;
+	// If previous skoor thread is not running, we delete it
 	}
+	if ( d->skoorSyntaxThread && d->skoorSyntaxThread->isFinished()  )
+		d->skoorSyntaxThread->deleteLater();
+
+	d->skoorSyntaxThread = 0;
+
+
+	// If a previous skool thread is still running
+	if (  d->skoolSyntaxThread ) {
+		// We reconnect it to self delete
+		disconnect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
+		connect( d->skoolSyntaxThread, SIGNAL(finished()), d->skoolSyntaxThread, SLOT(deleteLater()) );
+
+	// If previous skool thread is not running, we delete it
+	}
+	if ( d->skoolSyntaxThread && d->skoolSyntaxThread->isFinished() )
+		d->skoolSyntaxThread->deleteLater();
+
+	d->skoolSyntaxThread = 0;
+
+	//////////////////////////////////////////////////////////////
 
 	if ( ! mw->fc->hasCurrentDocument() )
 		return;
@@ -504,40 +493,24 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 	// Create a new thread
 	if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skoor ) {
 		// Create new document and connect it
-		if ( d->skoorSyntaxThread == 0 ) {
-			d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument(), this );
-			connect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
+		d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument(), this, true );
+		connect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
 
-			// Set paths
-			if ( ! filename.isEmpty() )
-				d->skoorSyntaxThread->addPath( QFileInfo(filename).path() );
-
-			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-				d->skoorSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
-		}
-
-		// Set text
-		d->skoorSyntaxThread->setDocument( mw->fc->currentDocument()->text() );
+		// Set paths
+		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
+			d->skoorSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
 
 		// Start it
 		d->skoorSyntaxThread->start(QThread::LowPriority);
 
 	} else if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skool ) {
-		if ( d->skoolSyntaxThread == 0 ) {
-			// Create new document and connect it
-			d->skoolSyntaxThread = new SkoolInterpretation( mw->fc->currentDocument(), this );
-			connect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
+		// Create new document and connect it
+		d->skoolSyntaxThread = new SkoolInterpretation( mw->fc->currentDocument(), this );
+		connect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
 
-			// Set paths
-			if ( ! filename.isEmpty() )
-				d->skoolSyntaxThread->addPath( QFileInfo(filename).path() );
-
-			if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-				d->skoolSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
-		}
-
-		// Set text
-		d->skoolSyntaxThread->setDocument( mw->fc->currentDocument()->text() );
+		// Set paths
+		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
+			d->skoolSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
 
 		// Start it
 		d->skoolSyntaxThread->start(QThread::LowPriority);
@@ -601,4 +574,23 @@ void BuildController::onSkoolSyntaxThreadFinished()
 
 	if ( ! d->timer.isActive() )
 		d->timer.start();
+}
+
+void BuildController::showSyntaxErrors( const gum::ErrorsContainer & errors )
+{
+	mw->fc->currentDocument()->clearAllSyntaxErrors();
+
+	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
+		const gum::ParseError & err = errors.getError(i);
+		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoolSyntaxThread->document() ) // => == fichier skool
+			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
+	}
+
+	if ( ! d->timer.isActive() )
+		d->timer.start();
+}
+
+void BuildController::onDocumentClosed( const QString & filename )
+{
+	QFile::remove( filename + ".bak" );
 }

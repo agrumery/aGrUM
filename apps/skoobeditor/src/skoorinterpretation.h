@@ -19,22 +19,22 @@ class SkoorInterpretation : public QThread
 	Q_OBJECT
 
 	const QsciScintillaExtended * m_sci;
-	QString m_title;
+	const QString m_title;
+	QString m_filename;
 	QList<QString> m_paths;
 	const bool m_syntaxMode;
+	const bool m_isDocModified;
 	std::string m_text;
 	gum::prm::skoor::SkoorInterpreter * m_interpreter;
 	mutable QMutex m_mutex;
 
 public:
-	SkoorInterpretation( QObject * parent, bool syntaxMode = true );
 	SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent, bool syntaxMode = true );
 	~SkoorInterpretation();
 
 	bool isSyntaxMode() const;
 	const QsciScintillaExtended * document() const;
-	QString documentTitle() const;
-	void setDocument( const QString & text );
+	const QString & documentTitle() const;
 	void setPaths( const QList<QString> & paths );
 	void addPath( const QString & path );
 	void addPaths( const QList<QString> & paths );

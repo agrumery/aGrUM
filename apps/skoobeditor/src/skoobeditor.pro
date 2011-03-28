@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     skoorinterpretation.cpp \
     projectproperties.cpp \
     prmtreemodel.cpp \
-    prmcompleter.cpp
+    prmcompleter.cpp \
+    parser.cpp
     
 HEADERS  += mainwindow.h \
     qscilexerskool.h \
@@ -69,7 +70,8 @@ HEADERS  += mainwindow.h \
     skoorinterpretation.h \
     projectproperties.h \
     prmtreemodel.h \
-    prmcompleter.h
+    prmcompleter.h \
+    parser.h
 
 FORMS    += mainwindow.ui \
     advancedsearch.ui \

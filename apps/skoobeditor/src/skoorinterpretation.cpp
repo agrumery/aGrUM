@@ -1,20 +1,37 @@
 #include "skoorinterpretation.h"
 
+#include <QFile>
+#include <QFileInfo>
 #include <QDebug>
 
-SkoorInterpretation::SkoorInterpretation( QObject * parent, bool syntaxMode ) :
-				QThread(parent), m_sci(0), m_syntaxMode(syntaxMode)
-{
-	m_interpreter = new gum::prm::skoor::SkoorInterpreter();
-}
 
 SkoorInterpretation::SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent, bool syntaxMode ) :
-		QThread(parent), m_sci(sci), m_syntaxMode(syntaxMode)
+		QThread(parent), m_sci(sci), m_title(m_sci->title()), m_syntaxMode(syntaxMode), m_isDocModified(m_sci->isModified()), m_interpreter(0)
 {
-	m_interpreter = new gum::prm::skoor::SkoorInterpreter();
-	m_interpreter->setVerboseMode(true);
-	if ( m_sci != 0 )
-		m_title = m_sci->title();
+	//m_interpreter = new gum::prm::skoor::SkoorInterpreter();
+	if ( m_sci != 0 ) {
+		m_filename = sci->filename();
+		// If file is not saved in a file
+		if ( m_filename.isEmpty() )
+			// Parse code
+			m_text = sci->text().toStdString();
+
+		// If file is saved in a file and has been modified
+		else if ( m_isDocModified ) {
+			// Save modifications in a temporary file
+			m_filename += ".bak";
+			QFile file( m_filename );
+			if ( file.open(QFile::WriteOnly) ) {
+				file.write( sci->text().toUtf8() );
+				file.close();
+			// If modifications can't be saved, parse code
+			} else {
+				m_text = sci->text().toStdString();
+				m_filename.clear();
+				addPath( QFileInfo(sci->filename()).path() );
+			}
+		}
+	}
 }
 
 SkoorInterpretation::~SkoorInterpretation()
@@ -30,15 +47,9 @@ const QsciScintillaExtended * SkoorInterpretation::document() const
 	return m_sci;
 }
 
-QString SkoorInterpretation::documentTitle() const
+const QString & SkoorInterpretation::documentTitle() const
 {
 	return m_title;
-}
-
-void SkoorInterpretation::setDocument( const QString & text )
-{
-	QMutexLocker locker(&m_mutex);
-	m_text = text.toStdString();
 }
 
 void SkoorInterpretation::setPaths( const QList<QString> & paths )
@@ -66,17 +77,21 @@ void SkoorInterpretation::addPaths( const QList<QString> & paths )
 
 void SkoorInterpretation::run()
 {
-	m_interpreter->clearContext();
-	m_interpreter->clearPaths();
-
 	QMutexLocker locker(&m_mutex);
+
+	delete m_interpreter;
+
+	if ( m_filename.isEmpty() ) {
+		m_interpreter = new gum::prm::skoor::SkoorInterpreter();
+		m_interpreter->processCommandLine( m_text );
+	} else
+		m_interpreter = new gum::prm::skoor::SkoorInterpreter(m_filename.toStdString());
+
 	m_interpreter->setSyntaxMode(m_syntaxMode);
 	foreach ( QString s, m_paths )
 		m_interpreter->addPath( s.toStdString() );
 
-	m_interpreter->processCommandLine( m_text );
 	locker.unlock();
-
 	m_interpreter->interpret();
 }
 

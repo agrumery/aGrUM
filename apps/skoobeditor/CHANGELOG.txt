@@ -1,4 +1,7 @@
-﻿28/03/2011
+﻿
+28/03/2011
+    * Add : Passe des des fichier plutôt que directement du texte aux parsers.
+    * Add : Sauvegarde automatique dans un fichier temporaire en cas de crash (de même que tout un tas d'autres infos).
     * Fix : Skoor ne trouve pas le import.
 
 25/03/2011

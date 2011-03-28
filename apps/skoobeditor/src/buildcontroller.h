@@ -9,10 +9,13 @@
 #include "prmtreemodel.h"
 
 class MainWindow;
+namespace gum {
+	class ErrorsContainer;
+}
 
 class BuildController : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit BuildController(MainWindow * mw, QObject *parent = 0);
 	~BuildController();
@@ -41,7 +44,12 @@ protected slots:
 	void onSkoorSyntaxThreadFinished();
 	void onSkoolSyntaxThreadFinished();
 
+	void onDocumentClosed( const QString & filename );
+
 	void triggerInit();
+
+protected:
+	void showSyntaxErrors(const gum::ErrorsContainer & errors);
 
 private:
 	MainWindow * mw;

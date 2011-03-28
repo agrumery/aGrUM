@@ -18,21 +18,20 @@ class SkoolInterpretation : public QThread
 	Q_OBJECT
 
 	const QsciScintillaExtended * m_sci;
-	QString m_title;
+	const QString m_title;
+	QString m_filename;
 	QString m_paths;
 	std::string m_text;
+	const bool m_isDocModified;
 	gum::prm::skool::SkoolReader * m_reader;
 	mutable QMutex m_mutex;
 
 public:
-	SkoolInterpretation( QObject * parent );
-	SkoolInterpretation( const QString & skoolFilename, QObject * parent);
 	SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent );
 	~SkoolInterpretation();
 
 	const QsciScintillaExtended * document() const;
-	QString documentTitle() const;
-	void setDocument( const QString & text );
+	const QString & documentTitle() const;
 	void setPaths( const QList<QString> & paths );
 	void addPath( const QString & path );
 	void addPaths( const QList<QString> & paths );
