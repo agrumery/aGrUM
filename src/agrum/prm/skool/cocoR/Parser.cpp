@@ -127,7 +127,7 @@ void Parser::Import() {
 		std::string fileID; 
 		while (!(la->kind == 0 || la->kind == 21)) {SynErr(35); Get();}
 		Expect(21);
-		Ident(fileID);
+		ImportIdent(fileID);
 		import(fileID); 
 		while (!(la->kind == 0 || la->kind == 8)) {SynErr(36); Get();}
 		Expect(8);
@@ -157,8 +157,24 @@ void Parser::Ident(std::string& s) {
 		s = sBuff.str(); 
 }
 
+void Parser::ImportIdent(std::string& s) {
+		std::stringstream sBuff; 
+		Expect(3);
+		sBuff << narrow(t->val); 
+		while (la->kind == 5) {
+			Get();
+			if (la->kind == 3) {
+				Get();
+			} else if (la->kind == 26) {
+				Get();
+			} else SynErr(38);
+			sBuff << "." << narrow(t->val); 
+		}
+		s = sBuff.str(); 
+}
+
 void Parser::Type() {
-		while (!(la->kind == 0 || la->kind == 9)) {SynErr(38); Get();}
+		while (!(la->kind == 0 || la->kind == 9)) {SynErr(39); Get();}
 		Expect(9);
 		Expect(3);
 		std::string name, extends, l, s; name = narrow(t->val); 
@@ -183,13 +199,13 @@ void Parser::Type() {
 			}
 			TRY2(factory().addLabel(l, s), "Can not add label "+l) 
 		}
-		while (!(la->kind == 0 || la->kind == 8)) {SynErr(39); Get();}
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(40); Get();}
 		Expect(8);
 		TRY2(factory().endDiscreteType(), "Can not create type "+name) 
 }
 
 void Parser::Interface() {
-		while (!(la->kind == 0 || la->kind == 11)) {SynErr(40); Get();}
+		while (!(la->kind == 0 || la->kind == 11)) {SynErr(41); Get();}
 		Expect(11);
 		Expect(3);
 		std::string interface, extends; interface = narrow(t->val); 
@@ -197,7 +213,7 @@ void Parser::Interface() {
 			Get();
 			Ident(extends);
 		}
-		while (!(la->kind == 0 || la->kind == 22)) {SynErr(41); Get();}
+		while (!(la->kind == 0 || la->kind == 22)) {SynErr(42); Get();}
 		Expect(22);
 		TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) 
 		while (la->kind == 3) {
@@ -215,13 +231,13 @@ void Parser::Interface() {
 				if (isClassOrInterface(type)) {
 					Reference(type, name, array);
 				} else if (la->kind == 8) {
-					while (!(la->kind == 0 || la->kind == 8)) {SynErr(42); Get();}
+					while (!(la->kind == 0 || la->kind == 8)) {SynErr(43); Get();}
 					Get();
 					TRY2(factory().addAttribute(type, name), "Can not add attribute "+name) 
-				} else SynErr(43);
-			} else SynErr(44);
+				} else SynErr(44);
+			} else SynErr(45);
 		}
-		while (!(la->kind == 0 || la->kind == 25)) {SynErr(45); Get();}
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(46); Get();}
 		Expect(25);
 		TRY2(factory().endInterface(), "Can not create interface "+interface) 
 }
@@ -246,7 +262,7 @@ void Parser::Class() {
 				set.insert(i); 
 			}
 		}
-		while (!(la->kind == 0 || la->kind == 22)) {SynErr(46); Get();}
+		while (!(la->kind == 0 || la->kind == 22)) {SynErr(47); Get();}
 		Expect(22);
 		TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) 
 		while (la->kind == 3) {
@@ -269,10 +285,10 @@ void Parser::Class() {
 					Aggregate(type, name);
 				} else if (la->kind == 28) {
 					Functions(type, name);
-				} else SynErr(47);
-			} else SynErr(48);
+				} else SynErr(48);
+			} else SynErr(49);
 		}
-		while (!(la->kind == 0 || la->kind == 25)) {SynErr(49); Get();}
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(50); Get();}
 		Expect(25);
 		TRY2(factory().endClass(), "Can not create class "+c) 
 }
@@ -314,10 +330,10 @@ void Parser::System() {
 				    }
 				} )
 				
-			} else SynErr(50);
+			} else SynErr(51);
 			Expect(8);
 		}
-		while (!(la->kind == 0 || la->kind == 25)) {SynErr(51); Get();}
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(52); Get();}
 		Expect(25);
 		TRY(factory().endSystem()) 
 }
@@ -330,7 +346,7 @@ void Parser::Label(std::string& s) {
 			float val; 
 			Number(val);
 			std::stringstream sBuff; sBuff << val; s = sBuff.str(); 
-		} else SynErr(52);
+		} else SynErr(53);
 }
 
 void Parser::Reference(std::string type, std::string name, bool array) {
@@ -343,7 +359,7 @@ void Parser::RefOrParam(std::string type, std::string name, bool array) {
 			Reference(type, name, array);
 		} else if (la->kind == 8 || la->kind == 15) {
 			Parameter(type, name);
-		} else SynErr(53);
+		} else SynErr(54);
 }
 
 void Parser::Attribute(std::string type, std::string name) {
@@ -376,10 +392,10 @@ void Parser::Attribute(std::string type, std::string name) {
 			while (la->kind == 3 || la->kind == 26) {
 				CPTRule(error);
 			}
-		} else SynErr(54);
+		} else SynErr(55);
 		Expect(25);
 		TRY3(factory().endAttribute(), "Can not create attribute "+name,error) 
-		while (!(la->kind == 0 || la->kind == 8)) {SynErr(55); Get();}
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(56); Get();}
 		Expect(8);
 }
 
@@ -394,7 +410,7 @@ void Parser::Aggregate(std::string type, std::string name) {
 		AggLabels(labels);
 		Expect(19);
 		TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
-		while (!(la->kind == 0 || la->kind == 8)) {SynErr(56); Get();}
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(57); Get();}
 		Expect(8);
 }
 
@@ -416,7 +432,7 @@ void Parser::Functions(std::string type, std::string name) {
 			}
 		}
 		Expect(19);
-		while (!(la->kind == 0 || la->kind == 8)) {SynErr(57); Get();}
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(58); Get();}
 		Expect(8);
 		TRY2(factory().addNoisyOrCompound(name, chains, numbers, leak, labels), "Can not add function"+name) 
 }
@@ -464,7 +480,7 @@ void Parser::Number(float& val) {
 		} else if (la->kind == 2) {
 			Get();
 			swscanf(t->val, L"%f", &val); 
-		} else SynErr(58);
+		} else SynErr(59);
 }
 
 void Parser::CPTRule(bool &error) {
@@ -483,7 +499,7 @@ void Parser::CPTRule(bool &error) {
 			Number(f);
 			values.push_back(f); 
 		}
-		while (!(la->kind == 0 || la->kind == 8)) {SynErr(59); Get();}
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(60); Get();}
 		Expect(8);
 		TRY3(factory().setCPFByRule(labels, values), std::string("Problem with CPF"), error) 
 }
@@ -495,7 +511,7 @@ void Parser::CPTRuleValue(std::string& s ) {
 		} else if (la->kind == 26) {
 			Get();
 			s = "*"; 
-		} else SynErr(60);
+		} else SynErr(61);
 }
 
 void Parser::AggChains(std::vector<std::string>& chains ) {
@@ -522,9 +538,9 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			while (!(la->kind == 0 || la->kind == 25)) {SynErr(61); Get();}
+			while (!(la->kind == 0 || la->kind == 25)) {SynErr(62); Get();}
 			Expect(25);
-		} else SynErr(62);
+		} else SynErr(63);
 }
 
 void Parser::AggLabels(std::vector<std::string>& labels ) {
@@ -549,9 +565,9 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 				Expect(3);
 				labels.push_back(narrow(t->val)); 
 			}
-			while (!(la->kind == 0 || la->kind == 25)) {SynErr(63); Get();}
+			while (!(la->kind == 0 || la->kind == 25)) {SynErr(64); Get();}
 			Expect(25);
-		} else SynErr(64);
+		} else SynErr(65);
 }
 
 void Parser::NumberList(std::vector<float>& numbers ) {
@@ -568,7 +584,7 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 				numbers.push_back(f); 
 			}
 			Expect(24);
-		} else SynErr(65);
+		} else SynErr(66);
 }
 
 void Parser::ArrayDecl(std::string l1) {
@@ -595,8 +611,8 @@ void Parser::ArrayDecl(std::string l1) {
 				Ident(r1);
 				TRY( try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
 				catch ( gum::Exception& e ) { factory().setParameter(sBuff.str(), l2, r1); } ) 
-			} else SynErr(66);
-		} else SynErr(67);
+			} else SynErr(67);
+		} else SynErr(68);
 }
 
 
@@ -698,36 +714,37 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 35: s = coco_string_create(L"this symbol not expected in Import"); break;
 			case 36: s = coco_string_create(L"this symbol not expected in Import"); break;
 			case 37: s = coco_string_create(L"invalid Unit"); break;
-			case 38: s = coco_string_create(L"this symbol not expected in Type"); break;
+			case 38: s = coco_string_create(L"invalid ImportIdent"); break;
 			case 39: s = coco_string_create(L"this symbol not expected in Type"); break;
-			case 40: s = coco_string_create(L"this symbol not expected in Interface"); break;
+			case 40: s = coco_string_create(L"this symbol not expected in Type"); break;
 			case 41: s = coco_string_create(L"this symbol not expected in Interface"); break;
 			case 42: s = coco_string_create(L"this symbol not expected in Interface"); break;
-			case 43: s = coco_string_create(L"invalid Interface"); break;
+			case 43: s = coco_string_create(L"this symbol not expected in Interface"); break;
 			case 44: s = coco_string_create(L"invalid Interface"); break;
-			case 45: s = coco_string_create(L"this symbol not expected in Interface"); break;
-			case 46: s = coco_string_create(L"this symbol not expected in Class"); break;
-			case 47: s = coco_string_create(L"invalid Class"); break;
+			case 45: s = coco_string_create(L"invalid Interface"); break;
+			case 46: s = coco_string_create(L"this symbol not expected in Interface"); break;
+			case 47: s = coco_string_create(L"this symbol not expected in Class"); break;
 			case 48: s = coco_string_create(L"invalid Class"); break;
-			case 49: s = coco_string_create(L"this symbol not expected in Class"); break;
-			case 50: s = coco_string_create(L"invalid System"); break;
-			case 51: s = coco_string_create(L"this symbol not expected in System"); break;
-			case 52: s = coco_string_create(L"invalid Label"); break;
-			case 53: s = coco_string_create(L"invalid RefOrParam"); break;
-			case 54: s = coco_string_create(L"invalid Attribute"); break;
-			case 55: s = coco_string_create(L"this symbol not expected in Attribute"); break;
-			case 56: s = coco_string_create(L"this symbol not expected in Aggregate"); break;
-			case 57: s = coco_string_create(L"this symbol not expected in Functions"); break;
-			case 58: s = coco_string_create(L"invalid Number"); break;
-			case 59: s = coco_string_create(L"this symbol not expected in CPTRule"); break;
-			case 60: s = coco_string_create(L"invalid CPTRuleValue"); break;
-			case 61: s = coco_string_create(L"this symbol not expected in AggChains"); break;
-			case 62: s = coco_string_create(L"invalid AggChains"); break;
-			case 63: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
-			case 64: s = coco_string_create(L"invalid AggLabels"); break;
-			case 65: s = coco_string_create(L"invalid NumberList"); break;
-			case 66: s = coco_string_create(L"invalid ArrayDecl"); break;
+			case 49: s = coco_string_create(L"invalid Class"); break;
+			case 50: s = coco_string_create(L"this symbol not expected in Class"); break;
+			case 51: s = coco_string_create(L"invalid System"); break;
+			case 52: s = coco_string_create(L"this symbol not expected in System"); break;
+			case 53: s = coco_string_create(L"invalid Label"); break;
+			case 54: s = coco_string_create(L"invalid RefOrParam"); break;
+			case 55: s = coco_string_create(L"invalid Attribute"); break;
+			case 56: s = coco_string_create(L"this symbol not expected in Attribute"); break;
+			case 57: s = coco_string_create(L"this symbol not expected in Aggregate"); break;
+			case 58: s = coco_string_create(L"this symbol not expected in Functions"); break;
+			case 59: s = coco_string_create(L"invalid Number"); break;
+			case 60: s = coco_string_create(L"this symbol not expected in CPTRule"); break;
+			case 61: s = coco_string_create(L"invalid CPTRuleValue"); break;
+			case 62: s = coco_string_create(L"this symbol not expected in AggChains"); break;
+			case 63: s = coco_string_create(L"invalid AggChains"); break;
+			case 64: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
+			case 65: s = coco_string_create(L"invalid AggLabels"); break;
+			case 66: s = coco_string_create(L"invalid NumberList"); break;
 			case 67: s = coco_string_create(L"invalid ArrayDecl"); break;
+			case 68: s = coco_string_create(L"invalid ArrayDecl"); break;
 
 		default:
 		{

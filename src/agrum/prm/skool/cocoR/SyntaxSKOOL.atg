@@ -47,9 +47,113 @@ private:
              factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
     }
     
-    void import( std::string fileID ) {
-        //
+    void importDirID( std::string dirID )
+    {
         using namespace std;
+        
+        string dirname = dirID, dirpath;
+        bool dirFound = false;
+
+        // Create filename
+        replace(dirname.begin(), dirname.end(), '.', '/');
+        dirname += "/";
+        
+        // Search in current directory.
+        if ( __current_directory.isValid() ) {
+            dirpath = __current_directory.absolutePath() + dirname;
+            dirFound = Directory::isDir(dirpath);
+        }
+        
+        // Search in root package directory.
+        if ( ! dirFound && ! __package.empty() ) {
+            int cpt = std::count(__package.begin(), __package.end(), '.');
+            string cd = __current_directory.absolutePath();
+            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
+            for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
+                index = cd.find_last_of('/', index - 1);            
+            
+            if ( index != string::npos ) {
+                string rootDir = cd.substr(0, index+1); // with '/' at end
+                dirpath = rootDir + dirname;
+                dirFound = Directory::isDir(dirpath);
+            }
+        }
+
+        // Search filename in each path stored in __class_path
+        for (vector<string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
+            // Construct complete filePath
+            dirpath = (*path) + dirname;
+            dirFound = Directory::isDir(dirpath);
+        }
+
+        // If it is found, import all files in.
+        if (dirFound)
+            importDir( dirpath );
+        // If import filename has not been found, add an error.
+        else
+            SemErr("import not found");
+    }
+    
+    void importDir( std::string dirpath )
+    {
+        using namespace std;
+        
+        // Update current directory
+        Directory oldCurrentDirectory = __current_directory;
+        __current_directory = Directory(dirpath);
+        
+        const vector<string> & entries = __current_directory.entries();
+        for ( vector<string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
+            if ( (*i) == "." || (*i) == ".." )
+                continue;
+            
+            if ( Directory::isDir(dirpath+(*i)) )
+                importDir( dirpath+(*i)+"/" );
+            else
+                importFile( dirpath+(*i) );
+        }
+        
+        // Reset previous current directory
+        __current_directory = oldCurrentDirectory;
+    }
+    
+    void importFile( std::string filepath )
+    {
+        using namespace std;
+
+        // If we have already import this file, skip it.
+        // (like filepath is always absolute, there is no conflict)
+        if ( __imports.exists( filepath ) )
+            return;
+        // Remember we have found it.
+        __imports.insert(filepath);
+
+        // We parse it
+        Scanner s(filepath.c_str());
+        Parser p(&s);
+        p.setFactory(__factory);
+        p.setClassPath(__class_path);
+        p.setImports(__imports);
+        p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
+        p.Parse();
+
+        // We add file imported in p to file imported here.
+        gum::Set<string> parserImports = p.getImports();
+        for (gum::Set<string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
+            if (not __imports.exists(*iter))
+            __imports.insert(*iter);
+
+        // We add warnings and errors to this
+        __errors += p.__errors;
+    }
+    
+    void import( std::string fileID ) {
+        using namespace std;
+        
+        // Si on inclut un répertoire entier
+        size_t starIndex = fileID.find_last_of('*');
+        if ( starIndex != string::npos )
+            return importDirID(fileID.substr(0,starIndex-1));
         
         string filename = fileID, filepath;
         ifstream file_test;
@@ -102,34 +206,9 @@ private:
         }
 
         // If it is found, import it.
-        if (fileFound) {
-            // If we have already import this file, skip it.
-            // (like filepath is always absolute, there is no conflict)
-            if ( __imports.exists( filepath ) )
-                return;
-            // Remember we have found it.
-            __imports.insert(filepath);
-
-            // We parse it
-            Scanner s(filepath.c_str());
-            Parser p(&s);
-            p.setFactory(__factory);
-            p.setClassPath(__class_path);
-            p.setImports(__imports);
-            p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
-            p.Parse();
-
-            // We add file imported in p to file imported here.
-            gum::Set<string> parserImports = p.getImports();
-            for (gum::Set<string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
-                if (not __imports.exists(*iter))
-                __imports.insert(*iter);
-
-            // We add warnings and errors to this
-            __errors += p.__errors;
-            
-        // If import filename has not been found, add an error.
-        } else
+        if (fileFound)
+            importFile( filepath );
+        else
             SemErr("import not found");
     }
 
@@ -238,8 +317,8 @@ Package = (. std::string name; .)
     SYNC ';' .
 
 //=====================
-Import  =                           (. std::string fileID; .)
-    SYNC "import" Ident<fileID>     (. import(fileID); .)
+Import  =                              (. std::string fileID; .)
+    SYNC "import" ImportIdent<fileID>  (. import(fileID); .)
     SYNC ';' .
 
 //=====================
@@ -440,6 +519,13 @@ ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff <<
     ) .
 
 //=====================
+ImportIdent<std::string& s> =               (. std::stringstream sBuff; .)
+                        word                (. sBuff << narrow(t->val); .)
+                        {
+                          '.' (word | '*')  (. sBuff << "." << narrow(t->val); .)
+                        }                   (. s = sBuff.str(); .)
+                        .
+                        
 Ident<std::string& s> =             (. std::stringstream sBuff; .)
                         word        (. sBuff << narrow(t->val); .)
                         {
