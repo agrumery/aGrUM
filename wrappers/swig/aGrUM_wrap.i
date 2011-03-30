@@ -56,6 +56,9 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/Gibbs.h>
 
+#include <agrum/BN/algorithms/defaultKL.h>
+#include <agrum/BN/algorithms/bruteForceKL.h>
+
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
 
@@ -64,8 +67,6 @@
 %include "std_vector.i"
 %include "std_string.i"
 
-
-
 /* DIRECTORS (for cross language polymorphism) */
 %feature("director") gum::Potential; //add the __disown__() method to Potential
 %feature("nodirector") gum::MultiDimContainer::copyFrom;
@@ -73,8 +74,6 @@
 %feature("director") gum::DiscretizedVariable;
 %feature("director") gum::LazyPropagation;
 %feature("director") gum::Gibbs;
-
-
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
@@ -140,6 +139,9 @@
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/Gibbs.h>
+
+%import <agrum/BN/algorithms/defaultKL.h>
+%include <agrum/BN/algorithms/bruteForceKL.h>
 
 %import <agrum/core/signal/listener.h>
 %import <agrum/graphs/diGraphListener.h>
@@ -213,7 +215,6 @@
 }
 
 
-
 /* TEMPLATES INSTANTIATIONS */
 %template(Vector_float) std::vector<float>;
 %template(Sequence_node) gum::Sequence<gum::NodeId>;
@@ -232,6 +233,7 @@
 %template(BayesNetInference_float) gum::BayesNetInference<float>;
 %template(LazyPropagation_float) gum::LazyPropagation<float>;
 %template(Gibbs_float) gum::Gibbs<float>;
+%template(BruteForceKL_float) gum::BruteForceKL<float>;
 
 %template(Vector_double) std::vector<double>;
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
@@ -247,3 +249,4 @@
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
 %template(LazyPropagation_double) gum::LazyPropagation<double>;
 %template(Gibbs_double) gum::Gibbs<double>;
+%template(BruteForceKL_double) gum::BruteForceKL<double>;
