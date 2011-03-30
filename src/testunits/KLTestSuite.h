@@ -1,0 +1,138 @@
+/***************************************************************************
+ *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it wil be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
+ ***************************************************************************/
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include <cxxtest/AgrumTestSuite.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+
+#include <agrum/BN/algorithms/defaultKL.h>
+#include <agrum/BN/algorithms/bruteForceKL.h>
+
+#include "testsuite_utils.h"
+
+// The graph used for the tests:
+//          1   2_          1 -> 3
+//         / \ / /          1 -> 4
+//        3   4 /           3 -> 5
+//         \ / /            4 -> 5
+//          5_/             2 -> 4
+//                          2 -> 5
+
+namespace gum {
+
+  namespace tests {
+
+    class KLTestSuite: public CxxTest::TestSuite {
+
+      public:
+        void testNoDefaultConstructor() {
+          TS_ASSERT_THROWS (gum::DefaultKL<double> kl,gum::OperationNotAllowed);
+        }
+
+        void testConstructor() {
+          gum::BayesNet<float> net1;
+          {
+            gum::BIFReader<float> reader (&net1, GET_PATH_STR (BIFReader_file2.txt));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::BayesNet<float> net2;
+          {
+            gum::BIFReader<float> reader (&net2, GET_PATH_STR (BIFReader_file3.txt));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::BayesNet<float> net3;
+          {
+            gum::BIFReader<float> reader (&net3, GET_PATH_STR (BIFReader_file4.txt));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          TS_GUM_ASSERT_THROWS_NOTHING (gum::DefaultKL<float> kl (net1,net1));
+          TS_ASSERT_THROWS (gum::DefaultKL<float> kl (net1,net2) ,gum::OperationNotAllowed);
+          TS_GUM_ASSERT_THROWS_NOTHING (gum::DefaultKL<float> kl (net2,net3));
+        }
+
+        void testDifficulty1() {
+          gum::BayesNet<float> net2;
+          {
+            gum::BIFReader<float> reader (&net2, GET_PATH_STR (BIFReader_file3.txt));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::DefaultKL<float> kl (net2,net2);
+          TS_ASSERT_EQUALS (kl.difficulty(),KL::CORRECT);
+
+          gum::BayesNet<float> net;
+          {
+            gum::BIFReader<float> reader (&net, GET_PATH_STR (hailfinder.bif));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::DefaultKL<float> kl2 (net,net);
+          TS_ASSERT_EQUALS (kl2.difficulty(),KL::HEAVY);
+        }
+
+        void testBruteForceComputation() {
+          gum::BayesNet<float> net3;
+          {
+            gum::BIFReader<float> reader (&net3, GET_PATH_STR (BIFReader_file3.txt));
+            reader.trace (false);
+            reader.proceed();	    
+          }
+          
+          double vkl=0.0;
+	  
+          gum::BruteForceKL<float> stupid_bfkl (net3,net3);
+          TS_GUM_ASSERT_THROWS_NOTHING (vkl=stupid_bfkl.klPQ());
+	  TS_ASSERT_EQUALS(vkl,0.0);
+          TS_GUM_ASSERT_THROWS_NOTHING (vkl=stupid_bfkl.klQP());
+	  TS_ASSERT_EQUALS(vkl,0.0);
+
+          gum::BayesNet<float> net4;
+          {
+            gum::BIFReader<float> reader (&net4, GET_PATH_STR (BIFReader_file4.txt));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::DefaultKL<float> kl (net3,net4);
+          TS_ASSERT_EQUALS (kl.difficulty(),KL::CORRECT);
+
+          TS_ASSERT_THROWS (kl.klPQ(),gum::OperationNotAllowed);
+
+          gum::BruteForceKL<float> bfkl (kl);
+          TS_GUM_ASSERT_THROWS_NOTHING (vkl=bfkl.klPQ());
+	  GUM_TRACE_VAR(vkl);
+        }
+
+    };
+  } //tests
+}//gumSize

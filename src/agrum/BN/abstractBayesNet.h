@@ -46,6 +46,7 @@ namespace gum {
   template<typename T_DATA>
 
   class AbstractBayesNet {
+
     public:
       // ===========================================================================
       /// @name Constructors / Destructors
@@ -183,6 +184,9 @@ namespace gum {
 
       /// @}
 
+      /// @return Returns the log10 domain size of the joint probabilty for the BN
+      double log10DomainSize( void ) const;
+
       /// @return Returns a string representation of this BayesNet.
       std::string toString( void ) const;
 
@@ -215,7 +219,7 @@ namespace gum {
       /// Return the properties of this BayesNet and initialize the hash table is
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
-  };
+    };
 } // gum
 
 #include <agrum/BN/abstractBayesNet.tcc>

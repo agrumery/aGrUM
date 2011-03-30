@@ -180,14 +180,24 @@ namespace gum {
     return *__propertiesMap;
   }
 
+ template<typename T_DATA> INLINE
+  double
+  AbstractBayesNet<T_DATA>::log10DomainSize ( void ) const {
+    double dSize = 0.0;
+    for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
+      dSize += log10(variable ( *it ).domainSize());
+    }
+    return dSize;
+  }
+
   template<typename T_DATA> INLINE
   std::string
   AbstractBayesNet<T_DATA>::toString ( void ) const {
-    float dSize = 0.0;
     Size param = 0;
 
+    double dSize=log10DomainSize();
+
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
-      dSize += log10(variable ( *it ).domainSize());
       param += ( ( const MultiDimImplementation<T_DATA> & ) cpt ( *it ).getMasterRef() ).realSize();
     }
 
@@ -195,21 +205,21 @@ namespace gum {
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-    
-    if (dSize>6) 
+
+    if (dSize>6)
       s<<"domainSize: 10^" << dSize;
     else
-      s<<"domainSize: " << trunc(pow(10.0,dSize));
+      s<<"domainSize: " << round(pow(10.0,dSize));
 
     s<< ", parameters: " << param << ", compression ratio: ";
-    
-    if (compressionRatio>-3) 
+
+    if (compressionRatio>-3)
       s<<trunc(100.0-pow(10.0,compressionRatio+2.0));
     else
       s<<"100-10^" << compressionRatio+2.0;
-    
+
     s<< "% }";
-    
+
     return s.str();
   }
 

@@ -1,0 +1,60 @@
+network aGrUM_BN {
+   property version 1.0;
+   property author aGrUM;
+}
+
+variable n3 {
+   type discrete[2] {0, 1};
+}
+
+variable n5 {
+   type discrete[3] { final, frontiere,space};
+}
+
+variable n2 {
+   type discrete[2] {bar,foo};
+}
+
+variable n4 {
+   type discrete[2] {0, 1};
+}
+
+variable n1 {
+   type discrete[2] {0, 1};
+}
+
+variable n6 {
+  type discrete[2] {0, 1};
+}
+
+probability (n3 | n1) {
+   (0) 0.1 0.9;
+   (1) 0.9 0.1;
+}
+
+probability (n5 | n3, n2) {
+   (0, foo) 0.3 0.6 0.1;
+   (1, foo) 0.5 0.5 0;
+   (0, bar) 0.4 0.6 0;
+   (1, bar) 0.5 0.5 0;
+}
+
+probability (n2) {
+  default 0.3 0.7;
+}
+
+probability (n4 | n1, n2) {
+   (0, foo) 0.4 0.6;
+   (1, foo) 0.5 0.5;
+   (0, bar) 0.5 0.5;
+   (1, bar) 1 0;
+}
+
+probability (n1) {
+  default 0.2 0.8;
+}
+
+probability (n6 | n1, n5) {
+  table 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1; // not enough values for this table
+}
+
