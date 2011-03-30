@@ -660,6 +660,8 @@ void FileController::onDocumentRenamed(const QString & oldFilename, const QStrin
 	// We update openFiles
 	d->openFiles.remove(oldFilename);
 	d->openFiles.insert( newFilename, sci );
+
+	emit fileRenamed(oldFilename, newFilename, sci);
 }
 
 

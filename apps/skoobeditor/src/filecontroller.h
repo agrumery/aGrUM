@@ -57,6 +57,7 @@ public slots:
 signals:
 	void fileOpened(const QString & filename, QsciScintillaExtended * document);
 	void fileSaved(const QString & filename, QsciScintillaExtended * document);
+	void fileRenamed(const QString & oldFilename, const QString & newFilename, QsciScintillaExtended * document);
 	void fileClosed(const QString & filename);
 
 protected :

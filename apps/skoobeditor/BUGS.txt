@@ -9,6 +9,8 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
+
+    * Quand un fichier est renommé supprimer le temp_.
 	
 AMELIORATIONS :
 
@@ -26,6 +28,11 @@ AMELIORATIONS :
 
 TODOS :
   
+    1 ) Interpreteur
+    2 ) L'éditeur CPT attention aux noisyOr et rules
+    3 ) Visualisation Qlementine du graphe (réseau bayésien)
+    4 ) Visualisation d'un système et d'une classe (=> langage graphique ?) dot
+    
     * Pour le parser : ajouter un warning si deux classes/systèmes sont définis dans le même fichier.  
     
     * Utiliser la barre de status pour mettre différentes informations : 
@@ -33,7 +40,7 @@ TODOS :
 	- Numéro de ligne et colonne du curseur;
 	- Indicateur bien visible pour savoir l'état des touches Insert et Verr. Majuscule
 	- Nombre de ligne, de mot, de caractère...
-    * F6 sur un fichier de classe crée un fichier system, F6 sur un fichier system
+    * F6 sur un fichier de classe crée un fichier system minimal (crée toutes les instances), F6 sur un fichier system
 	crée un fichier requête.
     * Indentation automatique du fichier.
     * Génération de la documentation (style Javadoc ou Doxygen)

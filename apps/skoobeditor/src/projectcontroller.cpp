@@ -422,6 +422,7 @@ void ProjectController::closeProject()
 
 		// Tests because can be delete by MainWindow
 		disconnect( mw->ui->actionProjectProperties, SIGNAL(triggered()), d->projectProperties, SLOT(exec()) );
+		d->projectProperties->close();
 		d->projectProperties->deleteLater();
 		d->projectProperties = 0;
 

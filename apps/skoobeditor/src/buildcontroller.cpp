@@ -13,7 +13,6 @@
 #include "prmtreemodel.h"
 
 #include <agrum/prm/skool/SkoolReader.h>
-#include <agrum/prm/skoor/SkoorInterpreter.h>
 #include <agrum/core/errorsContainer.h>
 
 using namespace gum::prm::skool;
@@ -27,20 +26,38 @@ using namespace gum::prm::skoor;
 
 /* ************************************************************************* */
 
+/**
+  Parsing lancé par utilisateur et automatiquement.
+
+  Quand lancé par UTILISATEUR :
+  Visualisation des erreurs et warnings dans le dock.
+
+  Quand lancé AUTOMATIQUEMENT :
+  Visualisation des erreurs et warnings dans le document.
+
+  Quand ÉXÉCUTION :
+  Affichage des résultats dans le dock.
+
+  bool isManual
+  bool isExecution
+  AbstractParser * parser
+  Juste quand on le crée on connecte les bons signaux.
+  Méthode start to parse, et une exécution.
+  */
+
 /*
   */
 struct BuildController::PrivateData {
 	QListWidget * msg;
 
 	bool isExecution;
+	AbstractParser * parser;
 	SkoorInterpretation * skoorThread;
 	SkoolInterpretation  * skoolThread;
 
 	QMutex mutex;
 
 	bool autoSyntaxCheck;
-	SkoorInterpretation * skoorSyntaxThread;
-	SkoolInterpretation  * skoolSyntaxThread;
 	QTimer timer;
 
 	QSharedPointer<PRMTreeModel> prmModel;
@@ -59,8 +76,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	d->skoolThread = 0;
 
 	d->autoSyntaxCheck = false;
-	d->skoorSyntaxThread = 0;
-	d->skoolSyntaxThread = 0;
+	d->parser = 0;
 
 	d->timer.setSingleShot(true);
 	d->timer.setInterval(1000);
@@ -77,9 +93,10 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	connect( mw->ui->actionBuild, SIGNAL(triggered()), this, SLOT(checkSyntax()) );
 	connect( mw->ui->actionExecute, SIGNAL(triggered()), this, SLOT(execute()) );
 
-	connect( &d->timer, SIGNAL(timeout()), this, SLOT(startAutoSyntaxCheckThread()) );
-	connect( mw->fc, SIGNAL(fileSaved(QString,QsciScintillaExtended*)), this, SLOT(startAutoSyntaxCheckThread()) );
+	connect( &d->timer, SIGNAL(timeout()), this, SLOT(startAutoParsing()) );
+	connect( mw->fc, SIGNAL(fileSaved(QString,QsciScintillaExtended*)), this, SLOT(startAutoParsing()) );
 	connect( mw->fc, SIGNAL(fileClosed(QString)), this, SLOT(onDocumentClosed(QString)) );
+	connect( mw->fc, SIGNAL(fileRenamed(QString,QString,QsciScintillaExtended*)), this, SLOT(onDocumentClosed(QString)) );
 
 	// Must be start after project triggerInit
 	QTimer::singleShot( 500, this, SLOT(triggerInit()) );
@@ -96,7 +113,7 @@ BuildController::~BuildController()
 void BuildController::triggerInit()
 {
 	// Start it in case there is only one document
-	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startAutoSyntaxCheckThread(int)) );
+	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startAutoParsing(int)) );
 }
 
 /* ************************************************************************* */
@@ -113,7 +130,7 @@ void BuildController::setAutoSyntaxCheck( bool isAuto )
 
 	d->autoSyntaxCheck = isAuto;
 	if ( isAuto )
-		startAutoSyntaxCheckThread(-1);
+		startAutoParsing(-1);
 	else {
 		d->timer.stop();
 		d->prmModel.clear();
@@ -181,11 +198,11 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 
 	// Set paths
 	if ( mw->pc->isOpenProject() )
-		d->skoolThread->addPaths( mw->pc->currentProject()->paths() );
+		d->skoolThread->addClassPaths( mw->pc->currentProject()->paths() );
 
 	connect( d->skoolThread, SIGNAL(finished()), this, SLOT(onSyntaxCheckFinished()) );
 	d->isExecution = false;
-	d->skoolThread->start();
+	d->skoolThread->parse();
 
 	mw->vc->setBuildDockVisibility(true);
 }
@@ -196,11 +213,11 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 void BuildController::onSyntaxCheckFinished()
 {
 	// If there was a problem
-	if ( d->skoolThread->reader() == 0 || mw->fc->currentDocument() != d->skoolThread->document() )
+	if ( mw->fc->currentDocument() != d->skoolThread->document() )
 		return;
 
-	const gum::ErrorsContainer & errors = d->skoolThread->reader()->getErrorsContainer();
-	//const QString title = d->skoolThread->documentTitle();
+	const gum::ErrorsContainer & errors = d->skoolThread->errors();
+
 	const QString filename = d->skoolThread->document()->filename();
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
@@ -237,8 +254,6 @@ void BuildController::onSyntaxCheckFinished()
 
 	d->skoolThread->deleteLater();
 	d->skoolThread = 0;
-
-	d->msg->scrollToBottom();
 }
 
 
@@ -299,21 +314,22 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
 
 	// Delete previous thread
 	if ( d->skoorThread != 0 ) {
-		disconnect( d->skoorThread, SIGNAL(finished()), this, SLOT(onInterpretationFinished()) );
-		//d->skoorThread->deleteLater();
+		disconnect( d->skoorThread, 0, this, 0 );
+		connect( d->skoorThread, SIGNAL(finished()), d->skoorThread, SLOT(deleteLater()) );
 		d->skoorThread = 0;
 	}
 
 	// Create thread and set text
-	d->skoorThread = new SkoorInterpretation( sci, this, checkSyntaxOnly );
+	d->skoorThread = new SkoorInterpretation( sci, this );
+	d->skoorThread->setSyntaxMode(checkSyntaxOnly);
 
 	// Set classpaths
 	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(sci->filename()) )
-		d->skoorThread->addPaths( mw->pc->currentProject()->paths() );
+		d->skoorThread->addClassPaths( mw->pc->currentProject()->paths() );
 
 	// Connect and start thread.
 	connect( d->skoorThread, SIGNAL(finished()), this, SLOT(onInterpretationFinished()) );
-	d->skoorThread->start();
+	d->skoorThread->parse();
 	d->isExecution = ! checkSyntaxOnly;
 
 	// Show build dock
@@ -325,18 +341,41 @@ void BuildController::execute( QsciScintillaExtended * sci, bool checkSyntaxOnly
   */
 void BuildController::onInterpretationFinished()
 {
-	const SkoorInterpreter * interpreter = d->skoorThread->interpreter();
-	if ( interpreter == 0 || mw->fc->currentDocument() != d->skoorThread->document() )
+	if ( mw->fc->currentDocument() != d->skoorThread->document() )
 		return;
 
-	// If there was a problem
-	if ( interpreter->errors() == 0 ) {
+	const gum::ErrorsContainer & errors = d->skoorThread->errors();
+	const QString filename = d->skoorThread->document()->filename();
+
+	// On affiche les errors et les warnings
+	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
+		const gum::ParseError & err = errors.getError(i);
+
+		QString errFilename = QString::fromStdString( err.filename );
+		QString line = QString::number( err.line );
+		QString s = QString::fromStdString( err.toString() );
+
+		if ( errFilename.isEmpty() ) {
+			errFilename = filename;
+			s.prepend( errFilename + ":" );
+		} else if ( errFilename == "anonymous buffer" ) {
+			errFilename = filename;
+			s.replace( "anonymous buffer", filename );
+		}
+
+		QListWidgetItem * item = new QListWidgetItem(s, d->msg) ;
+		item->setData( Qt::UserRole, errFilename );
+		item->setData( Qt::UserRole + 1, line );
+	}
+
+	// If there was no errors (just warnings)
+	if ( errors.error_count == 0 ) {
 
 		if ( d->skoorThread->isSyntaxMode() )
 			d->msg->addItem(tr("Syntaxe vérifiée. Il n'y a pas d'erreur."));
 		else {
 			// We show all results
-			const vector< pair<string,QueryResult> > & results = interpreter->results();
+			const vector< pair<string,QueryResult> > & results = d->skoorThread->results();
 			for ( size_t i = 0 ; i < results.size() ; i++ ) {
 				const QString & query = QString::fromStdString( results[i].first );
 				d->msg->addItem( tr("%1").arg(query) );
@@ -352,42 +391,21 @@ void BuildController::onInterpretationFinished()
 		}
 		d->msg->item(d->msg->count() - 1)->setTextColor(Qt::blue);
 
-	} else { //  interpreter->errors() != 0
-
-		const QString filename = d->skoorThread->document()->filename();
-
-		for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
-			const gum::ParseError & err = interpreter->getError(i);
-
-			QString errFilename = QString::fromStdString( err.filename );
-			QString line = QString::number( err.line );
-			QString s = QString::fromStdString( err.toString() );
-
-			if ( errFilename.isEmpty() || errFilename == "anonymous buffer" ) {
-				errFilename = filename;
-				s.prepend( errFilename + ":" );
-			}
-
-			QListWidgetItem * item = new QListWidgetItem(s, d->msg) ;
-			item->setData( Qt::UserRole, errFilename );
-			item->setData( Qt::UserRole + 1, line );
-		}
+	} else { //  errors->error_count != 0
 
 		if ( d->skoorThread->isSyntaxMode() )
-			d->msg->addItem(tr("Syntaxe vérifiée. Il y a %1 erreurs.").arg(interpreter->errors()));
+			d->msg->addItem(tr("Syntaxe vérifiée. Il y a %1 erreurs.").arg(errors.error_count));
 		else
-			d->msg->addItem(tr("Éxécution interrompue. Il y a %1 erreurs.").arg(interpreter->errors()));
+			d->msg->addItem(tr("Éxécution interrompue. Il y a %1 erreurs.").arg(errors.error_count));
 		d->msg->item(0)->setTextColor(Qt::red);
 		d->msg->item(d->msg->count() - 1)->setTextColor(Qt::red);
 
 		d->isExecution = false;
 
-	} //  interpreter->errors() != 0
+	} //  errors->error_count != 0
 
 	d->skoorThread->deleteLater();
 	d->skoorThread = 0;
-
-	//d->msg->scrollToBottom();
 }
 
 
@@ -436,7 +454,7 @@ void BuildController::onMsgDoubleClick(QModelIndex index)
   -1 si il n'y a plus de document,
   -2 si la correction est fini.
   */
-void BuildController::startAutoSyntaxCheckThread(int i)
+void BuildController::startAutoParsing(int i)
 {
 	if ( ! d->autoSyntaxCheck )
 		return;
@@ -449,142 +467,65 @@ void BuildController::startAutoSyntaxCheckThread(int i)
 	// Delete the previous threads
 
 	// If a previous skoor thread is still running
-	if ( d->skoorSyntaxThread ) {
+	if ( d->parser ) {
 		// We reconnect it to self delete
-		disconnect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
-		connect( d->skoorSyntaxThread, SIGNAL(finished()), d->skoorSyntaxThread, SLOT(deleteLater()) );
-
-	// If previous skoor thread is not running, we delete it
+		disconnect( d->parser, 0, this, 0 );
+		connect( d->parser, SIGNAL(finished()), d->parser, SLOT(deleteLater()) );
 	}
-	if ( d->skoorSyntaxThread && d->skoorSyntaxThread->isFinished()  )
-		d->skoorSyntaxThread->deleteLater();
+	if ( d->parser && d->parser->isFinished()  )
+		d->parser->deleteLater();
 
-	d->skoorSyntaxThread = 0;
-
-
-	// If a previous skool thread is still running
-	if (  d->skoolSyntaxThread ) {
-		// We reconnect it to self delete
-		disconnect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
-		connect( d->skoolSyntaxThread, SIGNAL(finished()), d->skoolSyntaxThread, SLOT(deleteLater()) );
-
-	// If previous skool thread is not running, we delete it
-	}
-	if ( d->skoolSyntaxThread && d->skoolSyntaxThread->isFinished() )
-		d->skoolSyntaxThread->deleteLater();
-
-	d->skoolSyntaxThread = 0;
+	d->parser = 0;
 
 	//////////////////////////////////////////////////////////////
 
 	if ( ! mw->fc->hasCurrentDocument() )
 		return;
 
-	// Check if we are always on the same document
-	if ( d->skoorSyntaxThread != 0 &&
-		 d->skoorSyntaxThread->document() != mw->fc->currentDocument() )
-		return;
-	else if ( d->skoolSyntaxThread != 0 &&
-		 d->skoolSyntaxThread->document() != mw->fc->currentDocument() )
-		return;
-
 	QString filename = mw->fc->currentDocument()->filename();
 
 	// Create a new thread
-	if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skoor ) {
+	if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skoor )
 		// Create new document and connect it
-		d->skoorSyntaxThread = new SkoorInterpretation( mw->fc->currentDocument(), this, true );
-		connect( d->skoorSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoorSyntaxThreadFinished()) );
+		d->parser = new SkoorInterpretation( mw->fc->currentDocument(), this );
 
-		// Set paths
-		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-			d->skoorSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
-
-		// Start it
-		d->skoorSyntaxThread->start(QThread::LowPriority);
-
-	} else if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skool ) {
+	else if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skool )
 		// Create new document and connect it
-		d->skoolSyntaxThread = new SkoolInterpretation( mw->fc->currentDocument(), this );
-		connect( d->skoolSyntaxThread, SIGNAL(finished()), this, SLOT(onSkoolSyntaxThreadFinished()) );
+		d->parser = new SkoolInterpretation( mw->fc->currentDocument(), this );
 
-		// Set paths
-		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-			d->skoolSyntaxThread->addPaths( mw->pc->currentProject()->paths() );
+	connect( d->parser, SIGNAL(finished()), this, SLOT(onAutoParsingFinished()) );
 
-		// Start it
-		d->skoolSyntaxThread->start(QThread::LowPriority);
-	}
-}
+	// Set paths
+	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
+		d->parser->addClassPaths( mw->pc->currentProject()->paths() );
 
-/**
-  */
-void BuildController::onSkoorSyntaxThreadFinished()
-{
-	if ( d->skoorSyntaxThread == 0 || d->skoorSyntaxThread == 0 ||
-			! mw->fc->hasCurrentDocument() )
-		return;
-
-	const SkoorInterpreter * interpreter = d->skoorSyntaxThread->interpreter();
-	if ( interpreter == 0 )
-		return;
-
-	//
-	if ( interpreter->errors()== 0 ) {
-		d->prmModel.clear();
-		d->prmModel = QSharedPointer<PRMTreeModel>(new PRMTreeModel( interpreter->prm(), this ));
-	}
-
-	mw->fc->currentDocument()->clearAllSyntaxErrors();
-
-	for ( int i = 0, size = interpreter->errors() ; i < size ; i++ ) {
-		const gum::ParseError & err = interpreter->getError(i);
-		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoorSyntaxThread->document() ) // => == fichier skoor
-			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
-	}
-
-	if ( ! d->timer.isActive() )
-		d->timer.start();
+	// Start it
+	d->parser->parse(QThread::LowPriority);
 }
 
 
-/**
-  */
-void BuildController::onSkoolSyntaxThreadFinished()
+void BuildController::onAutoParsingFinished()
 {
-	if ( d->skoolSyntaxThread == 0 || d->skoolSyntaxThread->reader() == 0 ||
-		 ! mw->fc->hasCurrentDocument() )
+	if ( d->parser == 0 || d->parser->document() != mw->fc->currentDocument() )
 		return;
 
-	const SkoolReader * reader = d->skoolSyntaxThread->reader();
-	const gum::ErrorsContainer & errors = reader->getErrorsContainer();
+	const gum::ErrorsContainer & errors = d->parser->errors();
 
 	if ( errors.count() == 0 ) {
 		d->prmModel.clear();
-		d->prmModel = QSharedPointer<PRMTreeModel>(new PRMTreeModel( d->skoolSyntaxThread->reader()->prm(), this ));
+		d->prmModel = d->parser->prm();
 	}
 
 	mw->fc->currentDocument()->clearAllSyntaxErrors();
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
 		const gum::ParseError & err = errors.getError(i);
-		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoolSyntaxThread->document() ) // => == fichier skool
+		if ( err.filename.empty() || mw->fc->currentDocument() == d->parser->document() ) // => == fichier skool
 			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
 	}
 
 	if ( ! d->timer.isActive() )
 		d->timer.start();
-}
-
-void BuildController::showSyntaxErrors( const gum::ErrorsContainer & errors )
-{
-	mw->fc->currentDocument()->clearAllSyntaxErrors();
-
-	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
-		const gum::ParseError & err = errors.getError(i);
-		if ( err.filename.empty() || mw->fc->currentDocument() == d->skoolSyntaxThread->document() ) // => == fichier skool
-			mw->fc->currentDocument()->setSyntaxError(err.line - 1);
-	}
 
 	if ( ! d->timer.isActive() )
 		d->timer.start();

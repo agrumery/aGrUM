@@ -40,16 +40,13 @@ protected slots:
 	void onSyntaxCheckFinished();
 	void onMsgDoubleClick(QModelIndex index);
 
-	void startAutoSyntaxCheckThread(int i = -2);
-	void onSkoorSyntaxThreadFinished();
-	void onSkoolSyntaxThreadFinished();
+	void startAutoParsing(int i = -2);
+	void onAutoParsingFinished();
 
 	void onDocumentClosed( const QString & filename );
 
 	void triggerInit();
 
-protected:
-	void showSyntaxErrors(const gum::ErrorsContainer & errors);
 
 private:
 	MainWindow * mw;
