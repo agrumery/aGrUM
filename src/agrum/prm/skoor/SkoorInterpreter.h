@@ -117,6 +117,8 @@ public:
   int warnings() const;
   /// throw a string error if i >= count
   ParseError getError( int i ) const;
+  /// Return container with all errors.
+  ErrorsContainer getErrorsContainer() const;
   
   /// send on std::cerr the list of errors
   void showElegantErrors() const;

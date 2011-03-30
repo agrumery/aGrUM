@@ -744,6 +744,12 @@ ParseError SkoorInterpreter::getError( int i ) const
   return m_errors.getError( i );
 }
 
+/// Return container with all errors.
+ErrorsContainer SkoorInterpreter::getErrorsContainer() const
+{
+    return m_errors;
+}
+  
 ///
 void SkoorInterpreter::showElegantErrors() const {
   m_errors.showElegantErrors();
