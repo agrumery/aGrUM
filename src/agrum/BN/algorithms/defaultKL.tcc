@@ -72,28 +72,28 @@ namespace gum {
   template<typename T_DATA> INLINE
   double
   DefaultKL<T_DATA>::klPQ() {
-    __process();
+    _process();
     return _klPQ;
   }
 
   template<typename T_DATA> INLINE
   double
   DefaultKL<T_DATA>::klQP() {
-    __process();
+    _process();
     return _klQP;
   }
 
   template<typename T_DATA> INLINE
   bool
   DefaultKL<T_DATA>::errorPQ() {
-    __process();
+    _process();
     return _errorPQ;
   }
 
   template<typename T_DATA> INLINE
   bool
   DefaultKL<T_DATA>::errorQP() {
-    __process();
+    _process();
     return _errorQP;
   }
 
@@ -135,7 +135,7 @@ namespace gum {
 // do the job if not already __done
   template<typename T_DATA>
   void
-  DefaultKL<T_DATA>::__process() {
+  DefaultKL<T_DATA>::_process() {
     if (! __done) {
       _computeKL();
       __done=true;

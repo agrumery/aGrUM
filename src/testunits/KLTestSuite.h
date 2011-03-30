@@ -105,16 +105,16 @@ namespace gum {
           {
             gum::BIFReader<float> reader (&net3, GET_PATH_STR (BIFReader_file3.txt));
             reader.trace (false);
-            reader.proceed();	    
+            reader.proceed();
           }
-          
+
           double vkl=0.0;
-	  
+
           gum::BruteForceKL<float> stupid_bfkl (net3,net3);
           TS_GUM_ASSERT_THROWS_NOTHING (vkl=stupid_bfkl.klPQ());
-	  TS_ASSERT_EQUALS(vkl,0.0);
+          TS_ASSERT_EQUALS (vkl,0.0);
           TS_GUM_ASSERT_THROWS_NOTHING (vkl=stupid_bfkl.klQP());
-	  TS_ASSERT_EQUALS(vkl,0.0);
+          TS_ASSERT_EQUALS (vkl,0.0);
 
           gum::BayesNet<float> net4;
           {
@@ -130,7 +130,30 @@ namespace gum {
 
           gum::BruteForceKL<float> bfkl (kl);
           TS_GUM_ASSERT_THROWS_NOTHING (vkl=bfkl.klPQ());
-	  GUM_TRACE_VAR(vkl);
+          TS_ASSERT_DIFFERS (vkl, (float) 0.0);
+        }
+
+        void testBruteForceValues() {
+          gum::BayesNet<float> netP;
+          {
+            gum::BIFReader<float> reader (&netP, GET_PATH_STR (bnP.bif));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::BayesNet<float> netQ;
+          {
+            gum::BIFReader<float> reader (&netQ, GET_PATH_STR (bnQ.bif));
+            reader.trace (false);
+            reader.proceed();
+          }
+
+          gum::BruteForceKL<float> kl (netP,netQ);
+          TS_ASSERT_DELTA (kl.klPQ(),0.241864114,1e-5);
+          TS_ASSERT_DELTA (kl.klQP(),0.399826689,1e-5);
+          TS_ASSERT_EQUALS (kl.errorPQ(),0);
+          TS_ASSERT_EQUALS (kl.errorQP(),0);
+          TS_ASSERT_DELTA (kl.hellinger(),0.321089688,1e-5);
         }
 
     };

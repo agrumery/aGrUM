@@ -94,6 +94,7 @@ namespace gum {
 
     protected:
       virtual void _computeKL (void);
+      void _process();
 
       const BayesNet<T_DATA> _p;
       const BayesNet<T_DATA> _q;
@@ -105,8 +106,6 @@ namespace gum {
       bool _errorQP;
 
     private:
-      void __process();
-
       bool __checkCompatibility() const;
       KL::difficulty __difficulty;
       bool __done;

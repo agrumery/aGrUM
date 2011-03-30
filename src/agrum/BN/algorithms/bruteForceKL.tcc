@@ -64,7 +64,7 @@ namespace gum {
 
   template<typename T_DATA>
   void BruteForceKL<T_DATA>::_computeKL() {
-    _klPQ=_klQP=0.0;
+    _klPQ=_klQP=_hellinger=0.0;
     _errorPQ=_errorQP=0;
 
     gum::Instantiation Ip=_p.completeInstantiation();
@@ -74,6 +74,8 @@ namespace gum {
       __synchroInstantiations (Iq,Ip);
       T_DATA pp=_p.jointProbability (Ip);
       T_DATA pq=_q.jointProbability (Iq);
+
+      _hellinger+=pow (sqrt (pp)-sqrt (pq),2);
 
       if (pp!=0.0) {
         if (pq!=0.0) {
@@ -95,6 +97,15 @@ namespace gum {
     _klPQ=-_klPQ/log (2);
 
     _klQP=-_klQP/log (2);
+
+    _hellinger=sqrt (_hellinger);
   }
 
+
+  template<typename T_DATA> INLINE
+  double
+  BruteForceKL<T_DATA>::hellinger() {
+    this->_process();
+    return _hellinger;
+  }
 } // namespace gum

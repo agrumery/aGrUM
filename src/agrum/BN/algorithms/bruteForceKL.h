@@ -39,6 +39,8 @@ namespace gum {
   *
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
   * 
+  * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
+  * 
   * @warning This BruteForceKL should be use only if difficulty()==KL::CORRECT or at most KL::DIFFICULT ...
   * snippets :
   * @code
@@ -71,9 +73,13 @@ namespace gum {
 
       /** destructor */
       ~BruteForceKL ();
+      
+      double hellinger();
 
     protected:
       void _computeKL (void);
+      
+      double _hellinger;
 
       using DefaultKL<T_DATA>::_p;
       using DefaultKL<T_DATA>::_q;

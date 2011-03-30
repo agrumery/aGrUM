@@ -74,7 +74,7 @@ namespace gum {
       /**
        * Destructor.
        */
-      virtual ~BayesNet();
+       ~BayesNet();
 
       /**
        * Copy constructor.
@@ -96,43 +96,43 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      virtual const Potential<T_DATA>& cpt( NodeId varId ) const;
+       const Potential<T_DATA>& cpt( NodeId varId ) const;
 
       /**
        * Returns a constant reference to the dag of this Bayes Net.
        */
-      virtual const DAG& dag() const;
+       const DAG& dag() const;
 
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-      virtual const VariableNodeMap& variableNodeMap() const;
+       const VariableNodeMap& variableNodeMap() const;
 
       /**
        * Returns the number of variables in this bayes net.
        */
-      virtual Idx size() const;
+       Idx size() const;
       
       /**
        * Returns the number of arcs in this bayes net.
        */
-      virtual Idx nbrArcs() const;
+       Idx nbrArcs() const;
       
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
        * 
-       * $dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i)$ where $r_i$ is the number of instantiations of node $i$ and $q_i$ is the number of instantiations of its parents.
+       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of its parents.
        */
-      virtual Idx dim() const;
+       Idx dim() const;
       
 
       /// @return Returns a dot representation of this BayesNet.
-      virtual std::string toDot( void ) const;
+       std::string toDot( void ) const;
 
       /**
        * Retursn true if this bayes net is empty.
        */
-      virtual bool empty() const;
+       bool empty() const;
 
       
       /**
@@ -204,7 +204,7 @@ namespace gum {
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
-      virtual const DiscreteVariable& variable( NodeId id ) const;
+       const DiscreteVariable& variable( NodeId id ) const;
 
       /** we allow the user to change the name of a variable
       * @throws DuplicateLabel if this name already exists
@@ -216,15 +216,15 @@ namespace gum {
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      virtual NodeId nodeId( const DiscreteVariable &var ) const ;
+       NodeId nodeId( const DiscreteVariable &var ) const ;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      virtual NodeId idFromName( const std::string& name ) const;
+       NodeId idFromName( const std::string& name ) const;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+       const DiscreteVariable& variableFromName( const std::string& name ) const;
       /// @}
 
       // ===========================================================================
@@ -282,14 +282,14 @@ namespace gum {
        * The node's id are coherent with the variables and nodes of the topology.
        * @param clear If false returns the previously created moral graph.
        */
-      virtual const UndiGraph& moralGraph( bool clear = true ) const;
+       const UndiGraph& moralGraph( bool clear = true ) const;
 
       /**
        * The topological order stays the same as long as no variable or arcs are
        * added or erased from the topology.
        * @param clear If false returns the previously created topology.
        */
-      virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+       const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
 
       /// @}
       // ===========================================================================

@@ -106,7 +106,7 @@ namespace gum {
 
     /**
      * This method modifies the current table A in order to compute the
-     * result of the addition with all tables in B (A <- A + \sum_{u \in B} u)
+     * result of the addition with all tables in B (\f$ A \leftarrow A + \sum_{u \in B} u \f$)
      *
      * @param utilitiesList tables to add in this table (B in the description)
      * @warning we assume that every table in B contains a subset of variables in A
