@@ -186,7 +186,7 @@ private:
             
             if ( Directory::isDir(dirpath+(*i)) )
                 importDir( dirpath+(*i)+"/" );
-            else
+            else if ( (*i).substr( (*i).find_last_of('.') ) == ".skool" ) // if .skool
                 importFile( dirpath+(*i) );
         }
         
