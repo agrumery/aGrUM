@@ -1,6 +1,11 @@
 ﻿
+31/03/2011
+    * Fix bugs
+    * Refactoring du parsing utilisateur.
+    
 30/03/2011
     * Refactoring du parsing automatique.
+    * Quand un fichier est renommé supprimer le temp_.
     
 28/03/2011
     * Add : Passe des des fichier plutôt que directement du texte aux parsers.

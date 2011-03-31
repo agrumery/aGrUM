@@ -8,6 +8,7 @@
 
 #include <QFile>
 #include <QFileInfo>
+#include <QDebug>
 
 struct AbstractParser::PrivateData {
 	const QsciScintillaExtended * sci;
@@ -35,6 +36,7 @@ AbstractParser::AbstractParser(const QsciScintillaExtended * sci, QObject *paren
 //! Destructor
 AbstractParser::~AbstractParser()
 {
+	wait();
 	delete d->mutex;
 	delete d;
 }
@@ -47,25 +49,22 @@ void AbstractParser::parse( Priority priority )
 	if ( d->sci == 0 )
 		return;
 
-	if ( d->isDocModified && ! d->buffer.isEmpty() )
-
-
 	d->filename = d->sci->filename();
+	d->isDocModified = d->sci->isModified();
 
 	// If file is not saved in a file
-	if ( d->filename.isEmpty() )
+	if ( d->filename.isEmpty() ) {
 		// Parse code
 		d->buffer = d->sci->text();
 
 	// If file is saved in a file and has been modified
-	else if ( d->isDocModified ) {
+	} else if ( d->isDocModified ) {
 		// Save modifications in a temporary file
-		d->filename += ".bak";
 		QFile file( d->filename );
 		if ( file.open(QFile::WriteOnly) ) {
 			file.write( d->sci->text().toUtf8() );
 			file.close();
-			// If modifications can't be saved, parse code
+		// If modifications can't be saved, parse code
 		} else {
 			d->buffer = d->sci->text();
 			d->filename.clear();

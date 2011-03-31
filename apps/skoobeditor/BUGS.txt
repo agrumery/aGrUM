@@ -9,8 +9,6 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
-
-    * Quand un fichier est renommé supprimer le temp_.
 	
 AMELIORATIONS :
 
@@ -28,6 +26,7 @@ AMELIORATIONS :
 
 TODOS :
   
+    0 ) Dans skoor, se passer des déclarations de package et système.
     1 ) Interpreteur
     2 ) L'éditeur CPT attention aux noisyOr et rules
     3 ) Visualisation Qlementine du graphe (réseau bayésien)

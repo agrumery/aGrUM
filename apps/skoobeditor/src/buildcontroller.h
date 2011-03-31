@@ -30,19 +30,17 @@ public slots:
 
 	void checkSyntax( QsciScintillaExtended * sci = 0 );
 	void checkSyntax( const QString & filename );
-	void execute( QsciScintillaExtended * sci = 0, bool checkSyntaxOnly = false );
-	void execute( const QString & filename, bool checkSyntaxOnly = false );
+	void execute( QsciScintillaExtended * sci = 0 );
+	void execute( const QString & filename );
 
 	void hideBuildMessage();
 
 protected slots:
-	void onInterpretationFinished();
-	void onSyntaxCheckFinished();
+	void startParsing(bool isAuto = true, bool isExecution = false);
+	void onParsingFinished();
+	void onExecutionFinished();
+
 	void onMsgDoubleClick(QModelIndex index);
-
-	void startAutoParsing(int i = -2);
-	void onAutoParsingFinished();
-
 	void onDocumentClosed( const QString & filename );
 
 	void triggerInit();
