@@ -39,11 +39,11 @@ Section "SkoobEditor (required)"
   
   ; Put file there
   File bin\Release\skoobeditor.exe
-  File $%QTDIR%\qt\lib\qscintilla2.dll
-  File $%QTDIR%\qt\bin\QtCore4.dll
-  File $%QTDIR%\qt\bin\QtGui4.dll
-  File $%QTDIR%\qt\bin\mingwm10.dll
-  File $%QTDIR%\qt\bin\libgcc_s_dw2-1.dll
+  File $%QTDIR%\lib\qscintilla2.dll
+  File $%QTDIR%\bin\QtCore4.dll
+  File $%QTDIR%\bin\QtGui4.dll
+  File $%QTDIR%\bin\mingwm10.dll
+  File $%QTDIR%\bin\libgcc_s_dw2-1.dll
   
   WriteUninstaller "uninstall.exe"
   

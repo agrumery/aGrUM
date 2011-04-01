@@ -94,7 +94,7 @@ void MainWindow::showHelp()
 void MainWindow::showAboutDialog()
 {
 	QString message;
-	message += tr("SkoobEditor version 1.0b3\n\n");
+	message += tr("SkoobEditor version 1.0b4\n\n");
 	message += tr("Auteurs : Vincent Renaudineau, Pierre-Henri Wuillemin.\n\n");
 	message += tr("Copyright 2010 Lip6 (Paris, France). Tous droits réservés.");
 	message += tr("Ce logiciel est sous licence GPL v3.\n\n");

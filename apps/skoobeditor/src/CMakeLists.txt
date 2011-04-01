@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(skoobeditor)
 set(skoobeditor_VERSION_MAJOR "0")
-set(skoobeditor_VERSION_MINOR "3")
+set(skoobeditor_VERSION_MINOR "4")
 set(skoobeditor_VERSION_PATCH "0")
 
 # ~~~~~~~~~~~~ LIBRARIES ~~~~~~~~~~~~ #
