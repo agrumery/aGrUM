@@ -21,7 +21,7 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-import sys,os,csv,math
+import sys,os,csv
 
 from progress_bar import ProgressBar
 from pyAgrum_header import pyAgrum_header
@@ -98,6 +98,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
                 e[var]=data[positions[bn.idFromName(var)]]
                 if not transforme_label is None:
                     e[var]=transforme_label(e[var])
+               
         engine.setEvidence(e)
         engine.makeInference()
         px=engine.marginal(idTarget)[{target:label}]
@@ -110,7 +111,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
     if visible:
         print
     
-    res=sorted(res,key=lambda x:-x[0])
+    res=sorted(res,key=lambda x:x[0])
     
     vp=0.0
     fp=0.0

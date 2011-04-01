@@ -25,7 +25,7 @@
  */
 // ============================================================================
 #include <math.h>
-#include <agrum/BN/algorithms/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
 }

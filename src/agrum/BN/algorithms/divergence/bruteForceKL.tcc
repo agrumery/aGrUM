@@ -26,7 +26,7 @@
 // ============================================================================
 #include <math.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/algorithms/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
   // we are certain that Iq and Ip consist of variables with the same names and with the same labels.

@@ -144,8 +144,7 @@ if __name__=="__main__":
     else:
         csv_name=sys.argv[2]
         base,ext=os.path.splitext(csv_name)
-        if ext!='.csv':
-            csv_name+='.csv'
+        
 
     print '"{0}" vs "{1}"'.format(bn_name,csv_name)
     (nbr,LL)=computeScores(bn_name,csv_name,visible=True)

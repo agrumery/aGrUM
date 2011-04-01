@@ -425,7 +425,7 @@ public:
             gum::Instantiation I;
             I<<net->variable(*it);
             for(I.setFirst();! I.end(); ++I) {
-              TS_ASSERT_DELTA(infLazy.marginal(*it)[I],infShaf.marginal(*it)[I],1e-7);
+              TS_ASSERT_DELTA(infLazy.marginal(*it)[I],infShaf.marginal(*it)[I],1e-6);
             }
           }
         }

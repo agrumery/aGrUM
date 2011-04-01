@@ -27,8 +27,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <agrum/BN/algorithms/defaultKL.h>
-#include <agrum/BN/algorithms/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 #include "testsuite_utils.h"
 

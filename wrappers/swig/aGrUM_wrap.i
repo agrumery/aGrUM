@@ -56,8 +56,8 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/Gibbs.h>
 
-#include <agrum/BN/algorithms/defaultKL.h>
-#include <agrum/BN/algorithms/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
@@ -140,8 +140,8 @@
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/Gibbs.h>
 
-%import <agrum/BN/algorithms/defaultKL.h>
-%include <agrum/BN/algorithms/bruteForceKL.h>
+%import <agrum/BN/algorithms/divergence/defaultKL.h>
+%include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 %import <agrum/core/signal/listener.h>
 %import <agrum/graphs/diGraphListener.h>

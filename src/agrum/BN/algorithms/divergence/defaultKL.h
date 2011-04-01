@@ -19,84 +19,100 @@
 ***************************************************************************/
 /**
 * @file
-* @brief algorithm for exact computation KL divergence between BNs
+* @brief algorithm for KL divergence between BNs
 *
 * @author Pierre-Henri Wuillemin
 *
 */
-#ifndef GUM_BRUTE_FORCE_KL_H
-#define GUM_BRUTE_FORCE_KL_H
+#ifndef GUM_KL_H
+#define GUM_KL_H
 
-#include <agrum/BN/algorithms/defaultKL.h>
+#include <agrum/core/sequence.h>
+#include <agrum/BN/BayesNet.h>
+
+extern std::vector< float > v;
 
 namespace gum {
 
   /**
-  * BruteForceKL computes exactly the KL divergence betweens 2 BNs.
+  * DefaultKL is the base class for KL computation betweens 2 BNs.
   *
-  * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT ) of the needed time.
+  * DefaultKL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
+  * Since this computation may be very difficult, KL.difficulty() give an estimation ( KL_HEAVY,KL_DIFFICULT,KL_CORRECT ) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
   *
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
-  * 
-  * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
-  * 
-  * @warning This BruteForceKL should be use only if difficulty()==KL::CORRECT or at most KL::DIFFICULT ...
-  * snippets :
-  * @code
-  * gum::DefaultKL dkl(net1,net2);
-  * if (dkl.difficulty()!=KL::HEAVY) {
-  *  gum::BruteForceKL kl(dkl);
-  *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
-  * } else {
-  *  // other KL algorithm (IS for instance)
-  * }
-  * @endcode
   */
 
-  template<typename T_DATA> class BruteForceKL:public DefaultKL<T_DATA> {
+  namespace KL {
+    enum difficulty {HEAVY,DIFFICULT,CORRECT};
+  }
+
+  template<typename T_DATA> class DefaultKL {
+      static const int GAP_heavy_difficult = 12;
+      static const int GAP_difficult_correct = 7;
     public:
+
       /** no default constructor
        * @throw gum::OperationNotAllowed since this default constructor is not authorized
        */
-      BruteForceKL ();
+      DefaultKL ();
 
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q);
+      DefaultKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q);
 
       /** copy constructor
        */
-      BruteForceKL (const DefaultKL<T_DATA>& kl);
-
+      DefaultKL (const DefaultKL< T_DATA >& kl);
 
       /** destructor */
-      ~BruteForceKL ();
-      
-      double hellinger();
+      ~DefaultKL ();
+
+      /**
+       * return KL::HEAVY,KL::DIFFICULT,KL::CORRECT depending on the BNs __p and __q
+       */
+      KL::difficulty difficulty() const;
+
+
+      /// @name Accessors to results. The first call do the computations. The others do not.
+      /// @{
+
+      /// @return divergence KL(P||Q)
+      double klPQ();
+
+      /// @return divergence KL(Q||P)
+      double klQP();
+
+      /// @return true if erros while processing divergence KL(P||Q)
+      bool errorPQ();
+
+      /// @return true if erros while processing divergence KL(Q||P)
+      bool errorQP();
+      /// @}
 
     protected:
-      void _computeKL (void);
-      
-      double _hellinger;
+      virtual void _computeKL (void);
+      void _process();
 
-      using DefaultKL<T_DATA>::_p;
-      using DefaultKL<T_DATA>::_q;
+      const BayesNet<T_DATA> _p;
+      const BayesNet<T_DATA> _q;
 
-      using DefaultKL<T_DATA>::_klPQ;
-      using DefaultKL<T_DATA>::_klQP;
+      double _klPQ;
+      double _klQP;
 
-      using DefaultKL<T_DATA>::_errorPQ;
-      using DefaultKL<T_DATA>::_errorQP;
+      bool _errorPQ;
+      bool _errorQP;
 
     private:
-      //// synchronize Iq with Ip
-      void __synchroInstantiations (Instantiation& Iq,const Instantiation& Ip) const;
+      bool __checkCompatibility() const;
+      KL::difficulty __difficulty;
+      bool __done;
+
   };
+} //namespace gum
 
-} // namespace gum
+#include <agrum/BN/algorithms/divergence/defaultKL.tcc>
 
-#include <agrum/BN/algorithms/bruteForceKL.tcc>
-
-#endif// GUM_BRUTE_FORCE_KL_H
+#endif //GUM_KL_H
