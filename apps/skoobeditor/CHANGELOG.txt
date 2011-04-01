@@ -1,4 +1,7 @@
-﻿
+﻿01/04/2011
+    * Fix : Quand on quitte l'appli avec un fichier modifié,
+	ne supprime pas le .bak.
+
 31/03/2011
     * Fix bugs
     * Refactoring du parsing utilisateur.

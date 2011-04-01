@@ -49,25 +49,26 @@ void AbstractParser::parse( Priority priority )
 	if ( d->sci == 0 )
 		return;
 
-	d->filename = d->sci->filename();
+	setFilename( d->sci->filename() );
 	d->isDocModified = d->sci->isModified();
 
 	// If file is not saved in a file
-	if ( d->filename.isEmpty() ) {
+	if ( filename().isEmpty() ) {
 		// Parse code
-		d->buffer = d->sci->text();
+		setBuffer( d->sci->text() );
 
 	// If file is saved in a file and has been modified
 	} else if ( d->isDocModified ) {
 		// Save modifications in a temporary file
-		QFile file( d->filename );
+		setFilename( filename() + ".bak" );
+		QFile file( filename() );
 		if ( file.open(QFile::WriteOnly) ) {
 			file.write( d->sci->text().toUtf8() );
 			file.close();
 		// If modifications can't be saved, parse code
 		} else {
-			d->buffer = d->sci->text();
-			d->filename.clear();
+			setBuffer( d->sci->text() );
+			setFilename( QString() );
 			addClassPath( QFileInfo(d->sci->filename()).path() );
 		}
 	}
@@ -152,12 +153,27 @@ QString AbstractParser::filename() const
 	return d->filename;
 }
 
+//! Set filename thread safe
+void AbstractParser::setFilename( const QString & filename )
+{
+	QMutexLocker(d->mutex);
+	d->filename = filename;
+}
+
 //! Return the buffer to parse. If empty, look filename().
 QString AbstractParser::buffer() const
 {
 	QMutexLocker(d->mutex);
 	return d->buffer;
 
+}
+
+
+//! Set buffer thread safe
+void AbstractParser::setBuffer( const QString & buffer )
+{
+	QMutexLocker(d->mutex);
+	d->buffer = buffer;
 }
 
 //! Set the new PRM. Previous will be deleted if unused.

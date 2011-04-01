@@ -45,7 +45,6 @@ protected slots:
 
 	void triggerInit();
 
-
 private:
 	MainWindow * mw;
 

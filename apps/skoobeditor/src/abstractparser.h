@@ -69,6 +69,8 @@ protected:
 
 private:
 	void start( Priority priority = InheritPriority ) { QThread::start(priority); }
+	void setFilename( const QString & filename );
+	void setBuffer( const QString & buffer );
 
 	struct PrivateData;
 	PrivateData * d;

@@ -563,6 +563,7 @@ void FileController::updateMetadata(QsciScintillaExtended * sci)
 /**
   Process saveAllFiles and, if success,
   close the application.
+  Remove also all temp file from building.
   */
 bool FileController::quit()
 {
@@ -607,6 +608,11 @@ bool FileController::quit()
 	foreach( QsciScintillaExtended * sci, toSave )
 		if ( ! saveFile(sci) )
 			return false;
+
+	// Emit signal fileClosed to others controllers proceed to cleaning
+	// if necessary (build controller clean temp file for exemple).
+	foreach ( const QString & s, d->openFiles.keys() )
+		emit fileClosed(s);
 
 	return true;
 }
