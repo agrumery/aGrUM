@@ -322,6 +322,7 @@ namespace gum {
      */
     // ============================================================================
     ListBase (const ListBase<Val> &src);
+    ListBase (const List<Val> &src);
 
     // ============================================================================
     /// Destructor
@@ -1063,6 +1064,8 @@ namespace gum {
 
   private:
     /// ListIterator should be a friend to optimize access to elements
+
+    friend class ListBase<Val>;
 
     friend class ListIterator<Val>;
 

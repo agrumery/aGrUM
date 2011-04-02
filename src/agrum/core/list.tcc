@@ -267,6 +267,18 @@ namespace gum {
   }
 
   // ==============================================================================
+  /// Copy constructor
+  // ==============================================================================
+  template <typename Val> INLINE
+  ListBase<Val>::ListBase( const List<Val> &src ) {
+    // for debugging purposes
+    GUM_CONS_CPY( ListBase );
+
+    // actually copy the elements of list src
+    __copy_elements( src );
+  }
+
+  // ==============================================================================
   /// Copy operator.
   // ==============================================================================
   template <typename Val> INLINE
