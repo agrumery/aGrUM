@@ -25,7 +25,6 @@ AMELIORATIONS :
     
 
 TODOS :
-	-0.5 ) Faire la récupération de fichier temporaire.
     0 ) Dans skoor, se passer des déclarations de package et système.
     1 ) Interpreteur
     2 ) L'éditeur CPT attention aux noisyOr et rules

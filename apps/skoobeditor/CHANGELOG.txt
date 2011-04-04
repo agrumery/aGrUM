@@ -1,5 +1,8 @@
-﻿01/04/2011
-	* Done : Passer à la nouvelle version de Qt.
+﻿04/04/2011
+    * Add : Faire la récupération de fichier temporaire.
+
+01/04/2011
+    * Done : Passer à la nouvelle version de Qt.
     * Fix : Quand on quitte l'appli avec un fichier modifié,
 	ne supprime pas le .bak.
 

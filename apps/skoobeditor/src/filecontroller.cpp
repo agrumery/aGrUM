@@ -56,7 +56,7 @@ FileController::FileController(MainWindow * mw, QObject * parent) :
 	connect( mw->ui->actionCloseFile, SIGNAL(triggered()), this, SLOT(closeFile()) );
 	connect( mw->ui->actionCloseAllFiles, SIGNAL(triggered()), this, SLOT(closeAllFiles()) );
 	connect( mw->ui->actionUpdateMetadata, SIGNAL(triggered()), this, SLOT(updateMetadata()) );
-	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onDocumentChanged(int)) );
+	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentDocumentChanged(int)) );
 	connect( mw->ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
 
 	QTimer::singleShot( 100, this, SLOT(triggerInit()) );
@@ -232,6 +232,20 @@ bool FileController::openFile(const QString & filename)
 		if ( openFiles().contains(s) ) {
 			mw->ui->tabWidget->setCurrentWidget(openFiles().value(s));
 			continue;
+		}
+
+		// Try to open the .bak file if there was a crash last time.
+		if ( QFile::exists(s+".bak") ) {
+			int choice = QMessageBox::question( mw, QString("Récupération du fichier"),
+				tr("Il semble que le programme ne se soit pas terminé correctement et qu'une version plus récente du fichier '%1' existe.\nVoulez-vous essayer de la récupérer ?").arg(QFileInfo(s).fileName()),
+				QMessageBox::Yes, QMessageBox::No);
+			if ( choice == QMessageBox::Yes ) {
+				bool result = openFile(s+".bak");
+				if ( result ) {
+					currentDocument()->setFilename(s);
+					return result;
+				}
+			}
 		}
 
 		// We open the file
@@ -620,7 +634,7 @@ bool FileController::quit()
 
 /**
   */
-void FileController::onDocumentChanged(int index)
+void FileController::onCurrentDocumentChanged(int index)
 {
 	QsciScintillaExtended * sci = 0;
 
@@ -661,7 +675,7 @@ void FileController::onDocumentRenamed(const QString & oldFilename, const QStrin
 	if ( sci == 0 || oldFilename.isEmpty() )
 		return;
 
-	onDocumentChanged( mw->ui->tabWidget->indexOf(sci) );
+	onCurrentDocumentChanged( mw->ui->tabWidget->indexOf(sci) );
 
 	// We update openFiles
 	d->openFiles.remove(oldFilename);
@@ -755,10 +769,9 @@ QsciScintillaExtended * FileController::newDocument(const QString & title, QsciS
 	// We add a tab in the tabbar,
 	QsciScintillaExtended * sci =  new QsciScintillaExtended( lexer, mw->ui->tabWidget );
 	sci->setTitle( title );
-	connect( sci, SIGNAL(modificationChanged(bool)), this, SLOT(onDocumentChanged()) );
-	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentChanged()) );
-	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentRenamed(QString,QString)) );
 	mw->ui->tabWidget->addTab(sci, title);
+	connect( sci, SIGNAL(modificationChanged(bool)), this, SLOT(onCurrentDocumentChanged()) );
+	connect( sci, SIGNAL(filenameChanged(QString,QString)), this, SLOT(onDocumentRenamed(QString,QString)) );
 
 	// Restore editable menu
 	mw->ui->menuEdit->setEnabled(true);

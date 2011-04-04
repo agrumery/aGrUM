@@ -73,7 +73,7 @@ protected slots:
 	void removeOfRecentFiles( const QString & filename);
 	void saveFilesState();
 
-	void onDocumentChanged(int index = -2);
+	void onCurrentDocumentChanged(int index = -2);
 	void onDocumentRenamed(const QString & oldFilename, const QString & newFilename);
 	void triggerInit();
 
