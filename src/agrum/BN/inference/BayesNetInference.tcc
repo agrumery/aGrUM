@@ -53,6 +53,7 @@ namespace gum {
             _marginals.begin();it != _marginals.end();++it ) {
       if ( *it )delete( *it );
     }
+
     _marginals.clear();
   }
 
@@ -74,4 +75,4 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

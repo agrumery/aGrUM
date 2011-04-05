@@ -111,7 +111,7 @@ namespace gum {
        * Returns the number of variables in this bayes net.
        */
       virtual Idx size() const = 0;
-      
+
       /**
        * Retursn true if this bayes net is empty.
        */
@@ -219,7 +219,7 @@ namespace gum {
       /// Return the properties of this BayesNet and initialize the hash table is
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
-    };
+  };
 } // gum
 
 #include <agrum/BN/abstractBayesNet.tcc>

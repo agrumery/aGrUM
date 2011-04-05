@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 #(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
@@ -20,8 +21,11 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-import pyAgrum as gum
+import sys,os,csv,math
+
 from pyAgrum_header import pyAgrum_header
+
+import pyAgrum as gum
 
 def parents(bn,n):
     """
@@ -34,27 +38,30 @@ def parents(bn,n):
     #l is the liste of var names
     return map(bn.idFromName,l)
 
-def enfants(bn,n):
+def module_help(exit_value=1):
     """
-    gives a nodeId list of children of node n
-
-    (this algorithm is clearly not efficient AT ALL ...)
+    defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    return filter(lambda x:n in parents(bn,x), range(0,len(bn)))
+    print os.path.basename(sys.argv[0]),"src.{bif|dsl}"
+    sys.exit(exit_value)
 
 
 if __name__=="__main__":
     pyAgrum_header()
 
-    bn=gum.loadBN("bn.bif")
-
-    #liste des noeuds
-    print map(lambda x:str(x)+':'+bn.variable(x).name(),range(0,len(bn)))
-
-    #calcul des parents du noeud 0
-    print "noeud : ",bn.variable(0).name()
-    print "parents : ",parents(bn,0)
-
-    #calcul des enfant du noeud 4
-    print "noeud : ",bn.variable(4).name()
-    print "enfants : ",enfants(bn,4)
+    if len(sys.argv)<2:
+        module_help()
+        
+    bn=gum.loadBN(sys.argv[1])
+    inf=gum.LazyPropagation(bn)
+    inf.makeInference()
+    
+    print "Entropy of nodes (a posteriori)"
+    for i in bn.getTopologicalOrder():
+        print i," : ",inf.H(i)
+    
+    print
+    print "Mutual information and Variation of information for arcs (a posteriori)"
+    for i in bn.getTopologicalOrder():
+        for j in parents(bn,i):
+            print j,"->",i,"\t",inf.I(i,j),"\t",inf.VI(i,j)

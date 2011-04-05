@@ -15,9 +15,15 @@ debug:
 	$(ACT) agrum debug -p linux -j $(JOBS)
 
 test:
-	$(ACT) test release -t all -p linux -j $(JOBS)
+	$(ACT) test release -p linux -j $(JOBS)
 
 testdebug:
+	$(ACT) test debug  -p linux -j $(JOBS)
+
+testall:
+	$(ACT) test release -t all -p linux -j $(JOBS)
+
+testalldebug:
 	$(ACT) test debug -t all -p linux -j $(JOBS)
 
 run:

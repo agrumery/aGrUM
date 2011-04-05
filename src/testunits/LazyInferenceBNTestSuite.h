@@ -88,7 +88,7 @@ namespace gum {
           fill( *bn );
           // Testing the inference
           gum::LazyPropagation<float>* inf = 0;
-          TS_ASSERT_THROWS_NOTHING( inf = new gum::LazyPropagation<float>( *bn ) );
+          TS_ASSERT_THROWS_NOTHING( inf = new gum::LazyPropagation<float> ( *bn ) );
           TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
           if ( inf != 0 ) {
@@ -137,10 +137,27 @@ namespace gum {
 
           gum::Potential<float>* pot = 0;
           TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
-          if (pot) delete pot;
+
+          if ( pot ) delete pot;
         }
 
-        private:
+        // testing information methods
+        void testInformationMethods() {
+          fill( *bn );
+
+          gum::LazyPropagation<float> inf( *bn );
+          inf.makeInference();
+
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.H(( gum::NodeId ) 2 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 2) );
+          TS_GUM_ASSERT_THROWS_NOTHING (inf.VI ( (gum::NodeId) 2, (gum::NodeId) 4));
+          TS_ASSERT_THROWS( inf.I(( gum::NodeId ) 0, ( gum::NodeId ) 4) ,gum::OperationNotAllowed);
+          
+          //@TODO : test computations and not only good behaviour
+        }
+
+      private:
         // Builds a BN to test the inference
         void fill( gum::BayesNet<float> &bn ) {
           const gum::Potential<float>& p1 = bn.cpt( i1 );
@@ -201,4 +218,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

@@ -56,6 +56,7 @@ namespace gum {
    * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
    */
   template<typename T_DATA>
+
   class BayesNet: public AbstractBayesNet<T_DATA> {
 
       friend class BayesNetFactory<T_DATA>;
@@ -74,7 +75,7 @@ namespace gum {
       /**
        * Destructor.
        */
-       ~BayesNet();
+      ~BayesNet();
 
       /**
        * Copy constructor.
@@ -96,45 +97,45 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-       const Potential<T_DATA>& cpt( NodeId varId ) const;
+      const Potential<T_DATA>& cpt( NodeId varId ) const;
 
       /**
        * Returns a constant reference to the dag of this Bayes Net.
        */
-       const DAG& dag() const;
+      const DAG& dag() const;
 
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-       const VariableNodeMap& variableNodeMap() const;
+      const VariableNodeMap& variableNodeMap() const;
 
       /**
        * Returns the number of variables in this bayes net.
        */
-       Idx size() const;
-      
+      Idx size() const;
+
       /**
        * Returns the number of arcs in this bayes net.
        */
-       Idx nbrArcs() const;
-      
+      Idx nbrArcs() const;
+
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
-       * 
+       *
        * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of its parents.
        */
-       Idx dim() const;
-      
+      Idx dim() const;
+
 
       /// @return Returns a dot representation of this BayesNet.
-       std::string toDot( void ) const;
+      std::string toDot( void ) const;
 
       /**
        * Retursn true if this bayes net is empty.
        */
-       bool empty() const;
+      bool empty() const;
 
-      
+
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
        * variable is automatically generated.
@@ -144,7 +145,7 @@ namespace gum {
        * @param variable The variable added by copy.
        * @return the id of the added variable.
        */
-      NodeId add( const DiscreteVariable& variable);
+      NodeId add( const DiscreteVariable& variable );
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -153,8 +154,8 @@ namespace gum {
        * @param variable The variable added by copy.
        * @param aContent The content used for the variable potential.
        */
-      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent);
-      
+      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent );
+
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
        * variable is automatically generated.
@@ -162,7 +163,7 @@ namespace gum {
        * The implementation of the Potential is by default a MultiDimArray.
        *
        * @param variable The variable added by copy.
-       * @param id The chosen id. 
+       * @param id The chosen id.
        * @warning give an id  should be reserved for rare and specific situations !!!
        * @return the id of the added variable.
        * @throws DuplicateElement if id is already used
@@ -175,7 +176,7 @@ namespace gum {
        *
        * @param variable The variable added by copy.
        * @param aContent The content used for the variable potential.
-       * @param id The chosen id. 
+       * @param id The chosen id.
        * @warning give an id should be reserved for rare and specific situations !!!
        * @return the id of the added variable.
        * @throws DuplicateElement if id is already used
@@ -204,27 +205,27 @@ namespace gum {
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
-       const DiscreteVariable& variable( NodeId id ) const;
+      const DiscreteVariable& variable( NodeId id ) const;
 
       /** we allow the user to change the name of a variable
       * @throws DuplicateLabel if this name already exists
       * @throws NotFound Raised if no nodes matches id.
       */
-      void changeVariableName(NodeId id,const std::string& new_name);
+      void changeVariableName( NodeId id,const std::string& new_name );
 
       /**
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-       NodeId nodeId( const DiscreteVariable &var ) const ;
+      NodeId nodeId( const DiscreteVariable &var ) const ;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-       NodeId idFromName( const std::string& name ) const;
+      NodeId idFromName( const std::string& name ) const;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-       const DiscreteVariable& variableFromName( const std::string& name ) const;
+      const DiscreteVariable& variableFromName( const std::string& name ) const;
       /// @}
 
       // ===========================================================================
@@ -237,7 +238,7 @@ namespace gum {
 
       /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      T_DATA jointProbability(const Instantiation& i) const;
+      T_DATA jointProbability( const Instantiation& i ) const;
 
       ///
       /// @}
@@ -282,14 +283,14 @@ namespace gum {
        * The node's id are coherent with the variables and nodes of the topology.
        * @param clear If false returns the previously created moral graph.
        */
-       const UndiGraph& moralGraph( bool clear = true ) const;
+      const UndiGraph& moralGraph( bool clear = true ) const;
 
       /**
        * The topological order stays the same as long as no variable or arcs are
        * added or erased from the topology.
        * @param clear If false returns the previously created topology.
        */
-       const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+      const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
 
       /// @}
       // ===========================================================================
@@ -307,10 +308,10 @@ namespace gum {
       * @return the id of the added variable.
       * @throws DuplicateElement if id(<>0) is already used
       */
-      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight);
-      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight);
-      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight);
-      
+      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight );
+
       /**
       * Add a variable, it's associate node and a noisyOR implementation. The id of the new
       * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
@@ -388,6 +389,7 @@ namespace gum {
   operator<<( std::ostream& output, const AbstractBayesNet<T_DATA>& map );
 
 } /* namespace gum */
+
 // ============================================================================
 #include <agrum/BN/BayesNet.tcc>
 // ============================================================================

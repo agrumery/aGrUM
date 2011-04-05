@@ -70,7 +70,7 @@ namespace gum {
        * @throw NotFound Raised if no variable matches id.
        * @throw OperationNotAllowed Raised if the inference can not be done.
        */
-      virtual const Potential<T_DATA>& marginal( Id id );
+      virtual const Potential<T_DATA>& marginal( NodeId id );
 
       /**
        * Insert new evidence in the graph.
@@ -140,4 +140,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_INFERENCE_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
