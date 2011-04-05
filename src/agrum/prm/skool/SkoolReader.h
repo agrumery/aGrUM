@@ -112,6 +112,8 @@ private:
     Parser* __parser;
     bool __parseDone;
     bool __prmTake;
+    // Needed when file can't be parse (can not open it for exemple)
+    ErrorsContainer __errors;
 };
 
 } /* namespace skool */

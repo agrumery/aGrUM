@@ -55,36 +55,35 @@ namespace gum {
       INLINE
       void
       SkoolReader::readFile ( const std::string& file ) {
-        if ( ! __parseDone ) {
+        if ( ! __parseDone ) try {
           Scanner s ( file.c_str() );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
           __parser->setCurrentDirectory( file.substr(0, file.find_last_of('/')+1) );
-          try {
-            __parser->Parse();
-            __parseDone = true;
-          } catch ( gum::Exception &e ) {
-            GUM_SHOWERROR ( e );
-          }
-        }
+          
+          __parser->Parse();
+          __parseDone = true;
+        } catch ( gum::Exception &e ) {
+          GUM_SHOWERROR ( e );
+          __errors.addException( e.getContent(), file );
+        } 
       }
 
       INLINE
       void
       SkoolReader::readString ( const std::string & string ) {
-        if ( ! __parseDone ) {
+        if ( ! __parseDone ) try {
           Scanner s ( (unsigned char*) string.c_str(), (int) ( string.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
-
-          try {
-            __parser->Parse();
-            __parseDone = true;
-          } catch ( gum::Exception &e ) {
-            GUM_SHOWERROR ( e );
-          }
+          
+          __parser->Parse();
+          __parseDone = true;
+        } catch ( gum::Exception &e ) {
+          GUM_SHOWERROR ( e );
+          __errors.addException( e.getContent(), "" );
         }
       }
 
@@ -165,7 +164,8 @@ namespace gum {
       INLINE
       const ErrorsContainer & SkoolReader::getErrorsContainer() const
       {
-        return __parser->errors();
+        if ( __parseDone ) return __parser->errors();
+        else return __errors;
       }
 /// @}
 
