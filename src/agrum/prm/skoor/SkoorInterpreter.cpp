@@ -467,29 +467,36 @@ bool SkoorInterpreter::import ( string import_name ) try {
 
 
 std::string SkoorInterpreter::findSystemName ( const std::string& s ) {
-  std::string name;
   size_t dot = s.find_first_of ( '.' );
+  std::string name = s.substr ( 0, dot );
+  
+  //if ( ! m_context->aliasToImport( name ).empty() ) return m_context->aliasToImport( name );
 
   while ( dot != std::string::npos ) {
-    name = s.substr ( 0, dot );
-
     if ( m_reader->prm()->isSystem ( name ) ) return name;
 
     dot = s.find ( '.', dot + 1 );
+    name = s.substr ( 0, dot );
   }
 
   throw "could not find any system in " + s;
 }
 
 std::string SkoorInterpreter::findInstanceName ( const std::string& s, const std::string& sys ) {
-  std::string name = s.substr ( sys.length() + 1 );
-  size_t dot = name.find ( '.' );
-  name = name.substr ( 0, dot );
-
-  if ( ! m_reader->prm()->getSystem ( sys ).exists ( name ) )
-    throw "could not find any instance in " + name;
+  // Since s may contains an alias or no system (due to 'asmain'), do differently.
+  std::string name;
+  size_t dot1, dot2 = string::npos;
+  do {
+    dot1 = s.find_last_of ( '.', dot2 == string::npos ? string::npos : dot2-1 );
+    if ( dot1 == string::npos )
+      name = s.substr ( 0, dot2 );
+    else
+      name = s.substr ( dot1+1, dot2-dot1-1 );
+    if ( m_reader->prm()->getSystem ( sys ).exists ( name ) ) return name;
+    dot2 = dot1;
+  } while ( dot2 != string::npos );
   
-  return name;
+  throw "could not find any instance in " + s;
 }
 
 std::string SkoorInterpreter::findAttributeName ( const std::string & s, const gum::prm::Instance& instance ) {
@@ -498,7 +505,7 @@ std::string SkoorInterpreter::findAttributeName ( const std::string & s, const g
   if ( dot == std::string::npos )
     throw "could not find any attribute in " + s;
     
-  std::string name = s.substr ( dot + 1, std::string::npos );
+  std::string name = s.substr ( dot + 1 );
   
   if ( ! instance.exists ( name ) ) 
     throw "could not find any attribute in " + s;
@@ -507,6 +514,29 @@ std::string SkoorInterpreter::findAttributeName ( const std::string & s, const g
 
 }
 
+// After this method, ident doesn't contains the system name anymore.
+const System & SkoorInterpreter::getSystem( const string & ident ) {
+  try {
+    return m_reader->prm()->getSystem ( findSystemName (ident) );
+  } catch ( const string & ) {}
+  if ( m_context->getMainImport() != 0 )
+    return m_reader->prm()->getSystem ( m_context->getMainImport()->value );
+    
+  throw "could not find any system in " + ident;
+  //size_t dot = s.find_first_of ( '.' );
+	//string name = ident.substr(0, dot);
+  //if ( m_reader->prm()->systems().size() == 1 &&
+  //(*(m_reader->prm()->systems().begin()))->isInstance(name) ) {
+    //return *(*(m_reader->prm()->systems().begin()));
+  //} else if ( m_context.) {
+    
+  //} 
+	//si il n'y a qu'un seul import,
+		//cherche si cet import possède une instance avec substr
+	//sinon
+		//boucle
+	//throw
+}
 
 ///
 bool SkoorInterpreter::observe ( const ObserveCommand * command ) try {
@@ -515,7 +545,7 @@ bool SkoorInterpreter::observe ( const ObserveCommand * command ) try {
   const std::string right_val = command->rightValue;
   
   // Contruct the pair (instance,attribut)
-  const gum::prm::System& sys = m_reader->prm()->getSystem ( findSystemName ( left_val ) );
+  const gum::prm::System& sys = getSystem( left_val );
   const gum::prm::Instance& instance = sys.get ( findInstanceName ( left_val, sys.name() ) );
   const gum::prm::Attribute& attr = instance.get ( findAttributeName ( left_val, instance ) );
   gum::prm::PRMInference::Chain chain = std::make_pair ( &instance, &attr );
@@ -627,7 +657,7 @@ bool SkoorInterpreter::unobserve( const UnobserveCommand * command ) try
   string name = command->value;
   
   // Contruct the pair (instance,attribut)
-  const gum::prm::System& sys = m_reader->prm()->getSystem( findSystemName(name) );
+  const gum::prm::System& sys = getSystem( name );
   const gum::prm::Instance& instance = sys.get( findInstanceName(name, sys.name()) );
   const gum::prm::Attribute& attr = instance.get( findAttributeName(name, instance) );
      
@@ -658,7 +688,7 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
 	string query = command->value;
 	  
 	// Contruct the pair (instance,attribut)
-  const gum::prm::System& sys = m_reader->prm()->getSystem ( findSystemName ( query ) );
+  const gum::prm::System& sys = getSystem( query );
   const gum::prm::Instance& instance = sys.get ( findInstanceName ( query, sys.name() ) );
   const gum::prm::Attribute& attr = instance.get ( findAttributeName ( query, instance ) );
   gum::prm::PRMInference::Chain chain = std::make_pair ( &instance, &attr );

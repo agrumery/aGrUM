@@ -56,22 +56,24 @@ public :
 ///
 class ImportCommand : public SkoorCommand {
 public :
-  ImportCommand( int line, std::string value ) : SkoorCommand(line) {
+  ImportCommand( int line, const std::string & value, const std::string & alias ) : SkoorCommand(line) {
     this->value = value;
+    this->alias = alias;
   }
 
   std::string value;
+  std::string alias;
   
   Type type() const { return Import; }
   std::string toString() const {
-    return "import " + value + ";";
+    return "import " + value + (alias.empty()?"":"as "+alias) + ";";
   }
 };
 
 ///
 class ObserveCommand : public SkoorCommand {
 public :
-  ObserveCommand( int line, std::string leftValue, std::string rightValue ) : SkoorCommand(line) {
+  ObserveCommand( int line, const std::string & leftValue, const std::string & rightValue ) : SkoorCommand(line) {
     this->leftValue = leftValue;
     this->rightValue = rightValue;
   }
@@ -88,7 +90,7 @@ public :
 ///
 class UnobserveCommand : public SkoorCommand {
 public :
-  UnobserveCommand( int line, std::string value ) : SkoorCommand(line) { this->value = value; }
+  UnobserveCommand( int line, const std::string & value ) : SkoorCommand(line) { this->value = value; }
   
   std::string value;
   
@@ -101,7 +103,7 @@ public :
 ///
 class QueryCommand : public SkoorCommand {
 public :
-  QueryCommand( int line, std::string value ) : SkoorCommand(line) { this->value = value; }
+  QueryCommand( int line, const std::string & value ) : SkoorCommand(line) { this->value = value; }
   
   std::string value;
   
@@ -114,7 +116,7 @@ public :
 ///
 class SetEngineCommand : public SkoorCommand {
 public :
-  SetEngineCommand( int line, std::string value ) : SkoorCommand(line) { this->value = value; }
+  SetEngineCommand( int line, const std::string & value ) : SkoorCommand(line) { this->value = value; }
   
   std::string value;
   
@@ -127,7 +129,7 @@ public :
 ///
 class SetGndEngineCommand : public SkoorCommand {
 public :
-  SetGndEngineCommand( int line, std::string value ) : SkoorCommand(line) { this->value = value; }
+  SetGndEngineCommand( int line, const std::string & value ) : SkoorCommand(line) { this->value = value; }
   
   std::string value;
   
@@ -174,18 +176,23 @@ class SkoorContext {
   std::string m_package;
   std::vector<SkoorSession *> m_sessions;
   std::vector<ImportCommand *> m_imports;
+  ImportCommand * m_mainImport;
   
 public :
   SkoorContext(const std::string & filename = std::string());
   ~SkoorContext();
+  
+  const ImportCommand * getMainImport() const { return m_mainImport; }
 
   std::string getFilename() const;
   
   std::string getPackage() const;
   void setPackage( const std::string & package );
 
+  std::string aliasToImport( const std::string & alias );
   std::vector<ImportCommand *> getImports() const;
-  void addImport( int line, std::string import );
+  void addImport( int line, const std::string & import, const std::string & alias );
+  void addImport( int line, const std::string & import, bool ismain );
   
   std::vector<SkoorSession *> getSessions() const;
   void addSession( SkoorSession * session );

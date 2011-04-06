@@ -71,7 +71,8 @@ private:
 		_query=8,
 		_unobserve=9,
 		_engine=10,
-		_grd_engine=11
+		_grd_engine=11,
+		_asmain=12
 	};
 	int maxT;
 

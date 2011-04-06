@@ -38,6 +38,7 @@ using namespace std;
 SkoorContext::SkoorContext(const std::string & filename)
 {
   m_filename = filename;
+  m_mainImport = 0;
 }
 
 SkoorContext::~SkoorContext()
@@ -60,15 +61,29 @@ void SkoorContext::setPackage( const string & package )
   m_package = package;
 }
 
+string SkoorContext::aliasToImport( const string & alias )
+{
+  for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
+    if ( m_imports[i]->alias == alias )
+      return m_imports[i]->value;
+  return string();
+}
 
 vector<ImportCommand *> SkoorContext::getImports() const
 {
   return m_imports;
 }
 
-void SkoorContext::addImport( int line, std::string import )
+void SkoorContext::addImport( int line, const std::string & import, const std::string & alias )
 {
-  m_imports.push_back( new ImportCommand(line, import) );
+  m_imports.push_back( new ImportCommand(line, import, alias) );
+}
+  
+void SkoorContext::addImport( int line, const std::string & import, bool ismain )
+{
+  m_imports.push_back( new ImportCommand(line, import, import) );
+  if ( ismain )
+    m_mainImport = m_imports.back();
 }
   
 std::vector<SkoorSession *> SkoorContext::getSessions() const

@@ -43,6 +43,7 @@ TOKENS
   unobserve   = "unobserve".
   engine      = "engine".
   grd_engine  = "grd_engine".
+  asmain      = "asmain".
 
 //=====================
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -56,10 +57,16 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //=====================
-skoor = (. std::string s; .)
-          [ package Ident<s> (. __context->setPackage( s ); .) ';' ]
-          [ import Ident<s> (. __context->addImport( t->line, s ); .) ';']
-          { RequestBloc }.
+skoor =                 (. std::string s; bool ismain; .)
+    [ package Ident<s>  (. __context->setPackage( s ); .) 
+    SYNC ';' ]
+    { 
+      import Ident<s>   (. ismain = false; .)
+      [ asmain          (. ismain = true; .) ]
+                        (. __context->addImport( t->line, s, ismain ); .) 
+      SYNC ';' 
+    }
+    { RequestBloc }.
 
 RequestBloc = request word  (. __currentSession = new SkoorSession(gum::narrow(t->val)); .)
               '{' {
