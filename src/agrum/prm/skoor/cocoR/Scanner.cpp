@@ -297,8 +297,8 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 24;
-	noSym = 24;
+	maxT = 25;
+	noSym = 25;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 9);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -320,13 +320,14 @@ void Scanner::Init() {
 	keywords.set(L"unobserve", 9);
 	keywords.set(L"engine", 10);
 	keywords.set(L"grd_engine", 11);
-	keywords.set(L"asmain", 12);
-	keywords.set(L"SVED", 17);
-	keywords.set(L"SVE", 18);
-	keywords.set(L"GND", 19);
-	keywords.set(L"VE", 20);
-	keywords.set(L"VEBB", 21);
-	keywords.set(L"lazy", 22);
+	keywords.set(L"as", 12);
+	keywords.set(L"default", 13);
+	keywords.set(L"SVED", 18);
+	keywords.set(L"SVE", 19);
+	keywords.set(L"GND", 20);
+	keywords.set(L"VE", 21);
+	keywords.set(L"VEBB", 22);
+	keywords.set(L"lazy", 23);
 
 
 	tvalLength = 128;
@@ -561,15 +562,15 @@ Token* Scanner::NextToken() {
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_9;}
 			else {goto case_0;}
 		case 11:
-			{t->kind = 13; break;}
-		case 12:
 			{t->kind = 14; break;}
-		case 13:
+		case 12:
 			{t->kind = 15; break;}
-		case 14:
+		case 13:
 			{t->kind = 16; break;}
+		case 14:
+			{t->kind = 17; break;}
 		case 15:
-			{t->kind = 23; break;}
+			{t->kind = 24; break;}
 
 	}
 	AppendVal(t);

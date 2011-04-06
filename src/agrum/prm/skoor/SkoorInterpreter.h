@@ -136,10 +136,10 @@ private:
   void setEngine( const SetEngineCommand * command );
   void setGndEngine( const SetGndEngineCommand * command );
 
-  std::string findSystemName ( const std::string& s );
-  std::string findInstanceName ( const std::string& s, const std::string& sys );
+  std::string findSystemName ( std::string & s );
+  std::string findInstanceName ( const std::string& s, const gum::prm::System& sys );
   std::string findAttributeName ( const std::string& s, const gum::prm::Instance& instance );
-  const System & getSystem( const string & ident );
+  const System & getSystem( string & ident );
   void generateInfEngine(const gum::prm::System& sys);
   
   void addError( std::string msg );

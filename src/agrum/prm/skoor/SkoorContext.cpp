@@ -77,8 +77,10 @@ vector<ImportCommand *> SkoorContext::getImports() const
 void SkoorContext::addImport( int line, const std::string & import, const std::string & alias )
 {
   m_imports.push_back( new ImportCommand(line, import, alias) );
+  if ( alias == "default" )
+    m_mainImport = m_imports.back();
 }
-  
+
 void SkoorContext::addImport( int line, const std::string & import, bool ismain )
 {
   m_imports.push_back( new ImportCommand(line, import, import) );
