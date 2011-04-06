@@ -55,15 +55,19 @@ namespace gum {
       INLINE
       void
       SkoolReader::readFile ( const std::string& file ) {
-        if ( ! __parseDone ) try {
+        try {
           Scanner s ( file.c_str() );
-          __parser = new Parser ( &s );
-          __parser->setFactory ( &__factory );
-          __parser->setClassPath ( __class_path );
+          if ( ! __parseDone ) {
+            __parser = new Parser ( &s );
+            __parser->setFactory ( &__factory );
+            __parser->setClassPath ( __class_path );
+          } else
+            __parser->scanner = &s;
           __parser->setCurrentDirectory( file.substr(0, file.find_last_of('/')+1) );
           
           __parser->Parse();
           __parseDone = true;
+          __errors += __parser->errors();
         } catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
           __errors.addException( e.getContent(), file );
@@ -73,7 +77,8 @@ namespace gum {
       INLINE
       void
       SkoolReader::readString ( const std::string & string ) {
-        if ( ! __parseDone ) try {
+      // errors += parser.errors
+        try {
           Scanner s ( (unsigned char*) string.c_str(), (int) ( string.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
@@ -81,6 +86,7 @@ namespace gum {
           
           __parser->Parse();
           __parseDone = true;
+          __errors += __parser->errors();
         } catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
           __errors.addException( e.getContent(), "" );
@@ -105,67 +111,57 @@ namespace gum {
 /// publishing Errors API
       INLINE
       unsigned int SkoolReader::errLine ( unsigned int i ) const {
-        if ( __parseDone ) return __parser->errors().line ( i );
-        else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
+        return __errors.line(i);
       }
 
       INLINE
       unsigned int SkoolReader::errCol ( unsigned int i ) const {
-        if ( __parseDone ) return __parser->errors().col ( i );
-        else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
+        return __errors.col(i);
       }
 
       INLINE
       std::wstring SkoolReader::errFilename ( unsigned int i ) const {
-        if ( __parseDone ) return __parser->errors().filename ( i );
-        else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
+        return __errors.filename(i);
       }
 
       INLINE
       bool SkoolReader::errIsError ( unsigned int i ) const {
-        if ( __parseDone ) return __parser->errors().is_error ( i );
-        else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
+        return __errors.is_error(i);
       }
 
       INLINE
       std::string SkoolReader::errMsg ( unsigned int i ) const {
-        if ( __parseDone ) return std::string ( narrow ( __parser->errors().msg ( i ) ) );
-        else GUM_ERROR ( OperationNotAllowed, "Skool file not parsed yet" );
+        return gum::narrow(__errors.msg(i));
       }
 
       INLINE
       void SkoolReader::showElegantErrors() const {
-        if ( __parseDone ) __parser->errors().showElegantErrors();
-        else return;
+        __errors.showElegantErrors();
       }
 
       INLINE
       void SkoolReader::showElegantErrorsAndWarnings() const {
-        if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
-        else return;
+        __errors.showElegantErrorsAndWarnings();
       }
 
       INLINE
       void SkoolReader::showErrorCounts() const {
-        if ( __parseDone ) __parser->errors().showSyntheticResults();
-        else return;
+        __errors.showSyntheticResults();
       }
 
       INLINE
       Size  SkoolReader::errors() const {
-        return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().error_count;
+        return __errors.error_count;
       }
 
       INLINE
       Size  SkoolReader::warnings() const {
-        return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
+        return __errors.warning_count;
       }
 
       INLINE
-      const ErrorsContainer & SkoolReader::getErrorsContainer() const
-      {
-        if ( __parseDone ) return __parser->errors();
-        else return __errors;
+      const ErrorsContainer & SkoolReader::getErrorsContainer() const {
+        return __errors;
       }
 /// @}
 
