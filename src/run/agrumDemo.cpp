@@ -23,33 +23,32 @@
 #define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/DSL/DSLReader.h>
+#include <agrum/BN/io/net/netReader.h>
+#include <agrum/BN/io/BIF/BIFWriter.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
-
-int main ( void ) {
+int main( void ) {
   try {
     gum::BayesNet<float> bn;
-    gum::DSLReader<float> reader ( &bn, "/home/phw/Documents/research/LingChunKong/20101109/J0_GreedyBDeu.dsl" );
+    gum::NetReader<float> reader( &bn, GET_PATH_STR( test3.net ) );
 
     if ( ! reader.proceed() ) {
-      reader.showElegantErrorsAndWarnings();      
+      reader.showElegantErrorsAndWarnings();
       reader.showErrorCounts();
       return false;
     } else {
-      GUM_TRACE ( bn );
+      gum::BIFWriter<float> w;
+      w.write(std::cout,bn);
       return true;
     }
-    
+
 
   } catch ( gum::IOError& e ) {
-    GUM_SHOWERROR ( e );
+    GUM_SHOWERROR( e );
   }
 
   gum::__atexit();
 }
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

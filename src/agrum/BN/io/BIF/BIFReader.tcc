@@ -86,7 +86,7 @@ namespace gum {
   template<typename T_DATA> INLINE
   void BIFReader<T_DATA>::trace( bool b ) {
     __traceScanning=b;
-    __scanner->setTrace( b );
+    scanner().setTrace( b );
   }
 
   template<typename T_DATA>

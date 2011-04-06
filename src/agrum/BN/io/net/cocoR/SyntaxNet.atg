@@ -1,0 +1,272 @@
+
+#include <agrum/core/cast_unicode.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFactory.h>
+
+#undef TRY
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
+
+COMPILER Net
+
+gum::AbstractBayesNetFactory* __factory;
+
+void setFactory(gum::AbstractBayesNetFactory* f) {
+  __factory=f;
+}
+
+gum::AbstractBayesNetFactory& factory(void) {
+  if (__factory) return *__factory;
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
+}
+
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
+
+void Warning(std::string s) {
+  Warning(widen("Warning : "+s).c_str());
+}
+
+void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var, int res) {
+  if ((int) v.size()<res)
+    Warning("Not enough data in probability assignation for node "+var);
+  if ((int) v.size()>res)
+    Warning("Too many data in probability assignation for node "+var);
+}
+
+
+
+//=====================
+CHARACTERS
+  letter = 'A'..'Z' + 'a'..'z'+ '_' .
+  odd_letter = letter - 'e' - 'E'.
+  nextletter = letter + '.' .
+  digit  = '0'..'9'.
+
+  eol = '\n'.
+  inString   = ANY - '"'. /* set of all easy characters within a string */
+  nocomma = ANY - ';'.
+
+//=====================
+TOKENS
+  ident  =   ( letter {nextletter | digit} )
+            |
+            ( digit {digit} odd_letter {nextletter | digit} ).
+
+  integer = [ "+" | "-" ] digit { digit }.              /* integer part */
+
+  number = (
+            [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
+            [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
+           |
+            [ "+" | "-" ] digit { digit }                 /* integer part */
+            ( "E" | "e" ) [ "+" | "-" ] digit { digit }   /* mandatory exponent part */
+            )
+.
+
+  string = '"' {inString } '"'.
+
+//=====================
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO eol
+COMMENTS FROM "%" TO eol
+
+IGNORE '\r' + eol + '\t'
+
+//=====================
+PRODUCTIONS
+
+//==============
+STRING<std::string& str> = string (. str=narrow(t->val); .).
+
+//==============
+IDENT<std::string& name> = ident  (. name=narrow(t->val); .).
+
+//==============
+ELT_LIST<std::string& val> =
+    (string | number | integer | ident)  (.val=narrow(t->val); .)
+.
+
+//==============
+PURE_LIST<.std::vector<std::string>& vals .> = (. std::string val;vals.clear(); .)
+  ELT_LIST<val> (. vals.push_back(val); .)
+  {
+  ELT_LIST<val> (. vals.push_back(val); .)
+  }
+.
+
+//==============
+LIST<.std::vector<std::string>& vals .> =
+  '('
+  PURE_LIST<vals>
+  ')'
+.
+
+//==============
+Net = 	(.
+           	 	factory().startNetworkDeclaration();
+          	.)
+  "net"
+  			(.
+            std::string prop,val;
+            std::vector<std::string> vals;
+      .)
+  '{'
+			{
+      IDENT<prop>
+        '='
+          {
+            IDENT<val>  (. factory().addNetworkProperty(prop,val); .)
+          |
+            STRING<val> (. factory().addNetworkProperty(prop,val); .)
+          |
+          LIST<vals> (.
+              std::string merge;
+              merge="(";
+              for(Size i=0;i<vals.size();i++) {
+                if (i>0) merge+=",";
+                merge+=vals[i];
+              }
+              merge+=')';
+              factory().addNetworkProperty(prop,merge);
+          .)
+          }
+        ';'
+      }
+	'}' (.  factory().endNetworkDeclaration(); .)
+  {NODE}
+  {POTENTIAL}
+.
+
+//==============
+NODE =	(.
+			std::string var;
+		.)
+
+	"node" IDENT<var> (.
+      string prop;
+      string val;
+      std::vector<std::string> vals;
+      bool labels_done=false;;
+
+      TRY( factory().startVariableDeclaration());
+      TRY( factory().variableName(var));
+      .)
+	'{'
+      {
+      IDENT<prop>
+        '='
+          {
+            IDENT<val>
+          |
+            STRING<val>
+          |
+          LIST<vals> (.
+              if (prop=="states") {
+                if (labels_done) SemErr("Several labels lists for "+var);
+                labels_done=true;
+                for(Size  i=0;i<vals.size();i++) {
+                  TRY(factory().addModality(vals[i]));
+                }
+              }
+          .)
+          }
+        ';'
+      }
+	'}' (.TRY(factory().endVariableDeclaration()); .)
+.
+
+//==============
+PARENTS_DEFINITION<.std::string& name,std::vector<std::string>& var_seq.> = (.std::vector<std::string> parents;.)
+  '('
+  IDENT<name> (.
+    TRY(factory().startParentsDeclaration(name));
+     var_seq.clear();
+  .)
+  [
+    '|'
+    [
+    PURE_LIST<parents> (.
+        for (Size i=parents.size();i>=1;--i){
+            TRY(factory().variableId(parents[i-1]));
+            TRY(factory().addParent(parents[i-1]));
+        }
+
+        for(Size i=0;i<parents.size();i++) {
+          var_seq.push_back(parents[i]);
+        }
+    .)
+    ]
+  ]
+  ')' (.
+        var_seq.push_back(name);
+        TRY(factory().endParentsDeclaration());
+      .)
+.
+
+
+//==============
+FLOAT<float& val> =
+  number  (. swscanf(t->val, L"%f", &val); .)
+  |
+  integer (. swscanf(t->val, L"%f", &val); .)
+.
+
+//==============
+FLOAT_LIST<. std::vector<float>& v .>  (. float value; .) =
+  FLOAT<value>                (. v.push_back(value); .)
+  {
+  FLOAT<value>      (. v.push_back(value); .)
+  }
+.
+
+//==============
+FLOAT_NESTED_LIST<. std::vector<float>& v .>=
+  '('
+    (
+    FLOAT_NESTED_LIST<v>
+    { FLOAT_NESTED_LIST<v> }
+    |
+    FLOAT_LIST<v>
+    )
+    ')'
+.
+
+RAW_DATA<. std::string& variable,std::vector<std::string>& var_seq .> = (. std::vector<float> probas;.)
+"data" '='
+  FLOAT_NESTED_LIST<probas> (.
+    TRY(factory().startRawProbabilityDeclaration(variable));
+        gum::Size s=(gum::Size)0;
+        TRY(s=factory().cptDomainSize(factory().variableId(variable)));
+        if ((Size)probas.size()<(Size)s) {
+          Warning("Not enough data for cpt of node "+variable);
+        }
+        if ((Size)probas.size()>(Size)s) {
+          Warning("Too many data for cpt of node "+variable);
+        }
+        TRY(factory().rawConditionalTable(var_seq,probas));
+        TRY(factory().endRawProbabilityDeclaration());
+  .)
+  ';'
+.
+
+EXPERIENCE = (.std::vector<std::string> vals;std::string val; .)
+  "experience" '=' ( LIST<vals>  | ELT_LIST<val>)';'
+.
+
+//==============
+POTENTIAL  (.
+  std::string variable;
+  std::vector<float> probas;
+  std::vector<std::string> var_seq;
+.) =
+  "potential"
+  PARENTS_DEFINITION<variable,var_seq>
+  '{'
+   RAW_DATA<variable,var_seq>
+  [EXPERIENCE]
+  '}'
+.
+
+END Net.

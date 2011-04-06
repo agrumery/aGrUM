@@ -4,6 +4,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
+#undef TRY
 #define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
 COMPILER DSL
 
@@ -82,7 +83,7 @@ DSL = 	(.
            	 	std::string name_of_network;
            	 	factory().startNetworkDeclaration();
           	.)
-  "net" (IDENT<name_of_network> | STRING<name_of_network>) 
+  "net" (IDENT<name_of_network> | STRING<name_of_network>)
   			(. 	factory().addNetworkProperty("name", name_of_network); .)
   '{'
 			(. 	factory().endNetworkDeclaration(); .)
@@ -111,21 +112,21 @@ NODE =	(.
 			std::vector<std::string> parents;
 			int nbrMod = 0;
 		.)
-	
-	"node" IDENT<var> 
+
+	"node" IDENT<var>
 	'{'
 	"TYPE" ident ';'
 
 	HEADER
 
-	[SCREEN_PART]  
-	[USER_PROPERTIES_PART] 
-	[DOCUMENTATION_PART] 
-					
+	[SCREEN_PART]
+	[USER_PROPERTIES_PART]
+	[DOCUMENTATION_PART]
+
 	PARENTS<parents>
-					
+
 	VARIABLE_DEFINITION<nbrMod, var,parents>
-		
+
 	[EXTRA_DEFINITION_PART]
 	'}'
 	';'
@@ -137,7 +138,7 @@ BLOC_PART = '{' { ANY | BLOC_PART } '}' ';'.
 
 //============== IGNORED DLS PARTS (for now ?) ===========
 SCREEN_PART = "SCREEN" BLOC_PART.
-USER_PROPERTIES_PART = "USER_PROPERTIES" BLOC_PART. 
+USER_PROPERTIES_PART = "USER_PROPERTIES" BLOC_PART.
 DOCUMENTATION_PART = "DOCUMENTATION" BLOC_PART.
 EXTRA_DEFINITION_PART = "EXTRA_DEFINITION" BLOC_PART.
 OBSERVATION_COST_PART = "OBSERVATION_COST" BLOC_PART.
@@ -146,7 +147,7 @@ CREATION_PART = "CREATION" BLOC_PART.
 WINDOWPOSITION_PART = "WINDOWPOSITION" BLOC_PART.
 
 //==============
-HEADER = (. std::string content; .)	
+HEADER = (. std::string content; .)
 	"HEADER" '{'
 		"ID" ident ';'
 		"NAME" string ';'
@@ -157,7 +158,7 @@ HEADER = (. std::string content; .)
 PARENTS<. std::vector<std::string>& parents .> =
 	"PARENTS" '('
 	[ PARENTS_LIST<parents> ]
-	')' ';' 
+	')' ';'
 .
 
 //==============
@@ -165,9 +166,9 @@ PARENTS_LIST<. std::vector<std::string>& parents .> =
 	(.
 		std::string parent;
 	.)
-	
+
 	IDENT<parent> 		(.	parents.push_back(parent);	.)
-		
+
 	{ ',' IDENT<parent> (. parents.push_back(parent); .) }
 .
 
@@ -175,13 +176,13 @@ PARENTS_LIST<. std::vector<std::string>& parents .> =
 VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::string>& parents .> =
 	"DEFINITION" '{'
 		"NAMESTATES" '('
-									(. 
+									(.
 										TRY(factory().startVariableDeclaration());
 										TRY(factory().variableName(var));
 									.)
 
 			MODALITY_LIST<nbrMod>
-		')' ';' (. 	
+		')' ';' (.
 			TRY(factory().endVariableDeclaration());
 			gum::Size i;
 			TRY(factory().startParentsDeclaration(var));
@@ -190,11 +191,11 @@ VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::stri
 					TRY(factory().variableId(parents[i]));
 					TRY(factory().addParent(parents[i]));
 			}
-		
+
 			TRY(factory().endParentsDeclaration());
 		.)
 
-		PROBA<var, parents>		
+		PROBA<var, parents>
 					(.
 						int nbr=0;
 						TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
@@ -206,12 +207,12 @@ VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::stri
 .
 
 //==============
-MODALITY_LIST<int& nbrMod> = 
-								(. std::string label; .)	
+MODALITY_LIST<int& nbrMod> =
+								(. std::string label; .)
 	IDENT_OR_INTEGER<label>
-  							 	(. 
+  							 	(.
 									if ((label=="") && (nbrMod == 0)) SemErr("Not enough modalities for a discrete variable");
-  									TRY(factory().addModality(label)); 
+  									TRY(factory().addModality(label));
   									nbrMod++;
   								.)
 	[ "," MODALITY_LIST<nbrMod> ]
@@ -229,29 +230,29 @@ PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 
 //==============
 RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
-	(. 
+	(.
 		std::vector<float> v;
 		std::vector<float> prob;
 		gum::Size i,j, k;
 		gum::Size res, max, nbLabels;
 
 		res = factory().varInBN(factory().variableId(var)).domainSize();
-		
+
 		for(i = 0; i < parents.size(); i++){
 			res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
 		}
-		
+
 		//v.resize(res);
 		//prob	.resize(res);
 
 	.)
 
 	FLOAT_LIST<v>
-                            
-	(. 
+
+	(.
 		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
 		max = res / nbLabels;
-		
+
 		j = 0;
 		k = 0;
 		for(i = 0; i < res; i++){
@@ -264,7 +265,7 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 				j++;
 			}
 		}
-		
+
 		TRY(factory().startRawProbabilityDeclaration(var));
         gum::Size s=(gum::Size)0;
         TRY(s=factory().cptDomainSize(factory().variableId(var)));
@@ -272,14 +273,13 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 					Warning("Not enough data for cpt of node "+var);
 				}
         if ((int)prob.size()>(int)s) {
-					std::cerr<<var<<" : size="<<prob.size()<<" instead of "<<s<<std::endl;
 					Warning("Too many data for cpt of node "+var);
 				}
         TRY(factory().rawConditionalTable(prob));
         TRY(factory().endRawProbabilityDeclaration());
 
 	.)
-	
+
 .
 
 //==============

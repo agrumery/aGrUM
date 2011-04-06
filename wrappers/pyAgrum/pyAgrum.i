@@ -203,6 +203,8 @@ def loadBN(s):
     bn.loadBIF(s)
   elif extension=="DSL":
     bn.loadDSL(s)
+  elif extension=="NET":
+    bn.loadNET(s)
   else:
     raise Exception("extension "+s.split('.')[-1]+" not used")
 
@@ -277,7 +279,9 @@ def ids(self):
             } else {
                 return true;
             }
-        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        } catch (gum::IOError& e) {
+          GUM_SHOWERROR(e);
+        }
         return false;
     }
 
@@ -326,8 +330,46 @@ def ids(self):
         return false;
     }
 
-}
+    bool loadNET(std::string name, PyObject *l=(PyObject*)0)
+    {
+        std::vector<PythonLoadListener> py_listener(1);
+        try {
+            gum::NetReader<T_DATA> reader(self,name);
 
+            if (l) {
+              int l_size = 1;
+              PyObject *item;
+
+              if(PySequence_Check(l)) {
+                l_size = PySequence_Size(l);
+                py_listener.resize(l_size);
+                for(int i=0 ; i < l_size ; i++) {
+                  item = PySequence_GetItem(l, i);
+                  if(! py_listener[i].setPythonListener(item))
+                    return false;
+                }
+              } else {
+                if(! py_listener[0].setPythonListener(l))
+                  return false;
+              }
+
+              for(int i=0 ; i<l_size ; i++) {
+                GUM_CONNECT(reader.scanner(), onLoad,
+                            py_listener[i], PythonLoadListener::whenLoading);
+              }
+            }
+
+            if (! reader.proceed()) {
+                reader.showElegantErrorsAndWarnings();
+                reader.showErrorCounts();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        return false;
+    }
+}
 
 %feature("shadow") gum::MultiDimDecorator::variablesSequence %{
 def variablesSequence(self):

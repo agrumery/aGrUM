@@ -49,7 +49,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-namespace DSL {
+namespace net {
 
 
 
@@ -60,8 +60,7 @@ private:
 		_ident=1,
 		_integer=2,
 		_number=3,
-		_string=4,
-		_largestring=5
+		_string=4
 	};
 	int maxT;
 
@@ -121,32 +120,20 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 	void Warning(const wchar_t* msg);
 	const ErrorsContainer& errors() const;
 
-	void DSL();
-	void IDENT(std::string& name);
 	void STRING(std::string& str);
-	void HEADER_PART();
-	void CREATION_PART();
-	void NUM_SAMPLES();
-	void SCREEN_PART();
-	void WINDOWPOSITION_PART();
-	void BK_COLOR();
-	void USER_PROPERTIES_PART();
-	void DOCUMENTATION_PART();
-	void SHOW_AS();
+	void IDENT(std::string& name);
+	void ELT_LIST(std::string& val);
+	void PURE_LIST(std::vector<std::string>& vals );
+	void LIST(std::vector<std::string>& vals );
+	void Net();
 	void NODE();
-	void OBSERVATION_COST_PART();
-	void HEADER();
-	void PARENTS(std::vector<std::string>& parents );
-	void VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents );
-	void EXTRA_DEFINITION_PART();
-	void BLOC_PART();
-	void PARENTS_LIST(std::vector<std::string>& parents );
-	void MODALITY_LIST(int& nbrMod);
-	void PROBA(const std::string& var, const std::vector<std::string>& parents );
-	void IDENT_OR_INTEGER(std::string& name);
-	void RAW_PROBA(const std::string& var, const std::vector<std::string>& parents );
-	void FLOAT_LIST(std::vector<float>& v );
+	void POTENTIAL();
+	void PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_seq);
 	void FLOAT(float& val);
+	void FLOAT_LIST(std::vector<float>& v );
+	void FLOAT_NESTED_LIST(std::vector<float>& v );
+	void RAW_DATA(std::string& variable,std::vector<std::string>& var_seq );
+	void EXPERIENCE();
 
 	void Parse();
 

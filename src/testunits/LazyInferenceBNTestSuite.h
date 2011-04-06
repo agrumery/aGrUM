@@ -84,7 +84,7 @@ namespace gum {
         }
 
         // Testing when there is no evidence
-        void testCreationAndInference() {
+        void tsetCreationAndInference() {
           fill( *bn );
           // Testing the inference
           gum::LazyPropagation<float>* inf = 0;
@@ -108,7 +108,7 @@ namespace gum {
           TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
         }
 
-        void testMarginalWithEvidence() {
+        void tsetMarginalWithEvidence() {
           fill( *bn );
           gum::List< const gum::Potential<float>* > e_list;
           e_list.insert( e_i1 );
@@ -127,7 +127,7 @@ namespace gum {
         }
 
         // Testing when there is no evidence
-        void testJoint() {
+        void tsetJoint() {
           fill( *bn );
           // Testing the inference
           gum::LazyPropagation<float> inf( *bn );
@@ -148,12 +148,12 @@ namespace gum {
           gum::LazyPropagation<float> inf( *bn );
           inf.makeInference();
 
-          TS_GUM_ASSERT_THROWS_NOTHING( inf.H(( gum::NodeId ) 2 ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 2) );
-          TS_GUM_ASSERT_THROWS_NOTHING (inf.VI ( (gum::NodeId) 2, (gum::NodeId) 4));
-          TS_ASSERT_THROWS( inf.I(( gum::NodeId ) 0, ( gum::NodeId ) 4) ,gum::OperationNotAllowed);
-          
+           TS_GUM_ASSERT_THROWS_NOTHING( inf.H(( gum::NodeId ) 2 ) );
+           TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
+           TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 2 ) );
+           TS_GUM_ASSERT_THROWS_NOTHING( inf.VI(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
+           TS_ASSERT_THROWS( inf.I(( gum::NodeId ) 0, ( gum::NodeId ) 4 ) ,gum::OperationNotAllowed );
+
           //@TODO : test computations and not only good behaviour
         }
 

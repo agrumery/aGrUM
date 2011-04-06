@@ -1132,8 +1132,14 @@ namespace gum {
   template <typename T_DATA> INLINE
   Potential<T_DATA>* LazyPropagation<T_DATA>::joint( const NodeSet& nodes ) {
     Potential<T_DATA> *res = new Potential<T_DATA>();
-    __aPosterioriJoint( nodes, *res );
-    res->normalize();
+
+    try {
+      __aPosterioriJoint( nodes, *res );
+      res->normalize();
+    } catch ( OperationNotAllowed& e ) {
+      delete( res );
+      throw e;
+    }
 
     return res;
   }

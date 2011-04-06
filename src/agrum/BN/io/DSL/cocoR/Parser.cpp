@@ -283,7 +283,7 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 							TRY(factory().variableId(parents[i]));
 							TRY(factory().addParent(parents[i]));
 					}
-				
+		
 					TRY(factory().endParentsDeclaration());
 				
 		PROBA(var, parents);
@@ -330,7 +330,7 @@ void Parser::MODALITY_LIST(int& nbrMod) {
 		std::string label; 
 		IDENT_OR_INTEGER(label);
 		if ((label=="") && (nbrMod == 0)) SemErr("Not enough modalities for a discrete variable");
-			TRY(factory().addModality(label)); 
+			TRY(factory().addModality(label));
 			nbrMod++;
 		
 		if (la->kind == 28) {
@@ -363,11 +363,11 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 		gum::Size res, max, nbLabels;
 		
 				res = factory().varInBN(factory().variableId(var)).domainSize();
-				
+		
 				for(i = 0; i < parents.size(); i++){
 					res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
 				}
-				
+		
 				//v.resize(res);
 				//prob	.resize(res);
 		
@@ -376,31 +376,30 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
 		max = res / nbLabels;
 		
-		j = 0;
-		k = 0;
-		for(i = 0; i < res; i++){
-			if(i%max == 0){
-				prob.push_back(v[k]);
-				k++; j=1;
-			}
-			else{
-				prob.push_back(v[j*nbLabels + k-1]);
-				j++;
-			}
-		}
+				j = 0;
+				k = 0;
+				for(i = 0; i < res; i++){
+					if(i%max == 0){
+						prob.push_back(v[k]);
+						k++; j=1;
+					}
+					else{
+						prob.push_back(v[j*nbLabels + k-1]);
+						j++;
+					}
+				}
 		
-		TRY(factory().startRawProbabilityDeclaration(var));
-		      gum::Size s=(gum::Size)0;
-		      TRY(s=factory().cptDomainSize(factory().variableId(var)));
-		      if ((int)prob.size()<(int)s) {
-					Warning("Not enough data for cpt of node "+var);
-				}
-		      if ((int)prob.size()>(int)s) {
-					std::cerr<<var<<" : size="<<prob.size()<<" instead of "<<s<<std::endl;
-					Warning("Too many data for cpt of node "+var);
-				}
-		      TRY(factory().rawConditionalTable(prob));
-		      TRY(factory().endRawProbabilityDeclaration());
+				TRY(factory().startRawProbabilityDeclaration(var));
+		        gum::Size s=(gum::Size)0;
+		        TRY(s=factory().cptDomainSize(factory().variableId(var)));
+		        if ((int)prob.size()<(int)s) {
+							Warning("Not enough data for cpt of node "+var);
+						}
+		        if ((int)prob.size()>(int)s) {
+							Warning("Too many data for cpt of node "+var);
+						}
+		        TRY(factory().rawConditionalTable(prob));
+		        TRY(factory().endRawProbabilityDeclaration());
 		
 			
 }

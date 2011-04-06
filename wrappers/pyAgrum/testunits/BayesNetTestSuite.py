@@ -209,6 +209,14 @@ class TestBIF(BayesNetTestCase):
         self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
+    def testSimpleNETLoad(self):
+        self.bufferlisten = ""
+        self.bufferecoute = ""
+        bn = BayesNet()
+        res = bn.loadDSL('../../../src/testunits/ressources/test1.net', self.listen)
+        self.assertEqual(self.bufferlisten, "##########")
+        self.assertEqual(self.bufferecoute, "")
+        self.assertTrue(res)
 
     def testSimpleDSLLoad(self):
         self.bufferlisten = ""
