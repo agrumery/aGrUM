@@ -13,11 +13,13 @@ public:
 
 	bool isFullScreen() const;
 	bool isDocksVisible() const;
+	bool isDockVisible() const;
 	bool isStatusBarVisible() const;
 	bool isToolBarVisible() const;
 	bool isProjectExploratorVisible() const;
 	bool isSearchDockVisible() const;
 	bool isBuildDockVisible() const;
+	bool isExecuteDockVisible() const;
 
 	bool isLineNumbersVisible() const;
 	bool isBookmarksVisible() const;
@@ -28,11 +30,13 @@ public:
 public slots:
 	void setFullScreen(bool checked);
 	void setDocksVisibility(bool visible);
+	void setDockVisibility(bool visible);
 	void setStatusBarVisibility(bool visible);
 	void setToolBarVisibility(bool visible);
 	void setProjectExploratorVisibility(bool visible);
 	void setSearchDockVisibility(bool visible);
 	void setBuildDockVisibility(bool visible);
+	void setExecuteDockVisibility(bool visible);
 
 	void setLineNumbersVisibility(bool checked);
 	void setBookmarksVisibility(bool checked);

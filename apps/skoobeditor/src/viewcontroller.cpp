@@ -17,12 +17,15 @@ struct ViewController::PrivateData {
 	Qt::WindowStates oldWindowStates;
 	QAction * fullScreenAction;
 	QAction * docksVisibilityAction;
+	QAction * dockVisibilityAction;
 
 	QAction * statusBarVisibility;
 	QAction * toolBarVisibility;
 	QAction * projectExploratorVisibility;
 	QAction * searchDockVisibility;
 	QAction * buildDockVisibility;
+	QAction * executeDockVisibility;
+	QActionGroup * docksGroup;
 
 	QAction * lineNumbersVisibility;
 	QAction * bookmarksVisibility;
@@ -39,12 +42,19 @@ ViewController::ViewController(MainWindow * mw, QObject *parent) :
 {
 	d->fullScreenAction = mw->ui->actionFullScreen;
 	d->docksVisibilityAction = mw->ui->actionDocksVisibility;
+	d->dockVisibilityAction = mw->ui->actionDockVisibility;
 
 	d->statusBarVisibility = mw->ui->actionStatusBarVisibility;
 	d->toolBarVisibility = mw->ui->actionToolBarVisibility;
 	d->projectExploratorVisibility = mw->ui->actionProjectExploratorVisibility;
 	d->searchDockVisibility = mw->ui->actionSearchDockVisibility;
 	d->buildDockVisibility = mw->ui->actionBuildDockVisibility;
+	d->executeDockVisibility = mw->ui->actionExecuteDockVisibility;
+	d->docksGroup = new QActionGroup(this);
+	d->docksGroup->addAction(d->searchDockVisibility);
+	d->docksGroup->addAction(d->buildDockVisibility);
+	d->docksGroup->addAction(d->executeDockVisibility);
+	d->docksGroup->setExclusive(true);
 
 	d->lineNumbersVisibility = mw->ui->actionLineNumbersVisibility;
 	d->bookmarksVisibility = mw->ui->actionBookmarksVisibility;
@@ -56,10 +66,12 @@ ViewController::ViewController(MainWindow * mw, QObject *parent) :
 
 	connect( d->fullScreenAction, SIGNAL(toggled(bool)), this, SLOT(setFullScreen(bool)) );
 	connect( d->docksVisibilityAction, SIGNAL(toggled(bool)), this, SLOT(setDocksVisibility(bool)) );
+	connect( d->dockVisibilityAction, SIGNAL(toggled(bool)), mw->ui->dockStack, SLOT(setVisible(bool)) );
+	connect( d->searchDockVisibility, SIGNAL(toggled(bool)), this, SLOT(setSearchDockVisibility(bool)) );
+	connect( d->buildDockVisibility, SIGNAL(toggled(bool)), this, SLOT(setBuildDockVisibility(bool)) );
+	connect( d->executeDockVisibility, SIGNAL(toggled(bool)), this, SLOT(setExecuteDockVisibility(bool)) );
 
 	connect( d->projectExploratorVisibility, SIGNAL(toggled(bool)), mw->ui->projectExplorator, SLOT(setVisible(bool)) );
-	connect( d->searchDockVisibility, SIGNAL(toggled(bool)), mw->ui->advanceSearchResults, SLOT(setVisible(bool)) );
-	connect( d->buildDockVisibility, SIGNAL(toggled(bool)), mw->ui->buildDock, SLOT(setVisible(bool)) );
 
 	connect( d->lineNumbersVisibility, SIGNAL(toggled(bool)), this, SLOT(setLineNumbersVisibility(bool)) );
 	connect( d->bookmarksVisibility, SIGNAL(toggled(bool)), this, SLOT(setBookmarksVisibility(bool)) );
@@ -85,6 +97,11 @@ bool ViewController::isDocksVisible() const
 	return d->docksVisibilityAction->isChecked();
 }
 
+bool ViewController::isDockVisible() const
+{
+	return d->dockVisibilityAction->isChecked();
+}
+
 bool ViewController::isStatusBarVisible() const
 {
 	return d->statusBarVisibility->isChecked();
@@ -102,12 +119,17 @@ bool ViewController::isProjectExploratorVisible() const
 
 bool ViewController::isSearchDockVisible() const
 {
-	return d->searchDockVisibility->isChecked();
+	return isDocksVisible() && d->docksGroup->checkedAction() == d->searchDockVisibility;
 }
 
 bool ViewController::isBuildDockVisible() const
 {
-	return d->buildDockVisibility->isChecked();
+	return isDocksVisible() && d->docksGroup->checkedAction() == d->buildDockVisibility;
+}
+
+bool ViewController::isExecuteDockVisible() const
+{
+	return isDocksVisible() && d->docksGroup->checkedAction() == d->executeDockVisibility;
 }
 
 bool ViewController::isLineNumbersVisible() const
@@ -160,6 +182,11 @@ void ViewController::setDocksVisibility(bool visible)
 	setProjectExploratorVisibility(visible);
 }
 
+void ViewController::setDockVisibility(bool visible)
+{
+	d->dockVisibilityAction->setChecked(visible);
+}
+
 void ViewController::setStatusBarVisibility(bool visible)
 {
 	d->statusBarVisibility->setChecked(visible);
@@ -178,11 +205,23 @@ void ViewController::setProjectExploratorVisibility(bool visible)
 void ViewController::setSearchDockVisibility(bool visible)
 {
 	d->searchDockVisibility->setChecked(visible);
+	mw->ui->dockStack->setCurrentWidget( mw->ui->pageSearch );
+	setDockVisibility(visible);
+
 }
 
 void ViewController::setBuildDockVisibility(bool visible)
 {
 	d->buildDockVisibility->setChecked(visible);
+	mw->ui->dockStack->setCurrentWidget( mw->ui->pageBuild );
+	setDockVisibility(visible);
+}
+
+void ViewController::setExecuteDockVisibility(bool visible)
+{
+	d->executeDockVisibility->setChecked(visible);
+	mw->ui->dockStack->setCurrentWidget( mw->ui->pageExecute );
+	setDockVisibility(visible);
 }
 
 void ViewController::setLineNumbersVisibility( bool visible )

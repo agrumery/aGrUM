@@ -52,5 +52,5 @@ const char * QsciLexerSkoor::keywords (int set) const
 	if (set != 1)
 		return "";
 
-	return "? engine grd_engine import package query request unobserve";
+	return "? as default engine grd_engine import package query request unobserve";
 }

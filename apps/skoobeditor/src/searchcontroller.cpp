@@ -53,7 +53,7 @@ SearchController::SearchController(MainWindow * mw, QObject *parent) :
 		d(new PrivateData)
 {
 	d->tab = mw->ui->tabWidget;
-	d->sr = mw->ui->advanceSearchResults;
+	d->sr = mw->ui->searchDock;
 	d->qse = mw->ui->quickSearchEdit;
 	d->qre = mw->ui->quickReplaceEdit;
 	d->qsw = mw->ui->quickSearchWidget;
@@ -96,7 +96,7 @@ SearchController::SearchController(MainWindow * mw, QObject *parent) :
 	connect( mw->ui->actionSwitchMarker, SIGNAL(triggered()), this, SLOT(switchMarker()) );
 	connect( mw->ui->actionFindNextMarker, SIGNAL(triggered()), this, SLOT(findNextMarker()) );
 	connect( mw->ui->actionFindPreviousMarker, SIGNAL(triggered()), this, SLOT(findPreviousMarker()) );
-	connect( mw->ui->actionHideDocks, SIGNAL(triggered()), this, SLOT(hideQuickWidgets()) );
+	connect( mw->ui->actionDockVisibility, SIGNAL(triggered()), this, SLOT(hideQuickWidgets()) );
 
 	connect( mw->ui->searchOptionsButton, SIGNAL(clicked()), this, SLOT(onSearchOptionButtonClicked()) );
 	connect( d->caseSensitiveOptionAction, SIGNAL(toggled(bool)), this, SLOT(onCaseSensitiveOptionChecked(bool)) );

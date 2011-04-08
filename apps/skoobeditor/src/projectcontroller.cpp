@@ -222,8 +222,8 @@ void ProjectController::newProject()
 	}
 
 	currentProj = new Project(dial.projectDir(),this);
-	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onFileRenamed(QString,QString,QString)) );
-	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onFileMoved(QString,QString)) );
+	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onProjectFileRenamed(QString,QString,QString)) );
+	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onProjectFileMoved(QString,QString)) );
 
 	d->projectProperties = new ProjectProperties(currentProj, mw);
 	mw->ui->actionProjectProperties->setEnabled(true);
@@ -379,8 +379,8 @@ void ProjectController::openProject(QString projectpath)
 		closeProject();
 
 	currentProj = new Project(qDir.absolutePath(),this);
-	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onFileRenamed(QString,QString,QString)) );
-	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onFileMoved(QString,QString)) );
+	connect( currentProj, SIGNAL(fileRenamed(QString,QString,QString)), this, SLOT(onProjectFileRenamed(QString,QString,QString)) );
+	connect( currentProj, SIGNAL(fileMoved(QString,QString)), this, SLOT(onProjectFileMoved(QString,QString)) );
 
 	d->projectProperties = new ProjectProperties(currentProj, mw);
 	mw->ui->actionProjectProperties->setEnabled(true);
@@ -470,116 +470,99 @@ void ProjectController::closeProject()
 */
 void ProjectController::refactor( const QString & fromFilePath, const QString & toFilePath )
 {
-	qWarning() << "Project::refactor() was called, but is not yet implemented.\nFor moment, this method do nothing.";
+	/*! ***************   RÉFLEXIONS   ***************
+	  Les imports dans les autres fichiers peuvent être
+	  relatifs (ex : dans le même répertoire juste le
+	  nom de la classe).
+
+	  Peut être RELATIFS, que si c'est le MÊME package
+	  ou un SUR dossier.
+	  Sinon forcément ABSOLU par rapport au projet.
+
+	  CLASSPATHS ? Il n'y a rien à changer dans le
+	  classPath car si on fait appelle à lui c'est
+	  qu'il ne fait pas appelle à nous.
+
+	  WARNING : "import dir.*;" pas géré.
+	  Pas de changement dans ces fichiers.
+
+	  WARNING : Suppose qu'un fichier n'importe pas
+	  plusieurs fichiers ayant le même nom.
+
+	  ************************************************/
+
+	qWarning() << "Project::refactor() was called but is not yet implemented.\nFor moment, this method do nothing.";
 	return;
 
-// ############################### onFileRenamed ###############################
+	qDebug() << "\nin refactor();" << fromFilePath << toFilePath;
+
+	if ( fromFilePath == toFilePath || ! isOpenProject() )
+		return;
 
 	QFileInfo oldInfo(fromFilePath), newInfo(toFilePath);
 
-	if ( fromFilePath == toFilePath )
+	bool isDir = newInfo.isDir();
+	if ( isDir ) {
+		qWarning() << "Project::refactor() was called with directory, but is not yet implemented.\nFor moment, this method do nothing.";
 		return;
 
-	if ( newInfo.isDir() ) {
-		//// On fait comme si tous les fichiers enfants avait été bougé.
-		//foreach( QString file, childs ) {
-		//QFileInfo info(file);
-		//onFileMoved( oldPath + info.fileName(), info.filePath() )
-		//}
+		// If it's a directory,
+		// we move all its children recursively.
+		QModelIndex dirIndex = currentProj->index( toFilePath );
+
+		// Wait until dir is loaded. WARNING !!!!! with loop !!!!!!
+		QEventLoop loop(this);
+		connect( currentProj, SIGNAL(directoryLoaded(QString)), &loop, SLOT(quit()) );
+		if ( currentProj->hasChildren(dirIndex) && currentProj->rowCount(dirIndex) == 0 && currentProj->canFetchMore(dirIndex) ) {
+			currentProj->fetchMore(dirIndex);
+			loop.exec();
+		}
+
+		for ( int i = 0 ; i < currentProj->rowCount(dirIndex) ; i++ ) {
+			QFileInfo info(dirIndex.child(i,0).data(QFileSystemModel::FilePathRole).toString());
+			onProjectFileMoved(fromFilePath+"/"+info.fileName(), info.filePath());
+		}
 		return;
 	}
 
 	// Si l'extension est différente message
 	if (oldInfo.suffix() != newInfo.suffix()) {
-		QMessageBox::warning( mw, tr("Attention !"), tr("%1 a changé d'extension !").arg(oldInfo.filePath()) );
+		QMessageBox::warning( mw, tr("Attention !"), tr("%1 a changé d'extension !\nCe cas n'est pas pris en charge.").arg(oldInfo.filePath()) );
 		return;
 	}
 
-	QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath());
-	QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath());
-	oldPackage.replace("/",".");
-	newPackage.replace("/",".");
+	// On vérifie ce qui a changé
+	bool pathChanged = oldInfo.absolutePath() != newInfo.absolutePath();
+	bool nameChanged = oldInfo.baseName() != newInfo.baseName();
+	qDebug() << pathChanged << nameChanged;
 
-	foreach ( QString filename, currentProj->files() ) {
-		QsciScintillaExtended * sci = 0;
+	// Si le package a changé,
+	// on calcul les nouvelles lignes de package et import.
+	QString oldAbsImportLine, newAbsImportLine, newPackageLine;
+	{
+		QString oldPackage = currentProject()->rootDirectory().relativeFilePath(oldInfo.absolutePath()).replace("/","\\.");
+		if ( ! oldPackage.isEmpty() )
+			oldAbsImportLine = "import\\s+"+oldPackage+"\\."+oldInfo.baseName()+"\\s*;";
+		else
+			oldAbsImportLine = "import\\s+"+oldInfo.baseName()+"\\s*;";
+	}
 
-		if ( filename == newInfo.filePath() ) {
-			sci = mw->fc->fileToDocument( oldInfo.filePath() );
+	if ( pathChanged ) {
+		QString newPackage = currentProject()->rootDirectory().relativeFilePath(newInfo.absolutePath()).replace("/",".");
+		if ( ! newPackage.isEmpty() ) {
+			newPackageLine = "package "+newPackage+";";
+			newAbsImportLine = "import "+newPackage+"."+newInfo.baseName()+";";
 		} else
-			sci = mw->fc->fileToDocument( filename );
-
-		// If file is not open, we open it.
-		if ( sci == 0 ) {
-			// We open the file
-			QFile file(filename);
-
-			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-				continue;
-
-			// We charge the file,
-			sci = new QsciScintillaExtended(filename);
-			QString text(file.readAll());
-			file.close();
-			sci->setText(text);
-			sci->setModified(false);
-		}
-
-		if ( filename == newInfo.filePath() )
-			// We change his internal filename
-			sci->setFilename( newInfo.filePath() );
-
-		// Si oui on change le nom de la classe ou système dans le fichier
-		sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
-
-		// Si le document n'est pas un document ouvert,
-		if ( mw->ui->tabWidget->indexOf(sci) == -1 ) {
-			// We delete it
-			mw->fc->saveFile(sci);
-			sci->deleteLater();
-		}
+			newAbsImportLine = "import "+newInfo.baseName()+";";
 	}
 
-// ############################### onFileMoved #################################
+	qDebug() << oldAbsImportLine << newAbsImportLine << newPackageLine;
 
-	// On vérifie si le répertoire a changé
-	if ( oldInfo.absolutePath() == newInfo.absolutePath() )
-		return;
-
-	// If it's a directory,
-	// we move all its children recursively.
-	if ( newInfo.isDir() ) {
-		QModelIndex parent = currentProj->index( toFilePath );
-
-		// Wait until dir is loaded. WARNING !!!!! with loop !!!!!!
-		QEventLoop loop(this);
-		connect( currentProj, SIGNAL(directoryLoaded(QString)), &loop, SLOT(quit()) );
-		if ( currentProj->hasChildren(parent) && currentProj->rowCount(parent) == 0 && currentProj->canFetchMore(parent) ) {
-			currentProj->fetchMore(parent);
-			loop.exec();
-		}
-
-		for ( int i = 0 ; i < currentProj->rowCount(parent) ; i++ ) {
-			QFileInfo info(parent.child(i,0).data(QFileSystemModel::FilePathRole).toString());
-			onFileMoved(fromFilePath+"/"+info.fileName(), info.filePath());
-		}
-		return;
-	}
-
-	QString oldImportLine;
-	if ( ! oldPackage.isEmpty() )
-		oldImportLine = "import\\s+"+oldPackage+"\\."+oldInfo.baseName()+"\\s*;";
-	else
-		oldImportLine = "import\\s+"+oldInfo.baseName()+"\\s*;";
-
-	QString newPackageLine, newImportLine;
-	if ( ! newPackage.isEmpty() ) {
-		newPackageLine = "package "+newPackage+";";
-		newImportLine = "import "+newPackage+"."+newInfo.baseName()+";";
-	} else
-		newImportLine = "import "+newInfo.baseName()+";";
-
+	// Pour chaque fichier du projet
 	foreach ( QString filename, currentProj->files() ) {
+		qDebug() << "\tTreat" << filename;
 
+		// On ouvre le fichier
 		QsciScintillaExtended * sci = 0;
 		if ( filename == toFilePath )
 			sci = mw->fc->fileToDocument( fromFilePath );
@@ -587,15 +570,10 @@ void ProjectController::refactor( const QString & fromFilePath, const QString & 
 			qDebug() << "BUGGGGGGGGGGGGGGGGGGGG";
 		else
 			sci = mw->fc->fileToDocument( filename );
-
 		if ( sci == 0 ) {
-			// We open the file
 			QFile file(filename);
-
 			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 				continue;
-
-			// We charge the file,
 			sci = new QsciScintillaExtended(filename);
 			QString text(file.readAll());
 			file.close();
@@ -603,38 +581,82 @@ void ProjectController::refactor( const QString & fromFilePath, const QString & 
 			sci->setModified(false);
 		}
 
+		// Si c'est le document qui a été renommé ou bougé,
+		// on met à jour le package.
+		// Sinon, pour tous les autres, on met à jour les imports.
 		if ( filename == toFilePath ) {
-			// We update the filename
 			sci->setFilename( toFilePath );
 
-			// Si il y avait déjà un package
-			if ( sci->findFirst("package\\s+[\\.\\w]+\\s*;",true,false,false,false,true,0,0) ) {
-				// On le remplace
-				sci->replaceAll("package\\s+[\\.\\w]+\\s*;", newPackageLine, true, true, false);
-
-			// Sinon, si il n'y avait pas de déclaration de package et qu'il y en a une nouvelle
-			} else if ( ! newPackage.isEmpty() ){
-				// On cherche la fin des commentaires de début de fichier
-				int i = 0;
-				while (  i < sci->lines() && sci->isComment(i,0) )
-					i++;
-
-				if ( i < sci->lines() )
-					sci->insertAt("\n"+newPackageLine+"\n",i,0);
-				else
-					sci->insertAt("\n"+newPackageLine+"\n\n",0,0);
+			if ( pathChanged ) {
+				// Si il y avait déjà un package on le remplace,
+				// sinon, on l'insère à la fin des commentaires du début de fichier.
+				if ( sci->findFirst("package\\s+[\\.\\w]+\\s*;",true,false,false,false,true,0,0) ) {
+					sci->replaceAll("package\\s+[\\.\\w]+\\s*;", newPackageLine, true, true, false);
+				} else if ( ! newPackageLine.isEmpty() ){
+					int i = 0;
+					while (  i < sci->lines() && sci->isComment(i,0) )
+						i++;
+					if ( i < sci->lines() )
+						sci->insertAt("\n"+newPackageLine+"\n",i,0);
+					else
+						sci->insertAt("\n"+newPackageLine+"\n\n",0,0);
+				}
 			}
-		} else
-			sci->replaceAll(oldImportLine, newImportLine, true, true, false);
 
-		// Si le document n'est pas un document ouvert,
+			if ( nameChanged ) {
+				qDebug() << "replaceAll" << oldInfo.baseName() << "by" << newInfo.baseName();
+				sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
+			}
+
+		} else {
+			QString oldImportLine;
+
+			// Si fromFilePath est dans un subDir (ou =) de filename
+			  // Cherche en relatif package import
+			  // Cherche en absolu si pas trouvé.
+			QFileInfo fileInfo(filename);
+			if ( oldInfo.absolutePath().contains(fileInfo.absolutePath()) ) {
+				QString relPackage = QDir( fileInfo.absolutePath() ).
+					relativeFilePath( oldInfo.absolutePath() + "/" + oldInfo.baseName() ).replace('/',"\\.");
+				QString oldRelImportLine = "import\\s+"+relPackage+"\\s*;";
+				if (sci->findFirst(oldRelImportLine,true,true,false,false))
+					oldImportLine = oldRelImportLine;
+			}
+
+			if (oldImportLine.isEmpty() && sci->findFirst(oldAbsImportLine,true,true,false,false))
+					oldImportLine = oldAbsImportLine;
+
+			qDebug() << "trouvé = " << !oldImportLine.isEmpty() << "oldImportLine =" << oldImportLine;
+
+			// Si pathChanged et toFilePath est dans un subDir (ou =) de filename
+			  // Remplace par relatif package import
+			  // Sinon remplace par absolu
+			if ( pathChanged && ! oldImportLine.isEmpty() ) {
+				if ( newInfo.absolutePath().contains(fileInfo.absolutePath()) ) {
+					QString relPackage = QDir( fileInfo.absolutePath() ).
+						relativeFilePath( newInfo.absoluteFilePath() ).replace('/','.');
+					QString newRelImportLine = "import "+relPackage+";";
+					sci->replaceAll(oldImportLine, newRelImportLine, false, true, true);
+				} else {
+					sci->replaceAll(oldImportLine, newAbsImportLine, false, true, true);
+				}
+			}
+
+			if ( nameChanged && ! oldImportLine.isEmpty() ) {
+				qDebug() << "replaceAll" << oldInfo.baseName() << "by" << newInfo.baseName();
+				sci->replaceAll(oldInfo.baseName(), newInfo.baseName(), false, true, true);
+			}
+		}
+
+		// On ferme le document si il n'était pas déjà ouvert.
 		if ( mw->ui->tabWidget->indexOf(sci) == -1 ) {
-			// We delete it
 			mw->fc->saveFile(sci);
 			sci->deleteLater();
 		}
-	}
-}
+
+	} // end foreach
+
+} // end refactor()
 
 
 /**
@@ -740,21 +762,23 @@ bool ProjectController::on_projectExplorator_doubleClicked( QModelIndex index )
 /**
   When files are renamed, change the document filename if it is open;
   */
-void ProjectController::onFileRenamed( const QString & path, const QString & oldName, const QString & newName )
+void ProjectController::onProjectFileRenamed( const QString & path, const QString & oldName, const QString & newName )
 {
 	QsciScintillaExtended * sci = mw->fc->fileToDocument( path + "/" + oldName );
 	if ( sci != 0 )
 		sci->setFilename( path + "/" + newName );
+	//refactor( path + "/" + oldName, path + "/" + newName);
 }
 
 /**
   When files are moved, change the document filename if it is open;
   */
-void ProjectController::onFileMoved( const QString & oldFilePath, const QString & newFilePath )
+void ProjectController::onProjectFileMoved( const QString & oldFilePath, const QString & newFilePath )
 {
 	QsciScintillaExtended * sci = mw->fc->fileToDocument( oldFilePath );
 	if ( sci != 0 )
 		sci->setFilename( newFilePath );
+//	refactor(oldFilePath,newFilePath);
 }
 
 
@@ -840,6 +864,7 @@ void ProjectController::onCustomContextMenuRequested( const QPoint & pos )
 
 		} else if ( a->data().toString() == "execute" && currentProj->fileInfo(index).suffix() == "skoor" ) {
 			mw->bc->execute( index.data(Project::FilePathRole).toString() );
+
 		}
 	}
 }

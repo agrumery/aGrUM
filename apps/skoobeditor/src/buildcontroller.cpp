@@ -28,7 +28,8 @@ using namespace gum::prm::skoor;
 /*
   */
 struct BuildController::PrivateData {
-	QListWidget * msg;
+	QListWidget * buildList;
+	QListWidget * execList;
 
 	bool autoSyntaxCheck;
 	bool isAuto;
@@ -45,7 +46,8 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	mw(mw),
 	d(new PrivateData)
 {
-	d->msg = mw->ui->buildDock;
+	d->buildList = mw->ui->buildDock;
+	d->execList = mw->ui->execDock;
 	d->isAuto = false;
 	d->parser = 0;
 
@@ -61,8 +63,8 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	setlocale( LC_NUMERIC, "C" );
 	// ###########################################################
 
-	connect( d->msg, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMsgDoubleClick(QModelIndex)) );
-	connect( mw->ui->actionHideDocks, SIGNAL(triggered()), this, SLOT(hideBuildMessage()) );
+	connect( d->buildList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onMsgDoubleClick(QModelIndex)) );
+	connect( mw->ui->actionDockVisibility, SIGNAL(triggered()), this, SLOT(hideBuildMessage()) );
 
 	connect( mw->ui->actionBuild, SIGNAL(triggered()), this, SLOT(checkSyntax()) );
 	connect( mw->ui->actionExecute, SIGNAL(triggered()), this, SLOT(execute()) );
@@ -150,14 +152,6 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 			sci = mw->fc->currentDocument();
 	}
 
-	d->msg->clear();
-	d->msg->addItem( tr("Vérifie la syntaxe de '%1' ...").arg( sci->title() ) );
-	d->msg->item(0)->setTextColor(Qt::blue);
-
-	// Erase all error marks in editors
-	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
-		sci->clearAllErrors();
-
 	startParsing(false,false);
 
 	mw->vc->setBuildDockVisibility(true);
@@ -195,10 +189,14 @@ void BuildController::execute( QsciScintillaExtended * sci )
 			sci = mw->fc->currentDocument();
 	}
 
-	// Clear build dock and inform start of process
-	d->msg->clear();
-	d->msg->addItem( tr("Éxécution de '%1' ...").arg(sci->title()) );
-	d->msg->item(0)->setTextColor(Qt::blue);
+	// Clear exec dock and inform start of process
+	d->execList->addItem("");
+	d->execList->addItem( tr("Éxécution de '%1' ...").arg(sci->title()) );
+	int i = d->execList->count() - 1;
+	d->execList->item(i)->setTextColor(Qt::blue);
+	i--;
+	while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
+		d->execList->item(i--)->setTextColor(Qt::gray);
 
 	// Erase all error marks in editors
 	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
@@ -206,8 +204,9 @@ void BuildController::execute( QsciScintillaExtended * sci )
 
 	startParsing(false,true);
 
-	// Show build dock
-	mw->vc->setBuildDockVisibility(true);
+	// Show exec dock
+	d->execList->scrollToBottom();
+	mw->vc->setExecuteDockVisibility(true);
 }
 
 /**
@@ -222,13 +221,15 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	if ( ! mw->fc->hasCurrentDocument() )
 		return;
 
+	QsciScintillaExtended * sci = mw->fc->currentDocument();
+
 	// Stop timer if running, to prevent multiple thread.
 	d->timer.stop();
 
 	//////////////////////////////////////////////////////////////
 
 	//  create a new thread if there is not or isExecution is true or thread is still running or document change
-	//if ( ! d->parser || isExecution || d->parser->isRunning() || d->parser->document() != mw->fc->currentDocument() ) {
+	//if ( ! d->parser || isExecution || d->parser->isRunning() || d->parser->document() != sci ) {
 
 		// If a previous thread is still running
 		// We reconnect it to self delete
@@ -243,18 +244,18 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 		d->parser = 0;
 
 		// Create a new thread
-		if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skoor )
+		if ( sci->lexerEnum() == QsciScintillaExtended::Skoor )
 			// Create new document and connect it
-			d->parser = new SkoorInterpretation( mw->fc->currentDocument(), this );
+			d->parser = new SkoorInterpretation( sci, this );
 
-		else if ( mw->fc->currentDocument()->lexerEnum() == QsciScintillaExtended::Skool )
+		else if ( sci->lexerEnum() == QsciScintillaExtended::Skool )
 			// Create new document and connect it
-			d->parser = new SkoolInterpretation( mw->fc->currentDocument(), this );
+			d->parser = new SkoolInterpretation( sci, this );
 		else
 			return;
 
 		// Set paths
-		QString filename = mw->fc->currentDocument()->filename();
+		QString filename = sci->filename();
 		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
 			d->parser->addClassPaths( mw->pc->currentProject()->paths() );
 	//}
@@ -271,6 +272,23 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	d->isAuto = isAuto;
 	d->parser->setSyntaxMode( ! isExecution );
 	d->parser->parse(QThread::LowPriority);
+
+	if ( ! isAuto ) {
+		d->buildList->addItem("");
+		d->buildList->addItem( tr("Vérifie la syntaxe de '%1' ...").arg( sci->title() ) );
+
+		int i = d->buildList->count() - 1;
+		d->buildList->item(i)->setTextColor(Qt::blue);
+		i--;
+		while ( i >= 0 && d->buildList->item(i)->textColor() != Qt::gray )
+			d->buildList->item(i--)->setTextColor(Qt::gray);
+
+		// Erase all error marks in editors
+		foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
+			sci->clearAllErrors();
+
+		d->buildList->scrollToBottom();
+	}
 }
 
 
@@ -313,36 +331,30 @@ void BuildController::onParsingFinished()
 				errFilename = filename;
 			}
 
-			QListWidgetItem * item = new QListWidgetItem(s, d->msg) ;
+			QListWidgetItem * item = new QListWidgetItem(s, d->buildList) ;
 			item->setData( Qt::UserRole, errFilename );
 			item->setData( Qt::UserRole + 1, line );
 		}
-
 	}
 
 	if ( d->autoSyntaxCheck && ! d->timer.isActive() )
 		d->timer.start();
 
-	if ( ! d->isAuto && d->parser->isSyntaxMode() ) {
+	if ( ! d->isAuto ) {
 		if ( errors.count() == 0 ) {
-			d->msg->addItem(tr("Syntaxe vérifiée. Il n'y a pas d'erreur."));
-			d->msg->item(1)->setTextColor(Qt::blue);
+			d->buildList->addItem(tr("Syntaxe vérifiée. Il n'y a pas d'erreur."));
+			d->buildList->item(d->buildList->count() - 1)->setTextColor(Qt::blue);
 
 		} else {
-			d->msg->addItem(tr("Syntaxe vérifiée. Il y a %1 erreurs.").arg(errors.count()));
-			d->msg->item(0)->setTextColor(Qt::red);
-			d->msg->item(d->msg->count() - 1)->setTextColor(Qt::red);
+			d->buildList->addItem(tr("Syntaxe vérifiée. Il y a %1 erreurs.").arg(errors.count()));
+			int i = d->buildList->count() - 1;
+			d->buildList->item(i)->setTextColor(Qt::red);
+			i--;
+			while ( i >= 0 && d->buildList->item(i)->textColor() != Qt::gray )
+				i--;
+			d->buildList->item(i+1)->setTextColor(Qt::red);
 		}
-	} else if ( ! d->isAuto ) {
-		if ( errors.count() == 0 ) {
-			d->msg->addItem(tr("Éxécution terminée. Résultats :"));
-			d->msg->item(d->msg->count() - 1)->setTextColor(Qt::blue);
-
-		} else {
-			d->msg->addItem(tr("Éxécution interrompue. Il y a %1 erreurs.").arg(errors.count()));
-			d->msg->item(0)->setTextColor(Qt::red);
-			d->msg->item(d->msg->count() - 1)->setTextColor(Qt::red);
-		}
+		d->buildList->scrollToBottom();
 	}
 }
 
@@ -354,29 +366,44 @@ void BuildController::onExecutionFinished()
 	if ( mw->fc->currentDocument() != d->parser->document() )
 		return;
 
-	// We show errors and warnings.
-	onParsingFinished();
-
-	// If there was errors or it's not an execution, return.
-	if ( d->parser->errors().error_count != 0 || d->parser->isSyntaxMode() )
-		return;
-
 	// Else we show all results
 	SkoorInterpretation * skoorParser = qobject_cast<SkoorInterpretation *>( d->parser );
 	if ( skoorParser == 0 )
 		return;
 
+	// We show errors and warnings.
+	onParsingFinished();
+
+	// If there was errors or it's not an execution, return.
+	if ( skoorParser->errors().count() != 0 ) {
+		d->execList->addItem(tr("Éxécution interrompue. Il y a des erreurs."));
+		int i = d->execList->count() - 1;
+		d->execList->item(i)->setTextColor(Qt::red);
+		i--;
+		while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
+			i--;
+		d->execList->item(i+1)->setTextColor(Qt::red);
+		d->execList->scrollToBottom();
+
+		mw->vc->setBuildDockVisibility(true);
+		return;
+	}
+
 	const vector< pair<string,QueryResult> > & results = skoorParser->results();
 	for ( size_t i = 0 ; i < results.size() ; i++ ) {
 		const QString & query = QString::fromStdString( results[i].first );
-		d->msg->addItem( tr("%1").arg(query) );
-		d->msg->item(d->msg->count() - 1)->setTextColor(Qt::darkYellow);
+		d->execList->addItem( tr("%1").arg(query) );
+		d->execList->item(d->execList->count() - 1)->setTextColor(Qt::darkYellow);
 		const QueryResult & result = results[i].second;
 		for ( size_t j = 0 ; j < result.size() ; j++ ) {
 			float val = result[j].second;
-			d->msg->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].first) ).arg(val) );
+			d->execList->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].first) ).arg(val) );
 		}
 	}
+
+	d->execList->addItem(tr("Éxécution terminée."));
+	d->execList->item(d->execList->count() - 1)->setTextColor(Qt::blue);
+	d->execList->scrollToBottom();
 }
 
 
@@ -388,8 +415,7 @@ void BuildController::hideBuildMessage()
 	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
 		sci->clearAllErrors();
 
-	d->msg->clear();
-	mw->vc->setBuildDockVisibility(false);
+	mw->vc->setDockVisibility(false);
 }
 
 
@@ -397,7 +423,7 @@ void BuildController::hideBuildMessage()
  */
 void BuildController::onMsgDoubleClick(QModelIndex index)
 {
-	// Do anything if it is the first or the last message
+	// Do anything if it is not an error message.
 	if ( ! index.isValid() || ! index.data( Qt::UserRole ).isValid() )
 		return;
 

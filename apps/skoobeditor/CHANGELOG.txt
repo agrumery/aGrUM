@@ -1,4 +1,13 @@
-﻿04/04/2011
+﻿
+08/04/2011
+    * Improve : Ajout du dock éxécution, séparé de build.
+    
+07/04/2011
+    * Improve : Les docks build et search sont dans un layout stack et ne peuvent 
+      plus être affichés en même temps.
+    * Done : Dans skoor, se passer des déclarations de package et système.
+
+04/04/2011
     * Add : Faire la récupération de fichier temporaire.
 
 01/04/2011
