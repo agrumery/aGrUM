@@ -45,6 +45,7 @@ TOKENS
   grd_engine  = "grd_engine".
   as          = "as".
   default     = "default".
+  and         = "&".
 
 //=====================
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -92,8 +93,12 @@ Unobserve = unobserve (. std::string s; .)
             .
 
 //=====================
-Query = '?' (. std::string s; .)
-        Ident<s> (. __currentSession->addQuery( t->line, s ); .) ';'
+Query = '?'       (. std::string s; .)
+        Ident<s>  (. __currentSession->addQuery( t->line, s ); .)
+        { and
+        Ident<s>  (. __currentSession->addQuery( t->line, s ); .)
+        }
+        ';'
         .
 
 //=====================

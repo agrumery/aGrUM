@@ -297,22 +297,23 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 25;
-	noSym = 25;
+	maxT = 26;
+	noSym = 26;
 	int i;
-	for (i = 48; i <= 57; ++i) start.set(i, 9);
+	for (i = 48; i <= 57; ++i) start.set(i, 10);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
 	for (i = 95; i <= 95; ++i) start.set(i, 6);
 	for (i = 97; i <= 122; ++i) start.set(i, 6);
-	for (i = 43; i <= 43; ++i) start.set(i, 10);
-	for (i = 45; i <= 45; ++i) start.set(i, 10);
+	for (i = 43; i <= 43; ++i) start.set(i, 11);
+	for (i = 45; i <= 45; ++i) start.set(i, 11);
 	start.set(10, 7);
 	start.set(63, 8);
-	start.set(59, 11);
-	start.set(123, 12);
-	start.set(125, 13);
-	start.set(61, 14);
-	start.set(46, 15);
+	start.set(38, 9);
+	start.set(59, 12);
+	start.set(123, 13);
+	start.set(125, 14);
+	start.set(61, 15);
+	start.set(46, 16);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"package", 5);
 	keywords.set(L"import", 6);
@@ -322,12 +323,12 @@ void Scanner::Init() {
 	keywords.set(L"grd_engine", 11);
 	keywords.set(L"as", 12);
 	keywords.set(L"default", 13);
-	keywords.set(L"SVED", 18);
-	keywords.set(L"SVE", 19);
-	keywords.set(L"GND", 20);
-	keywords.set(L"VE", 21);
-	keywords.set(L"VEBB", 22);
-	keywords.set(L"lazy", 23);
+	keywords.set(L"SVED", 19);
+	keywords.set(L"SVE", 20);
+	keywords.set(L"GND", 21);
+	keywords.set(L"VE", 22);
+	keywords.set(L"VEBB", 23);
+	keywords.set(L"lazy", 24);
 
 
 	tvalLength = 128;
@@ -553,16 +554,16 @@ Token* Scanner::NextToken() {
 		case 8:
 			{t->kind = 8; break;}
 		case 9:
-			case_9:
+			{t->kind = 14; break;}
+		case 10:
+			case_10:
 			recEnd = pos; recKind = 1;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_9;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_10;}
 			else if (ch == L'.') {AddCh(); goto case_1;}
 			else {t->kind = 1; break;}
-		case 10:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_9;}
-			else {goto case_0;}
 		case 11:
-			{t->kind = 14; break;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_10;}
+			else {goto case_0;}
 		case 12:
 			{t->kind = 15; break;}
 		case 13:
@@ -570,7 +571,9 @@ Token* Scanner::NextToken() {
 		case 14:
 			{t->kind = 17; break;}
 		case 15:
-			{t->kind = 24; break;}
+			{t->kind = 18; break;}
+		case 16:
+			{t->kind = 25; break;}
 
 	}
 	AppendVal(t);
