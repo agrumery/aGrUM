@@ -159,6 +159,12 @@ class InterfaceGraph {
     /// Default constructor.
     InterfaceGraph(const System& sys);
 
+    /// Copy constructor, proceeds with a shallow copy so for friends only.
+    InterfaceGraph(const InterfaceGraph& source);
+
+    /// Copy operator.
+    InterfaceGraph& operator=(const InterfaceGraph& source);
+
     /// Destructor.
     ~InterfaceGraph();
 
@@ -260,12 +266,6 @@ class InterfaceGraph {
     /// Compute the label of edge and add it to __labels if it does not
     /// exists yet. Update edge with the correct label's id.
     void __label(EdgeData* edge, HashTable<std::string, LabelData*>& label_map);
-
-    /// Copy constructor, proceeds with a shallow copy so for friends only.
-    InterfaceGraph(const InterfaceGraph& source);
-
-    /// Copy operator.
-    InterfaceGraph& operator=(const InterfaceGraph& source);
 
 };
 

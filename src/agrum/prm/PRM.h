@@ -63,6 +63,11 @@ class PRM {
     /// @{
 
     /**
+     * Default constructor.
+     */
+    PRM();
+
+    /**
      * Destructor.
      */
     ~PRM();
@@ -171,11 +176,6 @@ class PRM {
   /// @name Private methods.
   // ========================================================================
     /// @{
-
-    /**
-     * Default constructor.
-     */
-    PRM();
 
     /**
      * Copy constructor. Not Implemented.

@@ -241,7 +241,10 @@ System::__groundPotential(const Instance& instance, const Attribute& attr, Bayes
           std::stringstream parent_name;
           const SlotChain& sc = static_cast<const SlotChain&>(instance.type().get(*parent));
           parent_name << instance.getInstance(sc.id()).name() << "." << sc.lastElt().safeName();
-          bijection.insert(&(instance.getInstance(sc.id()).get(sc.lastElt().id()).type().variable()), &(factory.variable(parent_name.str())));
+          bijection.insert(
+              &(instance.getInstance(sc.id()).get(sc.lastElt().safeName()).type().variable()),
+              &(factory.variable(parent_name.str()))
+              );
           break;
         }
       default: {
