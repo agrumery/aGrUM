@@ -150,6 +150,9 @@ class PRMInference {
     /// Returns true if i has evidence on Attribute a.
     bool hasEvidence(const Chain& chain) const;
 
+    /// Returns true if i has evidence on Attribute a.
+    bool hasEvidence() const;
+
     /// Add an evidence to the given instance's elt.
     /// @param chain The variable being observed.
     /// @param p The Potential added (by copy) as evidence.

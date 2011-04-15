@@ -100,6 +100,12 @@ PRMInference::hasEvidence(const Chain& chain) const {
 }
 
 INLINE
+bool
+PRMInference::hasEvidence() const {
+  return __evidences.size();
+}
+
+INLINE
 void
 PRMInference::removeEvidence(const Chain& chain) {
   try {
