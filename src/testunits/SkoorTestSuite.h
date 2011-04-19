@@ -42,12 +42,11 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     }
 
     void testParseFile1() {
-      SkoorInterpreter * si = 0;
-      
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
-      
+      SkoorInterpreter * si = new SkoorInterpreter();
       si->setSyntaxMode(true);
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      si->addPath("../../../src/testunits/ressources/skoor/");
+      
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
       
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );  
@@ -57,14 +56,13 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     
     
     void testParseFile2() {
-      SkoorInterpreter * si = 0;
-      
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/query2.skoor") );
-      
+      SkoorInterpreter * si = new SkoorInterpreter();
       si->setSyntaxMode(true);
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      si->addPath("../../../src/testunits/ressources/skoor/");
       
-      TS_ASSERT_EQUALS( si->errors(), 3 );
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/query2.skoor") );
+      
+      TS_ASSERT_EQUALS( si->errors(), 1 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );  
       
       delete si;
@@ -72,10 +70,11 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     
 
     void testInference() {
-      SkoorInterpreter * si = 0;
+      SkoorInterpreter * si = new SkoorInterpreter();
+      si->setSyntaxMode(false);
+      si->addPath("../../../src/testunits/ressources/skoor/");
       
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
       
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -85,10 +84,11 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     
     
     void testObserve() {
-      SkoorInterpreter * si = 0;
+      SkoorInterpreter * si = new SkoorInterpreter();
+      si->setSyntaxMode(false);
+      si->addPath("../../../src/testunits/ressources/skoor/");
       
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/queryObserveTest.skoor") );
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/queryObserveTest.skoor") );
 
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -119,10 +119,11 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     }
     
     void testUnobserve() {
-      SkoorInterpreter * si = 0;
+      SkoorInterpreter * si = new SkoorInterpreter();
+      si->setSyntaxMode(false);
+      si->addPath("../../../src/testunits/ressources/skoor/");
       
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/queryUnobserveTest.skoor") );
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/queryUnobserveTest.skoor") );
 
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -140,11 +141,13 @@ class SkoorTestSuite: public CxxTest::TestSuite {
     }
     
     void testQuery() {
-      SkoorInterpreter * si = 0;
+      SkoorInterpreter * si = new SkoorInterpreter();
+      si->setSyntaxMode(false);
+      si->addPath("../../../src/testunits/ressources/skoor/");
       
-      TS_GUM_ASSERT_THROWS_NOTHING( si = new SkoorInterpreter("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
-      TS_GUM_ASSERT_THROWS_NOTHING( si->interpret() );
+      TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile("../../../src/testunits/ressources/skoor/requests/query1.skoor") );
       
+      si->showElegantErrorsAndWarnings();
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );
       
@@ -158,7 +161,7 @@ class SkoorTestSuite: public CxxTest::TestSuite {
       
       // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de l'instance c1 est à 1.0
       
-      /*const PRMInference::EMap & e = si->inference()->evidence( c2 );
+      const PRMInference::EMap & e = si->inference()->evidence( c2 );
       const Potential<prm_float> * p = e[c1.get("equipState").id()];
       
       gum::Instantiation j( *p );
@@ -169,7 +172,7 @@ class SkoorTestSuite: public CxxTest::TestSuite {
         } else {
           TS_ASSERT_EQUALS( p->get(j), 0.0 );
         }
-      }*/  
+      }  
       
       delete si;
     }

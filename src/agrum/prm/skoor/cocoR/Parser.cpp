@@ -99,35 +99,44 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::skoor() {
-		std::string s, alias; 
-		if (la->kind == 5) {
-			Get();
-			Ident(s);
-			__context->setPackage( s ); 
-			while (!(la->kind == 0 || la->kind == 15)) {SynErr(27); Get();}
-			Expect(15);
-		}
-		while (la->kind == 6) {
-			Get();
-			Ident(s);
-			alias = ""; 
-			if (la->kind == 12) {
+		std::string s, alias; __currentSession = 0; 
+		if (StartOf(1)) {
+			if (la->kind == 5) {
 				Get();
-				if (la->kind == 13) {
-					Get();
-					alias = "default"; 
-				} else if (la->kind == 3) {
-					Get();
-					alias = gum::narrow(t->val); 
-				} else SynErr(28);
+				Ident(s);
+				__context->setPackage( s ); 
+				while (!(la->kind == 0 || la->kind == 15)) {SynErr(27); Get();}
+				Expect(15);
 			}
-			__context->addImport( t->line, s, alias ); 
-			while (!(la->kind == 0 || la->kind == 15)) {SynErr(29); Get();}
-			Expect(15);
-		}
-		while (la->kind == 7) {
-			RequestBloc();
-		}
+			while (la->kind == 6) {
+				Get();
+				Ident(s);
+				alias = ""; 
+				if (la->kind == 12) {
+					Get();
+					if (la->kind == 13) {
+						Get();
+						alias = "default"; 
+					} else if (la->kind == 3) {
+						Get();
+						alias = gum::narrow(t->val); 
+					} else SynErr(28);
+				}
+				__context->addImport( t->line, s, alias ); 
+				while (!(la->kind == 0 || la->kind == 15)) {SynErr(29); Get();}
+				Expect(15);
+			}
+			while (la->kind == 7) {
+				RequestBloc();
+			}
+		} else if (StartOf(2)) {
+			if ( __currentSession == 0 ) {
+			 __currentSession = new SkoorSession("default");
+			 __context->addSession( __currentSession );
+			}
+			
+			Command();
+		} else SynErr(30);
 }
 
 void Parser::Ident(std::string& s) {
@@ -147,21 +156,25 @@ void Parser::RequestBloc() {
 		Expect(3);
 		__currentSession = new SkoorSession(gum::narrow(t->val)); 
 		Expect(16);
-		while (StartOf(1)) {
-			if (la->kind == 3) {
-				Observe();
-			} else if (la->kind == 9) {
-				Unobserve();
-			} else if (la->kind == 8) {
-				Query();
-			} else if (la->kind == 10) {
-				SetEngine();
-			} else {
-				SetGrdEngine();
-			}
+		while (StartOf(2)) {
+			Command();
 		}
 		Expect(17);
-		__context->addSession( __currentSession ); 
+		__context->addSession( __currentSession ); __currentSession = 0; 
+}
+
+void Parser::Command() {
+		if (la->kind == 3) {
+			Observe();
+		} else if (la->kind == 9) {
+			Unobserve();
+		} else if (la->kind == 8) {
+			Query();
+		} else if (la->kind == 10) {
+			SetEngine();
+		} else if (la->kind == 11) {
+			SetGrdEngine();
+		} else SynErr(31);
 }
 
 void Parser::Observe() {
@@ -203,7 +216,7 @@ void Parser::SetEngine() {
 			Get();
 		} else if (la->kind == 21) {
 			Get();
-		} else SynErr(30);
+		} else SynErr(32);
 		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
 		Expect(15);
 }
@@ -216,7 +229,7 @@ void Parser::SetGrdEngine() {
 			Get();
 		} else if (la->kind == 24) {
 			Get();
-		} else SynErr(31);
+		} else SynErr(33);
 		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
 		Expect(15);
 }
@@ -246,8 +259,9 @@ bool Parser::StartOf(int s) {
 	const bool T = true;
 	const bool x = false;
 
-	static bool set[2][28] = {
+	static bool set[3][28] = {
 		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x},
+		{T,x,x,x, x,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
 		{x,x,x,T, x,x,x,x, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
 	};
 
@@ -301,8 +315,10 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 27: s = coco_string_create(L"this symbol not expected in skoor"); break;
 			case 28: s = coco_string_create(L"invalid skoor"); break;
 			case 29: s = coco_string_create(L"this symbol not expected in skoor"); break;
-			case 30: s = coco_string_create(L"invalid SetEngine"); break;
-			case 31: s = coco_string_create(L"invalid SetGrdEngine"); break;
+			case 30: s = coco_string_create(L"invalid skoor"); break;
+			case 31: s = coco_string_create(L"invalid Command"); break;
+			case 32: s = coco_string_create(L"invalid SetEngine"); break;
+			case 33: s = coco_string_create(L"invalid SetGrdEngine"); break;
 
 		default:
 		{

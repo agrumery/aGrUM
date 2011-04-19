@@ -25,7 +25,7 @@
  */
 // ============================================================================
 
-#include <agrum/prm/skoor/SkoorContext.h>
+#include "SkoorContext.h"
 
 namespace gum {
   namespace prm {
@@ -41,6 +41,13 @@ SkoorContext::SkoorContext(const std::string & filename)
   m_mainImport = 0;
 }
 
+SkoorContext::SkoorContext( const SkoorContext & s )
+{
+  m_filename = s.m_filename;
+  m_mainImport = s.m_mainImport;
+  *this += s;
+}
+  
 SkoorContext::~SkoorContext()
 {
   clear();
@@ -97,6 +104,11 @@ void SkoorContext::addSession( SkoorSession * session )
 {
   m_sessions.push_back( session );
 }
+
+void SkoorContext::addSession( const SkoorSession & session )
+{
+  addSession( new SkoorSession(session) );
+}
   
 void SkoorContext::clear()
 {
@@ -128,11 +140,32 @@ string SkoorContext::toString() const
   return output;
 }
 
+SkoorContext & SkoorContext::operator+=( const SkoorContext & c )
+{
+  const std::vector<ImportCommand *> & imports = c.getImports();
+  for ( std::vector<ImportCommand *>::const_iterator i = imports.begin() ; i != imports.end() ; i++ )
+    addImport( **i ) ;
+    
+  const std::vector<SkoorSession *> & sessions = c.getSessions();
+  if ( sessions.size() == 1 && sessions.back()->getName() == "default" ) {
+    *(this->m_sessions.back()) += *(sessions.back());
+  } else 
+    for ( std::vector<SkoorSession *>::const_iterator i = sessions.begin() ; i != sessions.end() ; i++ )
+      addSession( **i ) ;
+  return *this;
+}
+  
 /* ******************************************************************* */
 
 SkoorSession::SkoorSession( const string & name )
 {
   m_name = name;
+}
+
+SkoorSession::SkoorSession( const SkoorSession & s )
+{
+  m_name = s.m_name;
+  *this += s;
 }
 
 SkoorSession::~SkoorSession()
@@ -182,6 +215,27 @@ void SkoorSession::addSetGndEngine( int line, const string & value )
   addCommand( new SetGndEngineCommand(line,value) );
 }
   
+void SkoorSession::addCommand( const SkoorCommand * command )
+{
+  switch ( command->type() ) {
+    case SkoorCommand::SetEngine :
+      m_commands.push_back( new SetEngineCommand(*(SetEngineCommand*) command) );
+      break;
+    case SkoorCommand::SetGndEngine :
+      m_commands.push_back( new SetGndEngineCommand(*(SetGndEngineCommand*) command) );
+      break;
+    case SkoorCommand::Observe :
+      m_commands.push_back( new ObserveCommand(*(ObserveCommand*) command) );
+      break;
+    case SkoorCommand::Unobserve :
+      m_commands.push_back( new UnobserveCommand(*(UnobserveCommand*) command) );
+      break;
+    case SkoorCommand::Query :
+      m_commands.push_back( new QueryCommand(*(QueryCommand*) command) );
+      break;
+  }
+}
+  
 string SkoorSession::toString() const
 {
   string output;
@@ -192,6 +246,13 @@ string SkoorSession::toString() const
   output += "}\n";
   
   return output;
+}
+
+SkoorSession & SkoorSession::operator+=( const SkoorSession & c )
+{
+  for ( vector<SkoorCommand *>::const_iterator i = c.m_commands.begin() ; i < c.m_commands.end() ; i++ )
+    addCommand( *i );
+  return *this;
 }
 
 /* ******************************************************************* */

@@ -1,4 +1,7 @@
-import systems.MyKickAssSystem;
+
+package requests;
+
+import systems.MyKickAssSystem as default;
 
 request MyUbberQuerry {
   engine SVE;

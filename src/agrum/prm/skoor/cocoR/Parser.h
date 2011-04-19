@@ -120,6 +120,7 @@ void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
 	void skoor();
 	void Ident(std::string& s);
 	void RequestBloc();
+	void Command();
 	void Observe();
 	void Unobserve();
 	void Query();

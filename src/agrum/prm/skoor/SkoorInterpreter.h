@@ -53,34 +53,34 @@ class SkoorInterpreter {
 public:
   /// This constructor create an empty context.
   SkoorInterpreter();
-  /// This constructor use \a c as context.
-  SkoorInterpreter( SkoorContext * c );
-  /// This constructor parse \a filename and use it as context.
-  SkoorInterpreter( const std::string & filename );
   /// Destructor. Delete current context.
   ~SkoorInterpreter();
   
+  /**
+   * Interpret the file or the command line.
+   * If syntax mode is activated, check only syntax and semantic.
+   * If errors occured, return false. Errors messages can be retrieve be 
+   * getErrorsContainer() methods.
+   * If any errors occured, return true.
+   * Requests results can be retrieve be results() methods.
+   * */
+  bool interpretFile( const string & filename );
+  bool interpretLine( const string & line );
+  
+  /// Retrieve prm object.
+  const gum::prm::PRM* prm() const;
+  /// Retrieve inference motor object.
+  const gum::prm::PRMInference* inference() const;
+  /// Return a vector of pair query/QueryResults.
+  /// Each QueryResults is a vector of pair label/value.
+  const std::vector< std::pair<std::string,QueryResult> > & results() const;
+  /// Return container with all errors.
+  ErrorsContainer getErrorsContainer() const;
   
   /// Getter and setter for the context.
   SkoorContext * getContext() const;
   void setContext( SkoorContext * context );
-  
-  /// Clear the current context (and errors).
-  void clearContext();
-  
-  /**
-   * Parse the command line, in the previous context.
-   * Must be a package, import or request-block declaration.
-   * */
-  void processCommandLine( const std::string & commandLine );
-  
-  /**
-   * Crée le prm correspondant au contexte courant.
-   * Renvoie true en cas de succès, ou false en cas échéant d'échec
-   * de l'interprétation du contexte (import introuvable ou non défini,
-   * etc).
-   * */
-  bool interpret();
+  void clearContext();  
   
   /// Root paths to search from there packages.
   /// Default are working dir, request file dir if any 
@@ -97,15 +97,6 @@ public:
   bool isVerboseMode() const;
   void setVerboseMode ( bool f );
   
-  /// Retrieve prm object.
-  const gum::prm::PRM* prm() const;
-  /// Retrieve inference motor object.
-  const gum::prm::PRMInference* inference() const;
-  
-  /// Return a vector of pair query/QueryResults.
-  /// Each QueryResults is a vector of pair label/value.
-  const std::vector< std::pair<std::string,QueryResult> > & results() const;
-  
   /**
    * En cas d'échec, l'API de gestion d'erreurs est présente.
    * */
@@ -117,9 +108,6 @@ public:
   int warnings() const;
   /// throw a string error if i >= count
   ParseError getError( int i ) const;
-  /// Return container with all errors.
-  ErrorsContainer getErrorsContainer() const;
-  
   /// send on std::cerr the list of errors
   void showElegantErrors() const;
   /// send on std::cerr the list of errors or warnings
@@ -128,8 +116,15 @@ public:
   void showErrorCounts() const;
   
 private:
+  bool checkSemantic( SkoorContext * context );
+  bool checkSetEngine( SetEngineCommand * command );
+  bool checkSetGndEngine( SetGndEngineCommand * command );
+  bool checkObserve( ObserveCommand * command );
+  bool checkUnobserve( UnobserveCommand * command );
+  bool checkQuery( QueryCommand * command );
 
-  bool import( std::string import );
+  bool interpret( SkoorContext * c );
+  bool import( SkoorContext * context, std::string import );
   bool observe( const ObserveCommand * command );
   bool unobserve( const UnobserveCommand * command );
   void query( const QueryCommand * command );
@@ -137,7 +132,7 @@ private:
   void setGndEngine( const SetGndEngineCommand * command );
 
   std::string findSystemName ( std::string & s );
-  std::string findInstanceName ( const std::string& s, const gum::prm::System& sys );
+  std::string findInstanceName ( std::string& s, const gum::prm::System& sys );
   std::string findAttributeName ( const std::string& s, const gum::prm::Instance& instance );
   const System & getSystem( string & ident );
   void generateInfEngine(const gum::prm::System& sys);
@@ -157,7 +152,6 @@ private:
   bool m_verbose;
   std::ostream& m_log;
   int m_current_line;
-  mutable bool m_prm_taken;
   
   //// We need this when using grounded inference
   //gum::BayesNetInference<gum::prm::prm_float>* bn;

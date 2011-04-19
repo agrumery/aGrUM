@@ -59,7 +59,8 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //=====================
-skoor =                 (. std::string s, alias; .)
+skoor =                 (. std::string s, alias; __currentSession = 0; .)
+  (
     [ package Ident<s>  (. __context->setPackage( s ); .) 
     SYNC ';' ]
     { 
@@ -70,17 +71,28 @@ skoor =                 (. std::string s, alias; .)
       ) ]               (. __context->addImport( t->line, s, alias ); .) 
       SYNC ';' 
     }
-    { RequestBloc }.
+    { RequestBloc }
+  |                     (. 
+                          if ( __currentSession == 0 ) {
+                            __currentSession = new SkoorSession("default");
+                            __context->addSession( __currentSession );
+                          }
+                        .)
+    Command
+  ).
 
 RequestBloc = request word  (. __currentSession = new SkoorSession(gum::narrow(t->val)); .)
               '{' {
-                    ( Observe |
-                      Unobserve |
-                      Query |
-                      SetEngine |
-                      SetGrdEngine )
-              } '}' (. __context->addSession( __currentSession ); .)
+                    Command
+              } '}'         (. __context->addSession( __currentSession ); __currentSession = 0; .)
               .
+
+Command = ( Observe |
+            Unobserve |
+            Query |
+            SetEngine |
+            SetGrdEngine ) .
+
 //=====================
 Observe =   (. std::string left_value, right_value; .)
           Ident<left_value> '=' word (. right_value = gum::narrow(t->val); .)
