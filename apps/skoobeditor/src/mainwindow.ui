@@ -100,7 +100,7 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout" stretch="128,0,0">
+        <layout class="QVBoxLayout" name="verticalLayout" stretch="128,0,0,0">
          <property name="spacing">
           <number>1</number>
          </property>
@@ -123,6 +123,28 @@
            </property>
            <addaction name="actionHideDocks"/>
            <addaction name="actionDockVisibility"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="commandWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="margin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="commandLineEdit"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="validCommandButton">
+              <property name="text">
+               <string>Valider</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
          <item>
@@ -1317,6 +1339,22 @@
     <hint type="destinationlabel">
      <x>380</x>
      <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>commandLineEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>validCommandButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>454</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>712</x>
+     <y>420</y>
     </hint>
    </hints>
   </connection>

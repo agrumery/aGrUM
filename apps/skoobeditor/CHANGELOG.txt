@@ -1,4 +1,7 @@
 ﻿
+19/04/2011
+    * Add : Ajout de l'interpréteur aux documents Skoor, pour exécuter des commandes seules.
+    
 08/04/2011
     * Improve : Ajout du dock éxécution, séparé de build.
     

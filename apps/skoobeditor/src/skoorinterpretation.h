@@ -24,9 +24,6 @@ class SkoorInterpretation : public AbstractParser
 {
 	Q_OBJECT
 
-	gum::prm::skoor::SkoorInterpreter * m_interpreter;
-	mutable bool prmChanged;
-
 public:
 	SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent );
 	~SkoorInterpretation();
@@ -37,8 +34,21 @@ public:
 	//! Return result of execution.
 	std::vector< std::pair<std::string,gum::prm::skoor::QueryResult> > results() const;
 
+	//! Return last command.
+	QString command() const;
+
+public slots:
+	//! \reimp
+	virtual void parse( Priority priority = InheritPriority );
+	//! Parse a single command
+	virtual void parseCommand( const QString & command, Priority priority = InheritPriority );
+
 protected:
-	void run();
+	virtual void run();
+
+	gum::prm::skoor::SkoorInterpreter * m_interpreter;
+	mutable bool m_prmChanged;
+	QString m_command;
 };
 
 

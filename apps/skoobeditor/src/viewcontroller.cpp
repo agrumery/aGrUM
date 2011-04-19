@@ -132,6 +132,11 @@ bool ViewController::isExecuteDockVisible() const
 	return isDocksVisible() && d->docksGroup->checkedAction() == d->executeDockVisibility;
 }
 
+bool ViewController::isCommandWidgetVisible() const
+{
+	return mw->ui->commandWidget->isVisible();
+}
+
 bool ViewController::isLineNumbersVisible() const
 {
 	return d->lineNumbersVisibility->isChecked();
@@ -222,6 +227,11 @@ void ViewController::setExecuteDockVisibility(bool visible)
 	d->executeDockVisibility->setChecked(visible);
 	mw->ui->dockStack->setCurrentWidget( mw->ui->pageExecute );
 	setDockVisibility(visible);
+}
+
+void ViewController::setCommandWidgetVisible(bool visible)
+{
+	mw->ui->commandWidget->setVisible(visible);
 }
 
 void ViewController::setLineNumbersVisibility( bool visible )

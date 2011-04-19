@@ -50,4 +50,7 @@ int main(int argc, char *argv[]) try {
 } catch ( const std::string & err ) {
 	std::cerr << err << std::endl;
 	return 2;
+} catch ( const QString & err ) {
+	std::cerr << err.data() << std::endl;
+	return 3;
 }

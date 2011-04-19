@@ -20,6 +20,7 @@ public:
 	bool isSearchDockVisible() const;
 	bool isBuildDockVisible() const;
 	bool isExecuteDockVisible() const;
+	bool isCommandWidgetVisible() const;
 
 	bool isLineNumbersVisible() const;
 	bool isBookmarksVisible() const;
@@ -37,6 +38,7 @@ public slots:
 	void setSearchDockVisibility(bool visible);
 	void setBuildDockVisibility(bool visible);
 	void setExecuteDockVisibility(bool visible);
+	void setCommandWidgetVisible(bool visible);
 
 	void setLineNumbersVisibility(bool checked);
 	void setBookmarksVisibility(bool checked);

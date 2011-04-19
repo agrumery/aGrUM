@@ -67,8 +67,9 @@ protected:
 	//! Set the ErrorsContainer
 	void setErrors( const gum::ErrorsContainer & errors );
 
-private:
 	void start( Priority priority = InheritPriority ) { QThread::start(priority); }
+
+private:
 	void setFilename( const QString & filename );
 	void setBuffer( const QString & buffer );
 

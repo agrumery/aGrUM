@@ -30,10 +30,13 @@ using namespace gum::prm::skoor;
 struct BuildController::PrivateData {
 	QListWidget * buildList;
 	QListWidget * execList;
+	QLineEdit * commandLine;
+	QPushButton * commandButton;
 
 	bool autoSyntaxCheck;
 	bool isAuto;
 	AbstractParser * parser;
+
 	QTimer timer;
 
 	QSharedPointer<PRMTreeModel> prmModel;
@@ -48,6 +51,8 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 {
 	d->buildList = mw->ui->buildDock;
 	d->execList = mw->ui->execDock;
+	d->commandButton = mw->ui->validCommandButton;
+	d->commandLine = mw->ui->commandLineEdit;
 	d->isAuto = false;
 	d->parser = 0;
 
@@ -68,6 +73,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 
 	connect( mw->ui->actionBuild, SIGNAL(triggered()), this, SLOT(checkSyntax()) );
 	connect( mw->ui->actionExecute, SIGNAL(triggered()), this, SLOT(execute()) );
+	connect( d->commandButton, SIGNAL(clicked()), this, SLOT(onCommandValided()) );
 
 	connect( &d->timer, SIGNAL(timeout()), this, SLOT(startParsing()) );
 	connect( mw->fc, SIGNAL(fileSaved(QString,QsciScintillaExtended*)), this, SLOT(startParsing()) );
@@ -189,24 +195,70 @@ void BuildController::execute( QsciScintillaExtended * sci )
 			sci = mw->fc->currentDocument();
 	}
 
-	// Clear exec dock and inform start of process
-	d->execList->addItem("");
-	d->execList->addItem( tr("Éxécution de '%1' ...").arg(sci->title()) );
-	int i = d->execList->count() - 1;
-	d->execList->item(i)->setTextColor(Qt::blue);
-	i--;
-	while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
-		d->execList->item(i--)->setTextColor(Qt::gray);
+	if ( sci->lexerEnum() == QsciScintillaExtended::Skool && sci->block().first == "class" )
+		executeClass(sci);
 
-	// Erase all error marks in editors
-	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
-		sci->clearAllErrors();
+	else if ( sci->lexerEnum() == QsciScintillaExtended::Skool && sci->block().first == "system" )
+		executeSystem(sci);
 
-	startParsing(false,true);
+	else if ( sci->lexerEnum() == QsciScintillaExtended::Skoor ) {
+		// Clear exec dock and inform start of process
+		d->execList->addItem("");
+		d->execList->addItem( tr("Éxécution de '%1' ...").arg(sci->title()) );
+		int i = d->execList->count() - 1;
+		d->execList->item(i)->setTextColor(Qt::blue);
+		i--;
+		while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
+			d->execList->item(i--)->setTextColor(Qt::gray);
 
-	// Show exec dock
-	d->execList->scrollToBottom();
-	mw->vc->setExecuteDockVisibility(true);
+		// Erase all error marks in editors
+		foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
+			sci->clearAllErrors();
+
+		startParsing(false,true);
+
+		// Show exec dock
+		d->execList->scrollToBottom();
+		mw->vc->setExecuteDockVisibility(true);
+
+	} else
+		return;
+
+}
+
+void BuildController::createNewParser()
+{
+	QsciScintillaExtended * sci = mw->fc->currentDocument();
+	if ( sci == 0 )
+		throw "Can not create new parser, no document opened !";
+
+	// If a previous thread is still running
+	// We reconnect it to self delete
+	if ( d->parser ) {
+		disconnect( d->parser, 0, this, 0 );
+		connect( d->parser, SIGNAL(finished()), d->parser, SLOT(deleteLater()) );
+
+		if ( d->parser->isFinished()  )
+			d->parser->deleteLater();
+	}
+
+	d->parser = 0;
+
+	// Create a new thread
+	if ( sci->lexerEnum() == QsciScintillaExtended::Skoor )
+		// Create new document and connect it
+		d->parser = new SkoorInterpretation( sci, this );
+
+	else if ( sci->lexerEnum() == QsciScintillaExtended::Skool )
+		// Create new document and connect it
+		d->parser = new SkoolInterpretation( sci, this );
+	else
+		throw "Invalid lexerEnum ! " + QString::number(sci->lexerEnum());
+
+	// Set paths
+	QString filename = sci->filename();
+	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
+		d->parser->addClassPaths( mw->pc->currentProject()->paths() );
 }
 
 /**
@@ -226,43 +278,26 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	// Stop timer if running, to prevent multiple thread.
 	d->timer.stop();
 
+	// If a previous thread is still running, wait again
+	if ( isAuto && d->parser && d->parser->isRunning() ) {
+		d->timer.start();
+		return;
+	}
+
+
 	//////////////////////////////////////////////////////////////
 
 	//  create a new thread if there is not or isExecution is true or thread is still running or document change
-	//if ( ! d->parser || isExecution || d->parser->isRunning() || d->parser->document() != sci ) {
-
-		// If a previous thread is still running
-		// We reconnect it to self delete
-		if ( d->parser ) {
-			disconnect( d->parser, 0, this, 0 );
-			connect( d->parser, SIGNAL(finished()), d->parser, SLOT(deleteLater()) );
-
-			if ( d->parser->isFinished()  )
-				d->parser->deleteLater();
-		}
-
-		d->parser = 0;
-
-		// Create a new thread
-		if ( sci->lexerEnum() == QsciScintillaExtended::Skoor )
-			// Create new document and connect it
-			d->parser = new SkoorInterpretation( sci, this );
-
-		else if ( sci->lexerEnum() == QsciScintillaExtended::Skool )
-			// Create new document and connect it
-			d->parser = new SkoolInterpretation( sci, this );
-		else
-			return;
-
-		// Set paths
-		QString filename = sci->filename();
-		if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-			d->parser->addClassPaths( mw->pc->currentProject()->paths() );
-	//}
+	//if ( ! d->parser || isExecution || d->parser->isRunning() || d->parser->document() != sci )
+	try {
+		createNewParser();
+	} catch (const QString & err ) {
+		qWarning() << err;
+		return;
+	}
 
 	//////////////////////////////////////////////////////////////
 
-	disconnect( d->parser, 0, this, 0 );
 	if ( isExecution )
 		connect( d->parser, SIGNAL(finished()), this, SLOT(onExecutionFinished()) );
 	else
@@ -284,8 +319,8 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 			d->buildList->item(i--)->setTextColor(Qt::gray);
 
 		// Erase all error marks in editors
-		foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
-			sci->clearAllErrors();
+		foreach( QsciScintillaExtended * doc, mw->fc->openDocuments() )
+			doc->clearAllErrors();
 
 		d->buildList->scrollToBottom();
 	}
@@ -447,4 +482,76 @@ void BuildController::onMsgDoubleClick(QModelIndex index)
 void BuildController::onDocumentClosed( const QString & filename )
 {
 	QFile::remove( filename + ".bak" );
+}
+
+void BuildController::executeClass( QsciScintillaExtended * sci )
+{
+	qDebug() << "execute class" << sci->block().second;
+}
+
+void BuildController::executeSystem( QsciScintillaExtended * sci )
+{
+	qDebug() << "execute system" << sci->block().second;
+}
+
+void BuildController::onCommandValided()
+{
+	// Create a new parser if necessary
+	if ( d->parser == 0 || d->parser->document() != mw->fc->currentDocument() )
+		createNewParser();
+
+	// If a previous request was send, wait a few second and return if too long
+	if ( d->parser != 0 && d->parser->isRunning() )
+		if ( ! d->parser->wait(500) )
+			return;
+
+	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
+	if ( parser == 0 ) {
+		qWarning() << "in onCommandValided() : Error : parser == 0.";
+		return;
+	}
+
+	disconnect( d->parser, 0, this, 0 );
+	connect( d->parser, SIGNAL(finished()), this, SLOT(onCommandParsed()) );
+	connect( d->parser, SIGNAL(finished()), this, SLOT(onExecutionFinished()) );
+	d->parser->setSyntaxMode(false);
+
+	const QString & command = d->commandLine->text().simplified();
+
+	// Clear exec dock and inform start of process
+	d->execList->addItem("");
+	d->execList->addItem( tr("Éxécution de '%1' ...").arg(command) );
+	int i = d->execList->count() - 1;
+	d->execList->item(i)->setTextColor(Qt::blue);
+	i--;
+	while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
+		d->execList->item(i--)->setTextColor(Qt::gray);
+
+	// Erase all error marks in editors
+	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
+		sci->clearAllErrors();
+
+	// Show exec dock
+	d->execList->scrollToBottom();
+	mw->vc->setExecuteDockVisibility(true);
+
+	parser->parseCommand( command, QThread::NormalPriority );
+	d->commandLine->clear();
+}
+
+void BuildController::onCommandParsed()
+{
+	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
+	if ( parser == 0 ) {
+		qWarning() << "in onCommandParsed() : Error : parser == 0.";
+		return;
+	}
+
+	if ( parser->errors().count() == 0 ) {
+		QsciScintillaExtended * sci = mw->fc->currentDocument();
+		if ( sci->findFirst("}",false,false,false,true,false,0,0) ) {
+			QString indent(sci->indentation(sci->currentLine()-1),QChar(' '));
+			sci->replace( indent + parser->command() + "\n}");
+		}
+	}
 }

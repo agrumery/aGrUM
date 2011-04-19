@@ -40,12 +40,21 @@ protected slots:
 	void onParsingFinished();
 	void onExecutionFinished();
 
+	void onCommandValided();
+	void onCommandParsed();
+
 	void onMsgDoubleClick(QModelIndex index);
 	void onDocumentClosed( const QString & filename );
 
+	void executeClass( QsciScintillaExtended * sci );
+	void executeSystem( QsciScintillaExtended * sci );
+
+private slots:
 	void triggerInit();
 
 private:
+	void createNewParser();
+
 	MainWindow * mw;
 
 	struct PrivateData;

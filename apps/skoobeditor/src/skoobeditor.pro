@@ -26,8 +26,7 @@ TARGET = skoobeditor
 DESTDIR = $${PWD}/../bin/Release
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    qscilexerskool.cpp \
+		mainwindow.cpp \
     filecontroller.cpp \
     qsciscintillaextended.cpp \
     editcontroller.cpp \
@@ -47,10 +46,10 @@ SOURCES += main.cpp\
     projectproperties.cpp \
     prmtreemodel.cpp \
     prmcompleter.cpp \
-	abstractparser.cpp
+	abstractparser.cpp \
+    skoorinterpretation2.cpp
     
 HEADERS  += mainwindow.h \
-    qscilexerskool.h \
     filecontroller.h \
     qsciscintillaextended.h \
     editcontroller.h \
@@ -71,7 +70,8 @@ HEADERS  += mainwindow.h \
     projectproperties.h \
     prmtreemodel.h \
     prmcompleter.h \
-	abstractparser.h
+	abstractparser.h \
+    skoorinterpretation2.h
 
 FORMS    += mainwindow.ui \
     advancedsearch.ui \

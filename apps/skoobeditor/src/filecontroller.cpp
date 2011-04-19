@@ -651,14 +651,15 @@ void FileController::onCurrentDocumentChanged(int index)
 		mw->setWindowModified( sci->isModified() );
 		mw->ui->tabWidget->setTabText(index, sci->title() + (sci->isModified()?"*":""));
 		mw->ui->actionBuild->setEnabled( true );
-		// Enabled 'Execute' action only for Skoor files.
-		mw->ui->actionExecute->setEnabled( sci->lexerEnum() == QsciScintillaExtended::Skoor );
+		mw->ui->actionExecute->setEnabled( true );
+		mw->vc->setCommandWidgetVisible( sci->lexerEnum() == QsciScintillaExtended::Skoor );
 
 	} else {
 		mw->setWindowFilePath( QString() );
 		mw->setWindowModified( false );
 		mw->ui->actionExecute->setEnabled( false );
 		mw->ui->actionBuild->setEnabled( false );
+		mw->vc->setCommandWidgetVisible( false );
 	}
 }
 

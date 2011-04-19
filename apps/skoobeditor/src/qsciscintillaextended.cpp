@@ -1,6 +1,5 @@
 #include "qsciscintillaextended.h"
 
-#include "qscilexerskool.h"
 #include "qscilexerskoor.h"
 #include "qscilexerskool2.h"
 
@@ -235,11 +234,13 @@ QPair<QString,QString> QsciScintillaExtended::block()
 	 */
 
 	static QRegExp regex("(interface|class|system)\\s+([a-zA-Z_][\\w_]*(\\.[a-zA-Z_][\\w_]*)*)[^\\w_]");
-	int line = markerFindPrevious( currentLine(), 1 << Block);
-
-	// If not found
-	if ( line == -1 )
-		return QPair<QString,QString>(QString(),QString());
+	int line = markerFindPrevious( currentLine(), 1 << Block );
+	if ( line == -1 ) {
+		line = markerFindNext( currentLine(), 1 << Block );
+		// If not found
+		if ( line == -1 )
+			return QPair<QString,QString>(QString(),QString());
+	}
 
 	// If package was moved or delete, update state.
 	while ( line >= 0 && ! text(line).contains(regex) ) {

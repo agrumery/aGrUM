@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->splitter2->setStretchFactor( 1, 0 );
 	ui->splitter2->setStretchFactor( 2, 0 );
 
+	vc->setCommandWidgetVisible(false);
+
 	d->dial = new QDialog(this);
 	d->dial->setWindowIcon(QIcon("qrc:/logo"));
 	d->dial->setWindowTitle(tr("SkoobEditor -- Aide"));
