@@ -143,10 +143,14 @@ eliminateNode(const DiscreteVariable* var,
     pot = new Potential<prm_float>(projectSum(*tmp, var_set));
     delete tmp;
   }
-  for (Set<const Potential<prm_float>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter)
+  for (Set<const Potential<prm_float>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter) {
     pool.erase(const_cast<Potential<prm_float>*>(*iter));
+    if (trash.exists(const_cast<Potential<prm_float>*>(*iter))) {
+      trash.erase(const_cast<Potential<prm_float>*>(*iter));
+      delete const_cast<Potential<prm_float>*>(*iter);
+    }
+  }
   pool.insert(pot);
-  trash.insert(pot);
 }
 
 // void
