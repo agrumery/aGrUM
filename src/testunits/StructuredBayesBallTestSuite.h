@@ -129,57 +129,57 @@ namespace tests {
         TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
       }
 
-      /// Checking that when a root is queried and there is evidence on each leaf node, the
-      /// requisite nodes set contains all nodes
-      void testRootsObs() {
-        StructuredBayesBall* bb = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*prm_inf));
-        for (System::iterator i = sys->begin(); i != sys->end(); ++i) {
-          for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
-            if ( (**i).type().dag().children((**a).id()).empty() and (not (**i).hasRefAttr((**a).id())) ) {
-              PRMInference::Chain chain = std::make_pair(*i, *a);
-              Potential<prm_float> e;
-              e.add((**a).type().variable());
-              e.fill((prm_float) 0.0);
-              Instantiation inst(e);
-              inst.setFirst();
-              e.set(inst, (prm_float)1.0);
-              prm_inf->addEvidence(chain, e);
-              TS_ASSERT(bb->__isHardEvidence(*i, (**a).id()));
-            }
-          }
-        }
-        for (System::iterator i = sys->begin(); i != sys->end(); ++i) {
-          for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
-            if ((**i).type().dag().parents((**a).id()).empty()) {
-              TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
-              std::vector<Instance*> stack;
-              stack.push_back(*i);
-              Size count = 0;
-              while (not stack.empty()) {
-                Instance* inst = stack.back();
-                stack.pop_back();
-                TS_ASSERT(bb->exists(inst));
-                if (not bb->exists(inst)) {
-                  GUM_TRACE_VAR(inst->name());
-                  std::string dot = ".";
-                  GUM_TRACE((**i).name() + dot + (**a).safeName());
-                }
-                count += inst->size();
-                for (Instance::InvRefIterator iter = inst->beginInvRef(); iter != inst->endInvRef(); ++iter) {
-                  typedef std::vector< std::pair<Instance*, std::string> >::iterator Iter;
-                  for (Iter jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-                    stack.push_back(jter->first);
-                  }
-                }
-              }
-              TS_ASSERT(bb->requisiteNodes(*i).size() <= count);
-              // std::cerr << std::endl;
-            }
-          }
-        }
-        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
-      }
+      // /// Checking that when a root is queried and there is evidence on each leaf node, the
+      // /// requisite nodes set contains all nodes
+      // void testRootsObs() {
+      //   StructuredBayesBall* bb = 0;
+      //   TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*prm_inf));
+      //   for (System::iterator i = sys->begin(); i != sys->end(); ++i) {
+      //     for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
+      //       if ( (**i).type().dag().children((**a).id()).empty() and (not (**i).hasRefAttr((**a).id())) ) {
+      //         PRMInference::Chain chain = std::make_pair(*i, *a);
+      //         Potential<prm_float> e;
+      //         e.add((**a).type().variable());
+      //         e.fill((prm_float) 0.0);
+      //         Instantiation inst(e);
+      //         inst.setFirst();
+      //         e.set(inst, (prm_float)1.0);
+      //         prm_inf->addEvidence(chain, e);
+      //         TS_ASSERT(bb->__isHardEvidence(*i, (**a).id()));
+      //       }
+      //     }
+      //   }
+      //   for (System::iterator i = sys->begin(); i != sys->end(); ++i) {
+      //     for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
+      //       if ((**i).type().dag().parents((**a).id()).empty()) {
+      //         TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
+      //         std::vector<Instance*> stack;
+      //         stack.push_back(*i);
+      //         Size count = 0;
+      //         while (not stack.empty()) {
+      //           Instance* inst = stack.back();
+      //           stack.pop_back();
+      //           TS_ASSERT(bb->exists(inst));
+      //           if (not bb->exists(inst)) {
+      //             GUM_TRACE_VAR(inst->name());
+      //             std::string dot = ".";
+      //             GUM_TRACE((**i).name() + dot + (**a).safeName());
+      //           }
+      //           count += inst->size();
+      //           for (Instance::InvRefIterator iter = inst->beginInvRef(); iter != inst->endInvRef(); ++iter) {
+      //             typedef std::vector< std::pair<Instance*, std::string> >::iterator Iter;
+      //             for (Iter jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
+      //               stack.push_back(jter->first);
+      //             }
+      //           }
+      //         }
+      //         TS_ASSERT(bb->requisiteNodes(*i).size() <= count);
+      //         // std::cerr << std::endl;
+      //       }
+      //     }
+      //   }
+      //   TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+      // }
 
   };
 
