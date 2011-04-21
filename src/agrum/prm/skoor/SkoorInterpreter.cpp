@@ -111,20 +111,6 @@ void SkoorInterpreter::clearPaths()
   m_paths.clear();
 }
 
-/// Clear the current context (and errors).
-void SkoorInterpreter::clearContext()
-{
-  m_context->clear();
-  m_errors = ErrorsContainer();
-  if ( m_reader ) {
-    delete m_inf;
-    m_inf = 0;
-    delete m_reader->prm();
-    delete m_reader;
-    m_reader = 0;
-  }
-}
-
 /// syntax mode don't process anything, just check syntax.
 bool SkoorInterpreter::isInSyntaxMode() const {
   return m_syntax_flag;
@@ -727,7 +713,7 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
   const Attribute & attr = *(command->chain.second);
   
   gum::Potential<gum::prm::prm_float> m;
-
+  
 	// Create inference engine if it has not been already created.
   if ( ! m_inf )
     generateInfEngine ( *(command->system) );
@@ -736,13 +722,14 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
   if (m_verbose) m_log << "# Starting inference over query: " << query << "... " << flush;
   gum::Timer timer;
   timer.reset();
+  
   m_inf->marginal ( command->chain, m );
   
   // Compute spent time
   double t = timer.step();
   if (m_verbose) m_log << "Finished." << endl;
   if (m_verbose) m_log << "# Time in seconds (accuracy ~0.001): " << t << endl;
-
+  
   // Show results
   gum::Instantiation j ( m );
   if (m_verbose) m_log << endl;

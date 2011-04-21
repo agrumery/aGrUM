@@ -80,7 +80,6 @@ public:
   /// Getter and setter for the context.
   SkoorContext * getContext() const;
   void setContext( SkoorContext * context );
-  void clearContext();  
   
   /// Root paths to search from there packages.
   /// Default are working dir, request file dir if any 

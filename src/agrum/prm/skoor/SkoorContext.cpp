@@ -50,7 +50,10 @@ SkoorContext::SkoorContext( const SkoorContext & s )
   
 SkoorContext::~SkoorContext()
 {
-  clear();
+  for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
+    delete m_imports[i];
+  for ( int i = m_sessions.size() - 1 ; i >= 0 ; i-- )
+    delete m_sessions[i];
 }
   
 string SkoorContext::getFilename() const
@@ -108,17 +111,6 @@ void SkoorContext::addSession( SkoorSession * session )
 void SkoorContext::addSession( const SkoorSession & session )
 {
   addSession( new SkoorSession(session) );
-}
-  
-void SkoorContext::clear()
-{
-  m_package = "";
-  for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
-    delete m_imports[i];
-  m_imports.clear();
-  for ( int i = m_sessions.size() - 1 ; i >= 0 ; i-- )
-    delete m_sessions[i];
-  m_sessions.clear();
 }
   
 string SkoorContext::toString() const

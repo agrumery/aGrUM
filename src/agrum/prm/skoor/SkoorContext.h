@@ -222,8 +222,6 @@ public :
   void addSession( SkoorSession * session );
   void addSession( const SkoorSession & session );
   
-  void clear();
-  
   virtual std::string toString() const;
   SkoorContext & operator+=( const SkoorContext & c );
 };
