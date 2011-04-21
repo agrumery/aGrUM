@@ -64,6 +64,8 @@ protected:
 
 	//! Set the new PRM. Previous will be deleted if unused.
 	void setPRM( const gum::prm::PRM * prm );
+	//! Set the new PRM. Previous will be deleted if unused.
+	void setPRM( const QSharedPointer<PRMTreeModel> & prm );
 	//! Set the ErrorsContainer
 	void setErrors( const gum::ErrorsContainer & errors );
 

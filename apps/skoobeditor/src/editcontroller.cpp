@@ -117,6 +117,7 @@ void EditController::autoComplete()
 	if ( mw->fc->hasCurrentDocument() && ! newPRMModel.isNull() ) {
 		// If model has changed, init it.
 		if ( d->prmModel != newPRMModel ) {
+			QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
 			d->prmModel.clear();
 			d->prmModel = mw->bc->currentDocumentModel();
 			d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());

@@ -13,14 +13,14 @@ using namespace gum::prm;
 ################################################################################
  */
 
-PRMTreeItem::PRMTreeItem( PRMTreeItem * parent, const QString & data)
-	: parent(parent), localData(data)
+PRMTreeItem::PRMTreeItem( PRMTreeItem * parent, const QString & data, PRMType type )
+	: parent(parent), localData(data), type(type), isArray(false)
 {
 }
 
 
 PRMTreeItem::PRMTreeItem( PRMTreeItem * newParent, const PRMTreeItem * item )
-	: parent(newParent), localData(item->localData)
+	: parent(newParent), localData(item->localData), type(item->type), isArray(item->isArray)
 {
 	foreach( PRMTreeItem * child, item->children ) {
 		children << new PRMTreeItem( this, child );
@@ -33,20 +33,25 @@ PRMTreeItem::~PRMTreeItem()
 		delete item;
 }
 
-PRMTreeItem * PRMTreeItem::createChild( const QStringList & list )
+PRMTreeItem * PRMTreeItem::createChild( const QStringList & list, PRMType type  )
 {
 	if (list.isEmpty())
 		return 0;
 
 	foreach ( PRMTreeItem * child, children )
-		if ( child->localData == list.first() )
-			return child->createChild( list.mid(1) );
+		if ( child->localData == list.first() ) {
+			if ( list.size() > 1 )
+				return child->createChild( list.mid(1), type );
+			else
+				return child;
+		}
 
-	children.append( new PRMTreeItem(this,list.first()) );
+
+	children.append( new PRMTreeItem(this,list.first(),type) );
 	if ( list.size() == 1 )
 		return children.last();
 	else
-		return children.last()->createChild( list.mid(1) );
+		return children.last()->createChild( list.mid(1), type );
 }
 
 QString PRMTreeItem::toString(int tab) const
@@ -133,12 +138,12 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 	// Foreach type
 	foreach ( Type * type, prm->types() ) {
 		// Create the PRMTreeItem
-		rootItem->createChild( QString::fromStdString( type->name() ).split(".") );
+		rootItem->createChild( QString::fromStdString( type->name() ).split("."), PRMTreeItem::Type );
 		const gum::DiscreteVariable & var = type->variable();
 		// Foreach labels
 		for ( int i = 0 ; i < var.domainSize() ; i++ )
 			// Create the PRMTreeItem for the label (at the root)
-			rootItem->createChild( QStringList() << QString::fromStdString( var.label(i) ) );
+			rootItem->createChild( QStringList() << QString::fromStdString( var.label(i) ), PRMTreeItem::Label );
 	}
 
 	QList< QPair<PRMTreeItem *, ClassElementContainer *> > refList;
@@ -146,7 +151,7 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 	// Foreach interface
 	foreach ( Interface * i, prm->interfaces() ) {
 		// Create the PRMTreeItem
-		PRMTreeItem * interfaceItem = rootItem->createChild( QString::fromStdString( i->name() ).split(".") );
+		PRMTreeItem * interfaceItem = rootItem->createChild( QString::fromStdString( i->name() ).split("."), PRMTreeItem::Interface );
 		if (interfaceItem != 0)
 			// Add it to ref list to be recursively treat later
 			refList << QPair<PRMTreeItem *, ClassElementContainer *>(interfaceItem, i);
@@ -155,7 +160,7 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 	// Foreach class
 	foreach ( Class * c, prm->classes() ) {
 		// Create the PRMTreeItem
-		PRMTreeItem * classItem = rootItem->createChild( QString::fromStdString( c->name() ).split(".") );
+		PRMTreeItem * classItem = rootItem->createChild( QString::fromStdString( c->name() ).split("."), PRMTreeItem::Class );
 		if (classItem != 0)
 			// Add it to ref list to be recursively treat later
 			refList << QPair<PRMTreeItem *, ClassElementContainer *>(classItem, c);
@@ -164,11 +169,11 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 	// Foreach system
 	foreach ( System * s, prm->systems() ) {
 		// Create the PRMTreeItem
-		PRMTreeItem * item = rootItem->createChild( QString::fromStdString( s->name() ).split(".") );
+		PRMTreeItem * item = rootItem->createChild( QString::fromStdString( s->name() ).split("."), PRMTreeItem::System );
 		if (item != 0)
 			for ( System::iterator i = s->begin() ; i != s->end() ; ++i ) {
 				// Create the PRMTreeItem
-				PRMTreeItem * inst = item->createChild( QStringList() << QString::fromStdString((*i)->name()) );
+				PRMTreeItem * inst = item->createChild( QStringList() << QString::fromStdString((*i)->name()), PRMTreeItem::Instance );
 				// Add it to ref list to be recursively treat later
 				refList << QPair<PRMTreeItem *, ClassElementContainer *>(inst, &((*i)->type()));
 			}
@@ -185,13 +190,17 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 			i = static_cast<Interface *>( p.second );
 			Q_ASSERT( i != 0 );
 			//  Pour chaque attibut
-			foreach ( Attribute * a, i->attributes() )
+			foreach ( Attribute * a, i->attributes() ) {
 				//    je l'ajoute en enfant
-				p.first->createChild( QStringList() << QString::fromStdString(a->name()) );
+				PRMTreeItem * attItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Attribute );
+				attItem->ofType = QString::fromStdString(a->type().name());
+			}
 			//  Pour chaque ref
 			foreach ( ReferenceSlot * r, i->referenceSlots() ) {
 				//    je l'ajoute en enfant
-				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()) );
+				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()), PRMTreeItem::Refererence );
+				refItem->ofType = QString::fromStdString(r->slotType().name());
+				refItem->isArray = r->isArray();
 				//    je l'ajoute à la liste
 				refList << QPair<PRMTreeItem *, ClassElementContainer *>(refItem, &(r->slotType()));
 			}
@@ -200,17 +209,23 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 			c = static_cast<Class *>( p.second );
 			Q_ASSERT( c != 0 );
 			//  Pour chaque attibut
-			foreach ( Attribute * a, c->attributes() )
+			foreach ( Attribute * a, c->attributes() ) {
 				//    je l'ajoute en enfant
-				p.first->createChild( QStringList() << QString::fromStdString(a->name()) );
+				PRMTreeItem * attItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Attribute );
+				attItem->ofType = QString::fromStdString(a->type().name());
+			}
 			//  Pour chaque aggrégat
-			foreach ( Aggregate * a, c->aggregates() )
+			foreach ( Aggregate * a, c->aggregates() ) {
 				//    je l'ajoute en enfant
-				p.first->createChild( QStringList() << QString::fromStdString(a->name()) );
+				PRMTreeItem * aggItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Aggregate );
+				aggItem->ofType = QString::fromStdString(a->type().name());
+			}
 			//  Pour chaque ref
 			foreach ( ReferenceSlot * r, c->referenceSlots() ) {
 				//    je l'ajoute en enfant
-				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()) );
+				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()), PRMTreeItem::Refererence );
+				refItem->ofType = QString::fromStdString(r->slotType().name());
+				refItem->isArray = r->isArray();
 				//    je l'ajoute à la liste
 				refList << QPair<PRMTreeItem *, ClassElementContainer *>(refItem, &(r->slotType()));
 			}
@@ -296,6 +311,12 @@ void PRMTreeModel::addKeywords( const QStringList & keywords )
 {
 	foreach( QString word, keywords )
 		rootItem->children.append( new PRMTreeItem(rootItem, word) );
+}
+
+
+const PRMTreeItem * PRMTreeModel::getItem( const QString & name ) const
+{
+	return rootItem->getChild( name.split(QChar('.')) );
 }
 
 /// \reimp

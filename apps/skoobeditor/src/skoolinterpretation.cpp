@@ -42,17 +42,7 @@ void SkoolInterpretation::run()
 		m_reader->readFile( f.toStdString() );
 
 	setErrors( m_reader->getErrorsContainer() );
-	prmChanged = true;
+	QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel(m_reader->prm()) );
+	setPRM( ptr );
 }
-
-//! \reimp.
-QSharedPointer<PRMTreeModel> SkoolInterpretation::prm()
-{
-	if ( isFinished() && prmChanged ) {
-		prmChanged = false;
-		setPRM( m_reader->prm() );
-	}
-	return AbstractParser::prm();
-}
-
 

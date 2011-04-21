@@ -22,6 +22,8 @@ public:
 	/// Add keyworsd to model.
 	void addKeywords( const QStringList & keywords );
 
+	const PRMTreeItem * getItem( const QString & name ) const;
+
 	/// \reimp
 	virtual QModelIndex parent( const QModelIndex & index ) const;
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -38,11 +40,13 @@ private:
 
 class PRMTreeItem {
 public:
-	PRMTreeItem( PRMTreeItem * parent, const QString & data);
+	enum PRMType { Unknow, Type, Label, Class, Refererence, Attribute, Function, Aggregate, Interface, System, Instance };
+
+	PRMTreeItem( PRMTreeItem * parent, const QString & data, PRMType type = Unknow );
 	PRMTreeItem( PRMTreeItem * newParent, const PRMTreeItem * item );
 	~PRMTreeItem();
 
-	PRMTreeItem * createChild( const QStringList & list );
+	PRMTreeItem * createChild( const QStringList & list, PRMType type = Unknow );
 	QString toString(int tab = 0) const;
 	QString completeData() const;
 	PRMTreeItem * getChild( const QStringList & list );
@@ -52,6 +56,9 @@ public:
 	PRMTreeItem * parent;
 	QList<PRMTreeItem *> children;
 	QString localData;
+	PRMType type;
+	QString ofType;
+	bool isArray;
 };
 
 #endif // PRMTREEMODEL_H

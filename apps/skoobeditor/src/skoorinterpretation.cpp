@@ -58,6 +58,7 @@ void SkoorInterpretation::run()
 	foreach ( QString s, classPaths() )
 		m_interpreter->addPath( s.toStdString() );
 	m_interpreter->setSyntaxMode(isSyntaxMode());
+	//m_interpreter->setVerboseMode(true);
 
 	if ( ! m_command.isEmpty() ) {
 		if ( prm().isNull() ) { // On a pas encore parsé le fichier
@@ -72,18 +73,8 @@ void SkoorInterpretation::run()
 	else
 		m_interpreter->interpretLine( b );
 
-	m_prmChanged = true;
+	setPRM( m_interpreter->prm() );
 	setErrors( m_interpreter->getErrorsContainer() );
-}
-
-//! \reimp.
-QSharedPointer<PRMTreeModel> SkoorInterpretation::prm()
-{
-	if ( isFinished() && m_prmChanged ) {
-		m_prmChanged = false;
-		setPRM( m_interpreter->prm() );
-	}
-	return AbstractParser::prm();
 }
 
 vector< pair<string,QueryResult> > SkoorInterpretation::results() const

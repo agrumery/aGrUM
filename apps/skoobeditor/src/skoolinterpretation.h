@@ -27,9 +27,6 @@ public:
 	SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent );
 	~SkoolInterpretation();
 
-	//! \reimp.
-	virtual QSharedPointer<PRMTreeModel> prm();
-
 protected:
 	void run();
 };

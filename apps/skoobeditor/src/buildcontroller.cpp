@@ -354,16 +354,19 @@ void BuildController::onParsingFinished()
 
 			int line = err.line;
 			QString s = QString::fromStdString( err.toString() );
+			QString relFilename;
 
 			if ( errFilename.isEmpty() ) {
+				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				s.prepend( relFilename + ":" );
 				errFilename = filename;
-				s.prepend( errFilename + ":" );
-			} else if ( errFilename == "anonymous buffer" ) {
+			} else if ( errFilename == "anonymous buffer" || errFilename.endsWith(".bak") ) {
+				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				s.replace( errFilename, relFilename );
 				errFilename = filename;
-				s.replace( "anonymous buffer", filename );
-			} else if ( errFilename.endsWith(".bak") ) {
-				s.replace( errFilename, filename );
-				errFilename = filename;
+			} else {
+				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(errFilename);
+				s.replace( errFilename, relFilename );
 			}
 
 			QListWidgetItem * item = new QListWidgetItem(s, d->buildList) ;
@@ -486,12 +489,101 @@ void BuildController::onDocumentClosed( const QString & filename )
 
 void BuildController::executeClass( QsciScintillaExtended * sci )
 {
-	qDebug() << "execute class" << sci->block().second;
+	QString name = QFileInfo(sci->filename()).baseName();
+	QSharedPointer<PRMTreeModel> model = currentDocumentModel();
+
+	// On ouvre un nouveau document système
+	QsciScintillaExtended * sys = mw->fc->newDocument(name+"System", QsciScintillaExtended::Skool);
+	sys->setFilename(QFileInfo(sci->filename()).path()+"/"+sys->title()+".skool");
+
+	// On met à jour le package dans le document skoor,
+	if ( ! sci->package().isEmpty() )
+		sys->append("\npackage "+sci->package()+";\n");
+
+	// On ajoute l'import
+	sys->append("\nimport "+name+";\n\n");
+
+	// On ajoute le block default
+	sys->append("system "+name+"System {\n");
+
+	QString className = sci->block().second;
+	if ( ! sci->package().isEmpty() )
+		className = sci->package()+"."+className;
+
+	// Pour chaque référence dans la classe, et de façon récursive,
+	if ( ! model.isNull() ) {
+		const PRMTreeItem * classItem = model->getItem(className);
+		int cpt = 1;
+		QList< QPair<const PRMTreeItem *,QString> > toInst;
+		QString id = classItem->localData + QString::number(cpt++);
+
+		sys->append( "    " + className + " " + id + ";\n" );
+		foreach ( const PRMTreeItem * child, classItem->children )
+			if ( child->type == PRMTreeItem::Refererence )
+				toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
+
+		while ( ! toInst.isEmpty() ) {
+			QPair<const PRMTreeItem*,QString> pair = toInst.takeFirst();
+			const PRMTreeItem * item = pair.first;
+			QString ref = pair.second;
+			id = item->localData + QString::number(cpt++);
+
+			// Type
+			const PRMTreeItem * typeItem = model->getItem(item->ofType);
+			if ( ! typeItem )
+				sys->append( "// Problem with this reference : type not found.\n" );
+			else if ( typeItem->type == PRMTreeItem::Interface )
+				sys->append( "// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
+			else if ( typeItem->type != PRMTreeItem::Class )
+				sys->append( "// Problem with this reference : this type is not a class.\n" );
+			sys->append( "    " + item->ofType );
+
+			// Array
+			if ( item->isArray )
+				sys->append( "[2]" );
+
+			// ID
+			sys->append( " " + id + ";\n" );
+
+			// Affectation
+			sys->append( "    " + ref + " = " + id + ";\n");
+
+			// Recursive instanciation
+			foreach ( const PRMTreeItem * child, item->children )
+				if ( child->type == PRMTreeItem::Refererence )
+					toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
+		}
+	}
+
+	sys->append("}\n");
+
+	// give it the focus,
+	mw->ui->tabWidget->setCurrentWidget(sys);
+	sys->setFocus();
 }
+
 
 void BuildController::executeSystem( QsciScintillaExtended * sci )
 {
-	qDebug() << "execute system" << sci->block().second;
+	QString name = QFileInfo(sci->filename()).baseName();
+	// On crée un nouveau document skoor qu'on enregistre dans le package du système
+	QsciScintillaExtended * req = mw->fc->newDocument(name+"Request", QsciScintillaExtended::Skoor);
+	req->setFilename(QFileInfo(sci->filename()).path()+"/"+req->title()+".skoor");
+
+	// On met à jour le package dans le document skoor,
+	if ( ! sci->package().isEmpty() )
+		req->append("\npackage "+sci->package()+";\n");
+
+	// On ajoute l'import
+	req->append("\nimport "+name+" as default;\n\n");
+
+	// On ajoute le block default
+	req->append("request "+name+"Request {\n}\n");
+
+	// give it the focus,
+	mw->ui->tabWidget->setCurrentWidget(req);
+	req->setFocus();
+	// => L'utilisateur n'a plus qu'à faire les observations et requêtes nécessaires.
 }
 
 void BuildController::onCommandValided()

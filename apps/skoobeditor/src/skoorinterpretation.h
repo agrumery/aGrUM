@@ -28,14 +28,10 @@ public:
 	SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent );
 	~SkoorInterpretation();
 
-	//! \reimp.
-	virtual QSharedPointer<PRMTreeModel> prm();
-
-	//! Return result of execution.
-	std::vector< std::pair<std::string,gum::prm::skoor::QueryResult> > results() const;
-
 	//! Return last command.
 	QString command() const;
+	//! Return result of execution.
+	std::vector< std::pair<std::string,gum::prm::skoor::QueryResult> > results() const;
 
 public slots:
 	//! \reimp

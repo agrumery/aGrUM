@@ -184,6 +184,13 @@ void AbstractParser::setPRM( const gum::prm::PRM * prm )
 	d->prm = QSharedPointer<PRMTreeModel>( new PRMTreeModel(prm) );
 }
 
+void AbstractParser::setPRM( const QSharedPointer<PRMTreeModel> & prm )
+{
+	QMutexLocker(d->mutex);
+	d->prm.clear();
+	d->prm = prm;
+}
+
 //! Set the ErrorsContainer
 void AbstractParser::setErrors( const gum::ErrorsContainer & errors )
 {

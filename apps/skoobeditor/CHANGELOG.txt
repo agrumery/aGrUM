@@ -1,4 +1,9 @@
 ﻿
+21/04/2011 
+    * Improve : Affiche les nom de fichier en relatif dans le dock des messages d'erreur.
+    * Add : F6 sur un fichier de classe crée un fichier system minimal (crée toutes les instances), 
+    * Add : F6 sur un fichier system crée un fichier requête.
+    
 19/04/2011
     * Add : Ajout de l'interpréteur aux documents Skoor, pour exécuter des commandes seules.
     
