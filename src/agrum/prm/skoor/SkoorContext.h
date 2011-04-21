@@ -47,7 +47,7 @@ namespace gum {
 class SkoorCommand {
 public :
   int line;
-  enum Type {Import, Observe, Unobserve, Query, SetEngine, SetGndEngine};
+  enum Type {Observe, Unobserve, Query, SetEngine, SetGndEngine};
   
   SkoorCommand( int line ) : line(line) {}
   SkoorCommand( const SkoorCommand & c ) : line(c.line) {}
@@ -58,17 +58,17 @@ public :
 };
 
 ///
-class ImportCommand : public SkoorCommand {
+class ImportCommand {
 public :
   ImportCommand( int line, const std::string & value, const std::string & alias )
-   : SkoorCommand(line), value(value), alias(alias) {}
+   : line(line), value(value), alias(alias) {}
   ImportCommand( const ImportCommand & c )
-   : SkoorCommand(c), value(c.value), alias(c.alias) {}
+   : line(c.line), value(c.value), alias(c.alias) {}
 
+  int line;
   std::string value;
   std::string alias;
   
-  Type type() const { return Import; }
   std::string toString() const {
     return "import " + value + (alias.empty()?"":"as "+alias) + ";";
   }

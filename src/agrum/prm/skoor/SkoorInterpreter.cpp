@@ -193,7 +193,7 @@ bool SkoorInterpreter::interpretFile( const string & filename )
 
   delete m_context;
   m_context = new SkoorContext(filename);
-  SkoorContext c;
+  SkoorContext c(filename);
   
   // On vérifie la syntaxe
   Scanner s( filename.c_str() );
@@ -537,7 +537,7 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
   
   // Deduce root path from package name.
   string package = context->getPackage();
-  if ( ! package.empty() ) {
+  if ( ! found && ! package.empty() ) {
     string root;
     
     // if filename is not empty, start from it.
