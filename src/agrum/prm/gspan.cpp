@@ -190,9 +190,6 @@ GSpan::__sortPatterns() {
     }
   }
   if (not __patterns.empty()) {
-    // Second we sort __patterns.
-    GSpan::PatternSort my_sort(this);
-    std::sort(__patterns.begin(), __patterns.end(), my_sort);
     // Now we need to find all the matches we can, using __patterns.
     // We start by the best Pattern and add it's maximal independent set to __chosen
     GSpan::MatchedInstances* matches = new GSpan::MatchedInstances();
@@ -259,6 +256,22 @@ GSpan::__sortPatterns() {
       }
       __matched_instances.insert(*p, matches);
     }
+    // We remove patterns with 0 matches
+    std::vector<size_t> trash;
+    for (size_t idx = 0; idx < __patterns.size(); ++idx)
+      if (__matched_instances[__patterns[idx]]->size() < 2)
+        trash.push_back(idx);
+    while (trash.size()) {
+      delete __matched_instances[__patterns[trash.back()]];
+      __matched_instances.erase(__patterns[trash.back()]);
+      //delete __patterns[trash.back()];
+      __patterns[trash.back()] = __patterns.back();
+      __patterns.pop_back();
+      trash.pop_back();
+    }
+    // We sort __patterns.
+    GSpan::PatternSort my_sort(this);
+    std::sort(__patterns.begin(), __patterns.end(), my_sort);
   }
 }
 

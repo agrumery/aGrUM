@@ -909,6 +909,22 @@ class SkoolTestSuite: public CxxTest::TestSuite {
         delete prm;
     }
 
+    // void testEasyWriting() {
+    //   SkoolReader reader;
+    //   reader.addClassPath("../../../src/testunits/ressources/skool/First");
+    //   TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/First/systems/MyKickAssSystem.skool"));
+    //   PRM* prm = 0;
+    //   TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
+    //   Size plop = prm->classes().size();
+    //   plop += prm->interfaces().size();
+    //   TS_ASSERT_EQUALS(plop, (Size) 8);
+    //   System* sys = 0;
+    //   TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("systems.MyKickAssSystem")));
+    //   TS_ASSERT_EQUALS(sys->size(), (Size) 13);
+    //   if (prm)
+    //     delete prm;
+    // }
+
     // Do not uncommment these unless you want to debug or test with errors
     // (it dumps a lot of stuff)
 
