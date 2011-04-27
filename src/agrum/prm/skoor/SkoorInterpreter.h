@@ -42,7 +42,24 @@ namespace gum {
 
     namespace skoor {
 
-typedef std::vector< std::pair<std::string,float> > QueryResult;
+/**
+ * 
+ * */
+class SingleResult {
+public:
+  std::string label;
+  float p;
+};
+
+/**
+ * 
+ * */
+class QueryResult {
+public:
+  double time;
+  string command;
+  std::vector< SingleResult > values;
+};
 
 /**
  * Permet de manipuler un contexte skoor
@@ -71,9 +88,10 @@ public:
   const gum::prm::PRM* prm() const;
   /// Retrieve inference motor object.
   const gum::prm::PRMInference* inference() const;
-  /// Return a vector of pair query/QueryResults.
-  /// Each QueryResults is a vector of pair label/value.
-  const std::vector< std::pair<std::string,QueryResult> > & results() const;
+  /// Return a vector of QueryResults.
+  /// Each QueryResults is a struct with query command, time and values, 
+  /// a vector of struct SingleResult, with pair label/value.
+  const std::vector<QueryResult> & results() const;
   /// Return container with all errors.
   ErrorsContainer getErrorsContainer() const;
   
@@ -145,7 +163,7 @@ private:
   gum::prm::PRMInference* m_inf;
   std::string m_engine;
   std::string m_bn_engine;
-  std::vector< std::pair<std::string,QueryResult> > m_results;
+  std::vector<QueryResult> m_results;
   gum::ErrorsContainer m_errors;
   bool m_syntax_flag;
   bool m_verbose;

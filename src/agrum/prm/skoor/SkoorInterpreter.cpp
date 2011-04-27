@@ -143,14 +143,14 @@ const gum::prm::PRMInference* SkoorInterpreter::inference() const
 {
   return m_inf;
 }
-
-/// Return a vector of pair query/QueryResults.
-/// Each QueryResults is a vector of pair label/value.
-const std::vector< std::pair<std::string,QueryResult> > & SkoorInterpreter::results() const
+  
+/// Return a vector of QueryResults.
+/// Each QueryResults is a struct with query command, time and values, 
+/// a vector of struct SingleResult, with pair label/value.
+const std::vector<QueryResult> & SkoorInterpreter::results() const
 {
   return m_results;
 }
-  
 
 /**
  * Parse the file or the command line.
@@ -728,13 +728,18 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
   gum::Instantiation j ( m );
   if (m_verbose) m_log << endl;
   QueryResult result;
+  result.command = query;
+  result.time = t;
   for ( j.setFirst (); not j.end (); j.inc () ) {
     string label = attr.type().variable().label ( j.val ( attr.type().variable() ) );
     float value = m.get ( j );
-    result.push_back( make_pair(label, value) );
+    SingleResult singleResult;
+    singleResult.label = label;
+    singleResult.p = value;
+    result.values.push_back( singleResult );
     if (m_verbose) m_log << label << " : " << value << endl;
   }
-  m_results.push_back( make_pair(query,result) );
+  m_results.push_back( result );
   if (m_verbose) m_log << endl;
   
 } catch ( gum::Exception& e ) {
