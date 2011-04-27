@@ -130,10 +130,8 @@ void Parser::skoor() {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
-			if ( __currentSession == 0 ) {
-			 __currentSession = new SkoorSession("default");
-			 __context->addSession( __currentSession );
-			}
+			__currentSession = new SkoorSession("default");
+			__context->addSession( __currentSession );
 			
 			Command();
 		} else SynErr(30);

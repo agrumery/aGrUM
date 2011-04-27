@@ -73,10 +73,8 @@ skoor =                 (. std::string s, alias; __currentSession = 0; .)
     }
     { RequestBloc }
   |                     (. 
-                          if ( __currentSession == 0 ) {
                             __currentSession = new SkoorSession("default");
                             __context->addSession( __currentSession );
-                          }
                         .)
     Command
   ).

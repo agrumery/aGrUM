@@ -53,7 +53,7 @@ using namespace gum::prm;
 /// This constructor create an empty context.
 SkoorInterpreter::SkoorInterpreter() :
   m_context(new SkoorContext()),
-  m_reader(0),
+  m_reader(new skool::SkoolReader()),
   m_inf(0),
   m_syntax_flag(false),
   m_verbose(false),
@@ -67,8 +67,7 @@ SkoorInterpreter::~SkoorInterpreter()
 {
   delete m_context;
   delete m_inf;
-  if ( m_reader )
-    delete m_reader->prm();
+  delete m_reader->prm();
   delete m_reader;
 }
 
@@ -136,10 +135,7 @@ void SkoorInterpreter::setVerboseMode ( bool f )
 /// Retrieve prm object.
 const gum::prm::PRM* SkoorInterpreter::prm() const
 {
-    if ( m_reader ) {
-        return m_reader->prm();
-    } else
-        return 0;
+   return m_reader->prm();
 }
 
 /// Retrieve inference motor object.
@@ -190,6 +186,13 @@ bool SkoorInterpreter::interpretFile( const string & filename )
   m_errors = p.errors();
   if ( errors() > 0 )
     return false;
+  
+  // Set paths to search from.
+  delete m_reader;
+  m_reader = new skool::SkoolReader();
+  for ( size_t i = 0 ; i < m_paths.size() ; i++ )
+    m_reader->addClassPath( m_paths[i] );
+    
   // On vérifie la sémantique.
   if ( ! checkSemantic( &c ) )
     return false;
@@ -302,15 +305,6 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
   if ( errors() > 0 )
     return false;
   
-  if ( ! m_reader ) {
-    // Create the reader
-    m_reader = new skool::SkoolReader();
-    
-    // Set paths to search from.
-    for ( size_t i = 0 ; i < m_paths.size() ; i++ )
-      m_reader->addClassPath( m_paths[i] );
-  }
-  
   // On importe tous les systèmes.
   vector<ImportCommand *> imports = context->getImports();
   for ( vector<ImportCommand *>::const_iterator i = imports.begin() ; i < imports.end() ; i++ ) {
@@ -397,14 +391,14 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
 
 bool SkoorInterpreter::checkSetEngine( SetEngineCommand * command )
 {
-  string name = command->value;
-  return name == "SVED" || name == "GRD" || name == "SVE";
+  m_engine = command->value;
+  return m_engine == "SVED" || m_engine == "GRD" || m_engine == "SVE";
 }
 
 bool SkoorInterpreter::checkSetGndEngine( SetGndEngineCommand * command )
 {
-  string name = command->value;
-  return name == "VE" || name == "VEBB" || name == "lazy";
+  m_bn_engine = command->value;
+  return m_bn_engine == "VE" || m_bn_engine == "VEBB" || m_bn_engine == "lazy";
 }
 
 bool SkoorInterpreter::checkObserve( ObserveCommand * command )
@@ -423,21 +417,21 @@ bool SkoorInterpreter::checkObserve( ObserveCommand * command )
     command->chain = std::make_pair ( &instance, &attr );
     
     // Check label exists for this type.
-    gum::Potential<gum::prm::prm_float> e;
-    e.add ( chain.second->type().variable() );
-    gum::Instantiation i ( e );
+    //gum::Potential<gum::prm::prm_float> e;
+    command->potentiel.add ( chain.second->type().variable() );
+    gum::Instantiation i ( command->potentiel );
     bool found = false;
     for ( i.setFirst(); not i.end(); i.inc() ) {
       if ( chain.second->type().variable().label ( i.val ( chain.second->type().variable() ) ) == right_val ) {
-        e.set ( i, ( gum::prm::prm_float ) 1.0 );
+        command->potentiel.set ( i, ( gum::prm::prm_float ) 1.0 );
         found = true;
       } else {
-        e.set ( i, ( gum::prm::prm_float ) 0.0 );
+        command->potentiel.set ( i, ( gum::prm::prm_float ) 0.0 );
       }
     }
 
     if ( ! found ) addError( right_val + " is not a label of " + left_val );
-    else command->potentiel = e;
+    //else command->potentiel = e;
     
     return found;
     
@@ -605,7 +599,7 @@ std::string SkoorInterpreter::findSystemName ( std::string & s ) {
   std::string name = s.substr ( 0, dot );
   
   // We look first for real system, next for alias.
-  if ( m_reader->prm()->isSystem ( name ) ) {
+  if ( prm()->isSystem ( name ) ) {
     s = s.substr( dot+1 );
     return name;
   }
@@ -615,7 +609,7 @@ std::string SkoorInterpreter::findSystemName ( std::string & s ) {
   }
 
   while ( dot != std::string::npos ) {
-    if ( m_reader->prm()->isSystem ( name ) ) {
+    if ( prm()->isSystem ( name ) ) {
       s = s.substr( dot+1 );
       return name;
     }
@@ -647,10 +641,10 @@ std::string SkoorInterpreter::findAttributeName ( const std::string & s, const g
 // After this method, ident doesn't contains the system name anymore.
 const System & SkoorInterpreter::getSystem( string & ident ) {
   try {
-    return m_reader->prm()->getSystem ( findSystemName (ident) );
+    return prm()->getSystem ( findSystemName (ident) );
   } catch ( const string & ) {}
-  if ( m_context->getMainImport() != 0 && m_reader->prm()->isSystem(m_context->getMainImport()->value) )
-    return m_reader->prm()->getSystem ( m_context->getMainImport()->value );
+  if ( m_context->getMainImport() != 0 && prm()->isSystem(m_context->getMainImport()->value) )
+    return prm()->getSystem ( m_context->getMainImport()->value );
   
   throw "could not find any system or alias in '" + ident + "' and no default alias has been set.";
 }
@@ -766,7 +760,7 @@ void SkoorInterpreter::setGndEngine( const SetGndEngineCommand * command )
 
 
 ///
-void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys) 
+void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
 {  
   if ( m_verbose ) m_log << "# Building the inference engine... " << std::flush;
   
@@ -779,7 +773,7 @@ void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
   
   //
   if ( m_engine == "SVED" ) {
-    m_inf = new gum::prm::SVED( *(m_reader->prm()), sys);
+    m_inf = new gum::prm::SVED( *(prm()), sys);
     
   //
   } else if (m_engine == "GRD") {
@@ -803,7 +797,7 @@ void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
       bn_inf = new gum::ShaferShenoyInference<p_f>(*bn);
     }
     
-    gum::prm::GroundedInference* grd_inf = new gum::prm::GroundedInference(*(m_reader->prm()), sys);
+    gum::prm::GroundedInference* grd_inf = new gum::prm::GroundedInference(*(prm()), sys);
     grd_inf->setBNInference(bn_inf);
     m_inf = grd_inf;
     
@@ -811,7 +805,7 @@ void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
   } else {
     if (m_engine != "SVE")
       addWarning("unkown engine '" + m_engine + "', use SVE insteed.");
-    m_inf = new gum::prm::SVE(*(m_reader->prm()), sys);
+    m_inf = new gum::prm::SVE(*(prm()), sys);
   }
   
   if (m_verbose) m_log << "Finished." << std::endl;
