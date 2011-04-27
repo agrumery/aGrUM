@@ -46,8 +46,7 @@ SOURCES += main.cpp\
     projectproperties.cpp \
     prmtreemodel.cpp \
     prmcompleter.cpp \
-	abstractparser.cpp \
-    skoorinterpretation2.cpp
+	abstractparser.cpp
     
 HEADERS  += mainwindow.h \
     filecontroller.h \
@@ -70,8 +69,7 @@ HEADERS  += mainwindow.h \
     projectproperties.h \
     prmtreemodel.h \
     prmcompleter.h \
-	abstractparser.h \
-    skoorinterpretation2.h
+	abstractparser.h
 
 FORMS    += mainwindow.ui \
     advancedsearch.ui \

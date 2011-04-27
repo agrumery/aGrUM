@@ -9,79 +9,104 @@
 using namespace std;
 using namespace gum::prm::skoor;
 
+struct SkoorInterpretation::PrivateData {
+	QMutex *		                      mutex;
+	gum::prm::skoor::SkoorInterpreter *   interpreter;
+	QString                               command;
+	vector< pair<string,QueryResult> >    result;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+//! Constructor. Create skoor interpreter.
 SkoorInterpretation::SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent ) :
-		AbstractParser(sci, parent), m_interpreter(0), m_prmChanged(false)
+		AbstractParser(sci, parent), d(new PrivateData)
 {
-	m_interpreter = new SkoorInterpreter();
+	d->interpreter = new SkoorInterpreter();
+	d->mutex = new QMutex();
 }
 
+//! Destructor. Delete skoor interpreter.
 SkoorInterpretation::~SkoorInterpretation()
 {
 	// Wait the run methods ends.
 	wait();
-	delete m_interpreter;
+	delete d->mutex;
+	delete d->interpreter;
 }
 
 //! Return last command.
 QString SkoorInterpretation::command() const
 {
-	if ( isFinished() )
-		return m_command;
-	else
-		return QString();
+	QMutexLocker locker(d->mutex);
+	return d->command;
+}
+
+
+//! Return result of execution.
+vector< pair<string,QueryResult> > SkoorInterpretation::results() const
+{
+	QMutexLocker locker(d->mutex);
+	return d->result;
 }
 
 //! \reimp
 void SkoorInterpretation::parse( Priority priority )
 {
-	m_command.clear();
+	QMutexLocker locker(d->mutex);
+	d->command.clear();
+	locker.unlock();
+
 	AbstractParser::parse(priority);
 }
 
 //! Parse a single command
 void SkoorInterpretation::parseCommand( const QString & command, Priority priority )
 {
-	if ( isRunning() )
-		wait();
-	m_command = command;
+	QMutexLocker locker(d->mutex);
+	d->command = command;
+	locker.unlock();
+
 	AbstractParser::parse(priority);
 }
 
 
+//! \reimp
 void SkoorInterpretation::run()
 {
 	QString f = filename();
-	string b = buffer().toStdString();
+	QString b = buffer();
 
-	m_interpreter->setSyntaxMode(isSyntaxMode());
-	m_interpreter->clearPaths();
+	d->interpreter->setSyntaxMode(isSyntaxMode());
+	d->interpreter->clearPaths();
 	foreach ( QString s, classPaths() )
-		m_interpreter->addPath( s.toStdString() );
-	m_interpreter->setSyntaxMode(isSyntaxMode());
-	//m_interpreter->setVerboseMode(true);
+		d->interpreter->addPath( s.toStdString() );
+	d->interpreter->setSyntaxMode(isSyntaxMode());
+	//d->interpreter->setVerboseMode(true);
 
-	if ( ! m_command.isEmpty() ) {
-		if ( prm().isNull() ) { // On a pas encore parsé le fichier
-			if ( ! f.isEmpty() )
-				m_interpreter->interpretFile(f.toStdString());
-			else
-				m_interpreter->interpretLine( b );
+	QMutexLocker locker(d->mutex);
+	QString command = d->command;
+	locker.unlock();
+
+	if ( ! command.isEmpty() ) {
+		if ( ! d->interpreter || ! d->interpreter->prm() ) { // On a pas encore parsé le fichier
+			if ( ! f.isEmpty() ) {
+				d->interpreter->interpretFile( f.toStdString() );
+			} else {
+				d->interpreter->interpretLine( b.toStdString() );
+			}
 		}
-		m_interpreter->interpretLine( m_command.toStdString() );
+		d->interpreter->interpretLine( command.toStdString() );
 	} else if ( ! f.isEmpty() )
-		m_interpreter->interpretFile(f.toStdString());
+		d->interpreter->interpretFile( f.toStdString() );
 	else
-		m_interpreter->interpretLine( b );
+		d->interpreter->interpretLine( b.toStdString() );
 
-	setPRM( m_interpreter->prm() );
-	setErrors( m_interpreter->getErrorsContainer() );
+	setErrors( d->interpreter->getErrorsContainer() );
+	if ( d->interpreter->prm() == 0 )
+		return;
+	locker.relock();
+	d->result = d->interpreter->results();
+	QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel(d->interpreter->prm()) );
+	setPRM( ptr );
 }
-
-vector< pair<string,QueryResult> > SkoorInterpretation::results() const
-{
-	if ( isFinished() && ! isSyntaxMode() && m_interpreter )
-		return m_interpreter->results();
-	else
-		return vector< pair<string,QueryResult> >();
-}
-

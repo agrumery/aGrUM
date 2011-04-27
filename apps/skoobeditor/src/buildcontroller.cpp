@@ -40,8 +40,41 @@ struct BuildController::PrivateData {
 	QTimer timer;
 
 	QSharedPointer<PRMTreeModel> prmModel;
+
+	void showStartParsing( const QString & of );
+	void showStartExection( const QString & of );
 };
 
+void BuildController::PrivateData::showStartParsing( const QString & of )
+{
+	buildList->addItem("");
+	buildList->addItem( tr("Vérifie la syntaxe de '%1' ...").arg(of) );
+
+	int i = buildList->count() - 1;
+	buildList->item(i)->setTextColor(Qt::blue);
+	i--;
+	while ( i >= 0 && buildList->item(i)->textColor() != Qt::gray )
+		buildList->item(i--)->setTextColor(Qt::gray);
+	buildList->scrollToBottom();
+}
+
+void BuildController::PrivateData::showStartExection( const QString & of )
+{
+	showStartParsing(of);
+
+	// Clear exec dock and inform start of process
+	execList->addItem("");
+	execList->addItem( tr("Exécution de '%1' ...").arg(of) );
+	int i = execList->count() - 1;
+	execList->item(i)->setTextColor(Qt::blue);
+	i--;
+	while ( i >= 0 && execList->item(i)->textColor() != Qt::gray )
+		execList->item(i--)->setTextColor(Qt::gray);
+	execList->scrollToBottom();
+}
+
+
+/* ************************************************************************* */
 
 /// Contructor
 BuildController::BuildController(MainWindow * mw, QObject *parent) :
@@ -55,9 +88,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	d->commandLine = mw->ui->commandLineEdit;
 	d->isAuto = false;
 	d->parser = 0;
-
 	d->autoSyntaxCheck = false;
-	d->parser = 0;
 
 	d->timer.setSingleShot(true);
 	d->timer.setInterval(1000);
@@ -160,6 +191,12 @@ void BuildController::checkSyntax( QsciScintillaExtended * sci )
 
 	startParsing(false,false);
 
+	d->showStartParsing(sci->title());
+
+	// Erase all error marks in editors
+	foreach( QsciScintillaExtended * doc, mw->fc->openDocuments() )
+		doc->clearAllErrors();
+
 	mw->vc->setBuildDockVisibility(true);
 }
 
@@ -202,14 +239,7 @@ void BuildController::execute( QsciScintillaExtended * sci )
 		executeSystem(sci);
 
 	else if ( sci->lexerEnum() == QsciScintillaExtended::Skoor ) {
-		// Clear exec dock and inform start of process
-		d->execList->addItem("");
-		d->execList->addItem( tr("Éxécution de '%1' ...").arg(sci->title()) );
-		int i = d->execList->count() - 1;
-		d->execList->item(i)->setTextColor(Qt::blue);
-		i--;
-		while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
-			d->execList->item(i--)->setTextColor(Qt::gray);
+		d->showStartExection(sci->title());
 
 		// Erase all error marks in editors
 		foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
@@ -218,7 +248,6 @@ void BuildController::execute( QsciScintillaExtended * sci )
 		startParsing(false,true);
 
 		// Show exec dock
-		d->execList->scrollToBottom();
 		mw->vc->setExecuteDockVisibility(true);
 
 	} else
@@ -288,7 +317,7 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	//////////////////////////////////////////////////////////////
 
 	//  create a new thread if there is not or isExecution is true or thread is still running or document change
-	//if ( ! d->parser || isExecution || d->parser->isRunning() || d->parser->document() != sci )
+	//if ( ! d->parser || isExecution || d->parser->document() != sci )
 	try {
 		createNewParser();
 	} catch (const QString & err ) {
@@ -306,35 +335,24 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	// Start it
 	d->isAuto = isAuto;
 	d->parser->setSyntaxMode( ! isExecution );
-	d->parser->parse(QThread::LowPriority);
-
-	if ( ! isAuto ) {
-		d->buildList->addItem("");
-		d->buildList->addItem( tr("Vérifie la syntaxe de '%1' ...").arg( sci->title() ) );
-
-		int i = d->buildList->count() - 1;
-		d->buildList->item(i)->setTextColor(Qt::blue);
-		i--;
-		while ( i >= 0 && d->buildList->item(i)->textColor() != Qt::gray )
-			d->buildList->item(i--)->setTextColor(Qt::gray);
-
-		// Erase all error marks in editors
-		foreach( QsciScintillaExtended * doc, mw->fc->openDocuments() )
-			doc->clearAllErrors();
-
-		d->buildList->scrollToBottom();
-	}
+	if ( isAuto )
+		d->parser->parse(QThread::LowPriority);
+	else
+		d->parser->parse();
 }
 
 
 void BuildController::onParsingFinished()
 {
-	if ( d->parser == 0 || d->parser->document() != mw->fc->currentDocument() )
+	if ( d->parser == 0 ) {
+		qWarning() << "in onParsingFinished() : Error : parser == 0.";
+		return;
+	} else if (d->isAuto && d->parser->document() != mw->fc->currentDocument())
 		return;
 
 	const gum::ErrorsContainer & errors = d->parser->errors();
 
-	if ( errors.count() == 0 ) {
+	if ( errors.error_count == 0 ) {
 		d->prmModel.clear();
 		d->prmModel = d->parser->prm();
 	}
@@ -379,7 +397,7 @@ void BuildController::onParsingFinished()
 		d->timer.start();
 
 	if ( ! d->isAuto ) {
-		if ( errors.count() == 0 ) {
+		if ( errors.error_count == 0 ) {
 			d->buildList->addItem(tr("Syntaxe vérifiée. Il n'y a pas d'erreur."));
 			d->buildList->item(d->buildList->count() - 1)->setTextColor(Qt::blue);
 
@@ -406,41 +424,43 @@ void BuildController::onExecutionFinished()
 
 	// Else we show all results
 	SkoorInterpretation * skoorParser = qobject_cast<SkoorInterpretation *>( d->parser );
-	if ( skoorParser == 0 )
+	if ( skoorParser == 0 ) {
+		qWarning() << "in onExecutionFinished() : Error : parser == 0.";
 		return;
+	}
 
 	// We show errors and warnings.
 	onParsingFinished();
 
 	// If there was errors or it's not an execution, return.
-	if ( skoorParser->errors().count() != 0 ) {
-		d->execList->addItem(tr("Éxécution interrompue. Il y a des erreurs."));
+	qDebug() << "in BuildController::onExecutionFinished()" << (void*) skoorParser << skoorParser->errors().error_count;
+	if ( skoorParser->errors().error_count != 0 ) {
+		d->execList->addItem(tr("Exécution interrompue. Il y a des erreurs."));
 		int i = d->execList->count() - 1;
 		d->execList->item(i)->setTextColor(Qt::red);
 		i--;
 		while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
 			i--;
 		d->execList->item(i+1)->setTextColor(Qt::red);
-		d->execList->scrollToBottom();
 
 		mw->vc->setBuildDockVisibility(true);
-		return;
-	}
 
-	const vector< pair<string,QueryResult> > & results = skoorParser->results();
-	for ( size_t i = 0 ; i < results.size() ; i++ ) {
-		const QString & query = QString::fromStdString( results[i].first );
-		d->execList->addItem( tr("%1").arg(query) );
-		d->execList->item(d->execList->count() - 1)->setTextColor(Qt::darkYellow);
-		const QueryResult & result = results[i].second;
-		for ( size_t j = 0 ; j < result.size() ; j++ ) {
-			float val = result[j].second;
-			d->execList->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].first) ).arg(val) );
+	} else {
+		const vector< pair<string,QueryResult> > & results = skoorParser->results();
+		for ( size_t i = 0 ; i < results.size() ; i++ ) {
+			const QString & query = QString::fromStdString( results[i].first );
+			d->execList->addItem( tr("%1").arg(query) );
+			d->execList->item(d->execList->count() - 1)->setTextColor(Qt::darkYellow);
+			const QueryResult & result = results[i].second;
+			for ( size_t j = 0 ; j < result.size() ; j++ ) {
+				float val = result[j].second;
+				d->execList->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].first) ).arg(val) );
+			}
 		}
-	}
 
-	d->execList->addItem(tr("Éxécution terminée."));
-	d->execList->item(d->execList->count() - 1)->setTextColor(Qt::blue);
+		d->execList->addItem(tr("Exécution terminée."));
+		d->execList->item(d->execList->count() - 1)->setTextColor(Qt::blue);
+	}
 	d->execList->scrollToBottom();
 }
 
@@ -494,14 +514,14 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 
 	// On ouvre un nouveau document système
 	QsciScintillaExtended * sys = mw->fc->newDocument(name+"System", QsciScintillaExtended::Skool);
-	sys->setFilename(QFileInfo(sci->filename()).path()+"/"+sys->title()+".skool");
+	sys->setFilename(mw->pc->currentProject()->dir()+"/systems/"+sys->title()+".skool");
 
 	// On met à jour le package dans le document skoor,
 	if ( ! sci->package().isEmpty() )
-		sys->append("\npackage "+sci->package()+";\n");
+		sys->append("\npackage systems;\n");
 
 	// On ajoute l'import
-	sys->append("\nimport "+name+";\n\n");
+	sys->append("\nimport "+sci->package()+"."+name+";\n\n");
 
 	// On ajoute le block default
 	sys->append("system "+name+"System {\n");
@@ -516,13 +536,16 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 		int cpt = 1;
 		QList< QPair<const PRMTreeItem *,QString> > toInst;
 		QString id = classItem->localData + QString::number(cpt++);
+		QString indent = "    ";
 
-		sys->append( "    " + className + " " + id + ";\n" );
+		sys->append( indent + className + " " + id + ";\n" );
 		foreach ( const PRMTreeItem * child, classItem->children )
 			if ( child->type == PRMTreeItem::Refererence )
 				toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
 
-		while ( ! toInst.isEmpty() ) {
+		// Tant qu'il reste des références à instancier.
+		// Et qu'il n'y en a pas trop, pour éviter les récursions infinies.
+		while ( ! toInst.isEmpty() && cpt < 100 ) {
 			QPair<const PRMTreeItem*,QString> pair = toInst.takeFirst();
 			const PRMTreeItem * item = pair.first;
 			QString ref = pair.second;
@@ -531,12 +554,12 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 			// Type
 			const PRMTreeItem * typeItem = model->getItem(item->ofType);
 			if ( ! typeItem )
-				sys->append( "// Problem with this reference : type not found.\n" );
+				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : type not found.\n" );
 			else if ( typeItem->type == PRMTreeItem::Interface )
-				sys->append( "// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
+				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
 			else if ( typeItem->type != PRMTreeItem::Class )
-				sys->append( "// Problem with this reference : this type is not a class.\n" );
-			sys->append( "    " + item->ofType );
+				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is not a class.\n" );
+			sys->append( indent + item->ofType );
 
 			// Array
 			if ( item->isArray )
@@ -546,14 +569,15 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 			sys->append( " " + id + ";\n" );
 
 			// Affectation
-			sys->append( "    " + ref + " = " + id + ";\n");
+			sys->append( indent + ref + " = " + id + ";\n");
 
 			// Recursive instanciation
 			foreach ( const PRMTreeItem * child, item->children )
 				if ( child->type == PRMTreeItem::Refererence )
 					toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
 		}
-	}
+	} else
+		qWarning() << "in BuildController::executeClass() : model is null.";
 
 	sys->append("}\n");
 
@@ -568,17 +592,17 @@ void BuildController::executeSystem( QsciScintillaExtended * sci )
 	QString name = QFileInfo(sci->filename()).baseName();
 	// On crée un nouveau document skoor qu'on enregistre dans le package du système
 	QsciScintillaExtended * req = mw->fc->newDocument(name+"Request", QsciScintillaExtended::Skoor);
-	req->setFilename(QFileInfo(sci->filename()).path()+"/"+req->title()+".skoor");
+	req->setFilename(mw->pc->currentProject()->dir()+"/requests/"+req->title()+".skoor");
 
 	// On met à jour le package dans le document skoor,
 	if ( ! sci->package().isEmpty() )
-		req->append("\npackage "+sci->package()+";\n");
+		req->append("\npackage requests;\n");
 
 	// On ajoute l'import
-	req->append("\nimport "+name+" as default;\n\n");
+	req->append("\nimport "+sci->package()+"."+name+" as default;\n\n");
 
 	// On ajoute le block default
-	req->append("request "+name+"Request {\n}\n");
+	req->append("request "+name+"Request {\n    engine SVE;\n}\n");
 
 	// give it the focus,
 	mw->ui->tabWidget->setCurrentWidget(req);
@@ -588,6 +612,12 @@ void BuildController::executeSystem( QsciScintillaExtended * sci )
 
 void BuildController::onCommandValided()
 {
+	const QString & command = d->commandLine->text().simplified();
+	if ( command.isEmpty() ) {
+		d->commandLine->setStyleSheet("");
+		return;
+	}
+
 	// Create a new parser if necessary
 	if ( d->parser == 0 || d->parser->document() != mw->fc->currentDocument() )
 		createNewParser();
@@ -605,45 +635,40 @@ void BuildController::onCommandValided()
 
 	disconnect( d->parser, 0, this, 0 );
 	connect( d->parser, SIGNAL(finished()), this, SLOT(onCommandParsed()) );
-	connect( d->parser, SIGNAL(finished()), this, SLOT(onExecutionFinished()) );
 	d->parser->setSyntaxMode(false);
 
-	const QString & command = d->commandLine->text().simplified();
-
-	// Clear exec dock and inform start of process
-	d->execList->addItem("");
-	d->execList->addItem( tr("Éxécution de '%1' ...").arg(command) );
-	int i = d->execList->count() - 1;
-	d->execList->item(i)->setTextColor(Qt::blue);
-	i--;
-	while ( i >= 0 && d->execList->item(i)->textColor() != Qt::gray )
-		d->execList->item(i--)->setTextColor(Qt::gray);
+	d->showStartExection(command);
+	d->isAuto = false;
 
 	// Erase all error marks in editors
 	foreach( QsciScintillaExtended * sci, mw->fc->openDocuments() )
 		sci->clearAllErrors();
 
 	// Show exec dock
-	d->execList->scrollToBottom();
 	mw->vc->setExecuteDockVisibility(true);
 
 	parser->parseCommand( command, QThread::NormalPriority );
-	d->commandLine->clear();
+	d->commandLine->setStyleSheet("");
 }
 
 void BuildController::onCommandParsed()
 {
+	onExecutionFinished();
+
 	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
 	if ( parser == 0 ) {
 		qWarning() << "in onCommandParsed() : Error : parser == 0.";
 		return;
 	}
 
-	if ( parser->errors().count() == 0 ) {
+	if ( parser->errors().error_count == 0 ) {
+		d->commandLine->clear();
 		QsciScintillaExtended * sci = mw->fc->currentDocument();
 		if ( sci->findFirst("}",false,false,false,true,false,0,0) ) {
 			QString indent(sci->indentation(sci->currentLine()-1),QChar(' '));
 			sci->replace( indent + parser->command() + "\n}");
 		}
+	} else {
+		d->commandLine->setStyleSheet("background : red;");
 	}
 }

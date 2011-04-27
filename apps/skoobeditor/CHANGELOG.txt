@@ -1,4 +1,14 @@
 ﻿
+27/04/2011
+    * Fix : Erreurs dans le dock result et pas syntax.
+    
+22/04/2011
+    * Improve : ajoute "// AUTOMATIC WARNING :" si il y a une interface pour un slot dans l'exécution de classe.
+    * Improve : Quand il y a une erreur pour une commande, efface pas et met le fond en rouge.
+    * Improve : Système généré dans package systems. Idem requests
+    * Improve : Éxécution -> Exécution
+    * Fix : Les références récursives quand on exécute une classe.
+    
 21/04/2011 
     * Improve : Affiche les nom de fichier en relatif dans le dock des messages d'erreur.
     * Add : F6 sur un fichier de classe crée un fichier system minimal (crée toutes les instances), 

@@ -285,6 +285,10 @@ bool FileController::openFile(const QString & filename)
 		// Update last dir
 		d->lastDir = fileInfo.absolutePath();
 
+		//
+		if ( s.endsWith(".bak") )
+			currentDocument()->setFilename(s.left(s.length()-4));
+
 	}
 
 	saveFilesState();

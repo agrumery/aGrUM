@@ -136,7 +136,10 @@ PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
 	// Construction du PRMTreeModel
 
 	// Foreach type
-	foreach ( Type * type, prm->types() ) {
+	//foreach ( const Type * type, prm->types() ) {
+	const gum::Set< Type * > & sets = prm->types();
+	for ( gum::Set<Type *>::iterator i = sets.begin() ; i != sets.end() ; ++i ) {
+		const Type * type = *i;
 		// Create the PRMTreeItem
 		rootItem->createChild( QString::fromStdString( type->name() ).split("."), PRMTreeItem::Type );
 		const gum::DiscreteVariable & var = type->variable();

@@ -9,11 +9,13 @@
 using namespace gum::prm::skool;
 
 
+//! Constructor.
 SkoolInterpretation::SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent ) :
 		AbstractParser(sci, parent), m_reader(0), prmChanged(false)
 {
 }
 
+//! Destructor.
 SkoolInterpretation::~SkoolInterpretation()
 {
 	// Wait the run methods ends.
@@ -23,7 +25,7 @@ SkoolInterpretation::~SkoolInterpretation()
 	delete m_reader;
 }
 
-
+//! \reimp
 void SkoolInterpretation::run()
 {
 	QString f = filename();
