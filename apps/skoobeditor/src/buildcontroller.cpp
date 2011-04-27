@@ -13,6 +13,7 @@
 #include "prmtreemodel.h"
 
 #include <agrum/core/errorsContainer.h>
+#include <agrum/prm/skoor/SkoorInterpreter.h>
 
 using namespace gum::prm::skool;
 using namespace gum::prm::skoor;
@@ -35,6 +36,7 @@ struct BuildController::PrivateData {
 
 	bool autoSyntaxCheck;
 	bool isAuto;
+	bool isCommand;
 	AbstractParser * parser;
 
 	QTimer timer;
@@ -87,6 +89,7 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	d->commandButton = mw->ui->validCommandButton;
 	d->commandLine = mw->ui->commandLineEdit;
 	d->isAuto = false;
+	d->isCommand = false;
 	d->parser = 0;
 	d->autoSyntaxCheck = false;
 
@@ -355,6 +358,8 @@ void BuildController::onParsingFinished()
 	if ( errors.error_count == 0 ) {
 		d->prmModel.clear();
 		d->prmModel = d->parser->prm();
+
+		emit currentDocumentModelChanged();
 	}
 
 	if ( d->isAuto )
@@ -388,8 +393,10 @@ void BuildController::onParsingFinished()
 			}
 
 			QListWidgetItem * item = new QListWidgetItem(s, d->buildList) ;
-			item->setData( Qt::UserRole, errFilename );
-			item->setData( Qt::UserRole + 1, line );
+			if ( ! d->isCommand ) {
+				item->setData( Qt::UserRole, errFilename );
+				item->setData( Qt::UserRole + 1, line );
+			}
 		}
 	}
 
@@ -433,7 +440,6 @@ void BuildController::onExecutionFinished()
 	onParsingFinished();
 
 	// If there was errors or it's not an execution, return.
-	qDebug() << "in BuildController::onExecutionFinished()" << (void*) skoorParser << skoorParser->errors().error_count;
 	if ( skoorParser->errors().error_count != 0 ) {
 		d->execList->addItem(tr("Exécution interrompue. Il y a des erreurs."));
 		int i = d->execList->count() - 1;
@@ -446,15 +452,16 @@ void BuildController::onExecutionFinished()
 		mw->vc->setBuildDockVisibility(true);
 
 	} else {
-		const vector< pair<string,QueryResult> > & results = skoorParser->results();
+		const vector<QueryResult> & results = skoorParser->results();
 		for ( size_t i = 0 ; i < results.size() ; i++ ) {
-			const QString & query = QString::fromStdString( results[i].first );
-			d->execList->addItem( tr("%1").arg(query) );
+			const QString & query = QString::fromStdString( results[i].command );
+			double time = results[i].time;
+			d->execList->addItem( tr("%1 [%2s]").arg(query).arg(time) );
 			d->execList->item(d->execList->count() - 1)->setTextColor(Qt::darkYellow);
-			const QueryResult & result = results[i].second;
+			const vector<SingleResult> & result = results[i].values;
 			for ( size_t j = 0 ; j < result.size() ; j++ ) {
-				float val = result[j].second;
-				d->execList->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].first) ).arg(val) );
+				float val = result[j].p;
+				d->execList->addItem( tr("%1 : %2").arg( QString::fromStdString(result[j].label) ).arg(val) );
 			}
 		}
 
@@ -653,7 +660,9 @@ void BuildController::onCommandValided()
 
 void BuildController::onCommandParsed()
 {
+	d->isCommand = true;
 	onExecutionFinished();
+	d->isCommand = false;
 
 	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
 	if ( parser == 0 ) {

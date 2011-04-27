@@ -13,7 +13,7 @@ struct SkoorInterpretation::PrivateData {
 	QMutex *		                      mutex;
 	gum::prm::skoor::SkoorInterpreter *   interpreter;
 	QString                               command;
-	vector< pair<string,QueryResult> >    result;
+	vector<QueryResult>                   result;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ QString SkoorInterpretation::command() const
 
 
 //! Return result of execution.
-vector< pair<string,QueryResult> > SkoorInterpretation::results() const
+vector<gum::prm::skoor::QueryResult> SkoorInterpretation::results() const
 {
 	QMutexLocker locker(d->mutex);
 	return d->result;

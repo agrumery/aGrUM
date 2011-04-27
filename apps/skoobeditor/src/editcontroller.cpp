@@ -11,7 +11,6 @@
 #include "prmcompleter.h"
 
 #include <Qsci/qscilexer.h>
-#include <QCompleter>
 #include <QDebug>
 
 //
@@ -42,6 +41,9 @@ EditController::EditController( MainWindow * mw, QObject * parent) :
 	connect( mw->ui->actionDecreaseIndentation, SIGNAL(triggered()), this, SLOT(decreaseIndentation()) );
 	connect( mw->ui->actionEditPreferences, SIGNAL(triggered()), this, SLOT(editPreferences()) );
 	connect( mw->ui->actionAutoComplete, SIGNAL(triggered()), this, SLOT(autoComplete()) );
+
+	// Must be start after project triggerInit
+	QTimer::singleShot( 500, this, SLOT(triggerInit()) );
 }
 
 
@@ -49,6 +51,16 @@ EditController::EditController( MainWindow * mw, QObject * parent) :
 EditController::~EditController()
 {
 	delete d;
+}
+
+void EditController::triggerInit()
+{
+	connect( mw->bc, SIGNAL(currentDocumentModelChanged()), this, SLOT(onCurrentDocumentModelChanged()) );
+}
+
+QCompleter * EditController::completer() const
+{
+	return d->completer;
 }
 
 void EditController::undo()
@@ -113,19 +125,7 @@ void EditController::decreaseIndentation()
 
 void EditController::autoComplete()
 {
-	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->currentDocumentModel();
-	if ( mw->fc->hasCurrentDocument() && ! newPRMModel.isNull() ) {
-		// If model has changed, init it.
-		if ( d->prmModel != newPRMModel ) {
-			QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
-			d->prmModel.clear();
-			d->prmModel = mw->bc->currentDocumentModel();
-			d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
-			d->prmModel->setCurrentBlock(mw->fc->currentDocument()->block().second);
-			d->prmModel->addKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
-			d->prmModel->sort(0);
-			d->completer->setModel( d->prmModel.data() );
-		}
+	if ( ! d->prmModel.isNull() && mw->fc->hasCurrentDocument() ) {
 		mw->fc->currentDocument()->setCompleter(d->completer);
 		mw->fc->currentDocument()->autoCompleteFromCompleter();
 	} else if ( mw->fc->hasCurrentDocument() )
@@ -139,3 +139,22 @@ void EditController::editPreferences()
 	pr->exec();
 }
 
+void EditController::onCurrentDocumentModelChanged()
+{
+	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->currentDocumentModel();
+
+	// If doesn't changed, don't changed completer.
+	if ( newPRMModel.isNull() || d->prmModel == newPRMModel )
+		return;
+
+	QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
+	d->prmModel.clear();
+	d->prmModel = newPRMModel;
+	d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
+	d->prmModel->setCurrentBlock(mw->fc->currentDocument()->block().second);
+	d->prmModel->addKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
+	d->prmModel->sort(0);
+	d->completer->setModel( d->prmModel.data() );
+
+	emit completerChanged();
+}

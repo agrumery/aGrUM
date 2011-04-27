@@ -9,7 +9,7 @@ namespace gum {
 	namespace prm {
 		namespace skoor {
 			class SkoorInterpreter;
-			typedef std::vector< std::pair<std::string,float> > QueryResult;
+			struct QueryResult;
 		}
 	}
 }
@@ -36,7 +36,7 @@ public:
 	//! Return last command.
 	QString command() const;
 	//! Return result of execution.
-	std::vector< std::pair<std::string,gum::prm::skoor::QueryResult> > results() const;
+	std::vector<gum::prm::skoor::QueryResult> results() const;
 
 public slots:
 	//! \reimp

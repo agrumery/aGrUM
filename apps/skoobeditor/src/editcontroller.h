@@ -2,6 +2,7 @@
 #define EDITCONTROLLER_H
 
 #include <QObject>
+#include <QCompleter>
 
 #include "properties.h"
 
@@ -14,6 +15,9 @@ class EditController : public QObject
 public:
 	explicit EditController(MainWindow * mw, QObject * parent = 0);
 	~EditController();
+
+	//! Return the completer
+	QCompleter * completer() const;
 
 public slots:
 
@@ -35,6 +39,15 @@ public slots:
 	void autoComplete();
 
 	void editPreferences();
+
+signals:
+	void completerChanged();
+
+protected slots:
+	void onCurrentDocumentModelChanged();
+
+private slots:
+	void triggerInit();
 
 private:
 	MainWindow * mw;

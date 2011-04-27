@@ -35,6 +35,9 @@ public slots:
 
 	void hideBuildMessage();
 
+signals:
+	void currentDocumentModelChanged();
+
 protected slots:
 	void startParsing(bool isAuto = true, bool isExecution = false);
 	void onParsingFinished();
