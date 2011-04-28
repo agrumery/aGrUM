@@ -48,7 +48,6 @@ void QCommandLineEdit::keyPressEvent( QKeyEvent * event )
 //! We save the command in history.
 void QCommandLineEdit::onReturnPressed()
 {
-	qDebug() << "in QCommandLineEdit::onReturnPressed()" << text() << d->idx << d->history.size();
 	if ( text().isEmpty() )
 		return;
 	d->history.last() = text();

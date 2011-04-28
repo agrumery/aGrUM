@@ -1,5 +1,6 @@
 ﻿
 28/04/2011
+    * Add : Barre d'onglet pour le dock.
     * Add : Historique pour la zone de saisie des commandes de l'interpréteur.
     
 27/04/2011

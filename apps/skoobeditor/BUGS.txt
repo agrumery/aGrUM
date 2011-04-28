@@ -13,7 +13,6 @@ BUGS :
 AMELIORATIONS :
 
     * ? qui recalcule pas
-    * Barre d'onglet
     * autocomplétion dans a zone de saisie des commandes
     * Le contexte d'autocomplétion basé sur tout le projet avec le package courant.
     * Espace dans recherche avancée

@@ -59,6 +59,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	d->dial->setLayout(layout);
 	d->dial->resize(1024 + 5, 768 + 5);
 
+	ui->tabBar->addTab(tr("Search"));
+	ui->tabBar->addTab(tr("Build"));
+	ui->tabBar->addTab(tr("Execute"));
+	ui->tabBar->setShape( QTabBar::RoundedSouth );
+	connect( ui->tabBar, SIGNAL(currentChanged(int)), ui->dockStack, SLOT(setCurrentIndex(int)) );
+	connect( ui->dockStack, SIGNAL(currentChanged(int)), ui->tabBar, SLOT(setCurrentIndex(int)) );
+	connect( ui->tabBar, SIGNAL(currentChanged(int)), ui->dockStack, SLOT(show()) );
+
 	//
 	connect( ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()) );
 	connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()) );
