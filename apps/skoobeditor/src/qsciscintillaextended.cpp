@@ -618,11 +618,10 @@ void QsciScintillaExtended::setSyntaxError( int line )
 		line = currentLine();
 
 	//
-	int start = 0, len = lineLength(line);
 	// don't set the indicator on whitespace
 	const QString lineText = text(line);
+	int start = 0, len = lineText.length();
 	int i = 0;
-	Q_ASSERT( len == lineText.length() );
 	while ( i < len && isspace( lineText.at(i++).toLatin1() ) )
 		start++;
 

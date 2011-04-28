@@ -1,4 +1,7 @@
 ﻿
+28/04/2011
+    * Add : Historique pour la zone de saisie des commandes de l'interpréteur.
+    
 27/04/2011
     * Improve : Affichage du temps de calcul de la requête '?' variable [temps de calcul] : valeurs.
     * Fix : On ne peut plus double cliquer sur une erreur dûe à une commande de l'interpréteur.

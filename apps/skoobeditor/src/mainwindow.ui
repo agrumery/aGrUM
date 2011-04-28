@@ -135,7 +135,7 @@
              <number>1</number>
             </property>
             <item>
-             <widget class="QLineEdit" name="commandLineEdit"/>
+             <widget class="QCommandLineEdit" name="commandLineEdit"/>
             </item>
             <item>
              <widget class="QPushButton" name="validCommandButton">
@@ -1210,6 +1210,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCommandLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qcommandlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../rsrc/resources.qrc"/>
  </resources>

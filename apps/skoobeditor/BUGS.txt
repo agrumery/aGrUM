@@ -13,8 +13,6 @@ BUGS :
 AMELIORATIONS :
 
     * ? qui recalcule pas
-    * Temps de calcul de la requête '?' variable [temps de calcul] : valeurs.
-    * Historique.
     * Barre d'onglet
     * autocomplétion dans a zone de saisie des commandes
     * Le contexte d'autocomplétion basé sur tout le projet avec le package courant.
