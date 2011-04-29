@@ -30,7 +30,7 @@ import pyAgrum as gum
 
 def pngize(bn,base):
   """
-  From a bn 'bn' and a base 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in 
+  From a bn 'bn' and a base 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
 	dot format and in png.
   """
   dotfile=base+'.dot'
