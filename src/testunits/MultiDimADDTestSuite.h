@@ -52,7 +52,7 @@ namespace gum {
 
   namespace tests {
 
-    class MultiDimBucketTestSuite: public CxxTest::TestSuite {
+    class MultiDimADDTestSuite: public CxxTest::TestSuite {
 		
       private:
 		void __fillFactory( MultiDimADDFactory<float>* factory, gum::List<NodeId> idList ) {
