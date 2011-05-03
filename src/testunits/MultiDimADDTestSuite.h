@@ -34,20 +34,6 @@
 
 
 
-// The diagrams used for the tests:
-//           C -> 0.9
-//           |   C -> PL
-//           PL
-//          /  \  PL -> APU & PL -> ADR
-//        C2   U1
-//       /  \ /  C2 -> D3 & C2 -> D2 & D2 -> U1
-//      D3  D2
-//      |    |  D3 -> C3 & D2 -> C4
-//     C3    C4
-//       \  /  C3 -> C5 & C4 -> C5
-//        C5   D4
-//         \  /  C5 -> U2 & D4 -> U2
-//          U2
 namespace gum {
 
   namespace tests {
@@ -432,7 +418,7 @@ namespace gum {
 			
 			TS_ASSERT_EQUALS( container->realSize( ), (Size) 19);
 			
-			TS_GUM_ASSERT_THROWS_NOTHING ( std::cout << "Taux de compression" << container->compressionRate( ) << std::endl );
+			TS_GUM_ASSERT_THROWS_NOTHING ( container->compressionRate( ) );
 			
 			TS_GUM_ASSERT_THROWS_NOTHING ( container->variable( 0 ) );
 			
@@ -507,11 +493,11 @@ namespace gum {
 			// *********************************************************************
 			// test tostring() et tostring(Instantiation*)
 			// *********************************************************************
-			TS_GUM_ASSERT_THROWS_NOTHING( std::cout << std::endl << container->toString() << std::endl );
+			TS_GUM_ASSERT_THROWS_NOTHING( container->toString() );
 			
 			Instantiation inst(*container);
 			inst.setFirst();
-			TS_GUM_ASSERT_THROWS_NOTHING( std::cout << std::endl << container->toString(&inst) << std::endl );
+			TS_GUM_ASSERT_THROWS_NOTHING( container->toString(&inst) );
 			
 			
 			// *********************************************************************
