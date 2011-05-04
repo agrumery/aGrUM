@@ -62,7 +62,8 @@ public:
      * Default constructor.
      */
     MultiDimADD( Sequence< const DiscreteVariable* > varList, NodeGraphPart model, typename Property< const DiscreteVariable* >::onNodes varMap,
-					typename Property< T_DATA >::onNodes terminalNodeMap, typename Property< HashTable< Idx, NodeId >* >::onNodes arcMap, NodeId root );
+					typename Property< T_DATA >::onNodes terminalNodeMap, typename Property< HashTable< Idx, NodeId >* >::onNodes arcMap, 
+						typename Property< NodeId >::onNodes defaultArcMap, NodeId root );
 
     /**
      * Destructor.
@@ -243,8 +244,11 @@ private:
     /// Mapping between terminal nodes and their values
     typename Property< T_DATA >::onNodes __terminalNodeMap;
     
-    /// Mapping between utility variable's id and their utility table
+    /// Mapping between variable's values and associated node
     typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;
+    
+    /// Mapping between variable's values and associated node
+    typename Property< NodeId >::onNodes __defaultArcMap;
 
 	/// Name of this multiDim
 	std::string __name;

@@ -41,62 +41,62 @@ namespace gum {
     class MultiDimADDTestSuite: public CxxTest::TestSuite {
 		
       private:
-		void __fillFactory( MultiDimADDFactory<float>* factory, gum::List<NodeId> idList ) {
+		void __fillFactory( MultiDimADDFactory<float>* factory, List<NodeId>* idList ) {
 			
-			idList.insert ( factory->addNonTerminalNode ( *Cprimevar ) );//0
-            idList.insert ( factory->addNonTerminalNode ( *Cvar ) ); 	//1
-            idList.insert ( factory->addNonTerminalNode ( *PLvar ) ); 	//2
-            idList.insert ( factory->addNonTerminalNode ( *APUvar ) ); 	//3
-            idList.insert ( factory->addNonTerminalNode ( *BPUvar ) );	//4
-            idList.insert ( factory->addNonTerminalNode ( *ADRvar ) ); 	//5
-            idList.insert ( factory->addNonTerminalNode ( *BDRvar ) ); 	//6
-            idList.insert ( factory->addNonTerminalNode ( *BOvar ) ); 	//7
+			idList->insert ( factory->addNonTerminalNode ( *Cprimevar ) );	//0
+            idList->insert ( factory->addNonTerminalNode ( *Cvar ) ); 		//1
+            idList->insert ( factory->addNonTerminalNode ( *PLvar ) ); 		//2
+            idList->insert ( factory->addNonTerminalNode ( *APUvar ) ); 	//3
+            idList->insert ( factory->addNonTerminalNode ( *BPUvar ) );		//4
+            idList->insert ( factory->addNonTerminalNode ( *ADRvar ) ); 	//5
+            idList->insert ( factory->addNonTerminalNode ( *BDRvar ) ); 	//6
+            idList->insert ( factory->addNonTerminalNode ( *BOvar ) ); 		//7
             
-            idList.insert ( factory->addNonTerminalNode ( *Cvar ) ); 	//8
-            idList.insert ( factory->addNonTerminalNode ( *PLvar ) ); 	//9
-            idList.insert ( factory->addNonTerminalNode ( *APUvar ) ); 	//10
-            idList.insert ( factory->addNonTerminalNode ( *BPUvar ) );	//11
-            idList.insert ( factory->addNonTerminalNode ( *ADRvar ) ); 	//12
-            idList.insert ( factory->addNonTerminalNode ( *BDRvar ) ); 	//13
-            idList.insert ( factory->addNonTerminalNode ( *BOvar ) ); 	//14
+            idList->insert ( factory->addNonTerminalNode ( *Cvar ) ); 		//8
+            idList->insert ( factory->addNonTerminalNode ( *PLvar ) ); 		//9
+            idList->insert ( factory->addNonTerminalNode ( *APUvar ) ); 	//10
+            idList->insert ( factory->addNonTerminalNode ( *BPUvar ) );		//11
+            idList->insert ( factory->addNonTerminalNode ( *ADRvar ) ); 	//12
+            idList->insert ( factory->addNonTerminalNode ( *BDRvar ) ); 	//13
+            idList->insert ( factory->addNonTerminalNode ( *BOvar ) ); 		//14
             
-            idList.insert ( factory->addTerminalNode ( 0.0 ) );		//15
-            idList.insert ( factory->addTerminalNode ( 1.0 ) ); 	//16
-            idList.insert ( factory->addTerminalNode ( 0.9 ) ); 	//17
-            idList.insert ( factory->addTerminalNode ( 0.1 ) ); 	//18
+            idList->insert ( factory->addTerminalNode ( 0.0 ) );	//15
+            idList->insert ( factory->addTerminalNode ( 1.0 ) ); 	//16
+            idList->insert ( factory->addTerminalNode ( 0.9 ) ); 	//17
+            idList->insert ( factory->addTerminalNode ( 0.1 ) ); 	//18
 
-            factory->insertArc ( idList[0], idList[1], 1 );
-            factory->insertArc ( idList[0], idList[8], 0 );
+            factory->insertArc ( (*idList)[0], (*idList)[1], 1 );
+            factory->insertArc ( (*idList)[0], (*idList)[8], 0 );
             
-            factory->insertArc ( idList[1], idList[17], 1 );
-            factory->insertArc ( idList[1], idList[2], 0 );
-            factory->insertArc ( idList[2], idList[3], 1 );
-            factory->insertArc ( idList[2], idList[5], 0 );
-            factory->insertArc ( idList[3], idList[4], 1 );
-            factory->insertArc ( idList[3], idList[5], 0 );
-            factory->insertArc ( idList[4], idList[7], 1 );
-            factory->insertArc ( idList[4], idList[15], 0 );
-            factory->insertArc ( idList[5], idList[6], 1 );
-            factory->insertArc ( idList[5], idList[15], 0 );
-            factory->insertArc ( idList[6], idList[7], 1 );
-            factory->insertArc ( idList[6], idList[15], 0 );
-            factory->insertArc ( idList[7], idList[17], 1 );
-            factory->insertArc ( idList[7], idList[15], 0 );
+            factory->insertArc ( (*idList)[1], (*idList)[17], 1 );
+            factory->insertArc ( (*idList)[1], (*idList)[2], 0 );
+            factory->insertArc ( (*idList)[2], (*idList)[3], 1 );
+            factory->insertArc ( (*idList)[2], (*idList)[5], 0 );
+            factory->insertArc ( (*idList)[3], (*idList)[4], 1 );
+            factory->insertArc ( (*idList)[3], (*idList)[5], 0 );
+            factory->insertArc ( (*idList)[4], (*idList)[7], 1 );
+            factory->insertArc ( (*idList)[4], (*idList)[15], 0 );
+            factory->insertArc ( (*idList)[5], (*idList)[6], 1 );
+            factory->insertArc ( (*idList)[5], (*idList)[15], 0 );
+            factory->insertArc ( (*idList)[6], (*idList)[7], 1 );
+            factory->insertArc ( (*idList)[6], (*idList)[15], 0 );
+            factory->insertArc ( (*idList)[7], (*idList)[17], 1 );
+            factory->insertArc ( (*idList)[7], (*idList)[15], 0 );
             
-            factory->insertArc ( idList[8], idList[18], 1 );
-            factory->insertArc ( idList[8], idList[9], 0 );
-            factory->insertArc ( idList[9], idList[10], 1 );
-            factory->insertArc ( idList[9], idList[12], 0 );
-            factory->insertArc ( idList[10], idList[11], 1 );
-            factory->insertArc ( idList[10], idList[12], 0 );
-            factory->insertArc ( idList[11], idList[14], 1 );
-            factory->insertArc ( idList[11], idList[16], 0 );
-            factory->insertArc ( idList[12], idList[13], 1 );
-            factory->insertArc ( idList[12], idList[16], 0 );
-            factory->insertArc ( idList[13], idList[14], 1 );
-            factory->insertArc ( idList[13], idList[16], 0 );
-            factory->insertArc ( idList[14], idList[18], 1 );
-            factory->insertArc ( idList[14], idList[16], 0 );
+            factory->insertArc ( (*idList)[8], (*idList)[18], 1 );
+            factory->insertArc ( (*idList)[8], (*idList)[9], 0 );
+            factory->insertArc ( (*idList)[9], (*idList)[10], 1 );
+            factory->insertArc ( (*idList)[9], (*idList)[12], 0 );
+            factory->insertArc ( (*idList)[10], (*idList)[11], 1 );
+            factory->insertArc ( (*idList)[10], (*idList)[12], 0 );
+            factory->insertArc ( (*idList)[11], (*idList)[14], 1 );
+            factory->insertArc ( (*idList)[11], (*idList)[16], 0 );
+            factory->insertArc ( (*idList)[12], (*idList)[13], 1 );
+            factory->insertArc ( (*idList)[12], (*idList)[16], 0 );
+            factory->insertArc ( (*idList)[13], (*idList)[14], 1 );
+            factory->insertArc ( (*idList)[13], (*idList)[16], 0 );
+            factory->insertArc ( (*idList)[14], (*idList)[18], 1 );
+            factory->insertArc ( (*idList)[14], (*idList)[16], 0 );
 		}
 
       public:
@@ -124,68 +124,180 @@ namespace gum {
           delete BOvar;
         }
 
-        void FactorySimpleCreation() {
+        /** *************************************************************************************/
+		/**		Test sur la construction, le remplissage et la destruction d'une factory		*/
+		/** *************************************************************************************/
+		void testFactorySimpleCreation() {
+			
+			// *********************************************************************
+			// Création du multidim
+			// *********************************************************************
 			MultiDimADDFactory<float>* factory = NULL;
 			
 			TS_GUM_ASSERT_THROWS_NOTHING ( factory = new MultiDimADDFactory<float>() );
 			
-			gum::List<NodeId> idList;
-			TS_GUM_ASSERT_THROWS_NOTHING ( __fillFactory ( factory, idList ) );
-
+			
+			// *********************************************************************
+			// Remplissage du multidim ( donc accessoirement des fonctions d'insertion
+			// de noeuds et d'arcs sans risques de levage d'exception)
+			// *********************************************************************
+			List<NodeId> idList;
+			TS_GUM_ASSERT_THROWS_NOTHING ( __fillFactory ( factory, &idList ) );
+			
+			
+			// *********************************************************************
+			// Destruction du multidim
+			// *********************************************************************
 			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
         }
+        
+        
 
-        void FactoryGraphical() {
+        /** *************************************************************************************/
+		/**		Test sur des modifications apportées au remplissage du factory					*/
+		/** *************************************************************************************/
+		void testFactoryGraphicalFunctions() {
+			
+			// *********************************************************************
+			// Création du multidim
+			// *********************************************************************
 			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
-			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
+			List<NodeId> idList;
+			__fillFactory ( factory, &idList );
 			
-			TS_ASSERT_EQUALS( factory->addTerminalNode(1.0), (NodeId) 16 );			
-			factory->showProperties();
 			
+			// *********************************************************************
+			// Test sur les fonctions d'ajout et retrait de noeud
+			// *********************************************************************
+			
+			// Ajout d'un noeud terminal ayant la même valeur qu'un autre noeud terminal
+			// (la factory doit renvoyer l'id de ce node)
+			TS_ASSERT_EQUALS( factory->addTerminalNode(1.0), idList[16] );			
+			//factory->showProperties();
+			
+			// Test de retrait d'un noeud non terminal
 			TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode(12) );			
-			factory->showProperties();
+			//factory->showProperties();
 			
+			// Test de retrait d'un noeud terminal
 			TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode(15) );			
-			factory->showProperties();
+			//factory->showProperties();
 			
+			// Test de retrait du même noeud, pour s'assurer du levage d'exception
+			TS_ASSERT_THROWS(factory->eraseNode( idList[15]), InvalidNode);
+						
+			
+			// *********************************************************************
+			// Test sur les fonctions d'ajout et retrait d'arc
+			// *********************************************************************
+			
+			// Test de retrait d'un arc existant (ne doit lever aucune exception)
 			TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArc(3,4) );			
-			factory->showProperties();
+			//factory->showProperties();
 			
-			TS_ASSERT_THROWS(factory->eraseNode((NodeId) 15), InvalidNode);
-			TS_ASSERT_THROWS(factory->insertArc((NodeId) 15,(NodeId) 1, 2), InvalidNode);
-			TS_ASSERT_THROWS(factory->insertArc((NodeId) 16,(NodeId) 1, 3), OperationNotAllowed);
-			TS_ASSERT_THROWS(factory->insertArc((NodeId) 8,(NodeId) 18, 4), DuplicateElement);
-			TS_ASSERT_THROWS(factory->eraseArc((NodeId) 15,(NodeId) 1), InvalidNode);
-			TS_ASSERT_THROWS(factory->eraseArc((NodeId) 16,(NodeId) 1), OperationNotAllowed);
-			TS_GUM_ASSERT_THROWS_NOTHING(factory->eraseArc((NodeId) 8,(NodeId) 18));
-			TS_ASSERT_THROWS(factory->eraseArc((NodeId) 8,(NodeId) 18), InvalidArc);
+			// Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception InvalidNode)
+			// (le noeud 15 a été détruit un peu plus haut
+			TS_ASSERT_THROWS(factory->insertArc(idList[15], idList[1], 2), InvalidNode);
+			
+			// Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception OperationNotAllowed
+			// vu que les noeuds terminaux sont ... terminaux)
+			TS_ASSERT_THROWS(factory->insertArc(idList[16], idList[1], 3), OperationNotAllowed);
+			
+			// Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc (doit lever l'exception DuplicateElement)
+			TS_ASSERT_THROWS(factory->insertArc( idList[8], idList[18], 4), DuplicateElement);
+			
+			// Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
+			TS_ASSERT_THROWS( factory->insertArc( idList[8], idList[1], 5), InvalidArc );
+			
+			// Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
+			TS_GUM_ASSERT_THROWS_NOTHING(factory->eraseArc( idList[8], idList[18]));
+			
+			// Test de retrait d'un arc après encore un fois (en théorie il n'y a plus d'arc entre ces deux noeuds)
+			TS_ASSERT_THROWS(factory->eraseArc( idList[8], idList[18]), InvalidArc);
+			
+			// Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et donc n'existe pas
+			TS_ASSERT_THROWS(factory->eraseArc( idList[8], idList[1]), InvalidArc);
+			
+			// Test de retrait d'un arc dont un des noeuds n'existe plus (doit lever l'exception InvalidArc)
+			TS_ASSERT_THROWS(factory->eraseArc( idList[15], idList[1]), InvalidArc);
+			TS_ASSERT_THROWS(factory->eraseArc( idList[16], idList[1]), InvalidArc);
+						
+			
+			// *********************************************************************
+			// Test sur les fonctions d'ajout et retrait d'arc
+			// *********************************************************************
+			
+			// Test d'ajout d'un arc par défaut sans risque
+			TS_GUM_ASSERT_THROWS_NOTHING(factory->insertDefaultArc( idList[5], idList[7] ) );		
+			//factory->showProperties();
+			
+			// Test d'ajout d'un arc par défaut ayant pour départ un noeud inexistant (doit lever l'exception InvalidNode)
+			// (le noeud 15 a été détruit un peu plus haut
+			TS_ASSERT_THROWS(factory->insertDefaultArc(idList[15], idList[1]), InvalidNode);
+			
+			// Test d'ajout d'un arc par défaut ayant pour départ un noeud terminal (doit lever l'exception OperationNotAllowed
+			// vu que les noeuds terminaux sont ... terminaux)
+			TS_ASSERT_THROWS(factory->insertDefaultArc(idList[16], idList[1]), OperationNotAllowed);
+			
+			// Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc (doit lever l'exception DuplicateElement)
+			TS_ASSERT_THROWS(factory->insertDefaultArc( idList[0], idList[1]), DuplicateElement);
+			
+			// Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
+			TS_ASSERT_THROWS( factory->insertDefaultArc( idList[8], idList[1]), InvalidArc );
 
 			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
         }
-
-        void testFactoryGetMultiDimADD() {
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
-			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
-			
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
-
-			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
-			TS_GUM_ASSERT_THROWS_NOTHING( delete container );
-        }
         
         
-
-        void testMultiDimADDAccessorsModifiersMethods() {
+        
+        /** *************************************************************************************/
+		/**							Test sur d'appel du getMultiDimADD()						*/
+		/** *************************************************************************************/
+		void testFactoryGetMultiDimADD() {
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
 			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
 			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
+			__fillFactory ( factory, &idList );
+			factory->insertDefaultArc(idList[2], idList[15]);
+			
+			
+			// *********************************************************************
+			// Appel au multidim
+			// *********************************************************************
+			MultiDimADD<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			
+			
+			// *********************************************************************
+			// Verification de la complétion automatique des arcs par défaut (en mode texte)
+			// *********************************************************************
+			//factory->showProperties();
+			
+			
+			
+			// *********************************************************************
+			// Destruction du multidim
+			// *********************************************************************
+			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
+			TS_GUM_ASSERT_THROWS_NOTHING( delete container );
+        }
+        
+        
+
+        /** *************************************************************************************/
+		/**			Test des fonctions d'accès et de modification du multidim					*/
+		/** *************************************************************************************/
+		void testMultiDimADDAccessorsModifiersMethods() {
+			
+			// *********************************************************************
+			// Création du multidim
+			// *********************************************************************
+			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			gum::List<NodeId> idList;
+			__fillFactory ( factory, &idList );
 			
 			MultiDimADD<float>* container = NULL;
 			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
@@ -392,7 +504,7 @@ namespace gum {
 			// *********************************************************************
 			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
 			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
+			__fillFactory ( factory, &idList );
 			
 			MultiDimADD<float>* container = NULL;
 			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
@@ -444,7 +556,7 @@ namespace gum {
 			// *********************************************************************
 			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
 			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
+			__fillFactory ( factory, &idList );
 			
 			MultiDimADD<float>* container = NULL;
 			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
@@ -475,7 +587,7 @@ namespace gum {
 			// *********************************************************************
 			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
 			gum::List<NodeId> idList;
-			__fillFactory ( factory, idList );
+			__fillFactory ( factory, &idList );
 			
 			MultiDimADD<float>* container = NULL;
 			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );

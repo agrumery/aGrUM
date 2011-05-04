@@ -154,17 +154,19 @@ namespace gum {
 			
 		__arcMap[from]->insert(value, to);
 	}
-	
+
+
 	// =============================================================================
-    // Adds an arc between two nodes in the graph. The arc will have a value 
-    // linked to it.
+    // Adds a default arc in the DD
+    // @param from and
+    // @param to as NodeId
     // @throw InvalidNode If from and/or tail are not in the DD.
     // @throw OperationNotAllowed if head is a terminal node
     // @throw DuplicateElement if another arc linking those nodes already exists
     // =============================================================================
     template< typename T_DATA >
 	void
-	MultiDimADDFactory< T_DATA >::eraseArc( NodeId from, NodeId to ){
+	MultiDimADDFactory< T_DATA >::insertDefaultArc ( NodeId from, NodeId to ){
 		
 		if( __terminalNodeMap.exists( from ) )
 			GUM_ERROR( OperationNotAllowed, " No arcs can start from a terminal node" );
@@ -172,15 +174,41 @@ namespace gum {
 		if( !__model.exists(from) || !__model.exists(to) )
 			GUM_ERROR( InvalidNode, " One or both of the specified nodes does not exists." );
 			
-		if( !__model.existsArc( Arc( from, to) ) )
-			GUM_ERROR( InvalidArc, " Arc does not exists." );
+		for( HashTableIterator<Idx,NodeId> iter = __arcMap[from]->begin(); iter != __arcMap[from]->end(); ++iter )
+			if( *iter == to )
+				GUM_ERROR( DuplicateElement, " An arc linking those two nodes already exists" );
+		
+		__model.insertArc( from, to );
+		if( !_checkIntegrity() ){
+			__model.eraseArc( Arc( from, to ) );
+			GUM_ERROR( InvalidArc, " This arc does not respect the variable order property." );
+		}
 			
-		__model.eraseArc( Arc(from, to) );			
+		__defaultArcMap.insert(from, to);
+	}
+	
+	
+	// =============================================================================
+    // Adds an arc between two nodes in the graph.
+    // @throw InvalidArc If arc does not exist
+    // =============================================================================
+    template< typename T_DATA >
+	void
+	MultiDimADDFactory< T_DATA >::eraseArc( NodeId from, NodeId to ){
+		
+		if( !__model.existsArc( Arc(from, to) ) )
+			GUM_ERROR( InvalidArc, " That arc does not exist" );
+			
+		__model.eraseArc( Arc(from, to) );
+		bool defaultArc = true;
 		for( HashTableIterator<Idx,NodeId> iter = __arcMap[from]->begin(); iter != __arcMap[from]->end(); ++iter )
 				if( *iter == to ){
 					__arcMap[from]->erase(iter.key());
+					defaultArc = false;
 					break;
 				}
+		if( defaultArc )
+			__defaultArcMap.erase(from);
 	}
 	
 	// =============================================================================
@@ -198,8 +226,13 @@ namespace gum {
 					break;
 				}
 		}
+		
+		for ( DAG::NodeIterator iter = __model.beginNodes(); iter != __model.endNodes(); ++iter ) {
+			if ( !__terminalNodeMap.exists(*iter) && !__defaultArcMap.exists(*iter) )
+				__defaultArcMap.insert( *iter, __terminalNodeMap.begin().key() );
+		}
 			
-		return new MultiDimADD< T_DATA >( varTopo, __model, __varMap, __terminalNodeMap, __arcMap, root );
+		return new MultiDimADD< T_DATA >( varTopo, __model, __varMap, __terminalNodeMap, __arcMap, __defaultArcMap, root );
 	}
 
 /* **********************************************************************************************/
@@ -298,14 +331,14 @@ namespace gum {
 		cout << endl << "Liste des variables : " << endl;
 		for(Sequence< const DiscreteVariable* >::iterator varIter = __varsSeq.begin(); varIter != __varsSeq.end(); ++varIter)
 			cout << **varIter << " ; ";
-		cout << endl;
+		cout << endl << endl;
 		
 		cout << endl << "Liste des associations noeuds - variables : " << endl;
 		for(typename Property<const DiscreteVariable* >::onNodes::iterator nodeIter = __varMap.begin(); nodeIter != __varMap.end(); ++nodeIter)
 			cout << nodeIter.key() << " : " << **nodeIter << " ; ";
 		cout << endl << endl;
 		
-		cout << endl << "Liste des noeuds terminaux : " << endl;
+		cout << endl << "Liste des noeuds terminaux et de leur valeur : " << endl;
 		for( typename Property<T_DATA>::onNodes::iterator nodeIter = __terminalNodeMap.begin(); nodeIter != __terminalNodeMap.end(); ++nodeIter )
 			cout << nodeIter.key() << " : " << *nodeIter << " ; ";
 		cout << endl << endl;
@@ -319,6 +352,13 @@ namespace gum {
 			for( HashTableIterator<Idx,NodeId> hashIter = (*nodeIter)->begin(); hashIter != (*nodeIter)->end(); ++hashIter )
 				cout << "		" << hashIter.key() << " : " << *hashIter << " ; ";
 		}
+		cout << endl << endl;
+		
+		cout << endl << "Liste des association noeuds - noeuds par défaut : " << endl;
+		for( typename Property<NodeId>::onNodes::iterator nodeIter = __defaultArcMap.begin(); nodeIter != __defaultArcMap.end(); ++nodeIter )
+			cout << nodeIter.key() << " : " << *nodeIter << " ; ";
+		cout << endl << endl;
+		
 		cout << endl << endl;
 	}
 }

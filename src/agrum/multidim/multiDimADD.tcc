@@ -43,8 +43,10 @@ namespace gum {
 	// ==============================================================================
 	template<typename T_DATA> INLINE
 	MultiDimADD<T_DATA>::MultiDimADD( Sequence< const DiscreteVariable* > varList, NodeGraphPart model, typename Property< const DiscreteVariable* >::onNodes varMap,
-					typename Property< T_DATA >::onNodes terminalNodeMap, typename Property< HashTable< Idx, NodeId >* >::onNodes arcMap, NodeId root ):
-						MultiDimReadOnly<T_DATA>(), __graph(model), __variableMap( varMap ), __terminalNodeMap( terminalNodeMap ), __name("ADD") {
+					typename Property< T_DATA >::onNodes terminalNodeMap, typename Property< HashTable< Idx, NodeId >* >::onNodes arcMap, 
+						typename Property< NodeId >::onNodes defaultArcMap, NodeId root ):
+							MultiDimReadOnly<T_DATA>(), __graph(model), __variableMap( varMap ), __terminalNodeMap( terminalNodeMap ), __defaultArcMap(defaultArcMap), __name("ADD") {
+								
 		GUM_CONSTRUCTOR( MultiDimADD ) ;
 		
 		for( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
@@ -97,8 +99,12 @@ namespace gum {
 			T_DATA ret = 0;
 			NodeId i = __root;
 			
-			while( ! _isTerminalNode( i ) )
-				i = (*__arcMap[i])[ inst.val( __variableMap[i] ) ];
+			while( ! _isTerminalNode( i ) ){
+				if( __arcMap[i]->exists( inst.val( __variableMap[i] )) )
+					i = (*__arcMap[i])[ inst.val( __variableMap[i] ) ];
+				else
+					i = __defaultArcMap[i];
+			}
 				
 			ret = __terminalNodeMap[i];
 			return ret;
@@ -235,7 +241,7 @@ namespace gum {
 		template< typename T_DATA >
 		MultiDimContainer<T_DATA>*
 		MultiDimADD<T_DATA>::newFactory() const{
-			GUM_ERROR(OperationNotAllowed, "A factory exists for that kind of thing. Please fell free to used it");
+			GUM_ERROR(OperationNotAllowed, "A factory exists for that kind of thing. Please feel free to used it");
 			return NULL;
 		}
 		 

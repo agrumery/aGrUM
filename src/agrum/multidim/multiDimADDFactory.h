@@ -110,11 +110,23 @@ class MultiDimADDFactory {
      * @param from and
      * @param to as NodeId
      * @param value the value of the arc
-     * @throw InvalidArc If from and/or tail are not in the DD.
-     * @throw InvalidArc if head is a terminal node
+     * @throw InvalidNode If from and/or tail are not in the DD.
+     * @throw OperationNotAllowed if head is a terminal node
      * @throw DuplicateElement if another arc linking those nodes already exists
      */
     void insertArc ( NodeId from, NodeId to, Idx value );
+
+
+    /**
+     * Adds a default arc in the DD
+     *
+     * @param from and
+     * @param to as NodeId
+     * @throw InvalidNode If from and/or tail are not in the DD.
+     * @throw OperationNotAllowed if head is a terminal node
+     * @throw DuplicateElement if another arc linking those nodes already exists
+     */
+    void insertDefaultArc ( NodeId from, NodeId to );
 
 
     /**
@@ -122,7 +134,9 @@ class MultiDimADDFactory {
      *
      * @param from and
      * @param to as NodeId
-     * @throw InvalidArc If arc does not exist
+     * @throw InvalidNode If from and/or tail are not in the DD.
+     * @throw OperationNotAllowed if head is a terminal node
+     * @throw DuplicateElement if another arc linking those nodes already exists
      */
     void eraseArc ( NodeId from, NodeId to );
 	
@@ -133,6 +147,9 @@ class MultiDimADDFactory {
 	 */
 	MultiDimADD<T_DATA>* getMultiDimADD();
 		
+	/**
+	 * Displays the current ADD structures
+	 */
 	void showProperties();
 	
 	protected :
@@ -155,9 +172,12 @@ class MultiDimADDFactory {
 
 		/// Mapping between terminal nodes and their values
 		typename Property< T_DATA >::onNodes __terminalNodeMap;
-		
-		/// Mapping between utility variable's id and their utility table
+    
+		/// Mapping between variable's values and associated node
 		typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;
+		
+		/// Mapping between variable's values and associated node
+		typename Property< NodeId >::onNodes __defaultArcMap;
 	
 };
 
