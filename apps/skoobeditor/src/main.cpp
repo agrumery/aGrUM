@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include <QTextCodec>
+#include <QDebug>
 
 #include <agrum/core/exceptions.h>
 #include <iostream>

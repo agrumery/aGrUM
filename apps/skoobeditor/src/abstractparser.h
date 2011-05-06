@@ -6,7 +6,7 @@
 #include <QSharedPointer>
 
 class QsciScintillaExtended;
-class PRMTreeModel;
+class PRMTreeModel2;
 
 namespace gum {
 	class ErrorsContainer;
@@ -44,11 +44,14 @@ public:
 	virtual gum::ErrorsContainer errors() const;
 
 	//! Retrieve prm model.
-	virtual QSharedPointer<PRMTreeModel> prm() const;
+	virtual QSharedPointer<PRMTreeModel2> prm() const;
 
 public slots:
 	virtual void parse( Priority priority = InheritPriority );
 	void setSyntaxMode( bool active );
+
+signals:
+	void parseDone();
 
 protected:
 	//! The principal methods to reimplement.
@@ -63,7 +66,7 @@ protected:
 	QString buffer() const;
 
 	//! Set the new PRM. Previous will be deleted if unused.
-	void setPRM( const QSharedPointer<PRMTreeModel> & prm );
+	void setPRM( const QSharedPointer<PRMTreeModel2> & prm );
 	//! Set the ErrorsContainer
 	void setErrors( const gum::ErrorsContainer & errors );
 

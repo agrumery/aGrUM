@@ -1,7 +1,7 @@
 #include "skoolinterpretation.h"
 
 #include "qsciscintillaextended.h"
-#include "prmtreemodel.h"
+#include "prmtreemodel2.h"
 #include <agrum/prm/skool/SkoolReader.h>
 
 #include <QDebug>
@@ -44,7 +44,7 @@ void SkoolInterpretation::run()
 		m_reader->readFile( f.toStdString() );
 
 	setErrors( m_reader->getErrorsContainer() );
-	QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel(m_reader->prm()) );
+	QSharedPointer<PRMTreeModel2> ptr( new PRMTreeModel2(m_reader->prm()) );
 	setPRM( ptr );
 }
 

@@ -1,13 +1,14 @@
 #include "abstractparser.h"
 
 #include "qsciscintillaextended.h"
-#include "prmtreemodel.h"
+#include "prmtreemodel2.h"
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/prm/PRM.h>
 
 #include <QFile>
 #include <QFileInfo>
+#include <QApplication>
 #include <QDebug>
 
 struct AbstractParser::PrivateData {
@@ -19,7 +20,7 @@ struct AbstractParser::PrivateData {
 	QString buffer;
 	bool isDocModified;
 	gum::ErrorsContainer errors;
-	QSharedPointer<PRMTreeModel> prm;
+	QSharedPointer<PRMTreeModel2> prm;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +139,7 @@ gum::ErrorsContainer AbstractParser::errors() const
 }
 
 //! Retrieve prm model.
-QSharedPointer<PRMTreeModel> AbstractParser::prm() const
+QSharedPointer<PRMTreeModel2> AbstractParser::prm() const
 {
 	QMutexLocker locker(d->mutex);
 	return d->prm;
@@ -176,11 +177,12 @@ void AbstractParser::setBuffer( const QString & buffer )
 	d->buffer = buffer;
 }
 
-void AbstractParser::setPRM( const QSharedPointer<PRMTreeModel> & prm )
+void AbstractParser::setPRM( const QSharedPointer<PRMTreeModel2> & prm )
 {
 	QMutexLocker(d->mutex);
 	d->prm.clear();
 	d->prm = prm;
+	d->prm->moveToThread(QApplication::instance()->thread());
 }
 
 //! Set the ErrorsContainer

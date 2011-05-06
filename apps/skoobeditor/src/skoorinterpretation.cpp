@@ -1,7 +1,7 @@
 #include "skoorinterpretation.h"
 
 #include "qsciscintillaextended.h"
-#include "prmtreemodel.h"
+#include "prmtreemodel2.h"
 #include <agrum/prm/skoor/SkoorInterpreter.h>
 
 #include <QDebug>
@@ -107,6 +107,6 @@ void SkoorInterpretation::run()
 		return;
 	locker.relock();
 	d->result = d->interpreter->results();
-	QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel(d->interpreter->prm()) );
+	QSharedPointer<PRMTreeModel2> ptr( new PRMTreeModel2(d->interpreter->prm()) );
 	setPRM( ptr );
 }

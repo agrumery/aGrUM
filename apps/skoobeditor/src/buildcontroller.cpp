@@ -10,7 +10,6 @@
 #include "qsciscintillaextended.h"
 #include "skoolinterpretation.h"
 #include "skoorinterpretation.h"
-#include "prmtreemodel.h"
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/prm/skoor/SkoorInterpreter.h>
@@ -37,11 +36,14 @@ struct BuildController::PrivateData {
 	bool autoSyntaxCheck;
 	bool isAuto;
 	bool isCommand;
-	AbstractParser * parser;
+	AbstractParser * fileParser;
+
+	SkoorInterpretation * projectParser;
+	QsciScintillaExtended * projectDoc;
 
 	QTimer timer;
 
-	QSharedPointer<PRMTreeModel> prmModel;
+	QSharedPointer<PRMTreeModel2> prmModel;
 
 	void showStartParsing( const QString & of );
 	void showStartExection( const QString & of );
@@ -90,7 +92,9 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	d->commandLine = mw->ui->commandLineEdit;
 	d->isAuto = false;
 	d->isCommand = false;
-	d->parser = 0;
+	d->fileParser = 0;
+	d->projectParser = 0;
+	d->projectDoc = 0;
 	d->autoSyntaxCheck = false;
 
 	d->timer.setSingleShot(true);
@@ -129,7 +133,11 @@ BuildController::~BuildController()
 void BuildController::triggerInit()
 {
 	// Start it in case there is only one document
-	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startParsing()) );
+	//connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startParsing()) );
+
+	//
+	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(parseProject()) );
+	connect( mw->fc, SIGNAL(fileRenamed(QString,QString,QsciScintillaExtended*)), this, SLOT(parseProject()) );
 }
 
 /* ************************************************************************* */
@@ -153,12 +161,12 @@ void BuildController::setAutoSyntaxCheck( bool isAuto )
 	}
 }
 
-QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel()
+QSharedPointer<PRMTreeModel2> BuildController::currentDocumentModel()
 {
 	return d->prmModel;
 }
 
-const QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel() const
+const QSharedPointer<PRMTreeModel2> BuildController::currentDocumentModel() const
 {
 	return d->prmModel;
 }
@@ -258,6 +266,32 @@ void BuildController::execute( QsciScintillaExtended * sci )
 
 }
 
+void BuildController::parseProject()
+{
+	// If no project or still running
+	if ( ! mw->pc->isOpenProject() || d->projectParser != 0 )
+		return;
+
+	QString document;
+	const Project * project = mw->pc->currentProject();
+	foreach ( QString filename, project->files() )
+		if ( filename.endsWith(".skool") ) {
+			QString relFilename = QDir(project->dir()).relativeFilePath( filename );
+			relFilename.replace('/','.');
+			relFilename = relFilename.left( relFilename.length() - 6 );
+			document += "import " + relFilename + ";\n";
+		}
+
+	d->projectDoc = new QsciScintillaExtended( QsciScintillaExtended::Skoor, mw );
+	d->projectDoc->setFilename(project->dir()+"/projectFile.skoor");
+	d->projectDoc->append( document );
+	d->projectParser = new SkoorInterpretation( d->projectDoc, this );
+	d->projectParser->setSyntaxMode(true);
+	connect( d->projectParser, SIGNAL(finished()), this, SLOT(onProjectParseFinished()) );
+	d->projectParser->parse();
+}
+
+
 void BuildController::createNewParser()
 {
 	QsciScintillaExtended * sci = mw->fc->currentDocument();
@@ -266,31 +300,31 @@ void BuildController::createNewParser()
 
 	// If a previous thread is still running
 	// We reconnect it to self delete
-	if ( d->parser ) {
-		disconnect( d->parser, 0, this, 0 );
-		connect( d->parser, SIGNAL(finished()), d->parser, SLOT(deleteLater()) );
+	if ( d->fileParser ) {
+		disconnect( d->fileParser, 0, this, 0 );
+		connect( d->fileParser, SIGNAL(finished()), d->fileParser, SLOT(deleteLater()) );
 
-		if ( d->parser->isFinished()  )
-			d->parser->deleteLater();
+		if ( d->fileParser->isFinished()  )
+			d->fileParser->deleteLater();
 	}
 
-	d->parser = 0;
+	d->fileParser = 0;
 
 	// Create a new thread
 	if ( sci->lexerEnum() == QsciScintillaExtended::Skoor )
 		// Create new document and connect it
-		d->parser = new SkoorInterpretation( sci, this );
+		d->fileParser = new SkoorInterpretation( sci, this );
 
 	else if ( sci->lexerEnum() == QsciScintillaExtended::Skool )
 		// Create new document and connect it
-		d->parser = new SkoolInterpretation( sci, this );
+		d->fileParser = new SkoolInterpretation( sci, this );
 	else
 		throw "Invalid lexerEnum ! " + QString::number(sci->lexerEnum());
 
 	// Set paths
 	QString filename = sci->filename();
 	if ( mw->pc->isOpenProject() && mw->pc->currentProject()->isInside(filename) )
-		d->parser->addClassPaths( mw->pc->currentProject()->paths() );
+		d->fileParser->addClassPaths( mw->pc->currentProject()->paths() );
 }
 
 /**
@@ -311,7 +345,7 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	d->timer.stop();
 
 	// If a previous thread is still running, wait again
-	if ( isAuto && d->parser && d->parser->isRunning() ) {
+	if ( isAuto && d->fileParser && d->fileParser->isRunning() ) {
 		d->timer.start();
 		return;
 	}
@@ -331,43 +365,42 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	//////////////////////////////////////////////////////////////
 
 	if ( isExecution )
-		connect( d->parser, SIGNAL(finished()), this, SLOT(onExecutionFinished()) );
+		connect( d->fileParser, SIGNAL(finished()), this, SLOT(onExecutionFinished()) );
 	else
-		connect( d->parser, SIGNAL(finished()), this, SLOT(onParsingFinished()) );
+		connect( d->fileParser, SIGNAL(finished()), this, SLOT(onParsingFinished()) );
 
 	// Start it
 	d->isAuto = isAuto;
-	d->parser->setSyntaxMode( ! isExecution );
+	d->fileParser->setSyntaxMode( ! isExecution );
 	if ( isAuto )
-		d->parser->parse(QThread::LowPriority);
+		d->fileParser->parse(QThread::LowPriority);
 	else
-		d->parser->parse();
+		d->fileParser->parse();
 }
 
 
 void BuildController::onParsingFinished()
 {
-	if ( d->parser == 0 ) {
+	if ( d->fileParser == 0 ) {
 		qWarning() << "in onParsingFinished() : Error : parser == 0.";
 		return;
-	} else if (d->isAuto && d->parser->document() != mw->fc->currentDocument())
+	} else if (d->isAuto && d->fileParser->document() != mw->fc->currentDocument())
 		return;
 
-	const gum::ErrorsContainer & errors = d->parser->errors();
+	const gum::ErrorsContainer & errors = d->fileParser->errors();
 
-	if ( errors.error_count == 0 ) {
-		d->prmModel.clear();
-		d->prmModel = d->parser->prm();
-
-		emit currentDocumentModelChanged();
-	}
+	if ( /*errors.error_count == 0 &&*/ ! d->prmModel.isNull() ) {
+		d->prmModel->updateModel( d->fileParser->prm(), mw->fc->currentDocument() );
+		//emit currentDocumentModelChanged();
+	} /*else if ( d->prmModel.isNull() )
+		parseProject();*/
 
 	if ( d->isAuto )
 		mw->fc->currentDocument()->clearAllSyntaxErrors();
 
 	for ( int i = 0, size = errors.count() ; i < size ; i++ ) {
 		const gum::ParseError & err = errors.getError(i);
-		const QString & filename = d->parser->document()->filename();
+		const QString & filename = d->fileParser->document()->filename();
 		QString errFilename = QString::fromStdString( err.filename );
 
 		if ( d->isAuto && (errFilename.isEmpty() || errFilename.contains(filename,Qt::CaseSensitive)) )
@@ -426,11 +459,11 @@ void BuildController::onParsingFinished()
   */
 void BuildController::onExecutionFinished()
 {
-	if ( mw->fc->currentDocument() != d->parser->document() )
+	if ( mw->fc->currentDocument() != d->fileParser->document() )
 		return;
 
 	// Else we show all results
-	SkoorInterpretation * skoorParser = qobject_cast<SkoorInterpretation *>( d->parser );
+	SkoorInterpretation * skoorParser = qobject_cast<SkoorInterpretation *>( d->fileParser );
 	if ( skoorParser == 0 ) {
 		qWarning() << "in onExecutionFinished() : Error : parser == 0.";
 		return;
@@ -471,6 +504,29 @@ void BuildController::onExecutionFinished()
 	d->execList->scrollToBottom();
 }
 
+void BuildController::onProjectParseFinished()
+{
+	if ( ! d->projectParser )
+		return;
+
+	d->prmModel.clear();
+	d->prmModel = d->projectParser->prm();
+
+	emit currentDocumentModelChanged();
+
+	// Update icons in project explorator
+	// Clear all errors
+	//for ( int i = 0, size = d->projectParser->errors().size() ; i < size ; i++ ) {
+	//  QString filename = d->projectParser->errors().getError(i).filename();
+	//  mw->pc->setErrorIcon( filename );
+	//}
+
+
+	d->projectDoc->deleteLater();
+	d->projectDoc = 0;
+	d->projectParser->deleteLater();
+	d->projectParser = 0;
+}
 
 /**
   */
@@ -517,7 +573,7 @@ void BuildController::onDocumentClosed( const QString & filename )
 void BuildController::executeClass( QsciScintillaExtended * sci )
 {
 	QString name = QFileInfo(sci->filename()).baseName();
-	QSharedPointer<PRMTreeModel> model = currentDocumentModel();
+	QSharedPointer<PRMTreeModel2> model = currentDocumentModel();
 
 	// On ouvre un nouveau document système
 	QsciScintillaExtended * sys = mw->fc->newDocument(name+"System", QsciScintillaExtended::Skool);
@@ -539,32 +595,32 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 
 	// Pour chaque référence dans la classe, et de façon récursive,
 	if ( ! model.isNull() ) {
-		const PRMTreeItem * classItem = model->getItem(className);
+		const PRMTreeItem2 * classItem = model->getItem(className);
 		int cpt = 1;
-		QList< QPair<const PRMTreeItem *,QString> > toInst;
+		QList< QPair<const PRMTreeItem2 *,QString> > toInst;
 		QString id = classItem->localData + QString::number(cpt++);
 		QString indent = "    ";
 
 		sys->append( indent + className + " " + id + ";\n" );
-		foreach ( const PRMTreeItem * child, classItem->children )
-			if ( child->type == PRMTreeItem::Refererence )
-				toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
+		foreach ( const PRMTreeItem2 * child, classItem->children() )
+			if ( child->type == PRMTreeItem2::Refererence )
+				toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
 
 		// Tant qu'il reste des références à instancier.
 		// Et qu'il n'y en a pas trop, pour éviter les récursions infinies.
 		while ( ! toInst.isEmpty() && cpt < 100 ) {
-			QPair<const PRMTreeItem*,QString> pair = toInst.takeFirst();
-			const PRMTreeItem * item = pair.first;
+			QPair<const PRMTreeItem2*,QString> pair = toInst.takeFirst();
+			const PRMTreeItem2 * item = pair.first;
 			QString ref = pair.second;
 			id = item->localData + QString::number(cpt++);
 
 			// Type
-			const PRMTreeItem * typeItem = model->getItem(item->ofType);
+			const PRMTreeItem2 * typeItem = model->getItem(item->ofType);
 			if ( ! typeItem )
 				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : type not found.\n" );
-			else if ( typeItem->type == PRMTreeItem::Interface )
+			else if ( typeItem->type == PRMTreeItem2::Interface )
 				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
-			else if ( typeItem->type != PRMTreeItem::Class )
+			else if ( typeItem->type != PRMTreeItem2::Class )
 				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is not a class.\n" );
 			sys->append( indent + item->ofType );
 
@@ -579,9 +635,9 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 			sys->append( indent + ref + " = " + id + ";\n");
 
 			// Recursive instanciation
-			foreach ( const PRMTreeItem * child, item->children )
-				if ( child->type == PRMTreeItem::Refererence )
-					toInst << QPair<const PRMTreeItem *,QString>(child, id+"."+child->localData);
+			foreach ( const PRMTreeItem2 * child, item->children() )
+				if ( child->type == PRMTreeItem2::Refererence )
+					toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
 		}
 	} else
 		qWarning() << "in BuildController::executeClass() : model is null.";
@@ -626,23 +682,23 @@ void BuildController::onCommandValided()
 	}
 
 	// Create a new parser if necessary
-	if ( d->parser == 0 || d->parser->document() != mw->fc->currentDocument() )
+	if ( d->fileParser == 0 || d->fileParser->document() != mw->fc->currentDocument() )
 		createNewParser();
 
 	// If a previous request was send, wait a few second and return if too long
-	if ( d->parser != 0 && d->parser->isRunning() )
-		if ( ! d->parser->wait(500) )
+	if ( d->fileParser != 0 && d->fileParser->isRunning() )
+		if ( ! d->fileParser->wait(500) )
 			return;
 
-	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
+	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->fileParser);
 	if ( parser == 0 ) {
 		qWarning() << "in onCommandValided() : Error : parser == 0.";
 		return;
 	}
 
-	disconnect( d->parser, 0, this, 0 );
-	connect( d->parser, SIGNAL(finished()), this, SLOT(onCommandParsed()) );
-	d->parser->setSyntaxMode(false);
+	disconnect( d->fileParser, 0, this, 0 );
+	connect( d->fileParser, SIGNAL(finished()), this, SLOT(onCommandParsed()) );
+	d->fileParser->setSyntaxMode(false);
 
 	d->showStartExection(command);
 	d->isAuto = false;
@@ -664,7 +720,7 @@ void BuildController::onCommandParsed()
 	onExecutionFinished();
 	d->isCommand = false;
 
-	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->parser);
+	SkoorInterpretation * parser = qobject_cast<SkoorInterpretation *>(d->fileParser);
 	if ( parser == 0 ) {
 		qWarning() << "in onCommandParsed() : Error : parser == 0.";
 		return;
@@ -675,7 +731,9 @@ void BuildController::onCommandParsed()
 		QsciScintillaExtended * sci = mw->fc->currentDocument();
 		if ( sci->findFirst("}",false,false,false,true,false,0,0) ) {
 			QString indent(sci->indentation(sci->currentLine()-1),QChar(' '));
-			sci->replace( indent + parser->command() + "\n}");
+			QString newCommand = indent + parser->command() + "\n}";
+			sci->replace(newCommand);
+			sci->setSelection(0,0,0,0);
 		}
 	} else {
 		d->commandLine->setStyleSheet("background : red;");

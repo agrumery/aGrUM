@@ -6,7 +6,7 @@
 #include <QSharedPointer>
 
 #include "qsciscintillaextended.h"
-#include "prmtreemodel.h"
+#include "prmtreemodel2.h"
 
 class MainWindow;
 namespace gum {
@@ -22,8 +22,8 @@ public:
 
 	bool isAutoSyntaxCheck() const;
 
-	QSharedPointer<PRMTreeModel> currentDocumentModel();
-	const QSharedPointer<PRMTreeModel> currentDocumentModel() const;
+	QSharedPointer<PRMTreeModel2> currentDocumentModel();
+	const QSharedPointer<PRMTreeModel2> currentDocumentModel() const;
 
 public slots:
 	void setAutoSyntaxCheck( bool isAuto );
@@ -32,6 +32,8 @@ public slots:
 	void checkSyntax( const QString & filename );
 	void execute( QsciScintillaExtended * sci = 0 );
 	void execute( const QString & filename );
+
+	void parseProject();
 
 	void hideBuildMessage();
 
@@ -42,6 +44,7 @@ protected slots:
 	void startParsing(bool isAuto = true, bool isExecution = false);
 	void onParsingFinished();
 	void onExecutionFinished();
+	void onProjectParseFinished();
 
 	void onCommandValided();
 	void onCommandParsed();

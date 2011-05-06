@@ -18,10 +18,9 @@ QCommandLineEdit::QCommandLineEdit(QWidget * parent) : QLineEdit(parent), d(new 
 }
 
 //! \reimp
-//! To
+//! Handle Key_Up and Key_Down for historic.
 void QCommandLineEdit::keyPressEvent( QKeyEvent * event )
 {
-	qDebug() << event->text();
 	if ( completer() == 0 || completer()->popup() == 0 || completer()->popup()->isHidden() ) {
 		switch( event->key() ) {
 		case Qt::Key_Up:

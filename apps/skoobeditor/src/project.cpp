@@ -58,7 +58,7 @@ Project::~Project()
 /**
   Return the project name.
   */
-QString Project::name()
+QString Project::name() const
 {
 	return d->dir.dirName();
 }
@@ -67,7 +67,7 @@ QString Project::name()
 /**
   Return the project root directory.
   */
-QString Project::dir()
+QString Project::dir() const
 {
 	return d->dir.absolutePath();
 }

@@ -11,8 +11,8 @@ public:
 	Project(const QString & dir, QObject * parent = 0);
 	~Project();
 
-	QString name();
-	QString dir();
+	QString name() const;
+	QString dir() const;
 
 	///
 	bool isEditable() const;

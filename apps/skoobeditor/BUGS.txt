@@ -15,8 +15,8 @@ AMELIORATIONS :
     * ? qui recalcule pas
     * autocomplétion dans a zone de saisie des commandes
     * Le contexte d'autocomplétion basé sur tout le projet avec le package courant.
-    * Espace dans recherche avancée
     
+    * Espace entre les résultats dans recherche avancée (pas d'option pour le QTreeWidget)
     * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
     * Lien entre le nom de la classe ou du system ou des requêtes et le nom du fichier,
 	à la sauvegarde.

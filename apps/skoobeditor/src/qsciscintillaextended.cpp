@@ -671,18 +671,21 @@ void QsciScintillaExtended::autoCompleteFromCompleter()
 
 	// Search start of prefix.
 	while ( start >= 0 && ( lineText[start].isLetterOrNumber() ||
-							lineText[start] == QChar('.') ||
-							lineText[start] == QChar('_') ) ) start--;
+							lineText[start] == '_' ||
+							lineText[start] == '.' ||
+							lineText[start] == '[' ||
+							lineText[start] == ']' ) ) start--;
 	start++;
 	QString prefix = lineText.mid(start, caret - start);
 
-	if ( prefix.size() <= 1 ) {
+	if ( prefix.size() == 0 ) {
 		d->completer->popup()->hide();
 		return;
 	}
 
 	d->completer->setCompletionPrefix( prefix );
 	int count = d->completer->completionCount();
+
 	QRect cr;
 	if ( count == 0 )
 		return;
@@ -698,7 +701,7 @@ void QsciScintillaExtended::autoCompleteFromCompleter()
 		// Select first result
 		d->completer->popup()->setCurrentIndex(d->completer->completionModel()->index(0, 0));
 		// Show popup
-		d->completer->complete( cr );
+		d->completer->complete(cr);
 	}
 }
 

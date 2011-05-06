@@ -16,7 +16,7 @@
 //
 struct EditController::PrivateData {
 	PRMCompleter * completer;
-	QSharedPointer<PRMTreeModel> prmModel;
+	QSharedPointer<PRMTreeModel2> prmModel;
 };
 
 // Constructor
@@ -125,10 +125,13 @@ void EditController::decreaseIndentation()
 
 void EditController::autoComplete()
 {
-	if ( ! d->prmModel.isNull() && mw->fc->hasCurrentDocument() ) {
+	if ( ! mw->fc->hasCurrentDocument() )
+		return;
+
+	if ( ! d->prmModel.isNull() ) {
 		mw->fc->currentDocument()->setCompleter(d->completer);
 		mw->fc->currentDocument()->autoCompleteFromCompleter();
-	} else if ( mw->fc->hasCurrentDocument() )
+	} else
 		mw->fc->currentDocument()->autoCompleteFromAll();
 }
 
@@ -141,18 +144,18 @@ void EditController::editPreferences()
 
 void EditController::onCurrentDocumentModelChanged()
 {
-	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->currentDocumentModel();
+	QSharedPointer<PRMTreeModel2> newPRMModel = mw->bc->currentDocumentModel();
 
 	// If doesn't changed, don't changed completer.
 	if ( newPRMModel.isNull() || d->prmModel == newPRMModel )
 		return;
 
-	QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
+	QSharedPointer<PRMTreeModel2> oldPRMModel = d->prmModel;
 	d->prmModel.clear();
 	d->prmModel = newPRMModel;
-	d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
-	d->prmModel->setCurrentBlock(mw->fc->currentDocument()->block().second);
-	d->prmModel->addKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
+	//d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
+	//d->prmModel->setCurrentBlock(mw->fc->currentDocument()->block().second);
+	//d->prmModel->addKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
 	d->prmModel->sort(0);
 	d->completer->setModel( d->prmModel.data() );
 
