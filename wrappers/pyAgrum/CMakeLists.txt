@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.6)
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-find_package(PythonInterp 2.5)
+find_package(PythonInterp)
 find_package(PythonLibs)
 
 execute_process(
@@ -77,7 +77,7 @@ swig_add_module(pyAgrum python ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUMFILE} ${AGRU
 swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
 
 set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} -I/usr/include/python2.6")
+set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} -I${PYTHON_INCLUDE_PATH}")
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pyAgrum.py DESTINATION ${PYTHON_INSTALL})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL})
