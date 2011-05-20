@@ -195,6 +195,9 @@ def addTick(self,*args):
 %}
 
 %pythoncode %{
+def availableBNExts():
+  return "bif|dsl|net"
+
 def loadBN(s):
   bn=BayesNet()
 
@@ -206,7 +209,7 @@ def loadBN(s):
   elif extension=="NET":
     bn.loadNET(s)
   else:
-    raise Exception("extension "+s.split('.')[-1]+" not used")
+    raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
   return bn
 %}

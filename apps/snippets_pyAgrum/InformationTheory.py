@@ -42,7 +42,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{bif|dsl}"
+    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
     sys.exit(exit_value)
 
 

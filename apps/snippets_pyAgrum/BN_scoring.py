@@ -118,7 +118,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{bif|dsl} [data[.csv]]"
+    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} [data[.csv]]"
     sys.exit(exit_value)
 
 def getNumLabel(inst,i,label,transforme_label):
