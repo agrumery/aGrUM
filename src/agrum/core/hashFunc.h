@@ -178,6 +178,30 @@ namespace gum {
   };
 
 
+  /** generic hash functions for keys castable at most as unsigned long */
+  template <typename Key> class HashFuncSmallCastKey :
+    public HashFuncBase<Key> {
+  public:
+    /// basic constructor
+    HashFuncSmallCastKey ();
+    
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
+
+    /// computes the hashed value of a key
+    Size operator()( const Key& ) const;
+
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
+
+    // an additional shift to ensure that keys with fewer bits than unsigned longs
+    // are cast correctly
+    unsigned int _small_key_shift;
+  };
+
+
 
   /** generic hash functions for pairs of at most long integer keys */
   template <typename Key1, typename Key2> class HashFuncSmallKeyPair :
@@ -193,6 +217,30 @@ namespace gum {
   protected:
     // the number of right shift to perform to get correct hashed values
     unsigned int _right_shift;
+  };
+
+
+  /** generic hash functions for pairs of at most long integer keys */
+  template <typename Key1, typename Key2> class HashFuncSmallCastKeyPair :
+    public HashFuncBase< std::pair<Key1,Key2> > {
+  public:
+    /// basic constructor
+    HashFuncSmallCastKeyPair ();
+
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
+
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<Key1,Key2>& ) const ;
+
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
+
+    // an additional shift to ensure that keys with fewer bits than unsigned longs
+    // are cast correctly
+    unsigned int _small_key_shift;
   };
 
 
@@ -255,10 +303,10 @@ namespace gum {
     public HashFuncSmallKey<unsigned long> {};
 
   template <> class HashFunc<float> :
-    public HashFuncSmallKey<float> {};
+    public HashFuncSmallCastKey<float> {};
 
   template <> class HashFunc<double> :
-    public HashFuncSmallKey<double> {};
+    public HashFuncSmallCastKey<double> {};
 
   //for pedantic    template <> class HashFunc<long long> :
   //for pedantic  public HashFuncBigKey<long long> {};
