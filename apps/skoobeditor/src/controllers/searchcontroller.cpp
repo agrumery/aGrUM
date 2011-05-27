@@ -1,6 +1,6 @@
 #include "searchcontroller.h"
 
-#include "mainwindow.h"
+#include "uis/mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filecontroller.h"
 #include "editcontroller.h"
@@ -9,7 +9,7 @@
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
 
-#include "advancedsearch.h"
+#include "uis/advancedsearch.h"
 
 #include <QMessageBox>
 #include <QDebug>

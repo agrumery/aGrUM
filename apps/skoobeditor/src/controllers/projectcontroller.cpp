@@ -1,6 +1,6 @@
 #include "projectcontroller.h"
 
-#include "mainwindow.h"
+#include "uis/mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filecontroller.h"
 #include "editcontroller.h"
@@ -8,10 +8,10 @@
 #include "viewcontroller.h"
 #include "buildcontroller.h"
 #include "qsciscintillaextended.h"
-#include "qscilexerskool2.h"
+#include "lexers/qscilexerskool2.h"
 
-#include "newprojectdialog.h"
-#include "projectproperties.h"
+#include "uis/newprojectdialog.h"
+#include "uis/projectproperties.h"
 
 #include <QFile>
 #include <QDir>

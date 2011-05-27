@@ -5,7 +5,7 @@
 #include "ui_mainwindow.h"
 
 #include "qsciscintillaextended.h"
-#include "filecontroller.h"
+#include "controllers/filecontroller.h"
 
 #include <QMenu>
 #include <QMessageBox>

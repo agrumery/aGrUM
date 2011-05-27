@@ -25,57 +25,61 @@ win32 {
 TARGET = skoobeditor
 DESTDIR = $${PWD}/../bin/Release
 
-SOURCES += main.cpp\
-		mainwindow.cpp \
-    filecontroller.cpp \
-    qsciscintillaextended.cpp \
-    editcontroller.cpp \
-	searchcontroller.cpp \
-    advancedsearch.cpp \
-    viewcontroller.cpp \
-    projectcontroller.cpp \
-    newprojectdialog.cpp \
-    project.cpp \
-    qscilexerskoor.cpp \
-    buildcontroller.cpp \
-    properties.cpp \
-    qkeysequencewidget.cpp \
-    qscilexerskool2.cpp \
-	skoolinterpretation.cpp \
-    skoorinterpretation.cpp \
-    projectproperties.cpp \
-    prmtreemodel.cpp \
-    prmcompleter.cpp \
-	abstractparser.cpp
-    
-HEADERS  += mainwindow.h \
-    filecontroller.h \
-    qsciscintillaextended.h \
-    editcontroller.h \
-    searchcontroller.h \
-    advancedsearch.h \
-    viewcontroller.h \
-    projectcontroller.h \
-    newprojectdialog.h \
-    project.h \
-    qscilexerskoor.h \
-    buildcontroller.h \
-    properties.h \
-    qkeysequencewidget.h \
-    qscilexerskool2.h \
-    syntaxchecker.h \
-	skoolinterpretation.h \
-    skoorinterpretation.h \
-    projectproperties.h \
-    prmtreemodel.h \
-    prmcompleter.h \
-	abstractparser.h
+SOURCES += \
+    controllers/buildcontroller.cpp \
+    controllers/editcontroller.cpp \
+    controllers/filecontroller.cpp \
+    controllers/projectcontroller.cpp \
+    controllers/searchcontroller.cpp \
+    controllers/viewcontroller.cpp \
+    uis/advancedsearch.cpp \
+	uis/mainwindow.cpp \
+	uis/newprojectdialog.cpp \
+	uis/projectproperties.cpp \
+	uis/properties.cpp \
+	lexers/qscilexerskool2.cpp \
+	lexers/qscilexerskoor.cpp \
+	parsers/abstractparser.cpp \
+	parsers/skoolinterpretation.cpp \
+	parsers/skoorinterpretation.cpp \
+	main.cpp\
+	prmcompleter.cpp \
+	prmtreemodel.cpp \
+	project.cpp \
+	qcommandlineedit.cpp \
+	qkeysequencewidget.cpp \
+	qsciscintillaextended.cpp
 
-FORMS    += mainwindow.ui \
-    advancedsearch.ui \
-    newprojectdialog.ui \
-    properties.ui \
-    projectproperties.ui
+HEADERS  += \
+    controllers/buildcontroller.h \
+    controllers/editcontroller.h \
+    controllers/filecontroller.h \
+    controllers/projectcontroller.h \
+    controllers/searchcontroller.h \
+    controllers/viewcontroller.h \
+    uis/advancedsearch.h \
+    uis/mainwindow.h \
+    uis/newprojectdialog.h \
+    uis/projectproperties.h \
+    uis/properties.h \
+    lexers/qscilexerskool2.h \
+    lexers/qscilexerskoor.h \
+    parsers/abstractparser.h \
+    parsers/skoolinterpretation.h \
+    parsers/skoorinterpretation.h \
+    prmcompleter.h \
+    prmtreemodel.h \
+    project.h \
+    qcommandlineedit.h \
+    qkeysequencewidget.h \
+    qsciscintillaextended.h
+
+FORMS    += \
+    uis/advancedsearch.ui \
+    uis/mainwindow.ui \
+    uis/newprojectdialog.ui \
+    uis/projectproperties.ui
+    uis/properties.ui \
 
 RESOURCES += \
 	../rsrc/resources.qrc

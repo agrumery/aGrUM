@@ -1,7 +1,7 @@
 #include "qsciscintillaextended.h"
 
-#include "qscilexerskoor.h"
-#include "qscilexerskool2.h"
+#include "lexers/qscilexerskool2.h"
+#include "lexers/qscilexerskoor.h"
 
 #include <Qsci/qsciapis.h>
 #include <QFileInfo>

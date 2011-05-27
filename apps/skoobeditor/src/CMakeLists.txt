@@ -24,7 +24,7 @@ endif(QSCINTILLA2)
 file(GLOB_RECURSE SKOOB_SOURCES *.cpp)
 file(GLOB_RECURSE SKOOB_INCLUDES *.h)
 file(GLOB RESOURCES ../rsrc/*.qrc)
-file(GLOB FORMS *.ui)
+file(GLOB_RECURSE FORMS *.ui)
 file(GLOB RC_FILE ../rsrc/*.rc)
 
 # TODO : Ajouté les fichiers objects *.o de aGrUM/build/ plutôt que les sources

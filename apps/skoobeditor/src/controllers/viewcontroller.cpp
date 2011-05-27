@@ -1,6 +1,6 @@
 #include "viewcontroller.h"
 
-#include "mainwindow.h"
+#include "uis/mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filecontroller.h"
 #include "editcontroller.h"

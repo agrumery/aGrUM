@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QCompleter>
 
-#include "properties.h"
+#include "uis/properties.h"
 
 class MainWindow;
 

@@ -5,7 +5,7 @@
 #include <agrum/core/exceptions.h>
 #include <iostream>
 
-#include "mainwindow.h"
+#include "uis/mainwindow.h"
 
 
 /**

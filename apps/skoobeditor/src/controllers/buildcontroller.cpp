@@ -1,6 +1,6 @@
 #include "buildcontroller.h"
 
-#include "mainwindow.h"
+#include "uis/mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filecontroller.h"
 #include "editcontroller.h"
@@ -8,8 +8,8 @@
 #include "viewcontroller.h"
 #include "projectcontroller.h"
 #include "qsciscintillaextended.h"
-#include "skoolinterpretation.h"
-#include "skoorinterpretation.h"
+#include "parsers/skoolinterpretation.h"
+#include "parsers/skoorinterpretation.h"
 
 #include <agrum/core/errorsContainer.h>
 #include <agrum/prm/skoor/SkoorInterpreter.h>
