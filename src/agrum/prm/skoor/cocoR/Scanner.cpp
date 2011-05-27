@@ -297,8 +297,8 @@ void Scanner::Init() {
 	percent=-1;
 	EOL    = '\n';
 	eofSym = 0;
-	maxT = 26;
-	noSym = 26;
+	maxT = 28;
+	noSym = 28;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 10);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -314,6 +314,8 @@ void Scanner::Init() {
 	start.set(125, 14);
 	start.set(61, 15);
 	start.set(46, 16);
+	start.set(91, 17);
+	start.set(93, 18);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"package", 5);
 	keywords.set(L"import", 6);
@@ -574,6 +576,10 @@ Token* Scanner::NextToken() {
 			{t->kind = 18; break;}
 		case 16:
 			{t->kind = 25; break;}
+		case 17:
+			{t->kind = 26; break;}
+		case 18:
+			{t->kind = 27; break;}
 
 	}
 	AppendVal(t);

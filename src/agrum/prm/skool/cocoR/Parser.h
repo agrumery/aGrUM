@@ -204,7 +204,7 @@ private:
             return;
         // Remember we have found it.
         __imports.insert(filepath);
-
+        
         // We parse it
         Scanner s(filepath.c_str());
         Parser p(&s);
@@ -294,11 +294,6 @@ private:
       __imports = imports;
     }
 
-    // Get files imports.
-    const gum::Set<std::string>& getImports() const {
-      return __imports;
-    }
-
     // Add these import to this parser.
     void addImports(const gum::Set<std::string>& imports) {
       for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
@@ -332,6 +327,18 @@ public:
         __current_directory = Directory(cd);
         if ( ! __current_directory.isValid() )
           Warning( widen("gum::skool::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
+    }
+    
+    // Get files imports.
+    const gum::Set<std::string>& getImports() const {
+      return __imports;
+    }
+    
+    // Add this import to this parser.
+    void addImport(const std::string& import) {
+        if (not __imports.exists(import)) {
+          __imports.insert(import);
+        }
     }
     
 

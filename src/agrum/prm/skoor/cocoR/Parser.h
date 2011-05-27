@@ -126,6 +126,7 @@ void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
 	void Query();
 	void SetEngine();
 	void SetGrdEngine();
+	void IdentArray(std::string& s);
 
 	void Parse();
 

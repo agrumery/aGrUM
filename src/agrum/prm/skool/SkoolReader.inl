@@ -55,15 +55,28 @@ namespace gum {
       INLINE
       void
       SkoolReader::readFile ( const std::string& file ) {
+        size_t lastSlashIndex = file.find_last_of('/');
+        Directory dir(file.substr(0, lastSlashIndex+1));
+        if ( ! dir.isValid() ) {
+          __errors.addException( "directory doesn't exist.", dir.path() );
+          return;
+        }
+        string basename = file.substr(lastSlashIndex+1);
+        string absFilename = dir.absolutePath() + basename;
+        
         try {
-          Scanner s ( file.c_str() );
+          if ( __parser && __parser->getImports().exists( absFilename ) )
+            return;
+          
+          Scanner s ( absFilename.c_str() );
           if ( ! __parseDone ) {
             __parser = new Parser ( &s );
             __parser->setFactory ( &__factory );
             __parser->setClassPath ( __class_path );
           } else
             __parser->scanner = &s;
-          __parser->setCurrentDirectory( file.substr(0, file.find_last_of('/')+1) );
+          __parser->setCurrentDirectory( dir.absolutePath() );
+          __parser->addImport( absFilename );
           
           __parser->Parse();
           __parseDone = true;

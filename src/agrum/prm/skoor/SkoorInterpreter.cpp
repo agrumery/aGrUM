@@ -34,6 +34,7 @@
 #include <agrum/prm/SVED.h>
 #include <agrum/prm/groundedInference.h>
 #include <agrum/prm/SVE.h>
+#include <agrum/core/dir_utils.h>
 #undef COCO_PARSER_H__
 #undef COCO_SCANNER_H__
 #include <agrum/prm/skoor/cocoR/Parser.h>
@@ -386,6 +387,8 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
     if (m_verbose) m_log << endl << "## Session '" << sessionName << "' finished." << endl << endl << endl;
   }
   
+  if ( isVerboseMode() && errors() != 0 ) m_errors.showElegantErrorsAndWarnings();
+  
   return errors() == 0;
 }
 
@@ -534,7 +537,7 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
     for ( int i = 0 ; i < count ; i++ )
       root += "../";
     
-    import_abs_filename = root + import_name;
+    import_abs_filename = Directory(root).absolutePath() + import_name;
 		if ( m_verbose ) m_log << "# Search from package '" << package << "' => '" << import_abs_filename << "' ... " << flush;
 		file_test.open(import_abs_filename.c_str());
 		if (file_test.is_open()) {
