@@ -1,4 +1,12 @@
 ﻿
+27/05/2011
+    * Fix : Skoor : Quand un fichier est déjà importé, ne pas essayer de l'importer.
+    * Improve : L'autocomplétion s'update en temps réel.
+    * Add : autocomplétion dans a zone de saisie des commandes (bug connu:la sélection s'efface toute seule).
+    
+09/05/2011
+    * Improve : L'autocomplétion à maintenant lieu sur tout le projet.
+
 28/04/2011
     * Add : Barre d'onglet pour le dock.
     * Add : Historique pour la zone de saisie des commandes de l'interpréteur.

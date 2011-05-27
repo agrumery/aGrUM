@@ -16,7 +16,7 @@
 //
 struct EditController::PrivateData {
 	PRMCompleter * completer;
-	QSharedPointer<PRMTreeModel2> prmModel;
+	QSharedPointer<PRMTreeModel> prmModel;
 };
 
 // Constructor
@@ -27,7 +27,6 @@ EditController::EditController( MainWindow * mw, QObject * parent) :
 	pr(new Properties(mw,mw))
 {
 	d->completer = new PRMCompleter(this);
-	d->completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
 	connect( mw->ui->actionUndo, SIGNAL(triggered()), this, SLOT(undo()) );
 	connect( mw->ui->actionRedo, SIGNAL(triggered()), this, SLOT(redo()) );
@@ -144,20 +143,19 @@ void EditController::editPreferences()
 
 void EditController::onCurrentDocumentModelChanged()
 {
-	QSharedPointer<PRMTreeModel2> newPRMModel = mw->bc->currentDocumentModel();
+	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->currentDocumentModel();
 
 	// If doesn't changed, don't changed completer.
-	if ( newPRMModel.isNull() || d->prmModel == newPRMModel )
+	if ( newPRMModel.isNull() || d->prmModel == newPRMModel || ! mw->fc->hasCurrentDocument() )
 		return;
 
-	QSharedPointer<PRMTreeModel2> oldPRMModel = d->prmModel;
+	QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
 	d->prmModel.clear();
 	d->prmModel = newPRMModel;
-	//d->prmModel->setCurrentPackage(mw->fc->currentDocument()->package());
-	//d->prmModel->setCurrentBlock(mw->fc->currentDocument()->block().second);
-	//d->prmModel->addKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
+	d->prmModel->setKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
 	d->prmModel->sort(0);
 	d->completer->setModel( d->prmModel.data() );
+	d->completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 
 	emit completerChanged();
 }

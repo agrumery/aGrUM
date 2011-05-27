@@ -1,5 +1,7 @@
 #include "prmcompleter.h"
 
+#include "prmtreemodel.h"
+
 #include <QEvent>
 #include <QKeyEvent>
 #include <QAbstractItemView>
@@ -8,6 +10,7 @@
 PRMCompleter::PRMCompleter(QObject *parent) :
     QCompleter(parent)
 {
+	setCompletionRole(PRMTreeModel::LocalDataRole);
 }
 
 
@@ -20,5 +23,5 @@ QString PRMCompleter::pathFromIndex(const QModelIndex &index) const
 
 QStringList PRMCompleter::splitPath(const QString &path) const
 {
-	return path.split(QChar('.'));
+	return path.split('.');
 }

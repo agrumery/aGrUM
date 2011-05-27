@@ -718,9 +718,15 @@ void QsciScintillaExtended::insertCompletion(const QString& completion)
 {
 	if (d->completer->widget() != this)
 		return;
-	int extra = completion.length() - d->completer->completionPrefix().length();
-	insert( completion.right(extra) );
-	setCurrentIndex( currentIndex() + extra );
+
+	// select prefix
+	setSelection( currentLine(), currentIndex() - d->completer->completionPrefix().length(), currentLine(), currentIndex() );
+	// remove and insert
+	// TODO : replace by replaceSelectedText(completion);
+	removeSelectedText();
+	insert( completion );
+	// Set index
+	setCurrentIndex( currentIndex() + completion.length() );
 }
 
 void QsciScintillaExtended::focusInEvent(QFocusEvent *e)

@@ -39,11 +39,10 @@ struct BuildController::PrivateData {
 	AbstractParser * fileParser;
 
 	SkoorInterpretation * projectParser;
-	QsciScintillaExtended * projectDoc;
 
 	QTimer timer;
 
-	QSharedPointer<PRMTreeModel2> prmModel;
+	QSharedPointer<PRMTreeModel> prmModel;
 
 	void showStartParsing( const QString & of );
 	void showStartExection( const QString & of );
@@ -94,7 +93,6 @@ BuildController::BuildController(MainWindow * mw, QObject *parent) :
 	d->isCommand = false;
 	d->fileParser = 0;
 	d->projectParser = 0;
-	d->projectDoc = 0;
 	d->autoSyntaxCheck = false;
 
 	d->timer.setSingleShot(true);
@@ -133,11 +131,14 @@ BuildController::~BuildController()
 void BuildController::triggerInit()
 {
 	// Start it in case there is only one document
-	//connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startParsing()) );
+	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(startParsing()) );
 
 	//
 	connect( mw->ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(parseProject()) );
 	connect( mw->fc, SIGNAL(fileRenamed(QString,QString,QsciScintillaExtended*)), this, SLOT(parseProject()) );
+	parseProject();
+
+	mw->ui->commandLineEdit->setCompleter( mw->ec->completer() );
 }
 
 /* ************************************************************************* */
@@ -161,12 +162,12 @@ void BuildController::setAutoSyntaxCheck( bool isAuto )
 	}
 }
 
-QSharedPointer<PRMTreeModel2> BuildController::currentDocumentModel()
+QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel()
 {
 	return d->prmModel;
 }
 
-const QSharedPointer<PRMTreeModel2> BuildController::currentDocumentModel() const
+const QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel() const
 {
 	return d->prmModel;
 }
@@ -282,12 +283,13 @@ void BuildController::parseProject()
 			document += "import " + relFilename + ";\n";
 		}
 
-	d->projectDoc = new QsciScintillaExtended( QsciScintillaExtended::Skoor, mw );
-	d->projectDoc->setFilename(project->dir()+"/projectFile.skoor");
-	d->projectDoc->append( document );
-	d->projectParser = new SkoorInterpretation( d->projectDoc, this );
+	QsciScintillaExtended * projectDoc = new QsciScintillaExtended( QsciScintillaExtended::Skoor, mw );
+	projectDoc->setFilename(project->dir()+"/projectFile.skoor");
+	projectDoc->append( document );
+	d->projectParser = new SkoorInterpretation( projectDoc, this );
 	d->projectParser->setSyntaxMode(true);
 	connect( d->projectParser, SIGNAL(finished()), this, SLOT(onProjectParseFinished()) );
+	connect( d->projectParser, SIGNAL(finished()), projectDoc, SLOT(deleteLater()) );
 	d->projectParser->parse();
 }
 
@@ -336,7 +338,7 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 	startParsing( bool isAuto = true, bool isExecution = false )
 	return if no currentDocument
 	*/
-	if ( ! mw->fc->hasCurrentDocument() )
+	if ( ! mw->fc->hasCurrentDocument() || ( isAuto && ! d->autoSyntaxCheck ) )
 		return;
 
 	QsciScintillaExtended * sci = mw->fc->currentDocument();
@@ -382,18 +384,17 @@ void BuildController::startParsing( bool isAuto, bool isExecution )
 void BuildController::onParsingFinished()
 {
 	if ( d->fileParser == 0 ) {
-		qWarning() << "in onParsingFinished() : Error : parser == 0.";
+		qWarning() << "in onParsingFinished() : Error : fileParser == 0.";
 		return;
 	} else if (d->isAuto && d->fileParser->document() != mw->fc->currentDocument())
 		return;
 
 	const gum::ErrorsContainer & errors = d->fileParser->errors();
 
-	if ( /*errors.error_count == 0 &&*/ ! d->prmModel.isNull() ) {
-		d->prmModel->updateModel( d->fileParser->prm(), mw->fc->currentDocument() );
-		//emit currentDocumentModelChanged();
-	} /*else if ( d->prmModel.isNull() )
-		parseProject();*/
+	if ( errors.error_count == 0 && ! d->prmModel.isNull() ) {
+		d->prmModel->update( d->fileParser->prm(), mw->fc->currentDocument() );
+		d->prmModel->sort(0);
+	}
 
 	if ( d->isAuto )
 		mw->fc->currentDocument()->clearAllSyntaxErrors();
@@ -521,9 +522,6 @@ void BuildController::onProjectParseFinished()
 	//  mw->pc->setErrorIcon( filename );
 	//}
 
-
-	d->projectDoc->deleteLater();
-	d->projectDoc = 0;
 	d->projectParser->deleteLater();
 	d->projectParser = 0;
 }
@@ -572,8 +570,11 @@ void BuildController::onDocumentClosed( const QString & filename )
 
 void BuildController::executeClass( QsciScintillaExtended * sci )
 {
+	qWarning() << "BuildController::executeClass must be reimplemented with new PRMTreeModel interface.";
+	return;
+
 	QString name = QFileInfo(sci->filename()).baseName();
-	QSharedPointer<PRMTreeModel2> model = currentDocumentModel();
+	QSharedPointer<PRMTreeModel> model = currentDocumentModel();
 
 	// On ouvre un nouveau document système
 	QsciScintillaExtended * sys = mw->fc->newDocument(name+"System", QsciScintillaExtended::Skool);
@@ -595,50 +596,50 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 
 	// Pour chaque référence dans la classe, et de façon récursive,
 	if ( ! model.isNull() ) {
-		const PRMTreeItem2 * classItem = model->getItem(className);
-		int cpt = 1;
-		QList< QPair<const PRMTreeItem2 *,QString> > toInst;
-		QString id = classItem->localData + QString::number(cpt++);
-		QString indent = "    ";
+//		const PRMTreeItem2 * classItem = model->getItem(className);
+//		int cpt = 1;
+//		QList< QPair<const PRMTreeItem2 *,QString> > toInst;
+//		QString id = classItem->localData + QString::number(cpt++);
+//		QString indent = "    ";
 
-		sys->append( indent + className + " " + id + ";\n" );
-		foreach ( const PRMTreeItem2 * child, classItem->children() )
-			if ( child->type == PRMTreeItem2::Refererence )
-				toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
+//		sys->append( indent + className + " " + id + ";\n" );
+//		foreach ( const PRMTreeItem2 * child, classItem->children() )
+//			if ( child->type == PRMTreeItem2::Refererence )
+//				toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
 
-		// Tant qu'il reste des références à instancier.
-		// Et qu'il n'y en a pas trop, pour éviter les récursions infinies.
-		while ( ! toInst.isEmpty() && cpt < 100 ) {
-			QPair<const PRMTreeItem2*,QString> pair = toInst.takeFirst();
-			const PRMTreeItem2 * item = pair.first;
-			QString ref = pair.second;
-			id = item->localData + QString::number(cpt++);
+//		// Tant qu'il reste des références à instancier.
+//		// Et qu'il n'y en a pas trop, pour éviter les récursions infinies.
+//		while ( ! toInst.isEmpty() && cpt < 100 ) {
+//			QPair<const PRMTreeItem2*,QString> pair = toInst.takeFirst();
+//			const PRMTreeItem2 * item = pair.first;
+//			QString ref = pair.second;
+//			id = item->localData + QString::number(cpt++);
 
-			// Type
-			const PRMTreeItem2 * typeItem = model->getItem(item->ofType);
-			if ( ! typeItem )
-				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : type not found.\n" );
-			else if ( typeItem->type == PRMTreeItem2::Interface )
-				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
-			else if ( typeItem->type != PRMTreeItem2::Class )
-				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is not a class.\n" );
-			sys->append( indent + item->ofType );
+//			// Type
+//			const PRMTreeItem2 * typeItem = model->getItem(item->ofType);
+//			if ( ! typeItem )
+//				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : type not found.\n" );
+//			else if ( typeItem->type == PRMTreeItem2::Interface )
+//				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is an interface.\n// You must instance it with a class which implements it yourself.\n" );
+//			else if ( typeItem->type != PRMTreeItem2::Class )
+//				sys->append( "// AUTOMATIC WARNING :\n// Problem with this reference : this type is not a class.\n" );
+//			sys->append( indent + item->ofType );
 
-			// Array
-			if ( item->isArray )
-				sys->append( "[2]" );
+//			// Array
+//			if ( item->isArray )
+//				sys->append( "[2]" );
 
-			// ID
-			sys->append( " " + id + ";\n" );
+//			// ID
+//			sys->append( " " + id + ";\n" );
 
-			// Affectation
-			sys->append( indent + ref + " = " + id + ";\n");
+//			// Affectation
+//			sys->append( indent + ref + " = " + id + ";\n");
 
-			// Recursive instanciation
-			foreach ( const PRMTreeItem2 * child, item->children() )
-				if ( child->type == PRMTreeItem2::Refererence )
-					toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
-		}
+//			// Recursive instanciation
+//			foreach ( const PRMTreeItem2 * child, item->children() )
+//				if ( child->type == PRMTreeItem2::Refererence )
+//					toInst << QPair<const PRMTreeItem2 *,QString>(child, id+"."+child->localData);
+//		}
 	} else
 		qWarning() << "in BuildController::executeClass() : model is null.";
 

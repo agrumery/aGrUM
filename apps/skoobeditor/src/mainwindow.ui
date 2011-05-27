@@ -124,7 +124,7 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="128,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout_6" stretch="128,0,0,0">
             <property name="spacing">
              <number>1</number>
             </property>

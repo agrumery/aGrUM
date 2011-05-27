@@ -1,383 +1,454 @@
 #include "prmtreemodel.h"
-
-#include <QStringList>
 #include <QDebug>
 
+using namespace std;
+using namespace gum;
 using namespace gum::prm;
 
-/*
-################################################################################
-##                                                                            ##
-##                        INTERNAL REPRESENTATION                             ##
-##                                                                            ##
-################################################################################
- */
+const QString & PRMTreeModel::m_separator = ".";
 
-PRMTreeItem::PRMTreeItem( PRMTreeItem * parent, const QString & data, PRMType type )
-	: parent(parent), localData(data), type(type), isArray(false)
+PRMTreeModel::PRMTreeModel( const PRM * prm, const skoor::SkoorContext * context, QObject *parent) :
+	QStandardItemModel(parent), m_package(0), m_block(0), m_keywords(0)
 {
-}
+	QStandardItem * root = invisibleRootItem();
 
+	// Foreach >>>>>>  PRM::TYPE  <<<<<<
 
-PRMTreeItem::PRMTreeItem( PRMTreeItem * newParent, const PRMTreeItem * item )
-	: parent(newParent), localData(item->localData), type(item->type), isArray(item->isArray)
-{
-	foreach( PRMTreeItem * child, item->children ) {
-		children << new PRMTreeItem( this, child );
-	}
-}
+	const gum::Set< prm::Type * > & sets = prm->types();
+	for ( gum::Set<prm::Type *>::iterator i = sets.begin() ; i != sets.end() ; ++i ) {
+		const prm::Type * type = *i;
 
-PRMTreeItem::~PRMTreeItem()
-{
-	foreach( PRMTreeItem * item, children )
-		delete item;
-}
+		QStandardItem * item = createChild( QString::fromStdString(type->name()), root );
+		item->setData( Type, ObjectRole );
 
-PRMTreeItem * PRMTreeItem::createChild( const QStringList & list, PRMType type  )
-{
-	if (list.isEmpty())
-		return 0;
-
-	foreach ( PRMTreeItem * child, children )
-		if ( child->localData == list.first() ) {
-			if ( list.size() > 1 )
-				return child->createChild( list.mid(1), type );
-			else
-				return child;
-		}
-
-
-	children.append( new PRMTreeItem(this,list.first(),type) );
-	if ( list.size() == 1 )
-		return children.last();
-	else
-		return children.last()->createChild( list.mid(1), type );
-}
-
-QString PRMTreeItem::toString(int tab) const
-{
-	QString s;
-	for ( int i = 0; i < tab ; i++ ) s += "    ";
-	s += localData + "\n";
-	foreach ( PRMTreeItem * item, children )
-		s += item->toString(tab + 1);
-	return s;
-}
-
-QString PRMTreeItem::completeData() const
-{
-	if ( parent == 0 || parent->localData.isEmpty() )
-		return localData;
-	else
-		return parent->completeData() + "." + localData;
-}
-
-PRMTreeItem * PRMTreeItem::getChild( const QStringList & list )
-{
-	if ( list.isEmpty() )
-		return this;
-	foreach ( PRMTreeItem * child, children )
-		if ( child->localData == list.first() )
-			return child->getChild(list.mid(1));
-	return 0;
-}
-
-int PRMTreeItem::row() const
-{
-	if ( parent )
-		for ( int i = 0, size = parent->children.size() ; i < size ; i++ )
-			if ( parent->children[i] == this )
-				return i;
-		//return parent->children.indexOf( this ); // don't work ?? cast error du to const
-	return 0;
-}
-
-void PRMTreeItem::sort( Qt::SortOrder order )
-{
-	if ( order == Qt::AscendingOrder ) {
-		for ( int i = 0 ; i < children.size() - 1 ; i++ )
-			for ( int j = i+1 ; j < children.size() ; j++ )
-				if ( children[i]->localData.compare(children[j]->localData, Qt::CaseInsensitive) > 0 )
-					children.swap(i,j);
-	} else {
-		for ( int i = 0 ; i < children.size() - 1 ; i++ )
-			for ( int j = i+1 ; j < children.size() ; j++ )
-				if ( children[i]->localData.compare(children[j]->localData, Qt::CaseInsensitive) < 0 )
-					children.swap(i,j);
-	}
-
-	foreach ( PRMTreeItem * child, children )
-		child->sort(order);
-}
-
-/*
-################################################################################
-##                                                                            ##
-##                        EXTERNAL REPRESENTATION                             ##
-##                                                                            ##
-################################################################################
-
- TODO
-
-	// METHODE setCurrentPackage
-	// copie le PRMTreeItem du package à la racine,
-	// comme ça, tout ce qui est dedans n'a pas besoin d'être précédé du package
-
-	// METHODE setCurrentType
-	// copie le PRMTreeItem de la classe à la racine,
-	// comme ça, on a accès aux attributs et ref directement.
-
-*/
-
-/// Constructor
-PRMTreeModel::PRMTreeModel( const PRM * prm, QObject * parent )
-	: QAbstractItemModel(parent), rootItem(new PRMTreeItem(0, "")), currentPackage(0), currentBlock(0)
-{
-	// Construction du PRMTreeModel
-
-	// Foreach type
-	//foreach ( const Type * type, prm->types() ) {
-	const gum::Set< Type * > & sets = prm->types();
-	for ( gum::Set<Type *>::iterator i = sets.begin() ; i != sets.end() ; ++i ) {
-		const Type * type = *i;
-		// Create the PRMTreeItem
-		rootItem->createChild( QString::fromStdString( type->name() ).split("."), PRMTreeItem::Type );
-		const gum::DiscreteVariable & var = type->variable();
 		// Foreach labels
-		for ( int i = 0 ; i < var.domainSize() ; i++ )
-			// Create the PRMTreeItem for the label (at the root)
-			rootItem->createChild( QStringList() << QString::fromStdString( var.label(i) ), PRMTreeItem::Label );
-	}
-
-	QList< QPair<PRMTreeItem *, ClassElementContainer *> > refList;
-
-	// Foreach interface
-	foreach ( Interface * i, prm->interfaces() ) {
-		// Create the PRMTreeItem
-		PRMTreeItem * interfaceItem = rootItem->createChild( QString::fromStdString( i->name() ).split("."), PRMTreeItem::Interface );
-		if (interfaceItem != 0)
-			// Add it to ref list to be recursively treat later
-			refList << QPair<PRMTreeItem *, ClassElementContainer *>(interfaceItem, i);
-	}
-
-	// Foreach class
-	foreach ( Class * c, prm->classes() ) {
-		// Create the PRMTreeItem
-		PRMTreeItem * classItem = rootItem->createChild( QString::fromStdString( c->name() ).split("."), PRMTreeItem::Class );
-		if (classItem != 0)
-			// Add it to ref list to be recursively treat later
-			refList << QPair<PRMTreeItem *, ClassElementContainer *>(classItem, c);
-	}
-
-	// Foreach system
-	foreach ( System * s, prm->systems() ) {
-		// Create the PRMTreeItem
-		PRMTreeItem * item = rootItem->createChild( QString::fromStdString( s->name() ).split("."), PRMTreeItem::System );
-		if (item != 0)
-			for ( System::iterator i = s->begin() ; i != s->end() ; ++i ) {
-				// Create the PRMTreeItem
-				PRMTreeItem * inst = item->createChild( QStringList() << QString::fromStdString((*i)->name()), PRMTreeItem::Instance );
-				// Add it to ref list to be recursively treat later
-				refList << QPair<PRMTreeItem *, ClassElementContainer *>(inst, &((*i)->type()));
-			}
-	}
-
-	QPair<PRMTreeItem *, ClassElementContainer *> p;
-	while ( ! refList.isEmpty() ) {
-		p = refList.takeFirst();
-		// je recupère le type de la ref,
-		Interface * i;
-		Class * c;
-		switch ( p.second->obj_type() ) {
-		case PRMObject::prm_interface:
-			i = static_cast<Interface *>( p.second );
-			Q_ASSERT( i != 0 );
-			//  Pour chaque attibut
-			foreach ( Attribute * a, i->attributes() ) {
-				//    je l'ajoute en enfant
-				PRMTreeItem * attItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Attribute );
-				attItem->ofType = QString::fromStdString(a->type().name());
-			}
-			//  Pour chaque ref
-			foreach ( ReferenceSlot * r, i->referenceSlots() ) {
-				//    je l'ajoute en enfant
-				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()), PRMTreeItem::Refererence );
-				refItem->ofType = QString::fromStdString(r->slotType().name());
-				refItem->isArray = r->isArray();
-				//    je l'ajoute à la liste
-				refList << QPair<PRMTreeItem *, ClassElementContainer *>(refItem, &(r->slotType()));
-			}
-			break;
-		case PRMObject::prm_class :
-			c = static_cast<Class *>( p.second );
-			Q_ASSERT( c != 0 );
-			//  Pour chaque attibut
-			foreach ( Attribute * a, c->attributes() ) {
-				//    je l'ajoute en enfant
-				PRMTreeItem * attItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Attribute );
-				attItem->ofType = QString::fromStdString(a->type().name());
-			}
-			//  Pour chaque aggrégat
-			foreach ( Aggregate * a, c->aggregates() ) {
-				//    je l'ajoute en enfant
-				PRMTreeItem * aggItem = p.first->createChild( QStringList() << QString::fromStdString(a->name()), PRMTreeItem::Aggregate );
-				aggItem->ofType = QString::fromStdString(a->type().name());
-			}
-			//  Pour chaque ref
-			foreach ( ReferenceSlot * r, c->referenceSlots() ) {
-				//    je l'ajoute en enfant
-				PRMTreeItem * refItem = p.first->createChild( QStringList() << QString::fromStdString(r->name()), PRMTreeItem::Refererence );
-				refItem->ofType = QString::fromStdString(r->slotType().name());
-				refItem->isArray = r->isArray();
-				//    je l'ajoute à la liste
-				refList << QPair<PRMTreeItem *, ClassElementContainer *>(refItem, &(r->slotType()));
-			}
-			break;
+		const gum::DiscreteVariable & var = type->variable();
+		for ( int i = 0 ; i < var.domainSize() ; i++ ) {
+			// Create the PRMTreeItem2 for the label (at the root)
+			QStandardItem * label = createChild( QString::fromStdString(var.label(i)), root );
+			label->setData( Label, ObjectRole );
 		}
 	}
+
+	// Foreach >>>>>>  PRM::INTERFACE  <<<<<<
+
+	foreach ( prm::Interface * i, prm->interfaces() ) {
+
+		QStandardItem * intrfce = createChild( QString::fromStdString(i->name()).split(separator()), root );
+		intrfce->setData( Interface, ObjectRole );
+
+		//  Pour chaque attibut
+		foreach ( prm::Attribute * a, i->attributes() ) {
+			//    je l'ajoute en enfant
+			QStandardItem * item = createChild( QString::fromStdString(a->name()), intrfce );
+			item->setData( Attribute, ObjectRole );
+		}
+
+		//  Pour chaque ref
+		foreach ( prm::ReferenceSlot * r, i->referenceSlots() ) {
+			QStandardItem * refItem = createChild( QString::fromStdString(r->name()), intrfce );
+			refItem->setData( Refererence, ObjectRole );
+			refItem->setData( QString::fromStdString(r->slotType().name()).split(separator()), TypeRole );
+			refItem->setData( r->isArray(), IsArrayRole );
+		}
+	}
+
+	// Foreach >>>>>>  PRM::CLASS  <<<<<<
+
+	foreach ( prm::Class * c, prm->classes() ) {
+
+		QStandardItem * clss = createChild( QString::fromStdString(c->name()).split(separator()), root );
+		clss->setData( Class, ObjectRole );
+
+		//  Pour chaque attibut
+		foreach ( prm::Attribute * a, c->attributes() ) {
+			QStandardItem * item = createChild( QString::fromStdString(a->name()), clss );
+			item->setData( Attribute, ObjectRole );
+		}
+
+		//  Pour chaque aggrégat
+		foreach ( prm::Aggregate * a, c->aggregates() ) {
+			QStandardItem * item = createChild( QString::fromStdString(a->name()), clss );
+			item->setData( Aggregate, ObjectRole );
+		}
+
+		//  Pour chaque ref
+		foreach ( prm::ReferenceSlot * r, c->referenceSlots() ) {
+			QStandardItem * refItem = createChild( QString::fromStdString(r->name()), clss );
+			refItem->setData( Refererence, ObjectRole );
+			refItem->setData( QString::fromStdString(r->slotType().name()).split(separator()), TypeRole );
+			refItem->setData( r->isArray(), IsArrayRole );
+		}
+	}
+
+	// Foreach >>>>>>  PRM::SYSTEM  <<<<<<
+	foreach ( prm::System * s, prm->systems() ) {
+
+		QStandardItem * systm = createChild( QString::fromStdString(s->name()).split(separator()), root );
+		systm->setData( System, ObjectRole );
+
+		for ( prm::System::iterator i = s->begin() ; i != s->end() ; ++i ) {
+			QStandardItem * inst = createChild( QString::fromStdString((*i)->name()), systm );
+			inst->setData( Instance, ObjectRole );
+			inst->setData( QString::fromStdString((*i)->type().name()).split(separator()), TypeRole );
+		}
+	}
+
+	/* >>>>  CONTEXT  <<<< */
+	// Skool files don't have context
+	if ( context != 0 )
+		foreach ( const skoor::ImportCommand * i, context->getImports() )
+			addAlias( QString::fromStdString(i->alias), QString::fromStdString(i->value).split(separator()) );
 }
 
 PRMTreeModel::~PRMTreeModel()
 {
-	delete rootItem;
+
 }
 
-
-/// Set the current package to allow direct access of member.
-bool PRMTreeModel::setCurrentPackage( const QString & package )
+/// Add keywords to model.
+void PRMTreeModel::setKeywords( const QStringList & keywords )
 {
-	// If package is already currentPackage
-	if ( currentPackage && currentPackage->completeData() == package )
-		return true;
-
-	// Delete previous currentPackage
-	if ( currentPackage ) {
-		foreach( PRMTreeItem * item, currentPackage->children ) {
-			PRMTreeItem * child = rootItem->getChild( item->localData.split(QChar('.')) );
-			if ( child ) {
-				rootItem->children.removeOne(child);
-				delete child;
-			}
-		}
-		currentPackage = 0;
+	if ( m_keywords != 0 ) {
+		removeSameChildren( m_keywords, invisibleRootItem() );
+		delete m_keywords;
+		m_keywords = 0;
 	}
 
-	// Search new currentPackage
-	currentPackage = rootItem->getChild( package.split(QChar('.')) );
-	if ( currentPackage == 0 )
-		return false;
-
-	// Set currentPackage;
-	foreach( PRMTreeItem * item, currentPackage->children )
-		rootItem->children.append( new PRMTreeItem(rootItem, item) );
-
-	return true;
+	if ( ! keywords.isEmpty() ) {
+		m_keywords = new QStandardItem("keywords");
+		foreach( const QString & key, keywords ) {
+			QStandardItem * keyItem = new QStandardItem(key);
+			keyItem->setData(key, LocalDataRole);
+			keyItem->setData(Unknow, ObjectRole);
+			m_keywords->appendRow( keyItem );
+		}
+		appendSameChildren( m_keywords, invisibleRootItem() );
+	}
 }
 
-/// Set the current class, interface or system, to allow direct access of member.
-/// Current package must be set previously.
-bool PRMTreeModel::setCurrentBlock( const QString & block)
+/// Set the current package to allow direct access of its members.
+void PRMTreeModel::setCurrentPackage( const QStringList & package )
 {
-	if ( ! currentPackage )
-		return false;
-
-	// If block is already currentBlock
-	if ( currentBlock && currentBlock->localData == block )
-		return true;
-
-	// Delete previous currentBlock
-	if ( currentBlock ) {
-		foreach( PRMTreeItem * item, currentBlock->children ) {
-			PRMTreeItem * child = rootItem->getChild( item->localData.split(QChar('.')) );
-			if ( child ) {
-				rootItem->children.removeOne(child);
-				delete child;
-			}
-		}
-		currentPackage = 0;
+	if ( m_package != 0 ) {
+		removeSameChildren( m_package, invisibleRootItem() );
+		m_package = 0;
 	}
 
-	// Search new currentBlock
-	currentBlock = rootItem->getChild( block.split(QChar('.')) );
-	if ( currentBlock == 0 )
-		return false;
-
-	// Set currentBlock
-	foreach( PRMTreeItem * item, currentBlock->children )
-		rootItem->children.append( new PRMTreeItem(rootItem, item) );
-
-	return true;
+	if ( ! package.isEmpty() ) {
+		m_package = getChild( package );
+		if ( m_package != 0 )
+			appendSameChildren( m_package, invisibleRootItem() );
+		else
+			qWarning() << "Warning : in PRMTreeModel::setCurrentPackage(" << package.join(separator()) <<
+					") : package not found.";
+	}
 }
 
-/// Add keyworsd to model.
-void PRMTreeModel::addKeywords( const QStringList & keywords )
+/// Set the current class, interface or system, to allow direct access of its members.
+void PRMTreeModel::setCurrentBlock( const QString & block)
 {
-	foreach( QString word, keywords )
-		rootItem->children.append( new PRMTreeItem(rootItem, word) );
+	if ( m_block != 0 ) {
+		removeSameChildren( m_block, invisibleRootItem() );
+		m_block = 0;
+	}
+
+	if ( ! block.isEmpty() && m_package != 0 ) {
+		m_block = getChild( block, m_package );
+		if ( m_block != 0 )
+			appendSameChildren( m_block, invisibleRootItem() );
+		else
+			qWarning() << "Warning : in PRMTreeModel::setCurrentBlock(" << block <<
+					") : block not found in package" << m_package->data(Qt::DisplayRole).toString();
+	} else if ( m_package == 0 )
+		qWarning() << "Warning : in PRMTreeModel::setCurrentBlock(" << block << ") : package must be set previously.";
 }
 
-
-const PRMTreeItem * PRMTreeModel::getItem( const QString & name ) const
+/// Set alias for skoor files.
+/// If alias already exist, it is updated.
+void PRMTreeModel::addAlias( const QString & alias, const QStringList & to )
 {
-	return rootItem->getChild( name.split(QChar('.')) );
-}
-
-/// \reimp
-QModelIndex PRMTreeModel::parent( const QModelIndex & index ) const
-{
-	if ( ! index.isValid() )
-		return QModelIndex();
-
-	PRMTreeItem * child = static_cast<PRMTreeItem *>( index.internalPointer() );
-	PRMTreeItem * parent = child->parent;
-
-	if ( parent == rootItem )
-		return QModelIndex();
-
-	return createIndex( parent->row(), 0, parent );
-}
-
-/// \reimp
-int PRMTreeModel::rowCount( const QModelIndex & index ) const
-{
-	if ( ! index.isValid() )
-		return rootItem->children.size();
-	return static_cast<PRMTreeItem *>( index.internalPointer() )->children.size();
-}
-
-/// \reimp
-int PRMTreeModel::columnCount( const QModelIndex & index ) const
-{
-	return 1;
-}
-
-/// \reimp
-QVariant PRMTreeModel::data( const QModelIndex & index, int role ) const
-{
-	if ( index.isValid() && role == Qt::DisplayRole )
-		return static_cast<PRMTreeItem *>( index.internalPointer() )->completeData();
-	else if ( index.isValid() && role == Qt::EditRole )
-		return static_cast<PRMTreeItem *>( index.internalPointer() )->localData;
-	else
-		return QVariant();
-}
-
-/// \reimp
-QModelIndex PRMTreeModel::index( int row, int column, const QModelIndex & parent) const
-{
-	if ( column != 0 )
-		return QModelIndex();
-
-	if ( ! parent.isValid() )
-		return createIndex( row, 0, rootItem->children.at(row) );
-
-	return createIndex( row, 0, static_cast<PRMTreeItem *>( parent.internalPointer() )->children.at(row) );
-}
-
-/// \reimp
-void PRMTreeModel::sort( int column, Qt::SortOrder order )
-{
-	if ( column != 0 )
+	if ( alias.isEmpty() || to.isEmpty() )
 		return;
-	rootItem->sort(order);
+
+	QStandardItem * aliasItem = 0;
+
+	foreach ( QStandardItem * item, m_aliases )
+		if ( item->data(LocalDataRole).toString() == alias ) {
+			aliasItem = item;
+			break;
+		}
+
+	if ( aliasItem != 0 ) {
+		if ( aliasItem->data(TypeRole).toStringList() != to ) {
+			// Si default existe déjà mais ne référence pas le même item
+			if ( alias == "default" )
+				removeSameChildren( aliasItem, invisibleRootItem() );
+
+			aliasItem->setData( to, TypeRole );
+			aliasItem->removeRows(0, aliasItem->rowCount() - 1);
+
+			if ( alias == "default" ) {
+				fetchMore( aliasItem->index() );
+				appendSameChildren( aliasItem, invisibleRootItem() );
+			}
+		}
+	} else {
+		//		aliasItem = new QStandardItem(alias);
+		aliasItem = createChild( alias, invisibleRootItem() );
+		aliasItem->setData( alias, LocalDataRole );
+		aliasItem->setData( to, TypeRole );
+		aliasItem->setData( Alias, ObjectRole );
+		m_aliases << aliasItem;
+
+		if ( alias == "default" ) {
+			fetchMore( aliasItem->index() );
+			appendSameChildren( aliasItem, invisibleRootItem() );
+			takeRow(aliasItem->row());
+		}
+	}
+}
+
+
+/// \reimp
+bool PRMTreeModel::canFetchMore ( const QModelIndex & parent ) const
+{
+	QStandardItem * item = itemFromIndex(parent);
+	if ( item == 0 || item->rowCount() > 0 )
+		return false;
+
+	const QStringList & typeList = item->data(TypeRole).toStringList();
+	if ( typeList.isEmpty() )
+		return false;
+
+	QStandardItem * type = getChild( typeList );
+	if ( type == 0 )
+		return false;
+
+	return type->rowCount() > 0;
+}
+
+/// \reimp
+void PRMTreeModel::fetchMore ( const QModelIndex & parent )
+{
+	QStandardItem * item = itemFromIndex(parent);
+	if ( item == 0 ) {
+		qWarning() << "Warning : in PRMTreeModel::fetchMore : item == 0.";
+		return;
+	}
+
+	QStandardItem * typeItem = getChild( item->data(TypeRole).toStringList(), invisibleRootItem() );
+	if ( typeItem == 0 ) {
+		qWarning() << "Warning : in PRMTreeModel::fetchMore : typeItem == 0.";
+		return;
+	}
+
+	appendSameChildren( typeItem, item );
+}
+
+void PRMTreeModel::update( QSharedPointer<PRMTreeModel> model, QsciScintillaExtended * currentDocument )
+{
+	// >>>>>>>>>>>>>>>>>>>>>>   ALIASES   <<<<<<<<<<<<<<<<<<<<<<<<<
+
+	QList<QStandardItem* > aliasesTemp = m_aliases;
+
+	// Pour chaque alias du nouveau modèle
+	foreach ( QStandardItem * modelAliasItem, model->m_aliases ) {
+		const QString & modelAlias = modelAliasItem->data(LocalDataRole).toString();
+		bool aliasFound = false;
+		// On cherche s'il existe déjà dans ce modèle
+		foreach ( QStandardItem * thisAlias, aliasesTemp ) {
+			// Si l'item existe déjà
+			if ( modelAlias == thisAlias->data(LocalDataRole).toString() ) {
+				aliasFound = true;
+				// On le met à jour
+				addAlias( modelAlias, modelAliasItem->data(TypeRole).toStringList() );
+				aliasesTemp.removeOne( thisAlias );
+				break;
+			}
+		}
+		// S'il n'existe pas déjà
+		// On le crée
+		if ( ! aliasFound )
+			addAlias( modelAlias, modelAliasItem->data(TypeRole).toStringList() );
+	}
+
+	// Pour tous les éléments qui restent, on les supprime.
+	foreach ( QStandardItem * aliasItem, aliasesTemp ) {
+		if ( aliasItem->data(LocalDataRole).toString() == "default" )
+			removeSameChildren( aliasItem, invisibleRootItem() );
+		else
+			invisibleRootItem()->removeRow( aliasItem->row() );
+		m_aliases.removeOne(aliasItem);
+	}
+
+	// >>>>>>>>>>>>>>>>>>>>>>   CURRENT PACKAGE   <<<<<<<<<<<<<<<<<<<<<<<<<
+
+	// "".split('.') => [""] et pas []
+	if ( ! currentDocument->package().isEmpty() )
+		setCurrentPackage( currentDocument->package().split(separator()) );
+	else
+		setCurrentPackage( QStringList() );
+
+	// >>>>>>>>>>>>>>>>>>>>>>   CURRENT BLOCK   <<<<<<<<<<<<<<<<<<<<<<<<<
+
+	if ( m_package == 0 )
+		return;
+
+	setCurrentBlock( currentDocument->block().second );
+
+	// >>>>>>>>>>>>>>>>>>>>>>   BLOCK MEMBERS   <<<<<<<<<<<<<<<<<<<<<<<<<
+
+	// If block haven't been found, can't update it.
+	if ( m_block == 0 )
+		return;
+
+	QStandardItem * modelBlock = model->getChild( m_block->data(Qt::DisplayRole).toString().split(separator()) );
+	if ( modelBlock == 0 )
+		return;
+
+		// Remove all children foreach references that have fetchedMore
+	QList<QStandardItem *> itemsList = findItems( m_block->data(Qt::DisplayRole).toString().split(separator()), TypeRole );
+		foreach ( QStandardItem * item, itemsList )
+				item->removeRows(0, item->rowCount() );
+
+	removeSameChildren( m_block, invisibleRootItem() );
+	removeSameChildren( m_block, m_block );
+	appendSameChildren( modelBlock, m_block );
+	appendSameChildren( m_block, invisibleRootItem() );
+}
+
+// path is considered as package objects
+QStandardItem * PRMTreeModel::createChild( const QStringList & datas, QStandardItem * parent )
+{
+	if ( datas.isEmpty() )
+		return parent;
+
+	QString previousPath;
+	if ( parent == 0 )
+		parent = invisibleRootItem();
+	else if ( parent != invisibleRootItem() )
+		previousPath = parent->data(Qt::DisplayRole).toString() + separator();
+
+	QStandardItem * item = getChild( datas.first(), parent );
+	if ( item == 0 ) {
+		item = createChild( datas.first(), parent );
+		item->setData( datas.first(), LocalDataRole );
+	}
+	if ( datas.size() > 1 ) {
+		item->setData( Package, ObjectRole );
+		return createChild( datas.mid(1), item );
+	} else
+		return item;
+}
+
+QStandardItem * PRMTreeModel::createChild( const QString & data, QStandardItem * parent )
+{
+	QString previousPath;
+	if ( parent == 0 )
+		parent = invisibleRootItem();
+	else if ( parent != invisibleRootItem() )
+		previousPath = parent->data(Qt::DisplayRole).toString() + separator();
+
+	// If a child with this name already exist, return it.
+	QStandardItem * previousExistingChild = getChild( data, parent ) ;
+	if ( previousExistingChild != 0 )
+		return previousExistingChild;
+
+	QStandardItem * item = new QStandardItem(previousPath + data);
+	item->setData( data, LocalDataRole );
+	parent->appendRow( item );
+	return item;
+}
+
+QStandardItem * PRMTreeModel::getChild( const QString & data, QStandardItem * parent ) const
+{
+	if ( parent == 0 )
+		parent = invisibleRootItem();
+
+	for ( int i = parent->rowCount() - 1 ; i >= 0 ; i-- ) {
+		QStandardItem * child = parent->child(i);
+		if ( child->data(LocalDataRole).toString() == data )
+			return child;
+	}
+
+	return 0;
+}
+
+QStandardItem * PRMTreeModel::getChild( const QStringList & path, QStandardItem * parent ) const
+{
+	if ( parent == 0 )
+		parent = invisibleRootItem();
+
+	if ( path.isEmpty() )
+		return parent;
+
+	for ( int i = parent->rowCount() - 1 ; i >= 0 ; i-- ) {
+		QStandardItem * child = parent->child(i);
+		if ( child->data(LocalDataRole).toString() == path.first() )
+			return getChild( path.mid(1), child );
+	}
+
+	return 0;
+}
+
+void PRMTreeModel::removeSameChildren( const QStandardItem * from , QStandardItem * in )
+{
+	beginRemoveRows(in->index(),0,in->rowCount()-1);
+	blockSignals(true);
+	for ( int i = from->rowCount() - 1 ; i >= 0 ; i-- ) {
+		for ( int j = in->rowCount() - 1 ; j >= 0 ; j-- ) {
+			if ( in->child(j)->data(LocalDataRole).toString() == from->child(i)->data(LocalDataRole).toString() ) {
+				in->removeRow(j);
+				break;
+			}
+		}
+	}
+	blockSignals(false);
+	endRemoveRows();
+}
+
+void PRMTreeModel::appendSameChildren( const QStandardItem * from , QStandardItem * to )
+{
+	QString toPath;
+	if ( to != invisibleRootItem() )
+		toPath = to->data(Qt::DisplayRole).toString() + separator();
+
+	beginInsertRows(to->index(),to->rowCount(),to->rowCount() + from->rowCount()-1);
+	blockSignals(true);
+	for ( int i = from->rowCount() - 1 ; i >= 0 ; i-- ) {
+		QStandardItem * child = from->child(i);
+		const QString & data = child->data(LocalDataRole).toString();
+
+		QStandardItem * item = createChild( data, to );
+		item->setData( child->data(ObjectRole), ObjectRole );
+		item->setData( child->data(TypeRole), TypeRole );
+		item->setData( child->data(IsArrayRole), IsArrayRole );
+
+		// Pour le fetchMore
+		if ( item->data(TypeRole).toStringList().isEmpty() )
+			item->setData( child->data(Qt::DisplayRole).toString().split(separator()), TypeRole );
+
+	}
+	blockSignals(false);
+	endInsertRows();
+}
+
+
+///
+QList<QStandardItem *> PRMTreeModel::findItems( const QVariant & data, int role ) const
+{
+	QList<QStandardItem *> results;
+	QList<QStandardItem *> openList;
+	openList << invisibleRootItem();
+	while ( ! openList.isEmpty() ) {
+		QStandardItem * current = openList.takeFirst();
+		if ( current == 0 )
+			continue;
+		if ( current->data(role) == data )
+			results << current;
+		for ( int i = current->rowCount() - 1 ; i >= 0 ; i-- )
+			openList.append( current->child(i) );
+	}
+	return results;
 }

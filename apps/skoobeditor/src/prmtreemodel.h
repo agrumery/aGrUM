@@ -1,64 +1,72 @@
 #ifndef PRMTREEMODEL_H
 #define PRMTREEMODEL_H
 
-#include <QAbstractItemModel>
+#include <QStandardItemModel>
+#include <QStringList>
 
 #include <agrum/prm/PRM.h>
+#include <agrum/prm/skoor/SkoorContext.h>
 
-class PRMTreeItem;
+#include "qsciscintillaextended.h"
 
-class PRMTreeModel : public QAbstractItemModel
+class PRMTreeModel : public QStandardItemModel
 {
-	Q_OBJECT
-
+    Q_OBJECT
 public:
-	PRMTreeModel( const gum::prm::PRM * prm, QObject * parent = 0 );
+
+	/// enum PRM types.
+	enum PRMObjects { Unknow, Type, Label, Class, Refererence, Attribute, Function, Aggregate, Interface, System, Instance, Session, Alias, Package };
+
+	/// enum PRM data role.
+	/// DisplayRole contains the complete path as a string (ex: classes.Computer.room)
+	/// LocalDataRole contains the local data of the item as a QString (ex: room).
+	/// ObjectRole is one of PRMObjects types (ex : PRMObjects::Refererence).
+	/// TypeRole is a QStringList representing the type of the references, instances and aliases (ex: [classes,Room]).
+	/// IsArrayRole is a boolean, use only for references and instances (ex: false).
+	enum PRMRoles { LocalDataRole = Qt::UserRole, ObjectRole, TypeRole, IsArrayRole };
+
+	explicit PRMTreeModel( const gum::prm::PRM * prm, const gum::prm::skoor::SkoorContext * context = 0, QObject *parent = 0);
 	~PRMTreeModel();
 
-	/// Set the current package to allow direct access of member.
-	bool setCurrentPackage( const QString & package );
-	/// Set the current class, interface or system, to allow direct access of member.
-	bool setCurrentBlock( const QString & block);
-	/// Add keyworsd to model.
-	void addKeywords( const QStringList & keywords );
-
-	const PRMTreeItem * getItem( const QString & name ) const;
-
 	/// \reimp
-	virtual QModelIndex parent( const QModelIndex & index ) const;
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent) const;
-	virtual void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder );
+	virtual bool canFetchMore ( const QModelIndex & parent ) const;
+	/// \reimp
+	virtual void fetchMore ( const QModelIndex & parent );
+
+	/// Add keywords to model.
+	void setKeywords( const QStringList & keywords );
+	///
+	void update( QSharedPointer<PRMTreeModel> prm, QsciScintillaExtended * currentDocument );
+
+protected:
+	const QString & separator() const { return m_separator; }
+
+	QStandardItem * createChild( const QStringList & datas, QStandardItem * parent = 0 );
+	QStandardItem * createChild( const QString & data, QStandardItem * parent = 0 );
+
+	QStandardItem * getChild( const QString & data, QStandardItem * parent = 0 ) const;
+	QStandardItem * getChild( const QStringList & path, QStandardItem * parent = 0 ) const;
+
+	void appendSameChildren( const QStandardItem * from , QStandardItem * to );
+	void removeSameChildren( const QStandardItem * from , QStandardItem * in );
+
+	/// Set the current package to allow direct access of its members.
+	void setCurrentPackage( const QStringList & package );
+	/// Set the current class, interface or system, to allow direct access of its members.
+	void setCurrentBlock( const QString & block);
+	/// Set alias for skoor files.
+	/// If alias already exist, it is updated.
+	void addAlias( const QString & alias, const QStringList & to );
+
+	///
+	QList<QStandardItem *> findItems( const QVariant & data, int role = Qt::DisplayRole ) const;
 
 private:
-	PRMTreeItem * rootItem;
-	PRMTreeItem * currentPackage;
-	PRMTreeItem * currentBlock;
-};
-
-class PRMTreeItem {
-public:
-	enum PRMType { Unknow, Type, Label, Class, Refererence, Attribute, Function, Aggregate, Interface, System, Instance };
-
-	PRMTreeItem( PRMTreeItem * parent, const QString & data, PRMType type = Unknow );
-	PRMTreeItem( PRMTreeItem * newParent, const PRMTreeItem * item );
-	~PRMTreeItem();
-
-	PRMTreeItem * createChild( const QStringList & list, PRMType type = Unknow );
-	QString toString(int tab = 0) const;
-	QString completeData() const;
-	PRMTreeItem * getChild( const QStringList & list );
-	int row() const;
-	void sort( Qt::SortOrder order = Qt::AscendingOrder );
-
-	PRMTreeItem * parent;
-	QList<PRMTreeItem *> children;
-	QString localData;
-	PRMType type;
-	QString ofType;
-	bool isArray;
+	static const QString & m_separator;
+	QStandardItem * m_package;
+	QStandardItem * m_block;
+	QStandardItem * m_keywords;
+	QList<QStandardItem* > m_aliases;
 };
 
 #endif // PRMTREEMODEL_H

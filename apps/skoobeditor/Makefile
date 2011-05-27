@@ -20,6 +20,7 @@ default: release
 ################################################################################
 
 before: agrum
+	$(CMAKE) -E remove -f ../../build/linux/release/CMakeFiles/test.dir/test.cpp.o
 	$(CMAKE) -E make_directory build/Debug
 	$(CMAKE) -E make_directory build/Release
 	$(CMAKE) -E make_directory build/MinSizeRel
@@ -49,7 +50,7 @@ minrelease: before
 clean:
 	$(CMAKE) -E remove_directory bin
 	$(CMAKE) -E remove_directory build
-	$(CMAKE) -E remove_directory usrcda
+	$(CMAKE) -E remove_directory usr
 	
 installer: release
 	"C:\Program Files\NSIS\makensis.exe" installer_script.nsi

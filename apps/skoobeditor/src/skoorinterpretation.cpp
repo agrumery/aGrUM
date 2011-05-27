@@ -1,7 +1,7 @@
 #include "skoorinterpretation.h"
 
 #include "qsciscintillaextended.h"
-#include "prmtreemodel2.h"
+#include "prmtreemodel.h"
 #include <agrum/prm/skoor/SkoorInterpreter.h>
 
 #include <QDebug>
@@ -88,25 +88,32 @@ void SkoorInterpretation::run()
 	QString command = d->command;
 	locker.unlock();
 
+	bool result;
 	if ( ! command.isEmpty() ) {
 		if ( ! d->interpreter || ! d->interpreter->prm() ) { // On a pas encore parsé le fichier
 			if ( ! f.isEmpty() ) {
-				d->interpreter->interpretFile( f.toStdString() );
+				result = d->interpreter->interpretFile( f.toStdString() );
 			} else {
-				d->interpreter->interpretLine( b.toStdString() );
+				result = d->interpreter->interpretLine( b.toStdString() );
 			}
 		}
-		d->interpreter->interpretLine( command.toStdString() );
+		result = d->interpreter->interpretLine( command.toStdString() );
 	} else if ( ! f.isEmpty() )
-		d->interpreter->interpretFile( f.toStdString() );
+		result = d->interpreter->interpretFile( f.toStdString() );
 	else
-		d->interpreter->interpretLine( b.toStdString() );
+		result = d->interpreter->interpretLine( b.toStdString() );
+
+//	qDebug() << "in SkoorInterpretation::run() :" << command.isEmpty() << f.isEmpty()
+//			<< b.count('\n') << result << d->interpreter->getErrorsContainer().error_count << d->interpreter->prm();
+
+//	if ( d->interpreter->getErrorsContainer().error_count > 0 )
+//		d->interpreter->getErrorsContainer().showElegantErrorsAndWarnings();
 
 	setErrors( d->interpreter->getErrorsContainer() );
 	if ( d->interpreter->prm() == 0 )
 		return;
 	locker.relock();
 	d->result = d->interpreter->results();
-	QSharedPointer<PRMTreeModel2> ptr( new PRMTreeModel2(d->interpreter->prm()) );
+	QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel(d->interpreter->prm(),d->interpreter->getContext()) );
 	setPRM( ptr );
 }

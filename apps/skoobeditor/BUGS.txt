@@ -13,8 +13,6 @@ BUGS :
 AMELIORATIONS :
 
     * ? qui recalcule pas
-    * autocomplétion dans a zone de saisie des commandes
-    * Le contexte d'autocomplétion basé sur tout le projet avec le package courant.
     
     * Espace entre les résultats dans recherche avancée (pas d'option pour le QTreeWidget)
     * Séparer QsciScintillaExtended en QsciScintillaExtended et SkoobScintilla, et mettre des choses dans les lexers (commentaires)
@@ -29,8 +27,8 @@ AMELIORATIONS :
 
 TODOS :
     
-    2 ) L'éditeur CPT attention aux noisyOr et rules
     3 ) Visualisation Qlementine du graphe (réseau bayésien)
+    2 ) L'éditeur CPT attention aux noisyOr et rules
     4 ) Visualisation d'un système et d'une classe (=> langage graphique ?) dot
     
     * Pour le parser : ajouter un warning si deux classes/systèmes sont définis dans le même fichier.  
