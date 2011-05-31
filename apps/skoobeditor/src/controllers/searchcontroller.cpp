@@ -447,26 +447,23 @@ void SearchController::onQuickReplaceEditTextChanged(QString)
 
 void SearchController::onResultSearchDoubleClick(QTreeWidgetItem * item, int)
 {
-	QString filename;
-	if ( item->text(0).isEmpty() ) // => top-level item
-		filename = item->text(1);
-	else
-		filename = item->parent()->text(1);
+	QString filename = item->data(1, Qt::UserRole).toString();
 
 	QsciScintillaExtended * sci = mw->fc->fileToDocument(filename);
 	// If file is open
 	if ( sci == 0 ) {
-		if ( ! mw->fc->openFile( filename ) )
+		if ( ! mw->fc->openFile( filename ) ) {
+			qWarning() << "Warning : in onResultSearchDoubleClick : can't open file" << filename;
 			return;
-		else
+		} else
 			sci = mw->fc->currentDocument();
 	} else
 		d->tab->setCurrentWidget(sci);
 
-
 	if ( ! item->text(0).isEmpty() ) {
 		int line = item->text(0).toInt();
 		sci->setCursorPosition(line,0);
+		sci->setFocus();
 	}
 
 }
@@ -553,6 +550,7 @@ void SearchController::parseDocuments( const QList<QsciScintillaExtended *> & do
 			sci->getSelection(&lineFrom, &indexFrom, & lineTo, &indexTo);
 			child->setText(0, QString::number(lineFrom));
 			child->setText(1, sci->text(lineFrom).simplified() );
+			child->setData(1, Qt::UserRole, sci->filename() );
 			if (colorCpt++ % 2 != 0) {
 				child->setBackgroundColor(0, QColor(230,230,230));
 				child->setBackgroundColor(1, QColor(230,230,230));
@@ -560,8 +558,10 @@ void SearchController::parseDocuments( const QList<QsciScintillaExtended *> & do
 
 		}
 
-		if (parent)
+		if (parent) {
 			parent->setText(1, tr("%1 (%2)").arg(sci->title()).arg(searchMatch) );
+			parent->setData(1, Qt::UserRole, sci->filename() );
+		}
 	}
 }
 

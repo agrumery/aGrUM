@@ -35,6 +35,7 @@ public:
 	bool isComment(int position) const;
 	int getStyleAt( int line, int index ) const;
 	int getStyleAt( int position ) const;
+	int getCurrentStyle() const;
 
 	void setCompleter( QCompleter * c );
 	QCompleter * completer() const;

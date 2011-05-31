@@ -1,4 +1,13 @@
 ﻿
+31/05/2011
+    * Fix : L'autocomplétion ne fonctionne pas bien du tout pour la zone de commande
+	dans les documents skoor, car il commence dès le début, et il ne prend donc
+	pas en compte les ? ou unobserve.
+    * Fix : Ne faire la mise à jour que quand on demande l'autocomplétion.
+    * Fix : L'autocomplétion fonctionne bizarrement quand il n'y a pas de projet ouvert.
+    * Fix : Double cliquer sur un résultat de la recherche avancée ne marche pas.
+    * Improve : Supprimer le fichier projet .bak quand on ferme le projet.
+    
 27/05/2011
     * Fix : Skoor : Quand un fichier est déjà importé, ne pas essayer de l'importer.
     * Improve : L'autocomplétion s'update en temps réel.

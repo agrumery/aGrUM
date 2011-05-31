@@ -9,9 +9,13 @@ de plus d'informations.
 Pensez ainsi à commiter les changements fait à ce fichier sur le serveur !
 
 BUGS :
+    * Quand on ajoute une nouvelle commande via la zone de saisie, 
+	si le block est vide, marche mal (indentation).
 	
 AMELIORATIONS :
-
+    
+    * Voir pour une commande ou un bouton, pour créer un nouveau block.
+    
     * ? qui recalcule pas
     
     * Espace entre les résultats dans recherche avancée (pas d'option pour le QTreeWidget)

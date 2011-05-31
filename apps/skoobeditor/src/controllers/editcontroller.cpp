@@ -54,7 +54,7 @@ EditController::~EditController()
 
 void EditController::triggerInit()
 {
-	connect( mw->bc, SIGNAL(currentDocumentModelChanged()), this, SLOT(onCurrentDocumentModelChanged()) );
+	connect( mw->bc, SIGNAL(projectModelChanged()), this, SLOT(onProjectModelChanged()) );
 }
 
 QCompleter * EditController::completer() const
@@ -127,10 +127,16 @@ void EditController::autoComplete()
 	if ( ! mw->fc->hasCurrentDocument() )
 		return;
 
-	if ( ! d->prmModel.isNull() ) {
-		mw->fc->currentDocument()->setCompleter(d->completer);
-		mw->fc->currentDocument()->autoCompleteFromCompleter();
-	} else
+	if ( ! d->prmModel.isNull() && mw->pc->isOpenProject() ) {
+		mw->bc->updateModel();
+		if ( mw->ui->commandLineEdit->hasFocus() ) {
+			mw->ui->commandLineEdit->setCompleter(d->completer);
+			mw->ui->commandLineEdit->autoComplete();
+		} else {
+			mw->fc->currentDocument()->setCompleter(d->completer);
+			mw->fc->currentDocument()->autoCompleteFromCompleter();
+		}
+	} else if ( ! mw->ui->commandLineEdit->hasFocus() )
 		mw->fc->currentDocument()->autoCompleteFromAll();
 }
 
@@ -141,9 +147,9 @@ void EditController::editPreferences()
 	pr->exec();
 }
 
-void EditController::onCurrentDocumentModelChanged()
+void EditController::onProjectModelChanged()
 {
-	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->currentDocumentModel();
+	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->projectModel();
 
 	// If doesn't changed, don't changed completer.
 	if ( newPRMModel.isNull() || d->prmModel == newPRMModel || ! mw->fc->hasCurrentDocument() )

@@ -10,10 +10,20 @@ class QCommandLineEdit : public QLineEdit
 public:
 	QCommandLineEdit(QWidget * parent = 0);
 
+	//! \reimp
+	QCompleter * completer() const;
+	//! \reimp
+	void setCompleter( QCompleter * c );
+
+public slots:
+	/// Autocomplete from QCompleter and its model.
+	void autoComplete();
+
 protected:
 	virtual void keyPressEvent( QKeyEvent * event );
 
 protected slots:
+	void insertCompletion(const QString& completion);
 	void onReturnPressed();
 
 private:

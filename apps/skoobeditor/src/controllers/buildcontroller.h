@@ -22,8 +22,8 @@ public:
 
 	bool isAutoSyntaxCheck() const;
 
-	QSharedPointer<PRMTreeModel> currentDocumentModel();
-	const QSharedPointer<PRMTreeModel> currentDocumentModel() const;
+	QSharedPointer<PRMTreeModel> projectModel();
+	const QSharedPointer<PRMTreeModel> projectModel() const;
 
 public slots:
 	void setAutoSyntaxCheck( bool isAuto );
@@ -33,12 +33,16 @@ public slots:
 	void execute( QsciScintillaExtended * sci = 0 );
 	void execute( const QString & filename );
 
+	/// Parse all skool files in project.
 	void parseProject();
+	/// Update project model with newer information if possible.
+	void updateModel();
 
 	void hideBuildMessage();
 
 signals:
-	void currentDocumentModelChanged();
+	void projectModelChanged();
+	void modelCanBeUpdated();
 
 protected slots:
 	void startParsing(bool isAuto = true, bool isExecution = false);

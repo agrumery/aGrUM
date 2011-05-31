@@ -44,7 +44,7 @@ signals:
 	void completerChanged();
 
 protected slots:
-	void onCurrentDocumentModelChanged();
+	void onProjectModelChanged();
 
 private slots:
 	void triggerInit();

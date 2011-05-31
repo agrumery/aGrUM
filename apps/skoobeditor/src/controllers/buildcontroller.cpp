@@ -162,12 +162,12 @@ void BuildController::setAutoSyntaxCheck( bool isAuto )
 	}
 }
 
-QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel()
+QSharedPointer<PRMTreeModel> BuildController::projectModel()
 {
 	return d->prmModel;
 }
 
-const QSharedPointer<PRMTreeModel> BuildController::currentDocumentModel() const
+const QSharedPointer<PRMTreeModel> BuildController::projectModel() const
 {
 	return d->prmModel;
 }
@@ -293,7 +293,6 @@ void BuildController::parseProject()
 	d->projectParser->parse();
 }
 
-
 void BuildController::createNewParser()
 {
 	QsciScintillaExtended * sci = mw->fc->currentDocument();
@@ -391,10 +390,10 @@ void BuildController::onParsingFinished()
 
 	const gum::ErrorsContainer & errors = d->fileParser->errors();
 
-	if ( errors.error_count == 0 && ! d->prmModel.isNull() ) {
-		d->prmModel->update( d->fileParser->prm(), mw->fc->currentDocument() );
-		d->prmModel->sort(0);
-	}
+	if ( errors.error_count == 0 )
+		emit modelCanBeUpdated();
+
+	//updateModel();
 
 	if ( d->isAuto )
 		mw->fc->currentDocument()->clearAllSyntaxErrors();
@@ -414,14 +413,20 @@ void BuildController::onParsingFinished()
 			QString relFilename;
 
 			if ( errFilename.isEmpty() ) {
-				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				if ( mw->pc->isOpenProject() )
+					relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				else
+					relFilename = filename;
 				s.prepend( relFilename + ":" );
 				errFilename = filename;
 			} else if ( errFilename == "anonymous buffer" || errFilename.endsWith(".bak") ) {
-				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				if ( mw->pc->isOpenProject() )
+					relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(filename);
+				else
+					relFilename = filename;
 				s.replace( errFilename, relFilename );
 				errFilename = filename;
-			} else {
+			} else if ( mw->pc->isOpenProject() ) {
 				relFilename = QDir(mw->pc->currentProject()->dir()).relativeFilePath(errFilename);
 				s.replace( errFilename, relFilename );
 			}
@@ -513,7 +518,7 @@ void BuildController::onProjectParseFinished()
 	d->prmModel.clear();
 	d->prmModel = d->projectParser->prm();
 
-	emit currentDocumentModelChanged();
+	emit projectModelChanged();
 
 	// Update icons in project explorator
 	// Clear all errors
@@ -522,8 +527,21 @@ void BuildController::onProjectParseFinished()
 	//  mw->pc->setErrorIcon( filename );
 	//}
 
+	QFile::remove( d->projectParser->document()->filename() + ".bak" );
 	d->projectParser->deleteLater();
 	d->projectParser = 0;
+}
+
+/**
+  Update project model with newer information if possible.
+  */
+void BuildController::updateModel()
+{
+	if ( d->prmModel.isNull() || d->fileParser == 0 || d->fileParser->errors().error_count != 0 )
+		return;
+
+	d->prmModel->update( d->fileParser->prm(), mw->fc->currentDocument() );
+	d->prmModel->sort(0);
 }
 
 /**
@@ -574,7 +592,7 @@ void BuildController::executeClass( QsciScintillaExtended * sci )
 	return;
 
 	QString name = QFileInfo(sci->filename()).baseName();
-	QSharedPointer<PRMTreeModel> model = currentDocumentModel();
+	QSharedPointer<PRMTreeModel> model = projectModel();
 
 	// On ouvre un nouveau document système
 	QsciScintillaExtended * sys = mw->fc->newDocument(name+"System", QsciScintillaExtended::Skool);
@@ -676,11 +694,15 @@ void BuildController::executeSystem( QsciScintillaExtended * sci )
 
 void BuildController::onCommandValided()
 {
-	const QString & command = d->commandLine->text().simplified();
+	QString command = d->commandLine->text().simplified();
+
 	if ( command.isEmpty() ) {
 		d->commandLine->setStyleSheet("");
 		return;
 	}
+
+	if ( ! command.contains(QRegExp(";\\s*$")) )
+		command += ";";
 
 	// Create a new parser if necessary
 	if ( d->fileParser == 0 || d->fileParser->document() != mw->fc->currentDocument() )
@@ -735,6 +757,7 @@ void BuildController::onCommandParsed()
 			QString newCommand = indent + parser->command() + "\n}";
 			sci->replace(newCommand);
 			sci->setSelection(0,0,0,0);
+			sci->ensureLineVisible(sci->lines()-1);
 		}
 	} else {
 		d->commandLine->setStyleSheet("background : red;");

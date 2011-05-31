@@ -340,6 +340,10 @@ int QsciScintillaExtended::getStyleAt( int line, int index ) const
 	return getStyleAt( positionFromLineIndex(line,index) );
 }
 
+int QsciScintillaExtended::getCurrentStyle() const
+{
+	return getStyleAt( currentPos() );
+}
 
 /// Set Qt completer for autoCompletion.
 void QsciScintillaExtended::setCompleter( QCompleter * c )
@@ -695,7 +699,8 @@ void QsciScintillaExtended::autoCompleteFromCompleter()
 		insertCompletion( d->completer->currentCompletion() );
 	} else {
 		// Compute popup size.
-		cr = QRect( caretPosition(), QSize( d->completer->popup()->sizeHintForColumn(0) +
+		QPoint topLeft = caretPosition() - QPoint( QFontMetrics(lexer()->font(getCurrentStyle())).width(prefix), 0 );
+		cr = QRect( topLeft, QSize( d->completer->popup()->sizeHintForColumn(0) +
 											d->completer->popup()->verticalScrollBar()->sizeHint().width(),
 											textHeight(currentLine()) ) );
 		// Select first result
@@ -703,13 +708,6 @@ void QsciScintillaExtended::autoCompleteFromCompleter()
 		// Show popup
 		d->completer->complete(cr);
 	}
-}
-
-/**
-  */
-void QsciScintillaExtended::onMarginClicked(int, int line, Qt::KeyboardModifiers)
-{
-	switchMarker(line);
 }
 
 /**
@@ -727,6 +725,13 @@ void QsciScintillaExtended::insertCompletion(const QString& completion)
 	insert( completion );
 	// Set index
 	setCurrentIndex( currentIndex() + completion.length() );
+}
+
+/**
+  */
+void QsciScintillaExtended::onMarginClicked(int, int line, Qt::KeyboardModifiers)
+{
+	switchMarker(line);
 }
 
 void QsciScintillaExtended::focusInEvent(QFocusEvent *e)
