@@ -688,7 +688,7 @@ bool SkoorInterpreter::unobserve( const UnobserveCommand * command ) try
   gum::prm::PRMInference::Chain chain = command->chain;
     
   // Prevent from something
-  if ( ! m_inf->hasEvidence(chain) ) {
+  if ( ! m_inf || ! m_inf->hasEvidence(chain) ) {
     addWarning(name + " was not observed");
   } else {
     m_inf->removeEvidence(chain);
