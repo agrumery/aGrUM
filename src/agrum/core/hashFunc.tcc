@@ -134,8 +134,14 @@ namespace gum {
   template <typename Key> INLINE 
   HashFuncSmallCastKey<Key>::HashFuncSmallCastKey () :
     HashFuncBase<Key>(),
-    _small_key_shift ( sizeof (unsigned long) - sizeof(Key) ) {}
-    
+    #ifdef BIGENDIAN 
+    _small_key_shift ( 8 * ( sizeof (unsigned long) - sizeof ( Key ) ) )
+    #else
+    _small_key_shift ( sizeof ( unsigned long ) != sizeof ( Key ) ?
+                       ( ( 1UL << ( 8 * sizeof ( Key ) ) ) - 1 ) : -1 )
+    #endif
+  {}
+  
     
   // ==============================================================================
   /// update the hash function to take into account a resize of the hash table
@@ -152,8 +158,13 @@ namespace gum {
   // ==============================================================================
   template <typename Key> INLINE Size
   HashFuncSmallCastKey<Key>::operator()( const Key& key ) const  {
+    #ifdef BIGENDIAN
     return ( ( ( *( (unsigned long*) (&key) ) >> _small_key_shift ) *
                GUM_HASHTABLE_INT_GOLD ) >> _right_shift );
+    #else
+    return ( ( ( *( (unsigned long*) (&key) ) & _small_key_shift ) *
+               GUM_HASHTABLE_INT_GOLD ) >> _right_shift );   
+    #endif
   }
 
 
@@ -199,7 +210,16 @@ namespace gum {
   template <typename Key1, typename Key2> INLINE 
   HashFuncSmallCastKeyPair<Key1,Key2>::HashFuncSmallCastKeyPair () :
     HashFuncBase< std::pair<Key1,Key2> >(),
-    _small_key_shift ( sizeof (unsigned long) - sizeof(Key1) ) {}
+    #ifdef BIGENDIAN
+    _small_key_shift1 ( 8 * ( sizeof (unsigned long) - sizeof(Key1) ) ),
+    _small_key_shift2 ( 8 * ( sizeof (unsigned long) - sizeof(Key2) ) )
+    #else
+    _small_key_shift1 ( sizeof ( unsigned long ) != sizeof ( Key1 ) ?
+                        ( ( 1UL << ( 8 * sizeof ( Key1 ) ) ) - 1 ) : -1L ),
+    _small_key_shift2 ( sizeof ( unsigned long ) != sizeof ( Key2 ) ?
+                        ( ( 1UL << ( 8 * sizeof ( Key2 ) ) ) - 1 ) : -1L )
+    #endif
+  {}
     
   // ==============================================================================
   /// update the hash function to take into account a resize of the hash table
@@ -218,10 +238,17 @@ namespace gum {
   template <typename Key1, typename Key2> INLINE Size
   HashFuncSmallCastKeyPair<Key1,Key2>::operator()
     ( const std::pair<Key1,Key2>& key ) const  {
-    return ( ( ( *( (unsigned long*) (&(key.first)) ) >> _small_key_shift ) *
+    #if BIGENDIAN
+    return ( ( ( *( (unsigned long*) (&(key.first)) ) >> _small_key_shift1 ) *
                GUM_HASHTABLE_INT_GOLD +
-               ( *( (unsigned long*) (&(key.second)) ) >> _small_key_shift ) *
+               ( *( (unsigned long*) (&(key.second)) ) >> _small_key_shift2 ) *
                GUM_HASHTABLE_INT_PI ) >> _right_shift );
+    #else
+    return ( ( ( *( (unsigned long*) (&(key.first)) ) & _small_key_shift1 ) *
+               GUM_HASHTABLE_INT_GOLD +
+               ( *( (unsigned long*) (&(key.second)) ) & _small_key_shift2 ) *
+               GUM_HASHTABLE_INT_PI ) >> _right_shift );    
+    #endif
   }
 
   

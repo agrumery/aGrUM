@@ -198,7 +198,7 @@ namespace gum {
 
     // an additional shift to ensure that keys with fewer bits than unsigned longs
     // are cast correctly
-    unsigned int _small_key_shift;
+    unsigned long _small_key_shift;
   };
 
 
@@ -240,7 +240,8 @@ namespace gum {
 
     // an additional shift to ensure that keys with fewer bits than unsigned longs
     // are cast correctly
-    unsigned int _small_key_shift;
+    unsigned long _small_key_shift1;
+    unsigned long _small_key_shift2;
   };
 
 
@@ -325,6 +326,12 @@ namespace gum {
 
   template <> class HashFunc< std::pair<unsigned long, unsigned long> > :
     public HashFuncSmallKeyPair<unsigned long, unsigned long> {};
+
+  template <> class HashFunc< std::pair<float,float> > :
+    public HashFuncSmallCastKeyPair<float,float> {};
+
+  template <> class HashFunc< std::pair<double,double> > :
+    public HashFuncSmallCastKeyPair<double,double> {};
 
   /* removed for pedantic reasons
      template <> class HashFunc< std::pair<long long, long long> > :
