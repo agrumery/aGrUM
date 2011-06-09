@@ -18,15 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 // =========================================================================
-#include <sstream>
 #include <vector>
+#include <cstdio>
 #include <iostream>
+#include <sstream>
+#include <fstream>
 // =========================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 // =========================================================================
-#include <agrum/multidim/multiDimADD.h>
-#include <agrum/multidim/multiDimADDFactory.h>
+#include <agrum/multidim/multiDimDecisionDiagram.h>
+#include <agrum/multidim/multiDimDecisionDiagramFactory.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/multidim/labelizedVariable.h>
@@ -38,10 +40,21 @@ namespace gum {
 
   namespace tests {
 
-    class MultiDimADDTestSuite: public CxxTest::TestSuite {
+    class MultiDimDecisionDiagramTestSuite: public CxxTest::TestSuite {
 		
       private:
-		void __fillFactory( MultiDimADDFactory<float>* factory, List<NodeId>* idList ) {
+		void __fillFactory( MultiDimDecisionDiagramFactoryBase< float >* factory, List<NodeId>* idList ) {
+			
+			Sequence<const DiscreteVariable*> varseq;
+			varseq.insert( Cprimevar );
+			varseq.insert( Cvar );
+			varseq.insert( PLvar );
+			varseq.insert( APUvar );
+			varseq.insert( BPUvar );
+			varseq.insert( ADRvar );
+			varseq.insert( BDRvar );
+			varseq.insert( BOvar );
+			factory->specifyVariablesSequence( varseq );
 			
 			idList->insert ( factory->addNonTerminalNode ( *Cprimevar ) );	//0
             idList->insert ( factory->addNonTerminalNode ( *Cvar ) ); 		//1
@@ -60,10 +73,10 @@ namespace gum {
             idList->insert ( factory->addNonTerminalNode ( *BDRvar ) ); 	//13
             idList->insert ( factory->addNonTerminalNode ( *BOvar ) ); 		//14
             
-            idList->insert ( factory->addTerminalNode ( 0.0 ) );	//15
-            idList->insert ( factory->addTerminalNode ( 1.0 ) ); 	//16
-            idList->insert ( factory->addTerminalNode ( 0.9 ) ); 	//17
-            idList->insert ( factory->addTerminalNode ( 0.1 ) ); 	//18
+            idList->insert ( factory->addTerminalNode ( 0 ) );	//15
+            idList->insert ( factory->addTerminalNode ( 10 ) ); 	//16
+            idList->insert ( factory->addTerminalNode ( 9 ) ); 	//17
+            idList->insert ( factory->addTerminalNode ( 1 ) ); 	//18
 
             factory->insertArc ( (*idList)[0], (*idList)[1], 1 );
             factory->insertArc ( (*idList)[0], (*idList)[8], 0 );
@@ -132,9 +145,9 @@ namespace gum {
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = NULL;
+			MultiDimDecisionDiagramFactory<float>* factory = NULL;
 			
-			TS_GUM_ASSERT_THROWS_NOTHING ( factory = new MultiDimADDFactory<float>() );
+			TS_GUM_ASSERT_THROWS_NOTHING ( factory = new MultiDimDecisionDiagramFactory<float>() );
 			
 			
 			// *********************************************************************
@@ -161,7 +174,7 @@ namespace gum {
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			
@@ -172,7 +185,7 @@ namespace gum {
 			
 			// Ajout d'un noeud terminal ayant la même valeur qu'un autre noeud terminal
 			// (la factory doit renvoyer l'id de ce node)
-			TS_ASSERT_EQUALS( factory->addTerminalNode(1.0), idList[16] );			
+			TS_ASSERT_EQUALS( factory->addTerminalNode(10), idList[16] );			
 			//factory->showProperties();
 			
 			// Test de retrait d'un noeud non terminal
@@ -196,18 +209,24 @@ namespace gum {
 			//factory->showProperties();
 			
 			// Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception InvalidNode)
-			// (le noeud 15 a été détruit un peu plus haut
+			// (le noeud 15 a été détruit un peu plus haut)
 			TS_ASSERT_THROWS(factory->insertArc(idList[15], idList[1], 2), InvalidNode);
 			
 			// Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception OperationNotAllowed
 			// vu que les noeuds terminaux sont ... terminaux)
 			TS_ASSERT_THROWS(factory->insertArc(idList[16], idList[1], 3), OperationNotAllowed);
 			
-			// Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc (doit lever l'exception DuplicateElement)
-			TS_ASSERT_THROWS(factory->insertArc( idList[8], idList[18], 4), DuplicateElement);
+			// Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur différente(doit lever aucune exception)
+			TS_GUM_ASSERT_THROWS_NOTHING(factory->insertArc( idList[8], idList[18], 4) );
+			
+			// Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit lever aucune exception)
+			TS_ASSERT_THROWS(factory->insertArc( idList[8], idList[18], 1), DuplicateElement );
 			
 			// Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
 			TS_ASSERT_THROWS( factory->insertArc( idList[8], idList[1], 5), InvalidArc );
+			
+			// Test de retrait d'un arc avec valeur spécifiée
+			TS_GUM_ASSERT_THROWS_NOTHING(factory->eraseArcWithValue( idList[8], idList[18], 4));
 			
 			// Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
 			TS_GUM_ASSERT_THROWS_NOTHING(factory->eraseArc( idList[8], idList[18]));
@@ -224,7 +243,7 @@ namespace gum {
 						
 			
 			// *********************************************************************
-			// Test sur les fonctions d'ajout et retrait d'arc
+			// Test sur les fonctions d'ajout et retrait d'arc par defaut
 			// *********************************************************************
 			
 			// Test d'ajout d'un arc par défaut sans risque
@@ -239,8 +258,11 @@ namespace gum {
 			// vu que les noeuds terminaux sont ... terminaux)
 			TS_ASSERT_THROWS(factory->insertDefaultArc(idList[16], idList[1]), OperationNotAllowed);
 			
-			// Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc (doit lever l'exception DuplicateElement)
-			TS_ASSERT_THROWS(factory->insertDefaultArc( idList[0], idList[1]), DuplicateElement);
+			// Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc (doit rien lever)
+			TS_GUM_ASSERT_THROWS_NOTHING(factory->insertDefaultArc( idList[0], idList[1]) );
+			
+			// Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc par defaut(doit lever DuplicateElement)
+			TS_ASSERT_THROWS(factory->insertDefaultArc( idList[0], idList[3]), DuplicateElement );
 			
 			// Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
 			TS_ASSERT_THROWS( factory->insertDefaultArc( idList[8], idList[1]), InvalidArc );
@@ -251,14 +273,14 @@ namespace gum {
         
         
         /** *************************************************************************************/
-		/**							Test sur d'appel du getMultiDimADD()						*/
+		/**							Test sur d'appel du getMultiDimDecisionDiagram()						*/
 		/** *************************************************************************************/
-		void testFactoryGetMultiDimADD() {
+		void testFactoryGetMultiDimDecisionDiagram() {
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactoryBase<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			gum::List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			factory->insertDefaultArc(idList[2], idList[15]);
@@ -267,8 +289,8 @@ namespace gum {
 			// *********************************************************************
 			// Appel au multidim
 			// *********************************************************************
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 			
 			
 			// *********************************************************************
@@ -290,17 +312,17 @@ namespace gum {
         /** *************************************************************************************/
 		/**			Test des fonctions d'accès et de modification du multidim					*/
 		/** *************************************************************************************/
-		void testMultiDimADDAccessorsModifiersMethods() {
+		void testMultiDimDecisionDiagramAccessorsModifiersMethods() {
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			gum::List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 
 			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
 			
@@ -324,7 +346,7 @@ namespace gum {
 			// *********************************************************************
 			// Test name() et basename()
 			// *********************************************************************
-			TS_ASSERT_EQUALS( container->name(), "ADD" );
+			TS_ASSERT_EQUALS( container->name(), "MultiDimDecisionDiagram" );
 			
 			TS_ASSERT_EQUALS( container->basename(), "MultiDimImplementation" );
 			
@@ -339,10 +361,10 @@ namespace gum {
 			TS_ASSERT_THROWS(container->fill(14.0), OperationNotAllowed);
 			
 			std::vector<float> v;
-			for( int i = 0; i < 128; i++ )
+			for( float i = 0; i < 128; i++ )
 				v.push_back(i);
 			TS_ASSERT_THROWS(container->fillWith(v), SizeError);
-			for( int i = 128; i < 256; i++ )
+			for( float i = 128; i < 256; i++ )
 				v.push_back(i);
 			TS_ASSERT_THROWS(container->fillWith(v), OperationNotAllowed);
 			
@@ -356,9 +378,9 @@ namespace gum {
 			for( inst.setFirst(); ! inst.end(); ++inst )
 				if( inst.val(*Cvar) == 1 ){
 					if( inst.val(*Cprimevar) == 1 ) {
-						TS_ASSERT_DELTA(container->get(inst), 0.9, 0.001);
+						TS_ASSERT_DELTA(container->get(inst), 9, 0.001);
 					}else{
-						TS_ASSERT_DELTA(container->get(inst), 0.1, 0.001);					
+						TS_ASSERT_DELTA(container->get(inst), 1, 0.001);					
 					}
 				} else {
 					
@@ -371,26 +393,26 @@ namespace gum {
 								if( inst.val(*BOvar) == 1 ){
 									
 									if( inst.val(*Cprimevar) == 1 ) {
-										TS_ASSERT_DELTA(container->get(inst), 0.9, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 9, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 0.1, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 1, 0.001);
 									}
 											
 								} else {
 									
 									if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);	
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
 									}
 										
 								}
 							} else {
 									
 								if( inst.val(*Cprimevar) == 1 ){
-									TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+									TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 								}else{
-									TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);		
+									TS_ASSERT_DELTA(container->get(inst), 10, 0.001);		
 								}
 									
 							}
@@ -403,17 +425,17 @@ namespace gum {
 									if( inst.val(*BOvar) == 1 ) {
 									
 										if( inst.val(*Cprimevar) == 1 ) {
-											TS_ASSERT_DELTA(container->get(inst), 0.9, 0.001);
+											TS_ASSERT_DELTA(container->get(inst), 9, 0.001);
 										}else{
-											TS_ASSERT_DELTA(container->get(inst), 0.1, 0.001);
+											TS_ASSERT_DELTA(container->get(inst), 1, 0.001);
 										}
 									
 									} else {
 									
 										if( inst.val(*Cprimevar) == 1 ){
-											TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+											TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 										}else{
-											TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);		
+											TS_ASSERT_DELTA(container->get(inst), 10, 0.001);		
 										}	
 									
 									}
@@ -421,9 +443,9 @@ namespace gum {
 								} else {
 									
 									if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);	
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
 									}	
 									
 								}
@@ -431,9 +453,9 @@ namespace gum {
 							} else {
 									
 									if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);
 									}
 								
 							}
@@ -447,17 +469,17 @@ namespace gum {
 								if( inst.val(*BOvar) == 1 ) {
 									
 									if( inst.val(*Cprimevar) == 1 ) {
-										TS_ASSERT_DELTA(container->get(inst), 0.9, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 9, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 0.1, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 1, 0.001);
 									}
 								
 								} else {
 									
 									if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);	
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
 									}	
 								
 								}
@@ -465,9 +487,9 @@ namespace gum {
 							} else {
 									
 								if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);	
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
 								}	
 								
 							}
@@ -475,9 +497,9 @@ namespace gum {
 						} else {
 									
 							if( inst.val(*Cprimevar) == 1 ){
-										TS_ASSERT_DELTA(container->get(inst), 0.0, 0.001);
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
 									}else{
-										TS_ASSERT_DELTA(container->get(inst), 1.0, 0.001);	
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
 							}	
 							
 						}
@@ -497,17 +519,17 @@ namespace gum {
         
         
         
-        void testMultiDimADDImplementationMethods(){
+        void testMultiDimDecisionDiagramImplementationMethods(){
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			gum::List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 
 			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
 			
@@ -549,20 +571,20 @@ namespace gum {
 		
 		
 		
-		void testMultiDimADDCopyMethods(){
+		void testMultiDimDecisionDiagramCopyMethods(){
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			gum::List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 			
-			MultiDimADD<float>* container2 = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container2 = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container2 = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container2 = factory->getMultiDimDecisionDiagram() );
 
 
 			TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
@@ -580,26 +602,26 @@ namespace gum {
 		
 		
 		
-		void testMultiDimADDVariousMethods(){
+		void testMultiDimDecisionDiagramVariousMethods(){
 			
 			// *********************************************************************
 			// Création du multidim
 			// *********************************************************************
-			MultiDimADDFactory<float>* factory = new MultiDimADDFactory<float>();
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
 			gum::List<NodeId> idList;
 			__fillFactory ( factory, &idList );
 			
-			MultiDimADD<float>* container = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 			
-			MultiDimADD<float>* container2 = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container2 = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container2 = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container2 = factory->getMultiDimDecisionDiagram() );
 			
 			factory->eraseArc(2,5);
 			factory->insertArc(2,15,0);
 			
-			MultiDimADD<float>* container3 = NULL;
-			TS_GUM_ASSERT_THROWS_NOTHING( container3 = factory->getMultiDimADD() );
+			MultiDimDecisionDiagramBase<float>* container3 = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container3 = factory->getMultiDimDecisionDiagram() );
 			
 			
 			// *********************************************************************
@@ -629,7 +651,192 @@ namespace gum {
 			TS_GUM_ASSERT_THROWS_NOTHING( delete container3 );
 			
 			
-		}        
+		}  
+
+        void testToDot() {
+			
+			// *********************************************************************
+			// Création du multidim
+			// *********************************************************************
+			MultiDimDecisionDiagramFactory<float>* factory = new MultiDimDecisionDiagramFactory<float>();
+			gum::List<NodeId> idList;
+			__fillFactory ( factory, &idList );
+			
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
+
+			// For comparison with what readers will return
+			std::string dotfile = GET_PATH_STR ( DecisionDiagram.dot );
+			std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
+
+			if ( ! output.good() )
+				GUM_ERROR ( IOError, "Stream states flags are not all unset." );
+
+			output << container->toDot();
+
+			output.flush();
+
+			output.close();
+
+			if ( output.fail() )
+				GUM_ERROR ( IOError, "Writting in the ostream failed." );
+				
+			delete factory;
+			delete container;
+        } 
+
+        void testLinearApproximation() {
+			
+			// *********************************************************************
+			// Création du multidim
+			// *********************************************************************
+			MultiDimDecisionDiagramFactory<float, LinearApproximationPolicy>* factory = new MultiDimDecisionDiagramFactory<float, LinearApproximationPolicy>();
+			factory->setLowerLimit( 0 );
+			factory->setHigherLimit( 10 );
+			factory->setEpsilon( 5 );
+			
+			gum::List<NodeId> idList;
+			__fillFactory ( factory, &idList );
+			
+			MultiDimDecisionDiagramBase<float>* container = NULL;
+			TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
+				
+			delete factory;
+			
+			Instantiation inst( *container );
+			for( inst.setFirst(); ! inst.end(); ++inst )
+				if( inst.val(*Cvar) == 1 ){
+					if( inst.val(*Cprimevar) == 1 ) {
+						TS_ASSERT_DELTA(container->get(inst), 7.5, 0.001);
+					}else{
+						TS_ASSERT_DELTA(container->get(inst), 2.5, 0.001);					
+					}
+				} else {
+					
+					if( inst.val(*PLvar) == 1 ){
+						
+						if( inst.val(*APUvar) == 1 ){
+							
+							if( inst.val(*BPUvar) == 1 ){ 
+								
+								if( inst.val(*BOvar) == 1 ){
+									
+									if( inst.val(*Cprimevar) == 1 ) {
+										TS_ASSERT_DELTA(container->get(inst), 7.5, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 2.5, 0.001);
+									}
+											
+								} else {
+									
+									if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
+									}
+										
+								}
+							} else {
+									
+								if( inst.val(*Cprimevar) == 1 ){
+									TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+								}else{
+									TS_ASSERT_DELTA(container->get(inst), 10, 0.001);		
+								}
+									
+							}
+						} else {
+							
+							if( inst.val(*ADRvar) == 1 ) {
+								
+								if( inst.val(*BDRvar) == 1 ) {
+									
+									if( inst.val(*BOvar) == 1 ) {
+									
+										if( inst.val(*Cprimevar) == 1 ) {
+											TS_ASSERT_DELTA(container->get(inst), 7.5, 0.001);
+										}else{
+											TS_ASSERT_DELTA(container->get(inst), 2.5, 0.001);
+										}
+									
+									} else {
+									
+										if( inst.val(*Cprimevar) == 1 ){
+											TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+										}else{
+											TS_ASSERT_DELTA(container->get(inst), 10, 0.001);		
+										}	
+									
+									}
+									
+								} else {
+									
+									if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
+									}	
+									
+								}
+								
+							} else {
+									
+									if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);
+									}
+								
+							}
+						}
+					} else {
+						
+						if( inst.val(*ADRvar) == 1 ) {
+								
+							if( inst.val(*BDRvar) == 1 ) {
+								
+								if( inst.val(*BOvar) == 1 ) {
+									
+									if( inst.val(*Cprimevar) == 1 ) {
+										TS_ASSERT_DELTA(container->get(inst), 7.5, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 2.5, 0.001);
+									}
+								
+								} else {
+									
+									if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
+									}	
+								
+								}
+								
+							} else {
+									
+								if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
+								}	
+								
+							}
+							
+						} else {
+									
+							if( inst.val(*Cprimevar) == 1 ){
+										TS_ASSERT_DELTA(container->get(inst), 0, 0.001);
+									}else{
+										TS_ASSERT_DELTA(container->get(inst), 10, 0.001);	
+							}	
+							
+						}
+					}
+				}
+			
+			delete container;   
+		}
     };
   }
 }

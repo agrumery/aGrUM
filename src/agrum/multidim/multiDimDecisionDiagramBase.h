@@ -20,36 +20,42 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class implementing Algebraic Decision Diagrams
+ * @brief
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe Magnan 
  *
  */
-#ifndef GUM_MULTI_DIM_ADD_H
-#define GUM_MULTI_DIM_ADD_H
+#ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_BASE_H
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_BASE_H
 // ============================================================================
-#include <utility>
 #include <string>
 // ============================================================================
-#include <agrum/multidim/multiDimReadOnly.h>
 #include <agrum/core/hashTable.h>
+#include <agrum/core/bijection.h>
+// ============================================================================
+#include <agrum/multidim/approximationPolicy.h>
+#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 // ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
 // ============================================================================
 
 namespace gum {
 
+template<typename T_DATA >
+class MultiDimDecisionDiagramFactoryBase;
+
 /**
- * @class MultiDimADD multiDimADD.h <agrum/multidim/multiDimADD.h>
- * @brief Class implementingting an algebraic decision diagram
+ * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
+ * @brief Class implementingting an decision diagram model
+ * Contains all methods used by multidimdecisiondiagram, except for those concerning approximation policy
+ * For concrete usage of such multidim, please refer to multiDimDecisionDiagram
  * @ingroup multidim_group
  *
  */
 template<typename T_DATA>
 
-class MultiDimADD :  public MultiDimReadOnly<T_DATA> {
-
-    //friend class DecisionDiagramFactory<T_DATA>;
+class MultiDimDecisionDiagramBase :  public MultiDimReadOnly<T_DATA>, public virtual ApproximationPolicy<T_DATA> {
 
 public:
 
@@ -61,14 +67,12 @@ public:
     /**
      * Default constructor.
      */
-    MultiDimADD( Sequence< const DiscreteVariable* > varList, NodeGraphPart model, typename Property< const DiscreteVariable* >::onNodes varMap,
-					typename Property< T_DATA >::onNodes terminalNodeMap, typename Property< HashTable< Idx, NodeId >* >::onNodes arcMap, 
-						typename Property< NodeId >::onNodes defaultArcMap, NodeId root );
+    MultiDimDecisionDiagramBase( );
 
     /**
      * Destructor.
      */
-    ~MultiDimADD();
+    virtual ~MultiDimDecisionDiagramBase();
 
     /// @}
 
@@ -169,22 +173,6 @@ public:
     /// @name Various Methods
     // ===========================================================================
     /// @{
-
-	/**
-	 * This method creates a clone of this object, withouth its content
-	 * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-	 * @throw OperationNotAllowed without condition.
-     * @return an empty clone of this object with the same type
-     */
-     MultiDimContainer<T_DATA>* newFactory() const;
 	
 	/**
 	 * Displays the multidim. 
@@ -195,42 +183,149 @@ public:
 	 * Displays the internal representation of i. 
 	 */
 	 virtual const std::string toString(const Instantiation* i) const;
+	
+	/**
+	 * Displays the DecisionDiagramBase in the dot format
+	 */
+	 std::string toDot() const;
+    
+    /**
+     * Returns the number of variable truly present in diagram
+     */
+    Size diagramVarSize ( ) const;
  	
 	 
 	/// @}
+
+    // ===========================================================================
+    /// @name Operators Functions
+    // ===========================================================================
+    /// @{
+	 
+	/**
+	 * Returns the id of the root node from the diagram
+	 */
+	const NodeId getRoot() const;
+	
+	/**
+	 * Returns value associated to given node
+	 * @throw InvalidNode if node isn't terminal
+	 */ 
+	 const T_DATA getValueFromNode( NodeId n ) const;
+	 
+	/**
+	 * Returns node's sons map
+	 * @throw InvalidNode if node is terminal
+	 */
+	 const HashTable< Idx, NodeId >* getNodeSons( NodeId n ) const;
+	 
+	/**
+	 * Returns true if node has a default son
+	 */
+	 bool hasNodeDefaultSon( NodeId n ) const;
+	 
+	/**
+	 * Returns node's default son
+	 * @throw InvalidNode if node is terminal
+	 */
+	 const NodeId getNodeDefaultSon( NodeId n ) const;
+	 
+	/**
+	 * Returns associated variable of given node
+	 * @throw InvalidNode if Node is terminal
+	 */
+	 const DiscreteVariable& getVariableFromNode( NodeId n ) const;
+
+    /**
+     * Returns true if node is a chance one
+     */
+    bool isTerminalNode ( NodeId varId ) const;
+	
+	///@}
+
+    // ===========================================================================
+    /// @name Approximation Handling functions
+    // ===========================================================================
+    /// @{
+	
+	/**
+	 * Returns a factory that used same approximation pattern
+	 */
+	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const = 0;
+	 	
+	/**
+	 * Returns a factory that used same approximation pattern
+	 * Allows to set parameter for that approximation
+	 */
+	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowerLimit, T_DATA higherLimit) const = 0;
+	
+	///@}
+
+    // ===========================================================================
+    /// @name Fast Large modifications in structure
+    // ===========================================================================
+    /// @{
+    
+    /**
+     * Sets once and for all variable sequence.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setVariableSequence(  const Sequence< const DiscreteVariable* >& varList );
+     
+    /**
+     * Sets once and for all nodes of the diagram.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setDiagramNodes( const NodeGraphPart& model );
+     
+    /**
+     * Binds once and for all nodes to variables.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap );
+     
+    /**
+     * Binds once and for all terminal nodes to value.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setValueMap( const Bijection< NodeId, T_DATA >& valueMap );
+     
+    /**
+     * Links once and for all nodes of the graph.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap );
+     
+     /**
+     * Sets once and for all root node.
+     * @throw OperationNotAllowed if function as already been call;
+     */
+     void setRoot( const NodeId& root );
+
+protected :	
+	/**
+	 * Synchronize content after MultipleChanges. 
+	 */
+	 void _commitMultipleChanges();
+		
+	/// @}
 	
 protected :
 	/**
 	 * Returns data addressed by inst
 	 */
 	virtual T_DATA& _get( const Instantiation& inst ) const;
-
-    // ===========================================================================
-    /// @name Graph manipulation methods.
-    // ===========================================================================
-    /// @{
-
-    /**
-     * Returns true if node is a chance one
-     */
-    bool _isTerminalNode ( NodeId varId ) const;
-
-    /**
-    * Returns a constant reference over a variabe given its node id.
-    * @throw NotFound If no variable's id matches varId.
-    */
-    //virtual const DiscreteVariable& _nodeVariable ( NodeId id ) const;
-    
-
-    /// @}
     
     /**
-	 * Supposed to replace var x by y. But not authorized in a MultiDimADD
+	 * Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
 	 * @throw OperationNotAllowed without condition.
 	 */
-	 virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );     
+	 virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
 private:
+
+    /// Mapping between terminal nodes and their values
+    Bijection< NodeId, T_DATA > __valueMap;
 
 	/// The graph hidden behin this multidim
 	NodeGraphPart __graph;
@@ -240,9 +335,6 @@ private:
 	
     /// Mapping between id and variable
     typename Property< const DiscreteVariable* >::onNodes __variableMap;
-
-    /// Mapping between terminal nodes and their values
-    typename Property< T_DATA >::onNodes __terminalNodeMap;
     
     /// Mapping between variable's values and associated node
     typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;
@@ -252,14 +344,17 @@ private:
 
 	/// Name of this multiDim
 	std::string __name;
+	
+	///Just a boolean to indicates if diagram has been instanciated or not
+	bool __isInstanciated;
 };
 
 } /* namespace gum */
 
 // ============================================================================
-#include <agrum/multidim/multiDimADD.tcc>
+#include <agrum/multidim/multiDimDecisionDiagramBase.tcc>
 // ============================================================================
-#endif /* GUM_MULTI_DIM_ADD_H */
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_BASE_H */
 // ============================================================================
 
 // kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;

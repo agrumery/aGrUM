@@ -1,0 +1,92 @@
+
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Class allowing creation of Decision Diagram
+ *
+ * @author Jean-Christophe Magnan
+ *
+ */
+#ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
+// ============================================================================
+#include <agrum/multidim/approximationPolicy.h>
+#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
+#include <agrum/multidim/multiDimDecisionDiagram.h>
+// ============================================================================
+
+namespace gum {
+
+template< typename T, template<class> class IApproximationPolicy>
+class MultiDimDecisionDiagram;
+
+/**
+ * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
+ * @brief Class implementingting an algebraic decision diagram factory
+ * @ingroup multidim_group
+ *
+ */
+template<typename T_DATA, template <class> class IApproximationPolicy = ExactPolicy>
+
+class MultiDimDecisionDiagramFactory : public MultiDimDecisionDiagramFactoryBase<T_DATA>, public IApproximationPolicy<T_DATA> {
+	
+	public :
+
+    // ===========================================================================
+    /// @name Constructors, Destructors.
+    // ===========================================================================
+    /// @{
+
+    /**
+     * Default constructor.
+     */
+    MultiDimDecisionDiagramFactory();
+
+    /**
+     * Destructor.
+     * @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
+     */
+    ~MultiDimDecisionDiagramFactory();
+		
+	/// @}
+	
+	/**
+	 * Returns the multidimDecisionDiagram made
+	 */
+	MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram(bool fillWithDefaultArc = true, T_DATA defaultValue = 0 );
+	 
+	/// Convert value to approximation representation
+	inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
+	 
+	/// Convert approximation representation to value
+	inline T_DATA toExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::toExact( value ); };
+	
+};
+
+} /* namespace gum */
+
+// ============================================================================
+#include <agrum/multidim/multiDimDecisionDiagramFactory.tcc>
+// ============================================================================
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H */
+// ============================================================================
+
+// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;
