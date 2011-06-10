@@ -92,13 +92,7 @@ using namespace gum;
 			else{
 				
 				// if so we check if var is in the order or not
-				bool notin = true;
-				for( SequenceIterator< const DiscreteVariable* > ite = _varsSeq.begin(); ite != _varsSeq.end(); ++ite )
-					if( **ite == var ){
-						notin = false;
-						break;
-					}
-				if(notin)
+				if( !_varsSeq.exists( &var ) )
 					GUM_ERROR( OperationNotAllowed, "Variable is not in the specify order");
 			}
 		// *********************************************************************************************
@@ -109,33 +103,19 @@ using namespace gum;
 			NodeId node = _model.insertNode();
 			
 			// We mention that new node to the list of node bound to that variable
-			for( SequenceIterator< const DiscreteVariable* > ite = _varsSeq.begin(); ite != _varsSeq.end(); ++ite )
-					if( **ite == var ){
-						_varMap.insert( node, *ite );
-						break;
-					}
+			_varMap.insert( node, &var );
 						
 			_arcMap.insert( node, new HashTable< Idx, NodeId >() );
 			
 		// **********************************************************************************************
 		// Addition of the node to the list of tied to given variable
 		
-			// Search for the list
-			const DiscreteVariable* htVar = NULL;
-			for( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.begin(); iter != _var2NodeIdMap.end(); ++iter )
-				if( *(iter.key()) == var ){
-					htVar = iter.key();
-					break;
-				}
-							
 			// If list hasn't be created yet, we create it
-			if( htVar == NULL ){
+			if( !_var2NodeIdMap.exists( &var ) )
 				_var2NodeIdMap.insert( &var, new List<NodeId>() );
-				htVar = &var;
-			}
 			
 			// And finally we add the node to that list
-			_var2NodeIdMap[ htVar ]->insert( node );
+			_var2NodeIdMap[ &var ]->insert( node );
 
 		//*************************************************************************************************	
 		
@@ -152,25 +132,15 @@ using namespace gum;
     // =============================================================================
     template< typename T_DATA >
 	NodeId
-	MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNodeWithArcs( const DiscreteVariable& var, const HashTable< Idx, NodeId >& nodeArcMap, NodeId* defaultArcTo ){
+	MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNodeWithArcs( const DiscreteVariable* var, const HashTable< Idx, NodeId >& nodeArcMap, NodeId* defaultArcTo ){
 		
-		// ***********************************************************************
-		// Search of var ptr
-		const DiscreteVariable* ptrVar = NULL;
-		
-		for( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.begin(); iter != _var2NodeIdMap.end(); ++iter )
-			if( *(iter.key()) == var ){
-				ptrVar = iter.key();
-				break;
-			}
-			
 		// ************************************************************************
-		// If ptr exists (means we already insert a node with same var )
+		// If var adresses exists (means we already insert a node with same var )
 		// we check if nodes tied to this var aren't the same as the one we want to insert
 		// if so, we'll return that node id
-		if( ptrVar != NULL ){
+		if( _var2NodeIdMap.exists( var ) ){
 			
-			for( ListConstIterator< NodeId > iterNodeList = _var2NodeIdMap[ ptrVar ]->begin(); iterNodeList != _var2NodeIdMap[ ptrVar ]->end(); ++iterNodeList ){
+			for( ListConstIterator< NodeId > iterNodeList = _var2NodeIdMap[ var ]->begin(); iterNodeList != _var2NodeIdMap[ var ]->end(); ++iterNodeList ){
 				
 				bool thesame = true;
 				
@@ -225,7 +195,7 @@ using namespace gum;
 		// ***********************************************************************************
 		// if we manage to reach this point, this mean we have to insert the node 
 		// we his all bunch of arc
-		NodeId node = addNonTerminalNode( var );
+		NodeId node = addNonTerminalNode( *var );
 		
 		for( HashTableConstIterator< Idx, NodeId > iter = nodeArcMap.begin(); iter != nodeArcMap.end(); ++iter )
 			insertArc( node, *iter, iter.key() );

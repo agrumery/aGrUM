@@ -112,7 +112,7 @@ public:
 	 * Returns a factory that used same approximation pattern
 	 * Allows to set parameter for that approximation
 	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowerLimit, T_DATA higherLimit) const;
+	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowLimit, T_DATA highLimit) const;
 	 
 	/// Convert value to approximation representation
 	inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };

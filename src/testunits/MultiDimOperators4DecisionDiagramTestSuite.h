@@ -83,8 +83,8 @@ namespace gum {
 							factoryCreatedHere = true;
 							f = new MultiDimDecisionDiagramFactory<float>();
 							f->setEpsilon( 1 );
-							f->setLowerLimit( -100 );
-							f->setHigherLimit( 100 );
+							f->setLowLimit( -100 );
+							f->setHighLimit( 100 );
 						}
 						f->clear();	
 						f->specifyVariablesSequence( *varList );
@@ -99,11 +99,11 @@ namespace gum {
 						// ***********************************************************************	
 						// Creation of a list containing terminal node possible value
 						List<float> tnList;
-						float interval = f->getHigherLimit() - f->getLowerLimit();
+						float interval = f->getHighLimit() - f->getLowLimit();
 						uint i = 0; 
 						while( i < 25 ){
 							float newVal = ( rand()% ( (int) interval ) ) - interval/2;
-							if( newVal <= f->getHigherLimit() && newVal >= f->getLowerLimit() ){
+							if( newVal <= f->getHighLimit() && newVal >= f->getLowLimit() ){
 								tnList.insert( newVal );
 								i++; 
 							}
@@ -526,8 +526,8 @@ namespace gum {
 					
 					MultiDimDecisionDiagramFactory<float,LinearApproximationPolicy> f;
 					f.setEpsilon( 0.9 );
-					f.setLowerLimit( 0 );
-					f.setHigherLimit( 4.5 );
+					f.setLowLimit( 0 );
+					f.setHighLimit( 4.5 );
 					f.specifyVariablesSequence(  *varList );
 					NodeId a = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
 					NodeId b = f.addNonTerminalNode( *( varList->atPos( 1 ) ) );
@@ -551,8 +551,8 @@ namespace gum {
 					
 					f.clear();
 					f.setEpsilon( 1.3 );
-					f.setLowerLimit( 3.5 );
-					f.setHigherLimit( 9 );
+					f.setLowLimit( 3.5 );
+					f.setHighLimit( 9 );
 					
 					f.specifyVariablesSequence(  *varList );
 					a = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
@@ -663,8 +663,8 @@ namespace gum {
 										//~ 
 						//~ f.clear();
 						//~ f.setEpsilon( 7 );
-						//~ f.setLowerLimit( -42 );
-						//~ f.setHigherLimit( 69 );
+						//~ f.setLowLimit( -42 );
+						//~ f.setHighLimit( 69 );
 						//~ 
 						//~ Sequence< const DiscreteVariable* >* varList = generateRandomVarList( i + 1 );
 						//~ 
@@ -678,8 +678,8 @@ namespace gum {
 										//~ 
 						//~ f.clear();
 						//~ f.setEpsilon( 11 );
-						//~ f.setLowerLimit( -53 );
-						//~ f.setHigherLimit( 79 );
+						//~ f.setLowLimit( -53 );
+						//~ f.setHighLimit( 79 );
 						//~ MultiDimDecisionDiagramBase<float>* a2 = NULL;
 						//~ TS_GUM_ASSERT_THROWS_NOTHING( a2 = generateRandomfloatDecisionDiagram(varList, &f) );
 						//~ 

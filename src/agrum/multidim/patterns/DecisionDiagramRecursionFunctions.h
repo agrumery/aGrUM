@@ -40,18 +40,10 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 		
 		int index1 = -1;
 		int index2 = -1;
-		for( SequenceIterator<const DiscreteVariable*> ite = fusVarList.begin(); ite != fusVarList.end(); ++ite ){
-			if( **ite == a1->getVariableFromNode( n1 ) ){
-				index1 = fusVarList.pos( *ite );
-				break;	
-			}	
-		}	
-		for( SequenceIterator<const DiscreteVariable*> ite = fusVarList.begin(); ite != fusVarList.end(); ++ite ){
-			if( **ite == a2->getVariableFromNode( n2 ) ){
-				index2 = fusVarList.pos( *ite );
-				break;
-			}
-		}
+		if( fusVarList.exists( a1->getVariableFromNode( n1 ) ) )
+			index1 = fusVarList.pos(  a1->getVariableFromNode( n1 ) );
+		if( fusVarList.exists( a2->getVariableFromNode( n2 ) ) )
+			index2 = fusVarList.pos(  a2->getVariableFromNode( n2 ) );
 		if( index1 == -1 || index2 == -1 )
 					GUM_ERROR( FatalError, "Unable to compute MultiDimDecisionDiagramBase");
 				

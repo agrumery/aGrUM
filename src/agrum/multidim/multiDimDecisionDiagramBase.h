@@ -234,7 +234,7 @@ public:
 	 * Returns associated variable of given node
 	 * @throw InvalidNode if Node is terminal
 	 */
-	 const DiscreteVariable& getVariableFromNode( NodeId n ) const;
+	 const DiscreteVariable* getVariableFromNode( NodeId n ) const;
 
     /**
      * Returns true if node is a chance one
@@ -257,56 +257,61 @@ public:
 	 * Returns a factory that used same approximation pattern
 	 * Allows to set parameter for that approximation
 	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowerLimit, T_DATA higherLimit) const = 0;
+	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowLimit, T_DATA highLimit) const = 0;
 	
 	///@}
 
     // ===========================================================================
-    /// @name Fast Large modifications in structure
+    /// @name Structure instantiation
     // ===========================================================================
     /// @{
     
     /**
+     * Puts the multiDim in instantiation mode
+     * @throw OperationNotAllowed if diagram has already been instanciated
+     */
+     void beginInstantiation();
+    
+    /**
+     * Puts the multiDim out of instantiation mode
+     */
+     void endInstantiation();
+     
+    /**
      * Sets once and for all variable sequence.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setVariableSequence(  const Sequence< const DiscreteVariable* >& varList );
      
     /**
      * Sets once and for all nodes of the diagram.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setDiagramNodes( const NodeGraphPart& model );
      
     /**
      * Binds once and for all nodes to variables.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap );
      
     /**
      * Binds once and for all terminal nodes to value.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setValueMap( const Bijection< NodeId, T_DATA >& valueMap );
      
     /**
      * Links once and for all nodes of the graph.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap );
      
      /**
      * Sets once and for all root node.
-     * @throw OperationNotAllowed if function as already been call;
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setRoot( const NodeId& root );
-
-protected :	
-	/**
-	 * Synchronize content after MultipleChanges. 
-	 */
-	 void _commitMultipleChanges();
 		
 	/// @}
 	
@@ -347,6 +352,9 @@ private:
 	
 	///Just a boolean to indicates if diagram has been instanciated or not
 	bool __isInstanciated;
+	
+	///And another one to indicates if diagram is in instanciation or not
+	bool __instanciationModeOn;
 };
 
 } /* namespace gum */

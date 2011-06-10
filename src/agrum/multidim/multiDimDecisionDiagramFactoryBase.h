@@ -102,7 +102,7 @@ class MultiDimDecisionDiagramFactoryBase : public virtual ApproximationPolicy<T_
 		 * @throw OperationNotAllowed if no sequence of variable have yet been specified
 		 * Returns the id of that node
 		 */
-		NodeId addNonTerminalNodeWithArcs( const DiscreteVariable& var, const HashTable< Idx, NodeId >& nodeArcMap, NodeId* defaultArcTo = NULL );
+		NodeId addNonTerminalNodeWithArcs( const DiscreteVariable* var, const HashTable< Idx, NodeId >& nodeArcMap, NodeId* defaultArcTo = NULL );
 
 
 		/**

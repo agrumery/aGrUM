@@ -691,8 +691,8 @@ namespace gum {
 			// Création du multidim
 			// *********************************************************************
 			MultiDimDecisionDiagramFactory<float, LinearApproximationPolicy>* factory = new MultiDimDecisionDiagramFactory<float, LinearApproximationPolicy>();
-			factory->setLowerLimit( 0 );
-			factory->setHigherLimit( 10 );
+			factory->setLowLimit( 0 );
+			factory->setHighLimit( 10 );
 			factory->setEpsilon( 5 );
 			
 			gum::List<NodeId> idList;

@@ -43,7 +43,7 @@ namespace gum {
 	// ==============================================================================
 	template< typename T_DATA > INLINE
 	MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( ):
-							MultiDimReadOnly<T_DATA>(), __name("MultiDimDecisionDiagram"), __isInstanciated(false) {
+							MultiDimReadOnly<T_DATA>(), __name("MultiDimDecisionDiagram"), __isInstanciated(false), __instanciationModeOn(false) {
 			GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase ) ;
 	}
 
@@ -305,12 +305,12 @@ namespace gum {
 		// @throw InvalidNode if Node is terminal
 		// =============================================================================
 		template< typename T_DATA > INLINE
-		const DiscreteVariable&
+		const DiscreteVariable*
 		MultiDimDecisionDiagramBase< T_DATA >::getVariableFromNode( NodeId n ) const{
 			if( isTerminalNode( n ) )
 				GUM_ERROR( InvalidNode, " This is a terminal node " );
 			
-			return *__variableMap[ n ];
+			return __variableMap[ n ];
 		}
 		
 		// =============================================================================
@@ -375,12 +375,37 @@ namespace gum {
 		 
 	
 	/** *************************************************************************************/
-	/**						Fast Large modifications in structure							*/
-	/** *************************************************************************************/		
+	/**								Structure instantiation									*/
+	/** *************************************************************************************/	
+    
+		// ==============================================================================
+		// Puts the multiDim in instantiation mode
+		// @throw OperationNotAllowed if diagram has already been instanciated
+		// ==============================================================================
+		template< typename T_DATA >
+		void
+		MultiDimDecisionDiagramBase< T_DATA >::beginInstantiation(){
+			
+			if( __isInstanciated )
+				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+				
+			__instanciationModeOn = true;
+		}	
+    
+		// ==============================================================================
+		// Puts the multiDim in instantiation mode
+		// ==============================================================================
+		template< typename T_DATA >
+		void
+		MultiDimDecisionDiagramBase< T_DATA >::endInstantiation(){
+				
+			__instanciationModeOn = false;
+			__isInstanciated = true;
+		}
 
 		// ==============================================================================
 		// Sets once and for all variable sequence.
-		// @throw OperationNotAllowed if function as already been call or if not in multiplechange mode
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -389,7 +414,7 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 
 			for( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
@@ -398,7 +423,7 @@ namespace gum {
 
 		// ==============================================================================
 		// Sets once and for all nodes of the diagram.
-		// @throw OperationNotAllowed if function as already been call;
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -407,7 +432,7 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__graph = model;
@@ -415,7 +440,7 @@ namespace gum {
 
 		// ==============================================================================
 		// Binds once and for all nodes to variables.
-		// @throw OperationNotAllowed if function as already been call;
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -424,7 +449,7 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__variableMap = varMap;
@@ -432,7 +457,7 @@ namespace gum {
 
 		// ==============================================================================
 		// Binds once and for all terminal nodes to value.
-		// @throw OperationNotAllowed if function as already been call;
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -441,7 +466,7 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__valueMap = valueMap;
@@ -449,7 +474,7 @@ namespace gum {
 
 		// ==============================================================================
 		// Links once and for all nodes of the graph.
-		// @throw OperationNotAllowed if function as already been call;
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -458,7 +483,7 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__defaultArcMap = defaultArcMap;
@@ -469,7 +494,7 @@ namespace gum {
 
 		// ==============================================================================
 		// Sets once and for all root node.
-		// @throw OperationNotAllowed if function as already been call;
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 		// ==============================================================================
 		template< typename T_DATA >
 		void
@@ -478,21 +503,10 @@ namespace gum {
 			if( __isInstanciated )
 				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
 				
-			if( !this->_isInMultipleChangeMethod() )
+			if( !__instanciationModeOn )
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__root = root;
-		}
-
-		// ==============================================================================
-		// Synchronize content after MultipleChanges.
-		// ==============================================================================
-		template< typename T_DATA >
-		void
-		MultiDimDecisionDiagramBase< T_DATA >::_commitMultipleChanges(){
-		
-			__isInstanciated = true;
-			
 		}
 		 
 	

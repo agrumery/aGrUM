@@ -52,7 +52,7 @@ class ApproximationPolicy{
     /**
      * Default constructor.
      */
-		ApproximationPolicy() : _epsilon(0.1), _lowerLimit(0.0), _higherLimit(1.0) { };
+		ApproximationPolicy() : _epsilon(0.1), _lowLimit(0.0), _highLimit(1.0) { };
 		
 	/// @}
 
@@ -75,17 +75,17 @@ class ApproximationPolicy{
 				
 		
 		/// Sets lowest possible value
-		inline virtual void setLowerLimit( const T_DATA& newLowerLimit ) { _lowerLimit = newLowerLimit; };
+		inline virtual void setLowLimit( const T_DATA& newLowLimit ) { _lowLimit = newLowLimit; };
 		
 		/// Gets lowest possible value
-		inline T_DATA getLowerLimit( ) const { return _lowerLimit; };
+		inline T_DATA getLowLimit( ) const { return _lowLimit; };
 		
 		
 		/// Sets Highest possible value
-		inline virtual void setHigherLimit( const T_DATA& newHigherLimit ) { _higherLimit = newHigherLimit; };
+		inline virtual void setHighLimit( const T_DATA& newHighLimit ) { _highLimit = newHighLimit; };
 		
 		/// Gets Highest possible value
-		inline T_DATA getHigherLimit( ) const { return _higherLimit; };
+		inline T_DATA getHighLimit( ) const { return _highLimit; };
 		
 	/// @}
 		
@@ -94,10 +94,10 @@ class ApproximationPolicy{
 		T_DATA _epsilon;
 		
 		/// Lowest value possible
-		T_DATA _lowerLimit;
+		T_DATA _lowLimit;
 		
 		/// Highest value possible
-		T_DATA _higherLimit;
+		T_DATA _highLimit;
 };
 
 
@@ -166,29 +166,29 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 		/// Convert value to approximation representation
 		inline T_DATA fromExact(const T_DATA& value ) const { 
 			
-			if( value == this->_lowerLimit )
+			if( value == this->_lowLimit )
 				return 0;
 				
-			if( value == this->_higherLimit )
+			if( value == this->_highLimit )
 				return _nbInterval;
 				
-			if( value > this->_higherLimit )
+			if( value > this->_highLimit )
 				GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
 				
-			if( value < this->_lowerLimit )
+			if( value < this->_lowLimit )
 				GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
 			
-			return ( (int) ( ( value - this->_lowerLimit ) / this->_epsilon ) ) + 1;
+			return ( (int) ( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
 		};
 		
 		/// Convert approximation representation to value
 		inline T_DATA toExact(const T_DATA& value ) const {
 			
 			if( value == 0 )
-				return this->_lowerLimit;
+				return this->_lowLimit;
 				
 			if( value == _nbInterval )
-				return this->_higherLimit;
+				return this->_highLimit;
 				
 			if( value > _nbInterval )
 				GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
@@ -196,7 +196,7 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 			if( value < 0 )
 				GUM_ERROR( OutOfLowerBound, "Interval Number asked is negative" );
 				
-			return ( ( value * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowerLimit;
+			return ( ( value * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
 		};
 		
 		
@@ -205,16 +205,16 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 		
 		
 		/// Sets lowest possible value
-		inline virtual void setLowerLimit( const T_DATA& newLowerLimit ) { ApproximationPolicy<T_DATA>::setLowerLimit( newLowerLimit ); _getNbInterval(); };
+		inline virtual void setLowLimit( const T_DATA& newLowLimit ) { ApproximationPolicy<T_DATA>::setLowLimit( newLowLimit ); _getNbInterval(); };
 		
 		
 		/// Sets Highest possible value
-		inline virtual void setHigherLimit( const T_DATA& newHigherLimit ) { ApproximationPolicy<T_DATA>::setHigherLimit( newHigherLimit ); _getNbInterval(); };
+		inline virtual void setHighLimit( const T_DATA& newHighLimit ) { ApproximationPolicy<T_DATA>::setHighLimit( newHighLimit ); _getNbInterval(); };
 	/// @}
 
 protected :
 		/// get the number of interval
-		inline void _getNbInterval() { _nbInterval =  ( (int) ( this->_higherLimit - this->_lowerLimit ) / this->_epsilon ) + 1; };
+		inline void _getNbInterval() { _nbInterval =  ( (int) ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1; };
 		
 		T_DATA _nbInterval;
 };

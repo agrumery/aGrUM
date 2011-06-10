@@ -68,33 +68,33 @@
 	if( t1->empty() || t2->empty() )
 		return NULL;
 		
-	GUM_MULTI_DIM_OPERATOR_TYPE a1LowerLimit = t1->getLowerLimit();
-	GUM_MULTI_DIM_OPERATOR_TYPE a2LowerLimit = t2->getLowerLimit();
-	GUM_MULTI_DIM_OPERATOR_TYPE a1HigherLimit = t1->getHigherLimit();
-	GUM_MULTI_DIM_OPERATOR_TYPE a2HigherLimit = t2->getHigherLimit();
+	GUM_MULTI_DIM_OPERATOR_TYPE a1LowLimit = t1->getLowLimit();
+	GUM_MULTI_DIM_OPERATOR_TYPE a2LowLimit = t2->getLowLimit();
+	GUM_MULTI_DIM_OPERATOR_TYPE a1HighLimit = t1->getHighLimit();
+	GUM_MULTI_DIM_OPERATOR_TYPE a2HighLimit = t2->getHighLimit();
 	
-	GUM_MULTI_DIM_OPERATOR_TYPE newHigherLimit = GUM_MULTI_DIM_OPERATOR( a1LowerLimit, a2LowerLimit );	
-	GUM_MULTI_DIM_OPERATOR_TYPE newLowerLimit = GUM_MULTI_DIM_OPERATOR( a1LowerLimit, a2LowerLimit );
+	GUM_MULTI_DIM_OPERATOR_TYPE newHighLimit = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2LowLimit );	
+	GUM_MULTI_DIM_OPERATOR_TYPE newLowLimit = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2LowLimit );
 	
-	GUM_MULTI_DIM_OPERATOR_TYPE newVal = GUM_MULTI_DIM_OPERATOR( a1LowerLimit, a2HigherLimit );
-	if( newHigherLimit < newVal )
-		newHigherLimit = newVal;
-	if( newLowerLimit > newVal )
-		newLowerLimit = newVal;
+	GUM_MULTI_DIM_OPERATOR_TYPE newVal = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2HighLimit );
+	if( newHighLimit < newVal )
+		newHighLimit = newVal;
+	if( newLowLimit > newVal )
+		newLowLimit = newVal;
 	
-	newVal = GUM_MULTI_DIM_OPERATOR( a1HigherLimit, a2LowerLimit );
-	if( newHigherLimit < newVal )
-		newHigherLimit = newVal;
-	if( newLowerLimit > newVal )
-		newLowerLimit = newVal;
+	newVal = GUM_MULTI_DIM_OPERATOR( a1HighLimit, a2LowLimit );
+	if( newHighLimit < newVal )
+		newHighLimit = newVal;
+	if( newLowLimit > newVal )
+		newLowLimit = newVal;
 		
-	newVal = GUM_MULTI_DIM_OPERATOR( a1HigherLimit, a2HigherLimit );
-	if( newHigherLimit < newVal )
-		newHigherLimit = newVal;
-	if( newLowerLimit > newVal )
-		newLowerLimit = newVal;
+	newVal = GUM_MULTI_DIM_OPERATOR( a1HighLimit, a2HighLimit );
+	if( newHighLimit < newVal )
+		newHighLimit = newVal;
+	if( newLowLimit > newVal )
+		newLowLimit = newVal;
 		
-	MultiDimDecisionDiagramFactoryBase< GUM_MULTI_DIM_OPERATOR_TYPE >* Resfactory = t1->getFactory( t1->getEpsilon(), newLowerLimit, newHigherLimit);		
+	MultiDimDecisionDiagramFactoryBase< GUM_MULTI_DIM_OPERATOR_TYPE >* Resfactory = t1->getFactory( t1->getEpsilon(), newLowLimit, newHighLimit);		
 	
 	NodeId n1 = t1->getRoot();
 	NodeId n2 = t2->getRoot();
