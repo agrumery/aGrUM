@@ -25,8 +25,6 @@
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
 
-//to ease IDE parser
-#include <agrum/core/hashFunc.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
