@@ -21,7 +21,7 @@
  * @file
  * @brief Outlined implementation VariableNodeMap
  *
- * @author Lionel Torti
+ * @author Lionel Torti & Pierre-Henri Wuillemin
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -36,15 +36,15 @@
 
 namespace gum {
 
-  
+
   // Default constructor.
   VariableNodeMap::VariableNodeMap() {
     GUM_CONSTRUCTOR( VariableNodeMap );
   }
 
-  
+
   // Copy constructor.
-  VariableNodeMap::VariableNodeMap ( const VariableNodeMap& source ) {
+  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
     GUM_CONS_CPY( VariableNodeMap );
 
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
@@ -57,19 +57,21 @@ namespace gum {
     __names2nodes = source.__names2nodes;
   }
 
-  
+
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
     GUM_DESTRUCTOR( VariableNodeMap );
+
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
             __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
       delete iter.second();
     }
-    
+
     __nodes2vars.clear();
+
     __names2nodes.clear();
   }
-  
+
 
   // Copy operator.
   VariableNodeMap&
@@ -88,10 +90,11 @@ namespace gum {
     }
 
     __names2nodes = source.__names2nodes;
+
     return *this;
   }
 
-  
+
   /// friendly displays the content of the VariableNodeMap
   const std::string VariableNodeMap::toString() const {
     std::stringstream stream;
