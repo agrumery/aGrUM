@@ -40,30 +40,41 @@
 namespace gum {
 
   template<typename T_DATA>
-  GibbsKL<T_DATA>::GibbsKL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
-      GibbsSettings ( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
+  GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
+      GibbsSettings( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
       KL<T_DATA> ( P,Q ),
       particle::Gibbs<T_DATA> ( P ) {
-    GUM_CONSTRUCTOR ( GibbsKL );
+    GUM_CONSTRUCTOR( GibbsKL );
   }
 
   template<typename T_DATA>
-  GibbsKL<T_DATA>::GibbsKL ( const KL< T_DATA >& kl ) :
-      GibbsSettings ( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
+  GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
+      GibbsSettings( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
       KL<T_DATA> ( kl ),
       particle::Gibbs<T_DATA> ( kl.p() )  {
-    GUM_CONSTRUCTOR ( GibbsKL );
+    GUM_CONSTRUCTOR( GibbsKL );
   }
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::~GibbsKL() {
-    GUM_DESTRUCTOR ( GibbsKL );
+    GUM_DESTRUCTOR( GibbsKL );
   }
 
   template<typename T_DATA>
   void GibbsKL<T_DATA>::_computeKL() {
     _klPQ=_klQP=_hellinger=0.0;
     _errorPQ=_errorQP=0;
+
+    {
+      Instantiation Ip=_p.completeInstantiation();
+      Instantiation Iq=_q.completeInstantiation();
+
+      for ( Ip.setFirst();!Ip.end();++Ip ) {
+        KL<T_DATA>::__synchroInstantiations( Iq,Ip );
+
+        GUM_TRACE( Ip<<" : p="<<_p.jointProbability( Ip )<<"  q="<<_q.jointProbability( Iq ) );
+      }
+    }
 
     gum::Instantiation Iq=_q.completeInstantiation();
 
@@ -82,41 +93,43 @@ namespace gum {
 
     for ( nb_iter = 1;nb_iter <= maxIter();nb_iter++ ) {
       nextParticle( );
+      KL<T_DATA>::__synchroInstantiations( Iq,particle() );
 
-      KL<T_DATA>::__synchroInstantiations ( Iq,particle() );
-      T_DATA pp=_p.jointProbability ( particle() );
-      T_DATA pq=_q.jointProbability ( Iq );
+      GUM_TRACE( particle()<<" - "<<Iq );
+
+      T_DATA pp=_p.jointProbability( particle() );
+      T_DATA pq=_q.jointProbability( Iq );
 
       if ( pp!=0.0 ) {
-        _hellinger+=pow ( sqrt ( pp )-sqrt ( pq ),2 ) /pp;
+        _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
         if ( pq!=0.0 ) {
-          _klPQ-=log2 ( pq/pp );
+          _klPQ-=log2( pq/pp );
 
         } else {
           _errorPQ++;
         }
       }
-     
+
 
       if ( pq!=0.0 ) {
         if ( pp!=0.0 ) {
           tmp=pp/pq;
-          _klQP+= log2 ( tmp )/tmp;
+          _klQP+= log2( tmp )/tmp;
         } else {
           _errorQP++;
         }
       }
     }
-    
-    if (--nb_iter==0) GUM_ERROR(OperationNotAllowed,"no iteration at all");
-    
-    _klPQ=-_klPQ/(nb_iter);
 
-    _klQP=-_klQP/(nb_iter);
+    if ( --nb_iter==0 ) GUM_ERROR( OperationNotAllowed,"no iteration at all" );
 
-    _hellinger=sqrt ( _hellinger/nb_iter );
+    _klPQ=-_klPQ/( nb_iter );
+
+    _klQP=-_klQP/( nb_iter );
+
+    _hellinger=sqrt( _hellinger/nb_iter );
   }
 
 } // namespace gum
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2;
