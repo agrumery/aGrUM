@@ -52,7 +52,7 @@ namespace gum {
       static const int GAP_heavy_difficult = 12;
       static const int GAP_difficult_correct = 7;
 
-    protected:
+    public:
 
       /** no default constructor
        * @throw gum::OperationNotAllowed since this default constructor is not authorized
@@ -62,21 +62,19 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
+      KL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
 
       /** copy constructor
        */
-      KL( const KL< T_DATA >& kl );
+      KL ( const KL< T_DATA >& kl );
 
       /** destructor */
       ~KL();
 
-    public:
       /**
        * return KL::HEAVY,KL::DIFFICULT,KL::CORRECT depending on the BNs __p and __q
        */
       complexity::difficulty difficulty() const;
-
 
       /// @name Accessors to results. The first call do the computations. The others do not.
       /// @{
@@ -84,22 +82,28 @@ namespace gum {
       /// @return divergence KL(P||Q)
       double klPQ();
 
+      /// @return true if errors while processing divergence KL(P||Q)
+      bool errorPQ();
+
       /// @return divergence KL(Q||P)
       double klQP();
 
-      /// @return true if erros while processing divergence KL(P||Q)
-      bool errorPQ();
-
-      /// @return true if erros while processing divergence KL(Q||P)
+      /// @return true if errors while processing divergence KL(Q||P)
       bool errorQP();
-			
-			/// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
+
+      /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
       double hellinger();
-			
+
+      /// @return p
+      const BayesNet<T_DATA>& p(void) const;
+      
+      /// @return q
+      const BayesNet<T_DATA>& q(void) const;
       /// @}
 
     protected:
-      virtual void _computeKL( void ) = 0;
+      // should be pure virtual but using KL directly is a way to delay the choice between different computation scheme (@see BruteForceKL)
+      virtual void _computeKL ( void );
       void _process();
 
       const BayesNet<T_DATA> _p;
@@ -113,16 +117,17 @@ namespace gum {
       bool _errorQP;
 
       // synchronize Iq (on _q) with Ip (on _p)
-      void __synchroInstantiations( Instantiation& Iq,const Instantiation& Ip ) const;
-      
+      void __synchroInstantiations ( Instantiation& Iq,const Instantiation& Ip ) const;
+
 
     private:
       bool __checkCompatibility() const;
       complexity::difficulty __difficulty;
       bool __done;
-  };
+    };
 } //namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
+// kate: indent-mode cstyle; space-indent on; indent-width 2; 

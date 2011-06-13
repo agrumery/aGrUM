@@ -27,6 +27,7 @@
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/particles/Gibbs.h>
+#include <agrum/BN/algorithms/GibbsSettings.h>
 
 namespace gum {
 
@@ -40,6 +41,7 @@ namespace gum {
   template <typename T_DATA>
 
   class GibbsInference :
+				public GibbsSettings,
         public BayesNetInference<T_DATA>,
         public particle::Gibbs<T_DATA> {
 
@@ -81,34 +83,11 @@ namespace gum {
       void setRequiredInference();
       bool isInferenceRequired();
       ///@}
-
-      /// setter for Gibbs parameters
-      ///@{
-
-      /// stopping criterion on KL(t,t+1)
-      void setEpsilon( double );
-
-      /// stopping criterion on dKL(t,t+1)/dt
-      void setMinEpsilonRate( double );
-
-      /// stopping criterion on number of iteration
-      void setMaxIter( Size );
-
-      /// size of burn in on number of iteration
-      void setBurnIn( Size );
-
-      /// how many samples between 2 stopping tests
-      void setPeriodeSize( Size );
-
-      /// verbosity
-      void setVerbosity( bool );
-
+			
 			using particle::Gibbs<T_DATA>::particle;
 			using particle::Gibbs<T_DATA>::initParticle;
 			using particle::Gibbs<T_DATA>::nextParticle;
 			using particle::Gibbs<T_DATA>::bn;
-      ///@}
-
 
     protected:
       /**
@@ -122,20 +101,6 @@ namespace gum {
 
 
     private:
-      /// Threshold for convergence
-      double __eps;
-
-      /// Threshold for rate of epsilon
-      double __min_rate_eps;
-
-      /// parameters for gibbs sampler
-      ///@{
-      Size __max_iter;
-      Size __periode_size;
-      Size __burn_in;
-      bool __verbosity;
-      ///@}
-
       ///inference flag
       bool __inference_is_required;
 

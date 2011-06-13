@@ -19,28 +19,30 @@
 ***************************************************************************/
 /**
 * @file
-* @brief algorithm for exact computation KL divergence between BNs
+* @brief algorithm for approximated computation KL divergence between BNs using GIBBS sampling
 *
 * @author Pierre-Henri Wuillemin
 *
 */
-#ifndef GUM_BRUTE_FORCE_KL_H
-#define GUM_BRUTE_FORCE_KL_H
+#ifndef GUM_GIBBS_KL_H
+#define GUM_GIBBS_KL_H
 
 #include <agrum/BN/algorithms/divergence/KL.h>
+#include <agrum/BN/particles/Gibbs.h>
+#include <agrum/BN/algorithms/GibbsSettings.h>
 
 namespace gum {
 
   /**
-  * BruteForceKL computes exactly the KL divergence betweens 2 BNs.
+  * GibbsKL computes the KL divergence betweens 2 BNs using a pattern approximation : GIBBS sampling.
   *
-  * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT ) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
   * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?  * 
-  * 
-  * @warning This BruteForceKL should be use only if difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())
+  *
+  * @warning : convergence and stop criteria are designed w.r.t the main computation : KL(P||Q). The 2 others have no guarantee.
+  *
   * snippets :
   * @code
   * gum::KL base_kl(net1,net2);
@@ -54,29 +56,34 @@ namespace gum {
   * @endcode
   */
 
-  template<typename T_DATA> class BruteForceKL:public KL<T_DATA> {
+  template<typename T_DATA> class GibbsKL:
+        public GibbsSettings,
+        public KL<T_DATA>,
+        public particle::Gibbs<T_DATA> {
     public:
-      /** no default constructor
-       * @throw gum::OperationNotAllowed since this default constructor is not authorized
-       */
-      BruteForceKL ();
-
+      /* no default constructor */
+      
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q);
+      GibbsKL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
 
       /** copy constructor
        */
-      BruteForceKL (const KL<T_DATA>& kl);
+      GibbsKL ( const KL<T_DATA>& kl );
 
 
       /** destructor */
-      ~BruteForceKL ();
+      ~GibbsKL ();
 
-    protected:
-      void _computeKL (void);
+      using particle::Gibbs<T_DATA>::particle;
+      using particle::Gibbs<T_DATA>::initParticle;
+      using particle::Gibbs<T_DATA>::nextParticle;
+      using particle::Gibbs<T_DATA>::bn;
       
+    protected:
+      void _computeKL ( void );
+
       using KL<T_DATA>::_p;
       using KL<T_DATA>::_q;
       using KL<T_DATA>::_hellinger;
@@ -86,10 +93,11 @@ namespace gum {
 
       using KL<T_DATA>::_errorPQ;
       using KL<T_DATA>::_errorQP;
-  };
+      
+    };
 
 } // namespace gum
 
-#include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>
+#include <agrum/BN/algorithms/divergence/GibbsKL.tcc>
 
-#endif// GUM_BRUTE_FORCE_KL_H
+#endif// GUM_GIBBS_KL_H

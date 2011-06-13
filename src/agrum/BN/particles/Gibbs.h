@@ -25,8 +25,9 @@
 #ifndef GUM_GIBBS_H
 #define GUM_GIBBS_H
 
-#include <agrum/BN/BayesNet.h>
 #include <vector>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 

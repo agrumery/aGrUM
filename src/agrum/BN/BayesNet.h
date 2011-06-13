@@ -239,6 +239,10 @@ namespace gum {
       /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
       T_DATA jointProbability( const Instantiation& i ) const;
+      
+      /// Compute a parameter of the log joint probability for the BN (given an instantiation of the vars)
+      /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
+      T_DATA logJointProbability( const Instantiation& i ) const;
 
       ///
       /// @}
