@@ -25,7 +25,7 @@
  */
 // ============================================================================
 #include <math.h>
-#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 
 namespace gum {
 }

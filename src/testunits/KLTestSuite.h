@@ -27,7 +27,6 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <agrum/BN/algorithms/divergence/defaultKL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 #include "testsuite_utils.h"
@@ -48,7 +47,7 @@ namespace gum {
 
       public:
         void testNoDefaultConstructor() {
-          TS_ASSERT_THROWS (gum::DefaultKL<double> kl,gum::OperationNotAllowed);
+          TS_ASSERT_THROWS (gum::BruteForceKL<double> kl,gum::OperationNotAllowed);
         }
 
         void testConstructor() {
@@ -73,9 +72,9 @@ namespace gum {
             reader.proceed();
           }
 
-          TS_GUM_ASSERT_THROWS_NOTHING (gum::DefaultKL<float> kl (net1,net1));
-          TS_ASSERT_THROWS (gum::DefaultKL<float> kl (net1,net2) ,gum::OperationNotAllowed);
-          TS_GUM_ASSERT_THROWS_NOTHING (gum::DefaultKL<float> kl (net2,net3));
+          TS_GUM_ASSERT_THROWS_NOTHING (gum::BruteForceKL<float> kl (net1,net1));
+          TS_ASSERT_THROWS (gum::BruteForceKL<float> kl (net1,net2) ,gum::OperationNotAllowed);
+          TS_GUM_ASSERT_THROWS_NOTHING (gum::BruteForceKL<float> kl (net2,net3));
         }
 
         void testDifficulty1() {
@@ -86,8 +85,8 @@ namespace gum {
             reader.proceed();
           }
 
-          gum::DefaultKL<float> kl (net2,net2);
-          TS_ASSERT_EQUALS (kl.difficulty(),KL::CORRECT);
+          gum::BruteForceKL<float> kl (net2,net2);
+          TS_ASSERT_EQUALS (kl.difficulty(),gum::complexity::CORRECT);
 
           gum::BayesNet<float> net;
           {
@@ -96,8 +95,8 @@ namespace gum {
             reader.proceed();
           }
 
-          gum::DefaultKL<float> kl2 (net,net);
-          TS_ASSERT_EQUALS (kl2.difficulty(),KL::HEAVY);
+          gum::BruteForceKL<float> kl2 (net,net);
+          TS_ASSERT_EQUALS (kl2.difficulty(),gum::complexity::HEAVY);
         }
 
         void testBruteForceComputation() {
@@ -123,10 +122,8 @@ namespace gum {
             reader.proceed();
           }
 
-          gum::DefaultKL<float> kl (net3,net4);
-          TS_ASSERT_EQUALS (kl.difficulty(),KL::CORRECT);
-
-          TS_ASSERT_THROWS (kl.klPQ(),gum::OperationNotAllowed);
+          gum::BruteForceKL<float> kl (net3,net4);
+          TS_ASSERT_EQUALS (kl.difficulty(),gum::complexity::CORRECT);
 
           gum::BruteForceKL<float> bfkl (kl);
           TS_GUM_ASSERT_THROWS_NOTHING (vkl=bfkl.klPQ());

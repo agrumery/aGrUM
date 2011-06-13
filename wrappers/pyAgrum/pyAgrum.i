@@ -705,13 +705,13 @@ def setEvidence(self, evidces):
 }
 
 
-%feature("shadow") gum::Gibbs::__del__ %{
+%feature("shadow") gum::GibbsInference::__del__ %{
     def __del__(self):
         self.__disown__()
 %}
 
 
-%extend gum::Gibbs {
+%extend gum::GibbsInference {
     void __del__() {}
 }
 
@@ -747,6 +747,6 @@ Potential = Potential_double
 ListPotentials = ListPotentials_double
 BayesNet = BayesNet_double
 LazyPropagation = LazyPropagation_double
-Gibbs = Gibbs_double
+Gibbs = GibbsInference_double
 BruteForceKL = BruteForceKL_double
 %}

@@ -24,7 +24,7 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/GibbsInference.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -38,7 +38,7 @@ namespace gum {
 
   namespace tests {
 
-    class GibbsInferenceBNTestSuite: public CxxTest::TestSuite {
+    class GibbsInferenceTestSuite: public CxxTest::TestSuite {
       public:
         gum::BayesNet<float> *bn;
         gum::Id i1, i2, i3, i4, i5;
@@ -163,7 +163,7 @@ namespace gum {
 //       try {
 //         fill( *bn );
 //         // Testing the inference
-//         gum::Gibbs<float> inf( *bn );
+//         gum::GibbsInference<float> inf( *bn );
 //         inf.setVerbosity( false );
 //         inf.makeInference();
 //       } catch ( gum::Exception e ) {
@@ -175,7 +175,7 @@ namespace gum {
 
         void testGibbsInf_2() {
           fill( *bn );
-          gum::Gibbs<float> inf( *bn );
+          gum::GibbsInference<float> inf( *bn );
           inf.setVerbosity( false );
 
           try {
@@ -230,7 +230,7 @@ namespace gum {
           e_list.insert( e_i1 );
           e_list.insert( e_i4 );
 
-          gum::Gibbs<float> inf( *bn );
+          gum::GibbsInference<float> inf( *bn );
           inf.setVerbosity( false );
 
           try {

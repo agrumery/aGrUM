@@ -54,7 +54,7 @@ namespace gum {
   /// modifies the value of a given variable of the sequence (external function)
   // ==============================================================================
   INLINE Instantiation& Instantiation::chgVal( const DiscreteVariable& v,
-                                               const Idx newVal ) {
+      const Idx newVal ) {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
@@ -69,14 +69,14 @@ namespace gum {
       __chgVal( varPos, newVal );
 
       return *this;
-    } catch (NotFound&) {
+    } catch ( NotFound& ) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
-      GUM_ERROR(NotFound, name + v.name());
+      GUM_ERROR( NotFound, name + v.name() );
     }
   }
 
   INLINE Instantiation& Instantiation::chgVal( const DiscreteVariable* v,
-                                               const Idx newVal ) {
+      const Idx newVal ) {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
@@ -91,9 +91,9 @@ namespace gum {
       __chgVal( varPos, newVal );
 
       return *this;
-    } catch (NotFound&) {
+    } catch ( NotFound& ) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
-      GUM_ERROR(NotFound, name + v->name());
+      GUM_ERROR( NotFound, name + v->name() );
     }
   }
 
@@ -175,7 +175,7 @@ namespace gum {
   /// Default constructor
   // ==============================================================================
   INLINE Instantiation::Instantiation() :
-    __master( 0 ), __overflow( false ) {
+      __master( 0 ), __overflow( false ) {
     GUM_CONSTRUCTOR( Instantiation );
   }
 
@@ -804,7 +804,7 @@ namespace gum {
   /// indicates wether the MultiDimAdressable* m is the master
   // ==============================================================================
   INLINE bool Instantiation::isMaster( const MultiDimAdressable& m ) const  {
-    return isMaster(&m);
+    return isMaster( &m );
   }
 
   // ==============================================================================
@@ -834,8 +834,11 @@ namespace gum {
     __vars.swap( i, j );
 
     Idx v;
+
     v = __vals[i];
+
     __vals[i] = __vals[j];
+
     __vals[j] = v;
   }
 
@@ -850,7 +853,7 @@ namespace gum {
 
       if ( contains( pv ) ) {
         GUM_ASSERT( pos( *pv ) >= position ); // this var should not be
-                                              // already placed.
+        // already placed.
         __swap( position, pos( *pv ) );
         position++;
       }
@@ -925,12 +928,10 @@ namespace gum {
   }
 
   /// Replace x by y.
-  INLINE void Instantiation::_swap(const DiscreteVariable* x,
-                                   const DiscreteVariable* y) {
-    __vars.setAtPos(__vars.pos(x), y);
+  INLINE void Instantiation::_swap( const DiscreteVariable* x,
+                                    const DiscreteVariable* y ) {
+    __vars.setAtPos( __vars.pos( x ), y );
   }
-
-
 } /* namespace gum */
 
 

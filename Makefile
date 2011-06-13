@@ -1,6 +1,6 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
-i#
+#
 
 ACT=./act
 JOBS=7

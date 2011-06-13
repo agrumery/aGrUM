@@ -136,6 +136,6 @@ target_link_libraries(foo agrum)
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/GibbsInference.h>
 
 #endif // CONFIG_H

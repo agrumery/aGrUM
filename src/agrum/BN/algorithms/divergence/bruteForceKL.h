@@ -27,7 +27,7 @@
 #ifndef GUM_BRUTE_FORCE_KL_H
 #define GUM_BRUTE_FORCE_KL_H
 
-#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 
 namespace gum {
 
@@ -44,7 +44,7 @@ namespace gum {
   * @warning This BruteForceKL should be use only if difficulty()==KL::CORRECT or at most KL::DIFFICULT ...
   * snippets :
   * @code
-  * gum::DefaultKL dkl(net1,net2);
+  * gum::KL dkl(net1,net2);
   * if (dkl.difficulty()!=KL::HEAVY) {
   *  gum::BruteForceKL kl(dkl);
   *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
@@ -54,7 +54,7 @@ namespace gum {
   * @endcode
   */
 
-  template<typename T_DATA> class BruteForceKL:public DefaultKL<T_DATA> {
+  template<typename T_DATA> class BruteForceKL:public KL<T_DATA> {
     public:
       /** no default constructor
        * @throw gum::OperationNotAllowed since this default constructor is not authorized
@@ -68,31 +68,24 @@ namespace gum {
 
       /** copy constructor
        */
-      BruteForceKL (const DefaultKL<T_DATA>& kl);
+      BruteForceKL (const KL<T_DATA>& kl);
 
 
       /** destructor */
       ~BruteForceKL ();
-      
-      double hellinger();
 
     protected:
       void _computeKL (void);
       
-      double _hellinger;
+      using KL<T_DATA>::_p;
+      using KL<T_DATA>::_q;
+      using KL<T_DATA>::_hellinger;
 
-      using DefaultKL<T_DATA>::_p;
-      using DefaultKL<T_DATA>::_q;
+      using KL<T_DATA>::_klPQ;
+      using KL<T_DATA>::_klQP;
 
-      using DefaultKL<T_DATA>::_klPQ;
-      using DefaultKL<T_DATA>::_klQP;
-
-      using DefaultKL<T_DATA>::_errorPQ;
-      using DefaultKL<T_DATA>::_errorQP;
-
-    private:
-      //// synchronize Iq with Ip
-      void __synchroInstantiations (Instantiation& Iq,const Instantiation& Ip) const;
+      using KL<T_DATA>::_errorPQ;
+      using KL<T_DATA>::_errorQP;
   };
 
 } // namespace gum
