@@ -147,6 +147,9 @@ namespace gum {
       /// @throw NotFound if no such name exists in the graph.
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const = 0;
 
+      /// synchronize in (on this) with External 
+      void synchroInstantiations( Instantiation& in,const Instantiation& external ) const;
+      
       /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.

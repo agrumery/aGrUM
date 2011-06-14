@@ -161,23 +161,10 @@ namespace gum {
       }
   }
 
-  // we are certain that Iq and Ip consist of variables with the same names and with the same labels.
-  // But the order may be different ... :(
-  template<typename T_DATA>
-  void
-  KL<T_DATA>::__synchroInstantiations ( Instantiation& Iq,const Instantiation& Ip ) const {
-      for ( Idx i=0;i<Ip.nbrDim();i++ ) {
-          const std::string& v_name=Ip.variable ( i ).name();
-          const std::string& v_label=Ip.variable ( i ).label ( Ip.val ( i ) );
-          const DiscreteVariable& vq=_q.variableFromName ( v_name );
-          Iq.chgVal ( vq,vq[v_label] );
-        }
-    }
-
   // in order to keep KL instantiable
   template<typename T_DATA>
   void KL<T_DATA>::_computeKL() {
     GUM_ERROR ( OperationNotAllowed, "No default computations" );
   }
 } //namespace gum
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+

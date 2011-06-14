@@ -60,7 +60,7 @@ namespace gum {
     gum::Instantiation Iq=_q.completeInstantiation();
 
     for (Ip.setFirst();! Ip.end();++Ip) {
-      KL<T_DATA>::__synchroInstantiations (Iq,Ip);
+      _q.synchroInstantiations (Iq,Ip);
       T_DATA pp=_p.jointProbability (Ip);
       T_DATA pq=_q.jointProbability (Iq);
 

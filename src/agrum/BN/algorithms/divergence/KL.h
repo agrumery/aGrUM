@@ -116,10 +116,6 @@ namespace gum {
       bool _errorPQ;
       bool _errorQP;
 
-      // synchronize Iq (on _q) with Ip (on _p)
-      void __synchroInstantiations ( Instantiation& Iq,const Instantiation& Ip ) const;
-
-
     private:
       bool __checkCompatibility() const;
       complexity::difficulty __difficulty;

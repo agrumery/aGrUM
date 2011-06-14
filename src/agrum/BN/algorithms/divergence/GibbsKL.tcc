@@ -62,21 +62,20 @@ namespace gum {
 
   template<typename T_DATA>
   void GibbsKL<T_DATA>::_computeKL() {
-    _klPQ=_klQP=_hellinger=0.0;
-    _errorPQ=_errorQP=0;
 
-    {
-      Instantiation Ip=_p.completeInstantiation();
-      Instantiation Iq=_q.completeInstantiation();
-
-      for ( Ip.setFirst();!Ip.end();++Ip ) {
-        KL<T_DATA>::__synchroInstantiations( Iq,Ip );
-
-        GUM_TRACE( Ip<<" : p="<<_p.jointProbability( Ip )<<"  q="<<_q.jointProbability( Iq ) );
-      }
-    }
+//     {
+//       Instantiation Ip=_p.completeInstantiation();
+//       Instantiation Iq=_q.completeInstantiation();
+// 
+//       for ( Ip.setFirst();!Ip.end();++Ip ) {
+//         KL<T_DATA>::__synchroInstantiations( Iq,Ip );
+// 
+//         GUM_TRACE( Ip<<" : p="<<_p.jointProbability( Ip )<<"  q="<<_q.jointProbability( Iq ) );
+//       }
+//     }
 
     gum::Instantiation Iq=_q.completeInstantiation();
+    gum::Instantiation Ip=_p.completeInstantiation();
 
     initParticle();
 
@@ -87,17 +86,21 @@ namespace gum {
     // SAMPLING
     double err = 10.0, last_err = 0.0, err_rate = 10.0;
 
+    _klPQ=_klQP=_hellinger=( T_DATA )0.0;
+
+    _errorPQ=_errorQP=0;
+
     double tmp;
 
     Size nb_iter;
 
     for ( nb_iter = 1;nb_iter <= maxIter();nb_iter++ ) {
       nextParticle( );
-      KL<T_DATA>::__synchroInstantiations( Iq,particle() );
 
-      GUM_TRACE( particle()<<" - "<<Iq );
+      _p.synchroInstantiations( Ip,particle() );
+      _q.synchroInstantiations( Iq,particle() );
 
-      T_DATA pp=_p.jointProbability( particle() );
+      T_DATA pp=_p.jointProbability( Ip );
       T_DATA pq=_q.jointProbability( Iq );
 
       if ( pp!=0.0 ) {
@@ -111,7 +114,6 @@ namespace gum {
         }
       }
 
-
       if ( pq!=0.0 ) {
         if ( pp!=0.0 ) {
           tmp=pp/pq;
@@ -124,7 +126,7 @@ namespace gum {
 
     if ( --nb_iter==0 ) GUM_ERROR( OperationNotAllowed,"no iteration at all" );
 
-    _klPQ=-_klPQ/( nb_iter );
+    _klPQ=_klPQ/( nb_iter );
 
     _klQP=-_klQP/( nb_iter );
 
