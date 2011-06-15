@@ -30,18 +30,24 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
+#include <agrum/BN/algorithms/approximationSettings.h>
 
-#define DEFAULT_MAXITER 10000000
-#define DEFAULT_EPSILON 1e-4*log(2)
-#define DEFAULT_MIN_EPSILON_RATE 1e-4
-#define DEFAULT_PERIODE_SIZE 500
-#define DEFAULT_VERBOSITY false
+#define KL_DEFAULT_MAXITER 10000000
+#define KL_DEFAULT_EPSILON 1e-10
+#define KL_DEFAULT_MIN_EPSILON_RATE 1e-10
+#define KL_DEFAULT_PERIODE_SIZE 500
+#define KL_DEFAULT_VERBOSITY false
+#define KL_DEFAULT_BURNIN 3000
 
 namespace gum {
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
-      GibbsSettings( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
+      GibbsSettings( KL_DEFAULT_EPSILON,
+                     KL_DEFAULT_MIN_EPSILON_RATE,
+                     KL_DEFAULT_MAXITER,KL_DEFAULT_VERBOSITY,
+                     KL_DEFAULT_BURNIN,
+                     KL_DEFAULT_PERIODE_SIZE ),
       KL<T_DATA> ( P,Q ),
       particle::Gibbs<T_DATA> ( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
@@ -49,7 +55,12 @@ namespace gum {
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
-      GibbsSettings( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
+      GibbsSettings( KL_DEFAULT_EPSILON,
+                     KL_DEFAULT_MIN_EPSILON_RATE,
+                     KL_DEFAULT_MAXITER,
+                     KL_DEFAULT_VERBOSITY,
+                     KL_DEFAULT_BURNIN,
+                     KL_DEFAULT_PERIODE_SIZE ),
       KL<T_DATA> ( kl ),
       particle::Gibbs<T_DATA> ( kl.p() )  {
     GUM_CONSTRUCTOR( GibbsKL );
@@ -63,74 +74,72 @@ namespace gum {
   template<typename T_DATA>
   void GibbsKL<T_DATA>::_computeKL() {
 
-//     {
-//       Instantiation Ip=_p.completeInstantiation();
-//       Instantiation Iq=_q.completeInstantiation();
-// 
-//       for ( Ip.setFirst();!Ip.end();++Ip ) {
-//         KL<T_DATA>::__synchroInstantiations( Iq,Ip );
-// 
-//         GUM_TRACE( Ip<<" : p="<<_p.jointProbability( Ip )<<"  q="<<_q.jointProbability( Iq ) );
-//       }
-//     }
-
     gum::Instantiation Iq=_q.completeInstantiation();
     gum::Instantiation Ip=_p.completeInstantiation();
 
     initParticle();
+    initApproximationScheme();
 
     //BURN IN
-
     for ( Idx i = 0;i < burnIn();i++ ) nextParticle( );
 
     // SAMPLING
-    double err = 10.0, last_err = 0.0, err_rate = 10.0;
-
     _klPQ=_klQP=_hellinger=( T_DATA )0.0;
-
     _errorPQ=_errorQP=0;
+    bool check_rate;
+    T_DATA delta,ratio,error;
+    delta=ratio=error=(T_DATA)-1;
+    T_DATA oldPQ=0.0;
+    T_DATA pp,pq;
+    do {
+      check_rate=false;
+      oldPQ=_klPQ/nbrIterations();
 
-    double tmp;
+      for ( Size i=1;i<=periodeSize();i++ ) {
+        nextParticle( );
+        updateApproximationScheme();
 
-    Size nb_iter;
+        _p.synchroInstantiations( Ip,particle() );
+        _q.synchroInstantiations( Iq,particle() );
 
-    for ( nb_iter = 1;nb_iter <= maxIter();nb_iter++ ) {
-      nextParticle( );
+        pp=_p.jointProbability( Ip );
+        pq=_q.jointProbability( Iq );
 
-      _p.synchroInstantiations( Ip,particle() );
-      _q.synchroInstantiations( Iq,particle() );
+        if ( pp!=0.0 ) {
+          _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
-      T_DATA pp=_p.jointProbability( Ip );
-      T_DATA pq=_q.jointProbability( Iq );
-
-      if ( pp!=0.0 ) {
-        _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
+          if ( pq!=0.0 ) {
+            check_rate=true;
+            ratio=pq/pp;
+            delta=( T_DATA ) log2( ratio );
+            _klPQ+=delta;
+          } else {
+            _errorPQ++;
+          }
+        }
 
         if ( pq!=0.0 ) {
-          _klPQ-=log2( pq/pp );
-
-        } else {
-          _errorPQ++;
+          if ( pp!=0.0 ) {
+            _klQP+= ( T_DATA )( -delta*ratio );
+          } else {
+            _errorQP++;
+          }
         }
       }
 
-      if ( pq!=0.0 ) {
-        if ( pp!=0.0 ) {
-          tmp=pp/pq;
-          _klQP+= log2( tmp )/tmp;
-        } else {
-          _errorQP++;
-        }
+      if ( check_rate ) {
+        error=_klPQ/nbrIterations()-oldPQ;
       }
+    } while ( testApproximationScheme(( double )fabs( error ),check_rate )==APPROX_CONTINUE );
+
+    if ( verbosity() ) {
+      GUM_TRACE( messageApproximationScheme() );
+      GUM_TRACE( "#iterations = "<<nbrIterations() );
     }
 
-    if ( --nb_iter==0 ) GUM_ERROR( OperationNotAllowed,"no iteration at all" );
-
-    _klPQ=_klPQ/( nb_iter );
-
-    _klQP=-_klQP/( nb_iter );
-
-    _hellinger=sqrt( _hellinger/nb_iter );
+    _klPQ=-_klPQ/( nbrIterations() );
+    _klQP=-_klQP/( nbrIterations() );
+    _hellinger=sqrt( _hellinger/nbrIterations() );
   }
 
 } // namespace gum

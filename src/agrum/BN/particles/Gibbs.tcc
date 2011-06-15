@@ -29,7 +29,6 @@
 #include <agrum/BN/particles/Gibbs.h>
 
 #define DEFAULT_DRAWN 10
-#define DEFAULT_BURNIN 3000
 
 namespace gum {
 

@@ -27,11 +27,12 @@
 #include <string>
 #include <algorithm>
 
-#define DEFAULT_MAXITER 10000000
-#define DEFAULT_EPSILON 1e-4*log(2)
-#define DEFAULT_MIN_EPSILON_RATE 1e-4
-#define DEFAULT_PERIODE_SIZE 500
-#define DEFAULT_VERBOSITY false
+#define INFERENCE_DEFAULT_MAXITER 10000000
+#define INFERENCE_DEFAULT_EPSILON 1e-4*log(2)
+#define INFERENCE_DEFAULT_MIN_EPSILON_RATE 1e-4
+#define INFERENCE_DEFAULT_PERIODE_SIZE 500
+#define INFERENCE_DEFAULT_VERBOSITY false
+#define INFERENCE_DEFAULT_BURNIN 3000
 
 // to ease parsing for IDE
 #include <agrum/BN/inference/GibbsInference.h>
@@ -40,7 +41,12 @@ namespace gum {
   /// default constructor
   template <typename T_DATA>
   GibbsInference<T_DATA>::GibbsInference ( const AbstractBayesNet<T_DATA>& BN ) :
-      GibbsSettings ( DEFAULT_EPSILON,DEFAULT_MIN_EPSILON_RATE,DEFAULT_MAXITER,DEFAULT_VERBOSITY,DEFAULT_BURNIN,DEFAULT_PERIODE_SIZE ),
+      GibbsSettings ( INFERENCE_DEFAULT_EPSILON,
+                      INFERENCE_DEFAULT_MIN_EPSILON_RATE,
+                      INFERENCE_DEFAULT_MAXITER,
+                      INFERENCE_DEFAULT_VERBOSITY,
+                      INFERENCE_DEFAULT_BURNIN,
+                      INFERENCE_DEFAULT_PERIODE_SIZE ),
       BayesNetInference <T_DATA> ( BN ),
       particle::Gibbs<T_DATA> ( BN ) {
     // for debugging purposes

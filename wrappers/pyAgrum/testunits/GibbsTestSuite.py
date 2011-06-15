@@ -2,7 +2,7 @@
 
 import unittest
 from pyAgrum import BayesNet, LabelizedVar, RangeVar, DiscretizedVar, Potential
-from pyAgrum import ListPotentials, Gibbs
+from pyAgrum import ListPotentials, GibbsInference
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -80,7 +80,7 @@ class GibbsTestCase(pyAgrumTestCase):
 
 class TestDictFeature(GibbsTestCase):
     def testDictOfSequences(self):
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -88,7 +88,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -110,7 +110,7 @@ class TestDictFeature(GibbsTestCase):
 
 
     def testDictOfNumbers(self):
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -118,7 +118,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -140,7 +140,7 @@ class TestDictFeature(GibbsTestCase):
 
 
     def testDictOfLabels(self):
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -148,7 +148,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie2 = Gibbs(self.bn)
+        ie2 = GibbsInference(self.bn)
         ie2.setVerbosity(False)
         ie2.setEpsilon(0.0001)
         ie2.setMinEpsilonRate(0.0001)
@@ -160,7 +160,7 @@ class TestDictFeature(GibbsTestCase):
 
 
     def testWithDifferentVariables(self):
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -168,7 +168,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.s)
 
-        ie = Gibbs(self.bni)
+        ie = GibbsInference(self.bni)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -177,7 +177,7 @@ class TestDictFeature(GibbsTestCase):
         result2 = ie.marginal(self.si)
         self.assertDelta(result.tolist(), result2.tolist())
 
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -185,7 +185,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.s)
 
-        ie = Gibbs(self.bni)
+        ie = GibbsInference(self.bni)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -199,14 +199,14 @@ class TestDictFeature(GibbsTestCase):
 class TestInferenceResults(GibbsTestCase):
 
     def testOpenBayesSiteExamples(self):
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
         result = ie.marginal(self.w)
         self.assertDelta(result.tolist(), [0.3529, 0.6471])
 
-        ie = Gibbs(self.bn)
+        ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -217,7 +217,7 @@ class TestInferenceResults(GibbsTestCase):
 
 
     def testWikipediaExample(self):
-        ie = Gibbs(self.bn2)
+        ie = GibbsInference(self.bn2)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)

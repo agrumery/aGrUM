@@ -59,6 +59,9 @@
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <agrum/BN/algorithms/approximationSettings.h>
+#include <agrum/BN/algorithms/GibbsSettings.h>
+#include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
@@ -143,6 +146,9 @@
 
 %import <agrum/BN/algorithms/divergence/KL.h>
 %include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+%include <agrum/BN/algorithms/approximationSettings.h>
+%include <agrum/BN/algorithms/GibbsSettings.h>
+%include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
 %import <agrum/graphs/diGraphListener.h>
@@ -235,6 +241,7 @@
 %template(LazyPropagation_float) gum::LazyPropagation<float>;
 %template(GibbsInference_float) gum::GibbsInference<float>;
 %template(BruteForceKL_float) gum::BruteForceKL<float>;
+%template(GibbsKL_float) gum::GibbsKL<float>;
 
 %template(Vector_double) std::vector<double>;
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
@@ -251,3 +258,4 @@
 %template(LazyPropagation_double) gum::LazyPropagation<double>;
 %template(GibbsInference_double) gum::GibbsInference<double>;
 %template(BruteForceKL_double) gum::BruteForceKL<double>;
+%template(GibbsKL_double) gum::GibbsKL<double>;
