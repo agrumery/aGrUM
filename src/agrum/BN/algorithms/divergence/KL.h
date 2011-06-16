@@ -54,11 +54,6 @@ namespace gum {
 
     public:
 
-      /** no default constructor
-       * @throw gum::OperationNotAllowed since this default constructor is not authorized
-       */
-      KL();
-
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
@@ -106,8 +101,8 @@ namespace gum {
       virtual void _computeKL ( void );
       void _process();
 
-      const BayesNet<T_DATA> _p;
-      const BayesNet<T_DATA> _q;
+      const BayesNet<T_DATA>& _p;
+      const BayesNet<T_DATA>& _q;
 
       double _klPQ;
       double _klQP;

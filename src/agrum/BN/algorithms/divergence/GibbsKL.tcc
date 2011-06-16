@@ -74,8 +74,8 @@ namespace gum {
   template<typename T_DATA>
   void GibbsKL<T_DATA>::_computeKL() {
 
-    gum::Instantiation Iq=_q.completeInstantiation();
-    gum::Instantiation Ip=_p.completeInstantiation();
+    gum::Instantiation Iq;_q.completeInstantiation( Iq );
+    gum::Instantiation Ip;_p.completeInstantiation( Ip );
 
     initParticle();
     initApproximationScheme();
@@ -88,21 +88,20 @@ namespace gum {
     _errorPQ=_errorQP=0;
     bool check_rate;
     T_DATA delta,ratio,error;
-    delta=ratio=error=(T_DATA)-1;
+    delta=ratio=error=( T_DATA )-1;
     T_DATA oldPQ=0.0;
     T_DATA pp,pq;
     do {
       check_rate=false;
-      oldPQ=_klPQ/nbrIterations();
 
       for ( Size i=1;i<=periodeSize();i++ ) {
         nextParticle( );
         updateApproximationScheme();
 
-        _p.synchroInstantiations( Ip,particle() );
+        //_p.synchroInstantiations( Ip,particle() );
         _q.synchroInstantiations( Iq,particle() );
 
-        pp=_p.jointProbability( Ip );
+        pp=_p.jointProbability( particle() );
         pq=_q.jointProbability( Iq );
 
         if ( pp!=0.0 ) {
@@ -120,6 +119,8 @@ namespace gum {
 
         if ( pq!=0.0 ) {
           if ( pp!=0.0 ) {
+            // if we are here, it is certain that delta and ratio have been computed 
+            // further lines above. (for now #112-113)
             _klQP+= ( T_DATA )( -delta*ratio );
           } else {
             _errorQP++;
@@ -128,14 +129,17 @@ namespace gum {
       }
 
       if ( check_rate ) {
-        error=_klPQ/nbrIterations()-oldPQ;
+        // delta is used as a temporary variable
+        delta=_klPQ/nbrIterations();
+        error=( double )fabs( delta-oldPQ );
+        oldPQ=delta;
       }
-    } while ( testApproximationScheme(( double )fabs( error ),check_rate )==APPROX_CONTINUE );
+    } while ( testApproximationScheme( error ,check_rate )==APPROX_CONTINUE );
 
-    if ( verbosity() ) {
+    /*if ( verbosity() ) {
       GUM_TRACE( messageApproximationScheme() );
       GUM_TRACE( "#iterations = "<<nbrIterations() );
-    }
+    }*/
 
     _klPQ=-_klPQ/( nbrIterations() );
     _klQP=-_klQP/( nbrIterations() );

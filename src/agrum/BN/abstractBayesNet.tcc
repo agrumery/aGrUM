@@ -279,7 +279,7 @@ namespace gum {
   // But the order may be different ... :(
   template<typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::synchroInstantiations( Instantiation& in,const Instantiation& external ) const {
+  AbstractBayesNet<T_DATA>::synchroInstantiations( Instantiation& in,const Instantiation& external,bool sameLabelsOrder ) const {
     for ( Idx i=0;i<external.nbrDim();i++ ) {
       const std::string& v_name=external.variable( i ).name();
       const std::string& v_label=external.variable( i ).label( external.val( i ) );
@@ -287,6 +287,16 @@ namespace gum {
       in.chgVal( vq,vq[v_label] );
     }
   }
+  
+  template<typename T_DATA>
+  void
+  AbstractBayesNet<T_DATA>::completeInstantiation(Instantiation& I) const {
+    I.clear();
+
+    for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )
+      I << variable ( *node_iter );
+  }
+
 
 } /* namespace gum */
 

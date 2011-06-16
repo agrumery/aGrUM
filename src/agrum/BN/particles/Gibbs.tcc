@@ -37,8 +37,10 @@ namespace gum {
     template <typename T_DATA>
     Gibbs<T_DATA>::Gibbs( const AbstractBayesNet<T_DATA>& BN ) :
         __nbr_drawn_by_sample( DEFAULT_DRAWN ),
-        __bayesNet(BN) {
+        __bayesNet( BN ) {
       GUM_CONSTRUCTOR( Gibbs );
+
+      BN.completeInstantiation( __particle );
 
       // set the correspondance between variables
       const DAG& dag = this->bn().dag();
@@ -46,8 +48,8 @@ namespace gum {
 
       for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
         const DiscreteVariable& var = this->bn().variable( *iter );
-        // feed the sample
-        __particle << var;
+        //         // feed the sample
+        //         __particle << var;
         // feed the __sampling
         Potential<T_DATA>* tmp = new Potential<T_DATA>();
         __sampling_posterior.insert( *iter, tmp );
@@ -96,10 +98,10 @@ namespace gum {
     }
 
     template <typename T_DATA> INLINE
-    const AbstractBayesNet<T_DATA>& Gibbs<T_DATA>::bn( void) {
-			return __bayesNet;
+    const AbstractBayesNet<T_DATA>& Gibbs<T_DATA>::bn( void ) {
+      return __bayesNet;
     }
-    
+
     template <typename T_DATA> INLINE
     void Gibbs<T_DATA>::__setValVar( NodeId id, Idx choice ) {
       const DiscreteVariable& v = this->bn().variable( id );

@@ -30,12 +30,6 @@
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
-
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL() : KL<T_DATA>() {
-    GUM_CONSTRUCTOR (BruteForceKL);
-  }
-
   template<typename T_DATA>
   BruteForceKL<T_DATA>::BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q) :KL<T_DATA> (P,Q) {
     GUM_CONSTRUCTOR (BruteForceKL);
@@ -56,8 +50,8 @@ namespace gum {
     _klPQ=_klQP=_hellinger=0.0;
     _errorPQ=_errorQP=0;
 
-    gum::Instantiation Ip=_p.completeInstantiation();
-    gum::Instantiation Iq=_q.completeInstantiation();
+    gum::Instantiation Ip;_p.completeInstantiation(Ip);
+    gum::Instantiation Iq;_q.completeInstantiation(Iq);
 
     for (Ip.setFirst();! Ip.end();++Ip) {
       _q.synchroInstantiations (Iq,Ip);

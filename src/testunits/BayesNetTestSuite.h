@@ -603,7 +603,7 @@ namespace gum {
 
           fill ( bn, idList );
 
-            gum::Instantiation i = bn.completeInstantiation();
+            gum::Instantiation i;bn.completeInstantiation(i);
             TS_ASSERT_EQUALS(i.nbrDim(),bn.size());
             
             TS_ASSERT_EQUALS(i.domainSize(),(gum::Size)(2*2*2*2*3));

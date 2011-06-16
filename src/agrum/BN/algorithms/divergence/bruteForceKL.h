@@ -56,11 +56,6 @@ namespace gum {
 
   template<typename T_DATA> class BruteForceKL:public KL<T_DATA> {
     public:
-      /** no default constructor
-       * @throw gum::OperationNotAllowed since this default constructor is not authorized
-       */
-      BruteForceKL ();
-
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */

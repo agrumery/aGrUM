@@ -340,6 +340,12 @@ class Instantiation : public MultiDimInterface {
      */
     // ============================================================================
     void erase( const DiscreteVariable& v );
+    
+    /**
+     * @brief Erase all variables from an Instantiation
+     * @throw OperationNotAllowed Raised if the instantiation is a slave.
+     */
+    void clear();
 
     // ============================================================================
     /// Returns the product of the variable's domain size in the Instantiation.

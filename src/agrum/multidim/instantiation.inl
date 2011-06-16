@@ -148,6 +148,14 @@ namespace gum {
     __erase( v );
   }
 
+  /// removes everything
+  INLINE void Instantiation::clear(void) {
+    if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    
+    __vars.clear();
+    __vals.clear();
+  }
+  
   // ============================================================================
   /** @brief returns the product of the size of the domains of the variables
    * belonging to the matrix */
@@ -881,6 +889,7 @@ namespace gum {
     if ( m != __master ) GUM_ERROR( OperationNotAllowed, "only master can do this" );
 
     __erase( v );
+    if ( __master ) __master->setChangeNotification( *this );
   }
 
   // ==============================================================================
@@ -919,7 +928,6 @@ namespace gum {
     __vars.erase( &v );
     __vals.erase( __vals.begin() + pos );
 
-    if ( __master ) __master->setChangeNotification( *this );
   }
 
   /// is this empty ?

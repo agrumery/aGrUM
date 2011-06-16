@@ -105,8 +105,39 @@ namespace gum {
         return __verbosity;
       };
       /// @}
+      
+      /// history
+      /// @{
 
-      /// Approximation Scheme
+      ApproximationSchemeSTATE stateApproximationScheme() const {
+        return __current_state;
+      }
+        
+      /// @throw OperationNotAllowed if scheme not performed
+      Size nbrIterations() const {
+        if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
+          GUM_ERROR( OperationNotAllowed,
+                     "state of the approximation scheme is udefined" );
+        }
+        return __current_step;
+      };
+      
+      /// @throw OperationNotAllowed if scheme not performed or verbosity=false
+      const std::vector<double>& history() const {
+        if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
+          GUM_ERROR( OperationNotAllowed,
+                     "state of the approximation scheme is udefined" );
+        }
+        if ( verbosity()==false) {
+          GUM_ERROR( OperationNotAllowed,
+                     "No history when verbosity=false" );
+        }
+        
+        return __history;
+      }
+      /// @}
+
+     /// Approximation Scheme
       /** The approximation scheme is assumed to be used like this
       @code
       initApproximationScheme();
@@ -142,6 +173,7 @@ namespace gum {
         __current_state=APPROX_CONTINUE;
         __current_step=0;
         __current_epsilon=__current_rate=__min_rate_eps=-1.0;
+        __history.clear();
       };
 
       /// update the scheme w.r.t the new error
@@ -156,7 +188,9 @@ namespace gum {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is not correct : "+messageApproximationScheme() );
         }
-
+        
+        if (verbosity()) __history.push_back(error);
+        
         if ( __current_step>maxIter() )
           return ( __current_state=APPROX_LIMIT );
 
@@ -169,14 +203,10 @@ namespace gum {
             return ( __current_state=APPROX_RATE );
         }
 
-        return __current_state; // APPROX_CONTINUE
+        return stateApproximationScheme(); // APPROX_CONTINUE
       };
 
-      ApproximationSchemeSTATE stateApproximationScheme() {
-        return __current_state;
-      }
-
-      std::string messageApproximationScheme() {
+      std::string messageApproximationScheme() const {
         std::stringstream s;
         switch ( stateApproximationScheme() ) {
           case APPROX_CONTINUE: s<<"in progress";
@@ -193,13 +223,6 @@ namespace gum {
         return s.str();
       }
 
-      Size nbrIterations() {
-        if ( __current_state==APPROX_UNDEFINED ) {
-          GUM_ERROR( OperationNotAllowed,
-                     "state of the approximation scheme is udefined" );
-        }
-        return __current_step;
-      };
       ///  @}
     private:
       /// current state of approximationScheme
@@ -207,6 +230,9 @@ namespace gum {
       Size __current_step;
       ApproximationSchemeSTATE __current_state;
 
+      /// history for trace (if verbosity=true)
+      std::vector<double> __history;
+      
       /// Threshold for convergence
       double __eps;
 

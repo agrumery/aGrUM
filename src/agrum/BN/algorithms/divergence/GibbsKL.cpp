@@ -19,10 +19,10 @@
  ***************************************************************************/
 /**
  * @file
- * @brief KL divergence between BNs implementation
+ * @brief KL divergence between BNs with GIBBS implementation
  *
  * @author Pierre-Henri Wuillemin
  */
 
 #include <math.h>
-#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/GibbsKL.h>

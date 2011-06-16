@@ -504,16 +504,6 @@ namespace gum {
   }
 
 
-  template<typename T_DATA>
-  Instantiation BayesNet<T_DATA>::completeInstantiation() const {
-    Instantiation I;
-
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )
-      I << variable ( *node_iter );
-
-    return I;
-  }
-
   /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
   template<typename T_DATA>
   T_DATA BayesNet<T_DATA>::jointProbability ( const Instantiation& i ) const {

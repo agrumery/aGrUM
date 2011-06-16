@@ -47,10 +47,6 @@ namespace gum {
     class KLTestSuite: public CxxTest::TestSuite {
 
       public:
-        void testNoDefaultConstructor() {
-          TS_ASSERT_THROWS( gum::BruteForceKL<double> kl,gum::OperationNotAllowed );
-        }
-
         void testConstructor() {
           gum::BayesNet<float> net1;
           {
@@ -133,10 +129,11 @@ namespace gum {
           }
 
           {
-            gum::GibbsKL<float> bfkl( kl );
-            bfkl.setMaxIter( 40 );
-            TS_GUM_ASSERT_THROWS_NOTHING( vkl=bfkl.klPQ() );
+            gum::GibbsKL<float> gkl( kl );
+            gkl.setMaxIter( 40 );
+            TS_GUM_ASSERT_THROWS_NOTHING( vkl=gkl.klPQ() );
             TS_ASSERT_DIFFERS( vkl, ( float ) 0.0 );
+            TS_ASSERT_THROWS( gkl.history(),gum::OperationNotAllowed );
           }
         }
 
@@ -156,11 +153,11 @@ namespace gum {
           }
 
           gum::BruteForceKL<float> kl( netP,netQ );
-          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-5 );
-          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-5 );
+          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-7 );
+          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-7 );
           TS_ASSERT_EQUALS( kl.errorPQ(),0 );
           TS_ASSERT_EQUALS( kl.errorQP(),0 );
-          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-5 );
+          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-7 );
         }
 
         void testGibbsValues() {
@@ -179,13 +176,17 @@ namespace gum {
           }
 
           gum::GibbsKL<float> kl( netP,netQ );
-          kl.setVerbosity(true);
-          GUM_TRACE(kl.klPQ()<< " 0.241864114");
-          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-3 );
-          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-2 );
+          kl.setVerbosity( true );
+          // very rough approximation in order to not penalize TestSuite
+          kl.setEpsilon( 1e-4 );
+          kl.setMinEpsilonRate( 1e-4 );
+          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-1 );
+          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-1 );
           TS_ASSERT_EQUALS( kl.errorPQ(),0 );
           TS_ASSERT_EQUALS( kl.errorQP(),0 );
-          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-2 );
+          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-1 );
+          GUM_ASSERT( abs( kl.history().size() -kl.nbrIterations()/kl.periodeSize() )<2 );
+          //GUM_TRACE_VAR( kl.history() );
         }
     };
   } //tests
