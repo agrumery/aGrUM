@@ -28,6 +28,7 @@
 #ifndef GUM_APPROXIMATION_POLICY_H
 #define GUM_APPROXIMATION_POLICY_H
 //**********************************************************************
+#include <agrum/core/types.h>
 #include <agrum/core/exceptions.h>
 //**********************************************************************
 
@@ -163,7 +164,7 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 		
 		
 		/// Convert value to approximation representation
-		inline virtual int encode(const T_DATA& value ) const { 
+		inline Idx encode(const T_DATA& value ) const { 
 			
 			if( value == this->_lowLimit )
 				return 0;
@@ -177,11 +178,11 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 			if( value < this->_lowLimit )
 				GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
 			
-			return ( (int) ( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
+			return ( (Idx) ( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
 		};
 		
 		/// Convert approximation representation to value
-		inline virtual T_DATA decode( int representation ) const {
+		inline T_DATA decode( Idx representation ) const {
 			
 			if( representation == 0 )
 				return this->_lowLimit;
@@ -191,9 +192,6 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 				
 			if( representation > _nbInterval )
 				GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
-				
-			if( representation < 0 )
-				GUM_ERROR( OutOfLowerBound, "Interval Number asked is negative" );
 				
 			return ( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
 		};
@@ -213,9 +211,9 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 
 protected :
 		/// get the number of interval
-		inline void _getNbInterval() { _nbInterval =  ( (int) ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1; };
+		inline void _getNbInterval() { _nbInterval =  ( (Idx) ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1; };
 		
-		T_DATA _nbInterval;
+		Idx _nbInterval;
 };
 
 }
