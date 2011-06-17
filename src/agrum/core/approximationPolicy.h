@@ -28,6 +28,7 @@
 #ifndef GUM_APPROXIMATION_POLICY_H
 #define GUM_APPROXIMATION_POLICY_H
 //**********************************************************************
+#include <agrum/core/inline.h>
 #include <agrum/core/types.h>
 #include <agrum/core/exceptions.h>
 //**********************************************************************
@@ -67,24 +68,24 @@ class ApproximationPolicy{
 		
 		
 		/// Sets approximation factor
-		inline virtual void setEpsilon( const T_DATA& e ) { _epsilon = e; };
+		INLINE virtual void setEpsilon( const T_DATA& e ) { _epsilon = e; };
 		
 		/// Gets approximation factor
-		inline T_DATA epsilon() const { return _epsilon; };
+		INLINE T_DATA epsilon() const { return _epsilon; };
 				
 		
 		/// Sets lowest possible value
-		inline virtual void setLowLimit( const T_DATA& newLowLimit ) { _lowLimit = newLowLimit; };
+		INLINE virtual void setLowLimit( const T_DATA& newLowLimit ) { _lowLimit = newLowLimit; };
 		
 		/// Gets lowest possible value
-		inline T_DATA lowLimit( ) const { return _lowLimit; };
+		INLINE T_DATA lowLimit( ) const { return _lowLimit; };
 		
 		
 		/// Sets Highest possible value
-		inline virtual void setHighLimit( const T_DATA& newHighLimit ) { _highLimit = newHighLimit; };
+		INLINE virtual void setHighLimit( const T_DATA& newHighLimit ) { _highLimit = newHighLimit; };
 		
 		/// Gets Highest possible value
-		inline T_DATA highLimit( ) const { return _highLimit; };
+		INLINE T_DATA highLimit( ) const { return _highLimit; };
 		
 	/// @}
 		
@@ -127,7 +128,7 @@ class ExactPolicy : public virtual ApproximationPolicy<T_DATA> {
     /// @{
 		
 		/// Convert value to approximation representation
-		inline T_DATA fromExact(const T_DATA& value ) const { return value;};
+		INLINE T_DATA fromExact(const T_DATA& value ) const { return value;};
 		
 	/// @}
 };
@@ -160,17 +161,11 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
     /// @{
 		
 		/// Convert value to his approximation
-		inline T_DATA fromExact( const T_DATA& value ) const { return decode( encode( value ) ); };
+		INLINE T_DATA fromExact( const T_DATA& value ) const { return __decode( encode( value ) ); };
 		
 		
 		/// Convert value to approximation representation
-		inline Idx encode(const T_DATA& value ) const { 
-			
-			if( value == this->_lowLimit )
-				return 0;
-				
-			if( value == this->_highLimit )
-				return _nbInterval;
+		INLINE Idx encode(const T_DATA& value ) const { 
 				
 			if( value > this->_highLimit )
 				GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
@@ -178,40 +173,58 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 			if( value < this->_lowLimit )
 				GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
 			
-			return ( (Idx) ( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
+			return __encode( value );
 		};
 		
 		/// Convert approximation representation to value
-		inline T_DATA decode( Idx representation ) const {
+		INLINE T_DATA decode( Idx representation ) const {
+				
+			if( representation > _nbInterval )
+				GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
+				
+			return __decode( representation );
+		};
+		
+		
+		/// Sets approximation factor
+		INLINE virtual void setEpsilon( const T_DATA& e ) { ApproximationPolicy<T_DATA>::setEpsilon( e ); _getNbInterval(); };
+		
+		
+		/// Sets lowest possible value
+		INLINE virtual void setLowLimit( const T_DATA& newLowLimit ) { ApproximationPolicy<T_DATA>::setLowLimit( newLowLimit ); _getNbInterval(); };
+		
+		
+		/// Sets Highest possible value
+		INLINE virtual void setHighLimit( const T_DATA& newHighLimit ) { ApproximationPolicy<T_DATA>::setHighLimit( newHighLimit ); _getNbInterval(); };
+	/// @}
+
+protected :
+		/// Concretely computes the approximate representation
+		INLINE Idx __encode( const T_DATA& value ) const { 	
+			
+			if( value == this->_lowLimit )
+				return 0;
+				
+			if( value == this->_highLimit )
+				return _nbInterval;
+				
+			return ( (Idx) ( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1; 
+		};
+		
+		/// Concretely computes the approximate value from representation
+		INLINE T_DATA __decode( const T_DATA& representation ) const {
 			
 			if( representation == 0 )
 				return this->_lowLimit;
 				
 			if( representation == _nbInterval )
 				return this->_highLimit;
-				
-			if( representation > _nbInterval )
-				GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
-				
+			
 			return ( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
 		};
 		
-		
-		/// Sets approximation factor
-		inline virtual void setEpsilon( const T_DATA& e ) { ApproximationPolicy<T_DATA>::setEpsilon( e ); _getNbInterval(); };
-		
-		
-		/// Sets lowest possible value
-		inline virtual void setLowLimit( const T_DATA& newLowLimit ) { ApproximationPolicy<T_DATA>::setLowLimit( newLowLimit ); _getNbInterval(); };
-		
-		
-		/// Sets Highest possible value
-		inline virtual void setHighLimit( const T_DATA& newHighLimit ) { ApproximationPolicy<T_DATA>::setHighLimit( newHighLimit ); _getNbInterval(); };
-	/// @}
-
-protected :
 		/// get the number of interval
-		inline void _getNbInterval() { _nbInterval =  ( (Idx) ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1; };
+		INLINE void _getNbInterval() { _nbInterval =  ( (Idx) ( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1; };
 		
 		Idx _nbInterval;
 };
