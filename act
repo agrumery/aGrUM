@@ -59,7 +59,7 @@ def testManagement(cde):
     global current
     if cde=="all":
         writeTestList(allTests())
-        current['rule']='test'
+        #current['rule']='test'
     elif cde=='list':
         afficheTests()
         sys.exit(0)
@@ -293,9 +293,9 @@ shlv=shelve.open(".options.mak.py",writeback=True)
 if shlv.has_key('persistent'):
     persistent=shlv['persistent']
 
-shlv=shelve.open(".options.mak.py",writeback=True)
-if shlv.has_key('persistent'):
-    persistent=shlv['persistent']
+#shlv=shelve.open(".options.mak.py",writeback=True)
+#if shlv.has_key('persistent'):
+#    persistent=shlv['persistent']
 
 for key in default.iterkeys():
     if persistent.has_key(key):
