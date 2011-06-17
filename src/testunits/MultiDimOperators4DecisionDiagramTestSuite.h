@@ -31,11 +31,11 @@
 #include "testsuite_utils.h"
 // =====================================================================
 #include <agrum/core/exceptions.h>
+#include <agrum/core/approximationPolicy.h>
 // =====================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/approximationPolicy.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
 // =====================================================================
@@ -99,11 +99,11 @@ namespace gum {
 						// ***********************************************************************	
 						// Creation of a list containing terminal node possible value
 						List<float> tnList;
-						float interval = f->getHighLimit() - f->getLowLimit();
+						float interval = f->highLimit() - f->lowLimit();
 						uint i = 0; 
 						while( i < 25 ){
 							float newVal = ( rand()% ( (int) interval ) ) - interval/2;
-							if( newVal <= f->getHighLimit() && newVal >= f->getLowLimit() ){
+							if( newVal <= f->highLimit() && newVal >= f->lowLimit() ){
 								tnList.insert( newVal );
 								i++; 
 							}
@@ -494,7 +494,7 @@ namespace gum {
 					// =====================================================================================
 					
 					MultiDimDecisionDiagram<float> a1, a2;
-					MultiDimDecisionDiagramBase<float>* a3;
+					MultiDimDecisionDiagramBase<float>* a3 = NULL;
 					
 					//Test addition
 					TS_GUM_ASSERT_THROWS_NOTHING( a3 = (MultiDimDecisionDiagramBase<float>*) ( a1 + a2 ) );	

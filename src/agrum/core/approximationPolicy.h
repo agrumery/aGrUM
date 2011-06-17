@@ -61,31 +61,29 @@ class ApproximationPolicy{
     // ===========================================================================
     /// @{
 		
-		/// Convert value to approximation representation
+		/// Convert value to his approximation
 		virtual T_DATA fromExact(const T_DATA& value ) const = 0;
 		
-		/// Convert approximation representation to value
-		virtual T_DATA toExact(const T_DATA& value ) const = 0;
 		
 		/// Sets approximation factor
 		inline virtual void setEpsilon( const T_DATA& e ) { _epsilon = e; };
 		
 		/// Gets approximation factor
-		inline T_DATA getEpsilon() const { return _epsilon; };
+		inline T_DATA epsilon() const { return _epsilon; };
 				
 		
 		/// Sets lowest possible value
 		inline virtual void setLowLimit( const T_DATA& newLowLimit ) { _lowLimit = newLowLimit; };
 		
 		/// Gets lowest possible value
-		inline T_DATA getLowLimit( ) const { return _lowLimit; };
+		inline T_DATA lowLimit( ) const { return _lowLimit; };
 		
 		
 		/// Sets Highest possible value
 		inline virtual void setHighLimit( const T_DATA& newHighLimit ) { _highLimit = newHighLimit; };
 		
 		/// Gets Highest possible value
-		inline T_DATA getHighLimit( ) const { return _highLimit; };
+		inline T_DATA highLimit( ) const { return _highLimit; };
 		
 	/// @}
 		
@@ -130,9 +128,6 @@ class ExactPolicy : public virtual ApproximationPolicy<T_DATA> {
 		/// Convert value to approximation representation
 		inline T_DATA fromExact(const T_DATA& value ) const { return value;};
 		
-		/// Convert approximation representation to value
-		inline T_DATA toExact(const T_DATA& value ) const {return value;};
-		
 	/// @}
 };
 
@@ -163,8 +158,12 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
     // ===========================================================================
     /// @{
 		
+		/// Convert value to his approximation
+		inline T_DATA fromExact( const T_DATA& value ) const { return decode( encode( value ) ); };
+		
+		
 		/// Convert value to approximation representation
-		inline T_DATA fromExact(const T_DATA& value ) const { 
+		inline virtual int encode(const T_DATA& value ) const { 
 			
 			if( value == this->_lowLimit )
 				return 0;
@@ -182,21 +181,21 @@ class LinearApproximationPolicy : public virtual ApproximationPolicy<T_DATA> {
 		};
 		
 		/// Convert approximation representation to value
-		inline T_DATA toExact(const T_DATA& value ) const {
+		inline virtual T_DATA decode( int representation ) const {
 			
-			if( value == 0 )
+			if( representation == 0 )
 				return this->_lowLimit;
 				
-			if( value == _nbInterval )
+			if( representation == _nbInterval )
 				return this->_highLimit;
 				
-			if( value > _nbInterval )
+			if( representation > _nbInterval )
 				GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
 				
-			if( value < 0 )
+			if( representation < 0 )
 				GUM_ERROR( OutOfLowerBound, "Interval Number asked is negative" );
 				
-			return ( ( value * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
+			return ( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
 		};
 		
 		

@@ -66,8 +66,8 @@ using namespace gum;
 	MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecisionDiagram(bool fillWithDefaultArc, T_DATA defaultValue ) {
 		
 		if( fillWithDefaultArc ){
-			if( defaultValue < this->getLowLimit() )
-				defaultValue = ( this->getLowLimit() + this->getHighLimit() )/2;
+			if( defaultValue < this->lowLimit() )
+				defaultValue = ( this->lowLimit() + this->highLimit() )/2;
 			NodeId zeroId = this->addTerminalNode( defaultValue );
 			for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
 				if ( !this->_valueMap.existsFirst(*iter) && !this->_defaultArcMap.exists(*iter) && this->_arcMap[*iter]->size() < this->_varMap[*iter]->domainSize() ){
@@ -80,15 +80,16 @@ using namespace gum;
 		
 		ret->beginInstantiation();
 		
-		ret->setEpsilon( this->getEpsilon() );
-		ret->setLowLimit( this->getLowLimit() );
-		ret->setHighLimit( this->getHighLimit() );
+		ret->setEpsilon( this->epsilon() );
+		ret->setLowLimit( this->lowLimit() );
+		ret->setHighLimit( this->highLimit() );
 		
 		ret->setVariableSequence( this->_varsSeq );
 		
 		ret->setDiagramNodes( this->_model );
 		
 		ret->setVariableMap( this->_varMap );
+		ret->setVar2NodeMap( this->_var2NodeIdMap );
 		
 		ret->setValueMap( this->_valueMap );
 		ret->setDiagramArcs( this->_arcMap, this->_defaultArcMap );

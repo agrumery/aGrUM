@@ -28,7 +28,8 @@
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 // ============================================================================
-#include <agrum/multidim/approximationPolicy.h>
+#include <agrum/core/approximationPolicy.h>
+// ============================================================================
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 // ============================================================================
@@ -75,9 +76,6 @@ class MultiDimDecisionDiagramFactory : public MultiDimDecisionDiagramFactoryBase
 	 
 	/// Convert value to approximation representation
 	inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
-	 
-	/// Convert approximation representation to value
-	inline T_DATA toExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::toExact( value ); };
 	
 };
 
