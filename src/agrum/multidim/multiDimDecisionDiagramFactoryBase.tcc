@@ -214,10 +214,11 @@ using namespace gum;
     template< typename T_DATA >
 	NodeId
 	MultiDimDecisionDiagramFactoryBase< T_DATA >::addTerminalNode( const T_DATA& value ){
-		if( _valueMap.existsSecond( this->fromExact( value ) ) )
-			return _valueMap.first( this->fromExact( value ) );
+		T_DATA approximate = this->fromExact( value );
+		if( _valueMap.existsSecond( approximate ) )
+			return _valueMap.first( approximate );
 		NodeId node = _model.insertNode();
-		_valueMap.insert( node, this->fromExact( value ) );
+		_valueMap.insert( node, approximate );
 		return node;
 	}
 	
@@ -397,7 +398,7 @@ using namespace gum;
 		
 		cout << endl << "Liste des noeuds terminaux et de leur valeur : " << endl;
 		for( BijectionIterator<NodeId,T_DATA> nodeIter = _valueMap.begin(); nodeIter != _valueMap.end(); ++nodeIter )
-			cout << nodeIter.first() << " : " << this->toExact( this->_valueMap.second( nodeIter.second() ) ) << " ; ";
+			cout << nodeIter.first() << " : " << this->_valueMap.second( nodeIter.second() ) << " ; ";
 		cout << endl << endl;
 		
 		cout << endl << "Liste des associations valeur - noeuds : " << endl;

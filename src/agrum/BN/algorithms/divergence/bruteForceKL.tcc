@@ -26,34 +26,17 @@
 // ============================================================================
 #include <math.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
-  // we are certain that Iq and Ip consist of variables with the same names and with the same labels.
-  // But the order may be different ... :(
   template<typename T_DATA>
-  void
-  BruteForceKL<T_DATA>::__synchroInstantiations (Instantiation& Iq,const Instantiation& Ip) const {
-    for (Idx i=0;i<Ip.nbrDim();i++) {
-      const std::string& v_name=Ip.variable (i).name();
-      const std::string& v_label=Ip.variable (i).label (Ip.val (i));
-      const DiscreteVariable& vq=_q.variableFromName (v_name);
-      Iq.chgVal (vq,vq[v_label]);
-    }
-  }
-
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL() : DefaultKL<T_DATA>() {
+  BruteForceKL<T_DATA>::BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q) :KL<T_DATA> (P,Q) {
     GUM_CONSTRUCTOR (BruteForceKL);
   }
 
   template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q) :DefaultKL<T_DATA> (P,Q) {
-    GUM_CONSTRUCTOR (BruteForceKL);
-  }
-
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL (const DefaultKL< T_DATA >& kl) :DefaultKL<T_DATA> (kl) {
+  BruteForceKL<T_DATA>::BruteForceKL (const KL< T_DATA >& kl) :KL<T_DATA> (kl) {
     GUM_CONSTRUCTOR (BruteForceKL);
   }
 
@@ -67,11 +50,11 @@ namespace gum {
     _klPQ=_klQP=_hellinger=0.0;
     _errorPQ=_errorQP=0;
 
-    gum::Instantiation Ip=_p.completeInstantiation();
-    gum::Instantiation Iq=_q.completeInstantiation();
+    gum::Instantiation Ip;_p.completeInstantiation(Ip);
+    gum::Instantiation Iq;_q.completeInstantiation(Iq);
 
     for (Ip.setFirst();! Ip.end();++Ip) {
-      __synchroInstantiations (Iq,Ip);
+      _q.synchroInstantiations (Iq,Ip);
       T_DATA pp=_p.jointProbability (Ip);
       T_DATA pq=_q.jointProbability (Iq);
 
@@ -79,7 +62,7 @@ namespace gum {
 
       if (pp!=0.0) {
         if (pq!=0.0) {
-          _klPQ+=pp*log (pq/pp);
+          _klPQ-=pp*log2(pq/pp);
         } else {
           _errorPQ++;
         }
@@ -87,25 +70,13 @@ namespace gum {
 
       if (pq!=0.0) {
         if (pp!=0.0) {
-          _klQP+=pq*log (pp/pq);
+          _klQP-=pq*log2(pp/pq);
         } else {
           _errorQP++;
         }
       }
     }
-
-    _klPQ=-_klPQ/log (2);
-
-    _klQP=-_klQP/log (2);
-
     _hellinger=sqrt (_hellinger);
   }
 
-
-  template<typename T_DATA> INLINE
-  double
-  BruteForceKL<T_DATA>::hellinger() {
-    this->_process();
-    return _hellinger;
-  }
 } // namespace gum

@@ -55,10 +55,13 @@
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/GibbsInference.h>
 
-#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <agrum/BN/algorithms/approximationSettings.h>
+#include <agrum/BN/algorithms/GibbsSettings.h>
+#include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
@@ -74,7 +77,7 @@
 %feature("director") gum::LabelizedVariable;
 %feature("director") gum::DiscretizedVariable;
 %feature("director") gum::LazyPropagation;
-%feature("director") gum::Gibbs;
+%feature("director") gum::GibbsInference;
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
@@ -139,10 +142,13 @@
 
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
-%include <agrum/BN/inference/Gibbs.h>
+%include <agrum/BN/inference/GibbsInference.h>
 
-%import <agrum/BN/algorithms/divergence/defaultKL.h>
+%import <agrum/BN/algorithms/divergence/KL.h>
 %include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+%include <agrum/BN/algorithms/approximationSettings.h>
+%include <agrum/BN/algorithms/GibbsSettings.h>
+%include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
 %import <agrum/graphs/diGraphListener.h>
@@ -233,8 +239,9 @@
 %template(BayesNet_float) gum::BayesNet<float>;
 %template(BayesNetInference_float) gum::BayesNetInference<float>;
 %template(LazyPropagation_float) gum::LazyPropagation<float>;
-%template(Gibbs_float) gum::Gibbs<float>;
+%template(GibbsInference_float) gum::GibbsInference<float>;
 %template(BruteForceKL_float) gum::BruteForceKL<float>;
+%template(GibbsKL_float) gum::GibbsKL<float>;
 
 %template(Vector_double) std::vector<double>;
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
@@ -249,5 +256,6 @@
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
 %template(LazyPropagation_double) gum::LazyPropagation<double>;
-%template(Gibbs_double) gum::Gibbs<double>;
+%template(GibbsInference_double) gum::GibbsInference<double>;
 %template(BruteForceKL_double) gum::BruteForceKL<double>;
+%template(GibbsKL_double) gum::GibbsKL<double>;

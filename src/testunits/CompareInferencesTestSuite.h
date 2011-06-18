@@ -25,7 +25,7 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -185,7 +185,7 @@ public:
 //       gum::VariableElimination<double> inf_ValElim( *bn );
 //       inf_ValElim.makeInference();
 //
-//       gum::Gibbs<double> inf_gibbs( *bn );
+//       gum::GibbsInference<double> inf_gibbs( *bn );
 //       inf_gibbs.setVerbosity( false );
 //       inf_gibbs.setEpsilon( 1e-5 );
 //       inf_gibbs.setMinEpsilonRate( 1e-5 );
@@ -290,7 +290,7 @@ public:
         }
 
         {
-            gum::Gibbs<float> inf( *bn );
+            gum::GibbsInference<float> inf( *bn );
             inf.setVerbosity( false );
             inf.makeInference();
             {

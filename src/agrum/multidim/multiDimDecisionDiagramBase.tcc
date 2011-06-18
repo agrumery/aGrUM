@@ -57,6 +57,9 @@ namespace gum {
 		  if ( !__valueMap.existsFirst(*iter) && __arcMap[*iter] != NULL )
 				delete __arcMap[*iter];
 		}
+		
+		for( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.begin(); iter != __var2NodeIdMap.end(); ++iter )
+			delete *iter;
 	}
 	
 
@@ -95,7 +98,7 @@ namespace gum {
 					i = __defaultArcMap[i];
 			}
 				
-			ret = this->toExact( this->__valueMap.second( i ) );;
+			ret = this->__valueMap.second( i );
 			return ret;
 		}
 
@@ -242,7 +245,7 @@ namespace gum {
 
 			for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
 				if ( isTerminalNode( *nodeIter ) )
-					terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << this->toExact( this->__valueMap.second( *nodeIter ) ) << "\"]"<< ";" << std::endl;
+					terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << this->__valueMap.second( *nodeIter ) << "\"]"<< ";" << std::endl;
 				else {
 					nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << __variableMap[ *nodeIter ]->name() << "\"]"<< ";" << std::endl;
 
@@ -314,6 +317,19 @@ namespace gum {
 		}
 		
 		// =============================================================================
+		// Returns associated nodes of the variable pointed by the given node
+		// @throw InvalidNode if Node is terminal
+		// =============================================================================
+		template< typename T_DATA > INLINE
+		const List< NodeId >*
+		MultiDimDecisionDiagramBase< T_DATA >::getNodesFromVariable( const DiscreteVariable* v ) const{
+			
+			if( ! __var2NodeIdMap.exists( v ) )
+				return NULL;
+			return __var2NodeIdMap[ v ];
+		}
+		
+		// =============================================================================
 		// Returns value associated to given node
 		// @throw InvalidNode if node isn't terminal
 		// =============================================================================
@@ -323,7 +339,7 @@ namespace gum {
 			if( !isTerminalNode( n ) )
 				GUM_ERROR( InvalidNode, " Not a terminal node " );
 			
-			return this->toExact( this->__valueMap.second( n ) );
+			return this->__valueMap.second( n );
 		}
 		
 		// =============================================================================
@@ -371,6 +387,15 @@ namespace gum {
 		bool 
 		MultiDimDecisionDiagramBase< T_DATA >::isTerminalNode ( NodeId id ) const{
 			return ( __valueMap.existsFirst(id) );
+		}
+
+		// =============================================================================
+		// Returns true if node is a chance one
+		// =============================================================================
+		template< typename T_DATA > INLINE
+		bool 
+		MultiDimDecisionDiagramBase< T_DATA >::isInDiagramVariable ( const DiscreteVariable* v ) const {
+			return( __var2NodeIdMap.exists( v ) );
 		}
 		 
 	
@@ -453,6 +478,26 @@ namespace gum {
 				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
 				
 			__variableMap = varMap;
+		}
+
+
+		// ==============================================================================
+		// Sets the map linking variable to all nodes bond to it
+		// @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+		// ==============================================================================
+		template< typename T_DATA >
+		void
+		MultiDimDecisionDiagramBase< T_DATA >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ){
+			
+			if( __isInstanciated )
+				GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+				
+			if( !__instanciationModeOn )
+				GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+					
+			for( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.begin(); varIter != var2NodeMap.end(); ++varIter )
+				__var2NodeIdMap.insert(varIter.key(), new List< NodeId >(**varIter) );
+		
 		}
 
 		// ==============================================================================

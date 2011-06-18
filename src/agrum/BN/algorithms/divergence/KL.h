@@ -35,46 +35,41 @@ extern std::vector< float > v;
 namespace gum {
 
   /**
-  * DefaultKL is the base class for KL computation betweens 2 BNs.
+  * KL is the base class for KL computation betweens 2 BNs.
   *
-  * DefaultKL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
+  * KL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
   * Since this computation may be very difficult, KL.difficulty() give an estimation ( KL_HEAVY,KL_DIFFICULT,KL_CORRECT ) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
   *
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
   */
 
-  namespace KL {
+  namespace complexity {
     enum difficulty {HEAVY,DIFFICULT,CORRECT};
   }
 
-  template<typename T_DATA> class DefaultKL {
+  template<typename T_DATA> class KL {
       static const int GAP_heavy_difficult = 12;
       static const int GAP_difficult_correct = 7;
-    public:
 
-      /** no default constructor
-       * @throw gum::OperationNotAllowed since this default constructor is not authorized
-       */
-      DefaultKL ();
+    public:
 
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      DefaultKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q);
+      KL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
 
       /** copy constructor
        */
-      DefaultKL (const DefaultKL< T_DATA >& kl);
+      KL ( const KL< T_DATA >& kl );
 
       /** destructor */
-      ~DefaultKL ();
+      ~KL();
 
       /**
        * return KL::HEAVY,KL::DIFFICULT,KL::CORRECT depending on the BNs __p and __q
        */
-      KL::difficulty difficulty() const;
-
+      complexity::difficulty difficulty() const;
 
       /// @name Accessors to results. The first call do the computations. The others do not.
       /// @{
@@ -82,37 +77,48 @@ namespace gum {
       /// @return divergence KL(P||Q)
       double klPQ();
 
+      /// @return true if errors while processing divergence KL(P||Q)
+      bool errorPQ();
+
       /// @return divergence KL(Q||P)
       double klQP();
 
-      /// @return true if erros while processing divergence KL(P||Q)
-      bool errorPQ();
-
-      /// @return true if erros while processing divergence KL(Q||P)
+      /// @return true if errors while processing divergence KL(Q||P)
       bool errorQP();
+
+      /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
+      double hellinger();
+
+      /// @return p
+      const BayesNet<T_DATA>& p(void) const;
+      
+      /// @return q
+      const BayesNet<T_DATA>& q(void) const;
       /// @}
 
     protected:
-      virtual void _computeKL (void);
+      // should be pure virtual but using KL directly is a way to delay the choice between different computation scheme (@see BruteForceKL)
+      virtual void _computeKL ( void );
       void _process();
 
-      const BayesNet<T_DATA> _p;
-      const BayesNet<T_DATA> _q;
+      const BayesNet<T_DATA>& _p;
+      const BayesNet<T_DATA>& _q;
 
       double _klPQ;
       double _klQP;
+      double _hellinger;
 
       bool _errorPQ;
       bool _errorQP;
 
     private:
       bool __checkCompatibility() const;
-      KL::difficulty __difficulty;
+      complexity::difficulty __difficulty;
       bool __done;
-
-  };
+    };
 } //namespace gum
 
-#include <agrum/BN/algorithms/divergence/defaultKL.tcc>
+#include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
+// kate: indent-mode cstyle; space-indent on; indent-width 2; 

@@ -36,14 +36,14 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   AbstractBayesNet<T_DATA>::AbstractBayesNet() :
-      __propertiesMap ( 0 ) {
-    GUM_CONSTRUCTOR ( AbstractBayesNet );
+      __propertiesMap( 0 ) {
+    GUM_CONSTRUCTOR( AbstractBayesNet );
   }
 
   template <typename T_DATA> INLINE
-  AbstractBayesNet<T_DATA>::AbstractBayesNet ( const AbstractBayesNet<T_DATA>& from ) :
-      __propertiesMap ( 0 ) {
-    GUM_CONS_CPY ( AbstractBayesNet );
+  AbstractBayesNet<T_DATA>::AbstractBayesNet( const AbstractBayesNet<T_DATA>& from ) :
+      __propertiesMap( 0 ) {
+    GUM_CONS_CPY( AbstractBayesNet );
 
     if ( from.__propertiesMap != 0 ) {
       __propertiesMap = new HashTable<std::string, std::string> ( * ( from.__propertiesMap ) );
@@ -52,7 +52,7 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   AbstractBayesNet<T_DATA>::~AbstractBayesNet() {
-    GUM_DESTRUCTOR ( AbstractBayesNet );
+    GUM_DESTRUCTOR( AbstractBayesNet );
     // Removing previous properties
 
     if ( __propertiesMap != 0 ) {
@@ -80,22 +80,22 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   const std::string&
-  AbstractBayesNet<T_DATA>::property ( const std::string& name ) const {
+  AbstractBayesNet<T_DATA>::property( const std::string& name ) const {
     try {
-      return ( __properties() ) [name];
+      return ( __properties() )[name];
     } catch ( NotFound& ) {
       std::string msg = "The following property does not exists: ";
-      GUM_ERROR ( NotFound, msg + name );
+      GUM_ERROR( NotFound, msg + name );
     }
   }
 
   template<typename T_DATA> INLINE
   void
-  AbstractBayesNet<T_DATA>::setProperty ( const std::string& name, const std::string& value ) {
+  AbstractBayesNet<T_DATA>::setProperty( const std::string& name, const std::string& value ) {
     try {
-      __properties() [name] = value;
+      __properties()[name] = value;
     } catch ( NotFound& ) {
-      __properties().insert ( name, value );
+      __properties().insert( name, value );
     }
   }
 
@@ -125,24 +125,24 @@ namespace gum {
 
   template <typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::_moralGraph ( UndiGraph& graph ) const {
-    graph.populateNodes ( dag() );
+  AbstractBayesNet<T_DATA>::_moralGraph( UndiGraph& graph ) const {
+    graph.populateNodes( dag() );
     // transform the arcs into edges
 
     for ( DAG::ArcIterator iter = dag().beginArcs(); iter != dag().endArcs(); ++iter ) {
-      graph.insertEdge ( iter->first(), iter->second() );
+      graph.insertEdge( iter->first(), iter->second() );
     }
 
     // mary the parents
     for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
-      const NodeSet& parents = dag().parents ( *iter );
+      const NodeSet& parents = dag().parents( *iter );
 
       for ( NodeSetIterator it1 = parents.begin(); it1 != parents.end(); ++it1 ) {
         NodeSetIterator it2 = it1;
 
         for ( ++it2; it2 != parents.end(); ++it2 ) {
           // will automatically check if this edge already exists
-          graph.insertEdge ( *it1, *it2 );
+          graph.insertEdge( *it1, *it2 );
         }
       }
     }
@@ -150,24 +150,30 @@ namespace gum {
 
   template <typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::_topologicalOrder(Sequence<NodeId>& topo) const {
+  AbstractBayesNet<T_DATA>::_topologicalOrder( Sequence<NodeId>& topo ) const {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
-    for (DAG::NodeIterator n = dag.beginNodes(); n != dag.endNodes(); ++n)
-      if (dag.parents(*n).empty())
-        roots.push_back(*n);
-    while (roots.size()) {
-      topo.insert(roots.back());
+
+    for ( DAG::NodeIterator n = dag.beginNodes(); n != dag.endNodes(); ++n )
+      if ( dag.parents( *n ).empty() )
+        roots.push_back( *n );
+
+    while ( roots.size() ) {
+      topo.insert( roots.back() );
       roots.pop_back();
-      while (dag.children(topo.back()).size()) {
-        NodeId child = *(dag.children(topo.back()).begin());
-        dag.eraseArc(Arc(topo.back(), child));
-        if (dag.parents(child).empty())
-          roots.push_back(child);
+
+      while ( dag.children( topo.back() ).size() ) {
+        NodeId child = *( dag.children( topo.back() ).begin() );
+        dag.eraseArc( Arc( topo.back(), child ) );
+
+        if ( dag.parents( child ).empty() )
+          roots.push_back( child );
       }
     }
-    GUM_ASSERT(dag.sizeArcs() == 0);
-    GUM_ASSERT(topo.size() == dag.size());
+
+    GUM_ASSERT( dag.sizeArcs() == 0 );
+
+    GUM_ASSERT( topo.size() == dag.size() );
   }
 
   template<typename T_DATA> INLINE
@@ -180,41 +186,43 @@ namespace gum {
     return *__propertiesMap;
   }
 
- template<typename T_DATA> INLINE
+  template<typename T_DATA> INLINE
   double
-  AbstractBayesNet<T_DATA>::log10DomainSize ( void ) const {
+  AbstractBayesNet<T_DATA>::log10DomainSize( void ) const {
     double dSize = 0.0;
+
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
-      dSize += log10(variable ( *it ).domainSize());
+      dSize += log10( variable( *it ).domainSize() );
     }
+
     return dSize;
   }
 
   template<typename T_DATA> INLINE
   std::string
-  AbstractBayesNet<T_DATA>::toString ( void ) const {
+  AbstractBayesNet<T_DATA>::toString( void ) const {
     Size param = 0;
 
     double dSize=log10DomainSize();
 
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
-      param += ( ( const MultiDimImplementation<T_DATA> & ) cpt ( *it ).getMasterRef() ).realSize();
+      param += (( const MultiDimImplementation<T_DATA> & ) cpt( *it ).getMasterRef() ).realSize();
     }
 
-    double compressionRatio = log10(1.0*param)-dSize;
+    double compressionRatio = log10( 1.0*param )-dSize;
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
 
-    if (dSize>6)
+    if ( dSize>6 )
       s<<"domainSize: 10^" << dSize;
     else
-      s<<"domainSize: " << round(pow(10.0,dSize));
+      s<<"domainSize: " << round( pow( 10.0,dSize ) );
 
     s<< ", parameters: " << param << ", compression ratio: ";
 
-    if (compressionRatio>-3)
-      s<<trunc(100.0-pow(10.0,compressionRatio+2.0));
+    if ( compressionRatio>-3 )
+      s<<trunc( 100.0-pow( 10.0,compressionRatio+2.0 ) );
     else
       s<<"100-10^" << compressionRatio+2.0;
 
@@ -231,25 +239,25 @@ namespace gum {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
-        bijection.insert ( & ( variable ( *node ) ), & ( from.variable ( *node ) ) );
-        const NodeSet& parents = dag().parents ( *node );
+        bijection.insert( & ( variable( *node ) ), & ( from.variable( *node ) ) );
+        const NodeSet& parents = dag().parents( *node );
 
         for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
-          bijection.insert ( & ( variable ( *arc ) ), & ( from.variable ( *arc ) ) );
+          bijection.insert( & ( variable( *arc ) ), & ( from.variable( *arc ) ) );
         }
 
-        Instantiation i ( cpt ( *node ) );
+        Instantiation i( cpt( *node ) );
 
-        Instantiation j ( from.cpt ( *node ) );
+        Instantiation j( from.cpt( *node ) );
 
         for ( i.setFirst(); not i.end(); i.inc() ) {
           typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>::iterator BiIter;
 
           for ( BiIter iter = bijection.begin(); iter != bijection.end(); ++iter ) {
-            j.chgVal ( * ( iter.second() ), i.val ( * ( iter.first() ) ) );
+            j.chgVal( * ( iter.second() ), i.val( * ( iter.first() ) ) );
           }
 
-          if ( std::pow ( cpt ( *node ).get ( i ) - from.cpt ( *node ).get ( j ), ( T_DATA ) 2 ) > ( T_DATA ) 1e-6 ) {
+          if ( std::pow( cpt( *node ).get( i ) - from.cpt( *node ).get( j ), ( T_DATA ) 2 ) > ( T_DATA ) 1e-6 ) {
             return false;
           }
         }
@@ -266,6 +274,29 @@ namespace gum {
   AbstractBayesNet<T_DATA>::operator!= ( const AbstractBayesNet<T_DATA>& from ) const {
     return not this->operator== ( from );
   }
+
+  // we are certain that Iq and Ip consist of variables with the same names and with the same labels.
+  // But the order may be different ... :(
+  template<typename T_DATA>
+  void
+  AbstractBayesNet<T_DATA>::synchroInstantiations( Instantiation& in,const Instantiation& external,bool sameLabelsOrder ) const {
+    for ( Idx i=0;i<external.nbrDim();i++ ) {
+      const std::string& v_name=external.variable( i ).name();
+      const std::string& v_label=external.variable( i ).label( external.val( i ) );
+      const DiscreteVariable& vq=variableFromName( v_name );
+      in.chgVal( vq,vq[v_label] );
+    }
+  }
+  
+  template<typename T_DATA>
+  void
+  AbstractBayesNet<T_DATA>::completeInstantiation(Instantiation& I) const {
+    I.clear();
+
+    for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )
+      I << variable ( *node_iter );
+  }
+
 
 } /* namespace gum */
 

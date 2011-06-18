@@ -24,6 +24,8 @@
  * @author Lionel Torti and Pierre-Henri Wuillemin
  */
 // ============================================================================
+#include <limits>
+
 #include <agrum/BN/abstractBayesNet.h>
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
@@ -502,24 +504,33 @@ namespace gum {
   }
 
 
-  template<typename T_DATA>
-  Instantiation BayesNet<T_DATA>::completeInstantiation() const {
-    Instantiation I;
-
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )
-      I << variable ( *node_iter );
-
-    return I;
-  }
-
   /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
-  /// @throw
   template<typename T_DATA>
   T_DATA BayesNet<T_DATA>::jointProbability ( const Instantiation& i ) const {
     T_DATA value = ( T_DATA ) 1.0;
 
+    T_DATA tmp;
     for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
-      value *= cpt ( *node_iter ) [i];
+      if ((tmp=cpt ( *node_iter ) [i])==(T_DATA)0) {
+        return (T_DATA)0;
+      }
+      value *= tmp;
+    }
+
+    return value;
+  }
+  
+  /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
+  template<typename T_DATA>
+  T_DATA BayesNet<T_DATA>::logJointProbability ( const Instantiation& i ) const {
+    T_DATA value = ( T_DATA ) 0.0;
+
+    T_DATA tmp;
+    for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+      if ((tmp=cpt ( *node_iter ) [i])==(T_DATA)0) {
+        return (T_DATA)(- numeric_limits<double>::infinity( ));
+      }
+      value += log2(cpt ( *node_iter ) [i]);
     }
 
     return value;

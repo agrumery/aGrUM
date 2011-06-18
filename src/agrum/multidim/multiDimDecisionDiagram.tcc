@@ -70,9 +70,9 @@ namespace gum {
 	MultiDimContainer<T_DATA>*
 	MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::newFactory() const{
 		MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >* ret = new MultiDimDecisionDiagram<T_DATA, IApproximationPolicy>();
-		ret->setEpsilon( this->getEpsilon() );
-		ret->setLowLimit( this->getLowLimit() );
-		ret->setHighLimit( this->getHighLimit() );
+		ret->setEpsilon( this->epsilon() );
+		ret->setLowLimit( this->lowLimit() );
+		ret->setHighLimit( this->highLimit() );
 		
 		return ret;
 	}
@@ -84,9 +84,9 @@ namespace gum {
 	MultiDimDecisionDiagramFactoryBase<T_DATA>* 
 	MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::getFactory() const{
 		MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<T_DATA, IApproximationPolicy>();
-		ret->setEpsilon( this->getEpsilon() );
-		ret->setLowLimit( this->getLowLimit() );
-		ret->setHighLimit( this->getHighLimit() );
+		ret->setEpsilon( this->epsilon() );
+		ret->setLowLimit( this->lowLimit() );
+		ret->setHighLimit( this->highLimit() );
 		
 		return ret;
 	}
@@ -97,11 +97,11 @@ namespace gum {
 	// ==============================================================================
 	template<typename T_DATA,template <class> class IApproximationPolicy>
 	MultiDimDecisionDiagramFactoryBase<T_DATA>*
-	MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::getFactory( T_DATA epsilon, T_DATA lowLimit, T_DATA highLimit) const{
+	MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::getFactory( T_DATA gepsilon, T_DATA glowLimit, T_DATA ghighLimit) const{
 		MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<T_DATA, IApproximationPolicy>();
-		ret->setEpsilon( epsilon );
-		ret->setLowLimit( lowLimit );
-		ret->setHighLimit( highLimit );
+		ret->setEpsilon( gepsilon );
+		ret->setLowLimit( glowLimit );
+		ret->setHighLimit( ghighLimit );
 		
 		return ret;
 	}

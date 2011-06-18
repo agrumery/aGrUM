@@ -27,7 +27,7 @@
 #ifndef GUM_BRUTE_FORCE_KL_H
 #define GUM_BRUTE_FORCE_KL_H
 
-#include <agrum/BN/algorithms/divergence/defaultKL.h>
+#include <agrum/BN/algorithms/divergence/KL.h>
 
 namespace gum {
 
@@ -36,31 +36,26 @@ namespace gum {
   *
   * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT ) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
-  *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
-  * 
   * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
+  *
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?  * 
   * 
-  * @warning This BruteForceKL should be use only if difficulty()==KL::CORRECT or at most KL::DIFFICULT ...
+  * @warning This BruteForceKL should be use only if difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
   * snippets :
   * @code
-  * gum::DefaultKL dkl(net1,net2);
-  * if (dkl.difficulty()!=KL::HEAVY) {
-  *  gum::BruteForceKL kl(dkl);
+  * gum::KL base_kl(net1,net2);
+  * if (base_kl.difficulty()!=KL::HEAVY) {
+  *  gum::BruteForceKL kl(base_kl);
   *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
   * } else {
-  *  // other KL algorithm (IS for instance)
+  *  gum::GibbsKL kl(base_kl);
+  *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
   * }
   * @endcode
   */
 
-  template<typename T_DATA> class BruteForceKL:public DefaultKL<T_DATA> {
+  template<typename T_DATA> class BruteForceKL:public KL<T_DATA> {
     public:
-      /** no default constructor
-       * @throw gum::OperationNotAllowed since this default constructor is not authorized
-       */
-      BruteForceKL ();
-
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
@@ -68,31 +63,24 @@ namespace gum {
 
       /** copy constructor
        */
-      BruteForceKL (const DefaultKL<T_DATA>& kl);
+      BruteForceKL (const KL<T_DATA>& kl);
 
 
       /** destructor */
       ~BruteForceKL ();
-      
-      double hellinger();
 
     protected:
       void _computeKL (void);
       
-      double _hellinger;
+      using KL<T_DATA>::_p;
+      using KL<T_DATA>::_q;
+      using KL<T_DATA>::_hellinger;
 
-      using DefaultKL<T_DATA>::_p;
-      using DefaultKL<T_DATA>::_q;
+      using KL<T_DATA>::_klPQ;
+      using KL<T_DATA>::_klQP;
 
-      using DefaultKL<T_DATA>::_klPQ;
-      using DefaultKL<T_DATA>::_klQP;
-
-      using DefaultKL<T_DATA>::_errorPQ;
-      using DefaultKL<T_DATA>::_errorQP;
-
-    private:
-      //// synchronize Iq with Ip
-      void __synchroInstantiations (Instantiation& Iq,const Instantiation& Ip) const;
+      using KL<T_DATA>::_errorPQ;
+      using KL<T_DATA>::_errorQP;
   };
 
 } // namespace gum

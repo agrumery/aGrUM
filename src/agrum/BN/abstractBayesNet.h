@@ -48,9 +48,7 @@ namespace gum {
   class AbstractBayesNet {
 
     public:
-      // ===========================================================================
       /// @name Constructors / Destructors
-      // ===========================================================================
       /// @{
 
       /**
@@ -69,9 +67,7 @@ namespace gum {
       AbstractBayesNet( const AbstractBayesNet<T_DATA>& source );
 
       /// @}
-      // ===========================================================================
       /// @name Getter and setters
-      // ===========================================================================
       /// @{
 
       /**
@@ -86,9 +82,7 @@ namespace gum {
       void setProperty( const std::string& name, const std::string& value );
 
       /// @}
-      // ===========================================================================
       /// @name Variable manipulation methods.
-      // ===========================================================================
       /// @{
 
       /**
@@ -147,10 +141,13 @@ namespace gum {
       /// @throw NotFound if no such name exists in the graph.
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const = 0;
 
+      /// synchronize in (on this) with External
+      void synchroInstantiations( Instantiation& in,const Instantiation& external,bool sameLabelsOrder=true ) const;
+
+      /// Get an instantiation over all the variables of the BN
+      virtual void completeInstantiation( Instantiation& I ) const;
       /// @}
-      // ===========================================================================
       /// @name Arc manipulation methods.
-      // ===========================================================================
       /// @{
 
       /**
@@ -164,9 +161,7 @@ namespace gum {
       const DAG::ArcIterator& endArcs() const;
 
       /// @}
-      // ===========================================================================
       /// @name Graphical methods
-      // ===========================================================================
       /// @{
 
       /**

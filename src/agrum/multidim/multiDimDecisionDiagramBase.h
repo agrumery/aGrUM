@@ -32,8 +32,8 @@
 // ============================================================================
 #include <agrum/core/hashTable.h>
 #include <agrum/core/bijection.h>
+#include <agrum/core/approximationPolicy.h>
 // ============================================================================
-#include <agrum/multidim/approximationPolicy.h>
 #include <agrum/multidim/multiDimReadOnly.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 // ============================================================================
@@ -235,11 +235,22 @@ public:
 	 * @throw InvalidNode if Node is terminal
 	 */
 	 const DiscreteVariable* getVariableFromNode( NodeId n ) const;
+		
+	/**
+	 * Returns associated nodes of the variable pointed by the given node
+	 * @throw InvalidNode if Node is terminal
+	 */
+	 const List< NodeId >* getNodesFromVariable( const DiscreteVariable* v ) const;
 
     /**
      * Returns true if node is a chance one
      */
     bool isTerminalNode ( NodeId varId ) const;
+
+    /**
+     * Returns true if node is a chance one
+     */
+    bool isInDiagramVariable ( const DiscreteVariable* v ) const;
 	
 	///@}
 
@@ -288,6 +299,12 @@ public:
      * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
      */
      void setDiagramNodes( const NodeGraphPart& model );
+     
+    /**
+     * Sets the map linking variable to all nodes bond to it
+     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+     */
+    void setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap );
      
     /**
      * Binds once and for all nodes to variables.
@@ -340,6 +357,9 @@ private:
 	
     /// Mapping between id and variable
     typename Property< const DiscreteVariable* >::onNodes __variableMap;
+    
+    /// Mapping between var and node
+    HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
     
     /// Mapping between variable's values and associated node
     typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;

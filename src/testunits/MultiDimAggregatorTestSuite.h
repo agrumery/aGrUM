@@ -25,7 +25,7 @@
 #include <agrum/multidim/potential.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/Gibbs.h>
+#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
 #include <agrum/multidim/aggregators/min.h>
