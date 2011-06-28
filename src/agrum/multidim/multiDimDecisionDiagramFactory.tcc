@@ -30,80 +30,88 @@ using namespace std;
 using namespace gum;
 
 /* **********************************************************************************************/
-/*																								*/
-/*                         Constructors, Destructors											*/
-/*																								*/
+/*                        */
+/*                         Constructors, Destructors           */
+/*                        */
 /* **********************************************************************************************/
 
-    // =============================================================================
-    // Default constructor.
-    // =============================================================================
-    template<typename T_DATA, template <class> class IApproximationPolicy>
-    MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::MultiDimDecisionDiagramFactory(){
-		GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactory ) ;
-	}
+// =============================================================================
+// Default constructor.
+// =============================================================================
+template<typename T_DATA, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::MultiDimDecisionDiagramFactory() {
+  GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactory ) ;
+}
 
-    // =============================================================================
-    // Destructor.
-    // @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
-    // =============================================================================
-    template<typename T_DATA, template <class> class IApproximationPolicy>
-    MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::~MultiDimDecisionDiagramFactory(){
-		GUM_DESTRUCTOR( MultiDimDecisionDiagramFactory );
-	}
+// =============================================================================
+// clone constructor.
+// =============================================================================
+template<typename T_DATA, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::MultiDimDecisionDiagramFactory( const IApproximationPolicy<T_DATA>& md ) :
+    MultiDimDecisionDiagramFactoryBase<T_DATA>(),
+    IApproximationPolicy<T_DATA>( md ) {
+  GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactory ) ;
+}
+// =============================================================================
+// Destructor.
+// @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
+// =============================================================================
+template<typename T_DATA, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::~MultiDimDecisionDiagramFactory() {
+  GUM_DESTRUCTOR( MultiDimDecisionDiagramFactory );
+}
 
 /* **********************************************************************************************/
-/*																								*/
-/*                        Graph Manipulation methods											*/
-/*																								*/
+/*                        */
+/*                        Graph Manipulation methods           */
+/*                        */
 /* **********************************************************************************************/
-	
-	// =============================================================================
-    // Returns the multidimDecisionDiagram made
-    // =============================================================================
-    template<typename T_DATA, template <class> class IApproximationPolicy>
-	MultiDimDecisionDiagramBase<T_DATA>*
-	MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecisionDiagram(bool fillWithDefaultArc, T_DATA defaultValue ) {
-		
-		if( fillWithDefaultArc ){
-			if( defaultValue < this->lowLimit() )
-				defaultValue = ( this->lowLimit() + this->highLimit() )/2;
-			NodeId zeroId = this->addTerminalNode( defaultValue );
-			for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-				if ( !this->_valueMap.existsFirst(*iter) && !this->_defaultArcMap.exists(*iter) && this->_arcMap[*iter]->size() < this->_varMap[*iter]->domainSize() ){
-					this->_defaultArcMap.insert( *iter, zeroId );
-				}
-			}
-		}
-		
-		MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >* ret =  new MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >( );
-		
-		ret->beginInstantiation();
-		
-		ret->setEpsilon( this->epsilon() );
-		ret->setLowLimit( this->lowLimit() );
-		ret->setHighLimit( this->highLimit() );
-		
-		ret->setVariableSequence( this->_varsSeq );
-		
-		ret->setDiagramNodes( this->_model );
-		
-		ret->setVariableMap( this->_varMap );
-		ret->setVar2NodeMap( this->_var2NodeIdMap );
-		
-		ret->setValueMap( this->_valueMap );
-		ret->setDiagramArcs( this->_arcMap, this->_defaultArcMap );
-		
-		NodeId root = 0;
-		for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-			if ( !this->_valueMap.existsFirst(*iter) && !this->_model.children(*iter).empty() && this->_model.parents(*iter).empty() ){
-					root = *iter;
-					break;
-				}
-		}
-		ret->setRoot( root );
-		
-		ret->endInstantiation();
-		
-		return ret;
-	}
+
+// =============================================================================
+// Returns the multidimDecisionDiagram made
+// =============================================================================
+template<typename T_DATA, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramBase<T_DATA>*
+MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecisionDiagram( bool fillWithDefaultArc, T_DATA defaultValue ) {
+
+  if ( fillWithDefaultArc ) {
+    if ( defaultValue < this->lowLimit() )
+      defaultValue = ( this->lowLimit() + this->highLimit() )/2;
+    NodeId zeroId = this->addTerminalNode( defaultValue );
+    for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
+      if ( !this->_valueMap.existsFirst( *iter ) && !this->_defaultArcMap.exists( *iter ) && this->_arcMap[*iter]->size() < this->_varMap[*iter]->domainSize() ) {
+        this->_defaultArcMap.insert( *iter, zeroId );
+      }
+    }
+  }
+
+  MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >* ret =  new MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >( *this );
+
+  ret->beginInstantiation();
+  /*
+    ret->setEpsilon( this->epsilon() );*/
+  ret->setLimits(this->lowLimit(),this->highLimit());
+
+  ret->setVariableSequence( this->_varsSeq );
+
+  ret->setDiagramNodes( this->_model );
+
+  ret->setVariableMap( this->_varMap );
+  ret->setVar2NodeMap( this->_var2NodeIdMap );
+
+  ret->setValueMap( this->_valueMap );
+  ret->setDiagramArcs( this->_arcMap, this->_defaultArcMap );
+
+  NodeId root = 0;
+  for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
+    if ( !this->_valueMap.existsFirst( *iter ) && !this->_model.children( *iter ).empty() && this->_model.parents( *iter ).empty() ) {
+      root = *iter;
+      break;
+    }
+  }
+  ret->setRoot( root );
+
+  ret->endInstantiation();
+
+  return ret;
+}

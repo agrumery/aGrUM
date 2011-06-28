@@ -41,14 +41,12 @@
     std::cerr << __FILE__ << ":" << __LINE__ <<": trace "<<#x<<": "<<x << std::endl; }
 
 namespace gum {
-
-
   namespace debug {
 
     std::string __getFile( const char* f );
 
 
-    /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
     void __show_trace( const char *zeKey, const char *zeFile, long zeLine,
                        const char *zeMsg, const void *zePtr );
     void __inc_creation( const char *zeKey, const char *zeFile, long zeLine,
@@ -60,42 +58,44 @@ namespace gum {
 
 
 #ifndef NDEBUG
-    // FLAG : verbose mode
+// FLAG : verbose mode
 #undef TRACE_ON
 //     #define TRACE_ON
+
 #define GUM_ASSERT(condition) { assert(condition); }
 #define GUM_DEBUG(x) {x}
+
 #ifdef TRACE_ON
 #define GUM_DEBUG_TRACE(x) {                                            \
-      std::cerr << std::setw(20) << std::setfill(' ') << gum::debug::__getFile(__FILE__) << \
-        "#" << std::setfill('0') << std::setw(5) << std::dec <<__LINE__ << " : " << \
-        x << std::endl; }
+    std::cerr << std::setw(20) << std::setfill(' ') << gum::debug::__getFile(__FILE__) << \
+              "#" << std::setfill('0') << std::setw(5) << std::dec <<__LINE__ << " : " << \
+              x << std::endl; }
 #else
 #define GUM_DEBUG_TRACE(x)
 #endif
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
 #define GUM_CONSTRUCTOR_BASIC(x) { GUM_DEBUG_TRACE("Création de " #x)                                           \
-      gum::debug::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this,sizeof(x)); }
+    gum::debug::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this,sizeof(x)); }
 #define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_DESTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_DESTRUCTOR
 #define GUM_DESTRUCTOR_BASIC(x) {                                             \
-      gum::debug::__inc_deletion(#x,__FILE__,__LINE__,"destructor of",(void *)this); }
+    gum::debug::__inc_deletion(#x,__FILE__,__LINE__,"destructor of",(void *)this); }
 #define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_CPY, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONS_CPY
 #define GUM_CONS_CPY_BASIC(x) {                                               \
-      gum::debug::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this,sizeof(x));}
+    gum::debug::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this,sizeof(x));}
 #define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
 #define GUM_OP_CPY_BASIC(x) {                                                 \
-      gum::debug::__show_trace(#x,__FILE__,__LINE__,"copy operator of",(void *)this); }
+    gum::debug::__show_trace(#x,__FILE__,__LINE__,"copy operator of",(void *)this); }
 #define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
-    /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 #else //NDEBUG
-    /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 #define GUM_ASSERT(condition)
 #define GUM_DEBUG(x)
 #define GUM_DEBUG_TRACE(x)
@@ -103,7 +103,7 @@ namespace gum {
 #define GUM_DESTRUCTOR(x)
 #define GUM_CONS_CPY(x)
 #define GUM_OP_CPY(x)
-    /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 #endif //NDEBUG
 
 
@@ -114,10 +114,10 @@ namespace gum {
   /* ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        === */
   /* =========================================================================== */
   class Debug : public std::string {
-  public:
-    Debug( const std::string& str ) : std::string( str ) {}
+    public:
+      Debug( const std::string& str ) : std::string( str ) {}
 
-    Debug( const char* const str ) : std::string( str ) {}
+      Debug( const char* const str ) : std::string( str ) {}
   };
 
 

@@ -28,7 +28,8 @@
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 // ============================================================================
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/exactPolicy.h>
 // ============================================================================
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
@@ -36,48 +37,54 @@
 
 namespace gum {
 
-template< typename T, template<class> class IApproximationPolicy>
-class MultiDimDecisionDiagram;
+  template< typename T, template<class> class IApproximationPolicy>
+  class MultiDimDecisionDiagram;
 
-/**
- * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
- * @brief Class implementingting an algebraic decision diagram factory
- * @ingroup multidim_group
- *
- */
-template<typename T_DATA, template <class> class IApproximationPolicy = ExactPolicy>
+  /**
+   * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
+   * @brief Class implementingting an algebraic decision diagram factory
+   * @ingroup multidim_group
+   *
+   */
+  template<typename T_DATA, template <class> class IApproximationPolicy = ExactPolicy>
 
-class MultiDimDecisionDiagramFactory : public MultiDimDecisionDiagramFactoryBase<T_DATA>, public IApproximationPolicy<T_DATA> {
-	
-	public :
+  class MultiDimDecisionDiagramFactory : public MultiDimDecisionDiagramFactoryBase<T_DATA>, public IApproximationPolicy<T_DATA> {
 
-    // ===========================================================================
-    /// @name Constructors, Destructors.
-    // ===========================================================================
-    /// @{
+    public :
 
-    /**
-     * Default constructor.
-     */
-    MultiDimDecisionDiagramFactory();
+      // ===========================================================================
+      /// @name Constructors, Destructors.
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Destructor.
-     * @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
-     */
-    ~MultiDimDecisionDiagramFactory();
-		
-	/// @}
-	
-	/**
-	 * Returns the multidimDecisionDiagram made
-	 */
-	MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram(bool fillWithDefaultArc = true, T_DATA defaultValue = 0 );
-	 
-	/// Convert value to approximation representation
-	inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
-	
-};
+      /**
+       * Default constructor.
+       */
+      MultiDimDecisionDiagramFactory();
+      
+      /**
+       * clone constructor.
+       * @arg md is used for initialize approximation policy
+       */
+      MultiDimDecisionDiagramFactory(const IApproximationPolicy<T_DATA>& md);
+
+      /**
+       * Destructor.
+       * @warnings : this will not destroy properties on node. They have to be removed on multidim destruction
+       */
+      ~MultiDimDecisionDiagramFactory();
+
+      /// @}
+
+      /**
+       * Returns the multidimDecisionDiagram made
+       */
+      MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0 );
+
+      /// Convert value to approximation representation
+      inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
+
+  };
 
 } /* namespace gum */
 
