@@ -78,7 +78,7 @@ namespace gum {
       
       /// Convert value to his approximation. This method is slower than @fromExact since it verifies the bounds
       /// @throw OutOfLowerBound and OutOfUpperBound
-      INLINE T_DATA checkedFromExact( const T_DATA & value ) {	
+      INLINE T_DATA safeFromExact( const T_DATA & value ) {	
         if ( value > this->_highLimit ) {
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
 	}

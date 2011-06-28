@@ -94,14 +94,14 @@ namespace gum {
 // we keep the bounds checked in debug mode
 #ifndef NDEBUG
         if ( value > this->_highLimit ) {
-	  GUM_TRACE(value<<" not in ("<<this->_lowLimit<<"-"<<this->_highLimit<<")");
+          GUM_TRACE( value<<" not in ("<<this->_lowLimit<<"-"<<this->_highLimit<<")" );
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
-	}
+        }
 
         if ( value < this->_lowLimit ) {
-	  GUM_TRACE(value<<" not in ("<<this->_lowLimit<<"-"<<this->_highLimit<<")");
+          GUM_TRACE( value<<" not in ("<<this->_lowLimit<<"-"<<this->_highLimit<<")" );
           GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
-	}
+        }
 #endif //NDEBUG
         return __encode( value );
       };
@@ -124,8 +124,8 @@ namespace gum {
 
       /// set bounds in a whole
       INLINE virtual void setLimits( const T_DATA& newLowLimit, const T_DATA& newHighLimit ) {
-	ApproximationPolicy<T_DATA>::setLimits(newLowLimit,newHighLimit);
-	_computeNbInterval();
+        ApproximationPolicy<T_DATA>::setLimits( newLowLimit,newHighLimit );
+        _computeNbInterval();
       }
 
       /// Sets lowest possible value
@@ -146,7 +146,8 @@ namespace gum {
       /// Approximation factor
       T_DATA _epsilon;
 
-      /// Concretely computes the approximate representation [note that we accept value smaller or higher than limits : please @see ApproximationPolicy::safeFromExact ]
+      /// Concretely computes the approximate representation
+      /// @warning we accept value smaller or higher than limits : please @see ApproximationPolicy::safeFromExact
       INLINE Idx __encode( const T_DATA& value ) const {
 
         if ( value <= this->_lowLimit )
