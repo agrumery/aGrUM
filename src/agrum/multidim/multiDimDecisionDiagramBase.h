@@ -252,6 +252,16 @@ namespace gum {
        */
       bool isInDiagramVariable( const DiscreteVariable* v ) const;
 
+	  /**
+	   * Returns a hashtable containing for each node a list of variable
+	   * This method looks, for each path in the diagram, if a var does not precede others in
+	   * the given in parameter order.
+	   * The third parameter is the returned structure.
+	   */
+	   void getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq,
+							HashTable< NodeId, Set< const DiscreteVariable* >* >* result ) const;
+	
+
       ///@}
 
       // ===========================================================================
@@ -344,6 +354,20 @@ namespace gum {
       * @throw OperationNotAllowed without condition.
       */
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
+     /**
+      * Builds result as hashtable containing for each node a list of variable
+      * This method looks, for each path in the diagram, if a var does not precede others in
+      * the given in parameter order.
+      * Since it's a recursive deep first research, the second parameter give us the current node id
+      * the node from which we start that research.
+      * The third parameter is the returned structure.
+      * The foorth parameter is the sequence of variable in the currently explored path.
+      */
+      void _getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq, 
+								const NodeId currentNode, 
+								HashTable< NodeId, Set< const DiscreteVariable* >* >* result, 
+								const Sequence< const DiscreteVariable* > pathVarOrder ) const;
 
     private:
 
