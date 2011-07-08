@@ -79,7 +79,8 @@ namespace gum {
   
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) + (y)
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4Addition
-  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4Addition
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Addition
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Addition
   #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
   
   #define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimDecisionDiagrams
@@ -92,7 +93,8 @@ namespace gum {
   
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
-  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   
 
   // ==============================================================================
@@ -129,7 +131,8 @@ namespace gum {
   
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) - (y)
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4Subtraction
-  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4Subtraction
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Subtraction
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Subtraction
   #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
   
   #define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimDecisionDiagrams
@@ -142,7 +145,8 @@ namespace gum {
   
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
-  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
 
   
   // ==============================================================================
@@ -179,7 +183,8 @@ namespace gum {
   
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) * (y)
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4Multiplication
-  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4Multiplication
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Multiplication
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Multiplication
   #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
   
   #define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimDecisionDiagrams
@@ -192,7 +197,8 @@ namespace gum {
   
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
-  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
 
    
   // ==============================================================================
@@ -228,7 +234,8 @@ namespace gum {
   // ==============================================================================
   #define GUM_MULTI_DIM_OPERATOR(x,y) (x) / (y)
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4Division
-  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4Division
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Division
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Division
   #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
   
   #define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimDecisionDiagrams
@@ -241,7 +248,8 @@ namespace gum {
   
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
-  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
 
    
   // ==============================================================================
@@ -249,7 +257,8 @@ namespace gum {
   // ==============================================================================
   #define GUM_MULTI_DIM_OPERATOR(x,y) ( x >= y ? x : y )
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4Maximization
-  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4Maximization
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Maximization
+  #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Maximization
   #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
   
   #define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionDiagrams
@@ -262,7 +271,8 @@ namespace gum {
   
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
-  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
+  #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
 
   
   // ==============================================================================

@@ -90,13 +90,13 @@ namespace gum {
         Size nbrDrawnBySample( );
 
         const Instantiation& particle();
-				
-				const AbstractBayesNet<T_DATA>& bn();
+
+        const AbstractBayesNet<T_DATA>& bn();
         ///@}
 
       private:
         void __setValVar( NodeId id, Idx choice );
-				
+
         void __drawVar( NodeId id );
         void __GibbsSample( NodeId id );
         void __MonteCarloSample();

@@ -160,8 +160,10 @@ using namespace gum;
 							break;
 						}
 					
-				if( thesame )
+				if( thesame ){		
+					//~ std::cout << std::endl << std::endl << "Calquage sur noeud pour Var : " << var->toString() << " - Id : " << *iterNodeList;
 					return *iterNodeList;
+				}
 				
 			}
 			
@@ -189,13 +191,20 @@ using namespace gum;
 				break;
 			}
 		
-		if( sameArc )
+		if( sameArc ){		
+			//~ std::cout << std::endl << std::endl << "Gobage par arc pour Var : " << var->toString() << " - Id : " << nody;
 			return nody;
+		}
 		
 		// ***********************************************************************************
 		// if we manage to reach this point, this mean we have to insert the node 
-		// we his all bunch of arc
+		// with all his bunch of arc
 		NodeId node = addNonTerminalNode( *var );
+		
+		//~ std::cout << std::endl << std::endl << "insertion noeud pour Var : " << var->toString() << " - Id : " << node << " - Fils : " << nodeArcMap;
+		//~ if( defaultArcTo != NULL )
+			//~ std::cout << " - Defaut : " << *defaultArcTo;
+		//~ std::cout << std::endl << std::endl;
 		
 		for( HashTableConstIterator< Idx, NodeId > iter = nodeArcMap.begin(); iter != nodeArcMap.end(); ++iter )
 			insertArc( node, *iter, iter.key() );
@@ -270,9 +279,11 @@ using namespace gum;
 		if( _valueMap.existsFirst( from ) )
 			GUM_ERROR( OperationNotAllowed, " No arcs can start from a terminal node" );
 		else
-			if( !_valueMap.existsFirst( to ) )
+			if( !_valueMap.existsFirst( to ) ){
+				//~ std::cout << "From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl;
 				if( _varsSeq.pos( _varMap[ from ] ) >= _varsSeq.pos( _varMap[ to ] ) )
 					GUM_ERROR( InvalidArc, " This arc does not respect the variable order property." );
+			}
 			
 		for( HashTableIterator<Idx,NodeId> iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )
 			if( *iter == to &&  iter.key() == value)
@@ -304,9 +315,11 @@ using namespace gum;
 		if( _valueMap.existsFirst( from ) )
 			GUM_ERROR( OperationNotAllowed, " No arcs can start from a terminal node" );
 		else{
-			if( !_valueMap.existsFirst( to ) )
+			if( !_valueMap.existsFirst( to ) ){
+				//~ std::cout << "Par defaut - From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl;
 				if( _varsSeq.pos( _varMap[ from ] ) >= _varsSeq.pos( _varMap[ to ] ) )
 					GUM_ERROR( InvalidArc, " This arc does not respect the variable order property." );
+			}
 		}
 			
 		for( HashTableIterator<Idx,NodeId> iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )

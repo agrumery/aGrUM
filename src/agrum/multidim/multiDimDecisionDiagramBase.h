@@ -22,7 +22,7 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan 
+ * @author Jean-Christophe Magnan
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_BASE_H
@@ -32,7 +32,7 @@
 // ============================================================================
 #include <agrum/core/hashTable.h>
 #include <agrum/core/bijection.h>
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
 // ============================================================================
 #include <agrum/multidim/multiDimReadOnly.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
@@ -42,340 +42,365 @@
 
 namespace gum {
 
-template<typename T_DATA >
-class MultiDimDecisionDiagramFactoryBase;
+  template<typename T_DATA >
+  class MultiDimDecisionDiagramFactoryBase;
 
-/**
- * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
- * @brief Class implementingting an decision diagram model
- * Contains all methods used by multidimdecisiondiagram, except for those concerning approximation policy
- * For concrete usage of such multidim, please refer to multiDimDecisionDiagram
- * @ingroup multidim_group
- *
- */
-template<typename T_DATA>
+  /**
+   * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
+   * @brief Class implementingting an decision diagram model
+   * Contains all methods used by multidimdecisiondiagram, except for those concerning approximation policy
+   * For concrete usage of such multidim, please refer to multiDimDecisionDiagram
+   * @ingroup multidim_group
+   *
+   */
+  template<typename T_DATA>
 
-class MultiDimDecisionDiagramBase :  public MultiDimReadOnly<T_DATA>, public virtual ApproximationPolicy<T_DATA> {
+  class MultiDimDecisionDiagramBase :  public MultiDimReadOnly<T_DATA>, public virtual ApproximationPolicy<T_DATA> {
 
-public:
+    public:
 
-    // ===========================================================================
-    /// @name Constructors / Destructors
-    // ===========================================================================
-    /// @{
+      // ===========================================================================
+      /// @name Constructors / Destructors
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Default constructor.
-     */
-    MultiDimDecisionDiagramBase( );
+      /**
+       * Default constructor.
+       */
+      MultiDimDecisionDiagramBase( );
 
-    /**
-     * Destructor.
-     */
-    virtual ~MultiDimDecisionDiagramBase();
+      /**
+       * Destructor.
+       */
+      virtual ~MultiDimDecisionDiagramBase();
 
-    /// @}
+      /// @}
 
-    // ===========================================================================
-    /// @name Accessors/Modifiers
-    // ===========================================================================
-    /// @{
+      // ===========================================================================
+      /// @name Accessors/Modifiers
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Returns the name of the miltiDim implementation
+       */
+      virtual const std::string& name() const;
+
+      /**
+       * Returns valued pointed by inst
+       */
+      virtual T_DATA get( const Instantiation& inst ) const;
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Implementation of MultiDimInterface
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Adds a new var to the variables of the multidimensional matrix.
+       * @throw OperationNotAllowed cause it's not authorize on read only multidim
+       */
+      virtual void add( const DiscreteVariable &v );
+
+      /**
+       * Removes a var from the variables of the multidimensional matrix.
+       * @throw OperationNotAllowed cause it's not authorize on read only multidim
+       */
+      virtual void erase( const DiscreteVariable &v );
+
+      /**
+       * Returns the real number of parameter used in this table.
+       */
+      virtual Size realSize() const;
+
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Slave management and extension due to slave management
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Listen to change in a given Instantiation virtual
+       */
+      virtual void changeNotification( Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval );
+
+      /**
+       * Listen to setFirst in a given Instantiation
+       */
+      virtual void setFirstNotification( Instantiation& i );
+
+      /**
+       * Listen to setLast in a given Instantiation
+       */
+      virtual void setLastNotification( Instantiation& i );
+
+      /**
+       * Listen to increment in a given Instantiation
+       */
+      virtual void setIncNotification( Instantiation& i );
+
+      /**
+       * Listen to decrement in a given Instantiation
+       */
+      virtual void setDecNotification( Instantiation& i );
+
+      /**
+       * Listen to an assignement of value in a given Instantiation
+       */
+      virtual void setChangeNotification( Instantiation& i );
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Copy Methods
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Removes all variables in this Container and copy content from src, variable included
+       * @throw OperationNotAllowed cause this is a read only
+          */
+      void copy( const MultiDimContainer<T_DATA>& src ) const;
+
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Various Methods
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Displays the multidim.
+       */
+      virtual const std::string toString() const;
+
+      /**
+       * Displays the internal representation of i.
+       */
+      virtual const std::string toString( const Instantiation* i ) const;
+
+      /**
+       * Displays the DecisionDiagramBase in the dot format
+       */
+      std::string toDot() const;
+
+      /**
+       * Returns the number of variable truly present in diagram
+       */
+      Size diagramVarSize( ) const;
+
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Operators Functions
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Returns the id of the root node from the diagram
+       */
+      const NodeId getRoot() const;
+
+      /**
+       * Returns value associated to given node
+       * @throw InvalidNode if node isn't terminal
+       */
+      const T_DATA getValueFromNode( NodeId n ) const;
+
+      /**
+       * Returns node's sons map
+       * @throw InvalidNode if node is terminal
+       */
+      const HashTable< Idx, NodeId >* getNodeSons( NodeId n ) const;
+
+      /**
+       * Returns true if node has a default son
+       */
+      bool hasNodeDefaultSon( NodeId n ) const;
+
+      /**
+       * Returns node's default son
+       * @throw InvalidNode if node is terminal
+       */
+      const NodeId getNodeDefaultSon( NodeId n ) const;
+
+      /**
+       * Returns associated variable of given node
+       * @throw InvalidNode if Node is terminal
+       */
+      const DiscreteVariable* getVariableFromNode( NodeId n ) const;
+
+      /**
+       * Returns associated nodes of the variable pointed by the given node
+       * @throw InvalidNode if Node is terminal
+       */
+      const List< NodeId >* getNodesFromVariable( const DiscreteVariable* v ) const;
+
+      /**
+       * Returns true if node is a chance one
+       */
+      bool isTerminalNode( NodeId varId ) const;
+
+      /**
+       * Returns true if node is a chance one
+       */
+      bool isInDiagramVariable( const DiscreteVariable* v ) const;
+
+	  /**
+	   * Returns a hashtable containing for each node a list of variable
+	   * This method looks, for each path in the diagram, if a var does not precede others in
+	   * the given in parameter order.
+	   * The third parameter is the returned structure.
+	   */
+	   void getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq,
+							HashTable< NodeId, Set< const DiscreteVariable* >* >* result ) const;
 	
-	/**
-	 * Returns the name of the miltiDim implementation
-	 */
-	virtual const std::string& name() const;
-		
-	/**
-	 * Returns valued pointed by inst
-	 */
-	 virtual T_DATA get( const Instantiation& inst) const;
-		
-	/// @}
 
-    // ===========================================================================
-    /// @name Implementation of MultiDimInterface
-    // ===========================================================================
-    /// @{
-		
-	/**
-	 * Adds a new var to the variables of the multidimensional matrix. 
-	 * @throw OperationNotAllowed cause it's not authorize on read only multidim
-	 */
-	 virtual void add (const DiscreteVariable &v);
-		
-	/**
-	 * Removes a var from the variables of the multidimensional matrix.  
-	 * @throw OperationNotAllowed cause it's not authorize on read only multidim
-	 */
-	 virtual void erase (const DiscreteVariable &v);
-	 
-	/**
-	 * Returns the real number of parameter used in this table. 
-	 */
-	 virtual Size realSize () const;
- 	
-	 
-	/// @}
+      ///@}
 
-    // ===========================================================================
-    /// @name Slave management and extension due to slave management
-    // ===========================================================================
-    /// @{
-		
-	/**
-	 * Listen to change in a given Instantiation virtual
-	 */
-	 virtual void changeNotification(Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval);
- 	
-	/**
-	 * Listen to setFirst in a given Instantiation
-	 */
-	 virtual void setFirstNotification( Instantiation& i );
-	 
-	/**
-	 * Listen to setLast in a given Instantiation
-	 */
-	 virtual void setLastNotification( Instantiation& i );
-	 
-	/**
-	 * Listen to increment in a given Instantiation
-	 */
-	 virtual void setIncNotification( Instantiation& i );
-	 
-	/**
-	 * Listen to decrement in a given Instantiation
-	 */
-	 virtual void setDecNotification( Instantiation& i );
-	 
-	/**
-	 * Listen to an assignement of value in a given Instantiation
-	 */
-	 virtual void setChangeNotification( Instantiation& i );
-	 
-	/// @}
+      // ===========================================================================
+      /// @name Approximation Handling functions
+      // ===========================================================================
+      /// @{
 
-    // ===========================================================================
-    /// @name Copy Methods
-    // ===========================================================================
-    /// @{
+      /**
+       * Returns a factory that used same approximation pattern
+       */
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const = 0;
 
-	/**
-	 * Removes all variables in this Container and copy content from src, variable included
-	 * @throw OperationNotAllowed cause this is a read only
-     */
-     void copy( const MultiDimContainer<T_DATA>& src ) const;
- 	
-	 
-	/// @}
+      /**
+       * Returns a factory that used same approximation pattern
+       * Allows to set parameter for that approximation
+       */
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const = 0;
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ,T_DATA newLowLimit,T_DATA newHighLimit) const = 0;
 
-    // ===========================================================================
-    /// @name Various Methods
-    // ===========================================================================
-    /// @{
-	
-	/**
-	 * Displays the multidim. 
-	 */
-	 virtual const std::string toString() const;
-	
-	/**
-	 * Displays the internal representation of i. 
-	 */
-	 virtual const std::string toString(const Instantiation* i) const;
-	
-	/**
-	 * Displays the DecisionDiagramBase in the dot format
-	 */
-	 std::string toDot() const;
-    
-    /**
-     * Returns the number of variable truly present in diagram
-     */
-    Size diagramVarSize ( ) const;
- 	
-	 
-	/// @}
+      ///@}
 
-    // ===========================================================================
-    /// @name Operators Functions
-    // ===========================================================================
-    /// @{
-	 
-	/**
-	 * Returns the id of the root node from the diagram
-	 */
-	const NodeId getRoot() const;
-	
-	/**
-	 * Returns value associated to given node
-	 * @throw InvalidNode if node isn't terminal
-	 */ 
-	 const T_DATA getValueFromNode( NodeId n ) const;
-	 
-	/**
-	 * Returns node's sons map
-	 * @throw InvalidNode if node is terminal
-	 */
-	 const HashTable< Idx, NodeId >* getNodeSons( NodeId n ) const;
-	 
-	/**
-	 * Returns true if node has a default son
-	 */
-	 bool hasNodeDefaultSon( NodeId n ) const;
-	 
-	/**
-	 * Returns node's default son
-	 * @throw InvalidNode if node is terminal
-	 */
-	 const NodeId getNodeDefaultSon( NodeId n ) const;
-	 
-	/**
-	 * Returns associated variable of given node
-	 * @throw InvalidNode if Node is terminal
-	 */
-	 const DiscreteVariable* getVariableFromNode( NodeId n ) const;
-		
-	/**
-	 * Returns associated nodes of the variable pointed by the given node
-	 * @throw InvalidNode if Node is terminal
-	 */
-	 const List< NodeId >* getNodesFromVariable( const DiscreteVariable* v ) const;
+      // ===========================================================================
+      /// @name Structure instantiation
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Returns true if node is a chance one
-     */
-    bool isTerminalNode ( NodeId varId ) const;
+      /**
+       * Puts the multiDim in instantiation mode
+       * @throw OperationNotAllowed if diagram has already been instanciated
+       */
+      void beginInstantiation();
 
-    /**
-     * Returns true if node is a chance one
-     */
-    bool isInDiagramVariable ( const DiscreteVariable* v ) const;
-	
-	///@}
+      /**
+       * Puts the multiDim out of instantiation mode
+       */
+      void endInstantiation();
 
-    // ===========================================================================
-    /// @name Approximation Handling functions
-    // ===========================================================================
-    /// @{
-	
-	/**
-	 * Returns a factory that used same approximation pattern
-	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const = 0;
-	 	
-	/**
-	 * Returns a factory that used same approximation pattern
-	 * Allows to set parameter for that approximation
-	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowLimit, T_DATA highLimit) const = 0;
-	
-	///@}
+      /**
+       * Sets once and for all variable sequence.
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setVariableSequence( const Sequence< const DiscreteVariable* >& varList );
 
-    // ===========================================================================
-    /// @name Structure instantiation
-    // ===========================================================================
-    /// @{
-    
-    /**
-     * Puts the multiDim in instantiation mode
-     * @throw OperationNotAllowed if diagram has already been instanciated
-     */
-     void beginInstantiation();
-    
-    /**
-     * Puts the multiDim out of instantiation mode
-     */
-     void endInstantiation();
-     
-    /**
-     * Sets once and for all variable sequence.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setVariableSequence(  const Sequence< const DiscreteVariable* >& varList );
-     
-    /**
-     * Sets once and for all nodes of the diagram.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setDiagramNodes( const NodeGraphPart& model );
-     
-    /**
-     * Sets the map linking variable to all nodes bond to it
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-    void setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap );
-     
-    /**
-     * Binds once and for all nodes to variables.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap );
-     
-    /**
-     * Binds once and for all terminal nodes to value.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setValueMap( const Bijection< NodeId, T_DATA >& valueMap );
-     
-    /**
-     * Links once and for all nodes of the graph.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap );
-     
+      /**
+       * Sets once and for all nodes of the diagram.
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setDiagramNodes( const NodeGraphPart& model );
+
+      /**
+       * Sets the map linking variable to all nodes bond to it
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap );
+
+      /**
+       * Binds once and for all nodes to variables.
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap );
+
+      /**
+       * Binds once and for all terminal nodes to value.
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setValueMap( const Bijection< NodeId, T_DATA >& valueMap );
+
+      /**
+       * Links once and for all nodes of the graph.
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap );
+
+      /**
+      * Sets once and for all root node.
+      * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+      */
+      void setRoot( const NodeId& root );
+
+      /// @}
+
+    protected :
+      /**
+       * Returns data addressed by inst
+       */
+      virtual T_DATA& _get( const Instantiation& inst ) const;
+
+      /**
+      * Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
+      * @throw OperationNotAllowed without condition.
+      */
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
      /**
-     * Sets once and for all root node.
-     * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
-     */
-     void setRoot( const NodeId& root );
-		
-	/// @}
-	
-protected :
-	/**
-	 * Returns data addressed by inst
-	 */
-	virtual T_DATA& _get( const Instantiation& inst ) const;
-    
-    /**
-	 * Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
-	 * @throw OperationNotAllowed without condition.
-	 */
-	 virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+      * Builds result as hashtable containing for each node a list of variable
+      * This method looks, for each path in the diagram, if a var does not precede others in
+      * the given in parameter order.
+      * Since it's a recursive deep first research, the second parameter give us the current node id
+      * the node from which we start that research.
+      * The third parameter is the returned structure.
+      * The foorth parameter is the sequence of variable in the currently explored path.
+      */
+      void _getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq, 
+								const NodeId currentNode, 
+								HashTable< NodeId, Set< const DiscreteVariable* >* >* result, 
+								const Sequence< const DiscreteVariable* > pathVarOrder ) const;
 
-private:
+    private:
 
-    /// Mapping between terminal nodes and their values
-    Bijection< NodeId, T_DATA > __valueMap;
+      /// Mapping between terminal nodes and their values
+      Bijection< NodeId, T_DATA > __valueMap;
 
-	/// The graph hidden behin this multidim
-	NodeGraphPart __graph;
-	
-	/// The id of the root of the graph
-	NodeId __root;
-	
-    /// Mapping between id and variable
-    typename Property< const DiscreteVariable* >::onNodes __variableMap;
-    
-    /// Mapping between var and node
-    HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
-    
-    /// Mapping between variable's values and associated node
-    typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;
-    
-    /// Mapping between variable's values and associated node
-    typename Property< NodeId >::onNodes __defaultArcMap;
+      /// The graph hidden behin this multidim
+      NodeGraphPart __graph;
 
-	/// Name of this multiDim
-	std::string __name;
-	
-	///Just a boolean to indicates if diagram has been instanciated or not
-	bool __isInstanciated;
-	
-	///And another one to indicates if diagram is in instanciation or not
-	bool __instanciationModeOn;
-};
+      /// The id of the root of the graph
+      NodeId __root;
+
+      /// Mapping between id and variable
+      typename Property< const DiscreteVariable* >::onNodes __variableMap;
+
+      /// Mapping between var and node
+      HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
+
+      /// Mapping between variable's values and associated node
+      typename Property< HashTable< Idx, NodeId >* >::onNodes __arcMap;
+
+      /// Mapping between variable's values and associated node
+      typename Property< NodeId >::onNodes __defaultArcMap;
+
+      /// Name of this multiDim
+      std::string __name;
+
+      ///Just a boolean to indicates if diagram has been instanciated or not
+      bool __isInstanciated;
+
+      ///And another one to indicates if diagram is in instanciation or not
+      bool __instanciationModeOn;
+  };
 
 } /* namespace gum */
 

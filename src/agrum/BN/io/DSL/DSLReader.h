@@ -29,8 +29,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
+
 #include <agrum/BN/io/DSL/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
@@ -64,7 +63,7 @@ public:
      */
 	~DSLReader();
 
-	
+
 	/// Direct access to DSL scanner (mandatory for listener connection)
 	/// @throws IOError if file not exists
 	DSL::Scanner& scanner();
@@ -111,8 +110,8 @@ public:
 	void showErrorCounts();
 	/// @}
 
-    
-    
+
+
 protected:
 	BayesNet<T_DATA>* __bn;
 	BayesNetFactory<T_DATA>* __factory;
@@ -125,7 +124,7 @@ protected:
 
 	// a boolean to throw the ioerror not in the constructor but in the proceed()
 	bool __ioerror;
-      
+
   };
 
 
@@ -136,6 +135,6 @@ protected:
 #endif //DSLREADER_H
 
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
 
 

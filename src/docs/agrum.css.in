@@ -41,6 +41,13 @@ BODY,TD {
   background: #EEF1F7;
 }
 
+#nav-path li {
+  display:inline;
+}
+#nav-path li:before {
+  content: "»";
+}
+
 H1 {
        text-align: center;
        font-size: 180%;

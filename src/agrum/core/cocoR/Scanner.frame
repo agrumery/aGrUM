@@ -30,8 +30,8 @@ Scanner.h Specification
 -----------------------------------------------------------------------*/
 -->begin
 
-#if !defined(COCO_SCANNER_H__)
-#define COCO_SCANNER_H__
+#if !defined(-->prefixCOCO_SCANNER_H__)
+#define -->prefixCOCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -374,11 +374,11 @@ int Buffer::Peek() {
 // beg .. begin, zero-based, inclusive, in byte
 // end .. end, zero-based, exclusive, in byte
 wchar_t* Buffer::GetString(int beg, int end) {
-	int len = end - beg;
-	wchar_t *buf = new wchar_t[len];
+	int len = 0;
+	wchar_t *buf = new wchar_t[end - beg];
 	int oldPos = GetPos();
 	SetPos(beg);
-	for (int i = 0; i < len; ++i) buf[i] = (wchar_t) Read();
+	while (GetPos() < end) buf[len++] = (wchar_t) Read();
 	SetPos(oldPos);
 	wchar_t *res = coco_string_create(buf, 0, len);
 	coco_string_delete(buf);

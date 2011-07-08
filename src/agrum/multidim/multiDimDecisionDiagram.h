@@ -22,13 +22,14 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan 
+ * @author Jean-Christophe Magnan
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_H
 // ============================================================================
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/exactPolicy.h>
 // ============================================================================
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
@@ -36,93 +37,100 @@
 
 namespace gum {
 
-template< typename T, template<class> class IApproximationPolicy>
-class MultiDimDecisionDiagramFactory;
+  template< typename T, template<class> class IApproximationPolicy>
+  class MultiDimDecisionDiagramFactory;
 
-/**
- * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
- * @brief Class implementingting an decision diagram model
- * For description of general methods, please refer to multidimdecisiondiagrambase
- * For specific implementation and use of multidimdecisiondiagram this is the right place :
- * The idea is that approximation policy is given as a template class to this class ( please 
- * refer to approximationpolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
- * this class. 
- * A default classe exists : Exact Policy whixh commit no approximation on value given. As a default
- * you just have to declare MultiDimDecisionDiagram<T_DATA> and play with.
- * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<T_DATA, CLASS_DESCRIBING_NEW_PATTERN>.
- * Therefor, if do operation on MultiDimDecisionDiagram the return type will likely be MultiDimDecisionDiagramBase
- * @ingroup multidim_group
- *
- */
-template<typename T_DATA,template <class> class IApproximationPolicy  = ExactPolicy>
+  /**
+   * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
+   * @brief Class implementingting a decision diagram model
+   * For description of general methods, please refer to multidimdecisiondiagrambase
+   * For specific implementation and use of multidimdecisiondiagram this is the right place :
+   * The idea is that approximation policy is given as a template class to this class ( please
+   * refer to agrum/core/approximationPolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
+   * this class.
+   * A default classe exists : Exact Policy whixh commit no approximation on value given. As a default
+   * you just have to declare MultiDimDecisionDiagram<T_DATA> and play with.
+   * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<T_DATA, CLASS_DESCRIBING_NEW_PATTERN>.
+   * Therefor, if do operation on MultiDimDecisionDiagram the return type will likely be MultiDimDecisionDiagramBase
+   * @ingroup multidim_group
+   *
+   */
+  template<typename T_DATA,template <class> class IApproximationPolicy  = ExactPolicy>
 
-class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<T_DATA>, public IApproximationPolicy<T_DATA> {
+  class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<T_DATA>, public IApproximationPolicy<T_DATA> {
 
-public:
+    public:
 
-    // ===========================================================================
-    /// @name Constructors / Destructors
-    // ===========================================================================
-    /// @{
+      // ===========================================================================
+      /// @name Constructors / Destructors
+      // ===========================================================================
+      /// @{
 
-    /**
-     * Default constructor.
-     */
-    MultiDimDecisionDiagram( );
+      /**
+       * Default constructor.
+       */
+      MultiDimDecisionDiagram( );
 
-    /**
-     * Destructor.
-     */
-    ~MultiDimDecisionDiagram();
+      /** Constructor<T_DATA>
+       */
+      MultiDimDecisionDiagram( const IApproximationPolicy<T_DATA>& md );
 
-    /// @}
+      /**
+       * Destructor.
+       */
+      ~MultiDimDecisionDiagram();
 
-    // ===========================================================================
-    /// @name Various Methods
-    // ===========================================================================
-    /// @{
+      /// @}
 
-	/**
-	 * This method creates a clone of this object, without its content
-	 * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
-     MultiDimContainer<T_DATA>* newFactory() const;	 
-	
-	///@}
-	
-    // ===========================================================================
-    /// @name Approximation Handling functions
-    // ===========================================================================
-    /// @{
-	
-	/**
-	 * Returns a factory that used same approximation pattern
-	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const;
-	 	
-	/**
-	 * Returns a factory that used same approximation pattern
-	 * Allows to set parameter for that approximation
-	 */
-	 virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( T_DATA epsilon, T_DATA lowLimit, T_DATA highLimit) const;
-	 
-	/// Convert value to approximation representation
-	inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
-	 
-	
-	///@}
+      // ===========================================================================
+      /// @name Various Methods
+      // ===========================================================================
+      /// @{
 
-protected :
-};
+      /**
+       * This method creates a clone of this object, without its content
+       * (including variable), you must use this method if you want to ensure
+       * that the generated object has the same type than the object containing
+       * the called newFactory()
+       * For example :
+       *   MultiDimArray<double> y;
+       *   MultiDimContainer<double>* x = y.newFactory();
+       * Then x is a MultiDimArray<double>*
+       *
+       * @warning you must desallocate by yourself the memory
+       * @return an empty clone of this object with the same type
+       */
+      MultiDimContainer<T_DATA>* newFactory() const;
+
+      ///@}
+
+      // ===========================================================================
+      /// @name Approximation Handling functions
+      // ===========================================================================
+      /// @{
+
+      /**
+       * Returns a factory that used same approximation pattern
+       */
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const;
+      
+      /**
+       * Returns a factory that used same approximation pattern
+       * Allows to set parameter for that approximation
+       */
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const ;
+      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md  ,T_DATA newLowLimit,T_DATA newHighLimit) const ;
+
+      /// Convert value to approximation representation
+      inline T_DATA fromExact( const T_DATA& value ) const {
+        return IApproximationPolicy<T_DATA>::fromExact( value );
+      };
+
+
+      ///@}
+
+    protected :
+  };
 
 } /* namespace gum */
 

@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(COCO_SCANNER_H__)
-#define COCO_SCANNER_H__
+#if !defined(gum_DSL_COCO_SCANNER_H__)
+#define gum_DSL_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>

@@ -159,8 +159,8 @@ void Parser::Net() {
 					std::string merge;
 					merge="(";
 					for(Size i=0;i<vals.size();i++) {
-					  if (i>0) merge+=",";
-					  merge+=vals[i];
+					 if (i>0) merge+=",";
+					 merge+=vals[i];
 					}
 					merge+=')';
 					factory().addNetworkProperty(prop,merge);
@@ -189,9 +189,9 @@ void Parser::NODE() {
 		std::vector<std::string> vals;
 		bool labels_done=false;;
 		
-		      TRY( factory().startVariableDeclaration());
-		      TRY( factory().variableName(var));
-		      
+		TRY( factory().startVariableDeclaration());
+		TRY( factory().variableName(var));
+		
 		Expect(8);
 		while (la->kind == 1) {
 			IDENT(prop);
@@ -250,10 +250,10 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 				   TRY(factory().addParent(parents[i-1]));
 				}
 				
-				        for(Size i=0;i<parents.size();i++) {
-				          var_seq.push_back(parents[i]);
-				        }
-				    
+				for(Size i=0;i<parents.size();i++) {
+				 var_seq.push_back(parents[i]);
+				}
+				
 			}
 		}
 		Expect(6);
@@ -329,6 +329,93 @@ void Parser::EXPERIENCE() {
 
 
 
+// If the user declared a method Init and a mehtod Destroy they should
+// be called in the contructur and the destructor respctively.
+//
+// The following templates are used to recognize if the user declared
+// the methods Init and Destroy.
+
+template<typename T>
+struct ParserInitExistsRecognizer {
+	template<typename U, void (U::*)() = &U::Init>
+	struct ExistsIfInitIsDefinedMarker{};
+
+	struct InitIsMissingType {
+		char dummy1;
+	};
+	
+	struct InitExistsType {
+		char dummy1; char dummy2;
+	};
+
+	// exists always
+	template<typename U>
+	static InitIsMissingType is_here(...);
+
+	// exist only if ExistsIfInitIsDefinedMarker is defined
+	template<typename U>
+	static InitExistsType is_here(ExistsIfInitIsDefinedMarker<U>*);
+
+	enum { InitExists = (sizeof(is_here<T>(NULL)) == sizeof(InitExistsType)) };
+};
+
+template<typename T>
+struct ParserDestroyExistsRecognizer {
+	template<typename U, void (U::*)() = &U::Destroy>
+	struct ExistsIfDestroyIsDefinedMarker{};
+
+	struct DestroyIsMissingType {
+		char dummy1;
+	};
+	
+	struct DestroyExistsType {
+		char dummy1; char dummy2;
+	};
+
+	// exists always
+	template<typename U>
+	static DestroyIsMissingType is_here(...);
+
+	// exist only if ExistsIfDestroyIsDefinedMarker is defined
+	template<typename U>
+	static DestroyExistsType is_here(ExistsIfDestroyIsDefinedMarker<U>*);
+
+	enum { DestroyExists = (sizeof(is_here<T>(NULL)) == sizeof(DestroyExistsType)) };
+};
+
+// The folloing templates are used to call the Init and Destroy methods if they exist.
+
+// Generic case of the ParserInitCaller, gets used if the Init method is missing
+template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+struct ParserInitCaller {
+	static void CallInit(T *t) {
+		// nothing to do
+	}
+};
+
+// True case of the ParserInitCaller, gets used if the Init method exists
+template<typename T>
+struct ParserInitCaller<T, true> {
+	static void CallInit(T *t) {
+		t->Init();
+	}
+};
+
+// Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
+template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+struct ParserDestroyCaller {
+	static void CallDestroy(T *t) {
+		// nothing to do
+	}
+};
+
+// True case of the ParserDestroyCaller, gets used if the Destroy method exists
+template<typename T>
+struct ParserDestroyCaller<T, true> {
+	static void CallDestroy(T *t) {
+		t->Destroy();
+	}
+};
 void Parser::Parse() {
 	t = NULL;
 	la = dummyToken = new Token();
@@ -341,6 +428,7 @@ void Parser::Parse() {
 Parser::Parser(Scanner *scanner) {
 	maxT = 17;
 
+	ParserInitCaller<Parser>::CallInit(this);
 	dummyToken = NULL;
 	t = la = NULL;
 	minErrDist = 2;
@@ -363,6 +451,7 @@ bool Parser::StartOf(int s) {
 }
 
 Parser::~Parser() {
+	ParserDestroyCaller<Parser>::CallDestroy(this);
 	delete dummyToken;
 }
 void Parser::SemErr(const wchar_t* msg) {

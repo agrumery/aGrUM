@@ -70,8 +70,6 @@ public:
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
 #include <agrum/BN/io/BIF/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
@@ -185,4 +183,4 @@ namespace gum {
 
 #endif // BIF_READER_H
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

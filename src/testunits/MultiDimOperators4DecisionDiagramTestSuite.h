@@ -31,7 +31,8 @@
 #include "testsuite_utils.h"
 // =====================================================================
 #include <agrum/core/exceptions.h>
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
 // =====================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/labelizedVariable.h>
@@ -49,32 +50,116 @@ namespace gum {
 			class MultiDimOperators4DecisionDiagramTestSuite: public CxxTest::TestSuite {
 			
 			private :
+				
+				// ================================================================================================
+				// Génération fixe d'une liste de variable
+				// ================================================================================================
+				Sequence< const DiscreteVariable* >* generateFixVarList(){
+					
+					Sequence< const DiscreteVariable* >* ret = new Sequence< const DiscreteVariable* >();
+					
+					ret->insert( new LabelizedVariable( "A", "", 2 ) );
+					
+					ret->insert( new LabelizedVariable( "B", "", 2 ) );
+					
+					ret->insert( new LabelizedVariable( "C", "", 2 ) );
+					
+					return ret;
+					
+				}
+				// ================================================================================================
 			
 				// ================================================================================================
 				// Génération aléatoire d'une liste de 10 variables
 				// ================================================================================================
 				Sequence< const DiscreteVariable* >* generateRandomVarList( int i ){
-					srand(i);
+					srand(time(NULL) + i);
 					Sequence< const DiscreteVariable* >* ret = new Sequence< const DiscreteVariable* >();
 					
-					for( int i = 0; i < 10; i++ ){
+					for( int j = 0; j < 10; j++ ){
 						std::stringstream varName;
-						varName << "var" << i;
+						varName << "var" << j;
 						ret->insert( new LabelizedVariable( varName.str(), "", 2 + rand()%2 ) );
 					}
 					return ret;
+				}
+				// ================================================================================================
+			
+				// ================================================================================================
+				// Brassage aléatoire d'une liste de 10 variables
+				// ================================================================================================
+				void shuffleVarList( Sequence< const DiscreteVariable* >* varList, int i ){
+					srand(time(NULL) + i);
+					
+					for( int j = 0; j < 10; j++ )
+						varList->swap( rand()%(varList->size() ), rand()%(varList->size() ) );
+				}
+				// ================================================================================================
+				
+				// ================================================================================================
+				// Génération fixe de diagramme de décision
+				// ================================================================================================
+				MultiDimDecisionDiagramBase<float>* generateDecisionDiagram1( const Sequence< const DiscreteVariable* >* varList){
+					
+					MultiDimDecisionDiagramFactory<float> facto;
+					facto.specifyVariablesSequence(  *varList );
+					NodeId a = facto.addNonTerminalNode( *( varList->atPos( 0 ) ) );
+					NodeId b = facto.addNonTerminalNode( *( varList->atPos( 1 ) ) );
+					NodeId c = facto.addNonTerminalNode( *( varList->atPos( 2 ) ) );
+					
+					NodeId d = facto.addTerminalNode( 6 );
+					NodeId e = facto.addTerminalNode( 2 );
+					NodeId g = facto.addTerminalNode( 3 );
+					
+					facto.insertArc( a, b, 0 );
+					facto.insertArc( a, c, 1 );
+					
+					facto.insertArc( b, d, 0 );
+					facto.insertArc( b, c, 1 );
+					
+					facto.insertArc( c, e, 0 );
+					facto.insertArc( c, g, 1 );
+					
+					return facto.getMultiDimDecisionDiagram(false);
+					
+				}
+				// ================================================================================================
+				
+				// ================================================================================================
+				// Génération fixe de diagramme de décision
+				// ================================================================================================
+				MultiDimDecisionDiagramBase<float>* generateDecisionDiagram2( const Sequence< const DiscreteVariable* >* varList){
+					
+					MultiDimDecisionDiagramFactory<float> facto;
+					facto.specifyVariablesSequence(  *varList );
+					NodeId a = facto.addNonTerminalNode( *( varList->atPos( 0 ) ) );
+					NodeId c = facto.addNonTerminalNode( *( varList->atPos( 2 ) ) );
+					
+					NodeId d = facto.addTerminalNode( 4 );
+					NodeId e = facto.addTerminalNode( 5 );
+					NodeId g = facto.addTerminalNode( 1 );
+					
+					facto.insertArc( a, d, 0 );
+					facto.insertArc( a, c, 1 );
+					
+					facto.insertArc( c, e, 0 );
+					facto.insertArc( c, g, 1 );
+					
+					return facto.getMultiDimDecisionDiagram(false);
+					
 				}
 				// ================================================================================================
 				
 				// ================================================================================================
 				// Génération aléatoire de diagramme de décision
 				// ================================================================================================
-				MultiDimDecisionDiagramBase<float>* generateRandomfloatDecisionDiagram(Sequence< const DiscreteVariable* >* varList, MultiDimDecisionDiagramFactoryBase<float>* f = NULL) {
+				MultiDimDecisionDiagramBase<float>* generateRandomfloatDecisionDiagram( const Sequence< const DiscreteVariable* >* varList, int i, MultiDimDecisionDiagramFactoryBase<float>* f = NULL ) {
 					
+					srand( time(NULL) + i );
 					MultiDimDecisionDiagramBase<float>* ret = NULL;
 					bool factoryCreatedHere = false;
 					
-					while( ret == NULL || ( ret->diagramVarSize() > 5 ) ){
+					while( ret == NULL || ( ret->diagramVarSize() < 3 ) || ( ret->diagramVarSize() > 5 ) ){
 						
 						if( ret != NULL )
 							delete ret;
@@ -82,7 +167,6 @@ namespace gum {
 						if( f == NULL ){
 							factoryCreatedHere = true;
 							f = new MultiDimDecisionDiagramFactory<float>();
-							f->setEpsilon( 1 );
 							f->setLowLimit( -100 );
 							f->setHighLimit( 100 );
 						}
@@ -176,78 +260,6 @@ namespace gum {
 					if( factoryCreatedHere )
 						delete f;
 					return ret;
-				}
-				// ================================================================================================
-				
-				// ================================================================================================
-				// Génération fixe d'une liste de variable
-				// ================================================================================================
-				Sequence< const DiscreteVariable* >* generateFixVarList(){
-					
-					Sequence< const DiscreteVariable* >* ret = new Sequence< const DiscreteVariable* >();
-					
-					ret->insert( new LabelizedVariable( "A", "", 2 ) );
-					
-					ret->insert( new LabelizedVariable( "B", "", 2 ) );
-					
-					ret->insert( new LabelizedVariable( "C", "", 2 ) );
-					
-					return ret;
-					
-				}
-				// ================================================================================================
-				
-				// ================================================================================================
-				// Génération fixe de diagramme de décision
-				// ================================================================================================
-				MultiDimDecisionDiagramBase<float>* generateDecisionDiagram1(Sequence< const DiscreteVariable* >* varList){
-					
-					MultiDimDecisionDiagramFactory<float> f;
-					f.specifyVariablesSequence(  *varList );
-					NodeId a = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
-					NodeId b = f.addNonTerminalNode( *( varList->atPos( 1 ) ) );
-					NodeId c = f.addNonTerminalNode( *( varList->atPos( 2 ) ) );
-					
-					NodeId d = f.addTerminalNode( 6 );
-					NodeId e = f.addTerminalNode( 2 );
-					NodeId g = f.addTerminalNode( 3 );
-					
-					f.insertArc( a, b, 0 );
-					f.insertArc( a, c, 1 );
-					
-					f.insertArc( b, d, 0 );
-					f.insertArc( b, c, 1 );
-					
-					f.insertArc( c, e, 0 );
-					f.insertArc( c, g, 1 );
-					
-					return f.getMultiDimDecisionDiagram(false);
-					
-				}
-				// ================================================================================================
-				
-				// ================================================================================================
-				// Génération fixe de diagramme de décision
-				// ================================================================================================
-				MultiDimDecisionDiagramBase<float>* generateDecisionDiagram2(Sequence< const DiscreteVariable* >* varList){
-					
-					MultiDimDecisionDiagramFactory<float> f;
-					f.specifyVariablesSequence(  *varList );
-					NodeId a = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
-					NodeId c = f.addNonTerminalNode( *( varList->atPos( 2 ) ) );
-					
-					NodeId d = f.addTerminalNode( 4 );
-					NodeId e = f.addTerminalNode( 5 );
-					NodeId g = f.addTerminalNode( 1 );
-					
-					f.insertArc( a, d, 0 );
-					f.insertArc( a, c, 1 );
-					
-					f.insertArc( c, e, 0 );
-					f.insertArc( c, g, 1 );
-					
-					return f.getMultiDimDecisionDiagram(false);
-					
 				}
 				// ================================================================================================
 				
@@ -395,89 +407,98 @@ namespace gum {
 					// Then we try with random structure
 					// =====================================================================================
 					
-					//~ for(int i = 0; i < 10; i++ ){
-						//~ 
-						//~ Sequence< const DiscreteVariable* >* varList = generateRandomVarList( i + 1 );
-						//~ 
-						//~ sleep(1);
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a1 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a1 = generateRandomfloatDecisionDiagram(varList) );
-						//~ 
-						//~ sleep(1);
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a2 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a2 = generateRandomfloatDecisionDiagram(varList) );
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a3 = NULL;
-						//~ 
-						//~ //Test addition
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
-								//~ if( a3->get(inst) != a1->get(inst) + a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Substraction
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 0.01 );
-								//~ if( a3->get(inst) != a1->get(inst) - a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Multiplication
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 0.01 );
-								//~ if( a3->get(inst) != a1->get(inst) * a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Maximum
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst), 0.01 );
-								//~ if( a3->get(inst) != ( a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst) ))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ delete a1;
-						//~ delete a2;
-						//~ 
-						//~ for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
-							//~ delete *ite;
-						//~ delete varList;
-					//~ }
+					for(int i = 0; i < 100; i++ ){
+						
+						Sequence< const DiscreteVariable* >* varList = generateRandomVarList( i + 1 );						
+						shuffleVarList( varList, i + 2 );
+						
+						//~ std::cout << std::endl << " Sequence variable : ";
+						//~ for( SequenceIterator< const DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+							//~ std::cout << (*iter)->toString() << " - ";
+						//~ std::cout << std::endl;
+						MultiDimDecisionDiagramBase<float>* a1 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a1 = generateRandomfloatDecisionDiagram(varList, i + 3) );
+						//~ std::cout << std::endl << a1->toDot();
+						
+						shuffleVarList( varList, i + 4 );
+						
+						//~ std::cout << std::endl << " Sequence variable : ";
+						//~ for( SequenceIterator< const DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+							//~ std::cout << (*iter)->toString() << " - ";
+						//~ std::cout << std::endl;
+						MultiDimDecisionDiagramBase<float>* a2 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a2 = generateRandomfloatDecisionDiagram(varList, i + 5) );
+						//~ std::cout << std::endl << a2->toDot();
+						
+						MultiDimDecisionDiagramBase<float>* a3 = NULL;
+						
+						//Test addition
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
+								if( a3->get(inst) != a1->get(inst) + a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Substraction
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 0.01 );
+								if( a3->get(inst) != a1->get(inst) - a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Multiplication
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 0.01 );
+								if( a3->get(inst) != a1->get(inst) * a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Maximum
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst), 0.01 );
+								if( a3->get(inst) != ( a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst) ))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						delete a1;
+						delete a2;
+						
+						for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+							delete *ite;
+						delete varList;
+					}
 				}
 				// ================================================================================================
 				
@@ -498,15 +519,23 @@ namespace gum {
 					
 					//Test addition
 					TS_GUM_ASSERT_THROWS_NOTHING( a3 = (MultiDimDecisionDiagramBase<float>*) ( a1 + a2 ) );	
+					if( a3 != NULL )
+						delete a3;
 					
 					//Test subtraction
 					TS_GUM_ASSERT_THROWS_NOTHING( a3 = (MultiDimDecisionDiagramBase<float>*) ( a1 - a2 ) );	
+					if( a3 != NULL )
+						delete a3;
 					
 					//Test multiplication
 					TS_GUM_ASSERT_THROWS_NOTHING( a3 = (MultiDimDecisionDiagramBase<float>*) ( a1 * a2 ) );	
+					if( a3 != NULL )
+						delete a3;
 					
 					//Test division
 					TS_GUM_ASSERT_THROWS_NOTHING( a3 = (MultiDimDecisionDiagramBase<float>*) ( a1 / a2 ) );	
+					if( a3 != NULL )
+						delete a3;
 				}				
 				
 				// ================================================================================================
@@ -659,101 +688,312 @@ namespace gum {
 					// =====================================================================================
 					// Then we try with random structure
 					// =====================================================================================
-					//~ for(int i = 0; i < 10; i++ ){
-										//~ 
-						//~ f.clear();
-						//~ f.setEpsilon( 7 );
-						//~ f.setLowLimit( -42 );
-						//~ f.setHighLimit( 69 );
-						//~ 
-						//~ Sequence< const DiscreteVariable* >* varList = generateRandomVarList( i + 1 );
-						//~ 
-						//~ sleep(1);
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a1 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a1 = generateRandomfloatDecisionDiagram(varList, &f) );
-						//~ 
-						//~ sleep(1);
-						//~ 
-										//~ 
-						//~ f.clear();
-						//~ f.setEpsilon( 11 );
-						//~ f.setLowLimit( -53 );
-						//~ f.setHighLimit( 79 );
-						//~ MultiDimDecisionDiagramBase<float>* a2 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a2 = generateRandomfloatDecisionDiagram(varList, &f) );
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a3 = NULL;
-						//~ //Test addition
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 7 );
-								//~ if( a3->get(inst) != a1->get(inst) + a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Substraction
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 7 );
-								//~ if( a3->get(inst) != a1->get(inst) - a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Multiplication
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 7 );
-								//~ if( a3->get(inst) != a1->get(inst) * a2->get(inst))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ // Test Maximum
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );	
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ bool haserror = false;
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ float v1 = a1->get(inst), v2 = a2->get(inst);
-								//~ float max = (v1>=v2?v1:v2);				
-								//~ TS_ASSERT_DELTA( a3->get(inst), max, 7 );
-								//~ if( a3->get(inst) != ( max ))
-									//~ haserror = true;
-							//~ }
-							//~ if( haserror )
-								//~ saveDiagrams(varList, a1, a2, a3);
-							//~ delete a3;
-						//~ }
-						//~ 
-						//~ delete a1;
-						//~ delete a2;
-						//~ 
-						//~ for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
-							//~ delete *ite;
-						//~ delete varList;
-					//~ }
+					for(int i = 0; i < 100; i++ ){
+						
+						Sequence< const DiscreteVariable* >* varList = generateRandomVarList( i + 1 );						
+						shuffleVarList( varList, i + 2 );
+						//~ std::cout << std::endl << " Sequence variable : ";
+						//~ for( SequenceIterator< const DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+							//~ std::cout << (*iter)->toString() << " - ";
+						//~ std::cout << std::endl;
+						
+						f.clear();
+						f.setEpsilon( 7 );
+						f.setLowLimit( -42 );
+						f.setHighLimit( 69 );
+						
+						MultiDimDecisionDiagramBase<float>* a1 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a1 = generateRandomfloatDecisionDiagram(varList, i + 3, &f) );
+						//~ std::cout << std::endl << a1->toDot();
+						
+						shuffleVarList( varList, i + 4 );						
+						//~ std::cout << std::endl << " Sequence variable : ";
+						//~ for( SequenceIterator< const DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+							//~ std::cout << (*iter)->toString() << " - ";
+						//~ std::cout << std::endl;
+						
+						f.clear();
+						f.setEpsilon( 11 );
+						f.setLowLimit( -53 );
+						f.setHighLimit( 79 );
+						
+						MultiDimDecisionDiagramBase<float>* a2 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a2 = generateRandomfloatDecisionDiagram(varList, i + 5, &f) );
+						//~ std::cout << std::endl << a2->toDot();
+						
+						MultiDimDecisionDiagramBase<float>* a3 = NULL;
+						
+						//Test addition
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 7 );
+								if( a3->get(inst) != a1->get(inst) + a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Substraction
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 7 );
+								if( a3->get(inst) != a1->get(inst) - a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Multiplication
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 7 );
+								if( a3->get(inst) != a1->get(inst) * a2->get(inst))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						// Test Maximum
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );	
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							bool haserror = false;
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								float v1 = a1->get(inst), v2 = a2->get(inst);
+								float max = (v1>=v2?v1:v2);				
+								TS_ASSERT_DELTA( a3->get(inst), max, 7 );
+								if( a3->get(inst) != ( max ))
+									haserror = true;
+							}
+							if( haserror )
+								saveDiagrams(varList, a1, a2, a3);
+							delete a3;
+						}
+						
+						delete a1;
+						delete a2;
+						
+						for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+							delete *ite;
+						delete varList;
+					}
 				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				void _Reproducteur(){
+					
+					//~ LabelizedVariable* v0 = new LabelizedVariable( "0", "", 3 );
+					//~ LabelizedVariable* v1 = new LabelizedVariable( "1", "", 3 );
+					//~ LabelizedVariable* v2 = new LabelizedVariable( "2", "", 2 );
+					//~ LabelizedVariable* v3 = new LabelizedVariable( "3", "", 2 );
+					//~ LabelizedVariable* v4 = new LabelizedVariable( "4", "", 3 );
+					//~ LabelizedVariable* v5 = new LabelizedVariable( "5", "", 3 );
+					//~ LabelizedVariable* v6 = new LabelizedVariable( "6", "", 3 );
+					//~ LabelizedVariable* v7 = new LabelizedVariable( "7", "", 2 );
+					//~ LabelizedVariable* v8 = new LabelizedVariable( "8", "", 2 );
+					//~ LabelizedVariable* v9 = new LabelizedVariable( "9", "", 3 );				
+					//~ 
+										//~ 
+					//~ 
+					//~ MultiDimDecisionDiagramFactory<float> facto;
+					//~ 
+					//~ 
+					//~ Sequence< const DiscreteVariable* > seq;
+					//~ seq.insert( v6 );
+					//~ seq.insert( v5 );
+					//~ seq.insert( v1 );
+					//~ seq.insert( v9 );
+					//~ seq.insert( v2 );
+					//~ seq.insert( v3 );
+					//~ seq.insert( v0 );
+					//~ seq.insert( v7 );
+					//~ seq.insert( v8 );
+					//~ seq.insert( v4 );
+					//~ std::cout << std::endl << " Sequence variable : ";
+					//~ for( SequenceIterator< const DiscreteVariable* > iter = seq.begin(); iter != seq.end(); ++iter )
+						//~ std::cout << (*iter)->toString() << " - ";
+					//~ std::cout << std::endl;
+					//~ 
+					//~ facto.specifyVariablesSequence( seq );
+					//~ 
+					//~ NodeId n111 = facto.addNonTerminalNode( *v1 );
+					//~ NodeId n121 = facto.addNonTerminalNode( *v2 );
+					//~ NodeId n141 = facto.addNonTerminalNode( *v4 );
+					//~ NodeId n181 = facto.addNonTerminalNode( *v8 );
+					//~ NodeId n182 = facto.addNonTerminalNode( *v8 );
+					//~ NodeId n191 = facto.addNonTerminalNode( *v9 );
+					//~ 
+					//~ NodeId n1t38 = facto.addTerminalNode( 38 );
+					//~ NodeId n1t27 = facto.addTerminalNode( 27 );
+					//~ NodeId n1tm93 = facto.addTerminalNode( -93 );
+					//~ NodeId n1t2 = facto.addTerminalNode( 2 );
+					//~ NodeId n1tm50 = facto.addTerminalNode( -50 );
+					//~ NodeId n1t61 = facto.addTerminalNode( 61 );
+					//~ 
+					//~ facto.insertArc( n111, n191, 0 );
+					//~ facto.insertArc( n111, n1t38, 1 );
+					//~ 
+					//~ facto.insertArc( n121, n182, 0 );
+					//~ facto.insertArc( n121, n1t27, 1 );
+					//~ 
+					//~ facto.insertArc( n141, n1t2, 0 );
+					//~ facto.insertArc( n141, n1tm50, 1 );
+					//~ facto.insertArc( n141, n1t61, 2 );
+					//~ 
+					//~ facto.insertArc( n181, n141, 0 );
+					//~ 
+					//~ facto.insertArc( n182, n1tm93, 0 );
+					//~ 
+					//~ facto.insertArc( n191, n121, 0 );
+					//~ facto.insertArc( n191, n181, 1 );
+					//~ 
+					//~ MultiDimDecisionDiagramBase<float>* a1 = facto.getMultiDimDecisionDiagram();
+					//~ std::cout << std::endl << a1->toDot();
+					//~ 
+					//~ 
+					//~ 
+					//~ facto.clear();
+					//~ seq.clear();
+					//~ seq.insert( v8 );
+					//~ seq.insert( v5 );
+					//~ seq.insert( v6 );
+					//~ seq.insert( v9 );
+					//~ seq.insert( v4 );
+					//~ seq.insert( v3 );
+					//~ seq.insert( v0 );
+					//~ seq.insert( v1 );
+					//~ seq.insert( v7 );
+					//~ seq.insert( v2 );
+					//~ std::cout << std::endl << " Sequence variable : ";
+					//~ for( SequenceIterator< const DiscreteVariable* > iter = seq.begin(); iter != seq.end(); ++iter )
+						//~ std::cout << (*iter)->toString() << " - ";
+					//~ std::cout << std::endl;
+					//~ 
+					//~ facto.specifyVariablesSequence( seq );
+					//~ 
+					//~ NodeId n201 = facto.addNonTerminalNode( *v0 );
+					//~ NodeId n211 = facto.addNonTerminalNode( *v1 );
+					//~ NodeId n221 = facto.addNonTerminalNode( *v2 );
+					//~ NodeId n222 = facto.addNonTerminalNode( *v2 );
+					//~ NodeId n241 = facto.addNonTerminalNode( *v4 );
+					//~ NodeId n251 = facto.addNonTerminalNode( *v5 );
+					//~ 
+					//~ NodeId n2t59 = facto.addTerminalNode( 59 );
+					//~ NodeId n2t12 = facto.addTerminalNode( 12 );
+					//~ NodeId n2t92 = facto.addTerminalNode( 92 );
+					//~ NodeId n2tm93 = facto.addTerminalNode( -93 );
+					//~ NodeId n2tm99 = facto.addTerminalNode( -99 );
+					//~ 
+					//~ facto.insertArc( n201, n211, 0 );
+					//~ 
+					//~ facto.insertArc( n211, n221, 0 );
+					//~ facto.insertArc( n211, n222, 1 );
+					//~ 
+					//~ facto.insertArc( n221, n2t92, 0 );
+					//~ facto.insertArc( n221, n2t92, 1 );
+					//~ 
+					//~ facto.insertArc( n222, n2tm93, 0 );
+					//~ facto.insertArc( n222, n2tm99, 1 );
+					//~ 
+					//~ facto.insertArc( n241, n2t12, 0 );
+					//~ 
+					//~ facto.insertArc( n251, n2t59, 0 );					
+					//~ facto.insertArc( n251, n201, 1 );					
+					//~ facto.insertArc( n251, n241, 2 );
+					//~ 
+					//~ MultiDimDecisionDiagramBase<float>* a2 = facto.getMultiDimDecisionDiagram();
+					//~ std::cout << std::endl << a2->toDot();
+					//~ 
+					//~ 
+					//~ 
+					//~ MultiDimDecisionDiagramBase<float>* a3 = NULL;
+					//~ 
+					//~ //Test addition
+					//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );					
+					//~ if( a3 != NULL ){
+						//~ Instantiation inst(a3);
+						//~ bool haserror = false;
+						//~ for( inst.setFirst(); ! inst.end(); ++inst ){
+							//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
+							//~ if( a3->get(inst) != a1->get(inst) + a2->get(inst))
+								//~ haserror = true;
+						//~ }
+						//~ if( haserror )
+							//~ saveDiagrams(varList, a1, a2, a3);
+						//~ delete a3;
+					//~ }
+					//~ 
+					//~ delete a1;
+					//~ delete a2;
+					//~ 
+					//~ delete  v0;
+					//~ delete  v1;
+					//~ delete  v2;
+					//~ delete  v3;
+					//~ delete  v4;
+					//~ delete  v5;
+					//~ delete  v6;
+					//~ delete  v7;
+					//~ delete  v8;
+					//~ delete  v9;
+				}
+				// ================================================================================================
 			
 		};
 	}
