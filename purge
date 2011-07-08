@@ -1,0 +1,9 @@
+#! /bin/sh
+echo "Purge tool - aGrUM 2011"
+echo "cleans aGrum and removes cocoR generated files."
+echo "If cocoR is not installed, just 'svn update'' to retrieve removed files."
+python act clean
+find . -name "Parser.h" -print | xargs rm -f
+find . -name "Parser.cpp" -print | xargs rm -f
+find . -name "Scanner.h" -print | xargs rm -f
+find . -name "Scanner.cpp" -print | xargs rm -f

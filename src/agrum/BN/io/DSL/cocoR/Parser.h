@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(COCO_PARSER_H__)
-#define COCO_PARSER_H__
+#if !defined(gum_DSL_COCO_PARSER_H__)
+#define gum_DSL_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
 

@@ -279,13 +279,13 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 		gum::Size i;
 		TRY(factory().startParentsDeclaration(var));
 		
-					for(i = 0; i < parents.size(); i++){
-							TRY(factory().variableId(parents[i]));
-							TRY(factory().addParent(parents[i]));
-					}
+		for(i = 0; i < parents.size(); i++){
+			TRY(factory().variableId(parents[i]));
+			TRY(factory().addParent(parents[i]));
+		}
 		
-					TRY(factory().endParentsDeclaration());
-				
+		TRY(factory().endParentsDeclaration());
+		
 		PROBA(var, parents);
 		int nbr=0;
 		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
@@ -362,46 +362,46 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 		gum::Size i,j, k;
 		gum::Size res, max, nbLabels;
 		
-				res = factory().varInBN(factory().variableId(var)).domainSize();
+		res = factory().varInBN(factory().variableId(var)).domainSize();
 		
-				for(i = 0; i < parents.size(); i++){
-					res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
-				}
+		for(i = 0; i < parents.size(); i++){
+		res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
+		}
 		
-				//v.resize(res);
-				//prob	.resize(res);
+		//v.resize(res);
+		//prob	.resize(res);
 		
-			
+		
 		FLOAT_LIST(v);
 		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
 		max = res / nbLabels;
 		
-				j = 0;
-				k = 0;
-				for(i = 0; i < res; i++){
-					if(i%max == 0){
-						prob.push_back(v[k]);
-						k++; j=1;
-					}
-					else{
-						prob.push_back(v[j*nbLabels + k-1]);
-						j++;
-					}
-				}
+		j = 0;
+		k = 0;
+		for(i = 0; i < res; i++){
+		if(i%max == 0){
+			prob.push_back(v[k]);
+			k++; j=1;
+		}
+		else{
+			prob.push_back(v[j*nbLabels + k-1]);
+			j++;
+		}
+		}
 		
-				TRY(factory().startRawProbabilityDeclaration(var));
-		        gum::Size s=(gum::Size)0;
-		        TRY(s=factory().cptDomainSize(factory().variableId(var)));
-		        if ((int)prob.size()<(int)s) {
-							Warning("Not enough data for cpt of node "+var);
-						}
-		        if ((int)prob.size()>(int)s) {
-							Warning("Too many data for cpt of node "+var);
-						}
-		        TRY(factory().rawConditionalTable(prob));
-		        TRY(factory().endRawProbabilityDeclaration());
+		TRY(factory().startRawProbabilityDeclaration(var));
+		     gum::Size s=(gum::Size)0;
+		     TRY(s=factory().cptDomainSize(factory().variableId(var)));
+		     if ((int)prob.size()<(int)s) {
+				Warning("Not enough data for cpt of node "+var);
+			}
+		     if ((int)prob.size()>(int)s) {
+				Warning("Too many data for cpt of node "+var);
+			}
+		     TRY(factory().rawConditionalTable(prob));
+		     TRY(factory().endRawProbabilityDeclaration());
 		
-			
+		
 }
 
 void Parser::FLOAT_LIST(std::vector<float>& v ) {
@@ -433,6 +433,93 @@ void Parser::FLOAT(float& val) {
 
 
 
+// If the user declared a method Init and a mehtod Destroy they should
+// be called in the contructur and the destructor respctively.
+//
+// The following templates are used to recognize if the user declared
+// the methods Init and Destroy.
+
+template<typename T>
+struct ParserInitExistsRecognizer {
+	template<typename U, void (U::*)() = &U::Init>
+	struct ExistsIfInitIsDefinedMarker{};
+
+	struct InitIsMissingType {
+		char dummy1;
+	};
+	
+	struct InitExistsType {
+		char dummy1; char dummy2;
+	};
+
+	// exists always
+	template<typename U>
+	static InitIsMissingType is_here(...);
+
+	// exist only if ExistsIfInitIsDefinedMarker is defined
+	template<typename U>
+	static InitExistsType is_here(ExistsIfInitIsDefinedMarker<U>*);
+
+	enum { InitExists = (sizeof(is_here<T>(NULL)) == sizeof(InitExistsType)) };
+};
+
+template<typename T>
+struct ParserDestroyExistsRecognizer {
+	template<typename U, void (U::*)() = &U::Destroy>
+	struct ExistsIfDestroyIsDefinedMarker{};
+
+	struct DestroyIsMissingType {
+		char dummy1;
+	};
+	
+	struct DestroyExistsType {
+		char dummy1; char dummy2;
+	};
+
+	// exists always
+	template<typename U>
+	static DestroyIsMissingType is_here(...);
+
+	// exist only if ExistsIfDestroyIsDefinedMarker is defined
+	template<typename U>
+	static DestroyExistsType is_here(ExistsIfDestroyIsDefinedMarker<U>*);
+
+	enum { DestroyExists = (sizeof(is_here<T>(NULL)) == sizeof(DestroyExistsType)) };
+};
+
+// The folloing templates are used to call the Init and Destroy methods if they exist.
+
+// Generic case of the ParserInitCaller, gets used if the Init method is missing
+template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+struct ParserInitCaller {
+	static void CallInit(T *t) {
+		// nothing to do
+	}
+};
+
+// True case of the ParserInitCaller, gets used if the Init method exists
+template<typename T>
+struct ParserInitCaller<T, true> {
+	static void CallInit(T *t) {
+		t->Init();
+	}
+};
+
+// Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
+template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+struct ParserDestroyCaller {
+	static void CallDestroy(T *t) {
+		// nothing to do
+	}
+};
+
+// True case of the ParserDestroyCaller, gets used if the Destroy method exists
+template<typename T>
+struct ParserDestroyCaller<T, true> {
+	static void CallDestroy(T *t) {
+		t->Destroy();
+	}
+};
 void Parser::Parse() {
 	t = NULL;
 	la = dummyToken = new Token();
@@ -445,6 +532,7 @@ void Parser::Parse() {
 Parser::Parser(Scanner *scanner) {
 	maxT = 33;
 
+	ParserInitCaller<Parser>::CallInit(this);
 	dummyToken = NULL;
 	t = la = NULL;
 	minErrDist = 2;
@@ -469,6 +557,7 @@ bool Parser::StartOf(int s) {
 }
 
 Parser::~Parser() {
+	ParserDestroyCaller<Parser>::CallDestroy(this);
 	delete dummyToken;
 }
 void Parser::SemErr(const wchar_t* msg) {

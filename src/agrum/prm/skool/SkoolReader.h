@@ -34,8 +34,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
+
 #include <agrum/prm/skool/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
@@ -52,14 +51,14 @@ public:
     ~SkoolReader();
 
     void readFile(const std::string& file);
-    /// With readString method, you must set the current path 
+    /// With readString method, you must set the current path
     /// to search from import yourself, using addClassPath.
     void readString(const std::string & string);
 
     /**
      * @brief This methods defines the list of paths to look for skool files.
      * Use / for path separator ! Even on Windows !
-     * 
+     *
      * @param class_path A semicolon separated list of paths.
      */
     void setClassPath(const std::string& class_path);
@@ -75,8 +74,8 @@ public:
     Size errors() const;
     /// # of errors
     Size warnings() const;
-    
-    /// 
+
+    ///
     const ErrorsContainer & getErrorsContainer() const;
 
     /// line of ith error or warning
@@ -127,4 +126,4 @@ private:
 // ============================================================================
 #endif /* GUM_SKOOL_READER_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 0; 
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

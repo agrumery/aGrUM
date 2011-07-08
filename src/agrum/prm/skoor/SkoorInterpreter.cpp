@@ -35,8 +35,7 @@
 #include <agrum/prm/groundedInference.h>
 #include <agrum/prm/SVE.h>
 #include <agrum/core/dir_utils.h>
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
+
 #include <agrum/prm/skoor/cocoR/Parser.h>
 
 namespace gum {
@@ -44,7 +43,7 @@ namespace gum {
   namespace prm {
 
     namespace skoor {
-    
+
 using namespace std;
 using namespace gum;
 using namespace gum::prm;
@@ -73,7 +72,7 @@ SkoorInterpreter::~SkoorInterpreter()
 }
 
 /* ************************************************************************** */
-  
+
 /// Getter for the context.
 SkoorContext * SkoorInterpreter::getContext() const
 {
@@ -103,7 +102,7 @@ void SkoorInterpreter::addPath( const std::string & path )
 {
   m_paths.push_back(path);
 }
-  
+
 /// Root paths to search from there packages.
 /// Default are './' and one is calculate from request package if any.
 void SkoorInterpreter::clearPaths()
@@ -120,7 +119,7 @@ bool SkoorInterpreter::isInSyntaxMode() const {
 void SkoorInterpreter::setSyntaxMode ( bool f ) {
   m_syntax_flag = f;
 }
-    
+
 /// verbose mode show more details on the program execution.
 bool SkoorInterpreter::isVerboseMode() const
 {
@@ -144,9 +143,9 @@ const gum::prm::PRMInference* SkoorInterpreter::inference() const
 {
   return m_inf;
 }
-  
+
 /// Return a vector of QueryResults.
-/// Each QueryResults is a struct with query command, time and values, 
+/// Each QueryResults is a struct with query command, time and values,
 /// a vector of struct SingleResult, with pair label/value.
 const std::vector<QueryResult> & SkoorInterpreter::results() const
 {
@@ -155,15 +154,15 @@ const std::vector<QueryResult> & SkoorInterpreter::results() const
 
 /**
  * Parse the file or the command line.
- * If errors occured, return false. Errors messages can be retrieve be 
+ * If errors occured, return false. Errors messages can be retrieve be
  * getErrorsContainer() methods.
  * If any errors occured, return true.
  * Requests results can be retrieve be results() methods.
  * */
 bool SkoorInterpreter::interpretFile( const string & filename )
-{    
+{
   m_results.clear();
-  
+
   // Test if filename exist
   std::ifstream file_test;
   file_test.open(filename.c_str());
@@ -171,33 +170,33 @@ bool SkoorInterpreter::interpretFile( const string & filename )
     addError("file '" + filename + "' not found. Check classPath");
     return false;
   }
-  
+
   file_test.close();
 
   delete m_context;
   m_context = new SkoorContext(filename);
   SkoorContext c(filename);
-  
+
   // On vérifie la syntaxe
   Scanner s( filename.c_str() );
   Parser p( &s );
   p.setSkoorContext( &c );
   p.Parse();
-  
+
   m_errors = p.errors();
   if ( errors() > 0 )
     return false;
-  
+
   // Set paths to search from.
   delete m_reader;
   m_reader = new skool::SkoolReader();
   for ( size_t i = 0 ; i < m_paths.size() ; i++ )
     m_reader->addClassPath( m_paths[i] );
-    
+
   // On vérifie la sémantique.
   if ( ! checkSemantic( &c ) )
     return false;
-  
+
   if ( isInSyntaxMode() )
     return true;
   else
@@ -205,9 +204,9 @@ bool SkoorInterpreter::interpretFile( const string & filename )
 }
 
 bool SkoorInterpreter::interpretLine( const string & line )
-{  
+{
   m_results.clear();
-  
+
   // On vérifie la syntaxe
   SkoorContext c;
   Scanner s( ( unsigned char* ) line.c_str(), ( int ) line.length() );
@@ -217,11 +216,11 @@ bool SkoorInterpreter::interpretLine( const string & line )
   m_errors = p.errors();
   if ( errors() > 0 )
     return false;
-  
+
   // On vérifie la sémantique.
   if ( ! checkSemantic( &c ) )
     return false;
-  
+
   if ( isInSyntaxMode() )
     return true;
   else
@@ -236,23 +235,23 @@ bool SkoorInterpreter::interpretLine( const string & line )
  * */
 bool SkoorInterpreter::interpret( SkoorContext * c )
 {
-  if ( isVerboseMode() ) m_log << "## Start interpretation." << endl << flush; 
-  
+  if ( isVerboseMode() ) m_log << "## Start interpretation." << endl << flush;
+
   // Don't parse if any syntax errors.
   if ( errors() > 0 )
     return false;
-  
+
   // For each session
   vector<SkoorSession *> sessions = c->getSessions();
   for ( vector<SkoorSession *>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
-    
+
     // For each command
     vector<SkoorCommand *> commands = (*i)->getCommands();
     for ( vector<SkoorCommand *>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
-            
+
       // We process it.
       bool result = true;
-      try{ 
+      try{
       switch ( (*j)->type() ) {
         case SkoorCommand::Observe :
           result = observe( (ObserveCommand*) (*j) );
@@ -269,23 +268,23 @@ bool SkoorInterpreter::interpret( SkoorContext * c )
         case SkoorCommand::Query :
           query( (QueryCommand*) (*j) );
           break;
-      } 
-      } catch (gum::Exception&err) { result = false;addError(err.getContent()); 
+      }
+      } catch (gum::Exception&err) { result = false;addError(err.getContent());
       } catch (string&err) { result = false;addError(err); }
-      
-      // If there was a problem, skip the rest of this session, 
+
+      // If there was a problem, skip the rest of this session,
       // unless syntax mode is activated.
       if ( ! result ) {
         if (m_verbose) m_log << "Errors : skip the rest of this session." << endl;
         break;
       }
-      
+
     }
-    
+
   }
-  
-  if ( isVerboseMode() ) m_log << "## End interpretation." << endl << flush; 
-  
+
+  if ( isVerboseMode() ) m_log << "## End interpretation." << endl << flush;
+
   return errors() == 0;
 }
 
@@ -297,7 +296,7 @@ bool SkoorInterpreter::interpret( SkoorContext * c )
  * Import first all import, and check that systems, instances, attributes and labels exists.
  * While checking, prepare data structures for interpretation.
  * Return true if all is right, false otherwise.
- * 
+ *
  * Note : Stop checking at first error unless syntax mode is activated.
  * */
 bool SkoorInterpreter::checkSemantic( SkoorContext * context )
@@ -305,7 +304,7 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
   // Don't parse if any syntax errors.
   if ( errors() > 0 )
     return false;
-  
+
   // On importe tous les systèmes.
   vector<ImportCommand *> imports = context->getImports();
   for ( vector<ImportCommand *>::const_iterator i = imports.begin() ; i < imports.end() ; i++ ) {
@@ -318,29 +317,29 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
     if ( succeed )
       m_context->addImport( **i );
   }
-  
+
   // On vérifie chaque session
   vector<SkoorSession *> sessions = context->getSessions();
   if (m_verbose) m_log << "## Check semantic for " << sessions.size() << " sessions" << endl;
   for ( vector<SkoorSession *>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
-    
+
     string sessionName = (*i)->getName();
     SkoorSession * session = new SkoorSession(sessionName);
-    
+
     if (m_verbose) m_log << "## Start session '" << sessionName << "'..." << endl << endl;
-    
+
     // For each command
     vector<SkoorCommand *> commands = (*i)->getCommands();
     for ( vector<SkoorCommand *>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
-      
+
       if ( m_verbose ) m_log << "# * Going to check command : " << (*j)->toString() << endl;
-      
+
       // Update the current line (for warnings and errors)
       m_current_line = (*j)->line;
-      
+
       // We check it.
       bool result = true;
-      try{ 
+      try{
       switch ( (*j)->type() ) {
         case SkoorCommand::SetEngine :
           result = checkSetEngine( (SetEngineCommand*) (*j) );
@@ -358,37 +357,37 @@ bool SkoorInterpreter::checkSemantic( SkoorContext * context )
           result = checkQuery( (QueryCommand*) (*j) );
           break;
         default :
-          addError( "Error : Unknow command : " + 
+          addError( "Error : Unknow command : " +
             (*j)->toString() + "\n -> Command not processed.");
           result = false;
       }
-      } catch ( gum::Exception & err ) { result = false; addError(err.getContent()); 
+      } catch ( gum::Exception & err ) { result = false; addError(err.getContent());
       } catch ( string & err ) { result = false; addError(err); }
-      
-      // If there was a problem, skip the rest of this session, 
+
+      // If there was a problem, skip the rest of this session,
       // unless syntax mode is activated.
       if ( ! result && ! isInSyntaxMode() ) {
         if (m_verbose) m_log << "Errors : skip the rest of this session." << endl;
         break;
       }
-      
+
       // On l'ajoute au contexte globale
       if ( result )
         session->addCommand( (const SkoorCommand*) (*j) );
     }
-    
+
     // Ajoute la session au contexte global,
     // ou à la dernière session.
     if ( sessionName == "default" && m_context->getSessions().size() > 0 )
       *(m_context->getSessions().back()) += *session;
     else
       m_context->addSession( session );
-    
+
     if (m_verbose) m_log << endl << "## Session '" << sessionName << "' finished." << endl << endl << endl;
   }
-  
+
   if ( isVerboseMode() && errors() != 0 ) m_errors.showElegantErrorsAndWarnings();
-  
+
   return errors() == 0;
 }
 
@@ -409,16 +408,16 @@ bool SkoorInterpreter::checkObserve( ObserveCommand * command )
   try {
     std::string left_val  = command->leftValue;
     const std::string right_val = command->rightValue;
-    
+
     // Contruct the pair (instance,attribut)
     const gum::prm::System& sys = getSystem( left_val );
     const gum::prm::Instance& instance = sys.get ( findInstanceName ( left_val, sys ) );
     const gum::prm::Attribute& attr = instance.get ( findAttributeName ( left_val, instance ) );
     gum::prm::PRMInference::Chain chain = std::make_pair ( &instance, &attr );
-    
+
     command->system = &sys;
     command->chain = std::make_pair ( &instance, &attr );
-    
+
     // Check label exists for this type.
     //gum::Potential<gum::prm::prm_float> e;
     command->potentiel.add ( chain.second->type().variable() );
@@ -435,10 +434,10 @@ bool SkoorInterpreter::checkObserve( ObserveCommand * command )
 
     if ( ! found ) addError( right_val + " is not a label of " + left_val );
     //else command->potentiel = e;
-    
+
     return found;
-    
-  } catch ( gum::Exception & err ) { addError(err.getContent()); 
+
+  } catch ( gum::Exception & err ) { addError(err.getContent());
   } catch ( string & err ) { addError(err); }
   return false;
 }
@@ -447,19 +446,19 @@ bool SkoorInterpreter::checkUnobserve( UnobserveCommand * command )
 {
   try {
     string name = command->value;
-    
+
     // Contruct the pair (instance,attribut)
     const gum::prm::System& sys = getSystem( name );
     const gum::prm::Instance& instance = sys.get( findInstanceName(name, sys) );
     const gum::prm::Attribute& attr = instance.get( findAttributeName(name, instance) );
     gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
-    
+
     command->system = &sys;
     command->chain = std::make_pair ( &instance, &attr );
 
     return true;
-    
-  } catch ( gum::Exception & err ) { addError(err.getContent()); 
+
+  } catch ( gum::Exception & err ) { addError(err.getContent());
   } catch ( string & err ) { addError(err); }
   return false;
 }
@@ -468,19 +467,19 @@ bool SkoorInterpreter::checkQuery( QueryCommand * command )
 {
   try {
     string name = command->value;
-    
+
     // Contruct the pair (instance,attribut)
     const gum::prm::System& sys = getSystem( name );
     const gum::prm::Instance& instance = sys.get( findInstanceName(name, sys) );
     const gum::prm::Attribute& attr = instance.get( findAttributeName(name, instance) );
     gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
-    
+
     command->system = &sys;
     command->chain = std::make_pair ( &instance, &attr );
 
     return true;
-    
-  } catch ( gum::Exception & err ) { addError(err.getContent()); 
+
+  } catch ( gum::Exception & err ) { addError(err.getContent());
   } catch ( string & err ) { addError(err); }
   return false;
 }
@@ -488,18 +487,18 @@ bool SkoorInterpreter::checkQuery( QueryCommand * command )
 // Import the system skool file
 // Return false if any error.
 bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try {
-  
+
   if ( m_verbose ) m_log << "# Loading system '" << import_name << "' => '" << flush;
 
   std::replace ( import_name.begin(), import_name.end(), '.', '/' );
   import_name += ".skool";
-  
+
   if ( m_verbose ) m_log << import_name << "' ... " << endl << flush;
-  
+
   std::ifstream file_test;
   bool found = false;
   string import_abs_filename;
-  
+
   // Search in skoor file dir.
   string skoorFilename = context->getFilename();
   if ( ! skoorFilename.empty() ) {
@@ -512,17 +511,17 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
 			if (file_test.is_open()) {
 				if ( m_verbose ) m_log << "found !" << endl << flush;
 				file_test.close();
-				found = true;      
+				found = true;
 			} else if ( m_verbose )
 				m_log << "not found." << endl << flush;
 		}
   }
-  
+
   // Deduce root path from package name.
   string package = context->getPackage();
   if ( ! found && ! package.empty() ) {
     string root;
-    
+
     // if filename is not empty, start from it.
     string filename = context->getFilename();
     if ( ! filename.empty() ) {
@@ -530,25 +529,25 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
       if ( size != string::npos )
         root += filename.substr(0, size + 1); // take with the '/'
     }
-    
+
     //
     root += "../";
     int count = (int) std::count( package.begin(), package.end(), '.' );
     for ( int i = 0 ; i < count ; i++ )
       root += "../";
-    
+
     import_abs_filename = Directory(root).absolutePath() + import_name;
 		if ( m_verbose ) m_log << "# Search from package '" << package << "' => '" << import_abs_filename << "' ... " << flush;
 		file_test.open(import_abs_filename.c_str());
 		if (file_test.is_open()) {
 			if ( m_verbose ) m_log << "found !" << endl << flush;
 			file_test.close();
-			found = true;      
+			found = true;
 		} else if ( m_verbose )
 			m_log << "not found." << endl << flush;
   }
-  
-  // Search import in all paths.  
+
+  // Search import in all paths.
   for (vector<string>::iterator i = m_paths.begin(); ! found && i != m_paths.end(); i++) {
     import_abs_filename = (*i) + import_name;
     if ( m_verbose ) m_log << "# Search from classpath '" << import_abs_filename << "' ... " << flush;
@@ -557,39 +556,39 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
       if ( m_verbose ) m_log << " found !" << endl << flush;
       file_test.close();
       found = true;
-    } else if ( m_verbose ) 
+    } else if ( m_verbose )
       m_log << " not found." << endl << flush;
   }
-  
+
   if (not found) {
     if (m_verbose) m_log << "Finished with errors." << endl;
     addError("import not found.");
     return false;
   }
-  
+
   // May throw std::IOError if file does't exist
   int previousSkoolError = m_reader->errors();
   int previousSkoorError = errors();
   try {
     m_reader->readFile(import_abs_filename);
-    
+
     // Show errors and warning
     if ( m_verbose && (m_reader->errors() > (unsigned int) previousSkoolError || errors() > previousSkoorError) )
       m_log << "Finished with errors." << endl;
     else if ( m_verbose )
       m_log << "Finished." << endl;
-      
+
   } catch ( const gum::IOError & err ) {
-    if (m_verbose) m_log << "Finished with errors." << endl;    
+    if (m_verbose) m_log << "Finished with errors." << endl;
     addError( err.getContent() );
   }
-    
+
   // Add skool errors and warnings to skoor errors
   for ( ; previousSkoolError < m_reader->getErrorsContainer().count() ; previousSkoolError++ )
     m_errors.add( m_reader->getErrorsContainer().getError( previousSkoolError ) );
-  
+
   return errors() == previousSkoorError;
-  
+
 } catch ( const gum::Exception & err ) {
   if ( m_verbose ) m_log << "Finished with exceptions." << endl;
   addError( err.getContent() );
@@ -600,7 +599,7 @@ bool SkoorInterpreter::import ( SkoorContext * context, string import_name ) try
 std::string SkoorInterpreter::findSystemName ( std::string & s ) {
   size_t dot = s.find_first_of ( '.' );
   std::string name = s.substr ( 0, dot );
-  
+
   // We look first for real system, next for alias.
   if ( prm()->isSystem ( name ) ) {
     s = s.substr( dot+1 );
@@ -635,7 +634,7 @@ std::string SkoorInterpreter::findInstanceName ( std::string& s, const gum::prm:
 }
 
 std::string SkoorInterpreter::findAttributeName ( const std::string & s, const gum::prm::Instance& instance ) {
-  if ( ! instance.exists ( s ) ) 
+  if ( ! instance.exists ( s ) )
     throw "'" + s + "' is not an attribute of instance '" + instance.name() +"'.";
   return s;
 
@@ -648,15 +647,15 @@ const System & SkoorInterpreter::getSystem( string & ident ) {
   } catch ( const string & ) {}
   if ( m_context->getMainImport() != 0 && prm()->isSystem(m_context->getMainImport()->value) )
     return prm()->getSystem ( m_context->getMainImport()->value );
-  
+
   throw "could not find any system or alias in '" + ident + "' and no default alias has been set.";
 }
 
 ///
 bool SkoorInterpreter::observe ( const ObserveCommand * command ) try {
-  
+
   const PRMInference::Chain & chain = command->chain;
-  
+
   // Generate the inference engine if it doesn't exist.
   if ( ! m_inf )
     generateInfEngine( *(command->system) );
@@ -666,15 +665,15 @@ bool SkoorInterpreter::observe ( const ObserveCommand * command ) try {
     addWarning ( command->leftValue + " is already observed" );
 
   m_inf->addEvidence ( chain, command->potentiel );
-  
+
   if ( m_verbose ) m_log << "# Added evidence " << command->rightValue << " over attribute " << command->leftValue << endl;
   return true;
-    
+
 } catch ( gum::OperationNotAllowed & ex ) {
   addError( "someting went wrong when adding evidence " + command->rightValue +
         " over " + command->leftValue + " : " + ex.getContent() );
   return false;
-  
+
 } catch (const string & msg ) {
   addError( msg );
   return false;
@@ -686,7 +685,7 @@ bool SkoorInterpreter::unobserve( const UnobserveCommand * command ) try
 {
   string name = command->value;
   gum::prm::PRMInference::Chain chain = command->chain;
-    
+
   // Prevent from something
   if ( ! m_inf || ! m_inf->hasEvidence(chain) ) {
     addWarning(name + " was not observed");
@@ -694,7 +693,7 @@ bool SkoorInterpreter::unobserve( const UnobserveCommand * command ) try
     m_inf->removeEvidence(chain);
     if (m_verbose) m_log << "# Removed evidence over attribute " << name << std::endl;
   }
-  
+
   return true;
 
 } catch ( const string & msg ) {
@@ -704,29 +703,29 @@ bool SkoorInterpreter::unobserve( const UnobserveCommand * command ) try
 
 
 ///
-void SkoorInterpreter::query ( const QueryCommand * command ) try 
+void SkoorInterpreter::query ( const QueryCommand * command ) try
 {
 	const string & query = command->value;
   const Attribute & attr = *(command->chain.second);
-  
+
   gum::Potential<gum::prm::prm_float> m;
-  
+
 	// Create inference engine if it has not been already created.
   if ( ! m_inf )
     generateInfEngine ( *(command->system) );
-  
+
   // Inference
   if (m_verbose) m_log << "# Starting inference over query: " << query << "... " << flush;
   gum::Timer timer;
   timer.reset();
-  
+
   m_inf->marginal ( command->chain, m );
-  
+
   // Compute spent time
   double t = timer.step();
   if (m_verbose) m_log << "Finished." << endl;
   if (m_verbose) m_log << "# Time in seconds (accuracy ~0.001): " << t << endl;
-  
+
   // Show results
   gum::Instantiation j ( m );
   if (m_verbose) m_log << endl;
@@ -744,10 +743,10 @@ void SkoorInterpreter::query ( const QueryCommand * command ) try
   }
   m_results.push_back( result );
   if (m_verbose) m_log << endl;
-  
+
 } catch ( gum::Exception& e ) {
   throw "something went wrong while infering: " + e.getContent();
-  
+
 } catch ( const string & msg ) {
   addError ( msg );
 }
@@ -769,32 +768,32 @@ void SkoorInterpreter::setGndEngine( const SetGndEngineCommand * command )
 
 ///
 void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
-{  
+{
   if ( m_verbose ) m_log << "# Building the inference engine... " << std::flush;
-  
+
   //
   if ( m_inf ) {
     addWarning("an inference engine has already been defined.");
     delete m_inf;
     m_inf = 0;
   }
-  
+
   //
   if ( m_engine == "SVED" ) {
     m_inf = new gum::prm::SVED( *(prm()), sys);
-    
+
   //
   } else if (m_engine == "GRD") {
-    
+
     typedef gum::prm::prm_float p_f;
     gum::BayesNetInference<p_f>* bn_inf = 0;
     gum::BayesNet<p_f>* bn = new gum::BayesNet<p_f>();
     gum::BayesNetFactory<p_f> bn_factory(bn);
-    
+
     if (m_verbose) m_log << "(Grounding the network... " << flush;
-    sys.groundedBN(bn_factory);    
+    sys.groundedBN(bn_factory);
     if (m_verbose) m_log << "Finished)" << flush;
-    
+
     if (m_bn_engine == "VE") {
       bn_inf = new gum::VariableElimination<p_f>(*bn);
     } else if (m_bn_engine == "VEBB") {
@@ -804,18 +803,18 @@ void SkoorInterpreter::generateInfEngine(const gum::prm::System& sys)
     } else {
       bn_inf = new gum::ShaferShenoyInference<p_f>(*bn);
     }
-    
+
     gum::prm::GroundedInference* grd_inf = new gum::prm::GroundedInference(*(prm()), sys);
     grd_inf->setBNInference(bn_inf);
     m_inf = grd_inf;
-    
+
   //
   } else {
     if (m_engine != "SVE")
       addWarning("unkown engine '" + m_engine + "', use SVE insteed.");
     m_inf = new gum::prm::SVE(*(prm()), sys);
   }
-  
+
   if (m_verbose) m_log << "Finished." << std::endl;
 }
 
@@ -827,7 +826,7 @@ int SkoorInterpreter::count() const
 {
   return m_errors.count();
 }
-  
+
 ///
 int SkoorInterpreter::errors() const {
   return m_errors.error_count;
@@ -838,7 +837,7 @@ int SkoorInterpreter::warnings() const {
   return m_errors.warning_count;
 }
 
-/// 
+///
 ParseError SkoorInterpreter::getError( int i ) const
 {
   if ( i >= count() )
@@ -851,7 +850,7 @@ ErrorsContainer SkoorInterpreter::getErrorsContainer() const
 {
     return m_errors;
 }
-  
+
 ///
 void SkoorInterpreter::showElegantErrors() const {
   m_errors.showElegantErrors();
