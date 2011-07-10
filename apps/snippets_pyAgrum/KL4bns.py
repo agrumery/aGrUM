@@ -21,13 +21,18 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-import sys,os,math
+import sys,os
 
-from progress_bar import ProgressBar
 from pyAgrum_header import pyAgrum_header
 
 import pyAgrum as gum
 
+def whenProgress(x,y):
+    print "x=",x,"y=",y
+    
+def whenStop(s):
+    print "stop : ",s
+    
 def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
@@ -47,11 +52,23 @@ if __name__=="__main__":
     print 'P:"{0}" vs Q:"{1}"'.format(bn1_name,bn2_name)
     bnP=gum.loadBN(bn1_name)
     bnQ=gum.loadBN(bn2_name)
+    print 'P:"{0}" vs Q:"{1}"'.format(bnP,bnQ)
 
-    kl=gum.BruteForceKL(bnP,bnQ)
-    r=kl.compute()
-
-    print
-    print 'KL(P||Q)={0}[{2}]   KL(Q||P)={1}[{3}]'.format(r['klPQ'],r['klQP'],r['errorPQ'],r['errorQP'])
-    print 'hellinger(P,Q)={0}'.format(r['hellinger'])
-    print
+    try:
+        kl=gum.GibbsKL(bnP,bnQ)
+        #lis=gum.PythonGibbsKLListener(kl)
+        #lis.setWhenProgress(whenProgress)
+        #lis.setWhenStop(whenStop)
+        kl.setListeners(whenProgress,whenStop)
+        
+        r=kl.compute()
+            
+        print
+        print 'KL(P||Q)={0}[{2}]   KL(Q||P)={1}[{3}]'.format(r['klPQ'],r['klQP'],r['errorPQ'],r['errorQP'])
+        print 'hellinger(P,Q)={0}'.format(r['hellinger'])
+        print 'bhattacharya(P,Q)={0}'.format(r['bhattacharya'])
+        print
+    except gum.Exception as e: 
+        print e.getContent()
+        
+    print "finito"

@@ -22,8 +22,8 @@ import os,sys
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-def pyAgrum_header():
-    print os.path.basename(sys.argv[0])+" (c) 2011 -- Pierre-Henri Wuillemin -- UPMC"
+def pyAgrum_header(year="2011"):
+    print os.path.basename(sys.argv[0])+" (c) "+year+" -- Pierre-Henri Wuillemin -- UPMC"
     print "powered by pyAgrum/aGrUM"
     print
 
