@@ -98,11 +98,16 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
                 e[var]=data[positions[bn.idFromName(var)]]
                 if not transforme_label is None:
                     e[var]=transforme_label(e[var])
+                print bn.variable(bn.idFromName(var)),"=>",e[var]
 
-        engine.setEvidence(e)
-        engine.makeInference()
-        px=engine.marginal(idTarget)[{target:label}]
-        res.append((px,data[positions[idTarget]]))
+        try:
+            engine.setEvidence(e)
+            engine.makeInference()
+            px=engine.marginal(idTarget)[{target:label}]
+            res.append((px,data[positions[idTarget]]))
+        except gum.OutOfBounds as err:
+            print err
+            print "erreur : ",e
 
         if visible:
             prog.increment_amount()
@@ -151,7 +156,7 @@ def module_help(exit_value=1,message=""):
     sys.exit(exit_value)
 
 def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
-  points=computeROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state)
+  points=computeROC(bn,csv_name,variable,label,visible,transforme_label)
   print points[0]
   print points[1]
   print points[2]
