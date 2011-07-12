@@ -110,7 +110,7 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     aic=-2*likelihood+2*dim
     aicc=aic+2*dim*(dim+1)/(nbr_lines-dim+1)
     bic=-2*likelihood+dim*math.log(nbr_lines,2)
-    mdl=likelihood-nbr_arcs*math.log(nbr_lines,2)-32*dim #32=nbr bits for a params
+    mdl=-likelihood+nbr_arcs*math.log(nbr_lines,2)+32*dim #32=nbr bits for a params
 
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
             {'likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})

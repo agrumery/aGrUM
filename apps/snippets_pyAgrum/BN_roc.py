@@ -86,7 +86,10 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
     totalN=0
     res=[]
     for data in batchReader:
-        if data[positions[idTarget]].__eq__(label):
+        target_label=data[positions[idTarget]]
+        if not transforme_label is None:
+          target_label=transforme_label(target_label)
+        if target_label.__eq__(label):
             totalP+=1
         else:
             totalN+=1
@@ -98,7 +101,6 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
                 e[var]=data[positions[bn.idFromName(var)]]
                 if not transforme_label is None:
                     e[var]=transforme_label(e[var])
-                print bn.variable(bn.idFromName(var)),"=>",e[var]
 
         try:
             engine.setEvidence(e)
@@ -122,7 +124,10 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
     fp=0.0
     points=[(vp/totalP,fp/totalN)]
     for i in range(len(res)):
-        if res[i][1].__eq__(label):
+        res_label=res[i][1]
+        if not transforme_label is None:
+          res_label=transforme_label(res_label)
+        if res_label.__eq__(label):
             vp+=1.0
         else:
             fp+=1.0
@@ -177,9 +182,10 @@ def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
   pylab.grid(True)
 
   pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1)
-  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-', label= bn_name)
+  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-', label= sys.argv[1]+" - "+csv_name+ " - "+variable+"="+label)
 
   pylab.legend(loc='lower right')
+  pylab.savefig('roc_'+sys.argv[1]+'-'+sys.argv[2]+'.png')
   pylab.show()
 
 def checkROCargs():

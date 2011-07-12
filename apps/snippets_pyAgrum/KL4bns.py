@@ -29,10 +29,10 @@ import pyAgrum as gum
 
 def whenProgress(x,y):
     print "x=",x,"y=",y
-    
+
 def whenStop(s):
     print "stop : ",s
-    
+
 def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
@@ -59,16 +59,16 @@ if __name__=="__main__":
         #lis=gum.PythonGibbsKLListener(kl)
         #lis.setWhenProgress(whenProgress)
         #lis.setWhenStop(whenStop)
-        kl.setListeners(whenProgress,whenStop)
-        
+        #kl.setListeners(whenProgress,whenStop)
+
         r=kl.compute()
-            
+
         print
         print 'KL(P||Q)={0}[{2}]   KL(Q||P)={1}[{3}]'.format(r['klPQ'],r['klQP'],r['errorPQ'],r['errorQP'])
         print 'hellinger(P,Q)={0}'.format(r['hellinger'])
         print 'bhattacharya(P,Q)={0}'.format(r['bhattacharya'])
         print
-    except gum.Exception as e: 
+    except gum.Exception as e:
         print e.getContent()
-        
+
     print "finito"
