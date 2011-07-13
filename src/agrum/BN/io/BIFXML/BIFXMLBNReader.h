@@ -53,7 +53,7 @@ public:
    //reader.showErrorCounts();
   //}
   // End not implemented section
-  
+
  } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
 
   return 0;
@@ -82,9 +82,9 @@ public:
 
 
 namespace gum {
-  
- 
-  
+
+
+
   /**
    * @class BIFXMLBNReader
    * @brief Read an bayes net from an XML file with BIF format.
@@ -92,7 +92,7 @@ namespace gum {
    *
    * This class import an bayes net from an XML files using BIF format
    * See http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
-   * for information about this format. 
+   * for information about this format.
    *
    */
   template<typename T_DATA>
@@ -100,7 +100,7 @@ namespace gum {
   public:
     /**
      * Constructor
-     * A reader is created to reading a defined file. 
+     * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
     BIFXMLBNReader(BayesNet<T_DATA>* bn, const std::string& filePath );
@@ -114,30 +114,30 @@ namespace gum {
      * Reads the bayes net from the file referenced by filePath  given at the creation of class
      * @return Returns the number of error during the parsing (0 if none).
      */
-    virtual void proceed();
-    
+    virtual int proceed();
+
     /**
      * Signaler used to indicates how many percent of the Xml files have been parsed yet
      */
     typename gum::Signaler2<int, std::string> onProceed;
-    
+
   private:
-    
+
     /**
      * Parsing xml element containing data on variables
      */
     void __parsingVariables(ticpp::Element* parentNetwork);
-    
+
     /**
      * fill the diagram
      */
     void __fillingBN(ticpp::Element* parentNetwork);
-    
+
     /**
      * An handle to the bayes net in which will be load the content of the xml filePath
      */
     BayesNet<T_DATA>* __bn;
-    
+
     /**
      * the path to the xml filePath
      */
