@@ -50,21 +50,21 @@ namespace gum {
         void testConstructor() {
           gum::BayesNet<float> net1;
           {
-            gum::BIFReader<float> reader( &net1, GET_PATH_STR( BIFReader_file2.txt ) );
+            gum::BIFReader<float> reader( &net1, GET_PATH_STR( BIFReader_file2.bif ) );
             reader.trace( false );
             reader.proceed();
           }
 
           gum::BayesNet<float> net2;
           {
-            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.txt ) );
+            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif ) );
             reader.trace( false );
             reader.proceed();
           }
 
           gum::BayesNet<float> net3;
           {
-            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file4.txt ) );
+            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file4.bif ) );
             reader.trace( false );
             reader.proceed();
           }
@@ -77,7 +77,7 @@ namespace gum {
         void testDifficulty1() {
           gum::BayesNet<float> net2;
           {
-            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.txt ) );
+            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif) );
             reader.trace( false );
             reader.proceed();
           }
@@ -99,7 +99,7 @@ namespace gum {
         void testKLComputation() {
           gum::BayesNet<float> net3;
           {
-            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file3.txt ) );
+            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file3.bif ) );
             reader.trace( false );
             reader.proceed();
           }
@@ -114,7 +114,7 @@ namespace gum {
 
           gum::BayesNet<float> net4;
           {
-            gum::BIFReader<float> reader( &net4, GET_PATH_STR( BIFReader_file4.txt ) );
+            gum::BIFReader<float> reader( &net4, GET_PATH_STR( BIFReader_file4.bif ) );
             reader.trace( false );
             reader.proceed();
           }
