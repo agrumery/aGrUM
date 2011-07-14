@@ -24,7 +24,9 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/approximationPolicy/exactPolicy.h>
+
 #include "testsuite_utils.h"
 
 // The graph used for the tests:
@@ -80,7 +82,7 @@ namespace gum {
           typedef gum::ContextualDependenciesCNFWriter<double,ExactPolicy> typCNF;
           typCNF * writer = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
-          writer->setEpsilon( 0.2 );
+       //   writer->setEpsilon( 0.2 );
           writer->setLowLimit( 0 );
           writer->setHighLimit( 0.5 );
 

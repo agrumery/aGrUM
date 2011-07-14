@@ -39,7 +39,7 @@
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/debug.h>
-#include <agrum/core/approximationPolicy.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
 
 namespace gum {
 
