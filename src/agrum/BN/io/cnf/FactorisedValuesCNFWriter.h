@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -28,18 +27,17 @@
  * @author Lionel Torti & Pierre-Henri Wuillemin
  */
 
-#ifndef GUM_CNF_WRITER_H
-#define GUM_CNF_WRITER_H
+#ifndef GUM_OCNF_WRITER_H
+#define GUM_OCNF_WRITER_H
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/BNWriter.h>
+#include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/debug.h>
-#include <agrum/core/approximationPolicy.h>
 
 namespace gum {
 
@@ -55,7 +53,8 @@ namespace gum {
    *
    */
   template<typename T_DATA, template<class> class IApproximationPolicy = ExactPolicy>
-  class CNFWriter: public BNWriter<T_DATA>, public IApproximationPolicy<T_DATA>  {
+
+  class FactorisedValuesCNFWriter: public CNFWriter<T_DATA,IApproximationPolicy> {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -65,23 +64,23 @@ namespace gum {
       /**
        * Default constructor.
        */
-      CNFWriter();
+      FactorisedValuesCNFWriter();
 
       /**
        * Destructor.
        */
-      virtual ~CNFWriter();
+      virtual ~FactorisedValuesCNFWriter();
 
       /// @}
 
       /**
        * Writes a Bayesian Network in the output stream using the BN format.
        *
-			 * @param output The output stream.
+       * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn )=0;
+      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn );
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -91,14 +90,10 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn )=0;
+      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn );
 
-      inline T_DATA fromExact( const T_DATA& value ) const { 
-        return IApproximationPolicy<T_DATA>::fromExact( value ); };
-
-
-
-  /*  private:
+/*
+    private:
       // Returns the header of the BN file.
       std::string __header( const BayesNet<T_DATA>& bn );
 
@@ -109,10 +104,8 @@ namespace gum {
       std::string __variableCPT( const Potential<T_DATA>& cpt );
 
       // Returns the modalities labels of the variables in varsSeq*/
-      //
-      }; 
-      
+      };
 } /* namespace gum */
 
-#include <agrum/BN/io/cnf/CNFWriter.tcc>
+#include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.tcc>
 #endif    // GUM_NET_WRITER_H

@@ -17,33 +17,5 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-// to ease parsing in IDE
-#include <agrum/BN/io/cnf/CNFWriter.h>
-
-namespace gum {
-
-
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITER                              === */
-  /* ============================================================================ */
-  // Default constructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<T_DATA,IApproximationPolicy>::CNFWriter() {
-      GUM_CONSTRUCTOR( CNFWriter );
-    }
-
-  // Default destructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<T_DATA, IApproximationPolicy>::~CNFWriter() {
-      GUM_DESTRUCTOR( CNFWriter );
-    }
-
-
-} /*namespace gum */
-
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+// ============================================================================
+#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>

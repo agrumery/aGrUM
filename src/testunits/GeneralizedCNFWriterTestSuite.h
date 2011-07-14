@@ -23,9 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/net/netWriter.h>
-#include <agrum/BN/io/net/netReader.h>
-
+#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+#include <agrum/core/approximationPolicy.h>
 #include "testsuite_utils.h"
 
 // The graph used for the tests:
@@ -40,7 +39,7 @@ namespace gum {
 
   namespace tests {
 
-    class NetWriterTestSuite: public CxxTest::TestSuite {
+    class GeneralizedCNFWriterTestSuite: public CxxTest::TestSuite {
       public:
         gum::BayesNet<double> *bn;
         gum::Id i1, i2, i3, i4, i5;
@@ -72,23 +71,46 @@ namespace gum {
         }
 
         void testConstuctor() {
-          gum::NetWriter<double>* writer = NULL;
-          TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::NetWriter<double>() );
+          gum::GeneralizedCNFWriter<double>* writer = NULL;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::GeneralizedCNFWriter<double>() );
           delete writer;
         }
 
+        void testConstuctor_With_Aproximation() {
+          typedef gum::GeneralizedCNFWriter<double,LinearApproximationPolicy> typCNF;
+          typCNF * writer = NULL;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
+          writer->setEpsilon( 0.2 );
+          writer->setLowLimit( 0 );
+          writer->setHighLimit( 0.5 );
+
+          delete writer;
+        }
+
+
         void testWriter_ostream() {
-          gum::NetWriter<double> writer;
+          gum::GeneralizedCNFWriter<double> writer;
+          // Uncomment this to check the ouput
+          // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+        }
+
+        void testWriter_ostream_With_Approximation() {
+          typedef gum::GeneralizedCNFWriter<double,LinearApproximationPolicy> typCNF;
+          gum::GeneralizedCNFWriter<double,LinearApproximationPolicy> writer;
+          writer.setEpsilon( 0.2 );
+          writer.setLowLimit( 0 );
+          writer.setHighLimit( 1 );
+
           // Uncomment this to check the ouput
           // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
         }
 
         void testWriter_string() {
-          gum::NetWriter<double> writer;
-          std::string file = GET_PATH_STR( NetWriter_TestFile.net );
+          gum::GeneralizedCNFWriter<double> writer;
+          std::string file = GET_PATH_STR( O2CNFWriter_TestFile.cnf );
           TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-          file = GET_PATH_STR( NetWriter_RO_TestFile.net );
+          file = GET_PATH_STR( O2CNFWriter_RO_TestFile.cnf );
 
           try {
             writer.write( file, *bn );
@@ -98,34 +120,21 @@ namespace gum {
           }
         }
 
-        void test_isreadable(){
-          std::string file = GET_PATH_STR( NetWriter_RO_TestFile.net );
-          gum::BayesNet<float> *net = new gum::BayesNet<float>();
+        void testWriter_string_With_Approximation() {
+          gum::GeneralizedCNFWriter<double,LinearApproximationPolicy> writer;
+          writer.setEpsilon( 0.2 );
+          writer.setLowLimit( 0 );
+          writer.setHighLimit( 1 );
+          std::string file = GET_PATH_STR( O2CNFWriter_TestFile_Approximation.cnf );
+          TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+          file = GET_PATH_STR( O2CNFWriter_RO_TestFile_Approximation.cnf );
 
-          gum::NetReader<float> reader( net, file );
-
-
-          reader.trace( false );
-
-
-          bool isOK = false;
-
-          TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
-
-          TS_ASSERT( isOK );
-          TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-          // 0 warnings : no properties
-          TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
-
-            TS_ASSERT( net != 0 );
-
-          if ( net != 0 ) {
-            TS_ASSERT( ! net->empty() );
-
-            delete net;
-
+          try {
+            writer.write( file, *bn );
+            // TS_ASSERT(false);
+          } catch ( gum::IOError& e ) {
+            TS_ASSERT( true );
           }
-
         }
 
       private:
@@ -169,7 +178,6 @@ namespace gum {
             const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
                                   0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
                                  };
-
             int n = 16;const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
