@@ -39,7 +39,7 @@ namespace gum {
 
 namespace tests {
 
-class BIFWriterTestSuite: public CxxTest::TestSuite {
+class BIFXMLBNWriterTestSuite: public CxxTest::TestSuite {
 public:
     gum::BayesNet<double> *bn;
     gum::Id i1, i2, i3, i4, i5;
