@@ -200,8 +200,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Val& PriorityQueue<Val,Priority,Cmp>::top() const {
-    if ( !__nb_elements )
+    if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty priority queue" );
+    }
 
     return *( __heap[0]->second );
   }
@@ -211,8 +212,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Priority& PriorityQueue<Val,Priority,Cmp>::topPriority() const {
-    if ( !__nb_elements )
+    if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty priority queue" );
+    }
 
     return __heap[0]->first;
   }
@@ -352,8 +354,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Priority, typename Cmp> INLINE
   Val PriorityQueue<Val,Priority,Cmp>::pop() {
-    if ( !__nb_elements )
+    if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty priority queue" );
+    }
 
     Val v = *( __heap[0]->second );
 
@@ -381,8 +384,9 @@ namespace gum {
     bool val_exists = __indices.exists( val );
     
     // in uniqueness mode, check that val does not already exist
-    if ( __indices.keyUniquenessPolicy() && val_exists )
+    if ( __indices.keyUniquenessPolicy() && val_exists ) {
       GUM_ERROR( DuplicateElement, "val already exists in the priority queue" );
+    }
 
     // create the entry in the indices hashtable
     if ( ! val_exists )
@@ -452,8 +456,9 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Val& PriorityQueue<Val,Priority,Cmp>::operator[]( Size index )
     const  {
-    if ( index >= __nb_elements )
+    if ( index >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the PriorityQueue" );
+    }
     return *( __heap[index]->second );
   }
 

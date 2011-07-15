@@ -61,7 +61,7 @@ namespace gum {
 
           } catch ( gum::Exception &e ) {
             std::cerr << std::endl << e.getContent() << std::endl;
-            throw e;
+            throw ;
           }
         }
 
@@ -119,7 +119,7 @@ namespace gum {
 
           } catch ( gum::Exception &e ) {
             std::cerr << std::endl << e.getContent() << std::endl;
-            throw e;
+            throw ;
           }
         }
 

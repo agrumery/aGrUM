@@ -88,6 +88,9 @@ namespace gum {
 
       /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
       double hellinger();
+      
+      /// @return Bhattacharya distance (@see http://en.wikipedia.org/wiki/Bhattacharya_distance)
+      double bhattacharya();
 
       /// @return p
       const BayesNet<T_DATA>& p(void) const;
@@ -104,9 +107,10 @@ namespace gum {
       const BayesNet<T_DATA>& _p;
       const BayesNet<T_DATA>& _q;
 
-      double _klPQ;
-      double _klQP;
-      double _hellinger;
+      T_DATA _klPQ;
+      T_DATA _klQP;
+      T_DATA _hellinger;
+      T_DATA _bhattacharya;
 
       bool _errorPQ;
       bool _errorQP;

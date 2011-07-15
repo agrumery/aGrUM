@@ -25,168 +25,168 @@
  */
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 // ============================================================================
 
-INLINE
-Interface::ClassEltIterator
-Interface::begin() {
-  return __nodeIdMap.begin();
-}
+    INLINE
+    Interface::ClassEltIterator
+    Interface::begin() {
+      return __nodeIdMap.begin();
+    }
 
-INLINE
-const Interface::ClassEltIterator&
-Interface::end() {
-  return __nodeIdMap.end();
-}
+    INLINE
+    const Interface::ClassEltIterator&
+    Interface::end() {
+      return __nodeIdMap.end();
+    }
 
-INLINE
-Interface::const_ClassEltIterator
-Interface::begin() const {
-  return __nodeIdMap.begin();
-}
+    INLINE
+    Interface::const_ClassEltIterator
+    Interface::begin() const {
+      return __nodeIdMap.begin();
+    }
 
-INLINE
-const Interface::const_ClassEltIterator&
-Interface::end() const {
-  return __nodeIdMap.end();
-}
+    INLINE
+    const Interface::const_ClassEltIterator&
+    Interface::end() const {
+      return __nodeIdMap.end();
+    }
 
-INLINE
-void
-Interface::insertArc(const std::string& tail, const std::string& head) {
-  GUM_ERROR(OperationNotAllowed, "an Interface does not have arcs");
-}
+    INLINE
+    void
+    Interface::insertArc( const std::string& tail, const std::string& head ) {
+      GUM_ERROR( OperationNotAllowed, "an Interface does not have arcs" );
+    }
 
-INLINE
-Interface&
-Interface::super() {
-  if (__super)  return *__super;
-  else          GUM_ERROR(NotFound, "this Interface is not a sub interface");
-}
+    INLINE
+    Interface&
+    Interface::super() {
+      if ( __super )  return *__super;
+      else          GUM_ERROR( NotFound, "this Interface is not a sub interface" );
+    }
 
-INLINE
-const Interface&
-Interface::super() const {
-  if (__super)  return *__super;
-  else          GUM_ERROR(NotFound, "this Interface is not a sub interface");
-}
+    INLINE
+    const Interface&
+    Interface::super() const {
+      if ( __super )  return *__super;
+      else          GUM_ERROR( NotFound, "this Interface is not a sub interface" );
+    }
 
-INLINE
-void
-Interface::__addImplementation(Class* c) {
-  __implementations.insert(c);
-}
+    INLINE
+    void
+    Interface::__addImplementation( Class* c ) {
+      __implementations.insert( c );
+    }
 
-INLINE
-void
-Interface::__addExtension(Interface* i) {
-  __extensions.insert(i);
-}
+    INLINE
+    void
+    Interface::__addExtension( Interface* i ) {
+      __extensions.insert( i );
+    }
 
-INLINE
-ClassElement&
-Interface::operator[](NodeId id) {
-  return get(id);
-}
+    INLINE
+    ClassElement&
+    Interface::operator[]( NodeId id ) {
+      return get( id );
+    }
 
-INLINE
-const ClassElement&
-Interface::operator[](NodeId id) const {
-  return get(id);
-}
+    INLINE
+    const ClassElement&
+    Interface::operator[]( NodeId id ) const {
+      return get( id );
+    }
 
-INLINE
-ClassElement&
-Interface::operator[](const std::string& name) {
-  return get(name);
-}
+    INLINE
+    ClassElement&
+    Interface::operator[]( const std::string& name ) {
+      return get( name );
+    }
 
-INLINE
-const ClassElement&
-Interface::operator[](const std::string& name) const {
-  return get(name);
-}
+    INLINE
+    const ClassElement&
+    Interface::operator[]( const std::string& name ) const {
+      return get( name );
+    }
 
-INLINE
-PRMObject::ObjectType
-Interface::obj_type() const {
-  return PRMObject::prm_interface;
-}
+    INLINE
+    PRMObject::ObjectType
+    Interface::obj_type() const {
+      return PRMObject::prm_interface;
+    }
 
-INLINE
-const DAG&
-Interface::_dag() const { return __dag; }
+    INLINE
+    const DAG&
+    Interface::_dag() const { return __dag; }
 
-INLINE
-DAG&
-Interface::_dag() { return __dag; }
+    INLINE
+    DAG&
+    Interface::_dag() { return __dag; }
 
-INLINE
-ClassElement&
-Interface::get(NodeId id) {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  }
-}
+    INLINE
+    ClassElement&
+    Interface::get( NodeId id ) {
+      try {
+        return *( __nodeIdMap[id] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "no ClassElement with the given NodeId" );
+      }
+    }
 
-INLINE
-const ClassElement&
-Interface::get(NodeId id) const {
-  try {
-    return *(__nodeIdMap[id]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given NodeId");
-  }
-}
+    INLINE
+    const ClassElement&
+    Interface::get( NodeId id ) const {
+      try {
+        return *( __nodeIdMap[id] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "no ClassElement with the given NodeId" );
+      }
+    }
 
-INLINE
-ClassElement&
-Interface::get(const std::string& name) {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given name");
-  }
-}
+    INLINE
+    ClassElement&
+    Interface::get( const std::string& name ) {
+      try {
+        return *( __nameMap[name] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "no ClassElement with the given name" );
+      }
+    }
 
-INLINE
-const ClassElement&
-Interface::get(const std::string& name) const {
-  try {
-    return *(__nameMap[name]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "no ClassElement with the given name");
-  }
-}
+    INLINE
+    const ClassElement&
+    Interface::get( const std::string& name ) const {
+      try {
+        return *( __nameMap[name] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "no ClassElement with the given name" );
+      }
+    }
 
-INLINE
-const Set< Attribute* >&
-Interface::attributes() const {
-  return __attributes;
-}
+    INLINE
+    const Set< Attribute* >&
+    Interface::attributes() const {
+      return __attributes;
+    }
 
-INLINE
-const Set< ReferenceSlot* >&
-Interface::referenceSlots() const {
-  return __referenceSlots;
-}
+    INLINE
+    const Set< ReferenceSlot* >&
+    Interface::referenceSlots() const {
+      return __referenceSlots;
+    }
 
-INLINE
-Set<Class*>&
-Interface::implementations() {
-  return __implementations;
-}
+    INLINE
+    Set<Class*>&
+    Interface::implementations() {
+      return __implementations;
+    }
 
-INLINE
-const Set<Class*>&
-Interface::implementations() const {
-  return __implementations;
-}
+    INLINE
+    const Set<Class*>&
+    Interface::implementations() const {
+      return __implementations;
+    }
 
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

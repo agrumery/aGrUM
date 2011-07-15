@@ -50,8 +50,9 @@ namespace gum {
   template<typename T_DATA> INLINE
   void
   BIFWriter<T_DATA>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
-    if ( ! output.good() )
+    if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
+    }
 
     output << __header( bn ) << std::endl;
 
@@ -68,8 +69,9 @@ namespace gum {
 
     output.flush();
 
-    if ( output.fail() )
+    if ( output.fail() ) {
       GUM_ERROR( IOError, "Writting in the ostream failed." );
+    }
   }
 
   // Writes a Bayesian Network in the referenced file using the BIF format.
@@ -84,8 +86,9 @@ namespace gum {
   BIFWriter<T_DATA>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
-    if ( ! output.good() )
+    if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
+    }
 
     output << __header( bn ) << std::endl;
 
@@ -103,8 +106,9 @@ namespace gum {
     output.flush();
     output.close();
 
-    if ( output.fail() )
+    if ( output.fail() ) {
       GUM_ERROR( IOError, "Writting in the ostream failed." );
+    }
   }
 
   // Returns a bloc defining a variable's CPT in the BIF format.

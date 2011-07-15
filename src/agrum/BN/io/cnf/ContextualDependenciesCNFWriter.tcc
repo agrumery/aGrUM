@@ -51,7 +51,7 @@ namespace gum {
     void
     ContextualDependenciesCNFWriter<T_DATA, IApproximationPolicy>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
       std::cout << "start writing" << std::endl;
-      
+
 
       Instantiation Order;
       for(gum::Sequence<gum::NodeId>::iterator it = bn.getTopologicalOrder().begin();it !=bn.getTopologicalOrder().end();++it)
@@ -69,15 +69,15 @@ namespace gum {
       Idx numvar = 0;
       Idx clause = 0;
       std::stringstream clausstr, clausstr2;
-      gum::HashTable<std::string, Idx> vartable ; 
-      gum::HashTable<std::string, Idx> protable ; 
+      gum::HashTable<std::string, Idx> vartable ;
+      gum::HashTable<std::string, Idx> protable ;
       gum::HashTable<const gum::DiscreteVariable*,gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >* > cptparamval;
 
       for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
         std::cout << *iter << std::endl;
         std::stringstream str0 ;
         const DiscreteVariable * var = &bn.variable(*iter);
-        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) { 
+        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) {
           std::stringstream stri ;
           stri << var->name() <<"_"<< var->label( i );
           vartable.insert(stri.str(), ++num);
@@ -115,7 +115,7 @@ namespace gum {
           }
         }
       }
-      std::stringstream str2; 
+      std::stringstream str2;
 
       while ( !cptparamval.empty()){
         gum::HashTable<const DiscreteVariable*,gum::HashTable<std::string, gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator itvar = cptparamval.begin();
@@ -128,7 +128,7 @@ namespace gum {
           std::cout << "initial" << std::endl;
 
           for (gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator itpv = (*itpvall)->begin(); itpv != (*itpvall)->end(); ++itpv  ){
-            std::cout  << "{" << std::endl; 
+            std::cout  << "{" << std::endl;
             for (gum::Sequence<gum::Instantiation*>::iterator itseqv = (*itpv)->begin(); itseqv != (*itpv)->end(); ++itseqv  ){
               std::cout << (*itseqv)->toString() <<" "<< std::endl;
             }
@@ -144,7 +144,7 @@ namespace gum {
                   gum::Instantiation instpro(**itseqv , false);
                   instpro.reorder(Order);
                   const gum::DiscreteVariable * var = &((*itseqv)->variable(iInst));
-                  instpro.erase(*var);// reorder instance to optimize make sure key unicity. 
+                  instpro.erase(*var);// reorder instance to optimize make sure key unicity.
                   if(!orderStruct.exists(instpro.toString())){
                     orderStruct.insert(instpro.toString(),
                         new gum::HashTable<const gum::DiscreteVariable * ,std::pair<gum::Set<Idx>*,gum::Set<Idx>*>*>());
@@ -188,11 +188,11 @@ namespace gum {
             }
             while (!orderStruct.empty()){
               while(!(*(orderStruct.begin()))->empty()){
-                delete (*(*(orderStruct.begin()))->begin())->first; 
-                delete (*(*(orderStruct.begin()))->begin())->second; 
+                delete (*(*(orderStruct.begin()))->begin())->first;
+                delete (*(*(orderStruct.begin()))->begin())->second;
                 (*(orderStruct.begin()))->erase((*(orderStruct.begin()))->begin());
               }
-              delete *(orderStruct.begin());//std::cout<<"orderStruct" << *(orderStruct.begin()) << std::endl; 
+              delete *(orderStruct.begin());//std::cout<<"orderStruct" << *(orderStruct.begin()) << std::endl;
               orderStruct.erase(orderStruct.begin());
             }
           }
@@ -200,7 +200,7 @@ namespace gum {
 
         /*  std::cout << "transformation result" << std::endl;
           for (gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator itpv = (*itpvall)->begin(); itpv != (*itpvall)->end(); ++itpv  ){
-            std::cout  << "{" << std::endl; 
+            std::cout  << "{" << std::endl;
             for (gum::Sequence<gum::Instantiation*>::iterator itseqv = (*itpv)->begin(); itseqv != (*itpv)->end(); ++itseqv  ){
               std::cout << (*itseqv)->toString() <<" "<< std::endl;
             }
@@ -208,11 +208,11 @@ namespace gum {
           }
           std::cout << "=====================================================================" << std::endl;
  */
-          
+
           while(!(*itpvall)->empty()){
             gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator   itpv = (*itpvall)->begin();
             while(!(*itpv)->empty()){
-              gum::Sequence<gum::Instantiation*>::iterator   itseqv = (*itpv)->begin(); 
+              gum::Sequence<gum::Instantiation*>::iterator   itseqv = (*itpv)->begin();
               for (Idx i = 0; i < (*itseqv)->nbrDim() ; i++){
                 std::stringstream str;
                 str << (*itseqv)->variable(i).name() <<"_" << (*itseqv)->val((*itseqv)->variable(i));
@@ -237,7 +237,7 @@ namespace gum {
         delete (*itvar);
         cptparamval.erase(itvar);
       }
-      
+
       clausstr << str2.str();
 
       output <<"p cnf "<< num <<" "<<clause << "\neclauses "<< numvar<<"\n" << clausstr.str() <<  clausstr2.str()  << std::endl;
@@ -272,20 +272,20 @@ namespace gum {
       Idx numvar = 0;
       Idx clause = 0;
       std::stringstream clausstr, clausstr2;
-      gum::HashTable<std::string, Idx> vartable ; 
-      gum::HashTable<std::string, Idx> protable ; 
+      gum::HashTable<std::string, Idx> vartable ;
+      gum::HashTable<std::string, Idx> protable ;
       gum::HashTable<const gum::DiscreteVariable*,gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >* > cptparamval;
-      
-      
+
+
 
       Instantiation Order;
       for(gum::Sequence<gum::NodeId>::iterator it = bn.getTopologicalOrder().begin();it !=bn.getTopologicalOrder().end();++it)
         Order.add(bn.variable(*it));
-      
+
       for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
         std::stringstream str0 ;
         const DiscreteVariable * var = &bn.variable(*iter);
-        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) { 
+        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) {
           std::stringstream stri ;
           stri << var->name() <<"_"<< var->label( i );
           vartable.insert(stri.str(), ++num);
@@ -322,8 +322,8 @@ namespace gum {
           }
         }
       }
-      
-      std::stringstream str2; 
+
+      std::stringstream str2;
 
       while ( !cptparamval.empty()){
         gum::HashTable<const DiscreteVariable*,gum::HashTable<std::string, gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator itvar = cptparamval.begin();
@@ -335,7 +335,7 @@ namespace gum {
           std::cout << "initial" << std::endl;
 
           for (gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator itpv = (*itpvall)->begin(); itpv != (*itpvall)->end(); ++itpv  ){
-            std::cout  << "{" << std::endl; 
+            std::cout  << "{" << std::endl;
             for (gum::Sequence<gum::Instantiation*>::iterator itseqv = (*itpv)->begin(); itseqv != (*itpv)->end(); ++itseqv  ){
               std::cout << (*itseqv)->toString() <<" "<< std::endl;
             }
@@ -348,7 +348,7 @@ namespace gum {
             //std::cout <<  (**itpv) << std::endl;
             gum::Idx linecount = 0;
             gum::HashTable<std::string,gum::HashTable<const  gum::DiscreteVariable* ,std::pair<gum::Set<Idx>*,gum::Set<Idx>*>*>*> orderStruct;// set sizeof Hashtable
-            
+
             gum::Set<gum::Idx> elimination;
             gum::HashTable<std::string,gum::Instantiation*> newSeqpre ;
             //  gum::Sequence<gum::Instantiation*>* newSeqpre = new gum::Sequence<gum::Instantiation*>;
@@ -364,18 +364,18 @@ namespace gum {
                   instpro->reorder(Order);
                 //  std::cout << *instpro << std::endl;
 
-                  // reorder instance to optimize make sure key unicity. 
+                  // reorder instance to optimize make sure key unicity.
                   if(!orderStruct.exists(instpro->toString()) && !newSeqpre.exists(instpro->toString())){
                     orderStruct.insert(instpro->toString(),
                         new gum::HashTable<const gum::DiscreteVariable * ,std::pair<gum::Set<Idx>*,gum::Set<Idx>*>*>());
-                    
+
                   }
                   if( orderStruct.exists(instpro->toString()) && !orderStruct[instpro->toString()]->exists(var)){
 
                     // do that for the first var where all instantiation are be accounted then line are simply erased
                     orderStruct[instpro->toString()]->insert(var,
                         new std::pair<gum::Set<Idx>*,gum::Set<Idx>*>(new gum::Set<Idx>,new gum::Set<Idx>((*itseqv)->variable(iInst).domainSize())));// set sizeof Hashtable
-                    
+
                     //delete instpro;
                   }
                   if( orderStruct.exists(instpro->toString()) && !newSeqpre.exists(instpro->toString())){
@@ -392,17 +392,17 @@ namespace gum {
                         delete (*itb);
                         orderStruct2->erase(itb.key());
                       }
-                      
+
                       delete orderStruct2;
                       orderStruct.erase(instpro->toString());
                     }
-                    else delete instpro; 
+                    else delete instpro;
                   }
                   else if( newSeqpre.exists(instpro->toString())){
                     elimination.insert(linecount);
-                    delete instpro; 
+                    delete instpro;
                   }
-                  
+
                 }
               }
             }
@@ -452,8 +452,8 @@ namespace gum {
             }
             while (!orderStruct.empty()){
               while(!(*(orderStruct.begin()))->empty()){
-                delete (*(*(orderStruct.begin()))->begin())->first; 
-                delete (*(*(orderStruct.begin()))->begin())->second; 
+                delete (*(*(orderStruct.begin()))->begin())->first;
+                delete (*(*(orderStruct.begin()))->begin())->second;
                 (*(orderStruct.begin()))->erase((*(orderStruct.begin()))->begin());
               }
               delete *(orderStruct.begin());
@@ -466,7 +466,7 @@ std::cout << (*itpv)->size() << std::endl;
 
 /*          std::cout << "transformation result" << std::endl;
           for (gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator itpv = (*itpvall)->begin(); itpv != (*itpvall)->end(); ++itpv  ){
-            std::cout  << "{" << std::endl; 
+            std::cout  << "{" << std::endl;
             for (gum::Sequence<gum::Instantiation*>::iterator itseqv = (*itpv)->begin(); itseqv != (*itpv)->end(); ++itseqv  ){
               std::cout << (*itseqv)->toString() <<" "<< std::endl;
             }
@@ -474,11 +474,11 @@ std::cout << (*itpv)->size() << std::endl;
           }
           std::cout << "=====================================================================" << std::endl;
 */
-   
+
        while(!(*itpvall)->empty()){
             gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator   itpv = (*itpvall)->begin();
             while(!(*itpv)->empty()){
-              gum::Sequence<gum::Instantiation*>::iterator   itseqv = (*itpv)->begin(); 
+              gum::Sequence<gum::Instantiation*>::iterator   itseqv = (*itpv)->begin();
               for (Idx i = 0; i < (*itseqv)->nbrDim() ; i++){
                 std::stringstream str;
                 str << (*itseqv)->variable(i).name() <<"_" << (*itseqv)->val((*itseqv)->variable(i));
@@ -503,7 +503,7 @@ std::cout << (*itpv)->size() << std::endl;
         delete (*itvar);
         cptparamval.erase(itvar);
       }
-      
+
 
       clausstr << str2.str();
 
@@ -519,7 +519,7 @@ std::cout << (*itpv)->size() << std::endl;
 
       if ( output.fail() )
         GUM_ERROR( IOError, "Writting in the ostream failed." );
-      
+
     }
 
   // Returns a bloc defining a variable's CPT in the BN format.

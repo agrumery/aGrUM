@@ -48,8 +48,8 @@ namespace gum {
         void setUp() {
           bn = new gum::BayesNet<double>();
 
-          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
+          gum::LabelizedVariable n1( "n1", "", 2 ), n2( "n2", "", 2 ),  n3( "n3", "" , 2 );
+          gum::LabelizedVariable n4( "n4", "", 2 ), n5( "n5", "", 2 );
 
           i1 = bn->addVariable( n1 );
           i2 = bn->addVariable( n2 );
@@ -111,6 +111,7 @@ namespace gum {
           bool isOK = false;
 
           TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+          reader.showElegantErrors();
 
           TS_ASSERT( isOK );
           TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
@@ -178,4 +179,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

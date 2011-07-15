@@ -164,7 +164,7 @@ namespace gum {
 
     //Outcomes
     for ( Idx i = 0; i < var.domainSize(); i++ )
-      str << "\t<OUTCOMES>" << var.label( i ) << "</OUTCOMES>" << std::endl;
+      str << "\t<OUTCOME>" << var.label( i ) << "</OUTCOME>" << std::endl;
 
 //     //Closing tag
     str << "</VARIABLE>" << std::endl;

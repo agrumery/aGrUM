@@ -49,17 +49,16 @@ namespace gum {
   // ============================================================================
   template<typename T_DATA> INLINE
   MultiDimNoisyORCompound<T_DATA>::MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                                            const MultiDimNoisyORCompound<T_DATA>& from ):
-    MultiDimReadOnly<T_DATA>()
-  {
+      const MultiDimNoisyORCompound<T_DATA>& from ):
+      MultiDimReadOnly<T_DATA>() {
     GUM_CONSTRUCTOR( MultiDimNoisyORCompound );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
-    for (HashTableConstIterator< const DiscreteVariable *, T_DATA > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter) {
+    for ( HashTableConstIterator< const DiscreteVariable *, T_DATA > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
       try {
-        causalWeight(*(bij.first(iter.key())), *iter);
-      } catch (NotFound&) {
-        causalWeight(*(iter.key()), *iter);
+        causalWeight( *( bij.first( iter.key() ) ), *iter );
+      } catch ( NotFound& ) {
+        causalWeight( *( iter.key() ), *iter );
       }
     }
   }
@@ -91,7 +90,7 @@ namespace gum {
         const DiscreteVariable& v = this->variable( j );
 
         if ( i.val( v ) == 1 ) {
-          T_DATA pr = (1-causalWeight(v))/ratio;
+          T_DATA pr = ( 1-causalWeight( v ) )/ratio;
 
           if ( pr == ( T_DATA )0.0 ) {
             fact = ( T_DATA )0.0;
@@ -114,7 +113,9 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void MultiDimNoisyORCompound<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
-    if ( w == ( T_DATA )0 ) GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
+    if ( w == ( T_DATA )0 ) {
+      GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
+    }
 
     __causal_weights.set( &v, w );
   }
@@ -156,7 +157,7 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   MultiDimContainer<T_DATA>* MultiDimNoisyORCompound<T_DATA>::newFactory() const {
-    return new MultiDimNoisyORCompound<T_DATA>(__external_weight, __default_weight);
+    return new MultiDimNoisyORCompound<T_DATA>( __external_weight, __default_weight );
     // GUM_ERROR( OperationNotAllowed,
     //            "This class doesn't contain an empty constructor" );
     // return 0;
@@ -164,20 +165,19 @@ namespace gum {
 
   // returns the name of the implementation
   template<typename T_DATA> INLINE
-  const std::string& MultiDimNoisyORCompound<T_DATA>::name () const {
+  const std::string& MultiDimNoisyORCompound<T_DATA>::name() const {
     static const std::string str = "MultiDimNoisyORCompound";
     return str;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimNoisyORCompound<T_DATA>::_swap(const DiscreteVariable* x,
-                                              const DiscreteVariable* y)
-  {
-    MultiDimImplementation<T_DATA>::_swap(x, y);
-    __causal_weights.insert(y, __causal_weights[x]);
-    __causal_weights.erase(x);
+  void MultiDimNoisyORCompound<T_DATA>::_swap( const DiscreteVariable* x,
+      const DiscreteVariable* y ) {
+    MultiDimImplementation<T_DATA>::_swap( x, y );
+    __causal_weights.insert( y, __causal_weights[x] );
+    __causal_weights.erase( x );
   }
 
 // ==================================================
 } /* namespace gum */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

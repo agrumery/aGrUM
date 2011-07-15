@@ -25,86 +25,85 @@
  */
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-ClassElement::ClassElementType
-Aggregate::elt_type() const { return prm_aggregate; }
+    INLINE
+    ClassElement::ClassElementType
+    Aggregate::elt_type() const { return prm_aggregate; }
 
-INLINE
-Aggregate::AggregateType
-Aggregate::agg_type() const { return __agg_type; }
+    INLINE
+    Aggregate::AggregateType
+    Aggregate::agg_type() const { return __agg_type; }
 
-INLINE
-Idx
-Aggregate::label() const { return __label; }
+    INLINE
+    Idx
+    Aggregate::label() const { return __label; }
 
-INLINE
-Type&
-Aggregate::type() { return *__type; }
+    INLINE
+    Type&
+    Aggregate::type() { return *__type; }
 
-INLINE
-const Type&
-Aggregate::type() const { return *__type; }
+    INLINE
+    const Type&
+    Aggregate::type() const { return *__type; }
 
-INLINE
-Potential<prm_float>&
-Aggregate::cpf() { GUM_ERROR(OperationNotAllowed, "This is an aggregate."); }
+    INLINE
+    Potential<prm_float>&
+    Aggregate::cpf() { GUM_ERROR( OperationNotAllowed, "This is an aggregate." ); }
 
-INLINE
-const Potential<prm_float>&
-Aggregate::cpf() const { GUM_ERROR(OperationNotAllowed, "This is an aggregate."); }
+    INLINE
+    const Potential<prm_float>&
+    Aggregate::cpf() const { GUM_ERROR( OperationNotAllowed, "This is an aggregate." ); }
 
-INLINE
-MultiDimImplementation<prm_float>*
-Aggregate::buildImpl() const
-{
-  MultiDimImplementation<prm_float>* impl = 0;
-  switch (agg_type()) {
-    case agg_min:
-      impl = new aggregator::Min<prm_float>();
-      break;
-    case agg_max:
-      impl = new aggregator::Max<prm_float>();
-      break;
-    //case agg_count:
-    //  if (__label < __type.variable().domainSize()) {
-    //    impl = new aggregator::Count<prm_float>(__label);
-    //  } else {
-    //    std::string msg = "This aggregator of type agg_count isn't initialized "
-    //      "properly.";
-    //    GUM_ERROR(FatalError, msg);
-    //  }
-    //  break;
-    case agg_exists:
-      impl = new aggregator::Exists<prm_float>(__label);
-      break;
-    case agg_forall:
-      impl = new aggregator::Forall<prm_float>(__label);
-      break;
-    case agg_count:
-    case agg_mean:
-    case agg_or:
-    case agg_and:
-      GUM_ERROR(OperationNotAllowed,"Aggregator not implemented yet.");
-      break;
-    default:
-      GUM_ERROR(OperationNotAllowed, "Unknown aggregator.");
-  }
-  return impl;
-}
+    INLINE
+    MultiDimImplementation<prm_float>*
+    Aggregate::buildImpl() const {
+      MultiDimImplementation<prm_float>* impl = 0;
+      switch ( agg_type() ) {
+        case agg_min:
+          impl = new aggregator::Min<prm_float>();
+          break;
+        case agg_max:
+          impl = new aggregator::Max<prm_float>();
+          break;
+          //case agg_count:
+          //  if (__label < __type.variable().domainSize()) {
+          //    impl = new aggregator::Count<prm_float>(__label);
+          //  } else {
+          //    std::string msg = "This aggregator of type agg_count isn't initialized "
+          //      "properly.";
+          //    GUM_ERROR(FatalError, msg);
+          //  }
+          //  break;
+        case agg_exists:
+          impl = new aggregator::Exists<prm_float>( __label );
+          break;
+        case agg_forall:
+          impl = new aggregator::Forall<prm_float>( __label );
+          break;
+        case agg_count:
+        case agg_mean:
+        case agg_or:
+        case agg_and:
+          GUM_ERROR( OperationNotAllowed,"Aggregator not implemented yet." );
+          break;
+        default:
+          GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
+      }
+      return impl;
+    }
 
 // See gum::ClassElement::_addParent().
-INLINE
-void
-Aggregate::addParent(const ClassElement& elt) { }
+    INLINE
+    void
+    Aggregate::addParent( const ClassElement& elt ) { }
 
 // See gum::ClassElement::_addChild().
-INLINE
-void
-Aggregate::addChild(const ClassElement& elt) { }
+    INLINE
+    void
+    Aggregate::addChild( const ClassElement& elt ) { }
 
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

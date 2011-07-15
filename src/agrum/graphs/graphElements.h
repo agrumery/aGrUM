@@ -59,12 +59,12 @@
 
   <h4>ID factory</h4>
   For aGrUM, each node has (is) an id. IDs begin from 1 (id>0).
-  
+
   For the uniqueness of ids, insertNode() in NodeGraphPart contains an internal
   idFactory which guarantees this property.
 
   There are two ways to bypass the idFactory :
-  
+
   - use the copy constructor or the @ref gum::NodeGraphPart::populateNodes().
   These very two methods copy a set of
   nodes and ensure that the ids are the same as those of their argument
@@ -98,20 +98,20 @@
   for(G::NodeIterator it=gr.beginNodes();it != gr.endNodes() ; ++it) {
   ... // *it is a gum::NodeId
   }
-    
+
   // iterate on edges (if possible)
   for(G::EdgeIterator it=gr.beginEdges();it != gr.endEdges() ; ++it) {
   ... // *it is a gum::Edge
   }
- 
+
   // iterate on arcs (if possible)
   for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++it) {
   ... // *it is a gum::Arc
   }
   @endcode
-  
+
   <h4>Properties</h4>
-  
+
   Properties are the way to put (dynamic) informations within nodes, edges and
   arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
   or Arc. Unfortunately, due to a lack (or what we find to be lack) of C++, there
@@ -319,70 +319,70 @@ namespace gum {
   /* =========================================================================== */
 
   class Edge {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// constructs a new edge (aN1,aN2)
-    /** @param aN1 the ID of the first extremal node
-     * @param aN2 the ID of the second extremal node */
-    Edge( NodeId aN1, NodeId aN2 ) ;
+      /// constructs a new edge (aN1,aN2)
+      /** @param aN1 the ID of the first extremal node
+       * @param aN2 the ID of the second extremal node */
+      Edge( NodeId aN1, NodeId aN2 ) ;
 
-    /// copy constructor
-    Edge( const Edge& src ) ;
+      /// copy constructor
+      Edge( const Edge& src ) ;
 
-    /// destructor
-    ~Edge();
+      /// destructor
+      ~Edge();
 
-    ///@}
-
-
-    // ############################################################################
-    /// @name Accessors
-    // ############################################################################
-    /// @{
-    
-    /// returns a Boolean (false) indicating that the edge is undirected
-    bool isDirected() const ;
-
-    /// returns an extremal node of an edge given the ID of the other one
-    NodeId other( NodeId id ) const;
-    
-    /// returns one extremal node ID (whichever one it is is unspecified)
-    NodeId first() const ;
-    
-    /// returns the node ID of the other extremal node ID
-    NodeId second() const ;    
-
-    ///@}
+      ///@}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors
+      // ############################################################################
+      /// @{
 
-    /// copy operator
-    Edge& operator= ( const Edge& src ) ;
+      /// returns a Boolean (false) indicating that the edge is undirected
+      bool isDirected() const ;
 
-    /// checks whether two undirected edges are equal
-    /** Two Edge are equal if they have the same extremal nodes, whetever their
-     * order. For instance (3,4) == (4,3). */
-    bool operator== ( const Edge& src ) const ;
+      /// returns an extremal node of an edge given the ID of the other one
+      NodeId other( NodeId id ) const;
 
-    /// checks whether two undirected edges are different
-    /** Two Edge are different if at least one extremal node of an edge is not
-     * an extremal node of the other edge. For instance, (4,5) != (5,6). */
-    bool operator!= ( const Edge& src ) const ;
+      /// returns one extremal node ID (whichever one it is is unspecified)
+      NodeId first() const ;
 
-    /// @}
+      /// returns the node ID of the other extremal node ID
+      NodeId second() const ;
+
+      ///@}
 
 
-  private:
-    /// the extremal nodes of the edge (their order is unimportant)
-    NodeId n1, n2;
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+
+      /// copy operator
+      Edge& operator= ( const Edge& src ) ;
+
+      /// checks whether two undirected edges are equal
+      /** Two Edge are equal if they have the same extremal nodes, whetever their
+       * order. For instance (3,4) == (4,3). */
+      bool operator== ( const Edge& src ) const ;
+
+      /// checks whether two undirected edges are different
+      /** Two Edge are different if at least one extremal node of an edge is not
+       * an extremal node of the other edge. For instance, (4,5) != (5,6). */
+      bool operator!= ( const Edge& src ) const ;
+
+      /// @}
+
+
+    private:
+      /// the extremal nodes of the edge (their order is unimportant)
+      NodeId n1, n2;
 
   };
 
@@ -427,115 +427,110 @@ namespace gum {
   /* =========================================================================== */
 
   class Arc {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// basic constructor. Creates tail -> head.
-    /** @warning the order in which the nodes are passed is important */
-    Arc( NodeId tail, NodeId head ) ;
+      /// basic constructor. Creates tail -> head.
+      /** @warning the order in which the nodes are passed is important */
+      Arc( NodeId tail, NodeId head ) ;
 
-    /// copy constructor
-    Arc( const Arc& src ) ;
+      /// copy constructor
+      Arc( const Arc& src ) ;
 
-    /// destructor
-    ~Arc();
+      /// destructor
+      ~Arc();
 
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors
-    // ############################################################################
-    /// @{
-
-    /// returns the tail of the arc
-    NodeId tail() const ;
-
-    /// returns the head of the arc
-    NodeId head() const ;
-
-    /// returns a Boolean (true) indicating that the arc is directed
-    bool isDirected() const ;
-
-    /// returns an extremal node of an edge given the ID of the other one
-    NodeId other( NodeId id ) const;
-
-    /// returns one extremal node ID (whichever one it is is unspecified)
-    NodeId first() const ;
-
-    /// returns the node ID of the other extremal node ID
-    NodeId second() const ;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors
+      // ############################################################################
+      /// @{
 
-    /// copy operator
-    Arc& operator= ( const Arc& src ) ;
+      /// returns the tail of the arc
+      NodeId tail() const ;
 
-    /// checks whether two arcs are equal
-    /** Two arcs are considered equal if they have the same head and tail
-     * (by same we mean they have the same ID). */
-    bool operator== ( const Arc& src ) const ;
+      /// returns the head of the arc
+      NodeId head() const ;
 
-    /// check if two arcs are different
-    /** Two arcs are considered different if they have different head and/or tail
-     * (by different we mean they have different ID). */
-    bool operator!= ( const Arc& src ) const ;
+      /// returns a Boolean (true) indicating that the arc is directed
+      bool isDirected() const ;
 
-    /// @}
+      /// returns an extremal node of an edge given the ID of the other one
+      NodeId other( NodeId id ) const;
+
+      /// returns one extremal node ID (whichever one it is is unspecified)
+      NodeId first() const ;
+
+      /// returns the node ID of the other extremal node ID
+      NodeId second() const ;
+
+      /// @}
 
 
-  private:
-    /// the extremal nodes of the edge (their order is unimportant)
-    NodeId n1, n2;
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+
+      /// copy operator
+      Arc& operator= ( const Arc& src ) ;
+
+      /// checks whether two arcs are equal
+      /** Two arcs are considered equal if they have the same head and tail
+       * (by same we mean they have the same ID). */
+      bool operator== ( const Arc& src ) const ;
+
+      /// check if two arcs are different
+      /** Two arcs are considered different if they have different head and/or tail
+       * (by different we mean they have different ID). */
+      bool operator!= ( const Arc& src ) const ;
+
+      /// @}
 
 
-    /// modifies the tail of the arc
-    void __setTail( NodeId id ) ;
+    private:
+      /// the extremal nodes of the edge (their order is unimportant)
+      NodeId n1, n2;
 
-    /// modifies the head of the arc
-    void __setHead( NodeId id ) ;
 
-    /// reverses the direction of the arc
-    void operator- () ;
+      /// modifies the tail of the arc
+      void __setTail( NodeId id ) ;
+
+      /// modifies the head of the arc
+      void __setHead( NodeId id ) ;
+
+      /// reverses the direction of the arc
+      void operator- () ;
   };
 
 
-
-
-
-
-
-  ////////////////////////////////////////////////////////////////
-  //we need to provide hash functions for some Edge and Arc
+////////////////////////////////////////////////////////////////
+//we need to provide hash functions for some Edge and Arc
 
   template <> class HashFunc<Edge> : public  HashFuncSmallKeyPair<NodeId, NodeId> {
-  public:
-    /**
-     * @throw HashSize
-     */
-    Size operator()( const Edge& key ) const ;
-  private:
-    mutable std::pair<NodeId, NodeId> pair;
+    public:
+      /**
+       * @throw HashSize
+       */
+      Size operator()( const Edge& key ) const ;
+    private:
+      mutable std::pair<NodeId, NodeId> pair;
   };
 
 
   template <> class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId, NodeId> {
-  public:
-    /**
-     * @throw HashSize
-     */
-    Size operator()( const Arc& key ) const ;
-  private:
-    mutable std::pair<NodeId, NodeId> pair;
+    public:
+      /**
+       * @throw HashSize
+       */
+      Size operator()( const Arc& key ) const ;
+    private:
+      mutable std::pair<NodeId, NodeId> pair;
   };
 
 
@@ -580,17 +575,17 @@ namespace gum {
   };
 
 
-  /// @}
+/// @}
 
 
-  // ==============================================================================
-  /// to friendly display an edge
-  // ==============================================================================
+// ==============================================================================
+/// to friendly display an edge
+// ==============================================================================
   std::ostream& operator<< ( std::ostream& stream, const Edge& edge );
 
-  // ==============================================================================
-  /// to friendly display an arc
-  // ==============================================================================
+// ==============================================================================
+/// to friendly display an arc
+// ==============================================================================
   std::ostream& operator<< ( std::ostream& stream, const Arc& arc );
 
 

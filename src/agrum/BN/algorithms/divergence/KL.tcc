@@ -85,6 +85,13 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
+  double
+  KL<T_DATA>::bhattacharya() {
+    _process();
+    return _bhattacharya;
+  }
+
+  template<typename T_DATA> INLINE
   bool
   KL<T_DATA>::errorPQ() {
     _process();
@@ -114,22 +121,18 @@ namespace gum {
   template<typename T_DATA>
   bool
   KL<T_DATA>::__checkCompatibility() const {
-
-    if ( _p.size() !=_q.size() ) GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same size)" );
-
-    if ( _p.log10DomainSize() !=_q.log10DomainSize() ) GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize)" );
-
     for ( DAG::NodeIterator it=_p.beginNodes();it!=_p.endNodes();++it ) {
       const DiscreteVariable& vp=_p.variable( *it );
 
       try {
         const DiscreteVariable& vq=_q.variableFromName( vp.name() );
 
-        if ( vp.domainSize() !=vq.domainSize() ) GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize for"+vp.name() +")" );
+        if ( vp.domainSize() !=vq.domainSize() ) GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize for "+vp.name() +")" );
 
         for ( Id i=0;i<vp.domainSize();i++ ) {
           try {
             vq[vp.label( i )];
+            vp[vq.label( i )];
 
           } catch ( OutOfBounds& e ) {
 
@@ -141,6 +144,15 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same vars : "+vp.name() +")" );
       }
     }
+
+    // should not be used
+    if ( _p.size() !=_q.size() )
+      GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same size)" );
+
+    if ( fabs(_p.log10DomainSize() -_q.log10DomainSize()) >1e-14) {
+      GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize) : p="<<_p.log10DomainSize()<<" q="<<_q.log10DomainSize()<<" => "<< _p.log10DomainSize()-_q.log10DomainSize());
+    }
+
 
     return true;
   }

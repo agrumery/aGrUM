@@ -43,25 +43,25 @@ namespace gum {
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
+      KL<T_DATA> ( P,Q ),
       GibbsSettings( KL_DEFAULT_EPSILON,
                      KL_DEFAULT_MIN_EPSILON_RATE,
                      KL_DEFAULT_MAXITER,KL_DEFAULT_VERBOSITY,
                      KL_DEFAULT_BURNIN,
                      KL_DEFAULT_PERIODE_SIZE ),
-      KL<T_DATA> ( P,Q ),
       particle::Gibbs<T_DATA> ( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
   }
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
+      KL<T_DATA> ( kl ),
       GibbsSettings( KL_DEFAULT_EPSILON,
                      KL_DEFAULT_MIN_EPSILON_RATE,
                      KL_DEFAULT_MAXITER,
                      KL_DEFAULT_VERBOSITY,
                      KL_DEFAULT_BURNIN,
                      KL_DEFAULT_PERIODE_SIZE ),
-      KL<T_DATA> ( kl ),
       particle::Gibbs<T_DATA> ( kl.p() )  {
     GUM_CONSTRUCTOR( GibbsKL );
   }
@@ -104,10 +104,11 @@ namespace gum {
         pp=_p.jointProbability( particle() );
         pq=_q.jointProbability( Iq );
 
-        if ( pp!=0.0 ) {
+        if ( pp!=( T_DATA )0.0 ) {
           _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
-          if ( pq!=0.0 ) {
+          if ( pq!=( T_DATA )0.0 ) {
+            _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
             check_rate=true;
             ratio=pq/pp;
             delta=( T_DATA ) log2( ratio );
@@ -117,9 +118,9 @@ namespace gum {
           }
         }
 
-        if ( pq!=0.0 ) {
-          if ( pp!=0.0 ) {
-            // if we are here, it is certain that delta and ratio have been computed 
+        if ( pq!=( T_DATA )0.0 ) {
+          if ( pp!=( T_DATA )0.0 ) {
+            // if we are here, it is certain that delta and ratio have been computed
             // further lines above. (for now #112-113)
             _klQP+= ( T_DATA )( -delta*ratio );
           } else {
@@ -134,16 +135,16 @@ namespace gum {
         error=( double )fabs( delta-oldPQ );
         oldPQ=delta;
       }
+
+      GUM_EMIT2( onProgress, ( int )(( 100.0*nbrIterations() )/maxIter() ),error );
     } while ( testApproximationScheme( error ,check_rate )==APPROX_CONTINUE );
 
-    /*if ( verbosity() ) {
-      GUM_TRACE( messageApproximationScheme() );
-      GUM_TRACE( "#iterations = "<<nbrIterations() );
-    }*/
+    GUM_EMIT1( onStop,messageApproximationScheme() );
 
     _klPQ=-_klPQ/( nbrIterations() );
     _klQP=-_klQP/( nbrIterations() );
     _hellinger=sqrt( _hellinger/nbrIterations() );
+    _bhattacharya=-log( _bhattacharya );
   }
 
 } // namespace gum

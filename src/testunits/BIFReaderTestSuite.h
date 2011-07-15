@@ -43,7 +43,7 @@ namespace gum {
     class BIFReaderTestSuite: public CxxTest::TestSuite {
       public:
         void testConstuctor() {
-          std::string file = GET_PATH_STR( BIFReader_file1.txt );
+          std::string file = GET_PATH_STR( BIFReader_file1.bif );
 
           gum::BayesNet<float> net;
 
@@ -57,7 +57,7 @@ namespace gum {
         }
 
         void testRead_file1() {
-          std::string file = GET_PATH_STR( BIFReader_file1.txt );
+          std::string file = GET_PATH_STR( BIFReader_file1.bif );
 
           gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
@@ -88,7 +88,7 @@ namespace gum {
         }
 
         void testRead_file2_float() {
-          std::string file = GET_PATH_STR( BIFReader_file2.txt );
+          std::string file = GET_PATH_STR( BIFReader_file2.bif );
 
           gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
@@ -170,7 +170,7 @@ namespace gum {
         }
 
         void testRead_file2_double() {
-          std::string file = GET_PATH_STR( BIFReader_file2.txt );
+          std::string file = GET_PATH_STR( BIFReader_file2.bif );
 
           gum::BayesNet<double> *net = new gum::BayesNet<double>();
 
@@ -255,7 +255,7 @@ namespace gum {
         }
 
         void testRead_file3() {
-          std::string file = GET_PATH_STR( BIFReader_file3.txt );
+          std::string file = GET_PATH_STR( BIFReader_file3.bif );
 
           gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
@@ -1012,4 +1012,4 @@ namespace gum {
     };
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

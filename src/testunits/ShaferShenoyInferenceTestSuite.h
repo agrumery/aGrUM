@@ -159,7 +159,7 @@ namespace gum {
           } catch ( gum::Exception e ) {
             TS_ASSERT( false );
             std::cerr << std::endl << e.getContent() << std::endl;
-            throw e;
+            throw ;
           }
         }
 

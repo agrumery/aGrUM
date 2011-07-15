@@ -28,6 +28,7 @@
 #ifndef GUM_APPROXIMATION_POLICY_H
 #define GUM_APPROXIMATION_POLICY_H
 //**********************************************************************
+#include <agrum/core/debug.h>
 #include <agrum/core/inline.h>
 #include <agrum/core/types.h>
 #include <agrum/core/exceptions.h>
@@ -93,8 +94,9 @@ namespace gum {
       /// set bounds in a whole
       /// @throw OutOfBounds
       INLINE virtual void setLimits( const T_DATA& newLowLimit, const T_DATA& newHighLimit ) {
-        if ( newLowLimit >newHighLimit )
+        if ( newLowLimit >newHighLimit ) {
           GUM_ERROR( OutOfBounds, "Asked low value is higher than asked high value" );
+	}
 
         _lowLimit=newLowLimit;
         _highLimit=newHighLimit;
@@ -103,8 +105,9 @@ namespace gum {
       /// Sets lowest possible value
       /// @throw OutOfUpperBound
       INLINE virtual void setLowLimit( const T_DATA& newLowLimit ) {
-        if ( newLowLimit > this->_highLimit )
+        if ( newLowLimit > this->_highLimit ) {
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
+	}
 
         _lowLimit = newLowLimit;
       };
@@ -118,8 +121,9 @@ namespace gum {
       /// Sets Highest possible value
       /// @throw OutOfLowerBound
       INLINE virtual void setHighLimit( const T_DATA& newHighLimit ) {
-        if ( newHighLimit < this->_lowLimit )
+        if ( newHighLimit < this->_lowLimit ) {
           GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
+	}
 
         _highLimit = newHighLimit;
       };

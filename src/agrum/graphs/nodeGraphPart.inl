@@ -87,18 +87,17 @@ namespace gum {
     if ( __holes && ( ! __holes->empty() ) ) {
       newNode = *( __holes->begin() );
       __eraseHole( newNode );
-    }
-    else {
+    } else {
       newNode = __bound;
       ++__bound;
       __updateEndIterator();
     }
-    
+
     GUM_EMIT1( onNodeAdded, newNode );
 
     return newNode;
   }
-  
+
   INLINE Size NodeGraphPart::sizeNodes( ) const {
     return ( __holes ) ? ( __bound - __holes->size() ) : __bound;
   }
@@ -110,14 +109,14 @@ namespace gum {
   INLINE bool NodeGraphPart::existsNode( const NodeId node ) const {
     if ( node >= __bound )
       return false;
-    
+
     return ( ! __inHoles( node ) );
   }
 
   INLINE bool NodeGraphPart::exists( const NodeId node ) const {
     return existsNode( node );
   }
-  
+
   INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
     if ( ! existsNode( node ) ) return;
 
@@ -210,14 +209,14 @@ namespace gum {
 
 
 
-  
+
   //=================NODEGRAPHPARTITERATOR============================
 
 
 
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPart* nodes ) :
-    __nodes( nodes ), __pos( 0 ), __valid( false ) {
+      __nodes( nodes ), __pos( 0 ), __valid( false ) {
 
     GUM_CONNECT( *const_cast<NodeGraphPart *>( nodes ),
                  onNodeDeleted, *this, NodeGraphPartIterator::whenNodeDeleted );
@@ -226,7 +225,7 @@ namespace gum {
 
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPartIterator& it ):
-    __nodes( it.__nodes ), __pos( it.__pos ), __valid( it.__valid ) {
+      __nodes( it.__nodes ), __pos( it.__pos ), __valid( it.__valid ) {
     GUM_CONS_CPY( NodeGraphPartIterator );
   }
 
@@ -237,11 +236,11 @@ namespace gum {
   INLINE NodeGraphPartIterator&
   NodeGraphPartIterator::operator=( const NodeGraphPartIterator& it ) {
     //  avoid self assignment
-    if (&it != this ) {
+    if ( &it != this ) {
       __nodes = it.__nodes;
       __pos = it.__pos;
       __valid = it.__valid;
-      
+
       Listener::operator=( it );
       GUM_OP_CPY( NodeGraphPartIterator );
     }
@@ -269,8 +268,9 @@ namespace gum {
   }
 
   INLINE NodeId NodeGraphPartIterator::operator*( void ) const {
-    if ( !__valid )
+    if ( !__valid ) {
       GUM_ERROR( UndefinedIteratorValue, "This iterator is not valid !" );
+    }
 
     return __pos;
   }
@@ -282,8 +282,7 @@ namespace gum {
     if ( __pos >= __nodes->bound() ) {
       __pos = __nodes->bound();
       __valid = false;
-    }
-    else {
+    } else {
       __valid = __nodes->exists( __pos );
     }
   }

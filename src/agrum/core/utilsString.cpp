@@ -49,7 +49,7 @@ namespace gum {
     // parse the string
     for ( unsigned int i = 0; i < str_to_split.size(); ++i ) {
       last_is_delimiter=false;
-      
+
       // check wether we are reading an escape character
       if ( str_to_split[i] == escape_char ) {
         if ( i+1 < str_to_split.size() ) {
@@ -74,8 +74,7 @@ namespace gum {
           result.push_back( string_to_add );
           string_to_add.clear();
           new_string_to_add = false;
-        }
-        else {
+        } else {
           result.push_back( "?" );
         }
 
@@ -88,17 +87,18 @@ namespace gum {
 
     // if we opened a delimitered field but this field was not closed
     // by a delimiter, raise an axception
-    if ( delimited )
+    if ( delimited ) {
       GUM_ERROR( IOError, "delimited field opened but not closed" );
+    }
 
     // check if there remains a string to push into the result vector
     if ( new_string_to_add )
       result.push_back( string_to_add );
-    if (last_is_delimiter)
-      result.push_back( "?");
+    if ( last_is_delimiter )
+      result.push_back( "?" );
 
     return result;
   }
-  
+
 } /* namespace gum */
 

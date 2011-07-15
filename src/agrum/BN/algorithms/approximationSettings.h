@@ -17,20 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /**
  * @file
  * @brief This file contains getters and setters for Approximation settings
+ * ApproximationSettings provides as well 2 signals :
+ *   - onProgress(int pourcent,double error)
+ *   - onStop(std::string message)
+  * @see ApproximationListener for dedicated listener.
+ *
  * @author Pierre-Henri Wuillemin
  */
 #ifndef GUM_APPROXIMATION_SETTINGS_H
 #define GUM_APPROXIMATION_SETTINGS_H
 
 #include <agrum/core/debug.h>
+#include <agrum/core/signal/signaler.h>
 
 namespace gum {
 
   class ApproximationSettings {
     public:
+      Signaler2<int,double> onProgress; // progression,error
+      Signaler1<std::string> onStop; // criteria messageApproximationScheme
+
       enum ApproximationSchemeSTATE {
         APPROX_UNDEFINED,
         APPROX_CONTINUE,
@@ -60,7 +70,10 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if eps<=0
       void setEpsilon( double eps ) {
-        if ( eps<=0 ) GUM_ERROR( OutOfLowerBound,"eps should be >0" );
+        if ( eps<=0 ) {
+          GUM_ERROR( OutOfLowerBound,"eps should be >0" );
+        }
+
         __eps=eps;
       };
 
@@ -73,7 +86,10 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if rate<=0
       void setMinEpsilonRate( double rate ) {
-        if ( rate<=0 ) GUM_ERROR( OutOfLowerBound,"rate should be >0" );
+        if ( rate<=0 ) {
+          GUM_ERROR( OutOfLowerBound,"rate should be >0" );
+        }
+
         __min_rate_eps=rate;
       };
 
@@ -86,7 +102,10 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter( Size max ) {
-        if ( max<1 ) GUM_ERROR( OutOfLowerBound,"max should be >=1" );
+        if ( max<1 ) {
+          GUM_ERROR( OutOfLowerBound,"max should be >=1" );
+        }
+
         __max_iter=max;
       };
 
@@ -105,14 +124,14 @@ namespace gum {
         return __verbosity;
       };
       /// @}
-      
+
       /// history
       /// @{
 
       ApproximationSchemeSTATE stateApproximationScheme() const {
         return __current_state;
       }
-        
+
       /// @throw OperationNotAllowed if scheme not performed
       Size nbrIterations() const {
         if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
@@ -121,23 +140,23 @@ namespace gum {
         }
         return __current_step;
       };
-      
+
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
       const std::vector<double>& history() const {
         if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is udefined" );
         }
-        if ( verbosity()==false) {
+        if ( verbosity()==false ) {
           GUM_ERROR( OperationNotAllowed,
                      "No history when verbosity=false" );
         }
-        
+
         return __history;
       }
       /// @}
 
-     /// Approximation Scheme
+      /// Approximation Scheme
       /** The approximation scheme is assumed to be used like this
       @code
       initApproximationScheme();
@@ -188,9 +207,9 @@ namespace gum {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is not correct : "+messageApproximationScheme() );
         }
-        
-        if (verbosity()) __history.push_back(error);
-        
+
+        if ( verbosity() ) __history.push_back( error );
+
         if ( __current_step>maxIter() )
           return ( __current_state=APPROX_LIMIT );
 
@@ -232,7 +251,7 @@ namespace gum {
 
       /// history for trace (if verbosity=true)
       std::vector<double> __history;
-      
+
       /// Threshold for convergence
       double __eps;
 

@@ -123,8 +123,9 @@ namespace gum {
 
     if ( tree_level == 0 ) return;
 
-    if (( min_level > max_level ) || ( max_level >= tree_level ) )
+    if (( min_level > max_level ) || ( max_level >= tree_level ) ) {
       GUM_ERROR( OutOfBounds, "min_level and/or max_level not ok" );
+    }
 
     // parse the database
     unsigned int level, val;

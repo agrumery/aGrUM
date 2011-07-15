@@ -51,7 +51,11 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
+#include <agrum/BN/io/DSL/DSLWriter.h>
 #include <agrum/BN/io/net/netReader.h>
+#include <agrum/BN/io/net/netWriter.h>
+#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>

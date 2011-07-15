@@ -23,13 +23,13 @@
 
 namespace gum {
 
-  
+
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
   template<typename T_DATA> INLINE
   MultiDimImplementation<T_DATA>::MultiDimImplementation():
-    MultiDimContainer<T_DATA>(),__vars(),__slaveInstantiations() {
+      MultiDimContainer<T_DATA>(),__vars(),__slaveInstantiations() {
     GUM_CONSTRUCTOR( MultiDimImplementation );
     __internalChangeMethod=DIRECT_CHANGE;
     __internalChangeState=NO_CHANGE;
@@ -42,10 +42,10 @@ namespace gum {
   template<typename T_DATA> INLINE
   MultiDimImplementation<T_DATA>::MultiDimImplementation
   ( const MultiDimImplementation<T_DATA>& from ) :
-    MultiDimContainer<T_DATA>( from ),__vars( from.__vars ),
-    __internalChangeMethod( from.__internalChangeMethod ),
-    __internalChangeState( from.__internalChangeState ),
-    __domainSize( from.__domainSize ) {
+      MultiDimContainer<T_DATA>( from ),__vars( from.__vars ),
+      __internalChangeMethod( from.__internalChangeMethod ),
+      __internalChangeState( from.__internalChangeState ),
+      __domainSize( from.__domainSize ) {
     GUM_CONS_CPY( MultiDimImplementation );
     GUM_ASSERT( ! this->_isCommitNeeded() );
   }
@@ -70,8 +70,9 @@ namespace gum {
   void MultiDimImplementation<T_DATA>::add( const DiscreteVariable& v ) {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if ( __vars.exists( &v ) )
+    if ( __vars.exists( &v ) ) {
       GUM_ERROR( DuplicateElement,"Var already exists in this instantiation" );
+    }
 
     __domainSize*=v.domainSize();
 
@@ -92,8 +93,9 @@ namespace gum {
   template<typename T_DATA> INLINE
   void MultiDimImplementation<T_DATA>::erase( const DiscreteVariable& v ) {
     // check that the variable does actually belong to the MultiDimImplementation
-    if ( ! __vars.exists( &v ) )
+    if ( ! __vars.exists( &v ) ) {
       GUM_ERROR( NotFound,"Var does not exist in this instantiation" );
+    }
 
     __domainSize/=v.domainSize();
 
@@ -114,7 +116,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   MultiDimImplementation<T_DATA>& operator<<( MultiDimImplementation<T_DATA>& array,
-                                              const DiscreteVariable& v ) {
+      const DiscreteVariable& v ) {
     array.add( v );
     return array;
   }
@@ -265,23 +267,22 @@ namespace gum {
   /// get the actual state of *this
   template<typename T_DATA> INLINE
   float MultiDimImplementation<T_DATA>::compressionRate() const {
-    return ((float)1)-(float)realSize()/(float)domainSize();
+    return (( float )1 )-( float )realSize()/( float )domainSize();
   }
 
   /// returns a basename to be used for default operators
   template<typename T_DATA>
-  const std::string& MultiDimImplementation<T_DATA>::basename () const {
+  const std::string& MultiDimImplementation<T_DATA>::basename() const {
     static const std::string str = "MultiDimImplementation";
     return str;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::_swap(const DiscreteVariable* x,
-                                             const DiscreteVariable* y)
-  {
-    __vars.setAtPos(__vars.pos(x), y);
-    for (List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter) {
-      (**iter).swap(*x, *y);
+  void MultiDimImplementation<T_DATA>::_swap( const DiscreteVariable* x,
+      const DiscreteVariable* y ) {
+    __vars.setAtPos( __vars.pos( x ), y );
+    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter ) {
+      ( **iter ).swap( *x, *y );
     }
   }
 
@@ -293,7 +294,7 @@ namespace gum {
                              const MultiDimImplementation<T_DATA>& array ) {
     return out << static_cast<const MultiDimContainer<T_DATA>&>( array );
   }
-  
+
 } /* namespace gum */
 
 

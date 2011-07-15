@@ -39,13 +39,13 @@ namespace gum {
 // Default constructor.
   template<typename T_DATA> INLINE
   DSLWriter<T_DATA>::DSLWriter() {
-    GUM_CONSTRUCTOR ( DSLWriter );
+    GUM_CONSTRUCTOR( DSLWriter );
   }
 
 // Default destructor.
   template<typename T_DATA> INLINE
   DSLWriter<T_DATA>::~DSLWriter() {
-    GUM_DESTRUCTOR ( DSLWriter );
+    GUM_DESTRUCTOR( DSLWriter );
   }
 
   /** Writes a Bayesian Network in the output stream using the DSL format.
@@ -54,22 +54,24 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template<typename T_DATA>
-  void DSLWriter<T_DATA>::write ( std::ostream &output, const BayesNet<T_DATA>& bn ) {
-    if ( ! output.good() )
-      GUM_ERROR ( IOError, "Stream states flags are not all unset." );
+  void DSLWriter<T_DATA>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+    if ( ! output.good() ) {
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
+    }
 
     output << "net Unnamed\n{\n";
 
     for ( SequenceIterator<NodeId> iter = bn.getTopologicalOrder().begin(); iter != bn.getTopologicalOrder().end(); ++iter ) {
-      output << __variableBloc ( bn, bn.variable ( *iter ) );
+      output << __variableBloc( bn, bn.variable( *iter ) );
     }
 
     output << "};";
 
     output.flush();
 
-    if ( output.fail() )
-      GUM_ERROR ( IOError, "Writting in the ostream failed." );
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
+    }
 
   }
 
@@ -81,12 +83,12 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template<typename T_DATA>
-  void DSLWriter<T_DATA>::write ( std::string filePath, const BayesNet<T_DATA>& bn ) {
+  void DSLWriter<T_DATA>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
     std::filebuf fb;
-    fb.open ( filePath.c_str(), std::ios::out );
-    std::ostream output ( &fb );
+    fb.open( filePath.c_str(), std::ios::out );
+    std::ostream output( &fb );
 
-    write ( output, bn );
+    write( output, bn );
 
     fb.close();
   }
@@ -95,14 +97,14 @@ namespace gum {
    * Returns a bloc defining a variable in the DSL format.
    */
   template<typename T_DATA>
-  std::string DSLWriter<T_DATA>::__variableBloc ( const BayesNet<T_DATA>& bn , const DiscreteVariable& var ) {
+  std::string DSLWriter<T_DATA>::__variableBloc( const BayesNet<T_DATA>& bn , const DiscreteVariable& var ) {
     NodeId id;
     gum::Size i = 0;
     std::ostringstream oss;
 
-    std::string val ( "" );
+    std::string val( "" );
 
-    id = bn.idFromName ( var.name() );
+    id = bn.idFromName( var.name() );
 
     oss << "\tnode " << var.name() << "\n\t{\n";
 
@@ -114,7 +116,7 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-    const Sequence< const DiscreteVariable * > &tmp_vars = bn.cpt ( id ).variablesSequence();
+    const Sequence< const DiscreteVariable * > &tmp_vars = bn.cpt( id ).variablesSequence();
 
     for ( Idx i = tmp_vars.size() - 1;i > 0 ;i-- ) {
       if ( i < tmp_vars.size() - 1 ) oss << ", ";
@@ -132,7 +134,7 @@ namespace gum {
     for ( i = 0; i < var.domainSize(); i++ ) {
       if ( i != 0 ) oss << ", ";
 
-      oss << var.label ( i );
+      oss << var.label( i );
     }
 
     oss << ");\n";
@@ -143,10 +145,10 @@ namespace gum {
     oss << "\t\t\tPROBABILITIES = (";
     i = 0;
 
-    for ( Instantiation iter = bn.cpt ( id ).getMasterRef(); i < bn.cpt ( id ).domainSize(); ++iter ) {
+    for ( Instantiation iter = bn.cpt( id ).getMasterRef(); i < bn.cpt( id ).domainSize(); ++iter ) {
       if ( i != 0 ) oss << ", ";
 
-      oss << bn.cpt ( id ) [iter];
+      oss << bn.cpt( id )[iter];
 
       i++;
     }

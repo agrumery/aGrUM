@@ -196,7 +196,7 @@ def addTick(self,*args):
 
 %pythoncode %{
 def availableBNExts():
-  return "bif|dsl|net"
+  return "bif|dsl|net|bifxml"
 
 def loadBN(s):
   bn=BayesNet()
@@ -204,6 +204,8 @@ def loadBN(s):
   extension=s.split('.')[-1].upper()
   if extension=="BIF":
     bn.loadBIF(s)
+  elif extension=="BIFXML":
+    bn.loadBIFXML(s)
   elif extension=="DSL":
     bn.loadDSL(s)
   elif extension=="NET":
@@ -212,6 +214,20 @@ def loadBN(s):
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
   return bn
+
+def saveBN(bn,s):
+  extension=s.split('.')[-1].upper()
+  if extension=="BIF":
+    bn.saveBIF(s)
+  elif extension=="BIFXML":
+    bn.saveBIFXML(s)
+  elif extension=="DSL":
+    bn.saveDSL(s)
+  elif extension=="NET":
+    bn.saveNET(s)
+  else:
+    raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+
 %}
 
 %extend gum::BayesNet {
@@ -225,7 +241,8 @@ def names(self):
     give the list of names of variable in the bn
     """
 
-    inst=self.completeInstantiation()
+    inst=Instantiation()
+    self.completeInstantiation(inst)
     l={}
     for i in range(inst.nbrDim()):
         l[inst.variable(i).name()]=self.nodeId(inst.variable(i))
@@ -237,8 +254,8 @@ def ids(self):
     """
     give a list of ids of variable in the bn
     """
-
-    inst=self.completeInstantiation()
+    inst=Instantiation()
+    self.completeInstantiation(inst)
     l={}
     for i in range(inst.nbrDim()):
         l[self.nodeId(inst.variable(i))]=inst.variable(i).name()
@@ -333,6 +350,11 @@ def ids(self):
         return false;
     }
 
+    void saveDSL(std::string name) {
+        gum::DSLWriter<T_DATA> writer;
+        writer.write( name, *self );
+    }
+
     bool loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener(1);
@@ -371,6 +393,29 @@ def ids(self):
             }
         } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
         return false;
+    }
+
+   void saveNET(std::string name) {
+        gum::NetWriter<T_DATA> writer;
+        writer.write( name, *self );
+    }
+
+   bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
+    {
+        try {
+            gum::BIFXMLBNReader<T_DATA> reader(self,name);
+            int isOK= reader.proceed();
+             return (isOK==0);
+        } catch (gum::IOError& e) {
+            GUM_SHOWERROR(e);
+        }
+
+        return false;
+   }
+
+    void saveBIFXML(std::string name) {
+        gum::BIFXMLBNWriter<T_DATA> writer;
+        writer.write( name, *self );
     }
 }
 
@@ -725,6 +770,7 @@ PyObject* compute(void) {
   PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
   PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
   PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
+  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
 
   return q;
 }
@@ -739,6 +785,7 @@ PyObject* compute(void) {
   PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
   PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
   PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
+  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
 
   return q;
 }
@@ -747,6 +794,7 @@ PyObject* compute(void) {
 %{
 #include "extensions/PythonBNListener.h"
 #include "extensions/PythonLoadListener.h"
+/*#include "extensions/PythonGibbsKLListener.h"*/
 %}
 
 /* INCLUDE aGrUM base wrap */
@@ -754,7 +802,33 @@ PyObject* compute(void) {
 
 %include "extensions/PythonBNListener.h"
 %include "extensions/PythonLoadListener.h"
+/*%include "extensions/PythonGibbsKLListener.h"*/
 
+
+
+/* TEMPLATES INSTANTIATIONS */
+/*
+%template(PythonGibbsKLListener_float) PythonGibbsKLListener<float>;
+%template(PythonGibbsKLListener_double) PythonGibbsKLListener<double>;
+
+%extend gum::GibbsKL_double {
+%pythoncode {
+    def setListeners(self,whenProgress,whenStop):
+        self.listener=PythonGibbsKLListener_double(self)
+        self.listener.setWhenProgress(onProgress)
+        self.listener.setWhenStop(onStop)
+}
+}
+
+%extend gum::GibbsKL_float {
+%pythoncode {
+    def setListeners(self,whenProgress,whenStop):
+        self.listener=PythonGibbsKLListener_float(self)
+        self.listener.setWhenProgress(onProgress)
+        self.listener.setWhenStop(onStop)
+}
+}
+*/
 
 %pythoncode %{
 Potential = Potential_double
@@ -764,4 +838,7 @@ LazyPropagation = LazyPropagation_double
 GibbsInference = GibbsInference_double
 BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double
+# PythonGibbsKLListener=PythonGibbsKLListener_double
 %}
+
+

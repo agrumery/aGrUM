@@ -156,12 +156,12 @@ namespace gum {
     // ============================================================================
     /// check whether two iterators point toward the same case
     // ============================================================================
-    bool operator== ( const DatabaseIterator& ) const throw();
+    bool operator== ( const DatabaseIterator& ) const ;
 
     // ============================================================================
     /// check whether two iterators point toward different cases
     // ============================================================================
-    bool operator!= ( const DatabaseIterator& ) const throw();
+    bool operator!= ( const DatabaseIterator& ) const ;
 
     // ============================================================================
     /** @brief returns the value of the ith node/index in the current case
@@ -338,7 +338,7 @@ namespace gum {
      * @throw NotFound exception is thrown if the case cannot be found
      * (ncase is too big). */
     // ============================================================================
-    const unsigned int* line( unsigned int ncase ) const throw( NotFound );
+    const unsigned int* line( unsigned int ncase ) const; 
 
     // ============================================================================
     /// get the value of the ith node in the nth case of the database
@@ -347,12 +347,12 @@ namespace gum {
      * i.e., if n and/or i is/are too big. */
     // ============================================================================
     unsigned int value( unsigned int n, unsigned int i )
-      const throw( NotFound );
+      const ;
 
     // ============================================================================
     /// returns the name of the kth node in the database
     // ============================================================================
-    const std::string& nodeName( unsigned int k ) const throw( NotFound );
+    const std::string& nodeName( unsigned int k ) const ;
 
     // ============================================================================
     /// returns the names of all the nodes
@@ -362,35 +362,33 @@ namespace gum {
     // ============================================================================
     /// returns the names of all the modalities of a given node
     // ============================================================================
-    const std::vector<std::string>& modalitiesNames( unsigned int k )
-      const throw( NotFound );
+    const std::vector<std::string>& modalitiesNames( unsigned int k )const ;
 
     // ============================================================================
     /// returns the kth modality name of the ith node
     // ============================================================================
-    const std::string& modalityName( unsigned int k, unsigned int i )
-      const throw( NotFound );
+    const std::string& modalityName( unsigned int k, unsigned int i )const ;
 
     // ============================================================================
     /// get the number of modalities of the kth node
     /// @warning : including "?" label if there are missing values
     // ============================================================================
-    unsigned int nbrModalities( unsigned int k ) const throw( NotFound );
+    unsigned int nbrModalities( unsigned int k ) const ;
 
     // ============================================================================
     /// get the number of modalities of all the nodes
     // ============================================================================
-    const std::vector<unsigned int>& nbrModalities() const throw();
+    const std::vector<unsigned int>& nbrModalities() const ;
 
     // ============================================================================
     /// get the number of cases in the database
     // ============================================================================
-    unsigned int nbrLines() const throw();
+    unsigned int nbrLines() const ;
 
     // ============================================================================
     /// get the number of nodes in the database
     // ============================================================================
-    unsigned int nbrNodes() const throw();
+    unsigned int nbrNodes() const ;
 
     /// is there any missing value in the database
     bool hasMissingValue() const;
@@ -412,22 +410,22 @@ namespace gum {
     // ============================================================================
     /// returns an iterator pointing to the beginning of the database
     // ============================================================================
-    const DatabaseIterator& begin() const throw();
+    const DatabaseIterator& begin() const ;
 
     // ============================================================================
     /// returns an iterator pointing just after the last element of the database
     // ============================================================================
-    const DatabaseIterator& end() const throw();
+    const DatabaseIterator& end() const ;
 
     // ============================================================================
     /// returns an iterator pointing to the last element of the database
     // ============================================================================
-    const DatabaseIterator& rbegin() const throw();
+    const DatabaseIterator& rbegin() const ;
 
     // ============================================================================
     /// returns an iterator pointing just before the first element of the database
     // ============================================================================
-    const DatabaseIterator& rend() const throw();
+    const DatabaseIterator& rend() const ;
 
     /// @}
     

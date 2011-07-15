@@ -310,8 +310,9 @@ namespace gum {
   template< typename T_DATA > INLINE
   const DiscreteVariable*
   MultiDimDecisionDiagramBase< T_DATA >::getVariableFromNode( NodeId n ) const {
-    if ( isTerminalNode( n ) )
+    if ( isTerminalNode( n ) ) {
       GUM_ERROR( InvalidNode, " This is a terminal node " );
+    }
 
     return __variableMap[ n ];
   }
@@ -336,8 +337,9 @@ namespace gum {
   template< typename T_DATA > INLINE
   const T_DATA
   MultiDimDecisionDiagramBase< T_DATA >::getValueFromNode( NodeId n ) const {
-    if ( !isTerminalNode( n ) )
+    if ( !isTerminalNode( n ) ) {
       GUM_ERROR( InvalidNode, " Not a terminal node " );
+    }
 
     return this->__valueMap.second( n );
   }
@@ -349,8 +351,9 @@ namespace gum {
   template< typename T_DATA > INLINE
   const HashTable< Idx, NodeId >*
   MultiDimDecisionDiagramBase< T_DATA >::getNodeSons( NodeId n ) const {
-    if ( isTerminalNode( n ) )
+    if ( isTerminalNode( n ) ) {
       GUM_ERROR( InvalidNode, " This is a terminal node " );
+    }
 
     if ( !__arcMap.exists( n ) )
       return NULL;
@@ -374,8 +377,9 @@ namespace gum {
   template< typename T_DATA > INLINE
   const NodeId
   MultiDimDecisionDiagramBase< T_DATA >::getNodeDefaultSon( NodeId n ) const {
-    if ( isTerminalNode( n ) )
+    if ( isTerminalNode( n ) ) {
       GUM_ERROR( InvalidNode, " This is a terminal node " );
+    }
 
     return __defaultArcMap[ n ];
   }
@@ -488,8 +492,9 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::beginInstantiation() {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
     __instanciationModeOn = true;
   }
@@ -513,11 +518,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setVariableSequence( const Sequence< const DiscreteVariable* >& varList ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
       MultiDimImplementation<T_DATA>::add( **iter );
@@ -531,11 +538,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setDiagramNodes( const NodeGraphPart& model ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     __graph = model;
   }
@@ -548,11 +557,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     __variableMap = varMap;
   }
@@ -566,11 +577,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     for ( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.begin(); varIter != var2NodeMap.end(); ++varIter )
       __var2NodeIdMap.insert( varIter.key(), new List< NodeId >( **varIter ) );
@@ -585,11 +598,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setValueMap( const Bijection< NodeId, T_DATA >& valueMap ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     __valueMap = valueMap;
   }
@@ -602,11 +617,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     __defaultArcMap = defaultArcMap;
 
@@ -622,11 +639,13 @@ namespace gum {
   void
   MultiDimDecisionDiagramBase< T_DATA >::setRoot( const NodeId& root ) {
 
-    if ( __isInstanciated )
+    if ( __isInstanciated ) {
       GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+    }
 
-    if ( !__instanciationModeOn )
+    if ( !__instanciationModeOn ) {
       GUM_ERROR( OperationNotAllowed, "Must first be in multiple change mode to do such thing" );
+    }
 
     __root = root;
   }

@@ -127,7 +127,7 @@ namespace gum {
       LabelizedVariable* newVar  = new LabelizedVariable( varName, varDescription, 0 );
 
       //Getting variable outcomes
-      ticpp::Iterator< ticpp::Element > varOutComesIte( "OUTCOMES" );
+      ticpp::Iterator< ticpp::Element > varOutComesIte( "OUTCOME" );
       for ( varOutComesIte = varOutComesIte.begin( currentVar ); varOutComesIte != varOutComesIte.end(); ++varOutComesIte )
         newVar->addLabel( varOutComesIte->GetTextOrDefault( "" ) );
 

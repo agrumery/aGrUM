@@ -31,52 +31,54 @@
 
 namespace gum {
   template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q) :KL<T_DATA> (P,Q) {
-    GUM_CONSTRUCTOR (BruteForceKL);
+  BruteForceKL<T_DATA>::BruteForceKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :KL<T_DATA> ( P,Q ) {
+    GUM_CONSTRUCTOR( BruteForceKL );
   }
 
   template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL (const KL< T_DATA >& kl) :KL<T_DATA> (kl) {
-    GUM_CONSTRUCTOR (BruteForceKL);
+  BruteForceKL<T_DATA>::BruteForceKL( const KL< T_DATA >& kl ) :KL<T_DATA> ( kl ) {
+    GUM_CONSTRUCTOR( BruteForceKL );
   }
 
   template<typename T_DATA>
   BruteForceKL<T_DATA>::~BruteForceKL() {
-    GUM_DESTRUCTOR (BruteForceKL);
+    GUM_DESTRUCTOR( BruteForceKL );
   }
 
   template<typename T_DATA>
   void BruteForceKL<T_DATA>::_computeKL() {
-    _klPQ=_klQP=_hellinger=0.0;
-    _errorPQ=_errorQP=0;
+    _klPQ=_klQP=_hellinger=_bhattacharya=( T_DATA )0.0;
+    _errorPQ=_errorQP=( T_DATA )0;
 
-    gum::Instantiation Ip;_p.completeInstantiation(Ip);
-    gum::Instantiation Iq;_q.completeInstantiation(Iq);
+    gum::Instantiation Ip;_p.completeInstantiation( Ip );
+    gum::Instantiation Iq;_q.completeInstantiation( Iq );
 
-    for (Ip.setFirst();! Ip.end();++Ip) {
-      _q.synchroInstantiations (Iq,Ip);
-      T_DATA pp=_p.jointProbability (Ip);
-      T_DATA pq=_q.jointProbability (Iq);
+    for ( Ip.setFirst();! Ip.end();++Ip ) {
+      _q.synchroInstantiations( Iq,Ip );
+      T_DATA pp=_p.jointProbability( Ip );
+      T_DATA pq=_q.jointProbability( Iq );
 
-      _hellinger+=pow (sqrt (pp)-sqrt (pq),2);
+      _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 );
+      _bhattacharya+=sqrt( pp*pq );
 
-      if (pp!=0.0) {
-        if (pq!=0.0) {
-          _klPQ-=pp*log2(pq/pp);
+      if ( pp!=( T_DATA )0.0 ) {
+        if ( pq!=( T_DATA )0.0 ) {
+          _klPQ-=pp*log2( pq/pp );
         } else {
           _errorPQ++;
         }
       }
 
-      if (pq!=0.0) {
-        if (pp!=0.0) {
-          _klQP-=pq*log2(pp/pq);
+      if ( pq!=( T_DATA )0.0 ) {
+        if ( pp!=( T_DATA )0.0 ) {
+          _klQP-=pq*log2( pp/pq );
         } else {
           _errorQP++;
         }
       }
     }
-    _hellinger=sqrt (_hellinger);
+    _hellinger=sqrt( _hellinger );
+    _bhattacharya=-log( _bhattacharya );
   }
 
 } // namespace gum

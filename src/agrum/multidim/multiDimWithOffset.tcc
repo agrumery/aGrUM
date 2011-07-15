@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 //to ease IDE parsers...
+#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimWithOffset.h>
 
 namespace gum {
@@ -59,7 +60,9 @@ namespace gum {
   void MultiDimWithOffset<T_DATA>::add( const DiscreteVariable& v ) {
     Size lg=this->domainSize();
 
-		if (lg>GUM_MAX_SIZE/v.domainSize()) GUM_ERROR(OutOfBounds,"Out of bounds !");
+    if ( lg>GUM_MAX_SIZE/v.domainSize() ) {
+      GUM_ERROR( OutOfBounds,"Out of bounds !" );
+    }
 
     MultiDimImplementation<T_DATA>::add( v );
     _gaps.insert( &v,lg );
@@ -252,15 +255,15 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   Size MultiDimWithOffset<T_DATA>::toOffset( const Instantiation& i ) const {
-    return _getOffs(i);
+    return _getOffs( i );
   }
 
   /// set the Instantiation to the values corresponding to the offset (in this array)
   template<typename T_DATA> INLINE
   Instantiation& MultiDimWithOffset<T_DATA>::fromOffset( Instantiation& i,Size offset ) const {
-    this->_computeInstantiationValue(i,offset);
-		return i;
-	}
+    this->_computeInstantiationValue( i,offset );
+    return i;
+  }
 
 } /* namespace gum */
 

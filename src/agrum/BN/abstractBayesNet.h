@@ -142,7 +142,7 @@ namespace gum {
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const = 0;
 
       /// synchronize in (on this) with External
-      void synchroInstantiations( Instantiation& in,const Instantiation& external,bool sameLabelsOrder=true ) const;
+      void synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder=true ) const;
 
       /// Get an instantiation over all the variables of the BN
       virtual void completeInstantiation( Instantiation& I ) const;

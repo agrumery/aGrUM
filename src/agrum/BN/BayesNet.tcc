@@ -456,7 +456,7 @@ namespace gum {
       return;
     }
 
-    GUM_ERROR ( InvalidArc, "This head is not a noisyOR variable !" );
+    GUM_ERROR ( InvalidArc, "Head variable ("<< variable(head).name() <<") is not a noisyOR variable !" );
   }
 
   template<typename T_DATA> INLINE

@@ -208,7 +208,7 @@ namespace gum {
     if ( newVal >= __vars[varPos]->domainSize() )
       GUM_ERROR( OutOfBounds, "" );
 
-    std::cout << (1 << newVal) <<"  " <<  __vals[varPos] << std::endl;
+    GUM_TRACE((1 << newVal) <<"  " <<  __vals[varPos] );
     __chgVals( varPos, (1 << newVal) | __vals[varPos] );
  return *this;
 
@@ -587,7 +587,7 @@ namespace gum {
     Size s = 1;
 
     for ( Sequence<const DiscreteVariable *>::iterator i = __vars.begin();
-        i != __vars.end(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl; 
+        i != __vars.end(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl;
       s *= ( *i )->domainSize();
     }
 
@@ -675,7 +675,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::val( const DiscreteVariable& var ) const {
-    Idx n = 0;  
+    Idx n = 0;
     Size value = __vals[__vars[&var]];
     if (nbrOccurences(var) ==1){
       while(value > 1){n++;value>>=1;}

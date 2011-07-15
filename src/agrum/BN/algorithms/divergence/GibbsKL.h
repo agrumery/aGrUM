@@ -31,17 +31,20 @@
 #include <agrum/BN/particles/Gibbs.h>
 #include <agrum/BN/algorithms/GibbsSettings.h>
 
+#include <agrum/core/signal/signaler.h>
+
 namespace gum {
 
 /**
-* GibbsKL computes the KL divergence betweens 2 BNs using a pattern approximation : GIBBS sampling.
+* GibbsKL computes the KL divergence betweens 2 BNs using an approximation pattern : GIBBS sampling.
 *
 * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
-* BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
+* GibbsKL allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
+* and Bhattacharya distance (Kaylath,T. 1967)
 *
-* It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())
+* It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP()). In those cases, Hellinger distance approximation is under-evaluated.
 *
-* @warning : convergence and stop criteria are designed w.r.t the main computation : KL(P||Q). The 2 others have no guarantee.
+* @warning : convergence and stop criteria are designed w.r.t the main computation : KL(P||Q). The 3 others have no guarantee.
 *
 * snippets :
 * @code
@@ -55,26 +58,26 @@ namespace gum {
 * }
 * @endcode
 */
-
 template<typename T_DATA> class GibbsKL:
-            public GibbsSettings,
             public KL<T_DATA>,
+            public GibbsSettings,
             public particle::Gibbs<T_DATA> {
 public:
+
     /* no default constructor */
 
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
      */
-    GibbsKL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
+    GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
 
     /** copy constructor
      */
-    GibbsKL ( const KL<T_DATA>& kl );
+    GibbsKL( const KL<T_DATA>& kl );
 
 
     /** destructor */
-    ~GibbsKL ();
+    ~GibbsKL();
 
     using particle::Gibbs<T_DATA>::particle;
     using particle::Gibbs<T_DATA>::initParticle;
@@ -82,11 +85,12 @@ public:
     using particle::Gibbs<T_DATA>::bn;
 
 protected:
-    void _computeKL ( void );
+    void _computeKL( void );
 
     using KL<T_DATA>::_p;
     using KL<T_DATA>::_q;
     using KL<T_DATA>::_hellinger;
+    using KL<T_DATA>::_bhattacharya;
 
     using KL<T_DATA>::_klPQ;
     using KL<T_DATA>::_klQP;

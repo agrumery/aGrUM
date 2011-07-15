@@ -24,13 +24,19 @@
  *
  */
 
+// to ease parser
+#include <agrum/graphs/undiGraph.h>
 
 namespace gum {
 
-	
+
   INLINE void UndiGraph::insertEdge( const NodeId first,const NodeId second ) {
-    if ( ! exists( first ) ) GUM_ERROR( InvalidNode,"first node" );
-    if ( ! exists( second ) ) GUM_ERROR( InvalidNode,"second node" );
+    if ( ! exists( first ) ) {
+      GUM_ERROR( InvalidNode,"first node" );
+    }
+    if ( ! exists( second ) ) {
+      GUM_ERROR( InvalidNode,"second node" );
+    }
     EdgeGraphPart::insertEdge( second,first );
   }
 

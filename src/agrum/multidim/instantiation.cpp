@@ -103,11 +103,15 @@ namespace gum {
   Instantiation& Instantiation::operator=( const Instantiation& aI ) {
     if ( __master ) {
       if ( ! aI.isMaster( __master ) ) { // aI as the same master.
-        if ( nbrDim()!=aI.nbrDim() ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+        if ( nbrDim()!=aI.nbrDim() ) {
+          GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+        }
 
         for ( Idx i=0;i<nbrDim();i++ ) {
           if (( ! contains( aI.variable( i ) ) ) ||
-              ( ! aI.contains( variable( i ) ) ) ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+              ( ! aI.contains( variable( i ) ) ) ) {
+            GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+          }
         }
       }
 
@@ -130,7 +134,6 @@ namespace gum {
   /*
     void Instantiation::changeDimCommand
     (const Sequence<const DiscreteVariable *>& v) {
-    GUM_DEBUG_TRACE( "multidim command" );
     bool modif = false; // indicates whether we modified sequence vars
     // first we remove all the variables belonging to this but not to v
     for (Idx index = __vars.size() - 1; index < __vars.size(); --index)

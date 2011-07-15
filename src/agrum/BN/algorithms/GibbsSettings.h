@@ -68,7 +68,9 @@ namespace gum {
 
       /// @throw OutOfLowerBound if b<1
       void setBurnIn( Size b ) {
-        if ( b<1 ) GUM_ERROR( OutOfLowerBound,"b should be >=1" );
+        if ( b<1 ) {
+          GUM_ERROR( OutOfLowerBound,"b should be >=1" );
+        }
         __burn_in=b;
       };
 
@@ -80,7 +82,10 @@ namespace gum {
 
       /// @throw OutOfLowerBound if p<1
       void setPeriodeSize( Size p ) {
-        if ( p<1 ) GUM_ERROR( OutOfLowerBound,"p should be >=1" );
+        if ( p<1 ) {
+          GUM_ERROR( OutOfLowerBound,"p should be >=1" );
+        }
+        
         __periode_size=p;
 
       };

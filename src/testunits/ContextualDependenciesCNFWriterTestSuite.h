@@ -49,8 +49,8 @@ namespace gum {
         void setUp() {
           bn = new gum::BayesNet<double>();
 
-          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
+          gum::LabelizedVariable n1( "n1", "", 2 ), n2( "n2", "", 2 ),  n3( "n3", "" , 2 );
+          gum::LabelizedVariable n4( "n4", "", 2 ), n5( "n5", "", 2 );
 
           i1 = bn->addVariable( n1 );
           i2 = bn->addVariable( n2 );
@@ -123,14 +123,20 @@ namespace gum {
         }
 
         void testWriter_string_With_Approximation() {
+          GUM_CHECKPOINT;
           gum::ContextualDependenciesCNFWriter<double,LinearApproximationPolicy> writer;
+          GUM_CHECKPOINT;
+
           writer.setEpsilon( 0.2 );
           writer.setLowLimit( 0 );
           writer.setHighLimit( 1 );
           std::string file = GET_PATH_STR( ContextualDependenciesCNFWriter_TestFile_Approximation.cnf );
-          TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
-          file = GET_PATH_STR( ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf );
 
+          GUM_CHECKPOINT;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+          GUM_CHECKPOINT;
+
+          file = GET_PATH_STR( ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf );
           try {
             writer.write( file, *bn );
             // TS_ASSERT(false);
@@ -188,4 +194,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

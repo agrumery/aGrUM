@@ -1,13 +1,11 @@
 project(AGRUM)
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 include("version.txt")
 
 set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-set(AGRUM_OPTIMIZATION "-O3")
-set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 include("cmake/CompilOptions.agrum.cmake")
 
 file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)

@@ -32,90 +32,89 @@
 #endif // GUM_NO_INLINE
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-void
-PRMInference::clearEvidence() {
-  for (EvidenceIterator iter = __evidences.begin(); iter != __evidences.end(); ++iter) {
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      delete *jter;
-    }
-    delete *iter;
-  }
-  __evidences.clear();
-}
-
-PRMInference::PRMInference(const PRMInference& source):
-  _prm(source._prm), _sys(source._sys)
-{
-  GUM_CONS_CPY( PRMInference );
-  for (PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
-    __evidences.insert(iter.key(), new PRMInference::EMap());
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      Potential<prm_float>* e = new Potential<prm_float>();
-      e->add(*((**jter).variablesSequence().front()));
-      Instantiation i(*e);
-      for (i.setFirst(); not i.end(); i.inc()) {
-        e->set(i, (**jter).get(i));
+    void
+    PRMInference::clearEvidence() {
+      for ( EvidenceIterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
+        for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
+          delete *jter;
+        }
+        delete *iter;
       }
-      __evidences[iter.key()]->insert(jter.key(), e);
+      __evidences.clear();
     }
-  }
-}
 
-PRMInference&
-PRMInference::operator=(const PRMInference& source) {
-  clearEvidence();
-  _prm = source._prm;
-  _sys = source._sys;
-  for (PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter) {
-    __evidences.insert(iter.key(), new PRMInference::EMap());
-    for (PRMInference::EMapIterator jter = (*iter)->begin(); jter != (*iter)->end(); ++jter) {
-      Potential<prm_float>* e = new Potential<prm_float>();
-      e->add(*((**jter).variablesSequence().front()));
-      Instantiation i(*e);
-      for (i.setFirst(); not i.end(); i.inc()) {
-        e->set(i, (**jter).get(i));
+    PRMInference::PRMInference( const PRMInference& source ):
+        _prm( source._prm ), _sys( source._sys ) {
+      GUM_CONS_CPY( PRMInference );
+      for ( PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter ) {
+        __evidences.insert( iter.key(), new PRMInference::EMap() );
+        for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
+          Potential<prm_float>* e = new Potential<prm_float>();
+          e->add( *(( **jter ).variablesSequence().front() ) );
+          Instantiation i( *e );
+          for ( i.setFirst(); not i.end(); i.inc() ) {
+            e->set( i, ( **jter ).get( i ) );
+          }
+          __evidences[iter.key()]->insert( jter.key(), e );
+        }
       }
-      __evidences[iter.key()]->insert(jter.key(), e);
     }
-  }
-  return *this;
-}
 
-PRMInference::EMap&
-PRMInference::__EMap(const Instance* i) {
-  if (__evidences.exists(i)) {
-    return *(__evidences[i]);
-  } else {
-    __evidences.insert(i, new PRMInference::EMap());
-    return *(__evidences[i]);
-  }
-}
-
-void
-PRMInference::addEvidence(const Chain& chain, const Potential<prm_float>& p) {
-  if (chain.first->exists(chain.second->id())) {
-    if ( (p.nbrDim() != 1) or (not p.contains(chain.second->type().variable())) )
-      GUM_ERROR(OperationNotAllowed, "illegal evidence for the given Attribute.");
-    Potential<prm_float>* e = new Potential<prm_float>();
-    e->add(chain.second->type().variable());
-    Instantiation i(*e);
-    for (i.setFirst(); not i.end(); i.inc())
-      e->set(i, p.get(i));
-    PRMInference::EMap& emap = __EMap(chain.first);
-    if (emap.exists(chain.second->id())) {
-      delete emap[chain.second->id()];
-      emap[chain.second->id()] = e;
-    } else {
-      emap.insert(chain.second->id(), e);
+    PRMInference&
+    PRMInference::operator=( const PRMInference& source ) {
+      clearEvidence();
+      _prm = source._prm;
+      _sys = source._sys;
+      for ( PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter ) {
+        __evidences.insert( iter.key(), new PRMInference::EMap() );
+        for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
+          Potential<prm_float>* e = new Potential<prm_float>();
+          e->add( *(( **jter ).variablesSequence().front() ) );
+          Instantiation i( *e );
+          for ( i.setFirst(); not i.end(); i.inc() ) {
+            e->set( i, ( **jter ).get( i ) );
+          }
+          __evidences[iter.key()]->insert( jter.key(), e );
+        }
+      }
+      return *this;
     }
-    _evidenceAdded(chain);
-  } else {
-    GUM_ERROR(NotFound, "the given Attribute does not belong to this Instance.");
-  }
-}
 
-} /* namespace prm */
+    PRMInference::EMap&
+    PRMInference::__EMap( const Instance* i ) {
+      if ( __evidences.exists( i ) ) {
+        return *( __evidences[i] );
+      } else {
+        __evidences.insert( i, new PRMInference::EMap() );
+        return *( __evidences[i] );
+      }
+    }
+
+    void
+    PRMInference::addEvidence( const Chain& chain, const Potential<prm_float>& p ) {
+      if ( chain.first->exists( chain.second->id() ) ) {
+        if (( p.nbrDim() != 1 ) or( not p.contains( chain.second->type().variable() ) ) )
+          GUM_ERROR( OperationNotAllowed, "illegal evidence for the given Attribute." );
+        Potential<prm_float>* e = new Potential<prm_float>();
+        e->add( chain.second->type().variable() );
+        Instantiation i( *e );
+        for ( i.setFirst(); not i.end(); i.inc() )
+          e->set( i, p.get( i ) );
+        PRMInference::EMap& emap = __EMap( chain.first );
+        if ( emap.exists( chain.second->id() ) ) {
+          delete emap[chain.second->id()];
+          emap[chain.second->id()] = e;
+        } else {
+          emap.insert( chain.second->id(), e );
+        }
+        _evidenceAdded( chain );
+      } else {
+        GUM_ERROR( NotFound, "the given Attribute does not belong to this Instance." );
+      }
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

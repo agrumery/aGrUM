@@ -56,8 +56,9 @@ namespace gum {
           iter != h.end(); ++iter ) {
       NodeId new_one = iter.key();
 
-      if ( existsNode( new_one ) )
-        GUM_ERROR( DuplicateElement, "in the graph" );
+      if ( existsNode( new_one ) ) {
+        GUM_ERROR( DuplicateElement, new_one<<" already exists in the graph" );
+      }
 
       insertNode( new_one );
     }

@@ -163,13 +163,13 @@ namespace gum {
     /// returns the set of arcs stored within the ArcGraphPart
     const ArcSet& asArcs() const;
 
-    /// returns the set of arcs ingoing to a given node
+    /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
      * @param id the node toward which the arcs returned are pointing */
     const NodeSet& parents( const NodeId id ) const;
 
-    /// returns the set of arcs outgoing from a given node
+    /// returns the set of nodes with arc outgoing from a given node
     /** Note that the set of arcs returned may be empty if no arc within the
      * ArcGraphPart is outgoing from the given node.
      * @param id the node which is the tail of the arcs returned */

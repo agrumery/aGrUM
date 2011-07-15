@@ -103,7 +103,7 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
     return p;
   } catch (Exception& e) {
     if (p) delete p;
-    throw e;
+    throw ;
   }
 }
 

@@ -82,7 +82,7 @@ namespace gum {
                    SplayBinaryNode* g,
                    SplayBinaryNode* d,
                    SplayBinaryNode* p ):
-    elt( e ), size( 1 ), fg( g ), fd( d ), pere( p ) {
+      elt( e ), size( 1 ), fg( g ), fd( d ), pere( p ) {
     if ( addr.exists( elt ) )
       addr[elt] = this;
     else
@@ -369,7 +369,7 @@ namespace gum {
 
 
 
-  
+
 
   /* ============================================================================ */
   /* ============================================================================ */
@@ -406,7 +406,7 @@ namespace gum {
   // ==============================================================================
   template <class Element> INLINE
   SplayTree<Element>::SplayTree( const Element& e ):
-    root( 0 ),addr() {
+      root( 0 ),addr() {
     root = new SplayBinaryNode<Element>( e,addr );
     // for debugging purposes
     GUM_CONSTRUCTOR( SplayTree );
@@ -463,12 +463,10 @@ namespace gum {
     int val = i;
 
     if ( !root ) {
-      throw NotFound( "The tree is empty !" );
-    }
-    else if ( val >= root->size ) {
-      throw NotFound( "The index is too large !" );
-    }
-    else {
+      GUM_ERROR(NotFound, "The tree is empty !" );
+    } else if ( val >= root->size ) {
+      GUM_ERROR(NotFound, "The index is too large !" );
+    } else {
       // The element exists
       // Find it
       SplayBinaryNode<Element>* act = root;
@@ -501,9 +499,9 @@ namespace gum {
     int val = i;
 
     if ( !root ) {
-      throw NotFound( "The tree is empty !" );
+      GUM_ERROR(NotFound, "The tree is empty !" );
     } else if ( val >= root->size ) {
-      throw NotFound( "The index is too large !" );
+      GUM_ERROR(NotFound, "The index is too large !" );
     } else {
       // The element exists
       // Find it
@@ -539,8 +537,9 @@ namespace gum {
   Element& SplayTree<Element>::front() {
     SplayBinaryNode<Element>* act = root;
 
-    if ( !root )
+    if ( !root ) {
       GUM_ERROR( NotFound,"The splay tree is empty" );
+    }
 
     if ( act->fg )
       for ( ;act->fg;act = act->fg ) ;
@@ -557,8 +556,9 @@ namespace gum {
   Element& SplayTree<Element>::back() {
     SplayBinaryNode<Element>* act = root;
 
-    if ( !root )
+    if ( !root ) {
       GUM_ERROR( NotFound,"The splay tree is empty" );
+    }
 
     if ( act->fd )
       for ( ;act->fd;act = act->fd ) ;
@@ -779,8 +779,9 @@ namespace gum {
   SplayTree<Element> SplayTree<Element>::split_by_val( const Element& e ) {
     GUM_ASSERT( root != 0 );
 
-    if ( !addr.exists( e ) )
+    if ( !addr.exists( e ) ) {
       GUM_ERROR( NotFound, "not enough elements in the splay tree" );
+    }
 
     // We will find the node at position i
     SplayBinaryNode<Element>* act = addr[e];
@@ -844,10 +845,10 @@ namespace gum {
       out << *e.fg << ",";
 
     out << e.elt;
-    
+
     if ( e.fd )
       out << "," << *e.fd;
-  
+
     return out;
   }
 
@@ -857,12 +858,12 @@ namespace gum {
   template <typename Element> INLINE
   std::ostream& operator<<( std::ostream& out, const SplayTree<Element>& s ) {
     out << "|[";
-    
+
     if ( s.root )
       out << *s.root;
-    
+
     out << "]|";
-    
+
     return out;
   }
 

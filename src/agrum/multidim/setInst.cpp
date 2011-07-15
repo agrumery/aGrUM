@@ -101,12 +101,12 @@ namespace gum {
 
       //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
     }
-  
-  
+
+
   SetInst::SetInst(  const Instantiation& aI) :
     /* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
       // for debugging purposes
-      GUM_CONS_CPY( SetInst ); 
+      GUM_CONS_CPY( SetInst );
       const Sequence<const DiscreteVariable *>& v = aI.variablesSequence();
       __vars.resize( v.size() );
       __vals.reserve( v.size() );
@@ -153,7 +153,6 @@ namespace gum {
   /*
      void SetInst::changeDimCommand
      (const Sequence<const DiscreteVariable *>& v) {
-     GUM_DEBUG_TRACE( "multidim command" );
      bool modif = false; // indicates whether we modified sequence vars
   // first we remove all the variables belonging to this but not to v
   for (Idx index = __vars.size() - 1; index < __vars.size(); --index)
@@ -189,7 +188,7 @@ namespace gum {
 
     if ( iter != __vars.end() ) {
       std::stringstream sstr2;
-      sstr2.str(""); 
+      sstr2.str("");
       Size si =variable(iter.pos()).domainSize();
       Size valb=  vals( iter.pos() );
 
@@ -203,7 +202,7 @@ namespace gum {
       sstr << variable( iter.pos() ).name() << ":"<<sstr2.str();
       ++iter;
       while ( iter != __vars.end() ) {std::stringstream sstr3;
-        sstr3 <<""; 
+        sstr3 <<"";
         si = variable(iter.pos()).domainSize();
 
         valb=  vals( iter.pos() );

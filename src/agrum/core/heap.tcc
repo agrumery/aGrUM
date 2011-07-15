@@ -132,8 +132,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Cmp> INLINE
   const Val& Heap<Val,Cmp>::top() const  {
-    if ( !__nb_elements )
+    if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty heap" );
+    }
 
     return *__heap[0];
   }
@@ -224,8 +225,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Cmp> INLINE
   Val Heap<Val,Cmp>::pop() {
-    if ( !__nb_elements )
+    if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty heap" );
+    }
 
     Val v = *__heap[0];
 
@@ -281,8 +283,9 @@ namespace gum {
   template <typename Val, typename Cmp> INLINE
   const Val& Heap<Val,Cmp>::operator[]( Size index ) const  {
     // check if the element exists
-    if ( index >= __nb_elements )
+    if ( index >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the heap" );
+    }
 
     return *__heap[index];
   }

@@ -30,7 +30,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  
+
 namespace gum {
 
 
@@ -69,8 +69,9 @@ namespace gum {
     // sorted in increasing order
     if ( safe_mode ) {
       for ( unsigned int i=1; i<conditional_set.size(); ++i )
-        if ( conditional_set[i] < conditional_set[i-1] )
+        if ( conditional_set[i] < conditional_set[i-1] ) {
           GUM_ERROR( FatalError, "the conditional set is not sorted properly" );
+        }
     }
 
     std::pair<Id,Id> edge( std::min( node1,node2 ),std::max( node1,node2 ) );
@@ -106,8 +107,9 @@ namespace gum {
       _prepareInsertVal( node1,node2,conditional_set,val,safe_mode );
     // check if tree is pointing to an already computed test
 
-    if ( tree.has_score )
+    if ( tree.has_score ) {
       GUM_ERROR( DuplicateElement, "the cache contains already the score" );
+    }
 
     tree.score = val;
 
@@ -140,8 +142,9 @@ namespace gum {
     // sorted in increasing order
     if ( safe_mode ) {
       for ( unsigned int i=1; i<conditional_set.size(); ++i )
-        if ( conditional_set[i] < conditional_set[i-1] )
+        if ( conditional_set[i] < conditional_set[i-1] ) {
           GUM_ERROR( FatalError, "the conditional set is not sorted properly" );
+        }
     }
 
     std::pair<Id,Id> edge( std::min( node1,node2 ),std::max( node1,node2 ) );
@@ -179,8 +182,9 @@ namespace gum {
     Score* score = getPtrTestVal( node1, node2, conditional_set, safe_mode );
     // check if the pointer is different from 0 before returning it
 
-    if ( !score )
+    if ( !score ) {
       GUM_ERROR( NotFound, "the value is not in the cache" );
+    }
 
     return *score;
   }
@@ -199,7 +203,7 @@ namespace gum {
   // ==============================================================================
   template <typename Score>
   CacheNode<Score>::CacheNode( const CacheNode<Score>& from ) :
-    score( from.score ), has_score( from.has_score ), children( from.children ) {
+      score( from.score ), has_score( from.has_score ), children( from.children ) {
     // for debugging purposes
     GUM_CONS_CPY( CacheNode );
   }
@@ -239,8 +243,8 @@ namespace gum {
                              const CacheNode<Score>& tree ) {
     return stream;
   }
-  
-  
+
+
 } /* namespace gum */
 
 

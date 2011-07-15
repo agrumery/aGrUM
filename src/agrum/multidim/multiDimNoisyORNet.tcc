@@ -114,7 +114,9 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void MultiDimNoisyORNet<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
-    if ( w == ( T_DATA )0 ) GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
+    if ( w == ( T_DATA )0 ) {
+      GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
+    }
 
     __causal_weights.set( &v, w );
   }
