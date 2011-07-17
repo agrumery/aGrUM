@@ -56,7 +56,7 @@
 
     To install aGrUm :
     @code
-    svn co http://webia.lip6.fr/svn/agrum/tags/v1.5
+    svn co http://alm.lip6.fr/svn/agrum/tags/v1.5
     make
     sudo make install
     @endcode
