@@ -10,7 +10,8 @@ to OpenBayes, a free Bayesian Network library for Python."
 
 
 %pythoncode %{
-from numpy import *
+#from numpy import *
+import numpy
 %}
 
 /* EXCEPTION HANDLING */
@@ -449,14 +450,14 @@ def variablesSequence(self):
         self._var_dims = []
         content = []
         if self.empty():
-            self.__distrib__ = array(content, dtype=float32)
+            self.__distrib__ = numpy.array(content, dtype=float32)
             return
         i = Instantiation(self)
         i.setFirst
         while not i.end():
             content.append(self.get(i))
             i.inc()
-        self.__distrib__ = array(content, dtype=float32)
+        self.__distrib__ = numpy.array(content, dtype=float32)
         for var in self.variablesSequence():
             self._var_names.append(var.name())
             self._var_dims.append(len(var))
@@ -473,14 +474,14 @@ def variablesSequence(self):
         self._var_dims = []
         content = []
         if self.empty():
-            self.__distrib__ = array(content, dtype=float64) #M
+            self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
         i = Instantiation(self)
         i.setFirst
         while not i.end():
             content.append(self.get(i))
             i.inc()
-        self.__distrib__ = array(content, dtype=float64) #M
+        self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
         for var in self.variablesSequence():
             self._var_names.append(var.name())
             self._var_dims.append(len(var))
@@ -529,7 +530,7 @@ def variablesSequence(self):
 
 %feature("shadow") gum::Potential::toarray %{
     def toarray(self):
-        return array(self.tolist())
+        return numpy.array(self.tolist())
 %}
 
 

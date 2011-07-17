@@ -79,7 +79,7 @@ public:
     void testWriter_ostream() {
         gum::BIFXMLBNWriter<double> writer;
         // Uncomment this to check the ouput
-        TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+        //TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
