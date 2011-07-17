@@ -28,6 +28,9 @@
 #include <algorithm>
 #include <cassert>
 
+// including generated configuration file
+#include <agrum/config.h>
+
 namespace gum {
 namespace debug {
 

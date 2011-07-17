@@ -28,6 +28,8 @@
 // utility provides the std::pair <> template
 #include <string>
 #include <utility>
+
+#include <agrum/config.h>
 #include <agrum/core/utils.h>
 #include <agrum/core/refPtr.h>
 
@@ -184,7 +186,7 @@ namespace gum {
   public:
     /// basic constructor
     HashFuncSmallCastKey ();
-    
+
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
     void resize( Size );

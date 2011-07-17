@@ -41,17 +41,21 @@ if(UNIX)
 endif(UNIX)
 
 if ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
-  add_definitions("-DGUM_TRACE_ON")
+    set(GUM_TRACE_ON TRUE)
 endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 
 include(CheckTypeSize)
 CHECK_TYPE_SIZE(long LONG_SIZE)
 CHECK_TYPE_SIZE(double DOUBLE_SIZE)
 if ("${LONG_SIZE}" STREQUAL "${DOUBLE_SIZE}")
-  add_definitions("-DGUM_LONG_DOUBLE_SAME_SIZE")
+  set(GUM_LONG_DOUBLE_SAME_SIZE TRUE)
+else ("${LONG_SIZE}" STREQUAL "${DOUBLE_SIZE}")
+  set(GUM_LONG_DOUBLE_DIFFERENT_SIZE TRUE)
 endif ("${LONG_SIZE}" STREQUAL "${DOUBLE_SIZE}")
 
 add_definitions("-Wall")
 add_definitions("-pedantic")
-add_definitions("-DGUM_SRC_PATH=${AGRUM_SOURCE_DIR}")
-add_definitions("-DGUM_VERSION=${AGRUM_VERSION}")
+
+set(GUM_SRC_PATH "${AGRUM_SOURCE_DIR}")
+set(GUM_VERSION "\"${AGRUM_VERSION}\"")
+
