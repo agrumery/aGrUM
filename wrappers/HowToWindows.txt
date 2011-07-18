@@ -1,0 +1,14 @@
+- install MinGW compiler (for instance Code::Block with MinGW).
+- install CMAKE
+- install SWIG
+- install Python 2.x
+- change PATH properly
+
+- cmake -G "MinGW Makefiles" ..\pyAgrum\CMakeCache.txt -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib" (-DCMAKE_VERBOSE_MAKEFILES si besoin)
+
+Si souci de linkage, qqchose comme
+C:\PROGRA~2\CODEBL~1\MinGW\bin\G__~1.EXE     -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+
+- copier pyAgrum.py et _pyAgrum.pyd dans python\Libs\site-package
+
+et hop

@@ -32,17 +32,17 @@
 
 namespace gum {
 
-  
+
   /// default constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation
   ( const PartialOrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
-    bool minimality) :
-    StaticTriangulation ( elimSeq, JTStrategy, minimality ),
-    __modalities ( 0 ),
-    __partial_order ( 0 ) {
+    bool minimality ) :
+      StaticTriangulation( elimSeq, JTStrategy, minimality ),
+      __modalities( 0 ),
+      __partial_order( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( PartialOrderedTriangulation );
+    GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
 
 
@@ -53,19 +53,19 @@ namespace gum {
     const List<NodeSet>* partial_order,
     const PartialOrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
-    bool minimality) :
-    StaticTriangulation ( theGraph, dom, elimSeq, JTStrategy, minimality ),
-    __modalities ( dom ),
-    __partial_order ( partial_order ) {
+    bool minimality ) :
+      StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
+      __modalities( dom ),
+      __partial_order( partial_order ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( PartialOrderedTriangulation );
+    GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
-   
+
 
   /// destructor
   PartialOrderedTriangulation::~PartialOrderedTriangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( PartialOrderedTriangulation );
+    GUM_DESTRUCTOR( PartialOrderedTriangulation );
   }
 
 
@@ -79,28 +79,29 @@ namespace gum {
     if ( graph ) ++nb;
     if ( modal ) ++nb;
     if ( partial_order ) ++nb;
-    if ( (nb != 0 ) && ( nb != 3 ) )
-      GUM_ERROR ( GraphError, "PartialOrderedTriangulation requires valid "
-                  "graphs, modalities and elimination orderings");
-    
-    StaticTriangulation::_setGraph ( graph, modal );
+    if (( nb != 0 ) && ( nb != 3 ) ) {
+      GUM_ERROR( GraphError, "PartialOrderedTriangulation requires valid "
+                 "graphs, modalities and elimination orderings" );
+    }
+
+    StaticTriangulation::_setGraph( graph, modal );
     __partial_order = partial_order;
     __modalities = modal;
   }
 
-  
+
   /// virtual copy constructor
-  PartialOrderedTriangulation* PartialOrderedTriangulation::newFactory () const {
+  PartialOrderedTriangulation* PartialOrderedTriangulation::newFactory() const {
     return new PartialOrderedTriangulation;
   }
 
 
   /// the function called to initialize the triangulation process
-  void PartialOrderedTriangulation::_initTriangulation ( UndiGraph& graph ) {
-    PartialOrderedEliminationSequenceStrategy* elim = 
+  void PartialOrderedTriangulation::_initTriangulation( UndiGraph& graph ) {
+    PartialOrderedEliminationSequenceStrategy* elim =
       static_cast<PartialOrderedEliminationSequenceStrategy*>
       ( _elimination_sequence_strategy );
-    elim->setGraph ( &graph, __modalities, __partial_order );
+    elim->setGraph( &graph, __modalities, __partial_order );
   }
 
 

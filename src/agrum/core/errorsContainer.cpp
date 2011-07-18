@@ -22,7 +22,7 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-
+#include <agrum/core/exceptions.h>
 #include <agrum/core/errorsContainer.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -86,16 +86,18 @@ namespace gum {
   {
     if ( count() > i )
       return errors[i]; // May throw an error if i >= count().
-    else
-      throw "Index out of bound.";
+    else {
+      GUM_ERROR(OutOfBounds, "Index out of bound.");
+    }
   }
   
   ParseError ErrorsContainer::last() const
   {
     if ( count() > 0 )
       return errors[count() - 1];
-    else
-      throw "Index out of bound.";
+    else {
+      GUM_ERROR(OutOfBounds, "Index out of bound.");
+    }
   }
   
 /* ************************************************************************** */

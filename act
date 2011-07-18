@@ -205,6 +205,17 @@ def proceed(options):
     folders=cmake_option=make_options=run_cde =""
 
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
+        # ensure creation of agrum/config.h (as a release version of agrum)
+        folders=["build",options['platform'],'release']
+        cmake_option=" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE="
+        if (options['verbose']):
+            cmake_option=cmake_option+"ON"
+        else:
+            cmake_option=cmake_option+"OFF"
+        [safe_cd(s) for s in folders]
+        execute("cmake "+cmake_option)
+        [execute("cd ..") for s in folders]
+
         folders=['build','wrappers',options['wrapper']]
         cmake_option="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
         if options['rule'] in ["install"]:

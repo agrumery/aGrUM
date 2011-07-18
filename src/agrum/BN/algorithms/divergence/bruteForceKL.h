@@ -38,8 +38,8 @@ namespace gum {
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
   * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?  * 
-  * 
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?  *
+  *
   * @warning This BruteForceKL should be use only if difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
   * snippets :
   * @code
@@ -59,22 +59,23 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL (const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q);
+      BruteForceKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
 
       /** copy constructor
        */
-      BruteForceKL (const KL<T_DATA>& kl);
+      BruteForceKL( const KL<T_DATA>& kl );
 
 
       /** destructor */
-      ~BruteForceKL ();
+      ~BruteForceKL();
 
     protected:
-      void _computeKL (void);
-      
+      void _computeKL( void );
+
       using KL<T_DATA>::_p;
       using KL<T_DATA>::_q;
       using KL<T_DATA>::_hellinger;
+      using KL<T_DATA>::_bhattacharya;
 
       using KL<T_DATA>::_klPQ;
       using KL<T_DATA>::_klQP;

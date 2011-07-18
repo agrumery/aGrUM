@@ -353,8 +353,9 @@ namespace gum {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable *>& vars = ( *iter )->variablesSequence();
 
-      if ( vars.size() != 1 )
+      if ( vars.size() != 1 ) {
         GUM_ERROR( IdError, "" );
+      }
 
       // remove already existing evidence w.r.t. iter's node
       const DiscreteVariable *var = vars.atPos( 0 );
@@ -970,9 +971,10 @@ namespace gum {
     }
 
     // check if we actually found the clique we were interested in
-    if ( !clique_found )
+    if ( !clique_found ) {
       GUM_ERROR( OperationNotAllowed,
                  "no clique was found to compute the joint probability" );
+    }
 
     /*
     // check if we performed a __collect on the set of ids, else we need some
@@ -1138,7 +1140,7 @@ namespace gum {
       res->normalize();
     } catch ( OperationNotAllowed& e ) {
       delete( res );
-      throw e;
+      throw;
     }
 
     return res;

@@ -82,12 +82,12 @@ gumDAGGenerator::getNbrNodes() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_NODES" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "NBR_NODES" );
+    GUM_ERROR( gumNotFound,"Paramater not initialized."<<"NBR_NODES" );
   }
 }
 
@@ -100,7 +100,7 @@ gumDAGGenerator::setNbrNodes( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_NODES" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES" );
   }
 
   try {
@@ -121,12 +121,12 @@ gumDAGGenerator::getMinParents() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_PARENT" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value "<< "MIN_NBR_PARENT" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "MIN_NBR_PARENT" );
+    GUM_ERROR( gumNotFound, "Paramater not initialized."<< "MIN_NBR_PARENT" );
   }
 }
 
@@ -139,7 +139,7 @@ gumDAGGenerator::setMinParents( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_PARENT" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"MIN_NBR_PARENT" );
   }
 
   try {
@@ -160,12 +160,12 @@ gumDAGGenerator::getMaxParents() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_PARENT" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<< "MAX_NBR_PARENT" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "MAX_NBR_PARENT" );
+    GUM_ERROR( gumNotFound,"Paramater not initialized."<<"MAX_NBR_PARENT" );
   }
 }
 
@@ -178,7 +178,7 @@ gumDAGGenerator::setMaxParents( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_PARENT" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"MAX_NBR_PARENT" );
   }
 
   try {
@@ -199,12 +199,12 @@ gumDAGGenerator::getMinChildren() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_CHILD" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"MIN_NBR_CHILD" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "MIN_NBR_CHILD" );
+    GUM_ERROR( gumNotFound,"Paramater not initialized."<<"MIN_NBR_CHILD" );
   }
 }
 
@@ -217,7 +217,7 @@ gumDAGGenerator::setMinChildren( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_CHILD" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"MIN_NBR_CHILD" );
   }
 
   try {
@@ -238,12 +238,12 @@ gumDAGGenerator::getMaxChildren() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_CHILD" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"MAX_NBR_CHILD" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "MAX_NBR_CHILD" );
+    GUM_ERROR( gumNotFound, "Paramater not initialized."<<"MAX_NBR_CHILD" );
   }
 }
 
@@ -256,7 +256,7 @@ gumDAGGenerator::setMaxChildren( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_CHILD" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"MAX_NBR_CHILD" );
   }
 
   try {
@@ -277,12 +277,12 @@ gumDAGGenerator::getNbrRootNodes() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_ROOT" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"NBR_ROOT" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "NBR_ROOT" );
+    GUM_ERROR( gumNotFound, "Paramater not initialized."<<"NBR_ROOT" );
   }
 }
 
@@ -295,7 +295,7 @@ gumDAGGenerator::setNbrRootNodes( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_ROOT" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<< "NBR_ROOT" );
   }
 
   try {
@@ -316,12 +316,12 @@ gumDAGGenerator::getNbrLeafNodes() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_LEAF" );
+      GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<<"NBR_LEAF" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "NBR_LEAF" );
+    GUM_ERROR( gumNotFound, "Paramater not initialized."<<"NBR_LEAF" );
   }
 }
 
@@ -334,7 +334,7 @@ gumDAGGenerator::setNbrLeafNodes( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_LEAF" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<< "NBR_LEAF" );
   }
 
   try {
@@ -355,12 +355,12 @@ gumDAGGenerator::getNbrConnexComponent() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-      throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP" );
+      GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_COMP" );
     }
 
     return retVal;
   } else {
-    throw gumNotFound( "Paramater not initialized.", "NBR_COMP" );
+    GUM_ERROR( gumNotFound,"Paramater not initialized."<<"NBR_COMP" );
   }
 }
 
@@ -373,7 +373,7 @@ gumDAGGenerator::setNbrConnexComponent( gumSize n ) {
   std::ostringstream output;
 
   if ( !( output << n ) ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP" );
+    GUM_ERROR( gumOperationNotAllowed,"Incorrect parameter value."<< "NBR_COMP" );
   }
 
   try {
@@ -388,59 +388,59 @@ INLINE
 void
 gumDAGGenerator::checkParameters() const {
   if ( getMinParents() > getMaxParents() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_PARENT > MAX_NBR_PARENT" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "MIN_NBR_PARENT > MAX_NBR_PARENT" );
   }
 
   if ( getMinChildren() > getMaxChildren() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MIN_NBR_CHILD > MAX_NBR_CHILD" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"MIN_NBR_CHILD > MAX_NBR_CHILD" );
   }
 
   if ( getMaxParents() > getNbrNodes() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_PARENT > NBR_NODES" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"MAX_NBR_PARENT > NBR_NODES" );
   }
 
   if ( getMaxChildren() > getNbrNodes() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "MAX_NBR_CHILD > NBR_NODES" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"MAX_NBR_CHILD > NBR_NODES" );
   }
 
   if ( getNbrRootNodes() < 1 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_ROOT < 1" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"NBR_ROOT < 1" );
   }
 
   if ( getNbrLeafNodes() < 1 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_LEAF < 1" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"NBR_LEAF < 1" );
   }
 
   if ( getNbrConnexComponent() < 1 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP < 1" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_COMP < 1" );
   }
 
   if ( getNbrConnexComponent() > getNbrNodes() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP > NBR_NODES" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<<"NBR_COMP > NBR_NODES" );
   }
 
   if ( getNbrConnexComponent() > getNbrRootNodes() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP > NBR_ROOT" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_COMP > NBR_ROOT" );
   }
 
   if ( getNbrConnexComponent() > getNbrLeafNodes() ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_COMP > NBR_ROOT" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_COMP > NBR_ROOT" );
   }
 
   if ( getNbrNodes() / getNbrConnexComponent() == 0 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_NODES / NBR_COMP == 0" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES / NBR_COMP == 0" );
   }
 
   if ( getNbrRootNodes() / getNbrConnexComponent() == 0 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_ROOT / NBR_COMP == 0" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_ROOT / NBR_COMP == 0" );
   }
 
   if ( getNbrLeafNodes() / getNbrConnexComponent() == 0 ) {
-    throw gumOperationNotAllowed( "Incorrect parameter value.", "NBR_LEAF / NBR_COMP == 0" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_LEAF / NBR_COMP == 0" );
   }
 
   if ( getNbrNodes() < getNbrRootNodes() + getNbrLeafNodes() ) {
-    throw gumOperationNotAllowed( "Invalid parameters.", "NBR_NODES < NBR_ROOT + NBR_LEAF" );
+    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES < NBR_ROOT + NBR_LEAF" );
   }
 
 }

@@ -26,136 +26,135 @@
  */
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-PRMInference::PRMInference(const PRM& prm, const System& system):
- _prm(&prm), _sys(&system)
-{
-  GUM_CONSTRUCTOR( PRMInference );
-}
-
-INLINE
-PRMInference::~PRMInference() {
-  GUM_DESTRUCTOR( PRMInference );
-  clearEvidence();
-}
-
-INLINE
-PRMInference::EMap&
-PRMInference::evidence(const Instance& i) {
-  try {
-    return *(__evidences[&i]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "this instance has no evidence.");
-  }
-}
-
-INLINE
-const PRMInference::EMap&
-PRMInference::evidence(const Instance& i) const {
-  try {
-    return *(__evidences[&i]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "this instance has no evidence.");
-  }
-}
-
-INLINE
-PRMInference::EMap&
-PRMInference::evidence(const Instance* i) {
-  try {
-    return *(__evidences[i]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "this instance has no evidence.");
-  }
-}
-
-INLINE
-const PRMInference::EMap&
-PRMInference::evidence(const Instance* i) const {
-  try {
-    return *(__evidences[i]);
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "this instance has no evidence.");
-  }
-}
-
-INLINE
-bool
-PRMInference::hasEvidence(const Instance& i) const {
-  return __evidences.exists(&i);
-}
-
-INLINE
-bool
-PRMInference::hasEvidence(const Instance* i) const {
-  return __evidences.exists(i);
-}
-
-INLINE
-bool
-PRMInference::hasEvidence(const Chain& chain) const {
-  return (hasEvidence(chain.first))?evidence(chain.first).exists(chain.second->id()):false;
-}
-
-INLINE
-bool
-PRMInference::hasEvidence() const {
-  return __evidences.size();
-}
-
-INLINE
-void
-PRMInference::removeEvidence(const Chain& chain) {
-  try {
-    if (__EMap(chain.first).exists(chain.second->id())) {
-      _evidenceRemoved(chain);
-      delete __EMap(chain.first)[chain.second->id()];
-      __EMap(chain.first).erase(chain.second->id());
+    INLINE
+    PRMInference::PRMInference( const PRM& prm, const System& system ):
+        _prm( &prm ), _sys( &system ) {
+      GUM_CONSTRUCTOR( PRMInference );
     }
-  } catch (NotFound&) {
-    // Ok, we are only removing
-    GUM_CHECKPOINT;
-  }
-}
 
-INLINE
-void
-PRMInference::marginal(const PRMInference::Chain& chain, Potential<prm_float>& m) {
-  if (m.nbrDim() > 0) {
-    GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
-  }
-  if (hasEvidence(chain)) {
-    m.add(chain.second->type().variable());
-    const Potential<prm_float>& e = *(evidence(chain.first)[chain.second->id()]);
-    Instantiation i(m), j(e);
-    for (i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc())
-      m.set(i, e.get(j));
-  } else {
-    if (chain.second != &(chain.first->get(chain.second->safeName()))) {
-      PRMInference::Chain good_chain = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
-      m.add(good_chain.second->type().variable());
-      _marginal(good_chain, m);
-    } else {
-      m.add(chain.second->type().variable());
-      _marginal(chain, m);
+    INLINE
+    PRMInference::~PRMInference() {
+      GUM_DESTRUCTOR( PRMInference );
+      clearEvidence();
     }
-  }
-}
 
-INLINE
-void
-PRMInference::joint(const std::vector< PRMInference::Chain >& chains, Potential<prm_float>& j) {
-  if (j.nbrDim() > 0) {
-    GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.");
-  }
-  for (std::vector< PRMInference::Chain >::const_iterator chain = chains.begin(); chain != chains.end(); ++chain) {
-    j.add(chain->second->type().variable());
-  }
-  _joint(chains, j);
-}
+    INLINE
+    PRMInference::EMap&
+    PRMInference::evidence( const Instance& i ) {
+      try {
+        return *( __evidences[&i] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "this instance has no evidence." );
+      }
+    }
 
-} /* namespace prm */
+    INLINE
+    const PRMInference::EMap&
+    PRMInference::evidence( const Instance& i ) const {
+      try {
+        return *( __evidences[&i] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "this instance has no evidence." );
+      }
+    }
+
+    INLINE
+    PRMInference::EMap&
+    PRMInference::evidence( const Instance* i ) {
+      try {
+        return *( __evidences[i] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "this instance has no evidence." );
+      }
+    }
+
+    INLINE
+    const PRMInference::EMap&
+    PRMInference::evidence( const Instance* i ) const {
+      try {
+        return *( __evidences[i] );
+      } catch ( NotFound& ) {
+        GUM_ERROR( NotFound, "this instance has no evidence." );
+      }
+    }
+
+    INLINE
+    bool
+    PRMInference::hasEvidence( const Instance& i ) const {
+      return __evidences.exists( &i );
+    }
+
+    INLINE
+    bool
+    PRMInference::hasEvidence( const Instance* i ) const {
+      return __evidences.exists( i );
+    }
+
+    INLINE
+    bool
+    PRMInference::hasEvidence( const Chain& chain ) const {
+      return ( hasEvidence( chain.first ) )?evidence( chain.first ).exists( chain.second->id() ):false;
+    }
+
+    INLINE
+    bool
+    PRMInference::hasEvidence() const {
+      return __evidences.size();
+    }
+
+    INLINE
+    void
+    PRMInference::removeEvidence( const Chain& chain ) {
+      try {
+        if ( __EMap( chain.first ).exists( chain.second->id() ) ) {
+          _evidenceRemoved( chain );
+          delete __EMap( chain.first )[chain.second->id()];
+          __EMap( chain.first ).erase( chain.second->id() );
+        }
+      } catch ( NotFound& ) {
+        // Ok, we are only removing
+        GUM_CHECKPOINT;
+      }
+    }
+
+    INLINE
+    void
+    PRMInference::marginal( const PRMInference::Chain& chain, Potential<prm_float>& m ) {
+      if ( m.nbrDim() > 0 ) {
+        GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );
+      }
+      if ( hasEvidence( chain ) ) {
+        m.add( chain.second->type().variable() );
+        const Potential<prm_float>& e = *( evidence( chain.first )[chain.second->id()] );
+        Instantiation i( m ), j( e );
+        for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() )
+          m.set( i, e.get( j ) );
+      } else {
+        if ( chain.second != &( chain.first->get( chain.second->safeName() ) ) ) {
+          PRMInference::Chain good_chain = std::make_pair( chain.first, &( chain.first->get( chain.second->safeName() ) ) );
+          m.add( good_chain.second->type().variable() );
+          _marginal( good_chain, m );
+        } else {
+          m.add( chain.second->type().variable() );
+          _marginal( chain, m );
+        }
+      }
+    }
+
+    INLINE
+    void
+    PRMInference::joint( const std::vector< PRMInference::Chain >& chains, Potential<prm_float>& j ) {
+      if ( j.nbrDim() > 0 ) {
+        GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );
+      }
+      for ( std::vector< PRMInference::Chain >::const_iterator chain = chains.begin(); chain != chains.end(); ++chain ) {
+        j.add( chain->second->type().variable() );
+      }
+      _joint( chains, j );
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

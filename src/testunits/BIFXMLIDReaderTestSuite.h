@@ -48,18 +48,18 @@
 //          U2
 
 namespace gum {
-  
+
   class aSimpleListener : public gum::Listener {
-      private:
-        int __nbr;
-        
-      public:
-        aSimpleListener():__nbr(0) {};
-        void whenProceeding(const void *buffer,int percent, std::string status) {
-          __nbr=percent;
-         //std::cout << "Progress : " << percent << "%" << " Status : " << status << std::endl;
-        }
-        int getNbr() {return __nbr;};
+    private:
+      int __nbr;
+
+    public:
+      aSimpleListener():__nbr( 0 ) {};
+      void whenProceeding( const void *buffer,int percent, std::string status ) {
+        __nbr=percent;
+        //std::cout << "Progress : " << percent << "%" << " Status : " << status << std::endl;
+      }
+      int getNbr() {return __nbr;};
   };
 
   namespace tests {
@@ -67,8 +67,8 @@ namespace gum {
     class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
       public:
         void testConstuctor() {
-         std::string file = GET_PATH_STR( IDBIFXMLIO_file.xml );
-          
+          std::string file = GET_PATH_STR( IDBIFXMLIO_file.xml );
+
           gum::InfluenceDiagram<float> net;
 
 
@@ -95,14 +95,17 @@ namespace gum {
           // For comparison with what have wrote Writer
           std::string dotfile = GET_PATH_STR( IDToDotReader.dot );
           std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
-          if ( ! output.good() )
-              GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          if ( ! output.good() ) {
+            GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          }
+
           output << net->toDot();
           output.flush();
           output.close();
-          if ( output.fail() )
+          if ( output.fail() ) {
             GUM_ERROR( IOError, "Writting in the ostream failed." );
-              
+          }
+
           if ( net != 0 ) {
             TS_ASSERT( !net->empty() );
           }
@@ -352,20 +355,20 @@ namespace gum {
 
           delete net;
         }
-        
+
         void testRead_file3_float() {
           std::string file = GET_PATH_STR( IDBIFXMLIO_file.xml );
 
           gum::InfluenceDiagram<float> *net = new gum::InfluenceDiagram<float>();
 
           gum::BIFXMLIDReader<float> reader( net, file );
-          
+
           aSimpleListener asl;
           GUM_CONNECT( reader, onProceed, asl, aSimpleListener::whenProceeding );
 
           TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-          
-          TS_ASSERT_EQUALS(asl.getNbr(),100);
+
+          TS_ASSERT_EQUALS( asl.getNbr(),100 );
           delete net;
         }
     };

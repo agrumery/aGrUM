@@ -79,8 +79,9 @@ namespace gum {
   template <typename Key>
   void HashFuncBase<Key>::resize( Size new_size )  {
     // things work properly only for hashtables with at least 2 elements
-    if ( new_size < 2 )
+    if ( new_size < 2 ) {
       GUM_ERROR( HashSize, "the size of the hashtable is too small" );
+    }
 
     _hash_log2_size = __hashTableLog2( new_size );
     _hash_size = 1UL << _hash_log2_size;
@@ -97,7 +98,7 @@ namespace gum {
 
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                 GUM_HASH_FUNC_SMALL_KEY IMPLEMENTATION               ===*/
@@ -133,18 +134,19 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  template <typename Key> INLINE 
+  template <typename Key> INLINE
   HashFuncSmallCastKey<Key>::HashFuncSmallCastKey () :
     HashFuncBase<Key>(),
-    #ifdef BIGENDIAN 
+    #ifdef BIGENDIAN
     _small_key_shift ( 8 * ( sizeof (unsigned long) - sizeof ( Key ) ) )
     #else
+//#ifdef GUM_LONG_DOUBLE_SAME_SIZE
     _small_key_shift ( sizeof ( unsigned long ) != sizeof ( Key ) ?
                        ( ( 1UL << ( 8 * sizeof ( Key ) ) ) - 1 ) : -1 )
     #endif
   {}
-  
-    
+
+
   // ==============================================================================
   /// update the hash function to take into account a resize of the hash table
   // ==============================================================================
@@ -165,12 +167,12 @@ namespace gum {
                GUM_HASHTABLE_INT_GOLD ) >> _right_shift );
     #else
     return ( ( ( *( (unsigned long*) (&key) ) & _small_key_shift ) *
-               GUM_HASHTABLE_INT_GOLD ) >> _right_shift );   
+               GUM_HASHTABLE_INT_GOLD ) >> _right_shift );
     #endif
   }
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===              GUM_HASH_FUNC_SMALL_KEY_PAIR IMPLEMENTATION            === */
@@ -199,7 +201,7 @@ namespace gum {
   }
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===           GUM_HASH_FUNC_SMALL_CAST_KEY_PAIR IMPLEMENTATION          === */
@@ -209,7 +211,7 @@ namespace gum {
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
-  template <typename Key1, typename Key2> INLINE 
+  template <typename Key1, typename Key2> INLINE
   HashFuncSmallCastKeyPair<Key1,Key2>::HashFuncSmallCastKeyPair () :
     HashFuncBase< std::pair<Key1,Key2> >(),
     #ifdef BIGENDIAN
@@ -222,7 +224,7 @@ namespace gum {
                         ( ( 1UL << ( 8 * sizeof ( Key2 ) ) ) - 1 ) : -1L )
     #endif
   {}
-    
+
   // ==============================================================================
   /// update the hash function to take into account a resize of the hash table
   // ==============================================================================
@@ -249,11 +251,11 @@ namespace gum {
     return ( ( ( *( (unsigned long*) (&(key.first)) ) & _small_key_shift1 ) *
                GUM_HASHTABLE_INT_GOLD +
                ( *( (unsigned long*) (&(key.second)) ) & _small_key_shift2 ) *
-               GUM_HASHTABLE_INT_PI ) >> _right_shift );    
+               GUM_HASHTABLE_INT_PI ) >> _right_shift );
     #endif
   }
 
-  
+
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -290,7 +292,7 @@ namespace gum {
   }
   */
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===              GUM_HASH_FUNC_BIG_KEY_PAIR IMPLEMENTATION               ===*/
@@ -298,7 +300,7 @@ namespace gum {
   /* =========================================================================== */
 
   /* for pedantic reasons, the following lines are removed (not iso c++)
-     
+
   // ==============================================================================
   /// update the hash function to take into account a resize of the hash table
   // ==============================================================================
@@ -347,7 +349,7 @@ namespace gum {
     return HashFunc<unsigned int*>::operator()( key.__refCountPtr() );
   }
 
-  
+
 } /* namespace gum */
 
 

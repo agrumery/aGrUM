@@ -153,10 +153,7 @@ namespace gum {
       for ( I.setFirst(); ! I.end(); I.inc() ) s += proba[I];
 
       if ( s == ( T_DATA ) 0 ) {
-        std::ostringstream str;
-        str << "A normalisation factor is 0 in node " << id << " (" << v << ")";
-
-        GUM_ERROR( FatalError, str.str() );
+        GUM_ERROR( FatalError, "A normalisation factor is 0 in node " << id << " (" << v << ") : "<<proba );
       }
 
       // draw value
@@ -229,8 +226,9 @@ namespace gum {
     void Gibbs<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
       const Sequence<const DiscreteVariable *>& vars = pot->variablesSequence();
 
-      if ( vars.size() != 1 )
+      if ( vars.size() != 1 ) {
         GUM_ERROR( SizeError, "The evidence should be one-dimensionnal" );
+      }
 
       NodeId id = this->bn().nodeId( * ( vars.atPos( 0 ) ) );
 
@@ -258,8 +256,9 @@ namespace gum {
         const Potential<T_DATA>& pot = **iter;
         const Sequence<const DiscreteVariable *>& vars = pot.variablesSequence();
 
-        if ( vars.size() != 1 )
+        if ( vars.size() != 1 ) {
           GUM_ERROR( SizeError, "The evidence should be one-dimensionnal" );
+        }
 
         Size nb_un = 0;
 

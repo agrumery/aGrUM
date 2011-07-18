@@ -77,7 +77,8 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     if positions is None:
          sys.exit(1)
 
-    inst=bn.completeInstantiation()
+    inst=gum.Instantiation()
+    bn.completeInstantiation(inst)
 
     if visible:
         prog = ProgressBar(csv_name+' : ',0, nbr_lines, 77,  mode='static', char='#')
@@ -88,7 +89,7 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     for data in batchReader:
         for i in range(inst.nbrDim()):
             try:
-                inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
+              inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
             except gum.OutOfBounds:
                 print "out of bounds",i,positions[i],data[positions[i]],inst.variable(i)
         p=bn.jointProbability(inst)
@@ -103,15 +104,16 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     if visible:
         print
 
-    nbr_arcs=bn.nbrArcs()
-    dim=bn.dim()
-    
-    aic=likelihood-dim
-    bic=likelihood-dim*math.log(nbr_lines,2)/2.0
-    mdl=likelihood-nbr_arcs*math.log(nbr_lines,2)-32*dim #32=nbr bits for a params
-    
+    nbr_arcs=1.0*bn.nbrArcs()
+    dim=1.0*bn.dim()
+
+    aic=-2*likelihood+2*dim
+    aicc=aic+2*dim*(dim+1)/(nbr_lines-dim+1)
+    bic=-2*likelihood+dim*math.log(nbr_lines,2)
+    mdl=-likelihood+nbr_arcs*math.log(nbr_lines,2)+32*dim #32=nbr bits for a params
+
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
-            {'likelihood':likelihood,'aic':aic,'bic':bic,'mdl':mdl})
+            {'likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})
 
 
 def module_help(exit_value=1):
@@ -123,12 +125,12 @@ def module_help(exit_value=1):
 
 def getNumLabel(inst,i,label,transforme_label):
     if transforme_label is not None:
-        label=transforme_label(label)
-    
-    if label.isdigit(): # an indice
-        return int(label)
-    else:
-        return inst.variable(i)[label]
+      label=transforme_label(label)
+
+    return inst.variable(i)[label]
+
+def stringify(s):
+  return '"'+s+'"'
 
 if __name__=="__main__":
     pyAgrum_header()
@@ -144,7 +146,7 @@ if __name__=="__main__":
     else:
         csv_name=sys.argv[2]
         base,ext=os.path.splitext(csv_name)
-        
+
 
     print '"{0}" vs "{1}"'.format(bn_name,csv_name)
     (nbr,LL)=computeScores(bn_name,csv_name,visible=True)

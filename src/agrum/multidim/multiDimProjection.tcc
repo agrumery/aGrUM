@@ -33,43 +33,43 @@
 
 namespace gum {
 
-  
+
   /// constructor
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimProjection<T_DATA,TABLE>::MultiDimProjection
-  (TABLE<T_DATA>* (*proj) ( const TABLE<T_DATA>&,
-                            const Set<const DiscreteVariable*>& ) ) :
-    _proj ( proj ) {
+  ( TABLE<T_DATA>* ( *proj )( const TABLE<T_DATA>&,
+                              const Set<const DiscreteVariable*>& ) ) :
+      _proj( proj ) {
     /// for debugging purposes
-    GUM_CONSTRUCTOR ( MultiDimProjection );
+    GUM_CONSTRUCTOR( MultiDimProjection );
   }
 
-  
+
   /// copy constructor
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimProjection<T_DATA,TABLE>::MultiDimProjection
   ( const MultiDimProjection<T_DATA,TABLE>& from ) :
-    _proj ( from._proj ) {
+      _proj( from._proj ) {
     /// for debugging purposes
-    GUM_CONS_CPY ( MultiDimProjection );
+    GUM_CONS_CPY( MultiDimProjection );
   }
 
-  
+
   /// destructor
   template< typename T_DATA, template<typename> class TABLE >
-  MultiDimProjection<T_DATA,TABLE>::~MultiDimProjection () {
+  MultiDimProjection<T_DATA,TABLE>::~MultiDimProjection() {
     /// for debugging purposes
-    GUM_DESTRUCTOR ( MultiDimProjection );
+    GUM_DESTRUCTOR( MultiDimProjection );
   }
 
 
   /// virtual constructor
   template< typename T_DATA, template<typename> class TABLE >
   MultiDimProjection<T_DATA,TABLE>*
-  MultiDimProjection<T_DATA,TABLE>::newFactory () const {
+  MultiDimProjection<T_DATA,TABLE>::newFactory() const {
     return new MultiDimProjection<T_DATA,TABLE> ( *this );
   }
-  
+
 
   /// creates and returns the projection of the table over a subset of its vars
   template< typename T_DATA, template<typename> class TABLE >
@@ -77,7 +77,7 @@ namespace gum {
   MultiDimProjection<T_DATA,TABLE>::project
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars ) {
-    return _proj ( table, del_vars );
+    return _proj( table, del_vars );
   }
 
 
@@ -88,7 +88,7 @@ namespace gum {
   ( TABLE<T_DATA>& container,
     const TABLE<T_DATA>& table,
     const Set<const TABLE<T_DATA>*>& del_vars ) {
-    TABLE<T_DATA>* res = project ( table, del_vars );
+    TABLE<T_DATA>* res = project( table, del_vars );
     container = *res;
     delete res;
   }
@@ -98,7 +98,7 @@ namespace gum {
   template< typename T_DATA, template<typename> class TABLE >
   void MultiDimProjection<T_DATA,TABLE>::setProjectFunction
   ( TABLE<T_DATA>*
-    (*proj)
+    ( *proj )
     ( const TABLE<T_DATA>&,
       const Set<const DiscreteVariable*>& ) ) {
     _proj = proj;
@@ -108,11 +108,11 @@ namespace gum {
   /// returns the projection function currently used by the projector
   template< typename T_DATA, template<typename> class TABLE >
   INLINE TABLE<T_DATA>*
-  (* MultiDimProjection<T_DATA,TABLE>::projectFunction () )
-    ( const TABLE<T_DATA>&, const Set<const DiscreteVariable*>& ) const {
+  ( * MultiDimProjection<T_DATA,TABLE>::projectFunction() )
+  ( const TABLE<T_DATA>&, const Set<const DiscreteVariable*>& ) const {
     return _proj;
   }
-  
+
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
@@ -120,10 +120,10 @@ namespace gum {
   INLINE float MultiDimProjection<T_DATA,TABLE>::nbOperations
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars ) const {
-    return table.domainSize ();
+    return table.domainSize();
   }
 
-  
+
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template< typename T_DATA, template<typename> class TABLE >
@@ -132,8 +132,8 @@ namespace gum {
     const Set<const DiscreteVariable*>& del_vars ) const {
     float res = 1.0f;
     for ( typename Sequence<const DiscreteVariable*>::const_iterator
-            iter = vars.begin(); iter != vars.end(); ++iter ) {
-      res *= (*iter)->domainSize();
+          iter = vars.begin(); iter != vars.end(); ++iter ) {
+      res *= ( *iter )->domainSize();
     }
 
     return res;
@@ -148,17 +148,17 @@ namespace gum {
     const Set<const DiscreteVariable*>& del_vars ) const {
     long res = 1;
     for ( typename Sequence<const DiscreteVariable*>::const_iterator
-            iter = vars.begin(); iter != vars.end(); ++iter ) {
-      if ( ! del_vars.contains ( *iter ) ) {
+          iter = vars.begin(); iter != vars.end(); ++iter ) {
+      if ( ! del_vars.contains( *iter ) ) {
         if ( std::numeric_limits<long>::max() /
-             (long) (*iter)->domainSize() < res ) {
-          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
+             ( long )( *iter )->domainSize() < res ) {
+          GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
-        res *= (*iter)->domainSize();
+        res *= ( *iter )->domainSize();
       }
     }
 
-    return std::pair<long,long> (res,res);
+    return std::pair<long,long> ( res,res );
   }
 
 
@@ -168,10 +168,10 @@ namespace gum {
   MultiDimProjection<T_DATA,TABLE>::memoryUsage
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars ) const {
-    return memoryUsage ( table.variablesSequence (), del_vars );
+    return memoryUsage( table.variablesSequence(), del_vars );
   }
- 
-  
+
+
 } /* namespace gum */
 
 

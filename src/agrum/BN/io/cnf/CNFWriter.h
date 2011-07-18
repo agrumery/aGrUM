@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -38,6 +39,7 @@
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/debug.h>
+#include <agrum/core/approximationPolicy/approximationPolicy.h>
 
 namespace gum {
 
@@ -52,9 +54,8 @@ namespace gum {
    * for information on this format.
    *
    */
-  template<typename T_DATA>
-
-  class CNFWriter: public BNWriter<T_DATA> {
+  template<typename T_DATA, template<class> class IApproximationPolicy = ExactPolicy>
+  class CNFWriter: public BNWriter<T_DATA>, public IApproximationPolicy<T_DATA>  {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -80,7 +81,7 @@ namespace gum {
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn );
+      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn )=0;
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -90,10 +91,14 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn );
+      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn )=0;
+
+      inline T_DATA fromExact( const T_DATA& value ) const { 
+        return IApproximationPolicy<T_DATA>::fromExact( value ); };
 
 
-    private:
+
+  /*  private:
       // Returns the header of the BN file.
       std::string __header( const BayesNet<T_DATA>& bn );
 
@@ -103,8 +108,10 @@ namespace gum {
       // Returns a bloc defining a variable's CPT in the BN format.
       std::string __variableCPT( const Potential<T_DATA>& cpt );
 
-      // Returns the modalities labels of the variables in varsSeq
-      };
+      // Returns the modalities labels of the variables in varsSeq*/
+      //
+      }; 
+      
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter.tcc>

@@ -51,17 +51,25 @@ if __name__=="__main__":
 
     if len(sys.argv)<2:
         module_help()
-        
+
     bn=gum.loadBN(sys.argv[1])
     inf=gum.LazyPropagation(bn)
     inf.makeInference()
-    
+
     print "Entropy of nodes (a posteriori)"
+    res=[]
     for i in bn.getTopologicalOrder():
-        print i," : ",inf.H(i)
-    
+      res.append((bn.variable(i).name(),inf.H(i)))
+    res=sorted(res,key=lambda x:-x[1])
+    for i in range(len(res)):
+        print res[i]
+
     print
     print "Mutual information and Variation of information for arcs (a posteriori)"
+    res=[]
     for i in bn.getTopologicalOrder():
-        for j in parents(bn,i):
-            print j,"->",i,"\t",inf.I(i,j),"\t",inf.VI(i,j)
+      for j in parents(bn,i):
+        res.append((bn.variable(j).name()+"->"+bn.variable(i).name(),inf.I(i,j),inf.VI(i,j)))
+    res=sorted(res,key=lambda x:-x[1])
+    for i in range(len(res)):
+      print res[i]

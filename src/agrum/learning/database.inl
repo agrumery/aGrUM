@@ -23,13 +23,13 @@
 
 namespace gum {
 
-  
+
   /// return a ref to filename
   INLINE const std::string& Database::filename() const {
     return __filename;
   }
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                       GUM_DATABASE IMPLEMENTATION                   === */
@@ -39,11 +39,11 @@ namespace gum {
   // ==============================================================================
   /// get the ncaseth case in the database
   // ==============================================================================
-  INLINE const unsigned int* Database::line( unsigned int ncase )
-    const throw( NotFound ) {
+  INLINE const unsigned int* Database::line( unsigned int ncase ) const {
     // check if the case exists
-    if ( ncase >= __nb_cases )
+    if ( ncase >= __nb_cases ){
       GUM_ERROR( NotFound, "ncase is too big" );
+    }
 
     return __cases + ncase * __nb_nodes;
   }
@@ -52,7 +52,7 @@ namespace gum {
   /// get the number of modalities of all the nodes
   // ==============================================================================
   INLINE const std::vector<unsigned int>& Database::nbrModalities()
-    const throw() {
+  const{
     return __nb_modalities;
   }
 
@@ -60,10 +60,11 @@ namespace gum {
   /// get the value of the ith node in the nth case of the database
   // ==============================================================================
   INLINE unsigned int Database::value( unsigned int n, unsigned int i )
-    const throw( NotFound ) {
+  const{
     // check if the value exists
-    if (( n >= __nb_cases ) || ( i >= __nb_nodes ) )
+    if (( n >= __nb_cases ) || ( i >= __nb_nodes ) ) {
       GUM_ERROR( NotFound, "ncase and/or nnode is too big" );
+    }
 
     return __cases[n * __nb_nodes + i];
   }
@@ -72,10 +73,11 @@ namespace gum {
   /// returns the name of the kth node in the database
   // ==============================================================================
   INLINE const std::string& Database::nodeName( unsigned int k )
-    const throw( NotFound ) {
+  const{
     // check if the node exists
-    if ( k >= __nb_nodes )
+    if ( k >= __nb_nodes ) {
       GUM_ERROR( NotFound, "the kth node cannot be found" );
+    }
 
     return __node_names[k];
   }
@@ -101,8 +103,9 @@ namespace gum {
   /// is there any missing value for this row
   INLINE bool Database::hasMissingValue( unsigned int k ) const {
     // check if the node exists
-    if ( k >= __nb_nodes )
+    if ( k >= __nb_nodes ) {
       GUM_ERROR( NotFound, "the kth node cannot be found" );
+    }
 
     return __missing_value[k];
   }
@@ -112,10 +115,11 @@ namespace gum {
   /// returns the names of all the modalities of a given node
   // ==============================================================================
   INLINE const std::vector<std::string>&
-  Database::modalitiesNames( unsigned int k ) const throw( NotFound ) {
+  Database::modalitiesNames( unsigned int k ) const {
     // check if the node exists
-    if ( k >= __nb_nodes )
+    if ( k >= __nb_nodes ) {
       GUM_ERROR( NotFound, "the kth node cannot be found" );
+    }
 
     return __modalities_names[k];
   }
@@ -125,10 +129,11 @@ namespace gum {
   // ==============================================================================
   INLINE const std::string&
   Database::modalityName( unsigned int k, unsigned int i )
-    const throw( NotFound ) {
+  const  {
     // check if the node and modality do exist
-    if (( i >= __nb_nodes ) || ( k>=__modalities_names[i].size() ) )
+    if (( i >= __nb_nodes ) || ( k>=__modalities_names[i].size() ) ) {
       GUM_ERROR( NotFound, "the node and/or modality cannot be found" );
+    }
 
     return __modalities_names[i][k];
   }
@@ -137,10 +142,11 @@ namespace gum {
   /// get the number of modalities of the kth node
   // ==============================================================================
   INLINE unsigned int Database::nbrModalities( unsigned int k )
-    const throw( NotFound ) {
+  const  {
     // check if the node exists
-    if ( k >= __nb_nodes )
+    if ( k >= __nb_nodes ) {
       GUM_ERROR( NotFound, "the kth node cannot be found" );
+    }
 
     return __nb_modalities[k];
   }
@@ -148,42 +154,42 @@ namespace gum {
   // ==============================================================================
   /// get the number of __cases in the database
   // ==============================================================================
-  INLINE unsigned int Database::nbrLines() const throw() {
+  INLINE unsigned int Database::nbrLines() const {
     return __nb_cases;
   }
 
   // ==============================================================================
   /// get the number of nodes in the database
   // ==============================================================================
-  INLINE unsigned int Database::nbrNodes() const throw() {
+  INLINE unsigned int Database::nbrNodes() const {
     return __nb_nodes;
   }
 
   // ==============================================================================
   /// returns an iterator pointing to the beginning of the database
   // ==============================================================================
-  INLINE const DatabaseIterator& Database::begin() const throw() {
+  INLINE const DatabaseIterator& Database::begin() const {
     return __iter_begin;
   }
 
   // ==============================================================================
   /// returns an iterator pointing just after the last element of the database
   // ==============================================================================
-  INLINE const DatabaseIterator& Database::end() const throw() {
+  INLINE const DatabaseIterator& Database::end() const {
     return __iter_end;
   }
 
   // ==============================================================================
   /// returns an iterator pointing to the last element of the database
   // ==============================================================================
-  INLINE const DatabaseIterator& Database::rbegin() const throw() {
+  INLINE const DatabaseIterator& Database::rbegin() const {
     return __iter_rbegin;
   }
 
   // ==============================================================================
   /// returns an iterator pointing just before the first element of the database
   // ==============================================================================
-  INLINE const DatabaseIterator& Database::rend() const throw() {
+  INLINE const DatabaseIterator& Database::rend() const {
     return __iter_rend;
   }
 
@@ -200,7 +206,7 @@ namespace gum {
   /// creates an iterator pointing toward nothing
   // ==============================================================================
   INLINE DatabaseIterator::DatabaseIterator() :
-    __database( 0 ), __current_case( 0 ), __offset( 0 ) {
+      __database( 0 ), __current_case( 0 ), __offset( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DatabaseIterator );
   }
@@ -210,7 +216,7 @@ namespace gum {
   // ==============================================================================
   INLINE DatabaseIterator::DatabaseIterator
   ( const Database& data, unsigned int nb_case ) :
-    __database( &data ), __offset( data.nbrNodes() ) {
+      __database( &data ), __offset( data.nbrNodes() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DatabaseIterator );
     __current_case = data.line( nb_case );
@@ -221,8 +227,8 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   INLINE DatabaseIterator::DatabaseIterator( const DatabaseIterator& from ) :
-    __database( from.__database ), __current_case( from.__current_case ),
-    __offset( from.__offset ) {
+      __database( from.__database ), __current_case( from.__current_case ),
+      __offset( from.__offset ) {
     //for debugging purposes
     GUM_CONS_CPY( DatabaseIterator );
     if ( __database )
@@ -250,19 +256,19 @@ namespace gum {
     __offset = __database->nbrNodes();
 
     switch ( location ) {
-    case GUM_DATABASE_ITER_BEGIN:
-      __current_case = __database->__cases;
-      break;
-    case GUM_DATABASE_ITER_RBEGIN:
-      __current_case =
-        __database->__cases + __offset * ( __database->__nb_cases - 1 );
-      break;
-    case GUM_DATABASE_ITER_END:
-      __current_case = __database->__cases + __offset * __database->__nb_cases;
-      break;
-    case GUM_DATABASE_ITER_REND:
-      __current_case = __database->__cases - __offset;
-      break;
+      case GUM_DATABASE_ITER_BEGIN:
+        __current_case = __database->__cases;
+        break;
+      case GUM_DATABASE_ITER_RBEGIN:
+        __current_case =
+          __database->__cases + __offset * ( __database->__nb_cases - 1 );
+        break;
+      case GUM_DATABASE_ITER_END:
+        __current_case = __database->__cases + __offset * __database->__nb_cases;
+        break;
+      case GUM_DATABASE_ITER_REND:
+        __current_case = __database->__cases - __offset;
+        break;
     }
   }
 
@@ -308,7 +314,7 @@ namespace gum {
   /// check whether two __iterators point toward the same case
   // ==============================================================================
   INLINE bool DatabaseIterator::operator== ( const DatabaseIterator& from )
-    const throw() {
+  const {
     return ( __current_case == from.__current_case );
   }
 
@@ -316,7 +322,7 @@ namespace gum {
   /// check whether two __iterators point toward different __cases
   // ==============================================================================
   INLINE bool DatabaseIterator::operator!= ( const DatabaseIterator& from )
-    const throw() {
+  const {
     return ( __current_case != from.__current_case );
   }
 
@@ -325,8 +331,9 @@ namespace gum {
   // ==============================================================================
   INLINE DatabaseIterator& DatabaseIterator::nextCase() {
     if ( ! __database ||
-         ( __current_case + __offset >= __database->end().__current_case ) )
+         ( __current_case + __offset >= __database->end().__current_case ) ) {
       GUM_ERROR( OutOfBounds, "the next case does not exist" );
+    }
 
     __current_case += __offset;
 
@@ -346,8 +353,9 @@ namespace gum {
   // ==============================================================================
   INLINE DatabaseIterator& DatabaseIterator::prevCase() {
     if ( ! __database ||
-         ( __current_case < __database->begin().__current_case + __offset ) )
+         ( __current_case < __database->begin().__current_case + __offset ) ) {
       GUM_ERROR( OutOfBounds, "the previous case does not exist" );
+    }
 
     __current_case -= __offset;
 
@@ -366,8 +374,9 @@ namespace gum {
   /// returns the value of the ith node in the current case (safe, \sa operator[])
   // ==============================================================================
   INLINE unsigned int DatabaseIterator::at( unsigned int i ) const {
-    if ( ! __database || ( i >= __database->__nb_nodes ) )
+    if ( ! __database || ( i >= __database->__nb_nodes ) ) {
       GUM_ERROR( NotFound, "there exists no ith node" );
+    }
 
     return __current_case[i];
   }

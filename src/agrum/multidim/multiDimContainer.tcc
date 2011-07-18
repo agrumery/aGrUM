@@ -105,40 +105,39 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA>
   bool
-  MultiDimContainer<T_DATA>::operator==(const MultiDimContainer<T_DATA>& p) const {
-    if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
+  MultiDimContainer<T_DATA>::operator==( const MultiDimContainer<T_DATA>& p ) const {
+    if (( nbrDim() == p.nbrDim() ) && ( domainSize() == p.domainSize() ) ) {
       typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
-      for (var_iterator iter = variablesSequence().begin();
-           iter != variablesSequence().end(); ++iter) {
-        if ( ! p.variablesSequence().exists(*iter)) {
+      for ( var_iterator iter = variablesSequence().begin();
+            iter != variablesSequence().end(); ++iter ) {
+        if ( ! p.variablesSequence().exists( *iter ) ) {
           return false;
         }
       }
-      Instantiation i(*this);
+      Instantiation i( *this );
       AlmostDifferent<T_DATA> cmp;
-      for (i.setFirst(); ! i.end(); ++i) {
-        if (  cmp ( get(i), p.get(i) ) ) {
+      for ( i.setFirst(); ! i.end(); ++i ) {
+        if ( cmp( get( i ), p.get( i ) ) ) {
           return false;
         }
       }
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
-  
+
   // ==============================================================================
   // Test if this potential is different of p.
   // ==============================================================================
   template<typename T_DATA> INLINE
   bool
-  MultiDimContainer<T_DATA>::operator!=(const MultiDimContainer<T_DATA>& p) const {
+  MultiDimContainer<T_DATA>::operator!=( const MultiDimContainer<T_DATA>& p ) const {
     return ! operator== ( p );
   }
 
-  
+
   // ==============================================================================
   // automation fill with vector.
   // ==============================================================================
@@ -162,8 +161,9 @@ namespace gum {
   template<typename T_DATA>
   void MultiDimContainer<T_DATA>::copyFrom
   ( const MultiDimContainer<T_DATA>& src ,Instantiation* p_i ) const {
-    if ( src.domainSize()!=domainSize() )
+    if ( src.domainSize()!=domainSize() ) {
       GUM_ERROR( OperationNotAllowed,"Domain size do not fit" );
+    }
 
     Instantiation i_dest( *this );
 
@@ -172,12 +172,12 @@ namespace gum {
     if ( p_i==( Instantiation * )0 ) {
       for ( i_dest.setFirst(),i_src.setFirst();! i_dest.end() ;
             ++i_dest,++i_src ) {
-        set(i_dest,src[i_src]);
+        set( i_dest,src[i_src] );
       }
     } else {
       for ( i_dest.setFirst(),i_src.setFirst();! i_dest.end() ;
             i_dest.incIn( *p_i ),++i_src ) {
-        set(i_dest,src[i_src]);
+        set( i_dest,src[i_src] );
       }
     }
   }

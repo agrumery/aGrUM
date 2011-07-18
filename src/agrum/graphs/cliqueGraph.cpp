@@ -83,7 +83,7 @@ namespace gum {
   CliqueGraph::containerPath( const NodeId node1, const NodeId node2 ) const  {
     // get a path from a __clique containing node1 to a __clique containing node2
     std::vector<NodeId> path = undirectedPath( container( node1 ),
-                                               container( node2 ) );
+                               container( node2 ) );
 
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
@@ -108,8 +108,9 @@ namespace gum {
     NodeSet& clique = __cliques[clique_id];
 
     // check if the node already exists, in which case throw an exception
-    if ( clique.contains( node_id ) )
+    if ( clique.contains( node_id ) ) {
       GUM_ERROR( DuplicateElement, "the clique set already contains the node" );
+    }
 
     clique.insert( node_id );
 
@@ -117,7 +118,7 @@ namespace gum {
     const NodeSet& set = neighbours( clique_id );
     for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
       if ( __cliques[*ite].contains( node_id ) )
-        __separators[Edge ( *ite, clique_id )].insert( node_id );
+        __separators[Edge( *ite, clique_id )].insert( node_id );
     }
   }
 
@@ -136,7 +137,7 @@ namespace gum {
       // update the __separators adjacent to __clique 'id'
       const NodeSet& set = neighbours( clique_id );
       for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
-        Edge edge ( *ite, clique_id );
+        Edge edge( *ite, clique_id );
         if ( __separators[edge].contains( node_id ) )
           __separators[edge].erase( node_id );
       }
@@ -190,7 +191,7 @@ namespace gum {
       if ( otherID != from ) {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
-        const Edge edge ( otherID, clique ); 
+        const Edge edge( otherID, clique );
         const NodeSet& from_separ = __separators[edge];
         for ( NodeSetIterator iter_clique = nodes_clique.begin();
               iter_clique != nodes_clique.end(); ++iter_clique ) {
@@ -288,7 +289,7 @@ namespace gum {
     return true;
   }
 
-  
+
   const std::string
   CliqueGraph::toString() const {
     std::stringstream stream;
@@ -297,7 +298,7 @@ namespace gum {
     for ( NodeIterator iter_node = beginNodes();
           iter_node != endNodes(); ++iter_node ) {
       stream << " -- node: " << *iter_node << std::endl << "    clique:";
-      
+
       const NodeSet& cl = clique( *iter_node );
       for ( NodeSetIterator iter = cl.begin();iter != cl.end(); ++iter )
         stream << "  " << *iter;
@@ -314,7 +315,7 @@ namespace gum {
     return stream.str();
   }
 
-  
+
   const std::string
   CliqueGraph::toDot() const {
     std::stringstream stream;

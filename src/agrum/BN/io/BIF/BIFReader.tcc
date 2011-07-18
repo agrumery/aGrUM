@@ -114,43 +114,57 @@ namespace gum {
   template<typename T_DATA> INLINE
   unsigned int BIFReader<T_DATA>::errLine( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().line( i );
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   unsigned int BIFReader<T_DATA>::errCol( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().col( i );
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   bool BIFReader<T_DATA>::errIsError( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().is_error( i );
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   std::string BIFReader<T_DATA>::errMsg( unsigned int i ) {
     if ( __parseDone ) return std::string( narrow( __parser->errors().msg( i ) ) );
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   void BIFReader<T_DATA>::showElegantErrors() {
     if ( __parseDone ) __parser->errors().showElegantErrors();
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   void BIFReader<T_DATA>::showElegantErrorsAndWarnings() {
     if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   void BIFReader<T_DATA>::showErrorCounts() {
     if ( __parseDone ) __parser->errors().showSyntheticResults();
-    else GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed,"BIF file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE

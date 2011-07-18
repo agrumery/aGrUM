@@ -60,8 +60,9 @@ namespace gum {
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v.domainSize() )
+      if ( newVal >= v.domainSize() ) {
         GUM_ERROR( OutOfBounds, "" );
+      }
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -82,8 +83,9 @@ namespace gum {
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v->domainSize() )
+      if ( newVal >= v->domainSize() ) {
         GUM_ERROR( OutOfBounds, "" );
+      }
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -103,11 +105,13 @@ namespace gum {
   INLINE Instantiation& Instantiation::chgVal( Idx varPos, const Idx newVal ) {
     // check that the variable does belong to the instantiation and that the new
     // value is possible.
-    if ( __vals.size() <= varPos )
+    if ( __vals.size() <= varPos ) {
       GUM_ERROR( NotFound, "" );
+    }
 
-    if ( newVal >= __vars[varPos]->domainSize() )
+    if ( newVal >= __vars[varPos]->domainSize() ) {
       GUM_ERROR( OutOfBounds, "" );
+    }
 
     // if we were in overflow, indicate that we are not anymore
     __overflow = false;
@@ -122,12 +126,15 @@ namespace gum {
   // ==============================================================================
   INLINE void Instantiation::add( const DiscreteVariable& v )  {
     // if __master : not allowed
-    if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    if ( __master ) {
+      GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    }
 
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if ( __vars.exists( &v ) )
+    if ( __vars.exists( &v ) ) {
       GUM_ERROR( DuplicateElement, "Var already exists in this instantiation" );
+    }
 
     // actually add the new dimension
     __add( v );
@@ -138,24 +145,29 @@ namespace gum {
   // ==============================================================================
   INLINE void Instantiation::erase( const DiscreteVariable& v ) {
     // if __master : not allowed
-    if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    if ( __master ) {
+      GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    }
 
     // check that the variable does actually belong to the Instantiation
-    if ( ! __vars.exists( &v ) )
+    if ( ! __vars.exists( &v ) ) {
       GUM_ERROR( NotFound, "Var does not exist in this instantiation" );
+    }
 
     // actually delete the dimension
     __erase( v );
   }
 
   /// removes everything
-  INLINE void Instantiation::clear(void) {
-    if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
-    
+  INLINE void Instantiation::clear( void ) {
+    if ( __master ) {
+      GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    }
+
     __vars.clear();
     __vals.clear();
   }
-  
+
   // ============================================================================
   /** @brief returns the product of the size of the domains of the variables
    * belonging to the matrix */
@@ -208,8 +220,9 @@ namespace gum {
   /// returns the current value of a given variable
   // ==============================================================================
   INLINE Idx Instantiation::val( const Idx i ) const {
-    if ( i >= __vals.size() )
+    if ( i >= __vals.size() ) {
       GUM_ERROR( NotFound, "" );
+    }
 
     return __vals[i];
   }
@@ -870,7 +883,9 @@ namespace gum {
 
   /// force the variables sequence order to be the same as the master one
   INLINE void Instantiation::synchronizeWithMaster( const MultiDimAdressable* m ) {
-    if ( m != __master ) GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    if ( m != __master ) {
+      GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    }
 
     reorder( __master->variablesSequence() );
   }
@@ -878,7 +893,9 @@ namespace gum {
   /// add new dim by master
   INLINE void Instantiation::addWithMaster
   ( const MultiDimAdressable* m , const DiscreteVariable& v ) {
-    if ( m != __master ) GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    if ( m != __master ) {
+      GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    }
 
     __add( v );
   }
@@ -886,7 +903,9 @@ namespace gum {
   /// erase new dim by master
   INLINE void Instantiation::eraseWithMaster
   ( const MultiDimAdressable* m , const DiscreteVariable& v ) {
-    if ( m != __master ) GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    if ( m != __master ) {
+      GUM_ERROR( OperationNotAllowed, "only master can do this" );
+    }
 
     __erase( v );
     if ( __master ) __master->setChangeNotification( *this );
@@ -897,7 +916,9 @@ namespace gum {
   // ==============================================================================
   INLINE bool Instantiation::actAsSlave( MultiDimAdressable& aMD )  {
     // if __master : not allowed
-    if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    if ( __master ) {
+      GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+    }
 
     __master = &aMD;
 

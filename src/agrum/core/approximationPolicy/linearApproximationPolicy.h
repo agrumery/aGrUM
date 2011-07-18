@@ -109,8 +109,9 @@ namespace gum {
       /// Convert approximation representation to value
       INLINE T_DATA decode( Idx representation ) const {
 
-        if ( representation > _nbInterval )
+        if ( representation > _nbInterval ) {
           GUM_ERROR( OutOfUpperBound, "Interval Number asked is higher than total number of interval" );
+        }
 
         return __decode( representation );
       };

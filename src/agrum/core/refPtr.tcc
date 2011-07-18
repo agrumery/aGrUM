@@ -29,7 +29,7 @@
 
 
 namespace gum {
-  
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // ==============================================================================
@@ -37,8 +37,8 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   RefPtr<Val>::RefPtr( Val *v )  :
-    __val( v ),
-    __refcount( v ? new unsigned int( 1U ) : 0 ) {
+      __val( v ),
+      __refcount( v ? new unsigned int( 1U ) : 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( RefPtr );
   }
@@ -48,7 +48,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   RefPtr<Val>::RefPtr( const RefPtr<Val>& from )  :
-    __val( from.__val ), __refcount( from.__refcount ) {
+      __val( from.__val ), __refcount( from.__refcount ) {
     // for debugging purposes
     GUM_CONS_CPY( RefPtr );
 
@@ -60,7 +60,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> template <typename DownVal> INLINE
   RefPtr<Val>::RefPtr( const RefPtr<DownVal>& from )  :
-    __val( from.__val ), __refcount( from.__refcount ) {
+      __val( from.__val ), __refcount( from.__refcount ) {
     // for debugging purposes
     GUM_CONS_CPY( RefPtr );
 
@@ -78,8 +78,7 @@ namespace gum {
         // the delete of v fails (note that this should probably never happen))
         delete count;
         delete v;
-      }
-      else --*count;
+      } else --*count;
     }
   }
 
@@ -92,11 +91,11 @@ namespace gum {
     if ( __val != from.__val ) {
       // for debugging purposes
       GUM_OP_CPY( RefPtr );
-      
+
       // keep track of the current refcount and dumb pointer
       unsigned int *old_refcount = __refcount;
       Val *old_val = __val;
-      
+
       // perform the copy
       __refcount = from.__refcount;
       __val = from.__val;
@@ -118,7 +117,7 @@ namespace gum {
     if ( __val != from ) {
       // for debugging purposes
       GUM_OP_CPY( RefPtr );
-      
+
       // keep track of the current refcount and dumb pointer
       unsigned int *old_refcount = __refcount;
       Val *old_val = __val;
@@ -131,8 +130,7 @@ namespace gum {
           __refcount = 0;
 
         __val = from;
-      }
-      catch ( std::bad_alloc ) {
+      } catch ( std::bad_alloc ) {
         if ( *old_refcount == 1 ) {
           __val = from;
           delete old_val;
@@ -161,7 +159,7 @@ namespace gum {
     // keep track of the current refcount and dumb pointer
     unsigned int *old_refcount = __refcount;
     Val *old_val = __val;
-    
+
     // perform the copy
     __refcount = from.__refcount;
     __val = from.__val;
@@ -203,7 +201,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   Val& RefPtr<Val>::operator*()  {
-    if ( !__val ) GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    if ( !__val ) {
+      GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    }
 
     return *__val;
   }
@@ -213,7 +213,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   const Val& RefPtr<Val>::operator*() const  {
-    if ( !__val ) GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    if ( !__val ) {
+      GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    }
 
     return *__val;
   }
@@ -223,7 +225,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   Val* RefPtr<Val>::operator->() const  {
-    if ( !__val ) GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    if ( !__val ) {
+      GUM_ERROR( NullElement, "dereferencing a NULL pointer" );
+    }
 
     return __val;
   }
@@ -249,26 +253,26 @@ namespace gum {
     __destroy( old_refcount,old_val );
   }
 
-  
+
   // ==============================================================================
   /// returns the number of references on the contained pointer
   // ==============================================================================
   template <typename Val> INLINE
-  unsigned int RefPtr<Val>::refCount () const {
-    if (__refcount == 0) return 0;
+  unsigned int RefPtr<Val>::refCount() const {
+    if ( __refcount == 0 ) return 0;
     return *__refcount;
   }
 
-  
+
   // ==============================================================================
   /// returns the refcount pointer
   // ==============================================================================
   template <typename Val> INLINE
-  unsigned int* RefPtr<Val>::__refCountPtr () const {
+  unsigned int* RefPtr<Val>::__refCountPtr() const {
     return __refcount;
   }
-    
-  
+
+
   // ==============================================================================
   /// swap the contents of two RefPtr
   /** @param ptr1 the smart pointer the content of which we swap with that of ptr2
@@ -287,7 +291,7 @@ namespace gum {
     ptr1.__val = tmp_val;
     ptr1.__refcount = tmp_refcount;
   }
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 

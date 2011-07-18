@@ -1,0 +1,251 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+// to ease parsing in IDE
+#include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
+
+namespace gum {
+
+  /* ============================================================================ */
+  /* ===                           GUM_BN_WRITER                              === */
+  /* ============================================================================ */
+  // Default constructor.
+  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+    FactorisedValuesCNFWriter<T_DATA, IApproximationPolicy>::FactorisedValuesCNFWriter() {
+      GUM_CONSTRUCTOR( FactorisedValuesCNFWriter );
+    }
+
+  // Default destructor.
+  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+    FactorisedValuesCNFWriter<T_DATA, IApproximationPolicy>::~FactorisedValuesCNFWriter() {
+      GUM_DESTRUCTOR( FactorisedValuesCNFWriter );
+    }
+
+  //
+  // Writes a Bayesian Network in the output stream using the BN format.
+  //
+  // @param ouput The output stream.
+  // @param bn The Bayesian Network writen in output.
+  // @throws Raised if an I/O error occurs.
+  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+    void
+    FactorisedValuesCNFWriter<T_DATA, IApproximationPolicy>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+      if ( ! output.good() )
+        GUM_ERROR( IOError, "Stream states flags are not all unset." );
+      std::stringstream strfile, strfile2;
+
+      Idx num = 0; 
+      Idx numparam = 0;
+      for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+
+        numparam +=  bn.variable(*iter).domainSize();
+      }
+      Idx clause = 0;
+      std::stringstream clausstr;
+      gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
+      gum::HashTable<std::string, Idx> protable ; 
+      for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        for ( Idx i = 0; i <  bn.variable(*iter).domainSize(); i++ ) {
+          std::stringstream str;
+          str << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
+          vartable.insert(str.str(), ++num);strfile << num <<"::"<< str.str() <<"\n";
+        }
+        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        Instantiation inst( cpt );
+        for ( inst.setFirst(); ! inst.end(); ++inst ) { 
+          std::stringstream strinst;
+          strinst << inst.toString();
+          strinst << "_val=" <<fromExact(cpt[inst]);
+          if(!protable.exists( strinst.str() )){
+
+            protable.insert(inst.toString(), ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
+          }
+        }
+      }
+ for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        std::stringstream str0 , str2;
+        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) { 
+          std::stringstream stri ;//= bn.variable(*iter).name()+"_"+ bn.variable(*iter).label( i ) ;
+          stri << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
+          str0 << vartable[stri.str()] << " ";
+        }
+        str0 << "0\n";clause++;
+        clausstr << str0.str();
+        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        Instantiation inst( cpt );
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          if (fromExact(cpt[inst]) != 1.0  ){
+            for (Idx i = 0; i < inst.nbrDim() ; i++){
+              std::stringstream str;
+              str << inst.variable(i).name() <<"_" << inst.val(inst.variable(i));
+              str2 <<"-"<< vartable[str.str()] <<" ";
+            }
+            if (fromExact(cpt[inst]) ){
+              std::stringstream strinst;
+              strinst << bn.variable(*iter).name();
+              strinst << "_val=" <<fromExact(cpt[inst]);
+              str2 <<protable[strinst.str()];
+            }
+            str2  << " 0\n"; clause++;
+          }
+        }
+        clausstr << str2.str();
+
+
+      }
+
+      output <<"p cnf "<< num+numparam <<" "<<clause << "\n"<< clausstr.str() << std::endl;
+      output.flush();
+
+    }
+
+  // Writes a Bayesian Network in the referenced file using the BN format.
+  // If the file doesn't exists, it is created.
+  // If the file exists, it's content will be erased.
+  //
+  // @param filePath The path to the file used to write the Bayesian Network.
+  // @param bn The Bayesian Network writed in the file.
+  // @throws Raised if an I/O error occurs.
+  template<typename T_DATA,template<class> class IApproximationPolicy > INLINE
+    void
+    FactorisedValuesCNFWriter<T_DATA, IApproximationPolicy>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+      std::ofstream output( filePath.c_str(), std::ios_base::trunc );
+      std::ofstream outputvar( (filePath+".var").c_str(), std::ios_base::trunc );
+
+      if ( ! output.good() )
+        GUM_ERROR( IOError, "Stream states flags are not all unset." );
+      std::stringstream strfile, strfile2;
+      if ( ! outputvar.good() )
+        GUM_ERROR( IOError, "Stream states flags are not all unset." );
+
+      Idx num = 0;
+      Idx numparam = 0;
+      for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+
+        numparam +=  bn.variable(*iter).domainSize();
+      }
+
+      Idx clause = 0;
+      std::stringstream clausstr;
+      gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
+      gum::HashTable<std::string, Idx> protable ; 
+      for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        for ( Idx i = 0; i <  bn.variable(*iter).domainSize(); i++ ) {
+          std::stringstream str;
+          str << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
+          vartable.insert(str.str(), ++num);strfile << num <<"::"<< str.str() <<"\n";
+        }
+        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        Instantiation inst( cpt );
+        for ( inst.setFirst(); ! inst.end(); ++inst ) { 
+          if(fromExact(cpt[inst]) && fromExact(cpt[inst]) != 1.0){
+            std::stringstream strinst;
+            strinst << bn.variable(*iter).name();
+            strinst << "_val=" <<fromExact(cpt[inst]);
+            if(!protable.exists( strinst.str() )){
+              protable.insert( strinst.str() , ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
+
+            }
+          }
+        }
+      }
+
+      for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        std::stringstream str0 , str2;
+        for ( Idx i = 0; i < bn.variable(*iter).domainSize(); i++ ) { 
+          std::stringstream stri ;//= bn.variable(*iter).name()+"_"+ bn.variable(*iter).label( i ) ;
+          stri << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
+          str0 << vartable[stri.str()] << " ";
+        }
+        str0 << "0\n";clause++;
+        clausstr << str0.str();
+        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        Instantiation inst( cpt );
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+          if (fromExact(cpt[inst]) != 1.0  ){
+            for (Idx i = 0; i < inst.nbrDim() ; i++){
+              std::stringstream str;
+              str << inst.variable(i).name() <<"_" << inst.val(inst.variable(i));
+              str2 <<"-"<< vartable[str.str()] <<" ";
+            }
+            if (fromExact(cpt[inst]) ){
+              std::stringstream strinst;
+              strinst << bn.variable(*iter).name();
+              strinst << "_val=" <<fromExact(cpt[inst]);
+              str2 <<protable[strinst.str()];
+            }
+            str2  << " 0\n"; clause++;
+          }
+        }
+        clausstr << str2.str();
+
+
+      }
+
+      output <<"p cnf "<< num + numparam <<" "<<clause << "\n"<< clausstr.str() << std::endl;
+      output.flush();
+      outputvar << strfile.str() << strfile2.str();
+      outputvar.flush();
+      outputvar.close();
+      output.close();
+      if ( outputvar.fail() )
+        GUM_ERROR( IOError, "Writting in the ostream failed." );
+
+      if ( output.fail() )
+        GUM_ERROR( IOError, "Writting in the ostream failed." );
+    }
+
+  // Returns a bloc defining a variable's CPT in the BN format.
+/*  template<typename T_DATA> INLINE
+    std::string
+    OCNFWriter<T_DATA>::__variableCPT( const Potential<T_DATA>& cpt ) {
+      std::stringstream str;
+      str << "";
+      return str.str();
+    }
+
+  // Returns the header of the BN file.
+  template<typename T_DATA> INLINE
+    std::string
+    OCNFWriter<T_DATA>::__header( const BayesNet<T_DATA>& ) {
+      std::stringstream str;
+      str << "";
+      return str.str();
+    }
+
+  // Returns a bloc defining a variable in the BN format.
+  template<typename T_DATA> INLINE
+    std::string
+    OCNFWriter<T_DATA>::__variableBloc( const DiscreteVariable& var ) {
+      std::stringstream str;
+      str << "" ;
+      return str.str();
+    }*/
+
+  // Returns the modalities labels of the variables in varsSeq
+
+} /* namespace gum */
+
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;

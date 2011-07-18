@@ -43,8 +43,9 @@ namespace gum {
   }
 
   DiGraphListener::DiGraphListener(DiGraph* g) {
-    if ( !g )
+    if ( !g ) {
       GUM_ERROR(OperationNotAllowed,"A graph listener need a graph to listen to");
+    }
 
     GUM_CONSTRUCTOR(DiGraphListener);
     _graph=g;

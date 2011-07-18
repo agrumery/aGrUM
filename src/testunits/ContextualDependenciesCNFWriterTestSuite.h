@@ -23,7 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/cnf/CNFWriter.h>
+#include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/approximationPolicy/exactPolicy.h>
 
 #include "testsuite_utils.h"
 
@@ -39,7 +41,7 @@ namespace gum {
 
   namespace tests {
 
-    class CNFWriterTestSuite: public CxxTest::TestSuite {
+    class ContextualDependenciesCNFWriterTestSuite: public CxxTest::TestSuite {
       public:
         gum::BayesNet<double> *bn;
         gum::Id i1, i2, i3, i4, i5;
@@ -47,8 +49,8 @@ namespace gum {
         void setUp() {
           bn = new gum::BayesNet<double>();
 
-          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+          gum::LabelizedVariable n1( "n1", "", 2 ), n2( "n2", "", 2 ),  n3( "n3", "" , 2 );
+          gum::LabelizedVariable n4( "n4", "", 2 ), n5( "n5", "", 2 );
 
           i1 = bn->addVariable( n1 );
           i2 = bn->addVariable( n2 );
@@ -71,24 +73,70 @@ namespace gum {
         }
 
         void testConstuctor() {
-          gum::CNFWriter<double>* writer = NULL;
-          TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::CNFWriter<double>() );
+          gum::ContextualDependenciesCNFWriter<double>* writer = NULL;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::ContextualDependenciesCNFWriter<double>() );
           delete writer;
         }
 
+        void testConstuctor_With_Aproximation() {
+          typedef gum::ContextualDependenciesCNFWriter<double,ExactPolicy> typCNF;
+          typCNF * writer = NULL;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
+       //   writer->setEpsilon( 0.2 );
+          writer->setLowLimit( 0 );
+          writer->setHighLimit( 0.5 );
+
+          delete writer;
+        }
+
+
         void testWriter_ostream() {
-          gum::CNFWriter<double> writer;
+          gum::ContextualDependenciesCNFWriter<double> writer;
+          // Uncomment this to check the ouput
+          // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+        }
+
+        void testWriter_ostream_With_Approximation() {
+          typedef gum::ContextualDependenciesCNFWriter<double,LinearApproximationPolicy> typCNF;
+          gum::ContextualDependenciesCNFWriter<double,LinearApproximationPolicy> writer;
+          writer.setEpsilon( 0.2 );
+          writer.setLowLimit( 0 );
+          writer.setHighLimit( 1 );
+
           // Uncomment this to check the ouput
           // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
         }
 
         void testWriter_string() {
-          gum::CNFWriter<double> writer;
-          std::string file = GET_PATH_STR( CNFWriter_TestFile.cnf );
+          gum::ContextualDependenciesCNFWriter<double> writer;
+          std::string file = GET_PATH_STR( ContextualDependenciesCNFWriter_TestFile.cnf );
           TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-          file = GET_PATH_STR( CNFWriter_RO_TestFile.cnf );
+          file = GET_PATH_STR( ContextualDependenciesCNFWriter_RO_TestFile.cnf );
 
+          try {
+            writer.write( file, *bn );
+            // TS_ASSERT(false);
+          } catch ( gum::IOError& e ) {
+            TS_ASSERT( true );
+          }
+        }
+
+        void testWriter_string_With_Approximation() {
+          GUM_CHECKPOINT;
+          gum::ContextualDependenciesCNFWriter<double,LinearApproximationPolicy> writer;
+          GUM_CHECKPOINT;
+
+          writer.setEpsilon( 0.2 );
+          writer.setLowLimit( 0 );
+          writer.setHighLimit( 1 );
+          std::string file = GET_PATH_STR( ContextualDependenciesCNFWriter_TestFile_Approximation.cnf );
+
+          GUM_CHECKPOINT;
+          TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+          GUM_CHECKPOINT;
+
+          file = GET_PATH_STR( ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf );
           try {
             writer.write( file, *bn );
             // TS_ASSERT(false);
@@ -135,10 +183,10 @@ namespace gum {
           const gum::Potential<double>& p5 = bn.cpt( i5 );
           {
             // FILLING PARAMS
-            const double t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
-                                  0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+            const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
+                                  0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
                                  };
-            int n = 24;const std::vector<double> v( t, t + n );
+            int n = 16;const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
         }
@@ -146,4 +194,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

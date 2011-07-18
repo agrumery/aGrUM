@@ -36,6 +36,7 @@
 #include <agrum/core/utils.h>
 // ============================================================================
 #include <agrum/multidim/instantiation.h>
+
 // ============================================================================
 namespace gum {
 
@@ -109,6 +110,7 @@ namespace gum {
                                      const DiscreteVariable* const var,
                                      const Idx& oldval,const Idx& newval ) =0;
 
+
     // ============================================================================
     /**
      * Listen to setFirst in a given Instantiation.
@@ -116,6 +118,7 @@ namespace gum {
      */
     // ============================================================================
     virtual void setFirstNotification( Instantiation& i )=0;
+
 
     // ============================================================================
     /**
@@ -140,6 +143,7 @@ namespace gum {
      */
     // ============================================================================
     virtual void setDecNotification( Instantiation& i ) =0;
+
 
     // ============================================================================
     /// Listen to an assignment of a value in a Instantiation.

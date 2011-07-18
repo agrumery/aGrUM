@@ -37,187 +37,187 @@
 #include <agrum/prm/classElement.h>
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 // ============================================================================
-class Class;
+    class Class;
 // ============================================================================
-/**
- * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
- * @brief Defines an aggregate in a PRM.
- *
- * An Aggregate is defined by its type, and by the slot chain on which it
- * is applied.
- *
- * The name of an aggregate is always of the form:
- * agg_type(slot_chain[, param])
- * 
- * An aggregate is a member of a class.
- *
- * An aggregate in a PRM is used to summarized information about n-ary 
- * relations.
- *
- * @see PRM PRMFactory Class SlotChain
- * @ingroup prm_group
- */
-class Aggregate: public ClassElement {
-  friend class Class;
-  public:
-  // ========================================================================
-  /// @name Built-in types.
-  // ========================================================================
-    /// @{
-
-    /// The different type of aggregates we can have.
-    enum AggregateType { agg_min, agg_max, agg_mean, agg_count,
-                         agg_exists, agg_forall, agg_or, agg_and };
-
     /**
-     * Static method which returns the AggregateType given its string
-     * representation.
-     * We suppose that str is given either entirely in lower case or upper 
-     * case. It will also match if only the first letter is in upper case. 
+     * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
+     * @brief Defines an aggregate in a PRM.
      *
-     * @throw Raise NotFound exception if no matches is found.
-     */
-    static AggregateType str2enum(const std::string& str)
-    {
-      if (str == "min" || str == "MIN" || str == "Min") {
-        return agg_min;
-      } else if (str == "max" || str == "MAX" || str == "Max") {
-        return agg_max;
-      } else if (str == "mean" || str == "MEAN" || str == "Mean") {
-        return agg_mean;
-      } else if (str == "count" || str == "COUNT" || str == "Count") {
-        return agg_count;
-      } else if (str == "exists" || str == "EXISTS" || str == "Exists") {
-        return agg_exists;
-      } else if (str == "or" || str == "OR" || str == "Or") {
-        return agg_or;
-      } else if (str == "and" || str == "AND" || str == "And") {
-        return agg_and;
-      } else if (str =="forall" || str == "FORALL" || str == "ForAll") {
-        return agg_forall;
-      } else {
-        std::string msg = "Unknown aggregate: ";
-        msg.append(str);
-        GUM_ERROR(NotFound, msg);
-      }
-    }
-
-    /// @}
-  // ========================================================================
-  /// @name Constructor & destructor.
-  // ========================================================================
-    /// @{
-
-    /**
-     * Default constructor.
-     * @param name The name of this aggregate.
-     * @param aggType The aggregate type of this aggregate.
-     * @param rvType The random variable type of this aggregate, which is copied.
-     */
-    Aggregate(const std::string& name, AggregateType aggType, const Type& rvType);
-
-    /**
-     * Default constructor.
-     * @param name The name of this aggregate.
-     * @param aggType The aggregate type of this aggregate.
-     * @param rvType The random variable type of this aggregate, which is copied.
-     * @param label The index of the label on which this aggregate applies.
-     */
-    Aggregate(const std::string& name, AggregateType aggType, const Type& rvType, Idx label);
-
-    /// Destructor.
-    virtual ~Aggregate();
-
-    /// @}
-  // ========================================================================
-  /// @name Getters and Setters.
-  // ========================================================================
-    /// @{
-
-    /// See gum::ClassElement::elt_type().
-    virtual ClassElementType elt_type() const;
-
-    /// Returns the aggregate of *this.
-    AggregateType agg_type() const;
-
-    /**
-     * Returns the label's index on which this aggregate applies.
-     * @throw OperationNotAllowed Raised if the aggregate does not applies
-     *                            on a label.
-     */
-    Idx label() const;
-
-    /// See gum::ClassElement::_addParent().
-    virtual void addParent(const ClassElement& elt);
-
-    /// See gum::ClassElement::_addChild().
-    virtual void addChild(const ClassElement& elt);
-
-    /// See gum::ClassElement::type().
-    virtual Type& type();
-
-    /// See gum::ClassElement::type().
-    virtual const Type& type() const;
-
-    /**
-     * @brief Aggregates don't have Potential until they are instantiated as Attribute,
-     *        so this will raise an OperationNotAllowed exception.
-     * See gum::ClassElement::cpf().
-     */
-    virtual Potential<prm_float>& cpf();
-
-    /**
-     * @brief Aggregates don't have Potential until they are instantiated as Attribute,
-     *        so this will raise an OperationNotAllowed exception.
-     * See gum::ClassElement::cpf().
-     */
-    virtual const Potential<prm_float>& cpf() const;
-
-    /**
-     * Returns a pointer over an empty gum::MultiDimImplementation of the good
-     * type for this Aggregate.
+     * An Aggregate is defined by its type, and by the slot chain on which it
+     * is applied.
      *
-     * This should be use when manipulating instantiations of aggregates.
+     * The name of an aggregate is always of the form:
+     * agg_type(slot_chain[, param])
+     *
+     * An aggregate is a member of a class.
+     *
+     * An aggregate in a PRM is used to summarized information about n-ary
+     * relations.
+     *
+     * @see PRM PRMFactory Class SlotChain
+     * @ingroup prm_group
      */
-    MultiDimImplementation<prm_float>* buildImpl() const;
+    class Aggregate: public ClassElement {
+        friend class Class;
+      public:
+        // ========================================================================
+        /// @name Built-in types.
+        // ========================================================================
+        /// @{
 
-    /// @}
-  private:
-  // ========================================================================
-  /// @name Private methods.
-  // ========================================================================
-    /// @{
+        /// The different type of aggregates we can have.
+        enum AggregateType { agg_min, agg_max, agg_mean, agg_count,
+                             agg_exists, agg_forall, agg_or, agg_and
+                         };
 
-    /// Copy constructor. Don't use it.
-    Aggregate(const Aggregate& source);
+        /**
+         * Static method which returns the AggregateType given its string
+         * representation.
+         * We suppose that str is given either entirely in lower case or upper
+         * case. It will also match if only the first letter is in upper case.
+         *
+         * @throw Raise NotFound exception if no matches is found.
+         */
+        static AggregateType str2enum( const std::string& str ) {
+          if ( str == "min" || str == "MIN" || str == "Min" ) {
+            return agg_min;
+          } else if ( str == "max" || str == "MAX" || str == "Max" ) {
+            return agg_max;
+          } else if ( str == "mean" || str == "MEAN" || str == "Mean" ) {
+            return agg_mean;
+          } else if ( str == "count" || str == "COUNT" || str == "Count" ) {
+            return agg_count;
+          } else if ( str == "exists" || str == "EXISTS" || str == "Exists" ) {
+            return agg_exists;
+          } else if ( str == "or" || str == "OR" || str == "Or" ) {
+            return agg_or;
+          } else if ( str == "and" || str == "AND" || str == "And" ) {
+            return agg_and;
+          } else if ( str =="forall" || str == "FORALL" || str == "ForAll" ) {
+            return agg_forall;
+          } else {
+            std::string msg = "Unknown aggregate: ";
+            msg.append( str );
+            GUM_ERROR( NotFound, msg );
+          }
+        }
 
-    /// Copy operator. Don't use it.
-    Aggregate& operator=(const Aggregate& source);
+        /// @}
+        // ========================================================================
+        /// @name Constructor & destructor.
+        // ========================================================================
+        /// @{
 
-    /// @}
-  // ========================================================================
-  /// @name Private members.
-  // ========================================================================
-    /// @{
+        /**
+         * Default constructor.
+         * @param name The name of this aggregate.
+         * @param aggType The aggregate type of this aggregate.
+         * @param rvType The random variable type of this aggregate, which is copied.
+         */
+        Aggregate( const std::string& name, AggregateType aggType, const Type& rvType );
 
-    /// The AggregateType of this aggregate.
-    AggregateType __agg_type;
+        /**
+         * Default constructor.
+         * @param name The name of this aggregate.
+         * @param aggType The aggregate type of this aggregate.
+         * @param rvType The random variable type of this aggregate, which is copied.
+         * @param label The index of the label on which this aggregate applies.
+         */
+        Aggregate( const std::string& name, AggregateType aggType, const Type& rvType, Idx label );
 
-    /// The random variable type of this aggregate
-    /// It is deleted with the aggregate.
-    Type* __type;
+        /// Destructor.
+        virtual ~Aggregate();
 
-    /// Some aggregators applies only on a given label. This attribute must
-    /// have the concerned Idx. If not initialized the pointer equals 0.
-    /// It is deleted with the aggregate.
-    Idx __label;
+        /// @}
+        // ========================================================================
+        /// @name Getters and Setters.
+        // ========================================================================
+        /// @{
 
-    /// @}
-};
+        /// See gum::ClassElement::elt_type().
+        virtual ClassElementType elt_type() const;
+
+        /// Returns the aggregate of *this.
+        AggregateType agg_type() const;
+
+        /**
+         * Returns the label's index on which this aggregate applies.
+         * @throw OperationNotAllowed Raised if the aggregate does not applies
+         *                            on a label.
+         */
+        Idx label() const;
+
+        /// See gum::ClassElement::_addParent().
+        virtual void addParent( const ClassElement& elt );
+
+        /// See gum::ClassElement::_addChild().
+        virtual void addChild( const ClassElement& elt );
+
+        /// See gum::ClassElement::type().
+        virtual Type& type();
+
+        /// See gum::ClassElement::type().
+        virtual const Type& type() const;
+
+        /**
+         * @brief Aggregates don't have Potential until they are instantiated as Attribute,
+         *        so this will raise an OperationNotAllowed exception.
+         * See gum::ClassElement::cpf().
+         */
+        virtual Potential<prm_float>& cpf();
+
+        /**
+         * @brief Aggregates don't have Potential until they are instantiated as Attribute,
+         *        so this will raise an OperationNotAllowed exception.
+         * See gum::ClassElement::cpf().
+         */
+        virtual const Potential<prm_float>& cpf() const;
+
+        /**
+         * Returns a pointer over an empty gum::MultiDimImplementation of the good
+         * type for this Aggregate.
+         *
+         * This should be use when manipulating instantiations of aggregates.
+         */
+        MultiDimImplementation<prm_float>* buildImpl() const;
+
+        /// @}
+      private:
+        // ========================================================================
+        /// @name Private methods.
+        // ========================================================================
+        /// @{
+
+        /// Copy constructor. Don't use it.
+        Aggregate( const Aggregate& source );
+
+        /// Copy operator. Don't use it.
+        Aggregate& operator=( const Aggregate& source );
+
+        /// @}
+        // ========================================================================
+        /// @name Private members.
+        // ========================================================================
+        /// @{
+
+        /// The AggregateType of this aggregate.
+        AggregateType __agg_type;
+
+        /// The random variable type of this aggregate
+        /// It is deleted with the aggregate.
+        Type* __type;
+
+        /// Some aggregators applies only on a given label. This attribute must
+        /// have the concerned Idx. If not initialized the pointer equals 0.
+        /// It is deleted with the aggregate.
+        Idx __label;
+
+        /// @}
+    };
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } // namespace gum
 // ============================================================================
 #ifndef GUM_NO_INLINE

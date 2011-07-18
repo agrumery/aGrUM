@@ -25,37 +25,37 @@
  */
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-NodeId
-ClassElement::id() const { return __id; }
+    INLINE
+    NodeId
+    ClassElement::id() const { return __id; }
 
-INLINE
-PRMObject::ObjectType
-ClassElement::obj_type() const { return PRMObject::prm_class_elt; }
+    INLINE
+    PRMObject::ObjectType
+    ClassElement::obj_type() const { return PRMObject::prm_class_elt; }
 
-INLINE
-void
-ClassElement::setId(NodeId id) { __id = id; }
+    INLINE
+    void
+    ClassElement::setId( NodeId id ) { __id = id; }
 
-INLINE
-const std::string&
-ClassElement::safeName() const {
-  return _safeName;
-}
+    INLINE
+    const std::string&
+    ClassElement::safeName() const {
+      return _safeName;
+    }
 
-INLINE
-std::string
-ClassElement::cast(const Type& t) const {
-  if (type().isSubTypeOf(t)) {
-    return ClassElement::LEFT_CAST() + t.name() + ClassElement::RIGHT_CAST() + name();
-  } else {
-    GUM_ERROR(OperationNotAllowed, "illegal cast");
-  }
-}
+    INLINE
+    std::string
+    ClassElement::cast( const Type& t ) const {
+      if ( type().isSubTypeOf( t ) ) {
+        return ClassElement::LEFT_CAST() + t.name() + ClassElement::RIGHT_CAST() + name();
+      } else {
+        GUM_ERROR( OperationNotAllowed, "illegal cast" );
+      }
+    }
 
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

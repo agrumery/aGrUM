@@ -672,8 +672,9 @@ namespace gum {
           std::string dotfile = GET_PATH_STR( DecisionDiagram.dot );
           std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
-          if ( ! output.good() )
+          if ( ! output.good() ) {
             GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          }
 
           output << container->toDot();
 
@@ -681,8 +682,9 @@ namespace gum {
 
           output.close();
 
-          if ( output.fail() )
+          if ( output.fail() ) {
             GUM_ERROR( IOError, "Writting in the ostream failed." );
+          }
 
           delete factory;
           delete container;

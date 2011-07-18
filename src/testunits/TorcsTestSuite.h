@@ -123,7 +123,7 @@ namespace gum {
             inf.makeInference();
           } catch ( gum::Exception e ) {
             //std::cerr << std::endl << e.getContent() << std::endl;
-            throw e;
+            throw ;
           }
         }
 

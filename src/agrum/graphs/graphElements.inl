@@ -92,7 +92,9 @@ namespace gum {
   INLINE NodeId Edge::other( NodeId id ) const {
     if ( id == n1 ) return n2;
     else if ( id == n2 ) return n1;
-    else GUM_ERROR( IdError, "" );
+    else {
+      GUM_ERROR( IdError, id<<" does not belong to this edge" );
+    }
   }
 
   // ==============================================================================
@@ -210,7 +212,9 @@ namespace gum {
   INLINE NodeId Arc::other( NodeId id ) const {
     if ( id == n1 ) return n2;
     else if ( id == n2 ) return n1;
-    else GUM_ERROR( IdError, "" );
+    else {
+      GUM_ERROR( IdError, id<<" does not belong to this arc" );
+    }
   }
 
   // ==============================================================================

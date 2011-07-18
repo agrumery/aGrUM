@@ -24,6 +24,7 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/net/netWriter.h>
+#include <agrum/BN/io/net/netReader.h>
 
 #include "testsuite_utils.h"
 
@@ -47,8 +48,8 @@ namespace gum {
         void setUp() {
           bn = new gum::BayesNet<double>();
 
-          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+          gum::LabelizedVariable n1( "n1", "", 2 ), n2( "n2", "", 2 ),  n3( "n3", "" , 2 );
+          gum::LabelizedVariable n4( "n4", "", 2 ), n5( "n5", "", 2 );
 
           i1 = bn->addVariable( n1 );
           i2 = bn->addVariable( n2 );
@@ -97,6 +98,37 @@ namespace gum {
           }
         }
 
+        void test_isreadable(){
+          std::string file = GET_PATH_STR( NetWriter_RO_TestFile.net );
+          gum::BayesNet<float> *net = new gum::BayesNet<float>();
+
+          gum::NetReader<float> reader( net, file );
+
+
+          reader.trace( false );
+
+
+          bool isOK = false;
+
+          TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+          reader.showElegantErrors();
+
+          TS_ASSERT( isOK );
+          TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+          // 0 warnings : no properties
+          TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
+
+            TS_ASSERT( net != 0 );
+
+          if ( net != 0 ) {
+            TS_ASSERT( ! net->empty() );
+
+            delete net;
+
+          }
+
+        }
+
       private:
         // Builds a BN to test the inference
         void fill( gum::BayesNet<double> &bn ) {
@@ -135,10 +167,11 @@ namespace gum {
           const gum::Potential<double>& p5 = bn.cpt( i5 );
           {
             // FILLING PARAMS
-            const double t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
-                                  0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+            const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
+                                  0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
                                  };
-            int n = 24;const std::vector<double> v( t, t + n );
+
+            int n = 16;const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
         }
@@ -146,4 +179,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

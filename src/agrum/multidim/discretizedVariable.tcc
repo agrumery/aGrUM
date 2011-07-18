@@ -66,17 +66,20 @@ namespace gum {
 
   template<typename T_TICKS> INLINE
   Idx DiscretizedVariable<T_TICKS>::_pos( const T_TICKS& target ) const {
-    if ( __ticks_size<2 )
+    if ( __ticks_size<2 ) {
       GUM_ERROR( OutOfBounds,NOT_ENOUGH_TICKS );
+    }
 
-    if ( target < __ticks[ 0 ] )
+    if ( target < __ticks[ 0 ] ) {
       GUM_ERROR( OutOfLowerBound ,LESS_THAN_FIRST_RANGE );
+    }
 
-    if ( target > __ticks[ __ticks_size-1 ] )
+    if ( target > __ticks[ __ticks_size-1 ] ) {
       GUM_ERROR( OutOfUpperBound , MORE_THAN_LAST_RANGE );
+    }
 
     if ( target == __ticks[ __ticks_size-1 ] ) // special case for upper limit
-                                     // (which belongs to class __ticks_size-2
+      // (which belongs to class __ticks_size-2
       return __ticks_size-2;
 
     return _dichotomy( target, 0, __ticks_size-1 );
@@ -85,15 +88,15 @@ namespace gum {
   template<typename T_TICKS> INLINE
   DiscretizedVariable<T_TICKS>::DiscretizedVariable
   ( const std::string& aName, const std::string& aDesc ) :
-    DiscreteVariable( aName, aDesc ),__ticks( INC_TICKS_ARRAY )
-    ,__ticks_size(( Size )0 ) {
+      DiscreteVariable( aName, aDesc ),__ticks( INC_TICKS_ARRAY )
+      ,__ticks_size(( Size )0 ) {
     GUM_CONSTRUCTOR( DiscretizedVariable );
   }
 
   template<typename T_TICKS>
   DiscretizedVariable<T_TICKS>::DiscretizedVariable
-  ( const DiscretizedVariable<T_TICKS>& aDRV) : DiscreteVariable( aDRV ),
-                                                     __ticks( INC_TICKS_ARRAY ) {
+  ( const DiscretizedVariable<T_TICKS>& aDRV ) : DiscreteVariable( aDRV ),
+      __ticks( INC_TICKS_ARRAY ) {
     GUM_CONS_CPY( DiscretizedVariable );
     _copy( aDRV );
   }
@@ -106,7 +109,7 @@ namespace gum {
   template<typename T_TICKS>
   DiscreteVariable*
   DiscretizedVariable<T_TICKS>::copyFactory() const {
-    DiscretizedVariable<T_TICKS>* varPtr = new DiscretizedVariable<T_TICKS>(*this);
+    DiscretizedVariable<T_TICKS>* varPtr = new DiscretizedVariable<T_TICKS>( *this );
 
     return ( DiscreteVariable* ) varPtr;
   }
@@ -139,8 +142,9 @@ namespace gum {
   template<typename T_TICKS>
   DiscretizedVariable<T_TICKS>&
   DiscretizedVariable<T_TICKS>::addTick( const T_TICKS & aTick ) {
-    if ( isTick( aTick ) )
+    if ( isTick( aTick ) ) {
       GUM_ERROR( DefaultInLabel, "Tick already used for this variable " );
+    }
 
     if ( __ticks_size == __ticks.size() ) { //streching __ticks if necessary
       __ticks.resize( __ticks_size + INC_MARKS_ARRAY );
@@ -191,8 +195,9 @@ namespace gum {
   const std::string DiscretizedVariable<T_TICKS>::label( const Idx i ) const {
     std::stringstream ss;
 
-    if ( i >= __ticks_size-1 )
+    if ( i >= __ticks_size-1 ) {
       GUM_ERROR( OutOfBounds, "inexisting label index" );
+    }
 
     ss << "[" << __ticks[ i] << ";" << __ticks[ i+1 ] ;
 
@@ -203,8 +208,9 @@ namespace gum {
 
   template<typename T_TICKS> INLINE
   Idx DiscretizedVariable<T_TICKS>::operator[]( const T_TICKS& aTarget ) const {
-    if ( empty() )
+    if ( empty() ) {
       GUM_ERROR( OutOfBounds, "empty variable "+toString() );
+    }
 
     Idx zeTick=_pos( aTarget );
 
@@ -229,15 +235,17 @@ namespace gum {
     return __ticks_size<2?0:__ticks_size-1;
   }
 
-	template<typename T_TICKS>
-  INLINE DiscreteVariable::Type DiscretizedVariable<T_TICKS>::type(void) const {
+  template<typename T_TICKS>
+  INLINE DiscreteVariable::Type DiscretizedVariable<T_TICKS>::type( void ) const {
     return Discretized;
   }
 
   template<typename T_TICKS>
-  INLINE const T_TICKS& DiscretizedVariable<T_TICKS>::tick(const Idx i) const {
-    if (i>=__ticks_size)
-      GUM_ERROR( OutOfBounds, "There is no such tick");
+  INLINE const T_TICKS& DiscretizedVariable<T_TICKS>::tick( const Idx i ) const {
+    if ( i>=__ticks_size ) {
+      GUM_ERROR( OutOfBounds, "There is no such tick" );
+    }
+
     return __ticks[i];
   }
 } /* namespace gum */

@@ -1429,8 +1429,9 @@ namespace gum {
    * (0 = first node eliminated) */
   // ==============================================================================
   unsigned int IncrementalTriangulation::eliminationOrder( const NodeId node ) {
-    if ( ! __graph.existsNode ( node ) )
-      GUM_ERROR ( NotFound, "the node does not exist" );
+    if ( ! __graph.existsNode ( node ) ) {
+      GUM_ERROR ( NotFound, "the node "<<node<<" does not exist" );
+    }
       
     // compute the elimination order
     eliminationOrder ();

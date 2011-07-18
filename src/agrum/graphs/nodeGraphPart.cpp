@@ -36,20 +36,20 @@ namespace gum {
   ///////////////////// NodeGraphPart
   NodeGraphPart::NodeGraphPart( Size holes_size ,
                                 bool holes_resize_policy ) :
-    __holes_size( holes_size ),
-    __holes_resize_policy( holes_resize_policy ),
-    __endIterator( this ),
-    __bound( 0 ) {
+      __holes_size( holes_size ),
+      __holes_resize_policy( holes_resize_policy ),
+      __endIterator( this ),
+      __bound( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR( NodeGraphPart );
     __updateEndIterator();
   }
 
   NodeGraphPart::NodeGraphPart( const NodeGraphPart& s ) :
-    __holes_size( s.__holes_size ),
-    __holes_resize_policy( s.__holes_resize_policy ),
-    __endIterator( this ),
-    __bound( s.__bound ) {
+      __holes_size( s.__holes_size ),
+      __holes_resize_policy( s.__holes_resize_policy ),
+      __endIterator( this ),
+      __bound( s.__bound ) {
     __holes = 0;
 
     if ( s.__holes )
@@ -100,8 +100,7 @@ namespace gum {
       }
 
       __updateEndIterator();
-    }
-    else {
+    } else {
       if ( !__holes )
         __holes = new NodeSet( __holes_size, __holes_resize_policy );
 
@@ -149,13 +148,11 @@ namespace gum {
       __bound = id + 1;
 
       __updateEndIterator();
-    }
-    else {
+    } else {
       if ( __inHoles( id ) ) {  // we fill a hole
         __eraseHole( id );
-      }
-      else {
-        GUM_ERROR( DuplicateElement, "This id is already used" );
+      } else {
+        GUM_ERROR( DuplicateElement, "Id "<<id<<" is already used" );
       }
     }
 
@@ -168,7 +165,7 @@ namespace gum {
 
     if ( onNodeDeleted.hasListener() ) {
       for ( NodeId n = 0; n < bound; ++n ) {
-        if ( ! __inHoles( n ) ) 
+        if ( ! __inHoles( n ) )
           GUM_EMIT1( onNodeDeleted, n );
       }
     }
@@ -192,5 +189,5 @@ namespace gum {
     }
   }
 
-  
+
 } /* namespace gum */

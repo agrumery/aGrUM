@@ -25,96 +25,92 @@
  */
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-ClassElement::ClassElementType
-Attribute::elt_type() const { return prm_attribute; }
+    INLINE
+    ClassElement::ClassElementType
+    Attribute::elt_type() const { return prm_attribute; }
 
-INLINE
-Type&
-Attribute::type() { return *__type; }
+    INLINE
+    Type&
+    Attribute::type() { return *__type; }
 
-INLINE
-const Type&
-Attribute::type() const { return *__type; }
+    INLINE
+    const Type&
+    Attribute::type() const { return *__type; }
 
-INLINE
-Potential<prm_float>&
-Attribute::cpf() { return *__cpf; }
+    INLINE
+    Potential<prm_float>&
+    Attribute::cpf() { return *__cpf; }
 
-INLINE
-const Potential<prm_float>&
-Attribute::cpf() const { return *__cpf; }
+    INLINE
+    const Potential<prm_float>&
+    Attribute::cpf() const { return *__cpf; }
 
-INLINE
-void
-Attribute::addParent(const ClassElement& elt)
-{
-  try {
-    __cpf->add(elt.type().variable());
-  } catch (DuplicateElement&) {
-    std::stringstream msg;
-    msg << ": " << elt.name() << " as parent of " << name();
-    GUM_ERROR(DuplicateElement, msg.str());
-  } catch (OperationNotAllowed&) {
-    std::stringstream msg;
-    msg << ": " << elt.name() << " of wrong type as parent of " << name();
-    GUM_ERROR(OperationNotAllowed, msg.str());
-  }
-}
+    INLINE
+    void
+    Attribute::addParent( const ClassElement& elt ) {
+      try {
+        __cpf->add( elt.type().variable() );
+      } catch ( DuplicateElement& ) {
+        std::stringstream msg;
+        msg << ": " << elt.name() << " as parent of " << name();
+        GUM_ERROR( DuplicateElement, msg.str() );
+      } catch ( OperationNotAllowed& ) {
+        std::stringstream msg;
+        msg << ": " << elt.name() << " of wrong type as parent of " << name();
+        GUM_ERROR( OperationNotAllowed, msg.str() );
+      }
+    }
 
 // See gum::ClassElement::_addChild().
-INLINE
-void
-Attribute::addChild(const ClassElement& elt) { }
+    INLINE
+    void
+    Attribute::addChild( const ClassElement& elt ) { }
 
-INLINE
-FuncAttribute::FuncAttribute(const std::string& name,
-                             const Type& type,
-                             MultiDimImplementation<prm_float>* impl):
-  Attribute(name, type, impl)
-{
-  GUM_CONSTRUCTOR( FuncAttribute );
-}
+    INLINE
+    FuncAttribute::FuncAttribute( const std::string& name,
+                                  const Type& type,
+                                  MultiDimImplementation<prm_float>* impl ):
+        Attribute( name, type, impl ) {
+      GUM_CONSTRUCTOR( FuncAttribute );
+    }
 
-INLINE
-FuncAttribute::FuncAttribute(const std::string& name,
-                             Type* type, Potential<prm_float>* cpf,
-                             bool delete_type):
-  Attribute(name, type, cpf, delete_type)
-{
-  GUM_CONSTRUCTOR( FuncAttribute );
-}
+    INLINE
+    FuncAttribute::FuncAttribute( const std::string& name,
+                                  Type* type, Potential<prm_float>* cpf,
+                                  bool delete_type ):
+        Attribute( name, type, cpf, delete_type ) {
+      GUM_CONSTRUCTOR( FuncAttribute );
+    }
 
-INLINE
-FuncAttribute::~FuncAttribute() {
-  GUM_DESTRUCTOR( FuncAttribute );
-}
+    INLINE
+    FuncAttribute::~FuncAttribute() {
+      GUM_DESTRUCTOR( FuncAttribute );
+    }
 
-INLINE
-void
-FuncAttribute::addParent(const ClassElement& elt) { }
+    INLINE
+    void
+    FuncAttribute::addParent( const ClassElement& elt ) { }
 
-INLINE
-void
-FuncAttribute::addChild(const ClassElement& elt) { }
+    INLINE
+    void
+    FuncAttribute::addChild( const ClassElement& elt ) { }
 
-INLINE
-FuncAttribute::FuncAttribute(const FuncAttribute &source):
-  Attribute(source)
-{
-  GUM_CONS_CPY( FuncAttribute );
-  GUM_ERROR(FatalError, "illegal call to copy constructor");
-}
+    INLINE
+    FuncAttribute::FuncAttribute( const FuncAttribute &source ):
+        Attribute( source ) {
+      GUM_CONS_CPY( FuncAttribute );
+      GUM_ERROR( FatalError, "illegal call to copy constructor" );
+    }
 
-INLINE
-FuncAttribute&
-FuncAttribute::operator=(const FuncAttribute& from) {
-  GUM_ERROR(FatalError, "illegal call to copy operator");
-}
+    INLINE
+    FuncAttribute&
+    FuncAttribute::operator=( const FuncAttribute& from ) {
+      GUM_ERROR( FatalError, "illegal call to copy operator" );
+    }
 
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

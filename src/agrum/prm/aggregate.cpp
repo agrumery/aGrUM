@@ -32,44 +32,40 @@
 #endif //GUM_NO_INLINE
 // ============================================================================
 namespace gum {
-namespace prm {
+  namespace prm {
 
-Aggregate::Aggregate(const std::string& name, AggregateType aggType, const Type& rvType):
-  ClassElement(name), __agg_type(aggType),  __type(new Type(rvType)),
-  __label(rvType.variable().domainSize() + 1)
-{
-  GUM_CONSTRUCTOR( Aggregate );
-  _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
-}
+    Aggregate::Aggregate( const std::string& name, AggregateType aggType, const Type& rvType ):
+        ClassElement( name ), __agg_type( aggType ),  __type( new Type( rvType ) ),
+        __label( rvType.variable().domainSize() + 1 ) {
+      GUM_CONSTRUCTOR( Aggregate );
+      _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
+    }
 
-Aggregate::Aggregate(const std::string& name, AggregateType aggType, const Type& rvType, Idx label):
-  ClassElement(name), __agg_type(aggType), __type(new Type(rvType)),
-  __label(label)
-{
-  GUM_CONSTRUCTOR( Aggregate );
-  _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
-}
+    Aggregate::Aggregate( const std::string& name, AggregateType aggType, const Type& rvType, Idx label ):
+        ClassElement( name ), __agg_type( aggType ), __type( new Type( rvType ) ),
+        __label( label ) {
+      GUM_CONSTRUCTOR( Aggregate );
+      _safeName = ClassElement::LEFT_CAST() + __type->name() + ClassElement::RIGHT_CAST() + name;
+    }
 
-Aggregate::~Aggregate()
-{
-  GUM_DESTRUCTOR( Aggregate );
-  delete __type;
-}
+    Aggregate::~Aggregate() {
+      GUM_DESTRUCTOR( Aggregate );
+      delete __type;
+    }
 
-Aggregate::Aggregate(const Aggregate& source):
-  ClassElement(source), __agg_type(source.__agg_type), __type(new Type(source.type())),
-  __label(source.__label)
-{
-  GUM_CONS_CPY( Aggregate );
-  GUM_ERROR(FatalError, "illegal call to gum::Aggregate copy constructor.");
-}
+    Aggregate::Aggregate( const Aggregate& source ):
+        ClassElement( source ), __agg_type( source.__agg_type ), __type( new Type( source.type() ) ),
+        __label( source.__label ) {
+      GUM_CONS_CPY( Aggregate );
+      GUM_ERROR( FatalError, "illegal call to gum::Aggregate copy constructor." );
+    }
 
-Aggregate&
-Aggregate::operator=(const Aggregate& source) {
-  GUM_ERROR(FatalError, "illegal call to gum::Aggregate copy operator.");
-}
+    Aggregate&
+    Aggregate::operator=( const Aggregate& source ) {
+      GUM_ERROR( FatalError, "illegal call to gum::Aggregate copy operator." );
+    }
 
 // ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<BIF VERSION="0.3">
+<NETWORK>
+
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+	<NAME>n2</NAME>
+	<PROPERTY>desc</PROPERTY>
+	<OUTCOME>0</OUTCOME>
+	<OUTCOME>1</OUTCOME>
+</VARIABLE>
+
+<VARIABLE TYPE="nature">
+	<NAME>n1</NAME>
+	<PROPERTY></PROPERTY>
+	<OUTCOME>0</OUTCOME>
+	<OUTCOME>1</OUTCOME>
+</VARIABLE>
+
+<!-- Probability distributions -->
+<DEFINITION>
+	<FOR>n2</FOR>
+	<TABLE>0.3 0.7 </TABLE>
+</DEFINITION>
+<DEFINITION>
+	<FOR>n1</FOR>
+	<TABLE>0.2 0.8 </TABLE>
+</DEFINITION>
+
+</NETWORK>
+</BIF>

@@ -120,55 +120,71 @@ namespace gum {
   template<typename T_DATA> INLINE
   unsigned int NetReader<T_DATA>::errLine( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().line( i );
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   unsigned int NetReader<T_DATA>::errCol( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().col( i );
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   bool NetReader<T_DATA>::errIsError( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().is_error( i );
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   std::string NetReader<T_DATA>::errMsg( unsigned int i ) {
     if ( __parseDone ) return std::string( narrow( __parser->errors().msg( i ) ) );
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   void NetReader<T_DATA>::showElegantErrors() {
     if ( __parseDone ) __parser->errors().showElegantErrors();
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   void NetReader<T_DATA>::showElegantErrorsAndWarnings() {
     if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
   template<typename T_DATA> INLINE
   void NetReader<T_DATA>::showErrorsAndWarnings() {
     if ( __parseDone ) __parser->errors().showErrorsAndWarnings();
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 
   template<typename T_DATA> INLINE
   void NetReader<T_DATA>::showErrorCounts() {
     if ( __parseDone ) __parser->errors().showSyntheticResults();
-    else GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    else {
+      GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
+    }
   }
 
 

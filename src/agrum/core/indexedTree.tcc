@@ -40,7 +40,7 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Data>
   IndexedTree<Key,Data>::IndexedTree( const Key& theKey, Data* theData ) :
-    key( theKey ), data( theData ), parent( 0 ) {
+      key( theKey ), data( theData ), parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -50,7 +50,7 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Data>
   IndexedTree<Key,Data>::IndexedTree( Data *theData ) :
-    data( theData ), parent( 0 ) {
+      data( theData ), parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -60,7 +60,7 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Data>
   IndexedTree<Key,Data>::IndexedTree( const Key& theKey, const Data& theData ) :
-    key( theKey ), data( new Data( theData ) ), parent( 0 ) {
+      key( theKey ), data( new Data( theData ) ), parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -70,7 +70,7 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Data>
   IndexedTree<Key,Data>::IndexedTree( const IndexedTree<Key,Data>& from ) :
-    key( from.key ), data( 0 ), parent( 0 ) {
+      key( from.key ), data( 0 ), parent( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( IndexedTree );
 
@@ -83,7 +83,7 @@ namespace gum {
       children = from.children;
 
       for ( HashTableIterator< Key,IndexedTree<Key,Data> >
-              iter = children.begin(); iter != children.end(); ++iter )
+            iter = children.begin(); iter != children.end(); ++iter )
         iter->parent = this;
     } catch ( ... ) {
       if ( data ) delete data;
@@ -118,7 +118,7 @@ namespace gum {
         children = from.children;
 
         for ( HashTableIterator< Key,IndexedTree<Key,Data> >
-                iter = children.begin(); iter != children.end(); ++iter )
+              iter = children.begin(); iter != children.end(); ++iter )
           iter->parent = this;
       } catch ( ... ) {
         if ( data ) delete data;
@@ -174,8 +174,9 @@ namespace gum {
     // root of the tree
     if ( i + 1 == index.size() ) {
       // if the node to be inserted already exist, throw an exception
-      if ( current_node->children.exists( index[i] ) )
+      if ( current_node->children.exists( index[i] ) ) {
         GUM_ERROR( DuplicateElement, "the indexed tree already contains the node" );
+      }
 
       // here, the node to be inserted does not exist, so we must create it
       IndexedTree<Key,Data>* new_node =
@@ -221,8 +222,9 @@ namespace gum {
     // root of the tree
     if ( i + 1 == index.size() ) {
       // if the node to be inserted already exist, throw an exception
-      if ( current_node->children.exists( index[i] ) )
+      if ( current_node->children.exists( index[i] ) ) {
         GUM_ERROR( DuplicateElement, "the indexed tree already contains the node" );
+      }
 
       // here, the node to be inserted does not exist, so we must create it
       IndexedTree<Key,Data>* new_node =
@@ -350,15 +352,16 @@ namespace gum {
   // ==============================================================================
   template <typename Key, typename Data> INLINE
   Data& IndexedTree<Key,Data>::getData( const std::vector<Key>& index )
-    const  {
+  const  {
     IndexedTree<Key,Data>* current_node =
       const_cast<IndexedTree<Key,Data>*>( this );
 
     for ( unsigned int i = 0; i< index.size(); ++i )
       current_node = current_node->children[index[i]];
 
-    if ( data == 0 )
+    if ( data == 0 ) {
       GUM_ERROR( NotFound, "the datum could not be found" );
+    }
 
     return *( current_node->data );
   }
@@ -380,8 +383,8 @@ namespace gum {
 
 
 } /* namespace gum */
-  
-  
+
+
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
 
-  
+

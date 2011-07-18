@@ -790,8 +790,7 @@ namespace gum {
     // ============================================================================
     /// returns an iterator pointing to the end of the List
     // ============================================================================
-    const const_iterator& end() const ;
-    const iterator& end();
+    const const_iterator& end() const ;    const iterator& end();
 
     // ============================================================================
     /// returns an iterator pointing just before the beginning of the List

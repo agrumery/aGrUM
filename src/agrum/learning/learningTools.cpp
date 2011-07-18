@@ -57,7 +57,9 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR( LearnCounting );
 
-    if ( database.hasMissingValue() ) GUM_ERROR( OperationNotAllowed,"Learning Tools do not handle missing values (for now)" );
+    if ( database.hasMissingValue() ) {
+      GUM_ERROR( OperationNotAllowed,"Learning Tools do not handle missing values (for now)" );
+    }
   }
 
   // ==============================================================================
@@ -139,8 +141,9 @@ namespace gum {
   // ==============================================================================
   unsigned int LearnCounting::getRow( unsigned int level )
   const  {
-    if ( level >= tree_level )
+    if ( level >= tree_level ) {
       GUM_ERROR( NotFound, "the level does not exist" );
+    }
 
     return level_row[level];
   }
@@ -287,8 +290,9 @@ namespace gum {
           }
         }
       }
-    } else
+    } else {
       GUM_ERROR( NotFound, "not enough variables to compute chi2" );
+    }
 
     has_chi2_value = true;
 
@@ -304,8 +308,9 @@ namespace gum {
     if ( has_degrees_of_freedom ) return degrees_of_freedom;
 
     // if the tree has not enough levels, throw an exception
-    if ( tree.getNbrLevels() < 2 )
+    if ( tree.getNbrLevels() < 2 ) {
       GUM_ERROR( NotFound, "not enough variables to compute chi2's DF" );
+    }
 
     // compute from the tree the number of degrees of freedom
     degrees_of_freedom = 1;
@@ -494,8 +499,9 @@ namespace gum {
       if ( rows[i] == row ) break;
 
     // check if we found the variable
-    if ( i >= rows.size() )
+    if ( i >= rows.size() ) {
       GUM_ERROR( NotFound, "could not find the variable to remove" );
+    }
 
     // update the tree structure
     min_parsing_level = i;
