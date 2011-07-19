@@ -136,6 +136,31 @@ void Parser::LIST(std::vector<std::string>& vals ) {
 		Expect(6);
 }
 
+void Parser::GARBAGE_ELT_LIST() {
+		if (la->kind == 3) {
+			Get();
+		} else if (la->kind == 2) {
+			Get();
+		} else SynErr(19);
+}
+
+void Parser::GARBAGE_LISTS_SEQUENCE() {
+		GARBAGE_NESTED_LIST();
+		while (la->kind == 2 || la->kind == 3 || la->kind == 5) {
+			GARBAGE_NESTED_LIST();
+		}
+}
+
+void Parser::GARBAGE_NESTED_LIST() {
+		if (la->kind == 2 || la->kind == 3) {
+			GARBAGE_ELT_LIST();
+		} else if (la->kind == 5) {
+			Get();
+			GARBAGE_LISTS_SEQUENCE();
+			Expect(6);
+		} else SynErr(20);
+}
+
 void Parser::Net() {
 		factory().startNetworkDeclaration();
 		
@@ -269,7 +294,7 @@ void Parser::FLOAT(float& val) {
 		} else if (la->kind == 2) {
 			Get();
 			swscanf(t->val, L"%f", &val); 
-		} else SynErr(19);
+		} else SynErr(21);
 }
 
 void Parser::FLOAT_LIST(std::vector<float>& v ) {
@@ -291,7 +316,7 @@ void Parser::FLOAT_NESTED_LIST(std::vector<float>& v ) {
 			}
 		} else if (la->kind == 2 || la->kind == 3) {
 			FLOAT_LIST(v);
-		} else SynErr(20);
+		} else SynErr(22);
 		Expect(6);
 }
 
@@ -319,11 +344,7 @@ void Parser::EXPERIENCE() {
 		std::vector<std::string> vals;std::string val; 
 		Expect(15);
 		Expect(9);
-		if (la->kind == 5) {
-			LIST(vals);
-		} else if (StartOf(1)) {
-			ELT_LIST(val);
-		} else SynErr(21);
+		GARBAGE_NESTED_LIST();
 		Expect(10);
 }
 
@@ -485,9 +506,10 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 16: s = coco_string_create(L"\"potential\" expected"); break;
 			case 17: s = coco_string_create(L"??? expected"); break;
 			case 18: s = coco_string_create(L"invalid ELT_LIST"); break;
-			case 19: s = coco_string_create(L"invalid FLOAT"); break;
-			case 20: s = coco_string_create(L"invalid FLOAT_NESTED_LIST"); break;
-			case 21: s = coco_string_create(L"invalid EXPERIENCE"); break;
+			case 19: s = coco_string_create(L"invalid GARBAGE_ELT_LIST"); break;
+			case 20: s = coco_string_create(L"invalid GARBAGE_NESTED_LIST"); break;
+			case 21: s = coco_string_create(L"invalid FLOAT"); break;
+			case 22: s = coco_string_create(L"invalid FLOAT_NESTED_LIST"); break;
 
 		default:
 		{

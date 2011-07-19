@@ -174,6 +174,34 @@ namespace gum {
           }
         }
 
+        void testRead_file_with_xp() {
+          std::string file = GET_PATH_STR( bn_with_xp.net );
+
+          gum::BayesNet<float> *net = new gum::BayesNet<float>();
+
+          gum::NetReader<float> reader( net, file );
+
+          reader.trace( false );
+
+          bool isOK = false;
+
+          TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+
+          TS_ASSERT( isOK );
+          TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+          // 0 warnings : no properties
+          TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
+	  reader.showElegantErrors();
+
+          TS_ASSERT( net != 0 );
+
+          if ( net != 0 ) {
+            TS_ASSERT( ! net->empty() );
+
+            delete net;
+          }
+        }
+
     };
   }
 }
