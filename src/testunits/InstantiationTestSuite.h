@@ -23,220 +23,320 @@
 #include <agrum/multidim/discretizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 
   namespace tests {
 
     class InstantiationTestSuite: public CxxTest::TestSuite {
-        void setUp() {
-        }
+      gum::BayesNet<double> *bn;
+      gum::Id i1, i2, i3, i4, i5;
 
-        void tearDown() {
-        }
+      void setUp() {
+        bn = new gum::BayesNet<double>();
+
+        gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+        gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
+
+        i1 = bn->addVariable( n1 );
+        i2 = bn->addVariable( n2 );
+        i3 = bn->addVariable( n3 );
+        i4 = bn->addVariable( n4 );
+        i5 = bn->addVariable( n5 );
+
+        bn->insertArc( i1, i3 );
+        bn->insertArc( i1, i4 );
+        bn->insertArc( i3, i5 );
+        bn->insertArc( i4, i5 );
+        bn->insertArc( i2, i4 );
+        bn->insertArc( i2, i5 );
+
+        fill( *bn );
+      }
+
+      void tearDown() {
+        delete bn;
+      }
 
       public:
-        void testCreation() {
-          gum::Instantiation i;
-          TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size )0 );
+      void testCreation() {
+        gum::Instantiation i;
+        TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size )0 );
+      }
+
+      void testInsertSupprVariables() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
+        gum::Instantiation i;
+
+        TS_GUM_ASSERT_THROWS_NOTHING( i << a << b << c );
+        TS_ASSERT_THROWS( i << a , gum::DuplicateElement );
+        TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size ) 3 );
+        TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*4*5 ) );
+
+        TS_ASSERT( i.contains( a ) );
+
+        TS_ASSERT_EQUALS( i.pos( b ), ( gum::Size ) 1 );
+        TS_ASSERT_EQUALS( &( i.variable( 1 ) ), &b );
+
+        i.chgVal( a, 1 ).chgVal( b, 2 ).chgVal( c, 4 );
+        TS_ASSERT_EQUALS( i.toString(), "<a:1|b:2|c:4>" );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( i >> b );
+        TS_ASSERT_THROWS( i >> b , gum::NotFound );
+        TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size ) 2 );
+        TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*5 ) );
+
+        TS_ASSERT_EQUALS( i.toString(), "<a:1|c:4>" );
+
+        TS_ASSERT( ! i.contains( b ) );
+      }
+
+      void testIncrementations() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
+        gum::Instantiation i;i << a << b << c;
+        gum::Instantiation j;j << c << b;;
+        gum::Size nb;
+
+        for ( nb = 0, i.setFirst();! i.end(); ++i ) nb++;
+
+        TS_ASSERT_EQUALS( nb, i.domainSize() );
+
+        for ( nb = 0, i.setFirstNotVar( b );! i.end(); i.incNotVar( b ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
+
+        for ( nb = 0, i.setFirstVar( b );! i.end(); i.incVar( b ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
+
+        for ( nb = 0, i.setFirstIn( j );! i.end() ; i.incIn( j ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
+
+        for ( nb = 0, i.setFirstOut( j );! i.end() ; i.incOut( j ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
+      }
+
+      void testDecrementations() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
+        gum::Instantiation i;i << a << b << c;
+        gum::Instantiation j;j << c << b;
+        gum::Size nb;
+
+        for ( nb = 0, i.setLast();! i.rend(); --i ) nb++;
+
+        TS_ASSERT_EQUALS( nb, i.domainSize() );
+
+        for ( nb = 0, i.setLastNotVar( b );! i.rend(); i.decNotVar( b ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
+
+        for ( nb = 0, i.setLastVar( b );! i.rend(); i.decVar( b ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
+
+        for ( nb = 0, i.setLastIn( j );! i.rend() ; i.decIn( j ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
+
+        for ( nb = 0, i.setLastOut( j );! i.rend() ; i.decOut( j ) ) nb++;
+
+        TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
+      }
+
+      void testReordering() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
+        gum::Instantiation i;i << a << b << c;
+        gum::Instantiation j;j << c << a;
+
+        // reordering in {in|de}crementation
+        i.setFirst();
+        TS_ASSERT_EQUALS( i.toString(), "<a:0|b:0|c:0>" );
+        i.inc();
+        TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:0>" );
+        i.incIn( j );
+        TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:1>" );
+        i.decIn( j );
+        TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:0>" );
+
+        //reordering
+        i.reorder( j );
+        TS_ASSERT_EQUALS( i.toString(), "<c:0|a:1|b:0>" );
+      }
+
+      void testReordering_cpt() {
+        
+        Instantiation Order;
+        
+        for(gum::Sequence<gum::NodeId>::iterator it = bn->getTopologicalOrder().begin();it !=bn->getTopologicalOrder().end();++it)
+          Order.add(bn->variable(*it));
+
+
+        const gum::Potential<double>& pot = bn->cpt(i5);
+
+        gum::Instantiation inst(pot);
+        inst.forgetMaster();
+        for ( inst.setFirst();! inst.end(); ++inst ) { 
+          gum::Instantiation instcomp(inst);
+
+          instcomp.reorder(Order);
+          TS_ASSERT_EQUALS( pot[inst],pot[instcomp]  );
+
+
+        }
+        std::cout << pot << std::endl;
+        gum::Instantiation inst2(pot);
+        inst2.reorder(Order);
+        for ( inst2.setFirst();! inst2.end(); ++inst2 ) { 
+          std::cout << inst2 << pot[inst2] << std::endl;
         }
 
-        void testInsertSupprVariables() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-          gum::Instantiation i;
+        // reordering in {in|de}crementation
+      }
 
-          TS_GUM_ASSERT_THROWS_NOTHING( i << a << b << c );
-          TS_ASSERT_THROWS( i << a , gum::DuplicateElement );
-          TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size ) 3 );
-          TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*4*5 ) );
+      void testSlavery() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
+        gum::MultiDimArray<double> t;
+        t << a << b << c;
+        gum::MultiDimArray<double> t2;
+        t2 << b << a << c;
 
-          TS_ASSERT( i.contains( a ) );
+        gum::Instantiation i( t );
+        i.setFirst();
+        TS_ASSERT_EQUALS( i.toString(), "<a:0|b:0|c:0>" );
+        TS_ASSERT_THROWS( i.actAsSlave( t2 ), gum::OperationNotAllowed );
 
-          TS_ASSERT_EQUALS( i.pos( b ), ( gum::Size ) 1 );
-          TS_ASSERT_EQUALS( &( i.variable( 1 ) ), &b );
+        gum::Instantiation j;
+        j << b << c;
+        TS_ASSERT( ! j.actAsSlave( t ) );
+        j << a;j.chgVal( a, 1 );
+        TS_ASSERT( j.actAsSlave( t ) );
+        TS_ASSERT_EQUALS( j.toString(), "<a:1|b:0|c:0>" );
+        j.forgetMaster();
+        TS_ASSERT( j.actAsSlave( t2 ) );
+        TS_ASSERT_EQUALS( j.toString(), "<b:0|a:1|c:0>" );
 
-          i.chgVal( a, 1 ).chgVal( b, 2 ).chgVal( c, 4 );
-          TS_ASSERT_EQUALS( i.toString(), "<a:1|b:2|c:4>" );
+        gum::DiscretizedVariable<double> d( "d", "Discretized variable" );;
+        TS_GUM_ASSERT_THROWS_NOTHING( d.addTick( 3.1 ).addTick( 2.0 ).addTick( 4.0 ) );
+        TS_ASSERT_THROWS( j << d, gum::OperationNotAllowed );
+        j.forgetMaster();
+        TS_GUM_ASSERT_THROWS_NOTHING( j << d );
+        j.chgVal( d, d[2.5] );
+        TS_ASSERT( ! j.actAsSlave( t ) );
+      }
 
-          TS_GUM_ASSERT_THROWS_NOTHING( i >> b );
-          TS_ASSERT_THROWS( i >> b , gum::NotFound );
-          TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size ) 2 );
-          TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*5 ) );
+      void testChgValIn() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
 
-          TS_ASSERT_EQUALS( i.toString(), "<a:1|c:4>" );
+        gum::Instantiation i;i << b << c << d;
+        gum::Instantiation j;j << b << a << c;
 
-          TS_ASSERT( ! i.contains( b ) );
+        i.chgVal( b, 2 ).chgVal( c, 3 ).chgVal( d, 1 );
+        j.chgVal( b, 1 ).chgVal( a, 0 ).chgVal( c, 1 );
+        TS_ASSERT_EQUALS( i.toString(), "<b:2|c:3|d:1>" );
+        TS_ASSERT_EQUALS( j.toString(), "<b:1|a:0|c:1>" );
+
+        j.chgValIn( i );
+        TS_ASSERT_EQUALS( j.toString(), "<b:2|a:0|c:3>" );
+      }
+
+      void testOperatorEgal() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
+        gum::MultiDimArray<char> p, q;
+        p << a << b << c;
+        q << c << d;
+
+        gum::Instantiation ip( p ), ip2( p ), iq( q ), j, k;
+
+        ++( ++ip );
+
+        //free = slave
+        TS_GUM_ASSERT_THROWS_NOTHING( j = ip );
+        TS_ASSERT_EQUALS( p.toOffset( j ), p.toOffset( ip ) );
+        TS_ASSERT_EQUALS( j.toString(), ip.toString() );
+
+        // slave_same_master=slave_same_master
+        TS_GUM_ASSERT_THROWS_NOTHING( ip2 = ip );
+        TS_ASSERT_EQUALS( p.toOffset( ip2 ), p.toOffset( ip ) );
+        TS_ASSERT_EQUALS( ip2.toString(), ip.toString() );
+
+        // slave = free - same variables set
+        k << b << a << c;
+        ++k;
+        TS_GUM_ASSERT_THROWS_NOTHING( ip2 = k );
+        TS_ASSERT_EQUALS( p.toOffset( k ), p.toOffset( ip2 ) );
+        TS_ASSERT_EQUALS( k.val( a ), ip2.val( a ) );
+        TS_ASSERT_EQUALS( k.val( b ), ip2.val( b ) );
+        TS_ASSERT_EQUALS( k.val( c ), ip2.val( c ) );
+
+        // slave = free- not same variables set
+        TS_ASSERT_THROWS( iq = k, gum::OperationNotAllowed );
+
+        // slave = slave - not same master
+        TS_ASSERT_THROWS( iq = ip, gum::OperationNotAllowed );
+      }
+
+      void testOffsetOperation() {
+        gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
+        gum::MultiDimArray<char> p;
+        p << a << b << c;
+
+        gum::Instantiation i1( p ), i2( p );
+
+        for ( i1.setFirst();! i1.end(); ++i1 ) {
+          gum::Size l = p.toOffset( i1 );
+          p.fromOffset( i2, l );
+          TS_ASSERT_EQUALS( p.toOffset( i1 ), p.toOffset( i2 ) );
+        }
+      }
+
+      private:
+      // Builds a BN to test the inference
+      void fill( gum::BayesNet<double> &bn ) {
+        const gum::Potential<double>& p1 = bn.cpt( i1 );
+        {
+          // FILLING PARAMS
+          const double t[2] = {0.5, 0.5};
+          int n = 2;const std::vector<double> v( t, t + n );
+          p1.fillWith( v );
         }
 
-        void testIncrementations() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-          gum::Instantiation i;i << a << b << c;
-          gum::Instantiation j;j << c << b;;
-          gum::Size nb;
-
-          for ( nb = 0, i.setFirst();! i.end(); ++i ) nb++;
-
-          TS_ASSERT_EQUALS( nb, i.domainSize() );
-
-          for ( nb = 0, i.setFirstNotVar( b );! i.end(); i.incNotVar( b ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
-
-          for ( nb = 0, i.setFirstVar( b );! i.end(); i.incVar( b ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
-
-          for ( nb = 0, i.setFirstIn( j );! i.end() ; i.incIn( j ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
-
-          for ( nb = 0, i.setFirstOut( j );! i.end() ; i.incOut( j ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
+        const gum::Potential<double>& p2 = bn.cpt( i2 );
+        {
+          // FILLING PARAMS
+          const double t[2] = {0.3, 0.7};
+          int n = 2;const std::vector<double> v( t, t + n );
+          p2.fillWith( v );
         }
 
-        void testDecrementations() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-          gum::Instantiation i;i << a << b << c;
-          gum::Instantiation j;j << c << b;
-          gum::Size nb;
-
-          for ( nb = 0, i.setLast();! i.rend(); --i ) nb++;
-
-          TS_ASSERT_EQUALS( nb, i.domainSize() );
-
-          for ( nb = 0, i.setLastNotVar( b );! i.rend(); i.decNotVar( b ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
-
-          for ( nb = 0, i.setLastVar( b );! i.rend(); i.decVar( b ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
-
-          for ( nb = 0, i.setLastIn( j );! i.rend() ; i.decIn( j ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
-
-          for ( nb = 0, i.setLastOut( j );! i.rend() ; i.decOut( j ) ) nb++;
-
-          TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
+        const gum::Potential<double>& p3 = bn.cpt( i3 );
+        {
+          // FILLING PARAMS
+          const double t[4] = {0.1, 0.9, 0.9, 0.1};
+          int n = 4;const std::vector<double> v( t, t + n );
+          p3.fillWith( v );
         }
 
-        void testReordering() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-          gum::Instantiation i;i << a << b << c;
-          gum::Instantiation j;j << c << a;
-
-          // reordering in {in|de}crementation
-          i.setFirst();
-          TS_ASSERT_EQUALS( i.toString(), "<a:0|b:0|c:0>" );
-          i.inc();
-          TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:0>" );
-          i.incIn( j );
-          TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:1>" );
-          i.decIn( j );
-          TS_ASSERT_EQUALS( i.toString(), "<a:1|b:0|c:0>" );
-
-          //reordering
-          i.reorder( j );
-          TS_ASSERT_EQUALS( i.toString(), "<c:0|a:1|b:0>" );
+        const gum::Potential<double>& p4 = bn.cpt( i4 );
+        {
+          // FILLING PARAMS
+          const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+          int n = 8;const std::vector<double> v( t, t + n );
+          p4.fillWith( v );
         }
 
-        void testSlavery() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-          gum::MultiDimArray<double> t;
-          t << a << b << c;
-          gum::MultiDimArray<double> t2;
-          t2 << b << a << c;
-
-          gum::Instantiation i( t );
-          i.setFirst();
-          TS_ASSERT_EQUALS( i.toString(), "<a:0|b:0|c:0>" );
-          TS_ASSERT_THROWS( i.actAsSlave( t2 ), gum::OperationNotAllowed );
-
-          gum::Instantiation j;
-          j << b << c;
-          TS_ASSERT( ! j.actAsSlave( t ) );
-          j << a;j.chgVal( a, 1 );
-          TS_ASSERT( j.actAsSlave( t ) );
-          TS_ASSERT_EQUALS( j.toString(), "<a:1|b:0|c:0>" );
-          j.forgetMaster();
-          TS_ASSERT( j.actAsSlave( t2 ) );
-          TS_ASSERT_EQUALS( j.toString(), "<b:0|a:1|c:0>" );
-
-          gum::DiscretizedVariable<double> d( "d", "Discretized variable" );;
-          TS_GUM_ASSERT_THROWS_NOTHING( d.addTick( 3.1 ).addTick( 2.0 ).addTick( 4.0 ) );
-          TS_ASSERT_THROWS( j << d, gum::OperationNotAllowed );
-          j.forgetMaster();
-          TS_GUM_ASSERT_THROWS_NOTHING( j << d );
-          j.chgVal( d, d[2.5] );
-          TS_ASSERT( ! j.actAsSlave( t ) );
+        const gum::Potential<double>& p5 = bn.cpt( i5 );
+        {
+          // FILLING PARAMS
+          const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
+          };
+          int n = 16;const std::vector<double> v( t, t + n );
+          p5.fillWith( v );
         }
-
-        void testChgValIn() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
-
-          gum::Instantiation i;i << b << c << d;
-          gum::Instantiation j;j << b << a << c;
-
-          i.chgVal( b, 2 ).chgVal( c, 3 ).chgVal( d, 1 );
-          j.chgVal( b, 1 ).chgVal( a, 0 ).chgVal( c, 1 );
-          TS_ASSERT_EQUALS( i.toString(), "<b:2|c:3|d:1>" );
-          TS_ASSERT_EQUALS( j.toString(), "<b:1|a:0|c:1>" );
-
-          j.chgValIn( i );
-          TS_ASSERT_EQUALS( j.toString(), "<b:2|a:0|c:3>" );
-        }
-
-        void testOperatorEgal() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
-          gum::MultiDimArray<char> p, q;
-          p << a << b << c;
-          q << c << d;
-
-          gum::Instantiation ip( p ), ip2( p ), iq( q ), j, k;
-
-          ++( ++ip );
-
-          //free = slave
-          TS_GUM_ASSERT_THROWS_NOTHING( j = ip );
-          TS_ASSERT_EQUALS( p.toOffset( j ), p.toOffset( ip ) );
-          TS_ASSERT_EQUALS( j.toString(), ip.toString() );
-
-          // slave_same_master=slave_same_master
-          TS_GUM_ASSERT_THROWS_NOTHING( ip2 = ip );
-          TS_ASSERT_EQUALS( p.toOffset( ip2 ), p.toOffset( ip ) );
-          TS_ASSERT_EQUALS( ip2.toString(), ip.toString() );
-
-          // slave = free - same variables set
-          k << b << a << c;
-          ++k;
-          TS_GUM_ASSERT_THROWS_NOTHING( ip2 = k );
-          TS_ASSERT_EQUALS( p.toOffset( k ), p.toOffset( ip2 ) );
-          TS_ASSERT_EQUALS( k.val( a ), ip2.val( a ) );
-          TS_ASSERT_EQUALS( k.val( b ), ip2.val( b ) );
-          TS_ASSERT_EQUALS( k.val( c ), ip2.val( c ) );
-
-          // slave = free- not same variables set
-          TS_ASSERT_THROWS( iq = k, gum::OperationNotAllowed );
-
-          // slave = slave - not same master
-          TS_ASSERT_THROWS( iq = ip, gum::OperationNotAllowed );
-        }
-
-        void testOffsetOperation() {
-          gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
-          gum::MultiDimArray<char> p;
-          p << a << b << c;
-
-          gum::Instantiation i1( p ), i2( p );
-
-          for ( i1.setFirst();! i1.end(); ++i1 ) {
-            gum::Size l = p.toOffset( i1 );
-            p.fromOffset( i2, l );
-            TS_ASSERT_EQUALS( p.toOffset( i1 ), p.toOffset( i2 ) );
-          }
-        }
+      }
     };
 
   }
