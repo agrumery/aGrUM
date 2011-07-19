@@ -1095,6 +1095,8 @@ namespace gum {
        * variables only in *this.
        *
        * The variables only in v are ignored.
+       *
+       * @throw OperationNotAllowed if slave instantiation
        */
       // ============================================================================
       void reorder( const Sequence<const DiscreteVariable*>& v );
@@ -1237,6 +1239,18 @@ namespace gum {
       /// initialisation (same in 4 constructors)
       // ============================================================================
       void __init( MultiDimAdressable* master );
+
+      // ============================================================================
+      /**
+       * @brief Reorder vars of this instantiation giving the order in v.
+       *
+       * In the new order variables common to v and *this are placed first, then
+       * variables only in *this.
+       *
+       * The variables only in v are ignored.
+       */
+      // ============================================================================
+      void __reorder( const Sequence<const DiscreteVariable*>& v );
   };
 
 // ============================================================================
