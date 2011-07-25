@@ -222,4 +222,4 @@ def checkROCargs():
 
 if __name__=="__main__":
   (bn,csv_name,variable,label)=checkROCargs()
-  showROC(bn,csv_name,variable,label,True,add_state)
+  showROC(bn,csv_name,variable,label,True,None)

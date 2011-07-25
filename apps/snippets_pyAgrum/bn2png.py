@@ -28,7 +28,7 @@ import subprocess
 from pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
-def pngize(bn,base):
+def pngize(aBN,base):
   """
   From a bn 'bn' and a base 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
 	dot format and in png.
