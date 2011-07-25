@@ -15,6 +15,7 @@
 #include <agrum/core/types.h>
 #include <agrum/core/utils.h>
 #include <agrum/core/hashFunc.h>
+#include <agrum/core/bijection.h>
 #include <agrum/core/set.h>
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
@@ -108,7 +109,6 @@
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
-%include <agrum/core/bijection.h>
 
 %include <agrum/multidim/variable.h>
 %include <agrum/multidim/discreteVariable.h>
@@ -227,20 +227,27 @@
 
 
 /* TEMPLATES INSTANTIATIONS */
+
 %template(Vector_float) std::vector<float>;
+
 %template(Sequence_node) gum::Sequence<gum::NodeId>;
 %template(Sequence_string) gum::Sequence<std::string>;
+
 %template(DiscretizedVar) gum::DiscretizedVariable<float>;
+
 %template(MultiDimContainer_float) gum::MultiDimContainer<float>;
 %template(MultiDimImplementation_float) gum::MultiDimImplementation<float>;
 %template(MultiDimDecorator_float) gum::MultiDimDecorator<float>;
 %template(MultiDimWithOffset_float) gum::MultiDimWithOffset<float>;
 %template(MultiDimArray_float) gum::MultiDimArray<float>;
+
 %template(Potential_float) gum::Potential<float>;
 %template(BaseListPotentials_float) gum::ListBase< const gum::Potential<float> *>;
 %template(ListPotentials_float) gum::List< const gum::Potential<float> *>;
+
 %template(AbstractBayesNet_float) gum::AbstractBayesNet<float>;
 %template(BayesNet_float) gum::BayesNet<float>;
+
 %template(BayesNetInference_float) gum::BayesNetInference<float>;
 %template(LazyPropagation_float) gum::LazyPropagation<float>;
 %template(GibbsInference_float) gum::GibbsInference<float>;

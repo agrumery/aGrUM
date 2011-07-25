@@ -25,7 +25,9 @@ import sys,os
 from pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
-NUMBER_FORMAT='{0:.5f}'
+DECIMAL_LENGTH=4
+NUMBER_FORMAT='{0:.'+str(DECIMAL_LENGTH)+'f}'
+BLANK=' '
 
 def module_help(exit_value=1):
     """
@@ -34,17 +36,67 @@ def module_help(exit_value=1):
     print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
     sys.exit(exit_value)
 
+def max_length(v):
+  m=len(v.name())
+  for i in range(len(v)):
+    m=max(m,len(v.label(i)))
+  return m
+
 def pretty_cpt(cpt):
-    i=gum.Instantiation(cpt)
-    print cpt.variable(0).name()
-    i.setFirst()
-    while not(i.end()):
-        for j in range(1,cpt.nbrDim()):
-            print cpt.variable(j).label(i.val(j)),'|',
-        print NUMBER_FORMAT.format(cpt.get(i)),
+  size=(1+2+DECIMAL_LENGTH)*len(cpt.variable(0))-1
+
+  width={}
+  total_width=0
+  for j in range(1,cpt.nbrDim()):
+    width[j]=2+max_length(cpt.variable(j))
+    total_width+=width[j]+1
+  total_width-=1
+
+  print (' '*total_width+'|-'+'-'*size+'-|')
+
+  line='-'*total_width+'|'
+  line+="{0:^{1}}".format(cpt.variable(0).name()[0:size+2],size+2)
+  line+='|'
+  print(line)
+
+  line=''
+  for j in range(1,cpt.nbrDim()):
+    line+="{0:^{1}}|".format(cpt.variable(j).name(),width[j])
+  if line=='':
+    line='|'
+  line+=BLANK
+  for j in range(len(cpt.variable(0))):
+    line+=("{0:^{1}}"+BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH+2],DECIMAL_LENGTH+2)
+  line+='|'
+  print (line)
+  print ('-'*total_width)+'|'+'-'*(2+size)+'|'
+
+  i=gum.Instantiation(cpt)
+  i.setFirst()
+  while not(i.end()):
+      line=''
+      for j in range(1,cpt.nbrDim()):
+        line+="{0:^{1}}|".format(cpt.variable(j).label(i.val(j)),width[j])
+      if line=='':
+        line='|'
+      line+=' '
+      for j in range(len(cpt.variable(0))):
+        line+=NUMBER_FORMAT.format(cpt.get(i))+' '
         i.inc()
-        print NUMBER_FORMAT.format(cpt.get(i))
-        i.inc()
+      line+='|'
+      print line
+
+  print ('-'*total_width)+'|'+'-'*(2+size)+'|'
+
+def pretty_bn(aBN):
+  if isinstance(aBN,str):
+    bn=gum.loadBN(aBN)
+  else:
+    bn=aBN
+
+  for i in range(len(bn)):
+    pretty_cpt(bn.cpt(i))
+  print("")
 
 if __name__=="__main__":
     pyAgrum_header()
@@ -52,7 +104,4 @@ if __name__=="__main__":
     if len(sys.argv)<2:
         module_help()
 
-    bn=gum.loadBN(sys.argv[1])
-    for i in range(len(bn)):
-        pretty_cpt(bn.cpt(i))
-        print
+    pretty_bn(sys.argv[1])

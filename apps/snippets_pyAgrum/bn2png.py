@@ -33,6 +33,11 @@ def pngize(bn,base):
   From a bn 'bn' and a base 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
 	dot format and in png.
   """
+  if isinstance(aBN,str):
+    bn=gum.loadBN(aBN)
+  else:
+    bn=aBN
+
   dotfile=base+'.dot'
   pngfile=base+'.png'
 
@@ -49,6 +54,5 @@ if __name__=="__main__":
     if len(sys.argv)<2:
         print os.path.basename(sys.argv[0]),"file.{"+gum.availableBNExts()+"}"
     else:
-        bn=gum.loadBN(sys.argv[1])
         base,ext=os.path.splitext(sys.argv[1])
-        pngize(bn,base)
+        pngize(sys.argv[1],base)

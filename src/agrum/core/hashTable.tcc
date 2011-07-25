@@ -29,6 +29,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+//to help IDE parser
+#include <agrum/core/hashTable.h>
 
 /* ############################################################################# */
 /* #                           WARNING:  DEPENDENCIES                          # */

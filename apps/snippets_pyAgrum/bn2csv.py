@@ -97,7 +97,12 @@ class CSVGenerator:
         """
         From the file name_in (BN file), generate n samples and save them in name_out
         """
-        bn=gum.loadBN(name_in)
+
+        if isinstance(name_in,str):
+          bn=gum.loadBN(name_in)
+        else:
+          bn=name_in
+
         seq=bn.getTopologicalOrder()
         writer = csv.writer(open(name_out,'wb'))
 

@@ -23,16 +23,29 @@
 import pyAgrum as gum
 from pyAgrum_header import pyAgrum_header
 
+def parents_name(bn,n):
+  l=bn.cpt(n).var_names
+  l.pop()
+  return l
+
 def parents(bn,n):
     """
     gives a nodeId list of parents of node n
 
     (this algorithm is clearly not efficient ...)
     """
-    l=bn.cpt(n).var_names
-    l.pop()
+
+    l=parents_name(bn,n)
     #l is the liste of var names
     return map(bn.idFromName,l)
+
+def enfants_name(bn,n):
+    """
+    gives a nodeId list of name of children of node n
+
+    (this algorithm is clearly not efficient AT ALL ...)
+    """
+    return filter(lambda x:n in parents_anme(bn,x), range(0,len(bn)))
 
 def enfants(bn,n):
     """
