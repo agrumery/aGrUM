@@ -224,7 +224,7 @@ def proceed(options):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-                run_cde="PYTHON_PATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+                run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
                 print RED+"No tests for "+options['wrapper']+ENDC
                 sys.exit(0)
