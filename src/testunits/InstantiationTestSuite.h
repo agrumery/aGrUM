@@ -23,16 +23,40 @@
 #include <agrum/multidim/discretizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 
   namespace tests {
 
     class InstantiationTestSuite: public CxxTest::TestSuite {
+        gum::BayesNet<double> *bn;
+        gum::Id i1, i2, i3, i4, i5;
+
         void setUp() {
+          bn = new gum::BayesNet<double>();
+
+          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
+
+          i1 = bn->addVariable( n1 );
+          i2 = bn->addVariable( n2 );
+          i3 = bn->addVariable( n3 );
+          i4 = bn->addVariable( n4 );
+          i5 = bn->addVariable( n5 );
+
+          bn->insertArc( i1, i3 );
+          bn->insertArc( i1, i4 );
+          bn->insertArc( i3, i5 );
+          bn->insertArc( i4, i5 );
+          bn->insertArc( i2, i4 );
+          bn->insertArc( i2, i5 );
+
+          fill( *bn );
         }
 
         void tearDown() {
+          delete bn;
         }
 
       public:
@@ -142,6 +166,37 @@ namespace gum {
           TS_ASSERT_EQUALS( i.toString(), "<c:0|a:1|b:0>" );
         }
 
+        void testReordering_cpt() {
+
+          Instantiation Order;
+
+          for ( gum::Sequence<gum::NodeId>::iterator it = bn->getTopologicalOrder().begin();it !=bn->getTopologicalOrder().end();++it )
+            Order.add( bn->variable( *it ) );
+
+
+          const gum::Potential<double>& pot = bn->cpt( i5 );
+
+          gum::Instantiation inst( pot );
+          gum::Instantiation instcomp( inst );
+          TS_ASSERT_THROWS(instcomp.reorder( Order ),gum::OperationNotAllowed);
+
+          inst.forgetMaster();
+          for ( inst.setFirst();! inst.end(); ++inst ) {
+            gum::Instantiation instcomp( inst );
+
+            instcomp.reorder( Order );
+            TS_ASSERT_EQUALS( pot[inst],pot[instcomp] );
+          }
+
+          gum::Instantiation inst2( pot );
+          inst2.forgetMaster();
+          inst2.reorder( Order );
+          for ( inst2.setFirst();! inst2.end(); ++inst2 ) {
+            inst.chgValIn(inst2);
+            TS_ASSERT_EQUALS(pot[inst2],pot[inst]);
+          }
+        }
+
         void testSlavery() {
           gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
           gum::MultiDimArray<double> t;
@@ -237,8 +292,54 @@ namespace gum {
             TS_ASSERT_EQUALS( p.toOffset( i1 ), p.toOffset( i2 ) );
           }
         }
+
+      private:
+        // Builds a BN to test the inference
+        void fill( gum::BayesNet<double> &bn ) {
+          const gum::Potential<double>& p1 = bn.cpt( i1 );
+          {
+            // FILLING PARAMS
+            const double t[2] = {0.5, 0.5};
+            int n = 2;const std::vector<double> v( t, t + n );
+            p1.fillWith( v );
+          }
+
+          const gum::Potential<double>& p2 = bn.cpt( i2 );
+          {
+            // FILLING PARAMS
+            const double t[2] = {0.3, 0.7};
+            int n = 2;const std::vector<double> v( t, t + n );
+            p2.fillWith( v );
+          }
+
+          const gum::Potential<double>& p3 = bn.cpt( i3 );
+          {
+            // FILLING PARAMS
+            const double t[4] = {0.1, 0.9, 0.9, 0.1};
+            int n = 4;const std::vector<double> v( t, t + n );
+            p3.fillWith( v );
+          }
+
+          const gum::Potential<double>& p4 = bn.cpt( i4 );
+          {
+            // FILLING PARAMS
+            const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+            int n = 8;const std::vector<double> v( t, t + n );
+            p4.fillWith( v );
+          }
+
+          const gum::Potential<double>& p5 = bn.cpt( i5 );
+          {
+            // FILLING PARAMS
+            const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
+                                  0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
+                                 };
+            int n = 16;const std::vector<double> v( t, t + n );
+            p5.fillWith( v );
+          }
+        }
     };
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

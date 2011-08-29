@@ -23,12 +23,13 @@
  * @authorPierre-Henri WUILLEMIN
  */
 
-namespace gum {
+#include <agrum/core/list.h>
 
+namespace gum {
   // a function to get rid of a weird strict-aliasing rule warning
-	INLINE
-	const void*
-	___get__list_end() {
-  	return &__list_end;
-	}
+  INLINE
+  const void*
+  ___get__list_end() {
+    return &__list_end;
+  }
 }

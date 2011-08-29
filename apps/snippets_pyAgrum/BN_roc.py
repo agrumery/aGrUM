@@ -89,7 +89,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
         target_label=data[positions[idTarget]]
         if not transforme_label is None:
           target_label=transforme_label(target_label)
-        if target_label.__eq__(label):
+        if str(target_label)==str(label):
             totalP+=1
         else:
             totalN+=1
@@ -127,7 +127,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
         res_label=res[i][1]
         if not transforme_label is None:
           res_label=transforme_label(res_label)
-        if res_label.__eq__(label):
+        if str(res_label)==str(label):
             vp+=1.0
         else:
             fp+=1.0
@@ -182,10 +182,10 @@ def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
   pylab.grid(True)
 
   pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1)
-  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-', label= sys.argv[1]+" - "+csv_name+ " - "+variable+"="+label)
+  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-', label= csv_name+ " - "+variable+"="+str(label))
 
   pylab.legend(loc='lower right')
-  pylab.savefig('roc_'+sys.argv[1]+'-'+sys.argv[2]+'.png')
+  pylab.savefig('roc_'+csv_name+ "-"+variable+"-"+str(label)+'.png')
   pylab.show()
 
 def checkROCargs():

@@ -399,11 +399,11 @@ namespace gum {
        *          variable as, usually, it is not necessary. If need be, use function
        *          inOverflow() to check.
        *
-       * @param var the variable the value of which we wish to know
+       * @param pvar a pointer to the variable the value of which we wish to know
        * @throw NotFound Raised if var does not belong to the instantiation.
        */
       // ============================================================================
-      Idx val( const DiscreteVariable* var ) const;
+      Idx valFromPtr( const DiscreteVariable* pvar ) const;
 
       // ============================================================================
       /**
@@ -490,6 +490,10 @@ namespace gum {
        * This function also unsets the overflow flag.
        *
        * If no variables in i matches, then no value is changed.
+       *
+       * @warning Variables has to be "the same". Therefore chgValIn is usefull in a same domain variables (for instance a BN).
+       * However two identical variables will not be recognized as same (for instance between 2 BNs).
+       * @see Instantiation::assign_values for this kind of utilisation.
        *
        * @param i A Instantiation in which the new values are searched.
        * @return Returns a reference to *this in order to chain the chgVal.
@@ -1095,6 +1099,8 @@ namespace gum {
        * variables only in *this.
        *
        * The variables only in v are ignored.
+       *
+       * @throw OperationNotAllowed if slave instantiation
        */
       // ============================================================================
       void reorder( const Sequence<const DiscreteVariable*>& v );
@@ -1125,12 +1131,11 @@ namespace gum {
        * @throw NotFound Raised if a variable in i does not point to a variable in j
        *                 or if a variable in i is missing in bij.
        */
-      static void assign_values( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                 const Instantiation& i, Instantiation& j ) {
+      static void assign_values( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,const Instantiation& i, Instantiation& j ) {
         try {
           for ( Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
                 iter != i.variablesSequence().end(); ++iter ) {
-            j.chgVal( bij.second( *iter ), i.val( *iter ) );
+            j.chgVal( bij.second( *iter ), i.valFromPtr( *iter ) );
           }
         } catch ( NotFound& ) {
           GUM_ERROR( NotFound, "missing variable in bijection or instantiation" );
@@ -1237,6 +1242,18 @@ namespace gum {
       /// initialisation (same in 4 constructors)
       // ============================================================================
       void __init( MultiDimAdressable* master );
+
+      // ============================================================================
+      /**
+       * @brief Reorder vars of this instantiation giving the order in v.
+       *
+       * In the new order variables common to v and *this are placed first, then
+       * variables only in *this.
+       *
+       * The variables only in v are ignored.
+       */
+      // ============================================================================
+      void __reorder( const Sequence<const DiscreteVariable*>& v );
   };
 
 // ============================================================================

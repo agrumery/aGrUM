@@ -237,8 +237,8 @@ namespace gum {
   // ==============================================================================
   /// returns the current value of a given variable
   // ==============================================================================
-  INLINE Idx Instantiation::val( const DiscreteVariable* var ) const {
-    return __vals[__vars[var]];
+  INLINE Idx Instantiation::valFromPtr( const DiscreteVariable* pvar ) const {
+    return __vals[__vars[pvar]];
   }
 
   // ==============================================================================
@@ -855,17 +855,23 @@ namespace gum {
     __vars.swap( i, j );
 
     Idx v;
-
     v = __vals[i];
-
     __vals[i] = __vals[j];
-
     __vals[j] = v;
   }
 
   /// reordering
-  INLINE void Instantiation::reorder
-  ( const Sequence<const DiscreteVariable*>& original ) {
+  INLINE
+  void Instantiation::reorder( const Sequence<const DiscreteVariable*>& original ) {
+    if ( __master ) {
+      GUM_ERROR( OperationNotAllowed,"Reordering impossible in slave instantiation" );
+    }
+    __reorder(original);
+  }
+
+  ///
+  INLINE
+  void Instantiation::__reorder(const Sequence<const DiscreteVariable*>& original ) {
     Idx max = original.size();
     Idx position = 0;
 
@@ -887,7 +893,7 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "only master can do this" );
     }
 
-    reorder( __master->variablesSequence() );
+    __reorder( __master->variablesSequence() );
   }
 
   /// add new dim by master

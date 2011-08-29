@@ -28,6 +28,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease IDE parser
+#include <agrum/core/heap.h>
 
 namespace gum {
 
@@ -37,7 +39,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>::Heap( Cmp compare, Size capacity ) :
-    __heap( capacity ), __nb_elements( 0 ), __cmp( compare ) {
+      __heap( capacity ), __nb_elements( 0 ), __cmp( compare ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Heap );
   }
@@ -47,17 +49,16 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>::Heap( const Heap<Val,Cmp>& from ) :
-    __heap( from.__heap.size() ), __nb_elements( 0 ), __cmp( from.__cmp ) {
+      __heap( from.__heap.size() ), __nb_elements( 0 ), __cmp( from.__cmp ) {
     // for debugging purposes
     GUM_CONS_CPY( Heap );
-    
+
     // copy the elements of from.__heap
     Size i;
     try {
       for ( i = 0; i < from.__nb_elements; ++i )
         __heap[i] = new Val( *from.__heap[i] );
-    }
-    catch ( ... ) {  // in case all the allocations could not be performed
+    } catch ( ... ) { // in case all the allocations could not be performed
       for ( Size j = 0; j < i; ++j )
         delete __heap[j];
 
@@ -76,7 +77,7 @@ namespace gum {
     if ( this != &from ) {
       // for debugging purposes
       GUM_OP_CPY( Heap );
-      
+
       // set the comparison function
       __cmp = from.__cmp;
 
@@ -100,8 +101,7 @@ namespace gum {
         // create the elements that are lacking
         for ( ; __nb_elements < from.__nb_elements; ++__nb_elements )
           __heap[__nb_elements] = new Val( *from.__heap[__nb_elements] );
-      }
-      catch ( ... ) {
+      } catch ( ... ) {
         for ( Size i = 0; i < __nb_elements; ++i )
           delete __heap[i];
 
@@ -121,7 +121,7 @@ namespace gum {
   Heap<Val,Cmp>::~Heap() {
     // for debugging purposes
     GUM_DESTRUCTOR( Heap );
-    
+
     // remove the pointers from the heap
     for ( Size i = 0; i < __nb_elements; ++i )
       delete __heap[i];
@@ -175,7 +175,7 @@ namespace gum {
     // remove the element and put the last element in its place
     Val* last = __heap[__nb_elements - 1];
     delete __heap[index];
-    
+
     __heap.pop_back();
     --__nb_elements;
 
@@ -316,7 +316,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Cmp> INLINE
   std::ostream& operator<< ( std::ostream& stream, const Heap<Val,Cmp>& heap ) {
-    stream << heap.toString ();
+    stream << heap.toString();
     return stream;
   }
 

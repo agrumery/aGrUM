@@ -10,7 +10,6 @@ to OpenBayes, a free Bayesian Network library for Python."
 
 
 %pythoncode %{
-#from numpy import *
 import numpy
 %}
 
@@ -126,6 +125,7 @@ import numpy
 %ignore gum::Sequence::operator<<;
 %ignore gum::Sequence::operator>>;
 %ignore gum::Sequence::operator[];
+
 %rename(append) gum::Sequence::insert( const KEY& k );
 %rename(index) gum::Sequence::pos( const KEY& key ) const ;
 %rename(remove) gum::Sequence::erase( const KEY& k );
@@ -134,8 +134,7 @@ import numpy
 
 %rename(__str__) gum::DiscreteVariable::toString() const;
 %rename(__len__) gum::DiscreteVariable::domainSize() const;
-%rename(__getitem__) gum::DiscreteVariable::operator[](
-                         const std::string& label) const;
+%rename(__getitem__) gum::DiscreteVariable::operator[](const std::string& label) const;
 %extend gum::DiscretizedVariable { //XXX hack, rename will be better
     gum::Idx index(const float& aTarget) const {
         return (*self)[aTarget];
@@ -161,10 +160,11 @@ import numpy
 %rename(pop_front) gum::List::popFront();
 %rename(pop_back) gum::List::popBack();
 
+%ignore gum::Instantiation::assign_values;
 %rename(__str__) gum::Instantiation::toString() const;
+%rename(__len__) gum::Instantiation::nbrDim() const;
+
 %rename(remove) gum::MultiDimDecorator::erase( const DiscreteVariable& var );
-
-
 
 /* CLASS EXTENSIONS */
 %extend gum::Exception {
@@ -245,7 +245,7 @@ def names(self):
     inst=Instantiation()
     self.completeInstantiation(inst)
     l={}
-    for i in range(inst.nbrDim()):
+    for i in range(len(inst)):
         l[inst.variable(i).name()]=self.nodeId(inst.variable(i))
     return l
 }
@@ -258,7 +258,7 @@ def ids(self):
     inst=Instantiation()
     self.completeInstantiation(inst)
     l={}
-    for i in range(inst.nbrDim()):
+    for i in range(len(inst)):
         l[self.nodeId(inst.variable(i))]=inst.variable(i).name()
     return l
 }

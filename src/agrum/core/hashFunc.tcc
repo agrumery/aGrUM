@@ -25,7 +25,7 @@
 #include <agrum/core/debug.h>
 #include <agrum/core/exceptions.h>
 
-//to ease IDE parser
+//to help IDE parser
 #include <agrum/core/hashFunc.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -354,3 +354,5 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+

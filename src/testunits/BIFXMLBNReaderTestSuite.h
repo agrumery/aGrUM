@@ -137,10 +137,6 @@ namespace gum {
 
           const gum::Potential<double> &proba = net->cpt( net->idFromName("dog-out") );
           TS_ASSERT_EQUALS(proba.domainSize(),(gum::Size) 8);
-          gum::Instantiation inst(proba);
-          for(inst.setFirst(); ! inst.end(); ++inst) {
-            GUM_TRACE(inst<<":"<<proba[inst]);
-          }
         }
 
         void Read_file2_double() {
@@ -357,7 +353,6 @@ namespace gum {
 
             const gum::Potential<float> &proba_6 = net->cpt( idMap["n6"] );
             TS_ASSERT_EQUALS( proba_6.domainSize(), ( gum::Size ) 12 );
-            GUM_TRACE( proba_6 );
 
             gum::Instantiation inst_6( proba_6 );
             inst_6.chgVal( var_6, 0 );

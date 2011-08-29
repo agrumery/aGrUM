@@ -125,6 +125,9 @@ void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::s
 	void ELT_LIST(std::string& val);
 	void PURE_LIST(std::vector<std::string>& vals );
 	void LIST(std::vector<std::string>& vals );
+	void GARBAGE_ELT_LIST();
+	void GARBAGE_LISTS_SEQUENCE();
+	void GARBAGE_NESTED_LIST();
 	void Net();
 	void NODE();
 	void POTENTIAL();

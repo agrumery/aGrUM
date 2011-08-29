@@ -24,19 +24,9 @@
 import sys,os,csv,math
 
 from pyAgrum_header import pyAgrum_header
+from parents import parents
 
 import pyAgrum as gum
-
-def parents(bn,n):
-    """
-    gives a nodeId list of parents of node n
-
-    (this algorithm is clearly not efficient ...)
-    """
-    l=bn.cpt(n).var_names
-    l.pop()
-    #l is the liste of var names
-    return map(bn.idFromName,l)
 
 def module_help(exit_value=1):
     """

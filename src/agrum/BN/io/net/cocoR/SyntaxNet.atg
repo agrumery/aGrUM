@@ -104,6 +104,21 @@ LIST<.std::vector<std::string>& vals .> =
 .
 
 //==============
+GARBAGE_ELT_LIST = (number | integer ).
+
+GARBAGE_LISTS_SEQUENCE = GARBAGE_NESTED_LIST {GARBAGE_NESTED_LIST}.
+
+GARBAGE_NESTED_LIST =
+    GARBAGE_ELT_LIST
+    |
+    (
+	'('
+	GARBAGE_LISTS_SEQUENCE
+	')'
+    )
+.
+
+//==============
 Net = 	(.
            	 	factory().startNetworkDeclaration();
           	.)
@@ -252,7 +267,7 @@ RAW_DATA<. std::string& variable,std::vector<std::string>& var_seq .> = (. std::
 .
 
 EXPERIENCE = (.std::vector<std::string> vals;std::string val; .)
-  "experience" '=' ( LIST<vals>  | ELT_LIST<val>)';'
+  "experience" '=' GARBAGE_NESTED_LIST ';'
 .
 
 //==============

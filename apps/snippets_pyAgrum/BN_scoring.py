@@ -58,7 +58,10 @@ def checkCompatibility(bn,fields,csv_name):
     return res
 
 def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
-    bn=gum.loadBN(bn_name)
+    if isinstance(bn,str):
+      bn=gum.loadBN(bn_name)
+    else:
+      bn=bn_name
 
     nbr_lines=lines_count(csv_name)-1
 
@@ -87,7 +90,7 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     nbr_insignificant=0
     likelihood=0.0
     for data in batchReader:
-        for i in range(inst.nbrDim()):
+        for i in range(len(inst)):
             try:
               inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
             except gum.OutOfBounds:

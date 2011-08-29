@@ -208,7 +208,7 @@ namespace gum {
 
     for ( HashTableConstIterator<const DiscreteVariable *,Size> iter=_gaps.begin();
           iter != _gaps.end(); ++iter )
-      if ( i.contains( iter.key() ) ) off += *iter * i.val( iter.key() );
+      if ( i.contains( iter.key() ) ) off += *iter * i.valFromPtr( iter.key() );
 
     return off;
   }

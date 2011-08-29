@@ -54,16 +54,13 @@ namespace gum {
   }
 
 
-
-
   // ==============================================================================
   /// initialization function
   // ==============================================================================
   template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__initialize
-  ( const AbstractBayesNet<T_DATA>& BN,
-    StaticTriangulation& triangulation,
-    const HashTable<NodeId, unsigned int>& modalities )  {
+  void LazyPropagation<T_DATA>::__initialize( const AbstractBayesNet<T_DATA>& BN,
+      StaticTriangulation& triangulation,
+      const HashTable<NodeId, unsigned int>& modalities )  {
     const JunctionTree& triang_jt = triangulation.junctionTree();
     BinaryJoinTreeConverterDefault bon_converter;
     NodeSet emptyset;

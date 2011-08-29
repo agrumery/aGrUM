@@ -32,89 +32,89 @@
 namespace gum {
 
 
-/**
- * @class GibbsInference GibbsInference.h <agrum/BN/inference/GibbsInference.h>
- * @brief class for making Gibbs sampling inference in bayesian networks.
- * @ingroup bn_group
- *
- */
-template <typename T_DATA>
+  /**
+   * @class GibbsInference GibbsInference.h <agrum/BN/inference/GibbsInference.h>
+   * @brief class for making Gibbs sampling inference in bayesian networks.
+   * @ingroup bn_group
+   *
+   */
+  template <typename T_DATA>
 
-class GibbsInference :
-            public GibbsSettings,
-            public BayesNetInference<T_DATA>,
-            public particle::Gibbs<T_DATA> {
+  class GibbsInference :
+        public GibbsSettings,
+        public BayesNetInference<T_DATA>,
+        public particle::Gibbs<T_DATA> {
 
-public:
-    /**
-     * Default constructor
-     */
-    GibbsInference( const AbstractBayesNet<T_DATA>& BN );
+    public:
+      /**
+       * Default constructor
+       */
+      GibbsInference( const AbstractBayesNet<T_DATA>& BN );
 
-    /**
-     * Destructor.
-     */
-    virtual ~GibbsInference();
+      /**
+       * Destructor.
+       */
+      virtual ~GibbsInference();
 
-    /**
-     * Makes the inference: all marginals are computed.
-     */
-    virtual void makeInference() ;
+      /**
+       * Makes the inference: all marginals are computed.
+       */
+      virtual void makeInference() ;
 
-    /**
-     * Insert new evidence in the graph.
-     * @warning if an evidence already w.r.t. a given node and a new
-     * evidence w.r.t. this node is onserted, the old evidence is removed.
-     */
-    virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) ;
+      /**
+       * Insert new evidence in the graph.
+       * @warning if an evidence already w.r.t. a given node and a new
+       * evidence w.r.t. this node is inserted, the old evidence is removed.
+       */
+      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) ;
 
-    /**
-     * Remove a given evidence from the graph.
-     */
-    virtual void eraseEvidence( const Potential<T_DATA>* e ) ;
+      /**
+       * Remove a given evidence from the graph.
+       */
+      virtual void eraseEvidence( const Potential<T_DATA>* e ) ;
 
-    /**
-     * Remove all evidence from the graph.
-     */
-    virtual void eraseAllEvidence() ;
+      /**
+       * Remove all evidence from the graph.
+       */
+      virtual void eraseAllEvidence() ;
 
-    /// lazy management of infenrence
-    ///@{
-    void setRequiredInference();
-    bool isInferenceRequired();
-    ///@}
+      /// lazy management of infenrence
+      ///@{
+      void setRequiredInference();
+      bool isInferenceRequired();
+      ///@}
 
-    using particle::Gibbs<T_DATA>::particle;
-    using particle::Gibbs<T_DATA>::initParticle;
-    using particle::Gibbs<T_DATA>::nextParticle;
-    using particle::Gibbs<T_DATA>::bn;
+      using particle::Gibbs<T_DATA>::particle;
+      using particle::Gibbs<T_DATA>::initParticle;
+      using particle::Gibbs<T_DATA>::nextParticle;
+      using particle::Gibbs<T_DATA>::bn;
 
-protected:
-    /**
-     * Returns the probability of the variable.
-     *
-     * @param id The variable's id.
-     * @param marginal the potential to fill
-     * @throw ElementNotFound Raised if no variable matches id.
-     */
-    virtual void _fillMarginal( NodeId id ,Potential<T_DATA>& marginal );
-
-
-private:
-    ///inference flag
-    bool __inference_is_required;
+    protected:
+      /**
+       * Returns the probability of the variable.
+       *
+       * @param id The variable's id.
+       * @param marginal the potential to fill
+       * @throw ElementNotFound Raised if no variable matches id.
+       */
+      virtual void _fillMarginal( NodeId id ,Potential<T_DATA>& marginal );
 
 
-    /// the actual number of sampling for each modality by node
-    typename Property<Potential<T_DATA>*>::onNodes __sampling_nbr;
+    private:
+      ///inference flag
+      bool __inference_is_required;
 
 
-    void __unsetRequiredInference();
-    void __initStats();
-    void __updateStats_without_err();
-    double __updateStats_with_err( Size nbr );
+      /// the actual number of sampling for each modality by node
+      typename Property<Potential<T_DATA>*>::onNodes __sampling_nbr;
 
-};
+
+      void __unsetRequiredInference();
+      void __initStats();
+      void __updateStats_without_err();
+      double __updateStats_with_err( Size nbr );
+
+  };
 
 
 } /* namespace gum */

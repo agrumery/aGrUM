@@ -191,18 +191,27 @@ namespace gum {
     // Variable
     str << "\t<FOR>" << bn.variable( varNodeId ).name() << "</FOR>" << std::endl;
 
-    // Conditional Parents
-    List< std::string > parentList;
-    const NodeSet& parentNodes=bn.dag().parents( varNodeId );
-    for ( NodeSet::const_iterator parentIter = parentNodes.begin(); parentIter!=parentNodes.end(); ++ parentIter )
-      str << "\t<GIVEN>" <<bn.variable ( *parentIter ).name() << "</GIVEN>" << std::endl;
-
     // Table
-    Instantiation inst( bn.cpt( varNodeId ) );
+    // For historical reason, the code is not the same betwen bIXML for BN and for ID ...
+    const Potential<T_DATA>& cpt=bn.cpt( varNodeId );
+
+    // Conditional Parents
+    for ( Idx i=1;i<cpt.nbrDim();i++ )
+      str << "\t<GIVEN>" <<cpt.variable( i ).name() << "</GIVEN>" << std::endl;
+
+    Instantiation inst;
+    inst<<cpt.variable( 0 );
+    for ( Idx i=cpt.nbrDim()-1;i>0;i-- ) inst<<cpt.variable( i );
+
     str << "\t<TABLE>";
-    for ( inst.setFirst(); !inst.end(); inst.inc() )
-      str << bn.cpt( varNodeId )[inst] << " ";
-    str << "</TABLE>" << std::endl;
+    for ( inst.setFirst(); !inst.end(); inst.inc() ) {
+      if ( inst.val( 0 )==0 )
+        str<<std::endl<<"\t\t";
+      else
+        str << " ";
+      str<<cpt[inst];//"<!-- "<<inst<<" -->"<<std::endl;
+    }
+    str << std::endl<<"\t</TABLE>" << std::endl;
 
     // Closing tag
     str << "</DEFINITION>" << std::endl;
