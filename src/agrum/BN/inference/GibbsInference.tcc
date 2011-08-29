@@ -70,10 +70,9 @@ namespace gum {
   /// destructor
   template <typename T_DATA> INLINE
   GibbsInference<T_DATA>::~GibbsInference() {
-    // for debugging purposes
     GUM_DESTRUCTOR( GibbsInference );
-    // remove all the created potentials and instantiations
 
+    // remove all the created potentials and instantiations
     for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
             __sampling_nbr.begin();
           iter != __sampling_nbr.end(); ++iter )
@@ -223,14 +222,14 @@ namespace gum {
       // last pass of the period with error
       nextParticle( );
       updateApproximationScheme();
-      error=__updateStats_with_err(nbrIterations() + burnIn());
+      error=__updateStats_with_err( nbrIterations() + burnIn() );
     } while ( testApproximationScheme( error )==APPROX_CONTINUE );
-    
+
     /*if ( verbosity() ) {
       GUM_TRACE( messageApproximationScheme() );
       GUM_TRACE( "#iterations = "<<nbrIterations() );
     }*/
-    
+
     /*
     for ( nb_iter = 1;nb_iter <= maxIter();nb_iter++ ) {
       nextParticle( );
@@ -248,7 +247,7 @@ namespace gum {
           if ( verbosity() ) GUM_TRACE( "Stop by err_rate=" << err_rate );
 
           break;
-          
+
         }
       } else {
         __updateStats_without_err();

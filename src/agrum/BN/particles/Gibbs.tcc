@@ -307,7 +307,7 @@ namespace gum {
 
         for ( Sequence<const DiscreteVariable*>::iterator it = seq.begin();
               it != seq.end();++it ) {
-          I.chgVal( it.pos() , __particle.val( *it ) );
+          I.chgVal( it.pos() , __particle.valFromPtr( *it ) );
         }
 
         Potential<T_DATA>& proba = *__sampling_posterior[id];

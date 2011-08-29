@@ -28,6 +28,8 @@ from topology import parents_name
 
 import pyAgrum as gum
 
+DELTA_ERROR=1e-6
+
 def compareBNVariables(b1,b2):
   for i in range(len(b1)):
     try:
@@ -36,7 +38,7 @@ def compareBNVariables(b1,b2):
       if (len(v2)!=len(v1)):
         return v1.name() + " has not the same domain size in the two bns"
     except IndexError:
-      return b1.variable(i).name()+" does not exist in "+name2
+      return b1.variable(i).name()+" does not exist in second bn"
 
     for i in range(len(b2)):
       try:
@@ -53,9 +55,9 @@ def compareBNParents(b1,b2):
   for i in range(len(b1)):
     id1=i
     id2=b2.idFromName(b1.variable(id1).name())
-
-  if not set(parents_name(b1,id1))==set(parents_name(b2,id2)):
-    return b1.variable(id1).name() +" has not the same parents in the two bns"
+    
+    if not set(parents_name(b1,id1))==set(parents_name(b2,id2)):
+        return b1.variable(id1).name() +" has not the same parents in the two bns"
 
   return "OK"
 
@@ -71,9 +73,8 @@ def compareCPT(cpt1,cpt2):
     for i in range(len(I1)):
       I2.chgVal(dico2[I1.variable(i).name()],I1.val(i))
 
-    print I1,":",cpt1.get(I1)," == ",I2,":",cpt2.get(I2)
-    if cpt1.get(I1)!=cpt2.get(I2):
-      return "Pour "+cpt1.variable(0).name()+", cpt1["+str(I1)+"]!=cpt2["+str(I2)+"]"
+    if abs(cpt1.get(I1)-cpt2.get(I2))>DELTA_ERROR:
+      return "For "+cpt1.variable(0).name()+", cpt1["+str(I1)+"] ("+str(cpt1.get(I1))+") !=cpt2["+str(I2)+"] ("+str(cpt2.get(I2))+")"
     I1+=1
   return "OK"
 
@@ -119,7 +120,4 @@ if __name__=="__main__":
     if len(sys.argv)!=3:
         module_help()
 
-
     print compareBN(sys.argv[1],sys.argv[2])
-
-    print "finito"

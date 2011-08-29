@@ -24,8 +24,9 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <sstream>
-#include <agrum/core/debug.h>
 
+// to ease parser
+#include <agrum/core/list.h>
 
 namespace gum {
 

@@ -137,7 +137,7 @@ namespace gum {
       for ( condVars.setFirst(); !condVars.end(); ++condVars ) {
 
         // Writing the probabilities of the variable
-        if ( condVars.val( varsSeq[( Idx )0] ) != ( varsSeq[( Idx )0] )->domainSize()-1 && condVars.val( varsSeq[( Idx )0] ) != 0 ) {
+        if ( condVars.valFromPtr( varsSeq[( Idx )0] ) != ( varsSeq[( Idx )0] )->domainSize()-1 && condVars.valFromPtr( varsSeq[( Idx )0] ) != 0 ) {
           str << tab << cpt[condVars] ;
         } else {
           bool notend = false;

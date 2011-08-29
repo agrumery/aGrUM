@@ -37,43 +37,43 @@
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
 namespace gum {
-/**
- * @class BayesBall BayesBall.h <agrum/BN/inference/BayesBall.h>
- * @brief Implementation of Shachter's Bayes Balls algorithm.
- * @ingroup bn_group
- *
- */
-class BayesBall {
-public:
-
-  /// Default constructor.
-  BayesBall();
-
-  /// Destructor.
-  ~BayesBall();
-
   /**
-   * Fill requisite with the requisite nodes in dag given a query and hard
-   * evidences.
+   * @class BayesBall BayesBall.h <agrum/BN/inference/BayesBall.h>
+   * @brief Implementation of Shachter's Bayes Balls algorithm.
+   * @ingroup bn_group
+   *
    */
-  void requisiteNodes(const DAG& dag,
-                      const Set<NodeId>& query,
-                      const Set<NodeId>& hardEvidence,
-                      Set<NodeId>& requisite);
+  class BayesBall {
+    public:
 
-private:
+      /// Default constructor.
+      BayesBall();
 
-  /// Call this when a node receive the ball from one of his child.
-  void __fromChild(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
+      /// Destructor.
+      ~BayesBall();
 
-  /// Call this when a node reveive the ball from one of this parents.
-  void __fromParent(NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence);
+      /**
+       * Fill requisite with the requisite nodes in dag given a query and hard
+       * evidences.
+       */
+      void requisiteNodes( const DAG& dag,
+                           const Set<NodeId>& query,
+                           const Set<NodeId>& hardEvidence,
+                           Set<NodeId>& requisite );
 
-  /// Top and bottom flags for each nodes.
-  //HashTable< NodeId, std::pair<bool, bool> > __marks;
-  Property< std::pair<bool, bool> >::onNodes __marks;
+    private:
 
-};
+      /// Call this when a node receive the ball from one of his child.
+      void __fromChild( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence );
+
+      /// Call this when a node reveive the ball from one of this parents.
+      void __fromParent( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence );
+
+      /// Top and bottom flags for each nodes.
+      //HashTable< NodeId, std::pair<bool, bool> > __marks;
+      Property< std::pair<bool, bool> >::onNodes __marks;
+
+  };
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

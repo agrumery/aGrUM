@@ -230,7 +230,9 @@ namespace gum {
       for ( NodeSet::const_iterator parentIter = parentArcs.begin(); parentIter !=  parentArcs.end(); ++ parentIter )
         parentList.push_back( infdiag.variable( *parentIter ).name() );
 
-      for ( List< std::string >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
+      for ( List< std::string >::iterator parentListIte = parentList.rbegin();
+            parentListIte != parentList.rend();
+            --parentListIte )
         str << "\t<GIVEN>" << ( *parentListIte ) << "</GIVEN>" << std::endl;
 
       if ( infdiag.isChanceNode( varNodeId ) ) {

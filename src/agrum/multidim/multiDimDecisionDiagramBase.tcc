@@ -92,8 +92,8 @@ namespace gum {
     NodeId i = __root;
 
     while ( ! isTerminalNode( i ) ) {
-      if ( __arcMap[i]->exists( inst.val( __variableMap[i] ) ) )
-        i = ( *__arcMap[i] )[ inst.val( __variableMap[i] )];
+      if ( __arcMap[i]->exists( inst.valFromPtr( __variableMap[i] ) ) )
+        i = ( *__arcMap[i] )[ inst.valFromPtr( __variableMap[i] )];
       else
         i = __defaultArcMap[i];
     }
@@ -402,82 +402,82 @@ namespace gum {
     return( __var2NodeIdMap.exists( v ) );
   }
 
-	// =============================================================================
-	// Returns a hashtable containing for each node a list of variable
-	// This method looks, for each path in the diagram, if a var does not precede others in
-	// the given in parameter order.
-	// =============================================================================
-	template< typename T_DATA > INLINE
-	void 
-	MultiDimDecisionDiagramBase< T_DATA >::getPreceedingsVariable ( const Sequence< const DiscreteVariable* >* varsSeq, 
-																	HashTable< NodeId, Set< const DiscreteVariable* >* >* result ) const{
-																		
-		Sequence< const DiscreteVariable* > pathVarOrder;
-		_getPreceedingsVariable( varsSeq, this->getRoot(), result, pathVarOrder );
-		
-		for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = result->begin(); iterH != result->end(); ++iterH ){
-			Set< const DiscreteVariable* > finalSet = **iterH;
-			for( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
-				if( varsSeq->pos( *iterS ) >= varsSeq->pos( this->getVariableFromNode( iterH.key() ) ) )
-					(*iterH)->erase( *iterS );
-		}
+  // =============================================================================
+  // Returns a hashtable containing for each node a list of variable
+  // This method looks, for each path in the diagram, if a var does not precede others in
+  // the given in parameter order.
+  // =============================================================================
+  template< typename T_DATA > INLINE
+  void
+  MultiDimDecisionDiagramBase< T_DATA >::getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq,
+      HashTable< NodeId, Set< const DiscreteVariable* >* >* result ) const {
 
-		//~ std::cout << std::endl << " Preneeded variable Table : ";
-		//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = result->begin(); iterH != result->end(); ++iterH ){
-			//~ std::cout << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->getVariableFromNode( iterH.key() )->toString() << " - Preneeded Variable : ";
-			//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
-				//~ std::cout <<  (*iterS)->toString() << " - ";
-			//~ std::cout << std::endl;
-		//~ }
-		//~ std::cout << std::endl;	
-	}
-		
-	// And the recursive parts of this function
-	template< typename T_DATA > INLINE
-	void 
-	MultiDimDecisionDiagramBase< T_DATA >::_getPreceedingsVariable ( const Sequence< const DiscreteVariable* >* varsSeq, const NodeId currentNode, 
-																	HashTable< NodeId, Set< const DiscreteVariable* >* >* result, const Sequence< const DiscreteVariable* > pathVarOrder ) const{				
-		
-		if( !result->exists( currentNode ) )
-			result->insert( currentNode, new Set< const DiscreteVariable* >() );
-			
-		Set< const DiscreteVariable* >* currentVarSet = (*result)[currentNode];
-		
-		Sequence< const DiscreteVariable* > currentPathVarOrder( pathVarOrder );
-		currentPathVarOrder.insert( this->getVariableFromNode( currentNode ) );
-		
-		for( HashTableConstIterator< Idx, NodeId > sonsIter = this->getNodeSons( currentNode )->begin(); sonsIter != this->getNodeSons( currentNode )->end(); ++sonsIter ){
-		
-			if( !this->isTerminalNode( *sonsIter ) ){
-				
-				this->_getPreceedingsVariable( varsSeq, *sonsIter, result, currentPathVarOrder );
-				
-				Set< const DiscreteVariable* >* setTemp = currentVarSet;
-				currentVarSet = new Set< const DiscreteVariable* >( *( ( *result )[ *sonsIter ] ) + *setTemp );
-				delete setTemp;
-			}
-		}
-		if( this->hasNodeDefaultSon( currentNode ) ){
-			NodeId defaultSon = this->getNodeDefaultSon( currentNode );
-			if( ! this->isTerminalNode( defaultSon ) ){					
-				this->_getPreceedingsVariable( varsSeq, defaultSon, result, currentPathVarOrder );
-				
-				Set< const DiscreteVariable* >* setTemp = currentVarSet;
-				currentVarSet = new Set< const DiscreteVariable* >( *( ( *result )[ defaultSon ] ) + *setTemp );
-				delete setTemp;
-			}
-		}
-		result->erase( currentNode );
-		result->insert( currentNode, currentVarSet );
-		
-		for( SequenceIterator< const DiscreteVariable* > pathVarOrderIter = pathVarOrder.begin(); pathVarOrderIter != pathVarOrder.end(); ++pathVarOrderIter )
-			if( varsSeq->pos( *pathVarOrderIter ) > varsSeq->pos( this->getVariableFromNode( currentNode ) ) ) {
-				currentVarSet->insert( this->getVariableFromNode( currentNode ) );
-				break;
-			}
-			
-		
-	}
+    Sequence< const DiscreteVariable* > pathVarOrder;
+    _getPreceedingsVariable( varsSeq, this->getRoot(), result, pathVarOrder );
+
+    for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = result->begin(); iterH != result->end(); ++iterH ) {
+      Set< const DiscreteVariable* > finalSet = **iterH;
+      for ( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
+        if ( varsSeq->pos( *iterS ) >= varsSeq->pos( this->getVariableFromNode( iterH.key() ) ) )
+          ( *iterH )->erase( *iterS );
+    }
+
+    //~ std::cout << std::endl << " Preneeded variable Table : ";
+    //~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = result->begin(); iterH != result->end(); ++iterH ){
+    //~ std::cout << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->getVariableFromNode( iterH.key() )->toString() << " - Preneeded Variable : ";
+    //~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
+    //~ std::cout <<  (*iterS)->toString() << " - ";
+    //~ std::cout << std::endl;
+    //~ }
+    //~ std::cout << std::endl;
+  }
+
+  // And the recursive parts of this function
+  template< typename T_DATA > INLINE
+  void
+  MultiDimDecisionDiagramBase< T_DATA >::_getPreceedingsVariable( const Sequence< const DiscreteVariable* >* varsSeq, const NodeId currentNode,
+      HashTable< NodeId, Set< const DiscreteVariable* >* >* result, const Sequence< const DiscreteVariable* > pathVarOrder ) const {
+
+    if ( !result->exists( currentNode ) )
+      result->insert( currentNode, new Set< const DiscreteVariable* >() );
+
+    Set< const DiscreteVariable* >* currentVarSet = ( *result )[currentNode];
+
+    Sequence< const DiscreteVariable* > currentPathVarOrder( pathVarOrder );
+    currentPathVarOrder.insert( this->getVariableFromNode( currentNode ) );
+
+    for ( HashTableConstIterator< Idx, NodeId > sonsIter = this->getNodeSons( currentNode )->begin(); sonsIter != this->getNodeSons( currentNode )->end(); ++sonsIter ) {
+
+      if ( !this->isTerminalNode( *sonsIter ) ) {
+
+        this->_getPreceedingsVariable( varsSeq, *sonsIter, result, currentPathVarOrder );
+
+        Set< const DiscreteVariable* >* setTemp = currentVarSet;
+        currentVarSet = new Set< const DiscreteVariable* >( *(( *result )[ *sonsIter ] ) + *setTemp );
+        delete setTemp;
+      }
+    }
+    if ( this->hasNodeDefaultSon( currentNode ) ) {
+      NodeId defaultSon = this->getNodeDefaultSon( currentNode );
+      if ( ! this->isTerminalNode( defaultSon ) ) {
+        this->_getPreceedingsVariable( varsSeq, defaultSon, result, currentPathVarOrder );
+
+        Set< const DiscreteVariable* >* setTemp = currentVarSet;
+        currentVarSet = new Set< const DiscreteVariable* >( *(( *result )[ defaultSon ] ) + *setTemp );
+        delete setTemp;
+      }
+    }
+    result->erase( currentNode );
+    result->insert( currentNode, currentVarSet );
+
+    for ( SequenceIterator< const DiscreteVariable* > pathVarOrderIter = pathVarOrder.begin(); pathVarOrderIter != pathVarOrder.end(); ++pathVarOrderIter )
+      if ( varsSeq->pos( *pathVarOrderIter ) > varsSeq->pos( this->getVariableFromNode( currentNode ) ) ) {
+        currentVarSet->insert( this->getVariableFromNode( currentNode ) );
+        break;
+      }
+
+
+  }
 
 
   /** *************************************************************************************/

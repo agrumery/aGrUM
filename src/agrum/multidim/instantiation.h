@@ -399,11 +399,11 @@ namespace gum {
        *          variable as, usually, it is not necessary. If need be, use function
        *          inOverflow() to check.
        *
-       * @param var the variable the value of which we wish to know
+       * @param pvar a pointer to the variable the value of which we wish to know
        * @throw NotFound Raised if var does not belong to the instantiation.
        */
       // ============================================================================
-      Idx val( const DiscreteVariable* var ) const;
+      Idx valFromPtr( const DiscreteVariable* pvar ) const;
 
       // ============================================================================
       /**
@@ -1135,7 +1135,7 @@ namespace gum {
         try {
           for ( Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
                 iter != i.variablesSequence().end(); ++iter ) {
-            j.chgVal( bij.second( *iter ), i.val( *iter ) );
+            j.chgVal( bij.second( *iter ), i.valFromPtr( *iter ) );
           }
         } catch ( NotFound& ) {
           GUM_ERROR( NotFound, "missing variable in bijection or instantiation" );

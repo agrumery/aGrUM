@@ -237,8 +237,8 @@ namespace gum {
   // ==============================================================================
   /// returns the current value of a given variable
   // ==============================================================================
-  INLINE Idx Instantiation::val( const DiscreteVariable* var ) const {
-    return __vals[__vars[var]];
+  INLINE Idx Instantiation::valFromPtr( const DiscreteVariable* pvar ) const {
+    return __vals[__vars[pvar]];
   }
 
   // ==============================================================================

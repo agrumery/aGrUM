@@ -41,7 +41,6 @@ namespace gum {
    *
    */
   template <typename T_DATA>
-
   class BayesNetInference {
     public:
       /**
