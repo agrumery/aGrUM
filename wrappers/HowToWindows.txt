@@ -4,11 +4,17 @@
 - install Python 2.x
 - change PATH properly
 
-- cmake -G "MinGW Makefiles" ..\pyAgrum\CMakeCache.txt -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib" (-DCMAKE_VERBOSE_MAKEFILES si besoin)
+- dans build/linux/release
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE=OFF
+- dans build/wrappers/pyAgrum
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
 
 Si souci de linkage, qqchose comme
 C:\PROGRA~2\CODEBL~1\MinGW\bin\G__~1.EXE     -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+"c:\Program Files (x86)\CodeBlocks\MinGW\bin\mingw32-g++.exe" -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
 
 - copier pyAgrum.py et _pyAgrum.pyd dans python\Libs\site-package
+copy pyAgrum.py c:\Python27\Lib\site-packages\.
+copy _pyAgrum.pyd c:\Python27\Lib\site-packages\.
 
 et hop
