@@ -1,0 +1,113 @@
+(variables  (glue t f)  (typeneeded highq lowq) (connected good bad f) (bolts t f)  (adrilled t f) (bdrilled t f) )
+action drilla
+adrilled (connected (good (0.000000 1.000000 ))
+		    (bad (0.000000 1.000000 ))
+		    (f (adrilled (t (1.000000 0.000000 ))
+				 (f (0.800000 0.200000 )))
+		       ))
+
+bdrilled (connected (good (0.000000 1.000000 ))
+		    (bad (0.000000 1.000000 ))
+		    (f (bdrilled (t (1.000000 0.000000 ))
+				 (f (0.000000 1.000000 )))
+		       ))
+
+typeneeded (typeneeded (highq (1.000000 0.000000 ))
+		       (lowq (0.000000 1.000000 )))
+
+connected (connected (good (1.000000 0.000000 0.000000 ))
+		     (bad (0.000000 1.000000 0.000000 ))
+		     (f (0.000000 0.000000 1.000000 )))
+
+bolts (bolts (t (1.000000 0.000000 ))
+	     (f (0.000000 1.000000 )))
+
+glue (glue (t (1.000000 0.000000 ))
+	   (f (0.000000 1.000000 )))
+endaction
+action drillb
+bdrilled (connected (good (0.000000 1.000000 ))
+		    (bad (0.000000 1.000000 ))
+		    (f (bdrilled (t (1.000000 0.000000 ))
+				 (f (0.800000 0.200000 )))
+		       ))
+
+adrilled (connected (good (0.000000 1.000000 ))
+		    (bad (0.000000 1.000000 ))
+		    (f (adrilled (t (1.000000 0.000000 ))
+				 (f (0.000000 1.000000 )))
+		       ))
+
+typeneeded (typeneeded (highq (1.000000 0.000000 ))
+		       (lowq (0.000000 1.000000 )))
+
+connected (connected (good (1.000000 0.000000 0.000000 ))
+		     (bad (0.000000 1.000000 0.000000 ))
+		     (f (0.000000 0.000000 1.000000 )))
+
+bolts (bolts (t (1.000000 0.000000 ))
+	     (f (0.000000 1.000000 )))
+
+glue (glue (t (1.000000 0.000000 ))
+	   (f (0.000000 1.000000 )))
+
+endaction
+action bolt
+adrilled (adrilled (t (1.000000 0.000000 ))
+		   (f (0.000000 1.000000 )))
+
+bdrilled (bdrilled (t (1.000000 0.000000 ))
+		   (f (0.000000 1.000000 )))
+
+typeneeded (typeneeded (highq (1.000000 0.000000 ))
+		       (lowq (0.000000 1.000000 )))
+
+connected (connected (good (1.000000 0.000000 0.000000 ))
+		     (bad (0.000000 1.000000 0.000000 ))
+		     (f (bolts (t (adrilled (t (bdrilled (t (1.000000 0.000000 0.000000 ))
+							 (f (0.000000 0.000000 1.000000 )))
+					       )
+					    (f (0.000000 0.000000 1.000000 )))
+				  )
+			       (f (0.000000 0.000000 1.000000 )))
+			))
+
+bolts (bolts (t (1.000000 0.000000 ))
+	     (f (0.000000 1.000000 )))
+
+glue (glue (t (1.000000 0.000000 ))
+	   (f (0.000000 1.000000 )))
+
+endaction
+action glue
+adrilled (adrilled (t (1.000000 0.000000 ))
+		   (f (0.000000 1.000000 )))
+
+bdrilled (bdrilled (t (1.000000 0.000000 ))
+		   (f (0.000000 1.000000 )))
+
+typeneeded (typeneeded (highq (1.000000 0.000000 ))
+		       (lowq (0.000000 1.000000 )))
+
+connected (connected (good (1.000000 0.000000 0.000000 ))
+		     (bad (0.000000 1.000000 0.000000 ))
+		     (f (glue (t (0.000000 1.000000 0.000000 ))
+			      (f (0.000000 0.000000 1.000000 )))
+			))
+
+bolts (bolts (t (1.000000 0.000000 ))
+	     (f (0.000000 1.000000 )))
+
+glue (glue (t (1.000000 0.000000 ))
+	   (f (0.000000 1.000000 )))
+endaction
+reward (typeneeded (highq (connected (good (10.000000) )
+				     (bad (0.000000) )
+				     (f (0.000000) )))
+		   (lowq (connected (good (1.000000) )
+				    (bad (3.000000) )
+				    (f (0.000000) ))
+			 ))
+discount 0.900000
+tolerance 0.1
+                            

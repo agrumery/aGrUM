@@ -156,8 +156,11 @@ namespace gum {
 
         if ( value >= this->_highLimit )
           return _nbInterval;
-
+          
+		//~ std::cout << "Original value : " << value << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - Encoded Value : " << (( Idx )(( value - this->_lowLimit ) / this->_epsilon ) ) + 1 << std::endl;
+	
         return (( Idx )(( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
+        
       };
 
       /// Concretely computes the approximate value from representation
@@ -168,6 +171,8 @@ namespace gum {
 
         if ( representation == _nbInterval )
           return this->_highLimit;
+          
+	//~ std::cout << "Rep value : " << representation << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - DecodedValue : " << (( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit << std::endl;
 
         return (( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
       };

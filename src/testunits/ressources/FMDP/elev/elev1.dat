@@ -1,0 +1,48 @@
+(variables (p1state waiting served inside) (floor f1 f2 f3 f4 f5) )
+action elevup 
+	floor	(floor	(f1	(0.0 1.0 0.0 0.0 0.0))
+			(f2	(0.0 0.0 1.0 0.0 0.0))
+			(f3	(0.0 0.0 0.0 1.0 0.0))
+			(f4	(0.0 0.0 0.0 0.0 1.0))
+			(f5	(0.0 0.0 0.0 0.0 1.0)))
+	p1state	(p1state	(waiting	(1.0	0.0	0.0))
+				(served		(0.0	1.0	0.0))
+				(inside		(0.0	0.0	1.0)))
+	cost	(0.1)
+endaction
+action elevdown
+	floor	(floor	(f1	(1.0 0.0 0.0 0.0 0.0))
+			(f2	(1.0 0.0 0.0 0.0 0.0))
+			(f3	(0.0 1.0 0.0 0.0 0.0))
+			(f4	(0.0 0.0 1.0 0.0 0.0))
+			(f5	(0.0 0.0 0.0 1.0 0.0)))
+	p1state	(p1state	(served		(0.0	1.0	0.0))
+				(waiting	(1.0	0.0	0.0))
+				(inside		(0.0	0.0	1.0)))
+endaction
+action elevstop
+	floor	(floor	(f1	(1.0 0.0 0.0 0.0 0.0))
+			(f2	(0.0 1.0 0.0 0.0 0.0))
+			(f3	(0.0 0.0 1.0 0.0 0.0))
+			(f4	(0.0 0.0 0.0 1.0 0.0))
+			(f5	(0.0 0.0 0.0 0.0 1.0)))
+	p1state	(p1state	(waiting	(floor	(f1	(1.0	0.0	0.0))
+							(f2	(0.1	0.0	0.9))
+							(f3	(1.0	0.0	0.0))
+							(f4	(1.0	0.0	0.0))
+							(f5	(1.0	0.0	0.0))))
+				(served		(0.0	1.0	0.0))
+				(inside		(floor	(f1	(0.0	0.0	1.0))
+							(f2	(0.0	0.0	1.0))
+							(f3	(0.0	0.0	1.0))
+							(f4	(0.0	0.0	1.0))
+							(f5	(0.0	0.9	0.1)))))
+endaction
+reward	(p1state	(waiting	(0.0))
+			(served		(1.0))
+			(inside		(0.0)))
+discount 0.9
+tolerance 0.01
+
+
+	

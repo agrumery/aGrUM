@@ -70,8 +70,14 @@ namespace gum {
        * Default constructor.
        */
       MultiDimDecisionDiagram( );
+      
+      /**
+       * Copy constructor.
+       */
+      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >& md );
 
-      /** Constructor<T_DATA>
+      /** 
+       * Constructor with approximation initialisation
        */
       MultiDimDecisionDiagram( const IApproximationPolicy<T_DATA>& md );
 

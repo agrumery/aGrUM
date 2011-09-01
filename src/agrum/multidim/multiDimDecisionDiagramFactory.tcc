@@ -30,9 +30,9 @@ using namespace std;
 using namespace gum;
 
 /* **********************************************************************************************/
-/*                        */
-/*                         Constructors, Destructors           */
-/*                        */
+/*																								*/
+/*									Constructors, Destructors 									*/
+/*																								*/
 /* **********************************************************************************************/
 
 // =============================================================================
@@ -62,9 +62,9 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::~MultiDimDecisio
 }
 
 /* **********************************************************************************************/
-/*                        */
-/*                        Graph Manipulation methods           */
-/*                        */
+/*																								*/
+/*									Graph Manipulation methods									*/
+/*																								*/
 /* **********************************************************************************************/
 
 // =============================================================================
@@ -77,10 +77,15 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecis
   if ( fillWithDefaultArc ) {
     if ( defaultValue < this->lowLimit() )
       defaultValue = ( this->lowLimit() + this->highLimit() )/2;
-    NodeId zeroId = this->addTerminalNode( defaultValue );
+    NodeId zeroId = 0;
+    bool zeroNotCreated = true;
     for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
       if ( !this->_valueMap.existsFirst( *iter ) && !this->_defaultArcMap.exists( *iter ) && this->_arcMap[*iter]->size() < this->_varMap[*iter]->domainSize() ) {
-        this->_defaultArcMap.insert( *iter, zeroId );
+		  if( zeroNotCreated ){
+			  zeroId = this->addTerminalNode( defaultValue );
+			  zeroNotCreated = false;
+		  }
+		  this->_defaultArcMap.insert( *iter, zeroId );
       }
     }
   }
@@ -92,6 +97,8 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecis
     ret->setEpsilon( this->epsilon() );*/
   ret->setLimits(this->lowLimit(),this->highLimit());
 
+  if( this->_noVariableCheckMode )
+	this->_varsSeq = this->_findVariableOrder();
   ret->setVariableSequence( this->_varsSeq );
 
   ret->setDiagramNodes( this->_model );
@@ -104,7 +111,11 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecis
 
   NodeId root = 0;
   for ( DAG::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-    if ( !this->_valueMap.existsFirst( *iter ) && !this->_model.children( *iter ).empty() && this->_model.parents( *iter ).empty() ) {
+	if( this->_valueMap.existsFirst( *iter ) && this->_model.size() == 1 ){
+		root = *iter;
+		break;
+	}
+	if ( !this->_valueMap.existsFirst( *iter ) && !this->_model.children( *iter ).empty() && this->_model.parents( *iter ).empty() ) {
       root = *iter;
       break;
     }
