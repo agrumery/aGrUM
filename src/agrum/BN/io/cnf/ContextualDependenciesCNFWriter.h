@@ -27,8 +27,8 @@
  * @author Lionel Torti & Pierre-Henri Wuillemin
  */
 
-#ifndef GUM_O2CNF_WRITER_H
-#define GUM_O2CNF_WRITER_H
+#ifndef GUM_CDCNF_WRITER_H
+#define GUM_CDCNF_WRITER_H
 
 #include <fstream>
 #include <iostream>

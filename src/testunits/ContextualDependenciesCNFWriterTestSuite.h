@@ -151,7 +151,7 @@ namespace gum {
           const gum::Potential<double>& p1 = bn.cpt( i1 );
           {
             // FILLING PARAMS
-            const double t[2] = {0.2, 0.8};
+            const double t[2] = {0.5, 0.5};
             int n = 2;const std::vector<double> v( t, t + n );
             p1.fillWith( v );
           }
@@ -189,6 +189,7 @@ namespace gum {
             int n = 16;const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
+          //std::cout << p5 << std::endl;
         }
     };
 
