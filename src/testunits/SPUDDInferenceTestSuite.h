@@ -42,7 +42,7 @@ namespace gum {
 
     class SPUDDInferenceTestSuite: public CxxTest::TestSuite {
       public:
-        void test_Coffee() {
+        void /*test*/_Coffee() {
           std::string file = GET_PATH_STR( FMDP/coffee/coffee.dat );
 
           gum::FactoredMarkovDecisionProcess<double> fmdp;
