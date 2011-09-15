@@ -128,7 +128,7 @@ namespace gum {
 					while( __fmdp->hasVariable() ){
 						
 						Vtemp = Vaction;
-						Vaction = multiply2MultiDimDecisionDiagrams( Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ) );
+						Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ), Vaction );
 						delete Vtemp;
 							
 						__fmdp->nextVariable();
@@ -211,7 +211,7 @@ namespace gum {
 						while( __fmdp->hasVariable() ){
 							
 							Vtemp = Vaction;
-							Vaction = multiply2MultiDimDecisionDiagrams( Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ) );
+							Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ), Vaction  );
 							delete Vtemp;
 								
 							__fmdp->nextVariable();
@@ -227,7 +227,7 @@ namespace gum {
 						Vaction = Vtemp;
 						
 						Vtemp = Vaction;
-						Vaction = add2MultiDimDecisionDiagrams( Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ) );
+						Vaction = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ), Vaction  );
 						delete Vtemp;
 						
 						VactionCollector.insert( __fmdp->actionIterId(), Vaction );

@@ -60,7 +60,7 @@
 	MultiDimDecisionDiagramBase< GUM_MULTI_DIM_PROJECTION_TYPE >* ret = reinterpret_cast<MultiDimDecisionDiagramBase< T_DATA >*>( table->newFactory() );
 	ret->copy( *table );
 		
-	//~ GUM_TRACE( ret->toDot() );
+	//~ GUM_TRACE( "Recopie diagramme originel dans résultat : " << ret->toDot() );
 	MultiDimDecisionDiagramFactoryBase< GUM_MULTI_DIM_PROJECTION_TYPE >* Resfactory = table->getFactory( );
 	Sequence< const DiscreteVariable* > varsSeq = table->variablesSequence();
 	
@@ -87,6 +87,7 @@
 		// ************************************************************************************
 		// If root node is terminal, we have nothing to worried about
 		if( ret->isTerminalNode( ret->root() ) ) {
+			//~ GUM_TRACE( "Diagramme réduit à noeud terminal. Aborting ..." );
 			Resfactory->addTerminalNode( ret->nodeValue( ret->root() ) );
 			delete ret;
 			ret = Resfactory->getMultiDimDecisionDiagram();
@@ -116,7 +117,8 @@
 				
 				const MultiDimDecisionDiagramBase<T_DATA>* oldDiagram = ret;
 				
-				//~ GUM_TRACE( oldDiagram->toDot() );
+				
+				//~ GUM_TRACE( "Projection normal." << oldDiagram->toDot() );
 			
 				nodeMap.insert( oldDiagram->root(), Resfactory->addNonTerminalNode( oldDiagram->nodeVariable( oldDiagram->root() ) ) );
 					
@@ -129,12 +131,13 @@
 					// Recovering current node id and its associated node id in building diagram
 					NodeId currentNodeId = fifo.back();
 					fifo.pop_back();
+					//~ GUM_TRACE( "Noeud courant : " << currentNodeId );
 						
 					// ************************************************************************************
 					// For each sons
 					const HashTable< Idx, NodeId >* sonsMap = oldDiagram->nodeSons( currentNodeId );
 					for( HashTableConstIterator< Idx, NodeId > sonsIter = sonsMap->begin(); sonsIter != sonsMap->end(); ++sonsIter ){
-						
+						//~ GUM_TRACE( "Fils suivi : " << *sonsIter );
 						bool subDiagramJustInstanciated = false;
 						// ************************************************************************************
 						// If node is not in nodeMap, it means that we haven't inserted him yet in resulting diagram
@@ -165,7 +168,7 @@
 									nodeMap.insert( *sonsIter, Resfactory->insertSubDecisionDiagram( projectedDiagram, nodeMap[ currentNodeId ], sonsIter.key() ) );
 									
 									//~ GUM_TRACE( "And on factory : " << std::endl );									
-									//~ Resfactory->showProperties();
+									// Resfactory->showProperties();
 									
 									delete projectedDiagram;
 									subDiagramJustInstanciated = true;
@@ -184,8 +187,8 @@
 						// Next we can insert arc in between
 						if( !subDiagramJustInstanciated ){
 							//~ GUM_TRACE( " From : " << nodeMap[ currentNodeId ] << " - To : " << nodeMap[*sonsIter] << " - Value : " << sonsIter.key() << std::endl );
-							//~ Resfactory->showProperties();
 							Resfactory->insertArc( nodeMap[ currentNodeId ], nodeMap[ *sonsIter ], sonsIter.key() );
+							//Resfactory->showProperties();
 							//~ GUM_TRACE( "Done!" << std::endl );
 						}
 					}
@@ -196,7 +199,7 @@
 						
 						NodeId currentNodeDefaultSon = oldDiagram->nodeDefaultSon( currentNodeId );						
 						bool subDiagramJustInstanciated = false;
-						
+						//~ GUM_TRACE( "Fils par D2FAUT!");
 						if( !nodeMap.exists( currentNodeDefaultSon ) ){
 							
 							if( oldDiagram->isTerminalNode( currentNodeDefaultSon ) ){
@@ -220,7 +223,7 @@
 									nodeMap.insert( currentNodeDefaultSon, Resfactory->insertSubDecisionDiagram( projectedDiagram, nodeMap[ currentNodeId ] ) );
 									
 									//~ GUM_TRACE( "And on factory : " << std::endl );									
-									//~ Resfactory->showProperties();
+									// Resfactory->showProperties();
 									
 									delete projectedDiagram;
 									subDiagramJustInstanciated = true;
@@ -235,8 +238,8 @@
 							
 						if( !subDiagramJustInstanciated ){
 							//~ GUM_TRACE(  " From : " << nodeMap[ currentNodeId ] << " - To : " << nodeMap[currentNodeDefaultSon] << std::endl );
-							//~ Resfactory->showProperties();
 							Resfactory->insertDefaultArc( nodeMap[ currentNodeId ], nodeMap[ currentNodeDefaultSon ] );
+							//Resfactory->showProperties();
 							//~ GUM_TRACE( "Done!" << std::endl );
 						}					
 					}

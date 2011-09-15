@@ -59,7 +59,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      SPUDDInference ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.00001 );
+      SPUDDInference ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.001 );
 
       /**
        * Default destructor

@@ -159,7 +159,7 @@ namespace gum {
 					MultiDimDecisionDiagramBase<float>* ret = NULL;
 					bool factoryCreatedHere = false;
 					
-					while( ret == NULL || ( ret->diagramVarSize() < 3) || ( ret->diagramVarSize() > 3 ) ){
+					while( ret == NULL || ( ret->diagramVarSize() < 5 ) || ( ret->diagramVarSize() > 7 ) ){
 						
 						if( ret != NULL )
 							delete ret;
@@ -338,8 +338,10 @@ namespace gum {
 						bool haserror = false;
 						for( inst.setFirst(); ! inst.end(); ++inst ){
 							TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
-							if( a3->get(inst) != a1->get(inst) + a2->get(inst))
+							if( a3->get(inst) != a1->get(inst) + a2->get(inst)){
 								haserror = true;
+								break;
+							}
 						}
 						if( haserror ){
 							GUM_TRACE( std::endl << a1->toDot() << std::endl << a2->toDot() << std::endl << a3->toDot() );
@@ -424,117 +426,117 @@ namespace gum {
 					// Then we try with random structure
 					// =====================================================================================
 					
-					//~ for(int i = 0; i < 100; i++ ){
-						//~ 
+					for(int i = 0; i < 10; i++ ){
+						
 						//~ GUM_TRACE( i+1 << "ème itération" << std::endl );
-						//~ 
-						//~ Sequence< const DiscreteVariable* >* varList = __generateRandomVarList( i + 1 );						
-						//~ __shuffleVarList( varList, i + 2 );
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a1 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a1 = __generateRandomfloatDecisionDiagram(varList, i + 3) );
-						//~ 
-						//~ __shuffleVarList( varList, i + 4 );
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a2 = NULL;
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a2 = __generateRandomfloatDecisionDiagram(varList, i + 5) );
-						//~ 
-						//~ MultiDimDecisionDiagramBase<float>* a3 = NULL;
-						//~ 
-						//~ bool haserror = false;
-							//~ 
-						//~ //Test addition
-						//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );			
-						//~ if( a3 != NULL ){
-							//~ Instantiation inst(a3);
-							//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-								//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
-								//~ if( a3->get(inst) != a1->get(inst) + a2->get(inst)){
-									//~ GUM_TRACE("AQUI!");
-									//~ __saveDiagrams(a1, a2, a3);
-									//~ haserror = true;
-									//~ break;
-								//~ }
-							//~ }
-							//~ delete a3;
-						//~ } else {
-							//~ __saveDiagrams(a1, a2, a3);
-							//~ haserror = true;
-						//~ }
-						//~ 
-						//~ // Test Substraction
-						//~ if( !haserror ){
-							//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
-							//~ if( a3 != NULL ){
-								//~ Instantiation inst(a3);
-								//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-									//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 0.01 );
-									//~ if( a3->get(inst) != a1->get(inst) - a2->get(inst)){
-										//~ GUM_TRACE("AQUI!");
-										//~ __saveDiagrams(a1, a2, a3);
-										//~ haserror = true;
-										//~ break;
-									//~ }
-								//~ }
-								//~ delete a3;
-							//~ } else {
-								//~ __saveDiagrams(a1, a2, a3);
-								//~ haserror = true;
-							//~ }
-						//~ }
-						//~ 
-						//~ // Test Multiplication
-						//~ if( !haserror ){
-							//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
-							//~ if( a3 != NULL ){
-								//~ Instantiation inst(a3);
-								//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-									//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 0.01 );
-									//~ if( a3->get(inst) != a1->get(inst) * a2->get(inst)){
-										//~ GUM_TRACE("AQUI!");
-										//~ __saveDiagrams(a1, a2, a3);
-										//~ haserror = true;
-										//~ break;
-									//~ }
-								//~ }
-								//~ delete a3;
-							//~ } else {
-								//~ __saveDiagrams(a1, a2, a3);
-								//~ haserror = true;
-							//~ }
-						//~ }
-						//~ 
-						//~ // Test Maximum
-						//~ if( !haserror ){
-							//~ TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );					
-							//~ if( a3 != NULL ){
-								//~ Instantiation inst(a3);
-								//~ for( inst.setFirst(); ! inst.end(); ++inst ){
-									//~ TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst), 0.01 );
-									//~ if( a3->get(inst) != ( a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst) )){
-										//~ GUM_TRACE("AQUI!");
-										//~ __saveDiagrams(a1, a2, a3);
-										//~ haserror = true;
-										//~ break;
-									//~ }
-								//~ }
-								//~ delete a3;
-							//~ } else {
-								//~ __saveDiagrams(a1, a2, a3);
-								//~ haserror = true;
-							//~ }
-						//~ }
-						//~ 
-						//~ delete a1;
-						//~ delete a2;
-						//~ 
-						//~ for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
-							//~ delete *ite;
-						//~ delete varList;
-						//~ 
-						//~ if( haserror )
-							//~ break;
-					//~ }
+						
+						Sequence< const DiscreteVariable* >* varList = __generateRandomVarList( i + 1 );						
+						__shuffleVarList( varList, i + 2 );
+						
+						MultiDimDecisionDiagramBase<float>* a1 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a1 = __generateRandomfloatDecisionDiagram(varList, i + 3) );
+						
+						__shuffleVarList( varList, i + 4 );
+						
+						MultiDimDecisionDiagramBase<float>* a2 = NULL;
+						TS_GUM_ASSERT_THROWS_NOTHING( a2 = __generateRandomfloatDecisionDiagram(varList, i + 5) );
+						
+						MultiDimDecisionDiagramBase<float>* a3 = NULL;
+						
+						bool haserror = false;
+							
+						//Test addition
+						TS_GUM_ASSERT_THROWS_NOTHING( a3 = add2MultiDimDecisionDiagrams( a1 , a2 ) );			
+						if( a3 != NULL ){
+							Instantiation inst(a3);
+							for( inst.setFirst(); ! inst.end(); ++inst ){
+								TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) + a2->get(inst), 0.01 );
+								if( a3->get(inst) != a1->get(inst) + a2->get(inst)){
+									__saveDiagrams(a1, a2, a3);
+									haserror = true;
+									break;
+								}
+							}
+							delete a3;
+						} else {
+							GUM_TRACE("AQUI!");
+							__saveDiagrams(a1, a2, a3);
+							haserror = true;
+						}
+						
+						// Test Substraction
+						if( !haserror ){
+							TS_GUM_ASSERT_THROWS_NOTHING( a3 = subtract2MultiDimDecisionDiagrams( a1 , a2 ) );					
+							if( a3 != NULL ){
+								Instantiation inst(a3);
+								for( inst.setFirst(); ! inst.end(); ++inst ){
+									TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) - a2->get(inst), 0.01 );
+									if( a3->get(inst) != a1->get(inst) - a2->get(inst)){
+										GUM_TRACE("AQUI!");
+										__saveDiagrams(a1, a2, a3);
+										haserror = true;
+										break;
+									}
+								}
+								delete a3;
+							} else {
+								__saveDiagrams(a1, a2, a3);
+								haserror = true;
+							}
+						}
+						
+						// Test Multiplication
+						if( !haserror ){
+							TS_GUM_ASSERT_THROWS_NOTHING( a3 = multiply2MultiDimDecisionDiagrams( a1 , a2 ) );					
+							if( a3 != NULL ){
+								Instantiation inst(a3);
+								for( inst.setFirst(); ! inst.end(); ++inst ){
+									TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) * a2->get(inst), 0.01 );
+									if( a3->get(inst) != a1->get(inst) * a2->get(inst)){
+										GUM_TRACE("AQUI!");
+										__saveDiagrams(a1, a2, a3);
+										haserror = true;
+										break;
+									}
+								}
+								delete a3;
+							} else {
+								__saveDiagrams(a1, a2, a3);
+								haserror = true;
+							}
+						}
+						
+						// Test Maximum
+						if( !haserror ){
+							TS_GUM_ASSERT_THROWS_NOTHING( a3 = maximize2MultiDimDecisionDiagrams( a1 , a2 ) );					
+							if( a3 != NULL ){
+								Instantiation inst(a3);
+								for( inst.setFirst(); ! inst.end(); ++inst ){
+									TS_ASSERT_DELTA( a3->get(inst), a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst), 0.01 );
+									if( a3->get(inst) != ( a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst) )){
+										GUM_TRACE("AQUI!");
+										__saveDiagrams(a1, a2, a3);
+										haserror = true;
+										break;
+									}
+								}
+								delete a3;
+							} else {
+								__saveDiagrams(a1, a2, a3);
+								haserror = true;
+							}
+						}
+						
+						delete a1;
+						delete a2;
+						
+						for( SequenceIterator< const DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+							delete *ite;
+						delete varList;
+						
+						if( haserror )
+							break;
+					}
 				}
 				// ================================================================================================
 				

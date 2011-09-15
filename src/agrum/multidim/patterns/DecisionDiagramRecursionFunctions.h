@@ -1,6 +1,7 @@
 #ifndef GUM_DECISION_DIAGRAM_OPERATOR_DATA
 #define GUM_DECISION_DIAGRAM_OPERATOR_DATA
 
+
 template< typename T >
 struct OperatorData {
 	
@@ -21,6 +22,8 @@ struct OperatorData {
 	
 	/// Table to remind us wich part of both diagram have already been explored, and the resulting node
 	HashTable< std::string, NodeId >* explorationTable;
+	
+	Idx nbOpToDo;
 	
 	OperatorData( const MultiDimDecisionDiagramBase<T>* t1, const MultiDimDecisionDiagramBase<T>* t2, T newLowLimit, T newHighLimit ){
 		
@@ -126,6 +129,7 @@ struct OperatorData {
 		instantiateVariables = new HashTable< const DiscreteVariable*, Idx >();	
 		defaultInstantiateVariables = new List< const DiscreteVariable* >();
 		explorationTable = new HashTable< std::string, NodeId >();
+		nbOpToDo = 0;
 	}
 	
 	~OperatorData(){
@@ -164,7 +168,7 @@ insertNonTerminalNode( OperatorData<T>& opData, const DiscreteVariable* associat
 				defaultSon = NULL;
 				break;
 			}
-	return opData.factory->addNonTerminalNodeWithArcs( associatedVariable, sonsMap, defaultSon );
+	return opData.factory->unsafeAddNonTerminalNodeWithArcs( associatedVariable, sonsMap, defaultSon );
 }
 
 #endif
@@ -182,21 +186,22 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 												NodeId followerCurrentNode,
 												std::string tabu ) {
 													
+											
 													
-	//~ std::stringstream key;
-	//~ key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
-	//~ if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
-		//~ for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
-			 //~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
-				//~ key << instIter.key()->name() << *instIter << "-";
-		//~ for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
-			//~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
-				//~ key << (*listIter)->name() << "*-";
-	//~ }
-	//~ if( opData.explorationTable->exists( key.str() ) ){
-			//~ std::cout << "PRUNING! : " << key.str() << std::endl;
-			//~ return (*(opData.explorationTable))[key.str()];
-	//~ }
+	std::stringstream key;
+	key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
+	if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
+		for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
+			 if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
+				key << instIter.key()->name() << *instIter << "-";
+		for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
+			if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
+				key << (*listIter)->name() << "*-";
+	}
+	if( opData.explorationTable->exists( key.str() ) ){
+			//~ GUM_TRACE( "PRUNING! : " << key.str() << std::endl );
+			return (*(opData.explorationTable))[key.str()];
+	}
 
 	tabu += "\t";
 	NodeId newNode = 0;
@@ -207,41 +212,32 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 	// we only have to compute the resulting value
 		if( leader->isTerminalNode(leaderCurrentNode) && follower->isTerminalNode(followerCurrentNode) ){	
 			
-			//~ GUM_TRACE( tabu << "Ajout noeud terminal " << " - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode );
-			
 			// First we have to get pointers on value from those terminal nodes
-			T leaderValue = leader->nodeValue( leaderCurrentNode );
-			T followerValue = follower->nodeValue( followerCurrentNode );
+			T leaderValue = leader->unsafeNodeValue( leaderCurrentNode );
+			T followerValue = follower->unsafeNodeValue( followerCurrentNode );
 			
 			// Then we have to compute new value
 			// To do so we have to ensure that given value are in order
 			// ( substraction and division aren't commutative for exemple)
-			T newVal = 0;
-			newVal = GUM_MULTI_DIM_OPERATOR( leaderValue, followerValue );
-			//~ std::cout << "leaderValue : " << leaderValue << " - followerValue : " << followerValue << " - newVal : " << newVal << std::endl;
+			T newVal = GUM_MULTI_DIM_OPERATOR( leaderValue, followerValue );
+			Idx nbOptToDo = opData.nbOpToDo;
+			while( nbOptToDo > 1 ){
+				newVal = GUM_MULTI_DIM_OPERATOR( newVal, followerValue );
+				nbOptToDo--;
+			}
 				
 			// And finally we insert a new node in diagram with this value
-			//~ GUM_TRACE( " Ajout noeud" );
 			newNode = opData.factory->addTerminalNode( newVal );
-			//~ GUM_TRACE( "LEAF EXPLORATION STATUS : " << *(opData.explorationTable) );
-			//~ GUM_TRACE( "Ajout de : " << key.str() << " -> " << newNode );
-			//~ opData.explorationTable->insert( key.str(), newNode );	
-			
-			//~ std ::cout << std::endl << "Insertion noeud terminal : " << newNode << " - Valeur : " << newVal << std::endl;
+			opData.explorationTable->insert( key.str(), newNode );	
 		}
 	// *******************************************************************************************************
 	
 	if( !follower->isTerminalNode( followerCurrentNode ) )
 		if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
-			
-			//~ GUM_TRACE( "Preneeded Variable : " );
-			//~ for( SetIterator< const DiscreteVariable* > iterS = (*opData.retrogradeVarTable)[ followerCurrentNode ]->begin(); iterS != (*opData.retrogradeVarTable)[ followerCurrentNode ]->end(); ++iterS )
-				//~ GUM_TRACE(  (*iterS)->toString() << " - " );
-			//~ GUM_TRACE( std::endl );
 				
 			Idx indexFin = opData.factory->variablesSequence().size();
 			if( !leader->isTerminalNode( leaderCurrentNode ) )
-				indexFin = opData.factory->variablesSequence().pos( leader->nodeVariable( leaderCurrentNode ) );
+				indexFin = opData.factory->variablesSequence().pos( leader->unsafeNodeVariable( leaderCurrentNode ) );
 				
 			Idx indexDebut = 0;
 			if( leaderParentVar != NULL )
@@ -249,21 +245,20 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 				
 			if( indexFin != indexDebut )
 				for( Idx i = indexDebut; i < indexFin; ++i ){
+					
 					if( (*opData.retrogradeVarTable)[ followerCurrentNode ]->exists( opData.factory->variablesSequence().atPos( i ) ) && 
 						( !opData.instantiateVariables->exists( opData.factory->variablesSequence().atPos( i ) ) || 
 								!opData.defaultInstantiateVariables->exists( opData.factory->variablesSequence().atPos( i ) ) ) ) {
-							//~ GUM_TRACE( " Action Taken! - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode << " - Instantiated Variable : " << opData.factory->variablesSequence().atPos( i )->toString() );
-								
+									
 							const List<NodeId>* varNodes = follower->variableNodes( opData.factory->variablesSequence().atPos( i ) );
 							HashTable< Idx, NodeId > sonsIds;
 
 							List<Idx> doneVarModalities;
 
 							for(  ListConstIterator<NodeId> nodesIter = varNodes->begin(); nodesIter != varNodes->end(); ++nodesIter )
-								for( HashTableConstIterator< Idx, NodeId > arcIter = follower->nodeSons(*nodesIter)->begin(); arcIter != follower->nodeSons(*nodesIter)->end(); ++arcIter )
+								for( HashTableConstIterator< Idx, NodeId > arcIter = follower->unsafeNodeSons(*nodesIter)->begin(); arcIter != follower->unsafeNodeSons(*nodesIter)->end(); ++arcIter )
 									if( !doneVarModalities.exists( arcIter.key() ) ){
 										doneVarModalities.insert( arcIter.key() );
-										//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << arcIter.key() );
 										opData.instantiateVariables->insert( opData.factory->variablesSequence().atPos( i ), arcIter.key() );
 										sonsIds.insert( arcIter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, opData.factory->variablesSequence().atPos( i ), leaderCurrentNode,
 																										followerCurrentNode, tabu ) );
@@ -272,18 +267,14 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 
 							NodeId* defaultSon = NULL;
 							if( doneVarModalities.size() != opData.factory->variablesSequence().atPos( i )->domainSize() ){
-								//~ GUM_TRACE( tabu << " Descente sur fils par défaut" );
 								opData.defaultInstantiateVariables->insert( opData.factory->variablesSequence().atPos( i ) );
 								defaultSon = new NodeId();
 								*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, opData.factory->variablesSequence().atPos( i ), leaderCurrentNode, 
 																			followerCurrentNode, tabu );
 								opData.defaultInstantiateVariables->eraseByVal( opData.factory->variablesSequence().atPos( i ) );
-							}						
-
-							//~ GUM_TRACE( " Ajout noeud" );
+							}	
 			
 							newNode = insertNonTerminalNode( opData, opData.factory->variablesSequence().atPos( i ), sonsIds, defaultSon );
-							//~ GUM_TRACE( "FAIT" );
 							
 							return newNode;
 
@@ -312,11 +303,11 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 			// associated variable in the resulting diagram
 				int indexLeader = -1;
 				int indexFollower = -1;
-				
-				if( opData.factory->variablesSequence().exists( leader->nodeVariable( leaderCurrentNode ) ) )
-					indexLeader = opData.factory->variablesSequence().pos(  leader->nodeVariable( leaderCurrentNode ) );
-				if( opData.factory->variablesSequence().exists( follower->nodeVariable( followerCurrentNode ) ) )
-					indexFollower = opData.factory->variablesSequence().pos(  follower->nodeVariable( followerCurrentNode ) );
+
+				if( opData.factory->variablesSequence().exists( leader->unsafeNodeVariable( leaderCurrentNode ) ) )
+					indexLeader = opData.factory->variablesSequence().pos(  leader->unsafeNodeVariable( leaderCurrentNode ) );
+				if( opData.factory->variablesSequence().exists( follower->unsafeNodeVariable( followerCurrentNode ) ) )
+					indexFollower = opData.factory->variablesSequence().pos(  follower->unsafeNodeVariable( followerCurrentNode ) );
 				if( indexLeader == -1 || indexFollower == -1 )
 							GUM_ERROR( FatalError, "Unable to compute MultiDimDecisionDiagramBase");
 			//==========================================================
@@ -335,54 +326,42 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( 	const MultiDimDecisionDiagramBas
 			// If not - meaning it's the same variable - we have to go
 			// down on both
 			if( indexLeader == indexFollower ){
-				//~ GUM_TRACE( tabu << "Recur - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode << " - Instantiated Variable : " << leader->nodeVariable( leaderCurrentNode )->toString() );
-
-				const HashTable< Idx, NodeId >* leaderSonsMap = leader->nodeSons( leaderCurrentNode );
-				const HashTable< Idx, NodeId >* followerSonsMap = follower->nodeSons( followerCurrentNode );
+				
+				const HashTable< Idx, NodeId >* leaderSonsMap = leader->unsafeNodeSons( leaderCurrentNode );
+				const HashTable< Idx, NodeId >* followerSonsMap = follower->unsafeNodeSons( followerCurrentNode );
 
 				HashTable< Idx, NodeId > sonsIds;
 				List<Idx> followerCheckedArcs;
 				for( HashTableConstIterator<Idx, NodeId> leaderSonsIter = leaderSonsMap->begin(); leaderSonsIter != leaderSonsMap->end(); ++leaderSonsIter ){
-					//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << leaderSonsIter.key() );
 
 					NodeId followerSon = 0;
 					if( followerSonsMap->exists( leaderSonsIter.key() ) ){
 						followerSon = (*followerSonsMap)[ leaderSonsIter.key() ];
 						followerCheckedArcs.insert( leaderSonsIter.key() );
-					}else
-						followerSon = follower->nodeDefaultSon( followerCurrentNode );
-						
-					sonsIds.insert( leaderSonsIter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), *leaderSonsIter, 
-																							followerSon, tabu ) );
+					}else	
+						followerSon = follower->unsafeNodeDefaultSon( followerCurrentNode );
+					sonsIds.insert( leaderSonsIter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), *leaderSonsIter, 
+																							followerSon, tabu ) );	
 				}
 				
 				for( HashTableConstIterator<Idx, NodeId> followerSonsIter = followerSonsMap->begin(); followerSonsIter != followerSonsMap->end(); ++followerSonsIter)
 					if( !followerCheckedArcs.exists( followerSonsIter.key() ) ){
-						//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << followerSonsIter.key() );
-						sonsIds.insert( followerSonsIter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ),
-																							leader->nodeDefaultSon( leaderCurrentNode ), *followerSonsIter, tabu ) );
+						sonsIds.insert( followerSonsIter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ),
+																							leader->unsafeNodeDefaultSon( leaderCurrentNode ), *followerSonsIter, tabu ) );
 
 					}
 				
 				
 				NodeId* defaultSon = NULL;
 				
-				if( leader->hasNodeDefaultSon( leaderCurrentNode ) && follower->hasNodeDefaultSon( followerCurrentNode ) ) {
-					//~ GUM_TRACE( tabu << " Descente sur fils par défaut" );
+				if( leader->unsafeHasNodeDefaultSon( leaderCurrentNode ) && follower->unsafeHasNodeDefaultSon( followerCurrentNode ) ) {
 					defaultSon = new NodeId();
-					*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), leader->nodeDefaultSon( leaderCurrentNode ), 
-															follower->nodeDefaultSon( followerCurrentNode ), tabu );
+					*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), leader->unsafeNodeDefaultSon( leaderCurrentNode ), 
+															follower->unsafeNodeDefaultSon( followerCurrentNode ), tabu );
 				}					
 					
-				//~ GUM_TRACE( tabu << "Ajout noeud" );
-					
-				newNode = insertNonTerminalNode( opData, leader->nodeVariable( leaderCurrentNode ), sonsIds, defaultSon );
-
-				//~ GUM_TRACE( "EQUALS EXPLORATION STATUS : " << *(opData.explorationTable) );
-				//~ GUM_TRACE( "Ajout de : " << key.str() << " -> " << newNode );
-				//~ opData.explorationTable->insert( key.str(), newNode );	
-
-				//~ GUM_TRACE( tabu << "Fin Recur - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode );
+				newNode = insertNonTerminalNode( opData, leader->unsafeNodeVariable( leaderCurrentNode ), sonsIds, defaultSon );
+				opData.explorationTable->insert( key.str(), newNode );	
 			}
 		}
 	// *******************************************************************************************************
@@ -403,25 +382,25 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
 														std::string tabu ) {
 													
 													
-	//~ std::stringstream key;
-	//~ key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
-	//~ if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
-		//~ for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
-			 //~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
-				//~ key << instIter.key()->name() << *instIter << "-";
-		//~ for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
-			//~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
-				//~ key << (*listIter)->name() << "*-";
-	//~ }
+	std::stringstream key;
+	key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
+	if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
+		for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
+			 if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
+				key << instIter.key()->name() << *instIter << "-";
+		for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
+			if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
+				key << (*listIter)->name() << "*-";
+	}
 	//~ if( opData.explorationTable->exists( key.str() ) ){
 			//~ std::cout << "PRUNING! : " << key.str() << std::endl;
 			//~ return (*(opData.explorationTable))[key.str()];
 	//~ }
 
 	NodeId newNode = 0;
-	//~ GUM_TRACE( tabu << "GoDownLeader  - Noeud Leader : " << leaderCurrentNode << " - Noeud Follower : " << followerCurrentNode << " - Instantiated Variable : " << leader->nodeVariable( leaderCurrentNode )->toString() );
 
-		const HashTable< Idx, NodeId >* sonsMap = leader->nodeSons(leaderCurrentNode);
+		
+		const HashTable< Idx, NodeId >* sonsMap = leader->unsafeNodeSons(leaderCurrentNode);
 
 		HashTable< Idx, NodeId > sonsIds;
 		
@@ -429,17 +408,14 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
 		// For each value the current var take on this node, we have to do our computation
 			for( HashTableConstIterator<Idx, NodeId> iter = sonsMap->begin(); iter != sonsMap->end(); ++iter){
 				
-				//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << iter.key() );
-				
 				// But we have to indicates to possible node on follower diagram, the current value of the var
-				opData.instantiateVariables->insert( leader->nodeVariable( leaderCurrentNode ), iter.key() );
+				opData.instantiateVariables->insert( leader->unsafeNodeVariable( leaderCurrentNode ), iter.key() );
 				
-				sonsIds.insert( iter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), *iter, followerCurrentNode, tabu ) );
+				sonsIds.insert( iter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), *iter, followerCurrentNode, tabu ) );
 						
 				// And do some cleaning after the call of course					
-				opData.instantiateVariables->erase( leader->nodeVariable( leaderCurrentNode ) );
+				opData.instantiateVariables->erase( leader->unsafeNodeVariable( leaderCurrentNode ) );
 			}
-		//*********************************************************************************************************
 		
 		// ********************************************************************************************************
 		// Then, if not all possible value of that node have been investigate (meaning we have a default arc)
@@ -448,34 +424,31 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
 			
 			NodeId* defaultSon = NULL;
 			
-			if( leader->hasNodeDefaultSon( leaderCurrentNode ) ) {
+			if( leader->unsafeHasNodeDefaultSon( leaderCurrentNode ) ) {
 
 				// Then, for each of those remaining value, we go down
 				for( ListConstIterator<Idx> modalitiesIter = (*(opData.remainingModalitiesTable))[leaderCurrentNode]->begin(); 
 															modalitiesIter != (*(opData.remainingModalitiesTable))[leaderCurrentNode]->end(); ++modalitiesIter){
 					
-					//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << *modalitiesIter );
-					
 					// with usual indicators
-					opData.instantiateVariables->insert( leader->nodeVariable( leaderCurrentNode ), *modalitiesIter );
+					opData.instantiateVariables->insert( leader->unsafeNodeVariable( leaderCurrentNode ), *modalitiesIter );
 					
-					sonsIds.insert( *modalitiesIter, GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), 
-																				leader->nodeDefaultSon( leaderCurrentNode ), followerCurrentNode, tabu ) );
+					sonsIds.insert( *modalitiesIter, GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), 
+																				leader->unsafeNodeDefaultSon( leaderCurrentNode ), followerCurrentNode, tabu ) );
 													
-					opData.instantiateVariables->erase( leader->nodeVariable( leaderCurrentNode ) );
+					opData.instantiateVariables->erase( leader->unsafeNodeVariable( leaderCurrentNode ) );
 				}
 
 				// Next, we go down on default variable, just in case
-				if( sonsMap->size() + (*(opData.remainingModalitiesTable))[leaderCurrentNode]->size() != leader->nodeVariable( leaderCurrentNode )->domainSize() ){
-					//~ GUM_TRACE( tabu << " Descente sur fils par défaut" );
+				if( sonsMap->size() + (*(opData.remainingModalitiesTable))[leaderCurrentNode]->size() != leader->unsafeNodeVariable( leaderCurrentNode )->domainSize() ){
 					
-					opData.defaultInstantiateVariables->insert( leader->nodeVariable( leaderCurrentNode ) );
+					opData.defaultInstantiateVariables->insert( leader->unsafeNodeVariable( leaderCurrentNode ) );
 					
 					defaultSon = new NodeId();
-					*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), leader->nodeDefaultSon( leaderCurrentNode ), 
+					*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), leader->unsafeNodeDefaultSon( leaderCurrentNode ), 
 															followerCurrentNode, tabu );
 														
-					opData.defaultInstantiateVariables->eraseByVal( leader->nodeVariable( leaderCurrentNode ) );
+					opData.defaultInstantiateVariables->eraseByVal( leader->unsafeNodeVariable( leaderCurrentNode ) );
 				}
 
 			}
@@ -484,15 +457,8 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
 		
 		// ********************************************************************************************************
 		// And we finally add this node to our resulting graph
-		//~ GUM_TRACE( tabu << "Ajout noeud" );
-			
-		newNode = insertNonTerminalNode( opData, leader->nodeVariable(leaderCurrentNode), sonsIds, defaultSon );
-		
-	//~ GUM_TRACE( tabu << "Fin GoDownLeader  - Noeud Leader : " << leaderCurrentNode << " - Noeud Follower : " << followerCurrentNode );
-	
-	//~ GUM_TRACE( "GODOWNLEADER EXPLORATION STATUS : " << *(opData.explorationTable) );
-	//~ GUM_TRACE( "Ajout de : " << key.str() << " -> " << newNode );
-	//~ opData.explorationTable->insert( key.str(), newNode );	
+		newNode = insertNonTerminalNode( opData, leader->unsafeNodeVariable(leaderCurrentNode), sonsIds, defaultSon );
+		opData.explorationTable->insert( key.str(), newNode );	
 	
 	return newNode;
 }
@@ -510,53 +476,45 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION( const MultiDimDecis
 															std::string tabu ) {
 													
 														
-		//~ std::stringstream key;
-		//~ key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
-		//~ if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
-			//~ for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
-				 //~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
-					//~ key << instIter.key()->name() << *instIter << "-";
-			//~ for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
-				//~ if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
-					//~ key << (*listIter)->name() << "*-";
-		//~ }
+		std::stringstream key;
+		key <<  leaderCurrentNode << "-" << followerCurrentNode << "-";
+		if( opData.retrogradeVarTable->exists( followerCurrentNode ) ){
+			for( HashTableIterator<  const DiscreteVariable*, Idx > instIter = opData.instantiateVariables->begin(); instIter != opData.instantiateVariables->end(); ++instIter )
+				 if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( instIter.key() ) )
+					key << instIter.key()->name() << *instIter << "-";
+			for( ListIterator< const DiscreteVariable* > listIter = opData.defaultInstantiateVariables->begin(); listIter != opData.defaultInstantiateVariables->end(); ++listIter )
+				if( (*(opData.retrogradeVarTable))[ followerCurrentNode ]->exists( *listIter ) )
+					key << (*listIter)->name() << "*-";
+		}
 		//~ if( opData.explorationTable->exists( key.str() ) ){
 			//~ std::cout << "PRUNING! : " << key.str() << std::endl;
 				//~ return (*(opData.explorationTable))[key.str()];
 		//~ }
-													
-		//~ GUM_TRACE( tabu << "GoDownFollower - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode << " - Instantiated Variable : " << follower->nodeVariable( followerCurrentNode )->toString() );
 
 		NodeId newNode = 0;
 		
-		const HashTable< Idx, NodeId >* sonsMap = follower->nodeSons( followerCurrentNode );
+		const HashTable< Idx, NodeId >* sonsMap = follower->unsafeNodeSons( followerCurrentNode );
 
 		// ***************************************************************************************************************
 		// If var exists in leader diagram and has already been instantiate to its default value,
 		// we have to do so in second diagram too
-			if( opData.defaultInstantiateVariables->exists( follower->nodeVariable( followerCurrentNode ) ) ){
-				
-				//~ GUM_TRACE( tabu << " Saut par fils par défaut " );
-				newNode = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->nodeDefaultSon( followerCurrentNode ), tabu );
-			
-			}
+			if( opData.defaultInstantiateVariables->exists( follower->unsafeNodeVariable( followerCurrentNode ) ) )
+				newNode = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->unsafeNodeDefaultSon( followerCurrentNode ), tabu );
 		// ***************************************************************************************************************
 			else 
 		// ***************************************************************************************************************
 		// If var exists in leader diagram and has already been instantiate to a value,
 		// we have to go down on this value
-			if( opData.instantiateVariables->exists( follower->nodeVariable( followerCurrentNode ) ) ) {
-				
-				//~ GUM_TRACE( tabu << " Saut par fils : " << (*opData.instantiateVariables)[ follower->nodeVariable( followerCurrentNode ) ] );
-				
+			if( opData.instantiateVariables->exists( follower->unsafeNodeVariable( followerCurrentNode ) ) ) {
+								
 				// But we have to check if value has its arc for this node
-				if( sonsMap->exists( (*opData.instantiateVariables)[ follower->nodeVariable( followerCurrentNode ) ] ) )
+				if( sonsMap->exists( (*opData.instantiateVariables)[ follower->unsafeNodeVariable( followerCurrentNode ) ] ) )
 				
 					newNode = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode,
-												(*sonsMap)[ (*opData.instantiateVariables)[ follower->nodeVariable( followerCurrentNode ) ] ], tabu );
+												(*sonsMap)[ (*opData.instantiateVariables)[ follower->unsafeNodeVariable( followerCurrentNode ) ] ], tabu );
 				else
 				
-					newNode = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->nodeDefaultSon( followerCurrentNode ), tabu );
+					newNode = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->unsafeNodeDefaultSon( followerCurrentNode ), tabu );
 											
 			} 
 		// ****************************************************************************************************************			
@@ -567,31 +525,23 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION( const MultiDimDecis
 			
 			// In that case we do our computation for all sons of that var
 			for( HashTableConstIterator<Idx, NodeId> iter = sonsMap->begin(); iter != sonsMap->end(); ++iter){
-				//~ GUM_TRACE( tabu << " Descente sur fils numéro : " << iter.key() );
 				sonsIds.insert( iter.key(), GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, *iter, tabu ) );
 			}
 
 			// and for its default son if it has one
 			NodeId* defaultSon = NULL;
 			
-			if( follower->hasNodeDefaultSon( followerCurrentNode ) ) {
-				//~ GUM_TRACE( tabu << " Descente sur fils par défaut" );
+			if( follower->unsafeHasNodeDefaultSon( followerCurrentNode ) ) {
 				defaultSon = new NodeId();
-				*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->nodeDefaultSon( followerCurrentNode ), tabu );
+				*defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderParentVar, leaderCurrentNode, follower->unsafeNodeDefaultSon( followerCurrentNode ), tabu );
 			} 
 			
 			// And we had this node to our graph
-			//~ GUM_TRACE( tabu << "Ajout noeud" );
-			
-				
-			newNode = insertNonTerminalNode( opData, follower->nodeVariable(followerCurrentNode), sonsIds, defaultSon );
+			newNode = insertNonTerminalNode( opData, follower->unsafeNodeVariable(followerCurrentNode), sonsIds, defaultSon );
+			opData.explorationTable->insert( key.str(), newNode );	
 
 			}
-		// ****************************************************************************************************************	
-	//~ GUM_TRACE( tabu << "Fin GoDownFollower - Noeud leader : " << leaderCurrentNode << " - Noeud follower : " << followerCurrentNode );
-	//~ 
-	//~ GUM_TRACE( "GODOWNFOLLOWER EXPLORATION STATUS : " << *(opData.explorationTable) );
-	//~ GUM_TRACE( "Ajout de : " << key.str() << " -> " << newNode );
+		// ****************************************************************************************************************
 	//~ opData.explorationTable->insert( key.str(), newNode );	
 	return newNode;
 }
@@ -607,44 +557,54 @@ GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION( const MultiDimDecisionD
 	// ************************************************************************************
 	// If so, projection is done by operating sub diagram rooted by node sons
 	Idx nbProjDone = 0;
-	const HashTable< Idx, NodeId >* childrenMap = oldDiagram->nodeSons( node );
+	const HashTable< Idx, NodeId >* childrenMap = oldDiagram->unsafeNodeSons( node );
 	MultiDimDecisionDiagramBase< T >* t1 = NULL;
+	HashTableConstIterator< Idx, NodeId > childrenIter = childrenMap->begin();
+	NodeId prevChild = *childrenIter;
+	++childrenIter;
 	
-	for( HashTableConstIterator< Idx, NodeId > childrenIter = childrenMap->begin(); childrenIter != childrenMap->end();	++childrenIter){ 
+	while( childrenIter != childrenMap->end() ){ 
 		
-		MultiDimDecisionDiagramBase< T >* t2 = oldDiagram->extractSubDecisionDiagram( *childrenIter );
-		MultiDimDecisionDiagramBase< T >* t3 = GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( t1, t2 );
-				
-		delete t2;
-		if( t1 != NULL )
-			delete t1;
-		t1 = t3;
+		if( t1 == NULL){
+			OperatorData<T> opData( oldDiagram, oldDiagram, oldDiagram->lowLimit(), oldDiagram->highLimit() );
+		
+			GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( oldDiagram, oldDiagram, opData, NULL, prevChild, *childrenIter, "" );
+		
+			t1 = opData.factory->getMultiDimDecisionDiagram();
+		} else {
+			OperatorData<T> opData( t1, oldDiagram, t1->lowLimit(), t1->highLimit() );
+		
+			GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( t1, oldDiagram, opData, NULL, t1->root(), *childrenIter, "" );	
+			delete t1;	
+		
+			t1 = opData.factory->getMultiDimDecisionDiagram();	
+		}
+		
 		nbProjDone++;
+		++childrenIter;
 	}
 	
-	if( oldDiagram->hasNodeDefaultSon( node ) ){
-		
-		MultiDimDecisionDiagramBase< T >* t2 = oldDiagram->extractSubDecisionDiagram( oldDiagram->nodeDefaultSon( node ) );
-		HashTable< NodeId, T > resContainer;
+	if( oldDiagram->unsafeHasNodeDefaultSon( node ) ){
 		Idx nbProjRemaining = domainSize - nbProjDone;
-		for( BijectionIterator< NodeId, T > valueIter = t2->valuesMap().begin(); valueIter != t2->valuesMap().end(); ++valueIter ){
-			T nonProjectedVal = valueIter.second();
-			T projectedVal = nonProjectedVal;
-			for( Idx i = 1; i < nbProjRemaining; ++i )
-				projectedVal = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( projectedVal, nonProjectedVal );
-			resContainer.insert( valueIter.first(), projectedVal );
+		
+		if( t1 == NULL){
+			OperatorData<T> opData( oldDiagram, oldDiagram, oldDiagram->lowLimit(), oldDiagram->highLimit() );
+			opData.nbOpToDo = nbProjRemaining - 1 ;
+		
+			GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( oldDiagram, oldDiagram, opData, NULL, prevChild, oldDiagram->unsafeNodeDefaultSon(node), "" );
+		
+			t1 = opData.factory->getMultiDimDecisionDiagram();
+		} else {
+			OperatorData<T> opData( t1, oldDiagram, t1->lowLimit(), t1->highLimit() );
+			opData.nbOpToDo = nbProjRemaining;
+		
+			GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( t1, oldDiagram, opData, NULL, t1->root(), oldDiagram->unsafeNodeDefaultSon(node), "" );	
+			delete t1;	
+		
+			t1 = opData.factory->getMultiDimDecisionDiagram();	
 		}
-		for( HashTableIterator< NodeId, T > htIter = resContainer.begin(); htIter != resContainer.end(); ++htIter )
-			t2->chgValue( htIter.key(), *htIter );
-			
-		MultiDimDecisionDiagramBase< T >* t3 = GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION( t1, t2 );
 		
-		delete t2;
-		if( t1 != NULL )
-			delete t1;
-		t1 = t3;
-		
-	}	
+	}
 		
 	return t1;
 }
