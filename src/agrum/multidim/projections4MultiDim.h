@@ -30,6 +30,7 @@
 #include <agrum/core/set.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecorator.h>
 
 
@@ -188,6 +189,92 @@ namespace gum {
 
 
   
+
+  
+  /// a specialized function for projecting a multiDimDecisionDiagram using a Max operator
+  /** The function projects a table over the subset of its variables NOT IN
+   * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
+   * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
+   * a table over B,D defined as Max_{A,C} table (A,B,C,D).
+   * @return function ProjectMaxMultiDimDecisionDiagram allocates on the heap the
+   * new T multiDimDecisionDiagram and returns it
+   * @warning In practice, do not use this function but rather operator/function
+   * projectMax on multiDimDecorators. This operator will take care to select this
+   * function if it is appropriate for your projection. */
+  template<typename T_DATA>
+  MultiDimDecisionDiagramBase<T_DATA>*
+  projectMaxMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars ); 
+
+  template<typename T_DATA>
+  MultiDimImplementation<T_DATA>*
+  projectMaxMultiDimDecisionDiagram ( const MultiDimImplementation<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars ); 
+
+  
+  /// a specialized function for projecting a multiDimDecisionDiagram using a Min operator
+  /** The function projects a table over the subset of its variables NOT IN
+   * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
+   * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
+   * a table over B,D defined as Min_{A,C} table (A,B,C,D).
+   * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
+   * new T multiDimDecisionDiagram and returns it
+   * @warning In practice, do not use this function but rather operator/function
+   * projectMin on multiDimDecorators. This operator will take care to select this
+   * function if it is appropriate for your projection. */
+  template<typename T_DATA>
+  MultiDimDecisionDiagramBase<T_DATA>*
+  projectMinMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars ); 
+
+  template<typename T_DATA>
+  MultiDimImplementation<T_DATA>*
+  projectMinMultiDimDecisionDiagram ( const MultiDimImplementation<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars );
+
+  
+  /// a specialized function for projecting a multiDimDecisionDiagram using a summation
+  /** The function projects a table over the subset of its variables NOT IN
+   * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
+   * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
+   * a table over B,D defined as Sum_{A,C} table (A,B,C,D).
+   * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
+   * new T multiDimDecisionDiagram and returns it
+   * @warning In practice, do not use this function but rather operator/function
+   * projectSum on multiDimDecorators. This operator will take care to select this
+   * function if it is appropriate for your projection. */
+  template<typename T_DATA>
+  MultiDimDecisionDiagramBase<T_DATA>*
+  projectSumMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars ); 
+
+  template<typename T_DATA>
+  MultiDimImplementation<T_DATA>*
+  projectSumMultiDimDecisionDiagram ( const MultiDimImplementation<T_DATA>* table,
+                            const Set<const DiscreteVariable *>& del_vars );
+
+
+  /// a specialized function for projecting a multiDimDecisionDiagram using products
+  /** The function projects a table over the subset of its variables NOT IN
+   * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
+   * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
+   * a table over B,D defined as Prod_{A,C} table (A,B,C,D).
+   * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
+   * new T multiDimDecisionDiagram and returns it
+   * @warning In practice, do not use this function but rather operator/function
+   * projectProduct on multiDimDecorators. This operator will take care to select
+   * this function if it is appropriate for your projection. */
+  template<typename T_DATA>
+  MultiDimDecisionDiagramBase<T_DATA>*
+  projectProductMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<T_DATA>* table,
+                                const Set<const DiscreteVariable *>& del_vars ); 
+
+  template<typename T_DATA>
+  MultiDimImplementation<T_DATA>*
+  projectProductMultiDimDecisionDiagram ( const MultiDimImplementation<T_DATA>* table,
+                                const Set<const DiscreteVariable *>& del_vars ); 
+                                
+                                
   
   // ==============================================================================
   // the operators that should be used to select appropriately the functions

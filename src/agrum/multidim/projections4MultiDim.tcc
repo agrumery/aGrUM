@@ -232,6 +232,110 @@ namespace gum {
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
+  
+  // ==============================================================================
+  /// a specialized max projection function for multiDimDecisionDiagrams
+  // ==============================================================================
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMaximising
+  #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x >= y ? x : y )
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Maximization
+  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMaxMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
+  
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectMaxMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
+  
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  
+
+  // ==============================================================================
+  /// a specialized min projection function for multiDimDecisionDiagrams
+  // ==============================================================================
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMinimising
+  #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x <= y ? x : y )
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Minimization
+  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMinMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
+  
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectMinMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
+  
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+
+
+  // ==============================================================================
+  /// a specialized sum projection function for multiDimDecisionDiagrams
+  // ==============================================================================
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeBySumming
+  #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x + y )
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Addition
+  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectSumMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
+  
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectSumMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
+  
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+
+  
+  // ==============================================================================
+  /// a specialized product projection function for multiDimDecisionDiagrams
+  // ==============================================================================
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMultiplicating
+  #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x * y )
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Multiplication
+  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  
+  #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectProductMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
+  
+
+  #define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectProductMultiDimDecisionDiagram
+  #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
+  
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+
 
   
   // ==============================================================================
@@ -360,7 +464,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
       
-      std::string MultiDimArrayString ("MultiDimArray");
+      std::string MultiDimArrayString ("MultiDimArray");     
+      std::string MultiDimDecisionDiagramString ("MultiDimDecisionDiagram");
       std::string BaseNameString ("MultiDimImplementation");
     
       // register base functions for multiDimArrays
@@ -372,6 +477,16 @@ namespace gum {
                                    &projectSumMultiDimArray);
       registerProjection<T_DATA> ( "product", MultiDimArrayString,
                                    &projectProductMultiDimArray);
+    
+      // register base functions for multiDimArrays
+      //~ registerProjection<T_DATA> ( "max", MultiDimDecisionDiagramString,
+                                   //~ &projectMaxMultiDimDecisionDiagram);
+      //~ registerProjection<T_DATA> ( "min", MultiDimDecisionDiagramString,
+                                   //~ &projectMinMultiDimDecisionDiagram);
+      registerProjection<T_DATA> ( "sum", MultiDimDecisionDiagramString,
+                                   &projectSumMultiDimDecisionDiagram);
+      //~ registerProjection<T_DATA> ( "product", MultiDimDecisionDiagramString,
+                                   //~ &projectProductMultiDimDecisionDiagram);
 
       // register default basename functions 
       registerProjection<T_DATA> ( "max", BaseNameString,

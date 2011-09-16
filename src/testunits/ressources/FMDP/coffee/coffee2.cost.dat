@@ -1,0 +1,212 @@
+// coffee example
+// a robot uses battery, computational and physical resources to obtain and deliver coffee to a single user
+// the robot can move from an office location to a shop 
+// it may possibly be raining outside between the two, and the robot can get wet
+// the robot can get an umbrella that helps it not get wet when outside
+// the robot's job is to get the user coffee when she doesn't have any
+// and to avoid getting wet
+// 
+(variables 
+	(huc yes no) 			// huc: user has coffee
+	(w drenched sprinkled dry) 	// w  : robot is wet
+	(hrc yes no) 			// hrc: robot has coffee
+	(r heavy light no) 		// r  : raining outside?
+	(u yes no) 			// u  : robot has umbrella
+	(l office shop) 		// l  : robot's location
+	(batt dead low high)		// batt: battery state 
+)
+//
+// some CPTS may be unnormalized - 
+// this means all CPTs will be automatically normalized when read in
+unnormalised
+//
+// some pre-defined dds
+// robot keeps coffee if it has it
+dd samehrc
+	(hrc	(yes    (hrc'	(yes	(1.00)) (no	(0.0))))
+		(no	(hrc'	(yes	(0.00)) (no	(1.0)))))
+enddd
+// user keeps coffee if it has it
+// example of an unnormalized CPT
+//dd defaulthuc
+//	(huc	(yes    (huc'	(yes	(9.0)) (no	(1.0))))
+//		(no	(huc'	(yes	(0.00)) (no	(10.0)))))
+//enddd
+dd defaulthuc
+	(huc	(yes    (huc'	(yes	(0.9)) (no	(0.1))))
+		(no	(huc'	(yes	(0.00)) (no	(1.0)))))
+enddd
+// robot keeps umbrella if it has it
+dd sameu
+	(u	(yes	(u'	(yes	(1.00))  (no	(0.0))))
+		(no	(u'	(yes	(0.00))	 (no	(1.0)))))
+enddd
+// robot's state of wetness stays the same
+dd samew
+	(w	(drenched	(w'	(drenched	(1.0))	(sprinkled	(0.0))	(dry	(0.0))))
+		(sprinkled	(w'	(drenched	(0.0))	(sprinkled	(1.0))	(dry	(0.0))))
+		(dry		(w'	(drenched	(0.0))	(sprinkled	(0.0))	(dry	(1.0)))))
+enddd
+// robot's location stays the same
+dd samel
+	(l	(office	(l'	(office	(1.00))  (shop	(0.0))))
+		(shop	(l'	(office	(0.00))	 (shop	(1.0)))))
+enddd
+// location changes if robot moves
+dd moveloc
+	(l	(office	(l'	(office	(0.10)) (shop	(0.90))))
+		(shop	(l'	(office	(0.90)) (shop   (0.10)))))
+enddd
+// state of rain can progress from no <-> light <-> heavy
+dd defaultrain
+	(r	(heavy 	(r'	(heavy	(0.9)) (light	(0.1)) (no	(0.0))))
+		(light	(r'	(heavy	(0.1)) (light	(0.8)) (no	(0.1))))
+		(no	(r'	(heavy	(0.0)) (light	(0.1)) (no	(0.9)))))
+enddd
+// battery slowly discharges
+dd defaultbatt
+	(batt	(dead	(batt'	(dead	(1.0))	(low	(0.0))	(high	(0.0))))
+		(low	(batt'	(dead	(0.2))	(low	(0.8))	(high	(0.0))))
+		(high	(batt'	(dead	(0.0))	(low	(0.1))	(high	(0.9)))))
+enddd
+// do nothing - exogenous events may affect huc and r
+// and the battery will discharge as usual
+action nothing
+	huc	(defaulthuc)
+	hrc	(samehrc)
+	w	(samew)
+	r	(defaultrain)
+	u	(sameu)
+	l	(samel)
+	batt	(defaultbatt)
+endaction
+// move to shop if in office and vice-versa
+// robot can get wet along the way if its raining and robot has no umbrella
+// this works less well if battery is low
+// doesn't work at all if battery is dead
+// its uphill from office->shop so the cost is a little more (wear on motors)
+action move
+	huc	(defaulthuc)
+	hrc	(samehrc)
+	w	(w	(drenched	(1.00 0.0 0.0))
+			(sprinkled	(r	(heavy	(u	(yes	(0.10 0.9 0.0))
+								(no	(0.90 0.1  0.0))))
+						(light	(u	(yes	(0.05 0.95 0.0))
+								(no	(0.70 0.3 0.0))))
+						(no	(0.0 0.9 0.1))))
+			(dry		(r	(heavy	(u	(yes	(0.1 0.1 0.8))
+								(no	(0.9 0.1 0.0))))
+						(light	(u	(yes	(0.05 0.05 0.9))
+								(no	(0.2 0.7 0.1))))
+						(no	(0.0 0.1 0.9)))))
+	r	(defaultrain)
+	u	(sameu)
+	l	[*	[+  (moveloc)  (batt	(dead	(0.0))	(low	(1.0))	(high	(0.0)))]
+			(batt	(dead	(samel))	(low	(1.0))	(high	(1.0)))]
+//	l	(batt	(dead	(samel))	(low	(moveloc))	(high	(moveloc)))
+	batt	(defaultbatt)
+	cost	(l	(office	(0.3))
+			(shop	(0.1)))
+endaction
+// robot delivers coffee to user
+action delc
+	huc	(huc	(yes	(0.90 0.10))
+			(no	(hrc	(yes	(l	(office	(0.80 0.20))
+							(shop	(0.00 1.00))))
+					(no	(0.00 1.00)))))
+	hrc	(hrc	(yes	(l	(office	(0.10 0.90))
+					(shop	(0.20 0.80))))
+			(no	(0.00 1.00)))
+	w	(samew)
+	r	(defaultrain)
+	u	(sameu)
+	l	(samel)
+	batt	(defaultbatt)
+endaction
+// robot gets the umbrella
+action getu
+	huc	(defaulthuc)
+	hrc	(samehrc)
+	w	(samew)
+	r	(defaultrain)
+	u	(u	(yes	(1.00 0.00))
+			(no	(l	(office	(0.90 0.10))
+					(shop	(0.00 1.00)))))
+	batt	(defaultbatt)
+	l	(samel)
+	cost	(l	(office	(0.2))
+			(shop	(0.0)))
+endaction
+// robot buys coffee carefully
+// this only works if the robot's in the shop
+// the robot can get wet here because of coffee spillage on receiving coffee
+// this costs more in computation power (more complex motions?)
+// but the probability of getting wet is smaller than in buyc_fast
+action buyc_careful
+	huc	(defaulthuc)
+	hrc	(hrc	(yes	(1.00 0.00))
+			(no	(l	(office	(0.00 1.00))
+					(shop	(1.0 0.00)))))
+	w	(hrc	(no	(hrc'	(yes	(w	(drenched  (1.00 0.0 0.00))
+							(sprinkled (0.0 1.0 0.0))
+							(dry	   (0.0 0.1 0.9))))
+					(no	(samew))))
+			(yes	(samew)))
+	r	(defaultrain)
+	u	(sameu)
+	batt	(defaultbatt)
+	l	(samel)
+	cost 	(l	(office	(0.0))
+			(shop	(0.5)))
+endaction
+// robot buys coffee quickly
+// again, this only works if the robot's in the shop
+// the robot can get wet here because of coffee spillage on receiving coffee
+// but the probability is higher here than in buyc_careful
+action buyc_fast
+	huc	(defaulthuc)
+	hrc	(hrc	(yes	(1.00 0.00))
+			(no	(l	(office	(0.00 1.00))
+					(shop	(0.90 0.10)))))
+	w	(hrc	(no	(hrc'	(yes	(w	(drenched  (1.00 0.0 0.00))
+							(sprinkled (0.0 1.0 0.0))
+							(dry	   (0.0 0.3 0.7))))
+					(no	(samew))))
+			(yes	(samew)))
+	r	(defaultrain)
+	u	(sameu)
+	l	(samel)
+	batt	(defaultbatt)
+	cost 	(l	(office	(0.0))
+			(shop	(0.1)))
+endaction
+// recharge the battery
+action recharge
+	huc	(defaulthuc)
+	hrc	(samehrc)
+	w	(samew)
+	r	(defaultrain)
+	u	(sameu)
+	l	(samel)
+	batt	(l	(office		(batt'	(dead	(0.0))	(low	(0.0))	(high	(1.0))))
+			(shop	(defaultbatt)))
+endaction	
+action dryoff
+	huc	(defaulthuc)
+	hrc	(samehrc)
+	w	(w	(drenched	(0.1 	0.2 0.7))
+			(sprinkled	(0.0	0.1 0.9))
+			(dry		(0.0	0.0 1.0)))
+	r	(defaultrain)
+	u	(sameu)
+	l	(samel)
+	batt	(defaultbatt)
+endaction
+
+reward [+  (huc	(yes	(1.0))
+		(no	(0.0)))
+	   (w	(drenched (-0.5))
+		(sprinkled (-0.1))
+		(dry	(0.0)))]
+discount 0.900000 
+tolerance 0.1

@@ -109,17 +109,18 @@ namespace gum {
       GUM_CONS_CPY( SetInst );
       const Sequence<const DiscreteVariable *>& v = aI.variablesSequence();
       __vars.resize( v.size() );
-      __vals.reserve( v.size() );
+      //__vals.reserve( v.size() );
       // fill the SetInst
 
       for ( Sequence<const DiscreteVariable *>::iterator iter = v.begin();
           iter != v.end();++iter ) {
         __add( **iter );
+        __vals[__vars[*iter]] =(1 << (aI.val(**iter)));
 
         // copy the content of aI
         //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
       }
-    }
+      }
 
 
   // operator=

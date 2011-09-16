@@ -58,7 +58,7 @@ def checkCompatibility(bn,fields,csv_name):
     return res
 
 def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
-    if isinstance(bn,str):
+    if isinstance(bn_name,str):
       bn=gum.loadBN(bn_name)
     else:
       bn=bn_name

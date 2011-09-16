@@ -23,6 +23,7 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
     CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
     CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
+	CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 

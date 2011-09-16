@@ -395,7 +395,7 @@ void Scanner::AddCh() {
 
 
 bool Scanner::Comment0() {
-	int level = 1, pos0 = pos, line0 = line, col0 = col, charPos0 = charPos;
+	int level = 1, /*pos0 = pos,*/ line0 = line/*, col0 = col, charPos0 = charPos*/;
 	NextCh();
 		for(;;) {
 			if (ch == 10) {
