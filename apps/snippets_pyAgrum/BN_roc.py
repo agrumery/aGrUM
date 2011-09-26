@@ -181,11 +181,11 @@ def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
   pylab.yticks(pylab.arange(0,1.1,.1))
   pylab.grid(True)
 
-  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1)
-  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-', label= csv_name+ " - "+variable+"="+str(label))
+  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1, label= bn.property("name")+" - "+csv_name+ " - "+variable+"="+str(label))
+  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-')
 
   pylab.legend(loc='lower right')
-  pylab.savefig('roc_'+csv_name+ "-"+variable+"-"+str(label)+'.png')
+  pylab.savefig('roc_'+bn.property("name")+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png')
   pylab.show()
 
 def checkROCargs():

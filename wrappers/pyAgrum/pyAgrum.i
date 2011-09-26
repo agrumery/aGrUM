@@ -214,6 +214,7 @@ def loadBN(s):
   else:
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+  bn.setProperty("name",s)
   return bn
 
 def saveBN(bn,s):
