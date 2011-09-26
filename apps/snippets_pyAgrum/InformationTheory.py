@@ -24,7 +24,7 @@
 import sys,os,csv,math
 
 from pyAgrum_header import pyAgrum_header
-from parents import parents
+from topology import parents
 
 import pyAgrum as gum
 
