@@ -45,7 +45,7 @@ def enfants_name(bn,n):
 
     (this algorithm is clearly not efficient AT ALL ...)
     """
-    return filter(lambda x:n in parents_anme(bn,x), range(0,len(bn)))
+    return filter(lambda x:n in parents_name(bn,x), range(0,len(bn)))
 
 def enfants(bn,n):
     """
