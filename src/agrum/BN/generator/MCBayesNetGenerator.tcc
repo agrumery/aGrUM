@@ -352,7 +352,7 @@ void MCBayesNetGenerator<T_DATA>::__createDAG(gum::Size BNSize, gum::Size iniRoo
     srand(time(NULL) + n);
     gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % min(BNSize , __max_parents) ) + 1: (rand() %  __max_parents) + 1 );
     std::vector<gum::NodeId> roots;
-    for (uint r = 0 ; r < nbRoot; r++) {
+    for (Idx r = 0 ; r < nbRoot; r++) {
         gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
         std::stringstream strBuff;
         strBuff << "n" <<n++<<"_"<<r;
@@ -389,7 +389,7 @@ std::vector<gum::NodeId> * MCBayesNetGenerator<T_DATA>::__createPartDAG(gum::Siz
     srand(time(NULL) + n);
     gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % min(__max_parents, BNSize)) + 1: (rand() % __max_parents) + 1 );//################
     std::vector<gum::NodeId> * roots = new std::vector<gum::NodeId> ;
-    for (uint r = 0 ; r < nbRoot; r++) {
+    for (Idx r = 0 ; r < nbRoot; r++) {
         gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
         std::stringstream strBuff;
         strBuff << "nA" <<n++<<"_"<<r;
