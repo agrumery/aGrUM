@@ -39,7 +39,7 @@ def parents(bn,n):
     #l is the liste of var names
     return map(bn.idFromName,l)
 
-def enfants_name(bn,n):
+def children_name(bn,n):
     """
     gives a nodeId list of name of children of node n
 
@@ -47,7 +47,7 @@ def enfants_name(bn,n):
     """
     return filter(lambda x:n in parents_name(bn,x), range(0,len(bn)))
 
-def enfants(bn,n):
+def children(bn,n):
     """
     gives a nodeId list of children of node n
 
