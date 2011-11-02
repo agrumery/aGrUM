@@ -82,6 +82,7 @@ public:
 
         if ( bn != 0 ) delete bn;
     }
+    
     void testGenerationDouble_4() {
         gum::MCBayesNetGenerator<double> gen(500);
 
@@ -92,6 +93,7 @@ public:
 
         if ( bn != 0 ) delete bn;
     }
+    
     void testGenerationDouble_3() {std::cout << 6 << std::endl;
         //     while(1){
         gum::MCBayesNetGenerator<double> gen(500);

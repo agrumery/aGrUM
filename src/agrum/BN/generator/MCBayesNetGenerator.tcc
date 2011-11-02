@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN & Ariele-Paolo MAESANO   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -288,7 +288,7 @@ void MCBayesNetGenerator<T_DATA>::__chooseclosenodes(gum::NodeId &i,gum::NodeId 
       
       j = *it;
     }
-    else GUM_ERROR( FatalError, "Sorry Misconstruction BN isolated node." )
+    else GUM_ERROR( FatalError, "Sorry Misconstructed BN because of isolated node." )
   
 }
 
