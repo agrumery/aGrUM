@@ -23,10 +23,25 @@
 import pyAgrum as gum
 from pyAgrum_header import pyAgrum_header
 
+def nodeId(bn,n):
+    if type(n)==str:
+        return bn.idFromName(n)
+    else:
+        return n
+
+def nodeName(bn,n):
+    if type(n)==str:
+        return n
+    else:
+        return bn.variable(n).name()
+
 def parents_name(bn,n):
-  l=bn.cpt(n).var_names
-  l.pop()
-  return l
+    """
+    gives a list of name of parents of node n
+    """
+    l=bn.cpt(nodeId(bn,n)).var_names
+    l.pop()
+    return l
 
 def parents(bn,n):
     """
@@ -34,26 +49,24 @@ def parents(bn,n):
 
     (this algorithm is clearly not efficient ...)
     """
-
-    l=parents_name(bn,n)
-    #l is the liste of var names
-    return map(bn.idFromName,l)
+    return map(bn.idFromName,parents_name(bn,n))
 
 def children_name(bn,n):
     """
-    gives a nodeId list of name of children of node n
+    gives a list of name of children of node n
 
     (this algorithm is clearly not efficient AT ALL ...)
     """
-    return filter(lambda x:n in parents_name(bn,x), range(0,len(bn)))
+    return map(lambda n:bn.variable(n).name(),children(bn,n))
 
 def children(bn,n):
     """
     gives a nodeId list of children of node n
 
     (this algorithm is clearly not efficient AT ALL ...)
-    """
-    return filter(lambda x:n in parents(bn,x), range(0,len(bn)))
+    """    
+    n=nodeName(bn,n)
+    return filter(lambda x:n in parents_name(bn,x), bn.ids())
 
 
 if __name__=="__main__":
@@ -62,12 +75,14 @@ if __name__=="__main__":
     bn=gum.loadBN("bn.bif")
 
     #liste des noeuds
-    print map(lambda x:str(x)+':'+bn.variable(x).name(),range(0,len(bn)))
+    print map(lambda x:str(x)+':'+bn.variable(x).name(),bn.ids())
 
     #calcul des parents du noeud 0
     print "noeud : ",bn.variable(0).name()
     print "parents : ",parents(bn,0)
+    print "parents : ",parents_name(bn,0)
 
     #calcul des enfant du noeud 4
     print "noeud : ",bn.variable(4).name()
-    print "enfants : ",enfants(bn,4)
+    print "enfants : ",children(bn,4)
+    print "enfants : ",children_name(bn,4)
