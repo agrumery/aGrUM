@@ -39,35 +39,14 @@ def parents_name(bn,n):
     """
     gives a list of name of parents of node n
     """
-    l=bn.cpt(nodeId(bn,n)).var_names
-    l.pop()
+    return map(lambda n:bn.variable(n).name(),bn.parents(nodeId(bn,n)))
     return l
-
-def parents(bn,n):
-    """
-    gives a nodeId list of parents of node n
-
-    (this algorithm is clearly not efficient ...)
-    """
-    return map(bn.idFromName,parents_name(bn,n))
 
 def children_name(bn,n):
     """
     gives a list of name of children of node n
-
-    (this algorithm is clearly not efficient AT ALL ...)
     """
-    return map(lambda n:bn.variable(n).name(),children(bn,n))
-
-def children(bn,n):
-    """
-    gives a nodeId list of children of node n
-
-    (this algorithm is clearly not efficient AT ALL ...)
-    """    
-    n=nodeName(bn,n)
-    return filter(lambda x:n in parents_name(bn,x), bn.ids())
-
+    return map(lambda n:bn.variable(n).name(),bn.children(nodeId(bn,n)))
 
 if __name__=="__main__":
     pyAgrum_header()
@@ -79,10 +58,10 @@ if __name__=="__main__":
 
     #calcul des parents du noeud 0
     print "noeud : ",bn.variable(0).name()
-    print "parents : ",parents(bn,0)
+    print "parents : ",bn.parents(0)
     print "parents : ",parents_name(bn,0)
 
     #calcul des enfant du noeud 4
     print "noeud : ",bn.variable(4).name()
-    print "enfants : ",children(bn,4)
+    print "enfants : ",bn.children(4)
     print "enfants : ",children_name(bn,4)

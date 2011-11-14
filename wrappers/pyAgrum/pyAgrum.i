@@ -233,14 +233,34 @@ def saveBN(bn,s):
 %}
 
 %extend gum::BayesNet {
-    PyObject *names() { return NULL; };
-    PyObject *ids() {return NULL;};
+    PyObject *names() { return NULL; } const;
+    PyObject *ids() {return NULL;} const;
+    PyObject *parents(const NodeId id) const {
+			PyObject* q=PyList_New();
+	
+			const NodeSet& p=dag().parents(id);
+			for(NodeSet::const_iterator it=p.begin();it!=p.end();it++) {
+				PyList_Append(q,PyInt_FromLong(*it));
+			}
+
+			return q;
+		};
+    PyObject *children(NodeId) {const NodeId id) const {
+			PyObject* q=PyList_New();
+	
+			const NodeSet& p=dag().children(id);
+			for(NodeSet::const_iterator it=p.begin();it!=p.end();it++) {
+				PyList_Append(q,PyInt_FromLong(*it));
+			}
+
+			return q;
+		};
 }
 
 %feature("shadow") gum::BayesNet::names() {
 def names(self):
     """
-    give the list of names of variable in the bn
+    give a dictionnary of (name,id) of variables in the bn
     """
 
     inst=Instantiation()
@@ -254,7 +274,7 @@ def names(self):
 %feature("shadow") gum::BayesNet::ids() {
 def ids(self):
     """
-    give a list of ids of variable in the bn
+    give a dictionnary of (id,name) of variables in the bn
     """
     inst=Instantiation()
     self.completeInstantiation(inst)

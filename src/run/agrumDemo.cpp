@@ -23,23 +23,27 @@
 #define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/net/netReader.h>
-#include <agrum/BN/io/BIF/BIFWriter.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 int main( void ) {
   try {
     gum::BayesNet<float> bn;
-    gum::NetReader<float> reader( &bn, GET_PATH_STR( test3.net ) );
+    gum::BIFReader<float> reader( &bn, GET_PATH_STR( asia.bif ) );
 
     if ( ! reader.proceed() ) {
       reader.showElegantErrorsAndWarnings();
       reader.showErrorCounts();
       return false;
     } else {
-      gum::BIFWriter<float> w;
-      w.write(std::cout,bn);
+      std::cout<<bn<<std::endl;
+      const Sequence<NodeId>&to=bn.getTopologicalOrder();
+      
+      for(Sequence<NodeId>::const_iterator it=to.begin();it!=to.end();++it) {
+	std::cout<<bn.variable(*it).name()<<" : " <<bn.dag().parents(*it)<<std::endl;
+	std::cout<<"    "<<bn.cpt(*it)<<std::endl;
+      }
       return true;
     }
 
