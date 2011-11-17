@@ -30,4 +30,4 @@ bn=gum.loadBN("bn.bif")
 seq=bn.getTopologicalOrder()
 
 for i in range(0,len(bn)):
-	print "%d : %d (%s)"%(i,seq[i],bn.variable(seq[i]).name())
+    print "%d : %d (%s)"%(i,seq[i],bn.variable(seq[i]).name())

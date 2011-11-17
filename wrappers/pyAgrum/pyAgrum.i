@@ -214,6 +214,7 @@ def loadBN(s):
   else:
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+  bn.setProperty("name",s)
   return bn
 
 def saveBN(bn,s):
@@ -232,38 +233,50 @@ def saveBN(bn,s):
 %}
 
 %extend gum::BayesNet {
-    PyObject *names() { return NULL; };
-    PyObject *ids() {return NULL;};
-}
+    PyObject *names() const {
+			PyObject* q=PyList_New(0);
+	
+			const DAG& dag=self->dag();
+			for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+				PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
+			}
 
-%feature("shadow") gum::BayesNet::names() {
-def names(self):
-    """
-    give the list of names of variable in the bn
-    """
+			return q;
+		};
 
-    inst=Instantiation()
-    self.completeInstantiation(inst)
-    l={}
-    for i in range(len(inst)):
-        l[inst.variable(i).name()]=self.nodeId(inst.variable(i))
-    return l
-}
+    PyObject *ids() {
+			PyObject* q=PyList_New(0);
+	
+			const DAG& dag=self->dag();
+			for ( NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+				PyList_Append(q,PyInt_FromLong(*node_iter));
+			}
 
-%feature("shadow") gum::BayesNet::ids() {
-def ids(self):
-    """
-    give a list of ids of variable in the bn
-    """
-    inst=Instantiation()
-    self.completeInstantiation(inst)
-    l={}
-    for i in range(len(inst)):
-        l[self.nodeId(inst.variable(i))]=inst.variable(i).name()
-    return l
-}
+			return q;
+		};
 
-%extend gum::BayesNet {
+    PyObject *parents(const NodeId id) const {
+			PyObject* q=PyList_New(0);
+	
+			const NodeSet& p=self->dag().parents(id);
+			for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+				PyList_Append(q,PyInt_FromLong(*it));
+			}
+
+			return q;
+		};
+
+    PyObject *children(const NodeId id) const {
+			PyObject* q=PyList_New(0);
+	
+			const NodeSet& p=self->dag().children(id);
+			for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+				PyList_Append(q,PyInt_FromLong(*it));
+			}
+
+			return q;
+		};
+
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
 				std::vector<PythonLoadListener> py_listener(1);

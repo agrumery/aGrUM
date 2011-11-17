@@ -105,6 +105,7 @@
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/core/inline.h>
+%include <agrum/config.h>
 
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>

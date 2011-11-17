@@ -93,9 +93,10 @@ def pretty_bn(aBN):
     bn=gum.loadBN(aBN)
   else:
     bn=aBN
-
+  
+  seq=bn.getTopologicalOrder()
   for i in range(len(bn)):
-    pretty_cpt(bn.cpt(i))
+    pretty_cpt(bn.cpt(seq[i]))
   print("")
 
 if __name__=="__main__":
