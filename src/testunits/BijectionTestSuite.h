@@ -311,9 +311,8 @@ namespace gum {
           TS_ASSERT( nb == 4 );
 
           iter = bijection.begin();
-          int *nb2;
-          nb2 = iter.first();
-          nb2 = iter.second();
+          iter.first();
+          iter.second();
 
         }
 

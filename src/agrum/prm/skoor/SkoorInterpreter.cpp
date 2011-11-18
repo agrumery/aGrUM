@@ -451,7 +451,7 @@ bool SkoorInterpreter::checkUnobserve( UnobserveCommand * command )
     const gum::prm::System& sys = getSystem( name );
     const gum::prm::Instance& instance = sys.get( findInstanceName(name, sys) );
     const gum::prm::Attribute& attr = instance.get( findAttributeName(name, instance) );
-    gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
+    // gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
 
     command->system = &sys;
     command->chain = std::make_pair ( &instance, &attr );
@@ -472,7 +472,7 @@ bool SkoorInterpreter::checkQuery( QueryCommand * command )
     const gum::prm::System& sys = getSystem( name );
     const gum::prm::Instance& instance = sys.get( findInstanceName(name, sys) );
     const gum::prm::Attribute& attr = instance.get( findAttributeName(name, instance) );
-    gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
+    // gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
 
     command->system = &sys;
     command->chain = std::make_pair ( &instance, &attr );

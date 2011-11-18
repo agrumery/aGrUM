@@ -17,6 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <sys/stat.h>
+
 #include <iostream>
 #include <string>
 
@@ -88,6 +90,8 @@ public:
         TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
         file = GET_PATH_STR( BNBIFXMLIO_RO_file.txt );
+
+        TS_ASSERT_EQUALS(chmod(file.c_str(),0444),0);
 
         try {
             writer.write( file, *bn );

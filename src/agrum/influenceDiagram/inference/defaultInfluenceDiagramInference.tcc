@@ -442,6 +442,7 @@ namespace gum {
 
     Instantiation utilityMarginalInst( utilityMarginal );
 
+    //TODO something has been forgotten here ? What is the use of uVal ???
     for ( utilityMarginalInst.setFirst(); not utilityMarginalInst.end(); utilityMarginalInst.inc() ) {
       T_DATA uVal = ( T_DATA ) 0;
 

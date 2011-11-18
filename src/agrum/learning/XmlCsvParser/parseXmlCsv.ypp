@@ -396,6 +396,6 @@ bool GUM_PARSE_XML_CSV_parser (gum::Database& database,
   delete GUM_PARSE_XML_CSV_modality_id2index_per_var;
   GUM_PARSE_XML_CSV_current_variable_name.clear ();
   
-  return true;
+  return result;
 }
 
