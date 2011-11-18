@@ -27,7 +27,7 @@
 #include <agrum/FMDP/FMDPFactory.h>
 // ============================================================================
 
-#define VERBOSITY(x) {  if (isVerbose()) std::cerr << "[FMDP factory] "<< x << std::endl; }
+#define FMDP_VERBOSITY(x) {  if (isVerbose()) std::cerr << "[FMDP factory] "<< x << std::endl; }
 
 
 namespace gum {
@@ -151,7 +151,7 @@ namespace gum {
 			else
 				__states.push_back ( PROPERTY );
 
-			VERBOSITY ( "starting property" );
+			FMDP_VERBOSITY ( "starting property" );
 		}
 	
 		// ==========================================================================================
@@ -180,7 +180,7 @@ namespace gum {
 			else
 			__states.pop_back();
 
-			VERBOSITY ( "property OK" );
+			FMDP_VERBOSITY ( "property OK" );
 		}
 		
 
@@ -205,7 +205,7 @@ namespace gum {
 				__stringBag.push_back ( "desc" );
 			}
 
-			VERBOSITY ( "  starting variable" );
+			FMDP_VERBOSITY ( "  starting variable" );
 		}
 	
 		// ==========================================================================================
@@ -224,7 +224,7 @@ namespace gum {
 
 				__foo_flag = true;
 				__stringBag[0] = name;
-				VERBOSITY ( "  -- variable " << name );
+				FMDP_VERBOSITY ( "  -- variable " << name );
 			}
 		}
 	
@@ -302,7 +302,7 @@ namespace gum {
 				__resetParts();
 				__states.pop_back();
 
-				VERBOSITY ( "  variable " << var->name() << " OK" );
+				FMDP_VERBOSITY ( "  variable " << var->name() << " OK" );
 				
 			} else {
 				
@@ -356,7 +356,7 @@ namespace gum {
 					//~ break;
 					
 
-			VERBOSITY ( "starting action declaration" );
+			FMDP_VERBOSITY ( "starting action declaration" );
 		}
 	
 		// ==========================================================================================
@@ -387,7 +387,7 @@ namespace gum {
 				__resetParts();
 			}
 
-			VERBOSITY ( "action OK" );
+			FMDP_VERBOSITY ( "action OK" );
 		}
 		
 
@@ -410,7 +410,7 @@ namespace gum {
 					
 			//~ this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
-			VERBOSITY ( "starting transition declaration" );
+			FMDP_VERBOSITY ( "starting transition declaration" );
 		}
 	
 		// ==========================================================================================
@@ -464,7 +464,7 @@ namespace gum {
 				__illegalStateError ( "endTransitionDeclaration" );
 			else
 				__states.pop_back();
-			VERBOSITY ( "transition OK" );
+			FMDP_VERBOSITY ( "transition OK" );
 		}
 		
 
@@ -487,7 +487,7 @@ namespace gum {
 					
 			this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
-			VERBOSITY ( "starting Cost declaration" );
+			FMDP_VERBOSITY ( "starting Cost declaration" );
 		}
 	
 		// ==========================================================================================
@@ -540,7 +540,7 @@ namespace gum {
 			else
 				__states.pop_back();
 
-			VERBOSITY ( "Cost OK" );
+			FMDP_VERBOSITY ( "Cost OK" );
 		}
 		
 
@@ -563,7 +563,7 @@ namespace gum {
 					
 			this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
-			VERBOSITY ( "starting reward declaration" );
+			FMDP_VERBOSITY ( "starting reward declaration" );
 		}
 	
 		// ==========================================================================================
@@ -609,7 +609,7 @@ namespace gum {
 			else
 				__states.pop_back();
 
-			VERBOSITY ( "reward OK" );
+			FMDP_VERBOSITY ( "reward OK" );
 		}
 		
 
@@ -630,7 +630,7 @@ namespace gum {
 			else 
 				__states.push_back ( DISCOUNT );
 
-			VERBOSITY ( "starting discount declaration" );
+			FMDP_VERBOSITY ( "starting discount declaration" );
 		}
 	
 		// ==========================================================================================
@@ -657,7 +657,7 @@ namespace gum {
 			else
 				__states.pop_back();
 
-			VERBOSITY ( "discount OK" );
+			FMDP_VERBOSITY ( "discount OK" );
 		}
 		
 

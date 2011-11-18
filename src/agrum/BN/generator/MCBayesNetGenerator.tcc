@@ -72,10 +72,8 @@ MCBayesNetGenerator<T_DATA>::~MCBayesNetGenerator() {
 template<typename T_DATA>
 BayesNet<T_DATA>* MCBayesNetGenerator<T_DATA>::generateBN(gum::Idx iteration, gum::Idx p,gum::Idx q) {
     __bayesNet = new BayesNet<T_DATA>();
-      GUM_TRACE("createDAG");
     __createTree(__nbNodes);
     __transformPoly(__nbNodes/2);
-      GUM_TRACE("modification");
     __PMMx_poly(iteration, p, q);
 
     for ( NodeId iter = 0.; iter < __bayesNet->size(); iter++ ) {
@@ -98,7 +96,7 @@ BayesNet<T_DATA>* MCBayesNetGenerator<T_DATA>::modifyingExistingBN(BayesNet<T_DA
 
 template<typename T_DATA>
 void MCBayesNetGenerator<T_DATA>::__PMMx_poly(gum::Idx iteration, gum::Idx p, gum::Idx q) {
-        if (!iteration)
+    if (!iteration)
         return;
     srand(time(NULL) + c++);
     gum::Idx per = rand() % 100;
@@ -200,7 +198,7 @@ void MCBayesNetGenerator<T_DATA>::__AorR() {
         __bayesNet->eraseArc(i,j);
     }
     else {
-            if (!__dag.existsArc(i,j)&&!__directedPath(j,i) &&
+        if (!__dag.existsArc(i,j)&&!__directedPath(j,i) &&
                 (!__max_parents || __dag.parents(j).size() + 1 <= __max_parents) &&
                 (double)(__dag.sizeArcs() + 1) /(double)(__dag.size()*__dag.size()) < __max_density) {
             __bayesNet->insertArc(i,j);
@@ -230,10 +228,10 @@ void MCBayesNetGenerator<T_DATA>::__AR() {
             for (gum::NodeSetIterator it =__dag.parents(j).begin(); it != __dag.parents(j).end(); ++it )
                 if (__directedPath(i,*it)) {
                     __bayesNet->eraseArc(*it,j);
-               }
+                }
         }
         else if (__directedPath(j,i)) {
-           for (gum::NodeSetIterator it =__dag.parents(i).begin(); it != __dag.parents(i).end(); ++it )
+            for (gum::NodeSetIterator it =__dag.parents(i).begin(); it != __dag.parents(i).end(); ++it )
                 if (__directedPath(j,*it)) {
                     __bayesNet->eraseArc(*it,i);
 
@@ -244,7 +242,7 @@ void MCBayesNetGenerator<T_DATA>::__AR() {
 
         try {
             __bayesNet->insertArc(i,j);
-        }catch (gum::InvalidCircuit) {
+        } catch (gum::InvalidCircuit) {
             std::cout << "ins7 i "<< __bayesNet->variable(i).name() <<"  j " << __bayesNet->variable(j).name()
                       << " i parents :"<< __dag.parents(i).size()<< " j parents :"<< __dag.parents(j).size()
                       << " connected :"<< __connect(i,j)<< " dir i j   :"<< __directedPath(i,j)<< " dir j i  : "<< __directedPath(j,i)
@@ -269,37 +267,37 @@ void MCBayesNetGenerator<T_DATA>::__chooseclosenodes(gum::NodeId &i,gum::NodeId 
     srand(time(NULL)+ c++);
     gum::Idx temp = rand() % __bayesNet->size();
     gum::Size co = 0;
-    if(__bayesNet->dag().parents(temp).size()){ 
-      j = temp;
-      NodeSetIterator it = __bayesNet->dag().parents(j).begin();
-      co = rand() % __bayesNet->dag().parents(j).size();
-      while(co--){
-      ++it;
-      }
-    i = *it;
+    if (__bayesNet->dag().parents(temp).size()) {
+        j = temp;
+        NodeSetIterator it = __bayesNet->dag().parents(j).begin();
+        co = rand() % __bayesNet->dag().parents(j).size();
+        while (co--) {
+            ++it;
+        }
+        i = *it;
     }
-    else if(__bayesNet->dag().children(temp).size()){ 
-      i = temp; 
-       NodeSetIterator it = __bayesNet->dag().children(i).begin();
-      co = rand() % __bayesNet->dag().children(i).size();
-      while(co--){
-      ++it;
-      }
-      
-      j = *it;
+    else if (__bayesNet->dag().children(temp).size()) {
+        i = temp;
+        NodeSetIterator it = __bayesNet->dag().children(i).begin();
+        co = rand() % __bayesNet->dag().children(i).size();
+        while (co--) {
+            ++it;
+        }
+
+        j = *it;
     }
     else GUM_ERROR( FatalError, "Sorry Misconstructed BN because of isolated node." )
-  
-}
+
+    }
 
 template<typename T_DATA>
 void MCBayesNetGenerator<T_DATA>::__createTree(gum::Size BNSize) {
     static Idx n = 0;
     srand(time(NULL) + n);
-        gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
-        std::stringstream strBuff;
-        strBuff << "n_1_" <<n++;
-          NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
+    gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
+    std::stringstream strBuff;
+    strBuff << "n_1_" <<n++;
+    NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
     Size maxNodes = BNSize - 1;
     gum::Size SubG = 0;
     while (maxNodes) {
@@ -307,17 +305,17 @@ void MCBayesNetGenerator<T_DATA>::__createTree(gum::Size BNSize) {
         maxNodes = maxNodes - SubG;
         gum::NodeId rootS = __createPartTree(SubG);
         __bayesNet->insertArc( root,rootS);
-        }
+    }
 }
 
 template<typename T_DATA>
 NodeId MCBayesNetGenerator<T_DATA>::__createPartTree(gum::Size BNSize) {
     static Idx n = 0;
     srand(time(NULL) + n);
-        gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
-        std::stringstream strBuff;
-        strBuff << "n_2_" <<n++;
-          NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
+    gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
+    std::stringstream strBuff;
+    strBuff << "n_2_" <<n++;
+    NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
     Size maxNodes = BNSize - 1;
     gum::Size SubG = 0;
     while (maxNodes) {
@@ -326,23 +324,23 @@ NodeId MCBayesNetGenerator<T_DATA>::__createPartTree(gum::Size BNSize) {
         maxNodes = maxNodes - SubG;
         gum::NodeId rootS = __createPartTree(SubG);
         __bayesNet->insertArc( root,rootS);
-        }
-        return root;
+    }
+    return root;
 }
 
 template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__transformPoly(gum::Idx nbiter){
-  while(nbiter--){
-    gum::NodeId i,j;
-    __chooseclosenodes(i,j);
-    if (__bayesNet->dag().parents(i).size() + 1 <= __max_parents){
-    __bayesNet->eraseArc(i,j);
-    __bayesNet->insertArc(j,i);
+void MCBayesNetGenerator<T_DATA>::__transformPoly(gum::Idx nbiter) {
+    while (nbiter--) {
+        gum::NodeId i,j;
+        __chooseclosenodes(i,j);
+        if (__bayesNet->dag().parents(i).size() + 1 <= __max_parents) {
+            __bayesNet->eraseArc(i,j);
+            __bayesNet->insertArc(j,i);
+        }
+        else nbiter++;
+
+
     }
-    else nbiter++;
- 
-    
-  }
 }
 
 
@@ -380,7 +378,10 @@ void MCBayesNetGenerator<T_DATA>::__createDAG(gum::Size BNSize, gum::Size iniRoo
         }
         delete rootS;
     }
-    if (!__isPolytree()) {std::cout << "it is not a polytree" << std::endl;GUM_ERROR( FatalError, "Sorry Misconstruction BN is no Polytree." );}
+    if (!__isPolytree()) {
+        std::cout << "it is not a polytree" << std::endl;
+        GUM_ERROR( FatalError, "Sorry Misconstruction BN is no Polytree." );
+    }
 }
 
 template<typename T_DATA>
@@ -403,7 +404,7 @@ std::vector<gum::NodeId> * MCBayesNetGenerator<T_DATA>::__createPartDAG(gum::Siz
         std::vector<gum::NodeId> * rootS = __createPartDAG(SubG, nbRoot);
         for (std::vector<gum::NodeId>::iterator it = roots->begin();it != roots->end(); ++it) {
             gum::Idx theroot = rand() % rootS->size() ;
-            __bayesNet->insertArc( *it, (*rootS)[theroot]); 
+            __bayesNet->insertArc( *it, (*rootS)[theroot]);
         }
         if (rootS->size() == SubG) {
             for (std::vector<gum::NodeId>::iterator it = rootS->begin();it != rootS->end(); ++it) {
