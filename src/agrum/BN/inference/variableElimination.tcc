@@ -177,42 +177,9 @@ namespace gum {
   template<typename T_DATA>
   void
   VariableElimination<T_DATA>::__eliminateNode( NodeId id,
-      Set< Potential<T_DATA>* >& pool,
-      Set< Potential<T_DATA>* >& trash ) {
-    MultiDimBucket<T_DATA>* bucket = new MultiDimBucket<T_DATA>();
-    Set< Potential<T_DATA>* > toRemove;
-    for ( SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter ) {
-      if (( *iter )->contains( this->bn().variable( id ) ) ) {
-        bucket->add( **iter );
-        toRemove.insert( *iter );
-      }
-    }
-    try {
-      bucket->add( __evidences[id] );
-    } catch ( NotFound& ) {
-      // No evidence on id
-    }
-    if ( not toRemove.empty() ) {
-      for ( SetIterator< Potential<T_DATA>* > iter = toRemove.begin(); iter != toRemove.end(); ++iter ) {
-        pool.erase( *iter );
-      }
-      for ( Set<const DiscreteVariable*>::iterator jter = bucket->allVariables().begin();
-            jter != bucket->allVariables().end(); ++jter ) {
-        try {
-          if ( this->bn().nodeId( **jter ) != id ) {
-            bucket->add( **jter );
-          }
-        } catch ( NotFound& ) {
-          // This can happen if bn is a HollowBayesNet...
-          bucket->add( **jter );
-        }
-      }
-      Potential<T_DATA>* bucket_pot = new Potential<T_DATA>( bucket );
-      trash.insert( bucket_pot );
-      pool.insert( bucket_pot );
-    } else {
-      delete bucket;
-    }
+                                             Set< Potential<T_DATA>* >& pool,
+                                             Set< Potential<T_DATA>* >& trash ) {
+    prm::eliminateNode(&(this->bn().variable(id)), pool, trash);
   }
 
 } /* namespace gum */
