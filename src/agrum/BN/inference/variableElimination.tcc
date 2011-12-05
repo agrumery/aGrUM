@@ -171,6 +171,8 @@ namespace gum {
     __pool.clear();
     for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
       __pool.insert( const_cast< Potential<T_DATA>* >( &( this->bn().cpt( *iter ) ) ) );
+      if (__evidences.exists(*iter))
+        __pool.insert(const_cast< Potential<T_DATA>* >(__evidences[*iter]));
     }
   }
 
