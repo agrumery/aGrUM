@@ -476,10 +476,10 @@ void Parser::CastIdent(std::string& s) {
 void Parser::Number(float& val) {
 		if (la->kind == 1) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atoi(t->val); 
 		} else if (la->kind == 2) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atof(t->val); 
 		} else SynErr(59);
 }
 
@@ -592,7 +592,7 @@ void Parser::ArrayDecl(std::string l1) {
 		Expect(23);
 		if (la->kind == 1) {
 			Get();
-			sBuff << '[' << narrow(t->val) << ']'; swscanf(t->val, L"%d", &size); 
+			sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); 
 		}
 		Expect(24);
 		if (la->kind == 3) {

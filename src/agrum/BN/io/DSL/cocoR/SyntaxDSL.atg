@@ -306,9 +306,9 @@ IDENT_OR_INTEGER<std::string& name> =
 
 //==============
 FLOAT<float& val> =
-  number  (. swscanf(t->val, L"%f", &val); .)
+  number  (. val=coco_atof(t->val); .)
   |
-  integer (. swscanf(t->val, L"%f", &val); .)
+  integer (. val=coco_atoi(t->val); .)
 .
 
 

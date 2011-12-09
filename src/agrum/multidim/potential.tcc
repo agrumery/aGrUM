@@ -223,7 +223,7 @@ namespace gum {
 
   /// sum of all elements in this
   template<typename T_DATA> INLINE
-  const T_DATA Potential<T_DATA>::getSum() const  {
+  const T_DATA Potential<T_DATA>::sum() const  {
     Instantiation i( this->_content );
     T_DATA s = ( T_DATA ) 0;
 
@@ -236,7 +236,7 @@ namespace gum {
   /// do nothing is sum is 0
   template<typename T_DATA> INLINE
   Potential<T_DATA>& Potential<T_DATA>::normalize()  const {
-    T_DATA s = getSum();
+    T_DATA s = sum();
 
     if ( s != ( T_DATA ) 0 ) {
       Instantiation i( this->_content );

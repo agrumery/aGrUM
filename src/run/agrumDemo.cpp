@@ -30,7 +30,7 @@
 int main( void ) {
   try {
     gum::BayesNet<float> bn;
-    gum::BIFReader<float> reader( &bn, GET_PATH_STR( asia.bif ) );
+    gum::BIFReader<float> reader( &bn, GET_PATH_STR( Diabetes.bif ) );
 
     if ( ! reader.proceed() ) {
       reader.showElegantErrorsAndWarnings();
@@ -41,8 +41,10 @@ int main( void ) {
       const Sequence<NodeId>&to=bn.getTopologicalOrder();
       
       for(Sequence<NodeId>::const_iterator it=to.begin();it!=to.end();++it) {
-	std::cout<<bn.variable(*it).name()<<" : " <<bn.dag().parents(*it)<<std::endl;
-	std::cout<<"    "<<bn.cpt(*it)<<std::endl;
+				if (bn.cpt(*it).sum()>0) {
+					std::cout<<bn.variable(*it).name()<<" : " <<bn.dag().parents(*it)<<std::endl;
+					std::cout<<"    "<<bn.cpt(*it)<<std::endl;
+				}
       }
       return true;
     }

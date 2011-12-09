@@ -260,13 +260,13 @@ IDENT_OR_INTEGER<std::string& name> =
 .
 
 //==============
-NBR<int& val> = integer (. swscanf(t->val, L"%d", &val); .).
+NBR<int& val> = integer (. val=coco_atoi(t->val); .).
 
 //==============
 FLOAT<float& val> =
-  number  (. swscanf(t->val, L"%f", &val); .)
+  number  (. val=coco_atof(t->val); .)
   |
-  integer (. swscanf(t->val, L"%f", &val); .)
+  integer (. val=coco_atoi(t->val); .)
 .
 
 
