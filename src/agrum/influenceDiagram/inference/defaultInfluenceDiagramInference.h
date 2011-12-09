@@ -82,7 +82,7 @@ public:
 
     /// @}
     // ====================================================================
-    /// @name Inference and evidence management
+    /// @name Inference
     // ====================================================================
     /// @{
 
@@ -96,7 +96,13 @@ public:
     const Idx getBestDecisionChoice( NodeId decisionId );
 
     /// displays the result of an inference
-    void displayResult(std::ostream& stream =std::cout);
+    void displayResult(std::ostream& stream = std::cout);
+
+    /// @}
+    // ====================================================================
+    /// @name Evidence management
+    // ====================================================================
+    /// @{
 
     /// @see gum::InfluenceDiagramInference::insertEvidence().
     virtual void insertEvidence( const List<const Potential<T_DATA>*>& evidenceList );
@@ -118,7 +124,7 @@ public:
 
     /// Displays on terminal the result of strong junction tree computation
     /// for test purpose only
-    void displayStrongJunctionTree(std::ostream &stream=std::cout);
+    void displayStrongJunctionTree( std::ostream &stream = std::cout );
 
 private:
 
@@ -165,9 +171,6 @@ private:
     // ====================================================================
     /// @{
 
-    /// @return Returns the list of neighbours of a given clique
-    const EdgeSet& __getNeighbours( NodeId cliqueId );
-
     /// @return Returns a separator given two adjacent cliques
     const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
@@ -212,8 +215,8 @@ private:
     /// @return A pointer over the dummy bucket.
     UtilityTable<T_DATA>* __makeDummyUtility( NodeId cliqueId );
 
-    /// Returns true if neighboor is eliminated after current node
-    bool __IsValidNeighBoor( NodeId currentNode, NodeId neighboorNode );
+    /// Returns true if observed  node is eliminated after current node
+    bool __IsEliminatedAfter( NodeId observedNode, NodeId currentNode  ) ;
 
     /// @}
 };
