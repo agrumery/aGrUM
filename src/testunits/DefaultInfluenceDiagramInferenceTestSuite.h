@@ -369,7 +369,7 @@ namespace gum {
           gum::InfluenceDiagram<float> *topology = NULL;
           gum::List<gum::NodeId> idList;
           TS_GUM_ASSERT_THROWS_NOTHING ( topology = new gum::InfluenceDiagram<float>() );
-          TS_GUM_ASSERT_THROWS_NOTHING ( fillwithOilWildcater ( *topology, idList ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( fillwithDecAsia ( *topology, idList ) );
 
           gum::DefaultInfluenceDiagramInference<float> * dIDI = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING ( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
@@ -453,7 +453,7 @@ namespace gum {
 
           gum::NullStream devnull;
           gum::DefaultInfluenceDiagramInference<float> dIDI ( id );
-          dIDI.displayStrongJunctionTree ( devnull );
+          dIDI.displayStrongJunctionTree ( devnull  );
         }
 
         void testInferenceWithOilWildCater() {

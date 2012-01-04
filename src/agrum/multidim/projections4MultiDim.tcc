@@ -237,14 +237,13 @@ namespace gum {
   /// a specialized max projection function for multiDimDecisionDiagrams
   // ==============================================================================
 
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMaximising
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMaximising
   #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x >= y ? x : y )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL ( -1 * std::numeric_limits<T_DATA>::max() )
   
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
-  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Maximization
-  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMaxMultiDimDecisionDiagram
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
@@ -256,21 +255,21 @@ namespace gum {
   #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
   
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
   
 
   // ==============================================================================
   /// a specialized min projection function for multiDimDecisionDiagrams
   // ==============================================================================
 
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMinimising
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMinimising
   #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x <= y ? x : y )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
-  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Minimization
-  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMinMultiDimDecisionDiagram
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
@@ -282,21 +281,21 @@ namespace gum {
   #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
   
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
 
   // ==============================================================================
   /// a specialized sum projection function for multiDimDecisionDiagrams
   // ==============================================================================
 
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeBySumming
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreBySumming
   #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x + y )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
-  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Addition
-  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectSumMultiDimDecisionDiagram
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
@@ -307,22 +306,22 @@ namespace gum {
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
   #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
   
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
   // ==============================================================================
   /// a specialized product projection function for multiDimDecisionDiagrams
   // ==============================================================================
 
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION eleminateNodeByMultiplicating
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMultiplicating
   #define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x * y )
+  #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   
-  #define GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
-  #define GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION DecisionDiagramRecur4Multiplication
-  #include <agrum/multidim/patterns/DecisionDiagramRecursionFunctions.h>
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_SUB_DIAGRAM_OPERATOR_FUNCTION
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION_DEFINITION
+  #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectProductMultiDimDecisionDiagram
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
@@ -333,8 +332,9 @@ namespace gum {
   #include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
   #undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
   
-  #undef GUM_DECISION_DIAGRAM_PROJECTION_ELEMINATE_NODE_FUNCTION
+  #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
+  #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
 
   
@@ -479,14 +479,14 @@ namespace gum {
                                    &projectProductMultiDimArray);
     
       // register base functions for multiDimArrays
-      //~ registerProjection<T_DATA> ( "max", MultiDimDecisionDiagramString,
-                                   //~ &projectMaxMultiDimDecisionDiagram);
-      //~ registerProjection<T_DATA> ( "min", MultiDimDecisionDiagramString,
-                                   //~ &projectMinMultiDimDecisionDiagram);
+      registerProjection<T_DATA> ( "max", MultiDimDecisionDiagramString,
+                                   &projectMaxMultiDimDecisionDiagram);
+      registerProjection<T_DATA> ( "min", MultiDimDecisionDiagramString,
+                                   &projectMinMultiDimDecisionDiagram);
       registerProjection<T_DATA> ( "sum", MultiDimDecisionDiagramString,
                                    &projectSumMultiDimDecisionDiagram);
-      //~ registerProjection<T_DATA> ( "product", MultiDimDecisionDiagramString,
-                                   //~ &projectProductMultiDimDecisionDiagram);
+      registerProjection<T_DATA> ( "product", MultiDimDecisionDiagramString,
+                                   &projectProductMultiDimDecisionDiagram);
 
       // register default basename functions 
       registerProjection<T_DATA> ( "max", BaseNameString,

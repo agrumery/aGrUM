@@ -89,6 +89,22 @@ namespace gum {
 
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented
+  /// by strings
+  // ==============================================================================
+  INLINE Size
+  HashFunc< std::vector<Idx> >::operator()
+  ( const std::vector<Idx>& key ) const  {
+    register Size h = 0;
+
+    for ( size_t i = 0; i < key.size(); ++i )
+      h += i*key[i];
+
+    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+  }
+
+
+  // ==============================================================================
+  /// returns a hashed key for hash tables the keys of which are represented
   /// by Debugs
   // ==============================================================================
   INLINE Size

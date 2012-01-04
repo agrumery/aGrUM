@@ -1,22 +1,23 @@
-/***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+
+/********************************************************************************
+*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES	*
+*   {prenom.nom}_at_lip6.fr 										*
+*															*
+*   This program is free software; you can redistribute it and/or modify 		*
+*   it under the terms of the GNU General Public License as published by	*
+*   the Free Software Foundation; either version 2 of the License, or 		*
+*   (at your option) any later version.								*
+* 															*
+*   This program is distributed in the hope that it will be useful,			*
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of 		*
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 		*
+*   GNU General Public License for more details.						*
+* 															*
+*   You should have received a copy of the GNU General Public License		*
+*   along with this program; if not, write to the							*
+*   Free Software Foundation, Inc.,									*
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 			*
+*********************************************************************************/
 /**
 * @file
 * @brief Template implementation of MultiDimDecisionDiagramBase.h classe.
@@ -34,1053 +35,962 @@
 
 namespace gum {
 
-	/* **************************************************************************************************** */
-	/*																										*/
-	/*									CONSTRUCTOR, DESTRUCTOR & CO										*/
-	/*																										*/
-	/* **************************************************************************************************** */
+    /* ***************************************************************************************************** */
+    /*                                                                                                                                                         */
+    /*                                  CONSTRUCTOR, DESTRUCTOR & CO                                                                 */
+    /*                                                                                                                                                        */
+    /* **************************************************************************************************** */
 
-		// ==============================================================================
-		// Default constructor
-		// ==============================================================================
-		template< typename T_DATA > INLINE
-		MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( ):
-		MultiDimReadOnly<T_DATA>(), __name( "MultiDimDecisionDiagram" ), __isInstanciated( false ), __instanciationModeOn( false ) {
-			
-			GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase ) ;
+	// ==============================================================================
+	// Default constructor
+	// ==============================================================================
+	template< typename T_DATA > INLINE
+	MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( ) :
+	MultiDimReadOnly<T_DATA>() , 
+	__name( "MultiDimDecisionDiagram" ) , 
+	__isInstanciated( false ) , 
+	__instanciationModeOn( false ) {
+	    GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase ) ;
+	}
+
+	// ==============================================================================
+	// Copy constructor
+	// ==============================================================================
+	template< typename T_DATA > INLINE
+	MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< T_DATA >& source ):
+	MultiDimReadOnly<T_DATA>( source ) ,
+	__name( "MultiDimDecisionDiagram" ) , 
+	__isInstanciated( false ) , 
+	__instanciationModeOn( false ) {
+	    GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase ) ;
+	    this->copy( source );
+	}
+
+	// ==============================================================================
+	// destructor
+	// ==============================================================================
+	template< typename T_DATA > INLINE
+	MultiDimDecisionDiagramBase< T_DATA >::~MultiDimDecisionDiagramBase() {
+
+	    GUM_DESTRUCTOR( MultiDimDecisionDiagramBase );
+
+	    for ( NodeGraphPart::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
+		if( *iter != 0 )
+		    if ( !__valueMap.existsFirst( *iter ) && __arcMap[*iter] != NULL )
+			delete __arcMap[*iter];
+	    }
+
+	    for ( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.begin(); iter != __var2NodeIdMap.end(); ++iter )
+		delete *iter;
+
+	}
+
+
+    /* ***************************************************************************************************** */
+    /*                                                                                                                                                         */
+    /*                                  MULTIDIM METHODS                                                                                         */
+    /*                                                                                                                                                        */
+    /* **************************************************************************************************** */
+    
+	/** *********************************************************************************** **/
+	/**        Accessors/Modifiers                                                                                       **/
+	/** *********************************************************************************** **/
+
+	    // ==============================================================================
+	    // Returns the real name of this multidim implementation
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    const std::string&
+	    MultiDimDecisionDiagramBase< T_DATA >::name() const {
+
+		return __name;
+
+	    }
+
+	    // =============================================================================
+	    // Returns valued pointed by inst
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    T_DATA
+	    MultiDimDecisionDiagramBase< T_DATA >::get( const Instantiation& inst ) const {
+
+		NodeId i = __root;
+		while ( ! isTerminalNode( i ) ) {
+		    if ( (*__arcMap[i])[ inst.val( *__variableMap[i] ) ] != 0 )
+			i = ( *__arcMap[i] )[ inst.val( *__variableMap[i] ) ];
+		    else
+			i = __defaultArcMap[i];
 		}
 
-		// ==============================================================================
-		// Copy constructor
-		// ==============================================================================
-		template< typename T_DATA > INLINE
-		MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< T_DATA >& source ):
-		MultiDimReadOnly<T_DATA>( source ), __name( "MultiDimDecisionDiagram" ), __isInstanciated( false ), __instanciationModeOn( false ) {
-			
-			GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase ) ;
-			
-			this->copy( source );
+		return this->__valueMap.second( i );
+
+	    }
+
+	    // =============================================================================
+	    // Returns the terminal node associated to value pointed by inst
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    NodeId
+	    MultiDimDecisionDiagramBase< T_DATA >::getNode( const Instantiation& inst ) const {
+
+		NodeId i = __root;
+
+		while ( ! isTerminalNode( i ) ) {
+		    if ( (*__arcMap[i])[ inst.val( *__variableMap[i] ) ] != 0  )
+			i = ( *__arcMap[i] )[ inst.val( *__variableMap[i] ) ];
+		    else
+			i = __defaultArcMap[i];
 		}
 
-		// ==============================================================================
-		// destructor
-		// ==============================================================================
-		template< typename T_DATA > INLINE
-		MultiDimDecisionDiagramBase< T_DATA >::~MultiDimDecisionDiagramBase() {
-			
-			GUM_DESTRUCTOR( MultiDimDecisionDiagramBase );
-			
-			for ( NodeGraphPart::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
-				if ( !__valueMap.existsFirst( *iter ) && __arcMap[*iter] != NULL )
-					delete __arcMap[*iter];
-			}
+		return i;
 
-			for ( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.begin(); iter != __var2NodeIdMap.end(); ++iter )
-				delete *iter;
-				
+	    }
+
+
+	/** *********************************************************************************** **/
+	/**      Implementation of MultiDimInterface                                                                **/
+	/** *********************************************************************************** **/
+
+	    // =============================================================================
+	    // Adds a new var to the variables of the multidimensional matrix.
+	    // throw OperationNotAllowed cause it's not authorize on read only multidim
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::add( const DiscreteVariable &v ) {
+		GUM_ERROR( OperationNotAllowed," Can't add a variable to a read only multidim " );
+	    }
+
+	    // =============================================================================
+	    // Removes a var from the variables of the multidimensional matrix.
+	    // @throw OperationNotAllowed cause it's not authorize on read only multidim
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::erase( const DiscreteVariable &v ) {
+		GUM_ERROR( OperationNotAllowed," Can't remove a variable from a read only multidim " );
+	    }
+
+	    // ==============================================================================
+	    // Returns the real number of parameter used in this table.
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    Size
+	    MultiDimDecisionDiagramBase< T_DATA >::realSize() const {
+		return __graph.size() - 1;
+	    }
+
+	    // ==============================================================================
+	    // Indicates if diagram has no value inside at all
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    bool
+	    MultiDimDecisionDiagramBase< T_DATA >::empty () const {
+		return __valueMap.empty();
+	    }
+
+	/** *********************************************************************************** **/
+	/**    Slave management and extension due to slave management                           **/
+	/** *********************************************************************************** **/
+
+	    // ===============================================================================
+	    // Listen to change in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::changeNotification( Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval ) {
+	    }
+
+	    // ===============================================================================
+	    // Listen to setFirst in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setFirstNotification( Instantiation& i ) {
+	    }
+
+	    // ===============================================================================
+	    // Listen to setLast in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setLastNotification( Instantiation& i ) {
+	    }
+
+	    // ===============================================================================
+	    // Listen to increment in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setIncNotification( Instantiation& i ) {
+	    }
+
+	    // ===============================================================================
+	    // Listen to decrement in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setDecNotification( Instantiation& i ) {
+	    }
+
+	    // ===============================================================================
+	    // Listen to an assignement of value in a given Instantiation
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setChangeNotification( Instantiation& i ) {
+	    }
+
+
+	/** *********************************************************************************** **/
+	/**        Copy Methods                                                                                                **/
+	/** *********************************************************************************** **/
+
+	    // ===============================================================================
+	    // Makes a copy of given decision diagram
+	    // @throw OperationNotAllowed cause this is a read only
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimDecisionDiagramBase<T_DATA>& source, bool fullInstanciation ) {
+
+		if(  __isInstanciated )
+		    GUM_ERROR( OperationNotAllowed, "This is a read only" );
+
+		this->beginInstantiation();
+
+		this->setVariableSequence( source.variablesSequence() );
+
+		this->setDiagramNodes( source.nodesMap() );
+
+		__valueMap = source.valuesMap();
+
+		__variableMap.resize( source.nodesMap().size() );
+
+		__var2NodeIdMap.resize( source.variablesSequence().size() );
+
+		__arcMap.resize( source.nodesMap().size() );
+
+		__defaultArcMap.resize( source.nodesMap().size() );
+
+		for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ){
+
+		    if( *nodeIter != 0 && !source.isTerminalNode( *nodeIter ) ) {
+
+			__variableMap.insert( *nodeIter, source.nodeVariable( *nodeIter ) );
+
+			if( !__var2NodeIdMap.exists( source.nodeVariable( *nodeIter ) ) )
+			    __var2NodeIdMap.insert( source.nodeVariable( *nodeIter ), new List< NodeId >( *( source.variableNodes( source.nodeVariable( *nodeIter ) ) ) ) );
+
+			__arcMap.insert( *nodeIter, new std::vector<NodeId>( *(source.nodeSons( *nodeIter ) ) ) );
+
+			if( source.hasNodeDefaultSon( *nodeIter ) )
+			    __defaultArcMap.insert( *nodeIter, source.nodeDefaultSon( *nodeIter ) );
+
+		    }
 		}
 
+		this->setRoot( source.root() );
 
-	/* **************************************************************************************************** */
-	/*																										*/
-	/*										MULTIDIM METHODS												*/
-	/*																										*/
-	/* **************************************************************************************************** */
+		if( fullInstanciation )
+		    this->endInstantiation();
 
-		/** *********************************************************************************** **/
-		/**									Accessors/Modifiers									**/
-		/** *********************************************************************************** **/
+	    }
 
-			// =============================================================================
-			// Returns the real name of this multidim implementation
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const std::string&
-			MultiDimDecisionDiagramBase< T_DATA >::name() const {
-				
-				return __name;
-				
+	    // ===============================================================================
+	    // Removes all variables in this Container and copy content from src, variable included
+	    // @throw OperationNotAllowed cause this is a read only and a decision diagram ( which 
+	    // makes quiet complicate any copy operation as a matter of fact )
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimContainer<T_DATA>& src ){
+
+	    GUM_ERROR( OperationNotAllowed, "This is a read only with a special structure" );
+
+	    }
+
+
+	/** *********************************************************************************** **/
+	/**        Various Methods                                                                                            **/
+	/** *********************************************************************************** **/
+
+	    // ===============================================================================
+	    // Displays the internal representation of i.
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    const std::string
+	    MultiDimDecisionDiagramBase< T_DATA >::toString() const {
+
+		return MultiDimReadOnly<T_DATA>::toString();
+
+	    }
+
+	    // ===============================================================================
+	    // Displays the internal representation of i.
+	    // ===============================================================================
+	    template< typename T_DATA > INLINE
+	    const std::string
+	    MultiDimDecisionDiagramBase< T_DATA >::toString( const Instantiation* i ) const {
+
+		std::stringstream sBuff;
+		sBuff << ( *i ) << " = " << get( *i );
+		return sBuff.str();
+
+	    }
+
+	    // ===============================================================================
+	    // Displays the DecisionDiagramBase in the dot format
+	    // ===============================================================================
+	    template< typename T_DATA >
+	    std::string
+	    MultiDimDecisionDiagramBase< T_DATA >::toDot( const std::string graphName ) const {
+
+		std::stringstream output;
+		std::stringstream terminalStream;
+		std::stringstream nonTerminalStream;
+		std::stringstream arcstream;
+		std::stringstream defaultarcstream;
+		output << std::endl << "digraph \""<< graphName << "\" {" << std::endl;
+
+		terminalStream << "node [shape = box];" << std::endl;
+		nonTerminalStream << "node [shape = ellipse];" << std::endl;
+		std::string tab = "  ";
+
+		for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
+		    if( *nodeIter != 0 ){
+			if ( isTerminalNode( *nodeIter ) ){
+			    terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << *nodeIter << "-" << std::setprecision(15) << this->__valueMap.second( *nodeIter ) << "\"]"<< ";" << std::endl;
+			} else {
+			    nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << *nodeIter << "-" << __variableMap[ *nodeIter ]->name() << "\"]"<< ";" << std::endl;
+
+			    if ( __arcMap[*nodeIter] != NULL ){
+				for ( std::vector<NodeId>::iterator sonIter =  __arcMap[*nodeIter]->begin(); sonIter !=  __arcMap[*nodeIter]->end(); ++sonIter)
+				    if( *sonIter != 0 )
+					arcstream << tab <<  *nodeIter << " -> " << *sonIter << " [label=\"" << __variableMap[ *nodeIter ]->label( std::distance( __arcMap[*nodeIter]->begin(), sonIter ) ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+			    }
+
+			    if ( __defaultArcMap.exists( *nodeIter ) )
+				defaultarcstream << tab <<  *nodeIter << " -> " << __defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
 			}
+		    }
+		}
 
-			// =============================================================================
-			// Returns valued pointed by inst
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			T_DATA
-			MultiDimDecisionDiagramBase< T_DATA >::get( const Instantiation& inst ) const {
-				
-				NodeId i = __root;
+		output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << "}" << std::endl;
 
-				while ( ! isTerminalNode( i ) ) {
-					if ( __arcMap[i]->exists( inst.val( *__variableMap[i] ) ) )
-						i = ( *__arcMap[i] )[ inst.val( *__variableMap[i] )];
-					else
-						i = __defaultArcMap[i];
+		return output.str();
+
+	    }
+
+	    // ==============================================================================
+	    // Returns the number of variable trully present in the diagram
+	    // ==============================================================================
+	    template< typename T_DATA >
+	    Size
+	    MultiDimDecisionDiagramBase< T_DATA >::diagramVarSize( ) const {
+
+		Sequence< const DiscreteVariable* > varTopo = this->variablesSequence();
+		for ( SequenceIterator< const DiscreteVariable* > ite1 = varTopo.begin(); ite1 != varTopo.end(); ) {
+		    bool isin = false;
+		    HashTableConstIterator< NodeId, const DiscreteVariable* > ite2 = __variableMap.begin();
+		    while ( ite2 != __variableMap.end() ) {
+			if ( **ite1 == **ite2 ) {
+			    isin = true;
+			    break;
+			}
+			++ite2;
+		    }
+		    if ( isin )
+			++ite1;
+		    else
+			varTopo.erase( *ite1 );
+		}
+
+		return varTopo.size();
+
+	    }
+
+
+	/** *********************************************************************************** **/
+	/**        Diagram Handlers                                                                                          **/
+	/** *********************************************************************************** **/
+
+	    // =============================================================================
+	    // Returns the node graph part
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const NodeGraphPart&
+	    MultiDimDecisionDiagramBase< T_DATA >::nodesMap() const{
+		return __graph;
+	    }
+
+	    // =============================================================================
+	    // Returns true if node is a terminal node
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const NodeId&
+	    MultiDimDecisionDiagramBase< T_DATA >::root( ) const {
+		return __root ;
+	    }
+
+	    // =============================================================================
+	    // Returns associated variable of given node
+	    // @throw InvalidNode if Node is terminal
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const DiscreteVariable*
+	    MultiDimDecisionDiagramBase< T_DATA >::nodeVariable( NodeId n ) const {
+
+		if ( isTerminalNode( n ) ){
+		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
+		}
+
+		return unsafeNodeVariable( n );
+
+	    }
+
+	    template< typename T_DATA > INLINE
+	    const DiscreteVariable*
+	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeVariable( NodeId n ) const {
+
+		return __variableMap[ n ];
+
+	    }
+
+	    // =============================================================================
+	    // Returns associated nodes of the variable pointed by the given node
+	    // @throw InvalidNode if Node is terminal
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const List< NodeId >*
+	    MultiDimDecisionDiagramBase< T_DATA >::variableNodes( const DiscreteVariable* v ) const {
+
+		if ( ! __var2NodeIdMap.exists( v ) )
+		    return NULL;
+
+		return __var2NodeIdMap[ v ];
+
+	    }
+
+	    // =============================================================================
+	    // Returns value associated to given node
+	    // @throw InvalidNode if node isn't terminal
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const T_DATA&
+	    MultiDimDecisionDiagramBase< T_DATA >::nodeValue( NodeId n ) const {
+
+		if ( !isTerminalNode( n ) ){
+		    GUM_ERROR( InvalidNode, " Node " << n << " is a non terminal node. " );
+		}
+
+		return unsafeNodeValue( n );
+
+	    }
+
+	    template< typename T_DATA > INLINE
+	    const T_DATA&
+	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeValue( NodeId n ) const {
+
+		return this->__valueMap.second( n );
+
+	    }
+
+	    // =============================================================================
+	    // Returns node's sons map
+	    // @throw InvalidNode if node is terminal
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const std::vector< NodeId >*
+	    MultiDimDecisionDiagramBase< T_DATA >::nodeSons( NodeId n ) const {
+
+		if ( isTerminalNode( n ) ){
+		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
+		}
+
+		return unsafeNodeSons( n );
+
+	    }
+
+
+	    template< typename T_DATA > INLINE
+	    const std::vector<  NodeId >*
+	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeSons( NodeId n ) const {
+
+		if ( !__arcMap.exists( n ) )
+		    return NULL;
+
+		return __arcMap[ n ];
+	    }
+
+	    // =============================================================================
+	    // Returns values map
+	    // @throw InvalidNode if node is terminal
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const Bijection< NodeId, T_DATA >&
+	    MultiDimDecisionDiagramBase< T_DATA >::valuesMap( ) const{
+
+		return __valueMap;
+
+	    }
+
+	    // =============================================================================
+	    // Returns true if node has a default son
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    bool
+	    MultiDimDecisionDiagramBase< T_DATA >::hasNodeDefaultSon( NodeId n ) const {
+
+		if ( isTerminalNode( n ) ){
+		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
+		}
+
+		return unsafeHasNodeDefaultSon( n );
+
+	    }
+
+	    template< typename T_DATA > INLINE
+	    bool
+	    MultiDimDecisionDiagramBase< T_DATA >::unsafeHasNodeDefaultSon( NodeId n ) const {
+
+		return __defaultArcMap.exists( n );
+
+	    }
+
+	    // =============================================================================
+	    // Returns node's default son
+	    // @throw InvalidNode if node is terminal
+	    // @throw NotFound if node doesn't have a default son
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    const NodeId
+	    MultiDimDecisionDiagramBase< T_DATA >::nodeDefaultSon( NodeId n ) const {
+
+		if ( isTerminalNode( n ) ){
+		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
+		}
+
+		if( !__defaultArcMap.exists( n ) ){
+		    GUM_ERROR( NotFound, " Node " <<  n << " doesn't have a default son." );
+		}
+
+		return unsafeNodeDefaultSon( n );
+
+	    }
+
+	    template< typename T_DATA > INLINE
+	    const NodeId
+	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeDefaultSon( NodeId n ) const {
+
+		return __defaultArcMap[ n ];
+
+	    }
+
+	    // =============================================================================
+	    // Returns true if node is a terminal node
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    bool
+	    MultiDimDecisionDiagramBase< T_DATA >::isTerminalNode( NodeId id ) const {
+
+		return ( __valueMap.existsFirst( id ) );
+
+	    }
+
+	    // =============================================================================
+	    // Returns true if variable has at least one node associated in diagram
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    bool
+	    MultiDimDecisionDiagramBase< T_DATA >::isInDiagramVariable( const DiscreteVariable* v ) const {
+
+		return( __var2NodeIdMap.exists( v ) );
+
+	    }
+
+	    // =============================================================================
+	    // Returns a hashtable containing for each node a list of variable
+	    // This method looks, for each path in the diagram, if a var does not precede others in
+	    // the given in parameter order.
+	    // =============================================================================
+	    template< typename T_DATA >
+	    void 
+	    MultiDimDecisionDiagramBase< T_DATA >::findRetrogradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
+	    HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVariablesTable ) const{
+
+		if( this->__variableMap.empty() )
+		return;
+
+		HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable = new HashTable<NodeId, Set< const DiscreteVariable* >* >();
+		__makePreceedingVariablesLists( preceedingVariablesTable );
+
+		List<NodeId>* visitedNodes = new List<NodeId>();
+		__findRetorgradeVariables( varsSeq, this->__root, retrogradeVariablesTable, preceedingVariablesTable, visitedNodes);
+		delete visitedNodes;
+
+
+		for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
+		    Set< const DiscreteVariable* > finalSet = **iterH;
+		    for( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
+			if( varsSeq->pos( *iterS ) >= varsSeq->pos( this->nodeVariable( iterH.key() ) ) )
+			    (*iterH)->erase( *iterS );
+		}
+
+		//~ std::stringstream varString;
+		//~ varString << std::endl << " Sequence variable : ";
+		//~ for( SequenceIterator< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
+		//~ varString << (*iter)->name() << " - ";
+		//~ varString << std::endl;
+		//~ GUM_TRACE( varString.str() );
+		//~ 
+		//~ GUM_TRACE( std::endl << this->toDot() );
+		//~ 
+		//~ std::stringstream preceedingVarLog;
+		//~ preceedingVarLog << std::endl << " Preceeding variable Table : ";
+		//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH ){
+		//~ preceedingVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
+		//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
+		//~ preceedingVarLog << (*iterS)->name() << " - ";
+		//~ preceedingVarLog << std::endl;
+		//~ }
+		//~ GUM_TRACE( preceedingVarLog.str() );
+		//~ 
+		//~ std::stringstream retorgradeVarLog;
+		//~ retorgradeVarLog << std::endl << " Retrograde variable Table : ";
+		//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
+		//~ retorgradeVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
+		//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
+		//~ retorgradeVarLog << (*iterS)->name() << " - ";
+		//~ retorgradeVarLog << std::endl;
+		//~ }
+		//~ GUM_TRACE( retorgradeVarLog.str() );
+
+		for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH )
+		delete *iterH;
+		delete preceedingVariablesTable;  
+
+	    }
+
+	    // ==============================================================================
+	    //  Instantiates this diagram by multiplying leaf of given diagram by factor
+	    // ==============================================================================
+	    template< typename T_DATA >
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::multiplyByScalar( const MultiDimDecisionDiagramBase<T_DATA>* m, T_DATA factor ) {
+
+		if( __isInstanciated )
+		    GUM_ERROR( OperationNotAllowed, "Decision diagram has already been instanciated" );
+
+		this->copy( *m, false );
+
+		Bijection< NodeId, T_DATA > newValueMap;
+		for( BijectionIterator< NodeId, T_DATA > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter ){
+		    T_DATA tempVal = valueIter.second() * factor;
+		    if( newValueMap.existsSecond( tempVal ) ){
+			NodeId nody = newValueMap.first( tempVal );
+			for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter )
+			    if( *nodeIter != 0 && !isTerminalNode( *nodeIter ) ){
+				if( !__arcMap.exists(*nodeIter) )
+				    std::cout << "OW! OW! : " << *nodeIter << std::endl;
+				for( std::vector<NodeId>::iterator sonsIter = __arcMap[*nodeIter]->begin(); sonsIter != __arcMap[*nodeIter]->end(); ++sonsIter )
+				    if( *sonsIter == valueIter.first() )
+					*sonsIter = nody;
+				if( __defaultArcMap.exists(*nodeIter) && __defaultArcMap[*nodeIter] == valueIter.first() ){
+				    __defaultArcMap.erase(*nodeIter);
+				    __defaultArcMap.insert(*nodeIter, nody );
 				}
+			    }
+			__graph.eraseNode( valueIter.first() );
+		    } else
+			newValueMap.insert( valueIter.first(), tempVal);
+		}
+		__valueMap = newValueMap;
 
-				return this->__valueMap.second( i );
-				
+	    }
+
+	/** *********************************************************************************** **/
+	/**      Structure instantiation                                                                                     **/
+	/** *********************************************************************************** **/
+
+	    // ==============================================================================
+	    // Puts the multiDim in instantiation mode
+	    // @throw OperationNotAllowed if diagram has already been instanciated
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::beginInstantiation() {
+
+		if ( __isInstanciated ){
+		    GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
+		}
+
+		__instanciationModeOn = true;
+
+	    }
+
+	    // ==============================================================================
+	    // Puts the multiDim in instantiation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::endInstantiation() {
+
+		__instanciationModeOn = false;
+		__isInstanciated = true;
+	    }
+
+	    // ==============================================================================
+	    // Sets once and for all variable sequence.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setVariableSequence( const Sequence< const DiscreteVariable* >& varList ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
+		    MultiDimImplementation<T_DATA>::add( **iter );
+
+	    }
+
+	    // ==============================================================================
+	    // Sets once and for all nodes of the diagram.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setDiagramNodes( const NodeGraphPart& model ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		__graph = model;
+
+	    }
+
+	    // ==============================================================================
+	    // Binds once and for all nodes to variables.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		__variableMap = varMap;
+
+	    }
+
+	    // ==============================================================================
+	    // Sets the map linking variable to all nodes bond to it
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		for ( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.begin(); varIter != var2NodeMap.end(); ++varIter )
+		    __var2NodeIdMap.insert( varIter.key(), new List< NodeId >( **varIter ) );
+
+	    }
+
+	    // ==============================================================================
+	    // Binds once and for all terminal nodes to value.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setValueMap( const Bijection< NodeId, T_DATA >& valueMap ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		__valueMap = valueMap;
+
+	    }
+
+	    // ==============================================================================
+	    // Links once and for all nodes of the graph.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setDiagramArcs( const typename Property< std::vector< NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		__defaultArcMap = defaultArcMap;
+
+		for ( HashTableConstIterator< NodeId, std::vector< NodeId >* > arcIter = arcMap.begin(); arcIter != arcMap.end(); ++arcIter )
+		    __arcMap.insert( arcIter.key(), new std::vector< NodeId >( **arcIter ) );
+
+	    }
+
+	    // ==============================================================================
+	    // Sets once and for all root node.
+	    // @throw OperationNotAllowed if diagram not in instanciation mode
+	    // ==============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::setRoot( const NodeId& root ) {
+
+		if ( !__instanciationModeOn ){
+		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
+		}
+
+		__root = root;
+
+	    }
+
+
+	/** *********************************************************************************** **/
+	/**        Protected Methods                                                                                         **/
+	/** *********************************************************************************** **/
+
+	    // =============================================================================
+	    // Returns data addressed by inst
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    T_DATA&
+	    MultiDimDecisionDiagramBase< T_DATA >::_get( const Instantiation& inst ) const {
+
+		GUM_ERROR( OperationNotAllowed, "a MultiDimDecisionDiagram is a read only MultiDim" );
+
+	    }
+
+	    // =============================================================================
+	    // Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
+	    // @throw OperationNotAllowed without condition.
+	    // =============================================================================
+	    template< typename T_DATA > INLINE
+	    void
+	    MultiDimDecisionDiagramBase< T_DATA >::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
+
+		GUM_ERROR( OperationNotAllowed, "Can't be done in a MultiDimDecisionDiagram" );
+
+	    }
+
+	    // And the recursive parts of this function
+	    template< typename T_DATA >
+	    void 
+	    MultiDimDecisionDiagramBase< T_DATA >::__makePreceedingVariablesLists( HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable ) const {
+
+		PriorityQueue<NodeId> fifo;
+		fifo.insert( this->variablesSequence().pos( __variableMap[this->__root] ), this->__root );
+		preceedingVariablesTable->insert( this->__root, new Set< const DiscreteVariable* >() );
+
+
+		while( !fifo.empty() ) {
+
+		NodeId currentNode = fifo.pop();
+
+		    if( !this->isTerminalNode( currentNode ) ){
+
+			for( std::vector< NodeId >::iterator arcIter = __arcMap[ currentNode ]->begin(); arcIter != __arcMap[ currentNode ]->end(); arcIter++ ){
+
+			    if( *arcIter != 0 && !this->isTerminalNode( *arcIter ) ){
+
+				if( preceedingVariablesTable->exists( *arcIter ) ){
+
+				    Set< const DiscreteVariable* >* setTemp = (*preceedingVariablesTable)[ *arcIter ];
+				    (*preceedingVariablesTable)[ *arcIter ] = new Set< const DiscreteVariable* >( *((*preceedingVariablesTable)[ currentNode ]) + *setTemp );
+				    delete setTemp;
+
+				} else 
+				    preceedingVariablesTable->insert( *arcIter, new Set< const DiscreteVariable* >(*((*preceedingVariablesTable)[ currentNode ])) );
+
+				(*preceedingVariablesTable)[ *arcIter ]->insert( __variableMap[ currentNode ] );
+				if( !fifo.contains( *arcIter ) )
+				    fifo.insert( this->variablesSequence().pos( __variableMap[*arcIter] ), *arcIter );
+
+			    }
 			}
 
-			// =============================================================================
-			// Returns the terminal node associated to value pointed by inst
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			NodeId
-			MultiDimDecisionDiagramBase< T_DATA >::getNode( const Instantiation& inst ) const {
-				
-				NodeId i = __root;
+			if( __defaultArcMap.exists( currentNode ) && !this->isTerminalNode( __defaultArcMap[currentNode] ) ){
 
-				while ( ! isTerminalNode( i ) ) {
-					if ( __arcMap[i]->exists( inst.val( *__variableMap[i] ) ) )
-						i = ( *__arcMap[i] )[ inst.val( *__variableMap[i] )];
-					else
-						i = __defaultArcMap[i];
-				}
+			    NodeId defaultSon = __defaultArcMap[currentNode];
 
-				return i;
-				
-			}
+			    if( preceedingVariablesTable->exists( defaultSon ) ){
 
-		/** *********************************************************************************** **/
-		/**							Implementation of MultiDimInterface							**/
-		/** *********************************************************************************** **/
+				Set< const DiscreteVariable* >* setTemp = (*preceedingVariablesTable)[ defaultSon ];
+				(*preceedingVariablesTable)[ defaultSon ] = new Set< const DiscreteVariable* >( *((*preceedingVariablesTable)[ currentNode ]) + *setTemp );
+				delete setTemp;
 
-			// =============================================================================
-			// Adds a new var to the variables of the multidimensional matrix.
-			// throw OperationNotAllowed cause it's not authorize on read only multidim
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::add( const DiscreteVariable &v ) {
-				
-				GUM_ERROR( OperationNotAllowed," Can't add a variable to a read only multidim " );
-			
-			}
+			    } else 
+				preceedingVariablesTable->insert( defaultSon, new Set< const DiscreteVariable* >(*((*preceedingVariablesTable)[ currentNode ])) );
 
-			// =============================================================================
-			// Removes a var from the variables of the multidimensional matrix.
-			// @throw OperationNotAllowed cause it's not authorize on read only multidim
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::erase( const DiscreteVariable &v ) {
-				
-				GUM_ERROR( OperationNotAllowed," Can't remove a variable from a read only multidim " );
-			
-			}
-
-			// ==============================================================================
-			// Returns the real number of parameter used in this table.
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			Size
-			MultiDimDecisionDiagramBase< T_DATA >::realSize() const {
-				
-				return __graph.size();
-				
-			}
-
-			// ==============================================================================
-			// Indicates if diagram has no value inside at all
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			bool
-			MultiDimDecisionDiagramBase< T_DATA >::empty () const {
-				return __valueMap.empty();
-			}
-
-		/** *********************************************************************************** **/
-		/**					Slave management and extension due to slave management				**/
-		/** *********************************************************************************** **/
-
-			// ===============================================================================
-			// Listen to change in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::changeNotification( Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval ) {
-			}
-
-			// ===============================================================================
-			// Listen to setFirst in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setFirstNotification( Instantiation& i ) {
-			}
-
-			// ===============================================================================
-			// Listen to setLast in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setLastNotification( Instantiation& i ) {
-			}
-
-			// ===============================================================================
-			// Listen to increment in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setIncNotification( Instantiation& i ) {
-			}
-
-			// ===============================================================================
-			// Listen to decrement in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setDecNotification( Instantiation& i ) {
-			}
-
-			// ===============================================================================
-			// Listen to an assignement of value in a given Instantiation
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setChangeNotification( Instantiation& i ) {
-			}
-
-
-		/** *********************************************************************************** **/
-		/**									Copy Methods										**/
-		/** *********************************************************************************** **/
-
-			// ===============================================================================
-			// Makes a copy of given decision diagram
-			// @throw OperationNotAllowed cause this is a read only
-			// ===============================================================================
-			template< typename T_DATA >
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimDecisionDiagramBase<T_DATA>& source ) {
-				
-				if(  __isInstanciated )
-					GUM_ERROR( OperationNotAllowed, "This is a read only" );
-
-				this->beginInstantiation();
-				
-				this->setVariableSequence( source.variablesSequence() );
-				
-				this->setDiagramNodes( source.nodesMap() );
-				
-				for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ){
-					
-					if( source.isTerminalNode( *nodeIter ) )
-						__valueMap.insert( *nodeIter, source.nodeValue( *nodeIter ) );
-					else {
-						
-						__variableMap.insert( *nodeIter, source.nodeVariable( *nodeIter ) );
-						
-						if( !__var2NodeIdMap.exists( source.nodeVariable( *nodeIter ) ) )
-							__var2NodeIdMap.insert( source.nodeVariable( *nodeIter ), new List< NodeId >( *( source.variableNodes( source.nodeVariable( *nodeIter ) ) ) ) );
-							
-						__arcMap.insert( *nodeIter, new HashTable< Idx, NodeId >( *(source.nodeSons( *nodeIter ) ) ) );
-						
-						if( source.hasNodeDefaultSon( *nodeIter ) )
-							__defaultArcMap.insert( *nodeIter, source.nodeDefaultSon( *nodeIter ) );
-						
-					}
-				}
-
-				this->setRoot( source.root() );
-
-				this->endInstantiation();
-				
-			}
-
-			// ===============================================================================
-			// Removes all variables in this Container and copy content from src, variable included
-			// @throw OperationNotAllowed cause this is a read only and a decision diagram ( which 
-			// makes quiet complicate any copy operation as a matter of fact )
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimContainer<T_DATA>& src ){
-				
-				GUM_ERROR( OperationNotAllowed, "This is a read only" );
-				
-			}
-
-
-		/** *********************************************************************************** **/
-		/**									Various Methods										**/
-		/** *********************************************************************************** **/
-		
-			// ===============================================================================
-			// Displays the internal representation of i.
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			const std::string
-			MultiDimDecisionDiagramBase< T_DATA >::toString() const {
-				
-				return MultiDimReadOnly<T_DATA>::toString();
-				
-			}
-
-			// ===============================================================================
-			// Displays the internal representation of i.
-			// ===============================================================================
-			template< typename T_DATA > INLINE
-			const std::string
-			MultiDimDecisionDiagramBase< T_DATA >::toString( const Instantiation* i ) const {
-				
-				std::stringstream sBuff;
-				sBuff << ( *i ) << " = " << get( *i );
-				return sBuff.str();
-				
-			}
-
-			// ===============================================================================
-			// Displays the DecisionDiagramBase in the dot format
-			// ===============================================================================
-			template< typename T_DATA >
-			std::string
-			MultiDimDecisionDiagramBase< T_DATA >::toDot() const {
-				
-				std::stringstream output;
-				std::stringstream terminalStream;
-				std::stringstream nonTerminalStream;
-				std::stringstream arcstream;
-				std::stringstream defaultarcstream;
-				output << "digraph \"no_name\" {" << std::endl;
-
-				terminalStream << "node [shape = box];" << std::endl;
-				nonTerminalStream << "node [shape = ellipse];" << std::endl;
-				std::string tab = "  ";
-
-				for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
-					if ( isTerminalNode( *nodeIter ) ){
-						terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" /*<< *nodeIter << "-"*/ << std::setprecision(15) << this->__valueMap.second( *nodeIter ) << "\"]"<< ";" << std::endl;
-					} else {
-						nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" /*<< *nodeIter << "-" */<< __variableMap[ *nodeIter ]->name() << "\"]"<< ";" << std::endl;
-
-						if ( __arcMap[*nodeIter] != NULL )
-							for ( HashTableConstIterator<Idx,NodeId> arcIter = __arcMap[*nodeIter]->begin(); arcIter != __arcMap[*nodeIter]->end(); ++arcIter )
-								arcstream << tab <<  *nodeIter << " -> " << *arcIter << " [label=\"" << __variableMap[ *nodeIter ]->label( arcIter.key() ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
-
-						if ( __defaultArcMap.exists( *nodeIter ) )
-							defaultarcstream << tab <<  *nodeIter << " -> " << __defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
-					}
-				}
-
-				output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << std::endl << std::endl << "}" << std::endl;
-
-				return output.str();
-			
-			}
-
-			// ==============================================================================
-			// Returns the number of variable trully present in the diagram
-			// ==============================================================================
-			template< typename T_DATA >
-			Size
-			MultiDimDecisionDiagramBase< T_DATA >::diagramVarSize( ) const {
-
-				Sequence< const DiscreteVariable* > varTopo = this->variablesSequence();
-				for ( SequenceIterator< const DiscreteVariable* > ite1 = varTopo.begin(); ite1 != varTopo.end(); ) {
-					bool isin = false;
-					HashTableConstIterator< NodeId, const DiscreteVariable* > ite2 = __variableMap.begin();
-					while ( ite2 != __variableMap.end() ) {
-						if ( **ite1 == **ite2 ) {
-							isin = true;
-							break;
-						}
-						++ite2;
-					}
-					if ( isin )
-						++ite1;
-					else
-						varTopo.erase( *ite1 );
-				}
-
-				return varTopo.size();
-				
-			}
-			
-
-		/** *********************************************************************************** **/
-		/**									Diagram Handlers									**/
-		/** *********************************************************************************** **/
-
-			// =============================================================================
-			// Returns the node graph part
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const NodeGraphPart&
-			MultiDimDecisionDiagramBase< T_DATA >::nodesMap() const{
-				
-				return __graph;
-			}
-
-			// =============================================================================
-			// Returns true if node is a terminal node
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const NodeId&
-			MultiDimDecisionDiagramBase< T_DATA >::root( ) const {
-				
-				return __root ;
-			
-			}
-
-			// =============================================================================
-			// Returns associated variable of given node
-			// @throw InvalidNode if Node is terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const DiscreteVariable*
-			MultiDimDecisionDiagramBase< T_DATA >::nodeVariable( NodeId n ) const {
-				
-				if ( isTerminalNode( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
-				}
-					
-				return unsafeNodeVariable( n );
-				
-			}
-			
-			template< typename T_DATA > INLINE
-			const DiscreteVariable*
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeVariable( NodeId n ) const {
-					
-				return __variableMap[ n ];
-				
-			}
-
-			// =============================================================================
-			// Returns associated nodes of the variable pointed by the given node
-			// @throw InvalidNode if Node is terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const List< NodeId >*
-			MultiDimDecisionDiagramBase< T_DATA >::variableNodes( const DiscreteVariable* v ) const {
-
-				if ( ! __var2NodeIdMap.exists( v ) )
-					return NULL;
-					
-				return __var2NodeIdMap[ v ];
-			
-			}
-
-			// =============================================================================
-			// Returns value associated to given node
-			// @throw InvalidNode if node isn't terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const T_DATA&
-			MultiDimDecisionDiagramBase< T_DATA >::nodeValue( NodeId n ) const {
-				
-				if ( !isTerminalNode( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a non terminal node. " );
-				}
-					
-				return unsafeNodeValue( n );
-			
-			}
-			
-			template< typename T_DATA > INLINE
-			const T_DATA&
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeValue( NodeId n ) const {
-					
-				return this->__valueMap.second( n );
-			
-			}
-
-			// =============================================================================
-			// Returns node's sons map
-			// @throw InvalidNode if node is terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const HashTable< Idx, NodeId >*
-			MultiDimDecisionDiagramBase< T_DATA >::nodeSons( NodeId n ) const {
-				
-				if ( isTerminalNode( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
-				}
-				
-				return unsafeNodeSons( n );
-			
-			}
-			
-			
-			template< typename T_DATA > INLINE
-			const HashTable< Idx, NodeId >*
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeSons( NodeId n ) const {
-
-				if ( !__arcMap.exists( n ) )
-					return NULL;
-				
-				return __arcMap[ n ];
-			}
-
-			// =============================================================================
-			// Returns values map
-			// @throw InvalidNode if node is terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const Bijection< NodeId, T_DATA >&
-			MultiDimDecisionDiagramBase< T_DATA >::valuesMap( ) const{
-				
-				return __valueMap;
-				
-			}
-
-			// =============================================================================
-			// Changes a terminal node value in diagram
-			// @warning Decision Diagrams are read only multi dim and should remain this way,
-			// meaning this function shouldn't be used. Its only purpose actually is to solve 
-			// an issue during projection.
-			// @throw InvalidNode if node is terminal
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::chgValue( NodeId n, T_DATA newVal ){
-				
-				if ( !__valueMap.existsFirst( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a non terminal node. " );
-				}
-				
-				unsafeChgValue( n, newVal );
-				
-			}
-			
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeChgValue( NodeId n, T_DATA newVal ){
-				
-				__valueMap.eraseFirst( n );
-				__valueMap.insert( n, newVal );
-				
-			}
-
-			// =============================================================================
-			// Returns true if node has a default son
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			bool
-			MultiDimDecisionDiagramBase< T_DATA >::hasNodeDefaultSon( NodeId n ) const {
-				
-				if ( isTerminalNode( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
-				}
-
-				return unsafeHasNodeDefaultSon( n );
-				
-			}
-			
-			template< typename T_DATA > INLINE
-			bool
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeHasNodeDefaultSon( NodeId n ) const {
-
-				return __defaultArcMap.exists( n );
-				
-			}
-
-			// =============================================================================
-			// Returns node's default son
-			// @throw InvalidNode if node is terminal
-			// @throw NotFound if node doesn't have a default son
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			const NodeId
-			MultiDimDecisionDiagramBase< T_DATA >::nodeDefaultSon( NodeId n ) const {
-				
-				if ( isTerminalNode( n ) ){
-					GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
-				}
-					
-				if( !__defaultArcMap.exists( n ) ){
-					GUM_ERROR( NotFound, " Node " <<  n << " doesn't have a default son." );
-				}
-
-				return unsafeNodeDefaultSon( n );
-			
-			}
-			
-			template< typename T_DATA > INLINE
-			const NodeId
-			MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeDefaultSon( NodeId n ) const {
-
-				return __defaultArcMap[ n ];
-			
-			}
-
-			// =============================================================================
-			// Returns true if node is a terminal node
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			bool
-			MultiDimDecisionDiagramBase< T_DATA >::isTerminalNode( NodeId id ) const {
-				
-				return ( __valueMap.existsFirst( id ) );
-			
-			}
-
-			// =============================================================================
-			// Returns true if variable has at least one node associated in diagram
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			bool
-			MultiDimDecisionDiagramBase< T_DATA >::isInDiagramVariable( const DiscreteVariable* v ) const {
-				
-				return( __var2NodeIdMap.exists( v ) );
-			
-			}
-
-			// =============================================================================
-			// Returns a hashtable containing for each node a list of variable
-			// This method looks, for each path in the diagram, if a var does not precede others in
-			// the given in parameter order.
-			// =============================================================================
-			template< typename T_DATA >
-			void 
-			MultiDimDecisionDiagramBase< T_DATA >::findRetrogradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
-																			HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVariablesTable ) const{
-
-				if( this->__variableMap.empty() )
-					return;
-					
-				HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable = new HashTable<NodeId, Set< const DiscreteVariable* >* >();
-				__makePreceedingVariablesLists( preceedingVariablesTable );
-				
-				List<NodeId>* visitedNodes = new List<NodeId>();
-				__findRetorgradeVariables( varsSeq, this->__root, retrogradeVariablesTable, preceedingVariablesTable, visitedNodes);
-				delete visitedNodes;
-				
-
-				for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
-					Set< const DiscreteVariable* > finalSet = **iterH;
-					for( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
-						if( varsSeq->pos( *iterS ) >= varsSeq->pos( this->nodeVariable( iterH.key() ) ) )
-							(*iterH)->erase( *iterS );
-				}
-
-				//~ std::stringstream varString;
-				//~ varString << std::endl << " Sequence variable : ";
-				//~ for( SequenceIterator< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
-					//~ varString << (*iter)->name() << " - ";
-				//~ varString << std::endl;
-				//~ GUM_TRACE( varString.str() );
-				//~ 
-				//~ GUM_TRACE( std::endl << this->toDot() );
-				//~ 
-				//~ std::stringstream preceedingVarLog;
-				//~ preceedingVarLog << std::endl << " Preceeding variable Table : ";
-				//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH ){
-					//~ preceedingVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
-					//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
-						//~ preceedingVarLog << (*iterS)->name() << " - ";
-					//~ preceedingVarLog << std::endl;
-				//~ }
-				//~ GUM_TRACE( preceedingVarLog.str() );
-					//~ 
-				//~ std::stringstream retorgradeVarLog;
-				//~ retorgradeVarLog << std::endl << " Retrograde variable Table : ";
-				//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
-					//~ retorgradeVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
-					//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
-						//~ retorgradeVarLog << (*iterS)->name() << " - ";
-					//~ retorgradeVarLog << std::endl;
-				//~ }
-				//~ GUM_TRACE( retorgradeVarLog.str() );
-				
-				for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH )
-					delete *iterH;
-				delete preceedingVariablesTable;	
-				
-			}
-
-			// =============================================================================
-			// Extracts sub decision diagram from specified root node
-			//  @throw NotFound if node does not exist
-			// =============================================================================
-			template< typename T_DATA >
-			MultiDimDecisionDiagramBase<T_DATA>*
-			MultiDimDecisionDiagramBase< T_DATA >::extractSubDecisionDiagram( const NodeId root ) const{
-				
-				if( !__graph.existsNode( root ) ) {
-					GUM_ERROR( NotFound, "Node " <<  root << " does not exist in diagram." );
-				}
-				
-				MultiDimDecisionDiagramFactoryBase<T_DATA>* factory = getFactory();
-				factory->setVariablesSequence( this->variablesSequence() );
-				
-				if( isTerminalNode( root ) )
-					factory->addTerminalNode( __valueMap.second( root ) );
-				else {
-					
-					//~ Sequence< const DiscreteVariable* > varsSeq;
-					//~ for( Idx i =  this->variablesSequence().pos( __variableMap[ root ] ); i != this->variablesSequence().size(); i++ )
-						//~ varsSeq.insert( this->variablesSequence().atPos( i ) );
-					//~ factory->setVariablesSequence( varsSeq );
-				
-					HashTable< NodeId, NodeId > nodeMap;
-					nodeMap.insert( root, factory->addNonTerminalNode( __variableMap[ root ] ) );
-						
-					std::vector<NodeId> fifo;
-					fifo.push_back( root );
-					
-					while( !fifo.empty() ){
-						
-						// ************************************************************************************
-						// Recovering current node id and its associated node id in building diagram
-						NodeId currentNodeId = fifo.back();
-						fifo.pop_back();
-						
-						// ************************************************************************************
-						// if node is not terminal, we have to insert in new diagram his sons
-						// and arcs linking them
-						if( !isTerminalNode( currentNodeId ) ) {
-							
-							// ************************************************************************************
-							// For each sons
-							for( HashTableConstIterator< Idx, NodeId > sonsIter = __arcMap[currentNodeId]->begin(); sonsIter != __arcMap[currentNodeId]->end(); ++sonsIter ){
-								
-								// ************************************************************************************
-								// If node is not in nodeMap, it means that we haven't inserted him yet in sub diagram
-								if( !nodeMap.exists( *sonsIter ) ){
-									
-									if( isTerminalNode( *sonsIter ) )
-										nodeMap.insert( *sonsIter, factory->addTerminalNode( __valueMap.second( *sonsIter ) ) );
-									else
-										nodeMap.insert( *sonsIter, factory->addNonTerminalNode( __variableMap[ *sonsIter ] ) );
-										
-									// And we also have to insert him in our fifo to explore him later
-									fifo.push_back( *sonsIter );
-								}
-								
-								// ************************************************************************************
-								// Next we can insert arc in between
-								factory->insertArc( nodeMap[ currentNodeId ], nodeMap[*sonsIter], sonsIter.key() );
-							}
-							
-							// ************************************************************************************
-							// And if node has a default son, we do quiet the same with it
-							if( hasNodeDefaultSon( currentNodeId ) ){
-								
-								if( !nodeMap.exists( __defaultArcMap[currentNodeId] ) ){
-									
-									if( isTerminalNode( __defaultArcMap[currentNodeId] ) )
-										nodeMap.insert( __defaultArcMap[currentNodeId], factory->addTerminalNode( __valueMap.second( __defaultArcMap[ currentNodeId ] ) ) );
-									else
-										nodeMap.insert( __defaultArcMap[currentNodeId], factory->addNonTerminalNode( __variableMap[ __defaultArcMap[ currentNodeId ] ] ) );
-										
-									fifo.push_back( __defaultArcMap[currentNodeId] );
-								}
-								
-								factory->insertDefaultArc( nodeMap[ currentNodeId ], nodeMap[ __defaultArcMap[ currentNodeId ] ] );						
-							}
-						}
-					}
-				}
-				
-				MultiDimDecisionDiagramBase<T_DATA>* ret = factory->getMultiDimDecisionDiagram();
-				delete factory;
-				return ret;
-			}
-
-			// ==============================================================================
-			//  Instantiates this diagram by multiplying leaf of given diagram by factor
-			// ==============================================================================
-			template< typename T_DATA >
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::multiplyByScalar( const MultiDimDecisionDiagramBase<T_DATA>* m, T_DATA factor ) {
-				
-				if( __isInstanciated )
-					GUM_ERROR( OperationNotAllowed, "Decision diagram has already been instanciated" );
-					
-				this->copy( *m );
-				
-				Bijection< NodeId, T_DATA > newValueMap;
-				for( BijectionIterator< NodeId, T_DATA > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter )
-					newValueMap.insert( valueIter.first(), valueIter.second() * factor );
-				__valueMap = newValueMap;
-				
-			}
-
-		/** *********************************************************************************** **/
-		/**								Structure instantiation									**/
-		/** *********************************************************************************** **/
-
-			// ==============================================================================
-			// Puts the multiDim in instantiation mode
-			// @throw OperationNotAllowed if diagram has already been instanciated
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::beginInstantiation() {
-
-				if ( __isInstanciated ){
-					GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
-				}
-
-				__instanciationModeOn = true;
-			
-			}
-
-			// ==============================================================================
-			// Puts the multiDim in instantiation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::endInstantiation() {
-
-				__instanciationModeOn = false;
-				__isInstanciated = true;
-			}
-
-			// ==============================================================================
-			// Sets once and for all variable sequence.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setVariableSequence( const Sequence< const DiscreteVariable* >& varList ) {
-
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
-
-				for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
-					MultiDimImplementation<T_DATA>::add( **iter );
-				
-			}
-
-			// ==============================================================================
-			// Sets once and for all nodes of the diagram.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setDiagramNodes( const NodeGraphPart& model ) {
-
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
-
-				__graph = model;
-				
-			}
-
-			// ==============================================================================
-			// Binds once and for all nodes to variables.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap ) {
-
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
-
-				__variableMap = varMap;
-				
-			}
-
-			// ==============================================================================
-			// Sets the map linking variable to all nodes bond to it
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ) {
-
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
-
-				for ( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.begin(); varIter != var2NodeMap.end(); ++varIter )
-					__var2NodeIdMap.insert( varIter.key(), new List< NodeId >( **varIter ) );
-					
-			}
-
-			// ==============================================================================
-			// Binds once and for all terminal nodes to value.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setValueMap( const Bijection< NodeId, T_DATA >& valueMap ) {
-
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
-
-				__valueMap = valueMap;
+			    (*preceedingVariablesTable)[ defaultSon ]->insert( __variableMap[ currentNode ] );
+			    if( !fifo.contains( defaultSon ) )
+				fifo.insert( this->variablesSequence().pos( __variableMap[defaultSon] ), defaultSon );
 
 			}
+		    }
+		}
+	    }
 
-			// ==============================================================================
-			// Links once and for all nodes of the graph.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setDiagramArcs( const typename Property< HashTable< Idx, NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap ) {
+	    // And the recursive parts of this function
+	    template< typename T_DATA >
+	    void 
+	    MultiDimDecisionDiagramBase< T_DATA >::__findRetorgradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
+	    const NodeId currentNode, 
+	    HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVarTable,  
+	    HashTable< NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable,
+	    List<NodeId>* visitedNodes ) const {  
 
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
+		if( !retrogradeVarTable->exists( currentNode ) )
+		    retrogradeVarTable->insert( currentNode, new Set< const DiscreteVariable* >() );
 
-				__defaultArcMap = defaultArcMap;
+		Set< const DiscreteVariable* >* currentVarSet = (*retrogradeVarTable)[currentNode];
 
-				for ( HashTableConstIterator< NodeId, HashTable< Idx, NodeId >* > arcIter = arcMap.begin(); arcIter != arcMap.end(); ++arcIter )
-					__arcMap.insert( arcIter.key(), new HashTable< Idx, NodeId >( **arcIter ) );
-					
-			}
+		for(std::vector< NodeId >::iterator sonsIter = __arcMap[ currentNode ]->begin(); sonsIter != __arcMap[ currentNode ]->end(); sonsIter++ ){
 
-			// ==============================================================================
-			// Sets once and for all root node.
-			// @throw OperationNotAllowed if diagram not in instanciation mode
-			// ==============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::setRoot( const NodeId& root ) {
+		    if( *sonsIter != 0 && !this->isTerminalNode( *sonsIter ) ){
 
-				if ( !__instanciationModeOn ){
-					GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
-				}
+			if( !visitedNodes->exists( *sonsIter ) )
+			    this->__findRetorgradeVariables ( varsSeq, *sonsIter, retrogradeVarTable, preceedingVariablesTable, visitedNodes );
 
-				__root = root;
-				
-			}
+			Set< const DiscreteVariable* >* setTemp = currentVarSet;
+			currentVarSet = new Set< const DiscreteVariable* >( *( ( *retrogradeVarTable )[ *sonsIter ] ) + *setTemp );
+			delete setTemp;
+		    }
+		}
 
+		if( __defaultArcMap.exists( currentNode ) && !this->isTerminalNode( __defaultArcMap[currentNode] ) ){
 
-		/** *********************************************************************************** **/
-		/**									Protected Methods									**/
-		/** *********************************************************************************** **/
+		    NodeId defaultSon = this->nodeDefaultSon( currentNode );  
 
-			// =============================================================================
-			// Returns data addressed by inst
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			T_DATA&
-			MultiDimDecisionDiagramBase< T_DATA >::_get( const Instantiation& inst ) const {
-				
-				GUM_ERROR( OperationNotAllowed, "a MultiDimDecisionDiagram is a read only MultiDim" );
-				
-			}
+		    if( !visitedNodes->exists( defaultSon ) )
+			this->__findRetorgradeVariables ( varsSeq, defaultSon, retrogradeVarTable, preceedingVariablesTable, visitedNodes );
 
-			// =============================================================================
-			// Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
-			// @throw OperationNotAllowed without condition.
-			// =============================================================================
-			template< typename T_DATA > INLINE
-			void
-			MultiDimDecisionDiagramBase< T_DATA >::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-				
-				GUM_ERROR( OperationNotAllowed, "Can't be done in a MultiDimDecisionDiagram" );
-				
-			}
-			
-			// And the recursive parts of this function
-			template< typename T_DATA >
-			void 
-			MultiDimDecisionDiagramBase< T_DATA >::__makePreceedingVariablesLists( HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable ) const {
-				
-				PriorityQueue<NodeId> fifo;
-				fifo.insert( this->variablesSequence().pos( __variableMap[this->__root] ), this->__root );
-				preceedingVariablesTable->insert( this->__root, new Set< const DiscreteVariable* >() );
-				
-				
-				while( !fifo.empty() ) {
-					
-					NodeId currentNode = fifo.pop();
-					
-					if( !this->isTerminalNode( currentNode ) ){
-						
-						for( HashTableConstIterator< Idx, NodeId > arcIter = __arcMap[ currentNode ]->begin(); arcIter != __arcMap[ currentNode ]->end(); ++arcIter ){
-							
-							if( !this->isTerminalNode( *arcIter ) ){
-								
-								if( preceedingVariablesTable->exists( *arcIter ) ){
-									
-									Set< const DiscreteVariable* >* setTemp = (*preceedingVariablesTable)[ *arcIter ];
-									(*preceedingVariablesTable)[ *arcIter ] = new Set< const DiscreteVariable* >( *((*preceedingVariablesTable)[ currentNode ]) + *setTemp );
-									delete setTemp;
-									
-								} else 
-									preceedingVariablesTable->insert( *arcIter, new Set< const DiscreteVariable* >(*((*preceedingVariablesTable)[ currentNode ])) );
-									
-								(*preceedingVariablesTable)[ *arcIter ]->insert( __variableMap[ currentNode ] );
-								if( !fifo.contains( *arcIter ) )
-									fifo.insert( this->variablesSequence().pos( __variableMap[*arcIter] ), *arcIter );
-									
-							}
-						}
-						
-						if( __defaultArcMap.exists( currentNode ) && !this->isTerminalNode( __defaultArcMap[currentNode] ) ){
-							
-							NodeId defaultSon = __defaultArcMap[currentNode];
-							
-							if( preceedingVariablesTable->exists( defaultSon ) ){
-								
-								Set< const DiscreteVariable* >* setTemp = (*preceedingVariablesTable)[ defaultSon ];
-								(*preceedingVariablesTable)[ defaultSon ] = new Set< const DiscreteVariable* >( *((*preceedingVariablesTable)[ currentNode ]) + *setTemp );
-								delete setTemp;
-								
-							} else 
-								preceedingVariablesTable->insert( defaultSon, new Set< const DiscreteVariable* >(*((*preceedingVariablesTable)[ currentNode ])) );
-								
-							(*preceedingVariablesTable)[ defaultSon ]->insert( __variableMap[ currentNode ] );
-							if( !fifo.contains( defaultSon ) )
-								fifo.insert( this->variablesSequence().pos( __variableMap[defaultSon] ), defaultSon );
-							
-						}
-					}
-				}
-			}
-		
-			// And the recursive parts of this function
-			template< typename T_DATA >
-			void 
-			MultiDimDecisionDiagramBase< T_DATA >::__findRetorgradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
-																			const NodeId currentNode, 
-																			HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVarTable,  
-																			HashTable< NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable,
-																			List<NodeId>* visitedNodes ) const {	
-																				
-				if( !retrogradeVarTable->exists( currentNode ) )
-					retrogradeVarTable->insert( currentNode, new Set< const DiscreteVariable* >() );
+		    Set< const DiscreteVariable* >* setTemp = currentVarSet;
+		    currentVarSet = new Set< const DiscreteVariable* >( *( ( *retrogradeVarTable )[ defaultSon ] ) + *setTemp );
+		    delete setTemp;
+		}
+		retrogradeVarTable->erase( currentNode );
+		retrogradeVarTable->insert( currentNode , currentVarSet );
 
-				Set< const DiscreteVariable* >* currentVarSet = (*retrogradeVarTable)[currentNode];
+		for( SetIterator< const DiscreteVariable* > nodeParentsVarIter = (*preceedingVariablesTable)[currentNode]->begin(); 
+			    nodeParentsVarIter != (*preceedingVariablesTable)[currentNode]->end(); ++nodeParentsVarIter )
+		    if( varsSeq->pos( *nodeParentsVarIter ) > varsSeq->pos( this->nodeVariable( currentNode ) ) ) {
+			currentVarSet->insert( this->nodeVariable( currentNode ) );
+		break;
+		}
 
-				for( HashTableConstIterator< Idx, NodeId > sonsIter = __arcMap[ currentNode ]->begin(); sonsIter != __arcMap[ currentNode ]->end(); ++sonsIter ){
-
-					if( !this->isTerminalNode( *sonsIter ) ){
-						
-						if( !visitedNodes->exists( *sonsIter ) )
-							this->__findRetorgradeVariables ( varsSeq, *sonsIter, retrogradeVarTable, preceedingVariablesTable, visitedNodes );
-
-						Set< const DiscreteVariable* >* setTemp = currentVarSet;
-						currentVarSet = new Set< const DiscreteVariable* >( *( ( *retrogradeVarTable )[ *sonsIter ] ) + *setTemp );
-						delete setTemp;
-					}
-				}
-				
-				if( __defaultArcMap.exists( currentNode ) && !this->isTerminalNode( __defaultArcMap[currentNode] ) ){
-					
-					NodeId defaultSon = this->nodeDefaultSon( currentNode );	
-					
-					if( !visitedNodes->exists( defaultSon ) )
-							this->__findRetorgradeVariables ( varsSeq, defaultSon, retrogradeVarTable, preceedingVariablesTable, visitedNodes );
-
-					Set< const DiscreteVariable* >* setTemp = currentVarSet;
-					currentVarSet = new Set< const DiscreteVariable* >( *( ( *retrogradeVarTable )[ defaultSon ] ) + *setTemp );
-					delete setTemp;
-				}
-				retrogradeVarTable->erase( currentNode );
-				retrogradeVarTable->insert( currentNode , currentVarSet );
-
-				for( SetIterator< const DiscreteVariable* > nodeParentsVarIter = (*preceedingVariablesTable)[currentNode]->begin(); 
-												nodeParentsVarIter != (*preceedingVariablesTable)[currentNode]->end(); ++nodeParentsVarIter )
-					if( varsSeq->pos( *nodeParentsVarIter ) > varsSeq->pos( this->nodeVariable( currentNode ) ) ) {
-						currentVarSet->insert( this->nodeVariable( currentNode ) );
-						break;
-					}
-				
-				visitedNodes->insert( currentNode );
-			}
+		visitedNodes->insert( currentNode );
+	    }
 }

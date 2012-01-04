@@ -60,26 +60,26 @@ namespace gum {
           factory->setVariablesSequence( varseq );
 
           idList->insert( factory->addNonTerminalNode( Cprimevar ) );   //0
-          idList->insert( factory->addNonTerminalNode( Cvar ) );     //1
-          idList->insert( factory->addNonTerminalNode( PLvar ) );     //2
-          idList->insert( factory->addNonTerminalNode( APUvar ) );    //3
-          idList->insert( factory->addNonTerminalNode( BPUvar ) );    //4
-          idList->insert( factory->addNonTerminalNode( ADRvar ) );    //5
-          idList->insert( factory->addNonTerminalNode( BDRvar ) );    //6
-          idList->insert( factory->addNonTerminalNode( BOvar ) );     //7
+          idList->insert( factory->addNonTerminalNode( Cvar ) );        //1
+          idList->insert( factory->addNonTerminalNode( PLvar ) );       //2
+          idList->insert( factory->addNonTerminalNode( APUvar ) );      //3
+          idList->insert( factory->addNonTerminalNode( BPUvar ) );      //4
+          idList->insert( factory->addNonTerminalNode( ADRvar ) );      //5
+          idList->insert( factory->addNonTerminalNode( BDRvar ) );      //6
+          idList->insert( factory->addNonTerminalNode( BOvar ) );       //7
 
-          idList->insert( factory->addNonTerminalNode( Cvar ) );     //8
-          idList->insert( factory->addNonTerminalNode( PLvar ) );     //9
-          idList->insert( factory->addNonTerminalNode( APUvar ) );    //10
-          idList->insert( factory->addNonTerminalNode( BPUvar ) );    //11
-          idList->insert( factory->addNonTerminalNode( ADRvar ) );    //12
-          idList->insert( factory->addNonTerminalNode( BDRvar ) );    //13
-          idList->insert( factory->addNonTerminalNode( BOvar ) );     //14
+          idList->insert( factory->addNonTerminalNode( Cvar ) );        //8
+          idList->insert( factory->addNonTerminalNode( PLvar ) );       //9
+          idList->insert( factory->addNonTerminalNode( APUvar ) );      //10
+          idList->insert( factory->addNonTerminalNode( BPUvar ) );      //11
+          idList->insert( factory->addNonTerminalNode( ADRvar ) );      //12
+          idList->insert( factory->addNonTerminalNode( BDRvar ) );      //13
+          idList->insert( factory->addNonTerminalNode( BOvar ) );       //14
 
-          idList->insert( factory->addTerminalNode( 0 ) );   //15
-          idList->insert( factory->addTerminalNode( 10 ) );    //16
-          idList->insert( factory->addTerminalNode( 9 ) );    //17
-          idList->insert( factory->addTerminalNode( 1 ) );    //18
+          idList->insert( factory->addTerminalNode( 0 ) );      //15
+          idList->insert( factory->addTerminalNode( 10 ) );     //16
+          idList->insert( factory->addTerminalNode( 9 ) );      //17
+          idList->insert( factory->addTerminalNode( 1 ) );      //18
 
           factory->insertArc(( *idList )[0], ( *idList )[1], 1 );
           factory->insertArc(( *idList )[0], ( *idList )[8], 0 );
@@ -192,11 +192,11 @@ namespace gum {
           //factory->showProperties();
 
           // Test de retrait d'un noeud non terminal
-          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode( 12 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode( idList[12] ) );
           //factory->showProperties();
 
           // Test de retrait d'un noeud terminal
-          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode( 15 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseNode( idList[15] ) );
           //factory->showProperties();
 
           // Test de retrait du même noeud, pour s'assurer du levage d'exception
@@ -206,10 +206,6 @@ namespace gum {
           // *********************************************************************
           // Test sur les fonctions d'ajout et retrait d'arc
           // *********************************************************************
-
-          // Test de retrait d'un arc existant (ne doit lever aucune exception)
-          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArc( 3,4 ) );
-          //factory->showProperties();
 
           // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception NotFOund)
           // (le noeud 15 a été détruit un peu plus haut)
@@ -228,9 +224,14 @@ namespace gum {
           // Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception OperationNotAllowed)
           TS_ASSERT_THROWS( factory->insertArc( idList[8], idList[1], 5 ), OperationNotAllowed );
 
+          // Test de retrait d'un arc existant (ne doit lever aucune exception)
+          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArc( idList[3], idList[4] ) );
+//           factory->showProperties();
+
           // Test de retrait d'un arc avec valeur spécifiée
           TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArcWithValue( idList[8], idList[18], 4 ) );
-
+//           factory->showProperties();
+          
           // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
           TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArc( idList[8], idList[18] ) );
 
@@ -626,21 +627,21 @@ namespace gum {
           LabelizedVariable* Banditovar = new LabelizedVariable( "Bandito", "Desperado", 2 );
           
           // Test is terminal node
-          TS_ASSERT_EQUALS( container->isTerminalNode( 15 ), true );
+          TS_ASSERT_EQUALS( container->isTerminalNode( 16 ), true );
           TS_ASSERT_EQUALS( container->isTerminalNode( 6 ), false );
           
           // Test Root
-          TS_ASSERT_EQUALS( container->root(), (Idx) 0 );
+          TS_ASSERT_EQUALS( container->root(), (Idx) 1 );
           
           // test node value
-          TS_GUM_ASSERT_THROWS_NOTHING( container->nodeValue( 15 ) );
-          TS_ASSERT_EQUALS( container->nodeValue( 15 ), 0 );
+          TS_GUM_ASSERT_THROWS_NOTHING( container->nodeValue( 16 ) );
+          TS_ASSERT_EQUALS( container->nodeValue( 16 ), 0 );
           TS_ASSERT_THROWS( container->nodeValue( 6 ), InvalidNode );
           
           // Test node variable
           TS_GUM_ASSERT_THROWS_NOTHING( container->nodeVariable( 6 ) );
-          TS_ASSERT_EQUALS( container->nodeVariable( 6 )->name(), "BDR" );
-          TS_ASSERT_THROWS( container->nodeVariable( 15 ), InvalidNode );
+          TS_ASSERT_EQUALS( container->nodeVariable( 6 )->name(), "ADR" );
+          TS_ASSERT_THROWS( container->nodeVariable( 16 ), InvalidNode );
                     
           // Test node variable
           TS_GUM_ASSERT_THROWS_NOTHING( container->variableNodes( Cprimevar ) );
@@ -648,15 +649,15 @@ namespace gum {
           
           // Test node sons
           TS_GUM_ASSERT_THROWS_NOTHING( container->nodeSons( 6 ) );
-          TS_ASSERT_THROWS( container->nodeSons( 15 ), InvalidNode );
+          TS_ASSERT_THROWS( container->nodeSons( 16 ), InvalidNode );
           
           // Test has node default sons
           TS_ASSERT_EQUALS( container->hasNodeDefaultSon( 6 ), false );
-          TS_ASSERT_THROWS( container->hasNodeDefaultSon( 15 ), InvalidNode );
+          TS_ASSERT_THROWS( container->hasNodeDefaultSon( 16 ), InvalidNode );
           
           // Test has node default sons
           TS_ASSERT_THROWS( container->nodeDefaultSon( 6 ), NotFound );
-          TS_ASSERT_THROWS( container->nodeDefaultSon( 15 ), InvalidNode );
+          TS_ASSERT_THROWS( container->nodeDefaultSon( 16 ), InvalidNode );
           
           // Test is in diagram variable
           TS_GUM_ASSERT_THROWS_NOTHING( container->isInDiagramVariable( Cprimevar ) );
@@ -687,8 +688,8 @@ namespace gum {
           MultiDimDecisionDiagramBase<float>* container2 = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING( container2 = factory->getMultiDimDecisionDiagram() );
 
-          factory->eraseArc( 2,5 );
-          factory->insertArc( 2,15,0 );
+          factory->eraseArc( 3,6 );
+          factory->insertArc( 3,16,0 );
 
           MultiDimDecisionDiagramBase<float>* container3 = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING( container3 = factory->getMultiDimDecisionDiagram() );

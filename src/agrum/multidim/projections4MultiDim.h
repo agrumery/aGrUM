@@ -173,19 +173,19 @@ namespace gum {
    * defined as T[A,B,C,D,E] = f ( t1[A,B,C,D],t2[D,B,E] ) for all A,B,C,D,E.
    * @return function combine2MultiDimArrays allocates on the heap the new
    * T multiDimArray and returns it */
-  /*
+  
   template<typename T_DATA>
   MultiDimArray<T_DATA>*
   ProjectFuncMultiDimArray ( const MultiDimArray<T_DATA>* t1,
                              const MultiDimArray<T_DATA>* t2,
-                             const T (*f) ( const T&, const T&) );
+                             const T_DATA (*f) ( const T_DATA&, const T_DATA&) );
   
   template<typename T_DATA>
   MultiDimImplementation<T_DATA>*
   combine2MultiDimArrays ( const MultiDimImplementation<T_DATA>* t1,
                            const MultiDimImplementation<T_DATA>* t2,
-                           const T (*f) ( const T&, const T&) );
-  */
+                           const T_DATA (*f) ( const T_DATA&, const T_DATA&) );
+  
 
 
   
