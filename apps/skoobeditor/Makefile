@@ -33,10 +33,26 @@ agrum:
 #	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
 #	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
 #endif
+################################################################################
+
+before_debug: agrum_debug
+	$(CMAKE) -E remove -f ../../build/linux/release/CMakeFiles/test.dir/test.cpp.o
+	$(CMAKE) -E make_directory build/Debug
+	$(CMAKE) -E make_directory build/Release
+	$(CMAKE) -E make_directory build/MinSizeRel
+
+agrum_debug:
+#ifeq ($(OS),Linux)
+	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/debug)
+	(cd ../../build/$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
+#else
+#	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
+#	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#endif
 
 ################################################################################
 
-debug: before
+debug: before_debug
 	(cd build/Debug && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Debug && $(MAKE) -j 4)
 
 release: before
@@ -51,7 +67,7 @@ clean:
 	$(CMAKE) -E remove_directory bin
 	$(CMAKE) -E remove_directory build
 	$(CMAKE) -E remove_directory usr
-	
+
 installer: release
 	"C:\Program Files\NSIS\makensis.exe" installer_script.nsi
 
@@ -64,4 +80,4 @@ dpkg: release
 	(cp bin/Release/skoobeditor usr/bin/)
 	(cd .. && dpkg-deb --build skoobeditor)
 
-	
+

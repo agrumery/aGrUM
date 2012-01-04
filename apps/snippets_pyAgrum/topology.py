@@ -49,7 +49,7 @@ def children_name(bn,n):
     return map(lambda n:bn.variable(n).name(),bn.children(nodeId(bn,n)))
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     bn=gum.loadBN("bn.bif")
 

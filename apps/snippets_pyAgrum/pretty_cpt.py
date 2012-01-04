@@ -93,14 +93,14 @@ def pretty_bn(aBN):
     bn=gum.loadBN(aBN)
   else:
     bn=aBN
-  
+
   seq=bn.getTopologicalOrder()
   for i in range(len(bn)):
     pretty_cpt(bn.cpt(seq[i]))
   print("")
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     if len(sys.argv)<2:
         module_help()

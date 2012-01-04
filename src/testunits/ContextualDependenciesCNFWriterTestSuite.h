@@ -82,7 +82,7 @@ namespace gum {
           typedef gum::ContextualDependenciesCNFWriter<double,ExactPolicy> typCNF;
           typCNF * writer = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
-       //   writer->setEpsilon( 0.2 );
+          //   writer->setEpsilon( 0.2 );
           writer->setLowLimit( 0 );
           writer->setHighLimit( 0.5 );
 
@@ -123,7 +123,6 @@ namespace gum {
         }
 
         void testWriter_string_With_Approximation() {
-          GUM_CHECKPOINT;
           gum::ContextualDependenciesCNFWriter<double,LinearApproximationPolicy> writer;
 
           writer.setEpsilon( 0.2 );
@@ -134,6 +133,7 @@ namespace gum {
           TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
           file = GET_PATH_STR( ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf );
+
           try {
             writer.write( file, *bn );
             // TS_ASSERT(false);
@@ -186,6 +186,7 @@ namespace gum {
             int n = 16;const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
+
           //std::cout << p5 << std::endl;
         }
     };

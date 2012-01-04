@@ -49,7 +49,7 @@ def pngize(aBN,base):
   return subprocess.call(cmd)
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     if len(sys.argv)<2:
         print os.path.basename(sys.argv[0]),"file.{"+gum.availableBNExts()+"}"

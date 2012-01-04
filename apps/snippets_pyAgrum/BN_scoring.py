@@ -136,7 +136,7 @@ def stringify(s):
   return '"'+s+'"'
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     if len(sys.argv)<2:
         module_help()

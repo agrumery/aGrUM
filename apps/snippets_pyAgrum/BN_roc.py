@@ -189,7 +189,7 @@ def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
   pylab.show()
 
 def checkROCargs():
-  pyAgrum_header()
+  pyAgrum_header(2011)
 
   bn_name=sys.argv[1] if len(sys.argv)>1 else ""
   csv_name=sys.argv[2] if len(sys.argv)>2 else ""

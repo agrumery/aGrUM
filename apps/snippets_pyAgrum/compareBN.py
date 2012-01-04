@@ -55,7 +55,7 @@ def compareBNParents(b1,b2):
   for i in range(len(b1)):
     id1=i
     id2=b2.idFromName(b1.variable(id1).name())
-    
+
     if not set(parents_name(b1,id1))==set(parents_name(b2,id2)):
         return b1.variable(id1).name() +" has not the same parents in the two bns"
 
@@ -115,7 +115,7 @@ def module_help(exit_value=1):
     sys.exit(exit_value)
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     if len(sys.argv)!=3:
         module_help()
