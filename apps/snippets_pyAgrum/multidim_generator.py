@@ -25,9 +25,10 @@ from pyAgrum_header import pyAgrum_header
 def multidim_generator(bornes,sauf={}):
     """
     Générateur pour une itération sur une série de variables dont on connait le nombre de modalités.
+    Generator for an iteration over a serie of variables whith known number of modalities
 
-    bornes est un dictionnaire du type de {key1:3,key2:4,key3:5} (key1 est une variable à 3 modalités, etc.)
-    sauf est un dictionnaire du type de {key2:1} : on ne veut pas itérer sur key2, qui vaudra 1 dans l'itérateur
+    bornes is a dictionary like "{key1:3,key2:4,key3:5}" (key1 is a variable with 3 modalities, etc.)
+    sauf is a dictionary like "{key2:1}" : one do not iterate over key2, but key2 will be set to 1 in the iterator
     """
     valeurs={}
     for k in bornes:
@@ -52,20 +53,20 @@ def multidim_generator(bornes,sauf={}):
 
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
-    print "#### ITERATION SUR LES 3 VARIABLES #####"
+    print "#### ITERATION ON 3 VARIABLES #####"
     for i in multidim_generator(dict(x=4,y=3,z=2)):
         print i
 
-    print "#### ITERATION SUR Y ET Z (X VAUT 3) #####"
+    print "#### ITERATION ON Y AND Z (X=3) #####"
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(x=3)):
         print i
 
-    print "#### ITERATION SUR X ET Y (Z VAUT 1) #####"
+    print "#### ITERATION ON X AND Y (Z=1) #####"
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(z=1)):
         print i
 
-    print "#### ITERATION SUR Y (X VAUT 1 et Z VAUT 0) #####"
+    print "#### ITERATION ON Y (X=1 and Z=0) #####"
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(x=1,z=0)):
         print i

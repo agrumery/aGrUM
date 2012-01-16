@@ -141,7 +141,7 @@ def module_help(exit_value=1):
     sys.exit(exit_value)
 
 if __name__=="__main__":
-    pyAgrum_header()
+    pyAgrum_header(2011)
 
     if len(sys.argv)<3:
         module_help()

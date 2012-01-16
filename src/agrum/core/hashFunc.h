@@ -371,6 +371,13 @@ namespace gum {
     Size operator()( const std::pair<std::string, std::string>& key ) const ;
   };
 
+  template <> class HashFunc< std::vector<Idx> > :
+    public HashFuncBase< std::vector< Idx > > {
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const std::vector< Idx >& key ) const ;
+  };
+
   template <> class HashFunc<Debug> : public HashFuncBase<Debug> {
   public:
     /// computes the hashed value of a key

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os,sys
+import pyAgrum as gum
 
 #(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
@@ -22,9 +23,9 @@ import os,sys
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-def pyAgrum_header(year="2011"):
-    print os.path.basename(sys.argv[0])+" (c) "+year+" -- Pierre-Henri Wuillemin -- UPMC"
-    print "powered by pyAgrum/aGrUM"
+def pyAgrum_header(year,author="Pierre-Henri Wuillemin/LIP6/UPMC"):
+    print os.path.basename(sys.argv[0])+" (c) "+str(year)+" -- "+author+" --"
+    print "powered by pyAgrum/aGrUM "+gum.GUM_VERSION
     print
 
 if __name__=="__main__":

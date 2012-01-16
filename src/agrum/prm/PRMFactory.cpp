@@ -326,7 +326,7 @@ namespace gum {
       // knst holds parents without a specific value ("*")
       Instantiation jnst, knst;
       const DiscreteVariable* var = 0;
-      Size pos = 0;
+      //not_used Size pos = 0;
       bool found = false;
       for ( size_t i = 0; i < parents.size(); ++i ) {
         var = a->cpf().variablesSequence().atPos( 1+i );
@@ -334,7 +334,7 @@ namespace gum {
           knst.add( *var );
         } else {
           jnst.add( *var );
-          pos = 0;
+          //not_used pos = 0;
           found = false;
           for ( Size j = 0; j < var->domainSize(); ++j ) {
             if ( var->label( j ) == parents[i] ) {

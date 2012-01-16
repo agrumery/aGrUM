@@ -135,152 +135,151 @@ PRODUCTIONS
 	/// *************************************************************************************
 	/// Variable rule
 	/// *************************************************************************************
-	VARIABLE =  					(. std::string name_of_var; .)
-			'(' 					(. __factory->startVariableDeclaration(); .)
-			IDENT<name_of_var> 		(. TRY( __factory->variableName( name_of_var ) ); .) 
-			MODALITY_LIST
-			')' 					(. TRY( __factory->endVariableDeclaration() ); .)
-			.
+	VARIABLE =  				(. std::string name_of_var; .)
+		'(' 				(. __factory->startVariableDeclaration(); .)
+		IDENT<name_of_var> 		(. TRY( __factory->variableName( name_of_var ) ); .) 
+		MODALITY_LIST
+		')' 				(. TRY( __factory->endVariableDeclaration() ); .)
+		.
   
 	/// *************************************************************************************
 	/// Modality List rule
 	/// *************************************************************************************
-	MODALITY_LIST =						(. std::string label; .)
-			IDENT_OR_INTEGER<label>     (. TRY( __factory->addModality( label ) ); .)
-			[ MODALITY_LIST ]
-			.
+	MODALITY_LIST =					(. std::string label; .)
+		IDENT_OR_INTEGER<label> 	(. TRY( __factory->addModality( label ) ); .)
+		[ MODALITY_LIST ]
+		.
 
 
 	/// *************************************************************************************
 	/// Action declaration rule
 	/// *************************************************************************************
-	ACTION =													(. std::string name_of_action; .)
-			"action"  											(. __factory->startActionDeclaration(); .)
-			(IDENT<name_of_action> | STRING<name_of_action>)	(. TRY( __factory->addAction( name_of_action ) ); .)
-			{ TRANSITION_DECISION_DIAGRAM } 
-			[ COST_DECISION_DIAGRAM ]
-			"endaction"  										(. TRY( __factory->endActionDeclaration() ); .)
-			.
+	ACTION =							(. std::string name_of_action; .)
+		"action"						(. __factory->startActionDeclaration(); .)
+		(IDENT<name_of_action> | STRING<name_of_action>)	(. TRY( __factory->addAction( name_of_action ) ); .)
+		{ TRANSITION_DECISION_DIAGRAM } 
+		[ COST_DECISION_DIAGRAM ]
+		"endaction"						(. TRY( __factory->endActionDeclaration() ); .)
+		.
   
 	/// *************************************************************************************
 	/// Transition Decision Diagram main rule
 	/// *************************************************************************************
-	TRANSITION_DECISION_DIAGRAM =				(. std::string name_of_var;
-												   __factory->startTransitionDeclaration(); .)
-			IDENT<name_of_var>					(. std::string prime_name_of_var = name_of_var + "'";
-												   __currentDecisionDiagramVar = prime_name_of_var; .)
-			( IF( IsFollowedByIdent() ) 
-			'(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
-												(. TRY( __factory->addTransition( name_of_var ) );
-												   __factory->endTransitionDeclaration();
-												   __parentModality.clear();
-												   __parentNode.clear(); .)
-			.
+	TRANSITION_DECISION_DIAGRAM =			(. std::string name_of_var;
+							   __factory->startTransitionDeclaration(); .)
+		IDENT<name_of_var>			(. std::string prime_name_of_var = name_of_var + "'";
+							   __currentDecisionDiagramVar = prime_name_of_var; .)
+		( IF( IsFollowedByIdent() ) 
+		'(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+							(. TRY( __factory->addTransition( name_of_var ) );
+							   __factory->endTransitionDeclaration();
+							   __parentModality.clear();
+							   __parentNode.clear(); .)
+		.
 	
 	/// *************************************************************************************
 	/// Transition Decision Diagram recursion rule
 	/// *************************************************************************************
-	SUB_TRANSITION_DECISION_DIAGRAM = 								(. std::string name_of_var;
-																	   std::string modality_of_var;
-																	   NodeId var_id; .)
-			IDENT<name_of_var> 										(. var_id = __factory->addNonTerminalNode( name_of_var );
-																	   if( !__parentNode.empty() )
-																			__factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-			{'('
-			IDENT_OR_INTEGER<modality_of_var> 						(. __parentNode.push_back( var_id );
-																	   __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
-			( IF( IsFollowedByIdent() ) 
-			'(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
-																	(. __parentModality.pop_back(); .)
-			')'}													(. __parentNode.pop_back(); .)
-			.
+	SUB_TRANSITION_DECISION_DIAGRAM = 			(. std::string name_of_var;
+								   std::string modality_of_var;
+								   NodeId var_id; .)
+		IDENT<name_of_var> 				(. var_id = __factory->addNonTerminalNode( name_of_var );
+								   if( !__parentNode.empty() )
+									__factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+		{'('
+		IDENT_OR_INTEGER<modality_of_var> 		(. __parentNode.push_back( var_id );
+								   __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
+		( IF( IsFollowedByIdent() ) 
+		'(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+								(. __parentModality.pop_back(); .)
+		')'}						(. __parentNode.pop_back(); .)
+		.
 		
 	/// *************************************************************************************
 	/// Transition diagram leaf rule
 	/// *************************************************************************************
-	TRANSITION_LEAF = 			(. float value;
-								   gum::Idx i = 0;
-								   NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
-								   if( !__parentNode.empty() )
-										__factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-			FLOAT<value>	 	(. NodeId val_id = __factory->addTerminalNode( value );
-								   __factory->insertArc( var_id, val_id, i ); .)								   
-			{ 
-			FLOAT<value> 		(. ++i;
-								   val_id = __factory->addTerminalNode( value );
-								   __factory->insertArc( var_id, val_id, i ); .)	
-			}
-			.
+	TRANSITION_LEAF = 		(. float value;
+					   gum::Idx i = 0;
+					   NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
+					   if( !__parentNode.empty() )
+						__factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+		FLOAT<value>		(. NodeId val_id = __factory->addTerminalNode( value );
+					   __factory->insertArc( var_id, val_id, i ); .)
+		{ 
+		FLOAT<value> 		(. ++i;
+					   val_id = __factory->addTerminalNode( value );
+					   __factory->insertArc( var_id, val_id, i ); .)
+		}
+		.
   
 	/// *************************************************************************************
 	/// Cost Decision Diagram main rule
 	/// *************************************************************************************
 	COST_DECISION_DIAGRAM =				(. std::string name_of_var;
-										   __factory->startCostDeclaration(); .)
-			"cost"
-			'('	
-			SUB_DECISION_DIAGRAM
-			')'	
-										(. TRY( __factory->addCost( ) );
-										   __factory->endCostDeclaration();
-										   __parentModality.clear();
-										   __parentNode.clear(); .)
-			.			
+							   __factory->startCostDeclaration(); .)
+		"cost"
+		'('	
+		SUB_DECISION_DIAGRAM
+		')'					(. TRY( __factory->addCost( ) );
+							   __factory->endCostDeclaration();
+							   __parentModality.clear();
+							   __parentNode.clear(); .)
+		.
   
 	/// *************************************************************************************
 	/// Reward Decision Diagram main rule
 	/// *************************************************************************************
 	REWARD_DECISION_DIAGRAM =			(. std::string name_of_var;
-										   __factory->startRewardDeclaration(); .)
-			"reward"
-			( IF( IsFollowedByIdent() )
-			'(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
-										(. TRY( __factory->addReward( ) );
-										   __factory->endRewardDeclaration();
-										   __parentModality.clear();
-										   __parentNode.clear(); .)
-			.
+							   __factory->startRewardDeclaration(); .)
+		"reward"
+		( IF( IsFollowedByIdent() )
+		'(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
+							(. TRY( __factory->addReward( ) );
+							   __factory->endRewardDeclaration();
+							   __parentModality.clear();
+							   __parentNode.clear(); .)
+		.
 	
 	/// *************************************************************************************
 	/// Decision Diagram recursion rule
 	/// *************************************************************************************
-	SUB_DECISION_DIAGRAM = 							(. std::string name_of_var;
-													   std::string modality_of_var;
-													   NodeId var_id;.)
-			IDENT<name_of_var> 						(. var_id = __factory->addNonTerminalNode( name_of_var );
-													   if( !__parentNode.empty() )
-															__factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-			{'('
-			IDENT_OR_INTEGER<modality_of_var> 		(. __parentNode.push_back( var_id );
-													   __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
-			( IF( IsFollowedByIdent() )
-			'(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
-													(. __parentModality.pop_back(); .)
-			')'}									(. __parentNode.pop_back(); .)
-			.
-		
+	SUB_DECISION_DIAGRAM = 					(. std::string name_of_var;
+								   std::string modality_of_var;
+								   NodeId var_id;.)
+		IDENT<name_of_var> 				(. var_id = __factory->addNonTerminalNode( name_of_var );
+								   if( !__parentNode.empty() )
+								      __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+		{'('
+		IDENT_OR_INTEGER<modality_of_var> 		(. __parentNode.push_back( var_id );
+								   __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
+		( IF( IsFollowedByIdent() )
+		'(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
+								(. __parentModality.pop_back(); .)
+		')'}						(. __parentNode.pop_back(); .)
+		.
+
 	/// *************************************************************************************
 	/// Diagram leaf rule
 	/// *************************************************************************************
-	LEAF = 					(. float value; .)
-			FLOAT<value>	(. NodeId val_id = __factory->addTerminalNode( value );
-								__factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)							   
+	LEAF = 			(. float value; .)
+		FLOAT<value>	(. NodeId val_id = __factory->addTerminalNode( value );
+				   __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
 			{ 
-			FLOAT<value> 	(. NodeId val_id = __factory->addTerminalNode( value );
-								__factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
-			}
-			.
-			
+		FLOAT<value> 	(. NodeId val_id = __factory->addTerminalNode( value );
+				   __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
+		}
+		.
+
 	/// *************************************************************************************
 	/// Diagram leaf rule
 	/// *************************************************************************************
-	DISCOUNT = 				(. float value;
-							   __factory->startDiscountDeclaration( ); .)
+	DISCOUNT = 			(. float value;
+					   __factory->startDiscountDeclaration( ); .)
 			"discount"
 			FLOAT<value>	(. __factory->addDiscount( value );
-							   __factory->endDiscountDeclaration( ); .)
+					   __factory->endDiscountDeclaration( ); .)
 			.
-			
+
 	/// *************************************************************************************
 	/// Diagram leaf rule
 	/// *************************************************************************************
@@ -314,9 +313,9 @@ PRODUCTIONS
 	/// Float rule
 	/// *************************************************************************************
 	FLOAT<float& val> =
-			number	(. swscanf(t->val, L"%f", &val); .)
+			number	(. val=coco_atof(t->val); .)
 			|
-			integer	(. swscanf(t->val, L"%f", &val); .)
+			integer	(. val=coco_atoi(t->val); .)
 			.
 
 

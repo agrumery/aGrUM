@@ -291,10 +291,10 @@ void Parser::TRANSITION_LEAF() {
 void Parser::FLOAT(float& val) {
 		if (la->kind == 3) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atof(t->val); 
 		} else if (la->kind == 2) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atoi(t->val); 
 		} else SynErr(21);
 }
 

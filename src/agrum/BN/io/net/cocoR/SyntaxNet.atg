@@ -223,9 +223,9 @@ PARENTS_DEFINITION<.std::string& name,std::vector<std::string>& var_seq.> = (.st
 
 //==============
 FLOAT<float& val> =
-  number  (. swscanf(t->val, L"%f", &val); .)
+  number  (. val=coco_atof(t->val); .)
   |
-  integer (. swscanf(t->val, L"%f", &val); .)
+  integer (. val=coco_atoi(t->val); .)
 .
 
 //==============

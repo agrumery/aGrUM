@@ -143,6 +143,8 @@ namespace gum {
 
       Potential<T_DATA>& operator= ( const Potential<T_DATA>& src );
 
+      /// sum of all elements in this
+      const T_DATA sum() const ;
 
     protected:
       /// perform the marginalization p over the vars on *this.
@@ -151,8 +153,6 @@ namespace gum {
       /// perform the multiplication of args.
       void _multiplicate ( const Potential& p1, const Potential& p2 ) ;
 
-      /// sum of all elements in this
-      const T_DATA getSum() const ;
 
       virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };

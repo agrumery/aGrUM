@@ -382,13 +382,11 @@ public:
             }
         }
 
-
         for ( gum::List< gum::Potential< float > const * >::iterator it = list_pot.begin();it != list_pot.end();++it ) {
             delete *it;
         }
 
         delete e_i1;
-
         delete e_i4;
         delete bn;
     }

@@ -186,6 +186,11 @@ namespace gum {
        bool hasVariable() const;
         
 	  /**
+       * Returns current primed variable pointed by variable iterator
+       */
+       const DiscreteVariable* variable() const;
+        
+	  /**
        * Deplaces iterator onto next variable
        */
        void nextVariable();
@@ -207,49 +212,47 @@ namespace gum {
        MultiDimDecisionDiagramBase<T_DATA>* primeCopy( MultiDimDecisionDiagramBase<T_DATA>* source );
 
       /// @}
-      void show() const;
+      std::string show() const;
        
     private :     
        
-	  /**
-       * Returns action id
-       */
-       const Idx& __actionId( const std::string& ) const;		  
-    
-		/// Variable default transition cpt table
-		HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
-		
-		/// Table which give for each action a table containing variables transition cpt
-		HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionTransitionTable;
-    
-		/// default cost table
-		const MultiDimImplementation< T_DATA >* __defaultCostTable;
-		
-		/// Table which give for each action cost table
-		HashTable< Idx, const MultiDimImplementation< T_DATA >* > __actionCostTable;
-		
-		/// Bijection mapping an action name to its id
-		Bijection< Idx, const std::string* > __actionMap;
-    
-		/// default reward table
-		const MultiDimImplementation< T_DATA >* __defaultRewardTable;
-		
-		Set< const DiscreteVariable* > __primedVariablesSet;
-		Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
-		
-		/// FMDP discount factor
-		T_DATA __discount;
-		
-		/// Gives the next action id
-		Idx __nextActionId;
-		
-		/// Iterator on actions
-		HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
-		
-		/// Iterator on variable
-		HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
-		
-		
+    /**
+      * Returns action id
+      */
+      const Idx& __actionId( const std::string& ) const;
+
+      /// Variable default transition cpt table
+      HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
+
+      /// Table which give for each action a table containing variables transition cpt
+      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionTransitionTable;
+
+      /// default cost table
+      const MultiDimImplementation< T_DATA >* __defaultCostTable;
+
+      /// Table which give for each action cost table
+      HashTable< Idx, const MultiDimImplementation< T_DATA >* > __actionCostTable;
+
+      /// Bijection mapping an action name to its id
+      Bijection< Idx, const std::string* > __actionMap;
+
+      /// default reward table
+      const MultiDimImplementation< T_DATA >* __defaultRewardTable;
+
+      Set< const DiscreteVariable* > __primedVariablesSet;
+      Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
+
+      /// FMDP discount factor
+      T_DATA __discount;
+
+      /// Gives the next action id
+      Idx __nextActionId;
+
+      /// Iterator on actions
+      HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
+
+      /// Iterator on variable
+      HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
   };
 } /* namespace gum */
 

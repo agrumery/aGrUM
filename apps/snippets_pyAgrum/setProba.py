@@ -23,7 +23,7 @@
 from pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
-pyAgrum_header()
+pyAgrum_header(2011)
 
 bn=gum.loadBN("bn.bif")
 

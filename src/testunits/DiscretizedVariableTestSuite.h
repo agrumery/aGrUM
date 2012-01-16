@@ -137,17 +137,16 @@ namespace gum {
           gum::DiscretizedVariable<double> d( "d", "Discretized variable" );;
           d.addTick( 3.1 ).addTick( 2.0 ).addTick( 4.0 );
 
-          double vv;
-          TS_GUM_ASSERT_THROWS_NOTHING( vv = d[2.5] );
-          TS_ASSERT_THROWS( vv = d[0.5], gum::OutOfLowerBound );
-          TS_ASSERT_THROWS( vv = d[4.5], gum::OutOfUpperBound );
+          TS_GUM_ASSERT_THROWS_NOTHING( d[2.5] );
+          TS_ASSERT_THROWS( d[0.5], gum::OutOfLowerBound );
+          TS_ASSERT_THROWS( d[4.5], gum::OutOfUpperBound );
 
           d.addTick( -std::numeric_limits<double>::infinity() );
           d.addTick( std::numeric_limits<double>::infinity() );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( vv = d[2.5] );
-          TS_GUM_ASSERT_THROWS_NOTHING( vv = d[0.5] );
-          TS_GUM_ASSERT_THROWS_NOTHING( vv = d[4.5] );
+          TS_GUM_ASSERT_THROWS_NOTHING( d[2.5] );
+          TS_GUM_ASSERT_THROWS_NOTHING( d[0.5] );
+          TS_GUM_ASSERT_THROWS_NOTHING( d[4.5] );
         }
     };
 

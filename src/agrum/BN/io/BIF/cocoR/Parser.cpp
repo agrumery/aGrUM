@@ -241,7 +241,7 @@ void Parser::LABELIZE_VAR(int& nbrMod) {
 
 void Parser::NBR(int& val) {
 		Expect(2);
-		swscanf(t->val, L"%d", &val); 
+		val=coco_atoi(t->val); 
 }
 
 void Parser::MODALITY_LIST() {
@@ -356,10 +356,10 @@ void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<st
 void Parser::FLOAT(float& val) {
 		if (la->kind == 3) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atof(t->val); 
 		} else if (la->kind == 2) {
 			Get();
-			swscanf(t->val, L"%f", &val); 
+			val=coco_atoi(t->val); 
 		} else SynErr(34);
 }
 

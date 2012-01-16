@@ -82,13 +82,12 @@ namespace gum {
 
         void testInsert1() {
           gum::MixedGraph graph;
-          gum::NodeId id1, id2, id3, id4, id5;
 
-          TS_GUM_ASSERT_THROWS_NOTHING( id1 = graph.insertNode( ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id2 = graph.insertNode( ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id3 = graph.insertNode( ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id4 = graph.insertNode( ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id5 = graph.insertNode( ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( graph.insertNode( ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( graph.insertNode( ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( graph.insertNode( ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( graph.insertNode( ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( graph.insertNode( ) );
 
           TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 0, 2 ) );
           TS_GUM_ASSERT_THROWS_NOTHING( graph.insertEdge( 2, 4 ) );

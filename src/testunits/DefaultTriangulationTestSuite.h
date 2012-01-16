@@ -304,8 +304,8 @@ namespace gum {
           gum::BayesNet<float> *bn = new gum::BayesNet<float>();
           gum::BIFReader<float> reader( bn, file );
           reader.trace( false );
-          bool isOK = false;
-          TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+          
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
           gum::LazyPropagation<float> inf( *bn );
 

@@ -79,6 +79,30 @@ StructuredInference::gspan() const {
   return *__gspan;
 }
 
+INLINE
+void
+StructuredInference::__removeNode(StructuredInference::PData& data,
+                                  NodeId id,
+                                  Set<Potential<prm_float>*>& pool)
+{
+  data.graph.eraseNode(id);
+  GUM_ASSERT(not data.graph.exists(id));
+  data.mod.erase(id);
+  GUM_ASSERT(not data.mod.exists(id));
+  data.node2attr.eraseFirst(id);
+  GUM_ASSERT(not data.node2attr.existsFirst(id));
+  data.map.erase(id);
+  GUM_ASSERT(not data.map.exists(id));
+  data.vars.eraseFirst(id);
+  GUM_ASSERT(not data.vars.existsFirst(id));
+  data.inners().erase(id);
+  GUM_ASSERT(not data.inners().exists(id));
+  pool.erase(data.pots[id]);
+  GUM_ASSERT(not pool.exists(data.pots[id]));
+  data.pots.erase(id);
+  GUM_ASSERT(not data.pots.exists(id));
+}
+
 } /* namespace prm */
 } /* namespace gum */
 // ============================================================================

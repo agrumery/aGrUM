@@ -118,8 +118,8 @@ eliminateNode(const DiscreteVariable* var,
               Set<Potential<prm_float>*>& pool,
               Set<Potential<prm_float>*>& trash)
 {
-  static Potential<prm_float>* pot = 0;
-  static Potential<prm_float>* tmp = 0;
+  Potential<prm_float>* pot = 0;
+  Potential<prm_float>* tmp = 0;
   Set<const DiscreteVariable*> var_set;
   var_set.insert(var);
   Set<const Potential<prm_float>*> pots;
@@ -129,14 +129,8 @@ eliminateNode(const DiscreteVariable* var,
   if (pots.size() == 0) {
     return;
   } else if (pots.size() == 1) {
-    pot = const_cast<Potential<prm_float>*>(*(pots.begin()));
-    if (pot->nbrDim() == 1) {
-      // No need to compute anything, this is a leaf node without evidence
-      pool.erase(pot);
-      return;
-    } else {
-      pot = new Potential<prm_float>(projectSum(*pot, var_set));
-    }
+    tmp = const_cast<Potential<prm_float>*>(*(pots.begin()));
+    pot = new Potential<prm_float>(projectSum(*tmp, var_set));
   } else {
     MultiDimCombinationDefault<float,Potential> Comb ( multPotential );
     tmp = Comb.combine(pots);
@@ -151,6 +145,7 @@ eliminateNode(const DiscreteVariable* var,
     }
   }
   pool.insert(pot);
+  trash.insert(pot);
 }
 
 // void

@@ -38,6 +38,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <cstdlib>
 #include <string>
 #include <cwchar>
+#include <locale>
+
 // ============================================================================
 // io.h and fcntl are used to ensure binary read from streams on windows
 #if _MSC_VER >= 1300
@@ -108,6 +110,21 @@ namespace gum {
       stm << ctfacet.narrow( str[i], 0 ) ;
     return stm.str() ;
   }
+  
+  inline float coco_atof(const wchar_t* c) {
+		float res;
+		std::istringstream istr(narrow(c));
+		istr.imbue(std::locale("C"));
+		istr>>res;
+		return res;
+	}
+  inline int coco_atoi(const wchar_t* c) {
+		int res;
+		std::istringstream istr(narrow(c));
+		istr.imbue(std::locale("C"));
+		istr>>res;
+		return res;
+	}
 
 } // namespace gum
 // ============================================================================

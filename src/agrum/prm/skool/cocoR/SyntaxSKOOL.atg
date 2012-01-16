@@ -516,7 +516,7 @@ System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
          .
 
 ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; .)
-    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; swscanf(t->val, L"%d", &size); .) ] ']'
+    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); .) ] ']'
     (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
       | '.' word            (. std::string l2 = narrow(t->val); .)
         (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
@@ -556,8 +556,8 @@ Label<std::string& s> =   word        (. s = narrow(t->val); .)
                           Number<val> (. std::stringstream sBuff; sBuff << val; s = sBuff.str(); .)
                         .
 
-Number<float& val> =    integer (. swscanf(t->val, L"%f", &val); .)
-                      | float   (. swscanf(t->val, L"%f", &val); .)
+Number<float& val> =    integer (. val=coco_atoi(t->val); .)
+                      | float   (. val=coco_atof(t->val); .)
                       .
 
 END Skool.

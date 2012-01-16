@@ -290,11 +290,11 @@ namespace gum {
 
   template<typename T_DATA>
   void
-  AbstractBayesNet<T_DATA>::completeInstantiation(Instantiation& I) const {
+  AbstractBayesNet<T_DATA>::completeInstantiation( Instantiation& I ) const {
     I.clear();
 
     for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )
-      I << variable ( *node_iter );
+      I << variable( *node_iter );
   }
 
 

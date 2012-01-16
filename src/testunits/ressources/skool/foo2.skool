@@ -1,0 +1,3 @@
+usage: 
+gen_file domain_size interface_size boundary_size class_count class_size system_size min_freq
+gen_file min_freq

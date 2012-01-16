@@ -204,10 +204,9 @@ class SequenceTestSuite: public CxxTest::TestSuite {
     
     seq<<a<<b;
 
-    int* n = 0;
     for ( gum::Sequence<int*>::iterator it=seq.rbegin();
           it!=seq.rend();--it ) {
-      n=*it;
+      *it; //TODO do not see the reason of this line ... ???
     }
 
 

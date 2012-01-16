@@ -92,6 +92,9 @@ class StructuredInference: public PRMInference {
     /// Returns the instance of gspan used to search patterns.
     const GSpan& gspan() const;
 
+    /// Search for patterns without doing any computations.
+    void searchPatterns();
+
     /// @}
   protected:
   // ========================================================================
@@ -141,7 +144,7 @@ class StructuredInference: public PRMInference {
       /// The pattern for which this represents data about it
       const gspan::Pattern& pattern;
       /// A reference over the usable matches of pattern
-      const GSpan::MatchedInstances& matches;
+      GSpan::MatchedInstances& matches;
       /// A yet to be triangulated undigraph
       UndiGraph graph;
       /// The pattern's variables modalities
@@ -149,11 +152,17 @@ class StructuredInference: public PRMInference {
       /// A bijection to easily keep track  between graph and attributes, its of the
       /// form instance_name DOT attr_name
       Bijection<NodeId, std::string> node2attr;
+      /// To ease translating potentials from one match to another
+      Property< std::pair<Idx, std::string> >::onNodes map;
       /// Bijection between graph's nodes and their corresponding DiscreteVariable, for
       /// inference purpose
       Bijection<NodeId, const DiscreteVariable*> vars;
+      /// To handle barren nodes
+      Property< Potential<prm_float>* >::onNodes pots;
+      /// Set of barren nodes
+      Set<NodeId> barren;
       /// Default constructor.
-      PData(const gspan::Pattern& p, const GSpan::MatchedInstances& m);
+      PData(const gspan::Pattern& p, GSpan::MatchedInstances& m);
       /// Copy constructor.
       PData(const PData& source);
       /// Destructor
@@ -175,7 +184,7 @@ class StructuredInference: public PRMInference {
       /// with children outside the pattern and the other nodes
       List<NodeSet> __partial_order;
       /// A copy of __partial_order without empty sets
-      List<NodeSet> __real_order;
+      List<NodeSet>* __real_order;
     };
 
     /// Private structure to represent data about a Class.
@@ -241,6 +250,10 @@ class StructuredInference: public PRMInference {
     /// Flag which tells to use pattern mining or not
     bool __mining;
 
+    /// Flag with an explicit name
+    bool __found_query;
+    std::pair<Idx, std::string> __query_data;
+
     /// This calls __reducePattern() over each pattern and then build the reduced graph
     /// which is used for inference.
     /// The reduce graph is a triangulated instance graph.
@@ -251,6 +264,9 @@ class StructuredInference: public PRMInference {
 
     /// Add edges in the reduced graph.
     void __addEdgesInReducedGraph(RGData& data);
+
+    void __removeNode(StructuredInference::PData& data, NodeId id,
+                      Set<Potential<prm_float>*>& pool);
 
     /// Add the reduced potentials of instances not in any used patterns.
     void __reduceAloneInstances(RGData& data);
@@ -267,8 +283,18 @@ class StructuredInference: public PRMInference {
                              Set<Potential<prm_float>*>& pool,
                              const Sequence<Instance*>& match);
 
-    /// Add in data.obs() all observed variable (output or not).
-    void __buildObsSet(PData& data, const Sequence<Instance*>& match);
+    void __insertNodeInElimLists(StructuredInference::PData& data,
+                                 const Sequence<Instance*>& match,
+                                 Instance* inst,
+                                 Attribute* attr,
+                                 NodeId id,
+                                 std::pair<Idx, std::string>& v);
+
+    bool __allInstanceNoRefAttr(StructuredInference::PData& data,
+                                std::pair<Idx, std::string> attr);
+
+    void __removeBarrenNodes(StructuredInference::PData& data,
+                             Set<Potential<prm_float>*>& pool);
 
     /// Add in data.queries() any queried variable in one of data.pattern matches.
     void __buildQuerySet(PData& data);
@@ -281,11 +307,18 @@ class StructuredInference: public PRMInference {
                              const Sequence<Instance*>& match,
                              const std::vector<NodeId>& elim_order);
 
+    Set<Potential<prm_float>*>*
+    __eliminateObservedNodesInSource(StructuredInference::PData& data,
+                                     const Set<Potential<prm_float>*>& pool,
+                                     const Sequence<Instance*>& match,
+                                     const std::vector<NodeId>& elim_order);
+
+
     /// Translate a given Potential Set into one w.r.t. variables in match.
     Set<Potential<prm_float>*>*
-    __translatePotSet(Set<Potential<prm_float>*>& set,
-                      const Sequence<Instance*>& source,
-                      const Sequence<Instance*>& match);
+    __translatePotSet(StructuredInference::PData& data,
+                      const gum::Set<gum::Potential<gum::prm::prm_float>*>& pool,
+                      const gum::Sequence<gum::prm::Instance*>& match);
 
     /// Unreduce the match containing the query.
     void __unreduceMatchWithQuery();

@@ -85,11 +85,10 @@ namespace gum {
           TS_ASSERT( tree.empty() == false );
 
           tree.clear();
-          int x;
 
-          TS_ASSERT_THROWS_ANYTHING( x = tree.rootValue(); );
-          TS_ASSERT_THROWS_ANYTHING( x = tree.minValue(); );
-          TS_ASSERT_THROWS_ANYTHING( x = tree.maxValue(); );
+          TS_ASSERT_THROWS_ANYTHING( tree.rootValue(); );
+          TS_ASSERT_THROWS_ANYTHING( tree.minValue(); );
+          TS_ASSERT_THROWS_ANYTHING( tree.maxValue(); );
           TS_ASSERT( tree.size() == 0 );
           TS_ASSERT( tree.empty() == true );
         }

@@ -21,6 +21,11 @@
 * @file
 * @brief Implementations of the classes defined in
 * InfluenceDiagram/inference/defaultInfluenceDiagramInference.h.
+*  @note For deep understanding of the inherent algorithms put in motion here
+*  a strong look at "From Influence Diagrams To Junction Trees, Frank Jensen, Finn V. Jensen, Soren L; Dittmer, 1994" is
+*  highly recommended.
+*  @note __triangulation->eliminationOrder() gives nodes in order in which they disappear, meaning that the first one
+*  is the first one to be eliminated.
 */
 // ============================================================================
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -30,356 +35,432 @@
 #include <agrum/influenceDiagram/inference/defaultInfluenceDiagramInference.h>
 
 namespace gum {
-// ============================================================================
+  /* **************************************************************************************************** **/
+  /* **                                                                                                                                                    **/
+  /* **                                                   Constructor & Destructor                                                         **/
+  /* **                                                                                                                                                    **/
+  /* **************************************************************************************************** **/
+  
+    // ======================================================================================
+    // Default constructor.
+    // @param inDiag The influence diagram on which we perform inferences
+    // ======================================================================================
+    template<typename T_DATA>
+    DefaultInfluenceDiagramInference<T_DATA>::DefaultInfluenceDiagramInference( const InfluenceDiagram<T_DATA> &infDiag ) :
+        InfluenceDiagramInference<T_DATA> ( infDiag ),
+        __triangulation( 0 ),
+        __inferencePotential( 0 ),
+        __inferenceUtility( 0 ),
+        __inferenceMade( false ) {
+        
+            GUM_CONSTRUCTOR( DefaultInfluenceDiagramInference );
 
-// Default constructor
-  template<typename T_DATA>
-  DefaultInfluenceDiagramInference<T_DATA>::DefaultInfluenceDiagramInference( const InfluenceDiagram<T_DATA> &infDiag ) :
-      InfluenceDiagramInference<T_DATA> ( infDiag ),
-      __triangulation( 0 ),
-      __inferencePotential( 0 ),
-      __inferenceUtility( 0 ),
-      __inferenceMade( false ) {
-    GUM_CONSTRUCTOR( DefaultInfluenceDiagramInference );
+            //Make modalities map
+            typename Property<unsigned int>::onNodes __modalitiesMap;
 
-    //Make modalities map
-    typename Property<unsigned int>::onNodes __modalitiesMap;
+            for ( DAG::NodeIterator iter = this->getInfluenceDiagram().beginNodes(); iter != this->getInfluenceDiagram().endNodes(); ++iter )
+                __modalitiesMap.insert( *iter,  this->getInfluenceDiagram().variable( *iter ).domainSize() );
 
-    for ( DAG::NodeIterator iter = this->getInfluenceDiagram().beginNodes(); iter != this->getInfluenceDiagram().endNodes(); ++iter )
-      __modalitiesMap.insert( *iter,  this->getInfluenceDiagram().variable( *iter ).domainSize() );
+            const UndiGraph* moralGraph = & ( this->getInfluenceDiagram().moralGraph() );
 
-    const UndiGraph* moralGraph = & ( this->getInfluenceDiagram().moralGraph() );
+            const List<NodeSet>* partialTemporalOrder = & ( this->getInfluenceDiagram().getPartialTemporalOrder() );
 
-    const List<NodeSet>* partialTemporalOrder = & ( this->getInfluenceDiagram().getPartialTemporalOrder() );
+            //Make Junction Tree
+            __triangulation = new PartialOrderedTriangulation( moralGraph, &__modalitiesMap, partialTemporalOrder );
 
-    //Make Junction Tree
-    __triangulation = new PartialOrderedTriangulation( moralGraph, &__modalitiesMap, partialTemporalOrder );
+            __triangulation->junctionTree();
 
-    __triangulation->junctionTree();
+            __makeCliquePropertiesMap();
 
-    __makeCliquePropertiesMap();
-
-    __makeStrongJunctionTree();
-  }
-
-// Destructor
-  template<typename T_DATA>
-  DefaultInfluenceDiagramInference<T_DATA>::~DefaultInfluenceDiagramInference() {
-    GUM_DESTRUCTOR( DefaultInfluenceDiagramInference );
-
-    delete __triangulation;
-
-    __cleanUp();
-
-    for ( typename Property< CliqueProperties<T_DATA>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
-          cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
-      delete *cliquePropertyIter;
-
-    for ( SetIterator< Potential<T_DATA>* > potentialDummiesIter = __potentialDummies.begin();
-          potentialDummiesIter != __potentialDummies.end(); ++potentialDummiesIter )
-      delete *potentialDummiesIter;
-
-    for ( SetIterator< UtilityTable<T_DATA>* > utilityDummiesIter = __utilityDummies.begin();
-          utilityDummiesIter != __utilityDummies.end(); ++utilityDummiesIter )
-      delete *utilityDummiesIter;
-  }
-
-  template <typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::makeInference() {
-    __cleanUp();
-
-    NodeId rootClique = __cliqueEliminationMap[0];
-    const NodeSet& neighbours = __triangulation->junctionTree().neighbours( rootClique );
-
-    for ( NodeSetIterator childIterator = neighbours.begin(); childIterator != neighbours.end(); ++childIterator )
-      __collectChild( rootClique, *childIterator );
-
-    NodeSet separator;
-
-    __reduceClique( __cliquePropertiesMap[ rootClique ], separator, __inferencePotential, __inferenceUtility );
-
-    __inferenceMade = true;
-  }
-
-  template <typename T_DATA> INLINE
-  T_DATA
-  DefaultInfluenceDiagramInference<T_DATA>::getMEU() {
-    if ( !__inferenceMade ) {
-      GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
+            __makeStrongJunctionTree();
     }
 
-    Instantiation res( __inferenceUtility );
+    // ======================================================================================
+    // Default destructor.
+    // ======================================================================================
+    template<typename T_DATA>
+    DefaultInfluenceDiagramInference<T_DATA>::~DefaultInfluenceDiagramInference() {
+      
+        GUM_DESTRUCTOR( DefaultInfluenceDiagramInference );
 
-    return __inferenceUtility->get( res );
-  }
+        delete __triangulation;
 
-  template <typename T_DATA> INLINE
-  const Idx
-  DefaultInfluenceDiagramInference<T_DATA>::getBestDecisionChoice( NodeId decisionId ) {
-    if ( !__inferenceMade ) {
-      GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
+        __cleanUp();
+
+        for ( typename Property< CliqueProperties<T_DATA>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
+            cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
+        delete *cliquePropertyIter;
+
+        for ( SetIterator< Potential<T_DATA>* > potentialDummiesIter = __potentialDummies.begin();
+            potentialDummiesIter != __potentialDummies.end(); ++potentialDummiesIter )
+        delete *potentialDummiesIter;
+
+        for ( SetIterator< UtilityTable<T_DATA>* > utilityDummiesIter = __utilityDummies.begin();
+            utilityDummiesIter != __utilityDummies.end(); ++utilityDummiesIter )
+        delete *utilityDummiesIter;
     }
 
-    if ( !this->getInfluenceDiagram().isDecisionNode( decisionId ) ) {
-      GUM_ERROR( InvalidNode, "Node is not a decision node" );
+    
+    
+  /* **************************************************************************************************** **/
+  /* **                                                                                                                                                    **/
+  /* **                                                                  Inference                                                                   **/
+  /* **                                                                                                                                                    **/
+  /* **************************************************************************************************** **/
+    
+    // ======================================================================================
+    // makeInference : Performs the inference
+    // ======================================================================================
+    template <typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::makeInference() {
+      
+        __cleanUp();
+
+        NodeId rootClique = __cliqueEliminationMap[0];
+        const NodeSet& neighbours = __triangulation->junctionTree().neighbours( rootClique );
+
+        for ( NodeSetIterator childIterator = neighbours.begin(); childIterator != neighbours.end(); ++childIterator )
+            __collectChild( rootClique, *childIterator );
+
+        NodeSet separator;
+
+        __reduceClique( __cliquePropertiesMap[ rootClique ], separator, __inferencePotential, __inferenceUtility );
+
+        __inferenceMade = true;
+        
     }
 
-    return __utakenDecisionMap[ decisionId ];
-  }
+    // ======================================================================================
+    // getMEU : Returns the maximum expected utility for this inference on this diagram
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+    T_DATA
+    DefaultInfluenceDiagramInference<T_DATA>::getMEU() {
+      
+        if ( !__inferenceMade )
+              GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
 
-
-  template <typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::displayResult( std::ostream& stream ) {
-    if ( !__inferenceMade ) {
-      GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
+        Instantiation res( __inferenceUtility );
+        return __inferenceUtility->get( res );
     }
 
-    stream << "Espérance d'utilité finale : " << std::endl << std::flush;
-    stream << *__inferenceUtility << std::endl;
-    stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
+    // ======================================================================================
+    // getBestDecisionChoice : Returns for given decision node the best decision to take under this infernece
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+    const Idx
+    DefaultInfluenceDiagramInference<T_DATA>::getBestDecisionChoice( NodeId decisionId ) {
 
-    for ( HashTableConstIterator< NodeId, Idx > utilityIter = __utakenDecisionMap.begin();
-          utilityIter != __utakenDecisionMap.end(); ++utilityIter ) {
-      stream << "Decision " << this->getInfluenceDiagram().variable( utilityIter.key() ) << " : " << this->getInfluenceDiagram().variable( utilityIter.key() ).label( *utilityIter ) << std::endl << std::flush;
-    }
-  }
+        if ( !__inferenceMade )
+            GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
 
-// Returns the Triangulation used by this class.
-  template <typename T_DATA> INLINE
-  Triangulation&
-  DefaultInfluenceDiagramInference<T_DATA>::getTriangulation() {
-    return *__triangulation;
-  }
+        if ( !this->getInfluenceDiagram().isDecisionNode( decisionId ) )
+            GUM_ERROR( InvalidNode, "Node is not a decision node" );
 
-// insert new evidence in the graph
-  template<typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& evidenceList ) {
-    for ( ListConstIterator<const Potential<T_DATA>*> evidenceListIter = evidenceList.begin();
-          evidenceListIter != evidenceList.end(); ++evidenceListIter )
-      __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId(( *evidenceListIter )->variable( 0 ) )] ]->addEvidence( **evidenceListIter );
-  }
+        return __utakenDecisionMap[ decisionId ];
 
-// remove a given evidence from the graph
-  template <typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::eraseEvidence( const Potential<T_DATA>* evidence ) {
-    if ( not( evidence->variablesSequence().size() != 1 ) )
-      __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( evidence->variable( 0 ) )] ]->removeEvidence( evidence->variable( 0 ) );
-  }
-
-// remove all evidence from the graph
-  template <typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::eraseAllEvidence() {
-    for ( typename Property< CliqueProperties<T_DATA>* >::onNodes::iterator nodeIter = __cliquePropertiesMap.begin(); nodeIter != __cliquePropertiesMap.end(); ++nodeIter )
-      ( *nodeIter )->removeAllEvidence();
-  }
-
-// @return Returns the list of neighbours of a given clique
-  template<typename T_DATA> INLINE
-  const EdgeSet&
-  DefaultInfluenceDiagramInference<T_DATA>::__getNeighbours( NodeId cliqueId ) {
-    return __triangulation->junctionTree().neighbours( cliqueId );
-  }
-
-// @return Returns a separator given two adjacent cliques
-  template<typename T_DATA> INLINE
-  const NodeSet&
-  DefaultInfluenceDiagramInference<T_DATA>::__getSeparator( NodeId clique_1, NodeId clique_2 ) {
-    return __triangulation->junctionTree().separator( clique_1, clique_2 );
-  }
-
-
-// @return Returns the clique in which the node's potential must be stored
-  template<typename T_DATA>
-  NodeId
-  DefaultInfluenceDiagramInference<T_DATA>::__getClique( const std::vector<NodeId> &eliminationOrder, NodeId id ) {
-    NodeSet idSet;
-    idSet.insert( id );
-
-    const NodeSet& parents = this->getInfluenceDiagram().dag().parents( id );
-
-    for ( NodeSet::const_iterator parentsIter = parents.begin(); parentsIter != parents.end(); ++parentsIter )
-      idSet.insert( *parentsIter );
-
-    for ( size_t i = 0; i < eliminationOrder.size(); ++i )
-      if ( idSet.contains( eliminationOrder[i] ) )
-        return __triangulation->createdJunctionTreeClique( eliminationOrder[i] );
-
-    GUM_ERROR( FatalError, "No clique found for node " << id );
-  }
-
-// Builds the cliques tables
-  template<typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::__makeCliquePropertiesMap() {
-    const std::vector<NodeId> elim = __triangulation->eliminationOrder();
-
-    NodeSet potentialsCliquesSet, utilitiesCliqueSet;
-
-    // First pass to create the clique's table
-
-    for ( CliqueGraph::NodeIterator cliqueIter = __triangulation->junctionTree().beginNodes();
-          cliqueIter != __triangulation->junctionTree().endNodes(); ++cliqueIter ) {
-      __cliquePropertiesMap.insert( *cliqueIter, new CliqueProperties<T_DATA>() );
-      potentialsCliquesSet.insert( *cliqueIter );
-      utilitiesCliqueSet.insert( *cliqueIter );
-
-      for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique( *cliqueIter ).begin();
-            cliqueNodesIter != __triangulation->junctionTree().clique( *cliqueIter ).end(); ++cliqueNodesIter )
-        __cliquePropertiesMap[*cliqueIter]->addVariable( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
-
-      __cliquePropertiesMap[*cliqueIter]->makeEliminationOrder( elim, this->getInfluenceDiagram() );
     }
 
-    // Second pass to add the potentials and utilities into good cliques
-    for ( size_t i = 0; i < elim.size(); i++ ) {
-      // Récupération de la bonne clique
-      NodeId cliqueId = __getClique( elim, elim[i] );
-      __nodeToCliqueMap.insert( elim[i], cliqueId );
+    // ======================================================================================
+    // displayResult : displays results obtained from inference
+    // ======================================================================================
+    template <typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::displayResult( std::ostream& stream ) {
+      
+        if ( !__inferenceMade )
+            GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
 
-      // Ajout de la cpt si le noeud est un noeud chance
-
-      if ( this->getInfluenceDiagram().isChanceNode( elim[i] ) ) {
-        __cliquePropertiesMap[cliqueId]->addPotential( this->getInfluenceDiagram().cpt( elim[i] ) );
-        potentialsCliquesSet.erase( cliqueId );
-      }
+        stream << "Espérance d'utilité finale : " << std::endl << std::flush;
+        stream << *__inferenceUtility << std::endl;
+        
+        stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
+        for ( HashTableConstIterator< NodeId, Idx > utilityIter = __utakenDecisionMap.begin(); utilityIter != __utakenDecisionMap.end(); ++utilityIter )
+            stream << "Decision " << this->getInfluenceDiagram().variable( utilityIter.key() ) << " : " << this->getInfluenceDiagram().variable( utilityIter.key() ).label( *utilityIter ) << std::endl;
+        
     }
 
-    // Third pass to fill empty cliques with "one" matrices for potentials and "zero" matrices for utilities.
-    for ( NodeSetIterator potentialCliqueIter = potentialsCliquesSet.begin();
-          potentialCliqueIter != potentialsCliquesSet.end(); ++potentialCliqueIter )
-      __cliquePropertiesMap[ *potentialCliqueIter ]->addPotential( *__makeDummyPotential( *potentialCliqueIter ) );
-
-    // Fourth pass to adress utility table to the good clique
-    // We go trought all diagram's nodes in search of utility nodes
-    for ( NodeGraphPartIterator  nodesIter = this->getInfluenceDiagram().dag().beginNodes();
-          nodesIter != this->getInfluenceDiagram().dag().endNodes(); ++nodesIter ) {
-      if ( this->getInfluenceDiagram().isUtilityNode( *nodesIter ) ) {
-        // Récupération de la bonne clique
-        NodeId cliqueId = __getClique( elim, *nodesIter );
-        __cliquePropertiesMap[cliqueId]->addUtility( this->getInfluenceDiagram().utility( *nodesIter ) );
-        utilitiesCliqueSet.erase( cliqueId );
-      }
+    
+    
+  /* **************************************************************************************************** **/
+  /* **                                                                                                                                                    **/
+  /* **                                               Evidence management                                                                 **/
+  /* **                                                                                                                                                    **/
+  /* **************************************************************************************************** **/
+    
+    // ======================================================================================
+    // insertEvidence : inserts new evidence in the graph
+    // ======================================================================================
+    template<typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& evidenceList ) {
+      
+        for ( ListConstIterator<const Potential<T_DATA>*> evidenceListIter = evidenceList.begin(); evidenceListIter != evidenceList.end(); ++evidenceListIter )
+            __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( ( *evidenceListIter )->variable( 0 ) ) ] ]->addEvidence( **evidenceListIter );
+    
     }
 
-    for ( NodeSetIterator utilityCliqueIter = utilitiesCliqueSet.begin();
-          utilityCliqueIter != utilitiesCliqueSet.end(); ++utilityCliqueIter )
-      __cliquePropertiesMap[ *utilityCliqueIter ]->addUtility( *__makeDummyUtility( *utilityCliqueIter ) );
-  }
+    // ======================================================================================
+    // eraseEvidence : removes a given evidence from the graph
+    // ======================================================================================
+    template <typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::eraseEvidence( const Potential<T_DATA>* evidence ) {
+      
+        if ( not( evidence->variablesSequence().size() != 1 ) )
+            __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( evidence->variable( 0 ) ) ] ]->removeEvidence( evidence->variable( 0 ) );
+    
+    }
 
-// Makes the strong junction tree to make easier inferences
-  template<typename T_DATA>
-  void
-  DefaultInfluenceDiagramInference<T_DATA>::__makeStrongJunctionTree() {
-    UndiGraph triaGraph = __triangulation->triangulatedGraph();
-    CliqueGraph junTree = __triangulation->junctionTree();
-    const std::vector<NodeId> elim = __triangulation->eliminationOrder();
+    // ======================================================================================
+    // eraseAllEvidence : removes all evidence from the graph
+    // ======================================================================================
+    template <typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::eraseAllEvidence() {
+      
+        for ( typename Property< CliqueProperties<T_DATA>* >::onNodes::iterator nodeIter = __cliquePropertiesMap.begin(); nodeIter != __cliquePropertiesMap.end(); ++nodeIter )
+            ( *nodeIter )->removeAllEvidence();
+    
+    }
 
-    // Pour chaque clique
 
-    for ( CliqueGraph::NodeIterator cliqueIter = junTree.beginNodes(); cliqueIter != junTree.endNodes(); ++cliqueIter ) {
-      Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ *cliqueIter ]->cliqueEliminationOrder();
-      SequenceIterator<NodeId> cliqueNodesIter =  eliminationOrder.begin();
-      bool ValidIndex = false;
+    
+  /* **************************************************************************************************** **/
+  /* **                                                                                                                                                    **/
+  /* **                                                                Getters                                                                        **/
+  /* **                                                                                                                                                    **/
+  /* **************************************************************************************************** **/
+    
+    // ======================================================================================
+    // getTriangulation : returns the triangulation obtained for this influence diagram
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+    Triangulation&
+    DefaultInfluenceDiagramInference<T_DATA>::getTriangulation() {
+      
+        return *__triangulation;
+    
+    }
 
-      // On parcours chaque noeud de la clique par ordre d'élimination, ...
+    // ======================================================================================
+    // __getSeparator :: returns the set of node contains in clique1 inter clique2
+    // ======================================================================================
+    template<typename T_DATA> INLINE
+    const NodeSet&
+    DefaultInfluenceDiagramInference<T_DATA>::__getSeparator( NodeId clique_1, NodeId clique_2 ) {
 
-      while ( cliqueNodesIter != eliminationOrder.end() && !ValidIndex ) {
-        // ...pour chacun de ces noeuds on regarde ses voisins, ...
-        const NodeSet& neighbours = triaGraph.neighbours( *cliqueNodesIter );
+        return __triangulation->junctionTree().separator( clique_1, clique_2 );
 
-        for ( NodeSetIterator nodeNeighboorsIter = neighbours.begin();nodeNeighboorsIter != neighbours.end(); ++ nodeNeighboorsIter ) {
-          // ... si un de ces voisin n'appartient pas à la clique ...
-          if ( ! eliminationOrder.exists( *nodeNeighboorsIter ) && __IsValidNeighBoor( *cliqueNodesIter, *nodeNeighboorsIter ) ) {
-            SequenceIterator<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
-            ++cliqueRemainingNodesIter;
-            bool neighboorsAgreed = true;
+    }
 
-            // ... alors on regarde si les autres noeuds de la clique non observés ont ce voisin en commun ...
+    // ======================================================================================
+    // __getClique : for a given node in diagram, returns the clique id  of the first variable to disappear between node variable and its parents variables
+    // ======================================================================================
+    template<typename T_DATA>
+    NodeId
+    DefaultInfluenceDiagramInference<T_DATA>::__getClique( const std::vector<NodeId> &eliminationOrder, NodeId id ) {
 
-            while ( cliqueRemainingNodesIter != eliminationOrder.end() && neighboorsAgreed ) {
-              neighboorsAgreed = false;
-              // ... en vérifiant que ce voisin est dans leur voisinage.
-              const NodeSet& remainsNodes = triaGraph.neighbours( *cliqueRemainingNodesIter );
+      
+        //***********************************************************************************************************************************
+        // First, we create a node set with node id and parents id
+        NodeSet idSet;
+        idSet.insert( id );
 
-              for ( NodeSetIterator remainNodeNeighboorsIter = remainsNodes.begin();remainNodeNeighboorsIter != remainsNodes.end(); ++ remainNodeNeighboorsIter ) {
-                if ( *remainNodeNeighboorsIter == *nodeNeighboorsIter ) {
-                  neighboorsAgreed = true;
-                  break;
+        const NodeSet& parents = this->getInfluenceDiagram().dag().parents( id );
+
+        for ( NodeSet::const_iterator parentsIter = parents.begin(); parentsIter != parents.end(); ++parentsIter )
+            idSet.insert( *parentsIter );
+        //***********************************************************************************************************************************
+
+        //***********************************************************************************************************************************
+        // Then, we search for the first one to be eliminated in elimination order
+       for ( size_t i = 0; i < eliminationOrder.size(); ++i )
+            if ( idSet.contains( eliminationOrder[i] ) )
+                return __triangulation->createdJunctionTreeClique( eliminationOrder[i] );
+
+        GUM_ERROR( FatalError, "No clique found for node " << id );
+        //***********************************************************************************************************************************
+    
+    }
+
+    // ======================================================================================
+    // __makeCliquePropertiesMap : Builds up clique data structure for the inference
+    // ======================================================================================
+    template<typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::__makeCliquePropertiesMap() {
+      
+        const std::vector<NodeId> elim = __triangulation->eliminationOrder();
+
+        // Those two sets will contains cliques id for cliques which doesn't have a potential or a utility table at all
+        NodeSet potentialsCliquesSet, utilitiesCliqueSet;
+
+        //***********************************************************************************************************************************
+        // First pass to create the clique's table
+        for ( CliqueGraph::NodeIterator cliqueIter = __triangulation->junctionTree().beginNodes();
+                    cliqueIter != __triangulation->junctionTree().endNodes(); ++cliqueIter ) {
+          
+            __cliquePropertiesMap.insert( *cliqueIter, new CliqueProperties<T_DATA>() );
+        
+            potentialsCliquesSet.insert( *cliqueIter );
+            utilitiesCliqueSet.insert( *cliqueIter );
+
+            // Insertion in clique properties of the variables contains in the clique
+            for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique( *cliqueIter ).begin();
+                        cliqueNodesIter != __triangulation->junctionTree().clique( *cliqueIter ).end(); ++cliqueNodesIter )
+                __cliquePropertiesMap[*cliqueIter]->addVariable( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
+
+            // Creation of clique own elimination order (based on the general one)
+            __cliquePropertiesMap[*cliqueIter]->makeEliminationOrder( elim, this->getInfluenceDiagram() );
+        }
+        //***********************************************************************************************************************************
+        
+        //***********************************************************************************************************************************
+        // Second pass to add the potentials into good cliques
+        for ( size_t i = 0; i < elim.size(); i++ ) {
+          
+            // Récupération de la bonne clique
+            NodeId cliqueId = __getClique( elim, elim[i] );
+            __nodeToCliqueMap.insert( elim[i], cliqueId );
+
+            // Ajout de la cpt si le noeud est un noeud chance
+            if ( this->getInfluenceDiagram().isChanceNode( elim[i] ) ) {
+                __cliquePropertiesMap[cliqueId]->addPotential( this->getInfluenceDiagram().cpt( elim[i] ) );
+                potentialsCliquesSet.erase( cliqueId );
+            }
+        }
+        //***********************************************************************************************************************************
+
+        //***********************************************************************************************************************************
+        // Third pass to fill empty cliques with "one" matrices for potentials and "zero" matrices for utilities.
+        for ( NodeSetIterator potentialCliqueIter = potentialsCliquesSet.begin(); potentialCliqueIter != potentialsCliquesSet.end(); ++potentialCliqueIter )
+            __cliquePropertiesMap[ *potentialCliqueIter ]->addPotential( *__makeDummyPotential( *potentialCliqueIter ) );
+        //***********************************************************************************************************************************
+        
+        //***********************************************************************************************************************************
+        // Fourth pass to adress utility table to the good clique
+        // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
+        for ( NodeGraphPartIterator  nodesIter = this->getInfluenceDiagram().dag().beginNodes();
+                    nodesIter != this->getInfluenceDiagram().dag().endNodes(); ++nodesIter )          
+            if ( this->getInfluenceDiagram().isUtilityNode( *nodesIter ) ) {
+                // Récupération de la bonne clique
+                NodeId cliqueId = __getClique( elim, *nodesIter );
+                __cliquePropertiesMap[cliqueId]->addUtility( this->getInfluenceDiagram().utility( *nodesIter ) );
+                utilitiesCliqueSet.erase( cliqueId );
+            }
+        //***********************************************************************************************************************************
+
+        //***********************************************************************************************************************************
+        // Fifth pass to fill empty cliques with "zero" matrices for utilities.
+        for ( NodeSetIterator utilityCliqueIter = utilitiesCliqueSet.begin(); utilityCliqueIter != utilitiesCliqueSet.end(); ++utilityCliqueIter )
+            __cliquePropertiesMap[ *utilityCliqueIter ]->addUtility( *__makeDummyUtility( *utilityCliqueIter ) );
+        //***********************************************************************************************************************************
+    
+    }
+
+    // ======================================================================================
+    // __makeStrongJunctionTree : actually, the main interest of this function is to find the strong root from which make the recursive
+    // __collectChild call.
+    // ======================================================================================
+    template<typename T_DATA>
+    void
+    DefaultInfluenceDiagramInference<T_DATA>::__makeStrongJunctionTree() {
+
+        // Pour chaque clique
+        for ( CliqueGraph::NodeIterator cliqueIter = __triangulation->junctionTree().beginNodes(); cliqueIter != __triangulation->junctionTree().endNodes(); ++cliqueIter ) {
+          
+            Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ *cliqueIter ]->cliqueEliminationOrder();
+            SequenceIterator<NodeId> cliqueNodesIter =  eliminationOrder.begin();
+            bool validIndex = false;
+
+            // On parcours chaque noeud de la clique par ordre d'élimination, ...
+            while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
+              
+                SequenceIterator<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
+                ++ cliqueRemainingNodesIter;
+                if( cliqueRemainingNodesIter  != eliminationOrder.end() ){
+                  
+                    NodeSet suspectedNodes ( __triangulation->triangulatedGraph().neighbours( *cliqueRemainingNodesIter )  );
+                    while( cliqueRemainingNodesIter != eliminationOrder.end() && ! suspectedNodes.empty() ) {
+                        NodeSet possiblesNodes( suspectedNodes );
+                        for( NodeSetIterator possibleNodesIter = possiblesNodes.begin(); possibleNodesIter != possiblesNodes.end(); ++possibleNodesIter )
+                            if( !__triangulation->triangulatedGraph().neighbours( *cliqueRemainingNodesIter ).exists( *possibleNodesIter ) )
+                                suspectedNodes.erase( *possibleNodesIter );
+                        ++cliqueRemainingNodesIter;
+                    }
+                    
+                    if( ! suspectedNodes.empty() )
+                        for( NodeSetIterator suspectedNodesIter = suspectedNodes.begin(); suspectedNodesIter != suspectedNodes.end(); ++suspectedNodesIter )
+                            if( ! eliminationOrder.exists( *suspectedNodesIter ) && __IsEliminatedAfter( *suspectedNodesIter, *cliqueNodesIter ) ){
+                                validIndex = true;
+                                break;
+                            }
                 }
-              }
-
-              ++cliqueRemainingNodesIter;
+                
+                if( !validIndex )
+                    ++cliqueNodesIter;
             }
-
-            if ( neighboorsAgreed )
-              ValidIndex = true;
-          }
-
-          if ( ValidIndex )
-            break;
+            
+            if( validIndex ){
+                  Idx index = 1;
+                  for ( std::vector<NodeId>::const_iterator eliminationOrderIter = __triangulation->eliminationOrder().begin();                        
+                              eliminationOrderIter != __triangulation->eliminationOrder().end() && *eliminationOrderIter != *cliqueNodesIter; ++eliminationOrderIter, ++index );
+                   
+                  __cliqueEliminationMap.insert( __triangulation->eliminationOrder().size() - index, *cliqueIter );
+                    
+            } else
+                try{
+                    __cliqueEliminationMap.insert( 0, *cliqueIter );
+                } catch( Exception e){ 
+                  std::cout << std::endl << "Noyeux Joel" << std::endl;
+                  
+                }
         }
-
-        if ( !ValidIndex )
-          ++cliqueNodesIter;
-      }
-
-      // Si on a trouvé un noeud,
-      if ( ValidIndex ) {
-        // On recherche sa position dans la séquence d'élimination globale
-        size_t i = 0;
-
-        while ( i < elim.size() ) {
-          if ( *cliqueNodesIter == elim[i] ) {
-            try {
-              __cliqueEliminationMap.insert( elim.size() - i, *cliqueIter );
-            } catch ( gum::Exception e ) {
-
-            }
-
-            break;
-          }
-
-          i++;
-        }
-      } else {
-        __cliqueEliminationMap.insert( 0, *cliqueIter );
-      }
+        
     }
-  }
 
-/// Returns true if neighboor is eliminated after current node
-  template <typename T_DATA>
-  bool
-  DefaultInfluenceDiagramInference<T_DATA>::__IsValidNeighBoor( NodeId currentNode, NodeId neighboorNode ) {
-    const std::vector<NodeId> elim = __triangulation->eliminationOrder();
-    int i = 0;
+  
+  
+    // ======================================================================================
+    // __IsEliminatedAfter :   checks if  observed  node is eliminated after current node.
+    // ======================================================================================
+    template <typename T_DATA>
+    bool
+    DefaultInfluenceDiagramInference<T_DATA>::__IsEliminatedAfter( NodeId observedNode, NodeId currentNode  ) {
+        
+        for ( std::vector<NodeId>::const_iterator eliminationOrderIter = __triangulation->eliminationOrder().begin();
+                     eliminationOrderIter != __triangulation->eliminationOrder().end(); ++eliminationOrderIter ) {
+            if( *eliminationOrderIter == currentNode )
+                return true;
+            if( *eliminationOrderIter == observedNode )
+                return false;
+        }
 
-    while ( elim[i] != currentNode && elim[i] != neighboorNode )
-      i++;
+        return false;
+    }
 
-    if ( elim[i] == currentNode )
-      return true;
+  
 
-    return false;
-  }
-
-
-  template <typename T_DATA>
+    // ======================================================================================
+    // displayStrongJunctionTree : displays the junction tree obtained for this influence diagram   
+    // ======================================================================================
+    template <typename T_DATA>
   void
   DefaultInfluenceDiagramInference<T_DATA>::displayStrongJunctionTree( std::ostream &stream ) {
+    stream << std::endl << "Strong junction tree map : " << std::endl;
     for ( HashTableConstIterator< size_t, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.begin();
-          strongJunctionTreeIter != __cliqueEliminationMap.end(); ++strongJunctionTreeIter ) {
-      stream << "Clique " << __triangulation->junctionTree().clique( *strongJunctionTreeIter ) << " : " << strongJunctionTreeIter.key() << std::endl << std::flush;
-
-    }
+          strongJunctionTreeIter != __cliqueEliminationMap.end(); ++strongJunctionTreeIter )
+      stream << "Clique  : " << __triangulation->junctionTree().clique( *strongJunctionTreeIter ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
   }
 
-  template <typename T_DATA>
+  
+  
+    // ======================================================================================
+    //  __cleanUp : removes all data computed for previous inference   
+    // ======================================================================================
+    template <typename T_DATA>
   void
   DefaultInfluenceDiagramInference<T_DATA>::__cleanUp() {
     if ( __inferencePotential != 0 ) {
@@ -400,197 +481,217 @@ namespace gum {
 
     __inferenceMade = false;
   }
+  
+  
 
-  template <typename T_DATA>
+    // ======================================================================================
+    //  __collectChild : or when the parents collects message from its child     
+    // ======================================================================================
+    template <typename T_DATA>
   void
   DefaultInfluenceDiagramInference<T_DATA>::__collectChild( NodeId parent, NodeId child ) {
+    
     const NodeSet& neighbours = __triangulation->junctionTree().neighbours( child );
 
-    for ( NodeSetIterator childIterator = neighbours.begin();childIterator != neighbours.end(); ++childIterator ) {
+    for ( NodeSetIterator childIterator = neighbours.begin();childIterator != neighbours.end(); ++childIterator )
       if ( *childIterator != parent )
         __collectChild( child, *childIterator );
-    }
 
     __absorbClique( child, parent );
 
   }
 
-// Clique Absorbtion algorithm
-  template<typename T_DATA>
+    // ======================================================================================
+    //  __absorbClique : Performs a clique absorption by another one   
+    // ======================================================================================
+    template<typename T_DATA>
   void
   DefaultInfluenceDiagramInference<T_DATA>::__absorbClique( NodeId absorbedCliqueId, NodeId absorbingCliqueId ) {
-    /*std::cout << std::endl << std::endl;
-    std::cout << "Clique " << __triangulation->junctionTree().clique( absorbedCliqueId ) << " est absorbé par " << __triangulation->junctionTree().clique( absorbingCliqueId ) << std::endl;
-    std::fflush(stdout);*/
-    // Recuperation of clique properties
+    
+    // Recuperation of absorbed clique properties
     CliqueProperties<T_DATA>* absorbedClique =  __cliquePropertiesMap[ absorbedCliqueId ];
 
     // Get the nodes making the separtion between the absorbed clique and the absorbing one
     NodeSet separator = __getSeparator( absorbedCliqueId, absorbingCliqueId );
-    /*std::cout << "Separator : " << separator << std::endl;
-    std::fflush(stdout);*/
 
     Potential<T_DATA>* potentialMarginal = 0;
     UtilityTable<T_DATA>* utilityMarginal = 0;
 
-    // ==================================================================================================================
-    // To realize the absorption, we have to eliminate each variable contained in the clique wich is not on the separator
-    // ==================================================================================================================
+   // First  we reduce absorbed clique by eleminating clique variables which aren't in the separator.
+   // The aim of this operation is to obtained by marginalization a potential and a utility over the variable presents 
+   // in the separator (and only those one ). Those tables represent the "messages" sent by child
+   // clique to its parent.
     __reduceClique( absorbedClique, separator, potentialMarginal, utilityMarginal );
 
-    __cliquePropertiesMap[ absorbingCliqueId ]->addPotential( *potentialMarginal, true );
+    // Then those tables are add in parents clique property.
+      // For the potential, we just add it
+      __cliquePropertiesMap[ absorbingCliqueId ]->addPotential( *potentialMarginal, true );
 
-    Instantiation utilityMarginalInst( utilityMarginal );
+      // For  the utility table, we need first to divide it by the potential
+      Instantiation utilityMarginalInst( utilityMarginal );
+      for ( utilityMarginalInst.setFirst(); not utilityMarginalInst.end(); utilityMarginalInst.inc() ) {
+        
+        T_DATA uVal = ( T_DATA ) 0;
+        if ( potentialMarginal->get( utilityMarginalInst ) != ( T_DATA ) 0 )
+          uVal = utilityMarginal->get( utilityMarginalInst ) / potentialMarginal->get( utilityMarginalInst );
+        
+        utilityMarginal->set( utilityMarginalInst, uVal );
+      }
 
-    for ( utilityMarginalInst.setFirst(); not utilityMarginalInst.end(); utilityMarginalInst.inc() ) {
-      T_DATA uVal = ( T_DATA ) 0;
-
-      if ( potentialMarginal->get( utilityMarginalInst ) != ( T_DATA ) 0 )
-        uVal = utilityMarginal->get( utilityMarginalInst ) / potentialMarginal->get( utilityMarginalInst );
-    }
-
-    __cliquePropertiesMap[ absorbingCliqueId ]->addUtility( *utilityMarginal, true );
+      // And then we can add the utility table.
+      __cliquePropertiesMap[ absorbingCliqueId ]->addUtility( *utilityMarginal, true );
   }
-
-// Reduces a clqiue
-  template <typename T_DATA> INLINE
-  void
+    
+    // ======================================================================================
+    // __reduceClique : Performs a clique reduction  
+    // ======================================================================================
+    // This operations consists in eliminating each variable of the clique wich are not in the separtor between this clique and its parent clique.
+    // Variable elimination is done by performing the correct marging operation on clique potential. That operation is determined by the nature
+    // of currently eleminated variable : if its a chance variable, we sum over its modalities, if its a decision node we maximise over its modalities.
+    template <typename T_DATA> INLINE
+    void
   DefaultInfluenceDiagramInference<T_DATA>::__reduceClique( CliqueProperties<T_DATA>* absorbedClique, NodeSet& separator,
       Potential<T_DATA>*& potentialMarginal, UtilityTable<T_DATA>*& utilityMarginal ) {
 
     Instantiation cliqueInstance( absorbedClique->cliqueInstantiation() );
-    Sequence<const DiscreteVariable*> cliqueVarList( absorbedClique->cliqueVariables() );
+    Sequence< const DiscreteVariable * > cliqueRemainVarList( cliqueInstance.variablesSequence() );
 
+    // So for each variable of that clique ...
     for ( SequenceIterator<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().begin();
           eliminationOrderIter != absorbedClique->cliqueEliminationOrder().end(); ++eliminationOrderIter ) {
-      /*std::cout << "Node elimination : " << *eliminationOrderIter << std::endl;
-      std::fflush(stdout);*/
+      
+      // if it's not on separtor with its parent
       if ( ! separator.contains( *eliminationOrderIter ) ) {
+        
         //=================================================================================
-
-        // First we create the potentials that will result from elimination of variable
-        Potential<T_DATA>* potentialTemp = new Potential<T_DATA>();
-        UtilityTable<T_DATA>* utilityTemp = new UtilityTable<T_DATA>();
-
-        // This potential will have all none yet eliminated variable except the current one
-        const DiscreteVariable* currentVar = & ( this->getInfluenceDiagram().variable( *eliminationOrderIter ) );
-        SequenceIterator<const DiscreteVariable*> eraseVarIter = cliqueVarList.begin();
-
-        while ( eraseVarIter != cliqueVarList.end() ) {
-          if ( **eraseVarIter == *currentVar )
-            break;
-
-          ++eraseVarIter;
-        }
-
-        cliqueVarList.erase( eraseVarIter );
-
-        for ( SequenceIterator<const DiscreteVariable*> cliqueVarListIter = cliqueVarList.begin();
-              cliqueVarListIter != cliqueVarList.end(); ++cliqueVarListIter ) {
-          /*std::cout << "Ajout de var :" << **cliqueVarListIter << std::endl;
-          std::fflush(stdout);*/
-
-          potentialTemp->add( **cliqueVarListIter );
-          utilityTemp->add( **cliqueVarListIter );
-        }
-
-        // And we add an instanciation to that potential
-        Instantiation potentialInst( potentialTemp );
-
-        //=====================================================================================
-
-        // Then we fill the new potential by marginalizing the ancient one
-        for ( potentialInst.setFirst(); not potentialInst.end(); potentialInst.inc() ) {
-          T_DATA potentialValue = ( T_DATA ) 0;
-          T_DATA utilityValue = ( T_DATA ) 0;
-          cliqueInstance.chgValIn( potentialInst );
-
-          for ( cliqueInstance.setFirstOut( potentialInst ); not cliqueInstance.end(); cliqueInstance.incOut( potentialInst ) ) {
-            // Récupération de la valeur de la cpt de la clique pour cette instance
-            T_DATA currentPotential = ( T_DATA ) 1;
-
-            if ( potentialMarginal == 0 ) {
-              // If there's no ancient potential it means that we haven't yet compute him
-              for ( HashTableConstIterator<const Potential<T_DATA>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().begin();
-                    potentialIter != absorbedClique->potentialBucket().end(); ++potentialIter ) {
-                ( *potentialIter )->chgValIn( cliqueInstance );
-                currentPotential *= potentialIter.key()->get( **potentialIter );
-              }
-            } else {
-              Instantiation potentialMarginalInst( potentialMarginal );
-              potentialMarginalInst.chgValIn( cliqueInstance );
-              currentPotential = potentialMarginal->get( potentialMarginalInst );
-            }
-
-            // Récupération de la valeur d'utilité de la clique pour cette instance
-            T_DATA currentUtility = ( T_DATA ) 0;
-
-            if ( utilityMarginal == 0 ) {
-              for ( HashTableConstIterator<const UtilityTable<T_DATA>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().begin();
-                    utilityIter != absorbedClique->utilityBucket().end(); ++utilityIter ) {
-                ( *utilityIter )->chgValIn( cliqueInstance );
-                currentUtility += utilityIter.key()->get( **utilityIter );
-              }
-
-              currentUtility *= currentPotential;
-            } else {
-              Instantiation utilityMarginalInst( utilityMarginal );
-              utilityMarginalInst.chgValIn( cliqueInstance );
-              currentUtility = utilityMarginal->get( utilityMarginalInst );
-            }
-
-            // Marginalization
-            if ( this->getInfluenceDiagram().isDecisionNode( *eliminationOrderIter ) ) {
-              if ( potentialValue < currentPotential ) {
-                potentialValue = currentPotential;
-              }
-
-              if ( utilityValue < currentUtility ) {
-                utilityValue = currentUtility;
-
-                if ( __utakenDecisionMap.exists( *eliminationOrderIter ) )
-                  __utakenDecisionMap.erase( *eliminationOrderIter );
-
-                __utakenDecisionMap.insert( *eliminationOrderIter,
-                                            cliqueInstance.val( this->getInfluenceDiagram().variable( *eliminationOrderIter ) ) );
-              }
-            } else {
-              potentialValue += currentPotential;
-              utilityValue += currentUtility;
-            }
-
+        // Initialisation Operations
+        
+          // First we create the tables that will result from variable elimination
+          Potential<T_DATA>* newPotential = new Potential<T_DATA>();
+          UtilityTable<T_DATA>* newUtility = new UtilityTable<T_DATA>();
+          
+          // Then we need to add all not yet eliminated variables of the clique in ours new table
+         cliqueRemainVarList .erase( &( this->getInfluenceDiagram().variable( *eliminationOrderIter ) ) );
+         for ( SequenceIterator<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
+                cliqueVarListIter != cliqueRemainVarList.end(); ++cliqueVarListIter ) {
+            newPotential->add( **cliqueVarListIter );
+            newUtility->add( **cliqueVarListIter );
           }
 
-          potentialTemp->set( potentialInst, potentialValue );
+          // And finally, before doing marginalizing operations,
+          // we add an instanciation to those tables to ease marginalizing operations.
+          // Note that we only need one tablel instance because the other one 's got 
+          // exactly sames variables
+          Instantiation newInstantiation( newPotential );
 
-          utilityTemp->set( potentialInst, utilityValue );
+        //=====================================================================================
+        // Marginalization
+          
+          // Then we fill the new potentials over all their values by marginalizing the previous one
+          for ( newInstantiation.setFirst(); not newInstantiation.end(); newInstantiation.inc() ) {
+            
+            // Various initialization
+            T_DATA potentialValue = ( T_DATA ) 0;
+            T_DATA utilityValue = ( T_DATA ) 0;
+             if ( this->getInfluenceDiagram().isDecisionNode( *eliminationOrderIter ) )
+                utilityValue = -1 * ( std::numeric_limits< T_DATA>::max() );
+            
+             // Then we compute value for current newInstanciation
+            cliqueInstance.chgValIn( newInstantiation );
+            for ( cliqueInstance.setFirstOut( newInstantiation ); not cliqueInstance.end(); cliqueInstance.incOut( newInstantiation ) ) {
+              
+              //********************************************************************************************************
+              // Récupération de la valeur de la cpt de la clique pour cette instance
+              T_DATA currentPotential = ( T_DATA ) 1;
+
+              if ( potentialMarginal == 0 ) {
+                // If there's no ancient potential it means that we haven't yet compute him
+                for ( HashTableConstIterator<const Potential<T_DATA>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().begin();
+                      potentialIter != absorbedClique->potentialBucket().end(); ++potentialIter ) {
+                  ( *potentialIter )->chgValIn( cliqueInstance );
+                  currentPotential *= potentialIter.key()->get( **potentialIter );
+                }
+              } else {
+                Instantiation potentialMarginalInst( potentialMarginal );
+                potentialMarginalInst.chgValIn( cliqueInstance );
+                currentPotential = potentialMarginal->get( potentialMarginalInst );
+              }
+              //********************************************************************************************************
+              
+
+              //********************************************************************************************************
+              // Récupération de la valeur d'utilité de la clique pour cette instance
+              T_DATA currentUtility = ( T_DATA ) 0;
+
+              if ( utilityMarginal == 0 ) {
+                for ( HashTableConstIterator<const UtilityTable<T_DATA>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().begin();
+                      utilityIter != absorbedClique->utilityBucket().end(); ++utilityIter ) {
+                  ( *utilityIter )->chgValIn( cliqueInstance );
+                  currentUtility += utilityIter.key()->get( **utilityIter );
+                }
+
+                currentUtility *= currentPotential;
+              } else {
+                Instantiation utilityMarginalInst( utilityMarginal );
+                utilityMarginalInst.chgValIn( cliqueInstance );
+                currentUtility = utilityMarginal->get( utilityMarginalInst );
+              }
+              //********************************************************************************************************
+              
+              //********************************************************************************************************
+              // Marginalization
+              if ( this->getInfluenceDiagram().isDecisionNode( *eliminationOrderIter ) ) {
+                if ( potentialValue < currentPotential ) {
+                  potentialValue = currentPotential;
+                }
+
+                if ( utilityValue < currentUtility ) {
+                  utilityValue = currentUtility;
+
+                  if ( __utakenDecisionMap.exists( *eliminationOrderIter ) )
+                    __utakenDecisionMap.erase( *eliminationOrderIter );
+
+                  __utakenDecisionMap.insert( *eliminationOrderIter,
+                                              cliqueInstance.val( this->getInfluenceDiagram().variable( *eliminationOrderIter ) ) );
+                }
+              } else {
+                potentialValue += currentPotential;
+                utilityValue += currentUtility;
+              }
+              //********************************************************************************************************
+            }
+
+            // And finally we update  the potentials with computed value for newInstanciation
+            newPotential->set( newInstantiation, potentialValue );
+            newUtility->set( newInstantiation, utilityValue );
+          }
+
+          //=====================================================================================
+          // Updates of tables
+          if ( potentialMarginal != 0 )
+            delete potentialMarginal;
+          potentialMarginal = newPotential;
+
+          if ( utilityMarginal != 0 )
+            delete utilityMarginal;
+          utilityMarginal = newUtility;
+
+          //=====================================================================================
+          // Then we removed variable from clique list of variable  ...
+          cliqueInstance.erase( this->getInfluenceDiagram().variable( *eliminationOrderIter ) );
         }
-
-        cliqueInstance.erase( this->getInfluenceDiagram().variable( *eliminationOrderIter ) );
-
-        /*std::cout << "Potential : " << *potentialTemp << std::endl;
-        std::fflush(stdout);
-        std::cout << "Utility : " << *utilityTemp << std::endl;
-        std::fflush(stdout);*/
-
-        if ( potentialMarginal != 0 )
-          delete potentialMarginal;
-
-        potentialMarginal = potentialTemp;
-
-        if ( utilityMarginal != 0 )
-          delete utilityMarginal;
-
-        utilityMarginal = utilityTemp;
-      }
     }
   }
 
-// @param cliqueId The clique for which the dummy bucket is made.
-// @return A pointer over the dummy bucket.
-  template <typename T_DATA> INLINE
+  
+  
+    // ======================================================================================
+    //  __makeDummyPotential : creates a generic potential   
+    // ======================================================================================
+    template <typename T_DATA> INLINE
   Potential<T_DATA>*
   DefaultInfluenceDiagramInference<T_DATA>::__makeDummyPotential( NodeId cliqueId ) {
+    
     Potential<T_DATA>* pot = new Potential<T_DATA> ( new MultiDimSparse<T_DATA> (( T_DATA ) 1 ) );
     __potentialDummies.insert( pot );
 
@@ -598,12 +699,14 @@ namespace gum {
           cliqueNodesIter != __triangulation->junctionTree().clique( cliqueId ).end(); ++cliqueNodesIter )
       pot->add( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
 
+    pot->normalize();
     return pot;
   }
 
-// @param cliqueId The clique for which the dummy bucket is made.
-// @return A pointer over the dummy bucket.
-  template <typename T_DATA> INLINE
+    // ======================================================================================
+    //  __makeDummyUtility : creates a generic utility   
+    // ======================================================================================
+    template <typename T_DATA> INLINE
   UtilityTable<T_DATA>*
   DefaultInfluenceDiagramInference<T_DATA>::__makeDummyUtility( NodeId cliqueId ) {
     UtilityTable<T_DATA>* ut = new UtilityTable<T_DATA> ( new MultiDimSparse<T_DATA> (( T_DATA ) 0 ) );
@@ -616,19 +719,26 @@ namespace gum {
     return ut;
   }
 
-// ============================================================================
-//                                CLIQUEPROP
-// ============================================================================
+  
+  
+// =================================================================================== //
+//                                                                                                                                                                                                                 //
+//                                                                               CLIQUEPROPERTIES  Methods                                                                                     //
+//                                                                                                                                                                                                                 //
+// =================================================================================== //
 
-// Default constructor.
-// @param id the id of this clique on which this properties holds.
-  template <typename T_DATA>
+    // ======================================================================================
+    // Default constructor   
+    // ======================================================================================
+    template <typename T_DATA>
   CliqueProperties<T_DATA>::CliqueProperties() {
     GUM_CONSTRUCTOR( CliqueProperties );
   }
 
-// Destructor.
-  template <typename T_DATA>
+    // ======================================================================================
+    // Default destructor    
+    // ======================================================================================
+    template <typename T_DATA>
   CliqueProperties<T_DATA>::~CliqueProperties() {
     GUM_DESTRUCTOR( CliqueProperties );
 
@@ -637,17 +747,20 @@ namespace gum {
     removeAllEvidence();
 
     for ( HashTableIterator<const Potential<T_DATA>*, Instantiation*> potentialIter = __potentialBucket.begin();
-          potentialIter != __potentialBucket.end(); ++potentialIter )
-      delete *potentialIter;
+        potentialIter != __potentialBucket.end(); ++potentialIter )
+    delete *potentialIter;
 
     for ( HashTableIterator<const UtilityTable<T_DATA>*, Instantiation*> utilityIter = __utilityBucket.begin();
-          utilityIter != __utilityBucket.end(); ++utilityIter )
-      delete *utilityIter;
+        utilityIter != __utilityBucket.end(); ++utilityIter )
+    delete *utilityIter;
   }
+  
+  
 
-// Add a variable to this clique
-// @param v The added variable.
-  template <typename T_DATA>
+    // ======================================================================================
+    // addVariable : adds a variable to the clique  
+    // ======================================================================================
+    template <typename T_DATA>
   void
   CliqueProperties<T_DATA>::addVariable( const DiscreteVariable& v ) {
     try {
@@ -656,18 +769,31 @@ namespace gum {
       // Nothing to do then!
     }
   }
-
-  template <typename T_DATA>
-  void
-  CliqueProperties<T_DATA>::makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<T_DATA>& infDiag ) {
-    for ( size_t i = 0; i < elim.size(); i++ ) {
-      if ( __allVarsInst.contains( infDiag.variable( elim[i] ) ) )
-        __eliminationOrder.insert( elim[i] );
-    }
+  
+    // ======================================================================================
+    // cliqueVariables : returns List containing all variables contained in this clique   
+    // ======================================================================================
+    // @return returns List containing all variables contained in this clique
+  template <typename T_DATA> INLINE
+  const Sequence< const DiscreteVariable*>&
+  CliqueProperties<T_DATA>::cliqueVariables() {
+    return __allVarsInst.variablesSequence();
   }
 
-// Add a Potential to this clique
-// @param cpt The added CPT.
+    // ======================================================================================
+    // cliqueInstantiation : returns instanciation on variable within this clique  
+    // ======================================================================================
+    // @return returns instanciation on variable within this clique
+  template <typename T_DATA> INLINE
+  Instantiation&
+  CliqueProperties<T_DATA>::cliqueInstantiation() {
+    return __allVarsInst;
+  }
+
+    // ======================================================================================
+    // addPotential : adds a potential to this clique  
+    // ======================================================================================
+    // The removable boolean inidcates if this potential can be cleaned off after an inference or not
   template <typename T_DATA>
   void
   CliqueProperties<T_DATA>::addPotential( const Potential<T_DATA>& cpt, bool removable ) {
@@ -677,73 +803,138 @@ namespace gum {
 
     for ( Sequence< const DiscreteVariable * >::iterator iter = cpt.begin(); iter != cpt.end(); ++iter ) {
       if ( removable && !__allVarsInst.contains( **iter ) )
-        __removableVarList.insert( *iter );
+          try{
+            __removableVarList.insert( *iter );
+          } catch ( DuplicateElement& e ) {
+            // Nothing to do then!
+          }
 
       addVariable( **iter );
     }
   }
+  
+    // ======================================================================================
+    // potentialBucket : Returns the potential bucket of this Clique  
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+  const HashTable<const Potential<T_DATA>*, Instantiation* >&
+  CliqueProperties<T_DATA>::potentialBucket() {
+    return __potentialBucket;
+  }
+  
 
-// Add a Potential to this clique
-// @param cpt The added CPT.
+    // ======================================================================================
+    // addUtility : adds a utility table to this clique  
+    // ======================================================================================
+    // The removable boolean inidcates if this utilityTable can be cleaned off after an inference or not
   template <typename T_DATA>
   void
   CliqueProperties<T_DATA>::addUtility( const UtilityTable<T_DATA>& ut, bool removable ) {
-    try {
       __utilityBucket.insert( &ut, new Instantiation( ut ) );
 
       if ( removable ) __removableUtilityList.insert( &ut );
 
       for ( Sequence< const DiscreteVariable * >::iterator iter = ut.begin(); iter != ut.end(); ++iter ) {
         if ( removable && !__allVarsInst.contains( **iter ) )
-          __removableVarList.insert( *iter );
+          try{
+            __removableVarList.insert( *iter );
+          } catch ( DuplicateElement& e ) {
+            // Nothing to do then!
+          }
 
         addVariable( **iter );
       }
-    } catch ( DuplicateElement& e ) {
-      // Nothing to do then!
-    }
   }
 
-// Cleans the clique after an inference
+    // ======================================================================================
+    //  utilityBucket : Returns the utiluty table bucket of this Clique  
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+  const HashTable<const UtilityTable<T_DATA>*, Instantiation* >&
+  CliqueProperties<T_DATA>::utilityBucket() {
+    return __utilityBucket;
+  }
+  
+  
+    // ======================================================================================
+    // cleanFromInference : performs a cleaning of the clique after an inference  
+    // ======================================================================================
+    // This is done by removing the "message" given by a child clique to its parents, meaning the potentials and utility tables obtained by
+  // variable elemination in the clique.
   template <typename T_DATA>
   void
   CliqueProperties<T_DATA>::cleanFromInference() {
+    
+    // Removed added variables during inference (normally, the __removableVarList is empty, but we never know )
     for ( ListIterator<const DiscreteVariable*> removedVarIter =  __removableVarList.begin(); removedVarIter !=  __removableVarList.end(); ++removedVarIter ) {
       __allVarsInst.erase( **removedVarIter );
       __removableVarList.erase( removedVarIter );
     }
 
+    // Removed added potentials during inference
     for ( ListIterator<const Potential<T_DATA>* > removedPotIter =  __removablePotentialList.begin();
           removedPotIter !=  __removablePotentialList.end(); ++removedPotIter ) {
       delete __potentialBucket[ *removedPotIter ];
       __potentialBucket.erase( *removedPotIter );
       delete *removedPotIter;
-      __removablePotentialList.erase( removedPotIter );
     }
+    __removablePotentialList.clear();
 
+    // Removed added utility tables during inference
     for ( ListIterator<const UtilityTable<T_DATA>* > removedUtIter =  __removableUtilityList.begin();
           removedUtIter !=  __removableUtilityList.end(); ++removedUtIter ) {
       delete __utilityBucket[ *removedUtIter ];
       __utilityBucket.erase( *removedUtIter );
       delete *removedUtIter;
-      __removableUtilityList.erase( removedUtIter );
     }
+    __removableUtilityList.clear();
   }
 
 
-// Add an evidence on a variable in this clique.
-// @throw NotFound Raised if the evidence is on a variable not present
-//                 in this clique.
+  
+    // ======================================================================================
+    // makeEliminationOrder : creates an elimination order in the clique compatible with global elimination order   
+    // ======================================================================================
+    // The global elimination order is given by elim.
+  template <typename T_DATA>
+  void
+  CliqueProperties<T_DATA>::makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<T_DATA>& infDiag ) {
+    for ( size_t i = 0; i < elim.size(); i++ ) {
+      if ( __allVarsInst.contains( infDiag.variable( elim[i] ) ) )
+        __eliminationOrder.insert( elim[i] );
+    }
+  }
+  
+    // ======================================================================================
+    // cliqueEliminationOrder : returns the elimination sequence for this clique  
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+  const Sequence<NodeId>&
+  CliqueProperties<T_DATA>::cliqueEliminationOrder() {
+    return __eliminationOrder;
+  }
+
+  
+
+    // ======================================================================================
+    // addEvidence : add evidence over one variable present in the clique   
+    // ======================================================================================
+    // @throw OperationNotAllowed if evidence has more than one variable. 
+  // @throw NotFound Raised if the evidence is on a variable not present in this clique.
+  // @throw DuplicateElement, if another evidence over this variable exists for this clique
   template <typename T_DATA>
   void
   CliqueProperties<T_DATA>::addEvidence( const Potential<T_DATA>& evidence ) {
+    
     // To avoid interference
     cleanFromInference();
 
+    // First, we check if evidence is over only one variable.
     if ( evidence.variablesSequence().size() != 1 ) {
       GUM_ERROR( OperationNotAllowed, "expected evidence on 1 variable, found on " << evidence.variablesSequence().size() );
     }
 
+    // Then we assure us that that variable is in the clique
     if ( ! __allVarsInst.contains( evidence.variablesSequence().atPos( 0 ) ) ) {
       GUM_ERROR( NotFound, evidence.variablesSequence().atPos( 0 )->name() << " not found in clique " );
     }
@@ -753,8 +944,19 @@ namespace gum {
     __potentialBucket.insert( &evidence, new Instantiation( evidence ) );
   }
 
-// Removes all the evidences containing v
-  template <typename T_DATA> INLINE
+    // ======================================================================================
+    // evidences : Returns the mapping of evidences on variables in this clique   
+    // ======================================================================================
+    template <typename T_DATA> INLINE
+  const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >&
+  CliqueProperties<T_DATA>::evidences() const {
+    return __evidences;
+  }
+
+    // ======================================================================================
+    // removeEvidence : Removes the evidence over v    
+    // ======================================================================================
+    template <typename T_DATA> INLINE
   void
   CliqueProperties<T_DATA>::removeEvidence( const DiscreteVariable& v ) {
     const Potential<T_DATA>* evi = __evidences[ &v ];
@@ -764,58 +966,20 @@ namespace gum {
     __evidences.erase( &v );
   }
 
-// Remove all the evidences
-  template <typename T_DATA> INLINE
+    // ======================================================================================
+    // removeAllEvidence : Removes all the evidences   
+    // ======================================================================================
+    template <typename T_DATA> INLINE
   void
   CliqueProperties<T_DATA>::removeAllEvidence() {
     for ( HashTableIterator< const DiscreteVariable*, const Potential<T_DATA>*  > evidencesIter = __evidences.begin();
-          evidencesIter != __evidences.end(); ++evidencesIter )
+          evidencesIter != __evidences.end(); )
       removeEvidence( * ( evidencesIter.key() ) );
 
     __evidences.clear();
   }
-
-// @return Returns the mapping of evidences on the variables in this clique.
-  template <typename T_DATA> INLINE
-  const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >&
-  CliqueProperties<T_DATA>::evidences() const {
-    return __evidences;
-  }
-
-// @return Returns the bucket of this Clique
-  template <typename T_DATA> INLINE
-  const HashTable<const Potential<T_DATA>*, Instantiation* >&
-  CliqueProperties<T_DATA>::potentialBucket() {
-    return __potentialBucket;
-  }
-
-// @return Returns the bucket of this Clique
-  template <typename T_DATA> INLINE
-  const HashTable<const UtilityTable<T_DATA>*, Instantiation* >&
-  CliqueProperties<T_DATA>::utilityBucket() {
-    return __utilityBucket;
-  }
-
-// @return returns the elimination sequence for this clique
-  template <typename T_DATA> INLINE
-  const Sequence<NodeId>&
-  CliqueProperties<T_DATA>::cliqueEliminationOrder() {
-    return __eliminationOrder;
-  }
-
-// @return returns List containing all variables contained in this clique
-  template <typename T_DATA> INLINE
-  const Sequence< const DiscreteVariable*>&
-  CliqueProperties<T_DATA>::cliqueVariables() {
-    return __allVarsInst.variablesSequence();
-  }
-
-// @return returns instanciation on variable within this clique
-  template <typename T_DATA> INLINE
-  Instantiation&
-  CliqueProperties<T_DATA>::cliqueInstantiation() {
-    return __allVarsInst;
-  }
+  
+  
 
 // ============================================================================
 } /* namespace gum */
