@@ -199,18 +199,18 @@ def addTick(self,*args):
 def availableBNExts():
   return "bif|dsl|net|bifxml"
 
-def loadBN(s):
+def loadBN(s,listeners=None):
   bn=BayesNet()
 
   extension=s.split('.')[-1].upper()
   if extension=="BIF":
-    bn.loadBIF(s)
+    bn.loadBIF(s,listeners)
   elif extension=="BIFXML":
-    bn.loadBIFXML(s)
+    bn.loadBIFXML(s,listeners)
   elif extension=="DSL":
-    bn.loadDSL(s)
+    bn.loadDSL(s,listeners)
   elif extension=="NET":
-    bn.loadNET(s)
+    bn.loadNET(s,listeners)
   else:
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
