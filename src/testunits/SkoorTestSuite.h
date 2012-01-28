@@ -94,8 +94,8 @@ class SkoorTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( si->warnings(), 0 );
       
       // Observe correctly
-      const Instance& c1 = si->prm()->getSystem("systems.MyKickAssSystem").get("c1");
-      const Instance& c2 = si->prm()->getSystem("systems.MyKickAssSystem").get("c2");
+      const Instance& c1 = si->prm()->system("systems.MyKickAssSystem").get("c1");
+      const Instance& c2 = si->prm()->system("systems.MyKickAssSystem").get("c2");
       
       TS_ASSERT(   si->inference()->hasEvidence( PRMInference::Chain(&c1, &c1.get("can_print"))) );
       TS_ASSERT(   si->inference()->hasEvidence( PRMInference::Chain(&c2, &c2.get("equipState"))) );
@@ -129,8 +129,8 @@ class SkoorTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( si->warnings(), 0 );
       
       // Unobserve correctly
-      const Instance& c1 = si->prm()->getSystem("systems.MyKickAssSystem").get("c1");
-      const Instance& c2 = si->prm()->getSystem("systems.MyKickAssSystem").get("c2");
+      const Instance& c1 = si->prm()->system("systems.MyKickAssSystem").get("c1");
+      const Instance& c2 = si->prm()->system("systems.MyKickAssSystem").get("c2");
       
       TS_ASSERT( ! si->inference()->hasEvidence( PRMInference::Chain(&c1, &c1.get("can_print"))) );
       TS_ASSERT( ! si->inference()->hasEvidence( PRMInference::Chain(&c2, &c2.get("equipState"))) );
@@ -151,8 +151,8 @@ class SkoorTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( si->errors(), 0 );
       TS_ASSERT_EQUALS( si->warnings(), 0 );
       
-      const Instance& c1 = si->prm()->getSystem("systems.MyKickAssSystem").get("c1");
-      const Instance& c2 = si->prm()->getSystem("systems.MyKickAssSystem").get("c2");
+      const Instance& c1 = si->prm()->system("systems.MyKickAssSystem").get("c1");
+      const Instance& c2 = si->prm()->system("systems.MyKickAssSystem").get("c2");
       
       TS_ASSERT( ! si->inference()->hasEvidence( PRMInference::Chain(&c1, &c1.get("can_print"))) );
       TS_ASSERT(   si->inference()->hasEvidence( PRMInference::Chain(&c2, &c2.get("equipState"))) );

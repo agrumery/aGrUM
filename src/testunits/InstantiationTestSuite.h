@@ -170,7 +170,7 @@ namespace gum {
 
           Instantiation Order;
 
-          for ( gum::Sequence<gum::NodeId>::iterator it = bn->getTopologicalOrder().begin();it !=bn->getTopologicalOrder().end();++it )
+          for ( gum::Sequence<gum::NodeId>::iterator it = bn->topologicalOrder().begin();it !=bn->topologicalOrder().end();++it )
             Order.add( bn->variable( *it ) );
 
 

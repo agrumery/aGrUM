@@ -94,7 +94,7 @@ namespace gum {
         TS_ASSERT_THROWS( queue1.insert (10, "AAA"), gum::DuplicateElement );
 
         const gum::HashTable< std::string,std::vector<gum::Size> >&
-          vals = queue1.getAllValues();
+          vals = queue1.allValues();
         TS_ASSERT ( vals.size () == 4 );
       }
 
@@ -207,7 +207,7 @@ namespace gum {
         TS_ASSERT_THROWS( queue1.insert (10, set1), gum::DuplicateElement );
 
         const gum::HashTable< gum::Set<int>,std::vector<gum::Size> >&
-          vals = queue1.getAllValues();
+          vals = queue1.allValues();
         TS_ASSERT ( vals.size () == 4 );
 
         queue1.clear ();

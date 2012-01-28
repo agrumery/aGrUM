@@ -36,7 +36,7 @@
   MultiDimImplementation<T_DATA>*                                     \
   NAME ( const MultiDimDecorator<T_DATA>& table,                      \
          const Set<const DiscreteVariable *>& del_vars ) {            \
-    const MultiDimImplementation<T_DATA>* impl = table.getContent (); \
+    const MultiDimImplementation<T_DATA>* impl = table.content (); \
     return NAME ( *impl, del_vars );                                  \
   }
 

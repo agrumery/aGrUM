@@ -47,11 +47,11 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
       TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
       PRM* prm = reader.prm();
-      TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
-      TS_ASSERT_EQUALS(prm->getType("t_degraded").variable().domainSize(), (gum::Size)3);
-      TS_ASSERT_EQUALS(prm->getType("t_bw_p").variable().domainSize(), (gum::Size)4);
-      TS_ASSERT_EQUALS(prm->getType("t_color_p").variable().domainSize(), (gum::Size)5);
+      TS_ASSERT_EQUALS(prm->type("t_state").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->type("t_ink").variable().domainSize(), (gum::Size)2);
+      TS_ASSERT_EQUALS(prm->type("t_degraded").variable().domainSize(), (gum::Size)3);
+      TS_ASSERT_EQUALS(prm->type("t_bw_p").variable().domainSize(), (gum::Size)4);
+      TS_ASSERT_EQUALS(prm->type("t_color_p").variable().domainSize(), (gum::Size)5);
       delete prm;
     }
 
@@ -59,25 +59,25 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/types.skool"));
       PRM* prm = reader.prm();
-      TS_ASSERT(prm->getType("t_state").isSubType());
-      TS_ASSERT(prm->getType("t_state").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_ink").isSubType());
-      TS_ASSERT(prm->getType("t_ink").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_ink").isSubTypeOf(prm->getType("t_state")));
-      TS_ASSERT(prm->getType("t_paper").isSubType());
-      TS_ASSERT(prm->getType("t_paper").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_paper").isSubTypeOf(prm->getType("t_state")));
-      TS_ASSERT(prm->getType("t_degraded").isSubType());
-      TS_ASSERT(prm->getType("t_degraded").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_degraded").isSubTypeOf(prm->getType("t_state")));
-      TS_ASSERT(prm->getType("t_bw_p").isSubType());
-      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("t_state")));
-      TS_ASSERT(prm->getType("t_bw_p").isSubTypeOf(prm->getType("t_degraded")));
-      TS_ASSERT(prm->getType("t_color_p").isSubType());
-      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("boolean")));
-      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("t_state")));
-      TS_ASSERT(prm->getType("t_color_p").isSubTypeOf(prm->getType("t_degraded")));
+      TS_ASSERT(prm->type("t_state").isSubType());
+      TS_ASSERT(prm->type("t_state").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_ink").isSubType());
+      TS_ASSERT(prm->type("t_ink").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_ink").isSubTypeOf(prm->type("t_state")));
+      TS_ASSERT(prm->type("t_paper").isSubType());
+      TS_ASSERT(prm->type("t_paper").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_paper").isSubTypeOf(prm->type("t_state")));
+      TS_ASSERT(prm->type("t_degraded").isSubType());
+      TS_ASSERT(prm->type("t_degraded").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_degraded").isSubTypeOf(prm->type("t_state")));
+      TS_ASSERT(prm->type("t_bw_p").isSubType());
+      TS_ASSERT(prm->type("t_bw_p").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_bw_p").isSubTypeOf(prm->type("t_state")));
+      TS_ASSERT(prm->type("t_bw_p").isSubTypeOf(prm->type("t_degraded")));
+      TS_ASSERT(prm->type("t_color_p").isSubType());
+      TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("boolean")));
+      TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("t_state")));
+      TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("t_degraded")));
       TS_ASSERT_EQUALS(prm->types().size(), (gum::Size)7);
       delete prm;
     }
@@ -177,8 +177,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("ColorPrinter"));
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
       TS_ASSERT_EQUALS(prm->interfaces().size(), (gum::Size)2);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Equipment"));
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Printer"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->interface("Equipment"));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->interface("Printer"));
       delete prm;
     }
 
@@ -194,8 +194,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       Class& ColorPrinter = prm->getClass("ColorPrinter");
       Class& Computer = prm->getClass("Computer");
       // Interfaces
-      Interface& Equipment = prm->getInterface("Equipment");
-      Interface& Printer = prm->getInterface("Printer");
+      Interface& Equipment = prm->interface("Equipment");
+      Interface& Printer = prm->interface("Printer");
       // Testing PowerSupply
       TS_ASSERT(PowerSupply.isSubTypeOf(PowerSupply));
       TS_ASSERT(not PowerSupply.isSubTypeOf(Room));
@@ -267,8 +267,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       Class& ColorPrinter = prm->getClass("ColorPrinter");
       Class& Computer = prm->getClass("Computer");
       // Interfaces
-      Interface& Equipment = prm->getInterface("Equipment");
-      Interface& Printer = prm->getInterface("Printer");
+      Interface& Equipment = prm->interface("Equipment");
+      Interface& Printer = prm->interface("Printer");
       // Testing PowerSupply
       TS_ASSERT(PowerSupply.isSuperTypeOf(PowerSupply));
       TS_ASSERT(not PowerSupply.isSuperTypeOf(Room));
@@ -382,7 +382,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      Interface& Equipment = prm->getInterface("Equipment");
+      Interface& Equipment = prm->interface("Equipment");
       TS_ASSERT_EQUALS(Equipment.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(Equipment.attributes().size(), (gum::Size)3);
       TS_GUM_ASSERT_THROWS_NOTHING(Equipment["equipState"]);
@@ -420,8 +420,8 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       SkoolReader reader;
       TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/skool/complexprinters.skool"));
       PRM* prm = reader.prm();
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("Printer"));
-      Interface& Printer = prm->getInterface("Printer");
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->interface("Printer"));
+      Interface& Printer = prm->interface("Printer");
       TS_ASSERT_EQUALS(Printer.referenceSlots().size(), (gum::Size)1);
       TS_ASSERT_EQUALS(Printer.attributes().size(), (gum::Size)5);
       TS_GUM_ASSERT_THROWS_NOTHING(Printer["room"]);
@@ -789,7 +789,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       System* sys = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->system("aSys")));
       Class& power = prm->getClass("PowerSupply");
       Class& room = prm->getClass("Room");
       Class& BWPrinter = prm->getClass("BWPrinter");
@@ -830,7 +830,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       System* sys = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->system("aSys")));
       Class& param_class = prm->getClass("ParamClass");
       Instance& param = sys->get("param");
       std::string attr = "(boolean)aBoolParam";
@@ -890,7 +890,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
       PRM* prm = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       System* sys = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->system("aSys")));
       for (System::iterator iter = sys->begin(); iter != sys->end(); ++iter) {
         for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
           Instantiation i((**jter).cpf()), var;
@@ -919,7 +919,7 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     //   plop += prm->interfaces().size();
     //   TS_ASSERT_EQUALS(plop, (Size) 8);
     //   System* sys = 0;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("systems.MyKickAssSystem")));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->system("systems.MyKickAssSystem")));
     //   TS_ASSERT_EQUALS(sys->size(), (Size) 13);
     //   if (prm)
     //     delete prm;
@@ -951,11 +951,11 @@ class SkoolTestSuite: public CxxTest::TestSuite {
     //  SkoolReader reader;
     //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
     //  PRM* prm = reader.prm();
-    //  TS_ASSERT_EQUALS(prm->getType("t_state").variable().domainSize(), (gum::Size)2);
-    //  TS_ASSERT_EQUALS(prm->getType("t_ink").variable().domainSize(), (gum::Size)2);
-    //  TS_ASSERT_EQUALS(prm->getType("t_degraded").variable().domainSize(), (gum::Size)3);
-    //  TS_ASSERT_EQUALS(prm->getType("t_bw_p").variable().domainSize(), (gum::Size)4);
-    //  TS_ASSERT_EQUALS(prm->getType("t_color_p").variable().domainSize(), (gum::Size)5);
+    //  TS_ASSERT_EQUALS(prm->type("t_state").variable().domainSize(), (gum::Size)2);
+    //  TS_ASSERT_EQUALS(prm->type("t_ink").variable().domainSize(), (gum::Size)2);
+    //  TS_ASSERT_EQUALS(prm->type("t_degraded").variable().domainSize(), (gum::Size)3);
+    //  TS_ASSERT_EQUALS(prm->type("t_bw_p").variable().domainSize(), (gum::Size)4);
+    //  TS_ASSERT_EQUALS(prm->type("t_color_p").variable().domainSize(), (gum::Size)5);
     //  delete prm;
     //}
 

@@ -73,7 +73,7 @@ namespace gum {
         TS_ASSERT ( ! res.isAbstract () );
         TS_ASSERT ( ! real_myproj2.result().isAbstract () );
         Potential<float>* res2 = proj ( pot1, del_vars, 0 );
-        TS_ASSERT ( *(res2->getContent()) == res.multiDim () );
+        TS_ASSERT ( *(res2->content()) == res.multiDim () );
                
         delete res2;
         delete &(res.multiDim());

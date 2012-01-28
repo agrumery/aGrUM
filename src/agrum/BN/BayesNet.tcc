@@ -386,7 +386,7 @@ namespace gum {
 
   template<typename T_DATA>
   const Sequence<NodeId>&
-  BayesNet<T_DATA>::getTopologicalOrder ( bool clear ) const {
+  BayesNet<T_DATA>::topologicalOrder ( bool clear ) const {
     if ( clear or ( __topologicalOrder->empty() ) ) {
       __topologicalOrder->clear();
       AbstractBayesNet<T_DATA>::_topologicalOrder ( *__topologicalOrder );

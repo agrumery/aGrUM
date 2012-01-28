@@ -51,14 +51,14 @@ namespace tests {
           SkoolReader reader;
           reader.readFile("../../../src/testunits/ressources/skool/inference.skool");
           prm = reader.prm();
-          sys = &(prm->getSystem("aSys"));
+          sys = &(prm->system("aSys"));
           prm_inf = new SVE(*prm, *sys);
         }
         {
           SkoolReader reader;
           reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool");
           small = reader.prm();
-          small_sys = &(small->getSystem("smallSys"));
+          small_sys = &(small->system("smallSys"));
           small_inf = new SVE(*small, *small_sys);
         }
         // std::cerr << std::endl;

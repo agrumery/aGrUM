@@ -79,7 +79,7 @@ namespace gum {
             id.insertArc( idList[3], idList[10] );
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -151,7 +151,7 @@ namespace gum {
               u2.fillWith( v );
             }
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -548,7 +548,7 @@ namespace gum {
           fill( id, idList );
 
           gum::Sequence<gum::NodeId> topoOrder;
-          TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = id.getTopologicalOrder() );
+          TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = id.topologicalOrder() );
 
           TS_ASSERT_EQUALS( topoOrder.size(), ( gum::Size ) 11 );
         }

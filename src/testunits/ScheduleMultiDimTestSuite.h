@@ -77,18 +77,18 @@ namespace gum {
 
         std::string s5 = f5.toString();
         std::stringstream s6;
-        s6 << "<" << pot.getContent() << ">";
+        s6 << "<" << pot.content() << ">";
         TS_ASSERT ( s6.str() == s5 );
 
         gum::Potential<float> pot2;
         pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
         f4.setMultiDim ( pot2 );
         gum::ScheduleMultiDim<float> f6 ( f4 );
-        TS_ASSERT ( f5.multiDim() == *pot2.getContent() );
-        TS_ASSERT_THROWS ( f3.setMultiDim ( *pot2.getContent() ),
+        TS_ASSERT ( f5.multiDim() == *pot2.content() );
+        TS_ASSERT_THROWS ( f3.setMultiDim ( *pot2.content() ),
                            gum::DuplicateElement );
-        TS_ASSERT ( f6.multiDim() == *pot2.getContent() );
-        TS_ASSERT ( f6.multiDim() == *pot2.getContent() );
+        TS_ASSERT ( f6.multiDim() == *pot2.content() );
+        TS_ASSERT ( f6.multiDim() == *pot2.content() );
         
         std::string str = f3.toString ();
         f3 = f5;

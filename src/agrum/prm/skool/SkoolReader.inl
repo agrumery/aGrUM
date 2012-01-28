@@ -83,7 +83,7 @@ namespace gum {
           __errors += __parser->errors();
         } catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
-          __errors.addException( e.getContent(), file );
+          __errors.addException( e.content(), file );
         } 
       }
 
@@ -102,7 +102,7 @@ namespace gum {
           __errors += __parser->errors();
         } catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
-          __errors.addException( e.getContent(), "" );
+          __errors.addException( e.content(), "" );
         }
       }
 
@@ -173,7 +173,7 @@ namespace gum {
       }
 
       INLINE
-      const ErrorsContainer & SkoolReader::getErrorsContainer() const {
+      const ErrorsContainer & SkoolReader::errorsContainer() const {
         return __errors;
       }
 /// @}

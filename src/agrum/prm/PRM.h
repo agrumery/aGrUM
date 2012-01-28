@@ -106,13 +106,13 @@ class PRM {
      * Returns a constant reference on a Type given it's name.
      * @throw NotFound Raised if no type is found with the given name.
      */
-    Type& getType(const std::string& name);
+    Type& type(const std::string& name);
 
     /**
      * Returns a constant reference on a Type given it's name.
      * @throw NotFound Raised if no type is found with the given name.
      */
-    const Type& getType(const std::string& name) const;
+    const Type& type(const std::string& name) const;
 
     /**
      * Returns the Set of all Type in this PRM.
@@ -140,13 +140,13 @@ class PRM {
      * Returns a constant reference on a Class given it's name.
      * @throw NotFound Raised if no class is found with the given name.
      */
-    Interface& getInterface(const std::string& name);
+    Interface& interface(const std::string& name);
 
     /**
      * Returns a constant reference on a Class given it's name.
      * @throw NotFound Raised if no class is found with the given name.
      */
-    const Interface& getInterface(const std::string& name) const;
+    const Interface& interface(const std::string& name) const;
 
     /**
      * Returns the Set of all Class in this PRM.
@@ -157,13 +157,13 @@ class PRM {
      * Returns a constant reference on a System given it's name.
      * @throw NotFound Raised if no model is found with the given name.
      */
-    System& getSystem(const std::string& name);
+    System& system(const std::string& name);
 
     /**
      * Returns a constant reference on a System given it's name.
      * @throw NotFound Raised if no model is found with the given name.
      */
-    const System& getSystem(const std::string& name) const;
+    const System& system(const std::string& name) const;
 
     /**
      * Returns the Set of all Systems in this PRM.

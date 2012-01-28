@@ -82,7 +82,7 @@ namespace gum {
   
   /// Return the i-th error.
   /// May throw an exception if i >= count().
-  ParseError ErrorsContainer::getError( int i ) const
+  ParseError ErrorsContainer::error( int i ) const
   {
     if ( count() > i )
       return errors[i]; // May throw an error if i >= count().
@@ -144,7 +144,7 @@ namespace gum {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
     for ( int i = 0 ; i < cont.count() ; i++ )
-        errors.push_back( cont.getError(i) );    
+        errors.push_back( cont.error(i) );    
     return *this;
   }
       
@@ -154,8 +154,8 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      if ( getError(i).is_error )
-        cerr << getError(i).toString() << endl;
+      if ( error(i).is_error )
+        cerr << error(i).toString() << endl;
     }
   }
   
@@ -166,7 +166,7 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ )
-      cerr << getError(i).toString() << endl;
+      cerr << error(i).toString() << endl;
   }
   
       
@@ -176,8 +176,8 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      if ( getError(i).is_error ) {
-        cerr << getError(i).toElegantString();
+      if ( error(i).is_error ) {
+        cerr << error(i).toElegantString();
         cerr << endl;
       }
     }
@@ -188,7 +188,7 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      cerr << getError(i).toElegantString();
+      cerr << error(i).toElegantString();
       cerr << endl;
     }
   }  

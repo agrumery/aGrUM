@@ -437,8 +437,8 @@ namespace gum {
         for ( NodeSet::const_iterator node = parents.begin(); node != parents.end(); ++node ) {
           GUM_TRACE_VAR( type().get( *node ).safeName() );
         }
-        std::cerr << e.getContent() << std::endl;
-        std::cerr << e.getCallStack() << std::endl;
+        std::cerr << e.content() << std::endl;
+        std::cerr << e.callStack() << std::endl;
         std::exit( 0 );
       }
       // } catch (NotFound& e) {

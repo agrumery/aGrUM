@@ -331,7 +331,7 @@ public:
      * added or erased from the topology.
      * @param clear If false returns the previously created topology.
      */
-    virtual const Sequence<NodeId>& getTopologicalOrder ( bool clear = true ) const;
+    virtual const Sequence<NodeId>& topologicalOrder ( bool clear = true ) const;
 
     /// @}
     // ===========================================================================

@@ -63,13 +63,13 @@ namespace gum {
 
         void testConstructorDestructor() {
           InterfaceGraph* ig = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( __prm->getSystem( "microSys" ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( __prm->system( "microSys" ) ) );
           TS_GUM_ASSERT_THROWS_NOTHING( delete ig );
         }
 
         void testMicroTopologie() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "microSys" );
+          System& m = __prm->system( "microSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Checking existing nodes
           TS_ASSERT( ig->graph().existsNode( ig->id( m.get( "pow" ) ) ) );
@@ -89,7 +89,7 @@ namespace gum {
 
         void testMicroLabelsOnNodes() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "microSys" );
+          System& m = __prm->system( "microSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Testing power supply
           TS_ASSERT_EQUALS( ig->size( ig->node( ig->id( m.get( "pow" ) ) ).l ), ( Size ) 1 );
@@ -114,7 +114,7 @@ namespace gum {
 
         void testMicroLabelsOnEdges() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "microSys" );
+          System& m = __prm->system( "microSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Test difference
           TS_ASSERT_DIFFERS( ig->edge( ig->id( m.get( "pow" ) ), ig->id( m.get( "p" ) ) ).l,
@@ -140,7 +140,7 @@ namespace gum {
 
         void testSmallTopologie() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "smallSys" );
+          System& m = __prm->system( "smallSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Checking existing nodes
           int node_count = 0;
@@ -205,7 +205,7 @@ namespace gum {
 
         void testSmallLabelsOnNodes() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "smallSys" );
+          System& m = __prm->system( "smallSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Testing each labels size (the number of nodes with the given label)
           TS_ASSERT_EQUALS( ig->size( ig->node( ig->id( m.get( "pow" ) ) ).l ), ( Size ) 1 );
@@ -217,7 +217,7 @@ namespace gum {
 
         void testSmallLabelsOnEdges() {
           InterfaceGraph* ig = 0;
-          System& m = __prm->getSystem( "smallSys" );
+          System& m = __prm->system( "smallSys" );
           TS_GUM_ASSERT_THROWS_NOTHING( ig = new InterfaceGraph( m ) );
           // Test difference
           int edge_count = 0;
@@ -251,7 +251,7 @@ namespace gum {
           generator.setDomainSize( 2 );
           generator.setMaxParents( 5 );
           PRM* prm = generator.generate();
-          System& sys = prm->getSystem(( **( prm->systems().begin() ) ).name() );
+          System& sys = prm->system(( **( prm->systems().begin() ) ).name() );
           InterfaceGraph* g = 0;
           TS_GUM_ASSERT_THROWS_NOTHING( g = new InterfaceGraph( sys ) );
 

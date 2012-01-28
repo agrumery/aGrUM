@@ -20,12 +20,11 @@ macro(CocoRTarget DIRNAME ARG_PREFIX ARG_NAMESPACE)
 		COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp.old
 		DEPENDS ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Scanner.frame ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Parser.frame ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Copyright.frame
 	)
-  SET(AGRUM_SOURCES ${AGRUM_SOURCES} ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h)
+  set(AGRUM_SOURCES ${AGRUM_SOURCES} ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h)
 
-  # Since parser does not exists yet when cmake is run, mark it as generated
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp GENERATED)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h GENERATED)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp GENERATED)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h GENERATED)
 endmacro(CocoRTarget)
-
+# Since parser does not exists yet when cmake is run, mark it as generated

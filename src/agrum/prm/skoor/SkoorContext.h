@@ -171,9 +171,9 @@ public:
   SkoorSession( const SkoorSession & s );
   virtual ~SkoorSession();
   
-  std::string getName() const;
+  std::string name() const;
   
-  std::vector<SkoorCommand *> getCommands() const;
+  std::vector<SkoorCommand *> commands() const;
   void addObserve( int line, const std::string & leftValue, const std::string & rightValue );
   void addUnobserve( int line, const std::string & value );
   void addQuery( int line, const std::string & value );
@@ -203,22 +203,22 @@ public :
   SkoorContext( const SkoorContext & s );
   virtual ~SkoorContext();
   
-  const ImportCommand * getMainImport() const { return m_mainImport; }
+  const ImportCommand * mainImport() const { return m_mainImport; }
 
-  std::string getFilename() const;
+  std::string filename() const;
   
-  std::string getPackage() const;
+  std::string package() const;
   void setPackage( const std::string & package );
 
   std::string aliasToImport( const std::string & alias );
-  std::vector<ImportCommand *> getImports() const;
+  std::vector<ImportCommand *> imports() const;
   void addImport( int line, const std::string & import, const std::string & alias );
   void addImport( int line, const std::string & import, bool ismain );
   void addImport( const ImportCommand & i ) { 
     m_imports.push_back( new ImportCommand(i.line,i.value,i.alias) );
     if ( i.alias == "default" ) m_mainImport = m_imports.back(); }
   
-  std::vector<SkoorSession *> getSessions() const;
+  std::vector<SkoorSession *> sessions() const;
   void addSession( SkoorSession * session );
   void addSession( const SkoorSession & session );
   

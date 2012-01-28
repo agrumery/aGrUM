@@ -73,11 +73,11 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       VariableElimination<prm_float>* ve = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->system("aSys").groundedBN(bn_factory));
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->system("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-      const Instance& instance = prm->getSystem("aSys").get("c1");
+      const Instance& instance = prm->system("aSys").get("c1");
       const Attribute& attribute = instance.get("can_print");
       Potential<prm_float> e;
       e.add(attribute.type().variable());
@@ -97,13 +97,13 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       VariableElimination<prm_float>* ve = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(small->getSystem("microSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(small->system("microSys").groundedBN(bn_factory));
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*small, small->getSystem("microSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*small, small->system("microSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
       // Building query
       {
-        const Instance& instance = small->getSystem("microSys").get("c");
+        const Instance& instance = small->system("microSys").get("c");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -115,7 +115,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("p");
+        const Instance& instance = small->system("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -127,7 +127,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Instance& instance = small->system("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -143,9 +143,9 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
 
     void testSmallSVEInference() {
       SVE* sve = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(sve = new SVE(*small, small->getSystem("microSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(sve = new SVE(*small, small->system("microSys")));
       {
-        const Instance& instance = small->getSystem("microSys").get("c");
+        const Instance& instance = small->system("microSys").get("c");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -157,7 +157,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("p");
+        const Instance& instance = small->system("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -169,7 +169,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Instance& instance = small->system("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -185,9 +185,9 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
 
     void testSmallSVEDInference() {
       SVED* sved = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(sved = new SVED(*small, small->getSystem("microSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(sved = new SVED(*small, small->system("microSys")));
       {
-        const Instance& instance = small->getSystem("microSys").get("c");
+        const Instance& instance = small->system("microSys").get("c");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -199,7 +199,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("p");
+        const Instance& instance = small->system("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -211,7 +211,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Instance& instance = small->system("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -227,9 +227,9 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
 
     void testSmallStructInference() {
       StructuredInference* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new StructuredInference(*small, small->getSystem("microSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf = new StructuredInference(*small, small->system("microSys")));
       {
-        const Instance& instance = small->getSystem("microSys").get("c");
+        const Instance& instance = small->system("microSys").get("c");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -241,7 +241,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.399168, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("p");
+        const Instance& instance = small->system("microSys").get("p");
         const Attribute& attribute = instance.get("equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -253,7 +253,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT_DELTA(m.get(i), 0.50104, 1e-6);
       }
       {
-        const Instance& instance = small->getSystem("microSys").get("pow");
+        const Instance& instance = small->system("microSys").get("pow");
         const Attribute& attribute = instance.get("powState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         Potential<prm_float> m;
@@ -277,21 +277,21 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       VEWithBB<prm_float>* vebb = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->system("aSys").groundedBN(bn_factory));
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(ss = new ShaferShenoyInference<prm_float>(bn));
       TS_GUM_ASSERT_THROWS_NOTHING(vebb = new VEWithBB<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->system("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ss = new GroundedInference(*prm, prm->system("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_vebb = new GroundedInference(*prm, prm->system("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_vebb->setBNInference(vebb));
       for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
         Potential<prm_float> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
         try {
           size_t pos = bn.variableNodeMap().name(*node).find_first_of('.');
-          const Instance& instance = prm->getSystem("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
+          const Instance& instance = prm->system("aSys").get(bn.variableNodeMap().name(*node).substr(0, pos));
           const Attribute& attribute = instance.get(bn.variableNodeMap().name(*node).substr(pos+1));
           PRMInference::Chain chain = std::make_pair(&instance, &attribute);
           std::string dot = ".";
@@ -301,13 +301,13 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
           // GUM_TRACE("SS done");
           g_vebb->marginal(chain, m_vebb);
           // GUM_TRACE("VEWithBB done");
-          SVE sve(*prm, prm->getSystem("aSys"));
+          SVE sve(*prm, prm->system("aSys"));
           sve.marginal(chain, m_sve);
           // GUM_TRACE("SVE done");
-          SVED sved(*prm, prm->getSystem("aSys"));
+          SVED sved(*prm, prm->system("aSys"));
           sved.marginal(chain, m_sved);
           // GUM_TRACE("SVED done");
-          StructuredInference structinf(*prm, prm->getSystem("aSys"));
+          StructuredInference structinf(*prm, prm->system("aSys"));
           structinf.marginal(chain, m_struct);
           // GUM_TRACE("StructInf done");
           // We need two instantiations, one for the grounded potentials and one
@@ -358,10 +358,10 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
     }
 
     void testStructuredBB() {
-      SVE sve(*prm, prm->getSystem("aSys"));
+      SVE sve(*prm, prm->system("aSys"));
       StructuredBayesBall* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(sve));
-      Instance& i = prm->getSystem("aSys").get("pow");
+      Instance& i = prm->system("aSys").get("pow");
       TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i, i.get("(t_state)state").id()));
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
     }
@@ -371,13 +371,13 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       VariableElimination<prm_float>* ve = 0;
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory));
+      TS_GUM_ASSERT_THROWS_NOTHING(prm->system("aSys").groundedBN(bn_factory));
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new VariableElimination<prm_float>(bn));
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new GroundedInference(*prm, prm->system("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve));
       // Adding evidence
       {
-        const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+        const Instance& instance = prm->system("aSys").get("bw_printers[0]");
         const Attribute& attribute = instance.get("(t_degraded)equipState");
         Potential<prm_float> e;
         e.add(attribute.type().variable());
@@ -391,7 +391,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT(g_ve->hasEvidence(chain.first));
       }
       {
-        const Instance& instance = prm->getSystem("aSys").get("c1");
+        const Instance& instance = prm->system("aSys").get("c1");
         const Attribute& attribute = instance.get("can_print");
         Potential<prm_float> e;
         e.add(attribute.type().variable());
@@ -406,7 +406,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       }
       // making a first inference with evidence
       {
-        const Instance& q_i = prm->getSystem("aSys").get("pow");
+        const Instance& q_i = prm->system("aSys").get("pow");
         const Attribute& q_a = q_i.get("state");
         PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
         Potential<prm_float> m;
@@ -419,20 +419,20 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       }
       // Removing evidences
       {
-        const Instance& instance = prm->getSystem("aSys").get("c1");
+        const Instance& instance = prm->system("aSys").get("c1");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
       }
       {
-        const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+        const Instance& instance = prm->system("aSys").get("bw_printers[0]");
         const Attribute& attribute = instance.get("(t_degraded)equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
       }
       // Inference without evidences
       {
-        const Instance& q_i = prm->getSystem("aSys").get("pow");
+        const Instance& q_i = prm->system("aSys").get("pow");
         const Attribute& q_a = q_i.get("state");
         PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
         Potential<prm_float> m;
@@ -448,10 +448,10 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
 
     void testEvidenceSioux2() {
       SVE* g_ve = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVE(*prm, prm->getSystem("aSys")));
+      TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVE(*prm, prm->system("aSys")));
       // Adding evidence
       {
-        const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+        const Instance& instance = prm->system("aSys").get("bw_printers[0]");
         const Attribute& attribute = instance.get("(t_degraded)equipState");
         Potential<prm_float> e;
         e.add(attribute.type().variable());
@@ -465,7 +465,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
         TS_ASSERT(g_ve->hasEvidence(chain.first));
       }
       {
-        const Instance& instance = prm->getSystem("aSys").get("c1");
+        const Instance& instance = prm->system("aSys").get("c1");
         const Attribute& attribute = instance.get("can_print");
         Potential<prm_float> e;
         e.add(attribute.type().variable());
@@ -480,7 +480,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       }
       // making a first inference with evidence
       {
-        const Instance& q_i = prm->getSystem("aSys").get("pow");
+        const Instance& q_i = prm->system("aSys").get("pow");
         const Attribute& q_a = q_i.get("state");
         PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
         Potential<prm_float> m;
@@ -493,20 +493,20 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
       }
       // Removing evidences
       {
-        const Instance& instance = prm->getSystem("aSys").get("c1");
+        const Instance& instance = prm->system("aSys").get("c1");
         const Attribute& attribute = instance.get("can_print");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
       }
       {
-        const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+        const Instance& instance = prm->system("aSys").get("bw_printers[0]");
         const Attribute& attribute = instance.get("(t_degraded)equipState");
         PRMInference::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
       }
       // Inference without evidences
       {
-        const Instance& q_i = prm->getSystem("aSys").get("pow");
+        const Instance& q_i = prm->system("aSys").get("pow");
         const Attribute& q_a = q_i.get("state");
         PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
         Potential<prm_float> m;
@@ -522,10 +522,10 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
 
     // void testEvidenceSioux3() {
     //   SVED* g_ve = 0;
-    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVED(*prm, prm->getSystem("aSys")));
+    //   TS_GUM_ASSERT_THROWS_NOTHING(g_ve = new SVED(*prm, prm->system("aSys")));
     //   // Adding evidence
     //   {
-    //     const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+    //     const Instance& instance = prm->system("aSys").get("bw_printers[0]");
     //     const Attribute& attribute = instance.get("(t_degraded)equipState");
     //     Potential<prm_float> e;
     //     e.add(attribute.type().variable());
@@ -539,7 +539,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
     //     TS_ASSERT(g_ve->hasEvidence(chain.first));
     //   }
     //   {
-    //     const Instance& instance = prm->getSystem("aSys").get("c1");
+    //     const Instance& instance = prm->system("aSys").get("c1");
     //     const Attribute& attribute = instance.get("can_print");
     //     Potential<prm_float> e;
     //     e.add(attribute.type().variable());
@@ -554,7 +554,7 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
     //   }
     //   // making a first inference with evidence
     //   {
-    //     const Instance& q_i = prm->getSystem("aSys").get("pow");
+    //     const Instance& q_i = prm->system("aSys").get("pow");
     //     const Attribute& q_a = q_i.get("state");
     //     PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
     //     Potential<prm_float> m;
@@ -567,20 +567,20 @@ class PRMInferenceTestSuite: public CxxTest::TestSuite {
     //   }
     //   // Removing evidences
     //   {
-    //     const Instance& instance = prm->getSystem("aSys").get("c1");
+    //     const Instance& instance = prm->system("aSys").get("c1");
     //     const Attribute& attribute = instance.get("can_print");
     //     PRMInference::Chain chain = std::make_pair(&instance, &attribute);
     //     TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
     //   }
     //   {
-    //     const Instance& instance = prm->getSystem("aSys").get("bw_printers[0]");
+    //     const Instance& instance = prm->system("aSys").get("bw_printers[0]");
     //     const Attribute& attribute = instance.get("(t_degraded)equipState");
     //     PRMInference::Chain chain = std::make_pair(&instance, &attribute);
     //     TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain));
     //   }
     //   // Inference without evidences
     //   {
-    //     const Instance& q_i = prm->getSystem("aSys").get("pow");
+    //     const Instance& q_i = prm->system("aSys").get("pow");
     //     const Attribute& q_a = q_i.get("state");
     //     PRMInference::Chain q_chain = std::make_pair(&q_i, &q_a);
     //     Potential<prm_float> m;

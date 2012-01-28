@@ -70,7 +70,7 @@ namespace gum {
             id.insertArc ( idList[3], idList[5] );
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -116,7 +116,7 @@ namespace gum {
             }
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -160,7 +160,7 @@ namespace gum {
             id.insertArc ( idList[9], idList[8] );
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -260,7 +260,7 @@ namespace gum {
             }
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }

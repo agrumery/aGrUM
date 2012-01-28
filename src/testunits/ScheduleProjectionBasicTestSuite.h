@@ -77,7 +77,7 @@ namespace gum {
         gum::MultiDimProjection<float,MultiDimImplementation>
           mymultiproj ( schedule_proj_mysum );
         gum::MultiDimImplementation<float>* t2 =
-          mymultiproj.project ( *( t1.getContent() ), del_vars );
+          mymultiproj.project ( *( t1.content() ), del_vars );
 
         gum::ScheduleProjectionBasic<float> myproj ( schedule_proj_mysum );
         gum::Schedule<float> schedule;
@@ -98,9 +98,9 @@ namespace gum {
         delete t2;
         
         mymultiproj.setProjectFunction ( schedule_proj_mymin );
-        t2 = mymultiproj.project ( *( t1.getContent() ), del_vars );
+        t2 = mymultiproj.project ( *( t1.content() ), del_vars );
         myproj.setProjectFunction ( schedule_proj_mymin );
-        ScheduleMultiDim<float> t3 ( *( t1.getContent () ) );
+        ScheduleMultiDim<float> t3 ( *( t1.content () ) );
         tt2 = myproj.project ( t3, del_vars, schedule );
         while ( ! available.empty () ) {
           for ( NodeSet::const_iterator iter = available.begin();
@@ -113,7 +113,7 @@ namespace gum {
         gum::ScheduleDeleteMultiDim<float> del3  ( tt2 );
         del3.execute ();
 
-        tt2 = myproj.project ( *( t1.getContent () ), del_vars, schedule );
+        tt2 = myproj.project ( *( t1.content () ), del_vars, schedule );
         while ( ! available.empty () ) {
           for ( NodeSet::const_iterator iter = available.begin();
                 iter != available.end (); ++iter ) {
@@ -121,7 +121,7 @@ namespace gum {
           }
         }
         TS_ASSERT ( tt2.multiDim() == *t2 );
-        TS_ASSERT ( myproj.nbOperations ( *( t1.getContent() ),
+        TS_ASSERT ( myproj.nbOperations ( *( t1.content() ),
                                           del_vars, schedule ) == dom ); 
         gum::ScheduleDeleteMultiDim<float> del4  ( tt2 );
         del4.execute ();
@@ -195,7 +195,7 @@ namespace gum {
         TS_ASSERT ( xxx.first == 16384 );
         TS_ASSERT ( xxx.second == 16384 );
 
-        xxx = myproj.memoryUsage ( *( t1.getContent() ), del_vars, schedule );
+        xxx = myproj.memoryUsage ( *( t1.content() ), del_vars, schedule );
         TS_ASSERT ( xxx.first == 16384 );
         TS_ASSERT ( xxx.second == 16384 );
       

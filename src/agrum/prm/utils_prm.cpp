@@ -64,7 +64,7 @@ decomposePath(const std::string& path, std::vector<std::string>& v) {
 Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                     const Potential<prm_float>& source)
 {
-  const MultiDimImplementation<prm_float>* impl = source.getContent();
+  const MultiDimImplementation<prm_float>* impl = source.content();
   Potential<prm_float>* p = 0;
   try {
     if (dynamic_cast< const MultiDimReadOnly<prm_float>* >(impl)) {

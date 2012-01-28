@@ -45,11 +45,11 @@ PRM::isSystem(const std::string name) const { return __systemMap.exists(name); }
 
 INLINE
 Type&
-PRM::getType(const std::string& name) { return *(__typeMap[name]); }
+PRM::type(const std::string& name) { return *(__typeMap[name]); }
 
 INLINE
 const Type&
-PRM::getType(const std::string& name) const { return *(__typeMap[name]); }
+PRM::type(const std::string& name) const { return *(__typeMap[name]); }
 
 INLINE
 const Set<Type*>&
@@ -69,11 +69,11 @@ PRM::classes() const { return __classes; }
 
 INLINE
 Interface&
-PRM::getInterface(const std::string& name) { return *__interfaceMap[name]; }
+PRM::interface(const std::string& name) { return *__interfaceMap[name]; }
 
 INLINE
 const Interface&
-PRM::getInterface(const std::string& name) const { return *__interfaceMap[name]; }
+PRM::interface(const std::string& name) const { return *__interfaceMap[name]; }
 
 INLINE
 const Set<Interface*>&
@@ -81,11 +81,11 @@ PRM::interfaces() const { return __interfaces; }
 
 INLINE
 System&
-PRM::getSystem(const std::string& name) { return *(__systemMap[name]); }
+PRM::system(const std::string& name) { return *(__systemMap[name]); }
 
 INLINE
 const System&
-PRM::getSystem(const std::string& name) const { return *(__systemMap[name]); }
+PRM::system(const std::string& name) const { return *(__systemMap[name]); }
 
 INLINE
 const Set<System*>&

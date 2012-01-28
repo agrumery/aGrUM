@@ -168,7 +168,7 @@ namespace gum {
 //         inf.makeInference();
 //       } catch ( gum::Exception e ) {
 //         TS_ASSERT( false );
-//         std::cerr << std::endl << e.getContent() << std::endl;
+//         std::cerr << std::endl << e.content() << std::endl;
 //         throw e;
 //       }
         }
@@ -197,7 +197,7 @@ namespace gum {
             const gum::Potential<float>& marginal = inf.marginal( i2 );
             printPotential( marginal );
           } catch ( gum::Exception e ) {
-            std::cerr << e.getContent() << std::endl;
+            std::cerr << e.content() << std::endl;
             TS_ASSERT( false );
           }
 
@@ -236,7 +236,7 @@ namespace gum {
           try {
             inf.insertEvidence( e_list );
           } catch ( gum::Exception e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             TS_ASSERT( false );
           }
 

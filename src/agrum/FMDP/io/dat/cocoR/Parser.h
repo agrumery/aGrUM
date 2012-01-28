@@ -40,7 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/FMDP/abstractFMDPFactory.h>
 // =====================================================================
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.getType());}
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.type());}
 
 #include <iostream>
 #include <string>

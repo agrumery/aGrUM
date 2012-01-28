@@ -189,7 +189,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleMultiDim );
 
-    const MultiDimImplementation<T_DATA>* impl = multidim.getContent();
+    const MultiDimImplementation<T_DATA>* impl = multidim.content();
     
     // check whether the multidimImplementation has already been stored
     if ( __multidim2id().exists ( impl ) ) {
@@ -424,7 +424,7 @@ namespace gum {
   INLINE void
   ScheduleMultiDim<T_DATA>::setMultiDim
   ( const MultiDimDecorator<T_DATA>& m ) {
-    setMultiDim ( *( m.getContent() ) );
+    setMultiDim ( *( m.content() ) );
   }
     
 

@@ -34,8 +34,8 @@
   template<typename T> \
   MultiDimImplementation<T>* \
   NAME ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) { \
-    const MultiDimImplementation<T>* impl1 = t1.getContent (); \
-    const MultiDimImplementation<T>* impl2 = t2.getContent (); \
+    const MultiDimImplementation<T>* impl1 = t1.content (); \
+    const MultiDimImplementation<T>* impl2 = t2.content (); \
     return ( *impl1 OP *impl2 ); \
   }
  

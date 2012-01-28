@@ -108,7 +108,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       generator.setDomainSize(2);
       generator.setMaxParents(5);
       PRM* prm = generator.generate();
-      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      System& sys = prm->system((**(prm->systems().begin())).name());
       StructuredInference inf(*prm, sys);
       inf.setPatternMining(false);
       const Instance& i = pickInstance(sys);
@@ -133,7 +133,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       generator.setDomainSize(2);
       generator.setMaxParents(5);
       PRM* prm = generator.generate();
-      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      System& sys = prm->system((**(prm->systems().begin())).name());
       StructuredInference inf(*prm, sys);
       inf.setPatternMining(false);
       const Instance& i = pickInstance(sys);
@@ -158,7 +158,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
       generator.setDomainSize(2);
       generator.setMaxParents(5);
       PRM* prm = generator.generate();
-      System& sys = prm->getSystem((**(prm->systems().begin())).name());
+      System& sys = prm->system((**(prm->systems().begin())).name());
       StructuredInference inf(*prm, sys);
       inf.setPatternMining(false);
       const Instance& i = pickInstance(sys);
@@ -183,7 +183,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -208,7 +208,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -233,7 +233,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -258,7 +258,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -283,7 +283,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -308,7 +308,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -333,7 +333,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -358,7 +358,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);
@@ -383,7 +383,7 @@ class StructuredInferenceTestSuite: public CxxTest::TestSuite {
     //   generator.setDomainSize(2);
     //   generator.setMaxParents(5);
     //   PRM* prm = generator.generate();
-    //   System& sys = prm->getSystem((**(prm->systems().begin())).name());
+    //   System& sys = prm->system((**(prm->systems().begin())).name());
     //   StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
     //   inf.setPatternMining(true);
     //   const Instance& i = pickInstance(sys);

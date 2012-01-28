@@ -51,7 +51,7 @@ class GSpanTestSuite: public CxxTest::TestSuite {
       __driver  = new SkoolReader();
       //dot_dir = "/testunits/dot/";
       __driver->readFile("../../../src/testunits/ressources/skool/specialprinters.skool");
-      ig = new InterfaceGraph(__driver->prm()->getSystem("m"));
+      ig = new InterfaceGraph(__driver->prm()->system("m"));
     }
 
     void tearDown() {
@@ -67,7 +67,7 @@ class GSpanTestSuite: public CxxTest::TestSuite {
 
     void testTree() {
       GSpan* gspan = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->getSystem("m")));
+      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->system("m")));
       if (gspan != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
         TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);

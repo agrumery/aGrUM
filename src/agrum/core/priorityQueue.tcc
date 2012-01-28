@@ -24,6 +24,7 @@
  */
 #include <string>
 #include <sstream>
+#include "priorityQueue.h"
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -370,7 +371,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val, typename Priority, typename Cmp> INLINE
   const HashTable< Val,std::vector<Size> >&
-  PriorityQueue<Val,Priority,Cmp>::getAllValues() const  {
+  PriorityQueue<Val,Priority,Cmp>::allValues() const  {
     return __indices;
   }
 
