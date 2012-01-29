@@ -77,7 +77,7 @@ namespace gum {
 
       this->endMultipleChanges();
 
-      MultiDimDecorator<T_DATA>::getContent()->copyFrom
+      MultiDimDecorator<T_DATA>::content()->copyFrom
       ( dynamic_cast<const MultiDimContainer<T_DATA>&>( src.getMasterRef() ) );
     }
   }

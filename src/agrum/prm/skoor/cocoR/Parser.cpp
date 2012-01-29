@@ -101,32 +101,32 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 void Parser::skoor() {
 		std::string s, alias; __currentSession = 0; 
 		if (StartOf(1)) {
-			if (la->kind == _package) {
+			if (la->kind == 5) {
 				Get();
 				Ident(s);
 				__context->setPackage( s ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(29); Get();}
-				Expect(15 /* ";" */);
+				while (!(la->kind == 0 || la->kind == 15)) {SynErr(29); Get();}
+				Expect(15);
 			}
-			while (la->kind == _import) {
+			while (la->kind == 6) {
 				Get();
 				Ident(s);
 				alias = ""; 
-				if (la->kind == _as) {
+				if (la->kind == 12) {
 					Get();
-					if (la->kind == _default) {
+					if (la->kind == 13) {
 						Get();
 						alias = "default"; 
-					} else if (la->kind == _word) {
+					} else if (la->kind == 3) {
 						Get();
 						alias = gum::narrow(t->val); 
 					} else SynErr(30);
 				}
 				__context->addImport( t->line, s, alias ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(31); Get();}
-				Expect(15 /* ";" */);
+				while (!(la->kind == 0 || la->kind == 15)) {SynErr(31); Get();}
+				Expect(15);
 			}
-			while (la->kind == _request) {
+			while (la->kind == 7) {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
@@ -139,39 +139,39 @@ void Parser::skoor() {
 
 void Parser::Ident(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(3);
 		sBuff << narrow(t->val); 
-		while (la->kind == 25 /* "." */) {
+		while (la->kind == 25) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			sBuff << "." << narrow(t->val); 
 		}
 		s = sBuff.str(); 
 }
 
 void Parser::RequestBloc() {
-		Expect(_request);
-		Expect(_word);
+		Expect(7);
+		Expect(3);
 		__currentSession = new SkoorSession(gum::narrow(t->val)); 
-		Expect(16 /* "{" */);
+		Expect(16);
 		while (StartOf(2)) {
 			Command();
 		}
-		while (!(la->kind == _EOF || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
-		Expect(17 /* "}" */);
+		while (!(la->kind == 0 || la->kind == 17)) {SynErr(33); Get();}
+		Expect(17);
 		__context->addSession( __currentSession ); __currentSession = 0; 
 }
 
 void Parser::Command() {
-		if (la->kind == _word) {
+		if (la->kind == 3) {
 			Observe();
-		} else if (la->kind == _unobserve) {
+		} else if (la->kind == 9) {
 			Unobserve();
-		} else if (la->kind == _query) {
+		} else if (la->kind == 8) {
 			Query();
-		} else if (la->kind == _engine) {
+		} else if (la->kind == 10) {
 			SetEngine();
-		} else if (la->kind == _grd_engine) {
+		} else if (la->kind == 11) {
 			SetGrdEngine();
 		} else SynErr(34);
 }
@@ -179,79 +179,79 @@ void Parser::Command() {
 void Parser::Observe() {
 		std::string left_value, right_value; 
 		IdentArray(left_value);
-		Expect(18 /* "=" */);
-		Expect(_word);
+		Expect(18);
+		Expect(3);
 		right_value = gum::narrow(t->val); 
-		Expect(15 /* ";" */);
+		Expect(15);
 		__currentSession->addObserve(t->line, left_value, right_value); 
 }
 
 void Parser::Unobserve() {
-		Expect(_unobserve);
+		Expect(9);
 		std::string s; 
 		IdentArray(s);
 		__currentSession->addUnobserve( t->line, s ); 
-		Expect(15 /* ";" */);
+		Expect(15);
 }
 
 void Parser::Query() {
-		Expect(_query);
+		Expect(8);
 		std::string s; 
 		IdentArray(s);
 		__currentSession->addQuery( t->line, s ); 
-		while (la->kind == _and) {
+		while (la->kind == 14) {
 			Get();
 			IdentArray(s);
 			__currentSession->addQuery( t->line, s ); 
 		}
-		Expect(15 /* ";" */);
+		Expect(15);
 }
 
 void Parser::SetEngine() {
-		Expect(_engine);
-		if (la->kind == 19 /* "SVED" */) {
+		Expect(10);
+		if (la->kind == 19) {
 			Get();
-		} else if (la->kind == 20 /* "SVE" */) {
+		} else if (la->kind == 20) {
 			Get();
-		} else if (la->kind == 21 /* "GND" */) {
+		} else if (la->kind == 21) {
 			Get();
 		} else SynErr(35);
 		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
-		Expect(15 /* ";" */);
+		Expect(15);
 }
 
 void Parser::SetGrdEngine() {
-		Expect(_grd_engine);
-		if (la->kind == 22 /* "VE" */) {
+		Expect(11);
+		if (la->kind == 22) {
 			Get();
-		} else if (la->kind == 23 /* "VEBB" */) {
+		} else if (la->kind == 23) {
 			Get();
-		} else if (la->kind == 24 /* "lazy" */) {
+		} else if (la->kind == 24) {
 			Get();
 		} else SynErr(36);
 		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
-		Expect(15 /* ";" */);
+		Expect(15);
 }
 
 void Parser::IdentArray(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(3);
 		sBuff << narrow(t->val); 
-		if (la->kind == 26 /* "[" */) {
+		if (la->kind == 26) {
 			Get();
-			Expect(_integer);
+			Expect(1);
 			sBuff << '[' << narrow(t->val) << ']'; 
-			Expect(27 /* "]" */);
+			Expect(27);
 		}
-		while (la->kind == 25 /* "." */) {
+		while (la->kind == 25) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			sBuff << "." << narrow(t->val); 
-			if (la->kind == 26 /* "[" */) {
+			if (la->kind == 26) {
 				Get();
-				Expect(_integer);
+				Expect(1);
 				sBuff << '[' << narrow(t->val) << ']'; 
-				Expect(27 /* "]" */);
+				Expect(27);
 			}
 		}
 		s = sBuff.str(); 

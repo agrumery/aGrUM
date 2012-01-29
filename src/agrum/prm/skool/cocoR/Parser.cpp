@@ -99,11 +99,11 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::Skool() {
-		if (la->kind == 20 /* "package" */) {
+		if (la->kind == 20) {
 			Package();
 		}
-		while (la->kind == 21 /* "import" */) {
-			while (!(la->kind == _EOF || la->kind == 21 /* "import" */)) {SynErr(31); Get();}
+		while (la->kind == 21) {
+			while (!(la->kind == 0 || la->kind == 21)) {SynErr(31); Get();}
 			Import();
 		}
 		while (StartOf(1)) {
@@ -115,43 +115,43 @@ void Parser::Skool() {
 
 void Parser::Package() {
 		std::string name; 
-		while (!(la->kind == _EOF || la->kind == 20 /* "package" */)) {SynErr(33); Get();}
-		Expect(20 /* "package" */);
+		while (!(la->kind == 0 || la->kind == 20)) {SynErr(33); Get();}
+		Expect(20);
 		Ident(name);
 		factory().pushPackage(name); __package = name; 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(34); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(34); Get();}
+		Expect(8);
 }
 
 void Parser::Import() {
 		std::string fileID; 
-		while (!(la->kind == _EOF || la->kind == 21 /* "import" */)) {SynErr(35); Get();}
-		Expect(21 /* "import" */);
+		while (!(la->kind == 0 || la->kind == 21)) {SynErr(35); Get();}
+		Expect(21);
 		ImportIdent(fileID);
 		import(fileID); 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(36); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(36); Get();}
+		Expect(8);
 }
 
 void Parser::Unit() {
-		if (la->kind == _type) {
+		if (la->kind == 9) {
 			Type();
-		} else if (la->kind == _interface) {
+		} else if (la->kind == 11) {
 			Interface();
-		} else if (la->kind == _class) {
+		} else if (la->kind == 10) {
 			Class();
-		} else if (la->kind == _system) {
+		} else if (la->kind == 13) {
 			System();
 		} else SynErr(37);
 }
 
 void Parser::Ident(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(3);
 		sBuff << narrow(t->val); 
-		while (la->kind == _dot) {
+		while (la->kind == 5) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			sBuff << "." << narrow(t->val); 
 		}
 		s = sBuff.str(); 
@@ -159,13 +159,13 @@ void Parser::Ident(std::string& s) {
 
 void Parser::ImportIdent(std::string& s) {
 		std::stringstream sBuff; 
-		Expect(_word);
+		Expect(3);
 		sBuff << narrow(t->val); 
-		while (la->kind == _dot) {
+		while (la->kind == 5) {
 			Get();
-			if (la->kind == _word) {
+			if (la->kind == 3) {
 				Get();
-			} else if (la->kind == 26 /* "*" */) {
+			} else if (la->kind == 26) {
 				Get();
 			} else SynErr(38);
 			sBuff << "." << narrow(t->val); 
@@ -174,139 +174,139 @@ void Parser::ImportIdent(std::string& s) {
 }
 
 void Parser::Type() {
-		while (!(la->kind == _EOF || la->kind == _type)) {SynErr(39); Get();}
-		Expect(_type);
-		Expect(_word);
+		while (!(la->kind == 0 || la->kind == 9)) {SynErr(39); Get();}
+		Expect(9);
+		Expect(3);
 		std::string name, extends, l, s; name = narrow(t->val); 
-		if (la->kind == _extends) {
+		if (la->kind == 12) {
 			Get();
 			Ident(extends);
 		}
 		TRY2(factory().startDiscreteType(name, extends), "Can not create type "+name) 
 		Label(l);
-		if (la->kind == _colon) {
+		if (la->kind == 7) {
 			Get();
 			Label(s);
 		}
 		TRY2(factory().addLabel(l, s), "Can not add label "+l) 
-		while (la->kind == _comma) {
+		while (la->kind == 6) {
 			s = ""; 
-			ExpectWeak(_comma, 3);
+			ExpectWeak(6, 3);
 			Label(l);
-			if (la->kind == _colon) {
+			if (la->kind == 7) {
 				Get();
 				Label(s);
 			}
 			TRY2(factory().addLabel(l, s), "Can not add label "+l) 
 		}
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(40); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(40); Get();}
+		Expect(8);
 		TRY2(factory().endDiscreteType(), "Can not create type "+name) 
 }
 
 void Parser::Interface() {
-		while (!(la->kind == _EOF || la->kind == _interface)) {SynErr(41); Get();}
-		Expect(_interface);
-		Expect(_word);
+		while (!(la->kind == 0 || la->kind == 11)) {SynErr(41); Get();}
+		Expect(11);
+		Expect(3);
 		std::string interface, extends; interface = narrow(t->val); 
-		if (la->kind == _extends) {
+		if (la->kind == 12) {
 			Get();
 			Ident(extends);
 		}
-		while (!(la->kind == _EOF || la->kind == 22 /* "{" */)) {SynErr(42); Get();}
-		Expect(22 /* "{" */);
+		while (!(la->kind == 0 || la->kind == 22)) {SynErr(42); Get();}
+		Expect(22);
 		TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) 
-		while (la->kind == _word) {
+		while (la->kind == 3) {
 			std::string type, name; 
 			Ident(type);
-			if (la->kind == 23 /* "[" */) {
+			if (la->kind == 23) {
 				Get();
-				Expect(24 /* "]" */);
-				Expect(_word);
+				Expect(24);
+				Expect(3);
 				name = narrow(t->val); bool array = true; 
 				Reference(type, name, array);
-			} else if (la->kind == _word) {
+			} else if (la->kind == 3) {
 				Get();
 				name = narrow(t->val); bool array = false; 
 				if (isClassOrInterface(type)) {
 					Reference(type, name, array);
-				} else if (la->kind == _semicolon) {
-					while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(43); Get();}
+				} else if (la->kind == 8) {
+					while (!(la->kind == 0 || la->kind == 8)) {SynErr(43); Get();}
 					Get();
 					TRY2(factory().addAttribute(type, name), "Can not add attribute "+name) 
 				} else SynErr(44);
 			} else SynErr(45);
 		}
-		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(46); Get();}
-		Expect(25 /* "}" */);
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(46); Get();}
+		Expect(25);
 		TRY2(factory().endInterface(), "Can not create interface "+interface) 
 }
 
 void Parser::Class() {
-		Expect(_class);
-		Expect(_word);
+		Expect(10);
+		Expect(3);
 		std::string c, super; c = narrow(t->val); 
-		if (la->kind == _extends) {
+		if (la->kind == 12) {
 			Get();
 			Ident(super);
 		}
 		gum::Set<std::string> set; 
-		if (la->kind == _implements) {
+		if (la->kind == 16) {
 			std::string i; 
 			Get();
 			Ident(i);
 			set.insert(i); 
-			while (la->kind == _comma) {
+			while (la->kind == 6) {
 				Get();
 				Ident(i);
 				set.insert(i); 
 			}
 		}
-		while (!(la->kind == _EOF || la->kind == 22 /* "{" */)) {SynErr(47); Get();}
-		Expect(22 /* "{" */);
+		while (!(la->kind == 0 || la->kind == 22)) {SynErr(47); Get();}
+		Expect(22);
 		TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) 
-		while (la->kind == _word) {
+		while (la->kind == 3) {
 			std::string type, name; bool array = false; 
 			Ident(type);
-			if (la->kind == 23 /* "[" */) {
+			if (la->kind == 23) {
 				Get();
-				Expect(24 /* "]" */);
-				Expect(_word);
+				Expect(24);
+				Expect(3);
 				name = narrow(t->val); array = true; 
 				Reference(type, name, array);
-			} else if (la->kind == _word) {
+			} else if (la->kind == 3) {
 				Get();
 				name = narrow(t->val); array = false; 
-				if (la->kind == _semicolon || la->kind == _default) {
+				if (la->kind == 8 || la->kind == 15) {
 					RefOrParam(type, name, array);
-				} else if (la->kind == _dependson || la->kind == 22 /* "{" */) {
+				} else if (la->kind == 14 || la->kind == 22) {
 					Attribute(type, name);
-				} else if (la->kind == 27 /* "=" */) {
+				} else if (la->kind == 27) {
 					Aggregate(type, name);
-				} else if (la->kind == 28 /* "~" */) {
+				} else if (la->kind == 28) {
 					Functions(type, name);
 				} else SynErr(48);
 			} else SynErr(49);
 		}
-		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(50); Get();}
-		Expect(25 /* "}" */);
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(50); Get();}
+		Expect(25);
 		TRY2(factory().endClass(), "Can not create class "+c) 
 }
 
 void Parser::System() {
-		Expect(_system);
-		Expect(_word);
+		Expect(13);
+		Expect(3);
 		TRY(factory().startSystem(narrow(t->val))) 
-		Expect(22 /* "{" */);
-		while (la->kind == _word) {
+		Expect(22);
+		while (la->kind == 3) {
 			std::string l1, r1; 
 			Ident(l1);
-			if (la->kind == 23 /* "[" */) {
+			if (la->kind == 23) {
 				ArrayDecl(l1);
-			} else if (la->kind == _word) {
+			} else if (la->kind == 3) {
 				Get();
 				TRY(factory().addInstance(l1, narrow(t->val))) 
-			} else if (la->kind == 29 /* "+=" */) {
+			} else if (la->kind == 29) {
 				Get();
 				Ident(r1);
 				gum::prm::System * system = static_cast<gum::prm::System*>(factory().getCurrent());
@@ -316,7 +316,7 @@ void Parser::System() {
 				   TRY(factory().setReferenceSlot(l1, r1)) 
 				} 
 				
-			} else if (la->kind == 27 /* "=" */) {
+			} else if (la->kind == 27) {
 				Get();
 				Ident(r1);
 				TRY( try {
@@ -331,18 +331,18 @@ void Parser::System() {
 				} )
 				
 			} else SynErr(51);
-			Expect(_semicolon);
+			Expect(8);
 		}
-		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(52); Get();}
-		Expect(25 /* "}" */);
+		while (!(la->kind == 0 || la->kind == 25)) {SynErr(52); Get();}
+		Expect(25);
 		TRY(factory().endSystem()) 
 }
 
 void Parser::Label(std::string& s) {
-		if (la->kind == _word) {
+		if (la->kind == 3) {
 			Get();
 			s = narrow(t->val); 
-		} else if (la->kind == _integer || la->kind == _float) {
+		} else if (la->kind == 1 || la->kind == 2) {
 			float val; 
 			Number(val);
 			std::stringstream sBuff; sBuff << val; s = sBuff.str(); 
@@ -350,14 +350,14 @@ void Parser::Label(std::string& s) {
 }
 
 void Parser::Reference(std::string type, std::string name, bool array) {
-		Expect(_semicolon);
+		Expect(8);
 		TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) 
 }
 
 void Parser::RefOrParam(std::string type, std::string name, bool array) {
 		if (isClassOrInterface(type)) {
 			Reference(type, name, array);
-		} else if (la->kind == _semicolon || la->kind == _default) {
+		} else if (la->kind == 8 || la->kind == 15) {
 			Parameter(type, name);
 		} else SynErr(54);
 }
@@ -365,119 +365,119 @@ void Parser::RefOrParam(std::string type, std::string name, bool array) {
 void Parser::Attribute(std::string type, std::string name) {
 		std::string p; bool error = false; 
 		TRY3(factory().startAttribute(type, name), "Can not create attribute "+name,error) 
-		if (la->kind == _dependson) {
+		if (la->kind == 14) {
 			Get();
 			CastIdent(p);
 			TRY3(factory().addParent(p), "Can not add parent "+p,error) 
-			while (la->kind == _comma) {
+			while (la->kind == 6) {
 				Get();
 				CastIdent(p);
 				TRY3(factory().addParent(p), "Can not add parent "+p,error) 
 			}
 		}
-		Expect(22 /* "{" */);
-		if (la->kind == 23 /* "[" */) {
+		Expect(22);
+		if (la->kind == 23) {
 			Get();
 			std::vector<float> cpt; float f; 
 			Number(f);
 			cpt.push_back(f); 
-			while (WeakSeparator(_comma,5,4) ) {
+			while (WeakSeparator(6,5,4) ) {
 				Number(f);
 				cpt.push_back(f); 
 			}
-			Expect(24 /* "]" */);
+			Expect(24);
 			TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) 
-		} else if (la->kind == _word || la->kind == 26 /* "*" */) {
+		} else if (la->kind == 3 || la->kind == 26) {
 			CPTRule(error);
-			while (la->kind == _word || la->kind == 26 /* "*" */) {
+			while (la->kind == 3 || la->kind == 26) {
 				CPTRule(error);
 			}
 		} else SynErr(55);
-		Expect(25 /* "}" */);
+		Expect(25);
 		TRY3(factory().endAttribute(), "Can not create attribute "+name,error) 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(56); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(56); Get();}
+		Expect(8);
 }
 
 void Parser::Aggregate(std::string type, std::string name) {
 		std::string func, s; std::vector<std::string> chains, labels; 
-		Expect(27 /* "=" */);
-		Expect(_word);
+		Expect(27);
+		Expect(3);
 		func = narrow(t->val); 
-		Expect(_LEFT_CAST);
+		Expect(18);
 		AggChains(chains);
-		ExpectWeak(_comma, 6);
+		ExpectWeak(6, 6);
 		AggLabels(labels);
-		Expect(_RIGHT_CAST);
+		Expect(19);
 		TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(57); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(57); Get();}
+		Expect(8);
 }
 
 void Parser::Functions(std::string type, std::string name) {
 		if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} 
-		Expect(28 /* "~" */);
-		Expect(_noisyOr);
-		Expect(_LEFT_CAST);
+		Expect(28);
+		Expect(17);
+		Expect(18);
 		std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; 
 		AggChains(chains);
-		Expect(_comma);
+		Expect(6);
 		NumberList(numbers);
-		if (la->kind == _comma) {
+		if (la->kind == 6) {
 			Get();
 			Number(leak);
-			if (la->kind == _comma) {
+			if (la->kind == 6) {
 				Get();
 				AggLabels(labels);
 			}
 		}
-		Expect(_RIGHT_CAST);
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(58); Get();}
-		Expect(_semicolon);
+		Expect(19);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(58); Get();}
+		Expect(8);
 		TRY2(factory().addNoisyOrCompound(name, chains, numbers, leak, labels), "Can not add function"+name) 
 }
 
 void Parser::Parameter(std::string type, std::string name) {
 		std::string l; 
-		if (la->kind == _default) {
+		if (la->kind == 15) {
 			Get();
 			Label(l);
 		}
 		TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) 
-		Expect(_semicolon);
+		Expect(8);
 }
 
 void Parser::CastIdent(std::string& s) {
 		std::string cast, open(gum::prm::ClassElement::LEFT_CAST()), close(gum::prm::ClassElement::RIGHT_CAST()); std::stringstream sBuff; 
-		if (la->kind == _LEFT_CAST) {
+		if (la->kind == 18) {
 			Get();
 			Ident(cast);
-			Expect(_RIGHT_CAST);
+			Expect(19);
 			sBuff << open << cast << close; 
 		}
-		Expect(_word);
+		Expect(3);
 		sBuff << narrow(t->val); 
-		while (la->kind == _dot) {
+		while (la->kind == 5) {
 			cast = ""; 
 			Get();
 			sBuff << '.'; 
-			if (la->kind == _LEFT_CAST) {
+			if (la->kind == 18) {
 				Get();
 				Ident(cast);
-				Expect(_RIGHT_CAST);
+				Expect(19);
 				sBuff << open << cast << close; 
 			}
-			Expect(_word);
+			Expect(3);
 			sBuff << narrow(t->val); 
 		}
 		s = sBuff.str(); 
 }
 
 void Parser::Number(float& val) {
-		if (la->kind == _integer) {
+		if (la->kind == 1) {
 			Get();
 			val=coco_atoi(t->val); 
-		} else if (la->kind == _float) {
+		} else if (la->kind == 2) {
 			Get();
 			val=coco_atof(t->val); 
 		} else SynErr(59);
@@ -488,125 +488,125 @@ void Parser::CPTRule(bool &error) {
 		std::string s; float f; 
 		CPTRuleValue(s);
 		labels.push_back(s); 
-		while (WeakSeparator(_comma,8,7) ) {
+		while (WeakSeparator(6,8,7) ) {
 			CPTRuleValue(s);
 			labels.push_back(s); 
 		}
-		Expect(_colon);
+		Expect(7);
 		Number(f);
 		values.push_back(f); 
-		while (WeakSeparator(_comma,5,9) ) {
+		while (WeakSeparator(6,5,9) ) {
 			Number(f);
 			values.push_back(f); 
 		}
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(60); Get();}
-		Expect(_semicolon);
+		while (!(la->kind == 0 || la->kind == 8)) {SynErr(60); Get();}
+		Expect(8);
 		TRY3(factory().setCPFByRule(labels, values), std::string("Problem with CPF"), error) 
 }
 
 void Parser::CPTRuleValue(std::string& s ) {
-		if (la->kind == _word) {
+		if (la->kind == 3) {
 			Get();
 			s = narrow(t->val); 
-		} else if (la->kind == 26 /* "*" */) {
+		} else if (la->kind == 26) {
 			Get();
 			s = "*"; 
 		} else SynErr(61);
 }
 
 void Parser::AggChains(std::vector<std::string>& chains ) {
-		if (la->kind == _word || la->kind == _LEFT_CAST) {
+		if (la->kind == 3 || la->kind == 18) {
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-		} else if (la->kind == 23 /* "[" */) {
+		} else if (la->kind == 23) {
 			Get();
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-			while (WeakSeparator(_comma,10,4) ) {
+			while (WeakSeparator(6,10,4) ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			Expect(24 /* "]" */);
-		} else if (la->kind == 22 /* "{" */) {
+			Expect(24);
+		} else if (la->kind == 22) {
 			Get();
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-			while (WeakSeparator(_comma,10,11) ) {
+			while (WeakSeparator(6,10,11) ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(62); Get();}
-			Expect(25 /* "}" */);
+			while (!(la->kind == 0 || la->kind == 25)) {SynErr(62); Get();}
+			Expect(25);
 		} else SynErr(63);
 }
 
 void Parser::AggLabels(std::vector<std::string>& labels ) {
-		if (la->kind == _word) {
+		if (la->kind == 3) {
 			Get();
 			labels.push_back(narrow(t->val)); 
-		} else if (la->kind == 23 /* "[" */) {
+		} else if (la->kind == 23) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			labels.push_back(narrow(t->val)); 
-			while (la->kind == _comma) {
+			while (la->kind == 6) {
 				Get();
-				Expect(_word);
+				Expect(3);
 				labels.push_back(narrow(t->val)); 
 			}
-			Expect(24 /* "]" */);
-		} else if (la->kind == 22 /* "{" */) {
+			Expect(24);
+		} else if (la->kind == 22) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			labels.push_back(narrow(t->val)); 
-			while (WeakSeparator(_comma,12,11) ) {
-				Expect(_word);
+			while (WeakSeparator(6,12,11) ) {
+				Expect(3);
 				labels.push_back(narrow(t->val)); 
 			}
-			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(64); Get();}
-			Expect(25 /* "}" */);
+			while (!(la->kind == 0 || la->kind == 25)) {SynErr(64); Get();}
+			Expect(25);
 		} else SynErr(65);
 }
 
 void Parser::NumberList(std::vector<float>& numbers ) {
 		float f; 
-		if (la->kind == _integer || la->kind == _float) {
+		if (la->kind == 1 || la->kind == 2) {
 			Number(f);
 			numbers.push_back(f); 
-		} else if (la->kind == 23 /* "[" */) {
+		} else if (la->kind == 23) {
 			Get();
 			Number(f);
 			numbers.push_back(f); 
-			while (WeakSeparator(_comma,5,4) ) {
+			while (WeakSeparator(6,5,4) ) {
 				Number(f);
 				numbers.push_back(f); 
 			}
-			Expect(24 /* "]" */);
+			Expect(24);
 		} else SynErr(66);
 }
 
 void Parser::ArrayDecl(std::string l1) {
 		std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; 
-		Expect(23 /* "[" */);
-		if (la->kind == _integer) {
+		Expect(23);
+		if (la->kind == 1) {
 			Get();
 			sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); 
 		}
-		Expect(24 /* "]" */);
-		if (la->kind == _word) {
+		Expect(24);
+		if (la->kind == 3) {
 			Get();
 			TRY(factory().addArray(l1, narrow(t->val), size)) 
-		} else if (la->kind == _dot) {
+		} else if (la->kind == 5) {
 			Get();
-			Expect(_word);
+			Expect(3);
 			std::string l2 = narrow(t->val); 
-			if (la->kind == 29 /* "+=" */) {
+			if (la->kind == 29) {
 				Get();
 				Ident(r1);
 				TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) 
-			} else if (la->kind == 27 /* "=" */) {
+			} else if (la->kind == 27) {
 				Get();
 				Ident(r1);
 				TRY( try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
