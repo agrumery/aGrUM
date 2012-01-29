@@ -123,7 +123,7 @@ int main (int argc, char *argv[]) {
       session.fail = false;
       
     } catch (gum::Exception& e) {
-      std::cerr << "Something went wrong: " << e.getContent();
+      std::cerr << "Something went wrong: " << e.content();
       session.fail = true;
       
     } catch (std::string&) { // Syntax error, error message already printed

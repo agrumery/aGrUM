@@ -21,7 +21,7 @@ import numpy
         PyErr_SetString(PyExc_RuntimeError, "C++ Bad Cast");
         SWIG_fail;
     } catch(gum::NotFound &e) {
-        PyErr_SetString(PyExc_IndexError, e.getContent().c_str());
+        PyErr_SetString(PyExc_IndexError, e.content().c_str());
         SWIG_fail;
     } catch(gum::DefaultInLabel &e) {
         gum::DefaultInLabel *ecopy = new gum::DefaultInLabel(e);
@@ -105,7 +105,7 @@ import numpy
             SWIG_Python_ExceptionType(SWIGTYPE_p_gum__OutOfBounds), err);
         SWIG_fail;
     } catch(gum::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.getContent().c_str());
+        PyErr_SetString(PyExc_Exception, e.content().c_str());
         SWIG_fail;
     } catch(std::exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
@@ -170,7 +170,7 @@ import numpy
 %extend gum::Exception {
     const char * __str__()
     {
-        return self->getContent().c_str();
+        return self->content().c_str();
     }
 }
 

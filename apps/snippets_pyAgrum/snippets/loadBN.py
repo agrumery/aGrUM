@@ -19,6 +19,7 @@
 #IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
+
 import sys,os
 
 import pyAgrum as gum
@@ -27,35 +28,35 @@ from pyAgrum_header import pyAgrum_header
 from progress_bar import ProgressBar
 
 def module_help(exit_value=1):
-	"""
-	defines help viewed if args are not OK on command line, and exit with exit_value
-	"""
-	print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
-	sys.exit(exit_value)
-	
+    """
+    defines help viewed if args are not OK on command line, and exit with exit_value
+    """
+    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
+    sys.exit(exit_value)
+    
 def doLoadBN(s):
-	# you could simply do that 
-	# bn=gum.loadBN("test")
-	# but listeners are fun !!
-	progressbar=ProgressBar("Loading "+s,0,100,mode='dynamic', char='-')
-	
-	def local_update(pourcent):
-		progressbar.update_amount(pourcent)
-		progressbar.display()
-		if pourcent==100: print
-	
-	x=0
-	def local2(pourcent):
-		x=x+1
-		
-	return gum.loadBN(s,[local_update,local2])
-	
+    # you could simply do that 
+    # bn=gum.loadBN("test")
+    # but listeners are fun !!
+    
+    title=os.path.basename(s)+" ("+'{0:,d}'.format(os.path.getsize(s)/1024).replace(',',' ')+" Ko)"
+    progressbar=ProgressBar(title,0,100,mode='dynamic', char='-')
+    
+    def local_update(pourcent):
+        progressbar.update_amount(pourcent)
+        progressbar.display()
+        if pourcent==100: print
+    
+    return gum.loadBN(s,local_update)
+    
 
 if __name__=="__main__":
-	pyAgrum_header(2012)
+    pyAgrum_header(2012)
 
-	if len(sys.argv)<2:
-			module_help()
+    if len(sys.argv)<2:
+            module_help()
 
-	bn=doLoadBN(sys.argv[1])
-	print(bn)
+    bn=doLoadBN(sys.argv[1])
+    print(bn)
+    
+    
