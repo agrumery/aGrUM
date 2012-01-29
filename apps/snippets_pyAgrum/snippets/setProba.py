@@ -20,14 +20,23 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-from pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
+from gumLib.pyAgrum_header import pyAgrum_header
 
 pyAgrum_header(2011)
 
 bn=gum.loadBN("bn.bif")
 
-seq=bn.getTopologicalOrder()
+print bn.variable(0).name()
+# a
 
-for i in range(0,len(bn)):
-    print "%d : %d (%s)"%(i,seq[i],bn.variable(seq[i]).name())
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 0.0250064  0.974994 ]
+
+bn.cpt(0)[{'e':0,'f':1}]=[1,0]
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 1. 0. ]
+
+bn.cpt(0)[{'a':0, 'e':0,'f':1}]=12
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 12. 0. ]

@@ -91,7 +91,6 @@ class CSVGenerator:
             (nod,par)=self.caching_nameAndParents(bn,node_id)
             self._sample[nod] = CSVGenerator.draw(self.caching_probas(bn,node_id,nod,par))
 
-        print(seq," => ",self._sample)
         return self._sample
 
     def proceed(self,name_in, name_out, n,visible):
@@ -104,7 +103,7 @@ class CSVGenerator:
         else:
           bn=name_in
 
-        seq=bn.getTopologicalOrder()
+        seq=bn.topologicalOrder()
         writer = csv.writer(open(name_out,'wb'))
 
         if visible:

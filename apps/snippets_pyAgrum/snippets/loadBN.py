@@ -24,8 +24,8 @@ import sys,os
 
 import pyAgrum as gum
 
-from pyAgrum_header import pyAgrum_header
-from progress_bar import ProgressBar
+from gumLib.pyAgrum_header import pyAgrum_header
+from gumLib.progress_bar import ProgressBar
 
 def module_help(exit_value=1):
     """
