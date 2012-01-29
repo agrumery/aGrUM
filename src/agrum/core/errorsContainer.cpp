@@ -34,165 +34,159 @@
 
 namespace gum {
 
-  ParseError::ParseError(bool is_error, const string& msg, int line) : 
-    is_error(is_error), line(line), colomn(-1), msg(msg), filename(""), code("")
-  {}
-  
-  ParseError::ParseError(bool is_error, const string& msg, const string& filename, int line, int col) : 
-    is_error(is_error), line(line), colomn(col), msg(msg), filename(filename), code("")
-  {}
-  
-  ParseError::ParseError(bool is_error, const string& msg, const string& filename, const string& code, int line, int col) : 
-    is_error(is_error), line(line), colomn(col), msg(msg), filename(filename), code(code)
-  {}
-  
+  ParseError::ParseError ( bool is_error, const string& msg, int line ) :
+      is_error ( is_error ), line ( line ), colomn ( -1 ), msg ( msg ), filename ( "" ), code ( "" ) {}
+
+  ParseError::ParseError ( bool is_error, const string& msg, const string& filename, int line, int col ) :
+      is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( "" ) {}
+
+  ParseError::ParseError ( bool is_error, const string& msg, const string& filename, const string& code, int line, int col ) :
+      is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( code ) {}
+
   ///
-  string ParseError::toString() const
-  {
+  string ParseError::toString() const {
     ostringstream s;
+
     if ( ! filename.empty() )
       s << filename << ":" << line << ": ";
     else
       s << line << " : ";
+
     s << ( is_error ? "error" : "warning" ) << " : " << msg;
+
     return s.str();
   }
-  
+
   ///
-  string ParseError::toElegantString() const
-  {
+  string ParseError::toElegantString() const {
     if ( filename.empty() )
       return toString();
-    
+
     if ( code.empty() ) {
-      ifstream ifs( filename.c_str() );
-      for ( int i = 0 ; i < line ; i++ ) 
-        getline( ifs, code );
+      ifstream ifs ( filename.c_str() );
+
+      for ( int i = 0 ; i < line ; i++ )
+        getline ( ifs, code );
     }
-    
+
     ostringstream s;
+
     s << filename << ":" << line << "\n";
     s << code << "\n";
+
     if ( colomn > 0 )
-      s << string(colomn - 1,' ') << "^";
+      s << string ( colomn - 1,' ' ) << "^";
+
     s << ( is_error ? "error" : "warning" ) << " : " << msg << "\n";
-    
+
     return s.str();
   }
-  
+
   /// Return the i-th error.
   /// May throw an exception if i >= count().
-  ParseError ErrorsContainer::error( int i ) const
-  {
+  ParseError ErrorsContainer::error ( int i ) const {
     if ( count() > i )
       return errors[i]; // May throw an error if i >= count().
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR ( OutOfBounds, "Index out of bound." );
     }
   }
-  
-  ParseError ErrorsContainer::last() const
-  {
+
+  ParseError ErrorsContainer::last() const {
     if ( count() > 0 )
       return errors[count() - 1];
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR ( OutOfBounds, "Index out of bound." );
     }
   }
-  
-/* ************************************************************************** */
 
-  ErrorsContainer::ErrorsContainer()
-  {
+  /* ************************************************************************** */
+
+  ErrorsContainer::ErrorsContainer() {
     error_count = 0;
     warning_count = 0;
   }
 
-  ErrorsContainer::ErrorsContainer( const ErrorsContainer & cont )
-  {
-    
+  ErrorsContainer::ErrorsContainer ( const ErrorsContainer & cont ) {
+
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
     errors = cont.errors;
   }
 
-  ErrorsContainer ErrorsContainer::operator+( const ErrorsContainer & cont ) const
-  {
+  ErrorsContainer ErrorsContainer::operator+ ( const ErrorsContainer & cont ) const {
     ErrorsContainer newCont;
-    
+
     newCont.error_count = this->error_count + cont.error_count;
     newCont.warning_count = this->warning_count + cont.warning_count;
-    std::copy( this->errors.begin(), this->errors.end(), newCont.errors.begin() );
-    std::copy( cont.errors.begin(), cont.errors.end(), newCont.errors.end() );
-    
+    std::copy ( this->errors.begin(), this->errors.end(), newCont.errors.begin() );
+    std::copy ( cont.errors.begin(), cont.errors.end(), newCont.errors.end() );
+
     return newCont;
   }
-  
-  ErrorsContainer ErrorsContainer::operator=( const ErrorsContainer & cont )
-  {
+
+  ErrorsContainer ErrorsContainer::operator= ( const ErrorsContainer & cont ) {
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
     errors = cont.errors;
-    
+
     return *this;
   }
-      
-  ErrorsContainer ErrorsContainer::operator+=( const ErrorsContainer & cont )
-  {
+
+  ErrorsContainer ErrorsContainer::operator+= ( const ErrorsContainer & cont ) {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
+
     for ( int i = 0 ; i < cont.count() ; i++ )
-        errors.push_back( cont.error(i) );    
+      errors.push_back ( cont.error ( i ) );
+
     return *this;
   }
-      
-  void ErrorsContainer::showErrors() const
-  {
-    if ( count() == 0 ) 
+
+  void ErrorsContainer::showErrors() const {
+    if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      if ( error(i).is_error )
-        cerr << error(i).toString() << endl;
+      if ( error ( i ).is_error )
+        cerr << error ( i ).toString() << endl;
     }
   }
-  
-  
-  void ErrorsContainer::showErrorsAndWarnings() const
-  {
-    if ( count() == 0 ) 
+
+
+  void ErrorsContainer::showErrorsAndWarnings() const {
+    if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ )
-      cerr << error(i).toString() << endl;
+      cerr << error ( i ).toString() << endl;
   }
-  
-      
-  void ErrorsContainer::showElegantErrors() const
-  {
-    if ( count() == 0 ) 
+
+
+  void ErrorsContainer::showElegantErrors() const {
+    if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      if ( error(i).is_error ) {
-        cerr << error(i).toElegantString();
+      if ( error ( i ).is_error ) {
+        cerr << error ( i ).toElegantString();
         cerr << endl;
       }
     }
   }
 
   void ErrorsContainer::showElegantErrorsAndWarnings() const {
-    if ( count() == 0 ) 
+    if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      cerr << error(i).toElegantString();
+      cerr << error ( i ).toElegantString();
       cerr << endl;
     }
-  }  
-  
+  }
+
 }//namespace gum
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
