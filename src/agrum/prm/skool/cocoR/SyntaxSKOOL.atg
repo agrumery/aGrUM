@@ -85,7 +85,7 @@ private:
               // Construct complete filePath
               dirpath = (*path) + dirname;
               dirFound = Directory::isDir(dirpath);
-              exit;
+              break;
           }
         }
 

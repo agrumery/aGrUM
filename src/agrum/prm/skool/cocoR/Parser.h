@@ -127,7 +127,6 @@ private:
     void importDirID( std::string dirID )
     {
         using namespace std;
-        GUM_TRACE("import DirID "<<dirID);
 
         string dirname = dirID, dirpath;
         bool dirFound = false;
@@ -158,11 +157,14 @@ private:
         }
 
         // Search filename in each path stored in __class_path
+        if ( ! dirFound ) {
           for (vector<string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
               // Construct complete filePath
               dirpath = (*path) + dirname;
               dirFound = Directory::isDir(dirpath);
+              break;
           }
+        }
 
         // If it is found, import all files in.
         if (dirFound)
@@ -175,7 +177,6 @@ private:
     void importDir( std::string dirpath )
     {
         using namespace std;
-        GUM_TRACE("import dir "<<dirpath);
 
         // Update current directory
         Directory oldCurrentDirectory = __current_directory;
@@ -183,7 +184,7 @@ private:
 
         const vector<string> & entries = __current_directory.entries();
         for ( vector<string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
-            if ((*i)[0]== '.') //( (*i) == "." || (*i) == ".." )
+            if ((*i)[0]== '.') //"." or ".." or ".svn" or any hidden directories...
                 continue;
 
             if ( Directory::isDir(dirpath+(*i)) )
@@ -199,7 +200,6 @@ private:
     void importFile( std::string filepath )
     {
         using namespace std;
-        GUM_TRACE("import file "<<filepath);
 
         // If we have already import this file, skip it.
         // (like filepath is always absolute, there is no conflict)
@@ -230,7 +230,6 @@ private:
     void import( std::string fileID ) {
         using namespace std;
 
-        GUM_TRACE("import "<<fileID);
         // Si on inclut un r?(C)pertoire entier
         size_t starIndex = fileID.find_last_of('*');
         if ( starIndex != string::npos ) {
