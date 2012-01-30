@@ -7,24 +7,24 @@
 
 
 //! \brief The QsciLexerSkoor class encapsulates the Scintilla Skoor lexer.
-class QsciLexerSkoor : public QsciLexerJava
-{
-	Q_OBJECT
 
-public:
-	//! Construct a QsciLexerSkoor with parent \a parent.  \a parent is
-	//! typically the QsciScintilla instance.
-	QsciLexerSkoor(QObject * parent = 0);
+class QsciLexerSkoor : public QsciLexerJava {
+    Q_OBJECT
 
-	//! Destroys the QsciLexerSkoor instance.
-	virtual ~QsciLexerSkoor();
+  public:
+    //! Construct a QsciLexerSkoor with parent \a parent.  \a parent is
+    //! typically the QsciScintilla instance.
+    QsciLexerSkoor( QObject * parent = 0 );
 
-	//! Returns the name of the language.
-	const char * language () const;
+    //! Destroys the QsciLexerSkoor instance.
+    virtual ~QsciLexerSkoor();
 
-	//! Returns the set of keywords for the keyword set \a set recognised
-	//! by the lexer as a space separated string.
-	const char * keywords (int set) const;
+    //! Returns the name of the language.
+    const char * language() const;
+
+    //! Returns the set of keywords for the keyword set \a set recognised
+    //! by the lexer as a space separated string.
+    const char * keywords( int set ) const;
 };
 
 #endif // QSCILEXERSKOOR_H

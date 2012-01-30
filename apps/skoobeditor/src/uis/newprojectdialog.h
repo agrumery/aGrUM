@@ -4,25 +4,25 @@
 #include <QDialog>
 
 namespace Ui {
-    class NewProjectDialog;
+
+  class NewProjectDialog;
 }
 
-class NewProjectDialog : public QDialog
-{
+class NewProjectDialog : public QDialog {
     Q_OBJECT
 
-public:
-    explicit NewProjectDialog(QWidget *parent = 0);
+  public:
+    explicit NewProjectDialog( QWidget *parent = 0 );
     ~NewProjectDialog();
 
-	QString projectName();
-	QString projectDir();
+    QString projectName();
+    QString projectDir();
 
-protected slots:
-	void on_selectDirectoryButton_clicked();
-	void on_buttonBox_accepted();
+  protected slots:
+    void on_selectDirectoryButton_clicked();
+    void on_buttonBox_accepted();
 
-private:
+  private:
     Ui::NewProjectDialog *ui;
 };
 

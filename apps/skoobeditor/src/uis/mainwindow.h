@@ -6,15 +6,22 @@
 #include <QCloseEvent>
 
 namespace Ui {
-    class MainWindow;
+
+  class MainWindow;
 }
 
 class FileController;
+
 class EditController;
+
 class SearchController;
+
 class ViewController;
+
 class ProjectController;
+
 class BuildController;
+
 class Properties;
 
 /**
@@ -24,41 +31,47 @@ class Properties;
 
   This class only handles the quit action.
   */
-class MainWindow : public QMainWindow
-{
+
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
-	explicit MainWindow(QWidget * parent = 0);
+  public:
+    explicit MainWindow( QWidget * parent = 0 );
     ~MainWindow();
 
-protected:
-	void closeEvent( QCloseEvent * event );
+  protected:
+    void closeEvent( QCloseEvent * event );
 
-protected slots:
-	void showHelp();
-	void showAboutDialog();
+  protected slots:
+    void showHelp();
+    void showAboutDialog();
 
-private:
-	Ui::MainWindow * ui;
+  private:
+    Ui::MainWindow * ui;
 
-	FileController * fc;
-	EditController * ec;
-	SearchController * sc;
-	ViewController * vc;
-	ProjectController * pc;
-	BuildController * bc;
+    FileController * fc;
+    EditController * ec;
+    SearchController * sc;
+    ViewController * vc;
+    ProjectController * pc;
+    BuildController * bc;
 
-	struct PrivateData;
-	PrivateData * d;
+    struct PrivateData;
+    PrivateData * d;
 
-	friend class FileController;
-	friend class EditController;
-	friend class SearchController;
-	friend class ViewController;
-	friend class ProjectController;
-	friend class BuildController;
-	friend class Properties;
+    friend class FileController;
+
+    friend class EditController;
+
+    friend class SearchController;
+
+    friend class ViewController;
+
+    friend class ProjectController;
+
+    friend class BuildController;
+
+    friend class Properties;
 };
 
 #endif // MAINWINDOW_H

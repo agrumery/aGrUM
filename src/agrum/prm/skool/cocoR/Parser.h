@@ -123,32 +123,33 @@ private:
       return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
              factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
     }
-    
+
     void importDirID( std::string dirID )
     {
         using namespace std;
-        
+        GUM_TRACE("import DirID "<<dirID);
+
         string dirname = dirID, dirpath;
         bool dirFound = false;
 
         // Create filename
         replace(dirname.begin(), dirname.end(), '.', '/');
         dirname += "/";
-        
+
         // Search in current directory.
         if ( __current_directory.isValid() ) {
             dirpath = __current_directory.absolutePath() + dirname;
             dirFound = Directory::isDir(dirpath);
         }
-        
+
         // Search in root package directory.
         if ( ! dirFound && ! __package.empty() ) {
             int cpt = std::count(__package.begin(), __package.end(), '.');
             string cd = __current_directory.absolutePath();
             size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
             for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
-                index = cd.find_last_of('/', index - 1);            
-            
+                index = cd.find_last_of('/', index - 1);
+
             if ( index != string::npos ) {
                 string rootDir = cd.substr(0, index+1); // with '/' at end
                 dirpath = rootDir + dirname;
@@ -157,11 +158,11 @@ private:
         }
 
         // Search filename in each path stored in __class_path
-        for (vector<string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
-            // Construct complete filePath
-            dirpath = (*path) + dirname;
-            dirFound = Directory::isDir(dirpath);
-        }
+          for (vector<string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
+              // Construct complete filePath
+              dirpath = (*path) + dirname;
+              dirFound = Directory::isDir(dirpath);
+          }
 
         // If it is found, import all files in.
         if (dirFound)
@@ -170,33 +171,35 @@ private:
         else
             SemErr("import not found");
     }
-    
+
     void importDir( std::string dirpath )
     {
         using namespace std;
-        
+        GUM_TRACE("import dir "<<dirpath);
+
         // Update current directory
         Directory oldCurrentDirectory = __current_directory;
         __current_directory = Directory(dirpath);
-        
+
         const vector<string> & entries = __current_directory.entries();
         for ( vector<string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
-            if ( (*i) == "." || (*i) == ".." )
+            if ((*i)[0]== '.') //( (*i) == "." || (*i) == ".." )
                 continue;
-            
+
             if ( Directory::isDir(dirpath+(*i)) )
                 importDir( dirpath+(*i)+"/" );
             else if ( (*i).substr( (*i).find_last_of('.') ) == ".skool" ) // if .skool
                 importFile( dirpath+(*i) );
         }
-        
+
         // Reset previous current directory
         __current_directory = oldCurrentDirectory;
     }
-    
+
     void importFile( std::string filepath )
     {
         using namespace std;
+        GUM_TRACE("import file "<<filepath);
 
         // If we have already import this file, skip it.
         // (like filepath is always absolute, there is no conflict)
@@ -204,7 +207,7 @@ private:
             return;
         // Remember we have found it.
         __imports.insert(filepath);
-        
+
         // We parse it
         Scanner s(filepath.c_str());
         Parser p(&s);
@@ -223,15 +226,17 @@ private:
         // We add warnings and errors to this
         __errors += p.__errors;
     }
-    
+
     void import( std::string fileID ) {
         using namespace std;
-        
+
+        GUM_TRACE("import "<<fileID);
         // Si on inclut un r?(C)pertoire entier
         size_t starIndex = fileID.find_last_of('*');
-        if ( starIndex != string::npos )
+        if ( starIndex != string::npos ) {
             return importDirID(fileID.substr(0,starIndex-1));
-        
+        }
+
         string filename = fileID, filepath;
         ifstream file_test;
         bool fileFound = false;
@@ -239,7 +244,7 @@ private:
         // Create filename
         replace(filename.begin(), filename.end(), '.', '/');
         filename += ".skool";
-        
+
         // Search in current directory.
         if ( __current_directory.isValid() ) {
             filepath = __current_directory.absolutePath() + filename;
@@ -249,15 +254,15 @@ private:
                 fileFound = true;
             }
         }
-        
+
         // Search in root package directory.
         if ( ! fileFound && ! __package.empty() ) {
             int cpt = std::count(__package.begin(), __package.end(), '.');
             string cd = __current_directory.absolutePath();
             size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
             for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
-                index = cd.find_last_of('/', index - 1);            
-            
+                index = cd.find_last_of('/', index - 1);
+
             if ( index != string::npos ) {
                 string rootDir = cd.substr(0, index+1); // with '/' at end
                 filepath = rootDir + filename;
@@ -302,7 +307,7 @@ private:
         }
       }
     }
-    
+
 public:
     // Set the parser factory.
     void setFactory(gum::prm::PRMFactory* f) {
@@ -321,26 +326,26 @@ public:
     void setClassPath(const std::vector<std::string>& class_path) {
       __class_path = class_path;
     }
-    
+
     // Must be an absolute path
     void setCurrentDirectory( const std::string & cd ) {
         __current_directory = Directory(cd);
         if ( ! __current_directory.isValid() )
           Warning( widen("gum::skool::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
     }
-    
+
     // Get files imports.
     const gum::Set<std::string>& getImports() const {
       return __imports;
     }
-    
+
     // Add this import to this parser.
     void addImport(const std::string& import) {
         if (not __imports.exists(import)) {
           __imports.insert(import);
         }
     }
-    
+
 
 //##############################################################################
 //

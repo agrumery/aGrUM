@@ -149,7 +149,8 @@ namespace gum {
           {
             // FILLING PARAMS
             const double t[2] = {0.5, 0.5};
-            int n = 2;const std::vector<double> v( t, t + n );
+            int n = 2;
+            const std::vector<double> v( t, t + n );
             p1.fillWith( v );
           }
 
@@ -157,7 +158,8 @@ namespace gum {
           {
             // FILLING PARAMS
             const double t[2] = {0.3, 0.7};
-            int n = 2;const std::vector<double> v( t, t + n );
+            int n = 2;
+            const std::vector<double> v( t, t + n );
             p2.fillWith( v );
           }
 
@@ -165,7 +167,8 @@ namespace gum {
           {
             // FILLING PARAMS
             const double t[4] = {0.1, 0.9, 0.9, 0.1};
-            int n = 4;const std::vector<double> v( t, t + n );
+            int n = 4;
+            const std::vector<double> v( t, t + n );
             p3.fillWith( v );
           }
 
@@ -173,7 +176,8 @@ namespace gum {
           {
             // FILLING PARAMS
             const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-            int n = 8;const std::vector<double> v( t, t + n );
+            int n = 8;
+            const std::vector<double> v( t, t + n );
             p4.fillWith( v );
           }
 
@@ -183,7 +187,8 @@ namespace gum {
             const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
                                   0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
                                  };
-            int n = 16;const std::vector<double> v( t, t + n );
+            int n = 16;
+            const std::vector<double> v( t, t + n );
             p5.fillWith( v );
           }
 

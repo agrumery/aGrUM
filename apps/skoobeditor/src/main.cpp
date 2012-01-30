@@ -32,26 +32,26 @@ et l'auto-complétion contextuelle.
 
 */
 
-int main(int argc, char *argv[]) try {
+int main( int argc, char *argv[] ) try {
 
-	QApplication a(argc, argv);
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-	QCoreApplication::setOrganizationName("Lip6");
-	QCoreApplication::setApplicationName("SkoobEditor");
+  QApplication a( argc, argv );
+  QTextCodec::setCodecForTr( QTextCodec::codecForName( "UTF-8" ) );
+  QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "UTF-8" ) );
+  QCoreApplication::setOrganizationName( "Lip6" );
+  QCoreApplication::setApplicationName( "SkoobEditor" );
 
-	MainWindow w;
-	w.showMaximized();
+  MainWindow w;
+  w.showMaximized();
 
-	return a.exec();
+  return a.exec();
 
 } catch ( const gum::Exception & err ) {
-	std::cerr << err.getContent() << std::endl;
-	return 1;
+  std::cerr << err.content() << std::endl;
+  return 1;
 } catch ( const std::string & err ) {
-	std::cerr << err << std::endl;
-	return 2;
+  std::cerr << err << std::endl;
+  return 2;
 } catch ( const QString & err ) {
-	std::cerr << err.data() << std::endl;
-	return 3;
+  std::cerr << err.data() << std::endl;
+  return 3;
 }
