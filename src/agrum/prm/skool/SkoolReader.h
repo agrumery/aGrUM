@@ -76,7 +76,7 @@ public:
     Size warnings() const;
 
     ///
-    const ErrorsContainer & getErrorsContainer() const;
+    const ErrorsContainer & errorsContainer() const;
 
     /// line of ith error or warning
     unsigned int errLine( unsigned int i ) const;

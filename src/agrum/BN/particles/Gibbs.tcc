@@ -329,7 +329,7 @@ namespace gum {
     void Gibbs<T_DATA>::initParticle() {
       initRandom();
 
-      const Sequence<NodeId>& topo = this->bn().getTopologicalOrder();
+      const Sequence<NodeId>& topo = this->bn().topologicalOrder();
 
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence

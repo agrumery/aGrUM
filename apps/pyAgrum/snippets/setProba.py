@@ -21,8 +21,22 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 
 import pyAgrum as gum
+from gumLib.pyAgrum_header import pyAgrum_header
 
-bn=gum.BayesNet()
-bn.loadDSL("alarm.dsl")
+pyAgrum_header(2011)
 
-print bn
+bn=gum.loadBN("bn.bif")
+
+print bn.variable(0).name()
+# a
+
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 0.0250064  0.974994 ]
+
+bn.cpt(0)[{'e':0,'f':1}]=[1,0]
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 1. 0. ]
+
+bn.cpt(0)[{'a':0, 'e':0,'f':1}]=12
+print bn.cpt(0)[{'e':0,'f':1}]
+# [ 12. 0. ]

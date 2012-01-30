@@ -4,11 +4,14 @@
 #include "abstractparser.h"
 
 namespace gum {
-	namespace prm {
-		namespace skool {
-			class SkoolReader;
-		}
-	}
+
+  namespace prm {
+
+    namespace skool {
+
+      class SkoolReader;
+    }
+  }
 }
 
 /**
@@ -16,19 +19,19 @@ namespace gum {
  * It send a finished() signal when done.
  * When done, you can retrieve the SkoolReader.
  */
-class SkoolInterpretation : public AbstractParser
-{
-	Q_OBJECT
 
-	gum::prm::skool::SkoolReader * m_reader;
-	mutable bool prmChanged;
+class SkoolInterpretation : public AbstractParser {
+    Q_OBJECT
 
-public:
-	SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent );
-	~SkoolInterpretation();
+    gum::prm::skool::SkoolReader * m_reader;
+    mutable bool prmChanged;
 
-protected:
-	void run();
+  public:
+    SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent );
+    ~SkoolInterpretation();
+
+  protected:
+    void run();
 };
 
 #endif // SKOOLINTERPRETATION_H

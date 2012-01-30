@@ -185,7 +185,7 @@ namespace gum {
     bool hasUndirectedCycle() const;
     
     /// returns the partial graph formed by the nodes given in parameter
-    virtual UndiGraph getPartialUndiGraph( NodeSet nodesSet );
+    virtual UndiGraph partialUndiGraph( NodeSet nodesSet );
 
     /// @}
     

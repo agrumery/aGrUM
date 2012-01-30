@@ -20,6 +20,8 @@
 
 #include <iostream>
 
+#include <clocale>
+
 #define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
 
 #include <agrum/BN/BayesNet.h>
@@ -29,6 +31,11 @@
 
 int main( void ) {
   try {
+		
+		std::cout<<"Locale is: "<<std::locale("")<<std::endl;
+// 		std::locale::globale(std::locale("Fr_FR"));
+		std::cout<<"Locale is: "<<std::locale("")<<std::endl;
+		
     gum::BayesNet<float> bn;
     gum::BIFReader<float> reader( &bn, GET_PATH_STR( Diabetes.bif ) );
 

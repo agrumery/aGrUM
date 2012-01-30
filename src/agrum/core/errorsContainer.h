@@ -72,7 +72,7 @@ namespace gum {
       
       /// Return the i-th error.
       /// May throw an exception if i >= count().
-      ParseError getError( int i ) const;
+      ParseError error( int i ) const;
       ParseError last() const;
       
       /// Add an error.
@@ -98,7 +98,7 @@ namespace gum {
       void Exception ( const std::wstring& filename, const wchar_t *msg );
 
       // Deprecated.
-      // Use getError(i)->method().
+      // Use error(i)->method().
       bool is_error( int i ) const;
       int line( int i ) const;
       int col( int i ) const;

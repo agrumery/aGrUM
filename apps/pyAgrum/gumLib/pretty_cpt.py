@@ -94,9 +94,9 @@ def pretty_bn(aBN):
   else:
     bn=aBN
 
-  seq=bn.getTopologicalOrder()
-  for i in range(len(bn)):
-    pretty_cpt(bn.cpt(seq[i]))
+  seq=bn.topologicalOrder()
+  for nod in seq:
+    pretty_cpt(bn.cpt(nod))
   print("")
 
 if __name__=="__main__":

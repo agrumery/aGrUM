@@ -99,12 +99,12 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 
 void Parser::BIF() {
 		NETWORK();
-		while (la->kind == 9 || la->kind == 16) {
-			if (la->kind == 9) {
-				while (!(la->kind == 0 || la->kind == 9)) {SynErr(26); Get();}
+		while (la->kind == 9 /* "variable" */ || la->kind == 16 /* "probability" */) {
+			if (la->kind == 9 /* "variable" */) {
+				while (!(la->kind == _EOF || la->kind == 9 /* "variable" */)) {SynErr(26); Get();}
 				VARIABLE();
 			} else {
-				while (!(la->kind == 0 || la->kind == 16)) {SynErr(27); Get();}
+				while (!(la->kind == _EOF || la->kind == 16 /* "probability" */)) {SynErr(27); Get();}
 				PROBA();
 			}
 		}
@@ -114,18 +114,18 @@ void Parser::NETWORK() {
 		std::string name_of_network;
 		factory().startNetworkDeclaration();
 		
-		Expect(6);
-		if (la->kind == 1) {
+		Expect(6 /* "network" */);
+		if (la->kind == _ident) {
 			IDENT(name_of_network);
-		} else if (la->kind == 4) {
+		} else if (la->kind == _string) {
 			STRING(name_of_network);
 		} else SynErr(28);
 		factory().addNetworkProperty("name", name_of_network); 
-		Expect(7);
-		while (la->kind == 23) {
+		Expect(7 /* "{" */);
+		while (la->kind == 23 /* "property" */) {
 			PROPERTY();
 		}
-		Expect(8);
+		Expect(8 /* "}" */);
 		factory().endNetworkDeclaration(); 
 }
 
@@ -135,11 +135,11 @@ void Parser::VARIABLE() {
 		int nbrMod;
 		factory().startVariableDeclaration();
 		
-		Expect(9);
+		Expect(9 /* "variable" */);
 		IDENT(name_of_var);
 		TRY( factory().variableName(name_of_var)); 
-		Expect(7);
-		while (la->kind == 23) {
+		Expect(7 /* "{" */);
+		while (la->kind == 23 /* "property" */) {
 			PROPERTY();
 		}
 		LABELIZE_VAR(nbrMod);
@@ -149,35 +149,35 @@ void Parser::VARIABLE() {
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+name_of_var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+name_of_var);
 		
-		while (la->kind == 23) {
+		while (la->kind == 23 /* "property" */) {
 			PROPERTY();
 		}
-		Expect(8);
+		Expect(8 /* "}" */);
 }
 
 void Parser::PROBA() {
-		Expect(16);
+		Expect(16 /* "probability" */);
 		std::string var;
 		std::vector<float> proba;
 		std::vector<std::string> parents;
 		bool error_on_variable=false;
 		
-		Expect(17);
+		Expect(17 /* "(" */);
 		IDENT(var);
-		try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.getType());}
+		try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.type());}
 		TRY(factory().startParentsDeclaration(var));
 		
-		if (la->kind == 18) {
+		if (la->kind == 18 /* "|" */) {
 			Get();
 			LISTE_PARENTS(parents);
 		}
-		Expect(19);
+		Expect(19 /* ")" */);
 		TRY(factory().endParentsDeclaration()); 
-		Expect(7);
-		while (la->kind == 23) {
+		Expect(7 /* "{" */);
+		while (la->kind == 23 /* "property" */) {
 			PROPERTY();
 		}
-		if (la->kind == 20) {
+		if (la->kind == 20 /* "table" */) {
 			RAW_PROBA(proba);
 			if (! error_on_variable) {
 			 TRY(factory().startRawProbabilityDeclaration(var));
@@ -189,58 +189,58 @@ void Parser::PROBA() {
 			 TRY(factory().endRawProbabilityDeclaration());
 			}
 			
-			Expect(14);
-		} else if (la->kind == 17 || la->kind == 21) {
+			Expect(14 /* ";" */);
+		} else if (la->kind == 17 /* "(" */ || la->kind == 21 /* "default" */) {
 			FACTORIZED_PROBA(var,parents);
 		} else SynErr(29);
-		Expect(8);
+		Expect(8 /* "}" */);
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(1);
+		Expect(_ident);
 		name=narrow(t->val);  
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(4);
+		Expect(_string);
 		str=narrow(t->val); 
 }
 
 void Parser::PROPERTY() {
 		std::string name_of_prop,content; float val; 
-		Expect(23);
+		Expect(23 /* "property" */);
 		IDENT(name_of_prop);
-		if (la->kind == 24) {
+		if (la->kind == 24 /* "=" */) {
 			Get();
 			STRING(content);
-			Expect(14);
-		} else if (la->kind == 5) {
+			Expect(14 /* ";" */);
+		} else if (la->kind == _largestring) {
 			Get();
-		} else if (la->kind == 1) {
+		} else if (la->kind == _ident) {
 			IDENT(content);
-			Expect(14);
-		} else if (la->kind == 2 || la->kind == 3) {
+			Expect(14 /* ";" */);
+		} else if (la->kind == _integer || la->kind == _number) {
 			FLOAT(val);
-			Expect(14);
+			Expect(14 /* ";" */);
 		} else SynErr(30);
 		Warning("Properties are not supported yet"); 
 }
 
 void Parser::LABELIZE_VAR(int& nbrMod) {
-		Expect(10);
-		Expect(11);
-		Expect(12);
+		Expect(10 /* "type" */);
+		Expect(11 /* "discrete" */);
+		Expect(12 /* "[" */);
 		NBR(nbrMod);
-		Expect(13);
+		Expect(13 /* "]" */);
 		if (nbrMod<=1) SemErr("Not enough modalities for a discrete variable"); 
-		Expect(7);
+		Expect(7 /* "{" */);
 		MODALITY_LIST();
-		Expect(8);
-		Expect(14);
+		Expect(8 /* "}" */);
+		Expect(14 /* ";" */);
 }
 
 void Parser::NBR(int& val) {
-		Expect(2);
+		Expect(_integer);
 		val=coco_atoi(t->val); 
 }
 
@@ -248,16 +248,16 @@ void Parser::MODALITY_LIST() {
 		std::string label; 
 		IDENT_OR_INTEGER(label);
 		TRY(factory().addModality(label)); 
-		if (la->kind == 15) {
-			ExpectWeak(15, 1);
+		if (la->kind == 15 /* "," */) {
+			ExpectWeak(15 /* "," */, 1);
 			MODALITY_LIST();
 		}
 }
 
 void Parser::IDENT_OR_INTEGER(std::string& name) {
-		if (la->kind == 1) {
+		if (la->kind == _ident) {
 			IDENT(name);
-		} else if (la->kind == 2) {
+		} else if (la->kind == _integer) {
 			Get();
 			name=narrow(t->val);  
 		} else SynErr(31);
@@ -270,14 +270,14 @@ void Parser::LISTE_PARENTS(std::vector<std::string>& parents ) {
 		TRY( factory().addParent(parent));
 		parents.push_back(parent);
 		
-		if (la->kind == 15) {
-			ExpectWeak(15, 2);
+		if (la->kind == 15 /* "," */) {
+			ExpectWeak(15 /* "," */, 2);
 			LISTE_PARENTS(parents);
 		}
 }
 
 void Parser::RAW_PROBA(std::vector<float>& v ) {
-		Expect(20);
+		Expect(20 /* "table" */);
 		v.clear(); 
 		LISTE_FLOAT(v);
 }
@@ -286,7 +286,7 @@ void Parser::FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& p
 		TRY(factory().startFactorizedProbabilityDeclaration(var));
 		
 		ASSIGNATION(var,parents,true);
-		while (la->kind == 17 || la->kind == 21) {
+		while (la->kind == 17 /* "(" */ || la->kind == 21 /* "default" */) {
 			ASSIGNATION(var,parents,false);
 		}
 		TRY(factory().endFactorizedProbabilityDeclaration()); 
@@ -297,8 +297,8 @@ void Parser::LISTE_FLOAT(std::vector<float>& v ) {
 		FLOAT(value);
 		v.push_back(value); 
 		if (StartOf(3)) {
-			if (la->kind == 15 || la->kind == 18) {
-				if (la->kind == 15) {
+			if (la->kind == 15 /* "," */ || la->kind == 18 /* "|" */) {
+				if (la->kind == 15 /* "," */) {
 					Get();
 				} else {
 					Get();
@@ -311,17 +311,17 @@ void Parser::LISTE_FLOAT(std::vector<float>& v ) {
 void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& parents,bool is_first ) {
 		std::vector<float> v; std::vector<std::string> labels;
 		
-		if (la->kind == 17) {
+		if (la->kind == 17 /* "(" */) {
 			Get();
 			TRY(factory().startFactorizedEntry()); 
 			LISTE_LABELS(parents,labels,0);
-			Expect(19);
+			Expect(19 /* ")" */);
 			LISTE_FLOAT(v);
 			__checkSizeOfProbabilityAssignation(v,var);
 			TRY(factory().setVariableValuesUnchecked(v));
 			TRY(factory().endFactorizedEntry());
 			
-		} else if (la->kind == 21) {
+		} else if (la->kind == 21 /* "default" */) {
 			Get();
 			if (! is_first) SemErr("'default' assignation has to be the first."); 
 			LISTE_FLOAT(v);
@@ -331,33 +331,33 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 			TRY(factory().endFactorizedEntry());
 			
 		} else SynErr(32);
-		Expect(14);
+		Expect(14 /* ";" */);
 }
 
 void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label ) {
 		std::string name_of_label;
 		if (num_label>=parents.size()) SemErr("Too many labels in this assignation");
 		
-		if (la->kind == 1 || la->kind == 2) {
+		if (la->kind == _ident || la->kind == _integer) {
 			IDENT_OR_INTEGER(name_of_label);
 			labels.push_back(name_of_label);
 			TRY(factory().setParentModality(parents[num_label],name_of_label));
 			
-		} else if (la->kind == 22) {
+		} else if (la->kind == 22 /* "*" */) {
 			Get();
 			labels.push_back("*"); 
 		} else SynErr(33);
-		if (la->kind == 15) {
-			ExpectWeak(15, 4);
+		if (la->kind == 15 /* "," */) {
+			ExpectWeak(15 /* "," */, 4);
 			LISTE_LABELS(parents,labels,num_label+1);
 		}
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == 3) {
+		if (la->kind == _number) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == 2) {
+		} else if (la->kind == _integer) {
 			Get();
 			val=coco_atoi(t->val); 
 		} else SynErr(34);

@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 #(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
@@ -21,12 +20,12 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-import sys,os,csv,math
-
-from pyAgrum_header import pyAgrum_header
-from topology import parents
+import sys,os
 
 import pyAgrum as gum
+
+from gumLib.pyAgrum_header import pyAgrum_header
+from gumLib.progress_bar import ProgressBar
 
 def module_help(exit_value=1):
     """
@@ -34,32 +33,30 @@ def module_help(exit_value=1):
     """
     print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
     sys.exit(exit_value)
-
+    
+def doLoadBN(s):
+    # you could simply do that 
+    # bn=gum.loadBN("test")
+    # but listeners are fun !!
+    
+    title=os.path.basename(s)+" ("+'{0:,d}'.format(os.path.getsize(s)/1024).replace(',',' ')+" Ko)"
+    progressbar=ProgressBar(title,0,100,mode='dynamic', char='-')
+    
+    def local_update(pourcent):
+        progressbar.update_amount(pourcent)
+        progressbar.display()
+        if pourcent==100: print
+    
+    return gum.loadBN(s,local_update)
+    
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
+    pyAgrum_header(2012)
 
     if len(sys.argv)<2:
-        module_help()
+            module_help()
 
-    bn=gum.loadBN(sys.argv[1])
-    inf=gum.LazyPropagation(bn)
-    inf.makeInference()
-
-    print "Entropy of nodes (a posteriori)"
-    res=[]
-    for i in bn.getTopologicalOrder():
-      res.append((bn.variable(i).name(),inf.H(i)))
-    res=sorted(res,key=lambda x:-x[1])
-    for i in range(len(res)):
-        print res[i]
-
-    print
-    print "Mutual information and Variation of information for arcs (a posteriori)"
-    res=[]
-    for i in bn.getTopologicalOrder():
-      for j in parents(bn,i):
-        res.append((bn.variable(j).name()+"->"+bn.variable(i).name(),inf.I(i,j),inf.VI(i,j)))
-    res=sorted(res,key=lambda x:-x[1])
-    for i in range(len(res)):
-      print res[i]
+    bn=doLoadBN(sys.argv[1])
+    print(bn)
+    
+    

@@ -36,6 +36,7 @@ namespace gum {
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
           GUM_ASSERT( prm!=( prm::PRM* )0 );
+          delete(prm);
         }
 
         void testRegression1() {
@@ -44,6 +45,7 @@ namespace gum {
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
           GUM_ASSERT( prm!=( prm::PRM* )0 );
+          delete(prm);
         }
 
         void testRegression2() {
@@ -52,6 +54,7 @@ namespace gum {
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
           GUM_ASSERT( prm!=( prm::PRM* )0 );
+          delete(prm);
         }
     };
 

@@ -44,7 +44,7 @@ before_debug: agrum_debug
 agrum_debug:
 #ifeq ($(OS),Linux)
 	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/debug)
-	(cd ../../build/$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
+	(cd ../../build/$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
 #else
 #	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
 #	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)

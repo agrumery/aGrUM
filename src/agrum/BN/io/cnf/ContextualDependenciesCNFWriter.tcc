@@ -51,7 +51,7 @@ namespace gum {
     void
     ContextualDependenciesCNFWriter<T_DATA, IApproximationPolicy>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
       Instantiation Order;
-      for(gum::Sequence<gum::NodeId>::iterator it = bn.getTopologicalOrder().begin();it !=bn.getTopologicalOrder().end();++it)
+      for(gum::Sequence<gum::NodeId>::iterator it = bn.topologicalOrder().begin();it !=bn.topologicalOrder().end();++it)
         Order.add(bn.variable(*it));
       if ( ! output.good() )
         GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -250,7 +250,7 @@ namespace gum {
 
 
       Instantiation Order;
-      for(gum::Sequence<gum::NodeId>::iterator it = bn.getTopologicalOrder().begin();it !=bn.getTopologicalOrder().end();++it)
+      for(gum::Sequence<gum::NodeId>::iterator it = bn.topologicalOrder().begin();it !=bn.topologicalOrder().end();++it)
         Order.add(bn.variable(*it));
 
       for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {

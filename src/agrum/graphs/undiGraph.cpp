@@ -141,7 +141,7 @@ namespace gum {
   }
 
   /// returns the partial graph formed by the nodes given in parameter
-  UndiGraph UndiGraph::getPartialUndiGraph ( NodeSet nodesSet ) {
+  UndiGraph UndiGraph::partialUndiGraph ( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
     for ( NodeSetIterator nodeIter = nodesSet.begin(); nodeIter != nodesSet.end(); ++nodeIter ) {

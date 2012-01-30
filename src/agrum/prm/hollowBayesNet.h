@@ -118,8 +118,8 @@
 //     /// See gum::AbstractBayesNet::moralGraph().
 //     virtual const UndiGraph& moralGraph( bool clear = true ) const;
 // 
-//     /// See gum::AbstractBayesNet::getTopologicalOrder().
-//     virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+//     /// See gum::AbstractBayesNet::topologicalOrder().
+//     virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
 // 
 //     /// @return Returns a dot representation of this BayesNet.
 //     virtual std::string toDot( void ) const;

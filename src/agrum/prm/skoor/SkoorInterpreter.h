@@ -77,7 +77,7 @@ public:
    * Interpret the file or the command line.
    * If syntax mode is activated, check only syntax and semantic.
    * If errors occured, return false. Errors messages can be retrieve be 
-   * getErrorsContainer() methods.
+   * errorsContainer() methods.
    * If any errors occured, return true.
    * Requests results can be retrieve be results() methods.
    * */
@@ -93,7 +93,7 @@ public:
   /// a vector of struct SingleResult, with pair label/value.
   const std::vector<QueryResult> & results() const;
   /// Return container with all errors.
-  ErrorsContainer getErrorsContainer() const;
+  ErrorsContainer errorsContainer() const;
   
   /// Getter and setter for the context.
   SkoorContext * getContext() const;
@@ -124,7 +124,7 @@ public:
   /// # of warnings
   int warnings() const;
   /// throw a string error if i >= count
-  ParseError getError( int i ) const;
+  ParseError error( int i ) const;
   /// send on std::cerr the list of errors
   void showElegantErrors() const;
   /// send on std::cerr the list of errors or warnings
@@ -151,7 +151,7 @@ private:
   std::string findSystemName ( std::string & s );
   std::string findInstanceName ( std::string& s, const gum::prm::System& sys );
   std::string findAttributeName ( const std::string& s, const gum::prm::Instance& instance );
-  const System & getSystem( string & ident );
+  const System & system( string & ident );
   void generateInfEngine(const gum::prm::System& sys);
   
   void addError( std::string msg );

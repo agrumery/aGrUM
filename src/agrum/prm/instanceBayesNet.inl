@@ -152,7 +152,7 @@ InstanceBayesNet::moralGraph( bool clear ) const {
 
 INLINE
 const Sequence<NodeId>&
-InstanceBayesNet::getTopologicalOrder( bool clear ) const {
+InstanceBayesNet::topologicalOrder( bool clear ) const {
   if (__topo == 0) {
     __topo = new Sequence<NodeId>();
     AbstractBayesNet<prm_float>::_topologicalOrder(*__topo);

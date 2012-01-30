@@ -149,7 +149,7 @@ namespace gum {
 
     INLINE
     const Sequence<NodeId>&
-    ClassBayesNet::getTopologicalOrder( bool clear ) const {
+    ClassBayesNet::topologicalOrder( bool clear ) const {
       if ( __topo == 0 ) {
         __topo = new Sequence<NodeId>();
         AbstractBayesNet<prm_float>::_topologicalOrder( *__topo );

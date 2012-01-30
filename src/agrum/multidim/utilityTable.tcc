@@ -41,7 +41,7 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   UtilityTable<T_DATA>::UtilityTable( const UtilityTable<T_DATA>& toCopy ) :
-      MultiDimDecorator<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( toCopy.getContent()->newFactory() ) ) {
+      MultiDimDecorator<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( toCopy.content()->newFactory() ) ) {
     const Sequence<const DiscreteVariable*>& varSeq =
       toCopy.variablesSequence();
     for ( Sequence<const DiscreteVariable*>::iterator iter =
@@ -68,7 +68,7 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   UtilityTable<T_DATA>* UtilityTable<T_DATA>::newFactory() const {
-    return new UtilityTable<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( this->getContent()->newFactory() ) );
+    return new UtilityTable<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( this->content()->newFactory() ) );
   }
 
   template <typename T_DATA> INLINE
@@ -211,7 +211,7 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void UtilityTable<T_DATA>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-    MultiDimDecorator<T_DATA>::getContent()->swap( *x,*y );
+    MultiDimDecorator<T_DATA>::content()->swap( *x,*y );
   }
 
 } /* namespace gum */

@@ -157,12 +157,12 @@ namespace gum {
     // ============================================================================
     /// Protected access to content.
     // ============================================================================
-    const MultiDimImplementation<T_DATA>* getContent() const;
+    const MultiDimImplementation<T_DATA>* content() const;
 
     // ============================================================================
     /// Access to content.
     // ============================================================================
-    MultiDimImplementation<T_DATA>* getContent();
+    MultiDimImplementation<T_DATA>* content();
 
     /// @}
 

@@ -103,7 +103,7 @@ class CSVGenerator:
         else:
           bn=name_in
 
-        seq=bn.getTopologicalOrder()
+        seq=bn.topologicalOrder()
         writer = csv.writer(open(name_out,'wb'))
 
         if visible:

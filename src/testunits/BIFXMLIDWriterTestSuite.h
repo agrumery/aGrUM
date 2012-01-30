@@ -78,7 +78,7 @@ namespace gum {
             infDiag.insertArc( idList[3], idList[10] );
 
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }
@@ -143,7 +143,7 @@ namespace gum {
               u2.fillWith( v );
             }
           } catch ( gum::Exception &e ) {
-            std::cerr << std::endl << e.getContent() << std::endl;
+            std::cerr << std::endl << e.content() << std::endl;
             throw ;
           }
         }

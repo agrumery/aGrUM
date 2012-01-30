@@ -175,7 +175,7 @@ namespace gum {
        * added or erased src the topology.
        * @param clear If false returns the previously created topology.
        */
-      virtual const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const = 0;
+      virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const = 0;
 
       /// @}
 

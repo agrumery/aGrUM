@@ -8,54 +8,53 @@
 
 class MainWindow;
 
-class EditController : public QObject
-{
+class EditController : public QObject {
     Q_OBJECT
 
-public:
-	explicit EditController(MainWindow * mw, QObject * parent = 0);
-	~EditController();
+  public:
+    explicit EditController( MainWindow * mw, QObject * parent = 0 );
+    ~EditController();
 
-	//! Return the completer
-	QCompleter * completer() const;
+    //! Return the completer
+    QCompleter * completer() const;
 
-public slots:
+  public slots:
 
-	void undo();
-	void redo();
+    void undo();
+    void redo();
 
-	void cut();
-	void copy();
-	void paste();
+    void cut();
+    void copy();
+    void paste();
 
-	void remove();
-	void selectAll();
+    void remove();
+    void selectAll();
 
-	void switchComment();
+    void switchComment();
 
-	void increaseIndentation();
-	void decreaseIndentation();
+    void increaseIndentation();
+    void decreaseIndentation();
 
-	void autoComplete();
+    void autoComplete();
 
-	void editPreferences();
+    void editPreferences();
 
-signals:
-	void completerChanged();
+  signals:
+    void completerChanged();
 
-protected slots:
-	void onProjectModelChanged();
+  protected slots:
+    void onProjectModelChanged();
 
-private slots:
-	void triggerInit();
+  private slots:
+    void triggerInit();
 
-private:
-	MainWindow * mw;
+  private:
+    MainWindow * mw;
 
-	struct PrivateData;
-	PrivateData * d;
+    struct PrivateData;
+    PrivateData * d;
 
-	Properties * pr;
+    Properties * pr;
 };
 
 #endif // EDITCONTROLLER_H

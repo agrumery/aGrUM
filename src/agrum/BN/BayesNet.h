@@ -291,7 +291,7 @@ namespace gum {
        * added or erased from the topology.
        * @param clear If false returns the previously created topology.
        */
-      const Sequence<NodeId>& getTopologicalOrder( bool clear = true ) const;
+      const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
 
       /// @}
       // ===========================================================================

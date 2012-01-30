@@ -144,8 +144,8 @@ namespace gum {
 
         gum::ScheduleCombinationBasic<float> comb ( schedule_comb_myadd );
         Set<const MultiDimImplementation<float>*> set;
-        set << pot1.getContent() << pot2.getContent()
-            << pot3.getContent() << pot4.getContent();
+        set << pot1.content() << pot2.content()
+            << pot3.content() << pot4.content();
         Schedule<float> schedule;
         const ScheduleMultiDim<float> result = comb.combine ( set, schedule );
 
@@ -218,8 +218,8 @@ namespace gum {
         gum::MultiDimCombinationDefault<float,MultiDimImplementation>
           comb11 ( schedule_comb_myadd );
         Set<const MultiDimImplementation<float>*> set2;
-        set2 << pot1.getContent() << pot2.getContent()
-             << pot3.getContent() << pot4.getContent();
+        set2 << pot1.content() << pot2.content()
+             << pot3.content() << pot4.content();
         MultiDimImplementation<float>* res11 = comb11.combine ( set2 );
 
         TS_ASSERT ( *res11 == result.multiDim () );
@@ -255,7 +255,7 @@ namespace gum {
         Set<const Potential<float>*> set;
         set << &t1 << &t2 << &t3;
         Set<const MultiDimImplementation<float>*> set2;
-        set2 << t1.getContent() << t2.getContent() << t3.getContent();
+        set2 << t1.content() << t2.content() << t3.content();
         
         Schedule<float> schedule;
 

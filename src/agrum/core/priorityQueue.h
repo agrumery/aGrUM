@@ -290,7 +290,7 @@ namespace gum {
      * priority queue and, for each key, the corresponding value is the list of
      * indices in the queue where we can find the key. */
     // ============================================================================
-    const HashTable< Val,std::vector<Size> >& getAllValues() const ;
+    const HashTable< Val,std::vector<Size> >& allValues() const ;
 
     // ============================================================================
     /// displays the content of the queue

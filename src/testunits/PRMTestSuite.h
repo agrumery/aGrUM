@@ -73,7 +73,7 @@ class PRMTestSuite: public CxxTest::TestSuite {
       TS_GUM_ASSERT_THROWS_NOTHING(c = new ClassBayesNet(prm->getClass("SafeComputer")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete c);
       InstanceBayesNet* inst = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inst = new InstanceBayesNet(prm->getSystem("aSys").get("c1")));
+      TS_GUM_ASSERT_THROWS_NOTHING(inst = new InstanceBayesNet(prm->system("aSys").get("c1")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete inst);
     }
 
@@ -97,7 +97,7 @@ class PRMTestSuite: public CxxTest::TestSuite {
 
     void testInstanceAccess() {
       InstanceBayesNet* bn = 0;
-      Instance& i = prm->getSystem("aSys").get("c1");
+      Instance& i = prm->system("aSys").get("c1");
       TS_GUM_ASSERT_THROWS_NOTHING(bn = new InstanceBayesNet(i));
       TS_ASSERT_EQUALS(bn->size(), i.size());
       for (Instance::iterator attr = i.begin(); attr != i.end(); ++attr) {
@@ -113,7 +113,7 @@ class PRMTestSuite: public CxxTest::TestSuite {
     }
 
     void testGroundedBN() {
-      System& sys = prm->getSystem("aSys");
+      System& sys = prm->system("aSys");
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
@@ -147,7 +147,7 @@ class PRMTestSuite: public CxxTest::TestSuite {
     }
 
     void testCPF() {
-      System& sys = prm->getSystem("aSys");
+      System& sys = prm->system("aSys");
       for (System::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
         for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
           Instantiation i((**jter).cpf()), var;
@@ -165,7 +165,7 @@ class PRMTestSuite: public CxxTest::TestSuite {
     }
 
     void testNormalisedCPT() {
-      System& sys = prm->getSystem("aSys");
+      System& sys = prm->system("aSys");
       BayesNet<prm_float> bn;
       BayesNetFactory<prm_float> bn_factory(&bn);
       TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));

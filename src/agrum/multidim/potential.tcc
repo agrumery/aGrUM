@@ -77,7 +77,7 @@ namespace gum {
 
       this->endMultipleChanges();
 
-      MultiDimDecorator<T_DATA>::getContent()->copyFrom
+      MultiDimDecorator<T_DATA>::content()->copyFrom
       ( dynamic_cast<const MultiDimContainer<T_DATA>&>( src.getMasterRef() ) );
     }
   }
@@ -85,7 +85,7 @@ namespace gum {
   // operator =
   template<typename T_DATA>
   Potential<T_DATA>& Potential<T_DATA>::operator= ( const Potential<T_DATA>& src ) {
-    MultiDimDecorator<T_DATA>::getContent()->copy
+    MultiDimDecorator<T_DATA>::content()->copy
     ( dynamic_cast<const MultiDimContainer<T_DATA>&>( src.getMasterRef() ) );
     return *this;
   }
@@ -252,12 +252,12 @@ namespace gum {
   Potential<T_DATA>* Potential<T_DATA>::newFactory() const {
     return new Potential<T_DATA>
            ( static_cast<MultiDimImplementation<T_DATA>*>
-             ( this->getContent()->newFactory() ) );
+             ( this->content()->newFactory() ) );
   }
 
   template<typename T_DATA> INLINE
   void Potential<T_DATA>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-    MultiDimDecorator<T_DATA>::getContent()->swap( *x, *y );
+    MultiDimDecorator<T_DATA>::content()->swap( *x, *y );
   }
 
 } /* namespace gum */

@@ -192,7 +192,7 @@ namespace gum {
 
   void InfluenceDiagramGenerator::__checkTemporalOrderf ( InfluenceDiagram<float>* infdiag ) {
     if ( ! infdiag->decisionOrderExists() ) {
-      Sequence<NodeId> order = infdiag->getTopologicalOrder ( true );
+      Sequence<NodeId> order = infdiag->topologicalOrder ( true );
 
       Sequence<NodeId>::const_iterator orderIter = order.begin();
 
@@ -216,7 +216,7 @@ namespace gum {
 
   void InfluenceDiagramGenerator::__checkTemporalOrderd ( InfluenceDiagram<double>* infdiag ) {
     if ( ! infdiag->decisionOrderExists() ) {
-      Sequence<NodeId> order = infdiag->getTopologicalOrder ( true );
+      Sequence<NodeId> order = infdiag->topologicalOrder ( true );
 
       Sequence<NodeId>::const_iterator orderIter = order.begin();
 

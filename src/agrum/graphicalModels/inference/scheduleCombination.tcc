@@ -94,7 +94,7 @@ namespace gum {
     for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
     }
 
     // perform the combination
@@ -148,7 +148,7 @@ namespace gum {
     for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
     }
 
     // perform the combination
@@ -201,7 +201,7 @@ namespace gum {
     for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->getContent() ) ) );
+        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
     }
 
     // compute the memory consumption of the combination

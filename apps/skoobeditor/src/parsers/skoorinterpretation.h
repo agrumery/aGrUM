@@ -6,12 +6,16 @@
 #include <vector>
 
 namespace gum {
-	namespace prm {
-		namespace skoor {
-			class SkoorInterpreter;
-			struct QueryResult;
-		}
-	}
+
+  namespace prm {
+
+    namespace skoor {
+
+      class SkoorInterpreter;
+
+      struct QueryResult;
+    }
+  }
 }
 
 /**
@@ -23,33 +27,33 @@ namespace gum {
  * When done, you can always retrieve prm and errors,
  * and also results and last command (empty if it was a file).
  */
-class SkoorInterpretation : public AbstractParser
-{
-	Q_OBJECT
 
-public:
-	//! Constructor. Create skoor interpreter.
-	SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent );
-	//! Destructor. Delete skoor interpreter.
-	~SkoorInterpretation();
+class SkoorInterpretation : public AbstractParser {
+    Q_OBJECT
 
-	//! Return last command.
-	QString command() const;
-	//! Return result of execution.
-	std::vector<gum::prm::skoor::QueryResult> results() const;
+  public:
+    //! Constructor. Create skoor interpreter.
+    SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent );
+    //! Destructor. Delete skoor interpreter.
+    ~SkoorInterpretation();
 
-public slots:
-	//! \reimp
-	virtual void parse( Priority priority = InheritPriority );
-	//! Parse a single command
-	virtual void parseCommand( const QString & command, Priority priority = InheritPriority );
+    //! Return last command.
+    QString command() const;
+    //! Return result of execution.
+    std::vector<gum::prm::skoor::QueryResult> results() const;
 
-protected:
-	//! \reimp
-	virtual void run();
+  public slots:
+    //! \reimp
+    virtual void parse( Priority priority = InheritPriority );
+    //! Parse a single command
+    virtual void parseCommand( const QString & command, Priority priority = InheritPriority );
 
-	struct PrivateData;
-	PrivateData * d;
+  protected:
+    //! \reimp
+    virtual void run();
+
+    struct PrivateData;
+    PrivateData * d;
 };
 
 

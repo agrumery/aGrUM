@@ -20,7 +20,8 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
-from pyAgrum_header import pyAgrum_header
+import pyAgrum as gum
+from gumLib.pyAgrum_header import pyAgrum_header
 
 def multidim_generator(bornes,sauf={}):
     """

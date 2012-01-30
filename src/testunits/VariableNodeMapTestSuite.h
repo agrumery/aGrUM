@@ -207,10 +207,10 @@ namespace gum {
           fill( topo, idList );
 
           gum::Sequence<gum::NodeId> topoOrder;
-          //TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.getTopologicalOrder() );
+          //TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() );
 
           try {
-            topoOrder = topo.getTopologicalOrder();
+            topoOrder = topo.topologicalOrder();
           } catch ( gum::Exception& e ) {
             GUM_SHOWERROR( e );
           }

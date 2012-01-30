@@ -266,7 +266,7 @@ std::string Parser::findInstanceName(const std::string& s, const std::string& sy
   std::string name = s.substr(sys.length() + 1);
   size_t dot = name.find('.');
   name = name.substr(0, dot);
-  if (reader.prm()->getSystem(sys).exists(name)) return name;
+  if (reader.prm()->system(sys).exists(name)) return name;
   std::string msg = "could not find any instance in ";
   error(msg + name);
   throw msg + name;
@@ -284,7 +284,7 @@ std::string Parser::findAttributeName(const std::string& s, const gum::prm::Inst
 }
 
 void Parser::addObservation(const std::string& left_val, const std::string& right_val) {
-  const gum::prm::System& sys = reader.prm()->getSystem (findSystemName(left_val));
+  const gum::prm::System& sys = reader.prm()->system (findSystemName(left_val));
   const gum::prm::Instance& instance = sys.get(findInstanceName(left_val, sys.name()));
   const gum::prm::Attribute& attr = instance.get(findAttributeName(left_val, instance));
   gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
@@ -328,7 +328,7 @@ void Parser::addObservation(const std::string& left_val, const std::string& righ
 }
 
 void Parser::removeObervation(const std::string name) {
-  const gum::prm::System& sys = reader.prm()->getSystem (findSystemName(name));
+  const gum::prm::System& sys = reader.prm()->system (findSystemName(name));
   const gum::prm::Instance& instance = sys.get(findInstanceName(name, sys.name()));
   const gum::prm::Attribute& attr = instance.get(findAttributeName(name, instance));
   gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
@@ -381,7 +381,7 @@ void Parser::generateInfEngine(const gum::prm::System& sys) {
 
 void Parser::query(const std::string& name) {
   if (not isInSyntaxMode()) {
-    const gum::prm::System& sys = reader.prm()->getSystem (findSystemName(name));
+    const gum::prm::System& sys = reader.prm()->system (findSystemName(name));
     const gum::prm::Instance& instance = sys.get(findInstanceName(name, sys.name()));
     const gum::prm::Attribute& attr = instance.get(findAttributeName(name, instance));
     gum::prm::PRMInference::Chain chain = std::make_pair(&instance, &attr);
@@ -405,9 +405,9 @@ void Parser::query(const std::string& name) {
       log << "Time in seconds (accuracy ~0.001): " << t << std::endl;
     } catch (gum::Exception& e) {
       std::string msg = "something went wrong while infering: ";
-      error(msg + e.getContent());
+      error(msg + e.content());
       delete inf;
-      throw msg + e.getContent();
+      throw msg + e.content();
     }
     gum::Instantiation j (m);
     for (j.setFirst (); not j.end (); j.inc ()) {

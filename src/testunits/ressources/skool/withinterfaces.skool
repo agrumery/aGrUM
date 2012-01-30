@@ -1,3 +1,11 @@
+/// ****************************************************************************
+///   
+///   THIS FILE IS PART OF 'testSkoobEditor' PROJECT.
+///   
+///         LAST MODIFICATION : lundi 30 janvier 2012
+///   
+/// ****************************************************************************
+
 type type_2 0, 1;
 
 interface iface_3 {
@@ -8,7 +16,7 @@ interface iface_3 {
   type_2 elt_6;
 }
 
-class class_4 {
+class class_4 implements iface_3 {
   type_2 elt_2 {
   [0.244165, 0.755835]
   };
@@ -26,7 +34,7 @@ class class_4 {
   };
 }
 
-class class_6 {
+class class_6 implements iface_3 {
   iface_3 elt_8;
   iface_3 elt_9;
   type_2 elt_2 dependson elt_9.elt_4 {
@@ -46,7 +54,7 @@ class class_6 {
   };
 }
 
-class class_8 {
+class class_8 implements iface_3 {
   iface_3 elt_13;
   iface_3 elt_14;
   iface_3 elt_15;
@@ -67,7 +75,7 @@ class class_8 {
   };
 }
 
-class class_5 {
+class class_5 implements iface_3implements iface_3 {
   iface_3 elt_7;
   type_2 elt_2 dependson elt_7.elt_6 {
   [0.56989, 0.43011, 0.238747, 0.761253]
@@ -86,7 +94,7 @@ class class_5 {
   };
 }
 
-class class_7 {
+class class_7 implements iface_3{
   iface_3 elt_11;
   iface_3 elt_12;
   iface_3 elt_10;
@@ -107,7 +115,7 @@ class class_7 {
   };
 }
 
-system sys_9 {
+system sys_9 implements iface_3{
   class_5 inst_5;
   class_8 inst_10;
   class_4 inst_3;

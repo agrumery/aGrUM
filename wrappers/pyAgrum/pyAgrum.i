@@ -21,7 +21,7 @@ import numpy
         PyErr_SetString(PyExc_RuntimeError, "C++ Bad Cast");
         SWIG_fail;
     } catch(gum::NotFound &e) {
-        PyErr_SetString(PyExc_IndexError, e.getContent().c_str());
+        PyErr_SetString(PyExc_IndexError, e.content().c_str());
         SWIG_fail;
     } catch(gum::DefaultInLabel &e) {
         gum::DefaultInLabel *ecopy = new gum::DefaultInLabel(e);
@@ -105,7 +105,7 @@ import numpy
             SWIG_Python_ExceptionType(SWIGTYPE_p_gum__OutOfBounds), err);
         SWIG_fail;
     } catch(gum::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.getContent().c_str());
+        PyErr_SetString(PyExc_Exception, e.content().c_str());
         SWIG_fail;
     } catch(std::exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
@@ -170,7 +170,7 @@ import numpy
 %extend gum::Exception {
     const char * __str__()
     {
-        return self->getContent().c_str();
+        return self->content().c_str();
     }
 }
 
@@ -199,18 +199,18 @@ def addTick(self,*args):
 def availableBNExts():
   return "bif|dsl|net|bifxml"
 
-def loadBN(s):
+def loadBN(s,listeners=None):
   bn=BayesNet()
 
   extension=s.split('.')[-1].upper()
   if extension=="BIF":
-    bn.loadBIF(s)
+    bn.loadBIF(s,listeners) 
   elif extension=="BIFXML":
-    bn.loadBIFXML(s)
+    bn.loadBIFXML(s,listeners)
   elif extension=="DSL":
-    bn.loadDSL(s)
+    bn.loadDSL(s,listeners)
   elif extension=="NET":
-    bn.loadNET(s)
+    bn.loadNET(s,listeners)
   else:
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
@@ -230,81 +230,62 @@ def saveBN(bn,s):
   else:
     raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+
 %}
 
 %extend gum::BayesNet {
     PyObject *names() const {
-			PyObject* q=PyList_New(0);
-	
-			const DAG& dag=self->dag();
-			for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
-				PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
-			}
-
-			return q;
-		};
+      PyObject* q=PyList_New(0);
+    
+      const DAG& dag=self->dag();
+      for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
+      }
+      return q;
+    };
 
     PyObject *ids() {
-			PyObject* q=PyList_New(0);
-	
-			const DAG& dag=self->dag();
-			for ( NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
-				PyList_Append(q,PyInt_FromLong(*node_iter));
-			}
+		PyObject* q=PyList_New(0);
 
-			return q;
-		};
+		const DAG& dag=self->dag();
+		for ( NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+			PyList_Append(q,PyInt_FromLong(*node_iter));
+		}
+
+		return q;
+	};
 
     PyObject *parents(const NodeId id) const {
-			PyObject* q=PyList_New(0);
-	
-			const NodeSet& p=self->dag().parents(id);
-			for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-				PyList_Append(q,PyInt_FromLong(*it));
-			}
+		PyObject* q=PyList_New(0);
 
-			return q;
-		};
+		const NodeSet& p=self->dag().parents(id);
+		for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+			PyList_Append(q,PyInt_FromLong(*it));
+		}
+
+		return q;
+	};
 
     PyObject *children(const NodeId id) const {
-			PyObject* q=PyList_New(0);
-	
-			const NodeSet& p=self->dag().children(id);
-			for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-				PyList_Append(q,PyInt_FromLong(*it));
-			}
+		PyObject* q=PyList_New(0);
 
-			return q;
-		};
+		const NodeSet& p=self->dag().children(id);
+		for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+			PyList_Append(q,PyInt_FromLong(*it));
+		}
+
+		return q;
+	};
 
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
-				std::vector<PythonLoadListener> py_listener(1);
+    	  std::vector<PythonLoadListener> py_listener;
         try {
             gum::BIFReader<T_DATA> reader(self,name);
-
-						if (l) {
-							int l_size = 1;
-							PyObject *item;
-
-							if(PySequence_Check(l)) {
-								l_size = PySequence_Size(l);
-								py_listener.resize(l_size);
-								for(int i=0 ; i < l_size ; i++) {
-									item = PySequence_GetItem(l, i);
-									if(! py_listener[i].setPythonListener(item))
-										return false;
-								}
-							} else {
-								if(! py_listener[0].setPythonListener(l))
-									return false;
-							}
-
-							for(int i=0 ; i<l_size ; i++) {
-								GUM_CONNECT(reader.scanner(), onLoad,
-														py_listener[i], PythonLoadListener::whenLoading);
-							}
-						}
+            int l_size=__fillLoadListeners(py_listener,l);
+            for(int i=0 ; i<l_size ; i++) {
+                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+            }
 
             if (! reader.proceed()) {
                 reader.showElegantErrorsAndWarnings();
@@ -326,32 +307,13 @@ def saveBN(bn,s):
 
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
-				std::vector<PythonLoadListener> py_listener(1);
+	std::vector<PythonLoadListener> py_listener;
         try {
             gum::DSLReader<T_DATA> reader(self,name);
-
-						if (l) {
-							int l_size = 1;
-							PyObject *item;
-
-							if(PySequence_Check(l)) {
-								l_size = PySequence_Size(l);
-								py_listener.resize(l_size);
-								for(int i=0 ; i < l_size ; i++) {
-									item = PySequence_GetItem(l, i);
-									if(! py_listener[i].setPythonListener(item))
-										return false;
-								}
-							} else {
-								if(! py_listener[0].setPythonListener(l))
-									return false;
-							}
-
-							for(int i=0 ; i<l_size ; i++) {
-								GUM_CONNECT(reader.scanner(), onLoad,
-														py_listener[i], PythonLoadListener::whenLoading);
-							}
-						}
+            int l_size=__fillLoadListeners(py_listener,l);
+            for(int i=0 ; i<l_size ; i++) {
+                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+            }
 
             if (! reader.proceed()) {
                 reader.showElegantErrorsAndWarnings();
@@ -371,31 +333,12 @@ def saveBN(bn,s):
 
     bool loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
-        std::vector<PythonLoadListener> py_listener(1);
+        std::vector<PythonLoadListener> py_listener;
         try {
             gum::NetReader<T_DATA> reader(self,name);
-
-            if (l) {
-              int l_size = 1;
-              PyObject *item;
-
-              if(PySequence_Check(l)) {
-                l_size = PySequence_Size(l);
-                py_listener.resize(l_size);
-                for(int i=0 ; i < l_size ; i++) {
-                  item = PySequence_GetItem(l, i);
-                  if(! py_listener[i].setPythonListener(item))
-                    return false;
-                }
-              } else {
-                if(! py_listener[0].setPythonListener(l))
-                  return false;
-              }
-
-              for(int i=0 ; i<l_size ; i++) {
-                GUM_CONNECT(reader.scanner(), onLoad,
-                            py_listener[i], PythonLoadListener::whenLoading);
-              }
+            int l_size=__fillLoadListeners(py_listener,l);
+            for(int i=0 ; i<l_size ; i++) {
+                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
 
             if (! reader.proceed()) {
@@ -418,8 +361,16 @@ def saveBN(bn,s):
     {
         try {
             gum::BIFXMLBNReader<T_DATA> reader(self,name);
+            /* nothing as listener for now for BIFXML ... */
+            /*            
+            int l_size=__fillLoadListeners(py_listener,l);
+            for(int i=0 ; i<l_size ; i++) {
+                GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+            }
+            */
+
             int isOK= reader.proceed();
-             return (isOK==0);
+            return (isOK==0);
         } catch (gum::IOError& e) {
             GUM_SHOWERROR(e);
         }
@@ -809,6 +760,30 @@ PyObject* compute(void) {
 #include "extensions/PythonBNListener.h"
 #include "extensions/PythonLoadListener.h"
 /*#include "extensions/PythonGibbsKLListener.h"*/
+
+
+int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
+	if (!l) return 0;
+	if (l==Py_None) return 0;
+
+	int l_size = 0;
+	PyObject *item;
+
+	if(PySequence_Check(l)) {
+			l_size = PySequence_Size(l);
+			py_listener.resize(l_size);
+			for(int i=0 ; i < l_size ; i++) {
+					item = PySequence_GetItem(l, i);
+					if(! py_listener[i].setPythonListener(item)) return 0;
+			}
+	} else {
+      l_size=1;
+      py_listener.resize(l_size);
+			if(! py_listener[0].setPythonListener(l)) return 0;
+	}
+
+	return l_size;
+};
 %}
 
 /* INCLUDE aGrUM base wrap */

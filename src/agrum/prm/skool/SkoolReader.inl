@@ -46,8 +46,10 @@ namespace gum {
       INLINE
       SkoolReader::~SkoolReader() {
         GUM_DESTRUCTOR ( SkoolReader );
+
         if ( __parseDone )
           delete __parser;
+
         if ( ! __prmTake )
           delete __factory.prm();
       }
@@ -55,54 +57,65 @@ namespace gum {
       INLINE
       void
       SkoolReader::readFile ( const std::string& file ) {
-        size_t lastSlashIndex = file.find_last_of('/');
-        Directory dir(file.substr(0, lastSlashIndex+1));
+        size_t lastSlashIndex = file.find_last_of ( '/' );
+        Directory dir ( file.substr ( 0, lastSlashIndex+1 ) );
+
         if ( ! dir.isValid() ) {
-          __errors.addException( "directory doesn't exist.", dir.path() );
+          __errors.addException ( "directory doesn't exist.", dir.path() );
           return;
         }
-        string basename = file.substr(lastSlashIndex+1);
+
+        string basename = file.substr ( lastSlashIndex+1 );
+
         string absFilename = dir.absolutePath() + basename;
-        
+
         try {
-          if ( __parser && __parser->getImports().exists( absFilename ) )
+          if ( __parser && __parser->getImports().exists ( absFilename ) )
             return;
-          
+
           Scanner s ( absFilename.c_str() );
+
           if ( ! __parseDone ) {
             __parser = new Parser ( &s );
             __parser->setFactory ( &__factory );
             __parser->setClassPath ( __class_path );
-          } else
+          }
+          else
             __parser->scanner = &s;
-          __parser->setCurrentDirectory( dir.absolutePath() );
-          __parser->addImport( absFilename );
-          
+
+          __parser->setCurrentDirectory ( dir.absolutePath() );
+
+          __parser->addImport ( absFilename );
+
           __parser->Parse();
+
           __parseDone = true;
+
           __errors += __parser->errors();
-        } catch ( gum::Exception &e ) {
+        }
+        catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
-          __errors.addException( e.getContent(), file );
-        } 
+          __errors.addException ( e.content(), file );
+        }
       }
 
       INLINE
       void
       SkoolReader::readString ( const std::string & string ) {
-      // errors += parser.errors
+        // errors += parser.errors
         try {
-          Scanner s ( (unsigned char*) string.c_str(), (int) ( string.length() ) );
+          Scanner s ( ( unsigned char* ) string.c_str(), ( int ) ( string.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
-          
+
           __parser->Parse();
           __parseDone = true;
           __errors += __parser->errors();
-        } catch ( gum::Exception &e ) {
+        }
+        catch ( gum::Exception &e ) {
           GUM_SHOWERROR ( e );
-          __errors.addException( e.getContent(), "" );
+          __errors.addException ( e.content(), "" );
         }
       }
 
@@ -113,9 +126,9 @@ namespace gum {
         __prmTake = true;
         return __factory.prm();
       }
-      
+
       INLINE
-      const gum::prm::PRM* 
+      const gum::prm::PRM*
       SkoolReader::prm() const {
         return __factory.prm();
       }
@@ -124,27 +137,27 @@ namespace gum {
 /// publishing Errors API
       INLINE
       unsigned int SkoolReader::errLine ( unsigned int i ) const {
-        return __errors.line(i);
+        return __errors.line ( i );
       }
 
       INLINE
       unsigned int SkoolReader::errCol ( unsigned int i ) const {
-        return __errors.col(i);
+        return __errors.col ( i );
       }
 
       INLINE
       std::wstring SkoolReader::errFilename ( unsigned int i ) const {
-        return __errors.filename(i);
+        return __errors.filename ( i );
       }
 
       INLINE
       bool SkoolReader::errIsError ( unsigned int i ) const {
-        return __errors.is_error(i);
+        return __errors.is_error ( i );
       }
 
       INLINE
       std::string SkoolReader::errMsg ( unsigned int i ) const {
-        return gum::narrow(__errors.msg(i));
+        return gum::narrow ( __errors.msg ( i ) );
       }
 
       INLINE
@@ -173,13 +186,15 @@ namespace gum {
       }
 
       INLINE
-      const ErrorsContainer & SkoolReader::getErrorsContainer() const {
+      const ErrorsContainer & SkoolReader::errorsContainer() const {
         return __errors;
       }
+
 /// @}
 
     } /* namespace skool */
   } /* namespace prm */
 } /* namespace gum */
+
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

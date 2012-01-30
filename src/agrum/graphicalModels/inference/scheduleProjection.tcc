@@ -85,7 +85,7 @@ namespace gum {
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars,
     Schedule<T_DATA>& schedule ) {
-    ScheduleMultiDim<T_DATA> sched_table ( *( table.getContent () ) );
+    ScheduleMultiDim<T_DATA> sched_table ( *( table.content () ) );
     return project ( sched_table, del_vars, schedule );
   }
   
@@ -110,7 +110,7 @@ namespace gum {
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<T_DATA>& schedule ) {
-    ScheduleMultiDim<T_DATA> sched_table ( *( table.getContent () ) );
+    ScheduleMultiDim<T_DATA> sched_table ( *( table.content () ) );
     return nbOperations ( sched_table, del_vars, schedule );
   }
 
@@ -135,7 +135,7 @@ namespace gum {
   ( const TABLE<T_DATA>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<T_DATA>& schedule ) {
-    ScheduleMultiDim<T_DATA> sched_table ( *( table.getContent () ) );
+    ScheduleMultiDim<T_DATA> sched_table ( *( table.content () ) );
     return memoryUsage ( sched_table, del_vars, schedule );
   }
 

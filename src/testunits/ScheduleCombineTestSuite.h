@@ -86,8 +86,8 @@ namespace gum {
         gum::Potential<float> pot4 ( pot1 + pot2);
         gum::Potential<float> pot5 ( pot4 + pot3);
 
-        TS_ASSERT ( result1.multiDim() == *pot4.getContent() );
-        TS_ASSERT ( result2.multiDim() == *pot5.getContent() );
+        TS_ASSERT ( result1.multiDim() == *pot4.content() );
+        TS_ASSERT ( result2.multiDim() == *pot5.content() );
         
         Sequence<const ScheduleMultiDim<float>*> seq = comb2.multiDimArgs ();
         SequenceIterator<const ScheduleMultiDim<float>*> iter = seq.begin();
@@ -106,7 +106,7 @@ namespace gum {
         delete &(comb2.result().multiDim());
 
         comb3.execute ();
-        TS_ASSERT ( comb3.result().multiDim() == *pot4.getContent() );
+        TS_ASSERT ( comb3.result().multiDim() == *pot4.content() );
         delete &(comb3.result().multiDim());
 
         gum::ScheduleCombine<float>* comb4 = comb3.newFactory ();

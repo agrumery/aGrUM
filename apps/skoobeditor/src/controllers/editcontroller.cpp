@@ -14,154 +14,146 @@
 #include <QDebug>
 
 //
+
 struct EditController::PrivateData {
-	PRMCompleter * completer;
-	QSharedPointer<PRMTreeModel> prmModel;
+  PRMCompleter * completer;
+  QSharedPointer<PRMTreeModel> prmModel;
 };
 
 // Constructor
-EditController::EditController( MainWindow * mw, QObject * parent) :
-	QObject(parent),
-	mw(mw),
-	d(new PrivateData),
-	pr(new Properties(mw,mw))
-{
-	d->completer = new PRMCompleter(this);
+EditController::EditController( MainWindow * mw, QObject * parent ) :
+    QObject( parent ),
+    mw( mw ),
+    d( new PrivateData ),
+    pr( new Properties( mw,mw ) ) {
+  d->completer = new PRMCompleter( this );
 
-	connect( mw->ui->actionUndo, SIGNAL(triggered()), this, SLOT(undo()) );
-	connect( mw->ui->actionRedo, SIGNAL(triggered()), this, SLOT(redo()) );
-	connect( mw->ui->actionCut, SIGNAL(triggered()), this, SLOT(cut()) );
-	connect( mw->ui->actionCopy, SIGNAL(triggered()), this, SLOT(copy()) );
-	connect( mw->ui->actionPaste, SIGNAL(triggered()), this, SLOT(paste()) );
-	connect( mw->ui->actionRemove, SIGNAL(triggered()), this, SLOT(remove()) );
-	connect( mw->ui->actionSelectAll, SIGNAL(triggered()), this, SLOT(selectAll()) );
-	connect( mw->ui->actionSwitchComment, SIGNAL(triggered()), this, SLOT(switchComment()) );
-	connect( mw->ui->actionIncreaseIndentation, SIGNAL(triggered()), this, SLOT(increaseIndentation()) );
-	connect( mw->ui->actionDecreaseIndentation, SIGNAL(triggered()), this, SLOT(decreaseIndentation()) );
-	connect( mw->ui->actionEditPreferences, SIGNAL(triggered()), this, SLOT(editPreferences()) );
-	connect( mw->ui->actionAutoComplete, SIGNAL(triggered()), this, SLOT(autoComplete()) );
+  connect( mw->ui->actionUndo, SIGNAL( triggered() ), this, SLOT( undo() ) );
+  connect( mw->ui->actionRedo, SIGNAL( triggered() ), this, SLOT( redo() ) );
+  connect( mw->ui->actionCut, SIGNAL( triggered() ), this, SLOT( cut() ) );
+  connect( mw->ui->actionCopy, SIGNAL( triggered() ), this, SLOT( copy() ) );
+  connect( mw->ui->actionPaste, SIGNAL( triggered() ), this, SLOT( paste() ) );
+  connect( mw->ui->actionRemove, SIGNAL( triggered() ), this, SLOT( remove() ) );
+  connect( mw->ui->actionSelectAll, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
+  connect( mw->ui->actionSwitchComment, SIGNAL( triggered() ), this, SLOT( switchComment() ) );
+  connect( mw->ui->actionIncreaseIndentation, SIGNAL( triggered() ), this, SLOT( increaseIndentation() ) );
+  connect( mw->ui->actionDecreaseIndentation, SIGNAL( triggered() ), this, SLOT( decreaseIndentation() ) );
+  connect( mw->ui->actionEditPreferences, SIGNAL( triggered() ), this, SLOT( editPreferences() ) );
+  connect( mw->ui->actionAutoComplete, SIGNAL( triggered() ), this, SLOT( autoComplete() ) );
 
-	// Must be start after project triggerInit
-	QTimer::singleShot( 500, this, SLOT(triggerInit()) );
+  // Must be start after project triggerInit
+  QTimer::singleShot( 500, this, SLOT( triggerInit() ) );
 }
 
 
 // Destructor
-EditController::~EditController()
-{
-	delete d;
+EditController::~EditController() {
+  delete d;
 }
 
-void EditController::triggerInit()
-{
-	connect( mw->bc, SIGNAL(projectModelChanged()), this, SLOT(onProjectModelChanged()) );
+void EditController::triggerInit() {
+  connect( mw->bc, SIGNAL( projectModelChanged() ), this, SLOT( onProjectModelChanged() ) );
 }
 
-QCompleter * EditController::completer() const
-{
-	return d->completer;
+QCompleter * EditController::completer() const {
+  return d->completer;
 }
 
-void EditController::undo()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->undo();
+void EditController::undo() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->undo();
 }
 
-void EditController::redo()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->redo();
+void EditController::redo() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->redo();
 }
 
-void EditController::cut()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->cut();
+void EditController::cut() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->cut();
 }
 
-void EditController::copy()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->copy();
+void EditController::copy() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->copy();
 }
 
-void EditController::paste()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->paste();
+void EditController::paste() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->paste();
 }
 
-void EditController::remove()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->removeSelectedText();
+void EditController::remove() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->removeSelectedText();
 }
 
-void EditController::selectAll()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->selectAll();
+void EditController::selectAll() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->selectAll();
 }
 
-void EditController::switchComment()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->switchComment();
+void EditController::switchComment() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->switchComment();
 }
 
-void EditController::increaseIndentation()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->indent();
+void EditController::increaseIndentation() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->indent();
 }
 
-void EditController::decreaseIndentation()
-{
-	if (mw->fc->hasCurrentDocument())
-		mw->fc->currentDocument()->unindent();
+void EditController::decreaseIndentation() {
+  if ( mw->fc->hasCurrentDocument() )
+    mw->fc->currentDocument()->unindent();
 }
 
-void EditController::autoComplete()
-{
-	if ( ! mw->fc->hasCurrentDocument() )
-		return;
+void EditController::autoComplete() {
+  if ( ! mw->fc->hasCurrentDocument() )
+    return;
 
-	if ( ! d->prmModel.isNull() && mw->pc->isOpenProject() ) {
-		mw->bc->updateModel();
-		if ( mw->ui->commandLineEdit->hasFocus() ) {
-			mw->ui->commandLineEdit->setCompleter(d->completer);
-			mw->ui->commandLineEdit->autoComplete();
-		} else {
-			mw->fc->currentDocument()->setCompleter(d->completer);
-			mw->fc->currentDocument()->autoCompleteFromCompleter();
-		}
-	} else if ( ! mw->ui->commandLineEdit->hasFocus() )
-		mw->fc->currentDocument()->autoCompleteFromAll();
+  if ( ! d->prmModel.isNull() && mw->pc->isOpenProject() ) {
+    mw->bc->updateModel();
+
+    if ( mw->ui->commandLineEdit->hasFocus() ) {
+      mw->ui->commandLineEdit->setCompleter( d->completer );
+      mw->ui->commandLineEdit->autoComplete();
+    } else {
+      mw->fc->currentDocument()->setCompleter( d->completer );
+      mw->fc->currentDocument()->autoCompleteFromCompleter();
+    }
+  } else if ( ! mw->ui->commandLineEdit->hasFocus() )
+    mw->fc->currentDocument()->autoCompleteFromAll();
 }
 
 /**
   */
-void EditController::editPreferences()
-{
-	pr->exec();
+void EditController::editPreferences() {
+  pr->exec();
 }
 
-void EditController::onProjectModelChanged()
-{
-	QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->projectModel();
+void EditController::onProjectModelChanged() {
+  QSharedPointer<PRMTreeModel> newPRMModel = mw->bc->projectModel();
 
-	// If doesn't changed, don't changed completer.
-	if ( newPRMModel.isNull() || d->prmModel == newPRMModel || ! mw->fc->hasCurrentDocument() )
-		return;
+  // If doesn't changed, don't changed completer.
 
-	QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
-	d->prmModel.clear();
-	d->prmModel = newPRMModel;
-	d->prmModel->setKeywords( QString( mw->fc->currentDocument()->lexer()->keywords(1) ).split(QChar(' ')) );
-	d->prmModel->sort(0);
-	d->completer->setModel( d->prmModel.data() );
-	d->completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+  if ( newPRMModel.isNull() || d->prmModel == newPRMModel || ! mw->fc->hasCurrentDocument() )
+    return;
 
-	emit completerChanged();
+  QSharedPointer<PRMTreeModel> oldPRMModel = d->prmModel;
+
+  d->prmModel.clear();
+
+  d->prmModel = newPRMModel;
+
+  d->prmModel->setKeywords( QString( mw->fc->currentDocument()->lexer()->keywords( 1 ) ).split( QChar( ' ' ) ) );
+
+  d->prmModel->sort( 0 );
+
+  d->completer->setModel( d->prmModel.data() );
+
+  d->completer->setModelSorting( QCompleter::CaseSensitivelySortedModel );
+
+  emit completerChanged();
 }

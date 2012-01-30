@@ -8,6 +8,13 @@ set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include("${CMAKE_CURRENT_CMAKE_DIR}/CompilOptions.agrum.cmake")
 
+configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${GUM_SRC_PATH}/agrum/config.h")
+
+file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)
+file(GLOB_RECURSE AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.h)
+file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.inl)
+file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.tcc)
+
 ### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
 include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
 if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
@@ -23,24 +30,17 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
     CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
     CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
-	CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
+	  CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
-
-configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${GUM_SRC_PATH}/agrum/config.h")
-
-file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)
-file(GLOB_RECURSE AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.h)
-file(GLOB_RECURSE AGRUM_INLINES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.inl)
-file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.tcc)
 
 include_directories(${AGRUM_BINARY_DIR})
 include_directories(${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
 
-set(AGRUM_FILES "${AGRUM_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES}")
+set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
-add_library(${LIBAGRUM} SHARED ${AGRUM_SOURCES})
+add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
 ## target docs

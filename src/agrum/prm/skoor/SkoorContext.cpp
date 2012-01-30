@@ -56,12 +56,12 @@ SkoorContext::~SkoorContext()
     delete m_sessions[i];
 }
   
-string SkoorContext::getFilename() const
+string SkoorContext::filename() const
 {
   return m_filename;
 }
   
-string SkoorContext::getPackage() const
+string SkoorContext::package() const
 {
   return m_package;
 }
@@ -79,7 +79,7 @@ string SkoorContext::aliasToImport( const string & alias )
   return string();
 }
 
-vector<ImportCommand *> SkoorContext::getImports() const
+vector<ImportCommand *> SkoorContext::imports() const
 {
   return m_imports;
 }
@@ -98,7 +98,7 @@ void SkoorContext::addImport( int line, const std::string & import, bool ismain 
     m_mainImport = m_imports.back();
 }
   
-std::vector<SkoorSession *> SkoorContext::getSessions() const
+std::vector<SkoorSession *> SkoorContext::sessions() const
 {
   return m_sessions;
 }
@@ -134,12 +134,12 @@ string SkoorContext::toString() const
 
 SkoorContext & SkoorContext::operator+=( const SkoorContext & c )
 {
-  const std::vector<ImportCommand *> & imports = c.getImports();
+  const std::vector<ImportCommand *> & imports = c.imports();
   for ( std::vector<ImportCommand *>::const_iterator i = imports.begin() ; i != imports.end() ; i++ )
     addImport( **i ) ;
     
-  const std::vector<SkoorSession *> & sessions = c.getSessions();
-  if ( sessions.size() == 1 && sessions.back()->getName() == "default" ) {
+  const std::vector<SkoorSession *> & sessions = c.sessions();
+  if ( sessions.size() == 1 && sessions.back()->name() == "default" ) {
     *(this->m_sessions.back()) += *(sessions.back());
   } else 
     for ( std::vector<SkoorSession *>::const_iterator i = sessions.begin() ; i != sessions.end() ; i++ )
@@ -167,12 +167,12 @@ SkoorSession::~SkoorSession()
   m_commands.clear();
 }
 
-string SkoorSession::getName() const
+string SkoorSession::name() const
 {
   return m_name;
 }
 
-vector<SkoorCommand *> SkoorSession::getCommands() const
+vector<SkoorCommand *> SkoorSession::commands() const
 {
   return m_commands;
 }

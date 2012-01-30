@@ -639,7 +639,7 @@ namespace gum {
   */
   template<typename T_DATA>
   const Sequence<NodeId>&
-  InfluenceDiagram<T_DATA>::getTopologicalOrder( bool clear ) const {
+  InfluenceDiagram<T_DATA>::topologicalOrder( bool clear ) const {
     if ( clear or( __topologicalOrder->empty() ) ) {
       __topologicalOrder->clear();
       AbstractBayesNet<T_DATA>::_topologicalOrder( *__topologicalOrder );
@@ -655,7 +655,7 @@ namespace gum {
   template<typename T_DATA>
   bool
   InfluenceDiagram<T_DATA>::decisionOrderExists() const {
-    Sequence<NodeId> order = getTopologicalOrder( true );
+    Sequence<NodeId> order = topologicalOrder( true );
 
     //Finding first decision node
     Sequence<NodeId>::const_iterator orderIter = order.begin();
@@ -814,7 +814,7 @@ namespace gum {
       GUM_ERROR( NotFound, "No decision path exists" );
     }
 
-    Sequence<NodeId> order = getTopologicalOrder( false );
+    Sequence<NodeId> order = topologicalOrder( false );
 
     std::vector<NodeId>*  decisionSequence = new std::vector<NodeId>();
 
