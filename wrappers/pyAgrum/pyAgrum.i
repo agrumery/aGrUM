@@ -234,27 +234,15 @@ def saveBN(bn,s):
 %}
 
 %extend gum::BayesNet {
-    PyObject *pyTopologicalOrder() const {        
-        PyObject* q=PyList_New(0);
-
-        gum::Sequence<gum::NodeId> topoOrder=self->topologicalOrder();
-        for(gum::Idx i=0;i<topoOrder.size();i++) {
-		PyList_Append(q,PyInt_FromLong(topoOrder.atPos(i)));
-        }
-
-        return q;
-    };
-
     PyObject *names() const {
-		PyObject* q=PyList_New(0);
-	
-		const DAG& dag=self->dag();
-		for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
-			PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
-		}
-
-		return q;
-	};
+      PyObject* q=PyList_New(0);
+    
+      const DAG& dag=self->dag();
+      for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
+      }
+      return q;
+    };
 
     PyObject *ids() {
 		PyObject* q=PyList_New(0);
@@ -294,7 +282,7 @@ def saveBN(bn,s):
     	  std::vector<PythonLoadListener> py_listener;
         try {
             gum::BIFReader<T_DATA> reader(self,name);
-            int l_size=__fillListeners(py_listener,l);
+            int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
@@ -322,7 +310,7 @@ def saveBN(bn,s):
 	std::vector<PythonLoadListener> py_listener;
         try {
             gum::DSLReader<T_DATA> reader(self,name);
-            int l_size=__fillListeners(py_listener,l);
+            int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
@@ -348,7 +336,7 @@ def saveBN(bn,s):
         std::vector<PythonLoadListener> py_listener;
         try {
             gum::NetReader<T_DATA> reader(self,name);
-            int l_size=__fillListeners(py_listener,l);
+            int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
@@ -375,7 +363,7 @@ def saveBN(bn,s):
             gum::BIFXMLBNReader<T_DATA> reader(self,name);
             /* nothing as listener for now for BIFXML ... */
             /*            
-            int l_size=__fillListeners(py_listener,l);
+            int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
@@ -774,28 +762,28 @@ PyObject* compute(void) {
 /*#include "extensions/PythonGibbsKLListener.h"*/
 
 
+int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
+	if (!l) return 0;
+	if (l==Py_None) return 0;
 
+	int l_size = 0;
+	PyObject *item;
 
-    int __fillListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
-        if (!l) return 0;
-        if (l==Py_None) return 0;
+	if(PySequence_Check(l)) {
+			l_size = PySequence_Size(l);
+			py_listener.resize(l_size);
+			for(int i=0 ; i < l_size ; i++) {
+					item = PySequence_GetItem(l, i);
+					if(! py_listener[i].setPythonListener(item)) return 0;
+			}
+	} else {
+      l_size=1;
+      py_listener.resize(l_size);
+			if(! py_listener[0].setPythonListener(l)) return 0;
+	}
 
-        int l_size = 0;
-        PyObject *item;
-
-        if(PySequence_Check(l)) {
-            l_size = PySequence_Size(l);
-            py_listener.resize(l_size);
-            for(int i=0 ; i < l_size ; i++) {
-                item = PySequence_GetItem(l, i);
-                if(! py_listener[i].setPythonListener(item)) return false;
-            }
-        } else {
-            if(! py_listener[0].setPythonListener(l)) return false;
-        }
-
-        return l_size;
-    };
+	return l_size;
+};
 %}
 
 /* INCLUDE aGrUM base wrap */

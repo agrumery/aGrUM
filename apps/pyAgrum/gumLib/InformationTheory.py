@@ -48,7 +48,7 @@ if __name__=="__main__":
 
     print "Entropy of nodes (a posteriori)"
     res=[]
-    for i in bn.getTopologicalOrder():
+    for i in bn.topologicalOrder():
       res.append((bn.variable(i).name(),inf.H(i)))
     res=sorted(res,key=lambda x:-x[1])
     for i in range(len(res)):
@@ -57,7 +57,7 @@ if __name__=="__main__":
     print
     print "Mutual information and Variation of information for arcs (a posteriori)"
     res=[]
-    for i in bn.getTopologicalOrder():
+    for i in bn.topologicalOrder():
       for j in parents(bn,i):
         res.append((bn.variable(j).name()+"->"+bn.variable(i).name(),inf.I(i,j),inf.VI(i,j)))
     res=sorted(res,key=lambda x:-x[1])
