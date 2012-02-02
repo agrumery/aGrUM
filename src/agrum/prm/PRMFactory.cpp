@@ -29,7 +29,9 @@
 #include <agrum/prm/PRMFactory.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
+
 namespace gum {
+
   namespace prm {
 
     void
@@ -37,11 +39,13 @@ namespace gum {
       if ( extends == "" ) {
         Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
+
         if ( not var ) {
           GUM_ERROR( FatalError, "the current type's variable is not a LabelizedVariable." );
         } else if ( t->__super ) {
           GUM_ERROR( OperationNotAllowed, "current type is a subtype." );
         }
+
         try {
           var->addLabel( l );
         } catch ( DuplicateElement& ) {
@@ -50,12 +54,15 @@ namespace gum {
       } else {
         Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
+
         if ( not var ) {
           GUM_ERROR( FatalError, "the current type's variable is not a LabelizedVariable." );
         } else if ( not t->__super ) {
           GUM_ERROR( OperationNotAllowed, "current type is not a subtype." );
         }
+
         bool found = false;
+
         for ( Idx i = 0; i < t->__super->__var->domainSize(); ++i ) {
           if ( t->__super->__var->label( i ) == extends ) {
             try {
@@ -63,11 +70,14 @@ namespace gum {
             } catch ( DuplicateElement& ) {
               GUM_ERROR( DuplicateElement, "a label with the same value already exists" );
             }
+
             t->__label_map->push_back( i );
+
             found = true;
             break;
           }
         }
+
         if ( not found ) {
           GUM_ERROR( NotFound, "inexistent label in super type." );
         }
@@ -82,6 +92,7 @@ namespace gum {
       Class* c = 0;
       Class* mother = 0;
       Set<Interface*> impl;
+
       if ( implements != 0 ) {
         for ( Set<std::string>::iterator iter = implements->begin();
               iter != implements->end(); ++iter ) {
@@ -98,6 +109,7 @@ namespace gum {
           // }
         }
       }
+
       if ( extends != "" ) {
         // Retrieving the mother class
         mother = __retrieveClass( extends );
@@ -112,6 +124,7 @@ namespace gum {
         //   }
         // }
       }
+
       if (( extends == "" ) and impl.empty() ) {
         c = new Class( real_name );
       } else if (( extends != "" ) and impl.empty() ) {
@@ -121,7 +134,9 @@ namespace gum {
       } else if (( extends != "" ) and( not impl.empty() ) ) {
         c = new Class( real_name, *mother, impl );
       }
+
       __prm->__classMap.insert( c->name(), c );
+
       __prm->__classes.insert( c );
       __stack.push_back( c );
     }
@@ -133,45 +148,54 @@ namespace gum {
       std::string name;
       std::stringstream msg;
       msg << "class " << c->name() << " does not respect interface ";
+
       try {
         for ( Set<Interface*>::iterator iter = c->implements().begin(); iter != c->implements().end(); ++iter ) {
           i = *iter;
+
           try {
             for ( DAG::NodeIterator node = i->dag().beginNodes(); node != i->dag().endNodes(); ++node ) {
               name = i->get( *node ).name();
+
               switch ( i->get( *node ).elt_type() ) {
                 case ClassElement::prm_aggregate:
                 case ClassElement::prm_attribute: {
-                    if (( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
-                        ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
-                      if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
-                        GUM_ERROR( TypeError, msg.str() + i->name() );
-                      }
-                    } else {
+                  if (( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
+                      ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
+                    if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-                    break;
+                  } else {
+                    GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
+
+                  break;
+                }
+
                 case ClassElement::prm_refslot: {
-                    if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
-                      const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
-                      const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
-                      if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
-                        GUM_ERROR( TypeError, msg.str() + i->name() );
-                      }
-                    } else {
+                  if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
+                    const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
+                    const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
+
+                    if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-                    break;
+                  } else {
+                    GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
+
+                  break;
+                }
+
                 case ClassElement::prm_slotchain: {
-                    // Nothing to check: they are automatically inherited
-                    break;
-                  }
+                  // Nothing to check: they are automatically inherited
+                  break;
+                }
+
                 default: {
-                    std::string msg = "unexpected ClassElement in interface ";
-                    GUM_ERROR( FatalError, msg + i->name() );
-                  }
+                  std::string msg = "unexpected ClassElement in interface ";
+                  GUM_ERROR( FatalError, msg + i->name() );
+                }
               }
             }
           } catch ( NotFound& ) {
@@ -181,6 +205,7 @@ namespace gum {
       } catch ( NotFound& ) {
         // this Class does not implement any Interface
       }
+
       __stack.pop_back();
     }
 
@@ -190,6 +215,7 @@ namespace gum {
       __checkDuplicateName( real_name );
       Interface* i = 0;
       Interface* super = 0;
+
       if ( extends != "" ) {
         super = __retrieveInterface( extends );
         // try {
@@ -203,12 +229,15 @@ namespace gum {
         //   }
         // }
       }
+
       if ( super != 0 ) {
         i = new Interface( real_name, *super );
       } else {
         i = new Interface( real_name );
       }
+
       __prm->__interfaceMap.insert( i->name(), i );
+
       __prm->__interfaces.insert( i );
       __stack.push_back( i );
     }
@@ -219,16 +248,19 @@ namespace gum {
       c->add( attr );
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
+
       for ( DAG::NodeIterator node = c->dag().beginNodes(); node != c->dag().endNodes(); ++node ) {
         try {
           if ( vars.exists( &( c->get( *node ).type().variable() ) ) ) {
             ++count;
+
             if ( &( attr->type().variable() ) != &( c->get( *node ).type().variable() ) ) {
               c->insertArc( c->get( *node ).safeName(), attr->safeName() );
             }
           }
         } catch ( OperationNotAllowed& ) { }
       }
+
       if ( count != attr->cpf().variablesSequence().size() ) {
         GUM_ERROR( NotFound, "unable to found all parents of this attribute" );
       }
@@ -239,32 +271,40 @@ namespace gum {
       // Retrieving pointers
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
       ClassElementContainer* c = __checkStackContainter( 2 );
+
       try {
         ClassElement& elt = c->get( name );
+
         switch ( elt.elt_type() ) {
           case ClassElement::prm_refslot: {
-              GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
-              break;
-            }
+            GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
+            break;
+          }
+
           case ClassElement::prm_slotchain: {
-              if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
-                GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
-              }
-              c->insertArc( name, a->name() );
-              break;
+            if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
+              GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
             }
+
+            c->insertArc( name, a->name() );
+
+            break;
+          }
+
           case ClassElement::prm_attribute:
           case ClassElement::prm_aggregate: {
-              c->insertArc( name, a->name() );
-              break;
-            }
+            c->insertArc( name, a->name() );
+            break;
+          }
+
           default: {
-              GUM_ERROR( FatalError, "unknown ClassElement" );
-            }
+            GUM_ERROR( FatalError, "unknown ClassElement" );
+          }
         }
       } catch ( NotFound& ) {
         // Check if name is a slot chain
         SlotChain* sc = __buildSlotChain( c, name );
+
         if ( sc == 0 ) {
           std::string msg = "found no ClassElement with the given name ";
           GUM_ERROR( NotFound, msg + name );
@@ -282,27 +322,34 @@ namespace gum {
     void
     PRMFactory::setRawCPFByColumns( const std::vector<prm_float>& array ) {
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
+
       if ( a->cpf().domainSize() != array.size() ) {
         std::stringstream s;
         s << "illegal CPF size, found " << array.size() << " and expected " << a->cpf().domainSize();
         GUM_ERROR( OperationNotAllowed, s.str() );
       }
+
       if ( a->cpf().nbrDim() == 1 ) {
         setRawCPFByLines( array );
       } else {
         std::vector<Size> pos( a->cpf().nbrDim(), 0 );
         Instantiation inst( a->cpf() );
         inst.setFirst();
+
         for ( std::vector<prm_float>::const_iterator value = array.begin(); value != array.end(); ++value ) {
           a->cpf().set( inst, *value );
+
           for ( size_t idx = pos.size(); idx > 0; --idx ) {
             bool stop = true;
             ++( pos[idx-1] );
+
             if ( pos[idx-1] == a->cpf().variablesSequence().atPos( idx-1 )->domainSize() ) {
               pos[idx-1] = 0;
               stop = false;
             }
+
             inst.chgVal( a->cpf().variablesSequence().atPos( idx-1 ), pos[idx-1] );
+
             if ( stop ) {
               break;
             }
@@ -315,27 +362,34 @@ namespace gum {
     PRMFactory::setCPFByRule( const std::vector<std::string>& parents,
                               const std::vector<prm_float>& values ) {
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
+
       if (( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
         GUM_ERROR( OperationNotAllowed, "wrong number of parents" );
       }
+
       if ( values.size() != a->type().variable().domainSize() ) {
         GUM_ERROR( OperationNotAllowed, "wrong number of values" );
       }
+
       Instantiation inst( a->cpf() );
+
       // jnst holds parents with a specific value (not "*")
       // knst holds parents without a specific value ("*")
       Instantiation jnst, knst;
       const DiscreteVariable* var = 0;
       //not_used Size pos = 0;
       bool found = false;
+
       for ( size_t i = 0; i < parents.size(); ++i ) {
         var = a->cpf().variablesSequence().atPos( 1+i );
+
         if ( parents[i] == "*" ) {
           knst.add( *var );
         } else {
           jnst.add( *var );
           //not_used pos = 0;
           found = false;
+
           for ( Size j = 0; j < var->domainSize(); ++j ) {
             if ( var->label( j ) == parents[i] ) {
               jnst.chgVal( *var, j );
@@ -343,15 +397,19 @@ namespace gum {
               break;
             }
           }
+
           if ( not found ) {
             std::string msg = "could not find label ";
             GUM_ERROR( NotFound, msg + parents[i] );
           }
         }
       }
+
       inst.chgValIn( jnst );
+
       for ( Size i = 0; i < a->type()->domainSize(); ++i ) {
         inst.chgVal( a->type().variable(), i );
+
         for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
           a->cpf().set( inst, values[i] );
         }
@@ -362,6 +420,7 @@ namespace gum {
     PRMFactory::addParameter( const std::string& type, const std::string& name,
                               std::string value ) {
       Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+
       if ( value == "" ) {
         MultiDimSparse<prm_float>* impl =
           new MultiDimSparse<prm_float>( std::numeric_limits<prm_float>::signaling_NaN() );
@@ -372,6 +431,7 @@ namespace gum {
         Attribute* a = new Attribute( name, *__retrieveType( type ), impl );
         Instantiation inst( a->cpf() );
         bool found = false;
+
         for ( inst.setFirst(); not inst.end(); inst.inc() ) {
           if ( a->type()->label( inst.pos( *( a->type() ) ) ) == value ) {
             a->cpf().set( inst, 1 );
@@ -379,9 +439,11 @@ namespace gum {
             break;
           }
         }
+
         if ( not found ) {
           GUM_ERROR( NotFound, "illegal default value." );
         }
+
         c->addParameter( a, true );
       }
     }
@@ -393,13 +455,17 @@ namespace gum {
                                const std::vector<std::string>& params ) {
       Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
       // Checking call legality
+
       if ( chains.size() == 0 ) {
         GUM_ERROR( OperationNotAllowed, "an Aggregate requires at least one parent" );
       }
+
       // Retrieving the parents of the aggregate
       std::vector<ClassElement*> inputs;
+
       // This helps knowing if the aggregate has parents outside the current class (see below)
       bool hasSC = __retrieveInputs( c, chains, inputs );
+
       // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
       if ( inputs.size() > 1 ) {
         for ( std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter ) {
@@ -408,46 +474,61 @@ namespace gum {
           }
         }
       }
+
       // Different treatments for different types of aggregate.
       Aggregate* agg = 0;
+
       switch ( Aggregate::str2enum( agg_type ) ) {
         case Aggregate::agg_or:
         case Aggregate::agg_and: {
-            if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
-              GUM_ERROR( WrongType, "expected booleans" );
-            }
+          if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
+            GUM_ERROR( WrongType, "expected booleans" );
           }
+        }
+
         case Aggregate::agg_min:
         case Aggregate::agg_max: {
-            if ( params.size() != 0 ) {
-              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
-            }
-            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
-            break;
+          if ( params.size() != 0 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
+
+          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
+
+          break;
+        }
+
         case Aggregate::agg_exists:
         case Aggregate::agg_forall: {
-            if ( params.size() != 1 ) {
-              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
-            }
-            Idx label_idx = 0;
-            while ( label_idx < inputs.front()->type()->domainSize() ) {
-              if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
-                break;
-              }
-              ++label_idx;
-            }
-            if ( label_idx == inputs.front()->type()->domainSize() ) {
-              GUM_ERROR( NotFound, "could not find label" );
-            }
-            // Creating and adding the Aggregate
-            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
-            break;
+          if ( params.size() != 1 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
+
+          Idx label_idx = 0;
+
+          while ( label_idx < inputs.front()->type()->domainSize() ) {
+            if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
+              break;
+            }
+
+            ++label_idx;
+          }
+
+          if ( label_idx == inputs.front()->type()->domainSize() ) {
+            GUM_ERROR( NotFound, "could not find label" );
+          }
+
+          // Creating and adding the Aggregate
+          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
+
+          break;
+        }
+
         default:
-          { GUM_ERROR( FatalError, "Unknown aggregator." ); }
+        { GUM_ERROR( FatalError, "Unknown aggregator." ); }
       }
+
       std::string safe_name = agg->safeName();
+
       try {
         if ( hasSC ) {
           try {
@@ -458,17 +539,20 @@ namespace gum {
         } else {
           // Inner aggregators can be directly used has attributes
           Attribute* attr = new Attribute( agg->name(), agg->type(), agg->buildImpl() );
+
           try {
             c->add( attr );
           } catch ( DuplicateElement& ) {
             c->overload( attr );
           }
+
           delete agg;
         }
       } catch ( DuplicateElement& e ) {
         delete agg;
         throw ;
       }
+
       for ( std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter ) {
         c->insertArc(( *iter )->safeName(), safe_name );
       }
@@ -480,6 +564,7 @@ namespace gum {
                                   bool isArray ) {
       ClassElementContainer* owner = __checkStackContainter( 1 );
       ClassElementContainer* slotType = 0;
+
       try {
         slotType = __retrieveClass( type );
       } catch ( NotFound& ) {
@@ -489,7 +574,9 @@ namespace gum {
           GUM_ERROR( NotFound, "unknown ReferenceSlot slot type" );
         }
       }
+
       ReferenceSlot* ref = new ReferenceSlot( name, *slotType, isArray );
+
       try {
         owner->add( ref );
       } catch ( DuplicateElement& e ) {
@@ -503,8 +590,10 @@ namespace gum {
       System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
       Class* c = __retrieveClass( type );
       Instance* inst = 0;
+
       try {
         model->addArray( name, *c );
+
         for ( Size i = 0; i < size; ++i ) {
           std::stringstream elt_name;
           elt_name << name << "[" << i << "]";
@@ -523,6 +612,7 @@ namespace gum {
     void
     PRMFactory::incArray( const std::string& l_i, const std::string& r_i ) {
       System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+
       if ( model->isArray( l_i ) ) {
         if ( model->isInstance( r_i ) ) {
           model->add( l_i, model->get( r_i ) );
@@ -543,6 +633,7 @@ namespace gum {
       System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
       std::vector<Instance*> lefts;
       std::vector<Instance*> rights;
+
       if ( model->isInstance( l_i ) ) {
         lefts.push_back( &( model->get( l_i ) ) );
       } else if ( model->isArray( l_i ) ) {
@@ -551,6 +642,7 @@ namespace gum {
       } else {
         GUM_ERROR( NotFound, "left value does not name an instance or an array" );
       }
+
       if ( model->isInstance( r_i ) ) {
         rights.push_back( &( model->get( r_i ) ) );
       } else if ( model->isArray( r_i ) ) {
@@ -559,6 +651,7 @@ namespace gum {
       } else {
         GUM_ERROR( NotFound, "left value does not name an instance or an array" );
       }
+
       for ( Jter l = lefts.begin(); l != lefts.end(); ++l ) {
         for ( Jter r = rights.begin(); r != rights.end(); ++r ) {
           if (( **l ).type().get( l_ref ).elt_type() == ClassElement::prm_refslot ) {
@@ -574,31 +667,40 @@ namespace gum {
     PRMFactory::setParameter( const std::string& instance, const std::string& param, const std::string& value ) {
       System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
       Instance* i = 0;
+
       try {
         i = &( model->get( instance ) );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "instance not found in current system" );
       }
+
       Attribute* a = 0;
+
       try {
         a = &( i->get( param ) );
+
         if ( not i->type().isParameter( *a ) ) {
           GUM_ERROR( OperationNotAllowed, "given attribute is not a parameter" );
         }
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "no such parameter in the given instance" );
       }
+
       Size label = a->type()->domainSize();
+
       for ( Size idx = 0; idx < a->type()->domainSize(); ++idx ) {
         if ( value == a->type()->label( idx ) ) {
           label = idx;
           break;
         }
       }
+
       if ( label == a->type()->domainSize() ) {
         GUM_ERROR( NotFound, "no such label in the given parameter" );
       }
+
       Potential<prm_float> pot;
+
       pot.add( a->type().variable() );
       pot.fill(( prm_float ) 0 );
       Instantiation inst( pot );
@@ -614,6 +716,7 @@ namespace gum {
       ClassElementContainer* current = start;
       ReferenceSlot* ref = 0;
       Sequence<ClassElement*> elts;
+
       for ( size_t i = 0; i < v.size(); ++i ) {
         try {
           switch ( current->get( v[i] ).elt_type() ) {
@@ -624,19 +727,23 @@ namespace gum {
               break;
             case ClassElement::prm_aggregate:
             case ClassElement::prm_attribute:
+
               if ( i == v.size() - 1 ) {
                 elts.insert( &( current->get( v[i] ) ) );
                 break;
               } else {
                 return 0;
               }
+
             default: { return 0; }
           }
         } catch ( NotFound& ) {
           return 0;
         }
       }
+
       GUM_ASSERT( v.size() == elts.size() );
+
       current->setOutputNode( *( elts.back() ), true );
       return new SlotChain( name, elts );
     }
@@ -645,6 +752,7 @@ namespace gum {
     PRMFactory::__retrieveInputs( Class* c, const std::vector<std::string>& chains,
                                   std::vector<ClassElement*>& inputs ) {
       bool retVal = false;
+
       for ( size_t i = 0; i < chains.size(); ++i ) {
         try {
           inputs.push_back( &( c->get( chains[i] ) ) );
@@ -652,6 +760,7 @@ namespace gum {
         } catch ( NotFound& ) {
           inputs.push_back( __buildSlotChain( c, chains[i] ) );
           retVal = true;
+
           if ( inputs.back() ) {
             c->add( inputs.back() );
           } else {
@@ -659,17 +768,23 @@ namespace gum {
           }
         }
       }
+
       Type* t = __retrieveCommonType( inputs );
+
       std::vector< std::pair<ClassElement*, ClassElement*> > toAdd;
+
       for ( std::vector<ClassElement*>::iterator elt = inputs.begin(); elt != inputs.end(); ++elt ) {
         if (( **elt ).type() != ( *t ) ) {
           if ( ClassElement::isSlotChain( **elt ) ) {
             SlotChain* sc = static_cast<SlotChain*>( *elt );
             std::stringstream name;
+
             for ( Size idx = 0; idx < sc->chain().size() - 1; ++idx ) {
               name << sc->chain().atPos( idx )->name() << ".";
             }
+
             name << ".(" << t->name() << ")" << sc->lastElt().name();
+
             try {
               toAdd.push_back( std::make_pair( *elt, &( c->get( name.str() ) ) ) );
             } catch ( NotFound& ) {
@@ -682,6 +797,7 @@ namespace gum {
           }
         }
       }
+
       return retVal;
     }
 
@@ -690,9 +806,11 @@ namespace gum {
       const Type* current = 0;
       HashTable<std::string, Size> counters;
       // Finding all types and super types
+
       for ( std::vector<ClassElement*>::const_iterator iter = elts.begin(); iter != elts.end(); ++iter )  {
         try {
           current = &(( **iter ).type() );
+
           while ( current != 0 ) {
             // Filling counters
             if ( counters.exists( current->name() ) ) {
@@ -700,6 +818,7 @@ namespace gum {
             } else {
               counters.insert( current->name(), 1 );
             }
+
             // Loop guard
             if ( current->isSubType() ) {
               current = &( current->super() );
@@ -711,22 +830,29 @@ namespace gum {
           GUM_ERROR( WrongClassElement, "found a ClassElement without a type" );
         }
       }
+
       // We need to find the most specialized (i.e. max depth) common type
       current = 0;
+
       int max_depth = -1;
+
       int current_depth = 0;
+
       for ( HashTable<std::string, Size>::iterator iter = counters.begin(); iter != counters.end(); ++iter ) {
         if (( *iter ) == elts.size() ) {
           current_depth = __typeDepth( __retrieveType( iter.key() ) );
+
           if ( current_depth > max_depth ) {
             max_depth = current_depth;
             current = __retrieveType( iter.key() );
           }
         }
       }
+
       if ( current ) {
         return const_cast<Type*>( current );
       }
+
       GUM_ERROR( NotFound, "could not find a common type" );
     }
 
@@ -738,17 +864,23 @@ namespace gum {
       if ( currentType() != PRMObject::prm_class ) {
         GUM_ERROR( gum::FactoryInvalidState, "invalid state to add a noisy-or" );
       }
+
       Class* c = dynamic_cast<gum::prm::Class*>( getCurrent() );
+
       std::vector<ClassElement*> parents;
+
       for ( std::vector<std::string>::const_iterator iter = chains.begin(); iter != chains.end(); ++iter ) {
         parents.push_back( &( c->get( *iter ) ) );
       }
+
       Type* common_type = __retrieveCommonType( parents );
+
       for ( size_t idx = 0; idx < parents.size(); ++idx ) {
         if ( parents[idx]->type() != ( *common_type ) ) {
           ClassElement* parent = parents[idx];
           // Either safe_name is an non existing slot chain or an existing cast descendant
           std::string safe_name = parent->cast( *common_type );
+
           if ( not c->exists( safe_name ) ) {
             if ( ClassElement::isSlotChain( *parent ) ) {
               parents[idx] = __buildSlotChain( c, safe_name );
@@ -761,6 +893,7 @@ namespace gum {
           }
         }
       }
+
       if ( numbers.size() == 1 ) {
         gum::prm::Attribute* attr = new gum::prm::Attribute( name, retrieveType( "boolean" ),
             new gum::MultiDimNoisyORCompound<gum::prm::prm_float>( leak, numbers.front() ) );
@@ -768,13 +901,16 @@ namespace gum {
       } else if ( numbers.size() == parents.size() ) {
         gum::MultiDimNoisyORCompound<gum::prm::prm_float>* noisy = new gum::MultiDimNoisyORCompound<gum::prm::prm_float>( leak );
         gum::prm::FuncAttribute* attr = new gum::prm::FuncAttribute( name, retrieveType( "boolean" ), noisy );
+
         for ( size_t idx = 0; idx < numbers.size(); ++idx ) {
           noisy->causalWeight( parents[idx]->type().variable(), numbers[idx] );
         }
+
         addAttribute( attr );
       } else {
         GUM_ERROR( OperationNotAllowed, "invalid parameters for a noisy or" );
       }
+
       if ( not labels.empty() ) {
         GUM_ERROR( OperationNotAllowed, "labels definitions not handle for noisy-or" );
       }
@@ -791,17 +927,21 @@ namespace gum {
           // Looking for the type using all declared namespaces
           std::string prefix;
           std::string dot = ".";
+
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
             if ( __prm->__typeMap.exists(( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous type name, specify full name" );
               }
+
               prefix = *iter;
             }
           }
+
           return __prm->__typeMap[prefix + dot + name];
         }
       }
+
       return 0;
     }
 
@@ -816,17 +956,21 @@ namespace gum {
           // Looking for the class using all declared namespaces
           std::string prefix;
           std::string dot = ".";
+
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
             if ( __prm->__classMap.exists(( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous class name, specify full name" );
               }
+
               prefix = *iter;
             }
           }
+
           return __prm->__classMap[prefix + dot + name];
         }
       }
+
       // Just for compilation warnings
       return 0;
     }
@@ -842,17 +986,21 @@ namespace gum {
           // Looking for the interface using all declared namespaces
           std::string prefix;
           std::string dot = ".";
+
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
             if ( __prm->__interfaceMap.exists(( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous class name, specify full name" );
               }
+
               prefix = *iter;
             }
           }
+
           return __prm->__interfaceMap[prefix + dot + name];
         }
       }
+
       // Just for compilation warnings
       return 0;
     }
