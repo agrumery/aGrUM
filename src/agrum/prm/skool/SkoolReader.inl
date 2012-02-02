@@ -55,14 +55,14 @@ namespace gum {
       }
 
       INLINE
-      void
+      int
       SkoolReader::readFile ( const std::string& file ) {
         size_t lastSlashIndex = file.find_last_of ( '/' );
         Directory dir ( file.substr ( 0, lastSlashIndex+1 ) );
 
         if ( ! dir.isValid() ) {
           __errors.addException ( "directory doesn't exist.", dir.path() );
-          return;
+          return __errors.count();
         }
 
         string basename = file.substr ( lastSlashIndex+1 );
@@ -71,7 +71,7 @@ namespace gum {
 
         try {
           if ( __parser && __parser->getImports().exists ( absFilename ) )
-            return;
+            return __errors.count();;
 
           Scanner s ( absFilename.c_str() );
 
@@ -97,10 +97,12 @@ namespace gum {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), file );
         }
+
+        return __parser->errors().count();
       }
 
       INLINE
-      void
+      int
       SkoolReader::readString ( const std::string & string ) {
         // errors += parser.errors
         try {
@@ -117,6 +119,8 @@ namespace gum {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), "" );
         }
+
+        return __parser->errors().count();
       }
 
 

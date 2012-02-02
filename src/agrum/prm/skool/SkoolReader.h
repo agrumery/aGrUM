@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of SkoolReader.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI & PH WUILLEMIN
  */
 // ============================================================================
 #ifndef GUM_SKOOL_READER_H
@@ -50,10 +50,10 @@ public:
 
     ~SkoolReader();
 
-    void readFile(const std::string& file);
+    int readFile(const std::string& file);
     /// With readString method, you must set the current path
     /// to search from import yourself, using addClassPath.
-    void readString(const std::string & string);
+    int readString(const std::string & string);
 
     /**
      * @brief This methods defines the list of paths to look for skool files.

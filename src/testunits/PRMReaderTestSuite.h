@@ -32,28 +32,45 @@ namespace gum {
       public:
         void testBasicRead() {
           prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/inference.skool ) ) );
+          int res;
+          TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( skool/inference.skool ) ) );
+
+          if (res!=0)reader.showElegantErrors();
+          TS_ASSERT_EQUALS(res,0);
+
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
+          TS_ASSERT( prm!=( prm::PRM* )0 );
+
           delete(prm);
         }
 
         void testRegression1() {
           prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/withinterfaces.skool ) ) );
+          int res;
+          TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( skool/withinterfaces.skool ) ) );
+
+          if (res!=0)reader.showElegantErrors();
+          TS_ASSERT_EQUALS(res,0);
+
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
+          TS_ASSERT( prm!=( prm::PRM* )0 );
           delete(prm);
         }
 
         void testRegression2() {
           prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/foo2.skool ) ) );
+          int res;
+          TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( skool/foo2.skool ) ) );
+
+          if (res!=0)reader.showElegantErrors();
+          TS_ASSERT_EQUALS(res,0);
+
           prm::PRM* prm;
           TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
+          TS_ASSERT( prm!=( prm::PRM* )0 );
+
           delete(prm);
         }
     };
