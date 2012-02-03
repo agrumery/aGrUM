@@ -19,6 +19,7 @@
  ***************************************************************************/
 #ifndef GUM_DEBUG_H
 #define GUM_DEBUG_H
+// WARNING : Do not include this file directlty : instead include <agrum/config.h>
 
 #include <iostream>
 #include <iomanip>
@@ -27,26 +28,6 @@
 #include <vector>
 #include <algorithm>
 #include <cassert>
-
-// including generated configuration file
-#include <agrum/config.h>
-
-namespace gum {
-namespace debug {
-
-std::string __getFile( const char* f );
-
-
-/////////////////////////////////////////////////////////////
-void __show_trace( const char *zeKey, const char *zeFile, long zeLine,
-                   const char *zeMsg, const void *zePtr );
-void __inc_creation( const char *zeKey, const char *zeFile, long zeLine,
-                     const char *zeMsg, const void *zePtr,int zeSize=-1 );
-void __inc_deletion( const char *zeKey, const char *zeFile, long zeLine,
-                     const char *zeMsg, const void *zePtr );
-void __dumpObjects( void );
-void __atexit( void );
-
 
 #ifndef NDEBUG
 
@@ -104,19 +85,42 @@ void __atexit( void );
 #define GUM_TRACE_NEWLINE
 #endif // GUM_TRACE_ON
 
-} /* namespace gum::debug */
+namespace gum {
+
+#ifndef NDEBUG
+
+  namespace debug {
+
+    std::string __getFile( const char* f );
 
 
-/* =========================================================================== */
-/* ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        === */
-/* =========================================================================== */
-class Debug : public std::string {
-public:
-    Debug( const std::string& str ) : std::string( str ) {}
+/////////////////////////////////////////////////////////////
+    void __show_trace( const char *zeKey, const char *zeFile, long zeLine,
+                       const char *zeMsg, const void *zePtr );
+    void __inc_creation( const char *zeKey, const char *zeFile, long zeLine,
+                         const char *zeMsg, const void *zePtr,int zeSize=-1 );
+    void __inc_deletion( const char *zeKey, const char *zeFile, long zeLine,
+                         const char *zeMsg, const void *zePtr );
+    void __dumpObjects( void );
+    void __atexit( void );
 
-    Debug( const char* const str ) : std::string( str ) {}
-};
 
+
+  } /* namespace gum::debug */
+
+
+#endif // NDEBUG
+
+  /* =========================================================================== */
+  /* ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        === */
+  /* =========================================================================== */
+
+  class Debug : public std::string {
+    public:
+      Debug( const std::string& str ) : std::string( str ) {}
+
+      Debug( const char* const str ) : std::string( str ) {}
+  };
 
 } /* namespace gum */
 

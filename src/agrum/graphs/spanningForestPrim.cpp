@@ -24,8 +24,8 @@
  */
 
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/graphs/spanningForestPrim.h>
 
 
@@ -73,6 +73,7 @@ namespace gum {
   /// Returns the cost of the spanning forest
   float SpanningForestPrim::costOfSpanningForest() {
     if ( __require_computation ) __compute();
+
     return __spanning_tree_cost;
   }
 
@@ -80,6 +81,7 @@ namespace gum {
   /// Returns the edges in a min cost spanning forest
   const EdgeSet& SpanningForestPrim::edgesInSpanningForest() {
     if ( __require_computation ) __compute();
+
     return __spanning_tree.edges();
   }
 
@@ -87,6 +89,7 @@ namespace gum {
   /// Construct the spanning forest
   const UndiGraph& SpanningForestPrim::spanningForest() {
     if ( __require_computation ) __compute();
+
     return __spanning_tree;
   }
 
@@ -115,6 +118,7 @@ namespace gum {
     __exploreNode( id );
 
     // get the next nodes to link to the current spanning tree nodes
+
     while ( ! __edgesToExplore.empty() ) {
       const Edge edge = __edgesToExplore.pop();
       const NodeId first = edge.first();
@@ -122,6 +126,7 @@ namespace gum {
 
       // consider only the edges that have one extremal node not in the spanning
       // tree as those that can be added to the tree
+
       if ( ! __spanning_tree.existsNode( first ) ) {
         // add the edge to the spanning tree
         __spanning_tree.insertNode( first );
@@ -148,6 +153,7 @@ namespace gum {
     // add its neighbors __edgesToExplore to indicate that they are
     // potential next nodes to explore
     const NodeSet& neighbours = __graph.neighbours( id );
+
     for ( NodeSet::const_iterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       if ( ! __spanning_tree.existsNode( *iter ) ) {

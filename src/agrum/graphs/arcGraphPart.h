@@ -22,7 +22,9 @@
 
 #include <algorithm>
 #include <utility>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/graphElements.h>
 #include <agrum/core/signal/signaler.h>
 

@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 // ============================================================================
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 // ============================================================================
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/multiDimBijArray.h>

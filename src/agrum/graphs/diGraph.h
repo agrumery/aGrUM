@@ -28,7 +28,9 @@
 #include <iostream>
 #include <utility>
 #include <sstream>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/nodeGraphPart.h>
 #include <agrum/graphs/arcGraphPart.h>
 
@@ -117,7 +119,7 @@ namespace gum {
                       bool nodes_resize_policy    = true,
                       Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
                       bool arcs_resize_policy    = true );
-  
+
     /// copy constructor
     /** @param g the DiGraph to copy */
     DiGraph( const DiGraph& g );
@@ -127,7 +129,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -142,7 +144,7 @@ namespace gum {
     // not virtual : it is a feature !!! :)
     bool operator==( const DiGraph& g ) const;
 
-    /// tests whether two DiGraphs are different 
+    /// tests whether two DiGraphs are different
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
     bool operator!=( const DiGraph& g ) const;
@@ -150,7 +152,7 @@ namespace gum {
     /// @}
 
 
-    
+
     // ############################################################################
     /// @name Accessors/Modifiers
     // ############################################################################
@@ -188,7 +190,7 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/diGraph.inl>

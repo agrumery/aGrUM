@@ -28,10 +28,7 @@
 #ifndef GUM_APPROXIMATION_POLICY_H
 #define GUM_APPROXIMATION_POLICY_H
 //**********************************************************************
-#include <agrum/core/debug.h>
-#include <agrum/core/inline.h>
-#include <agrum/core/types.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
 //**********************************************************************
 
@@ -76,10 +73,10 @@ namespace gum {
 
       /// Convert value to his approximation. This method (at least in release mode, should not verify the limits
       virtual T_DATA fromExact( const T_DATA& value ) const = 0;
-      
+
       /// Convert value to his approximation. This method is slower than @fromExact since it verifies the bounds
       /// @throw OutOfLowerBound and OutOfUpperBound
-      INLINE T_DATA safeFromExact( const T_DATA & value ) {	
+      INLINE T_DATA safeFromExact( const T_DATA & value ) {
         if ( value > this->_highLimit ) {
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
 	}
@@ -87,7 +84,7 @@ namespace gum {
         if ( value < this->_lowLimit ) {
           GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
 	}
-	
+
 	return fromExact(value);
       };
 

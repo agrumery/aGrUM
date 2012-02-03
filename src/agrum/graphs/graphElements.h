@@ -263,7 +263,9 @@
 #define GUM_GRAPH_ELEMENTS_H
 
 #include <iostream>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/set.h>
 
 

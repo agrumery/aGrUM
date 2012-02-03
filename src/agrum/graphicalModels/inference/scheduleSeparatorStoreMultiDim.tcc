@@ -26,7 +26,7 @@
 
 
 #include <sstream>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 
 namespace gum {

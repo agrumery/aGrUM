@@ -22,8 +22,7 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
 //to help IDE parser
 #include <agrum/core/hashFunc.h>

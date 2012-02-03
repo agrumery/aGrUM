@@ -31,7 +31,7 @@
 #ifndef GUM_APPROXIMATION_SETTINGS_H
 #define GUM_APPROXIMATION_SETTINGS_H
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 
 namespace gum {

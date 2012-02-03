@@ -28,7 +28,7 @@
 #ifndef GUM_INFERENCE_H
 #define GUM_INFERENCE_H
 // ============================================================================
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 // ============================================================================
 #include <agrum/BN/BayesNet.h>
 // ============================================================================
@@ -41,6 +41,7 @@ namespace gum {
    *
    */
   template <typename T_DATA>
+
   class BayesNetInference {
     public:
       /**

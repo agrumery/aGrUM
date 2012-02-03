@@ -26,7 +26,9 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/set.h>
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
@@ -37,10 +39,10 @@
 
 namespace gum {
 
-  
+
   namespace tests {
 
-    
+
     class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
       void test1 () {
@@ -51,22 +53,22 @@ namespace gum {
           std::string s = str.str();
           vars[i] = new LabelizedVariable (s, s, 4);
         }
-        
+
         gum::Potential<float> t1, t2, t3, t4, t5, t6;
         t1 << *(vars[0]) << *(vars[1]);
-        t2 << *(vars[1]) << *(vars[2]);        
+        t2 << *(vars[1]) << *(vars[2]);
         t3 << *(vars[3]) << *(vars[4]) << *(vars[5]);
         t4 << *(vars[4]) << *(vars[7]);
         t5 << *(vars[5]) << *(vars[6]);
         t6 << *(vars[8]) << *(vars[9]);
-        
+
         randomInitP ( t1 );
         randomInitP ( t2 );
         randomInitP ( t3 );
         randomInitP ( t4 );
         randomInitP ( t5 );
         randomInitP ( t6 );
-        
+
         gum::MultiDimCombineAndProjectDefault<float,Potential>
           projcomb ( multPot, mySum );
 
@@ -83,15 +85,15 @@ namespace gum {
 
         TS_ASSERT ( yyy.first == 244 );
         TS_ASSERT ( yyy.second == 228 );
-        
-        TS_ASSERT ( nb_ops == 416 ); 
+
+        TS_ASSERT ( nb_ops == 416 );
         TS_ASSERT ( res.size() == 3 );
-        
+
         gum::Set<const gum::Potential<float>*>::const_iterator iter = res.begin();
         const gum::Potential<float>* res1 = *iter; ++iter;
         const gum::Potential<float>* res2 = *iter; ++iter;
         const gum::Potential<float>* res3 = *iter;
-        
+
         gum::MultiDimCombinationDefault<float,Potential> comb ( multPot );
         gum::MultiDimProjection<float,Potential> proj ( mySum );
 
@@ -113,7 +115,7 @@ namespace gum {
         tt2 = proj.project ( *tt1, del_vars2 );
         delete tt1;
         TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
-        
+
         delete tt2;
         del_vars2.clear ();
         del_vars2 << vars[9] << vars[10];
@@ -135,7 +137,7 @@ namespace gum {
                 iter = res.begin(); iter != res.end (); ++iter ) {
           delete *iter;
         }
-        
+
         for (unsigned int i = 0; i < vars.size(); ++i)
           delete vars[i];
       }
@@ -153,13 +155,13 @@ namespace gum {
           t.set (i, 1 + (int) ( ( (float) rand() / RAND_MAX ) * 50 ) );
       }
 
-      
+
       // the function used to combine two tables
       static Potential<float>* addPot ( const Potential<float>& t1,
                                         const Potential<float>& t2 ) {
         return new Potential<float> (t1 + t2);
       }
-      
+
 
       // the function used to combine two tables
       static Potential<float>* multPot ( const Potential<float>& t1,
@@ -167,7 +169,7 @@ namespace gum {
         return new Potential<float> (t1 * t2);
       }
 
-      
+
       static Potential<float>*
       mySum ( const Potential<float>& table,
               const Set<const DiscreteVariable*>& del_vars ) {
@@ -190,11 +192,11 @@ namespace gum {
 } /* namespace gum */
 
 
-      
-    
+
+
 /*
 
-    
+
 // @brief returns a rough estimate of the number of operations that will be
 // performed to compute the combination
 virtual float

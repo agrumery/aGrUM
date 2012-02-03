@@ -25,8 +25,8 @@
  */
 
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/graphs/orderedTriangulation.h>
 
 
@@ -74,15 +74,20 @@ namespace gum {
     const std::vector<NodeId>* sequence ) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;
+
     if ( graph ) ++nb;
+
     if ( modal ) ++nb;
+
     if ( sequence ) ++nb;
+
     if (( nb != 0 ) && ( nb != 3 ) ) {
       GUM_ERROR( GraphError, "OrderedTriangulation requires valid "
                  "graphs, modalities and elimination orderings" );
     }
 
     StaticTriangulation::_setGraph( graph, modal );
+
     __sequence = sequence;
   }
 

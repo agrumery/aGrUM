@@ -28,8 +28,8 @@
 
 #include <vector>
 #include <string>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -59,5 +59,5 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif /* GUM_UTILS_STRING_H */

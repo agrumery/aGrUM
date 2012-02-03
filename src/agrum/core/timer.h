@@ -29,8 +29,7 @@ extern "C" {
 #include <sys/timeb.h>
 }
 
-
-#include <agrum/core/inline.h>
+#include <agrum/config.h>
 
 
 namespace gum {
@@ -45,76 +44,77 @@ namespace gum {
    *  This class uses double for representing time data, all the values are in
    *  seconds, and the precision is about 0.001 s
    */
+
   class Timer {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /**
-     * Default constructor (launching the timer)
-     */
-    Timer();
+      /**
+       * Default constructor (launching the timer)
+       */
+      Timer();
 
-    /**
-     * Copy constructor
-     */
-    Timer (const Timer&);
+      /**
+       * Copy constructor
+       */
+      Timer( const Timer& );
 
-    /**
-     * Destructor
-     */
-    ~Timer();
-    
-    /// @}
+      /**
+       * Destructor
+       */
+      ~Timer();
 
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /**
-     * copy operator
-     */
-    Timer& operator= (const Timer&);
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Timer manipulation
-    // ############################################################################
-    /// @{
 
-    /**
-     * Reset the timer
-     */
-    void reset();
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    /**
-     * Returns the delta time between now and the last reset() call
-     * (or the constructor)
-     *
-     * @return delta time in seconds (accuracy : 0.001 s)
-     */
-    double step() const;
+      /**
+       * copy operator
+       */
+      Timer& operator= ( const Timer& );
 
-    /// @}
-    
-  protected:
-    /**
-     * Convert a struct timeb* representation of time in a double representation
-     *
-     * @param time_val the first representation
-     * @return a double representation (in seconds, accuracy : 0.001 s)
-     */
-    double _convert( struct timeb* time_val ) const;
+      /// @}
 
-    /// time of the last call to reset() or the constructor
-    double _start;
+
+      // ############################################################################
+      /// @name Timer manipulation
+      // ############################################################################
+      /// @{
+
+      /**
+       * Reset the timer
+       */
+      void reset();
+
+      /**
+       * Returns the delta time between now and the last reset() call
+       * (or the constructor)
+       *
+       * @return delta time in seconds (accuracy : 0.001 s)
+       */
+      double step() const;
+
+      /// @}
+
+    protected:
+      /**
+       * Convert a struct timeb* representation of time in a double representation
+       *
+       * @param time_val the first representation
+       * @return a double representation (in seconds, accuracy : 0.001 s)
+       */
+      double _convert( struct timeb* time_val ) const;
+
+      /// time of the last call to reset() or the constructor
+      double _start;
 
   };
 

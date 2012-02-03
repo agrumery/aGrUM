@@ -17,23 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include <agrum/core/utils.h>
 #include <ctime>
+
+#include <agrum/config.h>
 
 namespace gum {
 
 // we do not use INLINE but inline instead
   INLINE
   double getRandomProba() {
-    return ( ( double ) rand() ) / ( ( double ) RAND_MAX );
+    return (( double ) rand() ) / (( double ) RAND_MAX );
   }
 
 // we do not use INLINE but inline instead
   INLINE
   void initRandom() {
-    srand ( ( unsigned int ) std::time ( NULL ) );
+    srand(( unsigned int ) std::time( NULL ) );
   }
 
 } /* namespace gum */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2;

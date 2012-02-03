@@ -28,7 +28,7 @@
 
 
 #include <limits>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/graphicalModels/inference/scheduleProject.h>
 
 

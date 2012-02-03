@@ -25,16 +25,16 @@
  * This file provides common tools used by various learning algorithms.
  * */
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
+
+#include <agrum/learning/learningTools.h>
 
 namespace gum {
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  
+
   /* ============================================================================ */
   /* ============================================================================ */
   /* ===                    GUM_COUNTING_BOX IMPLEMENTATION                   === */
@@ -45,7 +45,7 @@ namespace gum {
   /// returns a new box for the LearnCounting tree
   // ==============================================================================
   INLINE LearnCounting::CountingBox::CountingBox( unsigned int modal ) :
-    next( 0 ), nb_cases( modal,0 ), children( modal,0 ) {
+      next( 0 ), nb_cases( modal,0 ), children( modal,0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( CountingBox );
   }
@@ -92,7 +92,7 @@ namespace gum {
 
 
 
-  
+
   /* ============================================================================ */
   /* ============================================================================ */
   /* ===                   GUM_LEARN_COUNTING IMPLEMENTATION                  === */
@@ -117,7 +117,7 @@ namespace gum {
   /// a function that parses the database and store the results into the tree
   // ==============================================================================
   INLINE void LearnCounting::parseDatabase( unsigned int min_level,
-                                            unsigned int max_level )  {
+      unsigned int max_level )  {
     CountingBox* box;
     // check if min_level and max_level are OK
 
@@ -216,11 +216,11 @@ namespace gum {
     if ( tree_level ) {
       --tree_level;
       return std::pair<LearnCounting::CountingBox*,
-        LearnCounting::CountingBox*> ( level_beg[tree_level],
-                                       level_end[tree_level] );
+             LearnCounting::CountingBox*> ( level_beg[tree_level],
+                                            level_end[tree_level] );
     } else
       return std::pair<LearnCounting::CountingBox*,
-      LearnCounting::CountingBox*> ( 0,0 );
+             LearnCounting::CountingBox*> ( 0,0 );
   }
 
   // ==============================================================================
@@ -231,12 +231,12 @@ namespace gum {
   LearnCounting::removeNGetLevel( unsigned int level ) {
     if ( tree_level <= level )
       return std::pair<LearnCounting::CountingBox*,
-      LearnCounting::CountingBox*> ( 0,0 );
+             LearnCounting::CountingBox*> ( 0,0 );
     else {
       deleteLevel( level+1 );
       --tree_level;
       return std::pair<LearnCounting::CountingBox*,
-        LearnCounting::CountingBox*> ( level_beg[level], level_end[level] );
+             LearnCounting::CountingBox*> ( level_beg[level], level_end[level] );
     }
   }
 
@@ -244,7 +244,7 @@ namespace gum {
   /// extracts a level from the tree but keep it in the tree
   // ==============================================================================
   INLINE LearnCounting::CountingBox* LearnCounting::getLastLevel()
-    const  {
+  const  {
     if ( tree_level == 0 ) return 0;
 
     return level_beg[tree_level - 1];
@@ -255,7 +255,7 @@ namespace gum {
   // ==============================================================================
   INLINE LearnCounting::CountingBox*
   LearnCounting::getLevel( unsigned int level )
-    const  {
+  const  {
     if ( tree_level <= level ) return 0;
 
     return level_beg[level];
@@ -267,6 +267,7 @@ namespace gum {
   INLINE unsigned int LearnCounting::getNbrLevels() const  {
     return tree_level;
   }
+
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 

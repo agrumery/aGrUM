@@ -29,7 +29,9 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/core/sequence.h>
 
@@ -55,129 +57,130 @@ namespace gum {
    * @ingroup multidim_group
    */
   /* ============================================================================ */
+
   class LabelizedVariable : public DiscreteVariable {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-    // ============================================================================
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
+      // ============================================================================
 
-		/** @brief Default constructor
-		* @param aName the name
-		* @param aDesc the Description
-		* @param nbrLabel the domainSize (2 by default)
-		*/
-    // ============================================================================
-    LabelizedVariable( const std::string& aName,
-                       const std::string& aDesc="",
-                       const int nbrLabel = 2 );
+      /** @brief Default constructor
+      * @param aName the name
+      * @param aDesc the Description
+      * @param nbrLabel the domainSize (2 by default)
+      */
+      // ============================================================================
+      LabelizedVariable( const std::string& aName,
+                         const std::string& aDesc="",
+                         const int nbrLabel = 2 );
 
-    // ============================================================================
-    /// Copy constructor
-		/**
-		* @param aLDRV the variable we copy
-		*/
-    // ============================================================================
-    LabelizedVariable( const LabelizedVariable& aLDRV );
+      // ============================================================================
+      /// Copy constructor
+      /**
+      * @param aLDRV the variable we copy
+      */
+      // ============================================================================
+      LabelizedVariable( const LabelizedVariable& aLDRV );
 
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    virtual ~LabelizedVariable();
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      virtual ~LabelizedVariable();
 
-		/// a virtual copyFactory ...
-    virtual DiscreteVariable* copyFactory() const;
+      /// a virtual copyFactory ...
+      virtual DiscreteVariable* copyFactory() const;
 
-    /// @}
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /// copy operator
-    /** @param aLDRV the labelized discrete random variable we copy */
-    // ============================================================================
-    const LabelizedVariable& operator= ( const LabelizedVariable& aLDRV );
-
-    // ============================================================================
-    /// returns the index of a given label
-    /** @param aLabel searched label
-     * @return the index of this label
-     * @throw NotFound */
-    // ============================================================================
-    Idx operator[]( const std::string& aLabel ) const ;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /// indicates whether the variable already has the label passed in argument
-    /** @param aLabel
-     * @return true if the label already exists */
-    // ============================================================================
-    bool isLabel( const std::string& aLabel ) const;
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+      // ============================================================================
+      /// copy operator
+      /** @param aLDRV the labelized discrete random variable we copy */
+      // ============================================================================
+      const LabelizedVariable& operator= ( const LabelizedVariable& aLDRV );
 
-    // ============================================================================
-    /// add a label with a new index (we assume that we will NEVER remove a label)
-		/** @param aLabel the label to be added to the labelized variable
-     * @throw DuplicateElement is raised if the variable already contains
-     * the label
-     * @return *this which allows : v.addLabel("1").addLabel("2")...;
-     */
-    // ============================================================================
-    LabelizedVariable& addLabel( const std::string aLabel ) ;
+      // ============================================================================
+      /// returns the index of a given label
+      /** @param aLabel searched label
+       * @return the index of this label
+       * @throw NotFound */
+      // ============================================================================
+      Idx operator[]( const std::string& aLabel ) const ;
 
-    // ============================================================================
-    /// erase all the labels
-    // ============================================================================
-    void eraseLabels( void );
-
-    // ============================================================================
-    /// returns the ith label
-    /** @param i
-     * @return the ith label */
-    // ============================================================================
-    virtual const std::string label( const Idx i ) const;
-
-    // ============================================================================
-    /// returns the size of the random discrete variable domain
-    // ============================================================================
-    virtual Size domainSize() const;
-
-    // ============================================================================
-    /// returns the set of labels of the variable
-    // ============================================================================
-    const Sequence<std::string>& labels() const;
-		
-    // ============================================================================
-    /// returns the type of variable
-    // ============================================================================
-    virtual Type type(void) const;
-
-    /// @}
+      /// @}
 
 
-  protected:
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
+      // ============================================================================
+      /// indicates whether the variable already has the label passed in argument
+      /** @param aLabel
+       * @return true if the label already exists */
+      // ============================================================================
+      bool isLabel( const std::string& aLabel ) const;
 
-		/// (protected) Default constructor
-    LabelizedVariable( ) {GUM_CONSTRUCTOR(LabelizedVariable);};
+      // ============================================================================
+      /// add a label with a new index (we assume that we will NEVER remove a label)
+      /** @param aLabel the label to be added to the labelized variable
+         * @throw DuplicateElement is raised if the variable already contains
+         * the label
+         * @return *this which allows : v.addLabel("1").addLabel("2")...;
+         */
+      // ============================================================================
+      LabelizedVariable& addLabel( const std::string aLabel ) ;
 
-    // ============================================================================
-    /// copies the content of aLDRV
-    // ============================================================================
-    void _copy( const LabelizedVariable& aLDRV );
+      // ============================================================================
+      /// erase all the labels
+      // ============================================================================
+      void eraseLabels( void );
+
+      // ============================================================================
+      /// returns the ith label
+      /** @param i
+       * @return the ith label */
+      // ============================================================================
+      virtual const std::string label( const Idx i ) const;
+
+      // ============================================================================
+      /// returns the size of the random discrete variable domain
+      // ============================================================================
+      virtual Size domainSize() const;
+
+      // ============================================================================
+      /// returns the set of labels of the variable
+      // ============================================================================
+      const Sequence<std::string>& labels() const;
+
+      // ============================================================================
+      /// returns the type of variable
+      // ============================================================================
+      virtual Type type( void ) const;
+
+      /// @}
 
 
-  private:
-    /// the set of labels contained in the variable
-    Sequence<std::string> zeLabels;
+    protected:
+
+      /// (protected) Default constructor
+      LabelizedVariable( ) {GUM_CONSTRUCTOR( LabelizedVariable );};
+
+      // ============================================================================
+      /// copies the content of aLDRV
+      // ============================================================================
+      void _copy( const LabelizedVariable& aLDRV );
+
+
+    private:
+      /// the set of labels contained in the variable
+      Sequence<std::string> zeLabels;
 
   };
 

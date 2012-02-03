@@ -29,7 +29,8 @@
 #include <string>
 #include <sstream>
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/multidim/instantiation.h>
@@ -53,38 +54,38 @@ namespace gum {
    * Variables in a CPF must all have different names.
    */
   template <typename T_DATA>
-  class CPF: public MultiDimDecorator<T_DATA>
-  {
-  public:
-    // ============================================================================
-    /// @name Constructors & Destructor
-    // ============================================================================
-    /// @{
-    /**
-     * Default constructor.
-     *
-     * A MultiDimArray is used for representing the CPF.
-     */
-    CPF();
 
-    /**
-     * Constructor with user defined content.
-     * The content will be deleted with this class.
-     * @param content The implementation used for representing the CPF.
-     */
-    CPF(MultiDimImplementation<T_DATA> *content);
+  class CPF: public MultiDimDecorator<T_DATA> {
+    public:
+      // ============================================================================
+      /// @name Constructors & Destructor
+      // ============================================================================
+      /// @{
+      /**
+       * Default constructor.
+       *
+       * A MultiDimArray is used for representing the CPF.
+       */
+      CPF();
 
-    /**
-     * Copy constructor.
-     */
-    CPF(const CPF<T_DATA>& from);
+      /**
+       * Constructor with user defined content.
+       * The content will be deleted with this class.
+       * @param content The implementation used for representing the CPF.
+       */
+      CPF( MultiDimImplementation<T_DATA> *content );
 
-    /**
-     * Destructor.
-     */
-    virtual ~CPF();
+      /**
+       * Copy constructor.
+       */
+      CPF( const CPF<T_DATA>& from );
 
-    /// @}
+      /**
+       * Destructor.
+       */
+      virtual ~CPF();
+
+      /// @}
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -103,123 +104,123 @@ namespace gum {
 
 
 
-    // ============================================================================
-    /// Getters & setters
-    // ============================================================================
-    /// @{
-    /**
-     * Add a new conditioned variable.
-     * @param var The new conditioned variable added.
-     * @throw DuplicateElement
-     */
-    virtual void add( const DiscreteVariable& var );
+      // ============================================================================
+      /// Getters & setters
+      // ============================================================================
+      /// @{
+      /**
+       * Add a new conditioned variable.
+       * @param var The new conditioned variable added.
+       * @throw DuplicateElement
+       */
+      virtual void add( const DiscreteVariable& var );
 
-    /**
-     *  Removes a dimension.
-     *  @param var The variable which is removed.
-     *  @throws NotFound If var isn't in this.
-     *  @throws OperationNotAllowed If var can't be removed.
-     */
-    virtual void erase( const DiscreteVariable& var);
+      /**
+       *  Removes a dimension.
+       *  @param var The variable which is removed.
+       *  @throws NotFound If var isn't in this.
+       *  @throws OperationNotAllowed If var can't be removed.
+       */
+      virtual void erase( const DiscreteVariable& var );
 
-    /**
-     * Adds a conditioning variable.
-     * @param var The variable added as a conditioning variable.
-		 * @param isConditioned If true then var is added as a conditioned variable,
-     *               otherwise it is added as a conditioning variable.
-     * @throw DuplicateElement
-     */
-    void add(const DiscreteVariable& var, bool isConditioned);
+      /**
+       * Adds a conditioning variable.
+       * @param var The variable added as a conditioning variable.
+      * @param isConditioned If true then var is added as a conditioned variable,
+       *               otherwise it is added as a conditioning variable.
+       * @throw DuplicateElement
+       */
+      void add( const DiscreteVariable& var, bool isConditioned );
 
-    /**
-		* Returns true if the variable is a conditioned variable.
-		* @param var The variable that is tested.
-     */
-    bool isConditioned(const DiscreteVariable& var) const;
+      /**
+      * Returns true if the variable is a conditioned variable.
+      * @param var The variable that is tested.
+       */
+      bool isConditioned( const DiscreteVariable& var ) const;
 
-    /**
-     * Returns a Instantiation initialized
-     * over the conditioned variables.
-     *
-     * The methods parse all the sequence of variables to build the
-     * Instantiation (i.e. it's not fast).
-     *
-     * To speed your code call this method this way:
-     * @code
-     * Instantiation inst = myCPF.conditionedVars();
-     * @endcode
-     */
-    Instantiation conditionedVars();
+      /**
+       * Returns a Instantiation initialized
+       * over the conditioned variables.
+       *
+       * The methods parse all the sequence of variables to build the
+       * Instantiation (i.e. it's not fast).
+       *
+       * To speed your code call this method this way:
+       * @code
+       * Instantiation inst = myCPF.conditionedVars();
+       * @endcode
+       */
+      Instantiation conditionedVars();
 
-    /**
-     * Returns a constant Instantiation initialized
-     * over the conditioned variables.
-     *
-     * The methods parse all the sequence of variables to build the
-     * Instantiation (i.e. it's not fast).
-     *
-     * To speed your code call this method this way:
-     * @code
-     * const Instantiation inst = myCPF.conditionedVars();
-     * @endcode
-     */
-    const Instantiation conditionedVars() const;
+      /**
+       * Returns a constant Instantiation initialized
+       * over the conditioned variables.
+       *
+       * The methods parse all the sequence of variables to build the
+       * Instantiation (i.e. it's not fast).
+       *
+       * To speed your code call this method this way:
+       * @code
+       * const Instantiation inst = myCPF.conditionedVars();
+       * @endcode
+       */
+      const Instantiation conditionedVars() const;
 
-    /**
-     * Returns a Instantiation initialized
-     * over the conditioning variables.
-     *
-     * The methods parse all the sequence of variables to build the
-     * Instantiation (i.e. it's not fast).
-     *
-     * To speed your code call this method this way:
-     * @code
-     * Instantiation inst = myCPF.conditioningVars();
-     * @endcode
-     */
-    Instantiation conditioningVars();
+      /**
+       * Returns a Instantiation initialized
+       * over the conditioning variables.
+       *
+       * The methods parse all the sequence of variables to build the
+       * Instantiation (i.e. it's not fast).
+       *
+       * To speed your code call this method this way:
+       * @code
+       * Instantiation inst = myCPF.conditioningVars();
+       * @endcode
+       */
+      Instantiation conditioningVars();
 
-    /**
-     * Returns a constant Instantiation initialized
-     * over the conditioning variables.
-     *
-     * The methods parse all the sequence of variables to build the
-     * Instantiation (i.e. it's not fast).
-     *
-     * To speed your code call this method this way:
-     * @code
-     * const Instantiation inst = myCPF.conditioningVars();
-     * @endcode
-     */
-    const Instantiation conditioningVars() const;
+      /**
+       * Returns a constant Instantiation initialized
+       * over the conditioning variables.
+       *
+       * The methods parse all the sequence of variables to build the
+       * Instantiation (i.e. it's not fast).
+       *
+       * To speed your code call this method this way:
+       * @code
+       * const Instantiation inst = myCPF.conditioningVars();
+       * @endcode
+       */
+      const Instantiation conditioningVars() const;
 
-    /// @}
+      /// @}
 
 
-    // ============================================================================
-    /// @name Various methods
-    // ============================================================================
-    /// @{
-    /**
-     * Used by operator<< for displaying the content of CPF.
-     *
-     * The result differs from the one of a MultiDimDecorator since
-     * conditioned variables will be places at the left and conditioning variables
-     * at the right.
-     *
-     * @return Returns a string with the content of this CPF.
-     */
-    virtual const std::string toString(const Instantiation *i) const;
+      // ============================================================================
+      /// @name Various methods
+      // ============================================================================
+      /// @{
+      /**
+       * Used by operator<< for displaying the content of CPF.
+       *
+       * The result differs from the one of a MultiDimDecorator since
+       * conditioned variables will be places at the left and conditioning variables
+       * at the right.
+       *
+       * @return Returns a string with the content of this CPF.
+       */
+      virtual const std::string toString( const Instantiation *i ) const;
 
-    /// @}
+      /// @}
 
-  protected:
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    protected:
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
-  private:
-    // Used to no if a given is conditioned or not (if _cond[var] == true then
-    // var is a conditioned variable).
-    HashTable<const DiscreteVariable*, bool>* __condMap;
+    private:
+      // Used to no if a given is conditioned or not (if _cond[var] == true then
+      // var is a conditioned variable).
+      HashTable<const DiscreteVariable*, bool>* __condMap;
   };
 
 

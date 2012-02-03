@@ -65,11 +65,11 @@
 #ifndef GUM_SPLAY_H
 #define GUM_SPLAY_H
 
-#include <agrum/core/inline.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/hashTable.h>
 #include <iostream>
 
+#include <agrum/config.h>
+
+#include <agrum/core/hashTable.h>
 
 namespace gum {
 

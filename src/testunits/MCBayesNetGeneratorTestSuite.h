@@ -22,10 +22,12 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+
+#include <agrum/config.h>
+
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/core/set.h>
-#include <agrum/core/exceptions.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 

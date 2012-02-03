@@ -19,7 +19,7 @@
  ***************************************************************************/
 /** @file
  * @brief A container for registering binary functions on multiDimImplementations
- * 
+ *
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -28,12 +28,12 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
+#include <agrum/multidim/operatorRegister4MultiDim.h>
 
 namespace gum {
-  
+
 
   /// adds a new entry into the register
   template<typename T_DATA>
@@ -44,34 +44,37 @@ namespace gum {
     typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr newFunction ) {
     // insert the new entry
     OperatorSet* theset;
-    if ( ! __set.exists ( operation_name ) ) {
-      theset = __set.insert ( operation_name, new OperatorSet );
+
+    if ( ! __set.exists( operation_name ) ) {
+      theset = __set.insert( operation_name, new OperatorSet );
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      debug::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
-                              (void*) theset );
+      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+                             ( void* ) theset );
 #endif /* NDEBUG */
-    }
-    else {
+    } else {
       theset = __set[operation_name];
     }
 
-    std::pair<std::string,std::string> thepair (type1,type2);
-    theset->insert ( thepair, newFunction);
+    std::pair<std::string,std::string> thepair( type1,type2 );
+
+    theset->insert( thepair, newFunction );
   }
 
-  
+
   /// removes a given entry from the register
   template<typename T_DATA>
   void OperatorRegister4MultiDim<T_DATA>::erase
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) {
-    if ( ! __set.exists ( operation_name ) ) return;
+    if ( ! __set.exists( operation_name ) ) return;
+
     OperatorSet* theset = __set[operation_name];
-    theset->erase (std::pair<std::string,std::string>(type1,type2));
+
+    theset->erase( std::pair<std::string,std::string>( type1,type2 ) );
   }
 
 
@@ -81,55 +84,58 @@ namespace gum {
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) const {
-    if ( ! __set.exists ( operation_name ) ) return false;
+    if ( ! __set.exists( operation_name ) ) return false;
+
     return __set[operation_name].exists
-      ( std::pair<std::string,std::string>(type1,type2) );
+           ( std::pair<std::string,std::string>( type1,type2 ) );
   }
-    
-    
+
+
   /** @brief returns the specialized operator assigned to a given pair of
    * MultiDimImplementations */
   template<typename T_DATA> INLINE
   typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
-  OperatorRegister4MultiDim<T_DATA>::get ( const std::string& operation_name,
-                                           const std::string& type1,
-                                           const std::string& type2 ) const {
+  OperatorRegister4MultiDim<T_DATA>::get( const std::string& operation_name,
+                                          const std::string& type1,
+                                          const std::string& type2 ) const {
     OperatorSet* theset = __set[operation_name];
-    return (*theset)[std::pair<std::string,std::string>(type1,type2)];
+    return ( *theset )[std::pair<std::string,std::string>( type1,type2 )];
   }
 
 
   /// a named constructor that constructs one and only one Register per data type
   template<typename T_DATA>
   OperatorRegister4MultiDim<T_DATA>&
-  OperatorRegister4MultiDim<T_DATA>::Register () {
+  OperatorRegister4MultiDim<T_DATA>::Register() {
     static OperatorRegister4MultiDim container;
 
 #ifndef NDEBUG
     static bool first = true;
+
     if ( first ) {
       first = false;
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      debug::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
-                              (void*) &container.__set );
+      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+                             ( void* ) &container.__set );
 
     }
+
 #endif /* NDEBUG */
-    
+
     return container;
   }
-     
+
   /// Default constructor: creates an empty register
   template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::OperatorRegister4MultiDim () {
+  OperatorRegister4MultiDim<T_DATA>::OperatorRegister4MultiDim() {
   }
-  
-  
+
+
   /// destructor
   template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::~OperatorRegister4MultiDim () {
+  OperatorRegister4MultiDim<T_DATA>::~OperatorRegister4MultiDim() {
     // remove all the sets
     for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
             __set.begin(); iter != __set.end(); ++iter )
@@ -140,13 +146,13 @@ namespace gum {
   /// a function to more easily register new operators in MultiDims
   template<typename T_DATA>
   void
-  registerOperator ( const std::string& operation_name,
-                     const std::string& type1,
-                     const std::string& type2,
-                     typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
-                     function ) {
+  registerOperator( const std::string& operation_name,
+                    const std::string& type1,
+                    const std::string& type2,
+                    typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
+                    function ) {
     OperatorRegister4MultiDim<T_DATA>::Register().insert( operation_name,
-                                                          type1, type2, function);
+        type1, type2, function );
   }
 
 

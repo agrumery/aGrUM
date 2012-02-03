@@ -25,7 +25,7 @@
  */
 
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/graphs/defaultJunctionTreeStrategy.h>
 #include <agrum/graphs/staticTriangulation.h>
 

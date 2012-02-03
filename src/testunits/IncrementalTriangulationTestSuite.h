@@ -24,7 +24,9 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/incrementalTriangulation.h>
 #include <agrum/graphs/defaultTriangulation.h>
 
@@ -33,344 +35,344 @@ namespace gum {
   namespace tests {
 
     class IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
-    public:
-      void test1() {
-        gum::DefaultTriangulation tr;
-        gum::IncrementalTriangulation triang( tr );
-
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.insertNode( 10, 10 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.insertNode( 30, 10 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.insertNode( 20, 10 );
-        triang.insertNode( 40, 10 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        const gum::CliqueGraph& JT1 = triang.junctionTree();
-        TS_ASSERT_EQUALS( JT1.size() , 4U );
-
-        triang.insertEdge( 10, 20 );
-        triang.insertEdge( 10, 30 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        const gum::CliqueGraph& JT2 = triang.junctionTree();
-        TS_ASSERT_EQUALS( JT2.size() , 3U );
-        TS_ASSERT_EQUALS( JT2.sizeEdges() , 1U );
-
-        triang.eraseEdge( gum::Edge( 10, 20 ) );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        triang.eraseEdge( gum::Edge( 10, 30 ) );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        gum::NodeSet c1;
-        c1 << 10 << 20 << 30 << 40;
-        createClique( triang, c1 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.eraseEdge( gum::Edge( 10, 30 ) );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        triang.eraseEdge( gum::Edge( 10, 20 ) );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.insertEdge( 10, 20 );
-        triang.insertEdge( 10, 30 );
-        triang.insertNode( 50, 10 );
-        triang.insertNode( 80, 10 );
-        triang.insertNode( 60, 10 );
-        triang.insertNode( 70, 10 );
-
-        gum::NodeSet c2, c3, c4, c5;
-        c2 << 20 << 40 << 50;
-        c3 << 40 << 50 << 60;
-        c4 << 20 << 50 << 70;
-        c5 << 10 << 30 << 80;
-
-        createClique( triang, c4 );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        createClique( triang, c3 );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        createClique( triang, c2 );
-        createClique( triang, c5 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.eraseNode( 40 );
-        triang.updateTriangulation();
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-
-        triang.insertNode( 40, 10 );
-        createClique( triang, c1 );
-        createClique( triang, c2 );
-        createClique( triang, c3 );
-        createClique( triang, c4 );
-        createClique( triang, c5 );
-        triang.updateTriangulation();
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
-      }
-
-      void testPaperError() {
-        // check whether Incremental triangulations fix a bug in the paper by
-        // Flores et al.
-        gum::DefaultTriangulation tr;
-        gum::IncrementalTriangulation triang( tr );
-
-        triang.insertNode( 0, 10 );
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertNode( 1, 10 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertEdge( 0, 1 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertNode( 2, 10 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertEdge( 0, 2 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertEdge( 2, 1 );
-
-        triang.eraseNode( 0 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-      }
-
-      void testRandom() {
-        for ( unsigned int k = 1; k < 100; ++k ) {
-          // std::cerr << "<<<<<<<<<<<<<<<<<< k = "<< k << std::endl;
-          srand( k );
-
+      public:
+        void test1() {
           gum::DefaultTriangulation tr;
           gum::IncrementalTriangulation triang( tr );
 
-          for ( unsigned int i = 0; i < 100; ++i ) {
-            int nb = ( int )((( float ) rand() / RAND_MAX ) * 100 );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-            // ===================================================
-            // remove some node
+          triang.insertNode( 10, 10 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-            if ( nb < 10 ) {
-              continue;
-              const gum::UndiGraph& graph = triang.graph();
-              nb = ( int )((( float ) rand() / RAND_MAX ) * graph.bound() );
-              // std::cerr << "remove node " << nb << std::endl;
-              triang.eraseNode( nb );
-            }
+          triang.insertNode( 30, 10 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-            // ===================================================
-            // add a new node
-            else if ( nb < 30 ) {
-              // std::cerr << "create node " << triang.graph().bound() << std::endl;
-              triang.insertNode( triang.graph().bound(), 10 );
-            }
+          triang.insertNode( 20, 10 );
+          triang.insertNode( 40, 10 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          const gum::CliqueGraph& JT1 = triang.junctionTree();
+          TS_ASSERT_EQUALS( JT1.size() , 4U );
 
-            // ===================================================
-            // remove some edge
-            else if ( nb < 50 ) {
-              unsigned int nb1 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
-              unsigned int nb2 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
-              // std::cerr << "remove edge (" << nb1 << "," << nb2 << ")" << std::endl;
-              triang.eraseEdge( gum::Edge( nb1, nb2 ) );
-            }
+          triang.insertEdge( 10, 20 );
+          triang.insertEdge( 10, 30 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          const gum::CliqueGraph& JT2 = triang.junctionTree();
+          TS_ASSERT_EQUALS( JT2.size() , 3U );
+          TS_ASSERT_EQUALS( JT2.sizeEdges() , 1U );
 
-            // ===================================================
-            // add a new edge
-            else {
-              unsigned int nb1 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
-              unsigned int nb2 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
-              // std::cerr << "create edge (" << nb1 << "," << nb2 << ")" << std::endl;
-              triang.insertEdge( nb1, nb2 );
-            }
+          triang.eraseEdge( gum::Edge( 10, 20 ) );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.eraseEdge( gum::Edge( 10, 30 ) );
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-            nb = ( int )((( float ) rand() / RAND_MAX ) * 20 );
+          gum::NodeSet c1;
+          c1 << 10 << 20 << 30 << 40;
+          createClique( triang, c1 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-            if ( nb <= 3 ) {
-              // std::cerr << "   --- check --- " << std::endl;
-              triang.updateTriangulation();
-              TS_ASSERT_EQUALS( triang.__check(), true );
-            }
-          }
+          triang.eraseEdge( gum::Edge( 10, 30 ) );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.eraseEdge( gum::Edge( 10, 20 ) );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
 
-          triang.clear();
+          triang.insertEdge( 10, 20 );
+          triang.insertEdge( 10, 30 );
+          triang.insertNode( 50, 10 );
+          triang.insertNode( 80, 10 );
+          triang.insertNode( 60, 10 );
+          triang.insertNode( 70, 10 );
+
+          gum::NodeSet c2, c3, c4, c5;
+          c2 << 20 << 40 << 50;
+          c3 << 40 << 50 << 60;
+          c4 << 20 << 50 << 70;
+          c5 << 10 << 30 << 80;
+
+          createClique( triang, c4 );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          createClique( triang, c3 );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          createClique( triang, c2 );
+          createClique( triang, c5 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          triang.eraseNode( 40 );
+          triang.updateTriangulation();
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          triang.insertNode( 40, 10 );
+          createClique( triang, c1 );
+          createClique( triang, c2 );
+          createClique( triang, c3 );
+          createClique( triang, c4 );
+          createClique( triang, c5 );
+          triang.updateTriangulation();
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
         }
-      }
 
-      void testElimSeq() {
-        gum::DefaultTriangulation tr;
-        gum::IncrementalTriangulation triang( tr );
+        void testPaperError() {
+          // check whether Incremental triangulations fix a bug in the paper by
+          // Flores et al.
+          gum::DefaultTriangulation tr;
+          gum::IncrementalTriangulation triang( tr );
 
-        triang.updateTriangulation();
-        triang.insertNode( 10, 10 );
-        triang.insertNode( 30, 10 );
-        triang.insertNode( 20, 10 );
-        triang.insertNode( 40, 10 );
+          triang.insertNode( 0, 10 );
+          triang.updateTriangulation();
 
-        const std::vector<gum::NodeId>& elim1 = triang.eliminationOrder();
-        TS_ASSERT_EQUALS( elim1.size(), 4U );
-        TS_ASSERT_EQUALS( elim1[0], 10U );
-        TS_ASSERT_EQUALS( elim1[1], 30U );
-        TS_ASSERT_EQUALS( elim1[2], 20U );
-        TS_ASSERT_EQUALS( elim1[3], 40U );
+          if ( ! triang.__check() ) return;
 
-        const gum::CliqueGraph& JT1 = triang.junctionTree();
-        TS_ASSERT_EQUALS( JT1.size() , 4U );
+          triang.insertNode( 1, 10 );
 
-        triang.insertEdge( 10, 20 );
-        triang.insertEdge( 10, 30 );
-        triang.eraseEdge( gum::Edge( 10, 20 ) );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.updateTriangulation();
 
-        triang.eraseEdge( gum::Edge( 10, 30 ) );
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          if ( ! triang.__check() ) return;
 
-        gum::NodeSet c1;
-        c1 << 10 << 20 << 30 << 40;
-        createClique( triang, c1 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.insertEdge( 0, 1 );
 
-        triang.eraseEdge( gum::Edge( 10, 30 ) );
-        TS_ASSERT_EQUALS( triang.__check(), true );
-        triang.eraseEdge( gum::Edge( 10, 20 ) );
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.updateTriangulation();
 
-        triang.insertEdge( 10, 20 );
-        triang.insertEdge( 10, 30 );
-        triang.insertNode( 50, 10 );
-        triang.insertNode( 80, 10 );
-        triang.insertNode( 60, 10 );
-        triang.insertNode( 70, 10 );
+          if ( ! triang.__check() ) return;
 
-        gum::NodeSet c2, c3, c4, c5;
-        c2 << 20 << 40 << 50;
-        c3 << 40 << 50 << 60;
-        c4 << 20 << 50 << 70;
-        c5 << 10 << 30 << 80;
+          triang.insertNode( 2, 10 );
 
-        createClique( triang, c4 );
-        triang.updateTriangulation();
-        createClique( triang, c3 );
-        triang.updateTriangulation();
-        createClique( triang, c2 );
-        createClique( triang, c5 );
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.updateTriangulation();
 
-        const std::vector<gum::NodeId>& elim2 = triang.eliminationOrder();
-        TS_ASSERT_EQUALS( elim2.size(), 8U );
-        TS_ASSERT_EQUALS( elim2[0], 60U );
-        TS_ASSERT_EQUALS( elim2[1], 80U );
-        TS_ASSERT_EQUALS( elim2[2], 30U );
-        TS_ASSERT_EQUALS( elim2[3], 10U );
-        TS_ASSERT_EQUALS( elim2[4], 40U );
-        TS_ASSERT_EQUALS( elim2[5], 50U );
-        TS_ASSERT_EQUALS( elim2[6], 70U );
-        TS_ASSERT_EQUALS( elim2[7], 20U );
+          if ( ! triang.__check() ) return;
 
-        triang.eraseNode( 40 );
-        triang.updateTriangulation();
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.insertEdge( 0, 2 );
 
-        const std::vector<gum::NodeId>& elim3 = triang.eliminationOrder();
-        TS_ASSERT_EQUALS( elim3.size(), 7U );
-        TS_ASSERT_EQUALS( elim3[0], 60U );
-        TS_ASSERT_EQUALS( elim3[1], 50U );
-        TS_ASSERT_EQUALS( elim3[2], 70U );
-        TS_ASSERT_EQUALS( elim3[3], 80U );
-        TS_ASSERT_EQUALS( elim3[4], 30U );
-        TS_ASSERT_EQUALS( elim3[5], 20U );
-        TS_ASSERT_EQUALS( elim3[6], 10U );
+          triang.updateTriangulation();
 
-        triang.insertNode( 40, 10 );
-        createClique( triang, c1 );
-        createClique( triang, c2 );
-        createClique( triang, c3 );
-        createClique( triang, c4 );
-        createClique( triang, c5 );
-        triang.updateTriangulation();
-        triang.updateTriangulation();
-        TS_ASSERT_EQUALS( triang.__check(), true );
+          if ( ! triang.__check() ) return;
 
-        const std::vector<gum::NodeId>& elim4 = triang.eliminationOrder();
-        TS_ASSERT_EQUALS( elim4.size(), 8U );
-        TS_ASSERT_EQUALS( elim4[0], 60U );
-        TS_ASSERT_EQUALS( elim4[1], 80U );
-        TS_ASSERT_EQUALS( elim4[2], 30U );
-        TS_ASSERT_EQUALS( elim4[3], 10U );
-        TS_ASSERT_EQUALS( elim4[4], 70U );
-        TS_ASSERT_EQUALS( elim4[5], 50U );
-        TS_ASSERT_EQUALS( elim4[6], 40U );
-        TS_ASSERT_EQUALS( elim4[7], 20U );
+          triang.insertEdge( 2, 1 );
 
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 60U ), 0U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 80U ), 1U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 30U ), 2U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 10U ), 3U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 70U ), 4U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 50U ), 5U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 40U ), 6U );
-        TS_ASSERT_EQUALS( triang.eliminationOrder( 20U ), 7U );
+          triang.eraseNode( 0 );
 
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeCliques().size(), 8U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 10 ), 2U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 20 ), 8U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 30 ), 2U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 40 ), 8U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 50 ), 8U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 60 ), 9U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 70 ), 5U );
-        TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 80 ), 6U );
-      }
+          triang.updateTriangulation();
 
-    private:
+          if ( ! triang.__check() ) return;
+        }
 
-      void createClique( gum::IncrementalTriangulation& triang,
-                         const gum::NodeSet& clique ) {
-        gum::NodeSetIterator iter2;
+        void testRandom() {
+          for ( unsigned int k = 1; k < 100; ++k ) {
+            // std::cerr << "<<<<<<<<<<<<<<<<<< k = "<< k << std::endl;
+            srand( k );
 
-        for ( gum::NodeSetIterator iter = clique.begin();
-              iter != clique.end(); ++iter ) {
-          iter2 = iter;
+            gum::DefaultTriangulation tr;
+            gum::IncrementalTriangulation triang( tr );
 
-          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
-            try { triang.insertEdge( *iter, *iter2 ); }
-            catch ( gum::DuplicateElement& ) {}
+            for ( unsigned int i = 0; i < 100; ++i ) {
+              int nb = ( int )((( float ) rand() / RAND_MAX ) * 100 );
+
+              // ===================================================
+              // remove some node
+
+              if ( nb < 10 ) {
+                continue;
+                const gum::UndiGraph& graph = triang.graph();
+                nb = ( int )((( float ) rand() / RAND_MAX ) * graph.bound() );
+                // std::cerr << "remove node " << nb << std::endl;
+                triang.eraseNode( nb );
+              }
+
+              // ===================================================
+              // add a new node
+              else if ( nb < 30 ) {
+                // std::cerr << "create node " << triang.graph().bound() << std::endl;
+                triang.insertNode( triang.graph().bound(), 10 );
+              }
+
+              // ===================================================
+              // remove some edge
+              else if ( nb < 50 ) {
+                unsigned int nb1 =
+                  ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                unsigned int nb2 =
+                  ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                // std::cerr << "remove edge (" << nb1 << "," << nb2 << ")" << std::endl;
+                triang.eraseEdge( gum::Edge( nb1, nb2 ) );
+              }
+
+              // ===================================================
+              // add a new edge
+              else {
+                unsigned int nb1 =
+                  ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                unsigned int nb2 =
+                  ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                // std::cerr << "create edge (" << nb1 << "," << nb2 << ")" << std::endl;
+                triang.insertEdge( nb1, nb2 );
+              }
+
+              nb = ( int )((( float ) rand() / RAND_MAX ) * 20 );
+
+              if ( nb <= 3 ) {
+                // std::cerr << "   --- check --- " << std::endl;
+                triang.updateTriangulation();
+                TS_ASSERT_EQUALS( triang.__check(), true );
+              }
+            }
+
+            triang.clear();
           }
         }
-      }
+
+        void testElimSeq() {
+          gum::DefaultTriangulation tr;
+          gum::IncrementalTriangulation triang( tr );
+
+          triang.updateTriangulation();
+          triang.insertNode( 10, 10 );
+          triang.insertNode( 30, 10 );
+          triang.insertNode( 20, 10 );
+          triang.insertNode( 40, 10 );
+
+          const std::vector<gum::NodeId>& elim1 = triang.eliminationOrder();
+          TS_ASSERT_EQUALS( elim1.size(), 4U );
+          TS_ASSERT_EQUALS( elim1[0], 10U );
+          TS_ASSERT_EQUALS( elim1[1], 30U );
+          TS_ASSERT_EQUALS( elim1[2], 20U );
+          TS_ASSERT_EQUALS( elim1[3], 40U );
+
+          const gum::CliqueGraph& JT1 = triang.junctionTree();
+          TS_ASSERT_EQUALS( JT1.size() , 4U );
+
+          triang.insertEdge( 10, 20 );
+          triang.insertEdge( 10, 30 );
+          triang.eraseEdge( gum::Edge( 10, 20 ) );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          triang.eraseEdge( gum::Edge( 10, 30 ) );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          gum::NodeSet c1;
+          c1 << 10 << 20 << 30 << 40;
+          createClique( triang, c1 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          triang.eraseEdge( gum::Edge( 10, 30 ) );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+          triang.eraseEdge( gum::Edge( 10, 20 ) );
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          triang.insertEdge( 10, 20 );
+          triang.insertEdge( 10, 30 );
+          triang.insertNode( 50, 10 );
+          triang.insertNode( 80, 10 );
+          triang.insertNode( 60, 10 );
+          triang.insertNode( 70, 10 );
+
+          gum::NodeSet c2, c3, c4, c5;
+          c2 << 20 << 40 << 50;
+          c3 << 40 << 50 << 60;
+          c4 << 20 << 50 << 70;
+          c5 << 10 << 30 << 80;
+
+          createClique( triang, c4 );
+          triang.updateTriangulation();
+          createClique( triang, c3 );
+          triang.updateTriangulation();
+          createClique( triang, c2 );
+          createClique( triang, c5 );
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          const std::vector<gum::NodeId>& elim2 = triang.eliminationOrder();
+          TS_ASSERT_EQUALS( elim2.size(), 8U );
+          TS_ASSERT_EQUALS( elim2[0], 60U );
+          TS_ASSERT_EQUALS( elim2[1], 80U );
+          TS_ASSERT_EQUALS( elim2[2], 30U );
+          TS_ASSERT_EQUALS( elim2[3], 10U );
+          TS_ASSERT_EQUALS( elim2[4], 40U );
+          TS_ASSERT_EQUALS( elim2[5], 50U );
+          TS_ASSERT_EQUALS( elim2[6], 70U );
+          TS_ASSERT_EQUALS( elim2[7], 20U );
+
+          triang.eraseNode( 40 );
+          triang.updateTriangulation();
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          const std::vector<gum::NodeId>& elim3 = triang.eliminationOrder();
+          TS_ASSERT_EQUALS( elim3.size(), 7U );
+          TS_ASSERT_EQUALS( elim3[0], 60U );
+          TS_ASSERT_EQUALS( elim3[1], 50U );
+          TS_ASSERT_EQUALS( elim3[2], 70U );
+          TS_ASSERT_EQUALS( elim3[3], 80U );
+          TS_ASSERT_EQUALS( elim3[4], 30U );
+          TS_ASSERT_EQUALS( elim3[5], 20U );
+          TS_ASSERT_EQUALS( elim3[6], 10U );
+
+          triang.insertNode( 40, 10 );
+          createClique( triang, c1 );
+          createClique( triang, c2 );
+          createClique( triang, c3 );
+          createClique( triang, c4 );
+          createClique( triang, c5 );
+          triang.updateTriangulation();
+          triang.updateTriangulation();
+          TS_ASSERT_EQUALS( triang.__check(), true );
+
+          const std::vector<gum::NodeId>& elim4 = triang.eliminationOrder();
+          TS_ASSERT_EQUALS( elim4.size(), 8U );
+          TS_ASSERT_EQUALS( elim4[0], 60U );
+          TS_ASSERT_EQUALS( elim4[1], 80U );
+          TS_ASSERT_EQUALS( elim4[2], 30U );
+          TS_ASSERT_EQUALS( elim4[3], 10U );
+          TS_ASSERT_EQUALS( elim4[4], 70U );
+          TS_ASSERT_EQUALS( elim4[5], 50U );
+          TS_ASSERT_EQUALS( elim4[6], 40U );
+          TS_ASSERT_EQUALS( elim4[7], 20U );
+
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 60U ), 0U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 80U ), 1U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 30U ), 2U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 10U ), 3U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 70U ), 4U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 50U ), 5U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 40U ), 6U );
+          TS_ASSERT_EQUALS( triang.eliminationOrder( 20U ), 7U );
+
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeCliques().size(), 8U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 10 ), 2U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 20 ), 8U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 30 ), 2U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 40 ), 8U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 50 ), 8U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 60 ), 9U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 70 ), 5U );
+          TS_ASSERT_EQUALS( triang.createdJunctionTreeClique( 80 ), 6U );
+        }
+
+      private:
+
+        void createClique( gum::IncrementalTriangulation& triang,
+                           const gum::NodeSet& clique ) {
+          gum::NodeSetIterator iter2;
+
+          for ( gum::NodeSetIterator iter = clique.begin();
+                iter != clique.end(); ++iter ) {
+            iter2 = iter;
+
+            for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+              try { triang.insertEdge( *iter, *iter2 ); }
+              catch ( gum::DuplicateElement& ) {}
+            }
+          }
+        }
 
     };
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

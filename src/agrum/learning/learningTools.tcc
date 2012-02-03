@@ -26,7 +26,7 @@
  * */
 #include <iostream>
 #include <utility>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

@@ -25,7 +25,7 @@
 // #include <iostream>
 // #include <vector>
 //
-// #include <agrum/core/gum_utils.h>
+// #include <agrum/config.h>
 //
 // #include <agrum/gumId.h>
 // #include <agrum/gumBayesNetTpl.h>
@@ -41,7 +41,7 @@
 // /* ===             GENERIC CLASS FOR COMPUTING K2-LIKE ALGORITHMS             === */
 // /* ============================================================================== */
 // /* ============================================================================== */
-// /** @class gumK2AlgoBase 
+// /** @class gumK2AlgoBase
 //   * @ingroup bn_group
 //   */
 // /* ============================================================================== */

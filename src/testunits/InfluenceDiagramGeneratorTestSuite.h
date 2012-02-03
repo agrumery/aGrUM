@@ -22,11 +22,13 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+
+#include <agrum/config.h>
+
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/influenceDiagram/generator/simpleUTGenerator.h>
-#include <agrum/core/exceptions.h>
 
 namespace gum {
 
@@ -55,16 +57,16 @@ namespace gum {
           TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( cptGen ) );
           TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
         }
-	
-	void testCreationDeletion_3() {
+
+        void testCreationDeletion_3() {
           gum::InfluenceDiagramGenerator* gen = NULL;
 
           gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
           TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( utGen ) );
           TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
         }
-	
-	void testCreationDeletion_4() {
+
+        void testCreationDeletion_4() {
           gum::InfluenceDiagramGenerator* gen = NULL;
 
           gum::SimpleCPTGenerator* cptGen = new gum::SimpleCPTGenerator();
@@ -76,12 +78,13 @@ namespace gum {
         void testGenerationFloat_1() {
           gum::InfluenceDiagramGenerator gen;
           gum::InfluenceDiagram<float>* id = 0;
-	  
+
           TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 ) );
-	  
-	  TS_ASSERT(id->decisionOrderExists());
+
+          TS_ASSERT( id->decisionOrderExists() );
+
           if ( id != 0 ) delete id;
-	  
+
         }
 
         void testGenerationFloat_2() {
@@ -107,8 +110,9 @@ namespace gum {
           gum::InfluenceDiagram<double>* id = 0;
 
           TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 ) );
-	  
-	  TS_ASSERT(id->decisionOrderExists());
+
+          TS_ASSERT( id->decisionOrderExists() );
+
           if ( id != 0 ) delete id;
         }
 

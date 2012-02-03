@@ -26,8 +26,9 @@
 #define GUM_INDEXED_TREE_H
 
 #include <iostream>
-#include <agrum/core/utils.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
 
 
@@ -51,7 +52,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// creates a tree with one node without data
     // ============================================================================
@@ -94,7 +95,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// adds a new node into the tree
     /** @throw DuplicateElement exception is thrown if a node with an identical
@@ -156,7 +157,7 @@ namespace gum {
   template <typename Key, typename Data>
   std::ostream& operator<< ( std::ostream&, const IndexedTree<Key,Data>& );
 
-  
+
 } /* namespace gum */
 
 

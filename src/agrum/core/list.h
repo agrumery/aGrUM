@@ -99,8 +99,8 @@
 
 #include <iostream>
 
-#include <agrum/core/utils.h>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
+
 #include <agrum/core/refPtr.h>
 
 

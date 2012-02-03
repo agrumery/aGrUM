@@ -72,7 +72,7 @@ public:
 #include <string>
 #include <list>
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
 #include <agrum/core/tinyxml/ticpp/ticpp.h>

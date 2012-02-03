@@ -22,7 +22,8 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/core/errorsContainer.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

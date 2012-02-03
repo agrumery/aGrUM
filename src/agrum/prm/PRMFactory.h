@@ -33,8 +33,7 @@
 #include <iostream>
 #include <limits>
 // ============================================================================
-#include <agrum/core/utils.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 // ============================================================================
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>

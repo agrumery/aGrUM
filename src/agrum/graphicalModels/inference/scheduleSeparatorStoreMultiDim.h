@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,7 +28,9 @@
 
 
 #include <string>
-#include <agrum/core/inline.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/multiDimImplementation.h>
@@ -40,107 +42,108 @@ namespace gum {
 
 
   template <typename T_DATA>
+
   class ScheduleSeparatorStoreMultiDim : public ScheduleOperation<T_DATA> {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    ScheduleSeparatorStoreMultiDim
-    ( const ScheduleMultiDim<T_DATA>& table,
-      typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onArcs&
-      separator_tables,
-      Arc separator );
-    
-    /// copy constructor
-    ScheduleSeparatorStoreMultiDim
-    ( const ScheduleSeparatorStoreMultiDim<T_DATA>& );
+      /// default constructor
+      ScheduleSeparatorStoreMultiDim
+      ( const ScheduleMultiDim<T_DATA>& table,
+        typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onArcs&
+        separator_tables,
+        Arc separator );
 
-    /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleSeparatorStoreMultiDim<T_DATA>* newFactory () const;
+      /// copy constructor
+      ScheduleSeparatorStoreMultiDim
+      ( const ScheduleSeparatorStoreMultiDim<T_DATA>& );
 
-    /// destructor
-    virtual ~ScheduleSeparatorStoreMultiDim ();
+      /// virtual copy constructor: creates a clone of the operation
+      virtual ScheduleSeparatorStoreMultiDim<T_DATA>* newFactory() const;
 
-    /// @}
+      /// destructor
+      virtual ~ScheduleSeparatorStoreMultiDim();
 
-    
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      /// @}
 
-    /// copy operator
-    ScheduleSeparatorStoreMultiDim<T_DATA>& operator=
-    ( const ScheduleSeparatorStoreMultiDim<T_DATA>& );
 
-    /// operator ==
-    /** Two operations are identical if and only if they have the same
-     * arguments and their types are identical (combine, project, etc) */
-    bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    /// operator !=
-    /** Two operations are identical if and only if they have the same
-     * arguments and their types are identical (combine, project, etc) */
-    bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+      /// copy operator
+      ScheduleSeparatorStoreMultiDim<T_DATA>& operator=
+      ( const ScheduleSeparatorStoreMultiDim<T_DATA>& );
 
-    /// @}
-    
+      /// operator ==
+      /** Two operations are identical if and only if they have the same
+       * arguments and their types are identical (combine, project, etc) */
+      bool operator== ( const ScheduleOperation<T_DATA>& ) const;
 
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
+      /// operator !=
+      /** Two operations are identical if and only if they have the same
+       * arguments and their types are identical (combine, project, etc) */
+      bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
 
-    /// executes the operation
-    void execute ();
+      /// @}
 
-    /** @brief returns an estimation of the number of elementary operations
-     * needed to perform the ScheduleOperation */
-    float nbOperations () const;
-    
-    /// returns the memory consumption used during the operation
-    /** Actually, this function does not return a precise account of the memory
-     * used by the ScheduleOperation but a rough estimate based on the sizes
-     * of the tables involved in the operation.
-     * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used by
-     * the resulting table ) */
-    std::pair<long,long> memoryUsage () const;
- 
-    /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs () const;
 
-    /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults () const;
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// displays the content of the operation
-    std::string toString () const;
-    
-    /// @}
+      /// executes the operation
+      void execute();
 
-    
-    
-  private:
-    // the table to store into the clique
-    ScheduleMultiDim<T_DATA> __table;
+      /** @brief returns an estimation of the number of elementary operations
+       * needed to perform the ScheduleOperation */
+      float nbOperations() const;
 
-    // a mapping assigning to each clique a set of tables
-    typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onArcs*
-    __tableSet;
-    
-    // the separator into which the table will be stored
-    Arc __separator;
+      /// returns the memory consumption used during the operation
+      /** Actually, this function does not return a precise account of the memory
+       * used by the ScheduleOperation but a rough estimate based on the sizes
+       * of the tables involved in the operation.
+       * @return a pair of memory consumption: the first one is the maximum
+       * amount of memory used during the operation and the second one is the
+       * amount of memory still used at the end of the function ( the memory used by
+       * the resulting table ) */
+      std::pair<long,long> memoryUsage() const;
 
-    /// the set of ScheduleMultidims passed in arguments 
-    mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
+      /// returns the set of multidims passed in argument to the operation
+      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs() const;
+
+      /// returns the set of multidims that should be the result of the operation
+      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults() const;
+
+      /// displays the content of the operation
+      std::string toString() const;
+
+      /// @}
+
+
+
+    private:
+      // the table to store into the clique
+      ScheduleMultiDim<T_DATA> __table;
+
+      // a mapping assigning to each clique a set of tables
+      typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onArcs*
+      __tableSet;
+
+      // the separator into which the table will be stored
+      Arc __separator;
+
+      /// the set of ScheduleMultidims passed in arguments
+      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
 
   };
-  
-  
+
+
 } /* namespace gum */
 
 

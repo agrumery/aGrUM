@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,8 +27,10 @@
 
 
 #include <utility>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
-#include <agrum/core/types.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/graphElements.h>
@@ -107,25 +109,25 @@ namespace gum {
      * @warning operations are inserted by copy */
     NodeId insert ( const ScheduleOperation<T_DATA>& );
 
-    /** @brief adds a constraint indicating that an operation cannot be performed 
+    /** @brief adds a constraint indicating that an operation cannot be performed
      * before another one */
     void forceAfter ( const ScheduleOperation<T_DATA>& op_to_force,
                       const ScheduleOperation<T_DATA>& op_before );
     void forceAfter ( NodeId op_to_force, NodeId op_before );
 
-    /** @brief adds a constraint indicating that an operation cannot be performed 
+    /** @brief adds a constraint indicating that an operation cannot be performed
      * before a set of operations */
     void forceAfter ( const ScheduleOperation<T_DATA>& op_to_force,
                       const Set<const ScheduleOperation<T_DATA>*>& ops_before );
     void forceAfter ( NodeId op_to_force, const NodeSet& ops_before );
-    
-    /** @brief adds a constraint indicating that an operation must be performed 
+
+    /** @brief adds a constraint indicating that an operation must be performed
      * before another one */
     void forceBefore ( const ScheduleOperation<T_DATA>& op_to_force,
                        const ScheduleOperation<T_DATA>& op_after );
     void forceBefore ( NodeId op_to_force, NodeId op_after );
 
-    /** @brief adds a constraint indicating that an operation must be performed 
+    /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
     void forceBefore ( const ScheduleOperation<T_DATA>& op_to_force,
                        const Set<const ScheduleOperation<T_DATA>*>& ops_after );
@@ -154,7 +156,7 @@ namespace gum {
     operationsInvolving ( const ScheduleMultiDim<T_DATA>& table) const;
     const NodeSet&
     operationsInvolving ( MultiDimId table_id) const;
-    
+
     /// returns the set of ScheduleOperations that can be executed at once
     /** The scheduleOperations that can be executed at once are those that
      have no parent or whose parents have already been executed. */
@@ -172,8 +174,8 @@ namespace gum {
 
     /** @bried returns an estimation of the number of elementary operations needed
      * to perform a given ScheduleOperation */
-    float nbOperations ( NodeId ) const; 
-    float nbOperations ( ScheduleOperation<T_DATA>& ) const; 
+    float nbOperations ( NodeId ) const;
+    float nbOperations ( ScheduleOperation<T_DATA>& ) const;
 
     /// returns the memory consumption used during the execution of an operation
     /** Actually, this function does not return a precise account of the memory
@@ -190,7 +192,7 @@ namespace gum {
 
 
   private:
-    
+
     /// the DAG of the operations to perform
     /** Operations can be scheduled as a DAG: nodes without parents can be
      * executed directly. The other nodes need their parents to be executed to
@@ -223,12 +225,12 @@ namespace gum {
     /// for each multidim, store the set of operations involving it
     HashTable<MultiDimId,NodeSet*> __multidim2operations;
 
-    
+
     /** @brief updates the set of parents for the nodes whoses parents are not
      * correct yet and update accordingly the available operations */
     void __updateWrongParents () const;
    };
-  
+
 
 } /* namespace gum */
 

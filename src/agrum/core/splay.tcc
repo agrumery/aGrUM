@@ -25,9 +25,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include <cassert>
-#include <agrum/core/debug.h>
-#include <agrum/core/inline.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
+#include <agrum/core/splay.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -44,9 +46,8 @@ namespace gum {
   // ==============================================================================
   /// a function used to perform copies of HashTableLists
   // ==============================================================================
-  template <class Element> INLINE void SplayBinaryNode<Element>::
-  _copy( const SplayBinaryNode<Element>& from,
-         HashTable<Element,SplayBinaryNode<Element>*>& addr ) {
+  template <class Element> INLINE void SplayBinaryNode<Element>::_copy( const SplayBinaryNode<Element>& from,
+      HashTable<Element,SplayBinaryNode<Element>*>& addr ) {
     if ( addr.exists( from.elt ) )
       addr[from.elt] = this;
     else
@@ -463,9 +464,9 @@ namespace gum {
     int val = i;
 
     if ( !root ) {
-      GUM_ERROR(NotFound, "The tree is empty !" );
+      GUM_ERROR( NotFound, "The tree is empty !" );
     } else if ( val >= root->size ) {
-      GUM_ERROR(NotFound, "The index is too large !" );
+      GUM_ERROR( NotFound, "The index is too large !" );
     } else {
       // The element exists
       // Find it
@@ -499,9 +500,9 @@ namespace gum {
     int val = i;
 
     if ( !root ) {
-      GUM_ERROR(NotFound, "The tree is empty !" );
+      GUM_ERROR( NotFound, "The tree is empty !" );
     } else if ( val >= root->size ) {
-      GUM_ERROR(NotFound, "The index is too large !" );
+      GUM_ERROR( NotFound, "The index is too large !" );
     } else {
       // The element exists
       // Find it

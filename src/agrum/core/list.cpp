@@ -22,7 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/core/inline.h>
+#include <agrum/config.h>
+
 #include <agrum/core/list.h>
 
 /// include the inlined functions if necessary

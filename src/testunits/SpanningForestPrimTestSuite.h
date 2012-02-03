@@ -24,7 +24,9 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/spanningForestPrim.h>
 
 namespace gum {
@@ -109,4 +111,4 @@ namespace gum {
 
   }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

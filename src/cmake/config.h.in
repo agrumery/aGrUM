@@ -22,7 +22,6 @@
 // Please do not change its content.
 // Please do not add it to the repository.
 
-// WARNING !
 // To ease the process (especially for pyAgrum and other apps which directly
 // use agrum source instead of linking with agrum shared library), this file is
 // generated in source directory :
@@ -31,11 +30,26 @@
 #ifndef GUM_CONFIG_H
 #define GUM_CONFIG_H
 
+#include <agrum/core/debug.h>
+#include <agrum/core/inline.h>
+#include <agrum/core/types.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/utils.h>
+
 #cmakedefine GUM_SRC_PATH @GUM_SRC_PATH@
 #cmakedefine GUM_VERSION @GUM_VERSION@
 
 #cmakedefine GUM_TRACE_ON
 
 #cmakedefine GUM_LONG_DOUBLE_SAME_SIZE
+
+#ifdef __GNUC__
+#define GUM_DEPRECATED(func) func __attribute__ ((deprecated))
+#elif defined(_MSC_VER)
+#define GUM_DEPRECATED(func) __declspec(deprecated) func
+#else
+#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#define GUM_DEPRECATED(func) func
+#endif
 
 #endif // GUM_CONFIG_H

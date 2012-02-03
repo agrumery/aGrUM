@@ -17,61 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief Definition of abstract classes for import of Influence Diagram from a file
- *
- * All classes used to import an influence diagram from a file must inherit from IDReader
- *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
- */
-#ifndef GUM_ID_READER_H
-#define GUM_ID_READER_H
-
-#include <iostream>
-#include <string>
-#include <agrum/config.h>
-#include <agrum/influenceDiagram/influenceDiagram.h>
-
-
-namespace gum {
-  
- 
-  
-  /**
-   * @class IDReader
-   * @brief Pure virtual class for importing an ID from a file.
-   * @ingroup id_group
-   *
-   * All classes used to read an influence diagram from 
-   * a file must inherit from this class
-   */
-  template<typename T_DATA>
-  class IDReader {
-  public:
-    /**
-     * Constructor
-     * A reader is created to reading a defined file. 
-     * Note that an ID as to be created before and given in parameter.
-     */
-    IDReader(InfluenceDiagram<T_DATA>* infdiag, const std::string& filePath );
-
-    /**
-     * Default destructor.
-     */
-    virtual ~IDReader();
-
-    /**
-     * Reads the influence diagram from the file referenced by filePath  given at the creation of class
-     * @return Returns the number of error during the parsing (0 if none).
-     */
-    virtual void proceed() =0;
-  };
-
-
-} /* namespace gum */
-
-
-#include "IDReader.tcc"
-
-#endif // GUM_ID_READER_H
+// ============================================================================
+#include <agrum/BN/inference/lazyPropagation.h>
+// ============================================================================

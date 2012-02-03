@@ -26,8 +26,7 @@
 #include <execinfo.h>
 #endif //NDEBUG
 
-#include <agrum/core/exceptions.h>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -43,7 +42,7 @@ namespace gum {
       " :\n--------------\n! "+msg+"\n--------------\n";
   }
 
-  
+
   Exception::Exception( const std::string aMsg,const std::string aType ) :
     _msg( aMsg ), _type( aType ) {
 #ifndef NDEBUG
@@ -66,7 +65,7 @@ namespace gum {
 #endif
   }
 
-  
+
 } /* namespace gum */
 
 

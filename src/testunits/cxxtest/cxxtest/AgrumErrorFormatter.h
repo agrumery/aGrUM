@@ -10,7 +10,7 @@
 //
 
 #include <agrum/core/timer.h>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 #include <cxxtest/TestRunner.h>
 #include <cxxtest/TestListener.h>

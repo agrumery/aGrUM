@@ -28,7 +28,9 @@
 
 #include <string>
 #include <ostream>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashFunc.h>
 #include <agrum/multidim/variable.h>
 
@@ -48,111 +50,111 @@ namespace gum {
   /* =========================================================================== */
 
   class DiscreteVariable : public Variable {
-  public:
-    enum Type {Discretized,Labelized,Range};
+    public:
+      enum Type {Discretized,Labelized,Range};
 
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// Default constructor
-    // ============================================================================
-    DiscreteVariable( const std::string& aName, const std::string& aDesc );
+      // ============================================================================
+      /// Default constructor
+      // ============================================================================
+      DiscreteVariable( const std::string& aName, const std::string& aDesc );
 
-    // ============================================================================
-    /// Copy constructor
-    // ============================================================================
-    /** Copy Constructor.
-     *
-     * If aDRV haves any listener, it will not be copied.
-     *
-     * @param aDRV the variable we copy
-     */
-    DiscreteVariable( const DiscreteVariable& aDRV );
+      // ============================================================================
+      /// Copy constructor
+      // ============================================================================
+      /** Copy Constructor.
+       *
+       * If aDRV haves any listener, it will not be copied.
+       *
+       * @param aDRV the variable we copy
+       */
+      DiscreteVariable( const DiscreteVariable& aDRV );
 
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    virtual ~DiscreteVariable();
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      virtual ~DiscreteVariable();
 
-    // ============================================================================
-    /// Copy Factory.
-    /// @return Returns a pointer on a new copy of this.
-    // ============================================================================
-    virtual DiscreteVariable* copyFactory() const = 0;
+      // ============================================================================
+      /// Copy Factory.
+      /// @return Returns a pointer on a new copy of this.
+      // ============================================================================
+      virtual DiscreteVariable* copyFactory() const = 0;
 
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    // ============================================================================
-    /// @return true if the domainSize() < 2;
-    // ============================================================================
-    bool empty() const;
-
-    // ============================================================================
-    /// @return the number of modalities of the random discrete
-    // ============================================================================
-    virtual Size domainSize() const = 0;
-
-    // ============================================================================
-    /// get the indice-th label. This method is pure virtual.
-    /** @param indice the index of the label we wish to return
-     * @throw OutOfBound
-     */
-    // ============================================================================
-    virtual const std::string label( const Idx indice ) const = 0;
-
-    // ============================================================================
-    /// returns the type of variable
-    // ============================================================================
-    virtual Type type(void) const =0;
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// Copy operator
-    /** @param aRV to be copied
-     * @return a ref to *this */
-    // ============================================================================
-    DiscreteVariable& operator= ( const DiscreteVariable& aRV );
+      // ============================================================================
+      /// @return true if the domainSize() < 2;
+      // ============================================================================
+      bool empty() const;
 
-    // ============================================================================
-    /// equality operator
-    // ============================================================================
-    virtual bool operator== ( const DiscreteVariable& aRV ) const ;
+      // ============================================================================
+      /// @return the number of modalities of the random discrete
+      // ============================================================================
+      virtual Size domainSize() const = 0;
 
-    // ============================================================================
-    /// inequality operator
-    // ============================================================================
-    virtual bool operator!= ( const DiscreteVariable& aRV ) const ;
+      // ============================================================================
+      /// get the indice-th label. This method is pure virtual.
+      /** @param indice the index of the label we wish to return
+       * @throw OutOfBound
+       */
+      // ============================================================================
+      virtual const std::string label( const Idx indice ) const = 0;
 
-    /// @}
-
-    /// from the label to its index in var.
-    ///  @warning This operation may have different complexity in different
-    /// subclasses.
-    /// @throws NotFound
-    virtual Idx operator[]( const std::string& label ) const = 0;
-
-    /// string version of *this
-    virtual const std::string toString() const;
+      // ============================================================================
+      /// returns the type of variable
+      // ============================================================================
+      virtual Type type( void ) const =0;
+      /// @}
 
 
-  protected:
-    /// (protected) Default constructor
-    DiscreteVariable( ) {GUM_CONSTRUCTOR( DiscreteVariable );};
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+
+      // ============================================================================
+      /// Copy operator
+      /** @param aRV to be copied
+       * @return a ref to *this */
+      // ============================================================================
+      DiscreteVariable& operator= ( const DiscreteVariable& aRV );
+
+      // ============================================================================
+      /// equality operator
+      // ============================================================================
+      virtual bool operator== ( const DiscreteVariable& aRV ) const ;
+
+      // ============================================================================
+      /// inequality operator
+      // ============================================================================
+      virtual bool operator!= ( const DiscreteVariable& aRV ) const ;
+
+      /// @}
+
+      /// from the label to its index in var.
+      ///  @warning This operation may have different complexity in different
+      /// subclasses.
+      /// @throws NotFound
+      virtual Idx operator[]( const std::string& label ) const = 0;
+
+      /// string version of *this
+      virtual const std::string toString() const;
+
+
+    protected:
+      /// (protected) Default constructor
+      DiscreteVariable( ) {GUM_CONSTRUCTOR( DiscreteVariable );};
   };
 
   // ===============================================================================
