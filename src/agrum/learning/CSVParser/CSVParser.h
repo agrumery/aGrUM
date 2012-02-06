@@ -31,7 +31,7 @@ while (csvp.next()) {
 }
 in.close();
 @endcode
- * 
+ *
  * @author Pierre-Henri WUILLEMIN
  *
  */
@@ -53,24 +53,25 @@ namespace gum {
 
       /**
        * gets the next line of the csv stream and parses it
-       * 
+       *
        * @return false if there is no next line
        */
       bool next();
-      
+
       /**
        * @return the current parsed line
-       * 
+       *
        * @throw gum::NullElement if there is no data
        */
       const std::vector<std::string>& currentData()  const;
 
     private:
       void __tokenize(const std::string& str);
-      
+
       std::string __line;
       std::string __delimiter;
-      std::string __delimiterPlusSpace;
+      std::string __spaces;
+      std::string __delimiterPlusSpaces;
       char __commentMarker;
       std::istream& __in;
       std::vector<std::string> __data;

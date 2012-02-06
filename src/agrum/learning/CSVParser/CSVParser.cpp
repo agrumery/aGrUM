@@ -26,42 +26,60 @@
 
 namespace gum {
 
-  CSVParser::CSVParser(std::istream & in, const std::string& delimiter, const char  commentmarker) :
+  CSVParser::CSVParser( std::istream & in, const std::string& delimiter, const char  commentmarker ) :
       __line(),
-      __delimiter(delimiter),
-      __delimiterPlusSpace(delimiter),
-      __commentMarker( commentmarker),
-      __in(in),
+      __delimiter( delimiter ),
+      __spaces( " \t" ),
+      __delimiterPlusSpaces( __delimiter+__spaces ),
+      __commentMarker( commentmarker ),
+      __in( in ),
       __data(),
-      __emptyData(true) {
-    __delimiterPlusSpace.append(" ");
+      __emptyData( true ) {
+    GUM_CONSTRUCTOR( CSVParser );
   }
 
-  CSVParser::~CSVParser() {}
+  CSVParser::~CSVParser() {
+    GUM_DESTRUCTOR( CSVParser );
+  }
 
-  void CSVParser::__tokenize(const std::string& str) {
-    Size counter(0);
-    Size lastPos = str.find_first_not_of(__delimiterPlusSpace, 0);
-    Size pos     = str.find_first_of(__delimiter, lastPos);
-    Size pos_w = str.find_last_not_of(' ',pos);
+  void CSVParser::__tokenize( const std::string& s) {
+    // removing comment part
+    Size pos_truncate_comment = s.find_first_of( __commentMarker,0 );
+    std::string str =s.substr(0,pos_truncate_comment);
+    GUM_TRACE_VAR("<"+str+">");
 
-    while (std::string::npos != pos || std::string::npos != lastPos) {
-      const Size fieldlength = pos == std::string::npos ?   pos_w + 1 - lastPos: pos_w -lastPos;
+    Size counter=0;
 
-      if (__data.size() < ++counter) __data.resize(counter);
+    Size last_pos = str.find_first_not_of( __delimiterPlusSpaces, 0 );
 
-      __data[counter-1].resize(fieldlength);
+    Size pos     = str.find_first_of( __delimiter, last_pos );
 
-      __data[counter-1].assign(str,lastPos, fieldlength);
+    Size pos_w = str.find_last_not_of( __spaces,last_pos+1);
 
-      lastPos = str.find_first_not_of(__delimiterPlusSpace, pos);
+    while ( std::string::npos != pos || std::string::npos != last_pos ) {
 
-      pos = str.find_first_of(__delimiter, lastPos);
+      const Size fieldlength = pos == std::string::npos ?   pos_w + 1 - last_pos: pos_w -last_pos;
 
-      pos_w = str.find_last_not_of(' ',pos);
+      if ( __data.size() < ++counter ) __data.resize( counter );
+
+      __data[counter-1].resize( fieldlength );
+
+      __data[counter-1].assign( str,last_pos, fieldlength );
+      GUM_TRACE_VAR(pos);
+      GUM_TRACE_VAR(last_pos);
+      GUM_TRACE_VAR(pos_w);
+      GUM_TRACE_VAR("<"+__data[counter-1]+">");
+      GUM_TRACE_VAR(pos);
+
+      last_pos = str.find_first_not_of( __delimiterPlusSpaces, pos );
+
+      pos = str.find_first_of( __delimiter, last_pos );
+
+      pos_w = str.find_last_not_of( __spaces,last_pos+1 );
     }
 
-    __data.resize(counter);
+    __data.resize( counter );
+
     __emptyData=false;
   }
 

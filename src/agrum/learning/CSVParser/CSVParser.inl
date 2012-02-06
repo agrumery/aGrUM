@@ -26,10 +26,11 @@ namespace gum {
     while (getline(__in,__line)) {
       if (__line.size() == 0) continue;
 
-      if (__line.at(0) == __commentMarker) continue;
+      // fast recognition of commented lines
+      Size lastPos = __line.find_first_not_of( __delimiterPlusSpaces, 0 );
+      if (__line.at(lastPos) == __commentMarker) continue;
 
       __tokenize(__line);
-
       return true;
     }
 

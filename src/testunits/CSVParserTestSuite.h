@@ -35,55 +35,68 @@ namespace gum {
 
     class CSVParserTestSuite: public CxxTest::TestSuite {
       private:
+        gum::Size scanString( std::string csvstring,std::string& res ) {
+          std::istringstream in( csvstring );
+          gum::CSVParser parser( in );
+
+          // no data parser for now
+          TS_ASSERT_THROWS( parser.currentData(),gum::NullElement )
+
+          gum::Size count=0;
+          res="";
+
+          while ( parser.next() ) {
+            count++;
+            const std::vector<std::string>& v=parser.currentData();
+
+            for ( gum::Idx i=0;i<v.size();i++ ) res+=v[i];
+          }
+
+          return count;
+        };
+
       public:
         void testSimpleCSV() {
-          std::string csv("1,2,3,4 \n 5,6,7,8 \n 9,10,11,12");
+          std::string res;
+          gum::Size count;
 
-          std::istringstream in(csv);
-          gum::CSVParser parser(in);
-
-          // no data parser for now
-          TS_ASSERT_THROWS(parser.currentData(),gum::NullElement)
-
-          GUM_TRACE("here");
-          gum::Size count=0;
-          std::string res="";
-
-          while (parser.next()) {
-            count++;
-            const std::vector<std::string>& v=parser.currentData();
-
-            for (gum::Idx i=0;i<v.size();i++) res+=v[i];
-          }
-
-          TS_ASSERT_EQUALS(count,(Size)3);
-
-          TS_ASSERT_EQUALS(res,std::string("123456789101112"));
+          // simpleCSV
+          count=scanString( "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
         };
-	
+
         void testSimpleCSVwithComment() {
-          std::string csv("1,2,3,4 \n # this is a comment \n 5,6,7,8 \n 9,10,11,12");
+          std::string res;
+          gum::Size count;
 
-          std::istringstream in(csv);
-          gum::CSVParser parser(in);
+          // simpleCSV with comment line
+          count=scanString( "1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
 
-          // no data parser for now
-          TS_ASSERT_THROWS(parser.currentData(),gum::NullElement)
+          // simpleCSV with comment line
+          count=scanString( "1,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
 
-          GUM_TRACE("here");
-          gum::Size count=0;
-          std::string res="";
+          // simpleCSV with commented pa
+          count=scanString( "1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
 
-          while (parser.next()) {
-            count++;
-            const std::vector<std::string>& v=parser.currentData();
+          count=scanString( "1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
 
-            for (gum::Idx i=0;i<v.size();i++) res+=v[i];
-          }
+          count=scanString( "1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
 
-          TS_ASSERT_EQUALS(count,(Size)3);
+          count=scanString( "1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1256789101112" ) );
 
-          TS_ASSERT_EQUALS(res,std::string("123456789101112"));
         };
     };
   }
