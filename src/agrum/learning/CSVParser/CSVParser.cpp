@@ -51,14 +51,21 @@ namespace gum {
 
     if (first_letter_token==std::string::npos) {
       next_token=last_letter_token=first_letter_token;
+      return;
     }
 
-    next_token= str.find_first_of ( __delimiter, first_letter_token );
-
-    if (next_token==std::string::npos) {
-      last_letter_token= str.find_last_not_of ( __spaces,next_token );
+    if (str.at(first_letter_token)=='"') {
+      last_letter_token=str.find_first_of('"',first_letter_token+1);
+      if (last_letter_token==std::string::npos) GUM_ERROR(FatalError,"String does not end");
+      next_token=str.find_first_of(__delimiter,last_letter_token);
     } else {
-      last_letter_token= str.find_last_not_of ( __delimiterPlusSpaces,next_token-1 );
+      next_token= str.find_first_of ( __delimiter, first_letter_token );
+
+      if (next_token==std::string::npos) {
+        last_letter_token= str.find_last_not_of ( __spaces,next_token );
+      } else {
+        last_letter_token= str.find_last_not_of ( __delimiterPlusSpaces,next_token-1 );
+      }
     }
 
     //GUM_TRACE ( str<<" : "<<first_letter_token<<"["<<getTheChar(str,first_letter_token)<<"]-"<<last_letter_token<<"["<<getTheChar(str,last_letter_token)<<"]-"<<next_token );
