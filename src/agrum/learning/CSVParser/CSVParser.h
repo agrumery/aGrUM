@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for fast parsing of CSV file (content never completely in memory)
+ * @brief Class for fast parsing of CSV file (never more than one line in application memory)
  *
  * Typical use :
 @code
@@ -66,6 +66,7 @@ namespace gum {
       const std::vector<std::string>& currentData()  const;
 
     private:
+      void __getNextTriplet(const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from);
       void __tokenize(const std::string& str);
 
       std::string __line;

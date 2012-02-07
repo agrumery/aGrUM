@@ -26,59 +26,73 @@
 
 namespace gum {
 
-  CSVParser::CSVParser( std::istream & in, const std::string& delimiter, const char  commentmarker ) :
-      __line(),
-      __delimiter( delimiter ),
-      __spaces( " \t" ),
-      __delimiterPlusSpaces( __delimiter+__spaces ),
-      __commentMarker( commentmarker ),
-      __in( in ),
-      __data(),
-      __emptyData( true ) {
-    GUM_CONSTRUCTOR( CSVParser );
+  CSVParser::CSVParser ( std::istream & in, const std::string& delimiter, const char  commentmarker ) :
+    __line(),
+    __delimiter ( delimiter ),
+    __spaces ( " \t" ),
+    __delimiterPlusSpaces ( __delimiter+__spaces ),
+    __commentMarker ( commentmarker ),
+    __in ( in ),
+    __data(),
+    __emptyData ( true ) {
+    GUM_CONSTRUCTOR ( CSVParser );
   }
 
   CSVParser::~CSVParser() {
-    GUM_DESTRUCTOR( CSVParser );
+    GUM_DESTRUCTOR ( CSVParser );
   }
 
-  void CSVParser::__tokenize( const std::string& s) {
-    // removing comment part
-    Size pos_truncate_comment = s.find_first_of( __commentMarker,0 );
-    std::string str =s.substr(0,pos_truncate_comment);
-    GUM_TRACE_VAR("<"+str+">");
 
-    Size counter=0;
+  char getTheChar(const std::string& str,Size pos) {
+    return (pos<std::string::npos)?str.at(pos):'$';
+  }
+  void CSVParser::__getNextTriplet (const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) {
+    first_letter_token= str.find_first_not_of ( __spaces, from );
 
-    Size last_pos = str.find_first_not_of( __delimiterPlusSpaces, 0 );
-
-    Size pos     = str.find_first_of( __delimiter, last_pos );
-
-    Size pos_w = str.find_last_not_of( __spaces,last_pos+1);
-
-    while ( std::string::npos != pos || std::string::npos != last_pos ) {
-
-      const Size fieldlength = pos == std::string::npos ?   pos_w + 1 - last_pos: pos_w -last_pos;
-
-      if ( __data.size() < ++counter ) __data.resize( counter );
-
-      __data[counter-1].resize( fieldlength );
-
-      __data[counter-1].assign( str,last_pos, fieldlength );
-      GUM_TRACE_VAR(pos);
-      GUM_TRACE_VAR(last_pos);
-      GUM_TRACE_VAR(pos_w);
-      GUM_TRACE_VAR("<"+__data[counter-1]+">");
-      GUM_TRACE_VAR(pos);
-
-      last_pos = str.find_first_not_of( __delimiterPlusSpaces, pos );
-
-      pos = str.find_first_of( __delimiter, last_pos );
-
-      pos_w = str.find_last_not_of( __spaces,last_pos+1 );
+    if (first_letter_token==std::string::npos) {
+      next_token=last_letter_token=first_letter_token;
     }
 
-    __data.resize( counter );
+    next_token= str.find_first_of ( __delimiter, first_letter_token );
+
+    if (next_token==std::string::npos) {
+      last_letter_token= str.find_last_not_of ( __spaces,next_token );
+    } else {
+      last_letter_token= str.find_last_not_of ( __delimiterPlusSpaces,next_token-1 );
+    }
+
+    //GUM_TRACE ( str<<" : "<<first_letter_token<<"["<<getTheChar(str,first_letter_token)<<"]-"<<last_letter_token<<"["<<getTheChar(str,last_letter_token)<<"]-"<<next_token );
+  }
+
+  void CSVParser::__tokenize ( const std::string& s ) {
+    // removing comment part
+    std::string str =s.substr ( 0,s.find_first_of ( __commentMarker,0 ) );
+    Size counter=0,first_letter_token,next_token,last_letter_token;
+
+
+    __getNextTriplet ( str,first_letter_token,next_token,last_letter_token,0 );
+
+    while ( std::string::npos != first_letter_token && std::string::npos != last_letter_token ) {
+      if ( __data.size() < ++counter )
+        __data.resize ( counter );
+
+
+      if ( last_letter_token>=first_letter_token ) {
+        const Size fieldlength = last_letter_token+ 1 - first_letter_token;
+        __data[counter-1].resize ( fieldlength );
+        __data[counter-1].assign ( str,first_letter_token, fieldlength );
+      } else {
+        __data[counter-1]="";
+      }
+
+      //GUM_TRACE ( "-----["<<__data[counter-1]<<"]" );
+
+      if ( next_token==std::string::npos ) break;
+
+      __getNextTriplet ( str,first_letter_token,next_token,last_letter_token,next_token+1 );
+    }
+
+    __data.resize ( counter );
 
     __emptyData=false;
   }

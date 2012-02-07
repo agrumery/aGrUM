@@ -26,8 +26,9 @@ namespace gum {
     while (getline(__in,__line)) {
       if (__line.size() == 0) continue;
 
-      // fast recognition of commented lines
-      Size lastPos = __line.find_first_not_of( __delimiterPlusSpaces, 0 );
+      // fast recognition of commented or empty lines lines
+      Size lastPos = __line.find_first_not_of( __spaces, 0 );
+      if (lastPos==std::string::npos) continue;
       if (__line.at(lastPos) == __commentMarker) continue;
 
       __tokenize(__line);
