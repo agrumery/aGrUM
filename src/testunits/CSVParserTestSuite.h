@@ -35,7 +35,7 @@ namespace gum {
 
     class CSVParserTestSuite: public CxxTest::TestSuite {
       private:
-        gum::Size scanString( std::string csvstring,std::string& res ) {
+        gum::Size testParseString( std::string csvstring,std::string& res ) {
           std::istringstream in( csvstring );
           gum::CSVParser parser( in );
 
@@ -49,7 +49,10 @@ namespace gum {
             count++;
             const std::vector<std::string>& v=parser.currentData();
 
-            for ( gum::Idx i=0;i<v.size();i++ ) res+=v[i];
+            for ( gum::Idx i=0; i<v.size(); i++ ) {
+              res+=v[i];
+              res+=(i==v.size()-1)?'|':':';
+            }
           }
 
           return count;
@@ -61,9 +64,22 @@ namespace gum {
           gum::Size count;
 
           // simpleCSV
-          count=scanString( "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12",res );
+
+          count=testParseString( "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) );
+
+          // simpleCSV
+
+          count=testParseString( "1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:2:3:4|5:6::8|9:10:11:12|" ) );
+
+          // simpleCSV
+
+          count=testParseString( ",,,, \n ,,,, \n ,,,,",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "::::|::::|::::|" ) );
         };
 
         void testSimpleCSVwithComment() {
@@ -71,32 +87,67 @@ namespace gum {
           gum::Size count;
 
           // simpleCSV with comment line
-          count=scanString( "1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+
+          count=testParseString( "1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) );
 
           // simpleCSV with comment line
-          count=scanString( "1,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+
+          count=testParseString( "1,2,3,4 \n\t  # this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "123456789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1:2:3:4|5:6:7:8|9:10:11:12|" ) );
 
           // simpleCSV with commented pa
-          count=scanString( "1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
-          TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
 
-          count=scanString( "1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          count=testParseString( "1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1|5:6:7:8|9:10:11:12|" ) );
 
-          count=scanString( "1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+
+          count=testParseString( "1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "156789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1|5:6:7:8|9:10:11:12|" ) );
 
-          count=scanString( "1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          count=testParseString( "1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_ASSERT_EQUALS( count,( Size )3 );
-          TS_ASSERT_EQUALS( res,std::string( "1256789101112" ) );
+          TS_ASSERT_EQUALS( res,std::string( "1:|5:6:7:8|9:10:11:12|" ) );
 
+
+          count=testParseString( "1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:2|5:6:7:8|9:10:11:12|" ) );
+        };
+
+        void testSimpleCSVwithDoubleQuote() {
+          std::string res;
+          gum::Size count;
+
+          // simpleCSV with double quoted token
+
+          count=testParseString( "1,\"fjkdls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:\"fjkdls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+
+          // simpleCSV with double quoted token with separator in the double-quoted token
+
+          count=testParseString( "1,\"fjk,dls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:\"fjk,dls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+
+          // simpleCSV with double quoted token with # in the double-quoted token
+          count=testParseString( "1,\"fjk,dl#s2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:\"fjk,dl#s2\":3:4|5:6:7:8|9:10:11:12|" ) );
+	  
+          // simpleCSV with double quoted token with double quote in the double-quoted token
+          count=testParseString( "1,\"fjk,dl\\\"s2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
+          TS_ASSERT_EQUALS( count,( Size )3 );
+          TS_ASSERT_EQUALS( res,std::string( "1:\"fjk,dl\\\"s2\":3:4|5:6:7:8|9:10:11:12|" ) );
+	  
+	  
+          // simpleCSV with not ending double quoted token 
+          TS_ASSERT_THROWS(count=testParseString( "1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res ),gum::FatalError);
         };
     };
   }

@@ -26,12 +26,13 @@
 
 namespace gum {
 
-  CSVParser::CSVParser ( std::istream & in, const std::string& delimiter, const char  commentmarker ) :
+  CSVParser::CSVParser ( std::istream & in, const std::string& delimiter, const char  commentmarker,const char quoteMarker ) :
     __line(),
     __delimiter ( delimiter ),
     __spaces ( " \t" ),
     __delimiterPlusSpaces ( __delimiter+__spaces ),
     __commentMarker ( commentmarker ),
+    __quoteMarker ( quoteMarker ),
     __in ( in ),
     __data(),
     __emptyData ( true ) {
@@ -46,60 +47,94 @@ namespace gum {
   char getTheChar(const std::string& str,Size pos) {
     return (pos<std::string::npos)?str.at(pos):'$';
   }
-  void CSVParser::__getNextTriplet (const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) {
+  void CSVParser::__getNextTriplet (const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) const {
     first_letter_token= str.find_first_not_of ( __spaces, from );
 
     if (first_letter_token==std::string::npos) {
       next_token=last_letter_token=first_letter_token;
+      GUM_TRACE("END OF LINE");
       return;
     }
 
-    if (str.at(first_letter_token)=='"') {
-      last_letter_token=str.find_first_of('"',first_letter_token+1);
+    if (str.at(first_letter_token)==__quoteMarker) {
+      last_letter_token=__correspondingQuoteMarker(str,first_letter_token);
+
       if (last_letter_token==std::string::npos) GUM_ERROR(FatalError,"String does not end");
+
       next_token=str.find_first_of(__delimiter,last_letter_token);
     } else {
       next_token= str.find_first_of ( __delimiter, first_letter_token );
 
       if (next_token==std::string::npos) {
         last_letter_token= str.find_last_not_of ( __spaces,next_token );
+      } else if (next_token==first_letter_token) {
+        last_letter_token=first_letter_token;
       } else {
         last_letter_token= str.find_last_not_of ( __delimiterPlusSpaces,next_token-1 );
       }
     }
 
-    //GUM_TRACE ( str<<" : "<<first_letter_token<<"["<<getTheChar(str,first_letter_token)<<"]-"<<last_letter_token<<"["<<getTheChar(str,last_letter_token)<<"]-"<<next_token );
+    GUM_TRACE ( str<<" : "<<first_letter_token<<"["<<getTheChar(str,first_letter_token)<<"]-"<<last_letter_token<<"["<<getTheChar(str,last_letter_token)<<"]-"<<next_token );
   }
 
   void CSVParser::__tokenize ( const std::string& s ) {
-    // removing comment part
-    std::string str =s.substr ( 0,s.find_first_of ( __commentMarker,0 ) );
+    // looking for first commentMarker not in a string
+    Size commentMarker=s.find_first_of(__commentMarker,0);
+    Size quoteMarker=s.find_first_of(__quoteMarker,0);
+    Size quoteMarkerEnd;
+
+    while (quoteMarker<commentMarker) {
+      quoteMarkerEnd=__correspondingQuoteMarker(s,quoteMarker);
+      if (quoteMarkerEnd==std::string::npos) GUM_ERROR(FatalError,"String does not end");
+      
+      GUM_TRACE(s<<" : "<<quoteMarker<<" CORRESPONDING QUOTE MOARKER : "<<quoteMarkerEnd<< " -> " <<commentMarker);
+
+      while (commentMarker<quoteMarkerEnd) { // the comment was in the quote
+        commentMarker=s.find_first_of(__commentMarker,commentMarker+1);
+	GUM_TRACE_VAR(commentMarker);
+      }
+
+      quoteMarker=s.find_first_of(__quoteMarker,quoteMarkerEnd+1);
+    }
+
+    std::string str =s.substr ( 0,commentMarker);
+
     Size counter=0,first_letter_token,next_token,last_letter_token;
 
 
     __getNextTriplet ( str,first_letter_token,next_token,last_letter_token,0 );
 
     while ( std::string::npos != first_letter_token && std::string::npos != last_letter_token ) {
-      if ( __data.size() < ++counter )
-        __data.resize ( counter );
+      if ( __data.size() <=counter )
+        __data.resize ( counter+1 );
 
-
-      if ( last_letter_token>=first_letter_token ) {
+      if (first_letter_token==next_token) {
+        __data[counter]="";
+      } else if ( last_letter_token>=first_letter_token ) {
         const Size fieldlength = last_letter_token+ 1 - first_letter_token;
-        __data[counter-1].resize ( fieldlength );
-        __data[counter-1].assign ( str,first_letter_token, fieldlength );
+        __data[counter].resize ( fieldlength );
+        __data[counter].assign ( str,first_letter_token, fieldlength );
       } else {
-        __data[counter-1]="";
+        __data[counter]="";
       }
 
-      //GUM_TRACE ( "-----["<<__data[counter-1]<<"]" );
+      counter++;
+
+      GUM_TRACE ( "-----["<<__data[counter-1]<<"]" );
 
       if ( next_token==std::string::npos ) break;
 
       __getNextTriplet ( str,first_letter_token,next_token,last_letter_token,next_token+1 );
     }
 
-    __data.resize ( counter );
+    // case where we end up with an empty field ...
+    if (first_letter_token==std::string::npos && last_letter_token==first_letter_token && next_token==first_letter_token) {
+      counter++;
+      __data.resize(counter);
+      __data[counter-1]="";
+    } else {
+      __data.resize ( counter );
+    }
 
     __emptyData=false;
   }
