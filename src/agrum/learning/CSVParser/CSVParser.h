@@ -64,6 +64,11 @@ namespace gum {
        * @throw gum::NullElement if there is no data
        */
       const std::vector<std::string>& currentData()  const;
+      
+      /**
+       * return the current noLine of parser line
+       */
+      const Size noLine() const;
 
     private:
       void __getNextTriplet(const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from) const;
@@ -74,6 +79,7 @@ namespace gum {
       std::string __delimiter;
       std::string __spaces;
       std::string __delimiterPlusSpaces;
+      Size __noLine;
       char __commentMarker;
       char __quoteMarker;
       std::istream& __in;

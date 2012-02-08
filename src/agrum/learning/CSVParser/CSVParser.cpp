@@ -31,6 +31,7 @@ namespace gum {
     __delimiter ( delimiter ),
     __spaces ( " \t" ),
     __delimiterPlusSpaces ( __delimiter+__spaces ),
+    __noLine((Size)0),
     __commentMarker ( commentmarker ),
     __quoteMarker ( quoteMarker ),
     __in ( in ),
@@ -44,22 +45,25 @@ namespace gum {
   }
 
 
+  // for debugginh purpose
+  /*
   char getTheChar(const std::string& str,Size pos) {
     return (pos<std::string::npos)?str.at(pos):'$';
   }
+  */
+
   void CSVParser::__getNextTriplet (const std::string& str,Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) const {
     first_letter_token= str.find_first_not_of ( __spaces, from );
 
     if (first_letter_token==std::string::npos) {
       next_token=last_letter_token=first_letter_token;
-      GUM_TRACE("END OF LINE");
       return;
     }
 
     if (str.at(first_letter_token)==__quoteMarker) {
       last_letter_token=__correspondingQuoteMarker(str,first_letter_token);
 
-      if (last_letter_token==std::string::npos) GUM_ERROR(FatalError,"String does not end");
+      if (last_letter_token==std::string::npos) GUM_ERROR(FatalError,"String does not end at line "<<noLine());
 
       next_token=str.find_first_of(__delimiter,last_letter_token);
     } else {
@@ -73,8 +77,6 @@ namespace gum {
         last_letter_token= str.find_last_not_of ( __delimiterPlusSpaces,next_token-1 );
       }
     }
-
-    GUM_TRACE ( str<<" : "<<first_letter_token<<"["<<getTheChar(str,first_letter_token)<<"]-"<<last_letter_token<<"["<<getTheChar(str,last_letter_token)<<"]-"<<next_token );
   }
 
   void CSVParser::__tokenize ( const std::string& s ) {
@@ -85,13 +87,11 @@ namespace gum {
 
     while (quoteMarker<commentMarker) {
       quoteMarkerEnd=__correspondingQuoteMarker(s,quoteMarker);
-      if (quoteMarkerEnd==std::string::npos) GUM_ERROR(FatalError,"String does not end");
-      
-      GUM_TRACE(s<<" : "<<quoteMarker<<" CORRESPONDING QUOTE MOARKER : "<<quoteMarkerEnd<< " -> " <<commentMarker);
+
+      if (quoteMarkerEnd==std::string::npos) GUM_ERROR(FatalError,"String does not end at line "<<noLine());
 
       while (commentMarker<quoteMarkerEnd) { // the comment was in the quote
         commentMarker=s.find_first_of(__commentMarker,commentMarker+1);
-	GUM_TRACE_VAR(commentMarker);
       }
 
       quoteMarker=s.find_first_of(__quoteMarker,quoteMarkerEnd+1);
@@ -119,8 +119,6 @@ namespace gum {
       }
 
       counter++;
-
-      GUM_TRACE ( "-----["<<__data[counter-1]<<"]" );
 
       if ( next_token==std::string::npos ) break;
 
