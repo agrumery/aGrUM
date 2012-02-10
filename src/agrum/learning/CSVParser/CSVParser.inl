@@ -25,7 +25,7 @@ namespace gum {
   INLINE bool CSVParser::next() {
     while (getline(__in,__line)) {
       __noLine++;
-      
+
       if (__line.size() == 0) continue;
 
       // fast recognition of commented or empty lines lines
@@ -59,12 +59,12 @@ namespace gum {
     }
   }
 
-  INLINE const std::vector<std::string> &CSVParser::currentData()  const {
+  INLINE const std::vector<std::string> &CSVParser::current()  const {
     if (__emptyData) GUM_ERROR(NullElement,"No parsed data");
 
     return __data;
   }
-  
+
   const Size CSVParser::noLine() const {
     if (__noLine==0) GUM_ERROR(NullElement,"No parsed data");
     return __noLine;

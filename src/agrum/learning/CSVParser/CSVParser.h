@@ -63,8 +63,8 @@ namespace gum {
        *
        * @throw gum::NullElement if there is no data
        */
-      const std::vector<std::string>& currentData()  const;
-      
+      const std::vector<std::string>& current()  const;
+
       /**
        * return the current noLine of parser line
        */

@@ -20,6 +20,7 @@
 #include <cstdio>
 #include <iostream>
 #include <sstream>
+#include <string.h>
 
 
 #ifndef NDEBUG
@@ -32,14 +33,15 @@
 
 
 namespace gum {
-  const std::string __createMsg( const std::string filename,
-                                 const std::string function,
-                                 const int line,const std::string msg ) {
-    char m[20];
-    sprintf( m,"%6.6d",line );
-    std::string res( "" );
-    return "\n  <"+filename+"> "+function+"() #"+m+
-      " :\n--------------\n! "+msg+"\n--------------\n";
+  const std::string __createMsg( const std::string& filename,
+                                 const std::string& function,
+                                 const int line,const std::string& msg ) {
+    std::stringstream stream;
+    stream<<std::endl<<"<"<<filename<<"> "<<function<<"() #"
+          <<std::setw( 6 ) <<std::dec<<line<<" :"<<std::endl
+          <<"--------------"<<std::endl<<"! "<<msg<<std::endl
+          <<"--------------"<<std::endl;
+    return stream.str();
   }
 
 
@@ -47,21 +49,22 @@ namespace gum {
     _msg( aMsg ), _type( aType ) {
 #ifndef NDEBUG
 #define callStackDepth 20
-      void *array[callStackDepth];
-      size_t size;
-      char **strings;
-      size = backtrace( array, callStackDepth );
-      strings = backtrace_symbols( array, size );
+    void *array[callStackDepth];
+    size_t size;
+    char **strings;
+    size = backtrace( array, callStackDepth );
+    strings = backtrace_symbols( array, size );
 
-      std::stringstream stream;
-      for ( size_t i = 1; i < size; ++i ) {
-        stream<< i<<" :" <<strings[i]<<std::endl;
-      }
+    std::stringstream stream;
 
-      free( strings );
-      _callstack=stream.str();
+    for( size_t i = 1; i < size; ++i ) {
+      stream<< i<<" :" <<strings[i]<<std::endl;
+    }
+
+    free( strings );
+    _callstack=stream.str();
 #else
-      _callstack="Callstack only in debug mode";
+    _callstack="Callstack only in debug mode";
 #endif
   }
 
