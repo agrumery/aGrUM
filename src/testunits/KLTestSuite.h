@@ -40,155 +40,151 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
+  class KLTestSuite: public CxxTest::TestSuite {
 
-    class KLTestSuite: public CxxTest::TestSuite {
-
-      public:
-        void testConstructor() {
-          gum::BayesNet<float> net1;
-          {
-            gum::BIFReader<float> reader( &net1, GET_PATH_STR( BIFReader_file2.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::BayesNet<float> net2;
-          {
-            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::BayesNet<float> net3;
-          {
-            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file4.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          TS_GUM_ASSERT_THROWS_NOTHING( gum::BruteForceKL<float> kl( net1,net1 ) );
-          TS_ASSERT_THROWS( gum::BruteForceKL<float> kl( net1,net2 ) ,gum::OperationNotAllowed );
-          TS_GUM_ASSERT_THROWS_NOTHING( gum::BruteForceKL<float> kl( net2,net3 ) );
+    public:
+      void testConstructor() {
+        gum::BayesNet<float> net1;
+        {
+          gum::BIFReader<float> reader( &net1, GET_PATH_STR( BIFReader_file2.bif ) );
+          reader.trace( false );
+          reader.proceed();
         }
 
-        void testDifficulty1() {
-          gum::BayesNet<float> net2;
-          {
-            gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::BruteForceKL<float> kl( net2,net2 );
-          TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
-
-          gum::BayesNet<float> net;
-          {
-            gum::BIFReader<float> reader( &net, GET_PATH_STR( hailfinder.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::KL<float> kl2( net,net );
-          TS_ASSERT_EQUALS( kl2.difficulty(),gum::complexity::HEAVY );
+        gum::BayesNet<float> net2;
+        {
+          gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif ) );
+          reader.trace( false );
+          reader.proceed();
         }
 
-        void testKLComputation() {
-          gum::BayesNet<float> net3;
-          {
-            gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file3.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          double vkl=0.0;
-
-          gum::BruteForceKL<float> stupid_bfkl( net3,net3 );
-          TS_GUM_ASSERT_THROWS_NOTHING( vkl=stupid_bfkl.klPQ() );
-          TS_ASSERT_EQUALS( vkl,0.0 );
-          TS_GUM_ASSERT_THROWS_NOTHING( vkl=stupid_bfkl.klQP() );
-          TS_ASSERT_EQUALS( vkl,0.0 );
-
-          gum::BayesNet<float> net4;
-          {
-            gum::BIFReader<float> reader( &net4, GET_PATH_STR( BIFReader_file4.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::KL<float> kl( net3,net4 );
-          TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
-
-          {
-            gum::BruteForceKL<float> bfkl( kl );
-            TS_GUM_ASSERT_THROWS_NOTHING( vkl=bfkl.klPQ() );
-            TS_ASSERT_DIFFERS( vkl, ( float ) 0.0 );
-          }
-
-          {
-            gum::GibbsKL<float> gkl( kl );
-            gkl.setMaxIter( 40 );
-            TS_GUM_ASSERT_THROWS_NOTHING( vkl=gkl.klPQ() );
-            TS_ASSERT_DIFFERS( vkl, ( float ) 0.0 );
-            TS_ASSERT_THROWS( gkl.history(),gum::OperationNotAllowed );
-          }
+        gum::BayesNet<float> net3;
+        {
+          gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file4.bif ) );
+          reader.trace( false );
+          reader.proceed();
         }
 
-        void testBruteForceValues() {
-          gum::BayesNet<float> netP;
-          {
-            gum::BIFReader<float> reader( &netP, GET_PATH_STR( bnP.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::BruteForceKL<float> kl( net1,net1 ) );
+        TS_ASSERT_THROWS( gum::BruteForceKL<float> kl( net1,net2 ) ,gum::OperationNotAllowed );
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::BruteForceKL<float> kl( net2,net3 ) );
+      }
 
-          gum::BayesNet<float> netQ;
-          {
-            gum::BIFReader<float> reader( &netQ, GET_PATH_STR( bnQ.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::BruteForceKL<float> kl( netP,netQ );
-          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-7 );
-          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-7 );
-          TS_ASSERT_EQUALS( kl.errorPQ(),0 );
-          TS_ASSERT_EQUALS( kl.errorQP(),0 );
-          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-7 );
+      void testDifficulty1() {
+        gum::BayesNet<float> net2;
+        {
+          gum::BIFReader<float> reader( &net2, GET_PATH_STR( BIFReader_file3.bif ) );
+          reader.trace( false );
+          reader.proceed();
         }
 
-        void testGibbsValues() {
-          gum::BayesNet<float> netP;
-          {
-            gum::BIFReader<float> reader( &netP, GET_PATH_STR( bnP.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
+        gum::BruteForceKL<float> kl( net2,net2 );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
 
-          gum::BayesNet<float> netQ;
-          {
-            gum::BIFReader<float> reader( &netQ, GET_PATH_STR( bnQ.bif ) );
-            reader.trace( false );
-            reader.proceed();
-          }
-
-          gum::GibbsKL<float> kl( netP,netQ );
-          kl.setVerbosity( true );
-          // very rough approximation in order to not penalize TestSuite
-          kl.setEpsilon( 1e-4 );
-          kl.setMinEpsilonRate( 1e-4 );
-          TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-1 );
-          TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-1 );
-          TS_ASSERT_EQUALS( kl.errorPQ(),0 );
-          TS_ASSERT_EQUALS( kl.errorQP(),0 );
-          TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-1 );
-          GUM_ASSERT( abs( kl.history().size() -kl.nbrIterations()/kl.periodeSize() )<2 );
-          //GUM_TRACE_VAR( kl.history() );
+        gum::BayesNet<float> net;
+        {
+          gum::BIFReader<float> reader( &net, GET_PATH_STR( hailfinder.bif ) );
+          reader.trace( false );
+          reader.proceed();
         }
-    };
-  } //tests
-}//gumSize
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+
+        gum::KL<float> kl2( net,net );
+        TS_ASSERT_EQUALS( kl2.difficulty(),gum::complexity::HEAVY );
+      }
+
+      void testKLComputation() {
+        gum::BayesNet<float> net3;
+        {
+          gum::BIFReader<float> reader( &net3, GET_PATH_STR( BIFReader_file3.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        double vkl=0.0;
+
+        gum::BruteForceKL<float> stupid_bfkl( net3,net3 );
+        TS_GUM_ASSERT_THROWS_NOTHING( vkl=stupid_bfkl.klPQ() );
+        TS_ASSERT_EQUALS( vkl,0.0 );
+        TS_GUM_ASSERT_THROWS_NOTHING( vkl=stupid_bfkl.klQP() );
+        TS_ASSERT_EQUALS( vkl,0.0 );
+
+        gum::BayesNet<float> net4;
+        {
+          gum::BIFReader<float> reader( &net4, GET_PATH_STR( BIFReader_file4.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        gum::KL<float> kl( net3,net4 );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
+
+        {
+          gum::BruteForceKL<float> bfkl( kl );
+          TS_GUM_ASSERT_THROWS_NOTHING( vkl=bfkl.klPQ() );
+          TS_ASSERT_DIFFERS( vkl, ( float ) 0.0 );
+        }
+
+        {
+          gum::GibbsKL<float> gkl( kl );
+          gkl.setMaxIter( 40 );
+          TS_GUM_ASSERT_THROWS_NOTHING( vkl=gkl.klPQ() );
+          TS_ASSERT_DIFFERS( vkl, ( float ) 0.0 );
+          TS_ASSERT_THROWS( gkl.history(),gum::OperationNotAllowed );
+        }
+      }
+
+      void testBruteForceValues() {
+        gum::BayesNet<float> netP;
+        {
+          gum::BIFReader<float> reader( &netP, GET_PATH_STR( bnP.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        gum::BayesNet<float> netQ;
+        {
+          gum::BIFReader<float> reader( &netQ, GET_PATH_STR( bnQ.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        gum::BruteForceKL<float> kl( netP,netQ );
+        TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-7 );
+        TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-7 );
+        TS_ASSERT_EQUALS( kl.errorPQ(),0 );
+        TS_ASSERT_EQUALS( kl.errorQP(),0 );
+        TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-7 );
+      }
+
+      void testGibbsValues() {
+        gum::BayesNet<float> netP;
+        {
+          gum::BIFReader<float> reader( &netP, GET_PATH_STR( bnP.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        gum::BayesNet<float> netQ;
+        {
+          gum::BIFReader<float> reader( &netQ, GET_PATH_STR( bnQ.bif ) );
+          reader.trace( false );
+          reader.proceed();
+        }
+
+        gum::GibbsKL<float> kl( netP,netQ );
+        kl.setVerbosity( true );
+        // very rough approximation in order to not penalize TestSuite
+        kl.setEpsilon( 1e-4 );
+        kl.setMinEpsilonRate( 1e-4 );
+        TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-1 );
+        TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-1 );
+        TS_ASSERT_EQUALS( kl.errorPQ(),0 );
+        TS_ASSERT_EQUALS( kl.errorQP(),0 );
+        TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-1 );
+        GUM_ASSERT( abs( kl.history().size() -kl.nbrIterations()/kl.periodeSize() )<2 );
+        //GUM_TRACE_VAR( kl.history() );
+      }
+  };
+} //gum_tests

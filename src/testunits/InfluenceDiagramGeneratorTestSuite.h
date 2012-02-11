@@ -30,109 +30,106 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/influenceDiagram/generator/simpleUTGenerator.h>
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
+  class InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
+    public:
 
-    class InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
-      public:
+      void setUp() {
+      }
 
-        void setUp() {
+      void tearDown() {
+      }
+
+      void testCreationDeletion_1() {
+        gum::InfluenceDiagramGenerator* gen = NULL;
+
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator() );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
+      }
+
+      void testCreationDeletion_2() {
+        gum::InfluenceDiagramGenerator* gen = NULL;
+
+        gum::SimpleCPTGenerator* cptGen = new gum::SimpleCPTGenerator();
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( cptGen ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
+      }
+
+      void testCreationDeletion_3() {
+        gum::InfluenceDiagramGenerator* gen = NULL;
+
+        gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( utGen ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
+      }
+
+      void testCreationDeletion_4() {
+        gum::InfluenceDiagramGenerator* gen = NULL;
+
+        gum::SimpleCPTGenerator* cptGen = new gum::SimpleCPTGenerator();
+        gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( cptGen, utGen ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
+      }
+
+      void testGenerationFloat_1() {
+        gum::InfluenceDiagramGenerator gen;
+        gum::InfluenceDiagram<float>* id = 0;
+
+        TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 ) );
+
+        TS_ASSERT( id->decisionOrderExists() );
+
+        if( id != 0 ) delete id;
+
+      }
+
+      void testGenerationFloat_2() {
+        gum::InfluenceDiagramGenerator gen;
+
+        gum::InfluenceDiagram<float>* id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 );
+        // Test for cicuits
+        std::vector<gum::NodeId> stack;
+        gum::Set<gum::NodeId> passed;
+        const gum::DAG& dag = id->dag();
+
+        for( gum::DAG::NodeIterator iter = dag.beginNodes();
+             iter != dag.endNodes();
+             ++iter ) {
+          TS_ASSERT_THROWS( dag.directedPath( *iter, *iter ), gum::NotFound );
         }
 
-        void tearDown() {
+        if( id != 0 ) delete id;
+      }
+
+      void testGenerationDouble_1() {
+        gum::InfluenceDiagramGenerator gen;
+        gum::InfluenceDiagram<double>* id = 0;
+
+        TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 ) );
+
+        TS_ASSERT( id->decisionOrderExists() );
+
+        if( id != 0 ) delete id;
+      }
+
+      void testGenerationDouble_2() {
+        gum::InfluenceDiagramGenerator gen;
+
+        gum::InfluenceDiagram<double>* id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 );
+        // Test for cicuits
+        std::vector<gum::NodeId> stack;
+        gum::Set<gum::NodeId> passed;
+        const gum::DAG& dag = id->dag();
+
+        for( gum::DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+          TS_ASSERT_THROWS( dag.directedPath( *iter, *iter ), gum::NotFound );
         }
 
-        void testCreationDeletion_1() {
-          gum::InfluenceDiagramGenerator* gen = NULL;
+        if( id != 0 ) delete id;
+      }
 
-          TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator() );
-          TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-        }
+  };
 
-        void testCreationDeletion_2() {
-          gum::InfluenceDiagramGenerator* gen = NULL;
-
-          gum::SimpleCPTGenerator* cptGen = new gum::SimpleCPTGenerator();
-          TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( cptGen ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-        }
-
-        void testCreationDeletion_3() {
-          gum::InfluenceDiagramGenerator* gen = NULL;
-
-          gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
-          TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( utGen ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-        }
-
-        void testCreationDeletion_4() {
-          gum::InfluenceDiagramGenerator* gen = NULL;
-
-          gum::SimpleCPTGenerator* cptGen = new gum::SimpleCPTGenerator();
-          gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
-          TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator( cptGen, utGen ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-        }
-
-        void testGenerationFloat_1() {
-          gum::InfluenceDiagramGenerator gen;
-          gum::InfluenceDiagram<float>* id = 0;
-
-          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 ) );
-
-          TS_ASSERT( id->decisionOrderExists() );
-
-          if ( id != 0 ) delete id;
-
-        }
-
-        void testGenerationFloat_2() {
-          gum::InfluenceDiagramGenerator gen;
-
-          gum::InfluenceDiagram<float>* id = gen.generateIDF( 25, 0.3, 0.3, 0.1, 4 );
-          // Test for cicuits
-          std::vector<gum::NodeId> stack;
-          gum::Set<gum::NodeId> passed;
-          const gum::DAG& dag = id->dag();
-
-          for ( gum::DAG::NodeIterator iter = dag.beginNodes();
-                iter != dag.endNodes();
-                ++iter ) {
-            TS_ASSERT_THROWS( dag.directedPath( *iter, *iter ), gum::NotFound );
-          }
-
-          if ( id != 0 ) delete id;
-        }
-
-        void testGenerationDouble_1() {
-          gum::InfluenceDiagramGenerator gen;
-          gum::InfluenceDiagram<double>* id = 0;
-
-          TS_GUM_ASSERT_THROWS_NOTHING( id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 ) );
-
-          TS_ASSERT( id->decisionOrderExists() );
-
-          if ( id != 0 ) delete id;
-        }
-
-        void testGenerationDouble_2() {
-          gum::InfluenceDiagramGenerator gen;
-
-          gum::InfluenceDiagram<double>* id = gen.generateIDD( 25, 0.3, 0.3, 0.1, 4 );
-          // Test for cicuits
-          std::vector<gum::NodeId> stack;
-          gum::Set<gum::NodeId> passed;
-          const gum::DAG& dag = id->dag();
-
-          for ( gum::DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
-            TS_ASSERT_THROWS( dag.directedPath( *iter, *iter ), gum::NotFound );
-          }
-
-          if ( id != 0 ) delete id;
-        }
-
-    };
-
-  }
 }

@@ -74,8 +74,8 @@ namespace gum {
 
   struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
-      return (( t1 > t2 + ( T ) 0.000001 ) ||
-              ( t2 > t1 + ( T ) 0.000001 ) );
+      return ( ( t1 > t2 + ( T ) 0.000001 ) ||
+               ( t2 > t1 + ( T ) 0.000001 ) );
     }
   };
 

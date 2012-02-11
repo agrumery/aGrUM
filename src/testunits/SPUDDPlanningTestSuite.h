@@ -36,35 +36,33 @@
 #include <agrum/FMDP/planning/SPUDDPlanning.h>
 // =====================================================================
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
+  class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
 
-    class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
-      
-      private :
-        std::string file;
-        
-        void run( const std::string showSaveFile ){
+    private :
+      std::string file;
 
-          gum::FactoredMarkovDecisionProcess<double> fmdp;
-          gum::MultiDimDecisionDiagramFactory<double> ddf;
-          // gum::MultiDimDecisionDiagramFactory<double,LinearApproximationPolicy> ddf;
-          // ddf.setEpsilon( 0.0001 );
-          // ddf.setLowLimit( -10 );
-          // ddf.setHighLimit( 10 );
-          SPUDDPlanning<double> inf( &fmdp, showSaveFile );
+      void run( const std::string showSaveFile ) {
 
-          gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
+        gum::FactoredMarkovDecisionProcess<double> fmdp;
+        gum::MultiDimDecisionDiagramFactory<double> ddf;
+        // gum::MultiDimDecisionDiagramFactory<double,LinearApproximationPolicy> ddf;
+        // ddf.setEpsilon( 0.0001 );
+        // ddf.setLowLimit( -10 );
+        // ddf.setHighLimit( 10 );
+        SPUDDPlanning<double> inf( &fmdp, showSaveFile );
 
-          reader.trace( false );
+        gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
-          
-          
-        
+        reader.trace( false );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
+
+
+
 //           ofstream fichier(showSaveFile.c_str(), std::ios::out | std::ios::app);  //déclaration du flux et ouverture du fichier
-//           
+//
 //           if(!fichier)  // si l'ouverture a réussi
 //           {
 //               std::cerr << "Erreur à l'ouverture !" << std::endl;
@@ -72,39 +70,36 @@ namespace gum {
 //           }
 //           fichier << fmdp.show();
 //           fichier.close();
-          
-          TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning() );
-        }
-        
-      public:
-        
-        void test_Coffee() {
-          file = GET_PATH_STR( FMDP/coffee/coffee.dat );
-          run("Coffee");
-        }
-        
-        void est_FactoryS() {
-          file = GET_PATH_STR( FMDP/factory/tiny-factory.dat );
-          run("TinyFactory");
-        }
-        
-        void est_Factory() {
-          file = GET_PATH_STR( FMDP/factory/factory.dat );
-          run("Factory");
-        }
-        
-        void est_Factory0() {
-          file = GET_PATH_STR( FMDP/factory/factory0.dat );
-          run("Factory0");
-        }
-        
-        void est_Factory1() {
-          file = GET_PATH_STR( FMDP/factory/factory1.dat );
-          run("Factory1");
-        }
 
-    };
-  }
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning() );
+      }
+
+    public:
+
+      void test_Coffee() {
+        file = GET_PATH_STR( FMDP/coffee/coffee.dat );
+        run( "Coffee" );
+      }
+
+      void est_FactoryS() {
+        file = GET_PATH_STR( FMDP/factory/tiny-factory.dat );
+        run( "TinyFactory" );
+      }
+
+      void est_Factory() {
+        file = GET_PATH_STR( FMDP/factory/factory.dat );
+        run( "Factory" );
+      }
+
+      void est_Factory0() {
+        file = GET_PATH_STR( FMDP/factory/factory0.dat );
+        run( "Factory0" );
+      }
+
+      void est_Factory1() {
+        file = GET_PATH_STR( FMDP/factory/factory1.dat );
+        run( "Factory1" );
+      }
+
+  };
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
-

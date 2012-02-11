@@ -36,6 +36,8 @@ suites = []
 suite = None
 inBlock = 0
 
+namespace='gum_tests'
+
 outputFileName = None
 runner = None
 gui = None
@@ -293,7 +295,7 @@ def addLineToBlock( suite, lineNo, line ):
     '''Append the line to the current CXXTEST_CODE() block'''
     line = fixBlockLine( suite, lineNo, line )
     line = re.sub( r'^.*\{\{', '', line )
-    
+
     e = re.search( r'\}\}', line )
     if e:
         line = line[:e.start()]
@@ -500,13 +502,13 @@ def generateSuite( output, suite ):
 def writeSuitePointer( output, suite ):
     '''Create static suite pointer object for dynamic suites'''
     if noStaticInit:
-        output.write( 'static gum::tests::%s *%s;\n\n' % (suite['name'], suite['object']) )
+        output.write( 'static %s::%s *%s;\n\n' % (namespace,suite['name'], suite['object']) )
     else:
-        output.write( 'static gum::tests::%s *%s = 0;\n\n' % (suite['name'], suite['object']) )
+        output.write( 'static %s::%s *%s = 0;\n\n' % (namespace,suite['name'], suite['object']) )
 
 def writeSuiteObject( output, suite ):
     '''Create static suite object for non-dynamic suites'''
-    output.writelines( [ "static gum::tests::", suite['name'], " ", suite['object'], ";\n\n" ] )
+    output.writelines( [ "static ",namespace,"::", suite['name'], " ", suite['object'], ";\n\n" ] )
 
 def writeTestList( output, suite ):
     '''Write the head of the test linked list for a suite'''
@@ -538,11 +540,11 @@ def runBody( suite, test ):
 def dynamicRun( suite, test ):
     '''Body of TestDescription::run() for test in a dynamic suite'''
     return 'if ( ' + suite['object'] + ' ) ' + suite['object'] + '->' + test['name'] + '();'
-    
+
 def staticRun( suite, test ):
     '''Body of TestDescription::run() for test in a non-dynamic suite'''
     return suite['object'] + '.' + test['name'] + '();'
-    
+
 def writeSuiteDescription( output, suite ):
     '''Write SuiteDescription object'''
     if isDynamic( suite ):

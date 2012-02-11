@@ -26,54 +26,50 @@
 #include <agrum/multidim/multiDimSparse.h>
 
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
+  class CrossMultiDimTestSuite: public CxxTest::TestSuite {
+    public:
+      void testComparaisonMin() {
+        gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+        gum::MultiDimArray<float> full;
+        gum::MultiDimSparse<float> sparse( ( float )0 );
+        gum::aggregator::Min<float> agg;
+        agg << a << b << c << d;
+        full << a << b << c << d;
+        sparse << a << b << c << d;
 
-    class CrossMultiDimTestSuite: public CxxTest::TestSuite {
-      public:
-        void testComparaisonMin() {
-          gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-          gum::MultiDimArray<float> full;
-          gum::MultiDimSparse<float> sparse(( float )0 );
-          gum::aggregator::Min<float> agg;
-          agg << a << b << c << d;
-          full << a << b << c << d;
-          sparse << a << b << c << d;
+        gum::Instantiation i( agg );
 
-          gum::Instantiation i( agg );
-
-          for ( i.setFirst(); ! i.end(); ++i ) {
-            float res = agg[i];
-            full.set( i, res );
-            sparse.set( i, res );
-          }
-
-          for ( i.setFirst(); ! i.end(); ++i ) {
-            TS_ASSERT_EQUALS( sparse[i], agg[i] );
-            TS_ASSERT_EQUALS( full[i], agg[i] );
-          }
-
-          gum::Instantiation j( sparse );
-
-          for ( j.setFirst(); !j.end() ; ++j ) {
-            TS_ASSERT_EQUALS( agg[j], sparse[j] );
-            TS_ASSERT_EQUALS( full[j], sparse[j] );
-          }
-
-          gum::Instantiation k( full );
-
-          for ( k.setFirst(); !k.end() ; ++k ) {
-            TS_ASSERT_EQUALS( agg[k], full[k] );
-            TS_ASSERT_EQUALS( sparse[k], full[k] );
-          }
-
-          TS_ASSERT_EQUALS( agg.compressionRate(), ( float )1.0 ); // 100% de compression
-
-          TS_ASSERT_EQUALS( sparse.compressionRate(), ( float )0.75 ); // deterministic as a sparse : 75% parameters are 0...
-          TS_ASSERT_EQUALS( full.compressionRate(), ( float )0 ); // 0% de compression...
+        for( i.setFirst(); ! i.end(); ++i ) {
+          float res = agg[i];
+          full.set( i, res );
+          sparse.set( i, res );
         }
-    };
-  }
+
+        for( i.setFirst(); ! i.end(); ++i ) {
+          TS_ASSERT_EQUALS( sparse[i], agg[i] );
+          TS_ASSERT_EQUALS( full[i], agg[i] );
+        }
+
+        gum::Instantiation j( sparse );
+
+        for( j.setFirst(); !j.end() ; ++j ) {
+          TS_ASSERT_EQUALS( agg[j], sparse[j] );
+          TS_ASSERT_EQUALS( full[j], sparse[j] );
+        }
+
+        gum::Instantiation k( full );
+
+        for( k.setFirst(); !k.end() ; ++k ) {
+          TS_ASSERT_EQUALS( agg[k], full[k] );
+          TS_ASSERT_EQUALS( sparse[k], full[k] );
+        }
+
+        TS_ASSERT_EQUALS( agg.compressionRate(), ( float )1.0 ); // 100% de compression
+
+        TS_ASSERT_EQUALS( sparse.compressionRate(), ( float )0.75 ); // deterministic as a sparse : 75% parameters are 0...
+        TS_ASSERT_EQUALS( full.compressionRate(), ( float )0 ); // 0% de compression...
+      }
+  };
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

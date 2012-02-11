@@ -33,189 +33,185 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
+  class LazyInferenceTestSuite: public CxxTest::TestSuite {
+    public:
+      gum::BayesNet<float> *bn;
+      gum::Id i1, i2, i3, i4, i5;
+      gum::Potential<float> *e_i1, *e_i4;
 
-    class LazyInferenceTestSuite: public CxxTest::TestSuite {
-      public:
-        gum::BayesNet<float> *bn;
-        gum::Id i1, i2, i3, i4, i5;
-        gum::Potential<float> *e_i1, *e_i4;
+      void setUp() {
+        bn = new gum::BayesNet<float>();
 
-        void setUp() {
-          bn = new gum::BayesNet<float>();
+        gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+        gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-          gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
-          gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+        i1 = bn->addVariable( n1 );
+        i2 = bn->addVariable( n2 );
+        i3 = bn->addVariable( n3 );
+        i4 = bn->addVariable( n4 );
+        i5 = bn->addVariable( n5 );
 
-          i1 = bn->addVariable( n1 );
-          i2 = bn->addVariable( n2 );
-          i3 = bn->addVariable( n3 );
-          i4 = bn->addVariable( n4 );
-          i5 = bn->addVariable( n5 );
+        bn->insertArc( i1, i3 );
+        bn->insertArc( i1, i4 );
+        bn->insertArc( i3, i5 );
+        bn->insertArc( i4, i5 );
+        bn->insertArc( i2, i4 );
+        bn->insertArc( i2, i5 );
 
-          bn->insertArc( i1, i3 );
-          bn->insertArc( i1, i4 );
-          bn->insertArc( i3, i5 );
-          bn->insertArc( i4, i5 );
-          bn->insertArc( i2, i4 );
-          bn->insertArc( i2, i5 );
+        e_i1 = new gum::Potential<float>();
+        ( *e_i1 ) << bn->variable( i1 );
+        e_i1->fill( ( float ) 0 );
+        gum::Instantiation inst_1( *e_i1 );
+        inst_1.chgVal( bn->variable( i1 ), 0 );
+        e_i1->set( inst_1, ( float ) 1 );
 
-          e_i1 = new gum::Potential<float>();
-          ( *e_i1 ) << bn->variable( i1 );
-          e_i1->fill(( float ) 0 );
-          gum::Instantiation inst_1( *e_i1 );
-          inst_1.chgVal( bn->variable( i1 ), 0 );
-          e_i1->set( inst_1, ( float ) 1 );
+        e_i4 = new gum::Potential<float>();
+        ( *e_i4 ) << bn->variable( i4 );
+        e_i4->fill( ( float ) 0 );
+        gum::Instantiation inst_4( *e_i4 );
+        inst_4.chgVal( bn->variable( i4 ), 1 );
+        e_i4->set( inst_4, ( float ) 1 );
+      }
 
-          e_i4 = new gum::Potential<float>();
-          ( *e_i4 ) << bn->variable( i4 );
-          e_i4->fill(( float ) 0 );
-          gum::Instantiation inst_4( *e_i4 );
-          inst_4.chgVal( bn->variable( i4 ), 1 );
-          e_i4->set( inst_4, ( float ) 1 );
+      void tearDown() {
+        delete bn;
+        delete e_i1;
+        delete e_i4;
+      }
+
+      // Testing when there is no evidence
+      void tsetCreationAndInference() {
+        fill( *bn );
+        // Testing the inference
+        gum::LazyPropagation<float>* inf = 0;
+        TS_ASSERT_THROWS_NOTHING( inf = new gum::LazyPropagation<float> ( *bn ) );
+        TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
+
+        if( inf != 0 ) {
+          TS_ASSERT_THROWS_NOTHING( delete inf );
+        }
+      }
+
+      void Marginal() {
+        fill( *bn );
+        gum::LazyPropagation<float> inf( *bn );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+      }
+
+      void tsetMarginalWithEvidence() {
+        fill( *bn );
+        gum::List< const gum::Potential<float>* > e_list;
+        e_list.insert( e_i1 );
+        e_list.insert( e_i4 );
+
+        gum::LazyPropagation<float> inf( *bn );
+
+        TS_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
+
+        TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
+        TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+      }
+
+      // Testing when there is no evidence
+      void tsetJoint() {
+        fill( *bn );
+        // Testing the inference
+        gum::LazyPropagation<float> inf( *bn );
+        gum::NodeSet nodeset;
+        nodeset.insert( 2 );
+        nodeset.insert( 4 );
+
+        gum::Potential<float>* pot = 0;
+        TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
+
+        if( pot ) delete pot;
+      }
+
+      // testing information methods
+      void testInformationMethods() {
+        fill( *bn );
+
+        gum::LazyPropagation<float> inf( *bn );
+        inf.makeInference();
+
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.H( ( gum::NodeId ) 2 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.I( ( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.I( ( gum::NodeId ) 2, ( gum::NodeId ) 2 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.VI( ( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
+        TS_ASSERT_THROWS( inf.I( ( gum::NodeId ) 0, ( gum::NodeId ) 4 ) ,gum::OperationNotAllowed );
+
+        //@TODO : test computations and not only good behaviour
+      }
+
+    private:
+      // Builds a BN to test the inference
+      void fill( gum::BayesNet<float> &bn ) {
+        const gum::Potential<float>& p1 = bn.cpt( i1 );
+        {
+          // FILLING PARAMS
+          const float t[2] = {0.2, 0.8};
+          int n = 2; const std::vector<float> v( t, t + n );
+          p1.fillWith( v );
         }
 
-        void tearDown() {
-          delete bn;
-          delete e_i1;
-          delete e_i4;
+        const gum::Potential<float>& p2 = bn.cpt( i2 );
+        {
+          // FILLING PARAMS
+          const float t[2] = {0.3, 0.7};
+          int n = 2; const std::vector<float> v( t, t + n );
+          p2.fillWith( v );
         }
 
-        // Testing when there is no evidence
-        void tsetCreationAndInference() {
-          fill( *bn );
-          // Testing the inference
-          gum::LazyPropagation<float>* inf = 0;
-          TS_ASSERT_THROWS_NOTHING( inf = new gum::LazyPropagation<float> ( *bn ) );
-          TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
-
-          if ( inf != 0 ) {
-            TS_ASSERT_THROWS_NOTHING( delete inf );
-          }
+        const gum::Potential<float>& p3 = bn.cpt( i3 );
+        {
+          // FILLING PARAMS
+          const float t[4] = {0.1, 0.9, 0.9, 0.1};
+          int n = 4; const std::vector<float> v( t, t + n );
+          p3.fillWith( v );
         }
 
-        void Marginal() {
-          fill( *bn );
-          gum::LazyPropagation<float> inf( *bn );
-
-          TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+        const gum::Potential<float>& p4 = bn.cpt( i4 );
+        {
+          // FILLING PARAMS
+          const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+          int n = 8; const std::vector<float> v( t, t + n );
+          p4.fillWith( v );
         }
 
-        void tsetMarginalWithEvidence() {
-          fill( *bn );
-          gum::List< const gum::Potential<float>* > e_list;
-          e_list.insert( e_i1 );
-          e_list.insert( e_i4 );
-
-          gum::LazyPropagation<float> inf( *bn );
-
-          TS_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
-
-          TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i1 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i2 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i3 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i4 ) );
-          TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
+        const gum::Potential<float>& p5 = bn.cpt( i5 );
+        {
+          // FILLING PARAMS
+          const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
+                               0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
+                              };
+          int n = 24; const std::vector<float> v( t, t + n );
+          p5.fillWith( v );
+          //printProba(p5);
         }
+      }
 
-        // Testing when there is no evidence
-        void tsetJoint() {
-          fill( *bn );
-          // Testing the inference
-          gum::LazyPropagation<float> inf( *bn );
-          gum::NodeSet nodeset;
-          nodeset.insert( 2 );
-          nodeset.insert( 4 );
+      // Uncomment this to have some outputs.
+      void printProba( const gum::Potential<float> & ) {
+        //gum::Instantiation inst(p);
 
-          gum::Potential<float>* pot = 0;
-          TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
+        //for (inst.setFirst(); !inst.end(); ++inst)
+        //{
+        //  std::cerr << inst<<" : " <<p[inst] << std::endl;
+        //}
+        //std::cerr << std::endl;
+      }
+  };
 
-          if ( pot ) delete pot;
-        }
-
-        // testing information methods
-        void testInformationMethods() {
-          fill( *bn );
-
-          gum::LazyPropagation<float> inf( *bn );
-          inf.makeInference();
-
-           TS_GUM_ASSERT_THROWS_NOTHING( inf.H(( gum::NodeId ) 2 ) );
-           TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
-           TS_GUM_ASSERT_THROWS_NOTHING( inf.I(( gum::NodeId ) 2, ( gum::NodeId ) 2 ) );
-           TS_GUM_ASSERT_THROWS_NOTHING( inf.VI(( gum::NodeId ) 2, ( gum::NodeId ) 4 ) );
-           TS_ASSERT_THROWS( inf.I(( gum::NodeId ) 0, ( gum::NodeId ) 4 ) ,gum::OperationNotAllowed );
-
-          //@TODO : test computations and not only good behaviour
-        }
-
-      private:
-        // Builds a BN to test the inference
-        void fill( gum::BayesNet<float> &bn ) {
-          const gum::Potential<float>& p1 = bn.cpt( i1 );
-          {
-            // FILLING PARAMS
-            const float t[2] = {0.2, 0.8};
-            int n = 2;const std::vector<float> v( t, t + n );
-            p1.fillWith( v );
-          }
-
-          const gum::Potential<float>& p2 = bn.cpt( i2 );
-          {
-            // FILLING PARAMS
-            const float t[2] = {0.3, 0.7};
-            int n = 2;const std::vector<float> v( t, t + n );
-            p2.fillWith( v );
-          }
-
-          const gum::Potential<float>& p3 = bn.cpt( i3 );
-          {
-            // FILLING PARAMS
-            const float t[4] = {0.1, 0.9, 0.9, 0.1};
-            int n = 4;const std::vector<float> v( t, t + n );
-            p3.fillWith( v );
-          }
-
-          const gum::Potential<float>& p4 = bn.cpt( i4 );
-          {
-            // FILLING PARAMS
-            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-            int n = 8;const std::vector<float> v( t, t + n );
-            p4.fillWith( v );
-          }
-
-          const gum::Potential<float>& p5 = bn.cpt( i5 );
-          {
-            // FILLING PARAMS
-            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
-                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
-                                };
-            int n = 24;const std::vector<float> v( t, t + n );
-            p5.fillWith( v );
-            //printProba(p5);
-          }
-        }
-
-        // Uncomment this to have some outputs.
-        void printProba( const gum::Potential<float> & ) {
-          //gum::Instantiation inst(p);
-
-          //for (inst.setFirst(); !inst.end(); ++inst)
-          //{
-          //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-          //}
-          //std::cerr << std::endl;
-        }
-    };
-
-  }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

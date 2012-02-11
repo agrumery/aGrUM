@@ -36,18 +36,16 @@
 #include <agrum/core/signal/listener.h>
 
 
-
-namespace gum {
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  namespace tests {
+namespace gum_tests {
 
-    class NodeGraphPartTestSuite;
-  }
+  class NodeGraphPartTestSuite;
+}
 
 #endif
+
+namespace gum {
 
   class NodeGraphPart;
 
@@ -368,7 +366,7 @@ namespace gum {
 
       /// to enable testunits to use __check
 
-      friend class tests::NodeGraphPartTestSuite;
+      friend class gum_tests::NodeGraphPartTestSuite;
 
 
 

@@ -27,16 +27,14 @@
 #include <agrum/core/hashTable.h>
 
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
-
-    class HashTableTestSuite: public CxxTest::TestSuite {
+  class HashTableTestSuite: public CxxTest::TestSuite {
     public:
 
       void testConstructor() {
         gum::HashTable<int, int> *table = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING(( table = new gum::HashTable<int, int>() ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( ( table = new gum::HashTable<int, int>() ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete table );
       }
 
@@ -371,7 +369,7 @@ namespace gum {
         TS_ASSERT_EQUALS( t1.capacity(), ( gum::Size )4 );
         TS_ASSERT_EQUALS( t2.capacity(), ( gum::Size )4 );
 
-        for ( int i = 0; i < 10000; i++ ) {
+        for( int i = 0; i < 10000; i++ ) {
           TS_GUM_ASSERT_THROWS_NOTHING( t1.insert( i, i ) );
           TS_GUM_ASSERT_THROWS_NOTHING( t2.insert( i, i ) );
         }
@@ -391,7 +389,7 @@ namespace gum {
         std::string str = "Space, the final frontiere.";
         TS_GUM_ASSERT_THROWS_NOTHING( map4 = t1.map( str ) );
 
-        for ( int i = 1; i < 7; i++ ) {
+        for( int i = 1; i < 7; i++ ) {
           TS_ASSERT_EQUALS( map1[i], t1[i] + ".foo" );
           TS_ASSERT_EQUALS( map2[i], t1[i] + ".bar" );
           TS_ASSERT_EQUALS( map3[i], t1[i] + ".42" );
@@ -405,19 +403,19 @@ namespace gum {
 
         gum::List<std::string> expected, obtained;
 
-        for ( int i = 1; i < 7; i++ ) {
+        for( int i = 1; i < 7; i++ ) {
           expected.insert( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
-              iter != t1.end();
-              ++ iter ) {
+        for( gum::HashTable<int, std::string>::iterator iter = t1.begin();
+             iter != t1.end();
+             ++ iter ) {
           obtained.insert( *iter );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );
 
-        for ( gum::Size i = 0; i < obtained.size(); i++ ) {
+        for( gum::Size i = 0; i < obtained.size(); i++ ) {
           TS_ASSERT( expected.exists( obtained[i] ) );
         }
       }
@@ -428,59 +426,65 @@ namespace gum {
 
         gum::List<std::string> expected, obtained;
 
-        for ( int i = 1; i < 7; i++ ) {
+        for( int i = 1; i < 7; i++ ) {
           expected.insert( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
-              iter != t1.end(); ++iter ) {
+        for( gum::HashTable<int, std::string>::iterator iter = t1.begin();
+             iter != t1.end(); ++iter ) {
           obtained.insert( *iter );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );
 
-        for ( gum::Size i = 0; i < obtained.size(); i++ ) {
+        for( gum::Size i = 0; i < obtained.size(); i++ ) {
           TS_ASSERT( expected.exists( obtained[i] ) );
         }
       }
 
 
-      void test_float_hash () {
+      void test_float_hash() {
         unsigned int size = 20;
         gum::HashTable<float, unsigned int> t1;
-        for ( unsigned int i = 0; i < size; ++i ) {
+
+        for( unsigned int i = 0; i < size; ++i ) {
           float nb = i + i * 0.01;
-          t1.insert ( nb, i * 1000 + i );
+          t1.insert( nb, i * 1000 + i );
         }
-        
-        std::vector<float> vect ( size + 1 );
-        for ( unsigned int i = 0; i < vect.size(); ++i ) {
+
+        std::vector<float> vect( size + 1 );
+
+        for( unsigned int i = 0; i < vect.size(); ++i ) {
           vect[i] = i + i * 0.01;
         }
-        for ( unsigned int i = 0; i < size; ++i ) {
-          TS_ASSERT( t1.exists ( vect[i] ) );
+
+        for( unsigned int i = 0; i < size; ++i ) {
+          TS_ASSERT( t1.exists( vect[i] ) );
           TS_ASSERT( t1[vect[i]] == i * 1000 + i );
         }
       }
-      
-      void test_double_hash () {
+
+      void test_double_hash() {
         unsigned int size = 20;
         gum::HashTable<double, unsigned int> t1;
-        for ( unsigned int i = 0; i < size; ++i ) {
+
+        for( unsigned int i = 0; i < size; ++i ) {
           double nb = i + i * 0.01;
-          t1.insert ( nb, i * 1000 + i );
+          t1.insert( nb, i * 1000 + i );
         }
-        
-        std::vector<double> vect ( size + 1 );
-        for ( unsigned int i = 0; i < vect.size(); ++i ) {
+
+        std::vector<double> vect( size + 1 );
+
+        for( unsigned int i = 0; i < vect.size(); ++i ) {
           vect[i] = i + i * 0.01;
         }
-        for ( unsigned int i = 0; i < size; ++i ) {
-          TS_ASSERT( t1.exists ( vect[i] ) );
+
+        for( unsigned int i = 0; i < size; ++i ) {
+          TS_ASSERT( t1.exists( vect[i] ) );
           TS_ASSERT( t1[vect[i]] == i * 1000 + i );
         }
       }
-      
+
 
 
     private:
@@ -510,8 +514,8 @@ namespace gum {
         fill( full );
         gum::HashTable<int, std::string> inter;
 
-        for ( int i = 1; i < 7; i++ ) {
-          if ( table.exists( i ) && table[i] ) {
+        for( int i = 1; i < 7; i++ ) {
+          if( table.exists( i ) && table[i] ) {
             inter.insert( i, full[i] );
           }
         }
@@ -524,8 +528,8 @@ namespace gum {
         fill( full );
         gum::HashTable<int, std::string> unionTable;
 
-        for ( int i = 1; i < 7; i++ ) {
-          if ( table.exists( i ) && table[i] ) {
+        for( int i = 1; i < 7; i++ ) {
+          if( table.exists( i ) && table[i] ) {
             unionTable.insert( i, full[i] );
           }
         }
@@ -546,8 +550,6 @@ namespace gum {
       }
 
 
-    };
+  };
 
-  }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

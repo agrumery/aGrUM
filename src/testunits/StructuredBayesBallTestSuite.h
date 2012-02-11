@@ -29,12 +29,11 @@
 #include <agrum/prm/skool/SkoolReader.h>
 // ============================================================================
 
-namespace gum {
-namespace tests {
+namespace gum_tests {
 
-  using namespace gum;
-  using namespace gum::prm;
-  using namespace gum::prm::skool;
+//   using namespace gum;
+//   using namespace gum::prm;
+//   using namespace gum::prm::skool;
 
   class StructuredBayesBallTestSuite: public CxxTest::TestSuite {
     private:
@@ -49,17 +48,17 @@ namespace tests {
       void setUp() {
         {
           SkoolReader reader;
-          reader.readFile("../../../src/testunits/ressources/skool/inference.skool");
+          reader.readFile( "../../../src/testunits/ressources/skool/inference.skool" );
           prm = reader.prm();
-          sys = &(prm->system("aSys"));
-          prm_inf = new SVE(*prm, *sys);
+          sys = &( prm->system( "aSys" ) );
+          prm_inf = new SVE( *prm, *sys );
         }
         {
           SkoolReader reader;
-          reader.readFile("../../../src/testunits/ressources/skool/printers_systems.skool");
+          reader.readFile( "../../../src/testunits/ressources/skool/printers_systems.skool" );
           small = reader.prm();
-          small_sys = &(small->system("smallSys"));
-          small_inf = new SVE(*small, *small_sys);
+          small_sys = &( small->system( "smallSys" ) );
+          small_inf = new SVE( *small, *small_sys );
         }
         // std::cerr << std::endl;
       }
@@ -73,60 +72,66 @@ namespace tests {
 
       void testConstructors() {
         StructuredBayesBall* bb = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*prm_inf));
-        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
-        TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*small_inf));
-        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+        TS_GUM_ASSERT_THROWS_NOTHING( bb = new StructuredBayesBall( *prm_inf ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bb );
+        TS_GUM_ASSERT_THROWS_NOTHING( bb = new StructuredBayesBall( *small_inf ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bb );
       }
 
       /// Checking that when a root is queried and there is no evidence, the
       /// requisite nodes set contains only the root node.
       void testRootsNoObs() {
         StructuredBayesBall* bb = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*prm_inf));
-        for (System::iterator i = sys->begin(); i != sys->end(); ++i) {
-          for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
-            if ((**i).type().dag().parents((**a).id()).empty()) {
-              TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
-              for (System::iterator j = sys->begin(); j != sys->end(); ++j) {
-                if ((*j) != (*i)) {
-                  TS_ASSERT(not bb->exists(*j));
-                } else if (bb->exists(*j)) {
-                  TS_ASSERT_EQUALS(bb->requisiteNodes(*j).size(), (Size) 1);
-                  TS_ASSERT(bb->requisiteNodes(*j).contains((**a).id()));
+        TS_GUM_ASSERT_THROWS_NOTHING( bb = new StructuredBayesBall( *prm_inf ) );
+
+        for( System::iterator i = sys->begin(); i != sys->end(); ++i ) {
+          for( Instance::iterator a = ( **i ).begin(); a != ( **i ).end(); ++a ) {
+            if( ( **i ).type().dag().parents( ( **a ).id() ).empty() ) {
+              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( *i, ( **a ).id() ) );
+
+              for( System::iterator j = sys->begin(); j != sys->end(); ++j ) {
+                if( ( *j ) != ( *i ) ) {
+                  TS_ASSERT( not bb->exists( *j ) );
+                } else if( bb->exists( *j ) ) {
+                  TS_ASSERT_EQUALS( bb->requisiteNodes( *j ).size(), ( Size ) 1 );
+                  TS_ASSERT( bb->requisiteNodes( *j ).contains( ( **a ).id() ) );
                 } else {
-                  TS_ASSERT(false);
+                  TS_ASSERT( false );
                 }
               }
             }
           }
         }
-        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bb );
       }
 
       /// Checking that when a root is queried and there is no evidence, the
       /// requisite nodes set contains only the root node.
       void testRootsNoObsSmall() {
         StructuredBayesBall* bb = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(bb = new StructuredBayesBall(*small_inf));
-        for (System::iterator i = small_sys->begin(); i != small_sys->end(); ++i) {
-          for (Instance::iterator a = (**i).begin(); a != (**i).end(); ++a) {
-            if ((**i).type().dag().parents((**a).id()).empty()) {
-              TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(*i, (**a).id()));
-              for (System::iterator j = small_sys->begin(); j != small_sys->end(); ++j) {
-                if ((*j) != (*i)) {
-                  TS_ASSERT(not bb->exists(*j));
-                } else if (bb->exists(*j)) {
-                  TS_ASSERT_EQUALS(bb->requisiteNodes(*j).size(), (Size) 1);
-                  TS_ASSERT(bb->requisiteNodes(*j).contains((**a).id()));
+        TS_GUM_ASSERT_THROWS_NOTHING( bb = new StructuredBayesBall( *small_inf ) );
+
+        for( System::iterator i = small_sys->begin(); i != small_sys->end(); ++i ) {
+          for( Instance::iterator a = ( **i ).begin(); a != ( **i ).end(); ++a ) {
+            if( ( **i ).type().dag().parents( ( **a ).id() ).empty() ) {
+              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( *i, ( **a ).id() ) );
+
+              for( System::iterator j = small_sys->begin(); j != small_sys->end(); ++j ) {
+                if( ( *j ) != ( *i ) ) {
+                  TS_ASSERT( not bb->exists( *j ) );
+                } else if( bb->exists( *j ) ) {
+                  TS_ASSERT_EQUALS( bb->requisiteNodes( *j ).size(), ( Size ) 1 );
+                  TS_ASSERT( bb->requisiteNodes( *j ).contains( ( **a ).id() ) );
                 } else {
-                  TS_ASSERT(false);
+                  TS_ASSERT( false );
                 }
               }
             }
           }
         }
-        TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bb );
       }
 
       // /// Checking that when a root is queried and there is evidence on each leaf node, the
@@ -183,6 +188,4 @@ namespace tests {
 
   };
 
-} // namespace tests
-} // namespace gum
-// ============================================================================
+} // namespace gum_tests
