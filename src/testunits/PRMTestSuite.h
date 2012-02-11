@@ -40,8 +40,6 @@
 
 namespace gum_tests {
 
-using namespace gum;
-
   class PRMTestSuite: public CxxTest::TestSuite {
     private:
       gum::prm::PRM* prm;
@@ -79,11 +77,11 @@ using namespace gum;
         gum::prm::Class& c = prm->getClass( "SafeComputer" );
         gum::prm::ClassBayesNet* bn = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet( prm->getClass( "SafeComputer" ) ) );
-        Size elts = c.attributes().size() + c.aggregates().size();
+        gum::Size elts = c.attributes().size() + c.aggregates().size();
         TS_ASSERT_EQUALS( bn->size(), elts );
 
-        for( Set<gum::prm::Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr ) {
-          NodeId id = 0;
+        for( gum::Set<gum::prm::Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr ) {
+          gum::NodeId id = 0;
           TS_GUM_ASSERT_THROWS_NOTHING( ( **attr ).cpf() );
           TS_GUM_ASSERT_THROWS_NOTHING( id = bn->idFromName( ( **attr ).safeName() ) );
           TS_GUM_ASSERT_THROWS_NOTHING( bn->cpt( id ) );
@@ -102,7 +100,7 @@ using namespace gum;
         TS_ASSERT_EQUALS( bn->size(), i.size() );
 
         for( gum::prm::Instance::iterator attr = i.begin(); attr != i.end(); ++attr ) {
-          NodeId id = 0;
+          gum::NodeId id = 0;
           TS_GUM_ASSERT_THROWS_NOTHING( ( **attr ).cpf() );
           TS_GUM_ASSERT_THROWS_NOTHING( id = bn->idFromName( ( **attr ).safeName() ) );
           TS_GUM_ASSERT_THROWS_NOTHING( bn->cpt( id ) );
@@ -116,8 +114,8 @@ using namespace gum;
 
       void testGroundedBN() {
         gum::prm::System& sys = prm->system( "aSys" );
-        BayesNet<gum::prm::prm_float> bn;
-        BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
+        gum::BayesNet<gum::prm::prm_float> bn;
+        gum::BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
         int count = 0;
 
@@ -129,25 +127,25 @@ using namespace gum;
 
         int wount = 0;
 
-        for( DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
           wount++;
           std::string var = bn.variable( *node ).name();
           size_t pos = var.find_first_of( '.' );
           gum::prm::Instance& instance = sys.get( var.substr( 0, pos ) );
           gum::prm::Attribute& attr = instance.get( var.substr( pos +1 ) );
-          TS_ASSERT_DIFFERS( bn.cpt( *node ).nbrDim(), ( Size )0 );
+          TS_ASSERT_DIFFERS( bn.cpt( *node ).nbrDim(), ( gum::Size )0 );
 
           if( gum::prm::ClassElement::isAggregate( instance.type().get( attr.id() ) ) ) {
-            TS_ASSERT_DIFFERS( attr.cpf().nbrDim(), ( Size )1 );
+            TS_ASSERT_DIFFERS( attr.cpf().nbrDim(), ( gum::Size )1 );
           }
         }
 
         TS_ASSERT_EQUALS( count, wount );
 
-        for( DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
-          const DiscreteVariable* var = &( bn.variable( *node ) );
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+          const gum::DiscreteVariable* var = &( bn.variable( *node ) );
 
-          for( DAG::NodeIterator mode = bn.dag().beginNodes(); mode != bn.dag().endNodes(); ++mode ) {
+          for( gum::DAG::NodeIterator mode = bn.dag().beginNodes(); mode != bn.dag().endNodes(); ++mode ) {
             if( ( *node ) != ( *mode ) ) {
               TS_ASSERT_DIFFERS( var, &( bn.variable( *mode ) ) );
             }
@@ -160,7 +158,7 @@ using namespace gum;
 
         for( gum::prm::System::iterator iter = sys.begin(); iter != sys.end(); ++iter ) {
           for( gum::prm::Instance::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
-            Instantiation i( ( **jter ).cpf() ), var;
+            gum::Instantiation i( ( **jter ).cpf() ), var;
             var.add( ( **jter ).type().variable() );
 
             for( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
@@ -179,13 +177,13 @@ using namespace gum;
 
       void testNormalisedCPT() {
         gum::prm::System& sys = prm->system( "aSys" );
-        BayesNet<gum::prm::prm_float> bn;
-        BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
+        gum::BayesNet<gum::prm::prm_float> bn;
+        gum::BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
 
-        for( DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
-          const Potential<gum::prm::prm_float>& cpt = bn.cpt( *node );
-          Instantiation i( cpt ), j;
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+          const gum::Potential<gum::prm::prm_float>& cpt = bn.cpt( *node );
+          gum::Instantiation i( cpt ), j;
           j.add( bn.variable( *node ) );
 
           for( i.setFirstOut( j ); not i.end(); i.incOut( j ) ) {

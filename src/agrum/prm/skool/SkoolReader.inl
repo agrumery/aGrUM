@@ -65,9 +65,9 @@ namespace gum {
           return __errors.count();
         }
 
-        string basename = file.substr ( lastSlashIndex+1 );
+        std::string basename = file.substr ( lastSlashIndex+1 );
 
-        string absFilename = dir.absolutePath() + basename;
+        std::string absFilename = dir.absolutePath() + basename;
 
         try {
           if ( __parser && __parser->getImports().exists ( absFilename ) )
@@ -79,8 +79,7 @@ namespace gum {
             __parser = new Parser ( &s );
             __parser->setFactory ( &__factory );
             __parser->setClassPath ( __class_path );
-          }
-          else
+          } else
             __parser->scanner = &s;
 
           __parser->setCurrentDirectory ( dir.absolutePath() );
@@ -92,8 +91,7 @@ namespace gum {
           __parseDone = true;
 
           __errors += __parser->errors();
-        }
-        catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), file );
         }
@@ -103,10 +101,10 @@ namespace gum {
 
       INLINE
       int
-      SkoolReader::readString ( const std::string & string ) {
+      SkoolReader::readString ( const std::string& str ) {
         // errors += parser.errors
         try {
-          Scanner s ( ( unsigned char* ) string.c_str(), ( int ) ( string.length() ) );
+          Scanner s ( ( unsigned char* ) str.c_str(), ( int ) ( str.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
@@ -114,8 +112,7 @@ namespace gum {
           __parser->Parse();
           __parseDone = true;
           __errors += __parser->errors();
-        }
-        catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), "" );
         }
@@ -190,7 +187,7 @@ namespace gum {
       }
 
       INLINE
-      const ErrorsContainer & SkoolReader::errorsContainer() const {
+      const ErrorsContainer& SkoolReader::errorsContainer() const {
         return __errors;
       }
 
@@ -201,4 +198,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

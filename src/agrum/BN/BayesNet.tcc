@@ -528,7 +528,7 @@ namespace gum {
     T_DATA tmp;
     for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
       if ((tmp=cpt ( *node_iter ) [i])==(T_DATA)0) {
-        return (T_DATA)(- numeric_limits<double>::infinity( ));
+        return (T_DATA)(- std::numeric_limits<double>::infinity( ));
       }
       value += log2(cpt ( *node_iter ) [i]);
     }

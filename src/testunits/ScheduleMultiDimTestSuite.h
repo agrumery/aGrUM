@@ -28,16 +28,16 @@ namespace gum_tests {
   class ScheduleMultiDimTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 4 );
+          vars[i] = new gum::LabelizedVariable( s, s, 4 );
         }
 
-        Sequence<const DiscreteVariable*> seq;
+        gum::Sequence<const gum::DiscreteVariable*> seq;
         seq << vars[0] << vars[2] << vars[4];
 
         gum::ScheduleMultiDim<float> f1( seq );

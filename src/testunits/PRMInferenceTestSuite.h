@@ -269,14 +269,14 @@ namespace gum_tests {
         gum::prm::GroundedInference* g_ss = 0;
         gum::prm::GroundedInference* g_vebb = 0;
         gum::VariableElimination<gum::prm::prm_float>* ve = 0;
-        ShaferShenoyInference<gum::prm::prm_float>* ss = 0;
-        VEWithBB<gum::prm::prm_float>* vebb = 0;
+        gum::ShaferShenoyInference<gum::prm::prm_float>* ss = 0;
+        gum::VEWithBB<gum::prm::prm_float>* vebb = 0;
         gum::BayesNet<gum::prm::prm_float> bn;
         gum::BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING( prm->system( "aSys" ).groundedBN( bn_factory ) );
         TS_GUM_ASSERT_THROWS_NOTHING( ve = new gum::VariableElimination<gum::prm::prm_float>( bn ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( ss = new ShaferShenoyInference<gum::prm::prm_float>( bn ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( vebb = new VEWithBB<gum::prm::prm_float>( bn ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( ss = new gum::ShaferShenoyInference<gum::prm::prm_float>( bn ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( vebb = new gum::VEWithBB<gum::prm::prm_float>( bn ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve = new gum::prm::GroundedInference( *prm, prm->system( "aSys" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve->setBNInference( ve ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_ss = new gum::prm::GroundedInference( *prm, prm->system( "aSys" ) ) );
@@ -284,7 +284,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( g_vebb = new gum::prm::GroundedInference( *prm, prm->system( "aSys" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_vebb->setBNInference( vebb ) );
 
-        for( DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
           gum::Potential<gum::prm::prm_float> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
 
           try {
@@ -298,7 +298,7 @@ namespace gum_tests {
             g_ss->marginal( chain, m_ss );
             // GUM_TRACE("SS done");
             g_vebb->marginal( chain, m_vebb );
-            // GUM_TRACE("VEWithBB done");
+            // GUM_TRACE("gum::VEWithBB done");
             gum::prm::SVE sve( *prm, prm->system( "aSys" ) );
             sve.marginal( chain, m_sve );
             // GUM_TRACE("SVE done");
@@ -343,7 +343,7 @@ namespace gum_tests {
             if( zero ) {
               GUM_TRACE( foo );
             }
-          } catch( Exception& e ) {
+          } catch( gum::Exception& e ) {
             GUM_TRACE_VAR( bn.variableNodeMap().name( *node ) );
             TS_GUM_ASSERT_THROWS_NOTHING( throw e );
             break;

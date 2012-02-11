@@ -28,12 +28,10 @@
 
 #include <unistd.h>
 
-using namespace std;
-
 namespace gum {
 
 //! Return true if \a directory is a valid directory, false otherwise.
-  bool Directory::isDir( const string & directory ) {
+  bool Directory::isDir( const std::string & directory ) {
     return Directory( directory ).isValid();
   }
 
@@ -43,7 +41,7 @@ namespace gum {
   }
 
 //! Contructor
-  Directory::Directory( const string & directory ) : m_dirName( directory ) {
+  Directory::Directory( const std::string & directory ) : m_dirName( directory ) {
     GUM_CONSTRUCTOR( Directory );
     m_dirPtr = opendir( m_dirName.c_str() );
   }
@@ -68,8 +66,8 @@ namespace gum {
   }
 
 //! Return directory content.
-  vector<string> Directory::entries() const {
-    vector<string> result;
+  std::vector<std::string> Directory::entries() const {
+    std::vector<std::string> result;
 
     if ( ! isValid() )
       return result;
@@ -79,7 +77,7 @@ namespace gum {
     dirent * entry;
 
     while (( entry = readdir( m_dirPtr ) ) )
-      result.push_back( string( entry->d_name ) );
+      result.push_back( std::string( entry->d_name ) );
 
     return result;
   }
@@ -93,13 +91,13 @@ namespace gum {
   }
 
 //! Return directory path.
-  string Directory::path() const {
+  std::string Directory::path() const {
     return m_dirName;
   }
 
 //! Return directory absolute path.
-  string Directory::absolutePath() const {
-    string result;
+  std::string Directory::absolutePath() const {
+    std::string result;
 
     if ( ! isValid() )
       return result;
@@ -115,10 +113,10 @@ namespace gum {
     char absPath[255];
 
     if ( getcwd( absPath, 254 ) != NULL )
-      result = string( absPath )+'/';
+      result = std::string( absPath )+'/';
 
     if ( chdir( oldWD ) != 0 )
-      cerr << "Warning : Could not go to previous working directory. (" << __FILE__ << ":" << __LINE__ << ")" << endl;
+      std::cerr << "Warning : Could not go to previous working directory. (" << __FILE__ << ":" << __LINE__ << ")" << std::endl;
 
     return result;
   }

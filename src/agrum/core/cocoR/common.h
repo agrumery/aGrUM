@@ -68,8 +68,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 // cocoR genereted files may create unused-variable
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
-using namespace std;
-
 namespace gum {
 
   /// string handling, wide character
@@ -97,18 +95,18 @@ namespace gum {
   void  coco_string_delete(char* &data);
 
   /// CocoR uses unicode, thus use this to cast string in wstring.
-  inline wstring widen( const string& str ) {
-    wostringstream wstm ;
-    const ctype<wchar_t>& ctfacet = use_facet< ctype<wchar_t> >( wstm.getloc() ) ;
+  inline std::wstring widen( const std::string& str ) {
+    std::wostringstream wstm ;
+    const std::ctype<wchar_t>& ctfacet = std::use_facet< std::ctype<wchar_t> >( wstm.getloc() ) ;
     for( size_t i=0 ; i<str.size() ; ++i )
       wstm << ctfacet.widen( str[i] ) ;
     return wstm.str() ;
   }
 
   /// CocoR uses unicode, thus use this to cast wstring in string.
-  inline string narrow( const wstring& str ) {
-    ostringstream stm ;
-    const ctype<char>& ctfacet = use_facet< ctype<char> >( stm.getloc() ) ;
+  inline std::string narrow( const std::wstring& str ) {
+    std::ostringstream stm ;
+    const std::ctype<char>& ctfacet = std::use_facet< std::ctype<char> >( stm.getloc() ) ;
     for( size_t i=0 ; i<str.size() ; ++i )
       stm << ctfacet.narrow( str[i], 0 ) ;
     return stm.str() ;

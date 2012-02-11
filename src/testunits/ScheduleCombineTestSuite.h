@@ -37,13 +37,13 @@ namespace gum_tests {
   class ScheduleCombineTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 2 );
+          vars[i] = new gum::LabelizedVariable( s, s, 2 );
         }
 
         gum::Potential<float> pot1;
@@ -62,7 +62,7 @@ namespace gum_tests {
         gum::ScheduleMultiDim<float> f3( pot3 );
 
         gum::ScheduleCombine<float> comb1( f1, f2, myadd );
-        const ScheduleMultiDim<float>& result1 = comb1.result();
+        const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
         TS_ASSERT( comb1.nbOperations() == 32 );
         std::pair<long,long> xxx = comb1.memoryUsage();
@@ -74,7 +74,7 @@ namespace gum_tests {
         TS_ASSERT( s1.str() == comb1.toString() );
 
         gum::ScheduleCombine<float> comb2( result1, f3, myadd );
-        const ScheduleMultiDim<float>& result2 = comb2.result();
+        const gum::ScheduleMultiDim<float>& result2 = comb2.result();
 
         TS_ASSERT( result1.isAbstract() );
         comb1.execute();
@@ -88,8 +88,8 @@ namespace gum_tests {
         TS_ASSERT( result1.multiDim() == *pot4.content() );
         TS_ASSERT( result2.multiDim() == *pot5.content() );
 
-        Sequence<const ScheduleMultiDim<float>*> seq = comb2.multiDimArgs();
-        SequenceIterator<const ScheduleMultiDim<float>*> iter = seq.begin();
+        gum::Sequence<const gum::ScheduleMultiDim<float>*> seq = comb2.multiDimArgs();
+        gum::SequenceIterator<const gum::ScheduleMultiDim<float>*> iter = seq.begin();
         TS_ASSERT( **iter == result1 );
         ++iter;
         TS_ASSERT( **iter == f3 );
@@ -121,8 +121,8 @@ namespace gum_tests {
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
-      void randomInit( Potential<float>& t ) {
-        Instantiation i( t );
+      void randomInit( gum::Potential<float>& t ) {
+        gum::Instantiation i( t );
         srand( time( NULL ) );
 
         for( i.setFirst(); ! i.end(); ++i )

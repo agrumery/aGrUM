@@ -348,7 +348,7 @@ template<typename T_DATA>
 void MCBayesNetGenerator<T_DATA>::__createDAG(gum::Size BNSize, gum::Size iniRoot) {
     static Idx n = 0;
     srand(time(NULL) + n);
-    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % min(BNSize , __max_parents) ) + 1: (rand() %  __max_parents) + 1 );
+    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % std::min(BNSize , __max_parents) ) + 1: (rand() %  __max_parents) + 1 );
     std::vector<gum::NodeId> roots;
     for (Idx r = 0 ; r < nbRoot; r++) {
         gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
@@ -356,7 +356,7 @@ void MCBayesNetGenerator<T_DATA>::__createDAG(gum::Size BNSize, gum::Size iniRoo
         strBuff << "n" <<n++<<"_"<<r;
         roots.push_back(__bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod)));
     }
-    Size maxNodes = BNSize - min( nbRoot , BNSize);
+    Size maxNodes = BNSize - std::min( nbRoot , BNSize);
     gum::Size SubG = 0;
     while (maxNodes) {
 
@@ -388,7 +388,7 @@ template<typename T_DATA>
 std::vector<gum::NodeId> * MCBayesNetGenerator<T_DATA>::__createPartDAG(gum::Size BNSize, gum::Size iniRoot) {
     static Idx n = 0;
     srand(time(NULL) + n);
-    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % min(__max_parents, BNSize)) + 1: (rand() % __max_parents) + 1 );//################
+    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % std::min(__max_parents, BNSize)) + 1: (rand() % __max_parents) + 1 );//################
     std::vector<gum::NodeId> * roots = new std::vector<gum::NodeId> ;
     for (Idx r = 0 ; r < nbRoot; r++) {
         gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
@@ -396,7 +396,7 @@ std::vector<gum::NodeId> * MCBayesNetGenerator<T_DATA>::__createPartDAG(gum::Siz
         strBuff << "nA" <<n++<<"_"<<r;
         roots->push_back(__bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod)));
     }
-    Size maxNodes = BNSize - min( nbRoot , BNSize);
+    Size maxNodes = BNSize - std::min( nbRoot , BNSize);
     gum::Size SubG = 0;
     while (maxNodes) {
         SubG = (rand() % (maxNodes)) + 1 ;

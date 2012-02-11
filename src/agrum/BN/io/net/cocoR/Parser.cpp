@@ -209,8 +209,8 @@ void Parser::NODE() {
 		
 		Expect(12 /* "node" */);
 		IDENT(var);
-		string prop;
-		string val;
+		std::string prop;
+		std::string val;
 		std::vector<std::string> vals;
 		bool labels_done=false;;
 		
@@ -520,7 +520,7 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 		break;
 	}
 	//wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-	wstring ss=L"Syntax error : "+std::wstring(s);
+	std::wstring ss=L"Syntax error : "+std::wstring(s);
   __errors.Error(filename,line,col,ss.c_str());
 	coco_string_delete(s);
 }

@@ -217,7 +217,7 @@ namespace gum_tests {
           for( gum::NodeSet::iterator arcIter = parentList.begin();
                arcIter != parentList.end();
                ++arcIter ) {
-            TS_ASSERT( copy->dag().existsArc( Arc( *arcIter, *nodeIter ) ) );
+            TS_ASSERT( copy->dag().existsArc( gum::Arc( *arcIter, *nodeIter ) ) );
           }
 
           const gum::Potential<float> &srcCPT = source.cpt( *nodeIter );

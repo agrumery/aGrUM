@@ -51,7 +51,7 @@ namespace gum_tests {
         // ddf.setEpsilon( 0.0001 );
         // ddf.setLowLimit( -10 );
         // ddf.setHighLimit( 10 );
-        SPUDDPlanning<double> inf( &fmdp, showSaveFile );
+        gum::SPUDDPlanning<double> inf( &fmdp, showSaveFile );
 
         gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
 

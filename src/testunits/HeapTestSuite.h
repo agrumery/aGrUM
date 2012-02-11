@@ -151,7 +151,7 @@ namespace gum_tests {
 
 
       void testObj() {
-        gum::Heap< Set<int>, SetCmp > heap1;
+        gum::Heap< gum::Set<int>, SetCmp > heap1;
 
         gum::Set<int> s1, s2, s3, s4, s5;
         s1.insert( 1 );

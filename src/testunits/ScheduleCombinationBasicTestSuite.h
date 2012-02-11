@@ -38,13 +38,13 @@ namespace gum_tests {
   class ScheduleCombinationTestSuite: public CxxTest::TestSuite {
     public:
       void test_construct1() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 2 );
+          vars[i] = new gum::LabelizedVariable( s, s, 2 );
         }
 
         gum::Potential<float> pot1;
@@ -69,17 +69,17 @@ namespace gum_tests {
         gum::ScheduleMultiDim<float> f4( pot4 );
 
         gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
-        Set<const ScheduleMultiDim<float>*> set;
+        gum::Set<const gum::ScheduleMultiDim<float>*> set;
         set << &f1 << &f2 << &f2bis << &f3 << &f4;
-        Schedule<float> schedule;
-        const ScheduleMultiDim<float> result = comb.combine( set, schedule );
+        gum::Schedule<float> schedule;
+        const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
         TS_ASSERT( comb.nbOperations( set, schedule ) == 120 );
 
-        const NodeSet& available = schedule.availableOperations();
+        const gum::NodeSet& available = schedule.availableOperations();
 
         while( ! available.empty() ) {
-          for( NodeSet::const_iterator iter = available.begin();
+          for( gum::NodeSet::const_iterator iter = available.begin();
                iter != available.end(); ++iter ) {
             schedule.execute( *iter );
           }
@@ -87,17 +87,17 @@ namespace gum_tests {
 
         gum::ScheduleCombine<float> comb11( f1, f2, schedule_comb_myadd );
         comb11.execute();
-        const ScheduleMultiDim<float>& result11 = comb11.result();
+        const gum::ScheduleMultiDim<float>& result11 = comb11.result();
         gum::ScheduleCombine<float> comb12( f2, f3, schedule_comb_myadd );
         comb12.execute();
-        const ScheduleMultiDim<float>& result12 = comb12.result();
+        const gum::ScheduleMultiDim<float>& result12 = comb12.result();
         gum::ScheduleCombine<float> comb13( result12, f4, schedule_comb_myadd );
         comb13.execute();
-        const ScheduleMultiDim<float>& result13 = comb13.result();
+        const gum::ScheduleMultiDim<float>& result13 = comb13.result();
         gum::ScheduleCombine<float> comb14( result11, result13,
                                             schedule_comb_myadd );
         comb14.execute();
-        const ScheduleMultiDim<float>& result14 = comb14.result();
+        const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 
         TS_ASSERT( result14.multiDim() == result.multiDim() );
 
@@ -118,13 +118,13 @@ namespace gum_tests {
 
 
       void test_construct2() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 2 );
+          vars[i] = new gum::LabelizedVariable( s, s, 2 );
         }
 
         gum::Potential<float> pot1;
@@ -144,26 +144,26 @@ namespace gum_tests {
         randomInit( pot4 );
 
         gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
-        Set<const MultiDimImplementation<float>*> set;
+        gum::Set<const gum::MultiDimImplementation<float>*> set;
         set << pot1.content() << pot2.content()
             << pot3.content() << pot4.content();
-        Schedule<float> schedule;
-        const ScheduleMultiDim<float> result = comb.combine( set, schedule );
+        gum::Schedule<float> schedule;
+        const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
         TS_ASSERT( comb.nbOperations( set, schedule ) == 112 );
 
-        const NodeSet& available = schedule.availableOperations();
+        const gum::NodeSet& available = schedule.availableOperations();
 
         while( ! available.empty() ) {
-          for( NodeSet::const_iterator iter = available.begin();
+          for( gum::NodeSet::const_iterator iter = available.begin();
                iter != available.end(); ++iter ) {
             schedule.execute( *iter );
           }
         }
 
-        gum::MultiDimCombinationDefault<float,MultiDimImplementation>
+        gum::MultiDimCombinationDefault<float,gum::MultiDimImplementation>
         comb11( schedule_comb_myadd );
-        MultiDimImplementation<float>* res11 = comb11.combine( set );
+        gum::MultiDimImplementation<float>* res11 = comb11.combine( set );
 
         TS_ASSERT( *res11 == result.multiDim() );
 
@@ -177,13 +177,13 @@ namespace gum_tests {
 
 
       void test_construct3() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 2 );
+          vars[i] = new gum::LabelizedVariable( s, s, 2 );
         }
 
         gum::Potential<float> pot1;
@@ -203,28 +203,28 @@ namespace gum_tests {
         randomInit( pot4 );
 
         gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
-        Set<const Potential<float>*> set;
+        gum::Set<const gum::Potential<float>*> set;
         set << &pot1 << &pot2 << &pot3 << &pot4;
-        Schedule<float> schedule;
-        const ScheduleMultiDim<float> result = comb.combine( set, schedule );
+        gum::Schedule<float> schedule;
+        const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
         TS_ASSERT( comb.nbOperations( set, schedule ) == 112 );
 
-        const NodeSet& available = schedule.availableOperations();
+        const gum::NodeSet& available = schedule.availableOperations();
 
         while( ! available.empty() ) {
-          for( NodeSet::const_iterator iter = available.begin();
+          for( gum::NodeSet::const_iterator iter = available.begin();
                iter != available.end(); ++iter ) {
             schedule.execute( *iter );
           }
         }
 
-        gum::MultiDimCombinationDefault<float,MultiDimImplementation>
+        gum::MultiDimCombinationDefault<float,gum::MultiDimImplementation>
         comb11( schedule_comb_myadd );
-        Set<const MultiDimImplementation<float>*> set2;
+        gum::Set<const gum::MultiDimImplementation<float>*> set2;
         set2 << pot1.content() << pot2.content()
              << pot3.content() << pot4.content();
-        MultiDimImplementation<float>* res11 = comb11.combine( set2 );
+        gum::MultiDimImplementation<float>* res11 = comb11.combine( set2 );
 
         TS_ASSERT( *res11 == result.multiDim() );
 
@@ -238,16 +238,16 @@ namespace gum_tests {
 
 
       void test_construct4() {
-        std::vector<LabelizedVariable*> vars( 10 );
+        std::vector<gum::LabelizedVariable*> vars( 10 );
 
         for( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable( s, s, 4 );
+          vars[i] = new gum::LabelizedVariable( s, s, 4 );
         }
 
-        Potential<float> t1, t2, t3;
+        gum::Potential<float> t1, t2, t3;
         t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
         t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
         t3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
@@ -257,12 +257,12 @@ namespace gum_tests {
         randomInit( t3 );
 
         gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
-        Set<const Potential<float>*> set;
+        gum::Set<const gum::Potential<float>*> set;
         set << &t1 << &t2 << &t3;
-        Set<const MultiDimImplementation<float>*> set2;
+        gum::Set<const gum::MultiDimImplementation<float>*> set2;
         set2 << t1.content() << t2.content() << t3.content();
 
-        Schedule<float> schedule;
+        gum::Schedule<float> schedule;
 
         TS_ASSERT( comb.nbOperations( set, schedule ) == 16640 );
         std::pair<long,long> yyy = comb.memoryUsage( set, schedule );
@@ -281,8 +281,8 @@ namespace gum_tests {
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
-      void randomInit( Potential<float>& t ) {
-        Instantiation i( t );
+      void randomInit( gum::Potential<float>& t ) {
+        gum::Instantiation i( t );
         srand( time( NULL ) );
 
         for( i.setFirst(); ! i.end(); ++i )

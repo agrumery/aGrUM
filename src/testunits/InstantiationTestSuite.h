@@ -167,7 +167,7 @@ namespace gum_tests {
 
       void testReordering_cpt() {
 
-        Instantiation Order;
+        gum::Instantiation Order;
 
         for( gum::Sequence<gum::NodeId>::iterator it = bn->topologicalOrder().begin(); it !=bn->topologicalOrder().end(); ++it )
           Order.add( bn->variable( *it ) );

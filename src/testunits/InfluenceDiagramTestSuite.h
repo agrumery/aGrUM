@@ -260,7 +260,7 @@ namespace gum_tests {
         std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if( ! output.good() ) {
-          GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
         }
 
         output << id.toDot();
@@ -270,7 +270,7 @@ namespace gum_tests {
         output.close();
 
         if( output.fail() ) {
-          GUM_ERROR( IOError, "Writting in the ostream failed." );
+          GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
         }
       }
 
@@ -728,7 +728,7 @@ namespace gum_tests {
         for( gum::List< gum::NodeSet >::iterator seqIter = partialTemporalOrder.begin(); seqIter != partialTemporalOrder.end(); ++seqIter,++i ) {
           int j=0;
 
-          for( NodeSet::const_iterator it=seqIter->begin(); it!=seqIter->end(); ++it,++j ) {
+          for( gum::NodeSet::const_iterator it=seqIter->begin(); it!=seqIter->end(); ++it,++j ) {
             TS_ASSERT_EQUALS( *it,resultat[i][j] );
           }
         }
@@ -808,7 +808,7 @@ namespace gum_tests {
         id.insertArc( idList[14], idList[18] );
         id.insertArc( idList[15], idList[19] );
 
-        UndiGraph moralGraph;
+        gum::UndiGraph moralGraph;
         TS_ASSERT_THROWS_NOTHING( moralGraph = id.moralGraph( true ) );
 
         // For comparison with what readers will return
@@ -816,7 +816,7 @@ namespace gum_tests {
         std::ofstream idOutput( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if( ! idOutput.good() ) {
-          GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
         }
 
         idOutput << id.toDot();
@@ -826,7 +826,7 @@ namespace gum_tests {
         idOutput.close();
 
         if( idOutput.fail() ) {
-          GUM_ERROR( IOError, "Writting in the ostream failed." );
+          GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
         }
 
         // For comparison with what readers will return
@@ -835,7 +835,7 @@ namespace gum_tests {
         std::ofstream moralOutput( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if( ! moralOutput.good() ) {
-          GUM_ERROR( IOError, "Stream states flags are not all unset." );
+          GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
         }
 
         moralOutput << moralGraph.toDot();
@@ -845,7 +845,7 @@ namespace gum_tests {
         moralOutput.close();
 
         if( moralOutput.fail() ) {
-          GUM_ERROR( IOError, "Writting in the ostream failed." );
+          GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
         }
       }
 

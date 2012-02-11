@@ -50,13 +50,13 @@ namespace gum_tests {
       // ************************************************************************************************
       // Génération fixe d'une liste de variable
       // ************************************************************************************************
-      Sequence< const DiscreteVariable* >* __generateFixVarList() {
+      gum::Sequence< const gum::DiscreteVariable* >* __generateFixVarList() {
 
-        Sequence< const DiscreteVariable* >* ret  = new Sequence< const DiscreteVariable* >();
-        ret->insert( new LabelizedVariable( "A", "", 2 ) );
-        ret->insert( new LabelizedVariable( "B", "", 2 ) );
-        ret->insert( new LabelizedVariable( "C", "", 2 ) );
-        ret->insert( new LabelizedVariable( "D", "", 2 ) );
+        gum::Sequence< const gum::DiscreteVariable* >* ret  = new gum::Sequence< const gum::DiscreteVariable* >();
+        ret->insert ( new gum::LabelizedVariable ( "A", "", 2 ) );
+        ret->insert ( new gum::LabelizedVariable ( "B", "", 2 ) );
+        ret->insert ( new gum::LabelizedVariable ( "C", "", 2 ) );
+        ret->insert ( new gum::LabelizedVariable ( "D", "", 2 ) );
 
         return ret;
 
@@ -67,16 +67,16 @@ namespace gum_tests {
       // ************************************************************************************************
       // Génération aléatoire d'une liste de 10 variables
       // ************************************************************************************************
-      Sequence< const DiscreteVariable* >* __generateRandomVarList( int i ) {
+      gum::Sequence< const gum::DiscreteVariable* >* __generateRandomVarList ( int i ) {
 
-        srand( time( NULL ) + i );
+        srand ( time ( NULL ) + i );
 
-        Sequence< const DiscreteVariable* >* ret  = new Sequence< const DiscreteVariable* >();
+        gum::Sequence< const gum::DiscreteVariable* >* ret  = new gum::Sequence< const gum::DiscreteVariable* >();
 
-        for( int j  = 0; j < 10; j++ ) {
+        for ( int j  = 0; j < 10; j++ ) {
           std::stringstream varName;
           varName << "var" << j;
-          ret->insert( new LabelizedVariable( varName.str(), "", 2 + rand()%2 ) );
+          ret->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() %2 ) );
         }
 
         return ret;
@@ -87,12 +87,12 @@ namespace gum_tests {
       // ************************************************************************************************
       // Brassage aléatoire d'une liste de 10 variables
       // ************************************************************************************************
-      void __shuffleVarList( Sequence< const DiscreteVariable* >* varList, int i ) {
+      void __shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList, int i ) {
 
-        srand( time( NULL ) + i );
+        srand ( time ( NULL ) + i );
 
-        for( int j = 0; j < 10; j++ )
-          varList->swap( rand()%( varList->size() ), rand()%( varList->size() ) );
+        for ( int j = 0; j < 10; j++ )
+          varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
       }
 
       // ************************************************************************************************
@@ -100,28 +100,28 @@ namespace gum_tests {
       // ************************************************************************************************
       // Génération fixe de diagramme de décision
       // ************************************************************************************************
-      MultiDimDecisionDiagramBase<double>* __generateDecisionDiagram1( const Sequence< const DiscreteVariable* >* varList ) {
+      gum::MultiDimDecisionDiagramBase<double>* __generateDecisionDiagram1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
 
-        MultiDimDecisionDiagramFactory<double> facto;
-        facto.setVariablesSequence( *varList );
-        NodeId a  = facto.addNonTerminalNode( varList->atPos( 0 ) );
-        NodeId b  = facto.addNonTerminalNode( varList->atPos( 1 ) );
-        NodeId c  = facto.addNonTerminalNode( varList->atPos( 2 ) );
+        gum::MultiDimDecisionDiagramFactory<double> facto;
+        facto.setVariablesSequence ( *varList );
+        gum::NodeId a  = facto.addNonTerminalNode ( varList->atPos ( 0 ) );
+        gum::NodeId b  = facto.addNonTerminalNode ( varList->atPos ( 1 ) );
+        gum::NodeId c  = facto.addNonTerminalNode ( varList->atPos ( 2 ) );
 
-        NodeId d  = facto.addTerminalNode( 6 );
-        NodeId e  = facto.addTerminalNode( 2 );
-        NodeId g  = facto.addTerminalNode( 3 );
+        gum::NodeId d  = facto.addTerminalNode ( 6 );
+        gum::NodeId e  = facto.addTerminalNode ( 2 );
+        gum::NodeId g  = facto.addTerminalNode ( 3 );
 
-        facto.insertArc( a, b, 0 );
-        facto.insertArc( a, c, 1 );
+        facto.insertArc ( a, b, 0 );
+        facto.insertArc ( a, c, 1 );
 
-        facto.insertArc( b, d, 0 );
-        facto.insertArc( b, c, 1 );
+        facto.insertArc ( b, d, 0 );
+        facto.insertArc ( b, c, 1 );
 
-        facto.insertArc( c, e, 0 );
-        facto.insertArc( c, g, 1 );
+        facto.insertArc ( c, e, 0 );
+        facto.insertArc ( c, g, 1 );
 
-        return facto.getMultiDimDecisionDiagram( false );
+        return facto.getMultiDimDecisionDiagram ( false );
 
       }
 
@@ -130,49 +130,52 @@ namespace gum_tests {
       // ************************************************************************************************
       // Génération aléatoire de diagramme de décision
       // ************************************************************************************************
-      MultiDimDecisionDiagramBase<double>* __generateRandomdoubleDecisionDiagram( const Sequence< const DiscreteVariable* >* varList, int i, MultiDimDecisionDiagramFactoryBase<double>* f  = NULL ) {
+      gum::MultiDimDecisionDiagramBase<double>* __generateRandomdoubleDecisionDiagram (
+        const gum::Sequence< const gum::DiscreteVariable* >* varList,
+        int i,
+        gum::MultiDimDecisionDiagramFactoryBase<double>* f  = NULL ) {
 
-        srand( time( NULL ) + i );
-        MultiDimDecisionDiagramBase<double>* ret  = NULL;
+        srand ( time ( NULL ) + i );
+        gum::MultiDimDecisionDiagramBase<double>* ret  = NULL;
         bool factoryCreatedHere  = false;
 
-        while( ret == NULL || ( ret->diagramVarSize() < 7 ) || ( ret->diagramVarSize() > 10 ) ) {
+        while ( ret == NULL || ( ret->diagramVarSize() < 7 ) || ( ret->diagramVarSize() > 10 ) ) {
 
-          if( ret != NULL )
+          if ( ret != NULL )
             delete ret;
 
-          if( f == NULL ) {
+          if ( f == NULL ) {
             factoryCreatedHere  = true;
-            f  = new MultiDimDecisionDiagramFactory<double>();
-            f->setLowLimit( -100 );
-            f->setHighLimit( 100 );
+            f  = new gum::MultiDimDecisionDiagramFactory<double>();
+            f->setLowLimit ( -100 );
+            f->setHighLimit ( 100 );
           }
 
           f->clear();
 
-          f->setVariablesSequence( *varList );
+          f->setVariablesSequence ( *varList );
 
           // ***********************************************************************
           // Creation of table var - list of associated node id in the diagram
           // with initialization of those lists
-          HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeIdMap;
+          gum::HashTable< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > var2NodeIdMap;
 
-          for( Size numVar  = 0; numVar < ( *varList ).size(); ++numVar )
-            var2NodeIdMap.insert( ( *varList )[ numVar ], new List<NodeId>() );
+          for ( gum::Size numVar  = 0; numVar < ( *varList ).size(); ++numVar )
+            var2NodeIdMap.insert ( ( *varList ) [ numVar ], new gum::List<gum::NodeId>() );
 
           // ***********************************************************************
           // Creation of a list containing terminal node possible value
-          List<double> tnList;
+          gum::List<double> tnList;
 
           double interval  = f->highLimit() - f->lowLimit();
 
-          Idx i  = 0;
+          gum::Idx i  = 0;
 
-          while( i < 25 ) {
-            double newVal  = ( rand()% ( ( int ) interval ) ) - interval/2;
+          while ( i < 25 ) {
+            double newVal  = ( rand() % ( ( int ) interval ) ) - interval/2;
 
-            if( newVal <= f->highLimit() && newVal >= f->lowLimit() ) {
-              tnList.insert( newVal );
+            if ( newVal <= f->highLimit() && newVal >= f->lowLimit() ) {
+              tnList.insert ( newVal );
               i++;
             }
           }
@@ -181,55 +184,55 @@ namespace gum_tests {
           // Selection (randomly) of the root var in the diagram
           // all var that are before this one won't be in the diagram
           // for order on var purpose
-          Size initVar  = rand()%( varList->size()/2 );
+          gum::Size initVar  = rand() % ( varList->size() /2 );
 
           // ***********************************************************************
           // So for all remaining variable
-          for( Size numVar  = initVar; numVar < varList->size(); ++numVar ) {
+          for ( gum::Size numVar  = initVar; numVar < varList->size(); ++numVar ) {
 
             // if this is the root we add it
-            if( numVar == initVar )
-              var2NodeIdMap[( *varList )[ initVar ] ]->insert( f->unsafeAddNonTerminalNode( ( *varList )[ initVar ] ) );
+            if ( numVar == initVar )
+              var2NodeIdMap[ ( *varList ) [ initVar ] ]->insert ( f->unsafeAddNonTerminalNode ( ( *varList ) [ initVar ] ) );
 
             // then we check if another variable goes on it
             //(or if this is the root). It's done implicitly by the size of the list of node associated to that var.
             // if not we move on
             // else
-            if( !var2NodeIdMap[( *varList )[ numVar ] ]->empty() ) {
+            if ( !var2NodeIdMap[ ( *varList ) [ numVar ] ]->empty() ) {
               // for each node associated to that var
-              for( ListIterator<NodeId> numNode  = var2NodeIdMap[( *varList )[ numVar ] ]->begin(); numNode != var2NodeIdMap[( *varList )[ numVar ] ]->end();  ++numNode ) {
+              for ( gum::ListIterator<gum::NodeId> numNode  = var2NodeIdMap[ ( *varList ) [ numVar ] ]->begin(); numNode != var2NodeIdMap[ ( *varList ) [ numVar ] ]->end();  ++numNode ) {
 
                 // we determine a random number of arc starting from that node
-                Idx nbArc  = 1 + rand()%( ( *varList )[ numVar ]->domainSize() );
+                gum::Idx nbArc  = 1 + rand() % ( ( *varList ) [ numVar ]->domainSize() );
 
                 // for those arcs
 
-                for( Idx label  = 0; label < nbArc; label++ ) {
+                for ( gum::Idx label  = 0; label < nbArc; label++ ) {
 
                   // We first determine if it goes directly to a terminal node or node
-                  if( numVar != ( varList->size() - 1 ) && ( rand()%100 ) >= 42 ) {
+                  if ( numVar != ( varList->size() - 1 ) && ( rand() %100 ) >= 42 ) {
 
                     // if not, we determine randomly to which var it could go
-                    NodeId indToVar  = ( rand()%( varList->size() - 1 - numVar ) ) + numVar + 1;
-                    const DiscreteVariable* toVar  = ( *varList )[ indToVar ];
+                    gum::NodeId indToVar  = ( rand() % ( varList->size() - 1 - numVar ) ) + numVar + 1;
+                    const gum::DiscreteVariable* toVar  = ( *varList ) [ indToVar ];
 
                     // then we take the list of  node id associated to that var and
                     // we determine randomly if we add another node to that list or not
-                    NodeId desiredNode  = ( NodeId ) rand()%5;
+                    gum::NodeId desiredNode  = ( gum::NodeId ) rand() %5;
 
-                    if( desiredNode  >= var2NodeIdMap[ toVar ]->size() ) {
-                      var2NodeIdMap[ toVar ]->insert( f->unsafeAddNonTerminalNode( toVar ) );
+                    if ( desiredNode  >= var2NodeIdMap[ toVar ]->size() ) {
+                      var2NodeIdMap[ toVar ]->insert ( f->unsafeAddNonTerminalNode ( toVar ) );
                       desiredNode  = var2NodeIdMap[ toVar ]->size() - 1;
                     }
 
                     // then we add an arc between our current var associated node id and the considered var random node id
-                    f->unsafeInsertArc( *numNode, ( *var2NodeIdMap[ toVar ] )[desiredNode], label );
+                    f->unsafeInsertArc ( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
 
                   } else {
 
                     // if we add
-                    NodeId toVal  = f->addTerminalNode( tnList[ rand()%tnList.size()] );
-                    f->unsafeInsertArc( *numNode, toVal, label );
+                    gum::NodeId toVal  = f->addTerminalNode ( tnList[ rand() %tnList.size()] );
+                    f->unsafeInsertArc ( *numNode, toVal, label );
 
                   }
                 }
@@ -237,13 +240,13 @@ namespace gum_tests {
             }
           }
 
-          for( HashTableIterator< const DiscreteVariable*, List<NodeId>* > ht  = var2NodeIdMap.begin(); ht != var2NodeIdMap.end(); ++ht )
+          for ( gum::HashTableIterator< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht  = var2NodeIdMap.begin(); ht != var2NodeIdMap.end(); ++ht )
             delete *ht;
 
           ret  = f->getMultiDimDecisionDiagram();
         }
 
-        if( factoryCreatedHere )
+        if ( factoryCreatedHere )
           delete f;
 
         return ret;
@@ -254,27 +257,27 @@ namespace gum_tests {
       // ************************************************************************************************
       // Sauvegarde des diagrammes générant une erreur dans un fichier log
       // ************************************************************************************************
-      void __saveDiagrams( MultiDimDecisionDiagramBase<double>* a1, MultiDimDecisionDiagramBase<double>* a3, Set<const DiscreteVariable*> delVars ) {
+      void __saveDiagrams ( gum::MultiDimDecisionDiagramBase<double>* a1, gum::MultiDimDecisionDiagramBase<double>* a3, gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-        std::string dotfile = GET_PATH_STR( DecisionDiagramError.log );
-        std::ofstream output( dotfile.c_str(), std::ios::out );
+        std::string dotfile = GET_PATH_STR ( DecisionDiagramError.log );
+        std::ofstream output ( dotfile.c_str(), std::ios::out );
 
-        if( ! output.good() )
-          GUM_ERROR( IOError, "Stream states flags are not all unset." );
+        if ( ! output.good() )
+          GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
 
         output << std::endl;
 
-        for( SequenceIterator< const DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
 
         output << a1->toDot();
 
-        if( a3 != NULL ) {
+        if ( a3 != NULL ) {
           output << std::endl;
 
-          for( SequenceIterator< const DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
+          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
             output << ( *ite )->toString() << " - ";
 
           output << std::endl;
@@ -284,7 +287,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for( SetIterator< const DiscreteVariable*> ite = delVars.begin(); ite != delVars.end(); ++ite )
+        for ( gum::SetIterator< const gum::DiscreteVariable*> ite = delVars.begin(); ite != delVars.end(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -293,8 +296,8 @@ namespace gum_tests {
 
         output.close();
 
-        if( output.fail() )
-          GUM_ERROR( IOError, "Writting in the ostream failed." );
+        if ( output.fail() )
+          GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
       }
 
       // ================================================================================================
@@ -302,32 +305,32 @@ namespace gum_tests {
       // ================================================================================================
       // Evals  given in parameter operation. Returned boolean parameter indicates if all went well or not
       // ================================================================================================
-      bool __evalOperation( int operationId, MultiDimDecisionDiagramBase<double>* a1, Set< const DiscreteVariable* > del_vars, double& tempsCalcul, double& tempsEval, double delta = 0.01 ) {
+      bool __evalOperation ( int operationId, gum::MultiDimDecisionDiagramBase<double>* a1, gum::Set< const gum::DiscreteVariable* > del_vars, double& tempsCalcul, double& tempsEval, double delta = 0.01 ) {
 
         bool hasNoError = true;
-        MultiDimDecisionDiagramBase<double>* a3 = NULL;
+        gum::MultiDimDecisionDiagramBase<double>* a3 = NULL;
 
-        Timer timy;
+        gum::Timer timy;
         timy.reset();
 
         // ******************************************************************************************************
         // Generation du diagramme résultat
 
-        switch( operationId ) {
+        switch ( operationId ) {
           case 1 : // Test Addition
-            TS_GUM_ASSERT_THROWS_NOTHING( a3 = projectSumMultiDimDecisionDiagram( a1, del_vars ) );
+            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectSumMultiDimDecisionDiagram ( a1, del_vars ) );
             break;
           case 2 : // Test Multiplication
-            TS_GUM_ASSERT_THROWS_NOTHING( a3 = projectProductMultiDimDecisionDiagram( a1, del_vars ) );
+            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectProductMultiDimDecisionDiagram ( a1, del_vars ) );
             break;
           case 3 : // Test Minimisation
-            TS_GUM_ASSERT_THROWS_NOTHING( a3 = projectMinMultiDimDecisionDiagram( a1, del_vars ) );
+            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMinMultiDimDecisionDiagram ( a1, del_vars ) );
             break;
           case 4 :  // Test Maximisation
-            TS_GUM_ASSERT_THROWS_NOTHING( a3 = projectMaxMultiDimDecisionDiagram( a1, del_vars ) );
+            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMaxMultiDimDecisionDiagram ( a1, del_vars ) );
             break;
           default :
-            GUM_ERROR( OperationNotAllowed, "HEU ....." );
+            GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
         }
 
         // ******************************************************************************************************
@@ -337,82 +340,82 @@ namespace gum_tests {
         timy.reset();
 
         // ******************************************************************************************************
-        if( a3 != NULL ) {
+        if ( a3 != NULL ) {
 
-          Instantiation instEleminatedVar( a1 );
-          Instantiation instRemainingVar( a3 );
+          gum::Instantiation instEleminatedVar ( a1 );
+          gum::Instantiation instRemainingVar ( a3 );
 
-          for( instRemainingVar.setFirst(); ! instRemainingVar.end() && hasNoError; ++instRemainingVar ) {
+          for ( instRemainingVar.setFirst(); ! instRemainingVar.end() && hasNoError; ++instRemainingVar ) {
 
-            switch( operationId ) {
+            switch ( operationId ) {
 
               case 1 : {// Test Addition
-                double sum  = 0;
+                  double sum  = 0;
 
-                for( instEleminatedVar.chgValIn( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut( instRemainingVar ) )
-                  sum += a1->get( instEleminatedVar );
+                  for ( instEleminatedVar.chgValIn ( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut ( instRemainingVar ) )
+                    sum += a1->get ( instEleminatedVar );
 
-                TS_ASSERT_DELTA( a3->get( instRemainingVar ), sum, delta );
+                  TS_ASSERT_DELTA ( a3->get ( instRemainingVar ), sum, delta );
 
-                if( a3->get( instRemainingVar ) != sum )
-                  hasNoError = false;
-              }
+                  if ( a3->get ( instRemainingVar ) != sum )
+                    hasNoError = false;
+                }
 
-              break;
+                break;
 
               case 2 : {// Test Multiplication
-                double product  = 1;
+                  double product  = 1;
 
-                for( instEleminatedVar.chgValIn( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut( instRemainingVar ) )
-                  product *= a1->get( instEleminatedVar );
+                  for ( instEleminatedVar.chgValIn ( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut ( instRemainingVar ) )
+                    product *= a1->get ( instEleminatedVar );
 
-                TS_ASSERT_DELTA( a3->get( instRemainingVar ), product, delta );
+                  TS_ASSERT_DELTA ( a3->get ( instRemainingVar ), product, delta );
 
-                if( a3->get( instRemainingVar ) != product )
-                  hasNoError = false;
-              }
+                  if ( a3->get ( instRemainingVar ) != product )
+                    hasNoError = false;
+                }
 
-              break;
+                break;
 
               case 3 : {// Test Minimisation
-                double min  = std::numeric_limits<double>::max();
+                  double min  = std::numeric_limits<double>::max();
 
-                for( instEleminatedVar.chgValIn( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut( instRemainingVar ) )
-                  min  = min >= a1->get( instEleminatedVar ) ? a1->get( instEleminatedVar ) : min;
+                  for ( instEleminatedVar.chgValIn ( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut ( instRemainingVar ) )
+                    min  = min >= a1->get ( instEleminatedVar ) ? a1->get ( instEleminatedVar ) : min;
 
-                TS_ASSERT_DELTA( a3->get( instRemainingVar ), min, delta );
+                  TS_ASSERT_DELTA ( a3->get ( instRemainingVar ), min, delta );
 
-                if( a3->get( instRemainingVar ) != min )
-                  hasNoError = false;
-              }
+                  if ( a3->get ( instRemainingVar ) != min )
+                    hasNoError = false;
+                }
 
-              break;
+                break;
 
               case 4 :  {// Test Maximisation
-                double max  = -1  * ( std::numeric_limits<double>::max() );
+                  double max  = -1  * ( std::numeric_limits<double>::max() );
 
-                for( instEleminatedVar.chgValIn( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut( instRemainingVar ) )
-                  max  = max >= a1->get( instEleminatedVar ) ? max : a1->get( instEleminatedVar );
+                  for ( instEleminatedVar.chgValIn ( instRemainingVar ); ! instEleminatedVar.end(); instEleminatedVar.incOut ( instRemainingVar ) )
+                    max  = max >= a1->get ( instEleminatedVar ) ? max : a1->get ( instEleminatedVar );
 
-                TS_ASSERT_DELTA( a3->get( instRemainingVar ), max, delta );
+                  TS_ASSERT_DELTA ( a3->get ( instRemainingVar ), max, delta );
 
-                if( ( double )a3->get( instRemainingVar ) >= max + delta || ( double )a3->get( instRemainingVar ) <= max - delta )
-                  hasNoError = false;
-              }
+                  if ( ( double ) a3->get ( instRemainingVar ) >= max + delta || ( double ) a3->get ( instRemainingVar ) <= max - delta )
+                    hasNoError = false;
+                }
 
-              break;
+                break;
 
               default :
-                GUM_ERROR( OperationNotAllowed, "HEU ....." );
+                GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
             }
           }
 
-          if( !hasNoError )
-            __saveDiagrams( a1, a3, del_vars );
+          if ( !hasNoError )
+            __saveDiagrams ( a1, a3, del_vars );
 
           delete a3;
         } else {
-          __saveDiagrams( a1, a3, del_vars );
+          __saveDiagrams ( a1, a3, del_vars );
           hasNoError = false;
         }
 
@@ -433,7 +436,7 @@ namespace gum_tests {
       /* **************************************************************************************************************************** **/
       void test_Projections_Functions_on_MultiDimDecisionDiagrams() {
 
-        Timer time;
+        gum::Timer time;
         double tempsGene = 0;
         double tempsCalcul = 0;
         double tempsEval = 0;
@@ -443,80 +446,80 @@ namespace gum_tests {
         // *************************************************************************************
         time.reset();
 
-        Sequence< const DiscreteVariable* >* varList = __generateFixVarList();
+        gum::Sequence< const gum::DiscreteVariable* >* varList = __generateFixVarList();
 
-        MultiDimDecisionDiagramBase<double>* a1  = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING( a1 = __generateDecisionDiagram1( varList ) );
+        gum::MultiDimDecisionDiagramBase<double>* a1  = NULL;
+        TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateDecisionDiagram1 ( varList ) );
 
-        Set< const DiscreteVariable* > del_vars;
-        del_vars << varList->atPos( 0 );
-        del_vars << varList->atPos( 1 );
+        gum::Set< const gum::DiscreteVariable* > del_vars;
+        del_vars << varList->atPos ( 0 );
+        del_vars << varList->atPos ( 1 );
 
         tempsGene += time.step();
 
         bool evalRes = true;
 
-        for( int operationId = 1; operationId < 5 && evalRes; operationId++ )
-          evalRes = __evalOperation( operationId, a1, del_vars, tempsCalcul, tempsEval );
+        for ( int operationId = 1; operationId < 5 && evalRes; operationId++ )
+          evalRes = __evalOperation ( operationId, a1, del_vars, tempsCalcul, tempsEval );
 
         delete a1;
 
         del_vars.clear();
 
-        for( SequenceIterator< const DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
           delete *ite;
 
         delete varList;
 
-        if( !evalRes )
+        if ( !evalRes )
           return;
 
         // *************************************************************************************
         // Then we try with random structure
         // *************************************************************************************
-        for( int nbLoop  = 0; nbLoop < 100; nbLoop++ ) {
+        for ( int nbLoop  = 0; nbLoop < 100; nbLoop++ ) {
 
           time.reset();
 
-          varList  = __generateRandomVarList( nbLoop + 1 );
+          varList  = __generateRandomVarList ( nbLoop + 1 );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( a1  = __generateRandomdoubleDecisionDiagram( varList, nbLoop + 2 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( a1  = __generateRandomdoubleDecisionDiagram ( varList, nbLoop + 2 ) );
 
-          Idx maxSwapVar  = rand()%varList->size();
+          gum::Idx maxSwapVar  = rand() %varList->size();
 
-          for( Idx i  = 0; i < maxSwapVar; ++i )
-            del_vars << varList->atPos( rand()%varList->size() );
+          for ( gum::Idx i  = 0; i < maxSwapVar; ++i )
+            del_vars << varList->atPos ( rand() %varList->size() );
 
           tempsGene += time.step();
 
           evalRes = true;
 
-          TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 1, a1, del_vars, tempsCalcul, tempsEval ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( evalRes = __evalOperation ( 1, a1, del_vars, tempsCalcul, tempsEval ) );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 3, a1, del_vars, tempsCalcul, tempsEval ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( evalRes = __evalOperation ( 3, a1, del_vars, tempsCalcul, tempsEval ) );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 4, a1, del_vars, tempsCalcul, tempsEval ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( evalRes = __evalOperation ( 4, a1, del_vars, tempsCalcul, tempsEval ) );
 
           delete a1;
 
           del_vars.clear();
 
-          for( SequenceIterator< const DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
             delete *ite;
 
           delete varList;
 
-          if( !evalRes ) {
+          if ( !evalRes ) {
             std::cout << "An error has occured! Aborting test." <<std::endl;
             return;
           }
 
-          if( nbLoop%25 == 0 )
+          if ( nbLoop%25 == 0 )
             std::cout << "#";
-          else if( nbLoop%5 == 0 )
+          else if ( nbLoop%5 == 0 )
             std::cout << ".";
 
-          std::fflush( stdout );
+          std::fflush ( stdout );
         }
 
 //       std::cout << std::endl << "Temps Génération : " << tempsGene << "s - Temps Calcul : " << tempsCalcul << "s - Temps Evaluation " << tempsEval << "s ";
@@ -535,21 +538,21 @@ namespace gum_tests {
         // *************************************************************************************
         // First we try with a predefine structure
         // *************************************************************************************
-//       Sequence< const DiscreteVariable* >* varList  = __generateFixVarList();
+//       gum::Sequence< const gum::DiscreteVariable* >* varList  = __generateFixVarList();
 //
 //
-//       MultiDimDecisionDiagramFactory<double,LinearApproximationPolicy> f;
+//       gum::MultiDimDecisionDiagramFactory<double,LinearApproximationPolicy> f;
 //       f.setEpsilon( 0.9 );
 //       f.setLowLimit( 0 );
 //       f.setHighLimit( 4.5 );
 //       f.setVariablesSequence( *varList );
-//       NodeId a  = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
-//       NodeId b  = f.addNonTerminalNode( *( varList->atPos( 1 ) ) );
-//       NodeId c  = f.addNonTerminalNode( *( varList->atPos( 2 ) ) );
+//       gum::NodeId a  = f.addNonTerminalNode( *( varList->atPos( 0 ) ) );
+//       gum::NodeId b  = f.addNonTerminalNode( *( varList->atPos( 1 ) ) );
+//       gum::NodeId c  = f.addNonTerminalNode( *( varList->atPos( 2 ) ) );
 //
-//       NodeId d  = f.addTerminalNode( 1 );
-//       NodeId e  = f.addTerminalNode( 2 );
-//       NodeId g  = f.addTerminalNode( 3 );
+//       gum::NodeId d  = f.addTerminalNode( 1 );
+//       gum::NodeId e  = f.addTerminalNode( 2 );
+//       gum::NodeId g  = f.addTerminalNode( 3 );
 //
 //       f.insertArc( a, b, 0 );
 //       f.insertArc( a, c, 1 );
@@ -560,9 +563,9 @@ namespace gum_tests {
 //       f.insertArc( c, e, 0 );
 //       f.insertArc( c, g, 1 );
 //
-//       MultiDimDecisionDiagramBase<double>* a1  = f.getMultiDimDecisionDiagram( false );
+//       gum::MultiDimDecisionDiagramBase<double>* a1  = f.getMultiDimDecisionDiagram( false );
 //
-//       Set< const DiscreteVariable* > del_vars;
+//       gum::Set< const gum::DiscreteVariable* > del_vars;
 //       del_vars << varList->atPos( 0 );
 //       del_vars << varList->atPos( 1 );
 //
@@ -574,7 +577,7 @@ namespace gum_tests {
 //       delete a1;
 //       del_vars.clear();
 //
-//       for ( SequenceIterator< const DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+//       for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
 //    delete *ite;
 //       delete varList;
 //
@@ -595,8 +598,8 @@ namespace gum_tests {
 //
 //       TS_GUM_ASSERT_THROWS_NOTHING( a1  = generateRandomdoubleDecisionDiagram( varList, nbLoop + 2, &f ) );
 //
-//    Idx maxSwapVar  = rand()%varList->size();
-//    for( Idx i  = 0; i < maxSwapVar; ++i )
+//    gum::Idx maxSwapVar  = rand()%varList->size();
+//    for( gum::Idx i  = 0; i < maxSwapVar; ++i )
 //        del_vars << varList->atPos( rand()%varList->size() );
 //
 //    evalRes = true;
@@ -607,7 +610,7 @@ namespace gum_tests {
 //    delete a1;
 //    del_vars.clear();
 //
-//    for( SequenceIterator< const DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+//    for( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
 //        delete *ite;
 //    delete varList;
 //
@@ -634,33 +637,33 @@ namespace gum_tests {
 //   ************************************************************************************************
       void _reproduction() {
 
-//       Sequence< const DiscreteVariable* >* varList  = new Sequence< const DiscreteVariable* >();
+//       gum::Sequence< const gum::DiscreteVariable* >* varList  = new gum::Sequence< const gum::DiscreteVariable* >();
 //
-//       varList->insert( new LabelizedVariable( "0", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "1", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "2", "", 2 ) );
-//       varList->insert( new LabelizedVariable( "3", "", 2 ) );
-//       varList->insert( new LabelizedVariable( "4", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "5", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "6", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "7", "", 2 ) );
-//       varList->insert( new LabelizedVariable( "8", "", 3 ) );
-//       varList->insert( new LabelizedVariable( "9", "", 2 ) );
+//       varList->insert( new gum::LabelizedVariable( "0", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "1", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "2", "", 2 ) );
+//       varList->insert( new gum::LabelizedVariable( "3", "", 2 ) );
+//       varList->insert( new gum::LabelizedVariable( "4", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "5", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "6", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "7", "", 2 ) );
+//       varList->insert( new gum::LabelizedVariable( "8", "", 3 ) );
+//       varList->insert( new gum::LabelizedVariable( "9", "", 2 ) );
 //
-//       MultiDimDecisionDiagramFactory<double> facto;
+//       gum::MultiDimDecisionDiagramFactory<double> facto;
 //       facto.setVariablesSequence( *varList );
 //
-//       NodeId nv1  = facto.addNonTerminalNode( varList->atPos( 1 ) );
-//       NodeId nt0  = facto.addTerminalNode( 0 );
+//       gum::NodeId nv1  = facto.addNonTerminalNode( varList->atPos( 1 ) );
+//       gum::NodeId nt0  = facto.addTerminalNode( 0 );
 //
 //       facto.insertArc( nv1, nv3, 0 );
 //       facto.insertDefaultArc( nv1, nt0 );
 //
 //
-//       MultiDimDecisionDiagramBase<double>* a1  = NULL;
+//       gum::MultiDimDecisionDiagramBase<double>* a1  = NULL;
 //       TS_GUM_ASSERT_THROWS_NOTHING( a1  = facto.getMultiDimDecisionDiagram() );
 //
-//       Set< const DiscreteVariable* > del_vars;
+//       gum::Set< const gum::DiscreteVariable* > del_vars;
 //       del_vars << varList->atPos( 3 );
 //
 //       TS_GUM_ASSERT_THROWS_NOTHING( __evalOperation( 1, a1, del_vars ) );
@@ -668,10 +671,11 @@ namespace gum_tests {
 //       delete a1;
 //       del_vars.clear();
 //
-//       for( SequenceIterator< const DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+//       for( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
 //    delete *ite;
 //       delete varList;
       }
 
   };
 }
+

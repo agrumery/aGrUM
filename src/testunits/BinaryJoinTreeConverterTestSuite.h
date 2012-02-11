@@ -31,7 +31,7 @@ namespace gum_tests {
 
       void test1() {
         gum::CliqueGraph graph;
-        std::vector<NodeSet> cliques( 11 );
+        std::vector<gum::NodeSet> cliques( 11 );
 
         cliques[0]  << 1 << 2;
         cliques[1]  << 3 << 4 << 5;
@@ -60,14 +60,14 @@ namespace gum_tests {
         graph.insertEdge( 8,9 );
         graph.insertEdge( 9,10 );
 
-        Property<unsigned int>::onNodes domain_sizes;
+        gum::Property<unsigned int>::onNodes domain_sizes;
 
         for( unsigned int i = 1; i <= 17; ++i ) {
           domain_sizes.insert( i, 3 );
         }
 
         gum::BinaryJoinTreeConverterDefault converter;
-        NodeSet roots;
+        gum::NodeSet roots;
         roots << 9;
 
         try {

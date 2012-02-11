@@ -168,22 +168,21 @@
   \ingroup graph_group
 
   @code
-  using namespace gum;
 
-  List<NodeId> nodeFIFO;
+  gum::List<gum::NodeId> nodeFIFO;
   // mark[node] contains 0 if not visited
   // mark[node]=predecessor if visited
-  Property<NodeId>::onNodes mark=g.nodesProperty( 0 );
-  NodeId current;
+  gum::Property<gum::NodeId>::onNodes mark=g.nodesProperty( 0 );
+  gum::NodeId current;
 
   mark[n1]=n1;
   nodeFIFO.pushBack( n1 );
   while ( ! nodeFIFO.empty() ) {
   current=nodeFIFO.front();nodeFIFO.popFront();
 
-  const ArcSet& set=g.children( current );
-  for ( ArcSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
-  NodeId new_one=ite->head();
+  const gum::ArcSet& set=g.children( current );
+  for ( gum::ArcSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
+    gum::NodeId new_one=ite->head();
 
   if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
 
@@ -194,7 +193,7 @@
   }
   }
 
-  if ( mark[n2] ==0 ) GUM_ERROR( NotFound,"no path found" );
+  if ( mark[n2] ==0 ) GUM_ERROR( gum::NotFound,"no path found" );
   @endcode
 */
 

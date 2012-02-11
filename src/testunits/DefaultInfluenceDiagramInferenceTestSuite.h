@@ -479,13 +479,13 @@ namespace gum_tests {
         gum::DefaultInfluenceDiagramInference<float> * dIDI = NULL;
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
 
-        TS_ASSERT_THROWS( dIDI->getMEU(), OperationNotAllowed );
-        TS_ASSERT_THROWS( dIDI->getBestDecisionChoice( idList[0] ), OperationNotAllowed );
-        TS_ASSERT_THROWS( dIDI->displayResult( devnull ), OperationNotAllowed );
+        TS_ASSERT_THROWS( dIDI->getMEU(), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS( dIDI->getBestDecisionChoice( idList[0] ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS( dIDI->displayResult( devnull ), gum::OperationNotAllowed );
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->makeInference() );
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->getMEU() );
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->getBestDecisionChoice( idList[0] ) );
-        TS_ASSERT_THROWS( dIDI->getBestDecisionChoice( idList[2] ), InvalidNode );
+        TS_ASSERT_THROWS( dIDI->getBestDecisionChoice( idList[2] ), gum::InvalidNode );
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->displayResult( devnull ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->makeInference() );
@@ -511,7 +511,7 @@ namespace gum_tests {
 
         evidence1->add( topology->variable( idList[2] ) );
         evidence1->add( topology->variable( idList[3] ) );
-        TS_ASSERT_THROWS( inf.insertEvidence( e_list ), OperationNotAllowed );
+        TS_ASSERT_THROWS( inf.insertEvidence( e_list ), gum::OperationNotAllowed );
         evidence1->erase( topology->variable( idList[3] ) );
         evidence2->add( topology->variable( idList[3] ) );
 
