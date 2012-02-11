@@ -514,14 +514,10 @@ namespace gum_tests {
             return;
           }
 
-          if ( nbLoop%25 == 0 )
-            std::cout << "#";
-          else if ( nbLoop%5 == 0 )
-            std::cout << ".";
-
-          std::fflush ( stdout );
+          if (nbLoop %5 == 0) test_waiting(nbLoop/5);
         }
 
+        end_test_waiting();
 //       std::cout << std::endl << "Temps Génération : " << tempsGene << "s - Temps Calcul : " << tempsCalcul << "s - Temps Evaluation " << tempsEval << "s ";
       }
 
@@ -619,12 +615,10 @@ namespace gum_tests {
 //        return;
 //    }
 //
-//    if( nbLoop%25 == 0 )
-//        std::cout << "#";
-//    else if( nbLoop%5 == 0 )
-//        std::cout << ".";
-//    std::fflush( stdout );
-//       }
+//           if (nbLoop %5 == 0) test_waiting(nbLoop/5);
+//         }
+// 
+//         end_test_waiting();
       }
 
 

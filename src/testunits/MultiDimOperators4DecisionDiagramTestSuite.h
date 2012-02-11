@@ -550,13 +550,10 @@ namespace gum_tests {
             return;
           }
 
-          if ( i%25 == 0 )
-            std::cout << "#";
-          else if ( i%5 == 0 )
-            std::cout << ".";
-
-          std::fflush ( stdout );
+          if ( i%5 == 0 ) test_waiting(i/5);
         }
+
+        end_test_waiting();
 
 //       std::cout << std::endl << "Temps Génération : " << tempsGene << "s - Temps Calcul : " << tempsCalcul << "s - Temps Evaluation " << tempsEval << "s ";
       }
@@ -690,13 +687,11 @@ namespace gum_tests {
 //        std::cout << "An error has occured! Aborting test." <<std::endl;
 //        return;
 //    }
-//
-//    if( i%25 == 0 )
-//        std::cout << "#";
-//    else if( i%5 == 0 )
-//        std::cout << ".";
-//    std::fflush( stdout );
+/*
+      if( i%5 == 0 ) test_waiting(i/5));
+*/
 //       }
+// 	end_test_waiting();
       }
 
 
