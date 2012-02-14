@@ -106,7 +106,6 @@ namespace gum {
   IncrementalTriangulation::IncrementalTriangulation
   ( const IncrementalTriangulation& from ) :
       __graph( from.__graph ),
-      __modalities( from.__modalities ),
       __junction_tree( from.__junction_tree ),
       __T_mpd( from.__T_mpd ),
       __mps_of_node( from.__mps_of_node ),
@@ -122,6 +121,8 @@ namespace gum {
       __created_JT_cliques( from.__created_JT_cliques ) {
     // for debugging purposes
     GUM_CONS_CPY( IncrementalTriangulation );
+    
+    _modalities=from._modalities;
   }
 
 
@@ -157,7 +158,7 @@ namespace gum {
 
       // copy all the structures stored in "from"
       __graph = from.__graph ;
-      __modalities = from.__modalities;
+      _modalities = from._modalities;
       __junction_tree = from.__junction_tree;
       __T_mpd = from.__T_mpd;
       __mps_of_node = from.__mps_of_node;
@@ -192,7 +193,7 @@ namespace gum {
     // add the new node to the graph
     __graph.insertNode( node );
 
-    __modalities.insert( node, modal );
+    _modalities.insert( node, modal );
 
     // add a new clique to T_mpd and the junction tree
     NodeSet clique_nodes( 2 );
@@ -416,7 +417,7 @@ namespace gum {
     // remove X completely from the graph
     __graph.eraseNode( X );
 
-    __modalities.erase( X );
+    _modalities.erase( X );
   }
 
 
@@ -939,7 +940,7 @@ namespace gum {
 
         // now tmp_graph contains the graph that should be triangulated.
         // so triangulate it and get its junction tree
-        __triangulation->setGraph( &tmp_graph, &__modalities );
+        __triangulation->setGraph( &tmp_graph, &_modalities );
 
         const CliqueGraph& tmp_junction_tree = __triangulation->junctionTree();
 
@@ -1284,7 +1285,7 @@ namespace gum {
   // ==============================================================================
   void IncrementalTriangulation::clear() {
     __graph.clear();
-    __modalities.clear();
+    _modalities.clear();
     __junction_tree.clear();
     __T_mpd.clear();
     __mps_of_node.clear();
@@ -1521,3 +1522,5 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+

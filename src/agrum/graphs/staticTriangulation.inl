@@ -144,14 +144,6 @@ namespace gum {
   }
 
   
-  // ==============================================================================
-  /// returns the modalities of the variables of the graph to be triangulated
-  // ==============================================================================
-  INLINE
-  const Property<unsigned int>::onNodes* StaticTriangulation::modalities() const {
-    return __modalities;
-  }
-    
 
 
 } /* namespace gum */

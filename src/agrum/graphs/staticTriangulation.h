@@ -130,9 +130,6 @@ namespace gum {
       /// returns the graph to be triangulated
       const UndiGraph* originalGraph() const;
 
-      /// returns the modalities of the variables of the graph to be triangulated
-      const Property<unsigned int>::onNodes* modalities() const;
-
       /// @}
 
 
@@ -209,14 +206,9 @@ namespace gum {
       /// the junction tree strategy used by the triangulation
       JunctionTreeStrategy* _junction_tree_strategy;
 
-
-
     private:
       /// the original graph (that which will be triangulated)
       const UndiGraph* __original_graph;
-
-      /// the modalities of the nodes of the graph
-      const Property<unsigned int>::onNodes* __modalities;
 
       /// the triangulated graph
       UndiGraph __triangulated_graph;
