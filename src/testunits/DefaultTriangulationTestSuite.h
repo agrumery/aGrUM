@@ -87,6 +87,8 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING( triangle->triangulatedGraph() );
 
+        TS_ASSERT_EQUALS(triangle->maxLog10CliqueDomainSize(),log10(16)); // clique of 4 binary variables
+
         TS_GUM_ASSERT_THROWS_NOTHING( if( triangle ) delete triangle );
       };
 
