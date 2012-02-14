@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/utils.inl>
@@ -27,7 +27,7 @@
 namespace gum {
 
 
-  #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   bool Memcmp( const void * const _in,
                const void * const _out,
                unsigned long size ) {
@@ -43,12 +43,13 @@ namespace gum {
 
 
   void __atexit( void ) {
-  #ifndef NDEBUG
+#ifndef NDEBUG
     gum::debug::__atexit();
-  #endif
+#endif
   }
-  #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
-  
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
+
 } /* namespace gum */
 

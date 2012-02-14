@@ -80,10 +80,7 @@
 #include <vector>
 #include <utility>
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/utils.h>
-
+#include <agrum/config.h>
 
 namespace gum {
 
@@ -94,6 +91,7 @@ namespace gum {
   // ==============================================================================
   // templates provided by this file
   // ==============================================================================
+
   template <typename Val, typename Cmp> class Heap;
   template <typename Val, typename Cmp>
   std::ostream& operator<< ( std::ostream&, const Heap<Val,Cmp>& );

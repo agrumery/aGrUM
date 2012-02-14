@@ -160,8 +160,8 @@ NODE =	(.
 		.)
 
 	"node" IDENT<var> (.
-      string prop;
-      string val;
+      std::string prop;
+      std::string val;
       std::vector<std::string> vals;
       bool labels_done=false;;
 

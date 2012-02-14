@@ -117,7 +117,8 @@
 
 #include <ostream>
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
+
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimInterface.h>
 
@@ -163,6 +164,7 @@ namespace gum {
    * To print information about a Instantiation use the following function:
    * @see operator<<(std::ostream&, const Instantiation&)
    */
+
   class Instantiation : public MultiDimInterface {
     public:
       // ############################################################################
@@ -1141,6 +1143,7 @@ namespace gum {
           GUM_ERROR( NotFound, "missing variable in bijection or instantiation" );
         }
       }
+
       /// @}
 
     protected:

@@ -23,121 +23,124 @@
  *
  * @author Lionel TORTI
  */
+#ifndef GUM_EDGE_CODE_H
+#define GUM_EDGE_CODE_H
+
 // ============================================================================
 #include <ostream>
 // ============================================================================
-#include <agrum/core/types.h>
-#include <agrum/core/inline.h>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 // ============================================================================
-#ifndef GUM_EDGE_CODE_H
-#define GUM_EDGE_CODE_H
-// ============================================================================
+
 namespace gum {
-namespace prm {
-namespace gspan {
 
-/**
- * @class EdgeCode edgeCode.h <agrum/prm/gspan/edgeCode.h>
- * @brief represent a DFS code used by gspan.
- *
- * A DFS code represents a pair of node and an edge between these two nodes.
- */
-struct EdgeCode {
+  namespace prm {
 
-  /**
-   * Default constructor.
-   *
-   * If flag is true then this EdgeCode is a forward edge,
-   * otherwise it is a backward edge.
-   *
-   * @param i The DFS subscript of the first node in the code.
-   * @param j The DFS subscript of the second node in the code.
-   * @param l_i The label of the first node in the code.
-   * @param l_ij The label of the edge in the code.
-   * @param l_j The label of the second node in the code.
-   */
-  EdgeCode(Size i, Size j, Size l_i, Size l_ij, Size l_j);
+    namespace gspan {
 
-  /**
-   * Copy constructor.
-   * @param source The copied EdgeCode.
-   */
-  EdgeCode(const EdgeCode& source);
+      /**
+       * @class EdgeCode edgeCode.h <agrum/prm/gspan/edgeCode.h>
+       * @brief represent a DFS code used by gspan.
+       *
+       * A DFS code represents a pair of node and an edge between these two nodes.
+       */
 
-  /// Destructor.
-  ~EdgeCode();
+      struct EdgeCode {
 
-  /// The DFS subscript of the first node in the code.
-  Size i;
+        /**
+         * Default constructor.
+         *
+         * If flag is true then this EdgeCode is a forward edge,
+         * otherwise it is a backward edge.
+         *
+         * @param i The DFS subscript of the first node in the code.
+         * @param j The DFS subscript of the second node in the code.
+         * @param l_i The label of the first node in the code.
+         * @param l_ij The label of the edge in the code.
+         * @param l_j The label of the second node in the code.
+         */
+        EdgeCode( Size i, Size j, Size l_i, Size l_ij, Size l_j );
 
-  /// The DFS subscript of the second node in the code.
-  Size j;
+        /**
+         * Copy constructor.
+         * @param source The copied EdgeCode.
+         */
+        EdgeCode( const EdgeCode& source );
 
-  /// The label of the first node in the code.
-  Size l_i;
+        /// Destructor.
+        ~EdgeCode();
 
-  /// The label of the edge in the code.
-  Size l_ij;
+        /// The DFS subscript of the first node in the code.
+        Size i;
 
-  /// The label of the second node in the code.
-  Size l_j;
+        /// The DFS subscript of the second node in the code.
+        Size j;
 
-  /// The string version of this EdgeCode.
-  std::string name;
+        /// The label of the first node in the code.
+        Size l_i;
 
-  /**
-   * Returns true if this EdgeCode is a forward edge.
-   * @return Returns true if this EdgeCode is a forward edge.
-   */
-  bool isForward() const;
+        /// The label of the edge in the code.
+        Size l_ij;
 
-  /**
-   * Returns true if this EdgeCode is a backward edge.
-   * @return Returns true if this EdgeCode is a backward edge.
-   */
-  bool isBackward() const;
+        /// The label of the second node in the code.
+        Size l_j;
 
-  /**
-   * Copy operator.
-   * @param source The copied EdgeCode.
-   * @return Returns *this after the copy.
-   */
-  EdgeCode& operator=(const EdgeCode& source);
+        /// The string version of this EdgeCode.
+        std::string name;
 
-  /**
-   * Equality operator.
-   * @param code The code tested for equality with this.
-   * @return Returns true if this and code are equal.
-   */
-  bool operator==(const EdgeCode& code) const;
+        /**
+         * Returns true if this EdgeCode is a forward edge.
+         * @return Returns true if this EdgeCode is a forward edge.
+         */
+        bool isForward() const;
 
-  /**
-   * Difference operator.
-   * @param code The code tested for difference with this.
-   * @return Returns true if this and code are different.
-   */
-  bool operator!=(const EdgeCode& code) const;
+        /**
+         * Returns true if this EdgeCode is a backward edge.
+         * @return Returns true if this EdgeCode is a backward edge.
+         */
+        bool isBackward() const;
 
-  /**
-   * Lesser than operator.
-   * @param code The code on which the test is made.
-   * @return Returns true if this is lesser than code.
-   */
-  bool operator<(const EdgeCode& code) const;
-};
+        /**
+         * Copy operator.
+         * @param source The copied EdgeCode.
+         * @return Returns *this after the copy.
+         */
+        EdgeCode& operator=( const EdgeCode& source );
 
-/**
- * Print code in out.
- * @param out The stream in which code is printed.
- * @param code The printed EdgeCode.
- * @return Returns out after printing code in it.
- */
-std::ostream& operator<<(std::ostream& out, const EdgeCode& code);
+        /**
+         * Equality operator.
+         * @param code The code tested for equality with this.
+         * @return Returns true if this and code are equal.
+         */
+        bool operator==( const EdgeCode& code ) const;
 
-} /* namespace gspan */
-} /* namespace prm */
+        /**
+         * Difference operator.
+         * @param code The code tested for difference with this.
+         * @return Returns true if this and code are different.
+         */
+        bool operator!=( const EdgeCode& code ) const;
+
+        /**
+         * Lesser than operator.
+         * @param code The code on which the test is made.
+         * @return Returns true if this is lesser than code.
+         */
+        bool operator<( const EdgeCode& code ) const;
+      };
+
+      /**
+       * Print code in out.
+       * @param out The stream in which code is printed.
+       * @param code The printed EdgeCode.
+       * @return Returns out after printing code in it.
+       */
+      std::ostream& operator<<( std::ostream& out, const EdgeCode& code );
+
+    } /* namespace gspan */
+  } /* namespace prm */
 } /* namespace gum */
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/gspan/edgeCode.inl>
 #endif // GUM_NO_INLINE

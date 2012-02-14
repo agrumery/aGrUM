@@ -28,9 +28,7 @@
 #ifndef GUM_EXACT_POLICY_H
 #define GUM_EXACT_POLICY_H
 //**********************************************************************
-#include <agrum/core/inline.h>
-#include <agrum/core/types.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 //**********************************************************************

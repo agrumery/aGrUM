@@ -2,7 +2,8 @@
 #include <QTextCodec>
 #include <QDebug>
 
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <iostream>
 
 #include "uis/mainwindow.h"

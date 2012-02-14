@@ -24,6 +24,10 @@
 
 #define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
 
+#define GUM_TRACE_ON
+
+#include <agrum/config.h>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
@@ -31,11 +35,6 @@
 
 int main( void ) {
   try {
-		
-		std::cout<<"Locale is: "<<std::locale("")<<std::endl;
-// 		std::locale::globale(std::locale("Fr_FR"));
-		std::cout<<"Locale is: "<<std::locale("")<<std::endl;
-		
     gum::BayesNet<float> bn;
     gum::BIFReader<float> reader( &bn, GET_PATH_STR( Diabetes.bif ) );
 
@@ -43,25 +42,45 @@ int main( void ) {
       reader.showElegantErrorsAndWarnings();
       reader.showErrorCounts();
       return false;
-    } else {
-      std::cout<<bn<<std::endl;
-      const Sequence<NodeId>&to=bn.getTopologicalOrder();
-      
-      for(Sequence<NodeId>::const_iterator it=to.begin();it!=to.end();++it) {
-				if (bn.cpt(*it).sum()>0) {
-					std::cout<<bn.variable(*it).name()<<" : " <<bn.dag().parents(*it)<<std::endl;
-					std::cout<<"    "<<bn.cpt(*it)<<std::endl;
-				}
-      }
-      return true;
     }
+    GUM_TRACE_VAR(bn);
 
-
-  } catch ( gum::IOError& e ) {
+    GUM_TRACE("============================");
+    GUM_TRACE("affectation after definition");
+    gum::BayesNet<float> bn2;
+    bn2=bn;
+    GUM_TRACE_VAR(bn2);
+    
+    GUM_TRACE("==========================");
+    GUM_TRACE("affectation and definition");
+    gum::BayesNet<float> bn3=bn;
+    GUM_TRACE_VAR(bn3);
+    
+    GUM_TRACE("============================================");
+    GUM_TRACE("affectation after definition and affectation");    
+    gum::BayesNet<float> bn4;
+    gum::BIFReader<float> reader4( &bn4, GET_PATH_STR( asia.bif ) );
+    if ( ! reader4.proceed() ) {
+      reader4.showElegantErrorsAndWarnings();
+      reader4.showErrorCounts();
+      return false;
+    }
+    bn4=bn2;
+    GUM_TRACE_VAR(bn4);
+    
+    GUM_TRACE("=======================================");
+    GUM_TRACE("affectation of dynamically allocated BN");
+    gum::BayesNet<float>* pBn5=new gum::BayesNet<float>();
+    *pBn5=bn;
+    GUM_TRACE_VAR(*pBn5);
+    
+  }
+  catch ( gum::IOError& e ) {
     GUM_SHOWERROR( e );
   }
 
   gum::__atexit();
 }
+
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

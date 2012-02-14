@@ -25,7 +25,9 @@
 
 
 #include <cmath>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/defaultEliminationSequenceStrategy.h>
 
@@ -74,6 +76,7 @@ namespace gum {
       __simplicial_threshold( from.__simplicial_threshold ),
       __provide_fill_ins( from.__provide_fill_ins ) {
     GUM_CONS_CPY( DefaultEliminationSequenceStrategy );
+
     if ( __graph ) {
       setGraph( from.__graph, from.__modalities );
     }
@@ -84,6 +87,7 @@ namespace gum {
   DefaultEliminationSequenceStrategy::~DefaultEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultEliminationSequenceStrategy );
+
     if ( __simplicial_set ) delete __simplicial_set;
   }
 
@@ -121,6 +125,7 @@ namespace gum {
       if ( graph ) {
         // compute the log of the modalities
         __log_modalities.resize( __graph->sizeNodes() / 2 );
+
         for ( UndiGraph::NodeIterator iter = graph->beginNodes();
               iter != graph->endNodes(); ++iter ) {
           __log_modalities.insert( *iter, log(( *modal )[*iter] ) );
@@ -130,6 +135,7 @@ namespace gum {
         __simplicial_set = new
         SimplicialSet( __graph, &__log_modalities, &__log_weights,
                        __simplicial_ratio, __simplicial_threshold );
+
         __simplicial_set->setFillIns( __provide_fill_ins );
       }
     }
@@ -142,7 +148,9 @@ namespace gum {
     __modalities = 0;
     __log_modalities.clear();
     __log_weights.clear();
+
     if ( __simplicial_set ) delete __simplicial_set;
+
     __simplicial_set = 0;
   }
 
@@ -167,11 +175,13 @@ namespace gum {
       // here: select the node through Kjaerulff's heuristic
       Property< float >::onNodes::const_iterator iter_heuristic =
         __log_weights.begin();
+
       if ( iter_heuristic == __log_weights.end() ) {
         GUM_ERROR( NotFound, "there exists no more node to eliminate" );
       }
 
       float min_weight = *iter_heuristic;
+
       NodeId removable_node = iter_heuristic.key();
 
       for ( ++iter_heuristic; iter_heuristic != __log_weights.end();
@@ -190,6 +200,7 @@ namespace gum {
    * whether we want this feature to be activated */
   void DefaultEliminationSequenceStrategy::askFillIns( bool do_it ) {
     __provide_fill_ins = do_it;
+
     if ( __simplicial_set )
       __simplicial_set->setFillIns( __provide_fill_ins );
   }

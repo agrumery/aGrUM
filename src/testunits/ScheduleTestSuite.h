@@ -24,60 +24,59 @@
 #include <agrum/multidim/potential.h>
 #include <agrum/graphicalModels/inference/schedule.h>
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
 
-    
-    static gum::MultiDimImplementation<float>*
-    schedule_myadd ( const gum::MultiDimImplementation<float>& f1,
-                     const gum::MultiDimImplementation<float>& f2 ) {
-      return f1 + f2;
-    }
+  static gum::MultiDimImplementation<float>*
+  schedule_myadd ( const gum::MultiDimImplementation<float>& f1,
+                   const gum::MultiDimImplementation<float>& f2 ) {
+    return f1 + f2;
+  }
 
-    
-    class ScheduleTestSuite: public CxxTest::TestSuite {
+
+  class ScheduleTestSuite: public CxxTest::TestSuite {
     public:
-      void test_construct1 () {
-        std::vector<LabelizedVariable*> vars ( 10 );
-        for (unsigned int i = 0; i < 10; ++i) {
+      void test_construct1() {
+        std::vector<gum::LabelizedVariable*> vars ( 10 );
+
+        for ( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 2);
+          vars[i] = new gum::LabelizedVariable ( s, s, 2 );
         }
-        
+
         gum::Potential<float> pot1;
-        pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
+        pot1 << * ( vars[0] ) << * ( vars[2] ) << * ( vars[4] );
         randomInit ( pot1 );
         gum::ScheduleMultiDim<float> f1 ( pot1 );
-        
+
         gum::Potential<float> pot2;
-        pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
+        pot2 << * ( vars[1] ) << * ( vars[2] ) << * ( vars[3] );
         randomInit ( pot2 );
         gum::ScheduleMultiDim<float> f2 ( pot2 );
-        
+
         gum::Potential<float> pot3;
-        pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
+        pot3 << * ( vars[0] ) << * ( vars[3] ) << * ( vars[5] );
         randomInit ( pot3 );
         gum::ScheduleMultiDim<float> f3 ( pot3 );
 
         gum::Potential<float> pot4;
-        pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
+        pot4 << * ( vars[3] ) << * ( vars[4] ) << * ( vars[5] );
         randomInit ( pot4 );
         gum::ScheduleMultiDim<float> f4 ( pot4 );
 
         gum::ScheduleCombine<float> comb1 ( f1, f2, schedule_myadd );
-        const ScheduleMultiDim<float>& result1 = comb1.result ();
+        const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
         gum::ScheduleCombine<float> comb2 ( f2, f3, schedule_myadd );
-        const ScheduleMultiDim<float>& result2 = comb2.result ();
-       
+        const gum::ScheduleMultiDim<float>& result2 = comb2.result();
+
         gum::ScheduleCombine<float> comb3 ( result2, f4, schedule_myadd );
-        const ScheduleMultiDim<float>& result3 = comb3.result ();
+        const gum::ScheduleMultiDim<float>& result3 = comb3.result();
 
         gum::ScheduleCombine<float> comb4 ( result1, result3, schedule_myadd );
-        const ScheduleMultiDim<float>& result4 = comb4.result ();
+        const gum::ScheduleMultiDim<float>& result4 = comb4.result();
 
         gum::ScheduleDeleteMultiDim<float> del1 ( result1 );
         gum::ScheduleDeleteMultiDim<float> del2 ( result2 );
@@ -98,109 +97,113 @@ namespace gum {
         schedule.insert ( comb1 );
         TS_ASSERT ( schedule.availableOperations().size() == 2 );
 
-        TS_ASSERT ( schedule.dag().sizeArcs () == 3 );
+        TS_ASSERT ( schedule.dag().sizeArcs() == 3 );
         TS_ASSERT ( comb1 == schedule.operation ( 3 ) );
         TS_ASSERT ( 3 == schedule.nodeId ( comb1 ) );
 
-        const NodeSet& ops1 = schedule.operationsInvolving ( result1 );
-        NodeId del1_id = schedule.insert ( del1 );
+        const gum::NodeSet& ops1 = schedule.operationsInvolving ( result1 );
+        gum::NodeId del1_id = schedule.insert ( del1 );
         schedule.forceAfter ( del1_id, ops1 );
 
         schedule.insert ( del2 );
-        const NodeSet& ops2 = schedule.operationsInvolving ( result2.id() );
-        Set<const ScheduleOperation<float>*> oops2;
-        for ( NodeSet::const_iterator iter = ops2.begin();
+        const gum::NodeSet& ops2 = schedule.operationsInvolving ( result2.id() );
+        gum::Set<const gum::ScheduleOperation<float>*> oops2;
+
+        for ( gum::NodeSet::const_iterator iter = ops2.begin();
               iter != ops2.end(); ++iter ) {
           oops2.insert ( & ( schedule.operation ( *iter ) ) );
         }
+
         schedule.forceAfter ( del2, oops2 );
 
         schedule.insert ( del3 );
         schedule.forceAfter ( del3, comb4 );
-        
+
         schedule.execute ( comb1 );
         gum::Schedule<float> schedule2 = schedule;
-        TS_ASSERT ( schedule2.availableOperations ().size() == 1 );
+        TS_ASSERT ( schedule2.availableOperations().size() == 1 );
 
-        const NodeSet& available = schedule.availableOperations ();
-        while ( ! available.empty () ) {
-          for ( NodeSet::const_iterator iter = available.begin();
-                iter != available.end (); ++iter ) {
+        const gum::NodeSet& available = schedule.availableOperations();
+
+        while ( ! available.empty() ) {
+          for ( gum::NodeSet::const_iterator iter = available.begin();
+                iter != available.end(); ++iter ) {
             schedule.execute ( *iter );
           }
         }
 
         gum::ScheduleCombine<float> comb11 ( f1, f2, schedule_myadd );
-        comb11.execute ();
-        const ScheduleMultiDim<float>& result11 = comb11.result ();
+        comb11.execute();
+        const gum::ScheduleMultiDim<float>& result11 = comb11.result();
         gum::ScheduleCombine<float> comb12 ( f2, f3, schedule_myadd );
-        comb12.execute ();
-        const ScheduleMultiDim<float>& result12 = comb12.result ();
+        comb12.execute();
+        const gum::ScheduleMultiDim<float>& result12 = comb12.result();
         gum::ScheduleCombine<float> comb13 ( result12, f4, schedule_myadd );
-        comb13.execute ();
-        const ScheduleMultiDim<float>& result13 = comb13.result ();
+        comb13.execute();
+        const gum::ScheduleMultiDim<float>& result13 = comb13.result();
         gum::ScheduleCombine<float> comb14 ( result11, result13, schedule_myadd );
-        comb14.execute ();
-        const ScheduleMultiDim<float>& result14 = comb14.result ();
+        comb14.execute();
+        const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 
-        TS_ASSERT ( result14.multiDim () == result4.multiDim () );
+        TS_ASSERT ( result14.multiDim() == result4.multiDim() );
 
         gum::ScheduleDeleteMultiDim<float> del11 ( result11 );
         gum::ScheduleDeleteMultiDim<float> del12 ( result12 );
         gum::ScheduleDeleteMultiDim<float> del13 ( result13 );
         gum::ScheduleDeleteMultiDim<float> del14 ( result14 );
-        del4.execute  ();
-        del11.execute ();
-        del12.execute ();
-        del13.execute ();
-        del14.execute ();
-        
-        for (unsigned int i = 0; i < vars.size(); ++i)
+        del4.execute();
+        del11.execute();
+        del12.execute();
+        del13.execute();
+        del14.execute();
+
+        for ( unsigned int i = 0; i < vars.size(); ++i )
           delete vars[i];
       }
 
 
-      
-      void test_construct2 () {
-        std::vector<LabelizedVariable*> vars ( 10 );
-        for (unsigned int i = 0; i < 10; ++i) {
+
+      void test_construct2() {
+        std::vector<gum::LabelizedVariable*> vars ( 10 );
+
+        for ( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 2);
+          vars[i] = new gum::LabelizedVariable ( s, s, 2 );
         }
-        
+
         gum::Potential<float> pot1;
-        pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
+        pot1 << * ( vars[0] ) << * ( vars[2] ) << * ( vars[4] );
         randomInit ( pot1 );
         gum::ScheduleMultiDim<float> f1 ( pot1 );
-        
+
         gum::Potential<float> pot2;
-        pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
+        pot2 << * ( vars[1] ) << * ( vars[2] ) << * ( vars[3] );
         randomInit ( pot2 );
         gum::ScheduleMultiDim<float> f2 ( pot2 );
-        
+
         gum::Potential<float> pot3;
-        pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
+        pot3 << * ( vars[0] ) << * ( vars[3] ) << * ( vars[5] );
         randomInit ( pot3 );
         gum::ScheduleMultiDim<float> f3 ( pot3 );
 
         gum::Potential<float> pot4;
-        pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
+        pot4 << * ( vars[3] ) << * ( vars[4] ) << * ( vars[5] );
         randomInit ( pot4 );
         gum::ScheduleMultiDim<float> f4 ( pot4 );
 
         gum::ScheduleCombine<float> comb1 ( f1, f2, schedule_myadd );
-        const ScheduleMultiDim<float>& result1 = comb1.result ();
+        const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
         gum::ScheduleCombine<float> comb2 ( f2, f3, schedule_myadd );
-        const ScheduleMultiDim<float>& result2 = comb2.result ();
-       
+        const gum::ScheduleMultiDim<float>& result2 = comb2.result();
+
         gum::ScheduleCombine<float> comb3 ( result2, f4, schedule_myadd );
-        const ScheduleMultiDim<float>& result3 = comb3.result ();
+        const gum::ScheduleMultiDim<float>& result3 = comb3.result();
 
         gum::ScheduleCombine<float> comb4 ( result1, result3, schedule_myadd );
-        const ScheduleMultiDim<float>& result4 = comb4.result ();
+        const gum::ScheduleMultiDim<float>& result4 = comb4.result();
 
         gum::ScheduleDeleteMultiDim<float> del1 ( result1 );
         gum::ScheduleDeleteMultiDim<float> del2 ( result2 );
@@ -209,7 +212,7 @@ namespace gum {
 
         gum::Schedule<float> schedule;
 
-        NodeId id = schedule.insert ( comb4 );
+        gum::NodeId id = schedule.insert ( comb4 );
         TS_ASSERT ( schedule.availableOperations().size() == 0 );
         TS_ASSERT ( schedule.nbOperations ( id ) == 64 );
         TS_ASSERT ( schedule.memoryUsage ( id ).first == 64 );
@@ -227,11 +230,11 @@ namespace gum {
         schedule.insert ( comb1 );
         TS_ASSERT ( schedule.availableOperations().size() == 2 );
 
-        TS_ASSERT ( schedule.dag().sizeArcs () == 3 );
+        TS_ASSERT ( schedule.dag().sizeArcs() == 3 );
         TS_ASSERT ( comb1 == schedule.operation ( 3 ) );
         TS_ASSERT ( 3 == schedule.nodeId ( comb1 ) );
 
-        NodeId del1_id = schedule.insert ( del1 );
+        gum::NodeId del1_id = schedule.insert ( del1 );
         schedule.forceBefore ( schedule.nodeId ( comb4 ), del1_id );
 
         schedule.insert ( del2 );
@@ -239,45 +242,46 @@ namespace gum {
 
         schedule.insert ( del3 );
         schedule.forceAfter ( del3, comb4 );
-        
+
         schedule.execute ( comb1 );
         gum::Schedule<float> schedule2 = schedule;
-        TS_ASSERT ( schedule2.availableOperations ().size() == 1 );
+        TS_ASSERT ( schedule2.availableOperations().size() == 1 );
 
-        const NodeSet& available = schedule.availableOperations ();
-        while ( ! available.empty () ) {
-          for ( NodeSet::const_iterator iter = available.begin();
-                iter != available.end (); ++iter ) {
+        const gum::NodeSet& available = schedule.availableOperations();
+
+        while ( ! available.empty() ) {
+          for ( gum::NodeSet::const_iterator iter = available.begin();
+                iter != available.end(); ++iter ) {
             schedule.execute ( *iter );
           }
         }
 
         gum::ScheduleCombine<float> comb11 ( f1, f2, schedule_myadd );
-        comb11.execute ();
-        const ScheduleMultiDim<float>& result11 = comb11.result ();
+        comb11.execute();
+        const gum::ScheduleMultiDim<float>& result11 = comb11.result();
         gum::ScheduleCombine<float> comb12 ( f2, f3, schedule_myadd );
-        comb12.execute ();
-        const ScheduleMultiDim<float>& result12 = comb12.result ();
+        comb12.execute();
+        const gum::ScheduleMultiDim<float>& result12 = comb12.result();
         gum::ScheduleCombine<float> comb13 ( result12, f4, schedule_myadd );
-        comb13.execute ();
-        const ScheduleMultiDim<float>& result13 = comb13.result ();
+        comb13.execute();
+        const gum::ScheduleMultiDim<float>& result13 = comb13.result();
         gum::ScheduleCombine<float> comb14 ( result11, result13, schedule_myadd );
-        comb14.execute ();
-        const ScheduleMultiDim<float>& result14 = comb14.result ();
+        comb14.execute();
+        const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 
-        TS_ASSERT ( result14.multiDim () == result4.multiDim () );
+        TS_ASSERT ( result14.multiDim() == result4.multiDim() );
 
         gum::ScheduleDeleteMultiDim<float> del11 ( result11 );
         gum::ScheduleDeleteMultiDim<float> del12 ( result12 );
         gum::ScheduleDeleteMultiDim<float> del13 ( result13 );
         gum::ScheduleDeleteMultiDim<float> del14 ( result14 );
-        del4.execute  ();
-        del11.execute ();
-        del12.execute ();
-        del13.execute ();
-        del14.execute ();
-        
-        for (unsigned int i = 0; i < vars.size(); ++i)
+        del4.execute();
+        del11.execute();
+        del12.execute();
+        del13.execute();
+        del14.execute();
+
+        for ( unsigned int i = 0; i < vars.size(); ++i )
           delete vars[i];
       }
 
@@ -286,17 +290,15 @@ namespace gum {
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
-      void randomInit ( Potential<float>& t ) {
-        Instantiation i (t);
-        srand ( time ( NULL) );
+      void randomInit ( gum::Potential<float>& t ) {
+        gum::Instantiation i ( t );
+        srand ( time ( NULL ) );
+
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
+          t.set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );
       }
 
-    };
+  };
 
-  } /* namespace tests */
-
-} /* namespace gum */
-
+} /* namespace gum_tests */
 

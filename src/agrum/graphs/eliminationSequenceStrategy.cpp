@@ -24,7 +24,7 @@
  */
 
 
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/graphs/eliminationSequenceStrategy.h>
 
 

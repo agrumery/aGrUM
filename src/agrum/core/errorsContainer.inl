@@ -24,19 +24,20 @@
  */
 
 //to ease automatic parsers
-#include <agrum/core/inline.h>
+#include <agrum/config.h>
+
 #include <agrum/core/errorsContainer.h>
 
 namespace gum {
 
   INLINE
   void ErrorsContainer::Error( const std::wstring& filename, int line, int col, const wchar_t* msg ) {
-    add( ParseError( true, narrow( wstring( msg ) ), narrow( filename ), line, col ) );
+    add( ParseError( true, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
   }
 
   INLINE
   void ErrorsContainer::Warning( const std::wstring& filename, int line, int col, const wchar_t* msg ) {
-    add( ParseError( false, narrow( wstring( msg ) ), narrow( filename ), line, col ) );
+    add( ParseError( false, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
   }
 
   INLINE
@@ -75,8 +76,8 @@ namespace gum {
 
   INLINE
   void ErrorsContainer::showSyntheticResults() const {
-    cerr << "Errors : " << error_count << endl;
-    cerr << "Warnings : " << warning_count << endl;
+    std::cerr << "Errors : " << error_count << std::endl;
+    std::cerr << "Warnings : " << warning_count << std::endl;
   }
 
   INLINE

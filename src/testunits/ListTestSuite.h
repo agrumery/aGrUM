@@ -21,19 +21,18 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/core/list.h>
 
-namespace gum {
 
-namespace tests {
+namespace gum_tests {
 
-class ListTestSuite: public CxxTest::TestSuite {
-public:
+  class ListTestSuite: public CxxTest::TestSuite {
+    public:
 
-    void testPrivateMethods() {
+      void testPrivateMethods() {
         TS_GUM_ASSERT_THROWS_NOTHING( initializeList( 7 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( initializeList( -7 ) );
-    }
+      }
 
-    void testPush() {
+      void testPush() {
         gum::List<int> liste1;
         liste1.pushFront( 3 );
         TS_ASSERT_EQUALS( liste1.size(), ( gum::Size )1 );
@@ -41,9 +40,9 @@ public:
         liste1.pushBack( 4 );
         liste1.pushBack( 5 );
         TS_ASSERT_EQUALS( liste1.size(), ( gum::Size )3 );
-    }
+      }
 
-    void testCopy() {
+      void testCopy() {
         gum::List<int> liste1;
         liste1.pushFront( 3 );
         liste1.pushFront( 4 );
@@ -64,53 +63,53 @@ public:
 
         TS_ASSERT_EQUALS( liste2.size(), liste1.size() );
         TS_ASSERT_EQUALS( liste3.size(), ( gum::Size )0 );
-    }
+      }
 
-    void testInsert() {
+      void testInsert() {
         gum::List<int> list = initializeList( 6 );
         list.insert( 7 );
 
         TS_ASSERT_EQUALS( list.size(), ( gum::Size )7 );
-    }
+      }
 
-    void testFront() {
+      void testFront() {
         gum::List<int> list = initializeList( 7 );
         TS_ASSERT_EQUALS( list.front(), 1 );
         list.front() = 34;
         TS_ASSERT_EQUALS( list.front(), 34 );
-    }
+      }
 
-    void testBack() {
+      void testBack() {
         gum::List<int> list = initializeList( 7 );
         TS_ASSERT_EQUALS( list.back(), 7 );
         list.back() = 42;
         TS_ASSERT_EQUALS( list.back(), 42 );
-    }
+      }
 
-    void testsize() {
+      void testsize() {
         gum::List<int> list = initializeList( 7 );
         TS_ASSERT_EQUALS( list.size(), ( gum::Size )7 );
-    }
+      }
 
-    void testExists() {
+      void testExists() {
         gum::List<int> list = initializeList( 7 );
         TS_ASSERT( list.exists( 3 ) );
         TS_ASSERT( !list.exists( 42 ) );
-    }
+      }
 
-    void testEraseByVal() {
+      void testEraseByVal() {
         gum::List<int> list = initializeList( 7 );
         TS_GUM_ASSERT_THROWS_NOTHING( list.eraseByVal( 20 ) );
         list.pushBack( 3 );
         list.eraseByVal( 3 );
         TS_ASSERT_EQUALS( list.size(), ( gum::Size )7 );
-    }
+      }
 
-    void testEraseAllVal() {
+      void testEraseAllVal() {
         gum::List<int> list;
 
-        for ( int i = 0; i < 7; i++ )
-            list.insert( 42 );
+        for( int i = 0; i < 7; i++ )
+          list.insert( 42 );
 
         list.pushFront( 1 );
 
@@ -119,13 +118,13 @@ public:
         list.eraseAllVal( 42 );
 
         TS_ASSERT_EQUALS( list.size(), ( gum::Size )2 );
-    }
+      }
 
-    void testErase() {
+      void testErase() {
         gum::List<int> list;
 
-        for ( int i = 0; i < 7; i++ )
-            list.insert( i );
+        for( int i = 0; i < 7; i++ )
+          list.insert( i );
 
         list.erase( 2 );
 
@@ -138,13 +137,13 @@ public:
         list.erase( 20 );
 
         TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 5 );
-    }
+      }
 
-    void testEraseIterator() {
+      void testEraseIterator() {
         gum::List<int> list;
 
-        for ( int i = 0; i < 6; i++ )
-            list.insert( i );
+        for( int i = 0; i < 6; i++ )
+          list.insert( i );
 
         gum::List<int>::iterator iter = list.begin();
 
@@ -192,47 +191,45 @@ public:
 
         TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 1 );
 
-    }
+      }
 
-    void testPopBack() {
+      void testPopBack() {
         gum::List<int> list = initializeList( 7 );
         int last = list.back();
         list.popBack();
 
         TS_ASSERT_DIFFERS( list.back(), last );
-    }
+      }
 
-    void testPopFront() {
+      void testPopFront() {
         gum::List<int> list = initializeList( 7 );
         int first = list.front();
         list.popFront();
 
         TS_ASSERT_DIFFERS( list.front(), first );
-    }
+      }
 
-private:
-    /**
-     * Initialize a list with integers from 1 to count.
-     * If count < 1, then initialize from count to 1.
-     */
-    gum::List<int> initializeList( int count ) {
+    private:
+      /**
+       * Initialize a list with integers from 1 to count.
+       * If count < 1, then initialize from count to 1.
+       */
+      gum::List<int> initializeList( int count ) {
         gum::List<int> list;
 
-        if ( count >= 1 ) {
-            for ( int i = 1; i <= count; i++ )
-                list.pushBack( i );
+        if( count >= 1 ) {
+          for( int i = 1; i <= count; i++ )
+            list.pushBack( i );
 
-            return list;
+          return list;
         } else {
-            for ( int i = count; i <= 1; i++ )
-                list.pushBack( i );
+          for( int i = count; i <= 1; i++ )
+            list.pushBack( i );
 
-            return list;
+          return list;
         }
-    }
+      }
 
-};
+  };
 
 }
-}
-// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;

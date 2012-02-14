@@ -25,7 +25,9 @@
 
 
 #include <cmath>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/defaultPartialOrderedEliminationSequenceStrategy.h>
 
@@ -81,6 +83,7 @@ namespace gum {
       __simplicial_threshold( from.__simplicial_threshold ),
       __provide_fill_ins( from.__provide_fill_ins ) {
     GUM_CONS_CPY( DefaultPartialOrderedEliminationSequenceStrategy );
+
     if ( __graph ) {
       setGraph( from.__graph, from.__modalities, from.__subsets );
       __subset_iter = from.__subset_iter;
@@ -94,6 +97,7 @@ namespace gum {
   ~DefaultPartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
+
     if ( __simplicial_set ) delete __simplicial_set;
   }
 
@@ -106,9 +110,13 @@ namespace gum {
     // check that both the graph, the modalities and the subsets are different
     // from 0 or else that both are equal to 0
     unsigned int nb = 0;
+
     if ( graph ) ++nb;
+
     if ( modal ) ++nb;
+
     if ( subsets ) ++nb;
+
     if ( nb && ( nb != 3 ) ) {
       GUM_ERROR( GraphError,
                  "DefaultPartialOrderedEliminationSequenceStrategy needs valid "
@@ -139,6 +147,7 @@ namespace gum {
       if ( graph ) {
         // compute the log of the modalities
         __log_modalities.resize( __graph->sizeNodes() / 2 );
+
         for ( UndiGraph::NodeIterator iter = graph->beginNodes();
               iter != graph->endNodes(); ++iter ) {
           __log_modalities.insert( *iter, log(( *modal )[*iter] ) );
@@ -148,10 +157,12 @@ namespace gum {
         __simplicial_set = new
         SimplicialSet( __graph, &__log_modalities, &__log_weights,
                        __simplicial_ratio, __simplicial_threshold );
+
         __simplicial_set->setFillIns( __provide_fill_ins );
 
         // initialize properly the set of nodes that can be currently eliminated
         __subset_iter = __subsets->begin();
+
         __nodeset = *__subset_iter;
       }
     }
@@ -167,7 +178,9 @@ namespace gum {
     __subsets = 0;
     __subset_iter.clear();
     __nodeset.clear();
+
     if ( __simplicial_set ) delete __simplicial_set;
+
     __simplicial_set = 0;
   }
 
@@ -183,6 +196,7 @@ namespace gum {
           iter != __nodeset.end(); ++iter ) {
       try {
         float score = possibleNodes.priorityByVal( *iter );
+
         if ( ! found || ( score < min_score ) ) {
           found = true;
           min_score = score;
@@ -204,6 +218,7 @@ namespace gum {
     // if there is no simplicial set, send an exception
     if ( ! __graph )
       GUM_ERROR( NotFound, "the graph is empty" );
+
     if ( __nodeset.empty() ) {
       GUM_ERROR( NotFound, "no node is admissible" );
     }
@@ -214,25 +229,31 @@ namespace gum {
     try {
       return  __nodeToEliminate( __simplicial_set->allSimplicialNodes() );
     } catch ( NotFound& ) { }
+
     try {
       return __nodeToEliminate( __simplicial_set->allAlmostSimplicialNodes() );
     } catch ( NotFound& ) { }
+
     try {
       return __nodeToEliminate( __simplicial_set->allQuasiSimplicialNodes() );
     } catch ( NotFound& ) { }
 
     // here: select the node through Kjaerulff's heuristic
     NodeSetIterator iter = __nodeset.begin();
+
     float min_score = __log_weights[ *iter ];
+
     NodeId best_node = *iter;
 
     for ( ++iter; iter != __nodeset.end(); ++iter ) {
       float score = __log_weights[ *iter ];
+
       if ( score < min_score ) {
         min_score = score;
         best_node = *iter;
       }
     }
+
     return best_node;
   }
 
@@ -242,6 +263,7 @@ namespace gum {
   void
   DefaultPartialOrderedEliminationSequenceStrategy::askFillIns( bool do_it ) {
     __provide_fill_ins = do_it;
+
     if ( __simplicial_set )
       __simplicial_set->setFillIns( __provide_fill_ins );
   }
@@ -274,8 +296,10 @@ namespace gum {
 
       // remove the node from __nodeset
       __nodeset.erase( id );
+
       if ( __nodeset.empty() ) {
         ++__subset_iter;
+
         if ( __subset_iter != __subsets->end() )
           __nodeset = *__subset_iter;
       }

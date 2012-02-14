@@ -29,27 +29,28 @@
 #include <fstream>
 #include <vector>
 
-#include <agrum/core/inline.h>
+#include <agrum/config.h>
+
 #include <agrum/core/cocoR/common.h>
 
 namespace gum {
-  
+
   /**
-   * 
+   *
    */
   class ParseError {
     public:
       ParseError(bool is_error, const std::string& msg, int line);
       ParseError(bool is_error, const std::string& msg, const std::string& filename, int line, int col = 0);
       ParseError(bool is_error, const std::string& msg, const std::string& filename, const std::string& code, int line, int col = 0);
-    
+
       bool is_error;
       int line;
       int colomn; // default 0
       std::string msg;
       std::string filename; // default ""
       mutable std::string code; // default ""
-      
+
       ///
       std::string toString() const;
       ///
@@ -57,7 +58,7 @@ namespace gum {
   };
 
   class ErrorsContainer {
-      
+
       mutable std::vector<ParseError> errors;
 
     public:
@@ -66,15 +67,15 @@ namespace gum {
 
       ErrorsContainer();
       ErrorsContainer( const ErrorsContainer & cont );
-      
+
       /// Add an error object to container.
       void add( ParseError error );
-      
+
       /// Return the i-th error.
       /// May throw an exception if i >= count().
       ParseError error( int i ) const;
       ParseError last() const;
-      
+
       /// Add an error.
       void addError ( const std::string& msg, const std::string& filename, int line, int col );
       /// Add a warning.
@@ -84,14 +85,14 @@ namespace gum {
 
       /// Return the number of errors and warnings
       int count ( void ) const;
-      
+
       /// Print errors on standart error output.
       void showSyntheticResults() const;
       void showErrors() const;
       void showErrorsAndWarnings() const;
       void showElegantErrors() const;
       void showElegantErrorsAndWarnings() const;
-      
+
       // Use by coco/R
       void Error ( const std::wstring& filename, int line, int col, const wchar_t *msg );
       void Warning ( const std::wstring& filename, int line, int col, const wchar_t *msg );
@@ -104,11 +105,11 @@ namespace gum {
       int col( int i ) const;
       std::wstring msg( int i ) const;
       std::wstring filename( int i ) const;
-      
+
       ErrorsContainer operator+( const ErrorsContainer & cont ) const;
       ErrorsContainer operator=( const ErrorsContainer & cont );
       ErrorsContainer operator+=( const ErrorsContainer & cont );
-      
+
   }; // ErrorsContainer
 
 }//namespace gum
@@ -119,4 +120,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif //GUM_ERRORS_CONTAINERS_H
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

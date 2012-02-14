@@ -35,7 +35,7 @@ private:
     std::string                 __package;
     gum::Directory              __current_directory;
 
-    // Convert string to wstring.
+    // Convert std::string to wstring.
     void SemErr(std::string s) {
       SemErr(widen(s).c_str());
     }
@@ -49,9 +49,7 @@ private:
 
     void importDirID( std::string dirID )
     {
-        using namespace std;
-
-        string dirname = dirID, dirpath;
+        std::string dirname = dirID, dirpath;
         bool dirFound = false;
 
         // Create filename
@@ -67,13 +65,13 @@ private:
         // Search in root package directory.
         if ( ! dirFound && ! __package.empty() ) {
             int cpt = std::count(__package.begin(), __package.end(), '.');
-            string cd = __current_directory.absolutePath();
+            std::string cd = __current_directory.absolutePath();
             size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
+            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
                 index = cd.find_last_of('/', index - 1);
 
-            if ( index != string::npos ) {
-                string rootDir = cd.substr(0, index+1); // with '/' at end
+            if ( index != std::string::npos ) {
+                std::string rootDir = cd.substr(0, index+1); // with '/' at end
                 dirpath = rootDir + dirname;
                 dirFound = Directory::isDir(dirpath);
             }
@@ -81,7 +79,7 @@ private:
 
         // Search filename in each path stored in __class_path
         if ( ! dirFound ) {
-          for (vector<string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
+          for (std::vector<std::string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
               // Construct complete filePath
               dirpath = (*path) + dirname;
               dirFound = Directory::isDir(dirpath);
@@ -99,14 +97,12 @@ private:
 
     void importDir( std::string dirpath )
     {
-        using namespace std;
-
         // Update current directory
         Directory oldCurrentDirectory = __current_directory;
         __current_directory = Directory(dirpath);
 
-        const vector<string> & entries = __current_directory.entries();
-        for ( vector<string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
+        const std::vector<std::string> & entries = __current_directory.entries();
+        for ( std::vector<std::string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
             if ((*i)[0]== '.') //"." or ".." or ".svn" or any hidden directories...
                 continue;
 
@@ -122,8 +118,6 @@ private:
 
     void importFile( std::string filepath )
     {
-        using namespace std;
-
         // If we have already import this file, skip it.
         // (like filepath is always absolute, there is no conflict)
         if ( __imports.exists( filepath ) )
@@ -141,8 +135,8 @@ private:
         p.Parse();
 
         // We add file imported in p to file imported here.
-        gum::Set<string> parserImports = p.getImports();
-        for (gum::Set<string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
+        gum::Set<std::string> parserImports = p.getImports();
+        for (gum::Set<std::string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
             if (not __imports.exists(*iter))
             __imports.insert(*iter);
 
@@ -151,16 +145,14 @@ private:
     }
 
     void import( std::string fileID ) {
-        using namespace std;
-
         // Si on inclut un répertoire entier
         size_t starIndex = fileID.find_last_of('*');
-        if ( starIndex != string::npos ) {
+        if ( starIndex != std::string::npos ) {
             return importDirID(fileID.substr(0,starIndex-1));
         }
 
-        string filename = fileID, filepath;
-        ifstream file_test;
+        std::string filename = fileID, filepath;
+        std::ifstream file_test;
         bool fileFound = false;
 
         // Create filename
@@ -180,13 +172,13 @@ private:
         // Search in root package directory.
         if ( ! fileFound && ! __package.empty() ) {
             int cpt = std::count(__package.begin(), __package.end(), '.');
-            string cd = __current_directory.absolutePath();
+            std::string cd = __current_directory.absolutePath();
             size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != string::npos && i < cpt ; i++ )
+            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
                 index = cd.find_last_of('/', index - 1);
 
-            if ( index != string::npos ) {
-                string rootDir = cd.substr(0, index+1); // with '/' at end
+            if ( index != std::string::npos ) {
+                std::string rootDir = cd.substr(0, index+1); // with '/' at end
                 filepath = rootDir + filename;
                 file_test.open(filepath.c_str());
                 if (file_test.is_open()) {
@@ -197,7 +189,7 @@ private:
         }
 
         // Search filename in each path stored in __class_path
-        for (vector<string>::iterator path = __class_path.begin(); ! fileFound && path != __class_path.end(); ++path) {
+        for (std::vector<std::string>::iterator path = __class_path.begin(); ! fileFound && path != __class_path.end(); ++path) {
             // Construct complete filePath
             filepath = (*path) + filename;
 

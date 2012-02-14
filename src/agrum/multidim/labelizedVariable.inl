@@ -25,8 +25,9 @@
 #include <string>
 #include <sstream>
 #include <ostream>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/multidim/discreteVariable.h>
 #include <agrum/core/hashTable.h>
 

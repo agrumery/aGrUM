@@ -29,10 +29,11 @@
 // ============================================================================
 #include <vector>
 // ============================================================================
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
 // ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 // ============================================================================
+
 namespace gum {
   /* ============================================================================ */
   /* ============================================================================ */
@@ -47,6 +48,7 @@ namespace gum {
    * @ingroup multidim_group
    */
   template<typename T_DATA>
+
   class MultiDimWithOffset : public MultiDimImplementation<T_DATA> {
     public:
       MultiDimWithOffset();
@@ -170,7 +172,7 @@ namespace gum {
       // ############################################################################
       ///@{
 
-      /// 
+      ///
       /**
        * @brief Compute offset from an Instantiation (in this array).
        *
@@ -245,6 +247,7 @@ namespace gum {
 
   };
 } /* namespace gum */
+
 // ============================================================================
 #include <agrum/multidim/multiDimWithOffset.tcc>
 // ============================================================================

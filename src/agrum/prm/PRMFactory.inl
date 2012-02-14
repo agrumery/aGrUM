@@ -23,7 +23,10 @@
  * @author Lionel TORTI
  */
 // ============================================================================
+#include <agrum/prm/PRMFactory.h>
+
 namespace gum {
+
   namespace prm {
 
     INLINE
@@ -47,6 +50,7 @@ namespace gum {
       if ( __stack.size() == 0 ) {
         GUM_ERROR( NotFound, "no object being built" );
       }
+
       return __stack.back()->obj_type();
     }
 
@@ -56,6 +60,7 @@ namespace gum {
       if ( __stack.size() == 0 ) {
         GUM_ERROR( NotFound, "no object being built" );
       }
+
       return __stack.back();
     }
 
@@ -98,12 +103,15 @@ namespace gum {
     void
     PRMFactory::endDiscreteType() {
       Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+
       if ( not t->__isValid() ) {
         GUM_ERROR( OperationNotAllowed, "current type is not a valid subtype" );
       } else if ( t->variable().domainSize() < 2 ) {
         GUM_ERROR( OperationNotAllowed, "current type is not a valid discrete type" );
       }
+
       __prm->__typeMap.insert( t->name(), t );
+
       __prm->__types.insert( t );
       __stack.pop_back();
     }
@@ -129,11 +137,13 @@ namespace gum {
       ClassElementContainer* c = __checkStackContainter( 1 );
       Attribute* a = new Attribute( name, *__retrieveType( type ) );
       std::string dot = ".";
+
       try {
         c->add( a );
       } catch ( DuplicateElement& ) {
         c->overload( a );
       }
+
       __stack.push_back( a );
     }
 
@@ -142,8 +152,10 @@ namespace gum {
     PRMFactory::setRawCPFByLines( const std::vector<prm_float>& array ) {
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
       __checkStack( 2, PRMObject::prm_class );
+
       if ( a->cpf().domainSize() != array.size() )
         GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+
       a->cpf().fillWith( array );
     }
 
@@ -178,6 +190,7 @@ namespace gum {
       System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
       Class* c = __retrieveClass( type );
       Instance* inst = new Instance( name, *c );
+
       try {
         model->add( inst );
       } catch ( OperationNotAllowed& e ) {
@@ -219,10 +232,13 @@ namespace gum {
       if ( __stack.size() - i > __stack.size() ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       PRMObject* obj = __stack[__stack.size() - i];
+
       if ( obj->obj_type() != obj_type ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       return obj;
     }
 
@@ -233,7 +249,9 @@ namespace gum {
       if ( __stack.size() - i > __stack.size() ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       PRMObject* obj = __stack[__stack.size() - i];
+
       if (( obj->obj_type() == PRMObject::prm_class ) or
           ( obj->obj_type() == PRMObject::prm_interface ) ) {
         return static_cast<ClassElementContainer*>( obj );
@@ -249,13 +267,17 @@ namespace gum {
       if ( __stack.size() - i > __stack.size() ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       ClassElement* obj = dynamic_cast<ClassElement*>( __stack[__stack.size() - i] );
+
       if ( obj == 0 ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       if ( obj->elt_type() != elt_type ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
       }
+
       return obj;
     }
 
@@ -264,10 +286,12 @@ namespace gum {
     PRMFactory::__typeDepth( const Type* t ) {
       int depth = 0;
       const Type* current = t;
+
       while ( current->isSubType() ) {
         ++depth;
         current = &( current->super() );
       }
+
       return depth;
     }
 
@@ -286,6 +310,7 @@ namespace gum {
         __packages.pop_back();
         return s;
       }
+
       return "";
     }
 
@@ -294,6 +319,7 @@ namespace gum {
     PRMFactory::setReferenceSlot( const std::string& l_i,
                                   const std::string& r_i ) {
       size_t pos = l_i.find_last_of( '.' );
+
       if ( pos != std::string::npos ) {
         std::string l_ref = l_i.substr( pos + 1, std::string::npos );
         setReferenceSlot( l_i.substr( 0, pos ), l_ref, r_i );

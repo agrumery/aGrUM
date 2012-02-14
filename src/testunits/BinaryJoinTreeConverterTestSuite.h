@@ -24,17 +24,15 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
-
-    class BinaryJoinTreeConverterTestSuite: public CxxTest::TestSuite {
+  class BinaryJoinTreeConverterTestSuite: public CxxTest::TestSuite {
     public:
 
-      void test1 () {
+      void test1() {
         gum::CliqueGraph graph;
-        std::vector<NodeSet> cliques (11);
-        
+        std::vector<gum::NodeSet> cliques( 11 );
+
         cliques[0]  << 1 << 2;
         cliques[1]  << 3 << 4 << 5;
         cliques[2]  << 6 << 7 << 8;
@@ -47,42 +45,38 @@ namespace gum {
         cliques[9]  << 7 << 14;
         cliques[10] << 14 << 16;
 
-        for (unsigned int i = 0; i <= 10; ++i ) {
-          graph.insertNode ( i, cliques[i] );
+        for( unsigned int i = 0; i <= 10; ++i ) {
+          graph.insertNode( i, cliques[i] );
         }
-        
-        graph.insertEdge (0,5);
-        graph.insertEdge (1,5);
-        graph.insertEdge (2,5);
-        graph.insertEdge (3,5);
-        graph.insertEdge (4,5);
-        graph.insertEdge (5,8);
-        graph.insertEdge (6,8);
-        graph.insertEdge (7,8);
-        graph.insertEdge (8,9);
-        graph.insertEdge (9,10);
 
-        Property<unsigned int>::onNodes domain_sizes;
-        for (unsigned int i = 1; i <= 17; ++i) {
-          domain_sizes.insert ( i, 3 );
+        graph.insertEdge( 0,5 );
+        graph.insertEdge( 1,5 );
+        graph.insertEdge( 2,5 );
+        graph.insertEdge( 3,5 );
+        graph.insertEdge( 4,5 );
+        graph.insertEdge( 5,8 );
+        graph.insertEdge( 6,8 );
+        graph.insertEdge( 7,8 );
+        graph.insertEdge( 8,9 );
+        graph.insertEdge( 9,10 );
+
+        gum::Property<unsigned int>::onNodes domain_sizes;
+
+        for( unsigned int i = 1; i <= 17; ++i ) {
+          domain_sizes.insert( i, 3 );
         }
-        
+
         gum::BinaryJoinTreeConverterDefault converter;
-        NodeSet roots;
+        gum::NodeSet roots;
         roots << 9;
+
         try {
-          gum::CliqueGraph binTree = converter.convert ( graph, domain_sizes, roots );
-        }
-        catch ( gum::Exception& e ) {
-          GUM_SHOWERROR ( e );
+          gum::CliqueGraph binTree = converter.convert( graph, domain_sizes, roots );
+        } catch( gum::Exception& e ) {
+          GUM_SHOWERROR( e );
         }
       }
-      
+  };
 
-    };
-
-  } /* namespace tests */
-
-} /* namespace gum */
-
+} /* namespace gum_tests */
 

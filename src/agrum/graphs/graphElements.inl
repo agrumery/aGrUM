@@ -24,8 +24,8 @@
  */
 #include <iostream>
 #include <algorithm>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
 
 // to facilitate parsing
 #include<agrum/graphs/graphElements.h>
@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                GENERIC UNDIRECTED EDGES IMPLEMENTATION              === */
@@ -46,7 +46,7 @@ namespace gum {
   /// basic constructor
   // ==============================================================================
   INLINE Edge::Edge( NodeId aN1, NodeId aN2 )  :
-    n1 ( std::min( aN1,aN2 ) ), n2 ( std::max( aN1,aN2 ) ) {
+      n1( std::min( aN1,aN2 ) ), n2( std::max( aN1,aN2 ) ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Edge );
   }
@@ -55,7 +55,7 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   INLINE Edge::Edge( const Edge& src )  :
-    n1( src.n1 ), n2( src.n2 ) {
+      n1( src.n1 ), n2( src.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Edge );
   }
@@ -110,7 +110,7 @@ namespace gum {
   INLINE NodeId Edge::second() const  {
     return n2;
   }
-  
+
   // ==============================================================================
   /// check if two undirected edges are equal
   // ==============================================================================
@@ -127,7 +127,7 @@ namespace gum {
 
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                 GENERIC DIRECTED EDGES IMPLEMENTATION               === */
@@ -138,7 +138,7 @@ namespace gum {
   /// basic constructor.
   // ==============================================================================
   INLINE Arc::Arc( NodeId tail, NodeId head )  :
-    n1 ( tail ), n2 ( head ) {
+      n1( tail ), n2( head ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Arc );
   }
@@ -147,7 +147,7 @@ namespace gum {
   /// copy constructor
   // ==============================================================================
   INLINE Arc::Arc( const Arc& src )  :
-    n1( src.n1 ), n2( src.n2 ) {
+      n1( src.n1 ), n2( src.n2 ) {
     // for debugging purposes
     GUM_CONS_CPY( Arc );
   }
@@ -230,7 +230,7 @@ namespace gum {
   INLINE NodeId Arc::second() const  {
     return n2;
   }
-  
+
 
   // ==============================================================================
   /// check if two arcs are equal

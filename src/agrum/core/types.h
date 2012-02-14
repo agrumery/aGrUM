@@ -18,13 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <climits>
+// WARNING : Do not include this file directlty : instead include <agrum/config.h>
 
 #ifndef GUM_TYPES_H
 #define GUM_TYPES_H
 
-
 namespace gum {
-
 
 /// how copies should be performed (usual or shallow copies)
 /// @todo default is ?
@@ -50,4 +49,4 @@ namespace gum {
 
 
 #endif /* GUM_TYPES_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2;

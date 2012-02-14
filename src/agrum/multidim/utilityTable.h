@@ -24,7 +24,8 @@
 #ifndef GUM_UTILITY_TABLE_H
 #define GUM_UTILITY_TABLE_H
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
+
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimArray.h>
 
@@ -36,97 +37,98 @@ namespace gum {
 
   /** @class UtilityTable
    * representation of multi-dimensional utility (experimental)
-   * @ingroup multidim_group 
+   * @ingroup multidim_group
    */
+
   class UtilityTable : public MultiDimDecorator<T_DATA> {
-  public:
-    /**
-     * Default constructor (with a multiDimArray<> for implementation)
-     */
-    UtilityTable();
+    public:
+      /**
+       * Default constructor (with a multiDimArray<> for implementation)
+       */
+      UtilityTable();
 
-    /**
-     * Constructor
-     * @param aContent implementation of utility table
-     */
-    UtilityTable( MultiDimImplementation<T_DATA>* aContent );
+      /**
+       * Constructor
+       * @param aContent implementation of utility table
+       */
+      UtilityTable( MultiDimImplementation<T_DATA>* aContent );
 
-    /**
-     * Destructor
-     */
-    virtual ~UtilityTable();
+      /**
+       * Destructor
+       */
+      virtual ~UtilityTable();
 
-    /**
-     * Copy constructor
-     *
-     * @param toCopy utility to copy (with the same variables and content)
-     */
-    UtilityTable(const UtilityTable<T_DATA>& toCopy);
+      /**
+       * Copy constructor
+       *
+       * @param toCopy utility to copy (with the same variables and content)
+       */
+      UtilityTable( const UtilityTable<T_DATA>& toCopy );
 
-    /**
-     * Copy operator
-     *
-     * @param toCopy utility to copy (with the same variables and content)
-     * @raturn the copy
-     */
-    UtilityTable<T_DATA>& operator=(const UtilityTable<T_DATA>& toCopy);
+      /**
+       * Copy operator
+       *
+       * @param toCopy utility to copy (with the same variables and content)
+       * @raturn the copy
+       */
+      UtilityTable<T_DATA>& operator=( const UtilityTable<T_DATA>& toCopy );
 
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
-    virtual UtilityTable<T_DATA>* newFactory() const;
+      /**
+       * This method creates a clone of this object, withouth its content
+       * (including variable), you must use this method if you want to ensure
+       * that the generated object has the same type than the object containing
+       * the called newFactory()
+       * For example :
+       *   MultiDimArray<double> y;
+       *   MultiDimContainer<double>* x = y.newFactory();
+       * Then x is a MultiDimArray<double>*
+       *
+       * @warning you must desallocate by yourself the memory
+       * @return an empty clone of this object with the same type
+       */
+      virtual UtilityTable<T_DATA>* newFactory() const;
 
-    /**
-     * This method modifies the current table in order to store the
-     * result of the addition p1 + p2)
-     *
-     * @param p1 an utility
-     * @param p2 an utility
-     */
-    void sum(const UtilityTable<T_DATA>& p1,
-	     const UtilityTable<T_DATA>& p2);
+      /**
+       * This method modifies the current table in order to store the
+       * result of the addition p1 + p2)
+       *
+       * @param p1 an utility
+       * @param p2 an utility
+       */
+      void sum( const UtilityTable<T_DATA>& p1,
+                const UtilityTable<T_DATA>& p2 );
 
-    /**
-     * This method modifies the current table A in order to compute the
-     * result of the addition with B (A <- A + B)
-     *
-     * @param toAdd table to add in this table (B in the description)
-     */
-    void sumBy(const UtilityTable<T_DATA>& toAdd);
+      /**
+       * This method modifies the current table A in order to compute the
+       * result of the addition with B (A <- A + B)
+       *
+       * @param toAdd table to add in this table (B in the description)
+       */
+      void sumBy( const UtilityTable<T_DATA>& toAdd );
 
-    /**
-     * This method modifies the current table A in order to compute the
-     * result of the addition with all tables in B (\f$ A \leftarrow A + \sum_{u \in B} u \f$)
-     *
-     * @param utilitiesList tables to add in this table (B in the description)
-     * @warning we assume that every table in B contains a subset of variables in A
-     */
-    void sumBy(const List<UtilityTable<T_DATA>*>& utilitiesList);
+      /**
+       * This method modifies the current table A in order to compute the
+       * result of the addition with all tables in B (\f$ A \leftarrow A + \sum_{u \in B} u \f$)
+       *
+       * @param utilitiesList tables to add in this table (B in the description)
+       * @warning we assume that every table in B contains a subset of variables in A
+       */
+      void sumBy( const List<UtilityTable<T_DATA>*>& utilitiesList );
 
 
-    /**
-     * This method reduces the current table by maximization
-     *
-     * @param varList list of variables in the result
-     * @return an utility table
-     */
-    UtilityTable<T_DATA> reduceBy(const List<const DiscreteVariable*>& varList) const;
+      /**
+       * This method reduces the current table by maximization
+       *
+       * @param varList list of variables in the result
+       * @return an utility table
+       */
+      UtilityTable<T_DATA> reduceBy( const List<const DiscreteVariable*>& varList ) const;
 
-  protected:
+    protected:
 
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
-  private:
+    private:
 
   };
 

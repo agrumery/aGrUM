@@ -21,10 +21,13 @@
  * @file
  * @brief Inline implementation of gum::ClassElementContainer
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI & PH Wuillemin
  */
 // ============================================================================
+#include <agrum/prm/classElementContainer.h>
+
 namespace gum {
+
   namespace prm {
 // ============================================================================
 
@@ -74,7 +77,7 @@ namespace gum {
     void
     ClassElementContainer::setInputNode( const ClassElement& elt, bool b ) {
       if ( not exists( elt.safeName() ) ) {
-        GUM_ERROR( NotFound, "this ClassElement is not in this ClassElementContainer" );
+        GUM_ERROR( NotFound, ": <"+elt.safeName()+"> is not in <"+name()+">" );
       } else if ( ClassElement::isAttribute( elt ) or ClassElement::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).second = b;
@@ -100,13 +103,14 @@ namespace gum {
     void
     ClassElementContainer::setOutputNode( const ClassElement& elt, bool b ) {
       if ( not exists( elt.safeName() ) ) {
-        GUM_ERROR( NotFound, "this ClassElement is not in this ClassElementContainer" );
+        GUM_ERROR( NotFound, "<"+elt.safeName()+"> is not in <"+name()+">" );
       } else if ( ClassElement::isAttribute( elt ) or ClassElement::isAggregate( elt ) ) {
         try {
           _getIOFlag( elt ).second = b;
         } catch ( NotFound& ) {
           _setIOFlag( elt, std::make_pair( false, b ) );
         }
+
         if ( b ) {
           _updateDescendants( elt );
         }

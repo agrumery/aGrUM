@@ -27,12 +27,10 @@
 
 
 #include <limits>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/priorityQueue.h>
 
+#include <agrum/config.h>
+
+#include <agrum/multidim/multiDimCombineAndProjectDefault.h>
 
 namespace gum {
 
@@ -100,10 +98,12 @@ namespace gum {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
+
       for ( typename Set<const TABLE<T_DATA>*>::const_iterator
             iter = table_set.begin(); iter != table_set.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars =
           ( *iter )->variablesSequence();
+
         for ( typename Sequence<const DiscreteVariable*>::const_iterator
               it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
           all_vars.insert( *it );
@@ -163,6 +163,7 @@ namespace gum {
     PriorityQueue<const DiscreteVariable*, float> product_size;
 
     // initialize properly product_size
+
     for ( typename HashTable< const DiscreteVariable *,
           HashTable<const DiscreteVariable *, unsigned int> >::const_iterator
           iter = tables_vars_per_var.begin();
@@ -197,6 +198,7 @@ namespace gum {
       Set<const TABLE<T_DATA>*>& tables_to_combine = tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
+
       if ( tables_to_combine.size() == 0 )
         continue;
 
@@ -204,6 +206,7 @@ namespace gum {
       // there is nothing to do, else we shall use the MultiDimCombination
       // to perform the combination
       TABLE<T_DATA>* joint;
+
       bool joint_to_delete = false;
 
       if ( tables_to_combine.size() == 1 ) {
@@ -216,7 +219,9 @@ namespace gum {
 
       // compute the table resulting from marginalizing out del_var from joint
       Set<const DiscreteVariable*> del_one_var;
+
       del_one_var << del_var;
+
       TABLE<T_DATA>* marginal = __projection->project( *joint, del_one_var );
 
       // remove the temporary joint if needed
@@ -305,6 +310,7 @@ namespace gum {
       }
 
       table_set.insert( marginal );
+
       tmp_marginals.insert( marginal );
     }
 
@@ -395,9 +401,11 @@ namespace gum {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
+
       for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
             iter = table_set.begin(); iter != table_set.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
+
         for ( typename Sequence<const DiscreteVariable*>::const_iterator
               it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
           all_vars.insert( *it );
@@ -456,6 +464,7 @@ namespace gum {
     PriorityQueue<const DiscreteVariable*, float> product_size;
 
     // initialize properly product_size
+
     for ( typename HashTable< const DiscreteVariable *,
           HashTable<const DiscreteVariable *, unsigned int> >::const_iterator
           iter = tables_vars_per_var.begin();
@@ -494,6 +503,7 @@ namespace gum {
       tables_to_combine = tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
+
       if ( tables_to_combine.size() == 0 )
         continue;
 
@@ -501,6 +511,7 @@ namespace gum {
       // there is nothing to do, else we shall use the MultiDimCombination
       // to perform the combination
       Sequence<const DiscreteVariable*>* joint;
+
       bool joint_to_delete = false;
 
       if ( tables_to_combine.size() == 1 ) {
@@ -510,11 +521,13 @@ namespace gum {
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence<const DiscreteVariable*>;
+
         for ( typename
               Set<const Sequence<const DiscreteVariable*>*>::const_iterator
               iter = tables_to_combine.begin();
               iter != tables_to_combine.end(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
+
           for ( typename Sequence<const DiscreteVariable*>::const_iterator
                 iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
@@ -522,6 +535,7 @@ namespace gum {
             }
           }
         }
+
         joint_to_delete = true;
 
         // update the number of operations performed
@@ -530,16 +544,20 @@ namespace gum {
 
       // update the number of operations performed by marginalizing out del_var
       Set<const DiscreteVariable*> del_one_var;
+
       del_one_var << del_var;
+
       nb_operations += __projection->nbOperations( *joint, del_one_var );
 
       // compute the table resulting from marginalizing out del_var from joint
       Sequence<const DiscreteVariable*>* marginal;
+
       if ( joint_to_delete ) {
         marginal = joint;
       } else {
         marginal = new Sequence<const DiscreteVariable*> ( *joint );
       }
+
       marginal->erase( del_var );
 
 
@@ -591,8 +609,10 @@ namespace gum {
 
 
       // add the new projected marginal to the list of TABLES
+
       for ( unsigned int i = 0; i < marginal->size(); ++i ) {
         const DiscreteVariable* var_i = marginal->atPos( i );
+
         if ( del_vars.contains( var_i ) ) {
           // add the new marginal table to the set of tables of var i
           tables_per_var[var_i].insert( marginal );
@@ -640,6 +660,7 @@ namespace gum {
     const Set<const DiscreteVariable*>& del_vars ) const {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
+
     for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
             set.begin(); iter != set.end(); ++iter ) {
       var_set << &(( *iter )->variablesSequence() );
@@ -669,9 +690,11 @@ namespace gum {
       // determine the set of all the variables involved in the tables.
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
+
       for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
             iter = table_set.begin(); iter != table_set.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
+
         for ( typename Sequence<const DiscreteVariable*>::const_iterator
               it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
           all_vars.insert( *it );
@@ -730,6 +753,7 @@ namespace gum {
     PriorityQueue<const DiscreteVariable*, float> product_size;
 
     // initialize properly product_size
+
     for ( typename HashTable< const DiscreteVariable *,
           HashTable<const DiscreteVariable *, unsigned int> >::const_iterator
           iter = tables_vars_per_var.begin();
@@ -750,6 +774,7 @@ namespace gum {
 
     // the resulting memory consumtions
     long max_memory = 0;
+
     long current_memory = 0;
 
     // create a set of the temporary table's variables created during the
@@ -769,6 +794,7 @@ namespace gum {
       tables_to_combine = tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
+
       if ( tables_to_combine.size() == 0 )
         continue;
 
@@ -776,6 +802,7 @@ namespace gum {
       // there is nothing to do, else we shall use the MultiDimCombination
       // to perform the combination
       Sequence<const DiscreteVariable*>* joint;
+
       bool joint_to_delete = false;
 
       if ( tables_to_combine.size() == 1 ) {
@@ -785,11 +812,13 @@ namespace gum {
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence<const DiscreteVariable*>;
+
         for ( typename
               Set<const Sequence<const DiscreteVariable*>*>::const_iterator
               iter = tables_to_combine.begin();
               iter != tables_to_combine.end(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
+
           for ( typename Sequence<const DiscreteVariable*>::const_iterator
                 iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
@@ -797,46 +826,57 @@ namespace gum {
             }
           }
         }
+
         joint_to_delete = true;
 
         // update the number of operations performed
         std::pair<long,long> comb_memory =
           __combination->memoryUsage( tables_to_combine );
+
         if (( std::numeric_limits<long>::max() -
               current_memory < comb_memory.first ) ||
             ( std::numeric_limits<long>::max() -
               current_memory < comb_memory.second ) ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
+
         if ( current_memory + comb_memory.first > max_memory ) {
           max_memory = current_memory + comb_memory.first;
         }
+
         current_memory += comb_memory.second;
       }
 
       // update the number of operations performed by marginalizing out del_var
       Set<const DiscreteVariable*> del_one_var;
+
       del_one_var << del_var;
+
       std::pair<long,long> comb_memory =
         __projection->memoryUsage( *joint, del_one_var );
+
       if (( std::numeric_limits<long>::max() -
             current_memory < comb_memory.first ) ||
           ( std::numeric_limits<long>::max() -
             current_memory < comb_memory.second ) ) {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
       }
+
       if ( current_memory + comb_memory.first > max_memory ) {
         max_memory = current_memory + comb_memory.first;
       }
+
       current_memory += comb_memory.second;
 
       // compute the table resulting from marginalizing out del_var from joint
       Sequence<const DiscreteVariable*>* marginal;
+
       if ( joint_to_delete ) {
         marginal = joint;
       } else {
         marginal = new Sequence<const DiscreteVariable*> ( *joint );
       }
+
       marginal->erase( del_var );
 
 
@@ -881,10 +921,12 @@ namespace gum {
         if ( tmp_marginals.contains( *iter ) ) {
           long del_size = 1;
           const Sequence<const DiscreteVariable*>& del = **iter;
+
           for ( typename Sequence<const DiscreteVariable*>::const_iterator
                 iter_del = del.begin(); iter_del != del.end(); ++iter_del ) {
             del_size *= ( *iter_del )->domainSize();
           }
+
           current_memory -= del_size;
 
           delete *iter;
@@ -896,8 +938,10 @@ namespace gum {
 
 
       // add the new projected marginal to the list of TABLES
+
       for ( unsigned int i = 0; i < marginal->size(); ++i ) {
         const DiscreteVariable* var_i = marginal->atPos( i );
+
         if ( del_vars.contains( var_i ) ) {
           // add the new marginal table to the set of tables of var i
           tables_per_var[var_i].insert( marginal );
@@ -944,6 +988,7 @@ namespace gum {
     const Set<const DiscreteVariable*>& del_vars ) const {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
+
     for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
             set.begin(); iter != set.end(); ++iter ) {
       var_set << &(( *iter )->variablesSequence() );

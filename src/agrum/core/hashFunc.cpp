@@ -23,7 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #include <climits>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 #include <agrum/core/hashFunc.h>
 

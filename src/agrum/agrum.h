@@ -109,9 +109,7 @@ target_link_libraries(foo agrum)
 #include <limits.h>
 
 
-#include <agrum/core/utils.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
 
 #include <agrum/core/refPtr.h>
 #include <agrum/core/list.h>
@@ -132,7 +130,7 @@ target_link_libraries(foo agrum)
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
-#include <agrum/BN/io/BIFIO.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>

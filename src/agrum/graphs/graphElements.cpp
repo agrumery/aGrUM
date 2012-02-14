@@ -24,7 +24,9 @@
  */
 #include <iostream>
 #include <sstream>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/graphElements.h>
 
 #ifdef GUM_NO_INLINE
@@ -62,7 +64,7 @@ namespace gum {
     pair.second = key.second();
     return HashFuncSmallKeyPair<NodeId,NodeId>::operator()( pair );
   }
-  
+
 
   // ==============================================================================
   /// A \c << operator for edges

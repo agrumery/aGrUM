@@ -24,40 +24,57 @@
 
 #include "testsuite_utils.h"
 
-namespace gum {
 
-  namespace tests {
+namespace gum_tests {
 
-    class PRMReaderTestSuite: public CxxTest::TestSuite {
-      public:
-        void testBasicRead() {
-          prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/inference.skool ) ) );
-          prm::PRM* prm;
-          TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
-          delete(prm);
-        }
+  class PRMReaderTestSuite: public CxxTest::TestSuite {
+    public:
+      void testBasicRead() {
+        gum::prm::skool::SkoolReader reader;
+        int res;
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/inference.skool ) ) );
 
-        void testRegression1() {
-          prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/withinterfaces.skool ) ) );
-          prm::PRM* prm;
-          TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
-          delete(prm);
-        }
+        if ( res!=0 ) reader.showElegantErrors();
 
-        void testRegression2() {
-          prm::skool::SkoolReader reader;
-          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( skool/foo2.skool ) ) );
-          prm::PRM* prm;
-          TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-          GUM_ASSERT( prm!=( prm::PRM* )0 );
-          delete(prm);
-        }
-    };
+        TS_ASSERT_EQUALS ( res,0 );
 
-  } // namespace tests
-} // namespace gum
-// ============================================================================
+        gum::prm::PRM* prm;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
+
+        delete ( prm );
+      }
+
+      void testRegression1() {
+        gum::prm::skool::SkoolReader reader;
+        int res;
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/withinterfaces.skool ) ) );
+
+        if ( res!=0 ) reader.showElegantErrors();
+
+        TS_ASSERT_EQUALS ( res,0 );
+
+        gum::prm::PRM* prm;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
+        delete ( prm );
+      }
+
+      void testRegression2() {
+        gum::prm::skool::SkoolReader reader;
+        int res;
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/foo2.skool ) ) );
+
+        if ( res!=0 ) reader.showElegantErrors();
+
+        TS_ASSERT_EQUALS ( res,0 );
+
+        gum::prm::PRM* prm;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
+
+        delete ( prm );
+      }
+  };
+
+} // namespace gum_tests

@@ -25,8 +25,8 @@
  */
 
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/graphs/orderedEliminationSequenceStrategy.h>
 
 
@@ -91,6 +91,7 @@ namespace gum {
     }
 
     __graph = graph;
+
     __sequence = seq;
     __seq_index = 0;
   }

@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** 
+/**
  * @file
  * @brief Headers of PRMObject.
  *
@@ -29,154 +29,159 @@
 // ============================================================================
 #include <string>
 // ============================================================================
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
 // ============================================================================
 #include <agrum/prm/utils_prm.h>
 // ============================================================================
+
 namespace gum {
-namespace prm {
-/**
- * @class PRMObject
- *
- * @brief Abstract base class for any element defined in a PRM.
- *
- * This class is a base class for any element defined in a PRM. Since objects
- * in a PRM are differentiated by their names, the only information we need
- * about them is their name.
- *
- * Furthermore we use an enumeration to know the concrete type of a given
- * PRMObject preventing faster type checking.
- *
- * @ingroup prm_group
- */
-class PRMObject {
-  public:
-  // ==========================================================================
-  /// @name Built-in types.
-  // ==========================================================================
-    /// @{
 
+  namespace prm {
     /**
-     * Enumeration of the different types of objects handled by a PRM.
-     * The "all" type is used to tell that we want any kind of ObjectType
-     * (useful with iterators for example). No PRMObject will ever have
-     * "all" as type.
+     * @class PRMObject
+     *
+     * @brief Abstract base class for any element defined in a PRM.
+     *
+     * This class is a base class for any element defined in a PRM. Since objects
+     * in a PRM are differentiated by their names, the only information we need
+     * about them is their name.
+     *
+     * Furthermore we use an enumeration to know the concrete type of a given
+     * PRMObject preventing faster type checking.
+     *
+     * @ingroup prm_group
      */
-    enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
-                      prm_type, prm_system, prm_instance };
 
-    /// Returns the string representation of a PRMObject.
-    static std::string enum2str(ObjectType type) 
-    {
-      switch (type) {
-        case prm_class:
-          return "prm_class";
-        case prm_class_elt:
-          return "prm_class_elt";
-        case prm_type:
-          return "prm_type";
-        case prm_system:
-          return "prm_system";
-        case prm_instance:
-          return "prm_instance";
-        case prm_interface:
-          return "prm_interface";
-        default:
-          return "unknown";
-      }
-    }
+    class PRMObject {
+      public:
+        // ==========================================================================
+        /// @name Built-in types.
+        // ==========================================================================
+        /// @{
 
-    /// Returns true if obj_ptr is of type Class.
-    static INLINE bool isClass(const PRMObject& obj) {
-      return obj.obj_type() == prm_class;
-    }
+        /**
+         * Enumeration of the different types of objects handled by a PRM.
+         * The "all" type is used to tell that we want any kind of ObjectType
+         * (useful with iterators for example). No PRMObject will ever have
+         * "all" as type.
+         */
+        enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
+                          prm_type, prm_system, prm_instance
+                      };
 
-    /// Returns true if obj_ptr is of type Interface.
-    static INLINE bool isInterface(const PRMObject& obj) {
-      return obj.obj_type() == prm_interface;
-    }
+        /// Returns the string representation of a PRMObject.
+        static std::string enum2str( ObjectType type ) {
+          switch ( type ) {
+            case prm_class:
+              return "prm_class";
+            case prm_class_elt:
+              return "prm_class_elt";
+            case prm_type:
+              return "prm_type";
+            case prm_system:
+              return "prm_system";
+            case prm_instance:
+              return "prm_instance";
+            case prm_interface:
+              return "prm_interface";
+            default:
+              return "unknown";
+          }
+        }
 
-    /// Returns true if obj_ptr is of type Instance.
-    static INLINE bool isInstance(const PRMObject& obj) {
-      return obj.obj_type() == prm_instance;
-    }
+        /// Returns true if obj_ptr is of type Class.
+        static INLINE bool isClass( const PRMObject& obj ) {
+          return obj.obj_type() == prm_class;
+        }
 
-    /// @}
-  // ==========================================================================
-  /// @name Constructor & destructor.
-  // ==========================================================================
-    /// @{
+        /// Returns true if obj_ptr is of type Interface.
+        static INLINE bool isInterface( const PRMObject& obj ) {
+          return obj.obj_type() == prm_interface;
+        }
 
-    /**
-     * Constructor.
-     * @param name The name of this object.
-     */
-    PRMObject(const std::string& name);
+        /// Returns true if obj_ptr is of type Instance.
+        static INLINE bool isInstance( const PRMObject& obj ) {
+          return obj.obj_type() == prm_instance;
+        }
 
-    /**
-     * Copy constructor.
-     */
-    PRMObject(const PRMObject& source);
+        /// @}
+        // ==========================================================================
+        /// @name Constructor & destructor.
+        // ==========================================================================
+        /// @{
 
-    /**
-     * Destructor.
-     */
-    virtual ~PRMObject();
+        /**
+         * Constructor.
+         * @param name The name of this object.
+         */
+        PRMObject( const std::string& name );
 
-    /// @}
-  // ==========================================================================
-  /// @name Getters & setters.
-  // ==========================================================================
-    /// @{
+        /**
+         * Copy constructor.
+         */
+        PRMObject( const PRMObject& source );
 
-    /**
-     * Returns the name of this object.
-     */
-    const std::string& name() const;
+        /**
+         * Destructor.
+         */
+        virtual ~PRMObject();
 
-    /**
-     * Returns the type of this object.
-     */
-    virtual ObjectType obj_type() const =0;
+        /// @}
+        // ==========================================================================
+        /// @name Getters & setters.
+        // ==========================================================================
+        /// @{
 
-    /// @}
-  // ==========================================================================
-  /// @name Operators
-  // ==========================================================================
-    /// @{
+        /**
+         * Returns the name of this object.
+         */
+        const std::string& name() const;
 
-    /**
-     * To PRMObject are equal if they have the same name (which is unique).
-     */
-    bool operator==(const PRMObject& obj) const;
+        /**
+         * Returns the type of this object.
+         */
+        virtual ObjectType obj_type() const =0;
 
-    /**
-     * To PRMObject are equal if they have the same name (which is unique).
-     */
-    bool operator!=(const PRMObject& obj) const;
+        /// @}
+        // ==========================================================================
+        /// @name Operators
+        // ==========================================================================
+        /// @{
 
-    /**
-     * Copy operator.
-     */
-    PRMObject& operator=(const PRMObject& source);
+        /**
+         * To PRMObject are equal if they have the same name (which is unique).
+         */
+        bool operator==( const PRMObject& obj ) const;
 
-    /// @}
-  private:
-  // ==========================================================================
-  /// @name Private members.
-  // ==========================================================================
-    /// @{
+        /**
+         * To PRMObject are equal if they have the same name (which is unique).
+         */
+        bool operator!=( const PRMObject& obj ) const;
 
-    // The name of this object
-    // ======================================================================
-    std::string __name;
+        /**
+         * Copy operator.
+         */
+        PRMObject& operator=( const PRMObject& source );
 
-    /// @}
-};
+        /// @}
+      private:
+        // ==========================================================================
+        /// @name Private members.
+        // ==========================================================================
+        /// @{
+
+        // The name of this object
+        // ======================================================================
+        std::string __name;
+
+        /// @}
+    };
+
 /// For printing ObjectType easily.
-std::ostream& operator<<(std::ostream& out, PRMObject::ObjectType obj_type);
-} /* namespace prm */
+    std::ostream& operator<<( std::ostream& out, PRMObject::ObjectType obj_type );
+  } /* namespace prm */
 } /* namespace gum */
+
 // ============================================================================
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRMObject.inl>

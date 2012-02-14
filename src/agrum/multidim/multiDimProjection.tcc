@@ -28,7 +28,7 @@
 
 
 #include <limits>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 
 namespace gum {

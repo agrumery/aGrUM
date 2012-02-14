@@ -24,15 +24,15 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/graphs/incrementalTriangulation.h>
 #include <agrum/graphs/defaultTriangulation.h>
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
-
-    class IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
+  class IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
     public:
       void test1() {
         gum::DefaultTriangulation tr;
@@ -126,31 +126,31 @@ namespace gum {
         triang.insertNode( 0, 10 );
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
 
         triang.insertNode( 1, 10 );
 
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
 
         triang.insertEdge( 0, 1 );
 
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
 
         triang.insertNode( 2, 10 );
 
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
 
         triang.insertEdge( 0, 2 );
 
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
 
         triang.insertEdge( 2, 1 );
 
@@ -158,45 +158,45 @@ namespace gum {
 
         triang.updateTriangulation();
 
-        if ( ! triang.__check() ) return;
+        if( ! triang.__check() ) return;
       }
 
       void testRandom() {
-        for ( unsigned int k = 1; k < 100; ++k ) {
+        for( unsigned int k = 1; k < 100; ++k ) {
           // std::cerr << "<<<<<<<<<<<<<<<<<< k = "<< k << std::endl;
           srand( k );
 
           gum::DefaultTriangulation tr;
           gum::IncrementalTriangulation triang( tr );
 
-          for ( unsigned int i = 0; i < 100; ++i ) {
-            int nb = ( int )((( float ) rand() / RAND_MAX ) * 100 );
+          for( unsigned int i = 0; i < 100; ++i ) {
+            int nb = ( int )( ( ( float ) rand() / RAND_MAX ) * 100 );
 
             // ===================================================
             // remove some node
 
-            if ( nb < 10 ) {
+            if( nb < 10 ) {
               continue;
               const gum::UndiGraph& graph = triang.graph();
-              nb = ( int )((( float ) rand() / RAND_MAX ) * graph.bound() );
+              nb = ( int )( ( ( float ) rand() / RAND_MAX ) * graph.bound() );
               // std::cerr << "remove node " << nb << std::endl;
               triang.eraseNode( nb );
             }
 
             // ===================================================
             // add a new node
-            else if ( nb < 30 ) {
+            else if( nb < 30 ) {
               // std::cerr << "create node " << triang.graph().bound() << std::endl;
               triang.insertNode( triang.graph().bound(), 10 );
             }
 
             // ===================================================
             // remove some edge
-            else if ( nb < 50 ) {
+            else if( nb < 50 ) {
               unsigned int nb1 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                ( int )( ( ( float ) rand() / RAND_MAX ) * triang.graph().bound() );
               unsigned int nb2 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                ( int )( ( ( float ) rand() / RAND_MAX ) * triang.graph().bound() );
               // std::cerr << "remove edge (" << nb1 << "," << nb2 << ")" << std::endl;
               triang.eraseEdge( gum::Edge( nb1, nb2 ) );
             }
@@ -205,16 +205,16 @@ namespace gum {
             // add a new edge
             else {
               unsigned int nb1 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                ( int )( ( ( float ) rand() / RAND_MAX ) * triang.graph().bound() );
               unsigned int nb2 =
-                ( int )((( float ) rand() / RAND_MAX ) * triang.graph().bound() );
+                ( int )( ( ( float ) rand() / RAND_MAX ) * triang.graph().bound() );
               // std::cerr << "create edge (" << nb1 << "," << nb2 << ")" << std::endl;
               triang.insertEdge( nb1, nb2 );
             }
 
-            nb = ( int )((( float ) rand() / RAND_MAX ) * 20 );
+            nb = ( int )( ( ( float ) rand() / RAND_MAX ) * 20 );
 
-            if ( nb <= 3 ) {
+            if( nb <= 3 ) {
               // std::cerr << "   --- check --- " << std::endl;
               triang.updateTriangulation();
               TS_ASSERT_EQUALS( triang.__check(), true );
@@ -359,18 +359,16 @@ namespace gum {
                          const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
-        for ( gum::NodeSetIterator iter = clique.begin();
-              iter != clique.end(); ++iter ) {
+        for( gum::NodeSetIterator iter = clique.begin();
+             iter != clique.end(); ++iter ) {
           iter2 = iter;
 
-          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+          for( ++iter2; iter2 != clique.end(); ++iter2 ) {
             try { triang.insertEdge( *iter, *iter2 ); }
-            catch ( gum::DuplicateElement& ) {}
+            catch( gum::DuplicateElement& ) {}
           }
         }
       }
 
-    };
-  }
+  };
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

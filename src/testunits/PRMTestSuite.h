@@ -37,153 +37,166 @@
 // ============================================================================
 
 #include "testsuite_utils.h"
-namespace gum {
-namespace tests {
 
-using namespace gum;
-using namespace gum::prm;
-using namespace gum::prm::skool;
+namespace gum_tests {
 
-class PRMTestSuite: public CxxTest::TestSuite {
-  private:
-    PRM* prm;
-    PRM* small;
+  class PRMTestSuite: public CxxTest::TestSuite {
+    private:
+      gum::prm::PRM* prm;
+      gum::prm::PRM* small;
 
-  public:
-    void setUp() {
-      {
-        SkoolReader reader;
-        reader.readFile(GET_PATH_STR(skool/inference.skool));
-        prm = reader.prm();
-      }
-      {
-        SkoolReader reader;
-        reader.readFile(GET_PATH_STR(skool/printers_systems.skool));
-        small = reader.prm();
-      }
-    }
-
-    void tearDown() {
-      delete prm;
-      delete small;
-    }
-
-    void testCreation() {
-      ClassBayesNet* c = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(c = new ClassBayesNet(prm->getClass("SafeComputer")));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete c);
-      InstanceBayesNet* inst = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inst = new InstanceBayesNet(prm->system("aSys").get("c1")));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete inst);
-    }
-
-    void testClassAccess() {
-      Class& c = prm->getClass("SafeComputer");
-      ClassBayesNet* bn = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new ClassBayesNet(prm->getClass("SafeComputer")));
-      Size elts = c.attributes().size() + c.aggregates().size();
-      TS_ASSERT_EQUALS(bn->size(), elts);
-      for (Set<Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr) {
-        NodeId id = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING((**attr).cpf());
-        TS_GUM_ASSERT_THROWS_NOTHING(id = bn->idFromName((**attr).safeName()));
-        TS_GUM_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        TS_ASSERT_EQUALS((**attr).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        TS_ASSERT_EQUALS((**attr).cpf().domainSize(), bn->cpt(id).domainSize());
-      }
-      TS_ASSERT(bn->modalities().size() > 0);
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
-    }
-
-    void testInstanceAccess() {
-      InstanceBayesNet* bn = 0;
-      Instance& i = prm->system("aSys").get("c1");
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = new InstanceBayesNet(i));
-      TS_ASSERT_EQUALS(bn->size(), i.size());
-      for (Instance::iterator attr = i.begin(); attr != i.end(); ++attr) {
-        NodeId id = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING((**attr).cpf());
-        TS_GUM_ASSERT_THROWS_NOTHING(id = bn->idFromName((**attr).safeName()));
-        TS_GUM_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        TS_ASSERT_EQUALS((**attr).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        TS_ASSERT_EQUALS((**attr).cpf().domainSize(), bn->cpt(id).domainSize());
-      }
-      TS_ASSERT(bn->modalities().size() > 0);
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bn);
-    }
-
-    void testGroundedBN() {
-      System& sys = prm->system("aSys");
-      BayesNet<prm_float> bn;
-      BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
-      int count = 0;
-      for (System::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
-        for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-          ++count;
+    public:
+      void setUp() {
+        {
+          gum::prm::skool::SkoolReader reader;
+          reader.readFile( GET_PATH_STR( skool/inference.skool ) );
+          prm = reader.prm();
+        }
+        {
+          gum::prm::skool::SkoolReader reader;
+          reader.readFile( GET_PATH_STR( skool/printers_systems.skool ) );
+          small = reader.prm();
         }
       }
-      int wount = 0;
-      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        wount++;
-        std::string var = bn.variable(*node).name();
-        size_t pos = var.find_first_of('.');
-        Instance& instance = sys.get(var.substr(0, pos));
-        Attribute& attr = instance.get(var.substr(pos +1));
-        TS_ASSERT_DIFFERS(bn.cpt(*node).nbrDim(), (Size)0);
-        if (ClassElement::isAggregate(instance.type().get(attr.id()))) {
-          TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), (Size)1);
-        }
+
+      void tearDown() {
+        delete prm;
+        delete small;
       }
-      TS_ASSERT_EQUALS(count, wount);
-      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        const DiscreteVariable* var = &(bn.variable(*node));
-        for (DAG::NodeIterator mode = bn.dag().beginNodes(); mode != bn.dag().endNodes(); ++mode) {
-          if ((*node) != (*mode)) {
-            TS_ASSERT_DIFFERS(var, &(bn.variable(*mode)));
+
+      void testCreation() {
+        gum::prm::ClassBayesNet* c = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( c = new gum::prm::ClassBayesNet( prm->getClass( "SafeComputer" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete c );
+        gum::prm::InstanceBayesNet* inst = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( inst = new gum::prm::InstanceBayesNet( prm->system( "aSys" ).get( "c1" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete inst );
+      }
+
+      void testClassAccess() {
+        gum::prm::Class& c = prm->getClass( "SafeComputer" );
+        gum::prm::ClassBayesNet* bn = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet( prm->getClass( "SafeComputer" ) ) );
+        gum::Size elts = c.attributes().size() + c.aggregates().size();
+        TS_ASSERT_EQUALS( bn->size(), elts );
+
+        for( gum::Set<gum::prm::Attribute*>::iterator attr = c.attributes().begin(); attr != c.attributes().end(); ++attr ) {
+          gum::NodeId id = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( ( **attr ).cpf() );
+          TS_GUM_ASSERT_THROWS_NOTHING( id = bn->idFromName( ( **attr ).safeName() ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( bn->cpt( id ) );
+          TS_ASSERT_EQUALS( ( **attr ).cpf().nbrDim(), bn->cpt( id ).nbrDim() );
+          TS_ASSERT_EQUALS( ( **attr ).cpf().domainSize(), bn->cpt( id ).domainSize() );
+        }
+
+        TS_ASSERT( bn->modalities().size() > 0 );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bn );
+      }
+
+      void testInstanceAccess() {
+        gum::prm::InstanceBayesNet* bn = 0;
+        gum::prm::Instance& i = prm->system( "aSys" ).get( "c1" );
+        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::InstanceBayesNet( i ) );
+        TS_ASSERT_EQUALS( bn->size(), i.size() );
+
+        for( gum::prm::Instance::iterator attr = i.begin(); attr != i.end(); ++attr ) {
+          gum::NodeId id = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING( ( **attr ).cpf() );
+          TS_GUM_ASSERT_THROWS_NOTHING( id = bn->idFromName( ( **attr ).safeName() ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( bn->cpt( id ) );
+          TS_ASSERT_EQUALS( ( **attr ).cpf().nbrDim(), bn->cpt( id ).nbrDim() );
+          TS_ASSERT_EQUALS( ( **attr ).cpf().domainSize(), bn->cpt( id ).domainSize() );
+        }
+
+        TS_ASSERT( bn->modalities().size() > 0 );
+        TS_GUM_ASSERT_THROWS_NOTHING( delete bn );
+      }
+
+      void testGroundedBN() {
+        gum::prm::System& sys = prm->system( "aSys" );
+        gum::BayesNet<gum::prm::prm_float> bn;
+        gum::BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
+        int count = 0;
+
+        for( gum::prm::System::iterator iter = sys.begin(); iter != sys.end(); ++iter ) {
+          for( gum::prm::Instance::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+            ++count;
+          }
+        }
+
+        int wount = 0;
+
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+          wount++;
+          std::string var = bn.variable( *node ).name();
+          size_t pos = var.find_first_of( '.' );
+          gum::prm::Instance& instance = sys.get( var.substr( 0, pos ) );
+          gum::prm::Attribute& attr = instance.get( var.substr( pos +1 ) );
+          TS_ASSERT_DIFFERS( bn.cpt( *node ).nbrDim(), ( gum::Size )0 );
+
+          if( gum::prm::ClassElement::isAggregate( instance.type().get( attr.id() ) ) ) {
+            TS_ASSERT_DIFFERS( attr.cpf().nbrDim(), ( gum::Size )1 );
+          }
+        }
+
+        TS_ASSERT_EQUALS( count, wount );
+
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+          const gum::DiscreteVariable* var = &( bn.variable( *node ) );
+
+          for( gum::DAG::NodeIterator mode = bn.dag().beginNodes(); mode != bn.dag().endNodes(); ++mode ) {
+            if( ( *node ) != ( *mode ) ) {
+              TS_ASSERT_DIFFERS( var, &( bn.variable( *mode ) ) );
+            }
           }
         }
       }
-    }
 
-    void testCPF() {
-      System& sys = prm->system("aSys");
-      for (System::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
-        for (Instance::iterator jter = (**iter).begin(); jter != (**iter).end(); ++jter) {
-          Instantiation i((**jter).cpf()), var;
-          var.add((**jter).type().variable());
-          for (i.setFirstOut(var); not i.end(); i.incOut(var)) {
-            prm_float f = 0.0;
-            for (i.setFirstIn(var); not i.end(); i.incIn(var)) {
-              f += (**jter).cpf().get(i);
+      void testCPF() {
+        gum::prm::System& sys = prm->system( "aSys" );
+
+        for( gum::prm::System::iterator iter = sys.begin(); iter != sys.end(); ++iter ) {
+          for( gum::prm::Instance::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+            gum::Instantiation i( ( **jter ).cpf() ), var;
+            var.add( ( **jter ).type().variable() );
+
+            for( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
+              gum::prm::prm_float f = 0.0;
+
+              for( i.setFirstIn( var ); not i.end(); i.incIn( var ) ) {
+                f += ( **jter ).cpf().get( i );
+              }
+
+              TS_ASSERT_DELTA( f, 1.0, 1e-9 );
+              i.unsetOverflow();
             }
-            TS_ASSERT_DELTA(f, 1.0, 1e-9);
+          }
+        }
+      }
+
+      void testNormalisedCPT() {
+        gum::prm::System& sys = prm->system( "aSys" );
+        gum::BayesNet<gum::prm::prm_float> bn;
+        gum::BayesNetFactory<gum::prm::prm_float> bn_factory( &bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
+
+        for( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
+          const gum::Potential<gum::prm::prm_float>& cpt = bn.cpt( *node );
+          gum::Instantiation i( cpt ), j;
+          j.add( bn.variable( *node ) );
+
+          for( i.setFirstOut( j ); not i.end(); i.incOut( j ) ) {
+            gum::prm::prm_float sum = 0.0;
+
+            for( i.setFirstIn( j ); not i.end(); i.incIn( j ) )
+              sum += cpt.get( i );
+
+            TS_ASSERT_DELTA( sum, 1.0, 1e-9 );
             i.unsetOverflow();
           }
         }
       }
-    }
+  };
 
-    void testNormalisedCPT() {
-      System& sys = prm->system("aSys");
-      BayesNet<prm_float> bn;
-      BayesNetFactory<prm_float> bn_factory(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
-      for (DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node) {
-        const Potential<prm_float>& cpt = bn.cpt(*node);
-        Instantiation i(cpt), j;
-        j.add(bn.variable(*node));
-        for (i.setFirstOut(j); not i.end(); i.incOut(j)) {
-          prm_float sum = 0.0;
-          for (i.setFirstIn(j); not i.end(); i.incIn(j))
-            sum += cpt.get(i);
-          TS_ASSERT_DELTA(sum, 1.0, 1e-9);
-          i.unsetOverflow();
-        }
-      }
-    }
-};
-
-} // namespace tests
-} // namespace gum
-// ============================================================================
+} // namespace gum_tests

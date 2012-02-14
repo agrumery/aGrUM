@@ -24,6 +24,7 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
+// WARNING : Do not include this file directlty : instead include <agrum/config.h>
 
 #include <iostream>
 #include <iomanip>
@@ -45,9 +46,9 @@
 
 
 namespace gum {
-  const std::string __createMsg ( const std::string filename,
-                                  const std::string function,
-                                  const int line, const std::string msg );
+  const std::string __createMsg ( const std::string& filename,
+                                  const std::string& function,
+                                  const int line, const std::string& msg );
   /**
    * base class for all aGrUM's exceptions
    */
@@ -118,8 +119,6 @@ namespace gum {
   GUM_MAKE_ERROR ( OperationNotAllowed, Exception, "this operation is not allowed" )
 /// Exception : the element we looked for cannot be found
   GUM_MAKE_ERROR ( NotFound, Exception , "could not find this object" )
-/// Syntax Error while parsing
-  GUM_MAKE_ERROR ( SyntaxError, Exception, "Syntax error" )
 ///////////////////////////////////
 /// Exception base for reference errro
   GUM_MAKE_ERROR ( ReferenceError, Exception, "Reference error" )
@@ -137,7 +136,7 @@ namespace gum {
 /// Exception base for graph error
   GUM_MAKE_ERROR ( GraphError, Exception, "Graph error" )
 /// Exception : no neighbour to a given node was found
-  GUM_MAKE_ERROR ( Noneighbour, GraphError, "No neighbour can be found to the given node" )
+  GUM_MAKE_ERROR ( NoNeighbour, GraphError, "No neighbour can be found to the given node" )
 /// Exception : no parent for a given node was found
   GUM_MAKE_ERROR ( NoParent, GraphError, "No parent can be found w.r.t the given node" )
 /// Exception : no child for a given node was found
@@ -161,9 +160,23 @@ namespace gum {
   GUM_MAKE_ERROR ( WrongType, FactoryError, "wrong type for this operation" )
   GUM_MAKE_ERROR ( WrongClassElement, FactoryError, "wrong ClassElement for this operation" )
   GUM_MAKE_ERROR ( TypeError, FactoryError, "wrong subtype or subclass" )
+
+  /// special exception for syntax errors in files
+  class SyntaxError : public IOError {
+    protected:
+      Size _noLine;
+      Size _noCol;
+    public:
+      SyntaxError ( const std::string& aMsg,Size nol, Size noc,std::string aType="Syntax Error" ) : IOError ( aMsg,aType ),_noLine ( nol ),_noCol ( noc ) {
+
+      };
+
+      Size col() const { return _noCol;};
+      Size line() const {return _noLine;};
+  };
+#define GUM_SYNTAX_ERROR(msg,line,column) {std::ostringstream __error__str;__error__str<<msg;throw(gum::SyntaxError(__error__str.str(),line,column));}
 } /* namespace gum */
 
 
 #endif /* GUM_EXCEPTIONS_H */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

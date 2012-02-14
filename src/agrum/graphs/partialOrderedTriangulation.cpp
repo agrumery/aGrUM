@@ -25,8 +25,8 @@
  */
 
 
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/graphs/partialOrderedTriangulation.h>
 
 
@@ -76,15 +76,20 @@ namespace gum {
     const List<NodeSet>* partial_order ) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;
+
     if ( graph ) ++nb;
+
     if ( modal ) ++nb;
+
     if ( partial_order ) ++nb;
+
     if (( nb != 0 ) && ( nb != 3 ) ) {
       GUM_ERROR( GraphError, "PartialOrderedTriangulation requires valid "
                  "graphs, modalities and elimination orderings" );
     }
 
     StaticTriangulation::_setGraph( graph, modal );
+
     __partial_order = partial_order;
     __modalities = modal;
   }

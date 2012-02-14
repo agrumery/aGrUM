@@ -24,7 +24,8 @@
 
 #include <ostream>
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
+
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
@@ -33,6 +34,7 @@
 namespace gum {
 
   class MultiDimAdressable;
+
   class Instantiation;
   /* ============================================================================ */
   /* ============================================================================ */
@@ -45,29 +47,30 @@ namespace gum {
    * @ingroup multidim_group
    *
    * SetInst is designed to assign a set of deterministic values to tuples of variables  for contextual pependencies detection
-   * 
+   *
    * for variable I of possible determinstic instances i1 i2 i3 ... in
    * the expresion of a SET of instantiations is express by the boolean state of each instance transform in an integer
-   * 
+   *
    * for example: I  i1 or i2 or i4
-   * 
+   *
    *                i4 i3 i2 i1      setInst
    * I               1  0  1  1   ->      11
-   * 
+   *
    * two different types of setters:
    *
    * # function ending in val take the instance and encode it.
    * # function ending in vals take allready the encode expression of the intances union
    *
-   * 
+   *
    * @warning The model is based on the implementation of aGrUM Instantiation source code.
-   * The only difference is the impossibility to loop since the SetInst is not create to 
-   * run through, but to collect all union of the possible instantiations of 
-   * each variable, on the multiDimAdressable.   
-   * 
+   * The only difference is the impossibility to loop since the SetInst is not create to
+   * run through, but to collect all union of the possible instantiations of
+   * each variable, on the multiDimAdressable.
+   *
    * To print information about a SetInst use the following function:
    * @see operator<<(std::ostream&, const SetInst&)
    */
+
   class SetInst  {
     public:
       // ############################################################################
@@ -87,8 +90,8 @@ namespace gum {
        * @param notifyMaster whether or not notify master if exits
        */
       // ============================================================================
-      SetInst( const SetInst& aI);
-      SetInst( const Instantiation& aI);
+      SetInst( const SetInst& aI );
+      SetInst( const Instantiation& aI );
 
       // ============================================================================
       /**
@@ -238,7 +241,7 @@ namespace gum {
        */
       // ============================================================================
 
-      Idx nbrOccurences(const DiscreteVariable& var) const;
+      Idx nbrOccurences( const DiscreteVariable& var ) const;
 
       Idx val( const Idx i ) const;
 
@@ -337,13 +340,13 @@ namespace gum {
        * @throw OutOfBound Raised if newval is not a possible value for v.
        */
       // ============================================================================
-       SetInst& chgVals( const DiscreteVariable& v, const Size newval );
-       SetInst& addVal(const DiscreteVariable& v, const Idx newVal );
-       SetInst& addVals(const DiscreteVariable& v, const Size newVal ); 
-       SetInst& remVal(const DiscreteVariable& v, const Idx newVal );
-       SetInst& remVals(const DiscreteVariable& v, const Size newVal ); 
-       SetInst& interVals(const DiscreteVariable& v, const Size newVal ); 
-       SetInst& interVal(const DiscreteVariable& v, const Idx newVal ); 
+      SetInst& chgVals( const DiscreteVariable& v, const Size newval );
+      SetInst& addVal( const DiscreteVariable& v, const Idx newVal );
+      SetInst& addVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& remVal( const DiscreteVariable& v, const Idx newVal );
+      SetInst& remVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& interVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& interVal( const DiscreteVariable& v, const Idx newVal );
 
       // ============================================================================
       /**
@@ -361,11 +364,11 @@ namespace gum {
       // ============================================================================
       SetInst& chgVals( const DiscreteVariable* v, const Size newval );
       SetInst& addVal( const DiscreteVariable* v, const Idx newVal );
-      SetInst& addVals(const DiscreteVariable* v, const Size newVal ); 
-      SetInst& remVal(const DiscreteVariable* v, const Idx newVal );
-      SetInst& remVals(const DiscreteVariable* v, const Size newVal ); 
-      SetInst& interVals(const DiscreteVariable* v, const Size newVal ); 
-      SetInst& interVal(const DiscreteVariable* v, const Idx newVal ); 
+      SetInst& addVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& remVal( const DiscreteVariable* v, const Idx newVal );
+      SetInst& remVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& interVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& interVal( const DiscreteVariable* v, const Idx newVal );
 
       // ============================================================================
       /**
@@ -387,15 +390,15 @@ namespace gum {
       SetInst& chgVals( const Idx varPos, const Size newval );
 
       SetInst& addVal( Idx varPos, const Idx newVal );
-      SetInst& addVals( Idx varPos, const Size newVal ); 
+      SetInst& addVals( Idx varPos, const Size newVal );
       SetInst& remVal( Idx varPos, const Idx newVal );
-      SetInst& remVals( Idx varPos, const Size newVal ); 
-      SetInst& chgDifVal( Idx varPos, const Size newVal ); 
-      SetInst& interVals( Idx varPos, const Size newVal ); 
-      SetInst& interVal( Idx varPos, const Idx newVal ); 
+      SetInst& remVals( Idx varPos, const Size newVal );
+      SetInst& chgDifVal( Idx varPos, const Size newVal );
+      SetInst& interVals( Idx varPos, const Size newVal );
+      SetInst& interVal( Idx varPos, const Idx newVal );
 
       // ============================================================================
-   
+
       // ============================================================================
       SetInst& chgValIn( const SetInst& i );
 
@@ -519,7 +522,7 @@ namespace gum {
       bool rend() const ;
 
       /// @}
- /// @{
+/// @{
 
 
 
@@ -535,12 +538,12 @@ namespace gum {
       std::string toString() const ;
 
       // ============================================================================
-     
+
       // ============================================================================
       void reorder( const Sequence<const DiscreteVariable*>& v );
 
       // ============================================================================
-     
+
       // ============================================================================
       void reorder( const SetInst& i );
 
@@ -562,25 +565,26 @@ namespace gum {
        * @throw NotFound Raised if a variable in i does not point to a variable in j
        *                 or if a variable in i is missing in bij.
        */
-      static void assign_values(Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-          const SetInst& i, SetInst& j) {
+      static void assign_values( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                 const SetInst& i, SetInst& j ) {
         try {
-          for (Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
-              iter != i.variablesSequence().end(); ++iter) {
-            j.chgVal(bij.second(*iter), i.val(*iter));
+          for ( Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
+                iter != i.variablesSequence().end(); ++iter ) {
+            j.chgVal( bij.second( *iter ), i.val( *iter ) );
           }
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "missing variable in bijection or SetInst");
+        } catch ( NotFound& ) {
+          GUM_ERROR( NotFound, "missing variable in bijection or SetInst" );
         }
       }
+
       /// @}
 
-  protected:
+    protected:
 
       /// Replace x by y.
-      virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
-  private:
+    private:
 
       // ============================================================================
       /**
@@ -601,7 +605,7 @@ namespace gum {
       std::vector<Size> __vals;
 
       // ============================================================================
-     
+
       // ============================================================================
       bool __overflow;
 
@@ -611,7 +615,7 @@ namespace gum {
       void __swap( Idx i,Idx j );
 
       // ============================================================================
-     
+
       // ============================================================================
       void __chgVal( const Idx varPos, const Idx newVal );
       void __chgVals( const Idx varPos, const Size newVal );
@@ -665,14 +669,14 @@ namespace gum {
       /// initialisation (same in 4 constructors)
       // ============================================================================
       void __init( MultiDimAdressable* master );
-};
+  };
 
 // ============================================================================
 /// Print information of the SetInst in the stream.
 // ============================================================================
-std::ostream& operator<< ( std::ostream&, const SetInst& );
-gum::SetInst& operator<< ( gum::SetInst& inst, const gum::DiscreteVariable& i );
-gum::SetInst& operator>> ( gum::SetInst& inst, const gum::DiscreteVariable& i );
+  std::ostream& operator<< ( std::ostream&, const SetInst& );
+  gum::SetInst& operator<< ( gum::SetInst& inst, const gum::DiscreteVariable& i );
+  gum::SetInst& operator>> ( gum::SetInst& inst, const gum::DiscreteVariable& i );
 
 } /* namespace gum */
 

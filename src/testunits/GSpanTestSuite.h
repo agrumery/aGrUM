@@ -22,7 +22,8 @@
 #include <cxxtest/TestSuite.h>
 #include <cxxtest/AgrumTestSuite.h>
 // ============================================================================
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/BN/io/BIF/BIFWriter.h>
 // ============================================================================
 #include <agrum/prm/gspan.h>
@@ -30,52 +31,50 @@
 #include <agrum/prm/PRMFactory.h>
 #include <agrum/prm/skool/SkoolReader.h>
 // ============================================================================
-namespace gum {
-namespace tests {
-
-using namespace gum;
-using namespace gum::prm;
-using namespace gum::prm::gspan;
-using namespace gum::prm::skool;
 
 
-class GSpanTestSuite: public CxxTest::TestSuite {
-  private:
-    SkoolReader* __driver;
-    std::string dot_dir;
+namespace gum_tests {
 
-    InterfaceGraph* ig;
+  class GSpanTestSuite: public CxxTest::TestSuite {
+    private:
+      gum::prm::skool::SkoolReader* __driver;
+      std::string dot_dir;
 
-  public:
-    void setUp() {
-      __driver  = new SkoolReader();
-      //dot_dir = "/testunits/dot/";
-      __driver->readFile("../../../src/testunits/ressources/skool/specialprinters.skool");
-      ig = new InterfaceGraph(__driver->prm()->system("m"));
-    }
+      gum::prm::gspan::InterfaceGraph* ig;
 
-    void tearDown() {
-      delete ig;
-      if (__driver->prm() != 0) delete __driver->prm();
-      delete __driver;
-    }
-
-    void testInterfaceGraph() {
-      TS_ASSERT_EQUALS(ig->graph().size(), (Size) 1 + 5*2 + 4*3 + 4*3 + 5 + 3 + 4);
-      TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (Size) (5*2 + 3*4 + 4*3) + 5 + 3*3 + 4*2);
-    }
-
-    void testTree() {
-      GSpan* gspan = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(gspan = new GSpan(*(__driver->prm()), __driver->prm()->system("m")));
-      if (gspan != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);
+    public:
+      void setUp() {
+        __driver  = new gum::prm::skool::SkoolReader();
+        //dot_dir = "/testunits/dot/";
+        __driver->readFile ( "../../../src/testunits/ressources/skool/specialprinters.skool" );
+        ig = new gum::prm::gspan::InterfaceGraph ( __driver->prm()->system ( "m" ) );
       }
-    }
 
-};
+      void tearDown() {
+        delete ig;
+
+        if ( __driver->prm() != 0 ) delete __driver->prm();
+
+        delete __driver;
+      }
+
+      void testInterfaceGraph() {
+        TS_ASSERT_EQUALS ( ig->graph().size(), ( gum::Size ) 1 + 5*2 + 4*3 + 4*3 + 5 + 3 + 4 );
+        TS_ASSERT_EQUALS ( ig->graph().sizeEdges(), ( gum::Size ) ( 5*2 + 3*4 + 4*3 ) + 5 + 3*3 + 4*2 );
+      }
+
+      void testTree() {
+        gum::prm::GSpan* gspan = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING ( gspan = new gum::prm::GSpan ( * ( __driver->prm() ), __driver->prm()->system ( "m" ) ) );
+
+        if ( gspan != 0 ) {
+          TS_GUM_ASSERT_THROWS_NOTHING ( gspan->discoverPatterns() );
+          TS_GUM_ASSERT_THROWS_NOTHING ( delete gspan );
+        }
+      }
+
+  };
+
 // ============================================================================
 } // tests
-} // gum
 

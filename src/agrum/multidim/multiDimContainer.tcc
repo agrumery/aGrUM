@@ -18,8 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/core/utils.h>
+#include <agrum/config.h>
 
+#include <agrum/multidim/multiDimContainer.h>
 
 namespace gum {
 
@@ -108,19 +109,24 @@ namespace gum {
   MultiDimContainer<T_DATA>::operator==( const MultiDimContainer<T_DATA>& p ) const {
     if (( nbrDim() == p.nbrDim() ) && ( domainSize() == p.domainSize() ) ) {
       typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
+
       for ( var_iterator iter = variablesSequence().begin();
             iter != variablesSequence().end(); ++iter ) {
         if ( ! p.variablesSequence().exists( *iter ) ) {
           return false;
         }
       }
+
       Instantiation i( *this );
+
       AlmostDifferent<T_DATA> cmp;
+
       for ( i.setFirst(); ! i.end(); ++i ) {
         if ( cmp( get( i ), p.get( i ) ) ) {
           return false;
         }
       }
+
       return true;
     } else {
       return false;

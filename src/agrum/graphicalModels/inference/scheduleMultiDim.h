@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,8 +27,9 @@
 
 
 #include <string>
-#include <agrum/core/inline.h>
-#include <agrum/core/types.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 #include <agrum/multidim/discreteVariable.h>
@@ -91,7 +92,7 @@ namespace gum {
    *
    * // here, we can display the content of the real multidim table stored
    * // into result2
-   * std::cout << result2.multiDim ();   
+   * std::cout << result2.multiDim ();
    * @endcode
    *
    * So, to summarize the key idea underlying Schedule* classes: these classes
@@ -128,7 +129,7 @@ namespace gum {
 
     /// @}
 
-    
+
 
     // ############################################################################
     /// @name Operators
@@ -141,13 +142,13 @@ namespace gum {
 
     /// checks whether two ScheduleMultiDim are related to the same table
     bool operator== ( const ScheduleMultiDim<T_DATA>& ) const;
-    
+
     /// checks whether two ScheduleMultiDim are related to different tables
     bool operator!= ( const ScheduleMultiDim<T_DATA>& ) const;
-    
+
     /// @}
 
-    
+
 
     // ############################################################################
     /// @name Accessors/Modifiers
@@ -167,7 +168,7 @@ namespace gum {
      * @throws NotFound exception is thrown if the multidimImplementation does not
      * exist yet (because it has not been computed yet) */
     const MultiDimImplementation<T_DATA>& multiDim () const;
-    
+
     /// returns the id of the ScheduleMultiDim
     Id id () const;
 
@@ -186,17 +187,17 @@ namespace gum {
     /** @throws DuplicateElement exception is thrown if the MultiDimDecorator
      * has already been wrapped in a ScheduleMultiDim with another id */
     void setMultiDim ( const MultiDimDecorator<T_DATA>& );
-    
+
     /// displays the content of the multidim
     std::string toString () const;
-    
+
     /// @}
 
 
   private:
     /// grant accesses to ScheduleDeleteMultiDim
     friend class ScheduleDeleteMultiDim<T_DATA>;
-    
+
     /// the unique Id of the ScheduleMultiDim
     Id __id;
 
@@ -219,7 +220,7 @@ namespace gum {
 
     /// returns a table with the domain size of the table corresponding to id
     static HashTable<Id,Size>& __id2size ();
-    
+
   };
 
 

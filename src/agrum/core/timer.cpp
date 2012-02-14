@@ -17,10 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/core/timer.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/inline.h>
+#include <agrum/config.h>
 
+#include <agrum/core/timer.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/timer.inl>

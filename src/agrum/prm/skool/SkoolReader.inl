@@ -55,23 +55,23 @@ namespace gum {
       }
 
       INLINE
-      void
+      int
       SkoolReader::readFile ( const std::string& file ) {
         size_t lastSlashIndex = file.find_last_of ( '/' );
         Directory dir ( file.substr ( 0, lastSlashIndex+1 ) );
 
         if ( ! dir.isValid() ) {
           __errors.addException ( "directory doesn't exist.", dir.path() );
-          return;
+          return __errors.count();
         }
 
-        string basename = file.substr ( lastSlashIndex+1 );
+        std::string basename = file.substr ( lastSlashIndex+1 );
 
-        string absFilename = dir.absolutePath() + basename;
+        std::string absFilename = dir.absolutePath() + basename;
 
         try {
           if ( __parser && __parser->getImports().exists ( absFilename ) )
-            return;
+            return __errors.count();;
 
           Scanner s ( absFilename.c_str() );
 
@@ -79,8 +79,7 @@ namespace gum {
             __parser = new Parser ( &s );
             __parser->setFactory ( &__factory );
             __parser->setClassPath ( __class_path );
-          }
-          else
+          } else
             __parser->scanner = &s;
 
           __parser->setCurrentDirectory ( dir.absolutePath() );
@@ -92,19 +91,20 @@ namespace gum {
           __parseDone = true;
 
           __errors += __parser->errors();
-        }
-        catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), file );
         }
+
+        return __parser->errors().count();
       }
 
       INLINE
-      void
-      SkoolReader::readString ( const std::string & string ) {
+      int
+      SkoolReader::readString ( const std::string& str ) {
         // errors += parser.errors
         try {
-          Scanner s ( ( unsigned char* ) string.c_str(), ( int ) ( string.length() ) );
+          Scanner s ( ( unsigned char* ) str.c_str(), ( int ) ( str.length() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
@@ -112,11 +112,12 @@ namespace gum {
           __parser->Parse();
           __parseDone = true;
           __errors += __parser->errors();
-        }
-        catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
           __errors.addException ( e.content(), "" );
         }
+
+        return __parser->errors().count();
       }
 
 
@@ -186,7 +187,7 @@ namespace gum {
       }
 
       INLINE
-      const ErrorsContainer & SkoolReader::errorsContainer() const {
+      const ErrorsContainer& SkoolReader::errorsContainer() const {
         return __errors;
       }
 
@@ -197,4 +198,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

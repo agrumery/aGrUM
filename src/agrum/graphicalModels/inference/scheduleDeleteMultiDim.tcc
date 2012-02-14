@@ -27,10 +27,10 @@
 
 
 #include <limits>
-#include <agrum/core/debug.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/types.h>
+#include <agrum/config.h>
 
+// to ease ide parser
+#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
 
 namespace gum {
 

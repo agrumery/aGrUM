@@ -25,75 +25,76 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimCombinationDefault.h>
 
+namespace gum_tests {
 
-namespace gum {
 
-  
-  namespace tests {
-
-    
-    class MultiDimCombinationTestSuite: public CxxTest::TestSuite {
+  class MultiDimCombinationTestSuite: public CxxTest::TestSuite {
     private:
       // ==========================================================================
       /// initialize randomly a table
       // ==========================================================================
-      void randomInitP ( Potential<float>& t ) {
-        Instantiation i (t);
-        srand ( time ( NULL) );
+      void randomInitP ( gum::Potential<float>& t ) {
+        gum::Instantiation i ( t );
+        srand ( time ( NULL ) );
+
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set (i, (int) ( ( (float) rand() / RAND_MAX ) * 100000 ) );
-      }
-
-      
-      // the function used to combine two tables
-      static Potential<float>* addPotential ( const Potential<float>& t1,
-                                              const Potential<float>& t2 ) {
-        return new Potential<float> (t1 + t2);
+          t.set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );
       }
 
 
       // the function used to combine two tables
-      static Potential<float>* multPotential ( const Potential<float>& t1,
-                                               const Potential<float>& t2 ) {
-        return new Potential<float> (t1 * t2);
+      static gum::Potential<float>* addPotential ( const gum::Potential<float>& t1,
+          const gum::Potential<float>& t2 ) {
+        return new gum::Potential<float> ( t1 + t2 );
       }
 
-      
+
+      // the function used to combine two tables
+      static gum::Potential<float>* multPotential ( const gum::Potential<float>& t1,
+          const gum::Potential<float>& t2 ) {
+        return new gum::Potential<float> ( t1 * t2 );
+      }
+
+
     public:
-      void test_op_multidimArray () {
-        std::vector<LabelizedVariable*> vars ( 10 );
-        for (unsigned int i = 0; i < 10; ++i) {
+      void test_op_multidimArray() {
+        std::vector<gum::LabelizedVariable*> vars ( 10 );
+
+        for ( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new LabelizedVariable (s, s, 4);
+          vars[i] = new gum::LabelizedVariable ( s, s, 4 );
         }
-        
-        Potential<float> t1, t2, t3;
-        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+        gum::Potential<float> t1, t2, t3;
+
+        t1 << * ( vars[0] ) << * ( vars[1] ) << * ( vars[2] );
+        t2 << * ( vars[0] ) << * ( vars[1] ) << * ( vars[5] );
+        t3 << * ( vars[6] ) << * ( vars[4] ) << * ( vars[3] );
 
         randomInitP ( t1 );
         randomInitP ( t2 );
         randomInitP ( t3 );
 
-        Potential<float>* t4, *t5, *t6;
-        t4 = new Potential<float> ( t1 + t2 );
-        t5 = new Potential<float> ( t3 + *t4 );
+        gum::Potential<float>* t4, *t5, *t6;
+        t4 = new gum::Potential<float> ( t1 + t2 );
+        t5 = new gum::Potential<float> ( t3 + *t4 );
 
-        Set<const Potential<float>*> set;
+        gum::Set<const gum::Potential<float>*> set;
         set << &t1 << &t2 << &t3;
-        
-        MultiDimCombinationDefault<float,Potential> xxx ( addPotential );
+
+        gum::MultiDimCombinationDefault<float,gum::Potential> xxx ( addPotential );
         t6 = xxx.combine ( set );
         TS_ASSERT ( t6 );
-        TS_ASSERT (*t6 == *t5);
+        TS_ASSERT ( *t6 == *t5 );
 
         delete t4;
         delete t5;
@@ -104,25 +105,23 @@ namespace gum {
         TS_ASSERT ( yyy.first == 16640 );
         TS_ASSERT ( yyy.second == 16384 );
 
-        t4 = new Potential<float> ( t1 * t2 );
-        t5 = new Potential<float> ( t3 * (*t4) );
+        t4 = new gum::Potential<float> ( t1 * t2 );
+        t5 = new gum::Potential<float> ( t3 * ( *t4 ) );
         xxx.setCombineFunction ( multPotential );
         t6 = xxx.combine ( set );
         TS_ASSERT ( t6 );
-        TS_ASSERT (*t6 == *t5);
+        TS_ASSERT ( *t6 == *t5 );
 
         delete t4;
         delete t5;
-        delete t6;        
-        
-        for (unsigned int i = 0; i < vars.size(); ++i)
+        delete t6;
+
+        for ( unsigned int i = 0; i < vars.size(); ++i )
           delete vars[i];
       }
 
 
-    };
+  };
 
-  } /* namespace tests */
-
-} /* namespace gum */
+} /* namespace gum_tests */
 

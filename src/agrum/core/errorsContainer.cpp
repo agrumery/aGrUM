@@ -22,7 +22,8 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/core/exceptions.h>
+#include <agrum/config.h>
+
 #include <agrum/core/errorsContainer.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -34,18 +35,18 @@
 
 namespace gum {
 
-  ParseError::ParseError ( bool is_error, const string& msg, int line ) :
-      is_error ( is_error ), line ( line ), colomn ( -1 ), msg ( msg ), filename ( "" ), code ( "" ) {}
+  ParseError::ParseError ( bool is_error, const std::string& msg, int line ) :
+    is_error ( is_error ), line ( line ), colomn ( -1 ), msg ( msg ), filename ( "" ), code ( "" ) {}
 
-  ParseError::ParseError ( bool is_error, const string& msg, const string& filename, int line, int col ) :
-      is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( "" ) {}
+  ParseError::ParseError ( bool is_error, const std::string& msg, const std::string& filename, int line, int col ) :
+    is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( "" ) {}
 
-  ParseError::ParseError ( bool is_error, const string& msg, const string& filename, const string& code, int line, int col ) :
-      is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( code ) {}
+  ParseError::ParseError ( bool is_error, const std::string& msg, const std::string& filename, const std::string& code, int line, int col ) :
+    is_error ( is_error ), line ( line ), colomn ( col ), msg ( msg ), filename ( filename ), code ( code ) {}
 
-  ///
-  string ParseError::toString() const {
-    ostringstream s;
+///
+  std::string ParseError::toString() const {
+    std::ostringstream s;
 
     if ( ! filename.empty() )
       s << filename << ":" << line << ": ";
@@ -57,33 +58,33 @@ namespace gum {
     return s.str();
   }
 
-  ///
-  string ParseError::toElegantString() const {
+///
+  std::string ParseError::toElegantString() const {
     if ( filename.empty() )
       return toString();
 
     if ( code.empty() ) {
-      ifstream ifs ( filename.c_str() );
+      std::ifstream ifs ( filename.c_str() );
 
       for ( int i = 0 ; i < line ; i++ )
-        getline ( ifs, code );
+        std::getline ( ifs, code );
     }
 
-    ostringstream s;
+    std::ostringstream s;
 
-    s << filename << ":" << line << "\n";
+    s << filename << ":" << line << ": "<< ( is_error ? "error" : "warning" ) <<"\n";
     s << code << "\n";
 
     if ( colomn > 0 )
-      s << string ( colomn - 1,' ' ) << "^";
+      s << std::string ( colomn - 1,' ' ) << "^";
 
-    s << ( is_error ? "error" : "warning" ) << " : " << msg << "\n";
+    s << msg << "\n";
 
     return s.str();
   }
 
-  /// Return the i-th error.
-  /// May throw an exception if i >= count().
+/// Return the i-th error.
+/// May throw an exception if i >= count().
   ParseError ErrorsContainer::error ( int i ) const {
     if ( count() > i )
       return errors[i]; // May throw an error if i >= count().
@@ -151,7 +152,7 @@ namespace gum {
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error )
-        cerr << error ( i ).toString() << endl;
+        std::cerr << error ( i ).toString() << std::endl;
     }
   }
 
@@ -161,7 +162,7 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ )
-      cerr << error ( i ).toString() << endl;
+      std::cerr << error ( i ).toString() << std::endl;
   }
 
 
@@ -171,8 +172,8 @@ namespace gum {
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error ) {
-        cerr << error ( i ).toElegantString();
-        cerr << endl;
+        std::cerr << error ( i ).toElegantString();
+        std::cerr << std::endl;
       }
     }
   }
@@ -182,8 +183,8 @@ namespace gum {
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      cerr << error ( i ).toElegantString();
-      cerr << endl;
+      std::cerr << error ( i ).toElegantString();
+      std::cerr << std::endl;
     }
   }
 

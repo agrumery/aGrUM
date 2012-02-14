@@ -28,7 +28,9 @@
 #define GUM_POTENTIAL_H
 
 #include <vector>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>
 
@@ -69,7 +71,7 @@ namespace gum {
        * @param aContent decorated implementation
        */
       // ============================================================================
-      explicit Potential ( MultiDimImplementation<T_DATA> *aContent );
+      explicit Potential( MultiDimImplementation<T_DATA> *aContent );
 
       // ============================================================================
       /**
@@ -78,7 +80,7 @@ namespace gum {
        * Too dangerous.
        */
       // ============================================================================
-      explicit Potential ( const Potential<T_DATA>& src );
+      explicit Potential( const Potential<T_DATA>& src );
 
       // ============================================================================
       /**
@@ -90,8 +92,8 @@ namespace gum {
        * @param from the multidimensional matrix we copy into this
        */
       // ============================================================================
-      explicit Potential ( MultiDimImplementation<T_DATA> *aContent,
-                           const MultiDimContainer<T_DATA>& src );
+      explicit Potential( MultiDimImplementation<T_DATA> *aContent,
+                          const MultiDimContainer<T_DATA>& src );
 
       // ============================================================================
       /**
@@ -130,14 +132,14 @@ namespace gum {
 
       /// marginalizing p over the vars on *this.
       /// @throw OperationNotAllowed if there is var in *this not in p.
-      Potential<T_DATA>& marginalize ( const Potential<T_DATA>& p ) const;
+      Potential<T_DATA>& marginalize( const Potential<T_DATA>& p ) const;
 
       /// Multiplication of args.
       /// @throw OperationNotAllowed if *this is not empty
-      void multiplicate ( const Potential<T_DATA>& p1, const Potential<T_DATA>& p2 ) ;
+      void multiplicate( const Potential<T_DATA>& p1, const Potential<T_DATA>& p2 ) ;
 
       /// Multiplication of this and arg (in this).
-      Potential<T_DATA>& multiplicateBy ( const Potential<T_DATA>& p1 ) ;
+      Potential<T_DATA>& multiplicateBy( const Potential<T_DATA>& p1 ) ;
 
       ///@}
 
@@ -148,13 +150,13 @@ namespace gum {
 
     protected:
       /// perform the marginalization p over the vars on *this.
-      void _marginalize ( const Potential& p ) const;
+      void _marginalize( const Potential& p ) const;
 
       /// perform the multiplication of args.
-      void _multiplicate ( const Potential& p1, const Potential& p2 ) ;
+      void _multiplicate( const Potential& p1, const Potential& p2 ) ;
 
 
-      virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
 
@@ -166,4 +168,4 @@ namespace gum {
 
 #endif /* GUM_POTENTIAL_H */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

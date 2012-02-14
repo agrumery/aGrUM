@@ -96,7 +96,9 @@
 #define GUM_HASH_TABLE_H
 
 #include <iostream>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashFunc.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -115,13 +117,13 @@ namespace gum {
   template <typename Key, typename Val> class HashTableConstIterator;
   template <typename T1,  typename T2>  class Bijection;
 
-  
+
   // ==============================================================================
   /// a << operator for HashTableList
   // ==============================================================================
-  template <typename Key, typename Val> std::ostream& operator<< 
+  template <typename Key, typename Val> std::ostream& operator<<
   ( std::ostream&, const HashTableList<Key, Val>& );
-  
+
   // ==============================================================================
   /// a << operator for HashTableList with pointer keys
   // ==============================================================================
@@ -143,9 +145,9 @@ namespace gum {
 
 
 
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  
+
   // a class used to create the static iterator used by HashTables. The aim of
   // using this class rather than just creating __HashTableIterEnd as a global
   // variable is to prevent other classes to access and modify __HashTableIterEnd
@@ -163,11 +165,11 @@ namespace gum {
     // friends that have access to the iterator
     template<typename Key, typename Val> friend class HashTable;
   };
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
-  
+
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -186,7 +188,7 @@ namespace gum {
     HashTableBucket<Key, Val> *next;
     Key key;
     Val val;
-    
+
     // ============================================================================
     HashTableBucket() : prev( 0 ), next( 0 ) {}
 
@@ -198,7 +200,7 @@ namespace gum {
   };
 
 
-  
+
   /* =========================================================================== */
   /* ===       DOUBLY CHAINED LISTS FOR STORING ELEMENTS IN HASH TABLES      === */
   /* =========================================================================== */
@@ -209,7 +211,7 @@ namespace gum {
      * basically by hash tables */
     // ============================================================================
     HashTableList();
-    
+
     // ============================================================================
     /** copy constructor. The new list and that which is copied do not share the
      * elements: the new list contains new instances of the keys and of values
@@ -217,7 +219,7 @@ namespace gum {
      * the new values point toward the same elements. */
     // ============================================================================
     HashTableList( const HashTableList<Key, Val>& from );
-    
+
     // ============================================================================
     /** assignment operator. The new list and that which is copied do not share the
      * elements: the new list contains new instances of the keys and of values
@@ -229,12 +231,12 @@ namespace gum {
      * an empty list) */
     // ============================================================================
     HashTableList<Key, Val>& operator= ( const HashTableList<Key, Val>& from );
-    
+
     // ============================================================================
     // destructor
     // ============================================================================
     ~HashTableList();
-    
+
     // ============================================================================
     /** function at returns the ith element in the current chained list. The first
      * element has index 0.
@@ -242,7 +244,7 @@ namespace gum {
     // ============================================================================
     Val& at( unsigned int i );
     const Val& at( unsigned int i ) const;
-    
+
     // ============================================================================
     /// operator [] returns the value corresponding to a given key
     /**
@@ -251,37 +253,37 @@ namespace gum {
     // ============================================================================
     Val& operator[]( const Key& key );
     const Val& operator[]( const Key& key ) const ;
-    
+
     // ============================================================================
     /// check whether there exists an element with a given key in the list
     // ============================================================================
     bool exists( const Key& key ) const  ;
-    
+
     // ============================================================================
     /** inserts a new element in the chained list. The element is inserted
      * at the beginning of the list. When allocation cannot be performed, the
      * function raises a bad_alloc exception. */
     // ============================================================================
     Val& insert( const Key& key, const Val& val );
-    
+
     // ============================================================================
     /** inserts a new element in the chained list. The element is inserted
      * at the beginning of the list. When allocation cannot be performed, the
      * function raises a bad_alloc exception. */
     // ============================================================================
     const Key& insertAndGetKey ( const Key& key, const Val& val );
-    
+
     // ============================================================================
     /// function for deleting all the elements of a chained list
     // ============================================================================
     void clear();
-    
+
     // ============================================================================
     /// returns a boolean indicating whether the chained list is empty
     // ============================================================================
     bool empty() const ;
-    
-     
+
+
   private:
     // friends
     friend class HashTable<Key, Val>;
@@ -295,7 +297,7 @@ namespace gum {
                                          const HashTable<Key,Val>& );
     friend std::ostream& operator<< <> ( std::ostream&,
                                          const HashTable<Key*,Val>& );
-    
+
     // a pointer on the first element of the chained list
     HashTableBucket<Key, Val> *__deb_list;
 
@@ -331,14 +333,14 @@ namespace gum {
     // efficient removals of buckets
     // ============================================================================
     HashTableBucket<Key, Val>* __getBucket( const Key& key ) const ;
-    
+
   };
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
-  
+
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                          GENERIC HASH TABLES                        === */
@@ -431,13 +433,13 @@ namespace gum {
     typedef HashTableIterator<Key, Val> iterator;
     typedef HashTableConstIterator<Key, Val> const_iterator;
 
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
 
     /// @{
-    
+
     // ===========================================================================
     /** @brief Default constructor: optionnally we may indicate the desired size
      * for the nodes vector.
@@ -530,7 +532,7 @@ namespace gum {
     // ============================================================================
     static const iterator& end4Statics ();
     static const const_iterator& constEnd4Statics ();
-    
+
     /// @}
 
 
@@ -586,7 +588,7 @@ namespace gum {
      * in the sense of ==. */
     // ============================================================================
     bool operator== ( const HashTable<Key, Val> &from ) const ;
-    
+
     // ============================================================================
     /// checks whether two hashtables contain different sets of elements
     /** Two hashtables are considered different if they contain different pairs
@@ -848,7 +850,7 @@ namespace gum {
 
     /// @}
 
-    
+
 
   private:
     // friends
@@ -865,7 +867,7 @@ namespace gum {
     /// for bijections to quickly access data
     template <typename T1, typename T2> friend class Bijection;
 
-    
+
     /** @brief the hash table is represented as a vector of chained lists. 'nodes'
      * is this very vector. */
     HashTableList<Key, Val> *__nodes;
@@ -894,7 +896,7 @@ namespace gum {
     /// the list of iterators pointing to the hash table
     mutable const_iterator *__iterator_list;
 
-    
+
 
     #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -938,16 +940,16 @@ namespace gum {
     // ============================================================================
     HashTableBucket<Key,Val>*
     __insertAndGetBucket ( const Key& key, const Val& val );
-    
+
    #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   };
 
 
 
-  
 
-  
+
+
   /* =========================================================================== */
   /* ===                      HASH TABLES CONST ITERATORS                    === */
   /* =========================================================================== */
@@ -995,7 +997,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// basic constructor: creates an iterator pointing to nothing
     // ============================================================================
@@ -1029,7 +1031,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// returns the key corresponding to the value pointed to by the iterator
     /** @throws UndefinedIteratorValue exception is thrown when the iterator does
@@ -1037,7 +1039,7 @@ namespace gum {
      * @throw UndefinedIteratorValue */
     // ============================================================================
     const Key& key() const;
-    
+
     // ============================================================================
     /** @brief makes the iterator point toward nothing (in particular, it is not
      * related anymore to its current hash table)
@@ -1088,7 +1090,7 @@ namespace gum {
      * @throw UndefinedIteratorValue */
     // ============================================================================
     const Val& operator*() const;
-    
+
     // ============================================================================
     /// dereferences the value pointed to by the iterator
     /** This operator allows developers to write code like @c iterator->member()
@@ -1096,7 +1098,7 @@ namespace gum {
      * @throw UndefinedIteratorValue */
     // ============================================================================
     const Val* operator-> () const;
-    
+
     /// @}
 
 
@@ -1106,7 +1108,7 @@ namespace gum {
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
     friend class HashTable<Key, Val>;
-    
+
     /// the hash table the iterator is pointing to
     const HashTable<Key, Val> *__table;
 
@@ -1138,7 +1140,7 @@ namespace gum {
     // ============================================================================
     /// returns the index in the hashtable's node vector pointed to by the iterator
     // ============================================================================
-    Size __getIndex() const ;    
+    Size __getIndex() const ;
 
   };
 
@@ -1193,7 +1195,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     // ============================================================================
     /// basic constructor: creates an iterator pointing to nothing
     // ============================================================================
@@ -1227,7 +1229,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ############################################################################
     /// @{
-    
+
     using HashTableConstIterator<Key,Val>::key;
     using HashTableConstIterator<Key,Val>::clear;
 
@@ -1254,7 +1256,7 @@ namespace gum {
      * loop is guaranteed to never produce a segmentation fault. */
     // ============================================================================
     HashTableIterator<Key, Val>& operator++() ;
-    
+
     // ============================================================================
     /// checks whether two iterators are pointing toward different elements
     // ============================================================================
@@ -1273,7 +1275,7 @@ namespace gum {
     // ============================================================================
     Val& operator*() ;
     const Val& operator*() const;
-    
+
     // ============================================================================
     /// dereferences the value pointed to by the iterator
     /** This operator allows developers to write code like @c iterator->member()
@@ -1282,14 +1284,14 @@ namespace gum {
     // ============================================================================
     Val* operator-> ();
     const Val* operator-> () const;
-    
+
     /// @}
-    
+
   };
 
 
 
-  
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -1298,11 +1300,11 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-  
+
 } /* namespace gum */
 
 
 /// always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
-  
+
 #endif  // GUM_HASHTABLE_H

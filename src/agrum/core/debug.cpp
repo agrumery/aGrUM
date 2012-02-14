@@ -29,8 +29,7 @@
 #include <vector>
 #include <algorithm>
 
-#include <agrum/core/exceptions.h>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,7 +45,7 @@ namespace gum {
   namespace debug {
     typedef std::map<std::string,int> DEBUG_MAP;
 
-    // this static hashtable only on debug mode.
+// this static hashtable only on debug mode.
     static DEBUG_MAP& __sizeof() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
@@ -55,7 +54,7 @@ namespace gum {
       return *sizeOf;
     }
 
-    // this static hashtable only on debug mode.
+// this static hashtable only on debug mode.
     static DEBUG_MAP& __creation() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
@@ -90,7 +89,7 @@ namespace gum {
       __sizeof() [zeKey]=zeSize;
     }
 
-    // to handle static element of agrum library
+// to handle static element of agrum library
     void __dec_creation ( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
       __show_trace ( zeKey,zeFile,zeLine,zeMsg,zePtr );
       __creation() [zeKey]--;
@@ -115,11 +114,12 @@ namespace gum {
       // list of created objects
       std::vector<std::string> res;
 
-      for ( DEBUG_MAP::const_iterator xx = __creation().begin(); xx != __creation().end();++xx ) {
+      for ( DEBUG_MAP::const_iterator xx = __creation().begin(); xx != __creation().end(); ++xx ) {
         std::stringstream stream;
         int zeCreatedObjs=xx->second;
         int zeDeletedObjts=-1;
-        int size=__sizeof() [xx->first];stream<<"| "<<std::setw ( 50 ) <<xx->first<<" | "<<std::setw ( 5 ) <<size<<" o | "<<std::setw ( 8 ) <<zeCreatedObjs<<" | ";
+        int size=__sizeof() [xx->first];
+        stream<<"| "<<std::setw ( 50 ) <<xx->first<<" | "<<std::setw ( 5 ) <<size<<" o | "<<std::setw ( 8 ) <<zeCreatedObjs<<" | ";
 
         if ( size>0 ) total_size+=zeCreatedObjs*size;
 
@@ -133,13 +133,16 @@ namespace gum {
 
         stream<<" |";;
 
-        if ( zeCreatedObjs!=zeDeletedObjts ) {nb_err+=abs ( zeDeletedObjts-zeCreatedObjs );stream<<"<--- failed";}
+        if ( zeCreatedObjs!=zeDeletedObjts ) {
+          nb_err+=abs ( zeDeletedObjts-zeCreatedObjs );
+          stream<<"<--- failed";
+        }
 
         res.push_back ( stream.str() );
       }
 
       // list of deleted objects, but not created (?)
-      for ( DEBUG_MAP::const_iterator xx = __deletion().begin(); xx != __deletion().end();++xx ) {
+      for ( DEBUG_MAP::const_iterator xx = __deletion().begin(); xx != __deletion().end(); ++xx ) {
         try {
           __creation() [xx->first];
         }
@@ -180,7 +183,7 @@ namespace gum {
 
     }
 
-    // take into account static objects in agrum (no called destructor before exit())
+// take into account static objects in agrum (no called destructor before exit())
     void __staticCorrections() {
       __dec_creation ( "HashTableIterator"  ,"__hash_static_end",0,"static variable correction",0 );
       __dec_creation ( "SetIterator","__empty_edge_set",0,"static variable correction",0 );

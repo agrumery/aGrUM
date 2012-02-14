@@ -21,7 +21,9 @@
 #include <cstring>
 #include <fstream>
 #include <string>
-#include <agrum/core/exceptions.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/utilsString.h>
 #include <agrum/learning/database.h>
 
@@ -94,6 +96,7 @@ namespace gum {
       GUM_OP_CPY( Database );
 
       // remove the old content
+
       if ( __cases ) delete[] __cases;
 
       // detach the __iterators pointing to this
@@ -103,22 +106,32 @@ namespace gum {
 
       // set the new content
       __nb_nodes = from.__nb_nodes;
+
       __nb_cases = from.__nb_cases;
+
       __node_names = from.__node_names;
+
       __node_name_per_id = from.__node_name_per_id;
+
       __nb_modalities = from.__nb_modalities;
+
       __filename = from.__filename;
+
       __cases = new unsigned int [__nb_nodes * __nb_cases];
+
       memcpy( __cases, from.__cases,
               __nb_nodes * __nb_cases * sizeof( unsigned int ) );
 
       // initialize the __iterators begin/rbegin/end/rend
       __iter_begin.__initializeIterator
       ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+
       __iter_end.__initializeIterator
       ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+
       __iter_rend.__initializeIterator
       ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+
       __iter_rbegin.__initializeIterator
       ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
     }
@@ -184,11 +197,13 @@ namespace gum {
       database.__filename = filename;
 
       // if the file is empty, do nothing
+
       if ( inFile.eof() )
         return database;
 
       // get the header line, its number of fields, and fill the nodes names
       std::string str;
+
       getline( inFile, str );
 
       if ( !inFile.good() ) {
@@ -196,6 +211,7 @@ namespace gum {
       }
 
       database.__node_names =
+
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
       database.__nb_nodes = database.__node_names.size();
 
@@ -205,6 +221,7 @@ namespace gum {
       // get the number of __cases
       for ( database.__nb_cases = 0; getline( inFile, str );
             database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 );
+
       // we do not count empty lines
     }
 
@@ -273,10 +290,13 @@ namespace gum {
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+
     database.__iter_rbegin.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+
     database.__iter_end.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+
     database.__iter_rend.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
 
@@ -308,6 +328,7 @@ namespace gum {
       database.__filename = filename;
 
       // if the file is empty, do nothing
+
       if ( inFile.eof() )
         return database;
 
@@ -321,12 +342,14 @@ namespace gum {
       }
 
       database.__node_names =
+
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
 
       database.__nb_nodes = database.__node_names.size();
 
       for ( unsigned int i = 0; i < database.__nb_nodes; ++i )
         database.__node_name_per_id.insert( database.__node_names[i], i );
+
       //Attention il faut garder l'ordre du fichier csv
 
       //
@@ -334,6 +357,7 @@ namespace gum {
       // get the number of __cases
       for ( database.__nb_cases = 0; getline( inFile, str );
             database.__nb_cases += ( isValidLine( str ) ) ? 1 : 0 );
+
       // we do not count empty lines
     }
 
@@ -410,6 +434,7 @@ namespace gum {
             }
 
           modal_names[i].insert( line[i], database.__nb_modalities[i] );
+
           ++database.__nb_modalities[i];
         }
 
@@ -436,10 +461,13 @@ namespace gum {
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+
     database.__iter_rbegin.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+
     database.__iter_end.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+
     database.__iter_rend.__initializeIterator
     ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
 

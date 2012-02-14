@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <cmath>
-#include <agrum/core/debug.h>
+#include <agrum/config.h>
 #include <agrum/learning/learningTools.h>
 
 #ifdef GUM_NO_INLINE

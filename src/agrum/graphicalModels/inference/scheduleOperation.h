@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,13 +28,14 @@
 
 #include <utility>
 #include <string>
-#include <agrum/core/inline.h>
-#include <agrum/core/types.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/sequence.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 
 
-namespace gum {  
+namespace gum {
 
 
   template <typename T_DATA>
@@ -42,7 +43,7 @@ namespace gum {
   public:
     /// the currently supported types of operations
     enum Type {
-      /// combine 2 ScheduleMultiDims 
+      /// combine 2 ScheduleMultiDims
       GUM_COMBINE_MULTIDIM,
       /// project a ScheduleMultiDim over a subset of its variables
       GUM_PROJECT_MULTIDIM,
@@ -54,7 +55,7 @@ namespace gum {
       GUM_SEPARATOR_STORE_MULTIDIM
     };
 
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -68,7 +69,7 @@ namespace gum {
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -85,7 +86,7 @@ namespace gum {
     virtual bool operator!= ( const ScheduleOperation<T_DATA>& ) const = 0;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors/Modifiers
@@ -101,11 +102,11 @@ namespace gum {
     /// returns the set of multidims passed in argument to the operation
     virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
     multiDimArgs () const = 0;
-    
+
     /// returns the set of multidims that should be the result of the operation
     virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
     multiDimResults () const = 0;
-    
+
     /// executes the operation
     virtual void execute () = 0;
 
@@ -122,13 +123,13 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used by
      * the resulting table ) */
     virtual std::pair<long,long> memoryUsage () const = 0;
- 
+
     /// displays the content of the operation
     virtual std::string toString () const = 0;
 
     /// @}
 
-    
+
   protected:
     /// default constructor
     ScheduleOperation ( Type t );
@@ -138,8 +139,8 @@ namespace gum {
 
     /// copy operator
     ScheduleOperation<T_DATA>& operator= ( const ScheduleOperation<T_DATA>& );
- 
-    
+
+
   private:
     /// the name of the operation to perform
     Type __type;
@@ -150,7 +151,7 @@ namespace gum {
    /// returns a new distinct ID for each operation
     static Id __newId ();
   };
-  
+
 
 } /* namespace gum */
 

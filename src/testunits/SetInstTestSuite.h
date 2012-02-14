@@ -25,25 +25,23 @@
 #include <agrum/multidim/setInst.h>
 #include <agrum/multidim/instantiation.h>
 
-namespace gum {
+namespace gum_tests {
 
-  namespace tests {
-
-    class SetInstTestSuite: public CxxTest::TestSuite {
+  class SetInstTestSuite: public CxxTest::TestSuite {
       void setUp() {
       }
 
       void tearDown() {
       }
 
-      public:
+    public:
       void testCreation() {
         gum::Instantiation in;
         gum::SetInst i;
         TS_ASSERT_EQUALS( i.nbrDim(), ( gum::Size )0 );
         gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
         in << a << c << b;
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::SetInst i2(in));
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::SetInst i2( in ) );
 
       }
 
@@ -74,7 +72,7 @@ namespace gum {
         TS_ASSERT( ! i.contains( b ) );
       }
 
-        void testRemValues() {
+      void testRemValues() {
         gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
         gum::SetInst i;
 
@@ -87,9 +85,9 @@ namespace gum {
         i.remVal( a, 1 ).remVal( b, 2 ).remVal( c, 4 );
         TS_ASSERT_EQUALS( i.toString(), "<a:01|b:0010|c:00100>" );
 
-        }
+      }
 
-        void test_ou_et_Values() {
+      void test_ou_et_Values() {
         gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
         gum::SetInst i, j;
 
@@ -98,9 +96,9 @@ namespace gum {
         TS_ASSERT_EQUALS( i.domainSize(), ( gum::Size )( 2*4*5 ) );
 
         i.chgVals( a, 2 ).chgVals( b, 14 ).chgVals( c, 28 );
-        i.interVals(a,1);
-        i.interVals(b,7);
-        i.interVals(c,7);
+        i.interVals( a,1 );
+        i.interVals( b,7 );
+        i.interVals( c,7 );
         TS_ASSERT_EQUALS( i.toString(), "<a:00|b:0110|c:00100>" );
 
         i.addVal( a, 0 ).addVal( b, 3 ).addVal( c, 1 );
@@ -110,18 +108,18 @@ namespace gum {
         TS_ASSERT_EQUALS( i.toString(), "<a:01|b:1010|c:00010>" );
 
 
-       j.chgVals( a, 2 ).chgVals( b, 14 ).chgVals( c, 28 );
-       TS_ASSERT_EQUALS( j.toString(), "<a:10|b:1110|c:11100>" );
-       j.remVals( a, 1 ).remVals( b, 8 ).remVals( c, 14 );
-       TS_ASSERT_EQUALS( j.toString(), "<a:10|b:0110|c:10000>" );
+        j.chgVals( a, 2 ).chgVals( b, 14 ).chgVals( c, 28 );
+        TS_ASSERT_EQUALS( j.toString(), "<a:10|b:1110|c:11100>" );
+        j.remVals( a, 1 ).remVals( b, 8 ).remVals( c, 14 );
+        TS_ASSERT_EQUALS( j.toString(), "<a:10|b:0110|c:10000>" );
 
-        }
+      }
 
 
       void testReordering() {
         gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 );
-        gum::SetInst i;i << a << b << c;
-        gum::SetInst j;j << c << a;
+        gum::SetInst i; i << a << b << c;
+        gum::SetInst j; j << c << a;
 
         // reordering in {in|de}crementation
         TS_ASSERT_EQUALS( i.toString(), "<a:01|b:0001|c:00001>" );
@@ -134,8 +132,8 @@ namespace gum {
       void testChgValIn() {
         gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ), c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
 
-        gum::SetInst i;i << b << c << d;
-        gum::SetInst j;j << b << a << c;
+        gum::SetInst i; i << b << c << d;
+        gum::SetInst j; j << b << a << c;
 
         i.chgVal( b, 2 ).chgVal( c, 3 ).chgVal( d, 1 );
         j.chgVal( b, 1 ).chgVal( a, 0 ).chgVal( c, 1 );
@@ -182,8 +180,6 @@ namespace gum {
         //TS_ASSERT_THROWS( iq = ip, gum::OperationNotAllowed );
       }
 
-    };
+  };
 
-  }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 

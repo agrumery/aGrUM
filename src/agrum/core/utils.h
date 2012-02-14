@@ -29,10 +29,6 @@
 // FLAG : DEBUG mode
 //#undef  NDEBUG
 //#define NDEBUG
-#include <agrum/core/debug.h>
-#include <agrum/core/inline.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/types.h>
 
 #ifdef NDEBUG
 #define GUM_CAST dynamic_cast
@@ -54,8 +50,9 @@ namespace std {
 
 namespace gum {
   /// Implements a stream with the same behaviour as /dev/null
+
   struct NullStream : std::ostream {
-    NullStream() : std::ios ( 0 ), std::ostream ( 0 ) {}
+    NullStream() : std::ios( 0 ), std::ostream( 0 ) {}
   };
 
   /// cross-platform replacement for memcmp. returns true if OK
@@ -74,29 +71,32 @@ namespace gum {
 
   /// indicate whether two elements are (almost) different or not
   template <typename T>
+
   struct AlmostDifferent {
-    bool operator() ( const T& t1, const T& t2 ) {
-      return ( ( t1 > t2 + (T) 0.000001 ) ||
-               ( t2 > t1 + (T) 0.000001 ) );
+    bool operator()( const T& t1, const T& t2 ) {
+      return ( ( t1 > t2 + ( T ) 0.000001 ) ||
+               ( t2 > t1 + ( T ) 0.000001 ) );
     }
   };
+
   template <typename T>
+
   struct AlmostDifferent<T*> {
-    bool operator() ( const T* t1, const T* t2 ) {
+    bool operator()( const T* t1, const T* t2 ) {
       return ( t1 != t2 );
     }
   };
-  
+
 
 } /* namespace gum */
 
-  
+
 #ifndef GUM_NO_INLINE
 #include <agrum/core/utils.inl>
 #endif // GUM_NO_INLINE
 
 
 #include <agrum/core/utils.tcc>
-  
-  
+
+
 #endif /* GUM_UTILS_H */

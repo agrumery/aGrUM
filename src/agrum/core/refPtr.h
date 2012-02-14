@@ -62,17 +62,19 @@
 #define GUM_REFPTR_H
 
 #include <new>
-#include <agrum/core/utils.h>
 
+#include <agrum/config.h>
 
 namespace gum {
 
 
-  #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
   template <typename Val> class RefPtr;
   template <typename Val> void swap( RefPtr<Val>&, RefPtr<Val>& ) ;
+
   template <typename Val> class HashFunc;
-  #endif
+#endif
 
 
   /* =========================================================================== */
@@ -123,199 +125,202 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
+
   template <typename Val> class RefPtr {
-  public:
-    /// swap the contents of two RefPtr
-    friend void swap <> ( RefPtr<Val>&, RefPtr<Val>& );
+    public:
+      /// swap the contents of two RefPtr
+      friend void swap <> ( RefPtr<Val>&, RefPtr<Val>& );
 
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// default constructor
-    /** This constructor creates an object encapsulating the pointer passed in
-     * argument. No copy of the value pointed to by the pointer is performed. The
-     * RefPtr assumes that the value pointed to has been allocated on the heap
-     * using the new operator. If this is not the case, then using RefPtr will
-     * result in an undefined behavior when the RefPtr is destroyed (ok, we all
-     * know what it means: a segmentation fault). To avoid deleting several times
-     * the pointer encapsulated, the safe way to use the RefPtr is certainly
-     * through calls like: @code RefPtr( new myObject ) @endcode
-     * Passing an already allocated pointer to the constructor is not forbidden.
-     * However, in this case, care should be taken not to allow external functions
-     * to delete the value pointed to by val. Moreover, care should be taken not to
-     * allow creating multiple RefPtr using this constructor on the same val. This
-     * would lead to unexpected results after deletion of the first RefPtr.
-     * @param val the dumb pointer encapsulated into the object (make sure it is
-     * allocated on the heap)
-     * @throws std::bad_alloc exception is thrown if the complete RefPtr structure
-     * cannot be set properly. */
-    // ============================================================================
-    explicit RefPtr( Val* val = 0 ) ;
+      // ============================================================================
+      /// default constructor
+      /** This constructor creates an object encapsulating the pointer passed in
+       * argument. No copy of the value pointed to by the pointer is performed. The
+       * RefPtr assumes that the value pointed to has been allocated on the heap
+       * using the new operator. If this is not the case, then using RefPtr will
+       * result in an undefined behavior when the RefPtr is destroyed (ok, we all
+       * know what it means: a segmentation fault). To avoid deleting several times
+       * the pointer encapsulated, the safe way to use the RefPtr is certainly
+       * through calls like: @code RefPtr( new myObject ) @endcode
+       * Passing an already allocated pointer to the constructor is not forbidden.
+       * However, in this case, care should be taken not to allow external functions
+       * to delete the value pointed to by val. Moreover, care should be taken not to
+       * allow creating multiple RefPtr using this constructor on the same val. This
+       * would lead to unexpected results after deletion of the first RefPtr.
+       * @param val the dumb pointer encapsulated into the object (make sure it is
+       * allocated on the heap)
+       * @throws std::bad_alloc exception is thrown if the complete RefPtr structure
+       * cannot be set properly. */
+      // ============================================================================
+      explicit RefPtr( Val* val = 0 ) ;
 
-    // ============================================================================
-    /// copy constructor
-    /** @param from the smart pointer we wish to make a copy */
-    // ============================================================================
-    RefPtr( const RefPtr<Val>& from ) ;
+      // ============================================================================
+      /// copy constructor
+      /** @param from the smart pointer we wish to make a copy */
+      // ============================================================================
+      RefPtr( const RefPtr<Val>& from ) ;
 
-    // ============================================================================
-    /// copy constructor for downcastable pointers
-    /** @param from the smart pointer we wish to make a copy */
-    // ============================================================================
-    template <typename DownVal> RefPtr( const RefPtr<DownVal>& from ) ;
+      // ============================================================================
+      /// copy constructor for downcastable pointers
+      /** @param from the smart pointer we wish to make a copy */
+      // ============================================================================
+      template <typename DownVal> RefPtr( const RefPtr<DownVal>& from ) ;
 
-    // ============================================================================
-    /** @brief destructor: decrements the ref count and deletes if necessary
-     * the dumb pointer */
-    // ============================================================================
-    ~RefPtr();
+      // ============================================================================
+      /** @brief destructor: decrements the ref count and deletes if necessary
+       * the dumb pointer */
+      // ============================================================================
+      ~RefPtr();
 
-    ///@}
-
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    // ============================================================================
-    /// checks whether a RefPtr points toward something
-    /** This method enables writing code like @c if (refptr) perform_operation() */
-    // ============================================================================
-    operator bool() const ;
-
-    // ============================================================================
-    /// makes the smart pointer point to 0.
-    /** If necessary, the dumb pointer previously pointed to by the RefPtr is
-     * deallocated. In this case, an exception may be thrown by the destructor of
-     * the object pointed to. But, even in this case, the RefPtr guarrantees that
-     * after the completion of this method, the RefPtr will point toward 0. */
-    // ============================================================================
-    void clear();
-
-    // ============================================================================
-    /// returns the number of smart pointer referencing the contained pointer
-    // ============================================================================
-    unsigned int refCount () const;
-
-    /// @}
+      ///@}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// copy operator
-    /** operator= may throw exceptions when the dumb pointer previously pointed to
-     * by the RefPtr is deallocated (that is, the destructor of the object pointed
-     * to may throw an exception). However, even when this occurs, the RefPtr
-     * guarrantees that the copy operation is correctly performed, that is, after
-     * the completion of the function, the RefPtr points to the same element
-     * as from.
-     * @param from the smart pointer we wish to make a copy */
-    // ============================================================================
-    RefPtr<Val>& operator=( const RefPtr<Val>& from );
+      // ============================================================================
+      /// checks whether a RefPtr points toward something
+      /** This method enables writing code like @c if (refptr) perform_operation() */
+      // ============================================================================
+      operator bool() const ;
 
-    // ============================================================================
-    /// copy operator
-    /** operator= may throw exceptions when the dumb pointer previously pointed to
-     * by the RefPtr is deallocated (that is, the destructor of the object pointed
-     * to may throw an exception). However, even when this occurs, the RefPtr
-     * guarrantees that its state is coherent: either it could succeed to
-     * encapsulate the dumb pointer and this one is referenced once, or even
-     * encapsulating the new pointer failed and the RefPtr points toward
-     * the 0 pointer.
-     * @param from the dumb pointer we wish to encapsulate */
-    // ============================================================================
-    RefPtr<Val>& operator=( Val* from );
+      // ============================================================================
+      /// makes the smart pointer point to 0.
+      /** If necessary, the dumb pointer previously pointed to by the RefPtr is
+       * deallocated. In this case, an exception may be thrown by the destructor of
+       * the object pointed to. But, even in this case, the RefPtr guarrantees that
+       * after the completion of this method, the RefPtr will point toward 0. */
+      // ============================================================================
+      void clear();
 
-    // ============================================================================
-    /// copy operator for downcastable pointers
-    /** operator= may throw exceptions when the dumb pointer previously pointed to
-     * by the RefPtr is deallocated (that is, the destructor of the object pointed
-     * to may throw an exception). However, even when this occurs, the RefPtr
-     * guarrantees that the copy operation is correctly performed, that is, after
-     * the completion of the function, the RefPtr points to the same element as
-     * from.
-     * @param from the smart pointer we wish to make a copy */
-    // ============================================================================
-    template <typename DownVal> RefPtr<Val>&
-    operator=( const RefPtr<DownVal>& from );
+      // ============================================================================
+      /// returns the number of smart pointer referencing the contained pointer
+      // ============================================================================
+      unsigned int refCount() const;
 
-    // ============================================================================
-    /// checks whether two RefPtr<Val> are smart pointers for the same element.
-    /** "Pointing toward the same element" is a little ambiguous: it does not mean
-     * that the smart pointers are pointing toward the same Val instance as
-     * several RefPtr<Val> created by the constructor with *val may point toward
-     * the same val element while being unrelated (they do not share the same
-     * reference). Instead, it means that the two smart pointers share the same
-     * reference counter, i.e., that at least one of the two smarts pointers has
-     * been created using the copy operator. As a consequence both pointers point
-     * toward the same Val instance (but the converse is false). */
-    // ============================================================================
-    bool operator== ( const RefPtr<Val>& from ) const ;
+      /// @}
 
-    // ============================================================================
-    /// checks whether two RefPtr<Val> are smart pointers for different elements
-    /** returns true if either the dumb pointers the smart pointers encapsulate are
-     * different or the reference counters are different (i.e., the smart pointers
-     * are not related through copy operators) */
-    // ============================================================================
-    bool operator!= ( const RefPtr<Val>& from ) const ;
 
-    // ============================================================================
-    /// dereferencing operator
-    /** This operator allows developers to write code like
-     * @c refptr->member()
-     * @throws NullElement exception is thrown whenever the smart pointer points
-     * toward 0 */
-    // ============================================================================
-    Val* operator->() const ;
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// dereferencing operator
-    /** This operator is provided for convenience but you should prefer using
-     * operator -> as this is the syntax you would use with the dumb pointer. Note
-     * however that it might be useful for built-in types such as int.
-     * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
-    // ============================================================================
-    Val& operator*() ;
+      // ============================================================================
+      /// copy operator
+      /** operator= may throw exceptions when the dumb pointer previously pointed to
+       * by the RefPtr is deallocated (that is, the destructor of the object pointed
+       * to may throw an exception). However, even when this occurs, the RefPtr
+       * guarrantees that the copy operation is correctly performed, that is, after
+       * the completion of the function, the RefPtr points to the same element
+       * as from.
+       * @param from the smart pointer we wish to make a copy */
+      // ============================================================================
+      RefPtr<Val>& operator=( const RefPtr<Val>& from );
 
-    /// const dereferencing operator
-    /** This operator is provided for convenience but you should prefer using
-     * operator -> as this is the syntax you would use with the dumb pointer. Note
-     * however that it might be useful for built-in types such as int.
-     * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
-    const Val& operator*() const ;
+      // ============================================================================
+      /// copy operator
+      /** operator= may throw exceptions when the dumb pointer previously pointed to
+       * by the RefPtr is deallocated (that is, the destructor of the object pointed
+       * to may throw an exception). However, even when this occurs, the RefPtr
+       * guarrantees that its state is coherent: either it could succeed to
+       * encapsulate the dumb pointer and this one is referenced once, or even
+       * encapsulating the new pointer failed and the RefPtr points toward
+       * the 0 pointer.
+       * @param from the dumb pointer we wish to encapsulate */
+      // ============================================================================
+      RefPtr<Val>& operator=( Val* from );
 
-    /// @}
+      // ============================================================================
+      /// copy operator for downcastable pointers
+      /** operator= may throw exceptions when the dumb pointer previously pointed to
+       * by the RefPtr is deallocated (that is, the destructor of the object pointed
+       * to may throw an exception). However, even when this occurs, the RefPtr
+       * guarrantees that the copy operation is correctly performed, that is, after
+       * the completion of the function, the RefPtr points to the same element as
+       * from.
+       * @param from the smart pointer we wish to make a copy */
+      // ============================================================================
+      template <typename DownVal> RefPtr<Val>&
+      operator=( const RefPtr<DownVal>& from );
 
-    // ############################################################################
-    // internals
-    // ############################################################################
-  private:
-    /// a friend to allow downcastings
-    template <typename T> friend class RefPtr;
+      // ============================================================================
+      /// checks whether two RefPtr<Val> are smart pointers for the same element.
+      /** "Pointing toward the same element" is a little ambiguous: it does not mean
+       * that the smart pointers are pointing toward the same Val instance as
+       * several RefPtr<Val> created by the constructor with *val may point toward
+       * the same val element while being unrelated (they do not share the same
+       * reference). Instead, it means that the two smart pointers share the same
+       * reference counter, i.e., that at least one of the two smarts pointers has
+       * been created using the copy operator. As a consequence both pointers point
+       * toward the same Val instance (but the converse is false). */
+      // ============================================================================
+      bool operator== ( const RefPtr<Val>& from ) const ;
 
-    /// a friend for hashing quickly ref pointers
-    template <typename T> friend class HashFunc;
+      // ============================================================================
+      /// checks whether two RefPtr<Val> are smart pointers for different elements
+      /** returns true if either the dumb pointers the smart pointers encapsulate are
+       * different or the reference counters are different (i.e., the smart pointers
+       * are not related through copy operators) */
+      // ============================================================================
+      bool operator!= ( const RefPtr<Val>& from ) const ;
 
-    /// the dumb pointer encapsulated into the "smart" pointer
-    Val *__val;
+      // ============================================================================
+      /// dereferencing operator
+      /** This operator allows developers to write code like
+       * @c refptr->member()
+       * @throws NullElement exception is thrown whenever the smart pointer points
+       * toward 0 */
+      // ============================================================================
+      Val* operator->() const ;
 
-    /// a reference counter on *val
-    unsigned int *__refcount;
+      // ============================================================================
+      /// dereferencing operator
+      /** This operator is provided for convenience but you should prefer using
+       * operator -> as this is the syntax you would use with the dumb pointer. Note
+       * however that it might be useful for built-in types such as int.
+       * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
+      // ============================================================================
+      Val& operator*() ;
 
-    /// a function to remove the content of the smart pointer, if any
-    void __destroy( unsigned int *, Val * );
+      /// const dereferencing operator
+      /** This operator is provided for convenience but you should prefer using
+       * operator -> as this is the syntax you would use with the dumb pointer. Note
+       * however that it might be useful for built-in types such as int.
+       * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
+      const Val& operator*() const ;
 
-    /// a function to return the refcount pointer
-    unsigned int *__refCountPtr () const;
+      /// @}
+
+      // ############################################################################
+      // internals
+      // ############################################################################
+    private:
+      /// a friend to allow downcastings
+
+      template <typename T> friend class RefPtr;
+
+      /// a friend for hashing quickly ref pointers
+
+      template <typename T> friend class HashFunc;
+
+      /// the dumb pointer encapsulated into the "smart" pointer
+      Val *__val;
+
+      /// a reference counter on *val
+      unsigned int *__refcount;
+
+      /// a function to remove the content of the smart pointer, if any
+      void __destroy( unsigned int *, Val * );
+
+      /// a function to return the refcount pointer
+      unsigned int *__refCountPtr() const;
   };
 
 

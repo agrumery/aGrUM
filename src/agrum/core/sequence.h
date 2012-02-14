@@ -33,7 +33,9 @@
 #define GUM_SEQUENCE_H
 
 #include <vector>
-#include <agrum/core/utils.h>
+
+#include <agrum/config.h>
+
 #include <agrum/core/hashTable.h>
 
 
@@ -60,273 +62,275 @@ namespace gum {
    * KEYs must be different. */
   /* =========================================================================== */
   template<typename KEY>
+
   class Sequence {
-    friend class SequenceIterator<KEY>;
 
-  public:
-    typedef SequenceIterator<KEY> iterator;
-    typedef SequenceIterator<KEY> const_iterator;
+      friend class SequenceIterator<KEY>;
 
-
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-
-    // ============================================================================
-    /// Default constructor
-    // ============================================================================
-    Sequence();
-
-    // ============================================================================
-    /// copy constructor
-    /** @param aSeq the sequence the elements of which will be copied.
-     * @warning The elements of the newly constructed sequence are copies of those
-     * in aSeq */
-    // ============================================================================
-    Sequence( const Sequence<KEY>& aSeq );
-
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~Sequence();
-
-    /// @}
+    public:
+      typedef SequenceIterator<KEY> iterator;
+      typedef SequenceIterator<KEY> const_iterator;
 
 
-    // ############################################################################
-    /// @name Iterators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// begin iterator
-    // ============================================================================
-    iterator begin() const;
+      // ============================================================================
+      /// Default constructor
+      // ============================================================================
+      Sequence();
 
-    // ============================================================================
-    /// rbegin iterator
-    // ============================================================================
-    iterator rbegin() const;
+      // ============================================================================
+      /// copy constructor
+      /** @param aSeq the sequence the elements of which will be copied.
+       * @warning The elements of the newly constructed sequence are copies of those
+       * in aSeq */
+      // ============================================================================
+      Sequence( const Sequence<KEY>& aSeq );
 
-    // ============================================================================
-    /// end iterator
-    // ============================================================================
-    const iterator& end() const;
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      ~Sequence();
 
-    // ============================================================================
-    /// rend iterator
-    // ============================================================================
-    const iterator& rend() const;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Iterators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// copy operator
-    /** @param aSeq : the copied sequence
-     * @return a ref to this */
-    // ============================================================================
-    Sequence<KEY>& operator= ( const Sequence<KEY>& aSeq );
+      // ============================================================================
+      /// begin iterator
+      // ============================================================================
+      iterator begin() const;
 
-    // ============================================================================
-    /// insert k at the end of the sequence (synonym for insert)
-    /** @param k the key we wish to insert in the sequence
-     * @return *this
-     * @throw DuplicateElement is thrown if the sequence contains already k */
-    // ============================================================================
-    Sequence<KEY>& operator<<( const KEY& k ) ;
+      // ============================================================================
+      /// rbegin iterator
+      // ============================================================================
+      iterator rbegin() const;
 
-    // ============================================================================
-    /// remove k in the sequence (synonym for remove)
-    /** If the element cannot be found, the function does nothing. In particular,
-     * it throws no exception.
-     * @param k the key we wish to remove
-     * @return *this */
-    // ============================================================================
-    Sequence<KEY>& operator>>( const KEY& k );
+      // ============================================================================
+      /// end iterator
+      // ============================================================================
+      const iterator& end() const;
 
-    // ============================================================================
-    /// returns the index of object k if it exists (synonym for pos)
-    /** @param k the key the index of which we wish to find
-     * @throw NotFound is thrown if k cannot be found in the sequence */
-    // ============================================================================
-    Idx operator[]( const KEY& k ) const ;
+      // ============================================================================
+      /// rend iterator
+      // ============================================================================
+      const iterator& rend() const;
 
-    // ============================================================================
-    /// returns the element at position i (synonym for atPos)
-    /** @param i
-     * @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    const KEY& operator[]( const Idx i ) const ;
-
-    // ============================================================================
-    /// returns true if the content of k equals that of *this
-    /** Note that two sequences are equal if and only if they contain the same
-     * KEYs (using KEY::operator==) in the same order
-     * @param k */
-    // ============================================================================
-    bool operator== ( const Sequence<KEY>& k ) const;
-
-    // ============================================================================
-    /// returns true if the content of k is different from that of *this
-    /** Note that two sequences are equal if and only if they contain the same
-     * variables (using KEY::operator==) in the same order
-     * @param k */
-    // ============================================================================
-    bool operator!= ( const Sequence<KEY>& k ) const;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// clear the sequence
-    // ============================================================================
-    void clear();
+      // ============================================================================
+      /// copy operator
+      /** @param aSeq : the copied sequence
+       * @return a ref to this */
+      // ============================================================================
+      Sequence<KEY>& operator= ( const Sequence<KEY>& aSeq );
 
-    // ============================================================================
-    /// returns the size of the sequence
-    // ============================================================================
-    Size size() const ;
+      // ============================================================================
+      /// insert k at the end of the sequence (synonym for insert)
+      /** @param k the key we wish to insert in the sequence
+       * @return *this
+       * @throw DuplicateElement is thrown if the sequence contains already k */
+      // ============================================================================
+      Sequence<KEY>& operator<<( const KEY& k ) ;
 
-    // ============================================================================
-    /// return true if empty
-    // ============================================================================
-    bool empty() const ;
+      // ============================================================================
+      /// remove k in the sequence (synonym for remove)
+      /** If the element cannot be found, the function does nothing. In particular,
+       * it throws no exception.
+       * @param k the key we wish to remove
+       * @return *this */
+      // ============================================================================
+      Sequence<KEY>& operator>>( const KEY& k );
 
-    // ============================================================================
-    /// check the existence of k in the sequence
-    /** complexity : \f$o(1)\f$ */
-    // ============================================================================
-    bool exists( const KEY& k ) const ;
+      // ============================================================================
+      /// returns the index of object k if it exists (synonym for pos)
+      /** @param k the key the index of which we wish to find
+       * @throw NotFound is thrown if k cannot be found in the sequence */
+      // ============================================================================
+      Idx operator[]( const KEY& k ) const ;
 
-    // ============================================================================
-    /// insert an element at the end of the sequence
-    /** complexity : \f$o(1)\f$
-     * @param k
-     * @throw DuplicateElement is thrown if the sequence contains already k */
-    // ============================================================================
-    void insert( const KEY& k );
+      // ============================================================================
+      /// returns the element at position i (synonym for atPos)
+      /** @param i
+       * @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      const KEY& operator[]( const Idx i ) const ;
 
-    // ============================================================================
-    /// remove an element from the sequence
-    /** If the element cannot be found, the function does nothing. In patricular,
-     * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
-     * of at most the n elements)
-     * @param k */
-    // ============================================================================
-    void erase( const KEY& k );
+      // ============================================================================
+      /// returns true if the content of k equals that of *this
+      /** Note that two sequences are equal if and only if they contain the same
+       * KEYs (using KEY::operator==) in the same order
+       * @param k */
+      // ============================================================================
+      bool operator== ( const Sequence<KEY>& k ) const;
 
-    // ============================================================================
-    /// remove from the sequence the element pointed to by the iterator
-    /** If the element cannot be found, the function does nothing. In patricular,
-     * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
-     * of at most the n elements)
-     * @param k */
-    // ============================================================================
-    void erase( const iterator& k);
+      // ============================================================================
+      /// returns true if the content of k is different from that of *this
+      /** Note that two sequences are equal if and only if they contain the same
+       * variables (using KEY::operator==) in the same order
+       * @param k */
+      // ============================================================================
+      bool operator!= ( const Sequence<KEY>& k ) const;
 
-    // ============================================================================
-    /// returns the object at the pos i
-    /** @param i
-     * @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    const KEY& atPos( const Idx i ) const ;
-
-    // ============================================================================
-    /// returns the position of the object passed in argument (if it exists)
-    /** @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    Idx  pos( const KEY& key ) const ;
-
-    /// change the value
-    /** @param i
-     * @param newKey
-     * @throw NotFound is thrown if the element does not exist
-     * @throw DuplicateElement if newKey alreay exists */
-    void setAtPos( Idx i,const KEY& newKey );
-
-    /// swap index
-    /**
-     * @param i
-     * @param j
-     */
-    void swap( Idx i,Idx j );
-
-    // ============================================================================
-    /// returns the first element
-    /**
-     * @throw NotFound if the sequence is empty */
-    // ============================================================================
-    const KEY& front() const;
-
-    // ============================================================================
-    /// returns the last element
-    /**
-     * @throw NotFound if the sequence is empty */
-    // ============================================================================
-    const KEY& back() const;
-
-    // ============================================================================
-    /// displays the content of the sequence
-    // ============================================================================
-    std::string toString() const;
-
-    // ============================================================================
-    /// modifies the size of the internal structures of the sequence
-    /** This function is provided for optimization issues. When you know you will
-     * have to insert elements into the sequence, it may be faster to use this
-     * function prior to the additions because it will change once and for all
-     * the sizes of all the internal containers. Note that if you provide a size
-     * that is smaller than the number of elements of the sequence, the function
-     * will not modify anything. */
-    // ============================================================================
-    void resize( unsigned int new_size );
-
-    /// @}
-
-  private:
-    /// keep track of the position of the element in v (for fast retrieval)
-    HashTable<KEY,Idx> __h;
-
-    /// the set of the elements stored into the sequence
-    std::vector<KEY*> __v;
-    // note that, using KEY* in __v, we actually store the KEY only once in the
-    // sequence (that is, within __h). This enables storing big objects within
-    // sequences without having memory overhead
-
-    /// stores the end iterator for fast access
-    SequenceIterator<KEY> __end;
-
-    /// stores the rend iterator for fast access
-    SequenceIterator<KEY> __rend;
+      /// @}
 
 
-    // ============================================================================
-    /// a method to update the end iterator after changes in the sequence
-    // ============================================================================
-    void __update_end();
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// clears the current sequence and fill it with copies the element of aSeq
-    // ============================================================================
-    void __copy( const Sequence<KEY>& aSeq );
+      // ============================================================================
+      /// clear the sequence
+      // ============================================================================
+      void clear();
 
-    // ============================================================================
-    /** @brief insert an element at the end of the sequence. private version
-     * for internal use */
-    // ============================================================================
-    void __insert( const KEY& k );
+      // ============================================================================
+      /// returns the size of the sequence
+      // ============================================================================
+      Size size() const ;
+
+      // ============================================================================
+      /// return true if empty
+      // ============================================================================
+      bool empty() const ;
+
+      // ============================================================================
+      /// check the existence of k in the sequence
+      /** complexity : \f$o(1)\f$ */
+      // ============================================================================
+      bool exists( const KEY& k ) const ;
+
+      // ============================================================================
+      /// insert an element at the end of the sequence
+      /** complexity : \f$o(1)\f$
+       * @param k
+       * @throw DuplicateElement is thrown if the sequence contains already k */
+      // ============================================================================
+      void insert( const KEY& k );
+
+      // ============================================================================
+      /// remove an element from the sequence
+      /** If the element cannot be found, the function does nothing. In patricular,
+       * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
+       * of at most the n elements)
+       * @param k */
+      // ============================================================================
+      void erase( const KEY& k );
+
+      // ============================================================================
+      /// remove from the sequence the element pointed to by the iterator
+      /** If the element cannot be found, the function does nothing. In patricular,
+       * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
+       * of at most the n elements)
+       * @param k */
+      // ============================================================================
+      void erase( const iterator& k );
+
+      // ============================================================================
+      /// returns the object at the pos i
+      /** @param i
+       * @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      const KEY& atPos( const Idx i ) const ;
+
+      // ============================================================================
+      /// returns the position of the object passed in argument (if it exists)
+      /** @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      Idx  pos( const KEY& key ) const ;
+
+      /// change the value
+      /** @param i
+       * @param newKey
+       * @throw NotFound is thrown if the element does not exist
+       * @throw DuplicateElement if newKey alreay exists */
+      void setAtPos( Idx i,const KEY& newKey );
+
+      /// swap index
+      /**
+       * @param i
+       * @param j
+       */
+      void swap( Idx i,Idx j );
+
+      // ============================================================================
+      /// returns the first element
+      /**
+       * @throw NotFound if the sequence is empty */
+      // ============================================================================
+      const KEY& front() const;
+
+      // ============================================================================
+      /// returns the last element
+      /**
+       * @throw NotFound if the sequence is empty */
+      // ============================================================================
+      const KEY& back() const;
+
+      // ============================================================================
+      /// displays the content of the sequence
+      // ============================================================================
+      std::string toString() const;
+
+      // ============================================================================
+      /// modifies the size of the internal structures of the sequence
+      /** This function is provided for optimization issues. When you know you will
+       * have to insert elements into the sequence, it may be faster to use this
+       * function prior to the additions because it will change once and for all
+       * the sizes of all the internal containers. Note that if you provide a size
+       * that is smaller than the number of elements of the sequence, the function
+       * will not modify anything. */
+      // ============================================================================
+      void resize( unsigned int new_size );
+
+      /// @}
+
+    private:
+      /// keep track of the position of the element in v (for fast retrieval)
+      HashTable<KEY,Idx> __h;
+
+      /// the set of the elements stored into the sequence
+      std::vector<KEY*> __v;
+      // note that, using KEY* in __v, we actually store the KEY only once in the
+      // sequence (that is, within __h). This enables storing big objects within
+      // sequences without having memory overhead
+
+      /// stores the end iterator for fast access
+      SequenceIterator<KEY> __end;
+
+      /// stores the rend iterator for fast access
+      SequenceIterator<KEY> __rend;
+
+
+      // ============================================================================
+      /// a method to update the end iterator after changes in the sequence
+      // ============================================================================
+      void __update_end();
+
+      // ============================================================================
+      /// clears the current sequence and fill it with copies the element of aSeq
+      // ============================================================================
+      void __copy( const Sequence<KEY>& aSeq );
+
+      // ============================================================================
+      /** @brief insert an element at the end of the sequence. private version
+       * for internal use */
+      // ============================================================================
+      void __insert( const KEY& k );
   };
 
 
@@ -344,115 +348,117 @@ namespace gum {
    * being respectively rend and end.
    **/
   template<typename KEY>
+
   class SequenceIterator {
-    friend class Sequence<KEY>;
 
-  public:
-    // ############################################################################
-    /// @name constructors / destructors
-    // ############################################################################
-    ///@{
-    // ============================================================================
-    /// constructor: always give a valid iterator (even if pos too large)
-    /**
-		 * @param seq the sequence
-		 * @param pos indicates to which position of the sequence the iterator should
-     * be pointing. By default, the iterator points to begin()
-     * @warning if pos is greater than the size of the sequence, the iterator
-     * is made pointing to end() */
-    // ============================================================================
-    SequenceIterator( const Sequence<KEY>& seq, Idx pos=0 );
+      friend class Sequence<KEY>;
 
-    // ============================================================================
-    /// copy constructor
-    // ============================================================================
-    SequenceIterator( const SequenceIterator<KEY>& source );
+    public:
+      // ############################################################################
+      /// @name constructors / destructors
+      // ############################################################################
+      ///@{
+      // ============================================================================
+      /// constructor: always give a valid iterator (even if pos too large)
+      /**
+      * @param seq the sequence
+      * @param pos indicates to which position of the sequence the iterator should
+       * be pointing. By default, the iterator points to begin()
+       * @warning if pos is greater than the size of the sequence, the iterator
+       * is made pointing to end() */
+      // ============================================================================
+      SequenceIterator( const Sequence<KEY>& seq, Idx pos=0 );
 
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~SequenceIterator();
+      // ============================================================================
+      /// copy constructor
+      // ============================================================================
+      SequenceIterator( const SequenceIterator<KEY>& source );
 
-    ///@}
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      ~SequenceIterator();
 
-
-    // ############################################################################
-    /// @name operators
-    // ############################################################################
-    ///@{
-    // ============================================================================
-    /// copy operator
-    // ============================================================================
-    SequenceIterator<KEY>& operator=( const SequenceIterator& source );
-
-    // ============================================================================
-    /// point the iterator to the next value in the sequence
-    // ============================================================================
-    SequenceIterator<KEY>& operator++();
-
-    // ============================================================================
-    /// point the iterator to the preceding value in the sequence
-    // ============================================================================
-    SequenceIterator<KEY>& operator--();
-
-    // ============================================================================
-    /// checks whether two iterators are pointing toward different elements
-    // ============================================================================
-    bool operator!=( const SequenceIterator<KEY>& source ) const;
-
-    // ============================================================================
-    /// checks whether two iterators are pointing toward the same element
-    // ============================================================================
-    bool operator==( const SequenceIterator<KEY>& source ) const;
-
-    // ============================================================================
-    /// returns the value pointed to by the iterator
-    ///@throw UndefinedIteratorValue on end() or rend()
-    // ============================================================================
-    const KEY& operator*() const ;
-
-    // ============================================================================
-    /// returns the value pointed to by the iterator
-    ///@throw UndefinedIteratorValue on end() or rend()
-    // ============================================================================
-    const KEY* operator->() const ;
-
-    /// @}
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    ///@throw UndefinedIteratorValue on end() or rend()
-    Idx pos() const;
-
-    /// @}
+      ///@}
 
 
+      // ############################################################################
+      /// @name operators
+      // ############################################################################
+      ///@{
+      // ============================================================================
+      /// copy operator
+      // ============================================================================
+      SequenceIterator<KEY>& operator=( const SequenceIterator& source );
 
-  private:
-    /// the index in the sequence's vector where the iterator is pointing
-    Idx __iterator;
+      // ============================================================================
+      /// point the iterator to the next value in the sequence
+      // ============================================================================
+      SequenceIterator<KEY>& operator++();
 
-    /// the sequence pointed to by the iterator
-    const Sequence<KEY> *__seq;
+      // ============================================================================
+      /// point the iterator to the preceding value in the sequence
+      // ============================================================================
+      SequenceIterator<KEY>& operator--();
+
+      // ============================================================================
+      /// checks whether two iterators are pointing toward different elements
+      // ============================================================================
+      bool operator!=( const SequenceIterator<KEY>& source ) const;
+
+      // ============================================================================
+      /// checks whether two iterators are pointing toward the same element
+      // ============================================================================
+      bool operator==( const SequenceIterator<KEY>& source ) const;
+
+      // ============================================================================
+      /// returns the value pointed to by the iterator
+      ///@throw UndefinedIteratorValue on end() or rend()
+      // ============================================================================
+      const KEY& operator*() const ;
+
+      // ============================================================================
+      /// returns the value pointed to by the iterator
+      ///@throw UndefinedIteratorValue on end() or rend()
+      // ============================================================================
+      const KEY* operator->() const ;
+
+      /// @}
+
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
+
+      ///@throw UndefinedIteratorValue on end() or rend()
+      Idx pos() const;
+
+      /// @}
 
 
-    // ============================================================================
-    /// the iterator points to the posth element (0 = beginning of the sequence).
-    // ============================================================================
-    void __setPos( Idx pos );
 
-    // ============================================================================
-    /// the iterator points to rend
-    // ============================================================================
-    void __setAtRend();
+    private:
+      /// the index in the sequence's vector where the iterator is pointing
+      Idx __iterator;
 
-    // ============================================================================
-    /// the iterator points to the end (which is pos size()-1)
-    // ============================================================================
-    void __setAtEnd();
+      /// the sequence pointed to by the iterator
+      const Sequence<KEY> *__seq;
+
+
+      // ============================================================================
+      /// the iterator points to the posth element (0 = beginning of the sequence).
+      // ============================================================================
+      void __setPos( Idx pos );
+
+      // ============================================================================
+      /// the iterator points to rend
+      // ============================================================================
+      void __setAtRend();
+
+      // ============================================================================
+      /// the iterator points to the end (which is pos size()-1)
+      // ============================================================================
+      void __setAtEnd();
 
   };
 
@@ -497,108 +503,110 @@ namespace gum {
    * being respectively rend and end.
    **/
   template<typename KEY>
+
   class SequenceIterator<KEY*> {
-    friend class Sequence<KEY*>;
 
-  public:
-    // ############################################################################
-    /// @name constructors / destructors
-    // ############################################################################
-    ///@{
-    // ============================================================================
-    /// constructor: always give a valid iterator (even if pos too large)
-    /** @param pos indicates to which position of the sequence the iterator should
-     * be pointing. By default, the iterator points to begin()
-     * @warning if pos is greater than the size of the sequence, the iterator
-     * is made pointing to end() */
-    // ============================================================================
-    SequenceIterator( const Sequence<KEY*>& seq, Idx pos=0 );
+      friend class Sequence<KEY*>;
 
-    // ============================================================================
-    /// copy constructor
-    // ============================================================================
-    SequenceIterator( const SequenceIterator<KEY*>& source );
+    public:
+      // ############################################################################
+      /// @name constructors / destructors
+      // ############################################################################
+      ///@{
+      // ============================================================================
+      /// constructor: always give a valid iterator (even if pos too large)
+      /** @param pos indicates to which position of the sequence the iterator should
+       * be pointing. By default, the iterator points to begin()
+       * @warning if pos is greater than the size of the sequence, the iterator
+       * is made pointing to end() */
+      // ============================================================================
+      SequenceIterator( const Sequence<KEY*>& seq, Idx pos=0 );
 
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~SequenceIterator();
+      // ============================================================================
+      /// copy constructor
+      // ============================================================================
+      SequenceIterator( const SequenceIterator<KEY*>& source );
 
-    ///@}
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      ~SequenceIterator();
 
-
-    // ############################################################################
-    /// @name operators
-    // ############################################################################
-    ///@{
-    // ============================================================================
-    /// copy operator
-    // ============================================================================
-    SequenceIterator<KEY*>& operator=( const SequenceIterator& source );
-
-    // ============================================================================
-    /// point the iterator to the next value in the sequence
-    // ============================================================================
-    SequenceIterator<KEY*>& operator++();
-
-    // ============================================================================
-    /// point the iterator to the preceding value in the sequence
-    // ============================================================================
-    SequenceIterator<KEY*>& operator--();
-
-    // ============================================================================
-    /// checks whether two iterators are pointing toward different elements
-    // ============================================================================
-    bool operator!=( const SequenceIterator<KEY*>& source ) const;
-
-    // ============================================================================
-    /// checks whether two iterators are pointing toward the same element
-    // ============================================================================
-    bool operator==( const SequenceIterator<KEY*>& source ) const;
-
-    // ============================================================================
-    /// returns the value pointed to by the iterator
-    ///@throw UndefinedIteratorValue on end() or rend()
-    // ============================================================================
-    KEY* const operator*() const ;
-
-    /// @}
+      ///@}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name operators
+      // ############################################################################
+      ///@{
+      // ============================================================================
+      /// copy operator
+      // ============================================================================
+      SequenceIterator<KEY*>& operator=( const SequenceIterator& source );
 
-    ///@throw UndefinedIteratorValue on end() or rend()
-    Idx pos() const;
+      // ============================================================================
+      /// point the iterator to the next value in the sequence
+      // ============================================================================
+      SequenceIterator<KEY*>& operator++();
 
-    /// @}
+      // ============================================================================
+      /// point the iterator to the preceding value in the sequence
+      // ============================================================================
+      SequenceIterator<KEY*>& operator--();
+
+      // ============================================================================
+      /// checks whether two iterators are pointing toward different elements
+      // ============================================================================
+      bool operator!=( const SequenceIterator<KEY*>& source ) const;
+
+      // ============================================================================
+      /// checks whether two iterators are pointing toward the same element
+      // ============================================================================
+      bool operator==( const SequenceIterator<KEY*>& source ) const;
+
+      // ============================================================================
+      /// returns the value pointed to by the iterator
+      ///@throw UndefinedIteratorValue on end() or rend()
+      // ============================================================================
+      KEY* const operator*() const ;
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
+
+      ///@throw UndefinedIteratorValue on end() or rend()
+      Idx pos() const;
+
+      /// @}
 
 
 
-  private:
-    /// the index in the sequence's vector where the iterator is pointing
-    Idx __iterator;
+    private:
+      /// the index in the sequence's vector where the iterator is pointing
+      Idx __iterator;
 
-    /// the sequence pointed to by the iterator
-    const Sequence<KEY*> *__seq;
+      /// the sequence pointed to by the iterator
+      const Sequence<KEY*> *__seq;
 
 
-    // ============================================================================
-    /// the iterator points to the posth element (0 = beginning of the sequence).
-    // ============================================================================
-    void __setPos( Idx pos );
+      // ============================================================================
+      /// the iterator points to the posth element (0 = beginning of the sequence).
+      // ============================================================================
+      void __setPos( Idx pos );
 
-    // ============================================================================
-    /// the iterator points to rend
-    // ============================================================================
-    void __setAtRend();
+      // ============================================================================
+      /// the iterator points to rend
+      // ============================================================================
+      void __setAtRend();
 
-    // ============================================================================
-    /// the iterator points to the end (which is pos size()-1)
-    // ============================================================================
-    void __setAtEnd();
+      // ============================================================================
+      /// the iterator points to the end (which is pos size()-1)
+      // ============================================================================
+      void __setAtEnd();
 
   };
 
@@ -621,274 +629,276 @@ namespace gum {
    * KEYs must be different. */
   /* =========================================================================== */
   template<typename KEY>
+
   class Sequence<KEY*> {
-    friend class SequenceIterator<KEY*>;
 
-  public:
-    typedef SequenceIterator<KEY*> iterator;
-    typedef SequenceIterator<KEY*> const_iterator;
+      friend class SequenceIterator<KEY*>;
 
-
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-
-    // ============================================================================
-    /// Default constructor
-    // ============================================================================
-    Sequence();
-
-    // ============================================================================
-    /// copy constructor
-    /** @param aSeq the sequence the elements of which will be copied.
-     * @warning The elements of the newly constructed sequence are copies of those
-     * in aSeq */
-    // ============================================================================
-    Sequence( const Sequence<KEY*>& aSeq );
-
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~Sequence();
-
-    /// @}
+    public:
+      typedef SequenceIterator<KEY*> iterator;
+      typedef SequenceIterator<KEY*> const_iterator;
 
 
-    // ############################################################################
-    /// @name Iterators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// begin iterator
-    // ============================================================================
-    iterator begin() const;
+      // ============================================================================
+      /// Default constructor
+      // ============================================================================
+      Sequence();
 
-    // ============================================================================
-    /// rbegin iterator
-    // ============================================================================
-    iterator rbegin() const;
+      // ============================================================================
+      /// copy constructor
+      /** @param aSeq the sequence the elements of which will be copied.
+       * @warning The elements of the newly constructed sequence are copies of those
+       * in aSeq */
+      // ============================================================================
+      Sequence( const Sequence<KEY*>& aSeq );
 
-    // ============================================================================
-    /// end iterator
-    // ============================================================================
-    const iterator& end() const;
+      // ============================================================================
+      /// destructor
+      // ============================================================================
+      ~Sequence();
 
-    // ============================================================================
-    /// rend iterator
-    // ============================================================================
-    const iterator& rend() const;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Iterators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// copy operator
-    /** @param aSeq : the copied sequence
-     * @return a ref to this */
-    // ============================================================================
-    Sequence<KEY*>& operator= ( const Sequence<KEY*>& aSeq );
+      // ============================================================================
+      /// begin iterator
+      // ============================================================================
+      iterator begin() const;
 
-    // ============================================================================
-    /// insert k at the end of the sequence (synonym for insert)
-    /** @param k the key we wish to insert in the sequence
-     * @return *this
-     * @throw DuplicateElement is thrown if the sequence contains already k */
-    // ============================================================================
-    Sequence<KEY*>& operator<<( KEY* const k ) ;
+      // ============================================================================
+      /// rbegin iterator
+      // ============================================================================
+      iterator rbegin() const;
 
-    // ============================================================================
-    /// remove k in the sequence (synonym for remove)
-    /** If the element cannot be found, the function does nothing. In particular,
-     * it throws no exception.
-     * @param k the key we wish to remove
-     * @return *this */
-    // ============================================================================
-    Sequence<KEY*>& operator>>( KEY* const k );
+      // ============================================================================
+      /// end iterator
+      // ============================================================================
+      const iterator& end() const;
 
-    // ============================================================================
-    /// returns the index of object k if it exists (synonym for pos)
-    /** @param k the key the index of which we wish to find
-     * @throw NotFound is thrown if k cannot be found in the sequence */
-    // ============================================================================
-    Idx operator[]( KEY* const k ) const ;
+      // ============================================================================
+      /// rend iterator
+      // ============================================================================
+      const iterator& rend() const;
 
-    // ============================================================================
-    /// returns the element at position i (synonym for atPos)
-    /** @param i
-     * @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    KEY* const operator[]( const Idx i ) const ;
-
-    // ============================================================================
-    /// returns true if the content of k equals that of *this
-    /** Note that two sequences are equal if and only if they contain the same
-     * KEY*s (using KEY*::operator==) in the same order
-     * @param k */
-    // ============================================================================
-    bool operator== ( const Sequence<KEY*>& k ) const;
-
-    // ============================================================================
-    /// returns true if the content of k is different from that of *this
-    /** Note that two sequences are equal if and only if they contain the same
-     * variables (using KEY*::operator==) in the same order
-     * @param k */
-    // ============================================================================
-    bool operator!= ( const Sequence<KEY*>& k ) const;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// clear the sequence
-    // ============================================================================
-    void clear();
+      // ============================================================================
+      /// copy operator
+      /** @param aSeq : the copied sequence
+       * @return a ref to this */
+      // ============================================================================
+      Sequence<KEY*>& operator= ( const Sequence<KEY*>& aSeq );
 
-    // ============================================================================
-    /// returns the size of the sequence
-    // ============================================================================
-    Size size() const ;
+      // ============================================================================
+      /// insert k at the end of the sequence (synonym for insert)
+      /** @param k the key we wish to insert in the sequence
+       * @return *this
+       * @throw DuplicateElement is thrown if the sequence contains already k */
+      // ============================================================================
+      Sequence<KEY*>& operator<<( KEY* const k ) ;
 
-    // ============================================================================
-    /// return true if empty
-    // ============================================================================
-    bool empty() const ;
+      // ============================================================================
+      /// remove k in the sequence (synonym for remove)
+      /** If the element cannot be found, the function does nothing. In particular,
+       * it throws no exception.
+       * @param k the key we wish to remove
+       * @return *this */
+      // ============================================================================
+      Sequence<KEY*>& operator>>( KEY* const k );
 
-    // ============================================================================
-    /// check the existence of k in the sequence
-    /** complexity : \f$o(1)\f$ */
-    // ============================================================================
-    bool exists( KEY* const k ) const ;
+      // ============================================================================
+      /// returns the index of object k if it exists (synonym for pos)
+      /** @param k the key the index of which we wish to find
+       * @throw NotFound is thrown if k cannot be found in the sequence */
+      // ============================================================================
+      Idx operator[]( KEY* const k ) const ;
 
-    // ============================================================================
-    /// insert an element at the end of the sequence
-    /** complexity : \f$o(1)\f$
-     * @param k
-     * @throw DuplicateElement is thrown if the sequence contains already k */
-    // ============================================================================
-    void insert( KEY* const k );
+      // ============================================================================
+      /// returns the element at position i (synonym for atPos)
+      /** @param i
+       * @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      KEY* const operator[]( const Idx i ) const ;
 
-    // ============================================================================
-    /// remove an element from the sequence
-    /** If the element cannot be found, the function does nothing. In patricular,
-     * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
-     * of at most the n elements)
-     * @param k */
-    // ============================================================================
-    void erase( KEY* const k );
+      // ============================================================================
+      /// returns true if the content of k equals that of *this
+      /** Note that two sequences are equal if and only if they contain the same
+       * KEY*s (using KEY*::operator==) in the same order
+       * @param k */
+      // ============================================================================
+      bool operator== ( const Sequence<KEY*>& k ) const;
 
-    // ============================================================================
-    /// remove from the sequence the element pointed to by the iterator
-    /** If the element cannot be found, the function does nothing. In patricular,
-     * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
-     * of at most the n elements)
-     * @param k */
-    // ============================================================================
-    void erase( const iterator& );
+      // ============================================================================
+      /// returns true if the content of k is different from that of *this
+      /** Note that two sequences are equal if and only if they contain the same
+       * variables (using KEY*::operator==) in the same order
+       * @param k */
+      // ============================================================================
+      bool operator!= ( const Sequence<KEY*>& k ) const;
 
-    // ============================================================================
-    /// returns the object at the pos i
-    /** @param i
-     * @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    KEY* const atPos( const Idx i ) const ;
-
-    // ============================================================================
-    /// returns the position of the object passed in argument (if it exists)
-    /** @throw NotFound is thrown if the element does not exist */
-    // ============================================================================
-    Idx  pos( KEY* const key ) const ;
-
-    /// change the value
-    /** @param i
-     * @param newKey
-     * @throw NotFound is thrown if the element does not exist
-     * @throw DuplicateElement if newKey alreay exists */
-    void setAtPos( Idx i, KEY* const newKey );
-
-    /// swap index
-    /**
-     * @param i
-     * @param j
-     */
-    void swap( Idx i,Idx j );
-
-    // ============================================================================
-    /// returns the first element
-    /**
-     * @throw NotFound if the sequence is empty */
-    // ============================================================================
-    KEY* const front() const;
-
-    // ============================================================================
-    /// returns the last element
-    /**
-     * @throw NotFound if the sequence is empty */
-    // ============================================================================
-    KEY* const back() const;
-
-    // ============================================================================
-    /// displays the content of the sequence
-    // ============================================================================
-    std::string toString() const;
-
-    // ============================================================================
-    /// modifies the size of the internal structures of the sequence
-    /** This function is provided for optimization issues. When you know you will
-     * have to insert elements into the sequence, it may be faster to use this
-     * function prior to the additions because it will change once and for all
-     * the sizes of all the internal containers. Note that if you provide a size
-     * that is smaller than the number of elements of the sequence, the function
-     * will not modify anything. */
-    // ============================================================================
-    void resize( unsigned int new_size );
-
-    /// @}
+      /// @}
 
 
-  private:
-    /// keep track of the position of the element in v (for fast retrieval)
-    HashTable<KEY*,Idx> __h;
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// the set of the elements stored into the sequence
-    std::vector<KEY*> __v;
-    // note that, using KEY* in __v, we actually store the KEY only once in the
-    // sequence (that is, within __h). This enables storing big objects within
-    // sequences without having memory overhead
+      // ============================================================================
+      /// clear the sequence
+      // ============================================================================
+      void clear();
 
-    /// stores the end iterator for fast access
-    SequenceIterator<KEY*> __end;
+      // ============================================================================
+      /// returns the size of the sequence
+      // ============================================================================
+      Size size() const ;
 
-    /// stores the rend iterator for fast access
-    SequenceIterator<KEY*> __rend;
+      // ============================================================================
+      /// return true if empty
+      // ============================================================================
+      bool empty() const ;
+
+      // ============================================================================
+      /// check the existence of k in the sequence
+      /** complexity : \f$o(1)\f$ */
+      // ============================================================================
+      bool exists( KEY* const k ) const ;
+
+      // ============================================================================
+      /// insert an element at the end of the sequence
+      /** complexity : \f$o(1)\f$
+       * @param k
+       * @throw DuplicateElement is thrown if the sequence contains already k */
+      // ============================================================================
+      void insert( KEY* const k );
+
+      // ============================================================================
+      /// remove an element from the sequence
+      /** If the element cannot be found, the function does nothing. In patricular,
+       * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
+       * of at most the n elements)
+       * @param k */
+      // ============================================================================
+      void erase( KEY* const k );
+
+      // ============================================================================
+      /// remove from the sequence the element pointed to by the iterator
+      /** If the element cannot be found, the function does nothing. In patricular,
+       * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
+       * of at most the n elements)
+       * @param k */
+      // ============================================================================
+      void erase( const iterator& );
+
+      // ============================================================================
+      /// returns the object at the pos i
+      /** @param i
+       * @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      KEY* const atPos( const Idx i ) const ;
+
+      // ============================================================================
+      /// returns the position of the object passed in argument (if it exists)
+      /** @throw NotFound is thrown if the element does not exist */
+      // ============================================================================
+      Idx  pos( KEY* const key ) const ;
+
+      /// change the value
+      /** @param i
+       * @param newKey
+       * @throw NotFound is thrown if the element does not exist
+       * @throw DuplicateElement if newKey alreay exists */
+      void setAtPos( Idx i, KEY* const newKey );
+
+      /// swap index
+      /**
+       * @param i
+       * @param j
+       */
+      void swap( Idx i,Idx j );
+
+      // ============================================================================
+      /// returns the first element
+      /**
+       * @throw NotFound if the sequence is empty */
+      // ============================================================================
+      KEY* const front() const;
+
+      // ============================================================================
+      /// returns the last element
+      /**
+       * @throw NotFound if the sequence is empty */
+      // ============================================================================
+      KEY* const back() const;
+
+      // ============================================================================
+      /// displays the content of the sequence
+      // ============================================================================
+      std::string toString() const;
+
+      // ============================================================================
+      /// modifies the size of the internal structures of the sequence
+      /** This function is provided for optimization issues. When you know you will
+       * have to insert elements into the sequence, it may be faster to use this
+       * function prior to the additions because it will change once and for all
+       * the sizes of all the internal containers. Note that if you provide a size
+       * that is smaller than the number of elements of the sequence, the function
+       * will not modify anything. */
+      // ============================================================================
+      void resize( unsigned int new_size );
+
+      /// @}
 
 
-    // ============================================================================
-    /// a method to update the end iterator after changes in the sequence
-    // ============================================================================
-    void __update_end();
+    private:
+      /// keep track of the position of the element in v (for fast retrieval)
+      HashTable<KEY*,Idx> __h;
 
-    // ============================================================================
-    /// clears the current sequence and fill it with copies the element of aSeq
-    // ============================================================================
-    void __copy( const Sequence<KEY*>& aSeq );
+      /// the set of the elements stored into the sequence
+      std::vector<KEY*> __v;
+      // note that, using KEY* in __v, we actually store the KEY only once in the
+      // sequence (that is, within __h). This enables storing big objects within
+      // sequences without having memory overhead
 
-    // ============================================================================
-    /** @brief insert an element at the end of the sequence. private version
-     * for internal use */
-    // ============================================================================
-    void __insert( KEY* const k );
+      /// stores the end iterator for fast access
+      SequenceIterator<KEY*> __end;
+
+      /// stores the rend iterator for fast access
+      SequenceIterator<KEY*> __rend;
+
+
+      // ============================================================================
+      /// a method to update the end iterator after changes in the sequence
+      // ============================================================================
+      void __update_end();
+
+      // ============================================================================
+      /// clears the current sequence and fill it with copies the element of aSeq
+      // ============================================================================
+      void __copy( const Sequence<KEY*>& aSeq );
+
+      // ============================================================================
+      /** @brief insert an element at the end of the sequence. private version
+       * for internal use */
+      // ============================================================================
+      void __insert( KEY* const k );
   };
 
 
