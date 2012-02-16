@@ -20,266 +20,376 @@
 /** @file
  * @brief Source implementation of MCBayesNetGenerator
  *
- * @author Pierre-Henri WUILLEMIN and Ariele Maesano
+ * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  *
  */
 // ============================================================================
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
-#include "MCBayesNetGenerator.h"
+
 // ============================================================================
+
+
+template<typename T_DATA>
+gum::Size getMaxModality(gum::BayesNet<T_DATA> & bayesNet){
+  gum::Size maxMod = 0;
+  gum::DAG::NodeIterator node = bayesNet.beginNodes();
+        while (node != bayesNet.endNodes()){
+          if (maxMod < bayesNet.variable(*node).domainSize() )
+            maxMod = bayesNet.variable(*node).domainSize();
+         ++node; 
+        }
+        return maxMod;
+}
+
 namespace gum {
 
 // Default constructor.
-// Use the SimpleCPTGenerator for generating the BNs CPT.
-template<typename T_DATA>
-MCBayesNetGenerator<T_DATA>::MCBayesNetGenerator(Size nbNodes, Size max_modality, Size max_parents, double max_density):
-        __cptGenerator(new SimpleCPTGenerator()) {
-    c = 0;
-    __bayesNet = 0;
-    __nbNodes = nbNodes;
-    if (max_density < (double)(nbNodes - 1) / (double)(nbNodes * nbNodes ))
-        GUM_ERROR(gum::Exception,"max density too low for complete connection");
-    __max_parents = max_parents;
-    __max_density = max_density;
-    __max_modality = max_modality;
+// Use the DefaultCPTGenerator for generating the BNs CPT.
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::MCBayesNetGenerator( Size nbrNodes, Size maxArcs, Idx maxModality, Size iteration ,Idx p,Idx q): 
+AbstractBayesNetGenerator<T_DATA,ICPTGenerator>(nbrNodes, maxArcs ,maxModality),_bayesNettemp(),_hashMarginal(){
+  if(p+q > 100) GUM_ERROR(OperationNotAllowed,"the sum of the probabilities p and q must be at most equal to 100");
+    _c = 0;
+    _iteration =iteration;
+    _p = p;
+    _q = q;
+    _disturbing = false;
+
     GUM_CONSTRUCTOR(MCBayesNetGenerator);
 }
 
-// Use this constructor if you want to use a different policy for generating
-// CPT than the default one.
-// The cptGenerator will be erased when the destructor is called.
-// @param cptGenerator The policy used to generate CPT.
-template<typename T_DATA>
-MCBayesNetGenerator<T_DATA>::MCBayesNetGenerator( CPTGenerator* cptGenerator,Size nbNodes ,Size max_modality, Size max_parents, double max_density):
-        __cptGenerator(cptGenerator) {
-    c = 0;
-    __bayesNet=0;
-    __nbNodes = nbNodes;
-    if (max_density < (double)(__nbNodes - 1) / (double)(__nbNodes * __nbNodes )) GUM_ERROR(gum::Exception,"max density too low for complete connection");
-    __max_parents = max_parents;
-    __max_density = max_density;
-    __max_modality = max_modality;
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::MCBayesNetGenerator( BayesNet<T_DATA> bayesNet, Size iteration ,Idx p,Idx q): 
+AbstractBayesNetGenerator<T_DATA,ICPTGenerator>(bayesNet.size(), (Size) (bayesNet.nbrArcs() * 1.1) ,getMaxModality(bayesNet)),_bayesNettemp(),_hashMarginal(){
+
+    _c = 0;
+    _iteration =iteration;
+    _p = p;
+    _q = q;
+    _disturbing = false;
+
     GUM_CONSTRUCTOR(MCBayesNetGenerator);
 }
-
 // Destructor.
-template<typename T_DATA>
-MCBayesNetGenerator<T_DATA>::~MCBayesNetGenerator() {
+template<typename T_DATA, template<class> class ICPTGenerator , template <class> class ICPTDisturber> 
+MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::~MCBayesNetGenerator() { 
     GUM_DESTRUCTOR(MCBayesNetGenerator);
-    delete __cptGenerator;
+
 }
 
-template<typename T_DATA>
-BayesNet<T_DATA>* MCBayesNetGenerator<T_DATA>::generateBN(gum::Idx iteration, gum::Idx p,gum::Idx q) {
-    __bayesNet = new BayesNet<T_DATA>();
-    __createTree(__nbNodes);
-    __transformPoly(__nbNodes/2);
-    __PMMx_poly(iteration, p, q);
 
-    for ( NodeId iter = 0.; iter < __bayesNet->size(); iter++ ) {
-        __cptGenerator->generateCPT ( __bayesNet->cpt ( iter ).pos ( __bayesNet->variable ( iter ) ), __bayesNet->cpt ( iter ) );
-    }
-    return __bayesNet;
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::generateBN(BayesNet<T_DATA> & bayesNet){
+
+
+  Idx iteration = _iteration;
+    
+   AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = bayesNet;
+    __createTree(AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_nbrNodes);
+    __transformPoly(AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_nbrNodes/2);
+    _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet ;
+    __PMMx_poly();
+
+   AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::fillCPT();
+    _iteration = iteration;
+
+    bayesNet = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet;
+
 }
+
+
 // density represent de
-template<typename T_DATA>
-BayesNet<T_DATA>* MCBayesNetGenerator<T_DATA>::modifyingExistingBN(BayesNet<T_DATA> * bayesNetinit, gum::Idx iteration, gum::Idx p,gum::Idx q) {
-    __bayesNet = new BayesNet<T_DATA>(bayesNetinit);
-    __PMMx_poly(iteration, p, q);
-    for ( NodeId iter = 0.; iter < __bayesNet->size(); iter++ ) {
-        __cptGenerator->generateCPT ( __bayesNet->cpt ( iter ).pos ( __bayesNet->variable ( iter ) ), __bayesNet->cpt ( iter ) );
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::disturbBN(BayesNet<T_DATA> & bayesNetinit, Size iteration) {// insert option for the variation
+ _disturbing = true;
+   Size iter = _iteration;
+   if(iteration) _iteration = iteration;
+    AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = bayesNetinit;
+    if(__checkConditions()){ 
+      LazyPropagation<T_DATA> inf(bayesNetinit);
+      inf.makeInference();
+      for (DAG::NodeIterator it = bayesNetinit.beginNodes(); it != bayesNetinit.endNodes(); ++it){
+       Potential<T_DATA> * pottemp = new Potential<T_DATA>();
+       pottemp->copy(inf.marginal(*it));
+       _hashMarginal.insert(*it, pottemp); 
+        
+      }
+      _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet ;
+      if(__isPolytree())__PMMx_poly();
+      else __PMMx_multi();
+      
+      bayesNetinit = (AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet); 
+      
+      while(_hashMarginal.size()){ 
+          delete (*(_hashMarginal.begin()));
+         _hashMarginal.erase(_hashMarginal.begin());
+         
+       }
+
     }
-    return __bayesNet;
+    else { 
+      std::cout << AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.toDot()  << std::endl;
+      GUM_ERROR( OperationNotAllowed, "BN is not valid cause it does not respect constraint " );
+    }
+     _iteration = iter;
+    _disturbing = false;
+
 }
 
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
+ bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__checkConditions(){
 
+        return AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_maxArcs >= AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().sizeArcs();    
+   
+}
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__PMMx_poly(gum::Idx iteration, gum::Idx p, gum::Idx q) {
-    if (!iteration)
+//main algorithme for moving between state of the BayesNet according on the nature of the topology polytree or multi-connected
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__PMMx_poly() {
+    if (!_iteration--)
         return;
-    srand(time(NULL) + c++);
-    gum::Idx per = rand() % 100;
-    if (per < p) {
+
+    srand(time(NULL) + _c++);
+    Idx per = rand() % 100;
+    if (per < _p) {
         __AorR();
-        if (!__isPolytree()) __PMMx_multi(--iteration,p,q);
-        else __PMMx_poly(--iteration,p,q);//
+        if (__checkConditions()) {_bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet; __PMMx_multi();}
+        else {
+
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = _bayesNettemp ; 
+          __PMMx_poly();}
     }
     else {
-        if (per < p + q) {
+        if (per < _p + _q) {
             __AR();
-            __PMMx_poly(--iteration,p,q);
+             if (!__checkConditions()) {
 
+               AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet =_bayesNettemp;}
+             else _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet;
+            __PMMx_poly();
         }
         else {
             __jump_poly();
-            if (!__isPolytree()) __PMMx_multi(--iteration,p,q);
-            else __PMMx_poly(--iteration,p,q);
-
+            if  (__checkConditions()){
+             _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet ;
+              __PMMx_multi();
+              
+            }
+            else {
+             AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet =   _bayesNettemp;
+             __PMMx_poly();
+              
+            }
         }
     }
+  
 }
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__PMMx_multi(gum::Idx iteration, gum::Idx p,gum::Idx q) {
-    if (!iteration)
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__PMMx_multi() {
+
+    if (!_iteration--)
         return;
-    srand(time(NULL) + c++);
-    gum::Idx per = rand() % 100;
-    if (per < p + q) {
-        BayesNet<T_DATA> * newbayes = new BayesNet<T_DATA>(*__bayesNet);
+
+    srand(time(NULL) + _c++);
+    Idx per = rand() % 100;
+    if (per < _p + _q) {
         __AorR();
-        if (__isPolytree()) {
-            if (per > p) {
-
-                delete __bayesNet;
-                __bayesNet= newbayes;
-
-                __PMMx_poly(--iteration,p,q);
-            }
-            else delete newbayes;
+          if (__checkConditions()) {
+           if (__isPolytree()) {
+                if (per < _p)  {_bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet ; __PMMx_poly(); }
+               else {AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = _bayesNettemp; __PMMx_multi();}
+           }
+           else {_bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet; __PMMx_multi();}
         }
         else {
-            delete newbayes;
-            __PMMx_multi(--iteration,p,q);
+         
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = _bayesNettemp; 
+          __PMMx_multi();
+      }
+    }
+        else {  __jump_multi();
+             if (__checkConditions()) {
+               _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet;
+               if(__isPolytree())
+                 __PMMx_poly(); 
+               else 
+                 __PMMx_multi();//TODO verification required
+               
+            }
+             else {
+               AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = _bayesNettemp ;
+               __PMMx_multi();
+            }
         }
-    }
-    else {
-        __jump_multi();
-        if (!__isPolytree())__PMMx_multi(--iteration,p,q);
-        else __PMMx_poly(--iteration,p,q);
-    }
-}
-
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__jump_poly() {
-    srand(time(NULL) + c++);
-    gum::NodeId i,j;
-    __choosenodes(i,j);
-    const DAG __dag = __bayesNet->dag();
-    if (__dag.existsArc(i,j) || __dag.existsArc(j,i)) {
-        return;
-    }
-    else
-        if (!__directedPath(j,i) &&
-                (!__max_parents || ((__dag.parents(j).size() + 1) <= __max_parents)) &&
-                ((double)(__dag.sizeArcs() + 1) /(double)(__dag.size()*__dag.size()) <= __max_density)) {
-            __bayesNet->insertArc(i,j);
-
-        }
+        
 }
 
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__jump_multi() {
-    srand(time(NULL)+ c++);
-    gum::NodeId i,j;
-    __choosenodes(i,j);
-    const DAG __dag = __bayesNet->dag();
-    if (__dag.existsArc(i,j) && __dag.parents(j).size() > 1) {
-        __bayesNet->eraseArc(i,j)
-        ;
-    }
-    else
-        if (__dag.existsArc(j,i)&& __dag.parents(i).size() > 1) {
-            __bayesNet->eraseArc(j,i)
-            ;
 
-        }
-}
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__AorR() {
+    srand(time(NULL) + _c++);
+    NodeId i,j;
+    __chooseNodes(i,j);
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
+    if (__dag.existsArc(i,j)) {
+        __eraseArc(i,  j);
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__AorR() {
-    srand(time(NULL) + c++);
-    gum::NodeId i,j;
-    __choosenodes(i,j);
-    const DAG __dag = __bayesNet->dag();
-    if (__dag.existsArc(i,j)&& __dag.parents(j).size() > 1) {
-        __bayesNet->eraseArc(i,j);
+        return;  
     }
-    else {
-        if (!__dag.existsArc(i,j)&&!__directedPath(j,i) &&
-                (!__max_parents || __dag.parents(j).size() + 1 <= __max_parents) &&
-                (double)(__dag.sizeArcs() + 1) /(double)(__dag.size()*__dag.size()) < __max_density) {
-            __bayesNet->insertArc(i,j);
-        }
+    else __insertArc( i,  j);
+        
     }
-}
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__AR() {
-    srand(time(NULL) + c++);
-    gum::NodeId i, j;
-    __choosenodes(i,j);
-    const DAG __dag = __bayesNet->dag();
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__AR() {
+
+    srand(time(NULL) + _c++);
+    NodeId i, j,head,tail;
+    __chooseNodes(i,j);
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
     if (__dag.existsArc(i,j) || __dag.existsArc(j,i)) {
         return;
     }
     else {
-        gum::Idx per = rand() % 100;
-        gum::Idx temp = j;
+        Idx per = rand() % 100;
         if (per < 50) {
-            j = i;
-            i = temp;
+            head = i;
+            tail = j;
         }
-        if (__max_parents && __dag.parents(j).size() + 1 > __max_parents ) return;
-
-        if (__directedPath(i,j)) {
-            for (gum::NodeSetIterator it =__dag.parents(j).begin(); it != __dag.parents(j).end(); ++it )
-                if (__directedPath(i,*it)) {
-                    __bayesNet->eraseArc(*it,j);
-                }
+        else {
+          head = j;
+        tail = i;
         }
-        else if (__directedPath(j,i)) {
-            for (gum::NodeSetIterator it =__dag.parents(i).begin(); it != __dag.parents(i).end(); ++it )
-                if (__directedPath(j,*it)) {
-                    __bayesNet->eraseArc(*it,i);
 
-                }
+
+        for (NodeSetIterator it = __dag.parents(j).begin(); it != __dag.parents(j).end(); ++it) {
+          NodeSet excluded;
+          excluded.insert(j);
+         if(__connect(*it, i, excluded)){
+           std::string nameit = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.variable(*it).name();
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.eraseArc(*it,j);//TODO reflect 
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(head,tail);return;
+         }
         }
-        else if (__dag.parents(j).size()) __bayesNet->eraseArc(*(__dag.parents(j).begin()),j);
-        else if (__dag.parents(i).size()) __bayesNet->eraseArc(*(__dag.parents(i).begin()),i);
 
-        try {
-            __bayesNet->insertArc(i,j);
-        } catch (gum::InvalidCircuit) {
-            std::cout << "ins7 i "<< __bayesNet->variable(i).name() <<"  j " << __bayesNet->variable(j).name()
-                      << " i parents :"<< __dag.parents(i).size()<< " j parents :"<< __dag.parents(j).size()
-                      << " connected :"<< __connect(i,j)<< " dir i j   :"<< __directedPath(i,j)<< " dir j i  : "<< __directedPath(j,i)
-                      << " is polytree " << __isPolytree()<<std::endl;
-            std::cerr << __bayesNet->toDot()<< std::endl;
-            exit(666);
+         for (NodeSetIterator it = __dag.children(j).begin(); it != __dag.children(j).end(); ++it) {
+           NodeSet excluded;
+           excluded.insert(j);
+         if(__connect(*it, i, excluded)){ 
+           std::string nameit = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.variable(*it).name();
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.eraseArc(j, *it);
+          AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(head,tail);return;
+         }
         }
     }
 }
 
-template<typename T_DATA> INLINE
-void MCBayesNetGenerator<T_DATA>::__choosenodes(gum::NodeId &i,gum::NodeId &j) {
-    srand(time(NULL)+ c++);
-    i = rand() % __bayesNet->size();
-    j = rand() % __bayesNet->size();
-    while (i==j)
-        j = rand() % __bayesNet->size();
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__jump_poly() {
+    srand(time(NULL) + _c++);
+    NodeId i,j;
+    __chooseNodes(i,j);
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
+    if (!__dag.existsArc(i,j))
+        __insertArc(i, j);
 }
 
-template<typename T_DATA> INLINE
-void MCBayesNetGenerator<T_DATA>::__chooseclosenodes(gum::NodeId &i,gum::NodeId &j) {
-    srand(time(NULL)+ c++);
-    gum::Idx temp = rand() % __bayesNet->size();
-    gum::Size co = 0;
-    if (__bayesNet->dag().parents(temp).size()) {
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__jump_multi() {
+    srand(time(NULL)+ _c++);
+    NodeId i,j;
+    __chooseNodes(i,j);
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
+    if (__dag.existsArc(i,j)){
+        __eraseArc(i, j);
+
+}
+}
+
+
+
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__insertArc(NodeId i, NodeId j) {
+  if(__directedPath(j,i)) return;
+  if (_disturbing) { 
+      Potential<T_DATA> potj;
+      potj = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.cpt(j);
+      AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(i,j);
+
+      disturbAugmCPT(i,j, AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet, potj,(T_DATA) 0.5);
+    }
+    else AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(i,j);
+}
+
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__eraseArc(NodeId i, NodeId j, bool mustbeconnex) {
+  if (_disturbing) {
+    const BayesNet<T_DATA> bayesNet( AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet);
+     Potential<T_DATA> potj;
+     potj.copy(AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.cpt(j));
+       AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.eraseArc(i,j);
+       
+       if(__connect(i,j) || ! mustbeconnex){
+       Potential<T_DATA> marg;
+       marg = (*_hashMarginal[i]);
+      
+       disturbReducCPT(i,j, AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet, potj, marg);
+      }
+       else AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(i,j);
+    }
+    else { AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.eraseArc(i,j);
+
+      
+    if(!__connect(i,j) && mustbeconnex){
+
+        AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(i,j);
+
+    }
+    
+    }
+}
+
+
+
+
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber >  INLINE
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__chooseNodes(NodeId &i,NodeId &j) {
+    srand(time(NULL)+ _c++);
+    i = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.size();
+    j = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.size();
+    while (i==j)
+        j = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.size();
+}
+
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber>
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__chooseCloseNodes(NodeId &i,NodeId &j) {
+  srand(time(NULL)+ _c++);
+    Idx temp = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.size();
+    Size co = 0;
+    if (AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().parents(temp).size()) {
         j = temp;
-        NodeSetIterator it = __bayesNet->dag().parents(j).begin();
-        co = rand() % __bayesNet->dag().parents(j).size();
+        NodeSetIterator it = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().parents(j).begin();
+        co = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().parents(j).size();
         while (co--) {
             ++it;
         }
         i = *it;
     }
-    else if (__bayesNet->dag().children(temp).size()) {
+    else if (AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().children(temp).size()) {
         i = temp;
-        NodeSetIterator it = __bayesNet->dag().children(i).begin();
-        co = rand() % __bayesNet->dag().children(i).size();
+        NodeSetIterator it = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().children(i).begin();
+        co = rand() % AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag().children(i).size();
         while (co--) {
             ++it;
         }
@@ -290,163 +400,107 @@ void MCBayesNetGenerator<T_DATA>::__chooseclosenodes(gum::NodeId &i,gum::NodeId 
 
     }
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__createTree(gum::Size BNSize) {
+    
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__createTree(Size BNSize) {
     static Idx n = 0;
     srand(time(NULL) + n);
-    gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
+    Idx nb_mod = 2 + rand() % ( AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_1_" <<n++;
-    NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
+    NodeId root = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
     Size maxNodes = BNSize - 1;
-    gum::Size SubG = 0;
+    Size SubG = 0;
     while (maxNodes) {
         SubG = (rand() % (maxNodes)) + 1 ;
         maxNodes = maxNodes - SubG;
-        gum::NodeId rootS = __createPartTree(SubG);
-        __bayesNet->insertArc( root,rootS);
+        NodeId rootS = __createPartTree(SubG);
+        AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc( root,rootS);
     }
 }
 
-template<typename T_DATA>
-NodeId MCBayesNetGenerator<T_DATA>::__createPartTree(gum::Size BNSize) {
+
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+NodeId MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__createPartTree(Size BNSize) {
     static Idx n = 0;
     srand(time(NULL) + n);
-    gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
+    Idx nb_mod = 2 + rand() % ( AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_2_" <<n++;
-    NodeId root = __bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
+    NodeId root = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod));
     Size maxNodes = BNSize - 1;
-    gum::Size SubG = 0;
+    Size SubG = 0;
     while (maxNodes) {
-
         SubG = (rand() % (maxNodes)) + 1 ;
         maxNodes = maxNodes - SubG;
-        gum::NodeId rootS = __createPartTree(SubG);
-        __bayesNet->insertArc( root,rootS);
+        NodeId rootS = __createPartTree(SubG);
+        AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc( root,rootS);
     }
     return root;
 }
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__transformPoly(gum::Idx nbiter) {
+
+// Allow to invert maximum nbiter arc to use from polytree only
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__transformPoly(Idx nbiter) {
     while (nbiter--) {
-        gum::NodeId i,j;
-        __chooseclosenodes(i,j);
-        if (__bayesNet->dag().parents(i).size() + 1 <= __max_parents) {
-            __bayesNet->eraseArc(i,j);
-            __bayesNet->insertArc(j,i);
-        }
-        else nbiter++;
-
-
+        NodeId i,j;
+        __chooseCloseNodes(i,j);
+        _bayesNettemp = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet;
+        __eraseArc(i,  j, false);
+            AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.insertArc(j,i);
+            if (!__checkConditions())
+            AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet = _bayesNettemp; 
     }
 }
 
 
-template<typename T_DATA>
-void MCBayesNetGenerator<T_DATA>::__createDAG(gum::Size BNSize, gum::Size iniRoot) {
-    static Idx n = 0;
-    srand(time(NULL) + n);
-    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % std::min(BNSize , __max_parents) ) + 1: (rand() %  __max_parents) + 1 );
-    std::vector<gum::NodeId> roots;
-    for (Idx r = 0 ; r < nbRoot; r++) {
-        gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
-        std::stringstream strBuff;
-        strBuff << "n" <<n++<<"_"<<r;
-        roots.push_back(__bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod)));
-    }
-    Size maxNodes = BNSize - std::min( nbRoot , BNSize);
-    gum::Size SubG = 0;
-    while (maxNodes) {
-
-        SubG = (rand() % (maxNodes)) + 1 ;
-        maxNodes = maxNodes - SubG;
-        std::vector<gum::NodeId> * rootS = __createPartDAG(SubG, nbRoot);
-        for (std::vector<gum::NodeId>::iterator it = roots.begin();it != roots.end(); ++it) {
-            gum::Idx theroot = rand() % rootS->size() ;
-
-            __bayesNet->insertArc( *it, (*rootS)[theroot]);
-        }
-        if (rootS->size() == SubG) {
-            for (std::vector<gum::NodeId>::iterator it = rootS->begin();it != rootS->end(); ++it) {
-                if (!__bayesNet->dag().parents(*it).size()) {
-                    gum::Idx theroot = rand() % roots.size();
-                    __bayesNet->insertArc(roots[theroot], *it);
-                }
-            }
-        }
-        delete rootS;
-    }
-    if (!__isPolytree()) {
-        std::cout << "it is not a polytree" << std::endl;
-        GUM_ERROR( FatalError, "Sorry Misconstruction BN is no Polytree." );
-    }
-}
-
-template<typename T_DATA>
-std::vector<gum::NodeId> * MCBayesNetGenerator<T_DATA>::__createPartDAG(gum::Size BNSize, gum::Size iniRoot) {
-    static Idx n = 0;
-    srand(time(NULL) + n);
-    gum::Size nbRoot = (BNSize <= iniRoot ?(rand() % std::min(__max_parents, BNSize)) + 1: (rand() % __max_parents) + 1 );//################
-    std::vector<gum::NodeId> * roots = new std::vector<gum::NodeId> ;
-    for (Idx r = 0 ; r < nbRoot; r++) {
-        gum::Idx nb_mod = (__max_modality == 2) ? 2 : 2 + rand() % ( __max_modality - 1);
-        std::stringstream strBuff;
-        strBuff << "nA" <<n++<<"_"<<r;
-        roots->push_back(__bayesNet->addVariable(LabelizedVariable(strBuff.str(), "" , nb_mod)));
-    }
-    Size maxNodes = BNSize - std::min( nbRoot , BNSize);
-    gum::Size SubG = 0;
-    while (maxNodes) {
-        SubG = (rand() % (maxNodes)) + 1 ;
-        maxNodes = maxNodes - SubG;
-        std::vector<gum::NodeId> * rootS = __createPartDAG(SubG, nbRoot);
-        for (std::vector<gum::NodeId>::iterator it = roots->begin();it != roots->end(); ++it) {
-            gum::Idx theroot = rand() % rootS->size() ;
-            __bayesNet->insertArc( *it, (*rootS)[theroot]);
-        }
-        if (rootS->size() == SubG) {
-            for (std::vector<gum::NodeId>::iterator it = rootS->begin();it != rootS->end(); ++it) {
-                if (!__bayesNet->dag().parents(*it).size()) {
-                    gum::Idx theroot = rand() % roots->size();
-                    __bayesNet->insertArc((*roots)[theroot], *it);
-                }
-            }
-        }
-        delete rootS;
-    }
-    return roots;
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
+bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__isPolytree() {
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
+    return AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.size() - 1 == AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.nbrArcs();
 }
 
 
-template<typename T_DATA>
-bool MCBayesNetGenerator<T_DATA>::__isPolytree() {
-    const gum::DAG __dag = __bayesNet->dag();
-    return __bayesNet->size() - 1 == __bayesNet->nbrArcs();
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__connect(const NodeId i, const NodeId j) {
+  const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
+  if (__dag.existsArc(i,j) || __dag.existsArc(j,i))
+        return true;
+    else {
+
+    NodeSet excluded;  
+    excluded.insert(i);
+        const NodeSet set_parent = __dag.parents(i);
+        for (NodeSetIterator par = set_parent.begin(); par != set_parent.end(); ++par) {
+            if (!excluded.exists(*par)&&__connect( *par,j,excluded))
+                return true;
+        }
+        const NodeSet  set_children = __dag.children(i);
+        for (NodeSetIterator par = set_children.begin(); par != set_children.end(); ++par) {
+            if (!excluded.exists(*par)&& __connect(*par,j,excluded))
+                return true;
+        }
+        return false;
+    }
+
 }
 
-template<typename T_DATA>
-bool MCBayesNetGenerator<T_DATA>::__connect(const gum::NodeId i, const gum::NodeId j) {
-    NodeSet excluded;
-    return __connect(i,j,excluded);
-}
 
-template<typename T_DATA>
-bool MCBayesNetGenerator<T_DATA>::__connect(const gum::NodeId i, const gum::NodeId j, gum::NodeSet &excluded) {
-    const DAG __dag = __bayesNet->dag();
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__connect(const NodeId i, const NodeId j, NodeSet &excluded) {
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
     if (__dag.existsArc(i,j) || __dag.existsArc(j,i))
         return true;
     else {
         excluded.insert(i);
-        const gum::NodeSet set_parent = __dag.parents(i);
-
-        for (gum::NodeSetIterator par = set_parent.begin(); par != set_parent.end(); ++par) {
+        const NodeSet set_parent = __dag.parents(i);
+        for (NodeSetIterator par = set_parent.begin(); par != set_parent.end(); ++par) {
             if (!excluded.exists(*par)&&__connect( *par,j,excluded))
                 return true;
         }
-        const gum::NodeSet  set_children = __dag.children(i);
-        for (gum::NodeSetIterator par = set_children.begin(); par != set_children.end(); ++par) {
+        const NodeSet  set_children = __dag.children(i);
+        for (NodeSetIterator par = set_children.begin(); par != set_children.end(); ++par) {
             if (!excluded.exists(*par)&& __connect(*par,j,excluded))
                 return true;
         }
@@ -454,38 +508,74 @@ bool MCBayesNetGenerator<T_DATA>::__connect(const gum::NodeId i, const gum::Node
     }
 }
 
-template<typename T_DATA>
-bool MCBayesNetGenerator<T_DATA>::__directedPath(const gum::NodeId tail, const gum::NodeId head) {
 
-    const DAG __dag = __bayesNet->dag();
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber > 
+bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__directedPath(const NodeId tail, const NodeId head) {
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
     if (__dag.existsArc(tail,head))
         return true;
     else {
-        const gum::NodeSet  set_children = __dag.children(tail);
-        for (gum::NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node) {
-            if (__directedPath(*node,head))
+      NodeSet excluded;
+      excluded.insert(tail);
+        const NodeSet  set_children = __dag.children(tail);
+        
+        for (NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node) {
+            if (__directedPath(*node,head,excluded))
                 return true;
         }
         return false;
     }
 }
 
-template<typename T_DATA>
-bool MCBayesNetGenerator<T_DATA>::__directedPath(const gum::NodeId tail, const gum::NodeId head, gum::NodeSet &excluded) {
+template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> 
+bool MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__directedPath(const NodeId tail, const NodeId head, NodeSet &excluded) {
 
-    const DAG __dag = __bayesNet->dag();
+    const DAG __dag = AbstractBayesNetGenerator<T_DATA,ICPTGenerator>::_bayesNet.dag();
     if (__dag.existsArc(tail,head))
         return true;
     else {
-        const gum::NodeSet  set_children = __dag.children(tail);
+        const NodeSet  set_children = __dag.children(tail);
         excluded.insert(tail);
-        for (gum::NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node) {
+        for (NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node) {
             if (!excluded.exists(*node)&&__directedPath(*node,head,excluded))
                 return true;
         }
         return false;
     }
 }
+
+
+
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      Size MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::iteration() const{
+       return _iteration; 
+      }
+      
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      Idx MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::p() const{
+        return _p;
+      }
+      
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      Idx MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::q() const{
+        return _q;
+      }
+      
+  
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::setIteration(Size iteration){
+        _iteration = iteration;
+      }
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::setP(Idx p){
+       _p = p ;
+       if(p+_q > 100) GUM_ERROR(OperationNotAllowed,"the sum of the probabilities p and q must be at most equal to 100");
+      }
+      template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+      void MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::setQ(Idx q){
+       _q = q;
+       if(_p+q > 100) GUM_ERROR(OperationNotAllowed,"the sum of the probabilities p and q must be at most equal to 100");
+      }
 
 
 } /* namespace gum */

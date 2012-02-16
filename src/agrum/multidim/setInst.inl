@@ -42,7 +42,7 @@ INLINE bool SetInst::contains( const DiscreteVariable* v ) const  {
 // ==============================================================================
 /// modifies internally the value of a given variable of the sequence
 // ==============================================================================
-INLINE void SetInst::__chgVal( const Idx varPos, const Idx newVal ) {
+INLINE void SetInst::__chgVal( Idx varPos, Idx newVal ) {
 
     //  Size oldVal = __vals[varPos];
     __vals[varPos] = 1 << newVal;
@@ -55,7 +55,7 @@ INLINE void SetInst::__chgVal( const Idx varPos, const Idx newVal ) {
 /// modifies the value of a given variable of the sequence (external function)
 // ==============================================================================
 INLINE SetInst& SetInst::chgVal( const DiscreteVariable& v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -77,7 +77,7 @@ INLINE SetInst& SetInst::chgVal( const DiscreteVariable& v,
 }
 
 INLINE SetInst& SetInst::chgVal( const DiscreteVariable* v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -101,7 +101,7 @@ INLINE SetInst& SetInst::chgVal( const DiscreteVariable* v,
 // ==============================================================================
 /// modifies the value of a given variable of the sequence (external function)
 // ==============================================================================
-INLINE SetInst& SetInst::chgVal( Idx varPos, const Idx newVal ) {
+INLINE SetInst& SetInst::chgVal( Idx varPos, Idx newVal ) {
     // check that the variable does belong to the SetInst and that the new
     // value is possible.
     if ( __vals.size() <= varPos )
@@ -121,7 +121,7 @@ INLINE SetInst& SetInst::chgVal( Idx varPos, const Idx newVal ) {
 // ==============================================================================
 /// modifies internally the value of a given variable of the sequence
 // ==============================================================================
-INLINE void SetInst::__chgVals( const Idx varPos, const Size newVals ) {
+INLINE void SetInst::__chgVals( Idx varPos, const Size newVals ) {
 
     //   Size oldVal = __vals[varPos];
     __vals[varPos] = 0;
@@ -199,7 +199,7 @@ INLINE SetInst& SetInst::chgVals( Idx varPos, const Size newVal ) {
     return *this;
 }
 
-INLINE SetInst& SetInst::addVal( Idx varPos, const Idx newVal )  {
+INLINE SetInst& SetInst::addVal( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
@@ -212,7 +212,7 @@ INLINE SetInst& SetInst::addVal( Idx varPos, const Idx newVal )  {
 }
 
 INLINE SetInst& SetInst::addVal( const DiscreteVariable* v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -234,7 +234,7 @@ INLINE SetInst& SetInst::addVal( const DiscreteVariable* v,
 }
 
 INLINE SetInst& SetInst::addVal( const DiscreteVariable& v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -310,7 +310,7 @@ INLINE SetInst& SetInst::addVals( const DiscreteVariable& v,
     }
 }
 
-INLINE SetInst& SetInst::remVal( Idx varPos, const Idx newVal )  {
+INLINE SetInst& SetInst::remVal( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
@@ -321,7 +321,7 @@ INLINE SetInst& SetInst::remVal( Idx varPos, const Idx newVal )  {
 }
 
 INLINE SetInst& SetInst::remVal( const DiscreteVariable* v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -342,7 +342,7 @@ INLINE SetInst& SetInst::remVal( const DiscreteVariable* v,
 }
 
 INLINE SetInst& SetInst::remVal( const DiscreteVariable& v,
-                                 const Idx newVal ) {
+                                 Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -483,7 +483,7 @@ INLINE SetInst& SetInst::interVals( const DiscreteVariable& v,
     }
 }
 
-INLINE SetInst& SetInst::interVal( Idx varPos, const Idx newVal )  {
+INLINE SetInst& SetInst::interVal( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
@@ -494,7 +494,7 @@ INLINE SetInst& SetInst::interVal( Idx varPos, const Idx newVal )  {
 }
 
 INLINE SetInst& SetInst::interVal( const DiscreteVariable* v,
-                                   const Idx newVal ) {
+                                   Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -515,7 +515,7 @@ INLINE SetInst& SetInst::interVal( const DiscreteVariable* v,
 }
 
 INLINE SetInst& SetInst::interVal( const DiscreteVariable& v,
-                                   const Idx newVal ) {
+                                   Idx newVal ) {
     try {
         // check that the variable does belong to the SetInst and that the new
         // value is possible.
@@ -626,7 +626,7 @@ INLINE Idx SetInst::nbrDim() const  {
 // ==============================================================================
 /// returns the current value of a given variable
 // ==============================================================================
-INLINE Size SetInst::vals( const Idx i ) const {
+INLINE Size SetInst::vals( Idx i ) const {
     if ( i >= __vals.size() )
         GUM_ERROR( NotFound, "" );
 
@@ -689,7 +689,7 @@ INLINE Idx SetInst::val( const DiscreteVariable& var ) const {
 // ==============================================================================
 /// returns the variable at position i in the tuple
 // ==============================================================================
-INLINE const DiscreteVariable& SetInst::variable( const Idx i ) const  {
+INLINE const DiscreteVariable& SetInst::variable( Idx i ) const  {
     return *( __vars.atPos( i ) );
 }
 

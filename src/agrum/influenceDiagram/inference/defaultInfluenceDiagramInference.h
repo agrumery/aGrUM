@@ -93,7 +93,7 @@ public:
     T_DATA getMEU();
 
     /// @see gum::InfluenceDiagramInference::getBestDecisionChoice( NodeId decisionId )
-    const Idx getBestDecisionChoice( NodeId decisionId );
+    Idx getBestDecisionChoice( NodeId decisionId );
 
     /// displays the result of an inference
     void displayResult(std::ostream& stream = std::cout);

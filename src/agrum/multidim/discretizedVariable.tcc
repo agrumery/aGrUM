@@ -41,7 +41,7 @@ namespace gum {
 
   template<typename T_TICKS>
   Idx DiscretizedVariable<T_TICKS>::_dichotomy
-  ( const T_TICKS& target,const Idx min,const Idx max ) const {
+  ( const T_TICKS& target,Idx min,Idx max ) const {
     Idx res;
     Idx mid=0;
 
@@ -192,7 +192,7 @@ namespace gum {
   }
 
   template<typename T_TICKS> INLINE
-  const std::string DiscretizedVariable<T_TICKS>::label( const Idx i ) const {
+  const std::string DiscretizedVariable<T_TICKS>::label( Idx i ) const {
     std::stringstream ss;
 
     if ( i >= __ticks_size-1 ) {
@@ -241,7 +241,7 @@ namespace gum {
   }
 
   template<typename T_TICKS>
-  INLINE const T_TICKS& DiscretizedVariable<T_TICKS>::tick( const Idx i ) const {
+  INLINE const T_TICKS& DiscretizedVariable<T_TICKS>::tick( Idx i ) const {
     if ( i>=__ticks_size ) {
       GUM_ERROR( OutOfBounds, "There is no such tick" );
     }

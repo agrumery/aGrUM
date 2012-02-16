@@ -38,7 +38,7 @@ namespace gum {
    * @brief Class for generating Utility Tables.
    * @ingroup id_group
    *
-   * This class implements a simple UT generation algorithm.
+   * This class implements a CPTGenerator UT generation algorithm.
    */
   class SimpleUTGenerator: public UTGenerator {
   public:

@@ -179,9 +179,9 @@ namespace gum {
       float compressionRate() const;
 
       // ============================================================================
-      /// See gum::MultiDimInterface::variable(const idx i)
+      /// See gum::MultiDimInterface::variable(Idx i)
       // ============================================================================
-      const DiscreteVariable& variable( const Idx i ) const ;
+      const DiscreteVariable& variable( Idx i ) const ;
 
       // ============================================================================
       Idx pos( const DiscreteVariable& v ) const ;

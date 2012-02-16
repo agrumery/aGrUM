@@ -31,8 +31,8 @@
 #include <iostream>
 
 #include <agrum/multidim/labelizedVariable.h>
-#include <agrum/BN/generator/CPTGenerator.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/abstractCPTGenerator.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/UTGenerator.h>
 #include <agrum/influenceDiagram/generator/simpleUTGenerator.h>
@@ -52,6 +52,7 @@ namespace gum {
  * the proportion of chance node and the proportion of utility node (the
  * proportion of decision node is deduce from thos two)
  */
+template < typename T_DATA>
 class InfluenceDiagramGenerator {
 public:
     // ############################################################################
@@ -60,7 +61,7 @@ public:
     /// @{
     /**
      * Default constructor.
-     * Use the SimpleCPTGenerator for generating the IDs CPT.
+     * Use the DefaultCPTGenerator for generating the IDs CPT.
      * Use the SimpleUTGenerator for generating the IDs UT.
      */
     InfluenceDiagramGenerator();
@@ -71,7 +72,7 @@ public:
      * The cptGenerator will be erased when the destructor is called.
      * @param cptGenerator The policy used to generate CPT.
      */
-    InfluenceDiagramGenerator(CPTGenerator* cptGenerator);
+    InfluenceDiagramGenerator(AbstractCPTGenerator<T_DATA>* cptGenerator);
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -88,7 +89,7 @@ public:
      * @param cptGenerator The policy used to generate CPT.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(CPTGenerator* cptGenerator, UTGenerator* utGenerator);
+    InfluenceDiagramGenerator(AbstractCPTGenerator<T_DATA>* cptGenerator, UTGenerator* utGenerator);
 
     /**
      * Destructor.
@@ -109,26 +110,15 @@ public:
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A IDs randomly generated.
      */
-    InfluenceDiagram<float>* generateIDF(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality=2);
+    InfluenceDiagram<T_DATA>* generateID(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality=2);
 
-    /**
-     * Generates an influence diagram using doubles.
-     * @param nbrNodes The number of nodes in the generated ID.
-     * @param density The probability of adding an arc between two nodes.
-     * @param chanceNodeDensity The proportion of chance node
-     * @param utilityNodeDensity The proportion of utility node
-     * @param max_modality Each DRV has from 2 to max_modality modalities
-     * @return A IDs randomly generated.
-     */
-    InfluenceDiagram<double>* generateIDD(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity,int max_modality=2);
+  
     /// @}
 private:
     // Check if a temporal order exists and creates ones if not
-    void __checkTemporalOrderf(InfluenceDiagram<float>* infdiag);
-    // Check if a temporal order exists and creates ones if not
-    void __checkTemporalOrderd(InfluenceDiagram<double>* infdiag);
+    void __checkTemporalOrder(InfluenceDiagram<T_DATA>* infdiag);
     // The Conditional Probability Table generator
-    CPTGenerator* __cptGenerator;
+    AbstractCPTGenerator<T_DATA>* __cptGenerator;
     // The Utility Table generator
     UTGenerator* __utGenerator;
 };
@@ -136,7 +126,7 @@ private:
 
 } /* namespace gum */
 
-
+#include <agrum/influenceDiagram/generator/influenceDiagramGenerator.tcc>
 #endif /* GUM_INF_DIAG_GENERATOR_H */
 
 // kate: indent-mode cstyle; space-indent on; indent-width 0; 

@@ -149,7 +149,7 @@ namespace gum {
     // getBestDecisionChoice : Returns for given decision node the best decision to take under this infernece
     // ======================================================================================
     template <typename T_DATA> INLINE
-    const Idx
+    Idx
     DefaultInfluenceDiagramInference<T_DATA>::getBestDecisionChoice( NodeId decisionId ) {
 
         if ( !__inferenceMade )

@@ -210,7 +210,7 @@ namespace gum {
        * @throw NotFound Raised if the element cannot be found.
        */
       // ============================================================================
-      Size vals( const Idx i ) const;
+      Size vals( Idx i ) const;
 
       // ============================================================================
       /**
@@ -243,7 +243,7 @@ namespace gum {
 
       Idx nbrOccurences( const DiscreteVariable& var ) const;
 
-      Idx val( const Idx i ) const;
+      Idx val( Idx i ) const;
 
       // ============================================================================
       /**
@@ -273,7 +273,7 @@ namespace gum {
        * @throw NotFound Raised if the element cannot be found.
        */
       // ============================================================================
-      const DiscreteVariable& variable( const Idx i ) const;
+      const DiscreteVariable& variable( Idx i ) const;
 
       // ============================================================================
       /**
@@ -289,7 +289,7 @@ namespace gum {
        * @throw OutOfBound Raised if newval is not a possible value for v.
        */
       // ============================================================================
-      SetInst& chgVal( const DiscreteVariable& v, const Idx newval );
+      SetInst& chgVal( const DiscreteVariable& v, Idx newval );
 
       // ============================================================================
       /**
@@ -305,7 +305,7 @@ namespace gum {
        * @throw OutOfBound Raised if newval is not a possible value for v.
        */
       // ============================================================================
-      SetInst& chgVal( const DiscreteVariable* v, const Idx newval );
+      SetInst& chgVal( const DiscreteVariable* v, Idx newval );
 
       // ============================================================================
       /**
@@ -324,7 +324,7 @@ namespace gum {
        *        the variable
        */
       // ============================================================================
-      SetInst& chgVal( const Idx varPos, const Idx newval );
+      SetInst& chgVal( Idx varPos, Idx newval );
 
       // ============================================================================
       /**
@@ -341,12 +341,12 @@ namespace gum {
        */
       // ============================================================================
       SetInst& chgVals( const DiscreteVariable& v, const Size newval );
-      SetInst& addVal( const DiscreteVariable& v, const Idx newVal );
+      SetInst& addVal( const DiscreteVariable& v, Idx newVal );
       SetInst& addVals( const DiscreteVariable& v, const Size newVal );
-      SetInst& remVal( const DiscreteVariable& v, const Idx newVal );
+      SetInst& remVal( const DiscreteVariable& v, Idx newVal );
       SetInst& remVals( const DiscreteVariable& v, const Size newVal );
       SetInst& interVals( const DiscreteVariable& v, const Size newVal );
-      SetInst& interVal( const DiscreteVariable& v, const Idx newVal );
+      SetInst& interVal( const DiscreteVariable& v, Idx newVal );
 
       // ============================================================================
       /**
@@ -363,12 +363,12 @@ namespace gum {
        */
       // ============================================================================
       SetInst& chgVals( const DiscreteVariable* v, const Size newval );
-      SetInst& addVal( const DiscreteVariable* v, const Idx newVal );
+      SetInst& addVal( const DiscreteVariable* v, Idx newVal );
       SetInst& addVals( const DiscreteVariable* v, const Size newVal );
-      SetInst& remVal( const DiscreteVariable* v, const Idx newVal );
+      SetInst& remVal( const DiscreteVariable* v, Idx newVal );
       SetInst& remVals( const DiscreteVariable* v, const Size newVal );
       SetInst& interVals( const DiscreteVariable* v, const Size newVal );
-      SetInst& interVal( const DiscreteVariable* v, const Idx newVal );
+      SetInst& interVal( const DiscreteVariable* v, Idx newVal );
 
       // ============================================================================
       /**
@@ -387,15 +387,15 @@ namespace gum {
        *        the variable
        */
       // ============================================================================
-      SetInst& chgVals( const Idx varPos, const Size newval );
+      SetInst& chgVals( Idx varPos, const Size newval );
 
-      SetInst& addVal( Idx varPos, const Idx newVal );
+      SetInst& addVal( Idx varPos, Idx newVal );
       SetInst& addVals( Idx varPos, const Size newVal );
-      SetInst& remVal( Idx varPos, const Idx newVal );
+      SetInst& remVal( Idx varPos, Idx newVal );
       SetInst& remVals( Idx varPos, const Size newVal );
       SetInst& chgDifVal( Idx varPos, const Size newVal );
       SetInst& interVals( Idx varPos, const Size newVal );
-      SetInst& interVal( Idx varPos, const Idx newVal );
+      SetInst& interVal( Idx varPos, Idx newVal );
 
       // ============================================================================
 
@@ -617,8 +617,8 @@ namespace gum {
       // ============================================================================
 
       // ============================================================================
-      void __chgVal( const Idx varPos, const Idx newVal );
-      void __chgVals( const Idx varPos, const Size newVal );
+      void __chgVal( Idx varPos, Idx newVal );
+      void __chgVals( Idx varPos, const Size newVal );
 
       // ============================================================================
       /**

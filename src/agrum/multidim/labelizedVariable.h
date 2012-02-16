@@ -147,7 +147,7 @@ namespace gum {
       /** @param i
        * @return the ith label */
       // ============================================================================
-      virtual const std::string label( const Idx i ) const;
+      virtual const std::string label( Idx i ) const;
 
       // ============================================================================
       /// returns the size of the random discrete variable domain

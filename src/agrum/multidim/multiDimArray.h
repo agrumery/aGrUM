@@ -140,7 +140,7 @@ namespace gum {
        * @warning for efficiency reasons, this function does not check whether
        * the element referenced by the offset actually belongs to the MultiDimArray.
        * If you want this additional feature, use instead function getByOffset */
-      const T_DATA& unsafeGet( const Idx offset ) const;
+      const T_DATA& unsafeGet( Idx offset ) const;
 
 
       /// returns the element stored in the multidimArray at a given offset
@@ -151,7 +151,7 @@ namespace gum {
        * by using function get with instantiation {x1,...,xk}.
        * @throws OutOfBound exception is thrown if the element referenced does not
        * belong to the MultiDimArray */
-      const T_DATA& getByOffset( const Idx offset ) const;
+      const T_DATA& getByOffset( Idx offset ) const;
 
       /// modifies the the element stored in the multidimArray at a given offset
       /** The offset is computed as follows: let S={X1,...,Xk} be the sequence of
@@ -162,7 +162,7 @@ namespace gum {
        * @warning for efficiency reasons, this function does not check whether
        * the element referenced by the offset actually belongs to the MultiDimArray.
        * If you want this additional feature, use instead function setByOffset */
-      void unsafeSet( const Idx offset, const T_DATA& );
+      void unsafeSet( Idx offset, const T_DATA& );
 
       /// modifies the the element stored in the multidimArray at a given offset
       /** The offset is computed as follows: let S={X1,...,Xk} be the sequence of
@@ -172,7 +172,7 @@ namespace gum {
        * by using function get with instantiation {x1,...,xk}.
        * @throws OutOfBound exception is thrown if the element referenced does not
        * belong to the MultiDimArray */
-      void setByOffset( const Idx offset, const T_DATA& );
+      void setByOffset( Idx offset, const T_DATA& );
 
       /// returns the real name of the multiDimArray
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a

@@ -30,6 +30,9 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -78,7 +81,30 @@ int main( void ) {
   catch ( gum::IOError& e ) {
     GUM_SHOWERROR( e );
   }
+{
+    gum::Size density[] = {9, 18, 27, 36, 45}; 
+          int trial_nb = 5;
+           for ( int i = 0; i < trial_nb; ++i ) {
+          gum::DefaultBayesNetGenerator<float> bnGen( 10, density[i] );
 
+            gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
+            bnGen.generateBN( *bayesNet);
+
+            GUM_TRACE(bayesNet->toDot());
+            gum::ShaferShenoyInference<float>* inf = 0;
+
+            inf = new gum::ShaferShenoyInference<float>( *bayesNet );
+           inf->makeInference();
+//inf->makeInference();
+            if ( inf != 0 ) {
+             delete inf;
+            }
+
+            delete bayesNet;
+	    std::cout << "end forloop " << std::endl;
+          }
+}
+  
   gum::__atexit();
 }
 

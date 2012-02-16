@@ -375,7 +375,7 @@ namespace gum {
        * @throw NotFound Raised if the element cannot be found.
        */
       // ============================================================================
-      Idx val( const Idx i ) const;
+      Idx val( Idx i ) const;
 
       // ============================================================================
       /**
@@ -415,7 +415,7 @@ namespace gum {
        * @throw NotFound Raised if the element cannot be found.
        */
       // ============================================================================
-      const DiscreteVariable& variable( const Idx i ) const;
+      const DiscreteVariable& variable( Idx i ) const;
 
       // ============================================================================
       /**
@@ -435,7 +435,7 @@ namespace gum {
        * @throw OutOfBound Raised if newval is not a possible value for v.
        */
       // ============================================================================
-      Instantiation& chgVal( const DiscreteVariable& v, const Idx newval );
+      Instantiation& chgVal( const DiscreteVariable& v, Idx newval );
 
       // ============================================================================
       /**
@@ -455,7 +455,7 @@ namespace gum {
        * @throw OutOfBound Raised if newval is not a possible value for v.
        */
       // ============================================================================
-      Instantiation& chgVal( const DiscreteVariable* v, const Idx newval );
+      Instantiation& chgVal( const DiscreteVariable* v, Idx newval );
 
       // ============================================================================
       /**
@@ -478,7 +478,7 @@ namespace gum {
        *        the variable
        */
       // ============================================================================
-      Instantiation& chgVal( const Idx varPos, const Idx newval );
+      Instantiation& chgVal( Idx varPos, Idx newval );
 
       // ============================================================================
       /**
@@ -1194,7 +1194,7 @@ namespace gum {
        *  informs its master MultiDimAdressable of the modification
        */
       // ============================================================================
-      void __chgVal( const Idx varPos, const Idx newVal );
+      void __chgVal( Idx varPos, Idx newVal );
 
       // ============================================================================
       /**

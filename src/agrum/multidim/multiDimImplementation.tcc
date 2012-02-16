@@ -164,7 +164,7 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   const DiscreteVariable&
-  MultiDimImplementation<T_DATA>::variable( const Idx i ) const  {
+  MultiDimImplementation<T_DATA>::variable( Idx i ) const  {
     return *( __vars.atPos( i ) );
   }
 

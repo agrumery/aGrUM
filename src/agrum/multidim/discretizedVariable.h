@@ -78,8 +78,8 @@ namespace gum {
        target in ticks
       */
       Idx _dichotomy( const T_TICKS& target,
-                      const Idx min,
-                      const Idx max ) const;
+                      Idx min,
+                      Idx max ) const;
 
       /**
        * seach the class of target (internally use _dichotomy)
@@ -155,7 +155,7 @@ namespace gum {
        * @return the ith label
        * @throw OutOfBound
        */
-      virtual const std::string label( const Idx i ) const;
+      virtual const std::string label( Idx i ) const;
 
       /// from the label to its index in var.
       /// @throws NotFound
@@ -177,7 +177,7 @@ namespace gum {
 
       /// from the index to the tick.
       /// @throws NotFound
-      const T_TICKS& tick( const Idx i ) const;
+      const T_TICKS& tick( Idx i ) const;
   };
 
 

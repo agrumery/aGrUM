@@ -161,20 +161,20 @@ namespace gum {
 
 /// returns the element stored in the multidimArray at a given offset
   template<typename T_DATA> INLINE
-  const T_DATA& MultiDimArray<T_DATA>::unsafeGet( const Idx offset ) const {
+  const T_DATA& MultiDimArray<T_DATA>::unsafeGet( Idx offset ) const {
     return _values[offset];
   }
 
 
   template<typename T_DATA> INLINE
-  void MultiDimArray<T_DATA>::unsafeSet( const Idx offset, const T_DATA& data ) {
+  void MultiDimArray<T_DATA>::unsafeSet( Idx offset, const T_DATA& data ) {
     _values[offset] = data;
   }
 
 
 /// returns the element stored in the multidimArray at a given offset
   template<typename T_DATA> INLINE
-  const T_DATA& MultiDimArray<T_DATA>::getByOffset( const Idx offset ) const {
+  const T_DATA& MultiDimArray<T_DATA>::getByOffset( Idx offset ) const {
     if ( offset >= _values.size() ) {
       GUM_ERROR( OutOfBounds, "offset too large" );
     }
@@ -184,7 +184,7 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void
-  MultiDimArray<T_DATA>::setByOffset( const Idx offset, const T_DATA& data ) {
+  MultiDimArray<T_DATA>::setByOffset( Idx offset, const T_DATA& data ) {
     if ( offset >= _values.size() ) {
       GUM_ERROR( OutOfBounds, "offset too large" );
     }
