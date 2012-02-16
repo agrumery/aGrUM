@@ -44,7 +44,7 @@ public:
     void testCreationDeletionFloat() {
         gum::MaxParentsMCBayesNetGenerator<float>* gen = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<float>( 50,200,3,4,30,40,50 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<float>( 30,100,3,4,30,40,50 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
     }
 
@@ -52,14 +52,14 @@ public:
         gum::MaxParentsMCBayesNetGenerator<float>* gen = NULL;
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<float>( 50,150,4,4,200,10,30 ));
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<float>( 30,150,4,4,20,10,30 ));
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
     }
 
       void testCreationDeletionDouble() {
         gum::MaxParentsMCBayesNetGenerator<double>* gen = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<double>( 50,200 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<double>( 30,100,4,4,20,10,30 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
     }
 
@@ -67,14 +67,14 @@ public:
         gum::MaxParentsMCBayesNetGenerator<double>* gen = NULL;
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<double>( 50,200 ));
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MaxParentsMCBayesNetGenerator<double>( 30,100,4,4,20,10,30 ));
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
     }
 
 
     void testGenerationBNFloat(){
       
-       gum::MaxParentsMCBayesNetGenerator<float> gen( 50,200,10,4,350,40,50 );
+       gum::MaxParentsMCBayesNetGenerator<float> gen( 30,100,10,4,30,40,50 );
         gum::BayesNet<float> * bn = new gum::BayesNet<float>();
         TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN(*bn));
 
@@ -84,7 +84,7 @@ public:
 
     void testGenerationBNDouble() {
 
-        gum::MaxParentsMCBayesNetGenerator<double> gen( 50,200,5,4,30,40,50 );
+        gum::MaxParentsMCBayesNetGenerator<double> gen( 30,100,5,4,30,40,50 );
         gum::BayesNet<double> * bn = new gum::BayesNet<double>();
         TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN(*bn));
 
@@ -94,10 +94,10 @@ public:
 
         void testGenerationfromBNFloat(){
       
-       gum::MaxParentsMCBayesNetGenerator<float> gen( 50,200,10,4,350,40,50 );
+       gum::MaxParentsMCBayesNetGenerator<float> gen( 30,100,10,4,30,40,50 );
         gum::BayesNet<float> * bn = new gum::BayesNet<float>();
         gen.generateBN(*bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::MaxParentsMCBayesNetGenerator<float> gen2(*bn,4,350,40,50));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::MaxParentsMCBayesNetGenerator<float> gen2(*bn,4,30,40,50));
 	
 	
         if ( bn != 0 ) delete bn;
@@ -106,10 +106,10 @@ public:
 
     void testGenerationfromBNDouble() {
 
-        gum::MaxParentsMCBayesNetGenerator<double> gen( 50,200,5,4,30,40,50 );
+        gum::MaxParentsMCBayesNetGenerator<double> gen( 30,100,5,4,30,40,50 );
         gum::BayesNet<double> * bn = new gum::BayesNet<double>();
         gen.generateBN(*bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::MaxParentsMCBayesNetGenerator<double> gen2(*bn,4,350,40,50));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::MaxParentsMCBayesNetGenerator<double> gen2(*bn,4,30,40,50));
         if ( bn != 0 ) delete bn;
 
     }  
@@ -117,7 +117,7 @@ public:
         void testDisturbBNFloatCPT(){
       
 
-       gum::MaxParentsMCBayesNetGenerator<float> gen( 50,200,8,30,40,50 );
+       gum::MaxParentsMCBayesNetGenerator<float> gen( 30,100,8,30,40,50 );
         gum::BayesNet<float> * bn = new gum::BayesNet<float>();
         gen.generateBN(*bn);
         TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN(*bn));
@@ -128,7 +128,7 @@ public:
     void testGenerationBNDoubleCPT() {
 
 
-        gum::MaxParentsMCBayesNetGenerator<double> gen( 50,200,8,4,30,40,50 );
+        gum::MaxParentsMCBayesNetGenerator<double> gen( 30,100,8,4,30,40,50 );
         gum::BayesNet<double> * bn = new gum::BayesNet<double>();
         gen.generateBN(*bn);
 	TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN(*bn));
@@ -141,7 +141,7 @@ public:
  
     void testInferenceFloat() {
 
-        gum::MaxParentsMCBayesNetGenerator<float> gen(  50,200,8,4,30,40,50 );
+        gum::MaxParentsMCBayesNetGenerator<float> gen(  30,100,8,4,30,40,50 );
 	gum::BayesNet<float> * bn = new gum::BayesNet<float>();
         gen.generateBN(*bn);
         // Test for inference
@@ -153,7 +153,7 @@ public:
 
     void testInferenceDouble() {
 
-        gum::MaxParentsMCBayesNetGenerator<double> gen(  50,200,8,4,30,40,50 );
+        gum::MaxParentsMCBayesNetGenerator<double> gen(  30,100,8,4,30,40,50 );
 	gum::BayesNet<double> * bn = new gum::BayesNet<double>();
         gen.generateBN(*bn);
         // Test for inference
