@@ -27,6 +27,7 @@
 #ifndef GUM_JUNCTION_TREE_STRATEGY_H
 #define GUM_JUNCTION_TREE_STRATEGY_H
 
+#include <agrum/config.h>
 
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
@@ -86,7 +87,7 @@ namespace gum {
 
     /// assign the triangulation to the junction tree strategy
     virtual void setTriangulation ( StaticTriangulation* triangulation ) = 0;
-    
+
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
     virtual const Property<NodeId>::onNodes& createdCliques () = 0;
@@ -97,7 +98,7 @@ namespace gum {
 
     /// resets the current junction tree strategy data structures
     virtual void clear () = 0;
-    
+
     /// @}
 
 

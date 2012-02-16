@@ -98,23 +98,23 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(4);
+		Expect(_string);
 		str=narrow(t->val); 
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(1);
+		Expect(_ident);
 		name=narrow(t->val); 
 }
 
 void Parser::ELT_LIST(std::string& val) {
-		if (la->kind == 4) {
+		if (la->kind == _string) {
 			Get();
-		} else if (la->kind == 3) {
+		} else if (la->kind == _number) {
 			Get();
-		} else if (la->kind == 2) {
+		} else if (la->kind == _integer) {
 			Get();
-		} else if (la->kind == 1) {
+		} else if (la->kind == _ident) {
 			Get();
 		} else SynErr(18);
 		val=narrow(t->val); 
@@ -131,52 +131,52 @@ void Parser::PURE_LIST(std::vector<std::string>& vals ) {
 }
 
 void Parser::LIST(std::vector<std::string>& vals ) {
-		Expect(5);
+		Expect(5 /* "(" */);
 		PURE_LIST(vals);
-		Expect(6);
+		Expect(6 /* ")" */);
 }
 
 void Parser::GARBAGE_ELT_LIST() {
-		if (la->kind == 3) {
+		if (la->kind == _number) {
 			Get();
-		} else if (la->kind == 2) {
+		} else if (la->kind == _integer) {
 			Get();
 		} else SynErr(19);
 }
 
 void Parser::GARBAGE_LISTS_SEQUENCE() {
 		GARBAGE_NESTED_LIST();
-		while (la->kind == 2 || la->kind == 3 || la->kind == 5) {
+		while (la->kind == _integer || la->kind == _number || la->kind == 5 /* "(" */) {
 			GARBAGE_NESTED_LIST();
 		}
 }
 
 void Parser::GARBAGE_NESTED_LIST() {
-		if (la->kind == 2 || la->kind == 3) {
+		if (la->kind == _integer || la->kind == _number) {
 			GARBAGE_ELT_LIST();
-		} else if (la->kind == 5) {
+		} else if (la->kind == 5 /* "(" */) {
 			Get();
 			GARBAGE_LISTS_SEQUENCE();
-			Expect(6);
+			Expect(6 /* ")" */);
 		} else SynErr(20);
 }
 
 void Parser::Net() {
 		factory().startNetworkDeclaration();
 		
-		Expect(7);
+		Expect(7 /* "net" */);
 		std::string prop,val;
 		std::vector<std::string> vals;
 		
-		Expect(8);
-		while (la->kind == 1) {
+		Expect(8 /* "{" */);
+		while (la->kind == _ident) {
 			IDENT(prop);
-			Expect(9);
-			while (la->kind == 1 || la->kind == 4 || la->kind == 5) {
-				if (la->kind == 1) {
+			Expect(9 /* "=" */);
+			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
+				if (la->kind == _ident) {
 					IDENT(val);
 					factory().addNetworkProperty(prop,val); 
-				} else if (la->kind == 4) {
+				} else if (la->kind == _string) {
 					STRING(val);
 					factory().addNetworkProperty(prop,val); 
 				} else {
@@ -192,14 +192,14 @@ void Parser::Net() {
 					
 				}
 			}
-			Expect(10);
+			Expect(10 /* ";" */);
 		}
-		Expect(11);
+		Expect(11 /* "}" */);
 		factory().endNetworkDeclaration(); 
-		while (la->kind == 12) {
+		while (la->kind == 12 /* "node" */) {
 			NODE();
 		}
-		while (la->kind == 16) {
+		while (la->kind == 16 /* "potential" */) {
 			POTENTIAL();
 		}
 }
@@ -207,7 +207,7 @@ void Parser::Net() {
 void Parser::NODE() {
 		std::string var;
 		
-		Expect(12);
+		Expect(12 /* "node" */);
 		IDENT(var);
 		std::string prop;
 		std::string val;
@@ -217,14 +217,14 @@ void Parser::NODE() {
 		TRY( factory().startVariableDeclaration());
 		TRY( factory().variableName(var));
 		
-		Expect(8);
-		while (la->kind == 1) {
+		Expect(8 /* "{" */);
+		while (la->kind == _ident) {
 			IDENT(prop);
-			Expect(9);
-			while (la->kind == 1 || la->kind == 4 || la->kind == 5) {
-				if (la->kind == 1) {
+			Expect(9 /* "=" */);
+			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
+				if (la->kind == _ident) {
 					IDENT(val);
-				} else if (la->kind == 4) {
+				} else if (la->kind == _string) {
 					STRING(val);
 				} else {
 					LIST(vals);
@@ -238,9 +238,9 @@ void Parser::NODE() {
 					
 				}
 			}
-			Expect(10);
+			Expect(10 /* ";" */);
 		}
-		Expect(11);
+		Expect(11 /* "}" */);
 		TRY(factory().endVariableDeclaration()); 
 }
 
@@ -249,24 +249,24 @@ void Parser::POTENTIAL() {
 		std::vector<float> probas;
 		std::vector<std::string> var_seq;
 		
-		Expect(16);
+		Expect(16 /* "potential" */);
 		PARENTS_DEFINITION(variable,var_seq);
-		Expect(8);
+		Expect(8 /* "{" */);
 		RAW_DATA(variable,var_seq);
-		if (la->kind == 15) {
+		if (la->kind == 15 /* "experience" */) {
 			EXPERIENCE();
 		}
-		Expect(11);
+		Expect(11 /* "}" */);
 }
 
 void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_seq) {
 		std::vector<std::string> parents;
-		Expect(5);
+		Expect(5 /* "(" */);
 		IDENT(name);
 		TRY(factory().startParentsDeclaration(name));
 		var_seq.clear();
 		
-		if (la->kind == 13) {
+		if (la->kind == 13 /* "|" */) {
 			Get();
 			if (StartOf(1)) {
 				PURE_LIST(parents);
@@ -281,17 +281,17 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 				
 			}
 		}
-		Expect(6);
+		Expect(6 /* ")" */);
 		var_seq.push_back(name);
 		TRY(factory().endParentsDeclaration());
 		
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == 3) {
+		if (la->kind == _number) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == 2) {
+		} else if (la->kind == _integer) {
 			Get();
 			val=coco_atoi(t->val); 
 		} else SynErr(21);
@@ -301,29 +301,29 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		while (la->kind == 2 || la->kind == 3) {
+		while (la->kind == _integer || la->kind == _number) {
 			FLOAT(value);
 			v.push_back(value); 
 		}
 }
 
 void Parser::FLOAT_NESTED_LIST(std::vector<float>& v ) {
-		Expect(5);
-		if (la->kind == 5) {
+		Expect(5 /* "(" */);
+		if (la->kind == 5 /* "(" */) {
 			FLOAT_NESTED_LIST(v);
-			while (la->kind == 5) {
+			while (la->kind == 5 /* "(" */) {
 				FLOAT_NESTED_LIST(v);
 			}
-		} else if (la->kind == 2 || la->kind == 3) {
+		} else if (la->kind == _integer || la->kind == _number) {
 			FLOAT_LIST(v);
 		} else SynErr(22);
-		Expect(6);
+		Expect(6 /* ")" */);
 }
 
 void Parser::RAW_DATA(std::string& variable,std::vector<std::string>& var_seq ) {
 		std::vector<float> probas;
-		Expect(14);
-		Expect(9);
+		Expect(14 /* "data" */);
+		Expect(9 /* "=" */);
 		FLOAT_NESTED_LIST(probas);
 		TRY(factory().startRawProbabilityDeclaration(variable));
 		   gum::Size s=(gum::Size)0;
@@ -337,15 +337,15 @@ void Parser::RAW_DATA(std::string& variable,std::vector<std::string>& var_seq ) 
 		   TRY(factory().rawConditionalTable(var_seq,probas));
 		   TRY(factory().endRawProbabilityDeclaration());
 		
-		Expect(10);
+		Expect(10 /* ";" */);
 }
 
 void Parser::EXPERIENCE() {
 		std::vector<std::string> vals;std::string val; 
-		Expect(15);
-		Expect(9);
+		Expect(15 /* "experience" */);
+		Expect(9 /* "=" */);
 		GARBAGE_NESTED_LIST();
-		Expect(10);
+		Expect(10 /* ";" */);
 }
 
 

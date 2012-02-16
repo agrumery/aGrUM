@@ -29,7 +29,7 @@ namespace gum {
    */
   template<typename T_DATA> INLINE
   BIFXMLBNReader<T_DATA>::BIFXMLBNReader( BayesNet<T_DATA>* bn, const std::string& filePath ):
-      BNReader<T_DATA>( bn, filePath ) {
+    BNReader<T_DATA>( bn, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLBNReader );
     __bn = bn;
     __filePath = filePath;
@@ -57,7 +57,8 @@ namespace gum {
 
       ticpp::Document xmlDoc( __filePath );
       xmlDoc.LoadFile();
-      if ( xmlDoc.NoChildren() ) {
+
+      if( xmlDoc.NoChildren() ) {
         GUM_ERROR( IOError, ": Loading fail, please check the file for any syntax error." );
       }
 
@@ -93,7 +94,7 @@ namespace gum {
       GUM_EMIT2( onProceed, 100, status );
 
       return 0;
-    } catch ( ticpp::Exception tinyexception ) {
+    } catch( ticpp::Exception tinyexception ) {
       GUM_ERROR( IOError, tinyexception.what() );
       return 1;
     }
@@ -106,13 +107,15 @@ namespace gum {
     // Counting the number of variable for the signal
     int nbVar = 0;
     ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
-    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte )
+
+    for( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte )
       nbVar++;
 
 
     // Iterating on variable element
     int nbIte = 0;
-    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte ) {
+
+    for( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte ) {
       ticpp::Element* currentVar = varIte.Get();
 
       //Getting variable name
@@ -128,18 +131,22 @@ namespace gum {
 
       //Getting variable outcomes
       ticpp::Iterator< ticpp::Element > varOutComesIte( "OUTCOME" );
-      for ( varOutComesIte = varOutComesIte.begin( currentVar ); varOutComesIte != varOutComesIte.end(); ++varOutComesIte )
+
+      for( varOutComesIte = varOutComesIte.begin( currentVar );
+           varOutComesIte != varOutComesIte.end();
+           ++varOutComesIte )
         newVar->addLabel( varOutComesIte->GetTextOrDefault( "" ) );
 
       //Getting variable type
       std::string nodeType = currentVar->GetAttribute<std::string>( "TYPE" );
 
-      // Add the variable to the bn
+      // Add the variable to the bn and then delete newVar (add makes a copy)
       __bn->add( *newVar );
+      delete( newVar );
 
       // Emitting progress.
       std::string status = "Network found. Now proceedind variables instanciation...";
-      int progress = ( int )(( float ) nbIte/ ( float )nbVar * 45 )+10;
+      int progress = ( int )( ( float ) nbIte/ ( float )nbVar * 45 )+10;
       GUM_EMIT2( onProceed, progress, status );
       nbIte++;
 
@@ -152,13 +159,15 @@ namespace gum {
     // Counting the number of variable for the signal
     int nbDef = 0;
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
-    for ( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte )
+
+    for( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte )
       nbDef++;
 
 
     //Iterating on definition nodes
     int nbIte = 0;
-    for ( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte ) {
+
+    for( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte ) {
       ticpp::Element* currentVar = definitionIte.Get();
 
       // Considered Node
@@ -168,12 +177,14 @@ namespace gum {
       // Get Node's parents
       ticpp::Iterator< ticpp::Element > givenIte( "GIVEN" );
       List<NodeId> parentList;
-      for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end(); ++givenIte ) {
+
+      for( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end(); ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
         NodeId parentId = __bn->idFromName( parentNode );
         parentList.push_back( parentId );
       }
-      for ( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
+
+      for( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
         __bn->insertArc( *parentListIte, currentVarId );
 
       // Recuperating tables values
@@ -181,10 +192,12 @@ namespace gum {
       std::istringstream issTableString( tableElement->GetTextOrDefault( "" ) );
       std::list<T_DATA> tablelist;
       T_DATA value;
-      while ( !issTableString.eof() ) {
+
+      while( !issTableString.eof() ) {
         issTableString >> value;
         tablelist.push_back( value );
       }
+
       std::vector<T_DATA> tablevector( tablelist.begin(), tablelist.end() );
 
       // Filling tables
@@ -193,7 +206,7 @@ namespace gum {
 
       // Emitting progress.
       std::string status = "All variables have been instancied. Now filling up diagram...";
-      int progress = ( int )(( float ) nbIte/ ( float )nbDef * 45 )+55;
+      int progress = ( int )( ( float ) nbIte/ ( float )nbDef * 45 )+55;
       GUM_EMIT2( onProceed, progress, status );
       nbIte++;
     }
