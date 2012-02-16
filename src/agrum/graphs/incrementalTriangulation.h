@@ -231,9 +231,6 @@ namespace gum {
       /// the graph that needs be triangulated
       UndiGraph __graph;
 
-      /// the modalities of the nodes
-      Property<unsigned int>::onNodes __modalities;
-
       /// the junction tree computed so far
       CliqueGraph __junction_tree;
 

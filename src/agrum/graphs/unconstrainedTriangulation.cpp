@@ -85,7 +85,7 @@ namespace gum {
     UnconstrainedEliminationSequenceStrategy* elim = 
       static_cast<UnconstrainedEliminationSequenceStrategy*>
       ( _elimination_sequence_strategy );
-    elim->setGraph ( &graph, modalities() );
+    elim->setGraph ( &graph, &modalities() );
   }
 
   
