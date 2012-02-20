@@ -28,15 +28,15 @@
  *
  * @author Pierre-Henri Wuillemin
  */
-#ifndef GUM_APPROXIMATION_SETTINGS_H
-#define GUM_APPROXIMATION_SETTINGS_H
+#ifndef GUM_APPROXIMATION_SCHEME_H
+#define GUM_APPROXIMATION_SCHEME_H
 
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 
 namespace gum {
 
-  class ApproximationSettings {
+  class ApproximationScheme {
     public:
       Signaler2<int,double> onProgress; // progression,error
       Signaler1<std::string> onStop; // criteria messageApproximationScheme
@@ -51,17 +51,17 @@ namespace gum {
 
       /// Constructors and Destructors
       /// @{
-      ApproximationSettings( double eps=5e-2,double rate=1e-2,Size max= ( Size ) 1000,bool v=false ) :
-          __current_state( APPROX_UNDEFINED ),
-          __eps( eps ),
-          __min_rate_eps( rate ),
-          __max_iter( max ),
-          __verbosity( v ) {
-        GUM_CONSTRUCTOR( ApproximationSettings );
+      ApproximationScheme( double eps=5e-2,double rate=1e-2,Size max= ( Size ) 1000,bool v=false ) :
+        __current_state( APPROX_UNDEFINED ),
+        __eps( eps ),
+        __min_rate_eps( rate ),
+        __max_iter( max ),
+        __verbosity( v ) {
+        GUM_CONSTRUCTOR( ApproximationScheme );
       };
 
-      ~ApproximationSettings() {
-        GUM_DESTRUCTOR( ApproximationSettings );
+      ~ApproximationScheme() {
+        GUM_DESTRUCTOR( ApproximationScheme );
       };
       /// @}
 
@@ -70,7 +70,7 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if eps<=0
       void setEpsilon( double eps ) {
-        if ( eps<=0 ) {
+        if( eps<=0 ) {
           GUM_ERROR( OutOfLowerBound,"eps should be >0" );
         }
 
@@ -86,7 +86,7 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if rate<=0
       void setMinEpsilonRate( double rate ) {
-        if ( rate<=0 ) {
+        if( rate<=0 ) {
           GUM_ERROR( OutOfLowerBound,"rate should be >0" );
         }
 
@@ -102,7 +102,7 @@ namespace gum {
       /// @{
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter( Size max ) {
-        if ( max<1 ) {
+        if( max<1 ) {
           GUM_ERROR( OutOfLowerBound,"max should be >=1" );
         }
 
@@ -134,20 +134,22 @@ namespace gum {
 
       /// @throw OperationNotAllowed if scheme not performed
       Size nbrIterations() const {
-        if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
+        if( stateApproximationScheme()==APPROX_UNDEFINED ) {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is udefined" );
         }
+
         return __current_step;
       };
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
       const std::vector<double>& history() const {
-        if ( stateApproximationScheme()==APPROX_UNDEFINED ) {
+        if( stateApproximationScheme()==APPROX_UNDEFINED ) {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is udefined" );
         }
-        if ( verbosity()==false ) {
+
+        if( verbosity()==false ) {
           GUM_ERROR( OperationNotAllowed,
                      "No history when verbosity=false" );
         }
@@ -203,22 +205,23 @@ namespace gum {
       /// update the scheme w.r.t the new error. Test the stopping criterion
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
       ApproximationSchemeSTATE testApproximationScheme( double error,bool check_rate=true ) {
-        if ( __current_state!=APPROX_CONTINUE ) {
+        if( __current_state!=APPROX_CONTINUE ) {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is not correct : "+messageApproximationScheme() );
         }
 
-        if ( verbosity() ) __history.push_back( error );
+        if( verbosity() ) __history.push_back( error );
 
-        if ( __current_step>maxIter() )
+        if( __current_step>maxIter() )
           return ( __current_state=APPROX_LIMIT );
 
         __last_epsilon=__current_epsilon;
-        if (( __current_epsilon=error )<epsilon() )
+
+        if( ( __current_epsilon=error )<epsilon() )
           return ( __current_state=APPROX_EPSILON );
 
-        if ( check_rate && __last_epsilon>0 ) {
-          if (( __current_rate=fabs(( __current_epsilon-__last_epsilon )/__current_epsilon ) )<minEpsilonRate() )
+        if( check_rate && __last_epsilon>0 ) {
+          if( ( __current_rate=fabs( ( __current_epsilon-__last_epsilon )/__current_epsilon ) )<minEpsilonRate() )
             return ( __current_state=APPROX_RATE );
         }
 
@@ -227,7 +230,8 @@ namespace gum {
 
       std::string messageApproximationScheme() const {
         std::stringstream s;
-        switch ( stateApproximationScheme() ) {
+
+        switch( stateApproximationScheme() ) {
           case APPROX_CONTINUE: s<<"in progress";
             break;
           case APPROX_EPSILON: s<<"stopped with epsilon="<<epsilon();
@@ -239,6 +243,7 @@ namespace gum {
           case APPROX_UNDEFINED: s<<"undefined state";
             break;
         };
+
         return s.str();
       }
 
@@ -262,5 +267,5 @@ namespace gum {
       bool __verbosity;
   };
 } //namespace gum
-#endif // GUM_APPROXIMATION_SETTINGS_H
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+#endif // GUM_APPROXIMATION_SCHEME_H
+

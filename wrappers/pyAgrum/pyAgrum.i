@@ -129,7 +129,7 @@ import numpy
 %rename(append) gum::Sequence::insert( const KEY& k );
 %rename(index) gum::Sequence::pos( const KEY& key ) const ;
 %rename(remove) gum::Sequence::erase( const KEY& k );
-%rename(__getitem__) gum::Sequence::atPos( const Idx i ) const ;
+%rename(__getitem__) gum::Sequence::atPos( Idx i ) const ;
 %rename(__str__) gum::Sequence::toString() const;
 
 %rename(__str__) gum::DiscreteVariable::toString() const;
@@ -204,7 +204,7 @@ def loadBN(s,listeners=None):
 
   extension=s.split('.')[-1].upper()
   if extension=="BIF":
-    bn.loadBIF(s,listeners) 
+    bn.loadBIF(s,listeners)
   elif extension=="BIFXML":
     bn.loadBIFXML(s,listeners)
   elif extension=="DSL":
@@ -236,9 +236,9 @@ def saveBN(bn,s):
 %extend gum::BayesNet {
     PyObject *names() const {
       PyObject* q=PyList_New(0);
-    
-      const DAG& dag=self->dag();
-      for ( NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
         PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
       }
       return q;
@@ -247,8 +247,8 @@ def saveBN(bn,s):
     PyObject *ids() {
 		PyObject* q=PyList_New(0);
 
-		const DAG& dag=self->dag();
-		for ( NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+		const gum::DAG& dag=self->dag();
+		for ( gum::NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
 			PyList_Append(q,PyInt_FromLong(*node_iter));
 		}
 
@@ -258,8 +258,8 @@ def saveBN(bn,s):
     PyObject *parents(const NodeId id) const {
 		PyObject* q=PyList_New(0);
 
-		const NodeSet& p=self->dag().parents(id);
-		for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+		const gum::NodeSet& p=self->dag().parents(id);
+		for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
 			PyList_Append(q,PyInt_FromLong(*it));
 		}
 
@@ -269,8 +269,8 @@ def saveBN(bn,s):
     PyObject *children(const NodeId id) const {
 		PyObject* q=PyList_New(0);
 
-		const NodeSet& p=self->dag().children(id);
-		for(NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
+		const gum::NodeSet& p=self->dag().children(id);
+		for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
 			PyList_Append(q,PyInt_FromLong(*it));
 		}
 
@@ -362,7 +362,7 @@ def saveBN(bn,s):
         try {
             gum::BIFXMLBNReader<T_DATA> reader(self,name);
             /* nothing as listener for now for BIFXML ... */
-            /*            
+            /*
             int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
@@ -786,7 +786,6 @@ int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *
 };
 %}
 
-/* INCLUDE aGrUM base wrap */
 %include "aGrUM_wrap.i"
 
 %include "extensions/PythonBNListener.h"

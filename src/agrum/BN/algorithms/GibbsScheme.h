@@ -22,10 +22,10 @@
  * @brief This file contains getters and setters for specific Gibbs approximation settings
  * @author Pierre-Henri Wuillemin
  */
-#ifndef GUM_GIBBS_SETTINGS_H
-#define GUM_GIBBS_SETTINGS_H
+#ifndef GUM_GIBBS_SCHEME_H
+#define GUM_GIBBS_SCHEME_H
 
-#include <agrum/BN/algorithms/approximationSettings.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
 
 namespace gum {
   /// class for settings of a Gibbs sampler
@@ -46,19 +46,19 @@ namespace gum {
   if (verbosity()) GUM_TRACE(messageApproximationScheme());
   @endcode
       */
-  class GibbsSettings : public ApproximationSettings {
+  class GibbsScheme : public ApproximationScheme {
     public:
       /// Constructors and Destructors
       /// @{
-      GibbsSettings( double eps=5e-2,double rate=1e-2,Size max= ( Size ) 1000,bool v=false,Size burn=1000,Size period=10 ) :
-          ApproximationSettings( eps,rate,max,v ),
-          __burn_in( burn ),
-          __periode_size( period ) {
-        GUM_CONSTRUCTOR( GibbsSettings );
+      GibbsScheme( double eps=5e-2,double rate=1e-2,Size max= ( Size ) 1000,bool v=false,Size burn=1000,Size period=10 ) :
+        ApproximationScheme( eps,rate,max,v ),
+        __burn_in( burn ),
+        __periode_size( period ) {
+        GUM_CONSTRUCTOR( GibbsScheme );
       };
 
-      ~GibbsSettings() {
-        GUM_DESTRUCTOR( GibbsSettings );
+      ~GibbsScheme() {
+        GUM_DESTRUCTOR( GibbsScheme );
       };
 
       /// @}
@@ -68,9 +68,10 @@ namespace gum {
 
       /// @throw OutOfLowerBound if b<1
       void setBurnIn( Size b ) {
-        if ( b<1 ) {
+        if( b<1 ) {
           GUM_ERROR( OutOfLowerBound,"b should be >=1" );
         }
+
         __burn_in=b;
       };
 
@@ -82,10 +83,10 @@ namespace gum {
 
       /// @throw OutOfLowerBound if p<1
       void setPeriodeSize( Size p ) {
-        if ( p<1 ) {
+        if( p<1 ) {
           GUM_ERROR( OutOfLowerBound,"p should be >=1" );
         }
-        
+
         __periode_size=p;
 
       };
@@ -99,7 +100,7 @@ namespace gum {
   };
 }//namespace gum
 
-#endif //GUM_GIBBS_SETTINGS_H
+#endif //GUM_GIBBS_SCHEME_H
 
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -30,7 +30,7 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/approximationSettings.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
 
 #define KL_DEFAULT_MAXITER 10000000
 #define KL_DEFAULT_EPSILON 1e-10
@@ -44,7 +44,7 @@ namespace gum {
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
       KL<T_DATA> ( P,Q ),
-      GibbsSettings( KL_DEFAULT_EPSILON,
+      GibbsScheme( KL_DEFAULT_EPSILON,
                      KL_DEFAULT_MIN_EPSILON_RATE,
                      KL_DEFAULT_MAXITER,KL_DEFAULT_VERBOSITY,
                      KL_DEFAULT_BURNIN,
@@ -56,7 +56,7 @@ namespace gum {
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
       KL<T_DATA> ( kl ),
-      GibbsSettings( KL_DEFAULT_EPSILON,
+      GibbsScheme( KL_DEFAULT_EPSILON,
                      KL_DEFAULT_MIN_EPSILON_RATE,
                      KL_DEFAULT_MAXITER,
                      KL_DEFAULT_VERBOSITY,

@@ -27,7 +27,7 @@
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/GibbsSettings.h>
+#include <agrum/BN/algorithms/GibbsScheme.h>
 
 namespace gum {
 
@@ -41,7 +41,7 @@ namespace gum {
   template <typename T_DATA>
 
   class GibbsInference :
-        public GibbsSettings,
+        public GibbsScheme,
         public BayesNetInference<T_DATA>,
         public particle::Gibbs<T_DATA> {
 

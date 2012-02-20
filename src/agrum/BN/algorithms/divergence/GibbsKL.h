@@ -29,7 +29,7 @@
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/GibbsSettings.h>
+#include <agrum/BN/algorithms/GibbsScheme.h>
 
 #include <agrum/core/signal/signaler.h>
 
@@ -60,7 +60,7 @@ namespace gum {
 */
 template<typename T_DATA> class GibbsKL:
             public KL<T_DATA>,
-            public GibbsSettings,
+            public GibbsScheme,
             public particle::Gibbs<T_DATA> {
 public:
 

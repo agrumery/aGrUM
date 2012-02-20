@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <python2.7/Python.h>
+#include <Python.h>
 
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
-#include <agrum/BN/algorithms/approximationListener.h>
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
 
 template<typename T_DATA>
-class PythonGibbsKLListener: public ApproximationListener {
+class PythonGibbsKLListener: public gum::ApproximationSchemeListener {
 private:
 
     PyObject *__pyWhenProgress;
@@ -36,7 +36,7 @@ private:
     };
 
 public:
-    PythonGibbsKLListener( const gum::GibbsKL<T_DATA>& k ):ApproximationListener(k) {
+  PythonGibbsKLListener( const gum::GibbsKL<T_DATA>& k ):gum::ApproximationListener(k) {
         __pyWhenProgress = __pyWhenStop = ( PyObject * )0;
     };
 
