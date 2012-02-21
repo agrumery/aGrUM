@@ -160,42 +160,42 @@ namespace gum {
               switch ( i->get( *node ).elt_type() ) {
                 case ClassElement::prm_aggregate:
                 case ClassElement::prm_attribute: {
-                  if (( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
-                      ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
-                    if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
+                    if (( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
+                        ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
+                      if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
+                        GUM_ERROR( TypeError, msg.str() + i->name() );
+                      }
+                    } else {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-                  } else {
-                    GUM_ERROR( TypeError, msg.str() + i->name() );
-                  }
 
-                  break;
-                }
+                    break;
+                  }
 
                 case ClassElement::prm_refslot: {
-                  if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
-                    const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
-                    const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
+                    if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
+                      const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
+                      const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
 
-                    if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
+                      if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
+                        GUM_ERROR( TypeError, msg.str() + i->name() );
+                      }
+                    } else {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-                  } else {
-                    GUM_ERROR( TypeError, msg.str() + i->name() );
+
+                    break;
                   }
 
-                  break;
-                }
-
                 case ClassElement::prm_slotchain: {
-                  // Nothing to check: they are automatically inherited
-                  break;
-                }
+                    // Nothing to check: they are automatically inherited
+                    break;
+                  }
 
                 default: {
-                  std::string msg = "unexpected ClassElement in interface ";
-                  GUM_ERROR( FatalError, msg + i->name() );
-                }
+                    std::string msg = "unexpected ClassElement in interface ";
+                    GUM_ERROR( FatalError, msg + i->name() );
+                  }
               }
             }
           } catch ( NotFound& ) {
@@ -277,29 +277,29 @@ namespace gum {
 
         switch ( elt.elt_type() ) {
           case ClassElement::prm_refslot: {
-            GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
-            break;
-          }
-
-          case ClassElement::prm_slotchain: {
-            if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
-              GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
+              GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
+              break;
             }
 
-            c->insertArc( name, a->name() );
+          case ClassElement::prm_slotchain: {
+              if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
+                GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
+              }
 
-            break;
-          }
+              c->insertArc( name, a->name() );
+
+              break;
+            }
 
           case ClassElement::prm_attribute:
           case ClassElement::prm_aggregate: {
-            c->insertArc( name, a->name() );
-            break;
-          }
+              c->insertArc( name, a->name() );
+              break;
+            }
 
           default: {
-            GUM_ERROR( FatalError, "unknown ClassElement" );
-          }
+              GUM_ERROR( FatalError, "unknown ClassElement" );
+            }
         }
       } catch ( NotFound& ) {
         // Check if name is a slot chain
@@ -481,50 +481,50 @@ namespace gum {
       switch ( Aggregate::str2enum( agg_type ) ) {
         case Aggregate::agg_or:
         case Aggregate::agg_and: {
-          if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
-            GUM_ERROR( WrongType, "expected booleans" );
+            if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
+              GUM_ERROR( WrongType, "expected booleans" );
+            }
           }
-        }
 
         case Aggregate::agg_min:
         case Aggregate::agg_max: {
-          if ( params.size() != 0 ) {
-            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
+            if ( params.size() != 0 ) {
+              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
+            }
+
+            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
+
+            break;
           }
-
-          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
-
-          break;
-        }
 
         case Aggregate::agg_exists:
         case Aggregate::agg_forall: {
-          if ( params.size() != 1 ) {
-            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
-          }
-
-          Idx label_idx = 0;
-
-          while ( label_idx < inputs.front()->type()->domainSize() ) {
-            if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
-              break;
+            if ( params.size() != 1 ) {
+              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
             }
 
-            ++label_idx;
+            Idx label_idx = 0;
+
+            while ( label_idx < inputs.front()->type()->domainSize() ) {
+              if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
+                break;
+              }
+
+              ++label_idx;
+            }
+
+            if ( label_idx == inputs.front()->type()->domainSize() ) {
+              GUM_ERROR( NotFound, "could not find label" );
+            }
+
+            // Creating and adding the Aggregate
+            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
+
+            break;
           }
-
-          if ( label_idx == inputs.front()->type()->domainSize() ) {
-            GUM_ERROR( NotFound, "could not find label" );
-          }
-
-          // Creating and adding the Aggregate
-          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
-
-          break;
-        }
 
         default:
-        { GUM_ERROR( FatalError, "Unknown aggregator." ); }
+          { GUM_ERROR( FatalError, "Unknown aggregator." ); }
       }
 
       std::string safe_name = agg->safeName();
@@ -723,7 +723,7 @@ namespace gum {
             case ClassElement::prm_refslot:
               ref = &( static_cast<ReferenceSlot&>( current->get( v[i] ) ) );
               elts.insert( ref );
-              current = &( const_cast<ClassElementContainer&>( ref->slotType() ) );
+              current = &( /*const_cast<ClassElementContainer&>*/( ref->slotType() ) );
               break;
             case ClassElement::prm_aggregate:
             case ClassElement::prm_attribute:
@@ -743,8 +743,10 @@ namespace gum {
       }
 
       GUM_ASSERT( v.size() == elts.size() );
-
+      
+      GUM_TRACE("new outputnode for "<<current->name());
       current->setOutputNode( *( elts.back() ), true );
+      
       return new SlotChain( name, elts );
     }
 
@@ -1010,3 +1012,4 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 // = ==========================================================================
+

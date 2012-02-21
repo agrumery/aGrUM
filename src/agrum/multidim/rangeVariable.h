@@ -113,7 +113,7 @@ namespace gum {
        * @throw OutOfBound
        */
       // ========================================================================
-      virtual const std::string label( const Idx indice ) const;
+      virtual const std::string label( Idx indice ) const;
 
       // ========================================================================
       /**

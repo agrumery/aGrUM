@@ -23,6 +23,8 @@
  *
  * @author Pierre-Henri Wuillemin
  */
+#include <Python.h>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/diGraphListener.h>
 

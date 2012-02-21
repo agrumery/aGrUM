@@ -303,7 +303,7 @@ namespace gum {
   // returns the object at the pos i
   // ==============================================================================
   template <typename KEY> INLINE
-  const KEY& Sequence<KEY>::atPos( const Idx i ) const {
+  const KEY& Sequence<KEY>::atPos( Idx i ) const {
     if ( i >= __h.size() ) {
       GUM_ERROR( NotFound, "" );
     }
@@ -439,7 +439,7 @@ namespace gum {
   /// returns the element at position i (synonym for atPos)
   // ==============================================================================
   template <typename KEY> INLINE
-  const KEY& Sequence<KEY>::operator[]( const Idx i ) const {
+  const KEY& Sequence<KEY>::operator[]( Idx i ) const {
     return atPos( i );
   }
 
@@ -819,7 +819,7 @@ namespace gum {
   // returns the object at the pos i
   // ==============================================================================
   template <typename KEY> INLINE
-  KEY* const Sequence<KEY*>::atPos( const Idx i ) const {
+  KEY* const Sequence<KEY*>::atPos( Idx i ) const {
     if ( i >= __h.size() ) {
       GUM_ERROR( NotFound, "" );
     }
@@ -954,7 +954,7 @@ namespace gum {
   /// returns the element at position i (synonym for atPos)
   // ==============================================================================
   template <typename KEY> INLINE
-  KEY* const Sequence<KEY*>::operator[]( const Idx i ) const {
+  KEY* const Sequence<KEY*>::operator[]( Idx i ) const {
     return atPos( i );
   }
 

@@ -33,7 +33,7 @@ namespace gum {
 
     INLINE
     ClassElementContainer::ClassElementContainer( const std::string& name ):
-        PRMObject( name ) {
+      PRMObject( name ) {
       GUM_CONSTRUCTOR( ClassElementContainer );
     }
 
@@ -50,7 +50,7 @@ namespace gum {
 
     INLINE
     ClassElementContainer::ClassElementContainer( const ClassElementContainer& source ):
-        PRMObject( source ) {
+      PRMObject( source ) {
       GUM_CONS_CPY( ClassElementContainer );
       GUM_ERROR( FatalError, "illegal call to ClassElementContainer copy constructor" );
     }
@@ -102,6 +102,7 @@ namespace gum {
     INLINE
     void
     ClassElementContainer::setOutputNode( const ClassElement& elt, bool b ) {
+      GUM_TRACE_VAR(name());
       if ( not exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound, "<"+elt.safeName()+"> is not in <"+name()+">" );
       } else if ( ClassElement::isAttribute( elt ) or ClassElement::isAggregate( elt ) ) {

@@ -66,8 +66,8 @@ namespace gum {
 
       /// default constructor
       /** @warning : a NodeGraphPartIterator is built with __valid=false. Don't
-       * forget to @ref NodeGraphPartIterator::__validate it (@see
-       * NodeGraphPart::beginNodes() code) */
+       * forget to @ref NodeGraphPartIterator::__validate it (@see NodeGraphPart::beginNodes() code) 
+       **/
       NodeGraphPartIterator( const NodeGraphPart* nodes );
 
       /// copy constructor

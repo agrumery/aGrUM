@@ -136,7 +136,7 @@ namespace gum {
        * @throw NotFound
        */
       // ============================================================================
-      virtual const DiscreteVariable& variable( const Idx i ) const =0;
+      virtual const DiscreteVariable& variable( Idx i ) const =0;
 
       // ============================================================================
       /**

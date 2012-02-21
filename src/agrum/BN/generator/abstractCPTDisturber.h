@@ -17,28 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /** @file
- * @brief Abstract class for generating Conditional Probability Tables.
+ * @brief Abstract class for disturbing Conditional Probability Tables.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
-#ifndef GUM_CPT_GENERATOR_H
-#define GUM_CPT_GENERATOR_H
+
+#ifndef GUM_ABSTRACT_CPT_DISTURBER_H
+#define GUM_ABSTRACT_CPT_DISTURBER_H
+
+
 
 #include <agrum/multidim/potential.h>
+#include <agrum/BN/BayesNet.h>
+//#include <agrum/BN/generator/MCBayesNetGenerator.h>
+
 
 
 namespace gum {
 
 
-  /** @class CPTGenerator *
-   * @brief Abstract class for generating Conditional Probability Tables.
+  /** @class CPTDisturb *
+   * @brief Abstract class for Modifying Conditional Probability Tables.
    * @ingroup bn_group
    *
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  class CPTGenerator {
+  template <typename T_DATA>
+  class AbstractCPTDisturber {
   public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -47,37 +55,35 @@ namespace gum {
     /**
      * Default constructor.
      */
-    CPTGenerator();
+    AbstractCPTDisturber();
 
     /**
      * Destructor.
      */
-    virtual ~CPTGenerator();
+    virtual ~AbstractCPTDisturber();
     /// @}
 
     // ############################################################################
-    /// @name CPT generation methods
+    /// @name CPT disturbing methods
     // ############################################################################
     /// @{
     /**
      * Generates a CPT using floats.
-		 * @param varId The variable id of the CPT owner.
-     * @param cpt A reference on the CPT to fill.
+     * @param varIdi The variable id parent of the CPT owner.
+     * @param varIdj A reference on the CPT owner.
+     * @param bayesNet the modified Bayesian Network.
+     * @param cpt_copy copy of the CPT before changing size
+     * @param marginal of the inference before changing size.
      */
-    virtual void generateCPT(const Idx& varId, const Potential<float>& cpt)=0;
+    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<T_DATA>& bayesNet, Potential<T_DATA>& cptCopy, Potential<T_DATA>& marg)=0;
+    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<T_DATA>& bayesNet, Potential<T_DATA>& cptCopy, T_DATA variation)=0;
 
-    /**
-     * Generates a CPT using doubles.
-		 * @param varId The variable id of the CPT owner.
-     * @param cpt A reference on the CPT to fill.
-     */
-    virtual void generateCPT(const Idx& varId, const Potential<double>& cpt)=0;
+ 
     /// @}
   };
 
 
 } /* namespace gum */
 
-
-#endif /* GUM_CPT_GENERATOR_H */
-
+#include<agrum/BN/generator/abstractCPTDisturber.tcc>
+#endif // CPTDISTURBER_H

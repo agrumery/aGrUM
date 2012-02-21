@@ -55,7 +55,7 @@ namespace gum {
   // ============================================================================
   INLINE
   const std::string
-  RangeVariable::label( const Idx indice ) const {
+  RangeVariable::label( Idx indice ) const {
     if ( belongs( indice  + __min ) ) {
       std::stringstream strBuff;
       strBuff << indice+__min;

@@ -23,6 +23,10 @@
  *
  * @author Lionel TORTI
  */
+
+//to ease parsing
+#include <agrum/prm/class.h>
+
 // ============================================================================
 namespace gum {
   namespace prm {
@@ -94,9 +98,11 @@ namespace gum {
     bool
     Class::isParameter( const ClassElement& elt ) const {
       const ClassElement& mine = get( elt.safeName() );
+
       if ( ClassElement::isAttribute( mine ) ) {
         return __parameters.exists( static_cast<Attribute*>( const_cast<ClassElement*>( &mine ) ) );
       }
+
       return false;
       // if (__nodeIdMap.exists(id) and (ClassElement::isAttribute(get(id)))) {
       //   return __parameters.exists(&(static_cast<Attribute&>(const_cast<ClassElement&>(get(id)))));
@@ -110,7 +116,7 @@ namespace gum {
     INLINE
     ClassElement&
     Class::get( const std::string& name ) {
-      try {
+      try {	
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "no ClassElement with the given name" );
@@ -219,6 +225,7 @@ namespace gum {
     Class::__checkOverloadLegality( const ClassElement* overloaded, const ClassElement* overloader ) {
       if ( overloaded->elt_type() != overloader->elt_type() )
         GUM_ERROR( TypeError, "invalid overload" );
+
       if ( overloaded->elt_type() == ClassElement::prm_attribute ) {
         if ( not overloader->type().isSubTypeOf( overloaded->type() ) ) {
           GUM_ERROR( TypeError, "the overloading ClassElement Type is illegal" );
@@ -247,6 +254,7 @@ namespace gum {
       if ( __nameMap.exists( param->name() ) ) {
         GUM_ERROR( DuplicateElement, "name already used by another ClassElement" );
       }
+
       param->setId( __dag.insertNode() );
       __nodeIdMap.insert( param->id(), param );
       __nameMap.insert( param->name(), param );
@@ -261,6 +269,7 @@ namespace gum {
     bool
     Class::isCastDescendant( const std::string& safe_name ) const {
       const ClassElement& elt = get( safe_name );
+
       try {
         return elt.type().name() == get( elt.name() ).type().name();
       } catch ( OperationNotAllowed& ) {

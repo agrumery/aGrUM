@@ -136,7 +136,7 @@ namespace gum {
   // ==============================================================================
   /// returns the ith label
   // ==============================================================================
-  INLINE const std::string LabelizedVariable::label( const Idx i ) const {
+  INLINE const std::string LabelizedVariable::label( Idx i ) const {
     return zeLabels.atPos( i );
   }
 

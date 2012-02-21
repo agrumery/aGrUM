@@ -42,7 +42,7 @@ namespace gum {
   // ==============================================================================
   /// modifies internally the value of a given variable of the sequence
   // ==============================================================================
-  INLINE void Instantiation::__chgVal( const Idx varPos, const Idx newVal ) {
+  INLINE void Instantiation::__chgVal( Idx varPos, Idx newVal ) {
     Idx oldVal = __vals[varPos];
     __vals[varPos] = newVal;
 
@@ -54,7 +54,7 @@ namespace gum {
   /// modifies the value of a given variable of the sequence (external function)
   // ==============================================================================
   INLINE Instantiation& Instantiation::chgVal( const DiscreteVariable& v,
-      const Idx newVal ) {
+      Idx newVal ) {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
@@ -77,7 +77,7 @@ namespace gum {
   }
 
   INLINE Instantiation& Instantiation::chgVal( const DiscreteVariable* v,
-      const Idx newVal ) {
+      Idx newVal ) {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
@@ -102,7 +102,7 @@ namespace gum {
   // ==============================================================================
   /// modifies the value of a given variable of the sequence (external function)
   // ==============================================================================
-  INLINE Instantiation& Instantiation::chgVal( Idx varPos, const Idx newVal ) {
+  INLINE Instantiation& Instantiation::chgVal( Idx varPos, Idx newVal ) {
     // check that the variable does belong to the instantiation and that the new
     // value is possible.
     if ( __vals.size() <= varPos ) {
@@ -219,7 +219,7 @@ namespace gum {
   // ==============================================================================
   /// returns the current value of a given variable
   // ==============================================================================
-  INLINE Idx Instantiation::val( const Idx i ) const {
+  INLINE Idx Instantiation::val( Idx i ) const {
     if ( i >= __vals.size() ) {
       GUM_ERROR( NotFound, "" );
     }
@@ -244,7 +244,7 @@ namespace gum {
   // ==============================================================================
   /// returns the variable at position i in the tuple
   // ==============================================================================
-  INLINE const DiscreteVariable& Instantiation::variable( const Idx i ) const  {
+  INLINE const DiscreteVariable& Instantiation::variable( Idx i ) const  {
     return *( __vars.atPos( i ) );
   }
 

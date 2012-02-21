@@ -77,6 +77,7 @@ namespace gum_tests {
         TS_ASSERT( net != 0 );
 
         if( net != 0 ) {
+          TS_ASSERT( ! net->empty() );
           TS_ASSERT_EQUALS( net->size(), ( gum::Size ) 2 );
           gum::NodeId node_1 = 0, node_2 = 0;
 
@@ -113,7 +114,6 @@ namespace gum_tests {
           TS_ASSERT_DELTA( proba_2[inst_2], 0.3, 0.001 );
           inst_2.setLast();
           TS_ASSERT_DELTA( proba_2[inst_2], 0.7, 0.001 );
-
           delete net;
         }
       }
@@ -132,14 +132,16 @@ namespace gum_tests {
 
         if( net != 0 ) {
           TS_ASSERT_EQUALS( net->size(), ( gum::Size ) 5 );
+
+          const gum::Potential<double> &proba = net->cpt( net->idFromName( "dog-out" ) );
+
+          TS_ASSERT_EQUALS( proba.domainSize(),( gum::Size ) 8 );
+
+          delete( net );
         }
-
-        const gum::Potential<double> &proba = net->cpt( net->idFromName( "dog-out" ) );
-
-        TS_ASSERT_EQUALS( proba.domainSize(),( gum::Size ) 8 );
       }
 
-      void Read_file2_double() {
+      void testRead_file2_double() {
         std::string file = GET_PATH_STR( BNBIFXMLReader_file2.bifxml );
         gum::BayesNet<double> *net = new gum::BayesNet<double>();
         gum::BIFXMLBNReader<double> reader( net, file );

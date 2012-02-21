@@ -24,8 +24,6 @@
  */
 
 //to ease automatic parsers
-#include <agrum/config.h>
-
 #include <agrum/core/errorsContainer.h>
 
 namespace gum {

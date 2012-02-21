@@ -367,7 +367,7 @@ namespace gum {
     }
 
     for ( std::vector<NodeId>::iterator iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )
-      if ( *iter == to &&  std::distance ( _arcMap[from]->begin(), iter ) == value ) {
+      if ( *iter == to &&  (gum::Idx) std::distance ( _arcMap[from]->begin(), iter ) == value ) {
         GUM_ERROR ( DuplicateElement, " A same (meaning with same value " <<  value << " ) arc linking those two nodes " << from << " -> " << to << " already exist." );
         break;
       }

@@ -17,27 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /** @file
- * @brief Source implementation of gumCPTGenerator.
+ * @brief Source implementation of gumAbstractCPTDisturber.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN and Ariele-Paolo Maesano
  *
  */
-#include <agrum/BN/generator/CPTGenerator.h>
 
 
-namespace gum {
+#include <agrum/BN/generator/abstractCPTDisturber.h>
 
 
-  // Default constructor.
-  CPTGenerator::CPTGenerator() {
-    GUM_CONSTRUCTOR( CPTGenerator );
-  }
 
-  // Destructor.
-  CPTGenerator::~CPTGenerator() {
-    GUM_DESTRUCTOR( CPTGenerator );
-  }
-
-
-} /* namespace gum */

@@ -94,7 +94,7 @@ namespace gum {
        * @throw OperationNotAllowed if no inference have yet been made
        * @throw InvalidNode if node given in parmaeter is not a decision node
        */
-      virtual const Idx getBestDecisionChoice( NodeId decisionId ) = 0;
+      virtual Idx getBestDecisionChoice( NodeId decisionId ) = 0;
 
     protected:
 

@@ -36,19 +36,21 @@
 
 // to ease parsing for IDE
 #include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/particles/Gibbs.h>
 
 namespace gum {
   /// default constructor
   template <typename T_DATA>
   GibbsInference<T_DATA>::GibbsInference( const AbstractBayesNet<T_DATA>& BN ) :
-      GibbsSettings( INFERENCE_DEFAULT_EPSILON,
-                     INFERENCE_DEFAULT_MIN_EPSILON_RATE,
-                     INFERENCE_DEFAULT_MAXITER,
-                     INFERENCE_DEFAULT_VERBOSITY,
-                     INFERENCE_DEFAULT_BURNIN,
-                     INFERENCE_DEFAULT_PERIODE_SIZE ),
-      BayesNetInference <T_DATA> ( BN ),
-      particle::Gibbs<T_DATA> ( BN ) {
+    GibbsScheme( INFERENCE_DEFAULT_EPSILON,
+                 INFERENCE_DEFAULT_MIN_EPSILON_RATE,
+                 INFERENCE_DEFAULT_MAXITER,
+                 INFERENCE_DEFAULT_VERBOSITY,
+                 INFERENCE_DEFAULT_BURNIN,
+                 INFERENCE_DEFAULT_PERIODE_SIZE ),
+    BayesNetInference <T_DATA> ( BN ),
+    particle::Gibbs<T_DATA> ( BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
@@ -56,7 +58,7 @@ namespace gum {
     const DAG& dag = bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+    for( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       const DiscreteVariable& var = bn().variable( *iter );
       // feed the __sampling
       Potential<T_DATA>* tmp = new Potential<T_DATA>();
@@ -73,9 +75,9 @@ namespace gum {
     GUM_DESTRUCTOR( GibbsInference );
 
     // remove all the created potentials and instantiations
-    for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter )
+    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+           __sampling_nbr.begin();
+         iter != __sampling_nbr.end(); ++iter )
       delete( *iter );
   }
 
@@ -100,10 +102,10 @@ namespace gum {
 
   template <typename T_DATA> INLINE
   void GibbsInference<T_DATA>::__initStats() {
-    for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
-      ( *iter )->fill(( T_DATA ) 0 );
+    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+           __sampling_nbr.begin();
+         iter != __sampling_nbr.end(); ++iter ) {
+      ( *iter )->fill( ( T_DATA ) 0 );
     }
   }
 
@@ -120,9 +122,9 @@ namespace gum {
     Size nbr = nb + 1; // we compute the new iteration
     double sum_entropy = 0;
 
-    for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
+    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+           __sampling_nbr.begin();
+         iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
@@ -132,19 +134,19 @@ namespace gum {
       T_DATA n_v=1+ ( *iter )->get( particle() );
       ( *iter )->set( particle(),n_v );
 
-      if ( n_v == ( T_DATA ) 1 ) sum_entropy += 100;
+      if( n_v == ( T_DATA ) 1 ) sum_entropy += 100;
       else sum_entropy += n_v * log( n_v / ( n_v - 1 ) );
     }
 
-    return sum_entropy / nbr + __sampling_nbr.size() *log(( double ) nbr / nb );
+    return sum_entropy / nbr + __sampling_nbr.size() *log( ( double ) nbr / nb );
   }
 
   /** same as __updateStats_with_err but with no entropy computation */
   template <typename T_DATA> INLINE
   void GibbsInference<T_DATA>::__updateStats_without_err() {
-    for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
+    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+           __sampling_nbr.begin();
+         iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
@@ -179,7 +181,7 @@ namespace gum {
   /// Returns the probability of the variable.
   template <typename T_DATA> INLINE
   void GibbsInference<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
-    if ( isInferenceRequired() ) makeInference();
+    if( isInferenceRequired() ) makeInference();
 
     marginal = * ( __sampling_nbr[id] );
 
@@ -192,7 +194,7 @@ namespace gum {
     try {
       I << v;
       I.chgVal( v, __current_sample.val( v ) );
-    } catch ( DuplicateElement e ) {
+    } catch( DuplicateElement e ) {
       // do nothing, it's OK
     }
   }
@@ -202,28 +204,30 @@ namespace gum {
   /// Returns the probability of the variables.
   template <typename T_DATA>
   void GibbsInference<T_DATA>::makeInference() {
-    if ( ! isInferenceRequired() ) return;
+    if( ! isInferenceRequired() ) return;
 
     __initStats();
     initParticle();
     initApproximationScheme();
 
     // BURN IN
-    for ( Idx i = 0;i < burnIn();i++ ) nextParticle( );
+    for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
 
     // SAMPLING
     double error = 0.0;
+
     do {
-      for ( Size i=1;i<=periodeSize()-1;i++ ) {
+      for( Size i=1; i<=periodeSize()-1; i++ ) {
         nextParticle( );
         updateApproximationScheme();
         __updateStats_without_err();
       }
+
       // last pass of the period with error
       nextParticle( );
       updateApproximationScheme();
       error=__updateStats_with_err( nbrIterations() + burnIn() );
-    } while ( testApproximationScheme( error )==APPROX_CONTINUE );
+    } while( testApproximationScheme( error )==APPROX_CONTINUE );
 
     /*if ( verbosity() ) {
       GUM_TRACE( messageApproximationScheme() );
@@ -270,4 +274,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -64,8 +64,8 @@
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <agrum/BN/algorithms/approximationSettings.h>
-#include <agrum/BN/algorithms/GibbsSettings.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/BN/algorithms/GibbsScheme.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
@@ -147,12 +147,13 @@
 
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
+%import <agrum/BN/algorithms/approximationScheme.h>
+%import <agrum/BN/algorithms/GibbsScheme.h>
 %include <agrum/BN/inference/GibbsInference.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
 %include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-%include <agrum/BN/algorithms/approximationSettings.h>
-%include <agrum/BN/algorithms/GibbsSettings.h>
+
 %include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
@@ -226,6 +227,11 @@
     }
 }
 
+%extend gum::GibbsInference {
+  using gum::ApproximationScheme::setVerbosity;
+  using gum::ApproximationScheme::setEpsilon;
+  using gum::ApproximationScheme::setMinEpsilonRate;
+}
 
 /* TEMPLATES INSTANTIATIONS */
 

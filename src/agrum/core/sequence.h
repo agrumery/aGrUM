@@ -167,7 +167,7 @@ namespace gum {
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
       // ============================================================================
-      const KEY& operator[]( const Idx i ) const ;
+      const KEY& operator[]( Idx i ) const ;
 
       // ============================================================================
       /// returns true if the content of k equals that of *this
@@ -245,7 +245,7 @@ namespace gum {
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
       // ============================================================================
-      const KEY& atPos( const Idx i ) const ;
+      const KEY& atPos( Idx i ) const ;
 
       // ============================================================================
       /// returns the position of the object passed in argument (if it exists)
@@ -734,7 +734,7 @@ namespace gum {
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
       // ============================================================================
-      KEY* const operator[]( const Idx i ) const ;
+      KEY* const operator[]( Idx i ) const ;
 
       // ============================================================================
       /// returns true if the content of k equals that of *this
@@ -812,7 +812,7 @@ namespace gum {
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
       // ============================================================================
-      KEY* const atPos( const Idx i ) const ;
+      KEY* const atPos( Idx i ) const ;
 
       // ============================================================================
       /// returns the position of the object passed in argument (if it exists)
