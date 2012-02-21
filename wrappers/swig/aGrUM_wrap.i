@@ -227,6 +227,11 @@
     }
 }
 
+%extend gum::GibbsInference {
+  using gum::ApproximationScheme::setVerbosity;
+  using gum::ApproximationScheme::setEpsilon;
+  using gum::ApproximationScheme::setMinEpsilonRate;
+}
 
 /* TEMPLATES INSTANTIATIONS */
 

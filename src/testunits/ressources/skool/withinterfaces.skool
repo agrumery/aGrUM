@@ -6,134 +6,134 @@
 ///   
 /// ****************************************************************************
 
-type type_2 0, 1;
+type Boolean 0, 1;
 
-interface iface_3 {
-  type_2 elt_2;
-  type_2 elt_5;
-  type_2 elt_3;
-  type_2 elt_4;
-  type_2 elt_6;
+interface pluggable {
+  Boolean usb;
+  Boolean peritel;
+  Boolean edf;
+  Boolean dvi;
+  Boolean jack;
 }
 
-class class_4 implements iface_3 {
-  type_2 elt_2 {
+class home implements pluggable {
+  Boolean usb {
   [0.244165, 0.755835]
   };
-  type_2 elt_5 {
+  Boolean peritel {
   [0.888805, 0.111195]
   };
-  type_2 elt_3 dependson elt_5 , elt_2 {
+  Boolean edf dependson peritel , usb {
   [0.591679, 0.408321, 0.23475, 0.76525, 0.969958, 0.0300416, 0.848251, 0.15175]
   };
-  type_2 elt_4 dependson elt_5 {
+  Boolean dvi dependson peritel {
   [0.528631, 0.471369, 0.533654, 0.466347]
   };
-  type_2 elt_6 dependson elt_4 {
+  Boolean jack dependson dvi {
   [0.900376, 0.0996237, 0.495246, 0.504754]
   };
 }
 
-class class_6 implements iface_3 {
-  iface_3 elt_8;
-  iface_3 elt_9;
-  type_2 elt_2 dependson elt_9.elt_4 {
+class hotel implements pluggable {
+  pluggable appart1;
+  pluggable appart2;
+  Boolean usb dependson appart2.dvi {
   [0.0566187, 0.943381, 0.488784, 0.511216]
   };
-  type_2 elt_5 dependson elt_2 {
+  Boolean peritel dependson usb {
   [0.234203, 0.765797, 0.313962, 0.686038]
   };
-  type_2 elt_3 {
+  Boolean edf {
   [0.106495, 0.893505]
   };
-  type_2 elt_4 dependson elt_3 {
+  Boolean dvi dependson edf {
   [0.23952, 0.76048, 0.410351, 0.589649]
   };
-  type_2 elt_6 dependson elt_8.elt_3 , elt_4 {
+  Boolean jack dependson appart1.edf , dvi {
   [0.289734, 0.710266, 0.113859, 0.886141, 0.590291, 0.409709, 0.382089, 0.617911]
   };
 }
 
-class class_8 implements iface_3 {
-  iface_3 elt_13;
-  iface_3 elt_14;
-  iface_3 elt_15;
-  type_2 elt_2 {
+class lotissement implements pluggable {
+  pluggable edificeA;
+  pluggable edificeB;
+  pluggable edificeC;
+  Boolean usb {
   [0.749698, 0.250302]
   };
-  type_2 elt_5 dependson elt_14.elt_3 , elt_2 {
+  Boolean peritel dependson edificeB.edf , usb {
   [0.624487, 0.375513, 0.233974, 0.766026, 0.535769, 0.464231, 0.438874, 0.561126]
   };
-  type_2 elt_3 dependson elt_13.elt_6 , elt_5 {
+  Boolean edf dependson edificeA.jack , peritel {
   [0.403858, 0.596142, 0.192219, 0.80778, 0.426315, 0.573686, 0.374915, 0.625085]
   };
-  type_2 elt_4 dependson elt_3 {
+  Boolean dvi dependson edf {
   [0.227839, 0.772161, 0.173567, 0.826433]
   };
-  type_2 elt_6 dependson elt_3 {
+  Boolean jack dependson edf {
   [0.92924, 0.0707603, 0.466433, 0.533567]
   };
 }
 
-class class_5 implements iface_3implements iface_3 {
-  iface_3 elt_7;
-  type_2 elt_2 dependson elt_7.elt_6 {
+class chalet implements pluggable {
+  pluggable studio;
+  Boolean usb dependson studio.jack {
   [0.56989, 0.43011, 0.238747, 0.761253]
   };
-  type_2 elt_5 dependson elt_2 {
+  Boolean peritel dependson usb {
   [0.583148, 0.416852, 0.660229, 0.339771]
   };
-  type_2 elt_3 dependson elt_2 {
+  Boolean edf dependson usb {
   [0.199645, 0.800355, 0.506616, 0.493384]
   };
-  type_2 elt_4 dependson elt_3 {
+  Boolean dvi dependson edf {
   [0.890838, 0.109162, 0.186238, 0.813762]
   };
-  type_2 elt_6 dependson elt_3 {
+  Boolean jack dependson edf {
   [0.520688, 0.479312, 0.041495, 0.958505]
   };
 }
 
-class class_7 implements iface_3{
-  iface_3 elt_11;
-  iface_3 elt_12;
-  iface_3 elt_10;
-  type_2 elt_2 {
+class immeuble implements pluggable{
+  pluggable etage1;
+  pluggable etage2;
+  pluggable etage3;
+  Boolean usb {
   [0.992516, 0.00748434]
   };
-  type_2 elt_5 dependson elt_2 , elt_12.elt_3 {
+  Boolean peritel dependson usb , etage2.edf {
   [0.369667, 0.630333, 0.479248, 0.520752, 0.563406, 0.436594, 0.257013, 0.742987]
   };
-  type_2 elt_3 {
+  Boolean edf {
   [0.902451, 0.0975487]
   };
-  type_2 elt_4 dependson elt_3 {
+  Boolean dvi dependson edf {
   [0.359514, 0.640486, 0.381514, 0.618486]
   };
-  type_2 elt_6 dependson elt_4 , elt_10.elt_6 , elt_5 {
+  Boolean jack dependson dvi , etage3.jack , peritel {
   [0.199623, 0.800377, 0.00752759, 0.992472, 0.64199, 0.35801, 0.805303, 0.194697, 0.413659, 0.586341, 0.657999, 0.342001, 0.436304, 0.563696, 0.623923, 0.376077]
   };
 }
 
-system sys_9 implements iface_3{
-  class_5 inst_5;
-  class_8 inst_10;
-  class_4 inst_3;
-  class_5 inst_8;
-  class_5 inst_11;
-  class_6 inst_6;
-  class_4 inst_9;
-  class_4 inst_2;
-  class_4 inst_4;
-  class_5 inst_7;
-  inst_5.elt_7 = inst_4;
-  inst_10.elt_13 = inst_8;
-  inst_10.elt_14 = inst_3;
-  inst_10.elt_15 = inst_9;
-  inst_8.elt_7 = inst_7;
-  inst_11.elt_7 = inst_10;
-  inst_6.elt_8 = inst_2;
-  inst_6.elt_9 = inst_5;
-  inst_7.elt_7 = inst_4;
+system sys_9 {
+  chalet chalet1;
+  lotissement lesCamelias;
+  home sweetHome;
+  chalet chalet2;
+  chalet chalet3;
+  hotel ibis;
+  home chezLesDupont;
+  home chezLesYang;
+  home chezLesSchmidt;
+  chalet chezJohnny;
+  chalet1.studio = chezLesSchmidt;
+  lesCamelias.edificeA = chalet2;
+  lesCamelias.edificeB = sweetHome;
+  lesCamelias.edificeC = chezLesDupont;
+  chalet2.studio = chezJohnny;
+  chalet3.studio = lesCamelias;
+  ibis.appart1 = chezLesYang;
+  ibis.appart2 = chalet1;
+  chezJohnny.studio = chezLesSchmidt;
 }
 
