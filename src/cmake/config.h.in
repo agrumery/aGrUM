@@ -41,7 +41,11 @@
 
 #cmakedefine GUM_TRACE_ON
 
-#cmakedefine GUM_LONG_DOUBLE_SAME_SIZE
+#cmakedefine GUM_CHAR_SIZE   @GUM_CHAR_SIZE@
+#cmakedefine GUM_INT_SIZE    @GUM_INT_SIZE@
+#cmakedefine GUM_LONG_SIZE   @GUM_LONG_SIZE@
+#cmakedefine GUM_FLOAT_SIZE  @GUM_FLOAT_SIZE@
+#cmakedefine GUM_DOUBLE_SIZE @GUM_DOUBLE_SIZE@
 
 #ifdef __GNUC__
 #define GUM_DEPRECATED(func) func __attribute__ ((deprecated))

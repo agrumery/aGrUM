@@ -259,7 +259,7 @@ INLINE SetInst& SetInst::addVals( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+    if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
         GUM_ERROR( OutOfBounds, "" );
     __chgVals( varPos, newVal | __vals[varPos] );
     return *this;
@@ -272,7 +272,7 @@ INLINE SetInst& SetInst::addVals( const DiscreteVariable* v,
         // value is possible.
         Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
@@ -294,7 +294,7 @@ INLINE SetInst& SetInst::addVals( const DiscreteVariable& v,
         // value is possible.
         Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
@@ -367,7 +367,7 @@ INLINE SetInst& SetInst::remVals( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+    if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
         GUM_ERROR( OutOfBounds, "" );
     __chgVals( varPos, ~newVal & __vals[varPos] );
     return *this;
@@ -380,7 +380,7 @@ INLINE SetInst& SetInst::remVals( const DiscreteVariable* v,
         // value is possible.
         Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
@@ -402,7 +402,7 @@ INLINE SetInst& SetInst::remVals( const DiscreteVariable& v,
         // value is possible.
         Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
@@ -432,7 +432,7 @@ INLINE SetInst& SetInst::interVals( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
         GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+    if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
         GUM_ERROR( OutOfBounds, "" );
     __chgVals( varPos, newVal & __vals[varPos] );
     return *this;
@@ -445,7 +445,7 @@ INLINE SetInst& SetInst::interVals( const DiscreteVariable* v,
         // value is possible.
         Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
@@ -467,7 +467,7 @@ INLINE SetInst& SetInst::interVals( const DiscreteVariable& v,
         // value is possible.
         Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-        if ( newVal >= (1 <<__vars[varPos]->domainSize()) )
+        if ( newVal >= (1UL <<__vars[varPos]->domainSize()) )
 
             GUM_ERROR( OutOfBounds, "" );
 
