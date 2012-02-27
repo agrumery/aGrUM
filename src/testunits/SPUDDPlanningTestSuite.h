@@ -36,65 +36,46 @@
 #include <agrum/FMDP/planning/SPUDDPlanning.h>
 // =====================================================================
 
-namespace gum {
-
-  namespace tests {
+namespace gum_tests {
 
     class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
       
       private :
         std::string file;
         
-        void run( const std::string showSaveFile, Idx mode ){
+        void run( const std::string showSaveFile, gum::Idx mode ){
 
           std::cout << std::endl;
           gum::FactoredMarkovDecisionProcess<double> fmdp;
           gum::MultiDimDecisionDiagramFactory<double> ddf;
-          SPUDDPlanning<double> inf( &fmdp );
+          gum::SPUDDPlanning<double> inf( &fmdp );
           
           gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
           reader.trace( false );
           TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed( ) );
           
-              std::string dotfile = GET_PATH_STR ( ../../../res/test.dot );
-              std::ofstream output ( dotfile.c_str(), std::ios::out );
-
-              if ( ! output.good() )
-                  GUM_ERROR ( IOError, "Stream states flags are not all unset." );
-
-              output << std::endl;
-              
-              output << fmdp.show();
-
-              output.flush();
-
-              output.close();
-
-              if ( output.fail() )
-                  GUM_ERROR ( IOError, "Writting in the ostream failed." );
-          
-//           MultiDimDecisionDiagramBase<double>* res = NULL;
+          gum::MultiDimDecisionDiagramBase<double>* res = NULL;
 //           TS_GUM_ASSERT_THROWS_NOTHING( res = inf.makePlanningAlgoEvaluation( showSaveFile, mode ) );
-//           TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning(  ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning(  ) );
 
 //           for( int imode = 1; imode < 5; imode++ ){
 //               for( int j = 0; j < 5; j++ ){
 //                   //******************************************************************************************************************************************
 //                   gum::FactoredMarkovDecisionProcess<double> fmdpPrime;
 //                   gum::MultiDimDecisionDiagramFactory<double> ddfPrime;
-//                   SPUDDPlanning<double> infPrime( &fmdpPrime );
+//                   gum::SPUDDPlanning<double> infPrime( &fmdpPrime );
 // 
 //                   gum::FMDPDatReader<double> readerPrime( &fmdpPrime, file, &ddfPrime );
 //                   readerPrime.trace( false );
 //                   TS_GUM_ASSERT_THROWS_NOTHING( readerPrime.proceed( ) );
 //                       
-//                   MultiDimDecisionDiagramBase<double>* resPrime = NULL;
+//                   gum::MultiDimDecisionDiagramBase<double>* resPrime = NULL;
 //                   TS_GUM_ASSERT_THROWS_NOTHING( resPrime = infPrime.makePlanningAlgoEvaluation( showSaveFile, imode ) );
 //         //           TS_GUM_ASSERT_THROWS_NOTHING( infPrime.makePlanning(  ) );     
 //                   
-//                   Bijection< const DiscreteVariable*, const DiscreteVariable* > reassignement;
-//                   for( SequenceIterator< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
-//                       for( SequenceIterator< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
+//                   gum::Bijection< const DiscreteVariable*, const DiscreteVariable* > reassignement;
+//                   for( gum::SequenceIterator< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
+//                       for( gum::SequenceIterator< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
 //                             if( **varIter == **varPrimeIter ){
 //                                 reassignement.insert( *varPrimeIter, *varIter );
 //                                 break;
@@ -102,12 +83,12 @@ namespace gum {
 //                       }
 //                   }
 // 
-//                   MultiDimDecisionDiagramBase<double>* comparableResPrime = reinterpret_cast<MultiDimDecisionDiagramBase<double>*>( resPrime->newFactory() );
+//                   gum::MultiDimDecisionDiagramBase<double>* comparableResPrime = reinterpret_cast<gum::MultiDimDecisionDiagramBase<double>*>( resPrime->newFactory() );
 //                   comparableResPrime->copyAndReassign( resPrime, reassignement );
 //                   
-//                   MultiDimDecisionDiagramBase<double>* comparisonPrime = subtract2MultiDimDecisionDiagrams( res,  comparableResPrime );
+//                   gum::MultiDimDecisionDiagramBase<double>* comparisonPrime = gum::subtract2MultiDimDecisionDiagrams( res,  comparableResPrime );
 //                     double gapPrime = 0;
-//                     for( BijectionIterator< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
+//                     for( gum::BijectionIterator< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
 //                         if( gapPrime < fabs( valIter.second() ) )
 //                             gapPrime = fabs( valIter.second() );
 //                   std::cout << " ------------------------------- Resultat : " << gapPrime  << std::endl ;
@@ -118,7 +99,7 @@ namespace gum {
 //               }
 //           }
           
-//           delete res;
+          delete res;
         }
         
       public:
@@ -201,6 +182,5 @@ namespace gum {
 
     };
   }
-}
 // kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
 

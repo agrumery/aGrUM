@@ -114,7 +114,6 @@ namespace gum {
 
             this->_defaultArcMap.insert ( *iter, zeroId );
           }
-	ret->setVarUsedModalitiesMap( this->_varUsedModalitiesMap );
 
         }
       }
@@ -136,6 +135,7 @@ namespace gum {
 
     ret->setVariableMap ( this->_varMap );
     ret->setVar2NodeMap ( this->_var2NodeIdMap );
+    ret->setVarUsedModalitiesMap( this->_varUsedModalitiesMap );
 
     ret->setValueMap ( newValueMap );
     ret->setDiagramArcs ( this->_arcMap, this->_defaultArcMap );
