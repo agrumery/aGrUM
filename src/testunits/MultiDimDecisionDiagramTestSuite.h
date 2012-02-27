@@ -234,6 +234,13 @@ namespace gum_tests {
         // Test de retrait d'un arc après encore un fois (en théorie il n'y a plus d'arc entre ces deux noeuds)
         TS_ASSERT_THROWS ( factory->eraseArc ( idList[8], idList[18] ), gum::InvalidArc );
 
+          // Test de retrait d'un arc avec valeur spécifiée
+          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseSpecificArc( idList[8], idList[18], 4 ) );
+//           factory->showProperties();
+          
+          // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
+          TS_GUM_ASSERT_THROWS_NOTHING( factory->eraseArc( idList[8], idList[18] ) );
+	  
         // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et donc n'existe pas
         TS_ASSERT_THROWS ( factory->eraseArc ( idList[8], idList[1] ), gum::InvalidArc );
 
