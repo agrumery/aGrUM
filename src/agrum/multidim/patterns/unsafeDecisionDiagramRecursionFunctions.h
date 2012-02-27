@@ -78,7 +78,7 @@
 
 	    // =========================================================================================================
 	    // Then we search in second diagram for possible preneeded variable
-	    retrogradeVarTable = new HashTable< NodeId, Set< const DiscreteVariable* >* >();
+	    retrogradeVarTable = new HashTable< NodeId, Set< const DiscreteVariable* >* >(t2->realSize(), true, false);
 	    t2->findRetrogradeVariables( &( factory->variablesSequence() ), retrogradeVarTable );
 	
 	    for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->begin(); retroVarIter != retrogradeVarTable->end(); ++retroVarIter )
@@ -89,7 +89,7 @@
 
 	    // =========================================================================================================
 	    // And we finally instantiates the other data structures
-	    explorationTable = new HashTable< std::vector<Idx>, NodeId >();
+	    explorationTable = new HashTable< std::vector<Idx>, NodeId >(t1->realSize()*t2->realSize(), true, false);
 	}
 
 	~OperatorData(){

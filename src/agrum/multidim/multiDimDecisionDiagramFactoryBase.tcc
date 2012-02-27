@@ -45,10 +45,10 @@ namespace gum {
     template< typename T_DATA >
     MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() :
     _model( 500, true, 1500, true ),
-    _varMap( 500 ),
+    _varMap( 500, true, false ),
     _valueMap( 125 ),
-    _arcMap( 500 ),
-    _defaultArcMap( 500 )
+    _arcMap( 500, true, false ),
+    _defaultArcMap( 500, true, false )
     {
       
 	GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactoryBase ) ;
