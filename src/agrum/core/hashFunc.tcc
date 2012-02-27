@@ -252,8 +252,8 @@ namespace gum {
   template <typename Key1, typename Key2> INLINE Size
   HashFuncSmallCastKeyPair<Key1,Key2>::operator()
     ( const std::pair<Key1,Key2>& key ) const  {
-    const Key1* key1 = &( key.first );
-    const Key2* key2 = &( key.second );
+    const Key1* const key1 = &( key.first );
+    const Key2* const key2 = &( key.second );
     return ((( *(( unsigned long* ) key1 ) & _small_key_mask1 ) *
              GUM_HASHTABLE_INT_GOLD +
              ( *(( unsigned long* ) key2 ) & _small_key_mask2 ) *
@@ -285,8 +285,10 @@ namespace gum {
   template <typename Key1, typename Key2> INLINE Size
   HashFuncMediumCastKeyPair<Key1,Key2>::operator()
     ( const std::pair<Key1,Key2>& key ) const  {
-    return (( *(( unsigned long* )( &( key.first ) ) ) * GUM_HASHTABLE_INT_GOLD +
-              *(( unsigned long* )( &( key.second ) ) ) * GUM_HASHTABLE_INT_PI )
+    const Key1* const key1 = &( key.first );
+    const Key2* const key2 = &( key.second );
+    return (( *(( unsigned long* )( key1 ) ) * GUM_HASHTABLE_INT_GOLD +
+              *(( unsigned long* )( key2 ) ) * GUM_HASHTABLE_INT_PI )
             >> _right_shift );
   }
 
