@@ -36,70 +36,171 @@
 #include <agrum/FMDP/planning/SPUDDPlanning.h>
 // =====================================================================
 
-namespace gum_tests {
+namespace gum {
 
-  class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
+  namespace tests {
 
-    private :
-      std::string file;
+    class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
+      
+      private :
+        std::string file;
+        
+        void run( const std::string showSaveFile, Idx mode ){
 
-      void run( const std::string showSaveFile ) {
+          std::cout << std::endl;
+          gum::FactoredMarkovDecisionProcess<double> fmdp;
+          gum::MultiDimDecisionDiagramFactory<double> ddf;
+          SPUDDPlanning<double> inf( &fmdp );
+          
+          gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
+          reader.trace( false );
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed( ) );
+          
+              std::string dotfile = GET_PATH_STR ( ../../../res/test.dot );
+              std::ofstream output ( dotfile.c_str(), std::ios::out );
 
-        gum::FactoredMarkovDecisionProcess<double> fmdp;
-        gum::MultiDimDecisionDiagramFactory<double> ddf;
-        // gum::MultiDimDecisionDiagramFactory<double,LinearApproximationPolicy> ddf;
-        // ddf.setEpsilon( 0.0001 );
-        // ddf.setLowLimit( -10 );
-        // ddf.setHighLimit( 10 );
-        gum::SPUDDPlanning<double> inf( &fmdp, showSaveFile );
+              if ( ! output.good() )
+                  GUM_ERROR ( IOError, "Stream states flags are not all unset." );
 
-        gum::FMDPDatReader<double> reader( &fmdp, file, &ddf );
+              output << std::endl;
+              
+              output << fmdp.show();
 
-        reader.trace( false );
+              output.flush();
 
-        TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
+              output.close();
 
+              if ( output.fail() )
+                  GUM_ERROR ( IOError, "Writting in the ostream failed." );
+          
+//           MultiDimDecisionDiagramBase<double>* res = NULL;
+//           TS_GUM_ASSERT_THROWS_NOTHING( res = inf.makePlanningAlgoEvaluation( showSaveFile, mode ) );
+//           TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning(  ) );
 
-
-//           ofstream fichier(showSaveFile.c_str(), std::ios::out | std::ios::app);  //déclaration du flux et ouverture du fichier
-//
-//           if(!fichier)  // si l'ouverture a réussi
-//           {
-//               std::cerr << "Erreur à l'ouverture !" << std::endl;
-//               return;
+//           for( int imode = 1; imode < 5; imode++ ){
+//               for( int j = 0; j < 5; j++ ){
+//                   //******************************************************************************************************************************************
+//                   gum::FactoredMarkovDecisionProcess<double> fmdpPrime;
+//                   gum::MultiDimDecisionDiagramFactory<double> ddfPrime;
+//                   SPUDDPlanning<double> infPrime( &fmdpPrime );
+// 
+//                   gum::FMDPDatReader<double> readerPrime( &fmdpPrime, file, &ddfPrime );
+//                   readerPrime.trace( false );
+//                   TS_GUM_ASSERT_THROWS_NOTHING( readerPrime.proceed( ) );
+//                       
+//                   MultiDimDecisionDiagramBase<double>* resPrime = NULL;
+//                   TS_GUM_ASSERT_THROWS_NOTHING( resPrime = infPrime.makePlanningAlgoEvaluation( showSaveFile, imode ) );
+//         //           TS_GUM_ASSERT_THROWS_NOTHING( infPrime.makePlanning(  ) );     
+//                   
+//                   Bijection< const DiscreteVariable*, const DiscreteVariable* > reassignement;
+//                   for( SequenceIterator< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
+//                       for( SequenceIterator< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
+//                             if( **varIter == **varPrimeIter ){
+//                                 reassignement.insert( *varPrimeIter, *varIter );
+//                                 break;
+//                             }
+//                       }
+//                   }
+// 
+//                   MultiDimDecisionDiagramBase<double>* comparableResPrime = reinterpret_cast<MultiDimDecisionDiagramBase<double>*>( resPrime->newFactory() );
+//                   comparableResPrime->copyAndReassign( resPrime, reassignement );
+//                   
+//                   MultiDimDecisionDiagramBase<double>* comparisonPrime = subtract2MultiDimDecisionDiagrams( res,  comparableResPrime );
+//                     double gapPrime = 0;
+//                     for( BijectionIterator< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
+//                         if( gapPrime < fabs( valIter.second() ) )
+//                             gapPrime = fabs( valIter.second() );
+//                   std::cout << " ------------------------------- Resultat : " << gapPrime  << std::endl ;
+//                   delete comparisonPrime;
+//                   delete comparableResPrime;
+//                   delete resPrime;
+//                   //*********************************************************************************************************************************************
+//               }
 //           }
-//           fichier << fmdp.show();
-//           fichier.close();
+          
+//           delete res;
+        }
+        
+      public:
+        
+        void test_Coffee() {
+          file = GET_PATH_STR( FMDP/coffee/coffee.dat );
+          run("Coffee",1);
+        }
+        
+        void est_FactoryS() {
+          file = GET_PATH_STR( FMDP/factory/tiny-factory.dat );
+          run("TinyFactory", 1);
+        }
+        
+        
+        
+        void est_FactoryDirect() {
+          file = GET_PATH_STR( FMDP/factory/factory.dat );
+          run("Factory.Direct", 1);
+        }
+        
+        void est_FactoryIndirect() {
+          file = GET_PATH_STR( FMDP/factory/factory.dat );
+          run("Factory.Indirect", 2);
+        }
+        
+        void est_FactoryNb() {
+          file = GET_PATH_STR( FMDP/factory/factory.dat );
+          run("Factory.Nb", 3);
+        }
+        
+        void est_FactoryTaille() {
+          file = GET_PATH_STR( FMDP/factory/factory.dat );
+          run("Factory.Taille", 4);
+        }
+        
+        
+        
+        void est_Factory0Direct() {
+          file = GET_PATH_STR( FMDP/factory/factory0.dat );
+          run("Factory0.Direct", 1);
+        }
+        
+        void est_Factory0Indirect() {
+          file = GET_PATH_STR( FMDP/factory/factory0.dat );
+          run("Factory0.Indirect", 2);
+        }
+        
+        void est_Factory0Nb() {
+          file = GET_PATH_STR( FMDP/factory/factory0.dat );
+          run("Factory0.Nb", 3);
+        }
+        
+        void est_Factory0Taille() {
+          file = GET_PATH_STR( FMDP/factory/factory0.dat );
+          run("Factory0.Taille", 4);
+        }
+        
+        
+        
+        void est_Factory1Direct() {
+          file = GET_PATH_STR( FMDP/factory/factory1.dat );
+          run("Factory1.Direct", 1);
+        }
+        
+        void est_Factory1Indirect() {
+          file = GET_PATH_STR( FMDP/factory/factory1.dat );
+          run("Factory1.Indirect", 2);
+        }
+        
+        void est_Factory1Nb() {
+          file = GET_PATH_STR( FMDP/factory/factory1.dat );
+          run("Factory1.Nb", 3);
+        }
+        
+        void est_Factory1Taille() {
+          file = GET_PATH_STR( FMDP/factory/factory1.dat );
+          run("Factory1.Taille", 4);
+        }
 
-        TS_GUM_ASSERT_THROWS_NOTHING( inf.makePlanning() );
-      }
-
-    public:
-
-      void test_Coffee() {
-        file = GET_PATH_STR( FMDP/coffee/coffee.dat );
-        run( "Coffee" );
-      }
-
-      void est_FactoryS() {
-        file = GET_PATH_STR( FMDP/factory/tiny-factory.dat );
-        run( "TinyFactory" );
-      }
-
-      void est_Factory() {
-        file = GET_PATH_STR( FMDP/factory/factory.dat );
-        run( "Factory" );
-      }
-
-      void est_Factory0() {
-        file = GET_PATH_STR( FMDP/factory/factory0.dat );
-        run( "Factory0" );
-      }
-
-      void est_Factory1() {
-        file = GET_PATH_STR( FMDP/factory/factory1.dat );
-        run( "Factory1" );
-      }
-
-  };
+    };
+  }
 }
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+
