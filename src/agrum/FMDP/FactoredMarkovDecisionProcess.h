@@ -207,9 +207,9 @@ namespace gum {
        const Set< const DiscreteVariable* >& primedVariables() const;
        
        /**
-        * Returns an altered version of given diagram where all variables are primed
+        * Returns the map on main variable and their primed version
         */
-       MultiDimDecisionDiagramBase<T_DATA>* primeCopy( MultiDimDecisionDiagramBase<T_DATA>* source );
+       const Bijection< const DiscreteVariable*, const DiscreteVariable*>& main2prime() const;
 
       /// @}
       std::string show() const;
@@ -220,6 +220,10 @@ namespace gum {
       * Returns action id
       */
       const Idx& __actionId( const std::string& ) const;
+      
+      /// Sequence de variables and its iterator
+      Sequence< const DiscreteVariable* > __varSeq;
+      SequenceIterator< const DiscreteVariable* > __varIter;
 
       /// Variable default transition cpt table
       HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
@@ -251,8 +255,8 @@ namespace gum {
       /// Iterator on actions
       HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
 
-      /// Iterator on variable
-      HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
+//       /// Iterator on variable
+//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
   };
 } /* namespace gum */
 

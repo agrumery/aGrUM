@@ -39,11 +39,26 @@ namespace gum {
   /*                                                                                                                                            */
   /* **********************************************************************************************/
 
-// =============================================================================
-// Default constructor.
-// =============================================================================
-  template< typename T_DATA >
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() {
+    // =============================================================================
+    // Default constructor.
+    // =============================================================================
+    template< typename T_DATA >
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() :
+    _model( 500, true, 1500, true ),
+    _varMap( 500 ),
+    _valueMap( 125 ),
+    _arcMap( 500 ),
+    _defaultArcMap( 500 )
+    {
+      
+	GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactoryBase ) ;
+	
+	putOffNoVariableCheckMode();
+	
+	_model.insertNode();
+    
+	_rootId = 0;
+    }
 
     GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactoryBase ) ;
 
@@ -72,6 +87,35 @@ namespace gum {
   /*                        Graph Manipulation methods                                                                       */
   /*                                                                                                                                            */
   /* **********************************************************************************************/
+    
+    // =============================================================================
+    // Returns the sequence of variables on which is based the diagram construction
+    // =============================================================================
+    template< typename T_DATA > INLINE
+    const Sequence< const DiscreteVariable* >&
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::variablesSequence(  ){
+      
+	return _varsSeq;
+      
+    }
+    
+    // =============================================================================
+    // Specifies the order between variable in the diagram
+    // To be done before any insertion of node linked to variable if not in
+    // NoVariableCheckMode.
+    // @param a sequence containing the variable (wich will be the referent )
+    // =============================================================================
+    template< typename T_DATA >
+    void
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::setVariablesSequence( Sequence< const DiscreteVariable* > s ){
+      
+	_varsSeq = s;
+	_var2NodeIdMap.resize( s.size() );
+	_varUsedModalitiesMap.resize( s.size() );
+// 	for( SequenceIterator< const DiscreteVariable* > siter = s.begin(); siter != s.end(); ++siter )
+// 	  _var2NodeIdMap.insert( *siter, new List<NodeId>() );
+      
+    }
 
 // =============================================================================
 // Returns the sequence of variables on which is based the diagram construction
@@ -249,12 +293,26 @@ namespace gum {
     NodeId nody = 0;
     std::vector< NodeId >::const_iterator arcIter = nodeArcMap.begin();
 
-    if ( defaultArcTo != 0 )
-      nody = defaultArcTo;
-    else if ( arcIter != nodeArcMap.end() ) {
-      nody = *arcIter;
-      ++arcIter;
-    }
+	  if( _valueMap.existsFirst( n ) )
+	      _valueMap.eraseFirst( n );
+	  else {
+	      _var2NodeIdMap[_varMap[n]]->eraseByVal(n);	      
+	      
+	      const DiscreteVariable* var = _varMap[n];
+	      for( std::vector<NodeId>::iterator sonsIter = _arcMap[n]->begin(); sonsIter != _arcMap[n]->end(); ++sonsIter ){
+		  if( *sonsIter != 0 ){
+		      Idx modality = std::distance(_arcMap[n]->begin(), sonsIter );
+		      bool usedModality = false;
+		      for( ListIterator<NodeId> iter = _var2NodeIdMap[var]->begin(); iter != _var2NodeIdMap[var]->end(); ++iter )
+			  if( (*_arcMap[*iter])[modality] != 0 ){
+			      usedModality = true;
+			      break;
+			  }
+		      (*_varUsedModalitiesMap[var])[modality] = usedModality;
+		  }
+	      }
+	      
+	      _varMap.erase( n );
 
     for ( ; arcIter != nodeArcMap.end(); ++arcIter )
       if ( *arcIter != 0 && *arcIter != nody ) {
@@ -375,18 +433,32 @@ namespace gum {
     unsafeInsertArc ( from, to, value );
   }
 
-// =============================================================================
-// Adds a default arc in the DD
-// @param from and
-// @param to as NodeId
-// @throw NotFound If from and/or tail are not in the DD.
-// @throw InvalidNode if head is a terminal node
-// @throw OperationNotAllowed arc doesn't respect variable order property
-// @throw DuplicateElement if another arc linking those nodes already exists
-// =============================================================================
-  template< typename T_DATA >
-  void
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::insertDefaultArc ( NodeId from, NodeId to ) {
+      // =============================================================================
+      // Erases an arc in the DD
+      // @param from and
+      // @param to as NodeId
+      // @throw InvalidArc If arc does not exist
+      // =============================================================================
+      template< typename T_DATA >
+      void
+      MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
+        
+	  if( !_model.existsArc( Arc(from, to) ) ){
+	      GUM_ERROR( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
+	  }
+	  
+	  if( (*_arcMap[from])[modality] == to ){
+	      (*_arcMap[from])[modality] = 0;
+	  }
+	  
+	  bool usedModality = false;
+	  const DiscreteVariable* var = _varMap[from];
+	  for( ListIterator<NodeId> iter = _var2NodeIdMap[var]->begin(); iter != _var2NodeIdMap[var]->end(); ++iter )
+	      if( (*_arcMap[*iter])[modality] != 0 ){
+		  usedModality = true;
+		  break;
+	      }
+	  (*_varUsedModalitiesMap[var])[modality] = usedModality;
 
     if ( !_model.exists ( from ) ) {
       GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." );
@@ -746,8 +818,16 @@ namespace gum {
       _defaultArcMap.erase ( *nodeIter );
       _varMap.erase ( *nodeIter );
 
-      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).begin(); parentIter !=_model.parents ( *nodeIter ).end(); ++parentIter ) {
-        _model.insertArc ( *parentIter, replacingNode );
+	for( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.begin(); iter != _var2NodeIdMap.end(); ++iter )
+	    delete *iter;
+	_var2NodeIdMap.clear();
+	
+	
+
+	for( HashTableIterator< const DiscreteVariable*, std::vector<bool>* > iter = _varUsedModalitiesMap.begin(); iter != _varUsedModalitiesMap.end(); ++iter )
+	    delete *iter;
+	_varUsedModalitiesMap.clear();
+    }
 
         std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
 
@@ -865,9 +945,9 @@ namespace gum {
     while ( modified ) {
       modified = false;
 
-      // ***************************************************************
-      // Pour chaque variable
-      for ( Sequence< const DiscreteVariable* >::iterator varIter = _varsSeq.begin(); varIter != _varsSeq.end(); ++varIter ) {
+    template< typename T_DATA > INLINE
+    void
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeInsertArc( NodeId from, NodeId to, Idx modality ){
 
         // ***************************************************************
         // Si elle est déjà dans la liste, on passe
@@ -879,32 +959,12 @@ namespace gum {
         // Sinon on cherche les noeuds ratachés à cette variable
         bool addVar = true;
 
-        for ( ListIterator<NodeId> nodeIter = _var2NodeIdMap[*varIter]->begin(); nodeIter != _var2NodeIdMap[*varIter]->end() ; ++nodeIter ) {
-
-          const NodeSet& parents = _model.parents ( *nodeIter );
-
-          // ***************************************************************
-          // Pour chaque noeud lié à cette variable, on voit si la variable
-          // associée au noeuds parents est déjà dans la liste
-          for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
-
-            // **********************************************************************
-            // Si ce n'est pas le cas, cette variable ci ne sera pas ajoutée
-            if ( !varTopo.exists ( _varMap[ *parentIter ] ) ) {
-              addVar = false;
-              break;
-            }
-          }
-
-          if ( !addVar )
-            break;
-        }
-
-        if ( addVar ) {
-          varTopo.insert ( *varIter );
-          modified = true;
-        }
-      }
+	(*_arcMap[from])[modality] =  to;
+	
+	const DiscreteVariable* var = _varMap[from];
+	if( !_varUsedModalitiesMap.exists(var) )
+	    _varUsedModalitiesMap.insert( var, new std::vector<bool>( var->domainSize(), false ) );
+	(*_varUsedModalitiesMap[var])[modality] = true;
     }
 
     return varTopo;

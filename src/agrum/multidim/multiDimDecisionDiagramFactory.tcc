@@ -114,6 +114,7 @@ namespace gum {
 
             this->_defaultArcMap.insert ( *iter, zeroId );
           }
+	ret->setVarUsedModalitiesMap( this->_varUsedModalitiesMap );
 
         }
       }

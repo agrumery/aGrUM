@@ -165,14 +165,14 @@ namespace gum {
          *
          * @param from and
          * @param to as NodeId
-         * @param value the value of the arc
+         * @param modality the modality on which arc is bind
          * @throw NotFound If from and/or tail are not in the DD.
          * @throw InvalidNode if head is a terminal node
          * @throw OperationNotAllowed if arc doesn't respect variable order property
          * @throw DuplicateElement if another arc linking those nodes already exists
          */
-        void insertArc( NodeId from, NodeId to, Idx value );
-        void unsafeInsertArc( NodeId from, NodeId to, Idx value );
+        void insertArc( NodeId from, NodeId to, Idx modality );
+        void unsafeInsertArc( NodeId from, NodeId to, Idx modality );
 
 
         /**
@@ -197,7 +197,7 @@ namespace gum {
          * @throw InvalidArc If arc does not exist
          * @warning due to the possibility that several arc with different value have the same from and to,
          * if several arcs have different value but same parent and child, this method will erase all of them .
-         * If you want to erase a specific one, use eraseArcWithValue
+         * If you want to erase a specific one, use eraseSpecificArc
          */
         void eraseArc( NodeId from, NodeId to );
 
@@ -207,9 +207,10 @@ namespace gum {
          *
          * @param from and
          * @param to as NodeId
+         * @param modality the modality corresponding to the to delete arc
          * @throw InvalidArc If arc does not exist
          */
-        void eraseArcWithValue( NodeId from, NodeId to, Idx value );
+        void eraseSpecificArc( NodeId from, NodeId to, Idx modality );
 
     /// @}
 
@@ -293,6 +294,9 @@ namespace gum {
 
       /// Mapping between variable and nodes tied to this var
       HashTable< const DiscreteVariable*, List<NodeId>* > _var2NodeIdMap;
+
+      /// Mapping between variable and nodes tied to this var
+      HashTable< const DiscreteVariable*, std::vector<bool>* > _varUsedModalitiesMap;
       
       /// NodeId of decision diagram root node
       NodeId _rootId;

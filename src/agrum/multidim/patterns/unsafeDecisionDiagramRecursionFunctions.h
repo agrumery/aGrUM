@@ -17,9 +17,6 @@
 	/// And the global retorgrade var set
 	Sequence< const DiscreteVariable* > retroVarSet;
 
-	/// Table giving instantiate variables and their modality
-	HashTable< NodeId, List<Idx>* >* remainingModalitiesTable;
-
 	/// Table to remind us wich part of both diagram have already been explored, and the resulting node
 	HashTable< std::vector<Idx>, NodeId >* explorationTable;
 
@@ -91,26 +88,6 @@
 			    retroVarSet.insert( *iter );
 
 	    // =========================================================================================================
-	    // Then we get for each node of first diagramm that have a default node the remaining modalities 
-	    // Those remaining modalities are the ones that a node in the second diagram associated to the same var 
-	    // as our current node in diagram one takes when our node is on default.
-	    remainingModalitiesTable = new HashTable< NodeId, List<Idx>* >();
-	    for( NodeGraphPartIterator nodeIter = t1->nodesMap().beginNodes(); nodeIter != t1->nodesMap().endNodes(); ++nodeIter ){
-		if( *nodeIter == 0 || t1->isTerminalNode( *nodeIter ) )
-		    continue;
-		remainingModalitiesTable->insert( *nodeIter, new List<Idx>() );
-		const List<NodeId>* varNodes = t2->variableNodes( t1->unsafeNodeVariable( *nodeIter ) );
-		if( varNodes != NULL ){
-		    // Then, we get remaining uninvestigated value for that variable
-		    for(  ListConstIterator<NodeId> nodesIter = varNodes->begin(); nodesIter != varNodes->end(); ++nodesIter )
-			for( std::vector< NodeId >::const_iterator arcIter = t2->unsafeNodeSons(*nodesIter)->begin(); arcIter != t2->unsafeNodeSons(*nodesIter)->end(); ++arcIter )
-			    if( *arcIter != 0 && (*(t1->unsafeNodeSons(*nodeIter)))[ std::distance( t2->unsafeNodeSons(*nodesIter)->begin(), arcIter) ] == 0 
-					  && !(*remainingModalitiesTable)[*nodeIter]->exists( std::distance( t2->unsafeNodeSons(*nodesIter)->begin(), arcIter) ) )
-				(*remainingModalitiesTable)[*nodeIter]->insert( std::distance( t2->unsafeNodeSons(*nodesIter)->begin(), arcIter) );
-		}
-	    }
-
-	    // =========================================================================================================
 	    // And we finally instantiates the other data structures
 	    explorationTable = new HashTable< std::vector<Idx>, NodeId >();
 	}
@@ -120,10 +97,6 @@
 	    for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->begin(); iterH != retrogradeVarTable->end(); ++iterH )
 		delete *iterH;
 	    delete retrogradeVarTable;
-
-	    for( HashTableIterator< NodeId, List<Idx>* > iterH = remainingModalitiesTable->begin(); iterH != remainingModalitiesTable->end(); ++iterH )
-		delete *iterH;
-	    delete remainingModalitiesTable;
 
 	    delete factory;
 
@@ -392,80 +365,67 @@
 
 	NodeId newNode = 0;
 
-	const std::vector< NodeId >* sonsMap = leader->unsafeNodeSons(key[0]);
 
-	std::vector< NodeId > sonsIds( sonsMap->size(), 0);
-	Idx nbExploredModalities = 0;
-	NodeId leaderCurrentNode = key[0];
-	Idx varVectorPos = 0;
-	if( opData.retroVarSet.exists( leader->unsafeNodeVariable( leaderCurrentNode ) ) )
-	    varVectorPos = opData.retroVarSet.pos( leader->unsafeNodeVariable( leaderCurrentNode ) ) + 2;
 
-	// ********************************************************************************************************
-	// For each value the current var take on this node, we have to do our computation
-	for( std::vector< NodeId>::const_iterator iter = sonsMap->begin(); iter != sonsMap->end(); ++iter)
-	    if( *iter != 0 ){
-		Idx sonKey = std::distance( sonsMap->begin(), iter );
-
-		// But we have to indicates to possible node on follower diagram, the current value of the var
-		if( varVectorPos != 0 )
-		    key[varVectorPos] = sonKey + 1;
+    Idx nbExploredModalities = 0;
+    NodeId leaderCurrentNode = key[0];
+    Idx varVectorPos = 0;
+    const DiscreteVariable* leaderCurrentVar = leader->unsafeNodeVariable( leaderCurrentNode );
+    const std::vector< NodeId >* sonsMap = leader->unsafeNodeSons( leaderCurrentNode );
+    std::vector< NodeId > sonsIds( sonsMap->size(), 0);
+    const std::vector< bool >* usedModalities = follower->variableUsedModalities( leaderCurrentVar );
+    if( opData.retroVarSet.exists( leaderCurrentVar ) )
+	varVectorPos = opData.retroVarSet.pos( leaderCurrentVar ) + 2;
+    
+    // ********************************************************************************************************
+    // For each value the current var take on this node, we have to do our computation
+    for( std::vector< NodeId>::const_iterator iter = sonsMap->begin(); iter != sonsMap->end(); ++iter){
+	Idx sonKey = std::distance( sonsMap->begin(), iter );
+	if( *iter != 0 || ( usedModalities != NULL && (*usedModalities)[ sonKey ] ) ){
+	    
+	    // But we have to indicates to possible node on follower diagram, the current value of the var
+	    if( varVectorPos != 0 )
+		key[varVectorPos] = sonKey + 1;
+	    if( *iter != 0 )
 		key[0] = *iter;
-		sonsIds[ sonKey ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), 
-			  key, tabu );
-
-		// And do some cleaning after the call of course
-		++nbExploredModalities;
-	    }
-	//*********************************************************************************************************
-
-	// ********************************************************************************************************
-	// Then, if not all possible value of that node have been investigate (meaning we have a default arc)
-	// we have to look on second diagram every value that can still take this var (meaning value not taken 
-	// on this leader node and the defautl one )
-	NodeId defaultSon = 0;
-
-	if( leader->unsafeHasNodeDefaultSon( leaderCurrentNode ) ) {
-	    key[0] =  leader->unsafeNodeDefaultSon( leaderCurrentNode );
-
-	    // Then, for each of those remaining value, we go down
-	    for( ListConstIterator<Idx> modalitiesIter = (*(opData.remainingModalitiesTable))[ leaderCurrentNode ]->begin(); 
-			modalitiesIter != (*(opData.remainingModalitiesTable))[ leaderCurrentNode ]->end(); ++modalitiesIter ){
-
-		// with usual indicators
-		if( varVectorPos != 0 )
-		    key[varVectorPos] = *modalitiesIter + 1;
-		sonsIds[ *modalitiesIter ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ), key, tabu );
-
-		++nbExploredModalities;
-	    }
-
-	    // Next, we go down on default variable, just in case
-	    if(nbExploredModalities != leader->unsafeNodeVariable( leaderCurrentNode )->domainSize() ){
-
-		if( varVectorPos != 0 )
-		    key[varVectorPos] = leader->unsafeNodeVariable( leaderCurrentNode )->domainSize() + 2;
-
-		defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->unsafeNodeVariable( leaderCurrentNode ),
-			key, tabu );
-	    }
-
+	    else
+		key[0] = leader->unsafeNodeDefaultSon( leaderCurrentNode );
+	    sonsIds[ sonKey ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderCurrentVar, 
+					key, tabu );
+	    
+	    ++nbExploredModalities;
 	}
-
-	//*********************************************************************************************************
-
-	// ********************************************************************************************************
-	// And we finally add this node to our resulting graph
-
-	newNode = insertNonTerminalNode( opData, leader->unsafeNodeVariable(leaderCurrentNode), sonsIds, defaultSon );
-
-	key[0] = leaderCurrentNode;
-	if( varVectorPos != 0 )
-	    key[varVectorPos] = 0;
-	opData.explorationTable->insert( key, newNode );
-
-	return newNode;
     }
+    //*********************************************************************************************************
+    
+    // ********************************************************************************************************
+    // Then, if not all possible value of that node have been investigate (meaning we have a default arc)
+    // we have to look on second diagram every value that can still take this var (meaning value not taken 
+    // on this leader node and the defautl one )
+    NodeId defaultSon = 0;
+    
+    if( leader->unsafeHasNodeDefaultSon( leaderCurrentNode )  && nbExploredModalities != leaderCurrentVar->domainSize() ) {
+	key[0] =  leader->unsafeNodeDefaultSon( leaderCurrentNode );
+	if( varVectorPos != 0 )
+	    key[varVectorPos] = leaderCurrentVar->domainSize() + 2;
+	
+	defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderCurrentVar, key, tabu );
+
+    }
+
+    //*********************************************************************************************************
+    
+    // ********************************************************************************************************
+    // And we finally add this node to our resulting graph
+    newNode = insertNonTerminalNode( opData, leaderCurrentVar, sonsIds, defaultSon );
+
+    key[0] = leaderCurrentNode;
+    if( varVectorPos != 0 )
+	key[varVectorPos] = 0;
+    opData.explorationTable->insert( key, newNode );
+
+    return newNode;
+}
 
 
 

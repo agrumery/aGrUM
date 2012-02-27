@@ -16,9 +16,6 @@ struct OperatorData {
     /// And the global retorgrade var set
     Sequence< const DiscreteVariable* > retroVarSet;
     
-    /// Table giving instantiate variables and their modality
-    HashTable< NodeId, List<Idx>* >* remainingModalitiesTable;
-    
     /// Table to remind us wich part of both diagram have already been explored, and the resulting node
     HashTable< std::vector<Idx>, NodeId >* explorationTable;
   
@@ -102,25 +99,6 @@ struct OperatorData {
 // 	GUM_TRACE( "RETRO VAR Sequence : " );
 // 	for( SequenceIterator< const DiscreteVariable* > seqIter = retroVarSet.begin(); seqIter != retroVarSet.end(); ++seqIter )
 // 	    GUM_TRACE( "\t\tVariable : " << (*seqIter)->name() );
-	// =========================================================================================================
-	// Then we get for each node of first diagramm that have a default node the remaining modalities 
-	// Those remaining modalities are the ones that a node in the second diagram associated to the same var 
-	// as our current node in diagram one takes when our node is on default.
-	remainingModalitiesTable = new HashTable< NodeId, List<Idx>* >();
-	for( NodeGraphPartIterator nodeIter = t1->nodesMap().beginNodes(); nodeIter != t1->nodesMap().endNodes(); ++nodeIter ){
-	    if( *nodeIter == 0 || t1->isTerminalNode( *nodeIter ) )
-		continue;
-	    remainingModalitiesTable->insert( *nodeIter, new List<Idx>() );
-	    const List<NodeId>* varNodes = t2->variableNodes( t1->nodeVariable( *nodeIter ) );
-	    if( varNodes != NULL ){
-		// Then, we get remaining uninvestigated value for that variable
-		for(  ListConstIterator<NodeId> nodesIter = varNodes->begin(); nodesIter != varNodes->end(); ++nodesIter )
-		    for( std::vector< NodeId >::const_iterator arcIter = t2->nodeSons(*nodesIter)->begin(); arcIter != t2->nodeSons(*nodesIter)->end(); ++arcIter )
-			if( *arcIter != 0 && (*(t1->nodeSons(*nodeIter)))[ std::distance( t2->nodeSons(*nodesIter)->begin(), arcIter) ] == 0 
-				  && !(*remainingModalitiesTable)[*nodeIter]->exists( std::distance( t2->nodeSons(*nodesIter)->begin(), arcIter) ) )
-			    (*remainingModalitiesTable)[*nodeIter]->insert( std::distance( t2->nodeSons(*nodesIter)->begin(), arcIter) );
-	    }
-	}
 	
 	// =========================================================================================================
 	// And we finally instantiates the other data structures
@@ -132,10 +110,6 @@ struct OperatorData {
 	for( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->begin(); iterH != retrogradeVarTable->end(); ++iterH )
 	    delete *iterH;
 	delete retrogradeVarTable;
-	
-	for( HashTableIterator< NodeId, List<Idx>* > iterH = remainingModalitiesTable->begin(); iterH != remainingModalitiesTable->end(); ++iterH )
-	    delete *iterH;
-	delete remainingModalitiesTable;
 	
 	delete factory;
 	
@@ -463,31 +437,37 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
     NodeId newNode = 0;
 //     GUM_TRACE( tabu << "GoDownLeader  - Noeud Leader : " << key[0] << " - Noeud Follower : " << key[1] << " - Instantiated Variable : " << leader->nodeVariable( key[0] )->toString() );
 
-    const std::vector< NodeId >* sonsMap = leader->nodeSons(key[0]);
 
-    std::vector< NodeId > sonsIds( sonsMap->size(), 0);
     Idx nbExploredModalities = 0;
     NodeId leaderCurrentNode = key[0];
     Idx varVectorPos = 0;
-    if( opData.retroVarSet.exists( leader->nodeVariable( leaderCurrentNode ) ) )
-	varVectorPos = opData.retroVarSet.pos( leader->nodeVariable( leaderCurrentNode ) ) + 2;
+    const DiscreteVariable* leaderCurrentVar = leader->nodeVariable( leaderCurrentNode );
+    const std::vector< NodeId >* sonsMap = leader->nodeSons( leaderCurrentNode );
+    std::vector< NodeId > sonsIds( sonsMap->size(), 0);
+    const std::vector< bool >* usedModalities = follower->variableUsedModalities( leaderCurrentVar );
+    if( opData.retroVarSet.exists( leaderCurrentVar ) )
+	varVectorPos = opData.retroVarSet.pos( leaderCurrentVar ) + 2;
     
     // ********************************************************************************************************
     // For each value the current var take on this node, we have to do our computation
-    for( std::vector< NodeId>::const_iterator iter = sonsMap->begin(); iter != sonsMap->end(); ++iter)
-	if( *iter != 0 ){
-	    Idx sonKey = std::distance( sonsMap->begin(), iter );
+    for( std::vector< NodeId>::const_iterator iter = sonsMap->begin(); iter != sonsMap->end(); ++iter){
+	Idx sonKey = std::distance( sonsMap->begin(), iter );
+	if( *iter != 0 || ( usedModalities != NULL && (*usedModalities)[ sonKey ] ) ){
 // 	    GUM_TRACE( tabu << "GoDownLeader  - Descente sur fils numéro : " << sonKey );
 	    
 	    // But we have to indicates to possible node on follower diagram, the current value of the var
 	    if( varVectorPos != 0 )
 		key[varVectorPos] = sonKey + 1;
-	    key[0] = *iter;
-	    sonsIds[ sonKey ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), 
+	    if( *iter != 0 )
+		key[0] = *iter;
+	    else
+		key[0] = leader->nodeDefaultSon( leaderCurrentNode );
+	    sonsIds[ sonKey ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderCurrentVar, 
 					key, tabu );
 	    
 	    ++nbExploredModalities;
 	}
+    }
     //*********************************************************************************************************
     
     // ********************************************************************************************************
@@ -496,34 +476,12 @@ GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION( const MultiDimDecisio
     // on this leader node and the defautl one )
     NodeId defaultSon = 0;
     
-    if( leader->hasNodeDefaultSon( leaderCurrentNode ) ) {
+    if( leader->hasNodeDefaultSon( leaderCurrentNode )  && nbExploredModalities != leaderCurrentVar->domainSize() ) {
 	key[0] =  leader->nodeDefaultSon( leaderCurrentNode );
-
-	// Then, for each of those remaining value, we go down
-	for( ListConstIterator<Idx> modalitiesIter = (*(opData.remainingModalitiesTable))[leaderCurrentNode]->begin(); 
-		    modalitiesIter != (*(opData.remainingModalitiesTable))[leaderCurrentNode]->end(); ++modalitiesIter){
-
-// 	    GUM_TRACE( tabu << "GoDownLeader  - Descente sur fils numéro : " << *modalitiesIter );
-
-	    // with usual indicators
-	    if( varVectorPos != 0 )
-		key[varVectorPos] = *modalitiesIter + 1;
-	    sonsIds[ *modalitiesIter ] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), 
-							key, tabu );
-
-	    ++nbExploredModalities;
-	}
-
-	// Next, we go down on default variable, just in case
-	if(nbExploredModalities != leader->nodeVariable( leaderCurrentNode )->domainSize() ){
-// 	    GUM_TRACE( tabu << "GoDownLeader  - Descente sur fils par défaut" );
-
-	    if( varVectorPos != 0 )
-		key[varVectorPos] = leader->nodeVariable( leaderCurrentNode )->domainSize() + 2;
-	    
-	    defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leader->nodeVariable( leaderCurrentNode ), key, tabu );
-
-	}
+	if( varVectorPos != 0 )
+	    key[varVectorPos] = leaderCurrentVar->domainSize() + 2;
+	
+	defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( leader, follower, opData, leaderCurrentVar, key, tabu );
 
     }
 

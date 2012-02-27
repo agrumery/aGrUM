@@ -60,15 +60,15 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-      /**
-       * Default constructor
-       */
-      SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, const std::string saveFilesName = "", T_DATA epsilon = 0.001 );
+          /**
+          * Default constructor
+          */
+          SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.001 );
 
-      /**
-       * Default destructor
-       */
-      ~SPUDDPlanning();
+          /**
+          * Default destructor
+          */
+          ~SPUDDPlanning();
 
       /// @}
       // ==========================================================================
@@ -76,14 +76,20 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-      /**
-       * Makes a spudd planning on FMDP
-       */
-      void makePlanning ();
-
+          /**
+          * Makes a spudd planning on FMDP
+          */
+          void makePlanning ();
+          
+          MultiDimDecisionDiagramBase< T_DATA >* makePlanningAlgoEvaluation( const std::string saveFilesName, Idx mode = 1 );
       /// @}
       
     private:
+      
+      /**
+       * Evals the policy corresponding to the given value function
+       */      
+       std::pair< MultiDimDecisionDiagramBase< T_DATA >*, HashTable< NodeId, List<Idx>* >* > __evalPolicy( const MultiDimDecisionDiagramBase< T_DATA >* V );
 
       /**
        * Evals value function for a given action
@@ -93,26 +99,27 @@ namespace gum {
       /**
        * Evals final value function by multiplying by discount reward and adding reward
        */
-        MultiDimDecisionDiagramBase< T_DATA >* __evalValueFunction( const MultiDimDecisionDiagramBase< T_DATA >* Vold );
+        MultiDimDecisionDiagramBase< T_DATA >* __addReward( const MultiDimDecisionDiagramBase< T_DATA >* Vold );
+        
+        
+        
+        MultiDimDecisionDiagramBase< T_DATA >* __evalActionValueAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
+        MultiDimDecisionDiagramBase< T_DATA >* __addRewardAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
+        std::pair<Idx,Idx> __evalNbRetrograde( const MultiDimDecisionDiagramBase<T_DATA>* t1, const MultiDimDecisionDiagramBase<T_DATA>* t2 );
+        
+        
     
-        /// The Factored Markov Decision Process on which we do our planning (NB : this one must have decision diagram as transitions and reward functions )
-        FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
-        
-        /// List of action indexes which corresponds to best action for a given terminal node in value function diagram
-        HashTable< NodeId, List<Idx>* > __bestPolicy; 
-        
-        /// The hyperparameter determining when we do stop value iteration.
-        T_DATA __epsilon;
+      /// The Factored Markov Decision Process on which we do our planning (NB : this one must have decision diagram as transitions and reward functions )
+      FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
       
-#ifdef TRACE_ALGO
-      /**
-       * Evals the number of retrograde variables that an operation will generate if we compute those two diagrams in that order
-       */
-      Idx __evalNbRetrograde( const MultiDimDecisionDiagramBase<T_DATA>* t1, const MultiDimDecisionDiagramBase<T_DATA>* t2 );
+      /// List of action indexes which corresponds to best action for a given terminal node in value function diagram
+      HashTable< NodeId, List<Idx>* > __bestPolicy; 
+      
+      /// The hyperparameter determining when we do stop value iteration.
+      T_DATA __epsilon;
       
       /// RetroVar number save file
       std::ofstream __traceAlgoSaveFile;
-#endif
 
   };
 } /* namespace gum */

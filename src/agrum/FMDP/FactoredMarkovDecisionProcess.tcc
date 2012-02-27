@@ -42,7 +42,7 @@ namespace gum {
     // Default constructor.
     // ===========================================================================
     template<typename T_DATA> INLINE
-    FactoredMarkovDecisionProcess<T_DATA>::FactoredMarkovDecisionProcess() {
+    FactoredMarkovDecisionProcess<T_DATA>::FactoredMarkovDecisionProcess() : __varIter( __varSeq ) {
       GUM_CONSTRUCTOR ( FactoredMarkovDecisionProcess );
       __defaultCostTable = NULL;
       __defaultRewardTable = NULL;
@@ -111,6 +111,9 @@ namespace gum {
 	GUM_ERROR( DuplicateElement, " Variable " << var->name() << " has already been inserted in FMDP." );
 	      
       __defaultTransitionTable.insert( var, NULL );
+      
+      
+      __varSeq.insert( var );
 	    
     }
 
@@ -330,7 +333,8 @@ namespace gum {
     template<typename T_DATA> INLINE
     void
     FactoredMarkovDecisionProcess<T_DATA>::resetVariablesIterator(){
-      __varIter = __defaultTransitionTable.begin();
+//       __varIter = __defaultTransitionTable.begin();
+	__varIter = __varSeq.begin();
     }
 
     // ===========================================================================
@@ -339,7 +343,8 @@ namespace gum {
     template<typename T_DATA> INLINE
     bool
     FactoredMarkovDecisionProcess<T_DATA>::hasVariable() const{
-      return __varIter != __defaultTransitionTable.end();
+//       return __varIter != __defaultTransitionTable.end();
+      return __varIter != __varSeq.end();
     }
 
     // ===========================================================================
@@ -348,7 +353,8 @@ namespace gum {
     template<typename T_DATA> INLINE
     const DiscreteVariable*
     FactoredMarkovDecisionProcess<T_DATA>::variable() const {
-      return __main2primed.second( __varIter.key() );
+//       return __main2primed.second( __varIter.key() );
+      return __main2primed.second( *__varIter );
     }
 
     // ===========================================================================
@@ -370,10 +376,13 @@ namespace gum {
     const MultiDimImplementation< T_DATA >*
     FactoredMarkovDecisionProcess<T_DATA>::transition() const{
 
-      if( (*__actionIter)->exists( __varIter.key() ) )
-	return (*(*__actionIter))[ __varIter.key() ];
+//       if( (*__actionIter)->exists( __varIter.key() ) )
+      if( (*__actionIter)->exists( *__varIter ) )
+// 	return (*(*__actionIter))[ __varIter.key() ];
+	  return (*(*__actionIter))[ *__varIter ];
       else
-	return *__varIter;
+// 	return *__varIter;
+	  return __defaultTransitionTable[ *__varIter ];
     }
 
     // ===========================================================================
@@ -386,59 +395,12 @@ namespace gum {
     }
 
     // ===========================================================================
-    // Returns an altered version of given diagram where all variables are primed
+    // Returns the map on main variable and their primed version
     // ===========================================================================
     template<typename T_DATA> INLINE
-    MultiDimDecisionDiagramBase<T_DATA>*
-    FactoredMarkovDecisionProcess<T_DATA>::primeCopy( MultiDimDecisionDiagramBase<T_DATA>* source ){
-    
-      MultiDimDecisionDiagramBase< T_DATA >* dest = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( source->newFactory() );
-
-      dest->beginInstantiation();
-      
-      Sequence<const DiscreteVariable*> primeVarSeq;
-      for( SequenceIterator<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
-	primeVarSeq.insert( __main2primed.second( *seqIter ) );	
-      dest->setVariableSequence( primeVarSeq );
-      //~ dest->setVariableSequence( source->variablesSequence() );
-      
-      dest->setDiagramNodes( source->nodesMap() );	
-      
-      typename Property< const DiscreteVariable* >::onNodes variableMap;
-      HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeIdMap;
-      typename Property< std::vector< NodeId >* >::onNodes arcMap;
-      typename Property< NodeId >::onNodes defaultArcMap;
-      
-      for( NodeGraphPartIterator nodeIter = source->nodesMap().beginNodes(); nodeIter != source->nodesMap().endNodes(); ++nodeIter ){
-
-	if( *nodeIter != 0 && !source->isTerminalNode( *nodeIter ) ){
-
-	  variableMap.insert( *nodeIter, __main2primed.second( source->nodeVariable( *nodeIter ) ) );
-
-	  if( !var2NodeIdMap.exists( __main2primed.second( source->nodeVariable( *nodeIter ) ) ) )
-	    var2NodeIdMap.insert( __main2primed.second( source->nodeVariable( *nodeIter ) ), new List< NodeId >( *( source->variableNodes( source->nodeVariable( *nodeIter ) ) ) ) );
-
-	  arcMap.insert( *nodeIter, new std::vector< NodeId >( *(source->nodeSons( *nodeIter ) ) ) );
-
-	  if( source->hasNodeDefaultSon( *nodeIter ) )
-	    defaultArcMap.insert( *nodeIter, source->nodeDefaultSon( *nodeIter ) );
-
-	}
-      }
-
-      dest->setVariableMap( variableMap );
-      dest->setVar2NodeMap( var2NodeIdMap );
-      for( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = var2NodeIdMap.begin(); iter != var2NodeIdMap.end(); ++iter)
-	delete *iter;
-
-      dest->setValueMap( source->valuesMap( ) );
-      dest->setDiagramArcs( arcMap, defaultArcMap );
-
-      dest->setRoot( source->root() );
-
-      dest->endInstantiation();
-      
-      return dest;
+    const Bijection< const DiscreteVariable*, const DiscreteVariable*>&
+    FactoredMarkovDecisionProcess<T_DATA>::main2prime() const{
+      return __main2primed;
     }
 
 
