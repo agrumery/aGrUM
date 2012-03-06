@@ -24,37 +24,41 @@
 
 
 // check if we allowed these patterns to be used
-#ifndef GUM_PROJECTION_PATTERN_ALLOWED
+#ifndef GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
-#warning To use projectionPattern4MultiDimImplementation.h, you must define GUM_PROJECTION_PATTERN_ALLOWED
+#warning To use completeProjectionPattern4MultiDimImplementation.h, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
-
 namespace gum{
 
-#ifdef GUM_MULTI_DIM_PROJECTION_NAME
+
+#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
   template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
-  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimImplementation<T_DATA>& ttable,
-                                  const Set<const DiscreteVariable *>& del_vars ) {
+  T_DATA
+  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
+  ( const MultiDimImplementation<T_DATA>& ttable,
+    Instantiation* instantiation = 0 ) {
 #endif
     
-    typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr func;
+    typename CompleteProjectionRegister4MultiDim<T_DATA>::CompleteProjectionPtr
+      func;
   
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,del_vars) in the register
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
-        ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.name() );
+      func = CompleteProjectionRegister4MultiDim<T_DATA>::Register().get
+        ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name() );
     }
     catch ( NotFound& ) {
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
-        ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.basename() );
+      func = CompleteProjectionRegister4MultiDim<T_DATA>::Register().get
+        ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename() );
     }
 
     // perform the projection
-    return func ( &ttable, del_vars );
+    return func ( &ttable, instantiation );
   }
-} /* end of namespace GUM */
-#endif /* GUM_PROJECTION_PATTERN_ALLOWED */
+
+
+} /* End of namespace gum */
+#endif /* GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED */
 

@@ -30,7 +30,7 @@
 
 #else
 
-
+namespace gum{
 // ================================================================================
 /// a specialized function for combining two multiDimArrays
 // ================================================================================
@@ -344,6 +344,6 @@
 
 
 #undef GUM_MULTI_DIM_OPERATOR_TYPE
+  }
 
-  
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

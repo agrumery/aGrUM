@@ -30,7 +30,7 @@
 #warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
 
 #else
-
+namespace gum{
 // ================================================================================
 /// a specialized function for projecting a multiDimDecisionDiagram over a subset of its vars
 // ================================================================================
@@ -100,6 +100,5 @@
 
 
 #undef GUM_MULTI_DIM_PROJECTION_TYPE  
-
-
+	}  /* end of namespace GUM */
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

@@ -31,16 +31,17 @@
 #include <agrum/multidim/operatorRegister4MultiDim.h>
 
 #define GUM_MULTI_DIM_DECORATOR_OP(NAME,OP)       \
+  namespace gum{  \
   template<typename T> \
   MultiDimImplementation<T>* \
   NAME ( const MultiDimDecorator<T>& t1, const MultiDimDecorator<T>& t2) { \
     const MultiDimImplementation<T>* impl1 = t1.content (); \
     const MultiDimImplementation<T>* impl2 = t2.content (); \
     return ( *impl1 OP *impl2 ); \
+  } \
   }
  
 
-namespace gum {
 
   /* ******************************************************************************************* */
   /*                                                                                             */
@@ -169,6 +170,9 @@ namespace gum {
   /*                                                                                             */
   /* ******************************************************************************************* */
   
+// Use only for debug on recursion functions
+// #define O4DDDEBUG
+
   // ==============================================================================
   /// a specialized function for summing two multiDimDecisionDiagram
   // ==============================================================================
@@ -180,7 +184,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Addition
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Addition
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -207,7 +215,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Subtraction
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Subtraction
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -234,7 +246,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Multiplication
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Multiplication
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -260,7 +276,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Division
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Division
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -286,7 +306,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Maximization
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Maximization
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -312,7 +336,11 @@ namespace gum {
   #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION DecisionDiagramGoDownOnLeader4Minimization
   #define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionDiagramGoDownOnFollower4Minimization
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef O4DDDEBUG
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/o4DDWithoutOrderRecursionFunctions.h>
+#endif
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION
   #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
@@ -328,7 +356,8 @@ namespace gum {
   #undef GUM_MULTI_DIM_OPERATOR
   #undef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION
 
-  
+#undef O4DDDEBUG
+
   // ==============================================================================
   /// a specialized function for functionally combining two multiDimArrays
   // ==============================================================================
@@ -429,6 +458,8 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
+namespace gum {
+  
   /// the function used to register all the above functions
   template<typename T_DATA>
   void operators4MultiDimInit () {

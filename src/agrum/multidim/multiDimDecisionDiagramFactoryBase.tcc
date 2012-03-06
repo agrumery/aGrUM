@@ -39,20 +39,26 @@ namespace gum {
   /*                                                                                                                                            */
   /* **********************************************************************************************/
 
-// =============================================================================
-// Default constructor.
-// =============================================================================
-  template< typename T_DATA >
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() {
-
-    GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactoryBase ) ;
-
-    putOffNoVariableCheckMode();
-
-    _model.insertNode();
-
-    _rootId = 0;
-  }
+    // =============================================================================
+    // Default constructor.
+    // =============================================================================
+    template< typename T_DATA >
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() :
+    _model( 500, true, 1500, true ),
+    _varMap( 500, true, false ),
+    _valueMap( 125 ),
+    _arcMap( 500, true, false ),
+    _defaultArcMap( 500, true, false )
+    {
+      
+	GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactoryBase ) ;
+	
+	putOffNoVariableCheckMode();
+	
+	_model.insertNode();
+    
+	_rootId = 0;
+    }
 
 // =============================================================================
 // Destructor.
@@ -72,31 +78,35 @@ namespace gum {
   /*                        Graph Manipulation methods                                                                       */
   /*                                                                                                                                            */
   /* **********************************************************************************************/
-
-// =============================================================================
-// Returns the sequence of variables on which is based the diagram construction
-// =============================================================================
-  template< typename T_DATA > INLINE
-  const Sequence< const DiscreteVariable* >&
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::variablesSequence( ) {
-
-    return _varsSeq;
-
-  }
-
-// =============================================================================
-// Specifies the order between variable in the diagram
-// To be done before any insertion of node linked to variable if not in
-// NoVariableCheckMode.
-// @param a sequence containing the variable (wich will be the referent )
-// =============================================================================
-  template< typename T_DATA >
-  void
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::setVariablesSequence ( Sequence< const DiscreteVariable* > s ) {
-
-    _varsSeq = s;
-
-  }
+    
+    // =============================================================================
+    // Returns the sequence of variables on which is based the diagram construction
+    // =============================================================================
+    template< typename T_DATA > INLINE
+    const Sequence< const DiscreteVariable* >&
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::variablesSequence(  ){
+      
+	return _varsSeq;
+      
+    }
+    
+    // =============================================================================
+    // Specifies the order between variable in the diagram
+    // To be done before any insertion of node linked to variable if not in
+    // NoVariableCheckMode.
+    // @param a sequence containing the variable (wich will be the referent )
+    // =============================================================================
+    template< typename T_DATA >
+    void
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::setVariablesSequence( Sequence< const DiscreteVariable* > s ){
+      
+	_varsSeq = s;
+	_var2NodeIdMap.resize( s.size() );
+	_varUsedModalitiesMap.resize( s.size() );
+// 	for( SequenceIterator< const DiscreteVariable* > siter = s.begin(); siter != s.end(); ++siter )
+// 	  _var2NodeIdMap.insert( *siter, new List<NodeId>() );
+      
+    }
 
   /* **********************************************************************************************/
   /*                                                                                                                                            */
@@ -248,26 +258,26 @@ namespace gum {
     bool sameArc = true;
     NodeId nody = 0;
     std::vector< NodeId >::const_iterator arcIter = nodeArcMap.begin();
-
-    if ( defaultArcTo != 0 )
-      nody = defaultArcTo;
-    else if ( arcIter != nodeArcMap.end() ) {
-      nody = *arcIter;
-      ++arcIter;
+	  
+    if( defaultArcTo != 0 )
+	nody = defaultArcTo;
+    else
+	if( arcIter != nodeArcMap.end() ){
+	    nody = *arcIter;
+	    ++arcIter;
+	}
+    
+    for(; arcIter != nodeArcMap.end(); ++arcIter )
+	if( *arcIter != 0 && *arcIter != nody ){
+	    sameArc = false;
+	    break;
+	}
+    
+    if( sameArc ){    
+	// GUM_TRACE( std::endl << std::endl << "Gobage par arc pour Var : " << var->toString() << " - Id : " << nody << std::endl);
+	res.first = true;
+	res.second = nody;
     }
-
-    for ( ; arcIter != nodeArcMap.end(); ++arcIter )
-      if ( *arcIter != 0 && *arcIter != nody ) {
-        sameArc = false;
-        break;
-      }
-
-    if ( sameArc ) {
-      // GUM_TRACE( std::endl << std::endl << "Gobage par arc pour Var : " << var->toString() << " - Id : " << nody << std::endl);
-      res.first = true;
-      res.second = nody;
-    }
-
     return res;
 
   }
@@ -375,42 +385,71 @@ namespace gum {
     unsafeInsertArc ( from, to, value );
   }
 
-// =============================================================================
-// Adds a default arc in the DD
-// @param from and
-// @param to as NodeId
-// @throw NotFound If from and/or tail are not in the DD.
-// @throw InvalidNode if head is a terminal node
-// @throw OperationNotAllowed arc doesn't respect variable order property
-// @throw DuplicateElement if another arc linking those nodes already exists
-// =============================================================================
-  template< typename T_DATA >
-  void
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::insertDefaultArc ( NodeId from, NodeId to ) {
-
-    if ( !_model.exists ( from ) ) {
-      GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." );
-    }
-
-    if ( !_model.exists ( to ) ) {
-      GUM_ERROR ( NotFound, " Destination node " <<  to << " does not exist." );
-    }
-
-    if ( _valueMap.existsFirst ( from ) ) {
-      GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
-    } else if ( !_valueMap.existsFirst ( to ) && !_noVariableCheckMode ) {
-      // GUM_TRACE( "Par defaut - From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl );
-      if ( _varsSeq.pos ( _varMap[ from ] ) >= _varsSeq.pos ( _varMap[ to ] ) ) {
-        GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  _varMap[from]->name() << " tied to node " << from <<
-                    " is after Variable " << _varMap[to]->name() << " tied to node " << to << " in variable order." );
+      // =============================================================================
+      // Adds a default arc in the DD
+      // @param from and
+      // @param to as NodeId
+      // @throw NotFound If from and/or tail are not in the DD.
+      // @throw InvalidNode if head is a terminal node
+      // @throw OperationNotAllowed arc doesn't respect variable order property
+      // @throw DuplicateElement if another arc linking those nodes already exists
+      // =============================================================================
+      template< typename T_DATA >
+      void
+      MultiDimDecisionDiagramFactoryBase< T_DATA >::insertDefaultArc ( NodeId from, NodeId to ){
+          
+	  if( !_model.exists(from) ){
+	      GUM_ERROR( NotFound, " Origin node " <<  from << " does not exist." );
+	  }
+	    
+	  if( !_model.exists(to) ){
+	      GUM_ERROR( NotFound, " Destination node " <<  to << " does not exist." );
+	  }
+	  
+	  if( _valueMap.existsFirst( from ) ){
+	      GUM_ERROR( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
+	  } else
+	      if( !_valueMap.existsFirst( to ) && !_noVariableCheckMode ){
+		  // GUM_TRACE( "Par defaut - From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl );
+		  if( _varsSeq.pos( _varMap[ from ] ) >= _varsSeq.pos( _varMap[ to ] ) ){
+		      GUM_ERROR( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  _varMap[from]->name() << " tied to node " << from <<
+			    " is after Variable " << _varMap[to]->name() << " tied to node " << to << " in variable order." );
+		  }
+	      }
+	  
+	  
+	  if( _defaultArcMap.exists( from ) && _defaultArcMap[from] != to )
+	      GUM_ERROR(DuplicateElement, "A default arc starting from this node " <<  from << " already exist." );
+	    
+	  unsafeInsertDefaultArc( from, to );
       }
-    }
 
-
-    if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] != to )
-      GUM_ERROR ( DuplicateElement, "A default arc starting from this node " <<  from << " already exist." );
-
-    unsafeInsertDefaultArc ( from, to );
+      // =============================================================================
+      // Erases an arc in the DD
+      // @param from and
+      // @param to as NodeId
+      // @throw InvalidArc If arc does not exist
+      // =============================================================================
+      template< typename T_DATA >
+      void
+      MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
+        
+	  if( !_model.existsArc( Arc(from, to) ) ){
+	      GUM_ERROR( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
+	  }
+	  
+	  if( (*_arcMap[from])[modality] == to ){
+	      (*_arcMap[from])[modality] = 0;
+	  }
+	  
+	  bool usedModality = false;
+	  const DiscreteVariable* var = _varMap[from];
+	  for( ListIterator<NodeId> iter = _var2NodeIdMap[var]->begin(); iter != _var2NodeIdMap[var]->end(); ++iter )
+	      if( (*_arcMap[*iter])[modality] != 0 ){
+		  usedModality = true;
+		  break;
+	      }
+	  (*_varUsedModalitiesMap[var])[modality] = usedModality;
   }
 
 
@@ -429,47 +468,25 @@ namespace gum {
       GUM_ERROR ( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
     }
 
-    for ( std::vector<NodeId>::iterator iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )
-      if ( *iter == to ) {
+    for ( std::vector<NodeId>::iterator modaliter = _arcMap[from]->begin(); modaliter != _arcMap[from]->end(); ++modaliter )
+      if ( *modaliter == to ) {
         _model.eraseArc ( Arc ( from, to ) );
-        *iter = 0;
+        *modaliter = 0;
+	  
+	  bool usedModality = false;
+	  const DiscreteVariable* var = _varMap[from];
+	  for( ListIterator<NodeId> samiter = _var2NodeIdMap[var]->begin(); samiter != _var2NodeIdMap[var]->end(); ++samiter )
+	      if( (*_arcMap[*samiter])[std::distance(_arcMap[from]->begin(), modaliter)] != 0 ){
+		  usedModality = true;
+		  break;
+	      }
+	  (*_varUsedModalitiesMap[var])[std::distance(_arcMap[from]->begin(), modaliter)] = usedModality;
       }
 
     if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] == to ) {
       _model.eraseArc ( Arc ( from, to ) );
       _defaultArcMap.erase ( from );
     }
-  }
-
-
-// =============================================================================
-// Erases an arc in the DD
-// @param from and
-// @param to as NodeId
-// @throw InvalidArc If arc does not exist
-// =============================================================================
-  template< typename T_DATA >
-  void
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseArcWithValue ( NodeId from, NodeId to, Idx value ) {
-
-    if ( !_model.existsArc ( Arc ( from, to ) ) ) {
-      GUM_ERROR ( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
-    }
-
-    if ( ( *_arcMap[from] ) [value] == to ) {
-      ( *_arcMap[from] ) [value] = 0;
-    }
-
-    bool allAlone = true;
-
-    for ( std::vector<NodeId>::iterator sonIter = _arcMap[from]->begin(); sonIter != _arcMap[from]->end(); ++sonIter )
-      if ( *sonIter == to ) {
-        allAlone = false;
-        break;
-      }
-
-    if ( allAlone )
-      _model.eraseArc ( Arc ( from, to ) );
   }
 
 
@@ -555,6 +572,8 @@ namespace gum {
 
     _var2NodeIdMap.resize ( source->variablesSequence().size() );
 
+    _varUsedModalitiesMap.resize ( source->variablesSequence().size() );
+
     _arcMap.resize ( source->nodesMap().size() );
 
     _defaultArcMap.resize ( source->nodesMap().size() );
@@ -565,8 +584,10 @@ namespace gum {
 
         _varMap.insert ( *nodeIter, source->unsafeNodeVariable ( *nodeIter ) );
 
-        if ( !_var2NodeIdMap.exists ( source->unsafeNodeVariable ( *nodeIter ) ) )
+        if ( !_var2NodeIdMap.exists ( source->unsafeNodeVariable ( *nodeIter ) ) ){
           _var2NodeIdMap.insert ( source->unsafeNodeVariable ( *nodeIter ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
+          _varUsedModalitiesMap.insert ( source->unsafeNodeVariable ( *nodeIter ), new std::vector< bool > ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
+	}
 
         _arcMap.insert ( *nodeIter, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( *nodeIter ) ) ) );
 
@@ -579,220 +600,202 @@ namespace gum {
         }
       }
     }
-  }
+  }    
 
+    // =============================================================================
+    // Swaps two variables in this multidim
+    // @throw OperationNotAllowed if the variable aren't adajcent in variable order
+    // =============================================================================
+    template< typename T_DATA > INLINE
+    void
+    MultiDimDecisionDiagramFactoryBase< T_DATA >::swap( const DiscreteVariable* x, const DiscreteVariable* y ){
 
-// =============================================================================
-// Swaps two variables in this multidim
-// @throw OperationNotAllowed if the variable aren't adajcent in variable order
-// =============================================================================
-  template< typename T_DATA > INLINE
-  void
-  MultiDimDecisionDiagramFactoryBase< T_DATA >::swap ( const DiscreteVariable* x, const DiscreteVariable* y ) {
+	if( _varsSeq.pos(y) != _varsSeq.pos(x) + 1 ){
+	    GUM_ERROR( OperationNotAllowed, "Swap must be between two adjacent var. Var " << y->name() << " is at pos " << _varsSeq.pos(y) << " and var " << x->name() << " at pos " << _varsSeq.pos(x) );
+	}
 
-    if ( _varsSeq.pos ( y ) != _varsSeq.pos ( x ) + 1 ) {
-      GUM_ERROR ( OperationNotAllowed, "Swap must be between two adjacent var. Var " << y->name() << " is at pos " << _varsSeq.pos ( y ) << " and var " << x->name() << " at pos " << _varsSeq.pos ( x ) );
+	_varsSeq.swap(_varsSeq.pos(x),_varsSeq.pos(y));
+
+	if( !_var2NodeIdMap.exists(x) || !_var2NodeIdMap.exists( y ) )
+	    return;
+
+	List<NodeId> *yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
+
+	for( ListIterator< NodeId > nodeIter = _var2NodeIdMap[x]->begin(); nodeIter != _var2NodeIdMap[x]->end(); ++nodeIter ){
+
+	    std::vector<NodeId>* sonsMap = new std::vector<NodeId>( y->domainSize(), 0 );
+
+	      for( Idx i = 0; i < y->domainSize(); i++ ){
+
+		  std::vector<NodeId>* grandSonsMap = new std::vector<NodeId>( x->domainSize(), 0 );
+
+		  for( Idx j = 0; j < x->domainSize(); j++ ){
+
+		      NodeId nodeIterSonId = 0;
+		      if( (*_arcMap[*nodeIter])[j] != 0 )
+			  nodeIterSonId = (*_arcMap[*nodeIter])[j];
+		      else
+			  nodeIterSonId = _defaultArcMap[*nodeIter];
+
+		      NodeId nodeIterGrandSonId = 0;
+		      if( _valueMap.existsFirst(nodeIterSonId) || _varMap[nodeIterSonId] != y ){
+			  nodeIterGrandSonId = nodeIterSonId;
+		      }else{
+			  if( (*_arcMap[nodeIterSonId])[i] != 0 ){
+			      nodeIterGrandSonId = (*_arcMap[nodeIterSonId])[i];
+			  }else{
+			      nodeIterGrandSonId = _defaultArcMap[nodeIterSonId];
+			  }
+		      }
+
+		      (*grandSonsMap)[j] = nodeIterGrandSonId;
+		  }
+
+		  NodeId sonId = 0;
+
+		  bool redundant = true;
+		  std::vector<NodeId>::iterator grandSonsIter = grandSonsMap->begin();
+		  NodeId grandSon = *grandSonsIter;
+		  while( grandSonsIter != grandSonsMap->end() ){
+		      if( grandSon != *grandSonsIter ){
+			  redundant = false;
+			  break;
+		      }
+		      ++grandSonsIter;
+		  }
+
+		  if( redundant ){
+		      sonId = grandSon;
+		      delete grandSonsMap;
+		  }else{
+		      bool existSame = false;
+		      NodeId sameSon = 0;
+		      for( ListIterator<NodeId> sonIter = xNodes->begin(); sonIter != xNodes->end(); ++sonIter ){
+			  bool thesame = true;
+			  for( std::vector<NodeId>::iterator iterArcMap = grandSonsMap->begin(); iterArcMap != grandSonsMap->end(); ++iterArcMap )
+			      if( (*_arcMap[ *sonIter ])[ std::distance( grandSonsMap->begin(), iterArcMap )  ] != *iterArcMap ){
+				  thesame = false;
+				  break;
+			      }
+			  if( thesame ){
+			      existSame = true;
+			      sameSon = *sonIter;
+			      break;
+			  }
+		      }
+
+		      if( existSame ){
+			  sonId = sameSon;
+			  delete grandSonsMap;
+		      }else{
+			  sonId = _model.insertNode();
+			  xNodes->insert( sonId );
+			  _varMap.insert( sonId, x );
+			  _arcMap.insert( sonId, grandSonsMap );
+			  for( std::vector<NodeId>::iterator grandSonsIter = grandSonsMap->begin(); grandSonsIter != grandSonsMap->end(); ++grandSonsIter )
+			      _model.insertArc( sonId, *grandSonsIter );
+		      }
+		  }
+
+		(*sonsMap)[i] = sonId;
+	    }
+
+	    NodeId replacingNode = 0;
+
+	    bool redundant = true;
+	    std::vector<NodeId>::iterator sonsIter = sonsMap->begin();
+	    NodeId son = *sonsIter;
+	    while( sonsIter != sonsMap->end() ){
+		if( son != *sonsIter ){
+		    redundant = false;
+		    break;
+		}
+		++sonsIter;
+	    }
+
+	    if( redundant ){
+		replacingNode = son;
+		delete sonsMap;
+	    }else{
+
+		bool existSame = false;
+		NodeId sameNode = 0;
+		for( ListIterator<NodeId> newNodeIter = yNodes->begin(); newNodeIter != yNodes->end(); ++newNodeIter ){
+		    bool thesame = true;
+		    for( std::vector<NodeId>::iterator iterArcMap = sonsMap->begin(); iterArcMap != sonsMap->end(); ++iterArcMap )
+			if( (*_arcMap[ *newNodeIter ])[ std::distance( sonsMap->begin(), iterArcMap )  ] != *iterArcMap ){
+			    thesame = false;
+			    break;
+			}
+		    if( thesame ){
+			existSame = true;
+			sameNode = *newNodeIter;
+			break;
+		    }
+		}
+
+		if( existSame ){
+		    replacingNode = sameNode;
+		    delete sonsMap;
+		}else{
+		    replacingNode = _model.insertNode();
+		    yNodes->insert( replacingNode );
+		    _varMap.insert( replacingNode, y );
+		    _arcMap.insert( replacingNode, sonsMap );
+		    for( std::vector<NodeId>::iterator sonsIter = sonsMap->begin(); sonsIter != sonsMap->end(); ++sonsIter )
+			_model.insertArc( replacingNode, *sonsIter );
+		}
+	    }
+
+	    delete _arcMap[*nodeIter];
+	    _arcMap.erase(*nodeIter);
+	    _defaultArcMap.erase(*nodeIter);
+	    _varMap.erase(*nodeIter);
+
+	    for ( NodeSetIterator parentIter = _model.parents(*nodeIter).begin(); parentIter !=_model.parents(*nodeIter).end(); ++parentIter ){
+		_model.insertArc( *parentIter, replacingNode );
+
+		std::vector<NodeId>* newSonMap = new std::vector<NodeId>( _arcMap[*parentIter]->size(), 0 );
+		for( std::vector<NodeId>::iterator pSIter = _arcMap[*parentIter]->begin(); pSIter != _arcMap[*parentIter]->end(); ++pSIter ){
+		    if( *pSIter == *nodeIter )
+			(*newSonMap)[ std::distance( _arcMap[*parentIter]->begin(), pSIter ) ] = replacingNode;
+		    else
+			(*newSonMap)[ std::distance( _arcMap[*parentIter]->begin(), pSIter ) ] = *pSIter;
+		}
+		delete _arcMap[*parentIter];
+		_arcMap.erase(*parentIter);
+		_arcMap.insert(*parentIter, newSonMap );
+
+		if( _defaultArcMap.exists(*parentIter) && _defaultArcMap[*parentIter] == *nodeIter ){
+		    _defaultArcMap.erase(*parentIter);
+		    _defaultArcMap.insert( *parentIter, replacingNode );
+		}
+
+	    }
+	    _model.eraseNode(*nodeIter);
+
+	}
+
+	for( ListIterator< NodeId > nodeIter = _var2NodeIdMap[y]->begin(); nodeIter != _var2NodeIdMap[y]->end(); ++nodeIter ){
+	    if( !_model.parents(*nodeIter).empty() ){
+		yNodes->insert(*nodeIter);
+	    }else{
+		delete _arcMap[*nodeIter];
+		_arcMap.erase(*nodeIter);
+		_defaultArcMap.erase(*nodeIter);
+		_varMap.erase(*nodeIter);
+		_model.eraseNode(*nodeIter);
+	    }
+	}
+
+	delete _var2NodeIdMap[y];
+	_var2NodeIdMap.erase(y);
+	_var2NodeIdMap.insert( y, yNodes );
+
+	delete _var2NodeIdMap[x];
+	_var2NodeIdMap.erase(x);
+	_var2NodeIdMap.insert( x, xNodes );
     }
-
-    _varsSeq.swap ( _varsSeq.pos ( x ),_varsSeq.pos ( y ) );
-
-    if ( !_var2NodeIdMap.exists ( x ) || !_var2NodeIdMap.exists ( y ) )
-      return;
-
-    List<NodeId> *yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
-
-    for ( ListIterator< NodeId > nodeIter = _var2NodeIdMap[x]->begin(); nodeIter != _var2NodeIdMap[x]->end(); ++nodeIter ) {
-
-      std::vector<NodeId>* sonsMap = new std::vector<NodeId> ( y->domainSize(), 0 );
-
-      for ( Idx i = 0; i < y->domainSize(); i++ ) {
-
-        std::vector<NodeId>* grandSonsMap = new std::vector<NodeId> ( x->domainSize(), 0 );
-
-        for ( Idx j = 0; j < x->domainSize(); j++ ) {
-
-          NodeId nodeIterSonId = 0;
-
-          if ( ( *_arcMap[*nodeIter] ) [j] != 0 )
-            nodeIterSonId = ( *_arcMap[*nodeIter] ) [j];
-          else
-            nodeIterSonId = _defaultArcMap[*nodeIter];
-
-          NodeId nodeIterGrandSonId = 0;
-
-          if ( _valueMap.existsFirst ( nodeIterSonId ) || _varMap[nodeIterSonId] != y ) {
-            nodeIterGrandSonId = nodeIterSonId;
-          } else {
-            if ( ( *_arcMap[nodeIterSonId] ) [i] != 0 ) {
-              nodeIterGrandSonId = ( *_arcMap[nodeIterSonId] ) [i];
-            } else {
-              nodeIterGrandSonId = _defaultArcMap[nodeIterSonId];
-            }
-          }
-
-          ( *grandSonsMap ) [j] = nodeIterGrandSonId;
-        }
-
-        NodeId sonId = 0;
-
-        bool redundant = true;
-        std::vector<NodeId>::iterator grandSonsIter = grandSonsMap->begin();
-        NodeId grandSon = *grandSonsIter;
-
-        while ( grandSonsIter != grandSonsMap->end() ) {
-          if ( grandSon != *grandSonsIter ) {
-            redundant = false;
-            break;
-          }
-
-          ++grandSonsIter;
-        }
-
-        if ( redundant ) {
-          sonId = grandSon;
-          delete grandSonsMap;
-        } else {
-          bool existSame = false;
-          NodeId sameSon = 0;
-
-          for ( ListIterator<NodeId> sonIter = xNodes->begin(); sonIter != xNodes->end(); ++sonIter ) {
-            bool thesame = true;
-
-            for ( std::vector<NodeId>::iterator iterArcMap = grandSonsMap->begin(); iterArcMap != grandSonsMap->end(); ++iterArcMap )
-              if ( ( *_arcMap[ *sonIter ] ) [ std::distance ( grandSonsMap->begin(), iterArcMap )  ] != *iterArcMap ) {
-                thesame = false;
-                break;
-              }
-
-            if ( thesame ) {
-              existSame = true;
-              sameSon = *sonIter;
-              break;
-            }
-          }
-
-          if ( existSame ) {
-            sonId = sameSon;
-            delete grandSonsMap;
-          } else {
-            sonId = _model.insertNode();
-            xNodes->insert ( sonId );
-            _varMap.insert ( sonId, x );
-            _arcMap.insert ( sonId, grandSonsMap );
-
-            for ( std::vector<NodeId>::iterator grandSonsIter = grandSonsMap->begin(); grandSonsIter != grandSonsMap->end(); ++grandSonsIter )
-              _model.insertArc ( sonId, *grandSonsIter );
-          }
-        }
-
-        ( *sonsMap ) [i] = sonId;
-      }
-
-      NodeId replacingNode = 0;
-
-      bool redundant = true;
-      std::vector<NodeId>::iterator sonsIter = sonsMap->begin();
-      NodeId son = *sonsIter;
-
-      while ( sonsIter != sonsMap->end() ) {
-        if ( son != *sonsIter ) {
-          redundant = false;
-          break;
-        }
-
-        ++sonsIter;
-      }
-
-      if ( redundant ) {
-        replacingNode = son;
-        delete sonsMap;
-      } else {
-
-        bool existSame = false;
-        NodeId sameNode = 0;
-
-        for ( ListIterator<NodeId> newNodeIter = yNodes->begin(); newNodeIter != yNodes->end(); ++newNodeIter ) {
-          bool thesame = true;
-
-          for ( std::vector<NodeId>::iterator iterArcMap = sonsMap->begin(); iterArcMap != sonsMap->end(); ++iterArcMap )
-            if ( ( *_arcMap[ *newNodeIter ] ) [ std::distance ( sonsMap->begin(), iterArcMap )  ] != *iterArcMap ) {
-              thesame = false;
-              break;
-            }
-
-          if ( thesame ) {
-            existSame = true;
-            sameNode = *newNodeIter;
-            break;
-          }
-        }
-
-        if ( existSame ) {
-          replacingNode = sameNode;
-          delete sonsMap;
-        } else {
-          replacingNode = _model.insertNode();
-          yNodes->insert ( replacingNode );
-          _varMap.insert ( replacingNode, y );
-          _arcMap.insert ( replacingNode, sonsMap );
-
-          for ( std::vector<NodeId>::iterator sonsIter = sonsMap->begin(); sonsIter != sonsMap->end(); ++sonsIter )
-            _model.insertArc ( replacingNode, *sonsIter );
-        }
-      }
-
-      delete _arcMap[*nodeIter];
-      _arcMap.erase ( *nodeIter );
-      _defaultArcMap.erase ( *nodeIter );
-      _varMap.erase ( *nodeIter );
-
-      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).begin(); parentIter !=_model.parents ( *nodeIter ).end(); ++parentIter ) {
-        _model.insertArc ( *parentIter, replacingNode );
-
-        std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
-
-        for ( std::vector<NodeId>::iterator pSIter = _arcMap[*parentIter]->begin(); pSIter != _arcMap[*parentIter]->end(); ++pSIter ) {
-          if ( *pSIter == *nodeIter )
-            ( *newSonMap ) [ std::distance ( _arcMap[*parentIter]->begin(), pSIter ) ] = replacingNode;
-          else
-            ( *newSonMap ) [ std::distance ( _arcMap[*parentIter]->begin(), pSIter ) ] = *pSIter;
-        }
-
-        delete _arcMap[*parentIter];
-        _arcMap.erase ( *parentIter );
-        _arcMap.insert ( *parentIter, newSonMap );
-
-        if ( _defaultArcMap.exists ( *parentIter ) && _defaultArcMap[*parentIter] == *nodeIter ) {
-          _defaultArcMap.erase ( *parentIter );
-          _defaultArcMap.insert ( *parentIter, replacingNode );
-        }
-
-      }
-
-      _model.eraseNode ( *nodeIter );
-
-    }
-
-    for ( ListIterator< NodeId > nodeIter = _var2NodeIdMap[y]->begin(); nodeIter != _var2NodeIdMap[y]->end(); ++nodeIter ) {
-      if ( !_model.parents ( *nodeIter ).empty() ) {
-        yNodes->insert ( *nodeIter );
-      } else {
-        delete _arcMap[*nodeIter];
-        _arcMap.erase ( *nodeIter );
-        _defaultArcMap.erase ( *nodeIter );
-        _varMap.erase ( *nodeIter );
-        _model.eraseNode ( *nodeIter );
-      }
-    }
-
-    delete _var2NodeIdMap[y];
-    _var2NodeIdMap.erase ( y );
-    _var2NodeIdMap.insert ( y, yNodes );
-
-    delete _var2NodeIdMap[x];
-    _var2NodeIdMap.erase ( x );
-    _var2NodeIdMap.insert ( x, xNodes );
-  }
 
 
 //===============================================================================================================
@@ -823,6 +826,11 @@ namespace gum {
       delete *iter;
 
     _var2NodeIdMap.clear();
+
+    for ( HashTableIterator< const DiscreteVariable*, std::vector<bool>* > iter = _varUsedModalitiesMap.begin(); iter != _varUsedModalitiesMap.end(); ++iter )
+      delete *iter;
+
+    _varUsedModalitiesMap.clear();
   }
 
 
@@ -854,60 +862,55 @@ namespace gum {
   template< typename T_DATA >
   Sequence< const DiscreteVariable* >
   MultiDimDecisionDiagramFactoryBase< T_DATA >::_findVariableOrder() {
-
-    Sequence< const DiscreteVariable* > varTopo;
-    bool modified = true;
-
-    // ****************************************************************
-    // On itère jusqu'à ce qu'il n'y ait plus de modification
-    // (signe que toutes les variables sont dans la liste ou qu'un
-    // problème existe)
-    while ( modified ) {
-      modified = false;
-
-      // ***************************************************************
-      // Pour chaque variable
-      for ( Sequence< const DiscreteVariable* >::iterator varIter = _varsSeq.begin(); varIter != _varsSeq.end(); ++varIter ) {
-
-        // ***************************************************************
-        // Si elle est déjà dans la liste, on passe
-        if ( varTopo.exists ( *varIter ) ) {
-          continue;
-        }
-
-        // ***************************************************************
-        // Sinon on cherche les noeuds ratachés à cette variable
-        bool addVar = true;
-
-        for ( ListIterator<NodeId> nodeIter = _var2NodeIdMap[*varIter]->begin(); nodeIter != _var2NodeIdMap[*varIter]->end() ; ++nodeIter ) {
-
-          const NodeSet& parents = _model.parents ( *nodeIter );
-
-          // ***************************************************************
-          // Pour chaque noeud lié à cette variable, on voit si la variable
-          // associée au noeuds parents est déjà dans la liste
-          for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
-
-            // **********************************************************************
-            // Si ce n'est pas le cas, cette variable ci ne sera pas ajoutée
-            if ( !varTopo.exists ( _varMap[ *parentIter ] ) ) {
-              addVar = false;
-              break;
-            }
-          }
-
-          if ( !addVar )
-            break;
-        }
-
-        if ( addVar ) {
-          varTopo.insert ( *varIter );
-          modified = true;
-        }
-      }
-    }
-
-    return varTopo;
+      
+	Sequence< const DiscreteVariable* > varTopo;
+	bool modified = true;
+	
+	// ****************************************************************
+	// On itère jusqu'à ce qu'il n'y ait plus de modification
+	// (signe que toutes les variables sont dans la liste ou qu'un
+	// problème existe)
+	while( modified ){
+	    modified = false;
+	    
+	    // ***************************************************************
+	    // Pour chaque variable
+	    for( Sequence< const DiscreteVariable* >::iterator varIter = _varsSeq.begin(); varIter != _varsSeq.end();++varIter){
+	      
+		// ***************************************************************
+		// Si elle est déjà dans la liste, on passe
+		if( varTopo.exists(*varIter) ){
+		    continue;
+		}
+	      
+		// ***************************************************************
+		// Sinon on cherche les noeuds ratachés à cette variable
+		bool addVar = true;
+		for( ListIterator<NodeId> nodeIter = _var2NodeIdMap[*varIter]->begin(); nodeIter != _var2NodeIdMap[*varIter]->end() ; ++nodeIter ){
+		    
+		    const NodeSet& parents = _model.parents( *nodeIter );
+		    // ***************************************************************
+		    // Pour chaque noeud lié à cette variable, on voit si la variable
+		    // associée au noeuds parents est déjà dans la liste
+		    for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ){
+		      
+			// **********************************************************************
+			// Si ce n'est pas le cas, cette variable ci ne sera pas ajoutée
+			if( !varTopo.exists( _varMap[ *parentIter ] ) ){
+			    addVar = false;
+			    break;
+			}
+		    }
+		    if( !addVar )
+			break;
+		}
+		if( addVar ){
+		    varTopo.insert( *varIter );
+		    modified = true;
+		}
+	    }
+	}
+	return varTopo;
   }
 
 
@@ -966,8 +969,10 @@ namespace gum {
     // Addition of the node to the list of tied to given variable
 
     // If list hasn't be created yet, we create it
-    if ( !_var2NodeIdMap.exists ( var ) )
+    if ( !_var2NodeIdMap.exists ( var ) ){
       _var2NodeIdMap.insert ( var, new List<NodeId>() );
+      _varUsedModalitiesMap.insert( var, new std::vector<bool>( var->domainSize(), false ) );
+    }
 
     // And finally we add the node to that list
     _var2NodeIdMap[ var ]->insert ( node );
@@ -988,6 +993,7 @@ namespace gum {
     _model.insertArc ( from, to );
 
     ( *_arcMap[from] ) [value] =  to;
+    (*_varUsedModalitiesMap[ _varMap[from] ])[value] = true;
   }
 
 

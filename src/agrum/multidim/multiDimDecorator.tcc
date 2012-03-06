@@ -22,6 +22,8 @@
 // include the operators that will be used by the decorators
 #include <agrum/multidim/operators4MultiDim.h>
 #include <agrum/multidim/projections4MultiDim.h>
+#include <agrum/multidim/completeProjections4MultiDim.h>
+#include <agrum/multidim/partialInstantiation4MultiDim.h>
 
 
 namespace gum {
@@ -35,13 +37,26 @@ namespace gum {
   ( MultiDimImplementation<T_DATA> *aContent ) : _content( aContent ) {
     GUM_CONSTRUCTOR( MultiDimDecorator );
 
-    // register the operators that will be used by the decorator
-    Operators4MultiDimInitialize<T_DATA> op;
-    op.init ();
+    static bool first = true;
+    if ( first ) {
+      first = false;
+      
+      // register the operators that will be used by the decorator
+      Operators4MultiDimInitialize<T_DATA> op;
+      op.init ();
 
-    // register the projectors that will be used by the decorator
-    Projections4MultiDimInitialize<T_DATA> proj;
-    proj.init ();
+      // register the projectors that will be used by the decorator
+      Projections4MultiDimInitialize<T_DATA> proj;
+      proj.init ();
+
+      // register the projectors that will be used by the decorator
+      CompleteProjections4MultiDimInitialize<T_DATA> comp_proj;
+      comp_proj.init ();
+
+      // register the partial instantiators that will be used by the decorator
+      PartialInstantiation4MultiDimInitialize<T_DATA> inst;
+      inst.init ();
+    }
   }
 
   // ==============================================================================

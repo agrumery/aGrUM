@@ -90,7 +90,7 @@ namespace gum {
 
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented
-  /// by strings
+  /// by vectors of Idx
   // ==============================================================================
   INLINE Size
   HashFunc< std::vector<Idx> >::operator()

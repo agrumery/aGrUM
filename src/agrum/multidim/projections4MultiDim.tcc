@@ -32,16 +32,17 @@
 
 
 #define GUM_MULTI_DIM_DECORATOR_PROJ(NAME)                            \
+  namespace gum{ \
   template<typename T_DATA>                                           \
   MultiDimImplementation<T_DATA>*                                     \
   NAME ( const MultiDimDecorator<T_DATA>& table,                      \
          const Set<const DiscreteVariable *>& del_vars ) {            \
     const MultiDimImplementation<T_DATA>* impl = table.content (); \
     return NAME ( *impl, del_vars );                                  \
+  }\
   }
 
 
-namespace gum {
 
   
   // ==============================================================================
@@ -233,6 +234,7 @@ namespace gum {
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
   
+// #define P4DDDEBUG
   // ==============================================================================
   /// a specialized max projection function for multiDimDecisionDiagrams
   // ==============================================================================
@@ -242,7 +244,11 @@ namespace gum {
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL ( -1 * std::numeric_limits<T_DATA>::max() )
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef P4DDDEBUG
+  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+#endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMaxMultiDimDecisionDiagram
@@ -268,7 +274,11 @@ namespace gum {
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<T_DATA>::max()
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef P4DDDEBUG
+  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+#endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMinMultiDimDecisionDiagram
@@ -294,7 +304,11 @@ namespace gum {
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 0
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef P4DDDEBUG
+  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+#endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectSumMultiDimDecisionDiagram
@@ -320,7 +334,11 @@ namespace gum {
   #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (T_DATA) 1
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-  #include <agrum/multidim/patterns/unsafeDecisionDiagramRecursionFunctions.h>
+#ifdef P4DDDEBUG
+  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+#else
+  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+#endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectProductMultiDimDecisionDiagram
@@ -336,7 +354,7 @@ namespace gum {
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-
+#undef P4DDDEBUG
   
   // ==============================================================================
   /// a specialized function for functionally projecting a multiDimArray
@@ -456,6 +474,7 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
+namespace gum {
   /// the function used to register all the above functions
   template<typename T_DATA>
   void projections4MultiDimInit () {

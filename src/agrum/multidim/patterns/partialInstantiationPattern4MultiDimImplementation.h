@@ -18,43 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the pattern used by all the MultiDimImplementation projections
+ * @brief the pattern used by all the partial instantiations of multidimensional
+ * tables
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
 
 
 // check if we allowed these patterns to be used
-#ifndef GUM_PROJECTION_PATTERN_ALLOWED
+#ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
-#warning To use projectionPattern4MultiDimImplementation.h, you must define GUM_PROJECTION_PATTERN_ALLOWED
+#warning To use partialIntantiationPattern4MultiDimImplementation.h, you must define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
 #else
-
 namespace gum{
 
-#ifdef GUM_MULTI_DIM_PROJECTION_NAME
+#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
   template<typename T_DATA>
   MultiDimImplementation<T_DATA>*
-  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimImplementation<T_DATA>& ttable,
-                                  const Set<const DiscreteVariable *>& del_vars ) {
+  GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
+  ( const MultiDimImplementation<T_DATA>& ttable,
+    const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
 #endif
     
-    typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr func;
+    typename PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationPtr func;
   
     // get the appropriate function to perform the operation
     try {
-      // try to find func(ttable,del_vars) in the register
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
-        ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.name() );
+      // try to find func(ttable,inst_vars) in the register
+      func = PartialInstantiationRegister4MultiDim<T_DATA>::Register().get
+        ( "i", ttable.name() );
     }
     catch ( NotFound& ) {
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
-        ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.basename() );
+      func = PartialInstantiationRegister4MultiDim<T_DATA>::Register().get
+        ( "i", ttable.basename() );
     }
 
-    // perform the projection
-    return func ( &ttable, del_vars );
+    // perform the partial instantiation
+    return func ( &ttable, inst_vars );
   }
-} /* end of namespace GUM */
-#endif /* GUM_PROJECTION_PATTERN_ALLOWED */
+
+} /* End of namespace gum */
+
+#endif /* GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED */
 

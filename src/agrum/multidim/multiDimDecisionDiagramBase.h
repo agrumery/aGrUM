@@ -190,6 +190,11 @@ namespace gum {
       * makes quiet complicate any copy operation as a matter of fact )
       */
       void copy( const MultiDimContainer<T_DATA>& src );
+      
+     /**
+      * Performs a copy of given in parameter table plus a change of variable based upon bijection given in parameter.
+      **/
+       void copyAndReassign( const MultiDimDecisionDiagramBase<T_DATA>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new );
 
       /// @}
 
@@ -299,12 +304,16 @@ namespace gum {
 
       /**
        * Returns associated nodes of the variable pointed by the given node
-       * @throw InvalidNode if Node is terminal
        */
       const List< NodeId >* variableNodes( const DiscreteVariable* v ) const;
 
       /**
-       * Returns true if node is a chance one
+       * Returns associated nodes of the variable pointed by the given node
+       */
+      const std::vector< bool >* variableUsedModalities( const DiscreteVariable* v ) const;
+
+      /**
+       * Returns true if variable is in diagram
        */
       bool isInDiagramVariable( const DiscreteVariable* v ) const;
 
@@ -384,6 +393,12 @@ namespace gum {
       void setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap );
 
       /**
+       * Sets the map linking variable to used modality in graph
+       * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
+       */
+      void setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<bool>* > varUsedModalitiesMap );
+
+      /**
        * Binds once and for all nodes to variables.
        * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
        */
@@ -458,6 +473,9 @@ namespace gum {
 
       /// Mapping between var and node
       HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
+
+      /// Mapping between var and node
+      HashTable< const DiscreteVariable*, std::vector<bool>* > __varUsedModalitiesMap;
 
       /// Mapping between variable's values and associated node
       typename Property< std::vector<NodeId>* >::onNodes __arcMap;
