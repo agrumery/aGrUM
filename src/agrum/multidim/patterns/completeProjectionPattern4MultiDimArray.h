@@ -30,7 +30,7 @@
 #warning To use completeProjectionPattern, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
-
+namespace gum{
 
 // ================================================================================
 /// a specialized function for projecting a multiDimArray over all its variables
@@ -179,5 +179,6 @@
 #endif
   
 
+} /* End of namespace gum */
 
 #endif /* GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED */

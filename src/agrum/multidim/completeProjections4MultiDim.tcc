@@ -34,16 +34,17 @@
 
 
 #define GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ(NAME)                   \
+  namespace gum { \
   template<typename T_DATA>                                           \
   T_DATA                                                              \
   NAME ( const MultiDimDecorator<T_DATA>& table,                      \
          Instantiation* instantiation = 0 ) {                         \
     const MultiDimImplementation<T_DATA>* impl = table.content ();    \
     return NAME ( *impl, instantiation );                             \
+  } \
   }
 
 
-namespace gum {
 
   
   // ==============================================================================
@@ -305,6 +306,8 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
+  namespace gum {
+    
   /// the function used to register all the above functions
   template<typename T_DATA>
   void completeProjections4MultiDimInit () {

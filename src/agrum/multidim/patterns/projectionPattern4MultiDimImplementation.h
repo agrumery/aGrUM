@@ -30,7 +30,7 @@
 
 #else
 
-
+namespace gum{
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
   template<typename T_DATA>
@@ -55,7 +55,6 @@
     // perform the projection
     return func ( &ttable, del_vars );
   }
-
-
+} /* end of namespace GUM */
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */
 

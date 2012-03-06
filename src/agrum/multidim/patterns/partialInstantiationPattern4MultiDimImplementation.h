@@ -30,7 +30,7 @@
 #warning To use partialIntantiationPattern4MultiDimImplementation.h, you must define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
 #else
-
+namespace gum{
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
   template<typename T_DATA>
@@ -57,6 +57,7 @@
     return func ( &ttable, inst_vars );
   }
 
+} /* End of namespace gum */
 
 #endif /* GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED */
 

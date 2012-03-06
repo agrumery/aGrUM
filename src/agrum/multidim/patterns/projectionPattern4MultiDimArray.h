@@ -29,8 +29,8 @@
 #warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
 
 #else
-
-
+namespace gum{
+  
 // ================================================================================
 /// a specialized function for projecting a multiDimArray over a subset of its vars
 // ================================================================================
@@ -455,7 +455,5 @@
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 #undef GUM_MULTI_DIM_PROJECTION_POINTER
 #endif
-  
-
-
+    } /* end of namespace GUM */
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

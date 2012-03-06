@@ -33,16 +33,16 @@
 
 
 #define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                    \
+  namespace gum{ \
   template<typename T_DATA>                                           \
   MultiDimImplementation<T_DATA>*                                     \
   NAME ( const MultiDimDecorator<T_DATA>& table,                      \
          const HashTable<const DiscreteVariable *,Idx>& inst_vars ) { \
     const MultiDimImplementation<T_DATA>* impl = table.content ();    \
     return NAME ( *impl, inst_vars );                                 \
-  }
+  }\
+  } 
 
-
-namespace gum {
 
   
   // ==============================================================================
@@ -109,6 +109,8 @@ namespace gum {
   // ==============================================================================
   // ==============================================================================
 
+namespace gum {
+  
   /// the function used to register all the above functions
   template<typename T_DATA>
   void partialInstantiation4MultiDimInit () {

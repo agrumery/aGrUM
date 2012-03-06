@@ -30,8 +30,7 @@
 
 #else
 
-
-
+namespace gum{
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
   template<typename T>
@@ -83,7 +82,6 @@
     else
       return func ( &impl1,&impl2 );
   }
-
-
+}
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */
 

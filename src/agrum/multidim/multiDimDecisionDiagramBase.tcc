@@ -439,6 +439,16 @@ namespace gum {
 
 		output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << "}" << std::endl;
 
+// 		std::stringstream usedModalities;
+// 		usedModalities << " Used Modalities Tables : " << std::endl;
+// 		for( HashTableConstIterator< const DiscreteVariable*, std::vector<bool>* > varIter = __varUsedModalitiesMap.begin(); varIter != __varUsedModalitiesMap.end(); ++varIter ){
+// 			usedModalities << varIter.key()->name();
+// 			for( std::vector<bool>::iterator modalityIter = (*varIter)->begin(); modalityIter != (*varIter)->end(); ++modalityIter )
+// 			      usedModalities << " Modality : " << std::distance( (*varIter)->begin(), modalityIter ) << " - used : " << *modalityIter << "|";
+// 			usedModalities << std::endl;
+// 		}
+// 		output << usedModalities.str();
+
 		return output.str();
 
 	    }

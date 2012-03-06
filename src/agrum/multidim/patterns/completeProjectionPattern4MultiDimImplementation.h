@@ -29,7 +29,7 @@
 #warning To use completeProjectionPattern4MultiDimImplementation.h, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
-
+namespace gum{
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -59,5 +59,6 @@
   }
 
 
+} /* End of namespace gum */
 #endif /* GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED */
 

@@ -30,7 +30,7 @@
 #warning To use partialIntantiationPattern, you must define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
 #else
-
+namespace gum {
 
 // ================================================================================
 /// a specialized function instantiating some variables of a table and returning
@@ -238,5 +238,6 @@
 #endif
   
 
+} /* End of namespace gum */
 
 #endif /* GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED */

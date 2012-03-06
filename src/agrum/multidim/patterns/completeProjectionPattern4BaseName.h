@@ -30,6 +30,7 @@
 #warning To use completeProjectionPattern, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
+namespace gum{
 
 
 // ================================================================================
@@ -148,12 +149,12 @@
 }
 
 
-
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
 #endif
 
+} /* End of namespace gum */
 
 #endif /* GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED */
