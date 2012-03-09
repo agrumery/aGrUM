@@ -24,7 +24,6 @@
 import sys,os,csv,math
 
 from pyAgrum_header import pyAgrum_header
-from topology import parents
 
 import pyAgrum as gum
 
@@ -58,7 +57,7 @@ if __name__=="__main__":
     print "Mutual information and Variation of information for arcs (a posteriori)"
     res=[]
     for i in bn.topologicalOrder():
-      for j in parents(bn,i):
+      for j in bn.parents(i):
         res.append((bn.variable(j).name()+"->"+bn.variable(i).name(),inf.I(i,j),inf.VI(i,j)))
     res=sorted(res,key=lambda x:-x[1])
     for i in range(len(res)):
