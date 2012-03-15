@@ -44,13 +44,12 @@ def checkCompatibility(bn,fields,csv_name):
     """
     res={}
     isOK=True
-    names=bn.names()
     for field in bn.names():
         if not field in fields:
             print "** field '{0}' is missing in {1}".format(field,csv_name)
             isOK=False
         else:
-            res[names[field]]=fields[field]
+            res[bn.idFromName(field)]=fields[field]
 
     if not isOK:
         res=None
@@ -86,9 +85,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
     totalN=0
     res=[]
     for data in batchReader:
-        target_label=data[positions[idTarget]]
-        if not transforme_label is None:
-          target_label=transforme_label(target_label)
+        target_label=bn.variable(idTarget).label(int(data[positions[idTarget]]))
         if str(target_label)==str(label):
             totalP+=1
         else:
@@ -98,9 +95,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
         e={}
         for var in bn.names():
             if not var.__eq__(target):
-                e[var]=data[positions[bn.idFromName(var)]]
-                if not transforme_label is None:
-                    e[var]=transforme_label(e[var])
+                e[var]=bn.variableFromName(var).label(int(data[positions[bn.idFromName(var)]]))
 
         try:
             engine.setEvidence(e)
@@ -124,7 +119,7 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
     fp=0.0
     points=[(vp/totalP,fp/totalN)]
     for i in range(len(res)):
-        res_label=res[i][1]
+        res_label=bn.variable(idTarget).label(int(res[i][1]))
         if not transforme_label is None:
           res_label=transforme_label(res_label)
         if str(res_label)==str(label):
@@ -160,17 +155,19 @@ def module_help(exit_value=1,message=""):
     print
     sys.exit(exit_value)
 
-def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
+def showROC(bn,csv_name,variable,label,visible=True,show_fig=False,transforme_label=None):
   points=computeROC(bn,csv_name,variable,label,visible,transforme_label)
-  print points[0]
-  print points[1]
-  print points[2]
-  print points[3]
-  print "..."
-  print points[len(points)-4]
-  print points[len(points)-3]
-  print points[len(points)-2]
-  print points[len(points)-1]
+#  print points[0]
+#  print points[1]
+#  print points[2]
+#  print points[3]
+#  print "..."
+#  print points[len(points)-4]
+#  print points[len(points)-3]
+#  print points[len(points)-2]
+#  print points[len(points)-1]
+
+  shortname=os.path.basename(bn.property("name"))
 
   import pylab
 
@@ -181,12 +178,17 @@ def showROC(bn,csv_name,variable,label,visible=True,transforme_label=add_state):
   pylab.yticks(pylab.arange(0,1.1,.1))
   pylab.grid(True)
 
-  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1, label= bn.property("name")+" - "+csv_name+ " - "+variable+"="+str(label))
+  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1, label= shortname+" - "+csv_name+ " - "+variable+"="+str(label))
   pylab.plot([0.0,1.0], [0.0, 1.0], 'k-')
 
   pylab.legend(loc='lower right')
-  pylab.savefig('roc_'+bn.property("name")+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png')
-  pylab.show()
+  figname='roc_'+shortname+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png'
+  if visible:
+      pylab.savefig(figname)
+      print ("result in "+figname)
+
+  if show_fig:
+      pylab.show()
 
 def checkROCargs():
   pyAgrum_header(2011)
@@ -210,9 +212,9 @@ def checkROCargs():
     if variable not in bn.names():
       module_help(message=" Variable '"+variable+"'not found.\n Variables : "+str(bn.names()))
 
-      if label.__eq__(""):
+    if label.__eq__(""):
         module_help(message=" Labels : "+str(bn.variableFromName(variable)))
-      else:
+    else:
         try:
           bn.variableFromName(variable)[label]
         except gum.OutOfBounds:
@@ -222,4 +224,4 @@ def checkROCargs():
 
 if __name__=="__main__":
   (bn,csv_name,variable,label)=checkROCargs()
-  showROC(bn,csv_name,variable,label,True,add_state)
+  showROC(bn,csv_name,variable,label,True,False,None)

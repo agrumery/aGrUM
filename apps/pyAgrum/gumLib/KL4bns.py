@@ -69,6 +69,4 @@ if __name__=="__main__":
         print 'bhattacharya(P,Q)={0}'.format(r['bhattacharya'])
         print
     except gum.Exception as e:
-        print e.getContent()
-
-    print "finito"
+        print e.content()

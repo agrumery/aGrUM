@@ -38,7 +38,7 @@ def compareBNVariables(b1,b2):
       if (len(v2)!=len(v1)):
         return v1.name() + " has not the same domain size in the two bns"
     except IndexError:
-      return b1.variable(i).name()+" does not exist in second bn"
+      return b1.variable(i).name()+" does not exist in "+b2.property('name')
 
     for i in range(len(b2)):
       try:
@@ -47,7 +47,7 @@ def compareBNVariables(b1,b2):
         if (len(v2)!=len(v1)):
           return v2.name() + " has not the same domain size in the two bns"
       except IndexError:
-        return b2.variable(i).name()+" does not exist in first BN"
+        return b2.variable(i).name()+" does not exist in "+b1.property('name')
 
   return "OK"
 
@@ -74,7 +74,7 @@ def compareCPT(cpt1,cpt2):
       I2.chgVal(dico2[I1.variable(i).name()],I1.val(i))
 
     if abs(cpt1.get(I1)-cpt2.get(I2))>DELTA_ERROR:
-      return "For "+cpt1.variable(0).name()+", cpt1["+str(I1)+"] ("+str(cpt1.get(I1))+") !=cpt2["+str(I2)+"] ("+str(cpt2.get(I2))+")"
+      return "For "+cpt1.variable(0).name()+", cpt["+str(I1)+"] ("+str(cpt1.get(I1))+", in"+b1.property('name')+") !=cpt2["+str(I2)+"] ("+str(cpt2.get(I2))+", in"+b2.property('name')+")"
     I1+=1
   return "OK"
 
@@ -88,11 +88,13 @@ def compareBNCPT(b1,b2):
 def compareBN(name1,name2):
   if isinstance(name1,str):
     b1=gum.loadBN(name1)
+    b1.setProperty('name','"'+os.path.basename(b1.property('name')+'"'))
   else:
     b1=name1
 
   if isinstance(name2,str):
     b2=gum.loadBN(name2)
+    b2.setProperty('name','"'+os.path.basename(b2.property('name')+'"'))
   else:
     b2=name2
 

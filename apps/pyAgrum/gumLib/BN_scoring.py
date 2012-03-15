@@ -44,13 +44,12 @@ def checkCompatibility(bn,fields,csv_name):
     """
     res={}
     isOK=True
-    names=bn.names()
     for field in bn.names():
         if not field in fields:
             print "** field '{0}' is missing in {1}".format(field,csv_name)
             isOK=False
         else:
-            res[names[field]]=fields[field]
+            res[bn.idFromName(field)]=fields[field]
 
     if not isOK:
         res=None
@@ -88,15 +87,20 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
         prog.display()
 
     nbr_insignificant=0
+    num_ligne=0
     likelihood=0.0
     for data in batchReader:
+        num_ligne+=1
+        
         for i in range(len(inst)):
             try:
-              inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
+                inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
             except gum.OutOfBounds:
                 print "out of bounds",i,positions[i],data[positions[i]],inst.variable(i)
+
         p=bn.jointProbability(inst)
-        if p==0:
+        if p==0.0:
+            print (str(num_ligne)+":"+str(inst))
             nbr_insignificant+=1
         else:
             likelihood+=math.log(p,2)
@@ -128,9 +132,12 @@ def module_help(exit_value=1):
 
 def getNumLabel(inst,i,label,transforme_label):
     if transforme_label is not None:
-      label=transforme_label(label)
+        label=transforme_label(label)
 
-    return inst.variable(i)[label]
+    if label.isdigit(): # an indice
+        return int(label)
+    else:
+        return inst.variable(i)[label]
 
 def stringify(s):
   return '"'+s+'"'
@@ -139,19 +146,23 @@ if __name__=="__main__":
     pyAgrum_header(2011)
 
     if len(sys.argv)<2:
-        module_help()
-
-    bn_name=sys.argv[1]
-
-    if len(sys.argv)<3:
-        base,ext=os.path.splitext(bn_name)
-        csv_name=base+'.csv'
+        #module_help()
+        bn_name="../resources/alarm.dsl"
+        csv_name="alarm.csv"
     else:
-        csv_name=sys.argv[2]
-        base,ext=os.path.splitext(csv_name)
+        bn_name=sys.argv[1]
+    
+        if len(sys.argv)<3:
+            base,ext=os.path.splitext(bn_name)
+            csv_name=base+'.csv'
+        else:
+            csv_name=sys.argv[2]
+            base,ext=os.path.splitext(csv_name)
 
 
     print '"{0}" vs "{1}"'.format(bn_name,csv_name)
+    print
     (nbr,LL)=computeScores(bn_name,csv_name,visible=True)
+    print
     print '{0}% of base is significant.\nscores : {1}'.format(nbr,LL)
 

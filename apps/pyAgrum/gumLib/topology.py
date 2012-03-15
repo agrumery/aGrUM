@@ -19,7 +19,7 @@
 #IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
-
+import sys
 import pyAgrum as gum
 from pyAgrum_header import pyAgrum_header
 
@@ -48,20 +48,33 @@ def children_name(bn,n):
     """
     return map(lambda n:bn.variable(n).name(),bn.children(nodeId(bn,n)))
 
+def module_help(exit_value=1):
+    """
+    defines help viewed if args are not OK on command line, and exit with exit_value
+    """
+    print os.path.basename(sys.argv[0]),"bn.{"+gum.availableBNExts()+"}"
+    sys.exit(exit_value)
+    
 if __name__=="__main__":
     pyAgrum_header(2011)
+    
+    if len(sys.argv)!=2:
+        module_help()
 
-    bn=gum.loadBN("bn.bif")
+    bn_name=sys.argv[1]
 
-    #liste des noeuds
-    print map(lambda x:str(x)+':'+bn.variable(x).name(),bn.ids())
-
-    #calcul des parents du noeud 0
-    print "noeud : ",bn.variable(0).name()
-    print "parents : ",bn.parents(0)
-    print "parents : ",parents_name(bn,0)
-
-    #calcul des enfant du noeud 4
-    print "noeud : ",bn.variable(4).name()
-    print "enfants : ",bn.children(4)
-    print "enfants : ",children_name(bn,4)
+    bn=gum.loadBN(bn_name)
+    
+    if len(bn)>0:
+        #liste des noeuds
+        print map(lambda x:str(x)+':'+bn.variable(x).name(),bn.ids())
+    
+        #calcul des parents du noeud 0
+        print "noeud : ",bn.variable(0).name()
+        print "parents : ",bn.parents(0)
+        print "parents : ",parents_name(bn,0)
+    
+        #calcul des enfant du noeud 4
+        print "noeud : ",bn.variable(4).name()
+        print "enfants : ",bn.children(4)
+        print "enfants : ",children_name(bn,4)
