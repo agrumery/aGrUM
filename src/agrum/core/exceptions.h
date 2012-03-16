@@ -30,6 +30,7 @@
 #include <iomanip>
 #include <string>
 
+#include <agrum/core/types.h>
 
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type,msg) throw(type(msg))
