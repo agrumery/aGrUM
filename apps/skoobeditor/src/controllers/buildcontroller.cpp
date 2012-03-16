@@ -507,14 +507,14 @@ void BuildController::onExecutionFinished() {
     mw->vc->setBuildDockVisibility( true );
 
   } else {
-    const vector<QueryResult> & results = skoorParser->results();
+    const std::vector<QueryResult> & results = skoorParser->results();
 
     for ( size_t i = 0 ; i < results.size() ; i++ ) {
       const QString & query = QString::fromStdString( results[i].command );
       double time = results[i].time;
       d->execList->addItem( tr( "%1 [%2s]" ).arg( query ).arg( time ) );
       d->execList->item( d->execList->count() - 1 )->setTextColor( Qt::darkYellow );
-      const vector<SingleResult> & result = results[i].values;
+      const std::vector<SingleResult> & result = results[i].values;
 
       for ( size_t j = 0 ; j < result.size() ; j++ ) {
         float val = result[j].p;

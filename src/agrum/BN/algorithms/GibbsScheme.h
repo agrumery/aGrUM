@@ -101,6 +101,3 @@ namespace gum {
 }//namespace gum
 
 #endif //GUM_GIBBS_SCHEME_H
-
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
