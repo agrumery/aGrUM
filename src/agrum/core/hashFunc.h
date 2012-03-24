@@ -354,14 +354,14 @@ namespace gum {
     public HashFuncSmallKey<unsigned long> {};
   
   template <> class HashFunc<float> :
-#if GUM_FLOAT_SIZE == GUM_LONG_SIZE
+#if GUM_FLOAT_SIZE >= GUM_LONG_SIZE
     public HashFuncMediumCastKey<float> {};
 #else
     public HashFuncSmallCastKey<float> {};
 #endif
   
   template <> class HashFunc<double> :
-#if GUM_DOUBLE_SIZE == GUM_LONG_SIZE
+#if GUM_DOUBLE_SIZE >= GUM_LONG_SIZE
     public HashFuncMediumCastKey<double> {};
 #else
     public HashFuncSmallCastKey<double> {};
@@ -387,14 +387,14 @@ namespace gum {
     public HashFuncSmallKeyPair<unsigned long, unsigned long> {};
 
   template <> class HashFunc< std::pair<float,float> > :
-#if GUM_FLOAT_SIZE == GUM_LONG_SIZE
+#if GUM_FLOAT_SIZE >= GUM_LONG_SIZE
     public HashFuncMediumCastKeyPair<float,float> {};
 #else
     public HashFuncSmallCastKeyPair<float,float> {};
 #endif
 
   template <> class HashFunc< std::pair<double,double> > :
-#if GUM_DOUBLE_SIZE == GUM_LONG_SIZE    
+#if GUM_DOUBLE_SIZE >= GUM_LONG_SIZE    
     public HashFuncMediumCastKeyPair<double,double> {};
 #else
     public HashFuncSmallCastKeyPair<double,double> {};
