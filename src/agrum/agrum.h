@@ -84,6 +84,8 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
+set(CMAKE_BUILD_TYPE Release)
+
 file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
 file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
 
