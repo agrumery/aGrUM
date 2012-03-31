@@ -94,7 +94,7 @@ namespace gum {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError,"No such file "+streamName() );
     }
-
+    
     if ( !__parseDone ) {
       try {
         __parser->Parse();

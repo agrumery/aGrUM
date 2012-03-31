@@ -39,7 +39,9 @@
 int main( void ) {
   try {
     gum::BayesNet<float> bn;
-    gum::BIFReader<float> reader( &bn, GET_PATH_STR( Diabetes.bif ) );
+    gum::BIFReader<float> reader( &bn, GET_PATH_STR( dBN.bif ) );
+    reader.trace(true);
+    GUM_CHECKPOINT;
 
     if ( ! reader.proceed() ) {
       reader.showElegantErrorsAndWarnings();
@@ -47,7 +49,7 @@ int main( void ) {
       return false;
     }
     GUM_TRACE_VAR(bn);
-
+/*
     GUM_TRACE("============================");
     GUM_TRACE("affectation after definition");
     gum::BayesNet<float> bn2;
@@ -76,11 +78,13 @@ int main( void ) {
     gum::BayesNet<float>* pBn5=new gum::BayesNet<float>();
     *pBn5=bn;
     GUM_TRACE_VAR(*pBn5);
-    
+    delete(pBn5);    
+  */
   }
   catch ( gum::IOError& e ) {
     GUM_SHOWERROR( e );
   }
+  /*
 {
     gum::Size density[] = {9, 18, 27, 36, 45}; 
           int trial_nb = 5;
@@ -104,7 +108,7 @@ int main( void ) {
 	    std::cout << "end forloop " << std::endl;
           }
 }
-  
+*/  
   gum::__atexit();
 }
 
