@@ -336,12 +336,15 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 
 void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label ) {
 		std::string name_of_label;
-		if (num_label>=parents.size()) SemErr("Too many labels in this assignation");
 		
 		if (la->kind == _ident || la->kind == _integer) {
 			IDENT_OR_INTEGER(name_of_label);
 			labels.push_back(name_of_label);
+			if (num_label>=parents.size()) {
+			SemErr("Too many labels in this assignation");
+			} else {
 			TRY(factory().setParentModality(parents[num_label],name_of_label));
+			}
 			
 		} else if (la->kind == 22 /* "*" */) {
 			Get();

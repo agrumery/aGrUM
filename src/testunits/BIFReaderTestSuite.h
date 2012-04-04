@@ -981,6 +981,21 @@ namespace gum_tests {
 
         if( net ) delete net;
       }
+      
+      void dBN_INRA_regression_testing() {
+	{
+	  gum::BayesNet<float> net;
+	  gum::BIFReader<float> reader( &net, std::string(GET_PATH_STR( dBN_with_errors.bif )));
+	  TS_ASSERT_EQUALS(reader.warnings(),(gum::Size)3);
+	  TS_ASSERT_EQUALS(reader.errors(),(gum::Size)3);
+	}
+        {
+	  gum::BayesNet<float> net;
+	  gum::BIFReader<float> reader( &net, std::string(GET_PATH_STR( dBN.bif )));
+	  TS_ASSERT_EQUALS(reader.warnings(),(gum::Size)2);
+	  TS_ASSERT_EQUALS(reader.errors(),(gum::Size)0);
+	}
+      }
 
       void testWater() {
         std::string file = GET_PATH_STR( Water.bif );
