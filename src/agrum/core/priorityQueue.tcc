@@ -32,7 +32,7 @@
 
 namespace gum {
 
-  
+
   // ==============================================================================
   /// basic constructor
   // ==============================================================================
@@ -73,7 +73,7 @@ namespace gum {
                                            const_cast<Val*>( &iter.key() ) );
         }
       }
-    }    
+    }
     catch ( ... ) {  // if there was a problem, deallocate everything
       for ( HashTableConstIterator< Val,std::vector<Size> >
               iter2 = __indices.begin(); iter2!=iter; ++iter2 )
@@ -383,7 +383,7 @@ namespace gum {
                                                 const Val& val ) {
     // check whether val already exists in the queue
     bool val_exists = __indices.exists( val );
-    
+
     // in uniqueness mode, check that val does not already exist
     if ( __indices.keyUniquenessPolicy() && val_exists ) {
       GUM_ERROR( DuplicateElement, "val already exists in the priority queue" );
@@ -413,7 +413,7 @@ namespace gum {
 
     __heap.push_back( bucket );
     ++__nb_elements;
-    
+
     // restore the heap property
     Size i = __nb_elements - 1;
     for ( Size j = ( i-1 ) >> 1; i && __cmp( priority,__heap[j]->first );
@@ -487,11 +487,13 @@ namespace gum {
   /// changes the size of the internal structure storing the priority queue
   // ==============================================================================
   template <typename Val, typename Priority, typename Cmp>
-  void
+  Size
   PriorityQueue<Val,Priority,Cmp>::setPriority( Size index,
                                                 const Priority& new_priority ) {
     // check whether the element the priority of which should be changed exists
-    if ( index >= __nb_elements ) return;
+    if ( index >= __nb_elements ) {
+      GUM_ERROR( NotFound, "not enough elements in the PriorityQueue" );
+    }
 
     // get the element itself
     std::pair<Priority, Val*>* val = __heap[index];
@@ -552,6 +554,8 @@ namespace gum {
         }
       }
     }
+
+    return new_index;
   }
 
   // ==============================================================================
@@ -595,7 +599,7 @@ namespace gum {
   ( const bool new_policy )  {
     __indices.setKeyUniquenessPolicy( new_policy );
   }
-  
+
   // ==============================================================================
   /// A \c << operator for priority queues
   // ==============================================================================

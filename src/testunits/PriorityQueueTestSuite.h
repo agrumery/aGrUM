@@ -73,7 +73,7 @@ namespace gum_tests {
         queue1.setPriority( 0, 4 );
         TS_ASSERT( queue1.top() == "AAA" );
         TS_ASSERT( queue1.topPriority() == 4 );
-        TS_GUM_ASSERT_THROWS_NOTHING( queue1.setPriority( 10, 4 ) );
+        TS_ASSERT_THROWS( queue1.setPriority( 10, 4 ) ,gum::NotFound );
 
         queue1.setPriorityByVal( "BBB", 2 );
         TS_ASSERT( queue1.top() == "BBB" );
@@ -186,7 +186,7 @@ namespace gum_tests {
         queue1.setPriority( 0, 4 );
         TS_ASSERT( queue1.top() == set1 );
         TS_ASSERT( queue1.topPriority() == 4 );
-        TS_GUM_ASSERT_THROWS_NOTHING( queue1.setPriority( 10, 4 ) );
+        TS_ASSERT_THROWS( queue1.setPriority( 10, 4 ) ,gum::NotFound );
 
         queue1.setPriorityByVal( set2, 2 );
         TS_ASSERT( queue1.top() == set2 );
