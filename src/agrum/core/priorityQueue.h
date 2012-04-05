@@ -59,7 +59,7 @@
  * std::cerr << queue1 << std::endl;
  *
  * // change the priority of the element at position 3
- * queue1.setPriority (3,100);
+ * Size new_pos=queue1.setPriority (3,100);
  *
  * // change the priority of all instances of element "AAA"
  * queue1.setPriorityByVal ("AAA",100);
@@ -139,7 +139,7 @@ namespace gum {
    * std::cerr << queue1 << std::endl;
    *
    * // change the priority of the element at position 3
-   * queue1.setPriority (3,100);
+   * Size new_pos=queue1.setPriority (3,100);
    *
    * // change the priority of all instances of element "AAA"
    * queue1.setPriorityByVal ("AAA",100);
@@ -264,10 +264,10 @@ namespace gum {
 
       // ============================================================================
       /// modifies the priority of the element at position "index" of the queue
-      /** If the element cannot be found, the function returns without throwing any
-       * exception. */
+      /** @throw NotFound If the element cannot be found
+       */
       // ============================================================================
-      void setPriority( Size index, const Priority& new_priority );
+      Size setPriority( Size index, const Priority& new_priority );
 
       // ============================================================================
       /// modifies the priority of each instance of a given element
