@@ -64,9 +64,9 @@ namespace gum {
 
   const std::string RangeVariable::toString() const {
     std::stringstream s;
-    s << name() << " [" << min() << ", " << max() << "]";
+    s << name() << "[" << min() << "-" << max() << "]";
     return s.str();
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;

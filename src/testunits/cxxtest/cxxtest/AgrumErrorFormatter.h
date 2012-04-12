@@ -9,8 +9,11 @@
 // analogout to std::ostream.
 //
 
-#include <agrum/core/timer.h>
+// in order to force GUM_CHECKPOINT / GUM_TRACE / GUM_TRACE_VAR to works even in release mode
+#define GUM_TRACE_ON
+
 #include <agrum/config.h>
+#include <agrum/core/timer.h>
 
 #include <cxxtest/TestRunner.h>
 #include <cxxtest/TestListener.h>

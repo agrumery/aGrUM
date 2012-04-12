@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -53,6 +54,11 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size )4 );
         TS_ASSERT_EQUALS( var1.label( 1 ), "3" );
         TS_ASSERT_EQUALS( var1["3"], ( gum::Idx ) 1 );
+
+        std::stringstream s;
+        s<<var1;
+        TS_ASSERT_EQUALS( s.str(),"var1<4,3,2,1>" );
+        TS_ASSERT_EQUALS( var1.toString(),"var1<4,3,2,1>" );
       }
   };
 }

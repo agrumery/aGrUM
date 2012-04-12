@@ -18,57 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief min aggregator
+ * @brief exists aggregator
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-
+#include <sstream>
 // to ease parser in IDEs
-#include<agrum/multidim/aggregators/multiDimAggregator.h>
-#include<agrum/multidim/aggregators/min.h>
+#include<agrum/multidim/aggregators/or.h>
 
 namespace gum {
 
   namespace aggregator {
-    // ==============================================================================
-    /// Default constructor
-    // ==============================================================================
     template<typename T_DATA> INLINE
-    Min<T_DATA>::Min(): MultiDimAggregator<T_DATA>() {
-      GUM_CONSTRUCTOR( Min )
-    }
-
-// ==============================================================================
-/// Default constructor
-// ==============================================================================
-    template<typename T_DATA> INLINE
-    Min<T_DATA>::Min( const Min<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
-      GUM_CONS_CPY( Min );
-    }
-
-// ==============================================================================
-/// destructor
-// ==============================================================================
-    template<typename T_DATA> INLINE
-    Min<T_DATA>::~Min() {
-      GUM_DESTRUCTOR( Min );
+    And<T_DATA>::And(  ): MultiDimAggregator<T_DATA>() {
+      GUM_CONSTRUCTOR( And )
     }
 
     template<typename T_DATA> INLINE
-    Idx Min<T_DATA>::_neutralElt() const { return ( Idx )100000;} //clearly arbitrary choosen
-
-    template<typename T_DATA> INLINE
-    Idx Min<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 < i2 ) ? i1 : i2;}
-
-    template<typename T_DATA> INLINE
-    std::string Min<T_DATA>::aggregatorName( void ) const {
-      return "min";
+    And<T_DATA>::And( const And<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+      GUM_CONS_CPY( And );
     }
 
     template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Min<T_DATA>::newFactory() const {
-      return new Min<T_DATA>;
+    And<T_DATA>::~And() {
+      GUM_DESTRUCTOR( And );
     }
 
-  } // aggregator
+    template<typename T_DATA> INLINE
+    Idx And<T_DATA>::_neutralElt() const { return ( Idx )1;}
+
+    template<typename T_DATA> INLINE
+    Idx And<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
+      if( i1 == 1 ) {
+        return ( Idx )1;
+      } else {
+        stop_iteration = true;
+        return ( Idx )0;
+      }
+    }
+
+    template<typename T_DATA> INLINE
+    std::string And<T_DATA>::aggregatorName( void ) const {
+      return std::string("and");
+    }
+
+    template<typename T_DATA> INLINE
+    MultiDimContainer<T_DATA>* And<T_DATA>::newFactory() const {
+      return new And<T_DATA>();
+    }
+
+  } // namespace aggregator
 } // namespace gum

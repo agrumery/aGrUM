@@ -307,7 +307,6 @@ namespace gum {
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
       * @return the id of the added variable.
-      * @throws DuplicateElement if id(<>0) is already used
       */
       NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight );
       NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight );
@@ -328,6 +327,30 @@ namespace gum {
       NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
       NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
       NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
+
+      /**
+       * Add a variable, it's associate node and an OR implementation. The id of the new
+       * variable is automatically generated.
+       *
+       * @warning OR is implemented as a gum::aggregator::Or which means that if parents are not boolean, all value>1 is True
+       *
+       * @param variable The variable added by copy.
+       * @return the id of the added variable.
+       * @throws SizeError if variable.domainSize()>2
+       */
+      NodeId addOR( const DiscreteVariable& variable);
+
+      /**
+       * Add a variable, it's associate node and an AND implementation. The id of the new
+       * variable is automatically generated.
+       *
+       * @warning AND is implemented as a gum::aggregator::And which means that if parents are not boolean, all value>1 is True
+       *
+       * @param variable The variable added by copy.
+       * @return the id of the added variable.
+       * @throws SizeError if variable.domainSize()>2
+       */
+      NodeId addAND( const DiscreteVariable& variable);
 
       /**
       * Add an arc in the BN, and update arc.head's CPT.
