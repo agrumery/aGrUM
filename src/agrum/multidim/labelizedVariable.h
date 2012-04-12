@@ -42,11 +42,6 @@ namespace gum {
   class LabelizedVariable;
 
 
-  /// for friendly displaying the content of the variable
-  std::ostream& operator<< ( std::ostream&, const LabelizedVariable& );
-
-
-
   /* ============================================================================ */
   /* ============================================================================ */
   /* ===                        GUM_LABELIZED_VARIABLE                        === */
@@ -180,7 +175,7 @@ namespace gum {
 
     private:
       /// the set of labels contained in the variable
-      Sequence<std::string> zeLabels;
+      Sequence<std::string> __labels;
 
   };
 

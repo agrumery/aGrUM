@@ -24,6 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
+// to ease IDE parsing
+#include <agrum/multidim/rangeVariable.h>
 
 namespace gum {
 
@@ -56,7 +58,7 @@ namespace gum {
   INLINE
   const std::string
   RangeVariable::label( Idx indice ) const {
-    if ( belongs( indice  + __min ) ) {
+    if( belongs( indice  + __min ) ) {
       std::stringstream strBuff;
       strBuff << indice+__min;
       return strBuff.str();
@@ -71,11 +73,11 @@ namespace gum {
     std::istringstream i( l );
     Idx res;
 
-    if ( !( i>>res ) ) {
+    if( !( i>>res ) ) {
       GUM_ERROR( NotFound,"Bad label" );
     }
 
-    if ( ! belongs( res ) ) {
+    if( ! belongs( res ) ) {
       GUM_ERROR( NotFound,"Bad label" );
     }
 
@@ -124,7 +126,7 @@ namespace gum {
   INLINE
   bool
   RangeVariable::belongs( Idx indice ) const {
-    return (( __min <= indice ) && ( indice <= __max ) );
+    return ( ( __min <= indice ) && ( indice <= __max ) );
   }
 
   // ============================================================================
@@ -139,15 +141,6 @@ namespace gum {
     __max = aRV.__max;
     return *this;
   }
-
-  // ============================================================================
-  // For friendly displaying the content of the variable.
-  // ============================================================================
-  INLINE
-  std::ostream& operator<< ( std::ostream& s, const RangeVariable& LDRV ) {
-    return s << LDRV.toString();
-  }
-
 
   INLINE DiscreteVariable::Type RangeVariable::type( void ) const {
     return Range;

@@ -33,6 +33,8 @@
 #include <agrum/multidim/aggregators/count.h>
 #include <agrum/multidim/aggregators/forall.h>
 #include <agrum/multidim/aggregators/exists.h>
+#include <agrum/multidim/aggregators/or.h>
+#include <agrum/multidim/aggregators/and.h>
 
 
 namespace gum_tests {
@@ -90,12 +92,28 @@ namespace gum_tests {
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
 
+      float __is_or( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+        gum::Idx tmp;
+
+        tmp = ( ( b == ( gum::Idx )1 ) || ( c == ( gum::Idx )1 ) || ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+
+        return ( tmp == a ) ? ( float )1 : ( float )0;
+      }
+
+      float __is_and( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+        gum::Idx tmp;
+
+        tmp = ( ( b == ( gum::Idx )1 ) && ( c == ( gum::Idx )1 ) && ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+
+        return ( tmp == a ) ? ( float )1 : ( float )0;
+      }
+
     public:
       void testCreationMin() {
         gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
         gum::aggregator::Min<float> p;
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=min(b [0, 3],c [0, 3],d [0, 3])" );
+        TS_ASSERT_EQUALS( p.toString(), "a[0-3]=min(b[0-3],c[0-3],d[0-3])" );
 
         gum::Instantiation i( p );
 
@@ -108,7 +126,7 @@ namespace gum_tests {
         gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
         gum::aggregator::Max<float> p;
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=max(b [0, 3],c [0, 3],d [0, 3])" );
+        TS_ASSERT_EQUALS( p.toString(), "a[0-3]=max(b[0-3],c[0-3],d[0-3])" );
 
         gum::Instantiation i( p );
 
@@ -121,7 +139,7 @@ namespace gum_tests {
         gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
         gum::aggregator::Count<float> p( ( gum::Idx )2 );
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=count[2](b [0, 3],c [0, 3],d [0, 3])" );
+        TS_ASSERT_EQUALS( p.toString(), "a[0-3]=count[2](b[0-3],c[0-3],d[0-3])" );
 
         gum::Instantiation i( p );
 
@@ -134,7 +152,7 @@ namespace gum_tests {
         gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
         gum::aggregator::Forall<float> p( ( gum::Idx )2 );
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=forall[2](b [0, 3],c [0, 3],d [0, 3])" );
+        TS_ASSERT_EQUALS( p.toString(), "a[0-3]=forall[2](b[0-3],c[0-3],d[0-3])" );
 
         gum::Instantiation i( p );
 
@@ -147,12 +165,38 @@ namespace gum_tests {
         gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ), c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
         gum::aggregator::Exists<float> p( ( gum::Idx )2 );
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a [0, 3]=exists[2](b [0, 3],c [0, 3],d [0, 3])" );
+        TS_ASSERT_EQUALS( p.toString(), "a[0-3]=exists[2](b[0-3],c[0-3],d[0-3])" );
 
         gum::Instantiation i( p );
 
         for( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_exists_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+        }
+      }
+
+      void testCreationOR() {
+        gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 ), c( "c", "", 2 ), d( "d", "", 2 );
+        gum::aggregator::Or<float> p;
+        TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=or(b<0,1,2,3>,c<0,1>,d<0,1>)" );
+
+        gum::Instantiation i( p );
+
+        for( i.setFirst(); ! i.end(); ++i ) {
+          TS_ASSERT_EQUALS( p[i], __is_or( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+        }
+      }
+
+      void testCreationAND() {
+        gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 ), c( "c", "", 2 ), d( "d", "", 2 );
+        gum::aggregator::And<float> p;
+        TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=and(b<0,1,2,3>,c<0,1>,d<0,1>)" );
+
+        gum::Instantiation i( p );
+
+        for( i.setFirst(); ! i.end(); ++i ) {
+          TS_ASSERT_EQUALS( p[i], __is_and( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
 

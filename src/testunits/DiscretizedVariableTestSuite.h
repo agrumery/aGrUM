@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -70,6 +71,9 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS( v.addTick( 2 ), gum::DefaultInLabel );
 
+        std::stringstream s;
+        s<<v;
+        TS_ASSERT_EQUALS(s.str(),"var<[1;2[,[2;3]>");
         TS_ASSERT_EQUALS( v.toString(), "var<[1;2[,[2;3]>" );
 
         TS_ASSERT_EQUALS( v.tick( ( gum::Idx )0 ),1 );

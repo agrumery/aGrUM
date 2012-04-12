@@ -75,7 +75,7 @@ namespace gum {
        * @return return the message content
        */
       const std::string content() const {
-        return _type + " " + _msg;
+        return _type + " : " + _msg;
       }
 
       const std::string type() const {
