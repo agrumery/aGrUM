@@ -95,7 +95,7 @@ namespace gum_tests {
       float __is_or( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
         gum::Idx tmp;
 
-        tmp = ( ( b == ( gum::Idx )1 ) || ( c == ( gum::Idx )1 ) || ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+        tmp = ( ( b == ( gum::Idx )1 ) || ( c == ( gum::Idx )1 ) || ( d == ( gum::Idx )1 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
@@ -103,7 +103,7 @@ namespace gum_tests {
       float __is_and( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
         gum::Idx tmp;
 
-        tmp = ( ( b == ( gum::Idx )1 ) && ( c == ( gum::Idx )1 ) && ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+        tmp = ( ( b == ( gum::Idx )1 ) && ( c == ( gum::Idx )1 ) && ( d == ( gum::Idx )1 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }

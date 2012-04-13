@@ -338,7 +338,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws SizeError if variable.domainSize()>2
        */
-      NodeId addOR( const DiscreteVariable& variable);
+      NodeId addOR( const DiscreteVariable& variable );
 
       /**
        * Add a variable, it's associate node and an AND implementation. The id of the new
@@ -350,7 +350,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws SizeError if variable.domainSize()>2
        */
-      NodeId addAND( const DiscreteVariable& variable);
+      NodeId addAND( const DiscreteVariable& variable );
 
       /**
       * Add an arc in the BN, and update arc.head's CPT.
@@ -419,4 +419,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
