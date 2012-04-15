@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Abstract base class for all multi dimensionnal aggregator
+ * @brief class for multiDimNoisyORCompound
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_MULTI_DIM_NOISY_OR_COMPUND_H
-#define GUM_MULTI_DIM_NOISY_OR_COMPUND_H
+#ifndef GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
+#define GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
 
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/CIModels/multiDimCIModel.h>
 
 
 namespace gum {
 
   /* =========================================================================== */
   /* =========================================================================== */
-  /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
+  /* ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  === */
   /* =========================================================================== */
   /* =========================================================================== */
   /** @class MultiDimNoisyORCompound
@@ -51,7 +51,7 @@ namespace gum {
   /* =========================================================================== */
   template<typename T_DATA>
 
-  class MultiDimNoisyORCompound : public MultiDimReadOnly<T_DATA> {
+  class MultiDimNoisyORCompound : public MultiDimCIModel<T_DATA> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -99,32 +99,10 @@ namespace gum {
     /// @{
     // ============================================================================
   public:
+    
     virtual T_DATA get( const Instantiation &i ) const;
 
     const std::string toString( void ) const;
-
-    // @todo : optimisation with a always up-to-date value associated to each instantiation
-    virtual void changeNotification( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
-
-    virtual void setFirstNotification( gum::Instantiation& ) {};
-
-    virtual void setLastNotification( gum::Instantiation& ) {};
-
-    virtual void setIncNotification( gum::Instantiation& ) {};
-
-    virtual void setDecNotification( gum::Instantiation& ) {};
-
-    virtual void setChangeNotification( gum::Instantiation& ) {};
-
-    const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
-
-    /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
-    virtual Size realSize() const {return 0;};
-
-    T_DATA causalWeight( const DiscreteVariable& v ) const;
-    void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
-    T_DATA externalWeight() const;
-    void externalWeight( T_DATA w ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -137,18 +115,6 @@ namespace gum {
     virtual const std::string& name () const;
 
     /// @}
-  protected:
-    /// \f$ p_0 \f$ in Henrion (89).
-    mutable T_DATA __external_weight;
-
-    /// @name causal weights
-    /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-    /// @{
-    T_DATA __default_weight;
-    mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
-    /// @}
-
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
   // ==============================================================================
@@ -161,8 +127,8 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimNoisyORCompound.tcc>
+#include <agrum/multidim/CIModels/multiDimNoisyORCompound.tcc>
 
 
-#endif /* GUM_MULTI_DIM_NOISY_OR_COMPUND_H */
+#endif /* GUM_MULTI_DIM_NOISY_OR_COMPOUND_H */
 

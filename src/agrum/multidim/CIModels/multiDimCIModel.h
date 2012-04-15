@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Abstract base class for all multi dimensionnal aggregator
- *
+ * @brief Abstract base class for all multi dimensionnal Conditional Independency models 
+ * (see "The Noisy-Average Model for Local Probability Distributions", Zagorecki, 2003 
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_MULTI_DIM_NOISY_OR_NET_H
-#define GUM_MULTI_DIM_NOISY_OR_NET_H
+#ifndef GUM_MULTI_DIM_CI_MODEL_H
+#define GUM_MULTI_DIM_CI_MODEL_H
 
 #include <agrum/multidim/multiDimReadOnly.h>
 
@@ -35,23 +35,17 @@ namespace gum {
   /* ===                       GUM_MULTI_DIM_AGGREGATOR                      === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /** @class MultiDimNoisyORNet
-   * @brief Noisy OR representation
+  /** @class MultiDimCIModel
+   * @brief abstract class for Conditional Indepency Models
    * @ingroup multidim_group
    *
-   * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
-   *
    * @warning
-   *   - The first variable is assumed to be the NOISY-OR. The latter are
+   *   - The first variable is assumed to be the children. The latter are
    *     the causes.
-   *   - This code give probabilities for BINARY VARIABLES (other values are
-   *     assumed to be of probability 0). But for optimization reason, we will
-   *     never check if it is the case.
    */
   /* =========================================================================== */
   template<typename T_DATA>
-
-  class MultiDimNoisyORNet : public MultiDimReadOnly<T_DATA> {
+  class MultiDimCIModel : public MultiDimReadOnly<T_DATA> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -60,38 +54,22 @@ namespace gum {
     // ============================================================================
     /// Default constructor.
     // ============================================================================
-    MultiDimNoisyORNet( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-    MultiDimNoisyORNet( const MultiDimNoisyORNet<T_DATA>& from );
+    MultiDimCIModel( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
+    MultiDimCIModel( const MultiDimCIModel<T_DATA>& from );
 
     // ============================================================================
     /// Copy constructor using a bijection to swap variables from source.
     /// @param bij First variables are new variables, seconds are in from.
     // ============================================================================
-    MultiDimNoisyORNet( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                        const MultiDimNoisyORNet<T_DATA>& from );
+    MultiDimCIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                             const MultiDimCIModel<T_DATA>& from );
 
     // ============================================================================
     /// Destructor.
     // ============================================================================
-    virtual ~MultiDimNoisyORNet();
+    virtual ~MultiDimCIModel();
 
     /// @}
-
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
-    virtual MultiDimContainer<T_DATA>* newFactory() const;
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -99,8 +77,6 @@ namespace gum {
     /// @{
     // ============================================================================
   public:
-    virtual T_DATA get( const Instantiation &i ) const;
-
     const std::string toString( void ) const;
 
     // @todo : optimisation with a always up-to-date value associated to each instantiation
@@ -119,7 +95,7 @@ namespace gum {
     const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
 
     /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
-    virtual Size realSize() const {return 0;};
+    virtual Size realSize() const {return this->nbrDim();};
 
     T_DATA causalWeight( const DiscreteVariable& v ) const;
     void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
@@ -151,18 +127,10 @@ namespace gum {
     virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
-  // ==============================================================================
-  /// For friendly displaying the content of the array.
-  // ==============================================================================
-  template<typename T_DATA>
-  std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyORNet<T_DATA>& ag );
-
-
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimNoisyORNet.tcc>
+#include <agrum/multidim/CIModels/multiDimCIModel.tcc>
 
 
-#endif /* GUM_MULTI_DIM_NOISY_OR_NET_H */
+#endif /* GUM_MULTI_DIM_CI_MODEL_H */
 
