@@ -101,108 +101,108 @@ void Parser::DSL() {
 		std::string name_of_network;
 		factory().startNetworkDeclaration();
 		
-		Expect(6 /* "net" */);
-		if (la->kind == _ident) {
+		Expect(6);
+		if (la->kind == 1) {
 			IDENT(name_of_network);
-		} else if (la->kind == _string) {
+		} else if (la->kind == 4) {
 			STRING(name_of_network);
 		} else SynErr(34);
 		factory().addNetworkProperty("name", name_of_network); 
-		Expect(7 /* "{" */);
+		Expect(7);
 		factory().endNetworkDeclaration(); 
-		if (la->kind == 20 /* "HEADER" */) {
+		if (la->kind == 20) {
 			HEADER_PART();
 		}
-		if (la->kind == 21 /* "CREATION" */) {
+		if (la->kind == 21) {
 			CREATION_PART();
 		}
-		if (la->kind == 10 /* "NUMSAMPLES" */) {
+		if (la->kind == 10) {
 			NUM_SAMPLES();
 		}
-		if (la->kind == 15 /* "SCREEN" */) {
+		if (la->kind == 15) {
 			SCREEN_PART();
 		}
-		if (la->kind == 22 /* "WINDOWPOSITION" */) {
+		if (la->kind == 22) {
 			WINDOWPOSITION_PART();
 		}
-		if (la->kind == 11 /* "BKCOLOR" */) {
+		if (la->kind == 11) {
 			BK_COLOR();
 		}
-		if (la->kind == 16 /* "USER_PROPERTIES" */) {
+		if (la->kind == 16) {
 			USER_PROPERTIES_PART();
 		}
-		if (la->kind == 17 /* "DOCUMENTATION" */) {
+		if (la->kind == 17) {
 			DOCUMENTATION_PART();
 		}
-		if (la->kind == 12 /* "SHOWAS" */) {
+		if (la->kind == 12) {
 			SHOW_AS();
 		}
-		while (la->kind == 13 /* "node" */) {
+		while (la->kind == 13) {
 			NODE();
 		}
-		if (la->kind == 19 /* "OBSERVATION_COST" */) {
+		if (la->kind == 19) {
 			OBSERVATION_COST_PART();
 		}
-		Expect(8 /* "}" */);
-		Expect(9 /* ";" */);
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(_ident);
+		Expect(1);
 		name=narrow(t->val); 
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(_string);
+		Expect(4);
 		str=narrow(t->val); 
 }
 
 void Parser::HEADER_PART() {
-		Expect(20 /* "HEADER" */);
+		Expect(20);
 		BLOC_PART();
 }
 
 void Parser::CREATION_PART() {
-		Expect(21 /* "CREATION" */);
+		Expect(21);
 		BLOC_PART();
 }
 
 void Parser::NUM_SAMPLES() {
-		Expect(10 /* "NUMSAMPLES" */);
-		Expect(_integer);
-		Expect(9 /* ";" */);
+		Expect(10);
+		Expect(2);
+		Expect(9);
 }
 
 void Parser::SCREEN_PART() {
-		Expect(15 /* "SCREEN" */);
+		Expect(15);
 		BLOC_PART();
 }
 
 void Parser::WINDOWPOSITION_PART() {
-		Expect(22 /* "WINDOWPOSITION" */);
+		Expect(22);
 		BLOC_PART();
 }
 
 void Parser::BK_COLOR() {
-		Expect(11 /* "BKCOLOR" */);
-		Expect(_integer);
-		Expect(9 /* ";" */);
+		Expect(11);
+		Expect(2);
+		Expect(9);
 }
 
 void Parser::USER_PROPERTIES_PART() {
-		Expect(16 /* "USER_PROPERTIES" */);
+		Expect(16);
 		BLOC_PART();
 }
 
 void Parser::DOCUMENTATION_PART() {
-		Expect(17 /* "DOCUMENTATION" */);
+		Expect(17);
 		BLOC_PART();
 }
 
 void Parser::SHOW_AS() {
-		Expect(12 /* "SHOWAS" */);
-		Expect(_integer);
-		Expect(9 /* ";" */);
+		Expect(12);
+		Expect(2);
+		Expect(9);
 }
 
 void Parser::NODE() {
@@ -210,71 +210,71 @@ void Parser::NODE() {
 		std::vector<std::string> parents;
 		int nbrMod = 0;
 		
-		Expect(13 /* "node" */);
+		Expect(13);
 		IDENT(var);
-		Expect(7 /* "{" */);
-		Expect(14 /* "TYPE" */);
-		Expect(_ident);
-		Expect(9 /* ";" */);
+		Expect(7);
+		Expect(14);
+		Expect(1);
+		Expect(9);
 		HEADER();
-		if (la->kind == 15 /* "SCREEN" */) {
+		if (la->kind == 15) {
 			SCREEN_PART();
 		}
-		if (la->kind == 16 /* "USER_PROPERTIES" */) {
+		if (la->kind == 16) {
 			USER_PROPERTIES_PART();
 		}
-		if (la->kind == 17 /* "DOCUMENTATION" */) {
+		if (la->kind == 17) {
 			DOCUMENTATION_PART();
 		}
 		PARENTS(parents);
 		VARIABLE_DEFINITION(nbrMod, var,parents);
-		if (la->kind == 18 /* "EXTRA_DEFINITION" */) {
+		if (la->kind == 18) {
 			EXTRA_DEFINITION_PART();
 		}
-		Expect(8 /* "}" */);
-		Expect(9 /* ";" */);
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::OBSERVATION_COST_PART() {
-		Expect(19 /* "OBSERVATION_COST" */);
+		Expect(19);
 		BLOC_PART();
 }
 
 void Parser::HEADER() {
 		std::string content; 
-		Expect(20 /* "HEADER" */);
-		Expect(7 /* "{" */);
-		Expect(23 /* "ID" */);
-		Expect(_ident);
-		Expect(9 /* ";" */);
-		Expect(24 /* "NAME" */);
-		Expect(_string);
-		Expect(9 /* ";" */);
-		Expect(8 /* "}" */);
-		Expect(9 /* ";" */);
+		Expect(20);
+		Expect(7);
+		Expect(23);
+		Expect(1);
+		Expect(9);
+		Expect(24);
+		Expect(4);
+		Expect(9);
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::PARENTS(std::vector<std::string>& parents ) {
-		Expect(25 /* "PARENTS" */);
-		Expect(26 /* "(" */);
-		if (la->kind == _ident) {
+		Expect(25);
+		Expect(26);
+		if (la->kind == 1) {
 			PARENTS_LIST(parents);
 		}
-		Expect(27 /* ")" */);
-		Expect(9 /* ";" */);
+		Expect(27);
+		Expect(9);
 }
 
 void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents ) {
-		Expect(29 /* "DEFINITION" */);
-		Expect(7 /* "{" */);
-		Expect(30 /* "NAMESTATES" */);
-		Expect(26 /* "(" */);
+		Expect(29);
+		Expect(7);
+		Expect(30);
+		Expect(26);
 		TRY(factory().startVariableDeclaration());
 		TRY(factory().variableName(var));
 		
 		MODALITY_LIST(nbrMod);
-		Expect(27 /* ")" */);
-		Expect(9 /* ";" */);
+		Expect(27);
+		Expect(9);
 		TRY(factory().endVariableDeclaration());
 		gum::Size i;
 		TRY(factory().startParentsDeclaration(var));
@@ -292,17 +292,17 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
 		
-		Expect(8 /* "}" */);
-		Expect(9 /* ";" */);
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::EXTRA_DEFINITION_PART() {
-		Expect(18 /* "EXTRA_DEFINITION" */);
+		Expect(18);
 		BLOC_PART();
 }
 
 void Parser::BLOC_PART() {
-		Expect(7 /* "{" */);
+		Expect(7);
 		while (StartOf(1)) {
 			if (StartOf(2)) {
 				Get();
@@ -310,8 +310,8 @@ void Parser::BLOC_PART() {
 				BLOC_PART();
 			}
 		}
-		Expect(8 /* "}" */);
-		Expect(9 /* ";" */);
+		Expect(8);
+		Expect(9);
 }
 
 void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
@@ -319,7 +319,7 @@ void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
 		
 		IDENT(parent);
 		parents.push_back(parent);	
-		while (la->kind == 28 /* "," */) {
+		while (la->kind == 28) {
 			Get();
 			IDENT(parent);
 			parents.push_back(parent); 
@@ -333,24 +333,24 @@ void Parser::MODALITY_LIST(int& nbrMod) {
 			TRY(factory().addModality(label));
 			nbrMod++;
 		
-		if (la->kind == 28 /* "," */) {
+		if (la->kind == 28) {
 			Get();
 			MODALITY_LIST(nbrMod);
 		}
 }
 
 void Parser::PROBA(const std::string& var, const std::vector<std::string>& parents ) {
-		Expect(31 /* "PROBABILITIES" */);
-		Expect(26 /* "(" */);
+		Expect(31);
+		Expect(26);
 		RAW_PROBA(var, parents);
-		Expect(27 /* ")" */);
-		Expect(9 /* ";" */);
+		Expect(27);
+		Expect(9);
 }
 
 void Parser::IDENT_OR_INTEGER(std::string& name) {
-		if (la->kind == _ident) {
+		if (la->kind == 1) {
 			IDENT(name);
-		} else if (la->kind == _integer) {
+		} else if (la->kind == 2) {
 			Get();
 			name=narrow(t->val);
 		} else SynErr(35);
@@ -409,8 +409,8 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 		FLOAT(value);
 		v.push_back(value); 
 		while (StartOf(3)) {
-			if (la->kind == 28 /* "," */ || la->kind == 32 /* "|" */) {
-				if (la->kind == 28 /* "," */) {
+			if (la->kind == 28 || la->kind == 32) {
+				if (la->kind == 28) {
 					Get();
 				} else {
 					Get();
@@ -422,10 +422,10 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == _number) {
+		if (la->kind == 3) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == _integer) {
+		} else if (la->kind == 2) {
 			Get();
 			val=coco_atoi(t->val); 
 		} else SynErr(36);
