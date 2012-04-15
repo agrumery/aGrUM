@@ -23,7 +23,7 @@
 #include <agrum/multidim/labelizedVariable.h>
 #include <agrum/multidim/rangeVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/GibbsInference.h>
@@ -40,10 +40,12 @@ namespace gum_tests {
         p.causalWeight( b, 0.4 );
         p.causalWeight( d, 0.7 );
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.realSize(),(gum::Size)4 );
 
         gum::MultiDimNoisyORCompound<float> q( p );
-        TS_ASSERT_EQUALS( q.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( q.toString(), "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.realSize(),(gum::Size)4 );
       }
 
       void testComputationInNoisyORCompound() {
