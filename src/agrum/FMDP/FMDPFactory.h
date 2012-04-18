@@ -32,7 +32,7 @@
 // ============================================================================
 #include <agrum/core/sequence.h>
 // ============================================================================
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 // ============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>

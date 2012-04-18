@@ -173,7 +173,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/variable.inl>
+#include <agrum/randomVariables/variable.inl>
 #endif /* GUM_NO_INLINE */
 
 

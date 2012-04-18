@@ -20,8 +20,8 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/randomVariables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
 #include <agrum/BN/BayesNet.h>

@@ -32,7 +32,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/hashFunc.h>
-#include <agrum/multidim/variable.h>
+#include <agrum/randomVariables/variable.h>
 
 
 namespace gum {
@@ -166,8 +166,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/discreteVariable.inl>
+#include <agrum/randomVariables/discreteVariable.inl>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DISCRETE_VARIABLE_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

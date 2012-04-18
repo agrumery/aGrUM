@@ -23,7 +23,7 @@
 #include <string>
 // =====================================================================
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>

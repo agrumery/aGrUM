@@ -25,7 +25,7 @@
  */
 
 // to ease IDE parsing
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/randomVariables/rangeVariable.h>
 
 namespace gum {
 

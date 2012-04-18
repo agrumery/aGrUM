@@ -29,7 +29,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/set.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/projections4MultiDim.h>

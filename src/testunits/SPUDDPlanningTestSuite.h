@@ -28,7 +28,7 @@
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
 // =====================================================================
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
 // =====================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>

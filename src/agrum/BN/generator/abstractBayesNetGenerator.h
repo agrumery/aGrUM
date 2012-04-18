@@ -35,7 +35,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 // ============================================================================
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 // ============================================================================
 #include <agrum/BN/algorithms/divergence/KL.h>
 // ============================================================================

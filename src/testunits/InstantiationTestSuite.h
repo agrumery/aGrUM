@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/discretizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/randomVariables/discretizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>

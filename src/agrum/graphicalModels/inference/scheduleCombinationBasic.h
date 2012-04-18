@@ -75,7 +75,7 @@
 
 
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 #include <agrum/graphicalModels/inference/scheduleCombination.h>
 
 

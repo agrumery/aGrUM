@@ -46,7 +46,7 @@
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
 // ============================================================================
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 // ============================================================================
 
 namespace gum {

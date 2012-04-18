@@ -27,7 +27,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 
 namespace gum {
 
@@ -185,7 +185,7 @@ namespace gum {
 
 
 /// always include the implementation of the templates
-#include <agrum/multidim/discretizedVariable.tcc>
+#include <agrum/randomVariables/discretizedVariable.tcc>
 
 
 #endif /* GUM_DISCRETIZED_VARIABLE_H */

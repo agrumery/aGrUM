@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 // ============================================================================
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/randomVariables/rangeVariable.h>
 // ============================================================================
 #ifdef GUM_NO_INLINE
 #include <agrum/multidim/rangeVariable.inl>

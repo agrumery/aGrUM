@@ -44,7 +44,7 @@
 #include <agrum/BN/generator/defaultCPTDisturber.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/BN/generator/abstractBayesNetGenerator.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 

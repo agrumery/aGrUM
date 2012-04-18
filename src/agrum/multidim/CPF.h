@@ -32,7 +32,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/hashTable.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecorator.h>

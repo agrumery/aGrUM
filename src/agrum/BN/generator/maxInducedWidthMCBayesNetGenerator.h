@@ -42,7 +42,7 @@
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 #include <agrum/BN/generator/defaultCPTDisturber.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 
 namespace gum {
 /**

@@ -23,9 +23,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/randomVariables/labelizedVariable.h>
 #include <agrum/influenceDiagram/inference/defaultInfluenceDiagramInference.h>
 
 #include "testsuite_utils.h"

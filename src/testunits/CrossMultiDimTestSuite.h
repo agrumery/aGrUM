@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/randomVariables/rangeVariable.h>
 #include <agrum/multidim/aggregators/min.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimSparse.h>

@@ -33,7 +33,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/randomVariables/discreteVariable.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>

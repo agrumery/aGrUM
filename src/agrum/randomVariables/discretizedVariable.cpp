@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                                  *
+ *   {prenom.nom}_at_lip6.fr   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,29 +17,4 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/multidim/variable.h>
-
-#ifdef GUM_NO_INLINE
-#include <agrum/multidim/variable.inl>
-#endif /* GUM_NO_INLINE */
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-
-namespace gum {
-
-  
-  // =============================================================================
-  /// for friendly displaying the content of the variable
-  // =============================================================================
-  std::ostream& operator<< ( std::ostream& s, const Variable& LDRV ) {
-    s << LDRV.name() << ": " << LDRV.description();
-    return s;
-  }
-
-  
-} /* namespace gum */
-
-
-#endif    // DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/randomVariables/discretizedVariable.h>

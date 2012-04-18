@@ -19,7 +19,7 @@
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/multidim/discretizedVariable.h>
+#include <agrum/randomVariables/discretizedVariable.h>
 
 namespace gum {
 #define INC_TICKS_ARRAY 4
