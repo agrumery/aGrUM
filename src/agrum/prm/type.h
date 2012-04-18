@@ -29,8 +29,8 @@
 // ============================================================================
 #include <vector>
 // ============================================================================
-#include <agrum/randomVariables/discreteVariable.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 // ============================================================================

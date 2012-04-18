@@ -23,7 +23,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/randomVariables/rangeVariable.h>
+#include <agrum/variables/rangeVariable.h>
 
 namespace gum_tests {
 

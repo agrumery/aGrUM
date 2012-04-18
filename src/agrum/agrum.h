@@ -122,8 +122,8 @@ target_link_libraries(foo agrum)
 #include <agrum/graphs/mixedGraph.h>
 
 #include <agrum/multidim/variable.h>
-#include <agrum/randomVariables/discreteVariable.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/discretizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimDecorator.h>

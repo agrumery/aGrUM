@@ -31,7 +31,7 @@
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/core/approximationPolicy/exactPolicy.h>
 #include <agrum/core/approximationPolicy/linearApproximationPolicy.h>

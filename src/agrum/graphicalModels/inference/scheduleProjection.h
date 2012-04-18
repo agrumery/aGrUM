@@ -64,7 +64,7 @@
 
 #include <utility>
 #include <agrum/core/set.h>
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/schedule.h>
 

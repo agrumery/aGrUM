@@ -28,7 +28,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
 
 

@@ -21,7 +21,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/io/BIFXML/BIFXMLIDWriter.h>
 

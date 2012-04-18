@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimAdressable.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
 

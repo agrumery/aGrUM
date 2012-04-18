@@ -21,7 +21,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 
 namespace gum_tests {

@@ -35,7 +35,7 @@
 // ============================================================================
 #include <agrum/config.h>
 // ============================================================================
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
 // ============================================================================
 #include <agrum/prm/utils_prm.h>

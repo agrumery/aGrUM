@@ -33,7 +33,7 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 //======================================================================
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 //======================================================================

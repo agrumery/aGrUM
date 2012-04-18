@@ -24,7 +24,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/graphElements.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/graphs/defaultTriangulation.h>
 
 

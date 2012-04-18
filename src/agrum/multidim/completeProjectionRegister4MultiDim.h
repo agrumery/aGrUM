@@ -34,7 +34,7 @@
 #include <utility>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
 
 namespace gum {

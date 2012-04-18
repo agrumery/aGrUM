@@ -23,7 +23,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 
 namespace gum_tests {

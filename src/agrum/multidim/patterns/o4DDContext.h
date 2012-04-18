@@ -35,7 +35,7 @@
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 // ============================================================================
 
 namespace gum {

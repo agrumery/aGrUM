@@ -27,7 +27,7 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/defaultTriangulation.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
@@ -40,11 +40,11 @@
 #include <agrum/graphicalModels/variableNodeMap.h>
 
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/variable.h>
-#include <agrum/multidim/discreteVariable.h>
-#include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/rangeVariable.h>
-#include <agrum/multidim/discretizedVariable.h>
+#include <agrum/variables/variable.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
+#include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -111,11 +111,11 @@
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
 
-%include <agrum/multidim/variable.h>
-%include <agrum/multidim/discreteVariable.h>
-%include <agrum/multidim/labelizedVariable.h>
-%include <agrum/multidim/rangeVariable.h>
-%include <agrum/multidim/discretizedVariable.h>
+%include <agrum/variables/variable.h>
+%include <agrum/variables/discreteVariable.h>
+%include <agrum/variables/labelizedVariable.h>
+%include <agrum/variables/rangeVariable.h>
+%include <agrum/variables/discretizedVariable.h>
 
 %include <agrum/graphs/graphElements.h>
 %import <agrum/graphs/nodeGraphPart.h>

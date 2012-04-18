@@ -81,7 +81,7 @@
 
 #include <agrum/core/sequence.h>
 #include <agrum/multidim/multiDimCombination.h>
-#include <agrum/randomVariables/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
 
 namespace gum {

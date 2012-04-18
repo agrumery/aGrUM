@@ -31,7 +31,7 @@
 #include <vector>
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 // ============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 // ============================================================================

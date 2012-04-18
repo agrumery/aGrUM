@@ -23,7 +23,7 @@
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/multiDimBucket.h>
-#include <agrum/randomVariables/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 
 namespace gum_tests {
