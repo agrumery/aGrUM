@@ -407,6 +407,35 @@ def variablesSequence(self):
         self.__fill_distrib__()
 %}
 
+%extend gum::Potential {
+%pythoncode {
+    def __mul__(self,p2):
+        """
+        return self * p2
+        """
+        p=Potential()
+        p.multiplicate(self,p2)
+        return p
+
+    def eliminates(self,var):
+        """
+        eliminates a variable in the Potential. Returns the new Potential or self if the variable is not in self.
+        @warning : returns a list with only one scalar if eliminates remove the last variable
+        """
+        if var.name() in self.var_names:
+            q=Potential()
+            for i in range(self.nbrDim()):
+                if self.variable(i)!=var:
+                    q.add(self.variable(i))
+            if q.nbrDim()>0:
+                q.marginalize(self)
+            else:
+                q=[self.sum()]
+            return q
+        else:
+            return self
+}
+}
 
 %feature("shadow") gum::Potential<float>::__fill_distrib__ %{
     def __fill_distrib__(self):
