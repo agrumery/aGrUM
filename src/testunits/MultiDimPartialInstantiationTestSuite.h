@@ -30,7 +30,7 @@
 
 #include <agrum/core/debug.h>
 #include <agrum/core/set.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>

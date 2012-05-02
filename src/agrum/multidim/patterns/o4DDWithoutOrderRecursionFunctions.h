@@ -28,7 +28,7 @@
 
 
 // =============================================================================================
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/patterns/o4DDMiscellaneous.h>
 // =============================================================================================

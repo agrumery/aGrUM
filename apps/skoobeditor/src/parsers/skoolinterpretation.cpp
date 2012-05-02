@@ -28,7 +28,7 @@ SkoolInterpretation::~SkoolInterpretation() {
 //! \reimp
 void SkoolInterpretation::run() {
   QString f = filename();
-  string b = buffer().toStdString();
+  std::string b = buffer().toStdString();
 
   if ( m_reader )
     delete m_reader->prm();

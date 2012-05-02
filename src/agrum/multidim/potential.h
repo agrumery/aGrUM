@@ -31,6 +31,8 @@
 
 #include <agrum/config.h>
 
+#include <agrum/core/set.h>
+
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>
 
@@ -150,7 +152,7 @@ namespace gum {
 
     protected:
       /// perform the marginalization p over the vars on *this.
-      void _marginalize( const Potential& p ) const;
+      void _marginalize( const Potential& p,const Set<const DiscreteVariable *>& del_vars ) const;
 
       /// perform the multiplication of args.
       void _multiplicate( const Potential& p1, const Potential& p2 ) ;
@@ -168,4 +170,4 @@ namespace gum {
 
 #endif /* GUM_POTENTIAL_H */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -250,7 +250,7 @@ namespace gum {
      * master->getMasterRef()
      */
     // ============================================================================
-    virtual MultiDimAdressable& getMasterRef( void );
+    virtual MultiDimImplementation<T_DATA>& getMasterRef( void );
 
     // ============================================================================
     /**
@@ -259,7 +259,7 @@ namespace gum {
      * master->getMasterRef()
      */
     // ============================================================================
-    virtual const MultiDimAdressable& getMasterRef( void ) const;
+    virtual const MultiDimImplementation<T_DATA>& getMasterRef( void ) const;
 
     /// @}
 
@@ -315,6 +315,10 @@ namespace gum {
     /// by default, get just calls _get as a l-value
     virtual T_DATA get( const Instantiation& i ) const ;
   protected:
+    /// protecte method to swap the implementation behind the Potential
+    /// @warning unsafe method for slave Instantiations !
+    void _swapContent(MultiDimImplementation<T_DATA> *aContent) const;
+
     // ============================================================================
     /// The true container.
     // ============================================================================

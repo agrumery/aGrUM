@@ -30,7 +30,7 @@
 #include <vector>
 #include <iostream>
 
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 #include <agrum/BN/generator/abstractCPTGenerator.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>

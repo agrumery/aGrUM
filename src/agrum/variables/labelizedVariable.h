@@ -32,7 +32,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/core/sequence.h>
 
 
@@ -189,7 +189,7 @@ namespace gum {
 /* ============================================================================== */
 /* ============================================================================== */
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/labelizedVariable.inl>
+#include <agrum/variables/labelizedVariable.inl>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LABELIZED_DISCRETE_VARIABLE_H */

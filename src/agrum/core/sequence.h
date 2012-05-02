@@ -37,6 +37,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
 
 
 namespace gum {
@@ -296,6 +297,13 @@ namespace gum {
        * will not modify anything. */
       // ============================================================================
       void resize( unsigned int new_size );
+
+      /// difference between to sequence as a Set<KEY>
+      /**
+       * This function gives the set difference : *this \ seq
+       */
+      Set<KEY> diffSet( const Sequence<KEY>& seq) const;
+
 
       /// @}
 
@@ -863,6 +871,12 @@ namespace gum {
        * will not modify anything. */
       // ============================================================================
       void resize( unsigned int new_size );
+
+      /// difference between to sequence as a Set<KEY>
+      /**
+       * This function gives the set difference : *this \ seq
+       */
+      Set<KEY*> diffSet( const Sequence<KEY*>& seq) const;
 
       /// @}
 

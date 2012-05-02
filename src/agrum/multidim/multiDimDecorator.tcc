@@ -25,6 +25,8 @@
 #include <agrum/multidim/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
+// to ease IDE parsers
+#include <agrum/multidim/multiDimDecorator.h>
 
 namespace gum {
 
@@ -38,24 +40,25 @@ namespace gum {
     GUM_CONSTRUCTOR( MultiDimDecorator );
 
     static bool first = true;
-    if ( first ) {
+
+    if( first ) {
       first = false;
-      
+
       // register the operators that will be used by the decorator
       Operators4MultiDimInitialize<T_DATA> op;
-      op.init ();
+      op.init();
 
       // register the projectors that will be used by the decorator
       Projections4MultiDimInitialize<T_DATA> proj;
-      proj.init ();
+      proj.init();
 
       // register the projectors that will be used by the decorator
       CompleteProjections4MultiDimInitialize<T_DATA> comp_proj;
-      comp_proj.init ();
+      comp_proj.init();
 
       // register the partial instantiators that will be used by the decorator
       PartialInstantiation4MultiDimInitialize<T_DATA> inst;
-      inst.init ();
+      inst.init();
     }
   }
 
@@ -64,7 +67,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   MultiDimDecorator<T_DATA>::~MultiDimDecorator() {
-    if ( _content ) {
+    if( _content ) {
       delete _content;
     }
 
@@ -81,13 +84,13 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   T_DATA MultiDimDecorator<T_DATA>::get( const Instantiation& i ) const {
-    return (( MultiDimContainer<T_DATA> * ) _content )->get( i );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->get( i );
   }
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::set( const Instantiation& i,
                                        const T_DATA& value ) const {
-    return (( MultiDimContainer<T_DATA> * ) _content )->set( i,value );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->set( i,value );
   }
 
   // ==============================================================================
@@ -95,7 +98,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   Size MultiDimDecorator<T_DATA>::domainSize() const  {
-    return (( MultiDimContainer<T_DATA> * ) _content )->domainSize();
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->domainSize();
   }
 
   // ==============================================================================
@@ -103,7 +106,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::add( const DiscreteVariable& v ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->add( v );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->add( v );
   }
 
   // ==============================================================================
@@ -113,7 +116,7 @@ namespace gum {
   void MultiDimDecorator<T_DATA>::changeNotification
   ( Instantiation& i, const DiscreteVariable* const var,
     const Idx& oldval,const Idx& newval ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->changeNotification( i,var,oldval,
+    ( ( MultiDimContainer<T_DATA> * ) _content )->changeNotification( i,var,oldval,
         newval );
   }
 
@@ -122,7 +125,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::setChangeNotification( Instantiation& i ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->setChangeNotification( i );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->setChangeNotification( i );
   }
 
   // ==============================================================================
@@ -130,7 +133,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::setFirstNotification( Instantiation& i ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->setFirstNotification( i );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->setFirstNotification( i );
   }
 
   // ==============================================================================
@@ -138,7 +141,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::setLastNotification( Instantiation& i ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->setLastNotification( i );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->setLastNotification( i );
   }
 
   // ==============================================================================
@@ -146,7 +149,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::setIncNotification( Instantiation& i ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->setIncNotification( i );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->setIncNotification( i );
   }
 
   // ==============================================================================
@@ -154,7 +157,7 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::setDecNotification( Instantiation& i ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->setDecNotification( i );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->setDecNotification( i );
   }
 
   // ==============================================================================
@@ -162,43 +165,43 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   bool MultiDimDecorator<T_DATA>::registerSlave( Instantiation& i ) {
-    return (( MultiDimContainer<T_DATA> * ) _content )->registerSlave( i );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->registerSlave( i );
   }
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::erase( const DiscreteVariable& d ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->erase( d );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->erase( d );
   }
 
   template<typename T_DATA> INLINE
   const DiscreteVariable&
   MultiDimDecorator<T_DATA>::variable( Idx i ) const {
-    return (( MultiDimContainer<T_DATA> * ) _content )->variable( i );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->variable( i );
   }
 
   template<typename T_DATA> INLINE
   Idx MultiDimDecorator<T_DATA>::pos( const DiscreteVariable& d ) const {
-    return (( MultiDimContainer<T_DATA> * ) _content )->pos( d );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->pos( d );
   }
 
   template<typename T_DATA> INLINE
   bool MultiDimDecorator<T_DATA>::contains( const DiscreteVariable& d ) const  {
-    return (( MultiDimContainer<T_DATA> * ) _content )->contains( d );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->contains( d );
   }
 
   template<typename T_DATA> INLINE
   bool MultiDimDecorator<T_DATA>::empty() const  {
-    return (( MultiDimContainer<T_DATA> * ) _content )->empty();
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->empty();
   }
 
   template<typename T_DATA> INLINE
   bool MultiDimDecorator<T_DATA>::unregisterSlave( Instantiation& i ) {
-    return (( MultiDimContainer<T_DATA> * ) _content )->unregisterSlave( i );
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->unregisterSlave( i );
   }
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::fill( const T_DATA& d )  const {
-    (( MultiDimContainer<T_DATA> * ) _content )->fill( d );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->fill( d );
   }
 
   // ==============================================================================
@@ -216,7 +219,7 @@ namespace gum {
   template<typename T_DATA> INLINE
   const Sequence<const DiscreteVariable *>&
   MultiDimDecorator<T_DATA>::variablesSequence() const  {
-    return (( MultiDimContainer<T_DATA> * ) _content )->variablesSequence();
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->variablesSequence();
   }
 
   // ==============================================================================
@@ -224,20 +227,20 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   Idx MultiDimDecorator<T_DATA>::nbrDim() const  {
-    return (( MultiDimContainer<T_DATA> * ) _content )->nbrDim();
+    return ( ( MultiDimContainer<T_DATA> * ) _content )->nbrDim();
   }
 
   /// In order to insure the deref. for decorators, we need to virtualize the
   /// access to master pointer
   template<typename T_DATA> INLINE
-  MultiDimAdressable& MultiDimDecorator<T_DATA>:: getMasterRef( void ) {
+  MultiDimImplementation<T_DATA>& MultiDimDecorator<T_DATA>:: getMasterRef( void ) {
     return *_content;
   }
 
   /// In order to insure the deref. for decorators, we need to virtualize the
   /// access to master pointer
   template<typename T_DATA> INLINE
-  const MultiDimAdressable& MultiDimDecorator<T_DATA>:: getMasterRef( void )
+  const MultiDimImplementation<T_DATA>& MultiDimDecorator<T_DATA>:: getMasterRef( void )
   const {
     return *_content;
   }
@@ -271,17 +274,17 @@ namespace gum {
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::beginMultipleChanges( void ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->beginMultipleChanges();
+    ( ( MultiDimContainer<T_DATA> * ) _content )->beginMultipleChanges();
   }
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::endMultipleChanges( void ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges();
+    ( ( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges();
   }
 
   template<typename T_DATA> INLINE
   void MultiDimDecorator<T_DATA>::endMultipleChanges( const T_DATA& x ) {
-    (( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges( x );
+    ( ( MultiDimContainer<T_DATA> * ) _content )->endMultipleChanges( x );
   }
 
   /// Perform an homothety on a multiDim container
@@ -291,7 +294,7 @@ namespace gum {
     Instantiation i( this );
     i.setFirst();
 
-    while ( ! i.end() ) {
+    while( ! i.end() ) {
       set( i ,mul( alpha,get( i ) ) );
       ++i;
     }
@@ -303,9 +306,9 @@ namespace gum {
   ( T_DATA( *add )( const T_DATA,const T_DATA ) ) const {
     Instantiation i( this );
     T_DATA res;
-    i.setFirst();res=get( i );++i;
+    i.setFirst(); res=get( i ); ++i;
 
-    while ( ! i.end() ) {
+    while( ! i.end() ) {
       res=add( res,get( i ) );
       ++i;
     }
@@ -313,6 +316,17 @@ namespace gum {
     return res;
   }
 
+  template<typename T_DATA> INLINE
+  void MultiDimDecorator<T_DATA>::_swapContent( MultiDimImplementation<T_DATA> *aContent ) const {
+    if( aContent!=0 ) {
+      // TODO : frees all slave instantiations
+      // TODO : control the dimensions ?
+      MultiDimImplementation<T_DATA> *tmp=_content;
+      _content=aContent;
+      ///registers all instantiations
+      delete( tmp );
+    }
+  }
   // template <typename T_DATA>
   // MultiDimDecorator<T_DATA>* MultiDimDecorator<T_DATA>::newFactory() const {
   //   return new MultiDimDecorator<T_DATA>

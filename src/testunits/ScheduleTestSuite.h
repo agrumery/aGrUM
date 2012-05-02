@@ -20,7 +20,7 @@
 
 #include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/graphicalModels/inference/schedule.h>
 

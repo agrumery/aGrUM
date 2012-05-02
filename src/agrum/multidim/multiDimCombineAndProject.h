@@ -29,7 +29,7 @@
 
 #include <utility>
 #include <agrum/core/set.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
 
 namespace gum {

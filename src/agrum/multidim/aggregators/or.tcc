@@ -30,7 +30,7 @@ namespace gum {
 
   namespace aggregator {
     template<typename T_DATA> INLINE
-    Or<T_DATA>::Or(  ): MultiDimAggregator<T_DATA>() {
+    Or<T_DATA>::Or( ): MultiDimAggregator<T_DATA>() {
       GUM_CONSTRUCTOR( Or )
     }
 
@@ -59,7 +59,7 @@ namespace gum {
 
     template<typename T_DATA> INLINE
     std::string Or<T_DATA>::aggregatorName( void ) const {
-      return std::string("or");
+      return std::string( "or" );
     }
 
     template<typename T_DATA> INLINE

@@ -17,10 +17,10 @@
 *   Free Software Foundation, Inc.,                                       *
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/labelizedVariable.inl>
+#include <agrum/variables/labelizedVariable.inl>
 #endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

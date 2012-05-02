@@ -34,7 +34,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/hashFunc.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
 
 namespace gum {
@@ -202,7 +202,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/rangeVariable.inl>
+#include <agrum/variables/rangeVariable.inl>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RANGE_VARIABLE_H */

@@ -37,7 +37,7 @@
 #include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
 // =====================================================================
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>

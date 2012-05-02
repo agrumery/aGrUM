@@ -28,11 +28,11 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/core/hashTable.h>
 
 // to ease IDE parsers
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

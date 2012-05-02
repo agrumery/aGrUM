@@ -30,14 +30,12 @@
 #ifndef GUM_CONFIG_H
 #define GUM_CONFIG_H
 
-#include <agrum/core/debug.h>
-#include <agrum/core/inline.h>
-#include <agrum/core/types.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/utils.h>
+#define GUM_MAJOR_VERSION ${GUM_MAJOR_VERSION}
+#define GUM_MINOR_VERSION ${GUM_MINOR_VERSION}
+#define GUM_PATCH_VERSION ${GUM_PATCH_VERSION}
 
 #cmakedefine GUM_SRC_PATH @GUM_SRC_PATH@
-#cmakedefine GUM_VERSION @GUM_VERSION@
+#define GUM_VERSION @GUM_VERSION@
 
 #cmakedefine GUM_TRACE_ON
 
@@ -47,6 +45,22 @@
 #cmakedefine GUM_FLOAT_SIZE  @GUM_FLOAT_SIZE@
 #cmakedefine GUM_DOUBLE_SIZE @GUM_DOUBLE_SIZE@
 
+#define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \
+                            (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
+                            GUM_PATCH_VERSION>=z))))
+
+#ifdef __GNUC__
+#define GNUC_AT_LEAST(x,y) ((__GNUC__==x && __GNUC_MINOR__>=y) || __GNUC__>x)
+#else
+#define GNUC_AT_LEAST(x,y) 0
+#endif
+
+#ifdef __GNUC__
+#define GNUC_AT_MOST(x,y) ((__GNUC__==x && __GNUC_MINOR__<=y) || __GNUC__<x)
+#else
+#define GNUC_AT_MOST(x,y) 0
+#endif
+
 #ifdef __GNUC__
 #define GUM_DEPRECATED(func) func __attribute__ ((deprecated))
 #elif defined(_MSC_VER)
@@ -55,5 +69,12 @@
 #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
 #define GUM_DEPRECATED(func) func
 #endif
+
+
+#include <agrum/core/debug.h>
+#include <agrum/core/inline.h>
+#include <agrum/core/types.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/utils.h>
 
 #endif // GUM_CONFIG_H

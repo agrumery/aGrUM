@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsInference.h>
@@ -294,9 +294,9 @@ namespace gum_tests {
           {
             const gum::Potential<float>& p = inf.marginal( w ) ;
             gum::Instantiation I( p );
-            TS_ASSERT_DELTA( p[I], 0.3529, 1e-2 );
+            TS_ASSERT_DELTA( p[I], 0.3529, 3e-2 );
             ++I;
-            TS_ASSERT_DELTA( p[I], 0.6471, 1e-2 );
+            TS_ASSERT_DELTA( p[I], 0.6471, 3e-2 );
           }
 
           inf.eraseAllEvidence();

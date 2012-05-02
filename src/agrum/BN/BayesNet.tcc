@@ -456,30 +456,20 @@ namespace gum {
 
   template<typename T_DATA>
   void
-  BayesNet<T_DATA>::insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight ) {
+  BayesNet<T_DATA>::insertWeightedArc( NodeId tail, NodeId head, T_DATA causalWeight ) {
     const MultiDimAdressable& content = cpt( head ).getMasterRef();
 
-    const MultiDimNoisyORCompound<T_DATA>* noisyCompound = dynamic_cast<const MultiDimNoisyORCompound<T_DATA>*>( &content );
+    const MultiDimCIModel<T_DATA>* CImodel = dynamic_cast<const MultiDimCIModel<T_DATA>*>( &content );
 
-    if( noisyCompound != 0 ) {
+    if( CImodel != 0 ) {
       // or is OK
       insertArc( tail, head );
 
-      noisyCompound->causalWeight( variable( tail ), causalWeight );
+      CImodel->causalWeight( variable( tail ), causalWeight );
       return;
     }
 
-    const MultiDimNoisyORNet<T_DATA>* noisyNet = dynamic_cast<const MultiDimNoisyORNet<T_DATA>*>( &content );
-
-    if( noisyNet != 0 ) {
-      // or is OK
-      insertArc( tail, head );
-
-      noisyNet->causalWeight( variable( tail ), causalWeight );
-      return;
-    }
-
-    GUM_ERROR( InvalidArc, "Head variable ("<< variable( head ).name() <<") is not a noisyOR variable !" );
+    GUM_ERROR( InvalidArc, "Head variable ("<< variable( head ).name() <<") is not a CIModel variable !" );
   }
 
   template<typename T_DATA> INLINE

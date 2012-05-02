@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   {prenom.nom}_at_lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,72 +18,86 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Base class for discrete random variable.
+ * @brief Base class for random variable.
  *
- * This class is used as an interface.
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ * Basically wrapper for a string name and description.
+ * This class is used as an interface. So the constructor/destructor is protected.
+ * @author Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_DISCRETE_VARIABLE_H
-#define GUM_DISCRETE_VARIABLE_H
+#ifndef GUM_VARIABLE_H
+#define GUM_VARIABLE_H
 
+#include <iostream>
 #include <string>
-#include <ostream>
 
 #include <agrum/config.h>
-
-#include <agrum/core/hashFunc.h>
-#include <agrum/multidim/variable.h>
 
 
 namespace gum {
 
+
+  class Variable;
+
+
+  // =============================================================================
+  /// for friendly displaying the content of the variable
+  // =============================================================================
+  std::ostream& operator<<( std::ostream& s, const Variable& LDRV );
+
+
+
   /* =========================================================================== */
   /* =========================================================================== */
-  /* ===                         GUM_DISCRETE_VARIABLE                       === */
+  /* ===                            GUM_VARIABLE                             === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /** @class DiscreteVariable
-   * @brief Base class for discrete random variable.
+  /** @class Variable
+   * @brief Base class for every random variable.
    * @ingroup multidim_group
-   *
-   * This class is used as an interface. */
+   */
   /* =========================================================================== */
 
-  class DiscreteVariable : public Variable {
+  class Variable {
     public:
-      enum Type {Discretized,Labelized,Range};
-
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
 
       // ============================================================================
-      /// Default constructor
-      // ============================================================================
-      DiscreteVariable( const std::string& aName, const std::string& aDesc );
-
-      // ============================================================================
-      /// Copy constructor
-      // ============================================================================
-      /** Copy Constructor.
-       *
-       * If aDRV haves any listener, it will not be copied.
-       *
-       * @param aDRV the variable we copy
-       */
-      DiscreteVariable( const DiscreteVariable& aDRV );
-
-      // ============================================================================
       /// destructor
       // ============================================================================
-      virtual ~DiscreteVariable();
+      virtual ~Variable();
 
       // ============================================================================
       /// Copy Factory.
       /// @return Returns a pointer on a new copy of this.
       // ============================================================================
-      virtual DiscreteVariable* copyFactory() const = 0;
+      virtual Variable* copyFactory() const = 0;
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+      // ============================================================================
+      /// Copy operator
+      /** @param aRV to be copied
+       * @return a const ref to *this */
+      // ============================================================================
+      Variable& operator=( const Variable& aRV );
+
+      // ============================================================================
+      /// equality operator
+      // ============================================================================
+      virtual bool operator== ( const Variable& aRV ) const ;
+
+      // ============================================================================
+      /// inequality operator
+      // ============================================================================
+      virtual bool operator!= ( const Variable& aRV ) const ;
 
       /// @}
 
@@ -92,82 +106,75 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ############################################################################
       /// @{
+      // ============================================================================
+      /// sets the name of the variable
+      /** @param theValue */
+      // ============================================================================
+      void setName( const std::string& theValue );
 
       // ============================================================================
-      /// @return true if the domainSize() < 2;
+      /// returns the name of the variable
       // ============================================================================
-      bool empty() const;
+      const std::string& name() const;
 
       // ============================================================================
-      /// @return the number of modalities of the random discrete
+      /// sets the description of the variable
+      /// @warning since __description is mutable, setDescription() is const
+      /** @param theValue */
       // ============================================================================
-      virtual Size domainSize() const = 0;
+      void setDescription( const std::string& theValue ) const;
 
       // ============================================================================
-      /// get the indice-th label. This method is pure virtual.
-      /** @param indice the index of the label we wish to return
-       * @throw OutOfBound
-       */
+      /// returns the description of the variable
       // ============================================================================
-      virtual const std::string label( Idx indice ) const = 0;
-
-      // ============================================================================
-      /// returns the type of variable
-      // ============================================================================
-      virtual Type type( void ) const =0;
-      /// @}
-
-
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
-
-      // ============================================================================
-      /// Copy operator
-      /** @param aRV to be copied
-       * @return a ref to *this */
-      // ============================================================================
-      DiscreteVariable& operator= ( const DiscreteVariable& aRV );
-
-      // ============================================================================
-      /// equality operator
-      // ============================================================================
-      virtual bool operator== ( const DiscreteVariable& aRV ) const ;
-
-      // ============================================================================
-      /// inequality operator
-      // ============================================================================
-      virtual bool operator!= ( const DiscreteVariable& aRV ) const ;
+      const std::string& description() const;
 
       /// @}
 
-      /// from the label to its index in var.
-      ///  @warning This operation may have different complexity in different
-      /// subclasses.
-      /// @throws NotFound
-      virtual Idx operator[]( const std::string& label ) const = 0;
-
-      /// string version of *this
-      virtual const std::string toString() const;
 
 
     protected:
       /// (protected) Default constructor
-      DiscreteVariable( ) {GUM_CONSTRUCTOR( DiscreteVariable );};
+      Variable( ) {GUM_CONSTRUCTOR( Variable );};
+
+
+      // ============================================================================
+      /// protected copy
+      /** @param aRV to be copied */
+      // ============================================================================
+      void _copy( const Variable& aRV );
+
+
+      // ============================================================================
+      /// constructor
+      /** @param aName name of the variable
+       * @param aDesc description of the variable */
+      // ============================================================================
+      Variable( const std::string& aName, const std::string& aDesc );
+
+      // ============================================================================
+      /// copy constructor
+      /** @param aRV the variable we copy */
+      // ============================================================================
+      Variable( const Variable& aRV );
+
+
+    private:
+      /// the name of the variable
+      std::string __name;
+
+      /// the description of the variable
+      /// since description is not a characteristic of a variable, we allow the description to be changed even in a const reference.
+      mutable std::string __description;
   };
 
-  // ===============================================================================
-  /// for friendly displaying the content of the variable
-  // ===============================================================================
-  std::ostream& operator<< ( std::ostream&, const DiscreteVariable& );
 
 } /* namespace gum */
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/discreteVariable.inl>
+#include <agrum/variables/variable.inl>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_DISCRETE_VARIABLE_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+
+#endif /* GUM_VARIABLE_H */

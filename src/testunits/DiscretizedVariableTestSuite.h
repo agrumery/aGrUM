@@ -25,7 +25,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 
 #include <agrum/core/list.h>
-#include <agrum/multidim/discretizedVariable.h>
+#include <agrum/variables/discretizedVariable.h>
 
 namespace gum_tests {
 

@@ -35,7 +35,7 @@
 #include <agrum/core/timer.h>
 // *********************************************************************
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
 // *********************************************************************

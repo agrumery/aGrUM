@@ -20,10 +20,10 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimNoisyORNet.h>
+#include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/GibbsInference.h>
@@ -39,10 +39,12 @@ namespace gum_tests {
         p.causalWeight( b, 0.4 );
         p.causalWeight( d, 0.7 );
         TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.toString(), "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.realSize(),(gum::Size)4 );
 
         gum::MultiDimNoisyORNet<float> q( p );
-        TS_ASSERT_EQUALS( q.toString(), "a<0,1>=noisyOR([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( q.toString(), "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+        TS_ASSERT_EQUALS( p.realSize(),(gum::Size)4 );
       }
 
       void testComputationInNoisyORNet() {
@@ -132,11 +134,11 @@ namespace gum_tests {
         gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
         gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
-        bn.insertArcNoisyOR( idMalaria, idFever, 0.9 );
-        bn.insertArcNoisyOR( idFlu, idFever, 0.8 );
-        bn.insertArcNoisyOR( idCold, idFever, 0.4 );
+        bn.insertWeightedArc( idMalaria, idFever, 0.9 );
+        bn.insertWeightedArc( idFlu, idFever, 0.8 );
+        bn.insertWeightedArc( idCold, idFever, 0.4 );
 
-        TS_ASSERT_THROWS( bn.insertArcNoisyOR( idMalaria, idCold, 0.8 ), gum::InvalidArc );
+        TS_ASSERT_THROWS( bn.insertWeightedArc( idMalaria, idCold, 0.8 ), gum::InvalidArc );
 
 
         const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );

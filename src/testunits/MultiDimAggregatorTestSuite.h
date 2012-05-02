@@ -20,8 +20,8 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/multidim/labelizedVariable.h>
-#include <agrum/multidim/rangeVariable.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -95,7 +95,7 @@ namespace gum_tests {
       float __is_or( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
         gum::Idx tmp;
 
-        tmp = ( ( b == ( gum::Idx )1 ) || ( c == ( gum::Idx )1 ) || ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+        tmp = ( ( b == ( gum::Idx )1 ) || ( c == ( gum::Idx )1 ) || ( d == ( gum::Idx )1 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
@@ -103,7 +103,7 @@ namespace gum_tests {
       float __is_and( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
         gum::Idx tmp;
 
-        tmp = ( ( b == ( gum::Idx )1 ) && ( c == ( gum::Idx )1 ) && ( d == ( gum::Idx )1) ) ? ( gum::Idx )1 : ( gum::Idx )0;
+        tmp = ( ( b == ( gum::Idx )1 ) && ( c == ( gum::Idx )1 ) && ( d == ( gum::Idx )1 ) ) ? ( gum::Idx )1 : ( gum::Idx )0;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }

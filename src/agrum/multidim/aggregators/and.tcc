@@ -24,13 +24,13 @@
  */
 #include <sstream>
 // to ease parser in IDEs
-#include<agrum/multidim/aggregators/or.h>
+#include<agrum/multidim/aggregators/and.h>
 
 namespace gum {
 
   namespace aggregator {
     template<typename T_DATA> INLINE
-    And<T_DATA>::And(  ): MultiDimAggregator<T_DATA>() {
+    And<T_DATA>::And( ): MultiDimAggregator<T_DATA>() {
       GUM_CONSTRUCTOR( And )
     }
 
@@ -59,7 +59,7 @@ namespace gum {
 
     template<typename T_DATA> INLINE
     std::string And<T_DATA>::aggregatorName( void ) const {
-      return std::string("and");
+      return std::string( "and" );
     }
 
     template<typename T_DATA> INLINE

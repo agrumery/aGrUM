@@ -55,6 +55,3 @@ CHECK_TYPE_SIZE(double GUM_DOUBLE_SIZE)
 add_definitions("-Wall")
 add_definitions("-pedantic")
 
-set(GUM_SRC_PATH "${AGRUM_SOURCE_DIR}")
-set(GUM_VERSION "\"${AGRUM_VERSION}\"")
-

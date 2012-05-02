@@ -76,7 +76,7 @@ public:
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
 #include <agrum/core/tinyxml/ticpp/ticpp.h>
-#include <agrum/multidim/labelizedVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/io/BNReader.h>
 
 

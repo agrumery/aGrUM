@@ -17,4 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/multidim/discretizedVariable.h>
+#include <sstream>
+#include <agrum/variables/discreteVariable.h>
+
+#ifdef GUM_NO_INLINE
+#include <agrum/variables/discreteVariable.inl>
+#endif /* GUM_NO_INLINE */
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+namespace gum {
+
+
+  const std::string DiscreteVariable::toString() const {
+    std::stringstream s;
+    s<<name()<<"<";
+
+    if( domainSize()>0 ) {
+      s<<label( 0 );
+
+      for( Idx i=1; i<domainSize(); ++i ) {
+        s<<",";
+        s<<label( i );
+      }
+    }
+
+    s<<">";
+
+    return s.str();
+  }
+
+  // ===============================================================================
+  /// for friendly displaying the content of the variable
+  // ===============================================================================
+  std::ostream& operator<< ( std::ostream& s, const DiscreteVariable& DRV ) {
+    s << DRV.toString();
+    return s;
+  }
+
+
+} /* namespace gum */
+
+
+
+#endif    // DOXYGEN_SHOULD_SKIP_THIS
+

@@ -30,8 +30,8 @@
 #include <agrum/core/sequence.h>
 // ============================================================================
 #include <agrum/multidim/multiDimBijArray.h>
-#include <agrum/multidim/multiDimNoisyORNet.h>
-#include <agrum/multidim/multiDimNoisyORCompound.h>
+#include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
+#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
 // ============================================================================
 #include <agrum/prm/classElement.h>
 #include <agrum/prm/attribute.h>

@@ -28,7 +28,7 @@
 
 #include <utility>
 #include <agrum/core/set.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>

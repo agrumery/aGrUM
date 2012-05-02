@@ -28,25 +28,43 @@ import subprocess
 from pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
-def pngize(aBN,base):
+def dotize(aBN,name,style='pdf'):
   """
-  From a bn 'bn' and a base 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
-	dot format and in png.
+  From a bn 'bn' and a name 'bn', ize creates 'bn.dot' and 'bn.style', representation of the bn in
+	dot format and in style. style in [pdf,png,fig,jpg,svg]
   """
+  if style not in ['pdf','png','fig','jpg','svg']:
+      raise Exception,"<%s> in not a correct style ([pdf,png,fig,jpg,svg])"%style
+
   if isinstance(aBN,str):
     bn=gum.loadBN(aBN)
   else:
     bn=aBN
 
-  dotfile=base+'.dot'
-  pngfile=base+'.png'
+  dotfile=name+'.dot'
+  pngfile=name+'.'+style
 
   f=open(dotfile,'w')
   f.write(bn.toDot())
   f.close()
 
-  cmd=['dot','-Tpng',dotfile,('-o'+pngfile)]
+  cmd=['dot','-T'+style,dotfile,('-o'+pngfile)]
   return subprocess.call(cmd)
+
+
+def pngize(aBN,name):
+  """
+  From a bn 'bn' and a name 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
+	dot format and in png.
+  """
+  dotize(aBN,name,'png')
+
+def pdfize(aBN,name):
+  """
+  From a bn 'bn' and a name 'bn', pdfize creates 'bn.dot' and 'bn.pdf', representation of the bn in
+	dot format and in pdf.
+  """
+  dotize(aBN,name,'pdf')
 
 if __name__=="__main__":
     pyAgrum_header(2011)

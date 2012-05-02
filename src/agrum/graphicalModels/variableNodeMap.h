@@ -33,7 +33,7 @@
 
 #include <agrum/core/bijection.h>
 #include <agrum/graphs/graphElements.h>
-#include <agrum/multidim/discreteVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
 
 namespace gum {
