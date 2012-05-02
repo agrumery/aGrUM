@@ -357,11 +357,11 @@ namespace gum {
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
+      * @param causalWeight @see gum::MultiDimCIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */
-      void insertArcNoisyOR( NodeId tail, NodeId head, T_DATA causalWeight );
+      void insertWeightedArc( NodeId tail, NodeId head, T_DATA causalWeight );
 
       /// @}
       // ===========================================================================

@@ -110,6 +110,7 @@
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
+%include <agrum/core/set.h>
 
 %include <agrum/variables/variable.h>
 %include <agrum/variables/discreteVariable.h>

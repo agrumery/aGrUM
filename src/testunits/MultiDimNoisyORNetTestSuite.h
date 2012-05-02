@@ -134,11 +134,11 @@ namespace gum_tests {
         gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
         gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
-        bn.insertArcNoisyOR( idMalaria, idFever, 0.9 );
-        bn.insertArcNoisyOR( idFlu, idFever, 0.8 );
-        bn.insertArcNoisyOR( idCold, idFever, 0.4 );
+        bn.insertWeightedArc( idMalaria, idFever, 0.9 );
+        bn.insertWeightedArc( idFlu, idFever, 0.8 );
+        bn.insertWeightedArc( idCold, idFever, 0.4 );
 
-        TS_ASSERT_THROWS( bn.insertArcNoisyOR( idMalaria, idCold, 0.8 ), gum::InvalidArc );
+        TS_ASSERT_THROWS( bn.insertWeightedArc( idMalaria, idCold, 0.8 ), gum::InvalidArc );
 
 
         const gum::Potential<float>& pOneMoreParent1 = bn.cpt( idOneMoreParent1 );

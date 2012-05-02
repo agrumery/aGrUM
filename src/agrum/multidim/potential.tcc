@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
+// to ease IDE parser
 #include <agrum/multidim/potential.h>
 
 namespace gum {
@@ -103,6 +103,7 @@ namespace gum {
   template<typename T_DATA>
   Potential<T_DATA>& Potential<T_DATA>::marginalize( const Potential& p ) const {
     const Sequence<const DiscreteVariable *>& seq = this->variablesSequence() ;
+    Set<const DiscreteVariable *> delvars;
 
     if ( p.empty() ) {
       GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
@@ -115,31 +116,10 @@ namespace gum {
       }
     }
 
-    _marginalize( p );
+    _swapContent(projectSum(p.getMasterRef(),seq.diffSet(p.variablesSequence())));
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
     return const_cast<Potential<T_DATA>&>( *this );
-  }
-
-  // ==============================================================================
-  template<typename T_DATA>
-  void Potential<T_DATA>::_marginalize( const Potential& p )  const {
-    Instantiation it_p( p );
-    Instantiation it_this( this );
-    T_DATA s;
-
-    for ( it_p.setFirst(), it_this.setFirst() ;! it_this.end();
-          ++it_this, it_p.incIn( it_this ) ) {
-      s = 0.0;
-
-      for ( it_p.setFirstOut( it_this );! it_p.end();it_p.incOut( it_this ) ) {
-        s += p[it_p];
-      }
-
-      this->set( it_this , s );
-
-      it_p.unsetOverflow();
-    }
   }
 
   // ==============================================================================

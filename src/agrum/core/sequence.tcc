@@ -24,6 +24,8 @@
 
 #include <limits>
 
+//to ease IDE parser
+#include <agrum/core/sequence.h>
 
 namespace gum {
 
@@ -542,6 +544,17 @@ namespace gum {
   }
 
 
+  // ==============================================================================
+  /// returns the set difference : this \ seq
+  // ==============================================================================
+  template <typename KEY> INLINE
+  Set<KEY> Sequence<KEY>::diffSet( const Sequence<KEY>& seq) const {
+    Set<KEY> res;
+    for ( Sequence<KEY>::iterator iter = this->begin();iter != this->end();++iter ) {
+      if (! seq.exists(*iter)) res<<*iter;
+    }
+    return res;
+  }
 
 
 
@@ -1047,7 +1060,17 @@ namespace gum {
     __h.resize( new_size );
     __v.reserve( new_size );
   }
-
+  // ==============================================================================
+  /// returns the set difference : this \ seq
+  // ==============================================================================
+  template <typename KEY> INLINE
+  Set<KEY*> Sequence<KEY*>::diffSet( const Sequence<KEY*>& seq) const {
+    Set<KEY*> res;
+    for ( Sequence<KEY*>::iterator iter = seq.begin();iter != seq.end();++iter ) {
+      if (! this->exists(*iter)) res<<*iter;
+    }
+    return res;
+  }
 } /* namespace gum */
 
 

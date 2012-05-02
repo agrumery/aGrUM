@@ -34,15 +34,14 @@ namespace gum {
   const std::string DiscreteVariable::toString() const {
     std::stringstream s;
     s<<name()<<"<";
-    bool notZeFirst=false;
 
-    for ( Idx i=0;i<domainSize();++i ) {
-      if ( notZeFirst )
+    if( domainSize()>0 ) {
+      s<<label( 0 );
+
+      for( Idx i=1; i<domainSize(); ++i ) {
         s<<",";
-      else
-        notZeFirst=true;
-
-      s<<label( i );
+        s<<label( i );
+      }
     }
 
     s<<">";
