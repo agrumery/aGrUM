@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 // ============================================================================
-#ifndef GUM_MULTIDIM_H
-#define GUM_MULTIDIM_H
+#ifndef GUM_MULTIDIM_CONTAINER_H
+#define GUM_MULTIDIM_CONTAINER_H
 // ============================================================================
 #include <iostream>
 #include <vector>
@@ -93,7 +93,7 @@ namespace gum {
       // ============================================================================
       /// Copy constructor.
       // ============================================================================
-      MultiDimContainer( const MultiDimContainer<T_DATA>& src );
+      MultiDimContainer ( const MultiDimContainer<T_DATA>& src );
 
       // ============================================================================
       /// Destructor.
@@ -116,7 +116,7 @@ namespace gum {
        * instantiation.
        */
       // ============================================================================
-      virtual void set( const Instantiation& i,const T_DATA& value ) const;
+      virtual void set ( const Instantiation &i, const T_DATA &value ) const;
 
       // ============================================================================
       /**
@@ -127,7 +127,7 @@ namespace gum {
        * instantiation.
        */
       // ============================================================================
-      virtual T_DATA get( const Instantiation& i ) const ;
+      virtual T_DATA get ( const Instantiation &i ) const ;
 
       // ============================================================================
       /**
@@ -141,7 +141,7 @@ namespace gum {
        * @return Returns the adressed (T_DATA) value.
        */
       // ============================================================================
-      T_DATA operator[]( const Instantiation& i ) const;
+      T_DATA operator[] ( const Instantiation &i ) const;
 
       // ============================================================================
       /**
@@ -149,7 +149,7 @@ namespace gum {
        * @param d The value used to fill this gum::MultiDimContainer.
        */
       // ============================================================================
-      virtual void fill( const T_DATA& d ) const =0;
+      virtual void fill ( const T_DATA &d ) const = 0;
 
       // ==============================================================================
       /**
@@ -170,7 +170,7 @@ namespace gum {
        *                  domain size.
        */
       // ==============================================================================
-      virtual void fillWith( const std::vector<T_DATA>& v ) const;
+      virtual void fillWith ( const std::vector<T_DATA>& v ) const;
 
       /// @}
 
@@ -193,8 +193,8 @@ namespace gum {
        *                            than this gum::MultiDimContainer.
        */
       // ============================================================================
-      virtual void copyFrom( const MultiDimContainer<T_DATA>& src,
-                             Instantiation* p_i=( Instantiation * )0 ) const;
+      virtual void copyFrom ( const MultiDimContainer<T_DATA>& src,
+                              Instantiation *p_i = ( Instantiation * ) 0 ) const;
 
       // ============================================================================
       /**
@@ -202,7 +202,7 @@ namespace gum {
        * of src, variables included.
        */
       // ============================================================================
-      virtual void copy( const MultiDimContainer<T_DATA>& src );
+      virtual void copy ( const MultiDimContainer<T_DATA>& src );
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -234,17 +234,17 @@ namespace gum {
       // ============================================================================
       /// Display the internal representation of i.
       // ============================================================================
-      virtual const std::string toString( const Instantiation *i ) const=0;
+      virtual const std::string toString ( const Instantiation *i ) const = 0;
 
       // ============================================================================
       /// Test if this potential is equal to p.
       // ============================================================================
-      bool operator==( const MultiDimContainer<T_DATA>& p ) const;
+      bool operator== ( const MultiDimContainer<T_DATA>& p ) const;
 
       // ============================================================================
       /// Test if this potential is different of p.
       // ============================================================================
-      bool operator!=( const MultiDimContainer<T_DATA>& p ) const;
+      bool operator!= ( const MultiDimContainer<T_DATA>& p ) const;
 
       /// @}
 
@@ -259,7 +259,7 @@ namespace gum {
        * @warning Remember to call endMultipleChanges() when you finish your changes.
        */
       // ============================================================================
-      virtual void beginMultipleChanges( void ) = 0 ;
+      virtual void beginMultipleChanges ( void ) = 0 ;
 
       // ============================================================================
       /**
@@ -267,8 +267,8 @@ namespace gum {
        *        gum::MultiDimContainer.
        */
       // ============================================================================
-      virtual void endMultipleChanges( void ) = 0 ;
-      virtual void endMultipleChanges( const T_DATA& ) = 0 ;
+      virtual void endMultipleChanges ( void ) = 0 ;
+      virtual void endMultipleChanges ( const T_DATA & ) = 0 ;
       // ============================================================================
 
       /// @}
@@ -288,7 +288,7 @@ namespace gum {
        * @param i The instantiation used to find the data.
        */
       // ============================================================================
-      virtual T_DATA& _get( const Instantiation& i ) const =0;
+      virtual T_DATA &_get ( const Instantiation &i ) const = 0;
 
   };
 } /* namespace gum */
@@ -296,6 +296,5 @@ namespace gum {
 // ============================================================================
 #include <agrum/multidim/multiDimContainer.tcc>
 // ============================================================================
-#endif /* GUM_MULTIDIM_H */
+#endif /* GUM_MULTIDIM_CONTAINER_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 0;

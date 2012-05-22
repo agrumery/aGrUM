@@ -18,20 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// to ease IDE parser
+#include <agrum/multidim/multiDimAdressable.h>
 
 namespace gum {
 
 
   INLINE MultiDimAdressable::MultiDimAdressable() {
-    GUM_CONSTRUCTOR( MultiDimAdressable );
+    GUM_CONSTRUCTOR ( MultiDimAdressable );
   }
 
-  INLINE MultiDimAdressable::MultiDimAdressable(const MultiDimAdressable& from) {
-    GUM_CONS_CPY( MultiDimAdressable );
+  INLINE MultiDimAdressable::MultiDimAdressable ( const MultiDimAdressable &from ) {
+    GUM_CONS_CPY ( MultiDimAdressable );
   }
 
   INLINE MultiDimAdressable::~MultiDimAdressable() {
-    GUM_DESTRUCTOR( MultiDimAdressable );
+    GUM_DESTRUCTOR ( MultiDimAdressable );
   }
 
 

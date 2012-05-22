@@ -20,6 +20,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease IDE parser
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
@@ -28,12 +30,12 @@ namespace gum {
   /// Default constructor
   // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimImplementation<T_DATA>::MultiDimImplementation():
-      MultiDimContainer<T_DATA>(),__vars(),__slaveInstantiations() {
-    GUM_CONSTRUCTOR( MultiDimImplementation );
-    __internalChangeMethod=DIRECT_CHANGE;
-    __internalChangeState=NO_CHANGE;
-    __domainSize=1;
+  MultiDimImplementation<T_DATA>::MultiDimImplementation() :
+    MultiDimContainer<T_DATA>(), __vars(), __slaveInstantiations() {
+    GUM_CONSTRUCTOR ( MultiDimImplementation );
+    __internalChangeMethod = DIRECT_CHANGE;
+    __internalChangeState = NO_CHANGE;
+    __domainSize = 1;
   }
 
   // ==============================================================================
@@ -42,12 +44,12 @@ namespace gum {
   template<typename T_DATA> INLINE
   MultiDimImplementation<T_DATA>::MultiDimImplementation
   ( const MultiDimImplementation<T_DATA>& from ) :
-      MultiDimContainer<T_DATA>( from ),__vars( from.__vars ),
-      __internalChangeMethod( from.__internalChangeMethod ),
-      __internalChangeState( from.__internalChangeState ),
-      __domainSize( from.__domainSize ) {
-    GUM_CONS_CPY( MultiDimImplementation );
-    GUM_ASSERT( ! this->_isCommitNeeded() );
+    MultiDimContainer<T_DATA> ( from ), __vars ( from.__vars ),
+    __internalChangeMethod ( from.__internalChangeMethod ),
+    __internalChangeState ( from.__internalChangeState ),
+    __domainSize ( from.__domainSize ) {
+    GUM_CONS_CPY ( MultiDimImplementation );
+    GUM_ASSERT ( ! this->_isCommitNeeded() );
   }
 
   // ==============================================================================
@@ -55,10 +57,10 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   MultiDimImplementation<T_DATA>::~MultiDimImplementation() {
-    GUM_DESTRUCTOR( MultiDimImplementation );
+    GUM_DESTRUCTOR ( MultiDimImplementation );
     // unregister all remaining slave instantiations
 
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
+    for ( List<Instantiation *>::iterator iter = __slaveInstantiations.begin();
           iter != __slaveInstantiations.end(); ++iter )
       ( *iter )->forgetMaster();
   }
@@ -67,21 +69,21 @@ namespace gum {
   /// add a new var to the sequence of __vars.
   // ==============================================================================
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::add( const DiscreteVariable& v ) {
+  void MultiDimImplementation<T_DATA>::add ( const DiscreteVariable &v ) {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if ( __vars.exists( &v ) ) {
-      GUM_ERROR( DuplicateElement,"Var already exists in this instantiation" );
+    if ( __vars.exists ( &v ) ) {
+      GUM_ERROR ( DuplicateElement, "Var already exists in this implementation" );
     }
 
-    __domainSize*=v.domainSize();
+    __domainSize *= v.domainSize();
 
-    __vars.insert( &v );
+    __vars.insert ( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
+    for ( List<Instantiation *>::iterator iter = __slaveInstantiations.begin();
           iter != __slaveInstantiations.end(); ++iter ) {
-      ( *iter )->addWithMaster( this, v );
+      ( *iter )->addWithMaster ( this, v );
     }
 
     if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
@@ -91,20 +93,20 @@ namespace gum {
   /// removes a var from the variables of the multidimensional matrix
   // ==============================================================================
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::erase( const DiscreteVariable& v ) {
+  void MultiDimImplementation<T_DATA>::erase ( const DiscreteVariable &v ) {
     // check that the variable does actually belong to the MultiDimImplementation
-    if ( ! __vars.exists( &v ) ) {
-      GUM_ERROR( NotFound,"Var does not exist in this instantiation" );
+    if ( ! __vars.exists ( &v ) ) {
+      GUM_ERROR ( NotFound, "Var does not exist in this implementation" );
     }
 
-    __domainSize/=v.domainSize();
+    __domainSize /= v.domainSize();
 
-    __vars.erase( &v );
+    __vars.erase ( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
+    for ( List<Instantiation *>::iterator iter = __slaveInstantiations.begin();
           iter != __slaveInstantiations.end(); ++iter ) {
-      ( *iter )->eraseWithMaster( this, v );
+      ( *iter )->eraseWithMaster ( this, v );
     }
 
     if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
@@ -115,9 +117,9 @@ namespace gum {
   /// @todo this function should be declared somewhere?
   // ==============================================================================
   template<typename T_DATA> INLINE
-  MultiDimImplementation<T_DATA>& operator<<( MultiDimImplementation<T_DATA>& array,
-      const DiscreteVariable& v ) {
-    array.add( v );
+  MultiDimImplementation<T_DATA>& operator<< ( MultiDimImplementation<T_DATA>& array,
+      const DiscreteVariable &v ) {
+    array.add ( v );
     return array;
   }
 
@@ -125,19 +127,19 @@ namespace gum {
   /// add a Instantiation to the list of slave instantiations
   // ==============================================================================
   template<typename T_DATA> INLINE
-  bool MultiDimImplementation<T_DATA>::registerSlave( Instantiation& i ) {
+  bool MultiDimImplementation<T_DATA>::registerSlave ( Instantiation &i ) {
     // check that the Instantiation has the same variables as this
     if ( i.nbrDim() != __vars.size() )
       return false;
 
     for ( Sequence<const DiscreteVariable *>::iterator iter = __vars.begin();
           iter != __vars.end(); ++iter )
-      if ( ! i.contains( *iter ) )
+      if ( ! i.contains ( *iter ) )
         return false;
 
-    i.synchronizeWithMaster( this );
+    i.synchronizeWithMaster ( this );
 
-    __slaveInstantiations+=( &i );
+    __slaveInstantiations += ( &i );
 
     return true;
   }
@@ -146,8 +148,8 @@ namespace gum {
   /// removes a Instantiation from the list of slave instantiations
   // ==============================================================================
   template<typename T_DATA> INLINE
-  bool MultiDimImplementation<T_DATA>::unregisterSlave( Instantiation& slave ) {
-    __slaveInstantiations.eraseByVal( &slave );
+  bool MultiDimImplementation<T_DATA>::unregisterSlave ( Instantiation &slave ) {
+    __slaveInstantiations.eraseByVal ( &slave );
     // TODO This method should return true? Why not use a void instead?
     return true;
   }
@@ -163,19 +165,19 @@ namespace gum {
   }
 
   template<typename T_DATA> INLINE
-  const DiscreteVariable&
-  MultiDimImplementation<T_DATA>::variable( Idx i ) const  {
-    return *( __vars.atPos( i ) );
+  const DiscreteVariable &
+  MultiDimImplementation<T_DATA>::variable ( Idx i ) const  {
+    return * ( __vars.atPos ( i ) );
   }
 
   template<typename T_DATA> INLINE
-  Idx MultiDimImplementation<T_DATA>::pos( const DiscreteVariable& v ) const {
+  Idx MultiDimImplementation<T_DATA>::pos ( const DiscreteVariable &v ) const {
     return __vars[&v];
   }
 
   template<typename T_DATA> INLINE
-  bool MultiDimImplementation<T_DATA>::contains( const DiscreteVariable& v ) const {
-    return __vars.exists( &v );
+  bool MultiDimImplementation<T_DATA>::contains ( const DiscreteVariable &v ) const {
+    return __vars.exists ( &v );
   }
 
   // ==============================================================================
@@ -183,77 +185,77 @@ namespace gum {
   // ==============================================================================
   template<typename T_DATA> INLINE
   const Sequence<const DiscreteVariable *>&
-  MultiDimImplementation<T_DATA>::variablesSequence( void ) const  {
+  MultiDimImplementation<T_DATA>::variablesSequence ( void ) const  {
     return __vars;
   }
 
   /// is this empty ?
   template<typename T_DATA> INLINE
   bool MultiDimImplementation<T_DATA>::empty() const  {
-    GUM_ASSERT( ! this->_isCommitNeeded() );
+    GUM_ASSERT ( ! this->_isCommitNeeded() );
     return __vars.empty();
   }
 
   template<typename T_DATA> INLINE
-  MultiDimAdressable& MultiDimImplementation<T_DATA>::getMasterRef() {
+  MultiDimAdressable &MultiDimImplementation<T_DATA>::getMasterRef() {
     return *this;
   }
 
   template<typename T_DATA> INLINE
-  const MultiDimAdressable& MultiDimImplementation<T_DATA>::getMasterRef() const {
+  const MultiDimAdressable &MultiDimImplementation<T_DATA>::getMasterRef() const {
     return *this;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::beginMultipleChanges( void ) {
-    __internalChangeMethod=MULTIPLE_CHANGE;
+  void MultiDimImplementation<T_DATA>::beginMultipleChanges ( void ) {
+    __internalChangeMethod = MULTIPLE_CHANGE;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::endMultipleChanges( void ) {
-    if ( __internalChangeState==NOT_COMMITTED_CHANGE ) {
+  void MultiDimImplementation<T_DATA>::endMultipleChanges ( void ) {
+    if ( __internalChangeState == NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges();
-      __internalChangeState=NO_CHANGE;
+      __internalChangeState = NO_CHANGE;
     }
 
-    __internalChangeMethod=DIRECT_CHANGE;
+    __internalChangeMethod = DIRECT_CHANGE;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::endMultipleChanges( const T_DATA& x ) {
-    if ( __internalChangeState==NOT_COMMITTED_CHANGE ) {
-      _commitMultipleChanges( x );
-      __internalChangeState=NO_CHANGE;
+  void MultiDimImplementation<T_DATA>::endMultipleChanges ( const T_DATA &x ) {
+    if ( __internalChangeState == NOT_COMMITTED_CHANGE ) {
+      _commitMultipleChanges ( x );
+      __internalChangeState = NO_CHANGE;
     }
 
-    __internalChangeMethod=DIRECT_CHANGE;
+    __internalChangeMethod = DIRECT_CHANGE;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::_commitMultipleChanges( void ) {
+  void MultiDimImplementation<T_DATA>::_commitMultipleChanges ( void ) {
     // empty!
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::_commitMultipleChanges( const T_DATA& ) {
+  void MultiDimImplementation<T_DATA>::_commitMultipleChanges ( const T_DATA & ) {
     // empty!
   }
 
   /// get the actual change method of *this
   template<typename T_DATA> INLINE
   bool MultiDimImplementation<T_DATA>::_isInMultipleChangeMethod() const {
-    return ( __internalChangeMethod==MULTIPLE_CHANGE );
+    return ( __internalChangeMethod == MULTIPLE_CHANGE );
   }
 
   /// get the actual state of *this
   template<typename T_DATA> INLINE
   bool MultiDimImplementation<T_DATA>::_isCommitNeeded() const {
-    return ( __internalChangeState==NOT_COMMITTED_CHANGE );
+    return ( __internalChangeState == NOT_COMMITTED_CHANGE );
   }
 
   /// Returns a constant reference over the list of slaved instantiations.
   template<typename T_DATA> INLINE
-  const List<Instantiation*>&
+  const List<Instantiation *>&
   MultiDimImplementation<T_DATA>::_slaves() const {
     return __slaveInstantiations;
   }
@@ -261,28 +263,29 @@ namespace gum {
   /// get the actual state of *this
   template<typename T_DATA> INLINE
   void MultiDimImplementation<T_DATA>::__setNotCommitedChange() {
-    __internalChangeState=NOT_COMMITTED_CHANGE;
+    __internalChangeState = NOT_COMMITTED_CHANGE;
   }
 
   /// get the actual state of *this
   template<typename T_DATA> INLINE
   float MultiDimImplementation<T_DATA>::compressionRate() const {
-    return (( float )1 )-( float )realSize()/( float )domainSize();
+    return ( ( float ) 1 ) - ( float ) realSize() / ( float ) domainSize();
   }
 
   /// returns a basename to be used for default operators
   template<typename T_DATA>
-  const std::string& MultiDimImplementation<T_DATA>::basename() const {
+  const std::string &MultiDimImplementation<T_DATA>::basename() const {
     static const std::string str = "MultiDimImplementation";
     return str;
   }
 
   template<typename T_DATA> INLINE
-  void MultiDimImplementation<T_DATA>::_swap( const DiscreteVariable* x,
-      const DiscreteVariable* y ) {
-    __vars.setAtPos( __vars.pos( x ), y );
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter ) {
-      ( **iter ).swap( *x, *y );
+  void MultiDimImplementation<T_DATA>::_swap ( const DiscreteVariable *x,
+      const DiscreteVariable *y ) {
+    __vars.setAtPos ( __vars.pos ( x ), y );
+
+    for ( List<Instantiation *>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter ) {
+      ( **iter ).swap ( *x, *y );
     }
   }
 
@@ -290,9 +293,9 @@ namespace gum {
   /// for friendly displaying the content of the array
   // ==============================================================================
   template<typename T_DATA> INLINE
-  std::ostream& operator<< ( std::ostream& out,
+  std::ostream &operator<< ( std::ostream &out,
                              const MultiDimImplementation<T_DATA>& array ) {
-    return out << static_cast<const MultiDimContainer<T_DATA>&>( array );
+    return out << static_cast<const MultiDimContainer<T_DATA>&> ( array );
   }
 
 } /* namespace gum */
