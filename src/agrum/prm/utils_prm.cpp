@@ -108,9 +108,9 @@ Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, con
 }
 
 // the function used to combine two tables
-Potential<float>* multPotential ( const Potential<float>& t1,
-                                  const Potential<float>& t2 ) {
-  return new Potential<float> (t1 * t2);
+Potential<prm_float>* multPotential ( const Potential<prm_float>& t1,
+                                      const Potential<prm_float>& t2 ) {
+  return new Potential<prm_float> (t1 * t2);
 }
 
 void
