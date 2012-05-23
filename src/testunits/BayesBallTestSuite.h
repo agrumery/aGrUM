@@ -27,45 +27,50 @@
 
 namespace gum_tests {
 
-    class BayesBallTestSuite: public CxxTest::TestSuite {
-      public:
+  class BayesBallTestSuite: public CxxTest::TestSuite {
+    public:
 
-        void setUp() {
-        }
+      void setUp() {
+      }
 
-        void tearDown() {
-        }
+      void tearDown() {
+      }
 
-        void testCreation() {
-          gum::BayesBall* balls = 0;
-          TS_ASSERT_THROWS_NOTHING(balls = new gum::BayesBall());
-          TS_ASSERT_THROWS_NOTHING(if (balls != 0) delete balls);
-        }
+      void testCreation() {
+        gum::BayesBall* balls = 0;
+        TS_ASSERT_THROWS_NOTHING( balls = new gum::BayesBall() );
 
-        void testRequisiteNodes() {
-          gum::BayesBall balls;
-          gum::DefaultBayesNetGenerator<float> gen(50, 200, 2);
-          gum::BayesNet<float>* bn = new  gum::BayesNet<float>();
-          gen.generateBN(*bn);
-          gum::Set<gum::NodeId> requisite;
+        TS_ASSERT_THROWS_NOTHING( if( balls != 0 ) delete balls );
+      }
 
-          gum::Set<gum::NodeId> query, hardEvidence;
-          gum::Sequence<gum::NodeId> nodes_seq;
-          for (gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter)
-            nodes_seq.insert(*iter);
-          for (gum::Idx i = 0; i < 5; ++i)
-            hardEvidence.insert(nodes_seq.atPos(i));
-          for (gum::Idx j = 24; j > 19; --j)
-            query.insert(nodes_seq.atPos(j));
-          TS_ASSERT_THROWS_NOTHING(balls.requisiteNodes(bn->dag(), query, hardEvidence, requisite));
+      void testRequisiteNodes() {
+        gum::BayesBall balls;
+        gum::DefaultBayesNetGenerator<float> gen( 50, 200, 2 );
+        gum::BayesNet<float>* bn = new  gum::BayesNet<float>();
+        gen.generateBN( *bn );
+        gum::Set<gum::NodeId> requisite;
 
-          TS_ASSERT(requisite.size() >= 5);
+        gum::Set<gum::NodeId> query, hardEvidence;
+        gum::Sequence<gum::NodeId> nodes_seq;
 
-          if (bn != 0) delete bn;
-        }
+        for( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
+          nodes_seq.insert( *iter );
 
-    };
+        for( gum::Idx i = 0; i < 5; ++i )
+          hardEvidence.insert( nodes_seq.atPos( i ) );
 
-  }
+        for( gum::Idx j = 24; j > 19; --j )
+          query.insert( nodes_seq.atPos( j ) );
+
+        TS_ASSERT_THROWS_NOTHING( balls.requisiteNodes( bn->dag(), query, hardEvidence, requisite ) );
+
+        TS_ASSERT( requisite.size() >= 5 );
+
+        if( bn != 0 ) delete bn;
+      }
+
+  };
+
+}
 
 

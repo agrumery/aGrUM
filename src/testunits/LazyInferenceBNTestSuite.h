@@ -82,7 +82,7 @@ namespace gum_tests {
       }
 
       // Testing when there is no evidence
-      void tsetCreationAndInference() {
+      void testCreationAndInference() {
         fill( *bn );
         // Testing the inference
         gum::LazyPropagation<float>* inf = 0;
@@ -94,7 +94,7 @@ namespace gum_tests {
         }
       }
 
-      void Marginal() {
+      void testMarginal() {
         fill( *bn );
         gum::LazyPropagation<float> inf( *bn );
 
@@ -106,7 +106,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( inf.marginal( i5 ) );
       }
 
-      void tsetMarginalWithEvidence() {
+      void testMarginalWithEvidence() {
         fill( *bn );
         gum::List< const gum::Potential<float>* > e_list;
         e_list.insert( e_i1 );
@@ -125,7 +125,7 @@ namespace gum_tests {
       }
 
       // Testing when there is no evidence
-      void tsetJoint() {
+      void testJoint() {
         fill( *bn );
         // Testing the inference
         gum::LazyPropagation<float> inf( *bn );

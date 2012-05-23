@@ -649,7 +649,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( a,b );
       }
 
-      void removeaddSameArc() {
+      void testRemoveaddSameArc() {
         gum::BayesNet<float> bn;
 
         gum::MaxParentsMCBayesNetGenerator<float> gen( 10,30,40,30 );
