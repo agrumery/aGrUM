@@ -126,6 +126,7 @@ namespace gum {
        */
       typename Property<Potential<T_DATA>*>::onNodes _marginals;
 
+    private:
       /**
        * The Bayes net we wish to perform inference on.
        */
@@ -140,4 +141,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_INFERENCE_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
