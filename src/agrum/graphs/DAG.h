@@ -88,9 +88,9 @@ namespace gum {
    *       iter != g3.endArcs(); ++iter )
    *   cerr << *iter << endl;
    *
-   * const ArcSet& a=g3.parents( 3 );
+   * const NodeSet& a=g3.parents( 3 );
    *
-   * for ( ArcSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   * for ( NodeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
    *   cerr << "  -  "<<*iter;
    *
    * cerr<<endl;

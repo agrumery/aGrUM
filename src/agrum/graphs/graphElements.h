@@ -96,17 +96,17 @@
 
   // iterate on nodes
   for(G::NodeIterator it=gr.beginNodes();it != gr.endNodes() ; ++it) {
-  ... // *it is a gum::NodeId
+    ... // *it is a gum::NodeId
   }
 
   // iterate on edges (if possible)
   for(G::EdgeIterator it=gr.beginEdges();it != gr.endEdges() ; ++it) {
-  ... // *it is a gum::Edge
+    ... // *it is a gum::Edge
   }
 
   // iterate on arcs (if possible)
   for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++it) {
-  ... // *it is a gum::Arc
+    ... // *it is a gum::Arc
   }
   @endcode
 
@@ -128,21 +128,22 @@
   g.insertNode();
 
   for ( gum::UndiGraph::NodeIterator i=g.beginNodes(); i!=g.endNodes(); ++i ) {
-  is_id_odd.set( *i, *i % 2 == 0 );
+    is_id_odd.set( *i, *i % 2 == 0 );
   }
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
   for ( gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
-  i!=is_id_odd.end(); ++i ) {
-  std::cout<<i.key()<<" : "<<*i<<std::endl;
+        i!=is_id_odd.end(); 
+        ++i ) {
+    std::cout<<i.key()<<" : "<<*i<<std::endl;
   }
   @endcode
 
   Equivalently, you could have written :
   @code
   bool is_it_odd(const gum::NodeId& i) {
-  return i%2==0;
+    return i%2==0;
   }
 
   gum::UndiGraph g;
@@ -155,8 +156,9 @@
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
   for (gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
-  i!=is_id_odd.end(); ++i ) {
-  std::cout<<i.key()<<" : "<<*i<<std::endl;
+        i!=is_id_odd.end(); 
+        ++i ) {
+    std::cout<<i.key()<<" : "<<*i<<std::endl;
   }
   @endcode
 
@@ -172,25 +174,23 @@
   gum::List<gum::NodeId> nodeFIFO;
   // mark[node] contains 0 if not visited
   // mark[node]=predecessor if visited
-  gum::Property<gum::NodeId>::onNodes mark=g.nodesProperty( 0 );
+  gum::Property<gum::NodeId>::onNodes mark=g.nodesProperty((gum::NodeId) 0 );
   gum::NodeId current;
 
   mark[n1]=n1;
   nodeFIFO.pushBack( n1 );
   while ( ! nodeFIFO.empty() ) {
-  current=nodeFIFO.front();nodeFIFO.popFront();
+    current=nodeFIFO.front();nodeFIFO.popFront();
 
-  const gum::ArcSet& set=g.children( current );
-  for ( gum::ArcSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
-    gum::NodeId new_one=ite->head();
+    const gum::NodeSet& set=g.children( current );
+    for ( gum::NodeSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
+        gum::NodeId new_one=*ite;
+        if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
+        mark[new_one]=current;
+        if ( new_one==n2 ) break; // if we reach n2, stop.
 
-  if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
-
-  mark[new_one]=current;
-  if ( new_one==n2 ) break; // if we reach n2, stop.
-
-  nodeFIFO.pushBack( new_one );
-  }
+        nodeFIFO.pushBack( new_one );
+    }
   }
 
   if ( mark[n2] ==0 ) GUM_ERROR( gum::NotFound,"no path found" );
@@ -329,10 +329,10 @@ namespace gum {
       /// constructs a new edge (aN1,aN2)
       /** @param aN1 the ID of the first extremal node
        * @param aN2 the ID of the second extremal node */
-      Edge( NodeId aN1, NodeId aN2 ) ;
+      Edge ( NodeId aN1, NodeId aN2 ) ;
 
       /// copy constructor
-      Edge( const Edge& src ) ;
+      Edge ( const Edge& src ) ;
 
       /// destructor
       ~Edge();
@@ -349,7 +349,7 @@ namespace gum {
       bool isDirected() const ;
 
       /// returns an extremal node of an edge given the ID of the other one
-      NodeId other( NodeId id ) const;
+      NodeId other ( NodeId id ) const;
 
       /// returns one extremal node ID (whichever one it is is unspecified)
       NodeId first() const ;
@@ -436,10 +436,10 @@ namespace gum {
 
       /// basic constructor. Creates tail -> head.
       /** @warning the order in which the nodes are passed is important */
-      Arc( NodeId tail, NodeId head ) ;
+      Arc ( NodeId tail, NodeId head ) ;
 
       /// copy constructor
-      Arc( const Arc& src ) ;
+      Arc ( const Arc& src ) ;
 
       /// destructor
       ~Arc();
@@ -462,7 +462,7 @@ namespace gum {
       bool isDirected() const ;
 
       /// returns an extremal node of an edge given the ID of the other one
-      NodeId other( NodeId id ) const;
+      NodeId other ( NodeId id ) const;
 
       /// returns one extremal node ID (whichever one it is is unspecified)
       NodeId first() const ;
@@ -500,10 +500,10 @@ namespace gum {
 
 
       /// modifies the tail of the arc
-      void __setTail( NodeId id ) ;
+      void __setTail ( NodeId id ) ;
 
       /// modifies the head of the arc
-      void __setHead( NodeId id ) ;
+      void __setHead ( NodeId id ) ;
 
       /// reverses the direction of the arc
       void operator- () ;
@@ -518,7 +518,7 @@ namespace gum {
       /**
        * @throw HashSize
        */
-      Size operator()( const Edge& key ) const ;
+      Size operator() ( const Edge& key ) const ;
     private:
       mutable std::pair<NodeId, NodeId> pair;
   };
@@ -529,7 +529,7 @@ namespace gum {
       /**
        * @throw HashSize
        */
-      Size operator()( const Arc& key ) const ;
+      Size operator() ( const Arc& key ) const ;
     private:
       mutable std::pair<NodeId, NodeId> pair;
   };
@@ -600,4 +600,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif // GUM_GRAPHELEMENTS_H
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
