@@ -1,0 +1,26 @@
+Metadata-Version: 1.1
+Name: pyAgrum
+Version: @PYAGRUM_VERSION@
+Summary: Bayesian Networks in python
+Home-page: http://forge.lip6.fr/projects/pyagrum
+Author: Pierre-Henri WUILLEMIN
+Author-email: pierre-henri.wuillemin@lip6.fr
+License: GPL
+Download-URL: http://forge.lip6.fr/projects/pyagrum
+Description:pyAgrum is a Python wrapper for the C++ aGrUM library.
+It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+
+The module is a straightforward application of the SWIG interface generator. Custom-written code was added to make the interface more similar to OpenBayes, a free Bayesian Network library for Python.
+
+Platform: any
+Classifier: License :: OSI Approved :: GPL License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: @PYTHON_VERSION@
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers and Researchers
+Classifier: Topic :: Scientific/Engineering
+Requires: numpy
