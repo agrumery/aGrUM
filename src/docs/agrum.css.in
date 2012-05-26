@@ -6,7 +6,7 @@ BODY,H1,H2,H3,H4,H5,H6,P,CENTER,TD,TH,UL,DL,DIV {
 BODY {
   background: #EEF1F7;
   color: black;
-   margin: 1px;
+  margin: 1px;
 }
 
 H1,H2,H3,H4,H1 A,H2 A,H3 A,H4 A {
@@ -14,8 +14,8 @@ H1,H2,H3,H4,H1 A,H2 A,H3 A,H4 A {
   padding: 4px;
 }
 
-BODY,TD {
-       font-size: 90%;
+TD {
+  font-size: 90%;
 }
 
 #titlearea {
@@ -31,6 +31,7 @@ BODY,TD {
 #side-nav {
   margin-top: 1px;
   margin-left: 5px;
+  font-size: 70%;
 }
 
 #nav-path ul {
@@ -48,7 +49,11 @@ BODY,TD {
   content: "»";
 }
 
-H1 {
+.title {
+  background: #DDE1E7;
+}
+
+H1,.title {
        text-align: center;
        font-size: 180%;
        letter-spacing: 2px;
@@ -57,7 +62,6 @@ H1 {
 H2 {
        font-size: 140%;
        counter-reset: subsection;
-       background-color: #EEEEEE;
        letter-spacing: 2px;
 }
 H3 {
