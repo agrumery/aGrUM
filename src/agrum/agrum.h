@@ -56,9 +56,8 @@
 
     To install aGrUm :
     @code
-    svn co http://alm.lip6.fr/svn/agrum/tags/v1.5
-    make
-    sudo make install
+    git clone git://forge.lip6.fr/aGrUM
+    act install release -d installation_path
     @endcode
 
     \section using_agrum Using aGrUM
@@ -72,7 +71,7 @@ project(FOO)
 cmake_minimum_required(VERSION 2.8)
 
 # do not forget to change this line if needed ("act install -d...")
-set(AGRUM_INSTALLATION_DIRECTORY "/usr")
+set(AGRUM_INSTALLATION_DIRECTORY "installation_path")
 set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
 
 find_package(aGrUM)
