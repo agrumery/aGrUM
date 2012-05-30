@@ -245,15 +245,27 @@ def saveBN(bn,s):
     };
 
     PyObject *ids() {
-		PyObject* q=PyList_New(0);
+      PyObject* q=PyList_New(0);
 
-		const gum::DAG& dag=self->dag();
-		for ( gum::NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
-			PyList_Append(q,PyInt_FromLong(*node_iter));
-		}
+      const gum::DAG& dag=self->dag();
+      for ( gum::NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+        PyList_Append(q,PyInt_FromLong(*node_iter));
+      }
 
-		return q;
-	};
+      return q;
+    };
+
+    PyObject *arcs() {
+      PyObject* q=PyList_New(0);
+
+      const gum::DAG& dag=self->dag();
+      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.beginArcs();arc_iter != dag.endArcs(); ++arc_iter ) {
+        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));  
+      }
+
+      return q;
+    };
+
 
     PyObject *parents(const NodeId id) const {
 		PyObject* q=PyList_New(0);
