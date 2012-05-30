@@ -26,12 +26,26 @@ description of a BN
 import pyAgrum as gum
 
 def showBN(bn):
+    print('---------------------------------')
     print(bn.property("name"))
-
+    print('---------------------------------')
     print(bn)
+    print('---------------------------------')
+    
+    l=[len(bn.variable(i)) for i in bn.ids()]
+    print('variables domainSize : min={0} max={1}'.format(min(l),max(l)))
+    
+    print('parents : max={0}'.format(max([len(bn.parents(i)) for i in bn.ids()])))
+    print('---------------------------------')
 
     for i in bn.ids():
         print('{0} : {1}'.format(i,str(bn.variable(i))))
+    print('---------------------------------')
+    
+    for (i,j) in bn.arcs():
+        print('{0}->{1}'.format(bn.variable(i).name(),bn.variable(j).name()))
+    print('---------------------------------')
+        
 
 
 bn=gum.loadBN("../resources/alarm.dsl")
