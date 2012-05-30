@@ -19,11 +19,14 @@
 #IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
+"""
+How to access the parameters of a BN
+"""
 
 import pyAgrum as gum
 
 bn=gum.BayesNet()
-bn.loadBIF("bn.bif")
+bn.loadBIF("../resources/bn.bif")
 
 print bn.variable(0).name()
 # a

@@ -43,3 +43,8 @@ bn.cpt(daltonisme)[1,:]=[0.005,0.995]
 bn.saveBIF("exo1.bif")
 for line in open("exo1.bif"):
     print line,
+
+print("for gum.loadBN or gum.saveBN, possible files ext are ="+gum.availableBNExts())
+gum.saveBN(bn,"exo1.dsl")
+for line in open("exo1.dsl"):
+    print line,
