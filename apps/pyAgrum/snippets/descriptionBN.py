@@ -47,6 +47,7 @@ def showBN(bn):
     print('---------------------------------')
         
 
-
+#load the file alarm.dsl
 bn=gum.loadBN("../resources/alarm.dsl")
+
 showBN(bn)
