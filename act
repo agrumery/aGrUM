@@ -270,10 +270,13 @@ def uninstall(options):
     install_folder=options['destination']
     if options['wrapper']!='':
         install_folder=sysconfig.get_python_lib(1,0,prefix=install_folder)
-        print "suppression de "+RED+install_folder+"/pyAgrum.py"+ENDC
-        os.system('rm -f '+install_folder+"/pyAgrum.py")
-        print "suppression de "+RED+install_folder+"/_pyAgrum.so"+ENDC
-        os.system('rm -f '+install_folder+"/_pyAgrum.so")
+
+        print "suppresion récursive de "+RED+install_folder+"/pyAgrum"+ENDC
+        os.system('cd '+install_folder+' && rm -rf pyAgrum')
+        print "suppresion récursive de "+RED+install_folder+"/gumLib"+ENDC
+        os.system('cd '+install_folder+' && rm -rf gumLib')
+        print "suppresion de "+RED+install_folder+"/pyAgrum*.egg-info"+ENDC
+        os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
     else:
         print "suppresion de "+RED+install_folder+"/lib/libagrum*"+ENDC
         os.system('rm -f '+install_folder+"/lib/libagrum*")
