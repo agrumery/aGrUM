@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+"""
+pyAgrum is a Python wrapper for the C++ aGrUM library.
+It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+
+The module is a straightforward application of the SWIG interface generator. Custom-written code was added to make the interface more similar to OpenBayes, a free Bayesian Network library for Python.
+
+pyAgrum is GPL.
+
+site : https://forge.lip6.fr/projects/pyagrum/wiki
+"""
+
+# aGrum Licence (GPL)
+# -------------------
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License as published by  *
+#*   the Free Software Foundation; either version 2 of the License, or     *
+#*   (at your option) any later version.                                   *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU General Public License for more details.                          *
+#*                                                                         *
+#*   You should have received a copy of the GNU General Public License     *
+#*   along with this program; if not, write to the                         *
+#*   Free Software Foundation, Inc.,                                       *
+#*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+__version__ = '@PYAGRUM_VERSION@'
+__license__ = __doc__
+__project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
+
+# selection of imports extracted from dir(pyAgrum)
+from pyAgrum import Arc,BayesNet,BruteForceKL,DefaultInLabel,DiGraph,DiscreteVar,DiscretizedVar,DuplicateElement,DuplicateLabel,Edge,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION,GibbsInference,GibbsKL,GraphError,IOError,IdError,Instantiation,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidCircuit,InvalidEdge,InvalidNode,LabelizedVar,LazyPropagation,ListPotentials,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,Potential,PythonBNListener,PythonLoadListener,RangeVar,ReferenceError,Sequence_node,Sequence_string,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue,Variable,Vector_double,WrongClassElement,WrongType
+
+
+def availableBNExts():
+    """
+    return the list of suffix for supported BN file formats.
+    """
+    return "bif|dsl|net|bifxml"
+
+def loadBN(s,listeners=None):
+    """
+    returns a BN from a file using one of the availableBNExts() suffixes.
+    """
+    bn=BayesNet()
+
+    extension=s.split('.')[-1].upper()
+    if extension=="BIF":
+        bn.loadBIF(s,listeners)
+    elif extension=="BIFXML":
+        bn.loadBIFXML(s,listeners)
+    elif extension=="DSL":
+        bn.loadDSL(s,listeners)
+    elif extension=="NET":
+        bn.loadNET(s,listeners)
+    else:
+        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+
+    bn.setProperty("name",s)
+    return bn
+
+def saveBN(bn,s):
+    """
+    save a BN into a file using the format corresponding to one of the availableBNExts() suffixes.
+    """
+    extension=s.split('.')[-1].upper()
+    if extension=="BIF":
+        bn.saveBIF(s)
+    elif extension=="BIFXML":
+        bn.saveBIFXML(s)
+    elif extension=="DSL":
+        bn.saveDSL(s)
+    elif extension=="NET":
+        bn.saveNET(s)
+    else:
+        raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())

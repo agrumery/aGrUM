@@ -195,44 +195,6 @@ def addTick(self,*args):
   return self
 %}
 
-%pythoncode %{
-def availableBNExts():
-  return "bif|dsl|net|bifxml"
-
-def loadBN(s,listeners=None):
-  bn=BayesNet()
-
-  extension=s.split('.')[-1].upper()
-  if extension=="BIF":
-    bn.loadBIF(s,listeners)
-  elif extension=="BIFXML":
-    bn.loadBIFXML(s,listeners)
-  elif extension=="DSL":
-    bn.loadDSL(s,listeners)
-  elif extension=="NET":
-    bn.loadNET(s,listeners)
-  else:
-    raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
-
-  bn.setProperty("name",s)
-  return bn
-
-def saveBN(bn,s):
-  extension=s.split('.')[-1].upper()
-  if extension=="BIF":
-    bn.saveBIF(s)
-  elif extension=="BIFXML":
-    bn.saveBIFXML(s)
-  elif extension=="DSL":
-    bn.saveDSL(s)
-  elif extension=="NET":
-    bn.saveNET(s)
-  else:
-    raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
-
-
-%}
-
 %extend gum::BayesNet {
     PyObject *names() const {
       PyObject* q=PyList_New(0);
@@ -260,7 +222,7 @@ def saveBN(bn,s):
 
       const gum::DAG& dag=self->dag();
       for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.beginArcs();arc_iter != dag.endArcs(); ++arc_iter ) {
-        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));  
+        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
       }
 
       return q;
@@ -307,7 +269,7 @@ def saveBN(bn,s):
                 return true;
             }
         } catch (gum::IOError& e) {
-          GUM_SHOWERROR(e);
+          throw(e);
         }
         return false;
     }
@@ -334,7 +296,7 @@ def saveBN(bn,s):
             } else {
                 return true;
             }
-        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        } catch (gum::IOError& e) {throw (e);}
         return false;
     }
 
@@ -384,7 +346,7 @@ def saveBN(bn,s):
             int isOK= reader.proceed();
             return (isOK==0);
         } catch (gum::IOError& e) {
-            GUM_SHOWERROR(e);
+            throw(e);
         }
 
         return false;
