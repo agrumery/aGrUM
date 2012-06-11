@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 import pyAgrum as gum
 import numpy as np
 
-def getProba(bn,ev,target):
+def getPosterior(bn,ev,target):
     """
     Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
     """
@@ -44,7 +44,6 @@ def showProba(p):
     """
     Show a matplotlib barh (horizontal histogram) for a Potential p.
 
-    >>> showProba(getProba(bn,ev,target))
     """
     var=p.variable(0)
     ra=np.arange(len(var))
@@ -60,3 +59,21 @@ def showProba(p):
     ax.set_title(var.name())
     ax.get_xaxis().grid(True)
     plt.show()
+
+def showPosterior(bn,ev,target):
+    """
+    shortcut for showProba(getPosterior(bn,ev,target))
+    """
+    showProba(getPosterior(bn,ev,target))
+
+def showBN(bn,size="6,6"):
+    """
+    Shows a graphviz svg representation of the BN using size
+    """
+    import pydot
+    import IPython.core.display
+
+    p=pydot.graph_from_dot_data(bn.toDot())
+    p.set_size(size)
+    i=IPython.core.display.SVG(p.create_svg())
+    IPython.core.display.display(i)
