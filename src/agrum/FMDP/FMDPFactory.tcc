@@ -26,6 +26,9 @@
 // ============================================================================
 #include <agrum/FMDP/FMDPFactory.h>
 // ============================================================================
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/potential.h>
+// ============================================================================
 
 // #define FMDP_VERBOSITY(x) {  if (isVerbose()) std::cerr << "[FMDP factory] "<< x << std::endl; }
 
@@ -296,9 +299,6 @@ namespace gum {
         __fmdp->addPrimedVariable( varPrime, var );
         __varNameMap.insert( varPrime->name() , varPrime );
         
-        //~ __mainVarSeq.insert( var );
-        //~ __primedVarSeq.insert( varPrime );
-        
         __resetParts();
         __states.pop_back();
 
@@ -347,14 +347,6 @@ namespace gum {
         __foo_flag = true;
         __states.push_back ( ACTION );
       }
-      
-        
-      //~ for( SequenceIterator< const DiscreteVariable* > primedIter = __primedVarSeq.begin(); primedIter != __primedVarSeq.end(); ++primedIter )
-        //~ if( !__mainVarSeq.exists( *primedIter ) )
-          //~ __mainVarSeq.insert( *primedIter );
-        //~ else
-          //~ break;
-          
 
 //       VERBOSITY ( "starting action declaration" );
     }
@@ -407,8 +399,6 @@ namespace gum {
         __illegalStateError ( "startTransitionDeclaration" );
       else 
         __states.push_back ( TRANSITION );
-          
-      //~ this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
 //       VERBOSITY ( "starting transition declaration" );
     }
@@ -444,10 +434,10 @@ namespace gum {
         __illegalStateError ( "addTransition" );
       else {
         if( __foo_flag )
-          __fmdp->addTransitionForAction( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram(), __stringBag[0] );
+          __fmdp->addTransitionForAction( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram(false, (T_DATA) 0, true), __stringBag[0] );
         else
-          __fmdp->addTransition( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
-        //~ this->__decisionDiagramFactory->showProperties();
+          __fmdp->addTransition( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram(false, (T_DATA) 0, true) );
+        // this->__decisionDiagramFactory->showProperties();
         this->__decisionDiagramFactory->clear();
       }
           
@@ -470,7 +460,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Cost declaration methods (NONE <-> COST <-> ACTION)                                                  **/
+  /* **          Cost declaration methods (NONE <-> COST <-> ACTION)                                                   **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
   
@@ -484,8 +474,6 @@ namespace gum {
         __illegalStateError ( "startTransitionDeclaration" );
       else 
         __states.push_back ( COST );
-          
-      this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
 //       VERBOSITY ( "starting Cost declaration" );
     }
@@ -522,8 +510,7 @@ namespace gum {
           __fmdp->addCostForAction( this->__decisionDiagramFactory->getMultiDimDecisionDiagram(), __stringBag[0] );
         else
           __fmdp->addCost( this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
-        GUM_TRACE( "BOUH!" );
-        //~ this->__decisionDiagramFactory->showProperties();
+        // this->__decisionDiagramFactory->showProperties();
         this->__decisionDiagramFactory->clear();
       }
     }
@@ -560,10 +547,19 @@ namespace gum {
         __illegalStateError ( "startRewardDeclaration" );
       else 
         __states.push_back ( REWARD );
-          
-      this->__decisionDiagramFactory->setVariablesSequence( __mainVarSeq );
 
 //       VERBOSITY ( "starting reward declaration" );
+    }
+  
+    // ==========================================================================================
+    // Tells the factory that we're in a reward declaration mode where the global reward diagram is an operation between simplier dd
+    // ==========================================================================================
+    template<typename T_DATA> INLINE
+    void
+    FMDPFactory<T_DATA>::setOperationModeOn( std::string operationType ){
+      __foo_flag = true;
+      std::string ot( operationType );
+      __stringBag.push_back( ot );
     }
   
     // ==========================================================================================
@@ -578,7 +574,7 @@ namespace gum {
       if ( state() != REWARD )
         __illegalStateError ( "addReward" );
       else 
-        __fmdp->addReward( r );
+          __fmdp->addReward( r );
     }
   
     // ==========================================================================================
@@ -591,8 +587,11 @@ namespace gum {
       if ( state() != REWARD )
         __illegalStateError ( "addReward" );
       else {
-        __fmdp->addReward( this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
-        //~ this->__decisionDiagramFactory->showProperties();
+	if( __foo_flag )
+	  __ddBag.push_back(  this->__decisionDiagramFactory->getMultiDimDecisionDiagram(false, (T_DATA) 0, true) );
+	else
+          __fmdp->addReward( this->__decisionDiagramFactory->getMultiDimDecisionDiagram(false, (T_DATA) 0, true) );
+//         this->__decisionDiagramFactory->showProperties();
         this->__decisionDiagramFactory->clear();
       }
     }
@@ -606,9 +605,33 @@ namespace gum {
       
       if ( state() != REWARD )
         __illegalStateError ( "endRewardDeclaration" );
-      else
+      else{
+	if( __foo_flag ){
+	  MultiDimImplementation<T_DATA>* res = NULL;
+	  MultiDimImplementation<T_DATA>* temp;
+	  for( typename std::vector< const MultiDimImplementation<T_DATA>* >::iterator miter = __ddBag.begin(); miter != __ddBag.end(); ++miter ){
+	    
+	    temp = res;
+	    switch( __stringBag[0][0] ){
+	      case '+' : res = add2MultiDimDecisionDiagrams( res,  *miter );
+	                       break;
+	      case '-' : res = subtract2MultiDimDecisionDiagrams( res,  *miter );
+	                      break;
+	      case '*' : res = multiply2MultiDimDecisionDiagrams( res,  *miter );
+	                      break;
+	      case '/' : res = divide2MultiDimDecisionDiagrams( res,  *miter );
+	                      break;
+	      default : break;
+	    }
+	    delete *miter;
+	    if( temp != NULL)
+	      delete temp;
+	  }
+	  __fmdp->addReward( res );
+	}
+	__resetParts();
         __states.pop_back();
-
+      }
 //       VERBOSITY ( "reward OK" );
     }
     
@@ -747,6 +770,7 @@ namespace gum {
       __foo_flag = false;
       __bar_flag = false;
       __stringBag.clear();
+      __ddBag.clear();
     }
   
     //~ // ==========================================================================================

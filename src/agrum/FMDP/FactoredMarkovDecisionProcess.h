@@ -39,225 +39,230 @@
 //======================================================================
 
 namespace gum {
-  /**
-   * @class FactoredMarkovDecisionProcess
-   * This class is used to implement factored decision process.
-   * 
-   * This class supports a mechanism which allows user to give, for each
-   * variable ivolved in the process, a default transition probability table
-   * and to describe for specific actions a different table.
-   */
+/**
+ * @class FactoredMarkovDecisionProcess
+ * This class is used to implement factored decision process.
+ *
+ * This class supports a mechanism which allows user to give, for each
+ * variable ivolved in the process, a default transition probability table
+ * and to describe for specific actions a different table.
+ */
 
-  template<typename T_DATA>
+template<typename T_DATA>
 
-  class FactoredMarkovDecisionProcess {
+class FactoredMarkovDecisionProcess {
 
-    public:
+public:
 
-      // ===========================================================================
-      /// @name Constructors, Destructors.
-      // ===========================================================================
-      /// @{
+    // ===========================================================================
+    /// @name Constructors, Destructors.
+    // ===========================================================================
+    /// @{
 
-      /**
-       * Default constructor.
-       */
-       FactoredMarkovDecisionProcess();
+    /**
+     * Default constructor.
+     */
+    FactoredMarkovDecisionProcess();
 
-      /**
-       * Default destructor.
-       */
-       ~FactoredMarkovDecisionProcess();
+    /**
+     * Default destructor.
+     */
+    ~FactoredMarkovDecisionProcess();
 
-      /// @}
+    /// @}
 
-      // ===========================================================================
-      /// @name FMDP instantiation methods.
-      // ===========================================================================
-      /// @{
-		  
-		void setProperty( const std::string& propName, const std::string& propValue ){};
+    // ===========================================================================
+    /// @name FMDP instantiation methods.
+    // ===========================================================================
+    /// @{
 
-	  /**
-       * Adds a variable to FMDP description
-       * @throw DuplicateElement if a similar variable already exists
-       */
-       void addVariable( const DiscreteVariable* var );
+    void setProperty( const std::string& propName, const std::string& propValue ) {};
 
-	  /**
-       * Adds a primed variable to FMDP description
-       * @throw DuplicateElement if a similar variable already exists
-       */
-       void addPrimedVariable( const DiscreteVariable* var, const DiscreteVariable* mainVar );
+    /**
+     * Adds a variable to FMDP description
+     * @throw DuplicateElement if a similar variable already exists
+     */
+    void addVariable( const DiscreteVariable* var );
 
-	  /**
-       * Adds an action to FMDP description
-       * @throw DuplicateElement if an action with same name already exists
-       */
-       void addAction( const std::string& action );       
-       
-	  /**
-       * Adds a variable transition table to specified action
-       * @throw NotFound if action or var does not exists
-       * @throw DuplicateElement if variable already has a transition for this action
-       */
-       void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition, const std::string& action );      
-       
-	  /**
-       * Adds a default variable transition
-       * @throw NotFound if var does not exists
-       * @throw DuplicateElement if variable already has a default transition
-       */
-       void addTransition( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition );       
-       
-	  /**
-       * Adds a cost table to specified action
-       * @throw NotFound if action does not exists
-       */
-       void addCostForAction( const MultiDimImplementation<T_DATA>* cost, const std::string& action );      
-       
-	  /**
-       * Adds a default variable cost
-       * @throw DuplicateElement if a default cost exists already
-       */
-       void addCost( const MultiDimImplementation<T_DATA>* cost );   
-       
-	  /**
-       * Adds a default variable reward
-       * @throw DuplicateElement if a default reward exists already
-       */
-       void addReward( const MultiDimImplementation<T_DATA>* reward );      
-       
-	  /**
-       * Precises the discount factor for that mdp
-       */
-       void addDiscount( T_DATA discount );
-       
-      /// @}
+    /**
+     * Adds a primed variable to FMDP description
+     * @throw DuplicateElement if a similar variable already exists
+     */
+    void addPrimedVariable( const DiscreteVariable* var, const DiscreteVariable* mainVar );
 
-      // ===========================================================================
-      /// @name FMPD manipulation methods.
-      // ===========================================================================
-      /// @{      
-       
-	  /**
-       * Returns the discount factor of mdp
-       */
-       const T_DATA discount(  ) const;     
-       
-	  /**
-       * Returns the reward table of mdp
-       */
-       const MultiDimImplementation< T_DATA >* reward(  ) const;
-        
-	  /**
-       * Resets the action iterator
-       */
-       void resetActionsIterator();
-        
-	  /**
-       * Indicates if iterator reached end of actions (false then ) or not (true )
-       */
-       bool hasAction() const;
-        
-	  /**
-       * Deplaces iterator onto next action
-       */
-       void nextAction();
-        
-	  /**
-       * Returns the id of current action pointed by actionIterator
-       */
-       Idx actionIterId() const;
-        
-	  /**
-       * Returns name of action given in parameter
-       */
-       const std::string actionName( Idx actionId ) const;
-        
-	  /**
-       * Resets the variable iterator
-       */
-       void resetVariablesIterator();
-        
-	  /**
-       * Indicates if iterator reached end of variables (false then ) or not (true )
-       */
-       bool hasVariable() const;
-        
-	  /**
-       * Returns current primed variable pointed by variable iterator
-       */
-       const DiscreteVariable* variable() const;
-        
-	  /**
-       * Deplaces iterator onto next variable
-       */
-       void nextVariable();
-        
-	  /**
-       * Returns transition associated to current variable pointed by variable iterator 
-       * and current action poinbted by action iterator
-       */
-       const MultiDimImplementation< T_DATA >* transition() const;
-        
-	  /**
-       * Returns set of primed variable (variable at next instant )
-       */
-       const Set< const DiscreteVariable* >& primedVariables() const;
-       
-       /**
-        * Returns the map on main variable and their primed version
-        */
-       const Bijection< const DiscreteVariable*, const DiscreteVariable*>& main2prime() const;
+    /**
+     * Adds an action to FMDP description
+     * @throw DuplicateElement if an action with same name already exists
+     */
+    void addAction( const std::string& action );
 
-      /// @}
-      std::string show() const;
-       
-    private :     
-       
+    /**
+     * Adds a variable transition table to specified action
+     * @throw NotFound if action or var does not exists
+     * @throw DuplicateElement if variable already has a transition for this action
+     */
+    void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition, const std::string& action );
+
+    /**
+     * Adds a default variable transition
+     * @throw NotFound if var does not exists
+     * @throw DuplicateElement if variable already has a default transition
+     */
+    void addTransition( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition );
+
+    /**
+     * Adds a cost table to specified action
+     * @throw NotFound if action does not exists
+     */
+    void addCostForAction( const MultiDimImplementation<T_DATA>* cost, const std::string& action );
+
+    /**
+     * Adds a default variable cost
+     * @throw DuplicateElement if a default cost exists already
+     */
+    void addCost( const MultiDimImplementation<T_DATA>* cost );
+
+    /**
+     * Adds a default variable reward
+     * @throw DuplicateElement if a default reward exists already
+     */
+    void addReward( const MultiDimImplementation<T_DATA>* reward );
+
+    /**
+     * Precises the discount factor for that mdp
+     */
+    void addDiscount( T_DATA discount );
+
+    /// @}
+
+    // ===========================================================================
+    /// @name FMPD manipulation methods.
+    // ===========================================================================
+    /// @{
+
+    /**
+     * Returns the discount factor of mdp
+     */
+    const T_DATA discount(  ) const;
+
+    /**
+     * Returns the reward table of mdp
+     */
+    const MultiDimImplementation< T_DATA >* reward(  ) const;
+
+    /**
+     * Resets the action iterator
+     */
+    void resetActionsIterator();
+
+    /**
+     * Indicates if iterator reached end of actions (false then ) or not (true )
+     */
+    bool hasAction() const;
+
+    /**
+     * Deplaces iterator onto next action
+     */
+    void nextAction();
+
+    /**
+     * Returns the id of current action pointed by actionIterator
+     */
+    Idx actionIterId() const;
+
+    /**
+     * Returns name of action given in parameter
+     */
+    const std::string actionName( Idx actionId ) const;
+
+    /**
+     * Resets the variable iterator
+     */
+    void resetVariablesIterator();
+
+    /**
+     * Indicates if iterator reached end of variables (false then ) or not (true )
+     */
+    bool hasVariable() const;
+
+    /**
+     * Deplaces iterator onto next variable
+     */
+    void nextVariable();
+
+    /**
+     * Returns current primed variable pointed by variable iterator
+     */
+    const DiscreteVariable* variable() const;
+
+    /**
+     * Returns transition associated to current variable pointed by variable iterator
+     * and current action poinbted by action iterator
+     */
+    const MultiDimImplementation< T_DATA >* transition() const;
+
+    /**
+     * Returns transition associated to given in parameter variable
+     */
+    const MultiDimImplementation< T_DATA >* transition( const DiscreteVariable* v ) const;
+
+    /**
+     * Returns set of primed variable (variable at next instant )
+     */
+    const Set< const DiscreteVariable* >& primedVariables() const;
+
+    /**
+     * Returns the map on main variable and their primed version
+     */
+    const Bijection< const DiscreteVariable*, const DiscreteVariable*>& main2prime() const;
+
+    /// @}
+    std::string show() const;
+
+private :
+
     /**
       * Returns action id
       */
-      const Idx& __actionId( const std::string& ) const;
-      
-      /// Sequence de variables and its iterator
-      Sequence< const DiscreteVariable* > __varSeq;
-      SequenceIterator< const DiscreteVariable* > __varIter;
+    const Idx& __actionId( const std::string& ) const;
 
-      /// Variable default transition cpt table
-      HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
+    /// Sequence de variables and its iterator
+    Sequence< const DiscreteVariable* > __varSeq;
+    SequenceIterator< const DiscreteVariable* > __varIter;
 
-      /// Table which give for each action a table containing variables transition cpt
-      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionTransitionTable;
+    /// Variable default transition cpt table
+    HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
 
-      /// default cost table
-      const MultiDimImplementation< T_DATA >* __defaultCostTable;
+    /// Table which give for each action a table containing variables transition cpt
+    HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionTransitionTable;
 
-      /// Table which give for each action cost table
-      HashTable< Idx, const MultiDimImplementation< T_DATA >* > __actionCostTable;
+    /// default cost table
+    const MultiDimImplementation< T_DATA >* __defaultCostTable;
 
-      /// Bijection mapping an action name to its id
-      Bijection< Idx, const std::string* > __actionMap;
+    /// Table which give for each action cost table
+    HashTable< Idx, const MultiDimImplementation< T_DATA >* > __actionCostTable;
 
-      /// default reward table
-      const MultiDimImplementation< T_DATA >* __defaultRewardTable;
+    /// Bijection mapping an action name to its id
+    Bijection< Idx, const std::string* > __actionMap;
 
-      Set< const DiscreteVariable* > __primedVariablesSet;
-      Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
+    /// default reward table
+    const MultiDimImplementation< T_DATA >* __defaultRewardTable;
 
-      /// FMDP discount factor
-      T_DATA __discount;
+    Set< const DiscreteVariable* > __primedVariablesSet;
+    Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
 
-      /// Gives the next action id
-      Idx __nextActionId;
+    /// FMDP discount factor
+    T_DATA __discount;
 
-      /// Iterator on actions
-      HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
+    /// Gives the next action id
+    Idx __nextActionId;
+
+    /// Iterator on actions
+    HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
 
 //       /// Iterator on variable
 //       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
-  };
+};
 } /* namespace gum */
 
 // ============================================================================

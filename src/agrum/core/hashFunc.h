@@ -399,7 +399,15 @@ namespace gum {
 #else
     public HashFuncSmallCastKeyPair<double,double> {};
 #endif
-  
+
+  template <> class HashFunc< std::pair<double, long unsigned int> > :
+    public HashFuncMediumCastKeyPair<double, long unsigned int> {
+    };
+
+  template <> class HashFunc< std::pair<double, long int> > :
+    public HashFuncMediumCastKeyPair<double, long int> {
+    };
+    
   /* removed for pedantic reasons
      template <> class HashFunc< std::pair<long long, long long> > :
      public HashFuncBigKeyPair<long long, long long> {};

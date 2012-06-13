@@ -232,9 +232,18 @@
   #undef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
   #undef GUM_MULTI_DIM_PROJECTION
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
   
-// #define P4DDDEBUG
+  
+  
+
+  /* ******************************************************************************************* */
+  /*                                                                                             */
+  /*                          MultiDimDecisionDiagram functions                                  */
+  /*                                                                                             */
+  /* ******************************************************************************************* */
+  
+#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
+
   // ==============================================================================
   /// a specialized max projection function for multiDimDecisionDiagrams
   // ==============================================================================
@@ -245,9 +254,9 @@
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
 #ifdef P4DDDEBUG
-  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
 #else
-  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
 #endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
@@ -275,9 +284,9 @@
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
 #ifdef P4DDDEBUG
-  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
 #else
-  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
 #endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
@@ -305,9 +314,9 @@
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
 #ifdef P4DDDEBUG
-  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
 #else
-  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
 #endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
@@ -335,9 +344,9 @@
   
   #define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
 #ifdef P4DDDEBUG
-  #include <agrum/multidim/patterns/p4DDRecursionFunctionsDebug.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
 #else
-  #include <agrum/multidim/patterns/p4DDRecursionFunctions.h>
+  #include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
 #endif
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
   
@@ -353,8 +362,6 @@
   #undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
   #undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
   #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
-#undef P4DDDEBUG
   
   // ==============================================================================
   /// a specialized function for functionally projecting a multiDimArray

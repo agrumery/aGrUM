@@ -1,526 +1,882 @@
 (variables (ashaped t f) (bshaped t f) (typeneeded highq lowq) (glue t f) (apainted good poor f) (bpainted good poor f) (connected good bad f) (asmooth t f) (bsmooth t f) (bolts t f) (clamps t f) (drill t f) (spraygun t f) (skilledlab t f) (adrilled t f) (bdrilled t f) )
+
+
+
 action shapea
-ashaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (0.800000 0.200000 )))
 
-bshaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+ashaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (0.8 0.2 )))
 
-apainted (0.000000 0.000000 1.000000 )
-bpainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (bshaped (t (1 0))
+                               (f (0 1)))))
 
-asmooth (0.000000 1.000000 )
-bsmooth (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+apainted (0 0 1)
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (bpainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (0 1)
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bsmooth (connected (good (0 1))
+                   (bad (0 1))
+                   (f (bsmooth (t (1 0))
+                               (f (0 1)))))
 
-connected (0.000000 0.000000 1.000000 )
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (0 0 1)
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action shapeb
-bshaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (0.800000 0.200000 )))
 
-ashaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+ashaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (ashaped (t (1 0))
+                               (f (0 1)))))
 
-bpainted (0.000000 0.000000 1.000000 )
-apainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (0.8 0.2 )))
 
-bsmooth (0.000000 1.000000 )
-asmooth (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+apainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (apainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (0 0 1)
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (connected (good (0 1))
+                   (bad (0 1))
+                   (f (asmooth (t (1 0))
+                               (f (0 1)))))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bsmooth (0 1)
 
-connected (0.000000 0.000000 1.000000 )
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (0 0 1)
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action drilla
-ashaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
 
-bshaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+ashaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (ashaped (t (1 0))
+                               (f (0 1)))))
 
-apainted (0.000000 0.000000 1.000000 )
-bpainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (bshaped (t (1 0))
+                               (f (0 1)))))
 
-asmooth (0.000000 1.000000 )
-bsmooth (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+apainted (0 0 1)
 
-adrilled (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (adrilled (t (1.000000 0.000000 ))(f (drill (t (0.800000 0.200000 ))(f (0.000000 1.000000 )))
-))
-))
+bpainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (bpainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bdrilled (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+asmooth (0 1)
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bsmooth (connected (good (0 1))
+                   (bad (0 1))
+                   (f (bsmooth (t (1 0))
+                               (f (0 1)))))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+adrilled (connected (good (0 1))
+                    (bad (0 1))
+                    (f (adrilled (t (1 0))
+                                 (f (drill (t (0.8 0.2 ))
+                                           (f (0 1)))))))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bdrilled (connected (good (0 1))
+                    (bad (0 1))
+                    (f (bdrilled (t (1 0))
+                                 (f (0 1)))))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action drillb
-bshaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
 
-ashaped (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+ashaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (ashaped (t (1 0))
+                               (f (0 1)))))
 
-bpainted (0.000000 0.000000 1.000000 )
-apainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (connected (good (0 1))
+                   (bad (0 1))
+                   (f (bshaped (t (1 0))
+                               (f (0 1)))))
 
-bsmooth (0.000000 1.000000 )
-asmooth (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+apainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (apainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bdrilled (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (bdrilled (t (1.000000 0.000000 ))(f (drill (t (0.800000 0.200000 ))(f (0.000000 1.000000 )))
-))
-))
+bpainted (0 0 1)
 
-adrilled (connected (good (0.000000 1.000000 ))(bad (0.000000 1.000000 ))(f (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
-))
+asmooth (connected (good (0 1))
+                   (bad (0 1))
+                   (f (asmooth (t (1 0))
+                               (f (0 1)))))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bsmooth (0 1)
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+adrilled (connected (good (0 1))
+                    (bad (0 1))
+                    (f (adrilled (t (1 0))
+                                 (f (0 1)))))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bdrilled (connected (good (0 1))
+                    (bad (0 1))
+                    (f (bdrilled (t (1 0))
+                                 (f (drill (t (0.8 0.2 ))
+                                           (f (0 1)))))))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action dipa
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (asmooth (t (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+apainted (asmooth (t (0 1 0))
+                  (f (0 0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (bpainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action dipb
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (bsmooth (t (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-apainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+apainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (apainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (bsmooth (t (0 1 0))
+                  (f (0 0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action spraya
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (spraygun (t (asmooth (t (0.400000 0.500000 0.100000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (spraygun (t (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
-)(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+apainted (spraygun (t (asmooth (t (0.4 0.5 0.1))
+                               (f (0 0 1))))
+                   (f (apainted (good (1 0 0))
+                                (poor (0 1 0))
+                                (f (0 0 1)))))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (spraygun (t (connected (good (0 0 1))
+                                 (bad (0 0 1))
+                                 (f (bpainted (good (1 0 0))
+                                              (poor (0 1 0))
+                                              (f (0 0 1))))))
+                   (f (bpainted (good (1 0 0))
+                                (poor (0 1 0))
+                                (f (0 0 1)))))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action sprayb
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (spraygun (t (bsmooth (t (0.400000 0.500000 0.100000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-apainted (spraygun (t (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
-)(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+apainted (spraygun (t (connected (good (0 0 1))
+                                 (bad (0 0 1))
+                                 (f (apainted (good (1 0 0))
+                                              (poor (0 1 0))
+                                              (f (0 0 1))))))
+                   (f (apainted (good (1 0 0))
+                                (poor (0 1 0))
+                                (f (0 0 1)))))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (spraygun (t (bsmooth (t (0.4 0.5 0.1))
+                               (f (0 0 1))))
+                   (f (bpainted (good (1 0 0))
+                                (poor (0 1 0))
+                                (f (0 0 1)))))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action handpainta
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (skilledlab (t (asmooth (t (0.800000 0.200000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (asmooth (t (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+apainted (skilledlab (t (asmooth (t (0.8 0.2 0))
+                                 (f (0 0 1))))
+                     (f (asmooth (t (0 1 0))
+                                 (f (0 0 1)))))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (bpainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action handpaintb
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (skilledlab (t (bsmooth (t (0.800000 0.200000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (bsmooth (t (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-apainted (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+apainted (apainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (skilledlab (t (bsmooth (t (0.8 0.2 0))
+                                 (f (0 0 1))))
+                     (f (bsmooth (t (0 1 0))
+                                 (f (0 0 1)))))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action bolt
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+apainted (apainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (bpainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (bolts (t (adrilled (t (bdrilled (t (1.000000 0.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (0.000000 0.000000 1.000000 )))
-)(f (0.000000 0.000000 1.000000 )))
-))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (bolts (t (adrilled (t (bdrilled (t (1 0 0))
+                                                         (f (0 0 1))))
+                                            (f (0 0 1))))
+                               (f (0 0 1)))))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action glue
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+apainted (apainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (bpainted (good (1 0 0))
+                   (poor (0 1 0))
+                   (f (0 0 1)))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (glue (t (clamps (t (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-)(f (0.000000 0.000000 1.000000 )))
-))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (glue (t (clamps (t (0 1 0))
+                                         (f (0 0 1))))
+                              (f (0 0 1)))))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action polisha
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-apainted (0.000000 0.000000 1.000000 )
-bpainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (bpainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (ashaped (t (0.800000 0.200000 ))(f (0.000000 1.000000 )))
-))
+apainted (0 0 1)
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bpainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (bpainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (ashaped (t (0.8 0.2 ))
+                             (f (0 1)))))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
+
+
+
 action polishb
-ashaped (ashaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
 
-bshaped (bshaped (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
 
-bpainted (0.000000 0.000000 1.000000 )
-apainted (connected (good (0.000000 0.000000 1.000000 ))(bad (0.000000 0.000000 1.000000 ))(f (apainted (good (1.000000 0.000000 0.000000 ))(poor (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
-))
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
 
-bsmooth (bsmooth (t (1.000000 0.000000 ))(f (bshaped (t (0.800000 0.200000 ))(f (0.000000 1.000000 )))
-))
+bpainted (0 0 1)
 
-asmooth (asmooth (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+apainted (connected (good (0 0 1))
+                    (bad (0 0 1))
+                    (f (apainted (good (1 0 0))
+                                 (poor (0 1 0))
+                                 (f (0 0 1)))))
 
-adrilled (adrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bsmooth (bsmooth (t (1 0))
+                 (f (bshaped (t (0.8 0.2 ))
+                             (f (0 1)))))
 
-bdrilled (bdrilled (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
 
-typeneeded (typeneeded (highq (1.000000 0.000000 ))(lowq (0.000000 1.000000 )))
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
 
-connected (connected (good (1.000000 0.000000 0.000000 ))(bad (0.000000 1.000000 0.000000 ))(f (0.000000 0.000000 1.000000 )))
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
 
-bolts (bolts (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
 
-glue (glue (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+connected (connected (good (1 0 0))
+                     (bad (0 1 0))
+                     (f (0 0 1)))
 
-spraygun (spraygun (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+bolts (bolts (t (1 0))
+             (f (0 1)))
 
-skilledlab (skilledlab (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+glue (glue (t (1 0))
+           (f (0 1)))
 
-clamps (clamps (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
 
-drill (drill (t (1.000000 0.000000 ))(f (0.000000 1.000000 )))
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
 
 endaction
-reward (typeneeded (highq (connected (good (apainted (good (bpainted (good (10.000000) )(poor (3.000000) )(f (3.000000) ))
-)(poor (3.000000) )(f (3.000000) ))
-)(bad (0.000000) )(f (0.000000) ))
-)(lowq (connected (good (apainted (good (bpainted (good (1.000000) )(f (1.000000) )(poor (2.000000) ))
-)(f (bpainted (good (1.000000) )(f (1.000000) )(poor (2.000000) ))
-)(poor (bpainted (good (2.000000) )(f (2.000000) )(poor (3.000000) ))
-))
-)(bad (apainted (good (bpainted (good (3.000000) )(f (3.000000) )(poor (4.000000) ))
-)(f (bpainted (good (3.000000) )(f (3.000000) )(poor (4.000000) ))
-)(poor (bpainted (good (4.000000) )(f (4.000000) )(poor (5.000000) ))
-))
-)(f (0.000000) ))
-))
+
+
+
+reward (typeneeded (highq (connected (good (apainted (good (bpainted (good (10) )
+                                                                     (poor (3) )
+                                                                     (f (3) )))
+                                                     (poor (3) )
+                                                     (f (3) )))
+                                     (bad (0) )
+                                     (f (0) )))
+                   (lowq (connected (good (apainted (good (bpainted (good (1) )
+                                                                    (f (1) )
+                                                                    (poor (2) )))
+                                                    (f (bpainted (good (1) )
+                                                                 (f (1) )
+                                                                 (poor (2) )))
+                                                    (poor (bpainted (good (2) )
+                                                                    (f (2) )
+                                                                    (poor (3) )))))
+                                    (bad (apainted (good (bpainted (good (3) )
+                                                                   (f (3) )
+                                                                   (poor (4) )))
+                                                   (f (bpainted (good (3) )
+                                                                (f (3) )
+                                                                (poor (4) )))
+                                                   (poor (bpainted (good (4) )
+                                                                   (f (4) )
+                                                                   (poor (5) )))))
+                                    (f (0) ))))
+
 discount 0.900000
+
 tolerance 0.1
                               

@@ -32,6 +32,7 @@
 // ============================================================================
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 // ============================================================================
+#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
 
 namespace gum {
 
@@ -83,7 +84,7 @@ namespace gum {
 	    for ( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.begin(); iter != __var2NodeIdMap.end(); ++iter )
 		delete *iter;
 
-	    for ( HashTableIterator< const DiscreteVariable*, std::vector<bool>* > iter = __varUsedModalitiesMap.begin(); iter != __varUsedModalitiesMap.end(); ++iter )
+	    for ( HashTableIterator< const DiscreteVariable*, std::vector<Idx>* > iter = __varUsedModalitiesMap.begin(); iter != __varUsedModalitiesMap.end(); ++iter )
 		delete *iter;
 
 	}
@@ -288,7 +289,7 @@ namespace gum {
 			    __var2NodeIdMap.insert( source.nodeVariable( *nodeIter ), new List< NodeId >( *( source.variableNodes( source.nodeVariable( *nodeIter ) ) ) ) );
 
 			if( !__varUsedModalitiesMap.exists( source.nodeVariable( *nodeIter ) ) )
-			    __varUsedModalitiesMap.insert( source.nodeVariable( *nodeIter ), new std::vector<bool >( *( source.variableUsedModalities( source.nodeVariable( *nodeIter ) ) ) ) );
+			    __varUsedModalitiesMap.insert( source.nodeVariable( *nodeIter ), new std::vector<Idx >( *( source.variableUsedModalities( source.nodeVariable( *nodeIter ) ) ) ) );
 
 			__arcMap.insert( *nodeIter, new std::vector<NodeId>( *(source.nodeSons( *nodeIter ) ) ) );
 
@@ -326,11 +327,16 @@ namespace gum {
 	    MultiDimDecisionDiagramBase<T_DATA>::copyAndReassign( const MultiDimDecisionDiagramBase<T_DATA>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new ){
 	    
 	      this->beginInstantiation();
-	      
+
+#ifndef O4DDWITHORDER
 	      Sequence<const DiscreteVariable*> primeVarSeq;
 	      for( SequenceIterator<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
 		primeVarSeq.insert( old2new.second( *seqIter ) );
+
 	      this->setVariableSequence( primeVarSeq );
+#else
+	      this->setVariableSequence( source->variablesSequence() );
+#endif
 	      
 	      this->setDiagramNodes( source->nodesMap() );
 
@@ -356,7 +362,7 @@ namespace gum {
 		    __var2NodeIdMap.insert( old2new.second( source->unsafeNodeVariable( *nodeIter ) ), new List< NodeId >( *( source->variableNodes( source->unsafeNodeVariable( *nodeIter ) ) ) ) );
 
 		  if( !__varUsedModalitiesMap.exists( old2new.second( source->unsafeNodeVariable( *nodeIter ) ) ) )
-		    __varUsedModalitiesMap.insert( old2new.second( source->unsafeNodeVariable( *nodeIter ) ), new std::vector<bool>( *( source->variableUsedModalities( source->unsafeNodeVariable( *nodeIter ) ) ) ) );
+		    __varUsedModalitiesMap.insert( old2new.second( source->unsafeNodeVariable( *nodeIter ) ), new std::vector<Idx>( *( source->variableUsedModalities( source->unsafeNodeVariable( *nodeIter ) ) ) ) );
 
 		  __arcMap.insert( *nodeIter, new std::vector< NodeId >( *(source->unsafeNodeSons( *nodeIter ) ) ) );
 
@@ -487,24 +493,6 @@ namespace gum {
 	/** *********************************************************************************** **/
 
 	    // =============================================================================
-	    // Returns the node graph part
-	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    const NodeGraphPart&
-	    MultiDimDecisionDiagramBase< T_DATA >::nodesMap() const{
-		return __graph;
-	    }
-
-	    // =============================================================================
-	    // Returns true if node is a terminal node
-	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    const NodeId&
-	    MultiDimDecisionDiagramBase< T_DATA >::root( ) const {
-		return __root ;
-	    }
-
-	    // =============================================================================
 	    // Returns associated variable of given node
 	    // @throw InvalidNode if Node is terminal
 	    // =============================================================================
@@ -546,7 +534,7 @@ namespace gum {
 	    // Returns a boolean vector that indicates for all modalities that can take given in parameter variable if an arc is associated to it in diagram
 	    // =============================================================================
 	    template< typename T_DATA > INLINE
-	    const std::vector<bool >*
+	    const std::vector<Idx >*
 	    MultiDimDecisionDiagramBase< T_DATA >::variableUsedModalities( const DiscreteVariable* v ) const {
 
 		if ( ! __varUsedModalitiesMap.exists( v ) )
@@ -605,18 +593,6 @@ namespace gum {
 		    return NULL;
 
 		return __arcMap[ n ];
-	    }
-
-	    // =============================================================================
-	    // Returns values map
-	    // @throw InvalidNode if node is terminal
-	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    const Bijection< NodeId, T_DATA >&
-	    MultiDimDecisionDiagramBase< T_DATA >::valuesMap( ) const{
-
-		return __valueMap;
-
 	    }
 
 	    // =============================================================================
@@ -896,14 +872,14 @@ namespace gum {
 	    // ==============================================================================
 	    template< typename T_DATA > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<bool>* > varUsedModalitiesMap ){
+	    MultiDimDecisionDiagramBase< T_DATA >::setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<Idx>* > varUsedModalitiesMap ){
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
 		}
 
-		for ( HashTableConstIterator< const DiscreteVariable*, std::vector<bool>* > varIter = varUsedModalitiesMap.begin(); varIter != varUsedModalitiesMap.end(); ++varIter )
-		    __varUsedModalitiesMap.insert( varIter.key(), new std::vector<bool>( **varIter ) );
+		for ( HashTableConstIterator< const DiscreteVariable*, std::vector<Idx>* > varIter = varUsedModalitiesMap.begin(); varIter != varUsedModalitiesMap.end(); ++varIter )
+		    __varUsedModalitiesMap.insert( varIter.key(), new std::vector<Idx>( **varIter ) );
 	    }
 
 	    // ==============================================================================

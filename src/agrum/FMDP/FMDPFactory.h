@@ -217,8 +217,12 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-      /// Tells the factory that we're in a cost declaration.
+      /// Tells the factory that we're in a reward declaration.
       void startRewardDeclaration();
+
+      /// Tells the factory that we're in a reward declaration mode where the global reward diagram is an operation between
+      /// simplier decision diagram..
+      void setOperationModeOn( std::string operationType );
       
       /// Tells the factory to add a reward table to the current fmdp.
       void addReward ( const MultiDimAdressable* reward );
@@ -296,6 +300,9 @@ namespace gum {
 
       /// Just to keep track of strings between two start/end calls.
       std::vector<std::string> __stringBag;
+
+      /// Just to keep track of strings between two start/end calls.
+      std::vector<const MultiDimImplementation<T_DATA>*> __ddBag;
       
       /// Used in VARIABLE mode
       /// Checks if in __stringBag there is no other modality with the same name.
@@ -314,10 +321,6 @@ namespace gum {
       
       /// The factory used to build up decision diagram
       MultiDimDecisionDiagramFactoryBase<T_DATA>* __decisionDiagramFactory;
-      
-      /// Sequence of main and primed variable as they appear during variable declaration
-      Sequence< const DiscreteVariable* > __mainVarSeq;
-      Sequence< const DiscreteVariable* > __primedVarSeq;
 
       /// Mapping between a declared variable's name and itself.
       HashTable< std::string, const DiscreteVariable* > __varNameMap;

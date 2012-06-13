@@ -1,0 +1,1425 @@
+(variables  
+  (brushes t f)  
+  (skilledlab t f) 
+  (typeneeded highq lowq)  
+  (spraygun t f)
+  (cong t f) 
+  (conb t f ) 
+  (weldlab t f)
+  (wela t f) 
+  (wels t f) 
+  (mounting t f)
+  (asmooth t f) 
+  (bsmooth t f) 
+  (ashaped t f)
+  (bshaped t f)
+  (glue t f) 
+  (apg t f) 
+  (apb t f) 
+  (bpg t f) 
+  (bpb t f) 
+  (bolts t f) 
+  (adrilled t f) 
+  (bdrilled t f) 
+  (drill t f)
+  (clamps t f) 
+  (laquer t f) )
+
+
+
+action shapea
+
+ashaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (0.8 0.2)))))
+
+bshaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (bshaped (t (1 0))
+                                   (f (0 1)))))))
+
+apg (0 1)
+
+apb (0 1)
+
+bpg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (1 0))
+                           (f (0 1)))))))
+
+bpb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (0 1))
+                           (f (bpb (t (1 0))
+                                   (f (0 1)))))))))
+
+asmooth (0 1)
+
+bsmooth (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (bsmooth (t (1 0))
+                                   (f (0 1)))))))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (0 1)
+
+conb (0 1)
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action shapeb
+
+ashaped (cong (t  (0 1))
+              (f (conb (t (0 1))
+                       (f (ashaped (t (1 0))
+                                   (f (0 1)))))))
+
+bshaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (0.8 0.2)))))
+
+apg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (1 0))
+                           (f (0 1)))))))
+
+apb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (0 1))
+                           (f (apb (t (1 0))
+                                   (f (0 1)))))))))
+
+bpg (0 1)
+
+bpb (0 1)
+
+asmooth (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (asmooth (t (1 0))
+                                   (f (0 1)))))))
+
+bsmooth (0 1)
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (0 1)
+
+conb (0 1)
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action drilla
+
+ashaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (ashaped (t (1 0))
+                                   (f (0 1)))))))
+
+bshaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (bshaped (t (1 0))
+                                   (f (0 1)))))))
+
+apg (0 1)
+
+apb (0 1)
+
+bpg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (1 0))
+                           (f (0 1)))))))
+
+bpb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (0 1))
+                           (f (bpb (t (1 0))
+                                   (f (0 1)))))))))
+
+asmooth (0 1)
+
+bsmooth (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (bsmooth (t (1 0))
+                                   (f (0 1)))))))
+
+adrilled (cong (t (0 1))
+               (f (conb (t (0 1))
+                        (f (adrilled (t (1 0))
+                                     (f (drill (t (0.8 0.2))
+                                               (f (0 1)))))))))
+
+bdrilled (cong (t (0 1))
+               (f (conb (t (0 1))
+                        (f (bdrilled (t (1 0))
+                                     (f (0 1)))))))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action drillb
+
+ashaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (ashaped (t (1 0))
+                                   (f (0 1)))))))
+
+bshaped (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (bshaped (t (1 0))
+                                   (f (0 1)))))))
+
+apg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (1 0))
+                           (f (0 1)))))))
+
+apb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (0 1))
+                           (f (apb (t (1 0))
+                                   (f (0 1)))))))))
+
+bpg (0 1)
+
+bpb (0 1)
+
+asmooth (cong (t (0 1))
+              (f (conb (t (0 1))
+                       (f (asmooth (t (1 0))
+                                   (f (0 1)))))))
+
+bsmooth (0 1)
+
+adrilled (cong (t (0 1))
+               (f (conb (t (0 1))
+                        (f (adrilled (t (1 0))
+                                     (f (0 1)))))))
+
+bdrilled (cong (t (0 1))
+               (f (conb (t (0 1))
+                        (f (bdrilled (t (1 0))
+                                     (f (drill (t (0.8 0.2))
+                                               (f (0 1)))))))))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action dipa
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (0 1)
+
+apb (asmooth (t (1 0))
+             (f (0 1)))
+
+bpg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (1 0))
+                           (f (0 1)))))))
+
+bpb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (0 1))
+                           (f (bpb (t (1 0))
+                                   (f (0 1)))))))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action dipb
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (1 0))
+                           (f (0 1)))))))
+
+apb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (0 1))
+                           (f (apb (t (1 0))
+                                   (f (0 1)))))))))
+
+bpg (0 1)
+
+bpb (bsmooth (t (1 0))
+             (f (0 1)))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action spraya
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (spraygun (t (mounting (t (asmooth (t (0.4 0.6))
+                                       (f (0 1))))
+			   (f (0 1))))
+              (f (apg (t (1 0))
+                      (f (0 1)))))
+
+apb (spraygun (t (mounting (t (asmooth (t (0.5 0.5))
+                                       (f (0 1))))
+                           (f (1 0))))
+              (f (apg (t (0 1))
+                      (f (apb (t (1 0))
+                              (f (0 1)))))))
+
+bpg (spraygun (t (cong (t (0 1))
+                       (f  (conb (t (0 1))
+                                 (f (bpg (t (1 0))
+                                         (f (0 1))))))))
+              (f (bpg (t (1 0))
+                      (f (0 1)))))
+
+bpb (spraygun (t (cong (t (0 1))
+                       (f (conb (t (0 1))
+                                (f (bpg (t (0 1))
+                                        (f (bpb (t (1 0))
+                                                (f (0 1))))))))))
+              (f (bpg (t (0 1))
+                      (f (bpb (t (1 0))
+                              (f (0 1)))))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action sprayb
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (spraygun (t (cong (t (0 1))
+                       (f  (conb (t (0 1))
+                                 (f (apg (t (1 0))
+                                         (f (0 1))))))))
+              (f (apg (t (1 0))
+                      (f (0 1)))))
+
+apb (spraygun (t (cong (t (0 1))
+                       (f (conb (t (0 1))
+                                (f (apg (t (0 1))
+                                        (f (apb (t (1 0))
+                                                (f (0 1))))))))))
+              (f (apg (t (0 1))
+                      (f (apb (t (1 0))
+                              (f (0 1)))))))
+
+bpg (spraygun (t (mounting (t (bsmooth (t (0.4 0.6))
+                                       (f (0 1))))
+                           (f (0 1) ) ) )
+              (f (bpg (t (1 0))
+                      (f (0 1)))))
+
+bpb (spraygun (t (mounting (t (bsmooth (t (0.5 0.5))
+                                       (f (0 1))))
+                           (f (1 0) ) ) )
+              (f (bpg (t (0 1))
+                      (f (bpb (t (1 0))
+                              (f (0 1)))))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action handpainta
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (brushes (t (skilledlab (t (asmooth (t (0.8 0.2))
+                                        (f (0 1))))
+                            (f (asmooth (t (0 1))
+                                        (f (0 1))))))
+             (f (apg (t (1 0))
+                      (f (0 1)))))
+
+apb (brushes (t (skilledlab (t (asmooth (t (0.2 0.8))
+                                        (f (0 1))))
+                            (f (asmooth (t (1 0))
+                                        (f (0 1))))))
+             (f (apg (t (0 1))
+                      (f (apb (t (1 0))
+                              (f (0 1)))))))
+
+bpg (bpg (t (1 0))
+         (f (0 1)))
+
+bpb (bpg (t (0 1))
+         (f (bpb (t (1 0))
+                 (f (0 1)))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action handpaintb
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (apg (t (1 0))
+         (f (0 1)))
+
+apb (apg (t (0 1))
+         (f (apb (t (1 0))
+                 (f (0 1)))))
+
+bpg (brushes (t (skilledlab (t (bsmooth (t (0.8 0.2))
+                                        (f (0 1))))
+                            (f (bsmooth (t (0 1))
+                                        (f (0 1))))))
+             (f (bpg (t (1 0))
+                      (f (0 1)))))
+
+bpb (brushes (t (skilledlab (t (bsmooth (t (0.2 0.8))
+                                        (f (0 1))))
+                            (f (bsmooth (t (1 0))
+                                        (f (0 1))))))
+             (f (bpg (t (0 1))
+                      (f (bpb (t (1 0))
+                              (f (0 1)))))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action bolt
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (apg (t (1 0))
+         (f (0 1)))
+
+apb (apg (t (0 1))
+         (f (apb (t (1 0))
+                 (f (0 1)))))
+
+bpg (bpg (t (1 0))
+         (f (0 1)))
+
+bpb (bpg (t (0 1))
+         (f (bpb (t (1 0))
+                 (f (0 1)))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (conb (t (0 1))
+                    (f (bolts (t (adrilled (t (bdrilled (t (1 0))
+                                                        (f (0 1))))
+                                           (f (0 1))))
+                              (f (0 1)))))))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (bolts (t (adrilled (t (bdrilled (t (0 1))
+                                                        (f (0 1))))
+                                           (f (0 1))))
+                              (f (0 1)))))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action weld
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (apg (t (1 0))
+         (f (0 1)))
+
+apb (apg (t (0 1))
+         (f (apb (t (1 0))
+                 (f (0 1)))))
+
+bpg (bpg (t (1 0))
+         (f (0 1)))
+
+bpb (bpg (t (0 1))
+         (f (bpb (t (1 0))
+                 (f (0 1)))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0) )
+           (f (weldlab (t (wela (t (1 0))
+                                 (f (0 1))))
+                       (f (0 1)))))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (weldlab (t (wela (t (0 1))
+                                          (f (wels (t (0.9 0.1))
+                                                    (f (0 1))))
+                                (f (0 1)))))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action glue
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (apg (t (1 0))
+         (f (0 1)))
+
+apb (apg (t (0 1))
+         (f (apb (t (1 0))
+                 (f (0 1)))))
+
+bpg (bpg (t (1 0))
+         (f (0 1)))
+
+bpb (bpg (t (0 1))
+         (f (bpb (t (1 0))
+                 (f (0 1)))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0) )
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (glue (t (clamps (t (1 0))
+                                        (f (0 1))))
+                             (f (0 1)))))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action polisha
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (0 1)
+
+apb (0 1)
+
+bpg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (1 0))
+                           (f (0 1)))))))
+
+bpb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (bpg (t (0 1))
+                           (f (bpb (t (1 0))
+                                   (f (0 1)))))))))
+
+asmooth (asmooth (t (1 0))
+                 (f (ashaped (t (0.8 0.2))
+                             (f (0 1)))))
+
+bsmooth (bsmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+
+action polishb
+
+ashaped (ashaped (t (1 0))
+                 (f (0 1)))
+
+bshaped (bshaped (t (1 0))
+                 (f (0 1)))
+
+apg (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (1 0))
+                           (f (0 1)))))))
+
+apb (cong (t (0 1))
+          (f (conb (t (0 1))
+                   (f (apg (t (0 1))
+                           (f (apb (t (1 0))
+                                   (f (0 1)))))))))
+
+bpg (0 1)
+
+bpb (0 1)
+
+bsmooth (bsmooth (t (1 0))
+                 (f (bshaped (t (0.8 0.2))
+                             (f (0 1)))))
+
+asmooth (asmooth (t (1 0))
+                 (f (0 1)))
+
+adrilled (adrilled (t (1 0))
+                   (f (0 1)))
+
+bdrilled (bdrilled (t (1 0))
+                   (f (0 1)))
+
+typeneeded (typeneeded (highq (1 0))
+                       (lowq (0 1)))
+
+cong (cong (t (1 0))
+           (f (0 1)))
+
+conb (cong (t (0 1))
+           (f (conb (t (1 0))
+                    (f (0 1)))))
+
+bolts (bolts (t (1 0))
+             (f (0 1)))
+
+glue (glue (t (1 0))
+           (f (0 1)))
+
+spraygun (spraygun (t (1 0))
+                   (f (0 1)))
+
+skilledlab (skilledlab (t (1 0))
+                       (f (0 1)))
+
+clamps (clamps (t (1 0))
+               (f (0 1)))
+
+drill (drill (t (1 0))
+             (f (0 1)))
+
+mounting (mounting (t (1 0))
+                   (f (0 1)))
+
+brushes (brushes (t (1 0))
+                 (f (0 1)))
+
+laquer (laquer (t (1 0))
+               (f (0 1)))
+
+wela (wela (t (1 0))
+           (f (0 1)))
+
+wels( wela (t (0 1))
+           (f (wels (t (1 0))
+                    (f (0 1)))))
+
+weldlab (weldlab (t (1 0))
+                 (f (0 1)))
+
+endaction
+
+
+reward (typeneeded (highq (cong (t (apg (t (bpg (t (10))
+                                                (f (3))))
+                                        (f (3))))
+                                (f (0))))
+                   (lowq (cong (t (apg (t (bpg (t (1))
+                                               (f (bpb (t (2))
+                                                       (f (1))))))
+                                       (f (apb (t (bpg (t (2))
+                                                       (f (bpb (t (3))
+                                                               (f (2))))))
+                                               (f (bpg (t (1))
+                                                       (f (bpb (t (2))
+                                                               (f (1))))))))))
+                               (f (conb (t (apg (t (bpg (t (3))
+                                                        (f (bpb (t (4))
+                                                                (f (3))))))
+                                                (f (apb (t (bpg (t (4))
+                                                                (f (bpb (t (5))
+                                                                        (f (4))))))
+                                                        (f (bpg (t (3))
+                                                                (f (bpb (t (4))
+                                                                        (f (3))))))))))
+                                         (f (0)))))))
+
+discount 0.9
+
+tolerance 0.1
+                                    

@@ -79,11 +79,13 @@ namespace gum {
       /**
        * Returns the multidimDecisionDiagram made
        */
-      MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0 );
+      MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0, bool doCompress = false );
 
       /// Convert value to approximation representation
       inline T_DATA fromExact( const T_DATA& value ) const { return IApproximationPolicy<T_DATA>::fromExact( value ); };
 
+private:
+    void __mergedNode(NodeId from, NodeId to);
   };
 
 } /* namespace gum */

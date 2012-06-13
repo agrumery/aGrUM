@@ -35,7 +35,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
-#include <agrum/multidim/patterns/o4DDMiscellaneous.h>
+#include <agrum/multidim/patterns/DDUtility/o4DDMiscellaneous.h>
 // ============================================================================
 
 namespace gum {
@@ -91,47 +91,18 @@ GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME ( const MultiDimImplementation
         return ret;
     }
 
-// ======================================================================================================
-// First we have to determine both high and low limit of the new multidim
-// This is perform by computing both limit of each multidims by the other's one
-// Then we seek for the highest and the lowest of those value
-
-    GUM_MULTI_DIM_OPERATOR_TYPE a1LowLimit = t1->lowLimit();
-    GUM_MULTI_DIM_OPERATOR_TYPE a2LowLimit = t2->lowLimit();
-    GUM_MULTI_DIM_OPERATOR_TYPE a1HighLimit = t1->highLimit();
-    GUM_MULTI_DIM_OPERATOR_TYPE a2HighLimit = t2->highLimit();
-
-    GUM_MULTI_DIM_OPERATOR_TYPE newHighLimit = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2LowLimit );
-    GUM_MULTI_DIM_OPERATOR_TYPE newLowLimit = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2LowLimit );
-
-    GUM_MULTI_DIM_OPERATOR_TYPE newVal = GUM_MULTI_DIM_OPERATOR( a1LowLimit, a2HighLimit );
-    if ( newHighLimit < newVal )
-        newHighLimit = newVal;
-    if ( newLowLimit > newVal )
-        newLowLimit = newVal;
-
-    newVal = GUM_MULTI_DIM_OPERATOR( a1HighLimit, a2LowLimit );
-    if ( newHighLimit < newVal )
-        newHighLimit = newVal;
-    if ( newLowLimit > newVal )
-        newLowLimit = newVal;
-
-    newVal = GUM_MULTI_DIM_OPERATOR( a1HighLimit, a2HighLimit );
-    if ( newHighLimit < newVal )
-        newHighLimit = newVal;
-    if ( newLowLimit > newVal )
-        newLowLimit = newVal;
-// =========================================================================================================
-
 // =========================================================================================================
 //     std::cout << "Début opération" << std::endl;
-    OperatorData<T> opData( t1, t2, newLowLimit, newHighLimit );
-    opData.conti.setLeaderNode( t1->root() );
-    opData.conti.setFollowerNode ( t2->root() );
+    NonOrderedOperatorData<T> opData;
+    opData.initialize( t1, t2 );
 
-    GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( t1, t2, opData, NULL, "" );
+#ifdef O4DDWITHORDER
+    GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( opData, "" );
+#else
+    GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION( opData, NULL, "" );
+#endif
     //     std::cout << "Fin opération" << std::endl;
-   ret = opData.factory->getMultiDimDecisionDiagram();
+   ret = opData.factory->getMultiDimDecisionDiagram( false );
 
    return ret;
 }

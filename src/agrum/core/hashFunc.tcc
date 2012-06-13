@@ -365,8 +365,7 @@ namespace gum {
   key.second * GUM_HASHTABLE_LONG_PI ) >> GUM_HASHTABLE_OFFSET ) >>
   _right_shift ) & GUM_HASHTABLE_MASK );
   #endif
-  }
-  */
+  } */
 
   // ==============================================================================
   /// returns a hashed key for hash tables the keys of which are represented

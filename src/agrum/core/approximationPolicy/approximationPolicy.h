@@ -53,16 +53,12 @@ namespace gum {
       /**
        * Default constructor.
        */
-      ApproximationPolicy( T_DATA low=( T_DATA )0.0,T_DATA high=( T_DATA )1.1 ):_lowLimit( low ),_highLimit( high ) {
-        if ( low>=high ) {
-          GUM_ERROR( OutOfBounds, "lost must be < high" );
-        }
-      };
+      ApproximationPolicy(  ) {  };
 
       /**
        * copy constructor.
        */
-      ApproximationPolicy( const ApproximationPolicy<T_DATA>& md ) : _lowLimit( md._lowLimit ),_highLimit( md._highLimit ) { };
+      ApproximationPolicy( const ApproximationPolicy<T_DATA>* md ) { };
 
       /// @}
 
@@ -73,71 +69,20 @@ namespace gum {
 
       /// Convert value to his approximation. This method (at least in release mode, should not verify the limits
       virtual T_DATA fromExact( const T_DATA& value ) const = 0;
-
-      /// Convert value to his approximation. This method is slower than @fromExact since it verifies the bounds
-      /// @throw OutOfLowerBound and OutOfUpperBound
-      INLINE T_DATA safeFromExact( const T_DATA & value ) {
-        if ( value > this->_highLimit ) {
-          GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
-	}
-
-        if ( value < this->_lowLimit ) {
-          GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
-	}
-
-	return fromExact(value);
-      };
-
-      /// set bounds in a whole
-      /// @throw OutOfBounds
-      INLINE virtual void setLimits( const T_DATA& newLowLimit, const T_DATA& newHighLimit ) {
-        if ( newLowLimit >newHighLimit ) {
-          GUM_ERROR( OutOfBounds, "Asked low value is higher than asked high value" );
-	}
-
-        _lowLimit=newLowLimit;
-        _highLimit=newHighLimit;
-      }
-
-      /// Sets lowest possible value
-      /// @throw OutOfUpperBound
-      INLINE virtual void setLowLimit( const T_DATA& newLowLimit ) {
-        if ( newLowLimit > this->_highLimit ) {
-          GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
-	}
-
-        _lowLimit = newLowLimit;
-      };
-
-      /// Gets lowest possible value
-      INLINE T_DATA lowLimit( ) const {
-        return _lowLimit;
-      };
-
-
-      /// Sets Highest possible value
-      /// @throw OutOfLowerBound
-      INLINE virtual void setHighLimit( const T_DATA& newHighLimit ) {
-        if ( newHighLimit < this->_lowLimit ) {
-          GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
-	}
-
-        _highLimit = newHighLimit;
-      };
-
-      /// Gets Highest possible value
-      INLINE T_DATA highLimit( ) const {
-        return _highLimit;
-      };
+      
+      virtual void combineAdd( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
+      virtual void combineSub( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
+      virtual void combineMult( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
+      virtual void combineDiv( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
+      virtual void combineMax( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
+      virtual void combineMin( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      
       /// @}
-
-    protected:
-
-      /// Lowest value possible
-      T_DATA _lowLimit;
-
-      /// Highest value possible
-      T_DATA _highLimit;
   };
 
 }

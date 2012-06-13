@@ -22,19 +22,19 @@ file(GLOB_RECURSE AGRUM_TEMPLATES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DI
 
 ### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
 include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
-if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
-    FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
-endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+# if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+#     FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
+# endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
 ####################################################################
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include("${CMAKE_CURRENT_CMAKE_DIR}/CocoR.agrum.cmake")
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-    CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
-    CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
-    CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
-    CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
-    CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
+#     CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
+#     CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
+#     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
+#     CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
+#     CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
 	  CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################

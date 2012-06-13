@@ -28,6 +28,8 @@
 
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 
+#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
+
 namespace gum {
 
   template<typename T_DATA>
@@ -39,7 +41,7 @@ namespace gum {
     __fmdp = fmdp;
     __streamName = filename;
     __parseDone = false;
-	ddf->putOnNoVariableCheckMode();
+    ddf->putOnNoVariableCheckMode();
     __factory = new FMDPFactory<T_DATA> ( __fmdp, ddf );
 	//~ __factory->setVerbose();
     __ioerror = false;
