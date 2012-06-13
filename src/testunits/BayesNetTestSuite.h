@@ -541,7 +541,7 @@ namespace gum_tests {
       }
 
       void testCopyAndEqualityOperators() {
-        gum::DefaultBayesNetGenerator<float> generator( 50, 150, 4 );
+        gum::DefaultBayesNetGenerator<float> generator( 20, 30, 4 );
         gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
         bn_1->toDot();
         generator.generateBN( *bn_1 );
@@ -648,24 +648,11 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( a,b );
       }
-
-      void testRemoveaddSameArc() {
-        gum::BayesNet<float> bn;
-
-        gum::MaxParentsMCBayesNetGenerator<float> gen( 10,30,40,30 );
-
-        gen.generateBN( bn );
-        std::cout << "test " << bn.toDot() << std::endl;
-
-        for( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
-          for( gum::NodeSetIterator iter2 = bn.dag().children( *iter ).begin(); iter2 != bn.dag().children( *iter ).end(); ++iter2 ) {
-            std::cout << "arc "<< *iter << "  "<< *iter2 << std::endl;
-            bn.eraseArc( *iter , *iter2 );
-            TS_ASSERT_THROWS_NOTHING( bn.insertArc( *iter,*iter2 ) );
-          }
-      }
   };
 
 } //tests
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+
+
+
