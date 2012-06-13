@@ -486,12 +486,23 @@ namespace gum {
     std::stringstream output;
     output << "digraph \"";
 
+    std::string bn_name;
     try {
-      output << this->property( "name" ) << "\" {" << std::endl;
-
+      bn_name=this->property( "name" );
     } catch( NotFound& ) {
-      output << "no_name\" {" << std::endl;
+      bn_name="no_name";
     }
+
+
+    output << bn_name << "\" {" << std::endl;
+    output << "  graph [bgcolor=transparent,label=\""<<bn_name<<"\"];"<<std::endl;
+    output << "  node [style=filled fillcolor=\"#ffffaa\"];"<<std::endl<<std::endl;
+
+    for( DAG::NodeIterator node_iter = dag().beginNodes();
+        node_iter != dag().endNodes(); ++node_iter ) {
+      output<<"\""<<variable(*node_iter).name()<<"\" [comment=\""<<*node_iter<<":"<<variable(*node_iter)<<"\"];"<<std::endl;
+    }
+    output<<std::endl;
 
     std::string tab = "  ";
 
