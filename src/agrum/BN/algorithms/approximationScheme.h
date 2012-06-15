@@ -46,19 +46,24 @@ namespace gum {
         APPROX_CONTINUE,
         APPROX_EPSILON,
         APPROX_RATE,
-        APPROX_LIMIT
+        APPROX_LIMIT,
+        APPROX_TIME_LIMIT
       };
 
       /// Constructors and Destructors
       /// @{
-      ApproximationScheme( double eps=5e-2,double rate=1e-2,Size max= ( Size ) 1000,bool v=false ) :
+      ApproximationScheme( bool v=false ) :
         __current_state( APPROX_UNDEFINED ),
-        __eps( eps ),
-        __min_rate_eps( rate ),
-        __max_iter( max ),
+        __eps( 5e-2 ),
+        __min_rate_eps( 1e-2 ),
+        __max_time( 0.0 ),
+        __max_iter( ( Size )1000 ) ,
+        __burn_in( ( Size ) 0 ),
+        __periode_size( ( Size ) 1 ),
         __verbosity( v ) {
         GUM_CONSTRUCTOR( ApproximationScheme );
       };
+
 
       ~ApproximationScheme() {
         GUM_DESTRUCTOR( ApproximationScheme );
@@ -112,6 +117,56 @@ namespace gum {
       Size maxIter( void ) const {
         return __max_iter;
       };
+
+      /// @}
+
+      /// stopping criterion ontimeout
+      /// @{
+      /// @throw OutOfLowerBound if timeout<=0.0
+      /** if timeout==0, no timeout stopping criterion.
+      */
+      void setMaxTime( double timeout ) {
+        if( timeout<0.0 ) {
+          GUM_ERROR( OutOfLowerBound,"timeout should be >=0.0" );
+        }
+
+        __max_time=timeout;
+      };
+
+      double maxTime( void ) const {
+        return __max_time;
+      };
+      /// @}
+
+      /// how many samples between 2 stopping tests
+      /// @{
+
+      /// @throw OutOfLowerBound if p<1
+      void setPeriodeSize( Size p ) {
+        if( p<1 ) {
+          GUM_ERROR( OutOfLowerBound,"p should be >=1" );
+        }
+
+        __periode_size=p;
+
+      };
+
+      Size periodeSize( void ) const {return __periode_size;};
+      /// @}
+
+      /// size of burn in on number of iteration
+      /// @{
+
+      /// @throw OutOfLowerBound if b<1
+      void setBurnIn( Size b ) {
+        if( b<1 ) {
+          GUM_ERROR( OutOfLowerBound,"b should be >=1" );
+        }
+
+        __burn_in=b;
+      };
+
+      Size burnIn( void ) const {return __burn_in;};
       /// @}
 
       /// verbosity
@@ -136,7 +191,7 @@ namespace gum {
       Size nbrIterations() const {
         if( stateApproximationScheme()==APPROX_UNDEFINED ) {
           GUM_ERROR( OperationNotAllowed,
-                     "state of the approximation scheme is udefined" );
+                     "state of the approximation scheme is undefined" );
         }
 
         return __current_step;
@@ -167,7 +222,10 @@ namespace gum {
       do {
       // compute new values and a T_DATA error representing the progress in this step.
         updateApproximationScheme();
-      } while ( testApproximationScheme( epsilon )==APPROX_CONTINUE );
+        compute state of the approximation
+        if (startOfPeriod()) w.r.t to the state of approximation
+      compute epsilon
+      } while ( continueApproximationScheme( epsilon ));
       // end of loop
 
       if ( verbosity() ) {
@@ -193,9 +251,16 @@ namespace gum {
       void initApproximationScheme() {
         __current_state=APPROX_CONTINUE;
         __current_step=0;
-        __current_epsilon=__current_rate=__min_rate_eps=-1.0;
+        __current_epsilon=__current_rate=-1.0;
         __history.clear();
       };
+
+      /// @return true if we are at the beginning of a period (compute error is mandatory)
+      bool startOfPeriod() {
+        if( __current_step<__burn_in ) return false;
+
+        return ( ( __current_step-__burn_in )%__periode_size==0 );
+      }
 
       /// update the scheme w.r.t the new error
       void updateApproximationScheme() {
@@ -204,7 +269,10 @@ namespace gum {
 
       /// update the scheme w.r.t the new error. Test the stopping criterion
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
-      ApproximationSchemeSTATE testApproximationScheme( double error,bool check_rate=true ) {
+      /// @return true if stat become != APPROX_CONTINUE
+      bool continueApproximationScheme( double error,bool check_rate=true ) {
+        if( ! startOfPeriod() ) return true;
+
         if( __current_state!=APPROX_CONTINUE ) {
           GUM_ERROR( OperationNotAllowed,
                      "state of the approximation scheme is not correct : "+messageApproximationScheme() );
@@ -212,20 +280,27 @@ namespace gum {
 
         if( verbosity() ) __history.push_back( error );
 
-        if( __current_step>maxIter() )
-          return ( __current_state=APPROX_LIMIT );
+        if( __current_step>maxIter() ) {
+          __current_state=APPROX_LIMIT;
+          return false;
+        }
 
         __last_epsilon=__current_epsilon;
 
-        if( ( __current_epsilon=error )<epsilon() )
-          return ( __current_state=APPROX_EPSILON );
-
-        if( check_rate && __last_epsilon>0 ) {
-          if( ( __current_rate=fabs( ( __current_epsilon-__last_epsilon )/__current_epsilon ) )<minEpsilonRate() )
-            return ( __current_state=APPROX_RATE );
+        if( ( __current_epsilon=error )<epsilon() ) {
+          __current_state=APPROX_EPSILON ;
+          return false;
         }
 
-        return stateApproximationScheme(); // APPROX_CONTINUE
+        if( check_rate && __last_epsilon>0 ) {
+          if( ( __current_rate=fabs( ( __current_epsilon-__last_epsilon )/__current_epsilon ) )<minEpsilonRate() ) {
+            __current_state=APPROX_RATE ;
+            return false;
+          }
+
+        }
+
+        return ( stateApproximationScheme()==APPROX_CONTINUE ); // APPROX_CONTINUE
       };
 
       std::string messageApproximationScheme() const {
@@ -239,6 +314,8 @@ namespace gum {
           case APPROX_RATE: s<<"stopped with rate="<<minEpsilonRate();
             break;
           case APPROX_LIMIT: s<<"stopped with max iteration="<<maxIter();
+            break;
+          case APPROX_TIME_LIMIT: s<<"stopped with timeout="<<maxTime();
             break;
           case APPROX_UNDEFINED: s<<"undefined state";
             break;
@@ -263,7 +340,18 @@ namespace gum {
       /// Threshold for rate of epsilon
       double __min_rate_eps;
 
+      // timeout (not used if 0)
+      double __max_time;
+
+      /// max iterations as a stopping criterion
       Size __max_iter;
+
+      /// nbr of iterations before checking stopping criteria
+      Size __burn_in;
+
+      /// checking criteria every __periode_size iterations
+      Size __periode_size;
+
       bool __verbosity;
   };
 } //namespace gum

@@ -43,27 +43,32 @@ namespace gum {
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
-      KL<T_DATA> ( P,Q ),
-      GibbsScheme( KL_DEFAULT_EPSILON,
-                     KL_DEFAULT_MIN_EPSILON_RATE,
-                     KL_DEFAULT_MAXITER,KL_DEFAULT_VERBOSITY,
-                     KL_DEFAULT_BURNIN,
-                     KL_DEFAULT_PERIODE_SIZE ),
-      particle::Gibbs<T_DATA> ( P ) {
+    KL<T_DATA> ( P,Q ),
+    ApproximationScheme( ),
+    particle::Gibbs<T_DATA> ( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
+
+    setEpsilon( KL_DEFAULT_EPSILON );
+    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter( KL_DEFAULT_MAXITER );
+    setVerbosity( KL_DEFAULT_VERBOSITY );
+    setBurnIn( KL_DEFAULT_BURNIN );
+    setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
   }
 
   template<typename T_DATA>
   GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
-      KL<T_DATA> ( kl ),
-      GibbsScheme( KL_DEFAULT_EPSILON,
-                     KL_DEFAULT_MIN_EPSILON_RATE,
-                     KL_DEFAULT_MAXITER,
-                     KL_DEFAULT_VERBOSITY,
-                     KL_DEFAULT_BURNIN,
-                     KL_DEFAULT_PERIODE_SIZE ),
-      particle::Gibbs<T_DATA> ( kl.p() )  {
+    KL<T_DATA> ( kl ),
+    ApproximationScheme(),
+    particle::Gibbs<T_DATA> ( kl.p() )  {
     GUM_CONSTRUCTOR( GibbsKL );
+
+    setEpsilon( KL_DEFAULT_EPSILON );
+    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter( KL_DEFAULT_MAXITER );
+    setVerbosity( KL_DEFAULT_VERBOSITY );
+    setBurnIn( KL_DEFAULT_BURNIN );
+    setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
   }
 
   template<typename T_DATA>
@@ -74,14 +79,14 @@ namespace gum {
   template<typename T_DATA>
   void GibbsKL<T_DATA>::_computeKL() {
 
-    gum::Instantiation Iq;_q.completeInstantiation( Iq );
-    gum::Instantiation Ip;_p.completeInstantiation( Ip );
+    gum::Instantiation Iq; _q.completeInstantiation( Iq );
+    gum::Instantiation Ip; _p.completeInstantiation( Ip );
 
     initParticle();
     initApproximationScheme();
 
     //BURN IN
-    for ( Idx i = 0;i < burnIn();i++ ) nextParticle( );
+    for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
 
     // SAMPLING
     _klPQ=_klQP=_hellinger=( T_DATA )0.0;
@@ -91,53 +96,51 @@ namespace gum {
     delta=ratio=error=( T_DATA )-1;
     T_DATA oldPQ=0.0;
     T_DATA pp,pq;
+
     do {
       check_rate=false;
+      nextParticle( );
+      updateApproximationScheme();
 
-      for ( Size i=1;i<=periodeSize();i++ ) {
-        nextParticle( );
-        updateApproximationScheme();
+      //_p.synchroInstantiations( Ip,particle() );
+      _q.synchroInstantiations( Iq,particle() );
 
-        //_p.synchroInstantiations( Ip,particle() );
-        _q.synchroInstantiations( Iq,particle() );
+      pp=_p.jointProbability( particle() );
+      pq=_q.jointProbability( Iq );
 
-        pp=_p.jointProbability( particle() );
-        pq=_q.jointProbability( Iq );
+      if( pp!=( T_DATA )0.0 ) {
+        _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
-        if ( pp!=( T_DATA )0.0 ) {
-          _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
-
-          if ( pq!=( T_DATA )0.0 ) {
-            _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
-            check_rate=true;
-            ratio=pq/pp;
-            delta=( T_DATA ) log2( ratio );
-            _klPQ+=delta;
-          } else {
-            _errorPQ++;
-          }
-        }
-
-        if ( pq!=( T_DATA )0.0 ) {
-          if ( pp!=( T_DATA )0.0 ) {
-            // if we are here, it is certain that delta and ratio have been computed
-            // further lines above. (for now #112-113)
-            _klQP+= ( T_DATA )( -delta*ratio );
-          } else {
-            _errorQP++;
-          }
+        if( pq!=( T_DATA )0.0 ) {
+          _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
+          check_rate=true;
+          ratio=pq/pp;
+          delta=( T_DATA ) log2( ratio );
+          _klPQ+=delta;
+        } else {
+          _errorPQ++;
         }
       }
 
-      if ( check_rate ) {
+      if( pq!=( T_DATA )0.0 ) {
+        if( pp!=( T_DATA )0.0 ) {
+          // if we are here, it is certain that delta and ratio have been computed
+          // further lines above. (for now #112-113)
+          _klQP+= ( T_DATA )( -delta*ratio );
+        } else {
+          _errorQP++;
+        }
+      }
+
+      if( check_rate ) {
         // delta is used as a temporary variable
         delta=_klPQ/nbrIterations();
         error=( double )fabs( delta-oldPQ );
         oldPQ=delta;
       }
 
-      GUM_EMIT2( onProgress, ( int )(( 100.0*nbrIterations() )/maxIter() ),error );
-    } while ( testApproximationScheme( error ,check_rate )==APPROX_CONTINUE );
+      GUM_EMIT2( onProgress, ( int )( ( 100.0*nbrIterations() )/maxIter() ),error );
+    } while( continueApproximationScheme( error ,check_rate ) );
 
     GUM_EMIT1( onStop,messageApproximationScheme() );
 
@@ -148,4 +151,4 @@ namespace gum {
   }
 
 } // namespace gum
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
