@@ -235,7 +235,7 @@ namespace gum {
       /**
        * Returns the multidimDecisionDiagram made
        */
-      virtual MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0 ) = 0;
+      virtual MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0, bool doCompress = false ) = 0;
 
       /**
        * Sets the factory from an already existing diagram
@@ -296,7 +296,7 @@ namespace gum {
       HashTable< const DiscreteVariable*, List<NodeId>* > _var2NodeIdMap;
 
       /// Mapping between variable and nodes tied to this var
-      HashTable< const DiscreteVariable*, std::vector<bool>* > _varUsedModalitiesMap;
+      HashTable< const DiscreteVariable*, std::vector<Idx>* > _varUsedModalitiesMap;
       
       /// NodeId of decision diagram root node
       NodeId _rootId;

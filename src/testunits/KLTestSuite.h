@@ -176,15 +176,16 @@ namespace gum_tests {
         gum::GibbsKL<float> kl( netP,netQ );
         kl.setVerbosity( true );
         // very rough approximation in order to not penalize TestSuite
-        kl.setEpsilon( 1e-4 );
-        kl.setMinEpsilonRate( 1e-4 );
+        kl.setEpsilon( 1e-5 );
+        kl.setMinEpsilonRate( 1e-5 );
         TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-1 );
         TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-1 );
         TS_ASSERT_EQUALS( kl.errorPQ(),0 );
         TS_ASSERT_EQUALS( kl.errorQP(),0 );
         TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-1 );
-        GUM_ASSERT( abs( kl.history().size() -kl.nbrIterations()/kl.periodeSize() )<2 );
+        TS_ASSERT( abs( kl.history().size() -(kl.nbrIterations()-kl.burnIn())/kl.periodeSize() )<2 );
         //GUM_TRACE_VAR( kl.history() );
       }
   };
 } //gum_tests
+

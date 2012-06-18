@@ -2,7 +2,7 @@
 # -*- encoding: UTF-8 -*-
 
 import unittest
-from pyAgrum import BayesNet, LabelizedVar, InvalidNode, InvalidCircuit
+from pyAgrum import BayesNet, LabelizedVar, InvalidNode, InvalidDirectedCycle
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -94,7 +94,7 @@ class TestInsertions(BayesNetTestCase):
         bn.insertArc(idList[3], idList[4])
         bn.insertArc(idList[1], idList[4])
 
-        self.assertRaises(InvalidCircuit, bn.insertArc,idList[4],idList[0])
+        self.assertRaises(InvalidDirectedCycle, bn.insertArc,idList[4],idList[0])
         self.assertRaises(InvalidNode, bn.insertArc,42,666)
 
 
@@ -161,10 +161,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleBIFLoadWithoutListener(self):
@@ -175,10 +175,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testListBIFLoad(self):
@@ -189,10 +189,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testTupleBIFLoad(self):
@@ -203,10 +203,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleNETLoad(self):
@@ -226,10 +226,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testSimpleDSLLoadWithoutListener(self):
@@ -240,10 +240,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testListDSLLoad(self):
@@ -254,10 +254,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
 
@@ -269,10 +269,10 @@ class TestBIF(BayesNetTestCase):
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
-        
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(), 
+
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("KINKEDTUBE")).tolist(),
 																		[0.04, 0.96],places=4)
-        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), 
+        self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
 

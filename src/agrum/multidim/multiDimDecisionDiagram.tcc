@@ -130,30 +130,4 @@ namespace gum {
     return ret;
     
   }
-  
-
-  // ==============================================================================
-  // Returns a factory that used same approximation pattern
-  // ==============================================================================
-  template<typename T_DATA,template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagramFactoryBase<T_DATA>*
-  MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::getFactory( const ApproximationPolicy<T_DATA>& source,T_DATA newLowLimit,T_DATA newHighLimit ) const {
-  MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<T_DATA, IApproximationPolicy>( dynamic_cast<const IApproximationPolicy<T_DATA>& >( source ) );
-  ret->setLimits( newLowLimit,newHighLimit );
-  return ret;
-  }
-// ==============================================================================
-// Returns a factory that used same approximation pattern
-// Allows to set parameter for that approximation
-// ==============================================================================
-/*template<typename T_DATA,template <class> class IApproximationPolicy>
-MultiDimDecisionDiagramFactoryBase<T_DATA>*
-MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >::getFactory( T_DATA gepsilon, T_DATA glowLimit, T_DATA ghighLimit ) const {
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<T_DATA, IApproximationPolicy>();
-ret->setEpsilon( gepsilon );
-ret->setLowLimit( glowLimit );
-ret->setHighLimit( ghighLimit );
-
-return ret;
-}*/
 }

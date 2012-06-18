@@ -125,7 +125,6 @@ namespace gum {
        * Allows to set parameter for that approximation
        */
       virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const ;
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md  ,T_DATA newLowLimit,T_DATA newHighLimit) const ;
 
       /// Convert value to approximation representation
       inline T_DATA fromExact( const T_DATA& value ) const {

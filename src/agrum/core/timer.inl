@@ -17,15 +17,56 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+//to ease IDE parser
+#include <ctime>
+#include <agrum/core/timer.h>
+
+#include <sys/time.h>
+
+static long get_clock()
+{
+    struct timeval tv; 
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000000) + tv.tv_usec;
+}
 
 namespace gum {
-
   INLINE
-  double Timer::_convert( struct timeb* time_val ) const {
-    return ( double ) time_val->time +
-      ( double ) time_val->millitm / 1000.0;
+  void Timer::reset() {
+    _pause = 0;
+    _sleeping = false;
+    _start = get_clock();
+
+    //do _start = clock(); while ( _start == k );// to be sure to start at the beginning of a tick
   }
 
+  INLINE
+  double Timer::step() const {
+    if ( _sleeping )
+      return double ( _pause - _start ) / 1000000.0;
+    else
+      return double ( get_clock() - _start ) / 1000000.0;
+  }
+
+  INLINE
+  double Timer::pause() {
+    if ( !_sleeping ) {
+      _pause = get_clock();
+      _sleeping = true;
+    }
+
+    return step();
+  }
+
+  INLINE
+  double Timer::resume() {
+    if ( _sleeping ) {
+      _start += get_clock() - _pause;
+      _sleeping = false;
+    }
+
+    return step();
+  }
 } /* namespace gum */
 
 

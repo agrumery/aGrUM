@@ -114,7 +114,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id1, id4 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( graph.insertArc( id4, id5 ) );
 
-        TS_ASSERT_THROWS( graph.insertArc( id5, id2 ) , gum::InvalidCircuit );
+        TS_ASSERT_THROWS( graph.insertArc( id5, id2 ) , gum::InvalidDirectedCycle );
         TS_ASSERT_THROWS( graph.insertArc( 1000, id2 ) , gum::InvalidNode );
         TS_ASSERT_THROWS( graph.insertArc( id2, 1000 ) , gum::InvalidNode );
 

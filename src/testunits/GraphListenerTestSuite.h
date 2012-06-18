@@ -568,7 +568,7 @@ namespace gum_tests {
 
         buildDAG( g ); // 5 nodes/6 arcs for g
 
-        TS_ASSERT_THROWS( g.insertArc( id5, id2 ), gum::InvalidCircuit ); // should throw InvalidCircuit and should not call the listeners
+        TS_ASSERT_THROWS( g.insertArc( id5, id2 ), gum::InvalidDirectedCycle ); // should throw InvalidDirectedCycle and should not call the listeners
 
         TS_ASSERT_EQUALS( c.nodes(), 5 );
         TS_ASSERT_EQUALS( c.arcs(), 6 );

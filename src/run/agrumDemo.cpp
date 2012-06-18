@@ -22,8 +22,6 @@
 
 #include <clocale>
 
-#define GET_PATH_STR(x) "/home/phw/Documents/svn/agrum/trunk/src/testunits/ressources/" #x
-
 #define GUM_TRACE_ON
 
 #include <agrum/config.h>
@@ -31,86 +29,71 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/generator/defaultBayesNetGenerator.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+namespace gum {
+  template<typename T_DATA>
+  class LoopyBeliefPropagation : BayesNetInference<T_DATA> {
+    private:
+
+      Property<Potential<float> *>::onArcs __lArcs;
+      Property<Potential<float> *>::onArcs __pArcs;
+
+    public:
+      LoopyBeliefPropagation( const BayesNet<T_DATA>& bn ):BayesNetInference<T_DATA>( bn ) {
+
+        const ArcSet& arcs=this->bn().dag().asArcs();
+
+        for( ArcSet::const_iterator arc=arcs.begin(); arc!=arcs.end(); ++arc ) {
+          NodeId j=arc->head();
+          __lArcs.insert( *arc,new Potential<float>() );
+          ( *__lArcs[*arc] )<<this->bn().variable( j );
+          __pArcs.insert( *arc,new Potential<float>() );
+          ( *__pArcs[*arc] )<<this->bn().variable( j );
+        }
+      }
+
+      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {};
+      virtual void eraseEvidence( const Potential<T_DATA>* e ) {};
+      virtual void eraseAllEvidence() {};
+  };
+}
 
 int main( void ) {
-  try {
-    gum::BayesNet<float> bn;
-    gum::BIFReader<float> reader( &bn, GET_PATH_STR( dBN.bif ) );
-    reader.trace(true);
-    GUM_CHECKPOINT;
+  gum::BayesNet<float> bn;
 
-    if ( ! reader.proceed() ) {
-      reader.showElegantErrorsAndWarnings();
-      reader.showErrorCounts();
-      return false;
-    }
-    GUM_TRACE_VAR(bn);
-/*
-    GUM_TRACE("============================");
-    GUM_TRACE("affectation after definition");
-    gum::BayesNet<float> bn2;
-    bn2=bn;
-    GUM_TRACE_VAR(bn2);
-    
-    GUM_TRACE("==========================");
-    GUM_TRACE("affectation and definition");
-    gum::BayesNet<float> bn3=bn;
-    GUM_TRACE_VAR(bn3);
-    
-    GUM_TRACE("============================================");
-    GUM_TRACE("affectation after definition and affectation");    
-    gum::BayesNet<float> bn4;
-    gum::BIFReader<float> reader4( &bn4, GET_PATH_STR( asia.bif ) );
-    if ( ! reader4.proceed() ) {
-      reader4.showElegantErrorsAndWarnings();
-      reader4.showErrorCounts();
-      return false;
-    }
-    bn4=bn2;
-    GUM_TRACE_VAR(bn4);
-    
-    GUM_TRACE("=======================================");
-    GUM_TRACE("affectation of dynamically allocated BN");
-    gum::BayesNet<float>* pBn5=new gum::BayesNet<float>();
-    *pBn5=bn;
-    GUM_TRACE_VAR(*pBn5);
-    delete(pBn5);    
-  */
+  gum::BIFReader<float> reader( &bn, "tree.bif" ) );
+  reader.trace( true );
+
+  if( ! reader.proceed() ) {
+    reader.showElegantErrorsAndWarnings();
+    reader.showErrorCounts();
+    return false;
   }
-  catch ( gum::IOError& e ) {
-    GUM_SHOWERROR( e );
+
+  GUM_TRACE_VAR( bn );
+
+  gum::LoopyBeliefPropagation<float> inf( bn );
+  // inf .makeInference();
+//   for( gum::NodeId i=0; i<bn.size(); i++ ) {
+//     std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf.marginal( i )<<std::endl;
+//   }
+  gum::LazyPropagation<float> inf1( bn );
+  inf1.makeInference();
+
+  for( gum::NodeId i=0; i<bn.size(); i++ ) {
+    std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf1.marginal( i )<<std::endl;
   }
-  /*
-{
-    gum::Size density[] = {9, 18, 27, 36, 45}; 
-          int trial_nb = 5;
-           for ( int i = 0; i < trial_nb; ++i ) {
-          gum::DefaultBayesNetGenerator<float> bnGen( 10, density[i] );
 
-            gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
-            bnGen.generateBN( *bayesNet);
-
-            GUM_TRACE(bayesNet->toDot());
-            gum::ShaferShenoyInference<float>* inf = 0;
-
-            inf = new gum::ShaferShenoyInference<float>( *bayesNet );
-           inf->makeInference();
-//inf->makeInference();
-            if ( inf != 0 ) {
-             delete inf;
-            }
-
-            delete bayesNet;
-	    std::cout << "end forloop " << std::endl;
-          }
-}
-*/  
   gum::__atexit();
+
+//     const gum::NodeSet& p=bn.dag().parents(i);
+//     for (gum::NodeSet::const_iterator it=p.begin() ;;))
+//         *it <-
 }
+
 
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

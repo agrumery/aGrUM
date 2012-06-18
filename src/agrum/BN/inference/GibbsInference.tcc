@@ -43,16 +43,18 @@ namespace gum {
   /// default constructor
   template <typename T_DATA>
   GibbsInference<T_DATA>::GibbsInference( const AbstractBayesNet<T_DATA>& BN ) :
-    GibbsScheme( INFERENCE_DEFAULT_EPSILON,
-                 INFERENCE_DEFAULT_MIN_EPSILON_RATE,
-                 INFERENCE_DEFAULT_MAXITER,
-                 INFERENCE_DEFAULT_VERBOSITY,
-                 INFERENCE_DEFAULT_BURNIN,
-                 INFERENCE_DEFAULT_PERIODE_SIZE ),
+    ApproximationScheme(),
     BayesNetInference <T_DATA> ( BN ),
     particle::Gibbs<T_DATA> ( BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
+
+    setEpsilon( INFERENCE_DEFAULT_EPSILON );
+    setMinEpsilonRate( INFERENCE_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter( INFERENCE_DEFAULT_MAXITER );
+    setVerbosity( INFERENCE_DEFAULT_VERBOSITY );
+    setBurnIn( INFERENCE_DEFAULT_BURNIN );
+    setPeriodeSize( INFERENCE_DEFAULT_PERIODE_SIZE );
 
     // set the correspondance between variables
     const DAG& dag = bn().dag();
@@ -210,24 +212,17 @@ namespace gum {
     initParticle();
     initApproximationScheme();
 
-    // BURN IN
-    for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
-
     // SAMPLING
     double error = 0.0;
 
     do {
-      for( Size i=1; i<=periodeSize()-1; i++ ) {
-        nextParticle( );
-        updateApproximationScheme();
-        __updateStats_without_err();
-      }
-
-      // last pass of the period with error
       nextParticle( );
       updateApproximationScheme();
-      error=__updateStats_with_err( nbrIterations() + burnIn() );
-    } while( testApproximationScheme( error )==APPROX_CONTINUE );
+      if (startOfPeriod())
+        error=__updateStats_with_err( nbrIterations() + burnIn() );
+      else
+        __updateStats_without_err();
+    } while( continueApproximationScheme( error ) );
 
     /*if ( verbosity() ) {
       GUM_TRACE( messageApproximationScheme() );

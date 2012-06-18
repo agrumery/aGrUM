@@ -81,8 +81,8 @@ namespace gum_tests {
         typCNF* writer = NULL;
         TS_GUM_ASSERT_THROWS_NOTHING ( writer = new typCNF() );
         //   writer->setEpsilon( 0.2 );
-        writer->setLowLimit ( 0 );
-        writer->setHighLimit ( 0.5 );
+//         writer->setLowLimit ( 0 );
+//         writer->setHighLimit ( 0.5 );
 
         delete writer;
       }

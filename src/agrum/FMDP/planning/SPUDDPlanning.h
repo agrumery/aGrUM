@@ -63,7 +63,7 @@ namespace gum {
           /**
           * Default constructor
           */
-          SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.001 );
+          SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.00001 );
 
           /**
           * Default destructor
@@ -76,44 +76,103 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-          /**
+         /**
           * Makes a spudd planning on FMDP
           */
-          void makePlanning ();
-          
-          MultiDimDecisionDiagramBase< T_DATA >* makePlanningAlgoEvaluation( const std::string saveFilesName, Idx mode = 1 );
-      /// @}
+          MultiDimDecisionDiagramBase< T_DATA >* makePlanning ();
       
     private:
       
-      /**
-       * Evals the policy corresponding to the given value function
-       */      
-       std::pair< MultiDimDecisionDiagramBase< T_DATA >*, HashTable< NodeId, List<Idx>* >* > __evalPolicy( const MultiDimDecisionDiagramBase< T_DATA >* V );
+         /**
+          * Evals the policy corresponding to the given value function
+          */      
+          void __evalPolicy( const MultiDimDecisionDiagramBase< T_DATA >* V );
 
-      /**
-       * Evals value function for a given action
-       */
-        MultiDimDecisionDiagramBase< T_DATA >* __evalActionValue( const MultiDimDecisionDiagramBase< T_DATA >* Vold );
+         /**
+          * Evals value function for a given action
+          */
+          MultiDimDecisionDiagramBase< T_DATA >* __evalActionValue( const MultiDimDecisionDiagramBase< T_DATA >* Vold, Sequence< const DiscreteVariable*>& elVarSeq );
 
-      /**
-       * Evals final value function by multiplying by discount reward and adding reward
-       */
-        MultiDimDecisionDiagramBase< T_DATA >* __addReward( const MultiDimDecisionDiagramBase< T_DATA >* Vold );
+         /**
+          * Evals final value function by multiplying by discount reward and adding reward
+          */
+          MultiDimDecisionDiagramBase< T_DATA >* __addReward( const MultiDimDecisionDiagramBase< T_DATA >* Vold );
+            
+      /// @}
+      // ==========================================================================
+      /// @name Planning Algorithm Evaluation Methods
+      // ==========================================================================
+      /// @{
+      
+    public:
+      
+         /**
+          * Method to eval the efficiency of makePlanning algorithm
+          */      
+          MultiDimDecisionDiagramBase< T_DATA >* makePlanningAlgoEvaluation( const std::string saveFilesName, Idx mode = 1 );
+      
+    private:
+      
+         /**
+          * Method to eval the efficiency of Vaction evaluation
+          */      
+          MultiDimDecisionDiagramBase< T_DATA >* __evalActionValueAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
+      
+         /**
+          * Method to eval addition the multiplication by discount reward and the addition of reward to computed value function
+          */      
+          MultiDimDecisionDiagramBase< T_DATA >* __addRewardAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
+      
+         /**
+          * Evals the policy corresponding to the given value function
+          */      
+          std::pair<Idx,Idx> __evalNbRetrogradeEvaluation( const MultiDimDecisionDiagramBase<T_DATA>* t1, const MultiDimDecisionDiagramBase<T_DATA>* t2 );
+            
+      /// @}
+      // ==========================================================================
+      /// @name Optimal policy evaluation methods
+      // ==========================================================================
+      /// @{
+        
+       /**
+         * Performs one last step of the algorithm to obtain the arg max equivalent of the so far computed value function
+         */
+        MultiDimDecisionDiagramBase< std::pair< double, long > >* __argMaxValueFunction(const MultiDimDecisionDiagramBase< T_DATA >* V );
+        
+        /**
+         * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
+         * action to which is bind this diagram (given in parameter).
+         */
+        MultiDimDecisionDiagramBase< std::pair< double, long > >* __createArgMaxCopy( const MultiDimDecisionDiagramBase<T_DATA>* Vaction, Idx actionId );
+        
+        /**
+         * Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
+         * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
+         * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
+         */
+        NodeId __makeOptimalPolicyDecisionDiagram( const MultiDimDecisionDiagramBase< std::pair< double, long > >* V, const gum::NodeId& currentNode, MultiDimDecisionDiagramFactoryBase< Idx >* factory, HashTable< NodeId, NodeId >& explorationTable );
+        
+        /**
+         * Displays the optimal computed policy diagram
+         */
+        void __displayOptimalPolicy( MultiDimDecisionDiagramBase< Idx >* op );
+        
+        /**
+         * Computed arg max of two vactions given in parameter
+         */
+        MultiDimDecisionDiagramBase< std::pair< double, long > >* __argMaxOn2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1, const MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction2 );
+
         
         
+        /**
+         * Computed arg max of two vactions given in parameter
+         */
+        MultiDimDecisionDiagramBase< std::pair< double, long > >* __differenceOnPolicy( const MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1, const MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction2 );
         
-        MultiDimDecisionDiagramBase< T_DATA >* __evalActionValueAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
-        MultiDimDecisionDiagramBase< T_DATA >* __addRewardAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode );
-        std::pair<Idx,Idx> __evalNbRetrograde( const MultiDimDecisionDiagramBase<T_DATA>* t1, const MultiDimDecisionDiagramBase<T_DATA>* t2 );
-        
-        
+      /// @}
     
       /// The Factored Markov Decision Process on which we do our planning (NB : this one must have decision diagram as transitions and reward functions )
       FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
-      
-      /// List of action indexes which corresponds to best action for a given terminal node in value function diagram
-      HashTable< NodeId, List<Idx>* > __bestPolicy; 
       
       /// The hyperparameter determining when we do stop value iteration.
       T_DATA __epsilon;

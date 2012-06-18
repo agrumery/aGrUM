@@ -24,7 +24,7 @@
 * @author Jean-Christophe Magnan
 */
 
-#ifdef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+// #ifdef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
 
 
 // =============================================================================================
@@ -34,7 +34,7 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
-#include <agrum/multidim/patterns/o4DDMiscellaneous.h>
+#include <agrum/multidim/patterns/DDUtility/o4DDMiscellaneous.h>
 // =============================================================================================
 
 
@@ -48,65 +48,94 @@ GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiag
                                                                                                   bool delVarAscendant,
                                                                                                   HashTable< NodeId, NodeId >& explorationTable,
                                                                                                   const Set<const DiscreteVariable*>& delVars,
-                                                                                                  Idx nbOperation ) {
+                                                                                                  Idx nbOperation,
+												  std::string tabu  ) {
+  tabu += "\t";
+  
+  std::cout << tabu << "Status - curent Node : " << currentNode << " - delVarAscendant : " << delVarAscendant << " - nbOperation : " << nbOperation << std::endl;
 
     if ( oldDiagram->isTerminalNode( currentNode ) ) {
-        T_DATA resValue = oldDiagram->unsafeNodeValue( currentNode );
+std::cout << tabu << "TERMINAL NODE." << std::endl;
+        T_DATA resValue = oldDiagram->nodeValue( currentNode );
         for ( Idx i = 1; i < nbOperation; i++ )
-            resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, oldDiagram->unsafeNodeValue( currentNode ) );
+            resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, oldDiagram->nodeValue( currentNode ) );
+	
+	NodeId resNode = factory->addTerminalNode( resValue );
+	
+std::cout << tabu << "Creation Noeud Terminal => Valeur : " << resValue << " | Noeud : " << resNode << std::endl;
 
-        return factory->addTerminalNode( resValue );
+std::cout << tabu << "END TERMINAL NODE." << std::endl;
+        return resNode;
     }
 
-    if ( delVarAscendant || delVars.exists( oldDiagram->unsafeNodeVariable(currentNode) ) ) {
-
+    if ( delVarAscendant || delVars.exists( oldDiagram->nodeVariable(currentNode) ) ) {
+std::cout << tabu << "ELIMINATED VAR NODE." << std::endl;
         if ( !delVarAscendant ) {
-            if ( explorationTable.exists( currentNode ) )
-                return explorationTable[currentNode];
+            if ( explorationTable.exists( currentNode ) ){
+	        NodeId resNode = explorationTable[currentNode];
+std::cout << tabu << "Noeud déjà visité : " << currentNode << " | Noeud résultant : " << resNode << std::endl;
+                return resNode;
+	    }
         }
 
-        nbOperation /= oldDiagram->unsafeNodeVariable( currentNode )->domainSize();
+        nbOperation /= oldDiagram->nodeVariable( currentNode )->domainSize();
         Idx nbExploredModalities = 0;
-        std::vector<NodeId>::const_iterator sonIter = oldDiagram->unsafeNodeSons( currentNode )->begin();
+        std::vector<NodeId>::const_iterator sonIter = oldDiagram->nodeSons( currentNode )->begin();
         T_DATA resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
-        while ( sonIter !=  oldDiagram->unsafeNodeSons( currentNode )->end() ) {
+        while ( sonIter !=  oldDiagram->nodeSons( currentNode )->end() ) {
             if ( *sonIter != 0 ) {
-                NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, *sonIter, true, explorationTable, delVars, nbOperation );
+std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
+                NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, *sonIter, true, explorationTable, delVars, nbOperation, tabu );
                 resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, factory->nodeValue( sonValueNode ) );
                 nbExploredModalities++;
+std::cout << tabu << "Fin descente sur fils : " << *sonIter << std::endl;
             }
             ++sonIter;
         }
-        if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
-            NodeId defaultSonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, oldDiagram->unsafeNodeDefaultSon(currentNode),
-                                         true, explorationTable, delVars, nbOperation );
-            for ( Idx i = 0; i < oldDiagram->unsafeNodeVariable(currentNode)->domainSize() - nbExploredModalities; i++ )
+        if ( oldDiagram->hasNodeDefaultSon( currentNode ) ) {
+std::cout << tabu << "Descente sur fils par défaut" << std::endl;
+            NodeId defaultSonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, oldDiagram->nodeDefaultSon(currentNode),
+                                         true, explorationTable, delVars, nbOperation, tabu );
+            for ( Idx i = 0; i < oldDiagram->nodeVariable(currentNode)->domainSize() - nbExploredModalities; i++ )
                 resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, factory->nodeValue( defaultSonValueNode ) );
+std::cout << tabu << "Fin descente sur fils par défaut" << std::endl;
         }
 
-        nbOperation *= oldDiagram->unsafeNodeVariable( currentNode )->domainSize();
+        nbOperation *= oldDiagram->nodeVariable( currentNode )->domainSize();
 
         NodeId resNode = factory->addTerminalNode( resValue );
         if ( !delVarAscendant )
             explorationTable.insert( currentNode, resNode );
+	
+std::cout << tabu << "Creation Noeud Terminal => Valeur : " << resValue << " | Noeud : " << resNode << std::endl;
+
+std::cout << tabu << "END ELIMINATED VAR NODE." << std::endl;
         return resNode;
 
     } else {
 
-        if ( explorationTable.exists( currentNode ) )
-            return explorationTable[currentNode];
+std::cout << tabu << "REMAINING NODE." << std::endl;
+        if ( explorationTable.exists( currentNode ) ){
+	    NodeId ret = explorationTable[currentNode];
+std::cout << tabu << "Noeud déjà visité : " << currentNode << " | Noeud résultant : " << ret << std::endl;
+	    return ret;
+	}
 
-        std::vector<NodeId> sonsMap( oldDiagram->unsafeNodeVariable( currentNode )->domainSize(), 0 );
-        for ( std::vector<NodeId>::const_iterator sonIter = oldDiagram->unsafeNodeSons( currentNode )->begin(); sonIter !=  oldDiagram->unsafeNodeSons( currentNode )->end(); ++sonIter ) {
+        std::vector<NodeId> sonsMap( oldDiagram->nodeVariable( currentNode )->domainSize(), 0 );
+        for ( std::vector<NodeId>::const_iterator sonIter = oldDiagram->nodeSons( currentNode )->begin(); sonIter !=  oldDiagram->nodeSons( currentNode )->end(); ++sonIter ) {
             if ( *sonIter != 0 ) {
-                NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, *sonIter, false, explorationTable, delVars, nbOperation );
-                sonsMap[ std::distance( oldDiagram->unsafeNodeSons( currentNode )->begin(), sonIter ) ] = sonValueNode;
+std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
+                NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, *sonIter, false, explorationTable, delVars, nbOperation, tabu );
+                sonsMap[ std::distance( oldDiagram->nodeSons( currentNode )->begin(), sonIter ) ] = sonValueNode;
+std::cout << tabu << "Fin descente sur fils : " << *sonIter << std::endl;
             }
         }
         NodeId defaultSon = 0;
-        if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
-            defaultSon = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, oldDiagram->unsafeNodeDefaultSon(currentNode),
-                         true, explorationTable, delVars, nbOperation );
+        if ( oldDiagram->hasNodeDefaultSon( currentNode ) ) {
+std::cout << tabu << "Descente sur fils par défaut" << std::endl;
+            defaultSon = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, oldDiagram->nodeDefaultSon(currentNode),
+                         false, explorationTable, delVars, nbOperation, tabu );
+std::cout << tabu << "Fin descente sur fils par défaut" << std::endl;
         }
 
 
@@ -128,10 +157,13 @@ GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiag
                         break;
                     }
         }
-        NodeId resNode = factory->unsafeAddNonTerminalNodeWithArcs( oldDiagram->unsafeNodeVariable(currentNode), sonsMap, defaultSon );
+        NodeId resNode = factory->unsafeAddNonTerminalNodeWithArcs( oldDiagram->nodeVariable(currentNode), sonsMap, defaultSon );
         explorationTable.insert( currentNode, resNode );
+	
+std::cout << tabu << "Creation Noeud : " << resNode << std::endl;
+std::cout << tabu << "END REMAINING NODE." << std::endl;
         return resNode;
     }
 }
 }/* end of namespace GUM*/
-#endif /*GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION*/
+// #endif /*GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION*/

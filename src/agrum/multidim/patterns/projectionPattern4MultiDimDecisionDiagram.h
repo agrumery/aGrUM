@@ -30,6 +30,7 @@
 #warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
 
 #else
+#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
 namespace gum{
 // ================================================================================
 /// a specialized function for projecting a multiDimDecisionDiagram over a subset of its vars
@@ -91,7 +92,11 @@ namespace gum{
 	Idx nbOperation = 1;
 	for( SetIterator< const DiscreteVariable* > delVarsIter = delVars.begin(); delVarsIter != delVars.end(); ++delVarsIter )
 		nbOperation *= (*delVarsIter)->domainSize();
+#ifdef P4DDDEBUG
+	factory->setRootNode( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( ret, factory, ret->root(), false, explorationTable, delVars, nbOperation, "") );
+#else
 	factory->setRootNode( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( ret, factory, ret->root(), false, explorationTable, delVars, nbOperation) );
+#endif
 	delete ret;
 	ret = factory->getMultiDimDecisionDiagram();
 	delete factory;

@@ -65,6 +65,18 @@ namespace gum {
       INLINE T_DATA fromExact( const T_DATA& value ) const {
         return value;
       };
+      
+      void combineAdd( const ApproximationPolicy<T_DATA>* ap ) {};
+      
+      void combineSub( const ApproximationPolicy<T_DATA>* ap ) {};
+      
+      void combineMult( const ApproximationPolicy<T_DATA>* ap ) {};
+      
+      void combineDiv( const ApproximationPolicy<T_DATA>* ap ) {};
+      
+      void combineMax( const ApproximationPolicy<T_DATA>* ap ) {};
+      
+      void combineMin( const ApproximationPolicy<T_DATA>* ap ) {};
 
       /// @}
   };

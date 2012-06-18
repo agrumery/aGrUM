@@ -51,7 +51,7 @@ namespace gum_tests {
       }
 
       void testRead_file1() {
-        std::string file = GET_PATH_STR( FMDP/coffee/coffee.dat );
+        std::string file = GET_PATH_STR( FMDP/factory/factoryB.dat );
 
         gum::FactoredMarkovDecisionProcess<float> fmdp;
         gum::MultiDimDecisionDiagramFactory<float> ddf;

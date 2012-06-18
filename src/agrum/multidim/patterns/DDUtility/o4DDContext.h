@@ -73,17 +73,17 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-	  /// Set leader diagram current explored Node
-	  void setLeaderNode ( gum::NodeId exploredNode );
+	  /// Set DD1 diagram current explored Node
+	  void setDD1Node ( gum::NodeId exploredNode );
 	  
-	  /// Get leader diagram current explored Node
-	  gum::NodeId  getLeaderNode() const { return __leaderExploredNode; };
+	  /// Get DD1 diagram current explored Node
+	  gum::NodeId  getDD1Node() const { return __DD1ExploredNode; };
 
-	  /// Set follower diagram current explored Node
-	  void setFollowerNode ( gum::Idx exploredNode );
+	  /// Set DD2 diagram current explored Node
+	  void setDD2Node ( gum::Idx exploredNode );
 	  
-	  /// Get follower diagram current explored Node
-	  gum::NodeId  getFollowerNode() const { return __followerExploredNode; };
+	  /// Get DD2 diagram current explored Node
+	  gum::NodeId  getDD2Node() const { return __DD2ExploredNode; };
 
       // ===========================================================================
       /// @name Variables modalities handlers
@@ -112,13 +112,13 @@ namespace gum {
 	 
     private:
       
-      /// Leader Diagram current explored node
-     gum::NodeId __leaderExploredNode;
-     double __leaderPrimeLog;
+      /// DD1 Diagram current explored node
+     gum::NodeId __DD1ExploredNode;
+     double __DD1PrimeLog;
      
-     /// Follower Diagram current explored node
-     gum::NodeId __followerExploredNode;
-     double __followerPrimeLog;
+     /// DD2 Diagram current explored node
+     gum::NodeId __DD2ExploredNode;
+     double __DD2PrimeLog;
      
      /// Variable sequence for faster indexation
      gum::Sequence< const gum::DiscreteVariable* > __varSeq;
@@ -140,7 +140,7 @@ namespace gum {
 
 //========================================================================
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/patterns/o4DDContext.inl>
+#include <agrum/multidim/patterns/DDUtility/o4DDContext.inl>
 #endif /* GUM_NO_INLINE */
 //========================================================================
 

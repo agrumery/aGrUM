@@ -249,7 +249,33 @@ namespace gum {
       /**
        * Returns the id of the root node from the diagram
        */
-      const NodeId& root() const;
+      const NodeId& root() const { return __root; };
+      
+      /**
+       * Returns the node graph part
+       */
+       const NodeGraphPart& nodesMap() const { return __graph; };
+
+      /**
+       * Returns values map
+       * @throw InvalidNode if node is terminal
+       */
+      const Bijection< NodeId, T_DATA >& valuesMap() const { return __valueMap; };
+
+      /// Mapping between id and variable
+      const HashTable< NodeId, const DiscreteVariable* >& variableMap() const { return __variableMap; };
+
+      /// Mapping between var and node
+      const HashTable< const DiscreteVariable*, List<NodeId>* >& var2NodeIdMap() const { return __var2NodeIdMap; };
+
+      /// Mapping between var and node
+      const HashTable< const DiscreteVariable*, std::vector<Idx>* >& varUsedModalitiesMap() const { return __varUsedModalitiesMap; };
+
+      /// Mapping between variable's values and associated node
+      const HashTable< NodeId, std::vector<NodeId>* >& arcMap() const { return __arcMap; };
+
+      /// Mapping between variable's values and associated node
+      const HashTable< NodeId, NodeId >& defaultArcMap() const { return __defaultArcMap; };
 
       /**
        * Returns true if node is a chance one
@@ -290,17 +316,6 @@ namespace gum {
        */
       const NodeId nodeDefaultSon( NodeId n ) const;
       const NodeId unsafeNodeDefaultSon( NodeId n ) const;
-      
-      /**
-       * Returns the node graph part
-       */
-       const NodeGraphPart& nodesMap() const;
-
-      /**
-       * Returns values map
-       * @throw InvalidNode if node is terminal
-       */
-      const Bijection< NodeId, T_DATA >& valuesMap( ) const;
 
       /**
        * Returns associated nodes of the variable pointed by the given node
@@ -310,7 +325,7 @@ namespace gum {
       /**
        * Returns associated nodes of the variable pointed by the given node
        */
-      const std::vector< bool >* variableUsedModalities( const DiscreteVariable* v ) const;
+      const std::vector< Idx >* variableUsedModalities( const DiscreteVariable* v ) const;
 
       /**
        * Returns true if variable is in diagram
@@ -354,7 +369,6 @@ namespace gum {
        * Allows to set parameter for that approximation
        */
       virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const = 0;
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ,T_DATA newLowLimit,T_DATA newHighLimit) const = 0;
 
       ///@}
 
@@ -396,7 +410,7 @@ namespace gum {
        * Sets the map linking variable to used modality in graph
        * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
        */
-      void setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<bool>* > varUsedModalitiesMap );
+      void setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<Idx>* > varUsedModalitiesMap );
 
       /**
        * Binds once and for all nodes to variables.
@@ -475,7 +489,7 @@ namespace gum {
       HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
 
       /// Mapping between var and node
-      HashTable< const DiscreteVariable*, std::vector<bool>* > __varUsedModalitiesMap;
+      HashTable< const DiscreteVariable*, std::vector<Idx>* > __varUsedModalitiesMap;
 
       /// Mapping between variable's values and associated node
       typename Property< std::vector<NodeId>* >::onNodes __arcMap;

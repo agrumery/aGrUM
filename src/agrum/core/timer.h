@@ -20,14 +20,12 @@
 /** @file
  * @brief Class used to compute response times for benchmark purposes
  *
- * @author Jean-Philippe Dubus
+ * @author Pierre-Henri Wuillemin & Jean-Philippe Dubus
  */
 #ifndef GUM_TIMER_H
 #define GUM_TIMER_H
 
-extern "C" {
-#include <sys/timeb.h>
-}
+#include <ctime>
 
 #include <agrum/config.h>
 
@@ -60,7 +58,7 @@ namespace gum {
       /**
        * Copy constructor
        */
-      Timer( const Timer& );
+      Timer ( const Timer & );
 
       /**
        * Destructor
@@ -79,7 +77,7 @@ namespace gum {
       /**
        * copy operator
        */
-      Timer& operator= ( const Timer& );
+      Timer &operator= ( const Timer & );
 
       /// @}
 
@@ -93,29 +91,36 @@ namespace gum {
        * Reset the timer
        */
       void reset();
+      /**
+       * Pause the timer and return the delta (@see step() )
+       */
+      double pause();
+      /**
+       * Resume the timer and return the delta (@see step() )
+       */
+      double resume();
 
       /**
        * Returns the delta time between now and the last reset() call
        * (or the constructor)
        *
-       * @return delta time in seconds (accuracy : 0.001 s)
+       * @return delta time in seconds (accuracy : 0.001 ms)
        */
       double step() const;
+
+
 
       /// @}
 
     protected:
-      /**
-       * Convert a struct timeb* representation of time in a double representation
-       *
-       * @param time_val the first representation
-       * @return a double representation (in seconds, accuracy : 0.001 s)
-       */
-      double _convert( struct timeb* time_val ) const;
-
       /// time of the last call to reset() or the constructor
-      double _start;
+      long _start;
 
+      ///time of the last call to pause()
+      long _pause;
+
+      ///false if running
+      bool _sleeping;
   };
 
 

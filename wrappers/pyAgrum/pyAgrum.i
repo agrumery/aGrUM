@@ -48,13 +48,13 @@ import numpy
             SWIG_Python_ExceptionType(SWIGTYPE_p_gum__OperationNotAllowed),
                                       err);
         SWIG_fail;
-    } catch(gum::InvalidCircuit &e) {
-        gum::InvalidCircuit *ecopy = new gum::InvalidCircuit(e);
+    } catch(gum::InvalidDirectedCycle &e) {
+        gum::InvalidDirectedCycle *ecopy = new gum::InvalidDirectedCycle(e);
         PyObject *err = SWIG_NewPointerObj(ecopy,
-                                           SWIGTYPE_p_gum__InvalidCircuit,
+                                           SWIGTYPE_p_gum__InvalidDirectedCycle,
                                            1);
         PyErr_SetObject(
-            SWIG_Python_ExceptionType(SWIGTYPE_p_gum__InvalidCircuit), err);
+            SWIG_Python_ExceptionType(SWIGTYPE_p_gum__InvalidDirectedCycle), err);
         SWIG_fail;
     } catch(gum::InvalidNode &e) {
         gum::InvalidNode *ecopy = new gum::InvalidNode(e);

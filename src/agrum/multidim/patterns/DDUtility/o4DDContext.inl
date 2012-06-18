@@ -20,7 +20,7 @@
 // ============================================================================
 #include <cmath>
 // ============================================================================
-#include <agrum/multidim/patterns/o4DDContext.h>
+#include <agrum/multidim/patterns/DDUtility/o4DDContext.h>
 // ============================================================================
 #ifndef O4DDCONTEXT_INL
 #define O4DDCONTEXT_INL
@@ -35,21 +35,21 @@ namespace gum{
 /* **********************************************************************************************/
 
     // =============================================================================
-    // Set leader diagram current explored Node
+    // Set DD1 diagram current explored Node
     // =============================================================================
     INLINE 
     void
-    O4DDContext::setLeaderNode (gum::NodeId exploredNode ){ 
-      __leaderExploredNode = exploredNode;
+    O4DDContext::setDD1Node (gum::NodeId exploredNode ){ 
+      __DD1ExploredNode = exploredNode;
     }
 
     // =============================================================================
-    // Set follower diagram current explored Node
+    // Set DD2 diagram current explored Node
     // =============================================================================
     INLINE 
     void
-    O4DDContext::setFollowerNode (gum::NodeId exploredNode ){
-      __followerExploredNode = exploredNode;
+    O4DDContext::setDD2Node (gum::NodeId exploredNode ){
+      __DD2ExploredNode = exploredNode;
     }
 
 
@@ -87,7 +87,7 @@ namespace gum{
     INLINE
     const double
     O4DDContext::contextKey( ) const{
-      double o4DDContextKey = __leaderExploredNode * __leaderPrimeLog + __followerExploredNode * __followerPrimeLog;
+      double o4DDContextKey = __DD1ExploredNode * __DD1PrimeLog + __DD2ExploredNode * __DD2PrimeLog;
       for( Idx i = 0; i < __retrogradeVarInstantiation.size(); i++ )
 	o4DDContextKey += __retrogradeVarInstantiation[i] * __var2PrimeLog[i];
       return o4DDContextKey;

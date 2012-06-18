@@ -20,11 +20,7 @@
 // ============================================================================
 #include <cmath>
 // ============================================================================
-#include <agrum/multidim/patterns/o4DDContext.h>
-// ============================================================================
-#ifdef GUM_NO_INLINE
-#include <agrum/multidim/patterns/o4DDContext.inl>
-#endif
+#include <agrum/multidim/patterns/DDUtility/o4DDContext.h>
 // ============================================================================
 
 namespace gum {
@@ -79,10 +75,10 @@ const double O4DDContext::__logPrime[] = {log2 ( 2 ),log2 ( 3 ),log2 ( 5 ),log2 
     // Default constructor.
     // =============================================================================
     O4DDContext::O4DDContext(){
-      __leaderExploredNode = 0;
-      __leaderPrimeLog = __logPrime[ __nbLogPrime - 1 ];
-      __followerExploredNode = 0;
-      __followerPrimeLog = __logPrime[ __nbLogPrime - 2 ];
+      __DD1ExploredNode = 0;
+      __DD1PrimeLog = __logPrime[ __nbLogPrime - 1 ];
+      __DD2ExploredNode = 0;
+      __DD2PrimeLog = __logPrime[ __nbLogPrime - 2 ];
     }
 
     // =============================================================================
@@ -98,7 +94,7 @@ const double O4DDContext::__logPrime[] = {log2 ( 2 ),log2 ( 3 ),log2 ( 5 ),log2 
     std::string
     O4DDContext::toString() const{
 	std::stringstream ret;
-	ret << " Leader Current Node : " << __leaderExploredNode << " - Log " << __leaderPrimeLog << " | Follower Current Node : " << __followerExploredNode << " - Log " << __followerPrimeLog  << " | ";
+	ret << " DD1 Current Node : " << __DD1ExploredNode << " - Log " << __DD1PrimeLog << " | DD2 Current Node : " << __DD2ExploredNode << " - Log " << __DD2PrimeLog  << " | ";
 	for( SequenceIterator<const DiscreteVariable*> varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
 	  ret << "\t Variable retrograde : " << (*varIter)->name() << " -> Current Modality : " << __retrogradeVarInstantiation[ __varSeq.pos( *varIter ) ] << " | ";
 	
@@ -108,6 +104,6 @@ const double O4DDContext::__logPrime[] = {log2 ( 2 ),log2 ( 3 ),log2 ( 5 ),log2 
 
 // ============================================================================
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/patterns/o4DDContext.inl>
+#include <agrum/multidim/patterns/DDUtility/o4DDContext.inl>
 #endif
 // ============================================================================

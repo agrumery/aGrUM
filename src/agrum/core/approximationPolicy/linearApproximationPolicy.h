@@ -28,8 +28,9 @@
 #ifndef GUM_LINEAR_APPROXIMATION_POLICY_H
 #define GUM_LINEAR_APPROXIMATION_POLICY_H
 //**********************************************************************
+#include <typeinfo>
+//**********************************************************************
 #include <agrum/config.h>
-
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 //**********************************************************************
 
@@ -56,7 +57,9 @@ namespace gum {
       LinearApproximationPolicy( T_DATA low=( T_DATA )0.0,
                                  T_DATA high=( T_DATA )1.0,
                                  T_DATA eps=( T_DATA )0.1 ) :
-          ApproximationPolicy<T_DATA>( low,high ),
+          ApproximationPolicy<T_DATA>(  ),
+          _lowLimit( low ),
+          _highLimit( high ),
           _epsilon( eps ) {
         if ( eps<=0 ) {
           GUM_ERROR( OutOfBounds, "Epsilon must be >0" );
@@ -67,7 +70,7 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      LinearApproximationPolicy( const LinearApproximationPolicy<T_DATA>& md ) :
+      LinearApproximationPolicy( const LinearApproximationPolicy<T_DATA>* md ) :
           ApproximationPolicy<T_DATA>( md ),
           _epsilon( md._epsilon ),
           _nbInterval( md._nbInterval ) {
@@ -83,6 +86,218 @@ namespace gum {
       /// Convert value to his approximation
       INLINE T_DATA fromExact( const T_DATA& value ) const {
         return __decode( encode( value ) );
+      };
+      
+      void combineAdd( const ApproximationPolicy<T_DATA>* ap ) {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit + lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit + lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit + lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit + lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit + lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+      
+      void combineSub( const ApproximationPolicy<T_DATA>* ap )  {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit - lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit - lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit - lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit - lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit - lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+      
+      void combineMult( const ApproximationPolicy<T_DATA>* ap )  {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit * lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit * lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit * lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit * lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit * lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+      
+      void combineDiv( const ApproximationPolicy<T_DATA>* ap )  {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit / lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit / lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit / lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit / lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit / lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+      
+     void combineMax( const ApproximationPolicy<T_DATA>* ap )  {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit > lap->highLimit( ) ? _lowLimit : lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit > lap->lowLimit() ? _highLimit : lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit > lap->highLimit( ) ? _highLimit : lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+      
+      void combineMin( const ApproximationPolicy<T_DATA>* ap )  {
+	
+	try
+        {
+            const LinearApproximationPolicy<T_DATA>* lap = dynamic_cast< const LinearApproximationPolicy<T_DATA>* >( ap );
+
+            T_DATA newHighLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
+            T_DATA newLowLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
+
+            T_DATA  newVal = _lowLimit < lap->highLimit( ) ? _lowLimit : lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal =_highLimit < lap->lowLimit() ? _highLimit : lap->lowLimit();
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+
+            newVal = _highLimit < lap->highLimit( ) ? _highLimit : lap->highLimit( );
+            if ( newHighLimit < newVal )
+                newHighLimit = newVal;
+            if ( newLowLimit > newVal )
+                newLowLimit = newVal;
+        }
+        catch (const std::bad_cast& e)
+        {
+        }
+	
+      };
+
+      /// Convert value to his approximation. This method is slower than @fromExact since it verifies the bounds
+      /// @throw OutOfLowerBound and OutOfUpperBound
+      INLINE T_DATA safeFromExact( const T_DATA & value ) {
+        if ( value > this->_highLimit ) {
+          GUM_ERROR( OutOfUpperBound, "Value asked is higher than high limit" );
+	}
+
+        if ( value < this->_lowLimit ) {
+          GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
+	}
+
+	return fromExact(value);
       };
 
 
@@ -122,26 +337,61 @@ namespace gum {
       };
 
       /// set bounds in a whole
+      /// @throw OutOfBounds
       INLINE virtual void setLimits( const T_DATA& newLowLimit, const T_DATA& newHighLimit ) {
-        ApproximationPolicy<T_DATA>::setLimits( newLowLimit,newHighLimit );
+        if ( newLowLimit >newHighLimit ) {
+          GUM_ERROR( OutOfBounds, "Asked low value is higher than asked high value" );
+	}
+
+        _lowLimit=newLowLimit;
+        _highLimit=newHighLimit;
         _computeNbInterval();
       }
 
       /// Sets lowest possible value
+      /// @throw OutOfUpperBound
       INLINE virtual void setLowLimit( const T_DATA& newLowLimit ) {
-        ApproximationPolicy<T_DATA>::setLowLimit( newLowLimit );
+        if ( newLowLimit > this->_highLimit ) {
+          GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
+	}
+
+        _lowLimit = newLowLimit;
+
         _computeNbInterval();
       };
 
+      /// Gets lowest possible value
+      INLINE const T_DATA& lowLimit( ) const {
+        return _lowLimit;
+      };
 
       /// Sets Highest possible value
+      /// @throw OutOfLowerBound
       INLINE virtual void setHighLimit( const T_DATA& newHighLimit ) {
-        ApproximationPolicy<T_DATA>::setHighLimit( newHighLimit );
+
+        if ( newHighLimit < this->_lowLimit ) {
+          GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
+        }
+
+        _highLimit = newHighLimit;
+
         _computeNbInterval();
+      };
+
+      /// Gets Highest possible value
+      INLINE const T_DATA& highLimit( ) const {
+        return _highLimit;
       };
       /// @}
 
     protected :
+
+      /// Lowest value possible
+      T_DATA _lowLimit;
+
+      /// Highest value possible
+      T_DATA _highLimit;
+      
       /// Approximation factor
       T_DATA _epsilon;
 

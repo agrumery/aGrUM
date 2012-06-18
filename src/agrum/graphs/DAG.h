@@ -41,7 +41,7 @@ namespace gum {
    *
    *
    * This is the base class for Directed Acyclic Graph : insertArc may throw a
-   * Circuit if any (directed) cycle is created by this arc.
+   * DirectedCycle if any (directed) cycle is created by this arc.
    *
    * @par exemple de code
    * @code
@@ -59,7 +59,7 @@ namespace gum {
    * //throw an InvalidNode
    * // g1.insertArc( i1+i2+i3,i1 );
    *
-   * // throw an InvalidCircuit
+   * // throw an InvalidDirectedCycle
    * // g1.insertArc( i3,i1 );
    *
    * // copying graphs
@@ -152,7 +152,7 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes
-     * @throw InvalidCircuit if any (directed) cycle is created by this arc.
+     * @throw InvalidDirectedCycle if any (directed) cycle is created by this arc.
      *@warning Unfortunately, this means that insertArc is not in constant
      * time anymore. */
     virtual void insertArc( const NodeId tail,const NodeId head );
