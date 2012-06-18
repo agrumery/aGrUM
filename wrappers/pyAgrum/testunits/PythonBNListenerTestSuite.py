@@ -2,7 +2,7 @@
 # -*- encoding: UTF-8 -*-
 
 import unittest
-from pyAgrum import BayesNet, PythonBNListener, LabelizedVar, InvalidCircuit
+from pyAgrum import BayesNet, PythonBNListener, LabelizedVar, InvalidDirectedCycle
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -79,7 +79,7 @@ class TestListeners(PythonBNListenerTestCase):
         self.bn.insertArc(b, c)
         self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n"%(b, c))
 
-        self.assertRaises(InvalidCircuit, self.bn.insertArc,c,a)
+        self.assertRaises(InvalidDirectedCycle, self.bn.insertArc,c,a)
 
         self.buffer1 = ""
         self.bn.erase(b)

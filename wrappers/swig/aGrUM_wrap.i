@@ -65,7 +65,6 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 #include <agrum/BN/algorithms/approximationScheme.h>
-#include <agrum/BN/algorithms/GibbsScheme.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
@@ -104,8 +103,8 @@
 
 
 /* WRAPPED HEADERS (pyAgrum API) */
-%import <agrum/core/inline.h>
 %include <agrum/config.h>
+%import <agrum/core/inline.h>
 
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
@@ -149,7 +148,6 @@
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %import <agrum/BN/algorithms/approximationScheme.h>
-%import <agrum/BN/algorithms/GibbsScheme.h>
 %include <agrum/BN/inference/GibbsInference.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
