@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#define GUM_TRACE_ON
 #include <agrum/config.h>
 
 #include <agrum/core/timer.h>
@@ -24,41 +25,28 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
 #endif // GUM_NO_INLINE
+ 
 
 namespace gum {
 
   Timer::Timer() {
-    GUM_CONSTRUCTOR( Timer );
+    GUM_CONSTRUCTOR ( Timer );
     reset();
   }
 
-  Timer::Timer( const Timer& from ) : _start (from._start) {
-    GUM_CONS_CPY( Timer );
+  Timer::Timer ( const Timer &from ) : _start ( from._start ) {
+    GUM_CONS_CPY ( Timer );
   }
 
   Timer::~Timer() {
-    GUM_DESTRUCTOR( Timer );
+    GUM_DESTRUCTOR ( Timer );
   }
 
-  Timer& Timer::operator= (const Timer& from) {
+  Timer &Timer::operator= ( const Timer &from ) {
     GUM_OP_CPY ( Timer );
     _start = from._start;
+    _pause = from._pause;
     return *this;
   }
-
-  void Timer::reset() {
-    struct timeb time_val;
-    ftime( &time_val );
-    _start = _convert( &time_val );
-  }
-
-  double Timer::step() const {
-    struct timeb time_val;
-    ftime( &time_val );
-    double result = _convert( &time_val ) - _start;
-    return result;
-  }
-
-
 } /* namespace gum */
 
