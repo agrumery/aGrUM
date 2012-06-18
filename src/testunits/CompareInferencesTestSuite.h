@@ -173,7 +173,6 @@ namespace gum_tests {
       }
 
       void testInferencesWithNoEvidence() {
-        std::cerr << std::endl;
         gum::ShaferShenoyInference<double> inf_ShaShe( *bn );
         inf_ShaShe.makeInference();
 

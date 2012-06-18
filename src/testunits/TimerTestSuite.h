@@ -20,6 +20,8 @@
 #include <unistd.h>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/core/timer.h>
 
 namespace gum_tests {
@@ -40,13 +42,13 @@ namespace gum_tests {
 
           gum::Timer *t4=0;
           TS_GUM_ASSERT_THROWS_NOTHING( t4 = new gum::Timer( t1 ) );
-          TS_ASSERT_EQUALS( t4->step(),t1.step() );
+          TS_ASSERT_DELTA( t4->step(),t1.step(),1e-3 );
 
           gum::Timer t3( *t2 );
-          TS_ASSERT_EQUALS( t2->step(),t3.step() );
+          TS_ASSERT_DELTA( t2->step(),t3.step() ,1e-3);
 
           gum::Timer t5=t3;
-          TS_ASSERT_EQUALS( t5.step(),t3.step() );
+          TS_ASSERT_DELTA( t5.step(),t3.step() ,1e-3);
 
           delete t2;
           delete t4;
@@ -54,23 +56,28 @@ namespace gum_tests {
       }
 
       void testTrivial() {
+        int w=0;
         gum::Timer t;
         gum::Timer tt;
         t.reset();
         double t1 = t.step();
+        test_waiting(++w);
         tt.reset();
         double t5 = t.step();
         sleep( 1 );
+        test_waiting(++w);
         double t2 = t.pause();
         sleep( 1 );
+        test_waiting(++w);
         double t3 = t.resume();
         sleep( 1 );
+        test_waiting(++w);
         double t4 = t.step();
         double t6 = tt.step();
-
-        TS_ASSERT( ( t6 - t5 >= 3.0 ) && ( t6 - t5 < 3.002 ) );
-        TS_ASSERT( ( t4 - t1 >= 2.0 ) && ( t4 - t1 < 2.002 ) );
-        TS_ASSERT( ( t3 - t2 >= 0.0 ) && ( t3 - t2 < 0.002 ) );
+        end_test_waiting();
+        TS_ASSERT_DELTA( t6-t5,3.0,1e-3);
+        TS_ASSERT_DELTA( t4-t1,2.0,1e-3);
+        TS_ASSERT_DELTA( t3-t2,0.0,1e-3);
 
       }
   };
