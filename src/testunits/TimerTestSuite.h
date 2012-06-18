@@ -27,15 +27,26 @@ namespace gum_tests {
   class TimerTestSuite: public CxxTest::TestSuite {
     public:
       void testConstructors() {
-        TS_GUM_ASSERT_THROWS_NOTHING ( gum::Timer t1 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( gum::Timer *t2 = new gum::Timer(); delete ( t2 ); );
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::Timer t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::Timer *t2 = new gum::Timer(); delete( t2 ); );
         {
-          gum::Timer t1; t1.reset();
-          gum::Timer *t2 = new gum::Timer(), *t4;
+          gum::Timer t1;
+          t1.reset();
+
+          gum::Timer *t2 = new gum::Timer();
           t2->reset();
-          TS_GUM_ASSERT_THROWS_NOTHING ( gum::Timer t3 ( *t2 ) );
-          TS_GUM_ASSERT_THROWS_NOTHING ( t4 = new gum::Timer ( t1 ) );
-          t4->reset();
+
+          TS_GUM_ASSERT_THROWS_NOTHING( gum::Timer t3( *t2 ) );
+
+          gum::Timer *t4=0;
+          TS_GUM_ASSERT_THROWS_NOTHING( t4 = new gum::Timer( t1 ) );
+          TS_ASSERT_EQUALS( t4->step(),t1.step() );
+
+          gum::Timer t3( *t2 );
+          TS_ASSERT_EQUALS( t2->step(),t3.step() );
+
+          gum::Timer t5=t3;
+          TS_ASSERT_EQUALS( t5.step(),t3.step() );
 
           delete t2;
           delete t4;
@@ -49,17 +60,17 @@ namespace gum_tests {
         double t1 = t.step();
         tt.reset();
         double t5 = t.step();
-        sleep ( 1 );
+        sleep( 1 );
         double t2 = t.pause();
-        sleep ( 1 );
+        sleep( 1 );
         double t3 = t.resume();
-        sleep ( 1 );
+        sleep( 1 );
         double t4 = t.step();
         double t6 = tt.step();
 
-        TS_ASSERT ( ( t6 - t5 >= 3.0 ) && ( t6 - t5 < 3.002 ) );
-        TS_ASSERT ( ( t4 - t1 >= 2.0 ) && ( t4 - t1 < 2.002 ) );
-        TS_ASSERT ( ( t3 - t2 >= 0.0 ) && ( t3 - t2 < 0.002 ) );  
+        TS_ASSERT( ( t6 - t5 >= 3.0 ) && ( t6 - t5 < 3.002 ) );
+        TS_ASSERT( ( t4 - t1 >= 2.0 ) && ( t4 - t1 < 2.002 ) );
+        TS_ASSERT( ( t3 - t2 >= 0.0 ) && ( t3 - t2 < 0.002 ) );
 
       }
   };

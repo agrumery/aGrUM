@@ -25,27 +25,28 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
 #endif // GUM_NO_INLINE
- 
+
 
 namespace gum {
 
   Timer::Timer() {
-    GUM_CONSTRUCTOR ( Timer );
+    GUM_CONSTRUCTOR( Timer );
     reset();
   }
 
-  Timer::Timer ( const Timer &from ) : _start ( from._start ) {
-    GUM_CONS_CPY ( Timer );
+  Timer::Timer( const Timer &from ) : _start( from._start ),_pause( from._pause ),_sleeping( from._sleeping ) {
+    GUM_CONS_CPY( Timer );
   }
 
   Timer::~Timer() {
-    GUM_DESTRUCTOR ( Timer );
+    GUM_DESTRUCTOR( Timer );
   }
 
   Timer &Timer::operator= ( const Timer &from ) {
-    GUM_OP_CPY ( Timer );
+    GUM_OP_CPY( Timer );
     _start = from._start;
     _pause = from._pause;
+    _sleeping=_sleeping;
     return *this;
   }
 } /* namespace gum */
