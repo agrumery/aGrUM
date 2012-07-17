@@ -138,11 +138,7 @@ namespace gum {
         error=( double )fabs( delta-oldPQ );
         oldPQ=delta;
       }
-
-      GUM_EMIT2( onProgress, ( int )( ( 100.0*nbrIterations() )/maxIter() ),error );
     } while( continueApproximationScheme( error ,check_rate ) );
-
-    GUM_EMIT1( onStop,messageApproximationScheme() );
 
     _klPQ=-_klPQ/( nbrIterations() );
     _klQP=-_klQP/( nbrIterations() );

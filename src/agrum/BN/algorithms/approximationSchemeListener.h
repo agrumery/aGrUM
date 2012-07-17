@@ -21,20 +21,21 @@
 #define APPROXIMATIONSCHEMELISTENER_H
 
 #include <agrum/config.h>
+#include <agrum/core/signal/listener.h>
 
 namespace gum {
-  class ApproximationSchemeListener {
+  class ApproximationSchemeListener : public Listener {
 
     public:
       ApproximationSchemeListener();
       virtual ~ApproximationSchemeListener();
 
-      virtual void whenProgress( const void* src,int pourcent,double error ) =0;
+      virtual void whenProgress( const void* src,int pourcent,double error, long time ) =0;
       virtual void whenStop( const void* src, std::string message )=0;
 
     private:
       ApproximationSchemeListener( const ApproximationSchemeListener& other );
-      virtual ApproximationSchemeListener& operator=( const ApproximationSchemeListener& other );
+      ApproximationSchemeListener& operator=( const ApproximationSchemeListener& other );
   };
 }
 
