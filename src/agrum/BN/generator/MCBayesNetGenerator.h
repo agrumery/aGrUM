@@ -56,14 +56,14 @@ namespace gum {
  *
  * This class randomly generates a bayesian network given 6 parameters:
  * the number of nodes, the maximum number of arcs the and of iterations the maximum modality.
- * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high 
- * resulting in the failure of most of the inference Methods.\n 
- * 
+ * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+ * resulting in the failure of most of the inference Methods.\n
+ *
  * \anchor probability_p_q
- * 
+ *
  * This Generation method require the use of two probability parameters(p, q) defining the choice of processes that will provoke the change of state.
- * You can see in the graph below how the probabilities are used. 
- * 
+ * You can see in the graph below how the probabilities are used.
+ *
  * \dot
 digraph {
 size=4
@@ -72,14 +72,14 @@ bgcolor="transparent"
 if[shape=none, color=white ]
 //}
 
-subgraph cluster_state{ color=invis; 
+subgraph cluster_state{ color=invis;
 
 polytree
 multiconnected
 }
 
 subgraph cluster_function {
-  color=invis; 
+  color=invis;
 AorR1[shape=box,label="AorR", color=white]
 AR1[shape=box,label="AR", color=white]
 jump1[shape=box,label="Jump", color=white]
@@ -96,13 +96,13 @@ accept[shape=none, color=white]
 if2[label="if",shape=none, color=white]
 //}
 
-subgraph cluster_intstate{ color=invis; 
+subgraph cluster_intstate{ color=invis;
 
 
 polytree2[label="polytree", color=white]
 multiconnected2[label="multiconnected", color=white]
 }
-subgraph cluster_finstate{ color=invis; 
+subgraph cluster_finstate{ color=invis;
 
 
 polytree3[label="polytree", color=white]
@@ -143,45 +143,45 @@ or -> multiconnected3[style=dotted]
 }
  \enddot
  */
-  template <typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber> 
+  template <typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
   class MCBayesNetGenerator : public AbstractBayesNetGenerator<T_DATA,ICPTGenerator>, public ICPTDisturber<T_DATA> {
 
     public:
-      
+
        // ############################################################################
   /// @name Constructors / Destructor
   // ############################################################################
   /// @{
   /**
    * Constructor.
-   * Use by default the DefaultCPTGenerator for generating the BNs CPT 
+   * Use by default the DefaultCPTGenerator for generating the BNs CPT
    * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
    * @param nbrNodes The number of nodes in the generated BN.
    * @param maxArcs The maximum number of Arcs.
    * @param maxModality Each DRV has from 2 to maxModality modalities
    * @param iteration The number of iterations wanted to repeat the algorithm
-   * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" ) 
+   * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
    * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
    */
-  
+
       MCBayesNetGenerator( Size nbrNodes, Size maxArcs, Idx maxModality=2 , Size iteration=5000, Idx p=30, Idx q=40);
-      
+
        /**
    * Constructor.
-   * Use by default the DefaultCPTGenerator for generating the BNs CPT 
+   * Use by default the DefaultCPTGenerator for generating the BNs CPT
    * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
    * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
    * @param iteration The number of iterations wanted to repeat the algorithm
    * @param p probability for the change of the state (see \ref probability_p_q )
    * @param q probability for the change of the state (see \ref probability_p_q )
    */
-      
+
  MCBayesNetGenerator( BayesNet<T_DATA> bayesNet , Size iteration=5000, Idx p=30, Idx q=40);
-      
+
        /**
    * Destructor.
    */
-      
+
       ~MCBayesNetGenerator();
 
  /// @}
@@ -192,30 +192,30 @@ or -> multiconnected3[style=dotted]
   /// @{
   /**
    * Generates a random bayesian network.
-   * @param bayesNet empty BayesNet to generate. 
+   * @param bayesNet empty BayesNet to generate.
    * @return null but modify inputed Bayesian Network
-   */   
-      
+   */
+
       void generateBN( BayesNet<T_DATA> & bayesNet );
 
        /**
    * Change randomly the topology of a specific bayesian networks.
-   * @param bayesNetinit BayesNet to be modify 
+   * @param bayesNetinit BayesNet to be modify
    * @return null but modify inputed Bayesian Network
    * @throws OperationNotAllow if the initial state of the BayesNet is not respecting the wanted conditions
    * if iteration = 0, it is assumed that the number of iteration wanted is the same as the one specified in the constructor
-   */   
-       
+   */
+
       void disturbBN( BayesNet<T_DATA> & bayesNetinit, Size iteration = 0 );
-      
+
       ///@}
-      
+
        // ############################################################################
   /// @name Getters and Setters
   // ############################################################################
   /// @{
     ///@name Getters
-      
+
 
       /**
        * Return a constant reference to the number of iteration imposed on the Markov Chain BayesNetGenerator.
@@ -229,9 +229,9 @@ or -> multiconnected3[style=dotted]
        * Return a constant reference to the probabilité imposed on the Markov Chain BayesNetGenerator.
        */
       Idx q() const;
-     
+
       ///@name Setters
-      
+
        /**
       * Modifies the value of the number of iterations impose on the BayesNetGenerator
       */
@@ -244,9 +244,9 @@ or -> multiconnected3[style=dotted]
       * Modifies the value of the probability q imposed on the BayesNetGenerator
       */
       void setQ(Idx q);
-      
-      
-      
+
+
+
         /// @}
     protected:
 
@@ -256,10 +256,10 @@ or -> multiconnected3[style=dotted]
       bool _disturbing ;
       BayesNet<T_DATA>  _bayesNettemp;
       HashTable< NodeId, Potential<T_DATA> * > _hashMarginal;
-      
-      
+
+
       /**
-       * The function that verify if graph is a polytree. 
+       * The function that verify if graph is a polytree.
        **/
       bool __isPolytree();
       /**
@@ -278,82 +278,83 @@ or -> multiconnected3[style=dotted]
        * The function that will remove the arc between node i and node j. If the boolean parameter mustbeconnex is true, the function will assert that the graph remain connected and will restore the arc otherwise.
        **/
       void __eraseArc(NodeId i, NodeId j, bool mustbeconnex = true);
-      
+
        /**
-       * In the case that the graph is a polytree, the function will, according to the probability p and q, choose which change of state must occure( AorR or AR or jump) then will assert that the imposed constraint are respected and if not, will return to the previous topology. 
+       * In the case that the graph is a polytree, the function will, according to the probability p and q, choose which change of state must occure( AorR or AR or jump) then will assert that the imposed constraint are respected and if not, will return to the previous topology.
        **/
-      
+
       void __PMMx_poly(  ) ;
        /**
-       * In the case that the graph is a multiconnected graph, the function will, according to the probability p and q, choose which change of state must occure( AorR or jump) then will assert that the imposed constraint are respected and if not, will return to the previous topology. 
+       * In the case that the graph is a multiconnected graph, the function will, according to the probability p and q, choose which change of state must occure( AorR or jump) then will assert that the imposed constraint are respected and if not, will return to the previous topology.
        **/
       void __PMMx_multi();
       /**
-       * In the case that the graph is a polytree, the function will add a ramdom arc by the use of the function __insertArc if the arc does not exist allready. 
+       * In the case that the graph is a polytree, the function will add a ramdom arc by the use of the function __insertArc if the arc does not exist allready.
        **/
-      
+
       void __jump_poly() ;
-      
+
       /**
-       * In the case that the graph is a multiconnect graph, the function will choose randomly two nodes and will remove the arc between them by the use of the function __insertArc if the arc exists. 
+       * In the case that the graph is a multiconnect graph, the function will choose randomly two nodes and will remove the arc between them by the use of the function __insertArc if the arc exists.
        **/
-      
+
       void __jump_multi() ;
-      
+
       /**
-       * The function will add or remove a random arc in the graph using the functions __insertArc and __removeArc. 
+       * The function will add or remove a random arc in the graph using the functions __insertArc and __removeArc.
        **/
       void __AorR();
        /**
-       * The function will remove and add a random arc changing the topology of the graph but asserting its connectivity. 
+       * The function will remove and add a random arc changing the topology of the graph but asserting its connectivity.
        **/
       void __AR() ;
       /**
        * The boolean function that will assert the respect of the constraint.
        **/
       virtual bool __checkConditions();
-      
+
       void __createDAG( Size BNSize, Size iniRoot );
-      
+
       std::vector<Idx> * __createPartDAG( Size BNSize, Size iniRoot );
-      
+
       /**
-       * The internal function used by the previous __connect. It asserts the existence of an unoriented path between node i and node j avoiding passing through nodes listed in excluded. 
+       * The internal function used by the previous __connect. It asserts the existence of an unoriented path between node i and node j avoiding passing through nodes listed in excluded.
        **/
-      
+
       bool __connect( const NodeId i, const NodeId j, NodeSet &excluded );
-      
+
       /**
-       * The internal function used by the previous __directedPath. It asserts the existence of an oriented path between node i and node j avoiding passing through nodes listed in excluded. 
+       * The internal function used by the previous __directedPath. It asserts the existence of an oriented path between node i and node j avoiding passing through nodes listed in excluded.
        **/
       bool __directedPath( const NodeId tail, const NodeId head, NodeSet &excluded );
-      
+
       /**
        * The function that randomly choose two nodes of the graph.
        **/
-      
+
       void __chooseNodes( NodeId &i,NodeId &j );
-      
+
       /**
        * The function that randomly choose two neighbours nodes of the graph.
        **/
       void __chooseCloseNodes( NodeId &i,NodeId &j );
-     
+
       /**
        * The function that randomly change the simple tree into a polytree.
        **/
-      
+
       void __transformPoly( Idx nbiter );
-      
+
       /**
        * The function that randomly generate a simple tree.
        **/
       void __createTree( Size BNSize ) ;
-      
+
       /**
        * The internal function used by __createTree that randomly generate a simple tree.
+       * n : id number for node label
        **/
-      NodeId __createPartTree( Size BNSize ) ;
+      NodeId __createPartTree( Size BNSize , Idx& n) ;
 
 
   };

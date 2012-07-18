@@ -218,49 +218,13 @@ namespace gum {
     do {
       nextParticle( );
       updateApproximationScheme();
-      if (startOfPeriod())
+
+      if( startOfPeriod() )
         error=__updateStats_with_err( nbrIterations() + burnIn() );
       else
         __updateStats_without_err();
     } while( continueApproximationScheme( error ) );
 
-    /*if ( verbosity() ) {
-      GUM_TRACE( messageApproximationScheme() );
-      GUM_TRACE( "#iterations = "<<nbrIterations() );
-    }*/
-
-    /*
-    for ( nb_iter = 1;nb_iter <= maxIter();nb_iter++ ) {
-      nextParticle( );
-
-      if ( nb_iter % periodeSize() == 0 ) {
-        last_err = err;
-
-        if (( err = __updateStats_with_err( nb_iter + burnIn() ) ) < epsilon() ) {
-          if ( verbosity() ) GUM_TRACE( "Stop by err=" << err );
-
-          break;
-        }
-
-        if (( err_rate = fabs(( last_err - err ) / err ) ) < minEpsilonRate() ) {
-          if ( verbosity() ) GUM_TRACE( "Stop by err_rate=" << err_rate );
-
-          break;
-
-        }
-      } else {
-        __updateStats_without_err();
-      }
-    }
-
-    if ( verbosity() ) {
-      if ( nb_iter>maxIter() ) {
-        GUM_TRACE( "Stop by max_iteration="<<maxIter() );
-      } else {
-        GUM_TRACE( "#iterations : "<<nb_iter );
-      }
-    }
-    */
     __unsetRequiredInference();
   }
 

@@ -20,57 +20,70 @@
 #include <Python.h>
 
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 
-template<typename T_DATA>
-class PythonGibbsKLListener: public gum::ApproximationSchemeListener {
-private:
+class PythonApproximationListener: public gum::ApproximationSchemeListener {
+  private:
 
     PyObject *__pyWhenProgress;
     PyObject *__pyWhenStop;
+    gum::ApproximationScheme *__algo;
 
     void __checkCallable( PyObject *pyfunc ) {
-        if ( !PyCallable_Check( pyfunc ) ) {
-            PyErr_SetString( PyExc_TypeError, "Need a callable object!" );
-        }
+      if( !PyCallable_Check( pyfunc ) ) {
+        PyErr_SetString( PyExc_TypeError, "Need a callable object!" );
+      }
     };
 
-public:
-  PythonGibbsKLListener( const gum::GibbsKL<T_DATA>& k ):gum::ApproximationListener(k) {
-        __pyWhenProgress = __pyWhenStop = ( PyObject * )0;
+  public:
+    PythonApproximationListener( gum::ApproximationScheme& algo ):gum::ApproximationSchemeListener(),__algo( &algo ) {
+      __pyWhenProgress = __pyWhenStop = ( PyObject * )0;
+
+      GUM_CONNECT( ( *__algo ), onProgress,
+                   ( *this ), PythonApproximationListener::whenProgress );
+      GUM_CONNECT( ( *__algo ), onStop,
+                   ( *this ), PythonApproximationListener::whenStop );
     };
 
-    ~PythonGibbsKLListener() {
-        if ( __pyWhenProgress ) Py_DECREF( __pyWhenProgress );
-        if ( __pyWhenStop ) Py_DECREF( __pyWhenStop );
+    ~PythonApproximationListener() {
+      if( __pyWhenProgress ) Py_DECREF( __pyWhenProgress );
+
+      if( __pyWhenStop ) Py_DECREF( __pyWhenStop );
     };
 
-    void whenProgress( const void* src,int pourcent,double error ) {
-        if ( __pyWhenProgress ) {
-            PyObject *arglist = Py_BuildValue( "(id)", pourcent,error );
-            PyEval_CallObject( __pyWhenProgress,arglist );
-            Py_DECREF( arglist );
-        }
+    void whenProgress( const void* src,int pourcent,double error,long duration ) {
+      if( __pyWhenProgress ) {
+        PyObject *arglist = Py_BuildValue( "(id)", pourcent,error,duration );
+        PyEval_CallObject( __pyWhenProgress,arglist );
+        Py_DECREF( arglist );
+      }
     };
 
-    void whenStop(const void* src, std::string message ) {
-        if ( __pyWhenStop ) {
-            PyObject *arglist = Py_BuildValue( "(s)", message.c_str() );
-            PyEval_CallObject( __pyWhenStop,arglist );
-            Py_DECREF( arglist );
-        }
+    void whenStop( const void* src, std::string message ) {
+      if( __pyWhenStop ) {
+        PyObject *arglist = Py_BuildValue( "(s)", message.c_str() );
+        PyEval_CallObject( __pyWhenStop,arglist );
+        Py_DECREF( arglist );
+      }
     };
 
     void setWhenProgress( PyObject *pyfunc ) {
-        __checkCallable( pyfunc );
-        __pyWhenProgress=pyfunc;
-        Py_INCREF( pyfunc );
+      __checkCallable( pyfunc );
+
+      if( __pyWhenProgress ) Py_DECREF( __pyWhenProgress );
+
+      __pyWhenProgress=pyfunc;
+      Py_INCREF( pyfunc );
     };
 
     void setWhenStop( PyObject *pyfunc ) {
-        __checkCallable( pyfunc );
-        __pyWhenStop=pyfunc;
-        Py_INCREF( pyfunc );
+      __checkCallable( pyfunc );
+
+      if( __pyWhenStop ) Py_DECREF( __pyWhenStop );
+
+      __pyWhenStop=pyfunc;
+      Py_INCREF( pyfunc );
     };
 };
 

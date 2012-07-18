@@ -70,7 +70,7 @@ namespace gum {
       GUM_CONSTRUCTOR( Listener );
     }
 
-    
+
     Listener( const Listener& l ) {
       GUM_CONS_CPY( Listener );
 
@@ -81,7 +81,7 @@ namespace gum {
       }
     }
 
-    
+
     virtual ~Listener() {
       GUM_DESTRUCTOR( Listener );
 
@@ -91,12 +91,12 @@ namespace gum {
       }
       __senders.clear();
     }
-    
+
 
     INLINE void attachSignal__( __sig__::ISignaler* sender ) {
       __senders.pushBack( sender );
     }
-    
+
 
     INLINE void detachSignal__( __sig__::ISignaler* sender ) {
       __senders.eraseByVal ( sender );

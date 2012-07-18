@@ -37,9 +37,43 @@
 
 namespace gum {
 
+
+  /// Approximation Scheme
+  /** The approximation scheme is assumed to be used like this
+   *      @code
+   *      initApproximationScheme();
+   *
+   *      // this loop can stop with APPROX_EPSILON, APPROX_RATE, APPROX_LIMIT
+   *      do {
+   *      // compute new values and a T_DATA error representing the progress in this step.
+   *        updateApproximationScheme();
+   *        compute state of the approximation
+   *        if (startOfPeriod()) w.r.t to the state of approximation
+   *      compute epsilon
+   } while ( continueApproximationScheme( epsilon ));
+   // end of loop
+
+   if ( verbosity() ) {
+     switch ( stateApproximationScheme() ) {
+       case APPROX_CONTINUE: // should not be possible
+      break;
+       case APPROX_EPSILON: GUM_TRACE( "stop with epsilon="<<epsilon() );
+       break;
+       case APPROX_RATE: GUM_TRACE( "stop with rate="<<minEpsilonRate() );
+       break;
+       case APPROX_LIMIT: GUM_TRACE( "stop with max iteration="<<maxIter() );
+       break;
+       case APPROX_TIME_LIMIT: GUM_TRACE( "stop with timemout="<<currentTime() );
+       break;
+     }
+   }
+   // equivalent to
+   if (verbosity()) GUM_TRACE(messageApproximationScheme());
+   @endcode
+   */
   class ApproximationScheme {
     public:
-      Signaler2<int, double> onProgress; // progression,error
+      Signaler3<int, double, long> onProgress; // progression,error
       Signaler1<std::string> onStop; // criteria messageApproximationScheme
 
       enum ApproximationSchemeSTATE {
@@ -130,22 +164,17 @@ namespace gum {
         if ( timeout < 0.0 ) {
           GUM_ERROR ( OutOfLowerBound, "timeout should be >=0.0" );
         }
-        
+
         __max_time = timeout;
       };
-      
+
       /// returns the timeout (in seconds)
       double maxTime ( void ) const {
         return __max_time;
       };
 
       /// get the current running time in second (double)
-      /// @throw operationNotAllowed if no timeout has been declared (time_max=0)
       double currentTime ( void ) const {
-        if ( __max_time == 0 ) {
-          GUM_ERROR ( OperationNotAllowed, "No timeout declared" );
-        }
-
         return __timer.step();
       }
       /// @}
@@ -224,41 +253,6 @@ namespace gum {
         return __history;
       }
       /// @}
-
-      /// Approximation Scheme
-      /** The approximation scheme is assumed to be used like this
-      @code
-      initApproximationScheme();
-
-      // this loop can stop with APPROX_EPSILON, APPROX_RATE, APPROX_LIMIT
-      do {
-      // compute new values and a T_DATA error representing the progress in this step.
-        updateApproximationScheme();
-        compute state of the approximation
-        if (startOfPeriod()) w.r.t to the state of approximation
-      compute epsilon
-      } while ( continueApproximationScheme( epsilon ));
-      // end of loop
-
-      if ( verbosity() ) {
-      switch ( stateApproximationScheme() ) {
-      case APPROX_CONTINUE: // should not be possible
-      break;
-      case APPROX_EPSILON: GUM_TRACE( "stop with epsilon="<<epsilon() );
-      break;
-      case APPROX_RATE: GUM_TRACE( "stop with rate="<<minEpsilonRate() );
-      break;
-      case APPROX_LIMIT: GUM_TRACE( "stop with max iteration="<<maxIter() );
-      break;
-      case APPROX_TIME_LIMIT: GUM_TRACE( "stop with timemout="<<currentTime() );
-      break;
-      }
-      }
-      // equivalent to
-      if (verbosity()) GUM_TRACE(messageApproximationScheme());
-      @endcode
-      */
-
       /// @{
 
       /// initialise the scheme
@@ -286,6 +280,9 @@ namespace gum {
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
       /// @return true if stat become != APPROX_CONTINUE
       bool continueApproximationScheme ( double error, bool check_rate = true ) {
+        // For coherence, we fix the time used in the method.
+        long timer_step=__timer.step();
+
         if ( ! startOfPeriod() ) return true;
 
         if ( __current_state != APPROX_CONTINUE ) {
@@ -296,7 +293,7 @@ namespace gum {
         if ( verbosity() ) __history.push_back ( error );
 
         if ( __max_time > 0 ) {
-          if ( __timer.step() > __max_time ) {
+          if ( timer_step > __max_time ) {
             __stopScheme ( APPROX_TIME_LIMIT );
             return false;
           }
@@ -322,7 +319,11 @@ namespace gum {
 
         }
 
-        return ( stateApproximationScheme() == APPROX_CONTINUE ); // APPROX_CONTINUE
+        if (stateApproximationScheme() == APPROX_CONTINUE) {
+          if (onProgress.hasListener()) GUM_EMIT3(onProgress,__current_step*1.0/__max_iter,__current_epsilon,timer_step);
+          return true;
+        } else
+          return false;
       };
 
       std::string messageApproximationScheme() const {
@@ -355,6 +356,8 @@ namespace gum {
 
         __current_state = new_state;
         __timer.pause();
+
+        if (onStop.hasListener()) GUM_EMIT1(onStop,messageApproximationScheme());
       }
       /// current state of approximationScheme
       double __current_epsilon, __last_epsilon, __current_rate;

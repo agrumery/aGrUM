@@ -8,7 +8,6 @@ to OpenBayes, a free Bayesian Network library for Python."
 %module(docstring=DOCSTRING, directors="1") pyAgrum
 %feature("autodoc", "1");
 
-
 %pythoncode %{
 import numpy
 %}
@@ -112,8 +111,6 @@ import numpy
         SWIG_fail;
     }
 }
-
-
 
 /* MAKE OPERATIONS MORE PYTHONIC */
 %ignore gum::operator<<;
@@ -727,42 +724,10 @@ def setEvidence(self, evidces):
 %extend gum::GibbsInference {
     void __del__() {}
 }
-
-
-%extend gum::BruteForceKL {
-PyObject* compute(void) {
-  PyObject* q=PyDict_New();
-
-  PyDict_SetItemString(q,"klPQ",PyFloat_FromDouble(self->klPQ()));
-  PyDict_SetItemString(q,"errorPQ",PyInt_FromLong(self->errorPQ()));
-  PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
-  PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
-  PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
-  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-
-  return q;
-}
-}
-
-%extend gum::GibbsKL {
-PyObject* compute(void) {
-  PyObject* q=PyDict_New();
-
-  PyDict_SetItemString(q,"klPQ",PyFloat_FromDouble(self->klPQ()));
-  PyDict_SetItemString(q,"errorPQ",PyInt_FromLong(self->errorPQ()));
-  PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
-  PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
-  PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
-  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-
-  return q;
-}
-}
-
 %{
 #include "extensions/PythonBNListener.h"
 #include "extensions/PythonLoadListener.h"
-/*#include "extensions/PythonGibbsKLListener.h"*/
+#include "extensions/PythonApproximationListener.h"
 
 
 int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
@@ -789,37 +754,62 @@ int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *
 };
 %}
 
+
+%extend gum::BruteForceKL {
+PyObject* compute(void) {
+  PyObject* q=PyDict_New();
+
+  PyDict_SetItemString(q,"klPQ",PyFloat_FromDouble(self->klPQ()));
+  PyDict_SetItemString(q,"errorPQ",PyInt_FromLong(self->errorPQ()));
+  PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
+  PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
+  PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
+  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+
+  return q;
+}
+
+}
+
+%extend gum::GibbsKL {
+PyObject* compute(void) {
+  PyObject* q=PyDict_New();
+
+  PyDict_SetItemString(q,"klPQ",PyFloat_FromDouble(self->klPQ()));
+  PyDict_SetItemString(q,"errorPQ",PyInt_FromLong(self->errorPQ()));
+  PyDict_SetItemString(q,"klQP",PyFloat_FromDouble(self->klQP()));
+  PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
+  PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
+  PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+
+  return q;
+}
+
+}
+
+
 %include "aGrUM_wrap.i"
 
 %include "extensions/PythonBNListener.h"
 %include "extensions/PythonLoadListener.h"
-/*%include "extensions/PythonGibbsKLListener.h"*/
+%include "extensions/PythonApproximationListener.h"
 
 
+%inline %{
+#include <agrum/BN/generator/MCBayesNetGenerator.h>
 
-/* TEMPLATES INSTANTIATIONS */
-/*
-%template(PythonGibbsKLListener_float) PythonGibbsKLListener<float>;
-%template(PythonGibbsKLListener_double) PythonGibbsKLListener<double>;
+gum::BayesNet<double>& generateBN(gum::Size n_nodes=10,gum::Size n_arcs=15,gum::Size n_modmax=4) {
+    if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN");
 
-%extend gum::GibbsKL_double {
-%pythoncode {
-    def setListeners(self,whenProgress,whenStop):
-        self.listener=PythonGibbsKLListener_double(self)
-        self.listener.setWhenProgress(onProgress)
-        self.listener.setWhenStop(onStop)
+    gum::BayesNet<double>* bn=new gum::BayesNet<double>();
+
+    gum::MCBayesNetGenerator<double> gen( n_nodes,n_arcs,n_modmax);
+    gen.generateBN(*bn);
+
+    return *bn;
 }
-}
+%}
 
-%extend gum::GibbsKL_float {
-%pythoncode {
-    def setListeners(self,whenProgress,whenStop):
-        self.listener=PythonGibbsKLListener_float(self)
-        self.listener.setWhenProgress(onProgress)
-        self.listener.setWhenStop(onStop)
-}
-}
-*/
 
 %pythoncode %{
 Potential = Potential_double
@@ -829,7 +819,6 @@ LazyPropagation = LazyPropagation_double
 GibbsInference = GibbsInference_double
 BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double
-# PythonGibbsKLListener=PythonGibbsKLListener_double
 %}
 
 
