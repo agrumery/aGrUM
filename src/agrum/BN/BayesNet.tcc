@@ -564,6 +564,23 @@ namespace gum {
     return value;
   }
 
+  /// begin Multiple Change for all CPTs
+  template<typename T_DATA> 
+  void BayesNet<T_DATA>::beginTopologyTransformation() {
+    for( DAG::NodeIterator node_iter = dag().beginNodes();
+        node_iter != dag().endNodes(); ++node_iter ) {
+      __probaMap[*node_iter]->beginMultipleChanges();
+    }
+  }
+  
+  /// end Multiple Change for all CPTs
+  template<typename T_DATA> 
+  void BayesNet<T_DATA>::endTopologyTransformation() {    
+    for( DAG::NodeIterator node_iter = dag().beginNodes();
+        node_iter != dag().endNodes(); ++node_iter ) {
+      __probaMap[*node_iter]->endMultipleChanges();
+    }
+  }
 } /* namespace gum */
 
 // ============================================================================
