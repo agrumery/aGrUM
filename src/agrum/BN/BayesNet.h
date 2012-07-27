@@ -273,7 +273,18 @@ namespace gum {
       * @param tail as NodeId
       */
       void eraseArc( NodeId tail, NodeId head );
-
+      
+      /**
+       * When inserting/removing arcs, node CPTs change their dimension with a cost in time. 
+       * These functions delay the CPTs change to be done just once at the end of a sequence of topology modification.
+       */
+       ///@{
+       /// begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
+       void beginTopologyTransformation();
+       /// terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
+       void endTopologyTransformation();
+       ///@}
+       
       /// @}
       // ===========================================================================
       /// @name Graphical methods

@@ -45,48 +45,48 @@ namespace gum {
    *
    * This class randomly generates a bayesian network given three parameters:
    * the number of nodes and the max number of arcs and the number of maximum modality for each nodes.
-   * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high 
-   * resulting in the failure of most of the inference Methods. 
+   * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * resulting in the failure of most of the inference Methods.
    */
   template <typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator>
 
-  class DefaultBayesNetGenerator : public AbstractBayesNetGenerator<T_DATA,ICPTGenerator> {
-      public:
-        // ############################################################################
-        /// @name Constructors / Destructor
-        // ############################################################################
-        /// @{
-    
-	    /**
-   * Constructor.
-   * Use by default the DefaultCPTGenerator for generating the BNs CPT.
-   * @param nbrNodes The number of nodes imposed on the generator.
-   * @param maxArcs The number of maximum arcs imposed on the generator.
-   * @param maxModality Each DRV has from 2 to maxModality modalities
-   */
-        DefaultBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality=2);
+  class DefaultBayesNetGenerator : public AbstractBayesNetGenerator<T_DATA, ICPTGenerator> {
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructor
+      // ############################################################################
+      /// @{
 
-        /**
-         * Destructor.
-         */
-        ~DefaultBayesNetGenerator();
-        /// @}
+      /**
+      * Constructor.
+      * Use by default the DefaultCPTGenerator for generating the BNs CPT.
+      * @param nbrNodes The number of nodes imposed on the generator.
+      * @param maxArcs The number of maximum arcs imposed on the generator.
+      * @param maxModality Each DRV has from 2 to maxModality modalities
+      */
+      DefaultBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
-        // ############################################################################
-        /// @name BN generation methods
-        // ############################################################################
-        /// @{
-        /**
-	 * function that Generates a bayesian networks. 
-         * @param bayesNet Bayesian Network to be completed after initialisation 
-         * @return null but modify inputed Bayesian Network
-         */
-       
+      /**
+       * Destructor.
+       */
+      ~DefaultBayesNetGenerator();
+      /// @}
 
-        void generateBN(BayesNet<T_DATA> & bayesNet);
-	
-	 /// @}
-    }; /* class DefaultBayesNetGenerator */
+      // ############################################################################
+      /// @name BN generation methods
+      // ############################################################################
+      /// @{
+      /**
+      * function that Generates a bayesian networks.
+       * @param bayesNet Bayesian Network to be completed after initialisation
+       * @return null but modify inputed Bayesian Network
+       */
+
+
+      void generateBN ( BayesNet<T_DATA> & bayesNet );
+
+      /// @}
+  }; /* class DefaultBayesNetGenerator */
 
 } /* namespace gum */
 
