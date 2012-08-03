@@ -57,25 +57,33 @@ namespace gum {
   /// @warning : this version is optimized for the search of a directedPath
   /// in a DAG !
   bool DAG::__hasDirectedPath( const NodeId from, const NodeId to ) {
-    if ( ! exists( from ) ) return false;
-    if ( from==to ) return true;
+    if( ! exists( from ) ) return false;
+
+    if( from==to ) return true;
 
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
     nodeFIFO.pushBack( from );
 
+    NodeSet marked;
+    marked.insert( from );
+
     NodeId new_one;
 
-    while ( ! nodeFIFO.empty() ) {
+    while( ! nodeFIFO.empty() ) {
       new_one=nodeFIFO.front();
+      //std::cout<<new_one<<std::endl;
       nodeFIFO.popFront();
 
       const NodeSet& set=children( new_one );
 
-      for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
-        if ( *ite == to ) return true;
+      for( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
+        if( *ite == to ) return true;
 
-        nodeFIFO.pushBack( *ite );
+        if( ! marked.contains( *ite ) ) {
+          nodeFIFO.pushBack( *ite );
+          marked.insert( *ite );
+        }
       }
     }
 
