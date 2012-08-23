@@ -36,16 +36,16 @@ namespace gum {
    * A reader is created to reading a defined file. 
    * Note that an ID as to be created before and given in parameter.
    */
-  template<typename T_DATA> INLINE
-  IDReader<T_DATA>:: IDReader(InfluenceDiagram<T_DATA>* infdiag,const std::string& filePath ) {
+  template<typename GUM_SCALAR> INLINE
+  IDReader<GUM_SCALAR>:: IDReader(InfluenceDiagram<GUM_SCALAR>* infdiag,const std::string& filePath ) {
     GUM_CONSTRUCTOR( IDReader );
   }
 
   /*
    * Default destructor.
    */
-  template<typename T_DATA> INLINE
-  IDReader<T_DATA>::~IDReader() {
+  template<typename GUM_SCALAR> INLINE
+  IDReader<GUM_SCALAR>::~IDReader() {
     GUM_DESTRUCTOR( IDReader );
   }
 

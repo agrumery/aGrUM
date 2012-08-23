@@ -29,9 +29,9 @@ namespace gum {
   /**
    * choose a MultiDimArray<> as decorated implementation  */
   // ============================================================================
-  template<typename T_DATA>
-  Potential<T_DATA>::Potential( ) :
-      MultiDimDecorator<T_DATA> ( new MultiDimArray<T_DATA>() ) {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::Potential( ) :
+      MultiDimDecorator<GUM_SCALAR> ( new MultiDimArray<GUM_SCALAR>() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
   }
@@ -39,9 +39,9 @@ namespace gum {
   // ==============================================================================
   /// Default constructor: creates an empty null dimensional matrix
   // ==============================================================================
-  template<typename T_DATA>
-  Potential<T_DATA>::Potential( MultiDimImplementation<T_DATA> *aContent ) :
-      MultiDimDecorator<T_DATA> ( aContent ) {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR> *aContent ) :
+      MultiDimDecorator<GUM_SCALAR> ( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
   }
@@ -51,9 +51,9 @@ namespace gum {
   /// @warning this copy constructor should reference the same content !!!
   /// TOO DANGEROUS !!!
   // ==============================================================================
-  template<typename T_DATA>
-  Potential<T_DATA>::Potential( const Potential<T_DATA>& src ) :
-      MultiDimDecorator<T_DATA> ( src )  {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src ) :
+      MultiDimDecorator<GUM_SCALAR> ( src )  {
     // for debugging purposes
     GUM_CONS_CPY( Potential );
     GUM_ERROR( OperationNotAllowed,
@@ -61,10 +61,10 @@ namespace gum {
   }
 
   /// complex copy constructor : we choose the implementation
-  template<typename T_DATA>
-  Potential<T_DATA>::Potential( MultiDimImplementation<T_DATA> *aContent,
-                                const MultiDimContainer<T_DATA>& src ) :
-      MultiDimDecorator<T_DATA> ( aContent ) {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
+                                const MultiDimContainer<GUM_SCALAR>& src ) :
+      MultiDimDecorator<GUM_SCALAR> ( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
 
@@ -77,31 +77,31 @@ namespace gum {
 
       this->endMultipleChanges();
 
-      MultiDimDecorator<T_DATA>::content()->copyFrom
-      ( dynamic_cast<const MultiDimContainer<T_DATA>&>( src.getMasterRef() ) );
+      MultiDimDecorator<GUM_SCALAR>::content()->copyFrom
+      ( dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>( src.getMasterRef() ) );
     }
   }
 
   // operator =
-  template<typename T_DATA>
-  Potential<T_DATA>& Potential<T_DATA>::operator= ( const Potential<T_DATA>& src ) {
-    MultiDimDecorator<T_DATA>::content()->copy
-    ( dynamic_cast<const MultiDimContainer<T_DATA>&>( src.getMasterRef() ) );
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::operator= ( const Potential<GUM_SCALAR>& src ) {
+    MultiDimDecorator<GUM_SCALAR>::content()->copy
+    ( dynamic_cast<const MultiDimContainer<GUM_SCALAR>&>( src.getMasterRef() ) );
     return *this;
   }
 
   // ==============================================================================
   /// destructor
   // ==============================================================================
-  template<typename T_DATA>
-  Potential<T_DATA>::~Potential() {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::~Potential() {
     // for debugging purposes
     GUM_DESTRUCTOR( Potential );
   }
 
   // ==============================================================================
-  template<typename T_DATA>
-  Potential<T_DATA>& Potential<T_DATA>::marginalize( const Potential& p ) const {
+  template<typename GUM_SCALAR>
+  Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::marginalize( const Potential& p ) const {
     const Sequence<const DiscreteVariable *>& seq = this->variablesSequence() ;
     Set<const DiscreteVariable *> delvars;
 
@@ -119,13 +119,13 @@ namespace gum {
     _swapContent(projectSum(p.getMasterRef(),seq.diffSet(p.variablesSequence())));
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
-    return const_cast<Potential<T_DATA>&>( *this );
+    return const_cast<Potential<GUM_SCALAR>&>( *this );
   }
 
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   INLINE
-  Potential<T_DATA>& Potential<T_DATA>::multiplicateBy( const Potential& p1 ) {
+  Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::multiplicateBy( const Potential& p1 ) {
     if ( p1.empty() ) {
       GUM_ERROR( OperationNotAllowed,
                  "Multiplicate by empty potential is not allowed" );
@@ -134,9 +134,9 @@ namespace gum {
     if ( this->empty() ) {
       *this = p1;
     } else {
-      Potential<T_DATA> tmp;
+      Potential<GUM_SCALAR> tmp;
       tmp._multiplicate( *this, p1 );
-      MultiDimImplementation<T_DATA>* p = this->_content;
+      MultiDimImplementation<GUM_SCALAR>* p = this->_content;
       this->_content = tmp._content;
       tmp._content = p;
     }
@@ -145,9 +145,9 @@ namespace gum {
   }
 
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   INLINE
-  void Potential<T_DATA>::multiplicate( const Potential& p1, const Potential& p2 ) {
+  void Potential<GUM_SCALAR>::multiplicate( const Potential& p1, const Potential& p2 ) {
     if ( p1.empty() ) {
       *this = p2;
       return;
@@ -162,8 +162,8 @@ namespace gum {
   }
 
   // ==============================================================================
-  template<typename T_DATA>
-  void Potential<T_DATA>::_multiplicate( const Potential& p1, const Potential& p2 )  {
+  template<typename GUM_SCALAR>
+  void Potential<GUM_SCALAR>::_multiplicate( const Potential& p1, const Potential& p2 )  {
     this->beginMultipleChanges();
     // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
     const Sequence<const DiscreteVariable *> seq0 = this->variablesSequence() ;
@@ -202,10 +202,10 @@ namespace gum {
   }
 
   /// sum of all elements in this
-  template<typename T_DATA> INLINE
-  const T_DATA Potential<T_DATA>::sum() const  {
+  template<typename GUM_SCALAR> INLINE
+  const GUM_SCALAR Potential<GUM_SCALAR>::sum() const  {
     Instantiation i( this->_content );
-    T_DATA s = ( T_DATA ) 0;
+    GUM_SCALAR s = ( GUM_SCALAR ) 0;
 
     for ( i.setFirst();! i.end(); ++i ) s += this->get( i );
 
@@ -214,30 +214,30 @@ namespace gum {
 
   /// normalisation of this
   /// do nothing is sum is 0
-  template<typename T_DATA> INLINE
-  Potential<T_DATA>& Potential<T_DATA>::normalize()  const {
-    T_DATA s = sum();
+  template<typename GUM_SCALAR> INLINE
+  Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::normalize()  const {
+    GUM_SCALAR s = sum();
 
-    if ( s != ( T_DATA ) 0 ) {
+    if ( s != ( GUM_SCALAR ) 0 ) {
       Instantiation i( this->_content );
 
       for ( i.setFirst();! i.end() ; ++i ) this->set( i, this->get( i ) / s );
     }
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
-    return const_cast<Potential<T_DATA>&>( *this );
+    return const_cast<Potential<GUM_SCALAR>&>( *this );
   }
 
-  template <typename T_DATA> INLINE
-  Potential<T_DATA>* Potential<T_DATA>::newFactory() const {
-    return new Potential<T_DATA>
-           ( static_cast<MultiDimImplementation<T_DATA>*>
+  template <typename GUM_SCALAR> INLINE
+  Potential<GUM_SCALAR>* Potential<GUM_SCALAR>::newFactory() const {
+    return new Potential<GUM_SCALAR>
+           ( static_cast<MultiDimImplementation<GUM_SCALAR>*>
              ( this->content()->newFactory() ) );
   }
 
-  template<typename T_DATA> INLINE
-  void Potential<T_DATA>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-    MultiDimDecorator<T_DATA>::content()->swap( *x, *y );
+  template<typename GUM_SCALAR> INLINE
+  void Potential<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
+    MultiDimDecorator<GUM_SCALAR>::content()->swap( *x, *y );
   }
 
 } /* namespace gum */

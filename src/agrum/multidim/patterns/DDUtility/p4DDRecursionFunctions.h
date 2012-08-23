@@ -40,10 +40,10 @@
 
 namespace gum {
   
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 NodeId
-GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiagramBase<T_DATA>* oldDiagram,
-                                                                                                  MultiDimDecisionDiagramFactoryBase<T_DATA>* factory,
+GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,
+                                                                                                  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
                                                                                                   NodeId currentNode,
                                                                                                   bool delVarAscendant,
                                                                                                   HashTable< NodeId, NodeId >& explorationTable,
@@ -51,7 +51,7 @@ GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiag
                                                                                                   Idx nbOperation ) {
 
     if ( oldDiagram->isTerminalNode( currentNode ) ) {
-        T_DATA resValue = oldDiagram->unsafeNodeValue( currentNode );
+        GUM_SCALAR resValue = oldDiagram->unsafeNodeValue( currentNode );
         for ( Idx i = 1; i < nbOperation; i++ )
             resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, oldDiagram->unsafeNodeValue( currentNode ) );
 
@@ -68,7 +68,7 @@ GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiag
         nbOperation /= oldDiagram->unsafeNodeVariable( currentNode )->domainSize();
         Idx nbExploredModalities = 0;
         std::vector<NodeId>::const_iterator sonIter = oldDiagram->unsafeNodeSons( currentNode )->begin();
-        T_DATA resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
+        GUM_SCALAR resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
         while ( sonIter !=  oldDiagram->unsafeNodeSons( currentNode )->end() ) {
             if ( *sonIter != 0 ) {
                 NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( oldDiagram, factory, *sonIter, true, explorationTable, delVars, nbOperation );

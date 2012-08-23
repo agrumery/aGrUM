@@ -49,9 +49,9 @@ namespace gum {
    *     never check if it is the case.
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimNoisyORCompound : public MultiDimCIModel<T_DATA> {
+  class MultiDimNoisyORCompound : public MultiDimCIModel<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -60,15 +60,15 @@ namespace gum {
     // ============================================================================
     /// Default constructor.
     // ============================================================================
-    MultiDimNoisyORCompound( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-    MultiDimNoisyORCompound( const MultiDimNoisyORCompound<T_DATA>& from );
+    MultiDimNoisyORCompound( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+    MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Copy constructor using a bijection to swap variables from source.
     /// @param bij First variables are new variables, seconds are in from.
     // ============================================================================
     MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                             const MultiDimNoisyORCompound<T_DATA>& from );
+                             const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Destructor.
@@ -90,7 +90,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<T_DATA>* newFactory() const;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
     // ############################################################################
@@ -100,7 +100,7 @@ namespace gum {
     // ============================================================================
   public:
     
-    virtual T_DATA get( const Instantiation &i ) const;
+    virtual GUM_SCALAR get( const Instantiation &i ) const;
 
     const std::string toString( void ) const;
 
@@ -120,9 +120,9 @@ namespace gum {
   // ==============================================================================
   /// For friendly displaying the content of the array.
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyORCompound<T_DATA>& ag );
+                             const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */

@@ -44,10 +44,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class Min : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class Min : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Min();
-        Min( const Min<T_DATA>& from );
+        Min( const Min<GUM_SCALAR>& from );
         virtual ~Min();
 
       /**
@@ -63,7 +63,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
         virtual std::string aggregatorName( void ) const;

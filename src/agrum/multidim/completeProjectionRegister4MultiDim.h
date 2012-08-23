@@ -41,7 +41,7 @@ namespace gum {
   
 
   // the base object used by the projections
-  template<typename T_DATA> class MultiDimImplementation;
+  template<typename GUM_SCALAR> class MultiDimImplementation;
 
   
   /* =========================================================================== */
@@ -54,12 +54,12 @@ namespace gum {
    * 
    * @ingroup multidim_group */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   class CompleteProjectionRegister4MultiDim {
   public:
     /// the type of functions used by the register
-    typedef T_DATA
-    (*CompleteProjectionPtr) ( const MultiDimImplementation<T_DATA>*,
+    typedef GUM_SCALAR
+    (*CompleteProjectionPtr) ( const MultiDimImplementation<GUM_SCALAR>*,
                                Instantiation* instantiation );
 
     
@@ -179,12 +179,12 @@ namespace gum {
   // ==============================================================================
   /// a function to more easily register new projection functions in MultiDims
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
   registerCompleteProjection
   ( const std::string& projection_name,
     const std::string& type_multidim,
-    typename CompleteProjectionRegister4MultiDim<T_DATA>::CompleteProjectionPtr
+    typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
     function );
 
 

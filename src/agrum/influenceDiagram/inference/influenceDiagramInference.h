@@ -40,14 +40,14 @@ namespace gum {
    * @ingroup id_group
    *
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
   class InfluenceDiagramInference {
     public:
       /**
        * Default constructor
        */
-      InfluenceDiagramInference( const InfluenceDiagram<T_DATA>& infDiag );
+      InfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
       /**
        * Destructor.
@@ -65,12 +65,12 @@ namespace gum {
        * evidence w.r.t. this node is onserted, the old evidence is removed.
        * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
        */
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& evidenceList ) = 0;
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<T_DATA>* evidence ) = 0;
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* evidence ) = 0;
 
       /**
        * Remove all evidence from the graph.
@@ -80,13 +80,13 @@ namespace gum {
       /**
        * Returns a constant reference over the InfluenceDiagram on which this class work.
        */
-      const InfluenceDiagram<T_DATA>& getInfluenceDiagram() const;
+      const InfluenceDiagram<GUM_SCALAR>& getInfluenceDiagram() const;
 
       /**
        * Returns maximum expected utility obtained from inference
        * @throw OperationNotAllowed if no inference have yet been made
        */
-      virtual T_DATA getMEU() = 0;
+      virtual GUM_SCALAR getMEU() = 0;
 
       /**
        * Returns best choice for decision variable given in parameter ( based upon MEU criteria )
@@ -101,7 +101,7 @@ namespace gum {
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const InfluenceDiagram<T_DATA>& __infDiag;
+      const InfluenceDiagram<GUM_SCALAR>& __infDiag;
   };
 
 // ============================================================================

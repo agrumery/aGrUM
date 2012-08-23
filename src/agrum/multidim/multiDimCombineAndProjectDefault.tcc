@@ -36,25 +36,25 @@ namespace gum {
 
 
   /// default constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::MultiDimCombineAndProjectDefault
-  ( TABLE<T_DATA>* ( *combine )( const TABLE<T_DATA>&,
-                                 const TABLE<T_DATA>& ),
-    TABLE<T_DATA>* ( *project )( const TABLE<T_DATA>&,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::MultiDimCombineAndProjectDefault
+  ( TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,
+                                 const TABLE<GUM_SCALAR>& ),
+    TABLE<GUM_SCALAR>* ( *project )( const TABLE<GUM_SCALAR>&,
                                  const Set<const DiscreteVariable*>& ) ) :
-      MultiDimCombineAndProject<T_DATA,TABLE> (),
-      __combination( new MultiDimCombinationDefault<T_DATA,TABLE> ( combine ) ),
-      __projection( new MultiDimProjection<T_DATA,TABLE> ( project ) ) {
+      MultiDimCombineAndProject<GUM_SCALAR,TABLE> (),
+      __combination( new MultiDimCombinationDefault<GUM_SCALAR,TABLE> ( combine ) ),
+      __projection( new MultiDimProjection<GUM_SCALAR,TABLE> ( project ) ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimCombineAndProjectDefault );
   }
 
 
   /// copy constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::MultiDimCombineAndProjectDefault
-  ( const MultiDimCombineAndProjectDefault<T_DATA,TABLE>& from ) :
-      MultiDimCombineAndProject<T_DATA,TABLE> (),
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::MultiDimCombineAndProjectDefault
+  ( const MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>& from ) :
+      MultiDimCombineAndProject<GUM_SCALAR,TABLE> (),
       __combination( from.__combination->newFactory() ),
       __projection( from.__projection->newFactory() ) {
     // for debugging purposes
@@ -63,8 +63,8 @@ namespace gum {
 
 
   /// destructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::~MultiDimCombineAndProjectDefault() {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::~MultiDimCombineAndProjectDefault() {
     // for debugging purposes
     GUM_DESTRUCTOR( MultiDimCombineAndProjectDefault );
     delete __combination;
@@ -73,18 +73,18 @@ namespace gum {
 
 
   /// virtual constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>*
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::newFactory() const {
-    return new MultiDimCombineAndProjectDefault<T_DATA,TABLE> ( *this );
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>*
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::newFactory() const {
+    return new MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE> ( *this );
   }
 
 
   /// combine and project
-  template< typename T_DATA, template<typename> class TABLE >
-  Set<const TABLE<T_DATA>*>
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::combineAndProject
-  ( Set<const TABLE<T_DATA>*> table_set,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  Set<const TABLE<GUM_SCALAR>*>
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::combineAndProject
+  ( Set<const TABLE<GUM_SCALAR>*> table_set,
     Set<const DiscreteVariable*> del_vars ) {
     // when we remove a variable, we need to combine all the tables containing this
     // variable in order to produce a new unique table containing this variable.
@@ -99,7 +99,7 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
 
-      for ( typename Set<const TABLE<T_DATA>*>::const_iterator
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
             iter = table_set.begin(); iter != table_set.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars =
           ( *iter )->variablesSequence();
@@ -114,7 +114,7 @@ namespace gum {
     }
 
     // the tables containing a given variable
-    HashTable<const DiscreteVariable*, Set<const TABLE<T_DATA>*> >
+    HashTable<const DiscreteVariable*, Set<const TABLE<GUM_SCALAR>*> >
     tables_per_var( nb_vars );
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we count the number of tables
@@ -126,7 +126,7 @@ namespace gum {
 
     // initialize tables_vars_per_var and tables_per_var
     {
-      Set<const TABLE<T_DATA>*> empty_set( table_set.size() );
+      Set<const TABLE<GUM_SCALAR>*> empty_set( table_set.size() );
       HashTable<const DiscreteVariable*, unsigned int> empty_hash( nb_vars );
 
       for ( typename Set<const DiscreteVariable*>::const_iterator
@@ -136,7 +136,7 @@ namespace gum {
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for ( typename Set<const TABLE<T_DATA>*>::const_iterator
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
             iter = table_set.begin(); iter != table_set.end(); ++iter ) {
         const Sequence<const DiscreteVariable *>& vars =
           ( *iter )->variablesSequence();
@@ -185,7 +185,7 @@ namespace gum {
 
     // create a set of the temporary tables created during the
     // marginalization process (useful for deallocating temporary tables)
-    Set<const TABLE<T_DATA>*> tmp_marginals( table_set.size() );
+    Set<const TABLE<GUM_SCALAR>*> tmp_marginals( table_set.size() );
 
     // now, remove all the variables in del_vars, starting from those that produce
     // the smallest tables
@@ -195,7 +195,7 @@ namespace gum {
       del_vars.erase( del_var );
 
       // get the set of tables to combine
-      Set<const TABLE<T_DATA>*>& tables_to_combine = tables_per_var[del_var];
+      Set<const TABLE<GUM_SCALAR>*>& tables_to_combine = tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
 
@@ -205,12 +205,12 @@ namespace gum {
       // compute the combination of all the tables: if there is only one table,
       // there is nothing to do, else we shall use the MultiDimCombination
       // to perform the combination
-      TABLE<T_DATA>* joint;
+      TABLE<GUM_SCALAR>* joint;
 
       bool joint_to_delete = false;
 
       if ( tables_to_combine.size() == 1 ) {
-        joint = const_cast<TABLE<T_DATA>*>( *( tables_to_combine.begin() ) );
+        joint = const_cast<TABLE<GUM_SCALAR>*>( *( tables_to_combine.begin() ) );
         joint_to_delete = false;
       } else {
         joint = __combination->combine( tables_to_combine );
@@ -222,7 +222,7 @@ namespace gum {
 
       del_one_var << del_var;
 
-      TABLE<T_DATA>* marginal = __projection->project( *joint, del_one_var );
+      TABLE<GUM_SCALAR>* marginal = __projection->project( *joint, del_one_var );
 
       // remove the temporary joint if needed
       if ( joint_to_delete ) delete joint;
@@ -234,7 +234,7 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for ( typename Set<const TABLE<T_DATA>*>::const_iterator
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
             iter = tables_to_combine.begin();
             iter != tables_to_combine.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& table_vars =
@@ -324,58 +324,58 @@ namespace gum {
 
 
   /// changes the function used for combining two TABLES
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::setCombineFunction
-  ( TABLE<T_DATA>* ( *combine )( const TABLE<T_DATA>&,
-                                 const TABLE<T_DATA>& ) ) {
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::setCombineFunction
+  ( TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,
+                                 const TABLE<GUM_SCALAR>& ) ) {
     __combination->setCombineFunction( combine );
   }
 
 
   /// returns the current combination function
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE TABLE<T_DATA>*
-  ( * MultiDimCombineAndProjectDefault<T_DATA,TABLE>::combineFunction() )
-  ( const TABLE<T_DATA>&, const TABLE<T_DATA>& ) const {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  INLINE TABLE<GUM_SCALAR>*
+  ( * MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::combineFunction() )
+  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const {
     return __combination->combineFunction();
   }
 
 
   /// changes the class that performs the combinations
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::setCombinationClass
-  ( const MultiDimCombination<T_DATA,TABLE>& comb_class ) {
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::setCombinationClass
+  ( const MultiDimCombination<GUM_SCALAR,TABLE>& comb_class ) {
     delete __combination;
     __combination = comb_class.newFactory();
   }
 
 
   /// changes the function used for projecting TABLES
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::setProjectFunction
-  ( TABLE<T_DATA>* ( *proj )( const TABLE<T_DATA>&,
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::setProjectFunction
+  ( TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
                               const Set<const DiscreteVariable*>& ) ) {
     __projection->setProjectFunction( proj );
   }
 
 
   /// returns the current projection function
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE TABLE<T_DATA>*
-  ( * MultiDimCombineAndProjectDefault<T_DATA,TABLE>::projectFunction() )
-  ( const TABLE<T_DATA>&, const Set<const DiscreteVariable*>& ) const {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  INLINE TABLE<GUM_SCALAR>*
+  ( * MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::projectFunction() )
+  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const {
     return __projection->projectFunction();
   }
 
 
   /// changes the class that performs the projections
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::setProjectionClass
-  ( const MultiDimProjection<T_DATA,TABLE>& proj_class ) {
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::setProjectionClass
+  ( const MultiDimProjection<GUM_SCALAR,TABLE>& proj_class ) {
     delete __projection;
     __projection = proj_class.newFactory();
   }
@@ -383,8 +383,8 @@ namespace gum {
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template< typename T_DATA, template<typename> class TABLE >
-  float MultiDimCombineAndProjectDefault<T_DATA,TABLE>::nbOperations
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  float MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::nbOperations
   ( const Set<const Sequence<const DiscreteVariable*>*>& table_set,
     Set<const DiscreteVariable*> del_vars ) const {
     // when we remove a variable, we need to combine all the tables containing this
@@ -654,14 +654,14 @@ namespace gum {
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template< typename T_DATA, template<typename> class TABLE >
-  float MultiDimCombineAndProjectDefault<T_DATA,TABLE>::nbOperations
-  ( const Set<const TABLE<T_DATA>*>& set,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  float MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::nbOperations
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
     const Set<const DiscreteVariable*>& del_vars ) const {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
             set.begin(); iter != set.end(); ++iter ) {
       var_set << &(( *iter )->variablesSequence() );
     }
@@ -671,9 +671,9 @@ namespace gum {
 
 
   /// returns the memory consumption used during the combinations and projections
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   std::pair<long,long>
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::memoryUsage
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::memoryUsage
   ( const Set<const Sequence<const DiscreteVariable*>*>& table_set,
     Set<const DiscreteVariable*> del_vars ) const {
     // when we remove a variable, we need to combine all the tables containing this
@@ -981,15 +981,15 @@ namespace gum {
 
 
   /// returns the memory consumption used during the combinations and projections
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   std::pair<long,long>
-  MultiDimCombineAndProjectDefault<T_DATA,TABLE>::memoryUsage
-  ( const Set<const TABLE<T_DATA>*>& set,
+  MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::memoryUsage
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
     const Set<const DiscreteVariable*>& del_vars ) const {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter =
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
             set.begin(); iter != set.end(); ++iter ) {
       var_set << &(( *iter )->variablesSequence() );
     }

@@ -38,27 +38,27 @@ namespace gum {
 
 
   // the function used to combine two tables
-  template <typename T_DATA> INLINE
-  static Potential<T_DATA>*
-  multiPotential( const Potential<T_DATA>& t1,const Potential<T_DATA>& t2 ) {
-    return new Potential<T_DATA> ( t1 * t2 );
+  template <typename GUM_SCALAR> INLINE
+  static Potential<GUM_SCALAR>*
+  multiPotential( const Potential<GUM_SCALAR>& t1,const Potential<GUM_SCALAR>& t2 ) {
+    return new Potential<GUM_SCALAR> ( t1 * t2 );
   }
 
 
   // the function used to combine two tables
-  template <typename T_DATA> INLINE
-  static Potential<T_DATA>*
-  projPotential( const Potential<T_DATA>& t1,
+  template <typename GUM_SCALAR> INLINE
+  static Potential<GUM_SCALAR>*
+  projPotential( const Potential<GUM_SCALAR>& t1,
                  const Set<const DiscreteVariable *>& del_vars ) {
-    return new Potential<T_DATA> ( projectSum( t1 , del_vars ) );
+    return new Potential<GUM_SCALAR> ( projectSum( t1 , del_vars ) );
   }
 
 
   // ==============================================================================
   /// initialization function
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__initialize( const AbstractBayesNet<T_DATA>& BN,
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__initialize( const AbstractBayesNet<GUM_SCALAR>& BN,
       StaticTriangulation& triangulation,
       const HashTable<NodeId, unsigned int>& modalities )  {
     const JunctionTree& triang_jt = triangulation.junctionTree();
@@ -107,7 +107,7 @@ namespace gum {
 
     // create empty potential lists into the cliques of the joint tree as well
     // as empty lists of evidence
-    List <const Potential<T_DATA>*> empty_list;
+    List <const Potential<GUM_SCALAR>*> empty_list;
 
     for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
           iter != __JT->endNodes(); ++iter ) {
@@ -118,7 +118,7 @@ namespace gum {
     // put all the CPT's of the Bayes net nodes into the cliques
     for ( DAG::NodeIterator iter = dag.beginNodes();
           iter != dag.endNodes(); ++iter ) {
-      const Potential<T_DATA>& cpt = BN.cpt( *iter ) ;
+      const Potential<GUM_SCALAR>& cpt = BN.cpt( *iter ) ;
       __clique_potentials[__node_to_clique[*iter]].insert( &cpt );
     }
 
@@ -143,9 +143,9 @@ namespace gum {
   // ==============================================================================
   /// default constructor
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  LazyPropagation<T_DATA>::LazyPropagation( const AbstractBayesNet<T_DATA>& BN ) :
-      BayesNetInference<T_DATA> ( BN ) {
+  template <typename GUM_SCALAR> INLINE
+  LazyPropagation<GUM_SCALAR>::LazyPropagation( const AbstractBayesNet<GUM_SCALAR>& BN ) :
+      BayesNetInference<GUM_SCALAR> ( BN ) {
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
 
@@ -171,11 +171,11 @@ namespace gum {
   // ==============================================================================
   /// constructor with a given elimination sequence
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  LazyPropagation<T_DATA>::LazyPropagation
-  ( const AbstractBayesNet<T_DATA>& BN,
+  template <typename GUM_SCALAR> INLINE
+  LazyPropagation<GUM_SCALAR>::LazyPropagation
+  ( const AbstractBayesNet<GUM_SCALAR>& BN,
     const std::vector<NodeId>& elim_order ) :
-      BayesNetInference<T_DATA> ( BN ) {
+      BayesNetInference<GUM_SCALAR> ( BN ) {
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
 
@@ -203,8 +203,8 @@ namespace gum {
   // ==============================================================================
   /// destructor
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  LazyPropagation<T_DATA>::~LazyPropagation() {
+  template <typename GUM_SCALAR> INLINE
+  LazyPropagation<GUM_SCALAR>::~LazyPropagation() {
     // for debugging purposes
     GUM_DESTRUCTOR( LazyPropagation );
     // remove all the created potentials
@@ -221,8 +221,8 @@ namespace gum {
   // ==============================================================================
   /// indicates that we need inference in a given Junction tree connected component
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__setRequiredInference( NodeId id, NodeId from ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__setRequiredInference( NodeId id, NodeId from ) {
     // check if an inference has already happened through clique id
     if (( __collected_cliques[id] == false ) &&
         ( __diffused_cliques[id] == false ) )
@@ -269,8 +269,8 @@ namespace gum {
   // ==============================================================================
   /// remove a given evidence from the graph
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* pot ) {
     this->_invalidateMarginals();
     // if the evidence does not exist, do nothing
 
@@ -279,7 +279,7 @@ namespace gum {
     // remove the potential from the list of evidence of the cliques
     // @todo : elle n'est pas que dans une seule clique ?
     // (donc utiliser pot_clique ligne 204)
-    for ( HashTableIterator< NodeId, List <const Potential<T_DATA>*> >
+    for ( HashTableIterator< NodeId, List <const Potential<GUM_SCALAR>*> >
           iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter ) {
       iter->eraseByVal( pot );
@@ -300,12 +300,12 @@ namespace gum {
   // ==============================================================================
   /// remove all evidence from the graph
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::eraseAllEvidence() {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::eraseAllEvidence() {
     this->_invalidateMarginals();
     // remove the evidence store in the cliques
 
-    for ( HashTableIterator<NodeId, List<const Potential<T_DATA>*> >
+    for ( HashTableIterator<NodeId, List<const Potential<GUM_SCALAR>*> >
           iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter )
       iter->clear();
@@ -339,13 +339,13 @@ namespace gum {
   // ==============================================================================
   /// insert new evidence in the graph
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::insertEvidence
-  ( const List<const Potential<T_DATA>*>& pot_list ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::insertEvidence
+  ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
     this->_invalidateMarginals();
-    List <const Potential<T_DATA>*> empty_list;
+    List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable *>& vars = ( *iter )->variablesSequence();
@@ -383,8 +383,8 @@ namespace gum {
   // ==============================================================================
   /// remove variables del_vars from the list of potentials pot_list
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__marginalizeOut
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__marginalizeOut
   ( __PotentialSet& pot_list, Set<const DiscreteVariable*>& del_vars ) {
     // when we remove a variable, we need to combine all the tables containing this
     // variable in order to produce a new unique table containing this variable.
@@ -394,7 +394,7 @@ namespace gum {
     // the sizes of the tables produced when removing a given discrete variable
     PriorityQueue<const DiscreteVariable *, double> product_size;
     // the potentials containing a given variable
-    HashTable<const DiscreteVariable *, List<const Potential<T_DATA>*> > pot_per_var;
+    HashTable<const DiscreteVariable *, List<const Potential<GUM_SCALAR>*> > pot_per_var;
     // for a given variable X to be deleted, the list of all the variables of
     // the potentials containing X (actually, we count the number of potentials
     // containing the variable. This is more efficient for computing and updating
@@ -402,7 +402,7 @@ namespace gum {
     HashTable < const DiscreteVariable *,  HashTable < const DiscreteVariable *,
     unsigned int > > pot_vars_per_var;
     // initialize pot_vars_per_var and pot_per_var
-    List<const Potential<T_DATA>*> empty_list;
+    List<const Potential<GUM_SCALAR>*> empty_list;
     HashTable<const DiscreteVariable *, unsigned int>
     empty_hash( 16 ); // @todo why 16 ?
 
@@ -462,23 +462,23 @@ namespace gum {
       const DiscreteVariable *del_var = product_size.pop();
       del_vars.erase( del_var );
       // get the list of potentials to multiply
-      List<const Potential<T_DATA>*>& pot_to_mult = pot_per_var[del_var];
+      List<const Potential<GUM_SCALAR>*>& pot_to_mult = pot_per_var[del_var];
       // if there is no poential to multiply, do nothing
 
       if ( pot_to_mult.size() == 0 )
         continue;
 
       // compute the product of all the potentials
-      Potential<T_DATA>* joint ;
+      Potential<GUM_SCALAR>* joint ;
 
       bool joint_to_delete = false;
 
       if ( pot_to_mult.size() == 1 ) {
-        joint = const_cast<Potential<T_DATA>*>( pot_to_mult[0] );
+        joint = const_cast<Potential<GUM_SCALAR>*>( pot_to_mult[0] );
         joint_to_delete = false;
       } else {
         /*
-          ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
           joint = **iter;
 
           for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
@@ -486,18 +486,18 @@ namespace gum {
           }*/
 
         if ( pot_to_mult.size() ==1 ) {
-          ListConstIterator<const Potential<T_DATA>*> iter=pot_to_mult.begin();
-          joint = const_cast<Potential<T_DATA>*>( *iter );
+          ListConstIterator<const Potential<GUM_SCALAR>*> iter=pot_to_mult.begin();
+          joint = const_cast<Potential<GUM_SCALAR>*>( *iter );
           joint_to_delete = false;
         } else {
-          Set<const Potential<T_DATA>*> set;
+          Set<const Potential<GUM_SCALAR>*> set;
 
-          for ( ListConstIterator<const Potential<T_DATA>*>iter = pot_to_mult.begin();
+          for ( ListConstIterator<const Potential<GUM_SCALAR>*>iter = pot_to_mult.begin();
                 iter != pot_to_mult.end(); ++iter ) {
             set<<*iter;
           }
 
-          MultiDimCombinationDefault<T_DATA,Potential>
+          MultiDimCombinationDefault<GUM_SCALAR,Potential>
 
           fast_combination( multiPotential );
           joint = fast_combination.combine( set );
@@ -510,10 +510,10 @@ namespace gum {
 
       del_one_var << del_var;
 
-      Potential<T_DATA>* marginal = projPotential( *joint, del_one_var );
+      Potential<GUM_SCALAR>* marginal = projPotential( *joint, del_one_var );
 
 
-      // new Potential<T_DATA>( new MultiDimArray<T_DATA>() );
+      // new Potential<GUM_SCALAR>( new MultiDimArray<GUM_SCALAR>() );
 
       //   // const Sequence<const DiscreteVariable*>& joint_vars =
       //   // joint->variablesSequence();
@@ -532,7 +532,7 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
 
-      for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_to_mult.begin();
+      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
             iter != pot_to_mult.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& pot_vars =
           ( *iter )->variablesSequence();
@@ -620,21 +620,21 @@ namespace gum {
   // ==============================================================================
   /// creates the message sent by clique from_id to clique to_id
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__produceMessage( NodeId from_id, NodeId to_id ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__produceMessage( NodeId from_id, NodeId to_id ) {
     // get the potentials of the clique
-    const List <const Potential<T_DATA>*>& clique_pot = __clique_potentials[from_id];
+    const List <const Potential<GUM_SCALAR>*>& clique_pot = __clique_potentials[from_id];
     __PotentialSet pot_list( clique_pot.size() );
 
-    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
-    const List <const Potential<T_DATA>*>& evidence_list =
+    const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[from_id];
 
-    for ( ListConstIterator <const Potential<T_DATA>*> iter =
+    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter =
             evidence_list.begin();iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -679,8 +679,8 @@ namespace gum {
   // ==============================================================================
   /// performs the __collect phase of Lazy Propagation
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__collect( NodeId id, NodeId from ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__collect( NodeId id, NodeId from ) {
     __collected_cliques[id] = true;
     const NodeSet& neighbours = __JT->neighbours( id );
 
@@ -701,8 +701,8 @@ namespace gum {
   // ==============================================================================
   /// performs the __collect phase of Lazy Propagation
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::collect( NodeId id, bool force_collect ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::collect( NodeId id, bool force_collect ) {
     // get a clique that contains id
     NodeId clique = __node_to_clique[id];
     // check if we really need to perform an inference
@@ -721,8 +721,8 @@ namespace gum {
   // ==============================================================================
   /// performs the __diffusion phase of Lazy Propagation
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::__diffusion( NodeId id, NodeId from ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::__diffusion( NodeId id, NodeId from ) {
     __diffused_cliques[id] = true;
     const NodeSet& neighbours = __JT->neighbours( id );
     // #### TODO: make a more efficient inference using a stack of
@@ -742,8 +742,8 @@ namespace gum {
   // ==============================================================================
   /// performs the __collect phase of Lazy Propagation
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::diffusion( NodeId id, bool force_diffusion ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::diffusion( NodeId id, bool force_diffusion ) {
     // get a clique that contains id
     NodeId clique = __node_to_clique[id];
     // check if we really need to perform an inference
@@ -761,16 +761,16 @@ namespace gum {
   // ==============================================================================
   /// performs a whole inference (__collect + __diffusion)
   // ==============================================================================
-  template<typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::makeInference() {
+  template<typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::makeInference() {
     makeInference( false );
   }
 
   // ==============================================================================
   /// performs a whole inference (__collect + __diffusion)
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::makeInference( bool force_inference ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::makeInference( bool force_inference ) {
     // prepare a new inference from scratch
 
     if ( force_inference ) {
@@ -836,8 +836,8 @@ namespace gum {
   // ==============================================================================
   /// returns the marginal a posteriori proba of a given node
   // ==============================================================================
-  template <typename T_DATA> void
-  LazyPropagation<T_DATA>::__aPosterioriMarginal( NodeId id, Potential<T_DATA>& marginal ) {
+  template <typename GUM_SCALAR> void
+  LazyPropagation<GUM_SCALAR>::__aPosterioriMarginal( NodeId id, Potential<GUM_SCALAR>& marginal ) {
     // check if we performed a __collect on id, else we need some
     NodeId clique_of_id = __node_to_clique[id];
 
@@ -862,22 +862,22 @@ namespace gum {
     NodeId myclique = last_collect_clique_contains_id ?
                       __last_collect_clique : clique_of_id;
 
-    const List <const Potential<T_DATA>*>& clique_pot =
+    const List <const Potential<GUM_SCALAR>*>& clique_pot =
       __clique_potentials[myclique];
 
     // get the potentials of the clique
     __PotentialSet pot_list( clique_pot.size() +
                              __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
-    const List <const Potential<T_DATA>*>& evidence_list =
+    const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.begin();
           iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -922,12 +922,12 @@ namespace gum {
       __PotentialSetIterator iter=pot_list.begin();
       marginal=**iter;
     } else {
-      Set<const Potential<T_DATA>*> set;
+      Set<const Potential<GUM_SCALAR>*> set;
 
       for ( __PotentialSetIterator iter=pot_list.begin();iter != pot_list.end(); ++iter )
         set<<*iter;
 
-      MultiDimCombinationDefault<T_DATA,Potential> fast_combination( multiPotential );
+      MultiDimCombinationDefault<GUM_SCALAR,Potential> fast_combination( multiPotential );
 
       fast_combination.combine( marginal,set );
     }
@@ -937,9 +937,9 @@ namespace gum {
   // ==============================================================================
   /// returns the joint a posteriori proba of a given set of nodes
   // ==============================================================================
-  template <typename T_DATA> void
-  LazyPropagation<T_DATA>::__aPosterioriJoint( const NodeSet& ids,
-      Potential<T_DATA>& marginal ) {
+  template <typename GUM_SCALAR> void
+  LazyPropagation<GUM_SCALAR>::__aPosterioriJoint( const NodeSet& ids,
+      Potential<GUM_SCALAR>& marginal ) {
     // find a clique that contains all the nodes in ids. To do so, we loop over
     // all the cliques and check wheither there exists one with this feature
     NodeId clique_of_ids = 0;
@@ -1011,22 +1011,22 @@ namespace gum {
     */
     NodeId myclique = clique_of_ids;
 
-    const List <const Potential<T_DATA>*>& clique_pot =
+    const List <const Potential<GUM_SCALAR>*>& clique_pot =
       __clique_potentials[myclique];
 
     // get the potentials of the clique
     __PotentialSet pot_list( clique_pot.size() +
                              __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<T_DATA>*> iter = clique_pot.begin();
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
           iter != clique_pot.end(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
-    const List <const Potential<T_DATA>*>& evidence_list =
+    const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<T_DATA>*> iter = evidence_list.begin();
+    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.begin();
           iter != evidence_list.end(); ++iter )
       pot_list.insert( *iter );
 
@@ -1070,20 +1070,20 @@ namespace gum {
       __PotentialSetIterator iter=pot_list.begin();
       marginal=**iter;
     } else {
-      Set<const Potential<T_DATA>*> set;
+      Set<const Potential<GUM_SCALAR>*> set;
 
-      for ( SetIterator<const Potential<T_DATA>*>iter=pot_list.begin();iter != pot_list.end(); ++iter )
+      for ( SetIterator<const Potential<GUM_SCALAR>*>iter=pot_list.begin();iter != pot_list.end(); ++iter )
         set<<*iter;
 
-      MultiDimCombinationDefault<T_DATA,Potential> fast_combination( multiPotential );
+      MultiDimCombinationDefault<GUM_SCALAR,Potential> fast_combination( multiPotential );
 
       fast_combination.combine( marginal,set );
     }
   }
 
 
-  template <typename T_DATA> INLINE
-  const JunctionTree * LazyPropagation<T_DATA>::junctionTree() const {
+  template <typename GUM_SCALAR> INLINE
+  const JunctionTree * LazyPropagation<GUM_SCALAR>::junctionTree() const {
     return __JT;
   }
 
@@ -1091,27 +1091,27 @@ namespace gum {
   // ==============================================================================
   /// returns the marginal a posteriori proba of a given node
   // ==============================================================================
-  template <typename T_DATA> INLINE
-  void LazyPropagation<T_DATA>::_fillMarginal( NodeId id,
-      Potential<T_DATA>& marginal ) {
+  template <typename GUM_SCALAR> INLINE
+  void LazyPropagation<GUM_SCALAR>::_fillMarginal( NodeId id,
+      Potential<GUM_SCALAR>& marginal ) {
     __aPosterioriMarginal( id, marginal );
     marginal.normalize();
   }
 
 
-  template <typename T_DATA> INLINE
-  T_DATA LazyPropagation<T_DATA>::evidenceMarginal() {
+  template <typename GUM_SCALAR> INLINE
+  GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceMarginal() {
     // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
     // noeud X sur lequel je fais une collecte, et je calcule P(e) comme etant
     // P(e) = sum_X P(X,e). Mais s'il y a plusieurs composantes connexes dans
     // le reseau bayesien, ca ne fonctionne pas, il faudrait choisir un X par
     // composante connexe et multiplier entre elle les probas P(e) obtenues sur
     // chaque composante. So un TODO a faire rapidement.
-    Potential<T_DATA>* tmp = new Potential<T_DATA>();
+    Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
     Id id = __node_to_clique.begin().key();
     __aPosterioriMarginal( id, *tmp );
 
-    T_DATA sum = 0;
+    GUM_SCALAR sum = 0;
     Instantiation iter( *tmp );
 
     for ( iter.setFirst(); !iter.end(); ++iter )
@@ -1128,9 +1128,9 @@ namespace gum {
    * probabilities of every nodeset. In cases where it is not able to perform
    * properly this task, it will raise a OperationNotAllowed exception. */
   // ============================================================================
-  template <typename T_DATA> INLINE
-  Potential<T_DATA>* LazyPropagation<T_DATA>::joint( const NodeSet& nodes ) {
-    Potential<T_DATA> *res = new Potential<T_DATA>();
+  template <typename GUM_SCALAR> INLINE
+  Potential<GUM_SCALAR>* LazyPropagation<GUM_SCALAR>::joint( const NodeSet& nodes ) {
+    Potential<GUM_SCALAR> *res = new Potential<GUM_SCALAR>();
 
     try {
       __aPosterioriJoint( nodes, *res );
@@ -1146,18 +1146,18 @@ namespace gum {
   /** Entropy
    * Compute Shanon's entropy of a node given the observation
    */
-  template <typename T_DATA>
-  T_DATA
-  LazyPropagation<T_DATA>::H( NodeId X ) {
-    const Potential<T_DATA>& pX=this->marginal( X );
+  template <typename GUM_SCALAR>
+  GUM_SCALAR
+  LazyPropagation<GUM_SCALAR>::H( NodeId X ) {
+    const Potential<GUM_SCALAR>& pX=this->marginal( X );
 
     Instantiation i( pX );
-    T_DATA res= ( T_DATA ) 0;
+    GUM_SCALAR res= ( GUM_SCALAR ) 0;
 
     for ( i.setFirst(); ! i.end(); ++i ) {
-      T_DATA a=pX[i];
+      GUM_SCALAR a=pX[i];
 
-      if ( a> ( T_DATA ) 0 ) {
+      if ( a> ( GUM_SCALAR ) 0 ) {
         res+=a*log2( a );
       }
     }
@@ -1171,25 +1171,25 @@ namespace gum {
   * @warning Due to limitation of @joint, may not be able to compute this value
   * @throw OperationNotAllowed in these cases
   */
-  template <typename T_DATA>
-  T_DATA
-  LazyPropagation<T_DATA>::I( NodeId X,NodeId Y ) {
-    const Potential<T_DATA>& pX=this->marginal( X );
-    const Potential<T_DATA>& pY=this->marginal( Y );
+  template <typename GUM_SCALAR>
+  GUM_SCALAR
+  LazyPropagation<GUM_SCALAR>::I( NodeId X,NodeId Y ) {
+    const Potential<GUM_SCALAR>& pX=this->marginal( X );
+    const Potential<GUM_SCALAR>& pY=this->marginal( Y );
 
     NodeSet XY;XY<<X<<Y;
-    Potential<T_DATA>& pXY=* ( joint( XY ) );
+    Potential<GUM_SCALAR>& pXY=* ( joint( XY ) );
 
     Instantiation i( pXY );
-    T_DATA res= ( T_DATA ) 0;
+    GUM_SCALAR res= ( GUM_SCALAR ) 0;
 
     for ( i.setFirst();! i.end();++i ) {
-      T_DATA vXY=pXY[i];
-      T_DATA vX=pX[i];
-      T_DATA vY=pY[i];
+      GUM_SCALAR vXY=pXY[i];
+      GUM_SCALAR vX=pX[i];
+      GUM_SCALAR vY=pY[i];
 
-      if ( vXY> ( T_DATA ) 0 ) {
-        if ( vX== ( T_DATA ) 0 || vY== ( T_DATA ) 0 ) {
+      if ( vXY> ( GUM_SCALAR ) 0 ) {
+        if ( vX== ( GUM_SCALAR ) 0 || vY== ( GUM_SCALAR ) 0 ) {
           GUM_ERROR( OperationNotAllowed,"Mutual Information (X,Y) with P(X)=0 or P(Y)=0 and P(X,Y)>0" );
         }
 
@@ -1208,9 +1208,9 @@ namespace gum {
   * @warning Due to limitation of @joint, may not be able to compute this value
   * @throw OperationNotAllowed in these cases
   */
-  template <typename T_DATA> INLINE
-  T_DATA
-  LazyPropagation<T_DATA>::VI( NodeId X,NodeId Y ) {
+  template <typename GUM_SCALAR> INLINE
+  GUM_SCALAR
+  LazyPropagation<GUM_SCALAR>::VI( NodeId X,NodeId Y ) {
     return H( X ) +H( Y )-2*I( X,Y );
   }
 } /* namespace gum */

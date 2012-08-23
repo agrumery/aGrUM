@@ -252,7 +252,7 @@ def addTick(self,*args):
     {
     	  std::vector<PythonLoadListener> py_listener;
         try {
-            gum::BIFReader<T_DATA> reader(self,name);
+            gum::BIFReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
@@ -272,7 +272,7 @@ def addTick(self,*args):
     }
 
     void saveBIF(std::string name) {
-        gum::BIFWriter<T_DATA> writer;
+        gum::BIFWriter<GUM_SCALAR> writer;
         writer.write( name, *self );
     }
 
@@ -280,7 +280,7 @@ def addTick(self,*args):
     {
 	std::vector<PythonLoadListener> py_listener;
         try {
-            gum::DSLReader<T_DATA> reader(self,name);
+            gum::DSLReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
@@ -298,7 +298,7 @@ def addTick(self,*args):
     }
 
     void saveDSL(std::string name) {
-        gum::DSLWriter<T_DATA> writer;
+        gum::DSLWriter<GUM_SCALAR> writer;
         writer.write( name, *self );
     }
 
@@ -306,7 +306,7 @@ def addTick(self,*args):
     {
         std::vector<PythonLoadListener> py_listener;
         try {
-            gum::NetReader<T_DATA> reader(self,name);
+            gum::NetReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
             for(int i=0 ; i<l_size ; i++) {
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
@@ -324,14 +324,14 @@ def addTick(self,*args):
     }
 
    void saveNET(std::string name) {
-        gum::NetWriter<T_DATA> writer;
+        gum::NetWriter<GUM_SCALAR> writer;
         writer.write( name, *self );
     }
 
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
     {
         try {
-            gum::BIFXMLBNReader<T_DATA> reader(self,name);
+            gum::BIFXMLBNReader<GUM_SCALAR> reader(self,name);
             /* nothing as listener for now for BIFXML ... */
             /*
             int l_size=__fillLoadListeners(py_listener,l);
@@ -350,7 +350,7 @@ def addTick(self,*args):
    }
 
     void saveBIFXML(std::string name) {
-        gum::BIFXMLBNWriter<T_DATA> writer;
+        gum::BIFXMLBNWriter<GUM_SCALAR> writer;
         writer.write( name, *self );
     }
 }

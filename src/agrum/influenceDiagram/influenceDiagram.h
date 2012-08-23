@@ -50,11 +50,11 @@ namespace gum {
    * @ingroup InfluenceDiagram_group
    *
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class InfluenceDiagram : public AbstractBayesNet<T_DATA> {
+  class InfluenceDiagram : public AbstractBayesNet<GUM_SCALAR> {
 
-      //friend class InfluenceDiagramFactory<T_DATA>;
+      //friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
     public:
 
@@ -76,12 +76,12 @@ namespace gum {
       /**
        * Copy Constructor
        */
-      InfluenceDiagram( const InfluenceDiagram<T_DATA>& source );
+      InfluenceDiagram( const InfluenceDiagram<GUM_SCALAR>& source );
 
       /**
        * Copy Operator
        */
-      InfluenceDiagram<T_DATA>& operator= ( const InfluenceDiagram<T_DATA>& source );
+      InfluenceDiagram<GUM_SCALAR>& operator= ( const InfluenceDiagram<GUM_SCALAR>& source );
 
       /// @}
 
@@ -97,13 +97,13 @@ namespace gum {
        * Returns the CPT of a potential variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      virtual const Potential<T_DATA>& cpt( NodeId varId ) const;
+      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
       /**
        * Returns the utility table of a utility node.
        * @throw NotFound If no variable's id matches varId.
        */
-      virtual const UtilityTable<T_DATA>& utility( NodeId varId ) const;
+      virtual const UtilityTable<GUM_SCALAR>& utility( NodeId varId ) const;
 
       /**
        * Returns a constant reference to the dag of this Influence Diagram.
@@ -241,7 +241,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<T_DATA> *aContent, NodeId id = 0 );
+      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
 
       /**
        * Add a chance variable, it's associate node and it's CPT. The id of the new
@@ -254,7 +254,7 @@ namespace gum {
        * @throw InvalidAgrument If variable has more than one label
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<T_DATA> *aContent, NodeId id = 0 );
+      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
 
 
       /**
@@ -378,7 +378,7 @@ namespace gum {
       /**
        * Copying tables from another influence diagram
        */
-      void _copyTables( const InfluenceDiagram<T_DATA>& IDsource );
+      void _copyTables( const InfluenceDiagram<GUM_SCALAR>& IDsource );
 
       /**
        * Add a node
@@ -399,9 +399,9 @@ namespace gum {
       VariableNodeMap __variableMap;
 
       /// Mapping between potential variable's id and their CPT
-      typename Property< Potential<T_DATA>* >::onNodes __potentialMap;
+      typename Property< Potential<GUM_SCALAR>* >::onNodes __potentialMap;
       /// Mapping between utility variable's id and their utility table
-      typename Property<UtilityTable<T_DATA>* >::onNodes __utilityMap;
+      typename Property<UtilityTable<GUM_SCALAR>* >::onNodes __utilityMap;
 
       /// The topology sequence of this bayes net.
       mutable Sequence<NodeId>* __topologicalOrder;

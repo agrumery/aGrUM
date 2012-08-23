@@ -45,7 +45,7 @@ namespace gum {
    *
    *      // this loop can stop with APPROX_EPSILON, APPROX_RATE, APPROX_LIMIT
    *      do {
-   *      // compute new values and a T_DATA error representing the progress in this step.
+   *      // compute new values and a GUM_SCALAR error representing the progress in this step.
    *        updateApproximationScheme();
    *        compute state of the approximation
    *        if (startOfPeriod()) w.r.t to the state of approximation

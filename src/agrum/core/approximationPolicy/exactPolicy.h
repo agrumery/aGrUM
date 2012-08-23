@@ -40,8 +40,8 @@ namespace gum {
    * @brief Class implementing exact approximation policy (meaning a value is approximate to itself)
    * @ingroup multidim_group
    */
-  template<typename T_DATA>
-  class ExactPolicy : public virtual ApproximationPolicy<T_DATA> {
+  template<typename GUM_SCALAR>
+  class ExactPolicy : public virtual ApproximationPolicy<GUM_SCALAR> {
     public:
 
       // ===========================================================================
@@ -62,21 +62,21 @@ namespace gum {
       /// @{
 
       /// Convert value to approximation representation
-      INLINE T_DATA fromExact( const T_DATA& value ) const {
+      INLINE GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
         return value;
       };
       
-      void combineAdd( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
       
-      void combineSub( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
       
-      void combineMult( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
       
-      void combineDiv( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
       
-      void combineMax( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
       
-      void combineMin( const ApproximationPolicy<T_DATA>* ap ) {};
+      void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
 
       /// @}
   };

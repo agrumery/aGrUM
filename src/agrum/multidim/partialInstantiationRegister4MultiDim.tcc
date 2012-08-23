@@ -36,11 +36,11 @@ namespace gum {
 
 
   /// adds a new entry into the register
-  template<typename T_DATA>
-  void PartialInstantiationRegister4MultiDim<T_DATA>::insert
+  template<typename GUM_SCALAR>
+  void PartialInstantiationRegister4MultiDim<GUM_SCALAR>::insert
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim,
-    typename PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationPtr
+    typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr
     newFunction ) {
     // insert the new entry
     PartialInstantiationSet* theset;
@@ -65,8 +65,8 @@ namespace gum {
 
 
   /// removes a given entry from the register
-  template<typename T_DATA>
-  void PartialInstantiationRegister4MultiDim<T_DATA>::erase
+  template<typename GUM_SCALAR>
+  void PartialInstantiationRegister4MultiDim<GUM_SCALAR>::erase
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim ) {
     if ( ! __set.exists( instantiation_func_name ) ) return;
@@ -78,8 +78,8 @@ namespace gum {
 
 
   /// indicates whether a given entry exists in the register
-  template<typename T_DATA> INLINE
-  bool PartialInstantiationRegister4MultiDim<T_DATA>::exists
+  template<typename GUM_SCALAR> INLINE
+  bool PartialInstantiationRegister4MultiDim<GUM_SCALAR>::exists
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim ) const {
     if ( ! __set.exists( instantiation_func_name ) ) return false;
@@ -90,9 +90,9 @@ namespace gum {
 
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
-  template<typename T_DATA> INLINE
-  typename PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationPtr
-  PartialInstantiationRegister4MultiDim<T_DATA>::get
+  template<typename GUM_SCALAR> INLINE
+  typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr
+  PartialInstantiationRegister4MultiDim<GUM_SCALAR>::get
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim ) const {
     PartialInstantiationSet* theset = __set[instantiation_func_name];
@@ -101,9 +101,9 @@ namespace gum {
 
 
   /// a named constructor that constructs one and only one Register per data type
-  template<typename T_DATA>
-  PartialInstantiationRegister4MultiDim<T_DATA>&
-  PartialInstantiationRegister4MultiDim<T_DATA>::Register() {
+  template<typename GUM_SCALAR>
+  PartialInstantiationRegister4MultiDim<GUM_SCALAR>&
+  PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register() {
     static PartialInstantiationRegister4MultiDim container;
 
 #ifndef NDEBUG
@@ -126,14 +126,14 @@ namespace gum {
   
 
   /// Default constructor: creates an empty register
-  template<typename T_DATA>
-  PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationRegister4MultiDim() {
+  template<typename GUM_SCALAR>
+  PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationRegister4MultiDim() {
   }
 
 
   /// destructor
-  template<typename T_DATA>
-  PartialInstantiationRegister4MultiDim<T_DATA>::~PartialInstantiationRegister4MultiDim() {
+  template<typename GUM_SCALAR>
+  PartialInstantiationRegister4MultiDim<GUM_SCALAR>::~PartialInstantiationRegister4MultiDim() {
     // remove all the sets
     for ( typename HashTable<std::string, PartialInstantiationSet*>::iterator
             iter = __set.begin(); iter != __set.end(); ++iter )
@@ -142,13 +142,13 @@ namespace gum {
 
 
   /// a function to more easily register new instantiation functions in MultiDims
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void registerPartialInstantiation
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim,
-    typename PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationPtr
+    typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr
     function ) {
-    PartialInstantiationRegister4MultiDim<T_DATA>::Register().insert
+    PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register().insert
       ( instantiation_func_name, type_multidim, function );
   }
 

@@ -87,8 +87,8 @@
 namespace gum {
 
 
-  template< typename T_DATA, template<typename> class TABLE >
-  class MultiDimCombinationDefault : public MultiDimCombination<T_DATA,TABLE> {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  class MultiDimCombinationDefault : public MultiDimCombination<GUM_SCALAR,TABLE> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -99,11 +99,11 @@ namespace gum {
     /** @param combine a function that takes two tables in input and produces a
      * new table which is the result of the combination of the two tables
      * passed in argument. */
-    MultiDimCombinationDefault ( TABLE<T_DATA>* (*combine)
-                                 ( const TABLE<T_DATA>&, const TABLE<T_DATA>& ) );
+    MultiDimCombinationDefault ( TABLE<GUM_SCALAR>* (*combine)
+                                 ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) );
 
     /// copy constructor
-    MultiDimCombinationDefault ( const MultiDimCombinationDefault<T_DATA,TABLE>& );
+    MultiDimCombinationDefault ( const MultiDimCombinationDefault<GUM_SCALAR,TABLE>& );
     
     /// destructor
     virtual ~MultiDimCombinationDefault ();
@@ -111,7 +111,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same combination
      * function. */
-    virtual MultiDimCombinationDefault<T_DATA,TABLE>* newFactory () const;
+    virtual MultiDimCombinationDefault<GUM_SCALAR,TABLE>* newFactory () const;
 
     /// @}
 
@@ -126,23 +126,23 @@ namespace gum {
      * of all the TABLES passed in argument
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
-    virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set );
-    virtual void combine ( TABLE<T_DATA>& container ,
-                           const Set<const TABLE<T_DATA>*>& set );
+    virtual TABLE<GUM_SCALAR>* combine ( const Set<const TABLE<GUM_SCALAR>*>& set );
+    virtual void combine ( TABLE<GUM_SCALAR>& container ,
+                           const Set<const TABLE<GUM_SCALAR>*>& set );
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction ( TABLE<T_DATA>*
-                                      (*combine) ( const TABLE<T_DATA>&,
-                                                   const TABLE<T_DATA>& ) );
+    virtual void setCombineFunction ( TABLE<GUM_SCALAR>*
+                                      (*combine) ( const TABLE<GUM_SCALAR>&,
+                                                   const TABLE<GUM_SCALAR>& ) );
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE<T_DATA>* (* combineFunction () )
-      ( const TABLE<T_DATA>&, const TABLE<T_DATA>& ) const;
+    virtual TABLE<GUM_SCALAR>* (* combineFunction () )
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const;
 
      /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
     virtual float
-    nbOperations ( const Set<const TABLE<T_DATA>*>& set ) const;
+    nbOperations ( const Set<const TABLE<GUM_SCALAR>*>& set ) const;
     virtual float
     nbOperations ( const Set<const Sequence<const DiscreteVariable*>*>& set )
       const;
@@ -156,7 +156,7 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used by
      * the resulting table ) */
     virtual std::pair<long,long>
-    memoryUsage ( const Set<const TABLE<T_DATA>*>& set ) const;
+    memoryUsage ( const Set<const TABLE<GUM_SCALAR>*>& set ) const;
     virtual std::pair<long,long>
     memoryUsage ( const Set<const Sequence<const DiscreteVariable*>*>& set ) const;
 
@@ -165,8 +165,8 @@ namespace gum {
 
   protected:
     /// the function used to combine two tables
-    TABLE<T_DATA>* (*_combine) ( const TABLE<T_DATA>& t1,
-                                 const TABLE<T_DATA>& t2 );
+    TABLE<GUM_SCALAR>* (*_combine) ( const TABLE<GUM_SCALAR>& t1,
+                                 const TABLE<GUM_SCALAR>& t2 );
     
     
     /** @brief returns the domain size of the Cartesian product of the union of

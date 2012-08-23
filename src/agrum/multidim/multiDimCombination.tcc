@@ -33,25 +33,25 @@ namespace gum {
 
   
   /// constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombination<T_DATA,TABLE>::MultiDimCombination () {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombination<GUM_SCALAR,TABLE>::MultiDimCombination () {
     /// for debugging purposes
     GUM_CONSTRUCTOR ( MultiDimCombination );
   }
 
   
   /// copy constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombination<T_DATA,TABLE>::MultiDimCombination
-  ( const MultiDimCombination<T_DATA,TABLE>& from ) {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombination<GUM_SCALAR,TABLE>::MultiDimCombination
+  ( const MultiDimCombination<GUM_SCALAR,TABLE>& from ) {
     /// for debugging purposes
     GUM_CONS_CPY ( MultiDimCombination );
   }
 
   
   /// destructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimCombination<T_DATA,TABLE>::~MultiDimCombination () {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimCombination<GUM_SCALAR,TABLE>::~MultiDimCombination () {
     /// for debugging purposes
     GUM_DESTRUCTOR ( MultiDimCombination );
   }

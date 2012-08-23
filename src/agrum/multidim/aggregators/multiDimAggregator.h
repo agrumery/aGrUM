@@ -54,9 +54,9 @@ namespace gum {
    *    to fit in domain(aggregator variable)
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimAggregator : public MultiDimReadOnly<T_DATA> {
+  class MultiDimAggregator : public MultiDimReadOnly<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -66,7 +66,7 @@ namespace gum {
     /// Default constructor.
     // ============================================================================
     MultiDimAggregator();
-    MultiDimAggregator( const MultiDimAggregator<T_DATA>& from );
+    MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Destructor.
@@ -88,7 +88,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
 
     // ############################################################################
@@ -97,7 +97,7 @@ namespace gum {
     /// @{
     // ============================================================================
   public:
-    virtual T_DATA get( const Instantiation &i ) const;
+    virtual GUM_SCALAR get( const Instantiation &i ) const;
 
     virtual std::string aggregatorName( void ) const=0;
     const std::string toString( void ) const;
@@ -144,9 +144,9 @@ namespace gum {
   // ==============================================================================
   /// For friendly displaying the content of the array.
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimAggregator<T_DATA>& ag );
+                             const MultiDimAggregator<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */

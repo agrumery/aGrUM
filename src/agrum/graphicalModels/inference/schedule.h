@@ -60,7 +60,7 @@ namespace gum {
    * operations of the schedule can be performed. It is up to the user to check
    * this (function schedulePossible () may help here).
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   class Schedule {
   public:
     /// to identify correctly the ids that correspond to ScheduleOperation ids
@@ -79,7 +79,7 @@ namespace gum {
     Schedule ();
 
     /// copy constructor
-    Schedule ( const Schedule<T_DATA>& );
+    Schedule ( const Schedule<GUM_SCALAR>& );
 
     /// destructor
     ~Schedule ();
@@ -93,7 +93,7 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Schedule<T_DATA>& operator= ( const Schedule<T_DATA>& );
+    Schedule<GUM_SCALAR>& operator= ( const Schedule<GUM_SCALAR>& );
 
     /// @}
 
@@ -107,30 +107,30 @@ namespace gum {
     /** The Schedule class is able to determined by itself when the operation
      * should be performed.
      * @warning operations are inserted by copy */
-    NodeId insert ( const ScheduleOperation<T_DATA>& );
+    NodeId insert ( const ScheduleOperation<GUM_SCALAR>& );
 
     /** @brief adds a constraint indicating that an operation cannot be performed
      * before another one */
-    void forceAfter ( const ScheduleOperation<T_DATA>& op_to_force,
-                      const ScheduleOperation<T_DATA>& op_before );
+    void forceAfter ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
+                      const ScheduleOperation<GUM_SCALAR>& op_before );
     void forceAfter ( NodeId op_to_force, NodeId op_before );
 
     /** @brief adds a constraint indicating that an operation cannot be performed
      * before a set of operations */
-    void forceAfter ( const ScheduleOperation<T_DATA>& op_to_force,
-                      const Set<const ScheduleOperation<T_DATA>*>& ops_before );
+    void forceAfter ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
+                      const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before );
     void forceAfter ( NodeId op_to_force, const NodeSet& ops_before );
 
     /** @brief adds a constraint indicating that an operation must be performed
      * before another one */
-    void forceBefore ( const ScheduleOperation<T_DATA>& op_to_force,
-                       const ScheduleOperation<T_DATA>& op_after );
+    void forceBefore ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
+                       const ScheduleOperation<GUM_SCALAR>& op_after );
     void forceBefore ( NodeId op_to_force, NodeId op_after );
 
     /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
-    void forceBefore ( const ScheduleOperation<T_DATA>& op_to_force,
-                       const Set<const ScheduleOperation<T_DATA>*>& ops_after );
+    void forceBefore ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
+                       const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_after );
     void forceBefore ( NodeId op_to_force, const NodeSet& ops_after );
 
     /// returns a DAG indicating in which order the operations can be performed
@@ -140,20 +140,20 @@ namespace gum {
 
     /// returns the scheduleOperation corresponding to an id in the DAG
     /** @throws NotFound exception is raised if the DAG does not contain the id */
-    const ScheduleOperation<T_DATA>& operation ( NodeId ) const;
+    const ScheduleOperation<GUM_SCALAR>& operation ( NodeId ) const;
 
     /// returns the id of the node corresponding to a given ScheduleOperation
     /** @throws NotFound exception is raised the operation does not belong to
      * the Schedule */
-    NodeId nodeId ( const ScheduleOperation<T_DATA>& ) const;
+    NodeId nodeId ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// resturns the association between operations anf nodeIds
-    const typename Property<const ScheduleOperation<T_DATA>*>::onNodes&
+    const typename Property<const ScheduleOperation<GUM_SCALAR>*>::onNodes&
     operations () const;
 
     /// returns the set of operations involving a given multidim table
     const NodeSet&
-    operationsInvolving ( const ScheduleMultiDim<T_DATA>& table) const;
+    operationsInvolving ( const ScheduleMultiDim<GUM_SCALAR>& table) const;
     const NodeSet&
     operationsInvolving ( MultiDimId table_id) const;
 
@@ -170,12 +170,12 @@ namespace gum {
      * executed yet because some of its arguments have not already been computed
      * @throws NotFound exception is thrown if the operation cannot be found */
     void execute ( NodeId );
-    void execute ( const ScheduleOperation<T_DATA>& );
+    void execute ( const ScheduleOperation<GUM_SCALAR>& );
 
     /** @bried returns an estimation of the number of elementary operations needed
      * to perform a given ScheduleOperation */
     float nbOperations ( NodeId ) const;
-    float nbOperations ( ScheduleOperation<T_DATA>& ) const;
+    float nbOperations ( ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// returns the memory consumption used during the execution of an operation
     /** Actually, this function does not return a precise account of the memory
@@ -186,7 +186,7 @@ namespace gum {
      * amount of memory still used at the end of the operation ( the memory used by
      * the resulting table ) */
     std::pair<long,long> memoryUsage ( NodeId ) const;
-    std::pair<long,long> memoryUsage ( ScheduleOperation<T_DATA>& ) const;
+    std::pair<long,long> memoryUsage ( ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -200,7 +200,7 @@ namespace gum {
     mutable DAG __dag;
 
     /// a hashtable assigning to each node of the DAG an operation
-    typename Property<ScheduleOperation<T_DATA>*>::onNodes __node2operation;
+    typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes __node2operation;
 
     /// a hashtable assigning to each operation id a node id in the DAG
     HashTable<OperationId,NodeId> __operation2node;

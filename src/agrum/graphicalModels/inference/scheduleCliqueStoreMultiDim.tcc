@@ -34,14 +34,14 @@ namespace gum {
 
   
   /// default constructor
-  template <typename T_DATA>
-  ScheduleCliqueStoreMultiDim<T_DATA>::ScheduleCliqueStoreMultiDim
-  ( const ScheduleMultiDim<T_DATA>& table,
-    typename Property<Set<const MultiDimImplementation<T_DATA>*> >::onNodes&
+  template <typename GUM_SCALAR>
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
+  ( const ScheduleMultiDim<GUM_SCALAR>& table,
+    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes&
     clique_tables,
     NodeId clique ) :
-    ScheduleOperation<T_DATA>
-    ( ScheduleOperation<T_DATA>::GUM_CLIQUE_STORE_MULTIDIM ),
+    ScheduleOperation<GUM_SCALAR>
+    ( ScheduleOperation<GUM_SCALAR>::GUM_CLIQUE_STORE_MULTIDIM ),
     __table ( table ),
     __tableSet ( &clique_tables ),
     __clique ( clique ),
@@ -52,10 +52,10 @@ namespace gum {
 
 
   /// copy constructor
-  template <typename T_DATA>
-  ScheduleCliqueStoreMultiDim<T_DATA>::ScheduleCliqueStoreMultiDim
-  ( const ScheduleCliqueStoreMultiDim<T_DATA>& from ) :
-    ScheduleOperation<T_DATA> ( from ),
+  template <typename GUM_SCALAR>
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
+  ( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from ) :
+    ScheduleOperation<GUM_SCALAR> ( from ),
     __table ( from.__table ),
     __tableSet ( from.__tableSet ),
     __clique ( from.__clique ),
@@ -66,16 +66,16 @@ namespace gum {
 
   
   /// virtual copy constructor: creates a clone of the operation
-  template <typename T_DATA>
-  ScheduleCliqueStoreMultiDim<T_DATA>*
-  ScheduleCliqueStoreMultiDim<T_DATA>::newFactory () const {
-    return new ScheduleCliqueStoreMultiDim<T_DATA> ( *this );
+  template <typename GUM_SCALAR>
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>*
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::newFactory () const {
+    return new ScheduleCliqueStoreMultiDim<GUM_SCALAR> ( *this );
   }
 
 
   /// destructor
-  template <typename T_DATA>
-  ScheduleCliqueStoreMultiDim<T_DATA>::~ScheduleCliqueStoreMultiDim () {
+  template <typename GUM_SCALAR>
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::~ScheduleCliqueStoreMultiDim () {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleCliqueStoreMultiDim );
     if ( __args ) delete __args;
@@ -83,13 +83,13 @@ namespace gum {
 
 
   /// copy operator
-  template <typename T_DATA>
-  ScheduleCliqueStoreMultiDim<T_DATA>&
-  ScheduleCliqueStoreMultiDim<T_DATA>::operator=
-  ( const ScheduleCliqueStoreMultiDim<T_DATA>& from ) {
+  template <typename GUM_SCALAR>
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>&
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::operator=
+  ( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from ) {
     // avoid self assignment
     if ( &from != this ) {
-      ScheduleOperation<T_DATA>::operator= ( from );
+      ScheduleOperation<GUM_SCALAR>::operator= ( from );
       __table = from.__table;
       __tableSet = from.__tableSet;
       __clique = from.__clique;
@@ -103,12 +103,12 @@ namespace gum {
 
 
   /// operator ==
-  template <typename T_DATA>
-  bool ScheduleCliqueStoreMultiDim<T_DATA>::operator==
-  ( const ScheduleOperation<T_DATA>& op ) const {
+  template <typename GUM_SCALAR>
+  bool ScheduleCliqueStoreMultiDim<GUM_SCALAR>::operator==
+  ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type () != op.type () ) return false;
-    const ScheduleCliqueStoreMultiDim<T_DATA>& real_op =
-      static_cast<const ScheduleCliqueStoreMultiDim<T_DATA>&> ( op );
+    const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
+      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table == real_op.__table ) &&
              ( __tableSet == real_op.__tableSet ) &&
              ( __clique == real_op.__clique ) );
@@ -116,12 +116,12 @@ namespace gum {
 
 
   /// operator !=
-  template <typename T_DATA>
-  bool ScheduleCliqueStoreMultiDim<T_DATA>::operator!=
-  ( const ScheduleOperation<T_DATA>& op ) const {
+  template <typename GUM_SCALAR>
+  bool ScheduleCliqueStoreMultiDim<GUM_SCALAR>::operator!=
+  ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type () != op.type () ) return true;
-    const ScheduleCliqueStoreMultiDim<T_DATA>& real_op =
-      static_cast<const ScheduleCliqueStoreMultiDim<T_DATA>&> ( op );
+    const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
+      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table != real_op.__table ) ||
              ( __tableSet != real_op.__tableSet ) ||
              ( __clique != real_op.__clique ) );
@@ -129,12 +129,12 @@ namespace gum {
 
 
   /// executes the operation
-  template <typename T_DATA>
-  void ScheduleCliqueStoreMultiDim<T_DATA>::execute () {
-    const MultiDimImplementation<T_DATA>& multidim = __table.multiDim ();
+  template <typename GUM_SCALAR>
+  void ScheduleCliqueStoreMultiDim<GUM_SCALAR>::execute () {
+    const MultiDimImplementation<GUM_SCALAR>& multidim = __table.multiDim ();
     if ( ! __tableSet->exists ( __clique ) ) {
       __tableSet->insert ( __clique,
-                           Set<const MultiDimImplementation<T_DATA>*>() );
+                           Set<const MultiDimImplementation<GUM_SCALAR>*>() );
     }
     __tableSet->operator[](__clique).insert ( &multidim );
   }
@@ -142,26 +142,26 @@ namespace gum {
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperation */
-  template <typename T_DATA>
-  INLINE float ScheduleCliqueStoreMultiDim<T_DATA>::nbOperations () const {
+  template <typename GUM_SCALAR>
+  INLINE float ScheduleCliqueStoreMultiDim<GUM_SCALAR>::nbOperations () const {
     return 1.0f;
   }
 
 
   /// returns the memory consumption used during the operation
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE std::pair<long,long>
-  ScheduleCliqueStoreMultiDim<T_DATA>::memoryUsage () const {
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::memoryUsage () const {
     return std::pair<long,long> (0,0);
   }
  
 
   /// returns the multidim to be stored
-  template <typename T_DATA>
-  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
-  ScheduleCliqueStoreMultiDim<T_DATA>::multiDimArgs () const {
+  template <typename GUM_SCALAR>
+  INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimArgs () const {
     if ( ! __args ) {
-      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert ( &__table );
     }
     return *__args;
@@ -169,10 +169,10 @@ namespace gum {
 
 
   /// returns the set of multidims that should be the result of the operation
-  template <typename T_DATA>
-  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
-  ScheduleCliqueStoreMultiDim<T_DATA>::multiDimResults () const {
-    static Sequence<const ScheduleMultiDim<T_DATA>*> empty_seq;
+  template <typename GUM_SCALAR>
+  INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimResults () const {
+    static Sequence<const ScheduleMultiDim<GUM_SCALAR>*> empty_seq;
     #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the static sequence used here will be removed at the end of the
@@ -189,8 +189,8 @@ namespace gum {
   
   
   /// displays the content of the operation
-  template <typename T_DATA>
-  std::string ScheduleCliqueStoreMultiDim<T_DATA>::toString () const {
+  template <typename GUM_SCALAR>
+  std::string ScheduleCliqueStoreMultiDim<GUM_SCALAR>::toString () const {
     std::stringstream s;
     s << "store ( " << __table.toString() << ", clique " << __clique << " )";
     return s.str();

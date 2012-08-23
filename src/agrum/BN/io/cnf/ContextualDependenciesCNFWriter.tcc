@@ -30,14 +30,14 @@ namespace gum {
   /* ===                           GUM_BN_WRITER                              === */
   /* ============================================================================ */
   // Default constructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-   ContextualDependenciesCNFWriter<T_DATA,IApproximationPolicy>::ContextualDependenciesCNFWriter() {
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
+   ContextualDependenciesCNFWriter<GUM_SCALAR,IApproximationPolicy>::ContextualDependenciesCNFWriter() {
       GUM_CONSTRUCTOR( ContextualDependenciesCNFWriter );
     }
 
   // Default destructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-    ContextualDependenciesCNFWriter<T_DATA, IApproximationPolicy>::~ContextualDependenciesCNFWriter() {
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
+    ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::~ContextualDependenciesCNFWriter() {
       GUM_DESTRUCTOR( ContextualDependenciesCNFWriter );
     }
 
@@ -47,9 +47,9 @@ namespace gum {
   // @param ouput The output stream.
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
     void
-    ContextualDependenciesCNFWriter<T_DATA, IApproximationPolicy>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+    ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
       Instantiation Order;
       for(gum::Sequence<gum::NodeId>::iterator it = bn.topologicalOrder().begin();it !=bn.topologicalOrder().end();++it)
         Order.add(bn.variable(*it));
@@ -82,7 +82,7 @@ namespace gum {
         }
         str0 << "0\n";clause++;numvar++;
         clausstr2 << str0.str();
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );inst.forgetMaster();
         inst.reorder(Order);//TODO
         cptparamval.insert( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >());
@@ -227,9 +227,9 @@ namespace gum {
   // @param filePath The path to the file used to write the Bayesian Network.
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
     void
-    ContextualDependenciesCNFWriter<T_DATA, IApproximationPolicy>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+    ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
       std::ofstream output( filePath.c_str(), std::ios_base::trunc );
       std::ofstream outputvar( (filePath+".var").c_str(), std::ios_base::trunc );
 
@@ -265,7 +265,7 @@ namespace gum {
         }
         str0 << "0\n";clause++;numvar++;
         clausstr2 << str0.str();
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );inst.forgetMaster();
         inst.reorder(Order);
         cptparamval.insert( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >());

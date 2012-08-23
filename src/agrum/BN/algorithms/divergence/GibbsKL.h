@@ -58,10 +58,10 @@ namespace gum {
 * }
 * @endcode
 */
-template<typename T_DATA> class GibbsKL:
-            public KL<T_DATA>,
+template<typename GUM_SCALAR> class GibbsKL:
+            public KL<GUM_SCALAR>,
             public ApproximationScheme,
-            public particle::Gibbs<T_DATA> {
+            public particle::Gibbs<GUM_SCALAR> {
 public:
 
     /* no default constructor */
@@ -69,34 +69,34 @@ public:
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
      */
-    GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
+    GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    GibbsKL( const KL<T_DATA>& kl );
+    GibbsKL( const KL<GUM_SCALAR>& kl );
 
 
     /** destructor */
     ~GibbsKL();
 
-    using particle::Gibbs<T_DATA>::particle;
-    using particle::Gibbs<T_DATA>::initParticle;
-    using particle::Gibbs<T_DATA>::nextParticle;
-    using particle::Gibbs<T_DATA>::bn;
+    using particle::Gibbs<GUM_SCALAR>::particle;
+    using particle::Gibbs<GUM_SCALAR>::initParticle;
+    using particle::Gibbs<GUM_SCALAR>::nextParticle;
+    using particle::Gibbs<GUM_SCALAR>::bn;
 
 protected:
     void _computeKL( void );
 
-    using KL<T_DATA>::_p;
-    using KL<T_DATA>::_q;
-    using KL<T_DATA>::_hellinger;
-    using KL<T_DATA>::_bhattacharya;
+    using KL<GUM_SCALAR>::_p;
+    using KL<GUM_SCALAR>::_q;
+    using KL<GUM_SCALAR>::_hellinger;
+    using KL<GUM_SCALAR>::_bhattacharya;
 
-    using KL<T_DATA>::_klPQ;
-    using KL<T_DATA>::_klQP;
+    using KL<GUM_SCALAR>::_klPQ;
+    using KL<GUM_SCALAR>::_klQP;
 
-    using KL<T_DATA>::_errorPQ;
-    using KL<T_DATA>::_errorQP;
+    using KL<GUM_SCALAR>::_errorPQ;
+    using KL<GUM_SCALAR>::_errorQP;
 
 };
 

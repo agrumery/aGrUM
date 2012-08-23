@@ -54,16 +54,16 @@ namespace gum {
   * @endcode
   */
 
-  template<typename T_DATA> class BruteForceKL:public KL<T_DATA> {
+  template<typename GUM_SCALAR> class BruteForceKL:public KL<GUM_SCALAR> {
     public:
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
+      BruteForceKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      BruteForceKL( const KL<T_DATA>& kl );
+      BruteForceKL( const KL<GUM_SCALAR>& kl );
 
 
       /** destructor */
@@ -72,16 +72,16 @@ namespace gum {
     protected:
       void _computeKL( void );
 
-      using KL<T_DATA>::_p;
-      using KL<T_DATA>::_q;
-      using KL<T_DATA>::_hellinger;
-      using KL<T_DATA>::_bhattacharya;
+      using KL<GUM_SCALAR>::_p;
+      using KL<GUM_SCALAR>::_q;
+      using KL<GUM_SCALAR>::_hellinger;
+      using KL<GUM_SCALAR>::_bhattacharya;
 
-      using KL<T_DATA>::_klPQ;
-      using KL<T_DATA>::_klQP;
+      using KL<GUM_SCALAR>::_klPQ;
+      using KL<GUM_SCALAR>::_klQP;
 
-      using KL<T_DATA>::_errorPQ;
-      using KL<T_DATA>::_errorQP;
+      using KL<GUM_SCALAR>::_errorPQ;
+      using KL<GUM_SCALAR>::_errorQP;
   };
 
 } // namespace gum

@@ -39,7 +39,7 @@
 
 namespace gum {
 
-  template<typename T_DATA> class BayesNetFactory;
+  template<typename GUM_SCALAR> class BayesNetFactory;
 
 
   /**
@@ -53,13 +53,13 @@ namespace gum {
    * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
    *
    * Don't forget that you can print a BayesNet using
-   * gum::operator<<(std::ostream&, const BayesNet<T_DATA>&).
+   * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class BayesNet: public AbstractBayesNet<T_DATA> {
+  class BayesNet: public AbstractBayesNet<GUM_SCALAR> {
 
-      friend class BayesNetFactory<T_DATA>;
+      friend class BayesNetFactory<GUM_SCALAR>;
 
     public:
       // ===========================================================================
@@ -80,12 +80,12 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      BayesNet( const BayesNet<T_DATA>& source );
+      BayesNet( const BayesNet<GUM_SCALAR>& source );
 
       /**
        * Copy operator.
        */
-      BayesNet<T_DATA>& operator=( const BayesNet<T_DATA>& source );
+      BayesNet<GUM_SCALAR>& operator=( const BayesNet<GUM_SCALAR>& source );
 
       /// @}
       // ===========================================================================
@@ -97,7 +97,7 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      const Potential<T_DATA>& cpt( NodeId varId ) const;
+      const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
       /**
        * Returns a constant reference to the dag of this Bayes Net.
@@ -154,7 +154,7 @@ namespace gum {
        * @param variable The variable added by copy.
        * @param aContent The content used for the variable potential.
        */
-      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent );
+      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<GUM_SCALAR> *aContent );
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -181,7 +181,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id is already used
        */
-      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<T_DATA> *aContent, NodeId id );
+      NodeId add( const DiscreteVariable& variable,MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id );
 
       /**
        * Erase a Variable from the network and remove the variable from
@@ -235,11 +235,11 @@ namespace gum {
 
       /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      T_DATA jointProbability( const Instantiation& i ) const;
+      GUM_SCALAR jointProbability( const Instantiation& i ) const;
 
       /// Compute a parameter of the log joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      T_DATA logJointProbability( const Instantiation& i ) const;
+      GUM_SCALAR logJointProbability( const Instantiation& i ) const;
 
       ///
       /// @}
@@ -319,9 +319,9 @@ namespace gum {
       * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
       * @return the id of the added variable.
       */
-      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight );
-      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight );
-      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight );
+      NodeId addNoisyOR( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
 
       /**
       * Add a variable, it's associate node and a noisyOR implementation. The id of the new
@@ -335,9 +335,9 @@ namespace gum {
       * @return the id of the added variable.
       * @throws DuplicateElement if id is already used
       */
-      NodeId addNoisyOR( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
-      NodeId addNoisyORNet( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
-      NodeId addNoisyORCompound( const DiscreteVariable& variable, T_DATA externalWeight, NodeId id );
+      NodeId addNoisyOR( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
 
       /**
        * Add a variable, it's associate node and an OR implementation. The id of the new
@@ -372,7 +372,7 @@ namespace gum {
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */
-      void insertWeightedArc( NodeId tail, NodeId head, T_DATA causalWeight );
+      void insertWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
 
       /// @}
       // ===========================================================================
@@ -389,7 +389,7 @@ namespace gum {
        * @warning Deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
        */
       NodeId addVariable( const DiscreteVariable& variable,
-                          MultiDimImplementation<T_DATA> *aContent );
+                          MultiDimImplementation<GUM_SCALAR> *aContent );
 
       /**
        * @warning Deprecated: use erase(NodeId) instead.
@@ -407,8 +407,8 @@ namespace gum {
       VariableNodeMap __varMap;
 
       /// Mapping between the variable's id and their CPT.
-      //Property< Potential< T_DATA >* >::onNodes __probaMap;
-      HashTable<NodeId, Potential<T_DATA>* > __probaMap;
+      //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
+      HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
 
       /// The moral graph of this bayes net.
       mutable UndiGraph* __moralGraph;
@@ -419,9 +419,9 @@ namespace gum {
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   std::ostream&
-  operator<<( std::ostream& output, const AbstractBayesNet<T_DATA>& map );
+  operator<<( std::ostream& output, const AbstractBayesNet<GUM_SCALAR>& map );
 
 } /* namespace gum */
 

@@ -38,11 +38,11 @@ namespace gum {
 // @param bn A pointer over the BayesNet filled by this factory.
 // @throw DuplicateElement Raised if two variables in bn share the same
 //                         name.
-  template<typename T_DATA> INLINE
-  BayesNetFactory<T_DATA>::BayesNetFactory( BayesNet<T_DATA>* bn ) :
+  template<typename GUM_SCALAR> INLINE
+  BayesNetFactory<GUM_SCALAR>::BayesNetFactory( BayesNet<GUM_SCALAR>* bn ) :
       __parents( 0 ), __impl( 0 ), __bn( bn )  {
     GUM_CONSTRUCTOR( BayesNetFactory );
-    __states.push_back( BayesNetFactory<T_DATA>::NONE );
+    __states.push_back( BayesNetFactory<GUM_SCALAR>::NONE );
 
     for ( DAG::NodeIterator iter = bn->beginNodes(); iter != bn->endNodes(); ++iter ) {
       if ( __varNameMap.exists( bn->variable( *iter ).name() ) ) {
@@ -57,22 +57,22 @@ namespace gum {
 
 // Copy constructor.
 // The copy will have an exact copy of the constructed BayesNet in source.
-  template<typename T_DATA> INLINE
-  BayesNetFactory<T_DATA>::BayesNetFactory( const BayesNetFactory<T_DATA>& source ) :
+  template<typename GUM_SCALAR> INLINE
+  BayesNetFactory<GUM_SCALAR>::BayesNetFactory( const BayesNetFactory<GUM_SCALAR>& source ) :
       __parents( 0 ), __impl( 0 ), __bn( 0 ) {
     GUM_CONS_CPY( BayesNetFactory );
 
-    if ( source.state() != BayesNetFactory<T_DATA>::NONE ) {
+    if ( source.state() != BayesNetFactory<GUM_SCALAR>::NONE ) {
       GUM_ERROR( OperationNotAllowed, "Illegal state to proceed make a copy." );
     } else {
       __states = source.__states;
-      __bn = new BayesNet<T_DATA> ( * ( source.__bn ) );
+      __bn = new BayesNet<GUM_SCALAR> ( * ( source.__bn ) );
     }
   }
 
 // Destructor
-  template<typename T_DATA> INLINE
-  BayesNetFactory<T_DATA>::~BayesNetFactory() {
+  template<typename GUM_SCALAR> INLINE
+  BayesNetFactory<GUM_SCALAR>::~BayesNetFactory() {
     GUM_DESTRUCTOR( BayesNetFactory );
 
     if ( __parents != 0 ) delete __parents;
@@ -85,31 +85,31 @@ namespace gum {
   }
 
 // Returns the BayesNet created by this factory.
-  template<typename T_DATA> INLINE
-  BayesNet<T_DATA>*
-  BayesNetFactory<T_DATA>::bayesNet() {
+  template<typename GUM_SCALAR> INLINE
+  BayesNet<GUM_SCALAR>*
+  BayesNetFactory<GUM_SCALAR>::bayesNet() {
 
     return __bn;
   }
 
-  template<typename T_DATA> INLINE
-  const DiscreteVariable& BayesNetFactory<T_DATA>::varInBN( NodeId id ) {
+  template<typename GUM_SCALAR> INLINE
+  const DiscreteVariable& BayesNetFactory<GUM_SCALAR>::varInBN( NodeId id ) {
     return __bn->variable( id );
   }
 
 // Returns the current state of the factory.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   AbstractBayesNetFactory::factory_state
-  BayesNetFactory<T_DATA>::state() const {
+  BayesNetFactory<GUM_SCALAR>::state() const {
     // This is ok because there is alway at least the state NONE in the stack.
     return __states.back();
   }
 
 // Returns the NodeId of a variable given it's name.
 // @throw NotFound Raised if no variable matches the name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   NodeId
-  BayesNetFactory<T_DATA>::variableId( const std::string& name ) const {
+  BayesNetFactory<GUM_SCALAR>::variableId( const std::string& name ) const {
     try {
       return __varNameMap[name];
     } catch ( NotFound& e ) {
@@ -119,9 +119,9 @@ namespace gum {
 
 // Returns a constant reference on a variable given it's name.
 // @throw NotFound Raised if no variable matches the name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DiscreteVariable&
-  BayesNetFactory<T_DATA>::variable( const std::string& name ) const {
+  BayesNetFactory<GUM_SCALAR>::variable( const std::string& name ) const {
     try {
       return __bn->variable( variableId( name ) );
     } catch ( NotFound& ) {
@@ -132,37 +132,37 @@ namespace gum {
 // Returns the domainSize of the cpt for the node n.
 // @throw NotFound raised if no such NodeId exists.
 // @throw OperationNotAllowed if there is no bayesian networks.
-  template<typename T_DATA> INLINE
-  Size BayesNetFactory<T_DATA>::cptDomainSize( const NodeId n ) const {
+  template<typename GUM_SCALAR> INLINE
+  Size BayesNetFactory<GUM_SCALAR>::cptDomainSize( const NodeId n ) const {
     // (from PH) nowhere in the code, I see a check type if (__bn) __bn->. I assume __bn is forced not to be NULL ...
     return __bn->cpt( n ).domainSize();
   }
 
 // Tells the factory that we're in a network declaration.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startNetworkDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::startNetworkDeclaration() {
     if ( state() != NONE ) {
       __illegalStateError( "startNetworkDeclaration" );
     } else {
-      __states.push_back( BayesNetFactory<T_DATA>::NETWORK );
+      __states.push_back( BayesNetFactory<GUM_SCALAR>::NETWORK );
     }
 
     VERBOSITY( "starting network" );
   }
 
 // Tells the factory to add a property to the current network.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::addNetworkProperty( const std::string& propName,
+  BayesNetFactory<GUM_SCALAR>::addNetworkProperty( const std::string& propName,
       const std::string& propValue ) {
     __bn->setProperty( propName, propValue );
   }
 
 // Tells the factory that we're out of a network declaration.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::endNetworkDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::endNetworkDeclaration() {
     if ( state() != NETWORK ) {
       __illegalStateError( "endNetworkDeclaration" );
     } else {
@@ -173,9 +173,9 @@ namespace gum {
   }
 
 // Tells the factory that we're in a variable declaration.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startVariableDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::startVariableDeclaration() {
     if ( state() != NONE ) {
       __illegalStateError( "startVariableDeclaration" );
     } else {
@@ -188,9 +188,9 @@ namespace gum {
   }
 
 // Tells the factory the current variable's name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::variableName( const std::string& name ) {
+  BayesNetFactory<GUM_SCALAR>::variableName( const std::string& name ) {
     if ( state() != VARIABLE ) {
       __illegalStateError( "variableName" );
     } else {
@@ -207,9 +207,9 @@ namespace gum {
   }
 
 // Tells the factory the current variable's description.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::variableDescription( const std::string& desc ) {
+  BayesNetFactory<GUM_SCALAR>::variableDescription( const std::string& desc ) {
     if ( state() != VARIABLE ) {
       __illegalStateError( "variableDescription" );
     } else {
@@ -221,9 +221,9 @@ namespace gum {
 // Adds a modality to the current variable.
 // @throw DuplicateElement If the current variable already has a modality
 //                         with the same name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::addModality( const std::string& name ) {
+  BayesNetFactory<GUM_SCALAR>::addModality( const std::string& name ) {
     if ( state() != VARIABLE ) {
       __illegalStateError( "addModality" );
     } else {
@@ -242,10 +242,10 @@ namespace gum {
 // @throw OperationNotAllowed Raised if impl is not empty.
 // @throw OperationNotAllowed If an implementation is already defined for the
 //                            current variable.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setVariableCPTImplementation( MultiDimAdressable *adressable ) {
-    MultiDimImplementation<T_DATA>* impl = dynamic_cast<MultiDimImplementation<T_DATA>*>( adressable );
+  BayesNetFactory<GUM_SCALAR>::setVariableCPTImplementation( MultiDimAdressable *adressable ) {
+    MultiDimImplementation<GUM_SCALAR>* impl = dynamic_cast<MultiDimImplementation<GUM_SCALAR>*>( adressable );
 
     if ( state() != VARIABLE ) {
       __illegalStateError( "setVariableCPTImplementation" );
@@ -262,9 +262,9 @@ namespace gum {
   }
 
 // Tells the factory that we're out of a variable declaration.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   NodeId
-  BayesNetFactory<T_DATA>::endVariableDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::endVariableDeclaration() {
     if ( state() != VARIABLE ) {
       __illegalStateError( "endVariableDeclaration" );
     } else if ( __foo_flag and( __stringBag.size() > 3 ) ) {
@@ -322,9 +322,9 @@ namespace gum {
 
 // Tells the factory that we're declaring parents for some variable.
 // @var The concerned variable's name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startParentsDeclaration( const std::string& var ) {
+  BayesNetFactory<GUM_SCALAR>::startParentsDeclaration( const std::string& var ) {
     if ( state() != NONE ) {
       __illegalStateError( "startParentsDeclaration" );
     } else {
@@ -340,9 +340,9 @@ namespace gum {
 // Tells the factory for which variable we're declaring parents.
 // @var The parent's name.
 // @throw NotFound Raised if var does not exists.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::addParent( const std::string& var ) {
+  BayesNetFactory<GUM_SCALAR>::addParent( const std::string& var ) {
     if ( state() != PARENTS ) {
       __illegalStateError( "addParent" );
     } else {
@@ -356,9 +356,9 @@ namespace gum {
 // are created in the inverse order of the order of the parent specification.
 // @throw UndefinedElement Raised if the variable isn't defined (or not
 //                         enough defined).
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::endParentsDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::endParentsDeclaration() {
     if ( state() != PARENTS ) {
       __illegalStateError( "endParentsDeclaration" );
     } else {
@@ -382,15 +382,15 @@ namespace gum {
 // Tells the factory that we're declaring a conditional probability table
 // for some variable.
 // @param var The concerned variable's name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startRawProbabilityDeclaration( const std::string& var ) {
+  BayesNetFactory<GUM_SCALAR>::startRawProbabilityDeclaration( const std::string& var ) {
     if ( state() != NONE ) {
       __illegalStateError( "startRawProbabilityDeclaration" );
     } else {
       __checkVariableName( var );
       __stringBag.push_back( var );
-      __states.push_back( BayesNetFactory<T_DATA>::RAW_CPT );
+      __states.push_back( BayesNetFactory<GUM_SCALAR>::RAW_CPT );
     }
 
     VERBOSITY( "  cpt starting for " << var );
@@ -406,9 +406,9 @@ namespace gum {
 // ...,
 // [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
 // @param rawTable The raw table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::rawConditionalTable( const std::vector<std::string>& variables,
+  BayesNetFactory<GUM_SCALAR>::rawConditionalTable( const std::vector<std::string>& variables,
       const std::vector<float>& rawTable ) {
     if ( state() != RAW_CPT ) {
       __illegalStateError( "rawConditionalTable" );
@@ -417,11 +417,11 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__fillProbaWithValuesTable( const std::vector<std::string>& variables,
+  BayesNetFactory<GUM_SCALAR>::__fillProbaWithValuesTable( const std::vector<std::string>& variables,
       const std::vector<float>& rawTable ) {
-    const Potential<T_DATA>& table = __bn->cpt( __varNameMap[__stringBag[0]] );
+    const Potential<GUM_SCALAR>& table = __bn->cpt( __varNameMap[__stringBag[0]] );
     Instantiation cptInst( table );
 
     List<const DiscreteVariable*> varList;
@@ -449,9 +449,9 @@ namespace gum {
       }
 
       if ( j < rawTable.size() ) {
-        table.set( cptInst, ( T_DATA ) rawTable[j] );
+        table.set( cptInst, ( GUM_SCALAR ) rawTable[j] );
       } else {
-        table.set( cptInst, ( T_DATA ) 0 );
+        table.set( cptInst, ( GUM_SCALAR ) 0 );
       }
 
       j++;
@@ -459,9 +459,9 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::rawConditionalTable( const std::vector<float>& rawTable ) {
+  BayesNetFactory<GUM_SCALAR>::rawConditionalTable( const std::vector<float>& rawTable ) {
     if ( state() != RAW_CPT ) {
       __illegalStateError( "rawConditionalTable" );
     } else {
@@ -469,10 +469,10 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__fillProbaWithValuesTable( const std::vector<float>& rawTable ) {
-    const Potential<T_DATA>& table = __bn->cpt( __varNameMap[__stringBag[0]] );
+  BayesNetFactory<GUM_SCALAR>::__fillProbaWithValuesTable( const std::vector<float>& rawTable ) {
+    const Potential<GUM_SCALAR>& table = __bn->cpt( __varNameMap[__stringBag[0]] );
 
     Instantiation cptInst( table );
 
@@ -482,15 +482,15 @@ namespace gum {
 
     for ( cptInst.setFirstVar( first );! cptInst.end(); cptInst.incVar( first ) ) {
       for ( cptInst.setFirstNotVar( first ); ! cptInst.end(); cptInst.incNotVar( first ) )
-        table.set( cptInst, ( j < rawTable.size() ) ? ( T_DATA ) rawTable[j++] : ( T_DATA ) 0 );
+        table.set( cptInst, ( j < rawTable.size() ) ? ( GUM_SCALAR ) rawTable[j++] : ( GUM_SCALAR ) 0 );
 
       cptInst.unsetEnd();
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  BayesNetFactory<T_DATA>::__increment( std::vector<gum::Idx> &modCounter,
+  BayesNetFactory<GUM_SCALAR>::__increment( std::vector<gum::Idx> &modCounter,
                                         List<const DiscreteVariable*>& varList ) {
     bool last = true;
 
@@ -527,9 +527,9 @@ namespace gum {
 
 // Tells the factory that we finished declaring a conditional probability
 // table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::endRawProbabilityDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::endRawProbabilityDeclaration() {
     if ( state() != RAW_CPT ) {
       __illegalStateError( "endRawProbabilityDeclaration" );
     } else {
@@ -541,9 +541,9 @@ namespace gum {
   }
 
 // Tells the factory that we're starting a factorized declaration.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startFactorizedProbabilityDeclaration( const std::string& var ) {
+  BayesNetFactory<GUM_SCALAR>::startFactorizedProbabilityDeclaration( const std::string& var ) {
     if ( state() != NONE ) {
       __illegalStateError( "startFactorizedProbabilityDeclaration" );
     } else {
@@ -556,9 +556,9 @@ namespace gum {
 
 // Tells the factory that we start an entry of a factorized conditional
 // probability table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::startFactorizedEntry() {
+  BayesNetFactory<GUM_SCALAR>::startFactorizedEntry() {
     if ( state() != FACT_CPT ) {
       __illegalStateError( "startFactorizedEntry" );
     } else {
@@ -569,9 +569,9 @@ namespace gum {
 
 // Tells the factory that we finished declaring a conditional probability
 // table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::endFactorizedEntry() {
+  BayesNetFactory<GUM_SCALAR>::endFactorizedEntry() {
     if ( state() != FACT_ENTRY ) {
       __illegalStateError( "endFactorizedEntry" );
     } else {
@@ -583,9 +583,9 @@ namespace gum {
 
 // Tells the factory on which modality we want to instantiate one of
 // variable's parent.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setParentModality( const std::string& parent,
+  BayesNetFactory<GUM_SCALAR>::setParentModality( const std::string& parent,
       const std::string& modality ) {
     if ( state() != FACT_ENTRY ) {
       __illegalStateError( "string" );
@@ -622,9 +622,9 @@ namespace gum {
 // @code
 // as for rawProba, if value's size is different than the number of modalities of the current variable,
 // we don't use the supplementary values and we fill by 0 the missign values.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setVariableValuesUnchecked( const std::vector<float>& values ) {
+  BayesNetFactory<GUM_SCALAR>::setVariableValuesUnchecked( const std::vector<float>& values ) {
     if ( state() != FACT_ENTRY ) {
       __illegalStateError( "setVariableValues" );
     } else {
@@ -649,7 +649,7 @@ namespace gum {
 
         // Filling the variable's table.
         for ( inst.setFirstIn( inst_default ); ! inst.end(); inst.incIn( inst_default ) ) {
-          ( __bn->cpt( varId ) ).set( inst, inst.val( var ) < values.size() ? ( T_DATA ) values[inst.val( var )] : ( T_DATA ) 0 );
+          ( __bn->cpt( varId ) ).set( inst, inst.val( var ) < values.size() ? ( GUM_SCALAR ) values[inst.val( var )] : ( GUM_SCALAR ) 0 );
         }
       } else {
         Instantiation inst( __bn->cpt( __varNameMap[var.name()] ) );
@@ -660,16 +660,16 @@ namespace gum {
           inst.chgValIn( var_inst );
 
           for ( inst.setFirstOut( var_inst ); ! inst.end(); inst.incOut( var_inst ) ) {
-            ( __bn->cpt( varId ) ).set( inst, inst.val( var ) < values.size() ? ( T_DATA ) values[inst.val( var )] : ( T_DATA ) 0 );
+            ( __bn->cpt( varId ) ).set( inst, inst.val( var ) < values.size() ? ( GUM_SCALAR ) values[inst.val( var )] : ( GUM_SCALAR ) 0 );
           }
         }
       }
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setVariableValues( const std::vector<float>& values ) {
+  BayesNetFactory<GUM_SCALAR>::setVariableValues( const std::vector<float>& values ) {
     if ( state() != FACT_ENTRY ) {
       __illegalStateError( "setVariableValues" );
     } else {
@@ -686,9 +686,9 @@ namespace gum {
 
 // Tells the factory that we finished declaring a conditional probability
 // table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::endFactorizedProbabilityDeclaration() {
+  BayesNetFactory<GUM_SCALAR>::endFactorizedProbabilityDeclaration() {
     if ( state() != FACT_CPT ) {
       __illegalStateError( "endFactorizedProbabilityDeclaration" );
     } else {
@@ -708,10 +708,10 @@ namespace gum {
 // @throw OperationNotAllowed Raised if redefineParents == false and if table
 //                            is not a valid CPT for var in the current state
 //                            of the BayesNet.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setVariable( const DiscreteVariable& var ) {
-    if (( state() != BayesNetFactory<T_DATA>::NONE ) ) {
+  BayesNetFactory<GUM_SCALAR>::setVariable( const DiscreteVariable& var ) {
+    if (( state() != BayesNetFactory<GUM_SCALAR>::NONE ) ) {
       __illegalStateError( "setVariable" );
     } else {
       try {
@@ -741,14 +741,14 @@ namespace gum {
 // @throw OperationNotAllowed Raised if redefineParents == false and if table
 //                            is not a valid CPT for var in the current state
 //                            of the BayesNet.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::setVariableCPT( const std::string& varName,
+  BayesNetFactory<GUM_SCALAR>::setVariableCPT( const std::string& varName,
       MultiDimAdressable* adr,
       bool redefineParents ) {
-    Potential<T_DATA>* table = dynamic_cast<Potential<T_DATA>*>( adr );
+    Potential<GUM_SCALAR>* table = dynamic_cast<Potential<GUM_SCALAR>*>( adr );
 
-    if ( state() != BayesNetFactory<T_DATA>::NONE ) {
+    if ( state() != BayesNetFactory<GUM_SCALAR>::NONE ) {
       __illegalStateError( "setVariableCPT" );
     } else {
       __checkVariableName( varName );
@@ -777,9 +777,9 @@ namespace gum {
   }
 
 // Copy operator is illegal, use only copy constructor.
-  template<typename T_DATA> INLINE
-  BayesNetFactory<T_DATA>&
-  BayesNetFactory<T_DATA>::operator= ( const BayesNetFactory<T_DATA>& source ) {
+  template<typename GUM_SCALAR> INLINE
+  BayesNetFactory<GUM_SCALAR>&
+  BayesNetFactory<GUM_SCALAR>::operator= ( const BayesNetFactory<GUM_SCALAR>& source ) {
     GUM_ERROR( OperationNotAllowed, "Illegal!" );
     // For noisy compilers
     return *this;
@@ -787,9 +787,9 @@ namespace gum {
 
 
 // Raise an OperationNotAllowed with the message "Illegal state."
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__illegalStateError( const std::string& s ) {
+  BayesNetFactory<GUM_SCALAR>::__illegalStateError( const std::string& s ) {
     std::string msg = "Illegal state call (";
     msg += s;
     msg += ") in state ";
@@ -841,9 +841,9 @@ namespace gum {
 
 // Check if a variable with the given name exists, if not raise an NotFound
 // exception.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__checkVariableName( const std::string& name ) {
+  BayesNetFactory<GUM_SCALAR>::__checkVariableName( const std::string& name ) {
     if ( !__varNameMap.exists( name ) ) {
       GUM_ERROR( NotFound, name );
     }
@@ -851,9 +851,9 @@ namespace gum {
 
 // Check if var exists and if mod is one of it's modality, if not raise an
 // NotFound exception.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   Idx
-  BayesNetFactory<T_DATA>::__checkVariableModality( const std::string& name,
+  BayesNetFactory<GUM_SCALAR>::__checkVariableModality( const std::string& name,
       const std::string& mod ) {
     __checkVariableName( name );
     const DiscreteVariable& var = __bn->variable( __varNameMap[name] );
@@ -868,9 +868,9 @@ namespace gum {
   }
 
 // Check if in __stringBag there is no other modality with the same name.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__checkModalityInBag( const std::string& mod ) {
+  BayesNetFactory<GUM_SCALAR>::__checkModalityInBag( const std::string& mod ) {
     for ( size_t i = 2; i < __stringBag.size(); ++i ) {
       if ( mod == __stringBag[i] ) {
         GUM_ERROR( DuplicateElement, mod );
@@ -880,9 +880,9 @@ namespace gum {
 
 // Sub method of setVariableCPT() which redefine the BayesNet's DAG with
 // respect to table.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__setCPTAndParents( const DiscreteVariable& var, Potential<T_DATA>* table ) {
+  BayesNetFactory<GUM_SCALAR>::__setCPTAndParents( const DiscreteVariable& var, Potential<GUM_SCALAR>* table ) {
     __bn->__dag.eraseParents( __varNameMap[var.name()] );
 
     for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {
@@ -899,9 +899,9 @@ namespace gum {
   }
 
 // Reset the different parts used to constructed the BayesNet.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<T_DATA>::__resetParts() {
+  BayesNetFactory<GUM_SCALAR>::__resetParts() {
     __foo_flag = false;
     __bar_flag = false;
     __stringBag.clear();

@@ -31,9 +31,9 @@ namespace gum {
 
 // Default constructor.
 // Use the DefaultCPTGenerator for generating the BNs CPT.
-  template<typename T_DATA, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
-  MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::MaxParentsMCBayesNetGenerator ( Size nbrNodes, Size maxArcs , Size max_modality, Size maxParents, Idx iteration,  Idx p, Idx q ) :
-    MCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber> ( nbrNodes, maxArcs, max_modality, iteration , p, q ) {
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::MaxParentsMCBayesNetGenerator ( Size nbrNodes, Size maxArcs , Size max_modality, Size maxParents, Idx iteration,  Idx p, Idx q ) :
+    MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> ( nbrNodes, maxArcs, max_modality, iteration , p, q ) {
     if ( maxParents == 0 ) GUM_ERROR ( OperationNotAllowed, "maxParents must be at least equal to 1 to have a connexe graph" );
 
     _maxParents = maxParents;
@@ -41,43 +41,43 @@ namespace gum {
   }
 
 
-  template<typename T_DATA, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
-  MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::MaxParentsMCBayesNetGenerator ( BayesNet<T_DATA> bayesNet, Size maxParents, Idx iteration,  Idx p, Idx q ) :
-    MCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber> ( bayesNet, iteration , p, q ) {
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::MaxParentsMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxParents, Idx iteration,  Idx p, Idx q ) :
+    MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> ( bayesNet, iteration , p, q ) {
     _maxParents = maxParents;
     GUM_CONSTRUCTOR ( MaxParentsMCBayesNetGenerator );
   }
 
 // Destructor.
-  template<typename T_DATA, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
-  MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::~MaxParentsMCBayesNetGenerator() {
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::~MaxParentsMCBayesNetGenerator() {
     GUM_DESTRUCTOR ( MaxParentsMCBayesNetGenerator );
   }
 
-  template<typename T_DATA, template<class> class ICPTGenerator, template<class> class ICPTDisturber>
-  bool MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::__checkConditions() {
-    DAG::NodeIterator node = AbstractBayesNetGenerator<T_DATA, ICPTGenerator>::_bayesNet.beginNodes();
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber>
+  bool MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
+    DAG::NodeIterator node = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.beginNodes();
 
-    while ( node != AbstractBayesNetGenerator<T_DATA, ICPTGenerator>::_bayesNet.endNodes() ) {
-      if ( AbstractBayesNetGenerator<T_DATA, ICPTGenerator>::_bayesNet.dag().parents ( *node ).size() > _maxParents ) {
+    while ( node != AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.endNodes() ) {
+      if ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( *node ).size() > _maxParents ) {
         return false ;
       }
 
       ++node;
     }
 
-    return MCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::__checkConditions();
+    return MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions();
   }
 
 
 
 
-  template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
-  Size MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::maxParents() const {
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+  Size MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::maxParents() const {
     return _maxParents;
   }
-  template<typename T_DATA, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
-  void MaxParentsMCBayesNetGenerator<T_DATA, ICPTGenerator, ICPTDisturber>::setMaxParents ( Size maxParents ) {
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
+  void MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::setMaxParents ( Size maxParents ) {
     if ( maxParents == 0 ) GUM_ERROR ( OperationNotAllowed, "maxParents must be at least equal to 1 to have a connexe graph" );
 
     _maxParents = maxParents;

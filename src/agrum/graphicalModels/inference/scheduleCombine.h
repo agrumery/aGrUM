@@ -39,9 +39,9 @@
 namespace gum {
 
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
-  class ScheduleCombine : public ScheduleOperation<T_DATA> {
+  class ScheduleCombine : public ScheduleOperation<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -52,17 +52,17 @@ namespace gum {
       /** @warning tables 1 and 2 are stored by copy into the ScheduleCombine.
        * This is actually compulsory for the appropriate use of
        * ScheduleCombination classes */
-      ScheduleCombine( const ScheduleMultiDim<T_DATA>& table1,
-                       const ScheduleMultiDim<T_DATA>& table2,
-                       MultiDimImplementation<T_DATA>*
-                       ( *combine )( const MultiDimImplementation<T_DATA>&,
-                                     const MultiDimImplementation<T_DATA>& ) );
+      ScheduleCombine( const ScheduleMultiDim<GUM_SCALAR>& table1,
+                       const ScheduleMultiDim<GUM_SCALAR>& table2,
+                       MultiDimImplementation<GUM_SCALAR>*
+                       ( *combine )( const MultiDimImplementation<GUM_SCALAR>&,
+                                     const MultiDimImplementation<GUM_SCALAR>& ) );
 
       /// copy constructor
-      ScheduleCombine( const ScheduleCombine<T_DATA>& );
+      ScheduleCombine( const ScheduleCombine<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
-      virtual ScheduleCombine<T_DATA>* newFactory() const;
+      virtual ScheduleCombine<GUM_SCALAR>* newFactory() const;
 
       /// destructor
       ~ScheduleCombine();
@@ -77,17 +77,17 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScheduleCombine<T_DATA>& operator= ( const ScheduleCombine<T_DATA>& );
+      ScheduleCombine<GUM_SCALAR>& operator= ( const ScheduleCombine<GUM_SCALAR>& );
 
       /// operator ==
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      INLINE bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+      INLINE bool operator== ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// operator !=
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      INLINE bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+      INLINE bool operator!= ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// @}
 
@@ -116,13 +116,13 @@ namespace gum {
       std::pair<long,long> memoryUsage() const;
 
       /// returns the scheduleMultidim resulting from the execution of the operation
-      INLINE const ScheduleMultiDim<T_DATA>& result() const;
+      INLINE const ScheduleMultiDim<GUM_SCALAR>& result() const;
 
       /// returns the set of multidims passed in argument to the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
       /// returns the set of multidims that should be the result of the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
 
       /// displays the content of the operation
       std::string toString() const;
@@ -132,25 +132,25 @@ namespace gum {
 
     private:
       /// the first table to combine
-      ScheduleMultiDim<T_DATA> __table1;
+      ScheduleMultiDim<GUM_SCALAR> __table1;
 
       /// the second table to combine with
-      ScheduleMultiDim<T_DATA> __table2;
+      ScheduleMultiDim<GUM_SCALAR> __table2;
 
       /// the result of the operation
       /** the result is allocated and deallocated by ScheduleCombine */
-      ScheduleMultiDim<T_DATA>* __result;
+      ScheduleMultiDim<GUM_SCALAR>* __result;
 
       /// the set of ScheduleMultidims passed in arguments
-      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
+      mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
 
       /// the set of ScheduleMultidims resulting from the operation
-      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __results;
+      mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __results;
 
       /// the function actually used to perform the combination
-      MultiDimImplementation<T_DATA>*
-      ( *__combine )( const MultiDimImplementation<T_DATA>&,
-                      const MultiDimImplementation<T_DATA>& );
+      MultiDimImplementation<GUM_SCALAR>*
+      ( *__combine )( const MultiDimImplementation<GUM_SCALAR>&,
+                      const MultiDimImplementation<GUM_SCALAR>& );
   };
 
 

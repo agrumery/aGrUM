@@ -47,9 +47,9 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimWithOffset : public MultiDimImplementation<T_DATA> {
+  class MultiDimWithOffset : public MultiDimImplementation<GUM_SCALAR> {
     public:
       MultiDimWithOffset();
 
@@ -60,7 +60,7 @@ namespace gum {
        * is associated to it.
        * @param from The multidimensional matrix we copy into this.
        */
-      MultiDimWithOffset( const MultiDimWithOffset<T_DATA>& from );
+      MultiDimWithOffset( const MultiDimWithOffset<GUM_SCALAR>& from );
 
       /**
        * @brief Destrucor.
@@ -82,7 +82,7 @@ namespace gum {
        *
        * @param from The multidimensional matrix we copy into this.
        */
-      MultiDimWithOffset<T_DATA>& operator= ( const MultiDimWithOffset<T_DATA>& from );
+      MultiDimWithOffset<GUM_SCALAR>& operator= ( const MultiDimWithOffset<GUM_SCALAR>& from );
 
       /// @}
 
@@ -99,7 +99,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
       // ############################################################################
       /// @name Accessors / Modifiers
@@ -126,7 +126,7 @@ namespace gum {
        *
        * @param d A scalar which is used to fill the multidimensional table.
        */
-      virtual void fill( const T_DATA& d ) const = 0;
+      virtual void fill( const GUM_SCALAR& d ) const = 0;
 
       /// Returns string representating of internal data about i in this.
       virtual const std::string toString( const Instantiation *i ) const ;
@@ -243,7 +243,7 @@ namespace gum {
       void _computeInstantiationValue( Instantiation& result, Size indice ) const;
 
       /// data access operator
-      virtual T_DATA& _get( const Instantiation& i ) const =0;
+      virtual GUM_SCALAR& _get( const Instantiation& i ) const =0;
 
   };
 } /* namespace gum */

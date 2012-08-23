@@ -41,7 +41,7 @@
 // ============================================================================
 namespace gum {
 
-template <typename T_DATA> class VEWithBB;
+template <typename GUM_SCALAR> class VEWithBB;
 /**
  * @class VariableElimination variableElimination.h <agrum/BN/inference/variableElimination.h>
  * @brief Implementation of the state of the art Value Elimination algorithm.
@@ -54,11 +54,11 @@ template <typename T_DATA> class VEWithBB;
  * @ingroup bn_group
  *
  */
-template<typename T_DATA>
-class VariableElimination: public BayesNetInference<T_DATA> {
+template<typename GUM_SCALAR>
+class VariableElimination: public BayesNetInference<GUM_SCALAR> {
 public:
 
-  friend class VEWithBB<T_DATA>;
+  friend class VEWithBB<GUM_SCALAR>;
   // ============================================================================
   /// @name Constructor & destructor
   // ============================================================================
@@ -67,7 +67,7 @@ public:
   /**
    * Default constructor.
    */
-  VariableElimination(const AbstractBayesNet<T_DATA>& bn);
+  VariableElimination(const AbstractBayesNet<GUM_SCALAR>& bn);
 
   /**
    * Destructor.
@@ -99,12 +99,12 @@ public:
    * If an evidence already exists over one of the variable in pot_list, then
    * it is replaced by the new evidence in pot_list.
    */
-  virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list );
+  virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
   /**
    * Remove a given evidence from the graph.
    */
-  virtual void eraseEvidence( const Potential<T_DATA>* e );
+  virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
   /**
    * Remove all evidence from the graph.
@@ -140,8 +140,8 @@ public:
    * @param trash The Set of Potential to delete after use of those in pool.
    */
   void eliminateNodes(const std::vector<NodeId>& elim_order,
-                      Set< Potential<T_DATA>* >& pool,
-                      Set< Potential<T_DATA>* >& trash);
+                      Set< Potential<GUM_SCALAR>* >& pool,
+                      Set< Potential<GUM_SCALAR>* >& trash);
 
   /// @}
 
@@ -154,27 +154,27 @@ protected:
    * @param marginal the potential to fill
    * @throw ElementNotFound Raised if no variable matches id.
    */
-  virtual void _fillMarginal(NodeId id, Potential<T_DATA>& marginal);
+  virtual void _fillMarginal(NodeId id, Potential<GUM_SCALAR>& marginal);
 
 private:
 
   /// Private copy constructor.
-  VariableElimination(const VariableElimination<T_DATA>& source);
+  VariableElimination(const VariableElimination<GUM_SCALAR>& source);
 
   /// Private copy operator.
-  VariableElimination& operator=(const VariableElimination<T_DATA>& source);
+  VariableElimination& operator=(const VariableElimination<GUM_SCALAR>& source);
 
   /// Mapping between nodes and their evidences.
-  typename Property< const Potential<T_DATA>* >::onNodes __evidences;
+  typename Property< const Potential<GUM_SCALAR>* >::onNodes __evidences;
 
   /// The elimination order used by this algorithm.
   std::vector<NodeId> __eliminationOrder;
 
   /// The initial pool of potentials.
-  Set< Potential<T_DATA>* > __pool;
+  Set< Potential<GUM_SCALAR>* > __pool;
 
   /// Garbage collector over the buckets created during inference
-  Set< Potential<T_DATA>* > __trash;
+  Set< Potential<GUM_SCALAR>* > __trash;
 
   /// Compute the elimination order if __eliminationOrder is empty.
   void __computeEliminationOrder();
@@ -186,8 +186,8 @@ private:
   /// insert it in pool as a Potential after removing all the potentials
   /// already in it. If you don't understand, read the code...
   void __eliminateNode(NodeId id,
-                       Set< Potential<T_DATA>* >& pool,
-                       Set< Potential<T_DATA>* >& trash);
+                       Set< Potential<GUM_SCALAR>* >& pool,
+                       Set< Potential<GUM_SCALAR>* >& trash);
 
 };
 } /* namespace gum */

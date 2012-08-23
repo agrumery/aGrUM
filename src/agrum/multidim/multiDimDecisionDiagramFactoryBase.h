@@ -39,7 +39,7 @@
 
 namespace gum {
 
-  template<typename T_DATA >
+  template<typename GUM_SCALAR >
   class MultiDimDecisionDiagramBase;
 
   /**
@@ -49,9 +49,9 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimDecisionDiagramFactoryBase : public virtual ApproximationPolicy<T_DATA> {
+  class MultiDimDecisionDiagramFactoryBase : public virtual ApproximationPolicy<GUM_SCALAR> {
 
     public :
 
@@ -140,7 +140,7 @@ namespace gum {
          *
          * If a terminal node with such value already exists, its value will be return instead.
          */
-        NodeId addTerminalNode( const T_DATA& value );
+        NodeId addTerminalNode( const GUM_SCALAR& value );
 
 
         /**
@@ -228,19 +228,19 @@ namespace gum {
        * Returns the value of associated node if its a terminal one
        * @throw NotFound if it's not a terminal node
        */
-      T_DATA nodeValue(NodeId node);
+      GUM_SCALAR nodeValue(NodeId node);
       
       /// @}
 
       /**
        * Returns the multidimDecisionDiagram made
        */
-      virtual MultiDimDecisionDiagramBase<T_DATA>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, T_DATA defaultValue = 0, bool doCompress = false ) = 0;
+      virtual MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false ) = 0;
 
       /**
        * Sets the factory from an already existing diagram
        */
-      void setMultiDimDecisionDiagram( const MultiDimDecisionDiagramBase<T_DATA>* source );
+      void setMultiDimDecisionDiagram( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
 
       /**
        * Swaps two variables in the build on diagram
@@ -284,7 +284,7 @@ namespace gum {
       typename Property< const DiscreteVariable* >::onNodes _varMap;
 
       /// Mapping between terminal nodes and their values
-      Bijection< NodeId, T_DATA > _valueMap;
+      Bijection< NodeId, GUM_SCALAR > _valueMap;
 
       /// Mapping between variable's values and associated node
       typename Property< std::vector< NodeId >* >::onNodes _arcMap;

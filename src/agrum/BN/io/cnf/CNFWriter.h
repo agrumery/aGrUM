@@ -54,8 +54,8 @@ namespace gum {
    * for information on this format.
    *
    */
-  template<typename T_DATA, template<class> class IApproximationPolicy = ExactPolicy>
-  class CNFWriter: public BNWriter<T_DATA>, public IApproximationPolicy<T_DATA>  {
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy = ExactPolicy>
+  class CNFWriter: public BNWriter<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR>  {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -81,7 +81,7 @@ namespace gum {
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn )=0;
+      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn )=0;
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -91,22 +91,22 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn )=0;
+      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn )=0;
 
-      inline T_DATA fromExact( const T_DATA& value ) const { 
-        return IApproximationPolicy<T_DATA>::fromExact( value ); };
+      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const { 
+        return IApproximationPolicy<GUM_SCALAR>::fromExact( value ); };
 
 
 
   /*  private:
       // Returns the header of the BN file.
-      std::string __header( const BayesNet<T_DATA>& bn );
+      std::string __header( const BayesNet<GUM_SCALAR>& bn );
 
       // Returns a bloc defining a variable in the BN format.
       std::string __variableBloc( const DiscreteVariable& var );
 
       // Returns a bloc defining a variable's CPT in the BN format.
-      std::string __variableCPT( const Potential<T_DATA>& cpt );
+      std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
 
       // Returns the modalities labels of the variables in varsSeq*/
       //

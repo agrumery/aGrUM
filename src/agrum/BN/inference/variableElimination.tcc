@@ -28,32 +28,32 @@
 // ============================================================================
 namespace gum {
 
-  template<typename T_DATA> INLINE
-  VariableElimination<T_DATA>::VariableElimination( const AbstractBayesNet<T_DATA>& bn ):
-    BayesNetInference<T_DATA>( bn ) {
+  template<typename GUM_SCALAR> INLINE
+  VariableElimination<GUM_SCALAR>::VariableElimination( const AbstractBayesNet<GUM_SCALAR>& bn ):
+    BayesNetInference<GUM_SCALAR>( bn ) {
     GUM_CONSTRUCTOR( VariableElimination );
   }
 
-  template<typename T_DATA> INLINE
-  VariableElimination<T_DATA>::~VariableElimination() {
+  template<typename GUM_SCALAR> INLINE
+  VariableElimination<GUM_SCALAR>::~VariableElimination() {
     GUM_DESTRUCTOR( VariableElimination );
   }
 
-  template<typename T_DATA> INLINE
-  VariableElimination<T_DATA>::VariableElimination( const VariableElimination<T_DATA>& source ) {
+  template<typename GUM_SCALAR> INLINE
+  VariableElimination<GUM_SCALAR>::VariableElimination( const VariableElimination<GUM_SCALAR>& source ) {
     GUM_CONS_CPY( VariableElimination );
     GUM_ERROR( FatalError, "illegal call to VariableElimination copy constructor." );
   }
 
-  template<typename T_DATA> INLINE
-  VariableElimination<T_DATA>&
-  VariableElimination<T_DATA>::operator=( const VariableElimination& source ) {
+  template<typename GUM_SCALAR> INLINE
+  VariableElimination<GUM_SCALAR>&
+  VariableElimination<GUM_SCALAR>::operator=( const VariableElimination& source ) {
     GUM_ERROR( FatalError, "illegal call to VariableElimination copy operator." );
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const std::vector<NodeId>&
-  VariableElimination<T_DATA>::eliminationOrder() const {
+  VariableElimination<GUM_SCALAR>::eliminationOrder() const {
     if( __eliminationOrder.size() != 0 ) {
       return __eliminationOrder;
     } else {
@@ -61,23 +61,23 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  VariableElimination<T_DATA>::setEliminiationOrder( const std::vector<NodeId>& elim ) {
+  VariableElimination<GUM_SCALAR>::setEliminiationOrder( const std::vector<NodeId>& elim ) {
     __eliminationOrder = elim;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  VariableElimination<T_DATA>::makeInference() {
+  VariableElimination<GUM_SCALAR>::makeInference() {
     __computeEliminationOrder();
     __createInitialPool();
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {
-    for( ListConstIterator< const Potential<T_DATA>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
+  VariableElimination<GUM_SCALAR>::insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
+    for( ListConstIterator< const Potential<GUM_SCALAR>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
       if( ( *iter )->nbrDim() != 1 ) {
         GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
       }
@@ -94,9 +94,9 @@ namespace gum {
     this->_invalidateMarginals();
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  VariableElimination<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
+  VariableElimination<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* e ) {
     if( e->nbrDim() != 1 ) {
       GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
     }
@@ -105,32 +105,32 @@ namespace gum {
     this->_invalidateMarginals();
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  VariableElimination<T_DATA>::eraseAllEvidence() {
+  VariableElimination<GUM_SCALAR>::eraseAllEvidence() {
     __evidences.clear();
     this->_invalidateMarginals();
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::eliminateNodes( const std::vector<NodeId>& elim_order,
-      Set< Potential<T_DATA>* >& pool,
-      Set< Potential<T_DATA>* >& trash ) {
+  VariableElimination<GUM_SCALAR>::eliminateNodes( const std::vector<NodeId>& elim_order,
+      Set< Potential<GUM_SCALAR>* >& pool,
+      Set< Potential<GUM_SCALAR>* >& trash ) {
     for( size_t i = 0; i < elim_order.size(); ++i ) {
       __eliminateNode( elim_order[i], pool, trash );
     }
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
+  VariableElimination<GUM_SCALAR>::_fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal ) {
     __computeEliminationOrder();
     __createInitialPool();
-    Set< Potential<T_DATA>* > pool( __pool );
+    Set< Potential<GUM_SCALAR>* > pool( __pool );
 
-    // for ( typename Property< const Potential<T_DATA>* >::onNodes::iterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
-    //   pool.insert( const_cast< Potential<T_DATA>* >( *iter ) );
+    // for ( typename Property< const Potential<GUM_SCALAR>* >::onNodes::iterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
+    //   pool.insert( const_cast< Potential<GUM_SCALAR>* >( *iter ) );
     // }
     for( size_t i = 0; i < __eliminationOrder.size(); ++i ) {
       if( __eliminationOrder[i] != id ) {
@@ -139,15 +139,15 @@ namespace gum {
     }
 
     try {
-      pool.insert( const_cast<Potential<T_DATA>*>( __evidences[id] ) );
+      pool.insert( const_cast<Potential<GUM_SCALAR>*>( __evidences[id] ) );
     } catch( NotFound& ) {
       // No evidence on query
     }
 
     marginal.add( this->bn().variable( id ) );
-    marginal.fill( ( T_DATA ) 1 );
+    marginal.fill( ( GUM_SCALAR ) 1 );
 
-    for( SetIterator< Potential<T_DATA>* > iter = pool.begin(); iter != pool.end(); ++iter ) {
+    for( SetIterator< Potential<GUM_SCALAR>* > iter = pool.begin(); iter != pool.end(); ++iter ) {
       if( ( **iter ).nbrDim() > 0 ) {
         marginal.multiplicateBy( **iter );
       }
@@ -156,16 +156,16 @@ namespace gum {
     marginal.normalize();
 
     // Cleaning up the mess
-    for( SetIterator< Potential<T_DATA>* > iter = __trash.begin(); iter != __trash.end(); ++iter ) {
+    for( SetIterator< Potential<GUM_SCALAR>* > iter = __trash.begin(); iter != __trash.end(); ++iter ) {
       delete *iter;
     }
 
     __trash.clear();
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::__computeEliminationOrder() {
+  VariableElimination<GUM_SCALAR>::__computeEliminationOrder() {
     if( __eliminationOrder.empty() ) {
       typename Property<unsigned int>::onNodes modalities;
 
@@ -178,62 +178,62 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::__createInitialPool() {
+  VariableElimination<GUM_SCALAR>::__createInitialPool() {
     __pool.clear();
 
     for( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
-      __pool.insert( const_cast< Potential<T_DATA>* >( &( this->bn().cpt( *iter ) ) ) );
+      __pool.insert( const_cast< Potential<GUM_SCALAR>* >( &( this->bn().cpt( *iter ) ) ) );
 
       if( __evidences.exists( *iter ) )
-        __pool.insert( const_cast< Potential<T_DATA>* >( __evidences[*iter] ) );
+        __pool.insert( const_cast< Potential<GUM_SCALAR>* >( __evidences[*iter] ) );
     }
   }
   // the function used to combine two tables
-  template <typename T_DATA>
-  Potential<T_DATA>* multPotential ( const Potential<T_DATA>& t1,
-                                     const Potential<T_DATA>& t2 ) {
-    return new Potential<T_DATA> (t1 * t2);
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>* multPotential ( const Potential<GUM_SCALAR>& t1,
+                                     const Potential<GUM_SCALAR>& t2 ) {
+    return new Potential<GUM_SCALAR> (t1 * t2);
                                     }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  VariableElimination<T_DATA>::__eliminateNode( NodeId id,
-      Set< Potential<T_DATA>* >& pool,
-      Set< Potential<T_DATA>* >& trash ) {
+  VariableElimination<GUM_SCALAR>::__eliminateNode( NodeId id,
+      Set< Potential<GUM_SCALAR>* >& pool,
+      Set< Potential<GUM_SCALAR>* >& trash ) {
     // THIS IS A (TEMPLATIZED) COPY OF prm::eliminateNode
     {
       const gum::DiscreteVariable* var=&(this->bn().variable(id));
 
-      Potential<T_DATA>* pot = 0;
-      Potential<T_DATA>* tmp = 0;
+      Potential<GUM_SCALAR>* pot = 0;
+      Potential<GUM_SCALAR>* tmp = 0;
       Set<const DiscreteVariable*> var_set;
       var_set.insert( var );
-      Set<const Potential<T_DATA>*> pots;
+      Set<const Potential<GUM_SCALAR>*> pots;
 
-      for( SetIterator<Potential<T_DATA>*> iter = pool.begin(); iter != pool.end(); ++iter )
+      for( SetIterator<Potential<GUM_SCALAR>*> iter = pool.begin(); iter != pool.end(); ++iter )
         if( ( *iter )->contains( *var ) )
           pots.insert( *iter );
 
       if( pots.size() == 0 ) {
         return;
       } else if( pots.size() == 1 ) {
-        tmp = const_cast<Potential<T_DATA>*>( *( pots.begin() ) );
-        pot = new Potential<T_DATA>( projectSum( *tmp, var_set ) );
+        tmp = const_cast<Potential<GUM_SCALAR>*>( *( pots.begin() ) );
+        pot = new Potential<GUM_SCALAR>( projectSum( *tmp, var_set ) );
       } else {
-        MultiDimCombinationDefault<T_DATA,Potential> Comb( multPotential );
+        MultiDimCombinationDefault<GUM_SCALAR,Potential> Comb( multPotential );
         tmp = Comb.combine( pots );
-        pot = new Potential<T_DATA>( projectSum( *tmp, var_set ) );
+        pot = new Potential<GUM_SCALAR>( projectSum( *tmp, var_set ) );
         delete tmp;
       }
 
-      for( typename Set<const Potential<T_DATA>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter ) {
-        pool.erase( const_cast<Potential<T_DATA>*>( *iter ) );
+      for( typename Set<const Potential<GUM_SCALAR>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter ) {
+        pool.erase( const_cast<Potential<GUM_SCALAR>*>( *iter ) );
 
-        if( trash.exists( const_cast<Potential<T_DATA>*>( *iter ) ) ) {
-          trash.erase( const_cast<Potential<T_DATA>*>( *iter ) );
-          delete const_cast<Potential<T_DATA>*>( *iter );
+        if( trash.exists( const_cast<Potential<GUM_SCALAR>*>( *iter ) ) ) {
+          trash.erase( const_cast<Potential<GUM_SCALAR>*>( *iter ) );
+          delete const_cast<Potential<GUM_SCALAR>*>( *iter );
         }
       }
 

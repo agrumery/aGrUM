@@ -49,15 +49,15 @@ namespace gum {
    * refer to agrum/core/approximationPolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
    * this class.
    * A default classe exists : Exact Policy whixh commit no approximation on value given. As a default
-   * you just have to declare MultiDimDecisionDiagram<T_DATA> and play with.
-   * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<T_DATA, CLASS_DESCRIBING_NEW_PATTERN>.
+   * you just have to declare MultiDimDecisionDiagram<GUM_SCALAR> and play with.
+   * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<GUM_SCALAR, CLASS_DESCRIBING_NEW_PATTERN>.
    * Therefor, if do operation on MultiDimDecisionDiagram the return type will likely be MultiDimDecisionDiagramBase
    * @ingroup multidim_group
    *
    */
-  template<typename T_DATA,template <class> class IApproximationPolicy  = ExactPolicy>
+  template<typename GUM_SCALAR,template <class> class IApproximationPolicy  = ExactPolicy>
 
-  class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<T_DATA>, public IApproximationPolicy<T_DATA> {
+  class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR> {
 
     public:
 
@@ -74,12 +74,12 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >& md );
+      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
 
       /** 
        * Constructor with approximation initialisation
        */
-      MultiDimDecisionDiagram( const IApproximationPolicy<T_DATA>& md );
+      MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& md );
 
       /**
        * Destructor.
@@ -106,7 +106,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      MultiDimContainer<T_DATA>* newFactory() const;
+      MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
       ///@}
 
@@ -118,17 +118,17 @@ namespace gum {
       /**
        * Returns a factory that used same approximation pattern
        */
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory() const;
       
       /**
        * Returns a factory that used same approximation pattern
        * Allows to set parameter for that approximation
        */
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const ;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
 
       /// Convert value to approximation representation
-      inline T_DATA fromExact( const T_DATA& value ) const {
-        return IApproximationPolicy<T_DATA>::fromExact( value );
+      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+        return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
       };
 
 

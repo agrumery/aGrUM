@@ -29,16 +29,16 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLBNWriter<T_DATA>::BIFXMLBNWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLBNWriter<GUM_SCALAR>::BIFXMLBNWriter() {
     GUM_CONSTRUCTOR( BIFXMLBNWriter );
   }
 
   /*
    * Destructor.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLBNWriter<T_DATA>::~BIFXMLBNWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLBNWriter<GUM_SCALAR>::~BIFXMLBNWriter() {
     GUM_DESTRUCTOR( BIFXMLBNWriter );
   }
 
@@ -49,9 +49,9 @@ namespace gum {
    * @param bn The bayes net writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<T_DATA>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -86,9 +86,9 @@ namespace gum {
    * @param bn The bayes net writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<T_DATA>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
     write( output, bn );
@@ -105,9 +105,9 @@ namespace gum {
   /*
    * Returns the header of the BIF file.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<T_DATA>::__heading() {
+  BIFXMLBNWriter<GUM_SCALAR>::__heading() {
     std::stringstream str;
 
     // Header for every xml
@@ -143,9 +143,9 @@ namespace gum {
   /*
    * Returns a bloc defining a variable in the BIF format.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<T_DATA>::__variableBloc( const DiscreteVariable& var ) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -175,9 +175,9 @@ namespace gum {
   /*
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<T_DATA>::__variableDefinition( const NodeId& varNodeId, const BayesNet<T_DATA>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition( const NodeId& varNodeId, const BayesNet<GUM_SCALAR>& bn ) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -193,7 +193,7 @@ namespace gum {
 
     // Table
     // For historical reason, the code is not the same betwen bIXML for BN and for ID ...
-    const Potential<T_DATA>& cpt=bn.cpt( varNodeId );
+    const Potential<GUM_SCALAR>& cpt=bn.cpt( varNodeId );
 
     // Conditional Parents
     for ( Idx i=1;i<cpt.nbrDim();i++ )
@@ -223,9 +223,9 @@ namespace gum {
   /*
    * Returns the end of the BIF file.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<T_DATA>::__documentend() {
+  BIFXMLBNWriter<GUM_SCALAR>::__documentend() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

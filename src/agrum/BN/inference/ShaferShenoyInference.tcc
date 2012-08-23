@@ -33,9 +33,9 @@ namespace gum {
 // ============================================================================
 
 // Default constructor
-  template<typename T_DATA>
-  ShaferShenoyInference<T_DATA>::ShaferShenoyInference( const AbstractBayesNet<T_DATA> &bayesNet ):
-      BayesNetInference<T_DATA>( bayesNet ), __triangulation( 0 ) {
+  template<typename GUM_SCALAR>
+  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference( const AbstractBayesNet<GUM_SCALAR> &bayesNet ):
+      BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
     typename Property<unsigned int>::onNodes __modalitiesMap;
@@ -52,23 +52,23 @@ namespace gum {
   }
 
 // Destructor
-  template<typename T_DATA>
-  ShaferShenoyInference<T_DATA>::~ShaferShenoyInference() {
+  template<typename GUM_SCALAR>
+  ShaferShenoyInference<GUM_SCALAR>::~ShaferShenoyInference() {
     GUM_DESTRUCTOR( ShaferShenoyInference );
 
     delete __triangulation;
 
-    for ( typename Property< MultiDimBucket<T_DATA>* >::onArcs::iterator
+    for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator
           iter = __messagesMap.begin(); iter != __messagesMap.end(); ++iter ) {
       delete *iter;
     }
 
-    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
       delete *iter;
     }
 
-    for ( SetIterator< Potential<T_DATA>* > iter = __dummies.begin();
+    for ( SetIterator< Potential<GUM_SCALAR>* > iter = __dummies.begin();
           iter != __dummies.end(); ++iter ) {
       delete *iter;
     }
@@ -76,25 +76,25 @@ namespace gum {
   }
 
 // Returns the Triangulation used by this class.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   Triangulation&
-  ShaferShenoyInference<T_DATA>::triangulation() {
+  ShaferShenoyInference<GUM_SCALAR>::triangulation() {
     return *__triangulation;
   }
 
 // Makes the inference
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::makeInference() {
+  ShaferShenoyInference<GUM_SCALAR>::makeInference() {
     this->_invalidateMarginals();
     
     // Setting all collect flags at false
-    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
       ( *iter )->isCollected = false;
     }
 
-    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
       if ( not( *iter )->isCollected ) {
         __collectFromClique( iter.key() );
@@ -107,10 +107,10 @@ namespace gum {
 // @param id The variable's id.
 // @throw NotFound Raised if no variable matches id.
 // @throw OperationNotAllowed Raised if the inference haven't be done.
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::_fillMarginal( NodeId id,
-      Potential<T_DATA>& marginal ) {
+  ShaferShenoyInference<GUM_SCALAR>::_fillMarginal( NodeId id,
+      Potential<GUM_SCALAR>& marginal ) {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique( id );
     // First we find the smallest clique containing id
 
@@ -127,7 +127,7 @@ namespace gum {
     __collectFromClique( cliqueId );
 
     // Third we fill the marginal with the good values using a bucket
-    MultiDimBucket<T_DATA> bucket;
+    MultiDimBucket<GUM_SCALAR> bucket;
 
     bucket.add( this->bn().variable( id ) );
 
@@ -151,11 +151,11 @@ namespace gum {
   }
 
 // insert new evidence in the graph
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::insertEvidence(
-    const List<const Potential<T_DATA>*>& pot_list ) {
-    for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+  ShaferShenoyInference<GUM_SCALAR>::insertEvidence(
+    const List<const Potential<GUM_SCALAR>*>& pot_list ) {
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       __clique_prop[__node2CliqueMap[
                       this->bn().nodeId(( *iter )->variable( 0 ) )]
@@ -169,9 +169,9 @@ namespace gum {
   }
 
 // remove a given evidence from the graph
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::eraseEvidence( const Potential<T_DATA>* e ) {
+  ShaferShenoyInference<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* e ) {
     if ( not( e->variablesSequence().size() != 1 ) ) {
       __clique_prop[
         __node2CliqueMap[this->bn().nodeId( e->variable( 0 ) )]
@@ -183,10 +183,10 @@ namespace gum {
   }
 
 // remove all evidence from the graph
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::eraseAllEvidence() {
-    for ( typename Property< CliqueProp<T_DATA>* >::onNodes::iterator
+  ShaferShenoyInference<GUM_SCALAR>::eraseAllEvidence() {
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
       __removeDiffusedMessages( iter.key() );
       ( *iter )->removeAllEvidence();
@@ -194,23 +194,23 @@ namespace gum {
   }
 
 // @return Returns the list of neighbours of a given clique
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const NodeSet&
-  ShaferShenoyInference<T_DATA>::__getNeighbours( NodeId cliqueId ) {
+  ShaferShenoyInference<GUM_SCALAR>::__getNeighbours( NodeId cliqueId ) {
     return __triangulation->junctionTree().neighbours( cliqueId );
   }
 
 // @return Returns a separator given two adjacent cliques
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const NodeSet&
-  ShaferShenoyInference<T_DATA>::__getSeparator( NodeId clique_1, NodeId clique_2 ) {
+  ShaferShenoyInference<GUM_SCALAR>::__getSeparator( NodeId clique_1, NodeId clique_2 ) {
     return __triangulation->junctionTree().separator( clique_1, clique_2 );
   }
 
 // @return Returns the clique in which the node's cpt must be stored
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   NodeId
-  ShaferShenoyInference<T_DATA>::__getClique
+  ShaferShenoyInference<GUM_SCALAR>::__getClique
   ( const std::vector<NodeId> &eliminationOrder, NodeId id ) {
     Set<NodeId> idSet;
     idSet.insert( id );
@@ -234,9 +234,9 @@ namespace gum {
   }
 
 // Builds the cliques tables
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__buildCliquesTables() {
+  ShaferShenoyInference<GUM_SCALAR>::__buildCliquesTables() {
     const std::vector<NodeId> &elim = __triangulation->eliminationOrder();
 
     NodeSet cliquesSet;
@@ -244,7 +244,7 @@ namespace gum {
 
     for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
           iter != __triangulation->junctionTree().endNodes(); ++iter ) {
-      __clique_prop.insert( *iter, new CliqueProp<T_DATA>( *iter ) );
+      __clique_prop.insert( *iter, new CliqueProp<GUM_SCALAR>( *iter ) );
       cliquesSet.insert( *iter );
 
       for ( NodeSetIterator jter = __triangulation->junctionTree().clique( *iter ).begin();
@@ -268,9 +268,9 @@ namespace gum {
   }
 
 // Calls a collect with a node as source
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__collectFromClique( NodeId source ) {
+  ShaferShenoyInference<GUM_SCALAR>::__collectFromClique( NodeId source ) {
     __clique_prop[source]->isCollected = true;
 
     try {
@@ -285,9 +285,9 @@ namespace gum {
   }
 
 // Collecting phase of the inference
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   bool
-  ShaferShenoyInference<T_DATA>::__collect( NodeId source, NodeId current ) {
+  ShaferShenoyInference<GUM_SCALAR>::__collect( NodeId source, NodeId current ) {
     __clique_prop[current]->isCollected = true;
     bool newMsg = false; // Flag used to know if we must recompute the message current -> source
 
@@ -317,9 +317,9 @@ namespace gum {
   }
 
 // Diffusing phase of the inference
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__diffuseFromClique( NodeId source ) {
+  ShaferShenoyInference<GUM_SCALAR>::__diffuseFromClique( NodeId source ) {
     try {
       const NodeSet& neighbours = __getNeighbours( source );
       for ( NodeSetIterator iter = neighbours.begin();
@@ -339,9 +339,9 @@ namespace gum {
   }
 
 // Diffusing phase of the inference
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__diffuse( NodeId source, NodeId current,
+  ShaferShenoyInference<GUM_SCALAR>::__diffuse( NodeId source, NodeId current,
       bool recompute ) {
     const NodeSet& neighbours =  __getNeighbours( current );
     for ( NodeSetIterator iter = neighbours.begin();
@@ -361,11 +361,11 @@ namespace gum {
 
 // Create and saves the message from key.first to key.second in the
 // __messagesMap.
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__sendMessage( NodeId tail, NodeId head ) {
+  ShaferShenoyInference<GUM_SCALAR>::__sendMessage( NodeId tail, NodeId head ) {
     // Building the message's table held by the separator
-    MultiDimBucket<T_DATA> *message = new MultiDimBucket<T_DATA>();
+    MultiDimBucket<GUM_SCALAR> *message = new MultiDimBucket<GUM_SCALAR>();
 
     for ( NodeSet::iterator iter = __getSeparator( tail, head ).begin();
           iter != __getSeparator( tail, head ).end(); ++iter ) {
@@ -402,15 +402,15 @@ namespace gum {
     __messagesMap.insert( Arc( tail, head ), message );
   }
 
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   bool
-  ShaferShenoyInference<T_DATA>::__messageExists( NodeId source, NodeId dest ) {
+  ShaferShenoyInference<GUM_SCALAR>::__messageExists( NodeId source, NodeId dest ) {
     return __messagesMap.exists( Arc( source , dest ) );
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  ShaferShenoyInference<T_DATA>::__removeDiffusedMessages( NodeId cliqueId ) {
+  ShaferShenoyInference<GUM_SCALAR>::__removeDiffusedMessages( NodeId cliqueId ) {
     const NodeSet& neighbours = __getNeighbours( cliqueId );
     for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
@@ -423,10 +423,10 @@ namespace gum {
 
 // @param cliqueId The clique for which the dummy bucket is made.
 // @return A pointer over the dummy bucket.
-  template <typename T_DATA> INLINE
-  Potential<T_DATA>*
-  ShaferShenoyInference<T_DATA>::__makeDummyPotential( NodeId cliqueId ) {
-    Potential<T_DATA>* pot = new Potential<T_DATA>( new MultiDimSparse<T_DATA>(( T_DATA ) 1 ) );
+  template <typename GUM_SCALAR> INLINE
+  Potential<GUM_SCALAR>*
+  ShaferShenoyInference<GUM_SCALAR>::__makeDummyPotential( NodeId cliqueId ) {
+    Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>( new MultiDimSparse<GUM_SCALAR>(( GUM_SCALAR ) 1 ) );
     __dummies.insert( pot );
 
     for ( Set<NodeId>::const_iterator iter = __triangulation->junctionTree().clique( cliqueId ).begin();
@@ -443,9 +443,9 @@ namespace gum {
 
 // Default constructor.
 // @param id the id of this clique on which this properties holds.
-  template <typename T_DATA>
-  CliqueProp<T_DATA>::CliqueProp( NodeId id ):
-      isCollected( false ), __potential( new MultiDimBucket<T_DATA>() ),
+  template <typename GUM_SCALAR>
+  CliqueProp<GUM_SCALAR>::CliqueProp( NodeId id ):
+      isCollected( false ), __potential( new MultiDimBucket<GUM_SCALAR>() ),
       __varsPotential( 0 ), __name( "" ) {
     GUM_CONSTRUCTOR( CliqueProp );
     std::stringstream name;
@@ -454,8 +454,8 @@ namespace gum {
   }
 
 // Destructor.
-  template <typename T_DATA>
-  CliqueProp<T_DATA>::~CliqueProp() {
+  template <typename GUM_SCALAR>
+  CliqueProp<GUM_SCALAR>::~CliqueProp() {
     GUM_DESTRUCTOR( CliqueProp );
     delete __potential;
 
@@ -465,17 +465,17 @@ namespace gum {
   }
 
 // Returns the name of this clique.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   const std::string&
-  CliqueProp<T_DATA>::name() const {
+  CliqueProp<GUM_SCALAR>::name() const {
     return __name;
   }
 
 // Add a variable to this clique
 // @param v The added variable.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void
-  CliqueProp<T_DATA>::addVariable( const DiscreteVariable& v ) {
+  CliqueProp<GUM_SCALAR>::addVariable( const DiscreteVariable& v ) {
     __potential->add( v );
 
     if ( __varsPotential != 0 ) {
@@ -485,9 +485,9 @@ namespace gum {
 
 // Add a Potential to this clique
 // @param cpt The added CPT.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void
-  CliqueProp<T_DATA>::addPotential( const Potential<T_DATA>& cpt ) {
+  CliqueProp<GUM_SCALAR>::addPotential( const Potential<GUM_SCALAR>& cpt ) {
     if ( __varsPotential != 0 ) {
       __varsPotential->add( cpt );
     } else {
@@ -498,9 +498,9 @@ namespace gum {
 // Add an evidence on a variable in this clique.
 // @throw NotFound Raised if the evidence is on a variable not present
 //                 in this clique.
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  CliqueProp<T_DATA>::addEvidence( const Potential<T_DATA>& evidence ) {
+  CliqueProp<GUM_SCALAR>::addEvidence( const Potential<GUM_SCALAR>& evidence ) {
     if ( evidence.variablesSequence().size() != 1 ) {
       std::stringstream msg;
       msg << ": expected evidence on 1 variable, found on ";
@@ -519,7 +519,7 @@ namespace gum {
 
     if ( __varsPotential == 0 ) {
       __varsPotential = __potential;
-      __potential = new MultiDimBucket<T_DATA>();
+      __potential = new MultiDimBucket<GUM_SCALAR>();
       for (gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter) {
         __potential->add(**iter);
       }
@@ -532,9 +532,9 @@ namespace gum {
   }
 
 // Removes all the evidences containing v
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void
-  CliqueProp<T_DATA>::removeEvidence( const DiscreteVariable& v ) {
+  CliqueProp<GUM_SCALAR>::removeEvidence( const DiscreteVariable& v ) {
     __evidences.erase( &v );
 
     if ( __evidences.size() == 0 ) {
@@ -545,9 +545,9 @@ namespace gum {
   }
 
 // Remove all the evidences
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void
-  CliqueProp<T_DATA>::removeAllEvidence() {
+  CliqueProp<GUM_SCALAR>::removeAllEvidence() {
     if ( __evidences.size() != 0 ) {
       delete __potential;
       __potential = __varsPotential;
@@ -557,23 +557,23 @@ namespace gum {
   }
 
 // @return Returns the mapping of evidences on the variables in this clique.
-  template <typename T_DATA> INLINE
-  const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >&
-  CliqueProp<T_DATA>::evidences() const {
+  template <typename GUM_SCALAR> INLINE
+  const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* >&
+  CliqueProp<GUM_SCALAR>::evidences() const {
     return __evidences;
   }
 
 /// @return Returns the bucket of this Clique
-  template <typename T_DATA> INLINE
-  MultiDimBucket<T_DATA>&
-  CliqueProp<T_DATA>::bucket() {
+  template <typename GUM_SCALAR> INLINE
+  MultiDimBucket<GUM_SCALAR>&
+  CliqueProp<GUM_SCALAR>::bucket() {
     return *__potential;
   }
 
 /// @return Returns the bucket of this Clique
-  template <typename T_DATA> INLINE
-  const MultiDimBucket<T_DATA>&
-  CliqueProp<T_DATA>::bucket() const {
+  template <typename GUM_SCALAR> INLINE
+  const MultiDimBucket<GUM_SCALAR>&
+  CliqueProp<GUM_SCALAR>::bucket() const {
     return *__potential;
   }
 

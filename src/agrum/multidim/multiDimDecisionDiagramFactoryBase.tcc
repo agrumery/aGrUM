@@ -42,8 +42,8 @@ namespace gum {
 // =============================================================================
 // Default constructor.
 // =============================================================================
-template< typename T_DATA >
-MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase() :
+template< typename GUM_SCALAR >
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::MultiDimDecisionDiagramFactoryBase() :
     _model( 500, true, 1500, true ),
     _varMap( 500, true, false ),
     _valueMap( 125 ),
@@ -64,8 +64,8 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::MultiDimDecisionDiagramFactoryBase
 // Destructor.
 // @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
 // =============================================================================
-template< typename T_DATA >
-MultiDimDecisionDiagramFactoryBase< T_DATA >::~MultiDimDecisionDiagramFactoryBase() {
+template< typename GUM_SCALAR >
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::~MultiDimDecisionDiagramFactoryBase() {
 
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramFactoryBase );
 
@@ -82,9 +82,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::~MultiDimDecisionDiagramFactoryBas
 // =============================================================================
 // Returns the sequence of variables on which is based the diagram construction
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 const Sequence< const DiscreteVariable* >&
-MultiDimDecisionDiagramFactoryBase< T_DATA >::variablesSequence(  ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::variablesSequence(  ) {
 
     return _varsSeq;
 
@@ -96,9 +96,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::variablesSequence(  ) {
 // NoVariableCheckMode.
 // @param a sequence containing the variable (wich will be the referent )
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::setVariablesSequence( Sequence< const DiscreteVariable* > s ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::setVariablesSequence( Sequence< const DiscreteVariable* > s ) {
 
     _varsSeq = s;
     _var2NodeIdMap.resize( s.size() );
@@ -115,9 +115,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::setVariablesSequence( Sequence< co
 // =============================================================================
 // Sets root node of decision diagram
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::setRootNode ( const NodeId nody ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::setRootNode ( const NodeId nody ) {
     _rootId = nody;
 }
 
@@ -126,9 +126,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::setRootNode ( const NodeId nody ) 
 // @throw OperationNotAllowed if no sequence of variable have yet been specified
 // Returns the id of that node
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 NodeId
-MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNode ( const DiscreteVariable* var ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::addNonTerminalNode ( const DiscreteVariable* var ) {
 
     // *******************************************************************************************
     // Verification
@@ -160,9 +160,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNode ( const Discret
 // @throw OperationNotAllowed if no sequence of variable have yet been specified
 // Returns the id of that node
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 NodeId
-MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::addNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
 
     std::pair<bool, NodeId> check = checkredundancy ( var, nodeArcMap, defaultArcTo );
 
@@ -194,9 +194,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::addNonTerminalNodeWithArcs ( const
 // Checks if a node with same variable, same sons and same default arc does not
 // already exists in diagram
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 std::pair<bool, NodeId>
-MultiDimDecisionDiagramFactoryBase< T_DATA >::checkredundancy ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::checkredundancy ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
 
     std::pair<bool, NodeId> res;
     res.first = false;
@@ -292,11 +292,11 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::checkredundancy ( const DiscreteVa
 // Returns the id of that node. If a node with such value already exists, it
 // returns that node id.
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 NodeId
-MultiDimDecisionDiagramFactoryBase< T_DATA >::addTerminalNode ( const T_DATA& value ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::addTerminalNode ( const GUM_SCALAR& value ) {
 
-    T_DATA approximate = this->fromExact ( value );
+    GUM_SCALAR approximate = this->fromExact ( value );
 
     if ( _valueMap.existsSecond ( approximate ) ) {
         return _valueMap.first ( approximate );
@@ -314,9 +314,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::addTerminalNode ( const T_DATA& va
 // Removes the node corresponding to the given id from the diagram.
 // @throw NotFound if node does not exist
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseNode ( NodeId n ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::eraseNode ( NodeId n ) {
 
     if ( !_model.exists ( n ) ) {
         GUM_ERROR ( NotFound, "Node " <<  n << " does not exist in diagram." );
@@ -361,9 +361,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseNode ( NodeId n ) {
 // @throw OperationNotAllowed arc doesn't respect variable order property
 // @throw DuplicateElement if another arc linking those nodes already exists
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::insertArc ( NodeId from, NodeId to, Idx value ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertArc ( NodeId from, NodeId to, Idx value ) {
 
     if ( !_model.exists ( from ) ) {
         GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." );
@@ -401,9 +401,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::insertArc ( NodeId from, NodeId to
 // @throw OperationNotAllowed arc doesn't respect variable order property
 // @throw DuplicateElement if another arc linking those nodes already exists
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::insertDefaultArc ( NodeId from, NodeId to ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertDefaultArc ( NodeId from, NodeId to ) {
 
     if( !_model.exists(from) ) {
         GUM_ERROR( NotFound, " Origin node " <<  from << " does not exist." );
@@ -436,9 +436,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::insertDefaultArc ( NodeId from, No
 // @param to as NodeId
 // @throw InvalidArc If arc does not exist
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ) {
 
     if( !_model.existsArc( Arc(from, to) ) ) {
         GUM_ERROR( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
@@ -459,9 +459,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseSpecificArc ( NodeId from, No
 // if several arcs have different value but same parent and child, this method will erase all of them .
 // If you want to erase a specific one, use eraseArcWithValue
 // =============================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseArc ( NodeId from, NodeId to ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::eraseArc ( NodeId from, NodeId to ) {
 
     if ( !_model.existsArc ( Arc ( from, to ) ) ) {
         GUM_ERROR ( InvalidArc, " That arc " <<  from << " - " << to << " does not exist" );
@@ -492,9 +492,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::eraseArc ( NodeId from, NodeId to 
 // =============================================================================
 // Displays the current DecisionDiagram structure
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::showProperties() {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::showProperties() {
 
     std::stringstream output;
     std::stringstream terminalStream;
@@ -533,9 +533,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::showProperties() {
 // Returns the value of associated node if its a terminal one
 // @throw NotFound if it's not a terminal node
 // =============================================================================
-template< typename T_DATA > INLINE
-T_DATA
-MultiDimDecisionDiagramFactoryBase< T_DATA >::nodeValue ( NodeId node ) {
+template< typename GUM_SCALAR > INLINE
+GUM_SCALAR
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::nodeValue ( NodeId node ) {
     return _valueMap.second ( node );
 }
 
@@ -548,9 +548,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::nodeValue ( NodeId node ) {
 // =============================================================================
 // Sets the factory from an already existing diagram
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::setMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<T_DATA>* source ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::setMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source ) {
 
     this->clear();
 
@@ -598,9 +598,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::setMultiDimDecisionDiagram ( const
 // Swaps two variables in this multidim
 // @throw OperationNotAllowed if the variable aren't adajcent in variable order
 // =============================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
 
     if( _varsSeq.pos(y) != _varsSeq.pos(x) + 1 ) {
         GUM_ERROR( OperationNotAllowed, "Swap must be between two adjacent var. Var " << y->name() << " is at pos " << _varsSeq.pos(y) << " and var " << x->name() << " at pos " << _varsSeq.pos(x) );
@@ -793,9 +793,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::swap( const DiscreteVariable* x, c
 //===============================================================================================================
 // Resets the factory
 //===============================================================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::clear() {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::clear() {
 
     _rootId = 0;
 
@@ -833,9 +833,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::clear() {
 // ( including arc respecting a variable order )
 // Helpful when diagram is build on stream
 //===============================================================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::putOnNoVariableCheckMode() {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::putOnNoVariableCheckMode() {
     _noVariableCheckMode = true;
 }
 
@@ -843,9 +843,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::putOnNoVariableCheckMode() {
 //===============================================================================================================
 // Puts the factory out of no check on variable mode
 //===============================================================================================================
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::putOffNoVariableCheckMode() {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::putOffNoVariableCheckMode() {
     _noVariableCheckMode = false;
 }
 
@@ -853,9 +853,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::putOffNoVariableCheckMode() {
 //===============================================================================================================
 // Finds an order of variable compatible to the diagram
 // ==============================================================================================================
-template< typename T_DATA >
+template< typename GUM_SCALAR >
 Sequence< const DiscreteVariable* >
-MultiDimDecisionDiagramFactoryBase< T_DATA >::_findVariableOrder() {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::_findVariableOrder() {
 
     Sequence< const DiscreteVariable* > varTopo;
     bool modified = true;
@@ -915,9 +915,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::_findVariableOrder() {
 /*                        */
 /* **********************************************************************************************/
 
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 NodeId
-MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeAddNonTerminalNodeWithArcs ( const DiscreteVariable* var,  const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeAddNonTerminalNodeWithArcs ( const DiscreteVariable* var,  const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo ) {
 
     std::pair<bool, NodeId> check = checkredundancy ( var, nodeArcMap, defaultArcTo );
 
@@ -945,9 +945,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeAddNonTerminalNodeWithArcs (
 }
 
 
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 NodeId
-MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeAddNonTerminalNode ( const DiscreteVariable* var ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeAddNonTerminalNode ( const DiscreteVariable* var ) {
 
 
     // *******************************************************************************************
@@ -977,9 +977,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeAddNonTerminalNode ( const D
 }
 
 
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeInsertArc ( NodeId from, NodeId to, Idx value ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeInsertArc ( NodeId from, NodeId to, Idx value ) {
 
     if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] == to )
         return;
@@ -991,9 +991,9 @@ MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeInsertArc ( NodeId from, Nod
 }
 
 
-template< typename T_DATA > INLINE
+template< typename GUM_SCALAR > INLINE
 void
-MultiDimDecisionDiagramFactoryBase< T_DATA >::unsafeInsertDefaultArc ( NodeId from, NodeId to ) {
+MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeInsertDefaultArc ( NodeId from, NodeId to ) {
 
     for ( std::vector<NodeId>::iterator iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )
         if ( *iter == to ) {

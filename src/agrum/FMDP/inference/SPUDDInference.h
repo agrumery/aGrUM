@@ -45,7 +45,7 @@ namespace gum {
    *
    */
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
   class SPUDDInference {
 
@@ -59,7 +59,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      SPUDDInference ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon = 0.001 );
+      SPUDDInference ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.001 );
 
       /**
        * Default destructor
@@ -81,9 +81,9 @@ namespace gum {
       
     private:
     
-		FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
+		FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 		HashTable< NodeId, List<Idx>* > __bestPolicy; 
-		T_DATA __epsilon;
+		GUM_SCALAR __epsilon;
 
   };
 } /* namespace gum */

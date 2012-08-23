@@ -30,14 +30,14 @@ namespace gum {
   /* ===                           GUM_BN_WRITER                              === */
   /* ============================================================================ */
   // Default constructor.
-  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
-    GeneralizedCNFWriter<T_DATA,IApproximationPolicy>::GeneralizedCNFWriter() {
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
+    GeneralizedCNFWriter<GUM_SCALAR,IApproximationPolicy>::GeneralizedCNFWriter() {
       GUM_CONSTRUCTOR( GeneralizedCNFWriter );
     }
 
   // Default destructor.
-  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
-    GeneralizedCNFWriter<T_DATA, IApproximationPolicy >::~GeneralizedCNFWriter() {
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
+    GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::~GeneralizedCNFWriter() {
       GUM_DESTRUCTOR( GeneralizedCNFWriter );
     }
 
@@ -47,9 +47,9 @@ namespace gum {
   // @param ouput The output stream.
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
     void
-    GeneralizedCNFWriter<T_DATA, IApproximationPolicy >::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+    GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
       if ( ! output.good() )
         GUM_ERROR( IOError, "Stream states flags are not all unset." );
       std::stringstream strfile, strfile2;
@@ -70,7 +70,7 @@ namespace gum {
           str << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
           vartable.insert(str.str(), ++num);strfile << num <<"::"<< str.str() <<"\n";
         }
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
           std::stringstream strinst;
@@ -95,7 +95,7 @@ namespace gum {
         }
         str0 << "0\n";clause++;
         clausstr << str0.str() << str1.str();
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
           for (Idx i = 0; i < inst.nbrDim() ; i++){
@@ -121,9 +121,9 @@ namespace gum {
   // @param filePath The path to the file used to write the Bayesian Network.
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
     void
-    GeneralizedCNFWriter<T_DATA, IApproximationPolicy>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+    GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
       std::ofstream output( filePath.c_str(), std::ios_base::trunc );
       std::ofstream outputvar( (filePath+".var").c_str(), std::ios_base::trunc );
 
@@ -150,7 +150,7 @@ namespace gum {
           str << bn.variable(*iter).name() <<"_"<< bn.variable(*iter).label( i ) ;
           vartable.insert(str.str(), ++num);strfile << num <<"::"<< str.str() <<"\n";
         }
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
           std::stringstream strinst;
@@ -175,7 +175,7 @@ namespace gum {
         }
         str0 << "0\n";clause++;
         clausstr << str0.str() << str1.str();
-        const Potential<T_DATA>& cpt = bn.cpt( *iter );
+        const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
           for (Idx i = 0; i < inst.nbrDim() ; i++){
@@ -203,27 +203,27 @@ namespace gum {
     }
 
   // Returns a bloc defining a variable's CPT in the BN format.
-  /*template<typename T_DATA, template<class> class IApproximationPolicy > INLINE
+  /*template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
     std::string
-    CNFWriter<T_DATA>::__variableCPT( const Potential<T_DATA>& cpt ) {
+    CNFWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
     str << "";
     return str.str();
     }
 
   // Returns the header of the BN file.
-  template<typename T_DATA,> INLINE
+  template<typename GUM_SCALAR,> INLINE
   std::string
-  CNFWriter<T_DATA>::__header( const BayesNet<T_DATA>& ) {
+  CNFWriter<GUM_SCALAR>::__header( const BayesNet<GUM_SCALAR>& ) {
   std::stringstream str;
   str << "";
   return str.str();
   }
 
   // Returns a bloc defining a variable in the BN format.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  CNFWriter<T_DATA>::__variableBloc( const DiscreteVariable& var ) {
+  CNFWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
   std::stringstream str;
   str << "" ;
   return str.str();

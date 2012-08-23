@@ -33,24 +33,24 @@ namespace gum {
 
 
   /// default constructor
-  template<typename T_DATA>
-  Scheduler<T_DATA>::Scheduler () {
+  template<typename GUM_SCALAR>
+  Scheduler<GUM_SCALAR>::Scheduler () {
     // for debugging purposes
     GUM_CONSTRUCTOR ( Scheduler );
   }
 
   
   /// copy constructor
-  template<typename T_DATA>
-  Scheduler<T_DATA>::Scheduler ( const Scheduler<T_DATA>& from ) {
+  template<typename GUM_SCALAR>
+  Scheduler<GUM_SCALAR>::Scheduler ( const Scheduler<GUM_SCALAR>& from ) {
     // for debugging purposes
     GUM_CONS_CPY ( Scheduler );
   }
   
 
   /// destructor
-  template<typename T_DATA>
-  Scheduler<T_DATA>::~Scheduler () {
+  template<typename GUM_SCALAR>
+  Scheduler<GUM_SCALAR>::~Scheduler () {
     // for debugging purposes
     GUM_DESTRUCTOR ( Scheduler );
   }

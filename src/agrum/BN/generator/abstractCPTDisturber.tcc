@@ -30,14 +30,14 @@ namespace gum {
 
 
   // Default constructor.
-  template < typename T_DATA>
-  AbstractCPTDisturber<T_DATA>::AbstractCPTDisturber() {
+  template < typename GUM_SCALAR>
+  AbstractCPTDisturber<GUM_SCALAR>::AbstractCPTDisturber() {
     GUM_CONSTRUCTOR( AbstractCPTDisturber );
   }
 
   // Destructor.
-  template < typename T_DATA>
-  AbstractCPTDisturber<T_DATA>::~AbstractCPTDisturber() {
+  template < typename GUM_SCALAR>
+  AbstractCPTDisturber<GUM_SCALAR>::~AbstractCPTDisturber() {
     GUM_DESTRUCTOR( AbstractCPTDisturber );
   }
 

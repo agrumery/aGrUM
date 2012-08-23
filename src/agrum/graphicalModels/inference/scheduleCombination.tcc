@@ -33,48 +33,48 @@ namespace gum {
 
   
   /// constructor
-  template<typename T_DATA>
-  ScheduleCombination<T_DATA>::ScheduleCombination () {
+  template<typename GUM_SCALAR>
+  ScheduleCombination<GUM_SCALAR>::ScheduleCombination () {
     /// for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleCombination );
   }
 
   
   /// copy constructor
-  template<typename T_DATA>
-  ScheduleCombination<T_DATA>::ScheduleCombination
-  ( const ScheduleCombination<T_DATA>& from ) {
+  template<typename GUM_SCALAR>
+  ScheduleCombination<GUM_SCALAR>::ScheduleCombination
+  ( const ScheduleCombination<GUM_SCALAR>& from ) {
     /// for debugging purposes
     GUM_CONS_CPY ( ScheduleCombination );
   }
 
   
   /// destructor
-  template<typename T_DATA>
-  ScheduleCombination<T_DATA>::~ScheduleCombination () {
+  template<typename GUM_SCALAR>
+  ScheduleCombination<GUM_SCALAR>::~ScheduleCombination () {
     /// for debugging purposes
     GUM_DESTRUCTOR ( ScheduleCombination );
   }
 
 
   // adds to a given schedule the operations necessary to perform a combination
-  template<typename T_DATA>
-  ScheduleMultiDim<T_DATA>
-  ScheduleCombination<T_DATA>::combine
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    Schedule<T_DATA>& schedule ) {
+  template<typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>
+  ScheduleCombination<GUM_SCALAR>::combine
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
             iter = set.begin(); iter != set.end(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
 
     // perform the combination
-    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+    const ScheduleMultiDim<GUM_SCALAR>& res = combine ( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }
@@ -84,24 +84,24 @@ namespace gum {
 
   
   // adds to a given schedule the operations necessary to perform a combination
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  ScheduleMultiDim<T_DATA>
-  ScheduleCombination<T_DATA>::combine ( const Set<const TABLE<T_DATA>*>& set,
-                                         Schedule<T_DATA>& schedule ) {
+  ScheduleMultiDim<GUM_SCALAR>
+  ScheduleCombination<GUM_SCALAR>::combine ( const Set<const TABLE<GUM_SCALAR>*>& set,
+                                         Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
+        ( new ScheduleMultiDim<GUM_SCALAR> ( *( (*iter)->content() ) ) );
     }
 
     // perform the combination
-    const ScheduleMultiDim<T_DATA>& res = combine ( sched_set, schedule );
+    const ScheduleMultiDim<GUM_SCALAR>& res = combine ( sched_set, schedule );
     
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }
@@ -112,22 +112,22 @@ namespace gum {
   
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template <typename T_DATA>
-  float ScheduleCombination<T_DATA>::nbOperations
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  template <typename GUM_SCALAR>
+  float ScheduleCombination<GUM_SCALAR>::nbOperations
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
             iter = set.begin(); iter != set.end(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
 
     // perform the combination
     float res = nbOperations ( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }
@@ -138,24 +138,24 @@ namespace gum {
   
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  float ScheduleCombination<T_DATA>::nbOperations
-  ( const Set<const TABLE<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  float ScheduleCombination<GUM_SCALAR>::nbOperations
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
+        ( new ScheduleMultiDim<GUM_SCALAR> ( *( (*iter)->content() ) ) );
     }
 
     // perform the combination
     float res = nbOperations ( sched_set, schedule );
     
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }
@@ -165,22 +165,22 @@ namespace gum {
 
   
   /// returns the memory consumption used during the combination
-  template <typename T_DATA>
-  std::pair<long,long> ScheduleCombination<T_DATA>::memoryUsage
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  template <typename GUM_SCALAR>
+  std::pair<long,long> ScheduleCombination<GUM_SCALAR>::memoryUsage
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const MultiDimImplementation<T_DATA>*>::const_iterator
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
             iter = set.begin(); iter != set.end(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<T_DATA> ( **iter ) );
+      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
     
     // compute the memory consumption of the combination
     std::pair<long,long> res = memoryUsage ( sched_set, schedule );
     
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }
@@ -191,24 +191,24 @@ namespace gum {
   
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  std::pair<long,long> ScheduleCombination<T_DATA>::memoryUsage
-  ( const Set<const TABLE<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  std::pair<long,long> ScheduleCombination<GUM_SCALAR>::memoryUsage
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
-    Set<const ScheduleMultiDim<T_DATA>*> sched_set;
-    for ( typename Set<const TABLE<T_DATA>*>::const_iterator iter = set.begin();
+    Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
           iter != set.end(); ++iter ) {
       sched_set.insert
-        ( new ScheduleMultiDim<T_DATA> ( *( (*iter)->content() ) ) );
+        ( new ScheduleMultiDim<GUM_SCALAR> ( *( (*iter)->content() ) ) );
     }
 
     // compute the memory consumption of the combination
     std::pair<long,long> res = memoryUsage ( sched_set, schedule );
     
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
       delete *iter;
     }

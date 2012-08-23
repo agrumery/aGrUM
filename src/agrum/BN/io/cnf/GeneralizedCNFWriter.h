@@ -56,8 +56,8 @@ namespace gum {
 
 
    */
-  template<typename T_DATA, template<class> class IApproximationPolicy = ExactPolicy>
-  class GeneralizedCNFWriter: public CNFWriter<T_DATA,IApproximationPolicy> {
+  template<typename GUM_SCALAR, template<class> class IApproximationPolicy = ExactPolicy>
+  class GeneralizedCNFWriter: public CNFWriter<GUM_SCALAR,IApproximationPolicy> {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -83,7 +83,7 @@ namespace gum {
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn );
+      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn );
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -93,18 +93,18 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<T_DATA>& bn );
+      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn );
 
 
    /* private:
       // Returns the header of the BN file.
-      std::string __header( const BayesNet<T_DATA>& bn );
+      std::string __header( const BayesNet<GUM_SCALAR>& bn );
 
       // Returns a bloc defining a variable in the BN format.
       std::string __variableBloc( const DiscreteVariable& var );
 
       // Returns a bloc defining a variable's CPT in the BN format.
-      std::string __variableCPT( const Potential<T_DATA>& cpt );
+      std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
 
       // Returns the modalities labels of the variables in varsSeq*/
       };

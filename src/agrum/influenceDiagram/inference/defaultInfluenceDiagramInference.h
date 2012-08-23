@@ -49,7 +49,7 @@ class List;
 
 // ============================================================================
 
-template <typename T_DATA> class CliqueProperties;
+template <typename GUM_SCALAR> class CliqueProperties;
 // ============================================================================
 /**
  * @class defaultInfluenceDiagramInference defaultInfluenceDiagramInference.h <agrum/influenceDiagram/inference/defaultInfluenceDiagramInference.h>
@@ -59,8 +59,8 @@ template <typename T_DATA> class CliqueProperties;
  *
  * The class used for the triangulation is partialOrderedTriangulation.
  */
-template<typename T_DATA>
-class DefaultInfluenceDiagramInference: public InfluenceDiagramInference<T_DATA> {
+template<typename GUM_SCALAR>
+class DefaultInfluenceDiagramInference: public InfluenceDiagramInference<GUM_SCALAR> {
 
 public:
 
@@ -73,7 +73,7 @@ public:
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    DefaultInfluenceDiagramInference( const InfluenceDiagram<T_DATA>& infDiag );
+    DefaultInfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
     /**
      * Destructor.
@@ -90,7 +90,7 @@ public:
     virtual void makeInference();
 
     /// @see gum::InfluenceDiagramInference::getMEU().
-    T_DATA getMEU();
+    GUM_SCALAR getMEU();
 
     /// @see gum::InfluenceDiagramInference::getBestDecisionChoice( NodeId decisionId )
     Idx getBestDecisionChoice( NodeId decisionId );
@@ -105,10 +105,10 @@ public:
     /// @{
 
     /// @see gum::InfluenceDiagramInference::insertEvidence().
-    virtual void insertEvidence( const List<const Potential<T_DATA>*>& evidenceList );
+    virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList );
 
     /// @see gum::InfluenceDiagramInference::eraseEvidence().
-    virtual void eraseEvidence( const Potential<T_DATA>* evidence);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* evidence);
 
     /// @see gum::InfluenceDiagramInference::eraseAllEvidence().
     virtual void eraseAllEvidence();
@@ -137,16 +137,16 @@ private:
     Triangulation* __triangulation;
 
     /// The set of dummies sparse potential matrix created.
-    Set< Potential<T_DATA>* > __potentialDummies;
+    Set< Potential<GUM_SCALAR>* > __potentialDummies;
 
     /// The set of dummies sparse utilities matrix created.
-    Set< UtilityTable<T_DATA>* > __utilityDummies;
+    Set< UtilityTable<GUM_SCALAR>* > __utilityDummies;
 
     /// The resulting potential from inference
-    Potential<T_DATA>* __inferencePotential;
+    Potential<GUM_SCALAR>* __inferencePotential;
 
     /// The resulting utility from inference
-    UtilityTable<T_DATA>* __inferenceUtility;
+    UtilityTable<GUM_SCALAR>* __inferenceUtility;
 
     /// @}
     // ====================================================================
@@ -157,7 +157,7 @@ private:
     /// Mapping of the nodes with the clique used to put their CPT
     typename Property<NodeId>::onNodes __nodeToCliqueMap;
 
-    typename Property< CliqueProperties<T_DATA>* >::onNodes __cliquePropertiesMap;
+    typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes __cliquePropertiesMap;
 
     HashTable< size_t, NodeId > __cliqueEliminationMap;
 
@@ -201,19 +201,19 @@ private:
     void __absorbClique( NodeId absorbedCliqueId, NodeId absorbingCliqueId );
 
     /// Reduces a clique down to her separator from another clique elements
-    void __reduceClique( CliqueProperties<T_DATA>* absorbedClique, NodeSet& separator, Potential<T_DATA>*& potentialMarginal, UtilityTable<T_DATA>*& utilityMarginal );
+    void __reduceClique( CliqueProperties<GUM_SCALAR>* absorbedClique, NodeSet& separator, Potential<GUM_SCALAR>*& potentialMarginal, UtilityTable<GUM_SCALAR>*& utilityMarginal );
 
     /// Returns a pointer over a "dummy" potential, which is a CPT filled with
     /// one MultiDimSparse filled with 1. This is used by empty cliques.
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy potential.
     /// @return A pointer over the dummy bucket.
-    Potential<T_DATA>* __makeDummyPotential( NodeId cliqueId );
+    Potential<GUM_SCALAR>* __makeDummyPotential( NodeId cliqueId );
 
     /// Returns a pointer over a "dummy" utility, which is a utility table filled with
     /// one MultiDimSparse filled with 0. This is used by empty cliques.
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy utility.
     /// @return A pointer over the dummy bucket.
-    UtilityTable<T_DATA>* __makeDummyUtility( NodeId cliqueId );
+    UtilityTable<GUM_SCALAR>* __makeDummyUtility( NodeId cliqueId );
 
     /// Returns true if observed  node is eliminated after current node
     bool __IsEliminatedAfter( NodeId observedNode, NodeId currentNode  ) ;
@@ -225,7 +225,7 @@ private:
 /// @class CliqueProperties
 /// Private class to keep clique's properties.
 /// It used MultiDimBucket to compute the cliques potentials.
-template <typename T_DATA>
+template <typename GUM_SCALAR>
 
 class CliqueProperties {
 public:
@@ -243,17 +243,17 @@ public:
 
     /// Determines in which order nodes will be eliminated from clique
     /// @param elim the global elimination order.
-    void makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<T_DATA>& infDiag );
+    void makeEliminationOrder( const std::vector<NodeId>& elim, const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
     /// Add a potential to this clique
     /// @param cpt v's cpt.
     /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
-    void addPotential( const Potential<T_DATA>& cpt, bool removable = false );
+    void addPotential( const Potential<GUM_SCALAR>& cpt, bool removable = false );
 
     /// Add a potential to this clique
     /// @param cpt v's cpt.
     /// @param removable for cleaning purpose after inference, we have to keep track of adding potential during inference
-    void addUtility( const UtilityTable<T_DATA>& ut, bool removable = false );
+    void addUtility( const UtilityTable<GUM_SCALAR>& ut, bool removable = false );
 
     /// Removes all potential and utility table added during an inference
     void cleanFromInference();
@@ -265,7 +265,7 @@ public:
     /// @throw NotFound Raised if the evidence is on a variable not present
     ///        in this clique.
     /// @throw OperationNotAllowed If the evidence isn't valid.
-    void addEvidence( const Potential<T_DATA>& evidence );
+    void addEvidence( const Potential<GUM_SCALAR>& evidence );
 
     /// Removes all the evidences containing v
     void removeEvidence( const DiscreteVariable& v );
@@ -274,13 +274,13 @@ public:
     void removeAllEvidence();
 
     /// @return Returns the mapping of evidences on the variables in this clique.
-    const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >& evidences() const;
+    const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* >& evidences() const;
 
     /// @return Returns the bucket of this Clique
-    const HashTable<const Potential<T_DATA>*, Instantiation* >& potentialBucket();
+    const HashTable<const Potential<GUM_SCALAR>*, Instantiation* >& potentialBucket();
 
     /// @return Returns the bucket of this Clique
-    const HashTable<const UtilityTable<T_DATA>*, Instantiation* >& utilityBucket();
+    const HashTable<const UtilityTable<GUM_SCALAR>*, Instantiation* >& utilityBucket();
 
     /// @return returns the elimination sequence for this clique
     const Sequence<NodeId>& cliqueEliminationOrder();
@@ -293,13 +293,13 @@ public:
 
 private:
     /// Evidences on the variables in this clique
-    HashTable<const DiscreteVariable*, const Potential<T_DATA>* > __evidences;
+    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* > __evidences;
 
     /// The potential bucket of this clique with evidences
-    HashTable<const Potential<T_DATA>*, Instantiation* > __potentialBucket;
+    HashTable<const Potential<GUM_SCALAR>*, Instantiation* > __potentialBucket;
 
     /// The utility bucket of this clique
-    HashTable<const UtilityTable<T_DATA>*, Instantiation* > __utilityBucket;
+    HashTable<const UtilityTable<GUM_SCALAR>*, Instantiation* > __utilityBucket;
 
     /// The sequence of elimination of node in the clique
     Sequence<NodeId> __eliminationOrder;
@@ -312,10 +312,10 @@ private:
     List<const DiscreteVariable*> __removableVarList;
 
     /// The list of potentials that have been had during an inference
-    List<const Potential<T_DATA>* > __removablePotentialList;
+    List<const Potential<GUM_SCALAR>* > __removablePotentialList;
 
     /// The list of utilities that have been had during an inference
-    List<const UtilityTable<T_DATA>* > __removableUtilityList;
+    List<const UtilityTable<GUM_SCALAR>* > __removableUtilityList;
 };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

@@ -48,28 +48,28 @@ namespace gum {
    * @warning In practice, do not use this function but rather operator/function
    * partialInstantiation on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your instantiation. */
-  template<typename T_DATA>
-  MultiDimArray<T_DATA>*
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR>*
   partialInstantiationMultiDimArray
-  ( const MultiDimArray<T_DATA>* table,
+  ( const MultiDimArray<GUM_SCALAR>* table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars ); 
 
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
   partialInstantiationMultiDimArray
-  ( const MultiDimImplementation<T_DATA>* table,
+  ( const MultiDimImplementation<GUM_SCALAR>* table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars ); 
 
-  template<typename T_DATA>
-  MultiDimArray<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR*>*
   partialInstantiationMultiDimArray4Pointers
-  ( const MultiDimArray<T_DATA*>* table,
+  ( const MultiDimArray<GUM_SCALAR*>* table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars );
 
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR*>*
   partialInstantiationMultiDimArray4Pointers
-  ( const MultiDimImplementation<T_DATA*>* table,
+  ( const MultiDimImplementation<GUM_SCALAR*>* table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars );
 
 
@@ -81,17 +81,17 @@ namespace gum {
   // ==============================================================================
 
   /// the function to be used to instantiate a MultiDimImplementation
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
   partialInstantiation
-  ( const MultiDimImplementation<T_DATA>& table,
+  ( const MultiDimImplementation<GUM_SCALAR>& table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars );
 
   /// the function to be used to instantiate a MultiDimDecorator
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
   partialInstantiation
-  ( const MultiDimDecorator<T_DATA>& table,
+  ( const MultiDimDecorator<GUM_SCALAR>& table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars );
 
 
@@ -108,12 +108,12 @@ namespace gum {
 
   /** @brief the function used to register all the instantiation operators on
    * multidimImplementations over non-pointers types */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void partialInstantiation4MultiDimInit ();
 
   /** @brief the function used to register all the instantiations on
    * multidimImplementations over pointers types */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void pointerPartialInstantiation4MultiDimInit ();
 
   
@@ -127,9 +127,9 @@ namespace gum {
    * of which is to run function partialInstantiation4MultiDimInit, we allow this
    * partial specialization. This is most effective to produce different codes
    * for pointer types and non-pointer types. */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   struct PartialInstantiation4MultiDimInitialize {
-    void init () { partialInstantiation4MultiDimInit<T_DATA> (); };
+    void init () { partialInstantiation4MultiDimInit<GUM_SCALAR> (); };
   };
 
   
@@ -144,9 +144,9 @@ namespace gum {
    * function partialInstantiation4MultiDimInit or
    * pointerPartialInstantiation4MultiDimInit, we allow this
    * partial specialization to obtain. */
-  template<typename T_DATA>
-  struct PartialInstantiation4MultiDimInitialize<T_DATA*> {
-    void init () { pointerPartialInstantiation4MultiDimInit<T_DATA> (); };
+  template<typename GUM_SCALAR>
+  struct PartialInstantiation4MultiDimInitialize<GUM_SCALAR*> {
+    void init () { pointerPartialInstantiation4MultiDimInit<GUM_SCALAR> (); };
   };
 
  

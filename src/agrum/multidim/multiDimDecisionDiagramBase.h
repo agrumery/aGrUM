@@ -42,7 +42,7 @@
 
 namespace gum {
 
-  template<typename T_DATA >
+  template<typename GUM_SCALAR >
   class MultiDimDecisionDiagramFactoryBase;
 
   /**
@@ -53,9 +53,9 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimDecisionDiagramBase :  public MultiDimReadOnly<T_DATA>, public virtual ApproximationPolicy<T_DATA> {
+  class MultiDimDecisionDiagramBase :  public MultiDimReadOnly<GUM_SCALAR>, public virtual ApproximationPolicy<GUM_SCALAR> {
 
     public:
 
@@ -74,7 +74,7 @@ namespace gum {
        * @warning Deprecatedbecause of multiplyByScalar, please consider instead newFactory 
        * and then either copy or multiplyByScalar
        */
-      MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< T_DATA >& source );
+      MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< GUM_SCALAR >& source );
 
       /**
        * Destructor.
@@ -96,7 +96,7 @@ namespace gum {
       /**
        * Returns valued pointed by inst
        */
-      virtual T_DATA get( const Instantiation& inst ) const;
+      virtual GUM_SCALAR get( const Instantiation& inst ) const;
 
       /**
        * Returns the terminal node associated to value pointed by inst
@@ -182,19 +182,19 @@ namespace gum {
       * this multidim as a read only
       * @throw OperationNotAllowed if already instantiate cause this is a read only
       */
-      void copy( const MultiDimDecisionDiagramBase<T_DATA>& src, bool fullInstanciation = true );
+      void copy( const MultiDimDecisionDiagramBase<GUM_SCALAR>& src, bool fullInstanciation = true );
 
      /**
       * Removes all variables in this Container and copy content from src, variable included
       * @throw OperationNotAllowed cause this is a read only and a decision diagram ( which 
       * makes quiet complicate any copy operation as a matter of fact )
       */
-      void copy( const MultiDimContainer<T_DATA>& src );
+      void copy( const MultiDimContainer<GUM_SCALAR>& src );
       
      /**
       * Performs a copy of given in parameter table plus a change of variable based upon bijection given in parameter.
       **/
-       void copyAndReassign( const MultiDimDecisionDiagramBase<T_DATA>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new );
+       void copyAndReassign( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new );
 
       /// @}
 
@@ -226,7 +226,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      MultiDimContainer<T_DATA>* newFactory() const = 0;
+      MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
 
       /**
@@ -260,7 +260,7 @@ namespace gum {
        * Returns values map
        * @throw InvalidNode if node is terminal
        */
-      const Bijection< NodeId, T_DATA >& valuesMap() const { return __valueMap; };
+      const Bijection< NodeId, GUM_SCALAR >& valuesMap() const { return __valueMap; };
 
       /// Mapping between id and variable
       const HashTable< NodeId, const DiscreteVariable* >& variableMap() const { return __variableMap; };
@@ -286,8 +286,8 @@ namespace gum {
        * Returns value associated to given node
        * @throw InvalidNode if node isn't terminal
        */
-      const T_DATA& nodeValue( NodeId n ) const;
-      const T_DATA& unsafeNodeValue( NodeId n ) const;
+      const GUM_SCALAR& nodeValue( NodeId n ) const;
+      const GUM_SCALAR& unsafeNodeValue( NodeId n ) const;
 
       /**
        * Returns associated variable of given node
@@ -345,12 +345,12 @@ namespace gum {
        * Extracts sub decision diagram from specified root node
        * @throw NotFound if node does not exist
        */
-       MultiDimDecisionDiagramBase<T_DATA>* extractSubDecisionDiagram( const NodeId root ) const;
+       MultiDimDecisionDiagramBase<GUM_SCALAR>* extractSubDecisionDiagram( const NodeId root ) const;
                 
       /**
        * Instantiates this diagram by multiplying leaf of given diagram by factor
        */
-       void multiplyByScalar( const MultiDimDecisionDiagramBase<T_DATA>* m, T_DATA factor );
+       void multiplyByScalar( const MultiDimDecisionDiagramBase<GUM_SCALAR>* m, GUM_SCALAR factor );
 
       ///@}
 
@@ -362,13 +362,13 @@ namespace gum {
       /**
        * Returns a factory that used same approximation pattern
        */
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory() const = 0;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory() const = 0;
 
       /**
        * Returns a factory that used same approximation pattern
        * Allows to set parameter for that approximation
        */
-      virtual MultiDimDecisionDiagramFactoryBase<T_DATA>* getFactory( const ApproximationPolicy<T_DATA>& md ) const = 0;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory( const ApproximationPolicy<GUM_SCALAR>& md ) const = 0;
 
       ///@}
 
@@ -422,7 +422,7 @@ namespace gum {
        * Binds once and for all terminal nodes to value.
        * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
        */
-      void setValueMap( const Bijection< NodeId, T_DATA >& valueMap );
+      void setValueMap( const Bijection< NodeId, GUM_SCALAR >& valueMap );
 
       /**
        * Links once and for all nodes of the graph.
@@ -442,7 +442,7 @@ namespace gum {
       /**
        * Returns data addressed by inst
        */
-      virtual T_DATA& _get( const Instantiation& inst ) const;
+      virtual GUM_SCALAR& _get( const Instantiation& inst ) const;
 
       /**
       * Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
@@ -474,7 +474,7 @@ namespace gum {
                 
 
       /// Mapping between terminal nodes and their values
-      Bijection< NodeId, T_DATA > __valueMap;
+      Bijection< NodeId, GUM_SCALAR > __valueMap;
 
       /// The graph hidden behin this multidim
       NodeGraphPart __graph;

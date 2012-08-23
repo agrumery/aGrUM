@@ -37,22 +37,22 @@ namespace gum{
 /// the result
 // ================================================================================
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE T_DATA
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-    ( const MultiDimImplementation<T_DATA>* table,
+    ( const MultiDimImplementation<GUM_SCALAR>* table,
       const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE T_DATA*
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
-    ( const MultiDimImplementation<T_DATA*>* table,
+    ( const MultiDimImplementation<GUM_SCALAR*>* table,
       const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
 #endif
     
@@ -138,9 +138,9 @@ namespace gum{
   // fill the matrix with any element
   {
     const Instantiation table_inst ( table );
-    const T_DATA& any_element = *( table->get ( table_inst ) );
+    const GUM_SCALAR& any_element = *( table->get ( table_inst ) );
     for (Idx i = 0; i < result_domain_size; ++i ) {
-      result->unsafeSet ( i, new T_DATA ( any_element ) );
+      result->unsafeSet ( i, new GUM_SCALAR ( any_element ) );
     }
   }
 #endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */

@@ -83,10 +83,10 @@ namespace gum {
    * @brief Definition of templatized reader of FMDPDat files for Bayesian Networks.
    * @author Jean-Christophe Magnan
    */
-   template< typename T_DATA >
-  class FMDPDatReader : public FMDPReader<T_DATA> {
+   template< typename GUM_SCALAR >
+  class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
     public:
-      FMDPDatReader( FactoredMarkovDecisionProcess<T_DATA>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<T_DATA>* ddf );
+      FMDPDatReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf );
       ~FMDPDatReader();
 
       /// Direct access to FMDPDat scanner (mandatory for listener connection)
@@ -133,8 +133,8 @@ namespace gum {
       /// @}
 
     protected:
-      FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
-      FMDPFactory<T_DATA>* __factory;
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+      FMDPFactory<GUM_SCALAR>* __factory;
       MDPDAT::Scanner* __scanner;
       MDPDAT::Parser* __parser;
 

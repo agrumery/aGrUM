@@ -34,41 +34,41 @@ namespace gum {
 
 
   /// default constructor
-  template<typename T_DATA>
-  SchedulerBasic<T_DATA>::SchedulerBasic() :
-      Scheduler<T_DATA> () {
+  template<typename GUM_SCALAR>
+  SchedulerBasic<GUM_SCALAR>::SchedulerBasic() :
+      Scheduler<GUM_SCALAR> () {
     // for debugging purposes
     GUM_CONSTRUCTOR( SchedulerBasic );
   }
 
 
   /// copy constructor
-  template<typename T_DATA>
-  SchedulerBasic<T_DATA>::SchedulerBasic( const SchedulerBasic<T_DATA>& from ) :
-      Scheduler<T_DATA> ( from ) {
+  template<typename GUM_SCALAR>
+  SchedulerBasic<GUM_SCALAR>::SchedulerBasic( const SchedulerBasic<GUM_SCALAR>& from ) :
+      Scheduler<GUM_SCALAR> ( from ) {
     // for debugging purposes
     GUM_CONS_CPY( SchedulerBasic );
   }
 
 
   /// destructor
-  template<typename T_DATA>
-  SchedulerBasic<T_DATA>::~SchedulerBasic() {
+  template<typename GUM_SCALAR>
+  SchedulerBasic<GUM_SCALAR>::~SchedulerBasic() {
     // for debugging purposes
     GUM_DESTRUCTOR( SchedulerBasic );
   }
 
 
   /// virtual constructor
-  template<typename T_DATA>
-  SchedulerBasic<T_DATA>* SchedulerBasic<T_DATA>::newFactory() const {
-    return new SchedulerBasic<T_DATA> ( *this );
+  template<typename GUM_SCALAR>
+  SchedulerBasic<GUM_SCALAR>* SchedulerBasic<GUM_SCALAR>::newFactory() const {
+    return new SchedulerBasic<GUM_SCALAR> ( *this );
   }
 
 
   /// execute all the operations of a given schedule
-  template<typename T_DATA>
-  bool SchedulerBasic<T_DATA>::execute( Schedule<T_DATA>& schedule ) {
+  template<typename GUM_SCALAR>
+  bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule ) {
     const NodeSet& available = schedule.availableOperations();
     while ( ! available.empty() ) {
       for ( typename NodeSet::const_iterator iter = available.begin();
@@ -82,8 +82,8 @@ namespace gum {
 
 
   /// execute only k operations of a given schedule (default k = 1)
-  template<typename T_DATA>
-  bool SchedulerBasic<T_DATA>::execute( Schedule<T_DATA>& schedule,
+  template<typename GUM_SCALAR>
+  bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule,
                                         unsigned int k ) {
     const NodeSet& available = schedule.availableOperations();
     while ( ! available.empty() && k ) {
@@ -99,9 +99,9 @@ namespace gum {
 
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given schedule */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   float
-  SchedulerBasic<T_DATA>::nbOperations( const Schedule<T_DATA>& schedule ) const {
+  SchedulerBasic<GUM_SCALAR>::nbOperations( const Schedule<GUM_SCALAR>& schedule ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     float nb_operations = 0;
@@ -129,9 +129,9 @@ namespace gum {
 
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform the k first ScheduleOperations of a given schedule */
-  template<typename T_DATA>
-  float SchedulerBasic<T_DATA>::nbOperations
-  ( const Schedule<T_DATA>& schedule, unsigned int k ) const {
+  template<typename GUM_SCALAR>
+  float SchedulerBasic<GUM_SCALAR>::nbOperations
+  ( const Schedule<GUM_SCALAR>& schedule, unsigned int k ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     float nb_operations = 0;
@@ -158,9 +158,9 @@ namespace gum {
 
 
   /// returns the memory consumption used during the execution of a schedule
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::pair<long,long>
-  SchedulerBasic<T_DATA>::memoryUsage( const Schedule<T_DATA>& schedule ) const {
+  SchedulerBasic<GUM_SCALAR>::memoryUsage( const Schedule<GUM_SCALAR>& schedule ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     long max_memory = 0;
@@ -200,9 +200,9 @@ namespace gum {
 
   /** @brief returns the memory consumption used during the execution of the
    * k first ScheduleOperations of a given schedule */
-  template<typename T_DATA>
-  std::pair<long,long> SchedulerBasic<T_DATA>::memoryUsage
-  ( const Schedule<T_DATA>& schedule, unsigned int k ) const {
+  template<typename GUM_SCALAR>
+  std::pair<long,long> SchedulerBasic<GUM_SCALAR>::memoryUsage
+  ( const Schedule<GUM_SCALAR>& schedule, unsigned int k ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     long max_memory = 0;

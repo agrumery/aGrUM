@@ -30,15 +30,15 @@ namespace gum {
 
 
 // Default constructor.
-template <typename T_DATA> INLINE
-DefaultCPTGenerator<T_DATA>::DefaultCPTGenerator() :
-        AbstractCPTGenerator<T_DATA>() {
+template <typename GUM_SCALAR> INLINE
+DefaultCPTGenerator<GUM_SCALAR>::DefaultCPTGenerator() :
+        AbstractCPTGenerator<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( DefaultCPTGenerator );
 }
 
 // Destructor.
-template <typename T_DATA> INLINE
-DefaultCPTGenerator<T_DATA>::~DefaultCPTGenerator() {
+template <typename GUM_SCALAR> INLINE
+DefaultCPTGenerator<GUM_SCALAR>::~DefaultCPTGenerator() {
     GUM_DESTRUCTOR( DefaultCPTGenerator );
 }
 
@@ -47,19 +47,19 @@ DefaultCPTGenerator<T_DATA>::~DefaultCPTGenerator() {
 // @param cpt A reference on the CPT to fill.
 
 
-template <typename T_DATA> void
-DefaultCPTGenerator<T_DATA>::generateCPT( const Idx& varId, const Potential<T_DATA>& cpt ) {
-    std::vector<T_DATA> v;
+template <typename GUM_SCALAR> void
+DefaultCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
+    std::vector<GUM_SCALAR> v;
     srand( time( NULL ) );
     for ( Size i = 0; i < cpt.domainSize();  ++i ) {
-        v.push_back(( T_DATA ) rand() );
+        v.push_back(( GUM_SCALAR ) rand() );
     }
     cpt.fillWith( v );
     Instantiation varInst;
     varInst.add( cpt.variable( varId ) );
     Instantiation cptInst( cpt );
     for ( cptInst.setFirstOut( varInst ); !cptInst.end(); cptInst.incOut( varInst ) ) {
-        T_DATA sum = ( T_DATA ) 0;
+        GUM_SCALAR sum = ( GUM_SCALAR ) 0;
         for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
             sum += cpt[cptInst];
         }

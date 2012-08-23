@@ -38,9 +38,9 @@ namespace gum {
   /*
   * Default constructor.
   */
-  template<typename T_DATA> INLINE
-  InfluenceDiagram<T_DATA>::InfluenceDiagram() :
-      AbstractBayesNet<T_DATA>(), __topologicalOrder( 0 ) {
+  template<typename GUM_SCALAR> INLINE
+  InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram() :
+      AbstractBayesNet<GUM_SCALAR>(), __topologicalOrder( 0 ) {
     GUM_CONSTRUCTOR( InfluenceDiagram );
     __topologicalOrder = new Sequence<NodeId>();
   }
@@ -48,8 +48,8 @@ namespace gum {
   /*
   * Destructor.
   */
-  template<typename T_DATA>
-  InfluenceDiagram<T_DATA>::~InfluenceDiagram() {
+  template<typename GUM_SCALAR>
+  InfluenceDiagram<GUM_SCALAR>::~InfluenceDiagram() {
     GUM_DESTRUCTOR( InfluenceDiagram );
     _removeTables();
     delete __topologicalOrder;
@@ -58,9 +58,9 @@ namespace gum {
   /*
   * Copy Constructor
   */
-  template<typename T_DATA>
-  InfluenceDiagram<T_DATA>::InfluenceDiagram( const InfluenceDiagram<T_DATA>& source ) :
-      AbstractBayesNet<T_DATA> ( source ), __dag( source.__dag ), __variableMap( source.__variableMap ), __topologicalOrder( 0 ) {
+  template<typename GUM_SCALAR>
+  InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram( const InfluenceDiagram<GUM_SCALAR>& source ) :
+      AbstractBayesNet<GUM_SCALAR> ( source ), __dag( source.__dag ), __variableMap( source.__variableMap ), __topologicalOrder( 0 ) {
     GUM_CONS_CPY( InfluenceDiagram );
     _copyTables( source );
     __topologicalOrder = new Sequence<NodeId> ( * ( source.__topologicalOrder ) );
@@ -70,11 +70,11 @@ namespace gum {
   /*
   * Copy Operator
   */
-  template<typename T_DATA>
-  InfluenceDiagram<T_DATA>&
-  InfluenceDiagram<T_DATA>::operator= ( const InfluenceDiagram<T_DATA>& source ) {
+  template<typename GUM_SCALAR>
+  InfluenceDiagram<GUM_SCALAR>&
+  InfluenceDiagram<GUM_SCALAR>::operator= ( const InfluenceDiagram<GUM_SCALAR>& source ) {
     if ( this != &source ) {
-      AbstractBayesNet<T_DATA>::operator= ( source );
+      AbstractBayesNet<GUM_SCALAR>::operator= ( source );
       // Removing previous potentials
       _removeTables();
       __potentialMap.clear();
@@ -95,8 +95,8 @@ namespace gum {
   /*
   * Removing ancient table
   */
-  template<typename T_DATA>
-  void InfluenceDiagram<T_DATA>::_removeTables() {
+  template<typename GUM_SCALAR>
+  void InfluenceDiagram<GUM_SCALAR>::_removeTables() {
     for ( gum::DAG::NodeIterator iter = dag().beginNodes(); iter != dag().endNodes(); ++iter ) {
       if ( isChanceNode( *iter ) )
         delete &cpt( *iter );
@@ -108,14 +108,14 @@ namespace gum {
   /*
   * Copying tables from another influence diagram
   */
-  template<typename T_DATA>
-  void InfluenceDiagram<T_DATA>::_copyTables( const InfluenceDiagram<T_DATA>& IDsource ) {
+  template<typename GUM_SCALAR>
+  void InfluenceDiagram<GUM_SCALAR>::_copyTables( const InfluenceDiagram<GUM_SCALAR>& IDsource ) {
     // Copying potentials
-    Potential<T_DATA> * potentialCpy = NULL;
+    Potential<GUM_SCALAR> * potentialCpy = NULL;
 
-    for ( typename Property<Potential<T_DATA>*>::onNodes::const_iterator potentialIter = IDsource.__potentialMap.begin(); potentialIter != IDsource.__potentialMap.end(); ++potentialIter ) {
+    for ( typename Property<Potential<GUM_SCALAR>*>::onNodes::const_iterator potentialIter = IDsource.__potentialMap.begin(); potentialIter != IDsource.__potentialMap.end(); ++potentialIter ) {
       // Instanciation of the node's CPT
-      potentialCpy = new Potential<T_DATA>;
+      potentialCpy = new Potential<GUM_SCALAR>;
       ( *potentialCpy ) << variable( potentialIter.key() );
 
       // Addition of the parents
@@ -143,11 +143,11 @@ namespace gum {
     }
 
     // Copying Utilities
-    UtilityTable<T_DATA> *utilityCpy;
+    UtilityTable<GUM_SCALAR> *utilityCpy;
 
-    for ( typename Property<UtilityTable<T_DATA>*>::onNodes::const_iterator utilityIter = IDsource.__utilityMap.begin(); utilityIter != IDsource.__utilityMap.end(); ++utilityIter ) {
+    for ( typename Property<UtilityTable<GUM_SCALAR>*>::onNodes::const_iterator utilityIter = IDsource.__utilityMap.begin(); utilityIter != IDsource.__utilityMap.end(); ++utilityIter ) {
       // Instanciation of the node's CPT
-      utilityCpy = new UtilityTable<T_DATA>;
+      utilityCpy = new UtilityTable<GUM_SCALAR>;
       ( *utilityCpy ) << variable( utilityIter.key() );
 
       // Addition of the parents
@@ -178,9 +178,9 @@ namespace gum {
   /*
   * To string editor
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  InfluenceDiagram<T_DATA>::toDot( void ) const {
+  InfluenceDiagram<GUM_SCALAR>::toDot( void ) const {
     std::stringstream output;
     std::stringstream decisionNode;
     std::stringstream utilityNode;
@@ -232,36 +232,36 @@ namespace gum {
   /*
   * Returns the CPT of a chance variable.
   */
-  template<typename T_DATA> INLINE
-  const Potential<T_DATA>&
-  InfluenceDiagram<T_DATA>::cpt( NodeId varId ) const {
+  template<typename GUM_SCALAR> INLINE
+  const Potential<GUM_SCALAR>&
+  InfluenceDiagram<GUM_SCALAR>::cpt( NodeId varId ) const {
     return * ( __potentialMap[varId] );
   }
 
   /*
   * Returns the utility table of a utility node.
   */
-  template<typename T_DATA> INLINE
-  const UtilityTable<T_DATA>&
-  InfluenceDiagram<T_DATA>::utility( NodeId varId ) const {
+  template<typename GUM_SCALAR> INLINE
+  const UtilityTable<GUM_SCALAR>&
+  InfluenceDiagram<GUM_SCALAR>::utility( NodeId varId ) const {
     return * ( __utilityMap[varId] );
   }
 
   /*
   * Return true if node is a utility one
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  InfluenceDiagram<T_DATA>::isUtilityNode( NodeId varId ) const {
+  InfluenceDiagram<GUM_SCALAR>::isUtilityNode( NodeId varId ) const {
     return __utilityMap.exists( varId );
   }
 
   /*
   * Return true if node is a utility one
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  InfluenceDiagram<T_DATA>::isDecisionNode( NodeId varId ) const {
+  InfluenceDiagram<GUM_SCALAR>::isDecisionNode( NodeId varId ) const {
     bool ret = true;
 
     if ( isUtilityNode( varId ) || isChanceNode( varId ) )
@@ -273,101 +273,101 @@ namespace gum {
   /*
   * Return true if node is a chance one
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  InfluenceDiagram<T_DATA>::isChanceNode( NodeId varId ) const {
+  InfluenceDiagram<GUM_SCALAR>::isChanceNode( NodeId varId ) const {
     return __potentialMap.exists( varId );
   }
 
   /*
   * Returns the number of utility nodes
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   Size
-  InfluenceDiagram<T_DATA>::utilityNodeSize() const {
+  InfluenceDiagram<GUM_SCALAR>::utilityNodeSize() const {
     return __utilityMap.size();
   }
 
   /*
   * Returns the number of chance nodes
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   Size
-  InfluenceDiagram<T_DATA>::chanceNodeSize() const {
+  InfluenceDiagram<GUM_SCALAR>::chanceNodeSize() const {
     return __potentialMap.size();
   }
 
   /*
   * Returns the number of decision nodes
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   Size
-  InfluenceDiagram<T_DATA>::decisionNodeSize() const {
+  InfluenceDiagram<GUM_SCALAR>::decisionNodeSize() const {
     return ( size() - __utilityMap.size() - __potentialMap.size() );
   }
 
   /*
   * Returns a constant reference to the dag of this Influence Diagram.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DAG&
-  InfluenceDiagram<T_DATA>::dag() const {
+  InfluenceDiagram<GUM_SCALAR>::dag() const {
     return __dag;
   }
 
   /*
   * Returns a constant reference to the VariableNodeMap of this Influence Diagram
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const VariableNodeMap&
-  InfluenceDiagram<T_DATA>::variableNodeMap() const {
+  InfluenceDiagram<GUM_SCALAR>::variableNodeMap() const {
     return __variableMap;
   }
 
   /*
   * Returns the number of variables in this Influence Diagram.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   Idx
-  InfluenceDiagram<T_DATA>::size() const {
+  InfluenceDiagram<GUM_SCALAR>::size() const {
     return __dag.size();
   }
 
   /*
   * Retursn true if this Influence Diagram is empty.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  InfluenceDiagram<T_DATA>::empty() const {
+  InfluenceDiagram<GUM_SCALAR>::empty() const {
     return size() == 0;
   }
 
   /*
   * Returns a constant reference over a variabe given it's node id.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DiscreteVariable&
-  InfluenceDiagram<T_DATA>::variable( NodeId id ) const {
+  InfluenceDiagram<GUM_SCALAR>::variable( NodeId id ) const {
     return __variableMap[id];
   }
 
   /*
   * Return id node from discrete var pointer.
   */
-  template<typename T_DATA> INLINE
-  NodeId InfluenceDiagram<T_DATA>::nodeId( const DiscreteVariable &var ) const {
+  template<typename GUM_SCALAR> INLINE
+  NodeId InfluenceDiagram<GUM_SCALAR>::nodeId( const DiscreteVariable &var ) const {
     return __variableMap.get( var );
   }
 
 // Getter by name
-  template<typename T_DATA> INLINE
-  NodeId InfluenceDiagram<T_DATA>::idFromName( const std::string& name ) const {
+  template<typename GUM_SCALAR> INLINE
+  NodeId InfluenceDiagram<GUM_SCALAR>::idFromName( const std::string& name ) const {
     return __variableMap.idFromName( name );
   }
 
 // Getter by name
-  template<typename T_DATA> INLINE
-  const DiscreteVariable& InfluenceDiagram<T_DATA>::variableFromName( const std::string& name ) const {
+  template<typename GUM_SCALAR> INLINE
+  const DiscreteVariable& InfluenceDiagram<GUM_SCALAR>::variableFromName( const std::string& name ) const {
     return __variableMap.variableFromName( name );
   }
 
@@ -375,8 +375,8 @@ namespace gum {
   * Add a chance variable, it's associate node and it's CPT. The id of the new
   * variable is automatically generated.
   */
-  template<typename T_DATA>
-  NodeId InfluenceDiagram<T_DATA>::add( const DiscreteVariable& var, NodeId varId ) {
+  template<typename GUM_SCALAR>
+  NodeId InfluenceDiagram<GUM_SCALAR>::add( const DiscreteVariable& var, NodeId varId ) {
     return addChanceNode( var, varId );
   }
 
@@ -385,9 +385,9 @@ namespace gum {
   * variable is automatically generated.
   * @Throws : Gum::InvalidArgument if var has more than one state
   */
-  template<typename T_DATA>
-  NodeId InfluenceDiagram<T_DATA>::addUtilityNode( const DiscreteVariable& var, NodeId varId ) {
-    MultiDimArray<T_DATA>*  newMultiDim = new MultiDimArray<T_DATA>();
+  template<typename GUM_SCALAR>
+  NodeId InfluenceDiagram<GUM_SCALAR>::addUtilityNode( const DiscreteVariable& var, NodeId varId ) {
+    MultiDimArray<GUM_SCALAR>*  newMultiDim = new MultiDimArray<GUM_SCALAR>();
     NodeId res = 0;
 
     try {
@@ -404,8 +404,8 @@ namespace gum {
   * Add a decision variable. The id of the new
   * variable is automatically generated.
   */
-  template<typename T_DATA>
-  NodeId InfluenceDiagram<T_DATA>::addDecisionNode( const DiscreteVariable& var, NodeId varId ) {
+  template<typename GUM_SCALAR>
+  NodeId InfluenceDiagram<GUM_SCALAR>::addDecisionNode( const DiscreteVariable& var, NodeId varId ) {
     return _addNode( var, varId );
   }
 
@@ -413,9 +413,9 @@ namespace gum {
   * Add a chance variable, it's associate node and it's CPT. The id of the new
   * variable is automatically generated.
   */
-  template<typename T_DATA>
-  NodeId InfluenceDiagram<T_DATA>::addChanceNode( const DiscreteVariable& var, NodeId varId ) {
-    MultiDimArray<T_DATA>*  newMultiDim = new MultiDimArray<T_DATA>();
+  template<typename GUM_SCALAR>
+  NodeId InfluenceDiagram<GUM_SCALAR>::addChanceNode( const DiscreteVariable& var, NodeId varId ) {
+    MultiDimArray<GUM_SCALAR>*  newMultiDim = new MultiDimArray<GUM_SCALAR>();
     NodeId res = 0;
 
     try {
@@ -432,12 +432,12 @@ namespace gum {
   * Add a chance variable, it's associate node and it's CPT. The id of the new
   * variable is automatically generated.
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   NodeId
-  InfluenceDiagram<T_DATA>::addChanceNode( const DiscreteVariable& var, MultiDimImplementation<T_DATA> *aContent, NodeId DesiredId ) {
+  InfluenceDiagram<GUM_SCALAR>::addChanceNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId DesiredId ) {
     NodeId proposedId = _addNode( var, DesiredId );
 
-    Potential<T_DATA> *varcpt = new Potential<T_DATA> ( aContent );
+    Potential<GUM_SCALAR> *varcpt = new Potential<GUM_SCALAR> ( aContent );
     ( *varcpt ) << variable( proposedId );
     __potentialMap.insert( proposedId, varcpt );
 
@@ -450,16 +450,16 @@ namespace gum {
   * variable is automatically generated.
   * @Throws : Gum::InvalidArgument if var has more than one state
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   NodeId
-  InfluenceDiagram<T_DATA>::addUtilityNode( const DiscreteVariable& var, MultiDimImplementation<T_DATA> *aContent, NodeId DesiredId ) {
+  InfluenceDiagram<GUM_SCALAR>::addUtilityNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId DesiredId ) {
     if ( var.domainSize() != 1 ) {
       GUM_ERROR( InvalidArgument, "Utility var have no state ( which implicates a single label for data output reasons )." );
     }
 
     NodeId proposedId = _addNode( var, DesiredId );
 
-    UtilityTable<T_DATA> *varut = new UtilityTable<T_DATA> ( aContent );
+    UtilityTable<GUM_SCALAR> *varut = new UtilityTable<GUM_SCALAR> ( aContent );
 
     ( *varut ) << variable( proposedId );
 
@@ -471,8 +471,8 @@ namespace gum {
   /*
   * Add a node
   */
-  template<typename T_DATA>
-  NodeId InfluenceDiagram<T_DATA>::_addNode( const DiscreteVariable& variableType, NodeId DesiredId ) {
+  template<typename GUM_SCALAR>
+  NodeId InfluenceDiagram<GUM_SCALAR>::_addNode( const DiscreteVariable& variableType, NodeId DesiredId ) {
     // None thread safe code!
     NodeId proposedId;
 
@@ -494,9 +494,9 @@ namespace gum {
   * all childs of id.
   * If no variable matches the id, then nothing is done.
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  InfluenceDiagram<T_DATA>::erase( NodeId varId ) {
+  InfluenceDiagram<GUM_SCALAR>::erase( NodeId varId ) {
     if ( __variableMap.exists( varId ) ) {
       // Reduce the variable child's CPT or Utility Table if necessary
       const NodeSet& childrenArcs = __dag.children( varId );
@@ -527,16 +527,16 @@ namespace gum {
   * all childs of var.
   * If no variable matches, then nothing is done.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  InfluenceDiagram<T_DATA>::erase( const DiscreteVariable& var ) {
+  InfluenceDiagram<GUM_SCALAR>::erase( const DiscreteVariable& var ) {
     erase( __variableMap.get( var ) );
   }
 
   /* we allow the user to change the name of a variable
   */
-  template<typename T_DATA> INLINE
-  void InfluenceDiagram<T_DATA>::changeVariableName( NodeId id, const std::string& new_name ) {
+  template<typename GUM_SCALAR> INLINE
+  void InfluenceDiagram<GUM_SCALAR>::changeVariableName( NodeId id, const std::string& new_name ) {
     __variableMap.changeName( id, new_name );
   }
 
@@ -549,9 +549,9 @@ namespace gum {
   /*
   * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  InfluenceDiagram<T_DATA>::insertArc( NodeId tail, NodeId head ) {
+  InfluenceDiagram<GUM_SCALAR>::insertArc( NodeId tail, NodeId head ) {
     if ( isUtilityNode( tail ) ) {
       GUM_ERROR( InvalidArc, "Tail cannot be a utility node" );
     }
@@ -571,9 +571,9 @@ namespace gum {
   *
   * If (tail, head) doesn't exist, the nothing happens.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  InfluenceDiagram<T_DATA>::eraseArc( const Arc& arc ) {
+  InfluenceDiagram<GUM_SCALAR>::eraseArc( const Arc& arc ) {
     if ( dag().existsArc( arc ) ) {
       NodeId head = arc.head(), tail = arc.tail();
       __dag.eraseArc( arc );
@@ -592,9 +592,9 @@ namespace gum {
   *
   * If (tail, head) doesn't exist, the nothing happens.
   */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  InfluenceDiagram<T_DATA>::eraseArc( NodeId tail, NodeId head ) {
+  InfluenceDiagram<GUM_SCALAR>::eraseArc( NodeId tail, NodeId head ) {
     eraseArc( Arc( tail, head ) );
   }
 
@@ -606,9 +606,9 @@ namespace gum {
   /*
   * The node's id are coherent with the variables and nodes of the topology.
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   const UndiGraph&
-  InfluenceDiagram<T_DATA>::moralGraph( bool clear ) const {
+  InfluenceDiagram<GUM_SCALAR>::moralGraph( bool clear ) const {
     if ( clear ) {
       __moralGraph.clear();
       //DAG directGraph( dag() );
@@ -637,12 +637,12 @@ namespace gum {
   * The topological order stays the same as long as no variable or arcs are
   * added or erased from the topology.
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   const Sequence<NodeId>&
-  InfluenceDiagram<T_DATA>::topologicalOrder( bool clear ) const {
+  InfluenceDiagram<GUM_SCALAR>::topologicalOrder( bool clear ) const {
     if ( clear or( __topologicalOrder->empty() ) ) {
       __topologicalOrder->clear();
-      AbstractBayesNet<T_DATA>::_topologicalOrder( *__topologicalOrder );
+      AbstractBayesNet<GUM_SCALAR>::_topologicalOrder( *__topologicalOrder );
     }
 
     return *__topologicalOrder;
@@ -652,9 +652,9 @@ namespace gum {
   /*
   * True if a directed path exist with all decison nodes
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   bool
-  InfluenceDiagram<T_DATA>::decisionOrderExists() const {
+  InfluenceDiagram<GUM_SCALAR>::decisionOrderExists() const {
     Sequence<NodeId> order = topologicalOrder( true );
 
     //Finding first decision node
@@ -690,9 +690,9 @@ namespace gum {
   /*
   * Returns true if a path exists between source and destination
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   bool
-  InfluenceDiagram<T_DATA>::existsPathBetween( NodeId src, NodeId dest ) const {
+  InfluenceDiagram<GUM_SCALAR>::existsPathBetween( NodeId src, NodeId dest ) const {
     List<NodeId> nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
@@ -731,9 +731,9 @@ namespace gum {
   /*
   * Returns the decision graph
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   gum::DAG*
-  InfluenceDiagram<T_DATA>::getDecisionGraph() const {
+  InfluenceDiagram<GUM_SCALAR>::getDecisionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
     for ( NodeGraphPartIterator graphIter = dag().beginNodes(); graphIter != dag().endNodes(); ++graphIter ) {
@@ -763,9 +763,9 @@ namespace gum {
   /*
   * Returns the list of children decision for a given nodeId
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   Sequence<NodeId>*
-  InfluenceDiagram<T_DATA>::_getChildrenDecision( NodeId parentDecision ) const {
+  InfluenceDiagram<GUM_SCALAR>::_getChildrenDecision( NodeId parentDecision ) const {
     Sequence<NodeId>* childrenSeq = new Sequence<NodeId>();
 
     List<NodeId> nodeFIFO;
@@ -807,9 +807,9 @@ namespace gum {
   * Returns the sequence of decision nodes
   * @throw NotFound if such a sequence does not exist
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::vector<NodeId>*
-  InfluenceDiagram<T_DATA>::getDecisionOrder() const {
+  InfluenceDiagram<GUM_SCALAR>::getDecisionOrder() const {
     if ( !decisionOrderExists() ) {
       GUM_ERROR( NotFound, "No decision path exists" );
     }
@@ -830,9 +830,9 @@ namespace gum {
   * Returns partial temporal ordering
   * @throw NotFound if such a sequence does not exist
   */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   const List< NodeSet >&
-  InfluenceDiagram<T_DATA>::getPartialTemporalOrder( bool clear ) const {
+  InfluenceDiagram<GUM_SCALAR>::getPartialTemporalOrder( bool clear ) const {
     if ( clear ) {
       __temporalOrder.clear();
 

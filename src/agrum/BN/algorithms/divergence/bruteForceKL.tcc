@@ -30,47 +30,47 @@
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :KL<T_DATA> ( P,Q ) {
+  template<typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::BruteForceKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :KL<GUM_SCALAR> ( P,Q ) {
     GUM_CONSTRUCTOR( BruteForceKL );
   }
 
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::BruteForceKL( const KL< T_DATA >& kl ) :KL<T_DATA> ( kl ) {
+  template<typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::BruteForceKL( const KL< GUM_SCALAR >& kl ) :KL<GUM_SCALAR> ( kl ) {
     GUM_CONSTRUCTOR( BruteForceKL );
   }
 
-  template<typename T_DATA>
-  BruteForceKL<T_DATA>::~BruteForceKL() {
+  template<typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::~BruteForceKL() {
     GUM_DESTRUCTOR( BruteForceKL );
   }
 
-  template<typename T_DATA>
-  void BruteForceKL<T_DATA>::_computeKL() {
-    _klPQ=_klQP=_hellinger=_bhattacharya=( T_DATA )0.0;
-    _errorPQ=_errorQP=( T_DATA )0;
+  template<typename GUM_SCALAR>
+  void BruteForceKL<GUM_SCALAR>::_computeKL() {
+    _klPQ=_klQP=_hellinger=_bhattacharya=( GUM_SCALAR )0.0;
+    _errorPQ=_errorQP=( GUM_SCALAR )0;
 
     gum::Instantiation Ip;_p.completeInstantiation( Ip );
     gum::Instantiation Iq;_q.completeInstantiation( Iq );
 
     for ( Ip.setFirst();! Ip.end();++Ip ) {
       _q.synchroInstantiations( Iq,Ip );
-      T_DATA pp=_p.jointProbability( Ip );
-      T_DATA pq=_q.jointProbability( Iq );
+      GUM_SCALAR pp=_p.jointProbability( Ip );
+      GUM_SCALAR pq=_q.jointProbability( Iq );
 
       _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 );
       _bhattacharya+=sqrt( pp*pq );
 
-      if ( pp!=( T_DATA )0.0 ) {
-        if ( pq!=( T_DATA )0.0 ) {
+      if ( pp!=( GUM_SCALAR )0.0 ) {
+        if ( pq!=( GUM_SCALAR )0.0 ) {
           _klPQ-=pp*log2( pq/pp );
         } else {
           _errorPQ++;
         }
       }
 
-      if ( pq!=( T_DATA )0.0 ) {
-        if ( pp!=( T_DATA )0.0 ) {
+      if ( pq!=( GUM_SCALAR )0.0 ) {
+        if ( pp!=( GUM_SCALAR )0.0 ) {
           _klQP-=pq*log2( pp/pq );
         } else {
           _errorQP++;

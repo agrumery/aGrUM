@@ -36,12 +36,12 @@ namespace gum {
 
 
   /// constructor
-  template<typename T_DATA>
-  ScheduleCombinationBasic<T_DATA>::ScheduleCombinationBasic
-  ( MultiDimImplementation<T_DATA>* ( *combine )
-    ( const MultiDimImplementation<T_DATA>&,
-      const MultiDimImplementation<T_DATA>& ) ) :
-      ScheduleCombination<T_DATA> (),
+  template<typename GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>::ScheduleCombinationBasic
+  ( MultiDimImplementation<GUM_SCALAR>* ( *combine )
+    ( const MultiDimImplementation<GUM_SCALAR>&,
+      const MultiDimImplementation<GUM_SCALAR>& ) ) :
+      ScheduleCombination<GUM_SCALAR> (),
       _combine( combine ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR( ScheduleCombinationBasic );
@@ -49,10 +49,10 @@ namespace gum {
 
 
   /// copy constructor
-  template<typename T_DATA>
-  ScheduleCombinationBasic<T_DATA>::ScheduleCombinationBasic
-  ( const ScheduleCombinationBasic<T_DATA>& from ) :
-      ScheduleCombination<T_DATA> ( from ),
+  template<typename GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>::ScheduleCombinationBasic
+  ( const ScheduleCombinationBasic<GUM_SCALAR>& from ) :
+      ScheduleCombination<GUM_SCALAR> ( from ),
       _combine( from._combine ) {
     /// for debugging purposes
     GUM_CONS_CPY( ScheduleCombinationBasic );
@@ -60,45 +60,45 @@ namespace gum {
 
 
   /// destructor
-  template<typename T_DATA>
-  ScheduleCombinationBasic<T_DATA>::~ScheduleCombinationBasic() {
+  template<typename GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>::~ScheduleCombinationBasic() {
     /// for debugging purposes
     GUM_DESTRUCTOR( ScheduleCombinationBasic );
   }
 
 
   /// virtual constructor
-  template<typename T_DATA>
-  ScheduleCombinationBasic<T_DATA>*
-  ScheduleCombinationBasic<T_DATA>::newFactory() const {
-    return new ScheduleCombinationBasic<T_DATA> ( *this );
+  template<typename GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>*
+  ScheduleCombinationBasic<GUM_SCALAR>::newFactory() const {
+    return new ScheduleCombinationBasic<GUM_SCALAR> ( *this );
   }
 
 
   /// changes the function used for combining two MultiDimImplementations
-  template<typename T_DATA>
-  void ScheduleCombinationBasic<T_DATA>::setCombineFunction
-  ( MultiDimImplementation<T_DATA>* ( *combine )
-    ( const MultiDimImplementation<T_DATA>&,
-      const MultiDimImplementation<T_DATA>& ) ) {
+  template<typename GUM_SCALAR>
+  void ScheduleCombinationBasic<GUM_SCALAR>::setCombineFunction
+  ( MultiDimImplementation<GUM_SCALAR>* ( *combine )
+    ( const MultiDimImplementation<GUM_SCALAR>&,
+      const MultiDimImplementation<GUM_SCALAR>& ) ) {
     _combine = combine;
   }
 
 
   /// returns the combination function currently used by the combinator
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
-  ( * ScheduleCombinationBasic<T_DATA>::combineFunction() )
-  ( const MultiDimImplementation<T_DATA>&,
-    const MultiDimImplementation<T_DATA>& ) const {
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
+  ( * ScheduleCombinationBasic<GUM_SCALAR>::combineFunction() )
+  ( const MultiDimImplementation<GUM_SCALAR>&,
+    const MultiDimImplementation<GUM_SCALAR>& ) const {
     return _combine;
   }
 
 
   /// returns the domain size of the Cartesian product of the union of all the
   /// variables in seq1 and seq2
-  template<typename T_DATA>
-  Size ScheduleCombinationBasic<T_DATA>::_combinedSize
+  template<typename GUM_SCALAR>
+  Size ScheduleCombinationBasic<GUM_SCALAR>::_combinedSize
   ( const Sequence<const DiscreteVariable *>& seq1,
     const Sequence<const DiscreteVariable *>& seq2 ) const {
     if ( seq1.empty() && seq2.empty() ) return 0;
@@ -121,11 +121,11 @@ namespace gum {
 
 
   // adds operations to an already created schedule
-  template< typename T_DATA >
-  ScheduleMultiDim<T_DATA>
-  ScheduleCombinationBasic<T_DATA>::combine
-  ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
-    Schedule<T_DATA>& schedule ) {
+  template< typename GUM_SCALAR >
+  ScheduleMultiDim<GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>::combine
+  ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+    Schedule<GUM_SCALAR>& schedule ) {
     // check if the set passed in argument is empty. If so, raise an exception
     if ( set.size() < 2 ) {
       GUM_ERROR( InvalidArgumentsNumber,
@@ -134,19 +134,19 @@ namespace gum {
     }
 
     // create a vector with all the tables to combine
-    std::vector<const ScheduleMultiDim<T_DATA>*> tables( set.size() );
+    std::vector<const ScheduleMultiDim<GUM_SCALAR>*> tables( set.size() );
 
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator iter =
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
 
     // create a vector indicating wether the elements in tables are freshly
-    // created ScheduleMultiDim<T_DATA>* due to the combination of some
+    // created ScheduleMultiDim<GUM_SCALAR>* due to the combination of some
     // ScheduleMultiDims or if they were added by the user into the
     // combination container
     std::vector<bool> is_t_new( tables.size(), false );
@@ -183,27 +183,27 @@ namespace gum {
 
       // create the combination that will be performed later on and put it into
       // the schedule
-      ScheduleCombine<T_DATA> comb( *( tables[ti] ), *( tables[tj] ), _combine );
+      ScheduleCombine<GUM_SCALAR> comb( *( tables[ti] ), *( tables[tj] ), _combine );
       NodeId comb_id = schedule.insert( comb );
 
       // substitute tables[pair.first] by the result and delete the temporary
       // multidim tables
 
       if ( tables[ti] && is_t_new[ti] ) {
-        ScheduleDeleteMultiDim<T_DATA> del( *( tables[ti] ) );
+        ScheduleDeleteMultiDim<GUM_SCALAR> del( *( tables[ti] ) );
         NodeId del_id = schedule.insert( del );
         const NodeSet& set_i = schedule.operationsInvolving( *( tables[ti] ) );
         schedule.forceAfter( del_id, set_i );
       }
 
       if ( tables[tj] && is_t_new[tj] ) {
-        ScheduleDeleteMultiDim<T_DATA> del( *( tables[tj] ) );
+        ScheduleDeleteMultiDim<GUM_SCALAR> del( *( tables[tj] ) );
         NodeId del_id = schedule.insert( del );
         const NodeSet& set_j = schedule.operationsInvolving( *( tables[tj] ) );
         schedule.forceAfter( del_id, set_j );
       }
 
-      tables[ti] = &( static_cast<const ScheduleCombine<T_DATA>&>
+      tables[ti] = &( static_cast<const ScheduleCombine<GUM_SCALAR>&>
 
                       ( schedule.operation( comb_id ) ).result() );
       is_t_new[ti] = true;
@@ -265,31 +265,31 @@ namespace gum {
 
 
   // adds operations to an already created schedule
-  template<typename T_DATA>
-  INLINE ScheduleMultiDim<T_DATA>
-  ScheduleCombinationBasic<T_DATA>::combine
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::combine( set, schedule );
+  template<typename GUM_SCALAR>
+  INLINE ScheduleMultiDim<GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>::combine
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::combine( set, schedule );
   }
 
 
   // adds operations to an already created schedule
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  INLINE ScheduleMultiDim<T_DATA>
-  ScheduleCombinationBasic<T_DATA>:: combine
-  ( const Set<const TABLE<T_DATA>*>& set,
-    Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::combine( set, schedule );
+  INLINE ScheduleMultiDim<GUM_SCALAR>
+  ScheduleCombinationBasic<GUM_SCALAR>:: combine
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
+    Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::combine( set, schedule );
   }
 
 
   /// returns the result of the combination
-  template<typename T_DATA>
-  float ScheduleCombinationBasic<T_DATA>::nbOperations
-  ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  template<typename GUM_SCALAR>
+  float ScheduleCombinationBasic<GUM_SCALAR>::nbOperations
+  ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return 0.0f;
 
@@ -301,7 +301,7 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator iter =
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         tables[i] = &(( *iter )->variablesSequence() );
       }
@@ -431,29 +431,29 @@ namespace gum {
 
 
   /// returns the result of the combination
-  template<typename T_DATA>
-  INLINE float ScheduleCombinationBasic<T_DATA>::nbOperations
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::nbOperations( set, schedule );
+  template<typename GUM_SCALAR>
+  INLINE float ScheduleCombinationBasic<GUM_SCALAR>::nbOperations
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::nbOperations( set, schedule );
   }
 
 
   /// returns the result of the combination
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  INLINE float ScheduleCombinationBasic<T_DATA>::nbOperations
-  ( const Set<const TABLE<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::nbOperations( set, schedule );
+  INLINE float ScheduleCombinationBasic<GUM_SCALAR>::nbOperations
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::nbOperations( set, schedule );
   }
 
 
   /// returns the result of the combination
-  template<typename T_DATA>
-  std::pair<long,long> ScheduleCombinationBasic<T_DATA>::memoryUsage
-  ( const Set<const ScheduleMultiDim<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
+  template<typename GUM_SCALAR>
+  std::pair<long,long> ScheduleCombinationBasic<GUM_SCALAR>::memoryUsage
+  ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return std::pair<long,long> ( 0,0 );
 
@@ -469,7 +469,7 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<T_DATA>*>::const_iterator iter =
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars =
           &(( *iter )->variablesSequence() );
@@ -637,21 +637,21 @@ namespace gum {
 
 
   /// returns the memory consumption used during the combination
-  template<typename T_DATA>
-  INLINE std::pair<long,long> ScheduleCombinationBasic<T_DATA>::memoryUsage
-  ( const Set<const MultiDimImplementation<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::memoryUsage( set, schedule );
+  template<typename GUM_SCALAR>
+  INLINE std::pair<long,long> ScheduleCombinationBasic<GUM_SCALAR>::memoryUsage
+  ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::memoryUsage( set, schedule );
   }
 
 
   /// returns the memory consumption used during the combination
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   template <template<typename> class TABLE>
-  INLINE std::pair<long,long> ScheduleCombinationBasic<T_DATA>::memoryUsage
-  ( const Set<const TABLE<T_DATA>*>& set,
-    const Schedule<T_DATA>& schedule ) {
-    return ScheduleCombination<T_DATA>::memoryUsage( set, schedule );
+  INLINE std::pair<long,long> ScheduleCombinationBasic<GUM_SCALAR>::memoryUsage
+  ( const Set<const TABLE<GUM_SCALAR>*>& set,
+    const Schedule<GUM_SCALAR>& schedule ) {
+    return ScheduleCombination<GUM_SCALAR>::memoryUsage( set, schedule );
   }
 
 

@@ -52,7 +52,7 @@ namespace gum {
  * the proportion of chance node and the proportion of utility node (the
  * proportion of decision node is deduce from thos two)
  */
-template < typename T_DATA>
+template < typename GUM_SCALAR>
 class InfluenceDiagramGenerator {
 public:
     // ############################################################################
@@ -72,7 +72,7 @@ public:
      * The cptGenerator will be erased when the destructor is called.
      * @param cptGenerator The policy used to generate CPT.
      */
-    InfluenceDiagramGenerator(AbstractCPTGenerator<T_DATA>* cptGenerator);
+    InfluenceDiagramGenerator(AbstractCPTGenerator<GUM_SCALAR>* cptGenerator);
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -89,7 +89,7 @@ public:
      * @param cptGenerator The policy used to generate CPT.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(AbstractCPTGenerator<T_DATA>* cptGenerator, UTGenerator* utGenerator);
+    InfluenceDiagramGenerator(AbstractCPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator);
 
     /**
      * Destructor.
@@ -110,15 +110,15 @@ public:
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A IDs randomly generated.
      */
-    InfluenceDiagram<T_DATA>* generateID(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality=2);
+    InfluenceDiagram<GUM_SCALAR>* generateID(Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality=2);
 
   
     /// @}
 private:
     // Check if a temporal order exists and creates ones if not
-    void __checkTemporalOrder(InfluenceDiagram<T_DATA>* infdiag);
+    void __checkTemporalOrder(InfluenceDiagram<GUM_SCALAR>* infdiag);
     // The Conditional Probability Table generator
-    AbstractCPTGenerator<T_DATA>* __cptGenerator;
+    AbstractCPTGenerator<GUM_SCALAR>* __cptGenerator;
     // The Utility Table generator
     UTGenerator* __utGenerator;
 };

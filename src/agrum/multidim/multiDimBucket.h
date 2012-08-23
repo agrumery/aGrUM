@@ -62,8 +62,8 @@ namespace gum {
  * @ingroup multidim_group
  */
 // ============================================================================
-template<typename T_DATA>
-class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
+template<typename GUM_SCALAR>
+class MultiDimBucket : public MultiDimReadOnly<GUM_SCALAR> {
   public:
     // ========================================================================
     /// @name Constructor & destructor.
@@ -80,7 +80,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     MultiDimBucket(Size bufferSize=INT_MAX);
 
     /// Copy constructor.
-    MultiDimBucket(const MultiDimBucket<T_DATA>& source);
+    MultiDimBucket(const MultiDimBucket<GUM_SCALAR>& source);
 
     /// Destructor.
     virtual ~MultiDimBucket();
@@ -101,7 +101,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<T_DATA>* newFactory() const;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
     // ========================================================================
     /// @name Bucket methods.
@@ -110,20 +110,20 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// Add a gum::MultiDimContainer in the bucket.
     /// @throw gum::DuplicateElement Raised if impl is already in the bucket.
-    void add(const MultiDimContainer<T_DATA>& impl);
+    void add(const MultiDimContainer<GUM_SCALAR>& impl);
 
     /// Add a gum::MultiDimContainer in the bucket.
     /// @throw gum::DuplicateElement Raised if impl is already in the bucket.
-    void add(const MultiDimContainer<T_DATA>* impl);
+    void add(const MultiDimContainer<GUM_SCALAR>* impl);
 
     /// Remove a gum::MultiDimContainer from this bucket.
-    void erase(const MultiDimContainer<T_DATA>& impl);
+    void erase(const MultiDimContainer<GUM_SCALAR>& impl);
 
     /// Remove a gum::MultiDimContainer from this bucket.
-    void erase(const MultiDimContainer<T_DATA>* impl);
+    void erase(const MultiDimContainer<GUM_SCALAR>* impl);
 
     /// Returns true if the gum::MultiDimContainer is in this bucket.
-    bool contains(const MultiDimContainer<T_DATA>& impl) const;
+    bool contains(const MultiDimContainer<GUM_SCALAR>& impl) const;
 
     /// Returns the sequence of all the variables contained in the bucket.
     const Set<const DiscreteVariable*>& allVariables() const;
@@ -148,7 +148,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
      * Returns the MultiDimArray used by this MultiDimBucket.
      * @throw OperationNotAllowed If it'not built.
      */
-    const MultiDimArray<T_DATA>& bucket() const;
+    const MultiDimArray<GUM_SCALAR>& bucket() const;
 
     /// Returns the amount of memory allowed for this bucket.
     Size bufferSize() const;
@@ -210,7 +210,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// @{
 
     /// See gum::MultiDimContainer::get().
-    virtual T_DATA get (const Instantiation &i) const;
+    virtual GUM_SCALAR get (const Instantiation &i) const;
 
     /// @}
     // ========================================================================
@@ -255,7 +255,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// String representation of internal data about i in this.
     virtual const std::string toString (const Instantiation *i) const;
 
-    const HashTable<const MultiDimContainer<T_DATA>*, Instantiation*>& multidims() const;
+    const HashTable<const MultiDimContainer<GUM_SCALAR>*, Instantiation*>& multidims() const;
 
   protected:
     /// See gum::MultiDimImplementation::_commitMultipleChanges().
@@ -263,7 +263,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// This will raise en exception, you should directly use the get() and
     /// operator[]() methods.
-    virtual T_DATA& _get(const Instantiation &i) const;
+    virtual GUM_SCALAR& _get(const Instantiation &i) const;
 
     virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
@@ -279,10 +279,10 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     Bijection<Instantiation*, Instantiation*> __instantiations;
 
     /// The result table of this bucket.
-    MultiDimArray<T_DATA>* __bucket;
+    MultiDimArray<GUM_SCALAR>* __bucket;
 
     /// The set of gum::MultiDimContainer in this bucket.
-    mutable HashTable<const MultiDimContainer<T_DATA>*, Instantiation* > __multiDims;
+    mutable HashTable<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > __multiDims;
 
     /// The set of all variables of the multidims in this bucket.
     Set<const DiscreteVariable*> __allVariables;
@@ -310,7 +310,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
     /// supposed to be at 0.
     /// @param value The value to compute.
     /// @throw SizeError Raised if the bucket is empty.
-    T_DATA __computeValue(const Instantiation& value) const;
+    GUM_SCALAR __computeValue(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last
     /// computation.
@@ -318,7 +318,7 @@ class MultiDimBucket : public MultiDimReadOnly<T_DATA> {
 
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
-    mutable HashTable<const Instantiation*, T_DATA> __slavesValue;
+    mutable HashTable<const Instantiation*, GUM_SCALAR> __slavesValue;
 
     std::string __name;
 

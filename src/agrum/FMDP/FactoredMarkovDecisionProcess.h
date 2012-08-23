@@ -48,7 +48,7 @@ namespace gum {
  * and to describe for specific actions a different table.
  */
 
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 
 class FactoredMarkovDecisionProcess {
 
@@ -101,37 +101,37 @@ public:
      * @throw NotFound if action or var does not exists
      * @throw DuplicateElement if variable already has a transition for this action
      */
-    void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition, const std::string& action );
+    void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition, const std::string& action );
 
     /**
      * Adds a default variable transition
      * @throw NotFound if var does not exists
      * @throw DuplicateElement if variable already has a default transition
      */
-    void addTransition( const DiscreteVariable* var, const MultiDimImplementation<T_DATA>* transition );
+    void addTransition( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
 
     /**
      * Adds a cost table to specified action
      * @throw NotFound if action does not exists
      */
-    void addCostForAction( const MultiDimImplementation<T_DATA>* cost, const std::string& action );
+    void addCostForAction( const MultiDimImplementation<GUM_SCALAR>* cost, const std::string& action );
 
     /**
      * Adds a default variable cost
      * @throw DuplicateElement if a default cost exists already
      */
-    void addCost( const MultiDimImplementation<T_DATA>* cost );
+    void addCost( const MultiDimImplementation<GUM_SCALAR>* cost );
 
     /**
      * Adds a default variable reward
      * @throw DuplicateElement if a default reward exists already
      */
-    void addReward( const MultiDimImplementation<T_DATA>* reward );
+    void addReward( const MultiDimImplementation<GUM_SCALAR>* reward );
 
     /**
      * Precises the discount factor for that mdp
      */
-    void addDiscount( T_DATA discount );
+    void addDiscount( GUM_SCALAR discount );
 
     /// @}
 
@@ -143,12 +143,12 @@ public:
     /**
      * Returns the discount factor of mdp
      */
-    const T_DATA discount(  ) const;
+    const GUM_SCALAR discount(  ) const;
 
     /**
      * Returns the reward table of mdp
      */
-    const MultiDimImplementation< T_DATA >* reward(  ) const;
+    const MultiDimImplementation< GUM_SCALAR >* reward(  ) const;
 
     /**
      * Resets the action iterator
@@ -199,12 +199,12 @@ public:
      * Returns transition associated to current variable pointed by variable iterator
      * and current action poinbted by action iterator
      */
-    const MultiDimImplementation< T_DATA >* transition() const;
+    const MultiDimImplementation< GUM_SCALAR >* transition() const;
 
     /**
      * Returns transition associated to given in parameter variable
      */
-    const MultiDimImplementation< T_DATA >* transition( const DiscreteVariable* v ) const;
+    const MultiDimImplementation< GUM_SCALAR >* transition( const DiscreteVariable* v ) const;
 
     /**
      * Returns set of primed variable (variable at next instant )
@@ -231,37 +231,37 @@ private :
     SequenceIterator< const DiscreteVariable* > __varIter;
 
     /// Variable default transition cpt table
-    HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __defaultTransitionTable;
+    HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
 
     /// Table which give for each action a table containing variables transition cpt
-    HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionTransitionTable;
+    HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
 
     /// default cost table
-    const MultiDimImplementation< T_DATA >* __defaultCostTable;
+    const MultiDimImplementation< GUM_SCALAR >* __defaultCostTable;
 
     /// Table which give for each action cost table
-    HashTable< Idx, const MultiDimImplementation< T_DATA >* > __actionCostTable;
+    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionCostTable;
 
     /// Bijection mapping an action name to its id
     Bijection< Idx, const std::string* > __actionMap;
 
     /// default reward table
-    const MultiDimImplementation< T_DATA >* __defaultRewardTable;
+    const MultiDimImplementation< GUM_SCALAR >* __defaultRewardTable;
 
     Set< const DiscreteVariable* > __primedVariablesSet;
     Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
 
     /// FMDP discount factor
-    T_DATA __discount;
+    GUM_SCALAR __discount;
 
     /// Gives the next action id
     Idx __nextActionId;
 
     /// Iterator on actions
-    HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* >* > __actionIter;
+    HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
 
 //       /// Iterator on variable
-//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< T_DATA >* > __varIter;
+//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
 };
 } /* namespace gum */
 

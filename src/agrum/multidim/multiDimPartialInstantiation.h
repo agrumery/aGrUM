@@ -37,7 +37,7 @@
 namespace gum {
 
 
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   class MultiDimPartialInstantiation {
   public:
     // ############################################################################
@@ -50,7 +50,7 @@ namespace gum {
 
     /// copy constructor
     MultiDimPartialInstantiation
-    ( const MultiDimPartialInstantiation<T_DATA,TABLE>& );
+    ( const MultiDimPartialInstantiation<GUM_SCALAR,TABLE>& );
 
     /// destructor
     virtual ~MultiDimPartialInstantiation ();
@@ -58,7 +58,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimPartialInstantiation for the same kind of
      * table and data*/
-    virtual MultiDimPartialInstantiation<T_DATA,TABLE>* newFactory () const;
+    virtual MultiDimPartialInstantiation<GUM_SCALAR,TABLE>* newFactory () const;
 
     /// @}
 
@@ -69,8 +69,8 @@ namespace gum {
     /// @{
 
     /// copy operator
-    MultiDimPartialInstantiation<T_DATA,TABLE>& operator=
-    ( const MultiDimPartialInstantiation<T_DATA,TABLE>& );
+    MultiDimPartialInstantiation<GUM_SCALAR,TABLE>& operator=
+    ( const MultiDimPartialInstantiation<GUM_SCALAR,TABLE>& );
 
     /// @}
     
@@ -87,12 +87,12 @@ namespace gum {
      * of a subset of the variables of the TABLE passed in argument
      * @warning If inst_vars is precisely equal to the variables of table, the
      * result is an empty table. */
-    TABLE<T_DATA>*
-    instantiate ( const TABLE<T_DATA>& table,
+    TABLE<GUM_SCALAR>*
+    instantiate ( const TABLE<GUM_SCALAR>& table,
                   const HashTable<const DiscreteVariable *,Idx>& inst_vars );
     void
-    instantiate ( TABLE<T_DATA>& container,
-                  const TABLE<T_DATA>& table,
+    instantiate ( TABLE<GUM_SCALAR>& container,
+                  const TABLE<GUM_SCALAR>& table,
                   const HashTable<const DiscreteVariable *,Idx>& inst_vars );
     
     /// @}

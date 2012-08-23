@@ -45,10 +45,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class Forall : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class Forall : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Forall( Idx value );
-        Forall( const Forall<T_DATA>& from );
+        Forall( const Forall<GUM_SCALAR>& from );
         virtual ~Forall();
 
         /**
@@ -64,7 +64,7 @@ namespace gum {
          * @warning you must desallocate by yourself the memory
          * @return an empty clone of this object with the same type
          */
-        virtual MultiDimContainer<T_DATA>* newFactory() const;
+        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
         virtual std::string aggregatorName( void ) const;

@@ -34,26 +34,26 @@ namespace gum {
 
 
 // Default Constructor
-template <typename T_DATA>
-InfluenceDiagramInference<T_DATA>::InfluenceDiagramInference( const InfluenceDiagram<T_DATA>& infDiag ):
+template <typename GUM_SCALAR>
+InfluenceDiagramInference<GUM_SCALAR>::InfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag ):
 __infDiag( infDiag ) 
 {
         GUM_CONSTRUCTOR( InfluenceDiagramInference );
 }
 
 // Destructor
-template <typename T_DATA>
-InfluenceDiagramInference<T_DATA>::~InfluenceDiagramInference() 
+template <typename GUM_SCALAR>
+InfluenceDiagramInference<GUM_SCALAR>::~InfluenceDiagramInference() 
 {
         GUM_DESTRUCTOR( InfluenceDiagramInference );
         //_invalidateMarginals();
 }
 /*
-template <typename T_DATA>
+template <typename GUM_SCALAR>
 void 
-InfluenceDiagramInference<T_DATA>::_invalidateMarginals() 
+InfluenceDiagramInference<GUM_SCALAR>::_invalidateMarginals() 
 {
-        for ( typename Property< Potential<T_DATA> * >::onNodes::iterator it = _marginals.begin();
+        for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator it = _marginals.begin();
             it != _marginals.end(); ++it )
                 if( __infDiag.isChanceNode( it->key() ) ) 
                           if ( *it ) 
@@ -62,22 +62,22 @@ InfluenceDiagramInference<T_DATA>::_invalidateMarginals()
         _marginals.clear();
 }
 
-template <typename T_DATA>
-const Potential<T_DATA>& 
-InfluenceDiagramInference<T_DATA>::marginal( NodeId id )
+template <typename GUM_SCALAR>
+const Potential<GUM_SCALAR>& 
+InfluenceDiagramInference<GUM_SCALAR>::marginal( NodeId id )
 {
         if ( ! _marginals.exists( id ) ) 
         {
-                _marginals.insert( id, new Potential<T_DATA>() );
+                _marginals.insert( id, new Potential<GUM_SCALAR>() );
                 _fillMarginal( id, *_marginals[id] );
         }
 
         return *_marginals[id];
 }
 */
-template <typename T_DATA>
-const InfluenceDiagram<T_DATA>& 
-InfluenceDiagramInference<T_DATA>::getInfluenceDiagram() const 
+template <typename GUM_SCALAR>
+const InfluenceDiagram<GUM_SCALAR>& 
+InfluenceDiagramInference<GUM_SCALAR>::getInfluenceDiagram() const 
 {
         return __infDiag;
 }

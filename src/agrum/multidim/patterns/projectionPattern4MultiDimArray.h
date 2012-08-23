@@ -35,76 +35,76 @@ namespace gum{
 /// a specialized function for projecting a multiDimArray over a subset of its vars
 // ================================================================================
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA
-  template<typename T_DATA>
-  MultiDimArray<T_DATA>*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR>*
   GUM_MULTI_DIM_PROJECTION_NAME
-    ( const MultiDimArray<T_DATA>* table,
+    ( const MultiDimArray<GUM_SCALAR>* table,
       const Set<const DiscreteVariable *>& del_vars ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_PROJECTION_POINTER
-  template<typename T_DATA>
-  MultiDimArray<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR*>*
   GUM_MULTI_DIM_PROJECTION_POINTER_NAME
-    ( const MultiDimArray<T_DATA*>* table,
+    ( const MultiDimArray<GUM_SCALAR*>* table,
       const Set<const DiscreteVariable *>& del_vars ) {
 #endif
     
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME_F
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA
-  template<typename T_DATA>
-  MultiDimArray<T_DATA>*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR>*
   GUM_MULTI_DIM_PROJECTION_NAME_F
-    ( const MultiDimArray<T_DATA>* table,
+    ( const MultiDimArray<GUM_SCALAR>* table,
       const Set<const DiscreteVariable *>& del_vars,
-      T_DATA (*f) ( const T_DATA&, const T_DATA&) ) {
+      GUM_SCALAR (*f) ( const GUM_SCALAR&, const GUM_SCALAR&) ) {
 #endif
 
     
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_PROJECTION_POINTER
-  template<typename T_DATA>
-  MultiDimArray<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR*>*
   GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F
-    ( const MultiDimArray<T_DATA*>* table,
+    ( const MultiDimArray<GUM_SCALAR*>* table,
       const Set<const DiscreteVariable *>& del_vars,
-      T_DATA* (*f) ( const T_DATA const*, const T_DATA const* ) ) {
+      GUM_SCALAR* (*f) ( const GUM_SCALAR const*, const GUM_SCALAR const* ) ) {
 #endif
 
     
 #ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
   GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
-    ( const MultiDimImplementation<T_DATA>* ttable,
+    ( const MultiDimImplementation<GUM_SCALAR>* ttable,
       const Set<const DiscreteVariable *>& del_vars ) {
-    const MultiDimArray<T_DATA>* table =
-      reinterpret_cast<const MultiDimArray<T_DATA>*> (ttable);
+    const MultiDimArray<GUM_SCALAR>* table =
+      reinterpret_cast<const MultiDimArray<GUM_SCALAR>*> (ttable);
 #endif
 
     
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA*
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_PROJECTION_POINTER
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA*>*
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR*>*
   GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
-    ( const MultiDimImplementation<T_DATA*>* ttable,
+    ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
       const Set<const DiscreteVariable *>& del_vars ) {
-    const MultiDimArray<T_DATA*>* table =
-      reinterpret_cast<const MultiDimArray<T_DATA*>*> (ttable);
+    const MultiDimArray<GUM_SCALAR*>* table =
+      reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*> (ttable);
 #endif
 
 
   // create the neutral element used to fill the result upon its creation
-  const T_DATA neutral_element = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
+  const GUM_SCALAR neutral_element = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
     
 
   // first, compute whether we should loop over table or over the projected
@@ -186,7 +186,7 @@ namespace gum{
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
     result->endMultipleChanges ();
     for (Idx i = 0; i < result_domain_size; ++i ) {
-      result->unsafeSet ( i, new T_DATA ( neutral_element ) );
+      result->unsafeSet ( i, new GUM_SCALAR ( neutral_element ) );
     }
 #else
     result->endMultipleChanges ( neutral_element );
@@ -353,7 +353,7 @@ namespace gum{
     result->endMultipleChanges ( );
     // fill the matrix with the neutral element
     for (Idx i = 0; i < result_domain_size; ++i ) {
-      result->unsafeSet ( i, new T_DATA ( neutral_element ) );
+      result->unsafeSet ( i, new GUM_SCALAR ( neutral_element ) );
     }
 #else
     result->endMultipleChanges ( neutral_element );

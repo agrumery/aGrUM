@@ -33,41 +33,41 @@ namespace gum {
     // ==============================================================================
     /// Default constructor
     // ==============================================================================
-    template<typename T_DATA> INLINE
-    Min<T_DATA>::Min(): MultiDimAggregator<T_DATA>() {
+    template<typename GUM_SCALAR> INLINE
+    Min<GUM_SCALAR>::Min(): MultiDimAggregator<GUM_SCALAR>() {
       GUM_CONSTRUCTOR( Min )
     }
 
 // ==============================================================================
 /// Default constructor
 // ==============================================================================
-    template<typename T_DATA> INLINE
-    Min<T_DATA>::Min( const Min<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+    template<typename GUM_SCALAR> INLINE
+    Min<GUM_SCALAR>::Min( const Min<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR>( from ) {
       GUM_CONS_CPY( Min );
     }
 
 // ==============================================================================
 /// destructor
 // ==============================================================================
-    template<typename T_DATA> INLINE
-    Min<T_DATA>::~Min() {
+    template<typename GUM_SCALAR> INLINE
+    Min<GUM_SCALAR>::~Min() {
       GUM_DESTRUCTOR( Min );
     }
 
-    template<typename T_DATA> INLINE
-    Idx Min<T_DATA>::_neutralElt() const { return ( Idx )100000;} //clearly arbitrary choosen
+    template<typename GUM_SCALAR> INLINE
+    Idx Min<GUM_SCALAR>::_neutralElt() const { return ( Idx )100000;} //clearly arbitrary choosen
 
-    template<typename T_DATA> INLINE
-    Idx Min<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 < i2 ) ? i1 : i2;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Min<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 < i2 ) ? i1 : i2;}
 
-    template<typename T_DATA> INLINE
-    std::string Min<T_DATA>::aggregatorName( void ) const {
+    template<typename GUM_SCALAR> INLINE
+    std::string Min<GUM_SCALAR>::aggregatorName( void ) const {
       return "min";
     }
 
-    template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Min<T_DATA>::newFactory() const {
-      return new Min<T_DATA>;
+    template<typename GUM_SCALAR> INLINE
+    MultiDimContainer<GUM_SCALAR>* Min<GUM_SCALAR>::newFactory() const {
+      return new Min<GUM_SCALAR>;
     }
 
   } // aggregator

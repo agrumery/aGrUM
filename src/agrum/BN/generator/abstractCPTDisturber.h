@@ -45,7 +45,7 @@ namespace gum {
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   class AbstractCPTDisturber {
   public:
     // ############################################################################
@@ -75,8 +75,8 @@ namespace gum {
      * @param cpt_copy copy of the CPT before changing size
      * @param marginal of the inference before changing size.
      */
-    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<T_DATA>& bayesNet, Potential<T_DATA>& cptCopy, Potential<T_DATA>& marg)=0;
-    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<T_DATA>& bayesNet, Potential<T_DATA>& cptCopy, T_DATA variation)=0;
+    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg)=0;
+    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation)=0;
 
  
     /// @}

@@ -34,15 +34,15 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace gum {
-  template<typename T_DATA>
-  class LoopyBeliefPropagation : BayesNetInference<T_DATA> {
+  template<typename GUM_SCALAR>
+  class LoopyBeliefPropagation : BayesNetInference<GUM_SCALAR> {
     private:
 
       Property<Potential<float> *>::onArcs __lArcs;
       Property<Potential<float> *>::onArcs __pArcs;
 
     public:
-      LoopyBeliefPropagation( const BayesNet<T_DATA>& bn ):BayesNetInference<T_DATA>( bn ) {
+      LoopyBeliefPropagation( const BayesNet<GUM_SCALAR>& bn ):BayesNetInference<GUM_SCALAR>( bn ) {
 
         const ArcSet& arcs=this->bn().dag().asArcs();
 
@@ -55,8 +55,8 @@ namespace gum {
         }
       }
 
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) {};
-      virtual void eraseEvidence( const Potential<T_DATA>* e ) {};
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) {};
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) {};
       virtual void eraseAllEvidence() {};
   };
 }

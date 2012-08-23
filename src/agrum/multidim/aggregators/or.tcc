@@ -29,26 +29,26 @@
 namespace gum {
 
   namespace aggregator {
-    template<typename T_DATA> INLINE
-    Or<T_DATA>::Or( ): MultiDimAggregator<T_DATA>() {
+    template<typename GUM_SCALAR> INLINE
+    Or<GUM_SCALAR>::Or( ): MultiDimAggregator<GUM_SCALAR>() {
       GUM_CONSTRUCTOR( Or )
     }
 
-    template<typename T_DATA> INLINE
-    Or<T_DATA>::Or( const Or<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+    template<typename GUM_SCALAR> INLINE
+    Or<GUM_SCALAR>::Or( const Or<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR>( from ) {
       GUM_CONS_CPY( Or );
     }
 
-    template<typename T_DATA> INLINE
-    Or<T_DATA>::~Or() {
+    template<typename GUM_SCALAR> INLINE
+    Or<GUM_SCALAR>::~Or() {
       GUM_DESTRUCTOR( Or );
     }
 
-    template<typename T_DATA> INLINE
-    Idx Or<T_DATA>::_neutralElt() const { return ( Idx )0;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Or<GUM_SCALAR>::_neutralElt() const { return ( Idx )0;}
 
-    template<typename T_DATA> INLINE
-    Idx Or<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
+    template<typename GUM_SCALAR> INLINE
+    Idx Or<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
       if( i1 != 1 ) {
         return ( Idx )0;
       } else {
@@ -57,14 +57,14 @@ namespace gum {
       }
     }
 
-    template<typename T_DATA> INLINE
-    std::string Or<T_DATA>::aggregatorName( void ) const {
+    template<typename GUM_SCALAR> INLINE
+    std::string Or<GUM_SCALAR>::aggregatorName( void ) const {
       return std::string( "or" );
     }
 
-    template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Or<T_DATA>::newFactory() const {
-      return new Or<T_DATA>();
+    template<typename GUM_SCALAR> INLINE
+    MultiDimContainer<GUM_SCALAR>* Or<GUM_SCALAR>::newFactory() const {
+      return new Or<GUM_SCALAR>();
     }
 
   } // namespace aggregator

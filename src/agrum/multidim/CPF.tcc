@@ -28,9 +28,9 @@ namespace gum {
 
   // Default constructor.
   // A MultiDimArray is used for representing the CPF.
-  template <typename T_DATA> INLINE
-  CPF<T_DATA>::CPF():
-    MultiDimDecorator<T_DATA>(new MultiDimArray<T_DATA>())
+  template <typename GUM_SCALAR> INLINE
+  CPF<GUM_SCALAR>::CPF():
+    MultiDimDecorator<GUM_SCALAR>(new MultiDimArray<GUM_SCALAR>())
   {
     GUM_CONSTRUCTOR( CPF );
     __condMap = new HashTable<const DiscreteVariable*, bool>();
@@ -39,26 +39,26 @@ namespace gum {
   // Constructor with user defined content.
   // The content will be deleted with this class.
   // @param content The implementation used for representing the CPF.
-  template <typename T_DATA> INLINE
-  CPF<T_DATA>::CPF(MultiDimImplementation<T_DATA> *content):
-    MultiDimDecorator<T_DATA>(content)
+  template <typename GUM_SCALAR> INLINE
+  CPF<GUM_SCALAR>::CPF(MultiDimImplementation<GUM_SCALAR> *content):
+    MultiDimDecorator<GUM_SCALAR>(content)
   {
     GUM_CONSTRUCTOR( CPF );
     __condMap = new HashTable<const DiscreteVariable*, bool>();
   }
 
   // Copy constructor.
-  template <typename T_DATA> INLINE
-  CPF<T_DATA>::CPF(const CPF<T_DATA>& from):
-    MultiDimDecorator<T_DATA>(from)
+  template <typename GUM_SCALAR> INLINE
+  CPF<GUM_SCALAR>::CPF(const CPF<GUM_SCALAR>& from):
+    MultiDimDecorator<GUM_SCALAR>(from)
   {
     GUM_CONS_CPY( CPF );
     __condMap = new HashTable<const DiscreteVariable*, bool>(*(from.__condMap));
   }
 
   // Destructor.
-  template <typename T_DATA> INLINE
-  CPF<T_DATA>::~CPF()
+  template <typename GUM_SCALAR> INLINE
+  CPF<GUM_SCALAR>::~CPF()
   {
     GUM_DESTRUCTOR( CPF );
     delete __condMap;
@@ -71,11 +71,11 @@ namespace gum {
   // Add a new conditioned variable. 
   // @param v The new conditioned variable added.
   // @throw DuplicateElement 
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void 
-  CPF<T_DATA>::add( const DiscreteVariable& var )
+  CPF<GUM_SCALAR>::add( const DiscreteVariable& var )
   {
-    MultiDimDecorator<T_DATA>::add(var);
+    MultiDimDecorator<GUM_SCALAR>::add(var);
     __condMap->insert(&var, true);
   }
 
@@ -83,11 +83,11 @@ namespace gum {
   //  @param var The variable which is removed.
   //  @throws NotFound If var isn't in this.
   //  @throws OperationNotAllowed If var can't be removed.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void 
-  CPF<T_DATA>::erase( const DiscreteVariable& var)
+  CPF<GUM_SCALAR>::erase( const DiscreteVariable& var)
   {
-    MultiDimDecorator<T_DATA>::erase(var);
+    MultiDimDecorator<GUM_SCALAR>::erase(var);
     __condMap->erase(&var);
   }
 
@@ -95,18 +95,18 @@ namespace gum {
   // @param var The variable added as a conditioning variable.
   // @param isCond If true then var is added as a conditioned variable, 
   //               otherwise it is added as a conditioning variable.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   void 
-  CPF<T_DATA>::add(const DiscreteVariable& var, bool isConditioned)
+  CPF<GUM_SCALAR>::add(const DiscreteVariable& var, bool isConditioned)
   {
-    MultiDimDecorator<T_DATA>::add(var);
+    MultiDimDecorator<GUM_SCALAR>::add(var);
     __condMap->insert(&var, isConditioned);
   }
 
   // Returns true if the variable is a conditioned variable.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   bool 
-  CPF<T_DATA>::isConditioned(const DiscreteVariable& var) const
+  CPF<GUM_SCALAR>::isConditioned(const DiscreteVariable& var) const
   {
     return (*__condMap)[&var];
   }
@@ -116,9 +116,9 @@ namespace gum {
   // 
   // The methods parse all the sequence of variables to build the 
   // Instantiation (i.e. it's not fast).
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   Instantiation 
-  CPF<T_DATA>::conditionedVars()
+  CPF<GUM_SCALAR>::conditionedVars()
   {
     Instantiation inst; 
     for (HashTable<const DiscreteVariable*, bool>::iterator iter =
@@ -133,9 +133,9 @@ namespace gum {
   // 
   // The methods parse all the sequence of variables to build the 
   // Instantiation (i.e. it's not fast).
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   const Instantiation 
-  CPF<T_DATA>::conditionedVars() const
+  CPF<GUM_SCALAR>::conditionedVars() const
   {
     Instantiation inst; 
     for (HashTable<const DiscreteVariable*, bool>::iterator iter =
@@ -152,9 +152,9 @@ namespace gum {
   // 
   // The methods parse all the sequence of variables to build the 
   // Instantiation (i.e. it's not fast).
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   Instantiation 
-  CPF<T_DATA>::conditioningVars()
+  CPF<GUM_SCALAR>::conditioningVars()
   {
     Instantiation inst; 
     for (HashTable<const DiscreteVariable*, bool>::iterator iter =
@@ -171,9 +171,9 @@ namespace gum {
   // 
   // The methods parse all the sequence of variables to build the 
   // Instantiation (i.e. it's not fast).
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   const Instantiation 
-  CPF<T_DATA>::conditioningVars() const
+  CPF<GUM_SCALAR>::conditioningVars() const
   {
     Instantiation inst; 
     for (HashTableIterator<const DiscreteVariable*, bool> iter = __condMap->begin();
@@ -195,9 +195,9 @@ namespace gum {
   // at the right.
   //
   // @return Returns a string with the content of this CPF.
-  template <typename T_DATA> INLINE
+  template <typename GUM_SCALAR> INLINE
   const std::string
-  CPF<T_DATA>::toString(const Instantiation *i) const
+  CPF<GUM_SCALAR>::toString(const Instantiation *i) const
   {
     std::stringstream left;
     std::stringstream right;
@@ -219,16 +219,16 @@ namespace gum {
   }
 
 
-  template <typename T_DATA> INLINE
-  CPF<T_DATA>* CPF<T_DATA>::newFactory() const {
-    return new CPF<T_DATA>(static_cast<MultiDimImplementation<T_DATA>*>(this->getContent()->newFactory()));
+  template <typename GUM_SCALAR> INLINE
+  CPF<GUM_SCALAR>* CPF<GUM_SCALAR>::newFactory() const {
+    return new CPF<GUM_SCALAR>(static_cast<MultiDimImplementation<GUM_SCALAR>*>(this->getContent()->newFactory()));
   }
 
-  template<typename T_DATA> INLINE
-  void CPF<T_DATA>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
+  template<typename GUM_SCALAR> INLINE
+  void CPF<GUM_SCALAR>::_swap(const DiscreteVariable* x, const DiscreteVariable* y) {
     __condMap->insert(y, (*__condMap)[x]);
     __condMap->erase(x);
-    MultiDimDecorator<T_DATA>::getContent()._swap(x, y);
+    MultiDimDecorator<GUM_SCALAR>::getContent()._swap(x, y);
   }
 
 } /* namespace gum */

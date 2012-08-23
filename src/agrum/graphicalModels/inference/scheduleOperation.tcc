@@ -29,16 +29,16 @@ namespace gum {
 
 
   /// returns a new distinct ID for each ScheduleOperation
-  template <typename T_DATA>
-  Id ScheduleOperation<T_DATA>::__newId () {
+  template <typename GUM_SCALAR>
+  Id ScheduleOperation<GUM_SCALAR>::__newId () {
     static Id id = 0;
     return ++id;
   }
 
   
   /// default constructor
-  template <typename T_DATA>
-  ScheduleOperation<T_DATA>::ScheduleOperation ( Type t) :
+  template <typename GUM_SCALAR>
+  ScheduleOperation<GUM_SCALAR>::ScheduleOperation ( Type t) :
     __type ( t ), __id ( __newId() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleOperation );
@@ -46,9 +46,9 @@ namespace gum {
   
 
   /// copy constructor
-  template <typename T_DATA>
-  ScheduleOperation<T_DATA>::ScheduleOperation
-  ( const ScheduleOperation<T_DATA>& from ) :
+  template <typename GUM_SCALAR>
+  ScheduleOperation<GUM_SCALAR>::ScheduleOperation
+  ( const ScheduleOperation<GUM_SCALAR>& from ) :
     __type ( from.__type ), __id ( from.__id ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleOperation );
@@ -56,17 +56,17 @@ namespace gum {
   
 
   /// destructor
-  template <typename T_DATA>
-  ScheduleOperation<T_DATA>::~ScheduleOperation () {
+  template <typename GUM_SCALAR>
+  ScheduleOperation<GUM_SCALAR>::~ScheduleOperation () {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleOperation );
   }
 
 
   /// copy operator
-  template <typename T_DATA>
-  INLINE ScheduleOperation<T_DATA>&
-  ScheduleOperation<T_DATA>::operator= ( const ScheduleOperation<T_DATA>& from ) {
+  template <typename GUM_SCALAR>
+  INLINE ScheduleOperation<GUM_SCALAR>&
+  ScheduleOperation<GUM_SCALAR>::operator= ( const ScheduleOperation<GUM_SCALAR>& from ) {
     __type = from.__type;
     __id = from.__id;
     return *this;
@@ -74,16 +74,16 @@ namespace gum {
   
 
   /// returns the name of the operation
-  template <typename T_DATA>
-  INLINE typename ScheduleOperation<T_DATA>::Type
-  ScheduleOperation<T_DATA>::type () const {
+  template <typename GUM_SCALAR>
+  INLINE typename ScheduleOperation<GUM_SCALAR>::Type
+  ScheduleOperation<GUM_SCALAR>::type () const {
     return __type;
   }  
 
 
   /// returns the id of the operation
-  template <typename T_DATA>
-  INLINE Id ScheduleOperation<T_DATA>::id () const {
+  template <typename GUM_SCALAR>
+  INLINE Id ScheduleOperation<GUM_SCALAR>::id () const {
     return __id;
   }
 

@@ -53,9 +53,9 @@ namespace gum {
    *
    * Variables in a CPF must all have different names.
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
-  class CPF: public MultiDimDecorator<T_DATA> {
+  class CPF: public MultiDimDecorator<GUM_SCALAR> {
     public:
       // ============================================================================
       /// @name Constructors & Destructor
@@ -73,12 +73,12 @@ namespace gum {
        * The content will be deleted with this class.
        * @param content The implementation used for representing the CPF.
        */
-      CPF( MultiDimImplementation<T_DATA> *content );
+      CPF( MultiDimImplementation<GUM_SCALAR> *content );
 
       /**
        * Copy constructor.
        */
-      CPF( const CPF<T_DATA>& from );
+      CPF( const CPF<GUM_SCALAR>& from );
 
       /**
        * Destructor.
@@ -100,7 +100,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual CPF<T_DATA>* newFactory() const;
+      virtual CPF<GUM_SCALAR>* newFactory() const;
 
 
 

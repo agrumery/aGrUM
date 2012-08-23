@@ -41,9 +41,9 @@ namespace gum {
    * for information on this format.
    *
 */
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 
-class DSLWriter: public BNWriter<T_DATA> {
+class DSLWriter: public BNWriter<GUM_SCALAR> {
 
 public:
 	// ==========================================================================
@@ -70,7 +70,7 @@ public:
 	* @param bn The Bayesian Network writen in output.
 	* @throws IOError Raised if and I/O error occurs.
 	*/
-	virtual void write( std::ostream &output, const BayesNet<T_DATA>& bn );
+	virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn );
 
 	/**
 	* Writes a Bayesian Network in the referenced file using the DSL format.
@@ -80,14 +80,14 @@ public:
 	* @param bn The Bayesian Network writed in the file.
 	* @throws IOError Raised if and I/O error occurs.
 	*/
-	virtual void write( std::string filePath, const BayesNet<T_DATA>& bn );
+	virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn );
 
 
 
 private:
 
 	// Returns a bloc defining a variable in the DSL format.
-	std::string __variableBloc(const BayesNet<T_DATA>& bn , const DiscreteVariable& var );
+	std::string __variableBloc(const BayesNet<GUM_SCALAR>& bn , const DiscreteVariable& var );
 	
   };
 } /* namespace gum */

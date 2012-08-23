@@ -30,14 +30,14 @@ namespace gum {
   /* ===                           GUM_BIF_WRITER                             === */
   /* ============================================================================ */
   // Default constructor.
-  template<typename T_DATA> INLINE
-  BIFWriter<T_DATA>::BIFWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFWriter<GUM_SCALAR>::BIFWriter() {
     GUM_CONSTRUCTOR( BIFWriter );
   }
 
   // Default destructor.
-  template<typename T_DATA> INLINE
-  BIFWriter<T_DATA>::~BIFWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFWriter<GUM_SCALAR>::~BIFWriter() {
     GUM_DESTRUCTOR( BIFWriter );
   }
 
@@ -47,9 +47,9 @@ namespace gum {
   // @param ouput The output stream.
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFWriter<T_DATA>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+  BIFWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -61,7 +61,7 @@ namespace gum {
     }
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-      const Potential<T_DATA>& proba = bn.cpt( *iter );
+      const Potential<GUM_SCALAR>& proba = bn.cpt( *iter );
       output << __variableCPT( proba );
     }
 
@@ -81,9 +81,9 @@ namespace gum {
   // @param filePath The path to the file used to write the Bayesian Network.
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFWriter<T_DATA>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+  BIFWriter<GUM_SCALAR>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
     if ( ! output.good() ) {
@@ -97,7 +97,7 @@ namespace gum {
     }
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-      const Potential<T_DATA>& proba = bn.cpt( *iter );
+      const Potential<GUM_SCALAR>& proba = bn.cpt( *iter );
       output << __variableCPT( proba );
     }
 
@@ -112,9 +112,9 @@ namespace gum {
   }
 
   // Returns a bloc defining a variable's CPT in the BIF format.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFWriter<T_DATA>::__variableCPT( const Potential<T_DATA>& cpt ) {
+  BIFWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
 
@@ -163,9 +163,9 @@ namespace gum {
   }
 
   // Returns the header of the BIF file.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFWriter<T_DATA>::__header( const BayesNet<T_DATA>& ) {
+  BIFWriter<GUM_SCALAR>::__header( const BayesNet<GUM_SCALAR>& ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
     str << std::endl << "network aGrUM_BN {" << std::endl;
@@ -176,9 +176,9 @@ namespace gum {
   }
 
   // Returns a bloc defining a variable in the BIF format.
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFWriter<T_DATA>::__variableBloc( const DiscreteVariable& var ) {
+  BIFWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
     str << "variable " << var.name() << " {" << std::endl;
@@ -195,9 +195,9 @@ namespace gum {
   }
 
   // Returns the modalities labels of the variables in varsSeq
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFWriter<T_DATA>::__variablesLabels
+  BIFWriter<GUM_SCALAR>::__variablesLabels
   ( const Sequence<const DiscreteVariable*>& varsSeq,
     const Instantiation& inst ) {
     std::stringstream str;

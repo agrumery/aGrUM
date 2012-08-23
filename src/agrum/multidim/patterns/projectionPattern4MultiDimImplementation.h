@@ -33,22 +33,22 @@
 namespace gum{
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
-  template<typename T_DATA>
-  MultiDimImplementation<T_DATA>*
-  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimImplementation<T_DATA>& ttable,
+  template<typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR>*
+  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimImplementation<GUM_SCALAR>& ttable,
                                   const Set<const DiscreteVariable *>& del_vars ) {
 #endif
     
-    typename ProjectionRegister4MultiDim<T_DATA>::ProjectionPtr func;
+    typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr func;
   
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,del_vars) in the register
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
+      func = ProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
         ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.name() );
     }
     catch ( NotFound& ) {
-      func = ProjectionRegister4MultiDim<T_DATA>::Register().get
+      func = ProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
         ( GUM_MULTI_DIM_PROJECTION_FUNC_NAME, ttable.basename() );
     }
 

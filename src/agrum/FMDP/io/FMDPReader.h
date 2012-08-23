@@ -47,7 +47,7 @@ namespace gum {
    * Every class used to read the content of a Factored Markov Decision Process from a stream,
    * or a file must be a subclass of FMDPReader.
    */
-	template<typename T_DATA>
+	template<typename GUM_SCALAR>
   class FMDPReader {
   public:
     /**
@@ -56,7 +56,7 @@ namespace gum {
 		 * Note that the FMDP has to be built outside the reader. There is no delegation to create/destroy
 		 * the FMDP from inside the reader.
      */
-    FMDPReader( FactoredMarkovDecisionProcess<T_DATA>* fmdp, const std::string& filename );
+    FMDPReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename );
 
     /**
      * Default destructor.

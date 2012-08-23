@@ -181,7 +181,7 @@
 
 %extend gum::BayesNet {
     BayesNet(std::string name) {
-        gum::BayesNet<T_DATA> *bn = new gum::BayesNet<T_DATA>();
+        gum::BayesNet<GUM_SCALAR> *bn = new gum::BayesNet<GUM_SCALAR>();
         bn->setProperty("name", name);
         return bn;
     }

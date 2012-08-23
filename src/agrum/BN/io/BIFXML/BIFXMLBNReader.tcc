@@ -27,9 +27,9 @@ namespace gum {
    * A reader is created to reading a defined file.
    * Note that an BN as to be created before and given in parameter.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLBNReader<T_DATA>::BIFXMLBNReader( BayesNet<T_DATA>* bn, const std::string& filePath ):
-    BNReader<T_DATA>( bn, filePath ) {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLBNReader<GUM_SCALAR>::BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filePath ):
+    BNReader<GUM_SCALAR>( bn, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLBNReader );
     __bn = bn;
     __filePath = filePath;
@@ -38,8 +38,8 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLBNReader<T_DATA>::~BIFXMLBNReader() {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLBNReader<GUM_SCALAR>::~BIFXMLBNReader() {
     GUM_DESTRUCTOR( BIFXMLBNReader );
   }
 
@@ -47,9 +47,9 @@ namespace gum {
    * Reads the bayes net from the file referenced by filePath  given at the creation of class
    * @return Returns the number of error during the parsing (0 if none).
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   int
-  BIFXMLBNReader<T_DATA>::proceed() {
+  BIFXMLBNReader<GUM_SCALAR>::proceed() {
     try {
       // Loading file
       std::string status = "Loading File ...";
@@ -101,9 +101,9 @@ namespace gum {
   }
 
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  BIFXMLBNReader<T_DATA>::__parsingVariables( ticpp::Element* parentNetwork ) {
+  BIFXMLBNReader<GUM_SCALAR>::__parsingVariables( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
     int nbVar = 0;
     ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
@@ -153,9 +153,9 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  BIFXMLBNReader<T_DATA>::__fillingBN( ticpp::Element* parentNetwork ) {
+  BIFXMLBNReader<GUM_SCALAR>::__fillingBN( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
     int nbDef = 0;
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
@@ -190,18 +190,18 @@ namespace gum {
       // Recuperating tables values
       ticpp::Element* tableElement = currentVar->FirstChildElement( "TABLE" );
       std::istringstream issTableString( tableElement->GetTextOrDefault( "" ) );
-      std::list<T_DATA> tablelist;
-      T_DATA value;
+      std::list<GUM_SCALAR> tablelist;
+      GUM_SCALAR value;
 
       while( !issTableString.eof() ) {
         issTableString >> value;
         tablelist.push_back( value );
       }
 
-      std::vector<T_DATA> tablevector( tablelist.begin(), tablelist.end() );
+      std::vector<GUM_SCALAR> tablevector( tablelist.begin(), tablelist.end() );
 
       // Filling tables
-      const Potential<T_DATA>* table = &__bn->cpt( currentVarId );
+      const Potential<GUM_SCALAR>* table = &__bn->cpt( currentVarId );
       table->fillWith( tablevector );
 
       // Emitting progress.

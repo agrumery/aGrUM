@@ -37,7 +37,7 @@
 namespace gum {
 
 
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   class MultiDimCompleteProjection {
   public:
     // ############################################################################
@@ -46,11 +46,11 @@ namespace gum {
     /// @{
 
     /// default constructor
-    MultiDimCompleteProjection ( T_DATA (*proj) ( const TABLE<T_DATA>&,
+    MultiDimCompleteProjection ( GUM_SCALAR (*proj) ( const TABLE<GUM_SCALAR>&,
                                                   Instantiation* ) );
 
     /// copy constructor
-    MultiDimCompleteProjection ( const MultiDimCompleteProjection<T_DATA,TABLE>& );
+    MultiDimCompleteProjection ( const MultiDimCompleteProjection<GUM_SCALAR,TABLE>& );
 
     /// destructor
     virtual ~MultiDimCompleteProjection ();
@@ -58,7 +58,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same projection
      * function. */
-    virtual MultiDimCompleteProjection<T_DATA,TABLE>* newFactory () const;
+    virtual MultiDimCompleteProjection<GUM_SCALAR,TABLE>* newFactory () const;
 
     /// @}
 
@@ -69,28 +69,28 @@ namespace gum {
     /// @{
 
     /// creates and returns the projection of the table over all of its vars
-    T_DATA project ( const TABLE<T_DATA>& table,
+    GUM_SCALAR project ( const TABLE<GUM_SCALAR>& table,
                      Instantiation* instantiation = 0 );
 
     /// changes the function used for projecting TABLES
-    void setProjectFunction ( T_DATA (*proj) ( const TABLE<T_DATA>&,
+    void setProjectFunction ( GUM_SCALAR (*proj) ( const TABLE<GUM_SCALAR>&,
                                                Instantiation* ) );
 
     /// returns the projection function currently used by the projector
-    T_DATA (* projectFunction () )
-    ( const TABLE<T_DATA>&, Instantiation* ) const;
+    GUM_SCALAR (* projectFunction () )
+    ( const TABLE<GUM_SCALAR>&, Instantiation* ) const;
     
     /// @}
 
 
   protected:
     /// the projection function actually used 
-    T_DATA (*_proj) ( const TABLE<T_DATA>&, Instantiation* );
+    GUM_SCALAR (*_proj) ( const TABLE<GUM_SCALAR>&, Instantiation* );
 
   private:
     /// forbid copy operators
-    MultiDimCompleteProjection<T_DATA,TABLE>& operator=
-    ( const MultiDimCompleteProjection<T_DATA,TABLE>& );
+    MultiDimCompleteProjection<GUM_SCALAR,TABLE>& operator=
+    ( const MultiDimCompleteProjection<GUM_SCALAR,TABLE>& );
     
   };
 

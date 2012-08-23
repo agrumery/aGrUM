@@ -34,8 +34,8 @@ namespace gum {
 
   namespace particle {
 
-    template <typename T_DATA>
-    Gibbs<T_DATA>::Gibbs( const AbstractBayesNet<T_DATA>& BN ) :
+    template <typename GUM_SCALAR>
+    Gibbs<GUM_SCALAR>::Gibbs( const AbstractBayesNet<GUM_SCALAR>& BN ) :
         __nbr_drawn_by_sample( DEFAULT_DRAWN ),
         __bayesNet( BN ) {
       GUM_CONSTRUCTOR( Gibbs );
@@ -51,7 +51,7 @@ namespace gum {
         //         // feed the sample
         //         __particle << var;
         // feed the __sampling
-        Potential<T_DATA>* tmp = new Potential<T_DATA>();
+        Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
         __sampling_posterior.insert( *iter, tmp );
         ( *tmp ) << var;
         Instantiation* tmp_idx = new Instantiation( *tmp );
@@ -74,15 +74,15 @@ namespace gum {
 
     }
 
-    template <typename T_DATA>
-    Gibbs<T_DATA>::~Gibbs() {
+    template <typename GUM_SCALAR>
+    Gibbs<GUM_SCALAR>::~Gibbs() {
       GUM_DESTRUCTOR( Gibbs );
 
       for ( HashTableIterator<NodeId, Instantiation*> iter = __sampling_idx.begin();
             iter != __sampling_idx.end(); ++iter )
         delete( *iter );
 
-      for ( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+      for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
               __sampling_posterior.begin();
             iter != __sampling_posterior.end(); ++iter )
         delete( *iter );
@@ -97,13 +97,13 @@ namespace gum {
         delete( *iter );
     }
 
-    template <typename T_DATA> INLINE
-    const AbstractBayesNet<T_DATA>& Gibbs<T_DATA>::bn( void ) {
+    template <typename GUM_SCALAR> INLINE
+    const AbstractBayesNet<GUM_SCALAR>& Gibbs<GUM_SCALAR>::bn( void ) {
       return __bayesNet;
     }
 
-    template <typename T_DATA> INLINE
-    void Gibbs<T_DATA>::__setValVar( NodeId id, Idx choice ) {
+    template <typename GUM_SCALAR> INLINE
+    void Gibbs<GUM_SCALAR>::__setValVar( NodeId id, Idx choice ) {
       const DiscreteVariable& v = this->bn().variable( id );
       // the change is directly in __particle in order to use the new
       // drawn values for future draws
@@ -120,49 +120,49 @@ namespace gum {
     }
 
     /// how many sample between 2 stop test
-    template <typename T_DATA> INLINE
-    void Gibbs<T_DATA>::setNbrDrawnBySample( Size s ) {
+    template <typename GUM_SCALAR> INLINE
+    void Gibbs<GUM_SCALAR>::setNbrDrawnBySample( Size s ) {
       __nbr_drawn_by_sample = s;
     }
 
     /// how many sample between 2 stop test
-    template <typename T_DATA> INLINE
-    Size Gibbs<T_DATA>::nbrDrawnBySample( ) {
+    template <typename GUM_SCALAR> INLINE
+    Size Gibbs<GUM_SCALAR>::nbrDrawnBySample( ) {
       return __nbr_drawn_by_sample ;
     }
 
     // give the actual particle
-    template <typename T_DATA> inline
-    const Instantiation& Gibbs<T_DATA>::particle( void ) {
+    template <typename GUM_SCALAR> inline
+    const Instantiation& Gibbs<GUM_SCALAR>::particle( void ) {
       return __particle;
     }
 
     /// put in __next_sample a value for variable id,
     /// @warning : proba is a probability for variable id
-    template <typename T_DATA>
-    void Gibbs<T_DATA>::__drawVar( NodeId id ) {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::__drawVar( NodeId id ) {
       const DiscreteVariable& v = this->bn().variable( id );
-      Potential<T_DATA>& proba = *__sampling_posterior[id];
-      T_DATA p = ( T_DATA ) getRandomProba();
+      Potential<GUM_SCALAR>& proba = *__sampling_posterior[id];
+      GUM_SCALAR p = ( GUM_SCALAR ) getRandomProba();
       // use of __sampling_idx for shrink the number of temporary Instantiation
       Instantiation& I = *__sampling_idx[id];
       Idx choice = 0;
       // normalisation
-      T_DATA s = ( T_DATA ) 0;
+      GUM_SCALAR s = ( GUM_SCALAR ) 0;
 
       for ( I.setFirst(); ! I.end(); I.inc() ) s += proba[I];
 
-      if ( s == ( T_DATA ) 0 ) {
+      if ( s == ( GUM_SCALAR ) 0 ) {
         GUM_ERROR( FatalError, "A normalisation factor is 0 in node " << id << " (" << v << ") : "<<proba );
       }
 
       // draw value
       for ( I.setFirst(); ! I.end(); I.inc() ) {
-        if ( proba[I] == ( T_DATA ) 0 ) continue;
+        if ( proba[I] == ( GUM_SCALAR ) 0 ) continue;
 
         choice = I.val( v );
 
-        T_DATA q = proba[I] / s;
+        GUM_SCALAR q = proba[I] / s;
 
         if ( p <= q ) {
           break;
@@ -175,16 +175,16 @@ namespace gum {
     }
 
     /// change in __particle a new drawn value for id
-    template<typename T_DATA>
-    void Gibbs<T_DATA>::__GibbsSample( NodeId id ) {
+    template<typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::__GibbsSample( NodeId id ) {
       const DiscreteVariable& v = this->bn().variable( id );
       // we have to build P(x \given instantiation_markovblanket(x)) in posterior
       // see Pearl'88, 4.71 p218
-      Potential<T_DATA>& posterior = *__sampling_posterior[id];
+      Potential<GUM_SCALAR>& posterior = *__sampling_posterior[id];
       Instantiation& posterior_idx = *__sampling_idx[id];
 
       Instantiation* tmp;
-      T_DATA value;
+      GUM_SCALAR value;
 
       for ( posterior_idx.setFirst();! posterior_idx.end();posterior_idx.inc() ) {
         Idx current_mod_id = posterior_idx.val( v );
@@ -192,14 +192,14 @@ namespace gum {
         tmp->chgVal( v, current_mod_id );
         posterior.set( posterior_idx, value = this->bn().cpt( id )[*tmp] );
 
-        if ( value == ( T_DATA ) 0 ) {
+        if ( value == ( GUM_SCALAR ) 0 ) {
           continue;
         }
 
         if ( __evidences.exists( id ) ) {
           posterior.set( posterior_idx, posterior[posterior_idx]* ( value = ( * __evidences[id] )[posterior_idx] ) );
 
-          if ( value == ( T_DATA ) 0 ) {
+          if ( value == ( GUM_SCALAR ) 0 ) {
             continue;
           }
         }
@@ -211,7 +211,7 @@ namespace gum {
           //posterior[posterior_idx]*=( value=this->bn().cpt( *iter )[*tmp] );
           posterior.set( posterior_idx, posterior[posterior_idx]* ( value = this->bn().cpt( *iter )[*tmp] ) );
 
-          if ( value == ( T_DATA ) 0 ) {
+          if ( value == ( GUM_SCALAR ) 0 ) {
             continue;
           }
         }
@@ -222,8 +222,8 @@ namespace gum {
 
 
     /// remove a given evidence from the graph
-    template <typename T_DATA> INLINE
-    void Gibbs<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
+    template <typename GUM_SCALAR> INLINE
+    void Gibbs<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* pot ) {
       const Sequence<const DiscreteVariable *>& vars = pot->variablesSequence();
 
       if ( vars.size() != 1 ) {
@@ -238,22 +238,22 @@ namespace gum {
     }
 
     /// remove all evidence from the graph
-    template <typename T_DATA> INLINE
-    void Gibbs<T_DATA>::eraseAllEvidence() {
+    template <typename GUM_SCALAR> INLINE
+    void Gibbs<GUM_SCALAR>::eraseAllEvidence() {
       __evidences.clear();
       __hard_evidences.clear();
     }
 
     /// insert new evidence in the graph
-    template <typename T_DATA>
-    void Gibbs<T_DATA>::insertEvidence
-    ( const List<const Potential<T_DATA>*>& pot_list ) {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::insertEvidence
+    ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
       eraseAllEvidence();
 
-      for ( ListConstIterator<const Potential<T_DATA>*> iter = pot_list.begin();
+      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.begin();
             iter != pot_list.end(); ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
-        const Potential<T_DATA>& pot = **iter;
+        const Potential<GUM_SCALAR>& pot = **iter;
         const Sequence<const DiscreteVariable *>& vars = pot.variablesSequence();
 
         if ( vars.size() != 1 ) {
@@ -269,7 +269,7 @@ namespace gum {
         Instantiation I( pot );
 
         for ( I.setFirst();! I.end() ; ++I ) {
-          if ( pot[I] == ( T_DATA ) 0 ) {
+          if ( pot[I] == ( GUM_SCALAR ) 0 ) {
             nb_zero++;
           } else {
             pos_un = I.val( *vars.atPos( 0 ) );
@@ -290,13 +290,13 @@ namespace gum {
     /// This is not a really sample since we take into account evidence without
     /// care about parent of evidence, etc.
     /// This is just a not-so-bad first sample for GIBBS
-    template <typename T_DATA>
-    void Gibbs<T_DATA>::__MonteCarloSample() {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::__MonteCarloSample() {
       // _nodes_array is assumed to be the list of nodes to draw; in a topological-compatible order
       for ( unsigned int it=0;it<__nodes_array.size();it++ ) {
         Idx id = __nodes_array[it];
 
-        const Potential<T_DATA>& cpt = this->bn().cpt( id );
+        const Potential<GUM_SCALAR>& cpt = this->bn().cpt( id );
 
         const DiscreteVariable& v = this->bn().variable( id );
 
@@ -310,7 +310,7 @@ namespace gum {
           I.chgVal( it.pos() , __particle.valFromPtr( *it ) );
         }
 
-        Potential<T_DATA>& proba = *__sampling_posterior[id];
+        Potential<GUM_SCALAR>& proba = *__sampling_posterior[id];
 
         for ( I.setFirstVar( v ); ! I.end(); I.incVar( v ) ) {
           if ( __evidences.exists( id ) ) {
@@ -325,8 +325,8 @@ namespace gum {
     }
 
 
-    template <typename T_DATA>
-    void Gibbs<T_DATA>::initParticle() {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::initParticle() {
       initRandom();
 
       const Sequence<NodeId>& topo = this->bn().topologicalOrder();
@@ -357,8 +357,8 @@ namespace gum {
     }
 
 
-    template<typename T_DATA>
-    void Gibbs<T_DATA>::nextParticle() {
+    template<typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::nextParticle() {
       // GENERATE NEXT SAMPLE
       if ( __nbr_drawn_by_sample == 0 ) {
         // we want to draw all the node always in the same order

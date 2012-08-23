@@ -29,16 +29,16 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLIDWriter<T_DATA>::BIFXMLIDWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLIDWriter<GUM_SCALAR>::BIFXMLIDWriter() {
     GUM_CONSTRUCTOR( BIFXMLIDWriter );
   }
 
   /*
    * Destructor.
    */
-  template<typename T_DATA> INLINE
-  BIFXMLIDWriter<T_DATA>::~BIFXMLIDWriter() {
+  template<typename GUM_SCALAR> INLINE
+  BIFXMLIDWriter<GUM_SCALAR>::~BIFXMLIDWriter() {
     GUM_DESTRUCTOR( BIFXMLIDWriter );
   }
 
@@ -49,9 +49,9 @@ namespace gum {
    * @param infdiag The influence diagram writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLIDWriter<T_DATA>::write( std::ostream &output, const InfluenceDiagram<T_DATA>& infdiag ) {
+  BIFXMLIDWriter<GUM_SCALAR>::write( std::ostream &output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -96,9 +96,9 @@ namespace gum {
    * @param infdiag The Influence Diagram writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLIDWriter<T_DATA>::write( std::string filePath, const InfluenceDiagram<T_DATA>& infdiag ) {
+  BIFXMLIDWriter<GUM_SCALAR>::write( std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
     write( output, infdiag );
@@ -115,9 +115,9 @@ namespace gum {
   /*
    * Returns the header of the BIF file.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLIDWriter<T_DATA>::__heading() {
+  BIFXMLIDWriter<GUM_SCALAR>::__heading() {
     std::stringstream str;
 
     // Header for every xml
@@ -153,9 +153,9 @@ namespace gum {
   /*
    * Returns a bloc defining a variable in the BIF format.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLIDWriter<T_DATA>::__variableBloc( const DiscreteVariable& var, int varType ) {
+  BIFXMLIDWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var, int varType ) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -206,9 +206,9 @@ namespace gum {
   /*
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLIDWriter<T_DATA>::__variableDefinition( const NodeId& varNodeId, const InfluenceDiagram<T_DATA>& infdiag ) {
+  BIFXMLIDWriter<GUM_SCALAR>::__variableDefinition( const NodeId& varNodeId, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -265,9 +265,9 @@ namespace gum {
   /*
    * Returns the end of the BIF file.
    */
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLIDWriter<T_DATA>::__documentend() {
+  BIFXMLIDWriter<GUM_SCALAR>::__documentend() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

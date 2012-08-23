@@ -35,9 +35,9 @@ namespace gum {
 
 
   /// constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimProjection<T_DATA,TABLE>::MultiDimProjection
-  ( TABLE<T_DATA>* ( *proj )( const TABLE<T_DATA>&,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimProjection<GUM_SCALAR,TABLE>::MultiDimProjection
+  ( TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
                               const Set<const DiscreteVariable*>& ) ) :
       _proj( proj ) {
     /// for debugging purposes
@@ -46,9 +46,9 @@ namespace gum {
 
 
   /// copy constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimProjection<T_DATA,TABLE>::MultiDimProjection
-  ( const MultiDimProjection<T_DATA,TABLE>& from ) :
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimProjection<GUM_SCALAR,TABLE>::MultiDimProjection
+  ( const MultiDimProjection<GUM_SCALAR,TABLE>& from ) :
       _proj( from._proj ) {
     /// for debugging purposes
     GUM_CONS_CPY( MultiDimProjection );
@@ -56,69 +56,69 @@ namespace gum {
 
 
   /// destructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimProjection<T_DATA,TABLE>::~MultiDimProjection() {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimProjection<GUM_SCALAR,TABLE>::~MultiDimProjection() {
     /// for debugging purposes
     GUM_DESTRUCTOR( MultiDimProjection );
   }
 
 
   /// virtual constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimProjection<T_DATA,TABLE>*
-  MultiDimProjection<T_DATA,TABLE>::newFactory() const {
-    return new MultiDimProjection<T_DATA,TABLE> ( *this );
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimProjection<GUM_SCALAR,TABLE>*
+  MultiDimProjection<GUM_SCALAR,TABLE>::newFactory() const {
+    return new MultiDimProjection<GUM_SCALAR,TABLE> ( *this );
   }
 
 
   /// creates and returns the projection of the table over a subset of its vars
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE TABLE<T_DATA>*
-  MultiDimProjection<T_DATA,TABLE>::project
-  ( const TABLE<T_DATA>& table,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  INLINE TABLE<GUM_SCALAR>*
+  MultiDimProjection<GUM_SCALAR,TABLE>::project
+  ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars ) {
     return _proj( table, del_vars );
   }
 
 
   /// creates and returns the projection of the table over a subset of its vars
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimProjection<T_DATA,TABLE>::project
-  ( TABLE<T_DATA>& container,
-    const TABLE<T_DATA>& table,
-    const Set<const TABLE<T_DATA>*>& del_vars ) {
-    TABLE<T_DATA>* res = project( table, del_vars );
+  MultiDimProjection<GUM_SCALAR,TABLE>::project
+  ( TABLE<GUM_SCALAR>& container,
+    const TABLE<GUM_SCALAR>& table,
+    const Set<const TABLE<GUM_SCALAR>*>& del_vars ) {
+    TABLE<GUM_SCALAR>* res = project( table, del_vars );
     container = *res;
     delete res;
   }
 
 
   /// changes the function used for projecting TABLES
-  template< typename T_DATA, template<typename> class TABLE >
-  void MultiDimProjection<T_DATA,TABLE>::setProjectFunction
-  ( TABLE<T_DATA>*
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  void MultiDimProjection<GUM_SCALAR,TABLE>::setProjectFunction
+  ( TABLE<GUM_SCALAR>*
     ( *proj )
-    ( const TABLE<T_DATA>&,
+    ( const TABLE<GUM_SCALAR>&,
       const Set<const DiscreteVariable*>& ) ) {
     _proj = proj;
   }
 
 
   /// returns the projection function currently used by the projector
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE TABLE<T_DATA>*
-  ( * MultiDimProjection<T_DATA,TABLE>::projectFunction() )
-  ( const TABLE<T_DATA>&, const Set<const DiscreteVariable*>& ) const {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  INLINE TABLE<GUM_SCALAR>*
+  ( * MultiDimProjection<GUM_SCALAR,TABLE>::projectFunction() )
+  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const {
     return _proj;
   }
 
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
-  template< typename T_DATA, template<typename> class TABLE >
-  INLINE float MultiDimProjection<T_DATA,TABLE>::nbOperations
-  ( const TABLE<T_DATA>& table,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  INLINE float MultiDimProjection<GUM_SCALAR,TABLE>::nbOperations
+  ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars ) const {
     return table.domainSize();
   }
@@ -126,8 +126,8 @@ namespace gum {
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
-  template< typename T_DATA, template<typename> class TABLE >
-  float MultiDimProjection<T_DATA,TABLE>::nbOperations
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  float MultiDimProjection<GUM_SCALAR,TABLE>::nbOperations
   ( const Sequence<const DiscreteVariable*>& vars,
     const Set<const DiscreteVariable*>& del_vars ) const {
     float res = 1.0f;
@@ -141,9 +141,9 @@ namespace gum {
 
 
   /// returns the memory consumption used during the projection
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   std::pair<long,long>
-  MultiDimProjection<T_DATA,TABLE>::memoryUsage
+  MultiDimProjection<GUM_SCALAR,TABLE>::memoryUsage
   ( const Sequence<const DiscreteVariable*>& vars,
     const Set<const DiscreteVariable*>& del_vars ) const {
     long res = 1;
@@ -163,10 +163,10 @@ namespace gum {
 
 
   /// returns the memory consumption used during the projection
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE std::pair<long,long>
-  MultiDimProjection<T_DATA,TABLE>::memoryUsage
-  ( const TABLE<T_DATA>& table,
+  MultiDimProjection<GUM_SCALAR,TABLE>::memoryUsage
+  ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars ) const {
     return memoryUsage( table.variablesSequence(), del_vars );
   }

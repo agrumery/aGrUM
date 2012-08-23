@@ -46,7 +46,7 @@ namespace gum {
    * All classes used to read an influence diagram from 
    * a file must inherit from this class
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   class IDReader {
   public:
     /**
@@ -54,7 +54,7 @@ namespace gum {
      * A reader is created to reading a defined file. 
      * Note that an ID as to be created before and given in parameter.
      */
-    IDReader(InfluenceDiagram<T_DATA>* infdiag, const std::string& filePath );
+    IDReader(InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
 
     /**
      * Default destructor.

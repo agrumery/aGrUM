@@ -58,7 +58,7 @@ namespace gum {
    *
    */
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
   class FMDPFactory : public AbstractFMDPFactory {
 
@@ -73,7 +73,7 @@ namespace gum {
        * Use this constructor if you want to use an already created factored markov decision process.
        * @param fmdp A pointer over the Factored Markov Decision Process filled by this factory.
        */
-      FMDPFactory ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, MultiDimDecisionDiagramFactoryBase<T_DATA>* ddFactory );
+      FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory );
 
       //~ /**
        //~ * @brief Copy constructor.
@@ -83,7 +83,7 @@ namespace gum {
        //~ * @throw OperationNotAllowed Raised if the state of source is not NONE or
        //~ *                            NETWORK.
        //~ */
-      //~ FMDPFactory ( const FMDPFactory<T_DATA>& source );
+      //~ FMDPFactory ( const FMDPFactory<GUM_SCALAR>& source );
 
       /**
        * @brief Destructor.
@@ -108,7 +108,7 @@ namespace gum {
        * @throw OperationNotAllowed Raise if the state of the factory is different
        *                            than NONE.
        */
-      FactoredMarkovDecisionProcess<T_DATA>* FMDP() const;
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP() const;
 
       /// Returns the current state of the factory.
       FMDPfactory_state state() const;
@@ -302,7 +302,7 @@ namespace gum {
       std::vector<std::string> __stringBag;
 
       /// Just to keep track of strings between two start/end calls.
-      std::vector<const MultiDimImplementation<T_DATA>*> __ddBag;
+      std::vector<const MultiDimImplementation<GUM_SCALAR>*> __ddBag;
       
       /// Used in VARIABLE mode
       /// Checks if in __stringBag there is no other modality with the same name.
@@ -317,10 +317,10 @@ namespace gum {
       std::vector<FMDPfactory_state> __states;
 
       /// The constructed FMDP
-      FactoredMarkovDecisionProcess<T_DATA>* __fmdp;
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
       
       /// The factory used to build up decision diagram
-      MultiDimDecisionDiagramFactoryBase<T_DATA>* __decisionDiagramFactory;
+      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* __decisionDiagramFactory;
 
       /// Mapping between a declared variable's name and itself.
       HashTable< std::string, const DiscreteVariable* > __varNameMap;
@@ -328,7 +328,7 @@ namespace gum {
       bool __verbose;
 
       /// Copy operator is illegal, use only copy constructor.
-      FMDPFactory<T_DATA>& operator= ( const FMDPFactory<T_DATA>& source );
+      FMDPFactory<GUM_SCALAR>& operator= ( const FMDPFactory<GUM_SCALAR>& source );
 
       /// Raise an OperationNotAllowed with the message "Illegal state."
       void __illegalStateError ( const std::string& s );
