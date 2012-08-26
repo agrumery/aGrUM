@@ -61,7 +61,7 @@ def compareBNParents(b1,b2):
 
   return "OK"
 
-def compareCPT(cpt1,cpt2):
+def compareCPT(b1,cpt1,b2,cpt2):
   dico2={}
   for i in range(cpt2.nbrDim()):
     dico2[cpt2.variable(i).name()]=i
@@ -74,13 +74,13 @@ def compareCPT(cpt1,cpt2):
       I2.chgVal(dico2[I1.variable(i).name()],I1.val(i))
 
     if abs(cpt1.get(I1)-cpt2.get(I2))>DELTA_ERROR:
-      return "For "+cpt1.variable(0).name()+", cpt["+str(I1)+"] ("+str(cpt1.get(I1))+", in"+b1.property('name')+") !=cpt2["+str(I2)+"] ("+str(cpt2.get(I2))+", in"+b2.property('name')+")"
+      return "For "+cpt1.variable(0).name()+", cpt["+str(I1)+"] (="+str(cpt1.get(I1))+", in "+b1.property('name')+") !=cpt2["+str(I2)+"] (="+str(cpt2.get(I2))+", in "+b2.property('name')+")"
     I1+=1
   return "OK"
 
 def compareBNCPT(b1,b2):
   for i in range(len(b1)):
-    res=compareCPT(b1.cpt(i),b2.cpt(b2.idFromName(b1.variable(i).name())))
+    res=compareCPT(b1,b1.cpt(i),b2,b2.cpt(b2.idFromName(b1.variable(i).name())))
     if res!="OK":
       return res
   return "OK"

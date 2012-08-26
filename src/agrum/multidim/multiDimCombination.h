@@ -83,7 +83,7 @@
 namespace gum {
 
 
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   class MultiDimCombination {
   public:
     // ############################################################################
@@ -95,7 +95,7 @@ namespace gum {
     MultiDimCombination ();
 
     /// copy constructor
-    MultiDimCombination ( const MultiDimCombination<T_DATA,TABLE>& );
+    MultiDimCombination ( const MultiDimCombination<GUM_SCALAR,TABLE>& );
 
     /// destructor
     virtual ~MultiDimCombination ();
@@ -103,7 +103,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same combination
      * function. */
-    virtual MultiDimCombination<T_DATA,TABLE>* newFactory () const = 0;
+    virtual MultiDimCombination<GUM_SCALAR,TABLE>* newFactory () const = 0;
 
     /// @}
 
@@ -118,23 +118,23 @@ namespace gum {
      * of all the TABLES passed in argument
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
-    virtual TABLE<T_DATA>* combine ( const Set<const TABLE<T_DATA>*>& set ) = 0;
-    virtual void combine ( TABLE<T_DATA>& container,
-                           const Set<const TABLE<T_DATA>*>& set ) = 0;
+    virtual TABLE<GUM_SCALAR>* combine ( const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
+    virtual void combine ( TABLE<GUM_SCALAR>& container,
+                           const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction ( TABLE<T_DATA>*
-                                      (*combine) ( const TABLE<T_DATA>&,
-                                                   const TABLE<T_DATA>& ) ) = 0;
+    virtual void setCombineFunction ( TABLE<GUM_SCALAR>*
+                                      (*combine) ( const TABLE<GUM_SCALAR>&,
+                                                   const TABLE<GUM_SCALAR>& ) ) = 0;
     
     /// returns the combination function currently used by the combinator
-    virtual TABLE<T_DATA>* (* combineFunction () )
-      ( const TABLE<T_DATA>&, const TABLE<T_DATA>& ) const = 0;
+    virtual TABLE<GUM_SCALAR>* (* combineFunction () )
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const = 0;
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
     virtual float
-    nbOperations ( const Set<const TABLE<T_DATA>*>& set ) const = 0;
+    nbOperations ( const Set<const TABLE<GUM_SCALAR>*>& set ) const = 0;
     virtual float
     nbOperations ( const Set<const Sequence<const DiscreteVariable*>*>& set )
       const = 0;
@@ -148,7 +148,7 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used by
      * the resulting table ) */
     virtual std::pair<long,long>
-    memoryUsage ( const Set<const TABLE<T_DATA>*>& set ) const = 0;
+    memoryUsage ( const Set<const TABLE<GUM_SCALAR>*>& set ) const = 0;
     virtual std::pair<long,long>
     memoryUsage ( const Set<const Sequence<const DiscreteVariable*>*>& set )
       const = 0;
@@ -159,8 +159,8 @@ namespace gum {
 
   private:
     /// forbid copy operators
-    MultiDimCombination<T_DATA,TABLE>& operator=
-    ( const MultiDimCombination<T_DATA,TABLE>& );
+    MultiDimCombination<GUM_SCALAR,TABLE>& operator=
+    ( const MultiDimCombination<GUM_SCALAR,TABLE>& );
     
  };
 

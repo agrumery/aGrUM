@@ -40,14 +40,14 @@ namespace gum {
    * @ingroup bn_group
    *
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
   class BayesNetInference {
     public:
       /**
        * Default constructor
        */
-      BayesNetInference( const AbstractBayesNet<T_DATA>& bn );
+      BayesNetInference( const AbstractBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -70,7 +70,7 @@ namespace gum {
        * @throw NotFound Raised if no variable matches id.
        * @throw OperationNotAllowed Raised if the inference can not be done.
        */
-      virtual const Potential<T_DATA>& marginal( NodeId id );
+      virtual const Potential<GUM_SCALAR>& marginal( NodeId id );
 
       /**
        * Insert new evidence in the graph.
@@ -78,12 +78,12 @@ namespace gum {
        * evidence w.r.t. this node is onserted, the old evidence is removed.
        * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
        */
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) = 0;
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) = 0;
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<T_DATA>* e ) = 0;
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) = 0;
 
       /**
        * Remove all evidence from the graph.
@@ -93,7 +93,7 @@ namespace gum {
       /**
        * Returns a constant reference over the BayesNet on which this class work.
        */
-      const AbstractBayesNet<T_DATA>& bn() const;
+      const AbstractBayesNet<GUM_SCALAR>& bn() const;
 
     protected:
 
@@ -114,7 +114,7 @@ namespace gum {
        * @param marginal The completely empty potential to fill.
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal( NodeId id, Potential<T_DATA>& marginal ) = 0;
+      virtual void _fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal ) = 0;
 
       /**
        * Invalidate the set of marginals kept here.
@@ -124,13 +124,13 @@ namespace gum {
       /**
        * Mapping between marginals and __bayesNet's nodes.
        */
-      typename Property<Potential<T_DATA>*>::onNodes _marginals;
+      typename Property<Potential<GUM_SCALAR>*>::onNodes _marginals;
 
     private:
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const AbstractBayesNet<T_DATA>& __bayesNet;
+      const AbstractBayesNet<GUM_SCALAR>& __bayesNet;
   };
 
 // ============================================================================

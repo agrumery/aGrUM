@@ -29,27 +29,27 @@
 namespace gum {
 
   namespace aggregator {
-    template<typename T_DATA> INLINE
-    Forall<T_DATA>::Forall( Idx value ): MultiDimAggregator<T_DATA>(), __value( value ) {
+    template<typename GUM_SCALAR> INLINE
+    Forall<GUM_SCALAR>::Forall( Idx value ): MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
       GUM_CONSTRUCTOR( Forall )
     }
 
-    template<typename T_DATA> INLINE
-    Forall<T_DATA>::Forall( const Forall<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+    template<typename GUM_SCALAR> INLINE
+    Forall<GUM_SCALAR>::Forall( const Forall<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR>( from ) {
       __value = from.__value;
       GUM_CONS_CPY( Forall );
     }
 
-    template<typename T_DATA> INLINE
-    Forall<T_DATA>::~Forall() {
+    template<typename GUM_SCALAR> INLINE
+    Forall<GUM_SCALAR>::~Forall() {
       GUM_DESTRUCTOR( Forall );
     }
 
-    template<typename T_DATA> INLINE
-    Idx Forall<T_DATA>::_neutralElt() const { return ( Idx )1;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Forall<GUM_SCALAR>::_neutralElt() const { return ( Idx )1;}
 
-    template<typename T_DATA> INLINE
-    Idx Forall<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
+    template<typename GUM_SCALAR> INLINE
+    Idx Forall<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
       if ( i1 == __value ) {
         return ( Idx )1;
       } else {
@@ -58,17 +58,17 @@ namespace gum {
       }
     }
 
-    template<typename T_DATA> INLINE
+    template<typename GUM_SCALAR> INLINE
 
-    std::string Forall<T_DATA>::aggregatorName( void ) const {
+    std::string Forall<GUM_SCALAR>::aggregatorName( void ) const {
       std::stringstream ss;
       ss << "forall[" << __value << "]";
       return ss.str();
     }
 
-    template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Forall<T_DATA>::newFactory() const {
-      return new Forall<T_DATA>(__value);
+    template<typename GUM_SCALAR> INLINE
+    MultiDimContainer<GUM_SCALAR>* Forall<GUM_SCALAR>::newFactory() const {
+      return new Forall<GUM_SCALAR>(__value);
       // GUM_ERROR( OperationNotAllowed,
       //            "This class doesn't contain an empty constructor" );
       // return 0;

@@ -36,12 +36,12 @@ namespace gum {
 
 
   /// adds a new entry into the register
-  template<typename T_DATA>
-  void OperatorRegister4MultiDim<T_DATA>::insert
+  template<typename GUM_SCALAR>
+  void OperatorRegister4MultiDim<GUM_SCALAR>::insert
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2,
-    typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr newFunction ) {
+    typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr newFunction ) {
     // insert the new entry
     OperatorSet* theset;
 
@@ -65,8 +65,8 @@ namespace gum {
 
 
   /// removes a given entry from the register
-  template<typename T_DATA>
-  void OperatorRegister4MultiDim<T_DATA>::erase
+  template<typename GUM_SCALAR>
+  void OperatorRegister4MultiDim<GUM_SCALAR>::erase
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) {
@@ -79,8 +79,8 @@ namespace gum {
 
 
   /// indicates whether a given entry exists in the register
-  template<typename T_DATA> INLINE
-  bool OperatorRegister4MultiDim<T_DATA>::exists
+  template<typename GUM_SCALAR> INLINE
+  bool OperatorRegister4MultiDim<GUM_SCALAR>::exists
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) const {
@@ -93,9 +93,9 @@ namespace gum {
 
   /** @brief returns the specialized operator assigned to a given pair of
    * MultiDimImplementations */
-  template<typename T_DATA> INLINE
-  typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
-  OperatorRegister4MultiDim<T_DATA>::get( const std::string& operation_name,
+  template<typename GUM_SCALAR> INLINE
+  typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
+  OperatorRegister4MultiDim<GUM_SCALAR>::get( const std::string& operation_name,
                                           const std::string& type1,
                                           const std::string& type2 ) const {
     OperatorSet* theset = __set[operation_name];
@@ -104,9 +104,9 @@ namespace gum {
 
 
   /// a named constructor that constructs one and only one Register per data type
-  template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>&
-  OperatorRegister4MultiDim<T_DATA>::Register() {
+  template<typename GUM_SCALAR>
+  OperatorRegister4MultiDim<GUM_SCALAR>&
+  OperatorRegister4MultiDim<GUM_SCALAR>::Register() {
     static OperatorRegister4MultiDim container;
 
 #ifndef NDEBUG
@@ -128,14 +128,14 @@ namespace gum {
   }
 
   /// Default constructor: creates an empty register
-  template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::OperatorRegister4MultiDim() {
+  template<typename GUM_SCALAR>
+  OperatorRegister4MultiDim<GUM_SCALAR>::OperatorRegister4MultiDim() {
   }
 
 
   /// destructor
-  template<typename T_DATA>
-  OperatorRegister4MultiDim<T_DATA>::~OperatorRegister4MultiDim() {
+  template<typename GUM_SCALAR>
+  OperatorRegister4MultiDim<GUM_SCALAR>::~OperatorRegister4MultiDim() {
     // remove all the sets
     for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
             __set.begin(); iter != __set.end(); ++iter )
@@ -144,14 +144,14 @@ namespace gum {
 
 
   /// a function to more easily register new operators in MultiDims
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
   registerOperator( const std::string& operation_name,
                     const std::string& type1,
                     const std::string& type2,
-                    typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
+                    typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
                     function ) {
-    OperatorRegister4MultiDim<T_DATA>::Register().insert( operation_name,
+    OperatorRegister4MultiDim<GUM_SCALAR>::Register().insert( operation_name,
         type1, type2, function );
   }
 

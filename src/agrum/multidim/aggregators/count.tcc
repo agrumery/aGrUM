@@ -29,38 +29,38 @@
 namespace gum {
 
   namespace aggregator {
-    template<typename T_DATA> INLINE
-    Count<T_DATA>::Count( Idx value ): MultiDimAggregator<T_DATA>(), __value( value ) {
+    template<typename GUM_SCALAR> INLINE
+    Count<GUM_SCALAR>::Count( Idx value ): MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
       GUM_CONSTRUCTOR( Count )
     }
 
-    template<typename T_DATA> INLINE
-    Count<T_DATA>::Count( const Count<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+    template<typename GUM_SCALAR> INLINE
+    Count<GUM_SCALAR>::Count( const Count<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR>( from ) {
       __value = from.__value;
       GUM_CONS_CPY( Count );
     }
 
-    template<typename T_DATA> INLINE
-    Count<T_DATA>::~Count() {
+    template<typename GUM_SCALAR> INLINE
+    Count<GUM_SCALAR>::~Count() {
       GUM_DESTRUCTOR( Count );
     }
 
-    template<typename T_DATA> INLINE
-    Idx Count<T_DATA>::_neutralElt() const { return ( Idx )0;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Count<GUM_SCALAR>::_neutralElt() const { return ( Idx )0;}
 
-    template<typename T_DATA> INLINE
-    Idx Count<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2 , bool& stop_iteration ) const { return ( i1 == __value ) ? 1 + i2 : i2;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Count<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2 , bool& stop_iteration ) const { return ( i1 == __value ) ? 1 + i2 : i2;}
 
-    template<typename T_DATA> INLINE
-    std::string Count<T_DATA>::aggregatorName( void ) const {
+    template<typename GUM_SCALAR> INLINE
+    std::string Count<GUM_SCALAR>::aggregatorName( void ) const {
       std::stringstream ss;
       ss << "count[" << __value << "]";
       return ss.str();
     }
 
-    template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Count<T_DATA>::newFactory() const {
-      return new Count<T_DATA>(__value);
+    template<typename GUM_SCALAR> INLINE
+    MultiDimContainer<GUM_SCALAR>* Count<GUM_SCALAR>::newFactory() const {
+      return new Count<GUM_SCALAR>(__value);
       // GUM_ERROR( OperationNotAllowed,
       //            "This class doesn't contain an empty constructor" );
       // return 0;

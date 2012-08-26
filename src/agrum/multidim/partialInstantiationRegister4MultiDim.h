@@ -40,7 +40,7 @@ namespace gum {
   
 
   // the base object used by the partial instantiations
-  template<typename T_DATA> class MultiDimImplementation;
+  template<typename GUM_SCALAR> class MultiDimImplementation;
 
   
   /* =========================================================================== */
@@ -53,12 +53,12 @@ namespace gum {
    * 
    * @ingroup multidim_group */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   class PartialInstantiationRegister4MultiDim {
   public:
     /// the type of functions used by the register
-    typedef MultiDimImplementation<T_DATA>*
-    (*PartialInstantiationPtr) ( const MultiDimImplementation<T_DATA>*,
+    typedef MultiDimImplementation<GUM_SCALAR>*
+    (*PartialInstantiationPtr) ( const MultiDimImplementation<GUM_SCALAR>*,
                                  const HashTable<const DiscreteVariable*,Idx>& );
 
     
@@ -178,11 +178,11 @@ namespace gum {
   // ==============================================================================
   /// a function to more easily register new instantiation functions in MultiDims
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void registerPartialInstantiation
   ( const std::string& instantiation_func_name,
     const std::string& type_multidim,
-    typename PartialInstantiationRegister4MultiDim<T_DATA>::PartialInstantiationPtr
+    typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr
     function );
 
   

@@ -95,15 +95,15 @@ namespace gum {
    * for information about this format.
    *
    */
-  template<typename T_DATA>
-  class BIFXMLBNReader : BNReader<T_DATA> {
+  template<typename GUM_SCALAR>
+  class BIFXMLBNReader : BNReader<GUM_SCALAR> {
   public:
     /**
      * Constructor
      * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
-    BIFXMLBNReader(BayesNet<T_DATA>* bn, const std::string& filePath );
+    BIFXMLBNReader(BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
 
     /**
      * Default destructor.
@@ -136,7 +136,7 @@ namespace gum {
     /**
      * An handle to the bayes net in which will be load the content of the xml filePath
      */
-    BayesNet<T_DATA>* __bn;
+    BayesNet<GUM_SCALAR>* __bn;
 
     /**
      * the path to the xml filePath

@@ -35,9 +35,9 @@ namespace gum {
    * @brief Implementation of lazy propagation for inference in Bayesian Networks
    * @ingroup bn_group
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class LazyPropagation: public BayesNetInference<T_DATA> {
+  class LazyPropagation: public BayesNetInference<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -46,12 +46,12 @@ namespace gum {
       // ============================================================================
       /// default constructor
       // ============================================================================
-      LazyPropagation( const AbstractBayesNet<T_DATA>& BN );
+      LazyPropagation( const AbstractBayesNet<GUM_SCALAR>& BN );
 
       // ============================================================================
       /// constructor with a given elimination sequence
       // ============================================================================
-      LazyPropagation( const AbstractBayesNet<T_DATA>& BN,
+      LazyPropagation( const AbstractBayesNet<GUM_SCALAR>& BN,
                        const std::vector<NodeId>& elim_order );
 
       // ============================================================================
@@ -71,7 +71,7 @@ namespace gum {
       /** @warning if an evidence already exists w.r.t. a given node and a new
        * evidence w.r.t. this node is inserted, the old evidence is removed. */
       // ============================================================================
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& );
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& );
 
       // ============================================================================
       /// remove all evidence from the graph
@@ -81,7 +81,7 @@ namespace gum {
       // ============================================================================
       /// remove a given evidence from the graph
       // ============================================================================
-      virtual void eraseEvidence( const Potential<T_DATA>* );
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* );
 
       // ============================================================================
       /// performs the collect phase of Lazy Propagation
@@ -106,19 +106,19 @@ namespace gum {
       // ============================================================================
       /// returns the probability P(e) of the evidence enterred into the BN
       // ============================================================================
-      T_DATA evidenceMarginal();
+      GUM_SCALAR evidenceMarginal();
 
       // ============================================================================
       /// returns the joint a posteriori probability P(nodes|e)
       /** @warning right now, method joint cannot compute joint a posteriori
        * probabilities of every nodeset. In cases where it is not able to perform
        * properly this task, it will raise a OperationNotAllowed exception.
-       * @warning : joint computes a new Potential<T_DATA> and returns a pointer : do not forget to free it !
-       * @return a pointer to a dynamically allocated Potential<T_DATA>
+       * @warning : joint computes a new Potential<GUM_SCALAR> and returns a pointer : do not forget to free it !
+       * @return a pointer to a dynamically allocated Potential<GUM_SCALAR>
        * @throw OperationNotAllowed
        */
       // ============================================================================
-      Potential<T_DATA>* joint( const NodeSet& nodes );
+      Potential<GUM_SCALAR>* joint( const NodeSet& nodes );
 
       const JunctionTree *junctionTree() const ;
       /// @}
@@ -130,7 +130,7 @@ namespace gum {
       * Compute Shanon's entropy of a node given the observation
       * @see http://en.wikipedia.org/wiki/Information_entropy
       */
-      T_DATA H( NodeId X );
+      GUM_SCALAR H( NodeId X );
 
       /** Mutual information between X and Y
       * @see http://en.wikipedia.org/wiki/Mutual_information
@@ -138,7 +138,7 @@ namespace gum {
       * @warning Due to limitation of @joint, may not be able to compute this value
       * @throw OperationNotAllowed in these cases
       */
-      T_DATA I( NodeId X,NodeId Y );
+      GUM_SCALAR I( NodeId X,NodeId Y );
 
       /** Variation of information between X and Y
       * @see http://en.wikipedia.org/wiki/Variation_of_information
@@ -146,7 +146,7 @@ namespace gum {
       * @warning Due to limitation of @joint, may not be able to compute this value
       * @throw OperationNotAllowed in these cases
       */
-      T_DATA VI( NodeId X,NodeId Y );
+      GUM_SCALAR VI( NodeId X,NodeId Y );
       /// @}
 
 
@@ -158,12 +158,12 @@ namespace gum {
        * @param marginal the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal( Id id , Potential<T_DATA>& marginal );
+      virtual void _fillMarginal( Id id , Potential<GUM_SCALAR>& marginal );
 
 
     private:
-      typedef Set<const Potential<T_DATA>*> __PotentialSet;
-      typedef SetIterator<const Potential<T_DATA>*> __PotentialSetIterator;
+      typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
+      typedef SetIterator<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
       /// the triangulation class creating the junction tree used for inference
       DefaultTriangulation __triangulation;
@@ -174,11 +174,11 @@ namespace gum {
       HashTable< NodeId, NodeId> __node_to_clique;
 
       /// the list of all potentials stored in the cliques
-      typename Property< List <const Potential<T_DATA>*> >::onNodes
+      typename Property< List <const Potential<GUM_SCALAR>*> >::onNodes
       __clique_potentials;
 
       /// the list of all the evidence stored in the cliques
-      typename Property< List <const Potential<T_DATA>*> >::onNodes
+      typename Property< List <const Potential<GUM_SCALAR>*> >::onNodes
       __clique_evidence;
 
       /// the list of all potentials stored in the separators
@@ -234,25 +234,25 @@ namespace gum {
 
       // ============================================================================
       // ============================================================================
-      void __aPosterioriMarginal( NodeId id, Potential<T_DATA>& marginal );
+      void __aPosterioriMarginal( NodeId id, Potential<GUM_SCALAR>& marginal );
 
       // ============================================================================
       // ============================================================================
-      void __aPosterioriJoint( const NodeSet& ids, Potential<T_DATA>& marginal );
+      void __aPosterioriJoint( const NodeSet& ids, Potential<GUM_SCALAR>& marginal );
 
 
       // ============================================================================
       /// initialization function
       // ============================================================================
-      void __initialize( const AbstractBayesNet<T_DATA>& BN,
+      void __initialize( const AbstractBayesNet<GUM_SCALAR>& BN,
                          StaticTriangulation& triangulation,
                          const HashTable<NodeId, unsigned int>& modalities );
 
       /// avoid copy constructors
-      LazyPropagation( const LazyPropagation<T_DATA>& );
+      LazyPropagation( const LazyPropagation<GUM_SCALAR>& );
 
       /// avoid copy operators
-      LazyPropagation<T_DATA>& operator= ( const LazyPropagation<T_DATA>& );
+      LazyPropagation<GUM_SCALAR>& operator= ( const LazyPropagation<GUM_SCALAR>& );
   };
 
 

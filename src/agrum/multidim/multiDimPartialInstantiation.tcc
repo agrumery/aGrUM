@@ -33,66 +33,66 @@ namespace gum {
 
 
   /// constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimPartialInstantiation<T_DATA,TABLE>::MultiDimPartialInstantiation () {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::MultiDimPartialInstantiation () {
     /// for debugging purposes
     GUM_CONSTRUCTOR( MultiDimPartialInstantiation );
   }
 
 
   /// copy constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimPartialInstantiation<T_DATA,TABLE>::MultiDimPartialInstantiation
-  ( const MultiDimPartialInstantiation<T_DATA,TABLE>& from ) {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::MultiDimPartialInstantiation
+  ( const MultiDimPartialInstantiation<GUM_SCALAR,TABLE>& from ) {
     /// for debugging purposes
     GUM_CONS_CPY( MultiDimPartialInstantiation );
   }
 
 
   /// destructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimPartialInstantiation<T_DATA,TABLE>::~MultiDimPartialInstantiation() {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::~MultiDimPartialInstantiation() {
     /// for debugging purposes
     GUM_DESTRUCTOR( MultiDimPartialInstantiation );
   }
 
 
   /// virtual constructor
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimPartialInstantiation<T_DATA,TABLE>*
-  MultiDimPartialInstantiation<T_DATA,TABLE>::newFactory() const {
-    return new MultiDimPartialInstantiation<T_DATA,TABLE> ( *this );
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>*
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::newFactory() const {
+    return new MultiDimPartialInstantiation<GUM_SCALAR,TABLE> ( *this );
   }
 
   
   /// copy operator
-  template< typename T_DATA, template<typename> class TABLE >
-  MultiDimPartialInstantiation<T_DATA,TABLE>&
-  MultiDimPartialInstantiation<T_DATA,TABLE>::operator=
-  ( const MultiDimPartialInstantiation<T_DATA,TABLE>& from ) {
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>&
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::operator=
+  ( const MultiDimPartialInstantiation<GUM_SCALAR,TABLE>& from ) {
     return *this;
   }
 
 
   /// creates and returns the partial instantiation of the table
-  template< typename T_DATA, template<typename> class TABLE >
-  TABLE<T_DATA>*
-  MultiDimPartialInstantiation<T_DATA,TABLE>::instantiate
-  ( const TABLE<T_DATA>& table,
+  template< typename GUM_SCALAR, template<typename> class TABLE >
+  TABLE<GUM_SCALAR>*
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::instantiate
+  ( const TABLE<GUM_SCALAR>& table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
-    MultiDimImplementation<T_DATA>* new_impl =
+    MultiDimImplementation<GUM_SCALAR>* new_impl =
       partialInstantiation ( table, inst_vars );
-    return new TABLE<T_DATA> ( new_impl );
+    return new TABLE<GUM_SCALAR> ( new_impl );
   }
 
   /// creates and returns the partial instantiation of the table
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   void
-  MultiDimPartialInstantiation<T_DATA,TABLE>::instantiate
-  ( TABLE<T_DATA>& container,
-    const TABLE<T_DATA>& table,
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::instantiate
+  ( TABLE<GUM_SCALAR>& container,
+    const TABLE<GUM_SCALAR>& table,
     const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
-    MultiDimImplementation<T_DATA>* new_impl =
+    MultiDimImplementation<GUM_SCALAR>* new_impl =
       partialInstantiation ( table, inst_vars );
     container = *new_impl;
     delete new_impl;

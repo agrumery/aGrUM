@@ -48,9 +48,9 @@ namespace gum {
    * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
-  template <typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator>
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator>
 
-  class DefaultBayesNetGenerator : public AbstractBayesNetGenerator<T_DATA, ICPTGenerator> {
+  class DefaultBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
@@ -83,7 +83,7 @@ namespace gum {
        */
 
 
-      void generateBN ( BayesNet<T_DATA> & bayesNet );
+      void generateBN ( BayesNet<GUM_SCALAR> & bayesNet );
 
       /// @}
   }; /* class DefaultBayesNetGenerator */

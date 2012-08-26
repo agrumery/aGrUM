@@ -36,10 +36,10 @@ namespace gum {
 
 
   /// default constructor
-  template <typename T_DATA>
-  ScheduleDeleteMultiDim<T_DATA>::ScheduleDeleteMultiDim
-  ( const ScheduleMultiDim<T_DATA>& table ) :
-      ScheduleOperation<T_DATA> ( ScheduleOperation<T_DATA>::GUM_DELETE_MULTIDIM ),
+  template <typename GUM_SCALAR>
+  ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim
+  ( const ScheduleMultiDim<GUM_SCALAR>& table ) :
+      ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_DELETE_MULTIDIM ),
       __table( table ),
       __args( 0 ) {
     // for debugging purposes
@@ -48,10 +48,10 @@ namespace gum {
 
 
   /// copy constructor
-  template <typename T_DATA>
-  ScheduleDeleteMultiDim<T_DATA>::ScheduleDeleteMultiDim
-  ( const ScheduleDeleteMultiDim<T_DATA>& from ) :
-      ScheduleOperation<T_DATA> ( from ),
+  template <typename GUM_SCALAR>
+  ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim
+  ( const ScheduleDeleteMultiDim<GUM_SCALAR>& from ) :
+      ScheduleOperation<GUM_SCALAR> ( from ),
       __table( from.__table ),
       __args( 0 ) {
     // for debugging purposes
@@ -60,16 +60,16 @@ namespace gum {
 
 
   /// virtual copy constructor: creates a clone of the operation
-  template <typename T_DATA>
-  ScheduleDeleteMultiDim<T_DATA>*
-  ScheduleDeleteMultiDim<T_DATA>::newFactory() const {
-    return new ScheduleDeleteMultiDim<T_DATA> ( *this );
+  template <typename GUM_SCALAR>
+  ScheduleDeleteMultiDim<GUM_SCALAR>*
+  ScheduleDeleteMultiDim<GUM_SCALAR>::newFactory() const {
+    return new ScheduleDeleteMultiDim<GUM_SCALAR> ( *this );
   }
 
 
   /// destructor
-  template <typename T_DATA>
-  ScheduleDeleteMultiDim<T_DATA>::~ScheduleDeleteMultiDim() {
+  template <typename GUM_SCALAR>
+  ScheduleDeleteMultiDim<GUM_SCALAR>::~ScheduleDeleteMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleDeleteMultiDim );
     if ( __args ) delete __args;
@@ -77,13 +77,13 @@ namespace gum {
 
 
   /// copy operator
-  template <typename T_DATA>
-  ScheduleDeleteMultiDim<T_DATA>&
-  ScheduleDeleteMultiDim<T_DATA>::operator=
-  ( const ScheduleDeleteMultiDim<T_DATA>& from ) {
+  template <typename GUM_SCALAR>
+  ScheduleDeleteMultiDim<GUM_SCALAR>&
+  ScheduleDeleteMultiDim<GUM_SCALAR>::operator=
+  ( const ScheduleDeleteMultiDim<GUM_SCALAR>& from ) {
     // avoid self assignment
     if ( &from != this ) {
-      ScheduleOperation<T_DATA>::operator= ( from );
+      ScheduleOperation<GUM_SCALAR>::operator= ( from );
       __table = from.__table;
       if ( __args ) {
         __args->clear();
@@ -95,49 +95,49 @@ namespace gum {
 
 
   /// operator ==
-  template <typename T_DATA>
-  bool ScheduleDeleteMultiDim<T_DATA>::operator==
-  ( const ScheduleOperation<T_DATA>& op ) const {
+  template <typename GUM_SCALAR>
+  bool ScheduleDeleteMultiDim<GUM_SCALAR>::operator==
+  ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type() != op.type() ) return false;
-    const ScheduleDeleteMultiDim<T_DATA>& real_op =
-      static_cast<const ScheduleDeleteMultiDim<T_DATA>&>( op );
+    const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
+      static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
     return __table == real_op.__table;
   }
 
 
   /// operator !=
-  template <typename T_DATA>
-  bool ScheduleDeleteMultiDim<T_DATA>::operator!=
-  ( const ScheduleOperation<T_DATA>& op ) const {
+  template <typename GUM_SCALAR>
+  bool ScheduleDeleteMultiDim<GUM_SCALAR>::operator!=
+  ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type() != op.type() ) return true;
-    const ScheduleDeleteMultiDim<T_DATA>& real_op =
-      static_cast<const ScheduleDeleteMultiDim<T_DATA>&>( op );
+    const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
+      static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
     return __table != real_op.__table;
   }
 
 
   /// executes the operation
-  template <typename T_DATA>
-  void ScheduleDeleteMultiDim<T_DATA>::execute() {
-    const MultiDimImplementation<T_DATA>& multidim = __table.multiDim();
-    ScheduleMultiDim<T_DATA>::__multidim2id().erase( &multidim );
-    ScheduleMultiDim<T_DATA>::__id2multidim().erase( __table.id() );
+  template <typename GUM_SCALAR>
+  void ScheduleDeleteMultiDim<GUM_SCALAR>::execute() {
+    const MultiDimImplementation<GUM_SCALAR>& multidim = __table.multiDim();
+    ScheduleMultiDim<GUM_SCALAR>::__multidim2id().erase( &multidim );
+    ScheduleMultiDim<GUM_SCALAR>::__id2multidim().erase( __table.id() );
     delete &multidim;
   }
 
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperation */
-  template <typename T_DATA>
-  INLINE float ScheduleDeleteMultiDim<T_DATA>::nbOperations() const {
+  template <typename GUM_SCALAR>
+  INLINE float ScheduleDeleteMultiDim<GUM_SCALAR>::nbOperations() const {
     return 1.0f;
   }
 
 
   /// returns the memory consumption used during the operation
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE std::pair<long,long>
-  ScheduleDeleteMultiDim<T_DATA>::memoryUsage() const {
+  ScheduleDeleteMultiDim<GUM_SCALAR>::memoryUsage() const {
     long size_table = __table.domainSize();
     if ( size_table < 0 ) {
       GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
@@ -147,11 +147,11 @@ namespace gum {
 
 
   /// returns the multidims to be deleted
-  template <typename T_DATA>
-  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
-  ScheduleDeleteMultiDim<T_DATA>::multiDimArgs() const {
+  template <typename GUM_SCALAR>
+  INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+  ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( ! __args ) {
-      __args = new Sequence<const ScheduleMultiDim<T_DATA>*>;
+      __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
     }
     return *__args;
@@ -159,10 +159,10 @@ namespace gum {
 
 
   /// returns the set of multidims that should be the result of the operation
-  template <typename T_DATA>
-  INLINE const Sequence<const ScheduleMultiDim<T_DATA>*>&
-  ScheduleDeleteMultiDim<T_DATA>::multiDimResults() const {
-    static Sequence<const ScheduleMultiDim<T_DATA>*> empty_seq;
+  template <typename GUM_SCALAR>
+  INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+  ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimResults() const {
+    static Sequence<const ScheduleMultiDim<GUM_SCALAR>*> empty_seq;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static sequence used here will be removed at the end of the
@@ -185,8 +185,8 @@ namespace gum {
 
 
   /// displays the content of the operation
-  template <typename T_DATA>
-  std::string ScheduleDeleteMultiDim<T_DATA>::toString() const {
+  template <typename GUM_SCALAR>
+  std::string ScheduleDeleteMultiDim<GUM_SCALAR>::toString() const {
     return "delete ( " + __table.toString() + " )";
   }
 

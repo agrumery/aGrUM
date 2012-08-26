@@ -38,18 +38,18 @@ namespace gum {
 
 
   /// returns a new distinct ID for each abtract scheduleMultiDim
-  template <typename T_DATA>
-  Id ScheduleMultiDim<T_DATA>::__newId() {
+  template <typename GUM_SCALAR>
+  Id ScheduleMultiDim<GUM_SCALAR>::__newId() {
     static Id __abstract_id = 0;
     return ++__abstract_id;
   }
 
 
   /// returns a mapping from id to multidimImplementations
-  template <typename T_DATA>
-  HashTable<Id,const MultiDimImplementation<T_DATA>*>&
-  ScheduleMultiDim<T_DATA>::__id2multidim() {
-    static HashTable<Id,const MultiDimImplementation<T_DATA>*> __multidims;
+  template <typename GUM_SCALAR>
+  HashTable<Id,const MultiDimImplementation<GUM_SCALAR>*>&
+  ScheduleMultiDim<GUM_SCALAR>::__id2multidim() {
+    static HashTable<Id,const MultiDimImplementation<GUM_SCALAR>*> __multidims;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -68,10 +68,10 @@ namespace gum {
 
 
   /// returns the id corresponding to a given multidim
-  template <typename T_DATA>
-  HashTable<const MultiDimImplementation<T_DATA>*,Id>&
-  ScheduleMultiDim<T_DATA>::__multidim2id() {
-    static HashTable<const MultiDimImplementation<T_DATA>*,Id> __multidim_ids;
+  template <typename GUM_SCALAR>
+  HashTable<const MultiDimImplementation<GUM_SCALAR>*,Id>&
+  ScheduleMultiDim<GUM_SCALAR>::__multidim2id() {
+    static HashTable<const MultiDimImplementation<GUM_SCALAR>*,Id> __multidim_ids;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -90,9 +90,9 @@ namespace gum {
 
 
   /// returns a table indicating how many ScheduleMultiDim have the same id
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   HashTable<Id,unsigned int>&
-  ScheduleMultiDim<T_DATA>::__id2refs() {
+  ScheduleMultiDim<GUM_SCALAR>::__id2refs() {
     static HashTable<Id,unsigned int> __ids;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -112,9 +112,9 @@ namespace gum {
 
 
   /// returns a table with the variables of the table corresponding to id
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   HashTable<Id,const Sequence<const DiscreteVariable*>*>&
-  ScheduleMultiDim<T_DATA>::__id2vars() {
+  ScheduleMultiDim<GUM_SCALAR>::__id2vars() {
     static HashTable<Id,const Sequence<const DiscreteVariable*>*> __vars;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -134,9 +134,9 @@ namespace gum {
 
 
   /// returns a table with the domain size of the table corresponding to id
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   HashTable<Id,Size>&
-  ScheduleMultiDim<T_DATA>::__id2size() {
+  ScheduleMultiDim<GUM_SCALAR>::__id2size() {
     static HashTable<Id,Size> __size;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -156,9 +156,9 @@ namespace gum {
 
 
   /// constructs a ScheduleMultiDim containing an already built decorator
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>::ScheduleMultiDim
-  ( const MultiDimImplementation<T_DATA>& multidim ) {
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
+  ( const MultiDimImplementation<GUM_SCALAR>& multidim ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleMultiDim );
 
@@ -194,13 +194,13 @@ namespace gum {
 
 
   /// constructs a ScheduleMultiDim containing an already built decorator
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>::ScheduleMultiDim
-  ( const MultiDimDecorator<T_DATA>& multidim ) {
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
+  ( const MultiDimDecorator<GUM_SCALAR>& multidim ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleMultiDim );
 
-    const MultiDimImplementation<T_DATA>* impl = multidim.content();
+    const MultiDimImplementation<GUM_SCALAR>* impl = multidim.content();
 
     // check whether the multidimImplementation has already been stored
 
@@ -234,8 +234,8 @@ namespace gum {
 
 
   /// construct an (abstract) ScheduleMultiDim for a decorator yet to be built
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>::ScheduleMultiDim
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
   ( const Sequence<const DiscreteVariable*>& vars ) :
       __id( __newId() )  {
     // for debugging purposes
@@ -262,9 +262,9 @@ namespace gum {
 
 
   /// copy constructor
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>::ScheduleMultiDim
-  ( const ScheduleMultiDim<T_DATA>& from ) :
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
+  ( const ScheduleMultiDim<GUM_SCALAR>& from ) :
       __id( from.__id ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleMultiDim );
@@ -276,8 +276,8 @@ namespace gum {
 
 
   /// destructor
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>::~ScheduleMultiDim() {
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::~ScheduleMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleMultiDim );
 
@@ -303,10 +303,10 @@ namespace gum {
 
 
   /// copy operator
-  template <typename T_DATA>
-  ScheduleMultiDim<T_DATA>&
-  ScheduleMultiDim<T_DATA>::operator=
-  ( const ScheduleMultiDim<T_DATA>& from ) {
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>&
+  ScheduleMultiDim<GUM_SCALAR>::operator=
+  ( const ScheduleMultiDim<GUM_SCALAR>& from ) {
     // avoid self assignment
     if ( __id != from.__id ) {
       // remove the old id
@@ -338,65 +338,65 @@ namespace gum {
 
 
   /// checks whether two ScheduleMultiDim are related to the same table
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE bool
-  ScheduleMultiDim<T_DATA>::operator==
-  ( const ScheduleMultiDim<T_DATA>& m ) const {
+  ScheduleMultiDim<GUM_SCALAR>::operator==
+  ( const ScheduleMultiDim<GUM_SCALAR>& m ) const {
     return ( __id == m.__id );
   }
 
 
   /// checks whether two ScheduleMultiDim are related to different tables
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE bool
-  ScheduleMultiDim<T_DATA>::operator!=
-  ( const ScheduleMultiDim<T_DATA>& m ) const {
+  ScheduleMultiDim<GUM_SCALAR>::operator!=
+  ( const ScheduleMultiDim<GUM_SCALAR>& m ) const {
     return ( __id != m.__id );
   }
 
 
   /// returns the multiDimImplementation actually contained in the ScheduleMultiDim
-  template <typename T_DATA>
-  INLINE const MultiDimImplementation<T_DATA>&
-  ScheduleMultiDim<T_DATA>::multiDim() const {
+  template <typename GUM_SCALAR>
+  INLINE const MultiDimImplementation<GUM_SCALAR>&
+  ScheduleMultiDim<GUM_SCALAR>::multiDim() const {
     return * ( __id2multidim().operator[]( __id ) );
   }
 
 
   /// returns whether the ScheduleMultiDim contains a real multiDimImplementation
-  template <typename T_DATA>
-  INLINE bool ScheduleMultiDim<T_DATA>::isAbstract() const {
+  template <typename GUM_SCALAR>
+  INLINE bool ScheduleMultiDim<GUM_SCALAR>::isAbstract() const {
     return  ! __id2multidim().exists( __id );
   }
 
 
   /// returns the id of the ScheduleMultiDim
-  template <typename T_DATA>
-  INLINE Id ScheduleMultiDim<T_DATA>::id() const {
+  template <typename GUM_SCALAR>
+  INLINE Id ScheduleMultiDim<GUM_SCALAR>::id() const {
     return __id;
   }
 
 
   /// returns the set of variables involved in the multidim
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
-  ScheduleMultiDim<T_DATA>::variablesSequence() const {
+  ScheduleMultiDim<GUM_SCALAR>::variablesSequence() const {
     return * ( __id2vars().operator[]( __id ) );
   }
 
 
   /// returns the domain size of the multidim
-  template <typename T_DATA>
-  INLINE Size ScheduleMultiDim<T_DATA>::domainSize() const {
+  template <typename GUM_SCALAR>
+  INLINE Size ScheduleMultiDim<GUM_SCALAR>::domainSize() const {
     return __id2size().operator[]( __id );
   }
 
 
   /// sets a new multiDimImplementation inside the wrapper
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  ScheduleMultiDim<T_DATA>::setMultiDim
-  ( const MultiDimImplementation<T_DATA>& m ) {
+  ScheduleMultiDim<GUM_SCALAR>::setMultiDim
+  ( const MultiDimImplementation<GUM_SCALAR>& m ) {
     //check whether the same Multidimimplementation has not already been
     // wrapped with another ID. In this case, we shall throw a DuplicateElement
     // exception
@@ -411,7 +411,7 @@ namespace gum {
       // if the current ScheduleMultiDim already contained a multidimImplementation
       // we should remove it first and, then, add the new one
       if ( __id2multidim().exists( __id ) ) {
-        const MultiDimImplementation<T_DATA>* impl =
+        const MultiDimImplementation<GUM_SCALAR>* impl =
           __id2multidim().operator[]( __id );
 
         if ( impl == &m ) return;
@@ -440,17 +440,17 @@ namespace gum {
 
 
   /// sets a new multiDimImplementation inside the wrapper
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   INLINE void
-  ScheduleMultiDim<T_DATA>::setMultiDim
-  ( const MultiDimDecorator<T_DATA>& m ) {
+  ScheduleMultiDim<GUM_SCALAR>::setMultiDim
+  ( const MultiDimDecorator<GUM_SCALAR>& m ) {
     setMultiDim( *( m.content() ) );
   }
 
 
   /// displays the content of the multidim
-  template <typename T_DATA>
-  std::string ScheduleMultiDim<T_DATA>::toString() const {
+  template <typename GUM_SCALAR>
+  std::string ScheduleMultiDim<GUM_SCALAR>::toString() const {
     std::stringstream str;
     str << "<";
 

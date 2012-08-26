@@ -50,8 +50,8 @@ namespace gum {
 // ===========================================================================
 // Default constructor
 // ===========================================================================
-template<typename T_DATA> INLINE
-SPUDDPlanning<T_DATA>::SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon ) {
+template<typename GUM_SCALAR> INLINE
+SPUDDPlanning<GUM_SCALAR>::SPUDDPlanning ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) {
 
     GUM_CONSTRUCTOR( SPUDDPlanning );
     __epsilon = epsilon;
@@ -62,8 +62,8 @@ SPUDDPlanning<T_DATA>::SPUDDPlanning ( FactoredMarkovDecisionProcess<T_DATA>* fm
 // ===========================================================================
 // Default destructor
 // ===========================================================================
-template<typename T_DATA> INLINE
-SPUDDPlanning<T_DATA>::~SPUDDPlanning() {
+template<typename GUM_SCALAR> INLINE
+SPUDDPlanning<GUM_SCALAR>::~SPUDDPlanning() {
 
     GUM_DESTRUCTOR( SPUDDPlanning );
 
@@ -79,9 +79,9 @@ SPUDDPlanning<T_DATA>::~SPUDDPlanning() {
 // ===========================================================================
 // Makes a spudd planning on FMDP
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase< T_DATA >* 
-SPUDDPlanning<T_DATA>::makePlanning (  ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase< GUM_SCALAR >* 
+SPUDDPlanning<GUM_SCALAR>::makePlanning (  ) {
 
     // *****************************************************************************************
     // Initialisation
@@ -89,18 +89,18 @@ SPUDDPlanning<T_DATA>::makePlanning (  ) {
 
     // *****************************************************************************************
     // Threshold stopping criterion evaluation
-    T_DATA threshold = this->__epsilon * ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
+    GUM_SCALAR threshold = this->__epsilon * ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
 
-    T_DATA gap = threshold + 1;
+    GUM_SCALAR gap = threshold + 1;
  
 
     // *****************************************************************************************
     // Initialisation of Vold, Vnew and Vtemp
-    MultiDimDecisionDiagramBase< T_DATA >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward()->newFactory() );
-    Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ) );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward()->newFactory() );
+    Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ) );
 
-    MultiDimDecisionDiagramBase< T_DATA >* Vnew = NULL;
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = NULL;
 
     Idx nbIte = 0;
 
@@ -114,10 +114,10 @@ SPUDDPlanning<T_DATA>::makePlanning (  ) {
         // *****************************************************************************************
         // Loop reset
         __fmdp->resetActionsIterator();
-//         Set< MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
-	HashTable< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
+//         Set< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
+	HashTable< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
 
-        Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+        Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
         Vnew->copyAndReassign( Vold, __fmdp->main2prime() );
 
 #ifdef O4DDWITHORDER
@@ -148,7 +148,7 @@ SPUDDPlanning<T_DATA>::makePlanning (  ) {
         delete Vnew;
         Vnew = NULL;
 
-//         for ( SetIterator< MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//         for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
 	for( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ){
             Vtemp = Vnew;
 //             Vnew = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
@@ -168,9 +168,9 @@ SPUDDPlanning<T_DATA>::makePlanning (  ) {
         // *****************************************************************************************
         // Then we compare new value function and the old one
 
-        MultiDimDecisionDiagramBase< T_DATA >* deltaV = subtract2MultiDimDecisionDiagrams( Vnew, Vold );
+        MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams( Vnew, Vold );
         gap = 0;
-        for ( BijectionIterator< NodeId, T_DATA > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+        for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
             if ( gap < fabs( valIter.second() ) )
                 gap = fabs( valIter.second() );
         delete deltaV;
@@ -194,9 +194,9 @@ SPUDDPlanning<T_DATA>::makePlanning (  ) {
 // ===========================================================================
 // Evals the policy corresponding to the given value function
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 void
-SPUDDPlanning<T_DATA>::__evalPolicy( const MultiDimDecisionDiagramBase< T_DATA >* V ) {
+SPUDDPlanning<GUM_SCALAR>::__evalPolicy( const MultiDimDecisionDiagramBase< GUM_SCALAR >* V ) {
 
     // *****************************************************************************************
     // We have to do one last step to get best policy
@@ -223,17 +223,17 @@ SPUDDPlanning<T_DATA>::__evalPolicy( const MultiDimDecisionDiagramBase< T_DATA >
 // ===========================================================================
 // Evals the value function for current fmdp action
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase<T_DATA>*
-SPUDDPlanning<T_DATA>::__evalActionValue( const MultiDimDecisionDiagramBase< T_DATA >* Vold, Sequence< const DiscreteVariable*>& elVarSeq ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase<GUM_SCALAR>*
+SPUDDPlanning<GUM_SCALAR>::__evalActionValue( const MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold, Sequence< const DiscreteVariable*>& elVarSeq ) {
 
     // *****************************************************************************************
     // Initialisation
 //     __fmdp->resetVariablesIterator();
 
-    MultiDimDecisionDiagramBase< T_DATA >* Vaction = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
     Vaction->copy( *Vold );
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = NULL;
     
     // *****************************************************************************************
     // To evaluate action value function, we multiply old main value function by transition table
@@ -243,8 +243,8 @@ SPUDDPlanning<T_DATA>::__evalActionValue( const MultiDimDecisionDiagramBase< T_D
         // ***************************************************************************************
         // Multiplication of Vaction by current variable's CPT
         Vtemp = Vaction;
-//         Vaction = multiply2MultiDimDecisionDiagrams(  Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ) );
-        Vaction = multiply2MultiDimDecisionDiagrams(  Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition( __fmdp->main2prime().first( *varIter ) ) ) );
+//         Vaction = multiply2MultiDimDecisionDiagrams(  Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->transition() ) );
+        Vaction = multiply2MultiDimDecisionDiagrams(  Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->transition( __fmdp->main2prime().first( *varIter ) ) ) );
         delete Vtemp;
 
         // ***************************************************************************************
@@ -268,19 +268,19 @@ SPUDDPlanning<T_DATA>::__evalActionValue( const MultiDimDecisionDiagramBase< T_D
 // ===========================================================================
 // Updates the value function by multiplying by discount and adding reward
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase<T_DATA>*
-SPUDDPlanning<T_DATA>::__addReward( const MultiDimDecisionDiagramBase< T_DATA >* Vold ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase<GUM_SCALAR>*
+SPUDDPlanning<GUM_SCALAR>::__addReward( const MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold ) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
-    MultiDimDecisionDiagramBase< T_DATA >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
     Vnew->multiplyByScalar( Vold, __fmdp->discount() );
 
     // *****************************************************************************************
     // ... and finally add reward
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = Vnew;
-    Vnew = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ), Vtemp );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = Vnew;
+    Vnew = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ), Vtemp );
 
     delete Vtemp;
 
@@ -299,9 +299,9 @@ SPUDDPlanning<T_DATA>::__addReward( const MultiDimDecisionDiagramBase< T_DATA >*
 // ===========================================================================
 // Called for evaluation on algorithm
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase< T_DATA >*
-SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase< GUM_SCALAR >*
+SPUDDPlanning<GUM_SCALAR>::makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode ) {
 
     // *****************************************************************************************
     // Initialisation
@@ -309,17 +309,17 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
 
     // *****************************************************************************************
     // Threshold stopping criterion evaluation
-    T_DATA threshold =  0.1;
+    GUM_SCALAR threshold =  0.1;
 
-    T_DATA gap = threshold + 1;
+    GUM_SCALAR gap = threshold + 1;
 
     // *****************************************************************************************
     // Initialisation of Vold, Vnew and Vtemp
-    MultiDimDecisionDiagramBase< T_DATA >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward()->newFactory() );
-    Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ) );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward()->newFactory() );
+    Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ) );
 
-    MultiDimDecisionDiagramBase< T_DATA >* Vnew = NULL;
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = NULL;
 
     Idx nbIte = 0;
 
@@ -333,9 +333,9 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
         // *****************************************************************************************
         // Loop reset
         __fmdp->resetActionsIterator();
-        Set< MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
+        Set< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
 
-        Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+        Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
         Vnew->copyAndReassign( Vold, __fmdp->main2prime() );
 
         // *****************************************************************************************
@@ -378,7 +378,7 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
             return;
         }
 
-        for ( SetIterator< MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+        for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
 
             if ( Vnew != NULL )
                 nbNodeT1 = Vnew->nodesMap().size();
@@ -416,7 +416,7 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
 
             if ( sensDirect ) {
                 time.reset();
-                MultiDimDecisionDiagramBase< T_DATA >* Vind = maximize2MultiDimDecisionDiagrams( *VActionsIter, Vnew );
+                MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = maximize2MultiDimDecisionDiagrams( *VActionsIter, Vnew );
                 nbFinalNodeIndirect = Vind->nodesMap().size();
                 iterationTimeIndirect = time.step();
                 delete Vind;
@@ -428,7 +428,7 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
                 iterationTime = iterationTimeDirect;
             } else {
                 time.reset();
-                MultiDimDecisionDiagramBase< T_DATA >* Vind = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
+                MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
                 nbFinalNodeDirect = Vind->nodesMap().size();
                 iterationTimeDirect = time.step();
                 delete Vind;
@@ -464,9 +464,9 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
         // *****************************************************************************************
         // Then we compare new value function and the old one
 
-        MultiDimDecisionDiagramBase< T_DATA >* deltaV = subtract2MultiDimDecisionDiagrams( Vnew, Vold );
+        MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams( Vnew, Vold );
         gap = 0;
-        for ( BijectionIterator< NodeId, T_DATA > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+        for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
             if ( gap < fabs( valIter.second() ) )
                 gap = fabs( valIter.second() );
         delete deltaV;
@@ -488,15 +488,15 @@ SPUDDPlanning<T_DATA>::makePlanningAlgoEvaluation ( const std::string saveFilesN
 // ===========================================================================
 // Evals the value function for current fmdp action
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase<T_DATA>*
-SPUDDPlanning<T_DATA>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase<GUM_SCALAR>*
+SPUDDPlanning<GUM_SCALAR>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
 
     __fmdp->resetVariablesIterator();
 
-    MultiDimDecisionDiagramBase< T_DATA >* Vaction = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
     Vaction->copy( *Vold );
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = NULL;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = NULL;
 
     Idx nbNodeT1;
     Idx nbNodeT2;
@@ -529,7 +529,7 @@ SPUDDPlanning<T_DATA>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDi
 
         // =======================================================================================
         // Multiplication of Vaction by current variable's CPT
-        const MultiDimDecisionDiagramBase<T_DATA>* cpt = reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() );
+        const MultiDimDecisionDiagramBase<GUM_SCALAR>* cpt = reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->transition() );
 
         nbNodeT1 =  Vaction->nodesMap().size();
         nbNodeT2 = cpt->nodesMap().size();
@@ -564,7 +564,7 @@ SPUDDPlanning<T_DATA>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDi
 
         if ( sensDirect ) {
             time.reset();
-            MultiDimDecisionDiagramBase< T_DATA >* Vind = multiply2MultiDimDecisionDiagrams( cpt, Vaction );
+            MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = multiply2MultiDimDecisionDiagrams( cpt, Vaction );
             nbFinalNodeIndirect = Vind->nodesMap().size();
             iterationTimeIndirect = time.step();
             delete Vind;
@@ -576,7 +576,7 @@ SPUDDPlanning<T_DATA>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDi
             iterationTime = iterationTimeDirect;
         } else {
             time.reset();
-            MultiDimDecisionDiagramBase< T_DATA >* Vind = multiply2MultiDimDecisionDiagrams( Vaction, cpt );
+            MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = multiply2MultiDimDecisionDiagrams( Vaction, cpt );
             nbFinalNodeDirect = Vind->nodesMap().size();
             iterationTimeDirect = time.step();
             delete Vind;
@@ -618,18 +618,18 @@ SPUDDPlanning<T_DATA>::__evalActionValueAlgoEvaluation( const MultiDimDecisionDi
 // ===========================================================================
 // Updates the value function by multiplying by discount and adding reward
 // ===========================================================================
-template<typename T_DATA>
-MultiDimDecisionDiagramBase<T_DATA>*
-SPUDDPlanning<T_DATA>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramBase< T_DATA >* Vold, const std::string saveFilesName, Idx mode ) {
+template<typename GUM_SCALAR>
+MultiDimDecisionDiagramBase<GUM_SCALAR>*
+SPUDDPlanning<GUM_SCALAR>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
-    MultiDimDecisionDiagramBase< T_DATA >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vold->newFactory() );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vold->newFactory() );
     Vnew->multiplyByScalar( Vold, __fmdp->discount() );
 
     // *****************************************************************************************
     // ... and finally add reward
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp = Vnew;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = Vnew;
 
     Idx nbNodeT1;
     Idx nbNodeT2;
@@ -653,7 +653,7 @@ SPUDDPlanning<T_DATA>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramB
         return NULL;
     }
 
-    const MultiDimDecisionDiagramBase<T_DATA>* reward = reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() );
+    const MultiDimDecisionDiagramBase<GUM_SCALAR>* reward = reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() );
 
     if ( Vnew != NULL )
         nbNodeT1 = Vnew->nodesMap().size();
@@ -691,7 +691,7 @@ SPUDDPlanning<T_DATA>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramB
 
     if ( sensDirect ) {
         time.reset();
-        MultiDimDecisionDiagramBase< T_DATA >* Vind =add2MultiDimDecisionDiagrams( reward, Vnew );
+        MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind =add2MultiDimDecisionDiagrams( reward, Vnew );
         nbFinalNodeIndirect = Vind->nodesMap().size();
         iterationTimeIndirect = time.step();
         delete Vind;
@@ -702,7 +702,7 @@ SPUDDPlanning<T_DATA>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramB
         iterationTimeDirect = time.step();
     } else {
         time.reset();
-        MultiDimDecisionDiagramBase< T_DATA >* Vind = add2MultiDimDecisionDiagrams( Vnew, reward );
+        MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = add2MultiDimDecisionDiagrams( Vnew, reward );
         nbFinalNodeDirect = Vind->nodesMap().size();
         iterationTimeDirect = time.step();
         delete Vind;
@@ -730,9 +730,9 @@ SPUDDPlanning<T_DATA>::__addRewardAlgoEvaluation( const MultiDimDecisionDiagramB
 // ===========================================================================
 // Evals how many retrograde variable there will be if we do the operation in that order
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 std::pair<Idx,Idx>
-SPUDDPlanning<T_DATA>::__evalNbRetrogradeEvaluation( const MultiDimDecisionDiagramBase<T_DATA>* dD1, const MultiDimDecisionDiagramBase<T_DATA>* dD2 ) {
+SPUDDPlanning<GUM_SCALAR>::__evalNbRetrogradeEvaluation( const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD1, const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD2 ) {
 
 
     std::pair<Idx,Idx> res;
@@ -815,17 +815,17 @@ SPUDDPlanning<T_DATA>::__evalNbRetrogradeEvaluation( const MultiDimDecisionDiagr
 // ===========================================================================
 // Performs one last step of the algorithm to obtain the arg max equivalent of the so far computed value function
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 MultiDimDecisionDiagramBase< std::pair< double, long > >*
-SPUDDPlanning< T_DATA >::__argMaxValueFunction( const MultiDimDecisionDiagramBase< T_DATA >* V ){
+SPUDDPlanning< GUM_SCALAR >::__argMaxValueFunction( const MultiDimDecisionDiagramBase< GUM_SCALAR >* V ){
 
     // *****************************************************************************************
     // Loop reset
     __fmdp->resetActionsIterator();
-    Bijection< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
-    MultiDimDecisionDiagramBase< T_DATA >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( V->newFactory() );
+    Bijection< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( V->newFactory() );
     Vnew->copyAndReassign( V, __fmdp->main2prime() );
-    MultiDimDecisionDiagramBase< T_DATA >* Vtemp;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp;
 
 #ifdef O4DDWITHORDER
 	Sequence< const DiscreteVariable* > elVarSeq;
@@ -845,15 +845,15 @@ SPUDDPlanning< T_DATA >::__argMaxValueFunction( const MultiDimDecisionDiagramBas
     // For each action
     while ( __fmdp->hasAction() ) {
 
-        MultiDimDecisionDiagramBase< T_DATA >* Vaction = __evalActionValue( Vnew, elVarSeq );
+        MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = __evalActionValue( Vnew, elVarSeq );
 
-        Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vaction->newFactory() );
+        Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vaction->newFactory() );
         Vtemp->multiplyByScalar( Vaction, __fmdp->discount() );
         delete Vaction;
         Vaction = Vtemp;
 
         Vtemp = Vaction;
-        Vaction = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ), Vaction  );
+        Vaction = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ), Vaction  );
         delete Vtemp;
 
         VactionCollector.insert( __fmdp->actionIterId(), Vaction );
@@ -862,7 +862,7 @@ SPUDDPlanning< T_DATA >::__argMaxValueFunction( const MultiDimDecisionDiagramBas
 
     delete Vnew;
     MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamnew = NULL;
-//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
   for( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ){
 //         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VactionCollector.second( acta ), acta );
@@ -880,9 +880,9 @@ SPUDDPlanning< T_DATA >::__argMaxValueFunction( const MultiDimDecisionDiagramBas
 // Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
 // action to which is bind this diagram (given in parameter).
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 MultiDimDecisionDiagramBase< std::pair< double, long > >*
-SPUDDPlanning<T_DATA>::__createArgMaxCopy( const MultiDimDecisionDiagramBase<T_DATA>* Vaction, Idx actionId ) {
+SPUDDPlanning<GUM_SCALAR>::__createArgMaxCopy( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction, Idx actionId ) {
 
     MultiDimDecisionDiagramBase< std::pair< double, long > >* amcpy = new MultiDimDecisionDiagram< std::pair< double, long > >();
 
@@ -892,7 +892,7 @@ SPUDDPlanning<T_DATA>::__createArgMaxCopy( const MultiDimDecisionDiagramBase<T_D
 
     amcpy->setDiagramNodes( Vaction->nodesMap() );
     Bijection< NodeId, std::pair< double, long > > amvm( Vaction->valuesMap().size() );
-    for ( BijectionIterator< NodeId, T_DATA > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
+    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
         std::pair< double, long >  amv( (double) valueIter.second(), (long ) actionId );
         amvm.insert( valueIter.first(), amv );
     }
@@ -917,9 +917,9 @@ SPUDDPlanning<T_DATA>::__createArgMaxCopy( const MultiDimDecisionDiagramBase<T_D
 // Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
 // resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 NodeId
-SPUDDPlanning<T_DATA>::__makeOptimalPolicyDecisionDiagram( const MultiDimDecisionDiagramBase< std::pair< double, long > >* V,
+SPUDDPlanning<GUM_SCALAR>::__makeOptimalPolicyDecisionDiagram( const MultiDimDecisionDiagramBase< std::pair< double, long > >* V,
         const NodeId& currentNode,
         MultiDimDecisionDiagramFactoryBase<Idx>* factory,
         HashTable< NodeId, NodeId >& explorationTable ) {  
@@ -985,9 +985,9 @@ SPUDDPlanning<T_DATA>::__makeOptimalPolicyDecisionDiagram( const MultiDimDecisio
 // ===========================================================================
 // Displays the optimal computed policy diagram
 // ===========================================================================
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 void
-SPUDDPlanning<T_DATA>::__displayOptimalPolicy( MultiDimDecisionDiagramBase< Idx >* op ) {
+SPUDDPlanning<GUM_SCALAR>::__displayOptimalPolicy( MultiDimDecisionDiagramBase< Idx >* op ) {
 
     // *****************************************************************************************
     // And eventually we display the result
@@ -1066,9 +1066,9 @@ SPUDDPlanning<T_DATA>::__displayOptimalPolicy( MultiDimDecisionDiagramBase< Idx 
 #endif
 #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 
-template <typename T_DATA>
+template <typename GUM_SCALAR>
 gum::MultiDimDecisionDiagramBase< std::pair< double, long > >*
-gum::SPUDDPlanning<T_DATA>::__argMaxOn2MultiDimDecisionDiagrams( const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1,
+gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams( const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1,
         const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction2 ) {
 
     gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* ret = NULL;
@@ -1134,9 +1134,9 @@ gum::SPUDDPlanning<T_DATA>::__argMaxOn2MultiDimDecisionDiagrams( const gum::Mult
 #endif
 #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 
-template <typename T_DATA>
+template <typename GUM_SCALAR>
 gum::MultiDimDecisionDiagramBase< std::pair< double, long > >*
-gum::SPUDDPlanning<T_DATA>::__differenceOnPolicy( const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1,
+gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy( const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction1,
         const gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* Vaction2 ) {
 
     gum::MultiDimDecisionDiagramBase< std::pair< double, long > >* ret = NULL;

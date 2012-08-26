@@ -28,52 +28,52 @@ namespace gum {
 // ==============================================================================
 // Default constructor
 // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimReadOnly<T_DATA>::MultiDimReadOnly(): MultiDimImplementation<T_DATA>() {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimReadOnly<GUM_SCALAR>::MultiDimReadOnly(): MultiDimImplementation<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( MultiDimReadOnly ) ;
   }
 
 // ==============================================================================
 // Default constructor
 // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimReadOnly<T_DATA>::MultiDimReadOnly( const MultiDimReadOnly<T_DATA>& from ) : MultiDimImplementation<T_DATA>( from ) {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimReadOnly<GUM_SCALAR>::MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from ) : MultiDimImplementation<GUM_SCALAR>( from ) {
     GUM_CONS_CPY( MultiDimReadOnly );
   }
 
 // ==============================================================================
 // destructor
 // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimReadOnly<T_DATA>::~MultiDimReadOnly() {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimReadOnly<GUM_SCALAR>::~MultiDimReadOnly() {
     GUM_DESTRUCTOR( MultiDimReadOnly );
   }
 
 // ============================================================================
 // @throw OperationNotAllowed Raised because this is a read only table.
 // ============================================================================
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  MultiDimReadOnly<T_DATA>::set( const Instantiation& i,
-                                 const T_DATA& value ) const {
+  MultiDimReadOnly<GUM_SCALAR>::set( const Instantiation& i,
+                                 const GUM_SCALAR& value ) const {
     GUM_ERROR( OperationNotAllowed,"Write access to an aggregator" );
   }
 
 // ============================================================================
 // @throw OperationNotAllowed Raised because this is a read only table.
 // ============================================================================
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  MultiDimReadOnly<T_DATA>::fill( const T_DATA& ) const {
+  MultiDimReadOnly<GUM_SCALAR>::fill( const GUM_SCALAR& ) const {
     GUM_ERROR( OperationNotAllowed,"Write access to an aggregator" );
   }
 
 // ============================================================================
 // @throw OperationNotAllowed Raised because this is a read only table.
 // ============================================================================
-  template <typename T_DATA>
-  T_DATA&
-  MultiDimReadOnly<T_DATA>::_get( const Instantiation &i ) const  {
+  template <typename GUM_SCALAR>
+  GUM_SCALAR&
+  MultiDimReadOnly<GUM_SCALAR>::_get( const Instantiation &i ) const  {
     GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );
   }
 // ============================================================================

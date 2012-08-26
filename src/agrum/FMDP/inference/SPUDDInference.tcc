@@ -47,8 +47,8 @@ namespace gum {
 		// ===========================================================================
 		// Default constructor
 		// ===========================================================================
-		template<typename T_DATA> INLINE
-		SPUDDInference<T_DATA>::SPUDDInference ( FactoredMarkovDecisionProcess<T_DATA>* fmdp, T_DATA epsilon ){
+		template<typename GUM_SCALAR> INLINE
+		SPUDDInference<GUM_SCALAR>::SPUDDInference ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ){
 		
 			GUM_CONSTRUCTOR( SPUDDInference );
 			__epsilon = epsilon;
@@ -58,8 +58,8 @@ namespace gum {
 		// ===========================================================================
 		// Default destructor
 		// ===========================================================================
-		template<typename T_DATA> INLINE
-		SPUDDInference<T_DATA>::~SPUDDInference(){
+		template<typename GUM_SCALAR> INLINE
+		SPUDDInference<GUM_SCALAR>::~SPUDDInference(){
 			
 			GUM_DESTRUCTOR( SPUDDInference );
 		}
@@ -74,9 +74,9 @@ namespace gum {
 		// ===========================================================================
 		// Makes a spudd inference on FMDP
 		// ===========================================================================
-		template<typename T_DATA>
+		template<typename GUM_SCALAR>
 		void
-		SPUDDInference<T_DATA>::makeInference (  ){
+		SPUDDInference<GUM_SCALAR>::makeInference (  ){
 		
 			// *****************************************************************************************
 			// Initialisation
@@ -84,20 +84,20 @@ namespace gum {
 			
 				// *****************************************************************************************
 				// Threshold stopping criterion evaluation
-				T_DATA threshold =  this->__epsilon * ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
+				GUM_SCALAR threshold =  this->__epsilon * ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
 				threshold *= threshold;
 				
-				T_DATA gap = threshold + 1;
+				GUM_SCALAR gap = threshold + 1;
 				
 				
 				// *****************************************************************************************
 				// Initialisation of Vold, Vnew and Vtemp
-				MultiDimDecisionDiagramBase< T_DATA >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward()->newFactory() );
-				Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ) );
+				MultiDimDecisionDiagramBase< GUM_SCALAR >* Vold = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward()->newFactory() );
+				Vold->copy( *reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ) );
 				
-				MultiDimDecisionDiagramBase< T_DATA >* Vnew = NULL;
+				MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = NULL;
 				
-				MultiDimDecisionDiagramBase< T_DATA >* Vtemp = NULL;
+				MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp = NULL;
 			
 			
 			// *****************************************************************************************
@@ -108,7 +108,7 @@ namespace gum {
 				// *****************************************************************************************
 				// Loop reset
 				__fmdp->resetActionsIterator();
-				Set< MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
+				Set< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
 				
 				// *****************************************************************************************
 				// For each action
@@ -117,7 +117,7 @@ namespace gum {
 					__fmdp->resetVariablesIterator();
 					
 				//~ std::cout << std::endl << "---- Primérisation des diagrammes ";
-					MultiDimDecisionDiagramBase< T_DATA >* Vaction = __fmdp->primeCopy( Vold );
+					MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = __fmdp->primeCopy( Vold );
 				//~ std::cout << std::endl << "---- DONE ";
 					
 					
@@ -128,7 +128,7 @@ namespace gum {
 					while( __fmdp->hasVariable() ){
 						
 						Vtemp = Vaction;
-						Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ), Vaction );
+						Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->transition() ), Vaction );
 						delete Vtemp;
 							
 						__fmdp->nextVariable();
@@ -151,7 +151,7 @@ namespace gum {
 				// Next to evaluate main value function, we take maximise over all action value, ...
 				Vnew = NULL;
 				//~ std::cout << std::endl << "---- Maximisation des diagrammes ";
-				for( SetIterator< MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
+				for( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
 					Vtemp = Vnew;
 					Vnew = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
 					delete Vtemp;
@@ -162,7 +162,7 @@ namespace gum {
 				
 				// *****************************************************************************************
 				// ... we multiply the result by the discount factor, ...
-				Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vnew->newFactory() );
+				Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vnew->newFactory() );
 				Vtemp->multiplyByScalar( Vnew, __fmdp->discount() );
 				delete Vnew;
 				Vnew = Vtemp;
@@ -170,19 +170,19 @@ namespace gum {
 				// *****************************************************************************************
 				// ... and finally add reward
 				Vtemp = Vnew;
-				Vnew = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ), Vnew );
+				Vnew = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ), Vnew );
 				delete Vtemp;
 				
 				// *****************************************************************************************
 				// Then we compare new value function and the old one
 					//~ std::cout << std::endl << "---- Gap des diagrammes "<< std::endl;
-				const MultiDimDecisionDiagramBase< T_DATA >* Vnewcarre = multiply2MultiDimDecisionDiagrams( Vnew, Vnew );
-				const MultiDimDecisionDiagramBase< T_DATA >* Voldcarre = multiply2MultiDimDecisionDiagrams( Vold, Vold );
-				MultiDimDecisionDiagramBase< T_DATA >* deltaV = subtract2MultiDimDecisionDiagrams( Vnewcarre, Voldcarre );
+				const MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnewcarre = multiply2MultiDimDecisionDiagrams( Vnew, Vnew );
+				const MultiDimDecisionDiagramBase< GUM_SCALAR >* Voldcarre = multiply2MultiDimDecisionDiagrams( Vold, Vold );
+				MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams( Vnewcarre, Voldcarre );
 				delete Voldcarre;
 				delete Vnewcarre;
 				gap = 0;
-				for( BijectionIterator< NodeId, T_DATA > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+				for( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
 					if( gap < fabs( valIter.second() ) )
 						gap = fabs( valIter.second() );
 				delete deltaV;
@@ -200,18 +200,18 @@ namespace gum {
 			// We have to do one last step to get best policy
 			// *****************************************************************************************
 					__fmdp->resetActionsIterator();
-					HashTable< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VactionCollector;
+					HashTable< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
 					
 					while( __fmdp->hasAction() ){
 					
 						__fmdp->resetVariablesIterator();
 						
-						MultiDimDecisionDiagramBase< T_DATA >* Vaction = __fmdp->primeCopy( Vold );
+						MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = __fmdp->primeCopy( Vold );
 						
 						while( __fmdp->hasVariable() ){
 							
 							Vtemp = Vaction;
-							Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->transition() ), Vaction  );
+							Vaction = multiply2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->transition() ), Vaction  );
 							delete Vtemp;
 								
 							__fmdp->nextVariable();
@@ -221,13 +221,13 @@ namespace gum {
 						Vaction = projectSumMultiDimDecisionDiagram( Vaction, __fmdp->primedVariables() );
 						delete Vtemp;
 						
-						Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<T_DATA>*>( Vaction->newFactory() );
+						Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>( Vaction->newFactory() );
 						Vtemp->multiplyByScalar( Vaction, __fmdp->discount() );
 						delete Vaction;
 						Vaction = Vtemp;
 						
 						Vtemp = Vaction;
-						Vaction = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*>( __fmdp->reward() ), Vaction  );
+						Vaction = add2MultiDimDecisionDiagrams( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( __fmdp->reward() ), Vaction  );
 						delete Vtemp;
 						
 						VactionCollector.insert( __fmdp->actionIterId(), Vaction );
@@ -235,7 +235,7 @@ namespace gum {
 					}
 					
 					Vnew = NULL;
-					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
+					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
 						
 						//~ std::cout << std::endl << " Action : " << __fmdp->actionName( VActionsIter.key() ) << std::endl << (*VActionsIter)->toDot() << std::endl;
 						Vtemp = Vnew;
@@ -263,7 +263,7 @@ namespace gum {
 						inst.add( **varIter );
 						continue;
 					}
-					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
+					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ){
 						if( (*VActionsIter)->isInDiagramVariable( *varIter ) ){
 							inst.add( **varIter );
 							break;
@@ -280,14 +280,14 @@ namespace gum {
 					if( !__bestPolicy.exists( n ) )
 						__bestPolicy.insert( n, new List<Idx> );
 						
-					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter )
+					for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter )
 						if( Vnew->get( inst ) == (*VActionsIter)->get(inst) )
 							if( !__bestPolicy[n]->exists( VActionsIter.key() ) )
 								__bestPolicy[n]->insert( VActionsIter.key() );
 								
 				}
 				
-				for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< T_DATA >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter )
+				for( HashTableConstIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter )
 					delete *VActionsIter;
 			
 			// *****************************************************************************************

@@ -46,19 +46,19 @@ namespace gum {
    * @ingroup multidim_group
    *
    * The gum::MultiDimImplementation is an abstract class for all multidimensional
-   * implementation of container of T_DATA. Its purpose is to implement
+   * implementation of container of GUM_SCALAR. Its purpose is to implement
    * base algorithms with no regard to how the storage is done (tree, matrix...)
    *
    * It deals also with variables and implements pure virtual methods concerned
    * with dimensions.
    *
-   * See operator<<(std::ostream&, const MultiDimImplementation<T_DATA>&) to print
+   * See operator<<(std::ostream&, const MultiDimImplementation<GUM_SCALAR>&) to print
    * a gum::MultiDimImplementation.
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimImplementation : public MultiDimContainer<T_DATA> {
+  class MultiDimImplementation : public MultiDimContainer<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -72,7 +72,7 @@ namespace gum {
       // ============================================================================
       /// Copy constructor.
       // ============================================================================
-      MultiDimImplementation( const MultiDimImplementation<T_DATA>& from );
+      MultiDimImplementation( const MultiDimImplementation<GUM_SCALAR>& from );
 
       // ============================================================================
       /// Destructor.
@@ -94,7 +94,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
 
       // ############################################################################
@@ -103,7 +103,7 @@ namespace gum {
       /// @{
 
       // ============================================================================
-      using MultiDimContainer<T_DATA>::get;
+      using MultiDimContainer<GUM_SCALAR>::get;
 
       // ============================================================================
       // see gum::MultiDimInterface
@@ -232,14 +232,14 @@ namespace gum {
       /// See gum::MultiDimContainer::endMultipleChanges().
       // ============================================================================
       virtual void endMultipleChanges( void );
-      virtual void endMultipleChanges( const T_DATA& );
+      virtual void endMultipleChanges( const GUM_SCALAR& );
 
     protected:
       // ============================================================================
       /// Synchronize content after MultipleChanges.
       // ============================================================================
       virtual void _commitMultipleChanges( void );
-      virtual void _commitMultipleChanges( const T_DATA& );
+      virtual void _commitMultipleChanges( const GUM_SCALAR& );
 
       // ============================================================================
       /// Get the actual change method of *this.
@@ -301,9 +301,9 @@ namespace gum {
   // ==============================================================================
   /// For friendly displaying the content of the array.
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::ostream& operator<< ( std::ostream&,
-                             const MultiDimImplementation<T_DATA>& );
+                             const MultiDimImplementation<GUM_SCALAR>& );
 
 } /* namespace gum */
 

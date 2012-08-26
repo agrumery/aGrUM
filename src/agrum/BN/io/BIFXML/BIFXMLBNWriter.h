@@ -51,9 +51,9 @@ namespace gum {
    * for information about this format.
    *
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class BIFXMLBNWriter: public BNWriter<T_DATA> {
+  class BIFXMLBNWriter: public BNWriter<GUM_SCALAR> {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -79,7 +79,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream &output, const BayesNet<T_DATA>& infdiag );
+    virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& infdiag );
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -90,7 +90,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string filePath, const BayesNet<T_DATA>& infdiag );
+    virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& infdiag );
     
     private:
       /**
@@ -111,7 +111,7 @@ namespace gum {
       /**
        * Returns a bloc defining a variable's table (if she has) in the BIF format.
        */
-      std::string __variableDefinition( const NodeId& varNodeId, const BayesNet<T_DATA>& infdiag  );
+      std::string __variableDefinition( const NodeId& varNodeId, const BayesNet<GUM_SCALAR>& infdiag  );
       
       
   };

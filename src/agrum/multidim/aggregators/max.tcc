@@ -29,35 +29,35 @@
 namespace gum {
 
   namespace aggregator {
-    template<typename T_DATA> INLINE
-    Max<T_DATA>::Max(): MultiDimAggregator<T_DATA>() {
+    template<typename GUM_SCALAR> INLINE
+    Max<GUM_SCALAR>::Max(): MultiDimAggregator<GUM_SCALAR>() {
       GUM_CONSTRUCTOR( Max )
     }
 
-    template<typename T_DATA> INLINE
-    Max<T_DATA>::Max( const Max<T_DATA>& from ) : MultiDimAggregator<T_DATA>( from ) {
+    template<typename GUM_SCALAR> INLINE
+    Max<GUM_SCALAR>::Max( const Max<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR>( from ) {
       GUM_CONS_CPY( Max );
     }
 
-    template<typename T_DATA> INLINE
-    Max<T_DATA>::~Max() {
+    template<typename GUM_SCALAR> INLINE
+    Max<GUM_SCALAR>::~Max() {
       GUM_DESTRUCTOR( Max );
     }
 
-    template<typename T_DATA> INLINE
-    Idx Max<T_DATA>::_neutralElt() const { return ( Idx )0;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Max<GUM_SCALAR>::_neutralElt() const { return ( Idx )0;}
 
-    template<typename T_DATA> INLINE
-    Idx Max<T_DATA>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 > i2 ) ? i1 : i2;}
+    template<typename GUM_SCALAR> INLINE
+    Idx Max<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const { return ( i1 > i2 ) ? i1 : i2;}
 
-    template<typename T_DATA> INLINE
-    std::string Max<T_DATA>::aggregatorName( void ) const {
+    template<typename GUM_SCALAR> INLINE
+    std::string Max<GUM_SCALAR>::aggregatorName( void ) const {
       return "max";
     }
 
-    template<typename T_DATA> INLINE
-    MultiDimContainer<T_DATA>* Max<T_DATA>::newFactory() const {
-      return new Max<T_DATA>;
+    template<typename GUM_SCALAR> INLINE
+    MultiDimContainer<GUM_SCALAR>* Max<GUM_SCALAR>::newFactory() const {
+      return new Max<GUM_SCALAR>;
     }
 
   } // aggregator

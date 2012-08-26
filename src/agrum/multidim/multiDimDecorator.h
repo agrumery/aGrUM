@@ -51,12 +51,12 @@ namespace gum {
    * A MultiDimDecorator is a virtual class for all encapsulation of
    * MultiDimImplementation * (for instance probability, utility, etc.).
    * It implements a decorator design pattern in order to have a array/tree/sparse
-   * matrix/... implementation for multiDim<*T_DATA*>
+   * matrix/... implementation for multiDim<*GUM_SCALAR*>
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimDecorator : public MultiDimContainer<T_DATA> {
+  class MultiDimDecorator : public MultiDimContainer<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -65,7 +65,7 @@ namespace gum {
     // ============================================================================
     /// Constructor.
     // ============================================================================
-    MultiDimDecorator( MultiDimImplementation<T_DATA> *aContent );
+    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR> *aContent );
 
     // ============================================================================
     /// Destructor.
@@ -153,17 +153,17 @@ namespace gum {
     // ============================================================================
     /// Fills this with the content of d.
     // ============================================================================
-    virtual void fill( const T_DATA& d ) const;
+    virtual void fill( const GUM_SCALAR& d ) const;
 
     // ============================================================================
     /// Protected access to content.
     // ============================================================================
-    const MultiDimImplementation<T_DATA>* content() const;
+    const MultiDimImplementation<GUM_SCALAR>* content() const;
 
     // ============================================================================
     /// Access to content.
     // ============================================================================
-    MultiDimImplementation<T_DATA>* content();
+    MultiDimImplementation<GUM_SCALAR>* content();
 
     /// @}
 
@@ -180,7 +180,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimDecorator<T_DATA>* newFactory() const =0;
+    virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const =0;
 
 
     // ############################################################################
@@ -250,7 +250,7 @@ namespace gum {
      * master->getMasterRef()
      */
     // ============================================================================
-    virtual MultiDimImplementation<T_DATA>& getMasterRef( void );
+    virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
 
     // ============================================================================
     /**
@@ -259,7 +259,7 @@ namespace gum {
      * master->getMasterRef()
      */
     // ============================================================================
-    virtual const MultiDimImplementation<T_DATA>& getMasterRef( void ) const;
+    virtual const MultiDimImplementation<GUM_SCALAR>& getMasterRef( void ) const;
 
     /// @}
 
@@ -271,7 +271,7 @@ namespace gum {
     // ============================================================================
     virtual void beginMultipleChanges( void );
     virtual void endMultipleChanges( void );
-    virtual void endMultipleChanges( const T_DATA& );
+    virtual void endMultipleChanges( const GUM_SCALAR& );
 
     /// @}
 
@@ -296,7 +296,7 @@ namespace gum {
      */
     // ============================================================================
     virtual void
-    homothetic( T_DATA alpha,T_DATA( *mul )( const T_DATA,const T_DATA ) );
+    homothetic( GUM_SCALAR alpha,GUM_SCALAR( *mul )( const GUM_SCALAR,const GUM_SCALAR ) );
 
     // ============================================================================
     /**
@@ -305,24 +305,24 @@ namespace gum {
      * @return Returns the sum of values contains in the multiDim.
      */
     // ============================================================================
-    virtual T_DATA fold( T_DATA( *add )( const T_DATA,const T_DATA ) ) const;
+    virtual GUM_SCALAR fold( GUM_SCALAR( *add )( const GUM_SCALAR,const GUM_SCALAR ) ) const;
 
     /// @}
 
     /// by default, set just calls _get as a r-value
-    virtual void set( const Instantiation& i,const T_DATA& value ) const;
+    virtual void set( const Instantiation& i,const GUM_SCALAR& value ) const;
 
     /// by default, get just calls _get as a l-value
-    virtual T_DATA get( const Instantiation& i ) const ;
+    virtual GUM_SCALAR get( const Instantiation& i ) const ;
   protected:
     /// protecte method to swap the implementation behind the Potential
     /// @warning unsafe method for slave Instantiations !
-    void _swapContent(MultiDimImplementation<T_DATA> *aContent) const;
+    void _swapContent(MultiDimImplementation<GUM_SCALAR> *aContent) const;
 
     // ============================================================================
     /// The true container.
     // ============================================================================
-    mutable MultiDimImplementation<T_DATA> *_content;
+    mutable MultiDimImplementation<GUM_SCALAR> *_content;
 
 
     // ============================================================================
@@ -333,7 +333,7 @@ namespace gum {
      * @throw NotFound
      */
     // ============================================================================
-    T_DATA& _get( const Instantiation& i ) const;
+    GUM_SCALAR& _get( const Instantiation& i ) const;
 
   };
 

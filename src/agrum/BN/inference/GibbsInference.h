@@ -38,18 +38,18 @@ namespace gum {
    * @ingroup bn_group
    *
    */
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
   class GibbsInference :
         public ApproximationScheme,
-        public BayesNetInference<T_DATA>,
-        public particle::Gibbs<T_DATA> {
+        public BayesNetInference<GUM_SCALAR>,
+        public particle::Gibbs<GUM_SCALAR> {
 
     public:
       /**
        * Default constructor
        */
-      GibbsInference( const AbstractBayesNet<T_DATA>& BN );
+      GibbsInference( const AbstractBayesNet<GUM_SCALAR>& BN );
 
       /**
        * Destructor.
@@ -66,12 +66,12 @@ namespace gum {
        * @warning if an evidence already w.r.t. a given node and a new
        * evidence w.r.t. this node is inserted, the old evidence is removed.
        */
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) ;
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<T_DATA>* e ) ;
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) ;
 
       /**
        * Remove all evidence from the graph.
@@ -84,10 +84,10 @@ namespace gum {
       bool isInferenceRequired();
       ///@}
 
-      using particle::Gibbs<T_DATA>::particle;
-      using particle::Gibbs<T_DATA>::initParticle;
-      using particle::Gibbs<T_DATA>::nextParticle;
-      using particle::Gibbs<T_DATA>::bn;
+      using particle::Gibbs<GUM_SCALAR>::particle;
+      using particle::Gibbs<GUM_SCALAR>::initParticle;
+      using particle::Gibbs<GUM_SCALAR>::nextParticle;
+      using particle::Gibbs<GUM_SCALAR>::bn;
 
     protected:
       /**
@@ -97,7 +97,7 @@ namespace gum {
        * @param marginal the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal( NodeId id ,Potential<T_DATA>& marginal );
+      virtual void _fillMarginal( NodeId id ,Potential<GUM_SCALAR>& marginal );
 
 
     private:
@@ -106,7 +106,7 @@ namespace gum {
 
 
       /// the actual number of sampling for each modality by node
-      typename Property<Potential<T_DATA>*>::onNodes __sampling_nbr;
+      typename Property<Potential<GUM_SCALAR>*>::onNodes __sampling_nbr;
 
 
       void __unsetRequiredInference();

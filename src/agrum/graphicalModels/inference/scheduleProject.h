@@ -42,9 +42,9 @@
 namespace gum {
 
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
-  class ScheduleProject : public ScheduleOperation<T_DATA> {
+  class ScheduleProject : public ScheduleOperation<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -53,17 +53,17 @@ namespace gum {
 
       /// default constructor
       /** @warning table and del_vars are passed by copy */
-      ScheduleProject( const ScheduleMultiDim<T_DATA>& table,
+      ScheduleProject( const ScheduleMultiDim<GUM_SCALAR>& table,
                        const Set<const DiscreteVariable *>& del_vars,
-                       MultiDimImplementation<T_DATA>*
-                       ( *project )( const MultiDimImplementation<T_DATA>&,
+                       MultiDimImplementation<GUM_SCALAR>*
+                       ( *project )( const MultiDimImplementation<GUM_SCALAR>&,
                                      const Set<const DiscreteVariable *>& ) );
 
       /// copy constructor
-      ScheduleProject( const ScheduleProject<T_DATA>& );
+      ScheduleProject( const ScheduleProject<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
-      virtual ScheduleProject<T_DATA>* newFactory() const;
+      virtual ScheduleProject<GUM_SCALAR>* newFactory() const;
 
       /// destructor
       virtual ~ScheduleProject();
@@ -77,17 +77,17 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScheduleProject<T_DATA>& operator= ( const ScheduleProject<T_DATA>& );
+      ScheduleProject<GUM_SCALAR>& operator= ( const ScheduleProject<GUM_SCALAR>& );
 
       /// operator ==
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+      bool operator== ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// operator !=
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+      bool operator!= ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// @}
 
@@ -115,13 +115,13 @@ namespace gum {
       std::pair<long,long> memoryUsage() const;
 
       /// returns the scheduleMultidim resulting from the execution of the operation
-      const ScheduleMultiDim<T_DATA>& result() const;
+      const ScheduleMultiDim<GUM_SCALAR>& result() const;
 
       /// returns the set of multidims passed in argument to the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
       /// returns the set of multidims that should be the result of the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
 
       /// displays the content of the operation
       std::string toString() const;
@@ -132,23 +132,23 @@ namespace gum {
 
     private:
       // the table to project
-      ScheduleMultiDim<T_DATA> __table;
+      ScheduleMultiDim<GUM_SCALAR> __table;
 
       // the set of variables that should be removed from the table
       Set<const DiscreteVariable *> __del_vars;
 
       /// the result of the operation
-      ScheduleMultiDim<T_DATA>* __result;
+      ScheduleMultiDim<GUM_SCALAR>* __result;
 
       /// the set of ScheduleMultidims passed in arguments
-      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
+      mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
 
       /// the set of ScheduleMultidims resulting from the operation
-      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __results;
+      mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __results;
 
       /// the projection operator
-      MultiDimImplementation<T_DATA>*
-      ( *__project )( const MultiDimImplementation<T_DATA>&,
+      MultiDimImplementation<GUM_SCALAR>*
+      ( *__project )( const MultiDimImplementation<GUM_SCALAR>&,
                       const Set<const DiscreteVariable *>& );
 
   };

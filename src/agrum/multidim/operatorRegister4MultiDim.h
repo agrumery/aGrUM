@@ -38,7 +38,7 @@ namespace gum {
   
 
   // the base object used by combinations
-  template<typename T_DATA> class MultiDimImplementation;
+  template<typename GUM_SCALAR> class MultiDimImplementation;
 
   
   /* =========================================================================== */
@@ -49,13 +49,13 @@ namespace gum {
    * 
    * @ingroup multidim_group */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   class OperatorRegister4MultiDim {
   public:
     /// the type of functions used by the register
-    typedef MultiDimImplementation<T_DATA>*
-    (*OperatorPtr) ( const MultiDimImplementation<T_DATA>*,
-                     const MultiDimImplementation<T_DATA>* );
+    typedef MultiDimImplementation<GUM_SCALAR>*
+    (*OperatorPtr) ( const MultiDimImplementation<GUM_SCALAR>*,
+                     const MultiDimImplementation<GUM_SCALAR>* );
 
     
     // ############################################################################
@@ -185,12 +185,12 @@ namespace gum {
   // ==============================================================================
   /// a function to more easily register new operators in MultiDims
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
   registerOperator ( const std::string& operation_name,
                      const std::string& type1,
                      const std::string& type2,
-                     typename OperatorRegister4MultiDim<T_DATA>::OperatorPtr
+                     typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
                      function );
 
   

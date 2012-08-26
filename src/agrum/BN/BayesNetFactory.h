@@ -54,7 +54,7 @@ namespace gum {
    *
    */
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
   class BayesNetFactory : public AbstractBayesNetFactory {
 
@@ -70,7 +70,7 @@ namespace gum {
        * @throw DuplicateElement Raised if two variables in bn share the same
        *                         name.
        */
-      BayesNetFactory ( BayesNet<T_DATA>* bn );
+      BayesNetFactory ( BayesNet<GUM_SCALAR>* bn );
 
       /**
        * @brief Copy constructor.
@@ -81,7 +81,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the state of source is not NONE or
        *                            NETWORK.
        */
-      BayesNetFactory ( const BayesNetFactory<T_DATA>& source );
+      BayesNetFactory ( const BayesNetFactory<GUM_SCALAR>& source );
 
       /**
        * @brief Destructor.
@@ -105,7 +105,7 @@ namespace gum {
        * @throw OperationNotAllowed Raise if the state of the factory is different
        *                            than NONE.
        */
-      BayesNet<T_DATA>* bayesNet();
+      BayesNet<GUM_SCALAR>* bayesNet();
 
       /** short-cut accessor for a DiscreveVariable in the BN */
       const DiscreteVariable& varInBN ( NodeId id );
@@ -384,7 +384,7 @@ namespace gum {
 
       /// Implementation of variable between two
       /// startVariableDeclaration/endVariableDeclaration calls.
-      MultiDimImplementation<T_DATA>* __impl;
+      MultiDimImplementation<GUM_SCALAR>* __impl;
 
       /// @}
 
@@ -392,13 +392,13 @@ namespace gum {
       std::vector<factory_state> __states;
 
       /// The constructed BayesNet.
-      BayesNet<T_DATA>* __bn;
+      BayesNet<GUM_SCALAR>* __bn;
 
       /// Mapping between a declared variable's name and it's node id.
       HashTable<std::string, NodeId> __varNameMap;
 
       /// Copy operator is illegal, use only copy constructor.
-      BayesNetFactory<T_DATA>& operator= ( const BayesNetFactory<T_DATA>& source );
+      BayesNetFactory<GUM_SCALAR>& operator= ( const BayesNetFactory<GUM_SCALAR>& source );
 
       /// Raise an OperationNotAllowed with the message "Illegal state."
       void __illegalStateError ( const std::string& s );
@@ -416,7 +416,7 @@ namespace gum {
 
       /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
       /// respect to table.
-      void __setCPTAndParents ( const DiscreteVariable& var, Potential<T_DATA>* table );
+      void __setCPTAndParents ( const DiscreteVariable& var, Potential<GUM_SCALAR>* table );
 
       /// Reset the different parts used to constructed the BayesNet.
       void __resetParts();

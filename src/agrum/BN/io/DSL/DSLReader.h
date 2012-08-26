@@ -45,8 +45,8 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of DSLReader.
    */
-	template<typename T_DATA>
-	class DSLReader : public BNReader<T_DATA> {
+	template<typename GUM_SCALAR>
+	class DSLReader : public BNReader<GUM_SCALAR> {
 
 
 public:
@@ -56,7 +56,7 @@ public:
 		 * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
 		 * the BN from inside the reader.
      */
-	DSLReader(BayesNet<T_DATA>* bn,const std::string& filename );
+	DSLReader(BayesNet<GUM_SCALAR>* bn,const std::string& filename );
 
     /**
      * Default destructor.
@@ -113,8 +113,8 @@ public:
 
 
 protected:
-	BayesNet<T_DATA>* __bn;
-	BayesNetFactory<T_DATA>* __factory;
+	BayesNet<GUM_SCALAR>* __bn;
+	BayesNetFactory<GUM_SCALAR>* __factory;
 	DSL::Scanner* __scanner;
 	DSL::Parser* __parser;
 

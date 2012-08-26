@@ -46,10 +46,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class And : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class And : public MultiDimAggregator<GUM_SCALAR> {
       public:
         And( );
-        And( const And<T_DATA>& from );
+        And( const And<GUM_SCALAR>& from );
         virtual ~And();
 
         /**
@@ -65,7 +65,7 @@ namespace gum {
          * @warning you must desallocate by yourself the memory
          * @return an empty clone of this object with the same type
          */
-        virtual MultiDimContainer<T_DATA>* newFactory() const;
+        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
 

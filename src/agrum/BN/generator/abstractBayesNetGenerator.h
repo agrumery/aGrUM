@@ -51,9 +51,9 @@ namespace gum {
    * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
-  template <typename T_DATA, template<class> class ICPTGenerator>
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator>
 
-  class AbstractBayesNetGenerator : public ICPTGenerator<T_DATA> {
+  class AbstractBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {
 
     public:
       // ############################################################################
@@ -91,7 +91,7 @@ namespace gum {
       * @return null but modify inputed empty Bayesian Network
       */
 
-      virtual void generateBN ( BayesNet<T_DATA>& bayesNet ) = 0;
+      virtual void generateBN ( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
 
       /**
        * function that insert random values in the CPT of each nodes according to the @a CPTGenerator.
@@ -157,7 +157,7 @@ namespace gum {
       Size _nbrNodes;
       Size _maxArcs;
       Size _maxModality;
-      BayesNet<T_DATA>  _bayesNet;
+      BayesNet<GUM_SCALAR>  _bayesNet;
 
 
 

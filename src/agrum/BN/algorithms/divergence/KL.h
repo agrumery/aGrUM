@@ -48,7 +48,7 @@ namespace gum {
     enum difficulty {HEAVY,DIFFICULT,CORRECT};
   }
 
-  template<typename T_DATA> class KL {
+  template<typename GUM_SCALAR> class KL {
       static const int GAP_heavy_difficult = 12;
       static const int GAP_difficult_correct = 7;
 
@@ -57,11 +57,11 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL ( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q );
+      KL ( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      KL ( const KL< T_DATA >& kl );
+      KL ( const KL< GUM_SCALAR >& kl );
 
       /** destructor */
       ~KL();
@@ -93,10 +93,10 @@ namespace gum {
       double bhattacharya();
 
       /// @return p
-      const BayesNet<T_DATA>& p(void) const;
+      const BayesNet<GUM_SCALAR>& p(void) const;
       
       /// @return q
-      const BayesNet<T_DATA>& q(void) const;
+      const BayesNet<GUM_SCALAR>& q(void) const;
       /// @}
 
     protected:
@@ -104,13 +104,13 @@ namespace gum {
       virtual void _computeKL ( void );
       void _process();
 
-      const BayesNet<T_DATA>& _p;
-      const BayesNet<T_DATA>& _q;
+      const BayesNet<GUM_SCALAR>& _p;
+      const BayesNet<GUM_SCALAR>& _q;
 
-      T_DATA _klPQ;
-      T_DATA _klQP;
-      T_DATA _hellinger;
-      T_DATA _bhattacharya;
+      GUM_SCALAR _klPQ;
+      GUM_SCALAR _klQP;
+      GUM_SCALAR _hellinger;
+      GUM_SCALAR _bhattacharya;
 
       bool _errorPQ;
       bool _errorQP;

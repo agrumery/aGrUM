@@ -48,7 +48,7 @@ namespace gum {
    * @ingroup multidim_group
    *
    * The gum::MultiDimContainer is an abstract base class for all multi
-   * dimensionnal container of T_DATA. Its purpose is to deal with T_DATA access
+   * dimensionnal container of GUM_SCALAR. Its purpose is to deal with GUM_SCALAR access
    * with no regard to how the storage is done (tree, matrix...).
    *
    * MultiDimContainer is considered as const if its dimension does not change.
@@ -77,7 +77,7 @@ namespace gum {
    * @endcode
    */
   /* ============================================================================ */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
   class MultiDimContainer : public MultiDimAdressable {
     public:
@@ -93,7 +93,7 @@ namespace gum {
       // ============================================================================
       /// Copy constructor.
       // ============================================================================
-      MultiDimContainer ( const MultiDimContainer<T_DATA>& src );
+      MultiDimContainer ( const MultiDimContainer<GUM_SCALAR>& src );
 
       // ============================================================================
       /// Destructor.
@@ -116,7 +116,7 @@ namespace gum {
        * instantiation.
        */
       // ============================================================================
-      virtual void set ( const Instantiation &i, const T_DATA &value ) const;
+      virtual void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
 
       // ============================================================================
       /**
@@ -127,7 +127,7 @@ namespace gum {
        * instantiation.
        */
       // ============================================================================
-      virtual T_DATA get ( const Instantiation &i ) const ;
+      virtual GUM_SCALAR get ( const Instantiation &i ) const ;
 
       // ============================================================================
       /**
@@ -138,10 +138,10 @@ namespace gum {
        * instantiation.
        *
        * @param i An Instantiation.
-       * @return Returns the adressed (T_DATA) value.
+       * @return Returns the adressed (GUM_SCALAR) value.
        */
       // ============================================================================
-      T_DATA operator[] ( const Instantiation &i ) const;
+      GUM_SCALAR operator[] ( const Instantiation &i ) const;
 
       // ============================================================================
       /**
@@ -149,7 +149,7 @@ namespace gum {
        * @param d The value used to fill this gum::MultiDimContainer.
        */
       // ============================================================================
-      virtual void fill ( const T_DATA &d ) const = 0;
+      virtual void fill ( const GUM_SCALAR &d ) const = 0;
 
       // ==============================================================================
       /**
@@ -170,7 +170,7 @@ namespace gum {
        *                  domain size.
        */
       // ==============================================================================
-      virtual void fillWith ( const std::vector<T_DATA>& v ) const;
+      virtual void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
 
       /// @}
 
@@ -193,7 +193,7 @@ namespace gum {
        *                            than this gum::MultiDimContainer.
        */
       // ============================================================================
-      virtual void copyFrom ( const MultiDimContainer<T_DATA>& src,
+      virtual void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
                               Instantiation *p_i = ( Instantiation * ) 0 ) const;
 
       // ============================================================================
@@ -202,7 +202,7 @@ namespace gum {
        * of src, variables included.
        */
       // ============================================================================
-      virtual void copy ( const MultiDimContainer<T_DATA>& src );
+      virtual void copy ( const MultiDimContainer<GUM_SCALAR>& src );
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -217,7 +217,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
       /// @}
 
@@ -239,12 +239,12 @@ namespace gum {
       // ============================================================================
       /// Test if this potential is equal to p.
       // ============================================================================
-      bool operator== ( const MultiDimContainer<T_DATA>& p ) const;
+      bool operator== ( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
       // ============================================================================
       /// Test if this potential is different of p.
       // ============================================================================
-      bool operator!= ( const MultiDimContainer<T_DATA>& p ) const;
+      bool operator!= ( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
       /// @}
 
@@ -268,7 +268,7 @@ namespace gum {
        */
       // ============================================================================
       virtual void endMultipleChanges ( void ) = 0 ;
-      virtual void endMultipleChanges ( const T_DATA & ) = 0 ;
+      virtual void endMultipleChanges ( const GUM_SCALAR & ) = 0 ;
       // ============================================================================
 
       /// @}
@@ -288,7 +288,7 @@ namespace gum {
        * @param i The instantiation used to find the data.
        */
       // ============================================================================
-      virtual T_DATA &_get ( const Instantiation &i ) const = 0;
+      virtual GUM_SCALAR &_get ( const Instantiation &i ) const = 0;
 
   };
 } /* namespace gum */

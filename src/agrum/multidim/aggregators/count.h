@@ -47,10 +47,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class Count : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class Count : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Count( Idx value );
-        Count( const Count<T_DATA>& from );
+        Count( const Count<GUM_SCALAR>& from );
         virtual ~Count();
 
         virtual std::string aggregatorName( void ) const;
@@ -68,7 +68,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
       protected:

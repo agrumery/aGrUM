@@ -39,8 +39,8 @@ namespace gum {
    * @brief Decorator of a MultiDimArray, using a bijection over the variables.
    * @ingroup multidim_group
    */
-  template<typename T_DATA>
-  class MultiDimBijArray : public MultiDimWithOffset<T_DATA> {
+  template<typename GUM_SCALAR>
+  class MultiDimBijArray : public MultiDimWithOffset<GUM_SCALAR> {
     public:
       typedef Bijection<const DiscreteVariable*, const DiscreteVariable*> VarBijection;
 
@@ -55,7 +55,7 @@ namespace gum {
       ///                            raise an OperationNotAllowed
       // ============================================================================
       MultiDimBijArray(const VarBijection& bijection,
-                       const MultiDimArray<T_DATA>& array);
+                       const MultiDimArray<GUM_SCALAR>& array);
 
       // ============================================================================
       /// Gets the content of decorator and uses its implementation.
@@ -63,7 +63,7 @@ namespace gum {
       ///                            raise an OperationNotAllowed
       // ============================================================================
       MultiDimBijArray(const VarBijection& bijection,
-                       const MultiDimBijArray<T_DATA>& array);
+                       const MultiDimBijArray<GUM_SCALAR>& array);
 
       // ============================================================================
       /// copy constructor
@@ -71,7 +71,7 @@ namespace gum {
        * from, but no instantiation is associated to it.
        * @param from the multidimensional matrix we copy into this */
       // ============================================================================
-      MultiDimBijArray( const MultiDimBijArray<T_DATA>& from );
+      MultiDimBijArray( const MultiDimBijArray<GUM_SCALAR>& from );
 
       // ============================================================================
       /// destructor
@@ -98,7 +98,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimBijArray<T_DATA>* newFactory() const;
+      virtual MultiDimBijArray<GUM_SCALAR>* newFactory() const;
 
 
       // ############################################################################
@@ -112,7 +112,7 @@ namespace gum {
        * @param v The variable not added.
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
-      MultiDimBijArray<T_DATA>& operator= ( const MultiDimBijArray<T_DATA>& from );
+      MultiDimBijArray<GUM_SCALAR>& operator= ( const MultiDimBijArray<GUM_SCALAR>& from );
 
       /// @}
 
@@ -120,7 +120,7 @@ namespace gum {
       virtual const std::string& name() const;
 
       /// Returns the value pointed by i.
-      virtual T_DATA get (const Instantiation &i) const;
+      virtual GUM_SCALAR get (const Instantiation &i) const;
 
       /**
        * This will raise an exception: you can't change the variables in a
@@ -128,7 +128,7 @@ namespace gum {
        * @param v The variable not added.
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
-      virtual void set (const Instantiation &i, const T_DATA &value) const;
+      virtual void set (const Instantiation &i, const GUM_SCALAR &value) const;
 
       /**
        * This will raise an exception: you can't change the variables in a
@@ -156,7 +156,7 @@ namespace gum {
        * @param v The variable not added.
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
-      virtual void fill( const T_DATA& d ) const;
+      virtual void fill( const GUM_SCALAR& d ) const;
 
       /**
        * This will raise an exception: you can't change the variables in a
@@ -164,10 +164,10 @@ namespace gum {
        * @param v The variable not added.
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
-      virtual void fillWith (const std::vector< T_DATA > &v) const;
+      virtual void fillWith (const std::vector< GUM_SCALAR > &v) const;
 
     protected:
-      virtual T_DATA & _get (const Instantiation &i) const;
+      virtual GUM_SCALAR & _get (const Instantiation &i) const;
 
       /// synchronise content after MultipleChanges
       virtual void _commitMultipleChanges( void );
@@ -176,7 +176,7 @@ namespace gum {
 
     private:
       /// the true data.
-      const MultiDimArray<T_DATA>& __array;
+      const MultiDimArray<GUM_SCALAR>& __array;
 
       std::string __name;
     };

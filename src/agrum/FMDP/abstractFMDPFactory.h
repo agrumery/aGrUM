@@ -83,7 +83,7 @@ public:
     //~ * @throw OperationNotAllowed Raised if the state of source is not NONE or
     //~ *                            NETWORK.
     //~ */
-    //~ FMDPFactory ( const FMDPFactory<T_DATA>& source );
+    //~ FMDPFactory ( const FMDPFactory<GUM_SCALAR>& source );
 
     /**
      * @brief Destructor.

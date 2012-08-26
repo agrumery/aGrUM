@@ -25,14 +25,14 @@
 
 namespace gum {
 
-  template<typename T_DATA>
-  NetReader<T_DATA>::NetReader( BayesNet<T_DATA>* bn, const std::string& filename ) : BNReader<T_DATA> ( bn, filename ) {
+  template<typename GUM_SCALAR>
+  NetReader<GUM_SCALAR>::NetReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename ) : BNReader<GUM_SCALAR> ( bn, filename ) {
     GUM_CONSTRUCTOR( NetReader );
     __bn = bn;
     __streamName = filename;
     __parseDone = false;
 
-    __factory = new BayesNetFactory<T_DATA> ( __bn );
+    __factory = new BayesNetFactory<GUM_SCALAR> ( __bn );
 
     __ioerror = false;
 
@@ -48,8 +48,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA>
-  NetReader<T_DATA>::~NetReader() {
+  template<typename GUM_SCALAR>
+  NetReader<GUM_SCALAR>::~NetReader() {
     GUM_DESTRUCTOR( NetReader );
 
     if ( !__ioerror ) {
@@ -63,8 +63,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  net::Scanner& NetReader<T_DATA>::scanner() {
+  template<typename GUM_SCALAR> INLINE
+  net::Scanner& NetReader<GUM_SCALAR>::scanner() {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }
@@ -73,27 +73,27 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  const std::string& NetReader<T_DATA>::streamName() const {
+  template<typename GUM_SCALAR> INLINE
+  const std::string& NetReader<GUM_SCALAR>::streamName() const {
     return __streamName;
   }
 
 
-  template<typename T_DATA> INLINE
-  bool NetReader<T_DATA>::trace( void ) const {
+  template<typename GUM_SCALAR> INLINE
+  bool NetReader<GUM_SCALAR>::trace( void ) const {
     return __traceScanning;
   }
 
 
-  template<typename T_DATA> INLINE
-  void NetReader<T_DATA>::trace( bool b ) {
+  template<typename GUM_SCALAR> INLINE
+  void NetReader<GUM_SCALAR>::trace( bool b ) {
     __traceScanning = b;
     scanner().setTrace( b );
   }
 
 
-  template<typename T_DATA>
-  int NetReader<T_DATA>::proceed( void ) {
+  template<typename GUM_SCALAR>
+  int NetReader<GUM_SCALAR>::proceed( void ) {
     FILE* tmpfile();
 
     if ( __ioerror ) {
@@ -117,8 +117,8 @@ namespace gum {
 
   /// @{
   /// publishing Errors API
-  template<typename T_DATA> INLINE
-  unsigned int NetReader<T_DATA>::errLine( unsigned int i ) {
+  template<typename GUM_SCALAR> INLINE
+  unsigned int NetReader<GUM_SCALAR>::errLine( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().line( i );
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -126,8 +126,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  unsigned int NetReader<T_DATA>::errCol( unsigned int i ) {
+  template<typename GUM_SCALAR> INLINE
+  unsigned int NetReader<GUM_SCALAR>::errCol( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().col( i );
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -135,8 +135,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  bool NetReader<T_DATA>::errIsError( unsigned int i ) {
+  template<typename GUM_SCALAR> INLINE
+  bool NetReader<GUM_SCALAR>::errIsError( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().is_error( i );
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -144,8 +144,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  std::string NetReader<T_DATA>::errMsg( unsigned int i ) {
+  template<typename GUM_SCALAR> INLINE
+  std::string NetReader<GUM_SCALAR>::errMsg( unsigned int i ) {
     if ( __parseDone ) return std::string( narrow( __parser->errors().msg( i ) ) );
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -153,8 +153,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  void NetReader<T_DATA>::showElegantErrors() {
+  template<typename GUM_SCALAR> INLINE
+  void NetReader<GUM_SCALAR>::showElegantErrors() {
     if ( __parseDone ) __parser->errors().showElegantErrors();
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -162,16 +162,16 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  void NetReader<T_DATA>::showElegantErrorsAndWarnings() {
+  template<typename GUM_SCALAR> INLINE
+  void NetReader<GUM_SCALAR>::showElegantErrorsAndWarnings() {
     if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
     }
   }
 
-  template<typename T_DATA> INLINE
-  void NetReader<T_DATA>::showErrorsAndWarnings() {
+  template<typename GUM_SCALAR> INLINE
+  void NetReader<GUM_SCALAR>::showErrorsAndWarnings() {
     if ( __parseDone ) __parser->errors().showErrorsAndWarnings();
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -179,8 +179,8 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  void NetReader<T_DATA>::showErrorCounts() {
+  template<typename GUM_SCALAR> INLINE
+  void NetReader<GUM_SCALAR>::showErrorCounts() {
     if ( __parseDone ) __parser->errors().showSyntheticResults();
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
@@ -188,14 +188,14 @@ namespace gum {
   }
 
 
-  template<typename T_DATA> INLINE
-  Size  NetReader<T_DATA>::errors() {
+  template<typename GUM_SCALAR> INLINE
+  Size  NetReader<GUM_SCALAR>::errors() {
     return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().error_count;
   }
 
 
-  template<typename T_DATA> INLINE
-  Size  NetReader<T_DATA>::warnings() {
+  template<typename GUM_SCALAR> INLINE
+  Size  NetReader<GUM_SCALAR>::warnings() {
     return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
   }
 

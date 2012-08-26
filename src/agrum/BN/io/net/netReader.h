@@ -46,9 +46,9 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of NetReader.
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class NetReader : public BNReader<T_DATA> {
+  class NetReader : public BNReader<GUM_SCALAR> {
 
 
     public:
@@ -58,7 +58,7 @@ namespace gum {
       * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
       * the BN from inside the reader.
        */
-      NetReader( BayesNet<T_DATA>* bn,const std::string& filename );
+      NetReader( BayesNet<GUM_SCALAR>* bn,const std::string& filename );
 
       /**
        * Default destructor.
@@ -115,8 +115,8 @@ namespace gum {
 
 
     protected:
-      BayesNet<T_DATA>* __bn;
-      BayesNetFactory<T_DATA>* __factory;
+      BayesNet<GUM_SCALAR>* __bn;
+      BayesNetFactory<GUM_SCALAR>* __factory;
       net::Scanner* __scanner;
       net::Parser* __parser;
 

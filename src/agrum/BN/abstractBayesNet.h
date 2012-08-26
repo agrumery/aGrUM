@@ -43,7 +43,7 @@ namespace gum {
   * @class AbstractBayesNet abstractBayesNet.h <agrum/BN/abstractBayesNet.h>
    * Abstract class for representing a BayesNet.
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
   class AbstractBayesNet {
 
@@ -64,7 +64,7 @@ namespace gum {
       /**
        * Copy constructor. Do nothing.
        */
-      AbstractBayesNet( const AbstractBayesNet<T_DATA>& source );
+      AbstractBayesNet( const AbstractBayesNet<GUM_SCALAR>& source );
 
       /// @}
       /// @name Getter and setters
@@ -89,7 +89,7 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      virtual const Potential<T_DATA>& cpt( NodeId varId ) const = 0;
+      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const = 0;
 
       /**
        * Returns a constant reference to the dag of this Bayes Net.
@@ -189,16 +189,16 @@ namespace gum {
       virtual std::string toDot( void ) const=0;
 
       /// @return Returns true if the src and this are equal.
-      bool operator==( const AbstractBayesNet<T_DATA>& src ) const;
+      bool operator==( const AbstractBayesNet<GUM_SCALAR>& src ) const;
 
       /// @return Returns false if the src and this are equal.
-      bool operator!=( const AbstractBayesNet<T_DATA>& src ) const;
+      bool operator!=( const AbstractBayesNet<GUM_SCALAR>& src ) const;
 
     protected:
       /**
        * Private copy operator.
        */
-      AbstractBayesNet<T_DATA>& operator=( const AbstractBayesNet<T_DATA>& source );
+      AbstractBayesNet<GUM_SCALAR>& operator=( const AbstractBayesNet<GUM_SCALAR>& source );
 
       /// Returns the moral graph of this BayesNet.
       void _moralGraph( UndiGraph& graph ) const;

@@ -37,14 +37,14 @@ namespace gum {
   /* ===                           GUM_DSL_WRITTER                             === */
   /* ============================================================================ */
 // Default constructor.
-  template<typename T_DATA> INLINE
-  DSLWriter<T_DATA>::DSLWriter() {
+  template<typename GUM_SCALAR> INLINE
+  DSLWriter<GUM_SCALAR>::DSLWriter() {
     GUM_CONSTRUCTOR( DSLWriter );
   }
 
 // Default destructor.
-  template<typename T_DATA> INLINE
-  DSLWriter<T_DATA>::~DSLWriter() {
+  template<typename GUM_SCALAR> INLINE
+  DSLWriter<GUM_SCALAR>::~DSLWriter() {
     GUM_DESTRUCTOR( DSLWriter );
   }
 
@@ -53,8 +53,8 @@ namespace gum {
    * @param bn The Bayesian Network writen in output.
    * @throws Raised if an I/O error occurs.
    */
-  template<typename T_DATA>
-  void DSLWriter<T_DATA>::write( std::ostream &output, const BayesNet<T_DATA>& bn ) {
+  template<typename GUM_SCALAR>
+  void DSLWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -82,8 +82,8 @@ namespace gum {
    * @param bn The Bayesian Network writed in the file.
    * @throws Raised if an I/O error occurs.
    */
-  template<typename T_DATA>
-  void DSLWriter<T_DATA>::write( std::string filePath, const BayesNet<T_DATA>& bn ) {
+  template<typename GUM_SCALAR>
+  void DSLWriter<GUM_SCALAR>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
     std::filebuf fb;
     fb.open( filePath.c_str(), std::ios::out );
     std::ostream output( &fb );
@@ -96,8 +96,8 @@ namespace gum {
   /**
    * Returns a bloc defining a variable in the DSL format.
    */
-  template<typename T_DATA>
-  std::string DSLWriter<T_DATA>::__variableBloc( const BayesNet<T_DATA>& bn , const DiscreteVariable& var ) {
+  template<typename GUM_SCALAR>
+  std::string DSLWriter<GUM_SCALAR>::__variableBloc( const BayesNet<GUM_SCALAR>& bn , const DiscreteVariable& var ) {
     NodeId id;
     gum::Size i = 0;
     std::ostringstream oss;

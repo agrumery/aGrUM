@@ -68,8 +68,8 @@
 namespace gum {
 
 
-  template<typename T_DATA>
-  class ScheduleProjectionBasic : public ScheduleProjection<T_DATA> {
+  template<typename GUM_SCALAR>
+  class ScheduleProjectionBasic : public ScheduleProjection<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -77,12 +77,12 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduleProjectionBasic ( MultiDimImplementation<T_DATA>*
-                              (*proj) ( const MultiDimImplementation<T_DATA>&,
+    ScheduleProjectionBasic ( MultiDimImplementation<GUM_SCALAR>*
+                              (*proj) ( const MultiDimImplementation<GUM_SCALAR>&,
                                         const Set<const DiscreteVariable*>& ) );
     
     /// copy constructor
-    ScheduleProjectionBasic ( const ScheduleProjectionBasic<T_DATA>& );
+    ScheduleProjectionBasic ( const ScheduleProjectionBasic<GUM_SCALAR>& );
 
     /// destructor
     virtual ~ScheduleProjectionBasic ();
@@ -90,7 +90,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh ScheduleCombinator with the same projection
      * function. */
-    virtual ScheduleProjectionBasic<T_DATA>* newFactory () const;
+    virtual ScheduleProjectionBasic<GUM_SCALAR>* newFactory () const;
 
     /// @}
 
@@ -106,42 +106,42 @@ namespace gum {
      * NOT IN del_vars
      * @warning If del_vars is precisely equal to the variables of table, the
      * result is an empty table. */
-    ScheduleMultiDim<T_DATA>
-    project ( const ScheduleMultiDim<T_DATA>& table,
+    ScheduleMultiDim<GUM_SCALAR>
+    project ( const ScheduleMultiDim<GUM_SCALAR>& table,
               const Set<const DiscreteVariable*>& del_vars,
-              Schedule<T_DATA>& schedule );
-    ScheduleMultiDim<T_DATA>
-    project ( const MultiDimImplementation<T_DATA>& table,
+              Schedule<GUM_SCALAR>& schedule );
+    ScheduleMultiDim<GUM_SCALAR>
+    project ( const MultiDimImplementation<GUM_SCALAR>& table,
               const Set<const DiscreteVariable*>& del_vars,
-              Schedule<T_DATA>& schedule );
+              Schedule<GUM_SCALAR>& schedule );
     template <template<typename> class TABLE>
-    ScheduleMultiDim<T_DATA>
-    project ( const TABLE<T_DATA>& table,
+    ScheduleMultiDim<GUM_SCALAR>
+    project ( const TABLE<GUM_SCALAR>& table,
               const Set<const DiscreteVariable*>& del_vars,
-              Schedule<T_DATA>& schedule );
+              Schedule<GUM_SCALAR>& schedule );
     
     /// changes the function used for projecting tables
-    void setProjectFunction ( MultiDimImplementation<T_DATA>*
-                              (*proj) ( const MultiDimImplementation<T_DATA>&,
+    void setProjectFunction ( MultiDimImplementation<GUM_SCALAR>*
+                              (*proj) ( const MultiDimImplementation<GUM_SCALAR>&,
                                         const Set<const DiscreteVariable*>& ) );
     
     /// returns the projection function currently used by the projector
-    MultiDimImplementation<T_DATA>* (* projectFunction () )
-      ( const MultiDimImplementation<T_DATA>&,
+    MultiDimImplementation<GUM_SCALAR>* (* projectFunction () )
+      ( const MultiDimImplementation<GUM_SCALAR>&,
         const Set<const DiscreteVariable*>& ) const;
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection */
-    virtual float nbOperations ( const ScheduleMultiDim<T_DATA>& table,
+    virtual float nbOperations ( const ScheduleMultiDim<GUM_SCALAR>& table,
                                  const Set<const DiscreteVariable*>& del_vars,
-                                 const Schedule<T_DATA>& schedule );
-    float nbOperations ( const MultiDimImplementation<T_DATA>& table,
+                                 const Schedule<GUM_SCALAR>& schedule );
+    float nbOperations ( const MultiDimImplementation<GUM_SCALAR>& table,
                          const Set<const DiscreteVariable*>& del_vars,
-                         const Schedule<T_DATA>& schedule );
+                         const Schedule<GUM_SCALAR>& schedule );
     template <template<typename> class TABLE>
-    float nbOperations ( const TABLE<T_DATA>& set,
+    float nbOperations ( const TABLE<GUM_SCALAR>& set,
                          const Set<const DiscreteVariable*>& del_vars,
-                         const Schedule<T_DATA>& schedule );
+                         const Schedule<GUM_SCALAR>& schedule );
 
     /// returns the memory consumption used during the projection
     /** Actually, this function does not return a precise account of the memory
@@ -152,32 +152,32 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used by
      * the resulting table ) */
     virtual std::pair<long,long>
-    memoryUsage ( const ScheduleMultiDim<T_DATA>& table,
+    memoryUsage ( const ScheduleMultiDim<GUM_SCALAR>& table,
                   const Set<const DiscreteVariable*>& del_vars,
-                  const Schedule<T_DATA>& schedule );
+                  const Schedule<GUM_SCALAR>& schedule );
     std::pair<long,long>
-    memoryUsage ( const MultiDimImplementation<T_DATA>& table,
+    memoryUsage ( const MultiDimImplementation<GUM_SCALAR>& table,
                   const Set<const DiscreteVariable*>& del_vars,
-                  const Schedule<T_DATA>& schedule );
+                  const Schedule<GUM_SCALAR>& schedule );
     template <template<typename> class TABLE>
     std::pair<long,long>
-    memoryUsage ( const TABLE<T_DATA>& table,
+    memoryUsage ( const TABLE<GUM_SCALAR>& table,
                   const Set<const DiscreteVariable*>& del_vars,
-                  const Schedule<T_DATA>& schedule );
+                  const Schedule<GUM_SCALAR>& schedule );
 
     /// @}
 
 
   protected:
     /// the projection function actually used 
-    MultiDimImplementation<T_DATA>*
-    (*_proj) ( const MultiDimImplementation<T_DATA>&,
+    MultiDimImplementation<GUM_SCALAR>*
+    (*_proj) ( const MultiDimImplementation<GUM_SCALAR>&,
                const Set<const DiscreteVariable*>& );
 
   private:
     /// to be coherent with combinations, forbid copy operators
-    ScheduleProjectionBasic<T_DATA>&
-    operator= ( const ScheduleProjectionBasic<T_DATA>& );
+    ScheduleProjectionBasic<GUM_SCALAR>&
+    operator= ( const ScheduleProjectionBasic<GUM_SCALAR>& );
     
  };
 

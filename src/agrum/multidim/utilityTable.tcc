@@ -22,26 +22,26 @@
 
 namespace gum {
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>::UtilityTable() :
-      MultiDimDecorator<T_DATA>( new MultiDimArray<T_DATA> ) {
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>::UtilityTable() :
+      MultiDimDecorator<GUM_SCALAR>( new MultiDimArray<GUM_SCALAR> ) {
     GUM_CONSTRUCTOR( UtilityTable );
   }
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>::UtilityTable( MultiDimImplementation<T_DATA>* aContent ) :
-      MultiDimDecorator<T_DATA>( aContent ) {
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>::UtilityTable( MultiDimImplementation<GUM_SCALAR>* aContent ) :
+      MultiDimDecorator<GUM_SCALAR>( aContent ) {
     GUM_CONSTRUCTOR( UtilityTable );
   }
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>::~UtilityTable() {
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>::~UtilityTable() {
     GUM_DESTRUCTOR( UtilityTable );
   }
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>::UtilityTable( const UtilityTable<T_DATA>& toCopy ) :
-      MultiDimDecorator<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( toCopy.content()->newFactory() ) ) {
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>::UtilityTable( const UtilityTable<GUM_SCALAR>& toCopy ) :
+      MultiDimDecorator<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>( toCopy.content()->newFactory() ) ) {
     const Sequence<const DiscreteVariable*>& varSeq =
       toCopy.variablesSequence();
     for ( Sequence<const DiscreteVariable*>::iterator iter =
@@ -59,21 +59,21 @@ namespace gum {
     GUM_CONS_CPY( UtilityTable );
   }
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>& UtilityTable<T_DATA>::operator=( const UtilityTable<T_DATA>& toCopy ) {
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>& UtilityTable<GUM_SCALAR>::operator=( const UtilityTable<GUM_SCALAR>& toCopy ) {
     GUM_ERROR( OperationNotAllowed,
                "No copy for UtilityTable : how to choose the implementation ?" );
     return *this;
   }
 
-  template <typename T_DATA> INLINE
-  UtilityTable<T_DATA>* UtilityTable<T_DATA>::newFactory() const {
-    return new UtilityTable<T_DATA>( static_cast<MultiDimImplementation<T_DATA>*>( this->content()->newFactory() ) );
+  template <typename GUM_SCALAR> INLINE
+  UtilityTable<GUM_SCALAR>* UtilityTable<GUM_SCALAR>::newFactory() const {
+    return new UtilityTable<GUM_SCALAR>( static_cast<MultiDimImplementation<GUM_SCALAR>*>( this->content()->newFactory() ) );
   }
 
-  template <typename T_DATA> INLINE
-  void UtilityTable<T_DATA>::sum( const UtilityTable<T_DATA>& p1,
-                                  const UtilityTable<T_DATA>& p2 ) {
+  template <typename GUM_SCALAR> INLINE
+  void UtilityTable<GUM_SCALAR>::sum( const UtilityTable<GUM_SCALAR>& p1,
+                                  const UtilityTable<GUM_SCALAR>& p2 ) {
     this->beginMultipleChanges();
     // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
     const Sequence<const DiscreteVariable *> seq0=this->variablesSequence() ;
@@ -112,21 +112,21 @@ namespace gum {
 
   }
 
-  template <typename T_DATA>
-  void UtilityTable<T_DATA>::sumBy( const UtilityTable<T_DATA>& toAdd ) {
-    UtilityTable<T_DATA> tab( static_cast<MultiDimImplementation<T_DATA>*>( this->_content->newFactory() ) );
+  template <typename GUM_SCALAR>
+  void UtilityTable<GUM_SCALAR>::sumBy( const UtilityTable<GUM_SCALAR>& toAdd ) {
+    UtilityTable<GUM_SCALAR> tab( static_cast<MultiDimImplementation<GUM_SCALAR>*>( this->_content->newFactory() ) );
     tab.sum( *this, toAdd );
-    MultiDimImplementation<T_DATA>* swap = this->_content;
+    MultiDimImplementation<GUM_SCALAR>* swap = this->_content;
     this->_content = tab._content;
     tab._content = swap;
   }
 
-  template <typename T_DATA>
-  void UtilityTable<T_DATA>::sumBy( const List<UtilityTable<T_DATA>*>& utilitiesList ) {
+  template <typename GUM_SCALAR>
+  void UtilityTable<GUM_SCALAR>::sumBy( const List<UtilityTable<GUM_SCALAR>*>& utilitiesList ) {
     if ( ! utilitiesList.empty() ) {
       Instantiation globalInst( *this );
       Instantiation partialInst;
-      for ( typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+      for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
             iter != utilitiesList.end(); ++iter ) {
         const Sequence<const DiscreteVariable*>& varSeq = ( *iter )->variablesSequence();
         for ( typename Sequence<const DiscreteVariable*>::iterator varIter = varSeq.begin();
@@ -146,8 +146,8 @@ namespace gum {
               globalInst.incIn( partialInst ),
               ++partialInst ) {
 
-          T_DATA sumData = ( T_DATA ) 0;
-          for ( typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+          GUM_SCALAR sumData = ( GUM_SCALAR ) 0;
+          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
                 iter != utilitiesList.end(); ++iter ) {
             sumData += ( **iter )[partialInst];
           }
@@ -161,8 +161,8 @@ namespace gum {
       } else {
 
         for ( globalInst.setFirst(); ! globalInst.end(); ++globalInst ) {
-          T_DATA sumData = ( T_DATA ) 0;
-          for ( typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+          GUM_SCALAR sumData = ( GUM_SCALAR ) 0;
+          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
                 iter != utilitiesList.end(); ++iter ) {
             sumData += ( *iter )->get( globalInst );
           }
@@ -170,15 +170,15 @@ namespace gum {
         }
       }
     }
-//     for(typename List<UtilityTable<T_DATA>*>::const_iterator iter = utilitiesList.begin();
+//     for(typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
 //  iter != utilitiesList.end(); ++iter) {
 //       this->sumBy(**iter);
 //     }
   }
 
-  template <typename T_DATA>
-  UtilityTable<T_DATA> UtilityTable<T_DATA>::reduceBy( const List<const DiscreteVariable*>& varList ) const {
-    UtilityTable<T_DATA> result( new MultiDimArray<T_DATA> );
+  template <typename GUM_SCALAR>
+  UtilityTable<GUM_SCALAR> UtilityTable<GUM_SCALAR>::reduceBy( const List<const DiscreteVariable*>& varList ) const {
+    UtilityTable<GUM_SCALAR> result( new MultiDimArray<GUM_SCALAR> );
     for ( List<const DiscreteVariable*>::const_iterator iter = varList.begin();
           iter != varList.end(); ++iter ) {
       const DiscreteVariable& var = **iter;
@@ -194,11 +194,11 @@ namespace gum {
           ! resultI.end();
           ++resultI, inst.incIn( resultI ) ) {
       inst.setFirstOut( resultI );
-      T_DATA currentMax = this->get( inst );
+      GUM_SCALAR currentMax = this->get( inst );
       for ( inst.incOut( resultI );
             ! inst.end();
             inst.incOut( resultI ) ) {
-        T_DATA val = this->get( inst );
+        GUM_SCALAR val = this->get( inst );
         if ( val > currentMax ) {
           currentMax = val;
         }
@@ -209,9 +209,9 @@ namespace gum {
     return result;
   }
 
-  template<typename T_DATA> INLINE
-  void UtilityTable<T_DATA>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-    MultiDimDecorator<T_DATA>::content()->swap( *x,*y );
+  template<typename GUM_SCALAR> INLINE
+  void UtilityTable<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
+    MultiDimDecorator<GUM_SCALAR>::content()->swap( *x,*y );
   }
 
 } /* namespace gum */

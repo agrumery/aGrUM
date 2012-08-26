@@ -50,9 +50,9 @@ namespace gum {
    * matrix
    * @ingroup multidim_group */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class Potential : public MultiDimDecorator<T_DATA> {
+  class Potential : public MultiDimDecorator<GUM_SCALAR> {
 
     public:
       // ############################################################################
@@ -73,7 +73,7 @@ namespace gum {
        * @param aContent decorated implementation
        */
       // ============================================================================
-      explicit Potential( MultiDimImplementation<T_DATA> *aContent );
+      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent );
 
       // ============================================================================
       /**
@@ -82,7 +82,7 @@ namespace gum {
        * Too dangerous.
        */
       // ============================================================================
-      explicit Potential( const Potential<T_DATA>& src );
+      explicit Potential( const Potential<GUM_SCALAR>& src );
 
       // ============================================================================
       /**
@@ -94,8 +94,8 @@ namespace gum {
        * @param from the multidimensional matrix we copy into this
        */
       // ============================================================================
-      explicit Potential( MultiDimImplementation<T_DATA> *aContent,
-                          const MultiDimContainer<T_DATA>& src );
+      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
+                          const MultiDimContainer<GUM_SCALAR>& src );
 
       // ============================================================================
       /**
@@ -122,7 +122,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual Potential<T_DATA>* newFactory() const;
+      virtual Potential<GUM_SCALAR>* newFactory() const;
 
 
 
@@ -130,25 +130,25 @@ namespace gum {
       ///@{
 
       /// normalisation of this do nothing if sum is 0
-      Potential<T_DATA>& normalize() const;
+      Potential<GUM_SCALAR>& normalize() const;
 
       /// marginalizing p over the vars on *this.
       /// @throw OperationNotAllowed if there is var in *this not in p.
-      Potential<T_DATA>& marginalize( const Potential<T_DATA>& p ) const;
+      Potential<GUM_SCALAR>& marginalize( const Potential<GUM_SCALAR>& p ) const;
 
       /// Multiplication of args.
       /// @throw OperationNotAllowed if *this is not empty
-      void multiplicate( const Potential<T_DATA>& p1, const Potential<T_DATA>& p2 ) ;
+      void multiplicate( const Potential<GUM_SCALAR>& p1, const Potential<GUM_SCALAR>& p2 ) ;
 
       /// Multiplication of this and arg (in this).
-      Potential<T_DATA>& multiplicateBy( const Potential<T_DATA>& p1 ) ;
+      Potential<GUM_SCALAR>& multiplicateBy( const Potential<GUM_SCALAR>& p1 ) ;
 
       ///@}
 
-      Potential<T_DATA>& operator= ( const Potential<T_DATA>& src );
+      Potential<GUM_SCALAR>& operator= ( const Potential<GUM_SCALAR>& src );
 
       /// sum of all elements in this
-      const T_DATA sum() const ;
+      const GUM_SCALAR sum() const ;
 
     protected:
       /// perform the marginalization p over the vars on *this.

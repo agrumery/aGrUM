@@ -41,11 +41,11 @@
 
 namespace gum {
   /// default constructor
-  template <typename T_DATA>
-  GibbsInference<T_DATA>::GibbsInference( const AbstractBayesNet<T_DATA>& BN ) :
+  template <typename GUM_SCALAR>
+  GibbsInference<GUM_SCALAR>::GibbsInference( const AbstractBayesNet<GUM_SCALAR>& BN ) :
     ApproximationScheme(),
-    BayesNetInference <T_DATA> ( BN ),
-    particle::Gibbs<T_DATA> ( BN ) {
+    BayesNetInference <GUM_SCALAR> ( BN ),
+    particle::Gibbs<GUM_SCALAR> ( BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
@@ -63,7 +63,7 @@ namespace gum {
     for( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       const DiscreteVariable& var = bn().variable( *iter );
       // feed the __sampling
-      Potential<T_DATA>* tmp = new Potential<T_DATA>();
+      Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
       ( *tmp ) << var;
       __sampling_nbr.insert( *iter, tmp );
     }
@@ -72,42 +72,42 @@ namespace gum {
   }
 
   /// destructor
-  template <typename T_DATA> INLINE
-  GibbsInference<T_DATA>::~GibbsInference() {
+  template <typename GUM_SCALAR> INLINE
+  GibbsInference<GUM_SCALAR>::~GibbsInference() {
     GUM_DESTRUCTOR( GibbsInference );
 
     // remove all the created potentials and instantiations
-    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
            __sampling_nbr.begin();
          iter != __sampling_nbr.end(); ++iter )
       delete( *iter );
   }
 
   /// setter/getter for __inference_is_required
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::setRequiredInference() {
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::setRequiredInference() {
     this->_invalidateMarginals();
     __inference_is_required = true;
   }
 
   /// setter/getter for __inference_is_required
-  template <typename T_DATA> INLINE
-  bool GibbsInference<T_DATA>::isInferenceRequired() {
+  template <typename GUM_SCALAR> INLINE
+  bool GibbsInference<GUM_SCALAR>::isInferenceRequired() {
     return __inference_is_required;
   }
 
   /// setter/getter for __inference_is_required
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::__unsetRequiredInference() {
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::__unsetRequiredInference() {
     __inference_is_required = false;
   }
 
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::__initStats() {
-    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::__initStats() {
+    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
            __sampling_nbr.begin();
          iter != __sampling_nbr.end(); ++iter ) {
-      ( *iter )->fill( ( T_DATA ) 0 );
+      ( *iter )->fill( ( GUM_SCALAR ) 0 );
     }
   }
 
@@ -119,24 +119,24 @@ namespace gum {
      After simplification, it remains that
      entropy=\frac{1}{nbr}ln P_i \frac{P_i}{Q_i}+ln{nbr-1}{nbr}
   */
-  template <typename T_DATA> INLINE
-  double GibbsInference<T_DATA>::__updateStats_with_err( Size nb ) {
+  template <typename GUM_SCALAR> INLINE
+  double GibbsInference<GUM_SCALAR>::__updateStats_with_err( Size nb ) {
     Size nbr = nb + 1; // we compute the new iteration
     double sum_entropy = 0;
 
-    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
            __sampling_nbr.begin();
          iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
-      //T_DATA n_v = ( *iter )->get( *__sampling_idx[id] ) + 1;
+      //GUM_SCALAR n_v = ( *iter )->get( *__sampling_idx[id] ) + 1;
       //( *iter )->set( *__sampling_idx[id], n_v );
 
-      T_DATA n_v=1+ ( *iter )->get( particle() );
+      GUM_SCALAR n_v=1+ ( *iter )->get( particle() );
       ( *iter )->set( particle(),n_v );
 
-      if( n_v == ( T_DATA ) 1 ) sum_entropy += 100;
+      if( n_v == ( GUM_SCALAR ) 1 ) sum_entropy += 100;
       else sum_entropy += n_v * log( n_v / ( n_v - 1 ) );
     }
 
@@ -144,9 +144,9 @@ namespace gum {
   }
 
   /** same as __updateStats_with_err but with no entropy computation */
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::__updateStats_without_err() {
-    for( HashTableIterator<NodeId, Potential<T_DATA>*> iter =
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::__updateStats_without_err() {
+    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
            __sampling_nbr.begin();
          iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
@@ -158,31 +158,31 @@ namespace gum {
   }
 
   /// remove a given evidence from the graph
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::eraseEvidence( const Potential<T_DATA>* pot ) {
-    particle::Gibbs<T_DATA>::eraseEvidence( pot );
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* pot ) {
+    particle::Gibbs<GUM_SCALAR>::eraseEvidence( pot );
     setRequiredInference();
   }
 
   /// remove all evidence from the graph
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::eraseAllEvidence() {
-    particle::Gibbs<T_DATA>::eraseAllEvidence();
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::eraseAllEvidence() {
+    particle::Gibbs<GUM_SCALAR>::eraseAllEvidence();
     setRequiredInference();
   }
 
   /// insert new evidence in the graph
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::insertEvidence
-  ( const List<const Potential<T_DATA>*>& pot_list ) {
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::insertEvidence
+  ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
     this->_invalidateMarginals();
-    particle::Gibbs<T_DATA>::insertEvidence( pot_list );
+    particle::Gibbs<GUM_SCALAR>::insertEvidence( pot_list );
     setRequiredInference();
   }
 
   /// Returns the probability of the variable.
-  template <typename T_DATA> INLINE
-  void GibbsInference<T_DATA>::_fillMarginal( NodeId id, Potential<T_DATA>& marginal ) {
+  template <typename GUM_SCALAR> INLINE
+  void GibbsInference<GUM_SCALAR>::_fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal ) {
     if( isInferenceRequired() ) makeInference();
 
     marginal = * ( __sampling_nbr[id] );
@@ -204,8 +204,8 @@ namespace gum {
 
 
   /// Returns the probability of the variables.
-  template <typename T_DATA>
-  void GibbsInference<T_DATA>::makeInference() {
+  template <typename GUM_SCALAR>
+  void GibbsInference<GUM_SCALAR>::makeInference() {
     if( ! isInferenceRequired() ) return;
 
     __initStats();

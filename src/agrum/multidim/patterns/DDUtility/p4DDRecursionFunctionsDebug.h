@@ -40,10 +40,10 @@
 
 namespace gum {
   
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 NodeId
-GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiagramBase<T_DATA>* oldDiagram,
-                                                                                                  MultiDimDecisionDiagramFactoryBase<T_DATA>* factory,
+GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,
+                                                                                                  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
                                                                                                   NodeId currentNode,
                                                                                                   bool delVarAscendant,
                                                                                                   HashTable< NodeId, NodeId >& explorationTable,
@@ -56,7 +56,7 @@ GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiag
 
     if ( oldDiagram->isTerminalNode( currentNode ) ) {
 std::cout << tabu << "TERMINAL NODE." << std::endl;
-        T_DATA resValue = oldDiagram->nodeValue( currentNode );
+        GUM_SCALAR resValue = oldDiagram->nodeValue( currentNode );
         for ( Idx i = 1; i < nbOperation; i++ )
             resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR( resValue, oldDiagram->nodeValue( currentNode ) );
 	
@@ -81,7 +81,7 @@ std::cout << tabu << "Noeud déjà visité : " << currentNode << " | Noeud résu
         nbOperation /= oldDiagram->nodeVariable( currentNode )->domainSize();
         Idx nbExploredModalities = 0;
         std::vector<NodeId>::const_iterator sonIter = oldDiagram->nodeSons( currentNode )->begin();
-        T_DATA resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
+        GUM_SCALAR resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
         while ( sonIter !=  oldDiagram->nodeSons( currentNode )->end() ) {
             if ( *sonIter != 0 ) {
 std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;

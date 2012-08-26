@@ -36,26 +36,26 @@ namespace gum {
 // =============================================================================
 // Default constructor.
 // =============================================================================
-template<typename T_DATA, template <class> class IApproximationPolicy>
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::MultiDimDecisionDiagramFactory() {
+template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagramFactory() {
     GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactory ) ;
 }
 
 // =============================================================================
 // clone constructor.
 // =============================================================================
-template<typename T_DATA, template <class> class IApproximationPolicy>
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::MultiDimDecisionDiagramFactory ( const IApproximationPolicy<T_DATA>& md ) :
-    MultiDimDecisionDiagramFactoryBase<T_DATA>(),
-    IApproximationPolicy<T_DATA> ( md ) {
+template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagramFactory ( const IApproximationPolicy<GUM_SCALAR>& md ) :
+    MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>(),
+    IApproximationPolicy<GUM_SCALAR> ( md ) {
     GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactory ) ;
 }
 // =============================================================================
 // Destructor.
 // @warnings : this will not destroy properties on node. They ahve to be removed on multidim destruction
 // =============================================================================
-template<typename T_DATA, template <class> class IApproximationPolicy>
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::~MultiDimDecisionDiagramFactory() {
+template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::~MultiDimDecisionDiagramFactory() {
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramFactory );
 }
 
@@ -68,18 +68,18 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::~MultiDimDecisio
 // =============================================================================
 // Returns the multidimDecisionDiagram made
 // =============================================================================
-template<typename T_DATA, template <class> class IApproximationPolicy>
-MultiDimDecisionDiagramBase<T_DATA>*
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecisionDiagram ( bool fillWithDefaultArc, T_DATA defaultValue, bool doCompress ) {
+template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+MultiDimDecisionDiagramBase<GUM_SCALAR>*
+MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::getMultiDimDecisionDiagram ( bool fillWithDefaultArc, GUM_SCALAR defaultValue, bool doCompress ) {
 
     // **************************************************************************************************************
     // First of all we ensure there's no unused value in our value map
-    Bijection<NodeId, T_DATA> newValueMap;
+    Bijection<NodeId, GUM_SCALAR> newValueMap;
 
     if ( this->_model.size() == 2 && !this->_valueMap.empty() )
         newValueMap = this->_valueMap;
     else
-        for ( BijectionIterator<NodeId,T_DATA> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
+        for ( BijectionIterator<NodeId,GUM_SCALAR> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
             if ( this->_model.parents ( valueIter.first() ).empty() && valueIter.first() != this->_rootId )
                 this->_model.eraseNode ( valueIter.first() );
             else
@@ -268,7 +268,7 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecis
 
     // **************************************************************************************************************
     // And finally we do the instantiation of the MultiDim itself
-    MultiDimDecisionDiagram< T_DATA, IApproximationPolicy >* ret =  new MultiDimDecisionDiagram< T_DATA, IApproximationPolicy > ( *this );
+    MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >* ret =  new MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy > ( *this );
 
     ret->beginInstantiation();
 
@@ -303,9 +303,9 @@ MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::getMultiDimDecis
     return ret;
 }
 
-template<typename T_DATA, template <class> class IApproximationPolicy>
+template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
 void
-MultiDimDecisionDiagramFactory< T_DATA, IApproximationPolicy >::__mergedNode( NodeId from, NodeId to ) {
+MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::__mergedNode( NodeId from, NodeId to ) {
 
     const NodeSet& parents = this->_model.parents ( from );
 

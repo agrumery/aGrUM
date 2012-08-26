@@ -39,7 +39,7 @@ namespace gum {
      * @ingroup bn_group
      *
      */
-    template <typename T_DATA>
+    template <typename GUM_SCALAR>
 
     class Gibbs {
 
@@ -47,7 +47,7 @@ namespace gum {
         /**
          * Default constructor
          */
-        Gibbs( const AbstractBayesNet<T_DATA>& BN );
+        Gibbs( const AbstractBayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -63,12 +63,12 @@ namespace gum {
             * @warning if an evidence already w.r.t. a given node and a new
             * evidence w.r.t. this node is onserted, the old evidence is removed.
             */
-        virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list ) ;
+        virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
 
         /**
          * Remove a given evidence from the graph.
          */
-        virtual void eraseEvidence( const Potential<T_DATA>* e ) ;
+        virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) ;
 
         /**
          * Remove all evidence from the graph.
@@ -91,7 +91,7 @@ namespace gum {
 
         const Instantiation& particle();
 
-        const AbstractBayesNet<T_DATA>& bn();
+        const AbstractBayesNet<GUM_SCALAR>& bn();
         ///@}
 
       private:
@@ -119,10 +119,10 @@ namespace gum {
         typename Property<std::vector<NodeId>*>::onNodes __node_children;
 
         /// a table of potential for posterior computed in the markov blanket
-        typename Property<Potential<T_DATA>*>::onNodes __sampling_posterior;
+        typename Property<Potential<GUM_SCALAR>*>::onNodes __sampling_posterior;
 
         /// a list of all the evidence stored into the graph
-        typename Property<const Potential<T_DATA>*>::onNodes __evidences;
+        typename Property<const Potential<GUM_SCALAR>*>::onNodes __evidences;
 
         /// a table of instantiation for direct access on _sampling_nbr
         Property<Instantiation*>::onNodes __sampling_idx;
@@ -131,7 +131,7 @@ namespace gum {
         Property<Idx>::onNodes __hard_evidences;
 
         /// The Bayes net we draw particle on
-        const AbstractBayesNet<T_DATA>& __bayesNet;
+        const AbstractBayesNet<GUM_SCALAR>& __bayesNet;
     };
   } // namespace particle
 } //namespace gum

@@ -30,8 +30,8 @@
 #include <complex>
 
 namespace gum {
-  template<typename T_DATA>
-  KL<T_DATA>::KL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
+  template<typename GUM_SCALAR>
+  KL<GUM_SCALAR>::KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
       _p( P ),_q( Q ),
       _klPQ( 0.0 ),_klQP( 0.0 ),_errorPQ( false ),_errorQP( false ),
       __difficulty( complexity::HEAVY ),__done( false ) {
@@ -44,83 +44,83 @@ namespace gum {
     else __difficulty=complexity::CORRECT;
   }
 
-  template<typename T_DATA>
-  KL<T_DATA>::KL( const KL<T_DATA>& kl ) :
+  template<typename GUM_SCALAR>
+  KL<GUM_SCALAR>::KL( const KL<GUM_SCALAR>& kl ) :
       _p( kl._p ),_q( kl._q ),
       _klPQ( kl._klPQ ),_klQP( kl._klQP ),_errorPQ( kl._errorPQ ),_errorQP( kl._errorPQ ),
       __difficulty( kl.__difficulty ),__done( kl.__done ) {
     GUM_CONSTRUCTOR( KL );
   }
 
-  template<typename T_DATA>
-  KL<T_DATA>::~KL() {
+  template<typename GUM_SCALAR>
+  KL<GUM_SCALAR>::~KL() {
     GUM_DESTRUCTOR( KL );
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   complexity::difficulty
-  KL<T_DATA>::difficulty() const {
+  KL<GUM_SCALAR>::difficulty() const {
     return __difficulty;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   double
-  KL<T_DATA>::klPQ() {
+  KL<GUM_SCALAR>::klPQ() {
     _process();
     return _klPQ;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   double
-  KL<T_DATA>::klQP() {
+  KL<GUM_SCALAR>::klQP() {
     _process();
     return _klQP;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   double
-  KL<T_DATA>::hellinger() {
+  KL<GUM_SCALAR>::hellinger() {
     _process();
     return _hellinger;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   double
-  KL<T_DATA>::bhattacharya() {
+  KL<GUM_SCALAR>::bhattacharya() {
     _process();
     return _bhattacharya;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  KL<T_DATA>::errorPQ() {
+  KL<GUM_SCALAR>::errorPQ() {
     _process();
     return _errorPQ;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   bool
-  KL<T_DATA>::errorQP() {
+  KL<GUM_SCALAR>::errorQP() {
     _process();
     return _errorQP;
   }
 
-  template<typename T_DATA> INLINE
-  const BayesNet<T_DATA>&
-  KL<T_DATA>::p( void ) const {
+  template<typename GUM_SCALAR> INLINE
+  const BayesNet<GUM_SCALAR>&
+  KL<GUM_SCALAR>::p( void ) const {
     return _p;
   }
 
-  template<typename T_DATA> INLINE
-  const BayesNet<T_DATA>&
-  KL<T_DATA>::q( void ) const {
+  template<typename GUM_SCALAR> INLINE
+  const BayesNet<GUM_SCALAR>&
+  KL<GUM_SCALAR>::q( void ) const {
     return _q;
   }
 
 // check if the 2 BNs are compatible
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   bool
-  KL<T_DATA>::__checkCompatibility() const {
+  KL<GUM_SCALAR>::__checkCompatibility() const {
     for ( DAG::NodeIterator it=_p.beginNodes();it!=_p.endNodes();++it ) {
       const DiscreteVariable& vp=_p.variable( *it );
 
@@ -158,9 +158,9 @@ namespace gum {
   }
 
 // do the job if not already __done
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  KL<T_DATA>::_process() {
+  KL<GUM_SCALAR>::_process() {
     if ( ! __done ) {
       _computeKL();
       __done=true;
@@ -168,8 +168,8 @@ namespace gum {
   }
 
   // in order to keep KL instantiable
-  template<typename T_DATA>
-  void KL<T_DATA>::_computeKL() {
+  template<typename GUM_SCALAR>
+  void KL<GUM_SCALAR>::_computeKL() {
     GUM_ERROR( OperationNotAllowed, "No default computations" );
   }
 } //namespace gum

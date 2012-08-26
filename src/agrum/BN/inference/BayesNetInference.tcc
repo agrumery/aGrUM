@@ -34,22 +34,22 @@ namespace gum {
 
 
   // Default Constructor
-  template <typename T_DATA>
-  BayesNetInference<T_DATA>::BayesNetInference( const AbstractBayesNet<T_DATA>& bn ):
+  template <typename GUM_SCALAR>
+  BayesNetInference<GUM_SCALAR>::BayesNetInference( const AbstractBayesNet<GUM_SCALAR>& bn ):
       __bayesNet( bn ) {
     GUM_CONSTRUCTOR( BayesNetInference );
   }
 
   // Destructor
-  template <typename T_DATA>
-  BayesNetInference<T_DATA>::~BayesNetInference() {
+  template <typename GUM_SCALAR>
+  BayesNetInference<GUM_SCALAR>::~BayesNetInference() {
     GUM_DESTRUCTOR( BayesNetInference );
     _invalidateMarginals();
   }
 
-  template <typename T_DATA>
-  void BayesNetInference<T_DATA>::_invalidateMarginals() {
-    for ( typename Property< Potential<T_DATA> * >::onNodes::iterator it =
+  template <typename GUM_SCALAR>
+  void BayesNetInference<GUM_SCALAR>::_invalidateMarginals() {
+    for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator it =
             _marginals.begin();it != _marginals.end();++it ) {
       if ( *it )delete( *it );
     }
@@ -57,18 +57,18 @@ namespace gum {
     _marginals.clear();
   }
 
-  template <typename T_DATA>
-  const Potential<T_DATA>& BayesNetInference<T_DATA>::marginal( NodeId id ) {
+  template <typename GUM_SCALAR>
+  const Potential<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::marginal( NodeId id ) {
     if ( ! _marginals.exists( id ) ) {
-      _marginals.insert( id, new Potential<T_DATA>() );
+      _marginals.insert( id, new Potential<GUM_SCALAR>() );
       _fillMarginal( id, *_marginals[id] );
     }
 
     return *_marginals[id];
   }
 
-  template <typename T_DATA>
-  const AbstractBayesNet<T_DATA>& BayesNetInference<T_DATA>::bn() const {return __bayesNet;}
+  template <typename GUM_SCALAR>
+  const AbstractBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::bn() const {return __bayesNet;}
 
 
 } /* namespace gum */

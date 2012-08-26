@@ -40,7 +40,7 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   class ApproximationPolicy {
 
     public :
@@ -58,7 +58,7 @@ namespace gum {
       /**
        * copy constructor.
        */
-      ApproximationPolicy( const ApproximationPolicy<T_DATA>* md ) { };
+      ApproximationPolicy( const ApproximationPolicy<GUM_SCALAR>* md ) { };
 
       /// @}
 
@@ -68,19 +68,19 @@ namespace gum {
       /// @{
 
       /// Convert value to his approximation. This method (at least in release mode, should not verify the limits
-      virtual T_DATA fromExact( const T_DATA& value ) const = 0;
+      virtual GUM_SCALAR fromExact( const GUM_SCALAR& value ) const = 0;
       
-      virtual void combineAdd( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
-      virtual void combineSub( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
-      virtual void combineMult( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
-      virtual void combineDiv( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
-      virtual void combineMax( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
-      virtual void combineMin( const ApproximationPolicy<T_DATA>* ap ) = 0;
+      virtual void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
       
       /// @}
   };

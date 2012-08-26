@@ -43,8 +43,8 @@ namespace gum {
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
-  template <typename T_DATA>
-  class DefaultCPTDisturber: public AbstractCPTDisturber<T_DATA> {
+  template <typename GUM_SCALAR>
+  class DefaultCPTDisturber: public AbstractCPTDisturber<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -66,7 +66,7 @@ namespace gum {
     // ############################################################################
     /// @{
     /**
-     * Disturb a CPT using T_DATA.
+     * Disturb a CPT using GUM_SCALAR.
      * @param varIdi The variable id parent of the CPT owner.
      * @param varIdj The variable on the CPT owner.
      * @param bayesNet tne Bayesian Network.
@@ -74,16 +74,16 @@ namespace gum {
      * @param marginal of the inference before reduction on the node varIdi.
      */
 
-    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<T_DATA> & bayesNet, Potential<T_DATA>& cptCopy, Potential<T_DATA>& marg);
+    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR> & bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg);
     /**
-     * Disturb a CPT using T_DATA.
+     * Disturb a CPT using GUM_SCALAR.
      * @param varIdi The variable id parent of the CPT owner.
      * @param varIdj A reference on the CPT owner.
      * @param bayesNet the Bayesian Network.
      * @param cptCopy copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability .
      */
-    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj, BayesNet<T_DATA> & bayesNet, Potential<T_DATA>& cptCopy, T_DATA variation);
+    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR> & bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation);
 
  
   };

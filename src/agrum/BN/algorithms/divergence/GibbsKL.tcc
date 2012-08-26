@@ -41,11 +41,11 @@
 
 namespace gum {
 
-  template<typename T_DATA>
-  GibbsKL<T_DATA>::GibbsKL( const BayesNet<T_DATA>& P,const BayesNet<T_DATA>& Q ) :
-    KL<T_DATA> ( P,Q ),
+  template<typename GUM_SCALAR>
+  GibbsKL<GUM_SCALAR>::GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
+    KL<GUM_SCALAR> ( P,Q ),
     ApproximationScheme( ),
-    particle::Gibbs<T_DATA> ( P ) {
+    particle::Gibbs<GUM_SCALAR> ( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );
@@ -56,11 +56,11 @@ namespace gum {
     setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
   }
 
-  template<typename T_DATA>
-  GibbsKL<T_DATA>::GibbsKL( const KL< T_DATA >& kl ) :
-    KL<T_DATA> ( kl ),
+  template<typename GUM_SCALAR>
+  GibbsKL<GUM_SCALAR>::GibbsKL( const KL< GUM_SCALAR >& kl ) :
+    KL<GUM_SCALAR> ( kl ),
     ApproximationScheme(),
-    particle::Gibbs<T_DATA> ( kl.p() )  {
+    particle::Gibbs<GUM_SCALAR> ( kl.p() )  {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );
@@ -71,13 +71,13 @@ namespace gum {
     setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
   }
 
-  template<typename T_DATA>
-  GibbsKL<T_DATA>::~GibbsKL() {
+  template<typename GUM_SCALAR>
+  GibbsKL<GUM_SCALAR>::~GibbsKL() {
     GUM_DESTRUCTOR( GibbsKL );
   }
 
-  template<typename T_DATA>
-  void GibbsKL<T_DATA>::_computeKL() {
+  template<typename GUM_SCALAR>
+  void GibbsKL<GUM_SCALAR>::_computeKL() {
 
     gum::Instantiation Iq; _q.completeInstantiation( Iq );
     gum::Instantiation Ip; _p.completeInstantiation( Ip );
@@ -89,13 +89,13 @@ namespace gum {
     for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
 
     // SAMPLING
-    _klPQ=_klQP=_hellinger=( T_DATA )0.0;
+    _klPQ=_klQP=_hellinger=( GUM_SCALAR )0.0;
     _errorPQ=_errorQP=0;
     bool check_rate;
-    T_DATA delta,ratio,error;
-    delta=ratio=error=( T_DATA )-1;
-    T_DATA oldPQ=0.0;
-    T_DATA pp,pq;
+    GUM_SCALAR delta,ratio,error;
+    delta=ratio=error=( GUM_SCALAR )-1;
+    GUM_SCALAR oldPQ=0.0;
+    GUM_SCALAR pp,pq;
 
     do {
       check_rate=false;
@@ -108,25 +108,25 @@ namespace gum {
       pp=_p.jointProbability( particle() );
       pq=_q.jointProbability( Iq );
 
-      if( pp!=( T_DATA )0.0 ) {
+      if( pp!=( GUM_SCALAR )0.0 ) {
         _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
-        if( pq!=( T_DATA )0.0 ) {
+        if( pq!=( GUM_SCALAR )0.0 ) {
           _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
           check_rate=true;
           ratio=pq/pp;
-          delta=( T_DATA ) log2( ratio );
+          delta=( GUM_SCALAR ) log2( ratio );
           _klPQ+=delta;
         } else {
           _errorPQ++;
         }
       }
 
-      if( pq!=( T_DATA )0.0 ) {
-        if( pp!=( T_DATA )0.0 ) {
+      if( pq!=( GUM_SCALAR )0.0 ) {
+        if( pp!=( GUM_SCALAR )0.0 ) {
           // if we are here, it is certain that delta and ratio have been computed
           // further lines above. (for now #112-113)
-          _klQP+= ( T_DATA )( -delta*ratio );
+          _klQP+= ( GUM_SCALAR )( -delta*ratio );
         } else {
           _errorQP++;
         }

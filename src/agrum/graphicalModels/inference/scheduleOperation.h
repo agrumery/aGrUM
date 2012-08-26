@@ -38,7 +38,7 @@
 namespace gum {
 
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   class ScheduleOperation {
   public:
     /// the currently supported types of operations
@@ -62,7 +62,7 @@ namespace gum {
     /// @{
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleOperation<T_DATA>* newFactory () const = 0;
+    virtual ScheduleOperation<GUM_SCALAR>* newFactory () const = 0;
 
     /// destructor
     virtual ~ScheduleOperation ();
@@ -78,12 +78,12 @@ namespace gum {
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator== ( const ScheduleOperation<T_DATA>& ) const = 0;
+    virtual bool operator== ( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator!= ( const ScheduleOperation<T_DATA>& ) const = 0;
+    virtual bool operator!= ( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
 
     /// @}
 
@@ -100,11 +100,11 @@ namespace gum {
     Id id () const;
 
     /// returns the set of multidims passed in argument to the operation
-    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    virtual const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     multiDimArgs () const = 0;
 
     /// returns the set of multidims that should be the result of the operation
-    virtual const Sequence<const ScheduleMultiDim<T_DATA>*>&
+    virtual const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     multiDimResults () const = 0;
 
     /// executes the operation
@@ -135,10 +135,10 @@ namespace gum {
     ScheduleOperation ( Type t );
 
     /// copy constructor
-    ScheduleOperation ( const ScheduleOperation<T_DATA>& from );
+    ScheduleOperation ( const ScheduleOperation<GUM_SCALAR>& from );
 
     /// copy operator
-    ScheduleOperation<T_DATA>& operator= ( const ScheduleOperation<T_DATA>& );
+    ScheduleOperation<GUM_SCALAR>& operator= ( const ScheduleOperation<GUM_SCALAR>& );
 
 
   private:

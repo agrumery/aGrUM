@@ -45,9 +45,9 @@ namespace gum {
    * @ingroup multidim_group
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimSparse : public MultiDimWithOffset<T_DATA> {
+  class MultiDimSparse : public MultiDimWithOffset<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -56,7 +56,7 @@ namespace gum {
       // ============================================================================
       /// Default constructor: creates an empty null dimensional matrix
       // ============================================================================
-      MultiDimSparse( const T_DATA& default_value );
+      MultiDimSparse( const GUM_SCALAR& default_value );
 
       // ============================================================================
       /// copy constructor
@@ -64,7 +64,7 @@ namespace gum {
        * from, but no instantiation is associated to it.
        * @param from the multidimensional matrix we copy into this */
       // ============================================================================
-      MultiDimSparse( const MultiDimSparse<T_DATA>& from );
+      MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from );
 
       // ============================================================================
       /// destructor
@@ -88,7 +88,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
       // ############################################################################
@@ -99,7 +99,7 @@ namespace gum {
       /// copy operator
       /** @param from the multidimensional matrix we copy into this */
       // ============================================================================
-      MultiDimSparse<T_DATA>& operator= ( const MultiDimSparse<T_DATA>& from );
+      MultiDimSparse<GUM_SCALAR>& operator= ( const MultiDimSparse<GUM_SCALAR>& from );
       /// @}
 
       // ============================================================================
@@ -122,10 +122,10 @@ namespace gum {
       void erase( const DiscreteVariable& v );
 
       /// fill the table with d
-      virtual void fill( const T_DATA& d ) const;
+      virtual void fill( const GUM_SCALAR& d ) const;
 
-      virtual T_DATA get( const Instantiation& i ) const;
-      virtual void set( const Instantiation& i,const T_DATA& value ) const;
+      virtual GUM_SCALAR get( const Instantiation& i ) const;
+      virtual void set( const Instantiation& i,const GUM_SCALAR& value ) const;
 
       /// returns the real name of the multiDimArray
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -145,8 +145,8 @@ namespace gum {
     protected:
       /// the true data : the values is mutable since we can change the value
       /// in a const multiDimArray
-      mutable HashTable<Size,T_DATA> _params;
-      mutable T_DATA _default;
+      mutable HashTable<Size,GUM_SCALAR> _params;
+      mutable GUM_SCALAR _default;
 
       /// synchronise content after MultipleChanges
       virtual void _commitMultipleChanges( void );
@@ -155,7 +155,7 @@ namespace gum {
       /** @param i an Instantiation
        * @throw OperationNotAllowed
        */
-      virtual T_DATA& _get( const Instantiation& i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
+      virtual GUM_SCALAR& _get( const Instantiation& i ) const  {GUM_ERROR( OperationNotAllowed,"No (unconst) access to an aggregator" );};
 
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };

@@ -46,10 +46,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class Max : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class Max : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Max();
-        Max( const Max<T_DATA>& from );
+        Max( const Max<GUM_SCALAR>& from );
         virtual ~Max();
 
         /**
@@ -65,7 +65,7 @@ namespace gum {
          * @warning you must desallocate by yourself the memory
          * @return an empty clone of this object with the same type
          */
-        virtual MultiDimContainer<T_DATA>* newFactory() const;
+        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
         virtual std::string aggregatorName( void ) const;

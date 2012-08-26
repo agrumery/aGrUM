@@ -28,16 +28,16 @@ namespace gum {
   // ==============================================================================
   /// Default constructor
   // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimCIModel<T_DATA>::MultiDimCIModel( T_DATA external_weight, T_DATA default_weight ): MultiDimReadOnly<T_DATA>(), __external_weight( external_weight ), __default_weight( default_weight ) {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel( GUM_SCALAR external_weight, GUM_SCALAR default_weight ): MultiDimReadOnly<GUM_SCALAR>(), __external_weight( external_weight ), __default_weight( default_weight ) {
     GUM_CONSTRUCTOR( MultiDimCIModel ) ;
   }
 
 // ==============================================================================
 /// Default constructor
 // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimCIModel<T_DATA>::MultiDimCIModel( const MultiDimCIModel<T_DATA>& from ) : MultiDimReadOnly<T_DATA>( from ) {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel( const MultiDimCIModel<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>( from ) {
     GUM_CONS_CPY( MultiDimCIModel );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
@@ -47,14 +47,14 @@ namespace gum {
   // ============================================================================
   /// Copy constructor using a bijection to swap variables from source.
   // ============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimCIModel<T_DATA>::MultiDimCIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-      const MultiDimCIModel<T_DATA>& from ):
-      MultiDimReadOnly<T_DATA>() {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+      const MultiDimCIModel<GUM_SCALAR>& from ):
+      MultiDimReadOnly<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( MultiDimCIModel );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
-    for ( HashTableConstIterator< const DiscreteVariable *, T_DATA > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
+    for ( HashTableConstIterator< const DiscreteVariable *, GUM_SCALAR > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
       try {
         causalWeight( *( bij.first( iter.key() ) ), *iter );
       } catch ( NotFound& ) {
@@ -66,42 +66,42 @@ namespace gum {
 // ==============================================================================
 /// destructor
 // ==============================================================================
-  template<typename T_DATA> INLINE
-  MultiDimCIModel<T_DATA>::~MultiDimCIModel() {
+  template<typename GUM_SCALAR> INLINE
+  MultiDimCIModel<GUM_SCALAR>::~MultiDimCIModel() {
     GUM_DESTRUCTOR( MultiDimCIModel );
   }
 
-  template<typename T_DATA> INLINE
-  T_DATA MultiDimCIModel<T_DATA>::causalWeight( const DiscreteVariable& v ) const {
+  template<typename GUM_SCALAR> INLINE
+  GUM_SCALAR MultiDimCIModel<GUM_SCALAR>::causalWeight( const DiscreteVariable& v ) const {
     return ( __causal_weights.exists( &v ) ) ? __causal_weights[&v] : __default_weight;
   }
 
-  template<typename T_DATA> INLINE
-  void MultiDimCIModel<T_DATA>::causalWeight( const DiscreteVariable& v, T_DATA w ) const {
-    if ( w == ( T_DATA )0 ) {
+  template<typename GUM_SCALAR> INLINE
+  void MultiDimCIModel<GUM_SCALAR>::causalWeight( const DiscreteVariable& v, GUM_SCALAR w ) const {
+    if ( w == ( GUM_SCALAR )0 ) {
       GUM_ERROR( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
     }
 
     __causal_weights.set( &v, w );
   }
 
-  template<typename T_DATA> INLINE
-  T_DATA MultiDimCIModel<T_DATA>::externalWeight() const {
+  template<typename GUM_SCALAR> INLINE
+  GUM_SCALAR MultiDimCIModel<GUM_SCALAR>::externalWeight() const {
     return __external_weight;
   }
 
-  template<typename T_DATA> INLINE
-  void MultiDimCIModel<T_DATA>::externalWeight( T_DATA w ) const {
+  template<typename GUM_SCALAR> INLINE
+  void MultiDimCIModel<GUM_SCALAR>::externalWeight( GUM_SCALAR w ) const {
     __external_weight = w;
   }
 
-  template<typename T_DATA>
-  const std::string MultiDimCIModel<T_DATA>::toString() const {
+  template<typename GUM_SCALAR>
+  const std::string MultiDimCIModel<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<T_DATA>::variable( 0 ) << "=CIModel([" << externalWeight() << "],";
+    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=CIModel([" << externalWeight() << "],";
 
-    for ( Idx i = 1;i < MultiDimImplementation<T_DATA>::nbrDim();i++ ) {
-      s << MultiDimImplementation<T_DATA>::variable( i ) << "[" << causalWeight( MultiDimImplementation<T_DATA>::variable( i ) ) << "]";
+    for ( Idx i = 1;i < MultiDimImplementation<GUM_SCALAR>::nbrDim();i++ ) {
+      s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "[" << causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) ) << "]";
     }
 
     s << ")";
@@ -112,16 +112,16 @@ namespace gum {
   }
 
   // returns the name of the implementation
-  template<typename T_DATA> INLINE
-  const std::string& MultiDimCIModel<T_DATA>::name() const {
+  template<typename GUM_SCALAR> INLINE
+  const std::string& MultiDimCIModel<GUM_SCALAR>::name() const {
     static const std::string str = "MultiDimCIModel";
     return str;
   }
 
-  template<typename T_DATA> INLINE
-  void MultiDimCIModel<T_DATA>::_swap( const DiscreteVariable* x,
+  template<typename GUM_SCALAR> INLINE
+  void MultiDimCIModel<GUM_SCALAR>::_swap( const DiscreteVariable* x,
       const DiscreteVariable* y ) {
-    MultiDimImplementation<T_DATA>::_swap( x, y );
+    MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
     __causal_weights.insert( y, __causal_weights[x] );
     __causal_weights.erase( x );
   }

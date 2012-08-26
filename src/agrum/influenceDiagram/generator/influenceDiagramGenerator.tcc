@@ -30,10 +30,10 @@ namespace gum {
 
   // Default constructor.
   // Use the DefaultCPTGenerator for generating the IDs CPT.
-  template <typename T_DATA>
-  InfluenceDiagramGenerator<T_DATA>::InfluenceDiagramGenerator() {
+  template <typename GUM_SCALAR>
+  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR ( InfluenceDiagramGenerator );
-    __cptGenerator = new DefaultCPTGenerator<T_DATA>();
+    __cptGenerator = new DefaultCPTGenerator<GUM_SCALAR>();
     __utGenerator = new SimpleUTGenerator();
   }
 
@@ -41,8 +41,8 @@ namespace gum {
   // CPT than the default one.
   // The cptGenerator will be erased when the destructor is called.
   // @param cptGenerator The policy used to generate CPT. 
-  template <typename T_DATA>
-    InfluenceDiagramGenerator<T_DATA>::InfluenceDiagramGenerator ( AbstractCPTGenerator<T_DATA>* cptGenerator ) {
+  template <typename GUM_SCALAR>
+    InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator ( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator ) {
     GUM_CONSTRUCTOR ( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
     __utGenerator = new SimpleUTGenerator();
@@ -52,10 +52,10 @@ namespace gum {
   // UT than the default one.
   // The utGenerator will be erased when the destructor is called.
   // @param utGenerator The policy used to generate UT.
-   template <typename T_DATA>
-  InfluenceDiagramGenerator<T_DATA>::InfluenceDiagramGenerator ( UTGenerator* utGenerator ) {
+   template <typename GUM_SCALAR>
+  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator ( UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR ( InfluenceDiagramGenerator );
-    __cptGenerator = new DefaultCPTGenerator<T_DATA>();
+    __cptGenerator = new DefaultCPTGenerator<GUM_SCALAR>();
     __utGenerator = utGenerator;
   }
 
@@ -64,16 +64,16 @@ namespace gum {
   // The cptGenerator and utGenerator will be erased when the destructor is called.
   // @param cptGenerator The policy used to generate CPT.
   // @param utGenerator The policy used to generate UT.
-   template <typename T_DATA>
-  InfluenceDiagramGenerator<T_DATA>::InfluenceDiagramGenerator ( AbstractCPTGenerator<T_DATA>* cptGenerator, UTGenerator* utGenerator ) {
+   template <typename GUM_SCALAR>
+  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator ( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR ( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
     __utGenerator = utGenerator;
   }
 
   // Destructor.
-   template <typename T_DATA>
-  InfluenceDiagramGenerator<T_DATA>::~InfluenceDiagramGenerator() {
+   template <typename GUM_SCALAR>
+  InfluenceDiagramGenerator<GUM_SCALAR>::~InfluenceDiagramGenerator() {
     GUM_DESTRUCTOR ( InfluenceDiagramGenerator );
     delete __cptGenerator;
     delete __utGenerator;
@@ -86,10 +86,10 @@ namespace gum {
   // @param utilityNodeDensity The proportion of utility node
   // @param max_modality Each DRV has from 2 to max_modality modalities
   // @return A IDs randomly generated.
-   template <typename T_DATA>
-  InfluenceDiagram<T_DATA>*
-  InfluenceDiagramGenerator<T_DATA>::generateID ( Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality ) {
-    InfluenceDiagram<T_DATA>* influenceDiagram = new InfluenceDiagram<T_DATA>(); //TODO to templitize
+   template <typename GUM_SCALAR>
+  InfluenceDiagram<GUM_SCALAR>*
+  InfluenceDiagramGenerator<GUM_SCALAR>::generateID ( Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality ) {
+    InfluenceDiagram<GUM_SCALAR>* influenceDiagram = new InfluenceDiagram<GUM_SCALAR>(); //TODO to templitize
     // First we add nodes
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;
@@ -139,8 +139,8 @@ namespace gum {
 
 
 
- template <typename T_DATA>
-  void InfluenceDiagramGenerator<T_DATA>::__checkTemporalOrder ( InfluenceDiagram<T_DATA>* infdiag ) {
+ template <typename GUM_SCALAR>
+  void InfluenceDiagramGenerator<GUM_SCALAR>::__checkTemporalOrder ( InfluenceDiagram<GUM_SCALAR>* infdiag ) {
     if ( ! infdiag->decisionOrderExists() ) {
       Sequence<NodeId> order = infdiag->topologicalOrder ( true );
 

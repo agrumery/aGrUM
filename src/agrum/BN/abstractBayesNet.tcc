@@ -34,14 +34,14 @@ namespace gum {
 //                              AbstractBayesNet
 // ============================================================================
 
-  template <typename T_DATA> INLINE
-  AbstractBayesNet<T_DATA>::AbstractBayesNet() :
+  template <typename GUM_SCALAR> INLINE
+  AbstractBayesNet<GUM_SCALAR>::AbstractBayesNet() :
       __propertiesMap( 0 ) {
     GUM_CONSTRUCTOR( AbstractBayesNet );
   }
 
-  template <typename T_DATA> INLINE
-  AbstractBayesNet<T_DATA>::AbstractBayesNet( const AbstractBayesNet<T_DATA>& from ) :
+  template <typename GUM_SCALAR> INLINE
+  AbstractBayesNet<GUM_SCALAR>::AbstractBayesNet( const AbstractBayesNet<GUM_SCALAR>& from ) :
       __propertiesMap( 0 ) {
     GUM_CONS_CPY( AbstractBayesNet );
 
@@ -50,8 +50,8 @@ namespace gum {
     }
   }
 
-  template <typename T_DATA> INLINE
-  AbstractBayesNet<T_DATA>::~AbstractBayesNet() {
+  template <typename GUM_SCALAR> INLINE
+  AbstractBayesNet<GUM_SCALAR>::~AbstractBayesNet() {
     GUM_DESTRUCTOR( AbstractBayesNet );
     // Removing previous properties
 
@@ -61,9 +61,9 @@ namespace gum {
 
   }
 
-  template <typename T_DATA>
-  AbstractBayesNet<T_DATA>&
-  AbstractBayesNet<T_DATA>::operator= ( const AbstractBayesNet<T_DATA>& source ) {
+  template <typename GUM_SCALAR>
+  AbstractBayesNet<GUM_SCALAR>&
+  AbstractBayesNet<GUM_SCALAR>::operator= ( const AbstractBayesNet<GUM_SCALAR>& source ) {
     if ( this != &source ) {
       if ( __propertiesMap != 0 ) {
         delete __propertiesMap;
@@ -78,9 +78,9 @@ namespace gum {
     return *this;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const std::string&
-  AbstractBayesNet<T_DATA>::property( const std::string& name ) const {
+  AbstractBayesNet<GUM_SCALAR>::property( const std::string& name ) const {
     try {
       return ( __properties() )[name];
     } catch ( NotFound& ) {
@@ -89,9 +89,9 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   void
-  AbstractBayesNet<T_DATA>::setProperty( const std::string& name, const std::string& value ) {
+  AbstractBayesNet<GUM_SCALAR>::setProperty( const std::string& name, const std::string& value ) {
     try {
       __properties()[name] = value;
     } catch ( NotFound& ) {
@@ -99,33 +99,33 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DAG::NodeIterator
-  AbstractBayesNet<T_DATA>::beginNodes() const {
+  AbstractBayesNet<GUM_SCALAR>::beginNodes() const {
     return dag().beginNodes();
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DAG::NodeIterator
-  AbstractBayesNet<T_DATA>::endNodes() const {
+  AbstractBayesNet<GUM_SCALAR>::endNodes() const {
     return dag().endNodes();
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DAG::ArcIterator
-  AbstractBayesNet<T_DATA>::beginArcs() const {
+  AbstractBayesNet<GUM_SCALAR>::beginArcs() const {
     return dag().beginArcs();
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   const DAG::ArcIterator&
-  AbstractBayesNet<T_DATA>::endArcs() const {
+  AbstractBayesNet<GUM_SCALAR>::endArcs() const {
     return dag().endArcs();
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  AbstractBayesNet<T_DATA>::_moralGraph( UndiGraph& graph ) const {
+  AbstractBayesNet<GUM_SCALAR>::_moralGraph( UndiGraph& graph ) const {
     graph.populateNodes( dag() );
     // transform the arcs into edges
 
@@ -148,9 +148,9 @@ namespace gum {
     }
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   void
-  AbstractBayesNet<T_DATA>::_topologicalOrder( Sequence<NodeId>& topo ) const {
+  AbstractBayesNet<GUM_SCALAR>::_topologicalOrder( Sequence<NodeId>& topo ) const {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
 
@@ -176,9 +176,9 @@ namespace gum {
     GUM_ASSERT( topo.size() == dag.size() );
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   HashTable<std::string, std::string>&
-  AbstractBayesNet<T_DATA>::__properties() const {
+  AbstractBayesNet<GUM_SCALAR>::__properties() const {
     if ( __propertiesMap == 0 ) {
       __propertiesMap = new HashTable<std::string, std::string>();
     }
@@ -186,9 +186,9 @@ namespace gum {
     return *__propertiesMap;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   double
-  AbstractBayesNet<T_DATA>::log10DomainSize( void ) const {
+  AbstractBayesNet<GUM_SCALAR>::log10DomainSize( void ) const {
     double dSize = 0.0;
 
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
@@ -198,15 +198,15 @@ namespace gum {
     return dSize;
   }
 
-  template<typename T_DATA> INLINE
+  template<typename GUM_SCALAR> INLINE
   std::string
-  AbstractBayesNet<T_DATA>::toString( void ) const {
+  AbstractBayesNet<GUM_SCALAR>::toString( void ) const {
     Size param = 0;
 
     double dSize=log10DomainSize();
 
     for ( DAG::NodeIterator it = beginNodes();it != endNodes();++it ) {
-      param += (( const MultiDimImplementation<T_DATA> & ) cpt( *it ).getMasterRef() ).realSize();
+      param += (( const MultiDimImplementation<GUM_SCALAR> & ) cpt( *it ).getMasterRef() ).realSize();
     }
 
     double compressionRatio = log10( 1.0*param )-dSize;
@@ -231,9 +231,9 @@ namespace gum {
     return s.str();
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   bool
-  AbstractBayesNet<T_DATA>::operator== ( const AbstractBayesNet<T_DATA>& from ) const {
+  AbstractBayesNet<GUM_SCALAR>::operator== ( const AbstractBayesNet<GUM_SCALAR>& from ) const {
     if ( dag() == from.dag() ) {
       for ( DAG::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
         // We don't use Potential::operator== because BN's don't share
@@ -257,7 +257,7 @@ namespace gum {
             j.chgVal( * ( iter.second() ), i.val( * ( iter.first() ) ) );
           }
 
-          if ( std::pow( cpt( *node ).get( i ) - from.cpt( *node ).get( j ), ( T_DATA ) 2 ) > ( T_DATA ) 1e-6 ) {
+          if ( std::pow( cpt( *node ).get( i ) - from.cpt( *node ).get( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
             return false;
           }
         }
@@ -269,17 +269,17 @@ namespace gum {
     return false;
   }
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
   bool
-  AbstractBayesNet<T_DATA>::operator!= ( const AbstractBayesNet<T_DATA>& from ) const {
+  AbstractBayesNet<GUM_SCALAR>::operator!= ( const AbstractBayesNet<GUM_SCALAR>& from ) const {
     return not this->operator== ( from );
   }
 
   // we are certain that Iq and Ip consist of variables with the same names and with the same labels.
   // But the order may be different ... :(
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  AbstractBayesNet<T_DATA>::synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder ) const {
+  AbstractBayesNet<GUM_SCALAR>::synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder ) const {
     for ( Idx i=0;i<external.nbrDim();i++ ) {
       const std::string& v_name=external.variable( i ).name();
       const std::string& v_label=external.variable( i ).label( external.val( i ) );
@@ -288,9 +288,9 @@ namespace gum {
     }
   }
 
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   void
-  AbstractBayesNet<T_DATA>::completeInstantiation( Instantiation& I ) const {
+  AbstractBayesNet<GUM_SCALAR>::completeInstantiation( Instantiation& I ) const {
     I.clear();
 
     for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter )

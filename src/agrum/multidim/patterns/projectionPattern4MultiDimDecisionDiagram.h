@@ -37,27 +37,27 @@ namespace gum{
 // ================================================================================
 #ifdef GUM_DECISION_DIAGRAM_PROJECTION_NAME
 
-	#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA
+	#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
-	template<typename T_DATA>
-	MultiDimDecisionDiagramBase<T_DATA>*
-	GUM_DECISION_DIAGRAM_PROJECTION_NAME( const MultiDimDecisionDiagramBase<T_DATA>* table, const Set<const DiscreteVariable *>& delVars ) {
+	template<typename GUM_SCALAR>
+	MultiDimDecisionDiagramBase<GUM_SCALAR>*
+	GUM_DECISION_DIAGRAM_PROJECTION_NAME( const MultiDimDecisionDiagramBase<GUM_SCALAR>* table, const Set<const DiscreteVariable *>& delVars ) {
 	  
 #endif
 
     
 #ifdef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
 
-	#define GUM_MULTI_DIM_PROJECTION_TYPE T_DATA
+	#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
-	template<typename T_DATA>
-	MultiDimImplementation<T_DATA>*
-	GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME( const MultiDimImplementation<T_DATA>* ttable, const Set<const DiscreteVariable *>& delVars ) {
+	template<typename GUM_SCALAR>
+	MultiDimImplementation<GUM_SCALAR>*
+	GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME( const MultiDimImplementation<GUM_SCALAR>* ttable, const Set<const DiscreteVariable *>& delVars ) {
 		
-		const MultiDimDecisionDiagramBase<T_DATA>* table = reinterpret_cast<const MultiDimDecisionDiagramBase<T_DATA>*> (ttable);
+		const MultiDimDecisionDiagramBase<GUM_SCALAR>* table = reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> (ttable);
 		
 #endif
-	MultiDimDecisionDiagramFactoryBase<T_DATA>* factory = table->getFactory();
+	MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory = table->getFactory();
 	factory->setMultiDimDecisionDiagram( table );
 	Sequence< const DiscreteVariable* > varSeq = table->variablesSequence();
 				

@@ -143,8 +143,8 @@ or -> multiconnected3[style=dotted]
 }
  \enddot
  */
-  template <typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
-  class MCBayesNetGenerator : public AbstractBayesNetGenerator<T_DATA,ICPTGenerator>, public ICPTDisturber<T_DATA> {
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
+  class MCBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>, public ICPTDisturber<GUM_SCALAR> {
 
     public:
 
@@ -176,7 +176,7 @@ or -> multiconnected3[style=dotted]
    * @param q probability for the change of the state (see \ref probability_p_q )
    */
 
- MCBayesNetGenerator( BayesNet<T_DATA> bayesNet , Size iteration=5000, Idx p=30, Idx q=40);
+ MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet , Size iteration=5000, Idx p=30, Idx q=40);
 
        /**
    * Destructor.
@@ -196,7 +196,7 @@ or -> multiconnected3[style=dotted]
    * @return null but modify inputed Bayesian Network
    */
 
-      void generateBN( BayesNet<T_DATA> & bayesNet );
+      void generateBN( BayesNet<GUM_SCALAR> & bayesNet );
 
        /**
    * Change randomly the topology of a specific bayesian networks.
@@ -206,7 +206,7 @@ or -> multiconnected3[style=dotted]
    * if iteration = 0, it is assumed that the number of iteration wanted is the same as the one specified in the constructor
    */
 
-      void disturbBN( BayesNet<T_DATA> & bayesNetinit, Size iteration = 0 );
+      void disturbBN( BayesNet<GUM_SCALAR> & bayesNetinit, Size iteration = 0 );
 
       ///@}
 
@@ -254,8 +254,8 @@ or -> multiconnected3[style=dotted]
       Size _iteration;
       Idx _p, _q ;
       bool _disturbing ;
-      BayesNet<T_DATA>  _bayesNettemp;
-      HashTable< NodeId, Potential<T_DATA> * > _hashMarginal;
+      BayesNet<GUM_SCALAR>  _bayesNettemp;
+      HashTable< NodeId, Potential<GUM_SCALAR> * > _hashMarginal;
 
 
       /**

@@ -45,7 +45,7 @@
 namespace gum {
 // ============================================================================
 
-  template <typename T_DATA> class CliqueProp;
+  template <typename GUM_SCALAR> class CliqueProp;
 // ============================================================================
   /**
    * @class ShaferShenoyInference ShaferShenoyInference.h <agrum/BN/inference/ShaferShenoyInference.h>
@@ -61,8 +61,8 @@ namespace gum {
    * @warning : this class doesn't seem to infer bayesian network with multiple
    *           connected components
    */
-  template<typename T_DATA>
-  class ShaferShenoyInference: public BayesNetInference<T_DATA> {
+  template<typename GUM_SCALAR>
+  class ShaferShenoyInference: public BayesNetInference<GUM_SCALAR> {
 
     public:
 
@@ -75,7 +75,7 @@ namespace gum {
        * Default constructor.
        * @param bayesNet The Bayesian Network used for the inference.
        */
-      ShaferShenoyInference( const AbstractBayesNet<T_DATA>& bayesNet );
+      ShaferShenoyInference( const AbstractBayesNet<GUM_SCALAR>& bayesNet );
 
       /**
        * Destructor.
@@ -92,10 +92,10 @@ namespace gum {
       virtual void makeInference();
 
       /// @see gum::BayesNetInference::insertEvidence().
-      virtual void insertEvidence( const List<const Potential<T_DATA>*>& pot_list );
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
       /// @see gum::BayesNetInference::eraseEvidence().
-      virtual void eraseEvidence( const Potential<T_DATA>* );
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* );
 
       /// @see gum::BayesNetInference::eraseAllEvidence().
       virtual void eraseAllEvidence();
@@ -113,7 +113,7 @@ namespace gum {
     protected:
 
       /// @see gum::BayesNetInference::_fillMarginal().
-      virtual void _fillMarginal( NodeId id , Potential<T_DATA>& marginal );
+      virtual void _fillMarginal( NodeId id , Potential<GUM_SCALAR>& marginal );
 
     private:
 
@@ -126,7 +126,7 @@ namespace gum {
       Triangulation* __triangulation;
 
       /// The set of dummies sparse matrix created.
-      Set< Potential<T_DATA>* > __dummies;
+      Set< Potential<GUM_SCALAR>* > __dummies;
 
       /// @}
       // ====================================================================
@@ -137,11 +137,11 @@ namespace gum {
       /// Mapping of the nodes with the clique used to put their CPT
       typename Property<NodeId>::onNodes __node2CliqueMap;
 
-      typename Property< CliqueProp<T_DATA>* >::onNodes __clique_prop;
+      typename Property< CliqueProp<GUM_SCALAR>* >::onNodes __clique_prop;
 
       /// Mapping of an arc and the message which transited from pair.first to
       /// pair.second
-      typename Property< MultiDimBucket<T_DATA>* >::onArcs __messagesMap;
+      typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs __messagesMap;
 
       /// @}
       // ====================================================================
@@ -198,7 +198,7 @@ namespace gum {
       /// one MultiDimSparse filled with 1. This is used by empty cliques.
       /// @param cliqueId The NodeId of the cliqueId for which we build a dummy potential.
       /// @return A pointer over the dummy bucket.
-      Potential<T_DATA>* __makeDummyPotential( NodeId cliqueId );
+      Potential<GUM_SCALAR>* __makeDummyPotential( NodeId cliqueId );
 
       /// @}
     };
@@ -207,7 +207,7 @@ namespace gum {
 /// @class CliqueProp
 /// Private class to keep clique's properties.
 /// It used MultiDimBucket to compute the cliques potentials.
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
   class CliqueProp {
     public:
@@ -228,7 +228,7 @@ namespace gum {
 
       /// Add a potential to this clique
       /// @param cpt v's cpt.
-      void addPotential( const Potential<T_DATA>& cpt );
+      void addPotential( const Potential<GUM_SCALAR>& cpt );
 
       /// @brief Add an evidence on a variable in this clique.
       /// This method will remove any previous evidence on the given variable.
@@ -237,7 +237,7 @@ namespace gum {
       /// @throw NotFound Raised if the evidence is on a variable not present
       ///        in this clique.
       /// @throw OperationNotAllowed If the evidence isn't valid.
-      void addEvidence( const Potential<T_DATA>& evidence );
+      void addEvidence( const Potential<GUM_SCALAR>& evidence );
 
       /// Removes all the evidences containing v
       void removeEvidence( const DiscreteVariable& v );
@@ -246,26 +246,26 @@ namespace gum {
       void removeAllEvidence();
 
       /// @return Returns the mapping of evidences on the variables in this clique.
-      const HashTable<const DiscreteVariable*, const Potential<T_DATA>* >& evidences() const;
+      const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* >& evidences() const;
 
       /// @return Returns the bucket of this Clique
-      MultiDimBucket<T_DATA>& bucket();
+      MultiDimBucket<GUM_SCALAR>& bucket();
 
       /// @return Returns the bucket of this Clique
-      const MultiDimBucket<T_DATA>& bucket() const;
+      const MultiDimBucket<GUM_SCALAR>& bucket() const;
 
       /// Flag to know if this clique has been collected.
       bool isCollected;
 
     private:
       /// Evidences on the variables in this clique
-      HashTable<const DiscreteVariable*, const Potential<T_DATA>* > __evidences;
+      HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* > __evidences;
 
       /// The bucket of this clique with evidences
-      MultiDimBucket<T_DATA>* __potential;
+      MultiDimBucket<GUM_SCALAR>* __potential;
 
       /// The bucket of the variables without the evidences
-      MultiDimBucket<T_DATA>* __varsPotential;
+      MultiDimBucket<GUM_SCALAR>* __varsPotential;
 
       /// The name of the clique.
       std::string __name;

@@ -40,9 +40,9 @@
 namespace gum {
 
 
-  template <typename T_DATA>
+  template <typename GUM_SCALAR>
 
-  class ScheduleDeleteMultiDim : public ScheduleOperation<T_DATA> {
+  class ScheduleDeleteMultiDim : public ScheduleOperation<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -53,13 +53,13 @@ namespace gum {
       /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
        * This is actually compulsory for the appropriate use of
        * ScheduleCombination classes */
-      ScheduleDeleteMultiDim( const ScheduleMultiDim<T_DATA>& table );
+      ScheduleDeleteMultiDim( const ScheduleMultiDim<GUM_SCALAR>& table );
 
       /// copy constructor
-      ScheduleDeleteMultiDim( const ScheduleDeleteMultiDim<T_DATA>& );
+      ScheduleDeleteMultiDim( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
-      virtual ScheduleDeleteMultiDim<T_DATA>* newFactory() const;
+      virtual ScheduleDeleteMultiDim<GUM_SCALAR>* newFactory() const;
 
       /// destructor
       virtual ~ScheduleDeleteMultiDim();
@@ -73,18 +73,18 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScheduleDeleteMultiDim<T_DATA>& operator=
-      ( const ScheduleDeleteMultiDim<T_DATA>& );
+      ScheduleDeleteMultiDim<GUM_SCALAR>& operator=
+      ( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
 
       /// operator ==
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      bool operator== ( const ScheduleOperation<T_DATA>& ) const;
+      bool operator== ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// operator !=
       /** Two operations are identical if and only if they have the same
        * arguments and their types are identical (combine, project, etc) */
-      bool operator!= ( const ScheduleOperation<T_DATA>& ) const;
+      bool operator!= ( const ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// @}
 
@@ -112,10 +112,10 @@ namespace gum {
       std::pair<long,long> memoryUsage() const;
 
       /// returns the set of multidims passed in argument to the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimArgs() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
       /// returns the set of multidims that should be the result of the operation
-      const Sequence<const ScheduleMultiDim<T_DATA>*>& multiDimResults() const;
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
 
       /// displays the content of the operation
       std::string toString() const;
@@ -126,10 +126,10 @@ namespace gum {
 
     private:
       // the table to delete
-      ScheduleMultiDim<T_DATA> __table;
+      ScheduleMultiDim<GUM_SCALAR> __table;
 
       /// the set of ScheduleMultidims passed in arguments
-      mutable Sequence<const ScheduleMultiDim<T_DATA>*>* __args;
+      mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
 
   };
 

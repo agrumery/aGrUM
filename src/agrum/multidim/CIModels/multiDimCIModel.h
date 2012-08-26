@@ -44,8 +44,8 @@ namespace gum {
    *     the causes.
    */
   /* =========================================================================== */
-  template<typename T_DATA>
-  class MultiDimCIModel : public MultiDimReadOnly<T_DATA> {
+  template<typename GUM_SCALAR>
+  class MultiDimCIModel : public MultiDimReadOnly<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -54,15 +54,15 @@ namespace gum {
     // ============================================================================
     /// Default constructor.
     // ============================================================================
-    MultiDimCIModel( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-    MultiDimCIModel( const MultiDimCIModel<T_DATA>& from );
+    MultiDimCIModel( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+    MultiDimCIModel( const MultiDimCIModel<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Copy constructor using a bijection to swap variables from source.
     /// @param bij First variables are new variables, seconds are in from.
     // ============================================================================
     MultiDimCIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                             const MultiDimCIModel<T_DATA>& from );
+                             const MultiDimCIModel<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Destructor.
@@ -97,10 +97,10 @@ namespace gum {
     /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
     virtual Size realSize() const {return this->nbrDim();};
 
-    T_DATA causalWeight( const DiscreteVariable& v ) const;
-    void causalWeight( const DiscreteVariable& v,T_DATA w ) const;
-    T_DATA externalWeight() const;
-    void externalWeight( T_DATA w ) const;
+    GUM_SCALAR causalWeight( const DiscreteVariable& v ) const;
+    void causalWeight( const DiscreteVariable& v,GUM_SCALAR w ) const;
+    GUM_SCALAR externalWeight() const;
+    void externalWeight( GUM_SCALAR w ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -115,13 +115,13 @@ namespace gum {
     /// @}
   protected:
     /// \f$ p_0 \f$ in Henrion (89).
-    mutable T_DATA __external_weight;
+    mutable GUM_SCALAR __external_weight;
 
     /// @name causal weights
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
     /// @{
-    T_DATA __default_weight;
-    mutable HashTable<const DiscreteVariable *,T_DATA> __causal_weights;
+    GUM_SCALAR __default_weight;
+    mutable HashTable<const DiscreteVariable *,GUM_SCALAR> __causal_weights;
     /// @}
 
     virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);

@@ -31,14 +31,14 @@ namespace gum {
   /* ===                           GUM_BN_WRITER                              === */
   /* ============================================================================ */
   // Default constructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<T_DATA,IApproximationPolicy>::CNFWriter() {
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
+    CNFWriter<GUM_SCALAR,IApproximationPolicy>::CNFWriter() {
       GUM_CONSTRUCTOR( CNFWriter );
     }
 
   // Default destructor.
-  template<typename T_DATA, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<T_DATA, IApproximationPolicy>::~CNFWriter() {
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
+    CNFWriter<GUM_SCALAR, IApproximationPolicy>::~CNFWriter() {
       GUM_DESTRUCTOR( CNFWriter );
     }
 

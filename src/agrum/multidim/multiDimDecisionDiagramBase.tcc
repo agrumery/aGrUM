@@ -45,9 +45,9 @@ namespace gum {
 	// ==============================================================================
 	// Default constructor
 	// ==============================================================================
-	template< typename T_DATA > INLINE
-	MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( ) :
-	MultiDimReadOnly<T_DATA>() , 
+	template< typename GUM_SCALAR > INLINE
+	MultiDimDecisionDiagramBase< GUM_SCALAR >::MultiDimDecisionDiagramBase( ) :
+	MultiDimReadOnly<GUM_SCALAR>() , 
 	__name( "MultiDimDecisionDiagram" ) , 
 	__isInstanciated( false ) , 
 	__instanciationModeOn( false ) {
@@ -57,9 +57,9 @@ namespace gum {
 	// ==============================================================================
 	// Copy constructor
 	// ==============================================================================
-	template< typename T_DATA > INLINE
-	MultiDimDecisionDiagramBase< T_DATA >::MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< T_DATA >& source ):
-	MultiDimReadOnly<T_DATA>( source ) ,
+	template< typename GUM_SCALAR > INLINE
+	MultiDimDecisionDiagramBase< GUM_SCALAR >::MultiDimDecisionDiagramBase( const MultiDimDecisionDiagramBase< GUM_SCALAR >& source ):
+	MultiDimReadOnly<GUM_SCALAR>( source ) ,
 	__name( "MultiDimDecisionDiagram" ) , 
 	__isInstanciated( false ) , 
 	__instanciationModeOn( false ) {
@@ -70,8 +70,8 @@ namespace gum {
 	// ==============================================================================
 	// destructor
 	// ==============================================================================
-	template< typename T_DATA > INLINE
-	MultiDimDecisionDiagramBase< T_DATA >::~MultiDimDecisionDiagramBase() {
+	template< typename GUM_SCALAR > INLINE
+	MultiDimDecisionDiagramBase< GUM_SCALAR >::~MultiDimDecisionDiagramBase() {
 
 	    GUM_DESTRUCTOR( MultiDimDecisionDiagramBase );
 
@@ -103,9 +103,9 @@ namespace gum {
 	    // ==============================================================================
 	    // Returns the real name of this multidim implementation
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::string&
-	    MultiDimDecisionDiagramBase< T_DATA >::name() const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::name() const {
 
 		return __name;
 
@@ -114,9 +114,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns valued pointed by inst
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    T_DATA
-	    MultiDimDecisionDiagramBase< T_DATA >::get( const Instantiation& inst ) const {
+	    template< typename GUM_SCALAR > INLINE
+	    GUM_SCALAR
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::get( const Instantiation& inst ) const {
 
 		NodeId i = __root;
 		while ( ! isTerminalNode( i ) ) {
@@ -133,9 +133,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns the terminal node associated to value pointed by inst
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    NodeId
-	    MultiDimDecisionDiagramBase< T_DATA >::getNode( const Instantiation& inst ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::getNode( const Instantiation& inst ) const {
 
 		NodeId i = __root;
 
@@ -159,9 +159,9 @@ namespace gum {
 	    // Adds a new var to the variables of the multidimensional matrix.
 	    // throw OperationNotAllowed cause it's not authorize on read only multidim
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::add( const DiscreteVariable &v ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::add( const DiscreteVariable &v ) {
 		GUM_ERROR( OperationNotAllowed," Can't add a variable to a read only multidim " );
 	    }
 
@@ -169,27 +169,27 @@ namespace gum {
 	    // Removes a var from the variables of the multidimensional matrix.
 	    // @throw OperationNotAllowed cause it's not authorize on read only multidim
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::erase( const DiscreteVariable &v ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::erase( const DiscreteVariable &v ) {
 		GUM_ERROR( OperationNotAllowed," Can't remove a variable from a read only multidim " );
 	    }
 
 	    // ==============================================================================
 	    // Returns the real number of parameter used in this table.
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    Size
-	    MultiDimDecisionDiagramBase< T_DATA >::realSize() const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::realSize() const {
 		return __graph.size() - 1;
 	    }
 
 	    // ==============================================================================
 	    // Indicates if diagram has no value inside at all
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    bool
-	    MultiDimDecisionDiagramBase< T_DATA >::empty () const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::empty () const {
 		return __valueMap.empty();
 	    }
 
@@ -200,49 +200,49 @@ namespace gum {
 	    // ===============================================================================
 	    // Listen to change in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::changeNotification( Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::changeNotification( Instantiation& i, const DiscreteVariable* var, const Idx& oldval, const Idx& newval ) {
 	    }
 
 	    // ===============================================================================
 	    // Listen to setFirst in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setFirstNotification( Instantiation& i ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setFirstNotification( Instantiation& i ) {
 	    }
 
 	    // ===============================================================================
 	    // Listen to setLast in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setLastNotification( Instantiation& i ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setLastNotification( Instantiation& i ) {
 	    }
 
 	    // ===============================================================================
 	    // Listen to increment in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setIncNotification( Instantiation& i ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setIncNotification( Instantiation& i ) {
 	    }
 
 	    // ===============================================================================
 	    // Listen to decrement in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setDecNotification( Instantiation& i ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setDecNotification( Instantiation& i ) {
 	    }
 
 	    // ===============================================================================
 	    // Listen to an assignement of value in a given Instantiation
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setChangeNotification( Instantiation& i ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setChangeNotification( Instantiation& i ) {
 	    }
 
 
@@ -254,9 +254,9 @@ namespace gum {
 	    // Makes a copy of given decision diagram
 	    // @throw OperationNotAllowed cause this is a read only
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimDecisionDiagramBase<T_DATA>& source, bool fullInstanciation ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::copy( const MultiDimDecisionDiagramBase<GUM_SCALAR>& source, bool fullInstanciation ) {
 
 		if(  __isInstanciated )
 		    GUM_ERROR( OperationNotAllowed, "This is a read only" );
@@ -311,9 +311,9 @@ namespace gum {
 	    // @throw OperationNotAllowed cause this is a read only and a decision diagram ( which 
 	    // makes quiet complicate any copy operation as a matter of fact )
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::copy( const MultiDimContainer<T_DATA>& src ){
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::copy( const MultiDimContainer<GUM_SCALAR>& src ){
 
 	    GUM_ERROR( OperationNotAllowed, "This is a read only with a special structure" );
 
@@ -322,9 +322,9 @@ namespace gum {
 	    // ===========================================================================
 	    // Performs a copy of given in parameter table plus a change of variable based upon bijection given in parameter.
 	    // ===========================================================================
-	    template<typename T_DATA> INLINE
+	    template<typename GUM_SCALAR> INLINE
 	    void
-	    MultiDimDecisionDiagramBase<T_DATA>::copyAndReassign( const MultiDimDecisionDiagramBase<T_DATA>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new ){
+	    MultiDimDecisionDiagramBase<GUM_SCALAR>::copyAndReassign( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source, const Bijection<const DiscreteVariable*, const DiscreteVariable*>& old2new ){
 	    
 	      this->beginInstantiation();
 
@@ -385,20 +385,20 @@ namespace gum {
 	    // ===============================================================================
 	    // Displays the internal representation of i.
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::string
-	    MultiDimDecisionDiagramBase< T_DATA >::toString() const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::toString() const {
 
-		return MultiDimReadOnly<T_DATA>::toString();
+		return MultiDimReadOnly<GUM_SCALAR>::toString();
 
 	    }
 
 	    // ===============================================================================
 	    // Displays the internal representation of i.
 	    // ===============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::string
-	    MultiDimDecisionDiagramBase< T_DATA >::toString( const Instantiation* i ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::toString( const Instantiation* i ) const {
 
 		std::stringstream sBuff;
 		sBuff << ( *i ) << " = " << get( *i );
@@ -409,9 +409,9 @@ namespace gum {
 	    // ===============================================================================
 	    // Displays the DecisionDiagramBase in the dot format
 	    // ===============================================================================
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    std::string
-	    MultiDimDecisionDiagramBase< T_DATA >::toDot( const std::string graphName ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::toDot( const std::string graphName ) const {
 
 		std::stringstream output;
 		std::stringstream terminalStream;
@@ -462,9 +462,9 @@ namespace gum {
 	    // ==============================================================================
 	    // Returns the number of variable trully present in the diagram
 	    // ==============================================================================
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    Size
-	    MultiDimDecisionDiagramBase< T_DATA >::diagramVarSize( ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::diagramVarSize( ) const {
 
 		Sequence< const DiscreteVariable* > varTopo = this->variablesSequence();
 		for ( SequenceIterator< const DiscreteVariable* > ite1 = varTopo.begin(); ite1 != varTopo.end(); ) {
@@ -496,9 +496,9 @@ namespace gum {
 	    // Returns associated variable of given node
 	    // @throw InvalidNode if Node is terminal
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const DiscreteVariable*
-	    MultiDimDecisionDiagramBase< T_DATA >::nodeVariable( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::nodeVariable( NodeId n ) const {
 
 		if ( isTerminalNode( n ) ){
 		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
@@ -508,9 +508,9 @@ namespace gum {
 
 	    }
 
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const DiscreteVariable*
-	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeVariable( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeNodeVariable( NodeId n ) const {
 
 		return __variableMap[ n ];
 
@@ -519,9 +519,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns associated nodes of the variable pointed by the given node
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const List< NodeId >*
-	    MultiDimDecisionDiagramBase< T_DATA >::variableNodes( const DiscreteVariable* v ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::variableNodes( const DiscreteVariable* v ) const {
 
 		if ( ! __var2NodeIdMap.exists( v ) )
 		    return NULL;
@@ -533,9 +533,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns a boolean vector that indicates for all modalities that can take given in parameter variable if an arc is associated to it in diagram
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::vector<Idx >*
-	    MultiDimDecisionDiagramBase< T_DATA >::variableUsedModalities( const DiscreteVariable* v ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::variableUsedModalities( const DiscreteVariable* v ) const {
 
 		if ( ! __varUsedModalitiesMap.exists( v ) )
 		    return NULL;
@@ -548,9 +548,9 @@ namespace gum {
 	    // Returns value associated to given node
 	    // @throw InvalidNode if node isn't terminal
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    const T_DATA&
-	    MultiDimDecisionDiagramBase< T_DATA >::nodeValue( NodeId n ) const {
+	    template< typename GUM_SCALAR > INLINE
+	    const GUM_SCALAR&
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::nodeValue( NodeId n ) const {
 
 		if ( !isTerminalNode( n ) ){
 		    GUM_ERROR( InvalidNode, " Node " << n << " is a non terminal node. " );
@@ -560,9 +560,9 @@ namespace gum {
 
 	    }
 
-	    template< typename T_DATA > INLINE
-	    const T_DATA&
-	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeValue( NodeId n ) const {
+	    template< typename GUM_SCALAR > INLINE
+	    const GUM_SCALAR&
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeNodeValue( NodeId n ) const {
 
 		return this->__valueMap.second( n );
 
@@ -572,9 +572,9 @@ namespace gum {
 	    // Returns node's sons map
 	    // @throw InvalidNode if node is terminal
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::vector< NodeId >*
-	    MultiDimDecisionDiagramBase< T_DATA >::nodeSons( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::nodeSons( NodeId n ) const {
 
 		if ( isTerminalNode( n ) ){
 		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
@@ -585,9 +585,9 @@ namespace gum {
 	    }
 
 
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const std::vector<  NodeId >*
-	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeSons( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeNodeSons( NodeId n ) const {
 
 		if ( !__arcMap.exists( n ) )
 		    return NULL;
@@ -598,9 +598,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns true if node has a default son
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    bool
-	    MultiDimDecisionDiagramBase< T_DATA >::hasNodeDefaultSon( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::hasNodeDefaultSon( NodeId n ) const {
 
 		if ( isTerminalNode( n ) ){
 		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
@@ -610,9 +610,9 @@ namespace gum {
 
 	    }
 
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    bool
-	    MultiDimDecisionDiagramBase< T_DATA >::unsafeHasNodeDefaultSon( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeHasNodeDefaultSon( NodeId n ) const {
 
 		return __defaultArcMap.exists( n );
 
@@ -623,9 +623,9 @@ namespace gum {
 	    // @throw InvalidNode if node is terminal
 	    // @throw NotFound if node doesn't have a default son
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const NodeId
-	    MultiDimDecisionDiagramBase< T_DATA >::nodeDefaultSon( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::nodeDefaultSon( NodeId n ) const {
 
 		if ( isTerminalNode( n ) ){
 		    GUM_ERROR( InvalidNode, " Node " << n << " is a terminal node. " );
@@ -639,9 +639,9 @@ namespace gum {
 
 	    }
 
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    const NodeId
-	    MultiDimDecisionDiagramBase< T_DATA >::unsafeNodeDefaultSon( NodeId n ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeNodeDefaultSon( NodeId n ) const {
 
 		return __defaultArcMap[ n ];
 
@@ -650,9 +650,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns true if node is a terminal node
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    bool
-	    MultiDimDecisionDiagramBase< T_DATA >::isTerminalNode( NodeId id ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::isTerminalNode( NodeId id ) const {
 
 		return ( __valueMap.existsFirst( id ) );
 
@@ -661,9 +661,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns true if variable has at least one node associated in diagram
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    bool
-	    MultiDimDecisionDiagramBase< T_DATA >::isInDiagramVariable( const DiscreteVariable* v ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::isInDiagramVariable( const DiscreteVariable* v ) const {
 
 		return( __var2NodeIdMap.exists( v ) );
 
@@ -674,9 +674,9 @@ namespace gum {
 	    // This method looks, for each path in the diagram, if a var does not precede others in
 	    // the given in parameter order.
 	    // =============================================================================
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    void 
-	    MultiDimDecisionDiagramBase< T_DATA >::findRetrogradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::findRetrogradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
 	    HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVariablesTable ) const{
 
 		if( this->__variableMap.empty() )
@@ -735,18 +735,18 @@ namespace gum {
 	    // ==============================================================================
 	    //  Instantiates this diagram by multiplying leaf of given diagram by factor
 	    // ==============================================================================
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::multiplyByScalar( const MultiDimDecisionDiagramBase<T_DATA>* m, T_DATA factor ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::multiplyByScalar( const MultiDimDecisionDiagramBase<GUM_SCALAR>* m, GUM_SCALAR factor ) {
 
 		if( __isInstanciated )
 		    GUM_ERROR( OperationNotAllowed, "Decision diagram has already been instanciated" );
 
 		this->copy( *m, false );
 
-		Bijection< NodeId, T_DATA > newValueMap;
-		for( BijectionIterator< NodeId, T_DATA > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter ){
-		    T_DATA tempVal = valueIter.second() * factor;
+		Bijection< NodeId, GUM_SCALAR > newValueMap;
+		for( BijectionIterator< NodeId, GUM_SCALAR > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter ){
+		    GUM_SCALAR tempVal = valueIter.second() * factor;
 		    if( newValueMap.existsSecond( tempVal ) ){
 			NodeId nody = newValueMap.first( tempVal );
 			for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter )
@@ -777,9 +777,9 @@ namespace gum {
 	    // Puts the multiDim in instantiation mode
 	    // @throw OperationNotAllowed if diagram has already been instanciated
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::beginInstantiation() {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::beginInstantiation() {
 
 		if ( __isInstanciated ){
 		    GUM_ERROR( OperationNotAllowed, "Cannot operates modification a multidimdecisiondiagram once it has been created" );
@@ -792,9 +792,9 @@ namespace gum {
 	    // ==============================================================================
 	    // Puts the multiDim in instantiation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::endInstantiation() {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::endInstantiation() {
 
 		__instanciationModeOn = false;
 		__isInstanciated = true;
@@ -804,16 +804,16 @@ namespace gum {
 	    // Sets once and for all variable sequence.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setVariableSequence( const Sequence< const DiscreteVariable* >& varList ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setVariableSequence( const Sequence< const DiscreteVariable* >& varList ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
 		}
 
 		for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
-		    MultiDimImplementation<T_DATA>::add( **iter );
+		    MultiDimImplementation<GUM_SCALAR>::add( **iter );
 
 	    }
 
@@ -821,9 +821,9 @@ namespace gum {
 	    // Sets once and for all nodes of the diagram.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setDiagramNodes( const NodeGraphPart& model ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setDiagramNodes( const NodeGraphPart& model ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -837,9 +837,9 @@ namespace gum {
 	    // Binds once and for all nodes to variables.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -853,9 +853,9 @@ namespace gum {
 	    // Sets the map linking variable to all nodes bond to it
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setVar2NodeMap( const HashTable< const DiscreteVariable*, List<NodeId>* > var2NodeMap ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -870,9 +870,9 @@ namespace gum {
 	    //  Sets the map linking variable to used modality in graph
 	    // @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<Idx>* > varUsedModalitiesMap ){
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setVarUsedModalitiesMap( const HashTable< const DiscreteVariable*, std::vector<Idx>* > varUsedModalitiesMap ){
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -886,9 +886,9 @@ namespace gum {
 	    // Binds once and for all terminal nodes to value.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setValueMap( const Bijection< NodeId, T_DATA >& valueMap ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setValueMap( const Bijection< NodeId, GUM_SCALAR >& valueMap ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -902,9 +902,9 @@ namespace gum {
 	    // Links once and for all nodes of the graph.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setDiagramArcs( const typename Property< std::vector< NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setDiagramArcs( const typename Property< std::vector< NodeId >* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -921,9 +921,9 @@ namespace gum {
 	    // Sets once and for all root node.
 	    // @throw OperationNotAllowed if diagram not in instanciation mode
 	    // ==============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::setRoot( const NodeId& root ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::setRoot( const NodeId& root ) {
 
 		if ( !__instanciationModeOn ){
 		    GUM_ERROR( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
@@ -941,9 +941,9 @@ namespace gum {
 	    // =============================================================================
 	    // Returns data addressed by inst
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
-	    T_DATA&
-	    MultiDimDecisionDiagramBase< T_DATA >::_get( const Instantiation& inst ) const {
+	    template< typename GUM_SCALAR > INLINE
+	    GUM_SCALAR&
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::_get( const Instantiation& inst ) const {
 
 		GUM_ERROR( OperationNotAllowed, "a MultiDimDecisionDiagram is a read only MultiDim" );
 
@@ -953,18 +953,18 @@ namespace gum {
 	    // Supposed to replace var x by y. But not authorized in a MultiDimDecisionDiagramBase
 	    // @throw OperationNotAllowed without condition.
 	    // =============================================================================
-	    template< typename T_DATA > INLINE
+	    template< typename GUM_SCALAR > INLINE
 	    void
-	    MultiDimDecisionDiagramBase< T_DATA >::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
 
 		GUM_ERROR( OperationNotAllowed, "Can't be done in a MultiDimDecisionDiagram" );
 
 	    }
 
 	    // And the recursive parts of this function
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    void 
-	    MultiDimDecisionDiagramBase< T_DATA >::__makePreceedingVariablesLists( HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable ) const {
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::__makePreceedingVariablesLists( HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable ) const {
 
 		PriorityQueue<NodeId> fifo;
 		fifo.insert( this->variablesSequence().pos( __variableMap[this->__root] ), this->__root );
@@ -1020,9 +1020,9 @@ namespace gum {
 	    }
 
 	    // And the recursive parts of this function
-	    template< typename T_DATA >
+	    template< typename GUM_SCALAR >
 	    void 
-	    MultiDimDecisionDiagramBase< T_DATA >::__findRetorgradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
+	    MultiDimDecisionDiagramBase< GUM_SCALAR >::__findRetorgradeVariables ( const Sequence< const DiscreteVariable* >* varsSeq, 
 	    const NodeId currentNode, 
 	    HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVarTable,  
 	    HashTable< NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable,

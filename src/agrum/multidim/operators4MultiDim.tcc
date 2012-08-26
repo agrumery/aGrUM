@@ -472,7 +472,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator/, / )
 namespace gum {
 
 /// the function used to register all the above functions
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 void operators4MultiDimInit () {
     static bool first_init = true;
 
@@ -484,40 +484,40 @@ void operators4MultiDimInit () {
         std::string BaseNameString ("MultiDimImplementation");
 
         // register base functions for multiDimArrays
-        registerOperator<T_DATA> ( "+", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR> ( "+", MultiDimArrayString, MultiDimArrayString,
                                    &add2MultiDimArrays);
-        registerOperator<T_DATA> ( "-", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR> ( "-", MultiDimArrayString, MultiDimArrayString,
                                    &subtract2MultiDimArrays);
-        registerOperator<T_DATA> ( "*", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR> ( "*", MultiDimArrayString, MultiDimArrayString,
                                    &multiply2MultiDimArrays);
-        registerOperator<T_DATA> ( "/", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR> ( "/", MultiDimArrayString, MultiDimArrayString,
                                    &divide2MultiDimArrays);
 
         // register base functions for multiDimDecisionDiagrams
-        registerOperator<T_DATA> ( "+", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
+        registerOperator<GUM_SCALAR> ( "+", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
                                    &add2MultiDimDecisionDiagrams);
-        registerOperator<T_DATA> ( "-", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
+        registerOperator<GUM_SCALAR> ( "-", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
                                    &subtract2MultiDimDecisionDiagrams);
-        registerOperator<T_DATA> ( "*", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
+        registerOperator<GUM_SCALAR> ( "*", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
                                    &multiply2MultiDimDecisionDiagrams);
-        registerOperator<T_DATA> ( "/", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
+        registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
                                    &divide2MultiDimDecisionDiagrams);
 
         // register default basename functions
-        registerOperator<T_DATA> ( "+", BaseNameString, BaseNameString,
+        registerOperator<GUM_SCALAR> ( "+", BaseNameString, BaseNameString,
                                    &add2MultiDimImplementations);
-        registerOperator<T_DATA> ( "-", BaseNameString, BaseNameString,
+        registerOperator<GUM_SCALAR> ( "-", BaseNameString, BaseNameString,
                                    &subtract2MultiDimImplementations);
-        registerOperator<T_DATA> ( "*", BaseNameString, BaseNameString,
+        registerOperator<GUM_SCALAR> ( "*", BaseNameString, BaseNameString,
                                    &multiply2MultiDimImplementations);
-        registerOperator<T_DATA> ( "/", BaseNameString, BaseNameString,
+        registerOperator<GUM_SCALAR> ( "/", BaseNameString, BaseNameString,
                                    &divide2MultiDimImplementations);
     }
 }
 
 
 /// the function used to register all the above functions
-template<typename T_DATA>
+template<typename GUM_SCALAR>
 void pointerOperators4MultiDimInit () {
     static bool first_init = true;
 
@@ -528,13 +528,13 @@ void pointerOperators4MultiDimInit () {
         std::string BaseNameString ("MultiDimImplementation");
 
         // register base functions for multiDimArrays
-        registerOperator<T_DATA*> ( "+", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR*> ( "+", MultiDimArrayString, MultiDimArrayString,
                                     &add2MultiDimArrays4Pointers);
-        registerOperator<T_DATA*> ( "-", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR*> ( "-", MultiDimArrayString, MultiDimArrayString,
                                     &subtract2MultiDimArrays4Pointers);
-        registerOperator<T_DATA*> ( "*", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR*> ( "*", MultiDimArrayString, MultiDimArrayString,
                                     &multiply2MultiDimArrays4Pointers);
-        registerOperator<T_DATA*> ( "/", MultiDimArrayString, MultiDimArrayString,
+        registerOperator<GUM_SCALAR*> ( "/", MultiDimArrayString, MultiDimArrayString,
                                     &divide2MultiDimArrays4Pointers);
     }
 }

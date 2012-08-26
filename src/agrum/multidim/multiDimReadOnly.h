@@ -36,8 +36,8 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename T_DATA>
-  class MultiDimReadOnly : public MultiDimImplementation<T_DATA> {
+  template<typename GUM_SCALAR>
+  class MultiDimReadOnly : public MultiDimImplementation<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -52,7 +52,7 @@ namespace gum {
       // ============================================================================
       /// Copy constructor.
       // ============================================================================
-      MultiDimReadOnly( const MultiDimReadOnly<T_DATA>& from );
+      MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
 
       // ============================================================================
       /// Destructor.
@@ -74,7 +74,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const = 0;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
 
       // ############################################################################
@@ -85,12 +85,12 @@ namespace gum {
       // ============================================================================
       /// @throw OperationNotAllowed Raised because this is a read only table.
       // ============================================================================
-      virtual void set( const Instantiation& i ,const T_DATA& value ) const;
+      virtual void set( const Instantiation& i ,const GUM_SCALAR& value ) const;
 
       // ============================================================================
       /// @throw OperationNotAllowed Raised because this is a read only table.
       // ============================================================================
-      virtual void fill( const T_DATA& ) const;
+      virtual void fill( const GUM_SCALAR& ) const;
 
       /// @}
 
@@ -99,7 +99,7 @@ namespace gum {
       // ============================================================================
       /// @throw OperationNotAllowed Raised because this is a read only table.
       // ============================================================================
-      virtual T_DATA& _get( const Instantiation &i ) const;
+      virtual GUM_SCALAR& _get( const Instantiation &i ) const;
 
   };
 } /* namespace gum */

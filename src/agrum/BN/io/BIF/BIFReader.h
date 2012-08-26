@@ -114,11 +114,11 @@ namespace gum {
    *
    * @author Pierre-Henri Wuillemin
    */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class BIFReader : public BNReader<T_DATA> {
+  class BIFReader : public BNReader<GUM_SCALAR> {
     public:
-      BIFReader( BayesNet<T_DATA>* bn, const std::string& filename );
+      BIFReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
       ~BIFReader();
 
       /// Direct access to BIF scanner (mandatory for listener connection)
@@ -165,8 +165,8 @@ namespace gum {
       /// @}
 
     protected:
-      BayesNet<T_DATA>* __bn;
-      BayesNetFactory<T_DATA>* __factory;
+      BayesNet<GUM_SCALAR>* __bn;
+      BayesNetFactory<GUM_SCALAR>* __factory;
       BIF::Scanner* __scanner;
       BIF::Parser* __parser;
 

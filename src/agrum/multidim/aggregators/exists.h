@@ -46,10 +46,10 @@ namespace gum {
     */
     /* ============================================================================ */
 
-    template<typename T_DATA> class Exists : public MultiDimAggregator<T_DATA> {
+    template<typename GUM_SCALAR> class Exists : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Exists( Idx value );
-        Exists( const Exists<T_DATA>& from );
+        Exists( const Exists<GUM_SCALAR>& from );
         virtual ~Exists();
 
       /**
@@ -65,7 +65,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<T_DATA>* newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
 

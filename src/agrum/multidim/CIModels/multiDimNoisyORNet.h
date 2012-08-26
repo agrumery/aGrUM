@@ -44,9 +44,9 @@ namespace gum {
    *     never check if it is the case.
    */
   /* =========================================================================== */
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
 
-  class MultiDimNoisyORNet : public MultiDimCIModel<T_DATA> {
+  class MultiDimNoisyORNet : public MultiDimCIModel<GUM_SCALAR> {
   public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -55,15 +55,15 @@ namespace gum {
     // ============================================================================
     /// Default constructor.
     // ============================================================================
-    MultiDimNoisyORNet( T_DATA external_weight,T_DATA default_weight=( T_DATA )1.0 );
-    MultiDimNoisyORNet( const MultiDimNoisyORNet<T_DATA>& from );
+    MultiDimNoisyORNet( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+    MultiDimNoisyORNet( const MultiDimNoisyORNet<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Copy constructor using a bijection to swap variables from source.
     /// @param bij First variables are new variables, seconds are in from.
     // ============================================================================
     MultiDimNoisyORNet( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                        const MultiDimNoisyORNet<T_DATA>& from );
+                        const MultiDimNoisyORNet<GUM_SCALAR>& from );
 
     // ============================================================================
     /// Destructor.
@@ -85,7 +85,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<T_DATA>* newFactory() const;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
     // ############################################################################
@@ -94,7 +94,7 @@ namespace gum {
     /// @{
     // ============================================================================
   public:
-    virtual T_DATA get( const Instantiation &i ) const;
+    virtual GUM_SCALAR get( const Instantiation &i ) const;
 
     const std::string toString( void ) const;
 
@@ -114,9 +114,9 @@ namespace gum {
   // ==============================================================================
   /// For friendly displaying the content of the array.
   // ==============================================================================
-  template<typename T_DATA>
+  template<typename GUM_SCALAR>
   std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyORNet<T_DATA>& ag );
+                             const MultiDimNoisyORNet<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */

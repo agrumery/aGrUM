@@ -79,7 +79,7 @@ namespace gum {
        */
 
       /// @{
-      /// @brief Please @see BayesNetFactory<T_DATA> for documentation.
+      /// @brief Please @see BayesNetFactory<GUM_SCALAR> for documentation.
       virtual const DiscreteVariable& varInBN( NodeId id ) = 0;
       virtual factory_state state() const = 0;
       virtual NodeId variableId( const std::string& name ) const = 0;

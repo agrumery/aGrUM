@@ -55,8 +55,8 @@ namespace gum {
  * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high 
  * resulting in the failure of most of the inference Methods. 
  * */
-  template<typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
-  class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>{
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
+  class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>{
 
     public:
       
@@ -90,7 +90,7 @@ namespace gum {
    * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" ) 
    */
       
-      MaxInducedWidthMCBayesNetGenerator( BayesNet<T_DATA> bayesNet, Size maxInducedWidth=3, Idx iteration= 5000,  Idx p=30, Idx q=40);
+      MaxInducedWidthMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth=3, Idx iteration= 5000,  Idx p=30, Idx q=40);
   /**
    * Destructor.
    */

@@ -74,7 +74,7 @@
 namespace gum {
 
 
-  template< typename T_DATA, template<typename> class TABLE >
+  template< typename GUM_SCALAR, template<typename> class TABLE >
   class MultiDimProjection {
   public:
     // ############################################################################
@@ -83,13 +83,13 @@ namespace gum {
     /// @{
 
     /// default constructor
-    MultiDimProjection ( TABLE<T_DATA>*
+    MultiDimProjection ( TABLE<GUM_SCALAR>*
                          (*proj)
-                         ( const TABLE<T_DATA>&,
+                         ( const TABLE<GUM_SCALAR>&,
                            const Set<const DiscreteVariable*>& ) );
 
     /// copy constructor
-    MultiDimProjection ( const MultiDimProjection<T_DATA,TABLE>& );
+    MultiDimProjection ( const MultiDimProjection<GUM_SCALAR,TABLE>& );
 
     /// destructor
     virtual ~MultiDimProjection ();
@@ -97,7 +97,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same projection
      * function. */
-    virtual MultiDimProjection<T_DATA,TABLE>* newFactory () const;
+    virtual MultiDimProjection<GUM_SCALAR,TABLE>* newFactory () const;
 
     /// @}
 
@@ -112,25 +112,25 @@ namespace gum {
      * of the TABLE passed in argument over the set of variables NOT IN del_vars
      * @warning If del_vars is precisely equal to the variables of table, the
      * result is an empty table. */
-    TABLE<T_DATA>* project ( const TABLE<T_DATA>& table,
+    TABLE<GUM_SCALAR>* project ( const TABLE<GUM_SCALAR>& table,
                              const Set<const DiscreteVariable*>& del_vars );
-    void project ( TABLE<T_DATA>& container,
-                   const TABLE<T_DATA>& table,
-                   const Set<const TABLE<T_DATA>*>& del_vars );
+    void project ( TABLE<GUM_SCALAR>& container,
+                   const TABLE<GUM_SCALAR>& table,
+                   const Set<const TABLE<GUM_SCALAR>*>& del_vars );
 
     /// changes the function used for projecting TABLES
-    void setProjectFunction ( TABLE<T_DATA>*
+    void setProjectFunction ( TABLE<GUM_SCALAR>*
                               (*proj)
-                              ( const TABLE<T_DATA>&,
+                              ( const TABLE<GUM_SCALAR>&,
                                 const Set<const DiscreteVariable*>& ) );
 
     /// returns the projection function currently used by the projector
-    TABLE<T_DATA>* (* projectFunction () )
-      ( const TABLE<T_DATA>&, const Set<const DiscreteVariable*>& ) const;
+    TABLE<GUM_SCALAR>* (* projectFunction () )
+      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const;
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection */
-    float nbOperations ( const TABLE<T_DATA>& table,
+    float nbOperations ( const TABLE<GUM_SCALAR>& table,
                          const Set<const DiscreteVariable*>& del_vars ) const;
     float nbOperations ( const Sequence<const DiscreteVariable*>& vars,
                          const Set<const DiscreteVariable*>& del_vars ) const;
@@ -144,7 +144,7 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used by
      * the resulting table ) */
     std::pair<long,long>
-    memoryUsage ( const TABLE<T_DATA>& table,
+    memoryUsage ( const TABLE<GUM_SCALAR>& table,
                   const Set<const DiscreteVariable*>& del_vars ) const;
     std::pair<long,long>
     memoryUsage ( const Sequence<const DiscreteVariable*>& vars,
@@ -155,13 +155,13 @@ namespace gum {
 
   protected:
     /// the projection function actually used 
-    TABLE<T_DATA>* (*_proj) ( const TABLE<T_DATA>&,
+    TABLE<GUM_SCALAR>* (*_proj) ( const TABLE<GUM_SCALAR>&,
                               const Set<const DiscreteVariable*>& );
 
   private:
     /// forbid copy operators
-    MultiDimProjection<T_DATA,TABLE>& operator=
-    ( const MultiDimProjection<T_DATA,TABLE>& );
+    MultiDimProjection<GUM_SCALAR,TABLE>& operator=
+    ( const MultiDimProjection<GUM_SCALAR,TABLE>& );
     
   };
 

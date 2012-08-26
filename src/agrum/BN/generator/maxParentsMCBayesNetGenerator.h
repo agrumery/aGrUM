@@ -53,18 +53,18 @@ namespace gum {
  * This class is inherited from MCBayesNetGenerator and is an example of Markov Chain Bayesian Network Generator that can be implemented.
  * Here a constraint is added which is the maximum number of parents that a node can have.
  * To create our own MCBayesNetGenerator with a specific constraint you must:\n
- * 1) Create the class XXXXXXMCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>.\n
+ * 1) Create the class XXXXXXMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>.\n
  * 2) Add a variable specific to the constraint (here _maxParents). \n
  * 3) Verify in the function _checkCondition() the wanted constraint and then launch
- * MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>::__checkConditions() to verify the default constraint.\n
+ * MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions() to verify the default constraint.\n
  * 4) Define the getters and setters of the constraint variable.\n
  * 5) And verify in the constructor that the constraint is not in contradiction with the generator here maxParent must be >= 1.\n
  * 
  * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high 
  * resulting in the failure of most of the inference Methods. \n
  * */
-  template<typename T_DATA, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
-  class MaxParentsMCBayesNetGenerator : public MCBayesNetGenerator<T_DATA,ICPTGenerator,ICPTDisturber>{
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
+  class MaxParentsMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>{
 
     public:
       
@@ -98,7 +98,7 @@ namespace gum {
    * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" ) 
    */
       
-      MaxParentsMCBayesNetGenerator( BayesNet<T_DATA> bayesNet, Size maxParents=2, Idx iteration= 5000,  Idx p=30, Idx q=40);
+      MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size maxParents=2, Idx iteration= 5000,  Idx p=30, Idx q=40);
   /**
    * Destructor.
    */
