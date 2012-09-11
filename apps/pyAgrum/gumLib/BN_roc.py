@@ -56,7 +56,7 @@ def checkCompatibility(bn,fields,csv_name):
 
     return res
 
-def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
+def computeROCpoints(bn,csv_name,target,label,visible=False,transforme_label=None):
     idTarget=bn.idFromName(target)
     engine=gum.LazyPropagation(bn)
 
@@ -112,8 +112,10 @@ def computeROC(bn,csv_name,target,label,visible=False,transforme_label=None):
 
     if visible:
         print
+    return (res,totalP,totalN,idTarget)
 
-    res=sorted(res,key=lambda x:x[0])
+def computeROC(values,totalP,totalN,idTarget,transforme_label):
+    res=sorted(values,key=lambda x:x[0])
 
     vp=0.0
     fp=0.0
@@ -155,8 +157,31 @@ def module_help(exit_value=1,message=""):
     print
     sys.exit(exit_value)
 
+def drawROC(points,zeLabel,zeFilename,visible,show_fig):
+    import pylab
+
+    pylab.clf()
+    pylab.ylim((0,1))
+    pylab.xlim((0,1))
+    pylab.xticks(pylab.arange(0,1.1,.1))
+    pylab.yticks(pylab.arange(0,1.1,.1))
+    pylab.grid(True)
+
+    pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1, label= zeLabel)
+    pylab.plot([0.0,1.0], [0.0, 1.0], 'k-')
+
+    pylab.legend(loc='lower right')
+    if visible:
+        pylab.savefig(zeFilename)
+        print ("result in "+zeFilename)
+
+    if show_fig:
+        pylab.show()
+
+
 def showROC(bn,csv_name,variable,label,visible=True,show_fig=False,transforme_label=None):
-  points=computeROC(bn,csv_name,variable,label,visible,transforme_label)
+  (res,totalP,totalN,idTarget)=computeROCpoints(bn,csv_name,variable,label,visible,transforme_label)
+  points=computeROC(res,totalP,totalN,idTarget,transforme_label)
 #  print points[0]
 #  print points[1]
 #  print points[2]
@@ -168,27 +193,11 @@ def showROC(bn,csv_name,variable,label,visible=True,show_fig=False,transforme_la
 #  print points[len(points)-1]
 
   shortname=os.path.basename(bn.property("name"))
+  label=shortname+" - "+csv_name+ " - "+variable+"="+str(label)
 
-  import pylab
-
-  pylab.clf()
-  pylab.ylim((0,1))
-  pylab.xlim((0,1))
-  pylab.xticks(pylab.arange(0,1.1,.1))
-  pylab.yticks(pylab.arange(0,1.1,.1))
-  pylab.grid(True)
-
-  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=1, label= shortname+" - "+csv_name+ " - "+variable+"="+str(label))
-  pylab.plot([0.0,1.0], [0.0, 1.0], 'k-')
-
-  pylab.legend(loc='lower right')
   figname='roc_'+shortname+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png'
-  if visible:
-      pylab.savefig(figname)
-      print ("result in "+figname)
 
-  if show_fig:
-      pylab.show()
+  drawROC(points,label,figname,visible,show_fig)
 
 def checkROCargs():
   pyAgrum_header(2011)
