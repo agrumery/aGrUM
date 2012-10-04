@@ -161,8 +161,8 @@ def drawROC(points,zeLabel,zeFilename,visible,show_fig):
     import pylab
 
     pylab.clf()
-    pylab.ylim((0,1))
-    pylab.xlim((0,1))
+    pylab.ylim((-0.01,1.01))
+    pylab.xlim((-0.01,1.01))
     pylab.xticks(pylab.arange(0,1.1,.1))
     pylab.yticks(pylab.arange(0,1.1,.1))
     pylab.grid(True)

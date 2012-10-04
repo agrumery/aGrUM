@@ -1,9 +1,10 @@
 set(CMAKE_SYSTEM_NAME Windows)
 
-set(CMAKE_C_COMPILER i586-mingw32msvc-gcc)
-set(CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
+set(CMAKE_C_COMPILER /usr/bin/i586-mingw32msvc-gcc)
+set(CMAKE_CXX_COMPILER /usr/bin/i586-mingw32msvc-g++)
 
-set(CMAKE_FIND_ROOT_PATH /usr/i586-mingw32msvc)
+set(CMAKE_FIND_ROOT_PATH /usr/bin/i586-mingw32msvc)
+SET(CMAKE_RC_COMPILER /usr/bin/i586-mingw32msvc-windres)
 
 set(CMAKE_FIND_ROOT_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_MODE_LIBRARY ONLY)

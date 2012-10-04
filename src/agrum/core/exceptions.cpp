@@ -24,7 +24,9 @@
 
 
 #ifndef NDEBUG
+#ifndef __MINGW32__
 #include <execinfo.h>
+#endif //__MINGW32__
 #endif //NDEBUG
 
 #include <agrum/config.h>
@@ -48,6 +50,7 @@ namespace gum {
   Exception::Exception( const std::string aMsg,const std::string aType ) :
     _msg( aMsg ), _type( aType ) {
 #ifndef NDEBUG
+#ifndef __MINGW32__
 #define callStackDepth 20
     void *array[callStackDepth];
     size_t size;
@@ -63,9 +66,12 @@ namespace gum {
 
     free( strings );
     _callstack=stream.str();
-#else
-    _callstack="Callstack only in debug mode";
-#endif
+#else //__MINGW32__
+    _callstack="Callstack only in linux debug mode";
+#endif //__MINGW32__
+#else //NDEBUG
+    _callstack="Callstack only in linux debug mode";
+#endif //NDEBUG
   }
 
 

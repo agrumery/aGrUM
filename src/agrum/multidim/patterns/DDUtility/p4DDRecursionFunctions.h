@@ -39,7 +39,7 @@
 
 
 namespace gum {
-  
+
 template<typename GUM_SCALAR>
 NodeId
 GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,

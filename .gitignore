@@ -1,0 +1,12 @@
+*.pyc
+.txt
+.kdev4
+CMakeCache.txt
+CMakeFiles
+build
+.options.mak.py
+aGrUM-dev.kdev
+src/testunits/testList.cmake
+*.kdev4
+src/agrum/config.h
+

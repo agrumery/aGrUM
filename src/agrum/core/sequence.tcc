@@ -550,7 +550,7 @@ namespace gum {
   template <typename KEY> INLINE
   Set<KEY> Sequence<KEY>::diffSet( const Sequence<KEY>& seq) const {
     Set<KEY> res;
-    for ( Sequence<KEY>::iterator iter = this->begin();iter != this->end();++iter ) {
+    for (typename Sequence<KEY>::iterator iter = this->begin();iter != this->end();++iter ) {
       if (! seq.exists(*iter)) res<<*iter;
     }
     return res;
@@ -1066,7 +1066,7 @@ namespace gum {
   template <typename KEY> INLINE
   Set<KEY*> Sequence<KEY*>::diffSet( const Sequence<KEY*>& seq) const {
     Set<KEY*> res;
-    for ( Sequence<KEY*>::iterator iter = seq.begin();iter != seq.end();++iter ) {
+    for ( typename Sequence<KEY*>::iterator iter = seq.begin();iter != seq.end();++iter ) {
       if (! this->exists(*iter)) res<<*iter;
     }
     return res;
