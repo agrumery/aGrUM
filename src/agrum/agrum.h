@@ -52,7 +52,7 @@
   \page install_and_use Installing and using the aGrUM library
     \section Installation
 
-    aGrUM is still in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use. Let's assume that you want install version v1.5 (which does not exist for now).
+    aGrUM is still in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use. 
 
     To install aGrUm :
     @code
