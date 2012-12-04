@@ -233,6 +233,8 @@ def proceed(options):
     else:
         if options['rule']=='package':
             folders=["build",'package_'+options['platform'],options['option']]
+        elif options['rule']=='config':
+            folders=["build",options['platform'],'config']
         else:
             folders=["build",options['platform'],options['option']]
         cmake_option=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
@@ -258,7 +260,8 @@ def proceed(options):
 
     [safe_cd(s) for s in folders]
     execute("cmake "+cmake_option)
-    execute("make "+make_options)
+    if options['rule']!='config':
+        execute("make "+make_options)
     if (run_cde!=""):
         if (options['platform'] == "windows"):
             run_cde="wine "+run_cde
@@ -291,7 +294,7 @@ default={}
 current={}
 persistent={}
 
-list_rules="test run agrum wrapper install doc clean default show uninstall package".split()
+list_rules="config test run agrum wrapper install doc clean default show uninstall package".split()
 list_options="debug release".split()
 list_wrappers="pyAgrum jAgrum".split()
 
