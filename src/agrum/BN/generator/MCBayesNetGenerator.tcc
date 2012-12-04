@@ -343,7 +343,7 @@ namespace gum {
       potj = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.cpt ( j );
       AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
 
-      disturbAugmCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, ( GUM_SCALAR ) 0.5 );
+      this->disturbAugmCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, ( GUM_SCALAR ) 0.5 );
     } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
   }
 
@@ -360,7 +360,7 @@ namespace gum {
         Potential<GUM_SCALAR> marg;
         marg = ( *_hashMarginal[i] );
 
-        disturbReducCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, marg );
+        this->disturbReducCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, marg );
       } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
     } else {
       AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( i, j );
