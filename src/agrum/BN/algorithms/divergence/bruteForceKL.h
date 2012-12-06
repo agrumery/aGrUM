@@ -67,7 +67,7 @@ namespace gum {
 
 
       /** destructor */
-      ~BruteForceKL();
+      virtual ~BruteForceKL();
 
     protected:
       void _computeKL( void );

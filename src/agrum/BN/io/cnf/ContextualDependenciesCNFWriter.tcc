@@ -87,19 +87,19 @@ namespace gum {
         inst.reorder(Order);//TODO
         cptparamval.insert( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >());
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
-          if( fromExact(cpt[inst]) != 1){
+          if( this->fromExact(cpt[inst]) != 1){
             std::stringstream strk;
-            strk << fromExact(cpt[inst]);
+            strk << this->fromExact(cpt[inst]);
             std::string valp = strk.str();
             if(!(cptparamval[var])->exists(valp)){
               (cptparamval[var])->insert(valp, new gum::Sequence<gum::Sequence<gum::Instantiation*>*>());
 
               (*(cptparamval[var]))[valp]->insert(new gum::Sequence<gum::Instantiation*>);
 
-              if (fromExact(cpt[inst])) {
+              if (this->fromExact(cpt[inst])) {
                 std::stringstream strinst;
                 strinst << var->name();
-                strinst << "_val=" << fromExact(cpt[inst]);
+                strinst << "_val=" << this->fromExact(cpt[inst]);
                 if(!protable.exists( strinst.str() )){
                   protable.insert( strinst.str() , ++num);
                   strfile << num <<"::"<<  strinst.str()  <<"\n";
@@ -270,19 +270,19 @@ namespace gum {
         inst.reorder(Order);
         cptparamval.insert( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >());
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
-          if (fromExact(cpt[inst]) != 1){
+          if (this->fromExact(cpt[inst]) != 1){
             std::stringstream strk;
-            strk << fromExact(cpt[inst]);
+            strk << this->fromExact(cpt[inst]);
             std::string valp = strk.str();
             if(!(cptparamval[var])->exists(valp)){
               (cptparamval[var])->insert(valp, new gum::Sequence<gum::Sequence<gum::Instantiation*>*>());//remember to verify protocole for param = to 1
 
               (*(cptparamval[var]))[valp]->insert(new gum::Sequence<gum::Instantiation*>);
 
-              if (fromExact(cpt[inst])) {
+              if (this->fromExact(cpt[inst])) {
                 std::stringstream strinst;
                 strinst << var->name();
-                strinst << "_val=" << fromExact(cpt[inst]);
+                strinst << "_val=" << this->fromExact(cpt[inst]);
                 if(!protable.exists( strinst.str() )){
                   protable.insert( strinst.str() , ++num);
                   strfile << num <<"::"<<  strinst.str()  <<"\n";

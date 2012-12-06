@@ -75,7 +75,7 @@ namespace gum {
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
           std::stringstream strinst;
           strinst << inst.toString();
-          strinst << "_val=" <<fromExact(cpt[inst]);
+          strinst << "_val=" <<this->fromExact(cpt[inst]);
 
           protable.insert(inst.toString(), ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
         }
@@ -155,7 +155,7 @@ namespace gum {
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
           std::stringstream strinst;
           strinst << inst.toString();
-          strinst << "_val=" <<fromExact(cpt[inst]);
+          strinst << "_val=" <<this->fromExact(cpt[inst]);
 
           protable.insert(inst.toString(), ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
         }

@@ -92,7 +92,7 @@ namespace gum {
         __eps ( 5e-2 ),
         __min_rate_eps ( 1e-2 ),
         __max_time ( 0.0 ),
-        __max_iter ( ( Size ) 1000 ) ,
+        __max_iter ( ( Size ) 10000 ) ,
         __burn_in ( ( Size ) 0 ),
         __periode_size ( ( Size ) 1 ),
         __verbosity ( v ) {
@@ -154,6 +154,7 @@ namespace gum {
 
       /// @}
 
+      
       /// stopping criterion ontimeout
       /// @{
       /// @throw OutOfLowerBound if timeout<=0.0

@@ -75,7 +75,7 @@ namespace gum {
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
           std::stringstream strinst;
           strinst << inst.toString();
-          strinst << "_val=" <<fromExact(cpt[inst]);
+          strinst << "_val=" <<this->fromExact(cpt[inst]);
           if(!protable.exists( strinst.str() )){
 
             protable.insert(inst.toString(), ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
@@ -94,16 +94,16 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
-          if (fromExact(cpt[inst]) != 1.0  ){
+          if (this->fromExact(cpt[inst]) != 1.0  ){
             for (Idx i = 0; i < inst.nbrDim() ; i++){
               std::stringstream str;
               str << inst.variable(i).name() <<"_" << inst.val(inst.variable(i));
               str2 <<"-"<< vartable[str.str()] <<" ";
             }
-            if (fromExact(cpt[inst]) ){
+            if (this->fromExact(cpt[inst]) ){
               std::stringstream strinst;
               strinst << bn.variable(*iter).name();
-              strinst << "_val=" <<fromExact(cpt[inst]);
+              strinst << "_val=" <<this->fromExact(cpt[inst]);
               str2 <<protable[strinst.str()];
             }
             str2  << " 0\n"; clause++;
@@ -158,10 +158,10 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) { 
-          if(fromExact(cpt[inst]) && fromExact(cpt[inst]) != 1.0){
+          if(this->fromExact(cpt[inst]) && this->fromExact(cpt[inst]) != 1.0){
             std::stringstream strinst;
             strinst << bn.variable(*iter).name();
-            strinst << "_val=" <<fromExact(cpt[inst]);
+            strinst << "_val=" <<this->fromExact(cpt[inst]);
             if(!protable.exists( strinst.str() )){
               protable.insert( strinst.str() , ++numparam);strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
 
@@ -182,16 +182,16 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
         Instantiation inst( cpt );
         for ( inst.setFirst(); ! inst.end(); ++inst ) {
-          if (fromExact(cpt[inst]) != 1.0  ){
+          if (this->fromExact(cpt[inst]) != 1.0  ){
             for (Idx i = 0; i < inst.nbrDim() ; i++){
               std::stringstream str;
               str << inst.variable(i).name() <<"_" << inst.val(inst.variable(i));
               str2 <<"-"<< vartable[str.str()] <<" ";
             }
-            if (fromExact(cpt[inst]) ){
+            if (this->fromExact(cpt[inst]) ){
               std::stringstream strinst;
               strinst << bn.variable(*iter).name();
-              strinst << "_val=" <<fromExact(cpt[inst]);
+              strinst << "_val=" <<this->fromExact(cpt[inst]);
               str2 <<protable[strinst.str()];
             }
             str2  << " 0\n"; clause++;

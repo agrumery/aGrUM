@@ -502,7 +502,7 @@ namespace gum {
       //    is a left child of this parent. We just need to put the right child
       //    of the successor (if any) as the left child of its parent, and to
       //    replace "node" by the successor.
-      Node *successor = _succNode( node );
+      Node *successor = this->_succNode( node );
 
       if( successor == node->rightChild() ) {   // proceed to case 1:
         Node *left_child = node->leftChild();

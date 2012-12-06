@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <dirent.h>
+#include <unistd.h>
 
 #include <agrum/config.h>
 
