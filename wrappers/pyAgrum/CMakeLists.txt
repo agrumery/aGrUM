@@ -6,7 +6,7 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
 find_package(PythonInterp)
-find_package(PythonLibs)
+find_package(PythonLibs ${PYTHON_VERSION_MAJOR})
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
