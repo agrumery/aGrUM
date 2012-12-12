@@ -89,7 +89,7 @@ class ProgressBar:
         Display bar if needed
         """
         if self.hasChanged:
-            print '\r', self.bar, '\r', self.title,
+            print '\r', self.bar,
             sys.stdout.flush()
             self.hasChanged=False
 

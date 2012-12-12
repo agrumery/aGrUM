@@ -114,7 +114,7 @@ def computeROCpoints(bn,csv_name,target,label,visible=False,transforme_label=Non
         print
     return (res,totalP,totalN,idTarget)
 
-def computeROC(values,totalP,totalN,idTarget,transforme_label):
+def computeROC(bn,values,totalP,totalN,idTarget,label,transforme_label):
     res=sorted(values,key=lambda x:x[0])
 
     vp=0.0
@@ -173,7 +173,7 @@ def drawROC(points,zeLabel,zeFilename,visible,show_fig):
     pylab.legend(loc='lower right')
     if visible:
         pylab.savefig(zeFilename)
-        print ("result in "+zeFilename)
+        #print ("result in "+zeFilename)
 
     if show_fig:
         pylab.show()
@@ -181,7 +181,7 @@ def drawROC(points,zeLabel,zeFilename,visible,show_fig):
 
 def showROC(bn,csv_name,variable,label,visible=True,show_fig=False,transforme_label=None):
   (res,totalP,totalN,idTarget)=computeROCpoints(bn,csv_name,variable,label,visible,transforme_label)
-  points=computeROC(res,totalP,totalN,idTarget,transforme_label)
+  points=computeROC(bn,res,totalP,totalN,idTarget,label,transforme_label)
 #  print points[0]
 #  print points[1]
 #  print points[2]
