@@ -35,7 +35,6 @@
 // ============================================================================
 #include <agrum/graphicalModels/variableNodeMap.h>
 #include <agrum/BN/abstractBayesNet.h>
-#include <agrum/prm/skool/cocoR/SyntaxSKOOL.atg>
 // ============================================================================
 
 namespace gum {

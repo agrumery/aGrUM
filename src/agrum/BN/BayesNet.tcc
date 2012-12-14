@@ -538,13 +538,13 @@ namespace gum {
       copy_array = new Potential<GUM_SCALAR>();
 
       for ( gum::Idx i = 0; i < ( *srcIter )->nbrDim(); i++ ) {
-        ( *copy_array ) << this->variableFromName ( ( *srcIter )->array->variable ( i ).name() );
+        ( *copy_array ) << variableFromName ( ( *srcIter )->variable ( i ).name() );
       }
 
       copy_array->copyFrom ( **srcIter );
 
       // We add the CPT to the CPT's hashmap
-      __probaMap.insert ( srcIter.key(), copyPtr );
+      __probaMap.insert ( srcIter.key(), copy_array );
     }
   }
 

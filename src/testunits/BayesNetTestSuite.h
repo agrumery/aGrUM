@@ -304,18 +304,20 @@ namespace gum_tests {
         for ( gum::DAG::NodeIterator iter = copy.beginNodes(); iter != copy.endNodes(); ++iter ) {
           std::stringstream c_str;
           std::stringstream s_str;
-          
-          const gum::Sequence<const gum::DiscreteVariable *> &s_seq=source.cpt(*iter).variablesSequence();
-          for(gum::Sequence<const gum::DiscreteVariable *>::iterator it=s_seq.begin();it!=s_seq.end();++it) {
+
+          const gum::Sequence<const gum::DiscreteVariable *> &s_seq=source.cpt ( *iter ).variablesSequence();
+
+          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it=s_seq.begin(); it!=s_seq.end(); ++it ) {
             s_str<<**it<<",";
           }
-          
-          const gum::Sequence<const gum::DiscreteVariable *> &c_seq=copy.cpt(*iter).variablesSequence();
-          for(gum::Sequence<const gum::DiscreteVariable *>::iterator it=c_seq.begin();it!=c_seq.end();++it) {
+
+          const gum::Sequence<const gum::DiscreteVariable *> &c_seq=copy.cpt ( *iter ).variablesSequence();
+
+          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it=c_seq.begin(); it!=c_seq.end(); ++it ) {
             c_str<<**it<<",";
           }
-          
-          TS_ASSERT_EQUALS(c_str.str(),s_str.str());
+
+          TS_ASSERT_EQUALS ( c_str.str(),s_str.str() );
         }
       }
 
@@ -637,19 +639,23 @@ namespace gum_tests {
       void testCopyAndEqualityOperators() {
         gum::DefaultBayesNetGenerator<float> generator ( 20, 30, 4 );
         gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
-        bn_1->toDot();
+        GUM_CHECKPOINT;
+        
         generator.generateBN ( *bn_1 );
-        bn_1->toDot();
+        
         gum::BayesNet<float>* bn_2 = new gum::BayesNet<float>();
         generator.generateBN ( *bn_2 );
         gum::BayesNet<float> bn_cpy_1 = *bn_1;
         gum::BayesNet<float> bn_cpy_2 = *bn_2;
+        GUM_CHECKPOINT;
+        
         TS_ASSERT ( bn_cpy_1 == bn_cpy_1 );
         TS_ASSERT ( bn_cpy_1 == ( *bn_1 ) );
         TS_ASSERT ( bn_cpy_2 == bn_cpy_2 );
         TS_ASSERT ( bn_cpy_2 == ( *bn_2 ) );
         TS_ASSERT ( ( *bn_1 ) != ( *bn_2 ) );
         TS_ASSERT ( bn_cpy_1 != bn_cpy_2 );
+        GUM_CHECKPOINT;
 
         TS_ASSERT_EQUALS ( bn_cpy_1, bn_cpy_1 );
         TS_ASSERT_EQUALS ( bn_cpy_1, ( *bn_1 ) );
@@ -658,16 +664,12 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS ( ( *bn_1 ), ( *bn_2 ) );
         TS_ASSERT_DIFFERS ( bn_cpy_1, bn_cpy_2 );
 
+        GUM_CHECKPOINT;
         gum::BayesNet<float> cpy = *bn_1;
         TS_ASSERT ( cpy == ( *bn_1 ) );
         TS_ASSERT ( cpy != ( *bn_2 ) );
 
-        try {
-          cpy = *bn_2;
-
-        } catch ( gum::Exception& e ) {
-          TS_GUM_ASSERT_THROWS_NOTHING ( throw e );
-        }
+        TS_GUM_ASSERT_THROWS_NOTHING ( cpy = *bn_2 );
 
         TS_ASSERT_EQUALS ( cpy, ( *bn_2 ) );
 
@@ -675,12 +677,7 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS ( cpy, ( *bn_1 ) );
         TS_ASSERT ( cpy != ( *bn_1 ) );
 
-        try {
-          cpy = cpy;
-
-        } catch ( gum::Exception& e ) {
-          TS_ASSERT_THROWS_NOTHING ( throw e );
-        }
+        TS_ASSERT_THROWS_NOTHING ( cpy = cpy;);
 
         TS_ASSERT_EQUALS ( cpy, ( *bn_2 ) );
 
