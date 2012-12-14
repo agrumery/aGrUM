@@ -56,7 +56,7 @@ namespace gum {
   // ==============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  GUM_SCALAR MultiDimContainer<GUM_SCALAR>::operator[] ( const Instantiation &i ) const {
+  GUM_SCALAR MultiDimContainer<GUM_SCALAR>::operator[] ( const Instantiation& i ) const {
     return get ( i );
   }
 
@@ -64,7 +64,7 @@ namespace gum {
   // an [] operator using a Instantiation as argument
   // ==============================================================================
   template<typename GUM_SCALAR>
-  INLINE void MultiDimContainer<GUM_SCALAR>::set ( const Instantiation &i, const GUM_SCALAR &value ) const {
+  INLINE void MultiDimContainer<GUM_SCALAR>::set ( const Instantiation& i, const GUM_SCALAR& value ) const {
     _get ( i ) = value;
   }
 
@@ -72,7 +72,7 @@ namespace gum {
   // an [] operator using a Instantiation as argument
   // ==============================================================================
   template<typename GUM_SCALAR>
-  INLINE GUM_SCALAR MultiDimContainer<GUM_SCALAR>::get ( const Instantiation &i ) const {
+  INLINE GUM_SCALAR MultiDimContainer<GUM_SCALAR>::get ( const Instantiation& i ) const {
     return _get ( i );
   }
 
@@ -84,7 +84,7 @@ namespace gum {
     // we create a new instantiation and iterate over it to display the whole
     // content of the array
     std::stringstream ss;
-    Instantiation myinst ( const_cast<MultiDimContainer *> ( this ) );
+    Instantiation myinst ( const_cast<MultiDimContainer*> ( this ) );
 
     bool first = true;
 
@@ -108,7 +108,7 @@ namespace gum {
   bool
   MultiDimContainer<GUM_SCALAR>::operator== ( const MultiDimContainer<GUM_SCALAR>& p ) const {
     if ( ( nbrDim() == p.nbrDim() ) && ( domainSize() == p.domainSize() ) ) {
-      typedef Sequence< const DiscreteVariable * >::const_iterator var_iterator;
+      typedef Sequence< const DiscreteVariable* >::const_iterator var_iterator;
 
       for ( var_iterator iter = variablesSequence().begin();
             iter != variablesSequence().end(); ++iter ) {
@@ -166,16 +166,15 @@ namespace gum {
   // ==============================================================================
   template<typename GUM_SCALAR>
   void MultiDimContainer<GUM_SCALAR>::copyFrom
-  ( const MultiDimContainer<GUM_SCALAR>& src , Instantiation *p_i ) const {
+  ( const MultiDimContainer<GUM_SCALAR>& src , Instantiation* p_i ) const {
     if ( src.domainSize() != domainSize() ) {
       GUM_ERROR ( OperationNotAllowed, "Domain size do not fit" );
     }
 
     Instantiation i_dest ( *this );
-
     Instantiation i_src ( src );
 
-    if ( p_i == ( Instantiation * ) 0 ) {
+    if ( p_i == ( Instantiation* ) 0 ) {
       for ( i_dest.setFirst(), i_src.setFirst(); ! i_dest.end() ;
             ++i_dest, ++i_src ) {
         set ( i_dest, src[i_src] );
@@ -195,14 +194,16 @@ namespace gum {
   void MultiDimContainer<GUM_SCALAR>::copy ( const MultiDimContainer<GUM_SCALAR>& src ) {
     this->beginMultipleChanges();
 
-    Size nbr=this->nbrDim();
-    for ( Idx i = 0; i <nbr; i++ ) {
+    Size nbr = this->nbrDim();
+
+    for ( Idx i = 0; i < nbr; i++ ) {
       this->erase ( this->variable ( 0 ) );
     }
 
     for ( Idx i = 0; i < src.nbrDim(); i++ ) {
       this->add ( src.variable ( i ) );
     }
+
     this->endMultipleChanges();
 
     this->copyFrom ( src );
@@ -212,7 +213,7 @@ namespace gum {
   // display the content of an array
   // ==============================================================================
   template<typename GUM_SCALAR>
-  std::ostream &operator<< ( std::ostream &out,
+  std::ostream& operator<< ( std::ostream& out,
                              const MultiDimContainer<GUM_SCALAR>& array ) {
     out << array.toString();
     return out;

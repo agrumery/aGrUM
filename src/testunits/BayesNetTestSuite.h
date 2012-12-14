@@ -59,7 +59,7 @@ namespace gum_tests {
           bn.insertArc ( idList[3], idList[4] );
           bn.insertArc ( idList[1], idList[4] );
 
-        } catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
@@ -117,7 +117,7 @@ namespace gum_tests {
             //printProba(p5);
           }
 
-        } catch ( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
@@ -141,7 +141,7 @@ namespace gum_tests {
       }
 
     public:
-      gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+      gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
       void setUp() {
         var1 = new gum::LabelizedVariable ( "var1", "1", 2 );
@@ -200,8 +200,8 @@ namespace gum_tests {
               ++nodeIter ) {
           TS_ASSERT ( copy->dag().exists ( *nodeIter ) );
 
-          const gum::DiscreteVariable &srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable &cpVar = copy->variable ( *nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
+          const gum::DiscreteVariable& cpVar = copy->variable ( *nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -261,8 +261,8 @@ namespace gum_tests {
               ++nodeIter ) {
           TS_ASSERT ( copy.dag().exists ( *nodeIter ) );
 
-          const gum::DiscreteVariable &srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable &cpVar = copy.variable ( *nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
+          const gum::DiscreteVariable& cpVar = copy.variable ( *nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -305,19 +305,19 @@ namespace gum_tests {
           std::stringstream c_str;
           std::stringstream s_str;
 
-          const gum::Sequence<const gum::DiscreteVariable *> &s_seq=source.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable*> &s_seq = source.cpt ( *iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it=s_seq.begin(); it!=s_seq.end(); ++it ) {
-            s_str<<**it<<",";
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
+            s_str << **it << ",";
           }
 
-          const gum::Sequence<const gum::DiscreteVariable *> &c_seq=copy.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable*> &c_seq = copy.cpt ( *iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it=c_seq.begin(); it!=c_seq.end(); ++it ) {
-            c_str<<**it<<",";
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
+            c_str << **it << ",";
           }
 
-          TS_ASSERT_EQUALS ( c_str.str(),s_str.str() );
+          TS_ASSERT_EQUALS ( c_str.str(), s_str.str() );
         }
       }
 
@@ -347,7 +347,7 @@ namespace gum_tests {
           }
         }
 
-        gum::LabelizedVariable *varPtr = NULL;
+        gum::LabelizedVariable* varPtr = NULL;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable* ) & bn.variable ( idList[0] ) );
         TS_ASSERT_EQUALS ( *varPtr, *var1 );
@@ -372,7 +372,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( bn.size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS ( bn.dag().size(), ( gum::Size ) 5 );
 
-        gum::LabelizedVariable *varPtr = NULL;
+        gum::LabelizedVariable* varPtr = NULL;
         TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable* ) & bn.variable ( idList[0] ) );
         TS_ASSERT_EQUALS ( *varPtr, *var1 );
 
@@ -493,16 +493,16 @@ namespace gum_tests {
         gum::BayesNet<float> bn;
         gum::List<gum::NodeId> idList;
 
-        fill ( bn,idList );
+        fill ( bn, idList );
 
         for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-          std::stringstream s1,s2;
-          s1<<bn.cpt ( *iter );
+          std::stringstream s1, s2;
+          s1 << bn.cpt ( *iter );
           gum::initRandom();
 
           bn.generateCPTs();
-          s2<<bn.cpt ( *iter );
-          TS_ASSERT_DIFFERS ( s1.str(),s2.str() );
+          s2 << bn.cpt ( *iter );
+          TS_ASSERT_DIFFERS ( s1.str(), s2.str() );
         }
       }
 
@@ -637,25 +637,24 @@ namespace gum_tests {
       }
 
       void testCopyAndEqualityOperators() {
-        gum::DefaultBayesNetGenerator<float> generator ( 20, 30, 4 );
         gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
-        GUM_CHECKPOINT;
-        
+        gum::DefaultBayesNetGenerator<float> generator ( 20, 30, 4 );
         generator.generateBN ( *bn_1 );
-        
+
         gum::BayesNet<float>* bn_2 = new gum::BayesNet<float>();
+
         generator.generateBN ( *bn_2 );
+
         gum::BayesNet<float> bn_cpy_1 = *bn_1;
         gum::BayesNet<float> bn_cpy_2 = *bn_2;
-        GUM_CHECKPOINT;
-        
+
+
         TS_ASSERT ( bn_cpy_1 == bn_cpy_1 );
         TS_ASSERT ( bn_cpy_1 == ( *bn_1 ) );
         TS_ASSERT ( bn_cpy_2 == bn_cpy_2 );
         TS_ASSERT ( bn_cpy_2 == ( *bn_2 ) );
         TS_ASSERT ( ( *bn_1 ) != ( *bn_2 ) );
         TS_ASSERT ( bn_cpy_1 != bn_cpy_2 );
-        GUM_CHECKPOINT;
 
         TS_ASSERT_EQUALS ( bn_cpy_1, bn_cpy_1 );
         TS_ASSERT_EQUALS ( bn_cpy_1, ( *bn_1 ) );
@@ -664,7 +663,6 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS ( ( *bn_1 ), ( *bn_2 ) );
         TS_ASSERT_DIFFERS ( bn_cpy_1, bn_cpy_2 );
 
-        GUM_CHECKPOINT;
         gum::BayesNet<float> cpy = *bn_1;
         TS_ASSERT ( cpy == ( *bn_1 ) );
         TS_ASSERT ( cpy != ( *bn_2 ) );
@@ -677,7 +675,7 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS ( cpy, ( *bn_1 ) );
         TS_ASSERT ( cpy != ( *bn_1 ) );
 
-        TS_ASSERT_THROWS_NOTHING ( cpy = cpy;);
+        TS_ASSERT_THROWS_NOTHING ( cpy = cpy; );
 
         TS_ASSERT_EQUALS ( cpy, ( *bn_2 ) );
 
@@ -695,25 +693,25 @@ namespace gum_tests {
       void testAggregatorNodes() {
         {
           gum::BayesNet<float> bn;
-          gum::Idx i1=0;
+          gum::Idx i1 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( i1=bn.addOR ( *var1 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( i1 = bn.addOR ( *var1 ) );
           TS_ASSERT_THROWS ( bn.addOR ( *var5 ), gum::SizeError );
 
-          bn.insertArc ( bn.add ( *var3 ),i1 );
-          bn.insertArc ( bn.add ( *var4 ),i1 );
-          bn.insertArc ( bn.add ( *var5 ),i1 );
+          bn.insertArc ( bn.add ( *var3 ), i1 );
+          bn.insertArc ( bn.add ( *var4 ), i1 );
+          bn.insertArc ( bn.add ( *var5 ), i1 );
         }
         {
           gum::BayesNet<float> bn;
-          gum::Idx i2=0;
+          gum::Idx i2 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( i2=bn.addAND ( *var2 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( i2 = bn.addAND ( *var2 ) );
           TS_ASSERT_THROWS ( bn.addAND ( *var5 ), gum::SizeError );
 
-          bn.insertArc ( bn.add ( *var3 ),i2 );
-          bn.insertArc ( bn.add ( *var4 ),i2 );
-          bn.insertArc ( bn.add ( *var5 ),i2 );
+          bn.insertArc ( bn.add ( *var3 ), i2 );
+          bn.insertArc ( bn.add ( *var4 ), i2 );
+          bn.insertArc ( bn.add ( *var5 ), i2 );
         }
       }
 
@@ -724,20 +722,20 @@ namespace gum_tests {
         fill ( bn, idList );
 
         gum::Instantiation i; bn.completeInstantiation ( i );
-        TS_ASSERT_EQUALS ( i.nbrDim(),bn.size() );
+        TS_ASSERT_EQUALS ( i.nbrDim(), bn.size() );
 
-        TS_ASSERT_EQUALS ( i.domainSize(), ( gum::Size ) ( 2*2*2*2*3 ) );
+        TS_ASSERT_EQUALS ( i.domainSize(), ( gum::Size ) ( 2 * 2 * 2 * 2 * 3 ) );
 
         float a = 0.0;
-        TS_ASSERT_THROWS_NOTHING ( a= bn.jointProbability ( i ) );
+        TS_ASSERT_THROWS_NOTHING ( a = bn.jointProbability ( i ) );
 
-        TS_ASSERT_DELTA ( a,0.00072,1e-4 );
+        TS_ASSERT_DELTA ( a, 0.00072, 1e-4 );
 
         gum::Instantiation j;
         float b = 0.0;
         TS_ASSERT_THROWS_NOTHING ( b = bn.jointProbability ( j ) );
 
-        TS_ASSERT_EQUALS ( a,b );
+        TS_ASSERT_EQUALS ( a, b );
       }
   };
 

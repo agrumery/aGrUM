@@ -72,13 +72,11 @@ namespace gum {
     for ( Size i = 0; i < AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++i ) {
       strBuff << "n" << i;
       nb_mod = ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality == 2 ) ? 2 : 2 + rand() % ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality - 1 );
-      map.insert ( i, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addVariable ( LabelizedVariable ( strBuff.str(), "" , nb_mod ) ) );
+      map.insert ( i, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addVariable ( LabelizedVariable ( strBuff.str(), "" , nb_mod ) ) );      
       strBuff.str ( "" );
     }
 
     // We add arcs
-
-
     float density = ( float ) ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxArcs * 2 ) / ( float ) ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes * ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes - 1 ) );
     float p = density * ( float ) RAND_MAX;
 
