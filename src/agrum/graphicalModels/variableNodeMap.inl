@@ -80,7 +80,8 @@ namespace gum {
 
   
   // Maps id with var. Var is added by copy.
-  // @warning If the map already exist it will delete the precedent var!
+  // @throw DuplicateLabel if the name already exists in the mapping
+  // @throw DuplicateElement if the id already exists in the mapping
   INLINE
   NodeId VariableNodeMap::insert( NodeId id, const DiscreteVariable& var ) {
     if ( __names2nodes.existsFirst( var.name() ) ) {
@@ -88,7 +89,7 @@ namespace gum {
     }
 
     if ( exists( id ) ) {
-      erase( id );
+      GUM_ERROR( DuplicateElement, "Unable to insert new var with this id." );
     }
 
     __nodes2vars.insert( id, var.copyFactory() );
@@ -144,14 +145,6 @@ namespace gum {
     var->setName( new_name );
     __names2nodes.insert( new_name, id );
   }
-
-
-  /// removes all the associations
-  INLINE void VariableNodeMap::clear () {
-    __nodes2vars.clear ();
-    __names2nodes.clear ();
-  }
-    
 
   INLINE const std::string& VariableNodeMap::name(NodeId id) const {
     return __names2nodes.first(id);

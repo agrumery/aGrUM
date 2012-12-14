@@ -90,9 +90,11 @@ namespace gum {
       /// Return true if var matches a node.
       bool exists ( const DiscreteVariable& var ) const;
 
-      /// Maps id with var. Var is added by copy.
-      /** @warning If the map id already exist it will delete the precedent var!
+      /// Maps id with var. 
+      /** 
+       * @warning Var is added by copy.
        * @throws DuplicateLabel if this name already exists
+       * @throws DuplicateElement if this id already exists
        * @return Returns id (useful in some case); */
       NodeId insert ( NodeId id, const DiscreteVariable& var );
 
