@@ -32,7 +32,7 @@ ClusteredLayerGenerator::ClusteredLayerGenerator():
   __layers(), __domain_size(2), __max_parents(INT_MAX), __cluster_ratio(0.0)
 {
   GUM_CONSTRUCTOR(ClusteredLayerGenerator);
-  std::srand(std::time(NULL));
+  initRandom();
 }
 
 INLINE

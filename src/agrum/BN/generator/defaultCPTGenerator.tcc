@@ -25,6 +25,7 @@
  */
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 
+#include <ctime>
 
 namespace gum {
 
@@ -50,7 +51,8 @@ DefaultCPTGenerator<GUM_SCALAR>::~DefaultCPTGenerator() {
 template <typename GUM_SCALAR> void
 DefaultCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
     std::vector<GUM_SCALAR> v;
-    srand( time( NULL ) );
+    initRandom();
+    
     for ( Size i = 0; i < cpt.domainSize();  ++i ) {
         v.push_back(( GUM_SCALAR ) rand() );
     }

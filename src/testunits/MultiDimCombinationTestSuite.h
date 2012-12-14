@@ -42,7 +42,7 @@ namespace gum_tests {
       // ==========================================================================
       void randomInitP ( gum::Potential<float>& t ) {
         gum::Instantiation i ( t );
-        srand ( time ( NULL ) );
+        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
           t.set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );

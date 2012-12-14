@@ -193,6 +193,9 @@ namespace gum {
 
       /// @return Returns false if the src and this are equal.
       bool operator!=( const AbstractBayesNet<GUM_SCALAR>& src ) const;
+      
+      /// randomly generates CPTs for a given structure
+      void generateCPTs();
 
     protected:
       /**

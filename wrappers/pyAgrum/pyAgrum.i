@@ -247,7 +247,7 @@ def addTick(self,*args):
 
 		return q;
 	};
-
+	
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
     	  std::vector<PythonLoadListener> py_listener;
@@ -819,11 +819,12 @@ PyObject* compute(void) {
 %inline %{
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
+
 gum::BayesNet<double>& generateBN(gum::Size n_nodes=10,gum::Size n_arcs=15,gum::Size n_modmax=4) {
     if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN");
 
     gum::BayesNet<double>* bn=new gum::BayesNet<double>();
-
+    
     gum::MCBayesNetGenerator<double> gen( n_nodes,n_arcs,n_modmax);
     gen.generateBN(*bn);
 

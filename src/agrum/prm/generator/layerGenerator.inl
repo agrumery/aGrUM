@@ -31,8 +31,8 @@ INLINE
 LayerGenerator::LayerGenerator():
   __layers(), __domain_size(2), __max_parents(INT_MAX) {
   GUM_CONSTRUCTOR(LayerGenerator);
-  std::srand(std::time(NULL));
-}
+      initRandom();
+    }
 
 INLINE
 LayerGenerator::LayerGenerator(const LayerGenerator& source):

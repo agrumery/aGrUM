@@ -36,62 +36,48 @@
 
 namespace gum {
 
-  
+
   // Default constructor.
   VariableNodeMap::VariableNodeMap() {
-    GUM_CONSTRUCTOR( VariableNodeMap );
+    GUM_CONSTRUCTOR ( VariableNodeMap );
   }
 
-  
+
   // Copy constructor.
   VariableNodeMap::VariableNodeMap ( const VariableNodeMap& source ) {
-    GUM_CONS_CPY( VariableNodeMap );
+    GUM_CONS_CPY ( VariableNodeMap );
 
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter ) {
-      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() );
-      // copy factory is used inside insert
-    }
-
-    __names2nodes = source.__names2nodes;
+    __copy ( source );
   }
 
-  
+
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
-    GUM_DESTRUCTOR( VariableNodeMap );
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
-      delete iter.second();
-    }
-    
-    __nodes2vars.clear();
-    __names2nodes.clear();
+    GUM_DESTRUCTOR ( VariableNodeMap );
+
+    clear();
   }
-  
+
 
   // Copy operator.
   VariableNodeMap&
-  VariableNodeMap::operator=( const VariableNodeMap& source ) {
+  VariableNodeMap::operator= ( const VariableNodeMap& source ) {
+    clear();
+    __copy ( source );
+
+    return *this;
+  }
+
+  void VariableNodeMap::clear ( void ) {
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
             __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
       delete iter.second();
     }
 
     __nodes2vars.clear();
-
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter ) {
-      __nodes2vars.insert( iter.first(), iter.second()->copyFactory() );
-    }
-
-    __names2nodes = source.__names2nodes;
-    return *this;
+    __names2nodes.clear();
   }
 
-  
   /// friendly displays the content of the VariableNodeMap
   const std::string VariableNodeMap::toString() const {
     std::stringstream stream;
@@ -104,7 +90,17 @@ namespace gum {
     return stream.str();
   }
 
+  /// do the copy
+  void VariableNodeMap::__copy ( const VariableNodeMap& source ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
+            source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end(); ++iter ) {
+      __nodes2vars.insert ( iter.first(), iter.second()->copyFactory() );
+      // copy factory is used inside insert
+    }
 
+    __names2nodes = source.__names2nodes;
+  }
 
   // ============================================================================
   /// for friendly displaying the content of clique graphs
@@ -113,6 +109,7 @@ namespace gum {
     stream << v.toString();
     return stream;
   }
+
 
 
 } /* namespace gum */

@@ -940,7 +940,7 @@ namespace gum_tests {
       // ==========================================================================
       void randomInit ( gum::MultiDimArray<float>* t ) {
         gum::Instantiation i ( t );
-        srand ( time ( NULL ) );
+        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
           t->set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );
@@ -951,7 +951,7 @@ namespace gum_tests {
       // ==========================================================================
       void randomInitPointer ( gum::MultiDimArray<float*>* t ) {
         gum::Instantiation i ( t );
-        srand ( time ( NULL ) );
+        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
           t->set ( i, new float ( ( int ) ( ( ( float ) rand() /RAND_MAX ) * 100000 ) ) );
@@ -962,7 +962,7 @@ namespace gum_tests {
       // ==========================================================================
       void randomInitP ( gum::Potential<double>& t ) {
         gum::Instantiation i ( t );
-        srand ( time ( NULL ) );
+        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
           t.set ( i, ( int ) ( ( ( double ) rand() / RAND_MAX ) * 100000 ) );
@@ -974,7 +974,7 @@ namespace gum_tests {
       // ==========================================================================
       void randomInitPPointer ( gum::Potential<double*>& t ) {
         gum::Instantiation i ( t );
-        srand ( time ( NULL ) );
+        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
           t.set ( i, new double ( ( int ) ( ( ( double ) rand() /RAND_MAX ) * 100000 ) ) );

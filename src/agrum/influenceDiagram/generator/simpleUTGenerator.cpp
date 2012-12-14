@@ -48,7 +48,7 @@ namespace gum {
   SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<float>& ut ) 
   {
     std::vector<float> v;
-    srand( time( NULL ) );
+    initRandom() ;
 
     for ( Size i = 0; i < ut.domainSize();  ++i ) 
       v.push_back(( float ) rand()*1000 );
@@ -63,7 +63,7 @@ namespace gum {
   SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<double>& ut ) 
   {
     std::vector<double> v;
-    srand( time( NULL ) );
+    initRandom() ;
 
     for ( Size i = 0; i < ut.domainSize();  ++i )
       v.push_back(( double ) rand()*1000 );

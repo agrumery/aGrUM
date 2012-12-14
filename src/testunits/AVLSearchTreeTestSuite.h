@@ -184,7 +184,8 @@ namespace gum_tests {
       }
 
       void testRandomErase() {
-        srand( time( NULL ) );
+        gum::initRandom();
+        
         gum::AVLSearchTree<int> tree;
         std::vector<unsigned int> vect( 4000 );
 

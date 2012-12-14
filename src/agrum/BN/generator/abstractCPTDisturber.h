@@ -38,7 +38,7 @@
 namespace gum {
 
 
-  /** @class CPTDisturb *
+  /** @class AbstractCPTDisturb *
    * @brief Abstract class for Modifying Conditional Probability Tables.
    * @ingroup bn_group
    *

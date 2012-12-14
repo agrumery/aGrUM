@@ -6,7 +6,7 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
 find_package(PythonInterp)
-find_package(PythonLibs ${PYTHON_VERSION_MAJOR})
+find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
@@ -14,11 +14,14 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_version()"
-  OUTPUT_VARIABLE PYTHON_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+# execute_process(
+#   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_version()"
+#   OUTPUT_VARIABLE PYTHON_VERSION
+#   OUTPUT_STRIP_TRAILING_WHITESPACE
+#   # why not
+#   # SET(PYTHON_VERSION) "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
+#   # ?
+# )
 
 set(PYAGRUMFILE "pyAgrum.i")
 set(SWIGFILE "aGrUM_wrap.i")
@@ -90,7 +93,7 @@ file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../apps/pyAgrum/gumLib/*.
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../src/version.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
-set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION}.egg-info")
+set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.egg-info")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/egg-info.in" "${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE}")
