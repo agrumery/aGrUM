@@ -23,11 +23,13 @@
 #include <agrum/config.h>
 #include <agrum/core/signal/listener.h>
 
+#include <agrum/BN/algorithms/approximationScheme.h>
+
 namespace gum {
   class ApproximationSchemeListener : public Listener {
 
     public:
-      ApproximationSchemeListener();
+      ApproximationSchemeListener( ApproximationScheme& sch);
       virtual ~ApproximationSchemeListener();
 
       virtual void whenProgress( const void* src,int pourcent,double error, long time ) =0;
@@ -36,6 +38,8 @@ namespace gum {
     private:
       ApproximationSchemeListener( const ApproximationSchemeListener& other );
       ApproximationSchemeListener& operator=( const ApproximationSchemeListener& other );
+      
+      ApproximationScheme& __sch;
   };
 }
 

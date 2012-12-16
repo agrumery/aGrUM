@@ -31,6 +31,8 @@
 #ifndef GUM_APPROXIMATION_SCHEME_H
 #define GUM_APPROXIMATION_SCHEME_H
 
+#include <math.h>
+
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/timer.h>
@@ -94,7 +96,7 @@ namespace gum {
         __max_time ( 0.0 ),
         __max_iter ( ( Size ) 10000 ) ,
         __burn_in ( ( Size ) 0 ),
-        __periode_size ( ( Size ) 1 ),
+        __period_size ( ( Size ) 1 ),
         __verbosity ( v ) {
         GUM_CONSTRUCTOR ( ApproximationScheme );
       };
@@ -184,16 +186,16 @@ namespace gum {
       /// @{
 
       /// @throw OutOfLowerBound if p<1
-      void setPeriodeSize ( Size p ) {
+      void setPeriodSize ( Size p ) {
         if ( p < 1 ) {
           GUM_ERROR ( OutOfLowerBound, "p should be >=1" );
         }
 
-        __periode_size = p;
+        __period_size = p;
 
       };
 
-      Size periodeSize ( void ) const {return __periode_size;};
+      Size periodSize ( void ) const {return __period_size;};
       /// @}
 
       /// size of burn in on number of iteration
@@ -269,7 +271,7 @@ namespace gum {
       bool startOfPeriod() {
         if ( __current_step < __burn_in ) return false;
 
-        return ( ( __current_step - __burn_in ) % __periode_size == 0 );
+        return ( ( __current_step - __burn_in ) % __period_size == 0 );
       }
 
       /// update the scheme w.r.t the new error
@@ -384,8 +386,8 @@ namespace gum {
       /// nbr of iterations before checking stopping criteria
       Size __burn_in;
 
-      /// checking criteria every __periode_size iterations
-      Size __periode_size;
+      /// checking criteria every __period_size iterations
+      Size __period_size;
 
       bool __verbosity;
   };

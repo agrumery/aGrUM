@@ -6,7 +6,7 @@
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
+s
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,14 +17,19 @@
 */
 
 
-#include "approximationSchemeListener.h"
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
 
 namespace gum {
-  ApproximationSchemeListener::ApproximationSchemeListener() {
+  ApproximationSchemeListener::ApproximationSchemeListener(ApproximationScheme& sch):__sch(sch) {
     GUM_CONSTRUCTOR( ApproximationSchemeListener );
+    
+    GUM_CONNECT(( __sch ),onProgress,( *this ),ApproximationSchemeListener::whenProgress );
+    GUM_CONNECT(( __sch ),onStop,( *this ),ApproximationSchemeListener::whenStop);
   }
 
-  ApproximationSchemeListener::ApproximationSchemeListener( const ApproximationSchemeListener& other ) {
+  ApproximationSchemeListener::ApproximationSchemeListener( const ApproximationSchemeListener& other ) :__sch(other.__sch){
+    GUM_CONS_CPY( ApproximationSchemeListener );
+    GUM_ERROR( OperationNotAllowed,"No copy constructor for UndiGraphListener" );
 
   }
 
@@ -33,7 +38,8 @@ namespace gum {
   }
 
   ApproximationSchemeListener& ApproximationSchemeListener::operator=( const ApproximationSchemeListener& other ) {
-    return *this;
+    GUM_CONS_CPY( ApproximationSchemeListener );
+    GUM_ERROR( OperationNotAllowed,"No copy constructor for UndiGraphListener" );
   }
 
 }

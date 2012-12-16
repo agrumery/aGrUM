@@ -28,7 +28,6 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
 
     PyObject *__pyWhenProgress;
     PyObject *__pyWhenStop;
-    gum::ApproximationScheme *__algo;
 
     void __checkCallable( PyObject *pyfunc ) {
       if( !PyCallable_Check( pyfunc ) ) {
@@ -37,13 +36,8 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
     };
 
   public:
-    PythonApproximationListener( gum::ApproximationScheme& algo ):gum::ApproximationSchemeListener(),__algo( &algo ) {
+    PythonApproximationListener( gum::ApproximationScheme& algo ):gum::ApproximationSchemeListener(algo) {
       __pyWhenProgress = __pyWhenStop = ( PyObject * )0;
-
-      GUM_CONNECT( ( *__algo ), onProgress,
-                   ( *this ), PythonApproximationListener::whenProgress );
-      GUM_CONNECT( ( *__algo ), onStop,
-                   ( *this ), PythonApproximationListener::whenStop );
     };
 
     ~PythonApproximationListener() {

@@ -35,7 +35,7 @@
 #define KL_DEFAULT_MAXITER 10000000
 #define KL_DEFAULT_EPSILON 1e-10
 #define KL_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define KL_DEFAULT_PERIODE_SIZE 500
+#define KL_DEFAULT_PERIOD_SIZE 500
 #define KL_DEFAULT_VERBOSITY false
 #define KL_DEFAULT_BURNIN 3000
 
@@ -53,7 +53,7 @@ namespace gum {
     setMaxIter( KL_DEFAULT_MAXITER );
     setVerbosity( KL_DEFAULT_VERBOSITY );
     setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
+    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
   }
 
   template<typename GUM_SCALAR>
@@ -68,7 +68,7 @@ namespace gum {
     setMaxIter( KL_DEFAULT_MAXITER );
     setVerbosity( KL_DEFAULT_VERBOSITY );
     setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodeSize( KL_DEFAULT_PERIODE_SIZE );
+    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
   }
 
   template<typename GUM_SCALAR>

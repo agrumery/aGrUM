@@ -30,7 +30,7 @@
 #define INFERENCE_DEFAULT_MAXITER 10000000
 #define INFERENCE_DEFAULT_EPSILON 1e-4*log(2)
 #define INFERENCE_DEFAULT_MIN_EPSILON_RATE 1e-4
-#define INFERENCE_DEFAULT_PERIODE_SIZE 500
+#define INFERENCE_DEFAULT_PERIOD_SIZE 500
 #define INFERENCE_DEFAULT_VERBOSITY false
 #define INFERENCE_DEFAULT_BURNIN 3000
 
@@ -54,7 +54,7 @@ namespace gum {
     setMaxIter( INFERENCE_DEFAULT_MAXITER );
     setVerbosity( INFERENCE_DEFAULT_VERBOSITY );
     setBurnIn( INFERENCE_DEFAULT_BURNIN );
-    setPeriodeSize( INFERENCE_DEFAULT_PERIODE_SIZE );
+    setPeriodSize( INFERENCE_DEFAULT_PERIOD_SIZE );
 
     // set the correspondance between variables
     const DAG& dag = bn().dag();
