@@ -75,7 +75,7 @@ namespace gum {
    */
   class ApproximationScheme {
     public:
-      Signaler3<int, double, long> onProgress; // progression,error
+      Signaler3<int, double, double> onProgress; // progression,error
       Signaler1<std::string> onStop; // criteria messageApproximationScheme
 
       enum ApproximationSchemeSTATE {
@@ -284,7 +284,7 @@ namespace gum {
       /// @return true if stat become != APPROX_CONTINUE
       bool continueApproximationScheme ( double error, bool check_rate = true ) {
         // For coherence, we fix the time used in the method.
-        long timer_step=__timer.step();
+        double timer_step=__timer.step();
 
         if ( ! startOfPeriod() ) return true;
 
@@ -323,7 +323,7 @@ namespace gum {
         }
 
         if (stateApproximationScheme() == APPROX_CONTINUE) {
-          if (onProgress.hasListener()) GUM_EMIT3(onProgress,__current_step*1.0/__max_iter,__current_epsilon,timer_step);
+          if (onProgress.hasListener()) GUM_EMIT3(onProgress,(__current_step*100)/__max_iter,__current_epsilon,timer_step);
           return true;
         } else
           return false;
