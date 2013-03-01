@@ -1,0 +1,176 @@
+
+%pythonappend gum::BayesNetInference::marginal %{
+        val.__fill_distrib__()
+%}
+
+
+%feature("shadow") gum::BayesNetInference<float>::setEvidence %{
+def setEvidence(self, evidces):
+    if not isinstance(evidces, dict):
+        raise TypeError("setEvidence parameter must be dict, not %s"
+                        %(type(evidces)))
+
+    bn = self.bn()
+
+    # set evidences
+    list_pot = ListPotentials_double()
+    for var_name, evidce in evidces.iteritems():
+        pot = Potential_double()
+
+        if isinstance(var_name, int):
+            var = bn.variable(var_name)
+        elif isinstance(var_name, str):
+            var = bn.variableFromName(var_name)
+        else:
+            raise TypeError('values of the dict must be int or string')
+
+        pot.add(var)
+        if isinstance(evidce, (int, float, str)):
+            pot[:] = 0
+            # determine the var type
+            try:
+                cast_var = var.toLabelizedVar()
+                if isinstance(evidce, int):
+                    index = evidce
+                elif isinstance(evidce, str):
+                    index = cast_var[evidce]
+                else:
+                    raise TypeError('values of the dict must be int or string')
+            except RuntimeError:
+                try:
+                    cast_var = var.toRangeVar()
+                    if isinstance(evidce, int):
+                        index = cast_var[str(evidce)]
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    cast_var = var.toDiscretizedVar()
+                    if isinstance(evidce, float):
+                        index = cast_var.index(evidce)
+                    elif isinstance(evidce, str):
+                        index = cast_var.index(float(evidce))
+                    else:
+                        raise TypeError('values of the dict must be float or string')
+            pot[index] = 1
+        elif isinstance(evidce, (list, tuple)):
+            pot[:] = evidce
+        else:
+            raise TypeError('dict values must be number, string or sequence')
+        list_pot.append(pot)
+
+    self.insertEvidence(list_pot)
+%}
+
+
+// copy: M indicates the modifications
+%feature("shadow") gum::BayesNetInference<double>::setEvidence %{
+def setEvidence(self, evidces):
+    if not isinstance(evidces, dict):
+        raise TypeError("setEvidence parameter must be dict, not %s"
+                        %(type(evidces)))
+    bn = self.bn()
+
+    # set evidences
+    list_pot = ListPotentials_double() #M
+    for var_name, evidce in evidces.iteritems():
+        pot = Potential_double() #M
+
+        if isinstance(var_name, int):
+            var = bn.variable(var_name)
+        elif isinstance(var_name, str):
+            var = bn.variableFromName(var_name)
+        else:
+            raise TypeError('values of the dict must be int or string')
+
+        pot.add(var)
+        if isinstance(evidce, (int, float, str)):
+            pot[:] = 0
+            # determine the var type
+            try:
+                cast_var = var.toLabelizedVar()
+                if isinstance(evidce, int):
+                    index = evidce
+                elif isinstance(evidce, str):
+                    index = cast_var[evidce]
+                else:
+                    raise TypeError('values of the dict must be int or string')
+            except RuntimeError:
+                try:
+                    cast_var = var.toRangeVar()
+                    if isinstance(evidce, int):
+                        index = cast_var[str(evidce)]
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    cast_var = var.toDiscretizedVar()
+                    if isinstance(evidce, float):
+                        index = cast_var.index(evidce)
+                    elif isinstance(evidce, str):
+                        index = cast_var.index(float(evidce))
+                    else:
+                        raise TypeError('values of the dict must be float or string')
+            pot[index] = 1
+        elif isinstance(evidce, (list, tuple)):
+            pot[:] = evidce
+        else:
+            raise TypeError('dict values must be number, string or sequence')
+        list_pot.append(pot)
+
+    self.insertEvidence(list_pot)
+%}
+
+
+// these void class extensions are rewritten by "shadow" declarations
+%extend gum::BayesNetInference<float> {
+    void setEvidence(PyObject *evidces) {}
+}
+%extend gum::BayesNetInference<double> {
+    void setEvidence(PyObject *evidces) {}
+}
+
+
+%feature("shadow") gum::LazyPropagation::__del__ %{
+    def __del__(self):
+        self.__disown__()
+%}
+
+
+%extend gum::LazyPropagation {
+    void __del__() {};
+}
+
+%extend gum::LazyPropagation<double> {
+    Potential<double>*  joint(PyObject *seq_of_ids) {
+      /*if (PySequence_Check(seq_of_ids)==0) {
+        PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
+        return 0;
+      }*/
+        
+      gum::NodeSet s;
+      for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
+        PyObject* o=PyList_GetItem(seq_of_ids, i);
+        /*if (PyNumber_Check(o)==0) {
+          PyErr_SetString(PyExc_TypeError, "arg must be a sequence of ids");
+          return 0;
+        }*/
+        std::cout<<"   "<<i<<" : "<<PyInt_AsLong(o)<<std::endl;
+        s<<gum::NodeId( PyInt_AsLong(o));
+      }
+      std::cout<<s<<std::endl;
+      return self->joint(s);
+    };
+}
+
+%feature("shadow") gum::GibbsInference::__del__ %{
+    def __del__(self):
+        self.__disown__()
+%}
+
+
+%extend gum::GibbsInference {
+    void __del__() {}
+}

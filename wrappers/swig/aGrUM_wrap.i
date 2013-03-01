@@ -1,6 +1,5 @@
 /* INCLUDES */
 %{
-#define SWIG_FILE_WITH_INIT
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -12,6 +11,7 @@
 #include <new>
 #include <exception>
 #include <typeinfo>
+
 #include <agrum/core/types.h>
 #include <agrum/core/utils.h>
 #include <agrum/core/hashFunc.h>

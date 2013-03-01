@@ -28,6 +28,7 @@
 
 #include <agrum/core/signal/listener.h>
 
+
 class PythonLoadListener : public gum::Listener {
   private:
     PyObject *__whenLoading;
@@ -56,4 +57,28 @@ class PythonLoadListener : public gum::Listener {
     ~PythonLoadListener() {
       if ( __whenLoading ) Py_DECREF( __whenLoading );
     }
+};
+
+
+int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
+  if (!l) return 0;
+  if (l==Py_None) return 0;
+  
+  int l_size = 0;
+  PyObject *item;
+  
+  if(PySequence_Check(l)) {
+    l_size = PySequence_Size(l);
+    py_listener.resize(l_size);
+    for(int i=0 ; i < l_size ; i++) {
+      item = PySequence_GetItem(l, i);
+      if(! py_listener[i].setPythonListener(item)) return 0;
+    }
+  } else {
+    l_size=1;
+    py_listener.resize(l_size);
+    if(! py_listener[0].setPythonListener(l)) return 0;
+  }
+  
+  return l_size;
 };
