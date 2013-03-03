@@ -1,99 +1,175 @@
-/***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr   *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+/*#include "CredalNet.h"
+#include "InferenceEngine.h"
+#include "MCSampling.h"
+#include "LocalSearch.h"
+#include "LoopyPropagation.h"
+#include "Errors.h"
+*/
 
-#include <iostream>
-
-#include <clocale>
-
-#define GUM_TRACE_ON
-
-#include <agrum/config.h>
-
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/LocalSearch.h>
+#include <agrum/CN/LoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+using namespace gum;
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-namespace gum {
-  template<typename GUM_SCALAR>
-  class LoopyBeliefPropagation : BayesNetInference<GUM_SCALAR> {
-    private:
 
-      Property<Potential<float> *>::onArcs __lArcs;
-      Property<Potential<float> *>::onArcs __pArcs;
+#define xstrfy(s) strfy(s)
+#define strfy(x) #x
 
-    public:
-      LoopyBeliefPropagation( const BayesNet<GUM_SCALAR>& bn ):BayesNetInference<GUM_SCALAR>( bn ) {
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
-        const ArcSet& arcs=this->bn().dag().asArcs();
+int main(int argc, char * argv[]) {
+  std::cout<<GET_PATH_STR(bn_c.bif)<<std::endl;
+  
+  BayesNet<double> monBNa;
+  BIFReader< double > readera(&monBNa, GET_PATH_STR(bn_c.bif));
+  readera.proceed();
 
-        for( ArcSet::const_iterator arc=arcs.begin(); arc!=arcs.end(); ++arc ) {
-          NodeId j=arc->head();
-          __lArcs.insert( *arc,new Potential<float>() );
-          ( *__lArcs[*arc] )<<this->bn().variable( j );
-          __pArcs.insert( *arc,new Potential<float>() );
-          ( *__pArcs[*arc] )<<this->bn().variable( j );
-        }
-      }
+  BayesNet<double> monBNb;
+  BIFReader< double > readerb(&monBNb, GET_PATH_STR(den_c.bif));
+  readerb.proceed();
 
-      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) {};
-      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) {};
-      virtual void eraseAllEvidence() {};
-  };
-}
+    //std::cout << myCNa.toString() << std::endl;
+  //myCNa.intervalToCredal(0);
 
-int main( void ) {
-  gum::BayesNet<float> bn;
+  //std::cout << myCNa.toString();
+  //
+  //std::cout << "LP" << std::endl;
 
-  gum::BIFReader<float> reader( &bn, "tree.bif" ) );
-  reader.trace( true );
+  //LoopyPropagation< double > lp(myCNa);
+  //lp.makeInference();
+  
+  //std::cout << "MC rep" << std::endl;
+for(int i = 0; i < 1; i++) {
+  for(int j = 1; j < 2; j++) {
+  CredalNet<double> * myCNa = new CredalNet<double>(monBNa, monBNb);
+  //myCNa.intervalToCredal(10); // IDM s = 10
+  if(i==0)
+    myCNa->bnToCredal(0.95, false);
+  if(i==1)
+    myCNa->bnToCredal(0.8, false);
+  if(i==2)
+    myCNa->bnToCredal(0.85, false);
 
-  if( ! reader.proceed() ) {
-    reader.showElegantErrorsAndWarnings();
-    reader.showErrorCounts();
-    return false;
+  //std::cout << myCNa->toString() << std::endl;
+
+  MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> >(*myCNa);
+  MCE->setRepetitiveInd(false);
+  MCE->setTimeLimit(20);
+  if(j==0)
+    MCE->insertEvidence(GET_PATH_STR(forward.evi));
+  if(j==1)
+    MCE->insertEvidence(GET_PATH_STR(fb.evi));
+  //if(j==2)
+    //MCE.insertEvidence("./temp.evi");
+
+  MCE->makeInference();
+  if(i==0 && j == 0) {
+    //MCE->saveMarginals("./MCr_0.6c_f.mar");
+    MCE->saveExpectations("./MCs_0.6c_f.exp");
+  }
+  else if(i==1 && j == 0) {
+    //MCE->saveMarginals("./MCr_0.7c_f.mar");
+    MCE->saveExpectations("./MCs_0.7c_f.exp");
+  }
+  else if(i==2 && j == 0) {
+    //MCE->saveMarginals("./MCr_0.8c_f.mar");
+    MCE->saveExpectations("./MCs_0.95c_f.exp");
+  }
+  else if(i==0 && j == 1) {
+    //MCE->saveMarginals("./MCr_0.7c_fb.mar");
+    MCE->saveExpectations("./MCs_0.95c_fb.exp");
+  }
+  else if(i==1 && j == 1) {
+    //MCE->saveMarginals("./MCs_0.95c_fb.mar");
+    MCE->saveExpectations("./MCs_0.95c_fb.exp");
+  }
+  else if(i==2 && j == 1) {
+    //MCE->saveMarginals("./MCs_0.8_fb.mar");
+    MCE->saveExpectations("./MCs_0.8c_fb.exp");
   }
 
-  GUM_TRACE_VAR( bn );
-
-  gum::LoopyBeliefPropagation<float> inf( bn );
-  // inf .makeInference();
-//   for( gum::NodeId i=0; i<bn.size(); i++ ) {
-//     std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf.marginal( i )<<std::endl;
-//   }
-  gum::LazyPropagation<float> inf1( bn );
-  inf1.makeInference();
-
-  for( gum::NodeId i=0; i<bn.size(); i++ ) {
-    std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf1.marginal( i )<<std::endl;
+  //MCE.saveVertices("./SMCVr.res");
+  //MCE.saveExpectations("./rep.expect");
+  //MCE->eraseAllEvidence();
+  delete MCE;
+  delete myCNa;
   }
-
-  gum::__atexit();
-
-//     const gum::NodeSet& p=bn.dag().parents(i);
-//     for (gum::NodeSet::const_iterator it=p.begin() ;;))
-//         *it <-
 }
+/*
+  std::cout << "MC strong" << std::endl;
 
+  MCSampling<double, gum::LazyPropagation<double> > MCE2(myCNa);
+  MCE2.setRepetitiveInd(false);
+  MCE2.setTimeLimit(20);
+  //MCE2.insertEvidence("./forward.evi");
+  MCE2.makeInference();
+  MCE2.saveMarginals("./SMCs.res");
+  MCE2.saveVertices("./SMCVs.res");
+  MCE2.eraseAllEvidence();
+*/
+  //std::cout << "LS" << std::endl;
 
+  //LocalSearch<double, gum::LazyPropagation<double> > LSa(myCNa);
+  //LSa.setRepetitiveInd(true);
+  //LSa.insertEvidence("./evi.evi");
+  //LSa.makeInference();
+  //LSa.saveMarginals("./LS.res");
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+  return 0;
+/*
+  gum::BayesNet<double> monBN;
+  gum::BIFReader< double > reader(&monBN, "./2Umin.bif");
+  reader.proceed();
+
+  gum::BayesNet<double> monBN5;
+  gum::BIFReader< double > reader5(&monBN5, "./2Umax.bif");
+  reader5.proceed();
+*/
+
+/*
+  std::string dot_bn = monBN.toDot();
+  std::ofstream h_file("bn.dot", std::ios::out | std::ios::trunc);
+  h_file << dot_bn;
+  h_file.close();
+  return 0;
+*/
+
+/*
+  CredalNet<double> myCN(monBN, monBN5);
+
+  myCN.intervalToCredal();
+
+  std::cout << myCN.toString();
+
+  LocalSearch<double, gum::LazyPropagation<double> > LS(myCN);
+
+  LS.insertEvidence("./evi.evi");
+  LS.insertQuery("./evi.evi");
+
+  LS.setPassN(4);
+  LS.setMaxVertices(10);
+  LS.setRepetitiveInd(true);
+
+  LS.makeInference();
+
+  LS.saveMarginals("./LS.res");
+
+  MCSampling<double, gum::LazyPropagation<double> > MCE(myCN);
+  MCE.insertEvidence("./evi.evi");
+  MCE.insertQuery("./evi.evi");
+  //MCE.setIterStop(1000000000);
+  MCE.makeInference();
+  MCE.saveMarginals("./mc.res");
+
+  std::cout << "dts" << std::endl;
+  myCN.dts();
+
+  std::cout << myCN.toString();
+*/
+  return EXIT_SUCCESS;
+  
+}
