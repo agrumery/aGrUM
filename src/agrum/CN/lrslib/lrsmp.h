@@ -211,7 +211,7 @@ void subint (lrs_mp a, lrs_mp b, lrs_mp c);	/* compute c=a-b                    
 /* Miscellaneous functions        */
 /******************************** */
 
-//void free (void *);
+/*void free (void *);*/
 
 void lrs_getdigits (long *a, long *b);	/* send digit information to user                         */
 

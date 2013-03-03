@@ -155,6 +155,13 @@ namespace gum {
 /// Exception : existence of a directed cycle in a graph
   GUM_MAKE_ERROR( InvalidDirectedCycle, GraphError, "the graph contains a directed cycle" )
 
+///////////////////////////////////
+/// Exception base for CPT error
+  GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
+/// Exception : no neighbour to a given node was found
+  GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
+  
+
 /// Exception base for factory error
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
   GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )

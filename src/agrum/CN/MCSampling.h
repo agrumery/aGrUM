@@ -1,9 +1,9 @@
-#ifndef __MC_SAMPLING__H__
-#define __MC_SAMPLING__H__
+#ifndef ___CN_MC_SAMPLING__H__
+#define ___CN_MC_SAMPLING__H__
 
-#include "InferenceEngine.h"
-//#include "Chrono.h"
 #include <omp.h>
+
+#include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
 
@@ -13,7 +13,7 @@ namespace gum {
       bool __repetitiveInd;
       int __timeLimit;
       int __iterStop;
-     
+
       bool __stopType; // false if done within __timeLimit
 
       typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
@@ -23,11 +23,11 @@ namespace gum {
       std::vector< gum::NodeId > __varOrder;
       std::vector< std::vector< int > > __varInst;
       int __VERT;
-      bool stopN = false;
+      bool stopN;// = false;
       typename std::vector< std::vector < std::vector< GUM_SCALAR > > > __trajectories;
 
       void __verticesSampling();
-      void __insertEvidence(BNInferenceEngine & inference_engine) /*const*/;
+      void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
 
       // added (memory leak)
       //typename gum::List< const gum::Potential< GUM_SCALAR > * > __evi_list;
@@ -37,22 +37,22 @@ namespace gum {
     protected:
 
     public:
-      MCSampling(const CredalNet< GUM_SCALAR > & credalNet);
-      ~MCSampling();
+      MCSampling ( const CredalNet< GUM_SCALAR > & credalNet );
+      virtual ~MCSampling();
 
       void makeInference();
       void eraseAllEvidence();
-      
-      const std::vector< std::vector< GUM_SCALAR > > & vertices(const gum::NodeId id) const;
-      void saveVertices(const std::string & path) const;
-      void saveExpectations(const std::string & path) const;
+
+      const std::vector< std::vector< GUM_SCALAR > > & vertices ( const gum::NodeId id ) const;
+      void saveVertices ( const std::string &path ) const;
+      void saveExpectations ( const std::string &path ) const;
 
       bool getStopType() const;
 
-      void setRepetitiveInd(const bool repetitive);
-      void setTimeLimit(const int & time_limit);
-      void setIterStop(const int & no_change_time_limit);
-      void setAll(const bool repetitive, const int & time_limit, const int & no_change_time_limit);
+      void setRepetitiveInd ( const bool repetitive );
+      void setTimeLimit ( const int &time_limit );
+      void setIterStop ( const int &no_change_time_limit );
+      void setAll ( const bool repetitive, const int &time_limit, const int &no_change_time_limit );
 
       std::string toString() const;
 

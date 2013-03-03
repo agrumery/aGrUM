@@ -1,9 +1,9 @@
-#ifndef __LOCAL_SEARCH__H__
-#define __LOCAL_SEARCH__H__
+#ifndef __CN_LOCAL_SEARCH__H__
+#define __CN_LOCAL_SEARCH__H__
 
-#include "InferenceEngine.h"
-//#include "Chrono.h"
 #include <omp.h>
+
+#include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
 
@@ -15,36 +15,36 @@ namespace gum {
       int __passN;
 
       std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
-      std::vector< BNInferenceEngine  * > __engineSet;
+      std::vector< BNInferenceEngine * > __engineSet;
 
       typedef typename gum::Property< std::vector< int > >::onNodes __affec;
 
       typename gum::Property< std::vector< std::vector< __affec > > >::onNodes __localOptMin;
-	    typename gum::Property< std::vector< std::vector< __affec > > >::onNodes __localOptMax;
+      typename gum::Property< std::vector< std::vector< __affec > > >::onNodes __localOptMax;
 
       typename std::vector< __affec > __toDoAffec;
-	    typename std::vector< __affec > __nextToDoAffec;
+      typename std::vector< __affec > __nextToDoAffec;
       gum::NodeId __current;
       int __pconf;
-      
-      void __applyAffec(const __affec & affec, bool current, int pconf_pos = -1);
-      void __insertEvidence(BNInferenceEngine & inference_engine) const;
-      void __elimRedund(const std::vector< gum::NodeId > & processed);
-      bool __affec_eq(const __affec & first, const __affec & second, const std::vector< gum::NodeId > & processed) const;
+
+      void __applyAffec ( const __affec &affec, bool current, int pconf_pos = -1 );
+      void __insertEvidence ( BNInferenceEngine &inference_engine ) const;
+      void __elimRedund ( const std::vector< gum::NodeId > & processed );
+      bool __affec_eq ( const __affec &first, const __affec &second, const std::vector< gum::NodeId > & processed ) const;
 
     protected:
 
     public:
-      LocalSearch(const CredalNet< GUM_SCALAR > & credalNet);
+      LocalSearch ( const CredalNet< GUM_SCALAR > & credalNet );
       ~LocalSearch();
 
       void makeInference();
       void eraseAllEvidence();
-      
-      void setRepetitiveInd(const bool repetitive);
-      void setMaxVertices(const int number);
-      void setPassN(const int number);
-      void setAll(const bool repetitive, const int maxVertices, const int passN);
+
+      void setRepetitiveInd ( const bool repetitive );
+      void setMaxVertices ( const int number );
+      void setPassN ( const int number );
+      void setAll ( const bool repetitive, const int maxVertices, const int passN );
 
   };
 

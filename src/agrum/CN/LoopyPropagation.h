@@ -1,5 +1,5 @@
-#ifndef __LOOPY_PROPAGATION__H__
-#define __LOOPY_PROPAGATION__H__
+#ifndef __CN_LOOPY_PROPAGATION__H__
+#define __CN_LOOPY_PROPAGATION__H__
 
 namespace gum {
 
@@ -17,14 +17,14 @@ namespace gum {
       gum::NodeSet __notifiedNodesOnL;
 
       void __init();
-      void __msgP(const gum::NodeId & id, const typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes & msgsParents, typename std::vector< std::vector< GUM_SCALAR > > & msgsP);
+      void __msgP ( const gum::NodeId &id, const typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes &msgsParents, typename std::vector< std::vector< GUM_SCALAR > > & msgsP );
 
       std::map< int, std::vector< std::vector< int > > > __orders;
 
     protected:
 
     public:
-      LoopyPropagation(const CredalNet< GUM_SCALAR > & credalNet);
+      LoopyPropagation ( const CredalNet< GUM_SCALAR > & credalNet );
       ~LoopyPropagation();
 
       void makeInference();

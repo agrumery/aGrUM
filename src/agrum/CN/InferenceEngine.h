@@ -6,7 +6,7 @@ namespace gum {
   template< typename GUM_SCALAR >
   class InferenceEngine {
     private:
-      
+
     protected:
       const CredalNet< GUM_SCALAR > * _credalNet;
 
@@ -22,25 +22,25 @@ namespace gum {
       void _repetitiveInit();
 
     public:
-      InferenceEngine(const CredalNet< GUM_SCALAR > & credalNet);
+      InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
       ~InferenceEngine();
 
       virtual void makeInference() = 0;
       virtual void eraseAllEvidence();
 
-      void insertEvidence(const std::string & path);
-      void insertEvidence(const typename gum::Property< std::vector< GUM_SCALAR > >::onNodes & evidence);
+      void insertEvidence ( const std::string &path );
+      void insertEvidence ( const typename gum::Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
 
-      void insertQuery(const std::string & path);
-      void insertQuery(const typename gum::Property< std::vector< bool > >::onNodes & query);
+      void insertQuery ( const std::string &path );
+      void insertQuery ( const typename gum::Property< std::vector< bool > >::onNodes &query );
 
-      const std::vector< GUM_SCALAR > & marginalMin(const gum::NodeId id) const;
-      const std::vector< GUM_SCALAR > & marginalMax(const gum::NodeId id) const;
+      const std::vector< GUM_SCALAR > & marginalMin ( const gum::NodeId id ) const;
+      const std::vector< GUM_SCALAR > & marginalMax ( const gum::NodeId id ) const;
 
-      void saveMarginals(const std::string & path) const;
+      void saveMarginals ( const std::string &path ) const;
 
       std::string toString() const;
-      
+
   }; // CNInferenceEngine
 
 } // namespace cn

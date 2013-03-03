@@ -16,15 +16,15 @@ namespace gum {
     protected:
 
     public:
-      Errors(const int err_id, const std::string & err_txt, const int err_lvl) throw();
+      Errors ( const int err_id, const std::string &err_txt, const int err_lvl ) throw();
 
-      virtual const char * what() const throw();
+      virtual const char *what() const throw();
 
       int getLvl() const throw();
       int getId() const throw();
 
       ~Errors() throw();
-  
+
   }; // end of : Errors class definition
 
 } // end of : namespace cn
