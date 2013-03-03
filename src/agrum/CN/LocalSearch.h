@@ -50,6 +50,6 @@ namespace gum {
 
 } // namespace cn
 
-#include "LocalSearch.tcc"
+#include <agrum/CN/LocalSearch.tcc>
 
 #endif

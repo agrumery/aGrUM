@@ -35,6 +35,6 @@ namespace gum {
 
 } // namespace cn
 
-#include "LoopyPropagation.tcc"
+#include <agrum/CN/LoopyPropagation.tcc>
 
 #endif

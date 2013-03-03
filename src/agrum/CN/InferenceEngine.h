@@ -45,6 +45,6 @@ namespace gum {
 
 } // namespace cn
 
-#include "InferenceEngine.tcc"
+#include <agrum/CN/InferenceEngine.tcc>
 
 #endif

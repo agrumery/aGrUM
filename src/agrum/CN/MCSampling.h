@@ -61,6 +61,6 @@ namespace gum {
 
 } // namespace cn
 
-#include "MCSampling.tcc"
+#include <agrum/CN/MCSampling.tcc>
 
 #endif
