@@ -24,19 +24,19 @@ to OpenBayes, a free Bayesian Network library for Python."
 %}
 
 /* declaration of code modifiers for 'pythonification' of aGrUM */
-%import "exceptions.i"
-%import "pythonize.i"
+%include "exceptions.i"
+%include "pythonize.i"
 
 /* declaration of code enhancers for pyAgrum */
-%import "core.i"
-%import "variables.i"
-%import "potential.i"
+%include "core.i"
+%include "variables.i"
+%include "potential.i"
 
 %include "pylisteners.i"
 
-%import "bayesnet.i"
-%import "inference.i"
-%import "kl.i"
+%include "bayesnet.i"
+%include "inference.i"
+%include "kl.i"
 
 %include "aGrUM_wrap.i"
 
