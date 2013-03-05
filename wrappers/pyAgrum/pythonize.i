@@ -19,6 +19,8 @@
 %rename(__len__) gum::DiscreteVariable::domainSize() const;
 %rename(__getitem__) gum::DiscreteVariable::operator[](const std::string& label) const;
 
+%rename(gettype) gum::Exceptions::type;
+
 %ignore gum::ListBase::insert;
 %ignore gum::ListBase::pushFront;
 %ignore gum::ListBase::pushBack;
