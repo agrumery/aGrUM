@@ -38,7 +38,7 @@ namespace gum {
     //if(__repetitiveInd)
     try {
       this->_repetitiveInit();
-    } catch ( OperationNotAllowed &err ) {
+    } catch ( InvalidArgument &err ) {
       GUM_SHOWERROR ( err )
       std::cout << "\nvoid MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() : Will use strong independence" << std::endl;
       __repetitiveInd = false;
@@ -135,9 +135,8 @@ namespace gum {
 
           if ( inf_cpt >= __VERT )
             stopN = true;
-
-          #pragma omp flush(stopN)
         }
+        #pragma omp flush(stopN)
 
         __verticesSampling();
 
@@ -529,43 +528,31 @@ namespace gum {
     int choosen_vertex;
     Size dSize;
 
-    if ( __repetitiveInd || !stopN ) {
+    /*if ( __repetitiveInd || !stopN ) {
       if ( !stopN ) {
         std::vector< std::vector < int > > inst;
         #pragma omp critical
         {
           inst = __varInst;
 
-          // for each variable
-          for ( Size pos = 0; pos < __varInst.size(); pos++ ) {
-            __varInst[pos][0]++;
-
-            if ( __varInst[pos][0] > 1 )
-              __varInst[pos][0] = 0;
+          // for each local (conditional) credal set
+          for(int credalSet = 0; credalSet < (*cpt)[__varOrder[pos]].size(); credalSet++) {
+            __varInst[pos][credalSet]++;
+            if(__varInst[pos][credalSet] >= working_bn->variable(__varOrder[pos]).domainSize())
+              __varInst[pos][credalSet] = 0;
             else
               break;
-
-            // for each local (conditional) credal set
-            /*for(int credalSet = 0; credalSet < (*cpt)[__varOrder[pos]].size(); credalSet++) {
-              __varInst[pos][credalSet]++;
-              if(__varInst[pos][credalSet] >= working_bn->variable(__varOrder[pos]).domainSize())
-                __varInst[pos][credalSet] = 0;
-              else
-                break;
-            }*/
-
-
-
-            /*
-                      __varInst[pos]++;
-                      if(__varInst[pos] >= working_bn->variable(__varOrder[pos]).domainSize()) {
-                        __varInst[pos] = 0;
-                      }
-                      else
-                        break;
-                    }*/
           }
+
+          __varInst[pos]++;
+          if(__varInst[pos] >= working_bn->variable(__varOrder[pos]).domainSize()) {
+            __varInst[pos] = 0;
+          }
+          else
+            break;
         }
+      }
+    }
 
         typename gum::Property< std::vector< gum::NodeId > >::onNodes t0;
         typename gum::Property< std::vector< gum::NodeId > >::onNodes t1;
@@ -635,11 +622,10 @@ namespace gum {
 
         return;
       }
+*/
 
 
-
-
-
+  if( __repetitiveInd ) {
       typename gum::Property< std::vector< gum::NodeId > >::onNodes t0;
       typename gum::Property< std::vector< gum::NodeId > >::onNodes t1;
       t0 = this->_t0;
@@ -705,7 +691,6 @@ namespace gum {
         potential->fillWith ( var_cpt );
       }
     }
-
 
   }
 

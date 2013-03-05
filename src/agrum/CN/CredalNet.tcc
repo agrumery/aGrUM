@@ -1031,7 +1031,7 @@ namespace gum {
     // write H rep file
     int64_t num, den;
     std::string inefile = "lrs_h_tmp.ine";
-    std::ofstream h_file ( inefile, std::ios::out | std::ios::trunc );
+    std::ofstream h_file ( inefile.c_str(), std::ios::out | std::ios::trunc );
 
     if ( ! h_file.good() )
       GUM_ERROR ( IOError, "__H2V : could not open lrs input file : " << inefile );
@@ -1107,7 +1107,7 @@ namespace gum {
 
     // read V rep file
     std::string extfilename = "lrs_v_tmp.ext";
-    std::ifstream v_file ( extfilename, std::ios::in );
+    std::ifstream v_file ( extfilename.c_str(), std::ios::in );
 
     if ( ! v_file.good() )
       GUM_ERROR ( IOError, "__H2V() : could not open lrs ouput file : " << extfilename );

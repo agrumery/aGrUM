@@ -17,6 +17,7 @@ namespace gum {
 
       typename gum::Property< GUM_SCALAR >::onNodes _expectationMin;
       typename gum::Property< GUM_SCALAR >::onNodes _expectationMax;
+      //typename std::map< std::string, std::map< int, GUM_SCALAR > > _
 
       // variables modalities (the real ones, not discretized 0 1 2 3 ...)
       typename std::map< std::string, std::vector< GUM_SCALAR > > _modal;
