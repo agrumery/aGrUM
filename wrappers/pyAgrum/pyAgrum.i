@@ -15,17 +15,9 @@ to OpenBayes, a free Bayesian Network library for Python."
 %pythoncode %{
   import numpy
 %}
-
-/* adding extensions */
-%{
-#include "extensions/PythonBNListener.h"
-#include "extensions/PythonLoadListener.h"
-#include "extensions/PythonApproximationListener.h"
-%}
-
 /* declaration of code modifiers for 'pythonification' of aGrUM */
-%include "exceptions.i"
 %include "pythonize.i"
+%include "exceptions.i"
 
 /* declaration of code enhancers for pyAgrum */
 %include "core.i"
