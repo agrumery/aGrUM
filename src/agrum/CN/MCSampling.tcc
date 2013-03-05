@@ -26,14 +26,15 @@ namespace gum {
     int64_t no_change_iters = 0;
     int64_t timeElapsed;
 
+    // each thread keeps its own information before fusion
     std::vector< typename gum::Property< std::vector< GUM_SCALAR> >::onNodes > l_marginalMin;
     std::vector< typename gum::Property< std::vector< GUM_SCALAR> >::onNodes > l_marginalMax;
-    std::vector< typename gum::Property< std::vector< std::vector<GUM_SCALAR> > >::onNodes > l_marginalSets;
+    std::vector< typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes > l_marginalSets;
+    std::vector< typename gum::Property< GUM_SCALAR >::onNodes > l_expectationMin;
+    std::vector< typename gum::Property< GUM_SCALAR >::onNodes > l_expectationMax;
+    std::vector< std::map< std::string, typename std::vector< GUM_SCALAR > > > l_modal;
 
-    for ( gum::DAG::NodeIterator id = this->_credalNet->current_bn().beginNodes(); id != this->_credalNet->current_bn().endNodes(); ++id ) {
-      __marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
-    }
-
+    
     //if(__repetitiveInd)
     try {
       this->_repetitiveInit();
@@ -68,37 +69,8 @@ namespace gum {
 
     std::cout << "Will go through " << __VERT << " DBNs" << std::endl;
 
-    int time_steps = 14;
-    typename std::vector< std::vector< GUM_SCALAR > > eMin ( 3, std::vector< GUM_SCALAR >() );
-    eMin[0] = std::vector<GUM_SCALAR> ( time_steps, 100 );
-    eMin[1] = std::vector<GUM_SCALAR> ( time_steps, 100 );
-    eMin[2] = std::vector<GUM_SCALAR> ( time_steps - 1, 100 );
-    typename std::vector< std::vector< GUM_SCALAR > > eMax ( 3, std::vector< GUM_SCALAR >() );
-    eMax[0] = std::vector<GUM_SCALAR> ( time_steps, 0 );
-    eMax[1] = std::vector<GUM_SCALAR> ( time_steps, 0 );
-    eMax[2] = std::vector<GUM_SCALAR> ( time_steps - 1, 0 );
-
-
-
     #pragma omp parallel
     {
-
-      // var modalities
-      typename std::vector< GUM_SCALAR > km ( 5 );
-      typename std::vector< GUM_SCALAR > lo ( 8 );
-      typename std::vector< GUM_SCALAR > Temp ( 3 );
-
-      for ( double k = 5.5, p = 0; k <= 7.5; k = k + 0.5, p = p + 1 )
-        km[p] = k;
-
-      for ( double k = 0, p = 0; k <= 14; k = k + 2, p = p + 1 )
-        lo[p] = k;
-
-      Temp[0] = 8;
-      Temp[1] = 12;
-      Temp[2] = 16;
-      /////
-
       int this_thread = omp_get_thread_num();
       num_threads = omp_get_num_threads();
 
@@ -117,9 +89,17 @@ namespace gum {
         l_marginalMin.resize ( num_threads );
         l_marginalMax.resize ( num_threads );
         l_marginalSets.resize ( num_threads );
+        l_expectationMin.resize( num_threads );
+        l_expectationMax.resize( num_threads );
+        l_modal.resize( num_threads );
       }
 
       __workingSet[this_thread] = thread_bn;
+
+      #pragma omp critical
+      {
+        l_modal[this_thread] = this->_modal;
+      }
 
       gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
       __workingSetE[this_thread] = evi_list;
@@ -132,6 +112,8 @@ namespace gum {
         l_marginalMin[this_thread].insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
         l_marginalMax[this_thread].insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
         l_marginalSets[this_thread].insert ( *id, std::vector< std::vector< GUM_SCALAR> >() );
+        l_expectationMin[this_thread].insert ( *id, 100 );
+        l_expectationMax[this_thread].insert ( *id, 0 );
       }
 
       BNInferenceEngine inference_engine ( * ( __workingSet[this_thread] ) );
@@ -141,7 +123,7 @@ namespace gum {
       //Chrono tps_inf;
       //tps_inf.start();
 
-      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/tps_inf.step() < __timeLimit && ! all_stop ) {
+      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/tps_inf.step() < 0.1/*__timeLimit*/ && ! all_stop ) {
         #pragma omp atomic
         inf_cpt++;
 
@@ -168,13 +150,6 @@ namespace gum {
         /////// ATTENTION ///////
         // evidenceMarginal() is only available with LazyPropagation
         if ( inference_engine.evidenceMarginal() > 0 ) {
-          typename std::vector< std::vector< GUM_SCALAR > > expectations ( 3, std::vector< GUM_SCALAR >() );
-          expectations[0] = std::vector<GUM_SCALAR> ( time_steps, 0 );
-          expectations[1] = std::vector<GUM_SCALAR> ( time_steps, 0 );
-          expectations[2] = std::vector<GUM_SCALAR> ( time_steps - 1, 0 );
-//expectations[3] = std::vector<GUM_SCALAR>(1,inference_engine.evidenceMarginal()); // p(e)
-
-
           for ( gum::DAG::NodeIterator it = thread_dag.beginNodes(); it != thread_dag.endNodes(); ++it ) {
             const gum::Potential< GUM_SCALAR > & potential ( inference_engine.marginal ( *it ) );
             gum::Instantiation ins ( potential );
@@ -184,111 +159,83 @@ namespace gum {
               vertex.push_back ( potential[ins] );
             } // end of : node cpt
 
-
             // save DBN E(X)
+            // no need to fusion expectations yet, since stopping rule is set for marginals (intervals)
+            if( ! l_modal[this_thread].empty() ) {
+              std::string var_name, time_step;
+              size_t delim;
 
-            std::string var_name, time_step;
-            size_t delim;
+              var_name = __workingSet[this_thread]->variable ( *it ).name();
+              delim = var_name.find_first_of ( "_" );
+              time_step = var_name.substr ( delim + 1, var_name.size() );
+              var_name = var_name.substr ( 0, delim );
 
-            var_name = __workingSet[this_thread]->variable ( *it ).name();
-            delim = var_name.find_first_of ( "_" );
-            time_step = var_name.substr ( delim + 1, var_name.size() );
-            var_name = var_name.substr ( 0, delim );
+              if( l_modal[this_thread].find(var_name) != l_modal[this_thread].end() ) {
+                GUM_SCALAR exp = 0;
+                for ( Size mod = 0; mod < vertex.size(); mod++ )
+                  exp += vertex[mod] * l_modal[this_thread][var_name][mod];
 
-            if ( var_name.compare ( "km" ) == 0 ) {
-              for ( Size mod = 0; mod < vertex.size(); mod++ )
-                expectations[0][std::atoi ( time_step.c_str() )] += km[mod] * vertex[mod];
-            } else if ( var_name.compare ( "lo" ) == 0 ) {
-              for ( Size mod = 0; mod < vertex.size(); mod++ )
-                expectations[1][std::atoi ( time_step.c_str() )] += lo[mod] * vertex[mod];
-            } else if ( var_name.compare ( "temp" ) == 0 ) {
-              for ( Size mod = 0; mod < vertex.size(); mod++ )
-                expectations[2][std::atoi ( time_step.c_str() )] += Temp[mod] * vertex[mod];
+                if( exp > l_expectationMax[this_thread][*it] )
+                  l_expectationMax[this_thread][*it] = exp;
+                if( exp < l_expectationMin[this_thread][*it] )
+                  l_expectationMin[this_thread][*it] = exp;
+              }
+            } // end of : if modal (map) not empty
+
+            bool newOne = false;
+            bool added = false;
+            // we can check either global or local marginals since both are updated at each step
+            for( Size mod = 0; mod < vertex.size(); mod++ ) {
+              if(vertex[mod] <= this->_marginalMin[*it][mod]) {
+                l_marginalMin[this_thread][*it][mod] = vertex[mod];
+                newOne = true;
+              }
+              else if(vertex[mod] == this->_marginalMin[*it][mod]) {
+                newOne = true;
+              }
+              if(vertex[mod] >= this->_marginalMax[*it][mod]) {
+                l_marginalMax[this_thread][*it][mod] = vertex[mod];
+                newOne = true;
+              }
+              else if(vertex[mod] == this->_marginalMax[*it][mod]) {
+                newOne = true;
+              }
+              // store point to compute credal set vertices.
+              // check for redundancy at each step or at the end ?
+              /*if( !added && newOne ) {
+                l_marginalSets[this_thread][*it].push_back(vertex);
+                added = true;
+              }*/
             }
-
-
-
-            //bool newOne = false;
-            //bool added = false;
-            /*for(int pos = 0; pos < vertex.size(); pos++) {
-              if(vertex[pos] <= this->_marginalMin[*it][pos]) {
-                l_marginalMin[this_thread][*it][pos] = vertex[pos];
-                //newOne = true;
-              }
-              //else if(vertex[pos] == this->_marginalMin[*it][pos]) {
-               // newOne = true;
-              //}
-              if(vertex[pos] >= this->_marginalMax[*it][pos]) {
-                l_marginalMax[this_thread][*it][pos] = vertex[pos];
-                //newOne = true;
-              }
-              //else if(vertex[pos] == this->_marginalMax[*it][pos]) {
-              //newOne = true;
-              //}
-              //if(!added && newOne) {
-                //l_marginalSets[this_thread][*it].push_back(vertex);
-                //added = true;
-              //}
-            }*/
-            /*
-            int pos = 0;
-            for(ins.setFirst(); !ins.end(); ++ins, ++pos) {
-              if(potential[ins] < l_marginalMin[this_thread][*it][pos]) {
-                l_marginalMin[this_thread][*it][pos] = potential[ins];
-              }
-              if(potential[ins] > l_marginalMax[this_thread][*it][pos]) {
-                l_marginalMax[this_thread][*it][pos] = potential[ins];
-              }
-            } // end of : node cpt
-            */
-
-            // memory issue?
-            //std::vector< GUM_SCALAR >().swap(vertex);
           } // end of : for all nodes
-
-          #pragma omp critical
-          {
-            for ( Size var = 0; var < expectations.size(); var++ ) {
-              for ( Size t = 0; t < expectations[var].size(); t++ ) {
-                if ( expectations[var][t] < eMin[var][t] ) {
-                  eMin[var][t] = expectations[var][t];
-                  no_change = false;
-                  #pragma omp flush(no_change)
-                }
-
-                if ( expectations[var][t] > eMax[var][t] ) {
-                  eMax[var][t] = expectations[var][t];
-                  no_change = false;
-                  #pragma omp flush(no_change)
-                }
-              }
-            }
-
-            //__trajectories.push_back(expectations);
-          }
-          // memory issue?
-          //std::vector< std::vector< GUM_SCALAR > >().swap(expectations);
         } // end of : if p(e) > 0
 
         // global marginal update
-        /*#pragma omp for
+        #pragma omp for
         for(int i = 0; i < __workingSet[this_thread]->size(); i++) {
           int dSize = l_marginalMin[this_thread][i].size();
           for(int j = 0; j < dSize; j++) {
             for(int thread_id = 0; thread_id < num_threads; thread_id++) {
               if(l_marginalMin[thread_id][i][j] < this->_marginalMin[i][j]) {
                 no_change = false;
-                #pragma omp flush(no_change)
                 this->_marginalMin[i][j] = l_marginalMin[thread_id][i][j];
               }
               if(l_marginalMax[thread_id][i][j] > this->_marginalMax[i][j]) {
                 no_change = false;
-                #pragma omp flush(no_change)
                 this->_marginalMax[i][j] = l_marginalMax[thread_id][i][j];
               }
             } // end of : all threads
-          }
-        }*/
+            // update them
+            for(int thread_id = 0; thread_id < num_threads; thread_id++) {
+              if(l_marginalMin[thread_id][i][j] > this->_marginalMin[i][j])
+                l_marginalMin[thread_id][i][j] = this->_marginalMin[i][j];
+              if(l_marginalMax[thread_id][i][j] < this->_marginalMax[i][j])
+                l_marginalMax[thread_id][i][j] = this->_marginalMax[i][j];
+            } // end of : all threads
+          } // end of : all modalities
+        } // end of : all variables
+
+        
 
         // vertex update
         /*
@@ -376,30 +323,9 @@ namespace gum {
                 } // end of : all variables
         */
 
-        /*
-        #pragma omp for
-        for(int i = 0; i < __workingSet[this_thread]->size(); i++) {
-          int dSize = l_marginalMin[this_thread][i].size();
-          for(int j = 0; j < dSize; j++) {
-            for(int thread_id = 0; thread_id < num_threads; thread_id++) {
-              if(l_marginalMin[thread_id][i][j] < this->_marginalMin[i][j]) {
-                no_change = false;
-                #pragma omp flush(no_change)
-                this->_marginalMin[i][j] = l_marginalMin[thread_id][i][j];
-              }
-              if(l_marginalMax[thread_id][i][j] > this->_marginalMax[i][j]) {
-                no_change = false;
-                #pragma omp flush(no_change)
-                this->_marginalMax[i][j] = l_marginalMax[thread_id][i][j];
-              }
-            }
-          }
-        }
-        */
-
         #pragma omp barrier
 
-        #pragma omp master
+        #pragma omp single
         {
           #pragma omp flush(no_change)
 
@@ -409,17 +335,25 @@ namespace gum {
             no_change_iters = 0;
 
           no_change = true;
-          #pragma omp flush(no_change)
 
-          if ( no_change_iters >= __iterStop /*|| inf_cpt >1*/ ) {
+          if ( no_change_iters >= __iterStop /*|| inf_cpt >1*/ )
             all_stop = true;
-            #pragma omp flush(all_stop)
-          }
         }
         #pragma omp flush(inf_cpt)
         #pragma omp flush(all_stop)
 
       } // end of : while time spent < __timeLimit && ! all_stop
+
+      // expectation fusion
+      #pragma omp for
+      for(int i = 0; i < __workingSet[this_thread]->size(); i++) {
+        for(int thread_id = 0; thread_id < num_threads; thread_id++) {
+          if( l_expectationMax[thread_id][i] > this->_expectationMax[i] )
+            this->_expectationMax[i] = l_expectationMax[thread_id][i];
+          if( l_expectationMin[thread_id][i] < this->_expectationMin[i] )
+            this->_expectationMin[i] = l_expectationMin[thread_id][i];
+        } // end of : each thread
+      } // end of : each variable
 
       #pragma omp critical
       {
@@ -432,21 +366,6 @@ namespace gum {
     } // end of : parallel region
 
     //std::cout << std::endl;
-    /*
-
-        #pragma omp parallel for
-        for(int i = 0; i < __workingSet[0]->size(); i++) {
-          int dSize = l_marginalMin[0][i].size();
-          for(int j = 0; j < dSize; j++) {
-            for(int thread_id = 0; thread_id < num_threads; thread_id++) {
-              if(l_marginalMin[thread_id][i][j] < this->_marginalMin[i][j])
-                this->_marginalMin[i][j] = l_marginalMin[thread_id][i][j];
-              if(l_marginalMax[thread_id][i][j] > this->_marginalMax[i][j])
-                this->_marginalMax[i][j] = l_marginalMax[thread_id][i][j];
-            }
-          }
-        }
-        */
     /*
         #pragma omp for
         for(int i = 0; i < __workingSet[0]->size(); i++) {
@@ -510,103 +429,7 @@ namespace gum {
         } // end of : all variables
     */
 
-    /**
-     * elim redundant expectations
-     */
-    /*
-    // compute min/max expect over time
-    std::vector< std::vector <double> > inf(3);
-    std::vector< std::vector <double> > sup(3);
-    inf[0] = std::vector< double >(14,100);
-    inf[1] = std::vector< double >(14,100);
-    inf[2] = std::vector< double >(13,100);
-    //inf[3] = std::vector< double >(1,100);
-    sup[0] = std::vector< double >(14,0);
-    sup[1] = std::vector< double >(14,0);
-    sup[2] = std::vector< double >(13,0);
-    //sup[3] = std::vector< double >(1,0);
-
-
-    for(int e = 0; e < __trajectories.size(); e++) {
-      for(int var = 0; var < __trajectories[e].size(); var++) {
-        #pragma omp parallel for
-        for(int t = 0; t < __trajectories[e][var].size(); t++) {
-          if(__trajectories[e][var][t] < inf[var][t])
-            inf[var][t] = __trajectories[e][var][t];
-          if(__trajectories[e][var][t] > sup[var][t])
-            inf[var][t] = __trajectories[e][var][t];
-        }
-      }
-    }
-
-    // elim trajectories not passing at a min and/or max
-    std::vector<bool> eopts(__trajectories.size(), true);
-    for(int e = 0; e < __trajectories.size(); e++) {
-      bool isOpt = false;
-      for(int var = 0; var < __trajectories[e].size(); var++) {
-        for(int t = 0; t < __trajectories[e][var].size(); t++) {
-          if(__trajectories[e][var][t] == inf[var][t]) {
-            isOpt = true;
-            break;
-          }
-          if(__trajectories[e][var][t] == sup[var][t]) {
-            isOpt = true;
-            break;
-          }
-        }
-        if(isOpt)
-          break;
-      }
-      if(!isOpt)
-        eopts[e] = false;
-    }
-
-    std::vector< std::vector < std::vector < GUM_SCALAR > > > trajec;
-    for(int e = 0; e < __trajectories.size(); e++) {
-      if(eopts[e])
-        trajec.push_back(__trajectories[e]);
-    }
-    __trajectories = trajec;
-
-
-
-
-    eopts = std::vector<bool>(__trajectories.size(), true);
-    for(int e = 0; e < __trajectories.size(); e++) {
-      if(!eopts[e])
-        continue;
-      bool isEq = true;
-      for(int f = e+1; f < __trajectories.size(); f++) {
-        if(!eopts[f])
-          continue;
-
-        for(int var = 0; var < __trajectories[e].size(); var++) {
-          for(int t = 0; t < __trajectories[e][var].size(); t++) {
-            if(__trajectories[e][var][t] != __trajectories[f][var][t]) {
-              isEq = false;
-              break;
-            }
-          }
-          if(!isEq)
-            break;
-        }
-        if(isEq)
-          eopts[f] = false;
-      }
-    }
-
-    trajec = std::vector< std::vector < std::vector < GUM_SCALAR > > >();
-    for(int e = 0; e < __trajectories.size(); e++) {
-      if(eopts[e])
-        trajec.push_back(__trajectories[e]);
-    }
-    __trajectories = trajec;
-    */
-    //////////////////// end elim
-
-    __trajectories.push_back ( eMin );
-    __trajectories.push_back ( eMax );
-
+    
     /* if(all_stop && timeElapsed < __timeLimit)
        __stopType = false;
      else
@@ -620,29 +443,26 @@ namespace gum {
 
     //std::cout << toString();
 
-    /*   std::cout << "elapsed time : " << timeElapsed << " seconds" << std::endl;
+       std::cout << "elapsed time : " << timeElapsed << " seconds" << std::endl;
        std::cout << "stopping rule met : ";
        if(!__stopType)
          std::cout << "no change for " << __iterStop * num_threads << " inferences" << std::endl;
        else
-         std::cout << "time limit" << std::endl;*/
+         std::cout << "time limit" << std::endl;
 
     std::cout << std::endl << "# inferences : " << inf_cpt << std::endl;
-    std::cout << "# trajectoires : " << __trajectories.size() << std::endl;
+    //std::cout << "# trajectoires : " << __trajectories.size() << std::endl;
 
   }
 
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  const std::vector< std::vector< GUM_SCALAR > > & MCSampling< GUM_SCALAR, BNInferenceEngine >::vertices ( const gum::NodeId id ) const {
-    return __marginalSets[id];
-  }
-
+  /*
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
     //this->eraseAllEvidence();
     __marginalSets.clear();
-  }
+  }*/
 
+    /*
   template< typename GUM_SCALAR, class BNInferenceEngine >
   std::string MCSampling< GUM_SCALAR, BNInferenceEngine >::toString() const {
     std::stringstream output;
@@ -670,72 +490,8 @@ namespace gum {
 
     return output.str();
   }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >:: saveExpectations ( const std::string &path ) const {
-    std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
-
-    if ( ! m_stream.good() ) {
-      GUM_ERROR ( IOError, "void MCSampling< GUM_SCALAR, BNInferenceEngine >::saveVertices(const std::string & path) : could not open output file : " << path );
-    }
-
-    std::vector<std::string> names ( 4 );
-    names[0] = "km";
-    names[1] = "lo";
-    names[2] = "Temp";
-    names[3] = "p(e)";
-
-    for ( Size e = 0; e < __trajectories.size(); e++ ) {
-      for ( Size var = 0; var < __trajectories[e].size(); var++ ) {
-        if ( e > 0 || var > 0 )
-          m_stream << "\n";
-
-        m_stream << names[var];
-
-        for ( Size t = 0; t < __trajectories[e][var].size(); t++ ) {
-          m_stream << " " << __trajectories[e][var][t];
-        }
-      }
-    }
-
-    m_stream.close();
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::saveVertices ( const std::string &path ) const {
-    std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
-
-    if ( ! m_stream.good() ) {
-      GUM_ERROR(IOError, "void MCSampling< GUM_SCALAR, BNInferenceEngine >::saveVertices(const std::string & path) : could not open outpul file : " << path);
-    }
-
-    for ( typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes::const_iterator it = __marginalSets.begin(); it != __marginalSets.end(); ++it ) {
-      m_stream << this->_credalNet->current_bn().variable ( it.key() ).name() << "\n";
-
-      for ( int vertex = 0; vertex < __marginalSets[it.key()].size(); vertex ++ ) {
-        m_stream << "[";
-
-        for ( int mod = 0; mod < __marginalSets[it.key()][vertex].size(); mod++ ) {
-          if ( mod > 0 )
-            m_stream << ",";
-
-          m_stream << __marginalSets[it.key()][vertex][mod];
-        }
-
-        m_stream << "]\n";
-      }
-    }
-
-    m_stream.close();
-  }
-
-
-  /*
-    template< typename GUM_SCALAR, class BNInferenceEngine >
-    void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
-      InferenceEngine< GUM_SCALAR >::InferenceEngine::eraseAllEvidence();
-    }
   */
+
   template< typename GUM_SCALAR, class BNInferenceEngine >
   bool MCSampling< GUM_SCALAR, BNInferenceEngine >::getStopType() const {
     return __stopType;

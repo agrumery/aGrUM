@@ -43,6 +43,26 @@ void test_credal() {
   //lp.makeInference();
 
   //std::cout << "MC rep" << std::endl;
+
+  std::map< std::string, std::vector< double > > modals;
+  typename std::vector< double > km ( 5 );
+  typename std::vector< double > lo ( 8 );
+  typename std::vector< double > Temp ( 3 );
+
+  for ( double k = 5.5, p = 0; k <= 7.5; k = k + 0.5, p = p + 1 )
+    km[p] = k;
+
+  for ( double k = 0, p = 0; k <= 14; k = k + 2, p = p + 1 )
+    lo[p] = k;
+
+  Temp[0] = 8;
+  Temp[1] = 12;
+  Temp[2] = 16;
+
+  modals["km"] = km;
+  modals["lo"] = lo;
+  modals["temp"] = Temp;
+
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
@@ -60,8 +80,12 @@ void test_credal() {
       //std::cout << myCNa->toString() << std::endl;
 
       MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+
+      //MCE->insertModals(modals);
+      MCE->insertModals( GET_PATH_STR ( modalities.modal ) );
+
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 20 );
+      MCE->setTimeLimit ( 1 );
 
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
@@ -84,7 +108,7 @@ void test_credal() {
         //MCE->saveMarginals("./MCr_0.8c_f.mar");
         MCE->saveExpectations ( "./MCs_0.95c_f.exp" );
       } else if ( i == 0 && j == 1 ) {
-        //MCE->saveMarginals("./MCr_0.7c_fb.mar");
+        MCE->saveMarginals("./MCr_0.95c_fb.mar");
         MCE->saveExpectations ( "./MCs_0.95c_fb.exp" );
       } else if ( i == 1 && j == 1 ) {
         //MCE->saveMarginals("./MCs_0.95c_fb.mar");

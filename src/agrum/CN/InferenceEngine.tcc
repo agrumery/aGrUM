@@ -1,5 +1,5 @@
 #include <agrum/core/exceptions.h>
-
+#include <map>
 #include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
@@ -13,6 +13,9 @@ namespace gum {
       int dSize = _credalNet->current_bn().variable ( *id ).domainSize();
       _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
       _marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+      _expectationMin.insert( *id, 100); // numeric limit infinity or better, max modality (since expec <= max modal)?
+      _expectationMax.insert( *id, 0);
+      _marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
     }
   }
 
@@ -28,12 +31,63 @@ namespace gum {
 
     _marginalMin.clear();
     _marginalMax.clear();
+    _expectationMin.clear();
+    _expectationMax.clear();
+    _marginalSets.clear();
 
     for ( gum::DAG::NodeIterator id = _credalNet->current_bn().beginNodes(); id != _credalNet->current_bn().endNodes(); ++id ) {
       int dSize = _credalNet->current_bn().variable ( *id ).domainSize();
       _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
       _marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+
+      _expectationMin.insert( *id, 100); // numeric limit infinity or better, max modality (since expec <= max modal)?
+      _expectationMax.insert( *id, 0);
+      _marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
     }
+  }
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::insertModals( const std::string &path) {
+    std::ifstream evi_stream ( path.c_str(), std::ios::in );
+
+    if ( !evi_stream.good() ) {
+      GUM_ERROR(OperationNotAllowed, "void InferenceEngine< GUM_SCALAR >::insertModals(const std::string & path) : could not open input file : " << path );
+    }
+
+    std::string line, tmp;
+    char *cstr, *p;
+
+    while ( evi_stream.good() ) {
+      getline ( evi_stream, line );
+
+      if ( line.size() == 0 ) continue;
+
+      cstr = new char [line.size() + 1];
+      strcpy ( cstr, line.c_str() );
+
+      p = strtok ( cstr, " " );
+      tmp = p;
+
+      std::vector< GUM_SCALAR > values;
+      p = strtok ( NULL, " " );
+
+      while ( p != NULL ) {
+        values.push_back ( atof ( p ) );
+        p = strtok ( NULL, " " );
+      } // end of : line
+
+      _modal[tmp] = values;
+
+      delete[] p;
+      delete[] cstr;
+    } // end of : file
+
+    evi_stream.close();
+  }
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals) {
+    _modal = modals;
   }
 
   template< typename GUM_SCALAR >
@@ -169,6 +223,21 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
+  const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin( const gum::NodeId id ) const {
+    return _expectationMin[id];
+  }
+
+  template< typename GUM_SCALAR >
+  const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax( const gum::NodeId id ) const {
+    return _expectationMax[id];
+  }
+
+  template< typename GUM_SCALAR >
+  const std::vector< std::vector< GUM_SCALAR > > & InferenceEngine< GUM_SCALAR >::vertices ( const gum::NodeId id ) const {
+    return _marginalSets[id];
+  }
+
+  template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::saveMarginals ( const std::string &path ) const {
     std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
 
@@ -180,6 +249,84 @@ namespace gum {
       for ( int mod = 0; mod < it->size(); mod++ ) {
         m_stream << _credalNet->current_bn().variable ( it.key() ).name() << " " << mod << " " << ( *it ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
       }
+    }
+
+    m_stream.close();
+  }
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::saveExpectations (const std::string &path ) const {
+    if(_modal.empty())
+      return;
+
+    std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
+
+    if ( ! m_stream.good() ) {
+      GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::saveExpectations(const std::string & path) : could not open output file : " << path );
+    }
+
+    typedef typename std::map< int, GUM_SCALAR > innerMap;
+    //typedef typename std::pair< int, GUM_SCALAR > innerPair;
+    typedef typename std::map< std::string, innerMap > outerMap;
+    //typedef typename std::pair< std::string, innerMap > outerPair;
+
+    typedef typename std::map< std::string, std::vector< GUM_SCALAR > > mod;
+
+    // si non dynamique, sauver directement _expectationMin et Max
+    outerMap expectationsMin, expectationsMax;
+
+    for(typename mod::const_iterator it = _modal.begin(); it != _modal.end(); ++it) {
+      // we should check that input modalities and variables DO exist in the network (don't store stuff with empty lines if user input is wrong)
+      // not done yet
+      //expectationsMin.insert(outerPair(it->first, innerMap()));
+      //expectationsMax.insert(outerPair(it->first, innerMap()));
+      expectationsMin[it->first];
+      expectationsMax[it->first];
+    }
+
+    for ( typename gum::Property< GUM_SCALAR >::onNodes::const_iterator it = _expectationMin.begin(); it != _expectationMin.end(); ++it ) {
+      std::string var_name, time_step;
+      size_t delim;
+
+      var_name = _credalNet->current_bn().variable ( it.key() ).name();
+      delim = var_name.find_first_of ( "_" );
+      time_step = var_name.substr ( delim + 1, var_name.size() );
+      var_name = var_name.substr ( 0, delim );
+
+      //expectationsMin[var_name].insert(innerPair(atoi(time_step.c_str()), _expectationMin[it.key()]));
+      //expectationsMax[var_name].insert(innerPair(atoi(time_step.c_str()), _expectationMax[it.key()]));
+
+      expectationsMin[var_name][atoi(time_step.c_str())] = _expectationMin[it.key()];
+      expectationsMax[var_name][atoi(time_step.c_str())] = _expectationMax[it.key()];
+    }
+
+    /*
+    for(typename outerMap::const_iterator it = expectationsMin.begin(); it != expectationsMin.end(); ++it) {
+      std::cout << it->first << std::endl;
+      for(typename innerMap::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+        std::cout << it2->first << " => " << it2->second << std::endl;
+      }
+    }
+    */
+
+    for(typename mod::const_iterator it = _modal.begin(); it != _modal.end(); ++it) {
+      int time_step = 0;
+      m_stream << it->first;
+      while(expectationsMin[it->first].find(time_step) != expectationsMin[it->first].end()) {
+        m_stream << " " << expectationsMin[it->first][time_step];
+        time_step++;
+      }
+      m_stream << "\n";  
+    }
+
+    for(typename mod::const_iterator it = _modal.begin(); it != _modal.end(); ++it) {
+      int time_step = 0;
+      m_stream << it->first;
+      while(expectationsMax[it->first].find(time_step) != expectationsMax[it->first].end()) {
+        m_stream << " " << expectationsMax[it->first][time_step];
+        time_step++;
+      }
+      m_stream << "\n";
     }
 
     m_stream.close();
@@ -209,7 +356,36 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::saveVertices ( const std::string &path ) const {
+    std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
+
+    if ( ! m_stream.good() ) {
+      GUM_ERROR(IOError, "void InferenceEngine< GUM_SCALAR >::saveVertices(const std::string & path) : could not open outpul file : " << path);
+    }
+
+    for ( typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes::const_iterator it = _marginalSets.begin(); it != _marginalSets.end(); ++it ) {
+      m_stream << _credalNet->current_bn().variable ( it.key() ).name() << "\n";
+
+      for ( int vertex = 0; vertex < _marginalSets[it.key()].size(); vertex ++ ) {
+        m_stream << "[";
+
+        for ( int mod = 0; mod < _marginalSets[it.key()][vertex].size(); mod++ ) {
+          if ( mod > 0 )
+            m_stream << ",";
+
+          m_stream << _marginalSets[it.key()][vertex][mod];
+        }
+
+        m_stream << "]\n";
+      }
+    }
+
+    m_stream.close();
+  }
+
+  template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::_repetitiveInit() {
+    _timeSteps = 0;
     std::string var_name, time_step;
     size_t delim;
     const gum::DAG &dag = this->_credalNet->current_bn().dag();
@@ -268,6 +444,7 @@ namespace gum {
     }
 
     // t > 1 vars belongs to either _t0 or _t1 as member value
+    // remember _timeSteps
     for ( gum::DAG::NodeIterator id = dag.beginNodes(); id != dag.endNodes(); ++id ) {
       var_name = this->_credalNet->current_bn().variable ( *id ).name();
       delim = var_name.find_first_of ( "_" );
@@ -276,7 +453,13 @@ namespace gum {
       delim = time_step.find_first_of ( "_" );
       time_step = time_step.substr ( 0, delim );
 
+
+
       if ( time_step.compare ( "0" ) != 0 && time_step.compare ( "1" ) != 0 ) {
+        // keep max time_step
+        if(atoi(time_step.c_str()) > _timeSteps)
+          _timeSteps = atoi(time_step.c_str());
+
         std::string var_0_name;
         bool found = false;
 

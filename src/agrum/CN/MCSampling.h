@@ -18,19 +18,14 @@ namespace gum {
 
       typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
 
-      typename gum::Property< std::vector < std::vector< GUM_SCALAR> > >::onNodes __marginalSets;
-
       std::vector< gum::NodeId > __varOrder;
       std::vector< std::vector< int > > __varInst;
       int __VERT;
       bool stopN;// = false;
-      typename std::vector< std::vector < std::vector< GUM_SCALAR > > > __trajectories;
 
       void __verticesSampling();
       void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
 
-      // added (memory leak)
-      //typename gum::List< const gum::Potential< GUM_SCALAR > * > __evi_list;
       typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
 
 
@@ -41,11 +36,7 @@ namespace gum {
       virtual ~MCSampling();
 
       void makeInference();
-      void eraseAllEvidence();
-
-      const std::vector< std::vector< GUM_SCALAR > > & vertices ( const gum::NodeId id ) const;
-      void saveVertices ( const std::string &path ) const;
-      void saveExpectations ( const std::string &path ) const;
+      //void eraseAllEvidence();
 
       bool getStopType() const;
 
