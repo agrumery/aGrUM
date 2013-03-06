@@ -1,0 +1,2557 @@
+#include "LoopyPropagation.h"
+
+template<typename T_DATA>
+const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn() const
+{
+  return *(this->bnet);
+}
+
+template<typename T_DATA>
+const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_org() const
+{
+  return *((*(this->cn)).get_BN_original());
+}
+
+template<typename T_DATA>
+const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_min() const
+{
+  return *((*(this->cn)).get_BN_min());
+}
+
+template<typename T_DATA>
+const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_max() const
+{
+  return *((*(this->cn)).get_BN_max());
+}
+
+template<typename T_DATA>
+const std::vector< std::vector<T_DATA> >& gum::LoopyPropagation<T_DATA>::get_CPT_min() const
+{
+  return *((*(this->cn)).get_CPT_min());
+}
+
+template<typename T_DATA>
+const std::vector< std::vector<T_DATA> >& gum::LoopyPropagation<T_DATA>::get_CPT_max() const
+{
+  return *((*(this->cn)).get_CPT_max());
+}
+
+template<typename T_DATA>
+const CredalNet<T_DATA>& gum::LoopyPropagation<T_DATA>::get_cn() const
+{
+  return *(this->cn);
+}
+
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::saveInference(const std::string &path) 
+{
+  std::cout << "\n\n\t\t SAVING Inference results\n\n" << std::endl;
+  std::string path_name = path.substr(0,path.size()-4);
+  path_name = path_name + ".res";
+  
+  
+  std::ofstream res(path_name.c_str(), std::ios::out | std::ios::trunc);
+  
+  
+  if(!res.good())
+  {
+    std::cout << "impossible d'ouvrir le fichier res" << std::endl;
+    return;
+  }
+  
+  std::string ext = path.substr(path.size()-3,path.size());
+  if(std::strcmp(ext.c_str(),"evi") == 0)
+  {
+    std::ifstream evi(path.c_str(), std::ios::in);
+    std::string ligne;
+    if(!evi.good()) 
+    {
+      std::cout << "fichier evidence introuvable" << std::endl;
+      return;
+    }
+    while(evi.good())
+    {
+      getline(evi, ligne);
+      res << ligne << "\n";
+    }
+    evi.close();
+  }  
+  
+  res << "[RESULTATS]" << "\n";
+   
+  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
+  {	
+    // calcul distri posteriori
+    
+    T_DATA msg_p_min;
+    T_DATA msg_p_max;
+    
+    // cas evidence, calcul immediat
+    if( this->_Evidence.exists(*it) )
+    {
+      if( this->_Evidence[*it] == (T_DATA) 0. )
+	msg_p_min = (T_DATA) 0.;
+      else if( this->_Evidence[*it] == (T_DATA) 1. )
+	msg_p_min = (T_DATA) 1.;
+      
+      msg_p_max = msg_p_min;
+    }
+    // sinon depuis node P et node L
+    else
+    {
+	T_DATA min = this->_NodesP_min[*it];
+	T_DATA max;
+	
+	if( this->_NodesP_max.exists(*it) )
+	  max = this->_NodesP_max[*it];
+	else
+	  max = min;
+	
+	T_DATA lmin = this->_NodesL_min[*it];
+	T_DATA lmax;
+	
+	if( this->_NodesL_max.exists(*it) )
+	  lmax = this->_NodesL_max[*it];
+	else
+	  lmax = lmin;
+      	
+	// cas limites sur min
+	/*if(min == (T_DATA) 0. && lmin == _INF)
+	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
+	if( min == _INF && lmin == (T_DATA) 0. )
+	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+	
+	if ( /*min != (T_DATA) 0. &&*/ lmin == _INF  ) // cas infini
+	  msg_p_min = (T_DATA) 1.;
+	else if( min == (T_DATA) 0. || lmin == (T_DATA) 0.)
+	  msg_p_min = (T_DATA) 0;
+	else
+	  msg_p_min = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / min - (T_DATA)1.) * (T_DATA)1. / lmin ));
+	
+	// cas limites sur max	
+	/*if(max == (T_DATA) 0. && lmax == _INF)
+	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
+	if( max == _INF && lmax == (T_DATA) 0. )
+	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+	
+	if ( /*max != (T_DATA) 0. &&*/ lmax == _INF  ) // cas infini
+	  msg_p_max = (T_DATA) 1.;
+	else if( max == (T_DATA) 0. || lmax == (T_DATA) 0.)
+	  msg_p_max = (T_DATA) 0;
+	else
+	  msg_p_max = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / max - (T_DATA)1.) * (T_DATA)1. / lmax ));
+    }
+    
+    if(msg_p_min != msg_p_min && msg_p_max == msg_p_max)
+	{
+	  msg_p_min = msg_p_max;
+	  /*std::cout << std::endl;
+	  std::cout << "msg_p_min is NaN" << std::endl;*/
+	}
+	if(msg_p_max != msg_p_max && msg_p_min == msg_p_min)
+	{
+	  msg_p_max = msg_p_min;
+	  /*std::cout << std::endl;
+	  std::cout << "msg_p_max is NaN" << std::endl;*/
+	  
+	}
+	if(msg_p_max != msg_p_max && msg_p_min != msg_p_min)
+	{
+	  std::cout << std::endl;
+	  std::cout << "pas de proba calculable (verifier observations)" << std::endl;
+	}
+    
+    res << "P(" << (this->bn()).variable(*it).name() << " | e) = ";//<< std::endl;
+    
+    if( this->_Evidence.exists(*it) )
+      res << "(observe)" << std::endl;
+    else
+      res << std::endl;
+    
+    res << "\t\t" << (this->bn()).variable(*it).label(0) << "  [ " << (T_DATA) 1. - msg_p_max;
+    
+    if( msg_p_min != msg_p_max )
+      res << ", " << (T_DATA) 1. - msg_p_min <<" ] | ";
+    else
+      res<<" ] | ";    
+       
+    res << (this->bn()).variable(*it).label(1) << "  [ "<< msg_p_min;
+    if( msg_p_min != msg_p_max )
+      res << ", " << msg_p_max <<" ]"<<std::endl;
+    else
+      res<<" ]"<<std::endl;
+  }
+  
+  res.close();
+}
+
+
+/**
+* pour les fonctions suivantes, les T_DATA min/max doivent etre initialises
+* (min a 1 et max a 0) pour comparer avec les resultats intermediaires
+*/
+
+/**
+* une fois les cpts marginalises sur X et Ui, on calcul le min/max,
+*/
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_compute_ext(T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, T_DATA &num_min, T_DATA &num_max, T_DATA &den_min, T_DATA &den_max)
+{
+  T_DATA old_msg_min = msg_l_min;
+  T_DATA old_msg_max = msg_l_max;
+      
+  T_DATA num_min_tmp;
+  T_DATA den_min_tmp;
+  T_DATA num_max_tmp;
+  T_DATA den_max_tmp;
+  
+  T_DATA res_min, res_max;
+  
+  for(int i = 0; i < lx.size(); i++)
+  {
+    bool non_defini_min = false;
+    bool non_defini_max = false;
+    // cas infini
+    if( lx[i] == _INF /*< (T_DATA) 0.*/)
+    {
+      num_min_tmp = num_min /*- (T_DATA) 1.*/;
+      den_min_tmp = den_max /*- (T_DATA) 1.*/;
+      num_max_tmp = num_max /*- (T_DATA) 1.*/;
+      den_max_tmp = den_min /*- (T_DATA) 1.*/;
+    }
+    else if( lx[i] == (T_DATA) 1. )
+    {
+      num_min_tmp = (T_DATA) 1.;
+      den_min_tmp = (T_DATA) 1.;
+      num_max_tmp = (T_DATA) 1.;	
+      den_max_tmp = (T_DATA) 1.;
+    }
+    else if( lx[i] > (T_DATA) 1. )
+    {	
+      num_min_tmp = num_min + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      den_min_tmp = den_max + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      num_max_tmp = num_max + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      den_max_tmp = den_min + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+    }    
+    else if( lx[i] < (T_DATA) 1. )
+    {
+      num_min_tmp = num_max + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      den_min_tmp = den_min + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      num_max_tmp = num_min + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+      den_max_tmp = den_max + (T_DATA)1. / (lx[i] - (T_DATA)1.);
+    }
+    
+    //std::cout << "LAMBDA" << std::endl;    
+    //std::cout <<"num_min : "<< num_min << "num_max : " << num_max << " den min " << den_min << " den max " << den_max << std::endl;
+    //std::cout << num_min_tmp << "/" <<den_min_tmp << " " <<num_max_tmp << "/" <<den_max_tmp << std::endl;
+          
+    if(den_min_tmp == (T_DATA) 0. && num_min_tmp == (T_DATA) 0.)
+    {
+      non_defini_min = true;
+      //res_min = (T_DATA) 1.;
+     /* std::cout << std::endl;
+      std::cout << "ERR MSG L min non defini 0/0, msg actuel : "<< msg_l_min<<", "<<msg_l_max;
+      std::cout << " lx[i] : " << lx[i]<< " lx "<<lx<<std::endl;*/
+      //break;
+    }
+    else if(den_min_tmp == (T_DATA) 0. && num_min_tmp != (T_DATA) 0.)
+      res_min = _INF;//(T_DATA) -1.;
+    else if (den_min_tmp != _INF || num_min_tmp != _INF)
+      res_min = num_min_tmp / den_min_tmp;
+    
+    if(den_max_tmp == (T_DATA) 0. && num_max_tmp == (T_DATA) 0.)
+    {
+      non_defini_max = true;
+      //res_max = 1;
+    /*  std::cout << std::endl;
+      std::cout << "ERR MSG L max non defini 0/0 ";
+      std::cout << " lx[i] : " << lx[i]<< " lx "<<lx<<std::endl;*/
+      //break;
+    }
+    else if(den_max_tmp == (T_DATA) 0. && num_max_tmp != (T_DATA) 0.)
+      res_max = _INF;//(T_DATA) -1.;
+    else if (den_max_tmp != _INF || num_max_tmp != _INF)
+      res_max = num_max_tmp / den_max_tmp;
+    
+    if(non_defini_max && non_defini_min)
+    {
+      continue;
+    }
+    else if(non_defini_min && !non_defini_max)
+    {
+      //std::cout << "msg : "<<_INF<<std::endl;
+      res_min = res_max;
+    }
+    else if(non_defini_max && !non_defini_min)
+    {
+      //std::cout << "msg : "<<res_min<<std::endl;
+      res_max = res_min;
+    }
+    
+    if(res_min <= (T_DATA) 0.)
+      res_min = (T_DATA) 0.;
+    if(res_max <= (T_DATA) 0.)
+      res_max = (T_DATA) 0.;
+    
+    /*
+    std::cout << "res min / max" << std::endl;
+    std::cout << res_min << " | " << res_max << std::endl;
+    
+    std::cout << "msg min / max" << std::endl;
+    std::cout << msg_l_min << " | "<< msg_l_max << std::endl;*/
+    
+    //std::cout << res_min << " " << res_max<<std::endl;
+    
+    if(msg_l_min == msg_l_max && msg_l_min == (T_DATA) -2.)
+    {
+	msg_l_min = res_min;
+	msg_l_max = res_max;
+    }
+    
+    if( (res_max > msg_l_max ))//&& msg_l_max > (T_DATA) 0.) || res_max == _INF;/*(T_DATA) -1.*/)
+      msg_l_max = res_max;
+    
+    if( (res_min < msg_l_min ))//&& res_min != (T_DATA) -1.) || msg_l_min == _INF;/*(T_DATA) -1.*/)
+      msg_l_min = res_min;
+    
+  }  
+  
+ /* if(non_defini_min && non_defini_max)
+  {
+    msg_l_min = old_msg_min;
+    msg_l_max = old_msg_max;    
+  }*/
+  
+}
+
+/**
+* extremes pour une combinaison des parents, message vers parent
+*/
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_card)
+{
+ /* T_DATA min = msg_l_min;
+  T_DATA max = msg_l_max;*/
+  
+  T_DATA num_min = (T_DATA)0.;
+  T_DATA num_max = (T_DATA)0.;
+  T_DATA den_min = (T_DATA)0.;
+  T_DATA den_max = (T_DATA)0.;
+  
+  int taille = combi_msg_p.size();
+  
+  // we only have d node bits, and one parent, the one receiving the message
+  if(taille == 0 && d_node_card > 0)
+  {
+  	T_DATA v_num_min = 1;
+    T_DATA v_num_max = 0;
+    T_DATA v_den_min = 1;
+    T_DATA v_den_max = 0;
+    
+    int pos = 0;
+    // TO DO : put while in a function
+    T_DATA v_num_min_val, v_num_max_val, v_den_min_val, v_den_max_val;
+    while(pos < d_node_card)
+    {
+    	v_num_min_val = get_CPT_min()[id][d_node_card + pos];
+    	v_num_max_val = get_CPT_max()[id][d_node_card + pos];
+    	
+    	v_den_min_val = get_CPT_min()[id][pos];
+    	v_den_max_val = get_CPT_min()[id][pos];
+    	
+    	if(v_num_min > v_num_min_val)
+    		v_num_min = v_num_min_val;
+    	if(v_num_max < v_num_max_val)
+    		v_num_max = v_num_max_val;
+    	
+    	if(v_den_min > v_den_min_val)
+    		v_den_min = v_den_min_val;
+    	if(v_den_max < v_den_max_val)
+    		v_den_max = v_den_max_val;
+    		
+    	pos++;
+    }
+    
+    num_min = v_num_min;
+    num_max = v_num_max;
+    den_min = v_den_min;
+    den_max = v_den_max;
+    
+    _compute_ext(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
+    
+    return;
+  }
+  
+  // or we have more then one parent (without considering d nodes)
+  
+  std::vector< typename std::vector<T_DATA>::iterator > it(taille);
+  for(int i = 0; i < taille; i++)
+    it[i] = combi_msg_p[i].begin();
+  
+  int pas = 2; //= (int)pow(2,(int)pos);
+  intpow(pas, pos);
+  
+  /*int pas = pos;
+  int_2_pow(pas);*/
+  
+  int combi_den = 0;
+  int combi_num = pas;
+  
+  //std::cout << "COMPUTE EXT" << std::endl;
+  //std::cout << "msg_p " << combi_msg_p << std::endl;
+  //std::cout << "cpt : " << get_CPT_min()[id] << std::endl;
+  
+  // marginalisation
+  while(it[taille-1] != combi_msg_p[taille-1].end())
+  {
+    T_DATA prod = (T_DATA)1.;
+    //std::cout << "prod : ";
+    for(int k = 0; k < taille; k++)
+    {
+      //std::cout << *it[k] << " ";
+      prod *= *it[k];
+    }
+    
+    ///////////////////////////////
+    T_DATA v_num_min = 1;
+	T_DATA v_num_max = 0;
+	T_DATA v_den_min = 1;
+	T_DATA v_den_max = 0;
+		
+    if(d_node_card > 0)
+    {
+		T_DATA v_num_min_val, v_num_max_val, v_den_min_val, v_den_max_val;
+		int pos = 0;
+		
+		while(pos < d_node_card)
+		{
+			v_num_min_val = get_CPT_min()[id][combi_num];
+			v_num_max_val = get_CPT_max()[id][combi_num];
+			v_den_min_val = get_CPT_min()[id][combi_den];
+			v_den_max_val = get_CPT_max()[id][combi_den];
+			
+			if(v_num_min > v_num_min_val)
+				v_num_min = v_num_min_val;
+			if(v_num_max < v_num_max_val)
+				v_num_max = v_num_max_val;
+			
+			if(v_den_min > v_den_min_val)
+				v_den_min = v_den_min_val;
+			if(v_den_max < v_den_max_val)
+				v_den_max = v_den_max_val;
+				
+			pos++;
+			
+			combi_den++;
+			combi_num++;
+		}
+    }
+    // no d nodes
+    else
+    {
+    	v_num_min = get_CPT_min()[id][combi_num];
+    	v_num_max = get_CPT_max()[id][combi_num];
+    	v_den_min = get_CPT_min()[id][combi_den];
+    	v_den_max = get_CPT_max()[id][combi_den];
+    	
+    	combi_den++;
+		combi_num++;
+    }
+    
+    num_min += v_num_min * prod;
+    num_max += v_num_max * prod;
+    den_min += v_den_min * prod;
+    den_max += v_den_max * prod;
+    
+    ///////////////////////////////
+    // old version (without going over all d node values)
+    /*
+    //std::cout << std::endl;
+    //std::cout << "den : " << (get_CPT_min()[id][combi_den]) << std::endl;
+    den_min += (T_DATA) (get_CPT_min()[id][combi_den] * prod);
+    den_max += (T_DATA) (get_CPT_max()[id][combi_den] * prod);
+    
+    //std::cout << "num : " << (get_CPT_min()[id][combi_num]) << std::endl;
+    num_min += (T_DATA) (get_CPT_min()[id][combi_num] * prod);
+    num_max += (T_DATA) (get_CPT_max()[id][combi_num] * prod);
+    
+    combi_den++;
+    combi_num++;
+    */
+    
+    if( combi_den % pas == 0)
+    {
+      combi_den += pas;
+      combi_num += pas;
+    }
+        
+    // incrementation de 1
+    ++it[0];
+    for(int i = 0; (i<taille-1)&&(it[i] == combi_msg_p[i].end()); ++i)
+    {
+      it[i] = combi_msg_p[i].begin();
+      ++it[i+1];
+    }
+  }
+    
+  _compute_ext(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
+  /*std::cout << "retour 1 " << std::endl;
+  std::cout << min << " | " << max << std::endl;
+  msg_l_min = min;
+  msg_l_max = max;*/
+}
+
+/**
+* extremes pour une combinaison des parents, message vers enfant
+* marginalisation cpts
+*/
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_card)
+{  
+  T_DATA min = (T_DATA) 0.;
+  T_DATA max = (T_DATA) 0.;
+  
+  int taille = combi_msg_p.size();
+  
+  std::vector< typename std::vector<T_DATA>::iterator > it(taille);
+  for(int i = 0; i < taille; i++)
+    it[i] = combi_msg_p[i].begin();
+  
+  std::cout << "\t\t marginalisation : " << std::endl;
+  
+  int combi = 0;
+  
+  // we have d node but no other parents
+  if(taille == 0)
+  {
+  	std::cout << "\t\t\t\t no parents other than d node" << std::endl;
+  	// min/max init
+    T_DATA v_min = 1;
+    T_DATA v_max = 0;
+    
+    int pos = 0;
+    // TO DO : put while in a function
+    while(pos < d_node_card)
+    {
+    	T_DATA v_min_val = get_CPT_min()[id][combi];
+    	T_DATA v_max_val = get_CPT_max()[id][combi];
+    	
+    	std::cout << "\t\t\t" << v_min_val << std::endl;
+    	
+    	std::cout << "\t\t\t" << v_max_val << std::endl;
+    	
+    	
+    	if(v_min > v_min_val)
+    		v_min = v_min_val;
+    	if(v_max < v_max_val)
+    		v_max = v_max_val;
+    	
+    	combi++;
+    	pos++;
+    }
+    min = v_min;
+    max = v_max;
+  }
+  else
+  {
+  
+  // go through cpt (without d nodes bits considered)
+  while(it[taille-1] != combi_msg_p[taille-1].end())
+  {
+    T_DATA prod = (T_DATA)1.;
+    
+    for(int k = 0; k < taille; k++)
+      prod *= *it[k];
+    
+    // min/max init
+    T_DATA v_min = 1;
+    T_DATA v_max = 0;
+    
+    if(d_node_card > 0)
+    {
+    int pos = 0;
+    while(pos < d_node_card)
+    {
+    	T_DATA v_min_val = get_CPT_min()[id][combi];
+    	T_DATA v_max_val = get_CPT_max()[id][combi];
+    	
+    	if(v_min > v_min_val)
+    		v_min = v_min_val;
+    	if(v_max < v_max_val)
+    		v_max = v_max_val;
+    	
+    	combi++;
+    	pos++;
+    }
+    //combi--;
+    }
+    else
+    {
+    	v_min = get_CPT_min()[id][combi];
+    	v_max = get_CPT_max()[id][combi++];
+    }
+    // instead of summing, we need to find the min/max according to d node
+    // we need number of bits as d node
+    
+    // don't do product (*it) on d nodes messages, instead go through more than 2 values of combi, ie all d nodes value with the same product, choose min/max, then increment combi ans use next table entry (entry without d nodes)
+    //min += (get_CPT_min()[id][combi] * prod);	// marg min
+    //max += (get_CPT_max()[id][combi++] * prod); // marg max
+    
+    std::cout << "\t\t\t\t p_min : " << v_min << std::endl;
+    
+    std::cout << "\t\t\t\t p_max : " << v_max << std::endl;
+    
+    min += v_min * prod;
+    max += v_max * prod;
+    
+    //combi++;
+        
+    // incrementation de 1
+    ++it[0];
+    for(int i = 0; (i<taille-1)&&(it[i] == combi_msg_p[i].end()); ++i)
+    {
+      it[i] = combi_msg_p[i].begin();
+      ++it[i+1];
+    }
+  }
+  
+  } // end of else
+  
+  if(min < msg_p_min) msg_p_min = min;
+  if(max > msg_p_max) msg_p_max = max;
+  
+  std::cout << "\t\t\t msg min : " << msg_p_min << std::endl;
+  
+  std::cout << "\t\t\t msg max : " << msg_p_max << std::endl;
+}
+
+/**
+* enumere combinaisons messages parents, pour message vers enfant
+*/
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_bits)
+{
+  int taille = msgs_p.size();
+  //si LX fournis verifier X = 1 pour min/max => msg_l = 1, return
+  
+  // ou autre fonction ?
+  
+  // d node cardinality from d node bits number
+  int d_node_card = 2; // base init
+  intpow(d_node_card, d_node_bits); // d_node_card is now 2^d_node_bits
+  
+  if(d_node_card == 1) // no d node, 2^0 = 1
+    	d_node_card = 0;
+  
+  std::cout << "_enum_combi sur node id : " << id << std::endl;
+  
+  // noeud source & sans d node
+  if(taille == 0 && d_node_bits == 0)
+  {
+    msg_p_min = (T_DATA) get_CPT_min()[id][0];
+    msg_p_max = (T_DATA) get_CPT_max()[id][0];
+    
+    return;
+  }
+  else if(taille == 0 && d_node_bits > 0)
+  {
+  	std::vector< std::vector<T_DATA> > combi_msg_p;
+  	std::cout << "\t combi msg p : " << combi_msg_p << std::endl;
+    std::cout << "\t d node card : " << d_node_card << std::endl;
+  	_compute_ext(combi_msg_p, id, msg_p_min, msg_p_max, d_node_card);
+  	return;
+  }
+  
+  
+  // sinon enumerer les combi de list
+  std::vector< typename std::vector< std::vector<T_DATA> >::iterator > it(taille);
+  
+  for(int i = 0; i < taille; i++)
+    it[i] = ((msgs_p[i])).begin();
+  
+  //int cpt = 1;
+  while(it[0] != ((msgs_p[0])).end())
+  {
+    std::vector< std::vector<T_DATA> > combi_msg_p(taille);
+    for(int i = 0; i < taille; i++)
+      combi_msg_p[i] = *it[i];
+    
+    std::cout << "\t combi msg p : " << combi_msg_p << std::endl;
+    std::cout << "\t d node card : " << d_node_card << std::endl;
+    
+    /*
+    std::stringstream ss;
+    ss << cpt;
+    std::stringstream ss2;
+    ss2 <<  (int)pow(2,taille);
+    
+    std::string aff = " config message P : " + ss.str() + " / " + ss2.str()+"          ";
+    std::cout << aff;//<<"\r";  
+    for(int k = 0; k < aff.size(); k++)
+      std::cout << "\b";
+    std::cout.flush();
+    */
+    _compute_ext(combi_msg_p, id, msg_p_min, msg_p_max, d_node_card);
+    //cpt++;
+    
+    if(msg_p_min == (T_DATA)0. && msg_p_max == (T_DATA)1.)
+      return;
+    
+    combi_msg_p.clear();
+    
+    ++it[taille-1];
+    for(int i = taille-1; (i>0)&&(it[i] == ((msgs_p[i])).end()); --i)
+    {
+      it[i] = ((msgs_p[i])).begin();
+      ++it[i-1];
+    }
+  }
+  
+}
+
+/**
+* comme precedemment mais pour message parent, vraisemblance prise en compte
+*/
+
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_bits)
+{
+  int taille = msgs_p.size();
+  /*
+  T_DATA min = msg_l_min;
+  T_DATA max = msg_l_max;*/
+  
+  int d_node_card = 2;
+  intpow(d_node_card, d_node_bits);
+  
+  if(d_node_card == 1)
+  	d_node_card = 0;
+  
+  // un seul parent, celui qui recoit le message
+  if( taille == 0 && d_node_card == 0)
+  {
+    T_DATA num_min = (T_DATA)get_CPT_min()[id][1];
+    T_DATA num_max = (T_DATA)get_CPT_max()[id][1];
+    T_DATA den_min = (T_DATA)get_CPT_min()[id][0];
+    T_DATA den_max = (T_DATA)get_CPT_max()[id][0];
+        
+    _compute_ext(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
+    /*
+    msg_l_min = min;
+    msg_l_max = max;*/
+    return;
+  }
+  // one parent (the one receiving the message) and d node bits
+  else if( taille == 0 && d_node_card > 0 )
+  {
+  	std::vector< std::vector<T_DATA> > combi_msg_p;
+  	_compute_ext(combi_msg_p, id, msg_l_min, msg_l_max, lx, pos, d_node_card);
+  	return;
+  }
+  
+  
+  // sinon enumerer les combi de msgs_p
+  std::vector< typename std::vector< std::vector<T_DATA> >::iterator > it(taille);
+  
+  for(int i = 0; i < taille; i++)
+    it[i] = ((msgs_p[i])).begin();
+  
+  //std::stringstream ss2;
+  //ss2 <<  (int)pow(2,taille);
+  
+  //int cpt = 1;
+  while(it[0] != ((msgs_p[0])).end())
+  {
+    std::vector< std::vector<T_DATA> > combi_msg_p(taille);
+    for(int i = 0; i < taille; i++)
+      combi_msg_p[i] = *it[i];
+    /*
+    std::stringstream ss;
+    ss << cpt;
+    
+    
+    std::string aff = " config message L : " + ss.str() + " / " + ss2.str() +"          ";
+    std::cout << aff;//<<"\r";  
+    for(int k = 0; k < aff.size(); k++)
+      std::cout << "\b";
+    std::cout.flush();
+    */
+    _compute_ext(combi_msg_p, id, msg_l_min, msg_l_max, lx, pos, d_node_card);
+    /*
+    msg_l_min = min;
+    msg_l_max = max;
+    std::cout << "apres return "<< msg_l_min << " | " << msg_l_max << std::endl; */
+    
+    //cpt++;
+    
+    if(msg_l_min == (T_DATA)0. && msg_l_max == _INF /*msg_l_max == (T_DATA)-1.*/)
+      return;
+    
+    combi_msg_p.clear();
+    
+    ++it[taille-1];
+    for(int i = taille-1; (i>0)&&(it[i] == ((msgs_p[i])).end()); --i)
+    {
+      it[i] = ((msgs_p[i])).begin();
+      ++it[i-1];
+    }
+  }
+  
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			make inference 			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::makeInference()
+{
+	if(this->_InferenceUpToDate) return;
+	
+	std::cout << "\n\n\t\tINIT\n" << std::endl;
+	
+	//_cleanInferenceData();
+
+	_initialize();
+	
+	this->initApproximationScheme();
+	
+	std::cout << "\n\n\n\t\tInference\n" << std::endl;
+	
+	switch(__inferenceType)
+	{
+		case ordered:
+			_makeInferenceByOrderedArcs();
+			break;
+			
+		case randomOrder:
+			_makeInferenceByRandomOrder();
+			break;
+			
+		case randomEvaluation:
+			_makeInferenceByRandomEvaluation();
+			break;
+	}
+	
+	/* 
+	 * next to ordered, randomOrder, randomEvaluation
+	 * it would be possible to add some more inference orders:
+	 * 
+	 * cocktail - pass the network in topological order and then in reversed topological order.
+	 * 
+	 * trampStyle: all messages from one node and then skip to a nighbours and the same....
+	 * 
+	 * 
+	 */
+	
+	//_refreshLMsPIs();
+	//_calculateEpsilon();
+	
+	this->_InferenceUpToDate = true;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 		clean inference data		////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_cleanInferenceData() 
+{
+	//this->_invalidateMarginals();
+	//this->eraseAllEvidence();	
+	this->_oldMarginal_min.clear(); this->_oldMarginal_max.clear();
+	this->_ArcsL_min.clear(); this->_ArcsL_max.clear();
+	this->_ArcsP_min.clear(); this->_ArcsP_max.clear();
+	this->_NodesL_min.clear(); this->_NodesL_max.clear();
+	this->_NodesP_min.clear(); this->_NodesP_max.clear();
+	
+	this->_InferenceUpToDate = false;
+	
+	if(_msg_l_sent.size() > 0)
+	{
+	  for(DAG::NodeIterator it = bn().beginNodes(); it != bn().endNodes(); ++it)
+	    delete _msg_l_sent[*it];
+	}
+	_msg_l_sent.clear();
+	_update_l.clear();
+	_update_p.clear();
+	_Evidence.clear();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 		insert evidence	////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::insertEvidence(const std::string &path)
+{   
+  /*for(int i = 0; i < this->bn_org().size(); i++)
+    std::cout << this->bn_org().variable(i).name() << std::endl;*/
+  
+	_cleanInferenceData();
+	//eraseAllEvidence();
+	
+	//Lpmsg Infos;
+	
+	std::cout << " Parsing fichier evidence" << std::endl;
+	
+	std::ifstream evi(path.c_str(), std::ios::in);
+	
+	if(!evi.good())
+	{
+	  std::cout << " Fichier evidence introuvable, pas d'evidences"<< std::endl;
+	  return;
+	}
+	std::string ligne, tmp;
+	int var_add;
+	gum::NodeId var_tmp;
+	char *cstr, *p;
+	T_DATA proba;
+	
+	const std::vector< std::vector<gum::NodeId> > bits = *((get_cn()).get_BITS());
+	
+	while(evi.good() && std::strcmp(ligne.c_str(),"[EVIDENCES]") != 0)
+	    getline(evi, ligne);
+	
+	while( evi.good() )
+	{
+	  getline(evi, ligne);
+	 
+	  if( std::strcmp(ligne.c_str(),"[CIBLES]") == 0) break;
+	  if(ligne.size() == 0 ) continue;
+	  
+	  cstr = new char [ligne.size()+1];
+	  strcpy(cstr, ligne.c_str());
+	  
+	  std::vector< gum::NodeId > list_lx;
+	  // = new gum::Potential<T_DATA>();
+	  
+	  // tokens
+	  p = strtok (cstr, " ");
+	  bool var = true;
+	  while(p!=NULL)
+	  {
+	    tmp = p;
+	    if(var)
+	    {
+	      for(int i = 0; i < this->bn_org().size(); i++)
+	      {
+		if(tmp.compare(this->bn_org().variable(i).name()) == 0)
+		{
+		  var_add = i;
+		  std::cout << "\tevidence " << tmp;
+		  //var_tmp = this->bn_org().variable(i);
+		  //std::cout << bits << std::endl;
+		  for(int b = 0; b < bits[i].size(); b++)
+		  {
+		    
+		    list_lx.push_back(this->bn().nodeId(this->bn().variable(bits[i][b])));
+		    //msg * mon_msg = new msg();;
+		    //msg * lx = new msg();
+		    //gum::Potential<T_DATA> * ptr = new gum::Potential<T_DATA>();
+		    //*ptr << this->bn().variable(bits[i][b]);
+		    //(*mon_msg).push_back(ptr);
+		    //list_lx.push_back(mon_msg);
+		  }
+		  var = false;
+		  break;
+		  /*var_tmp =  this->bn_org().nodeId( this->bn_org().variable(i));
+		  
+		  std::cout << var_tmp << std::endl;
+		  std::cout << this->bn_org().variable(i).name() << std::endl;*/
+		}
+	      }
+	      // pour les autres evidences (variable indic, etc)
+	      for(int i = 0; i < this->bn().size(); i++)
+	      {
+		if(tmp.compare(this->bn().variable(i).name()) == 0)
+		{
+		  std::cout << "\tevidence " << tmp << " = ";
+		  p=strtok(NULL," ");
+		  tmp = p;
+		  proba = atof(tmp.c_str());
+		  std::cout << proba << std::endl;
+		  _Evidence.insert(this->bn().nodeId(this->bn().variable(i)), proba); // bit = 1
+		    
+		  break;
+		}
+	      }
+	      
+	    }
+	    else
+	    {
+	      //std::vector<T_DATA> t(this->bn_org().variable(var_add).domainSize(),(T_DATA)0);
+	      
+	      proba = atof(tmp.c_str());
+	      int val = 0;
+	      
+	      if(proba + 1 > this->bn_org().variable(var_add).domainSize()) 
+	      {
+		std::cout << " : cardinalite incompatible avec evidence !" << std::endl;
+		var = true;
+		continue;
+	      }
+	      
+	      std::cout << " = " << proba << std::endl;
+	      for(int i = list_lx.size() - 1; i >= 0; i--)
+	      {
+		//std::vector<T_DATA> t(2,0);		
+		
+		int puiss = (int)pow(2,i);
+		//val += (int)pow(2,i);
+		if(val + puiss <= proba)
+		{
+		  val += puiss;
+		  _Evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), (T_DATA)1.); // bit = 1
+		}
+		else
+		  _Evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), (T_DATA)0.); // bit = 0
+		
+		std::cout << "\t\tbit "<< i <<" = " << _Evidence[this->bn().nodeId(this->bn().variable( bits[var_add][i]))] << std::endl;
+		//(*((*(list_lx[i]))[0])).fillWith(t);
+		//std::cout << "\t\ttable cree : " << (*((*(list_lx[i]))[0])) << std::endl;
+		
+		//Infos.insert(list_lx[i]);
+	      }
+	      
+	      //t[proba] = 1;
+	      //gum::easyFill(*ptr, (int)this->bn_org().variableFromName(var_tmp).domainSize(), t);
+	      //(*ptr).fillWith(t);
+	      //(*lx).push_back(ptr);
+	      
+	    }
+	    p=strtok(NULL," ");
+	  } // fin lecture ligne
+	  delete[] p;
+	  delete[] cstr;
+	  
+	  
+	}
+	std::cout << " Parsing termine" << std::endl;
+	evi.close();	
+	
+	//this->insertEvidence(Infos);
+	
+	/*
+	for(typename Lpmsg::const_iterator it = a_evidences.begin(); it != a_evidences.end(); ++it)
+	{
+	  if( ((*(*it))[0])->nbrDim() != 1)
+	    GUM_ERROR(OperationNotAllowed, "Dimension of at least one evidence is different to 1. " );
+	  
+	  NodeId iN = this->bn().nodeId( ((*(*it))[0])->variable(0) );
+		if(_Evidence.exists(iN) ) _Evidence.erase(iN);
+		_Evidence.insert(iN, *it);
+	  */
+	  
+	  /*
+		if((*it)->nbrDim() != 1) GUM_ERROR(OperationNotAllowed, "Dimension of at least one evidence is different to 1. " );
+		 
+		NodeId iN = this->bn().nodeId( (*it)->variable(0) );
+		if(_Evidence.exists(iN) ) _Evidence.erase(iN);
+		_Evidence.insert(iN, *it);
+		*/
+	//}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			initialize	 			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_initialize()
+{
+
+	std::cout << "bin d nodes : " << std::endl;
+	std::cout << cn->bin_d_nodes << std::endl;
+
+
+  gum::DAG graphe = this->bn().dag();
+  	const Sequence<NodeId> & topoNodes = this->bn().topologicalOrder();
+	for(Sequence<NodeId>::const_iterator it = topoNodes.begin(); it != topoNodes.end(); ++it)
+	{	
+		std::cout << "\t"<< (this->bn()).variable(*it).name() << "   ";std::cout.flush();// << std::endl;
+		
+		
+		////////////////////////////////
+		_update_p.insert(*it,false);
+		_update_l.insert(*it,false);
+				
+		gum::NodeSet * _parents = new gum::NodeSet();
+		_msg_l_sent.insert(*it, _parents);
+		
+		
+	      // accelerer init pour evidences
+		if(this->_Evidence.exists(*it))
+		{
+		  active_nodes_set.insert(*it);
+		  _update_l.set(*it,true);
+		  _update_p.set(*it,true);
+		  if(this->_Evidence[*it] == (T_DATA) 1.)
+		  {
+		    this->_NodesL_min.insert(*it, _INF/*(T_DATA) -1.*/);
+		    //this->_NodesL_min.insert(*it, (T_DATA) 1.);
+		    
+		    
+		    this->_NodesP_min.insert(*it, (T_DATA) 1.);
+		  }
+		  else if (this->_Evidence[*it] == (T_DATA) 0.)
+		  {
+		    this->_NodesL_min.insert(*it, this->_Evidence[*it]); // soit 0
+		    this->_NodesP_min.insert(*it, (T_DATA) 0.);
+		  }
+		  
+		  this->_oldMarginal_min.insert(*it, this->_NodesP_min[*it]);
+		  std::cout<<"\r";std::cout.flush();
+		  continue;
+		}
+		
+		
+		gum::NodeSet _par = graphe.parents(*it);
+		gum::NodeSet _enf = graphe.children(*it);
+		
+		if(_par.size()==0)
+		{
+		  active_nodes_set.insert(*it);
+		  _update_p.set(*it,true);
+		  _update_l.set(*it,true);
+		}
+		// variables indicatrices seulement, prendre une couche avant
+		// ou alors verifier sur l'ancien DAG (sans indicatrices)
+		if(_enf.size()==0) 
+		{
+		  active_nodes_set.insert(*it);  
+		  _update_p.set(*it,true);
+		  _update_l.set(*it,true);
+		}
+		
+		
+		/**
+		* messages and so parents need to be read in order of appearance
+		* use potentials instead of dag
+		*/		
+		
+		const gum::Potential<T_DATA> * parents = &bn().cpt(*it);
+		
+		std::vector< std::vector< std::vector<T_DATA> > > msgs_p;
+		std::vector< std::vector<T_DATA> > msg_p;
+		std::vector<T_DATA> distri(2);
+		
+		int d_node_bits = 0;
+		
+		// +1 from start to avoid counting itself
+		for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
+		{
+			std::cout << "\t parent : " << bn().variable(bn().nodeId(**jt)) << std::endl;
+			if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
+			{
+				std::cout << "\t\t is d node" << std::endl;
+				d_node_bits++;
+			}
+			else
+			{
+			  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+			  distri[1] = this->_NodesP_min[bn().nodeId(**jt)];
+			  distri[0] = (T_DATA)1. - distri[1];
+			  msg_p.push_back(distri);
+			  
+			  if( (this->_NodesP_max).exists(bn().nodeId(**jt)) )
+			  {
+				distri[1] = this->_NodesP_max[bn().nodeId(**jt)];
+				distri[0] = (T_DATA)1. - distri[1];
+				msg_p.push_back(distri);
+			  }
+			  msgs_p.push_back(msg_p);
+			  msg_p.clear();
+		  	}
+		}
+		
+			
+		T_DATA msg_p_min = (T_DATA) 1.;
+		T_DATA msg_p_max = (T_DATA) 0.;
+		
+		_enum_combi(msgs_p, *it, msg_p_min, msg_p_max, d_node_bits);
+		std::cout<<"\r";std::cout.flush();
+		//std::cout << msg_p_min << " | " << msg_p_max << std::endl;
+		
+		if(msg_p_min <= (T_DATA) 0.)
+		  msg_p_min =  (T_DATA) 0.;
+		if(msg_p_max <= (T_DATA) 0.)
+		  msg_p_max =  (T_DATA) 0.;
+		
+		
+		(this->_NodesP_min).insert(*it, msg_p_min);
+		this->_oldMarginal_min.insert(*it, msg_p_min);
+		
+		
+		if(msg_p_min != msg_p_max)
+		{
+		  (this->_NodesP_max).insert(*it, msg_p_max);
+		  this->_oldMarginal_max.insert(*it, msg_p_max);
+		}
+		
+		/*
+		if(this->_Evidence.exists(*it))
+		{
+		  if(this->_Evidence[*it] == (T_DATA) 1.)
+		    this->_NodesL_min.insert(*it, _INF);
+		  else
+		    this->_NodesL_min.insert(*it, this->_Evidence[*it]);
+		}
+		else*/
+		  this->_NodesL_min.insert(*it, (T_DATA) 1.);
+		
+		//std::cout << this->_NodesL_min[*it] << std::endl;
+	    
+	}
+	
+	for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it) 
+	{		
+		this->_ArcsP_min.insert(*it, this->_NodesP_min[it->tail()]);
+		if( (this->_NodesP_max).exists(it->tail()) )
+		  this->_ArcsP_max.insert(*it, this->_NodesP_max[it->tail()]);
+		  
+		this->_ArcsL_min.insert(*it, this->_NodesL_min[it->tail()]);
+	}
+	std::cout << std::endl;
+	//std::cout << "                   " << std::endl;
+	//std::cout << " DONE " << std::endl;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 	make inference by ordered arcs	////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_makeInferenceByOrderedArcs()
+{	
+	gum::DAG graphe = this->bn().dag();
+	unsigned i = 0; T_DATA eps; //should be changed to the burn in option from new ApproximationScheme.
+	int cpt = 1; 
+	do	
+	{
+	  std::cout << "\t\tIteration : " << i << std::endl;
+		std::cout << std::endl;
+		
+		int taille = active_nodes_set.size();
+		cpt = 1;
+		for(gum::NodeSetIterator it = active_nodes_set.begin(); it != active_nodes_set.end(); ++it)
+		{
+		  gum::NodeSet _enfants = graphe.children(*it);
+		  int cpt_in = 1;
+		  int taille_in = _enfants.size();
+		  for(gum::NodeSetIterator jt = _enfants.begin(); jt != _enfants.end(); ++jt)
+		  {		    
+		    std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers enfant "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*jt).name() << "        ";
+		    std::cout <<"\r"; 
+		    //std::cout<<std::endl;
+		    std::cout.flush();
+		    _msgP(*it,*jt);
+		    //actifs_suivants.insert(*jt);
+		    cpt_in++;
+		  }
+		  cpt_in = 1;
+		  gum::NodeSet _parents = graphe.parents(*it);
+		  taille_in = _parents.size();
+		  for(gum::NodeSetIterator kt = _parents.begin(); kt != _parents.end(); ++kt)
+		  {
+		    std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers parent "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*kt).name() << "        ";;
+		    std::cout <<"\r"; 
+		    //std::cout<<std::endl;
+		    std::cout.flush();
+		    
+		    _msgL(*it,*kt);
+		    //actifs_suivants.insert(*kt);
+		    cpt_in++;
+		  }
+		  cpt++;
+		}
+		active_nodes_set.clear();
+		active_nodes_set = next_active_nodes_set;
+		next_active_nodes_set.clear();
+		
+		
+		/*for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it)
+		{
+		std::cout<< "\tArc " << cpt << " / " << this->bn().nbrArcs();//<< "\r";
+		std::cout.flush();
+		//std::cout << " de " << bn().variable(it->tail()).name() <<" vers "<<bn().variable(it->head()).name();
+		//std::cout.flush();
+			_msgP(it->tail(), it->head() );//std::cout<<std::endl;
+			_msgL(it->head(), it->tail() );
+			cpt++;
+			std::cout << "\r";std::cout.flush();
+			//std::cout << std::endl;
+		}*/
+		
+		
+		
+		std::cout << std::endl;
+		eps = _calculateEpsilon();
+		
+		std::cout << "epsilon = " << eps << std::endl;
+		this->updateApproximationScheme(); ++i;
+	} while( (i<0) || (this->continueApproximationScheme(eps, false)) || next_active_nodes_set.size() > 0 );
+	
+	//std::cout << "nb noeuds suivants : " << actifs_suivants.size() << std::endl;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 	make inference by random order	////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_makeInferenceByRandomOrder()
+{	
+	unsigned int nbrArcs = this->bn().dag().sizeArcs();
+	 
+	std::vector<cArcP> seq;
+	seq.reserve(nbrArcs);
+	for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it)
+		seq.push_back(&(*it));
+	
+	unsigned i = 0; T_DATA eps;
+	do
+	{
+		std::cout << "\t\tIteration : " << i << std::endl;
+		std::cout << std::endl;
+		int cpt = 1;
+		for(unsigned j = 0; j < nbrArcs / 2; ++j)
+		{
+			unsigned w1 = intRand(nbrArcs), w2 = intRand(nbrArcs);
+			if(w1==w2) continue;
+			
+			cArcP tmp = seq[w1];
+			seq[w1] = seq[w2];
+			seq[w2] = tmp;
+		}
+		
+		for(std::vector<cArcP>::iterator it = seq.begin(); it != seq.end(); ++it)
+		{
+			std::cout<< "\tArc " << cpt << " / " << this->bn().nbrArcs();//<< "\r";
+			std::cout.flush();
+			_msgP((*it)->tail(), (*it)->head() );
+			_msgL((*it)->head(), (*it)->tail() );
+			cpt++;
+			std::cout << "\r";std::cout.flush();
+		}
+		std::cout << std::endl;
+		eps = _calculateEpsilon();
+		
+		std::cout << "epsilon = " << eps << std::endl;
+		this->updateApproximationScheme(); ++i;
+	} while( (i<0) || (this->continueApproximationScheme(eps, false)) );
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 	make inference by random evaluation	////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_makeInferenceByRandomEvaluation() 
+{
+	unsigned int nbrArcs = this->bn().dag().sizeArcs();
+	 
+	double p = 0.2;
+	unsigned i = 0; T_DATA eps;
+	do
+	{
+		for(int k = 0; k < 1./p; ++k)
+		for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it)
+		{
+			if( maybe(p) ) 
+			{
+				_msgP(it->tail(), it->head() );
+				_msgL(it->head(), it->tail() );
+			}
+		}
+		
+		eps = _calculateEpsilon();
+		this->updateApproximationScheme(); ++i;
+	} while( (i<0) || (this->continueApproximationScheme(eps, false)) );
+}
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			_msgL 					////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
+{
+  //std::cout << "msg L de " << this->bn().variable(Y).name() << " vers " << this->bn().variable(X).name()<< std::endl;
+  //GUM_TRACE("_msgL called " << Y << " -> " << X);
+  NodeSet const & children = this->bn().dag().children(Y); 
+  
+  NodeSet const & _parents = this->bn().dag().parents(Y);
+  
+  const gum::Potential<T_DATA> * parents = &bn().cpt(Y);
+  
+  
+  if( ( (children.size() + (*parents).nbrDim() - 1) == 1 ) and (! this->_Evidence.exists(Y) ) )
+  {
+    std::cout << "sortie msgL de suite (dim)" << std::endl;
+    //GUM_TRACE("_msgL terminates short"); 
+    return;
+  }
+  
+  
+  bool update_l = _update_l[Y];
+  bool update_p = _update_p[Y];
+  
+  
+  
+  
+   ///////////////////////// ?????????????????? ///////////////
+  if( ! update_p && ! update_l )
+	{
+	  //std::cout << (this->bn()).variable(Y).name() <<" MSG_L vers " <<  (this->bn()).variable(X).name()<< " saute (inchange)" << std::endl;
+	  return;
+	}
+  
+  
+  
+  (*(_msg_l_sent[Y])).insert(X);
+  
+  // pour le refresh LM/PI
+  if( (*(_msg_l_sent[Y])).size() == _parents.size() )
+  {
+    //std::cout << "TOUS MSGS L envoyes" << std::endl;
+	(*(_msg_l_sent[Y])).clear();
+  	_update_l[Y] = false;
+  }
+  
+ 
+  
+  // ----------------------------------------------------------------- refresh LM_part
+  
+  
+ /**
+ * INITIALISER a -1 dans initialize et passer au message de suite si evidence
+ * pas besoin d'actualiser node_L
+ */
+   /* if(this->_Evidence.exists(Y) )
+    {
+      if( this->_Evidence[Y] == (T_DATA) 0. )
+	lmin = (T_DATA) 0.;
+      else if ( this->_Evidence[Y] == (T_DATA) 1. )
+	lmin = (T_DATA) -1.;
+      
+      lmax = lmin;
+    }
+    
+    else */
+   
+   
+   
+   if(update_l)
+   {
+   
+   if ( ! children.empty() && !this->_Evidence.exists(Y) ) 
+    {
+      
+	T_DATA lmin = (T_DATA) 1.;
+	T_DATA lmax = (T_DATA) 1.;
+  
+      for(NodeSet::const_iterator it = children.begin(); it != children.end(); ++it)
+      {
+	/*if( isDNode( (*(get_cn().get_CPT()))[*it] ) )
+	  continue;*/
+	
+	/*if( lmin == (T_DATA) 0. && this->_ArcsL_min[Arc(Y, *it)] == _INF)
+	{}
+	else if( lmin == _INF && this->_ArcsL_min[Arc(Y, *it)] == (T_DATA) 0.)
+	{}
+	else*/
+	  lmin *= this->_ArcsL_min[Arc(Y, *it)];
+		  		  
+	if( this->_ArcsL_max.exists(Arc(Y, *it)) )
+	{
+	  /*if( lmax == (T_DATA) 0. && this->_ArcsL_max[Arc(Y, *it)] == _INF)
+	  {}
+	  else if( lmax == _INF && this->_ArcsL_max[Arc(Y, *it)] == (T_DATA) 0.)
+	  {}
+	  else*/
+	    lmax *= this->_ArcsL_max[Arc(Y, *it)];
+	}
+	else
+	{
+	  /*if( lmax == (T_DATA) 0. && this->_ArcsL_min[Arc(Y, *it)] == _INF)
+	  {}
+	  else if( lmax == _INF && this->_ArcsL_min[Arc(Y, *it)] == (T_DATA) 0.)
+	  {}
+	  else*/
+	    lmax *= this->_ArcsL_min[Arc(Y, *it)];
+	}
+      }
+      
+      if(lmin != lmin && lmax == lmax){//std::cout <<"\n lmin non defini : 0*inf"<<std::endl;
+	lmin = lmax;}
+      if(lmax != lmax && lmin == lmin){//std::cout <<"\n lmax non defini : 0*inf"<<std::endl;
+	lmax = lmin;}
+      if(lmax != lmax && lmin != lmin)
+	std::cout << "pas de vraisemblance definie [lmin, lmax] (observations incompatibles ?)" << std::endl;
+            
+      if(lmin <= (T_DATA) 0.)
+	lmin = (T_DATA) 0.;
+      if(lmax <= (T_DATA) 0.)
+	lmax = (T_DATA) 0.;
+      
+      /*if(lmin != this->_NodesL_min[Y])
+	_update_l.set(Y,true);
+      else if(this->_NodesL_max.exists(Y))
+	if(lmax != this->_NodesL_max[Y])	
+	  _update_l.set(Y,true);
+      else
+      {
+	std::cout << "update noeud courant L false" << std::endl;
+	_update_l.set(Y,false);
+	
+      }*/
+      
+      /*
+      if(lmin == _INF)
+    lmin = (T_DATA) 1.;
+  else
+    lmin = lmin / (1+lmin);
+  
+  if(lmax == _INF)
+    lmax = (T_DATA) 1.;
+  else
+    lmax = lmax / (1+lmax);
+      */
+      
+      
+      // pas besoin de mettre a jour nodeL si evidence car jamais utilise si evidence
+	
+	this->_NodesL_min[Y] = lmin;
+	if( lmin != lmax )
+	{
+	 /* if( this->_NodesL_max.exists(Y) )
+	    this->_NodesL_max[Y] = lmax;
+	  else*/
+	    this->_NodesL_max.set(Y, lmax);
+	}
+	else
+	  if( this->_NodesL_max.exists(Y) )
+	    this->_NodesL_max.erase(Y);
+	  
+      //std::cout << "update noeud courant L false" << std::endl;
+     // _update_l.set(Y,false);
+    }
+    /*else
+    {std::cout << "update noeud courant L false" << std::endl;
+      _update_l.set(Y,false);
+    }*/
+    
+    
+    
+   } // fin si enfants ont change
+        
+    
+    T_DATA lmin = this->_NodesL_min[Y];
+    T_DATA lmax;
+    if( this->_NodesL_max.exists(Y) )
+      lmax =  this->_NodesL_max[Y];
+    else
+      lmax = lmin;
+    
+    /*
+    this->_NodesL_min[Y] = lmin;
+    if( lmin != lmax )
+    {
+      if( this->_NodesL_max.exists(Y) )
+	this->_NodesL_max[Y] = lmax;
+      else
+	this->_NodesL_max.insert(Y, lmax);
+    }
+    else
+      if( this->_NodesL_max.exists(Y) )
+	this->_NodesL_max.erase(Y);
+  */
+  /**
+  * pour les parents (hormis le noeud dest)
+  * si lmin == lmax == 1  => variable barren, envoi 1 comme message aux parents
+  */
+  
+  if( lmin == lmax && lmin == (T_DATA) 1. )
+  {
+    this->_ArcsL_min[Arc(X, Y)] = lmin;
+    if( this->_ArcsL_max.exists(Arc(X, Y)) )
+      this->_ArcsL_max.erase(Arc(X, Y));
+    
+    //std::cout << "MSG L inchange = 1" << std::endl;
+    
+    return;
+  }
+  
+  
+  //std::string var_name = this->bn().variable(Y).name();
+  
+  // comparer string inutile si isDnode verifie nb_dist = card && proba = 0 ou 1 ?
+  if(/*var_name.compare(0,2,"D-")==0 && */isDNode( (*(get_cn().get_CPT()))[Y] ))
+  {
+    //std::cout << "DNODE" << std::endl;std::cout.flush();
+    //std::cout << this->bn().variable(Y).name() << std::endl; std::cout.flush();
+    T_DATA min, max;
+    
+    if(lmax != (T_DATA) 0.)
+    {
+      if(lmin < ((T_DATA)1. / lmax) )
+	min = lmin;
+      else
+	min = ((T_DATA)1. / lmax);
+    }
+    else
+      min = lmin;
+    
+   if(lmin != (T_DATA) 0.)
+   {
+     if(lmax < ((T_DATA)1./lmin) )
+       max = (T_DATA) 1. / min;
+     else
+       max = lmax;
+   }
+   else
+     max = _INF;
+   
+  if(min <= (T_DATA) 0.)
+    min = (T_DATA) 0.;
+  if(max <= (T_DATA) 0.)
+    max = (T_DATA) 0.;
+    
+   bool update = false;
+   if( min != this->_ArcsL_min[Arc(X, Y)] )
+   {
+     this->_ArcsL_min[Arc(X, Y)] = min;
+     update = true;
+   }
+   
+   if( this->_ArcsL_max.exists(Arc(X, Y)) )
+   {
+     if( max != this->_ArcsL_max[Arc(X, Y)] )
+     {
+       if( max != min)
+	 this->_ArcsL_max[Arc(X, Y)] = max;
+       else //if( max == min )
+	 this->_ArcsL_max.erase(Arc(X, Y));
+       
+       update = true;
+     }
+   }
+   else
+   {
+     if( max != min)
+     {
+       this->_ArcsL_max.insert(Arc(X, Y), max);
+       update = true;
+     }
+   }
+   
+   if( update )
+   {
+    //std::cout<<std::endl;
+     //std::cout << " D_NODE msg L : [" << min << ", " << max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
+     _update_l.set(X,true);
+     next_active_nodes_set.insert(X);
+   }
+    
+    return;
+  }
+  
+  
+  
+  // garder pour chaque noeud un table des parents maj, une fois tous maj, stop jusque notification msg L ou P
+  
+  if(  update_p || update_l )
+  {
+	std::vector< std::vector< std::vector<T_DATA> > > msgs_p;
+	std::vector< std::vector<T_DATA> > msg_p;
+	std::vector<T_DATA> distri(2);
+	
+	gum::Idx pos;
+	
+	int d_node_bits = 0;
+		
+	// +1 from start to avoid counting itself
+	for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
+	{
+	  if( bn().nodeId(**jt) == X )
+	  {
+	    pos = (*parents).pos(**jt) - 1; // retirer la variable courante de la taille
+	    continue;
+	  }
+	  
+	  if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
+	{
+		  	//std::cout << "\t\t is d node" << std::endl;
+			d_node_bits++;
+	}
+	  else
+	  {
+	  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+	  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt),Y)];
+	  distri[0] = (T_DATA)1. - distri[1];
+	  msg_p.push_back(distri);
+	  
+	  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt),Y)) )
+	  {
+	    distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt),Y)];
+	    distri[0] = (T_DATA)1. - distri[1];
+	    msg_p.push_back(distri);
+	  }
+	  msgs_p.push_back(msg_p);
+	  msg_p.clear();
+	  } // end of else
+	}
+	
+	T_DATA min = (T_DATA) -2.;
+	T_DATA max = (T_DATA) -2.;
+	
+	
+	std::vector< T_DATA > lx;
+	lx.push_back(lmin);
+	
+	if(lmin != lmax)
+	  lx.push_back(lmax);
+	
+	//std::cout << lmin << std::endl;
+  // on peut avoir -1 pour infini
+  _enum_combi(msgs_p, Y, min, max, lx, pos, d_node_bits);
+  
+  if(min == (T_DATA) -2. || max == (T_DATA) -2.)
+  {
+    if(min != (T_DATA) -2.)
+      max = min;
+    else if(max != (T_DATA) -2.)
+      min = max;
+    else
+    {
+      std::cout << std::endl;
+      std::cout << "!!!! pas de message L calculable !!!!" << std::endl;
+      return;
+    }
+  }
+    
+  //std::cout << "msg L de " << this->bn().variable(Y).name() << " vers " << this->bn().variable(X).name()<< std::endl;
+  
+  if(min <= (T_DATA) 0.)
+    min = (T_DATA) 0.;
+  if(max <= (T_DATA) 0.)
+    max = (T_DATA) 0.;
+  
+  
+  
+  // ?????????????????????????????
+  //_update_p.set(Y,false);
+  
+  bool update = false;
+   if( min != this->_ArcsL_min[Arc(X, Y)] )
+   {
+     this->_ArcsL_min[Arc(X, Y)] = min;
+     update = true;
+   }
+   
+   if( this->_ArcsL_max.exists(Arc(X, Y)) )
+   {
+     if( max != this->_ArcsL_max[Arc(X, Y)] )
+     {
+       if( max != min)
+	 this->_ArcsL_max[Arc(X, Y)] = max;
+       else //if( max == min )
+	 this->_ArcsL_max.erase(Arc(X, Y));
+       
+       update = true;
+     }
+   }
+   else
+   {
+     if( max != min)
+     {
+       this->_ArcsL_max.insert(Arc(X, Y), max);
+       update = true;
+     }
+   }
+   
+   if( update )
+   {
+     //std::cout << std::endl;
+     //std::cout << " msg L : [" << min << ", " << max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
+     _update_l.set(X,true);
+     next_active_nodes_set.insert(X);
+   }
+  
+  
+	//GUM_TRACE("_msgL terminates long");*/
+  
+  
+  } // fin si update_p ou update_l
+
+  
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			_msgP 					////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_msgP(const NodeId X, const NodeId demanding_child)
+{
+  //std::cout << "msg P de " << this->bn().variable(X).name() << " vers " << this->bn().variable(demanding_child).name()<< std::endl;
+	//GUM_TRACE("_msgP called " << X << " -> " << demanding_child);
+	NodeSet const & children = this->bn().dag().children(X);
+	//NodeSet const & parents = this->bn().dag().parents(X);
+	const gum::Potential<T_DATA> * parents = &bn().cpt(X);
+		
+	if( ( (children.size() + (*parents).nbrDim() - 1) == 1) and (! this->_Evidence.exists(X) ))
+	{
+		//GUM_TRACE("_msgP terminates short");
+		return;
+	}
+	
+	// ------------------------------------------------------------------LM_part ---- from all children but one --- the lonely one will get the message :)
+	
+	// si evidence msg_p = 1 si X = 1, 0 sinon
+	if(this->_Evidence.exists(X) ) 
+	{
+	  this->_ArcsP_min[Arc(X, demanding_child)] = (T_DATA) this->_Evidence[X];
+	  //std::cout << "msg P :" << (T_DATA) this->_Evidence[X] << std::endl;
+	  if( this->_ArcsP_max.exists(Arc(X, demanding_child)) )
+	    this->_ArcsP_max.erase(Arc(X, demanding_child));
+	  
+	  return; // pas de mise a jour de node P
+	}
+	
+	
+  bool update_l = _update_l[X];
+  bool update_p = _update_p[X];
+	
+	/**
+	* si pas actualise, meme message
+	*/
+	if( ! update_p && ! update_l )
+	{
+	   //std::cout << (this->bn()).variable(X).name() <<" MSG_P vers " <<  (this->bn()).variable(demanding_child).name()<< " saute (inchange)" << std::endl;
+	  return;
+	}
+	
+	
+	// L_part
+		  
+	T_DATA lmin = (T_DATA) 1.;
+	T_DATA lmax = (T_DATA) 1.;
+	
+	
+	  // prendre node L et diviser par lmin et/ou lmax de demanding child ?
+	for(NodeSet::const_iterator it = children.begin(); it != children.end(); ++it)
+	{
+		  if( (*it) == demanding_child) continue;
+		  
+		  /*if( isDNode( (*(get_cn().get_CPT()))[*it] ) )
+		      continue;*/
+		  
+		  /*if( lmin == (T_DATA) 0. && this->_ArcsL_min[Arc(X, *it)] == _INF)
+		  {}
+		  else if( lmin == _INF && this->_ArcsL_min[Arc(X, *it)] == (T_DATA) 0.)
+		  {}
+		  else*/
+		    lmin *= this->_ArcsL_min[Arc(X, *it)];
+		  		  
+		  if( this->_ArcsL_max.exists(Arc(X, *it)) )
+		  {
+		    /*if( lmax == (T_DATA) 0. && this->_ArcsL_max[Arc(X, *it)] == _INF)
+		    {}
+		    else if( lmax == _INF && this->_ArcsL_max[Arc(X, *it)] == (T_DATA) 0.)
+		    {}
+		    else*/
+		      lmax *= this->_ArcsL_max[Arc(X, *it)];
+		  }
+		  else
+		  {
+		    /*if( lmax == (T_DATA) 0. && this->_ArcsL_min[Arc(X, *it)] == _INF)
+		    {}
+		    else if( lmax == _INF && this->_ArcsL_min[Arc(X, *it)] == (T_DATA) 0.)
+		    {}
+		    else*/
+		      lmax *= this->_ArcsL_min[Arc(X, *it)];
+		  }
+	}
+	
+      if(lmin != lmin && lmax == lmax){//std::cout <<"\n lmin non defini : 0*inf"<<std::endl;
+	lmin = lmax;}
+      if(lmax != lmax && lmin == lmin){//std::cout <<"\n lmax non defini : 0*inf"<<std::endl;
+	lmax = lmin;}
+      if(lmax != lmax && lmin != lmin)
+	std::cout << "pas de vraisemblance definie [lmin, lmax] (observations incompatibles ?)" << std::endl;
+            
+	
+	if(lmin <= (T_DATA) 0.)
+	  lmin = (T_DATA) 0.;
+	if(lmax <= (T_DATA) 0.)
+	  lmax = (T_DATA) 0.;
+	
+	/*
+	if(lmin == _INF)
+    lmin = (T_DATA) 1.;
+  else
+    lmin = lmin / (1+lmin);
+  
+  if(lmax == _INF)
+    lmax = (T_DATA) 1.;
+  else
+    lmax = lmax / (1+lmax);*/
+	/**
+	* si lmin == lmax == 1  => variable barren, msg envoye est pi(x) 
+	*/
+		
+	
+	// ------------------------------------------------------------------ refresh PI_part 
+	T_DATA min = _INF;//(T_DATA) 1.;
+	T_DATA max = (T_DATA) 0.;
+    
+    if(update_p )
+    {
+	std::vector< std::vector< std::vector<T_DATA> > > msgs_p;
+	std::vector< std::vector<T_DATA> > msg_p;
+	std::vector<T_DATA> distri(2);
+	
+	int d_node_bits = 0;
+	
+	// +1 from start to avoid counting itself
+	for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
+	{
+		// we don't need d nodes messages ! use 1 instead (we could do better, ie not use probability distributions for them)
+		if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
+		{
+			d_node_bits++;
+			/*distri[1] = 1;
+			distri[0] = 1;
+			msg_p.push_back(distri);*/
+		}
+		else
+		{
+		  // compute probability distribution to avoid doing it multiple times (at each new combination of messages)
+		  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), X)];
+		  distri[0] = (T_DATA)1. - distri[1];
+		  msg_p.push_back(distri);
+		  
+		  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), X)) )
+		  {    
+			distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), X)];
+			distri[0] = (T_DATA)1. - distri[1];
+			msg_p.push_back(distri);
+		  }
+	  }
+	  msgs_p.push_back(msg_p);
+	  msg_p.clear();
+	}
+			
+	/*T_DATA min = (T_DATA) 1.;
+	T_DATA max = (T_DATA) 0.;*/
+		
+	_enum_combi(msgs_p, X, min, max, d_node_bits);
+			
+	if(min <= (T_DATA) 0.)
+	  min = (T_DATA) 0.;
+	if(max <= (T_DATA) 0.)
+	  max = (T_DATA) 0.;
+	
+	if(min == _INF || max == _INF)
+	{std::cout << " ERREUR msg P min = max = INF " <<std::endl; std::cout.flush();}
+	
+	this->_NodesP_min[X] = min;
+	
+	if(min != max)
+	{
+	  /*if( this->_NodesP_max.exists(X) )
+	    this->_NodesP_max[X] = max;
+	  else
+	    this->_NodesP_max.insert(X, max);*/
+	  this->_NodesP_max.set(X, max);
+	}
+	else
+	  if( this->_NodesP_max.exists(X) )
+	    this->_NodesP_max.erase(X);
+	  
+	  _update_p.set(X,false);
+	  
+    } // fin si parents ont change
+   else
+    {
+     //std::cout << (this->bn()).variable(X).name() <<" MSG_P vers " <<  (this->bn()).variable(demanding_child).name()<< " enum combi saute" << std::endl;
+	  //T_DATA min, max;
+	  min = this->_NodesP_min[X];
+	  if( this->_NodesP_max.exists(X) )
+	    max = this->_NodesP_max[X];
+	  else
+	    max = min;
+    }
+	 
+	/**
+	 * message a envoyer
+	 */
+  if(  update_p ||  update_l )
+  {
+	
+	T_DATA msg_p_min;
+	T_DATA msg_p_max;
+	
+	// cas limites sur min	
+	/*if( min == (T_DATA) 0. && lmin == _INF)
+	  std::cout << "MESSAGE P ERR : pi = 0, l = inf" << std::endl;*/
+	if( min == _INF && lmin == (T_DATA) 0. )
+	  std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
+		
+	if (/* min != (T_DATA) 0. &&*/ lmin == _INF /*< (T_DATA) 0. */) // cas infini
+	  msg_p_min = (T_DATA) 1.;
+	else if( min == (T_DATA) 0. /*&& lmin != _INF*/ || lmin == (T_DATA) 0.)
+	  msg_p_min = (T_DATA) 0;
+	else
+	  msg_p_min = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / min - (T_DATA)1.) * (T_DATA)1. / lmin ));
+		
+	// cas limites sur max	
+	/*if(max == (T_DATA) 0. && lmax == _INF)
+	  std::cout << "MESSAGE P ERR : pi = 0, l = inf" << std::endl;*/
+	if( max == _INF && lmax == (T_DATA) 0. )
+	  std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
+	
+	if ( /*max != (T_DATA) 0. &&*/ lmax == _INF /*< (T_DATA) 0. */) // cas infini
+	  msg_p_max = (T_DATA) 1.;	
+	else if( max == (T_DATA) 0./* && lmax != _INF*/ || lmax == (T_DATA) 0.)
+	  msg_p_max = (T_DATA) 0;
+	else
+	  msg_p_max = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / max - (T_DATA)1.) * (T_DATA)1. / lmax ));
+	
+	if(msg_p_min != msg_p_min && msg_p_max == msg_p_max)
+	{
+	  msg_p_min = msg_p_max;
+	  std::cout << std::endl;
+	  std::cout << "msg_p_min is NaN" << std::endl;
+	}
+	if(msg_p_max != msg_p_max && msg_p_min == msg_p_min)
+	{
+	  msg_p_max = msg_p_min;
+	  std::cout << std::endl;
+	  std::cout << "msg_p_max is NaN" << std::endl;
+	  
+	}
+	if(msg_p_max != msg_p_max && msg_p_min != msg_p_min)
+	{
+	  std::cout << std::endl;
+	  std::cout << "pas de message P calculable (verifier observations)" << std::endl;
+	}
+  
+	if(msg_p_min <= (T_DATA) 0.)
+	  msg_p_min = (T_DATA) 0.;
+	if(msg_p_max <= (T_DATA) 0.)
+	  msg_p_max = (T_DATA) 0.;
+	
+	
+    bool update = false;
+   if( msg_p_min != this->_ArcsP_min[Arc(X, demanding_child)] )
+   {
+     this->_ArcsP_min[Arc(X, demanding_child)] = msg_p_min;
+     update = true;
+   }
+   
+   if( this->_ArcsP_max.exists(Arc(X, demanding_child)) )
+   {
+     if( msg_p_max != this->_ArcsP_max[Arc(X, demanding_child)] )
+     {
+       if( msg_p_max != msg_p_min)
+	 this->_ArcsP_max[Arc(X, demanding_child)] = msg_p_max;
+       else //if( msg_p_max == msg_p_min )
+	 this->_ArcsP_max.erase(Arc(X, demanding_child));
+       
+       update = true;
+     }
+   }
+   else
+   {
+     if( msg_p_max != msg_p_min)
+     {
+       this->_ArcsP_max.insert(Arc(X, demanding_child), msg_p_max);
+       update = true;
+     }
+   }
+   
+   if( update )
+   {
+     //std::cout<<std::endl;
+     //std::cout << " msg P : [" << msg_p_min << ", " << msg_p_max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
+     _update_p.set(demanding_child,true);
+     next_active_nodes_set.insert(demanding_child);
+   }
+	
+	
+	
+  } // fin si enfants ou parents ont change
+	
+	
+	
+	//GUM_TRACE("_msgP terminates long");
+	
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 		refresh LMs end PIs			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+void gum::LoopyPropagation<T_DATA>::_refreshLMsPIs() 
+{
+  std::cout << "\n\n\t\trefresh LM & PI\n" << std::endl;
+	for(DAG::NodeIterator itX = this->bn().beginNodes(); itX != this->bn().endNodes(); ++itX)
+	{
+	  std::cout << "                                          \r";std::cout.flush();
+	  std::cout << "\t" << this->bn().variable(*itX).name()<<"      ";std::cout.flush();// << std::endl;
+		NodeSet const & children = this->bn().dag().children(*itX);
+		//NodeSet const & parents = this->bn().dag().parents(*itX);
+		
+		const gum::Potential<T_DATA> * parents = &bn().cpt(*itX);
+	
+	//std::cout << std::endl;
+		
+	if ( _update_l[*itX] )
+	 {
+	   
+		
+		T_DATA lmin = (T_DATA) 1.;		  
+		T_DATA lmax = (T_DATA) 1.;
+		/*
+		if(this->_Evidence.exists(*itX))
+		{
+		  if( this->_Evidence[*itX] == (T_DATA) 0.)
+		    lmin = (T_DATA) 0.;    
+		  else if ( this->_Evidence[*itX] == (T_DATA) 1.)
+		    lmin = (T_DATA) -1.;
+		  
+		  lmax = lmin;
+		}
+		
+		else */if ( ! children.empty() && !this->_Evidence.exists(*itX))
+		{
+		 //std::cout << "REFRESH L : " << bn().variable(*itX).name()<<std::endl;
+		// L part
+		  for(NodeSet::const_iterator it = children.begin(); it != children.end(); ++it)
+		  {
+		    /*if( isDNode( (*(get_cn().get_CPT()))[*it] ) )
+		      continue;*/
+		    
+		    /*if( lmin == (T_DATA) 0. && this->_ArcsL_min[Arc(*itX, *it)] == _INF)
+		    {}
+		    else if( lmin == _INF && this->_ArcsL_min[Arc(*itX, *it)] == (T_DATA) 0.)
+		    {}
+		    else*/
+		      lmin *= this->_ArcsL_min[Arc(*itX, *it)];
+		    //std::cout << bn().variable(*it).name() <<" min " <<this->_ArcsL_min[Arc(*itX, *it)] << " ";
+		    
+				    
+		    if( this->_ArcsL_max.exists(Arc(*itX, *it)) )
+		    {
+		      //std::cout << " max " << this->_ArcsL_max[Arc(*itX, *it)] << std::endl;
+		      /*if( lmax == (T_DATA) 0. && this->_ArcsL_max[Arc(*itX, *it)] == _INF)
+		      {}
+		      else if( lmax == _INF && this->_ArcsL_max[Arc(*itX, *it)] == (T_DATA) 0.)
+		      {}
+		      else*/
+			lmax *= this->_ArcsL_max[Arc(*itX, *it)];
+		    }
+		    else
+		    {
+		      /*if( lmax == (T_DATA) 0. && this->_ArcsL_min[Arc(*itX, *it)] == _INF)
+		      {}
+		      else if( lmax == _INF && this->_ArcsL_min[Arc(*itX, *it)] == (T_DATA) 0.)
+		      {}
+		      else*/
+			lmax *= this->_ArcsL_min[Arc(*itX, *it)];
+		    }
+		  }
+		  
+		 if(lmin != lmin && lmax == lmax){//std::cout <<"\n lmin non defini : 0*inf"<<std::endl;
+	lmin = lmax;}
+      if(lmax != lmax && lmin == lmin){//std::cout <<"\n lmax non defini : 0*inf"<<std::endl;
+	lmax = lmin;}
+      if(lmax != lmax && lmin != lmin)
+	std::cout << "pas de vraisemblance definie [lmin, lmax] (observations incompatibles ?)" << std::endl;
+            
+		  if(lmin <= (T_DATA) 0.)
+		    lmin = (T_DATA) 0.;
+		  if(lmax <= (T_DATA) 0.)
+		    lmax = (T_DATA) 0.;
+		  /*
+		  if(lmin == _INF)
+		    lmin = (T_DATA) 1.;
+		  else
+		    lmin = lmin / (1+lmin);
+		  
+		  if(lmax == _INF)
+		    lmax = (T_DATA) 1.;
+		  else
+		    lmax = lmax / (1+lmax);
+			*/	  
+		  this->_NodesL_min[*itX] = lmin;
+		  
+		  if( lmin != lmax )
+		  {
+		    /*if( this->_NodesL_max.exists(*itX) )
+		      this->_NodesL_max[*itX] = lmax;
+		    else
+		      this->_NodesL_max.insert(*itX, lmax);*/
+		    this->_NodesL_max.set(*itX, lmax);
+		    //std::cout << lmax << std::endl;
+		  }
+		  else
+		    if( this->_NodesL_max.exists(*itX) )
+		      this->_NodesL_max.erase(*itX);
+		}
+		
+	 }
+	if(_update_p[*itX])
+	{
+		// PI part
+		   
+		if( ((*parents).nbrDim() - 1) > 0  && !this->_Evidence.exists(*itX) )
+		{
+		  //std::cout << "REFRESH P : " << bn().variable(*itX).name()<<std::endl;
+		    std::vector< std::vector< std::vector<T_DATA> > > msgs_p;
+		    std::vector< std::vector<T_DATA> > msg_p;
+		    std::vector<T_DATA> distri(2);
+		    
+		    int d_node_bits = 0;
+		    
+		    // +1 from start to avoid counting itself
+		    for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
+		    {
+				if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
+				{
+					d_node_bits++;
+					/*distri[1] = 1;
+					distri[0] = 1;
+					msg_p.push_back(distri);*/
+				}
+				else
+				{
+				  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+				  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), *itX)];
+				  distri[0] = (T_DATA)1. - distri[1];
+				  msg_p.push_back(distri);
+				  		      
+				  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), *itX)) )
+				  {    
+					distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), *itX)];
+					distri[0] = (T_DATA)1. - distri[1];
+					msg_p.push_back(distri);
+				  }
+				  msgs_p.push_back(msg_p);
+				  msg_p.clear();
+		      	}
+		    }
+		    
+		    T_DATA min = _INF;//(T_DATA) 1.;
+		    T_DATA max = (T_DATA) 0.;
+			    
+		    _enum_combi(msgs_p, *itX, min, max, d_node_bits);
+				
+		    
+		  if(min <= (T_DATA) 0.)
+		    min = (T_DATA) 0.;
+		  if(max <= (T_DATA) 0.)
+		    max = (T_DATA) 0.;
+		    
+		    this->_NodesP_min[*itX] = min;
+		    
+		    if(min != max)
+		    {
+		      /*if( this->_NodesP_max.exists(*itX) )
+			this->_NodesP_max[*itX] = max;
+		      else
+			this->_NodesP_max.insert(*itX, max);*/
+		      this->_NodesP_max.set(*itX, max);
+		    }
+		    else
+		      if( this->_NodesP_max.exists(*itX) )
+			this->_NodesP_max.erase(*itX);
+		  _update_p[*itX] = false;
+		}
+		
+		
+	}
+	
+	
+	std::cout << "\r";std::cout.flush();
+	}
+	std::cout<<std::endl;
+
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 		calculate epsilon			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+T_DATA gum::LoopyPropagation<T_DATA>::_calculateEpsilon() // as a matter of fact, this is derivative of epsilon, the real epsilon can not be know
+{
+  //std::cout << "calcul epsilon, refresh PI, LM, calcul de P(x|e)" << std::endl;
+  
+  _refreshLMsPIs();
+  
+  std::cout << "\n\n\t\t Probabilites\n" << std::endl;
+  
+  T_DATA epsilon = (T_DATA) 0;
+  
+   typename Property<T_DATA>::onNodes * min_hash = new typename Property<T_DATA>::onNodes;
+   typename Property<T_DATA>::onNodes * max_hash = new typename Property<T_DATA>::onNodes;
+    
+    // insert node by node while parsing _oldMarginal
+  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
+  {	
+    T_DATA old_min, old_max;
+    
+    old_min = this->_oldMarginal_min[*it];
+    
+    if( this->_oldMarginal_max.exists(*it) )
+      old_max = this->_oldMarginal_max[*it];
+    else
+      old_max = this->_oldMarginal_min[*it];
+    
+    (*min_hash).insert(*it,old_min);
+    (*max_hash).insert(*it,old_max);
+  }
+  
+    _oldMarginal_min_t.push_back(min_hash);
+    _oldMarginal_max_t.push_back(max_hash);
+  
+  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
+  {	
+    // calcul distri posteriori
+    
+    T_DATA msg_p_min;
+    T_DATA msg_p_max;
+    
+    // cas evidence, calcul immediat
+    if( this->_Evidence.exists(*it) )
+    {
+      if( this->_Evidence[*it] == (T_DATA) 0. )
+	msg_p_min = (T_DATA) 0.;
+      else if( this->_Evidence[*it] == (T_DATA) 1. )
+	msg_p_min = (T_DATA) 1.;
+      
+      msg_p_max = msg_p_min;
+    }
+    // sinon depuis node P et node L
+    else
+    {
+	T_DATA min = this->_NodesP_min[*it];
+	T_DATA max;
+	
+	if( this->_NodesP_max.exists(*it) )
+	  max = this->_NodesP_max[*it];
+	else
+	  max = min;
+	
+	T_DATA lmin = this->_NodesL_min[*it];
+	T_DATA lmax;
+	
+	if( this->_NodesL_max.exists(*it) )
+	  lmax = this->_NodesL_max[*it];
+	else
+	  lmax = lmin;
+	
+	if(min == _INF || max == _INF)
+	{
+	  std::cout << " min ou max === _INF !!!!!!!!!!!!!!!!!!!!!!!!!! " << std::endl;
+	  std::cout.flush();
+	}
+      	
+	// cas limites sur min
+	
+	/*if(min == (T_DATA) 0. && lmin == _INF)
+	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
+	if( min == _INF && lmin == (T_DATA) 0. )
+	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+	
+	if ( /*min != (T_DATA) 0. &&*/ lmin == _INF  ) // cas infini
+	  msg_p_min = (T_DATA) 1.;
+	else if( min == (T_DATA) 0. /*&& lmin != _INF*/ || lmin == (T_DATA) 0.)
+	  msg_p_min = (T_DATA) 0;
+	else
+	  msg_p_min = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / min - (T_DATA)1.) * (T_DATA)1. / lmin ));
+		
+	// cas limites sur max	
+	/*if(max == (T_DATA) 0. && lmax == _INF)
+	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
+	if( max == _INF && lmax == (T_DATA) 0. )
+	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+	
+	if ( /*max != (T_DATA) 0. &&*/ lmax == _INF  ) // cas infini
+	  msg_p_max = (T_DATA) 1.;
+	else if( max == (T_DATA) 0./* && lmax != _INF */ || lmax == (T_DATA) 0.)
+	  msg_p_max = (T_DATA) 0;	 
+	else
+	  msg_p_max = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / max - (T_DATA)1.) * (T_DATA)1. / lmax ));
+          
+	//std::cout << " lx : ["<<lmin<<", "<<lmax<<"] ";
+    }
+    
+    if(msg_p_min != msg_p_min && msg_p_max == msg_p_max)
+	{
+	  msg_p_min = msg_p_max;
+	  std::cout << std::endl;
+	  std::cout << "msg_p_min is NaN" << std::endl;
+	}
+	if(msg_p_max != msg_p_max && msg_p_min == msg_p_min)
+	{
+	  msg_p_max = msg_p_min;
+	  std::cout << std::endl;
+	  std::cout << "msg_p_max is NaN" << std::endl;
+	  
+	}
+	if(msg_p_max != msg_p_max && msg_p_min != msg_p_min)
+	{
+	  std::cout << std::endl;
+	  std::cout << "pas de proba calculable (verifier observations)" << std::endl;
+	}
+    
+    if(msg_p_min <= (T_DATA) 0.)
+      msg_p_min = (T_DATA) 0.;
+    if(msg_p_max <= (T_DATA) 0.)
+      msg_p_max = (T_DATA) 0.;
+    
+    
+    std::cout << "P(" << (this->bn()).variable(*it).name() << " | e) = ";
+     
+    
+        
+    std::cout <<" l = [ " << this->_NodesL_min[*it];
+    
+    if( this->_NodesL_max.exists(*it) && this->_NodesL_max[*it] != this->_NodesL_min[*it])
+	  std::cout << ", "<<this->_NodesL_max[*it]<<" ] pi = [ "<< this->_NodesP_min[*it];
+    else
+      std::cout << " ] pi = [ " << this->_NodesP_min[*it];
+    
+    if( this->_NodesP_max.exists(*it) && this->_NodesP_max[*it] != this->_NodesP_min[*it])
+	  std::cout << ", "<< this->_NodesP_max[*it]<<" ] ";
+    else
+      std::cout << " ] ";
+    
+    
+    
+    if( this->_Evidence.exists(*it) )
+      std::cout << "(observe)" << std::endl;
+    else
+      std::cout << std::endl;
+    
+    std::cout << "\t\t" << (this->bn()).variable(*it).label(0) << "  [ " << (T_DATA) 1. - msg_p_max;
+    
+    if( msg_p_min != msg_p_max )
+      std::cout << ", " << (T_DATA) 1. - msg_p_min <<" ] | ";
+    else
+      std::cout<<" ] | ";
+       
+    std::cout << (this->bn()).variable(*it).label(1) << "  [ "<< msg_p_min;
+    if( msg_p_min != msg_p_max )
+      std::cout << ", " << msg_p_max <<" ]"<<std::endl;
+    else
+      std::cout<<" ]"<<std::endl;
+    
+    std::cout.flush();
+    
+    // calcul epsilon
+    
+    T_DATA epsilonOnNode_min;
+    T_DATA epsilonOnNode_max;
+    
+    T_DATA old_min, old_max;
+    
+    old_min = this->_oldMarginal_min[*it];
+    
+    if( this->_oldMarginal_max.exists(*it) )
+      old_max = this->_oldMarginal_max[*it];
+    else
+      old_max = this->_oldMarginal_min[*it];
+    
+    epsilonOnNode_min = __euclidean(old_min, msg_p_min);
+    epsilonOnNode_max = __euclidean(old_max, msg_p_max);    
+    
+    _oldMarginal_min[*it] = msg_p_min;
+    if( msg_p_min != msg_p_max )
+    {
+      /*if( this->_oldMarginal_max.exists(*it) )
+	this->_oldMarginal_max[*it] = msg_p_max;
+      else
+	this->_oldMarginal_max.insert(*it, msg_p_max);*/
+	this->_oldMarginal_max.set(*it, msg_p_max);
+    }
+    else
+      if( this->_oldMarginal_max.exists(*it) )
+	this->_oldMarginal_max.erase(*it);
+    
+    if(epsilonOnNode_min > epsilon) epsilon = epsilonOnNode_min;
+    if(epsilonOnNode_max > epsilon) epsilon = epsilonOnNode_max;
+    
+   
+  }
+
+	epsilon = std::sqrt(epsilon); // !!!  this should be removed if non __euclidean measure is used!!
+	eps.push_back(epsilon);
+	//std::cout << "epsilon = " << epsilon << std::endl;
+	
+	return epsilon;  
+	
+	//return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 		euclidean				////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+T_DATA gum::LoopyPropagation<T_DATA>::__euclidean(T_DATA p, T_DATA q)
+{
+	T_DATA ptit = p - q;
+	return ptit*ptit;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			CONSTRUCTOR 			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+gum::LoopyPropagation<T_DATA>::LoopyPropagation(const CredalNet<T_DATA> &cn, const BayesNet<T_DATA>& bn) 
+:  _InferenceUpToDate(false), ApproximationScheme(), __inferenceType(ordered)
+//: PearlPropagation<T_DATA>(cn, bn), ApproximationScheme(), __inferenceType(ordered)
+{
+	this->cn = &cn;
+	this->bnet = &bn;
+	initRandom();
+	GUM_CONSTRUCTOR(LoopyPropagation);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// 			DESTRUCTOR	 			////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T_DATA>
+gum::LoopyPropagation<T_DATA>::~LoopyPropagation()
+{
+	_cleanInferenceData();
+	
+	GUM_DESTRUCTOR(LoopyPropagation);
+}
+
+
+
+
+
+
+
+
+
+

@@ -87,6 +87,7 @@ namespace gum {
       typename gum::Property< nodeType >::onNodes __nodeType;
       typename gum::Property< nodeType >::onNodes *__current_nodeType;// = NULL;
 
+      void __intervalToCredal();
       
       void __initParams();
       void __initCNNets ( const std::string &src_min_num, const std::string &src_max_den );
@@ -144,8 +145,7 @@ namespace gum {
 
       // transformation member methods
       void bnToCredal ( GUM_SCALAR beta, bool rational );
-      void __intervalToCredal();
-
+      
       void intervalToCredal ( const int s = 0 );
       void dts(); // for L2U, no arcs between decision node bits
       // not complete / to be removed
@@ -156,6 +156,8 @@ namespace gum {
       // other utility member methods
       void saveCNet ( const std::string &cn_path ) const;
       void loadCNet ( const std::string &src_cn_path );
+
+      void saveBNsMinMax( const std::string & min_path, const std::string & max_path ) const;
 
       void vacants ( int &result ) const;
       void notVacants ( int &result ) const;

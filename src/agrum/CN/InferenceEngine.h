@@ -1,10 +1,12 @@
 #ifndef __CN_INFERENCE_ENGINE__H__
 #define __CN_INFERENCE_ENGINE__H__
 
+#include <agrum/BN/algorithms/approximationScheme.h>
+
 namespace gum {
 
   template< typename GUM_SCALAR >
-  class InferenceEngine {
+  class InferenceEngine : public ApproximationScheme {
     private:
 
     protected:
@@ -17,7 +19,8 @@ namespace gum {
 
       typename gum::Property< GUM_SCALAR >::onNodes _expectationMin;
       typename gum::Property< GUM_SCALAR >::onNodes _expectationMax;
-      //typename std::map< std::string, std::map< int, GUM_SCALAR > > _
+      typename std::map< std::string, std::vector< GUM_SCALAR > > _dynamicExpMin;
+      typename std::map< std::string, std::vector< GUM_SCALAR > > _dynamicExpMax;
 
       // variables modalities (the real ones, not discretized 0 1 2 3 ...)
       typename std::map< std::string, std::vector< GUM_SCALAR > > _modal;
@@ -32,6 +35,8 @@ namespace gum {
       int _timeSteps;
 
       void _repetitiveInit();
+      void _dynamicExpectations();
+      void _initExpectations();
 
     public:
       InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
@@ -60,11 +65,16 @@ namespace gum {
 
       const GUM_SCALAR & expectationMin ( const gum::NodeId id ) const;
       const GUM_SCALAR & expectationMax ( const gum::NodeId id ) const;
+
+      const std::vector< GUM_SCALAR > & dynamicExpMin ( const std::string & varName ) const;
+      const std::vector< GUM_SCALAR > & dynamicExpMax ( const std::string & varName ) const;
+
       const std::vector< std::vector< GUM_SCALAR > > & vertices ( const gum::NodeId id ) const;
       
       void saveMarginals ( const std::string &path ) const;
       void saveExpectations ( const std::string &path ) const;
       void saveVertices ( const std::string &path ) const;
+      void dynamicExpectations(); // if someone forgets the protected call at the end of its own algorithm, the user can call it
 
       std::string toString() const;
 

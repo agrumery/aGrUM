@@ -43,6 +43,7 @@ namespace gum {
       delete __current_nodeType;
   }
 
+  // from BNs with numerators & denominators or cpts & denominators to credal
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::bnToCredal ( GUM_SCALAR beta, bool rational ) {
     double epsi_min = 1;
@@ -69,7 +70,7 @@ namespace gum {
 
       //GUM_SCALAR val_preced = 0.;
       //bool uniform;
-      std::cout << __src_bn.variable ( *node_idIt ).name() << std::endl;
+      //std::cout << __src_bn.variable ( *node_idIt ).name() << std::endl;
       std::string var_name = __src_bn.variable ( *node_idIt ).name();
       var_name = var_name.substr ( 0, 2 );
 
@@ -251,37 +252,10 @@ namespace gum {
 
       } // end of : for each entry
 
-      std::cout << "cas : " << CASES << std::endl;
+      //std::cout << "cas : " << CASES << std::endl;
     } // end of : for each variable
 
-    gum::BIFWriter< GUM_SCALAR > writer;
-
-    std::string minfilename = "min.bif";
-    std::string maxfilename = "max.bif";
-    std::ofstream min_file ( minfilename.c_str() , std::ios::out | std::ios::trunc );
-    std::ofstream max_file ( maxfilename.c_str(), std::ios::out | std::ios::trunc );
-
-    if ( ! min_file.good() )
-      GUM_ERROR ( IOError, "bnToCredal() : could not open stream : min_file : " << minfilename );
-
-    if ( ! max_file.good() ) {
-      min_file.close();
-      GUM_ERROR ( IOError, "bnToCredal() : could not open stream : min_file : " << maxfilename );
-    }
-
-    try {
-      writer.write ( min_file, __src_bn_min );
-      writer.write ( max_file, __src_bn_max );
-    } catch ( gum::Exception &err ) {
-      GUM_SHOWERROR ( err );
-      min_file.close();
-      max_file.close();
-      throw ( err );
-    }
-
-    min_file.close();
-    max_file.close();
-
+    
     std::cout << "epsilon min : " << epsi_min << std::endl;
     std::cout << "epsilon max : " << epsi_max << std::endl;
     std::cout << "epsilon moyen : " << epsi_moy / epsi_den << std::endl;
@@ -485,6 +459,43 @@ namespace gum {
     __sort_varType();
 
   }
+
+  /**
+   * to call after bnToCredal( GUM_SCALAR beta, bool rational )
+   * save a BN with lower probabilities and a BN with upper ones
+   */
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::saveBNsMinMax( const std::string & min_path, const std::string & max_path ) const {
+    gum::BIFWriter< GUM_SCALAR > writer;
+
+    std::string minfilename = min_path;//"min.bif";
+    std::string maxfilename = max_path;//"max.bif";
+    std::ofstream min_file ( minfilename.c_str() , std::ios::out | std::ios::trunc );
+    std::ofstream max_file ( maxfilename.c_str(), std::ios::out | std::ios::trunc );
+
+    if ( ! min_file.good() )
+      GUM_ERROR ( IOError, "bnToCredal() : could not open stream : min_file : " << minfilename );
+
+    if ( ! max_file.good() ) {
+      min_file.close();
+      GUM_ERROR ( IOError, "bnToCredal() : could not open stream : min_file : " << maxfilename );
+    }
+
+    try {
+      writer.write ( min_file, __src_bn_min );
+      writer.write ( max_file, __src_bn_max );
+    } catch ( gum::Exception &err ) {
+      GUM_SHOWERROR ( err );
+      min_file.close();
+      max_file.close();
+      throw ( err );
+    }
+
+    min_file.close();
+    max_file.close();
+
+  }
+
 
 
   template< typename GUM_SCALAR >
@@ -1030,8 +1041,12 @@ namespace gum {
   void CredalNet< GUM_SCALAR >::__H2V ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep, const bool rationals ) const {
     // write H rep file
     int64_t num, den;
-    std::string inefile = "lrs_h_tmp.ine";
-    std::ofstream h_file ( inefile.c_str(), std::ios::out | std::ios::trunc );
+
+    char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
+    std::string sinefile(inefile);
+    sinefile += ".ine";
+
+    std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
 
     if ( ! h_file.good() )
       GUM_ERROR ( IOError, "__H2V : could not open lrs input file : " << inefile );
@@ -1069,17 +1084,21 @@ namespace gum {
     // call lrs
     // lrs arguments
     char *args[3];
-    std::string soft_name = "lrs";
-    std::string intput_file = "lrs_h_tmp.ine";
-    std::string output_file = "lrs_v_tmp.ext";
 
+    std::string soft_name = "lrs";
+    std::string extfile(inefile);
+    extfile += ".ext";
+    
     args[0] = new char[soft_name.size()];
-    args[1] = new char[intput_file.size()];
-    args[2] = new char[output_file.size()];
+    args[1] = new char[sinefile.size()];
+    args[2] = new char[extfile.size()];
 
     strcpy ( args[0], soft_name.c_str() );
-    strcpy ( args[1], intput_file.c_str() );
-    strcpy ( args[2], output_file.c_str() );
+    strcpy ( args[1], sinefile.c_str() );
+    strcpy ( args[2], extfile.c_str() );
+
+
+    // cout to null not working in agrum, why ?
 
     // standard cout to null (avoid lrs flooding)
     int old_cout, new_cout;
@@ -1097,8 +1116,8 @@ namespace gum {
     close ( new_cout );
 
     lrs_main ( 3, args );
-
-    // restore standstd::vector< ard cout
+    
+    // restore standard cout
     fflush ( stdout );
     dup2 ( old_cout, 1 );
     close ( old_cout );
@@ -1106,11 +1125,10 @@ namespace gum {
     delete args[2]; delete args[1]; delete args[0];
 
     // read V rep file
-    std::string extfilename = "lrs_v_tmp.ext";
-    std::ifstream v_file ( extfilename.c_str(), std::ios::in );
+    std::ifstream v_file ( extfile.c_str() /*extfilename.c_str()*/, std::ios::in );
 
     if ( ! v_file.good() )
-      GUM_ERROR ( IOError, "__H2V() : could not open lrs ouput file : " << extfilename );
+      GUM_ERROR ( IOError, "__H2V() : could not open lrs ouput file : " );
 
     std::string line, tmp;
     char *cstr, * p;
@@ -1136,7 +1154,7 @@ namespace gum {
         vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str() );
         break;
       } else if ( line[1] != '1' ) {
-        GUM_ERROR ( IOError, "__H2V() : reading something other than a vertex from lrs output file : " << extfilename );
+        GUM_ERROR ( IOError, "__H2V() : reading something other than a vertex from lrs output file : " );
       }
 
       line = line.substr ( 2 );
@@ -1201,6 +1219,11 @@ namespace gum {
     } // end of : file
 
     v_file.close();
+
+    if( std::remove(sinefile.c_str()) != 0)
+      GUM_ERROR(IOError, "error removing : " + sinefile);
+    if( std::remove(extfile.c_str()) != 0)
+      GUM_ERROR(IOError, "error removing : " + extfile);
   }
 
   template< typename GUM_SCALAR >

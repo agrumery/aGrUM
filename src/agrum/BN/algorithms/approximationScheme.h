@@ -279,6 +279,11 @@ namespace gum {
         __current_step++ ;
       }
 
+      /// update the scheme w.r.t the new error and incr steps
+      void updateApproximationScheme(unsigned int incr) {
+        __current_step += incr;
+      }
+
       /// update the scheme w.r.t the new error. Test the stopping criterion
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
       /// @return true if stat become != APPROX_CONTINUE

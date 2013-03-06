@@ -25,28 +25,14 @@ void test_credal() {
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
- //GET_PATH_STR ( bn_c.bif ) );
+  BIFReader< double > readera ( &monBNa, //GET_PATH_STR ( 2Umin.bif ) );
+ GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
-//GET_PATH_STR ( den_c.bif ) );
+  BIFReader< double > readerb ( &monBNb, //GET_PATH_STR ( 2Umax.bif ) );
+ GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
-
-  //std::cout << myCNa.toString() << std::endl;
-  //myCNa.intervalToCredal(0);
-
-  //std::cout << myCNa.toString();
-  //
-  //std::cout << "LP" << std::endl;
-
-  //LoopyPropagation< double > lp(myCNa);
-  //lp.makeInference();
-
-  //std::cout << "MC rep" << std::endl;
-  //
-  //
 
   // dynacheese modalities
   std::map< std::string, std::vector< double > > modals;
@@ -80,24 +66,27 @@ void test_credal() {
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
-      myCNa->intervalToCredal(0);
+      //myCNa->intervalToCredal(0); // 2U network
 
-      //myCNa.intervalToCredal(10); // IDM s = 10
-      /*if ( i == 0 )
+        
+      if ( i == 0 )
         myCNa->bnToCredal ( 0.95, false );
 
       if ( i == 1 )
         myCNa->bnToCredal ( 0.8, false );
 
       if ( i == 2 )
-        myCNa->bnToCredal ( 0.85, false );*/
+        myCNa->bnToCredal ( 0.85, false );
+
+      myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
 
       //std::cout << myCNa->toString() << std::endl;
 
       MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
 
-      MCE->insertModals(modals2);
-      //MCE->insertModals( GET_PATH_STR ( modalities.modal ) );
+      //MCE->insertModals(modals2); //L2U modals
+      //MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+      MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
       MCE->setTimeLimit ( 1 );
@@ -106,13 +95,15 @@ void test_credal() {
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
 
       if ( j == 1 )
-        MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
-        //MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+        //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+        MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
 
       MCE->makeInference();
+      //std::vector<double> toto(MCE->dynamicExpMin("A"));
+      //std::cout << toto << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");

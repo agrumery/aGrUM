@@ -19,6 +19,7 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
+    // shared stuff
     int64_t inf_cpt = 0;
     int num_threads;
     bool no_change = true;
@@ -26,13 +27,19 @@ namespace gum {
     int64_t no_change_iters = 0;
     int64_t timeElapsed;
 
+    GUM_SCALAR epsilon_max = 0;
+
     // each thread keeps its own information before fusion
+    // threads do not like sharing iterators and such, so copy all that is needed (more memory, faster read/write)
+    // outside of parallel region if access is needed after all threads complete
     std::vector< typename gum::Property< std::vector< GUM_SCALAR> >::onNodes > l_marginalMin;
     std::vector< typename gum::Property< std::vector< GUM_SCALAR> >::onNodes > l_marginalMax;
     std::vector< typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes > l_marginalSets;
     std::vector< typename gum::Property< GUM_SCALAR >::onNodes > l_expectationMin;
     std::vector< typename gum::Property< GUM_SCALAR >::onNodes > l_expectationMax;
     std::vector< std::map< std::string, typename std::vector< GUM_SCALAR > > > l_modal;
+
+    typename std::vector< GUM_SCALAR > epsilons;
 
     
     //if(__repetitiveInd)
@@ -67,7 +74,7 @@ namespace gum {
 
     //__varInst = std::vector< std::vector<int> >(entries);
 
-    std::cout << "Will go through " << __VERT << " DBNs" << std::endl;
+    //std::cout << "Will go through " << __VERT << " DBNs" << std::endl;
 
     #pragma omp parallel
     {
@@ -75,6 +82,7 @@ namespace gum {
       num_threads = omp_get_num_threads();
 
       gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
+      // seg fault without critical (maybe iterators used for copy ?)
       #pragma omp critical
       {
         *thread_bn = this->_credalNet->current_bn();
@@ -92,29 +100,51 @@ namespace gum {
         l_expectationMin.resize( num_threads );
         l_expectationMax.resize( num_threads );
         l_modal.resize( num_threads );
+        epsilons.resize( num_threads, 0 );
       }
 
       __workingSet[this_thread] = thread_bn;
 
-      #pragma omp critical
-      {
+      //#pragma omp critical
+      //{
         l_modal[this_thread] = this->_modal;
-      }
+        l_marginalMin[this_thread] = this->_marginalMin;
+        l_marginalMax[this_thread] = this->_marginalMax;
+        l_marginalSets[this_thread] = this->_marginalSets;
+        l_expectationMin[this_thread] = this->_expectationMin;
+        l_expectationMax[this_thread] = this->_expectationMax;
+      //}
 
       gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
       __workingSetE[this_thread] = evi_list;
 
-
       const gum::DAG &thread_dag = __workingSet[this_thread]->dag();
 
+// above copies seems to work
+/*
       for ( gum::DAG::NodeIterator id = thread_dag.beginNodes(); id != thread_dag.endNodes(); ++id ) {
         int dSize = __workingSet[this_thread]->variable ( *id ).domainSize();
         l_marginalMin[this_thread].insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
         l_marginalMax[this_thread].insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
         l_marginalSets[this_thread].insert ( *id, std::vector< std::vector< GUM_SCALAR> >() );
+
+        // since only monitored variables in _modal will be alble to compute expectations, it is useless to initialize those for all variables
+        // _modal variables will always be checked further, so it is not necessary to check it here, but doing so will use less memory
+        std::string var_name, time_step;
+        size_t delim;
+
+        var_name = this->_credalNet->current_bn().variable ( *id ).name();
+        delim = var_name.find_first_of ( "_" );
+        time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
+
+        if(l_modal[this_thread].empty() || l_modal[this_thread].find(var_name) == l_modal[this_thread].end())
+          continue;
+
         l_expectationMin[this_thread].insert ( *id, 100 );
         l_expectationMax[this_thread].insert ( *id, 0 );
       }
+*/
 
       BNInferenceEngine inference_engine ( * ( __workingSet[this_thread] ) );
 
@@ -122,8 +152,15 @@ namespace gum {
       tps_inf.reset();
       //Chrono tps_inf;
       //tps_inf.start();
+      #pragma omp single
+      {
+        this->initApproximationScheme();
+        this->setMaxIter(__iterStop);
+        this->setMaxTime(__timeLimit);
+        this->setPeriodSize(1000);
+      }
 
-      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/tps_inf.step() < 0.1/*__timeLimit*/ && ! all_stop ) {
+      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/tps_inf.step() < __timeLimit && ! all_stop ) {
         #pragma omp atomic
         inf_cpt++;
 
@@ -132,6 +169,8 @@ namespace gum {
           int i = tps_inf.step();//tps_inf.getElapsedTimeInSec();
           std::cout << "inference : " << inf_cpt << " time elapsed : " << i  << " time left : " << ( __timeLimit - i ) << " seconds       \r";
           std::cout.flush();
+
+          //std::cout << "\ncurrent time : " << this->currentTime() << std::endl;
 
           if ( inf_cpt >= __VERT )
             stopN = true;
@@ -143,6 +182,7 @@ namespace gum {
         inference_engine.eraseAllEvidence();
         __insertEvidence ( inference_engine );
 
+        epsilons[this_thread] = 0;
         inference_engine.makeInference();
 
         // each thread update its marginals
@@ -186,6 +226,9 @@ namespace gum {
             // we can check either global or local marginals since both are updated at each step
             for( Size mod = 0; mod < vertex.size(); mod++ ) {
               if(vertex[mod] <= this->_marginalMin[*it][mod]) {
+                GUM_SCALAR delta = this->_marginalMin[*it][mod] - vertex[mod];
+                if(delta > epsilons[this_thread])
+                  epsilons[this_thread] = delta;
                 l_marginalMin[this_thread][*it][mod] = vertex[mod];
                 newOne = true;
               }
@@ -193,6 +236,9 @@ namespace gum {
                 newOne = true;
               }
               if(vertex[mod] >= this->_marginalMax[*it][mod]) {
+                GUM_SCALAR delta = vertex[mod] - this->_marginalMax[*it][mod];
+                if(delta > epsilons[this_thread])
+                  epsilons[this_thread] = delta;
                 l_marginalMax[this_thread][*it][mod] = vertex[mod];
                 newOne = true;
               }
@@ -234,7 +280,16 @@ namespace gum {
           } // end of : all modalities
         } // end of : all variables
 
-        
+        #pragma omp single
+        {
+          // find max epsilon among threads
+          for( Size thread_id = 0; thread_id < num_threads; thread_id++)
+            if(epsilons[thread_id] > epsilon_max)
+              epsilon_max = epsilons[thread_id];
+
+          // give it to approxscheme if inf_cpt % critere arret = 0 ?
+          this->updateApproximationScheme(num_threads);
+        }
 
         // vertex update
         /*
@@ -337,15 +392,34 @@ namespace gum {
 
           if ( no_change_iters >= __iterStop /*|| inf_cpt >1*/ )
             all_stop = true;
+
+          if( ! this->continueApproximationScheme(epsilon_max) ) {
+            std::cout << "\n\nApprox scheme stop\n" << std::endl;
+            std::cout << "epsilon : " << epsilon_max << std::endl;
+            std::cout << "\n" << this->messageApproximationScheme() << std::endl;
+            all_stop = true;
+          }
+          epsilon_max = 0;
         }
         #pragma omp flush(inf_cpt)
         #pragma omp flush(all_stop)
 
-      } // end of : while time spent < __timeLimit && ! all_stop
+    } // end of : while time spent < __timeLimit && ! all_stop
 
+    if( ! l_modal[this_thread].empty() ) {
       // expectation fusion
       #pragma omp for
       for(int i = 0; i < __workingSet[this_thread]->size(); i++) {
+        std::string var_name, time_step;
+        size_t delim;
+
+        var_name = __workingSet[this_thread]->variable ( i ).name();
+        delim = var_name.find_first_of ( "_" );
+        time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
+
+        if( l_modal[this_thread].find(var_name) == l_modal[this_thread].end() )          continue;
+
         for(int thread_id = 0; thread_id < num_threads; thread_id++) {
           if( l_expectationMax[thread_id][i] > this->_expectationMax[i] )
             this->_expectationMax[i] = l_expectationMax[thread_id][i];
@@ -353,6 +427,7 @@ namespace gum {
             this->_expectationMin[i] = l_expectationMin[thread_id][i];
         } // end of : each thread
       } // end of : each variable
+    }
 
       #pragma omp critical
       {
@@ -363,6 +438,9 @@ namespace gum {
 
 
     } // end of : parallel region
+
+    if( ! this->_modal.empty() )
+      this->_dynamicExpectations(); // work with any network
 
     //std::cout << std::endl;
     /*
