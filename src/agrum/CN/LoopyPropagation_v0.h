@@ -75,10 +75,10 @@ namespace gum
 		void _compute_ext(T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, T_DATA &num_min, T_DATA &num_max, T_DATA &den_min, T_DATA &den_max);
 		
 		// pour marginaliser sur une combinaison
-		void _compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_card);
+		void _compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos);
 		
 		// enumere combinaisons des messages parents
-		void _enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_bits);
+		void _enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos);
 		
 		/**
 		* message vers les enfants
@@ -86,10 +86,10 @@ namespace gum
 		void _msgP(const NodeId X, const NodeId demanding_child);
 		
 		// enumere combinaisons des messages parents
-		void _enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_bits);
+		void _enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max);
 		
 		// marginalise et calcul des extremes pour une combinaison
-		void _compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_card);
+		void _compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max);
 				
 		
 		void _refreshLMsPIs();
@@ -161,5 +161,5 @@ namespace gum
 
 
 
-#include "LoopyPropagation.tcc"
+#include "LoopyPropagation_v0.tcc"
 #endif

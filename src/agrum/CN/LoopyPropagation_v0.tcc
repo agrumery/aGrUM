@@ -1,4 +1,4 @@
-#include "LoopyPropagation.h"
+#include "LoopyPropagation_v0.h"
 
 template<typename T_DATA>
 const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn() const
@@ -9,7 +9,7 @@ const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn() const
 template<typename T_DATA>
 const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_org() const
 {
-  return *((*(this->cn)).get_BN_original());
+  return cn->src_bn();
 }
 
 template<typename T_DATA>
@@ -27,17 +27,17 @@ const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_max() const
 template<typename T_DATA>
 const std::vector< std::vector<T_DATA> >& gum::LoopyPropagation<T_DATA>::get_CPT_min() const
 {
-  return *((*(this->cn)).get_CPT_min());
+  return cn->get_CPT_min();
 }
 
 template<typename T_DATA>
 const std::vector< std::vector<T_DATA> >& gum::LoopyPropagation<T_DATA>::get_CPT_max() const
 {
-  return *((*(this->cn)).get_CPT_max());
+  return cn->get_CPT_max();
 }
 
 template<typename T_DATA>
-const CredalNet<T_DATA>& gum::LoopyPropagation<T_DATA>::get_cn() const
+const gum::CredalNet<T_DATA>& gum::LoopyPropagation<T_DATA>::get_cn() const
 {
   return *(this->cn);
 }
@@ -328,7 +328,7 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(T_DATA &msg_l_min, T_DATA &msg_
 * extremes pour une combinaison des parents, message vers parent
 */
 template<typename T_DATA>
-void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_card)
+void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos)
 {
  /* T_DATA min = msg_l_min;
   T_DATA max = msg_l_max;*/
@@ -340,56 +340,13 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
   
   int taille = combi_msg_p.size();
   
-  // we only have d node bits, and one parent, the one receiving the message
-  if(taille == 0 && d_node_card > 0)
-  {
-  	T_DATA v_num_min = 1;
-    T_DATA v_num_max = 0;
-    T_DATA v_den_min = 1;
-    T_DATA v_den_max = 0;
-    
-    int pos = 0;
-    // TO DO : put while in a function
-    T_DATA v_num_min_val, v_num_max_val, v_den_min_val, v_den_max_val;
-    while(pos < d_node_card)
-    {
-    	v_num_min_val = get_CPT_min()[id][d_node_card + pos];
-    	v_num_max_val = get_CPT_max()[id][d_node_card + pos];
-    	
-    	v_den_min_val = get_CPT_min()[id][pos];
-    	v_den_max_val = get_CPT_min()[id][pos];
-    	
-    	if(v_num_min > v_num_min_val)
-    		v_num_min = v_num_min_val;
-    	if(v_num_max < v_num_max_val)
-    		v_num_max = v_num_max_val;
-    	
-    	if(v_den_min > v_den_min_val)
-    		v_den_min = v_den_min_val;
-    	if(v_den_max < v_den_max_val)
-    		v_den_max = v_den_max_val;
-    		
-    	pos++;
-    }
-    
-    num_min = v_num_min;
-    num_max = v_num_max;
-    den_min = v_den_min;
-    den_max = v_den_max;
-    
-    _compute_ext(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
-    
-    return;
-  }
-  
-  // or we have more then one parent (without considering d nodes)
-  
   std::vector< typename std::vector<T_DATA>::iterator > it(taille);
   for(int i = 0; i < taille; i++)
     it[i] = combi_msg_p[i].begin();
   
   int pas = 2; //= (int)pow(2,(int)pos);
-  intpow(pas, pos);
+  int pp = pos;
+  cn->intPow(pas, pp);
   
   /*int pas = pos;
   int_2_pow(pas);*/
@@ -411,61 +368,6 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
       //std::cout << *it[k] << " ";
       prod *= *it[k];
     }
-    
-    ///////////////////////////////
-    T_DATA v_num_min = 1;
-	T_DATA v_num_max = 0;
-	T_DATA v_den_min = 1;
-	T_DATA v_den_max = 0;
-		
-    if(d_node_card > 0)
-    {
-		T_DATA v_num_min_val, v_num_max_val, v_den_min_val, v_den_max_val;
-		int pos = 0;
-		
-		while(pos < d_node_card)
-		{
-			v_num_min_val = get_CPT_min()[id][combi_num];
-			v_num_max_val = get_CPT_max()[id][combi_num];
-			v_den_min_val = get_CPT_min()[id][combi_den];
-			v_den_max_val = get_CPT_max()[id][combi_den];
-			
-			if(v_num_min > v_num_min_val)
-				v_num_min = v_num_min_val;
-			if(v_num_max < v_num_max_val)
-				v_num_max = v_num_max_val;
-			
-			if(v_den_min > v_den_min_val)
-				v_den_min = v_den_min_val;
-			if(v_den_max < v_den_max_val)
-				v_den_max = v_den_max_val;
-				
-			pos++;
-			
-			combi_den++;
-			combi_num++;
-		}
-    }
-    // no d nodes
-    else
-    {
-    	v_num_min = get_CPT_min()[id][combi_num];
-    	v_num_max = get_CPT_max()[id][combi_num];
-    	v_den_min = get_CPT_min()[id][combi_den];
-    	v_den_max = get_CPT_max()[id][combi_den];
-    	
-    	combi_den++;
-		combi_num++;
-    }
-    
-    num_min += v_num_min * prod;
-    num_max += v_num_max * prod;
-    den_min += v_den_min * prod;
-    den_max += v_den_max * prod;
-    
-    ///////////////////////////////
-    // old version (without going over all d node values)
-    /*
     //std::cout << std::endl;
     //std::cout << "den : " << (get_CPT_min()[id][combi_den]) << std::endl;
     den_min += (T_DATA) (get_CPT_min()[id][combi_den] * prod);
@@ -477,7 +379,6 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
     
     combi_den++;
     combi_num++;
-    */
     
     if( combi_den % pas == 0)
     {
@@ -506,7 +407,7 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
 * marginalisation cpts
 */
 template<typename T_DATA>
-void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_card)
+void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA> > &combi_msg_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max)
 {  
   T_DATA min = (T_DATA) 0.;
   T_DATA max = (T_DATA) 0.;
@@ -517,45 +418,7 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
   for(int i = 0; i < taille; i++)
     it[i] = combi_msg_p[i].begin();
   
-  std::cout << "\t\t marginalisation : " << std::endl;
-  
   int combi = 0;
-  
-  // we have d node but no other parents
-  if(taille == 0)
-  {
-  	std::cout << "\t\t\t\t no parents other than d node" << std::endl;
-  	// min/max init
-    T_DATA v_min = 1;
-    T_DATA v_max = 0;
-    
-    int pos = 0;
-    // TO DO : put while in a function
-    while(pos < d_node_card)
-    {
-    	T_DATA v_min_val = get_CPT_min()[id][combi];
-    	T_DATA v_max_val = get_CPT_max()[id][combi];
-    	
-    	std::cout << "\t\t\t" << v_min_val << std::endl;
-    	
-    	std::cout << "\t\t\t" << v_max_val << std::endl;
-    	
-    	
-    	if(v_min > v_min_val)
-    		v_min = v_min_val;
-    	if(v_max < v_max_val)
-    		v_max = v_max_val;
-    	
-    	combi++;
-    	pos++;
-    }
-    min = v_min;
-    max = v_max;
-  }
-  else
-  {
-  
-  // go through cpt (without d nodes bits considered)
   while(it[taille-1] != combi_msg_p[taille-1].end())
   {
     T_DATA prod = (T_DATA)1.;
@@ -563,46 +426,8 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
     for(int k = 0; k < taille; k++)
       prod *= *it[k];
     
-    // min/max init
-    T_DATA v_min = 1;
-    T_DATA v_max = 0;
-    
-    if(d_node_card > 0)
-    {
-    int pos = 0;
-    while(pos < d_node_card)
-    {
-    	T_DATA v_min_val = get_CPT_min()[id][combi];
-    	T_DATA v_max_val = get_CPT_max()[id][combi];
-    	
-    	if(v_min > v_min_val)
-    		v_min = v_min_val;
-    	if(v_max < v_max_val)
-    		v_max = v_max_val;
-    	
-    	combi++;
-    	pos++;
-    }
-    //combi--;
-    }
-    else
-    {
-    	v_min = get_CPT_min()[id][combi];
-    	v_max = get_CPT_max()[id][combi++];
-    }
-    // instead of summing, we need to find the min/max according to d node
-    // we need number of bits as d node
-    
-    // don't do product (*it) on d nodes messages, instead go through more than 2 values of combi, ie all d nodes value with the same product, choose min/max, then increment combi ans use next table entry (entry without d nodes)
-    //min += (get_CPT_min()[id][combi] * prod);	// marg min
-    //max += (get_CPT_max()[id][combi++] * prod); // marg max
-    
-    std::cout << "\t\t\t\t p_min : " << v_min << std::endl;
-    
-    std::cout << "\t\t\t\t p_max : " << v_max << std::endl;
-    
-    min += v_min * prod;
-    max += v_max * prod;
+    min += (get_CPT_min()[id][combi] * prod);	// marg min
+    max += (get_CPT_max()[id][combi++] * prod); // marg max
     
     //combi++;
         
@@ -615,53 +440,30 @@ void gum::LoopyPropagation<T_DATA>::_compute_ext(std::vector< std::vector<T_DATA
     }
   }
   
-  } // end of else
-  
   if(min < msg_p_min) msg_p_min = min;
   if(max > msg_p_max) msg_p_max = max;
-  
-  std::cout << "\t\t\t msg min : " << msg_p_min << std::endl;
-  
-  std::cout << "\t\t\t msg max : " << msg_p_max << std::endl;
 }
 
 /**
 * enumere combinaisons messages parents, pour message vers enfant
 */
 template<typename T_DATA>
-void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max, const int d_node_bits)
+void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_p_min, T_DATA &msg_p_max)
 {
   int taille = msgs_p.size();
   //si LX fournis verifier X = 1 pour min/max => msg_l = 1, return
   
   // ou autre fonction ?
   
-  // d node cardinality from d node bits number
-  int d_node_card = 2; // base init
-  intpow(d_node_card, d_node_bits); // d_node_card is now 2^d_node_bits
-  
-  if(d_node_card == 1) // no d node, 2^0 = 1
-    	d_node_card = 0;
-  
-  std::cout << "_enum_combi sur node id : " << id << std::endl;
-  
-  // noeud source & sans d node
-  if(taille == 0 && d_node_bits == 0)
+  // noeud source
+  if(taille == 0)
   {
     msg_p_min = (T_DATA) get_CPT_min()[id][0];
     msg_p_max = (T_DATA) get_CPT_max()[id][0];
     
     return;
   }
-  else if(taille == 0 && d_node_bits > 0)
-  {
-  	std::vector< std::vector<T_DATA> > combi_msg_p;
-  	std::cout << "\t combi msg p : " << combi_msg_p << std::endl;
-    std::cout << "\t d node card : " << d_node_card << std::endl;
-  	_compute_ext(combi_msg_p, id, msg_p_min, msg_p_max, d_node_card);
-  	return;
-  }
-  
+    
   
   // sinon enumerer les combi de list
   std::vector< typename std::vector< std::vector<T_DATA> >::iterator > it(taille);
@@ -669,15 +471,12 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
   for(int i = 0; i < taille; i++)
     it[i] = ((msgs_p[i])).begin();
   
-  //int cpt = 1;
+  int cpt = 1;
   while(it[0] != ((msgs_p[0])).end())
   {
     std::vector< std::vector<T_DATA> > combi_msg_p(taille);
     for(int i = 0; i < taille; i++)
       combi_msg_p[i] = *it[i];
-    
-    std::cout << "\t combi msg p : " << combi_msg_p << std::endl;
-    std::cout << "\t d node card : " << d_node_card << std::endl;
     
     /*
     std::stringstream ss;
@@ -691,8 +490,8 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
       std::cout << "\b";
     std::cout.flush();
     */
-    _compute_ext(combi_msg_p, id, msg_p_min, msg_p_max, d_node_card);
-    //cpt++;
+    _compute_ext(combi_msg_p, id, msg_p_min, msg_p_max);
+    cpt++;    
     
     if(msg_p_min == (T_DATA)0. && msg_p_max == (T_DATA)1.)
       return;
@@ -714,21 +513,15 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
 */
 
 template<typename T_DATA>
-void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos, const int d_node_bits)
+void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::vector<T_DATA> > > &msgs_p, const gum::NodeId &id, T_DATA &msg_l_min, T_DATA &msg_l_max, std::vector<T_DATA> &lx, const gum::Idx &pos)
 {
   int taille = msgs_p.size();
   /*
   T_DATA min = msg_l_min;
   T_DATA max = msg_l_max;*/
   
-  int d_node_card = 2;
-  intpow(d_node_card, d_node_bits);
-  
-  if(d_node_card == 1)
-  	d_node_card = 0;
-  
   // un seul parent, celui qui recoit le message
-  if( taille == 0 && d_node_card == 0)
+  if( taille == 0 )
   {
     T_DATA num_min = (T_DATA)get_CPT_min()[id][1];
     T_DATA num_max = (T_DATA)get_CPT_max()[id][1];
@@ -741,14 +534,6 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
     msg_l_max = max;*/
     return;
   }
-  // one parent (the one receiving the message) and d node bits
-  else if( taille == 0 && d_node_card > 0 )
-  {
-  	std::vector< std::vector<T_DATA> > combi_msg_p;
-  	_compute_ext(combi_msg_p, id, msg_l_min, msg_l_max, lx, pos, d_node_card);
-  	return;
-  }
-  
   
   // sinon enumerer les combi de msgs_p
   std::vector< typename std::vector< std::vector<T_DATA> >::iterator > it(taille);
@@ -759,7 +544,7 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
   //std::stringstream ss2;
   //ss2 <<  (int)pow(2,taille);
   
-  //int cpt = 1;
+  int cpt = 1;
   while(it[0] != ((msgs_p[0])).end())
   {
     std::vector< std::vector<T_DATA> > combi_msg_p(taille);
@@ -776,13 +561,13 @@ void gum::LoopyPropagation<T_DATA>::_enum_combi(std::vector< std::vector< std::v
       std::cout << "\b";
     std::cout.flush();
     */
-    _compute_ext(combi_msg_p, id, msg_l_min, msg_l_max, lx, pos, d_node_card);
+    _compute_ext(combi_msg_p, id, msg_l_min, msg_l_max, lx, pos);
     /*
     msg_l_min = min;
     msg_l_max = max;
     std::cout << "apres return "<< msg_l_min << " | " << msg_l_max << std::endl; */
     
-    //cpt++;
+    cpt++;
     
     if(msg_l_min == (T_DATA)0. && msg_l_max == _INF /*msg_l_max == (T_DATA)-1.*/)
       return;
@@ -909,16 +694,21 @@ void gum::LoopyPropagation<T_DATA>::insertEvidence(const std::string &path)
 	char *cstr, *p;
 	T_DATA proba;
 	
-	const std::vector< std::vector<gum::NodeId> > bits = *((get_cn()).get_BITS());
+	std::vector< std::vector<gum::NodeId> > bits;// = *((get_cn()).get_BITS());
+  bits.resize(this->bn().size());
+  for(int var = 0; var < this->bn().size(); var++) {
+    bits[var] = std::vector<gum::NodeId>(1,(gum::NodeId)var);
+  }
+
 	
-	while(evi.good() && std::strcmp(ligne.c_str(),"[EVIDENCES]") != 0)
+	while(evi.good() && std::strcmp(ligne.c_str(),"[EVIDENCE]") != 0)
 	    getline(evi, ligne);
 	
 	while( evi.good() )
 	{
 	  getline(evi, ligne);
 	 
-	  if( std::strcmp(ligne.c_str(),"[CIBLES]") == 0) break;
+	  if( std::strcmp(ligne.c_str(),"[QUERY]") == 0) break;
 	  if(ligne.size() == 0 ) continue;
 	  
 	  cstr = new char [ligne.size()+1];
@@ -1060,11 +850,6 @@ void gum::LoopyPropagation<T_DATA>::insertEvidence(const std::string &path)
 template<typename T_DATA>
 void gum::LoopyPropagation<T_DATA>::_initialize()
 {
-
-	std::cout << "bin d nodes : " << std::endl;
-	std::cout << cn->bin_d_nodes << std::endl;
-
-
   gum::DAG graphe = this->bn().dag();
   	const Sequence<NodeId> & topoNodes = this->bn().topologicalOrder();
 	for(Sequence<NodeId>::const_iterator it = topoNodes.begin(); it != topoNodes.end(); ++it)
@@ -1136,40 +921,29 @@ void gum::LoopyPropagation<T_DATA>::_initialize()
 		std::vector< std::vector<T_DATA> > msg_p;
 		std::vector<T_DATA> distri(2);
 		
-		int d_node_bits = 0;
-		
 		// +1 from start to avoid counting itself
 		for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
 		{
-			std::cout << "\t parent : " << bn().variable(bn().nodeId(**jt)) << std::endl;
-			if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
-			{
-				std::cout << "\t\t is d node" << std::endl;
-				d_node_bits++;
-			}
-			else
-			{
-			  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
-			  distri[1] = this->_NodesP_min[bn().nodeId(**jt)];
-			  distri[0] = (T_DATA)1. - distri[1];
-			  msg_p.push_back(distri);
-			  
-			  if( (this->_NodesP_max).exists(bn().nodeId(**jt)) )
-			  {
-				distri[1] = this->_NodesP_max[bn().nodeId(**jt)];
-				distri[0] = (T_DATA)1. - distri[1];
-				msg_p.push_back(distri);
-			  }
-			  msgs_p.push_back(msg_p);
-			  msg_p.clear();
-		  	}
+		  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+		  distri[1] = this->_NodesP_min[bn().nodeId(**jt)];
+		  distri[0] = (T_DATA)1. - distri[1];
+		  msg_p.push_back(distri);
+		  
+		  if( (this->_NodesP_max).exists(bn().nodeId(**jt)) )
+		  {    
+		    distri[1] = this->_NodesP_max[bn().nodeId(**jt)];
+		    distri[0] = (T_DATA)1. - distri[1];
+		    msg_p.push_back(distri);
+		  }
+		  msgs_p.push_back(msg_p);
+		  msg_p.clear();
 		}
 		
 			
 		T_DATA msg_p_min = (T_DATA) 1.;
 		T_DATA msg_p_max = (T_DATA) 0.;
 		
-		_enum_combi(msgs_p, *it, msg_p_min, msg_p_max, d_node_bits);
+		_enum_combi(msgs_p, *it, msg_p_min, msg_p_max);
 		std::cout<<"\r";std::cout.flush();
 		//std::cout << msg_p_min << " | " << msg_p_max << std::endl;
 		
@@ -1594,7 +1368,7 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
   //std::string var_name = this->bn().variable(Y).name();
   
   // comparer string inutile si isDnode verifie nb_dist = card && proba = 0 ou 1 ?
-  if(/*var_name.compare(0,2,"D-")==0 && */isDNode( (*(get_cn().get_CPT()))[Y] ))
+  /*if(isDNode( (*(get_cn().get_CPT()))[Y] ))
   {
     //std::cout << "DNODE" << std::endl;std::cout.flush();
     //std::cout << this->bn().variable(Y).name() << std::endl; std::cout.flush();
@@ -1663,6 +1437,7 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
     
     return;
   }
+  */
   
   
   
@@ -1675,8 +1450,6 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
 	std::vector<T_DATA> distri(2);
 	
 	gum::Idx pos;
-	
-	int d_node_bits = 0;
 		
 	// +1 from start to avoid counting itself
 	for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
@@ -1687,13 +1460,6 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
 	    continue;
 	  }
 	  
-	  if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
-	{
-		  	//std::cout << "\t\t is d node" << std::endl;
-			d_node_bits++;
-	}
-	  else
-	  {
 	  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
 	  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt),Y)];
 	  distri[0] = (T_DATA)1. - distri[1];
@@ -1707,7 +1473,6 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
 	  }
 	  msgs_p.push_back(msg_p);
 	  msg_p.clear();
-	  } // end of else
 	}
 	
 	T_DATA min = (T_DATA) -2.;
@@ -1722,7 +1487,7 @@ void gum::LoopyPropagation<T_DATA>::_msgL(const NodeId Y, const NodeId X)
 	
 	//std::cout << lmin << std::endl;
   // on peut avoir -1 pour infini
-  _enum_combi(msgs_p, Y, min, max, lx, pos, d_node_bits);
+  _enum_combi(msgs_p, Y, min, max, lx, pos);
   
   if(min == (T_DATA) -2. || max == (T_DATA) -2.)
   {
@@ -1919,33 +1684,20 @@ void gum::LoopyPropagation<T_DATA>::_msgP(const NodeId X, const NodeId demanding
 	std::vector< std::vector< std::vector<T_DATA> > > msgs_p;
 	std::vector< std::vector<T_DATA> > msg_p;
 	std::vector<T_DATA> distri(2);
-	
-	int d_node_bits = 0;
-	
+		
 	// +1 from start to avoid counting itself
 	for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
 	{
-		// we don't need d nodes messages ! use 1 instead (we could do better, ie not use probability distributions for them)
-		if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
-		{
-			d_node_bits++;
-			/*distri[1] = 1;
-			distri[0] = 1;
-			msg_p.push_back(distri);*/
-		}
-		else
-		{
-		  // compute probability distribution to avoid doing it multiple times (at each new combination of messages)
-		  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), X)];
-		  distri[0] = (T_DATA)1. - distri[1];
-		  msg_p.push_back(distri);
-		  
-		  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), X)) )
-		  {    
-			distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), X)];
-			distri[0] = (T_DATA)1. - distri[1];
-			msg_p.push_back(distri);
-		  }
+	  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+	  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), X)];
+	  distri[0] = (T_DATA)1. - distri[1];
+	  msg_p.push_back(distri);
+	  
+	  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), X)) )
+	  {    
+	    distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), X)];
+	    distri[0] = (T_DATA)1. - distri[1];
+	    msg_p.push_back(distri);
 	  }
 	  msgs_p.push_back(msg_p);
 	  msg_p.clear();
@@ -1954,7 +1706,7 @@ void gum::LoopyPropagation<T_DATA>::_msgP(const NodeId X, const NodeId demanding
 	/*T_DATA min = (T_DATA) 1.;
 	T_DATA max = (T_DATA) 0.;*/
 		
-	_enum_combi(msgs_p, X, min, max, d_node_bits);
+	_enum_combi(msgs_p, X, min, max);
 			
 	if(min <= (T_DATA) 0.)
 	  min = (T_DATA) 0.;
@@ -2222,40 +1974,28 @@ void gum::LoopyPropagation<T_DATA>::_refreshLMsPIs()
 		    std::vector< std::vector<T_DATA> > msg_p;
 		    std::vector<T_DATA> distri(2);
 		    
-		    int d_node_bits = 0;
-		    
 		    // +1 from start to avoid counting itself
 		    for(gum::Sequence<const gum::DiscreteVariable*>::const_iterator jt = ++((*parents).begin()); jt != (*parents).end(); ++jt)
 		    {
-				if(cn->bin_d_nodes.exists(bn().nodeId(**jt)))
-				{
-					d_node_bits++;
-					/*distri[1] = 1;
-					distri[0] = 1;
-					msg_p.push_back(distri);*/
-				}
-				else
-				{
-				  // compute probability distribution to avoid doing it multiple times (at each combination of messages)
-				  distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), *itX)];
-				  distri[0] = (T_DATA)1. - distri[1];
-				  msg_p.push_back(distri);
-				  		      
-				  if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), *itX)) )
-				  {    
-					distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), *itX)];
-					distri[0] = (T_DATA)1. - distri[1];
-					msg_p.push_back(distri);
-				  }
-				  msgs_p.push_back(msg_p);
-				  msg_p.clear();
-		      	}
+		      // compute probability distribution to avoid doing it multiple times (at each combination of messages)
+		      distri[1] = this->_ArcsP_min[Arc(bn().nodeId(**jt), *itX)];
+		      distri[0] = (T_DATA)1. - distri[1];
+		      msg_p.push_back(distri);
+		      		      
+		      if( (this->_ArcsP_max).exists(Arc(bn().nodeId(**jt), *itX)) )
+		      {    
+			distri[1] = this->_ArcsP_max[Arc(bn().nodeId(**jt), *itX)];
+			distri[0] = (T_DATA)1. - distri[1];
+			msg_p.push_back(distri);
+		      }
+		      msgs_p.push_back(msg_p);
+		      msg_p.clear();
 		    }
 		    
 		    T_DATA min = _INF;//(T_DATA) 1.;
 		    T_DATA max = (T_DATA) 0.;
 			    
-		    _enum_combi(msgs_p, *itX, min, max, d_node_bits);
+		    _enum_combi(msgs_p, *itX, min, max);
 				
 		    
 		  if(min <= (T_DATA) 0.)

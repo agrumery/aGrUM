@@ -452,6 +452,8 @@ namespace gum {
       } // end of : for each entry
 
       __credalNet_src_cpt.insert ( *node_idIt, var_cpt );
+      std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
+      std::cout << var_cpt << std::endl;
 
     } // end of : for each variable (node)
 
@@ -835,6 +837,62 @@ namespace gum {
   }
 
   // end of test pow
+  
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::intPow ( const int &base, int &exponent ) const {
+    __intPow(base,exponent);
+  }
+
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::int2Pow ( int &exponent ) const {
+    __int2Pow(exponent);
+  }
+
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::superiorPow ( const int &card, int &num_bits, int &new_card ) const {
+    __superiorPow(card,num_bits,new_card);
+  }
+
+  // only if CN is binary !!
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::computeCPTMinMax() {
+    binCptMin.resize(__src_bn.size());
+    binCptMax.resize(__src_bn.size());
+    for ( gum::DAG::NodeIterator node_idIt = __src_bn.beginNodes(); node_idIt != __src_bn.endNodes(); ++node_idIt ) {
+      std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
+      int pConf = credalNet_cpt()[*node_idIt].size();
+      std::vector< GUM_SCALAR > min(pConf);
+      std::vector< GUM_SCALAR > max(pConf);
+      for( int pconf = 0; pconf < pConf; pconf++) {
+        GUM_SCALAR v1, v2;
+        v1 = credalNet_cpt()[*node_idIt][pconf][0][1];
+        if(__credalNet_src_cpt[*node_idIt][pconf].size() > 1)
+          v2 = credalNet_cpt()[*node_idIt][pconf][1][1];
+        else
+          v2 = v1;
+        std::cout << "pconf : " << pconf << std::endl;
+        std::cout << credalNet_cpt()[*node_idIt][pconf] << std::endl;
+        std::cout << "v1, v2 : " << v1 << ", " << v2 << std::endl;
+        GUM_SCALAR delta = v1 - v2;
+        min[pconf] = (delta >= 0) ? v2 : v1;
+        max[pconf] = (delta >= 0) ? v1 : v2;
+      }
+      binCptMin[*node_idIt] = min;
+      binCptMax[*node_idIt] = max;
+    }
+  }
+
+  template< typename GUM_SCALAR >
+  const std::vector< std::vector< GUM_SCALAR > > & CredalNet< GUM_SCALAR >::get_CPT_min() const {
+    return binCptMin;
+  }
+
+  template< typename GUM_SCALAR >
+  const std::vector< std::vector< GUM_SCALAR > > & CredalNet< GUM_SCALAR >::get_CPT_max() const {
+    return binCptMax;
+  }
+
+
 
   template< typename GUM_SCALAR >
   std::string CredalNet< GUM_SCALAR >::toString() const {
@@ -884,6 +942,12 @@ namespace gum {
 
     return __src_bn;
   }
+
+  template< typename GUM_SCALAR >
+  const gum::BayesNet< GUM_SCALAR > & CredalNet< GUM_SCALAR >::src_bn() const {
+    return __src_bn;
+  }
+
 
 
   /////////// protected stuff //////////
@@ -1070,8 +1134,8 @@ namespace gum {
         for ( typename std::vector< GUM_SCALAR >::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 ) {
           // get integer fraction from decimal value
           // smaller numerator & denominator is farley
-          __farley ( num, den, *it2, __denMax );
-          h_file << num << '/' << den << ' ';
+          __farley ( num, den, ((*it2 > 0) ? *it2 : - *it2), __denMax );
+          h_file << ((*it2 > 0) ? num : -num) << '/' << den << ' ';
         }
 
         h_file << '\n';
@@ -1169,7 +1233,7 @@ namespace gum {
         if ( tmp.compare ( "1" ) == 0 || tmp.compare ( "0" ) == 0 )
           probability = atof ( tmp.c_str() );
         else {
-          pos = tmp.find ( " / " );
+          pos = tmp.find ( "/" );
           probability = atof ( tmp.substr ( 0, pos ).c_str() ) / atof ( tmp.substr ( pos + 1, tmp.size() ).c_str() );
         }
 

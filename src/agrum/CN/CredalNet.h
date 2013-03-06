@@ -87,6 +87,10 @@ namespace gum {
       typename gum::Property< nodeType >::onNodes __nodeType;
       typename gum::Property< nodeType >::onNodes *__current_nodeType;// = NULL;
 
+      typename std::vector< std::vector< GUM_SCALAR > > binCptMin;
+      typename std::vector< std::vector< GUM_SCALAR > > binCptMax;
+
+
       void __intervalToCredal();
       
       void __initParams();
@@ -166,11 +170,19 @@ namespace gum {
       std::string toString() const;
       void toPNG ( const std::string &png_path ) const;
 
-
       // test functions
       // to be removed ?
       void testFrac() const;
       void testPow() const;
+
+      void intPow ( const int &base, int &exponent ) const;
+      void int2Pow ( int &exponent ) const;
+      void superiorPow ( const int &card, int &num_bits, int &new_card ) const;
+
+      void computeCPTMinMax();
+      const std::vector< std::vector< GUM_SCALAR > > & get_CPT_min() const;
+      const std::vector< std::vector< GUM_SCALAR > > & get_CPT_max() const;
+
   }; // CredalNet
 
 } // namespace cn

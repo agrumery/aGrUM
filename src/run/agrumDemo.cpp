@@ -10,7 +10,7 @@
 #include <agrum/CN/InferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
 #include <agrum/CN/LocalSearch.h>
-#include <agrum/CN/LoopyPropagation.h>
+#include <agrum/CN/LoopyPropagation_v0.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 using namespace gum;
@@ -25,14 +25,29 @@ void test_credal() {
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, //GET_PATH_STR ( 2Umin.bif ) );
- GET_PATH_STR ( bn_c.bif ) );
+  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
+ //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, //GET_PATH_STR ( 2Umax.bif ) );
- GET_PATH_STR ( den_c.bif ) );
+  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
+ //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
+
+
+  /**
+   * (G)(L)2U test
+   */
+  CredalNet<double> myCNb(monBNa, monBNb);
+
+  myCNb.intervalToCredal(0);
+  std::cout << "computing min/max vertex" << std::endl;
+  myCNb.computeCPTMinMax();
+  std::cout << "computing done" << std::endl;
+  LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb, myCNb.current_bn());
+  //lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+
+  lp.makeInference();
 
   // dynacheese modalities
   std::map< std::string, std::vector< double > > modals;
@@ -68,7 +83,7 @@ void test_credal() {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
       //myCNa->intervalToCredal(0); // 2U network
 
-        
+       /*
       if ( i == 0 )
         myCNa->bnToCredal ( 0.95, false );
 
@@ -79,14 +94,18 @@ void test_credal() {
         myCNa->bnToCredal ( 0.85, false );
 
       myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
-
+*/
       //std::cout << myCNa->toString() << std::endl;
+      
+      //MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
 
-      MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( myCNb );
+
+
 
       //MCE->insertModals(modals2); //L2U modals
       //MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
-      MCE->insertModals(modals); //dyna cheese
+      //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
       MCE->setTimeLimit ( 10 );
@@ -94,9 +113,9 @@ void test_credal() {
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
 
-      if ( j == 1 )
+      //if ( j == 1 )
         //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
-        MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+        //MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
