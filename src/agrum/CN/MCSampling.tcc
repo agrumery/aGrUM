@@ -39,9 +39,14 @@ namespace gum {
     std::vector< typename gum::Property< GUM_SCALAR >::onNodes > l_expectationMax;
     std::vector< std::map< std::string, typename std::vector< GUM_SCALAR > > > l_modal;
 
-    typename std::vector< GUM_SCALAR > epsilons;
+    // to compute epsilon, we keep old marginals for K iterations, K being the stopping criterion
+    // to do : we should use burnin, for now we set all previous probabilitiy values to uniform (that's bad)
+    typename gum::Property< std::vector< GUM_SCALAR > >::onNodes previous_marginals;
+    for(int i = 0; i < this->_credalNet->current_bn().size(); i++) {
+      int dSize = this->_credalNet->current_bn().variable(i).domainSize();
+      previous_marginals.insert(i, std::vector< GUM_SCALAR >(dSize, 1./dSize));
+    }
 
-    
     //if(__repetitiveInd)
     try {
       this->_repetitiveInit();
@@ -100,7 +105,6 @@ namespace gum {
         l_expectationMin.resize( num_threads );
         l_expectationMax.resize( num_threads );
         l_modal.resize( num_threads );
-        epsilons.resize( num_threads, 0 );
       }
 
       __workingSet[this_thread] = thread_bn;
@@ -155,17 +159,21 @@ namespace gum {
       #pragma omp single
       {
         this->initApproximationScheme();
-        this->setMaxIter(__iterStop);
         this->setMaxTime(__timeLimit);
-        this->setPeriodSize(1000);
+        //this->setPeriodSize(__iterStop);
+        this->setEpsilon(std::numeric_limits< GUM_SCALAR >::min());
+        std::cout << "min eps : " << this->epsilon() << std::endl;
+        std::cout << "def eps rate : " << this->minEpsilonRate() << std::endl;
+        //this->setMinEpsilonRate();
       }
 
-      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/tps_inf.step() < __timeLimit && ! all_stop ) {
+      while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/ /*tps_inf.step() < __timeLimit &&*/ ! all_stop ) {
         #pragma omp atomic
         inf_cpt++;
 
         #pragma omp single
         {
+          #pragma omp flush(inf_cpt)
           int i = tps_inf.step();//tps_inf.getElapsedTimeInSec();
           std::cout << "inference : " << inf_cpt << " time elapsed : " << i  << " time left : " << ( __timeLimit - i ) << " seconds       \r";
           std::cout.flush();
@@ -182,7 +190,6 @@ namespace gum {
         inference_engine.eraseAllEvidence();
         __insertEvidence ( inference_engine );
 
-        epsilons[this_thread] = 0;
         inference_engine.makeInference();
 
         // each thread update its marginals
@@ -226,9 +233,6 @@ namespace gum {
             // we can check either global or local marginals since both are updated at each step
             for( Size mod = 0; mod < vertex.size(); mod++ ) {
               if(vertex[mod] <= this->_marginalMin[*it][mod]) {
-                GUM_SCALAR delta = this->_marginalMin[*it][mod] - vertex[mod];
-                if(delta > epsilons[this_thread])
-                  epsilons[this_thread] = delta;
                 l_marginalMin[this_thread][*it][mod] = vertex[mod];
                 newOne = true;
               }
@@ -236,9 +240,6 @@ namespace gum {
                 newOne = true;
               }
               if(vertex[mod] >= this->_marginalMax[*it][mod]) {
-                GUM_SCALAR delta = vertex[mod] - this->_marginalMax[*it][mod];
-                if(delta > epsilons[this_thread])
-                  epsilons[this_thread] = delta;
                 l_marginalMax[this_thread][*it][mod] = vertex[mod];
                 newOne = true;
               }
@@ -280,15 +281,61 @@ namespace gum {
           } // end of : all modalities
         } // end of : all variables
 
+        #pragma omp flush(inf_cpt)
+        // compute epsilon if needed
+        if(inf_cpt % __iterStop == 0) {
+          #pragma omp single
+          {
+            std::cout << "\nupdate epsilon" << std::endl;
+            epsilon_max = 0;
+          }
+
+          GUM_SCALAR thread_epsilon = 0;
+          GUM_SCALAR delta;
+          int dSize;
+          #pragma omp for
+          for(int i = 0; i < __workingSet[this_thread]->size(); i++) {
+            dSize = l_marginalMin[this_thread][i].size();
+            for(int j = 0; j < dSize; j++) {
+              delta = this->_marginalMin[i][j] - previous_marginals[i][j];
+              delta = (delta < 0) ? (-delta) : delta;
+              thread_epsilon = (thread_epsilon < delta) ? delta : thread_epsilon;
+              previous_marginals[i][j] = this->_marginalMin[i][j];
+            }
+          }
+          #pragma omp critical
+          {
+            #pragma omp flush(epsilon_max)
+            if(epsilon_max < thread_epsilon)
+              epsilon_max = thread_epsilon;
+          }
+          #pragma omp barrier
+          // give it to approxscheme if inf_cpt % critere arret = 0 ?
+          #pragma omp single
+          {
+            #pragma omp flush(epsilon_max)
+            this->updateApproximationScheme(__iterStop);
+            std::cout << epsilon_max << std::endl;
+            if( ! this->continueApproximationScheme(epsilon_max, false, true) ) {
+              std::cout << "\n\nApprox scheme stop\n" << std::endl;
+              std::cout << "epsilon : " << epsilon_max << std::endl;
+              std::cout << "\n" << this->messageApproximationScheme() << std::endl;
+              all_stop = true;
+            }
+          }
+          #pragma omp barrier
+        }
+
         #pragma omp single
         {
-          // find max epsilon among threads
-          for( Size thread_id = 0; thread_id < num_threads; thread_id++)
-            if(epsilons[thread_id] > epsilon_max)
-              epsilon_max = epsilons[thread_id];
-
-          // give it to approxscheme if inf_cpt % critere arret = 0 ?
-          this->updateApproximationScheme(num_threads);
+          if(this->currentTime() > __timeLimit) {
+            if( ! this->continueApproximationScheme(epsilon_max, false, false) ) {
+              std::cout << "\n\nApprox scheme stop\n" << std::endl;
+              std::cout << "epsilon : " << epsilon_max << std::endl;
+              std::cout << "\n" << this->messageApproximationScheme() << std::endl;
+              all_stop = true;
+            }
+          }
         }
 
         // vertex update
@@ -377,9 +424,9 @@ namespace gum {
                 } // end of : all variables
         */
 
-        #pragma omp barrier
+        //#pragma omp barrier
 
-        #pragma omp single
+        /*#pragma omp single
         {
           #pragma omp flush(no_change)
 
@@ -390,17 +437,10 @@ namespace gum {
 
           no_change = true;
 
-          if ( no_change_iters >= __iterStop /*|| inf_cpt >1*/ )
+          if ( no_change_iters >= __iterStop)
             all_stop = true;
-
-          if( ! this->continueApproximationScheme(epsilon_max) ) {
-            std::cout << "\n\nApprox scheme stop\n" << std::endl;
-            std::cout << "epsilon : " << epsilon_max << std::endl;
-            std::cout << "\n" << this->messageApproximationScheme() << std::endl;
-            all_stop = true;
-          }
-          epsilon_max = 0;
         }
+        */
         #pragma omp flush(inf_cpt)
         #pragma omp flush(all_stop)
 

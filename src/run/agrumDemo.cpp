@@ -89,7 +89,7 @@ void test_credal() {
       MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 1 );
+      MCE->setTimeLimit ( 10 );
 
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );

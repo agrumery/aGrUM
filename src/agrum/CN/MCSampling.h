@@ -2,7 +2,7 @@
 #define ___CN_MC_SAMPLING__H__
 
 #include <omp.h>
-
+#include <limits>
 #include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
