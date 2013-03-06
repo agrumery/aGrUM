@@ -75,7 +75,7 @@ namespace gum {
    */
   class ApproximationScheme {
     public:
-      Signaler3<int, double, double> onProgress; // progression,error
+      Signaler3<Size, double, double> onProgress; // progression,error
       Signaler1<std::string> onStop; // criteria messageApproximationScheme
 
       enum ApproximationSchemeSTATE {
@@ -156,7 +156,7 @@ namespace gum {
 
       /// @}
 
-      
+
       /// stopping criterion ontimeout
       /// @{
       /// @throw OutOfLowerBound if timeout<=0.0
@@ -280,7 +280,7 @@ namespace gum {
       }
 
       /// update the scheme w.r.t the new error and incr steps
-      void updateApproximationScheme(unsigned int incr) {
+      void updateApproximationScheme ( unsigned int incr ) {
         __current_step += incr;
       }
 
@@ -327,14 +327,15 @@ namespace gum {
 
         }
 
-        if (stateApproximationScheme() == APPROX_CONTINUE) {
-          if (onProgress.hasListener()) GUM_EMIT3(onProgress,(__current_step*100)/__max_iter,__current_epsilon,timer_step);
+        if ( stateApproximationScheme() == APPROX_CONTINUE ) {
+          if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, __current_step,__current_epsilon,timer_step );
+
           return true;
         } else
           return false;
       };
 
-      
+
       /// update the scheme w.r.t the new error. Test the stopping criterion
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
       /// @return true if stat become != APPROX_CONTINUE
@@ -378,8 +379,9 @@ namespace gum {
 
         }
 
-        if (stateApproximationScheme() == APPROX_CONTINUE) {
-          if (onProgress.hasListener()) GUM_EMIT3(onProgress,(__current_step*100)/__max_iter,__current_epsilon,timer_step);
+        if ( stateApproximationScheme() == APPROX_CONTINUE ) {
+          if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, ( __current_step*100 ) /__max_iter,__current_epsilon,timer_step );
+
           return true;
         } else
           return false;
@@ -416,7 +418,7 @@ namespace gum {
         __current_state = new_state;
         __timer.pause();
 
-        if (onStop.hasListener()) GUM_EMIT1(onStop,messageApproximationScheme());
+        if ( onStop.hasListener() ) GUM_EMIT1 ( onStop,messageApproximationScheme() );
       }
       /// current state of approximationScheme
       double __current_epsilon, __last_epsilon, __current_rate;

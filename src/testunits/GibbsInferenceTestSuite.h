@@ -26,6 +26,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsInference.h>
 
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -37,13 +39,13 @@
 
 namespace gum_tests {
 
-  class aSimpleGibbsListener : public gum::Listener {
+  class aSimpleGibbsListener : public gum::ApproximationSchemeListener {
     private:
       int __nbr;
       std::string __mess;
     public:
-      aSimpleGibbsListener() :__nbr ( 0 ) {};
-      void whenProgress ( const void *buffer,int a,double b,double c ) {
+      aSimpleGibbsListener(gum::ApproximationScheme& sch) : gum::ApproximationSchemeListener (sch),__nbr( 0 ),__mess("") {};
+      void whenProgress ( const void *buffer,gum::Size a,double b,double c ) {
         __nbr++;
       }
       void whenStop ( const void *buffer,std::string s ) {
@@ -307,9 +309,7 @@ namespace gum_tests {
 
         gum::GibbsInference<float> inf ( *bn );
 
-        aSimpleGibbsListener agsl;
-        GUM_CONNECT ( inf,onStop,agsl,aSimpleGibbsListener::whenStop );
-        GUM_CONNECT ( inf,onProgress,agsl,aSimpleGibbsListener::whenProgress );
+        aSimpleGibbsListener agsl(inf);
 
         try {
           // Testing the inference
@@ -318,8 +318,8 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
         
-        std::cout<<inf.nbrIterations()<<std::endl;
-        std::cout<<agsl.getNbr()<<std::endl;
+        TS_ASSERT_EQUALS(agsl.getNbr()*inf.periodSize()+inf.burnIn(),inf.nbrIterations());
+        TS_ASSERT_DIFFERS(agsl.getMess(),std::string(""));
       }
 
     private:
