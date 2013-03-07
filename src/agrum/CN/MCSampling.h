@@ -27,8 +27,7 @@ namespace gum {
 
       void __verticesSampling();
       void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
-
-      
+ 
     protected:
       
     public:
