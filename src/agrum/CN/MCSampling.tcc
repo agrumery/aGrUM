@@ -18,6 +18,26 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
+  void MCSampling< GUM_SCALAR, BNInferenceEnfine >::makeInference_v2() {
+    unsigned int num_threads;
+    bool all_stop = true;
+    
+    // threads local information
+    typedef std::vector< typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margis;
+    typedef std::vector< typename gum::Property< GUM_SCALAR > >::onNodes expes;
+    typedef std::vector< std::map< std::string, typename std::vector< GUM_SCALAR > > > modals;
+    //typedef std::vector< gum::Property< std::vector< typename std::vector< GUM_SCALAR > > >::onNodes > credalSets;
+
+    margis l_marginalMin;
+    margis l_marginalMax;
+    expes l_expectationMin;
+    expes l_expectationMax;
+    modals l_modal;
+
+
+  } // end of : makeInference() v2
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
     // shared stuff
     int64_t inf_cpt = 0;

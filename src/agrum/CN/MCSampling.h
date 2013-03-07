@@ -36,6 +36,8 @@ namespace gum {
       virtual ~MCSampling();
 
       void makeInference();
+
+      void makeInference_v2();
       //void eraseAllEvidence();
 
       bool getStopType() const;
