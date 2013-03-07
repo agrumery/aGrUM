@@ -13,6 +13,8 @@
 #include <agrum/CN/LoopyPropagation_v0.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+//#include <agrum/CN/MCSamplingInferenceTestSuite.h>
+
 using namespace gum;
 
 
