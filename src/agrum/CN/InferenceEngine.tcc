@@ -492,6 +492,76 @@ namespace gum {
     m_stream.close();
   }
 
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::_initThreadsData( const unsigned int & num_threads, const bool __storeVertices ) {
+    this->_workingSet.clear();
+    this->_workingSet.resize( num_threads );
+    this->_workingSetE.clear();
+    this->_workingSetE.resize( num_threads );
+
+    this->_l_marginalMin.resize( num_threads );
+    this->_l_marginalMax.resize( num_threads );
+    this->_l_expectationMin.resize( num_threads );
+    this->_l_expectationMax.resize( num_threads );
+
+    if ( __storeVertices )
+      this->_l_marginalSets.resize( num_threads );
+
+    this->_l_modal.resize( num_threads );
+
+    this->_oldMarginalMin = this->_marginalMin;
+    this->_oldMarginalMax = this->_marginalMax;
+  }
+
+  template< typename GUM_SCALAR >
+  inline void InferenceEngine< GUM_SCALAR >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices ) {
+    int this_thread = omp_get_thread_num();
+    // save E(X)
+    if( ! this->_l_modal[this_thread].empty() ) {
+      std::string var_name, time_step;
+      size_t delim;
+
+      var_name = this->_workingSet[this_thread]->variable ( id ).name();
+      delim = var_name.find_first_of ( "_" );
+      time_step = var_name.substr ( delim + 1, var_name.size() );
+      var_name = var_name.substr ( 0, delim );
+
+      if( this->_l_modal[this_thread].find(var_name) != this->_l_modal[this_thread].end() ) {
+        GUM_SCALAR exp = 0;
+        for ( Size mod = 0; mod < vertex.size(); mod++ )
+          exp += vertex[mod] * this->_l_modal[this_thread][var_name][mod];
+
+        if( exp > this->_l_expectationMax[this_thread][id] )
+          this->_l_expectationMax[this_thread][id] = exp;
+        if( exp < this->_l_expectationMin[this_thread][id] )
+          this->_l_expectationMin[this_thread][id] = exp;
+      }
+    } // end of : if modal (map) not empty
+
+    bool newOne = false;
+    bool added = false;
+    // for burn in, we need to keep checking on local marginals and not global ones (faster inference)
+    for( Size mod = 0; mod < vertex.size(); mod++ ) {
+      if(vertex[mod] <= this->_l_marginalMin[this_thread][id][mod]) {
+        this->_l_marginalMin[this_thread][id][mod] = vertex[mod];
+        newOne = true;
+      }
+      if(vertex[mod] >= this->_l_marginalMax[this_thread][id][mod]) {
+        this->_l_marginalMax[this_thread][id][mod] = vertex[mod];
+        newOne = true;
+      }
+      // store point to compute credal set vertices.
+      // check for redundancy at each step or at the end ?
+      if( __storeVertices && ! added && newOne ) {
+        this->_l_marginalSets[this_thread][id].push_back(vertex);
+        added = true;
+      }
+    }
+
+  }
+
+
   // since only monitored variables in _modal will be alble to compute expectations, it is useless to initialize those for all variables
   // _modal variables will always be checked further, so it is not necessary to check it here, but doing so will use less memory
   template< typename GUM_SCALAR >

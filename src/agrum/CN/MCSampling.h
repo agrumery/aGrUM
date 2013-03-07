@@ -15,8 +15,10 @@ namespace gum {
       int __iterStop;
 
       bool __stopType; // false if done within __timeLimit
+      bool __storeVertices;
 
-      typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
+      //typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
+      //typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
 
       std::vector< gum::NodeId > __varOrder;
       std::vector< std::vector< int > > __varInst;
@@ -26,11 +28,9 @@ namespace gum {
       void __verticesSampling();
       void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
 
-      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
-
-
+      
     protected:
-
+      
     public:
       MCSampling ( const CredalNet< GUM_SCALAR > & credalNet );
       virtual ~MCSampling();

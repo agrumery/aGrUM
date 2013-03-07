@@ -144,7 +144,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference();
+          mcs.makeInference_v2();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -191,7 +191,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference();
+          mcs.makeInference_v2();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -216,9 +216,9 @@ namespace gum_tests {
         try {
           exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
           exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-          exp elo_inf ( mcs.dynamicExpMax ( "lo" ) );
+          exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
           exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-          exp etemp_inf ( mcs.dynamicExpMax ( "temp" ) );
+          exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
           exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
@@ -261,7 +261,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference();
+          mcs.makeInference_v2();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
           GUM_SHOWERROR(e);
@@ -287,9 +287,9 @@ namespace gum_tests {
         try {
           exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
           exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-          exp elo_inf ( mcs.dynamicExpMax ( "lo" ) );
+          exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
           exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-          exp etemp_inf ( mcs.dynamicExpMax ( "temp" ) );
+          exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
           exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
@@ -303,10 +303,20 @@ namespace gum_tests {
       } // end of : testMCSamplingInferenceDRep (dynamic - dynacheese)
 
 
+      // with dynamic network
       void testMCSamplingListener () {
         tearDown();
-        setUp();
+        setUpD();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+
+        /*
+        // evidence from file
+        try {
+          mcs.insertEvidence ( GET_PATH_STR ( fb.evi ) );
+        } catch ( gum::Exception & e ) {
+          TS_ASSERT ( false );
+        }
+        */
         
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
@@ -314,11 +324,12 @@ namespace gum_tests {
         MCSamplingListener mcl ( mcs );
 
         try {
-          mcs.makeInference();
+          mcs.makeInference_v2();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
+        std::cout << mcl.nbr() << std::endl;
         TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string( "" ) );
 

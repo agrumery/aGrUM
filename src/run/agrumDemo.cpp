@@ -27,19 +27,17 @@ void test_credal() {
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
- //GET_PATH_STR ( bn_c.bif ) );
+  BIFReader< double > readera ( &monBNa, //GET_PATH_STR ( 2Umin.bif ) );
+ GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
- //GET_PATH_STR ( den_c.bif ) );
+  BIFReader< double > readerb ( &monBNb, //GET_PATH_STR ( 2Umax.bif ) );
+ GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
-
-  /**
-   * (G)(L)2U test
-   */
+/*
+  // (G)(L)2U test
   CredalNet<double> myCNb(monBNa, monBNb);
 
   myCNb.intervalToCredal(0);
@@ -60,16 +58,16 @@ void test_credal() {
   lp.saveInference("test.marginals");
   lp.saveMarginals("l2u.marginals");
 
-  /**
-   * LocalSearch test
-   */
+  
+  // LocalSearch test
+   
   LocalSearch<double, LazyPropagation<double> > ls(myCNb);
   //ls.insertEvidence( GET_PATH_STR ( L2U.evi ) );
   ls.insertEvidence(eviMap);
   ls.setPassN(5);
   ls.setMaxVertices(4);
   ls.makeInference();
-
+*/
 
   // dynacheese modalities
   std::map< std::string, std::vector< double > > modals;
@@ -105,7 +103,7 @@ void test_credal() {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
       //myCNa->intervalToCredal(0); // 2U network
 
-       /*
+       
       if ( i == 0 )
         myCNa->bnToCredal ( 0.95, false );
 
@@ -116,12 +114,13 @@ void test_credal() {
         myCNa->bnToCredal ( 0.85, false );
 
       myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
-*/
-      //std::cout << myCNa->toString() << std::endl;
-      
-      //MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
 
-      MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( myCNb );
+      //std::cout << myCNa->toString() << std::endl;
+      // dynacheese network
+      MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+
+      // 2U network
+      //MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( myCNb );
 
 
 
@@ -130,25 +129,25 @@ void test_credal() {
       //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 10 );
+      MCE->setTimeLimit ( 1 );
 
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
 
       if ( j == 1 )
-        MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
-        //MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+        //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+        MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
 
-      MCE->makeInference();
+      MCE->makeInference_v2();
 
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
 
-      std::vector<double> toto2(MCE->marginalMin("km"));
-      std::cout << toto2 << std::endl;
+      //std::vector<double> toto2(MCE->marginalMin("km"));
+      //std::cout << toto2 << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");

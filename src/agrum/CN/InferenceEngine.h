@@ -12,6 +12,33 @@ namespace gum {
     protected:
       const CredalNet< GUM_SCALAR > * _credalNet;
 
+////////////////////////// from MCSampling /////////////////
+      typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
+      typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
+      typedef typename gum::Property< GUM_SCALAR >::onNodes expe;
+
+      typedef gum::BayesNet< GUM_SCALAR > bnet;
+      typedef std::vector< margi > margis;
+      typedef std::vector< expe > expes;
+      typedef std::vector< credalSet > credalSets;
+
+      typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
+      
+      margis _l_marginalMin;
+      margis _l_marginalMax;
+      expes _l_expectationMin;
+      expes _l_expectationMax;
+      modals _l_modal;
+      credalSets _l_marginalSets;
+
+      margi _oldMarginalMin;
+      margi _oldMarginalMax;
+
+      typename std::vector< bnet * > _workingSet;
+      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > _workingSetE;
+
+//////////////////////////////////////////////////////////////
+
       typename gum::Property< std::vector< GUM_SCALAR > >::onNodes _marginalMin;
       typename gum::Property< std::vector< GUM_SCALAR > >::onNodes _marginalMax;
 
@@ -37,6 +64,11 @@ namespace gum {
       void _repetitiveInit();
       void _dynamicExpectations();
       void _initExpectations();
+
+      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices );
+
+      // inline stuff ( algorithms are easier to read with those )
+      inline void _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices );
 
     public:
       InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
