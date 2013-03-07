@@ -98,6 +98,25 @@ namespace gum {
     _initExpectations();
   }
 
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > > & eviMap ) {
+    if(! _evidence.empty() )
+      _evidence.clear();
+
+    typedef std::map< std::string, std::vector< GUM_SCALAR > > evidenceMap;
+
+    for(typename evidenceMap::const_iterator it = eviMap.begin(); it != eviMap.end(); ++it) {
+      gum::NodeId id;
+      try {
+        id = _credalNet->current_bn().idFromName(it->first);
+      } catch ( gum::NotFound & err) {
+        GUM_SHOWERROR ( err );
+        continue;
+      }
+      _evidence.insert ( id, it->second );
+    }
+  }
+
   // check that observed variables DO exists in the network (otherwise Lazy report an error and app crash)
   template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename gum::Property< std::vector < GUM_SCALAR > >::onNodes &evidence ) {
@@ -107,7 +126,7 @@ namespace gum {
     for ( typename gum::Property< std::vector < GUM_SCALAR > >::onNodes::const_iterator it = evidence.begin(); it != evidence.end(); ++it ) {
       try {
          _credalNet->current_bn().variable ( it.key() );
-      } catch ( gum::NotFound &err ) {
+      } catch ( gum::NotFound & err ) {
         GUM_SHOWERROR ( err );
         continue;
       }
@@ -120,7 +139,7 @@ namespace gum {
     std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
     if ( !evi_stream.good() ) {
-      GUM_ERROR(OperationNotAllowed, "void InferenceEngine< GUM_SCALAR >::insertEvidence(const std::string & path) : could not open input file : " << path );
+      GUM_ERROR(IOError, "void InferenceEngine< GUM_SCALAR >::insertEvidence(const std::string & path) : could not open input file : " << path );
     }
 
     if(! _evidence.empty() )
@@ -264,24 +283,77 @@ namespace gum {
 
   }
 
+  template< typename GUM_SCALAR > 
+  const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMin( const std::string & varName ) const {
+    try {
+      return _marginalMin[_credalNet->current_bn().idFromName(varName)];
+    } catch(gum::NotFound & err) {
+      throw(err);
+    }
+  }
+
+  template< typename GUM_SCALAR > 
+  const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMax( const std::string & varName ) const {
+    try {
+      return _marginalMax[_credalNet->current_bn().idFromName(varName)];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
+  }
+
   template< typename GUM_SCALAR >
   const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMin ( const gum::NodeId id ) const {
-    return _marginalMin[id];
+    try {
+      return _marginalMin[id];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
   }
 
   template< typename GUM_SCALAR >
   const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMax ( const gum::NodeId id ) const {
-    return _marginalMax[id];
+    try {
+      return _marginalMax[id];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
+
+  }
+
+  template< typename GUM_SCALAR >
+  const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin ( const std::string & varName ) const {
+    try {
+      return _expectationMin[_credalNet->current_bn().idFromName(varName)];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
+  }
+
+  template< typename GUM_SCALAR >
+  const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax ( const std::string & varName ) const {
+    try {
+      return _expectationMax[_credalNet->current_bn().idFromName(varName)];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
   }
 
   template< typename GUM_SCALAR >
   const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin( const gum::NodeId id ) const {
-    return _expectationMin[id];
+    try {
+      return _expectationMin[id];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
   }
 
   template< typename GUM_SCALAR >
   const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax( const gum::NodeId id ) const {
-    return _expectationMax[id];
+    try {
+      return _expectationMax[id];
+    } catch ( gum::NotFound & err ) {
+      throw ( err );
+    }
   }
 
   template< typename GUM_SCALAR >

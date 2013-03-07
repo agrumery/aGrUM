@@ -15,6 +15,7 @@ namespace gum {
       int __passN;
 
       std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
+      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
       std::vector< BNInferenceEngine * > __engineSet;
 
       typedef typename gum::Property< std::vector< int > >::onNodes __affec;

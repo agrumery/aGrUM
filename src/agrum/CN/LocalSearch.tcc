@@ -111,6 +111,7 @@ namespace gum {
       #pragma omp single
       {
         __workingSet.resize ( num_threads, NULL );
+        __workingSetE.resize( num_threads );
         __engineSet.resize ( num_threads, NULL );
         l_marginalMin.resize ( num_threads );
         l_marginalMax.resize ( num_threads );
@@ -120,6 +121,9 @@ namespace gum {
 
       __workingSet[this_thread] = thread_bn;
       __engineSet[this_thread] = new BNInferenceEngine ( * ( __workingSet[this_thread] ) );
+
+      gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
+      __workingSetE[this_thread] = evi_list;
 
       const gum::DAG &thread_dag = __workingSet[this_thread]->dag();
 
@@ -588,7 +592,16 @@ namespace gum {
 
     int this_thread = omp_get_thread_num();
     gum::BayesNet<GUM_SCALAR> * working_bn = __workingSet[this_thread];
-    gum::List< const gum::Potential< GUM_SCALAR > * > evi_list;
+
+    gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = __workingSetE[this_thread];
+
+    if ( evi_list->size() > 0 ) {
+      inference_engine.insertEvidence ( *evi_list );
+      return;
+    }
+
+
+    //gum::List< const gum::Potential< GUM_SCALAR > * > evi_list;
 
     typename gum::Property< std::vector< GUM_SCALAR > >::onNodes thread_evidence = this->_evidence;
 
@@ -604,11 +617,14 @@ namespace gum {
         throw ( err );
       }
 
-      evi_list.insert ( p );
+      evi_list->insert ( p );
     }
 
-    if ( evi_list.size() > 0 )
-      inference_engine.insertEvidence ( evi_list );
+    //__workingSetE[this_thread] = evi_list;
+
+    if ( evi_list->size() > 0 )
+      inference_engine.insertEvidence ( *evi_list );
+
   }
 
 

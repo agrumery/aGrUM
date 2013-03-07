@@ -11,7 +11,7 @@ const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_org() const
 {
   return cn->src_bn();
 }
-
+/*
 template<typename T_DATA>
 const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_min() const
 {
@@ -23,7 +23,7 @@ const gum::BayesNet<T_DATA>& gum::LoopyPropagation<T_DATA>::bn_max() const
 {
   return *((*(this->cn)).get_BN_max());
 }
-
+*/
 template<typename T_DATA>
 const std::vector< std::vector<T_DATA> >& gum::LoopyPropagation<T_DATA>::get_CPT_min() const
 {
@@ -616,6 +616,8 @@ void gum::LoopyPropagation<T_DATA>::makeInference()
 			_makeInferenceByRandomEvaluation();
 			break;
 	}
+
+  _updateMarginals();
 	
 	/* 
 	 * next to ordered, randomOrder, randomEvaluation
@@ -667,9 +669,45 @@ void gum::LoopyPropagation<T_DATA>::_cleanInferenceData()
 //////////////////////////////////// 		insert evidence	////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+template< typename T_DATA >
+void gum::LoopyPropagation< T_DATA >::insertEvidence( const std::string & path ) {
+  InferenceEngine< T_DATA >::insertEvidence( path );
+  _insertEvidence();
+}
+
+template< typename T_DATA >
+void gum::LoopyPropagation< T_DATA >::insertEvidence( const std::map< std::string, std::vector< T_DATA > > & eviMap ) {
+  InferenceEngine< T_DATA >::insertEvidence( eviMap );
+  _insertEvidence();
+}
+
+template< typename T_DATA >
+void gum::LoopyPropagation< T_DATA >::_insertEvidence() {
+  _cleanInferenceData();
+
+  if ( this->_evidence.size() == 0 )
+    return;
+
+  for ( typename gum::Property< std::vector< T_DATA > >::onNodes::const_iterator it = this->_evidence.begin(); it != this->_evidence.end(); ++it ) {
+    bool hardEvidence = false;
+    int modal;
+    for( int mod = 0; mod < it->size(); mod++)
+        
+        /*typename std::vector< T_DATA >::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 ) */{
+      if(hardEvidence && (*it)[mod] > 0) {
+        GUM_ERROR ( OperationNotAllowed, "void gum::LoopyPropagation< T_DATA >::_insertEvidence() : not reading hard evidence : " << *it );
+      }
+      else if(!hardEvidence && (*it)[mod] > 0) {
+        hardEvidence = true;
+        modal = mod;
+      }
+    }
+    _Evidence.insert(it.key(), modal);
+  }
+}
 
 template<typename T_DATA>
-void gum::LoopyPropagation<T_DATA>::insertEvidence(const std::string &path)
+void gum::LoopyPropagation<T_DATA>::insertEvidence_old(const std::string &path)
 {   
   /*for(int i = 0; i < this->bn_org().size(); i++)
     std::cout << this->bn_org().variable(i).name() << std::endl;*/
@@ -2028,8 +2066,102 @@ void gum::LoopyPropagation<T_DATA>::_refreshLMsPIs()
 	std::cout<<std::endl;
 
 }
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// update marginals ///////////////////
+////////////////////////////////////////////////////////////////////////////////
 
+template< typename T_DATA >
+void gum::LoopyPropagation<T_DATA>::_updateMarginals() {
+  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
+  {	
+    T_DATA msg_p_min;
+    T_DATA msg_p_max;
 
+    if( this->_Evidence.exists(*it) )
+    {
+      if( this->_Evidence[*it] == (T_DATA) 0. )
+        msg_p_min = (T_DATA) 0.;
+      else if( this->_Evidence[*it] == (T_DATA) 1. )
+        msg_p_min = (T_DATA) 1.;
+
+      msg_p_max = msg_p_min;
+    }
+    else
+    {
+      T_DATA min = this->_NodesP_min[*it];
+      T_DATA max;
+
+      if( this->_NodesP_max.exists(*it) )
+        max = this->_NodesP_max[*it];
+      else
+        max = min;
+
+      T_DATA lmin = this->_NodesL_min[*it];
+      T_DATA lmax;
+
+      if( this->_NodesL_max.exists(*it) )
+        lmax = this->_NodesL_max[*it];
+      else
+        lmax = lmin;
+
+      if(min == _INF || max == _INF)
+      {
+        std::cout << " min ou max === _INF !!!!!!!!!!!!!!!!!!!!!!!!!! " << std::endl;
+        std::cout.flush();
+      }
+
+      if( min == _INF && lmin == (T_DATA) 0. )
+        std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+
+      if ( lmin == _INF  ) 
+        msg_p_min = (T_DATA) 1.;
+      else if( min == (T_DATA) 0. || lmin == (T_DATA) 0.)
+        msg_p_min = (T_DATA) 0;
+      else
+        msg_p_min = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / min - (T_DATA)1.) * (T_DATA)1. / lmin ));
+
+      if( max == _INF && lmax == (T_DATA) 0. )
+        std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
+
+      if (  lmax == _INF  )        
+        msg_p_max = (T_DATA) 1.;
+      else if( max == (T_DATA) 0. || lmax == (T_DATA) 0.)
+        msg_p_max = (T_DATA) 0;	 
+      else
+        msg_p_max = (T_DATA)1. / ( (T_DATA)1. + ( ((T_DATA)1. / max - (T_DATA)1.) * (T_DATA)1. / lmax ));
+    }
+
+    if(msg_p_min != msg_p_min && msg_p_max == msg_p_max)
+    {
+      msg_p_min = msg_p_max;
+      std::cout << std::endl;
+      std::cout << "msg_p_min is NaN" << std::endl;
+    }
+    if(msg_p_max != msg_p_max && msg_p_min == msg_p_min)
+    {
+      msg_p_max = msg_p_min;
+      std::cout << std::endl;
+      std::cout << "msg_p_max is NaN" << std::endl;
+
+    }
+    if(msg_p_max != msg_p_max && msg_p_min != msg_p_min)
+    {
+      std::cout << std::endl;
+      std::cout << "pas de proba calculable (verifier observations)" << std::endl;
+    }
+
+    if(msg_p_min <= (T_DATA) 0.)
+      msg_p_min = (T_DATA) 0.;
+    if(msg_p_max <= (T_DATA) 0.)
+      msg_p_max = (T_DATA) 0.;
+
+    this->_marginalMin[*it][0] = 1 - msg_p_max;
+    this->_marginalMax[*it][0] = 1 - msg_p_min;
+    this->_marginalMin[*it][1] = msg_p_min;
+    this->_marginalMax[*it][1] = msg_p_max;
+
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// 		calculate epsilon			////////////////////////////////////
@@ -2265,8 +2397,7 @@ T_DATA gum::LoopyPropagation<T_DATA>::__euclidean(T_DATA p, T_DATA q)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename T_DATA>
 gum::LoopyPropagation<T_DATA>::LoopyPropagation(const CredalNet<T_DATA> &cn, const BayesNet<T_DATA>& bn) 
-:  _InferenceUpToDate(false), ApproximationScheme(), __inferenceType(ordered)
-//: PearlPropagation<T_DATA>(cn, bn), ApproximationScheme(), __inferenceType(ordered)
+:  _InferenceUpToDate(false), __inferenceType(ordered), InferenceEngine< T_DATA >::InferenceEngine ( cn )
 {
 	this->cn = &cn;
 	this->bnet = &bn;

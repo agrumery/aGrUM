@@ -51,7 +51,8 @@ namespace gum {
       // from map (copy)
       void insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals);
 
-      void insertEvidence ( const std::string &path );
+      void insertEvidence ( const std::string & path );
+      void insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > > & eviMap );
       // ? how the hell am i supposed to use a property without the network ??
       // use map (string instead of nodeId) ?
       void insertEvidence ( const typename gum::Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
@@ -62,9 +63,13 @@ namespace gum {
 
       const std::vector< GUM_SCALAR > & marginalMin ( const gum::NodeId id ) const;
       const std::vector< GUM_SCALAR > & marginalMax ( const gum::NodeId id ) const;
+      const std::vector< GUM_SCALAR > & marginalMin( const std::string & varName ) const;
+      const std::vector< GUM_SCALAR > & marginalMax( const std::string & varName ) const;
 
       const GUM_SCALAR & expectationMin ( const gum::NodeId id ) const;
       const GUM_SCALAR & expectationMax ( const gum::NodeId id ) const;
+      const GUM_SCALAR & expectationMin ( const std::string & varName ) const;
+      const GUM_SCALAR & expectationMax ( const std::string & varName ) const;
 
       const std::vector< GUM_SCALAR > & dynamicExpMin ( const std::string & varName ) const;
       const std::vector< GUM_SCALAR > & dynamicExpMax ( const std::string & varName ) const;

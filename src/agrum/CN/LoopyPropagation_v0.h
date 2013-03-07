@@ -16,7 +16,7 @@
 namespace gum
 {
 	template<typename T_DATA>
-	class LoopyPropagation : /* public PearlPropagation<T_DATA>,*/ public ApproximationScheme
+	class LoopyPropagation : public InferenceEngine<T_DATA>
 	{
 	public:
 		//typedef std::vector<T_DATA> msg;
@@ -32,8 +32,8 @@ namespace gum
 		
 		const gum::BayesNet<T_DATA>& bn() const;
 		const gum::BayesNet<T_DATA>& bn_org() const;
-		const gum::BayesNet<T_DATA>& bn_min() const;
-		const gum::BayesNet<T_DATA>& bn_max() const;
+		/*const gum::BayesNet<T_DATA>& bn_min() const;
+		const gum::BayesNet<T_DATA>& bn_max() const;*/
 		const std::vector< std::vector<T_DATA> >& get_CPT_min() const;
 		const std::vector< std::vector<T_DATA> >& get_CPT_max() const;
 		const CredalNet<T_DATA>& get_cn() const;
@@ -43,6 +43,8 @@ namespace gum
 		void setInferenceType(InferenceType inft){__inferenceType = inft;}
 		InferenceType inferenceType(){return __inferenceType;}
 		
+    // deprecated, use saveMarginals() from InferenceEngine instead if scripts are needed
+    // this one is actually easier to read from file, but harder to parse
 		void saveInference(const std::string &path);
 		
 		LoopyPropagation(const CredalNet<T_DATA> &cn, const BayesNet<T_DATA>& bn);
@@ -54,14 +56,18 @@ namespace gum
 		
 		typename std::vector<T_DATA> eps;
 		
-		virtual void insertEvidence(const std::string &path);
+    void insertEvidence( const std::string & path );
+    void insertEvidence( const std::map< std::string, std::vector< T_DATA > > & eviMap );
+    // deprecated insertEvidence (should use IngerenceEngine instead, like above)
+    // keep it since it will be usefull (little work needed) if DTS is back (GL2U)
+		virtual void insertEvidence_old(const std::string &path);
 		//virtual void eraseAllEvidence();
-		void virtual _cleanInferenceData();
-		
+				
 	protected:
-	
-		void virtual _initialize();
-		
+    void _updateMarginals();
+    void _insertEvidence();
+    void virtual _initialize();
+    void virtual _cleanInferenceData();
 		void virtual _makeInferenceByOrderedArcs();
 		void virtual _makeInferenceByRandomOrder();
 		void virtual _makeInferenceByRandomEvaluation();

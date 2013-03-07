@@ -45,9 +45,29 @@ void test_credal() {
   myCNb.computeCPTMinMax();
   std::cout << "computing done" << std::endl;
   LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb, myCNb.current_bn());
+
   //lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+  std::map< std::string, std::vector<double> > eviMap;
+  std::vector<double> evi0(2,0); evi0[0] = 1;
+  std::vector<double> evi1(2,0); evi1[1] = 1;
+  eviMap["L"] = evi1;
+  eviMap["G"] = evi0;
+  lp.insertEvidence(eviMap);
 
   lp.makeInference();
+  lp.saveInference("test.marginals");
+  lp.saveMarginals("l2u.marginals");
+
+  /**
+   * LocalSearch test
+   */
+  LocalSearch<double, LazyPropagation<double> > ls(myCNb);
+  //ls.insertEvidence( GET_PATH_STR ( L2U.evi ) );
+  ls.insertEvidence(eviMap);
+  ls.setPassN(5);
+  ls.setMaxVertices(4);
+  ls.makeInference();
+
 
   // dynacheese modalities
   std::map< std::string, std::vector< double > > modals;
@@ -113,16 +133,20 @@ void test_credal() {
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
 
-      //if ( j == 1 )
-        //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+      if ( j == 1 )
+        MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
         //MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
 
       MCE->makeInference();
+
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
+
+      std::vector<double> toto2(MCE->marginalMin("km"));
+      std::cout << toto2 << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");

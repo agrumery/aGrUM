@@ -847,7 +847,7 @@ namespace gum {
       evi_list->insert ( p );
     }
 
-    __workingSetE[this_thread] = evi_list;
+    //__workingSetE[this_thread] = evi_list;
 
     if ( evi_list->size() > 0 )
       inference_engine.insertEvidence ( *evi_list );
