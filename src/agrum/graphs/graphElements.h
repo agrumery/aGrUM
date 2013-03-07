@@ -77,7 +77,6 @@
   used) and it may deteriorate the compacity of
   the @ref gum::NodeGraphPart. </i>
 
-
   Good programmers should treat with respect the idFactory.
 
   <h4>Iterators</h4>
@@ -134,7 +133,7 @@
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
   for ( gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
-        i!=is_id_odd.end(); 
+        i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
   }
@@ -156,7 +155,7 @@
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
   for (gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
-        i!=is_id_odd.end(); 
+        i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
   }
@@ -513,6 +512,8 @@ namespace gum {
 ////////////////////////////////////////////////////////////////
 //we need to provide hash functions for some Edge and Arc
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
   template <> class HashFunc<Edge> : public  HashFuncSmallKeyPair<NodeId, NodeId> {
     public:
       /**
@@ -534,6 +535,7 @@ namespace gum {
       mutable std::pair<NodeId, NodeId> pair;
   };
 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 
   /** \ingroup graph_group

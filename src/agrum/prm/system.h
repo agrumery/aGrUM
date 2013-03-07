@@ -41,292 +41,292 @@
 #include <agrum/prm/instance.h>
 // ============================================================================
 namespace gum {
-namespace prm {
-class SystemIterator;
-class SystemConstIterator;
-
-/**
- * @class System system.h <agrum/prm/system.h>
- * @brief A System is a container of Instance and describe a relational
- *        skeleton.
- */
-class System: public PRMObject {
-  public:
-  // ========================================================================
-  /// @name Constructors & destructor.
-  // ========================================================================
-    /// @{
-
-    /// Default constructor.
-    System(const std::string& name);
-
-    /// Destructor.
-    virtual ~System();
-
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters over the relational skeleton.
-  // ========================================================================
-    /// @{
-
-    /// Returns the relation skeleton of this System.
-    const DiGraph& skeleton() const;
+  namespace prm {
+    class SystemIterator;
+    class SystemConstIterator;
 
     /**
-     * Returns an Instance given it's NodeId in the relational skeleton.
-     *
-     * @throw NotFound Raised if no Instance matches the given NodeId.
+     * @class System system.h <agrum/prm/system.h>
+     * @brief A System is a container of Instance and describe a relational
+     *        skeleton.
      */
-    Instance& get(NodeId id);
+    class System: public PRMObject {
+      public:
+        // ========================================================================
+        /// @name Constructors & destructor.
+        // ========================================================================
+        /// @{
 
-    /**
-     * Returns an Instance given it's NodeId in the relational skeleton.
-     *
-     * @throw NotFound Raised if no Instance matches the given NodeId.
-     */
-    const Instance& get(NodeId id) const;
+        /// Default constructor.
+        System ( const std::string& name );
 
-    /**
-     * @brief Insert an edge between between u and v using the ReferenceSlot
-     *      ref of u.
-     *
-     * Either u or v can be arrays:
-     *   - if u is an array and not v then an arc is added between each
-     *     Instance in u and v;
-     *   - if v is an array and not u then an arc is added between u and
-     *     each Instance in v;
-     *   - if u and v are arrays then an arc is added between each pair
-     *     of Instance in u and v.
-     *
-     * @param u A name of an Instance in this System.
-     * @param v A name of an Instance in this System.
-     * @param ref A ReferenceSlot of u which range type matches v's.
-     *
-     * @throw OutOfUpperBound Raised if ref can not receive another Instance.
-     * @throw NotFound Raised either if u, v or ref could not be found.
-     * @throw WrongClassElement Raised if ref does not name a ReferenceSlot.
-     * @throw TypeError Raised if v's type does not match ref range type.
-     */
-    void insertArc(const std::string& u, const std::string& v,
-                   const std::string& ref);
+        /// Destructor.
+        virtual ~System();
 
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters over Instance and array of Instance.
-  // ========================================================================
-    /// @{
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters over the relational skeleton.
+        // ========================================================================
+        /// @{
 
-    /// Returns the PRM type of this object.
-    virtual ObjectType obj_type() const;
+        /// Returns the relation skeleton of this System.
+        const DiGraph& skeleton() const;
 
-    /// Returns the number of Instance in this System.
-    Size size() const;
+        /**
+         * Returns an Instance given it's NodeId in the relational skeleton.
+         *
+         * @throw NotFound Raised if no Instance matches the given NodeId.
+         */
+        Instance& get ( NodeId id );
 
-    /// Retruns true either if name is an instance or an array in this System.
-    bool exists(const std::string& name) const;
+        /**
+         * Returns an Instance given it's NodeId in the relational skeleton.
+         *
+         * @throw NotFound Raised if no Instance matches the given NodeId.
+         */
+        const Instance& get ( NodeId id ) const;
 
-    /// Returns true if the given Class has at least one Instance in this
-    /// System.
-    bool isInstantiated(const Class& c) const;
+        /**
+         * @brief Insert an edge between between u and v using the ReferenceSlot
+         *      ref of u.
+         *
+         * Either u or v can be arrays:
+         *   - if u is an array and not v then an arc is added between each
+         *     Instance in u and v;
+         *   - if v is an array and not u then an arc is added between u and
+         *     each Instance in v;
+         *   - if u and v are arrays then an arc is added between each pair
+         *     of Instance in u and v.
+         *
+         * @param u A name of an Instance in this System.
+         * @param v A name of an Instance in this System.
+         * @param ref A ReferenceSlot of u which range type matches v's.
+         *
+         * @throw OutOfUpperBound Raised if ref can not receive another Instance.
+         * @throw NotFound Raised either if u, v or ref could not be found.
+         * @throw WrongClassElement Raised if ref does not name a ReferenceSlot.
+         * @throw TypeError Raised if v's type does not match ref range type.
+         */
+        void insertArc ( const std::string& u, const std::string& v,
+                         const std::string& ref );
 
-    /// Returns true if an Instance with the given name exists.
-    bool isInstance(const std::string& name) const;
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters over Instance and array of Instance.
+        // ========================================================================
+        /// @{
 
-    /// Returns true if an array with the given name exists.
-    bool isArray(const std::string& name) const;
+        /// Returns the PRM type of this object.
+        virtual ObjectType obj_type() const;
 
-    /**
-     * Returns the grounded Bayesian Network of this system.
-     * @param factory The factory used to build the grounded Bayesian Network.
-     */
-    void groundedBN(BayesNetFactory<prm_float>& factory) const;
+        /// Returns the number of Instance in this System.
+        Size size() const;
 
-    /// Instantiate all the Instance in this System.
-    void instantiate();
+        /// Retruns true either if name is an instance or an array in this System.
+        bool exists ( const std::string& name ) const;
 
-    /// @}
-  // ========================================================================
-  /// @name Instance handling.
-  // ========================================================================
-    /// @{
+        /// Returns true if the given Class has at least one Instance in this
+        /// System.
+        bool isInstantiated ( const Class& c ) const;
 
-    /// Returns a reference over an Instance given it's name
-    /// @throw NotFound Raised if the no Instance matches name.
-    Instance& get(const std::string& name);
+        /// Returns true if an Instance with the given name exists.
+        bool isInstance ( const std::string& name ) const;
 
-    /// Returns a constant reference over an Instance given it's name
-    /// @throw NotFound Raised if the no Instance matches name.
-    const Instance& get(const std::string& name) const;
+        /// Returns true if an array with the given name exists.
+        bool isArray ( const std::string& name ) const;
 
-    /// Returns the sequence of all instances of the given type
-    /// @throw NotFound Raised if there is instantiation of type.
-    const Set<Instance*>& get(const Class& type) const;
+        /**
+         * Returns the grounded Bayesian Network of this system.
+         * @param factory The factory used to build the grounded Bayesian Network.
+         */
+        void groundedBN ( BayesNetFactory<prm_float>& factory ) const;
 
-    /// Add an Instance to this system.
-    /// @throw DuplicateElement Raised if an Instance with the same name
-    ///                         already exists.
-    NodeId add(Instance* i);
+        /// Instantiate all the Instance in this System.
+        void instantiate();
 
-    /// @}
-  // ========================================================================
-  /// @name Array handling.
-  // ========================================================================
-    /// @{
+        /// @}
+        // ========================================================================
+        /// @name Instance handling.
+        // ========================================================================
+        /// @{
 
-    /// Returns the sequence of instances of a given array.
-    /// @throw NotFound Raised if no array matches name.
-    const Sequence<Instance*>& getArray(const std::string& name) const;
+        /// Returns a reference over an Instance given it's name
+        /// @throw NotFound Raised if the no Instance matches name.
+        Instance& get ( const std::string& name );
 
-    /// Returns the type of the given array.
-    /// @throw NotFound Raised if no array matches name.
-    ClassElementContainer& getArrayType(const std::string& name);
+        /// Returns a constant reference over an Instance given it's name
+        /// @throw NotFound Raised if the no Instance matches name.
+        const Instance& get ( const std::string& name ) const;
 
-    /// Returns the type of the given array.
-    /// @throw NotFound Raised if no array matches name.
-    const ClassElementContainer& getArrayType(const std::string& name) const;
+        /// Returns the sequence of all instances of the given type
+        /// @throw NotFound Raised if there is instantiation of type.
+        const Set<Instance*>& get ( const Class& type ) const;
 
-    /// @brief Add an Instance to an array in this system.
-    /// If the array doesn't exists it is created.
-    /// @throw TypeError Raised if i is not of the good type.
-    /// @throw DuplicateElement Raised if an Instance with same name already exists.
-    NodeId add(const std::string& array, Instance* i);
+        /// Add an Instance to this system.
+        /// @throw DuplicateElement Raised if an Instance with the same name
+        ///                         already exists.
+        NodeId add ( Instance* i );
 
-    /// @brief Add an Instance to an array in this system.
-    /// If the array doesn't exists it is created.
-    /// @throw TypeError Raised if i is not of the good type.
-    /// @throw DuplicateElement Raised if an Instance with same name already exists.
-    NodeId add(const std::string& array, Instance& i);
+        /// @}
+        // ========================================================================
+        /// @name Array handling.
+        // ========================================================================
+        /// @{
 
-    /// @brief Add an array of instances in this system.
-    /// If the array doesn't exists it is created.
-    /// @throw DuplicateElement Raised if an existing array with the same name
-    ///                         already exists.
-    void addArray(const std::string& array, ClassElementContainer& type);
+        /// Returns the sequence of instances of a given array.
+        /// @throw NotFound Raised if no array matches name.
+        const Sequence<Instance*>& getArray ( const std::string& name ) const;
 
-    /// @}
-  // ========================================================================
-  /// @name Iterators.
-  // ========================================================================
-    /// @{
+        /// Returns the type of the given array.
+        /// @throw NotFound Raised if no array matches name.
+        ClassElementContainer& getArrayType ( const std::string& name );
 
-    /// Iterator over the Instance of this System.
-    typedef Property<Instance*>::onNodes::iterator iterator;
+        /// Returns the type of the given array.
+        /// @throw NotFound Raised if no array matches name.
+        const ClassElementContainer& getArrayType ( const std::string& name ) const;
 
-    /// Returns an iterator over the instances in this system.
-    iterator begin();
+        /// @brief Add an Instance to an array in this system.
+        /// If the array doesn't exists it is created.
+        /// @throw TypeError Raised if i is not of the good type.
+        /// @throw DuplicateElement Raised if an Instance with same name already exists.
+        NodeId add ( const std::string& array, Instance* i );
 
-    /// Returns a iterator at the end of the set of Instance
-    /// in this System.
-    const iterator& end();
+        /// @brief Add an Instance to an array in this system.
+        /// If the array doesn't exists it is created.
+        /// @throw TypeError Raised if i is not of the good type.
+        /// @throw DuplicateElement Raised if an Instance with same name already exists.
+        NodeId add ( const std::string& array, Instance& i );
 
-    /// Constant Iterator over the Instance of this System.
-    typedef Property<Instance*>::onNodes::const_iterator const_iterator;
+        /// @brief Add an array of instances in this system.
+        /// If the array doesn't exists it is created.
+        /// @throw DuplicateElement Raised if an existing array with the same name
+        ///                         already exists.
+        void addArray ( const std::string& array, ClassElementContainer& type );
 
-    /// Returns a constant iterator over the instances in this system.
-    const_iterator begin() const;
+        /// @}
+        // ========================================================================
+        /// @name Iterators.
+        // ========================================================================
+        /// @{
 
-    /// Returns a constant iterator at the end of the set of Instance
-    /// in this System.
-    const const_iterator& end() const;
+        /// Iterator over the Instance of this System.
+        typedef Property<Instance*>::onNodes::iterator iterator;
 
-    /// Iterator over the Instance in an array in this System.
-    typedef Sequence<Instance*>::iterator array_iterator;
+        /// Returns an iterator over the instances in this system.
+        iterator begin();
 
-    /// Returns an iterator at the beginning of the Sequence of Instance
-    /// in the array named a;
-    /// @throw NotFound Raised if no array matches a.
-    array_iterator begin(const std::string& a);
+        /// Returns a iterator at the end of the set of Instance
+        /// in this System.
+        const iterator& end();
 
-    /// Returns an iterator at the end of the Sequence of Instance
-    /// in the array named a.
-    /// @throw NotFound Raised if no array matches a.
-    const array_iterator& end(const std::string& a);
+        /// Constant Iterator over the Instance of this System.
+        typedef Property<Instance*>::onNodes::const_iterator const_iterator;
 
-    /// Iterator over the Instance in an array in this System.
-    typedef Sequence<Instance*>::const_iterator const_array_iterator;
+        /// Returns a constant iterator over the instances in this system.
+        const_iterator begin() const;
 
-    /// Returns an iterator at the beginning of the Sequence of Instance
-    /// in the array named a;
-    /// @throw NotFound Raised if no array matches a.
-    const_array_iterator begin(const std::string& a) const;
+        /// Returns a constant iterator at the end of the set of Instance
+        /// in this System.
+        const const_iterator& end() const;
 
-    /// Returns an iterator at the end of the Sequence of Instance
-    /// in the array named a.
-    /// @throw NotFound Raised if no array matches a.
-    const const_array_iterator& end(const std::string& a) const;
+        /// Iterator over the Instance in an array in this System.
+        typedef Sequence<Instance*>::iterator array_iterator;
 
-    /// @}
-  private:
-    /// Copy constructor. Don't use it.
-    System(const System& from);
+        /// Returns an iterator at the beginning of the Sequence of Instance
+        /// in the array named a;
+        /// @throw NotFound Raised if no array matches a.
+        array_iterator begin ( const std::string& a );
 
-    /// Copy operator. Don't use it.
-    System& operator=(const System& from);
+        /// Returns an iterator at the end of the Sequence of Instance
+        /// in the array named a.
+        /// @throw NotFound Raised if no array matches a.
+        const array_iterator& end ( const std::string& a );
 
-  // ========================================================================
-  /// @name Private Instance handling methods and members.
-  // ========================================================================
-    /// @{
+        /// Iterator over the Instance in an array in this System.
+        typedef Sequence<Instance*>::const_iterator const_array_iterator;
 
-    /// The relational skeleton of this System.
-    DiGraph __skeleton;
+        /// Returns an iterator at the beginning of the Sequence of Instance
+        /// in the array named a;
+        /// @throw NotFound Raised if no array matches a.
+        const_array_iterator begin ( const std::string& a ) const;
 
-    /// The maping between Instance and their NodeId in the relational
-    /// skeleton of this System.
-    Property<Instance*>::onNodes __nodeIdMap;
+        /// Returns an iterator at the end of the Sequence of Instance
+        /// in the array named a.
+        /// @throw NotFound Raised if no array matches a.
+        const const_array_iterator& end ( const std::string& a ) const;
 
-    /// The mapping between Instance and their names.
-    HashTable<std::string, Instance*> __nameMap;
+        /// @}
+      private:
+        /// Copy constructor. Don't use it.
+        System ( const System& from );
 
-    /// Mapping between a class and all it's Instance in this system
-    HashTable<Class*, Set<Instance*>*> __instanceMap;
+        /// Copy operator. Don't use it.
+        System& operator= ( const System& from );
 
-    /// Typedef of the pair of a Class and the sequence of it's instantiation.
-    typedef std::pair< ClassElementContainer*, Sequence<Instance*>* > model_pair;
+        // ========================================================================
+        /// @name Private Instance handling methods and members.
+        // ========================================================================
+        /// @{
 
-    /// Mapping between arrays and their name. The first element of the pair
-    /// is the type of the array.
-    HashTable< std::string, model_pair> __arrayMap;
+        /// The relational skeleton of this System.
+        DiGraph __skeleton;
 
-    /// @}
-  // ========================================================================
-  /// @name Ground BN private methods.
-  // ========================================================================
-    /// @{
+        /// The maping between Instance and their NodeId in the relational
+        /// skeleton of this System.
+        Property<Instance*>::onNodes __nodeIdMap;
 
-    /// @brief Method which ground ReferenceSlot of an Instance and add arcs
-    ///        in the BayesNet.
-    /// @param instance The Instance grounded by this method.
-    /// @param bn       The factory used to build the grounded BayesNet.
-    void __groundRef(const Instance& instance,
-                     BayesNetFactory<prm_float>& factory) const;
+        /// The mapping between Instance and their names.
+        HashTable<std::string, Instance*> __nameMap;
 
-    /// @brief Method which ground Atttributes and Aggregators of
-    ///        an Instance.
-    /// @param instance The Instance grounded by this method.
-    /// @param bn       The factory used to build the grounded BayesNet.
-    void __groundAttr(const Instance& instance,
-                      BayesNetFactory<prm_float>& factory) const;
+        /// Mapping between a class and all it's Instance in this system
+        HashTable<Class*, Set<Instance*>*> __instanceMap;
 
-    /// @brief Method which copy node's Potential of an Instance to the grounded
-    ///        Bayesian Network.
-    /// @param instance The Instance currently grounded.
-    /// @param attr     The Attribute for which the Potential is grounded.
-    /// @param factory  The factory used to build the grounded BayesNet.
-    void __groundPotential(const Instance& instance, const Attribute& attr,
-                     BayesNetFactory<prm_float>& factory) const;
+        /// Typedef of the pair of a Class and the sequence of it's instantiation.
+        typedef std::pair< ClassElementContainer*, Sequence<Instance*>* > model_pair;
 
-    /// @brief Ground an aggregator with the given name in the grounded
-    ///        BayesNet.
-    /// @param elt    The aggregator grounded.
-    /// @param name   The aggregator's name in the grounded BayesNet.
-    /// @param bn     The factory used to build the grounded BayesNet.
-    void __groundAgg(const ClassElement& elt, const std::string& name,
-                     BayesNetFactory<prm_float>& factory) const;
-    /// @}
-};
+        /// Mapping between arrays and their name. The first element of the pair
+        /// is the type of the array.
+        HashTable< std::string, model_pair> __arrayMap;
 
-} /* namespace prm */
+        /// @}
+        // ========================================================================
+        /// @name Ground BN private methods.
+        // ========================================================================
+        /// @{
+
+        /// @brief Method which ground ReferenceSlot of an Instance and add arcs
+        ///        in the BayesNet.
+        /// @param instance The Instance grounded by this method.
+        /// @param factory  The factory used to build the grounded BayesNet.
+        void __groundRef ( const Instance& instance,
+                           BayesNetFactory<prm_float>& factory ) const;
+
+        /// @brief Method which ground Atttributes and Aggregators of
+        ///        an Instance.
+        /// @param instance The Instance grounded by this method.
+        /// @param factory  The factory used to build the grounded BayesNet.
+        void __groundAttr ( const Instance& instance,
+                            BayesNetFactory<prm_float>& factory ) const;
+
+        /// @brief Method which copy node's Potential of an Instance to the grounded
+        ///        Bayesian Network.
+        /// @param instance The Instance currently grounded.
+        /// @param attr     The Attribute for which the Potential is grounded.
+        /// @param factory  The factory used to build the grounded BayesNet.
+        void __groundPotential ( const Instance& instance, const Attribute& attr,
+                                 BayesNetFactory<prm_float>& factory ) const;
+
+        /// @brief Ground an aggregator with the given name in the grounded
+        ///        BayesNet.
+        /// @param elt     The aggregator grounded.
+        /// @param name    The aggregator's name in the grounded BayesNet.
+        /// @param factory The factory used to build the grounded BayesNet.
+        void __groundAgg ( const ClassElement& elt, const std::string& name,
+                           BayesNetFactory<prm_float>& factory ) const;
+        /// @}
+    };
+
+  } /* namespace prm */
 } /* namespace gum */
 // ============================================================================
 #ifndef GUM_NO_INLINE

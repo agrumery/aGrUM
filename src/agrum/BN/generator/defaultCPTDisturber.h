@@ -71,17 +71,17 @@ namespace gum {
      * @param varIdj The variable on the CPT owner.
      * @param bayesNet tne Bayesian Network.
      * @param cptCopy copy of the CPT before reduction.
-     * @param marginal of the inference before reduction on the node varIdi.
+     * @param marg of the inference before reduction on the node varIdi.
      */
-
     virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR> & bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg);
+    
     /**
      * Disturb a CPT using GUM_SCALAR.
      * @param varIdi The variable id parent of the CPT owner.
      * @param varIdj A reference on the CPT owner.
      * @param bayesNet the Bayesian Network.
      * @param cptCopy copy of the CPT before augmentation.
-     * @param variation degree of variation from the initial probability .
+     * @param variation degree of variation from the initial probability.
      */
     virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR> & bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation);
 

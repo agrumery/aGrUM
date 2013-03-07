@@ -20,7 +20,7 @@
 /** @file
  * @brief Inlined implementation for lists
  *
- * @authorPierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/core/list.h>

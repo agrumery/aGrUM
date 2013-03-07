@@ -45,7 +45,7 @@ namespace gum {
    *
    * This class randomly generates a bayesian network given three parameters:
    * the number of nodes and the max number of arcs and the number of maximum modality for each nodes.
-   * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
   template <typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator>

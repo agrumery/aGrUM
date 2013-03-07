@@ -149,46 +149,46 @@ namespace gum {
           void addRoot ( LabelData& data );
 
           /**
-           * @class DFSTree::EdgeGrowth DFSTree.h <agrum/prm/DFSTree.h>
+           * @class EdgeGrowth DFSTree.h <agrum/prm/DFSTree.h>
            * This class is used to define an edge growth of a pattern
            * in this DFSTree.
            */
 
           struct EdgeGrowth {
 
-            friend class DFSTree;
-            /// Constructor.
-            EdgeGrowth ( NodeId a_u, LabelData* an_edge, LabelData* a_l_v, NodeId a_v = 0 );
-            /// Copy constructor.
-            EdgeGrowth ( const EdgeGrowth& from );
-            /// Destructor.
-            ~EdgeGrowth();
-            /// The NodeId of the node from which we grow an edge.
-            NodeId u;
-            /// Returns the number of matches in the interface graph
-            /// for this edge growth.
-            //Size count() const;
-            /// The LabelData over the edge of this edge growth.
-            LabelData* edge;
-            /// The LabelData over the node of this edge growth.
-            LabelData* l_v;
-            /// If the growth is backward you must assigned the subscript of v,
-            /// otherwise 0 is assigned (recall that subscripts start from 1)
-            NodeId v;
-            /// Add the pair (u,v) as a match for the current growth.
-            void insert ( Instance* u, Instance* v );
-            /// The mapping between the u and v for each match in the interface graph.
-            Property< std::pair<Instance*, Instance*> >::onNodes matches;
-            /// Return a string representation of this
-            std::string toString();
+              friend class DFSTree;
+              /// Constructor.
+              EdgeGrowth ( NodeId a_u, LabelData* an_edge, LabelData* a_l_v, NodeId a_v = 0 );
+              /// Copy constructor.
+              EdgeGrowth ( const EdgeGrowth& from );
+              /// Destructor.
+              ~EdgeGrowth();
+              /// The NodeId of the node from which we grow an edge.
+              NodeId u;
+              /// Returns the number of matches in the interface graph
+              /// for this edge growth.
+              //Size count() const;
+              /// The LabelData over the edge of this edge growth.
+              LabelData* edge;
+              /// The LabelData over the node of this edge growth.
+              LabelData* l_v;
+              /// If the growth is backward you must assigned the subscript of v,
+              /// otherwise 0 is assigned (recall that subscripts start from 1)
+              NodeId v;
+              /// Add the pair (u,v) as a match for the current growth.
+              void insert ( Instance* u, Instance* v );
+              /// The mapping between the u and v for each match in the interface graph.
+              Property< std::pair<Instance*, Instance*> >::onNodes matches;
+              /// Return a string representation of this
+              std::string toString();
 
-          private:
-            /// The iso graph for computing the maximum independent set of matches.
-            UndiGraph iso_graph;
-            /// Vector used for computation
-            std::vector<NodeId>* degree_list;
-            /// The max indep set of matches
-            Set<NodeId> max_indep_set;
+            private:
+              /// The iso graph for computing the maximum independent set of matches.
+              UndiGraph iso_graph;
+              /// Vector used for computation
+              std::vector<NodeId>* degree_list;
+              /// The max indep set of matches
+              Set<NodeId> max_indep_set;
           };
 
           /**
@@ -200,6 +200,7 @@ namespace gum {
            *
            * @param p The Pattern from which a one edge growth is spawned.
            * @param edge_growth The data about the edge growth of p.
+           * @param min_freq minimum number of occurrence to be used as a pattern
            *
            * @throw FatalError Raised if the grow is an illegal backedge growth.
            * @throw OperationNotAllowed Raised if the grow is found to be not minimal.
@@ -251,32 +252,25 @@ namespace gum {
           /**
            * @brief Returns the maximal independent set of p isomorphism graph.
            *
-           * @pram p The pattern for which we want its maximal independent set.
+           * @param p The pattern for which we want its maximal independent set.
            *
            * @throw NotFound Raised if p is not a node in this DFSTree.
            */
           Set<NodeId>& max_indep_set ( const Pattern& p );
 
-          // /**
-          //  * Returns the sub_patterns member of the PatternData associated to p.
-          //  * @param p A Pattern.
-          //  * @return the sub_patterns member of the PatternData associated to p.
-          //  */
-          // Sequence< HashTable<ClassElement*, Size>* >& sub_patterns(const Pattern& p);
-
-          // /**
-          //  * Returns the sub_patterns_map member of the PatternData associated to p.
-          //  * @param p A Pattern.
-          //  * @return the sub_patterns_map member of the PatternData associated to p.
-          //  */
-          // HashTable<NodeId, Idx>& sub_patterns_map(const Pattern& p);
-
           /// Returns the frequency of p respecting it's maximal independent set.
+          /// @param p The pattern
           double frequency ( const Pattern& p ) const;
 
+          /// @param p The pattern
           PatternData& data ( const Pattern& p );
+          /// @param p The pattern
           const PatternData& data ( const Pattern& p ) const;
+
+          /// strategy getter
           SearchStrategy& strategy();
+          
+          /// strategy getter
           const SearchStrategy& strategy() const;
 
           /// @class NeighborDegreeSort DFSTree.h <agrum/prm/gspan/DFSTree.h>
@@ -360,13 +354,13 @@ namespace gum {
           SearchStrategy();
 
           /// Copy constructor.
-          SearchStrategy(const SearchStrategy& from);
+          SearchStrategy ( const SearchStrategy& from );
 
           /// Destructor.
           virtual ~SearchStrategy();
 
           /// Copy operator.
-          SearchStrategy& operator=(const SearchStrategy& from);
+          SearchStrategy& operator= ( const SearchStrategy& from );
 
           /// @}
           // =========================================================================
@@ -376,11 +370,11 @@ namespace gum {
 
           void setTree ( DFSTree* tree );
 
-          virtual bool accept_root (const Pattern* r) =0;
+          virtual bool accept_root ( const Pattern* r ) =0;
 
-          virtual bool accept_growth (const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth ) = 0;
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const DFSTree::EdgeGrowth& growth ) = 0;
 
           virtual bool operator() ( LabelData* i, LabelData* j ) = 0;
           virtual bool operator() ( Pattern* i, Pattern* j ) = 0;
@@ -388,7 +382,7 @@ namespace gum {
 
         protected:
           DFSTree* _tree;
-          double _computeCost(const Pattern& p);
+          double _computeCost ( const Pattern& p );
       };
 
       /**
@@ -411,13 +405,13 @@ namespace gum {
           FrequenceSearch ( Size freq );
 
           /// Copy constructor.
-          FrequenceSearch(const FrequenceSearch& from);
+          FrequenceSearch ( const FrequenceSearch& from );
 
           /// Destructor.
           virtual ~FrequenceSearch();
 
           /// Copy operator.
-          FrequenceSearch& operator=(const FrequenceSearch& from);
+          FrequenceSearch& operator= ( const FrequenceSearch& from );
 
           /// @}
           // =========================================================================
@@ -425,7 +419,7 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          virtual bool accept_root (const Pattern* r);
+          virtual bool accept_root ( const Pattern* r );
 
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
@@ -458,16 +452,16 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          StrictSearch(Size freq = 2);
+          StrictSearch ( Size freq = 2 );
 
           /// Copy constructor.
-          StrictSearch(const StrictSearch& from);
+          StrictSearch ( const StrictSearch& from );
 
           /// Destructor.
           virtual ~StrictSearch();
 
           /// Copy operator.
-          StrictSearch& operator=(const StrictSearch& from);
+          StrictSearch& operator= ( const StrictSearch& from );
 
           /// @}
           // =========================================================================
@@ -475,7 +469,7 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          virtual bool accept_root (const Pattern* r);
+          virtual bool accept_root ( const Pattern* r );
 
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
@@ -487,9 +481,9 @@ namespace gum {
 
         private:
           Size __freq;
-          double  __inner_cost(const Pattern* p);
-          double  __outer_cost(const Pattern* p);
-          void __compute_costs(const Pattern* p);
+          double  __inner_cost ( const Pattern* p );
+          double  __outer_cost ( const Pattern* p );
+          void __compute_costs ( const Pattern* p );
           HashTable<const Pattern*, std::pair<double , double > > __map;
           /// Private structure to represent data about a pattern.
           struct PData {
@@ -509,11 +503,11 @@ namespace gum {
             NodeSet outputs;
           };
           std::string __dot;
-          std::string __str(const Instance* i, const Attribute* a) const;
-          std::string __str(const Instance* i, const Attribute& a) const;
-          std::string __str(const Instance* i, const SlotChain& a) const;
-          void __buildPatternGraph(StrictSearch::PData& data, Set<Potential<prm_float>*>& pool, const Sequence<Instance*>& match);
-          std::pair<Size, Size> __elimination_cost(StrictSearch::PData& data, Set<Potential<prm_float>*>& pool);
+          std::string __str ( const Instance* i, const Attribute* a ) const;
+          std::string __str ( const Instance* i, const Attribute& a ) const;
+          std::string __str ( const Instance* i, const SlotChain& a ) const;
+          void __buildPatternGraph ( StrictSearch::PData& data, Set<Potential<prm_float>*>& pool, const Sequence<Instance*>& match );
+          std::pair<Size, Size> __elimination_cost ( StrictSearch::PData& data, Set<Potential<prm_float>*>& pool );
       };
 
       /**
@@ -534,13 +528,13 @@ namespace gum {
           TreeWidthSearch();
 
           /// Copy constructor.
-          TreeWidthSearch(const TreeWidthSearch& from);
+          TreeWidthSearch ( const TreeWidthSearch& from );
 
           /// Destructor.
           virtual ~TreeWidthSearch();
 
           /// Copy operator.
-          TreeWidthSearch& operator=(const TreeWidthSearch& from);
+          TreeWidthSearch& operator= ( const TreeWidthSearch& from );
 
           /// @}
           // =========================================================================
@@ -550,7 +544,7 @@ namespace gum {
 
           double cost ( const Pattern& p );
 
-          virtual bool accept_root (const Pattern* r);
+          virtual bool accept_root ( const Pattern* r );
 
           virtual bool accept_growth ( const Pattern* parent,
                                        const Pattern* child,
@@ -575,4 +569,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_DFS_TREE_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

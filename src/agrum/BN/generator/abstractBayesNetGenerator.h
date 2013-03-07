@@ -48,11 +48,10 @@ namespace gum {
    *
    * This class is the abstract class for randomly generating a bayesian network given three parameters:
    * the number of nodes the wanted maximum number of arcs and the maximum number of modality for each node.
-   * @WARNING  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
   template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-
   class AbstractBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {
 
     public:
@@ -67,10 +66,8 @@ namespace gum {
        * @param maxArcs The number of maximum number of arcs imposed on the generator
        * @param maxModality Each DRV has from 2 to maxModality modalities
        * @throws OperationNotAllowed if the number of maximum arcs does not allow the generation of a connexe graph maxArcs < nbrNodes -1, is too big maxArcs > nbrNodes *(nbrNodes -1) /2 and if the maximum of modality is lower than 2.
-       *
        */
-
-      AbstractBayesNetGenerator ( Size nbrNodes, Size MaxArcs, Size maxModality );
+      AbstractBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality );
 
       /**
        * Destructor.

@@ -60,7 +60,7 @@ namespace gum {
                "No copy for Potential : how to choose the implementation ?" );
   }
 
-  /// complex copy constructor : we choose the implementation
+  // complex copy constructor : we choose the implementation
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
                                 const MultiDimContainer<GUM_SCALAR>& src ) :

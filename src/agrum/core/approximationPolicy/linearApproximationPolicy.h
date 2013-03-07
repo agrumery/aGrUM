@@ -286,7 +286,7 @@ namespace gum {
 	
       };
 
-      /// Convert value to his approximation. This method is slower than @fromExact since it verifies the bounds
+      /// Convert value to his approximation. This method is slower than @ref fromExact since it verifies the bounds
       /// @throw OutOfLowerBound and OutOfUpperBound
       INLINE GUM_SCALAR safeFromExact( const GUM_SCALAR & value ) {
         if ( value > this->_highLimit ) {
@@ -302,7 +302,7 @@ namespace gum {
 
 
       /// Convert value to approximation representation
-      /// @thrhow OutOfLowerBound,OutOfUpperBound
+      /// @throw OutOfLowerBound,OutOfUpperBound
       INLINE Idx encode( const GUM_SCALAR& value ) const {
 // we keep the bounds checked in debug mode
 #ifndef NDEBUG

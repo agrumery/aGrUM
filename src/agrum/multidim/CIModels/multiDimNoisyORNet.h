@@ -59,8 +59,10 @@ namespace gum {
     MultiDimNoisyORNet( const MultiDimNoisyORNet<GUM_SCALAR>& from );
 
     // ============================================================================
-    /// Copy constructor using a bijection to swap variables from source.
-    /// @param bij First variables are new variables, seconds are in from.
+    /** Copy constructor using a bijection to swap variables from source.
+    * @param bij First variables are new variables, seconds are in from.
+    * @param from the copied instance
+    */
     // ============================================================================
     MultiDimNoisyORNet( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                         const MultiDimNoisyORNet<GUM_SCALAR>& from );

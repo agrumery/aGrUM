@@ -135,7 +135,7 @@ namespace gum {
       /** Mutual information between X and Y
       * @see http://en.wikipedia.org/wiki/Mutual_information
       *
-      * @warning Due to limitation of @joint, may not be able to compute this value
+      * @warning Due to limitation of @ref joint, may not be able to compute this value
       * @throw OperationNotAllowed in these cases
       */
       GUM_SCALAR I ( NodeId X,NodeId Y );
@@ -143,7 +143,7 @@ namespace gum {
       /** Variation of information between X and Y
       * @see http://en.wikipedia.org/wiki/Variation_of_information
       *
-      * @warning Due to limitation of @joint, may not be able to compute this value
+      * @warning Due to limitation of @ref joint, may not be able to compute this value
       * @throw OperationNotAllowed in these cases
       */
       GUM_SCALAR VI ( NodeId X,NodeId Y );

@@ -70,9 +70,6 @@ class GSpan {
      * Default constructor.
      * @param prm The PRM used by this class.
      * @param sys The System on which this class searches for patterns.
-     * @param min_freq The minimal frequency value used by this class.
-     * @param depth_stop The maximal depth of the gspan::DFSTree used by
-     *                   this class.
      * @param strategy The search strategy used for pattern mining, the
      *                 default strategy is gspan::FrequenceSearch.
      */

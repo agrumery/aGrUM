@@ -33,135 +33,136 @@
 #ifndef GUM_CLASS_BAYESNET_H
 #define GUM_CLASS_BAYESNET_H
 namespace gum {
-namespace prm {
-
-/**
- * @class ClassBayesNet classBayesNet.h <agrum/prm/classBayesNet.h>
- * @brief This class decorates a gum::prm::Class has an AbstractBayesNet.
- *
- * This class filters Attribute and Aggregate in a way it can be interpreted as
- * a BayesNet. SlotChains and ReferenceSlot are not represented.
- *
- * Remember that a ClassBayesNet does not contain input nodes parents and
- * output nodes children. Thus you should be careful when using one of the
- * BayesNetInference over a ClassBayesNet since some variables are missing in
- * the DAG but not in the nodes CPT.
- */
-class ClassBayesNet: public AbstractBayesNet<prm_float> {
-  public:
-  // ========================================================================
-  /// @name Constructors & destructor.
-  // ========================================================================
-    /// @{
-
-    /// Default constructor.
-    /// @param c The Class decorated by this ClassBayesNet.
-    ClassBayesNet(const Class& c);
-
-    /// Copy constructor.
-    ClassBayesNet(const ClassBayesNet& from);
-
-    /// Copy operator.
-    ClassBayesNet& operator=(const ClassBayesNet& from);
-
-    /// Destructor.
-    virtual ~ClassBayesNet();
-
-    /// @}
-  // ===========================================================================
-  /// @name Variable manipulation methods.
-  // ===========================================================================
-    /// @{
+  namespace prm {
 
     /**
-     * @brief Returns the CPT of a node in this ClassBayesNet.
+     * @class ClassBayesNet classBayesNet.h <agrum/prm/classBayesNet.h>
+     * @brief This class decorates a gum::prm::Class has an AbstractBayesNet.
      *
-     * If the node is an Aggregate, this will raise an OperationNotAllowed
-     * since Aggregate's CPT are define at instantiation only.
+     * This class filters Attribute and Aggregate in a way it can be interpreted as
+     * a BayesNet. SlotChains and ReferenceSlot are not represented.
      *
-     * @param varId a variable id.
-     * @return the Potential of varId.
-     *
-     * @throw NotFound raised if varId does not match any variable in this
-     *                 BayesNet.
-     * @throw OperationNotAllowed raised if varId is an Aggregate.
+     * Remember that a ClassBayesNet does not contain input nodes parents and
+     * output nodes children. Thus you should be careful when using one of the
+     * BayesNetInference over a ClassBayesNet since some variables are missing in
+     * the DAG but not in the nodes CPT.
      */
-    virtual const Potential<prm_float>& cpt( NodeId varId ) const;
+    class ClassBayesNet: public AbstractBayesNet<prm_float> {
+      public:
+        // ========================================================================
+        /// @name Constructors & destructor.
+        // ========================================================================
+        /// @{
 
-    /// See gum::AbstractBayesNet::dag().
-    virtual const DAG& dag() const;
+        /// Default constructor.
+        /// @param c The Class decorated by this ClassBayesNet.
+        ClassBayesNet ( const Class& c );
 
-    /// See gum::AbstractBayesNet::variableNodeMap().
-    virtual const VariableNodeMap& variableNodeMap() const;
+        /// Copy constructor.
+        ClassBayesNet ( const ClassBayesNet& from );
 
-    /// See gum::AbstractBayesNet::size().
-    virtual Idx size() const;
+        /// Copy operator.
+        ClassBayesNet& operator= ( const ClassBayesNet& from );
 
-    /// See gum::AbstractBayesNet::empty().
-    virtual bool empty() const;
+        /// Destructor.
+        virtual ~ClassBayesNet();
 
-    /// See gum::AbstractBayesNet::variable().
-    virtual const DiscreteVariable& variable( NodeId id ) const;
+        /// @}
+        // ===========================================================================
+        /// @name Variable manipulation methods.
+        // ===========================================================================
+        /// @{
 
-    /// See gum::AbstractBayesNet::nodeId().
-    virtual NodeId nodeId( const DiscreteVariable &var ) const;
+        /**
+         * @brief Returns the CPT of a node in this ClassBayesNet.
+         *
+         * If the node is an Aggregate, this will raise an OperationNotAllowed
+         * since Aggregate's CPT are define at instantiation only.
+         *
+         * @param varId a variable id.
+         * @return the Potential of varId.
+         *
+         * @throw NotFound raised if varId does not match any variable in this
+         *                 BayesNet.
+         * @throw OperationNotAllowed raised if varId is an Aggregate.
+         */
+        virtual const Potential<prm_float>& cpt ( NodeId varId ) const;
 
-    /// See gum::AbstractBayesNet::idFromName().
-    virtual NodeId idFromName( const std::string& name ) const;
+        /// See gum::AbstractBayesNet::dag().
+        virtual const DAG& dag() const;
 
-    /// See gum::AbstractBayesNet::variableFromName().
-    virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+        /// See gum::AbstractBayesNet::variableNodeMap().
+        virtual const VariableNodeMap& variableNodeMap() const;
 
-    const Property<unsigned int>::onNodes& modalities() const;
+        /// See gum::AbstractBayesNet::size().
+        virtual Idx size() const;
 
-    /// @}
-  // ===========================================================================
-  /// @name Graphical methods
-  // ===========================================================================
-    /// @{
+        /// See gum::AbstractBayesNet::empty().
+        virtual bool empty() const;
 
-    /// See gum::AbstractBayesNet::moralGraph().
-    virtual const UndiGraph& moralGraph( bool clear = true ) const;
+        /// See gum::AbstractBayesNet::variable().
+        virtual const DiscreteVariable& variable ( NodeId id ) const;
 
-    /// See gum::AbstractBayesNet::topologicalOrder().
-    virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
+        /// See gum::AbstractBayesNet::nodeId().
+        virtual NodeId nodeId ( const DiscreteVariable &var ) const;
 
-    /// @return Returns a dot representation of this BayesNet.
-    virtual std::string toDot() const;
+        /// See gum::AbstractBayesNet::idFromName().
+        virtual NodeId idFromName ( const std::string& name ) const;
 
-    /// @}
-  private:
-    /// Mapping between DiscreteVariable and their NodeId
-    HashTable<const DiscreteVariable*, const ClassElement*> __varNodeMap;
+        /// See gum::AbstractBayesNet::variableFromName().
+        virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
 
-    /// Private getter with type checking in case the id is not a formal Attribute.
-    /// @throw NotFound Raised if id is not a formal attribute.
-    const ClassElement& __get(NodeId id) const;
+        /// See gum::AbstractBayesNet::modalities().
+        const Property<unsigned int>::onNodes& modalities() const;
 
-    /// Private getter with type checking in case the id is not a formal Attribute.
-    /// @throw NotFound Raised if id is not a formal attribute.
-    const ClassElement& __get(const std::string& name) const;
+        /// @}
+        // ===========================================================================
+        /// @name Graphical methods
+        // ===========================================================================
+        /// @{
 
-    /// The ClassElementContainer decorated by this.
-    const Class* __class;
+        /// See gum::AbstractBayesNet::moralGraph().
+        virtual const UndiGraph& moralGraph ( bool clear = true ) const;
 
-    /// The Dag of a ClassBayesNet is a subgraph of __class->dag() containing only
-    /// Attribute and Aggregate.
-    DAG __dag;
+        /// See gum::AbstractBayesNet::topologicalOrder().
+        virtual const Sequence<NodeId>& topologicalOrder ( bool clear = true ) const;
 
-    /// ClassBayesNet are a read-only structure, no need to update the moral graph.
-    mutable UndiGraph* __moralGraph;
+        /// @return Returns a dot representation of this BayesNet.
+        virtual std::string toDot() const;
 
-    mutable Property<unsigned int>::onNodes __modalities;
+        /// @}
+      private:
+        /// Mapping between DiscreteVariable and their NodeId
+        HashTable<const DiscreteVariable*, const ClassElement*> __varNodeMap;
 
-    /// ClassBayesNet are a read-only structure, no need to update the
-    /// topological order.
-    mutable Sequence<NodeId>* __topo;
+        /// Private getter with type checking in case the id is not a formal Attribute.
+        /// @throw NotFound Raised if id is not a formal attribute.
+        const ClassElement& __get ( NodeId id ) const;
 
-    void __init(const Class& c);
-};
+        /// Private getter with type checking in case the id is not a formal Attribute.
+        /// @throw NotFound Raised if id is not a formal attribute.
+        const ClassElement& __get ( const std::string& name ) const;
 
-} /* namespace prm */
+        /// The ClassElementContainer decorated by this.
+        const Class* __class;
+
+        /// The Dag of a ClassBayesNet is a subgraph of __class->dag() containing only
+        /// Attribute and Aggregate.
+        DAG __dag;
+
+        /// ClassBayesNet are a read-only structure, no need to update the moral graph.
+        mutable UndiGraph* __moralGraph;
+
+        mutable Property<unsigned int>::onNodes __modalities;
+
+        /// ClassBayesNet are a read-only structure, no need to update the
+        /// topological order.
+        mutable Sequence<NodeId>* __topo;
+
+        void __init ( const Class& c );
+    };
+
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/classBayesNet.inl>

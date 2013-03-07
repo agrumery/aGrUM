@@ -32,90 +32,90 @@
 #ifndef GUM_PRM_GENERATOR_H
 #define GUM_PRM_GENERATOR_H
 namespace gum {
-namespace prm {
+  namespace prm {
 
-/**
- * @class nameGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
- * @brief This is a name generator for classes, types, systems, instances and
- *        class elements.
- *
- * The generation simply use an unsigned int starting at 1 and increasing for
- * each new name. Different numbers are used for each different type of
- * PRMObject.
- */
-class NameGenerator {
-  public:
-    // ========================================================================
-    /// @name Constructors and destructor.
-    // ========================================================================
-    /// @{
+    /**
+     * @class NameGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
+     * @brief This is a name generator for classes, types, systems, instances and
+     *        class elements.
+     *
+     * The generation simply use an unsigned int starting at 1 and increasing for
+     * each new name. Different numbers are used for each different type of
+     * PRMObject.
+     */
+    class NameGenerator {
+      public:
+        // ========================================================================
+        /// @name Constructors and destructor.
+        // ========================================================================
+        /// @{
 
-    /// Default constructor.
-    NameGenerator();
-    /// Copy constructor.
-    NameGenerator(const NameGenerator& source);
-    /// Destructor.
-    virtual ~NameGenerator();
-    /// Affectation operator
-    NameGenerator& operator=(const NameGenerator& source);
+        /// Default constructor.
+        NameGenerator();
+        /// Copy constructor.
+        NameGenerator ( const NameGenerator& source );
+        /// Destructor.
+        virtual ~NameGenerator();
+        /// Affectation operator
+        NameGenerator& operator= ( const NameGenerator& source );
 
-    /// @}
-    // ========================================================================
-    /// Getters and setters.
-    // ========================================================================
-    /// @{
+        /// @}
+        // ========================================================================
+        /// Getters and setters.
+        // ========================================================================
+        /// @{
 
-    /// Returns the next name w.r.t. the given ObjectType.
-    std::string nextName(PRMObject::ObjectType type);
+        /// Returns the next name w.r.t. the given ObjectType.
+        std::string nextName ( PRMObject::ObjectType type );
 
-    /// @}
-  private:
-    /// The vector of counters.
-    std::vector<unsigned int> __counters;
-};
+        /// @}
+      private:
+        /// The vector of counters.
+        std::vector<unsigned int> __counters;
+    };
 
-/**
- * @class PRMGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
- * @brief This class is the base class to all PRM generators.
- *
- * @ingroup prm_group
- */
-class PRMGenerator {
-  public:
-    // ========================================================================
-    /// @name Constructors and destructor.
-    // ========================================================================
-    /// @{
+    /**
+     * @class PRMGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
+     * @brief This class is the base class to all PRM generators.
+     *
+     * @ingroup prm_group
+     */
+    class PRMGenerator {
+      public:
+        // ========================================================================
+        /// @name Constructors and destructor.
+        // ========================================================================
+        /// @{
 
-    /// Default constructor.
-    PRMGenerator();
-    /// Copy constructor.
-    PRMGenerator(const PRMGenerator& source);
-    /// Destructor.
-    virtual ~PRMGenerator();
+        /// Default constructor.
+        PRMGenerator();
+        /// Copy constructor.
+        PRMGenerator ( const PRMGenerator& source );
+        /// Destructor.
+        virtual ~PRMGenerator();
 
-    /// @}
-    // ========================================================================
-    /// Getters and setters.
-    // ========================================================================
-    /// @{
+        /// @}
+        // ========================================================================
+        /// Getters and setters.
+        // ========================================================================
+        /// @{
 
-    /// Defines the NameGenerator used by this generator.
-    void setNameGenerator(const NameGenerator& name_gen);
+        /// Defines the NameGenerator used by this generator.
+        void setNameGenerator ( const NameGenerator& name_gen );
 
-    /// Returns the NameGenerator used by this generator.
-    const NameGenerator& getNameGenerator() const;
+        /// Returns the NameGenerator used by this generator.
+        const NameGenerator& getNameGenerator() const;
 
-    /// Proceeds with the generation of the PRM.
-    virtual PRM* generate() =0;
+        /// Proceeds with the generation of the PRM.
+        virtual PRM* generate() =0;
 
-    /// @}
-  protected:
-    /// The name generator used by this class.
-    NameGenerator _name_gen;
-};
+        /// @}
+      protected:
+        /// The name generator used by this class.
+        NameGenerator _name_gen;
+    };
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/generator/PRMGenerator.inl>
