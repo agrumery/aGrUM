@@ -5,7 +5,9 @@
 #include <agrum/CN/MCSampling.h>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
+
 #include <cxxtest/AgrumTestSuite.h>
 
 #define xstrfy(s) strfy(s)
@@ -14,6 +16,7 @@
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
 namespace gum_tests {
+  using namespace gum;
   ////////////////////////////////////////////////////////////////////
   class MCSamplingListener : public gum::ApproximationSchemeListener {
     private :
@@ -87,6 +90,8 @@ namespace gum_tests {
 
       // not dynamic (2U network) - with evidence
       void testMCSamplingInference () {
+        tearDown();
+        setUp();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
         
         // evidence from file
@@ -156,8 +161,12 @@ namespace gum_tests {
         }
       } // end of : testMCSamplingInference (2U network)
 
-      // dynamic (dynaCheese)
-      void testMCSamplingInferenceD () {
+      // dynamic (dynaCheese) - strong indep
+      void testMCSamplingInferenceDStrong () {
+        tearDown();
+        setUpD();
+        typedef std::vector< double > exp;
+
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
         
         //////////////////////////////////////////////////////
@@ -189,8 +198,8 @@ namespace gum_tests {
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            std::vector< double > inf ( mcs.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( mcs.marginalMax ( *node_idIt ) );
+            exp inf ( mcs.marginalMin ( *node_idIt ) );
+            exp sup ( mcs.marginalMax ( *node_idIt ) );
             double e_inf = mcs.expectationMin ( *node_idIt );
             double e_sup = mcs.expectationMax ( *node_idIt );
           }
@@ -204,7 +213,6 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
-        typename std::vector< double > exp;
         try {
           exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
           exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
@@ -215,13 +223,21 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-        
 
         try {
           mcs.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
+      } // end of : testMCSamplingInferenceDStrong
+
+      // dynamic (dynaCheese) - repetitive indep
+      void testMCSamplingInferenceDRep () {
+        tearDown();
+        setUpD();
+        typedef std::vector< double > exp;
+
+        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // repetitive independence
@@ -248,12 +264,13 @@ namespace gum_tests {
           mcs.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
+          GUM_SHOWERROR(e);
         }
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            std::vector< double > inf ( mcs.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( mcs.marginalMax ( *node_idIt ) );
+            exp inf ( mcs.marginalMin ( *node_idIt ) );
+            exp sup ( mcs.marginalMax ( *node_idIt ) );
             double e_inf = mcs.expectationMin ( *node_idIt );
             double e_sup = mcs.expectationMax ( *node_idIt );
           }
@@ -267,7 +284,6 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
-        typename std::vector< double > exp;
         try {
           exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
           exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
@@ -278,13 +294,21 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-      } // end of : testMCSamplingInferenceD (dynamic - dynacheese)
+
+        try {
+          mcs.eraseAllEvidence ();
+        } catch ( gum::Exception & e ) {
+          TS_ASSERT ( false );
+        }
+      } // end of : testMCSamplingInferenceDRep (dynamic - dynacheese)
 
 
       void testMCSamplingListener () {
+        tearDown();
+        setUp();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
         
-        mcs.setRepetitive ( false );
+        mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
 
         MCSamplingListener mcl ( mcs );
