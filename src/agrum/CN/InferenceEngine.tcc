@@ -397,7 +397,7 @@ namespace gum {
     }
 
     for ( typename gum::Property< std::vector< GUM_SCALAR > >::onNodes::const_iterator it = _marginalMin.begin(); it != _marginalMin.end(); ++it ) {
-      for ( int mod = 0; mod < it->size(); mod++ ) {
+      for ( Size mod = 0; mod < it->size(); mod++ ) {
         m_stream << _credalNet->current_bn().variable ( it.key() ).name() << " " << mod << " " << ( *it ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
       }
     }
@@ -492,6 +492,46 @@ namespace gum {
     m_stream.close();
   }
 
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::_verticesFusion() {
+  }
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::_expFusion() {
+    // don't create threads if there are no modalities to compute expectations
+    if ( this->_modal.empty() )
+      return;
+
+    #pragma omp parallel
+    {
+      unsigned int threadId = omp_get_thread_num();
+
+      if ( ! this->_l_modal[threadId].empty() ) {
+        #pragma omp for
+        for ( Size i = 0; i < this->_workingSet[threadId]->size(); i++ ) {
+          std::string var_name, time_step;
+          size_t delim;
+
+          var_name = this->_workingSet[threadId]->variable ( i ).name();
+          delim = var_name.find_first_of ( "_" );
+          time_step = var_name.substr ( delim + 1, var_name.size() );
+          var_name = var_name.substr ( 0, delim );
+
+          if ( this->_l_modal[threadId].find(var_name) == this->_l_modal[threadId].end() )
+            continue;
+
+          for ( Size tId = 0; tId < this->_l_expectationMax.size(); tId++ ) {
+            if( this->_l_expectationMax[tId][i] > this->_expectationMax[i] )
+              this->_expectationMax[i] = this->_l_expectationMax[tId][i];
+            if( this->_l_expectationMin[tId][i] < this->_expectationMin[i] )
+              this->_expectationMin[i] = this->_l_expectationMin[tId][i];
+          } // end of : each thread
+        } // end of : each variable
+      } // end of : if modals not empty
+
+    } // end of : parallel region
+  }
+
 
   template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::_initThreadsData( const unsigned int & num_threads, const bool __storeVertices ) {
@@ -515,27 +555,132 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
+  inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::_computeEpsilon() {
+    GUM_SCALAR eps = 0;
+    #pragma omp parallel
+    {
+      GUM_SCALAR tEps = 0;
+      GUM_SCALAR delta;
+
+      unsigned int dSize;
+      unsigned int tId = omp_get_thread_num();
+      #pragma omp for
+      for ( Size i = 0; i < this->_workingSet[tId]->size(); i++ ) {
+        dSize = this->_l_marginalMin[tId][i].size();
+        for ( Size j = 0; j < dSize; j++ ) {
+          // on min
+          delta = this->_marginalMin[i][j] - this->_oldMarginalMin[i][j];
+          delta = ( delta < 0 ) ? ( - delta ) : delta;
+          tEps = ( tEps < delta ) ? delta : tEps;
+
+          // on max
+          delta = this->_marginalMax[i][j] - this->_oldMarginalMax[i][j];
+          delta = ( delta < 0 ) ? ( - delta ) : delta;
+          tEps = ( tEps < delta ) ? delta : tEps;
+
+          this->_oldMarginalMin[i][j] = this->_marginalMin[i][j];
+          this->_oldMarginalMax[i][j] = this->_marginalMax[i][j];
+        }
+      } // end of : all variables
+
+      #pragma omp critical(epsilon_max)
+      {
+        #pragma omp flush(eps)
+        eps = ( eps < tEps ) ? tEps : eps;
+      }
+
+    } // end of : parallel region
+    return eps;
+  }
+
+
+  template< typename GUM_SCALAR >
+  inline void InferenceEngine< GUM_SCALAR >::_updateMarginals() {
+    #pragma omp parallel
+    {
+      unsigned int dSize;
+      unsigned int threadId = omp_get_thread_num();
+      #pragma omp for
+      for ( Size i = 0; i < this->_workingSet[threadId]->size(); i++ ) {
+        dSize = this->_l_marginalMin[threadId][i].size();
+        for ( Size j = 0; j < dSize; j++ ) {
+          // go through all threads
+          for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
+            if ( this->_l_marginalMin[tId][i][j] < this->_marginalMin[i][j] )
+              this->_marginalMin[i][j] = this->_l_marginalMin[tId][i][j];
+            if ( this->_l_marginalMax[tId][i][j] > this->_marginalMax[i][j] )
+              this->_marginalMax[i][j] = this->_l_marginalMax[tId][i][j];
+          } // end of : all threads
+          
+          // update them
+          for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
+            //if ( this->_l_marginalMin[tId][i][j] > this->_marginalMin[i][j] )
+              this->_l_marginalMin[tId][i][j] = this->_marginalMin[i][j];
+            //if ( this->_l_marginalMax[tId][i][j] < this->_oldMarginalMax[i][j] )
+              this->_l_marginalMax[tId][i][j] = this->_marginalMax[i][j];
+          } // end of : all threads
+          
+        } // end of : all modalities
+      } // end of : all variables
+    } // end of : parallel region
+
+  }
+
+
+  template< typename GUM_SCALAR >
+  inline void InferenceEngine< GUM_SCALAR >::_updateOldMarginals() {
+    #pragma omp parallel
+    {
+      unsigned int dSize;
+      unsigned int threadId = omp_get_thread_num();
+      #pragma omp for
+      for ( Size i = 0; i < this->_workingSet[threadId]->size(); i++ ) {
+        dSize = this->_l_marginalMin[threadId][i].size();
+        for ( Size j = 0; j < dSize; j++ ) {
+          // go through all threads
+          for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
+            if ( this->_l_marginalMin[tId][i][j] < this->_oldMarginalMin[i][j] )
+              this->_oldMarginalMin[i][j] = this->_l_marginalMin[tId][i][j];
+            if ( this->_l_marginalMax[tId][i][j] > this->_oldMarginalMax[i][j] )
+              this->_oldMarginalMax[i][j] = this->_l_marginalMax[tId][i][j];
+          } // end of : all threads
+          
+          // update them
+          for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
+            //if ( this->_l_marginalMin[tId][i][j] > this->_oldMarginalMin[i][j] )
+              this->_l_marginalMin[tId][i][j] = this->_oldMarginalMin[i][j];
+            //if ( this->_l_marginalMax[tId][i][j] < this->_oldMarginalMax[i][j] )
+              this->_l_marginalMax[tId][i][j] = this->_oldMarginalMax[i][j];
+          } // end of : all threads
+          
+        } // end of : all modalities
+      } // end of : all variables
+    } // end of : parallel region
+
+  }
+
+  template< typename GUM_SCALAR >
   inline void InferenceEngine< GUM_SCALAR >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices ) {
-    int this_thread = omp_get_thread_num();
+    unsigned int tId = omp_get_thread_num();
     // save E(X)
-    if( ! this->_l_modal[this_thread].empty() ) {
+    if( ! this->_l_modal[tId].empty() ) {
       std::string var_name, time_step;
       size_t delim;
 
-      var_name = this->_workingSet[this_thread]->variable ( id ).name();
+      var_name = this->_workingSet[tId]->variable ( id ).name();
       delim = var_name.find_first_of ( "_" );
       time_step = var_name.substr ( delim + 1, var_name.size() );
       var_name = var_name.substr ( 0, delim );
 
-      if( this->_l_modal[this_thread].find(var_name) != this->_l_modal[this_thread].end() ) {
+      if( this->_l_modal[tId].find(var_name) != this->_l_modal[tId].end() ) {
         GUM_SCALAR exp = 0;
         for ( Size mod = 0; mod < vertex.size(); mod++ )
-          exp += vertex[mod] * this->_l_modal[this_thread][var_name][mod];
+          exp += vertex[mod] * this->_l_modal[tId][var_name][mod];
 
-        if( exp > this->_l_expectationMax[this_thread][id] )
-          this->_l_expectationMax[this_thread][id] = exp;
-        if( exp < this->_l_expectationMin[this_thread][id] )
-          this->_l_expectationMin[this_thread][id] = exp;
+        if( exp > this->_l_expectationMax[tId][id] )
+          this->_l_expectationMax[tId][id] = exp;
+        if( exp < this->_l_expectationMin[tId][id] )
+          this->_l_expectationMin[tId][id] = exp;
       }
     } // end of : if modal (map) not empty
 
@@ -543,18 +688,18 @@ namespace gum {
     bool added = false;
     // for burn in, we need to keep checking on local marginals and not global ones (faster inference)
     for( Size mod = 0; mod < vertex.size(); mod++ ) {
-      if(vertex[mod] <= this->_l_marginalMin[this_thread][id][mod]) {
-        this->_l_marginalMin[this_thread][id][mod] = vertex[mod];
+      if(vertex[mod] <= this->_l_marginalMin[tId][id][mod]) {
+        this->_l_marginalMin[tId][id][mod] = vertex[mod];
         newOne = true;
       }
-      if(vertex[mod] >= this->_l_marginalMax[this_thread][id][mod]) {
-        this->_l_marginalMax[this_thread][id][mod] = vertex[mod];
+      if(vertex[mod] >= this->_l_marginalMax[tId][id][mod]) {
+        this->_l_marginalMax[tId][id][mod] = vertex[mod];
         newOne = true;
       }
       // store point to compute credal set vertices.
       // check for redundancy at each step or at the end ?
       if( __storeVertices && ! added && newOne ) {
-        this->_l_marginalSets[this_thread][id].push_back(vertex);
+        this->_l_marginalSets[tId][id].push_back(vertex);
         added = true;
       }
     }

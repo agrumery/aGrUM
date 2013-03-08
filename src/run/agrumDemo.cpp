@@ -141,7 +141,7 @@ void test_credal() {
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
 
-      MCE->makeInference_v2();
+      MCE->makeInference_v3();
 
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
@@ -171,7 +171,7 @@ void test_credal() {
 
       //MCE.saveVertices("./SMCVr.res");
       //MCE.saveExpectations("./rep.expect");
-      //MCE->eraseAllEvidence();
+      MCE->eraseAllEvidence();
       delete MCE;
       delete myCNa;
     }

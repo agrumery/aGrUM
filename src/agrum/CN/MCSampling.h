@@ -19,15 +19,21 @@ namespace gum {
 
       //typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
       //typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
+      typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
 
       std::vector< gum::NodeId > __varOrder;
       std::vector< std::vector< int > > __varInst;
       int __VERT;
       bool stopN;// = false;
 
-      void __verticesSampling();
-      void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
- 
+      inline void __verticesSampling();
+      inline void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
+      void __mcInitApproximationScheme();
+      void __mcThreadDataCopy();
+      inline void __threadInference();
+      inline void __threadUpdate();
+
+
     protected:
       
     public:
@@ -35,9 +41,10 @@ namespace gum {
       virtual ~MCSampling();
 
       void makeInference();
-
       void makeInference_v2();
-      //void eraseAllEvidence();
+      void makeInference_v3();
+
+      void eraseAllEvidence();
 
       bool getStopType() const;
 

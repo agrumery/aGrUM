@@ -18,6 +18,153 @@ namespace gum {
     GUM_DESTRUCTOR ( MCSampling );
   }
 
+  // TEST single thread dans testSuite
+  template< typename GUM_SCALAR, class BNInferenceEngine >
+  void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference_v3() {
+    if ( __repetitiveInd ) {
+      try {
+        this->_repetitiveInit();
+      } catch ( InvalidArgument & err ) {
+        GUM_SHOWERROR ( err );
+        __repetitiveInd = false;
+      }
+    }
+
+    __mcInitApproximationScheme();
+
+    __mcThreadDataCopy();
+
+    #pragma omp parallel for
+    for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
+      __threadInference();
+      __threadUpdate();
+    } // end of : parallel burnIn
+
+    this->updateApproximationScheme( this->burnIn() );
+
+    this->_updateOldMarginals(); // fusion threads + update old margi
+
+    GUM_SCALAR eps = 1; // to validate testSuite ?
+    this->continueApproximationScheme( eps, false, false );
+    
+    // less overheads with high periodSize
+    do {
+      eps = 0;
+      #pragma omp parallel for
+      for ( Size iter = 0; iter < this->periodSize(); iter++ ) {
+        __threadInference();
+        __threadUpdate();
+      } // end of : parallel periodSize
+
+      this->updateApproximationScheme( this->periodSize() );
+
+      this->_updateMarginals(); // fusion threads + update margi
+
+      eps = this->_computeEpsilon(); // also updates oldMargi
+
+    } while ( this->continueApproximationScheme( eps, false, false ) );
+
+    this->_expFusion();
+
+    if( __storeVertices )
+      this->_verticesFusion();
+
+    if( ! this->_modal.empty() )
+      this->_dynamicExpectations(); // work with any network
+
+    std::cout << this->messageApproximationScheme() << std::endl;
+
+  }
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
+    unsigned int tId = omp_get_thread_num();
+
+    if ( _l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
+      const gum::DAG &tDag = this->_workingSet[tId]->dag();
+      for ( gum::DAG::NodeIterator it = tDag.beginNodes(); it != tDag.endNodes(); ++it ) {
+        const gum::Potential< GUM_SCALAR > & potential( _l_inferenceEngine[tId]->marginal( *it ) );
+        gum::Instantiation ins( potential );
+        std::vector< GUM_SCALAR > vertex;
+
+        for ( ins.setFirst(); !ins.end(); ++ins )
+          vertex.push_back( potential[ins] );
+
+        this->_updateThread( *it, vertex, __storeVertices );
+      } // end of : for all nodes
+    } // end of : if ( p(e) > 0 )
+
+  }
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
+    int tId = omp_get_thread_num();
+    __verticesSampling();
+    _l_inferenceEngine[tId]->eraseAllEvidence();
+    __insertEvidence( *_l_inferenceEngine[tId] );
+    _l_inferenceEngine[tId]->makeInference();
+
+  }
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
+  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
+    this->setMaxTime( __timeLimit );
+    this->setEpsilon( std::numeric_limits< GUM_SCALAR >::min() );
+    /**
+     * VERIFIER d/dt(e(t+1)-e(t))
+     */
+    this->setMinEpsilonRate( std::numeric_limits< GUM_SCALAR >::min() );
+    this->setBurnIn( __iterStop );
+    this->setPeriodSize( __iterStop );
+
+    this->initApproximationScheme();
+  }
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
+  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
+    unsigned int num_threads;
+    #pragma omp parallel
+    {
+      unsigned int this_thread = omp_get_thread_num();
+
+      // implicit wait clause (don't put nowait)
+      #pragma omp single
+      {
+        num_threads = omp_get_num_threads();
+
+        this->_initThreadsData( num_threads, __storeVertices ); // in infEng
+        _l_inferenceEngine.resize( num_threads ); // in MCSampling
+      } // end of : single region
+
+      // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
+      // !!! BNInferenceEngine still needs to be initialized here anyway !!!
+
+      gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
+      #pragma omp critical(BNInit)
+      {
+        *thread_bn = this->_credalNet->current_bn();
+      }
+      this->_workingSet[this_thread] = thread_bn;
+
+      this->_l_marginalMin[this_thread] = this->_marginalMin;
+      this->_l_marginalMax[this_thread] = this->_marginalMax;
+      this->_l_expectationMin[this_thread] = this->_expectationMin;
+      this->_l_expectationMax[this_thread] = this->_expectationMax;
+      this->_l_modal[this_thread] = this->_modal;
+
+      if ( __storeVertices )
+        this->_l_marginalSets[this_thread] = this->_marginalSets;
+
+      gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
+      this->_workingSetE[this_thread] = evi_list;
+
+      BNInferenceEngine * inference_engine = new BNInferenceEngine( * ( this->_workingSet[this_thread] ) );
+      this->_l_inferenceEngine[this_thread] = inference_engine;
+      //BNInferenceEngine inference_engine ( * ( this->_workingSet[this_thread] ) );
+    }
+  }
+
+  // TEST single thread dans testSuite
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference_v2() {
 
@@ -42,17 +189,6 @@ namespace gum {
         __repetitiveInd = false;
       }
     }
-
-    this->setMaxTime( __timeLimit );
-    this->setEpsilon( std::numeric_limits< GUM_SCALAR >::min() );
-    /**
-     * VERIFIER d/dt(e(t+1)-e(t))
-     */
-    this->setMinEpsilonRate( std::numeric_limits< GUM_SCALAR >::min() );
-    this->setBurnIn( __iterStop );
-    this->setPeriodSize( __iterStop );
-
-    this->initApproximationScheme();
 
     unsigned int num_threads;
     bool all_stop = false;
@@ -93,6 +229,23 @@ namespace gum {
       BNInferenceEngine inference_engine ( * ( this->_workingSet[this_thread] ) );
       const gum::DAG &thread_dag = this->_workingSet[this_thread]->dag();
 
+      unsigned int reste = __iterStop % num_threads;
+      if ( reste != 0 ) {
+        __iterStop += reste;
+      }
+
+
+      this->setMaxTime( __timeLimit );
+      this->setEpsilon( std::numeric_limits< GUM_SCALAR >::min() );
+      /**
+       * VERIFIER d/dt(e(t+1)-e(t))
+       */
+      this->setMinEpsilonRate( std::numeric_limits< GUM_SCALAR >::min() );
+      this->setBurnIn( __iterStop );
+      this->setPeriodSize( __iterStop );
+
+      this->initApproximationScheme();
+
       //////////////////// burn in ///////////////////////
 
       do {
@@ -132,6 +285,8 @@ namespace gum {
         // information fusion is useless before end of burn in
         
       } while ( ! this->startOfPeriod() );
+
+      /////////////////////////////////////////////////////////////////////////////////////////////////////// mettre taille burn in
 
       ///////////// thread information fusion /////////////
       //////////////// update _oldMarginal ////////////////
@@ -912,12 +1067,26 @@ namespace gum {
 
   }
 
-  /*
+  
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
     //this->eraseAllEvidence();
-    __marginalSets.clear();
-  }*/
+    this->_l_marginalMin.clear();
+    this->_l_marginalMax.clear();
+    this->_l_expectationMin.clear();
+    this->_l_expectationMax.clear();
+    this->_l_modal.clear();
+    this->_l_marginalSets.clear();
+
+    this->_oldMarginalMin.clear();
+    this->_oldMarginalMax.clear();
+
+    for ( Size bn = 0; bn < this->_workingSet.size(); bn++ ) {
+      delete this->_workingSet[bn];
+      delete this->_workingSetE[bn];
+    }
+
+  }
 
     /*
   template< typename GUM_SCALAR, class BNInferenceEngine >
@@ -977,7 +1146,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
     int this_thread = omp_get_thread_num();
     gum::BayesNet< GUM_SCALAR > * working_bn = this->_workingSet[this_thread];
 
@@ -1153,7 +1322,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( BNInferenceEngine &inference_engine ) { /*const*/
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( BNInferenceEngine &inference_engine ) { /*const*/
     if ( this->_evidence.size() == 0 )
       return;
 

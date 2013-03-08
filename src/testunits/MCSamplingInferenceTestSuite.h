@@ -144,7 +144,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference_v2();
+          mcs.makeInference_v3();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -191,7 +191,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference_v2();
+          mcs.makeInference_v3();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -261,7 +261,7 @@ namespace gum_tests {
         }
         
         try {
-          mcs.makeInference_v2();
+          mcs.makeInference_v3();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
           GUM_SHOWERROR(e);
@@ -324,7 +324,7 @@ namespace gum_tests {
         MCSamplingListener mcl ( mcs );
 
         try {
-          mcs.makeInference_v2();
+          mcs.makeInference_v3();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }

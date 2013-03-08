@@ -65,10 +65,17 @@ namespace gum {
       void _dynamicExpectations();
       void _initExpectations();
 
-      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices );
+      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices ); // called once
 
       // inline stuff ( algorithms are easier to read with those )
       inline void _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices );
+      inline void _updateMarginals();
+      inline const GUM_SCALAR _computeEpsilon();
+
+      void _updateOldMarginals(); // called once only
+      void _expFusion(); // called once
+      void _verticesFusion(); // called ?? not done yet
+
 
     public:
       InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
