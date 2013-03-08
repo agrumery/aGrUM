@@ -53,6 +53,10 @@ clean:
 last:
 	$(ACT)
 
+linuxreleasedoc:
+	$(ACT) release doc -p linux
+	cat build/linux/release/warning.txt
+
 cppcheck:
 	cppcheck src --force --enable=all 2>cppcheck.txt
 	wc -l cppcheck.txt

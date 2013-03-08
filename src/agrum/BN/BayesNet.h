@@ -315,12 +315,14 @@ namespace gum {
       *
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
-      * @return the id of the added variable.
+      * @return the id of the added variable. @{
       */
+      
       NodeId addNoisyOR ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
       NodeId addNoisyORNet ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
       NodeId addNoisyORCompound ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
-
+      /** @} */
+      
       /**
       * Add a variable, it's associate node and a noisyOR implementation. The id of the new
       * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep

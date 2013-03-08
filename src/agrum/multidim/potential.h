@@ -91,7 +91,7 @@ namespace gum {
        * The newly created matrix contains the same variables and the same values as
        * from, but no instantiation is associated to it.
        * @param aContent decorated implementation
-       * @param from the multidimensional matrix we copy into this
+       * @param src the multidimensional matrix we copy into this
        */
       // ============================================================================
       explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent,

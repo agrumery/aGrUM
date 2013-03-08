@@ -134,7 +134,6 @@ namespace gum {
         return __factory.prm();
       }
 
-/// @{
 /// publishing Errors API
       INLINE
       unsigned int SkoolReader::errLine ( unsigned int i ) const {
@@ -190,8 +189,6 @@ namespace gum {
       const ErrorsContainer& SkoolReader::errorsContainer() const {
         return __errors;
       }
-
-/// @}
 
     } /* namespace skool */
   } /* namespace prm */

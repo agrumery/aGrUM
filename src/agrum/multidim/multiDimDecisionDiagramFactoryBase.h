@@ -67,7 +67,7 @@ namespace gum {
 
       /**
        * Destructor.
-       * @warnings : Since getMultiDimDecisionDiagram does a copy of DecisionDiagram
+       * @warning Since getMultiDimDecisionDiagram does a copy of DecisionDiagram
        * deleting this factory will not destroy properties on node of any instantiated DecisionDiagram.
        */
       virtual ~MultiDimDecisionDiagramFactoryBase();
@@ -82,75 +82,81 @@ namespace gum {
       /**
        * Returns the sequence of variables on which is based the diagram construction
        */
-      const Sequence< const DiscreteVariable* >& variablesSequence(  );
+      const Sequence< const DiscreteVariable* >& variablesSequence( );
 
       /**
        * To be done before any insertion of node linked to variable.
        * Specifies the order between variable in the diagram
        *
-       * @param a sequence containing the variable (wich will be the referent )
+       * @param s a sequence containing the variable (wich will be the referent )
        */
-      void setVariablesSequence( Sequence< const DiscreteVariable* > s );
+      void setVariablesSequence ( Sequence< const DiscreteVariable* > s );
 
       // ===========================================================================
       /// @name Nodes manipulation methods.
       // ===========================================================================
       /// @{
-        
-        /** 
-         * Sets root node of decision diagram
-         */
-        void setRootNode( const NodeId nody);
 
-        /**
-         * Adds a variable and its associate non terminal node. The id of the new
-         * variable is automatically generated.
-         *
-         * @param variable The variable added by copy.
-         * @throw OperationNotAllowed if no sequence of variable have yet been specified
-         * @return the id of the added variable.
-         */
-        NodeId addNonTerminalNode( const DiscreteVariable* var );
-        NodeId unsafeAddNonTerminalNode( const DiscreteVariable* var );
+      /**
+       * Sets root node of decision diagram
+       */
+      void setRootNode ( const NodeId nody );
 
+      /**
+       * Adds a variable and its associate non terminal node. The id of the new
+       * variable is automatically generated.
+       *
+       * @param var The variable added by copy.
+       * @throw OperationNotAllowed if no sequence of variable have yet been specified
+       * @return the id of the added variable.
+       */
+      ///@{
+      NodeId addNonTerminalNode ( const DiscreteVariable* var );
+      NodeId unsafeAddNonTerminalNode ( const DiscreteVariable* var );
+      ///@}
 
-        /**
-         * Adds a non-terminal node in the diagram linked to given variable.
-         * Inserts also arc between that node and mentionned node in the given hashtable
-         * @throw OperationNotAllowed if no sequence of variable have yet been specified
-         * Returns the id of that node
-         */
-        NodeId addNonTerminalNodeWithArcs( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
-        NodeId unsafeAddNonTerminalNodeWithArcs( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
-
-
-        /**
-         * Checks if a node with same variable, same sons and same default son does not already exists in diagram
-         * returns a pair constituing of a boolean that indicates if such a node exists, and his nodeid
-         */
-        std::pair<bool, NodeId> checkredundancy( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
-
-
-        /**
-         * Adds a value and it's associate terminal node. The id of the new
-         * variable is automatically generated.
-         *
-         * @param value The value added by copy.
-         * @return the id of the added variable.
-         *
-         * If a terminal node with such value already exists, its value will be return instead.
-         */
-        NodeId addTerminalNode( const GUM_SCALAR& value );
+      /**
+       * Adds a non-terminal node in the diagram linked to given variable.
+       * Inserts also arc between that node and mentionned node in the given hashtable
+       * @param var the variable added by copy
+       * @param nodeArcMap the variables to link
+       * @param defaultArcTo the variable to link by default (optional)
+       * @throw OperationNotAllowed if no sequence of variable have yet been specified
+       * Returns the id of that node
+       */
+      ///@{
+      NodeId addNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+      NodeId unsafeAddNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+      ///@}
 
 
-        /**
-         * Erases a node from the diagram
-         * If no variable matches the id, then nothing is done.
-         *
-         * @param id The id of the variable to erase.
-         * @throw NotFound if node isn't in diagram
-         */
-        void eraseNode( NodeId id );
+      /**
+       * Checks if a node with same variable, same sons and same default son does not already exists in diagram
+       * returns a pair constituing of a boolean that indicates if such a node exists, and his nodeid
+       */
+      std::pair<bool, NodeId> checkredundancy ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+
+
+      /**
+       * Adds a value and it's associate terminal node. The id of the new
+       * variable is automatically generated.
+       *
+       * @param value The value added by copy.
+       * @return the id of the added variable.
+       *
+       * If a terminal node with such value already exists, its value will be return instead.
+       */
+      NodeId addTerminalNode ( const GUM_SCALAR& value );
+
+
+      /**
+       * Erases a node from the diagram
+       * If no variable matches the id, then nothing is done.
+       *
+       * @param id The id of the variable to erase.
+       * @throw NotFound if node isn't in diagram
+       */
+      void eraseNode ( NodeId id );
 
       /// @}
 
@@ -160,117 +166,120 @@ namespace gum {
       /// @{
 
 
-        /**
-         * Adds an arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @param modality the modality on which arc is bind
-         * @throw NotFound If from and/or tail are not in the DD.
-         * @throw InvalidNode if head is a terminal node
-         * @throw OperationNotAllowed if arc doesn't respect variable order property
-         * @throw DuplicateElement if another arc linking those nodes already exists
-         */
-        void insertArc( NodeId from, NodeId to, Idx modality );
-        void unsafeInsertArc( NodeId from, NodeId to, Idx modality );
+      /**
+       * Adds an arc in the DD
+       *
+       * @param from and
+       * @param to as NodeId
+       * @param modality the modality on which arc is bind
+       * @throw NotFound If from and/or tail are not in the DD.
+       * @throw InvalidNode if head is a terminal node
+       * @throw OperationNotAllowed if arc doesn't respect variable order property
+       * @throw DuplicateElement if another arc linking those nodes already exists
+       */
+      ///@{
+      void insertArc ( NodeId from, NodeId to, Idx modality );
+      void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
+      ///@}
+      
+      
+
+      /**
+       * Adds a default arc in the DD
+       *
+       * @param from and
+       * @param to as NodeId
+       * @throw NotFound If from and/or tail are not in the DD.
+       * @throw InvalidNode if head is a terminal node
+       * @throw OperationNotAllowed if arc doesn't respect variable order property
+       * @throw DuplicateElement if another arc linking those nodes already exists
+       */
+      void insertDefaultArc ( NodeId from, NodeId to );
+      void unsafeInsertDefaultArc ( NodeId from, NodeId to );
 
 
-        /**
-         * Adds a default arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @throw NotFound If from and/or tail are not in the DD.
-         * @throw InvalidNode if head is a terminal node
-         * @throw OperationNotAllowed if arc doesn't respect variable order property
-         * @throw DuplicateElement if another arc linking those nodes already exists
-         */
-        void insertDefaultArc( NodeId from, NodeId to );
-        void unsafeInsertDefaultArc( NodeId from, NodeId to );
+      /**
+       * Erases an arc in the DD
+       *
+       * @param from and
+       * @param to as NodeId
+       * @throw InvalidArc If arc does not exist
+       * @warning due to the possibility that several arc with different value have the same from and to,
+       * if several arcs have different value but same parent and child, this method will erase all of them .
+       * If you want to erase a specific one, use eraseSpecificArc
+       */
+      void eraseArc ( NodeId from, NodeId to );
 
 
-        /**
-         * Erases an arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @throw InvalidArc If arc does not exist
-         * @warning due to the possibility that several arc with different value have the same from and to,
-         * if several arcs have different value but same parent and child, this method will erase all of them .
-         * If you want to erase a specific one, use eraseSpecificArc
-         */
-        void eraseArc( NodeId from, NodeId to );
+      /**
+       * Erases an arc in the DD
+       *
+       * @param from and
+       * @param to as NodeId
+       * @param modality the modality corresponding to the to delete arc
+       * @throw InvalidArc If arc does not exist
+       */
+      void eraseSpecificArc ( NodeId from, NodeId to, Idx modality );
 
+      /// @}
 
-        /**
-         * Erases an arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @param modality the modality corresponding to the to delete arc
-         * @throw InvalidArc If arc does not exist
-         */
-        void eraseSpecificArc( NodeId from, NodeId to, Idx modality );
+      // ===========================================================================
+      /// @name Getting methods
+      // ===========================================================================
+      /// @{
 
-    /// @}
-
-    // ===========================================================================
-    /// @name Getting methods
-    // ===========================================================================
-    /// @{
-    
       /**
        * Displays the current DecisionDiagram structure
        */
       void showProperties();
-    
+
       /**
        * Returns the value of associated node if its a terminal one
        * @throw NotFound if it's not a terminal node
        */
-      GUM_SCALAR nodeValue(NodeId node);
-      
+      GUM_SCALAR nodeValue ( NodeId node );
+
       /// @}
 
       /**
        * Returns the multidimDecisionDiagram made
        */
-      virtual MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false ) = 0;
+      virtual MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram ( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false ) = 0;
 
       /**
        * Sets the factory from an already existing diagram
        */
-      void setMultiDimDecisionDiagram( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
+      void setMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
 
       /**
        * Swaps two variables in the build on diagram
        */
-    void swap( const DiscreteVariable* x, const DiscreteVariable* y );
+      void swap ( const DiscreteVariable* x, const DiscreteVariable* y );
 
       /**
        * Resets the factory
        */
       void clear();
-      
+
       /**
        * Puts the factory in a mode where no verification are made on variable
        * ( including arc respecting a variable order )
        * Helpful when diagram is build on stream
        */
       void putOnNoVariableCheckMode();
-      
+
       /**
        * Puts the factory out of no check on variable mode
        */
       void putOffNoVariableCheckMode();
 
     protected :
-      
+
       /**
        * Finds an order of variable compatible to the diagram
        */
       Sequence< const DiscreteVariable* > _findVariableOrder();
-    
+
       /// Boolean precising if we are in check on variable mode or not
       bool _noVariableCheckMode;
 
@@ -297,7 +306,7 @@ namespace gum {
 
       /// Mapping between variable and nodes tied to this var
       HashTable< const DiscreteVariable*, std::vector<Idx>* > _varUsedModalitiesMap;
-      
+
       /// NodeId of decision diagram root node
       NodeId _rootId;
 
@@ -311,4 +320,4 @@ namespace gum {
 #endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H */
 // ============================================================================
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

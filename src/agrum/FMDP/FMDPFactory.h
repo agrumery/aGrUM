@@ -71,18 +71,19 @@ namespace gum {
 
       /**
        * Use this constructor if you want to use an already created factored markov decision process.
-       * @param fmdp A pointer over the Factored Markov Decision Process filled by this factory.
+       * @param fmdp A pointer over the @ref FactoredMarkovDecisionProcess filled by this factory.
+       * @param ddFactory The @ref MultiDimDecisionDiagramFactoryBase that will be used.
        */
       FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory );
 
       //~ /**
-       //~ * @brief Copy constructor.
-       //~ * The copy will have an exact copy of the constructed Factored markov Decision Process in source.
-       //~ * @warning You can only copy a factory if its current state is NONE or
-       //~ *          NETWORK.
-       //~ * @throw OperationNotAllowed Raised if the state of source is not NONE or
-       //~ *                            NETWORK.
-       //~ */
+      //~ * @brief Copy constructor.
+      //~ * The copy will have an exact copy of the constructed Factored markov Decision Process in source.
+      //~ * @warning You can only copy a factory if its current state is NONE or
+      //~ *          NETWORK.
+      //~ * @throw OperationNotAllowed Raised if the state of source is not NONE or
+      //~ *                            NETWORK.
+      //~ */
       //~ FMDPFactory ( const FMDPFactory<GUM_SCALAR>& source );
 
       /**
@@ -95,8 +96,6 @@ namespace gum {
        *                   peacefully.
        */
       ~FMDPFactory();
-
-      void sayHelloToTheWorld();
       /// @}
       // ==========================================================================
       /// @name Getter and setters.

@@ -73,11 +73,11 @@ namespace gum {
      * operations of the schedule) were performed */
     bool execute ( Schedule<GUM_SCALAR>&, unsigned int k );
      
-    /** @bried returns an estimation of the number of elementary operations needed
+    /** @brief returns an estimation of the number of elementary operations needed
      * to perform a given schedule */
     float nbOperations ( const Schedule<GUM_SCALAR>& ) const; 
 
-    /** @bried returns an estimation of the number of elementary operations needed
+    /** @brief returns an estimation of the number of elementary operations needed
      * to perform the k first ScheduleOperations of a given schedule
      *
      * If there are fewer than k operations in the schedule, then all those

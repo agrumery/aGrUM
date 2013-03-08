@@ -124,7 +124,7 @@ class Instance: public PRMObject {
     /**
      * @brief Given a name returns the related Attribute.
      *
-     * @param n The Attribute's name.
+     * @param name The Attribute's name.
      * @return Returns a reference over the Attribute.
      *
      * @throw NotFound Raised if there is no Attribute named n.
@@ -148,7 +148,7 @@ class Instance: public PRMObject {
     /**
      * @brief Given a name returns the related ClassElement.
      *
-     * @param n The ClassElement's name.
+     * @param name The ClassElement's name.
      * @return Returns a constant reference over the ClassElement.
      *
      * @throw NotFound Raised if there is no ClassElement named n.
@@ -308,7 +308,7 @@ class Instance: public PRMObject {
     /**
      * Returns true if id has at least one referring Attribute.
      * @param id A NodeId.
-     * @retun returns true if is has at least one referring Attribute.
+     * @return returns true if is has at least one referring Attribute.
      */
     bool hasRefAttr(NodeId id) const;
 

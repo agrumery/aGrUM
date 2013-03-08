@@ -168,12 +168,12 @@ namespace gum {
       // ============================================================================
       /// default constructor
       // ============================================================================
-      explicit ListBucket( const Val& v );
+      explicit ListBucket ( const Val& v );
 
       // ============================================================================
       /// copy constructor
       // ============================================================================
-      ListBucket( const ListBucket<Val>& src );
+      ListBucket ( const ListBucket<Val>& src );
 
       // ============================================================================
       /// copy operator
@@ -318,11 +318,12 @@ namespace gum {
        * Of course if these values are pointers, the new values point toward the same
        * elements. This constructor runs in linear time w.r.t. the number of elements
        * in list 'from'.
-       * @param from the list the contents of which is copied into the current one.
+       * @param src the list the contents of which is copied into the current one.
        */
-      // ============================================================================
-      ListBase( const ListBase<Val> &src );
-      ListBase( const List<Val> &src );
+      /// @{
+      ListBase ( const ListBase<Val> &src );
+      ListBase ( const List<Val> &src );
+      /// @}
 
       // ============================================================================
       /// Destructor
@@ -346,12 +347,12 @@ namespace gum {
        * @warning Note that \e val is not actually inserted into the list. Rather, it
        * is a copy of val that is inserted. */
       // ============================================================================
-      Val& pushFront( const Val& val );
+      Val& pushFront ( const Val& val );
 
       // ============================================================================
       /// alias for push_front
       // ============================================================================
-      Val& push_front( const Val& val );
+      Val& push_front ( const Val& val );
 
       // ============================================================================
       /// inserts a new element (a copy) at the end of the chained list
@@ -361,12 +362,12 @@ namespace gum {
        * @warning Note that \e val is not actually inserted into the list. Rather, it
        * is a copy of val that is inserted. */
       // ============================================================================
-      Val& pushBack( const Val& val );
+      Val& pushBack ( const Val& val );
 
       // ============================================================================
       /// alias for push_back
       // ============================================================================
-      Val& push_back( const Val& val );
+      Val& push_back ( const Val& val );
 
       // ============================================================================
       /// inserts a new element at the end of the chained list (alias of pushBack)
@@ -374,7 +375,7 @@ namespace gum {
        * @warning Note that \e val is not actually inserted into the list. Rather, it
        * is a copy of val that is inserted. */
       // ============================================================================
-      Val& insert( const Val& val );
+      Val& insert ( const Val& val );
 
       // ============================================================================
       /// returns a reference to first element of a list, if any
@@ -400,7 +401,7 @@ namespace gum {
        * This method runs in linear time w.r.t. the number of elements in the list.
        * @param val the value of the element we wish to check the existence of. */
       // ============================================================================
-      bool exists( const Val& val ) const;
+      bool exists ( const Val& val ) const;
 
       // ============================================================================
       /// erases the ith element of the List (the first one is in position 0)
@@ -408,12 +409,12 @@ namespace gum {
        * any exception. It runs in linear time in the size of the list.
        * @param i the position in the list of the element we wish to remove. */
       // ============================================================================
-      void erase( unsigned int i );
+      void erase ( unsigned int i );
 
       // ============================================================================
       /// erases the bucket from the List
       // ============================================================================
-      void erase( const ListBucket<Val>& bucket );
+      void erase ( const ListBucket<Val>& bucket );
 
       // ============================================================================
       /// erases the first element encountered with a given value
@@ -423,7 +424,7 @@ namespace gum {
        * through == operators.
        * @param val the value of the element we wish to remove. */
       // ============================================================================
-      void eraseByVal( const Val& val );
+      void eraseByVal ( const Val& val );
 
       // ============================================================================
       /// erases all the elements encountered with a given value
@@ -432,7 +433,7 @@ namespace gum {
        * @param val the value of the element we wish to remove.
        * Comparisons between Val instances are performed through == operators. */
       // ============================================================================
-      void eraseAllVal( const Val& val );
+      void eraseAllVal ( const Val& val );
 
       // ============================================================================
       /// removes the last element of a ListBase, if any
@@ -476,11 +477,11 @@ namespace gum {
        * @param f a function that maps any Val element into a Mount */
       // ============================================================================
       template <typename Mount>
-      ListBase<Mount> map( Mount( *f )( Val ) ) const;
+      ListBase<Mount> map ( Mount ( *f ) ( Val ) ) const;
       template <typename Mount>
-      ListBase<Mount> map( Mount( *f )( Val& ) ) const;
+      ListBase<Mount> map ( Mount ( *f ) ( Val& ) ) const;
       template <typename Mount>
-      ListBase<Mount> map( Mount( *f )( const Val& ) ) const;
+      ListBase<Mount> map ( Mount ( *f ) ( const Val& ) ) const;
 
       // ============================================================================
       /// creates a list of mountains with a given value from a list of val
@@ -488,7 +489,7 @@ namespace gum {
        * memory leak occurs.
        * @param mount the value taken by all the elements of the resulting list  */
       // ============================================================================
-      template <typename Mount> ListBase<Mount> map( const Mount& mount ) const;
+      template <typename Mount> ListBase<Mount> map ( const Mount& mount ) const;
 
       /// @}
 
@@ -542,7 +543,7 @@ namespace gum {
        * does not exist
        * @return a reference on the element stored at the ith position in the list */
       // ============================================================================
-      Val& operator[]( unsigned int i ) ;
+      Val& operator[] ( unsigned int i ) ;
 
       /// returns the const ith element in the current chained list
       /** The first of the list element has index 0.
@@ -551,7 +552,7 @@ namespace gum {
        * @throw NotFound exception is thrown if the element to be retrieved
        * does not exist
        * @return a reference on the element stored at the ith position in the list */
-      const Val& operator[]( unsigned int i ) const ;
+      const Val& operator[] ( unsigned int i ) const ;
 
       /// @}
 
@@ -590,7 +591,7 @@ namespace gum {
       /** before performing the copy, we assume in this function that the current
        * list (this) is empty (else there would be memory leak). */
       // ============================================================================
-      void __copy_elements( const ListBase<Val> &src );
+      void __copy_elements ( const ListBase<Val> &src );
 
       // ============================================================================
       /// returns the bucket corresponding to a given value
@@ -600,7 +601,7 @@ namespace gum {
        * @param val the value of the element the bucket of which we wish to return.
        * Comparisons between Val instances are performed through == operators. */
       // ============================================================================
-      ListBucket<Val>* __getBucket( const Val& val ) const;
+      ListBucket<Val>* __getBucket ( const Val& val ) const;
 
       // ============================================================================
       /// suppresses an element from a chained list
@@ -611,7 +612,7 @@ namespace gum {
        * @param bucket a pointer on the bucket in the chained list
        * we wish to remove. */
       // ============================================================================
-      void __erase( ListBucket<Val>* bucket );
+      void __erase ( ListBucket<Val>* bucket );
   };
 
 
@@ -739,7 +740,7 @@ namespace gum {
        * equal to 0, a new iterator's list is created for the current List.
        * This constructor runs in constant time. */
       // ============================================================================
-      List( const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
+      List ( const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
 
       // ============================================================================
       /// Copy constructor sharing its iterator's list with that of \c from
@@ -747,10 +748,10 @@ namespace gum {
        * list contains new instances of the values stored in the list to be copied.
        * Of course if these values are pointers, the new values point toward the same
        * elements. This constructor runs in linear time.
-       * @param from the list the contents of which is copied into the current one.
+       * @param src the list the contents of which is copied into the current one.
        */
       // ============================================================================
-      List( const List<Val> &src );
+      List ( const List<Val> &src );
 
       // ============================================================================
       /** @brief Copy constructor. The iterator's list is shared with that passed in
@@ -760,13 +761,13 @@ namespace gum {
        * list contains new instances of the values stored in the list to be copied.
        * Of course if these values are pointers, the new values point toward the same
        * elements. This constructor runs in linear time.
-       * @param from the list the contents of which is copied into the current one
+       * @param src the list the contents of which is copied into the current one
        * @param iter_list a pointer on the list where iterators on the current List
        * will be referenced. When equal to 0, a new iterator's list is created for
        * the current List. */
       // ============================================================================
-      List( const List<Val> &src,
-            const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
+      List ( const List<Val> &src,
+             const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list );
 
       // ============================================================================
       /// Destructor
@@ -880,7 +881,7 @@ namespace gum {
        * exception. It runs in linear time in the size of the list.
        * @param i the position in the list of the element we wish to remove. */
       // ============================================================================
-      void erase( unsigned int i );
+      void erase ( unsigned int i );
 
       // ============================================================================
       /// erases the element of the List pointed to by the iterator
@@ -888,13 +889,13 @@ namespace gum {
        * iterator points to end/rend, the function returns without throwing any
        * exception. It runs in linear time in the size of the list. */
       // ============================================================================
-      void erase( const iterator& iter );
+      void erase ( const iterator& iter );
 
       /// erases the element of the List pointed to by the const iterator
       /** If the element cannot be found, i.e., it has already been erased or the
        * iterator points to end/rend, the function returns without throwing any
        * exception. It runs in linear time in the size of the list. */
-      void erase( const const_iterator& iter );
+      void erase ( const const_iterator& iter );
 
       // ============================================================================
       /// erases the first element encountered with a given value
@@ -904,7 +905,7 @@ namespace gum {
        * Comparisons between Val instances are performed through == operators.
        * @param val the value of the element we wish to remove. */
       // ============================================================================
-      void eraseByVal( const Val& val );
+      void eraseByVal ( const Val& val );
 
       // ============================================================================
       /// erases all the elements encountered with a given value
@@ -913,7 +914,7 @@ namespace gum {
        * @param val the value of the element we wish to remove.
        * Comparisons between Val instances are performed through == operators. */
       // ============================================================================
-      void eraseAllVal( const Val& val );
+      void eraseAllVal ( const Val& val );
 
       // ============================================================================
       /// removes the last element of a List, if any
@@ -940,7 +941,7 @@ namespace gum {
        * previously attached to the List will point to end/rend) */
       // ============================================================================
       void
-      setIteratorList( const RefPtr< ListBase<ListConstIterator<Val>*> >& list );
+      setIteratorList ( const RefPtr< ListBase<ListConstIterator<Val>*> >& list );
 
       // ============================================================================
       /// returns the list containing the iterators pointing toward the List
@@ -963,21 +964,21 @@ namespace gum {
       /// creates a list of mountains from a list of val
       /** @param f a function that maps any Val element into a Mount */
       // ============================================================================
-      template <typename Mount> List<Mount> map( Mount( *f )( Val ) ) const;
+      template <typename Mount> List<Mount> map ( Mount ( *f ) ( Val ) ) const;
 
       /// creates a list of mountains from a list of val
       /** @param f a function that maps any Val element into a Mount */
-      template <typename Mount> List<Mount> map( Mount( *f )( Val& ) ) const;
+      template <typename Mount> List<Mount> map ( Mount ( *f ) ( Val& ) ) const;
 
       /// creates a list of mountains from a list of val
       /** @param f a function that maps any Val element into a Mount */
-      template <typename Mount> List<Mount> map( Mount( *f )( const Val& ) ) const;
+      template <typename Mount> List<Mount> map ( Mount ( *f ) ( const Val& ) ) const;
 
       // ============================================================================
       /// creates a list of mountains with a given value from a list of val
       /** @param mount the value taken by all the elements of the resulting list  */
       // ============================================================================
-      template <typename Mount> List<Mount> map( const Mount& mount ) const;
+      template <typename Mount> List<Mount> map ( const Mount& mount ) const;
 
       /// @}
 
@@ -998,7 +999,7 @@ namespace gum {
        * linear time.
        * @warning If the current List previously contained iterators, those will
        * be resetted to rend().
-       * @param from the list the content of which will be copied into the
+       * @param src the list the content of which will be copied into the
        * current List */
       // ============================================================================
       List<Val>& operator= ( const List<Val>& src );
@@ -1034,7 +1035,7 @@ namespace gum {
        * does not exist
        * @return a reference on the element stored at the ith position in the list */
       // ============================================================================
-      Val& operator[]( const unsigned int i ) ;
+      Val& operator[] ( const unsigned int i ) ;
 
       /// returns the const ith element in the current chained list.
       /** The first of the list element has index 0.
@@ -1043,7 +1044,7 @@ namespace gum {
        * @throw NotFound exception is thrown if the element to be retrieved
        * does not exist
        * @return a reference on the element stored at the ith position in the list */
-      const Val& operator[]( const unsigned int i ) const ;
+      const Val& operator[] ( const unsigned int i ) const ;
 
       /// @}
 
@@ -1058,7 +1059,7 @@ namespace gum {
        * @param bucket a pointer on the bucket in the chained list we wish
        * to remove. */
       // ============================================================================
-      void _erase( ListBucket<Val>* bucket );
+      void _erase ( ListBucket<Val>* bucket );
 
 
     private:
@@ -1141,12 +1142,12 @@ namespace gum {
       // ============================================================================
       /// copy constructor
       // ============================================================================
-      ListConstIterator( const ListConstIterator<Val>& src );
+      ListConstIterator ( const ListConstIterator<Val>& src );
 
       // ============================================================================
       /// Constructor for an iterator pointing to the \e ind_eltth element of a List
       // ============================================================================
-      ListConstIterator( const List<Val>& theList, unsigned int ind_elt );
+      ListConstIterator ( const List<Val>& theList, unsigned int ind_elt );
 
       // ============================================================================
       /// Destructor
@@ -1339,12 +1340,12 @@ namespace gum {
       // ============================================================================
       /// copy constructor
       // ============================================================================
-      ListIterator( const ListIterator<Val>& src );
+      ListIterator ( const ListIterator<Val>& src );
 
       // ============================================================================
       /// Constructor for an iterator pointing to the \e ind_eltth element of a List
       // ============================================================================
-      ListIterator( const List<Val>& theList, unsigned int ind_elt );
+      ListIterator ( const List<Val>& theList, unsigned int ind_elt );
 
       // ============================================================================
       /// Destructor
@@ -1467,4 +1468,4 @@ namespace gum {
 #include <agrum/core/list.tcc>
 
 #endif  /* GUM_LIST_H */
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

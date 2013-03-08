@@ -28,6 +28,7 @@
 // // ============================================================================
 // #include <agrum/prm/PRM.h>
 // // ============================================================================
+// REMOVED FROM DOC (see agrum.doxy.in)
 // #ifndef GUM_HOLLOW_BAYESNET_H
 // #define GUM_HOLLOW_BAYESNET_H
 // namespace gum {

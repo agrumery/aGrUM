@@ -64,8 +64,10 @@ namespace gum {
     MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     // ============================================================================
-    /// Copy constructor using a bijection to swap variables from source.
-    /// @param bij First variables are new variables, seconds are in from.
+    /** Copy constructor using a bijection to swap variables from source.
+    * @param bij First variables are new variables, seconds are in from.
+    * @param from the copied instance
+    */
     // ============================================================================
     MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                              const MultiDimNoisyORCompound<GUM_SCALAR>& from );

@@ -61,7 +61,6 @@ class ClassElement: public PRMObject {
      *
      * The ClassElement will automatically add itself to c.
      *
-     * @param c The class in which this element belongs.
      * @param name The name of this element, must be unique in it's class.
      * @throw DupplicateElement Raised if c contains already an element with
      *                          the same name.

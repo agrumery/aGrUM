@@ -37,9 +37,9 @@
 // #define GUM_IBAL_BRIDGE_H
 // namespace gum {
 // namespace prm {
-//
+// REMOVED FROM DOCS (see agrum.doxy.in)
 // /**
-//  * @class IBALBridge IBALBridge.h <agrum/prm/ibal/IBALBridge.h>
+//  * @class IBALBridge IbalBridge.h <agrum/prm/ibal/IbalBridge.h>
 //  * @brief This class writes a PRM in the IBAL formalism.
 //  *
 //  * @todo Add private flag when it's correctly implemented.

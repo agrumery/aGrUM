@@ -19,6 +19,9 @@
  ***************************************************************************/
 #ifndef GUM_K2_H
 #define GUM_K2_H
+
+// DELETE FROM DOC (see agrum.doxy.in)
+
 // TODO Adapt to the new version of gumBayesNetTpl.
 //
 //

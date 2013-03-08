@@ -41,7 +41,7 @@ namespace gum {
   class MultiDimDecisionDiagramFactory;
 
   /**
-   * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h <agrum/multidim/multiDimDecisionDiagramBase.h>
+   * @class MultiDimDecisionDiagram multiDimDecisionDiagram.h <agrum/multidim/multiDimDecisionDiagram.h>
    * @brief Class implementingting a decision diagram model
    * For description of general methods, please refer to multidimdecisiondiagrambase
    * For specific implementation and use of multidimdecisiondiagram this is the right place :
@@ -70,16 +70,16 @@ namespace gum {
        * Default constructor.
        */
       MultiDimDecisionDiagram( );
-      
+
       /**
        * Copy constructor.
        */
-      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
+      MultiDimDecisionDiagram ( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
 
-      /** 
+      /**
        * Constructor with approximation initialisation
        */
-      MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& md );
+      MultiDimDecisionDiagram ( const IApproximationPolicy<GUM_SCALAR>& md );
 
       /**
        * Destructor.
@@ -119,16 +119,16 @@ namespace gum {
        * Returns a factory that used same approximation pattern
        */
       virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory() const;
-      
+
       /**
        * Returns a factory that used same approximation pattern
        * Allows to set parameter for that approximation
        */
-      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory ( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
 
       /// Convert value to approximation representation
-      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
-        return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
+      inline GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const {
+        return IApproximationPolicy<GUM_SCALAR>::fromExact ( value );
       };
 
 
@@ -145,6 +145,6 @@ namespace gum {
 #endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
 // ============================================================================
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 
 

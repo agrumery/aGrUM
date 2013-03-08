@@ -55,7 +55,7 @@ namespace gum {
    * new operations into the schedule (at a specific place) and to remove some
    * operations.
    *
-   * @warningIn the Schedule class does not guarantee that the schedule can always
+   * @warning In the Schedule class does not guarantee that the schedule can always
    * be performed, i.e., that there always exists a sequence in which all the
    * operations of the schedule can be performed. It is up to the user to check
    * this (function schedulePossible () may help here).
@@ -172,7 +172,7 @@ namespace gum {
     void execute ( NodeId );
     void execute ( const ScheduleOperation<GUM_SCALAR>& );
 
-    /** @bried returns an estimation of the number of elementary operations needed
+    /** @brief returns an estimation of the number of elementary operations needed
      * to perform a given ScheduleOperation */
     float nbOperations ( NodeId ) const;
     float nbOperations ( ScheduleOperation<GUM_SCALAR>& ) const;

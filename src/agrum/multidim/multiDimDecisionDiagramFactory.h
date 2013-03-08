@@ -70,7 +70,7 @@ namespace gum {
 
       /**
        * Destructor.
-       * @warnings : this will not destroy properties on node. They have to be removed on multidim destruction
+       * @warning : this will not destroy properties on node. They have to be removed on multidim destruction
        */
       ~MultiDimDecisionDiagramFactory();
 

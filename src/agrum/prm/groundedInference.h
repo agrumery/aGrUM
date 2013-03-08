@@ -98,9 +98,7 @@ class GroundedInference: public PRMInference {
     virtual void _evidenceRemoved(const Chain& chain);
 
     /// @brief Generic method to compute the marginal of given element.
-    /// @param i Pointer over the Instance of elt.
-    /// @param elt Pointer over the Attribute for which the marginal must be
-    ///            computed.
+    /// @param chain 
     /// @param m CPF filled with the marginal of elt. It is initialized
     ///          properly.
     virtual void _marginal(const Chain& chain, Potential<prm_float>& m);

@@ -38,7 +38,7 @@
 namespace gum {
 
 
-  /** @class AbstractCPTDisturb *
+  /** @class AbstractCPTDisturber *
    * @brief Abstract class for Modifying Conditional Probability Tables.
    * @ingroup bn_group
    *
@@ -47,39 +47,44 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class AbstractCPTDisturber {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructor
-    // ############################################################################
-    /// @{
-    /**
-     * Default constructor.
-     */
-    AbstractCPTDisturber();
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructor
+      // ############################################################################
+      /// @{
+      /**
+       * Default constructor.
+       */
+      AbstractCPTDisturber();
 
-    /**
-     * Destructor.
-     */
-    virtual ~AbstractCPTDisturber();
-    /// @}
+      /**
+       * Destructor.
+       */
+      virtual ~AbstractCPTDisturber();
+      /// @}
 
-    // ############################################################################
-    /// @name CPT disturbing methods
-    // ############################################################################
-    /// @{
-    /**
-     * Generates a CPT using floats.
-     * @param varIdi The variable id parent of the CPT owner.
-     * @param varIdj A reference on the CPT owner.
-     * @param bayesNet the modified Bayesian Network.
-     * @param cpt_copy copy of the CPT before changing size
-     * @param marginal of the inference before changing size.
-     */
-    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg)=0;
-    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation)=0;
+      // ############################################################################
+      /// @name CPT disturbing methods
+      // ############################################################################
+      /**
+       * Generates a CPT using floats.
+       * @param varIdi The variable id parent of the CPT owner
+       * @param varIdj A reference on the CPT owner
+       * @param bayesNet the modified Bayesian Network
+       * @param cptCopy copy of the CPT before changing size
+       * @param marg of the inference before changing size
+       */
+      virtual void disturbReducCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg ) =0;
 
- 
-    /// @}
+      /**
+       * Generates a CPT using floats.
+       * @param varIdi The variable id parent of the CPT owner
+       * @param varIdj A reference on the CPT owner
+       * @param bayesNet the modified Bayesian Network
+       * @param cptCopy copy of the CPT before changing size
+       * @param variation degree of variation from the initial probability
+       */
+      virtual void disturbAugmCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation ) =0;
   };
 
 

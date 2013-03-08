@@ -10,14 +10,13 @@ IF (DOXYGEN_FOUND)
 	configure_file("${AGRUM_SOURCE_DIR}/docs/agrum.doxy.in" "${AGRUM_BINARY_DIR}/agrum.doxy")
 
 	add_custom_command(OUTPUT ${DOXYGEN_OUTPUT_DIR}
-		COMMAND ${CMAKE_COMMAND}
-		ARGS -E make_directory ${DOXYGEN_OUTPUT_DIR}
+	 COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${DOXYGEN_OUTPUT_DIR}
+   COMMAND ${CMAKE_COMMAND} -E copy ${AGRUM_SOURCE_DIR}/docs/mini_agrum2.png ${AGRUM_BINARY_DIR}/mini_agrum2.png
 	)
 
 	add_custom_command(
 	 OUTPUT ${DOXYGEN_OUTPUT}
 	 COMMAND ${CMAKE_COMMAND} -E echo_append "Building Documentation..."
-	 COMMAND ${CMAKE_COMMAND} -E copy ${AGRUM_BINARY_DIR}/agrum.css ${AGRUM_BINARY_DIR}/docs/html/agrum.css
 	 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
 	 COMMAND ${CMAKE_COMMAND} -E echo "Done."
 	 WORKING_DIRECTORY ${AGRUM_BINARY_DIR}
