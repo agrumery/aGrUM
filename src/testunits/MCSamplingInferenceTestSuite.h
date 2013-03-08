@@ -71,11 +71,11 @@ namespace gum_tests {
       // dynamic (dynaCheese network - slow)
       void setUpD () {
         BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c.bif ) );
+        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c_3.bif ) );
         readera.proceed();
 
         BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( den_c.bif ) );
+        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( den_c_3.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
@@ -175,7 +175,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( fb.evi ) );
+          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -214,10 +214,10 @@ namespace gum_tests {
         }
 
         try {
-          exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-          exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-          exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-          exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+          //exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+          //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+          //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+          //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
           exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
           exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
@@ -245,7 +245,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( fb.evi ) );
+          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -285,10 +285,10 @@ namespace gum_tests {
         }
 
         try {
-          exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-          exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-          exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-          exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+          //exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+          //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+          //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+          //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
           exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
           exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
@@ -309,14 +309,14 @@ namespace gum_tests {
         setUpD();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
 
-        /*
+        
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( fb.evi ) );
+          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-        */
+        
         
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );

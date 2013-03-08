@@ -13,6 +13,8 @@
 #include <agrum/CN/LoopyPropagation_v0.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+#include <agrum/CN/ExtensiveCredalNet.h>
+
 //#include <agrum/CN/MCSamplingInferenceTestSuite.h>
 
 using namespace gum;
@@ -98,6 +100,12 @@ void test_credal() {
   modals2["B"] = L;
   modals2["C"] = L; //...
 
+  ////////////////////////////////////////////
+ 
+
+  
+  ////////////////////////////////////////////
+
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
@@ -125,11 +133,11 @@ void test_credal() {
 
 
       //MCE->insertModals(modals2); //L2U modals
-      //MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+      MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
       //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 1 );
+      MCE->setTimeLimit ( 5 );
 
       if ( j == 0 )
         MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
@@ -141,7 +149,118 @@ void test_credal() {
       //if(j==2)
       //MCE.insertEvidence("./temp.evi");
 
+      //MCE->setIterStop(1001);
+      //MCE->makeInference_v2();
+
+      //MCE->makeInference_v3();
+
+      
+      MCSampling<double, LazyPropagation<double> > * MCE2 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      MCE2->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+      MCE2->setRepetitiveInd ( false );
+      MCE2->setTimeLimit ( 5 );
+      MCE2->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+
+      unsigned int sigmaMod = 0;
+      unsigned int sigmaExp = 0;
+      for( Size var = 0; var < myCNa->current_bn().size(); var++ ) {
+        sigmaMod += myCNa->current_bn().variable(var).domainSize()*2;
+        sigmaExp += 2;
+      }
+
+      std::cout << " marginals (min+max) : " << sigmaMod << std::endl;
+      std::cout << " expecttions (min+max) : " << sigmaExp << std::endl;
+
+
+      std::cout << "\n begin compare v2, v3 \n" << std::endl;
+      gum::Timer chrono2;
+      chrono2.reset();
+      MCE2->makeInference_v2();
+      double timeElapsed = chrono2.step();
+      std::cout << " v2 timeElapsed : " << timeElapsed << std::endl;
+      std::cout << " iters : " << MCE2->nbrIterations() << std::endl;
+      std::cout << " iters/sec : " << MCE2->nbrIterations()*1.0 / timeElapsed << std::endl;
+
+      
+      gum::Timer chrono;
+      chrono.reset();
       MCE->makeInference_v3();
+      timeElapsed = chrono.step();
+      std::cout << " v3 timeElapsed : " << timeElapsed << std::endl;
+      std::cout << " iters : " << MCE->nbrIterations() << std::endl;
+      std::cout << " iters/sec : " << MCE->nbrIterations()*1.0 / timeElapsed << std::endl;
+
+      std::cout << " marginals delta : " << std::endl;
+      double delta = 0;
+      unsigned int v3b = 0, v2b = 0, v23e = 0;
+      for( Size var = 0; var < myCNa->current_bn().size(); var++ ) {
+        Size dSize = myCNa->current_bn().variable(var).domainSize();
+        for( Size mod = 0; mod < dSize; mod++ ) {
+          double diff = MCE->marginalMin(var)[mod] - MCE2->marginalMin(var)[mod];
+          if (diff < 0) {
+            diff = -diff;
+            v3b++;
+          } else if (diff > 0) {
+            v2b++;
+          }
+          else {
+            v23e++;
+          }
+          delta = (delta < diff) ? diff : delta;
+
+          diff = MCE->marginalMax(var)[mod] - MCE2->marginalMax(var)[mod];
+          if (diff < 0) {
+            diff = -diff;
+            v2b++;
+          } else if(diff > 0){
+            v3b++;
+          }
+          else {
+            v23e++;
+          }
+          delta = (delta < diff) ? diff : delta;
+        }
+      }
+
+      std::cout << " v3 better than v2 : " << v3b << std::endl;
+      std::cout << " v2 better than v3 : " << v2b << std::endl;
+      std::cout << " V3 == v2 : " << v23e << std::endl;
+
+      std::cout << " expectations delta : " << std::endl;
+      delta = 0;
+      v3b = 0, v2b = 0, v23e = 0;
+      for( Size var = 0; var < myCNa->current_bn().size(); var++ ) {
+        double diff = MCE->expectationMin(var) - MCE2->expectationMin(var);
+        if (diff < 0) {
+          diff = -diff;
+          v3b++;
+        } else if (diff > 0) {
+          v2b++;
+        }
+        else {
+          v23e++;
+        }
+        delta = (delta < diff) ? diff : delta;
+
+        diff = MCE->expectationMax(var) - MCE2->expectationMax(var);
+        if (diff < 0) {
+          diff = -diff;
+          v2b++;
+        } else if(diff > 0){
+          v3b++;
+        }
+        else {
+          v23e++;
+        }
+        delta = (delta < diff) ? diff : delta;
+      }
+
+      std::cout << " v3 better than v2 : " << v3b << std::endl;
+      std::cout << " v2 better than v3 : " << v2b << std::endl;
+      std::cout << " V3 == v2 : " << v23e << std::endl;
+
+
+      MCE2->eraseAllEvidence();
 
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
@@ -173,6 +292,7 @@ void test_credal() {
       //MCE.saveExpectations("./rep.expect");
       MCE->eraseAllEvidence();
       delete MCE;
+      delete MCE2;
       delete myCNa;
     }
   }

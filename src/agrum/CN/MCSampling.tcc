@@ -229,6 +229,8 @@ namespace gum {
       BNInferenceEngine inference_engine ( * ( this->_workingSet[this_thread] ) );
       const gum::DAG &thread_dag = this->_workingSet[this_thread]->dag();
 
+
+      // otherwise you get STUCK !!!
       unsigned int reste = __iterStop % num_threads;
       if ( reste != 0 ) {
         __iterStop += reste;
@@ -264,7 +266,7 @@ namespace gum {
         */
 
         // !!! if updates of approximation scheme are WRONG, get rid of nowait clause (updates may be slower then)!!!
-        #pragma omp single nowait
+        #pragma omp single //nowait
         {
           this->updateApproximationScheme(num_threads);
         }
@@ -304,9 +306,9 @@ namespace gum {
           } // end of : all threads
           // update them
           for ( int thread_id = 0; thread_id < num_threads; thread_id++ ) {
-            if ( this->_l_marginalMin[thread_id][i][j] > this->_oldMarginalMin[i][j] )
+            //if ( this->_l_marginalMin[thread_id][i][j] > this->_oldMarginalMin[i][j] )
               this->_l_marginalMin[thread_id][i][j] = this->_oldMarginalMin[i][j];
-            if ( this->_l_marginalMax[thread_id][i][j] < this->_oldMarginalMax[i][j] )
+            //if ( this->_l_marginalMax[thread_id][i][j] < this->_oldMarginalMax[i][j] )
               this->_l_marginalMax[thread_id][i][j] = this->_oldMarginalMax[i][j];
           } // end of : all threads
         } // end of : all modalities
@@ -327,7 +329,8 @@ namespace gum {
         __insertEvidence ( inference_engine );
         inference_engine.makeInference();
 
-        #pragma omp single nowait
+        // implicit barrier needed ?
+        #pragma omp single //nowait
         {
           this->updateApproximationScheme(num_threads);
         }
@@ -366,9 +369,9 @@ namespace gum {
               } // end of : all threads
               // update them
               for ( int thread_id = 0; thread_id < num_threads; thread_id++ ) {
-                if ( this->_l_marginalMin[thread_id][i][j] > this->_marginalMin[i][j] )
+                //if ( this->_l_marginalMin[thread_id][i][j] > this->_marginalMin[i][j] )
                   this->_l_marginalMin[thread_id][i][j] = this->_marginalMin[i][j];
-                if ( this->_l_marginalMax[thread_id][i][j] < this->_marginalMax[i][j] )
+                //if ( this->_l_marginalMax[thread_id][i][j] < this->_marginalMax[i][j] )
                   this->_l_marginalMax[thread_id][i][j] = this->_marginalMax[i][j];
               } // end of : all threads
             } // end of : all modalities
@@ -376,10 +379,14 @@ namespace gum {
 
           //////////////// update epsilon_max  ////////////////
           //////////////// update _oldMarginal ////////////////
-          #pragma omp single
+          /*#pragma omp single
           {
             std::cout << "start of period" << std::endl;
             std::cout << this->nbrIterations() << std::endl;
+            epsilon_max = 0;
+          }*/
+          #pragma omp single
+          {
             epsilon_max = 0;
           }
 
@@ -416,7 +423,7 @@ namespace gum {
           {
             #pragma omp flush(epsilon_max)
             all_stop = ! this->continueApproximationScheme( epsilon_max, false, false );
-            std::cout << "epsilon : " << epsilon_max << std::endl;
+            //std::cout << "epsilon : " << epsilon_max << std::endl;
           }
 
           #pragma omp flush(all_stop)
