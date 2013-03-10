@@ -53,7 +53,7 @@ namespace gum {
       void setIterStop ( const int &no_change_time_limit );
       void setAll ( const bool repetitive, const int &time_limit, const int &no_change_time_limit );
 
-      std::string toString() const;
+      //PH std::string toString() const;
   };
 
 } // namespace cn

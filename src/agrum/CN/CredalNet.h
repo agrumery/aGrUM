@@ -142,9 +142,9 @@ namespace gum {
       const gum::BayesNet< GUM_SCALAR > & src_bn() const;
       const gum::BayesNet< GUM_SCALAR > & current_bn() const;
       const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes &credalNet_cpt() const;
-      const std::vector< std::vector< gum::NodeId > > & var_bits() const;
-      const std::vector< std::vector< GUM_SCALAR > > & credalNet_cpt_min() const;
-      const std::vector< std::vector< GUM_SCALAR > > & credalNet_cpt_max() const;
+      //PH const std::vector< std::vector< gum::NodeId > > & var_bits() const;
+      //PH const std::vector< std::vector< GUM_SCALAR > > & credalNet_cpt_min() const;
+      //PH const std::vector< std::vector< GUM_SCALAR > > & credalNet_cpt_max() const;
       nodeType getNodeType ( const gum::NodeId &id ) const;
 
       // transformation member methods
@@ -154,21 +154,21 @@ namespace gum {
       void dts(); // for L2U, no arcs between decision node bits
       // not complete / to be removed
       void bin();
-      void indic();
-      void perState();
+      //PH void indic();
+      //PH void perState();
 
       // other utility member methods
-      void saveCNet ( const std::string &cn_path ) const;
-      void loadCNet ( const std::string &src_cn_path );
+      //PH void saveCNet ( const std::string &cn_path ) const;
+      //PH void loadCNet ( const std::string &src_cn_path );
 
       void saveBNsMinMax( const std::string & min_path, const std::string & max_path ) const;
 
-      void vacants ( int &result ) const;
-      void notVacants ( int &result ) const;
-      void averageVertices ( double &result ) const;
+      //PH void vacants ( int &result ) const;
+      //PH void notVacants ( int &result ) const;
+      //PH void averageVertices ( double &result ) const;
 
       std::string toString() const;
-      void toPNG ( const std::string &png_path ) const;
+      //PH void toPNG ( const std::string &png_path ) const;
 
       // test functions
       // to be removed ?

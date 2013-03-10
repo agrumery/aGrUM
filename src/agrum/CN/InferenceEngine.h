@@ -90,7 +90,7 @@ namespace gum {
       // from map (copy)
       void insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals);
 
-      void insertEvidence ( const std::string & path );
+      void insertFileOfEvidence ( const std::string & path );
       void insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > > & eviMap );
       // ? how the hell am i supposed to use a property without the network ??
       // use map (string instead of nodeId) ?

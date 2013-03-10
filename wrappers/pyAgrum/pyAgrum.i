@@ -30,15 +30,22 @@ to OpenBayes, a free Bayesian Network library for Python."
 %include "inference.i"
 %include "kl.i"
 
+%include "credalnet.i"
+
 %include "aGrUM_wrap.i"
 
 %pythoncode %{
 Potential = Potential_double
 ListPotentials = ListPotentials_double
+
 BayesNet = BayesNet_double
 LazyPropagation = LazyPropagation_double
 GibbsInference = GibbsInference_double
+
 BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double
+
+CredalNet = CredalNet_double
+MCSampling = MCSampling_double
 %}
 

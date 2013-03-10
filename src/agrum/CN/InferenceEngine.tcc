@@ -135,7 +135,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  void InferenceEngine< GUM_SCALAR >::insertEvidence ( const std::string &path ) {
+  void InferenceEngine< GUM_SCALAR >::insertFileOfEvidence ( const std::string &path ) {
     std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
     if ( !evi_stream.good() ) {

@@ -70,6 +70,9 @@
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
 
+#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/MCSampling.h>
 %}
 
 %include "std_vector.i"
@@ -158,6 +161,9 @@
 %import <agrum/graphs/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
+%include <agrum/CN/CredalNet.h>
+%include <agrum/CN/InferenceEngine.h>
+%include <agrum/CN/MCSampling.h>
 
 
 /* CLASS EXTENSIONS */
@@ -177,16 +183,6 @@
         return dynamic_cast<gum::DiscretizedVariable<float> &>(*(self));
     }
 }
-
-
-%extend gum::BayesNet {
-    BayesNet(std::string name) {
-        gum::BayesNet<GUM_SCALAR> *bn = new gum::BayesNet<GUM_SCALAR>();
-        bn->setProperty("name", name);
-        return bn;
-    }
-}
-
 
 %extend gum::List {
     void append(Val val)
@@ -272,14 +268,44 @@
   using gum::ApproximationScheme::history;
 }
 
-/* TEMPLATES INSTANTIATIONS */
+%extend gum::MCSampling_double {
+      using gum::InferenceEngine::eraseAllEvidence;
+      using gum::InferenceEngine::insertModals;
+      using gum::InferenceEngine::insertFileOfEvidence;
+      using gum::InferenceEngine::insertQuery;
+      
+      using gum::InferenceEngine::marginalMin;
+      using gum::InferenceEngine::marginalMax;
+      using gum::InferenceEngine::marginalMin;
+      using gum::InferenceEngine::marginalMax;
+      
+      using gum::InferenceEngine::expectationMin;
+      using gum::InferenceEngine::expectationMax;
+      using gum::InferenceEngine::expectationMin;
+      using gum::InferenceEngine::expectationMax;
+      
+      using gum::InferenceEngine::dynamicExpMin;
+      using gum::InferenceEngine::dynamicExpMax;
+      
+      using gum::InferenceEngine::vertices;
+      
+      using gum::InferenceEngine::saveMarginals;
+      using gum::InferenceEngine::saveExpectations;
+      using gum::InferenceEngine::saveVertices;
+      using gum::InferenceEngine::dynamicExpectations;
+      
+      using gum::InferenceEngine::toString;
+}
 
-%template(Vector_float) std::vector<float>;
+/* TEMPLATES INSTANTIATIONS */
 
 %template(Sequence_node) gum::Sequence<gum::NodeId>;
 %template(Sequence_string) gum::Sequence<std::string>;
 
 %template(DiscretizedVar) gum::DiscretizedVariable<float>;
+
+/*
+%template(Vector_float) std::vector<float>;
 
 %template(MultiDimContainer_float) gum::MultiDimContainer<float>;
 %template(MultiDimImplementation_float) gum::MultiDimImplementation<float>;
@@ -299,16 +325,20 @@
 %template(GibbsInference_float) gum::GibbsInference<float>;
 %template(BruteForceKL_float) gum::BruteForceKL<float>;
 %template(GibbsKL_float) gum::GibbsKL<float>;
+*/
 
 %template(Vector_double) std::vector<double>;
+
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
 %template(MultiDimImplementation_double) gum::MultiDimImplementation<double>;
 %template(MultiDimDecorator_double) gum::MultiDimDecorator<double>;
 %template(MultiDimWithOffset_double) gum::MultiDimWithOffset<double>;
 %template(MultiDimArray_double) gum::MultiDimArray<double>;
+
 %template(Potential_double) gum::Potential<double>;
 %template(BaseListPotentials_double)  gum::ListBase< const gum::Potential<double> *>;
 %template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
+
 %template(AbstractBayesNet_double) gum::AbstractBayesNet<double>;
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
@@ -316,3 +346,6 @@
 %template(GibbsInference_double) gum::GibbsInference<double>;
 %template(BruteForceKL_double) gum::BruteForceKL<double>;
 %template(GibbsKL_double) gum::GibbsKL<double>;
+
+%template(CredalNet_double) gum::CredalNet<double>;
+%template(MCSampling_double) gum::MCSampling<double,gum::LazyPropagation<double> >;
