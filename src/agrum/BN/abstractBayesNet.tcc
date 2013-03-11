@@ -300,16 +300,6 @@ namespace gum {
   }
 
 
-  template<typename GUM_SCALAR>
-  void
-  AbstractBayesNet<GUM_SCALAR>::generateCPTs() {
-    DefaultCPTGenerator<GUM_SCALAR> generator;
-
-    for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
-      generator.generateCPT ( cpt ( *iter ).pos ( variable ( *iter ) ),  cpt ( *iter ) );
-    }
-  }
-
 } /* namespace gum */
 
 // ============================================================================
