@@ -268,34 +268,6 @@
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::MCSampling {
-      using gum::InferenceEngine::eraseAllEvidence;
-      using gum::InferenceEngine::insertModals;
-      using gum::InferenceEngine::insertFileOfEvidence;
-      using gum::InferenceEngine::insertQuery;
-      
-      using gum::InferenceEngine::marginalMin;
-      using gum::InferenceEngine::marginalMax;
-      using gum::InferenceEngine::marginalMin;
-      using gum::InferenceEngine::marginalMax;
-      
-      using gum::InferenceEngine::expectationMin;
-      using gum::InferenceEngine::expectationMax;
-      using gum::InferenceEngine::expectationMin;
-      using gum::InferenceEngine::expectationMax;
-      
-      using gum::InferenceEngine::dynamicExpMin;
-      using gum::InferenceEngine::dynamicExpMax;
-      
-      using gum::InferenceEngine::vertices;
-      
-      using gum::InferenceEngine::saveMarginals;
-      using gum::InferenceEngine::saveExpectations;
-      using gum::InferenceEngine::saveVertices;
-      using gum::InferenceEngine::dynamicExpectations;
-      
-      using gum::InferenceEngine::toString;
-}
 
 /* TEMPLATES INSTANTIATIONS */
 
@@ -348,4 +320,5 @@
 %template(GibbsKL_double) gum::GibbsKL<double>;
 
 %template(CredalNet_double) gum::CredalNet<double>;
+%template(InferenceEngine_double) gum::InferenceEngine<double>;
 %template(MCSampling_double) gum::MCSampling<double,gum::LazyPropagation<double> >;
