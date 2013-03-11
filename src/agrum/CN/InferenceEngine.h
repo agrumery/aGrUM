@@ -86,7 +86,7 @@ namespace gum {
 
       // initialize modalities to compute expectations
       // from file
-      void insertModalsFile( const std::string &path);
+      void insertModalsFile( const std::string &path );
       // from map (copy)
       void insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals);
 

@@ -33,13 +33,14 @@ namespace gum {
     __mcInitApproximationScheme();
     // NO MEM LEAK TILL HERE : before multi threading
     __mcThreadDataCopy();
-    return;
 
     #pragma omp parallel for
     for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
       __threadInference();
       __threadUpdate();
     } // end of : parallel burnIn
+
+    return;
 
     this->updateApproximationScheme( this->burnIn() );
 
@@ -140,12 +141,12 @@ namespace gum {
       // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
       // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
-      //gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
+      gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
       #pragma omp critical(Init)
       {
-        gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();//(this->_credalNet->current_bn());
+        //gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();//(this->_credalNet->current_bn());
         *thread_bn = this->_credalNet->current_bn();
-      
+      }
         this->_workingSet[this_thread] = thread_bn;
       
 
@@ -164,7 +165,7 @@ namespace gum {
 
         BNInferenceEngine * inference_engine = new BNInferenceEngine( * ( this->_workingSet[this_thread] ) );
         this->_l_inferenceEngine[this_thread] = inference_engine;
-      }
+      //}
     }
   }
 
