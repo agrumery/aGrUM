@@ -268,6 +268,29 @@
   using gum::ApproximationScheme::history;
 }
 
+%extend gum::MCSampling {
+  using gum::ApproximationScheme::setVerbosity;
+  using gum::ApproximationScheme::setEpsilon;
+  using gum::ApproximationScheme::setMinEpsilonRate;
+  using gum::ApproximationScheme::setMaxIter;
+  using gum::ApproximationScheme::setMaxTime;
+  using gum::ApproximationScheme::setPeriodSize;
+  using gum::ApproximationScheme::setBurnIn;
+
+  using gum::ApproximationScheme::verbosity;
+  using gum::ApproximationScheme::epsilon;
+  using gum::ApproximationScheme::minEpsilonRate;
+  using gum::ApproximationScheme::maxIter;
+  using gum::ApproximationScheme::maxTime;
+  using gum::ApproximationScheme::periodSize;
+  using gum::ApproximationScheme::burnIn;
+
+  using gum::ApproximationScheme::nbrIterations;
+  using gum::ApproximationScheme::currentTime;
+
+  using gum::ApproximationScheme::messageApproximationScheme;
+  using gum::ApproximationScheme::history;
+}
 
 /* TEMPLATES INSTANTIATIONS */
 
