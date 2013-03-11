@@ -96,7 +96,7 @@ namespace gum_tests {
         
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+          mcs.insertFileOfEvidence ( GET_PATH_STR ( L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -175,7 +175,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -245,7 +245,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -312,7 +312,7 @@ namespace gum_tests {
         
         // evidence from file
         try {
-          mcs.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
