@@ -156,7 +156,7 @@ namespace gum {
     return partialGraph;
   }
 
-  /// for friendly displaying the content of directed graphs
+  /// for friendly displaying the content of undirected graphs
   std::ostream& operator<< ( std::ostream& stream, const UndiGraph& g ) {
     stream << g.toString();
     return stream;

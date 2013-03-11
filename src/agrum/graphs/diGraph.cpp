@@ -59,8 +59,12 @@ namespace gum {
 
   const std::string DiGraph::toDot(const std::string& name) const {
     std::stringstream strBuff;
-    strBuff << "digraph " << name << " {" << std::endl;
     std::string tab = "     ";
+    strBuff << "digraph " << name << " {" << std::endl;
+    for (DiGraph::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter) {
+      strBuff << tab << *iter << ";" << std::endl;
+    }
+    strBuff << std::endl;
     for (DiGraph::ArcIterator iter = beginArcs(); iter != endArcs(); ++iter) {
       strBuff << tab << iter->tail() << " -> " << iter->head() << ";" << std::endl;
     }
