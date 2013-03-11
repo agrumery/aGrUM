@@ -137,7 +137,8 @@ void test_credal() {
       MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 5 );
+      MCE->setTimeLimit ( 1 );
+      MCE->setIterStop ( 8 );
 
       if ( j == 0 )
         MCE->insertEvidenceFile ( GET_PATH_STR ( forward.evi ) );
@@ -154,7 +155,7 @@ void test_credal() {
 
       //MCE->makeInference_v3();
 
-      
+/*      
       MCSampling<double, LazyPropagation<double> > * MCE2 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
       MCE2->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
       MCE2->setRepetitiveInd ( false );
@@ -181,7 +182,7 @@ void test_credal() {
       std::cout << " iters : " << MCE2->nbrIterations() << std::endl;
       std::cout << " iters/sec : " << MCE2->nbrIterations()*1.0 / timeElapsed << std::endl;
 
-      
+    
       gum::Timer chrono;
       chrono.reset();
       MCE->makeInference_v3();
@@ -271,16 +272,18 @@ void test_credal() {
       std::cout << " v3 better than v2 : " << v3b << std::endl;
       std::cout << " v2 better than v3 : " << v2b << std::endl;
       std::cout << " V3 == v2 : " << v23e << std::endl;
+*/
 
-
-      MCE2->eraseAllEvidence();
-      MCE3->eraseAllEvidence();
+      //MCE2->eraseAllEvidence();
+      //MCE3->eraseAllEvidence();
 
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
 
       //std::vector<double> toto2(MCE->marginalMin("km"));
       //std::cout << toto2 << std::endl;
+      //
+      MCE->makeInference_v3();
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
@@ -306,7 +309,7 @@ void test_credal() {
       //MCE.saveExpectations("./rep.expect");
       MCE->eraseAllEvidence();
       delete MCE;
-      delete MCE2;
+      //delete MCE2;
       delete myCNa;
     }
   }

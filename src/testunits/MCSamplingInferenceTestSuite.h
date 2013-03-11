@@ -159,6 +159,12 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
+        try {
+          mcs.eraseAllEvidence ();
+        } catch ( gum::Exception & e ) {
+          TS_ASSERT ( false );
+        }
+
         clearCNet();
       } // end of : testMCSamplingInference (2U network)
 
@@ -322,6 +328,7 @@ namespace gum_tests {
         
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
+        mcs.setIterStop ( 8 );
 
         MCSamplingListener mcl ( mcs );
 
@@ -333,6 +340,12 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string( "" ) );
+
+        try {
+          mcs.eraseAllEvidence ();
+        } catch ( gum::Exception & e ) {
+          TS_ASSERT ( false );
+        }
 
         clearCNet();
       } // end of : testMCSamplingListener

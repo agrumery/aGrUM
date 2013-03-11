@@ -31,8 +31,6 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   CredalNet< GUM_SCALAR >::~CredalNet() {
-    GUM_DESTRUCTOR ( CredalNet );
-
     if ( __current_bn != NULL )
       delete __current_bn;
 
@@ -41,6 +39,8 @@ namespace gum {
 
     if ( __current_nodeType != NULL )
       delete __current_nodeType;
+
+    GUM_DESTRUCTOR ( CredalNet );
   }
 
   // from BNs with numerators & denominators or cpts & denominators to credal

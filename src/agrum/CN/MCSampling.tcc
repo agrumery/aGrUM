@@ -29,10 +29,11 @@ namespace gum {
         __repetitiveInd = false;
       }
     }
-
+    
     __mcInitApproximationScheme();
-
+    // NO MEM LEAK TILL HERE : before multi threading
     __mcThreadDataCopy();
+    return;
 
     #pragma omp parallel for
     for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
@@ -133,18 +134,20 @@ namespace gum {
         num_threads = omp_get_num_threads();
 
         this->_initThreadsData( num_threads, __storeVertices ); // in infEng
-        _l_inferenceEngine.resize( num_threads ); // in MCSampling
+        _l_inferenceEngine.resize( num_threads, NULL ); // in MCSampling
       } // end of : single region
 
       // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
       // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
-      gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
-      #pragma omp critical(BNInit)
+      //gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
+      #pragma omp critical(Init)
       {
+        gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();//(this->_credalNet->current_bn());
         *thread_bn = this->_credalNet->current_bn();
-      }
-      this->_workingSet[this_thread] = thread_bn;
+      
+        this->_workingSet[this_thread] = thread_bn;
+      
 
       this->_l_marginalMin[this_thread] = this->_marginalMin;
       this->_l_marginalMax[this_thread] = this->_marginalMax;
@@ -152,15 +155,16 @@ namespace gum {
       this->_l_expectationMax[this_thread] = this->_expectationMax;
       this->_l_modal[this_thread] = this->_modal;
 
+      
       if ( __storeVertices )
         this->_l_marginalSets[this_thread] = this->_marginalSets;
 
-      gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
-      this->_workingSetE[this_thread] = evi_list;
+        gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
+        this->_workingSetE[this_thread] = evi_list;
 
-      BNInferenceEngine * inference_engine = new BNInferenceEngine( * ( this->_workingSet[this_thread] ) );
-      this->_l_inferenceEngine[this_thread] = inference_engine;
-      //BNInferenceEngine inference_engine ( * ( this->_workingSet[this_thread] ) );
+        BNInferenceEngine * inference_engine = new BNInferenceEngine( * ( this->_workingSet[this_thread] ) );
+        this->_l_inferenceEngine[this_thread] = inference_engine;
+      }
     }
   }
 
@@ -1081,11 +1085,34 @@ namespace gum {
     //std::cout << "# trajectoires : " << __trajectories.size() << std::endl;
 
   }
-
   
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
     //this->eraseAllEvidence();
+    // delete pointers
+    for ( Size bn = 0; bn < this->_workingSet.size(); bn++ ) {
+      if( __storeVertices )
+        this->_l_marginalSets[bn].clear();
+
+      if ( this->_workingSet[bn] != NULL )
+        delete this->_workingSet[bn];
+
+      if (this->_workingSetE[bn] != NULL ) {
+        for (typename gum::List< const gum::Potential< GUM_SCALAR > * >::iterator it = this->_workingSetE[bn]->begin(); it != this->_workingSetE[bn]->end(); ++it )
+          delete *it;
+
+        delete this->_workingSetE[bn];
+      }
+
+      if ( this->_l_inferenceEngine[bn] != NULL )
+        delete this->_l_inferenceEngine[bn];
+    }
+
+    // clear all vectors and maps
+    this->_workingSet.clear();
+    this->_workingSetE.clear();
+    this->_l_inferenceEngine.clear();
+
     this->_l_marginalMin.clear();
     this->_l_marginalMax.clear();
     this->_l_expectationMin.clear();
@@ -1096,11 +1123,21 @@ namespace gum {
     this->_oldMarginalMin.clear();
     this->_oldMarginalMax.clear();
 
-    for ( Size bn = 0; bn < this->_workingSet.size(); bn++ ) {
-      delete this->_workingSet[bn];
-      delete this->_workingSetE[bn];
-    }
+    this->_evidence.clear();
+    this->_query.clear();
+    
+    this->_marginalMin.clear();
+    this->_marginalMax.clear();
+    this->_expectationMin.clear();
+    this->_expectationMax.clear();
+    this->_marginalSets.clear();
+    this->_dynamicExpMin.clear();
+    this->_dynamicExpMax.clear();
+    this->_modal.clear();
+    this->_marginalSets.clear();
 
+    this->_t0.clear();
+    this->_t1.clear();
   }
 
     /*

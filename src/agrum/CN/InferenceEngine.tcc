@@ -36,6 +36,9 @@ namespace gum {
     _dynamicExpMax.clear();
     _modal.clear();
 
+    _t0.clear();
+    _t1.clear();
+
     for ( gum::DAG::NodeIterator id = _credalNet->current_bn().beginNodes(); id != _credalNet->current_bn().endNodes(); ++id ) {
       int dSize = _credalNet->current_bn().variable ( *id ).domainSize();
       _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
@@ -536,21 +539,30 @@ namespace gum {
   template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::_initThreadsData( const unsigned int & num_threads, const bool __storeVertices ) {
     this->_workingSet.clear();
-    this->_workingSet.resize( num_threads );
+    this->_workingSet.resize( num_threads, NULL );
     this->_workingSetE.clear();
-    this->_workingSetE.resize( num_threads );
+    this->_workingSetE.resize( num_threads, NULL );
 
+    this->_l_marginalMin.clear();
     this->_l_marginalMin.resize( num_threads );
+    this->_l_marginalMax.clear();
     this->_l_marginalMax.resize( num_threads );
+    this->_l_expectationMin.clear();
     this->_l_expectationMin.resize( num_threads );
+    this->_l_expectationMax.clear();
     this->_l_expectationMax.resize( num_threads );
 
-    if ( __storeVertices )
+    if ( __storeVertices ) {
+      this->_l_marginalSets.clear();
       this->_l_marginalSets.resize( num_threads );
+    }
 
+    this->_l_modal.clear();
     this->_l_modal.resize( num_threads );
 
+    this->_oldMarginalMin.clear();
     this->_oldMarginalMin = this->_marginalMin;
+    this->_oldMarginalMax.clear();
     this->_oldMarginalMax = this->_marginalMax;
   }
 
