@@ -14,15 +14,17 @@ import pyAgrum as gum
 
 #print ie.marginalMin(0)
 
-cn=gum.CredalNet("bn_c_3.bif","den_c_3.bif")
-cn.bnToCredal(0.5,False)
+cn=gum.CredalNet("bn_c_8.bif","den_c_8.bif")
+cn.bnToCredal(0.8,False)
 
 ie=gum.MCSampling(cn)
+ie.insertModalsFile("modalities.modal")
 
 ie.setRepetitiveInd(True)
-ie.setTimeLimit(1)
+ie.setTimeLimit(30)
 ie.setIterStop(1000)
 
 ie.makeInference_v3()
 
-print ie.marginalMin("temp_0")
+print ie.dynamicExpMax("temp")
+print ie.dynamicExpMin("temp")

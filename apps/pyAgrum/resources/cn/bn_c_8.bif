@@ -1,0 +1,79 @@
+
+network aGrUM_BN {
+   property version 1.0;
+   property author aGrUM;
+}
+
+variable temp_0 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_1 {
+   type discrete[3] {0, 1, 2};
+}
+
+variable temp_2 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_3 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_4 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_5 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_6 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_7 {
+   type discrete[3] {0, 1, 2};
+}
+variable temp_8 {
+   type discrete[3] {0, 1, 2};
+}
+
+
+probability (temp_0) {
+   default 0.1 0.3 0.6;
+}
+probability (temp_1 | temp_0) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_2 | temp_1) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_3 | temp_2) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_4 | temp_3) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_5 | temp_4) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_6 | temp_5) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_7 | temp_6) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
+probability (temp_8 | temp_7) {
+   (0) 0.33333333333 0.33333333334 0.33333333333;
+   (1) 0.2 0.2 0.6;
+   (2) 0.7 0.2 0.1;
+}
