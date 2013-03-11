@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::CredalNet< double > *cn;
 
       // not dynamic (2U network - fast)
-      void setUp () {
+      void initCNet () {
         BayesNet<double> monBNa;
         BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
         readera.proceed();
@@ -69,7 +69,7 @@ namespace gum_tests {
       }
 
       // dynamic (dynaCheese network - slow)
-      void setUpD () {
+      void initDCNet () {
         BayesNet<double> monBNa;
         BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c_3.bif ) );
         readera.proceed();
@@ -84,19 +84,18 @@ namespace gum_tests {
         cn->bnToCredal(beta, false);
       }
 
-      void tearDown () {
+      void clearCNet () {
         delete cn;
       }
 
       // not dynamic (2U network) - with evidence
-      void testMCSamplingInference () {
-        tearDown();
-        setUp();
+      void /*test*/MCSamplingInference () {
+        initCNet();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
         
         // evidence from file
         try {
-          mcs.insertFileOfEvidence ( GET_PATH_STR ( L2U.evi ) );
+          mcs.insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -159,12 +158,13 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
+
+        clearCNet();
       } // end of : testMCSamplingInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
-      void testMCSamplingInferenceDStrong () {
-        tearDown();
-        setUpD();
+      void /*test*/MCSamplingInferenceDStrong () {
+        initDCNet();
         typedef std::vector< double > exp;
 
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
@@ -175,7 +175,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -185,7 +185,7 @@ namespace gum_tests {
 
         // modalities from file
         try {
-          mcs.insertModals( GET_PATH_STR ( modalities.modal ) );
+          mcs.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -229,12 +229,13 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
+
+        clearCNet();
       } // end of : testMCSamplingInferenceDStrong
 
       // dynamic (dynaCheese) - repetitive indep
-      void testMCSamplingInferenceDRep () {
-        tearDown();
-        setUpD();
+      void /*test*/MCSamplingInferenceDRep () {
+        initDCNet();
         typedef std::vector< double > exp;
 
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
@@ -245,7 +246,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -255,7 +256,7 @@ namespace gum_tests {
 
         // modalities from file
         try {
-          mcs.insertModals( GET_PATH_STR ( modalities.modal ) );
+          mcs.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -300,19 +301,20 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
+
+        clearCNet();
       } // end of : testMCSamplingInferenceDRep (dynamic - dynacheese)
 
 
       // with dynamic network
       void testMCSamplingListener () {
-        tearDown();
-        setUpD();
+        initDCNet();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
 
         
         // evidence from file
         try {
-          mcs.insertFileOfEvidence ( GET_PATH_STR ( f_3.evi ) );
+          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -332,6 +334,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string( "" ) );
 
+        clearCNet();
       } // end of : testMCSamplingListener
 
   }; // end of : class MCSamplingInferenceTestSuite

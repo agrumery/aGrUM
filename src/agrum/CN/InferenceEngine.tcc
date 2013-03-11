@@ -45,7 +45,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  void InferenceEngine< GUM_SCALAR >::insertModals( const std::string &path) {
+  void InferenceEngine< GUM_SCALAR >::insertModalsFile( const std::string &path) {
     std::ifstream mod_stream ( path.c_str(), std::ios::in );
 
     if ( !mod_stream.good() ) {
@@ -135,7 +135,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  void InferenceEngine< GUM_SCALAR >::insertFileOfEvidence ( const std::string &path ) {
+  void InferenceEngine< GUM_SCALAR >::insertEvidenceFile ( const std::string &path ) {
     std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
     if ( !evi_stream.good() ) {
@@ -212,7 +212,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  void InferenceEngine< GUM_SCALAR >::insertQuery ( const std::string &path ) {
+  void InferenceEngine< GUM_SCALAR >::insertQueryFile ( const std::string &path ) {
     std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
     if ( !evi_stream.good() ) {
@@ -927,9 +927,20 @@ namespace gum {
       }
     }
 
-    std::cout << "clusters" << std::endl;
-    std::cout << "_t0 : " << std::endl << _t0 << std::endl;
-    std::cout << "_t1 : " << std::endl << _t1 << std::endl << std::endl;
+    //std::cout << "clusters" << std::endl;
+    //std::cout << "_t0 : " << std::endl << _t0 << std::endl;
+    //std::cout << "_t1 : " << std::endl << _t1 << std::endl << std::endl;
   }
+
+  template< typename GUM_SCALAR >
+  const typename gum::Property< std::vector< gum::NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
+    return _t0;
+  }
+
+  template< typename GUM_SCALAR >
+  const typename gum::Property< std::vector< gum::NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
+    return _t1;
+  }
+
 
 }

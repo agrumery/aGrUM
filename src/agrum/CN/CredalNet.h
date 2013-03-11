@@ -53,6 +53,9 @@ namespace gum {
 
     private:
       // member attributes (initialisation in CredalNet< GUM_SCALAR >::__initCNNets
+      // // min, max and average perturbation of the network ( if asked )
+      double __epsilonMin, __epsilonMax, __epsilonMoy;
+
       double __epsRedund;//= 1e-4;
 
       // farley algorithm
@@ -182,6 +185,10 @@ namespace gum {
       void computeCPTMinMax();
       const std::vector< std::vector< GUM_SCALAR > > & get_CPT_min() const;
       const std::vector< std::vector< GUM_SCALAR > > & get_CPT_max() const;
+
+      const double & getEpsilonMin() const;
+      const double & getEpsilonMax() const;
+      const double & getEpsilonMoy() const;
 
   }; // CredalNet
 

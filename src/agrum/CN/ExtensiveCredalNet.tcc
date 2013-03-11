@@ -24,7 +24,7 @@ namespace gum {
       }
       // add D node, rework cpts
       else {
-        
+
         //NodeId dNodeId = src_bn->add
       }
     }

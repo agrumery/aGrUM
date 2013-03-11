@@ -86,17 +86,17 @@ namespace gum {
 
       // initialize modalities to compute expectations
       // from file
-      void insertModals( const std::string &path);
+      void insertModalsFile( const std::string &path);
       // from map (copy)
       void insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals);
 
-      void insertFileOfEvidence ( const std::string & path );
+      void insertEvidenceFile ( const std::string & path );
       void insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > > & eviMap );
       // ? how the hell am i supposed to use a property without the network ??
       // use map (string instead of nodeId) ?
       void insertEvidence ( const typename gum::Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
 
-      void insertQuery ( const std::string &path );
+      void insertQueryFile ( const std::string &path );
       // why property ??? check old sources
       void insertQuery ( const typename gum::Property< std::vector< bool > >::onNodes &query );
 
@@ -121,6 +121,9 @@ namespace gum {
       void dynamicExpectations(); // if someone forgets the protected call at the end of its own algorithm, the user can call it
 
       std::string toString() const;
+
+      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT0Cluster() const;
+      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT1Cluster() const;
 
   }; // CNInferenceEngine
 

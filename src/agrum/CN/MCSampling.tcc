@@ -232,9 +232,9 @@ namespace gum {
 
       // otherwise you get STUCK !!!
       unsigned int reste = __iterStop % num_threads;
-      if ( reste != 0 ) {
-        __iterStop += reste;
-      }
+      if ( reste != 0 ) 
+        __iterStop += ( __iterStop < num_threads ) ? reste : -reste;
+      // + num_threads if upper value
 
 
       this->setMaxTime( __timeLimit );
@@ -558,7 +558,7 @@ namespace gum {
       __repetitiveInd = false;
     }
 
-    for ( typename gum::Property< std::vector< gum::NodeId > >::onNodes::const_iterator it = this->_t0.begin(); it != this->_t0.end(); ++it ) {
+    /*for ( typename gum::Property< std::vector< gum::NodeId > >::onNodes::const_iterator it = this->_t0.begin(); it != this->_t0.end(); ++it ) {
       __varOrder.push_back ( it.key() );
     }
 
@@ -577,7 +577,7 @@ namespace gum {
       __VERT *= 2;
 
       __varInst.push_back ( std::vector<int> ( 1, 0 ) );
-    }
+    }*/
 
     //__varInst = std::vector< std::vector<int> >(entries);
 
@@ -658,7 +658,7 @@ namespace gum {
       tps_inf.reset();
       //Chrono tps_inf;
       //tps_inf.start();
-      #pragma omp single
+      /*#pragma omp single
       {
         this->initApproximationScheme();
         this->setMaxTime(__timeLimit);
@@ -667,13 +667,13 @@ namespace gum {
         std::cout << "min eps : " << this->epsilon() << std::endl;
         std::cout << "def eps rate : " << this->minEpsilonRate() << std::endl;
         //this->setMinEpsilonRate();
-      }
+      }*/
 
       while ( /*inf_cpt < __VERT &&*/ /*tps_inf.getElapsedTime()*/ /*tps_inf.step() < __timeLimit &&*/ ! all_stop ) {
         #pragma omp atomic
         inf_cpt++;
 
-        #pragma omp single
+        /*#pragma omp single
         {
           #pragma omp flush(inf_cpt)
           int i = tps_inf.step();//tps_inf.getElapsedTimeInSec();
@@ -684,8 +684,8 @@ namespace gum {
 
           if ( inf_cpt >= __VERT )
             stopN = true;
-        }
-        #pragma omp flush(stopN)
+        }*/
+        //#pragma omp flush(stopN)
 
         __verticesSampling();
 
@@ -782,7 +782,7 @@ namespace gum {
             } // end of : all threads
           } // end of : all modalities
         } // end of : all variables
-
+/*
         #pragma omp flush(inf_cpt)
         // compute epsilon if needed
         if(inf_cpt % __iterStop == 0) {
@@ -826,9 +826,9 @@ namespace gum {
             }
           }
           #pragma omp barrier
-        }
+        }*/
 
-        #pragma omp single
+        /*#pragma omp single
         {
           if(this->currentTime() > __timeLimit) {
             if( ! this->continueApproximationScheme(epsilon_max, false, false) ) {
@@ -838,7 +838,7 @@ namespace gum {
               all_stop = true;
             }
           }
-        }
+        }*/
 
         // vertex update
         /*
@@ -928,8 +928,9 @@ namespace gum {
 
         //#pragma omp barrier
 
-        /*#pragma omp single
+        #pragma omp single
         {
+          #pragma omp flush(no_change_iters)
           #pragma omp flush(no_change)
 
           if ( no_change )
@@ -939,10 +940,17 @@ namespace gum {
 
           no_change = true;
 
-          if ( no_change_iters >= __iterStop)
+          if ( no_change_iters >= __iterStop) {
             all_stop = true;
+            std::cout << " no change for " << __iterStop << " iterations " << std::endl;
+          }
+
+          if ( tps_inf.step() > __timeLimit ) {
+            all_stop = true;
+            std::cout << " time limit reached " << std::endl;
+          }
         }
-        */
+        
         #pragma omp flush(inf_cpt)
         #pragma omp flush(all_stop)
 
@@ -1062,12 +1070,12 @@ namespace gum {
 
     //std::cout << toString();
 
-       std::cout << "elapsed time : " << timeElapsed << " seconds" << std::endl;
-       std::cout << "stopping rule met : ";
-       if(!__stopType)
-         std::cout << "no change for " << __iterStop * num_threads << " inferences" << std::endl;
-       else
-         std::cout << "time limit" << std::endl;
+       //std::cout << "elapsed time : " << timeElapsed << " seconds" << std::endl;
+       //std::cout << "stopping rule met : ";
+       //if(!__stopType)
+         //std::cout << "no change for " << __iterStop * num_threads << " inferences" << std::endl;
+       //else
+         //std::cout << "time limit" << std::endl;
 
     std::cout << std::endl << "# inferences : " << inf_cpt << std::endl;
     //std::cout << "# trajectoires : " << __trajectories.size() << std::endl;

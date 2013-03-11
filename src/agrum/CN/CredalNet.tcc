@@ -255,10 +255,12 @@ namespace gum {
       //std::cout << "cas : " << CASES << std::endl;
     } // end of : for each variable
 
-    
-    std::cout << "epsilon min : " << epsi_min << std::endl;
-    std::cout << "epsilon max : " << epsi_max << std::endl;
-    std::cout << "epsilon moyen : " << epsi_moy / epsi_den << std::endl;
+    __epsilonMin = epsi_min;
+    __epsilonMax = epsi_max;
+    __epsilonMoy = epsi_moy;
+    //std::cout << "epsilon min : " << epsi_min << std::endl;
+    //std::cout << "epsilon max : " << epsi_max << std::endl;
+    //std::cout << "epsilon moyen : " << epsi_moy / epsi_den << std::endl;
 
     __intervalToCredal();
   }
@@ -452,8 +454,8 @@ namespace gum {
       } // end of : for each entry
 
       __credalNet_src_cpt.insert ( *node_idIt, var_cpt );
-      std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
-      std::cout << var_cpt << std::endl;
+      //std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
+      //std::cout << var_cpt << std::endl;
 
     } // end of : for each variable (node)
 
@@ -892,6 +894,20 @@ namespace gum {
     return binCptMax;
   }
 
+  template< typename GUM_SCALAR >
+  const double & CredalNet< GUM_SCALAR >::getEpsilonMin() const {
+    return __epsilonMin;
+  }
+
+  template< typename GUM_SCALAR >
+  const double & CredalNet< GUM_SCALAR >::getEpsilonMax() const {
+    return __epsilonMax;
+  }
+
+  template< typename GUM_SCALAR >
+  const double & CredalNet< GUM_SCALAR >::getEpsilonMoy() const {
+    return __epsilonMoy;
+  }
 
 
   template< typename GUM_SCALAR >
@@ -959,6 +975,10 @@ namespace gum {
   void CredalNet< GUM_SCALAR >::__initParams() {
     GUM_TRACE ( "===================================================" );
     GUM_TRACE ( "===================================================" );
+    __epsilonMin = 0;
+    __epsilonMax = 0;
+    __epsilonMoy = 0;
+
     __epsRedund = 1e-4;
 
     // farley algorithm
@@ -1163,19 +1183,40 @@ namespace gum {
 
 
     // cout to null not working in agrum, why ?
+    //
+    // doesn't matter, use temporary file (not working with TestSuite either)
+    //
+ /*   char * lrs_outputs = tmpnam(NULL); 
+    std::string lrslog(lrs_outputs);
+    lrslog += ".lrslog";
+
+    std::ofstream l_file ( lrslog.c_str(), std::ios::out | std::ios::trunc );
+
+    if ( ! l_file.good() )
+      GUM_ERROR ( IOError, "__H2V : could not open lrs log file : " << lrslog );
+
+    std::streambuf *coutbuf = std::cout.rdbuf(); // save old buf
+    std::cout.rdbuf(l_file.rdbuf()); //redirect cout to tmp file
+
+    lrs_main ( 3, args );
+
+    std::cout.rdbuf(coutbuf); //restore standard output again
+    
+    // delete file
+    if( std::remove(lrslog.c_str()) != 0)
+      GUM_ERROR(IOError, "error removing : " + lrslog);
+*/
+    /////
+    /////
+    /////
+
 
     // standard cout to null (avoid lrs flooding)
     int old_cout, new_cout;
     fflush ( stdout );
     old_cout = dup ( 1 );
-
-    // uncomment to log lrs outputs
-    // do not use new_cout
-    //open("lrslog.txt", O_RDWR | O_CREAT | O_APPEND, S_IREAD | S_IWRITE );
-    //dup2(fd,STDOUT_FILENO);
-    //dup2(fd,STDERR_FILENO);
-
-    new_cout = open ( " / dev / null", O_WRONLY );
+    
+    new_cout = open ( "/dev/null", O_WRONLY );
     dup2 ( new_cout, 1 );
     close ( new_cout );
 
@@ -1185,6 +1226,7 @@ namespace gum {
     fflush ( stdout );
     dup2 ( old_cout, 1 );
     close ( old_cout );
+
 
     delete args[2]; delete args[1]; delete args[0];
 

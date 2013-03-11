@@ -133,21 +133,21 @@ void test_credal() {
 
 
       //MCE->insertModals(modals2); //L2U modals
-      MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
-      //MCE->insertModals(modals); //dyna cheese
+      //MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+      MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
       MCE->setTimeLimit ( 5 );
 
       if ( j == 0 )
-        MCE->insertEvidence ( GET_PATH_STR ( forward.evi ) );
+        MCE->insertEvidenceFile ( GET_PATH_STR ( forward.evi ) );
 
       if ( j == 1 )
         //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
-        MCE->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+        MCE->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
-      //MCE.insertEvidence("./temp.evi");
+      //MCE.insertFileOfEvidence("./temp.evi");
 
       //MCE->setIterStop(1001);
       //MCE->makeInference_v2();
@@ -156,10 +156,10 @@ void test_credal() {
 
       
       MCSampling<double, LazyPropagation<double> > * MCE2 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
-      MCE2->insertEvidence ( GET_PATH_STR ( fb.evi ) );
+      MCE2->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
       MCE2->setRepetitiveInd ( false );
       MCE2->setTimeLimit ( 5 );
-      MCE2->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+      MCE2->insertModals( modals ); //dyna cheese
 
       unsigned int sigmaMod = 0;
       unsigned int sigmaExp = 0;
@@ -189,6 +189,19 @@ void test_credal() {
       std::cout << " v3 timeElapsed : " << timeElapsed << std::endl;
       std::cout << " iters : " << MCE->nbrIterations() << std::endl;
       std::cout << " iters/sec : " << MCE->nbrIterations()*1.0 / timeElapsed << std::endl;
+
+      MCSampling<double, LazyPropagation<double> > * MCE3 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      MCE3->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
+      MCE3->setRepetitiveInd ( false );
+      MCE3->setTimeLimit ( 5 );
+      MCE3->insertModals( modals ); //dyna cheese
+
+      gum::Timer chrono3;
+      chrono3.reset();
+      MCE3->makeInference();
+      timeElapsed = chrono3.step();
+      std::cout << " v1 timeElapsed : " << timeElapsed << std::endl;
+
 
       std::cout << " marginals delta : " << std::endl;
       double delta = 0;
@@ -261,6 +274,7 @@ void test_credal() {
 
 
       MCE2->eraseAllEvidence();
+      MCE3->eraseAllEvidence();
 
       //std::vector<double> toto(MCE->dynamicExpMin("A"));
       //std::cout << toto << std::endl;
@@ -278,7 +292,7 @@ void test_credal() {
         //MCE->saveMarginals("./MCr_0.8c_f.mar");
         MCE->saveExpectations ( "./MCs_0.95c_f.exp" );
       } else if ( i == 0 && j == 1 ) {
-        MCE->saveMarginals("./MCr_0.95c_fb.mar");
+        MCE->saveMarginals(GET_PATH_STR ( MCr_0.95c_fb.mar ) );
         MCE->saveExpectations ( "./MCs_0.95c_fb.exp" );
       } else if ( i == 1 && j == 1 ) {
         //MCE->saveMarginals("./MCs_0.95c_fb.mar");
