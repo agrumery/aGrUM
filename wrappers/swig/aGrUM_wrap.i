@@ -268,7 +268,7 @@
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::MCSampling_double {
+%extend gum::MCSampling {
       using gum::InferenceEngine::eraseAllEvidence;
       using gum::InferenceEngine::insertModals;
       using gum::InferenceEngine::insertFileOfEvidence;
