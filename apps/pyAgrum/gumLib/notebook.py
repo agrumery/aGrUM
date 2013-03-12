@@ -66,9 +66,9 @@ def showPosterior(bn,ev,target):
     """
     showProba(getPosterior(bn,ev,target))
 
-def showBN(bn,size="6,6"):
+def showBN(bn,size="4"):
     """
-    Shows a graphviz svg representation of the BN using size
+    Shows a graphviz svg representation of the BN using size ("1" ,"2" , ..., "6")
     """
     import pydot
     import IPython.core.display
@@ -77,3 +77,31 @@ def showBN(bn,size="6,6"):
     p.set_size(size)
     i=IPython.core.display.SVG(p.create_svg())
     IPython.core.display.display(i)
+    
+def animApproximationScheme(apsc):
+  """
+  show an animated version of an approximation scheme
+  """
+  from IPython.display import clear_output,display
+  f=plt.gcf()
+  
+  h=gum.PythonApproximationListener(apsc)
+  
+  def stopper(x):
+    clear_output()
+    print("Solutions : {0}".format(x))
+    print("Time : {0} s".format(apsc.currentTime()))
+    print("Iterations : {0}".format(apsc.nbrIterations()))
+    
+  def progresser(x,y,z):
+    clear_output()
+    if len(apsc.history())<10:
+      plt.xlim(1,10)
+    else:
+      plt.xlim(1,len(apsc.history()))
+    plt.plot(np.log10(apsc.history()), 'g')
+    display(f)
+          
+  h.setWhenStop(stopper)
+  h.setWhenProgress(progresser)
+  
