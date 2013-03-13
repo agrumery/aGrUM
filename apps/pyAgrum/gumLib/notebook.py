@@ -86,6 +86,8 @@ def animApproximationScheme(apsc):
   f=plt.gcf()
   
   h=gum.PythonApproximationListener(apsc)
+  apsc.setVerbosity(True)
+  apsc.listener=h
   
   def stopper(x):
     clear_output()
@@ -104,4 +106,5 @@ def animApproximationScheme(apsc):
           
   h.setWhenStop(stopper)
   h.setWhenProgress(progresser)
+  
   
