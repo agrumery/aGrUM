@@ -18,8 +18,6 @@
 #include <cmath>
 #include <algorithm>
 #include <cstdlib>
-#include <omp.h>
-
 
 //we force MP (not long or GMP)
 #define MP
@@ -27,6 +25,9 @@
 #undef GMP
 #include "lrslib/lrslib.h"
 #include <agrum/core/exceptions.h>
+
+// replace #include <omp.h>
+#include <agrum/CN/OMPThreads.h>
 
 namespace gum {
 

@@ -1,7 +1,6 @@
 #ifndef ___CN_MC_SAMPLING__H__
 #define ___CN_MC_SAMPLING__H__
 
-#include <omp.h>
 #include <limits>
 #include <agrum/CN/InferenceEngine.h>
 

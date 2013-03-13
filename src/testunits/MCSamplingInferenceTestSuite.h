@@ -15,6 +15,13 @@
 
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
+#include <agrum/CN/OMPThreads.h>
+
+/**
+ * Mono-threaded version
+ * TestSuite operations are NOT thread safe (yet ?)
+ */
+
 namespace gum_tests {
   using namespace gum;
   ////////////////////////////////////////////////////////////////////
@@ -90,6 +97,7 @@ namespace gum_tests {
 
       // not dynamic (2U network) - with evidence
       void /*test*/MCSamplingInference () {
+        gum_threads::setNumber(1);
         initCNet();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
         
@@ -119,8 +127,16 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
+        try {
+          mcs.eraseAllEvidence ();
+        } catch ( gum::Exception & e ) {
+          TS_ASSERT ( false );
+        }
+
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
+        mcs.setEpsilon ( 0.1 );
+        mcs.setIterStop ( 8 );
 
         std::map < std::string, std::vector < double > > modals;
         std::vector < double > binaryModal(2,0);
@@ -141,7 +157,7 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-        
+
         try {
           mcs.makeInference_v3();
         } catch ( gum::Exception & e ) {
@@ -169,7 +185,8 @@ namespace gum_tests {
       } // end of : testMCSamplingInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
-      void /*test*/MCSamplingInferenceDStrong () {
+      void testMCSamplingInferenceDStrong () {
+        gum_threads::setNumber(1);
         initDCNet();
         typedef std::vector< double > exp;
 
@@ -188,6 +205,8 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
+        mcs.setEpsilon ( 0.1 );
+        mcs.setIterStop ( 8 );
 
         // modalities from file
         try {
@@ -240,7 +259,8 @@ namespace gum_tests {
       } // end of : testMCSamplingInferenceDStrong
 
       // dynamic (dynaCheese) - repetitive indep
-      void /*test*/MCSamplingInferenceDRep () {
+      void testMCSamplingInferenceDRep () {
+        gum_threads::setNumber(1);
         initDCNet();
         typedef std::vector< double > exp;
 
@@ -259,6 +279,8 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( true );
         mcs.setTimeLimit ( 1 );
+        mcs.setEpsilon ( 0.1 );
+        mcs.setIterStop ( 8 );
 
         // modalities from file
         try {
@@ -314,6 +336,7 @@ namespace gum_tests {
 
       // with dynamic network
       void testMCSamplingListener () {
+        gum_threads::setNumber(1);
         initDCNet();
         MCSampling < double, LazyPropagation < double > > mcs ( *cn );
 
@@ -328,6 +351,7 @@ namespace gum_tests {
         
         mcs.setRepetitiveInd ( false );
         mcs.setTimeLimit ( 1 );
+        mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
 
         MCSamplingListener mcl ( mcs );

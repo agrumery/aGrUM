@@ -1,6 +1,3 @@
-#include <agrum/core/exceptions.h>
-#include <agrum/CN/CredalNet.h>
-
 namespace gum {
 
   template< typename GUM_SCALAR >
@@ -1290,8 +1287,8 @@ namespace gum {
 
       #pragma omp parallel
       {
-        int this_thread = omp_get_thread_num();
-        int num_threads = omp_get_num_threads();
+        int this_thread = gum_threads::getThreadNumber();//omp_get_thread_num();
+        int num_threads = gum_threads::getNumberOfRunningThreads();//omp_get_num_threads();
 
         size_t begin_pos = ( this_thread + 0 ) * v_rep.size() / num_threads;
         size_t end_pos = ( this_thread + 1 ) * v_rep.size() / num_threads;

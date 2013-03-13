@@ -507,7 +507,7 @@ namespace gum {
 
     #pragma omp parallel
     {
-      unsigned int threadId = omp_get_thread_num();
+      unsigned int threadId = gum_threads::getThreadNumber();//omp_get_thread_num();
 
       if ( ! this->_l_modal[threadId].empty() ) {
         #pragma omp for
@@ -575,7 +575,7 @@ namespace gum {
       GUM_SCALAR delta;
 
       unsigned int dSize;
-      unsigned int tId = omp_get_thread_num();
+      unsigned int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
       #pragma omp for
       for ( Size i = 0; i < this->_workingSet[tId]->size(); i++ ) {
         dSize = this->_l_marginalMin[tId][i].size();
@@ -611,7 +611,7 @@ namespace gum {
     #pragma omp parallel
     {
       unsigned int dSize;
-      unsigned int threadId = omp_get_thread_num();
+      unsigned int threadId = gum_threads::getThreadNumber();//omp_get_thread_num();
       #pragma omp for
       for ( Size i = 0; i < this->_workingSet[threadId]->size(); i++ ) {
         dSize = this->_l_marginalMin[threadId][i].size();
@@ -644,7 +644,7 @@ namespace gum {
     #pragma omp parallel
     {
       unsigned int dSize;
-      unsigned int threadId = omp_get_thread_num();
+      unsigned int threadId = gum_threads::getThreadNumber();//omp_get_thread_num();
       #pragma omp for
       for ( Size i = 0; i < this->_workingSet[threadId]->size(); i++ ) {
         dSize = this->_l_marginalMin[threadId][i].size();
@@ -673,7 +673,7 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   inline void InferenceEngine< GUM_SCALAR >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices ) {
-    unsigned int tId = omp_get_thread_num();
+    unsigned int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
     // save E(X)
     if( ! this->_l_modal[tId].empty() ) {
       std::string var_name, time_step;

@@ -17,6 +17,8 @@
 
 //#include <agrum/CN/MCSamplingInferenceTestSuite.h>
 
+#include <agrum/CN/OMPThreads.h>
+
 using namespace gum;
 
 
@@ -26,16 +28,35 @@ using namespace gum;
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
 void test_credal() {
+/////////////// OMP test stuff ///////////////////
+
+  std::cout << "isOMP () ? : " << gum_threads::isOMP() << std::endl;
+  std::cout << "threads : " << gum_threads::getMaxNumberOfThreads() << std::endl;
+  gum_threads::setNumberOfThreads( gum_threads::getNumberOfLogicalProcessors()*2 );
+  std::cout << "new number : " << gum_threads::getMaxNumberOfThreads() << std::endl;
+
+  std::cout << "number of procs : " << gum_threads::getNumberOfLogicalProcessors() << std::endl;
+
+  //gum_threads::setDynamicThreadsNumber(true);
+  //gum_threads::setNestedParallelism(true);
+
+  std::cout << "dynamic threads : " << gum_threads::getDynamicThreadsNumber() << std::endl;
+  std::cout << "nested parallelism : " << gum_threads::getNestedParallelism() << std::endl;
+  std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
+  std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
+
+  
+//////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, //GET_PATH_STR ( 2Umin.bif ) );
- GET_PATH_STR ( bn_c.bif ) );
+  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
+ //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, //GET_PATH_STR ( 2Umax.bif ) );
- GET_PATH_STR ( den_c.bif ) );
+  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
+ //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
 /*
@@ -109,9 +130,9 @@ void test_credal() {
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
-      //myCNa->intervalToCredal(0); // 2U network
+      myCNa->intervalToCredal(0); // 2U network
 
-       
+       /*
       if ( i == 0 )
         myCNa->bnToCredal ( 0.95, false );
 
@@ -119,9 +140,9 @@ void test_credal() {
         myCNa->bnToCredal ( 0.8, false );
 
       if ( i == 2 )
-        myCNa->bnToCredal ( 0.85, false );
+        myCNa->bnToCredal ( 0.85, false );*/
 
-      myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
+      //myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
 
       //std::cout << myCNa->toString() << std::endl;
       // dynacheese network
@@ -132,20 +153,20 @@ void test_credal() {
 
 
 
-      //MCE->insertModals(modals2); //L2U modals
-      //MCE->insertModals( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
-      MCE->insertModals(modals); //dyna cheese
+      MCE->insertModals(modals2); //L2U modals
+      //MCE->insertModalsFile( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
+      //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 1 );
-      MCE->setIterStop ( 8 );
+      MCE->setTimeLimit ( 5 );
+      MCE->setIterStop ( 1000 );
 
       if ( j == 0 )
         MCE->insertEvidenceFile ( GET_PATH_STR ( forward.evi ) );
 
       if ( j == 1 )
-        //MCE->insertEvidence ( GET_PATH_STR ( L2U.evi ) );
-        MCE->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
+        MCE->insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
+        //MCE->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
       //MCE.insertFileOfEvidence("./temp.evi");
@@ -284,6 +305,9 @@ void test_credal() {
       //std::cout << toto2 << std::endl;
       //
       MCE->makeInference_v3();
+std::cout << MCE->messageApproximationScheme() << std::endl;
+std::cout << MCE->currentTime() << std::endl;
+std::cout << MCE->nbrIterations() << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
