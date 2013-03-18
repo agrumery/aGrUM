@@ -535,9 +535,57 @@ namespace gum {
     } // end of : parallel region
   }
 
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::_optFusion() {
+    typedef std::vector< std::vector< std::vector< bool > > > dBN;
+
+    unsigned int dSize;
+
+    std::cout << "thread opt fusion : " << this->_l_marginalMin.size() << std::endl;
+    std::cout << "opt size : " << this->_l_optimalNet[0]->getEntrySize() << std::endl;
+
+    // no parallel insert in hash-tables (OptBN)
+    for ( Size i = 0; i < this->_workingSet[0]->size(); i++ ) {
+      std::cout << this->_workingSet[0]->variable(i).name() << std::endl;
+      dSize = this->_l_marginalMin[0][i].size();
+      for ( Size j = 0; j < dSize; j++ ) {
+        std::cout << "\t mod : " << j << std::endl;
+        // go through all threads
+        std::vector< unsigned int > keymin(3);
+        keymin[0] = i; keymin[1] = j; keymin[2] = 0;
+        std::vector< unsigned int > keymax(keymin);
+        keymax[2] = 1;
+
+        for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
+          if ( this->_l_marginalMin[tId][i][j] == this->_marginalMin[i][j] ) {
+            std::cout << "\t\t min : ";
+            std::vector< dBN* > * tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymin );
+            std::cout << " size : " << tOpts->size() << std::endl;
+            for ( Size bn = 0; bn < tOpts->size(); bn++ )
+              _fusionOpt.insertCopyNoCheck( (*tOpts)[bn], keymin/*, false */);
+          }
+          //this->_marginalMin[i][j] = this->_l_marginalMin[tId][i][j];
+          if ( this->_l_marginalMax[tId][i][j] == this->_marginalMax[i][j] ) {
+            std::cout << "\t\t max : ";
+            std::vector< dBN* > * tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymax );
+            std::cout << " size : " << tOpts->size() << std::endl;
+            for ( Size bn = 0; bn < tOpts->size(); bn++ )
+              _fusionOpt.insertCopyNoCheck( (*tOpts)[bn], keymax/*, false */);
+          }
+        } // end of : all threads
+      } // end of : all modalities
+    } // end of : all variables
+
+    std::cout << "fusion size : " << _fusionOpt.getEntrySize() << std::endl;
+  }
 
   template< typename GUM_SCALAR >
-  void InferenceEngine< GUM_SCALAR >::_initThreadsData( const unsigned int & num_threads, const bool __storeVertices ) {
+  OptBN<GUM_SCALAR> * InferenceEngine< GUM_SCALAR >::getOptBN () {
+    return &_fusionOpt;
+  }
+
+  template< typename GUM_SCALAR >
+  void InferenceEngine< GUM_SCALAR >::_initThreadsData( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ) {
     this->_workingSet.clear();
     this->_workingSet.resize( num_threads, NULL );
     this->_workingSetE.clear();
@@ -555,6 +603,15 @@ namespace gum {
     if ( __storeVertices ) {
       this->_l_marginalSets.clear();
       this->_l_marginalSets.resize( num_threads );
+    }
+
+    if ( __storeBNOpt ) {
+      for ( Size ptr = 0; ptr < this->_l_optimalNet.size(); ptr++ )
+        if ( this->_l_optimalNet[ptr] != NULL )
+          delete this->_l_optimalNet[ptr];
+
+      this->_l_optimalNet.clear();
+      this->_l_optimalNet.resize( num_threads );
     }
 
     this->_l_modal.clear();
@@ -623,7 +680,7 @@ namespace gum {
             if ( this->_l_marginalMax[tId][i][j] > this->_marginalMax[i][j] )
               this->_marginalMax[i][j] = this->_l_marginalMax[tId][i][j];
           } // end of : all threads
-          
+          /*
           // update them
           for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
             //if ( this->_l_marginalMin[tId][i][j] > this->_marginalMin[i][j] )
@@ -631,7 +688,7 @@ namespace gum {
             //if ( this->_l_marginalMax[tId][i][j] < this->_oldMarginalMax[i][j] )
               this->_l_marginalMax[tId][i][j] = this->_marginalMax[i][j];
           } // end of : all threads
-          
+          */
         } // end of : all modalities
       } // end of : all variables
     } // end of : parallel region
@@ -656,7 +713,7 @@ namespace gum {
             if ( this->_l_marginalMax[tId][i][j] > this->_oldMarginalMax[i][j] )
               this->_oldMarginalMax[i][j] = this->_l_marginalMax[tId][i][j];
           } // end of : all threads
-          
+          /*
           // update them
           for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
             //if ( this->_l_marginalMin[tId][i][j] > this->_oldMarginalMin[i][j] )
@@ -664,7 +721,7 @@ namespace gum {
             //if ( this->_l_marginalMax[tId][i][j] < this->_oldMarginalMax[i][j] )
               this->_l_marginalMax[tId][i][j] = this->_oldMarginalMax[i][j];
           } // end of : all threads
-          
+          */
         } // end of : all modalities
       } // end of : all variables
     } // end of : parallel region
@@ -672,7 +729,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  inline void InferenceEngine< GUM_SCALAR >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices ) {
+  inline bool InferenceEngine< GUM_SCALAR >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices, const bool __storeBNOpt ) {
     unsigned int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
     // save E(X)
     if( ! this->_l_modal[tId].empty() ) {
@@ -698,15 +755,44 @@ namespace gum {
 
     bool newOne = false;
     bool added = false;
+    bool result = false;
     // for burn in, we need to keep checking on local marginals and not global ones (faster inference)
     for( Size mod = 0; mod < vertex.size(); mod++ ) {
-      if(vertex[mod] <= this->_l_marginalMin[tId][id][mod]) {
+      if(vertex[mod] < this->_l_marginalMin[tId][id][mod]) {
         this->_l_marginalMin[tId][id][mod] = vertex[mod];
         newOne = true;
+        if ( __storeBNOpt ) {
+          std::vector< unsigned int > key(3);
+          key[0] = id; key[1] = mod; key[2] = 0;
+          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, true) )
+            result = true;
+        }
       }
-      if(vertex[mod] >= this->_l_marginalMax[tId][id][mod]) {
+      if(vertex[mod] > this->_l_marginalMax[tId][id][mod]) {
         this->_l_marginalMax[tId][id][mod] = vertex[mod];
         newOne = true;
+        if ( __storeBNOpt ) {
+          std::vector< unsigned int > key(3);
+          key[0] = id; key[1] = mod; key[2] = 1;
+          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, true) )
+            result = true;
+        }
+      }
+      else if ( vertex[mod] == this->_l_marginalMin[tId][id][mod] 
+              || vertex[mod] == this->_l_marginalMax[tId][id][mod] ) {
+        newOne = true;
+        if ( __storeBNOpt && vertex[mod] == this->_l_marginalMin[tId][id][mod] ) {
+          std::vector< unsigned int > key(3);
+          key[0] = id; key[1] = mod; key[2] = 0;
+          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, false) )
+            result = true;
+        }
+        if ( __storeBNOpt && vertex[mod] == this->_l_marginalMax[tId][id][mod] ) {
+          std::vector< unsigned int > key(3);
+          key[0] = id; key[1] = mod; key[2] = 1;
+          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, false) )
+            result = true;
+        }
       }
       // store point to compute credal set vertices.
       // check for redundancy at each step or at the end ?
@@ -715,6 +801,13 @@ namespace gum {
         added = true;
       }
     }
+
+    // if all variables didn't get better marginals, we will delete
+    // this->_l_optimalNet[tId]->getCurrentSample() ( the caller will )
+    if ( __storeBNOpt && result )
+      return true;
+
+    return false;
 
   }
 

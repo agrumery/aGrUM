@@ -10,7 +10,7 @@
 #include <agrum/CN/InferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
 #include <agrum/CN/LocalSearch.h>
-#include <agrum/CN/LoopyPropagation_v0.h>
+#include <agrum/CN/LoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 #include <agrum/CN/ExtensiveCredalNet.h>
@@ -18,6 +18,8 @@
 //#include <agrum/CN/MCSamplingInferenceTestSuite.h>
 
 #include <agrum/CN/OMPThreads.h>
+
+#include <agrum/CN/OptBN.h>
 
 using namespace gum;
 
@@ -45,6 +47,11 @@ void test_credal() {
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
+  //gum_threads::setNumberOfThreads(1);
+
+// storeBN test (compilation)
+
+
   
 //////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
@@ -59,14 +66,14 @@ void test_credal() {
  //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
-/*
+
   // (G)(L)2U test
   CredalNet<double> myCNb(monBNa, monBNb);
 
   myCNb.intervalToCredal(0);
-  std::cout << "computing min/max vertex" << std::endl;
+  //std::cout << "computing min/max vertex" << std::endl;
   myCNb.computeCPTMinMax();
-  std::cout << "computing done" << std::endl;
+  //std::cout << "computing done" << std::endl;
   LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb, myCNb.current_bn());
 
   //lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
@@ -78,12 +85,13 @@ void test_credal() {
   lp.insertEvidence(eviMap);
 
   lp.makeInference();
-  lp.saveInference("test.marginals");
-  lp.saveMarginals("l2u.marginals");
+  lp.saveInference ( GET_PATH_STR ( test.marginals ) );
+  lp.saveMarginals ( GET_PATH_STR ( l2u.marginals ) );
 
-  
+  //lp.eraseAllEvidence();
+  return;
   // LocalSearch test
-   
+/*  
   LocalSearch<double, LazyPropagation<double> > ls(myCNb);
   //ls.insertEvidence( GET_PATH_STR ( L2U.evi ) );
   ls.insertEvidence(eviMap);
@@ -158,8 +166,10 @@ void test_credal() {
       //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 5 );
+      MCE->setTimeLimit ( 1 );
       MCE->setIterStop ( 1000 );
+
+      MCE->storeBNOpt ( true );
 
       if ( j == 0 )
         MCE->insertEvidenceFile ( GET_PATH_STR ( forward.evi ) );
@@ -304,10 +314,32 @@ void test_credal() {
       //std::vector<double> toto2(MCE->marginalMin("km"));
       //std::cout << toto2 << std::endl;
       //
-      MCE->makeInference_v3();
+      MCE->makeInference();
 std::cout << MCE->messageApproximationScheme() << std::endl;
 std::cout << MCE->currentTime() << std::endl;
 std::cout << MCE->nbrIterations() << std::endl;
+
+std::vector< unsigned int > key(3);
+key[0] = 0; key[1] = 1; key[2] = 0;
+//const std::vector< unsigned int > key(key1);
+
+typedef std::vector< std::vector< std::vector< bool > > > dBN;
+//////////////////////////////////////////////////////////////////////////
+// this stuff can lead to deletes in wrong places
+// DO NOY COPY anything !
+OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
+
+std::vector< dBN* > * tOpts = opt->getBNOptsFromKey( key ); 
+//////////////////////////////////////////////////////////////////////////
+unsigned int bnSet = tOpts->size();
+std::cout << "bn opts de nodeid 0 : " << bnSet << std::endl;
+
+
+for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+  std::cout << *(*tOpts)[bn] << std::endl;
+}
+
+std::cout << "deleted nets : " << MCE->notOptDelete << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
@@ -416,5 +448,9 @@ int main ( int argc, char *argv[] ) {
   } catch (gum::Exception& e) {
     GUM_SHOWERROR(e);
   }
+
+  std::cout << "Press ENTER to continue...";
+  std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
+
   return EXIT_SUCCESS;
 }

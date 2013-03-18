@@ -5,6 +5,8 @@
   #include <omp.h>
 #endif
 
+// namespace gum
+// namespace omp
 namespace gum_threads {
 
   inline bool isOMP () {

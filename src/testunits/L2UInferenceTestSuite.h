@@ -2,10 +2,9 @@
 #include <string>
 
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/LoopyPropagation.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -25,14 +24,14 @@
 namespace gum_tests {
   using namespace gum;
   ////////////////////////////////////////////////////////////////////
-  class MCSamplingListener : public gum::ApproximationSchemeListener {
+  class L2UListener : public gum::ApproximationSchemeListener {
     private :
       int __nbr;
       std::string __msg;
     protected :
 
     public :
-      MCSamplingListener( gum::ApproximationScheme & aS ) : gum::ApproximationSchemeListener ( aS ), __nbr ( 0 ), __msg ( "" ) {};
+      L2UListener( gum::ApproximationScheme & aS ) : gum::ApproximationSchemeListener ( aS ), __nbr ( 0 ), __msg ( "" ) {};
 
       void whenProgress ( const void * buffer, const gum::Size a, const double b, const double c ) {
         __nbr++;
@@ -52,7 +51,7 @@ namespace gum_tests {
   }; // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  class MCSamplingInferenceTestSuite : public CxxTest::TestSuite {
+  class L2UInferenceTestSuite : public CxxTest::TestSuite {
     private :
 
     protected :
@@ -79,7 +78,7 @@ namespace gum_tests {
       }
 
       // dynamic (dynaCheese network - slow)
-      void initDCNet () {
+     /* void initDCNet () {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
@@ -95,26 +94,25 @@ namespace gum_tests {
 
         double beta = 0.8;
         cn->bnToCredal(beta, false);
-      }
+      }*/
 
       void clearCNet () {
         delete cn;
       }
 
       // not dynamic (2U network) - with evidence
-      void /*test*/MCSamplingInference () {
+      void testL2UInference () {
         initCNet();
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
-        
+        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
         // evidence from file
         try {
-          mcs.insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
+          lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.eraseAllEvidence ();
+          lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -127,21 +125,16 @@ namespace gum_tests {
         eviMap["G"] = evi0;
 
         try {
-          mcs.insertEvidence ( eviMap );
+          lp.insertEvidence ( eviMap );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.eraseAllEvidence ();
+          lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-
-        mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
 
         std::map < std::string, std::vector < double > > modals;
         std::vector < double > binaryModal(2,0);
@@ -158,43 +151,43 @@ namespace gum_tests {
         }
 
         try {
-          mcs.insertModals( modals );
+          lp.insertModals( modals );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.makeInference();
+          lp.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            std::vector< double > inf ( mcs.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
+            std::vector< double > inf ( lp.marginalMin ( *node_idIt ) );
+            std::vector< double > sup ( lp.marginalMax ( *node_idIt ) );
+            //double e_inf = lp.expectationMin ( *node_idIt );
+            //double e_sup = lp.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.eraseAllEvidence ();
+          lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         clearCNet();
-      } // end of : testMCSamplingInference (2U network)
+      } // end of : testL2UInference (2U network)
 
-      // dynamic (dynaCheese) - strong indep
-      void testMCSamplingInferenceDStrong () {
+/*      // dynamic (dynaCheese) - strong indep
+      void testL2UInferenceD () {
         initDCNet();
         typedef std::vector< double > exp;
 
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
         
         //////////////////////////////////////////////////////
         // strong independence
@@ -202,42 +195,37 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
-        mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
-
         // modalities from file
         try {
-          mcs.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
+          lp.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
         
         try {
-          mcs.makeInference();
+          lp.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            exp inf ( mcs.marginalMin ( *node_idIt ) );
-            exp sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
+            exp inf ( lp.marginalMin ( *node_idIt ) );
+            exp sup ( lp.marginalMax ( *node_idIt ) );
+            double e_inf = lp.expectationMin ( *node_idIt );
+            double e_sup = lp.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.dynamicExpectations();
+          lp.dynamicExpectations();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -247,135 +235,54 @@ namespace gum_tests {
           //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
           //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
           //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-          exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
-          exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
+          exp etemp_inf ( lp.dynamicExpMin ( "temp" ) );
+          exp etemp_sup ( lp.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          mcs.eraseAllEvidence ();
+          lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         clearCNet();
-      } // end of : testMCSamplingInferenceDStrong
-
-      // dynamic (dynaCheese) - repetitive indep
-      void testMCSamplingInferenceDRep () {
-        initDCNet();
-        typedef std::vector< double > exp;
-
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
-
-        //////////////////////////////////////////////////////
-        // repetitive independence
-        //////////////////////////////////////////////////////
-
-        // evidence from file
-        try {
-          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-
-        mcs.setRepetitiveInd ( true );
-        mcs.setTimeLimit ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
-
-        // modalities from file
-        try {
-          mcs.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-        
-        try {
-          mcs.makeInference();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-          GUM_SHOWERROR(e);
-        }
-
-        try {
-          for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            exp inf ( mcs.marginalMin ( *node_idIt ) );
-            exp sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
-          }
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-
-        try {
-          mcs.dynamicExpectations();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-
-        try {
-          //exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-          //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-          //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-          //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-          exp etemp_inf ( mcs.dynamicExpMin ( "temp" ) );
-          exp etemp_sup ( mcs.dynamicExpMax ( "temp" ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-
-        try {
-          mcs.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
-        }
-
-        clearCNet();
-      } // end of : testMCSamplingInferenceDRep (dynamic - dynacheese)
-
-
+      } // end of : testL2UInferenceD
+*/
+      
       // with dynamic network
-      void testMCSamplingListener () {
+      /*void testL2UListener () {
         initDCNet();
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
-
+        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
         
         // evidence from file
         try {
-          mcs.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-        
-        
-        mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
-
-        MCSamplingListener mcl ( mcs );
+       
+        L2UListener mcl ( lp );
 
         try {
-          mcs.makeInference();
+          lp.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
-        TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
+        TS_ASSERT_EQUALS ( mcl.nbr() * lp.periodSize() + lp.burnIn(), lp.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string( "" ) );
 
         try {
-          mcs.eraseAllEvidence ();
+          lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         clearCNet();
-      } // end of : testMCSamplingListener
+      } // end of : testL2UListener*/
 
-  }; // end of : class MCSamplingInferenceTestSuite
+  }; // end of : class L2UInferenceTestSuite
 
 } // end of : namespace gum_tests

@@ -15,9 +15,8 @@ namespace gum {
 
       bool __stopType; // false if done within __timeLimit
       bool __storeVertices;
+      bool __storeBNOpt;
 
-      //typename std::vector< gum::BayesNet< GUM_SCALAR > * > __workingSet;
-      //typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > __workingSetE;
       typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
 
       std::vector< gum::NodeId > __varOrder;
@@ -26,6 +25,8 @@ namespace gum {
       bool stopN;// = false;
 
       inline void __verticesSampling();
+      // test another sampling method
+
       inline void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
       void __mcInitApproximationScheme();
       void __mcThreadDataCopy();
@@ -40,8 +41,6 @@ namespace gum {
       virtual ~MCSampling();
 
       void makeInference();
-      void makeInference_v2();
-      void makeInference_v3();
 
       void eraseAllEvidence();
 
@@ -52,7 +51,19 @@ namespace gum {
       void setIterStop ( const int &no_change_time_limit );
       void setAll ( const bool repetitive, const int &time_limit, const int &no_change_time_limit );
 
-      //PH std::string toString() const;      
+      // this will call funcs in InferenceEngine and will be stored there (since more algorithms can do the same thing, but not the same way)
+      void storeVertices ( const bool value );
+      void storeBNOpt ( const bool value );
+
+      //PH std::string toString() const;
+      
+
+      //// debug /////
+      
+      unsigned int notOptDelete; 
+      
+      ////////////////
+
   };
 
 } // namespace cn

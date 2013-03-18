@@ -1225,7 +1225,7 @@ namespace gum {
     close ( old_cout );
 
 
-    delete args[2]; delete args[1]; delete args[0];
+    delete[] args[2]; delete[] args[1]; delete[] args[0];
 
     // read V rep file
     std::ifstream v_file ( extfile.c_str() /*extfilename.c_str()*/, std::ios::in );
@@ -1239,7 +1239,7 @@ namespace gum {
 
     size_t pos, end_pos;
     bool keep_going = true;
-    int vertices = 0;
+    //int vertices;
 
     std::vector< GUM_SCALAR > vertex;
 
@@ -1251,10 +1251,11 @@ namespace gum {
       if ( line.size() == 0 ) continue;
       else if ( line.compare ( "end" ) == 0 ) {
         keep_going = false;
-        getline ( v_file, line );
+        // this is to get vertices number :
+        /*getline ( v_file, line );
         pos = line.find ( "vertices = " );
         end_pos = line.find ( "rays", pos + 9 );
-        vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str() );
+        vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str() );*/
         break;
       } else if ( line[1] != '1' ) {
         GUM_ERROR ( IOError, "__H2V() : reading something other than a vertex from lrs output file : " );
@@ -1300,7 +1301,7 @@ namespace gum {
 
           bool thread_redund = true;
 
-          for ( int modality = 0; modality < vertex.size(); modality++ ) {
+          for ( unsigned int modality = 0; modality < vertex.size(); modality++ ) {
             if ( fabs ( vertex[modality] - v_rep[p][modality] ) > __epsRedund ) {
               thread_redund = false;
               break;

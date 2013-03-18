@@ -68,6 +68,6 @@ namespace gum {
 
 }
 
-#include "agrum/CN/ExtensiveCredalNet.tcc";
+#include <agrum/CN/ExtensiveCredalNet.tcc>
 
 #endif

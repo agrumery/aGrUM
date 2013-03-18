@@ -2,6 +2,7 @@
 #define __CN_INFERENCE_ENGINE__H__
 
 #include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/CN/OptBN.h>
 
 namespace gum {
 
@@ -36,6 +37,9 @@ namespace gum {
 
       typename std::vector< bnet * > _workingSet;
       typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > _workingSetE;
+      ////// remember sampled dBNs //////
+      std::vector< OptBN< GUM_SCALAR >* > _l_optimalNet;
+      OptBN< GUM_SCALAR > _fusionOpt;
 
 //////////////////////////////////////////////////////////////
 
@@ -65,15 +69,17 @@ namespace gum {
       void _dynamicExpectations();
       void _initExpectations();
 
-      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices ); // called once
+      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ); // called once
 
       // inline stuff ( algorithms are easier to read with those )
-      inline void _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices );
+      // true if sampled net store
+      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices, const bool __storeBNOpt );
       inline void _updateMarginals();
       inline const GUM_SCALAR _computeEpsilon();
 
       void _updateOldMarginals(); // called once only
       void _expFusion(); // called once
+      void _optFusion(); // called once
       void _verticesFusion(); // called ?? not done yet
 
 
@@ -124,6 +130,8 @@ namespace gum {
 
       const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT0Cluster() const;
       const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT1Cluster() const;
+
+      OptBN<GUM_SCALAR> * getOptBN ();
 
   }; // CNInferenceEngine
 
