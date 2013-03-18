@@ -48,7 +48,7 @@ namespace gum_tests {
       std::string & msg() {
         return __msg;
       }
-  }; // end of : class mcSamplingListener
+  }; // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
   class L2UInferenceTestSuite : public CxxTest::TestSuite {
