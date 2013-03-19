@@ -9,7 +9,7 @@
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/InferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
-#include <agrum/CN/LocalSearch.h>
+//#include <agrum/CN/LocalSearch.h>
 #include <agrum/CN/LoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -88,7 +88,7 @@ void test_credal() {
   lp.saveInference ( GET_PATH_STR ( test.marginals ) );
   lp.saveMarginals ( GET_PATH_STR ( l2u.marginals ) );
 
-  //lp.eraseAllEvidence();
+  lp.eraseAllEvidence();
   return;
   // LocalSearch test
 /*  

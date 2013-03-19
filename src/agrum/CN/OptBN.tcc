@@ -31,14 +31,14 @@ namespace gum {
     // it is clear we will use the BN --> { var - mod - min|max } map
     typedef typename std::map< dBN*, std::vector< std::vector< unsigned int > > > dBNKey;
 
-    std::cout << "nb pointers : " << dBNToVar.size() << std::endl;
+    //std::cout << "nb pointers : " << dBNToVar.size() << std::endl;
     unsigned int cpt = 0;
     for ( dBNKey::iterator it = dBNToVar.begin(); it != dBNToVar.end(); ++it ) {
       delete it->first;
       cpt++;
-      std::cout << " #delete : " << cpt << "\r";
+      //std::cout << " #delete : " << cpt << "\r";
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
     dBNToVar.clear();
     varToBN.clear(); // all pointers should have been deleted BEFORE
 

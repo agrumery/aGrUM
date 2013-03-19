@@ -1,7 +1,7 @@
 #ifndef __LOOPY_PROPAGATION__H__
 #define __LOOPY_PROPAGATION__H__
 
-#include "CredalNet.h"
+#include <agrum/CN/CredalNet.h>
 //#include "PearlPropagation.h"
 #include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/core/sequence.h>
@@ -15,7 +15,7 @@
 
 namespace gum
 {
-	template<typename GUM_SCALAR>
+	template< typename GUM_SCALAR >
 	class LoopyPropagation : public InferenceEngine<GUM_SCALAR>
 	{
 	public:

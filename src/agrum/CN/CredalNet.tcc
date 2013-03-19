@@ -858,7 +858,7 @@ namespace gum {
     binCptMin.resize(__src_bn.size());
     binCptMax.resize(__src_bn.size());
     for ( gum::DAG::NodeIterator node_idIt = __src_bn.beginNodes(); node_idIt != __src_bn.endNodes(); ++node_idIt ) {
-      std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
+      //std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
       int pConf = credalNet_cpt()[*node_idIt].size();
       std::vector< GUM_SCALAR > min(pConf);
       std::vector< GUM_SCALAR > max(pConf);
@@ -869,9 +869,9 @@ namespace gum {
           v2 = credalNet_cpt()[*node_idIt][pconf][1][1];
         else
           v2 = v1;
-        std::cout << "pconf : " << pconf << std::endl;
-        std::cout << credalNet_cpt()[*node_idIt][pconf] << std::endl;
-        std::cout << "v1, v2 : " << v1 << ", " << v2 << std::endl;
+        //std::cout << "pconf : " << pconf << std::endl;
+        //std::cout << credalNet_cpt()[*node_idIt][pconf] << std::endl;
+        //std::cout << "v1, v2 : " << v1 << ", " << v2 << std::endl;
         GUM_SCALAR delta = v1 - v2;
         min[pconf] = (delta >= 0) ? v2 : v1;
         max[pconf] = (delta >= 0) ? v1 : v2;

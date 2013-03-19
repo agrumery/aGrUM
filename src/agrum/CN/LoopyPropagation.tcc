@@ -1,4 +1,4 @@
-#include "LoopyPropagation.h"
+#include <agrum/CN/LoopyPropagation.h>
 
 template<typename GUM_SCALAR>
 const gum::BayesNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::bn() const
@@ -45,7 +45,7 @@ const gum::CredalNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::get_cn() co
 template<typename GUM_SCALAR>
 void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path) 
 {
-  std::cout << "\n\n\t\t SAVING Inference results\n\n" << std::endl;
+  //std::cout << "\n\n\t\t SAVING Inference results\n\n" << std::endl;
   std::string path_name = path.substr(0,path.size()-4);
   path_name = path_name + ".res";
   
@@ -55,8 +55,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path)
   
   if(!res.good())
   {
-    std::cout << "impossible d'ouvrir le fichier res" << std::endl;
-    return;
+    GUM_ERROR ( NotFound, "LoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + path_name )
+    //std::cout << "LoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : impossible d'ouvrir le fichier res" << std::endl;
+    //return;
   }
   
   std::string ext = path.substr(path.size()-3,path.size());
@@ -66,8 +67,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path)
     std::string ligne;
     if(!evi.good()) 
     {
-      std::cout << "fichier evidence introuvable" << std::endl;
-      return;
+      GUM_ERROR ( NotFound, "LoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + ext )
+      //std::cout << "fichier evidence introuvable" << std::endl;
+      //return;
     }
     while(evi.good())
     {
@@ -346,13 +348,13 @@ void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GU
   
   int pas = 2; //= (int)pow(2,(int)pos);
   int pp = pos;
-  cn->intPow(pas, pp);
+  cn->intPow(pas, pp); // beware : pp is modified, not pas
   
   /*int pas = pos;
   int_2_pow(pas);*/
   
   int combi_den = 0;
-  int combi_num = pas;
+  int combi_num = pp;//pas;
   
   //std::cout << "COMPUTE EXT" << std::endl;
   //std::cout << "msg_p " << combi_msg_p << std::endl;
@@ -380,10 +382,10 @@ void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GU
     combi_den++;
     combi_num++;
     
-    if( combi_den % pas == 0)
+    if( combi_den % pp/*pas*/ == 0)
     {
-      combi_den += pas;
-      combi_num += pas;
+      combi_den += pp;//pas;
+      combi_num += pp;//pas;
     }
         
     // incrementation de 1
@@ -463,15 +465,61 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
     
     return;
   }
-    
-  
+
+  unsigned int msgPerm = 1;
+  #pragma omp parallel
+  {
+    GUM_SCALAR msg_pmin = msg_p_min;//_INF;
+    GUM_SCALAR msg_pmax = msg_p_max;//0;
+    std::vector< std::vector<GUM_SCALAR> > combi_msg_p(taille);
+
+    unsigned int confs = 1;
+    #pragma omp for
+    for(int i = 0; i < taille; i++)
+      confs *= msgs_p[i].size();
+
+    #pragma omp atomic
+    msgPerm *= confs;
+    #pragma omp barrier
+    #pragma omp flush(msgPerm)
+
+    #pragma omp for
+    for ( unsigned int j = 0; j < msgPerm; j++ ) {
+      // get jth msg :
+      unsigned int jvalue = j;
+      for( int i = 0; i < taille; i++ ) {
+        if ( msgs_p[i].size() == 2 ) {
+          combi_msg_p[i] = ( jvalue & 1 ) ? msgs_p[i][1] : msgs_p[i][0];
+          jvalue /= 2;
+        }
+        else
+          combi_msg_p[i] = msgs_p[i][0];
+      }
+     
+      _compute_ext(combi_msg_p, id, msg_pmin, msg_pmax);
+
+      combi_msg_p.clear();   
+    }
+
+    // since min is _INF and max is 0 at init, there is no issue having more threads here than during for loop
+    #pragma omp critical(msgpminmax)
+    {
+      #pragma omp flush(msg_p_min)
+      #pragma omp flush(msg_p_max)
+      if ( msg_p_min > msg_pmin )
+        msg_p_min = msg_pmin;
+      if ( msg_p_max < msg_pmax )
+        msg_p_max = msg_pmax;
+    }
+  }
+  return;
+
   // sinon enumerer les combi de list
   std::vector< typename std::vector< std::vector<GUM_SCALAR> >::iterator > it(taille);
   
   for(int i = 0; i < taille; i++)
     it[i] = ((msgs_p[i])).begin();
-  
-  int cpt = 1;
+   
   while(it[0] != ((msgs_p[0])).end())
   {
     std::vector< std::vector<GUM_SCALAR> > combi_msg_p(taille);
@@ -491,13 +539,13 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
     std::cout.flush();
     */
     _compute_ext(combi_msg_p, id, msg_p_min, msg_p_max);
-    cpt++;    
+    //cpt++;
     
     if(msg_p_min == (GUM_SCALAR)0. && msg_p_max == (GUM_SCALAR)1.)
       return;
     
     combi_msg_p.clear();
-    
+
     ++it[taille-1];
     for(int i = taille-1; (i>0)&&(it[i] == ((msgs_p[i])).end()); --i)
     {
@@ -505,7 +553,6 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
       ++it[i-1];
     }
   }
-  
 }
 
 /**
@@ -534,6 +581,62 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
     msg_l_max = max;*/
     return;
   }
+
+  /////////////////////////////////////////////////////////
+
+  unsigned int msgPerm = 1;
+  #pragma omp parallel
+  {
+    // -2 by default ?!
+    GUM_SCALAR msg_lmin = msg_l_min;//_INF;
+    GUM_SCALAR msg_lmax = msg_l_max;//0;
+    std::vector< std::vector<GUM_SCALAR> > combi_msg_p(taille);
+
+    unsigned int confs = 1;
+    #pragma omp for
+    for(int i = 0; i < taille; i++)
+      confs *= msgs_p[i].size();
+
+    #pragma omp atomic
+    msgPerm *= confs;
+    #pragma omp barrier
+    #pragma omp flush(msgPerm)
+
+    // direct binary representation of config, no need for iterators
+    #pragma omp for
+    for ( unsigned int j = 0; j < msgPerm; j++ ) {
+      // get jth msg :
+      unsigned int jvalue = j;
+      for( int i = 0; i < taille; i++ ) {
+        if ( msgs_p[i].size() == 2 ) {
+          combi_msg_p[i] = ( jvalue & 1 ) ? msgs_p[i][1] : msgs_p[i][0];
+          jvalue /= 2;
+        }
+        else
+          combi_msg_p[i] = msgs_p[i][0];
+      }
+     
+      _compute_ext(combi_msg_p, id, msg_lmin, msg_lmax, lx, pos);
+
+      combi_msg_p.clear();
+    }
+
+    // there may be more threads here than in the for loop, therefor positive test is NECESSARY (init is -2)
+    #pragma omp critical(msglminmax)
+    {
+      #pragma omp flush(msg_l_min)
+      #pragma omp flush(msg_l_max)
+      if ( ( msg_l_min > msg_lmin || msg_l_min == -2 ) && msg_lmin > 0 )
+        msg_l_min = msg_lmin;
+      if ( ( msg_l_max < msg_lmax || msg_l_max == -2 ) && msg_lmax > 0 )
+        msg_l_max = msg_lmax;
+    }
+
+  }
+
+  return;
+
+  ///////////////////////////////////////////////// old version ///
   
   // sinon enumerer les combi de msgs_p
   std::vector< typename std::vector< std::vector<GUM_SCALAR> >::iterator > it(taille);
@@ -592,7 +695,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
 {
 	if(this->_InferenceUpToDate) return;
 	
-	std::cout << "\n\n\t\tINIT\n" << std::endl;
+	//std::cout << "\n\n\t\tINIT\n" << std::endl;
 	
 	//_cleanInferenceData();
 
@@ -600,7 +703,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
 	
 	this->initApproximationScheme();
 	
-	std::cout << "\n\n\n\t\tInference\n" << std::endl;
+	//std::cout << "\n\n\n\t\tInference\n" << std::endl;
 	
 	switch(__inferenceType)
 	{
@@ -717,14 +820,15 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 	
 	//Lpmsg Infos;
 	
-	std::cout << " Parsing fichier evidence" << std::endl;
+	//std::cout << " Parsing fichier evidence" << std::endl;
 	
 	std::ifstream evi(path.c_str(), std::ios::in);
 	
 	if(!evi.good())
 	{
-	  std::cout << " Fichier evidence introuvable, pas d'evidences"<< std::endl;
-	  return;
+    GUM_ERROR ( NotFound, "LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &path) : could not open evidence file : " + path );
+	  //std::cout << " Fichier evidence introuvable, pas d'evidences"<< std::endl;
+	  //return;
 	}
 	std::string ligne, tmp;
 	int var_add = -1; // shoud not stay as such
@@ -768,7 +872,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		if(tmp.compare(this->bn_org().variable(i).name()) == 0)
 		{
 		  var_add = i;
-		  std::cout << "\tevidence " << tmp;
+		  //std::cout << "\tevidence " << tmp;
 		  //var_tmp = this->bn_org().variable(i);
 		  //std::cout << bits << std::endl;
 		  for(unsigned int b = 0; b < bits[i].size(); b++)
@@ -795,11 +899,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 	      {
 		if(tmp.compare(this->bn().variable(i).name()) == 0)
 		{
-		  std::cout << "\tevidence " << tmp << " = ";
+		  //std::cout << "\tevidence " << tmp << " = ";
 		  p=strtok(NULL," ");
 		  tmp = p;
 		  proba = atof(tmp.c_str());
-		  std::cout << proba << std::endl;
+		  //std::cout << proba << std::endl;
 		  _Evidence.insert(this->bn().nodeId(this->bn().variable(i)), proba); // bit = 1
 		    
 		  break;
@@ -821,7 +925,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		continue;
 	      }
 	      
-	      std::cout << " = " << proba << std::endl;
+	      //std::cout << " = " << proba << std::endl;
 	      for(int i = list_lx.size() - 1; i >= 0; i--)
 	      {
 		//std::vector<GUM_SCALAR> t(2,0);		
@@ -836,7 +940,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		else
 		  _Evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), (GUM_SCALAR)0.); // bit = 0
 		
-		std::cout << "\t\tbit "<< i <<" = " << _Evidence[this->bn().nodeId(this->bn().variable( bits[var_add][i]))] << std::endl;
+		//std::cout << "\t\tbit "<< i <<" = " << _Evidence[this->bn().nodeId(this->bn().variable( bits[var_add][i]))] << std::endl;
 		//(*((*(list_lx[i]))[0])).fillWith(t);
 		//std::cout << "\t\ttable cree : " << (*((*(list_lx[i]))[0])) << std::endl;
 		
@@ -856,7 +960,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 	  
 	  
 	}
-	std::cout << " Parsing termine" << std::endl;
+	//std::cout << " Parsing termine" << std::endl;
 	evi.close();	
 	
 	//this->insertEvidence(Infos);
@@ -891,8 +995,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
   gum::DAG graphe = this->bn().dag();
   	const Sequence<NodeId> & topoNodes = this->bn().topologicalOrder();
 	for(Sequence<NodeId>::const_iterator it = topoNodes.begin(); it != topoNodes.end(); ++it)
-	{	
+	{
+    /* msg from X to Y comment
 		std::cout << "\t"<< (this->bn()).variable(*it).name() << "   ";std::cout.flush();// << std::endl;
+    
+    */
 		
 		
 		////////////////////////////////
@@ -924,7 +1031,8 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		  }
 		  
 		  this->_oldMarginal_min.insert(*it, this->_NodesP_min[*it]);
-		  std::cout<<"\r";std::cout.flush();
+		  /* msg from X to Y comment
+      std::cout<<"\r";std::cout.flush();*/
 		  continue;
 		}
 		
@@ -982,7 +1090,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		GUM_SCALAR msg_p_max = (GUM_SCALAR) 0.;
 		
 		_enum_combi(msgs_p, *it, msg_p_min, msg_p_max);
-		std::cout<<"\r";std::cout.flush();
+		/* msg from X to Y comment
+     std::cout<<"\r";std::cout.flush();
+     */
 		//std::cout << msg_p_min << " | " << msg_p_max << std::endl;
 		
 		if(msg_p_min <= (GUM_SCALAR) 0.)
@@ -1024,7 +1134,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		  
 		this->_ArcsL_min.insert(*it, this->_NodesL_min[it->tail()]);
 	}
+  /* msg from X to Y comment
 	std::cout << std::endl;
+*/
 	//std::cout << "                   " << std::endl;
 	//std::cout << " DONE " << std::endl;
 }
@@ -1041,36 +1153,43 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
 	int cpt = 1; 
 	do	
 	{
+    /* msg from X to Y comment
 	  std::cout << "\t\tIteration : " << i << std::endl;
 		std::cout << std::endl;
-		
+		*/
 		int taille = active_nodes_set.size();
 		cpt = 1;
 		for(gum::NodeSetIterator it = active_nodes_set.begin(); it != active_nodes_set.end(); ++it)
 		{
 		  gum::NodeSet _enfants = graphe.children(*it);
 		  int cpt_in = 1;
-		  int taille_in = _enfants.size();
+		  /* msg from X to Y comment
+      int taille_in = _enfants.size();*/
 		  for(gum::NodeSetIterator jt = _enfants.begin(); jt != _enfants.end(); ++jt)
 		  {		    
-		    std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers enfant "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*jt).name() << "        ";
+		    /* msg from X to Y comment
+        std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers enfant "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*jt).name() << "        ";
 		    std::cout <<"\r"; 
 		    //std::cout<<std::endl;
 		    std::cout.flush();
+        */
 		    _msgP(*it,*jt);
 		    //actifs_suivants.insert(*jt);
 		    cpt_in++;
 		  }
 		  cpt_in = 1;
 		  gum::NodeSet _parents = graphe.parents(*it);
-		  taille_in = _parents.size();
+		  /* msg from X to Y comment
+      taille_in = _parents.size();
+      */
 		  for(gum::NodeSetIterator kt = _parents.begin(); kt != _parents.end(); ++kt)
 		  {
-		    std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers parent "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*kt).name() << "        ";;
+		    /* msg from X to Y comment
+        std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers parent "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*kt).name() << "        ";;
 		    std::cout <<"\r"; 
 		    //std::cout<<std::endl;
 		    std::cout.flush();
-		    
+		    */
 		    _msgL(*it,*kt);
 		    //actifs_suivants.insert(*kt);
 		    cpt_in++;
@@ -1097,10 +1216,12 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
 		
 		
 		
-		std::cout << std::endl;
+		/* msg from X to Y comment
+    std::cout << std::endl;*/
 		eps = _calculateEpsilon();
 		
-		std::cout << "epsilon = " << eps << std::endl;
+		/* msg from X to Y comment
+    std::cout << "epsilon = " << eps << std::endl;*/
 		this->updateApproximationScheme(); ++i;
 	} while( (i<0) || (this->continueApproximationScheme(eps, false)) || next_active_nodes_set.size() > 0 );
 	
@@ -1125,8 +1246,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
 	unsigned i = 0; GUM_SCALAR eps;
 	do
 	{
-		std::cout << "\t\tIteration : " << i << std::endl;
-		std::cout << std::endl;
+		/* msg from X to Y comment
+    std::cout << "\t\tIteration : " << i << std::endl;
+		std::cout << std::endl;*/
 		int cpt = 1;
 		for(unsigned j = 0; j < nbrArcs / 2; ++j)
 		{
@@ -1140,17 +1262,23 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
 		
 		for(std::vector<cArcP>::iterator it = seq.begin(); it != seq.end(); ++it)
 		{
-			std::cout<< "\tArc " << cpt << " / " << this->bn().nbrArcs();//<< "\r";
-			std::cout.flush();
+			/* msg from X to Y comment
+      std::cout<< "\tArc " << cpt << " / " << this->bn().nbrArcs();//<< "\r";
+			std::cout.flush();*/
 			_msgP((*it)->tail(), (*it)->head() );
 			_msgL((*it)->head(), (*it)->tail() );
 			cpt++;
-			std::cout << "\r";std::cout.flush();
+			/* msg from X to Y comment
+      std::cout << "\r";std::cout.flush();
+      */
 		}
-		std::cout << std::endl;
+    /* msg from X to Y comment
+		std::cout << std::endl;*/
 		eps = _calculateEpsilon();
 		
-		std::cout << "epsilon = " << eps << std::endl;
+		/* msg from X to Y comment
+    std::cout << "epsilon = " << eps << std::endl;
+    */
 		this->updateApproximationScheme(); ++i;
 	} while( (i<0) || (this->continueApproximationScheme(eps, false)) );
 	
@@ -1207,7 +1335,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
   
   if( ( (children.size() + (*parents).nbrDim() - 1) == 1 ) and (! this->_Evidence.exists(Y) ) )
   {
+    /* msg from X to Y comment
     std::cout << "sortie msgL de suite (dim)" << std::endl;
+    */
     //GUM_TRACE("_msgL terminates short"); 
     return;
   }
@@ -1527,6 +1657,16 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
   // on peut avoir -1 pour infini
   _enum_combi(msgs_p, Y, min, max, lx, pos);
   
+  /*if ( min == _INF || max == 0 ) {
+    if ( min != _INF ) max = min;
+    else if ( max != 0 ) min = max;
+    else {
+      std::cout << std::endl;
+      std::cout << "!!!! pas de message L calculable !!!!" << std::endl;
+      return;
+    }
+  }*/
+
   if(min == (GUM_SCALAR) -2. || max == (GUM_SCALAR) -2.)
   {
     if(min != (GUM_SCALAR) -2.)
@@ -1740,10 +1880,15 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
 	  msgs_p.push_back(msg_p);
 	  msg_p.clear();
 	}
-			
-	/*GUM_SCALAR min = (GUM_SCALAR) 1.;
-	GUM_SCALAR max = (GUM_SCALAR) 0.;*/
-		
+
+  /*
+  for(unsigned int i = 0; i < msgs_p.size(); i++ ) {
+    for(unsigned int j = 0; j < msgs_p[i].size(); j++) {
+      std::cout << msgs_p[i][j] << " ";
+    }
+    std::cout << std::endl;
+  }*/
+
 	_enum_combi(msgs_p, X, min, max);
 			
 	if(min <= (GUM_SCALAR) 0.)
@@ -1894,11 +2039,15 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
 template<typename GUM_SCALAR>
 void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs() 
 {
+  /* msg from X to Y comment
   std::cout << "\n\n\t\trefresh LM & PI\n" << std::endl;
+  */
 	for(DAG::NodeIterator itX = this->bn().beginNodes(); itX != this->bn().endNodes(); ++itX)
 	{
-	  std::cout << "                                          \r";std::cout.flush();
+	  /* msg from X to Y comment
+    std::cout << "                                          \r";std::cout.flush();
 	  std::cout << "\t" << this->bn().variable(*itX).name()<<"      ";std::cout.flush();// << std::endl;
+    */
 		NodeSet const & children = this->bn().dag().children(*itX);
 		//NodeSet const & parents = this->bn().dag().parents(*itX);
 		
@@ -1908,8 +2057,6 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 		
 	if ( _update_l[*itX] )
 	 {
-	   
-		
 		GUM_SCALAR lmin = (GUM_SCALAR) 1.;		  
 		GUM_SCALAR lmax = (GUM_SCALAR) 1.;
 		/*
@@ -2061,9 +2208,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 	}
 	
 	
-	std::cout << "\r";std::cout.flush();
+	/* msg from X to Y comment
+  std::cout << "\r";std::cout.flush();*/
 	}
-	std::cout<<std::endl;
+  /* msg from X to Y comment
+	std::cout<<std::endl;*/
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -2173,8 +2322,9 @@ GUM_SCALAR gum::LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter
   
   _refreshLMsPIs();
   
+  /* msg from X to Y comment
   std::cout << "\n\n\t\t Probabilites\n" << std::endl;
-  
+  */
   GUM_SCALAR epsilon = (GUM_SCALAR) 0;
   
    typename Property<GUM_SCALAR>::onNodes * min_hash = new typename Property<GUM_SCALAR>::onNodes;
@@ -2295,11 +2445,8 @@ GUM_SCALAR gum::LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter
     if(msg_p_max <= (GUM_SCALAR) 0.)
       msg_p_max = (GUM_SCALAR) 0.;
     
-    
+   /* message from X to Y comment probabilities display
     std::cout << "P(" << (this->bn()).variable(*it).name() << " | e) = ";
-     
-    
-        
     std::cout <<" l = [ " << this->_NodesL_min[*it];
     
     if( this->_NodesL_max.exists(*it) && this->_NodesL_max[*it] != this->_NodesL_min[*it])
@@ -2333,7 +2480,7 @@ GUM_SCALAR gum::LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter
       std::cout<<" ]"<<std::endl;
     
     std::cout.flush();
-    
+    */
     // calcul epsilon
     
     GUM_SCALAR epsilonOnNode_min;
