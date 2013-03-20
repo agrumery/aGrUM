@@ -2546,6 +2546,9 @@ template<typename GUM_SCALAR>
 gum::LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> &cn, const BayesNet<GUM_SCALAR>& bn) 
 : InferenceEngine< GUM_SCALAR >::InferenceEngine ( cn ), _InferenceUpToDate(false), __inferenceType(ordered)
 {
+  if ( ! cn.isSeparatelySpecified() )
+    GUM_ERROR (OperationNotAllowed, "LoopyPropagation is only available with separately specified nets");
+
 	this->cn = &cn;
 	this->bnet = &bn;
 	initRandom();

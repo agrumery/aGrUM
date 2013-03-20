@@ -7,7 +7,20 @@ namespace gum {
   template< typename GUM_SCALAR >
   OptBN< GUM_SCALAR >::OptBN ( const CredalNet<GUM_SCALAR> & cn ) {
     const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &cn.credalNet_cpt();
-    
+    /*size_t elems = 0;
+    Size nNodes = cpt->size();
+      
+    for ( Size node = 0; node < nNodes; node++ ) {
+      Size pConfs = ( *cpt )[node].size();
+      for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
+        Size nVertices = ( *cpt )[node][pconf].size();
+        int nBits, newCard;
+        cn.superiorPow(nVertices, nBits, newCard);
+        elems += nBits;
+      }
+    }
+    __sampleDef.resize( elems );*/
+
     Size nNodes = cpt->size();
     __sampleDef.resize( nNodes );
 
@@ -27,256 +40,176 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   OptBN< GUM_SCALAR >::~OptBN () {
-    // delete all pointers ( beware of duplicates in maps )
-    // it is clear we will use the BN --> { var - mod - min|max } map
-    typedef typename std::map< dBN*, std::vector< std::vector< unsigned int > > > dBNKey;
-
-    //std::cout << "nb pointers : " << dBNToVar.size() << std::endl;
-    unsigned int cpt = 0;
-    for ( dBNKey::iterator it = dBNToVar.begin(); it != dBNToVar.end(); ++it ) {
-      delete it->first;
-      cpt++;
-      //std::cout << " #delete : " << cpt << "\r";
-    }
-    //std::cout << std::endl;
-    dBNToVar.clear();
-    varToBN.clear(); // all pointers should have been deleted BEFORE
-
     GUM_DESTRUCTOR ( OptBN );
   }
 
-  // use only for fusion, when you know that what you add does not require to delete older entries
-  // realise a copy of all elements with new (delete needed)
   template< typename GUM_SCALAR >
-  void OptBN< GUM_SCALAR >::insertCopyNoCheck ( std::vector< std::vector< std::vector< bool > > > * bn, std::vector< unsigned int > & key/*, const bool isBetter*/ ) {
-    typedef std::vector< std::vector< std::vector< bool > > > dBN;
-
-    typedef typename std::map< std::vector< unsigned int > , std::vector< dBN* > > varKey;
-    typedef typename std::map< dBN*, std::vector< std::vector< unsigned int > > > dBNKey;
-
-    std::vector< dBN* > & bnValue = varToBN[key];
-    unsigned int bnSet = bnValue.size();
-    // there is an identical net already registered, do nothing
-    /*
-    bool found = false;
-    unsigned int bnSet = bnValue.size();
-    unsigned int tSize;
-    unsigned int tsampl;
-    unsigned int rtsampl;
-    #pragma omp parallel
-    {
-      #pragma omp single
-      {
-        tSize = gum_threads::getNumberOfRunningThreads();
-        tsampl = bnSet / tSize;
-        rtsampl = bnSet - tsampl * tSize;
-      }
-      #pragma omp barrier
-      #pragma omp flush(tSize)
+  bool OptBN< GUM_SCALAR >::insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key ) {
+    __currentHash = __vectHash(bn);
+    std::list< size_t > & nets = myVarHashs[ key ];
+    for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
+      if ( *it == __currentHash )
+        return false;
     }
 
-    if ( bnSet >= tSize ) {
-      #pragma omp parallel
-      {
-        unsigned int tnum = gum_threads::getThreadNumber();
-        unsigned int first = tsampl * tnum;
-        unsigned int last = first + tsampl - 1;
-        if ( tnum == (tSize - 1) )
-          last += rtsampl;
-
-        while ( ! found && first <= last ) {
-          if ( * ( bnValue[first] ) == * bn ) // don't compare adresses but values
-            found = true;
-          first++;
-          #pragma omp flush(found)
-        }
-      }
-      if ( found )
-        return;
-    }
-    else
-    {*/
-      for ( Size iter = 0; iter < bnSet ; iter++ )
-        if ( *( bnValue[iter] ) == *bn )
-          return;
-  /*  }
-   
-    bnSet = dBNToVar.size();
-    #pragma omp parallel
-    {
-      #pragma omp single
-      {
-        tSize = gum_threads::getNumberOfRunningThreads();
-        tsampl = bnSet / tSize;
-        rtsampl = bnSet - tsampl * tSize;
-      }
-      #pragma omp barrier
-      #pragma omp flush(tSize)
-    }
-    if ( bnSet >= tSize ) {
-      found = false;
-      #pragma omp parallel
-      {
-        unsigned int tnum = gum_threads::getThreadNumber();
-        unsigned int first = tsampl * tnum;
-        unsigned int last = first + tsampl - 1;
-        if ( tnum == (tSize - 1) )
-          last += rtsampl;
-
-        while ( ! found && first <= last ) {
-          dBNKey::iterator it = dBNToVar.begin();
-          for ( unsigned int pos = 0; pos < first; pos++ )
-            ++it;
-          if ( * ( it->first ) == * bn ) {
-            it->second.push_back( key );
-            bnValue.push_back( it->first );
-            found = true;
-          }
-          first++;
-        #pragma omp flush(found)
-        }
-      }
-    
-      if ( found )
-        return;
-    }
-    else {*/
-      for ( dBNKey::iterator it = dBNToVar.begin(); it != dBNToVar.end(); ++it ) {
-        // we found an identical net, do NOT use a new pointer
-        if ( *( it->first ) == *bn ) {
-          it->second.push_back(key);
-          bnValue.push_back(it->first);
-          return;
-        }
-      }
-    //}
-
-    // no identical bn was found, insert everything with new pointer
-    dBN * newBN = new dBN(*bn);
-    std::vector< std::vector< unsigned int > > & keyValue = dBNToVar[newBN];
-    keyValue.push_back(key);
-    bnValue.push_back(bn);
+    // add it
+    myHashNet[__currentHash] = bn;
+    // insert net hash in our key net list
+    nets.push_back(__currentHash);
+    // insert out key in the hash key list
+    myHashVars[__currentHash].push_back(key);
+    return true;
   }
 
 
   template< typename GUM_SCALAR >
-  bool OptBN< GUM_SCALAR >::insert ( /*std::vector< std::vector< std::vector< bool > > > * bn,*/ std::vector< unsigned int > & key, const bool isBetter ) {
-    // typedef
-    ///////////////////////////////////////////////////////////////////
-    typedef std::vector< std::vector< std::vector< bool > > > dBN;
+  bool OptBN< GUM_SCALAR >::insert ( const std::vector< unsigned int > & key, const bool isBetter ) {
+    typedef typename std::vector< unsigned int > varKey;
+    typedef typename std::map< size_t, dBN > hashNet;
+    typedef typename std::map< varKey, std::list< size_t > > varHashs;
+    typedef typename std::map< size_t, std::list< varKey > > hashVars;
+/*
+    hashNet myHashNet;
+    varHashs myVarHashs;
+    hashVars myHashVars;
+*/
 
-    // *A -> { *B } et *B -> { *A } maps
-    // beware of deletes / inserts
-    typedef typename std::map< std::vector< unsigned int > , std::vector< dBN* > > varKey;
-    typedef typename std::map< dBN*, std::vector< std::vector< unsigned int > > > dBNKey;
-    ///////////////////////////////////////////////////////////////////
-  std::vector< std::vector< std::vector< bool > > > * bn = this->__currentSample;
-
-    // bool isMin = (key[2] == 0) ? true : false;
-    // better min/max pValue :
-    // replace old BN :
-    // if not shared anymore : delete it
-    // still shared : don't delete it, just remove the old map entry
-    // do the same for vars ids according to previous result
     if ( isBetter ) {
-      // optimum nets for this key
-      std::vector< dBN* > & bnValue = varToBN[key];
-      // before deleting them, check if other keys uses them, with the reverse map
-      // keys using the same networks
-      for ( unsigned int iter = 0; iter < bnValue.size(); iter++ ) {
-        dBN * currentBN = bnValue[iter];
-        std::vector< std::vector< unsigned int > > & keyValue = dBNToVar[currentBN];
-        // we are the sole key using this BN, delete it and entry
-        if ( keyValue.size() == 1 /*&& keyValue[0] == key*/ ) {
-          // delete the net from its pointer
-          dBNToVar.erase(currentBN);
-          delete currentBN;
+      // get all nets of this key (maybe entry does not exists)
+      std::list< size_t > & old_nets = myVarHashs[ key ];
+      // for each one
+      for ( std::list< size_t >::iterator it = old_nets.begin(); it != old_nets.end(); ++it ) {
+        // get all keys associated to this net
+        std::list< varKey > & netKeys = myHashVars[ *it ];
+        // if we are the sole user, delete the net entry
+        if ( netKeys.size() == 1 ) {
+          myHashVars.erase ( *it );
         }
-        // others vars use the same BN, juste remove ourself from the keys
+        // other keys use the net, delete our key from list
         else {
-          for ( std::vector< std::vector< unsigned int > >::iterator it = keyValue.begin(); it != keyValue.end(); ++it ) {
-            if ( *it == key ) {
-              keyValue.erase(it); // invalidate iterators, break needed !
+          for ( std::list< varKey >::iterator it2 = netKeys.begin(); it2 != netKeys.end(); ++it2 ) {
+            if ( *it2 == key ) {
+              netKeys.erase ( it2 );
               break;
             }
           }
-        } // end of else
+        }  
+      } // end of : for each old_net
 
-      } // end of : for each old network
-
-      // add the new net to varToBN entry
-      //dBN * addbn = bn;
-      bnValue.push_back(bn/*__currentSample*/);
-
-      // and to dBNToVar
-      std::vector< std::vector< unsigned int > > & keyValue = dBNToVar[/*__currentSample*/bn];
-      keyValue.push_back(key);
-
+      // clear all old_nets
+      old_nets.clear();
+      // insert new net with it's hash
+      myHashNet[__currentHash] = __currentSample;
+      // insert net hash in our key net list
+      old_nets.push_back(__currentHash);
+      // insert out key in the hash key list
+      myHashVars[__currentHash].push_back(key);
       return true;
 
-    } // end of : if better bn ( from better marginal )
-    // push-back in one map and insert in the other ( it may already exist )
+    } // end of isBetter
+    // another opt net
     else {
-      std::vector< dBN* > & bnValue = varToBN[key];
-
-      // there is an identical net already registered, do nothing
-      for ( Size iter = 0; iter < bnValue.size(); iter++ )
-        if ( *( bnValue[iter] ) == *bn ) // no adress comparison
+      // check that we didn't add it for this key
+      std::list< size_t > & nets = myVarHashs[ key ];
+      for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
+        if ( *it == __currentHash )
           return false;
+      }
 
-      // don't use bn as key !!!! it will look for adress instead of value
-      // compare values with iterators
-      /*for ( dBNKey::iterator it = dBNToVar.begin(); it != dBNToVar.end(); ++it ) {
-        // we found an identical net, do NOT use the new pointer bn
-        if ( *( it->first ) == *bn ) {
-          
-          it->second.push_back(key);
-          bnValue.push_back(it->first);
-          return false; // we didn't use the new pointer ! (argument bn)
-        }
-      }*/
-
-      // no identical bn was found, insert everything with new pointer
-      std::vector< std::vector< unsigned int > > & keyValue = dBNToVar[bn];
-      keyValue.push_back(key);
-      bnValue.push_back(bn);
+      // add it
+      myHashNet[__currentHash] = __currentSample;
+      // insert net hash in our key net list
+      nets.push_back(__currentHash);
+      // insert out key in the hash key list
+      myHashVars[__currentHash].push_back(key);
       return true;
-
-    } // end of : not better net, another opt
-
+    } // end of ! isBetter
   }
 
+  
   template< typename GUM_SCALAR >
-  void OptBN< GUM_SCALAR >::setCurrentSample ( dBN * sample ) {
-    __currentSample = sample;
+  void OptBN< GUM_SCALAR >::setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample ) {
+    __currentSample.clear();
+    for ( unsigned int i = 0; i < sample.size(); i++ )
+      for ( unsigned int j = 0; j < sample[j].size(); j++ )
+        for ( unsigned int k = 0; k < sample[i][j].size(); k++ )
+          __currentSample.push_back( sample[i][j][k] );
+
+    //std::cout << sample << std::endl;
+    //std::cout << __currentSample << std::endl;
+
+    __currentHash = __vectHash( __currentSample );
   }
   
   template< typename GUM_SCALAR >
-  std::vector< std::vector< std::vector< bool > > > * OptBN< GUM_SCALAR >::getCurrentSample () {
+  const std::vector< bool > & OptBN< GUM_SCALAR >::getCurrentSample () {
     return __currentSample;
   }
 
   template< typename GUM_SCALAR >
-  const std::vector< std::vector< std::vector< bool > > > & OptBN< GUM_SCALAR >::getSampleDef () {
+  const std::vector< std::vector< std::vector < bool > > > & OptBN< GUM_SCALAR >::getSampleDef () {
     return __sampleDef;
   }
 
   template< typename GUM_SCALAR >
-  std::vector< std::vector< std::vector< std::vector< bool > > > * > * OptBN< GUM_SCALAR >::getBNOptsFromKey ( std::vector< unsigned int > & key ) {
-    if ( key.size() > 3 )
-      GUM_ERROR(NotFound, "wrong key format");
-    return &varToBN[key];
+  const std::vector< std::vector< bool > * > OptBN< GUM_SCALAR >::getBNOptsFromKey ( const std::vector< unsigned int > & key ) {
+    typedef std::vector< bool > dBN;
 
+    std::list< size_t > & netsHash = myVarHashs.at(key);
+
+    std::vector< dBN * > nets;
+    nets.resize( netsHash.size() );
+
+    std::list< size_t >::iterator it = netsHash.begin();
+
+    for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
+      nets[i] = & myHashNet.at( *it );
+    }
+
+    return nets;
   }
-  
-  /*template< typename GUM_SCALAR >
-  std::vector< std::vector< unsigned int > > & OptBN< GUM_SCALAR >::getKeysFromBNOpts ( std::vector< std::vector< std::vector< bool > > > & bn ) {
-    return dBNToVar[&bn];
-  }*/
 
   template< typename GUM_SCALAR >
+  const std::vector< std::vector< std::vector< std::vector < bool > > > > OptBN< GUM_SCALAR >::getFullBNOptsFromKey ( const std::vector< unsigned int > & key ) {
+    typedef typename std::vector< unsigned int > varKey;
+    typedef typename std::map< size_t, dBN > hashNet;
+    typedef typename std::map< varKey, std::list< size_t > > varHashs;
+    typedef typename std::map< size_t, std::list< varKey > > hashVars;
+/*
+    hashNet myHashNet;
+    varHashs myVarHashs;
+    hashVars myHashVars;
+*/
+
+    typedef std::vector< bool > dBN;
+
+    std::list< size_t > & netsHash = myVarHashs.at(key);
+
+    std::vector< std::vector< std::vector< std::vector < bool > > > > nets;
+    nets.resize( netsHash.size(), __sampleDef );
+
+    std::list< size_t >::iterator it = netsHash.begin();
+
+    for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
+      //std::vector< std::vector< std::vector < bool > > > net(__sampleDef);
+      dBN::iterator it2 = myHashNet.at( *it ).begin();
+      for ( unsigned int j = 0; j < __sampleDef.size(); j++ ) {
+        for( unsigned int k = 0; k < __sampleDef[j].size(); k++ ) {
+          for ( unsigned int l = 0; l < __sampleDef[j][k].size(); l++ ) {
+            nets[i][j][k][l] = *it2;
+            ++it2;
+          }
+        }
+      }
+    }
+
+    return nets;
+  }
+
+  
+  template< typename GUM_SCALAR >
   unsigned int OptBN< GUM_SCALAR >::getEntrySize() const {
-    return dBNToVar.size();
+    return myHashNet.size();
   }
 
 

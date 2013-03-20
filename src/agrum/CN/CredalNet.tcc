@@ -347,6 +347,7 @@ namespace gum {
 
     // get precise/credal/vacuous status of each variable
     __sort_varType();
+    __separatelySpecified = true;
   }
 
   template< typename GUM_SCALAR >
@@ -458,7 +459,7 @@ namespace gum {
 
     // get precise/credal/vacuous status of each variable
     __sort_varType();
-
+    __separatelySpecified = true;
   }
 
   /**
@@ -786,6 +787,10 @@ namespace gum {
     return this->__nodeType[id];
   }
 
+  template< typename GUM_SCALAR >
+  const bool CredalNet< GUM_SCALAR >::isSeparatelySpecified () const {
+    return __separatelySpecified;
+  }
 
 
   ///////////////////////////////// test decimal -> fractional algorithms

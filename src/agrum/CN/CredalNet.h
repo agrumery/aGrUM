@@ -71,6 +71,8 @@ namespace gum {
       // old custom algorithm
       int __precision;// = 1e6; // beware LRS
 
+      bool __separatelySpecified;
+
       // original bn (no transformation done on it)
       gum::BayesNet< GUM_SCALAR > __src_bn;
 
@@ -190,6 +192,8 @@ namespace gum {
       const double & getEpsilonMin() const;
       const double & getEpsilonMax() const;
       const double & getEpsilonMoy() const;
+
+      const bool isSeparatelySpecified() const;
 
   }; // CredalNet
 

@@ -38,8 +38,17 @@ namespace gum {
     __mcThreadDataCopy();
 
     #pragma omp parallel for
-    for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
+    for ( Size iter = 0; iter < 2/*this->burnIn()*/; iter++ ) {
       __threadInference();
+/*     
+      // to check random sampling
+      #pragma omp critical
+      {
+        unsigned int tid = gum_threads::getThreadNumber();
+        std::cout << "thread\t" << tid << "\tsample : "<< this->_l_optimalNet[tid]->getCurrentSample() << std::endl;
+      }
+      std::cout << std::endl;
+*/
       __threadUpdate();
     } // end of : parallel burnIn
 
@@ -98,7 +107,8 @@ namespace gum {
 
         for ( ins.setFirst(); !ins.end(); ++ins )
           vertex.push_back ( potential[ins] );
-
+        
+        //this->_updateThread ( *it, vertex, __storeVertices, __storeBNOpt );
         if ( this->_updateThread ( *it, vertex, __storeVertices, __storeBNOpt ) )
           keepSample = true;
 
@@ -106,7 +116,7 @@ namespace gum {
     } // end of : if ( p(e) > 0 )
 
     if ( __storeBNOpt && ! keepSample ) {
-      delete this->_l_optimalNet[tId]->getCurrentSample();
+      //delete this->_l_optimalNet[tId]->getCurrentSample();
       //std::cout << " net deleted, no opt found " << std::endl;
       #pragma omp critical(deleteCpt)
       {
@@ -221,7 +231,7 @@ namespace gum {
 
       if ( __storeBNOpt ) {
         if ( this->_l_inferenceEngine[bn] != NULL )
-          std::cout << "delete thread " << bn << " opt nets" << std::endl;
+          //std::cout << "delete thread " << bn << " opt nets" << std::endl;
           delete this->_l_optimalNet[bn];
       }
 
@@ -305,6 +315,17 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const {
+    unsigned int n = value;
+    // get bits of choosen_vertex
+    for (unsigned int i = 0; i < toFill.size(); i++)
+    {
+      toFill[i] = n & 1;
+      n /= 2;
+    }
+  }
+
+  template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
     int this_thread = gum_threads::getThreadNumber();//omp_get_thread_num();
     gum::BayesNet< GUM_SCALAR > * working_bn = this->_workingSet[this_thread];
@@ -316,9 +337,9 @@ namespace gum {
 
     typedef std::vector< std::vector< std::vector< bool > > > dBN;
 
-    dBN * sample;
+    dBN sample;
     if ( __storeBNOpt )
-      sample = new dBN( this->_l_optimalNet[this_thread]->getSampleDef() );
+      sample = dBN( this->_l_optimalNet[this_thread]->getSampleDef() );
 
     if ( __repetitiveInd ) {
       typename gum::Property< std::vector< gum::NodeId > >::onNodes t0;
@@ -334,6 +355,9 @@ namespace gum {
         for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
           choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
+          if ( __storeBNOpt )
+            __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
+
           for ( Size mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
         } // end of : pconf
@@ -341,6 +365,9 @@ namespace gum {
         potential->fillWith ( var_cpt );
 
         for ( Size pos = 0; pos < it->size(); pos++ ) {
+          if ( __storeBNOpt )
+            ( sample )[( *it )[pos]] = ( sample )[it.key()];
+          
           gum::Potential< GUM_SCALAR > * potential2 ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
           potential2->fillWith ( var_cpt );
         }
@@ -354,6 +381,9 @@ namespace gum {
         for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
           choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
+          if ( __storeBNOpt )
+            __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
+
           for ( Size mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
         } // end of : pconf
@@ -361,11 +391,18 @@ namespace gum {
         potential->fillWith ( var_cpt );
 
         for ( Size pos = 0; pos < it->size(); pos++ ) {
+          if ( __storeBNOpt )
+            ( sample )[( *it )[pos]] = ( sample )[it.key()];
+
           gum::Potential< GUM_SCALAR > * potential2 ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
           potential2->fillWith ( var_cpt );
         }
       }
-    } else {
+      if ( __storeBNOpt ) {
+        this->_l_optimalNet[this_thread]->setCurrentSample( sample );
+      }
+    } 
+    else {
       for ( gum::DAG::NodeIterator id = working_bn->beginNodes(); id != working_bn->endNodes(); ++id ) {
         dSize = working_bn->variable ( *id ).domainSize();
         gum::Potential< GUM_SCALAR > * potential ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( *id ) ) );
@@ -376,15 +413,8 @@ namespace gum {
           Size nVertices = ( *cpt ) [*id][pconf].size();
           choosen_vertex = rand() % nVertices;
 
-          if ( __storeBNOpt ) {
-            unsigned int n = choosen_vertex;
-            // get bits of choosen_vertex
-            for (unsigned int i = 0; i != ( *sample )[*id][pconf].size(); ++i)
-            {
-              ( *sample )[*id][pconf][i] = n & 1;
-              n /= 2;
-            }
-          }
+          if ( __storeBNOpt )
+            __binaryRep( ( sample )[*id][pconf], choosen_vertex );
 
           for ( Size mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [*id][pconf][choosen_vertex][mod];

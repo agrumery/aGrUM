@@ -31,7 +31,9 @@ namespace gum {
       void __mcInitApproximationScheme();
       void __mcThreadDataCopy();
       inline void __threadInference();
-      inline void __threadUpdate();
+      inline void __threadUpdate(); 
+
+      inline void __binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const;
 
 
     protected:

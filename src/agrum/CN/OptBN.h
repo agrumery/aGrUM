@@ -1,6 +1,8 @@
 #ifndef ___OPTBN__H___
 #define ___OPTBN__H___
 
+#include <tr1/functional>
+
 // graphe bi-partie avec hash-maps
 
 /**
@@ -12,22 +14,31 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   class OptBN {
-    typedef std::vector< std::vector< std::vector< bool > > > dBN;
+    typedef std::vector< bool > dBN;
 
-    // A -> { *B } et *B -> { A } maps
-    // beware of deletes / inserts
-    typedef typename std::map< std::vector< unsigned int > , std::vector< dBN* > > varKey;
-    typedef typename std::map< dBN*, std::vector< std::vector< unsigned int > > > dBNKey;
+    typedef typename std::vector< unsigned int > varKey;
+    typedef typename std::map< size_t, dBN > hashNet;
+    typedef typename std::map< varKey, std::list< size_t > > varHashs;
+    typedef typename std::map< size_t, std::list< varKey > > hashVars;
+
+    // not used yet, keep expectations for each optimal net
+    typedef typename std::map< size_t, typename gum::Property< GUM_SCALAR >::onNodes > hashExp;
+    // not used yet, keep marginals for each optimal net
+    typedef typename std::map< size_t, typename gum::Property< std::vector< GUM_SCALAR > >::onNodes > hashMargi;
 
     private :
-      varKey varToBN;
-      dBNKey dBNToVar;
+      // last version :
+      hashNet myHashNet;
+      varHashs myVarHashs;
+      hashVars myHashVars;
 
       // all samples have the same size
       // instead of creating them one by one, we will copy this one each time
-      dBN __sampleDef;
+      std::vector< std::vector< std::vector < bool > > > __sampleDef;
       // the sampled net during inference
-      dBN * __currentSample;
+      dBN __currentSample;
+      size_t __currentHash;
+      std::hash< std::vector< bool > > __vectHash;
 
     protected :
 
@@ -38,19 +49,22 @@ namespace gum {
       OptBN ();
       ~OptBN ( );
 
+      bool insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key );
       // insert do everything ( removing duplicates at insertion, etc )
-      bool insert ( /*dBN * bn,*/ std::vector< unsigned int > & key, const bool isBetter );
-      void insertCopyNoCheck ( dBN * bn, std::vector< unsigned int > & key/*, const bool isBetter*/ );
+      bool insert ( const std::vector< unsigned int > & key, const bool isBetter );
 
-      void setCurrentSample ( dBN * sample );
-      dBN * getCurrentSample ();
-      const dBN & getSampleDef ();
+      void setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample );
+      const dBN & getCurrentSample ();
 
+      const std::vector< std::vector< std::vector < bool > > > & getSampleDef ();
 
-      std::vector< dBN* > * getBNOptsFromKey ( std::vector< unsigned int > & key );
-      /*std::vector< std::vector< unsigned int > > & getKeysFromBNOpts ( dBN & bn );*/
+      const std::vector< dBN* > getBNOptsFromKey ( const std::vector< unsigned int > & key );
 
-      // how many dBN stored 
+      // with delimiters
+      const std::vector< std::vector< std::vector< std::vector < bool > > > > getFullBNOptsFromKey ( const std::vector< unsigned int > & key );
+
+      
+      // how many dBNs stored 
       unsigned int getEntrySize() const;
 
   }; // end of OptBN

@@ -537,12 +537,13 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   void InferenceEngine< GUM_SCALAR >::_optFusion() {
-    typedef std::vector< std::vector< std::vector< bool > > > dBN;
+    typedef std::vector< bool > dBN;
 
     unsigned int dSize;
 
     std::cout << "thread opt fusion : " << this->_l_marginalMin.size() << std::endl;
-    std::cout << "opt size : " << this->_l_optimalNet[0]->getEntrySize() << std::endl;
+
+    _fusionOpt = OptBN<GUM_SCALAR>( *this->_credalNet );
 
     // no parallel insert in hash-tables (OptBN)
     for ( Size i = 0; i < this->_workingSet[0]->size(); i++ ) {
@@ -559,18 +560,20 @@ namespace gum {
         for ( Size tId = 0; tId < this->_l_marginalMin.size(); tId++ ) {
           if ( this->_l_marginalMin[tId][i][j] == this->_marginalMin[i][j] ) {
             std::cout << "\t\t min : ";
-            std::vector< dBN* > * tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymin );
-            std::cout << " size : " << tOpts->size() << std::endl;
-            for ( Size bn = 0; bn < tOpts->size(); bn++ )
-              _fusionOpt.insertCopyNoCheck( (*tOpts)[bn], keymin/*, false */);
+            const std::vector< dBN* > & tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymin );
+            std::cout << " size : " << tOpts.size() << std::endl;
+            for ( Size bn = 0; bn < tOpts.size(); bn++ ) {
+              _fusionOpt.insert ( *tOpts[bn], keymin );
+            }
           }
           //this->_marginalMin[i][j] = this->_l_marginalMin[tId][i][j];
           if ( this->_l_marginalMax[tId][i][j] == this->_marginalMax[i][j] ) {
             std::cout << "\t\t max : ";
-            std::vector< dBN* > * tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymax );
-            std::cout << " size : " << tOpts->size() << std::endl;
-            for ( Size bn = 0; bn < tOpts->size(); bn++ )
-              _fusionOpt.insertCopyNoCheck( (*tOpts)[bn], keymax/*, false */);
+            const std::vector< dBN* > & tOpts = this->_l_optimalNet[tId]->getBNOptsFromKey( keymax );
+            std::cout << " size : " << tOpts.size() << std::endl;
+            for ( Size bn = 0; bn < tOpts.size(); bn++ ) {
+              _fusionOpt.insert ( *tOpts[bn], keymax );
+            }
           }
         } // end of : all threads
       } // end of : all modalities
@@ -764,7 +767,7 @@ namespace gum {
         if ( __storeBNOpt ) {
           std::vector< unsigned int > key(3);
           key[0] = id; key[1] = mod; key[2] = 0;
-          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, true) )
+          if ( this->_l_optimalNet[tId]->insert( key, true ) )
             result = true;
         }
       }
@@ -774,7 +777,7 @@ namespace gum {
         if ( __storeBNOpt ) {
           std::vector< unsigned int > key(3);
           key[0] = id; key[1] = mod; key[2] = 1;
-          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, true) )
+          if ( this->_l_optimalNet[tId]->insert( key, true ) )
             result = true;
         }
       }
@@ -784,13 +787,13 @@ namespace gum {
         if ( __storeBNOpt && vertex[mod] == this->_l_marginalMin[tId][id][mod] ) {
           std::vector< unsigned int > key(3);
           key[0] = id; key[1] = mod; key[2] = 0;
-          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, false) )
+          if ( this->_l_optimalNet[tId]->insert( key, false ) )
             result = true;
         }
         if ( __storeBNOpt && vertex[mod] == this->_l_marginalMax[tId][id][mod] ) {
           std::vector< unsigned int > key(3);
           key[0] = id; key[1] = mod; key[2] = 1;
-          if ( this->_l_optimalNet[tId]->insert(/*this->_l_optimalNet[tId]->getCurrentSample(),*/ key, false) )
+          if ( this->_l_optimalNet[tId]->insert(  key, false ) )
             result = true;
         }
       }

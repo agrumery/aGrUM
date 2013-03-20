@@ -89,7 +89,8 @@ void test_credal() {
   lp.saveMarginals ( GET_PATH_STR ( l2u.marginals ) );
 
   lp.eraseAllEvidence();
-  return;
+  //return;
+
   // LocalSearch test
 /*  
   LocalSearch<double, LazyPropagation<double> > ls(myCNb);
@@ -323,23 +324,29 @@ std::vector< unsigned int > key(3);
 key[0] = 0; key[1] = 1; key[2] = 0;
 //const std::vector< unsigned int > key(key1);
 
-typedef std::vector< std::vector< std::vector< bool > > > dBN;
+typedef std::vector< bool > dBN;
 //////////////////////////////////////////////////////////////////////////
 // this stuff can lead to deletes in wrong places
 // DO NOY COPY anything !
 OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
 
-std::vector< dBN* > * tOpts = opt->getBNOptsFromKey( key ); 
+const std::vector< std::vector< std::vector< std::vector< bool > > > > & tOpts = opt->getFullBNOptsFromKey( key ); 
 //////////////////////////////////////////////////////////////////////////
-unsigned int bnSet = tOpts->size();
+unsigned int bnSet = tOpts.size();
 std::cout << "bn opts de nodeid 0 : " << bnSet << std::endl;
 
-
 for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
-  std::cout << *(*tOpts)[bn] << std::endl;
+  std::cout << tOpts[bn] << std::endl;
 }
 
-std::cout << "deleted nets : " << MCE->notOptDelete << std::endl;
+const std::vector< dBN* > & tOpts2 = opt->getBNOptsFromKey( key );
+for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+  std::cout << *tOpts2[bn] << std::endl;
+}
+
+
+
+std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
