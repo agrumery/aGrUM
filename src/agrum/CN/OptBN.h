@@ -2,17 +2,11 @@
 #define ___OPTBN__H___
 
 #include <tr1/functional>
-
-// graphe bi-partie avec hash-maps
-
-/**
- * { [ nodeId, modality, min(0) | max(1) ] } <-- dBN
- * [ nodeId, modality, min(0) | max(1) ] --> { dBN }
- */
+#include "EmptyClass.h"
 
 namespace gum {
 
-  template< typename GUM_SCALAR >
+  template < typename GUM_SCALAR >
   class OptBN {
     typedef std::vector< bool > dBN;
 
@@ -27,20 +21,20 @@ namespace gum {
     typedef typename std::map< size_t, typename gum::Property< std::vector< GUM_SCALAR > >::onNodes > hashMargi;
 
     private :
+
+    protected :
       // last version :
-      hashNet myHashNet;
-      varHashs myVarHashs;
-      hashVars myHashVars;
+      hashNet _myHashNet;
+      varHashs _myVarHashs;
+      hashVars _myHashVars;
 
       // all samples have the same size
       // instead of creating them one by one, we will copy this one each time
-      std::vector< std::vector< std::vector < bool > > > __sampleDef;
+      std::vector< std::vector< std::vector < bool > > > _sampleDef;
       // the sampled net during inference
-      dBN __currentSample;
-      size_t __currentHash;
-      std::hash< std::vector< bool > > __vectHash;
-
-    protected :
+      dBN _currentSample;
+      size_t _currentHash;
+      std::hash< std::vector< bool > > _vectHash;
 
     public :
       // initialize __sampleDef from credalNet
@@ -49,11 +43,14 @@ namespace gum {
       OptBN ();
       ~OptBN ( );
 
+      // fusion insert ONLY ( do not remove stuff from maps )
       bool insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key );
       // insert do everything ( removing duplicates at insertion, etc )
       bool insert ( const std::vector< unsigned int > & key, const bool isBetter );
 
+      // set the sample and its hash
       void setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample );
+      // get the sample ( new form )
       const dBN & getCurrentSample ();
 
       const std::vector< std::vector< std::vector < bool > > > & getSampleDef ();
@@ -61,8 +58,7 @@ namespace gum {
       const std::vector< dBN* > getBNOptsFromKey ( const std::vector< unsigned int > & key );
 
       // with delimiters
-      const std::vector< std::vector< std::vector< std::vector < bool > > > > getFullBNOptsFromKey ( const std::vector< unsigned int > & key );
-
+      std::vector< std::vector< std::vector< std::vector < bool > > > > getFullBNOptsFromKey ( const std::vector< unsigned int > & key );
       
       // how many dBNs stored 
       unsigned int getEntrySize() const;

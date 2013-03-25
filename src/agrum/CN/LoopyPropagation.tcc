@@ -1,49 +1,51 @@
-#include <agrum/CN/LoopyPropagation.h>
+//#include <agrum/CN/LoopyPropagation.h>
+namespace gum {
+
 
 template<typename GUM_SCALAR>
-const gum::BayesNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::bn() const
+const gum::BayesNet<GUM_SCALAR>& LoopyPropagation<GUM_SCALAR>::bn() const
 {
   return *(this->bnet);
 }
 
 template<typename GUM_SCALAR>
-const gum::BayesNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::bn_org() const
+const gum::BayesNet<GUM_SCALAR>& LoopyPropagation<GUM_SCALAR>::bn_org() const
 {
   return cn->src_bn();
 }
 /*
 template<typename GUM_SCALAR>
-const gum::BayesNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::bn_min() const
+const gum::BayesNet<GUM_SCALAR>& LoopyPropagation<GUM_SCALAR>::bn_min() const
 {
   return *((*(this->cn)).get_BN_min());
 }
 
 template<typename GUM_SCALAR>
-const gum::BayesNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::bn_max() const
+const gum::BayesNet<GUM_SCALAR>& LoopyPropagation<GUM_SCALAR>::bn_max() const
 {
   return *((*(this->cn)).get_BN_max());
 }
 */
 template<typename GUM_SCALAR>
-const std::vector< std::vector<GUM_SCALAR> >& gum::LoopyPropagation<GUM_SCALAR>::get_CPT_min() const
+const std::vector< std::vector<GUM_SCALAR> >& LoopyPropagation<GUM_SCALAR>::get_CPT_min() const
 {
   return cn->get_CPT_min();
 }
 
 template<typename GUM_SCALAR>
-const std::vector< std::vector<GUM_SCALAR> >& gum::LoopyPropagation<GUM_SCALAR>::get_CPT_max() const
+const std::vector< std::vector<GUM_SCALAR> >& LoopyPropagation<GUM_SCALAR>::get_CPT_max() const
 {
   return cn->get_CPT_max();
 }
 
 template<typename GUM_SCALAR>
-const gum::CredalNet<GUM_SCALAR>& gum::LoopyPropagation<GUM_SCALAR>::get_cn() const
+const gum::CredalNet<GUM_SCALAR>& LoopyPropagation<GUM_SCALAR>::get_cn() const
 {
   return *(this->cn);
 }
 
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path) 
+void LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path) 
 {
   //std::cout << "\n\n\t\t SAVING Inference results\n\n" << std::endl;
   std::string path_name = path.substr(0,path.size()-4);
@@ -89,11 +91,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path)
     GUM_SCALAR msg_p_max = 0.0;
     
     // cas evidence, calcul immediat
-    if( this->_Evidence.exists(*it) )
+    if( this->_evidence.exists(*it) )
     {
-      if( this->_Evidence[*it] == (GUM_SCALAR) 0. )
+      if( this->_evidence[*it][1] == (GUM_SCALAR) 0. )
 	msg_p_min = (GUM_SCALAR) 0.;
-      else if( this->_Evidence[*it] == (GUM_SCALAR) 1. )
+      else if( this->_evidence[*it][1] == (GUM_SCALAR) 1. )
 	msg_p_min = (GUM_SCALAR) 1.;
       
       msg_p_max = msg_p_min;
@@ -165,7 +167,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path)
     
     res << "P(" << (this->bn()).variable(*it).name() << " | e) = ";//<< std::endl;
     
-    if( this->_Evidence.exists(*it) )
+    if( this->_evidence.exists(*it) )
       res << "(observe)" << std::endl;
     else
       res << std::endl;
@@ -197,7 +199,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::saveInference(const std::string &path)
 * une fois les cpts marginalises sur X et Ui, on calcul le min/max,
 */
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, GUM_SCALAR &num_min, GUM_SCALAR &num_max, GUM_SCALAR &den_min, GUM_SCALAR &den_max)
+void LoopyPropagation<GUM_SCALAR>::_compute_ext(GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, GUM_SCALAR &num_min, GUM_SCALAR &num_max, GUM_SCALAR &den_min, GUM_SCALAR &den_max)
 {
   GUM_SCALAR old_msg_min = msg_l_min;
   GUM_SCALAR old_msg_max = msg_l_max;
@@ -330,7 +332,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(GUM_SCALAR &msg_l_min, GUM_
 * extremes pour une combinaison des parents, message vers parent
 */
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos)
+void LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos)
 {
  /* GUM_SCALAR min = msg_l_min;
   GUM_SCALAR max = msg_l_max;*/
@@ -409,7 +411,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GU
 * marginalisation cpts
 */
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max)
+void LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max)
 {  
   GUM_SCALAR min = (GUM_SCALAR) 0.;
   GUM_SCALAR max = (GUM_SCALAR) 0.;
@@ -450,7 +452,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_compute_ext(std::vector< std::vector<GU
 * enumere combinaisons messages parents, pour message vers enfant
 */
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max)
+void LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max)
 {
   int taille = msgs_p.size();
   //si LX fournis verifier X = 1 pour min/max => msg_l = 1, return
@@ -560,7 +562,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
 */
 
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos)
+void LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos)
 {
   int taille = msgs_p.size();
   /*
@@ -691,7 +693,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_enum_combi(std::vector< std::vector< st
 //////////////////////////////////// 			make inference 			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
+void LoopyPropagation<GUM_SCALAR>::makeInference()
 {
 	if(this->_InferenceUpToDate) return;
 	
@@ -715,9 +717,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
 			_makeInferenceByRandomOrder();
 			break;
 			
-		case randomEvaluation:
-			_makeInferenceByRandomEvaluation();
-			break;
+		//case randomEvaluation:
+			//_makeInferenceByRandomEvaluation();
+			//break;
 	}
 
   _updateMarginals();
@@ -734,7 +736,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
 	 */
 	
 	//_refreshLMsPIs();
-	//_calculateEpsilon();
+	//this->_calculateEpsilon();
 	
 	this->_InferenceUpToDate = true;
 }
@@ -744,11 +746,12 @@ void gum::LoopyPropagation<GUM_SCALAR>::makeInference()
 //////////////////////////////////// 		clean inference data		////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_cleanInferenceData() 
+void LoopyPropagation<GUM_SCALAR>::_cleanInferenceData() 
 {
+  //this->eraseAllEvidence();
 	//this->_invalidateMarginals();
-	//this->eraseAllEvidence();	
-	this->_oldMarginal_min.clear(); this->_oldMarginal_max.clear();
+	this->eraseAllEvidence();	
+	//this->_oldMarginalMin.clear(); this->_oldMarginalMax.clear();
 	this->_ArcsL_min.clear(); this->_ArcsL_max.clear();
 	this->_ArcsP_min.clear(); this->_ArcsP_max.clear();
 	this->_NodesL_min.clear(); this->_NodesL_max.clear();
@@ -764,14 +767,14 @@ void gum::LoopyPropagation<GUM_SCALAR>::_cleanInferenceData()
 	_msg_l_sent.clear();
 	_update_l.clear();
 	_update_p.clear();
-	_Evidence.clear();
+	//this->_evidence.clear();
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// 		insert evidence	////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 template< typename GUM_SCALAR >
 void gum::LoopyPropagation< GUM_SCALAR >::insertEvidence( const std::string & path ) {
   InferenceEngine< GUM_SCALAR >::insertEvidence( path );
@@ -794,9 +797,7 @@ void gum::LoopyPropagation< GUM_SCALAR >::_insertEvidence() {
   for ( typename gum::Property< std::vector< GUM_SCALAR > >::onNodes::const_iterator it = this->_evidence.begin(); it != this->_evidence.end(); ++it ) {
     bool hardEvidence = false;
     int modal = -1; // should not stay as such
-    for( unsigned int mod = 0; mod < it->size(); mod++)
-        
-        /*typename std::vector< GUM_SCALAR >::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 ) */{
+    for( unsigned int mod = 0; mod < it->size(); mod++) {
       if(hardEvidence && (*it)[mod] > 0) {
         GUM_ERROR ( OperationNotAllowed, "void gum::LoopyPropagation< GUM_SCALAR >::_insertEvidence() : not reading hard evidence : " << *it );
       }
@@ -805,12 +806,17 @@ void gum::LoopyPropagation< GUM_SCALAR >::_insertEvidence() {
         modal = mod;
       }
     }
-    _Evidence.insert(it.key(), modal);
+    std::vector< GUM_SCALAR > modals(2);
+    modals[0] = (modal == 0) ? 1 : 0;
+    modals[1] = modal;
+
+    //this->_evidence.insert(it.key(), modal);
+    this->_evidence.insert ( it.key(), modals );
   }
-}
+}*/
 
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &path)
+void LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &path)
 {   
   /*for(int i = 0; i < this->bn_org().size(); i++)
     std::cout << this->bn_org().variable(i).name() << std::endl;*/
@@ -880,7 +886,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		    
 		    list_lx.push_back(this->bn().nodeId(this->bn().variable(bits[i][b])));
 		    //msg * mon_msg = new msg();;
-		    //msg * lx = new msg();
+		    //msg * lx = new msg();this->_calculateEpsilon
 		    //gum::Potential<GUM_SCALAR> * ptr = new gum::Potential<GUM_SCALAR>();
 		    //*ptr << this->bn().variable(bits[i][b]);
 		    //(*mon_msg).push_back(ptr);
@@ -904,7 +910,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		  tmp = p;
 		  proba = atof(tmp.c_str());
 		  //std::cout << proba << std::endl;
-		  _Evidence.insert(this->bn().nodeId(this->bn().variable(i)), proba); // bit = 1
+		  this->_evidence.insert(this->bn().nodeId(this->bn().variable(i)), std::vector< GUM_SCALAR > (2, proba) ); // bit = 1
 		    
 		  break;
 		}
@@ -935,12 +941,12 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 		if(val + puiss <= proba)
 		{
 		  val += puiss;
-		  _Evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), (GUM_SCALAR)1.); // bit = 1
+		  this->_evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), std::vector< GUM_SCALAR > (2, (GUM_SCALAR)1.) ); // bit = 1
 		}
 		else
-		  _Evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), (GUM_SCALAR)0.); // bit = 0
+		  this->_evidence.insert(this->bn().nodeId(this->bn().variable( bits[var_add][i])), std::vector< GUM_SCALAR > (2, (GUM_SCALAR)0.) ); // bit = 0
 		
-		//std::cout << "\t\tbit "<< i <<" = " << _Evidence[this->bn().nodeId(this->bn().variable( bits[var_add][i]))] << std::endl;
+		//std::cout << "\t\tbit "<< i <<" = " << this->_evidence[this->bn().nodeId(this->bn().variable( bits[var_add][i]))] << std::endl;
 		//(*((*(list_lx[i]))[0])).fillWith(t);
 		//std::cout << "\t\ttable cree : " << (*((*(list_lx[i]))[0])) << std::endl;
 		
@@ -972,16 +978,16 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 	    GUM_ERROR(OperationNotAllowed, "Dimension of at least one evidence is different to 1. " );
 	  
 	  NodeId iN = this->bn().nodeId( ((*(*it))[0])->variable(0) );
-		if(_Evidence.exists(iN) ) _Evidence.erase(iN);
-		_Evidence.insert(iN, *it);
+		if(this->_evidence.exists(iN) ) this->_evidence.erase(iN);
+		this->_evidence.insert(iN, *it);
 	  */
 	  
 	  /*
 		if((*it)->nbrDim() != 1) GUM_ERROR(OperationNotAllowed, "Dimension of at least one evidence is different to 1. " );
 		 
 		NodeId iN = this->bn().nodeId( (*it)->variable(0) );
-		if(_Evidence.exists(iN) ) _Evidence.erase(iN);
-		_Evidence.insert(iN, *it);
+		if(this->_evidence.exists(iN) ) this->_evidence.erase(iN);
+		this->_evidence.insert(iN, *it);
 		*/
 	//}
 }
@@ -990,16 +996,16 @@ void gum::LoopyPropagation<GUM_SCALAR>::insertEvidence_old(const std::string &pa
 //////////////////////////////////// 			initialize	 			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
+void LoopyPropagation<GUM_SCALAR>::_initialize()
 {
   gum::DAG graphe = this->bn().dag();
   	const Sequence<NodeId> & topoNodes = this->bn().topologicalOrder();
 	for(Sequence<NodeId>::const_iterator it = topoNodes.begin(); it != topoNodes.end(); ++it)
 	{
-    /* msg from X to Y comment
+    // msg from X to Y comment
 		std::cout << "\t"<< (this->bn()).variable(*it).name() << "   ";std::cout.flush();// << std::endl;
     
-    */
+    
 		
 		
 		////////////////////////////////
@@ -1011,28 +1017,36 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		
 		
 	      // accelerer init pour evidences
-		if(this->_Evidence.exists(*it))
+		if(this->_evidence.exists(*it))
 		{
+      std::cout << " evi : ";
 		  active_nodes_set.insert(*it);
 		  _update_l.set(*it,true);
 		  _update_p.set(*it,true);
-		  if(this->_Evidence[*it] == (GUM_SCALAR) 1.)
+		  if(this->_evidence[*it][1] == (GUM_SCALAR) 1.)
 		  {
+        std::cout << " = 1 ";
 		    this->_NodesL_min.insert(*it, _INF/*(GUM_SCALAR) -1.*/);
 		    //this->_NodesL_min.insert(*it, (GUM_SCALAR) 1.);
 		    
 		    
 		    this->_NodesP_min.insert(*it, (GUM_SCALAR) 1.);
 		  }
-		  else if (this->_Evidence[*it] == (GUM_SCALAR) 0.)
+		  else if (this->_evidence[*it][1] == (GUM_SCALAR) 0.)
 		  {
-		    this->_NodesL_min.insert(*it, this->_Evidence[*it]); // soit 0
+        std::cout << " = 0 ";
+		    this->_NodesL_min.insert(*it, this->_evidence[*it][1]); // soit 0
 		    this->_NodesP_min.insert(*it, (GUM_SCALAR) 0.);
 		  }
 		  
-		  this->_oldMarginal_min.insert(*it, this->_NodesP_min[*it]);
-		  /* msg from X to Y comment
-      std::cout<<"\r";std::cout.flush();*/
+      std::vector<GUM_SCALAR> marg(2);
+      marg[1] = this->_NodesP_min[*it];
+      marg[0] = 1 - marg[1];
+      std::cout << marg << std::endl;
+		  this->_oldMarginalMin.insert( *it, marg );
+      this->_oldMarginalMax.insert( *it, marg );
+		  // msg from X to Y comment
+      //std::cout<<"\r";std::cout.flush();
 		  continue;
 		}
 		
@@ -1102,22 +1116,32 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		
 		
 		(this->_NodesP_min).insert(*it, msg_p_min);
-		this->_oldMarginal_min.insert(*it, msg_p_min);
-		
+    std::vector<GUM_SCALAR> marg(2);
+    marg[1] = msg_p_min;
+    marg[0] = 1 - msg_p_min;
+
+		this->_oldMarginalMin.insert( *it, marg );
+		std::cout << "\n" << marg << std::endl;
+
 		
 		if(msg_p_min != msg_p_max)
 		{
-		  (this->_NodesP_max).insert(*it, msg_p_max);
-		  this->_oldMarginal_max.insert(*it, msg_p_max);
-		}
-		
+    marg[1] = msg_p_max;
+    marg[0] = 1 - msg_p_max;
+		 (this->_NodesP_max).insert(*it, msg_p_max);
+    }
+		this->_oldMarginalMax.insert(*it, marg );
+
+    std::cout << marg << std::endl;
+
+
 		/*
-		if(this->_Evidence.exists(*it))
+		if(this->_evidence.exists(*it))
 		{
-		  if(this->_Evidence[*it] == (GUM_SCALAR) 1.)
+		  if(this->_evidence[*it][1] == (GUM_SCALAR) 1.)
 		    this->_NodesL_min.insert(*it, _INF);
 		  else
-		    this->_NodesL_min.insert(*it, this->_Evidence[*it]);
+		    this->_NodesL_min.insert(*it, this->_evidence[*it][1]);
 		}
 		else*/
 		  this->_NodesL_min.insert(*it, (GUM_SCALAR) 1.);
@@ -1134,9 +1158,9 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 		  
 		this->_ArcsL_min.insert(*it, this->_NodesL_min[it->tail()]);
 	}
-  /* msg from X to Y comment
+  // msg from X to Y comment
 	std::cout << std::endl;
-*/
+
 	//std::cout << "                   " << std::endl;
 	//std::cout << " DONE " << std::endl;
 }
@@ -1146,37 +1170,38 @@ void gum::LoopyPropagation<GUM_SCALAR>::_initialize()
 //////////////////////////////////// 	make inference by ordered arcs	////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
+void LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
 {	
 	gum::DAG graphe = this->bn().dag();
 	unsigned i = 0; GUM_SCALAR eps; //should be changed to the burn in option from new ApproximationScheme.
 	int cpt = 1; 
 	do	
 	{
-    /* msg from X to Y comment
+    // msg from X to Y comment
 	  std::cout << "\t\tIteration : " << i << std::endl;
 		std::cout << std::endl;
-		*/
+		
 		int taille = active_nodes_set.size();
-		cpt = 1;
+		cpt = 0;
 		for(gum::NodeSetIterator it = active_nodes_set.begin(); it != active_nodes_set.end(); ++it)
 		{
 		  gum::NodeSet _enfants = graphe.children(*it);
 		  int cpt_in = 1;
-		  /* msg from X to Y comment
-      int taille_in = _enfants.size();*/
+		  // msg from X to Y comment
+      int taille_in = _enfants.size();
 		  for(gum::NodeSetIterator jt = _enfants.begin(); jt != _enfants.end(); ++jt)
 		  {		    
-		    /* msg from X to Y comment
+		    // msg from X to Y comment
         std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers enfant "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*jt).name() << "        ";
 		    std::cout <<"\r"; 
 		    //std::cout<<std::endl;
 		    std::cout.flush();
-        */
+        
 		    _msgP(*it,*jt);
 		    //actifs_suivants.insert(*jt);
 		    cpt_in++;
 		  }
+      cpt += cpt_in;
 		  cpt_in = 1;
 		  gum::NodeSet _parents = graphe.parents(*it);
 		  /* msg from X to Y comment
@@ -1184,47 +1209,36 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
       */
 		  for(gum::NodeSetIterator kt = _parents.begin(); kt != _parents.end(); ++kt)
 		  {
-		    /* msg from X to Y comment
+		    // msg from X to Y comment
         std::cout << "\tnoeud "<<cpt<<" / "<< taille<<" "<<this->bn().variable(*it).name()<<" message vers parent "<< cpt_in << " / " << taille_in <<" " << this->bn().variable(*kt).name() << "        ";;
 		    std::cout <<"\r"; 
 		    //std::cout<<std::endl;
 		    std::cout.flush();
-		    */
+		    
 		    _msgL(*it,*kt);
 		    //actifs_suivants.insert(*kt);
 		    cpt_in++;
 		  }
-		  cpt++;
+
+		  cpt+=cpt_in;
+      
+      /*if( ! (this->continueApproximationScheme(eps, false)) )
+        return;*/
 		}
+    eps = this->_calculateEpsilon();
+    
+    std::cout << "epsilon = " << eps << std::endl;
+    this->updateApproximationScheme(cpt);
+  
 		active_nodes_set.clear();
 		active_nodes_set = next_active_nodes_set;
 		next_active_nodes_set.clear();
-		
-		
-		/*for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it)
-		{
-		std::cout<< "\tArc " << cpt << " / " << this->bn().nbrArcs();//<< "\r";
-		std::cout.flush();
-		//std::cout << " de " << bn().variable(it->tail()).name() <<" vers "<<bn().variable(it->head()).name();
-		//std::cout.flush();
-			_msgP(it->tail(), it->head() );//std::cout<<std::endl;
-			_msgL(it->head(), it->tail() );
-			cpt++;
-			std::cout << "\r";std::cout.flush();
-			//std::cout << std::endl;
-		}*/
-		
-		
-		
-		/* msg from X to Y comment
-    std::cout << std::endl;*/
-		eps = _calculateEpsilon();
-		
-		/* msg from X to Y comment
-    std::cout << "epsilon = " << eps << std::endl;*/
-		this->updateApproximationScheme(); ++i;
-	} while( (i<0) || (this->continueApproximationScheme(eps, false)) || next_active_nodes_set.size() > 0 );
-	
+		i++;
+		// msg from X to Y comment
+    std::cout << std::endl;
+		// msg from X to Y comment
+    		
+	} while( this->continueApproximationScheme ( eps, false, false ) || active_nodes_set.size() > 0 );
 	//std::cout << "nb noeuds suivants : " << actifs_suivants.size() << std::endl;
 }
 
@@ -1234,7 +1248,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
 //////////////////////////////////// 	make inference by random order	////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
+void LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
 {	
 	unsigned int nbrArcs = this->bn().dag().sizeArcs();
 	 
@@ -1274,7 +1288,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
 		}
     /* msg from X to Y comment
 		std::cout << std::endl;*/
-		eps = _calculateEpsilon();
+		eps = this->_calculateEpsilon();
 		
 		/* msg from X to Y comment
     std::cout << "epsilon = " << eps << std::endl;
@@ -1286,43 +1300,13 @@ void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder()
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////// 	make inference by random evaluation	////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomEvaluation() 
-{
-	unsigned int nbrArcs = this->bn().dag().sizeArcs();
-	 
-	double p = 0.2;
-	unsigned i = 0; GUM_SCALAR eps;
-	do
-	{
-		for(int k = 0; k < 1./p; ++k)
-		for(DAG::ArcIterator it = this->bn().beginArcs(); it != this->bn().endArcs(); ++it)
-		{
-			if( maybe(p) ) 
-			{
-				_msgP(it->tail(), it->head() );
-				_msgL(it->head(), it->tail() );
-			}
-		}
-		
-		eps = _calculateEpsilon();
-		this->updateApproximationScheme(); ++i;
-	} while( (i<0) || (this->continueApproximationScheme(eps, false)) );
-}
-
-
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// 			_msgL 					////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
+void LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
 {
   //std::cout << "msg L de " << this->bn().variable(Y).name() << " vers " << this->bn().variable(X).name()<< std::endl;
   //GUM_TRACE("_msgL called " << Y << " -> " << X);
@@ -1333,11 +1317,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
   const gum::Potential<GUM_SCALAR> * parents = &bn().cpt(Y);
   
   
-  if( ( (children.size() + (*parents).nbrDim() - 1) == 1 ) and (! this->_Evidence.exists(Y) ) )
+  if( ( (children.size() + (*parents).nbrDim() - 1) == 1 ) and (! this->_evidence.exists(Y) ) )
   {
-    /* msg from X to Y comment
+    // msg from X to Y comment
     std::cout << "sortie msgL de suite (dim)" << std::endl;
-    */
+    
     //GUM_TRACE("_msgL terminates short"); 
     return;
   }
@@ -1377,11 +1361,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
  * INITIALISER a -1 dans initialize et passer au message de suite si evidence
  * pas besoin d'actualiser node_L
  */
-   /* if(this->_Evidence.exists(Y) )
+   /* if(this->_evidence.exists(Y) )
     {
-      if( this->_Evidence[Y] == (GUM_SCALAR) 0. )
+      if( this->_evidence[Y] == (GUM_SCALAR) 0. )
 	lmin = (GUM_SCALAR) 0.;
-      else if ( this->_Evidence[Y] == (GUM_SCALAR) 1. )
+      else if ( this->_evidence[Y] == (GUM_SCALAR) 1. )
 	lmin = (GUM_SCALAR) -1.;
       
       lmax = lmin;
@@ -1394,7 +1378,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
    if(update_l)
    {
    
-   if ( ! children.empty() && !this->_Evidence.exists(Y) ) 
+   if ( ! children.empty() && !this->_evidence.exists(Y) ) 
     {
       
 	GUM_SCALAR lmin = (GUM_SCALAR) 1.;
@@ -1723,8 +1707,8 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
    
    if( update )
    {
-     //std::cout << std::endl;
-     //std::cout << " msg L : [" << min << ", " << max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
+     std::cout << std::endl;
+     std::cout << " msg L : [" << min << ", " << max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
      _update_l.set(X,true);
      next_active_nodes_set.insert(X);
    }
@@ -1743,7 +1727,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgL(const NodeId Y, const NodeId X)
 //////////////////////////////////// 			_msgP 					////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId demanding_child)
+void LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId demanding_child)
 {
   //std::cout << "msg P de " << this->bn().variable(X).name() << " vers " << this->bn().variable(demanding_child).name()<< std::endl;
 	//GUM_TRACE("_msgP called " << X << " -> " << demanding_child);
@@ -1751,7 +1735,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
 	//NodeSet const & parents = this->bn().dag().parents(X);
 	const gum::Potential<GUM_SCALAR> * parents = &bn().cpt(X);
 		
-	if( ( (children.size() + (*parents).nbrDim() - 1) == 1) and (! this->_Evidence.exists(X) ))
+	if( ( (children.size() + (*parents).nbrDim() - 1) == 1) and (! this->_evidence.exists(X) ))
 	{
 		//GUM_TRACE("_msgP terminates short");
 		return;
@@ -1760,10 +1744,10 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
 	// ------------------------------------------------------------------LM_part ---- from all children but one --- the lonely one will get the message :)
 	
 	// si evidence msg_p = 1 si X = 1, 0 sinon
-	if(this->_Evidence.exists(X) ) 
+	if(this->_evidence.exists(X) ) 
 	{
-	  this->_ArcsP_min[Arc(X, demanding_child)] = (GUM_SCALAR) this->_Evidence[X];
-	  //std::cout << "msg P :" << (GUM_SCALAR) this->_Evidence[X] << std::endl;
+	  this->_ArcsP_min[Arc(X, demanding_child)] = (GUM_SCALAR) this->_evidence[X][1];
+	  //std::cout << "msg P :" << (GUM_SCALAR) this->_evidence[X] << std::endl;
 	  if( this->_ArcsP_max.exists(Arc(X, demanding_child)) )
 	    this->_ArcsP_max.erase(Arc(X, demanding_child));
 	  
@@ -2017,8 +2001,8 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
    
    if( update )
    {
-     //std::cout<<std::endl;
-     //std::cout << " msg P : [" << msg_p_min << ", " << msg_p_max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
+     std::cout<<std::endl;
+     std::cout << " msg P : [" << msg_p_min << ", " << msg_p_max<<"]" << " lx : [" <<lmin<<", "<<lmax<<"]"<<std::endl;
      _update_p.set(demanding_child,true);
      next_active_nodes_set.insert(demanding_child);
    }
@@ -2037,17 +2021,17 @@ void gum::LoopyPropagation<GUM_SCALAR>::_msgP(const NodeId X, const NodeId deman
 //////////////////////////////////// 		refresh LMs end PIs			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs() 
+void LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs() 
 {
-  /* msg from X to Y comment
+  // msg from X to Y comment
   std::cout << "\n\n\t\trefresh LM & PI\n" << std::endl;
-  */
+  
 	for(DAG::NodeIterator itX = this->bn().beginNodes(); itX != this->bn().endNodes(); ++itX)
 	{
-	  /* msg from X to Y comment
+	  // msg from X to Y comment
     std::cout << "                                          \r";std::cout.flush();
 	  std::cout << "\t" << this->bn().variable(*itX).name()<<"      ";std::cout.flush();// << std::endl;
-    */
+    
 		NodeSet const & children = this->bn().dag().children(*itX);
 		//NodeSet const & parents = this->bn().dag().parents(*itX);
 		
@@ -2060,17 +2044,17 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 		GUM_SCALAR lmin = (GUM_SCALAR) 1.;		  
 		GUM_SCALAR lmax = (GUM_SCALAR) 1.;
 		/*
-		if(this->_Evidence.exists(*itX))
+		if(this->_evidence.exists(*itX))
 		{
-		  if( this->_Evidence[*itX] == (GUM_SCALAR) 0.)
+		  if( this->_evidence[*itX] == (GUM_SCALAR) 0.)
 		    lmin = (GUM_SCALAR) 0.;    
-		  else if ( this->_Evidence[*itX] == (GUM_SCALAR) 1.)
+		  else if ( this->_evidence[*itX] == (GUM_SCALAR) 1.)
 		    lmin = (GUM_SCALAR) -1.;
 		  
 		  lmax = lmin;
 		}
 		
-		else */if ( ! children.empty() && !this->_Evidence.exists(*itX))
+		else */if ( ! children.empty() && !this->_evidence.exists(*itX))
 		{
 		 //std::cout << "REFRESH L : " << bn().variable(*itX).name()<<std::endl;
 		// L part
@@ -2152,7 +2136,7 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 	{
 		// PI part
 		   
-		if( ((*parents).nbrDim() - 1) > 0  && !this->_Evidence.exists(*itX) )
+		if( ((*parents).nbrDim() - 1) > 0  && !this->_evidence.exists(*itX) )
 		{
 		  //std::cout << "REFRESH P : " << bn().variable(*itX).name()<<std::endl;
 		    std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
@@ -2208,11 +2192,11 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 	}
 	
 	
-	/* msg from X to Y comment
-  std::cout << "\r";std::cout.flush();*/
+	// msg from X to Y comment
+  std::cout << "\r";std::cout.flush();
 	}
-  /* msg from X to Y comment
-	std::cout<<std::endl;*/
+  // msg from X to Y comment
+	std::cout<<std::endl;
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -2220,17 +2204,17 @@ void gum::LoopyPropagation<GUM_SCALAR>::_refreshLMsPIs()
 ////////////////////////////////////////////////////////////////////////////////
 
 template< typename GUM_SCALAR >
-void gum::LoopyPropagation<GUM_SCALAR>::_updateMarginals() {
+void LoopyPropagation<GUM_SCALAR>::_updateMarginals() {
   for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
   {	
     GUM_SCALAR msg_p_min = 1.0;
     GUM_SCALAR msg_p_max = 0.0;
 
-    if( this->_Evidence.exists(*it) )
+    if( this->_evidence.exists(*it) )
     {
-      if( this->_Evidence[*it] == (GUM_SCALAR) 0. )
+      if( this->_evidence[*it][1] == (GUM_SCALAR) 0. )
         msg_p_min = (GUM_SCALAR) 0.;
-      else if( this->_Evidence[*it] == (GUM_SCALAR) 1. )
+      else if( this->_evidence[*it][1] == (GUM_SCALAR) 1. )
         msg_p_min = (GUM_SCALAR) 1.;
 
       msg_p_max = msg_p_min;
@@ -2316,234 +2300,23 @@ void gum::LoopyPropagation<GUM_SCALAR>::_updateMarginals() {
 //////////////////////////////////// 		calculate epsilon			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-GUM_SCALAR gum::LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter of fact, this is derivative of epsilon, the real epsilon can not be know
+GUM_SCALAR LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter of fact, this is derivative of epsilon, the real epsilon can not be know
 {
   //std::cout << "calcul epsilon, refresh PI, LM, calcul de P(x|e)" << std::endl;
   
   _refreshLMsPIs();
-  
-  /* msg from X to Y comment
-  std::cout << "\n\n\t\t Probabilites\n" << std::endl;
-  */
-  GUM_SCALAR epsilon = (GUM_SCALAR) 0;
-  
-   typename Property<GUM_SCALAR>::onNodes * min_hash = new typename Property<GUM_SCALAR>::onNodes;
-   typename Property<GUM_SCALAR>::onNodes * max_hash = new typename Property<GUM_SCALAR>::onNodes;
-    
-    // insert node by node while parsing _oldMarginal
-  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
-  {	
-    GUM_SCALAR old_min, old_max;
-    
-    old_min = this->_oldMarginal_min[*it];
-    
-    if( this->_oldMarginal_max.exists(*it) )
-      old_max = this->_oldMarginal_max[*it];
-    else
-      old_max = this->_oldMarginal_min[*it];
-    
-    (*min_hash).insert(*it,old_min);
-    (*max_hash).insert(*it,old_max);
-  }
-  
-    _oldMarginal_min_t.push_back(min_hash);
-    _oldMarginal_max_t.push_back(max_hash);
-  
-  for(DAG::NodeIterator it = this->bn().beginNodes(); it != this->bn().endNodes(); ++it)
-  {	
-    // calcul distri posteriori
-    
-    GUM_SCALAR msg_p_min = 1.0;
-    GUM_SCALAR msg_p_max = 0.0;
-    
-    // cas evidence, calcul immediat
-    if( this->_Evidence.exists(*it) )
-    {
-      if( this->_Evidence[*it] == (GUM_SCALAR) 0. )
-	      msg_p_min = (GUM_SCALAR) 0.;
-      else if( this->_Evidence[*it] == (GUM_SCALAR) 1. )
-	      msg_p_min = (GUM_SCALAR) 1.;
-      
-      msg_p_max = msg_p_min;
-    }
-    // sinon depuis node P et node L
-    else
-    {
-	GUM_SCALAR min = this->_NodesP_min[*it];
-	GUM_SCALAR max;
-	
-	if( this->_NodesP_max.exists(*it) )
-	  max = this->_NodesP_max[*it];
-	else
-	  max = min;
-	
-	GUM_SCALAR lmin = this->_NodesL_min[*it];
-	GUM_SCALAR lmax;
-	
-	if( this->_NodesL_max.exists(*it) )
-	  lmax = this->_NodesL_max[*it];
-	else
-	  lmax = lmin;
-	
-	if(min == _INF || max == _INF)
-	{
-	  std::cout << " min ou max === _INF !!!!!!!!!!!!!!!!!!!!!!!!!! " << std::endl;
-	  std::cout.flush();
-	}
-      	
-	// cas limites sur min
-	
-	/*if(min == (GUM_SCALAR) 0. && lmin == _INF)
-	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
-	if( min == _INF && lmin == (GUM_SCALAR) 0. )
-	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
-	
-	if ( /*min != (GUM_SCALAR) 0. &&*/ lmin == _INF  ) // cas infini
-	  msg_p_min = (GUM_SCALAR) 1.;
-	else if( min == (GUM_SCALAR) 0. /*&& lmin != _INF*/ || lmin == (GUM_SCALAR) 0.)
-	  msg_p_min = (GUM_SCALAR) 0;
-	else
-	  msg_p_min = (GUM_SCALAR)1. / ( (GUM_SCALAR)1. + ( ((GUM_SCALAR)1. / min - (GUM_SCALAR)1.) * (GUM_SCALAR)1. / lmin ));
-		
-	// cas limites sur max	
-	/*if(max == (GUM_SCALAR) 0. && lmax == _INF)
-	  std::cout << "proba ERR : pi = 0, l = inf" << std::endl;*/
-	if( max == _INF && lmax == (GUM_SCALAR) 0. )
-	  std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
-	
-	if ( /*max != (GUM_SCALAR) 0. &&*/ lmax == _INF  ) // cas infini
-	  msg_p_max = (GUM_SCALAR) 1.;
-	else if( max == (GUM_SCALAR) 0./* && lmax != _INF */ || lmax == (GUM_SCALAR) 0.)
-	  msg_p_max = (GUM_SCALAR) 0;	 
-	else
-	  msg_p_max = (GUM_SCALAR)1. / ( (GUM_SCALAR)1. + ( ((GUM_SCALAR)1. / max - (GUM_SCALAR)1.) * (GUM_SCALAR)1. / lmax ));
-          
-	//std::cout << " lx : ["<<lmin<<", "<<lmax<<"] ";
-    }
-    
-    if(msg_p_min != msg_p_min && msg_p_max == msg_p_max)
-	{
-	  msg_p_min = msg_p_max;
-	  std::cout << std::endl;
-	  std::cout << "msg_p_min is NaN" << std::endl;
-	}
-	if(msg_p_max != msg_p_max && msg_p_min == msg_p_min)
-	{
-	  msg_p_max = msg_p_min;
-	  std::cout << std::endl;
-	  std::cout << "msg_p_max is NaN" << std::endl;
-	  
-	}
-	if(msg_p_max != msg_p_max && msg_p_min != msg_p_min)
-	{
-	  std::cout << std::endl;
-	  std::cout << "pas de proba calculable (verifier observations)" << std::endl;
-	}
-    
-    if(msg_p_min <= (GUM_SCALAR) 0.)
-      msg_p_min = (GUM_SCALAR) 0.;
-    if(msg_p_max <= (GUM_SCALAR) 0.)
-      msg_p_max = (GUM_SCALAR) 0.;
-    
-   /* message from X to Y comment probabilities display
-    std::cout << "P(" << (this->bn()).variable(*it).name() << " | e) = ";
-    std::cout <<" l = [ " << this->_NodesL_min[*it];
-    
-    if( this->_NodesL_max.exists(*it) && this->_NodesL_max[*it] != this->_NodesL_min[*it])
-	  std::cout << ", "<<this->_NodesL_max[*it]<<" ] pi = [ "<< this->_NodesP_min[*it];
-    else
-      std::cout << " ] pi = [ " << this->_NodesP_min[*it];
-    
-    if( this->_NodesP_max.exists(*it) && this->_NodesP_max[*it] != this->_NodesP_min[*it])
-	  std::cout << ", "<< this->_NodesP_max[*it]<<" ] ";
-    else
-      std::cout << " ] ";
-    
-    
-    
-    if( this->_Evidence.exists(*it) )
-      std::cout << "(observe)" << std::endl;
-    else
-      std::cout << std::endl;
-    
-    std::cout << "\t\t" << (this->bn()).variable(*it).label(0) << "  [ " << (GUM_SCALAR) 1. - msg_p_max;
-    
-    if( msg_p_min != msg_p_max )
-      std::cout << ", " << (GUM_SCALAR) 1. - msg_p_min <<" ] | ";
-    else
-      std::cout<<" ] | ";
-       
-    std::cout << (this->bn()).variable(*it).label(1) << "  [ "<< msg_p_min;
-    if( msg_p_min != msg_p_max )
-      std::cout << ", " << msg_p_max <<" ]"<<std::endl;
-    else
-      std::cout<<" ]"<<std::endl;
-    
-    std::cout.flush();
-    */
-    // calcul epsilon
-    
-    GUM_SCALAR epsilonOnNode_min;
-    GUM_SCALAR epsilonOnNode_max;
-    
-    GUM_SCALAR old_min, old_max;
-    
-    old_min = this->_oldMarginal_min[*it];
-    
-    if( this->_oldMarginal_max.exists(*it) )
-      old_max = this->_oldMarginal_max[*it];
-    else
-      old_max = this->_oldMarginal_min[*it];
-    
-    epsilonOnNode_min = __euclidean(old_min, msg_p_min);
-    epsilonOnNode_max = __euclidean(old_max, msg_p_max);    
-    
-    _oldMarginal_min[*it] = msg_p_min;
-    if( msg_p_min != msg_p_max )
-    {
-      /*if( this->_oldMarginal_max.exists(*it) )
-	this->_oldMarginal_max[*it] = msg_p_max;
-      else
-	this->_oldMarginal_max.insert(*it, msg_p_max);*/
-	this->_oldMarginal_max.set(*it, msg_p_max);
-    }
-    else
-      if( this->_oldMarginal_max.exists(*it) )
-	this->_oldMarginal_max.erase(*it);
-    
-    if(epsilonOnNode_min > epsilon) epsilon = epsilonOnNode_min;
-    if(epsilonOnNode_max > epsilon) epsilon = epsilonOnNode_max;
-    
-   
-  }
+  _updateMarginals();
 
-	epsilon = std::sqrt(epsilon); // !!!  this should be removed if non __euclidean measure is used!!
-	eps.push_back(epsilon);
-	//std::cout << "epsilon = " << epsilon << std::endl;
-	
-	return epsilon;  
-	
-	//return 0;
+  return this->_computeEpsilon();
+ 
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////// 		euclidean				////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename GUM_SCALAR>
-GUM_SCALAR gum::LoopyPropagation<GUM_SCALAR>::__euclidean(GUM_SCALAR p, GUM_SCALAR q)
-{
-	GUM_SCALAR ptit = p - q;
-	return ptit*ptit;
-}
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// 			CONSTRUCTOR 			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-gum::LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> &cn, const BayesNet<GUM_SCALAR>& bn) 
+LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> &cn, const BayesNet<GUM_SCALAR>& bn) 
 : InferenceEngine< GUM_SCALAR >::InferenceEngine ( cn ), _InferenceUpToDate(false), __inferenceType(ordered)
 {
   if ( ! cn.isSeparatelySpecified() )
@@ -2551,7 +2324,7 @@ gum::LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> 
 
 	this->cn = &cn;
 	this->bnet = &bn;
-	initRandom();
+	//initRandom();
 	GUM_CONSTRUCTOR(LoopyPropagation);
 }
 
@@ -2560,7 +2333,7 @@ gum::LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> 
 //////////////////////////////////// 			DESTRUCTOR	 			////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
-gum::LoopyPropagation<GUM_SCALAR>::~LoopyPropagation()
+LoopyPropagation<GUM_SCALAR>::~LoopyPropagation()
 {
 	_cleanInferenceData();
 	
@@ -2568,8 +2341,7 @@ gum::LoopyPropagation<GUM_SCALAR>::~LoopyPropagation()
 }
 
 
-
-
+} // end of namespace gum
 
 
 

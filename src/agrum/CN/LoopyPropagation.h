@@ -11,29 +11,20 @@
 
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 
-//double _INF = std::numeric_limits<double>::infinity();
-
 namespace gum
 {
-	template< typename GUM_SCALAR >
-	class LoopyPropagation : public InferenceEngine<GUM_SCALAR>
+
+  template< typename GUM_SCALAR >
+  class LoopyPropagation : public InferenceEngine<GUM_SCALAR>
 	{
 	public:
-		//typedef std::vector<GUM_SCALAR> msg;
-		typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
-		
-		//typedef typename Property< std::vector<GUM_SCALAR>* >::onNodes msg2;
-		
-		
-		//typedef gum::List<const msg*> Lpmsg;
+    typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
 		typedef const gum::Arc* cArcP;
 	
-		enum InferenceType {ordered, randomOrder, randomEvaluation}; 
+		enum InferenceType {ordered, randomOrder}; 
 		
 		const gum::BayesNet<GUM_SCALAR>& bn() const;
 		const gum::BayesNet<GUM_SCALAR>& bn_org() const;
-		/*const gum::BayesNet<GUM_SCALAR>& bn_min() const;
-		const gum::BayesNet<GUM_SCALAR>& bn_max() const;*/
 		const std::vector< std::vector<GUM_SCALAR> >& get_CPT_min() const;
 		const std::vector< std::vector<GUM_SCALAR> >& get_CPT_max() const;
 		const CredalNet<GUM_SCALAR>& get_cn() const;
@@ -49,28 +40,17 @@ namespace gum
 		
 		LoopyPropagation(const CredalNet<GUM_SCALAR> &cn, const BayesNet<GUM_SCALAR>& bn);
 		~LoopyPropagation();
-		
-		
-		std::vector< typename Property<GUM_SCALAR>::onNodes * > _oldMarginal_min_t;
-		std::vector< typename Property<GUM_SCALAR>::onNodes * > _oldMarginal_max_t;
-		
-		typename std::vector<GUM_SCALAR> eps;
-		
-    void insertEvidence( const std::string & path );
-    void insertEvidence( const std::map< std::string, std::vector< GUM_SCALAR > > & eviMap );
+				
     // deprecated insertEvidence (should use IngerenceEngine instead, like above)
     // keep it since it will be usefull (little work needed) if DTS is back (GL2U)
 		virtual void insertEvidence_old(const std::string &path);
-		//virtual void eraseAllEvidence();
 				
 	protected:
     void _updateMarginals();
-    void _insertEvidence();
     void virtual _initialize();
     void virtual _cleanInferenceData();
 		void virtual _makeInferenceByOrderedArcs();
 		void virtual _makeInferenceByRandomOrder();
-		void virtual _makeInferenceByRandomEvaluation();
 		
 		/**
 		* message vers les parents
@@ -99,12 +79,7 @@ namespace gum
 				
 		
 		void _refreshLMsPIs();
-		
 		GUM_SCALAR _calculateEpsilon();
-		
-		typename Property<GUM_SCALAR>::onNodes _oldMarginal_min;
-		typename Property<GUM_SCALAR>::onNodes _oldMarginal_max;
-		
 		
 		Property<bool>::onNodes _update_p;
 		Property<bool>::onNodes _update_l;
@@ -113,8 +88,6 @@ namespace gum
 		gum::NodeSet next_active_nodes_set;
 		
 		typename Property< gum::NodeSet * >::onNodes _msg_l_sent;
-		
-		typename Property<GUM_SCALAR>::onNodes _Evidence;
 		
 		// messages min/max sur X = 1
 		typename Property<GUM_SCALAR>::onArcs _ArcsL_min;
@@ -134,15 +107,11 @@ namespace gum
 		InferenceType __inferenceType;
 		
 		const CredalNet<GUM_SCALAR> *cn;
-		/*const gum::BayesNet<GUM_SCALAR> *bn_min;
-		const gum::BayesNet<GUM_SCALAR> *bn_max;*/
 		
 		const gum::BayesNet<GUM_SCALAR> *bnet;
 	};
 
-
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////// 			intRand 					////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	inline unsigned int intRand(unsigned int limit)
@@ -151,18 +120,8 @@ namespace gum
 	}
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////// 			maybe					////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool maybe(double p)
-	{
-		if(std::rand() <= p * RAND_MAX) return true;
-		return false;
-	}
-
-
-
 }
 
-#include "LoopyPropagation.tcc"
+#include <agrum/CN/LoopyPropagation.tcc>
+
 #endif

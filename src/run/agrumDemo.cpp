@@ -21,6 +21,8 @@
 
 #include <agrum/CN/OptBN.h>
 
+
+
 using namespace gum;
 
 
@@ -82,14 +84,25 @@ void test_credal() {
   std::vector<double> evi1(2,0); evi1[1] = 1;
   eviMap["L"] = evi1;
   eviMap["G"] = evi0;
+
+  std::cout << "inserting evi " << std::endl;
   lp.insertEvidence(eviMap);
+  std::cout << "inserting evi done" << std::endl;
 
   lp.makeInference();
+  std::cout << "inference done" << std::endl;
   lp.saveInference ( GET_PATH_STR ( test.marginals ) );
   lp.saveMarginals ( GET_PATH_STR ( l2u.marginals ) );
 
+  for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+    unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+    for( unsigned int mod = 0; mod < dSize; mod++ ) {
+      std::cout << "l2u p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp.marginalMin(*id)[mod] << ", " << lp.marginalMax(*id)[mod] << " ] " << std::endl;
+    }
+  }
+
   lp.eraseAllEvidence();
-  //return;
+  return;
 
   // LocalSearch test
 /*  
@@ -320,8 +333,14 @@ std::cout << MCE->messageApproximationScheme() << std::endl;
 std::cout << MCE->currentTime() << std::endl;
 std::cout << MCE->nbrIterations() << std::endl;
 
+
+std::cout << "MCS p(A) = [ " << MCE->marginalMin(0)[1] << ", " << MCE->marginalMax(0)[1] << " ] " << std::endl;
+
+
+
+
 std::vector< unsigned int > key(3);
-key[0] = 0; key[1] = 1; key[2] = 0;
+//key[0] = 0; key[1] = 1; key[2] = 0;
 //const std::vector< unsigned int > key(key1);
 
 typedef std::vector< bool > dBN;
@@ -330,21 +349,57 @@ typedef std::vector< bool > dBN;
 // DO NOY COPY anything !
 OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
 
-const std::vector< std::vector< std::vector< std::vector< bool > > > > & tOpts = opt->getFullBNOptsFromKey( key ); 
-//////////////////////////////////////////////////////////////////////////
-unsigned int bnSet = tOpts.size();
-std::cout << "bn opts de nodeid 0 : " << bnSet << std::endl;
 
+for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+  unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+  std::cout << "bn opts de : " << myCNb.src_bn().variable(*id).name() << std::endl;
+  for( unsigned int mod = 0; mod < dSize; mod++ ) {
+    key[0] = *id;
+    key[1] = mod;
+    key[2] = 0; // min
+    std::vector< std::vector< std::vector< std::vector< bool > > > > tOpts = opt->getFullBNOptsFromKey( key ); 
+    
+    std::cout << "min sur : " << mod << std::endl;
+    unsigned int bnSet = tOpts.size();
+    if ( bnSet > 10 )
+      continue;
+
+    for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+      std::cout << tOpts[bn] << std::endl;
+    }
+
+    key[2] = 1; // max
+    const std::vector< std::vector< std::vector< std::vector< bool > > > > & tOpts2 = opt->getFullBNOptsFromKey( key ); 
+    bnSet = tOpts2.size();
+    if ( bnSet > 10 )
+      continue;
+    std::cout << "max sur : " << mod << std::endl;
+    for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+      std::cout << tOpts2[bn] << std::endl;
+    }
+
+  }
+
+}
+    
+   
+
+
+//////////////////////////////////////////////////////////////////////////
+/*unsigned int bnSet = tOpts.size();
+std::cout << "bn opts de nodeid  : " << bnSet << std::endl;
 for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
   std::cout << tOpts[bn] << std::endl;
 }
 
 const std::vector< dBN* > & tOpts2 = opt->getBNOptsFromKey( key );
 for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
-  std::cout << *tOpts2[bn] << std::endl;
+  std::cout << *(tOpts2[bn]) << std::endl;
 }
 
-
+for(unsigned int i = 0; i < tOpts2[0]->size(); i++)
+  std::cout << (*(tOpts2[0]))[i] << " ";
+std::cout << std::endl;*/
 
 std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::endl;
 

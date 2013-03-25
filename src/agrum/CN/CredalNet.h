@@ -4,6 +4,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
+#include <agrum/core/exceptions.h>
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -19,14 +21,22 @@
 #include <algorithm>
 #include <cstdlib>
 
+// lrs stuff
 //we force MP (not long or GMP)
 #define MP
 #undef long
 #undef GMP
 #include "lrslib/lrslib.h"
-#include <agrum/core/exceptions.h>
 
-// replace #include <omp.h>
+// cdd stuff ( cdd lib needs to be installed )
+#include <setoper.h>
+#include <cdd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+
 #include <agrum/CN/OMPThreads.h>
 
 namespace gum {
@@ -110,6 +120,8 @@ namespace gum {
       void __int2Pow ( int &exponent ) const;
       void __superiorPow ( const int &card, int &num_bits, int &new_card ) const;
 
+      // cdd call
+      void __H2Vcdd ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep, const bool rationals ) const;
       // lrs call
       void __H2V ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep, const bool rationals ) const;
 

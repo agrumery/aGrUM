@@ -7,7 +7,7 @@
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  class MCSampling : public InferenceEngine< GUM_SCALAR > {
+  class MCSampling : public InferenceEngine< GUM_SCALAR, BNInferenceEngine > {
     private:
       bool __repetitiveInd;
       int __timeLimit;
@@ -17,7 +17,7 @@ namespace gum {
       bool __storeVertices;
       bool __storeBNOpt;
 
-      typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
+      //typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
 
       std::vector< gum::NodeId > __varOrder;
       std::vector< std::vector< int > > __varInst;

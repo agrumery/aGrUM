@@ -3,60 +3,44 @@
 
 #include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/CN/OptBN.h>
+#include "EmptyClass.h"
 
 namespace gum {
 
-  template< typename GUM_SCALAR >
-  class InferenceEngine : public ApproximationScheme {
+
+  template < typename GUM_SCALAR, class BNInferenceEngine = EmptyClass >
+  class InferenceEngine;
+
+  // code commun
+  template < typename GUM_SCALAR >
+  class InferenceEngine < GUM_SCALAR, EmptyClass > : public ApproximationScheme {
     private:
 
     protected:
       const CredalNet< GUM_SCALAR > * _credalNet;
 
-////////////////////////// from MCSampling /////////////////
       typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
       typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
       typedef typename gum::Property< GUM_SCALAR >::onNodes expe;
-
-      typedef gum::BayesNet< GUM_SCALAR > bnet;
-      typedef std::vector< margi > margis;
-      typedef std::vector< expe > expes;
-      typedef std::vector< credalSet > credalSets;
-
-      typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
       
-      margis _l_marginalMin;
-      margis _l_marginalMax;
-      expes _l_expectationMin;
-      expes _l_expectationMax;
-      modals _l_modal;
-      credalSets _l_marginalSets;
-
       margi _oldMarginalMin;
       margi _oldMarginalMax;
 
-      typename std::vector< bnet * > _workingSet;
-      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > _workingSetE;
-      ////// remember sampled dBNs //////
-      std::vector< OptBN< GUM_SCALAR >* > _l_optimalNet;
-      OptBN< GUM_SCALAR > _fusionOpt;
+      margi _marginalMin;
+      margi _marginalMax;
 
-//////////////////////////////////////////////////////////////
+      credalSet _marginalSets;
 
-      typename gum::Property< std::vector< GUM_SCALAR > >::onNodes _marginalMin;
-      typename gum::Property< std::vector< GUM_SCALAR > >::onNodes _marginalMax;
+      expe _expectationMin;
+      expe _expectationMax;
 
-      typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes _marginalSets;
-
-      typename gum::Property< GUM_SCALAR >::onNodes _expectationMin;
-      typename gum::Property< GUM_SCALAR >::onNodes _expectationMax;
       typename std::map< std::string, std::vector< GUM_SCALAR > > _dynamicExpMin;
       typename std::map< std::string, std::vector< GUM_SCALAR > > _dynamicExpMax;
 
       // variables modalities (the real ones, not discretized 0 1 2 3 ...)
       typename std::map< std::string, std::vector< GUM_SCALAR > > _modal;
 
-      typename gum::Property< std::vector< GUM_SCALAR > >::onNodes _evidence;
+      margi _evidence;
       typename gum::Property< std::vector< bool > >::onNodes _query;
 
       // sampling (dynamic network)
@@ -69,21 +53,10 @@ namespace gum {
       void _dynamicExpectations();
       void _initExpectations();
 
-      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ); // called once
-
-      // inline stuff ( algorithms are easier to read with those )
-      // true if sampled net store
-      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices, const bool __storeBNOpt );
-      inline void _updateMarginals();
       inline const GUM_SCALAR _computeEpsilon();
 
-      void _updateOldMarginals(); // called once only
-      void _expFusion(); // called once
-      void _optFusion(); // called once
-      void _verticesFusion(); // called ?? not done yet
-
-
     public:
+      InferenceEngine ();
       InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
       ~InferenceEngine();
 
@@ -132,9 +105,63 @@ namespace gum {
       const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT1Cluster() const;
 
       OptBN<GUM_SCALAR> * getOptBN ();
+  };
 
-  }; // CNInferenceEngine
+  // template used when algorithm runs multiple inference engines (such as sampling mutiple vertices)
+  template < typename GUM_SCALAR, class BNInferenceEngine >
+  class InferenceEngine : public InferenceEngine < GUM_SCALAR > {
+    protected :
+      typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
+      typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
+      typedef typename gum::Property< GUM_SCALAR >::onNodes expe;
 
+      typedef gum::BayesNet< GUM_SCALAR > bnet;
+      typedef std::vector< margi > margis;
+      typedef std::vector< expe > expes;
+      typedef std::vector< credalSet > credalSets;
+
+      typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
+      
+      margis _l_marginalMin;
+      margis _l_marginalMax;
+      expes _l_expectationMin;
+      expes _l_expectationMax;
+      modals _l_modal;
+      credalSets _l_marginalSets;
+
+      typename std::vector< bnet * > _workingSet;
+      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > _workingSetE;
+      
+//////////////////////////////////////////////////////////////
+
+      typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
+
+      ////// remember sampled dBNs //////
+      std::vector< OptBN< GUM_SCALAR > * > _l_optimalNet;
+      OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp is disabled (avoid creating 2 objects when only one is necessary)
+      // it should also avoid calling thread fusion operations
+
+      void _initThreadsData( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ); // called once
+
+      // inline stuff ( algorithms are easier to read with those )
+      // true if sampled net store
+      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool __storeVertices, const bool __storeBNOpt );
+
+      inline void _updateMarginals();
+      inline const GUM_SCALAR _computeEpsilon();
+      void _updateOldMarginals(); // called once only
+
+      void _optFusion(); // called once
+      void _expFusion(); // called once
+      void _verticesFusion(); // called ?? not done yet
+
+    public : 
+      InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
+      ~InferenceEngine();
+
+      OptBN< GUM_SCALAR > * getOptBN ();
+  };
+  
 } // namespace cn
 
 #include <agrum/CN/InferenceEngine.tcc>

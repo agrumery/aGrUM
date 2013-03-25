@@ -4,7 +4,7 @@
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( credalNet ) {
+  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR, BNInferenceEngine >::InferenceEngine ( credalNet ) {
     GUM_CONSTRUCTOR ( MCSampling );
     stopN = false;
     __repetitiveInd = false;
@@ -38,7 +38,7 @@ namespace gum {
     __mcThreadDataCopy();
 
     #pragma omp parallel for
-    for ( Size iter = 0; iter < 2/*this->burnIn()*/; iter++ ) {
+    for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
       __threadInference();
 /*     
       // to check random sampling
@@ -97,11 +97,13 @@ namespace gum {
     unsigned int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
     bool keepSample = false;
 
-    if ( _l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
+    if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
+
+
       const gum::DAG &tDag = this->_workingSet[tId]->dag();
 
       for ( gum::DAG::NodeIterator it = tDag.beginNodes(); it != tDag.endNodes(); ++it ) {
-        const gum::Potential< GUM_SCALAR > & potential ( _l_inferenceEngine[tId]->marginal ( *it ) );
+        const gum::Potential< GUM_SCALAR > & potential ( this->_l_inferenceEngine[tId]->marginal ( *it ) );
         gum::Instantiation ins ( potential );
         std::vector< GUM_SCALAR > vertex;
 
@@ -141,9 +143,9 @@ namespace gum {
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
     int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
     __verticesSampling();
-    _l_inferenceEngine[tId]->eraseAllEvidence();
-    __insertEvidence ( *_l_inferenceEngine[tId] );
-    _l_inferenceEngine[tId]->makeInference();
+    this->_l_inferenceEngine[tId]->eraseAllEvidence();
+    __insertEvidence ( *this->_l_inferenceEngine[tId] );
+    this->_l_inferenceEngine[tId]->makeInference();
 
   }
 
@@ -179,9 +181,9 @@ namespace gum {
         num_threads = gum_threads::getNumberOfRunningThreads();//omp_get_num_threads();
 
         this->_initThreadsData ( num_threads, __storeVertices, __storeBNOpt ); // in infEng
-        _l_inferenceEngine.resize ( num_threads, NULL ); // in MCSampling
+        this->_l_inferenceEngine.resize ( num_threads, NULL ); // in MCSampling
         //if ( __storeBNOpt )
-          //_l_sampledNet.resize ( num_threads );
+          //this->_l_sampledNet.resize ( num_threads );
       } // end of : single region
 
       // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :

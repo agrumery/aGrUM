@@ -429,7 +429,11 @@ namespace gum {
         } else {
           try {
             //std::cout << __src_bn.variable(*node_idIt) << " pconf : " << entry << " ineq : \n" << inequalities << std::endl;
-            __H2V ( inequalities, vertices, ( ( s > 0 ) ? true : false ) );
+            //__H2V ( inequalities, vertices, ( ( s > 0 ) ? true : false ) );
+
+
+            __H2Vcdd ( inequalities, vertices, ( ( s > 0 ) ? true : false ) );
+
             //std::cout << std::endl << vertices << std::endl;
           } catch ( const std::exception &err ) {
             std::cout << err.what() << std::endl;
@@ -1122,6 +1126,50 @@ namespace gum {
     }
   }
 
+  // cdd can use real values, not just rationals / integers
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::__H2Vcdd ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep, const bool rationals ) const {
+    dd_set_global_constants();
+
+    dd_MatrixPtr M, G;
+    dd_PolyhedraPtr poly;
+    dd_ErrorType err;
+
+    unsigned int rows = h_rep.size();
+    unsigned int cols = 0;
+    if( h_rep.size() > 0 )
+      cols = h_rep[0].size();
+
+    M = dd_CreateMatrix( rows, cols);
+
+    for ( unsigned int row = 0; row < rows; row++ ) {
+      for ( unsigned int col = 0; col < cols; col++ ) {
+        dd_set_d( M->matrix[row][col], h_rep[row][col] );
+      }
+    }
+
+    poly = dd_DDMatrix2Poly(M, &err);
+    G = dd_CopyGenerators(poly);
+
+    rows = G->rowsize;
+    cols = G->colsize;
+
+    v_rep.clear();
+    for ( unsigned int row = 0; row < rows; row++ ) {
+      std::vector< GUM_SCALAR > aRow(cols - 1);
+      if ( *G->matrix[row][0] != 1 )
+          GUM_ERROR(OperationNotAllowed, "__H2Vcdd : not reading a vertex");
+      for ( unsigned int col = 0; col < cols - 1; col++ ) {
+        aRow[col] = *G->matrix[row][ col + 1 ];
+      }
+      v_rep.push_back(aRow);
+    }
+
+    dd_FreeMatrix(M);
+    dd_FreeMatrix(G);
+    dd_free_global_constants();
+  }
+
 
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::__H2V ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep, const bool rationals ) const {
@@ -1155,7 +1203,8 @@ namespace gum {
       for ( typename std::vector< std::vector< GUM_SCALAR > >::const_iterator it = h_rep.begin(); it != h_rep.end(); ++it ) {
         for ( typename std::vector< GUM_SCALAR >::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 ) {
           // get integer fraction from decimal value
-          // smaller numerator & denominator is farley
+          // smallest numerator & denominator is farley, also overall
+          // best precision
           __farley ( num, den, ((*it2 > 0) ? *it2 : - *it2), __denMax );
           h_file << ((*it2 > 0) ? num : -num) << '/' << den << ' ';
         }

@@ -142,6 +142,7 @@ namespace gum_tests {
         mcs.setTimeLimit ( 1 );
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
+        //mcs.storeBNOpt ( true );
 
         std::map < std::string, std::vector < double > > modals;
         std::vector < double > binaryModal(2,0);
