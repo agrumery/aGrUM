@@ -78,7 +78,7 @@ namespace gum_tests {
       }
 
       // dynamic (dynaCheese network - slow)
-     /* void initDCNet () {
+      void initDCNet () {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
@@ -93,8 +93,8 @@ namespace gum_tests {
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
 
         double beta = 0.8;
-        cn->bnToCredal(beta, false);
-      }*/
+        cn->bnToCredal(beta);
+      }
 
       void clearCNet () {
         delete cn;
@@ -106,7 +106,7 @@ namespace gum_tests {
         LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
         // evidence from file
         try {
-          lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -182,7 +182,7 @@ namespace gum_tests {
         clearCNet();
       } // end of : testL2UInference (2U network)
 
-/*      // dynamic (dynaCheese) - strong indep
+      // dynamic (dynaCheese) - strong indep
       void testL2UInferenceD () {
         initDCNet();
         typedef std::vector< double > exp;
@@ -195,17 +195,17 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
         // modalities from file
-        try {
+        /*try {
           lp.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
-        }
+        }*/
         
         try {
           lp.makeInference();
@@ -249,16 +249,16 @@ namespace gum_tests {
 
         clearCNet();
       } // end of : testL2UInferenceD
-*/
+
       
       // with dynamic network
-      /*void testL2UListener () {
+      void testL2UListener () {
         initDCNet();
         LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
         
         // evidence from file
         try {
-          lp.insertEvidence ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -281,7 +281,7 @@ namespace gum_tests {
         }
 
         clearCNet();
-      } // end of : testL2UListener*/
+      } // end of : testL2UListener
 
   }; // end of : class L2UInferenceTestSuite
 

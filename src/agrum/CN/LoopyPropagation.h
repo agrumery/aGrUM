@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <limits>
+#include <agrum/CN/CNInferenceEngine.h>
 
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 
