@@ -58,5 +58,5 @@ CHECK_TYPE_SIZE(double GUM_DOUBLE_SIZE)
 add_definitions("-Wall")
 add_definitions("-pedantic")
 
-add_definitions("-std=c++11")
+add_definitions("-std=c++0x")
 
