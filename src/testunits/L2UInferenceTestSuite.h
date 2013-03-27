@@ -74,7 +74,7 @@ namespace gum_tests {
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
 
-        cn->intervalToCredal(0);
+        cn->intervalToCredal();
       }
 
       // dynamic (dynaCheese network - slow)

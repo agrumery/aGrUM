@@ -1204,9 +1204,8 @@ void LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
       cpt += cpt_in;
 		  cpt_in = 1;
 		  gum::NodeSet _parents = graphe.parents(*it);
-		  /* msg from X to Y comment
+		  // msg from X to Y comment
       taille_in = _parents.size();
-      */
 		  for(gum::NodeSetIterator kt = _parents.begin(); kt != _parents.end(); ++kt)
 		  {
 		    // msg from X to Y comment
@@ -1238,8 +1237,13 @@ void LoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs()
     std::cout << std::endl;
 		// msg from X to Y comment
     		
-	} while( this->continueApproximationScheme ( eps, false, false ) || active_nodes_set.size() > 0 );
-	//std::cout << "nb noeuds suivants : " << actifs_suivants.size() << std::endl;
+	} while( this->continueApproximationScheme ( eps, false, false ) && active_nodes_set.size() > 0 );
+	std::cout << "nb noeuds suivants : " << active_nodes_set.size() << std::endl;
+  for(gum::NodeSetIterator it = active_nodes_set.begin(); it != active_nodes_set.end(); ++it)
+		{
+      std::cout << this->bn().variable(*it).name() << std::endl;
+    }
+
 }
 
 
@@ -2317,7 +2321,7 @@ GUM_SCALAR LoopyPropagation<GUM_SCALAR>::_calculateEpsilon() // as a matter of f
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename GUM_SCALAR>
 LoopyPropagation<GUM_SCALAR>::LoopyPropagation(const CredalNet<GUM_SCALAR> &cn, const BayesNet<GUM_SCALAR>& bn) 
-: InferenceEngine< GUM_SCALAR >::InferenceEngine ( cn ), _InferenceUpToDate(false), __inferenceType(ordered)
+: CNInferenceEngine< GUM_SCALAR >::CNInferenceEngine ( cn ), _InferenceUpToDate(false), __inferenceType(ordered)
 {
   if ( ! cn.isSeparatelySpecified() )
     GUM_ERROR (OperationNotAllowed, "LoopyPropagation is only available with separately specified nets");

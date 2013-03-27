@@ -1,13 +1,5 @@
-/*#include "CredalNet.h"
-#include "InferenceEngine.h"
-#include "MCSampling.h"
-#include "LocalSearch.h"
-#include "LoopyPropagation.h"
-#include "Errors.h"
-*/
-
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/CNInferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
 //#include <agrum/CN/LocalSearch.h>
 #include <agrum/CN/LoopyPropagation.h>
@@ -32,6 +24,7 @@ using namespace gum;
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
 void test_credal() {
+
 /////////////// OMP test stuff ///////////////////
 
   std::cout << "isOMP () ? : " << gum_threads::isOMP() << std::endl;
@@ -72,7 +65,12 @@ void test_credal() {
   // (G)(L)2U test
   CredalNet<double> myCNb(monBNa, monBNb);
 
-  myCNb.intervalToCredal(0);
+/*
+  myCNb.testFrac();
+  return;
+*/
+
+  myCNb.intervalToCredal();
   //std::cout << "computing min/max vertex" << std::endl;
   myCNb.computeCPTMinMax();
   //std::cout << "computing done" << std::endl;
@@ -152,17 +150,17 @@ void test_credal() {
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
-      myCNa->intervalToCredal(0); // 2U network
+      myCNa->intervalToCredal(); // 2U network
 
-       /*
+       
       if ( i == 0 )
-        myCNa->bnToCredal ( 0.95, false );
+        myCNa->bnToCredal ( 0.95 );
 
       if ( i == 1 )
-        myCNa->bnToCredal ( 0.8, false );
+        myCNa->bnToCredal ( 0.8 );
 
       if ( i == 2 )
-        myCNa->bnToCredal ( 0.85, false );*/
+        myCNa->bnToCredal ( 0.85);
 
       //myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
 

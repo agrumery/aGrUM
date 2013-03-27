@@ -2,12 +2,12 @@
 #define ___CN_MC_SAMPLING__H__
 
 #include <limits>
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/CNInferenceEngine.h>
 
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  class MCSampling : public InferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+  class MCSampling : public CNInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
     private:
       bool __repetitiveInd;
       int __timeLimit;

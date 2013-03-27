@@ -2,7 +2,6 @@
 #define __LOOPY_PROPAGATION__H__
 
 #include <agrum/CN/CredalNet.h>
-//#include "PearlPropagation.h"
 #include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/core/sequence.h>
 #include <cstdlib>
@@ -15,7 +14,7 @@ namespace gum
 {
 
   template< typename GUM_SCALAR >
-  class LoopyPropagation : public InferenceEngine<GUM_SCALAR>
+  class LoopyPropagation : public CNInferenceEngine<GUM_SCALAR>
 	{
 	public:
     typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;

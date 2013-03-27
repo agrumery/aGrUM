@@ -4,7 +4,7 @@
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR, BNInferenceEngine >::InferenceEngine ( credalNet ) {
+  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : CNInferenceEngine< GUM_SCALAR, BNInferenceEngine >::CNInferenceEngine ( credalNet ) {
     GUM_CONSTRUCTOR ( MCSampling );
     stopN = false;
     __repetitiveInd = false;
@@ -37,8 +37,9 @@ namespace gum {
     __mcInitApproximationScheme();
     __mcThreadDataCopy();
 
+    auto bsize = this->burnIn();
     #pragma omp parallel for
-    for ( Size iter = 0; iter < this->burnIn(); iter++ ) {
+    for ( decltype(bsize) iter = 0; iter < bsize; iter++ ) {
       __threadInference();
 /*     
       // to check random sampling
@@ -52,23 +53,24 @@ namespace gum {
       __threadUpdate();
     } // end of : parallel burnIn
 
-    this->updateApproximationScheme( this->burnIn() );
+    this->updateApproximationScheme( bsize );
 
     this->_updateOldMarginals(); // fusion threads + update old margi
 
     GUM_SCALAR eps = 1; // to validate testSuite ?
     this->continueApproximationScheme ( eps, false, false );
     
+    auto psize = this->periodSize();
     // less overheads with high periodSize
     do {
       eps = 0;
       #pragma omp parallel for
-      for ( Size iter = 0; iter < this->periodSize(); iter++ ) {
+      for ( decltype(psize) iter = 0; iter < psize; iter++ ) {
         __threadInference();
         __threadUpdate();
       } // end of : parallel periodSize
 
-      this->updateApproximationScheme ( this->periodSize() );
+      this->updateApproximationScheme ( psize );
 
       this->_updateMarginals(); // fusion threads + update margi
 
@@ -94,15 +96,13 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
-    unsigned int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
+    int tId = gum_threads::getThreadNumber();
     bool keepSample = false;
 
     if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
-
-
       const gum::DAG &tDag = this->_workingSet[tId]->dag();
 
-      for ( gum::DAG::NodeIterator it = tDag.beginNodes(); it != tDag.endNodes(); ++it ) {
+      for ( auto it = tDag.beginNodes(), theEnd = tDag.endNodes(); it != theEnd; ++it ) {
         const gum::Potential< GUM_SCALAR > & potential ( this->_l_inferenceEngine[tId]->marginal ( *it ) );
         gum::Instantiation ins ( potential );
         std::vector< GUM_SCALAR > vertex;
@@ -141,7 +141,7 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
-    int tId = gum_threads::getThreadNumber();//omp_get_thread_num();
+    int tId = gum_threads::getThreadNumber();
     __verticesSampling();
     this->_l_inferenceEngine[tId]->eraseAllEvidence();
     __insertEvidence ( *this->_l_inferenceEngine[tId] );
@@ -170,23 +170,25 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
-    unsigned int num_threads;
+    int num_threads;
     #pragma omp parallel
     {
-      unsigned int this_thread = gum_threads::getThreadNumber();//omp_get_thread_num();
+      int this_thread = gum_threads::getThreadNumber();
 
       // implicit wait clause (don't put nowait)
       #pragma omp single
       {
-        num_threads = gum_threads::getNumberOfRunningThreads();//omp_get_num_threads();
+        // should we ask for max threads instead ( no differences here in practice )
+        num_threads = gum_threads::getNumberOfRunningThreads();
 
-        this->_initThreadsData ( num_threads, __storeVertices, __storeBNOpt ); // in infEng
-        this->_l_inferenceEngine.resize ( num_threads, NULL ); // in MCSampling
+        this->_initThreadsData ( num_threads, __storeVertices, __storeBNOpt );
+        this->_l_inferenceEngine.resize ( num_threads, NULL ); 
+        
         //if ( __storeBNOpt )
           //this->_l_sampledNet.resize ( num_threads );
       } // end of : single region
 
-      // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
+      // we could put those below in a function in CNInferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
       // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
       gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
@@ -223,8 +225,9 @@ namespace gum {
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
     //this->eraseAllEvidence();
+    auto tsize = this->_workingSet.size();
     // delete pointers
-    for ( Size bn = 0; bn < this->_workingSet.size(); bn++ ) {
+    for ( decltype(tsize) bn = 0; bn < tsize; bn++ ) {
       if ( __storeVertices )
         this->_l_marginalSets[bn].clear();
 
@@ -238,7 +241,7 @@ namespace gum {
       }
 
       if ( this->_workingSetE[bn] != NULL ) {
-        for ( typename gum::List< const gum::Potential< GUM_SCALAR > * >::iterator it = this->_workingSetE[bn]->begin(); it != this->_workingSetE[bn]->end(); ++it )
+        for ( auto it = this->_workingSetE[bn]->begin(), theEnd = this->_workingSetE[bn]->end(); it != theEnd; ++it )
           delete *it;
 
         delete this->_workingSetE[bn];
@@ -280,8 +283,8 @@ namespace gum {
     this->_t0.clear();
     this->_t1.clear();
 
-    for ( gum::DAG::NodeIterator id = this->_credalNet->current_bn().beginNodes(); id != this->_credalNet->current_bn().endNodes(); ++id ) {
-      int dSize = this->_credalNet->current_bn().variable ( *id ).domainSize();
+    for ( auto id = this->_credalNet->current_bn().beginNodes(), theEnd = this->_credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
+      auto dSize = this->_credalNet->current_bn().variable ( *id ).domainSize();
       this->_marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
       this->_marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
       this->_marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
@@ -319,8 +322,9 @@ namespace gum {
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const {
     unsigned int n = value;
+    auto tfsize = toFill.size();
     // get bits of choosen_vertex
-    for (unsigned int i = 0; i < toFill.size(); i++)
+    for ( decltype(tfsize) i = 0; i < tfsize; i++)
     {
       toFill[i] = n & 1;
       n /= 2;
@@ -329,13 +333,10 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
-    int this_thread = gum_threads::getThreadNumber();//omp_get_thread_num();
+    int this_thread = gum_threads::getThreadNumber();
     gum::BayesNet< GUM_SCALAR > * working_bn = this->_workingSet[this_thread];
 
     const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &this->_credalNet->credalNet_cpt();
-
-    int choosen_vertex;
-    Size dSize;
 
     typedef std::vector< std::vector< std::vector< bool > > > dBN;
 
@@ -349,24 +350,27 @@ namespace gum {
       t0 = this->_t0;
       t1 = this->_t1;
 
-      for ( typename gum::Property< std::vector< gum::NodeId > >::onNodes::const_iterator it = t0.begin(); it != t0.end(); ++it ) {
-        dSize = working_bn->variable ( it.key() ).domainSize();
+      // use cbegin() when available
+      for ( auto it = t0.begin(), theEnd = t0.end(); it != theEnd; ++it ) {
+        auto dSize = working_bn->variable ( it.key() ).domainSize();
         gum::Potential< GUM_SCALAR > * potential ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( it.key() ) ) );
         std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
-        for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
-          choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
+        auto pconfs = ( *cpt ) [it.key()].size();
+        for ( decltype(pconfs) pconf = 0; pconf < pconfs; pconf++ ) {
+          auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
           if ( __storeBNOpt )
             __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
 
-          for ( Size mod = 0; mod < dSize; mod++ )
+          for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
         } // end of : pconf
 
         potential->fillWith ( var_cpt );
 
-        for ( Size pos = 0; pos < it->size(); pos++ ) {
+        auto t0esize = it->size();
+        for ( decltype(t0esize) pos = 0; pos < t0esize; pos++ ) {
           if ( __storeBNOpt )
             ( sample )[( *it )[pos]] = ( sample )[it.key()];
           
@@ -375,24 +379,26 @@ namespace gum {
         }
       }
 
-      for ( typename gum::Property< std::vector< gum::NodeId > >::onNodes::const_iterator it = t1.begin(); it != t1.end(); ++it ) {
-        dSize = working_bn->variable ( it.key() ).domainSize();
+      // use cbegin()
+      for ( auto it = t1.begin(), theEnd = t1.end(); it != theEnd; ++it ) {
+        auto dSize = working_bn->variable ( it.key() ).domainSize();
         gum::Potential< GUM_SCALAR > * potential ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( it.key() ) ) );
         std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
         for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
-          choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
+          auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
           if ( __storeBNOpt )
             __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
 
-          for ( Size mod = 0; mod < dSize; mod++ )
+          for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
         } // end of : pconf
 
         potential->fillWith ( var_cpt );
 
-        for ( Size pos = 0; pos < it->size(); pos++ ) {
+        auto t1esize = it->size();
+        for ( decltype(t1esize) pos = 0; pos < t1esize; pos++ ) {
           if ( __storeBNOpt )
             ( sample )[( *it )[pos]] = ( sample )[it.key()];
 
@@ -405,20 +411,20 @@ namespace gum {
       }
     } 
     else {
-      for ( gum::DAG::NodeIterator id = working_bn->beginNodes(); id != working_bn->endNodes(); ++id ) {
-        dSize = working_bn->variable ( *id ).domainSize();
+      for ( auto id = working_bn->beginNodes(), theEnd = working_bn->endNodes(); id != theEnd; ++id ) {
+        auto dSize = working_bn->variable ( *id ).domainSize();
         gum::Potential< GUM_SCALAR > * potential ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( *id ) ) );
         std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
-        Size pConfs = ( *cpt ) [*id].size();
-
-        for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
+        
+        auto pConfs = ( *cpt ) [*id].size();
+        for ( decltype(pConfs) pconf = 0; pconf < pConfs; pconf++ ) {
           Size nVertices = ( *cpt ) [*id][pconf].size();
-          choosen_vertex = rand() % nVertices;
+          auto choosen_vertex = rand() % nVertices;
 
           if ( __storeBNOpt )
             __binaryRep( ( sample )[*id][pconf], choosen_vertex );
 
-          for ( Size mod = 0; mod < dSize; mod++ )
+          for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
             var_cpt[pconf * dSize + mod] = ( *cpt ) [*id][pconf][choosen_vertex][mod];
         } // end of : pconf
 
@@ -435,7 +441,7 @@ namespace gum {
     if ( this->_evidence.size() == 0 )
       return;
 
-    int this_thread = gum_threads::getThreadNumber();//omp_get_thread_num();
+    int this_thread = gum_threads::getThreadNumber();
     gum::BayesNet<GUM_SCALAR> * working_bn = this->_workingSet[this_thread];
 
     gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = this->_workingSetE[this_thread];
@@ -447,7 +453,8 @@ namespace gum {
 
     typename gum::Property< std::vector< GUM_SCALAR > >::onNodes thread_evidence = this->_evidence;
 
-    for ( typename gum::Property< std::vector< GUM_SCALAR > >::onNodes::const_iterator it = thread_evidence.begin(); it != thread_evidence.end(); ++it ) {
+    // use cbegin()
+    for ( auto it = thread_evidence.begin(), theEnd = thread_evidence.end(); it != theEnd; ++it ) {
       gum::Potential< GUM_SCALAR > *p = new gum::Potential< GUM_SCALAR >;
       ( *p ) << working_bn->variable ( it.key() );
 
