@@ -8,11 +8,12 @@
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
 
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
+//#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
 #include <agrum/CN/OMPThreads.h>
 
@@ -22,7 +23,7 @@
  */
 
 namespace gum_tests {
-  using namespace gum;
+  
   ////////////////////////////////////////////////////////////////////
   class L2UListener : public gum::ApproximationSchemeListener {
     private :
@@ -64,12 +65,12 @@ namespace gum_tests {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
-        BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
+        gum::BayesNet<double> monBNa;
+        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/2Umin.bif ) );
         readera.proceed();
 
-        BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
+        gum::BayesNet<double> monBNb;
+        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/2Umax.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
@@ -83,12 +84,12 @@ namespace gum_tests {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
-        BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( dbn_bin_min.bif ) );
+        gum::BayesNet<double> monBNa;
+        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/dbn_bin_min.bif ) );
         readera.proceed();
 
-        BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( dbn_bin_max.bif ) );
+        gum::BayesNet<double> monBNb;
+        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/dbn_bin_max.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
@@ -98,33 +99,27 @@ namespace gum_tests {
       }
 
       void clearCNet () {
-        std::cout << "delete net" << std::endl;
         delete cn;
-        std::cout << "net deleted" << std::endl;
       }
 
       // not dynamic (2U network) - with evidence
       void testL2UInference () {
-        std::cout << "begin test 1 " << std::endl;
         initCNet();
 
-        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
+        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
 
-        std::cout << "insert evi" << std::endl;
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-        std::cout << "erasing evi" << std::endl;
         try {
           lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
-        std::cout << "inserting evi from map" << std::endl;
         // evidence from map
         std::map< std::string, std::vector<double> > eviMap;
         std::vector<double> evi0(2,0); evi0[0] = 1;
@@ -164,15 +159,11 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }*/
 
-        std::cout << "begin inference" << std::endl;
-
         try {
           lp.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-
-        std::cout << "inference done" << std::endl;
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
@@ -192,16 +183,14 @@ namespace gum_tests {
         }
 
         clearCNet();
-        std::cout << " test 1 done " << std::endl;
       } // end of : testL2UInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
       void testL2UInferenceD () {
-        std::cout << "begin test 2 " << std::endl;
         initDCNet();
         typedef std::vector< double > exp;
 
-        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
+        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
         
         //////////////////////////////////////////////////////
         // strong independence
@@ -209,7 +198,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( dbn_bin_evi.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/dbn_bin_evi.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -268,13 +257,12 @@ namespace gum_tests {
       
       // with dynamic network
       void testL2UListener () {
-        std::cout << "begin listener test" << std::endl;
         initDCNet();
-        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
+        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
         
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( dbn_bin_evi.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/dbn_bin_evi.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
