@@ -861,7 +861,7 @@ namespace gum {
 
     __epsRedund = 1e-4;
 
-    // farley algorithm
+    // farey algorithm
     __epsF = 1e-6;
     __denMax = 1e6; // beware LRS
 

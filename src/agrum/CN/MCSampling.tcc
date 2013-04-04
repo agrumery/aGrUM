@@ -4,14 +4,14 @@
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : CNInferenceEngine< GUM_SCALAR, BNInferenceEngine >::CNInferenceEngine ( credalNet ) {
+  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::CNInferenceEngines ( credalNet ) {  
+    infEs::_repetitiveInd = false;
+    infEs::_timeLimit = 5 * 60;
+    infEs::_iterStop = 1000;
+    infEs::_storeVertices = false;
+    infEs::_storeBNOpt = false;
+
     GUM_CONSTRUCTOR ( MCSampling );
-    stopN = false;
-    __repetitiveInd = false;
-    __timeLimit = 5 * 60;
-    __iterStop = 1000;
-    __storeVertices = false;
-    __storeBNOpt = false;
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
@@ -22,12 +22,12 @@ namespace gum {
   // TEST single thread dans testSuite
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
-    if ( __repetitiveInd ) {
+    if ( infEs::_repetitiveInd ) {
       try {
         this->_repetitiveInit();
       } catch ( InvalidArgument & err ) {
         GUM_SHOWERROR ( err );
-        __repetitiveInd = false;
+        infEs::_repetitiveInd = false;
       }
     }
 
@@ -81,10 +81,10 @@ namespace gum {
     if ( ! this->_modal.empty() )
       this->_expFusion();
     
-    if( __storeBNOpt )
+    if( infEs::_storeBNOpt )
       this->_optFusion();
 
-    if ( __storeVertices )
+    if ( infEs::_storeVertices )
       this->_verticesFusion();
 
     if ( ! this->_modal.empty() )
@@ -110,14 +110,14 @@ namespace gum {
         for ( ins.setFirst(); !ins.end(); ++ins )
           vertex.push_back ( potential[ins] );
         
-        //this->_updateThread ( *it, vertex, __storeVertices, __storeBNOpt );
-        if ( this->_updateThread ( *it, vertex, __storeVertices, __storeBNOpt ) )
+        //this->_updateThread ( *it, vertex, infEs::_storeVertices, infEs::_storeBNOpt );
+        if ( this->_updateThread ( *it, vertex/*, infEs::_storeVertices, infEs::_storeBNOpt*/ ) )
           keepSample = true;
 
       } // end of : for all nodes
     } // end of : if ( p(e) > 0 )
 
-    if ( __storeBNOpt && ! keepSample ) {
+    if ( infEs::_storeBNOpt && ! keepSample ) {
       //delete this->_l_optimalNet[tId]->getCurrentSample();
       //std::cout << " net deleted, no opt found " << std::endl;
       #pragma omp critical(deleteCpt)
@@ -144,26 +144,21 @@ namespace gum {
     int tId = gum_threads::getThreadNumber();
     __verticesSampling();
     this->_l_inferenceEngine[tId]->eraseAllEvidence();
-    __insertEvidence ( *this->_l_inferenceEngine[tId] );
+    __insertEvidence();
     this->_l_inferenceEngine[tId]->makeInference();
 
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::storeBNOpt ( const bool value ) {
-    __storeBNOpt = value;
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
   void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
-    this->setMaxTime ( __timeLimit );
+    this->setMaxTime ( infEs::_timeLimit );
     this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
     /**
      * VERIFIER d/dt(e(t+1)-e(t))
      */
     this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
-    this->setBurnIn ( __iterStop );
-    this->setPeriodSize ( __iterStop );
+    this->setBurnIn ( infEs::_iterStop );
+    this->setPeriodSize ( infEs::_iterStop );
 
     this->initApproximationScheme();
   }
@@ -181,10 +176,10 @@ namespace gum {
         // should we ask for max threads instead ( no differences here in practice )
         num_threads = gum_threads::getNumberOfRunningThreads();
 
-        this->_initThreadsData ( num_threads, __storeVertices, __storeBNOpt );
+        this->_initThreadsData ( num_threads, infEs::_storeVertices, infEs::_storeBNOpt );
         this->_l_inferenceEngine.resize ( num_threads, NULL ); 
         
-        //if ( __storeBNOpt )
+        //if ( infEs::_storeBNOpt )
           //this->_l_sampledNet.resize ( num_threads );
       } // end of : single region
 
@@ -205,7 +200,11 @@ namespace gum {
       this->_l_expectationMax[this_thread] = this->_expectationMax;
       this->_l_modal[this_thread] = this->_modal;
 
-      if ( __storeVertices )
+      infEs::_l_clusters[this_thread].resize(2);
+      infEs::_l_clusters[this_thread][0] = infEs::_t0;
+      infEs::_l_clusters[this_thread][1] = infEs::_t1;
+
+      if ( infEs::_storeVertices )
         this->_l_marginalSets[this_thread] = this->_marginalSets;
 
       gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = new gum::List< const gum::Potential< GUM_SCALAR > * >();
@@ -214,109 +213,11 @@ namespace gum {
       BNInferenceEngine * inference_engine = new BNInferenceEngine ( * ( this->_workingSet[this_thread] ) );
       this->_l_inferenceEngine[this_thread] = inference_engine;
 
-      if ( __storeBNOpt ) {
+      if ( infEs::_storeBNOpt ) {
         OptBN<GUM_SCALAR> * threadOpt = new OptBN<GUM_SCALAR>( *this->_credalNet );
         this->_l_optimalNet[this_thread] = threadOpt;
       }
     }
-  }
-
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
-    //this->eraseAllEvidence();
-    auto tsize = this->_workingSet.size();
-    // delete pointers
-    for ( decltype(tsize) bn = 0; bn < tsize; bn++ ) {
-      if ( __storeVertices )
-        this->_l_marginalSets[bn].clear();
-
-      if ( this->_workingSet[bn] != NULL )
-        delete this->_workingSet[bn];
-
-      if ( __storeBNOpt ) {
-        if ( this->_l_inferenceEngine[bn] != NULL )
-          //std::cout << "delete thread " << bn << " opt nets" << std::endl;
-          delete this->_l_optimalNet[bn];
-      }
-
-      if ( this->_workingSetE[bn] != NULL ) {
-        for ( auto it = this->_workingSetE[bn]->begin(), theEnd = this->_workingSetE[bn]->end(); it != theEnd; ++it )
-          delete *it;
-
-        delete this->_workingSetE[bn];
-      }
-
-      if ( this->_l_inferenceEngine[bn] != NULL )
-        delete this->_l_inferenceEngine[bn];
-    }
-
-    // clear all vectors and maps
-    this->_workingSet.clear();
-    this->_workingSetE.clear();
-    this->_l_inferenceEngine.clear();
-    this->_l_optimalNet.clear();
-
-    this->_l_marginalMin.clear();
-    this->_l_marginalMax.clear();
-    this->_l_expectationMin.clear();
-    this->_l_expectationMax.clear();
-    this->_l_modal.clear();
-    this->_l_marginalSets.clear();
-
-    this->_oldMarginalMin.clear();
-    this->_oldMarginalMax.clear();
-
-    this->_evidence.clear();
-    this->_query.clear();
-
-    this->_marginalMin.clear();
-    this->_marginalMax.clear();
-    this->_expectationMin.clear();
-    this->_expectationMax.clear();
-    this->_marginalSets.clear();
-    this->_dynamicExpMin.clear();
-    this->_dynamicExpMax.clear();
-    this->_modal.clear();
-    this->_marginalSets.clear();
-
-    this->_t0.clear();
-    this->_t1.clear();
-
-    for ( auto id = this->_credalNet->current_bn().beginNodes(), theEnd = this->_credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
-      auto dSize = this->_credalNet->current_bn().variable ( *id ).domainSize();
-      this->_marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
-      this->_marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
-      this->_marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
-    }
-
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  bool MCSampling< GUM_SCALAR, BNInferenceEngine >::getStopType() const {
-    return __stopType;
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::setRepetitiveInd ( const bool repetitive ) {
-    __repetitiveInd = repetitive;
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::setTimeLimit ( const int &time_limit ) {
-    __timeLimit = time_limit * 60;
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::setIterStop ( const int &no_change_time_limit ) {
-    __iterStop = no_change_time_limit;
-  }
-
-  template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::setAll ( const bool repetitive, const int &time_limit, const int &no_change_time_limit ) {
-    __repetitiveInd = repetitive;
-    __timeLimit = time_limit * 60;
-    __iterStop = no_change_time_limit;
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
@@ -324,7 +225,7 @@ namespace gum {
     unsigned int n = value;
     auto tfsize = toFill.size();
     // get bits of choosen_vertex
-    for ( decltype(tfsize) i = 0; i < tfsize; i++)
+    for ( decltype(tfsize) i = 0; i < tfsize; i++ )
     {
       toFill[i] = n & 1;
       n /= 2;
@@ -341,14 +242,12 @@ namespace gum {
     typedef std::vector< std::vector< std::vector< bool > > > dBN;
 
     dBN sample;
-    if ( __storeBNOpt )
+    if ( infEs::_storeBNOpt )
       sample = dBN( this->_l_optimalNet[this_thread]->getSampleDef() );
 
-    if ( __repetitiveInd ) {
-      typename gum::Property< std::vector< gum::NodeId > >::onNodes t0;
-      typename gum::Property< std::vector< gum::NodeId > >::onNodes t1;
-      t0 = this->_t0;
-      t1 = this->_t1;
+    if ( infEs::_repetitiveInd ) {
+      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & t0 = infEs::_l_clusters[this_thread][0];
+      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & t1 = infEs::_l_clusters[this_thread][1];
 
       // use cbegin() when available
       for ( auto it = t0.begin(), theEnd = t0.end(); it != theEnd; ++it ) {
@@ -360,7 +259,7 @@ namespace gum {
         for ( decltype(pconfs) pconf = 0; pconf < pconfs; pconf++ ) {
           auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
-          if ( __storeBNOpt )
+          if ( infEs::_storeBNOpt )
             __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
 
           for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
@@ -371,7 +270,7 @@ namespace gum {
 
         auto t0esize = it->size();
         for ( decltype(t0esize) pos = 0; pos < t0esize; pos++ ) {
-          if ( __storeBNOpt )
+          if ( infEs::_storeBNOpt )
             ( sample )[( *it )[pos]] = ( sample )[it.key()];
           
           gum::Potential< GUM_SCALAR > * potential2 ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
@@ -388,7 +287,7 @@ namespace gum {
         for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
           auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
 
-          if ( __storeBNOpt )
+          if ( infEs::_storeBNOpt )
             __binaryRep( ( sample )[it.key()][pconf], choosen_vertex );
 
           for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
@@ -399,14 +298,14 @@ namespace gum {
 
         auto t1esize = it->size();
         for ( decltype(t1esize) pos = 0; pos < t1esize; pos++ ) {
-          if ( __storeBNOpt )
+          if ( infEs::_storeBNOpt )
             ( sample )[( *it )[pos]] = ( sample )[it.key()];
 
           gum::Potential< GUM_SCALAR > * potential2 ( const_cast< gum::Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
           potential2->fillWith ( var_cpt );
         }
       }
-      if ( __storeBNOpt ) {
+      if ( infEs::_storeBNOpt ) {
         this->_l_optimalNet[this_thread]->setCurrentSample( sample );
       }
     } 
@@ -421,7 +320,7 @@ namespace gum {
           Size nVertices = ( *cpt ) [*id][pconf].size();
           auto choosen_vertex = rand() % nVertices;
 
-          if ( __storeBNOpt )
+          if ( infEs::_storeBNOpt )
             __binaryRep( ( sample )[*id][pconf], choosen_vertex );
 
           for ( decltype(dSize) mod = 0; mod < dSize; mod++ )
@@ -430,24 +329,27 @@ namespace gum {
 
         potential->fillWith ( var_cpt );
       }
-      if ( __storeBNOpt )
+      if ( infEs::_storeBNOpt )
         this->_l_optimalNet[this_thread]->setCurrentSample( sample );
     }
 
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( BNInferenceEngine &inference_engine ) { /*const*/
+  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( ) {
     if ( this->_evidence.size() == 0 )
       return;
 
     int this_thread = gum_threads::getThreadNumber();
+
+    BNInferenceEngine * inference_engine = this->_l_inferenceEngine[ this_thread ];
+
     gum::BayesNet<GUM_SCALAR> * working_bn = this->_workingSet[this_thread];
 
     gum::List< const gum::Potential< GUM_SCALAR > * > * evi_list = this->_workingSetE[this_thread];
 
     if ( evi_list->size() > 0 ) {
-      inference_engine.insertEvidence ( *evi_list );
+      inference_engine->insertEvidence ( *evi_list );
       return;
     }
 
@@ -470,7 +372,7 @@ namespace gum {
     }
 
     if ( evi_list->size() > 0 )
-      inference_engine.insertEvidence ( *evi_list );
+      inference_engine->insertEvidence ( *evi_list );
 
   }
 

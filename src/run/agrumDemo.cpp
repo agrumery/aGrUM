@@ -13,10 +13,7 @@
 
 #include <agrum/CN/OptBN.h>
 
-
-
 using namespace gum;
-
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
@@ -44,20 +41,17 @@ void test_credal() {
 
   //gum_threads::setNumberOfThreads(1);
 
-// storeBN test (compilation)
-
-
   
 //////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
+  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /*bn_c_3.bif*/2Umin.bif ) );
  //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
+  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /*den_c_3.bif*/2Umax.bif ) );
  //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
@@ -70,11 +64,13 @@ void test_credal() {
   return;
 */
 
+  //myCNb.bnToCredal(0.5);
+
   myCNb.intervalToCredal();
   //std::cout << "computing min/max vertex" << std::endl;
   myCNb.computeCPTMinMax();
   //std::cout << "computing done" << std::endl;
-  LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb, myCNb.current_bn());
+  LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb);
 
   //lp.insertEvidence ( GET_PATH_STR ( L2U.evi ) );
   std::map< std::string, std::vector<double> > eviMap;
@@ -83,12 +79,22 @@ void test_credal() {
   eviMap["L"] = evi1;
   eviMap["G"] = evi0;
 
-  std::cout << "inserting evi " << std::endl;
   lp.insertEvidence(eviMap);
-  std::cout << "inserting evi done" << std::endl;
+
+  std::map< std::string, std::vector< double > > Umodals;
+  std::vector< double > Lm(2);
+  Lm[0] = 0;
+  Lm[1] = 1;
+  Umodals["A"] = Lm;
+  Umodals["B"] = Lm;
+  Umodals["C"] = Lm;
+
+  lp.insertModals(Umodals);
+
+  //lp.inferenceType(LoopyPropagation<double>::InferenceType::randomOrder);
 
   lp.makeInference();
-  std::cout << "inference done" << std::endl;
+  
   lp.saveInference ( GET_PATH_STR ( test.marginals ) );
   lp.saveMarginals ( GET_PATH_STR ( l2u.marginals ) );
 
@@ -99,8 +105,44 @@ void test_credal() {
     }
   }
 
-  lp.eraseAllEvidence();
-  return;
+  std::cout << lp.expectationMin(0) << std::endl;
+
+  std::cout << lp.messageApproximationScheme() << std::endl;
+
+  std::cout << lp.getApproximationSchemeMsg() << std::endl;
+
+  //lp.eraseAllEvidence();
+
+  // agrum hashmap with bool vectors test
+  /*
+  std::hash< std::vector< bool > > _vectHash;
+
+  gum::HashTable< unsigned long int, std::vector< unsigned int > > myMap;
+  std::vector< unsigned int > myKey(3);
+  myKey[2] = 1;
+  unsigned long int key = _vectHash(std::vector<bool>(4));
+  myMap.insert(key, myKey);
+  std::cout << myMap[key] << std::endl;
+
+  std::cout << "sizes" << std::endl;
+  std::cout << "size_t : " << sizeof(size_t) << std::endl;
+  std::cout << "key : " << sizeof(key) << std::endl;
+  std::cout << "unsigned int : " << sizeof(unsigned int) << std::endl;
+  std::cout << "unsigned long int : " << sizeof(unsigned long int) << std::endl;
+  */
+
+  /*
+  gum::HashTable< std::vector< bool >, std::vector< int> > myMap;
+  std::vector< bool > myKey(4);
+  myKey[2] = 1;
+  std::vector< int > myValue(2);
+  myValue[1] = 1;
+  myMap.insert(myKey, myValue);
+  std::cout << myMap[myKey] << std::endl;
+  */
+  
+  //return;
+  
 
   // LocalSearch test
 /*  
@@ -153,14 +195,14 @@ void test_credal() {
       myCNa->intervalToCredal(); // 2U network
 
        
-      if ( i == 0 )
+      /*if ( i == 0 )
         myCNa->bnToCredal ( 0.95 );
 
       if ( i == 1 )
         myCNa->bnToCredal ( 0.8 );
 
       if ( i == 2 )
-        myCNa->bnToCredal ( 0.85);
+        myCNa->bnToCredal ( 0.85);*/
 
       //myCNa->saveBNsMinMax("min.bif", "max.bif"); // interval BNs saved
 
@@ -347,6 +389,10 @@ typedef std::vector< bool > dBN;
 // DO NOY COPY anything !
 OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
 
+for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+  std::cout << myCNb.src_bn().variable(*id).name() << "\t";
+}
+std::cout << std::endl;
 
 for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
   unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
@@ -359,21 +405,30 @@ for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_b
     
     std::cout << "min sur : " << mod << std::endl;
     unsigned int bnSet = tOpts.size();
-    if ( bnSet > 10 )
-      continue;
+    
+    if ( bnSet > 10 ) {
+      std::cout << "more than 10" << std::endl;
+    }
+    else {
 
-    for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
-      std::cout << tOpts[bn] << std::endl;
+      for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+        std::cout << tOpts[bn] << std::endl;
+      }
     }
 
     key[2] = 1; // max
-    const std::vector< std::vector< std::vector< std::vector< bool > > > > & tOpts2 = opt->getFullBNOptsFromKey( key ); 
+    const std::vector< std::vector< std::vector< std::vector< bool > > > > & tOpts2 = opt->getFullBNOptsFromKey( key );
     bnSet = tOpts2.size();
-    if ( bnSet > 10 )
-      continue;
+
     std::cout << "max sur : " << mod << std::endl;
-    for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
-      std::cout << tOpts2[bn] << std::endl;
+
+    if ( bnSet > 10 ) {
+      std::cout << "more than 10" << std::endl;
+    }
+    else {
+      for ( unsigned int bn = 0; bn < bnSet; bn++ ) {
+        std::cout << tOpts2[bn] << std::endl;
+      }
     }
 
   }
@@ -412,7 +467,7 @@ std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::end
         MCE->saveExpectations ( "./MCs_0.95c_f.exp" );
       } else if ( i == 0 && j == 1 ) {
         MCE->saveMarginals(GET_PATH_STR ( MCr_0.95c_fb.mar ) );
-        MCE->saveExpectations ( "./MCs_0.95c_fb.exp" );
+        MCE->saveExpectations ( GET_PATH_STR ( MCs_0.95c_fb.exp ) );
       } else if ( i == 1 && j == 1 ) {
         //MCE->saveMarginals("./MCs_0.95c_fb.mar");
         MCE->saveExpectations ( "./MCs_0.95c_fb.exp" );

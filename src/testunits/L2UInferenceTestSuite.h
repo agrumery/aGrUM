@@ -75,6 +75,7 @@ namespace gum_tests {
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
+        cn->computeCPTMinMax();
       }
 
       // dynamic (dynaCheese network - slow)
@@ -83,47 +84,54 @@ namespace gum_tests {
           gum_threads::setNumberOfThreads(1);
         //#endif
         BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c_3.bif ) );
+        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( dbn_bin_min.bif ) );
         readera.proceed();
 
         BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( den_c_3.bif ) );
+        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( dbn_bin_max.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
 
-        double beta = 0.8;
-        cn->bnToCredal(beta);
+        cn->intervalToCredal();
+        cn->computeCPTMinMax();
       }
 
       void clearCNet () {
+        std::cout << "delete net" << std::endl;
         delete cn;
+        std::cout << "net deleted" << std::endl;
       }
 
       // not dynamic (2U network) - with evidence
       void testL2UInference () {
+        std::cout << "begin test 1 " << std::endl;
         initCNet();
-        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
+
+        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
+
+        std::cout << "insert evi" << std::endl;
         // evidence from file
         try {
           lp.insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
-
+        std::cout << "erasing evi" << std::endl;
         try {
           lp.eraseAllEvidence ();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
+        std::cout << "inserting evi from map" << std::endl;
         // evidence from map
         std::map< std::string, std::vector<double> > eviMap;
         std::vector<double> evi0(2,0); evi0[0] = 1;
         std::vector<double> evi1(2,0); evi1[1] = 1;
         eviMap["L"] = evi1;
         eviMap["G"] = evi0;
-
+        
         try {
           lp.insertEvidence ( eviMap );
         } catch ( gum::Exception & e ) {
@@ -150,17 +158,21 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
-        try {
+        /*try {
           lp.insertModals( modals );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
-        }
+        }*/
+
+        std::cout << "begin inference" << std::endl;
 
         try {
           lp.makeInference();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
+
+        std::cout << "inference done" << std::endl;
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
@@ -180,14 +192,16 @@ namespace gum_tests {
         }
 
         clearCNet();
+        std::cout << " test 1 done " << std::endl;
       } // end of : testL2UInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
       void testL2UInferenceD () {
+        std::cout << "begin test 2 " << std::endl;
         initDCNet();
         typedef std::vector< double > exp;
 
-        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
+        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
         
         //////////////////////////////////////////////////////
         // strong independence
@@ -195,7 +209,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( dbn_bin_evi.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
@@ -206,7 +220,7 @@ namespace gum_tests {
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }*/
-        
+         
         try {
           lp.makeInference();
         } catch ( gum::Exception & e ) {
@@ -217,29 +231,30 @@ namespace gum_tests {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
             exp inf ( lp.marginalMin ( *node_idIt ) );
             exp sup ( lp.marginalMax ( *node_idIt ) );
-            double e_inf = lp.expectationMin ( *node_idIt );
-            double e_sup = lp.expectationMax ( *node_idIt );
+            //double e_inf = lp.expectationMin ( *node_idIt );
+            //double e_sup = lp.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
 
+        /*
         try {
           lp.dynamicExpectations();
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
-        }
-
+        }*/
+/*
         try {
           //exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
           //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
           //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
           //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-          exp etemp_inf ( lp.dynamicExpMin ( "temp" ) );
-          exp etemp_sup ( lp.dynamicExpMax ( "temp" ) );
+          //exp etemp_inf ( lp.dynamicExpMin ( "temp" ) );
+          //exp etemp_sup ( lp.dynamicExpMax ( "temp" ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
-        }
+        }*/
 
         try {
           lp.eraseAllEvidence ();
@@ -253,16 +268,18 @@ namespace gum_tests {
       
       // with dynamic network
       void testL2UListener () {
+        std::cout << "begin listener test" << std::endl;
         initDCNet();
-        LoopyPropagation<double> lp = LoopyPropagation<double>(*cn, cn->current_bn());
+        LoopyPropagation<double> lp = LoopyPropagation<double>( *cn );
         
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( f_3.evi ) );
+          lp.insertEvidenceFile ( GET_PATH_STR ( dbn_bin_evi.evi ) );
         } catch ( gum::Exception & e ) {
           TS_ASSERT ( false );
         }
        
+        //lp.inferenceType(LoopyPropagation<double>::InferenceType::randomOrder);
         L2UListener mcl ( lp );
 
         try {

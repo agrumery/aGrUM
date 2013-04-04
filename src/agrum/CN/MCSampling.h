@@ -2,63 +2,85 @@
 #define ___CN_MC_SAMPLING__H__
 
 #include <limits>
-#include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/CNInferenceEngines.h>
 
 namespace gum {
 
+  /**
+   * @class MCSampling MCSampling.h <agrum/CN/MCSampling.h>
+   * @brief Basic sampling algorithm (pure random).
+   * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+   * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
+   */
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  class MCSampling : public CNInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+  class MCSampling : public CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > {
     private:
-      bool __repetitiveInd;
-      int __timeLimit;
-      int __iterStop;
+      /** To easily acces CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > methods. */
+      typedef CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > infEs;
 
-      bool __stopType; // false if done within __timeLimit
-      bool __storeVertices;
-      bool __storeBNOpt;
-
-      //typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
-
-      std::vector< gum::NodeId > __varOrder;
-      std::vector< std::vector< int > > __varInst;
-      int __VERT;
-      bool stopN;// = false;
-
-      inline void __verticesSampling();
-      // test another sampling method
-
-      inline void __insertEvidence ( BNInferenceEngine &inference_engine ) /*const*/;
+////////////////////////////////////////// 
+      /// @name Private initialization methods
+//////////////////////////////////////////
+      /// @{
+      /** Initialize approximation Scheme. */
       void __mcInitApproximationScheme();
+      /** Initialize threads data. */
       void __mcThreadDataCopy();
-      inline void __threadInference();
-      inline void __threadUpdate(); 
+      /// @}
+      
+////////////////////////////////////////// 
+      /// @name Private algorithm methods
+//////////////////////////////////////////
+      /// @{
+      /** Thread samples a BayesNet from the CredalNet. */
+      inline void __verticesSampling();
 
+      /** Insert CredalNet evidence into a thread BNInferenceEngine. */
+      inline void __insertEvidence();
+
+      /** Thread performs an inference using BNInferenceEngine. Calls __verticesSampling and __insertEvidence. */
+      inline void __threadInference();
+
+      /** Update thread data after a BayesNet inference. */
+      inline void __threadUpdate();
+
+      /** 
+       * Get the binary representation of a given value.
+       * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
+       * @param value The constant integer we want to binarize.
+       */
       inline void __binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const;
+      /// @}
 
 
     protected:
       
     public:
+//////////////////////////////////////////
+      /// @name Constructors / Destructors
+//////////////////////////////////////////
+      /// @{
+      /**
+       * Constructor.
+       * @param credalNet The CredalNet to be used by the algorithm.
+       */
       MCSampling ( const CredalNet< GUM_SCALAR > & credalNet );
+      /** Destructor. */
       virtual ~MCSampling();
+      /// @}
 
+////////////////////////////////////////// 
+      /// @name Public algorithm methods
+//////////////////////////////////////////
+      /// @{
+
+      /** Starts the inference. */
       void makeInference();
 
-      void eraseAllEvidence();
+      /// @}
 
-      bool getStopType() const;
-
-      void setRepetitiveInd ( const bool repetitive );
-      void setTimeLimit ( const int &time_limit );
-      void setIterStop ( const int &no_change_time_limit );
-      void setAll ( const bool repetitive, const int &time_limit, const int &no_change_time_limit );
-
-      // this will call funcs in InferenceEngine and will be stored there (since more algorithms can do the same thing, but not the same way)
-      void storeVertices ( const bool value );
-      void storeBNOpt ( const bool value );
-
-      //PH std::string toString() const;
-      
+      /** Erase all inference data (including thread data). */
+      //void eraseAllEvidence();
 
       //// debug /////
       
