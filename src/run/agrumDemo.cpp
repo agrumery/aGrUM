@@ -90,6 +90,7 @@ void test_credal() {
   Umodals["C"] = Lm;
 
   lp.insertModals(Umodals);
+  lp.storeVertices(true);
 
   //lp.inferenceType(LoopyPropagation<double>::InferenceType::randomOrder);
 
@@ -113,35 +114,9 @@ void test_credal() {
 
   //lp.eraseAllEvidence();
 
-  // agrum hashmap with bool vectors test
-  /*
-  std::hash< std::vector< bool > > _vectHash;
-
-  gum::HashTable< unsigned long int, std::vector< unsigned int > > myMap;
-  std::vector< unsigned int > myKey(3);
-  myKey[2] = 1;
-  unsigned long int key = _vectHash(std::vector<bool>(4));
-  myMap.insert(key, myKey);
-  std::cout << myMap[key] << std::endl;
-
-  std::cout << "sizes" << std::endl;
-  std::cout << "size_t : " << sizeof(size_t) << std::endl;
-  std::cout << "key : " << sizeof(key) << std::endl;
-  std::cout << "unsigned int : " << sizeof(unsigned int) << std::endl;
-  std::cout << "unsigned long int : " << sizeof(unsigned long int) << std::endl;
-  */
-
-  /*
-  gum::HashTable< std::vector< bool >, std::vector< int> > myMap;
-  std::vector< bool > myKey(4);
-  myKey[2] = 1;
-  std::vector< int > myValue(2);
-  myValue[1] = 1;
-  myMap.insert(myKey, myValue);
-  std::cout << myMap[myKey] << std::endl;
-  */
+  std::cout << lp.vertices( 0 ) << std::endl;
   
-  //return;
+  return;
   
 
   // LocalSearch test

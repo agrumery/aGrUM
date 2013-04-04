@@ -870,6 +870,49 @@ namespace gum {
 
   }
 
+  template< typename GUM_SCALAR >
+  void CNInferenceEngine< GUM_SCALAR >::_updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex ) {
+    // type is vector < vector < gum_scalar > >
+    auto & nodeCredalSet = _marginalSets[ id ];
+    bool toAdd = true;
+
+    for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
+      if ( vertex == *it ) {
+        toAdd = false;
+        break;
+      }
+    }
+
+    if ( toAdd )
+      nodeCredalSet.push_back( vertex );
+
+    // check that the point and all previously added ones are not inside the actual polytope
+    auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(), 
+        [&] ( const std::vector< GUM_SCALAR > & v ) -> bool {
+          for ( auto jt = v.cbegin(), jtEnd = v.cend(), 
+            minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(), 
+            maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend(); 
+            jt != jtEnd, 
+            minIt != minItEnd, 
+            maxIt != maxItEnd; 
+            ++jt, 
+            ++minIt, 
+            ++maxIt 
+          ) {
+            if ( *jt == *minIt || *jt == *maxIt )
+              return false;
+          }
+          return true;
+        }
+    );
+
+    nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
+
+    // there may be points not inside the polytope but on one of it's facet, meaning it's still a convec combination of vertices of this facet. Here we need lrs.
+
+    
+
+  }
 
 
   template< typename GUM_SCALAR >
@@ -885,25 +928,39 @@ namespace gum {
   template < typename GUM_SCALAR >
   inline const GUM_SCALAR CNInferenceEngine< GUM_SCALAR >::_computeEpsilon() {
     GUM_SCALAR eps = 0;
-    GUM_SCALAR delta;
+    #pragma omp parallel
+    {
+      GUM_SCALAR tEps = 0;
+      GUM_SCALAR delta;
 
-    for ( Size i = 0; i < _marginalMin.size(); i++ ) {
-      auto dSize = _marginalMin[i].size();
-      for ( decltype(dSize) j = 0; j < dSize; j++ ) {
-        // on min
-        delta = _marginalMin[i][j] - _oldMarginalMin[i][j];
-        delta = ( delta < 0 ) ? ( - delta ) : delta;
-        eps = ( eps < delta ) ? delta : eps;
+      int tId = gum_threads::getThreadNumber();
+      auto nsize = _marginalMin.size();
 
-        // on max
-        delta = _marginalMax[i][j] - _oldMarginalMax[i][j];
-        delta = ( delta < 0 ) ? ( - delta ) : delta;
-        eps = ( eps < delta ) ? delta : eps;
+      #pragma omp for
+      for ( decltype(nsize) i = 0; i < nsize; i++ ) {
+        auto dSize = _marginalMin[i].size();
+        for ( decltype(dSize) j = 0; j < dSize; j++ ) {
+          // on min
+          delta = _marginalMin[i][j] - _oldMarginalMin[i][j];
+          delta = ( delta < 0 ) ? ( - delta ) : delta;
+          tEps = ( tEps < delta ) ? delta : tEps;
 
-        _oldMarginalMin[i][j] = _marginalMin[i][j];
-        _oldMarginalMax[i][j] = _marginalMax[i][j];
+          // on max
+          delta = _marginalMax[i][j] - _oldMarginalMax[i][j];
+          delta = ( delta < 0 ) ? ( - delta ) : delta;
+          tEps = ( tEps < delta ) ? delta : tEps;
+
+          _oldMarginalMin[i][j] = _marginalMin[i][j];
+          _oldMarginalMax[i][j] = _marginalMax[i][j];
+        }
+      } // end of : all variables
+
+      #pragma omp critical(epsilon_max)
+      {
+        #pragma omp flush(eps)
+        eps = ( eps < tEps ) ? tEps : eps;
       }
-    } // end of : all variables
+    }
 
     return eps;
   }

@@ -1499,11 +1499,24 @@ namespace gum {
     std::vector< std::vector< GUM_SCALAR > > vertices ( 2, std::vector< GUM_SCALAR > (2) );
     for ( auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it )
     {
-      vertices[ 0 ] = infE::_marginalMin[ *it ];
-      vertices[ 1 ] = infE::_marginalMax[ *it ];
+      vertices[ 0 ][ 0 ] = infE::_marginalMin[ *it ][ 0 ];
+      vertices[ 0 ][ 1 ] = infE::_marginalMax[ *it ][ 1 ];
 
-      for ( auto vertex = 0, vend = 2; vertex != vend; vertex++ )
+      vertices[ 1 ][ 0 ] = infE::_marginalMax[ *it ][ 0 ];
+      vertices[ 1 ][ 1 ] = infE::_marginalMin[ *it ][ 1 ];
+
+      for ( auto vertex = 0, vend = 2; vertex != vend; vertex++ ) {
         infE::_updateExpectations( *it, vertices[ vertex ] );
+        // test credal sets vertices elim
+        // remove with L2U since variables are binary
+        infE::_updateCredalSets( *it, vertices[ vertex ] );
+      }
+      // add a convex combination to test elim
+      std::vector< GUM_SCALAR > redund(2);
+      redund[0] = 0.5 * ( vertices[ 0 ][ 0 ] + vertices[ 1 ][ 0 ] );
+      redund[1] = 0.5 * ( vertices[ 0 ][ 1 ] + vertices[ 1 ][ 1 ] );
+      infE::_updateCredalSets( *it, redund );
+
     }
   }
 
