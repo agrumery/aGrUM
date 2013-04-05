@@ -1,19 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+//#include <cxxtest/TestSuite.h>
+
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/LoopyPropagation.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
-
-#include <cxxtest/AgrumTestSuite.h>
-#include "testsuite_utils.h"
-
-#define xstrfy(s) strfy(s)
-#define strfy(x) #x
-
-//#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
 #include <agrum/CN/OMPThreads.h>
 
@@ -23,12 +19,13 @@
  */
 
 namespace gum_tests {
-  
+
   ////////////////////////////////////////////////////////////////////
   class L2UListener : public gum::ApproximationSchemeListener {
     private :
       int __nbr;
       std::string __msg;
+
     protected :
 
     public :
@@ -62,9 +59,7 @@ namespace gum_tests {
 
       // not dynamic (2U network - fast)
       void initCNet () {
-        //#ifdef NDEBUG
-          gum_threads::setNumberOfThreads(1);
-        //#endif
+        gum_threads::setNumberOfThreads(1);
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/2Umin.bif ) );
         readera.proceed();
@@ -81,9 +76,7 @@ namespace gum_tests {
 
       // dynamic (dynaCheese network - slow)
       void initDCNet () {
-        //#ifdef NDEBUG
-          gum_threads::setNumberOfThreads(1);
-        //#endif
+        gum_threads::setNumberOfThreads(1);
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/dbn_bin_min.bif ) );
         readera.proceed();
@@ -267,7 +260,7 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
        
-        //lp.inferenceType(LoopyPropagation<double>::InferenceType::randomOrder);
+        //lp.inferenceType(gum::LoopyPropagation<double>::InferenceType::randomOrder);
         L2UListener mcl ( lp );
 
         try {

@@ -408,7 +408,7 @@ namespace gum {
       if ( var_dSize > 2 && ( *__current_nodeType ) [*node_idIt] == CREDAL ) {
         int dNode_card = __find_dNode_card ( ( *__credalNet_current_cpt ) [*node_idIt] );
         int nb_bits, new_card;
-        __superiorPow ( dNode_card, nb_bits, new_card );
+        gum::superiorPow ( dNode_card, nb_bits, new_card );
 
         std::string dNode_bit_name;
 
@@ -548,7 +548,7 @@ namespace gum {
       auto var_dSize = __current_bn->variable ( *node_idIt ).domainSize();
 
       if ( var_dSize != 2 ) {
-        __superiorPow ( var_dSize, nb_bits, new_card );
+        gum::superiorPow ( var_dSize, nb_bits, new_card );
 
         std::string bit_name;
         std::vector< gum::NodeId > bits ( nb_bits );
@@ -661,78 +661,6 @@ namespace gum {
     return __separatelySpecified;
   }
 
-
-  ///////////////////////////////// test decimal -> fractional algorithms
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::testFrac() const {
-    int64_t num, den;
-
-    double value = 0.;
-    __farey ( num, den, value, __denMax );
-    std::cout << value << " = " << num << " / " << den << std::endl;
-
-    value = 1;
-    __farey ( num, den, value, __denMax );
-    std::cout  << value << " = " <<num << " / " << den << std::endl;
-
-    value = 0.2;
-    __farey( num, den, value, __denMax );
-    std::cout  << value << " = " <<num << " / " << den << std::endl;
-
-    value = 0.1;
-    __farey( num, den, value, __denMax );
-    std::cout  << value << " = " <<num << " / " << den << std::endl;
-
-    value = 0.01;
-    __farey( num, den, value, __denMax );
-    std::cout  << value << " = " <<num << " / " << den << std::endl;
-
-
-    /*
-    srand(NULL);
-    int64_t num, den;
-    int iter = 10;
-    //int PRECISION = 10000;
-    while(iter > 0)
-    {
-    double prob = rand()/(double)RAND_MAX;
-    __frac(num, den, prob);
-    std::cout << " num : " << prob << " frac : " << num << " / " << den << " val : " << (double) num/den << std::endl;
-    __farey(num,den,prob,__denMax);
-    std::cout << "farley : " << num << " / " << den << " val : " << (double)num/den << std::endl;
-
-    __fracC(num, den, (int)(prob*__precisionC), __deltaC, __precisionC);
-    std::cout << "other num : "<< (int)(__precision*prob)*10 << " other frac : " << num << " / " << den << " = " << num/(double)den << std::endl;
-        iter--;
-      }*/
-  }
-  //////////////////////////////// end of test decimal -> fractional
-  //
-  // test pow
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::testPow() const {
-    int x = 0;
-    __int2Pow ( x );
-    std::cout << x << std::endl;
-  }
-
-  // end of test pow
-  
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::intPow ( const int &base, int &exponent ) const {
-    __intPow(base,exponent);
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::int2Pow ( int &exponent ) const {
-    __int2Pow(exponent);
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::superiorPow ( const int &card, int &num_bits, int &new_card ) const {
-    __superiorPow(card,num_bits,new_card);
-  }
 
   // only if CN is binary !!
   template< typename GUM_SCALAR >
@@ -961,44 +889,6 @@ namespace gum {
     dest.endTopologyTransformation();
   }
 
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__intPow ( const int &base, int &exponent ) const {
-    if ( exponent == 0 ) {
-      exponent = 1;
-      return;
-    }
-
-    int out = base;
-
-    for ( int i = 1; i < exponent; i++ )
-      out *= base;
-
-    exponent = out;
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__int2Pow ( int &exponent ) const {
-    int base = 2;
-    base <<= ( exponent - 1 );
-    exponent = base;
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__superiorPow ( const int &card, int &num_bits, int &new_card ) const {
-    if ( card <= 0 ) {
-      num_bits = 0;
-      new_card = 1;
-      return;
-    }
-
-    num_bits = 1;
-    new_card = 2;
-
-    while ( new_card < card ) {
-      new_card *= 2;
-      num_bits++;
-    }
-  }
 
 /*
   // cdd can use real values, not just rationals / integers
@@ -1071,9 +961,10 @@ namespace gum {
     for ( auto it = h_rep.cbegin(), theEnd = h_rep.cend(); it != theEnd; ++it ) {
       for ( auto it2 = it->cbegin(), theEnd2 = it->cend(); it2 != theEnd2; ++it2 ) {
         // get integer fraction from decimal value
-        // smallest numerator & denominator is farley, also overall
+        // smallest numerator & denominator is farley, also 
         // best precision
-        __farey ( num, den, ((*it2 > 0) ? *it2 : - *it2), __denMax );
+        gum::Rational< GUM_SCALAR >::farey( num, den, ((*it2 > 0) ? *it2 : - *it2), __denMax, __epsF );
+
         h_file << ((*it2 > 0) ? num : -num) << '/' << den << ' ';
       }
 
@@ -1324,201 +1215,5 @@ namespace gum {
     } // end of : for each variable
   }
 
-  //////////////////////////////// farley algorithm
-  // does not work if number = 0 and / or 1 ?
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__farey ( int64_t &numerator, int64_t &denominator, const GUM_SCALAR &number, const int &den_max ) const {
-
-    if ( number < 0 && fabs ( fabs ( number ) - 1 ) < __epsF ) {
-      numerator = -1;
-      denominator = 1;
-      return;
-    } else if ( fabs ( number - 1. ) < __epsF ) {
-      numerator = 1;
-      denominator = 1;
-      return;
-    } else if ( number < __epsF ) {
-      numerator = 0;
-      denominator = 1;
-      return;
-    }
-
-    int a ( 0 ), b ( 1 ), c ( 1 ), d ( 1 );
-    double mediant ( 0.0F );
-
-    while ( b <= den_max && d <= den_max ) {
-      mediant = ( double ) ( a + c ) / ( double ) ( b + d );
-
-      if ( fabs ( number - mediant ) < __epsF ) {
-        if ( b + d <= den_max ) {
-          numerator = a + c;
-          denominator = b + d;
-          return;
-        } else if ( d > b ) {
-          numerator = c;
-          denominator = d;
-          return;
-        } else {
-          numerator = a;
-          denominator = b;
-          return;
-        }
-      } else if ( number > mediant ) {
-        a = a + c;
-        b = b + d;
-      } else {
-        c = a + c;
-        d = b + d;
-      }
-    }
-
-    if ( b > den_max ) {
-      numerator = c;
-      denominator = d;
-      return;
-    } else {
-      numerator = a;
-      denominator = b;
-      return;
-    }
-  }
-
-  ////////////////////////// end of farley algorithm
-
-  ////////////////////////// continued fractions
-
-  template< typename GUM_SCALAR >
-  bool CredalNet< GUM_SCALAR >::__less ( const double &a, const double &b, const int &c, const int &d ) const {
-    return ( a * d < b * c );
-  }
-
-  template< typename GUM_SCALAR >
-  bool CredalNet< GUM_SCALAR >::__leq ( const double &a, const double &b, const int &c, const int &d ) const {
-    return ( a *d <= b * c );
-  }
-
-  template< typename GUM_SCALAR >
-  int CredalNet< GUM_SCALAR >::__matches ( const double &a, const double &b, const int &alpha_num, const int &d_num, const int &denum ) const {
-    if ( __leq ( a, b, alpha_num - d_num, denum ) ) return 0;
-
-    if ( __less ( a, b, alpha_num + d_num, denum ) ) return 1;
-
-    return 0;
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__find_exact_left ( const double &p_a, const double &q_a, const double &p_b, const double &q_b, int64_t &num, int64_t &den, const int &alpha_num, const int &d_num, const int &denum ) const {
-    double k_num = denum * p_b - ( alpha_num + d_num ) * q_b;
-    double k_denum = ( alpha_num + d_num ) * q_a - denum * p_a;
-    double k = ( ( double ) k_num / k_denum ) + 1;
-    num = p_b + k * p_a;
-    den = q_b + k * q_a;
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__find_exact_right ( const double &p_a, const double &q_a, const double &p_b, const double &q_b, int64_t &num, int64_t &den, const int &alpha_num, const int &d_num, const int &denum ) const {
-    double k_num = -denum * p_b - ( alpha_num - d_num ) * q_b;
-    double k_denum = - ( alpha_num - d_num ) * q_a + denum * p_a;
-    double k = ( ( double ) k_num / k_denum ) + 1;
-    num = p_b + k * p_a;
-    den = q_b + k * q_a;
-  }
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__fracC ( int64_t &numerator, int64_t &denominator, const int &alpha_num, const int &d_num, const int &denum ) const {
-    double p_a = 0;
-    double q_a = 1;
-    double p_b = 1;
-    double q_b = 1;
-
-    double x, x_num, x_denum, new_p_a, new_q_a, new_p_b, new_q_b;
-    int aa, bb;
-
-    while ( true ) {
-      x_num = denum * p_b - alpha_num * q_b;
-      x_denum = -denum * p_a + alpha_num * q_a;
-      x = ( int ) ( ( x_num + x_denum - 1 ) / x_denum );
-
-      aa = __matches ( p_b + x * p_a, q_b + x * q_a, alpha_num, d_num, denum );
-      bb = __matches ( p_b + ( x - 1 ) * p_a, q_b + ( x - 1 ) * q_a, alpha_num, d_num, denum );
-
-      if ( aa || bb ) {
-        __find_exact_left ( p_a, q_a, p_b, q_b, numerator, denominator, alpha_num, d_num, denum );
-        break;
-      }
-
-      new_p_a = p_b + ( x - 1 ) * p_a;
-      new_q_a = q_b + ( x - 1 ) * q_a;
-      new_p_b = p_b + x * p_a;
-      new_q_b = q_b + x * q_a;
-
-      p_a = new_p_a;
-      p_b = new_p_b;
-      q_a = new_q_a;
-      q_b = new_q_b;
-
-      x_num = alpha_num * q_b - denum * p_b;
-      x_denum = -alpha_num * q_a + denum * p_a;
-      x = ( int ) ( ( x_num + x_denum - 1 ) / x_denum );
-
-      aa = __matches ( p_b + x * p_a, q_b + x * q_a, alpha_num, d_num, denum );
-      bb = __matches ( p_b + ( x - 1 ) * p_a, q_b + ( x - 1 ) * q_a, alpha_num, d_num, denum );
-
-      if ( aa || bb ) {
-        __find_exact_right ( p_a, q_a, p_b, q_b, numerator, denominator, alpha_num, d_num, denum );
-        break;
-      }
-
-      new_p_a = p_b + ( x - 1 ) * p_a;
-      new_q_a = q_b + ( x - 1 ) * q_a;
-      new_p_b = p_b + x * p_a;
-      new_q_b = q_b + x * q_a;
-
-      p_a = new_p_a;
-      p_b = new_p_b;
-      q_a = new_q_a;
-      q_b = new_q_b;
-    }
-  }
-
-  //////////////////////////// end of continued fractions
-
-  //////////////////////////// custom decimal -> fractional
-
-  template< typename GUM_SCALAR >
-  void CredalNet< GUM_SCALAR >::__frac ( int64_t &numerator, int64_t &denominator, const GUM_SCALAR &number ) const {
-    double l = log10 ( abs ( number ) );
-
-    int d1 = l + 1.000001;
-    int d2 = ( d1 <= 0 ) ? 4 : 4 - d1;
-
-    double dd = pow ( 10, d2 );
-    int64_t di = dd;
-
-    if ( di < dd )
-      di++;
-
-    double nd = number * di;
-    int64_t ni = nd;
-
-    if ( ni < nd )
-      ni++;
-
-    numerator = ni;
-    denominator = di;
-
-    int64_t a ( numerator ), b ( denominator ), t;
-
-    while ( b != 0 ) {
-      t = b;
-      b = a % b;
-      a = t;
-    }
-
-    numerator /= a;
-    denominator /= a;
-  }
-
-  //////////////////////////// end of custom decimal -> fractional
 
 } // namespace cn

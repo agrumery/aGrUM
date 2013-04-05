@@ -872,7 +872,6 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   void CNInferenceEngine< GUM_SCALAR >::_updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex ) {
-    // type is vector < vector < gum_scalar > >
     auto & nodeCredalSet = _marginalSets[ id ];
     bool toAdd = true;
 
@@ -885,6 +884,8 @@ namespace gum {
 
     if ( toAdd )
       nodeCredalSet.push_back( vertex );
+    else
+      return;
 
     // check that the point and all previously added ones are not inside the actual polytope
     auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(), 
@@ -908,9 +909,153 @@ namespace gum {
 
     nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
 
-    // there may be points not inside the polytope but on one of it's facet, meaning it's still a convec combination of vertices of this facet. Here we need lrs.
+    // we need at least 2 points to make a convex combination 
+    if ( nodeCredalSet.size() <= 2 )
+      return;
 
+    // there may be points not inside the polytope but on one of it's facet, meaning it's still a convex combination of vertices of this facet. Here we need lrs.
+
+    std::vector< std::vector< GUM_SCALAR > > outputCSet; // final set
+
+    char * vfile = tmpnam(NULL);
+    std::string svfile(vfile);
+    svfile += ".ext";
+
+    std::ofstream v_file ( svfile.c_str(), std::ios::out | std::ios::trunc );
+
+    if ( ! v_file.good() )
+      GUM_ERROR ( IOError, "could not open lrs input file : " << svfile );
+
+    v_file << "V-representation\n";
+    v_file << "begin\n";
+
+    auto setSize = nodeCredalSet.size();
+
+
+    v_file << setSize; // number of vertices
+    auto mods = vertex.size();
+    v_file << " " << mods + 1 << " rational\n";
+
+    for ( decltype( setSize ) vtex = 0; vtex < setSize; vtex++ )
+    {
+      v_file << " 1  ";
+      for( decltype( mods ) modal = 0; modal < mods; modal++ )
+      {
+        int64_t num, den;
+        GUM_SCALAR pr = nodeCredalSet[ vtex ][ modal ];
+
+        gum::Rational< GUM_SCALAR >::farey( num, den, pr, 1e6, 1e-6 );
+        v_file << num << '/' << den << ' ';
+
+      }
+      v_file << "\n";
+    }
+    v_file << "end\n";
+    v_file.close();
+
+    // call lrs
+    char *args[3];
+
+    std::string soft_name = "redund";
+    std::string extfile(vfile);
+    extfile += ".r.ext";
+
+    args[0] = new char[soft_name.size()];
+    args[1] = new char[svfile.size()];
+    args[2] = new char[extfile.size()];
+
+    strcpy ( args[0], soft_name.c_str() );
+    strcpy ( args[1], svfile.c_str() );
+    strcpy ( args[2], extfile.c_str() );
+
+    // standard cout to null (avoid lrs flooding)
+    int old_cout, new_cout;
+    fflush ( stdout );
+    old_cout = dup ( 1 );
+
+    new_cout = open ( "/dev/null", O_WRONLY );
+    dup2 ( new_cout, 1 );
+    close ( new_cout );
+
+    redund_main ( 3, args );
+
+    // restore standard cout
+    fflush ( stdout );
+    dup2 ( old_cout, 1 );
+    close ( old_cout );
+
+    delete[] args[2]; delete[] args[1]; delete[] args[0];
+
+    // read V rep file
+    std::ifstream e_file ( extfile.c_str() /*extfilename.c_str()*/, std::ios::in );
+
+    if ( ! e_file.good() )
+      GUM_ERROR ( IOError, "__H2Vlrs : could not open lrs ouput file : " << extfile );
+
+    std::string line, tmp;
+    char *cstr, * p;
+    GUM_SCALAR probability;
+
+    std::string::size_type pos, end_pos;
+    bool keep_going = true;
+    //int vertices;
+
+    std::vector< GUM_SCALAR > vtx;
+
+    e_file.ignore ( 256, 'l' );
+
+    while ( e_file.good() && keep_going ) {
+      getline ( e_file, line );
+
+      if ( line.size() == 0 ) continue;
+      else if ( line.compare ( "end" ) == 0 ) {
+        keep_going = false;
+        // this is to get vertices number :
+        /*getline ( v_file, line );
+          pos = line.find ( "vertices = " );
+          end_pos = line.find ( "rays", pos + 9 );
+          vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str() );*/
+        break;
+      } else if ( line[1] != '1' ) {
+        GUM_ERROR ( IOError, "reading something other than a vertex from lrs output file : " << extfile );
+      }
+
+      line = line.substr ( 2 );
+      cstr = new char[line.size() + 1];
+      strcpy ( cstr, line.c_str() );
+
+      p = strtok ( cstr, " " );
+
+      while ( p != NULL ) {
+        tmp = p;
+
+        if ( tmp.compare ( "1" ) == 0 || tmp.compare ( "0" ) == 0 )
+          probability = atof ( tmp.c_str() );
+        else {
+          pos = tmp.find ( "/" );
+          probability = atof ( tmp.substr ( 0, pos ).c_str() ) / atof ( tmp.substr ( pos + 1, tmp.size() ).c_str() );
+        }
+
+        vtx.push_back ( probability );
+        p = strtok ( NULL, " " );
+      } // end of : for all tokens
+
+      delete[] p;
+      delete[] cstr;
+
+      outputCSet.push_back( vtx );
+      vtx.clear();
+
+    } // end of file
+
+    e_file.close();
     
+    if( std::remove(svfile.c_str()) != 0)
+      GUM_ERROR(IOError, "error removing : " << svfile);
+    if( std::remove(extfile.c_str()) != 0)
+      GUM_ERROR(IOError, "error removing : " << extfile);
+    
+    _marginalSets[ id ] = outputCSet;
 
   }
 

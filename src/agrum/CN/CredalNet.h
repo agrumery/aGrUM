@@ -11,6 +11,9 @@
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/core/exceptions.h>
 
+#include <agrum/core/Rational.h> // custom decimal to rational
+#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -27,9 +30,9 @@
 
 // lrs stuff
 //we force MP (not long or GMP)
-#define MP
-#undef long
+#undef LONG
 #undef GMP
+#define MP
 #include "lrslib/lrslib.h"
 
 // cdd stuff ( cdd lib needs to be installed )
@@ -159,30 +162,13 @@ namespace gum {
        */
       std::string toString() const;
       //PH void toPNG ( const std::string &png_path ) const;
-
-      // test functions
-      // to be removed ?
-      void testFrac() const;
-      void testPow() const;
       
-////////////////////////////////////////// 
-      /// @name Public utility methods
-//////////////////////////////////////////
-      /// @{
-      /** @see __intPow */
-      void intPow ( const int &base, int &exponent ) const;
-      /** @see __int2Pow */
-      void int2Pow ( int &exponent ) const;
-      /** @see superiorPow */
-      void superiorPow ( const int &card, int &num_bits, int &new_card ) const;
-      /// @}
-
       /**
        * Used with binary networks to speed-up L2U inference.
        *
        * Store the lower and upper probabilities of each node X over the "true" modality, i.e. respectively \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$ and \f$ \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      void computeCPTMinMax();
+      void computeCPTMinMax(); // REDO THIS IN PRIVATE !!!
 
 ////////////////////////////////////////// 
       /// @name Getters and setters 
@@ -344,34 +330,6 @@ namespace gum {
        * @param bn_dest The reference to the new copy
        */
       void __bnCopy ( gum::BayesNet< GUM_SCALAR > & bn_dest );
-////////////////////////////////////////// 
-      /// @name Private utility methods
-//////////////////////////////////////////
-      /// @{
-      /**
-       * Specialized pow function with integers (faster implementation).
-       * @param base The constant integer base used to compute \f$ base^{exponent} \f$.
-       * @param exponent The integer exponent used which will hold the result afterward.
-       */
-      void __intPow ( const int &base, int &exponent ) const;
-
-      /**
-       * Specialized base 2 pow function with integer.
-       *
-       * @param exponent The integer exponent used to compute \f$ 2^{exponent} \f$ which will hold the result of afterward.
-       */
-      void __int2Pow ( int &exponent ) const;
-
-      /**
-       * Given an integer, compute it's - superior - and closest power of two, i.e. the number of bits necessary to represent this integer as well as the maximum integer that can be represented by those bits.
-       *
-       * @param card The constant choosen integer we wish to represent by bits.
-       * @param num_bits The integer used as a "return" value to get the minimum number of bits used to represend card.
-       * @param new_card The integer used as a "return" value to get the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
-       */
-      void __superiorPow ( const int &card, int &num_bits, int &new_card ) const;
-
-      /// @}
 
       //void __H2Vcdd ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
       /**
@@ -381,57 +339,6 @@ namespace gum {
        * @param v_rep A reference to the V-representation of the same credal set.
        */
       void __H2Vlrs ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
-
-//////////////////////////////////////////
-      /// @name Private real approximation by rational
-//////////////////////////////////////////
-      ///@{
-
-      /**
-       * @warning Prefer __farey
-       *
-       * Find the rational close enough to a given ( decimal ) number.
-       *
-       * @param numerator The numerator of the rational.
-       * @param denominator The denominator of the rational.
-       * @param number The constant number we want to approximate using rationals.
-       */
-      void __frac ( int64_t &numerator, int64_t &denominator, const GUM_SCALAR &number ) const;
-
-      /**
-       * Find the rational close enough to a given ( decimal ) number and whose denominator is not higher than a given integer number.
-       *
-       * @param numerator The numerator of the rational.
-       * @param denominator The denominator of the rational.
-       * @param number The constant number we want to approximate using rationals.
-       * @param den_max The constant highest authorized denominator.
-       */
-      void __farey ( int64_t &numerator, int64_t &denominator, const GUM_SCALAR &number, const int &den_max ) const;
-      
-      /**
-       * @warning Prefer __farey
-       *
-       * Find the rational close enough to a given ( decimal ) number.
-       *
-       * @param numerator The numerator of the rational.
-       * @param denominator The denominator of the rational.
-       * @param alpha_num The number we want to approximate expressed as an integer, i.e. \f$ alpha\_num = number * denum \f$.
-       * @param d_num The number of decimals used.
-       * @param denum The precision with which we multiplied the integer to approximate.
-       */
-      void __fracC ( int64_t &numerator, int64_t &denominator, const int &alpha_num, const int &d_num, const int &denum ) const;
-      /** @brief Used by __fracC */
-      bool __less ( const double &a, const double &b, const int &c, const int &d ) const;
-      /** @brief Used by __fracC */
-      bool __leq ( const double &a, const double &b, const int &c, const int &d ) const;
-      /** @brief Used by __fracC */
-      int __matches ( const double &a, const double &b, const int &alpha_num, const int &d_num, const int &denum ) const;
-      /** @brief Used by __fracC */
-      void __find_exact_left ( const double &p_a, const double &q_a, const double &p_b, const double &q_b, int64_t &num, int64_t &den, const int &alpha_num, const int &d_num, const int &denum ) const;
-      /** @brief Used by __fracC */
-      void __find_exact_right ( const double &p_a, const double &q_a, const double &p_b, const double &q_b, int64_t &num, int64_t &den, const int &alpha_num, const int &d_num, const int &denum ) const;
-
-      /// @}
 
   }; // CredalNet
 

@@ -9,6 +9,8 @@
 #include <limits>
 #include <agrum/CN/CNInferenceEngine.h>
 
+#include <agrum/core/pow.h>
+
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 
 namespace gum

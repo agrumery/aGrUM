@@ -1,5 +1,5 @@
-#ifndef ___OMPTHREADS___H___
-#define ___OMPTHREADS___H___
+#ifndef __OMPTHREADS__H__
+#define __OMPTHREADS__H__
 
 #ifdef _OPENMP
   #include <omp.h>

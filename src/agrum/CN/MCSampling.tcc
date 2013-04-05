@@ -110,8 +110,7 @@ namespace gum {
         for ( ins.setFirst(); !ins.end(); ++ins )
           vertex.push_back ( potential[ins] );
         
-        //this->_updateThread ( *it, vertex, infEs::_storeVertices, infEs::_storeBNOpt );
-        if ( this->_updateThread ( *it, vertex/*, infEs::_storeVertices, infEs::_storeBNOpt*/ ) )
+        if ( this->_updateThread ( *it, vertex ) )
           keepSample = true;
 
       } // end of : for all nodes

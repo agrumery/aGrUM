@@ -13,6 +13,9 @@
 #include <agrum/core/exceptions.h>
 #include <map>
 
+#include <agrum/core/Rational.h>
+#include <agrum/core/pow.h>
+
 namespace gum {
 
   /**

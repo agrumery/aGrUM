@@ -1,7 +1,8 @@
-#ifndef ___OPTBN__H___
-#define ___OPTBN__H___
+#ifndef __OPTBN__H__
+#define __OPTBN__H__
 
 #include <tr1/functional>
+#include <agrum/core/pow.h>
 
 namespace gum {
 

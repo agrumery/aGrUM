@@ -259,7 +259,8 @@ namespace gum {
 
     int pas = 2;
     int pp = pos;
-    cn->intPow( pas, pp );
+    //cn->intPow( pas, pp );
+    gum::intPow( pas, pp );
 
     int combi_den = 0;
     int combi_num = pp;
@@ -1509,13 +1510,15 @@ namespace gum {
         infE::_updateExpectations( *it, vertices[ vertex ] );
         // test credal sets vertices elim
         // remove with L2U since variables are binary
+        // but does the user know that ?
         infE::_updateCredalSets( *it, vertices[ vertex ] );
       }
+
       // add a convex combination to test elim
-      std::vector< GUM_SCALAR > redund(2);
+      /*std::vector< GUM_SCALAR > redund(2);
       redund[0] = 0.5 * ( vertices[ 0 ][ 0 ] + vertices[ 1 ][ 0 ] );
       redund[1] = 0.5 * ( vertices[ 0 ][ 1 ] + vertices[ 1 ][ 1 ] );
-      infE::_updateCredalSets( *it, redund );
+      infE::_updateCredalSets( *it, redund );*/
 
     }
   }

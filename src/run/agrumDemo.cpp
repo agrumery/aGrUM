@@ -13,6 +13,9 @@
 
 #include <agrum/CN/OptBN.h>
 
+#include <agrum/core/Rational.h>
+#include <agrum/CN/LrsWrapper.h>
+
 using namespace gum;
 
 #define xstrfy(s) strfy(s)
@@ -40,6 +43,23 @@ void test_credal() {
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
   //gum_threads::setNumberOfThreads(1);
+  
+/*
+  // test rationals
+  std::cout << std::endl;
+  gum::Rational< double >::testRationalAlgorithms(10);
+  return;*/
+
+  // test LrsWrapper
+  gum::credal::LRS<double> lrs;
+  lrs.setUpH( 2 );
+  // vacuous binary credal set
+  lrs.fillH( 0, 1, 0.0 );
+  lrs.fillH( 0, 1, 1.0 );
+
+  lrs.H2V();
+
+  return;
 
   
 //////////////////////////////////////////////////

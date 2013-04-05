@@ -61,8 +61,8 @@ namespace gum {
   template < typename GUM_SCALAR, class BNInferenceEngine >
   inline bool CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex/*, const bool __storeVertices, const bool __storeBNOpt*/ ) {
     int tId = gum_threads::getThreadNumber();
-    // save E(X)
-    if( ! _l_modal[tId].empty() ) {
+    // save E(X) if we don't save vertices
+    if( ! infE::_storeVertices && ! _l_modal[tId].empty() ) {
       std::string var_name = _workingSet[tId]->variable ( id ).name();
       auto delim = var_name.find_first_of ( "_" );
       //std::string time_step = var_name.substr ( delim + 1, var_name.size() );

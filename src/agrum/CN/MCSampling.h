@@ -1,5 +1,5 @@
-#ifndef ___CN_MC_SAMPLING__H__
-#define ___CN_MC_SAMPLING__H__
+#ifndef __CN_MC_SAMPLING__H__
+#define __CN_MC_SAMPLING__H__
 
 #include <limits>
 #include <agrum/CN/CNInferenceEngines.h>
