@@ -223,7 +223,7 @@ namespace gum {
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const {
     unsigned int n = value;
     auto tfsize = toFill.size();
-    // get bits of choosen_vertex
+		// get bits of choosen_vertex
     for ( decltype(tfsize) i = 0; i < tfsize; i++ )
     {
       toFill[i] = n & 1;
@@ -316,7 +316,7 @@ namespace gum {
         
         auto pConfs = ( *cpt ) [*id].size();
         for ( decltype(pConfs) pconf = 0; pconf < pConfs; pconf++ ) {
-          Size nVertices = ( *cpt ) [*id][pconf].size();
+          auto nVertices = ( *cpt ) [*id][pconf].size();
           auto choosen_vertex = rand() % nVertices;
 
           if ( infEs::_storeBNOpt )

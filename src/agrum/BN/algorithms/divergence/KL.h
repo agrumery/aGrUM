@@ -125,4 +125,4 @@ namespace gum {
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

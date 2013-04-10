@@ -1,16 +1,15 @@
-///////////////////////// 2 argument template ////////////////////////
+#include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/CNInferenceEngines.h>
  
 namespace gum {
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::CNInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet ) : CNInferenceEngine< GUM_SCALAR >::CNInferenceEngine ( credalNet ) {
-    std::cout << "CNInferenceEngines construct" << std::endl;
     GUM_CONSTRUCTOR ( CNInferenceEngines );
   }
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::~CNInferenceEngines() {
-    std::cout << "CNInferenceEngines destructor" << std::endl;
     GUM_DESTRUCTOR ( CNInferenceEngines );
   }
 
@@ -52,7 +51,7 @@ namespace gum {
     _l_modal.clear();
     _l_modal.resize( num_threads );
 
-    this->_oldMarginalMin.clear();
+    infE::_oldMarginalMin.clear();
     this->_oldMarginalMin = this->_marginalMin;
     this->_oldMarginalMax.clear();
     this->_oldMarginalMax = this->_marginalMax;
@@ -294,7 +293,7 @@ namespace gum {
   void CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_optFusion() {
     typedef std::vector< bool > dBN;
 
-    std::cout << "thread opt fusion : " << _l_marginalMin.size() << std::endl;
+    //std::cout << "thread opt fusion : " << _l_marginalMin.size() << std::endl;
 
     ///*_threadFusion*/infE::_dbnOpt = OptBN<GUM_SCALAR>( *this->_credalNet );
 
@@ -307,10 +306,10 @@ namespace gum {
       if ( infE::_evidence.exists( i ) )
         continue;
 
-      std::cout << _workingSet[0]->variable(i).name() << std::endl;
+      //std::cout << _workingSet[0]->variable(i).name() << std::endl;
       auto dSize = _l_marginalMin[0][i].size();
       for ( decltype(dSize) j = 0; j < dSize; j++ ) {
-        std::cout << "\t mod : " << j << std::endl;
+        //std::cout << "\t mod : " << j << std::endl;
         // go through all threads
         std::vector< unsigned int > keymin(3);
         keymin[0] = i; keymin[1] = j; keymin[2] = 0;
@@ -321,9 +320,9 @@ namespace gum {
         for ( decltype(tsize) tId = 0; tId < tsize; tId++ ) {
           //if ( fabs( _l_marginalMin[tId][i][j] - this->_marginalMin[i][j] ) <= 1e-6 ) {
           if ( _l_marginalMin[tId][i][j] == this->_marginalMin[i][j] ) {
-            std::cout << "\t\t min : ";
+            //std::cout << "\t\t min : ";
             const std::vector< dBN* > & tOpts = _l_optimalNet[tId]->getBNOptsFromKey( keymin );
-            std::cout << " size : " << tOpts.size() << std::endl;
+            //std::cout << " size : " << tOpts.size() << std::endl;
             auto osize = tOpts.size();
             for ( decltype(osize) bn = 0; bn < osize; bn++ ) {
               /*_threadFusion*/infE::_dbnOpt.insert ( *tOpts[bn], keymin );
@@ -331,9 +330,9 @@ namespace gum {
           }
           //if ( fabs( _l_marginalMax[tId][i][j] - this->_marginalMax[i][j] ) <= 1e-6 ) {
           if ( _l_marginalMax[tId][i][j] == this->_marginalMax[i][j] ) {
-            std::cout << "\t\t max : ";
+            //std::cout << "\t\t max : ";
             const std::vector< dBN* > & tOpts = _l_optimalNet[tId]->getBNOptsFromKey( keymax );
-            std::cout << " size : " << tOpts.size() << std::endl;
+            //std::cout << " size : " << tOpts.size() << std::endl;
             auto osize = tOpts.size();
             for ( decltype(osize) bn = 0; bn < osize; bn++ ) {
               /*_threadFusion*/infE::_dbnOpt.insert ( *tOpts[bn], keymax );
@@ -343,7 +342,7 @@ namespace gum {
       } // end of : all modalities
     } // end of : all variables
 
-    std::cout << "fusion size : " << /*_threadFusion*/infE::_dbnOpt.getEntrySize() << std::endl;
+    //std::cout << "fusion size : " << /*_threadFusion*/infE::_dbnOpt.getEntrySize() << std::endl;
   }
 
 

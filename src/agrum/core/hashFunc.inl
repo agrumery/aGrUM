@@ -121,4 +121,4 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; space-indent on; indent-width 2;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

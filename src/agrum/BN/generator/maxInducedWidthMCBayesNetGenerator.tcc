@@ -98,5 +98,5 @@ namespace gum {
     _maxlog10InducedWidth = maxlog10InducedWidth;
   }
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
 

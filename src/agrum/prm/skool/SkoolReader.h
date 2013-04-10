@@ -126,4 +126,4 @@ private:
 // ============================================================================
 #endif /* GUM_SKOOL_READER_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 0;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

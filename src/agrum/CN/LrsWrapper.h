@@ -12,11 +12,10 @@
 
 // lrs stuff
 //we force MP (not long or GMP)
-//#define MP
-//#undef long
-//#undef GMP
-//#include "lrslib/lrslib.h"
-//#include <agrum/CN/lrslib/lrslib.h>
+#define MP
+#undef long
+#undef GMP
+#include <agrum/CN/lrslib/lrslib.h>
 
 /**
  * Polytopes functions using Lexicographic Reverse Search by David Avis.

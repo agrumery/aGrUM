@@ -1,13 +1,13 @@
 //%%%%%%%%%%%%%%%%%%%%%%%  M I L D E W  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //% A preliminary model for deciding on the amount of fungicides to be used
 //% against attack of mildew in wheat.  The model has been developed by 
-//% Finn V. Jensen, Jørgen Olesen, and Uffe Kjærulff.
+//% Finn V. Jensen, Jï¿½rgen Olesen, and Uffe Kjï¿½rulff.
 //% 
 network Unknown {
 }
 
 variable dm_1 {
-  property label = "Tørstof 1"; 
+  property label = "Tï¿½rstof 1"; 
   property position = ( 199, 57 ); 
   type discrete[32] {   0_00_kg_m2, // "0.00 kg/m2"
    0_02_kg_m2, // "0.02 kg/m2"
@@ -71,7 +71,7 @@ variable foto_1 {
 }
 
 variable straaling_1 {
-  property label = "Globalstråling 1"; 
+  property label = "Globalstrï¿½ling 1"; 
   property position = ( 133, 123 ); 
   type discrete[4] {   ___150_MJ_m2, // "< 150 MJ/m2"
    150___199_MJ_m2, // "150 - 199 MJ/m2"
@@ -134,7 +134,7 @@ variable lai_0 {
 }
 
 variable dm_2 {
-  property label = "Tørstof 2"; 
+  property label = "Tï¿½rstof 2"; 
   property position = ( 389, 57 ); 
   type discrete[61] {   0_00_kg_m2, // "0.00 kg/m2"
    0_02_kg_m2, // "0.02 kg/m2"
@@ -227,7 +227,7 @@ variable foto_2 {
 }
 
 variable straaling_2 {
-  property label = "Globalstråling 2"; 
+  property label = "Globalstrï¿½ling 2"; 
   property position = ( 322, 123 ); 
   type discrete[4] {   ___150_MJ_m2, // "< 150 MJ/m2"
    150___199_MJ_m2, // "150 - 199 MJ/m2"
@@ -276,7 +276,7 @@ variable meldug_2 {
 }
 
 variable dm_3 {
-  property label = "Tørstof 3"; 
+  property label = "Tï¿½rstof 3"; 
   property position = ( 579, 57 ); 
   type discrete[100] {   0_00_kg_m2, // "0.00 kg/m2"
    0_02_kg_m2, // "0.02 kg/m2"
@@ -421,7 +421,7 @@ variable foto_3 {
 }
 
 variable straaling_3 {
-  property label = "Globalstråling 3"; 
+  property label = "Globalstrï¿½ling 3"; 
   property position = ( 512, 123 ); 
   type discrete[4] {   ___300_MJ_m2, // "< 300 MJ/m2"
    300___349_MJ_m2, // "300 - 349 MJ/m2"
@@ -469,7 +469,7 @@ variable meldug_3 {
 }
 
 variable dm_4 {
-  property label = "Tørstof 4"; 
+  property label = "Tï¿½rstof 4"; 
   property position = ( 778, 57 ); 
   type discrete[100] {   0_00_kg_m2, // "0.00 kg/m2"
    0_02_kg_m2, // "0.02 kg/m2"
@@ -609,7 +609,7 @@ variable foto_4 {
 }
 
 variable straaling_4 {
-  property label = "Globalstråling 4"; 
+  property label = "Globalstrï¿½ling 4"; 
   property position = ( 711, 123 ); 
   type discrete[4] {   ___300_MJ_m2, // "< 300 MJ/m2"
    300___349_MJ_m2, // "300 - 349 MJ/m2"
@@ -656,10 +656,10 @@ variable meldug_4 {
 variable mikro_1 {
   property label = "Mikroklima 1"; 
   property position = ( 171, 370 ); 
-  type discrete[4] {   T_rt_og_koldt, // "Tørt og koldt"
-   V_dt_og_koldt, // "Vådt og koldt"
-   T_rt_og_varmt, // "Tørt og varmt"
-   V_dt_og_varmt// "Vådt og varmt"
+  type discrete[4] {   T_rt_og_koldt, // "Tï¿½rt og koldt"
+   V_dt_og_koldt, // "Vï¿½dt og koldt"
+   T_rt_og_varmt, // "Tï¿½rt og varmt"
+   V_dt_og_varmt// "Vï¿½dt og varmt"
  };
 }
 
@@ -676,10 +676,10 @@ variable middel_1 {
 variable mikro_2 {
   property label = "Mikroklima 2"; 
   property position = ( 360, 370 ); 
-  type discrete[4] {   T_rt_og_koldt, // "Tørt og koldt"
-   V_dt_og_koldt, // "Vådt og koldt"
-   T_rt_og_varmt, // "Tørt og varmt"
-   V_dt_og_varmt// "Vådt og varmt"
+  type discrete[4] {   T_rt_og_koldt, // "Tï¿½rt og koldt"
+   V_dt_og_koldt, // "Vï¿½dt og koldt"
+   T_rt_og_varmt, // "Tï¿½rt og varmt"
+   V_dt_og_varmt// "Vï¿½dt og varmt"
  };
 }
 
@@ -696,10 +696,10 @@ variable middel_2 {
 variable mikro_3 {
   property label = "Mikroklima 3"; 
   property position = ( 550, 370 ); 
-  type discrete[4] {   T_rt_og_koldt, // "Tørt og koldt"
-   V_dt_og_koldt, // "Vådt og koldt"
-   T_rt_og_varmt, // "Tørt og varmt"
-   V_dt_og_varmt// "Vådt og varmt"
+  type discrete[4] {   T_rt_og_koldt, // "Tï¿½rt og koldt"
+   V_dt_og_koldt, // "Vï¿½dt og koldt"
+   T_rt_og_varmt, // "Tï¿½rt og varmt"
+   V_dt_og_varmt// "Vï¿½dt og varmt"
  };
 }
 
@@ -714,7 +714,7 @@ variable middel_3 {
 }
 
 variable nedboer_1 {
-  property label = "Nedbørsdøgn 1"; 
+  property label = "Nedbï¿½rsdï¿½gn 1"; 
   property position = ( 133, 465 ); 
   type discrete[3] {   0___1, // "0 - 1"
    2___3, // "2 - 3"
@@ -723,7 +723,7 @@ variable nedboer_1 {
 }
 
 variable nedboer_2 {
-  property label = "Nedbørsdøgn 2"; 
+  property label = "Nedbï¿½rsdï¿½gn 2"; 
   property position = ( 322, 465 ); 
   type discrete[3] {   0___1, // "0 - 1"
    2___3, // "2 - 3"
@@ -732,7 +732,7 @@ variable nedboer_2 {
 }
 
 variable nedboer_3 {
-  property label = "Nedbørsdøgn 3"; 
+  property label = "Nedbï¿½rsdï¿½gn 3"; 
   property position = ( 512, 465 ); 
   type discrete[3] {   0___1, // "0 - 1"
    2___3, // "2 - 3"

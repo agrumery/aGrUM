@@ -1,3 +1,5 @@
+#include <agrum/CN/CredalNet.h>
+
 namespace gum {
 
   template< typename GUM_SCALAR >

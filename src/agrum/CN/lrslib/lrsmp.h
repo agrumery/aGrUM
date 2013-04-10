@@ -1,3 +1,6 @@
+#ifndef __LRS_MP__H__
+#define __LRS_MP__H__
+
 /* lrsmp.h (lrs extended precision arithmetic library)              */
 /* Copyright: David Avis 2000, avis@cs.mcgill.ca                    */
 /* Version 4.0, February 17, 2000                                   */
@@ -225,3 +228,4 @@ void lrs_default_digits_overflow ();
 void digits_overflow ();
 
 /* end of  lrsmp.h (vertex enumeration using lexicographic reverse search) */
+#endif

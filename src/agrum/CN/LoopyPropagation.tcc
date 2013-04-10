@@ -1,3 +1,5 @@
+#include <agrum/CN/LoopyPropagation.h>
+
 namespace gum {
 
   template<typename GUM_SCALAR>

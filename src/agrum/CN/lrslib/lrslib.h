@@ -1,3 +1,6 @@
+#ifndef __LRS_LIB__H__
+#define __LRS_LIB__H__
+
 /* lrslib.h (vertex enumeration using lexicographic reverse search) */
 
 #define TITLE "lrslib "
@@ -211,6 +214,16 @@ extern FILE *lrs_cfp;			/* output file for checkpoint information       */
 extern unsigned long dict_count, dict_limit, cache_tries, cache_misses;
 extern lrs_dic *PBnew;    /* we will save Bob's dictionary in getabasis */
 
+/**
+ * wrapper for functions from lrsmp.h
+ */
+
+lrs_mp_vector lrs_alloc_mp_vector_wrapper (long n);	/* allocate lrs_mp_vector for n+1 lrs_mp numbers */
+lrs_mp_matrix lrs_alloc_mp_matrix_wrapper (long m, long n);	/* allocate lrs_mp_matrix for m+1 x n+1 lrs_mp   */
+
+void lrs_clear_mp_vector_wrapper (lrs_mp_vector a, long n);
+void lrs_clear_mp_matrix_wrapper (lrs_mp_matrix a, long m, long n);
+
 
 /*******************************/
 /* functions  for external use */
@@ -365,4 +378,5 @@ void lrs_set_obj_mp(lrs_dic *P, lrs_dat *Q, lrs_mp_vector num, lrs_mp_vector den
 /* end of  lrslib.h (vertex enumeration using lexicographic reverse search) */
 #ifdef __cplusplus
 }
+#endif
 #endif

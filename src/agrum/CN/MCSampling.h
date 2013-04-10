@@ -88,6 +88,8 @@ namespace gum {
       
       ////////////////
 
+      protected:
+      bool _repetitiveInd;
   };
 
 } // namespace cn

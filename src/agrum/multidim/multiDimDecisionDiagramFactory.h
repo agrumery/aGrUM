@@ -96,4 +96,4 @@ private:
 #endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H */
 // ============================================================================
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

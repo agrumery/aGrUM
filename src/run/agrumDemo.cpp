@@ -14,7 +14,7 @@
 #include <agrum/CN/OptBN.h>
 
 #include <agrum/core/Rational.h>
-#include <agrum/CN/LrsWrapper.h>
+//#include <agrum/CN/LrsWrapper.h>
 
 using namespace gum;
 
@@ -51,16 +51,94 @@ void test_credal() {
   return;*/
 
   // test LrsWrapper
+  /*
   gum::credal::LRS<double> lrs;
   lrs.setUpH( 2 );
   // vacuous binary credal set
-  lrs.fillH( 0, 1, 0.0 );
-  lrs.fillH( 0, 1, 1.0 );
-
+  lrs.fillH( 0, 0.5, 0 );
+  lrs.fillH( 0.5, 1, 1 );
+	std::cout << "H2V" << std::endl;
   lrs.H2V();
 
   return;
+	*/
+	
+	
+	/**
+	 * Various tests
+	 * 
+	 */
+	/*
+	std::vector< std::vector< std::vector<double> > > matrix(2);
+	int dim = 2;
+	std::vector<double> a1 = {0.2,0.3,0.5};
+	matrix[0].push_back(a1);
+	std::vector<double> a2 = {0.1,0.4,0.5};
+	matrix[0].push_back(a2);
+	std::vector<double> a3 = {0.1,0.3,0.6};
+	matrix[0].push_back(a3);
+	
+	std::vector<double> b1 = {0.6,0,0.4};
+	matrix[1].push_back(b1);
+	std::vector<double> b2 = {0.4,0.2,0.4};
+	matrix[1].push_back(b2);
+	//wstd::vector<double> b3 = {}
 
+	std::vector< double > uv1(3,0); uv1[1] = 1;
+	std::vector< double > uv2(3,0); uv2[0] = 1;
+	std::vector< double > uv3(3,0); uv3[2] = 1;
+	
+	std::vector< double > uv12(3,0.5); uv12[2] = 0;
+	std::vector< double > uv13(3,0.5); uv13[1] = 0;
+	std::vector< double > uv23(3,0.5); uv23[0] = 0;
+	
+	double dist1 = 0;
+	double dist2 = 0;
+	double dist3 = 0;
+	double dist4 = 0;
+	double dist5 = 0;
+	double dist6 = 0;
+	
+	int k = 1;
+	for ( auto & va : matrix[0] ) {
+		dist1 = 0; dist2 = 0; dist3 = 0; dist4 = 0; dist5 = 0; dist6 = 0;
+		int pos = 0;
+		for ( auto & elem : va ) {
+			dist1 += fabs ( elem - uv1[pos] );
+			dist2 += fabs ( elem - uv2[pos] );
+			dist3 += fabs ( elem - uv3[pos] );
+			dist4 += fabs ( elem - uv12[pos] );
+			dist5 += fabs ( elem - uv13[pos] );
+			dist6 += fabs ( elem - uv23[pos] );
+			pos++;
+		}
+		std::cout << "a" << k << " (0,1,0) " << dist1 << " | (1,0,0) " << dist2 << " | (0,0,1) " << dist3 
+		<< " | (1,1,0) " << dist4 << " | (1,0,1) " << dist5 << " | (0,1,1) " << dist6
+		<< std::endl;
+		k++;
+	}
+	
+	k = 1;
+	for ( auto & vb : matrix[1] ) {
+		dist1 = 0; dist2 = 0; dist3 = 0; dist4 = 0; dist5 = 0; dist6 = 0;
+		int pos = 0;
+		for ( auto & elem : vb ) {
+			dist1 += fabs ( elem - uv1[pos] );
+			dist2 += fabs ( elem - uv2[pos] );
+			dist3 += fabs ( elem - uv3[pos] );
+			dist4 += fabs ( elem - uv12[pos] );
+			dist5 += fabs ( elem - uv13[pos] );
+			dist6 += fabs ( elem - uv23[pos] );
+			pos++;
+		}
+		std::cout << "b" << k << " (0,1,0) " << dist1 << " | (1,0,0) " << dist2 << " | (0,0,1) " << dist3 
+		<< " | (1,1,0) " << dist4 << " | (1,0,1) " << dist5 << " | (0,1,1) " << dist6
+		<< std::endl;
+		k++;
+	}
+			
+	return;*/
+	
   
 //////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
@@ -88,6 +166,11 @@ void test_credal() {
 
   myCNb.intervalToCredal();
   //std::cout << "computing min/max vertex" << std::endl;
+	
+	
+	std::cout << myCNb.toString() << std::endl;
+	
+	
   myCNb.computeCPTMinMax();
   //std::cout << "computing done" << std::endl;
   LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb);
@@ -136,7 +219,7 @@ void test_credal() {
 
   std::cout << lp.vertices( 0 ) << std::endl;
   
-  return;
+  //return;
   
 
   // LocalSearch test
@@ -368,10 +451,14 @@ std::cout << MCE->messageApproximationScheme() << std::endl;
 std::cout << MCE->currentTime() << std::endl;
 std::cout << MCE->nbrIterations() << std::endl;
 
+for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+	unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+	for( unsigned int mod = 0; mod < dSize; mod++ ) {
+		std::cout << "MCS p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE->marginalMin(*id)[mod] << ", " << MCE->marginalMax(*id)[mod] << " ] " << std::endl;
+	}
+}
 
-std::cout << "MCS p(A) = [ " << MCE->marginalMin(0)[1] << ", " << MCE->marginalMax(0)[1] << " ] " << std::endl;
-
-
+//std::cout << "MCS p(A) = [ " << MCE->marginalMin(0)[1] << ", " << MCE->marginalMax(0)[1] << " ] " << std::endl;
 
 
 std::vector< unsigned int > key(3);

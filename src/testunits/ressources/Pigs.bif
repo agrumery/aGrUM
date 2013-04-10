@@ -1,6 +1,6 @@
 //%%%%%%%%%%%%%%%%%%%%%%%  P I G S  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //% Pedigree of breeding pigs.  Created by Claus S. Jensen on the basis of
-//% a data base from Søren Andersen (Danske Slagterier, Axeltorv Copenhagen).
+//% a data base from Sï¿½ren Andersen (Danske Slagterier, Axeltorv Copenhagen).
 //% The pedigree is used for diagnosing the PSE disease.
 //% 
 network Pig-Network {

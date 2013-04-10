@@ -1,4 +1,7 @@
-namespace gum {
+#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/lrslib/lrslib.h>
+
+namespace gum {  
   namespace credal {
 
     template < typename GUM_SCALAR >
@@ -11,11 +14,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     LRS< GUM_SCALAR >::~LRS () {
     }
-
+    
 
     template < typename GUM_SCALAR >
     void LRS< GUM_SCALAR >::setUpH ( const int & card ) {
-      if ( card < 2 )
+			if ( card < 2 )
         GUM_ERROR ( OperationNotAllowed, "LRS< GUM_SCALAR >::setUpH : cardinality must be at least 2" );
 
       __input = std::vector< std::vector< GUM_SCALAR > > ( card * 2 + 2, std::vector< GUM_SCALAR > ( card + 1, 0 ) );
@@ -31,6 +34,7 @@ namespace gum {
       __vertex = std::vector< GUM_SCALAR > ( card );
 
       __state = __states::Hup;
+			
       __card = card;
     }
 
@@ -61,7 +65,7 @@ namespace gum {
       __input[ modal * 2 + 1 ][ modal + 1 ] = -1;
 
       __vertex[ modal ] = max;
-
+			
       if ( ( modal - __vertex.size () + 1 ) == 0 )
         __state = __states::H2Vready;
     }
@@ -103,7 +107,7 @@ namespace gum {
       Q->n = __card + 1; /* number of input columns (dimension + 1 ) */
       Q->m = 2 * __card + 2; /* number of input rows = number of inequalities */ 
 
-      output = lrs_alloc_mp_vector ( Q->n );
+      output = lrs_alloc_mp_vector_wrapper ( Q->n );
 
       P = lrs_alloc_dic ( Q ); /* allocate and initialize lrs_dic */
 
@@ -118,7 +122,7 @@ namespace gum {
 
       /* Pivot to a starting dictionary */
       if ( ! lrs_getfirstbasis ( &P, Q, &Lin, FALSE ) )
-        GUM_ERROR ( FatalError, "LRS< GUM_SCALAR >::H2V : failed lrs_tfirstbasis" );
+        GUM_ERROR ( FatalError, "LRS< GUM_SCALAR >::H2V : failed lrs_getfirstbasis" );
 
       /* There may have been column redundancy */
       /* If so the linearity space is obtained and redundant */
@@ -126,8 +130,8 @@ namespace gum {
       /* from lrs_mp_matrix Lin dimensions nredundcol x d+1  */
 
       if ( Q->nredundcol > 0 ) {
-        for (col = 0L; col < Q->nredundcol; col++) /* print linearity space */
-          lrs_printoutput (Q, Lin[col]); /* Array Lin[][] holds the coeffs. */
+        for ( col = 0L; col < Q->nredundcol; col++ ) /* print linearity space */
+          lrs_printoutput ( Q, Lin[col] ); /* Array Lin[][] holds the coeffs. */
 
         GUM_ERROR ( FatalError, "LRS< GUM_SCALAR >::H2V : redundant columns !" );
       }
@@ -137,20 +141,26 @@ namespace gum {
       /* User can access each output line from output which is */
       /* a vertex/ray/facet from the lrs_mp_vector output      */
 
+			std::stringstream istring;
+			
+			
+
       do
       {
         for ( col = 0; col <= P->d; col++ )
-          if ( lrs_getsolution ( P, Q, output, col ) )
-            lrs_printoutput ( Q, output );
+          if ( lrs_getsolution ( P, Q, output, col ) ) {
+            istring. << lrs_printoutput ( Q, output );
+						//std::cout << istring << std::endl;
+					}
       }
       while ( lrs_getnextbasis ( &P, Q, FALSE ) );
-
+			
       lrs_printtotals (P, Q); /* print final totals */
 
 
       /* free space : do not change order of next 3 lines! */
 
-      lrs_clear_mp_vector ( output, Q->n );
+      lrs_clear_mp_vector_wrapper ( output, Q->n );
       lrs_free_dic ( P, Q ); /* deallocate lrs_dic */
       lrs_free_dat ( Q ); /* deallocate lrs_dat */
 
@@ -169,8 +179,8 @@ namespace gum {
 
       int64_t numerator, denominator;
 
-      for ( int row = 1; row <= rows; row++ ) {
-        for ( int col = 0; col < __card + 1; col++ ) {
+      for ( int row = 0; row < rows; row++ ) {
+        for ( decltype ( __card ) col = 0; col < __card + 1; col++ ) {
           gum::Rational< GUM_SCALAR >::farey ( numerator, denominator, __input [ row ][ col ] );
           num [ col ] = numerator;
           den [ col ] = denominator;
