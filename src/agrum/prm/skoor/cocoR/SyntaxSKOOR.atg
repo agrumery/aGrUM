@@ -3,9 +3,7 @@
 #include <algorithm>
 #include <fstream>
 
-namespace std {
-  #include<dirent.h>
-}
+#include<dirent.h>
 
 #include <agrum/prm/skoor/SkoorContext.h>
 

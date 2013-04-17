@@ -20,23 +20,23 @@ default: release
 ################################################################################
 
 before: agrum
-	$(CMAKE) -E remove -f ../../build/linux/release/CMakeFiles/test.dir/test.cpp.o
+	$(CMAKE) -E remove -f ../../build/skoobeditor-linux/release/CMakeFiles/test.dir/test.cpp.o
 	$(CMAKE) -E make_directory build/Debug
 	$(CMAKE) -E make_directory build/Release
 	$(CMAKE) -E make_directory build/MinSizeRel
 
 agrum:
 #ifeq ($(OS),Linux)
-	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/release)
-	(cd ../../build/$(call lc,$(OS))/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+	(cd ../../ && $(CMAKE) -E make_directory build/skoobeditor-$(call lc,$(OS))/release)
+	(cd ../../build/skoobeditor-$(call lc,$(OS))/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
 #else
-#	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
-#	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#	(cd ../../ && $(CMAKE) -E make_directory build/skoobeditor-windows/release)
+#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
 #endif
 ################################################################################
 
 before_debug: agrum_debug
-	$(CMAKE) -E remove -f ../../build/linux/release/CMakeFiles/test.dir/test.cpp.o
+	$(CMAKE) -E remove -f ../../build/skoobeditor-linux/release/CMakeFiles/test.dir/test.cpp.o
 	$(CMAKE) -E make_directory build/Debug
 	$(CMAKE) -E make_directory build/Release
 	$(CMAKE) -E make_directory build/MinSizeRel
@@ -44,10 +44,10 @@ before_debug: agrum_debug
 agrum_debug:
 #ifeq ($(OS),Linux)
 	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/debug)
-	(cd ../../build/$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
+	(cd ../../build/skoobeditor-$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
 #else
 #	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
-#	(cd ../../build/windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
 #endif
 
 ################################################################################

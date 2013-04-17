@@ -47,7 +47,7 @@ namespace gum {
   INLINE
   Size
   RangeVariable::domainSize() const {
-    return ( __max<=__min ) ?0: ( __max - __min + 1 );
+    return ( __maxBound<=__minBound ) ?0: ( __maxBound - __minBound + 1 );
   }
 
   // ============================================================================
@@ -58,9 +58,9 @@ namespace gum {
   INLINE
   const std::string
   RangeVariable::label( Idx indice ) const {
-    if( belongs( indice  + __min ) ) {
+    if( belongs( indice  + __minBound ) ) {
       std::stringstream strBuff;
-      strBuff << indice+__min;
+      strBuff << indice+__minBound;
       return strBuff.str();
     } else {
       GUM_ERROR( OutOfBounds,"Indice out of bounds." );
@@ -81,7 +81,7 @@ namespace gum {
       GUM_ERROR( NotFound,"Bad label" );
     }
 
-    return res-__min;
+    return res-__minBound;
   }
 
   // ============================================================================
@@ -90,7 +90,7 @@ namespace gum {
   INLINE
   Idx
   RangeVariable::min() const {
-    return __min;
+    return __minBound;
   }
 
   // ============================================================================
@@ -99,7 +99,7 @@ namespace gum {
   INLINE
   void
   RangeVariable::setMin( Idx minVal ) {
-    __min = minVal;
+    __minBound = minVal;
   }
 
   // ============================================================================
@@ -108,7 +108,7 @@ namespace gum {
   INLINE
   Idx
   RangeVariable::max() const {
-    return __max;
+    return __maxBound;
   }
 
   // ============================================================================
@@ -117,7 +117,7 @@ namespace gum {
   INLINE
   void
   RangeVariable::setMax( Idx maxVal ) {
-    __max = maxVal;
+    __maxBound = maxVal;
   }
 
   // ============================================================================
@@ -126,7 +126,7 @@ namespace gum {
   INLINE
   bool
   RangeVariable::belongs( Idx indice ) const {
-    return ( ( __min <= indice ) && ( indice <= __max ) );
+    return ( ( __minBound <= indice ) && ( indice <= __maxBound ) );
   }
 
   // ============================================================================
@@ -137,8 +137,8 @@ namespace gum {
   INLINE
   RangeVariable&
   RangeVariable::operator= ( const RangeVariable& aRV ) {
-    __min = aRV.__min;
-    __max = aRV.__max;
+    __minBound = aRV.__minBound;
+    __maxBound = aRV.__maxBound;
     return *this;
   }
 
