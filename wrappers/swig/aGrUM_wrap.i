@@ -71,7 +71,8 @@
 #include <agrum/graphs/diGraphListener.h>
 
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/OptBN.h>
+#include <agrum/CN/CNInferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
 %}
 
@@ -162,7 +163,8 @@
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %include <agrum/CN/CredalNet.h>
-%include <agrum/CN/InferenceEngine.h>
+%include <agrum/CN/OptBN.h>
+%include <agrum/CN/CNInferenceEngine.h>
 %include <agrum/CN/MCSampling.h>
 
 
@@ -343,5 +345,5 @@
 %template(GibbsKL_double) gum::GibbsKL<double>;
 
 %template(CredalNet_double) gum::CredalNet<double>;
-%template(InferenceEngine_double) gum::InferenceEngine<double>;
+%template(CNInferenceEngine_double) gum::CNInferenceEngine<double>;
 %template(MCSampling_double) gum::MCSampling<double,gum::LazyPropagation<double> >;

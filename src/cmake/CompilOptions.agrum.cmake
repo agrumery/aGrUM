@@ -3,14 +3,18 @@ set(AGRUM_OPTIMIZATION "-O3")
 
 set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 
+add_definitions("-Wall")
+add_definitions("-pedantic")
 
 if(MINGW)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
+  add_definitions("--std=c++0x")
 endif(MINGW)
 if(UNIX)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
+  add_definitions("--std=c++11")
 endif(UNIX)
 
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
@@ -47,16 +51,7 @@ if ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
     set(GUM_TRACE_ON TRUE)
 endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 
-include(CheckTypeSize)
-CHECK_TYPE_SIZE(char   GUM_CHAR_SIZE)
-CHECK_TYPE_SIZE(int    GUM_INT_SIZE)
-CHECK_TYPE_SIZE(long   GUM_LONG_SIZE)
-CHECK_TYPE_SIZE(float  GUM_FLOAT_SIZE)
-CHECK_TYPE_SIZE(double GUM_DOUBLE_SIZE)
 
-
-add_definitions("-Wall")
-add_definitions("-pedantic")
 
 add_definitions("-std=c++0x")
 

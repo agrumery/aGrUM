@@ -17,7 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <unistd.h>
+//#include <unistd.h>
+
+#include <chrono>
+#include <thread>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
@@ -56,6 +59,8 @@ namespace gum_tests {
       }
 
       void testTrivial() {
+        // for now, sleep does not work in mingw
+#ifndef __MINGW32__
         int w=0;
         gum::Timer t;
         gum::Timer tt;
@@ -64,13 +69,13 @@ namespace gum_tests {
         test_waiting(++w);
         tt.reset();
         double t5 = t.step();
-        sleep( 1 );
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         test_waiting(++w);
         double t2 = t.pause();
-        sleep( 1 );
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         test_waiting(++w);
         double t3 = t.resume();
-        sleep( 1 );
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         test_waiting(++w);
         double t4 = t.step();
         double t6 = tt.step();
@@ -78,7 +83,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( t6-t5,3.0,1e-3);
         TS_ASSERT_DELTA( t4-t1,2.0,1e-3);
         TS_ASSERT_DELTA( t3-t2,0.0,1e-3);
-
+#endif //__MINGW32__
       }
   };
 }
