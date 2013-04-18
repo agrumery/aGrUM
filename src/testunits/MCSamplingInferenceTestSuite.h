@@ -7,15 +7,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/CN/OMPThreads.h>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
 
-#define xstrfy(s) strfy(s)
-#define strfy(x) #x
-
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
-
-#include <agrum/CN/OMPThreads.h>
 
 /**
  * Mono-threaded version
