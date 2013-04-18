@@ -121,7 +121,8 @@ namespace gum {
       void bnToCredal ( GUM_SCALAR beta );
       
       /**
-			 * @deprecated Use intervalToCredal (lrsWrapper with no input / output files)
+			 * @deprecated Use intervalToCredal ( lrsWrapper with no input / output files needed ).
+			 * 
        * Computes the vertices of each credal set according to their interval definition (uses lrs).
        */
       void intervalToCredalWithFiles ();

@@ -1,3 +1,5 @@
+#include <agrum/CN/CNInferenceEngine.h>
+
 namespace gum {
   /*template< typename GUM_SCALAR >
   CNInferenceEngine< GUM_SCALAR >::CNInferenceEngine () : ApproximationScheme() {
@@ -871,18 +873,23 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  void CNInferenceEngine< GUM_SCALAR >::_updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex ) {
+  void CNInferenceEngine< GUM_SCALAR >::_updateCredalSetsWithFiles( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
     auto & nodeCredalSet = _marginalSets[ id ];
-    bool toAdd = true;
-
+		
+		bool eq = true;
     for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
-      if ( vertex == *it ) {
-        toAdd = false;
+			eq = true;
+			for ( auto end = vertex.size(), i = 0; i < end; i++ ) {
+				if ( vertex[ i ] != *it[ i ] ) {
+					eq = false;
+					break;
+				}
+			}
+      if ( eq )
         break;
-      }
     }
 
-    if ( toAdd )
+    if ( ! eq || nodeCredalSet.size() == 0 )
       nodeCredalSet.push_back( vertex );
     else
       return;
@@ -910,7 +917,7 @@ namespace gum {
     nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
 
     // we need at least 2 points to make a convex combination 
-    if ( nodeCredalSet.size() <= 2 )
+    if ( ! elimRedund || nodeCredalSet.size() <= 2 )
       return;
 
     // there may be points not inside the polytope but on one of it's facet, meaning it's still a convex combination of vertices of this facet. Here we need lrs.
@@ -1058,6 +1065,71 @@ namespace gum {
     _marginalSets[ id ] = outputCSet;
 
   }
+  
+  
+  template< typename GUM_SCALAR >
+  void CNInferenceEngine< GUM_SCALAR >::_updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+		auto & nodeCredalSet = _marginalSets[ id ];
+		auto dsize = vertex.size();
+		
+		bool eq = true;
+		for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
+			eq = true;
+			for ( decltype ( dsize ) i = 0; i < dsize; i++ ) {
+				if ( fabs ( vertex[ i ] - (*it)[ i ] ) > 1e-6 ) {
+					eq = false;
+					break;
+				}
+			}
+			if ( eq )
+				break;
+		}
+		
+		if ( ! eq || nodeCredalSet.size() == 0 )
+			nodeCredalSet.push_back( vertex );
+		else
+			return;
+	
+		// check that the point and all previously added ones are not inside the actual polytope
+    auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(), 
+        [&] ( const std::vector< GUM_SCALAR > & v ) -> bool {
+          for ( auto jt = v.cbegin(), jtEnd = v.cend(), 
+            minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(), 
+            maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend(); 
+            jt != jtEnd, 
+            minIt != minItEnd, 
+            maxIt != maxItEnd; 
+            ++jt, 
+            ++minIt, 
+            ++maxIt 
+          ) {
+						if ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 )
+              return false;
+          }
+          return true;
+        }
+    );
+		
+		nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
+
+		// we need at least 2 points to make a convex combination 
+		if ( ! elimRedund || nodeCredalSet.size() <= 2 )
+			return;
+		
+		// there may be points not inside the polytope but on one of it's facet, meaning it's still a convex combination of vertices of this facet. Here we need lrs.
+		auto setSize = nodeCredalSet.size();
+
+		gum::credal::LRS< GUM_SCALAR > lrsWrapper;
+		lrsWrapper.setUpV( dsize, setSize );
+		
+		for ( auto & vtx : nodeCredalSet )
+			lrsWrapper.fillV( vtx );
+		
+		lrsWrapper.elimRedundVrep();
+		
+		_marginalSets[ id ] = lrsWrapper.getOutput();
+		
+	}
 
 
   template< typename GUM_SCALAR >

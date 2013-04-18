@@ -20,7 +20,7 @@ namespace gum {
        *
        * @param iters Number of tests of each type ( lower than 1, greater than 1 ).
        */
-      static void testRationalAlgorithms ( const int & iters = 10 );
+      static void testRationalAlgorithms ( const unsigned int & iters = 10 );
 
     //////////////////////////////////////////
       /// @name Real approximation by rational
@@ -48,7 +48,7 @@ namespace gum {
        *
        * 4. fracC( numerator, denominator, (int)( number * denum ), d_num, denum );
        */
-      static void fracC ( int64_t & numerator, int64_t & denominator, const int & alpha_num, const int & d_num, const int & denum );
+			static void fracC ( long int & numerator, long int & denominator, const int & alpha_num, const int & d_num, const int & denum );
 
 
       /**
@@ -60,7 +60,7 @@ namespace gum {
        * @param denominator The denominator of the rational.
        * @param number The constant number we want to approximate using rationals.
        */
-      static void frac ( int64_t & numerator, int64_t & denominator, const GUM_SCALAR & number );
+			static void frac ( long int & numerator, long int & denominator, const GUM_SCALAR & number );
 
 
       /**
@@ -72,7 +72,7 @@ namespace gum {
        * @param den_max The constant highest authorized denominator.
        * @param zero The positive value below which a number is considered zero. 1e-6 by default.
        */
-      static void farey ( int64_t & numerator, int64_t & denominator, const GUM_SCALAR & number, const int & den_max = 1000000, const double & zero = 1e-6 );
+      static void farey ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max = 1000000, const double & zero = 1e-6 );
 
       /// @}
       
@@ -92,10 +92,10 @@ namespace gum {
       static int __matches ( const double & a, const double & b, const int & alpha_num, const int & d_num, const int & denum );
 
       /** @brief Used by fracC */
-      static void __find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, int64_t & num, int64_t & den, const int & alpha_num, const int & d_num, const int & denum );
+			static void __find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum );
 
       /** @brief Used by fracC */
-      static void __find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, int64_t & num, int64_t & den, const int & alpha_num, const int & d_num, const int & denum );
+			static void __find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum );
 
       /// @}
 

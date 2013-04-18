@@ -50,6 +50,7 @@ namespace gum {
        * @param value The constant integer we want to binarize.
        */
       inline void __binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const;
+
       /// @}
 
 

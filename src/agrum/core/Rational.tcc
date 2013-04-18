@@ -1,7 +1,9 @@
+#include <agrum/core/Rational.h>
+
 namespace gum {
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::testRationalAlgorithms ( const int & iters ) {
+  void Rational< GUM_SCALAR >::testRationalAlgorithms ( const unsigned int & iters ) {
     std::cout << " TESTING RATIONAL ALGORITHMS " << std::endl;
     
     srand ( time ( nullptr ) );
@@ -13,11 +15,11 @@ namespace gum {
     double DECI = 5;
     double den_max = 1000000000;
 
-    int64_t num, den;
+		long int num, den;
     GUM_SCALAR number;
     std::stringstream ss;
 
-    for ( int i = 0; i < iters; i++ ) {
+    for ( unsigned int i = 0; i < iters; i++ ) {
       std::cout << std::setw(10) << std::left << i;
       number = (GUM_SCALAR) rand() / (GUM_SCALAR) RAND_MAX;
       std::cout << std::setw(20) << std::left << number;
@@ -82,7 +84,7 @@ namespace gum {
 
     // 1 <= number <= 100 ( don't call farey, it will go through all farey rationals until den_max is met, which is 1000000 )
     double fmin = 1.0, fmax = 100.0;
-    for ( int i = iters+2; i < iters*2+2; i++ ) {
+    for ( unsigned int i = iters+2; i < iters*2+2; i++ ) {
       std::cout << std::setw(10) << std::left << i;
       number = (GUM_SCALAR) rand() / RAND_MAX;
       number = fmin + number * ( fmax - fmin );
@@ -122,7 +124,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::__find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, int64_t & num, int64_t & den, const int & alpha_num, const int & d_num, const int & denum ) {
+  void Rational< GUM_SCALAR >::__find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum ) {
     double k_num = denum * p_b - ( alpha_num + d_num ) * q_b;
     double k_denum = ( alpha_num + d_num ) * q_a - denum * p_a;
     double k = ( ( double ) k_num / k_denum ) + 1;
@@ -131,7 +133,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::__find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, int64_t & num, int64_t & den, const int & alpha_num, const int & d_num, const int & denum ) {
+  void Rational< GUM_SCALAR >::__find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum ) {
     double k_num = -denum * p_b - ( alpha_num - d_num ) * q_b;
     double k_denum = - ( alpha_num - d_num ) * q_a + denum * p_a;
     double k = ( ( double ) k_num / k_denum ) + 1;
@@ -140,7 +142,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::fracC ( int64_t & numerator, int64_t & denominator, const int & alpha_num, const int & d_num, const int & denum ) {
+  void Rational< GUM_SCALAR >::fracC ( long int & numerator, long int & denominator, const int & alpha_num, const int & d_num, const int & denum ) {
     double p_a = 0;
     double q_a = 1;
     double p_b = 1;
@@ -198,20 +200,20 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::frac ( int64_t & numerator, int64_t & denominator, const GUM_SCALAR & number ) {
+  void Rational< GUM_SCALAR >::frac ( long int & numerator, long int & denominator, const GUM_SCALAR & number ) {
     double l = log10 ( abs ( number ) );
 
     int d1 = l + 1.000001;
     int d2 = ( d1 <= 0 ) ? 4 : 4 - d1;
 
     double dd = pow ( 10, d2 );
-    int64_t di = dd;
+		long int di = dd;
 
     if ( di < dd )
       di++;
 
     double nd = number * di;
-    int64_t ni = nd;
+		long int ni = nd;
 
     if ( ni < nd )
       ni++;
@@ -219,7 +221,7 @@ namespace gum {
     numerator = ni;
     denominator = di;
 
-    int64_t a ( numerator ), b ( denominator ), t;
+		long int a ( numerator ), b ( denominator ), t;
 
     while ( b != 0 ) {
       t = b;
@@ -232,7 +234,7 @@ namespace gum {
   } // end of frac
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::farey ( int64_t & numerator, int64_t & denominator, const GUM_SCALAR & number, const int & den_max, const double & zero ) {
+  void Rational< GUM_SCALAR >::farey ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max, const double & zero ) {
     bool isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? - number : number;
 

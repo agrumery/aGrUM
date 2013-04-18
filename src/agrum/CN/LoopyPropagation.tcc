@@ -1513,7 +1513,7 @@ namespace gum {
         // test credal sets vertices elim
         // remove with L2U since variables are binary
         // but does the user know that ?
-        infE::_updateCredalSets( *it, vertices[ vertex ] );
+        infE::_updateCredalSets( *it, vertices[ vertex ] ); // no redundancy elimination with 2 vertices
       }
 
       // add a convex combination to test elim

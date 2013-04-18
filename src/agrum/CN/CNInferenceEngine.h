@@ -16,6 +16,8 @@
 #include <agrum/core/Rational.h>
 #include <agrum/core/pow.h>
 
+#include <agrum/CN/LrsWrapper.h>
+
 namespace gum {
 
   /**
@@ -143,13 +145,24 @@ namespace gum {
       inline void _updateExpectations( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex );
 
       /**
+			 * @deprecated Use _updateCredalSets ( LrsWrapper without intput/output files needed ).
+			 * 
        * Giben a node id and one of it's possible vertex, update it's credal set.
        * To maximise efficiency, don't pass a vertex we know is inside the polytope (i.e. not at an extreme value for any modality)
        *
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex );
+      inline void _updateCredalSetsWithFiles( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
+			
+			/**
+			 * Giben a node id and one of it's possible vertex, update it's credal set.
+			 * To maximise efficiency, don't pass a vertex we know is inside the polytope (i.e. not at an extreme value for any modality)
+			 *
+			 * @param id The id of the node to be updated
+			 * @param vertex A (potential) vertex of the node credal set
+			 */
+			inline void _updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
 
       /// @}
 

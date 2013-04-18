@@ -71,7 +71,7 @@ namespace gum {
       // use entry_size*0 for auto to find the right type !
       // otherwise, comparison of signed and unsigned type warning
       // OR decltype(entry_size) instead of auto
-      for ( decltype(entry_size) entry = 0; entry < entry_size; entry++ ) {
+      for ( decltype ( entry_size) entry = 0; entry < entry_size; entry++ ) {
         std::vector< GUM_SCALAR > vertex ( var_dSize );
 
         GUM_SCALAR den = potential_max->get ( ins_max );
@@ -275,7 +275,7 @@ namespace gum {
 				
 				lrsWrapper.H2V();
 				var_cpt[ entry ] = lrsWrapper.getOutput();
-				lrsWrapper.nextInput();
+				lrsWrapper.nextHInput();
 			}
 			
 			__credalNet_src_cpt.insert ( *node_idIt, var_cpt );
@@ -989,7 +989,7 @@ namespace gum {
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::__H2Vlrs ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep ) const {
     // write H rep file
-    int64_t num, den;
+    long int num, den;
 
     char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
     std::string sinefile(inefile);

@@ -51,7 +51,7 @@ void test_credal() {
   return;*/
 
   // test LrsWrapper
-  
+  /*
   gum::credal::LRS<double> lrs;
   lrs.setUpH( 2 );
   // vacuous binary credal set
@@ -67,23 +67,44 @@ void test_credal() {
 	std::cout << "volume computation" << std::endl;
 	
 	lrs.tearDown();
-	lrs.setUpV( 4, 4 );
+	lrs.setUpV( 4, 5 );
 	
 	std::vector< double > v1(4,0); v1[0]=1;
 	std::vector< double > v2(4,0); v2[1]=1;
 	std::vector< double > v3(4,0); v3[2]=1;
 	std::vector< double > v4(4,0); v4[3]=1;
+
+	std::vector< double > v5(4,0); v5[0]=0.5; v5[3]=0.5; // v5 = 0.5 * v1 + 0.5 * v4
 	
 	lrs.fillV(v1);
 	lrs.fillV(v2);
 	lrs.fillV(v3);
 	lrs.fillV(v4);
+	lrs.fillV(v5);
+	
+	std::cout << "input :\n" << lrs.getInput() << std::endl;
 	
 	lrs.computeVolume();
-	std::cout << "input :\n" << lrs.getInput() << std::endl;
+	
 	std::cout << "volume : " << lrs.getVolume() << std::endl;
 	
+	lrs.tearDown();
+	lrs.setUpV( 4, 5 );
+	lrs.fillV(v1);
+	lrs.fillV(v2);
+	lrs.fillV(v3);
+	lrs.fillV(v4);
+	lrs.fillV(v5);
+	
+	lrs.elimRedundVrep();
+	
+	std::cout << "ouput : \n" << lrs.getOutput() << std::endl;
+	
 	return;
+	
+	*/
+	
+	/*
 	
 	char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
 	std::string sinefile(inefile);
@@ -118,6 +139,8 @@ void test_credal() {
 	lrs_main ( 3, args );
 	
 	delete[] args[2]; delete[] args[1]; delete[] args[0];
+	
+	*/
 	
 	/*
 	std::cout << "from lrs main" << std::endl;
@@ -170,7 +193,7 @@ void test_credal() {
 	//std::remove(extfile.c_str());
 	*/
 	
-  return;
+  //return;
 	
 	
 
@@ -218,13 +241,16 @@ void test_credal() {
 	}
 	
 	MCSampling<double, LazyPropagation<double> > MCE( myCNb );
+	MCE.storeVertices(true);
 	MCE.makeInference();
 	
 	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		/*unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
 		for( unsigned int mod = 0; mod < dSize; mod++ ) {
 			std::cout << "MC p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE.marginalMin(*id)[mod] << ", " << MCE.marginalMax(*id)[mod] << " ] " << std::endl;
-		}
+		}*/
+		std::cout << "MC vertices of : " << myCNb.src_bn().variable(*id).name() << std::endl;
+		std::cout << MCE.vertices(*id) << std::endl;
 	}
 	
 	return;

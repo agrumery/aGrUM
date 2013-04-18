@@ -44,14 +44,14 @@ namespace gum {
 
 				
 				/** @brief Cardinality of the variable. */
-        int __card;
+        unsigned int __card;
 				
 				/** @brief To keep track of which constraints over modalities have been inserted. When the set is full, the state changes from up to ready. */
 				std::unordered_set< int > __insertedModals;
 				
 				
 				/** @brief The number of vertices of the polytope. */
-				int __vertices;
+				unsigned int __vertices;
 				
 				/** @brief To keep track of inserted vertices and total. When set is full, the state changes from up to ready. */
 				std::vector< std::vector< GUM_SCALAR > > __insertedVertices;
@@ -103,10 +103,10 @@ namespace gum {
 			/// @{				
 				
 				/** @brief Structure for holding current dictionary and indices of lrs. */
-				lrs_dic *__P;
+				lrs_dic *__dic;
 				
 				/** @brief Structure for holding static problem data of lrs.*/
-				lrs_dat *__Q;
+				lrs_dat *__dat;
 				
 				/** @brief One line of output of lrs : aither a ray, a vertex, a facet or a linearity. */
 				lrs_mp_vector __lrsOutput;
@@ -115,6 +115,19 @@ namespace gum {
 				lrs_mp_matrix __Lin;
 				
 			/// @}
+				
+		//////////////////////////////////////////
+			/// @name flags
+		//////////////////////////////////////////
+			/// @{
+				
+				bool __getVolume;
+				
+				bool __hull;
+				
+				bool __polytope;
+				
+			/// @}				
 				
 		//////////////////////////////////////////
 			/// @name cout redirection
@@ -137,19 +150,20 @@ namespace gum {
 				/** @brief Free lrs space. */
 				void __freeLrs ();
 				
-				/** @brief Initialize lrs structs. */
-				void __initLrs ( const bool & volume = false );
+				/** @brief Initialize lrs structs and first basis according to flags. */
+				void __initLrs ();
 				
 				/** 
 				 * @brief Fill lrs_dictionnary and datas from \c __input using integer rationals.
 				 * 
+				 * Build polyhedron constraints and objective.
 				 * gum::Rational< GUM_SCALAR >::farey is the default algorithm used to approximate reals by integer rationals.
 				 * 
 				 * @param P A pointer to a lrs_dic struct with flags set.
 				 * @param Q A pointer to a lrs_dat struct with members set.
 				 * @param F The function pointer to be used to approximate reals by rationals.
 				 */
-        void __fill ( lrs_dic * P, lrs_dat * Q ) const;
+        void __fill () const;
 				
 				/**
 				 * @brief Translate a single output from lrs.
@@ -187,6 +201,7 @@ namespace gum {
 				/// @name Getters and setters
 		//////////////////////////////////////////
 			/// @{
+				
 				/** 
 				 * @brief Get the intput matrix of the problem.
 				 * @return A constant reference to the \c __intput matrix.
@@ -198,8 +213,13 @@ namespace gum {
 				 * @return A constant reference to the \c __output matrix.
 				 */
 				const matrix & getOutput () const;
-
 				
+				/**
+				 * @brief Get the number of vertices of this polytope.
+				 * @return A constant reference to the number of vertices \c __vertices.
+				 */				
+				const unsigned int & getVerticesNumber () const;
+
 				/**
 				 * @brief Get the volume of the polytope that has been computed.
 				 * 
@@ -211,8 +231,7 @@ namespace gum {
 				 * 
 				 * @return A constant reference to the polytope volume.
 				 */
-				const GUM_SCALAR & getVolume () const;
-				
+				const GUM_SCALAR & getVolume () const;			
 				
 			/// @}
 				
@@ -228,7 +247,7 @@ namespace gum {
 				 * Initialize input matrix \c __input to correct dimensions and wrapper state \c __state to \c __states::Hup.
 				 * @param card A constant reference to the cardinality of the variable.
 				 */
-        void setUpH ( const int & card );
+        void setUpH ( const unsigned int & card );
 
 				
 				/**
@@ -238,7 +257,7 @@ namespace gum {
 				 * @param card A constant reference to the cardinality of the variable.
 				 * @param vertices A constant reference to the number of vertices of the polytope.
 				 */
-				void setUpV ( const int & card, const int & vertices );
+				void setUpV ( const unsigned int & card, const unsigned int & vertices );
 
 				
 				/** 
@@ -250,12 +269,14 @@ namespace gum {
 				
 				
 				/** 
-				 * @brief Reset the wrapper for next computation.
+				 * @brief Reset the wrapper for next computation for a H-representation with the same 
+				 * variable cardinality and number of inequalities. Usefull when creating credal networks 
+				 * specified as intervals over modalities.
 				 * 
 				 * Reset wrapper state \c __state to it's previous state and clear output matrix \c __output.
 				 * Keeps the cardinality \c __card of the variable and therefor the input matrix \c __intput structure.
 				 */
-				void nextInput ();
+				void nextHInput ();
 
 			/// @}
 				
@@ -271,7 +292,7 @@ namespace gum {
 				 * @param max The upper value of p(X=modal | .).
 				 * @param modal The modality on which we put constraints.
          */
-        void fillH ( const GUM_SCALAR & min, const GUM_SCALAR & max, const int & modal );
+        void fillH ( const GUM_SCALAR & min, const GUM_SCALAR & max, const unsigned int & modal );
 				
 				/**
 				 * @brief Creates the V-representation of a polytope by adding a vertex to the problem input \c __input.
@@ -315,8 +336,11 @@ namespace gum {
 				void computeVolume ();
 				
 				/**
-				 * V-Redundancy elimination.
+				 * @brief V-Redundancy elimination.
+				 * 
+				 * Eliminates redundant vertices from a polytope V-representation input \c __input.
 				 */
+				void elimRedundVrep ();
 				
 				/**
 				 * H-redundancy elimination.

@@ -109,8 +109,10 @@ namespace gum {
 
         for ( ins.setFirst(); !ins.end(); ++ins )
           vertex.push_back ( potential[ins] );
-        
-        if ( this->_updateThread ( *it, vertex ) )
+				
+				// true for redundancy elimination of node *it credal set
+				// but since global marginals are only updated at the end of each period of approximationScheme, it is useless to check now
+        if ( this->_updateThread ( *it, vertex, false ) ) 
           keepSample = true;
 
       } // end of : for all nodes

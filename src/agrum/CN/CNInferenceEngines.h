@@ -38,6 +38,17 @@ namespace gum {
 
       //typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
       typedef typename std::vector< gum::HashTable< std::string, std::vector< GUM_SCALAR > > > modals;
+			
+			/**
+			 * @brief Ask for redundancy elimination of a node credal set of a calling thread.
+			 * 
+			 * Called by _updateThread if vertices are stored.
+			 * 
+			 * @param id A constant reference to the node id whose credal set is to be checked for redundancy.
+			 * @param vertex The vertex to add to the credal set.
+			 * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
+			 */
+			inline void __updateThreadCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund );
 
     protected :
       /** Threads lower marginals, one per thread. */
@@ -76,7 +87,8 @@ namespace gum {
       /// @{
      
       /**
-       * Initialize threads data.
+       * @brief Initialize threads data.
+			 * 
        * @param num_threads The number of threads.
        * @param __storeVertices \c True if vertices should be stored, \c False otherwise.
        * @param __storeBNOpt \c True if optimal BayesNet should be stored, \c false otherwise.
@@ -89,24 +101,25 @@ namespace gum {
       /// @name Protected algorithms methods
 //////////////////////////////////////////
       /// @{
-      // true if sampled net store
-      /**
-       * Update thread information (marginals, expectations, BayesNet, vertices) for a given node id.
-       * @param id The id of the node to be updated.
-       * @param vertex The vertex.
-       * @param __storeVertices soon to be deprecated
-       * @param __storeBNOpt soone to be deprecated
-       * @return \c True if the BayesNet is kept (for now), \c False otherwise.
-       */
-      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex/*, const bool __storeVertices, const bool __storeBNOpt*/ );
 
       /**
-       * Fusion of threads marginals.
+       * @brief Update thread information (marginals, expectations, BayesNet, vertices) for a given node id.
+			 * 
+       * @param id The id of the node to be updated.
+       * @param vertex The vertex.
+			 * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
+       * @return \c True if the BayesNet is kept (for now), \c False otherwise.
+       */
+      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
+
+      /**
+       * @brief Fusion of threads marginals.
        */
       inline void _updateMarginals();
       
       /**
-       * Compute epsilon and update old marginals.
+       * @brief Compute epsilon and update old marginals.
+			 * 
        * @return Epsilon.
        */
       inline const GUM_SCALAR _computeEpsilon();
