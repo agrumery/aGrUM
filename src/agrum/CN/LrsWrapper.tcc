@@ -413,7 +413,7 @@ namespace gum {
 				//fprintf (lrs_ofp, FORMAT, Nt[i]);
 			
 			
-			if ( ! ( Din[ 0 ] == 2 && Din[ 1 ] == 1 ) )	/* rational */
+			if ( ! ( Din[ 0 ] == 2L && Din[ 1 ] == 1L ) )	/* rational */
 			{
 				//fprintf (lrs_ofp, "/");
 				//fprintf (lrs_ofp, "%lu", Dt[length (Dt) - 1]);
@@ -423,6 +423,10 @@ namespace gum {
 				//for (i = Dsize - 2; i >= 1; i--)
 					//std::cout << Dt[ i ];
 					//fprintf (lrs_ofp, FORMAT, Dt[i]);
+			}
+			else 
+			{
+				den = 1;
 			}
 			
 			//fprintf (lrs_ofp, " ");
