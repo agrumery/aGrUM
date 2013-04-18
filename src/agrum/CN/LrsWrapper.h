@@ -6,48 +6,79 @@
 #include <fcntl.h>
 #include <cstdio>
 #include <vector>
+#include <unordered_set>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/core/Rational.h>
 
 // lrs stuff
-//we force MP (not long or GMP)
-#define MP
+#include <agrum/CN/lrslib/lrslib.h>
+// we force MP (not long or GMP)
 #undef long
 #undef GMP
-#include <agrum/CN/lrslib/lrslib.h>
+#define MP
 
-/**
- * Polytopes functions using Lexicographic Reverse Search by David Avis.
- */
 
 #define enumStringify( name ) # name
 
 namespace gum {
   namespace credal {
 
+		/**
+		 * @class LRS LrsWrapper.h <agrum/CN/LrsWrapper.h>
+		 * @brief Class template acting as a wrapper for Lexicographic Reverse Search by David Avis.
+		 *
+		 * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+		 */
     template < typename GUM_SCALAR >
     class LRS {
       private :
+				/** @brief Shortcut for dynamic matrix using vectors. */
         typedef typename std::vector< std::vector< GUM_SCALAR > > matrix;
+				
+				/** @brief Input matrix - either a V-representation or an H-representation. */
         matrix __input;
+				
+				/** @brief Output matrix - either a V-representation or an H-representation. */
         matrix __output;
 
+				
+				/** @brief Cardinality of the variable. */
         int __card;
+				
+				/** @brief To keep track of which constraints over modalities have been inserted. When the set is full, the state changes from up to ready. */
+				std::unordered_set< int > __insertedModals;
+				
+				
+				/** @brief The number of vertices of the polytope. */
+				int __vertices;
+				
+				/** @brief To keep track of inserted vertices and total. When set is full, the state changes from up to ready. */
+				std::vector< std::vector< GUM_SCALAR > > __insertedVertices;
 
+				
+				/** @brief In case we have lower = upper for all modalities, a point probability, there is no need to use lrs. */
         std::vector< GUM_SCALAR > __vertex;
 
+				
+				/** @enum __states The possible states of the LrsWrapper. Some functions will throw an exception if the state is not correct. It allows the user to avoid making - invisible - mistakes. */ 
         enum __states {
           none,
           Hup,
           Vup,
           H2Vready,
-          V2Hready
+          V2Hready,
         };
 
+				/** @brief The current state of the LrsWrapper. */
         __states __state;
+				
+				
+				/** @brief The volume of the polytope, if computed, 0 otherwise. */
+				GUM_SCALAR __volume;
+				
 
-        // to print enum text and not value with GUM_ERROR
+				/** @brief To print an enum field name instead of it's value. Used with GUM_ERROR. */
         const char * __setUpStateNames[ 5 ] = {
           enumStringify ( none ),
           enumStringify ( Hup ),
@@ -56,15 +87,86 @@ namespace gum {
           enumStringify ( V2Hready ),
         };
 
+				/** 
+				 * @brief File descriptor of standard cout.
+				 * 
+				 * Lrs writes a lot of stuff on standard cout.
+				 * __oldCout is used to save the current cout before redirecting it to /dev/null when calling lrs.
+				 * The standard cout is restored when lrs is done.
+				 */
         mutable int __oldCout;
+				
+				
+		//////////////////////////////////////////
+			/// @name lrs structs
+		//////////////////////////////////////////
+			/// @{				
+				
+				/** @brief Structure for holding current dictionary and indices of lrs. */
+				lrs_dic *__P;
+				
+				/** @brief Structure for holding static problem data of lrs.*/
+				lrs_dat *__Q;
+				
+				/** @brief One line of output of lrs : aither a ray, a vertex, a facet or a linearity. */
+				lrs_mp_vector __lrsOutput;
+				
+				/** @brief Holds lrs input linearities if any are found. */
+				lrs_mp_matrix __Lin;
+				
+			/// @}
+				
+		//////////////////////////////////////////
+			/// @name cout redirection
+		//////////////////////////////////////////
+			/// @{
 
+				/** @brief The function that redirects standard cout to /dev/null. */
         void __coutOff () const;
+				
+				/** @brief The function that restores standard cout. */
         void __coutOn () const;
-
+				
+			/// @}
+				
+		//////////////////////////////////////////
+			/// @name lrs datas <-> wrapper datas
+		//////////////////////////////////////////
+			/// @{
+				
+				/** @brief Free lrs space. */
+				void __freeLrs ();
+				
+				/** @brief Initialize lrs structs. */
+				void __initLrs ( const bool & volume = false );
+				
+				/** 
+				 * @brief Fill lrs_dictionnary and datas from \c __input using integer rationals.
+				 * 
+				 * gum::Rational< GUM_SCALAR >::farey is the default algorithm used to approximate reals by integer rationals.
+				 * 
+				 * @param P A pointer to a lrs_dic struct with flags set.
+				 * @param Q A pointer to a lrs_dat struct with members set.
+				 * @param F The function pointer to be used to approximate reals by rationals.
+				 */
         void __fill ( lrs_dic * P, lrs_dat * Q ) const;
+				
+				/**
+				 * @brief Translate a single output from lrs.
+				 * 
+				 * Only vertices are supposed to be read at this step.
+				 * 
+				 * @param Nin Input numerators in mp format (returned by lrs).
+				 * @param Din Input denominators in mp format (returned by lrs).
+				 * @param Num Output integer numerators.
+				 * @param Den Output integer denominators.
+				 */
+				void __getLRSOutput( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const;
 
+			/// @}
+				
       public :
-    //////////////////////////////////////////
+		//////////////////////////////////////////
       /// @name Constructors / Destructors
     //////////////////////////////////////////
       /// @{
@@ -80,55 +182,147 @@ namespace gum {
         ~LRS ();
 
       /// @}
+		
+		//////////////////////////////////////////
+				/// @name Getters and setters
+		//////////////////////////////////////////
+			/// @{
+				/** 
+				 * @brief Get the intput matrix of the problem.
+				 * @return A constant reference to the \c __intput matrix.
+				 */
+				const matrix & getInput () const;
+				
+				/**
+				 * @brief Get the output matrix solution of the problem.
+				 * @return A constant reference to the \c __output matrix.
+				 */
+				const matrix & getOutput () const;
+
+				
+				/**
+				 * @brief Get the volume of the polytope that has been computed.
+				 * 
+				 * @warning Volume can only be computed using V-representation. H-representation volume computation is not predictable.
+				 * 
+				 * @warning Probabilistic polytopes are not full dimensional : they lie in the simplex' hyper plane, 
+				 * therefor a pseudo-volume will be computed by projecting the polytope. The projection used is the 
+				 * lexicographically smallest coordinate subspace.
+				 * 
+				 * @return A constant reference to the polytope volume.
+				 */
+				const GUM_SCALAR & getVolume () const;
+				
+				
+			/// @}
+				
       
     //////////////////////////////////////////
       /// @name setUp / tearDown
     //////////////////////////////////////////
-      /// @{
+			/// @{
 
+				/**
+				 * @brief Sets up an H-representation.
+				 * 
+				 * Initialize input matrix \c __input to correct dimensions and wrapper state \c __state to \c __states::Hup.
+				 * @param card A constant reference to the cardinality of the variable.
+				 */
         void setUpH ( const int & card );
 
-        //void setUpV ( const int & card );
+				
+				/**
+				 * @brief Sets up a V-representation.
+				 * 
+				 * Initialize input matrix \c __input to correct dimensions and wrapper state \c __state to \c __states::Vup.
+				 * @param card A constant reference to the cardinality of the variable.
+				 * @param vertices A constant reference to the number of vertices of the polytope.
+				 */
+				void setUpV ( const int & card, const int & vertices );
 
+				
+				/** 
+				 * @brief Reset the wrapper as if it was built.
+				 *
+				 * Reset wrapper state \c __state to \c __states::none and clear all member datas. 
+				 */
         void tearDown ();
+				
+				
+				/** 
+				 * @brief Reset the wrapper for next computation.
+				 * 
+				 * Reset wrapper state \c __state to it's previous state and clear output matrix \c __output.
+				 * Keeps the cardinality \c __card of the variable and therefor the input matrix \c __intput structure.
+				 */
+				void nextInput ();
 
-        /// @}
+			/// @}
+				
+		//////////////////////////////////////////
+			/// @name Input filling methods
+		//////////////////////////////////////////
+			/// @{
 
         /**
-         * Build H-representation
+				 * @brief Creates the H-representation of min <= p(X=modal | .) <= max and add it to the problem input \c __input.
+				 * 
+				 * @param min The lower value of p(X=modal | .).
+				 * @param max The upper value of p(X=modal | .).
+				 * @param modal The modality on which we put constraints.
          */
         void fillH ( const GUM_SCALAR & min, const GUM_SCALAR & max, const int & modal );
+				
+				/**
+				 * @brief Creates the V-representation of a polytope by adding a vertex to the problem input \c __input.
+				 * 
+				 * @param vertex The vertex we wish to add to the V-representation of the polytope.
+				 */
+				void fillV ( const std::vector< GUM_SCALAR > & vertex );
+				
+			/// @}
+				
+		//////////////////////////////////////////
+			/// @name lrs algorithms
+		//////////////////////////////////////////				
+			/// @{
+				
+        /**
+         * @brief H-representation to V-representation.
+         *
+         * Computes the V-representation of a polytope, i.e. it's vertices, from it's H-representation, i.e. the hyper-plan inequalities.
+         */
+        void H2V ();
 
         /**
-         * H-representation to V-representation.
+         * @brief V-representation to H-representation.
+				 * 
+				 * @warning Not complete yet.
          *
-         * Computes the V-representation of a credal set, i.e. it's vertices, from it's H-representation, the hyper-plan inequalities i.e. it's interval specificaton. Uses lrs.
-         *
+				 * Computes the H-representation of a polytope from it's V-representation.
          */
-        matrix H2V ();
+				void V2H ();
 
-
-        /**
-         * V-representation to H-representation.
-         *
-         */
-
-
-        /**
-         * V-Redundancy elimination.
-         */
-
-
-        /**
-         * H-redundancy elimination.
-         *
-         */
-
-
-        /**
-         * Polytope volume from V-representation.
-         *
-         */
+        /** 
+				 * @brief Computes a polytope ( pseudo ) volume from it's V-representation.
+				 * 
+				 * @warning Volume can only be computed using V-representation. H-representation volume computation is not predictable.
+				 * 
+				 * @warning Probabilistic polytopes are not full dimensional : they lie in the simplex' hyper plane, 
+				 * therefor a pseudo-volume will be computed by projecting the polytope. The projection used is the 
+				 * lexicographically smallest coordinate subspace.
+				 */
+				void computeVolume ();
+				
+				/**
+				 * V-Redundancy elimination.
+				 */
+				
+				/**
+				 * H-redundancy elimination.
+				 */
+				
+			/// @}
 
     };
 

@@ -64,55 +64,6 @@ void lrs_clear_mp_matrix_wrapper (lrs_mp_matrix a, long m, long n) {
 	lrs_clear_mp_matrix(a, m, n);
 }
 
-/*************************************
- * from lrs_printoutput, without printing
- *************************************/
-/*void
-lrs_getoutput (lrs_dat * Q, lrs_mp_vector output)
-{
-	long i;
-	
-	if (Q->hull || zero (output[0]))
-	{
-		for (i = 0; i < Q->n; i++)
-			pmp ("", output[i]);
-	}
-	else
-	{				
-		for (i = 1; i < Q->n; i++) {
-
-			lrs_mp Nin = output[i];
-			lrs_mp Din = output[0];
-			
-			lrs_mp Nt, Dt;
-			long i;
-			
-			copy (Nt, Nin);
-			copy (Dt, Din);
-			reduce (Nt, Dt);
-			
-			if (sign (Nin) * sign (Din) == NEG)
-				fprintf (lrs_ofp, "-");
-			else
-				fprintf (lrs_ofp, " ");
-			
-			fprintf (lrs_ofp, "%lu", Nt[length (Nt) - 1]);
-			for (i = length (Nt) - 2; i >= 1; i--)
-				fprintf (lrs_ofp, FORMAT, Nt[i]);
-			if (!(Dt[0] == 2 && Dt[1] == 1))
-			{
-				fprintf (lrs_ofp, "/");
-				fprintf (lrs_ofp, "%lu", Dt[length (Dt) - 1]);
-				for (i = length (Dt) - 2; i >= 1; i--)
-					fprintf (lrs_ofp, FORMAT, Dt[i]);
-			}
-			fprintf (lrs_ofp, " ");		
-		}
-	}
-	fflush(lrs_ofp);
-	
-}*/
-
 /*******************************/
 /* functions  for external use */
 /*******************************/

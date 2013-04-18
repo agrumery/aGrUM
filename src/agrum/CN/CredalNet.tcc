@@ -150,6 +150,7 @@ namespace gum {
     __intervalToCredal();
   }
 
+  /* no need for lrs : (max ... min ... max) vertices from bnToCredal() */
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::__intervalToCredal() {
     if ( ! __credalNet_src_cpt.empty() )
@@ -238,9 +239,58 @@ namespace gum {
     __sort_varType();
     __separatelySpecified = true;
   }
-
+  
+  /* uses lrsWrapper */
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::intervalToCredal () {
+		if ( ! __credalNet_src_cpt.empty() )
+			__credalNet_src_cpt.clear();
+		
+		__credalNet_src_cpt.resize ( __src_bn.size() );
+		
+		gum::credal::LRS< GUM_SCALAR > lrsWrapper;
+		
+		for ( auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
+			const gum::Potential< GUM_SCALAR > * const potential_min ( &__src_bn_min.cpt ( *node_idIt ) );
+			const gum::Potential< GUM_SCALAR > * const potential_max ( &__src_bn_max.cpt ( *node_idIt ) );
+			
+			auto var_dSize = __src_bn.variable ( *node_idIt ).domainSize();
+			auto entry_size = potential_min->domainSize() / var_dSize;
+			
+			std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
+			
+			gum::Instantiation ins_min ( potential_min );
+			gum::Instantiation ins_max ( potential_max );
+			
+			ins_min.setFirst();
+			ins_max.setFirst();
+			
+			lrsWrapper.setUpH( var_dSize );
+			
+			for ( decltype(entry_size) entry = 0; entry < entry_size; entry++ ) {
+				for ( decltype(var_dSize) modality = 0; modality < var_dSize; modality++ ) {
+					lrsWrapper.fillH( potential_min->get ( ins_min ), potential_max->get ( ins_max ), modality );
+					++ins_min; ++ins_max;
+				}
+				
+				lrsWrapper.H2V();
+				var_cpt[ entry ] = lrsWrapper.getOutput();
+				lrsWrapper.nextInput();
+			}
+			
+			__credalNet_src_cpt.insert ( *node_idIt, var_cpt );
+			
+		} // end of : for each variable (node)
+		
+		// get precise/credal/vacuous status of each variable
+		__sort_varType();
+		__separatelySpecified = true;
+	}
+	
+
+  /* call lrs */
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::intervalToCredalWithFiles () {
     if ( ! __credalNet_src_cpt.empty() )
       __credalNet_src_cpt.clear();
 
@@ -260,9 +310,9 @@ namespace gum {
 
       ins_min.setFirst();
       ins_max.setFirst();
-
+			
       // use iterator
-      for ( decltype(entry_size) entry = 0; entry < entry_size; entry++ ) {
+      for ( decltype(entry_size) entry = 0; entry < entry_size; entry++ ) {				
         std::vector< std::vector< GUM_SCALAR > > vertices;
         std::vector< GUM_SCALAR > vertex ( var_dSize ); // if not interval
 
@@ -295,32 +345,26 @@ namespace gum {
 
         if ( ! isInterval ) {
           vertices.push_back ( vertex );
-        } else {
+        } 
+        else {
           try {
-            //std::cout << __src_bn.variable(*node_idIt) << " pconf : " << entry << " ineq : \n" << inequalities << std::endl;
             __H2Vlrs ( inequalities, vertices );
             //__H2Vcdd ( inequalities, vertices );
-            //std::cout << std::endl << vertices << std::endl;
           } catch ( const std::exception &err ) {
             std::cout << err.what() << std::endl;
             throw;
           }
 
-          // permute first & second vertex to show L2U DTS error
-          // to be removed once all is well
-          /*if(vertices.size() > 1 && entry == 0) {
-          std::vector< GUM_SCALAR > tmp = vertices[0];
-          vertices[0] = vertices[1];
-          vertices[1] = tmp;
-          }*/
-          // end of permute (to be removed)
-
         } // end of : is interval
-        
+        if ( entry == 0 && vertices.size() >= 2 ) {
+					auto tmp = vertices[0];
+					vertices[0] = vertices[1];
+					vertices[1] = tmp;
+				}
         var_cpt[entry] = vertices;
 
       } // end of : for each entry
-
+			
       __credalNet_src_cpt.insert ( *node_idIt, var_cpt );
       //std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
       //std::cout << var_cpt << std::endl;

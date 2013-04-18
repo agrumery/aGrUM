@@ -14,6 +14,8 @@
 #include <agrum/core/Rational.h> // custom decimal to rational
 #include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
 
+#include <agrum/CN/LrsWrapper.h>
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -119,10 +121,16 @@ namespace gum {
       void bnToCredal ( GUM_SCALAR beta );
       
       /**
-       * Computes the vertices of each credal set according to their interval definition (uses lrs). 
+			 * @deprecated Use intervalToCredal (lrsWrapper with no input / output files)
+       * Computes the vertices of each credal set according to their interval definition (uses lrs).
        */
-      void intervalToCredal ();
-      
+      void intervalToCredalWithFiles ();
+			
+			/**
+			 * Computes the vertices of each credal set according to their interval definition (uses lrs).
+			 */
+			void intervalToCredal ();
+			
       /**
        * @deprecated
        * Transform this CredalNet using the Decision Theoretic Specification.
@@ -323,6 +331,7 @@ namespace gum {
       void __initCNNets ( const gum::BayesNet< GUM_SCALAR > & src_min_num, const gum::BayesNet< GUM_SCALAR > & src_max_den );
 
       /**
+			 * @deprecated
        * @warning May be useless since the BayesNet copy constructor seems to now work well (parent order is preserved).
        *
        * Copy the up-to-date BayesNet associated with this CredalNet. Since all we care about is the DAG, only arcs are copied. Because the order with which arcs are created is important, the function iterates over the CPTs variables to be sure parent order stays the same from a net to it's copy.
@@ -333,7 +342,8 @@ namespace gum {
 
       //void __H2Vcdd ( const std::vector< std::vector< GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
       /**
-       * Computes the V-representation of a credal set, i.e. it's vertices, from it's H-representation, the hyper-plan inequalities i.e. it's interval specificaton. Uses lrs.
+			 * @deprecated one should use the LrsWrapper class
+       * Computes the V-representation of a credal set, i.e. it's vertices, from it's H-representation, i.e. the hyper-plan inequalities. Uses lrs.
        *
        * @param h_rep A constant reference to the H-representation of a credal set.
        * @param v_rep A reference to the V-representation of the same credal set.

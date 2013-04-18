@@ -14,7 +14,7 @@
 #include <agrum/CN/OptBN.h>
 
 #include <agrum/core/Rational.h>
-//#include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/LrsWrapper.h>
 
 using namespace gum;
 
@@ -51,105 +51,141 @@ void test_credal() {
   return;*/
 
   // test LrsWrapper
-  /*
+  
   gum::credal::LRS<double> lrs;
   lrs.setUpH( 2 );
   // vacuous binary credal set
-  lrs.fillH( 0, 0.5, 0 );
-  lrs.fillH( 0.5, 1, 1 );
-	std::cout << "H2V" << std::endl;
-  lrs.H2V();
-
-  return;
+  lrs.fillH( 0, 1, 0 );
+	lrs.fillH( 0, 1, 1 );
+	//lrs.fillH( 0, 1, 2 );
+	//lrs.fillH( 0.1, 0.7, 3 );
+	
+	lrs.H2V();
+	
+  std::cout << lrs.getOutput() << std::endl;
+	
+	std::cout << "volume computation" << std::endl;
+	
+	lrs.tearDown();
+	lrs.setUpV( 4, 4 );
+	
+	std::vector< double > v1(4,0); v1[0]=1;
+	std::vector< double > v2(4,0); v2[1]=1;
+	std::vector< double > v3(4,0); v3[2]=1;
+	std::vector< double > v4(4,0); v4[3]=1;
+	
+	lrs.fillV(v1);
+	lrs.fillV(v2);
+	lrs.fillV(v3);
+	lrs.fillV(v4);
+	
+	lrs.computeVolume();
+	std::cout << "input :\n" << lrs.getInput() << std::endl;
+	std::cout << "volume : " << lrs.getVolume() << std::endl;
+	
+	return;
+	
+	char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
+	std::string sinefile(inefile);
+	sinefile += ".ext";
+	
+	std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
+	// b + Ax >= 0
+	h_file << "V - representation\n";
+	h_file << "begin\n";
+	h_file << "2 3 rational\n";
+	h_file << " " << 1 << " " << 0 << " " << 1 << "\n"; 
+	h_file << " " << 1 << " " << 1 << " " << 0 << "\n";
+	h_file << "end\n";
+	h_file << "volume";
+	
+	h_file.close();
+	
+	char *args[3];
+	
+	std::string soft_name = "lrs";
+	std::string extfile(inefile);
+	extfile += "_2.ext";
+	
+	args[0] = new char[soft_name.size()];
+	args[1] = new char[sinefile.size()];
+	args[2] = new char[extfile.size()];
+	
+	strcpy ( args[0], soft_name.c_str() );
+	strcpy ( args[1], sinefile.c_str() );
+	strcpy ( args[2], extfile.c_str() );
+	
+	lrs_main ( 3, args );
+	
+	delete[] args[2]; delete[] args[1]; delete[] args[0];
+	
+	/*
+	std::cout << "from lrs main" << std::endl;
+	
+	char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
+	std::string sinefile(inefile);
+	sinefile += ".ine";
+	
+	std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
+	// b + Ax >= 0
+	h_file << "H - representation\n";
+	h_file << "begin\n";
+	h_file << "10 5 rational\n";
+	// lower support hyperplans
+	h_file << -1 << "/" << 10 << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << -1 << "/" << 10 << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << -1 << "/" << 10 << " " << 0 << "/1" << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << -1 << "/" << 10 << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 1 << "/1" << "\n";
+	// upper support hyperplans
+	h_file << 7 << "/" << 10 << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << 7 << "/" << 10 << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << 7 << "/" << 10 << " " << 0 << "/1" << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << 7 << "/" << 10 << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << -1 << "/1" << "\n";
+	// sum to 1
+	h_file << 1 << "/" << 1 << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << "\n";
+	h_file << -1 << "/" << 1 << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << "\n";
+	h_file << "end";
+	
+	h_file.close();
+	
+	char *args[3];
+	
+	std::string soft_name = "lrs";
+	std::string extfile(inefile);
+	extfile += ".ext";
+	
+	args[0] = new char[soft_name.size()];
+	args[1] = new char[sinefile.size()];
+	args[2] = new char[extfile.size()];
+	
+	strcpy ( args[0], soft_name.c_str() );
+	strcpy ( args[1], sinefile.c_str() );
+	strcpy ( args[2], extfile.c_str() );
+	
+	lrs_main ( 3, args );
+	
+	delete[] args[2]; delete[] args[1]; delete[] args[0];
+	
+	//std::remove(sinefile.c_str());
+	//std::remove(extfile.c_str());
 	*/
 	
+  return;
 	
-	/**
-	 * Various tests
-	 * 
-	 */
-	/*
-	std::vector< std::vector< std::vector<double> > > matrix(2);
-	int dim = 2;
-	std::vector<double> a1 = {0.2,0.3,0.5};
-	matrix[0].push_back(a1);
-	std::vector<double> a2 = {0.1,0.4,0.5};
-	matrix[0].push_back(a2);
-	std::vector<double> a3 = {0.1,0.3,0.6};
-	matrix[0].push_back(a3);
 	
-	std::vector<double> b1 = {0.6,0,0.4};
-	matrix[1].push_back(b1);
-	std::vector<double> b2 = {0.4,0.2,0.4};
-	matrix[1].push_back(b2);
-	//wstd::vector<double> b3 = {}
 
-	std::vector< double > uv1(3,0); uv1[1] = 1;
-	std::vector< double > uv2(3,0); uv2[0] = 1;
-	std::vector< double > uv3(3,0); uv3[2] = 1;
-	
-	std::vector< double > uv12(3,0.5); uv12[2] = 0;
-	std::vector< double > uv13(3,0.5); uv13[1] = 0;
-	std::vector< double > uv23(3,0.5); uv23[0] = 0;
-	
-	double dist1 = 0;
-	double dist2 = 0;
-	double dist3 = 0;
-	double dist4 = 0;
-	double dist5 = 0;
-	double dist6 = 0;
-	
-	int k = 1;
-	for ( auto & va : matrix[0] ) {
-		dist1 = 0; dist2 = 0; dist3 = 0; dist4 = 0; dist5 = 0; dist6 = 0;
-		int pos = 0;
-		for ( auto & elem : va ) {
-			dist1 += fabs ( elem - uv1[pos] );
-			dist2 += fabs ( elem - uv2[pos] );
-			dist3 += fabs ( elem - uv3[pos] );
-			dist4 += fabs ( elem - uv12[pos] );
-			dist5 += fabs ( elem - uv13[pos] );
-			dist6 += fabs ( elem - uv23[pos] );
-			pos++;
-		}
-		std::cout << "a" << k << " (0,1,0) " << dist1 << " | (1,0,0) " << dist2 << " | (0,0,1) " << dist3 
-		<< " | (1,1,0) " << dist4 << " | (1,0,1) " << dist5 << " | (0,1,1) " << dist6
-		<< std::endl;
-		k++;
-	}
-	
-	k = 1;
-	for ( auto & vb : matrix[1] ) {
-		dist1 = 0; dist2 = 0; dist3 = 0; dist4 = 0; dist5 = 0; dist6 = 0;
-		int pos = 0;
-		for ( auto & elem : vb ) {
-			dist1 += fabs ( elem - uv1[pos] );
-			dist2 += fabs ( elem - uv2[pos] );
-			dist3 += fabs ( elem - uv3[pos] );
-			dist4 += fabs ( elem - uv12[pos] );
-			dist5 += fabs ( elem - uv13[pos] );
-			dist6 += fabs ( elem - uv23[pos] );
-			pos++;
-		}
-		std::cout << "b" << k << " (0,1,0) " << dist1 << " | (1,0,0) " << dist2 << " | (0,0,1) " << dist3 
-		<< " | (1,1,0) " << dist4 << " | (1,0,1) " << dist5 << " | (0,1,1) " << dist6
-		<< std::endl;
-		k++;
-	}
-			
-	return;*/
 	
   
 //////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   BayesNet<double> monBNa;
-  BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /*bn_c_3.bif*/2Umin.bif ) );
+	BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif/*gl2uERR_min.bif*/ ) );
  //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   BayesNet<double> monBNb;
-  BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /*den_c_3.bif*/2Umax.bif ) );
+	BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif/*gl2uERR_max.bif*/ ) );
  //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
@@ -164,13 +200,36 @@ void test_credal() {
 
   //myCNb.bnToCredal(0.5);
 
-  myCNb.intervalToCredal();
+  myCNb.intervalToCredal();//intervalToCredal();
   //std::cout << "computing min/max vertex" << std::endl;
-	
+  
 	
 	std::cout << myCNb.toString() << std::endl;
 	
+	myCNb.computeCPTMinMax();
+	LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb);
+	lp.makeInference();
 	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "l2u p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp.marginalMin(*id)[mod] << ", " << lp.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	MCSampling<double, LazyPropagation<double> > MCE( myCNb );
+	MCE.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "MC p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE.marginalMin(*id)[mod] << ", " << MCE.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	return;
+	
+	/*
   myCNb.computeCPTMinMax();
   //std::cout << "computing done" << std::endl;
   LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb);
@@ -220,7 +279,7 @@ void test_credal() {
   std::cout << lp.vertices( 0 ) << std::endl;
   
   //return;
-  
+  */
 
   // LocalSearch test
 /*  
@@ -270,7 +329,7 @@ void test_credal() {
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
       CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
-      myCNa->intervalToCredal(); // 2U network
+			myCNa->intervalToCredalWithFiles();//intervalToCredal(); // 2U network
 
        
       /*if ( i == 0 )
@@ -293,7 +352,7 @@ void test_credal() {
 
 
 
-      MCE->insertModals(modals2); //L2U modals
+      //MCE->insertModals(modals2); //L2U modals
       //MCE->insertModalsFile( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
       //MCE->insertModals(modals); //dyna cheese
 
@@ -301,13 +360,13 @@ void test_credal() {
       MCE->setTimeLimit ( 1 );
       MCE->setIterStop ( 1000 );
 
-      MCE->storeBNOpt ( true );
+      //MCE->storeBNOpt ( true );
 
-      if ( j == 0 )
+      /*if ( j == 0 )
         MCE->insertEvidenceFile ( GET_PATH_STR ( forward.evi ) );
 
       if ( j == 1 )
-        MCE->insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );
+        MCE->insertEvidenceFile ( GET_PATH_STR ( L2U.evi ) );*/
         //MCE->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
 
       //if(j==2)
