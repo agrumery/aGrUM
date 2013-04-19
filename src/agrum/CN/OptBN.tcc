@@ -29,7 +29,7 @@ namespace gum {
       _sampleDef[node].resize( pConfs );
       for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
         Size nVertices = ( *cpt )[node][pconf].size();
-        int nBits, newCard;
+        Size nBits, newCard;
         gum::superiorPow(nVertices, nBits, newCard);
         _sampleDef[node][pconf].resize(nBits);
       }

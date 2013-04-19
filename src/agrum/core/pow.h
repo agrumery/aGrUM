@@ -13,7 +13,7 @@ namespace gum {
    * @param base The constant integer base used to compute \f$ base^{exponent} \f$.
    * @param exponent The integer exponent used which will hold the result afterward.
    */
-  inline void intPow ( const int & base, int & exponent ) {
+  inline void intPow ( const Size & base, Size & exponent ) {
     if ( exponent == 0 ) {
       exponent = 1;
       return;
@@ -21,7 +21,7 @@ namespace gum {
 
     int out = base;
 
-    for ( int i = 1; i < exponent; i++ )
+    for ( Size i = 1; i < exponent; i++ )
       out *= base;
 
     exponent = out;
@@ -32,7 +32,7 @@ namespace gum {
    *
    * @param exponent The integer exponent used to compute \f$ 2^{exponent} \f$ which will hold the result of afterward.
    */
-  inline void int2Pow ( int & exponent ) {
+  inline void int2Pow ( Size & exponent ) {
     int base = 2;
     base <<= ( exponent - 1 );
     exponent = base;
@@ -45,7 +45,7 @@ namespace gum {
    * @param num_bits The integer used as a "return" value to get the minimum number of bits used to represend card.
    * @param new_card The integer used as a "return" value to get the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  inline void superiorPow ( const int & card, int & num_bits, int & new_card ) {
+  inline void superiorPow ( const Size & card, Size & num_bits, Size & new_card ) {
     if ( card <= 0 ) {
       num_bits = 0;
       new_card = 1;
