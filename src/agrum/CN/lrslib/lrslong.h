@@ -146,11 +146,12 @@ typedef long ***lrs_mp_matrix;
 /*global variables   */
 /*********************/
 
-long lrs_digits;		/* max permitted no. of digits   */
-long lrs_record_digits;		/* this is the biggest acheived so far.     */
+/* PH (agrum) added extern */
+extern long lrs_digits;		/* max permitted no. of digits   */
+extern long lrs_record_digits;		/* this is the biggest acheived so far.     */
 
-FILE *lrs_ifp;			/* input file pointer       */
-FILE *lrs_ofp;			/* output file pointer      */
+extern FILE *lrs_ifp;			/* input file pointer       */
+extern FILE *lrs_ofp;			/* output file pointer      */
 
 /*********************************************************/
 /* Initialization and allocation procedures - must use!  */
