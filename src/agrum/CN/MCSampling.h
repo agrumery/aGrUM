@@ -18,7 +18,7 @@ namespace gum {
       /** To easily acces CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > methods. */
       typedef CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > infEs;
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Private initialization methods
 //////////////////////////////////////////
       /// @{
@@ -27,8 +27,8 @@ namespace gum {
       /** Initialize threads data. */
       void __mcThreadDataCopy();
       /// @}
-      
-////////////////////////////////////////// 
+
+//////////////////////////////////////////
       /// @name Private algorithm methods
 //////////////////////////////////////////
       /// @{
@@ -44,7 +44,7 @@ namespace gum {
       /** Update thread data after a BayesNet inference. */
       inline void __threadUpdate();
 
-      /** 
+      /**
        * Get the binary representation of a given value.
        * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
@@ -55,7 +55,7 @@ namespace gum {
 
 
     protected:
-      
+
     public:
 //////////////////////////////////////////
       /// @name Constructors / Destructors
@@ -70,7 +70,7 @@ namespace gum {
       virtual ~MCSampling();
       /// @}
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Public algorithm methods
 //////////////////////////////////////////
       /// @{
@@ -84,12 +84,12 @@ namespace gum {
       //void eraseAllEvidence();
 
       //// debug /////
-      
-      unsigned int notOptDelete; 
-      
+
+      unsigned int notOptDelete;
+
       ////////////////
 
-      protected:
+    protected:
       bool _repetitiveInd;
   };
 

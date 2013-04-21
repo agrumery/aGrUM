@@ -13,21 +13,19 @@
 
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 
-namespace gum
-{
+namespace gum {
   /**
    * @class LoopyPropagation LoopyPropagation.h <agrum/CN/LoopyPropagation.h>
    * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
   template< typename GUM_SCALAR >
-  class LoopyPropagation : public CNInferenceEngine<GUM_SCALAR>
-	{
+  class LoopyPropagation : public CNInferenceEngine<GUM_SCALAR> {
     public:
       typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
-      typedef const gum::Arc* cArcP;
+      typedef const gum::Arc *cArcP;
 
-      /** 
+      /**
        * Inference type to be used by the algorithm.
        */
       enum InferenceType {
@@ -38,7 +36,7 @@ namespace gum
         randomOrder /**< Chooses a random arc ordering and sends messages accordingly. A new order is set at each step. A step is going through all arcs. */
       };
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Public algorithm methods
 //////////////////////////////////////////
       /// @{
@@ -48,7 +46,7 @@ namespace gum
 
       /// @}
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Getters and setters
 //////////////////////////////////////////
       /// @{
@@ -57,9 +55,9 @@ namespace gum
        * Set the inference type.
        * @param inft The choosen \c InferenceType.
        */
-      void inferenceType(InferenceType inft);
+      void inferenceType ( InferenceType inft );
 
-      /** 
+      /**
        * Get the inference type.
        * @return The inference type.
        */
@@ -67,13 +65,13 @@ namespace gum
 
       /// @}
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Post-inference methods
 //////////////////////////////////////////
       /// @{
 
       /**
-       * Erase all inference related data to perform another one. You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones. 
+       * Erase all inference related data to perform another one. You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
        */
       void eraseAllEvidence();
 
@@ -83,7 +81,7 @@ namespace gum
        * This one is easier to read but harder for scripts to parse.
        * @param path The path to the file to save marginals.
        */
-      void saveInference(const std::string &path);
+      void saveInference ( const std::string &path );
 
       /// @}
 
@@ -95,23 +93,23 @@ namespace gum
        * Constructor.
        * @param cnet The CredalNet to be used with this algorithm.
        */
-      LoopyPropagation(const CredalNet<GUM_SCALAR> &cnet);
+      LoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet );
       /** Destructor. */
       virtual ~LoopyPropagation();
       /// @}
 
     protected:
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Protected initialization methods
 //////////////////////////////////////////
       /// @{
 
-      /** Topological forward propagation to initialize old marginals & messages. */ 
+      /** Topological forward propagation to initialize old marginals & messages. */
       void _initialize();
 
       /// @}
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Protected algorithm methods
 //////////////////////////////////////////
       /// @{
@@ -130,7 +128,7 @@ namespace gum
        * @param X The constant node id of the node sending the message.
        * @param demanding_parent The constant node id of the node receiving the message.
        */
-      void _msgL(const NodeId X, const NodeId demanding_parent);  //allways sent from X to demanding_X
+      void _msgL ( const NodeId X, const NodeId demanding_parent ); //allways sent from X to demanding_X
 
       /**
        * Used by _msgL. Compute the final message for the given parent's message and likelihood (children's messages), numerators & denominators.
@@ -142,7 +140,7 @@ namespace gum
        * @param den_min The reference to the previously computed lower denominator.
        * @param den_max The reference to the previously computed upper denominator.
        */
-      void _compute_ext(GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, GUM_SCALAR &num_min, GUM_SCALAR &num_max, GUM_SCALAR &den_min, GUM_SCALAR &den_max);
+      void _compute_ext ( GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, GUM_SCALAR &num_min, GUM_SCALAR &num_max, GUM_SCALAR &den_min, GUM_SCALAR &den_max );
 
       /**
        * Used by _msgL. Compute the numerators & denominators for the given parent's message and likelihood (children's messages). Marginalisation.
@@ -153,7 +151,7 @@ namespace gum
        * @param lx The lower and upper likelihood.
        * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
        */
-      void _compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos);
+      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos );
 
       /**
        * Used by _msgL. Enumerate parent's messages.
@@ -164,14 +162,14 @@ namespace gum
        * @param lx The lower and upper likelihood.
        * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
        */
-      void _enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos);
+      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos );
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a demanding_child.
        * @param X The constant node id of the node sending the message.
        * @param demanding_child The constant node id of the node receiving the message.
        */
-      void _msgP(const NodeId X, const NodeId demanding_child);
+      void _msgP ( const NodeId X, const NodeId demanding_child );
 
       /**
        * Used by _msgP. Enumerate parent's messages.
@@ -180,7 +178,7 @@ namespace gum
        * @param msg_p_min The reference to the current lower value of the message to be sent.
        * @param msg_p_max The reference to the current upper value of the message to be sent.
        */
-      void _enum_combi(std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max);
+      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
 
       /**
        * Used by _msgP. Marginalisation.
@@ -189,20 +187,20 @@ namespace gum
        * @param msg_p_min The reference to the current lower value of the message to be sent.
        * @param msg_p_max The reference to the current upper value of the message to be sent.
        */
-      void _compute_ext(std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max);
+      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
 
       /** Get the last messages from one's parents and children. */
       void _refreshLMsPIs();
-      
-      /** 
+
+      /**
        * Compute epsilon.
        * @return Epsilon.
        */
       GUM_SCALAR _calculateEpsilon();
 
       /// @}
-      
-////////////////////////////////////////// 
+
+//////////////////////////////////////////
       /// @name Post-inference protected methods
 //////////////////////////////////////////
       /// @{

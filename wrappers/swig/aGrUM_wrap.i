@@ -73,6 +73,7 @@
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/OptBN.h>
 #include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/CNInferenceEngines.h>
 #include <agrum/CN/MCSampling.h>
 %}
 
@@ -165,6 +166,7 @@
 %include <agrum/CN/CredalNet.h>
 %include <agrum/CN/OptBN.h>
 %include <agrum/CN/CNInferenceEngine.h>
+%include <agrum/CN/CNInferenceEngines.h>
 %include <agrum/CN/MCSampling.h>
 
 
@@ -270,7 +272,7 @@
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::MCSampling {
+%extend gum::MCSampling<double,gum::LazyPropagation<double> > {
   using gum::ApproximationScheme::setVerbosity;
   using gum::ApproximationScheme::setEpsilon;
   using gum::ApproximationScheme::setMinEpsilonRate;
@@ -292,6 +294,8 @@
 
   using gum::ApproximationScheme::messageApproximationScheme;
   using gum::ApproximationScheme::history;
+
+  using gum::CNInferenceEngine<double>::insertEvidenceFile;
 }
 
 /* TEMPLATES INSTANTIATIONS */
@@ -346,4 +350,5 @@
 
 %template(CredalNet_double) gum::CredalNet<double>;
 %template(CNInferenceEngine_double) gum::CNInferenceEngine<double>;
+%template(CNInferenceEngines_double) gum::CNInferenceEngines<double,gum::LazyPropagation<double> >;
 %template(MCSampling_double) gum::MCSampling<double,gum::LazyPropagation<double> >;

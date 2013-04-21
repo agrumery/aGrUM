@@ -19,7 +19,6 @@
  */
 
 namespace gum_tests {
-  using namespace gum;
   ////////////////////////////////////////////////////////////////////
   class MCSamplingListener : public gum::ApproximationSchemeListener {
     private :
@@ -61,12 +60,12 @@ namespace gum_tests {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
-        BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( 2Umin.bif ) );
+        gum::BayesNet<double> monBNa;
+        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( cn/2Umin.bif ) );
         readera.proceed();
 
-        BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( 2Umax.bif ) );
+        gum::BayesNet<double> monBNb;
+        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( cn/2Umax.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
@@ -79,12 +78,12 @@ namespace gum_tests {
         //#ifdef NDEBUG
           gum_threads::setNumberOfThreads(1);
         //#endif
-        BayesNet<double> monBNa;
-        BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c_3.bif ) );
+        gum::BayesNet<double> monBNa;
+        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( bn_c_3.bif ) );
         readera.proceed();
 
-        BayesNet<double> monBNb;
-        BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( den_c_3.bif ) );
+        gum::BayesNet<double> monBNb;
+        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( den_c_3.bif ) );
         readerb.proceed();
         
         cn = new gum::CredalNet < double > ( monBNa, monBNb );
@@ -100,7 +99,7 @@ namespace gum_tests {
       // not dynamic (2U network) - with evidence
       void /*test*/MCSamplingInference () {
         initCNet();
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
         
         // evidence from file
         try {
@@ -191,7 +190,7 @@ namespace gum_tests {
         initDCNet();
         typedef std::vector< double > exp;
 
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
         
         //////////////////////////////////////////////////////
         // strong independence
@@ -264,7 +263,7 @@ namespace gum_tests {
         initDCNet();
         typedef std::vector< double > exp;
 
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // repetitive independence
@@ -337,7 +336,7 @@ namespace gum_tests {
       // with dynamic network
       void testMCSamplingListener () {
         initDCNet();
-        MCSampling < double, LazyPropagation < double > > mcs ( *cn );
+        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         
         // evidence from file
