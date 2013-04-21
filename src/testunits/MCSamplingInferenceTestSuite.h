@@ -172,7 +172,6 @@ namespace gum_tests {
 
         gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
-
         //////////////////////////////////////////////////////
         // strong independence
         //////////////////////////////////////////////////////
