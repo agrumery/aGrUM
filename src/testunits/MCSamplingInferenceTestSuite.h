@@ -2,7 +2,7 @@
 #include <string>
 
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/CNMonteCarloSampling.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -21,14 +21,14 @@
 
 namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
-  class MCSamplingListener : public gum::ApproximationSchemeListener {
+  class CNMonteCarloSamplingListener : public gum::ApproximationSchemeListener {
     private :
       int __nbr;
       std::string __msg;
     protected :
 
     public :
-      MCSamplingListener ( gum::ApproximationScheme &aS ) : gum::ApproximationSchemeListener ( aS ), __nbr ( 0 ), __msg ( "" ) {};
+      CNMonteCarloSamplingListener ( gum::ApproximationScheme &aS ) : gum::ApproximationSchemeListener ( aS ), __nbr ( 0 ), __msg ( "" ) {};
 
       void whenProgress ( const void *buffer, const gum::Size a, const double b, const double c ) {
         __nbr++;
@@ -48,7 +48,7 @@ namespace gum_tests {
   }; // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  class MCSamplingInferenceTestSuite : public CxxTest::TestSuite {
+  class CNMonteCarloSamplingInferenceTestSuite : public CxxTest::TestSuite {
     private :
 
     protected :
@@ -101,9 +101,9 @@ namespace gum_tests {
       }
 
       // not dynamic (2U network) - with evidence
-      void /*test*/MCSamplingInference () {
+      void /*test*/CNMonteCarloSamplingInference () {
         initCNet();
-        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::CNMonteCarloSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         // evidence from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( L2U.evi ) ); );
@@ -161,16 +161,16 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.eraseAllEvidence (); );
 
         clearCNet();
-      } // end of : testMCSamplingInference (2U network)
+      } // end of : testCNMonteCarloSamplingInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
-      void testMCSamplingInferenceDStrong () {
+      void testCNMonteCarloSamplingInferenceDStrong () {
 
         initDCNet();
 
         typedef std::vector< double > exp;
 
-        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::CNMonteCarloSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // strong independence
@@ -220,14 +220,14 @@ namespace gum_tests {
 
         clearCNet();
 
-      } // end of : testMCSamplingInferenceDStrong
+      } // end of : testCNMonteCarloSamplingInferenceDStrong
 
       // dynamic (dynaCheese) - repetitive indep
-      void testMCSamplingInferenceDRep () {
+      void testCNMonteCarloSamplingInferenceDRep () {
         initDCNet();
         typedef std::vector< double > exp;
 
-        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::CNMonteCarloSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // repetitive independence
@@ -275,12 +275,12 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.eraseAllEvidence (); );
 
         clearCNet();
-      } // end of : testMCSamplingInferenceDRep (dynamic - dynacheese)
+      } // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
 
       // with dynamic network
-      void testMCSamplingListener () {
+      void testCNMonteCarloSamplingListener () {
         initDCNet();
-        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::CNMonteCarloSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         // evidence from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( f_3.evi ) ); );
@@ -290,7 +290,7 @@ namespace gum_tests {
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
 
-        MCSamplingListener mcl ( mcs );
+        CNMonteCarloSamplingListener mcl ( mcs );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
@@ -300,8 +300,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.eraseAllEvidence (); );
 
         clearCNet();
-      } // end of : testMCSamplingListener
+      } // end of : testCNMonteCarloSamplingListener
 
-  }; // end of : class MCSamplingInferenceTestSuite
+  }; // end of : class CNMonteCarloSamplingInferenceTestSuite
 
 } // end of : namespace gum_tests

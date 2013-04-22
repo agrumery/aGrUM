@@ -8,13 +8,13 @@ namespace gum {
   namespace credal {
 
   /**
-   * @class MCSampling MCSampling.h <agrum/CN/MCSampling.h>
+   * @class CNMonteCarloSampling CNMonteCarloSampling.h <agrum/CN/CNMonteCarloSampling.h>
    * @brief Basic sampling algorithm (pure random).
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
    */
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  class MCSampling : public MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > {
+  class CNMonteCarloSampling : public MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > {
     private:
       /** To easily acces MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > methods. */
       typedef MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > infEs;
@@ -66,9 +66,9 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used by the algorithm.
        */
-      MCSampling ( const CredalNet< GUM_SCALAR > & credalNet );
+      CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet );
       /** Destructor. */
-      virtual ~MCSampling();
+      virtual ~CNMonteCarloSampling();
       /// @}
 
 //////////////////////////////////////////
@@ -98,6 +98,6 @@ namespace gum {
   } // namespace cn
 }
 
-#include <agrum/CN/MCSampling.tcc>
+#include <agrum/CN/CNMonteCarloSampling.tcc>
 
 #endif

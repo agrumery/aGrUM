@@ -23,7 +23,7 @@ namespace credal {
 
   /**
    * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
-   * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as LoopyPropagation (inner multi-threading) or MCSampling (outer multi-threading).
+   * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as LoopyPropagation (inner multi-threading) or CNMonteCarloSampling (outer multi-threading).
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
@@ -84,9 +84,9 @@ namespace credal {
       bool _storeVertices;
       /** @brief \c True if using repetitive independence ( dynamic network only ), \c False otherwise. \c False by default. */
       bool _repetitiveInd;
-      /** @brief Time limit stopping rule in seconds used by some algorithms such as MCSampling. 300 seconds by default. */
+      /** @brief Time limit stopping rule in seconds used by some algorithms such as CNMonteCarloSampling. 300 seconds by default. */
       int _timeLimit;
-      /** @brief Iterations limit stopping rule used by some algorithms such as MCSampling. The algorithms stops if no changes occured within 1000 iterations by default. */
+      /** @brief Iterations limit stopping rule used by some algorithms such as CNMonteCarloSampling. The algorithms stops if no changes occured within 1000 iterations by default. */
       int _iterStop;
       /** @brief \c True is optimal bayes net are stored, for each variable and each modality, \c False otherwise. Not all algorithms offers this option. \c False by default. */
       bool _storeBNOpt;

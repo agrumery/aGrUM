@@ -1,28 +1,28 @@
-#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/core/exceptions.h>
 
 namespace gum {
   namespace credal {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( credalNet ) {
+  CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( credalNet ) {
     infEs::_repetitiveInd = false;
     infEs::_timeLimit = 5 * 60;
     infEs::_iterStop = 1000;
     infEs::_storeVertices = false;
     infEs::_storeBNOpt = false;
 
-    GUM_CONSTRUCTOR ( MCSampling );
+    GUM_CONSTRUCTOR ( CNMonteCarloSampling );
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::~MCSampling() {
-    GUM_DESTRUCTOR ( MCSampling );
+  CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::~CNMonteCarloSampling() {
+    GUM_DESTRUCTOR ( CNMonteCarloSampling );
   }
 
   // TEST single thread dans testSuite
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
     if ( infEs::_repetitiveInd ) {
       try {
         this->_repetitiveInit();
@@ -99,7 +99,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
     int tId = gum::getThreadNumber();
     bool keepSample = false;
 
@@ -145,7 +145,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
     int tId = gum::getThreadNumber();
     __verticesSampling();
     this->_l_inferenceEngine[tId]->eraseAllEvidence();
@@ -155,7 +155,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
     this->setMaxTime ( infEs::_timeLimit );
     this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
     /**
@@ -169,7 +169,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  void MCSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
     int num_threads;
     #pragma omp parallel
     {
@@ -226,7 +226,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__binaryRep ( std::vector< bool > & toFill,  const unsigned int value ) const {
     unsigned int n = value;
     auto tfsize = toFill.size();
 
@@ -238,7 +238,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
     int this_thread = gum::getThreadNumber();
     gum::BayesNet< GUM_SCALAR > * working_bn = this->_workingSet[this_thread];
 
@@ -347,7 +347,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( ) {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence ( ) {
     if ( this->_evidence.size() == 0 )
       return;
 

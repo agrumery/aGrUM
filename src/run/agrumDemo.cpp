@@ -1,13 +1,13 @@
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/InferenceEngine.h>
-#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/CNMonteCarloSampling.h>
 //#include <agrum/CN/LocalSearch.h>
 #include <agrum/CN/LoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 #include <agrum/CN/ExtensiveCredalNet.h>
 
-//#include <agrum/CN/MCSamplingInferenceTestSuite.h>
+//#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
 
 #include <agrum/core/OMPThreads.h>
 
@@ -239,7 +239,7 @@ void test_credal() {
 		}
 	}
 	
-	gum::credal::MCSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
+	gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
 	MCE.storeVertices(true);
 	MCE.makeInference();
 	
@@ -370,10 +370,10 @@ void test_credal() {
 
       //std::cout << myCNa->toString() << std::endl;
       // dynacheese network
-      gum::credal::MCSampling<double, gum::LazyPropagation<double> > * MCE = new gum::credal::MCSampling<double, gum::LazyPropagation<double> > ( *myCNa );
+      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > * MCE = new gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > ( *myCNa );
 
       // 2U network
-      //MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( myCNb );
+      //CNMonteCarloSampling<double, LazyPropagation<double> > * MCE = new CNMonteCarloSampling<double, LazyPropagation<double> > ( myCNb );
 
 
 
@@ -403,7 +403,7 @@ void test_credal() {
       //MCE->makeInference_v3();
 
 /*      
-      MCSampling<double, LazyPropagation<double> > * MCE2 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      CNMonteCarloSampling<double, LazyPropagation<double> > * MCE2 = new CNMonteCarloSampling<double, LazyPropagation<double> > ( *myCNa );
       MCE2->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
       MCE2->setRepetitiveInd ( false );
       MCE2->setTimeLimit ( 5 );
@@ -438,7 +438,7 @@ void test_credal() {
       std::cout << " iters : " << MCE->nbrIterations() << std::endl;
       std::cout << " iters/sec : " << MCE->nbrIterations()*1.0 / timeElapsed << std::endl;
 
-      MCSampling<double, LazyPropagation<double> > * MCE3 = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      CNMonteCarloSampling<double, LazyPropagation<double> > * MCE3 = new CNMonteCarloSampling<double, LazyPropagation<double> > ( *myCNa );
       MCE3->insertEvidenceFile ( GET_PATH_STR ( fb.evi ) );
       MCE3->setRepetitiveInd ( false );
       MCE3->setTimeLimit ( 5 );
@@ -654,7 +654,7 @@ std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::end
   /*
     std::cout << "MC strong" << std::endl;
 
-    MCSampling<double, gum::LazyPropagation<double> > MCE2(myCNa);
+    CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE2(myCNa);
     MCE2.setRepetitiveInd(false);
     MCE2.setTimeLimit(20);
     //MCE2.insertEvidence("./forward.evi");
@@ -709,7 +709,7 @@ std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::end
 
     LS.saveMarginals("./LS.res");
 
-    MCSampling<double, gum::LazyPropagation<double> > MCE(myCN);
+    CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE(myCN);
     MCE.insertEvidence("./evi.evi");
     MCE.insertQuery("./evi.evi");
     //MCE.setIterStop(1000000000);

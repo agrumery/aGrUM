@@ -15,7 +15,7 @@ namespace credal {
 
   /**
    * @class MultipleInferenceEngines MultipleInferenceEngines.h <agrum/CN/MultipleInferenceEngines.h>
-   * @brief Class template representing a CredalNet inference engine using one or more BayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as MCSampling.
+   * @brief Class template representing a CredalNet inference engine using one or more BayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as CNMonteCarloSampling.
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
