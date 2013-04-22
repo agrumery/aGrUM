@@ -2,7 +2,7 @@
 #define __CN_MC_SAMPLING__H__
 
 #include <limits>
-#include <agrum/CN/CNInferenceEngines.h>
+#include <agrum/CN/MultipleInferenceEngines.h>
 
 namespace gum {
 
@@ -13,10 +13,10 @@ namespace gum {
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
    */
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  class MCSampling : public CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > {
+  class MCSampling : public MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > {
     private:
-      /** To easily acces CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > methods. */
-      typedef CNInferenceEngines< GUM_SCALAR, BNInferenceEngine > infEs;
+      /** To easily acces MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > methods. */
+      typedef MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine > infEs;
 
 //////////////////////////////////////////
       /// @name Private initialization methods

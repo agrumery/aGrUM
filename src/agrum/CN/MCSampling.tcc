@@ -4,7 +4,7 @@
 namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : CNInferenceEngines< GUM_SCALAR, BNInferenceEngine >::CNInferenceEngines ( credalNet ) {
+  MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( credalNet ) {
     infEs::_repetitiveInd = false;
     infEs::_timeLimit = 5 * 60;
     infEs::_iterStop = 1000;
@@ -46,7 +46,7 @@ namespace gum {
             // to check random sampling
             #pragma omp critical
             {
-              unsigned int tid = gum_threads::getThreadNumber();
+              unsigned int tid = gum::getThreadNumber();
               std::cout << "thread\t" << tid << "\tsample : "<< this->_l_optimalNet[tid]->getCurrentSample() << std::endl;
             }
             std::cout << std::endl;
@@ -99,7 +99,7 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
-    int tId = gum_threads::getThreadNumber();
+    int tId = gum::getThreadNumber();
     bool keepSample = false;
 
     if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
@@ -145,7 +145,7 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
-    int tId = gum_threads::getThreadNumber();
+    int tId = gum::getThreadNumber();
     __verticesSampling();
     this->_l_inferenceEngine[tId]->eraseAllEvidence();
     __insertEvidence();
@@ -172,13 +172,13 @@ namespace gum {
     int num_threads;
     #pragma omp parallel
     {
-      int this_thread = gum_threads::getThreadNumber();
+      int this_thread = gum::getThreadNumber();
 
       // implicit wait clause (don't put nowait)
       #pragma omp single
       {
         // should we ask for max threads instead ( no differences here in practice )
-        num_threads = gum_threads::getNumberOfRunningThreads();
+        num_threads = gum::getNumberOfRunningThreads();
 
         this->_initThreadsData ( num_threads, infEs::_storeVertices, infEs::_storeBNOpt );
         this->_l_inferenceEngine.resize ( num_threads, NULL );
@@ -187,7 +187,7 @@ namespace gum {
         //this->_l_sampledNet.resize ( num_threads );
       } // end of : single region
 
-      // we could put those below in a function in CNInferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
+      // we could put those below in a function in InferenceEngine, but let's keep this parallel region instead of breaking it and making another one to do the same stuff in 2 places since :
       // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
       gum::BayesNet< GUM_SCALAR > * thread_bn = new gum::BayesNet< GUM_SCALAR >();
@@ -238,7 +238,7 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   inline void MCSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
-    int this_thread = gum_threads::getThreadNumber();
+    int this_thread = gum::getThreadNumber();
     gum::BayesNet< GUM_SCALAR > * working_bn = this->_workingSet[this_thread];
 
     const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &this->_credalNet->credalNet_cpt();
@@ -350,7 +350,7 @@ namespace gum {
     if ( this->_evidence.size() == 0 )
       return;
 
-    int this_thread = gum_threads::getThreadNumber();
+    int this_thread = gum::getThreadNumber();
 
     BNInferenceEngine *inference_engine = this->_l_inferenceEngine[ this_thread ];
 

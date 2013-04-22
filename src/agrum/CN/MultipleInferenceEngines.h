@@ -1,5 +1,5 @@
-#ifndef __CN_INFERENCE_ENGINES__H__
-#define __CN_INFERENCE_ENGINES__H__
+#ifndef __MULTIPLE_INFERENCE_ENGINES__H__
+#define __MULTIPLE_INFERENCE_ENGINES__H__
 
 /**
  * @file
@@ -8,22 +8,22 @@
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
 
-#include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
 
   /**
-   * @class CNInferenceEngines CNInferenceEngines.h <agrum/CN/CNInferenceEngines.h>
+   * @class MultipleInferenceEngines MultipleInferenceEngines.h <agrum/CN/MultipleInferenceEngines.h>
    * @brief Class template representing a CredalNet inference engine using one or more BayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as MCSampling.
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
    */
   template < typename GUM_SCALAR, class BNInferenceEngine >
-  class CNInferenceEngines : public CNInferenceEngine < GUM_SCALAR > {
+  class MultipleInferenceEngines : public InferenceEngine < GUM_SCALAR > {
     private :
-      /** To easily access CNInferenceEngine< GUM_SCALAR > methods. */
-      typedef CNInferenceEngine<GUM_SCALAR> infE;
+      /** To easily access InferenceEngine< GUM_SCALAR > methods. */
+      typedef InferenceEngine<GUM_SCALAR> infE;
 
       typedef typename gum::Property< std::vector< gum::NodeId > >::onNodes cluster;
       typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
@@ -155,9 +155,9 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      CNInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet );
+      MultipleInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet );
       /** Destructor. */
-      virtual ~CNInferenceEngines();
+      virtual ~MultipleInferenceEngines();
 
       /// @}
       
@@ -194,7 +194,7 @@ namespace gum {
 
 } // end of namespace
 
-#include <agrum/CN/CNInferenceEngines.tcc>
+#include <agrum/CN/MultipleInferenceEngines.tcc>
 
 #endif
 

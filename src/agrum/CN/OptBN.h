@@ -61,7 +61,7 @@ namespace gum {
        */
       OptBN ( const CredalNet<GUM_SCALAR> & cn );
 
-      /** Default constructor that should be used only by CNInferenceEngine since it has a member variable. */
+      /** Default constructor that should be used only by InferenceEngine since it has a member variable. */
       OptBN ();
       /** Destructor. */
       ~OptBN ( );
@@ -93,7 +93,7 @@ namespace gum {
       /**
        * Initialize __sampleDef from the CredalNet.
        *
-       * Shoud only be used by CNInferenceEngine to initialize it's member variable.
+       * Shoud only be used by InferenceEngine to initialize it's member variable.
        * @param cn The CredalNet to be used.
        */
       void setCNet ( const CredalNet<GUM_SCALAR> & cn );

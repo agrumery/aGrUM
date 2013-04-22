@@ -8,7 +8,7 @@
 /**
  * Namespace used to control OpenMP.
  */
-namespace gum_threads {
+namespace gum {
 
   /**
    * Is OMP active ?

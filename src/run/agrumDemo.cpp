@@ -1,5 +1,5 @@
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/InferenceEngine.h>
 #include <agrum/CN/MCSampling.h>
 //#include <agrum/CN/LocalSearch.h>
 #include <agrum/CN/LoopyPropagation.h>
@@ -27,22 +27,22 @@ void test_credal() {
 
 /////////////// OMP test stuff ///////////////////
 
-  std::cout << "isOMP () ? : " << gum_threads::isOMP() << std::endl;
-  std::cout << "threads : " << gum_threads::getMaxNumberOfThreads() << std::endl;
-  gum_threads::setNumberOfThreads( gum_threads::getNumberOfLogicalProcessors()*2 );
-  std::cout << "new number : " << gum_threads::getMaxNumberOfThreads() << std::endl;
+  std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
+  std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
+  gum::setNumberOfThreads( gum::getNumberOfLogicalProcessors()*2 );
+  std::cout << "new number : " << gum::getMaxNumberOfThreads() << std::endl;
 
-  std::cout << "number of procs : " << gum_threads::getNumberOfLogicalProcessors() << std::endl;
+  std::cout << "number of procs : " << gum::getNumberOfLogicalProcessors() << std::endl;
 
-  //gum_threads::setDynamicThreadsNumber(true);
-  //gum_threads::setNestedParallelism(true);
+  //gum::setDynamicThreadsNumber(true);
+  //gum::setNestedParallelism(true);
 
-  std::cout << "dynamic threads : " << gum_threads::getDynamicThreadsNumber() << std::endl;
-  std::cout << "nested parallelism : " << gum_threads::getNestedParallelism() << std::endl;
+  std::cout << "dynamic threads : " << gum::getDynamicThreadsNumber() << std::endl;
+  std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
-  //gum_threads::setNumberOfThreads(1);
+  //gum::setNumberOfThreads(1);
   
 /*
   // test rationals

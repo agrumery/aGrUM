@@ -1456,7 +1456,7 @@ namespace gum {
 
 
   template<typename GUM_SCALAR>
-  LoopyPropagation<GUM_SCALAR>::LoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet ) : CNInferenceEngine< GUM_SCALAR >::CNInferenceEngine ( cnet ) {
+  LoopyPropagation<GUM_SCALAR>::LoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( cnet ) {
     if ( ! cnet.isSeparatelySpecified() )
       GUM_ERROR ( OperationNotAllowed, "LoopyPropagation is only available with separately specified nets" );
 

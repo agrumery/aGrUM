@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <limits>
-#include <agrum/CN/CNInferenceEngine.h>
+#include <agrum/CN/InferenceEngine.h>
 
 #include <agrum/core/pow.h>
 
@@ -20,7 +20,7 @@ namespace gum {
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
   template< typename GUM_SCALAR >
-  class LoopyPropagation : public CNInferenceEngine<GUM_SCALAR> {
+  class LoopyPropagation : public InferenceEngine<GUM_SCALAR> {
     public:
       typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
       typedef const gum::Arc *cArcP;
@@ -77,7 +77,7 @@ namespace gum {
 
       /**
        * @deprecated
-       * Use saveMarginals() from CNInferenceEngine instead.
+       * Use saveMarginals() from InferenceEngine instead.
        * This one is easier to read but harder for scripts to parse.
        * @param path The path to the file to save marginals.
        */
@@ -246,8 +246,8 @@ namespace gum {
       bool _InferenceUpToDate;
 
     private:
-      /** To easily access CNInferenceEngine< GUM_SCALAR > methods. */
-      typedef CNInferenceEngine<GUM_SCALAR> infE;
+      /** To easily access InferenceEngine< GUM_SCALAR > methods. */
+      typedef InferenceEngine<GUM_SCALAR> infE;
 
       /** The choosen inference type. nodeToNeighbours by Default. */
       InferenceType __inferenceType;

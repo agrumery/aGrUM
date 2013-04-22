@@ -59,7 +59,7 @@ namespace gum_tests {
       // not dynamic (2U network - fast)
       void initCNet () {
         //#ifdef NDEBUG
-        gum_threads::setNumberOfThreads ( 1 );
+        gum::setNumberOfThreads ( 1 );
         //#endif
         GUM_TRACE ( GET_CN_PATH_STR ( 2Umin.bif ) );
         gum::BayesNet<double> monBNa;
@@ -78,7 +78,7 @@ namespace gum_tests {
       // dynamic (dynaCheese network - slow)
       void initDCNet () {
         //#ifdef NDEBUG
-        gum_threads::setNumberOfThreads ( 1 );
+        gum::setNumberOfThreads ( 1 );
 
         //#endif
         gum::BayesNet<double> monBNa;

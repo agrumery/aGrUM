@@ -1,5 +1,5 @@
-#ifndef __CN_INFERENCE_ENGINE__H__
-#define __CN_INFERENCE_ENGINE__H__
+#ifndef __INFERENCE_ENGINE__H__
+#define __INFERENCE_ENGINE__H__
 
 /**
  * @file
@@ -21,13 +21,13 @@
 namespace gum {
 
   /**
-   * @class CNInferenceEngine CNInferenceEngine.h <agrum/CN/CNInferenceEngine.h>
+   * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
    * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as LoopyPropagation (inner multi-threading) or MCSampling (outer multi-threading).
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
   template < typename GUM_SCALAR >
-  class CNInferenceEngine : public ApproximationScheme {
+  class InferenceEngine : public ApproximationScheme {
     private:
       typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
       typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
@@ -183,17 +183,17 @@ namespace gum {
 //////////////////////////////////////////
       /// @{
 
-      //CNInferenceEngine ();
+      //InferenceEngine ();
       /**
        * Construtor.
        *
        * @param credalNet The credal net to be used with this inference engine.
        */
-      CNInferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
+      InferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
       /**
        * Destructor.
        */
-      virtual ~CNInferenceEngine();
+      virtual ~InferenceEngine();
 
       /// @}
 
@@ -460,6 +460,6 @@ namespace gum {
   
 } // namespace gum
 
-#include <agrum/CN/CNInferenceEngine.tcc>
+#include <agrum/CN/InferenceEngine.tcc>
 
 #endif
