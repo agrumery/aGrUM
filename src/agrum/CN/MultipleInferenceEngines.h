@@ -11,6 +11,7 @@
 #include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
+namespace credal {
 
   /**
    * @class MultipleInferenceEngines MultipleInferenceEngines.h <agrum/CN/MultipleInferenceEngines.h>
@@ -193,6 +194,7 @@ namespace gum {
   };
 
 } // end of namespace
+}
 
 #include <agrum/CN/MultipleInferenceEngines.tcc>
 

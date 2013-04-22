@@ -19,6 +19,7 @@
 #include <agrum/CN/LrsWrapper.h>
 
 namespace gum {
+namespace credal {
 
   /**
    * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
@@ -457,7 +458,7 @@ namespace gum {
 
   };
 
-  
+} 
 } // namespace gum
 
 #include <agrum/CN/InferenceEngine.tcc>

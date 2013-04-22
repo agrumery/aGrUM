@@ -5,6 +5,7 @@
 #include <agrum/core/pow.h>
 
 namespace gum {
+  namespace credal {
 
   /**
    * @class OptBN OptBN.h <agrum/CN/OptBN.h>
@@ -137,7 +138,8 @@ namespace gum {
 
   }; // end of OptBN
 
-}
+  } // credal namespace
+} // gum namespace
 
 #include <agrum/CN/OptBN.tcc>
 

@@ -1,6 +1,7 @@
 #include <agrum/CN/LoopyPropagation.h>
 
 namespace gum {
+namespace credal {
 
   template<typename GUM_SCALAR>
   void LoopyPropagation<GUM_SCALAR>::saveInference ( const std::string &path ) {
@@ -1506,7 +1507,7 @@ namespace gum {
     return __inferenceType;
   }
 
-
+}
 } // end of namespace gum
 
 

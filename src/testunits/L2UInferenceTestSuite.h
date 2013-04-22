@@ -11,7 +11,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 
-#include <agrum/CN/OMPThreads.h>
+#include <agrum/core/OMPThreads.h>
 
 /**
  * Mono-threaded version
@@ -55,7 +55,7 @@ namespace gum_tests {
     protected :
 
     public :
-      gum::CredalNet< double > *cn;
+      gum::credal::CredalNet< double > *cn;
 
       // not dynamic (2U network - fast)
       void initCNet () {
@@ -68,7 +68,7 @@ namespace gum_tests {
         gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/2Umax.bif ) );
         readerb.proceed();
         
-        cn = new gum::CredalNet < double > ( monBNa, monBNb );
+        cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
         cn->computeCPTMinMax();
@@ -85,7 +85,7 @@ namespace gum_tests {
         gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/dbn_bin_max.bif ) );
         readerb.proceed();
         
-        cn = new gum::CredalNet < double > ( monBNa, monBNb );
+        cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
         cn->computeCPTMinMax();
@@ -99,7 +99,7 @@ namespace gum_tests {
       void testL2UInference () {
         initCNet();
 
-        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
+        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double>( *cn );
 
         // evidence from file
         try {
@@ -183,7 +183,7 @@ namespace gum_tests {
         initDCNet();
         typedef std::vector< double > exp;
 
-        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
+        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double>( *cn );
         
         //////////////////////////////////////////////////////
         // strong independence
@@ -251,7 +251,7 @@ namespace gum_tests {
       // with dynamic network
       void testL2UListener () {
         initDCNet();
-        gum::LoopyPropagation<double> lp = gum::LoopyPropagation<double>( *cn );
+        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double>( *cn );
         
         // evidence from file
         try {

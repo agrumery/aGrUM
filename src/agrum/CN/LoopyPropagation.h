@@ -14,6 +14,8 @@
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 
 namespace gum {
+namespace credal {
+
   /**
    * @class LoopyPropagation LoopyPropagation.h <agrum/CN/LoopyPropagation.h>
    * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
@@ -264,7 +266,7 @@ namespace gum {
 
   };
 
-
+}
 }
 
 #include <agrum/CN/LoopyPropagation.tcc>

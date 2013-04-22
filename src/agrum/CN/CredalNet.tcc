@@ -1,6 +1,7 @@
 #include <agrum/CN/CredalNet.h>
 
 namespace gum {
+namespace credal {
 
   template< typename GUM_SCALAR >
   CredalNet< GUM_SCALAR >::CredalNet ( const std::string &src_min_num, const std::string &src_max_den ) {
@@ -1268,3 +1269,4 @@ namespace gum {
 
 
 } // namespace cn
+}

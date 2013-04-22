@@ -2,6 +2,7 @@
 #include <agrum/core/exceptions.h>
 
 namespace gum {
+  namespace credal {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   MCSampling< GUM_SCALAR, BNInferenceEngine >::MCSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( credalNet ) {
@@ -386,4 +387,5 @@ namespace gum {
 
   }
 
-} // namespace cn
+  } // namespace cn
+}

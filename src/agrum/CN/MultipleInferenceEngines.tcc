@@ -2,6 +2,7 @@
 #include <agrum/CN/MultipleInferenceEngines.h>
  
 namespace gum {
+namespace credal {
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( credalNet ) {
@@ -545,5 +546,5 @@ namespace gum {
 
   }
 
-
+}
 }

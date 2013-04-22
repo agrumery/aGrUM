@@ -9,14 +9,13 @@
 
 //#include <agrum/CN/MCSamplingInferenceTestSuite.h>
 
-#include <agrum/CN/OMPThreads.h>
+#include <agrum/core/OMPThreads.h>
 
 #include <agrum/CN/OptBN.h>
 
 #include <agrum/core/Rational.h>
 #include <agrum/CN/LrsWrapper.h>
 
-using namespace gum;
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
@@ -202,19 +201,19 @@ void test_credal() {
 //////////////////////////////////////////////////
   std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
-  BayesNet<double> monBNa;
-	BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif/*gl2uERR_min.bif*/ ) );
+  gum::BayesNet<double> monBNa;
+	gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif/*gl2uERR_min.bif*/ ) );
  //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
-  BayesNet<double> monBNb;
-	BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif/*gl2uERR_max.bif*/ ) );
+  gum::BayesNet<double> monBNb;
+	gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif/*gl2uERR_max.bif*/ ) );
  //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
 
   // (G)(L)2U test
-  CredalNet<double> myCNb(monBNa, monBNb);
+  gum::credal::CredalNet<double> myCNb(monBNa, monBNb);
 
 /*
   myCNb.testFrac();
@@ -230,7 +229,7 @@ void test_credal() {
 	std::cout << myCNb.toString() << std::endl;
 	
 	myCNb.computeCPTMinMax();
-	LoopyPropagation<double> lp = LoopyPropagation<double>(myCNb);
+	gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double>(myCNb);
 	lp.makeInference();
 	
 	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
@@ -240,7 +239,7 @@ void test_credal() {
 		}
 	}
 	
-	MCSampling<double, LazyPropagation<double> > MCE( myCNb );
+	gum::credal::MCSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
 	MCE.storeVertices(true);
 	MCE.makeInference();
 	
@@ -354,7 +353,7 @@ void test_credal() {
 
   for ( int i = 0; i < 1; i++ ) {
     for ( int j = 1; j < 2; j++ ) {
-      CredalNet<double> * myCNa = new CredalNet<double> ( monBNa, monBNb );
+      gum::credal::CredalNet<double> * myCNa = new gum::credal::CredalNet<double> ( monBNa, monBNb );
 			myCNa->intervalToCredalWithFiles();//intervalToCredal(); // 2U network
 
        
@@ -371,7 +370,7 @@ void test_credal() {
 
       //std::cout << myCNa->toString() << std::endl;
       // dynacheese network
-      MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( *myCNa );
+      gum::credal::MCSampling<double, gum::LazyPropagation<double> > * MCE = new gum::credal::MCSampling<double, gum::LazyPropagation<double> > ( *myCNa );
 
       // 2U network
       //MCSampling<double, LazyPropagation<double> > * MCE = new MCSampling<double, LazyPropagation<double> > ( myCNb );
@@ -554,7 +553,7 @@ typedef std::vector< bool > dBN;
 //////////////////////////////////////////////////////////////////////////
 // this stuff can lead to deletes in wrong places
 // DO NOY COPY anything !
-OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
+gum::credal::OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
 
 for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
   std::cout << myCNb.src_bn().variable(*id).name() << "\t";

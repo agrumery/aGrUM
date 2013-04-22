@@ -7,7 +7,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
-#include <agrum/CN/OMPThreads.h>
+#include <agrum/core/OMPThreads.h>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -54,7 +54,7 @@ namespace gum_tests {
     protected :
 
     public :
-      gum::CredalNet< double > *cn;
+      gum::credal::CredalNet< double > *cn;
 
       // not dynamic (2U network - fast)
       void initCNet () {
@@ -70,7 +70,7 @@ namespace gum_tests {
         gum::BIFReader< double > readerb ( &monBNb, GET_CN_PATH_STR ( 2Umax.bif ) );
         readerb.proceed();
 
-        cn = new gum::CredalNet < double > ( monBNa, monBNb );
+        cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
       }
@@ -89,7 +89,7 @@ namespace gum_tests {
         gum::BIFReader< double > readerb ( &monBNb, GET_CN_PATH_STR ( den_c_3.bif ) );
         readerb.proceed();
 
-        cn = new gum::CredalNet < double > ( monBNa, monBNb );
+        cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         double beta = 0.8;
         cn->bnToCredal ( beta );
@@ -103,7 +103,7 @@ namespace gum_tests {
       // not dynamic (2U network) - with evidence
       void /*test*/MCSamplingInference () {
         initCNet();
-        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         // evidence from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( L2U.evi ) ); );
@@ -170,7 +170,7 @@ namespace gum_tests {
 
         typedef std::vector< double > exp;
 
-        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // strong independence
@@ -227,7 +227,7 @@ namespace gum_tests {
         initDCNet();
         typedef std::vector< double > exp;
 
-        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         //////////////////////////////////////////////////////
         // repetitive independence
@@ -280,7 +280,7 @@ namespace gum_tests {
       // with dynamic network
       void testMCSamplingListener () {
         initDCNet();
-        gum::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
+        gum::credal::MCSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 
         // evidence from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( f_3.evi ) ); );

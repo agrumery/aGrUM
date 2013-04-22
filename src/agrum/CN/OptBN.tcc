@@ -1,5 +1,7 @@
 
 namespace gum {
+  namespace credal {
+
   template< typename GUM_SCALAR >
   OptBN< GUM_SCALAR >::OptBN () {
     cnet = nullptr;
@@ -211,4 +213,5 @@ namespace gum {
   }
 
 
+  } // end of credal namespace
 }

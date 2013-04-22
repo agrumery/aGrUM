@@ -46,10 +46,11 @@
 #include <math.h>
 #include <string.h>*/
 
-#include <agrum/CN/OMPThreads.h>
+#include <agrum/core/OMPThreads.h>
 
 namespace gum {
- 
+namespace credal {
+
   /**
    * @class CredalNet CredalNet.h <agrum/CN/CredalNet.h>
    * @brief Class template representing a Credal Network.
@@ -354,6 +355,7 @@ namespace gum {
   }; // CredalNet
 
 } // namespace cn
+}
 
 #include <agrum/CN/CredalNet.tcc>
 

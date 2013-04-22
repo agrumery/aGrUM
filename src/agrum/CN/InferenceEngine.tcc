@@ -1,6 +1,8 @@
 #include <agrum/CN/InferenceEngine.h>
 
 namespace gum {
+namespace credal {
+
   /*template< typename GUM_SCALAR >
   InferenceEngine< GUM_SCALAR >::InferenceEngine () : ApproximationScheme() {
     std::cout << "InferenceEngine construct ()" << std::endl;
@@ -1188,3 +1190,4 @@ namespace gum {
   }
 
 }
+} // namespace

@@ -5,6 +5,7 @@
 #include <agrum/CN/MultipleInferenceEngines.h>
 
 namespace gum {
+  namespace credal {
 
   /**
    * @class MCSampling MCSampling.h <agrum/CN/MCSampling.h>
@@ -93,7 +94,9 @@ namespace gum {
       bool _repetitiveInd;
   };
 
-} // namespace cn
+
+  } // namespace cn
+}
 
 #include <agrum/CN/MCSampling.tcc>
 
