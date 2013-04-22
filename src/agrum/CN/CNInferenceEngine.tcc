@@ -880,7 +880,7 @@ namespace gum {
     for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
 			eq = true;
 			for ( auto end = vertex.size(), i = 0; i < end; i++ ) {
-				if ( vertex[ i ] != *it[ i ] ) {
+				if ( fabs ( vertex[ i ] - (*it)[ i ] ) > 1e-6 ) {
 					eq = false;
 					break;
 				}
@@ -907,7 +907,7 @@ namespace gum {
             ++minIt, 
             ++maxIt 
           ) {
-            if ( *jt == *minIt || *jt == *maxIt )
+						if ( ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 ) && fabs ( *minIt - *maxIt ) > 1e-6 )
               return false;
           }
           return true;
@@ -1103,7 +1103,7 @@ namespace gum {
             ++minIt, 
             ++maxIt 
           ) {
-						if ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 )
+						if ( ( fabs( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 ) && fabs ( *minIt - *maxIt ) > 1e-6 )
               return false;
           }
           return true;

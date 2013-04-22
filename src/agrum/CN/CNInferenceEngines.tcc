@@ -179,7 +179,7 @@ namespace gum {
             ++minIt, 
             ++maxIt 
           ) {
-						if ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 )
+						if ( ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 ) && fabs ( *minIt - *maxIt ) > 1e-6 )
               return false;
           }
           return true;
