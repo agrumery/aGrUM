@@ -664,8 +664,13 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   void CNInferenceEngine< GUM_SCALAR >::_dynamicExpectations() {
-    if(_expectationMin.empty())
+		// no modals, no expectations computed during inference
+    if( _expectationMin.empty() || _modal.empty() )
       return;
+		
+		// already called by the algorithm or the user
+		if ( _dynamicExpMax.size() > 0 && _dynamicExpMin.size() > 0 )
+			return;
 
     //typedef typename std::map< int, GUM_SCALAR > innerMap;
     typedef typename gum::HashTable< int, GUM_SCALAR > innerMap;
