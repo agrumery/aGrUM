@@ -399,6 +399,8 @@ namespace gum {
 
       /// @}
 
+      /// randomly generates CPTs for a given structure
+      void generateCPTs();
     private:
       /// clear all potentials
       void __clearPotentials();

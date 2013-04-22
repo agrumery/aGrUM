@@ -23,6 +23,6 @@ configure_file(
 install(CODE "MESSAGE(\"\n\n************************\")")
 install(CODE "MESSAGE(\"* Installing Agrum ... *\")")
 install(CODE "MESSAGE(\"************************\n\n\")")
-install(DIRECTORY ${AGRUM_SOURCE_DIR}/agrum DESTINATION include FILES_MATCHING PATTERN ".svn" EXCLUDE PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh" PATTERN "*.tcc" PATTERN "*.inl")
-install(FILES ${AGRUM_SOURCE_DIR}/agrum/config.h DESTINATION include)
+install(DIRECTORY ${AGRUM_SOURCE_DIR}/agrum DESTINATION include FILES_MATCHING PATTERN PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh" PATTERN "*.tcc" PATTERN "*.inl")
+install(DIRECTORY ${AGRUM_BINARY_DIR}/agrum DESTINATION include FILES_MATCHING PATTERN PATTERN "*.h")
 install(TARGETS ${LIBAGRUM} DESTINATION lib)

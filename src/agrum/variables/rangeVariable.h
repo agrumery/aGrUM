@@ -182,10 +182,10 @@ namespace gum {
       /// @{
       // ========================================================================
       /// The lower bound.
-      Idx __min;
+      Idx __minBound;
 
       /// The upper bound.
-      Idx __max;
+      Idx __maxBound;
 
       /// @}
 

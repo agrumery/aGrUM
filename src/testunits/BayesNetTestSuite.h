@@ -59,7 +59,7 @@ namespace gum_tests {
           bn.insertArc ( idList[3], idList[4] );
           bn.insertArc ( idList[1], idList[4] );
 
-        } catch ( gum::Exception& e ) {
+        } catch ( gum::Exception &e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
@@ -69,55 +69,39 @@ namespace gum_tests {
         fillTopo ( bn, idList );
 
         try {
-          const gum::Potential<float>& p1 = bn.cpt ( idList[0] );
-          {
-            // FILLING PARAMS
-            const float t[2] = {0.2, 0.8};
-            int n = 2;
-            const std::vector<float> v ( t, t + n );
-            p1.fillWith ( v );
-          }
+          
+          bn.cpt ( idList[0] ).fillWith ( std::vector<float> {
+            0.2, 0.8
+          } );
 
-          const gum::Potential<float>& p2 = bn.cpt ( idList[1] );
-          {
-            // FILLING PARAMS
-            const float t[2] = {0.3, 0.7};
-            int n = 2;
-            const std::vector<float> v ( t, t + n );
-            p2.fillWith ( v );
-          }
+          bn.cpt ( idList[1] ).fillWith ( std::vector<float> {
+            0.3, 0.7
+          } );
 
-          const gum::Potential<float>& p3 = bn.cpt ( idList[2] );
-          {
-            // FILLING PARAMS
-            const float t[4] = {0.1, 0.9, 0.9, 0.1};
-            int n = 4;
-            const std::vector<float> v ( t, t + n );
-            p3.fillWith ( v );
-          }
+          bn.cpt ( idList[2] ).fillWith ( std::vector<float> {
+            0.1, 0.9,
+            0.9, 0.1
+          } );
 
-          const gum::Potential<float>& p4 = bn.cpt ( idList[3] );
-          {
-            // FILLING PARAMS
-            const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-            int n = 8;
-            const std::vector<float> v ( t, t + n );
-            p4.fillWith ( v );
-          }
+          bn.cpt ( idList[3] ).fillWith ( std::vector<float> {
+            0.4, 0.6,
+            0.5, 0.5,
+            0.5, 0.5,
+            1.0, 0.0
+          } );
 
-          const gum::Potential<float>& p5 = bn.cpt ( idList[4] );
-          {
-            // FILLING PARAMS
-            const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0,
-                                 0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0
-                                };
-            int n = 24;
-            const std::vector<float> v ( t, t + n );
-            p5.fillWith ( v );
-            //printProba(p5);
-          }
+          bn.cpt ( idList[4] ).fillWith ( std::vector<float>  {
+            0.3, 0.6, 0.1,
+            0.5, 0.5, 0.0,
+            0.5, 0.5, 0.0,
+            1.0, 0.0, 0.0,
+            0.4, 0.6, 0.0,
+            0.5, 0.5, 0.0,
+            0.5, 0.5, 0.0,
+            0.0, 0.0, 1.0
+          } );
 
-        } catch ( gum::Exception& e ) {
+        } catch ( gum::Exception &e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
@@ -141,7 +125,7 @@ namespace gum_tests {
       }
 
     public:
-      gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
+      gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
       void setUp() {
         var1 = new gum::LabelizedVariable ( "var1", "1", 2 );
@@ -200,8 +184,8 @@ namespace gum_tests {
               ++nodeIter ) {
           TS_ASSERT ( copy->dag().exists ( *nodeIter ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable& cpVar = copy->variable ( *nodeIter );
+          const gum::DiscreteVariable &srcVar = source.variable ( *nodeIter );
+          const gum::DiscreteVariable &cpVar = copy->variable ( *nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -213,7 +197,7 @@ namespace gum_tests {
             TS_ASSERT ( false );
           }
 
-          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
+          const gum::NodeSet &parentList = source.dag().parents ( *nodeIter );
 
           for ( gum::NodeSet::iterator arcIter = parentList.begin();
                 arcIter != parentList.end();
@@ -261,8 +245,8 @@ namespace gum_tests {
               ++nodeIter ) {
           TS_ASSERT ( copy.dag().exists ( *nodeIter ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable& cpVar = copy.variable ( *nodeIter );
+          const gum::DiscreteVariable &srcVar = source.variable ( *nodeIter );
+          const gum::DiscreteVariable &cpVar = copy.variable ( *nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -274,7 +258,7 @@ namespace gum_tests {
             TS_ASSERT ( false );
           }
 
-          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
+          const gum::NodeSet &parentList = source.dag().parents ( *nodeIter );
 
           for ( gum::NodeSet::iterator arcIter = parentList.begin();
                 arcIter != parentList.end();
@@ -305,15 +289,15 @@ namespace gum_tests {
           std::stringstream c_str;
           std::stringstream s_str;
 
-          const gum::Sequence<const gum::DiscreteVariable*> &s_seq = source.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable *> &s_seq = source.cpt ( *iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
             s_str << **it << ",";
           }
 
-          const gum::Sequence<const gum::DiscreteVariable*> &c_seq = copy.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable *> &c_seq = copy.cpt ( *iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable *>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
             c_str << **it << ",";
           }
 
@@ -347,16 +331,16 @@ namespace gum_tests {
           }
         }
 
-        gum::LabelizedVariable* varPtr = NULL;
+        gum::LabelizedVariable *varPtr = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable* ) & bn.variable ( idList[0] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable * ) & bn.variable ( idList[0] ) );
         TS_ASSERT_EQUALS ( *varPtr, *var1 );
 
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[0] ) ), *var1 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[1] ) ), *var2 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[2] ) ), *var3 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[3] ) ), *var4 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[4] ) ), *var5 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[0] ) ), *var1 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[1] ) ), *var2 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[2] ) ), *var3 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[3] ) ), *var4 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[4] ) ), *var5 );
       }
 
       void testInsertion_2() {
@@ -372,15 +356,15 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( bn.size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS ( bn.dag().size(), ( gum::Size ) 5 );
 
-        gum::LabelizedVariable* varPtr = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable* ) & bn.variable ( idList[0] ) );
+        gum::LabelizedVariable *varPtr = NULL;
+        TS_GUM_ASSERT_THROWS_NOTHING ( varPtr = ( gum::LabelizedVariable * ) & bn.variable ( idList[0] ) );
         TS_ASSERT_EQUALS ( *varPtr, *var1 );
 
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[0] ) ), *var1 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[1] ) ), *var2 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[2] ) ), *var3 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[3] ) ), *var4 );
-        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[4] ) ), *var5 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[0] ) ), *var1 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[1] ) ), *var2 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[2] ) ), *var3 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[3] ) ), *var4 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable * ) &bn.variable ( idList[4] ) ), *var5 );
       }
 
       void testArcInsertion() {
@@ -741,7 +725,7 @@ namespace gum_tests {
 
 } //tests
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 
 
 

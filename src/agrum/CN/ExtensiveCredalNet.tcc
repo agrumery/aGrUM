@@ -17,10 +17,11 @@ namespace gum {
     const Sequence< NodeId > topoOrder = src_bn->topologicalOrder();
 
     for ( Sequence< NodeId >::const_iterator id = topoOrder.begin(); id != topoOrder.end(); ++id ) {
-      unsigned int dSize = src_bn->variable( id ).domainSize();
+      unsigned int dSize = src_bn->variable ( id ).domainSize();
+
       // nothing to do, copy cpts as such
       if ( dSize == 2 ) {
-        
+
       }
       // add D node, rework cpts
       else {
@@ -59,38 +60,39 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   ExtensiveCredalNet< GUM_SCALAR >::~ExtensiveCredalNet () {
-    GUM_DESTRUCTOR( ExtensiveCredalNet );
+    GUM_DESTRUCTOR ( ExtensiveCredalNet );
   }
 
   template< typename GUM_SCALAR >
-  void ExtensiveCredalNet< GUM_SCALAR >::fillCPT ( const NodeId & id, const std::vector< Potential< GUM_SCALAR > > & cpt ) {
+  void ExtensiveCredalNet< GUM_SCALAR >::fillCPT ( const NodeId &id, const std::vector< Potential< GUM_SCALAR > > & cpt ) {
     __credalNet_src_cptP[id] = cpt;
   }
-  
+
   template< typename GUM_SCALAR >
-  void ExtensiveCredalNet< GUM_SCALAR >::fillCPT ( const NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt ) {
+  void ExtensiveCredalNet< GUM_SCALAR >::fillCPT ( const NodeId &id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt ) {
     __credalNet_src_cptV[id] = cpt;
   }
 
   template< typename GUM_SCALAR >
-  void ExtensiveCredalNet< GUM_SCALAR >::setCPT ( const vCPT & cpt ) {
+  void ExtensiveCredalNet< GUM_SCALAR >::setCPT ( const vCPT &cpt ) {
     __credalNet_src_cptV = cpt;
   }
-  
+
   template< typename GUM_SCALAR >
-  void ExtensiveCredalNet< GUM_SCALAR >::setCPT ( const pCPT & cpt ) {
+  void ExtensiveCredalNet< GUM_SCALAR >::setCPT ( const pCPT &cpt ) {
     __credalNet_src_cptP = cpt;
   }
 
   template< typename GUM_SCALAR >
-  const typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes & ExtensiveCredalNet< GUM_SCALAR >::vCpt () const {
+  const typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes &ExtensiveCredalNet< GUM_SCALAR >::vCpt () const {
     if ( __credalNet_cptV == NULL )
       GUM_ERROR ( OperationNotAllowed, " there is no __credalNet_cptV yet ! maybe you wanted __credalNet_src_cptV with vSrcCPT ()" );
+
     return *__credalNet_cptV;
   }
 
   template< typename GUM_SCALAR >
-  const typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes & ExtensiveCredalNet< GUM_SCALAR >::pCpt () const {
+  const typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes &ExtensiveCredalNet< GUM_SCALAR >::pCpt () const {
     if ( __credalNet_cptP == NULL )
       GUM_ERROR ( OperationNotAllowed, " there is no __credalNet_cptP yet ! maybe you wanted __credalNet_src_cptP with pSrcCPT" );
 
@@ -98,12 +100,12 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  const typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes & ExtensiveCredalNet< GUM_SCALAR >::vSrcCpt () const {
+  const typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes &ExtensiveCredalNet< GUM_SCALAR >::vSrcCpt () const {
     return __credalNet_src_cptV;
   }
 
   template< typename GUM_SCALAR >
-  const typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes & ExtensiveCredalNet< GUM_SCALAR >::pSrcCpt () const {
+  const typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes &ExtensiveCredalNet< GUM_SCALAR >::pSrcCpt () const {
     return __credalNet_src_cptP;
   }
 

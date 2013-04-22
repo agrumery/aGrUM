@@ -40,9 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <algorithm>
 #include <fstream>
 
-namespace std {
-  #include<dirent.h>
-}
+#include<dirent.h>
 
 #include <agrum/prm/skoor/SkoorContext.h>
 

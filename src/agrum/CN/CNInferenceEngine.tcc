@@ -355,7 +355,7 @@ namespace gum {
         std::vector< bool > values ( dSize, false );
 
         while ( p != NULL ) {
-          if ( atoi ( p ) >= dSize )
+          if ( (Size)atoi ( p ) >= dSize )
             GUM_ERROR(OutOfBounds, "void CNInferenceEngine< GUM_SCALAR >::insertQuery(const std::string & path) : query modality is higher or equal to cardinality");
 
           values[atoi ( p )] = true;

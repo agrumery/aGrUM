@@ -8,8 +8,8 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   class ExtensiveCredalNet : public CredalNet< GUM_SCALAR > {
-    typedef typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes vCPT;
-    typedef typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes pCPT;
+      typedef typename Property< std::vector < std::vector < std::vector < GUM_SCALAR > > > >::onNodes vCPT;
+      typedef typename Property< std::vector < Potential< GUM_SCALAR > > >::onNodes pCPT;
 
     private :
       // this CPT (vCPT) is the same type than CredalNet.h cpt field
@@ -18,8 +18,8 @@ namespace gum {
       // or
       pCPT __credalNet_src_cptP; // to use with BNEngines (sampling etc), faster fill
 
-      vCPT * __credalNet_cptV;
-      pCPT * __credalNet_cptP;
+      vCPT *__credalNet_cptV;
+      pCPT *__credalNet_cptP;
 
       void __initCPTs();
 
@@ -31,19 +31,19 @@ namespace gum {
       // to get a DAG, we don't care about the cpts in this case
       // unless there is a way to contaminate a BN to an extensive CN ?
       ExtensiveCredalNet ( const BayesNet< GUM_SCALAR > & bn );
-      
+
       // from separately specified credal net (beware of huge number of tables), may fail, should have some memory size anticipation !
       //ExtensiveCredalNet ( const SeparatedCredalNet< GUM_SCALAR > & cn );
-      
+
       // copy net
       //ExtensiveCredalNet ( const ExtensiveCredalNet< GUM_SCALAR > & cn );
       ~ExtensiveCredalNet ();
 
       // no reader yet, manual fill
-      void fillCPT ( const NodeId & id, const std::vector< Potential< GUM_SCALAR > > & cpt );
-      void fillCPT ( const NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt );
-      void setCPT ( const vCPT & cpt );
-      void setCPT ( const pCPT & cpt );
+      void fillCPT ( const NodeId &id, const std::vector< Potential< GUM_SCALAR > > & cpt );
+      void fillCPT ( const NodeId &id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt );
+      void setCPT ( const vCPT &cpt );
+      void setCPT ( const pCPT &cpt );
 
       void extensiveDTS();
       //void bin();
@@ -56,12 +56,12 @@ namespace gum {
       //ExtensiveCredalNet & extensiveDTS () const;
 
       // get src cpts
-      const vCPT & vSrcCpt () const;
-      const pCPT & pSrcCpt () const;
+      const vCPT &vSrcCpt () const;
+      const pCPT &pSrcCpt () const;
 
       // get the net CPTs (either one, upToDate)
-      const vCPT & vCpt() const;
-      const pCPT & pCpt() const;
+      const vCPT &vCpt() const;
+      const pCPT &pCpt() const;
 
 
   };

@@ -67,14 +67,14 @@ namespace gum {
       ~OptBN ( );
 
       /// @}
-     
+
       /**
        * Insert for thread fusion. All inserted nets are optimums and none will be deleted because a better one is being inserted.
        * @param bn The constant reference to the net to be inserted.
        * @param key The constant reference to the key at which we will insert the net.
        */
       bool insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key );
-      
+
       /**
        * Thread insert.
        * @param key The key at which the net will be inserted.
@@ -85,7 +85,7 @@ namespace gum {
 
 
 
-////////////////////////////////////////// 
+//////////////////////////////////////////
       /// @name Getters and setters
 //////////////////////////////////////////
       /// @{
@@ -96,7 +96,7 @@ namespace gum {
        * Shoud only be used by CNInferenceEngine to initialize it's member variable.
        * @param cn The CredalNet to be used.
        */
-      void setCNet( const CredalNet<GUM_SCALAR> & cn );
+      void setCNet ( const CredalNet<GUM_SCALAR> & cn );
 
       /**
        * Set the current thread sample and it's hash.
@@ -108,7 +108,7 @@ namespace gum {
        * Get the current sample as a vector of bits without structure.
        * @return The constant reference to the sampled BayesNet without structure.
        */
-      const dBN & getCurrentSample ();
+      const dBN &getCurrentSample ();
 
       /**
        * Get the sample structure.
@@ -119,17 +119,17 @@ namespace gum {
       /**
        * Get optimum BayesNet (s) without structure of the given variable, modality for min or max.
        * @param key The constant reference to the variable, modality, min or max.
-       * @return The constant vector of not yet constant pointers to the nets. 
+       * @return The constant vector of not yet constant pointers to the nets.
        */
-      const std::vector< dBN* > getBNOptsFromKey ( const std::vector< unsigned int > & key );
+      const std::vector< dBN * > getBNOptsFromKey ( const std::vector< unsigned int > & key );
 
-       /**
-       * Get optimum BayesNet (s) with structure of the given variable, modality for min or max.
-       * @param key The constant reference to the variable, modality, min or max.
-       * @return The vector of not yet constant pointers to the nets. 
-       */     
+      /**
+      * Get optimum BayesNet (s) with structure of the given variable, modality for min or max.
+      * @param key The constant reference to the variable, modality, min or max.
+      * @return The vector of not yet constant pointers to the nets.
+      */
       std::vector< std::vector< std::vector< std::vector < bool > > > > getFullBNOptsFromKey ( const std::vector< unsigned int > & key );
-      
+
       /** Get the number of BayesNet stored. */
       unsigned int getEntrySize() const;
 

@@ -237,7 +237,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for( gum::NodeSet::iterator iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for( auto iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
           graph.eraseNode( *iter );
         }
 
@@ -253,7 +253,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+        for( auto iter = arclist.begin(); iter != arclist.end(); ++iter ) {
           graph.eraseArc( *iter );
         }
 
@@ -265,12 +265,12 @@ namespace gum_tests {
       void testNodeListMapNodes() {
         gum::DAG graph = buildGraph();
 
-        gum::List<gum::Size> list = graph.listMapNodes( &simpleDoubleFunction );
+        auto list = graph.listMapNodes( &simpleDoubleFunction );
         TS_ASSERT_EQUALS( list.size(), graph.size() );
 
         gum::Size s = 0;
 
-        for( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for( auto iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -289,14 +289,14 @@ namespace gum_tests {
       void testHashMapNodes() {
         gum::DAG graph = buildGraph();
 
-        gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
+        auto hashmap = graph.nodesProperty( &simpleDoubleFunction );
         TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
 
         gum::Size sk = 0;
         gum::Size sv = 0;
 
         for(
-          gum::Property<gum::Size>::onNodes::iterator iter = hashmap.begin();
+          auto iter = hashmap.begin();
           iter != hashmap.end();
           ++iter
         ) {
@@ -324,7 +324,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for( auto iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -334,14 +334,14 @@ namespace gum_tests {
       void testHashMapArcs() {
         gum::DAG graph = buildGraph();
 
-        gum::Property<gum::Size>::onArcs hashmap = graph.arcsProperty( &simpleArcMapFunction );
+        auto hashmap = graph.arcsProperty( &simpleArcMapFunction );
         TS_ASSERT_EQUALS( hashmap.size(), graph.sizeArcs() );
 
         gum::Size sk = 0;
         gum::Size sv = 0;
 
         for(
-          gum::Property<gum::Size>::onArcs::iterator iter = hashmap.begin();
+          auto iter = hashmap.begin();
           iter != hashmap.end();
           ++iter
         ) {

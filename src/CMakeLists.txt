@@ -8,12 +8,8 @@ set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include("${CMAKE_CURRENT_CMAKE_DIR}/CompilOptions.agrum.cmake")
 
-set(GUM_SRC_PATH "${AGRUM_SOURCE_DIR}")
-set(GUM_VERSION "\"${AGRUM_VERSION}\"")
-set(GUM_MAJOR_VERSION 0)
-set(GUM_MINOR_VERSION ${AGRUM_VERSION_MINOR})
-set(GUM_PATCH_VERSION ${AGRUM_VERSION_PATCH})
-configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${GUM_SRC_PATH}/agrum/config.h")
+include("${CMAKE_CURRENT_CMAKE_DIR}/Config.agrum.cmake")
+configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
 
 file(GLOB_RECURSE AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.cpp)
 file(GLOB_RECURSE AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/*.h)
@@ -32,12 +28,12 @@ include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include("${CMAKE_CURRENT_CMAKE_DIR}/CocoR.agrum.cmake")
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-#     CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
-#     CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
-#     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
-#     CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
-#     CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
-	  CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
+     CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF)
+     CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL)
+     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net)
+     CocoRTarget(prm/skool/cocoR SyntaxSKOOL gum:prm:skool)
+     CocoRTarget(prm/skoor/cocoR SyntaxSKOOR gum:prm:skoor)
+     CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
