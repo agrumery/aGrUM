@@ -9,7 +9,7 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
 
 #include <agrum/BN/algorithms/approximationScheme.h>
-#include <agrum/CN/OptBN.h>
+#include <agrum/CN/VarMod2BNsMap.h>
 #include <agrum/core/exceptions.h>
 #include <map>
 
@@ -91,7 +91,7 @@ namespace credal {
       /** @brief \c True is optimal bayes net are stored, for each variable and each modality, \c False otherwise. Not all algorithms offers this option. \c False by default. */
       bool _storeBNOpt;
       /** @brief Object used to efficiently store optimal bayes net during inference, for some algorithms. */
-      OptBN< GUM_SCALAR > _dbnOpt;
+      VarMod2BNsMap< GUM_SCALAR > _dbnOpt;
 
       /** 
        * @deprecated
@@ -214,7 +214,7 @@ namespace credal {
        * Get optimum BayesNet.
        * @return A pointer to the optimal net object.
        */
-      OptBN<GUM_SCALAR> * getOptBN ();
+      VarMod2BNsMap<GUM_SCALAR> * getVarMod2BNsMap ();
       
       /**
        * Get this creadal network.

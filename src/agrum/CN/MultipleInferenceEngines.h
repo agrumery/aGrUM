@@ -77,7 +77,7 @@ namespace credal {
       /** Threads BNInferenceEngine. */
       typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
       /** Threads optimal BayesNet. */
-      std::vector< OptBN< GUM_SCALAR > * > _l_optimalNet;
+      std::vector< VarMod2BNsMap< GUM_SCALAR > * > _l_optimalNet;
       /** Fusion of threads optimal BayesNet. */
       //OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp is disabled (avoid creating 2 objects when only one is necessary)
       // it should also avoid calling thread fusion operations

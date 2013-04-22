@@ -219,7 +219,7 @@ namespace gum {
       this->_l_inferenceEngine[this_thread] = inference_engine;
 
       if ( infEs::_storeBNOpt ) {
-        OptBN<GUM_SCALAR> * threadOpt = new OptBN<GUM_SCALAR> ( *this->_credalNet );
+        VarMod2BNsMap<GUM_SCALAR> * threadOpt = new VarMod2BNsMap<GUM_SCALAR> ( *this->_credalNet );
         this->_l_optimalNet[this_thread] = threadOpt;
       }
     }

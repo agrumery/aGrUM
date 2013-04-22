@@ -3,26 +3,26 @@ namespace gum {
   namespace credal {
 
   template< typename GUM_SCALAR >
-  OptBN< GUM_SCALAR >::OptBN () {
+  VarMod2BNsMap< GUM_SCALAR >::VarMod2BNsMap () {
     cnet = nullptr;
 
-    GUM_CONSTRUCTOR ( OptBN );
+    GUM_CONSTRUCTOR ( VarMod2BNsMap );
   }
 
   template< typename GUM_SCALAR >
-  OptBN< GUM_SCALAR >::OptBN ( const CredalNet<GUM_SCALAR> & cn ) {
+  VarMod2BNsMap< GUM_SCALAR >::VarMod2BNsMap ( const CredalNet<GUM_SCALAR> & cn ) {
     setCNet ( cn );
 
-    GUM_CONSTRUCTOR ( OptBN );
+    GUM_CONSTRUCTOR ( VarMod2BNsMap );
   }
 
   template< typename GUM_SCALAR >
-  OptBN< GUM_SCALAR >::~OptBN () {
-    GUM_DESTRUCTOR ( OptBN );
+  VarMod2BNsMap< GUM_SCALAR >::~VarMod2BNsMap () {
+    GUM_DESTRUCTOR ( VarMod2BNsMap );
   }
 
   template< typename GUM_SCALAR >
-  void OptBN< GUM_SCALAR >::setCNet ( const CredalNet<GUM_SCALAR> & cn ) {
+  void VarMod2BNsMap< GUM_SCALAR >::setCNet ( const CredalNet<GUM_SCALAR> & cn ) {
     const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &cn.credalNet_cpt();
     auto nNodes = cpt->size();
     _sampleDef.resize ( nNodes );
@@ -43,7 +43,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  bool OptBN< GUM_SCALAR >::insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key ) {
+  bool VarMod2BNsMap< GUM_SCALAR >::insert ( const std::vector< bool > & bn, const std::vector< unsigned int > & key ) {
     _currentHash = _vectHash ( bn );
     std::list< size_t > & nets = _myVarHashs.getWithDefault ( key, std::list< size_t >() ); //[ key ];
 
@@ -63,7 +63,7 @@ namespace gum {
 
 
   template< typename GUM_SCALAR >
-  bool OptBN< GUM_SCALAR >::insert ( const std::vector< unsigned int > & key, const bool isBetter ) {
+  bool VarMod2BNsMap< GUM_SCALAR >::insert ( const std::vector< unsigned int > & key, const bool isBetter ) {
     if ( isBetter ) {
       // get all nets of this key (maybe entry does not exists)
       std::list< size_t > & old_nets = _myVarHashs.getWithDefault ( key, std::list< size_t >() ); //[ key ];
@@ -130,7 +130,7 @@ namespace gum {
 
 
   template< typename GUM_SCALAR >
-  void OptBN< GUM_SCALAR >::setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample ) {
+  void VarMod2BNsMap< GUM_SCALAR >::setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample ) {
     _currentSample.clear();
 
     for ( unsigned int i = 0; i < sample.size(); i++ )
@@ -145,17 +145,17 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  const std::vector< bool > & OptBN< GUM_SCALAR >::getCurrentSample () {
+  const std::vector< bool > & VarMod2BNsMap< GUM_SCALAR >::getCurrentSample () {
     return _currentSample;
   }
 
   template< typename GUM_SCALAR >
-  const std::vector< std::vector< std::vector < bool > > > & OptBN< GUM_SCALAR >::getSampleDef () {
+  const std::vector< std::vector< std::vector < bool > > > & VarMod2BNsMap< GUM_SCALAR >::getSampleDef () {
     return _sampleDef;
   }
 
   template< typename GUM_SCALAR >
-  const std::vector< std::vector< bool > * > OptBN< GUM_SCALAR >::getBNOptsFromKey ( const std::vector< unsigned int > & key ) {
+  const std::vector< std::vector< bool > * > VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey ( const std::vector< unsigned int > & key ) {
     // return something even if key does not exist
     if ( ! _myVarHashs.exists ( key ) )
       return std::vector< std::vector< bool > * >();
@@ -175,7 +175,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR >
-  std::vector< std::vector< std::vector< std::vector < bool > > > > OptBN< GUM_SCALAR >::getFullBNOptsFromKey ( const std::vector< unsigned int > & key ) {
+  std::vector< std::vector< std::vector< std::vector < bool > > > > VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey ( const std::vector< unsigned int > & key ) {
     if ( cnet == nullptr )
       GUM_ERROR ( OperationNotAllowed, "No CredalNet associated to me ! Can't get FullBNOptsFromKey : " << key );
 
@@ -208,7 +208,7 @@ namespace gum {
 
 
   template< typename GUM_SCALAR >
-  unsigned int OptBN< GUM_SCALAR >::getEntrySize() const {
+  unsigned int VarMod2BNsMap< GUM_SCALAR >::getEntrySize() const {
     return _myHashNet.size();
   }
 

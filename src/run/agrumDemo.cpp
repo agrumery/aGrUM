@@ -11,7 +11,7 @@
 
 #include <agrum/core/OMPThreads.h>
 
-#include <agrum/CN/OptBN.h>
+#include <agrum/CN/VarMod2BNsMap.h>
 
 #include <agrum/core/Rational.h>
 #include <agrum/CN/LrsWrapper.h>
@@ -553,7 +553,7 @@ typedef std::vector< bool > dBN;
 //////////////////////////////////////////////////////////////////////////
 // this stuff can lead to deletes in wrong places
 // DO NOY COPY anything !
-gum::credal::OptBN<double> * opt = MCE->getOptBN(); // & replaced by * to be sure 
+gum::credal::VarMod2BNsMap<double> * opt = MCE->getVarMod2BNsMap(); // & replaced by * to be sure 
 
 for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
   std::cout << myCNb.src_bn().variable(*id).name() << "\t";

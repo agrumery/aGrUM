@@ -118,7 +118,7 @@ namespace credal {
   }
 
     template < typename GUM_SCALAR >
-  OptBN<GUM_SCALAR> * InferenceEngine< GUM_SCALAR >::getOptBN () {
+  VarMod2BNsMap<GUM_SCALAR> * InferenceEngine< GUM_SCALAR >::getVarMod2BNsMap () {
     return &_dbnOpt;
   }
 

@@ -1,5 +1,5 @@
-#ifndef __OPTBN__H__
-#define __OPTBN__H__
+#ifndef __VAR_MOD_2_BNS_MAP__H__
+#define __VAR_MOD_2_BNS_MAP__H__
 
 #include <tr1/functional>
 #include <agrum/core/pow.h>
@@ -8,12 +8,13 @@ namespace gum {
   namespace credal {
 
   /**
-   * @class OptBN OptBN.h <agrum/CN/OptBN.h>
+   * @class VarMod2BNsMap VarMod2BNsMap.h <agrum/CN/VarMod2BNsMap.h>
    * @brief Class used to store optimum BayesNet during some inference algorithms.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
+
   template < typename GUM_SCALAR >
-  class OptBN {
+  class VarMod2BNsMap {
     private :
       typedef std::vector< bool > dBN;
 
@@ -60,12 +61,12 @@ namespace gum {
        *
        * @param cn The CredalNet to be used.
        */
-      OptBN ( const CredalNet<GUM_SCALAR> & cn );
+      VarMod2BNsMap ( const CredalNet<GUM_SCALAR> & cn );
 
       /** Default constructor that should be used only by InferenceEngine since it has a member variable. */
-      OptBN ();
+      VarMod2BNsMap ();
       /** Destructor. */
-      ~OptBN ( );
+      ~VarMod2BNsMap ( );
 
       /// @}
 
@@ -141,6 +142,6 @@ namespace gum {
   } // credal namespace
 } // gum namespace
 
-#include <agrum/CN/OptBN.tcc>
+#include <agrum/CN/VarMod2BNsMap.tcc>
 
 #endif
