@@ -5,8 +5,6 @@
 #include <agrum/CN/LoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
-#include <agrum/CN/ExtensiveCredalNet.h>
-
 //#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
 
 #include <agrum/core/OMPThreads.h>

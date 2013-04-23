@@ -18,6 +18,25 @@
 #undef GMP
 #define MP
 
+/* *** from lrs, we need to know BASE to read multiple precision integers *** */
+#ifndef B64
+/*32 bit machines */
+#define FORMAT "%4.4lu"
+#define MAXD 2147483647L
+#define BASE 10000L
+#define BASE_DIG 4
+#define INTSIZE 8L
+#define BIT "32bit"
+#else
+/* 64 bit machines */
+#define MAXD 9223372036854775807L
+#define BASE 1000000000L
+#define FORMAT "%9.9lu"
+#define BASE_DIG 9
+#define INTSIZE 16L
+#define BIT "64bit"
+#endif
+/* ************ */
 
 #define enumStringify( name ) # name
 

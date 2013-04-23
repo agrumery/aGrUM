@@ -1,3 +1,4 @@
+#include <agrum/CN/VarMod2BNsMap.h>
 
 namespace gum {
   namespace credal {

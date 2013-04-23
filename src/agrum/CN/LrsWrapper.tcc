@@ -295,8 +295,27 @@ namespace gum {
 
       long int Nsize = ( __dat->Nvolume[0] > 0 ) ? __dat->Nvolume[0] : -__dat->Nvolume[0];
       long int Dsize = ( __dat->Dvolume[0] > 0 ) ? __dat->Dvolume[0] : -__dat->Dvolume[0];
+			
+			long int num = 0L, den = 0L;
+			long int tmp;
+			
+			for ( decltype ( Nsize ) i = Nsize - 1; i > 0; i-- ) {
+				tmp = __dat->Nvolume[ i ];
+				for ( decltype ( i ) j = 1; j < i; j++ )
+					tmp *= BASE;
+				
+				num += tmp;
+			}
+			
+			for ( decltype ( Dsize ) i = Dsize - 1; i > 0; i-- ) {
+				tmp = __dat->Dvolume[ i ];
+				for ( decltype ( i ) j = 1; j < i; j++ )
+					tmp *= BASE;
+				
+				den += tmp;
+			}
 
-      __volume = __dat->Nvolume[ Nsize - 1 ] * 1.0 / __dat->Dvolume[ Dsize - 1 ];
+      __volume = num * 1.0 / den;
 
       __freeLrs();
 
@@ -371,61 +390,42 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void LRS< GUM_SCALAR >::__getLRSOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const {
-      //lrs_mp Nt, Dt;
-      //long i;
 
-      long int Nsize = ( Nin[ 0 ] > 0 ) ? Nin[ 0 ] : -Nin[ 0 ];
+			long int Nsize = ( Nin[ 0 ] > 0 ) ? Nin[ 0 ] : -Nin[ 0 ];
       long int Dsize = ( Din[ 0 ] > 0 ) ? Din[ 0 ] : -Din[ 0 ];
 
-      /*
-      for ( i = 0; i <= Nsize; i++ )
-        Nt[i] = Nin[i];
-      for ( i = 0; i <= Dsize; i++ )
-        Dt[i] = Din[i];
-      */
+      long int num = 0L;
+      long int den = 0L;
 
-      //reduce (Nt, Dt);
-
-      long int num = 1;
-      long int den = 1;
-
-      long int Nsign = ( ( Nin[ 0 ] < 0 ) ? -1L : 1L );
-      long int Dsign = ( ( Din[ 0 ] < 0 ) ? -1L : 1L );
-
-      /* print out       */
-      if ( ( Nsign * Dsign ) == -1L )
-        //fprintf (lrs_ofp, "-");
-        num = -num;
-
-      /*else
-        fprintf (lrs_ofp, " ");*/
-      //fprintf (lrs_ofp, "%lu", Nt[length (Nt) - 1]);
-
-      num *= Nin[ Nsize - 1 ];
-
-      //std::cout << "first print : " << Nt[ Nsize - 1 ];
-      //std::cout << "\n size : " << Nsize << "\n";
-
-      //for (i = Nsize - 2; i >= 1; i--)
-      //std::cout << Nt[ i ];
-      //fprintf (lrs_ofp, FORMAT, Nt[i]);
-
+			long int tmp;
+			
+			for ( decltype ( Nsize ) i = Nsize - 1; i > 0; i-- ) {
+				tmp = Nin[ i ];
+				for ( decltype ( i ) j = 1; j < i; j++ )
+					tmp *= BASE;
+				
+				num += tmp;
+			}
 
       if ( ! ( Din[ 0 ] == 2L && Din[ 1 ] == 1L ) ) { /* rational */
-        //fprintf (lrs_ofp, "/");
-        //fprintf (lrs_ofp, "%lu", Dt[length (Dt) - 1]);
-        //std::cout << "/" << Dt[ Dsize - 1 ];
-        den = Din[ Dsize - 1 ];
-
-        //for (i = Dsize - 2; i >= 1; i--)
-        //std::cout << Dt[ i ];
-        //fprintf (lrs_ofp, FORMAT, Dt[i]);
-      } else {
-        den = 1;
+				for ( decltype ( Dsize ) i = Dsize - 1; i > 0; i-- ) {
+					tmp = Din[ i ];
+					for ( decltype ( i ) j = 1; j < i; j++ )
+						tmp *= BASE;
+					
+					den += tmp;
+				}
+      } 
+      else {
+        den = 1L;
       }
-
-      //fprintf (lrs_ofp, " ");
-      //std::cout << " ";
+      
+      long int Nsign = ( ( Nin[ 0 ] < 0 ) ? -1L : 1L );
+			long int Dsign = ( ( Din[ 0 ] < 0 ) ? -1L : 1L );
+      
+      if ( ( Nsign * Dsign ) == -1L )
+				num = -num;
+			
       Num.push_back ( num );
       Den.push_back ( den );
 
