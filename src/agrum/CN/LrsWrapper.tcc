@@ -391,11 +391,6 @@ for ( auto  elem : __vertex )
 
     template < typename GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::__getLRSWrapperOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const {
-<<<<<<< HEAD
-=======
-      //lrs_mp Nt, Dt;
-      //long i;
->>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
 
 			long int Nsize = ( Nin[ 0 ] > 0 ) ? Nin[ 0 ] : -Nin[ 0 ];
       long int Dsize = ( Din[ 0 ] > 0 ) ? Din[ 0 ] : -Din[ 0 ];
