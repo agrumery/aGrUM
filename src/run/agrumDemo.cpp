@@ -18,6 +18,7 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 #include <agrum/core/OMPThreads.h>
+<<<<<<< HEAD
 
 #include <agrum/CN/LrsWrapper.h>
 
@@ -37,6 +38,23 @@
 #include <agrum/core/Rational.h> // custom decimal to rational
 #include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
 
+=======
+
+#include <agrum/CN/LrsWrapper.h>
+
+#include <agrum/prm/PRMFactory.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//including coco-generated PARSER and SCANNER
+
+#include <agrum/prm/skool/cocoR/Parser.h>
+#endif //DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/prm/skool/SkoolReader.h>
+
+
+#include <agrum/core/Rational.h> // custom decimal to rational
+#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+
+>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
 
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
