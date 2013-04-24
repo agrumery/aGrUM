@@ -25,8 +25,8 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 
-#include <agrum/config.h>
 
 #include <agrum/core/debug.h>
 #include <agrum/core/set.h>

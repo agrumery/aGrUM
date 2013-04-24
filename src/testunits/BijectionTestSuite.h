@@ -22,6 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 
 #include <agrum/core/bijection.h>
 #include <agrum/variables/labelizedVariable.h>

@@ -6,6 +6,20 @@
  * @brief Class representing Credal Networks
  */
 
+#include <vector>
+#include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <set>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
@@ -16,35 +30,12 @@
 
 #include <agrum/CN/LrsWrapper.h>
 
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <set>
-#include <string>
-#include <sstream>
-#include <cmath>
-#include <algorithm>
-#include <cstdlib>
-
 // lrs stuff
 //we force MP (not long or GMP)
 #undef LONG
 #undef GMP
 #define MP
-#include "lrslib/lrslib.h"
-
-// cdd stuff ( cdd lib needs to be installed )
-/*#include <setoper.h>
-#include <cdd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <string.h>*/
+#include <agrum/CN/lrslib/lrslib.h>
 
 #include <agrum/core/OMPThreads.h>
 

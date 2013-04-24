@@ -94,7 +94,7 @@ namespace gum {
     if ( ! this->_modal.empty() )
       this->_dynamicExpectations(); // work with any network
 
-    GUM_TRACE ( this->messageApproximationScheme() );
+    //GUM_TRACE ( this->messageApproximationScheme() );
 
   }
 

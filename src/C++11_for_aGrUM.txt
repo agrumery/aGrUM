@@ -43,4 +43,8 @@
 
   auto hashmap = graph.nodesProperty( &simpleDoubleFunction );
 
+3- string 
+  use string::size() rather than string::len()
+
+
   

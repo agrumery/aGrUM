@@ -21,16 +21,16 @@
 
 #include <iostream>
 #include <string>
-
+#include <fstream>
+#include <iostream>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/io/BIFXML/BIFXMLIDReader.h>
 
-#include "testsuite_utils.h"
-#include <fstream>
-#include <iostream>
 
 // The graph used for the tests:
 //           D1

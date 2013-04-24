@@ -17,21 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
-// ============================================================================
+#include "testsuite_utils.h"
+
 #include <agrum/BN/inference/VEWithBB.h>
-// ============================================================================
+
 #include <agrum/prm/groundedInference.h>
 #include <agrum/prm/structuredInference.h>
-// ============================================================================
+
 #include <agrum/prm/generator/layerGenerator.h>
 #include <agrum/prm/generator/clusteredLayerGenerator.h>
-// ============================================================================
+
 #include <agrum/prm/gspan/DFSTree.h>
-// ============================================================================
+
 #include <agrum/prm/skool/SkoolReader.h>
-// ============================================================================
+
 
 namespace gum_tests {
 

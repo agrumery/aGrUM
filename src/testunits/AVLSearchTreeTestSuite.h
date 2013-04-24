@@ -19,7 +19,10 @@
  ***************************************************************************/
 
 #include <cstdlib>
+
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/core/AVLSearchTree.h>
 
 namespace gum_tests {

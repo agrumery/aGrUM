@@ -253,7 +253,7 @@ namespace credal {
 
     __credalNet_src_cpt.resize ( __src_bn.size() );
 
-    credal::LRS< GUM_SCALAR > lrsWrapper;
+    credal::LRSWrapper< GUM_SCALAR > lrsWrapper;
 
     for ( auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       const Potential< GUM_SCALAR > * const potential_min ( &__src_bn_min.cpt ( *node_idIt ) );
@@ -841,15 +841,15 @@ namespace credal {
 
     // farey algorithm
     __epsF = 1e-6;
-    __denMax = 1e6; // beware LRS
+    __denMax = 1e6; // beware LRSWrapper
 
-    // continued fractions, beware LRS
+    // continued fractions, beware LRSWrapper
     // decimal paces (__epsC * __precisionC == 1)
     __precisionC = 1e6;
     __deltaC = 5;
 
     // old custom algorithm
-    __precision = 1e6; // beware LRS
+    __precision = 1e6; // beware LRSWrapper
 
     __current_bn = NULL;
     __credalNet_current_cpt =  NULL;

@@ -19,11 +19,9 @@
  ***************************************************************************/
 // ============================================================================
 #include <cxxtest/AgrumTestSuite.h>
-
-#include <agrum/prm/skool/SkoolReader.h>
-
 #include "testsuite_utils.h"
 
+#include <agrum/prm/skool/SkoolReader.h>
 
 namespace gum_tests {
 

@@ -21,6 +21,8 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 

@@ -21,12 +21,12 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
-
-#include "testsuite_utils.h"
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

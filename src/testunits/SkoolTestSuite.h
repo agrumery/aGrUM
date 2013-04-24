@@ -17,13 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
-#include <cxxtest/AgrumTestSuite.h>
-// ============================================================================
-#include <agrum/prm/skool/SkoolReader.h>
-// ============================================================================
 #include <iostream>
 #include <string>
+
+#include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
+#include <agrum/prm/skool/SkoolReader.h>
+
 namespace gum_tests {
 
   class SkoolTestSuite: public CxxTest::TestSuite {

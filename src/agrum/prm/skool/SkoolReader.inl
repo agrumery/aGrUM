@@ -101,10 +101,10 @@ namespace gum {
 
       INLINE
       int
-      SkoolReader::readString ( const std::string& str ) {
+      SkoolReader::readString ( const std::string& st ) {
         // errors += parser.errors
         try {
-          Scanner s ( ( unsigned char* ) str.c_str(), ( int ) ( str.length() ) );
+          Scanner s ( ( unsigned char* ) st.c_str(), ( int ) ( st.size() ) );
           __parser = new Parser ( &s );
           __parser->setFactory ( &__factory );
           __parser->setClassPath ( __class_path );
@@ -195,4 +195,4 @@ namespace gum {
 } /* namespace gum */
 
 // ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -1,5 +1,5 @@
-#ifndef __LRS_WRAPPER__H__
-#define __LRS_WRAPPER__H__
+#ifndef __LRSWrapper_WRAPPER__H__
+#define __LRSWrapper_WRAPPER__H__
 
 #include <cmath>
 #include <unistd.h>
@@ -7,16 +7,17 @@
 #include <cstdio>
 #include <vector>
 #include <unordered_set>
+#include <fstream>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/core/Rational.h>
 
-// lrs stuff
-#include <agrum/CN/lrslib/lrslib.h>
 // we force MP (not long or GMP)
 #undef long
 #undef GMP
 #define MP
+// lrs stuff
+#include <agrum/CN/lrslib/lrslib.h>
 
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifndef B64
@@ -44,13 +45,13 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class LRS LrsWrapper.h <agrum/CN/LrsWrapper.h>
+     * @class LRSWrapper LrsWrapper.h <agrum/CN/LrsWrapper.h>
      * @brief Class template acting as a wrapper for Lexicographic Reverse Search by David Avis.
      *
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      */
     template < typename GUM_SCALAR >
-    class LRS {
+    class LRSWrapper {
       private :
         /** @brief Shortcut for dynamic matrix using vectors. */
         typedef typename std::vector< std::vector< GUM_SCALAR > > matrix;
@@ -194,7 +195,7 @@ namespace gum {
          * @param Num Output integer numerators.
          * @param Den Output integer denominators.
          */
-        void __getLRSOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const;
+        void __getLRSWrapperOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const;
 
         /// @}
 
@@ -207,12 +208,12 @@ namespace gum {
         /**
          * Default Constructor.
          */
-        LRS ();
+        LRSWrapper ();
 
         /**
          * Default Destructor.
          */
-        ~LRS ();
+        ~LRSWrapper ();
 
         /// @}
 

@@ -17,20 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
-#include <iostream>
-#include <cxxtest/TestSuite.h>
-#include <cxxtest/AgrumTestSuite.h>
-// ============================================================================
-#include <agrum/config.h>
 
-#include <agrum/BN/io/BIF/BIFWriter.h>
-// ============================================================================
+#include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/prm/gspan.h>
-// ============================================================================
-#include <agrum/prm/PRMFactory.h>
+
 #include <agrum/prm/skool/SkoolReader.h>
-// ============================================================================
 
 
 namespace gum_tests {
@@ -45,8 +38,7 @@ namespace gum_tests {
     public:
       void setUp() {
         __driver  = new gum::prm::skool::SkoolReader();
-        //dot_dir = "/testunits/dot/";
-        __driver->readFile ( "../../../src/testunits/ressources/skool/specialprinters.skool" );
+        __driver->readFile ( GET_PATH_STR ( skool/specialprinters.skool ) );
         ig = new gum::prm::gspan::InterfaceGraph ( __driver->prm()->system ( "m" ) );
       }
 

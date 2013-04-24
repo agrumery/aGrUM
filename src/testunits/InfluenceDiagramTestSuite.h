@@ -21,6 +21,8 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
 #include <agrum/variables/discreteVariable.h>

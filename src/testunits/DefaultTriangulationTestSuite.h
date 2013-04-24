@@ -23,15 +23,14 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/graphs/defaultTriangulation.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/graphs/undiGraph.h>
-
 #include <agrum/BN/inference/lazyPropagation.h>
-
-#include "testsuite_utils.h"
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

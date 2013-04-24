@@ -101,7 +101,7 @@ namespace gum_tests {
       }
 
       // not dynamic (2U network) - with evidence
-      void /*test*/CNMonteCarloSamplingInference () {
+      void testCNMonteCarloSamplingInference () {
         initCNet();
         gum::credal::CNMonteCarloSampling < double, gum::LazyPropagation < double > > mcs ( *cn );
 

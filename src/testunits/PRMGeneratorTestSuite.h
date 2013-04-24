@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <fstream>
-// ============================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
-// ============================================================================
+#include "testsuite_utils.h"
+
 #include <agrum/prm/generator/layerGenerator.h>
 #include <agrum/prm/generator/clusteredLayerGenerator.h>
-// ============================================================================
 
 namespace gum_tests {
 

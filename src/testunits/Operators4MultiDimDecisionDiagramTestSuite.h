@@ -19,7 +19,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.    *
 *********************************************************************************/
 
-// =====================================================================
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -27,21 +26,19 @@
 #include <string>
 #include <sstream>
 #include <time.h>
-// =====================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
-// =====================================================================
-#include <agrum/config.h>
-// =====================================================================
+
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
-// =====================================================================
+
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
-// =====================================================================
+
 namespace gum_tests {
 
   class Operators4MultiDimDecisionDiagramTestSuite: public CxxTest::TestSuite {

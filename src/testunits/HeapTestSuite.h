@@ -19,10 +19,10 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/core/heap.h>
 #include <agrum/core/set.h>
-
-
 namespace gum_tests {
 
   class HeapTestSuite: public CxxTest::TestSuite {
