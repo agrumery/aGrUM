@@ -691,6 +691,218 @@ namespace credal {
     this->__current_nodeType = __bin_nodeType;
 
   }
+  
+  template< typename GUM_SCALAR >
+  void CredalNet< GUM_SCALAR >::approximatedBinarization() {
+		// don't forget to delete the old one (__current), if necessary at the end
+		BayesNet< GUM_SCALAR > * __bin_bn = new BayesNet< GUM_SCALAR >();
+		
+		//__bnCopy ( *__bin_bn );
+		// delete old one too
+		typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *__credalNet_bin_cpt = new typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes();
+		
+		// delete old one too
+		//typename Property< nodeType >::onNodes *__bin_nodeType = new typename Property< nodeType >::onNodes();
+		
+		const BayesNet< GUM_SCALAR > * __current_bn;
+		//const typename Property< nodeType >::onNodes *__current_nodeType;
+		const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *__credalNet_current_cpt;
+		
+		if ( this->__current_bn == NULL )
+			__current_bn = & this->__src_bn;
+		else
+			__current_bn = this->__current_bn;
+		
+		if ( this->__credalNet_current_cpt == NULL )
+			__credalNet_current_cpt = & this->__credalNet_src_cpt;
+		else
+			__credalNet_current_cpt = this->__credalNet_current_cpt;
+		
+		/*if ( this->__current_nodeType == NULL )
+			__current_nodeType = & this->__nodeType;
+		else
+			__current_nodeType = this->__current_nodeType;*/
+		
+		if ( ! __var_bits.empty() )
+			__var_bits.clear();
+		
+		__bin_bn->beginTopologyTransformation();
+		
+		for ( auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
+			Size nb_bits, new_card;
+			auto var_dSize = __current_bn->variable ( *node_idIt ).domainSize();
+			
+			if ( var_dSize != 2 ) {
+				gum::superiorPow ( var_dSize, nb_bits, new_card );
+				
+				std::string bit_name;
+				std::vector< gum::NodeId > bits ( nb_bits );
+				
+				for ( decltype ( nb_bits ) bit = 0; bit < nb_bits; bit++ ) {
+					bit_name = __current_bn->variable ( *node_idIt ).name() + " - bit - ";
+					std::stringstream ss;
+					ss << bit;
+					bit_name += ss.str();
+					
+					LabelizedVariable var_bit ( bit_name, "node " + bit_name, 2 );
+					NodeId iD = __bin_bn->add ( var_bit );
+					
+					bits[bit] = iD;
+				} // end of : for each bit
+				
+				__var_bits.insert ( *node_idIt, bits );
+				
+			} // end of : if variable is not binary
+			else {
+				std::string bit_name = __current_bn->variable ( *node_idIt ).name();
+				LabelizedVariable var_bit ( bit_name, "node " + bit_name, 2 );
+				NodeId iD = __bin_bn->add ( var_bit );
+				
+				__var_bits.insert ( *node_idIt, std::vector< NodeId > ( 1, iD ) );
+			}
+			
+		} // end of : for each original variable
+		
+		for ( auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
+			NodeSet parents = __current_bn->dag().parents ( *node_idIt );
+			
+			if ( ! parents.empty() ) {
+				for ( auto parent_idIt = __current_bn->cpt ( *node_idIt ).begin(), theEnd2 = __current_bn->cpt ( *node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
+					if ( __current_bn->nodeId ( **parent_idIt ) != *node_idIt ) {
+						for ( Size parent_bit = 0, spbits = __var_bits[__current_bn->nodeId ( **parent_idIt )].size(); parent_bit < spbits; parent_bit++ )
+							for ( Size var_bit = 0, mbits = __var_bits[*node_idIt].size(); var_bit < mbits; var_bit++ )
+								__bin_bn->insertArc ( __var_bits[__current_bn->nodeId ( **parent_idIt )][parent_bit], __var_bits[*node_idIt][var_bit] );
+					}
+					
+				} // end of : for each parent
+			} // end of : if parents
+			
+			// arcs with one's bits
+			for(int bit_c = 1; bit_c < __var_bits[*node_idIt].size(); bit_c++)
+				for(int bit_p = 0; bit_p < bit_c; bit_p++)
+					__bin_bn->insertArc(__var_bits[*node_idIt][bit_p], __var_bits[*node_idIt][bit_c]);
+			
+		
+		} // end of : for each original variable
+		
+		__bin_bn->endTopologyTransformation();
+		
+		for ( int var = 0; var < __current_bn->size(); var++ ) {
+			for( int i = 0; i < __var_bits[var].size(); i++ ) {
+				gum::Potential< GUM_SCALAR > const * potential(&__bin_bn->cpt(__var_bits[var][i]));
+				gum::Instantiation ins(potential);
+				ins.setFirst();
+				
+				auto entry_size = potential->domainSize() / 2;
+				std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
+				
+				int old_conf = 0;
+				
+				for ( int conf = 0; conf < entry_size; conf++ ) {
+					std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
+					
+					for( int old_distri = 0; old_distri < (*__credalNet_current_cpt)[var][old_conf].size(); old_distri++ ) {
+						std::vector< GUM_SCALAR > & vertex = (*__credalNet_current_cpt)[var][old_conf][old_distri];
+						
+						std::vector< int > incc( vertex.size(), 0 );
+						
+						for ( int preced = 0; preced < i; preced++ ) {
+							int bit_pos = ins.pos(__bin_bn->variable(__var_bits[var][preced]));
+							int val = ins.val(bit_pos);
+							
+							Size pas = preced;
+							gum::int2Pow(pas);
+							
+							int elem;
+							if(val == 0)
+								elem = 0;
+							else
+								elem = pas;
+							
+							while(elem < vertex.size()) {
+								incc[elem]++;
+								elem++;
+								if(elem%pas == 0)
+									elem += pas;
+							}
+						}
+						
+						Size pas = i;
+						gum::int2Pow(pas);
+						
+						std::vector< GUM_SCALAR > distri(2,0);
+						int pos = 1;
+						for(int elem = 0; elem < vertex.size(); elem++ ) {
+							if(elem%pas == 0)
+								pos = -pos;
+							if(incc[elem]==i) 
+								(pos < 0)?(distri[0] += vertex[elem]):(distri[1] += vertex[elem]);
+						}
+						
+						if ( i > 0 ) {
+							GUM_SCALAR den = distri[0] + distri[1];
+							if(den == 0) {
+								distri[0] = 0;
+								distri[1] = 0;
+							}
+							else {
+								distri[0] /= den;
+								distri[1] /= den;
+							}
+						}
+						
+						pvar_cpt.push_back(distri);
+						
+					} // end of old distris
+					
+					// get min/max approx, 2 vertices
+					std::vector< std::vector< GUM_SCALAR > > vertices(2, std::vector< GUM_SCALAR >(2,1));
+					vertices[1][1] = 0;
+					for ( int v = 0; v < pvar_cpt.size(); v++ ) {
+						if ( pvar_cpt[v] < vertices[0][1] )
+							vertices[0][1] = pvar_cpt[v];
+						if ( pvar_cpt[v] > vertices[1][1] )
+							vertices[1][1] = pvar_cpt[v];
+					}
+					vertices[0][0] = 1 - vertices[0][1];
+					vertices[1][0] = 1 - vertices[1][1];
+					
+					pvar_cpt = vertices;
+					
+					var_cpt[conf] = pvar_cpt;
+					
+					++ins;
+					++ins;
+					
+					old_conf++;
+					if(old_conf == (*__credalNet_current_cpt)[var].size())
+						old_conf = 0;
+					
+				} // end of new parent conf
+				
+				__credalNet_bin_cpt->push_back(var_cpt);
+				
+			} // end of bit i
+			
+		} // end of old variable
+		
+		//if ( this->__current_bn != NULL )
+			//delete this->__current_bn;
+		
+		this->__current_bn = __bin_bn;
+		
+		//if ( this->__credalNet_current_cpt != NULL )
+			//delete this->__credalNet_current_cpt;
+		
+		this->__credalNet_current_cpt = __credalNet_bin_cpt;
+		
+		//if ( this->__current_nodeType != NULL )
+			//delete this->__current_nodeType;
+		
+		//this->__current_nodeType = __bin_nodeType;
+		
+	}
+  
 
   template< typename GUM_SCALAR >
   const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes &CredalNet< GUM_SCALAR >::credalNet_cpt() const {

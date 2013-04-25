@@ -14,14 +14,14 @@ namespace gum {
 namespace credal {
 
   /**
-   * @class MultipleInferenceEngines MultipleInferenceEngines.h <agrum/CN/MultipleInferenceEngines.h>
+   * @class MultipleInferenceEngine MultipleInferenceEngine.h <agrum/CN/MultipleInferenceEngine.h>
    * @brief Class template representing a CredalNet inference engine using one or more BayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as CNMonteCarloSampling.
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
    */
   template < typename GUM_SCALAR, class BNInferenceEngine >
-  class MultipleInferenceEngines : public InferenceEngine < GUM_SCALAR > {
+  class MultipleInferenceEngine : public InferenceEngine < GUM_SCALAR > {
     private :
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       typedef InferenceEngine<GUM_SCALAR> infE;
@@ -156,9 +156,9 @@ namespace credal {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      MultipleInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet );
+      MultipleInferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
       /** Destructor. */
-      virtual ~MultipleInferenceEngines();
+      virtual ~MultipleInferenceEngine();
 
       /// @}
       
@@ -196,7 +196,7 @@ namespace credal {
 } // end of namespace
 }
 
-#include <agrum/CN/MultipleInferenceEngines.tcc>
+#include <agrum/CN/MultipleInferenceEngine.tcc>
 
 #endif
 

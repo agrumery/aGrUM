@@ -139,6 +139,11 @@ namespace credal {
       void bin();
       //PH void indic();
       //PH void perState();
+			
+			/**
+			 * @warning those are a test
+			 */
+			void approximatedBinarization();
       
       /// @}
 

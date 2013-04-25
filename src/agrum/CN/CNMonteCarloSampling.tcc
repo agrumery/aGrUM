@@ -5,7 +5,7 @@ namespace gum {
   namespace credal {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
-  CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( credalNet ) {
+  CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine ( credalNet ) {
     infEs::_repetitiveInd = false;
     infEs::_timeLimit = 5 * 60;
     infEs::_iterStop = 1000;

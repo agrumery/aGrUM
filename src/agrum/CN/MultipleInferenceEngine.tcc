@@ -1,22 +1,22 @@
 #include <agrum/CN/InferenceEngine.h>
-#include <agrum/CN/MultipleInferenceEngines.h>
+#include <agrum/CN/MultipleInferenceEngine.h>
 
 namespace gum {
   namespace credal {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngines ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( credalNet ) {
-      GUM_CONSTRUCTOR ( MultipleInferenceEngines );
+    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( credalNet ) {
+      GUM_CONSTRUCTOR ( MultipleInferenceEngine );
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::~MultipleInferenceEngines() {
-      GUM_DESTRUCTOR ( MultipleInferenceEngines );
+    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::~MultipleInferenceEngine() {
+      GUM_DESTRUCTOR ( MultipleInferenceEngine );
     }
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_initThreadsData ( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ) {
+    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_initThreadsData ( const unsigned int & num_threads, const bool __storeVertices, const bool __storeBNOpt ) {
       _workingSet.clear();
       _workingSet.resize ( num_threads, NULL );
       _workingSetE.clear();
@@ -59,7 +59,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline bool MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_updateThread ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+    inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThread ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
       int tId = gum::getThreadNumber();
 
       // save E(X) if we don't save vertices
@@ -157,7 +157,7 @@ namespace gum {
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::__updateThreadCredalSets ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::__updateThreadCredalSets ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
       int tId = gum::getThreadNumber();
       auto & nodeCredalSet = _l_marginalSets[ tId ][ id ];
       auto dsize = vertex.size();
@@ -226,7 +226,7 @@ for ( auto & vtx : nodeCredalSet )
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_updateMarginals() {
+    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateMarginals() {
       #pragma omp parallel
       {
         int threadId = gum::getThreadNumber();
@@ -265,7 +265,7 @@ for ( auto & vtx : nodeCredalSet )
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline const GUM_SCALAR MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_computeEpsilon() {
+    inline const GUM_SCALAR MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_computeEpsilon() {
       GUM_SCALAR eps = 0;
       #pragma omp parallel
       {
@@ -307,7 +307,7 @@ for ( auto & vtx : nodeCredalSet )
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_updateOldMarginals() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateOldMarginals() {
       #pragma omp parallel
       {
         int threadId = gum::getThreadNumber();
@@ -346,7 +346,7 @@ for ( auto & vtx : nodeCredalSet )
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_verticesFusion() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_verticesFusion() {
       // don't create threads if there are no vertices saved
       if ( ! infE::_storeVertices )
         return;
@@ -396,7 +396,7 @@ for ( auto & vtx : nodeThreadCredalSet ) {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_expFusion() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_expFusion() {
       // don't create threads if there are no modalities to compute expectations
       if ( this->_modal.empty() )
         return;
@@ -480,7 +480,7 @@ for ( auto & vertex : infE::_marginalSets[ i ] ) {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::_optFusion() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_optFusion() {
       typedef std::vector< bool > dBN;
 
       //std::cout << "thread opt fusion : " << _l_marginalMin.size() << std::endl;
@@ -542,7 +542,7 @@ for ( auto & vertex : infE::_marginalSets[ i ] ) {
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void MultipleInferenceEngines< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
       infE::eraseAllEvidence();
       auto tsize = _workingSet.size();
 
