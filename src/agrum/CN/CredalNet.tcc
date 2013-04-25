@@ -769,122 +769,127 @@ namespace credal {
 			if ( ! parents.empty() ) {
 				for ( auto parent_idIt = __current_bn->cpt ( *node_idIt ).begin(), theEnd2 = __current_bn->cpt ( *node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
 					if ( __current_bn->nodeId ( **parent_idIt ) != *node_idIt ) {
-						for ( Size parent_bit = 0, spbits = __var_bits[__current_bn->nodeId ( **parent_idIt )].size(); parent_bit < spbits; parent_bit++ )
-							for ( Size var_bit = 0, mbits = __var_bits[*node_idIt].size(); var_bit < mbits; var_bit++ )
-								__bin_bn->insertArc ( __var_bits[__current_bn->nodeId ( **parent_idIt )][parent_bit], __var_bits[*node_idIt][var_bit] );
+						for ( Size parent_bit = 0, spbits = __var_bits[ __current_bn->nodeId ( **parent_idIt ) ].size(); parent_bit < spbits; parent_bit++ )
+							for ( Size var_bit = 0, mbits = __var_bits[ *node_idIt ].size(); var_bit < mbits; var_bit++ )
+								__bin_bn->insertArc ( __var_bits[ __current_bn->nodeId ( **parent_idIt ) ][ parent_bit ], __var_bits[ *node_idIt ][ var_bit ] );
 					}
 					
 				} // end of : for each parent
 			} // end of : if parents
 			
 			// arcs with one's bits
-			for(int bit_c = 1; bit_c < __var_bits[*node_idIt].size(); bit_c++)
-				for(int bit_p = 0; bit_p < bit_c; bit_p++)
-					__bin_bn->insertArc(__var_bits[*node_idIt][bit_p], __var_bits[*node_idIt][bit_c]);
+			auto bitsize = __var_bits[ *node_idIt ].size ();
+			for ( decltype ( bitsize ) bit_c = 1; bit_c < bitsize; bit_c++ )
+				for ( decltype ( bit_c ) bit_p = 0; bit_p < bit_c; bit_p++ )
+					__bin_bn->insertArc ( __var_bits[ *node_idIt ][ bit_p ], __var_bits[ *node_idIt ][ bit_c ]);
 			
 		
 		} // end of : for each original variable
 		
 		__bin_bn->endTopologyTransformation();
 		
-		std::cout << "nodes and arcs inserted, computing probabilities" << std::endl;
-		
-		for ( int var = 0; var < __current_bn->size(); var++ ) {
-			for( int i = 0; i < __var_bits[var].size(); i++ ) {
-				gum::Potential< GUM_SCALAR > const * potential(&__bin_bn->cpt(__var_bits[var][i]));
-				gum::Instantiation ins(potential);
-				ins.setFirst();
+		auto varsize = __current_bn->size();
+		for ( decltype ( varsize ) var = 0; var < varsize; var++ ) {
+			auto bitsize = __var_bits[ var ].size ();
+			
+			for( decltype ( bitsize ) i = 0; i < bitsize; i++ ) {
+				gum::Potential< GUM_SCALAR > const * potential ( &__bin_bn->cpt ( __var_bits[ var ][ i ] ) );
+				gum::Instantiation ins ( potential );
+				ins.setFirst ();
 				
-				auto entry_size = potential->domainSize() / 2;
+				auto entry_size = potential->domainSize () / 2;
 				std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
 				
-				int old_conf = 0;
+				unsigned int old_conf = 0;
 				
-				for ( int conf = 0; conf < entry_size; conf++ ) {
-std::cout << "conf : "<<conf << std::endl;
+				for ( decltype ( entry_size ) conf = 0; conf < entry_size; conf++ ) {
 					std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
-					for( int old_distri = 0; old_distri < (*__credalNet_current_cpt)[var][old_conf].size(); old_distri++ ) {
-						const std::vector< GUM_SCALAR > & vertex = (*__credalNet_current_cpt)[var][old_conf][old_distri];
-std::cout << "old vertex : " << vertex << std::endl;
-						std::vector< int > incc( vertex.size(), 0 );
+					auto verticessize = ( *__credalNet_current_cpt )[ var ][ old_conf ].size();
+					
+					for( decltype ( verticessize ) old_distri = 0; old_distri < verticessize; old_distri++ ) {
+						const std::vector< GUM_SCALAR > & vertex = ( *__credalNet_current_cpt )[ var ][ old_conf ][ old_distri ];
+						auto vertexsize = vertex.size();
 						
-						for ( int preced = 0; preced < i; preced++ ) {
-							int bit_pos = ins.pos(__bin_bn->variable(__var_bits[var][preced]));
-							int val = ins.val(bit_pos);
+						std::vector< unsigned int > incc ( vertexsize, 0 );
+						
+						for ( decltype ( i ) preced = 0; preced < i; preced++ ) {
+							auto bit_pos = ins.pos ( __bin_bn->variable ( __var_bits[ var ][ preced ] ) );
+							auto val = ins.val ( bit_pos );
 							
 							Size pas = preced;
-							gum::int2Pow(pas);
+							gum::int2Pow ( pas );
 							
-							int elem;
-							if(val == 0)
+							decltype ( vertexsize ) elem;
+							if ( val == 0 )
 								elem = 0;
 							else
 								elem = pas;
 							
-							while(elem < vertex.size()) {
-								incc[elem]++;
+							while ( elem < vertexsize ) {
+								incc[ elem ]++;
 								elem++;
-								if(elem%pas == 0)
+								if ( elem % pas == 0 )
 									elem += pas;
 							}
 						}
 						
 						Size pas = i;
-						gum::int2Pow(pas);
+						gum::int2Pow ( pas );
 						
-						std::vector< GUM_SCALAR > distri(2,0);
+						std::vector< GUM_SCALAR > distri (2, 0);
 						int pos = 1;
-						for(int elem = 0; elem < vertex.size(); elem++ ) {
-							if(elem%pas == 0)
+						for ( decltype ( vertexsize ) elem = 0; elem < vertexsize; elem++ ) {
+							if ( elem % pas == 0 )
 								pos = -pos;
-							if(incc[elem]==i) 
-								(pos < 0)?(distri[0] += vertex[elem]):(distri[1] += vertex[elem]);
+							if ( incc[ elem ] == i ) 
+								( pos < 0 ) ? ( distri[ 0 ] += vertex[ elem ] ) : ( distri[ 1 ] += vertex[ elem ] );
 						}
 						
 						if ( i > 0 ) {
-							GUM_SCALAR den = distri[0] + distri[1];
-							if(den == 0) {
-								distri[0] = 0;
-								distri[1] = 0;
+							GUM_SCALAR den = distri[ 0 ] + distri[ 1 ];
+							if ( den == 0 ) {
+								distri[ 0 ] = 0;
+								distri[ 1 ] = 0;
 							}
 							else {
-								distri[0] /= den;
-								distri[1] /= den;
+								distri[ 0 ] /= den;
+								distri[ 1 ] /= den;
 							}
 						}
 						
-						pvar_cpt.push_back(distri);
+						pvar_cpt.push_back ( distri );
 						
 					} // end of old distris
 					
-					std::cout << "min max" << std::endl;
-					
 					// get min/max approx, 2 vertices
-					std::vector< std::vector< GUM_SCALAR > > vertices(2, std::vector< GUM_SCALAR >(2,1));
-					vertices[1][1] = 0;
-					for ( int v = 0; v < pvar_cpt.size(); v++ ) {
-						if ( pvar_cpt[v][1] < vertices[0][1] )
-							vertices[0][1] = pvar_cpt[v][1];
-						if ( pvar_cpt[v][1] > vertices[1][1] )
-							vertices[1][1] = pvar_cpt[v][1];
+					std::vector< std::vector< GUM_SCALAR > > vertices ( 2, std::vector< GUM_SCALAR > ( 2, 1 ) );
+					vertices[ 1 ][ 1 ] = 0;
+					
+					auto new_verticessize = pvar_cpt.size();
+					
+					for ( decltype ( new_verticessize ) v = 0; v < new_verticessize; v++ ) {
+						if ( pvar_cpt[ v ][ 1 ] < vertices[ 0 ][ 1 ] )
+							vertices[ 0 ][ 1 ] = pvar_cpt[ v ][ 1 ];
+						if ( pvar_cpt[ v ][ 1 ] > vertices[ 1 ][ 1 ] )
+							vertices[ 1 ][ 1 ] = pvar_cpt[ v ][ 1 ];
 					}
-					vertices[0][0] = 1 - vertices[0][1];
-					vertices[1][0] = 1 - vertices[1][1];
+					vertices[ 0 ][ 0 ] = 1 - vertices[ 0 ][ 1 ];
+					vertices[ 1 ][ 0 ] = 1 - vertices[ 1 ][ 1 ];
 					
 					pvar_cpt = vertices;
 					
-					var_cpt[conf] = pvar_cpt;
+					var_cpt[ conf ] = pvar_cpt;
 					
 					++ins;
 					++ins;
 					
 					old_conf++;
-					if(old_conf == (*__credalNet_current_cpt)[var].size())
+					if ( old_conf == ( *__credalNet_current_cpt )[ var ].size () )
 						old_conf = 0;
 					
 				} // end of new parent conf
 				
-				__credalNet_bin_cpt->insert(__var_bits[var][i],var_cpt);
+				__credalNet_bin_cpt->insert ( __var_bits[ var ][ i ], var_cpt );
 				
 			} // end of bit i
 			
@@ -933,10 +938,10 @@ std::cout << "old vertex : " << vertex << std::endl;
   // only if CN is binary !!
   template< typename GUM_SCALAR >
   void CredalNet< GUM_SCALAR >::computeCPTMinMax() {
-    binCptMin.resize ( __src_bn.size() );
-    binCptMax.resize ( __src_bn.size() );
+		binCptMin.resize ( __current_bn->size() );
+		binCptMax.resize ( __current_bn->size() );
 
-    for ( auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
+		for ( auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
       auto pConf = credalNet_cpt() [*node_idIt].size();
       std::vector< GUM_SCALAR > min ( pConf );
       std::vector< GUM_SCALAR > max ( pConf );
@@ -945,7 +950,7 @@ std::cout << "old vertex : " << vertex << std::endl;
         GUM_SCALAR v1, v2;
         v1 = credalNet_cpt() [*node_idIt][pconf][0][1];
 
-        if ( __credalNet_src_cpt[*node_idIt][pconf].size() > 1 )
+				if ( credalNet_cpt() [*node_idIt][pconf].size() > 1 )
           v2 = credalNet_cpt() [*node_idIt][pconf][1][1];
         else
           v2 = v1;

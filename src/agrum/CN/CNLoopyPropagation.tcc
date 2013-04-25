@@ -371,18 +371,24 @@ namespace credal {
       std::vector< std::vector<GUM_SCALAR> > combi_msg_p ( taille );
 
       decltype ( taille ) confs = 1;
+			
       #pragma omp for
-
       for ( decltype ( taille ) i = 0; i < taille; i++ )
         confs *= msgs_p[ i ].size();
 
       #pragma omp atomic
       msgPerm *= confs;
-      #pragma omp barrier
-      #pragma omp flush(msgPerm)
+			#pragma omp barrier
+			#pragma omp flush(msgPerm)
+			
+			#pragma omp single
+			{
+				std::cout << bnet->variable(id).name() << std::endl;
+				std::cout << "parents confs : " << msgPerm << std::endl;
+				std::cout << msgs_p << std::endl;
+			}
 
       #pragma omp for
-
       for ( decltype ( msgPerm ) j = 0; j < msgPerm; j++ ) {
         // get jth msg :
         auto jvalue = j;
@@ -391,13 +397,17 @@ namespace credal {
           if ( msgs_p[ i ].size() == 2 ) {
             combi_msg_p[ i ] = ( jvalue & 1 ) ? msgs_p[ i ][ 1 ] : msgs_p[ i ][ 0 ];
             jvalue /= 2;
-          } else
+          } 
+          else
             combi_msg_p[ i ] = msgs_p[ i ][ 0 ];
         }
-
+				std::cout << "compute conf : " << j << std::endl;
         _compute_ext ( combi_msg_p, id, msg_pmin, msg_pmax );
+				std::cout << "conf " << j << " computed" << std::endl;
       }
-
+      
+			std::cout << "computations done" << std::endl;
+			
       // since min is _INF and max is 0 at init, there is no issue having more threads here than during for loop
       #pragma omp critical(msgpminmax)
       {
@@ -560,11 +570,11 @@ namespace credal {
   void CNLoopyPropagation<GUM_SCALAR>::makeInference ( ) {
     if ( _InferenceUpToDate )
       return;
-
+std::cout << "starting init " << std::endl;
     _initialize();
-
+std::cout << "init " << std::endl;
     infE::initApproximationScheme();
-
+std::cout << "init ok" << std::endl;
     switch ( __inferenceType ) {
       case nodeToNeighbours:
         _makeInferenceNodeToNeighbours();
@@ -578,11 +588,11 @@ namespace credal {
         _makeInferenceByRandomOrder();
         break;
     }
-
+std::cout << "inference ok " << std::endl;
     _updateMarginals();
-
+std::cout << "marginals ok " << std::endl;
     _computeExpectations();
-
+		std::cout << "expectation ok " << std::endl;
     _InferenceUpToDate = true;
   }
 
@@ -612,6 +622,7 @@ namespace credal {
 
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_initialize ( ) {
+		std::cout << "begin" << std::endl;
     gum::DAG graphe = bnet->dag();
 
     const Sequence<NodeId> & topoNodes = bnet->topologicalOrder();
@@ -672,6 +683,8 @@ namespace credal {
       std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
       std::vector< std::vector<GUM_SCALAR> > msg_p;
       std::vector<GUM_SCALAR> distri ( 2 );
+			
+			std::cout << "enum combi, collecting parents messages"<< std::endl;
 
       // +1 from start to avoid counting itself
       // use const iterators when available with cbegin
@@ -695,6 +708,8 @@ namespace credal {
       GUM_SCALAR msg_p_max = 0.;
 
       _enum_combi ( msgs_p, *it, msg_p_min, msg_p_max );
+			
+			std::cout << "extrema computed" << std::endl;
 
       if ( msg_p_min <= ( GUM_SCALAR ) 0. )
         msg_p_min = ( GUM_SCALAR ) 0.;
@@ -1335,7 +1350,8 @@ namespace credal {
           msg_p_min = 1.;
 
         msg_p_max = msg_p_min;
-      } else {
+      } 
+      else {
         GUM_SCALAR min = _NodesP_min[ *it ];
         GUM_SCALAR max;
 

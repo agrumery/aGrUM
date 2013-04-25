@@ -58,6 +58,7 @@
 
 #include <agrum/CN/CredalNet.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
+#include <agrum/CN/CNLoopyPropagation.h>
 
 
 #define xstrfy(s) strfy(s)
@@ -91,9 +92,34 @@ void test_credal() {
 	cn.intervalToCredal();
 	std::cout << cn.toString() << std::endl;
 	
+	gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
+	
+	mc.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+		unsigned int dSize = cn.current_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "mc p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << mc.marginalMin(*id)[mod] << ", " << mc.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	
 	cn.approximatedBinarization();
 	
 	std::cout << cn.toString() << std::endl;
+	
+	cn.computeCPTMinMax ();
+	gum::setNumberOfThreads( 1 );
+	gum::credal::CNLoopyPropagation< double > lp ( cn );
+	
+	lp.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+		unsigned int dSize = cn.current_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "l2u p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp.marginalMin(*id)[mod] << ", " << lp.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
 }
 
 int main ( int argc, char *argv[] ) {
