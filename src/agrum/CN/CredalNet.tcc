@@ -488,7 +488,10 @@ namespace credal {
 
           __credalNet_dts_cpt->insert ( dBit_iD, dNode_bit_cpt );
           __dts_bn->insertArc ( dBit_iD, *node_idIt );
-          __dts_nodeType->insert ( dBit_iD, DNODE );
+          //__dts_nodeType->insert ( dBit_iD, DNODE );
+					
+					////////////////////// DNODE not available anymore ///////////////////////
+					
         } // end of : for each d node bit
 
         // add parents back
@@ -702,7 +705,7 @@ namespace credal {
 		typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *__credalNet_bin_cpt = new typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes();
 		
 		// delete old one too
-		//typename Property< nodeType >::onNodes *__bin_nodeType = new typename Property< nodeType >::onNodes();
+		typename Property< nodeType >::onNodes *__bin_nodeType = new typename Property< nodeType >::onNodes();
 		
 		const BayesNet< GUM_SCALAR > * __current_bn;
 		//const typename Property< nodeType >::onNodes *__current_nodeType;
@@ -787,6 +790,8 @@ namespace credal {
 		} // end of : for each original variable
 		
 		__bin_bn->endTopologyTransformation();
+		
+		// binarization of cpts
 		
 		auto varsize = __current_bn->size();
 		for ( decltype ( varsize ) var = 0; var < varsize; var++ ) {
@@ -895,6 +900,59 @@ namespace credal {
 			
 		} // end of old variable
 		
+		__bin_bn->beginTopologyTransformation();
+		
+		/* indicatrices variables */
+		auto old_varsize = __var_bits.size ();
+		for ( decltype ( old_varsize ) i = 0; i < old_varsize; i++ ) {
+			auto bitsize = __var_bits[ i ].size ();
+			// binary variable
+			if ( bitsize == 1 )
+				continue;
+			
+			auto old_card = __src_bn.variable ( i ).domainSize ();
+			for ( decltype ( old_card ) mod = 0; mod < old_card; mod++ ) {
+				std::string s;
+				s = "I-";
+				std::stringstream ss;
+				ss << __src_bn.variable ( i ).name(); 
+				ss << "-";
+				ss << mod;
+				s += ss.str();
+				
+				gum::LabelizedVariable var ( s, "node " + s, 2 );
+				const gum::NodeId indic = __bin_bn->add( var );
+				
+				// arcs from one's bits
+				for ( decltype ( bitsize ) bit = 0; bit < bitsize; bit++ )
+					__bin_bn->insertArc ( __var_bits[ i ][ bit ], indic );
+				
+				// cpt
+				Size num = bitsize;
+				gum::int2Pow ( num );
+				
+				std::vector< std::vector< std::vector< GUM_SCALAR > > > icpt ( num );
+				
+				for ( decltype ( num ) entry = 0; entry < num; entry++ ) {
+					std::vector< std::vector< GUM_SCALAR > > vertices ( 1, std::vector< GUM_SCALAR > ( 2, 0 ) );
+					
+					if ( i == entry )
+						vertices[ 0 ][ 1 ] = 1;
+					else
+						vertices[ 0 ][ 0 ] = 1;
+					
+					icpt[ entry ] = vertices;
+				}
+				
+				__credalNet_bin_cpt->insert ( indic, icpt );
+				
+				__bin_nodeType->insert ( indic, INDIC );
+			} // end of each modality, i.e. as many indicatrice
+			
+		}
+		
+		__bin_bn->endTopologyTransformation();
+		
 		//if ( this->__current_bn != NULL )
 			//delete this->__current_bn;
 		
@@ -908,8 +966,9 @@ namespace credal {
 		//if ( this->__current_nodeType != NULL )
 			//delete this->__current_nodeType;
 		
-		//this->__current_nodeType = __bin_nodeType;
+		this->__current_nodeType = __bin_nodeType;		
 		
+		__sort_varType(); // will fill __bin_nodeType except for INDIC variables
 	}
   
 
@@ -1438,11 +1497,15 @@ namespace credal {
     else
       __current_nodeType = this->__current_nodeType;
 
-    if ( ! __current_nodeType->empty() )
-      __current_nodeType->clear();
+    /*if ( ! __current_nodeType->empty() )
+      __current_nodeType->clear();*/
 
     for ( auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
 
+			// indicatrices are already present
+			if ( __current_nodeType->exists ( *node_idIt ) )
+				continue;
+			
       bool precise = true, vacuous = true;
 
       for ( auto entry = ( *__credalNet_current_cpt ) [*node_idIt].cbegin(), theEnd2 = ( *__credalNet_current_cpt ) [*node_idIt].cend(); entry != theEnd2; ++entry ) {
@@ -1472,6 +1535,8 @@ namespace credal {
               vacuous = false;
 
         } // end of : if vertices == dSize
+        else
+					vacuous = false;
 
         if ( vacuous == false && precise == false ) {
           __current_nodeType->insert ( *node_idIt, CREDAL );

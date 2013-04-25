@@ -192,7 +192,7 @@ namespace credal {
       void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
 
       /** Get the last messages from one's parents and children. */
-      void _refreshLMsPIs();
+			void _refreshLMsPIs( bool refreshIndic = false );
 
       /**
        * Compute epsilon.
@@ -209,7 +209,10 @@ namespace credal {
 
       /** Since the network is binary, expectations can be computed from the final marginals which give us the credal set vertices. */
       void _computeExpectations();
-
+			
+			/** @brief Only update indicatrices variables at the end of computations ( calls _msgP ). */
+			void _updateIndicatrices();
+			
       /// @}
 
 

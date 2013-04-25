@@ -56,7 +56,7 @@ namespace credal {
         PRECISE = 0,
         CREDAL = 1,
         VACUOUS = 2,
-        DNODE = 3
+				INDIC = 3
         /*,
         BARREN_PRECISE = 3,
         BARREN_CREDAL = 4,

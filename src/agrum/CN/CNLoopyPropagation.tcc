@@ -380,13 +380,6 @@ namespace credal {
       msgPerm *= confs;
 			#pragma omp barrier
 			#pragma omp flush(msgPerm)
-			
-			#pragma omp single
-			{
-				std::cout << bnet->variable(id).name() << std::endl;
-				std::cout << "parents confs : " << msgPerm << std::endl;
-				std::cout << msgs_p << std::endl;
-			}
 
       #pragma omp for
       for ( decltype ( msgPerm ) j = 0; j < msgPerm; j++ ) {
@@ -401,12 +394,9 @@ namespace credal {
           else
             combi_msg_p[ i ] = msgs_p[ i ][ 0 ];
         }
-				std::cout << "compute conf : " << j << std::endl;
+        
         _compute_ext ( combi_msg_p, id, msg_pmin, msg_pmax );
-				std::cout << "conf " << j << " computed" << std::endl;
       }
-      
-			std::cout << "computations done" << std::endl;
 			
       // since min is _INF and max is 0 at init, there is no issue having more threads here than during for loop
       #pragma omp critical(msgpminmax)
@@ -570,12 +560,12 @@ namespace credal {
   void CNLoopyPropagation<GUM_SCALAR>::makeInference ( ) {
     if ( _InferenceUpToDate )
       return;
-std::cout << "starting init " << std::endl;
-    _initialize();
-std::cout << "init " << std::endl;
-    infE::initApproximationScheme();
-std::cout << "init ok" << std::endl;
-    switch ( __inferenceType ) {
+
+		_initialize();
+
+		infE::initApproximationScheme();
+
+		switch ( __inferenceType ) {
       case nodeToNeighbours:
         _makeInferenceNodeToNeighbours();
         break;
@@ -588,12 +578,13 @@ std::cout << "init ok" << std::endl;
         _makeInferenceByRandomOrder();
         break;
     }
-std::cout << "inference ok " << std::endl;
-    _updateMarginals();
-std::cout << "marginals ok " << std::endl;
-    _computeExpectations();
-		std::cout << "expectation ok " << std::endl;
-    _InferenceUpToDate = true;
+
+    //_updateMarginals();
+    _updateIndicatrices(); // will call _updateMarginals()
+
+		_computeExpectations();
+
+		_InferenceUpToDate = true;
   }
 
   template<typename GUM_SCALAR>
@@ -622,7 +613,6 @@ std::cout << "marginals ok " << std::endl;
 
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_initialize ( ) {
-		std::cout << "begin" << std::endl;
     gum::DAG graphe = bnet->dag();
 
     const Sequence<NodeId> & topoNodes = bnet->topologicalOrder();
@@ -678,14 +668,12 @@ std::cout << "marginals ok " << std::endl;
        * messages and so parents need to be read in order of appearance
        * use potentials instead of dag
        */
-      const gum::Potential<GUM_SCALAR> * parents = &bnet->cpt ( *it );
+      const gum::Potential<GUM_SCALAR> * parents = & bnet->cpt ( *it );
 
       std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
       std::vector< std::vector<GUM_SCALAR> > msg_p;
       std::vector<GUM_SCALAR> distri ( 2 );
 			
-			std::cout << "enum combi, collecting parents messages"<< std::endl;
-
       // +1 from start to avoid counting itself
       // use const iterators when available with cbegin
       for ( auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt ) {
@@ -707,10 +695,9 @@ std::cout << "marginals ok " << std::endl;
       GUM_SCALAR msg_p_min = 1.;
       GUM_SCALAR msg_p_max = 0.;
 
-      _enum_combi ( msgs_p, *it, msg_p_min, msg_p_max );
+			if ( cn->getNodeType ( *it ) != cn->INDIC )
+				_enum_combi ( msgs_p, *it, msg_p_min, msg_p_max );
 			
-			std::cout << "extrema computed" << std::endl;
-
       if ( msg_p_min <= ( GUM_SCALAR ) 0. )
         msg_p_min = ( GUM_SCALAR ) 0.;
 
@@ -760,13 +747,21 @@ std::cout << "marginals ok " << std::endl;
       for ( auto it = active_nodes_set.begin(), theEnd = active_nodes_set.end(); it != theEnd; ++it ) {
         gum::NodeSet _enfants = graphe.children ( *it );
 
-        for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt )
+        for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt ) {
+					if ( cn->getNodeType ( *jt ) == cn->INDIC )
+						continue;
+					
           _msgP ( *it, *jt );
+				}
 
         gum::NodeSet _parents = graphe.parents ( *it );
 
-        for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt )
+        for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt ) {
+					if ( cn->getNodeType ( *it ) == cn->INDIC )
+						continue;
+					
           _msgL ( *it, *kt );
+				}
       }
 
       eps = _calculateEpsilon();
@@ -806,6 +801,9 @@ std::cout << "marginals ok " << std::endl;
       }
 
       for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
+				if ( cn->getNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getNodeType ( ( *it )->head() ) == cn->INDIC )
+					continue;
+				
         _msgP ( ( *it )->tail(), ( *it )->head() );
         _msgL ( ( *it )->head(), ( *it )->tail() );
       }
@@ -835,6 +833,9 @@ std::cout << "marginals ok " << std::endl;
 
     do {
       for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
+				if ( cn->getNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getNodeType ( ( *it )->head() ) == cn->INDIC )
+					continue;
+				
         _msgP ( ( *it )->tail(), ( *it )->head() );
         _msgL ( ( *it )->head(), ( *it )->tail() );
       }
@@ -1238,8 +1239,12 @@ std::cout << "marginals ok " << std::endl;
   }
 
   template<typename GUM_SCALAR>
-  void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs ( ) {
+  void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs ( bool refreshIndic ) {
     for ( auto itX = bnet->beginNodes(), theEnd = bnet->endNodes(); itX != theEnd; ++itX ) {
+			
+			if ( ( ! refreshIndic ) && cn->getNodeType( *itX ) == cn->INDIC )
+				continue;
+			
       NodeSet const &children = bnet->dag().children ( *itX );
 
       const gum::Potential<GUM_SCALAR> * parents = &bnet->cpt ( *itX );
@@ -1439,7 +1444,24 @@ std::cout << "marginals ok " << std::endl;
 
     return infE::_computeEpsilon();
   }
+  
+  
+  template<typename GUM_SCALAR>
+  void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices ( ) {
+		for ( auto id = bnet->beginNodes(), end = bnet->endNodes(); id != end; ++id ) {
+			if ( cn->getNodeType ( *id ) != cn->INDIC )
+				continue;
+			
+			auto parents = bnet->dag ( ).parents( *id );
+			for ( auto & pid : parents )
+				_msgP( pid, *id );
+		}
+		
+		_refreshLMsPIs( true );
+		_updateMarginals();
+	}
 
+	
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_computeExpectations ( ) {
     if ( infE::_modal.empty() )
