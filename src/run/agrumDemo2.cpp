@@ -20,7 +20,7 @@
 
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
-void test_credal() {
+void test_credal2() {
 
 /////////////// OMP test stuff ///////////////////
 
@@ -227,7 +227,7 @@ void test_credal() {
 	std::cout << myCNb.toString() << std::endl;
 	
 	myCNb.computeCPTMinMax();
-	gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double>(myCNb);
+	gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double>(myCNb);
 	lp.makeInference();
 	
 	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
@@ -721,9 +721,9 @@ std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::end
   */
 }
 
-int main ( int argc, char *argv[] ) {
+int main2 ( int argc, char *argv[] ) {
   try {
-    test_credal();
+    test_credal2();
   } catch (gum::Exception& e) {
     GUM_SHOWERROR(e);
   }
