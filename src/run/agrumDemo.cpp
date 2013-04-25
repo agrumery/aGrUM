@@ -83,6 +83,11 @@ void test_credal() {
   std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
+	
+	
+	gum::credal::CredalNet< double > cn();
+	
+	//cn.toString();
 }
 
 int main ( int argc, char *argv[] ) {

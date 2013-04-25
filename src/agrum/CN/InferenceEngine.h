@@ -23,7 +23,7 @@ namespace credal {
 
   /**
    * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
-   * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as LoopyPropagation (inner multi-threading) or CNMonteCarloSampling (outer multi-threading).
+   * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as CNLoopyPropagation (inner multi-threading) or CNMonteCarloSampling (outer multi-threading).
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */

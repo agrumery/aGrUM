@@ -1,5 +1,5 @@
-#ifndef __LOOPY_PROPAGATION__H__
-#define __LOOPY_PROPAGATION__H__
+#ifndef __CN_LOOPY_PROPAGATION__H__
+#define __CN_LOOPY_PROPAGATION__H__
 
 #include <agrum/CN/CredalNet.h>
 #include <agrum/BN/algorithms/approximationScheme.h>
@@ -17,12 +17,12 @@ namespace gum {
 namespace credal {
 
   /**
-   * @class LoopyPropagation LoopyPropagation.h <agrum/CN/LoopyPropagation.h>
+   * @class CNLoopyPropagation CNLoopyPropagation.h <agrum/CN/CNLoopyPropagation.h>
    * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    */
   template< typename GUM_SCALAR >
-  class LoopyPropagation : public InferenceEngine<GUM_SCALAR> {
+  class CNLoopyPropagation : public InferenceEngine<GUM_SCALAR> {
     public:
       typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
       typedef const gum::Arc *cArcP;
@@ -95,9 +95,9 @@ namespace credal {
        * Constructor.
        * @param cnet The CredalNet to be used with this algorithm.
        */
-      LoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet );
+      CNLoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet );
       /** Destructor. */
-      virtual ~LoopyPropagation();
+      virtual ~CNLoopyPropagation();
       /// @}
 
     protected:
@@ -269,6 +269,6 @@ namespace credal {
 }
 }
 
-#include <agrum/CN/LoopyPropagation.tcc>
+#include <agrum/CN/CNLoopyPropagation.tcc>
 
 #endif

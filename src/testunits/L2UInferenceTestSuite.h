@@ -5,7 +5,7 @@
 #include "testsuite_utils.h"
 
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/LoopyPropagation.h>
+#include <agrum/CN/CNLoopyPropagation.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
@@ -98,7 +98,7 @@ namespace gum_tests {
       void testL2UInference () {
         initCNet();
 
-        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double> ( *cn );
+        gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
         // evidence from file
         try {
@@ -183,7 +183,7 @@ namespace gum_tests {
         initDCNet();
         typedef std::vector< double > exp;
 
-        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double> ( *cn );
+        gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
         //////////////////////////////////////////////////////
         // strong independence
@@ -251,7 +251,7 @@ namespace gum_tests {
       // with dynamic network
       void testL2UListener () {
         initDCNet();
-        gum::credal::LoopyPropagation<double> lp = gum::credal::LoopyPropagation<double> ( *cn );
+        gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
         // evidence from file
         try {
@@ -260,7 +260,7 @@ namespace gum_tests {
           TS_ASSERT ( false );
         }
 
-        //lp.inferenceType(gum::LoopyPropagation<double>::InferenceType::randomOrder);
+        //lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
         L2UListener mcl ( lp );
 
         try {
