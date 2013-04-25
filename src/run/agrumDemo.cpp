@@ -85,9 +85,13 @@ void test_credal() {
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 	
 	
-	gum::credal::CredalNet< double > cn();
+	gum::credal::CredalNet< double > cn ( GET_PATH_STR( gl2u2_min.bif ), GET_PATH_STR( gl2u2_max.bif ) );
+	cn.intervalToCredal();
+	std::cout << cn.toString() << std::endl;
 	
-	//cn.toString();
+	cn.approximatedBinarization();
+	
+	std::cout << cn.toString() << std::endl;
 }
 
 int main ( int argc, char *argv[] ) {

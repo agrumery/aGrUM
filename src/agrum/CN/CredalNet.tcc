@@ -255,14 +255,14 @@ namespace credal {
 
     credal::LRSWrapper< GUM_SCALAR > lrsWrapper;
 
-    for ( auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
+    for ( auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {			
       const Potential< GUM_SCALAR > * const potential_min ( &__src_bn_min.cpt ( *node_idIt ) );
       const Potential< GUM_SCALAR > * const potential_max ( &__src_bn_max.cpt ( *node_idIt ) );
 
       auto var_dSize = __src_bn.variable ( *node_idIt ).domainSize();
       auto entry_size = potential_min->domainSize() / var_dSize;
 
-      std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
+			std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
 
       Instantiation ins_min ( potential_min );
       Instantiation ins_max ( potential_max );
@@ -802,7 +802,7 @@ namespace credal {
 					std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
 					
 					for( int old_distri = 0; old_distri < (*__credalNet_current_cpt)[var][old_conf].size(); old_distri++ ) {
-						std::vector< GUM_SCALAR > & vertex = (*__credalNet_current_cpt)[var][old_conf][old_distri];
+						const std::vector< GUM_SCALAR > & vertex = (*__credalNet_current_cpt)[var][old_conf][old_distri];
 						
 						std::vector< int > incc( vertex.size(), 0 );
 						
@@ -859,10 +859,10 @@ namespace credal {
 					std::vector< std::vector< GUM_SCALAR > > vertices(2, std::vector< GUM_SCALAR >(2,1));
 					vertices[1][1] = 0;
 					for ( int v = 0; v < pvar_cpt.size(); v++ ) {
-						if ( pvar_cpt[v] < vertices[0][1] )
-							vertices[0][1] = pvar_cpt[v];
-						if ( pvar_cpt[v] > vertices[1][1] )
-							vertices[1][1] = pvar_cpt[v];
+						if ( pvar_cpt[v][1] < vertices[0][1] )
+							vertices[0][1] = pvar_cpt[v][1];
+						if ( pvar_cpt[v][1] > vertices[1][1] )
+							vertices[1][1] = pvar_cpt[v][1];
 					}
 					vertices[0][0] = 1 - vertices[0][1];
 					vertices[1][0] = 1 - vertices[1][1];
@@ -880,7 +880,7 @@ namespace credal {
 					
 				} // end of new parent conf
 				
-				__credalNet_bin_cpt->push_back(var_cpt);
+				__credalNet_bin_cpt->insert(__var_bits[var][i],var_cpt);
 				
 			} // end of bit i
 			
