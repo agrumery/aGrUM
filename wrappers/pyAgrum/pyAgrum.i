@@ -46,6 +46,7 @@ BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double
 
 CredalNet = CredalNet_double
-MCSampling = MCSampling_double
+CNMonteCarloSampling = CNMonteCarloSampling_double
+CNLoopyPropagation = CNLoopyPropagation_double
 %}
 
