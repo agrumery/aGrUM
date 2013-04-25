@@ -2,7 +2,7 @@
 #include <agrum/CN/InferenceEngine.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
 //#include <agrum/CN/LocalSearch.h>
-#include <agrum/CN/LoopyPropagation.h>
+#include <agrum/CN/CNLoopyPropagation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 //#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
