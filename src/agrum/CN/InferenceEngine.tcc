@@ -66,10 +66,6 @@ namespace gum {
       _iterStop = iter_stop;
     }
 
-    template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::setTimeLimit ( const int &time_limit ) {
-      _timeLimit = time_limit * 60;
-    }
 
     template< typename GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::storeBNOpt ( const bool value ) {
@@ -95,11 +91,6 @@ namespace gum {
     template< typename GUM_SCALAR >
     bool InferenceEngine< GUM_SCALAR >::repetitiveInd () const {
       return _repetitiveInd;
-    }
-
-    template< typename GUM_SCALAR >
-    int InferenceEngine< GUM_SCALAR >::timeLimit () const {
-      return _timeLimit;
     }
 
     template< typename GUM_SCALAR >

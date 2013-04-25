@@ -33,8 +33,8 @@ namespace gum {
    * @param exponent The integer exponent used to compute \f$ 2^{exponent} \f$ which will hold the result of afterward.
    */
   inline void int2Pow ( Size & exponent ) {
-    int base = 2;
-    base <<= ( exponent - 1 );
+    int base = 1;
+    base <<= ( exponent /*- 1*/ );
     exponent = base;
   }
 

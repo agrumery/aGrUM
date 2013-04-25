@@ -380,7 +380,7 @@ void test_credal2() {
       //MCE->insertModals(modals); //dyna cheese
 
       MCE->setRepetitiveInd ( false );
-      MCE->setTimeLimit ( 1 );
+      MCE->setMaxTime ( 60 );
       MCE->setIterStop ( 1000 );
 
       //MCE->storeBNOpt ( true );

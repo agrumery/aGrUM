@@ -7,10 +7,11 @@ namespace gum {
   template< typename GUM_SCALAR, class BNInferenceEngine >
   CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine ( credalNet ) {
     infEs::_repetitiveInd = false;
-    infEs::_timeLimit = 5 * 60;
     infEs::_iterStop = 1000;
     infEs::_storeVertices = false;
     infEs::_storeBNOpt = false;
+		
+		this->setMaxTime ( 60 );
 
     GUM_CONSTRUCTOR ( CNMonteCarloSampling );
   }
@@ -156,7 +157,6 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
-    this->setMaxTime ( infEs::_timeLimit );
     this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
     /**
      * VERIFIER d/dt(e(t+1)-e(t))

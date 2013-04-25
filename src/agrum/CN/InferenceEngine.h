@@ -83,9 +83,7 @@ namespace credal {
       /** @brief \c True if credal sets vertices are stored, \c False otherwise. \c False by default. */
       bool _storeVertices;
       /** @brief \c True if using repetitive independence ( dynamic network only ), \c False otherwise. \c False by default. */
-      bool _repetitiveInd;
-      /** @brief Time limit stopping rule in seconds used by some algorithms such as CNMonteCarloSampling. 300 seconds by default. */
-      int _timeLimit;
+      bool _repetitiveInd;      
       /** @brief Iterations limit stopping rule used by some algorithms such as CNMonteCarloSampling. The algorithms stops if no changes occured within 1000 iterations by default. */
       int _iterStop;
       /** @brief \c True is optimal bayes net are stored, for each variable and each modality, \c False otherwise. Not all algorithms offers this option. \c False by default. */
@@ -239,10 +237,6 @@ namespace credal {
        */
       void setRepetitiveInd ( const bool repetitive );
       /**
-       * @param time_limit The time limit to be used by some algorithms, in minutes.
-       */
-      void setTimeLimit ( const int & time_limit );
-      /**
        * @param iter_stop The number of iterations without changes needed to stop some algorithms.
        */
       void setIterStop ( const int & iter_stop );
@@ -260,11 +254,6 @@ namespace credal {
        * @return \c True if repetitive, \c False otherwise.
        */
       bool repetitiveInd () const;
-      /**
-       * Get the time limit used by some algorithms.
-       * @return the time limit in seconds.
-       */
-      int timeLimit () const;
       /**
        * Get the number of iterations without changes used to stop some algorithms.
        * @return the number of iterations.

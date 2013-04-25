@@ -787,6 +787,8 @@ namespace credal {
 		
 		__bin_bn->endTopologyTransformation();
 		
+		std::cout << "nodes and arcs inserted, computing probabilities" << std::endl;
+		
 		for ( int var = 0; var < __current_bn->size(); var++ ) {
 			for( int i = 0; i < __var_bits[var].size(); i++ ) {
 				gum::Potential< GUM_SCALAR > const * potential(&__bin_bn->cpt(__var_bits[var][i]));
@@ -799,11 +801,11 @@ namespace credal {
 				int old_conf = 0;
 				
 				for ( int conf = 0; conf < entry_size; conf++ ) {
+std::cout << "conf : "<<conf << std::endl;
 					std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
-					
 					for( int old_distri = 0; old_distri < (*__credalNet_current_cpt)[var][old_conf].size(); old_distri++ ) {
 						const std::vector< GUM_SCALAR > & vertex = (*__credalNet_current_cpt)[var][old_conf][old_distri];
-						
+std::cout << "old vertex : " << vertex << std::endl;
 						std::vector< int > incc( vertex.size(), 0 );
 						
 						for ( int preced = 0; preced < i; preced++ ) {
@@ -854,6 +856,8 @@ namespace credal {
 						pvar_cpt.push_back(distri);
 						
 					} // end of old distris
+					
+					std::cout << "min max" << std::endl;
 					
 					// get min/max approx, 2 vertices
 					std::vector< std::vector< GUM_SCALAR > > vertices(2, std::vector< GUM_SCALAR >(2,1));

@@ -84,6 +84,8 @@ void test_credal() {
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 	
+	int x = 1;
+	//std::cout << (x <<= )
 	
 	gum::credal::CredalNet< double > cn ( GET_PATH_STR( gl2u2_min.bif ), GET_PATH_STR( gl2u2_max.bif ) );
 	cn.intervalToCredal();
