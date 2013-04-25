@@ -71,10 +71,10 @@
 #include <agrum/graphs/diGraphListener.h>
 
 #include <agrum/CN/CredalNet.h>
-#include <agrum/CN/OptBN.h>
-#include <agrum/CN/CNInferenceEngine.h>
-#include <agrum/CN/CNInferenceEngines.h>
-#include <agrum/CN/MCSampling.h>
+#include <agrum/CN/VarMod2BNsMap.h>
+#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/MultipleInferenceEngine.h>
+#include <agrum/CN/CNMonteCarloSampling.h>
 %}
 
 %include "std_vector.i"
@@ -164,11 +164,10 @@
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %include <agrum/CN/CredalNet.h>
-%include <agrum/CN/OptBN.h>
-%include <agrum/CN/CNInferenceEngine.h>
-%include <agrum/CN/CNInferenceEngines.h>
-%include <agrum/CN/MCSampling.h>
-
+%include <agrum/CN/VarMod2BNsMap.h>
+%include <agrum/CN/InferenceEngine.h>
+%include <agrum/CN/MultipleInferenceEngine.h>
+%include <agrum/CN/CNMonteCarloSampling.h>
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
@@ -272,7 +271,7 @@
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::MCSampling<double,gum::LazyPropagation<double> > {
+%extend gum::CNMonteCarloSampling<double,gum::LazyPropagation<double> > {
   using gum::ApproximationScheme::setVerbosity;
   using gum::ApproximationScheme::setEpsilon;
   using gum::ApproximationScheme::setMinEpsilonRate;
@@ -348,7 +347,7 @@
 %template(BruteForceKL_double) gum::BruteForceKL<double>;
 %template(GibbsKL_double) gum::GibbsKL<double>;
 
-%template(CredalNet_double) gum::CredalNet<double>;
-%template(CNInferenceEngine_double) gum::CNInferenceEngine<double>;
-%template(CNInferenceEngines_double) gum::CNInferenceEngines<double,gum::LazyPropagation<double> >;
-%template(MCSampling_double) gum::MCSampling<double,gum::LazyPropagation<double> >;
+%template(CredalNet_double) gum::credal::CredalNet<double>;
+%template(CNInferenceEngine_double) gum::credal::InferenceEngine<double>;
+%template(CNInferenceEngines_double) gum::credal::MultipleInferenceEngine<double,gum::LazyPropagation<double> >;
+%template(CNMonteCarloSampling_double) gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >;
