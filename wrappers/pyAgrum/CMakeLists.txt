@@ -118,15 +118,14 @@ foreach(C_FILE ${AGRUM_C_SOURCES})
     set_source_files_properties(${C_FILE} PROPERTIES COMPILE_FLAGS ${CMAKE_C_FLAGS_RELEASE})
 endforeach(C_FILE ${AGRUM_C_SOURCES})
 
-add_definitions("${CMAKE_CXX_FLAGS_RELEASE}")
-
 # Build
 swig_add_module(pyAgrum python ${CMAKE_CURRENT_BINARY_DIR}/pyAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES})
 #for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
 swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
 
 set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "-lgomp")
+set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
+set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "-lgomp")
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../apps/pyAgrum/gumLib/*.py")
 

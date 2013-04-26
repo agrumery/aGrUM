@@ -48,5 +48,6 @@ GibbsKL = GibbsKL_double
 CredalNet = CredalNet_double
 CNMonteCarloSampling = CNMonteCarloSampling_double
 CNLoopyPropagation = CNLoopyPropagation_double
+
 %}
 
