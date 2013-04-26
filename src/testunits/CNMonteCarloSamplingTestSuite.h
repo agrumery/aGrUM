@@ -122,7 +122,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.eraseAllEvidence (); );
 
         mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
+        mcs.setMaxTime ( 1 );
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
         //mcs.storeBNOpt ( true );
@@ -181,7 +181,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( f_3.evi ) ); );
 
         mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
+        mcs.setMaxTime ( 1 );
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
 
@@ -237,7 +237,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( f_3.evi ) ); );
 
         mcs.setRepetitiveInd ( true );
-        mcs.setTimeLimit ( 1 );
+        mcs.setMaxTime ( 1 );
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
 
@@ -286,7 +286,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertEvidenceFile ( GET_CN_PATH_STR ( f_3.evi ) ); );
 
         mcs.setRepetitiveInd ( false );
-        mcs.setTimeLimit ( 1 );
+        mcs.setMaxTime ( 1 );
         mcs.setEpsilon ( 0.1 );
         mcs.setIterStop ( 8 );
 
