@@ -38,10 +38,14 @@ namespace gum {
 
     __mcInitApproximationScheme();
     __mcThreadDataCopy();
+		
+		// don't put it after burnIn, it could stop with timeout : we want at least one burnIn and one periodSize
+		GUM_SCALAR eps = 1; // to validate testSuite ?
+		this->continueApproximationScheme ( eps, false, false ); 
 
     auto bsize = this->burnIn();
+		
     #pragma omp parallel for
-
     for ( decltype ( bsize ) iter = 0; iter < bsize; iter++ ) {
       __threadInference();
       /*
@@ -57,26 +61,23 @@ namespace gum {
     } // end of : parallel burnIn
 
     this->updateApproximationScheme ( bsize );
-
+		
     this->_updateOldMarginals(); // fusion threads + update old margi
-
-    GUM_SCALAR eps = 1; // to validate testSuite ?
-    this->continueApproximationScheme ( eps, false, false );
 
     auto psize = this->periodSize();
 
     // less overheads with high periodSize
     do {
       eps = 0;
-      #pragma omp parallel for
-
+      
+			#pragma omp parallel for
       for ( decltype ( psize ) iter = 0; iter < psize; iter++ ) {
         __threadInference();
         __threadUpdate();
       } // end of : parallel periodSize
 
       this->updateApproximationScheme ( psize );
-
+			
       this->_updateMarginals(); // fusion threads + update margi
 
       eps = this->_computeEpsilon(); // also updates oldMargi

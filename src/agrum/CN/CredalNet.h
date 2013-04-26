@@ -124,21 +124,6 @@ namespace credal {
 			 */
 			void intervalToCredal ();
 			
-      /**
-       * @deprecated
-       * Transform this CredalNet using the Decision Theoretic Specification.
-       * @warning not complete / definitive
-       */
-      void dts(); // for L2U, no arcs between decision node bits
-      // not complete / to be removed
-      /**
-       * @deprecated
-       * Binarise this CredalNet.
-       * @warning not complete / definitive
-       */
-      void bin();
-      //PH void indic();
-      //PH void perState();
 			
 			/**
 			 * @warning those are a test

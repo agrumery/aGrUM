@@ -85,14 +85,67 @@ void test_credal() {
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 	
-	int x = 1;
-	//std::cout << (x <<= )
 	
-	gum::credal::CredalNet< double > cn ( GET_PATH_STR( gl2u2_min.bif ), GET_PATH_STR( gl2u2_max.bif ) );
+	
+	/** polytope tests */	
+	char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
+	std::string sinefile(inefile);
+	sinefile += ".ine";
+	
+	std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
+	// b + Ax >= 0
+	h_file << "H - representation\n";
+	h_file << "begin\n";
+	h_file << "8 5 rational\n";
+	// lower support hyperplans
+	h_file << -1 << "/" << 10 << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << -1 << "/" << 2 << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << -1 << "/" << 5 << " " << 0 << "/1" << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << "\n";
+	// upper support hyperplans
+	h_file << 7 << "/" << 10 << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << 10 << "/" << 10 << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
+	h_file << 3 << "/" << 5 << " " << 0 << "/1" << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << "\n";
+	
+	// normalization constant from those, fourth modality is norm constant for each vertex
+	h_file << 0 << "/" << 1 << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << " " << -1 << "/1" << "\n";
+	h_file << 0 << "/" << 1 << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << " " << 1 << "/1" << "\n";
+	// sum to 1
+	//h_file << -1 << "/" << 1 << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << "\n";
+	//h_file << 1 << "/" << 1 << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << "\n";
+	h_file << "end";
+	
+	h_file.close();
+	
+	char *args[3];
+	
+	std::string soft_name = "lrs";
+	std::string extfile(inefile);
+	extfile += ".ext";
+	
+	args[0] = new char[soft_name.size()];
+	args[1] = new char[sinefile.size()];
+	args[2] = new char[extfile.size()];
+	
+	strcpy ( args[0], soft_name.c_str() );
+	strcpy ( args[1], sinefile.c_str() );
+	strcpy ( args[2], extfile.c_str() );
+	
+	lrs_main ( 3, args );
+	
+	delete[] args[2]; delete[] args[1]; delete[] args[0];
+	
+	return;	
+
+	
+	gum::credal::CredalNet< double > cn ( GET_PATH_STR( /*gl2u2_*/min.bif ), GET_PATH_STR( /*gl2u2_*/max.bif ) );
 	cn.intervalToCredal();
-	std::cout << cn.toString() << std::endl;
+	//std::cout << cn.toString() << std::endl;
+	
+	//cn.approximatedBinarization();
 	
 	gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
+	//mc.setMaxTime ( 60 * 10 );
+	//mc.setPeriodSize ( 4000 );
 	
 	mc.makeInference();
 	
@@ -103,13 +156,12 @@ void test_credal() {
 		}
 	}
 	
-	
 	cn.approximatedBinarization();
 	
-	std::cout << cn.toString() << std::endl;
-	
+	//std::cout << cn.toString() << std::endl;
+
 	cn.computeCPTMinMax ();
-	gum::setNumberOfThreads( 1 );
+	
 	gum::credal::CNLoopyPropagation< double > lp ( cn );
 	
 	lp.makeInference();
@@ -125,6 +177,7 @@ void test_credal() {
 int main ( int argc, char *argv[] ) {
   try {
     test_credal();
+		std::cout.flush();
   } catch (gum::Exception& e) {
     GUM_SHOWERROR(e);
   }

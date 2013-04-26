@@ -1439,10 +1439,10 @@ namespace credal {
 
   template<typename GUM_SCALAR>
   GUM_SCALAR CNLoopyPropagation<GUM_SCALAR>::_calculateEpsilon ( ) {
-    _refreshLMsPIs();
-    _updateMarginals();
+    _refreshLMsPIs ();
+    _updateMarginals ();
 
-    return infE::_computeEpsilon();
+    return infE::_computeEpsilon ();
   }
   
   
@@ -1452,13 +1452,13 @@ namespace credal {
 			if ( cn->getNodeType ( *id ) != cn->INDIC )
 				continue;
 			
-			auto parents = bnet->dag ( ).parents( *id );
+			auto parents = bnet->dag ( ).parents ( *id );
 			for ( auto & pid : parents )
-				_msgP( pid, *id );
+				_msgP ( pid, *id );
 		}
 		
-		_refreshLMsPIs( true );
-		_updateMarginals();
+		_refreshLMsPIs ( true );
+		_updateMarginals ();
 	}
 
 	
