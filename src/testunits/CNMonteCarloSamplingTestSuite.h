@@ -92,7 +92,7 @@ namespace gum_tests {
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         double beta = 0.8;
-        cn->bnToCredal ( beta );
+        cn->bnToCredal ( beta, false );
 
       }
 

@@ -73,6 +73,19 @@ namespace credal {
       /// @name Constructors / Destructors
 //////////////////////////////////////////
       /// @{
+			
+			/**
+			 * Constructor used to create a CredalNet step by step, i.e. node by node, arc by arc, manually filling potentials.
+			 */
+			CredalNet ();
+			
+			gum::NodeId addNode ( const std::string & name, const unsigned long & card );
+			void addArc ( const gum::NodeId & tail, const gum::NodeId & head );
+			
+			void setCPT ( const gum::NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt );
+			void fillConstraints ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper );
+			
+			
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet file path.
        * One can also provide a single BayesNet in order to perturb it's probability distributions into credal sets according to another BayesNet containing the number of cases, for each node, of each parent instanciation met during learning, i.e. \f$ p(X = 0 \mid pa(X) = j) = N_{pa(X) = j} \f$.
@@ -83,7 +96,7 @@ namespace credal {
       CredalNet ( const std::string &src_min_num, const std::string &src_max_den = "" );
 
       /**
-       * Constructor for interval defined credal network which takes 2 BayesNet. 
+       * Constructor for interval defined credal network which takes 2 BayesNet.
        * One can also provide a single BayesNet in order to perturb it's probability distributions into credal sets according to another BayesNet containing the number of cases, for each node, of each parent instanciation met during learning, i.e. \f$ p(X = 0 \mid pa(X) = j) = N_{pa(X) = j} \f$.
        *
        * @param src_min_num The BayesNet which contains lower probabilities.
@@ -101,29 +114,55 @@ namespace credal {
 //////////////////////////////////////////
       /// @name Public manipulation methods
 //////////////////////////////////////////
-      /// @{
+      /// @{			
+			
       /**
-       * Perturbates the BayesNet provided as input for this CrealNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
+       * Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
        *
        * The perturbations are done according to the number of cases met for each node and each of it's parent instanciation, i.e. \f$ \epsilon = \beta^{ln(N_{pa(X) = j} + 1)} \f$ is the imprecision introduced which leads to \f$ \underline{p}(X = i \mid pa(X) = j) = (1 - \epsilon) p(X = i \mid pa(X) = j) \f$ and \f$ \overline{p}(X = i \mid pa(X) = j) = \underline{p}(X = i \mid pa(X) = j) + \epsilon \f$.
-       *
+			 * Use this method when using a single BayesNet storing counts of events with \c oneNet set to \c TRUE or when using two BayesNet, one with lower probabilities and one with upper probabilities, with \c oneNet set to \c FALSE.
+			 * 
        * @param beta The beta used to perturbate the network. \f$ 0 \leq \beta \leq 1 \f$.
-       * 
+			 * @param oneNet Boolean used as a flag. Set to \c TRUE if one BayesNet if provided with counts, to \c FALSE if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net).
+			 * @param keepZeroes Boolean used as a flag as whether or not - respectively \c TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c FALSE, i.e. zeroes are not kept.
        */
-      void bnToCredal ( GUM_SCALAR beta );
+      void bnToCredal ( const GUM_SCALAR beta, const bool oneNet, const bool keepZeroes = false );
       
       /**
 			 * @deprecated Use intervalToCredal ( lrsWrapper with no input / output files needed ).
 			 * 
        * Computes the vertices of each credal set according to their interval definition (uses lrs).
+			 * 
+			 * Use this method when using a single BayesNet storing counts of events.
        */
       void intervalToCredalWithFiles ();
 			
 			/**
 			 * Computes the vertices of each credal set according to their interval definition (uses lrs).
+			 * 
+			 * Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
 			 */
 			void intervalToCredal ();
 			
+			/**
+			 * Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
+			 * 
+			 * Use this method when using a single BayesNet storing counts of events.
+			 * Lagrange normalization. This call is irreversible and modify counts stored by \c __src_bn.
+			 * 
+			 * Doest not performs computations of the parameters but keeps normalized counts of events only. Call \c idmLearning to compute the probabilities (with any parameter value).
+			 */
+			void lagrangeNormalization ();
+			
+			/**
+			 * Learns parameters from a BayesNet storing counts of events.
+			 * 
+			 * Use this method when using a single BayesNet storing counts of events.
+			 * IDM model if \c s > 0, standard point probability if \c s = 0 (default value if none precised).
+			 * @param s The IDM parameter.
+			 * @param keepZeroes Boolean used as a flag as whether or not - respectively \c TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c FALSE, i.e. zeroes are not kept.
+			 */
+			void idmLearning ( const unsigned int s = 0, const bool keepZeroes = false );
 			
 			/**
 			 * @warning those are a test
@@ -131,6 +170,7 @@ namespace credal {
 			void approximatedBinarization();
       
       /// @}
+			
 
       // other utility member methods
       //PH void saveCNet ( const std::string &cn_path ) const;
@@ -202,7 +242,7 @@ namespace credal {
       const double & getEpsilonMoy() const;
 
       /**
-       * @return Returns \c TRUE is this CredalNet is separately and interval specified, \c FALSE otherwise.
+       * @return Returns \c TRUE if this CredalNet is separately and interval specified, \c FALSE otherwise.
        */
       const bool isSeparatelySpecified() const;
 
@@ -221,7 +261,8 @@ namespace credal {
       const std::vector< std::vector< GUM_SCALAR > > & get_CPT_max() const;
 
       //PH const std::vector< std::vector< gum::NodeId > > & var_bits() const;
-      /// @}
+      
+			/// @}
     
     protected:
 
@@ -239,7 +280,7 @@ namespace credal {
       double __epsilonMoy;
 
       /** @brief Value under which a decimal number is considered to be zero when computing redundant vertices. */
-      double __epsRedund;//= 1e-4;
+      double __epsRedund;//= 1e-6;
 
       /** @brief Value under which a decimal number is considered to be zero when using __farey. */
       double __epsF;// = 1e-6;
@@ -249,7 +290,7 @@ namespace credal {
       /** @brief Precision used by __frac. */
       int __precision;// = 1e6; // beware LRS
 
-      /** @brief \c TRUE if this CredalNet is separately and interval specified. */
+      /** @brief \c TRUE if this CredalNet is separately and interval specified, \c FALSE otherwise. */
       bool __separatelySpecified;
 
       /** @brief Original BayesNet (used as a DAG). Is never modified. */
@@ -280,12 +321,12 @@ namespace credal {
       /** 
        * @brief Used with binary networks to speed-up L2U inference. Store the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector< std::vector< GUM_SCALAR > > binCptMin;
+      typename std::vector< std::vector< GUM_SCALAR > > __binCptMin;
 
       /** 
        * @brief Used with binary networks to speed-up L2U inference. Store the upper probabilities of each node X over the "true" modality, i.e. \f$ \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector< std::vector< GUM_SCALAR > > binCptMax;
+      typename std::vector< std::vector< GUM_SCALAR > > __binCptMax;
 
       /** @brief Set the nodeType of each node */
       void __sort_varType();
@@ -300,7 +341,7 @@ namespace credal {
       /**
        * Computes the vertices of each credal set according to their interval definition (does not use lrs). Only works with credal sets defined such that when one modality reach it's upper probability, all others are at their lowest.
        *
-       * Called by bnToCredal.
+       * Called by bnToCredal and idmLearning.
        */
       void __intervalToCredal();
       

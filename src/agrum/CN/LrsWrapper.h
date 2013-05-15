@@ -12,6 +12,7 @@
 #include <agrum/core/exceptions.h>
 #include <agrum/core/Rational.h>
 
+
 // we force MP (not long or GMP)
 #undef long
 #undef GMP
@@ -313,7 +314,20 @@ namespace gum {
          * @param modal The modality on which we put constraints.
          */
         void fillH ( const GUM_SCALAR &min, const GUM_SCALAR &max, const unsigned int &modal );
+				
+				
+				
+				/**
+				 * @warning NOT SAFE ( states && __input bypassed )
+				 * 
+				 * @todo finish it
+				 * 
+				 * @warning NOT SAFE
+				 */
+				void fillMatrix ( const std::vector< std::vector< GUM_SCALAR > > & matrix );
 
+				
+				
         /**
          * @brief Creates the V-representation of a polytope by adding a vertex to the problem input \c __input.
          *

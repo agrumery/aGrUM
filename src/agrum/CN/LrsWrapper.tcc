@@ -162,6 +162,20 @@ namespace gum {
       if ( __insertedModals.size() == __card )
         __state = __states::H2Vready;
     }
+    
+    
+    template < typename GUM_SCALAR >
+    void LRSWrapper< GUM_SCALAR >::fillMatrix ( const std::vector< std::vector< GUM_SCALAR > > & matrix ) {
+			if ( ! __state == __states::Hup )
+				GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not been called or H-representation is complete, current state is : " << __setUpStateNames[ __state ] );
+			
+			if ( matrix[0].size() - 1 > __card )
+				GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillMatrix : size is greater than cardinality : "  << ( matrix[0].size() - 1 ) << " > " << __card );
+			
+			__input = matrix;
+			
+			__state = __states::H2Vready;
+		}
 
 
     template < typename GUM_SCALAR >
@@ -170,11 +184,11 @@ namespace gum {
         GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::fillV : setUpV or nextInput has not been called or V-representation is complete, current state is : " << __setUpStateNames[ __state ] );
 
       if ( __insertedVertices.size() == __vertices )
-        GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillV : input if already full with " << __vertices << " vertices." );
+        GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillV : input is already full with " << __vertices << " vertices." );
 
       GUM_SCALAR cptSum = 0;
 
-for ( auto & p : vertex )
+			for ( auto & p : vertex )
         cptSum += p;
 
       if ( fabs ( 1 - cptSum ) > 1e-6 )
@@ -182,7 +196,7 @@ for ( auto & p : vertex )
 
       bool eq = true;
 
-for ( auto & v : __insertedVertices ) {
+			for ( auto & v : __insertedVertices ) {
         eq = true;
 
         for ( decltype ( __card ) mod = 0; mod < __card; mod++ )
@@ -215,7 +229,7 @@ for ( auto & v : __insertedVertices ) {
       // check that we have a credal set and not a precise point probability, i.e. sum of vertex elements is close to one ( floating type precision )
       GUM_SCALAR sum = 0;
 
-for ( auto  elem : __vertex )
+			for ( auto  elem : __vertex )
         sum += elem;
 
       if ( fabs ( sum - 1 ) < 1e-6 ) {
@@ -327,7 +341,7 @@ for ( auto  elem : __vertex )
     template < typename GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::elimRedundVrep () {
       if ( ! __state == __states::V2Hready )
-        GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::computeVolume : volume is only for V-representation or fillV has not been called with all vertices, current state is still : " << __setUpStateNames[ __state ] );
+				GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::elimRedundVrep : only for V-representation or fillV has not been called with all vertices, current state is still : " << __setUpStateNames[ __state ] );
 
       __coutOff();
 

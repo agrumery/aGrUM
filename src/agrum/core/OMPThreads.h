@@ -5,9 +5,6 @@
 #include <omp.h>
 #endif
 
-/**
- * Namespace used to control OpenMP.
- */
 namespace gum {
 
   /**

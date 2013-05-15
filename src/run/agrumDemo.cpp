@@ -11,6 +11,7 @@
 #include <cmath>
 #include <algorithm>
 #include <cstdlib>
+#include "../agrum/CN/CredalNet.h"
 
 
 
@@ -60,6 +61,8 @@
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
 
+#include <agrum/CN/LpInterface.h>
+
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
@@ -68,7 +71,7 @@
 
 void test_credal() {
 
-/////////////// OMP test stuff ///////////////////
+	/////////////// OMP test stuff ///////////////////
 
   std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
   std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
@@ -84,58 +87,143 @@ void test_credal() {
   std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
+	/////////////////////////////
 	
+	gum::cn::LpInterface< double > lpr;
+	const gum::cn::LpCol & c1 = lpr.addCol();
+	const gum::cn::LpCol & c2 = lpr.addCol();
 	
+	gum::cn::LpRow< double > & r1 = lpr.addRow();
+	//r1.setColCoeff(c1, 1);
+	//r1.setColCoeff(c2, -1);
 	
-	/** polytope tests */	
-	char * inefile = tmpnam(NULL); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
-	std::string sinefile(inefile);
-	sinefile += ".ine";
+	std::map< gum::cn::LpCol, double > cf;
+	cf[c1] = 1; 
+	cf[c2] = -1;
 	
-	std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
-	// b + Ax >= 0
-	h_file << "H - representation\n";
-	h_file << "begin\n";
-	h_file << "8 5 rational\n";
-	// lower support hyperplans
-	h_file << -1 << "/" << 10 << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
-	h_file << -1 << "/" << 2 << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
-	h_file << -1 << "/" << 6 << " " << 0 << "/1" << " " << 0 << "/1" << " " << 1 << "/1" << " " << 0 << "/1" << "\n";
-	// upper support hyperplans
-	h_file << 7 << "/" << 10 << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
-	h_file << 1 << "/" << 1 << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << " " << 0 << "/1" << "\n";
-	h_file << 3 << "/" << 4 << " " << 0 << "/1" << " " << 0 << "/1" << " " << -1 << "/1" << " " << 0 << "/1" << "\n";
+	r1.setColsCoeffs( cf );
 	
-	// normalization constant from those, fourth modality is norm constant for each vertex
-	h_file << 0 << "/" << 1 << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << " " << -1 << "/1" << "\n";
-	h_file << 0 << "/" << 1 << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << " " << 1 << "/1" << "\n";
-	// sum to 1
-	//h_file << -1 << "/" << 1 << " " << 1 << "/1" << " " << 1 << "/1" << " " << 1 << "/1" << "\n";
-	//h_file << 1 << "/" << 1 << " " << -1 << "/1" << " " << -1 << "/1" << " " << -1 << "/1" << "\n";
-	h_file << "end";
+	gum::cn::LpRow< double > & r2 = lpr.addRow();
+	//r2.setColCoeff(c1, 1);
+	//r2.setBounds(0., 0.7);
 	
-	h_file.close();
+	cf.clear();
+	cf[c1] = 1;
 	
-	char *args[3];
+	r2.setColsCoeffs( cf, 0., 0.7 );
 	
-	std::string soft_name = "lrs";
-	std::string extfile(inefile);
-	extfile += ".ext";
+	std::vector< std::vector< double > > output = lpr.solve();
+	std::cout << output << std::endl;
 	
-	args[0] = new char[soft_name.size()];
-	args[1] = new char[sinefile.size()];
-	args[2] = new char[extfile.size()];
+	cf.clear();
+	cf[c1] = 0.; 
+	cf[c2] = 0.;
+	gum::cn::LpExpr< double > expr;//( cf );
 	
-	strcpy ( args[0], soft_name.c_str() );
-	strcpy ( args[1], sinefile.c_str() );
-	strcpy ( args[2], extfile.c_str() );
+	expr = 2. * c1 - c2 + 2. + 1. + 2. * c2 - 0.5 * c1;
+	expr.print();
 	
-	lrs_main ( 3, args );
+	expr = c1;
+	expr.print();
 	
-	delete[] args[2]; delete[] args[1]; delete[] args[0];
+	expr = 2.;
+	expr.print();
 	
-	return;	
-
+	expr = c1 + 2.;
+	expr.print();
+	
+	expr = 2. - c1;
+	expr.print();
+	
+	expr = c1 + c2;
+	expr.print();
+	
+	expr = c1 - c2;
+	expr.print();
+	
+	expr = 0.2 <= c1 + c2;
+	expr.print();
+	
+	expr = c1 + c2 <= 0.2;
+	expr.print();
+	
+	expr = c1 <= c2;
+	expr.print();
+	
+	expr = c1 + c2 <= c1 + c2;
+	expr.print();
+	
+	expr = c1 - 2. + c2 + 3. <= 2. + c2;
+	expr.print();
+	
+	expr = 2. <= c1 + c2 <= 3.;
+	expr.print();
+	
+	expr = 2. <= 2. * c1 <= c2;
+	expr.print();
+	
+	expr = c2 <= c1 + c2 <= 3.;
+	expr.print();
+	
+	expr = 2. <= c1 + c2 <= c1 + c2;
+	expr.print();
+	
+	expr = c1 + c2 <= c1 + c2 <= 3.;
+	expr.print();
+	
+	expr = c1 + c2 <= c1 + c2 <= c1 + c2;
+	expr.print();
+	
+	return;
+	
+	////////////////////////////////
+	
+	gum::credal::CredalNet< double > nCN;
+	
+	gum::NodeId a = nCN.addNode( "toto", 2 );
+	gum::NodeId b = nCN.addNode( "titi", 3 );
+	
+	nCN.addArc( a, b );
+	
+	std::vector< double > lower( 2, 0 );
+	std::vector< double > upper( 2, 1 );
+	nCN.fillConstraints( a, lower, upper );
+	
+	nCN.fillConstraints( b, std::vector< double >( 6, 0 ), std::vector< double >( 6, 1 ) );
+	
+	nCN.intervalToCredal();
+	
+	std::cout << nCN.toString() << std::endl;	
+	
+	return;
+	
+	/////////////////////////////
+	
+	gum::credal::CredalNet< double > myCN ( GET_PATH_STR( numerators.bif ) );
+	myCN.idmLearning( 0, true );
+	std::cout << myCN.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN1 ( GET_PATH_STR( numerators.bif ) );
+	myCN1.lagrangeNormalization();
+	myCN1.idmLearning( 0, true );
+	std::cout << myCN1.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN2 ( GET_PATH_STR( numerators.bif ) );
+	myCN2.bnToCredal( 0.8, true, true );
+	std::cout << myCN2.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN3 ( GET_PATH_STR( numerators.bif ) );
+	myCN3.lagrangeNormalization();
+	
+	/*myCN3.idmLearning( 10, true );
+	std::cout << myCN3.toString() << std::endl;*/
+	
+	myCN3.bnToCredal( 0.8, true, true );
+	std::cout << myCN3.toString() << std::endl;
+	
+	return;
+	
+	//////////////////////////////////
 	
 	gum::credal::CredalNet< double > cn ( GET_PATH_STR( /*gl2u2_*/min.bif ), GET_PATH_STR( /*gl2u2_*/max.bif ) );
 	cn.intervalToCredal();
@@ -181,7 +269,7 @@ int main ( int argc, char *argv[] ) {
   } catch (gum::Exception& e) {
     GUM_SHOWERROR(e);
   }
-
+  std::cout.clear();
   std::cout << "Press ENTER to continue...";
   std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 

@@ -39,6 +39,8 @@ void test_credal2() {
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
+	return;
+	
   //gum::setNumberOfThreads(1);
   
 /*

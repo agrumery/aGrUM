@@ -49,8 +49,6 @@
  */
 #define DEFAULT_DIGITS 100L
 
-
-
 /**********MACHINE DEPENDENT CONSTANTS***********/
 /* MAXD is 2^(k-1)-1 where k=16,32,64 word size */
 /* MAXD must be at least 2*BASE^2               */

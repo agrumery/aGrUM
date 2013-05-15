@@ -247,7 +247,7 @@ namespace credal {
       /** "Upper" node information \f$ \pi \f$ obtained by combinaison of parent's messages. */
       typename Property<GUM_SCALAR>::onNodes _NodesP_max;
 
-      /** \c True if inference has already been performed, \c False otherwise. */
+      /** \c TRUE if inference has already been performed, \c FALSE otherwise. */
       bool _InferenceUpToDate;
 
     private:
