@@ -7,11 +7,13 @@ namespace gum {
   template< typename GUM_SCALAR, class BNInferenceEngine >
   CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > & credalNet ) : MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine ( credalNet ) {
     infEs::_repetitiveInd = false;
-    infEs::_iterStop = 1000;
+    //infEs::_iterStop = 1000;
     infEs::_storeVertices = false;
     infEs::_storeBNOpt = false;
 		
 		this->setMaxTime ( 60 );
+		this->setBurnIn ( 1000 );
+		this->setPeriodSize ( 1000 );
 
     GUM_CONSTRUCTOR ( CNMonteCarloSampling );
   }
@@ -21,7 +23,7 @@ namespace gum {
     GUM_DESTRUCTOR ( CNMonteCarloSampling );
   }
 
-  // TEST single thread dans testSuite
+  
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
     if ( infEs::_repetitiveInd ) {
@@ -43,12 +45,12 @@ namespace gum {
 		GUM_SCALAR eps = 1.; // to validate testSuite ?
 		///this->continueApproximationScheme ( eps, false/*, false*/ );
 
-    auto bsize = this->burnIn();
+    ///auto bsize = this->burnIn();
 		auto psize = this->periodSize();
 		
 		auto remaining = this->remainingBurnIn();
 		
-		/// instead of doing the whole burnIn, we do it period by period
+		/// instead of doing the whole burnIn in one pass, we do it period by period
 		/// so we can test the timer ( done by continueApproximationScheme )
 		do {
 			eps = 0;
@@ -173,8 +175,8 @@ namespace gum {
      * VERIFIER d/dt(e(t+1)-e(t))
      */
     this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
-    this->setBurnIn ( infEs::_iterStop );
-    this->setPeriodSize ( infEs::_iterStop );
+    //this->setBurnIn ( infEs::_iterStop );
+    //this->setPeriodSize ( infEs::_iterStop );
 		
 		this->setMaxIter ( this->burnIn() + this->periodSize() );
 

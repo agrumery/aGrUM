@@ -61,10 +61,11 @@ namespace gum {
 
     }
 
+    /*
     template< typename GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::setIterStop ( const int &iter_stop ) {
       _iterStop = iter_stop;
-    }
+    }*/
 
 
     template< typename GUM_SCALAR >
@@ -92,11 +93,11 @@ namespace gum {
     bool InferenceEngine< GUM_SCALAR >::repetitiveInd () const {
       return _repetitiveInd;
     }
-
+/*
     template< typename GUM_SCALAR >
     int InferenceEngine< GUM_SCALAR >::iterStop () const {
       return _iterStop;
-    }
+    }*/
 
     template< typename GUM_SCALAR >
     bool InferenceEngine< GUM_SCALAR >::storeVertices () const {

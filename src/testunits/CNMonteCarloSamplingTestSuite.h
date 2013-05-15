@@ -123,8 +123,7 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( false );
         mcs.setMaxTime ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
+        
         //mcs.storeBNOpt ( true );
 
         std::map < std::string, std::vector < double > > modals;
@@ -182,8 +181,6 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( false );
         mcs.setMaxTime ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
 
         // modalities from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertModalsFile ( GET_CN_PATH_STR ( modalities.modal ) ); );
@@ -238,8 +235,6 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( true );
         mcs.setMaxTime ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
 
         // modalities from file
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.insertModalsFile ( GET_CN_PATH_STR ( modalities.modal ) ); );
@@ -287,20 +282,16 @@ namespace gum_tests {
 
         mcs.setRepetitiveInd ( false );
         mcs.setMaxTime ( 1 );
-        mcs.setEpsilon ( 0.1 );
-        mcs.setIterStop ( 8 );
+				
+				mcs.setBurnIn( 100000 ); // so we can test time out criterion during burn in
+				mcs.setPeriodSize( 10 );
 
         CNMonteCarloSamplingListener mcl ( mcs );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
-				
-				std::cout << "steps : " << mcl.nbr() << std::endl;
-				std::cout << "psize : " << mcs.periodSize() << std::endl;
-				std::cout << "bin : " << mcs.burnIn() << std::endl;
-				
-				std::cout << "iters : " << mcs.nbrIterations() << std::endl;
 
-        TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
+				/// time out criterion during burn in test
+        TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + ( mcs.burnIn() - mcs.remainingBurnIn() ), mcs.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string ( "" ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.eraseAllEvidence (); );

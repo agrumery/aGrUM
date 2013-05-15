@@ -85,7 +85,7 @@ namespace credal {
       /** @brief \c True if using repetitive independence ( dynamic network only ), \c False otherwise. \c False by default. */
       bool _repetitiveInd;      
       /** @brief Iterations limit stopping rule used by some algorithms such as CNMonteCarloSampling. The algorithms stops if no changes occured within 1000 iterations by default. */
-      int _iterStop;
+      ///int _iterStop;
       /** @brief \c True is optimal bayes net are stored, for each variable and each modality, \c False otherwise. Not all algorithms offers this option. \c False by default. */
       bool _storeBNOpt;
       /** @brief Object used to efficiently store optimal bayes net during inference, for some algorithms. */
@@ -239,7 +239,7 @@ namespace credal {
       /**
        * @param iter_stop The number of iterations without changes needed to stop some algorithms.
        */
-      void setIterStop ( const int & iter_stop );
+      ///void setIterStop ( const int & iter_stop );
       /**
        * @param value \c True if vertices are to be stored, false otherwise.
        */
@@ -258,7 +258,7 @@ namespace credal {
        * Get the number of iterations without changes used to stop some algorithms.
        * @return the number of iterations.
        */
-      int iterStop () const;
+      ///int iterStop () const;
       /**
        * @return \c True if vertice are stored, \c False otherwise.
        */

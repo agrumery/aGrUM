@@ -772,7 +772,7 @@ namespace credal {
       active_nodes_set = next_active_nodes_set;
       next_active_nodes_set.clear();
 
-    } while ( infE::continueApproximationScheme ( eps, false/*, false*/ ) && active_nodes_set.size() > 0 );
+    } while ( infE::continueApproximationScheme ( eps, false ) && active_nodes_set.size() > 0 );
 
   }
 
