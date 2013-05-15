@@ -40,49 +40,59 @@ namespace gum {
     __mcThreadDataCopy();
 		
 		// don't put it after burnIn, it could stop with timeout : we want at least one burnIn and one periodSize
-		GUM_SCALAR eps = 1; // to validate testSuite ?
-		this->continueApproximationScheme ( eps, false, false ); 
+		GUM_SCALAR eps = 1.; // to validate testSuite ?
+		///this->continueApproximationScheme ( eps, false/*, false*/ );
 
     auto bsize = this->burnIn();
+		auto psize = this->periodSize();
 		
-    #pragma omp parallel for
-    for ( decltype ( bsize ) iter = 0; iter < bsize; iter++ ) {
-      __threadInference();
-      /*
-            // to check random sampling
-            #pragma omp critical
-            {
-              unsigned int tid = gum::getThreadNumber();
-              std::cout << "thread\t" << tid << "\tsample : "<< this->_l_optimalNet[tid]->getCurrentSample() << std::endl;
-            }
-            std::cout << std::endl;
-      */
-      __threadUpdate();
-    } // end of : parallel burnIn
-
-    this->updateApproximationScheme ( bsize );
+		auto remaining = this->remainingBurnIn();
 		
-    this->_updateOldMarginals(); // fusion threads + update old margi
-
-    auto psize = this->periodSize();
-
-    // less overheads with high periodSize
-    do {
-      eps = 0;
-      
-			#pragma omp parallel for
-      for ( decltype ( psize ) iter = 0; iter < psize; iter++ ) {
-        __threadInference();
-        __threadUpdate();
-      } // end of : parallel periodSize
-
-      this->updateApproximationScheme ( psize );
+		/// instead of doing the whole burnIn, we do it period by period
+		/// so we can test the timer ( done by continueApproximationScheme )
+		do {
+			eps = 0;
 			
-      this->_updateMarginals(); // fusion threads + update margi
+			auto iters = ( remaining < psize ) ? remaining : psize;
+			
+			#pragma omp parallel for
+			for ( decltype ( iters ) iter = 0; iter < iters; iter++ ) {
+				__threadInference();
+				__threadUpdate();
+			} // end of : parallel periodSize
+			
+			this->updateApproximationScheme ( iters );
+			
+			this->_updateMarginals(); // fusion threads + update margi
+			
+			eps = this->_computeEpsilon(); // also updates oldMargi
+			
+			remaining = this->remainingBurnIn();
+			
+		} while ( ( remaining > 0 )  && this->continueApproximationScheme ( eps, false ) );
+	
 
-      eps = this->_computeEpsilon(); // also updates oldMargi
+		if ( this->continueApproximationScheme ( eps, false ) ) {
 
-    } while ( this->continueApproximationScheme ( eps, false, false ) );
+			// less overheads with high periodSize
+			do {
+				eps = 0;
+				
+				#pragma omp parallel for
+				for ( decltype ( psize ) iter = 0; iter < psize; iter++ ) {
+					__threadInference();
+					__threadUpdate();
+				} // end of : parallel periodSize
+
+				this->updateApproximationScheme ( psize );
+				
+				this->_updateMarginals(); // fusion threads + update margi
+
+				eps = this->_computeEpsilon(); // also updates oldMargi
+
+			} while ( this->continueApproximationScheme ( eps, false ) );
+		
+		}
 
     if ( ! this->_modal.empty() )
       this->_expFusion();
@@ -165,6 +175,8 @@ namespace gum {
     this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
     this->setBurnIn ( infEs::_iterStop );
     this->setPeriodSize ( infEs::_iterStop );
+		
+		this->setMaxIter ( this->burnIn() + this->periodSize() );
 
     this->initApproximationScheme();
   }

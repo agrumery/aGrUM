@@ -284,58 +284,13 @@ namespace gum {
         __current_step += incr;
       }
 
-      /// update the scheme w.r.t the new error. Test the stopping criterion
-      /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
-      /// @return true if stat become != APPROX_CONTINUE
-      bool continueApproximationScheme ( double error, bool check_iter, bool check_rate ) {
-        // For coherence, we fix the time used in the method.
-        double timer_step=__timer.step();
-
-        if ( ! startOfPeriod() ) return true;
-
-        if ( __current_state != APPROX_CONTINUE ) {
-          GUM_ERROR ( OperationNotAllowed,
-                      "state of the approximation scheme is not correct : " + messageApproximationScheme() );
-        }
-
-        if ( verbosity() ) __history.push_back ( error );
-
-        if ( __max_time > 0 ) {
-          if ( timer_step > __max_time ) {
-            __stopScheme ( APPROX_TIME_LIMIT );
-            return false;
-          }
-        }
-
-        if ( check_iter && __current_step > maxIter() ) {
-          __stopScheme ( APPROX_LIMIT );
-          return false;
-        }
-
-        __last_epsilon = __current_epsilon;
-
-        if ( ( __current_epsilon = error ) < epsilon() ) {
-          __stopScheme ( APPROX_EPSILON );
-          return false;
-        }
-
-        if ( check_rate && __last_epsilon > 0 ) {
-          if ( ( __current_rate = fabs ( ( __current_epsilon - __last_epsilon ) / __current_epsilon ) ) < minEpsilonRate() ) {
-            __stopScheme ( APPROX_RATE );
-            return false;
-          }
-
-        }
-
-        if ( stateApproximationScheme() == APPROX_CONTINUE ) {
-          if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, __current_step,__current_epsilon,timer_step );
-
-          return true;
-        } else
-          return false;
-      };
-
-
+      Size remainingBurnIn () {
+				if ( __burn_in > __current_step )
+					return __burn_in - __current_step;
+				else
+					return 0;
+			}
+      
       /// update the scheme w.r.t the new error. Test the stopping criterion
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
       /// @return true if stat become != APPROX_CONTINUE
@@ -343,6 +298,13 @@ namespace gum {
         // For coherence, we fix the time used in the method.
         double timer_step=__timer.step();
 
+				if ( __max_time > 0 ) {
+					if ( timer_step > __max_time ) {
+						__stopScheme ( APPROX_TIME_LIMIT );
+						return false;
+					}
+				}
+				
         if ( ! startOfPeriod() ) return true;
 
         if ( __current_state != APPROX_CONTINUE ) {
@@ -351,13 +313,6 @@ namespace gum {
         }
 
         if ( verbosity() ) __history.push_back ( error );
-
-        if ( __max_time > 0 ) {
-          if ( timer_step > __max_time ) {
-            __stopScheme ( APPROX_TIME_LIMIT );
-            return false;
-          }
-        }
 
         if ( __current_step > maxIter() ) {
           __stopScheme ( APPROX_LIMIT );

@@ -926,7 +926,6 @@ namespace credal {
   void CredalNet< GUM_SCALAR >::computeCPTMinMax() {
 		__binCptMin.resize ( current_bn().size() );
 		__binCptMax.resize ( current_bn().size() );
-		
 
 		for ( auto node_idIt = current_bn().beginNodes(), theEnd = current_bn().endNodes(); node_idIt != theEnd; ++node_idIt ) {
       auto pConf = credalNet_cpt() [*node_idIt].size();

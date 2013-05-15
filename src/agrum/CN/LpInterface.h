@@ -406,7 +406,7 @@ namespace gum {
 			bool bl = exprb.__ileft;
 			bool br = exprb.__iright;
 			
-			if ( ! al && !   ) {
+			if (  1  ) {
 				for ( const auto & entry : expra.__mCoeffs )
 					expr.__lCoeffs[ entry.first ] = entry.second;
 				

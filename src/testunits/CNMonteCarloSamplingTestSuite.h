@@ -293,6 +293,12 @@ namespace gum_tests {
         CNMonteCarloSamplingListener mcl ( mcs );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
+				
+				std::cout << "steps : " << mcl.nbr() << std::endl;
+				std::cout << "psize : " << mcs.periodSize() << std::endl;
+				std::cout << "bin : " << mcs.burnIn() << std::endl;
+				
+				std::cout << "iters : " << mcs.nbrIterations() << std::endl;
 
         TS_ASSERT_EQUALS ( mcl.nbr() * mcs.periodSize() + mcs.burnIn(), mcs.nbrIterations() );
         TS_ASSERT_DIFFERS ( mcl.msg(), std::string ( "" ) );

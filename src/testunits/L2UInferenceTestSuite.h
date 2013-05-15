@@ -70,9 +70,7 @@ namespace gum_tests {
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
-				std::cout << "computeCPTMinMax" << std::endl;
         cn->computeCPTMinMax();
-				std::cout << "computeCPTMinMax OK" << std::endl;
       }
 
       // dynamic (dynaCheese network - slow)
@@ -89,9 +87,7 @@ namespace gum_tests {
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
-				std::cout << "computeCPTMinMax" << std::endl;
 				cn->computeCPTMinMax();
-				std::cout << "computeCPTMinMax OK" << std::endl;
       }
 
       void clearCNet () {
