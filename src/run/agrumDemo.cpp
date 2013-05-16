@@ -89,90 +89,28 @@ void test_credal() {
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 	/////////////////////////////
 	
-	gum::cn::LpInterface< double > lpr;
-	const gum::cn::LpCol & c1 = lpr.addCol();
-	const gum::cn::LpCol & c2 = lpr.addCol();
+	gum::credal::LpInterface lpr;
 	
-	gum::cn::LpRow< double > & r1 = lpr.addRow();
-	//r1.setColCoeff(c1, 1);
-	//r1.setColCoeff(c2, -1);
+	gum::credal::LpCol c1 = lpr.addCol();
+	gum::credal::LpCol c2 = lpr.addCol();
 	
-	std::map< gum::cn::LpCol, double > cf;
-	cf[c1] = 1; 
-	cf[c2] = -1;
+	lpr.print();
 	
-	r1.setColsCoeffs( cf );
+	std::cout << lpr.solve() << std::endl;
 	
-	gum::cn::LpRow< double > & r2 = lpr.addRow();
-	//r2.setColCoeff(c1, 1);
-	//r2.setBounds(0., 0.7);
+	lpr.clear();
 	
-	cf.clear();
-	cf[c1] = 1;
+	c1 = lpr.addCol();
+	c2 = lpr.addCol();
+	gum::credal::LpCol c3 = lpr.addCol();
 	
-	r2.setColsCoeffs( cf, 0., 0.7 );
+	lpr.addRow( c1 + c2 <= c3 );
+	lpr.addRow( 0.5 <= c3 );
 	
-	std::vector< std::vector< double > > output = lpr.solve();
-	std::cout << output << std::endl;
+	lpr.print();
 	
-	cf.clear();
-	cf[c1] = 0.; 
-	cf[c2] = 0.;
-	gum::cn::LpExpr< double > expr;//( cf );
+	std::cout << lpr.solve() << std::endl;
 	
-	expr = 2. * c1 - c2 + 2. + 1. + 2. * c2 - 0.5 * c1;
-	expr.print();
-	
-	expr = c1;
-	expr.print();
-	
-	expr = 2.;
-	expr.print();
-	
-	expr = c1 + 2.;
-	expr.print();
-	
-	expr = 2. - c1;
-	expr.print();
-	
-	expr = c1 + c2;
-	expr.print();
-	
-	expr = c1 - c2;
-	expr.print();
-	
-	expr = 0.2 <= c1 + c2;
-	expr.print();
-	
-	expr = c1 + c2 <= 0.2;
-	expr.print();
-	
-	expr = c1 <= c2;
-	expr.print();
-	
-	expr = c1 + c2 <= c1 + c2;
-	expr.print();
-	
-	expr = c1 - 2. + c2 + 3. <= 2. + c2;
-	expr.print();
-	
-	expr = 2. <= c1 + c2 <= 3.;
-	expr.print();
-	
-	expr = 2. <= 2. * c1 <= c2;
-	expr.print();
-	
-	expr = c2 <= c1 + c2 <= 3.;
-	expr.print();
-	
-	expr = 2. <= c1 + c2 <= c1 + c2;
-	expr.print();
-	
-	expr = c1 + c2 <= c1 + c2 <= 3.;
-	expr.print();
-	
-	expr = c1 + c2 <= c1 + c2 <= c1 + c2;
-	expr.print();
 	
 	return;
 	

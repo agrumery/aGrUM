@@ -383,7 +383,6 @@ void test_credal2() {
 
       MCE->setRepetitiveInd ( false );
       MCE->setMaxTime ( 60 );
-      MCE->setIterStop ( 1000 );
 
       //MCE->storeBNOpt ( true );
 

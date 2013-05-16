@@ -283,7 +283,7 @@ namespace gum_tests {
         mcs.setRepetitiveInd ( false );
         mcs.setMaxTime ( 1 );
 				
-				mcs.setBurnIn( 100000 ); // so we can test time out criterion during burn in
+				///mcs.setBurnIn( 100000 ); // so we can test time out criterion during burn in
 				mcs.setPeriodSize( 10 );
 
         CNMonteCarloSamplingListener mcl ( mcs );

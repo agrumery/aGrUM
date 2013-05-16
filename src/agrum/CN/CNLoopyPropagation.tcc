@@ -11,7 +11,7 @@ namespace credal {
     std::ofstream res ( path_name.c_str(), std::ios::out | std::ios::trunc );
 
     if ( ! res.good() )
-      GUM_ERROR ( NotFound, "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + path_name )
+      GUM_ERROR ( NotFound, "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + path_name );
 
       std::string ext = path.substr ( path.size() - 3, path.size() );
 
@@ -20,7 +20,7 @@ namespace credal {
       std::string ligne;
 
       if ( ! evi.good() )
-        GUM_ERROR ( NotFound, "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + ext )
+        GUM_ERROR ( NotFound, "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::string & path) : could not open file : " + ext );
 
         while ( evi.good() ) {
           getline ( evi, ligne );
@@ -741,7 +741,7 @@ namespace credal {
 
     GUM_SCALAR eps;
     // to validate TestSuite
-    infE::continueApproximationScheme ( 1., false );
+    infE::continueApproximationScheme ( 1. );
 
     do {
       for ( auto it = active_nodes_set.begin(), theEnd = active_nodes_set.end(); it != theEnd; ++it ) {
@@ -772,7 +772,7 @@ namespace credal {
       active_nodes_set = next_active_nodes_set;
       next_active_nodes_set.clear();
 
-    } while ( infE::continueApproximationScheme ( eps, false ) && active_nodes_set.size() > 0 );
+    } while ( infE::continueApproximationScheme ( eps ) && active_nodes_set.size() > 0 );
 
   }
 
@@ -789,7 +789,7 @@ namespace credal {
 
     GUM_SCALAR eps;
     // validate TestSuite
-    infE::continueApproximationScheme ( 1., false );
+    infE::continueApproximationScheme ( 1. );
 
     do {
       for ( decltype ( nbrArcs ) j = 0, theEnd = nbrArcs / 2; j < theEnd; j++ ) {
@@ -812,7 +812,7 @@ namespace credal {
 
       infE::updateApproximationScheme();
 
-    } while ( infE::continueApproximationScheme ( eps, false ) );
+    } while ( infE::continueApproximationScheme ( eps ) );
 
   }
 
@@ -829,7 +829,7 @@ namespace credal {
 
     GUM_SCALAR eps;
     // validate TestSuite
-    infE::continueApproximationScheme ( 1., false );
+    infE::continueApproximationScheme ( 1. );
 
     do {
       for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
@@ -844,7 +844,7 @@ namespace credal {
 
       infE::updateApproximationScheme();
 
-    } while ( infE::continueApproximationScheme ( eps, false ) );
+    } while ( infE::continueApproximationScheme ( eps ) );
 
   }
 

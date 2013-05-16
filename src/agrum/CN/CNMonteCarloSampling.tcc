@@ -12,7 +12,9 @@ namespace gum {
     infEs::_storeBNOpt = false;
 		
 		this->setMaxTime ( 60 );
-		this->setBurnIn ( 1000 );
+		this->enableMaxTime ();
+		
+		///this->setBurnIn ( 1000 );
 		this->setPeriodSize ( 1000 );
 
     GUM_CONSTRUCTOR ( CNMonteCarloSampling );
@@ -50,8 +52,11 @@ namespace gum {
 		
 		auto remaining = this->remainingBurnIn();
 		
+		/// this->burnIn() should be 0 therefor the first do ... while should be skipped
+		
 		/// instead of doing the whole burnIn in one pass, we do it period by period
-		/// so we can test the timer ( done by continueApproximationScheme )
+		/// so we can test the timer ( done by continueApproximationScheme ) and exit during burnIn
+		/// no error is thrown if we exit during burnIn ( although one should )
 		do {
 			eps = 0;
 			
@@ -65,16 +70,16 @@ namespace gum {
 			
 			this->updateApproximationScheme ( iters );
 			
-			this->_updateMarginals(); // fusion threads + update margi
+			///this->_updateMarginals(); // fusion threads + update margi
 			
-			eps = this->_computeEpsilon(); // also updates oldMargi
+			///eps = this->_computeEpsilon(); // also updates oldMargi
 			
 			remaining = this->remainingBurnIn();
 			
-		} while ( ( remaining > 0 )  && this->continueApproximationScheme ( eps, false ) );
+		} while ( ( remaining > 0 )  && this->continueApproximationScheme ( eps ) );
 	
 
-		if ( this->continueApproximationScheme ( eps, false ) ) {
+		if ( this->continueApproximationScheme ( eps ) ) {
 
 			// less overheads with high periodSize
 			do {
@@ -92,7 +97,7 @@ namespace gum {
 
 				eps = this->_computeEpsilon(); // also updates oldMargi
 
-			} while ( this->continueApproximationScheme ( eps, false ) );
+			} while ( this->continueApproximationScheme ( eps ) );
 		
 		}
 
@@ -170,15 +175,20 @@ namespace gum {
 
   template< typename GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcInitApproximationScheme() {
-    this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
+    //this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
     /**
      * VERIFIER d/dt(e(t+1)-e(t))
      */
-    this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
+    //this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
     //this->setBurnIn ( infEs::_iterStop );
     //this->setPeriodSize ( infEs::_iterStop );
 		
-		this->setMaxIter ( this->burnIn() + this->periodSize() );
+		///this->setMaxIter ( this->burnIn() + this->periodSize() );
+		this->setEpsilon ( 0. );
+		this->enableEpsilon (); // to be sure
+		
+		this->disableMinEpsilonRate ();
+		this->disableMaxIter ();
 
     this->initApproximationScheme();
   }
