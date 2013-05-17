@@ -118,6 +118,7 @@ namespace gum {
 			
 
       /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
+			/// If the criterion was disabled it will be enabled
       /// @{
       /// @throw OutOfLowerBound if eps<0
       void setEpsilon ( double eps ) {
@@ -126,6 +127,7 @@ namespace gum {
         }
 
         __eps = eps;
+				__test__eps = true;
       };
 
 			/// Get the value of epsilon
@@ -148,6 +150,7 @@ namespace gum {
       /// @}
 
       /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+      /// If the criterion was disabled it will be enabled
       /// @{
       /// @throw OutOfLowerBound if rate<0
       void setMinEpsilonRate ( double rate ) {
@@ -156,6 +159,7 @@ namespace gum {
         }
 
         __min_rate_eps = rate;
+				__test__min_rate_eps = true;
       };
 
 			/// Get the value of the minimal epsilon rate
@@ -178,6 +182,8 @@ namespace gum {
       /// @}
 
       /// stopping criterion on number of iteration
+      /// If the criterion was disabled it will be enabled
+      /// @param max The maximum number of iterations
       /// @{
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter ( Size max ) {
@@ -186,6 +192,7 @@ namespace gum {
         }
 
         __max_iter = max;
+				__test__max_iter = true;
       };
 
       Size maxIter ( void ) const {
@@ -208,6 +215,7 @@ namespace gum {
 
 
       /// stopping criterion on timeout
+      /// If the criterion was disabled it will be enabled
       /// @{
       /// @throw OutOfLowerBound if timeout<=0.0
       /** timeout is time in second (double).
@@ -218,6 +226,7 @@ namespace gum {
         }
 
         __max_time = timeout;
+				__test__max_time = true;
       };
 
       /// returns the timeout (in seconds)
@@ -246,7 +255,6 @@ namespace gum {
 
       /// how many samples between 2 stopping tests
       /// @{
-
       /// @throw OutOfLowerBound if p<1
       void setPeriodSize ( Size p ) {
         if ( p < 1 ) {

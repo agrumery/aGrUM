@@ -91,14 +91,15 @@ namespace gum {
     // SAMPLING
     _klPQ=_klQP=_hellinger=( GUM_SCALAR )0.0;
     _errorPQ=_errorQP=0;
-    bool check_rate;
+    ///bool check_rate;
     GUM_SCALAR delta,ratio,error;
     delta=ratio=error=( GUM_SCALAR )-1;
     GUM_SCALAR oldPQ=0.0;
     GUM_SCALAR pp,pq;
 
     do {
-      check_rate=false;
+      ///check_rate=false;
+      this->disableMinEpsilonRate(); // replace check_rate = false
       nextParticle( );
       updateApproximationScheme();
 
@@ -113,7 +114,8 @@ namespace gum {
 
         if( pq!=( GUM_SCALAR )0.0 ) {
           _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
-          check_rate=true;
+          ///check_rate=true;
+          this->enableMinEpsilonRate(); // replace check_rate=true;
           ratio=pq/pp;
           delta=( GUM_SCALAR ) log2( ratio );
           _klPQ+=delta;
@@ -132,13 +134,13 @@ namespace gum {
         }
       }
 
-      if( check_rate ) {
+      if( this->testMinEpsilonRate() /* replace check_rate */ ) {
         // delta is used as a temporary variable
         delta=_klPQ/nbrIterations();
         error=( double )fabs( delta-oldPQ );
         oldPQ=delta;
       }
-    } while( continueApproximationScheme( error ,check_rate ) );
+    } while( continueApproximationScheme( error /*,check_rate*/ ) );
 
     _klPQ=-_klPQ/( nbrIterations() );
     _klQP=-_klQP/( nbrIterations() );
