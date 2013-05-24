@@ -112,7 +112,8 @@ namespace gum {
 
     /**
      * Reads the bayes net from the file referenced by filePath  given at the creation of class
-     * @return Returns the number of error during the parsing (0 if none).
+     * @return Returns 0 if no error, 1 if any
+     * @warning XMLBNReader can not give the number of errors.
      */
     virtual int proceed();
 

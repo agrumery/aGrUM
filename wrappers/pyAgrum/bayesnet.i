@@ -71,7 +71,7 @@
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
 
-            if (! reader.proceed()) {
+            if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings();
                 reader.showErrorCounts();
                 return false;
@@ -99,7 +99,7 @@
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
 
-            if (! reader.proceed()) {
+            if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings();
                 reader.showErrorCounts();
                 return false;
@@ -125,7 +125,7 @@
                 GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
             }
 
-            if (! reader.proceed()) {
+            if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings();
                 reader.showErrorCounts();
                 return false;
@@ -153,7 +153,7 @@
             }
             */
 
-            int isOK= reader.proceed();
+            int isOK= reader.proceed(); // for BIFXML, proceed() returns 0 or 1
             return (isOK==0);
         } catch (gum::IOError& e) {
             throw(e);

@@ -63,11 +63,11 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS( reader.trace( false ),gum::IOError );
 
-        bool isOK = false;
+        int nbrErr = 0;
 
-        TS_ASSERT_THROWS( isOK = reader.proceed() ,gum::IOError );
+        TS_ASSERT_THROWS( nbrErr = reader.proceed() ,gum::IOError );
 
-        TS_ASSERT( ! isOK );
+        TS_ASSERT( ! nbrErr );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         // 0 warnings : no properties
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
@@ -93,11 +93,11 @@ namespace gum_tests {
         reader.trace( false );
 
 
-        bool isOK = false;
+        int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-        TS_ASSERT( isOK );
+        TS_ASSERT( nbrErr == 0 );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         // 0 warnings : no properties
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
@@ -124,11 +124,11 @@ namespace gum_tests {
         reader.trace( false );
 
 
-        bool isOK = false;
+        int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-        TS_ASSERT( isOK );
+        TS_ASSERT( nbrErr == 0 );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         // 0 warnings : no properties
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
@@ -152,11 +152,11 @@ namespace gum_tests {
 
         reader.trace( false );
 
-        bool isOK = false;
+        int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-        TS_ASSERT( isOK );
+        TS_ASSERT( nbrErr == 0 );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         // 0 warnings : no properties
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
@@ -179,11 +179,11 @@ namespace gum_tests {
 
         reader.trace( false );
 
-        bool isOK = false;
+        int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( isOK = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
 
-        TS_ASSERT( isOK );
+        TS_ASSERT( nbrErr == 0 );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         // 0 warnings : no properties
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 )
