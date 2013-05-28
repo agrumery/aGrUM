@@ -6,6 +6,7 @@
 #include <stdlib.h> // srand, rand
 #include <time.h>
 #include <iomanip>
+#include <cmath>
 
 namespace gum {
 
@@ -28,7 +29,7 @@ namespace gum {
       /// @{
 
       /**
-       * @warning Prefer farey, much more precise
+			 * @warning Prefer farey or continuedFrac, much more precise
        *
        * Find the rational close enough to a given ( decimal ) number. Works with integers only so a little work is needed before calling this function.
        *
@@ -48,11 +49,11 @@ namespace gum {
        *
        * 4. fracC( numerator, denominator, (int)( number * denum ), d_num, denum );
        */
-			static void fracC ( long int & numerator, long int & denominator, const int & alpha_num, const int & d_num, const int & denum );
+			static void fracC ( long int & numerator, long int & denominator, const long int & alpha_num, const long int & d_num, const long int & denum );
 
 
       /**
-       * @warning Prefer farey, much more precise
+			 * @warning Prefer farey or continuedFrac, much more precise
        *
        * Find the rational close enough to a given ( decimal ) number.
        *
@@ -64,16 +65,30 @@ namespace gum {
 
 
       /**
-       * Find the rational close enough to a given ( decimal ) number in [0,1] and whose denominator is not higher than a given integer number.
+       * Find the rational close enough to a given ( decimal ) number in [-1,1] and whose denominator is not higher than a given integer number.
        *
+			 * Best approximation with continuedFrac ( overall, slightly worse than continuedFrac by +- \c zero * 10, i.e. 1e-7 by default ).
+			 * 
        * @param numerator The numerator of the rational.
        * @param denominator The denominator of the rational.
        * @param number The constant number we want to approximate using rationals.
-       * @param den_max The constant highest authorized denominator.
+			 * @param den_max The constant highest authorized denominator. 1000000 by default.
        * @param zero The positive value below which a number is considered zero. 1e-6 by default.
        */
       static void farey ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max = 1000000, const double & zero = 1e-6 );
 
+			/**
+			 * Find the rational close enough to a given ( decimal ) number ( ANY number ) and whose denominator is not higher than a given integer number.
+			 *
+			 * Best approximation with farey ( overall, slightly better than farey by +- \c zero * 10, i.e. 1e-7 by default ).
+			 * 
+			 * @param numerator The numerator of the rational.
+			 * @param denominator The denominator of the rational.
+			 * @param number The constant number we want to approximate using rationals.
+			 * @param den_max The constant highest authorized denominator. 1000000 by default.
+			 * @param zero The positive value below which a number is considered zero. 1e-6 by default.
+			 */
+			static void continuedFrac ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max = 1000000, const double & zero = 1e-6 );
       /// @}
       
     private :
@@ -83,19 +98,19 @@ namespace gum {
       /// @{
 
       /** @brief Used by fracC */
-      static bool __less ( const double & a, const double & b, const int & c, const int & d );
+			static bool __less ( const double & a, const double & b, const long int & c, const long int & d );
 
       /** @brief Used by fracC */
-      static bool __leq ( const double & a, const double & b, const int & c, const int & d );
+			static bool __leq ( const double & a, const double & b, const long int & c, const long int & d );
 
       /** @brief Used by fracC */
-      static int __matches ( const double & a, const double & b, const int & alpha_num, const int & d_num, const int & denum );
+			static int __matches ( const double & a, const double & b, const long int & alpha_num, const long int & d_num, const long int & denum );
 
       /** @brief Used by fracC */
-			static void __find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum );
+			static void __find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const long int & alpha_num, const long int & d_num, const long int & denum );
 
       /** @brief Used by fracC */
-			static void __find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const int & alpha_num, const int & d_num, const int & denum );
+			static void __find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const long int & alpha_num, const long int & d_num, const long int & denum );
 
       /// @}
 

@@ -20,6 +20,8 @@
 #include <algorithm>
 #include <cstdlib>
 
+#include <utility> /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
@@ -81,9 +83,30 @@ namespace credal {
 			
 			gum::NodeId addNode ( const std::string & name, const unsigned long & card );
 			void addArc ( const gum::NodeId & tail, const gum::NodeId & head );
+			////////
+			/// @todo : solve constraints entry by entry automatically ?
+			////////
+			void setCPTs ( const gum::NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt );
+			/// @warning GUM_SCALAR can only be double since lp.solve() gives a vect of vect of doubles
+			void setCPT ( const gum::NodeId & id, unsigned long int & entry, const std::vector< std::vector< GUM_SCALAR > > & cpt );
 			
-			void setCPT ( const gum::NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt );
-			void fillConstraints ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper );
+			/**
+			 * Since we will forget the master ref of \c ins, we pass it by value, not reference
+			 */
+			void setCPT ( const gum::NodeId & id, gum::Instantiation & ins, const std::vector< std::vector< GUM_SCALAR > > & cpt );
+			
+			void fillConstraints ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper );			
+			
+			//void fillConstraint ( const gum::NodeId & id, unsigned long int & entry, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper );
+			//void fillConstraint ( const gum::NodeId & id, gum::Instantiation ins, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper );
+			
+			//////////////////////////////////////////
+			/// easy accessors to bnet stuff
+			
+			inline gum::Instantiation instantiation ( const gum::NodeId & id );
+			inline auto domainSize ( const gum::NodeId & id ) -> decltype ( std::declval< gum::DiscreteVariable >().domainSize() );
+			
+			//////////////////////////////////////////			
 			
 			
       /**

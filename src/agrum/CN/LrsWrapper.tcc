@@ -1,7 +1,8 @@
 #include <string.h>
 
-#include <agrum/CN/LrsWrapper.h>
-#include <agrum/CN/lrslib/lrslib.h>
+#include "LrsWrapper.h"
+#include "lrslib/lrslib.h"
+
 
 namespace gum {
   namespace credal {
@@ -18,10 +19,13 @@ namespace gum {
       __getVolume = false;
       __hull = false;
       __polytope = false;
+			
+			GUM_CONSTRUCTOR ( LRSWrapper );
     }
 
     template < typename GUM_SCALAR >
     LRSWrapper< GUM_SCALAR >::~LRSWrapper () {
+			GUM_DESTRUCTOR ( LRSWrapper );
     }
 
     template < typename GUM_SCALAR >
@@ -186,13 +190,13 @@ namespace gum {
       if ( __insertedVertices.size() == __vertices )
         GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillV : input is already full with " << __vertices << " vertices." );
 
-      GUM_SCALAR cptSum = 0;
+      //GUM_SCALAR cptSum = 0;
 
-			for ( auto & p : vertex )
-        cptSum += p;
+			//for ( auto & p : vertex )
+        //cptSum += p;
 
-      if ( fabs ( 1 - cptSum ) > 1e-6 )
-        GUM_ERROR ( CPTNoSumTo1, "LRSWrapper< GUM_SCALAR >::fillV : CPT sum is not one : " << cptSum << " from vertex : " << vertex );
+      //if ( fabs ( 1 - cptSum ) > 1e-6 )
+        //GUM_ERROR ( CPTNoSumTo1, "LRSWrapper< GUM_SCALAR >::fillV : CPT sum is not one : " << cptSum << " from vertex : " << vertex );
 
       bool eq = true;
 
@@ -205,8 +209,11 @@ namespace gum {
             break;
           }
 
-        if ( eq )
-          GUM_ERROR ( gum::DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV : vertex already present : " << vertex );
+        if ( eq ) {
+					__vertices--;
+					return;
+					//GUM_ERROR ( gum::DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV : vertex already present : " << vertex );
+				}
       }
 
       auto row = __insertedVertices.size();
@@ -475,7 +482,7 @@ namespace gum {
 
       for ( decltype ( rows ) row = 0; row < rows; row++ ) {
         for ( decltype ( cols ) col = 0; col < cols; col++ ) {
-          gum::Rational< GUM_SCALAR >::farey ( numerator, denominator, __input [ row ][ col ] );
+          gum::Rational< GUM_SCALAR >::continuedFrac ( numerator, denominator, __input [ row ][ col ] );
 
           num [ col ] = numerator;
           den [ col ] = denominator;

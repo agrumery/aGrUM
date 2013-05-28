@@ -178,7 +178,7 @@ namespace gum {
          * @brief Fill lrs_dictionnary and datas from \c __input using integer rationals.
          *
          * Build polyhedron constraints and objective.
-         * gum::Rational< GUM_SCALAR >::farey is the default algorithm used to approximate reals by integer rationals.
+         * gum::Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to approximate reals by integer rationals.
          *
          * @param P A pointer to a lrs_dic struct with flags set.
          * @param Q A pointer to a lrs_dat struct with members set.

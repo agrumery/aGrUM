@@ -1,4 +1,4 @@
-#include <agrum/CN/CredalNet.h>
+#include "CredalNet.h"
 #include "../core/exceptions.h"
 
 namespace gum {
@@ -40,22 +40,22 @@ namespace credal {
 	
 	
 	template< typename GUM_SCALAR >
-	void CredalNet< GUM_SCALAR >::setCPT ( const gum::NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt ) {
-		const Potential< GUM_SCALAR > * const potential ( &__src_bn.cpt ( id ) );
+	void CredalNet< GUM_SCALAR >::setCPTs ( const gum::NodeId & id, const std::vector< std::vector< std::vector< GUM_SCALAR > > > & cpt ) {
+		const gum::Potential< GUM_SCALAR > * const potential ( &__src_bn.cpt ( id ) );
 		
 		auto var_dSize = __src_bn.variable ( id ).domainSize();
 		auto entry_size = potential->domainSize() / var_dSize;
 		
 		if ( cpt.size() != entry_size )
-			GUM_ERROR ( gum::SizeError, "setCPT : entry sizes of cpts does not match for node id : " << id << " : " << cpt.size() << " != " << entry_size );
+			GUM_ERROR ( gum::SizeError, "setCPTs : entry sizes of cpts does not match for node id : " << id << " : " << cpt.size() << " != " << entry_size );
 		
 		for ( auto & cset : cpt ) {
 			if ( cset.size() == 0 )
-				GUM_ERROR ( gum::SizeError, "setCPT : vertices in credal set does not match for node id : " << id << " with 0 vertices" );
+				GUM_ERROR ( gum::SizeError, "setCPTs : vertices in credal set does not match for node id : " << id << " with 0 vertices" );
 			
 			for ( auto & vertex : cset ) {
 				if ( vertex.size() != var_dSize )
-					GUM_ERROR ( gum::SizeError, "setCPT : variable modalities in cpts does not match for node id : " << id << " with vertex " << vertex << " : " << vertex.size() << " != " << var_dSize );
+					GUM_ERROR ( gum::SizeError, "setCPTs : variable modalities in cpts does not match for node id : " << id << " with vertex " << vertex << " : " << vertex.size() << " != " << var_dSize );
 				
 				GUM_SCALAR sum = 0;
 				for ( auto & prob : vertex ) {
@@ -63,11 +63,111 @@ namespace credal {
 				}
 				
 				if ( fabs( sum - 1 ) > 1e-6 )
-					GUM_ERROR ( gum::CPTNoSumTo1, "setCPT : a vertex coordinates does not sum to one for node id : " << id << " with vertex " << vertex );
+					GUM_ERROR ( gum::CPTNoSumTo1, "setCPTs : a vertex coordinates does not sum to one for node id : " << id << " with vertex " << vertex );
 			}
 		}
 		
 		__credalNet_src_cpt.insert ( id, cpt );
+	}
+	
+	template< typename GUM_SCALAR >
+	void CredalNet< GUM_SCALAR >::setCPT ( const gum::NodeId & id, unsigned long int & entry, const std::vector< std::vector< GUM_SCALAR > > & cpt ) {
+		const gum::Potential< GUM_SCALAR > * const potential ( &__src_bn.cpt ( id ) );
+		
+		auto var_dSize = __src_bn.variable ( id ).domainSize();
+		auto entry_size = potential->domainSize() / var_dSize;
+		
+		if ( entry >= entry_size )
+			GUM_ERROR ( gum::SizeError, "setCPT : entry is greater or equal than entry size (entries start at 0 up to entry_size - 1) : " << entry << " >= " << entry_size );
+		
+		if ( cpt.size() == 0 )
+			GUM_ERROR ( gum::SizeError, "setCPT : empty credal set for entry : " << entry );
+		
+		for ( auto & vertex : cpt ) {	
+			if ( vertex.size() != var_dSize )
+				GUM_ERROR ( gum::SizeError, "setCPT : variable modalities in cpts does not match for node id : " << id << " with vertex " << vertex << " at entry " << entry << " : " << vertex.size() << " != " << var_dSize );
+			
+			GUM_SCALAR sum = 0;
+			for ( auto & prob : vertex ) {
+				sum += prob;
+			}
+			
+			if ( fabs( sum - 1 ) > 1e-6 )
+				GUM_ERROR ( gum::CPTNoSumTo1, "setCPT : a vertex coordinates does not sum to one for node id : " << id << " at entry " << entry << " with vertex " << vertex );
+		}
+		// !! auto does NOT use adress (if available) unless explicitly asked !!
+		auto & node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > (entry_size) );
+		
+		if( node_cpt[ entry ].size() != 0 )
+			GUM_ERROR ( gum::DuplicateElement, "setCPT : vertices of entry id " << entry << " already set to : " << node_cpt[ entry ] << ", cannot insert : " << cpt );
+		
+		node_cpt[ entry ] = cpt;
+		
+		///__credalNet_src_cpt.set ( id, node_cpt );
+	}
+	
+	template< typename GUM_SCALAR >
+	void CredalNet< GUM_SCALAR >::setCPT ( const gum::NodeId & id, gum::Instantiation & ins, const std::vector< std::vector< GUM_SCALAR > > & cpt ) {
+		const gum::Potential< GUM_SCALAR > * const potential ( &__src_bn.cpt ( id ) );
+		
+		auto var_dSize = __src_bn.variable ( id ).domainSize();
+		auto entry_size = potential->domainSize() / var_dSize;
+		
+		// to be sure of entry index reorder ins according to the bayes net potentials ( of the credal net )
+		// it WONT throw an error if the sequences are not equal not because of order but content, so we double check (before & after order correction)
+		// beware of slaves & master
+		gum::Instantiation ref ( potential );
+		ref.forgetMaster();
+		
+		ins.forgetMaster();
+		
+		const auto & vseq = ref.variablesSequence();
+		
+		if ( ins.variablesSequence() != vseq ) {
+			ins.reorder( ref );
+			
+			if( ins.variablesSequence() != vseq )
+				GUM_ERROR ( gum::OperationNotAllowed, "setCPT : instantiation : " << ins << " is not valid for node id " << id << " which accepts instantiations such as (order is not important) : " << ref );
+		}
+		
+		unsigned long int entry = 0, jump = 1;
+		
+		for ( unsigned int i = 0, end = ins.nbrDim(); i < end; i++ ) {
+			if ( __src_bn.nodeId( ins.variable( i ) ) == id )
+				continue;
+
+			entry += ins.val( i ) * jump;
+			
+			jump *= ins.variable( i ).domainSize();
+		}
+		
+		if ( entry >= entry_size )
+			GUM_ERROR ( gum::SizeError, "setCPT : entry is greater or equal than entry size (entries start at 0 up to entry_size - 1) : " << entry << " >= " << entry_size );
+		
+		if ( cpt.size() == 0 )
+			GUM_ERROR ( gum::SizeError, "setCPT : empty credal set for entry : " << entry );
+		
+		for ( auto & vertex : cpt ) {	
+			if ( vertex.size() != var_dSize )
+				GUM_ERROR ( gum::SizeError, "setCPT : variable modalities in cpts does not match for node id : " << id << " with vertex " << vertex << " at entry " << entry << " : " << vertex.size() << " != " << var_dSize );
+			
+			GUM_SCALAR sum = 0;
+			for ( auto & prob : vertex ) {
+				sum += prob;
+			}
+			
+			if ( fabs( sum - 1 ) > 1e-6 )
+				GUM_ERROR ( gum::CPTNoSumTo1, "setCPT : a vertex coordinates does not sum to one for node id : " << id << " at entry " << entry << " with vertex " << vertex );
+		}
+		
+		auto & node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > (entry_size) );
+		
+		if( node_cpt[ entry ].size() != 0 )
+			GUM_ERROR ( gum::DuplicateElement, "setCPT : vertices of entry : " << ins << " id " << entry << " already set to : " << node_cpt[ entry ] << ", cannot insert : " << cpt );
+		
+		node_cpt[ entry ] = cpt;
+		
+		///__credalNet_src_cpt.set ( id, node_cpt );
 	}
 	
 	
@@ -81,6 +181,34 @@ namespace credal {
 			GUM_ERROR( gum::SizeError, "fillConstraints : sizes does not match in fillWith for node id : " << id );
 		}
 	}
+	
+	/*
+	template< typename GUM_SCALAR >
+	void CredalNet< GUM_SCALAR >::fillConstraint ( const gum::NodeId & id, unsigned long int & entry, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper ) {
+		
+	}
+	
+	
+	template< typename GUM_SCALAR >
+	void CredalNet< GUM_SCALAR >::fillConstraint ( const gum::NodeId & id, gum::Instantiation ins, const std::vector< GUM_SCALAR > & lower, const std::vector<  GUM_SCALAR > & upper ) {
+		
+	}
+	*/
+	////////////////////////////////////////////////
+	/// bnet accessors / shortcuts
+	
+	template< typename GUM_SCALAR >
+	gum::Instantiation CredalNet< GUM_SCALAR >::instantiation ( const gum::NodeId & id ) {
+		return gum::Instantiation ( __src_bn.cpt( id ) );
+	}
+	
+	template< typename GUM_SCALAR >
+	auto CredalNet< GUM_SCALAR >::domainSize ( const gum::NodeId & id ) -> decltype ( std::declval< gum::DiscreteVariable >().domainSize() ) {
+		return __src_bn.variable( id ).domainSize();
+	}
+	
+	
+	///////////////////////////////////////////////
 	
 	
   template< typename GUM_SCALAR >
@@ -1006,7 +1134,7 @@ namespace credal {
 
       for ( decltype ( pconfs ) pconf = 0; pconf < pconfs; pconf++ ) {
         output << ins << " : ";
-        output << ( *__credalNet_current_cpt ) [*node_idIt][pconf] << std::endl;
+				output << ( *__credalNet_current_cpt ) [*node_idIt][pconf] << "\n";
 
         if ( pconf < pconfs - 1 )
           ++ins;

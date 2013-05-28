@@ -62,6 +62,7 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 
 #include <agrum/CN/LpInterface.h>
+#include <CredalNetTestSuite.h>
 
 
 #define xstrfy(s) strfy(s)
@@ -87,52 +88,86 @@ void test_credal() {
   std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
-	/////////////////////////////
-	
+
+	/////////////////////////////////
+	/*
 	gum::credal::LpInterface lpr;
 	
 	gum::credal::LpCol c1 = lpr.addCol();
 	gum::credal::LpCol c2 = lpr.addCol();
-	
-	lpr.print();
-	
-	std::cout << lpr.solve() << std::endl;
-	
-	lpr.clear();
-	
-	c1 = lpr.addCol();
-	c2 = lpr.addCol();
 	gum::credal::LpCol c3 = lpr.addCol();
 	
-	lpr.addRow( c1 + c2 <= c3 );
-	lpr.addRow( 0.5 <= c3 );
+	lpr.addRow( c1 <= c2 );
+	lpr.addProba();
 	
 	lpr.print();
 	
-	std::cout << lpr.solve() << std::endl;
+	auto v2 = lpr.solve();
+	std::cout << v2 << std::endl;
 	
+	gum::credal::LpExpr expr;
+	expr = 2;
+	expr.print();
 	
+	expr = c1;
+	expr.print();
+	
+	expr = 0;
+	expr.print();
+
 	return;
-	
+	*/
 	////////////////////////////////
 	
 	gum::credal::CredalNet< double > nCN;
 	
 	gum::NodeId a = nCN.addNode( "toto", 2 );
 	gum::NodeId b = nCN.addNode( "titi", 3 );
+	gum::NodeId c = nCN.addNode( "tata", 3 );
 	
-	nCN.addArc( a, b );
+	nCN.addArc( a, c );
+	nCN.addArc( b, c );
 	
 	std::vector< double > lower( 2, 0 );
 	std::vector< double > upper( 2, 1 );
-	nCN.fillConstraints( a, lower, upper );
 	
-	nCN.fillConstraints( b, std::vector< double >( 6, 0 ), std::vector< double >( 6, 1 ) );
+	std::vector< std::vector< double > > v {{0.2, 0.8}};
+	std::vector< std::vector< double > > v1 {{0.2, 0.4, 0.4}};
 	
-	nCN.intervalToCredal();
+	gum::Instantiation ins( nCN.current_bn().cpt( a ) );
+	nCN.setCPT(a, ins, v);
+	
+	ins = gum::Instantiation( nCN.current_bn().cpt( b ) );
+	nCN.setCPT(b, ins, v1);
+
+	ins = gum::Instantiation( nCN.current_bn().cpt( c ) );
+	
+	gum::credal::LpInterface llp;
+	auto cols = llp.addCols( 3 );
+	
+	for( ; ! ins.end(); ) {
+		for ( auto col : cols )
+			llp.addRow( rand() / RAND_MAX  <= col );
+		
+		llp.addRow( cols[ rand() % cols.size() ] <= cols[ rand() % cols.size() ] );
+		
+		llp.addSumIsOne ();
+		
+		nCN.setCPT(c, ins, llp.solve());
+		ins += 3; // card ( c ) = 3
+		
+		llp.clearRows();
+	}
+	
+	
+	//nCN.fillConstraints( a, lower, upper );
+	
+	//nCN.fillConstraints( b, std::vector< double >( 6, 0 ), std::vector< double >( 6, 1 ) );
+	
+	//nCN.intervalToCredal();
 	
 	std::cout << nCN.toString() << std::endl;	
-	
+		
 	return;
 	
 	/////////////////////////////
