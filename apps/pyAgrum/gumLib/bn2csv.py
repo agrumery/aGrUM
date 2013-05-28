@@ -30,6 +30,7 @@ import sys,os,csv,random
 
 from progress_bar import ProgressBar
 from pyAgrum_header import pyAgrum_header
+import math
 
 import pyAgrum as gum
 
@@ -46,13 +47,20 @@ class CSVGenerator:
     def draw(tab):
         """
         Draw a value using tab as probability table.
+
+        return the couple (i,proba)
         """
+        res=len(tab)-1
+
         t = random.random()
         for i in range(len(tab)):
             if t<tab[i]:
-                return i
+                res=i
+                break
             t-=tab[i]
-        return len(tab)-1
+
+
+        return (res,tab[res])
 
     @staticmethod
     def nameAndParents(bn,n):
@@ -85,17 +93,23 @@ class CSVGenerator:
         """
         Generate a sample w.r.t to the bn using the variable sequence seq
         (topological order)
+
+        return the coule (sample,log2-likelihood)
         """
         self._sample = {}
+        LL=0
         for node_id in seq:
             (nod,par)=self.caching_nameAndParents(bn,node_id)
-            self._sample[nod] = CSVGenerator.draw(self.caching_probas(bn,node_id,nod,par))
+            (self._sample[nod],p) = CSVGenerator.draw(self.caching_probas(bn,node_id,nod,par))
+            LL+=math.log(p,2)
 
-        return self._sample
+        return (self._sample,LL)
 
     def proceed(self,name_in, name_out, n,visible):
         """
         From the file name_in (BN file), generate n samples and save them in name_out
+
+        return the log2-likelihood of the n samples database
         """
 
         if isinstance(name_in,str):
@@ -117,8 +131,10 @@ class CSVGenerator:
             prog = ProgressBar(name_out+' : ',0, n, 77,  mode='static', char='#')
             prog.display()
 
+        LL=0
         for i in range(n):
-            cas = self.newSample(bn,seq)
+            (cas,ll) = self.newSample(bn,seq)
+            LL+=ll
             row=[cas[bn.variable(item).name()] for item in seq]
             writer.writerow(row)
 
@@ -128,6 +144,10 @@ class CSVGenerator:
 
         if visible:
             print
+            print "Log2-Likelihood : {0}".format(LL)
+            print
+
+        return LL
 
 def generateCSV(name_in, name_out, n,visible=False):
     g=CSVGenerator()
@@ -141,7 +161,7 @@ def module_help(exit_value=1):
     sys.exit(exit_value)
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
+    pyAgrum_header("2011-2013")
 
     if len(sys.argv)<3:
         module_help()

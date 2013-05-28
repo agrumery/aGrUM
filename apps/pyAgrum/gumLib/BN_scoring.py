@@ -120,7 +120,7 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     mdl=-likelihood+nbr_arcs*math.log(nbr_lines,2)+32*dim #32=nbr bits for a params
 
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
-            {'likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})
+            {'Log2-Likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})
 
 
 def module_help(exit_value=1):
@@ -128,6 +128,7 @@ def module_help(exit_value=1):
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
     print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} [data[.csv]]"
+    print
     sys.exit(exit_value)
 
 def getNumLabel(inst,i,label,transforme_label):
@@ -143,12 +144,10 @@ def stringify(s):
   return '"'+s+'"'
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
+    pyAgrum_header("2011-2013")
 
     if len(sys.argv)<2:
-        #module_help()
-        bn_name="../resources/alarm.dsl"
-        csv_name="alarm.csv"
+        module_help()
     else:
         bn_name=sys.argv[1]
     
@@ -159,10 +158,9 @@ if __name__=="__main__":
             csv_name=sys.argv[2]
             base,ext=os.path.splitext(csv_name)
 
-
-    print '"{0}" vs "{1}"'.format(bn_name,csv_name)
-    print
-    (nbr,LL)=computeScores(bn_name,csv_name,visible=True)
-    print
-    print '{0}% of base is significant.\nscores : {1}'.format(nbr,LL)
+        print '"{0}" vs "{1}"'.format(bn_name,csv_name)
+        print
+        (nbr,LL)=computeScores(bn_name,csv_name,visible=True)
+        print
+        print '{0}% of base is significant.\nscores : {1}'.format(nbr,LL)
 
