@@ -14,7 +14,7 @@
  * Mono-threaded version
  * TestSuite operations are NOT thread safe (yet ?)
  */
-#include <agrum/CN/testcpy.h>
+
 namespace gum_tests {
 	
 	class CredalNetTestSuite : public CxxTest::TestSuite {
@@ -26,7 +26,6 @@ namespace gum_tests {
 		public:
 			gum::credal::CredalNet< double > * cn;
 			
-			// not dynamic (2U network - fast)
 			void initCNet () {
 				gum::setNumberOfThreads ( 1 );
 				
@@ -37,53 +36,16 @@ namespace gum_tests {
 				delete cn;
 			}
 			
-			/// custom test function for easy optimization of operators
-			/// will be deleted when fully optimized
 			void LP () {
-				/*
-				gum::credal::LP lp;
-				auto c1 = lp.addCol();
-				auto c2 = lp.addCol();
-				auto r = lp.addRow( c1 + c2 + c1 + c2 );
-				r.print();
-				gum::credal::row R( r + c1 );
-				std::cout <<"R"<<std::endl;
-				R.print();
-				std::cout <<"lp\n";
-				lp.print();std::cout <<"cols\n";
-				c1.print();
-				c2.print();
-				*/
-				/*
-				gum::credal::LP lp;
-				lp.test();
-				*/
-				/*
 				gum::credal::LpInterface lp;
 				auto c1 = lp.addCol();
 				auto c2 = lp.addCol();
 				
-				gum::credal::LpExpr expr = 2 - c1;
-				gum::credal::LpExpr expr2 = c1 + c1 + c1 + c1 + c1 + c1;
-				expr2 + c1;
-				expr + expr2;
-				c2 - expr2;
-				*/
-				/*
-				lp.addRow( c1 <= c2 );
+				std::cout << "TEST 1" << std::endl;
+				lp.addSumIsOne();
+				std::cout << "TEST 1 OK" << std::endl;
 				
-				lp.addProba();
-				
-				lp.print();
-				
-				std::cout << lp.solve() << std::endl;
-				*/
-				///lp.addCol();
-				///lp.addCol();
-				///lp.clear();
-				///lp.addProba();
-				///lp.solve();
-			}
+			};
 			
 			/// network : A --> C <-- B built manually
 			void testCredalNetByLP () {
@@ -272,7 +234,9 @@ namespace gum_tests {
 					{0, 3./5, 2./5} 
 				}; // C lp solution A:2 B:2
 				
-				std::cout << "for loop" << std::endl;
+				
+				/// compute solutions, check bijection
+				
 				
 				for ( const auto & id : ids ) {
 					gum::Instantiation ins = cn->instantiation( id );

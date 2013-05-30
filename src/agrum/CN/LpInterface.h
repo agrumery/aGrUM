@@ -1,7 +1,6 @@
 #ifndef __LP_INTERFACE__H__
 #define __LP_INTERFACE__H__
 
-///#include <map>
 #include <string>       /// std::string
 #include <iostream>     /// std::cout
 #include <sstream>      /// std::ostringstream
@@ -26,7 +25,6 @@ namespace gum {
 				LpCol ( unsigned int id );
 				
 				LpCol ( const LpCol & col );
-				///LpCol ( LpCol && col );
 				
 				/** @brief Default destructor. */
 				~LpCol ();
@@ -38,44 +36,12 @@ namespace gum {
 				bool operator== ( const LpCol & col ) const;
 				bool operator!= ( const LpCol & col ) const;
 				
-				/// @warning : SELF assignment !!! test : this == &col -> return *this directly
-				/// @warning : return CONST ref to avoid (x=y)=z compiling ... but loose (x=y).nonConstFunc ???
 				LpCol & operator= ( const LpCol & col );
-				///LpCol & operator= ( LpCol && col );
+				
+				friend std::ostream & operator<< ( std::ostream & out, const LpCol & col );
 				
 				void print () const;
 				std::string toString () const;
-				
-				
-				LpExpr operator- () const;
-				
-				
-				LpExpr operator+ ( const LpCol & col ) const;
-				
-				LpExpr operator+ ( const LpExpr & expr ) const;
-				
-				template< typename SCALAR >
-				LpExpr operator+ ( const SCALAR & f ) const;
-				
-				
-				LpExpr operator- ( const LpCol & col ) const;
-				
-				LpExpr operator- ( const LpExpr & expr ) const;
-				
-				template< typename SCALAR >
-				LpExpr operator- ( const SCALAR & f ) const;
-				
-				
-				template< typename SCALAR >
-				LpExpr operator* ( const SCALAR & f ) const;
-				
-				
-				LpExpr operator<= ( const LpCol & col ) const;
-				
-				LpExpr operator<= ( const LpExpr & expr ) const;
-				
-				template< typename SCALAR >
-				LpExpr operator<= ( const SCALAR & f ) const;
 				
 			protected:
 				
@@ -104,106 +70,107 @@ namespace gum {
 			
 			LpExpr ( const LpExpr & expr );
 			
+			LpExpr ( const LpExpr & expr, bool copyLeft, bool copyMiddle, bool copyRight );
+			
+			/// move copy constructor
+			LpExpr ( LpExpr && expr );
+			/// be carefull when chaining moves with this one, as expr will be partially moved !!
+			LpExpr ( LpExpr && expr, bool copyLeft, bool copyMiddle, bool copyRight );
+			
 			~LpExpr ();
 			
+			/// Operators =
+			/// @{
+				
+			LpExpr & operator= ( const LpCol & rhs );
 			
-			LpExpr operator- () const;
+			LpExpr & operator= ( const LpExpr & rhs );
 			
-			
-			LpExpr operator+ ( const LpCol & col ) const;
-			
-			LpExpr operator+ ( const LpExpr & expr ) const;
-			
-			template< typename SCALAR >
-			LpExpr operator+ ( const SCALAR & f ) const;
+			LpExpr & operator= ( LpExpr && rhs );
 			
 			template< typename SCALAR >
-			friend LpExpr operator+ ( const SCALAR & f, const LpCol & col );
+			LpExpr & operator= ( const SCALAR & rhs );
+			
+			/// @}
+			
+			/// Unary operator -
+			/// @{
+				
+			///LpExpr operator- ();
+			
+			/// @}
+			
+			/// Operators +=
+			/// @{
+				
+			LpExpr & operator+= ( const LpCol & rhs );
+			
+			LpExpr & operator+= ( const LpExpr & rhs );
+			
+			LpExpr & operator+= ( LpExpr && rhs );
+			
+			template< typename T >
+			LpExpr & operator+= ( const T & rhs );
+			
+			/// @}
+			
+			/// Operators -=
+			/// @{
+				
+			LpExpr & operator-= ( const LpCol & rhs );
+			
+			LpExpr & operator-= ( const LpExpr & rhs );
+			
+			template< typename T >
+			LpExpr & operator-= ( const T & rhs );
+			
+			friend std::ostream & operator<< ( std::ostream & out, const LpExpr & expr );
+			
+			/// @}
 			
 			template< typename SCALAR >
-			friend LpExpr operator+ ( const SCALAR & f, const LpExpr & expr );
+			friend LpExpr operator* ( const SCALAR & lhs, const LpCol & rhs );
 			
+			/// Used by operators <=
+			/// @{
 			
-			LpExpr operator- ( const LpCol & col ) const;
+			/// ALWAYS inserted from left to right
+			inline void addSide ( const LpCol & from );
 			
-			LpExpr operator- ( const LpExpr & expr ) const;
+			/// ALWAYS inserted from left to right
+			inline void addSide ( const LpExpr & from );
 			
+			/// ALWAYS inserted from left to right
+			inline void addSide ( LpExpr && from );
+			
+			/// ALWAYS inserted from left to right
 			template< typename SCALAR >
-			LpExpr operator- ( const SCALAR & f ) const;
+			inline void addSide ( const SCALAR & from );
 			
-			template< typename SCALAR >
-			friend LpExpr operator- ( const SCALAR & f, const LpCol & col );
+			/// @}
 			
-			template< typename SCALAR >
-			friend LpExpr operator- ( const SCALAR & f, const LpExpr & expr );
-			
-			
-			template< typename SCALAR >
-			friend LpExpr operator* ( const SCALAR & f, const LpCol & col );
-			
-			
-			LpExpr operator<= ( const LpCol & col ) const;
-			
-			LpExpr operator<= ( const LpExpr & expr ) const;
-			
-			template< typename SCALAR >
-			LpExpr operator<= ( const SCALAR & f ) const;
-			
-			template< typename SCALAR >
-			friend LpExpr operator<= ( const SCALAR & f, const LpCol & col );
-			
-			template< typename SCALAR >
-			friend LpExpr operator<= ( const SCALAR & f, const LpExpr & expr );
-			
-			
-			LpExpr & operator+= ( const LpCol & col );
-			
-			LpExpr & operator+= ( const LpExpr & expr );
-			
-			template< typename SCALAR >
-			LpExpr & operator+= ( const SCALAR & f );
-			
-			
-			LpExpr & operator-= ( const LpCol & col );
-			
-			LpExpr & operator-= ( const LpExpr & expr );
-			
-			template< typename SCALAR >
-			LpExpr & operator-= ( const SCALAR & f );
-			
-			
-			LpExpr & operator= ( const LpCol & col );
-			
-			LpExpr & operator= ( const LpExpr & expr );
-			
-			template< typename SCALAR >
-			LpExpr & operator= ( const SCALAR & f );
-			
+			void clear();
 			
 			void print () const;
 			
 			std::string toString () const;
 			
-			void clear();
+			
+		protected:
 			
 		private:
 			bool __ileft;
+			bool __imiddle;
 			bool __iright;
 			
 			double __lValue;
 			double __mValue;
 			double __rValue;
 			
-			gum::HashTable< LpCol, double > __lCoeffs;
-			gum::HashTable< LpCol, double > __mCoeffs;
-			gum::HashTable< LpCol, double > __rCoeffs;
+			gum::HashTable< LpCol, double > * __lCoeffs;
+			gum::HashTable< LpCol, double > * __mCoeffs;
+			gum::HashTable< LpCol, double > * __rCoeffs;
 			
-			void __moveLeft ();
-			
-			inline void __copy ( const LpExpr & from );
-			inline void __copyLeft ( const LpExpr & from );
-			inline void __copyMiddle ( const LpExpr & from );
-			inline void __copyRight ( const LpExpr & from );
 		};
 		
 		
@@ -211,11 +178,24 @@ namespace gum {
 			friend class LpInterface;
 			
 			public:
+				/// to use swap trick with vectors
+				/// not intended to be used without expressions or by the user
+				LpRow ();
+				
 				LpRow ( const LpExpr & expr, const std::vector< LpCol > & cols );
+				
+				LpRow ( LpExpr && expr, const std::vector< LpCol > & cols );
 				
 				LpRow ( const LpRow & row );
 				
+				LpRow ( LpRow && row );
+				
 				~LpRow ();
+				
+				LpRow & operator= ( const LpRow & row );
+				LpRow & operator= ( LpRow && row );
+				
+				friend std::ostream & operator<< ( std::ostream & out, const LpRow & row );
 
 				void print () const;
 				
@@ -224,20 +204,22 @@ namespace gum {
 			protected:
 				
 			private:
-				gum::HashTable< LpCol, double > __coeffs;
 				double __cste;
+				
+				gum::HashTable< LpCol, double > * __coeffs;
 				
 		}; // end of class LpRow
 		
 		
 		class LpInterface {
-			
 			public:
 				/** @brief Default constructor, empty problem. */
 				LpInterface ();
 				
 				/** @brief Default destructor. */
 				~LpInterface ();
+				
+				friend std::ostream & operator<< ( std::ostream & out, const LpInterface & lpi );
 				
 				/**
 				 * @brief Insert a new column, i.e. a new variable.
@@ -255,6 +237,11 @@ namespace gum {
 				 * @brief Add rows to the linear programm according to expr which must be an inequality.
 				 */
 				void addRow ( const LpExpr & expr );
+				
+				/**
+				 * @brief Add rows to the linear programm according to expr which must be an inequality.
+				 */
+				void addRow ( LpExpr && expr );
 				
 				/**
 				 * @brief Add positivity constraints for all variables
@@ -310,7 +297,7 @@ namespace gum {
 				
 			private:
 				/** Rows of the problem. */
-				std::vector< LpRow > __rows;
+				std::vector< LpRow * > __rows;
 				/** Variables of the problem. */
 				std::vector< LpCol > __cols;
 				
@@ -321,6 +308,72 @@ namespace gum {
 				
 		}; // end of class LpInterface
 		
+		/// used by move semantics to take ownership of the hashTables of an Rvalue reference ( either a or b, it doesn't matter ).
+		/// the Rvalue reference will be deleted shortly after, and it's destructor will take care of the delete operations
+		inline void swap ( gum::HashTable< LpCol, double > *& a, gum::HashTable< LpCol, double > *& b );
+		
+		/// non-members operators +
+		/// @{
+		
+		template< typename T1, typename T2 >
+		LpExpr operator+ ( const T1 & lhs, const T2 & rhs );
+		
+		/// Rvalue reference operators
+		
+		template< typename T1, typename T2 >
+		LpExpr operator+ ( T1 && lhs, const T2 & rhs );
+		
+		template< typename T1, typename T2 >
+		LpExpr operator+ ( const T1 & lhs, T2 && rhs );
+		
+		template< typename T1, typename T2 >
+		LpExpr operator+ ( T1 && lhs, T2 && rhs );
+		
+		/// @}
+		
+		/// non-members operators -
+		/// @{
+		
+		template< typename T1, typename T2 >
+		LpExpr operator- ( const T1 & lhs, const T2 & rhs );
+		
+		/// Rvalue reference operators
+		
+		/// the only operator- that can use move semantics is on lsh. rhs cannot use move semantic because of - rhs
+		template< typename T2 >
+		LpExpr operator- ( LpExpr && lhs, const T2 & rhs );
+		
+		/// @}
+		
+		/// non-members operators *
+		/// @{
+		/// declared friend by LpExpr
+		template< typename SCALAR >
+		LpExpr operator* ( const SCALAR & lhs, const LpCol & rhs );
+		
+		template< typename SCALAR >
+		LpExpr operator* ( const LpCol & lhs, const SCALAR & rhs );
+		
+		/// @}
+		
+		/// non-members operators <=
+		/// @{
+			
+		template< typename T1, typename T2 >
+		LpExpr operator<= ( const T1 & lhs , const T2 & rhs );
+		
+		/// Rvalue reference operators
+		
+		template< typename T1, typename T2 >
+		LpExpr operator<= ( T1 && lhs , const T2 & rhs );
+		
+		template< typename T1, typename T2 >
+		LpExpr operator<= ( const T1 & lhs , T2 && rhs );
+		
+		template< typename T1, typename T2 >
+		LpExpr operator<= ( T1 && lhs , T2 && rhs );
+		
+		/// @}
 		
 	}	// end of namespace cn
 	
