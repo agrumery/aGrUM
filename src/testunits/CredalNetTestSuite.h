@@ -38,13 +38,52 @@ namespace gum_tests {
 			
 			void LP () {
 				gum::credal::LpInterface lp;
+				
 				auto c1 = lp.addCol();
 				auto c2 = lp.addCol();
+				auto c3 = lp.addCol();
+				auto c4 = lp.addCol();
+				auto c5 = lp.addCol();
+				auto c6 = lp.addCol();
+				auto c7 = lp.addCol();
+				auto c8 = lp.addCol();
 				
-				std::cout << "TEST 1" << std::endl;
-				lp.addSumIsOne();
-				std::cout << "TEST 1 OK" << std::endl;
 				
+				gum::Timer tim;
+				unsigned int tmp = 0;
+				std::cout << " test 1 : 1 <= expr <= 1, expr is not an rvalue ref" << std::endl;
+				while ( tim.step() < 10 ) {
+					gum::credal::LpExpr expr ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
+					lp.addRow ( 1 <= expr <= 1 );
+					lp.clearRows();
+					tmp++;
+				}
+				std::cout << tmp << " computations done" << std::endl;
+				
+				
+				tim.reset(); tmp = 0;
+				tim.resume();
+				std::cout << " test 2 : 1 <= expr <= 1, expr is an rvalue ref" << std::endl;
+				while ( tim.step() < 10 ) {
+					gum::credal::LpExpr expr ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
+					lp.addRow ( 1 <= std::move ( expr ) <= 1 );
+					lp.clearRows();
+					tmp++;
+				}
+				std::cout << tmp << " computations done" << std::endl;
+				
+				
+				tim.reset(); tmp = 0;
+				tim.resume();
+				std::cout << " test 3 : 1 <= expr & expr <= 1, expr is not an rvalue ref" << std::endl;
+				while ( tim.step() < 10 ) {
+					gum::credal::LpExpr expr ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
+					lp.addRow ( 1 <= expr );
+					lp.addRow ( expr <= 1 );
+					lp.clearRows();
+					tmp++;
+				}
+				std::cout << tmp << " computations done" << std::endl;
 			};
 			
 			/// network : A --> C <-- B built manually

@@ -62,7 +62,6 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 
 #include <agrum/CN/LpInterface.h>
-#include <CredalNetTestSuite.h>
 
 
 #define xstrfy(s) strfy(s)
@@ -89,34 +88,6 @@ void test_credal() {
   std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
   std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
-	/////////////////////////////////
-	/*
-	gum::credal::LpInterface lpr;
-	
-	gum::credal::LpCol c1 = lpr.addCol();
-	gum::credal::LpCol c2 = lpr.addCol();
-	gum::credal::LpCol c3 = lpr.addCol();
-	
-	lpr.addRow( c1 <= c2 );
-	lpr.addProba();
-	
-	lpr.print();
-	
-	auto v2 = lpr.solve();
-	std::cout << v2 << std::endl;
-	
-	gum::credal::LpExpr expr;
-	expr = 2;
-	expr.print();
-	
-	expr = c1;
-	expr.print();
-	
-	expr = 0;
-	expr.print();
-
-	return;
-	*/
 	////////////////////////////////
 	
 	gum::credal::CredalNet< double > nCN;
@@ -216,9 +187,9 @@ void test_credal() {
 			std::cout << "mc p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << mc.marginalMin(*id)[mod] << ", " << mc.marginalMax(*id)[mod] << " ] " << std::endl;
 		}
 	}
-	
+	/*
 	cn.approximatedBinarization();
-	
+	*/
 	//std::cout << cn.toString() << std::endl;
 
 	cn.computeCPTMinMax ();

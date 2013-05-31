@@ -93,12 +93,6 @@ namespace gum {
 			
 			/// @}
 			
-			/// Unary operator -
-			/// @{
-				
-			///LpExpr operator- ();
-			
-			/// @}
 			
 			/// Operators +=
 			/// @{
@@ -131,23 +125,8 @@ namespace gum {
 			template< typename SCALAR >
 			friend LpExpr operator* ( const SCALAR & lhs, const LpCol & rhs );
 			
-			/// Used by operators <=
-			/// @{
-			
-			/// ALWAYS inserted from left to right
-			inline void addSide ( const LpCol & from );
-			
-			/// ALWAYS inserted from left to right
-			inline void addSide ( const LpExpr & from );
-			
-			/// ALWAYS inserted from left to right
-			inline void addSide ( LpExpr && from );
-			
-			/// ALWAYS inserted from left to right
-			template< typename SCALAR >
-			inline void addSide ( const SCALAR & from );
-			
-			/// @}
+			template< typename T1, typename T2 >
+			friend LpExpr operator<= ( T1 && lhs, T2 && rhs );
 			
 			void clear();
 			
@@ -171,6 +150,24 @@ namespace gum {
 			gum::HashTable< LpCol, double > * __mCoeffs;
 			gum::HashTable< LpCol, double > * __rCoeffs;
 			
+			/// Used by operators <=
+			/// @{
+				
+			/// ALWAYS inserted from left to right
+			inline void __addSide ( const LpCol & from );
+			
+			/// ALWAYS inserted from left to right
+			inline void __addSide ( const LpExpr & from );
+			
+			/// ALWAYS inserted from left to right
+			inline void __addSide ( LpExpr && from );
+			
+			/// ALWAYS inserted from left to right
+			template< typename SCALAR >
+			inline void __addSide ( const SCALAR & from );
+			
+			/// @}
+			
 		};
 		
 		
@@ -178,10 +175,6 @@ namespace gum {
 			friend class LpInterface;
 			
 			public:
-				/// to use swap trick with vectors
-				/// not intended to be used without expressions or by the user
-				LpRow ();
-				
 				LpRow ( const LpExpr & expr, const std::vector< LpCol > & cols );
 				
 				LpRow ( LpExpr && expr, const std::vector< LpCol > & cols );
@@ -314,18 +307,12 @@ namespace gum {
 		
 		/// non-members operators +
 		/// @{
+			
+		/// generic case with a LpExpr on right side; we add it first whatever is on left side
+		template< typename T1 >
+		LpExpr operator+ ( T1 && lhs, LpExpr && rhs );
 		
-		template< typename T1, typename T2 >
-		LpExpr operator+ ( const T1 & lhs, const T2 & rhs );
-		
-		/// Rvalue reference operators
-		
-		template< typename T1, typename T2 >
-		LpExpr operator+ ( T1 && lhs, const T2 & rhs );
-		
-		template< typename T1, typename T2 >
-		LpExpr operator+ ( const T1 & lhs, T2 && rhs );
-		
+		/// generic case without a LpExpr on the right side
 		template< typename T1, typename T2 >
 		LpExpr operator+ ( T1 && lhs, T2 && rhs );
 		
@@ -336,8 +323,6 @@ namespace gum {
 		
 		template< typename T1, typename T2 >
 		LpExpr operator- ( const T1 & lhs, const T2 & rhs );
-		
-		/// Rvalue reference operators
 		
 		/// the only operator- that can use move semantics is on lsh. rhs cannot use move semantic because of - rhs
 		template< typename T2 >
@@ -358,20 +343,9 @@ namespace gum {
 		
 		/// non-members operators <=
 		/// @{
-			
-		template< typename T1, typename T2 >
-		LpExpr operator<= ( const T1 & lhs , const T2 & rhs );
-		
-		/// Rvalue reference operators
 		
 		template< typename T1, typename T2 >
-		LpExpr operator<= ( T1 && lhs , const T2 & rhs );
-		
-		template< typename T1, typename T2 >
-		LpExpr operator<= ( const T1 & lhs , T2 && rhs );
-		
-		template< typename T1, typename T2 >
-		LpExpr operator<= ( T1 && lhs , T2 && rhs );
+		LpExpr operator<= ( T1 && lhs, T2 && rhs );
 		
 		/// @}
 		
