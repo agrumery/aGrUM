@@ -93,10 +93,11 @@ namespace gum {
     INLINE void ScoringTreeConditioningBox::clear () {
       // remove all the children, if any
       if ( __final_level ) {
-        std::vector<ScoringTreeTargetSetBox*>& children =
-          reinterpret_cast<std::vector<ScoringTreeTargetSetBox*>&> ( __children );
-        for ( unsigned int i = 0; i < children.size (); ++i ) {
-          if ( children[i] ) ScoringTreeTargetSetBox::deleteBox ( children[i] );
+        for ( unsigned int i = 0; i < __children.size (); ++i ) {
+          if ( __children[i] ) {
+            ScoringTreeTargetSetBox::deleteBox
+              ( reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] ) );
+          }
         }
       }
       else {
