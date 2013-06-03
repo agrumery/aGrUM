@@ -38,9 +38,9 @@
 #include <agrum/core/list.h>
 
 
-#define LEARNING_SCORING_TREE_CONDITIONING_BOX_POOL_MAX_SIZE 10000
-#define LEARNING_SCORING_TREE_TARGET_SET_BOX_POOL_MAX_SIZE   20000
-#define LEARNING_SCORING_TREE_TARGET_BOX_POOL_MAX_SIZE       40000
+#define LEARNING_SCORING_TREE_CONDITIONING_BOX_POOL_MAX_SIZE 100000
+#define LEARNING_SCORING_TREE_TARGET_SET_BOX_POOL_MAX_SIZE   200000
+#define LEARNING_SCORING_TREE_TARGET_BOX_POOL_MAX_SIZE       400000
 
 
 namespace gum {
@@ -128,7 +128,19 @@ namespace gum {
       void clear ();
 
       /// returns the set of children
-      /** @return the set of children of the box */
+      /** @return the set of children of the box
+       * @warning note that, if the current box is at the final level, you
+       * will have to translate the returned vector into a vector of
+       * ScoringTreeTargetSetBox*. To avoid warnings indicating that you break
+       * strict aliasing optimizations, you should reinterpret_cast each element
+       * of the vector separately as shown in the following code:
+       * @code
+       * const std::vector<ScoringTreeConditioningBox*>& vect = box.children ();
+       * for ( unsigned int i = 0; i < vect.size(); ++i ) {
+       *   cout << reinterpret_cast<ScoringTreeTargetSetBox*> ( vect[i] )
+       * }
+       * Note that reinterpret_cast do not induce any runtime overhead.
+       * @endcode */
       const std::vector<ScoringTreeConditioningBox*>& children () const;
 
       /// indicates whether there exists a child at the ith modality
@@ -139,12 +151,18 @@ namespace gum {
 
       /// returns the ith child
       /** @param i the ith value of the node
-       * @return a pointer to the ith child (returns 0 if there is no child) */
+       * @return a pointer to the ith child (returns 0 if there is no child)
+       * @warning note that, if the current box is at the final level, you
+       * will have to translate the returned box into a ScoringTreeTargetSetBox*
+       * using a reinterpret_cast. */
       ScoringTreeConditioningBox* child ( unsigned int i ) const;
 
       /// sets the ith child
       /** @param i the child will be assigned to the ith value of the node
-       * @param box the box to be assigned to the ith modality */
+       * @param box the box to be assigned to the ith modality
+       * @warning no test is performed checking whether the type of the box is
+       * correct, i.e., whether it is a conditioning box if the current box is not
+       * at the final level or a target set box otherwise. */
       void setChild ( unsigned int i, ScoringTreeConditioningBox* box );
       void setChild ( unsigned int i, ScoringTreeTargetSetBox* box );
 
@@ -197,11 +215,11 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// default constructor
+      /// default constructor: use createBox instead of this constructor
       /** When the box is created, it reserves some memory to hold its children
-       * but those are not created yet. */
-      /** @param children_size the number of children boxes of the created box at
-       * the next level of the tree.
+       * but those are not created yet.
+       * @param children_size the number of children boxes of the created box at
+       * the next level of the scoring tree.
        * @param final_level a Boolean indicating whether the created box is at the
        * last level of conditioning boxes (true) or not. If final_level is false,
        * then the next tree level contains target set boxes. */
@@ -211,7 +229,8 @@ namespace gum {
       /// copy constructor: prevent its construction
       ScoringTreeConditioningBox ( const ScoringTreeConditioningBox& );
       
-      /// destructor: removes the box and all its descendants
+      /// destructor: use deleteBox instead of this destructor
+      /** this destructor removes the box and all its descendants from memory */
       ~ScoringTreeConditioningBox ();
      
       /// @}
@@ -304,7 +323,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// get the number of records of the ith modality found in the database
+      /// get the number of records found in the database of the ith modality
       /** @param i the modality of the target node */
       unsigned int nbRecords ( unsigned int i ) const;
 
@@ -312,13 +331,18 @@ namespace gum {
        * modalities */
       const std::vector<unsigned int>& nbRecords () const;
 
-      /// increments the number of observations of the ith modality
+      /// increments the number of records of the ith modality found so far
+      /** @param i the modality of the target node */
       void incrementNbRecords ( unsigned int i );
 
-      /// increments the number of observations of the ith modality by k
+      /// increments the number of records of the ith modality by k
+      /** @param i the modality of the target node
+       * @param k the number by which we shall increase the number of records */
       void incrementNbRecords ( unsigned int i, unsigned int k );
 
-      /// sets the number of observations of the ith modality
+      /// sets the number of records of the ith modality
+      /** @param i the modality of the target node
+       * @param k the new number of records of the ith modality */ 
       void setNbRecords ( unsigned int i, unsigned int k );
 
       /// @}
@@ -330,9 +354,13 @@ namespace gum {
       /// @{
 
       /// set the maximal capacity (number of boxes) of the pool
+      /** if the maximal pool size is decreased and the number of boxes currently
+       * stored into the pool is greater than new_size, the boxes in excess are
+       * freed from memory.
+       * @param new_size the new maximal number of boxes in the pool */
       static void setPoolCapacity ( unsigned int new_size );
 
-      /// clear the pool
+      /// clear the pool (free all boxes from memory)
       static void clearPool ();
       
       /// @}
@@ -356,12 +384,13 @@ namespace gum {
       /// @{
 
       /// default constructor
+      /** @param size the domain size of the target node */
       ScoringTreeTargetBox ( unsigned int size );
 
-      /// copy constructor: prevent its use by making it private
+      /// copy constructor: use createBox instead of this constructor
       ScoringTreeTargetBox ( const ScoringTreeTargetBox& from );
       
-      /// destructor
+      /// destructor: use deleteBox instead of this destructor
       ~ScoringTreeTargetBox ();
 
       /// @}
@@ -440,8 +469,8 @@ namespace gum {
        * more useful, it should be put back into the pool. Whenever a box is
        * needed, it shall be taken from the pool. If this one is empty, the box
        * returned is newly allocated into the heap.
-       * @param variable_modalities indicate the number of modalities of each
-       * variable that shall be taken into account */
+       * @param variable_modalities indicate the number of modalities (domain
+       * size) of each variable that shall be taken into account */
       static ScoringTreeTargetSetBox*
       createBox ( const std::vector<unsigned int>& variable_modalities );
 
@@ -461,34 +490,47 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// get the number of records observed in the database for the parents
-      unsigned int nbParentRecords () const;
-      
+      /// returns the box for the ith variable
+      /** @param i the index of the variable whose target box we wish to get */
+      ScoringTreeTargetBox* child ( unsigned int i ) const;
+
       /// get the number of records of the ith variable
+      /** @param i the index of the variable whose records we wish to get */
       const std::vector<unsigned int>& nbRecords ( unsigned int i ) const;
 
       /// get the number of records of the jth modality of the ith variable
+      /** @param i the index of the variable whose record we wish to get
+       * @param j the modality of the record we are interested in */
       unsigned int nbRecords ( unsigned int i, unsigned int j ) const;
 
-      /// returns the box for the ith variable
-      ScoringTreeTargetBox* targetBox ( unsigned int i ) const;
-
       /** @brief increment de the number of observations of the jth value of the
-       * ith variable */ 
+       * ith variable
+       * @param i the index of the variable whose record we wish to increment
+       * @param j the modality of the record */ 
       void incrementNbRecords ( unsigned int i, unsigned int j ) const;
 
       /** @brief increment the number of observations of the jth value of the
-       * ith variable by k */
+       * ith variable by k
+       * @param i the index of the variable whose record we wish to increment
+       * @param j the modality of the record
+       * @param k the number by which we increment the record */ 
       void incrementNbRecords ( unsigned int i,
                                 unsigned int j, unsigned int k ) const;
 
       /// sets the number of records of the jth value of the ith variable
+      /** @param i the index of the variable whose record we wish to set
+       * @param j the modality of the record
+       * @param k the number assigned to the record */ 
       void setNbRecords ( unsigned int i, unsigned int j, unsigned int k ) const;
+      
+      /// get the number of records observed in the database for the parents
+      unsigned int nbParentRecords () const;
       
       /// increment the number of observations of the parents of the container
       void incrementNbParentRecords ();
       
       /// increment the number of observations of the parents of the container
+      /** @param k the number by which we increment the number of parent records */
       void incrementNbParentRecords ( unsigned int k);
       
       /// empty the container
@@ -518,9 +560,13 @@ namespace gum {
       /// @{
 
       /// set the maximal capacity (number of boxes) of the pool
+      /** if the maximal pool size is decreased and the number of boxes currently
+       * stored into the pool is greater than new_size, the boxes in excess are
+       * freed from memory.
+       * @param new_size the new maximal number of boxes in the pool */
       static void setPoolCapacity ( unsigned int new_size );
 
-      /// clear the pool
+      /// clear the pool (free all boxes from memory)
       static void clearPool ();
       
       /// @}
@@ -546,8 +592,8 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// default constructor: creates a target set and fills it
-      /** This constructor crates a target set and fills it with target boxes
+      /// default constructor: use method createBox instead
+      /** This constructor creates a target set and fills it with target boxes
        * of the appropriate size. These boxes contain no record.
        * @param variable_modalities indicate the number of modalities of each
        * variable that shall be taken into account */
@@ -557,7 +603,7 @@ namespace gum {
       /// copy constructor: prevent its use by making it private
       ScoringTreeTargetSetBox ( const ScoringTreeTargetSetBox& );
 
-      /// destructor
+      /// destructor: use deleteBox instead
       ~ScoringTreeTargetSetBox ();
 
       /// @}

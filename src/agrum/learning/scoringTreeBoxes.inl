@@ -36,154 +36,6 @@ namespace gum {
     
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                   SCORING TREE CONDITIONING BOX                   === */
-    /* ========================================================================= */
-    /* ========================================================================= */
-     
-    /// default constructor
-    INLINE ScoringTreeConditioningBox::ScoringTreeConditioningBox
-    ( unsigned int children_size,
-      bool final_level ) :
-      __children ( children_size, 0 ),
-      __final_level ( final_level ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoringTreeConditioningBox );
-    }
-      
-
-    /// destructor
-    INLINE ScoringTreeConditioningBox::~ScoringTreeConditioningBox () {
-      // for debugging purposes
-      GUM_DESTRUCTOR ( ScoringTreeConditioningBox );
-      
-      // remove all the children
-      if ( __final_level ) {
-        std::vector<ScoringTreeTargetSetBox*>& children =
-          reinterpret_cast<std::vector<ScoringTreeTargetSetBox*>&> ( __children );
-        for ( unsigned int i = 0; i < children.size (); ++i ) {
-          if ( children[i] ) delete children[i];
-        }
-      }
-      else {
-        for ( unsigned int i = 0; i < __children.size (); ++i ) {
-          if ( __children[i] ) delete __children[i];
-        }
-      }
-    }
-
-    
-    /// select a ScoringTreeConditioningBox from a pool and return it
-    INLINE ScoringTreeConditioningBox*
-    ScoringTreeConditioningBox::createBox ( unsigned int children_size,
-                                            bool final_level ) {
-      if ( __pool.empty () ) {
-        return new ScoringTreeConditioningBox ( children_size, final_level );
-      }
-      else {
-        ScoringTreeConditioningBox* box = __pool.front ();
-        __pool.popFront ();
-        box->__resize ( children_size );
-        box->__setFinal ( final_level );
-        return box;
-      }
-    }
-
-    
-    /// reset the children to the empty set
-    INLINE void ScoringTreeConditioningBox::clear () {
-      // remove all the children, if any
-      if ( __final_level ) {
-        for ( unsigned int i = 0; i < __children.size (); ++i ) {
-          if ( __children[i] ) {
-            ScoringTreeTargetSetBox::deleteBox
-              ( reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] ) );
-          }
-        }
-      }
-      else {
-        for ( unsigned int i = 0; i < __children.size (); ++i ) {
-          if ( __children[i] ) deleteBox ( __children[i] );
-        }
-      }
-      
-      __children.clear ();
-    }
-
- 
-    /// put a ScoringTreeConditioningBox into the pool
-    INLINE void
-    ScoringTreeConditioningBox::deleteBox ( ScoringTreeConditioningBox* box ) {
-      // clear the box, so that the next time it is created out of the pool, it
-      // has no child
-      box->clear ();
-      if ( __pool.size () >= __pool_max_size ) {
-        delete box;
-      }
-      else {
-        __pool.pushBack ( box );
-      }
-    }
-
-
-    /// returns the set of children
-    INLINE const std::vector<ScoringTreeConditioningBox*>&
-    ScoringTreeConditioningBox::children () const {
-      return __children;
-    }
-
-    
-    /// indicates whether there exists a child at the ith modality
-    INLINE bool ScoringTreeConditioningBox::hasChild ( unsigned int i ) const {
-      return ( __children[i] != 0 );
-    }
-
-    
-    /// returns the ith child
-    INLINE ScoringTreeConditioningBox*
-    ScoringTreeConditioningBox::child ( unsigned int i ) const {
-      return __children[i];
-    }
-      
- 
-    /// sets the ith child
-    INLINE void
-    ScoringTreeConditioningBox::setChild ( unsigned int i,
-                                           ScoringTreeConditioningBox* box ) {
-      __children[i] = box;
-    }
-
-    
-    /// sets the ith child
-    INLINE void
-    ScoringTreeConditioningBox::setChild ( unsigned int i,
-                                           ScoringTreeTargetSetBox* box ) {
-      __children[i] = reinterpret_cast<ScoringTreeConditioningBox*> ( box );
-    }
-
-    
-    /// indicates whether the box is at the last conditioning level
-    INLINE bool ScoringTreeConditioningBox::isAtFinalLevel () const {
-      return __final_level;
-    }
-      
-
-    /// resize the number of children
-    INLINE void 
-    ScoringTreeConditioningBox::__resize ( unsigned int new_children_size ) {
-      __children.resize ( new_children_size, 0 );
-    }
-
-    
-    /// sets the final_level Boolean
-    INLINE void ScoringTreeConditioningBox::__setFinal ( bool final_level ) {
-      __final_level = final_level;
-    }
-    
-
-
-    
-    /* ========================================================================= */
-    /* ========================================================================= */
     /* ===                       SCORING TREE TARGET BOX                     === */
     /* ========================================================================= */
     /* ========================================================================= */
@@ -386,7 +238,7 @@ namespace gum {
 
     /// returns the target box for the ith variable
     INLINE ScoringTreeTargetBox*
-    ScoringTreeTargetSetBox::targetBox ( unsigned int i ) const {
+    ScoringTreeTargetSetBox::child ( unsigned int i ) const {
       return __target_boxes[i];
     }
     
@@ -447,6 +299,153 @@ namespace gum {
       if ( clear_nb_parent_records ) {
         __nb_parent_records = 0;
       }
+    }
+
+
+
+    /* ========================================================================= */
+    /* ========================================================================= */
+    /* ===                   SCORING TREE CONDITIONING BOX                   === */
+    /* ========================================================================= */
+    /* ========================================================================= */
+     
+    /// default constructor
+    INLINE ScoringTreeConditioningBox::ScoringTreeConditioningBox
+    ( unsigned int children_size,
+      bool final_level ) :
+      __children ( children_size, 0 ),
+      __final_level ( final_level ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( ScoringTreeConditioningBox );
+    }
+      
+
+    /// destructor
+    INLINE ScoringTreeConditioningBox::~ScoringTreeConditioningBox () {
+      // for debugging purposes
+      GUM_DESTRUCTOR ( ScoringTreeConditioningBox );
+      
+      // remove all the children
+      if ( __final_level ) {
+        for ( unsigned int i = 0; i < __children.size (); ++i ) {
+          if ( __children[i] ) {
+            delete reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] );
+          }
+        }
+      }
+      else {
+        for ( unsigned int i = 0; i < __children.size (); ++i ) {
+          if ( __children[i] ) delete __children[i];
+        }
+      }
+    }
+
+    
+    /// select a ScoringTreeConditioningBox from a pool and return it
+    INLINE ScoringTreeConditioningBox*
+    ScoringTreeConditioningBox::createBox ( unsigned int children_size,
+                                            bool final_level ) {
+      if ( __pool.empty () ) {
+        return new ScoringTreeConditioningBox ( children_size, final_level );
+      }
+      else {
+        ScoringTreeConditioningBox* box = __pool.front ();
+        __pool.popFront ();
+        box->__resize ( children_size );
+        box->__setFinal ( final_level );
+        return box;
+      }
+    }
+
+    
+    /// reset the children to the empty set
+    INLINE void ScoringTreeConditioningBox::clear () {
+      // remove all the children, if any
+      if ( __final_level ) {
+        for ( unsigned int i = 0; i < __children.size (); ++i ) {
+          if ( __children[i] ) {
+            ScoringTreeTargetSetBox::deleteBox
+              ( reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] ) );
+          }
+        }
+      }
+      else {
+        for ( unsigned int i = 0; i < __children.size (); ++i ) {
+          if ( __children[i] ) deleteBox ( __children[i] );
+        }
+      }
+      
+      __children.clear ();
+    }
+
+ 
+    /// put a ScoringTreeConditioningBox into the pool
+    INLINE void
+    ScoringTreeConditioningBox::deleteBox ( ScoringTreeConditioningBox* box ) {
+      // clear the box, so that the next time it is created out of the pool, it
+      // has no child
+      box->clear ();
+      if ( __pool.size () >= __pool_max_size ) {
+        delete box;
+      }
+      else {
+        __pool.pushBack ( box );
+      }
+    }
+
+
+    /// returns the set of children
+    INLINE const std::vector<ScoringTreeConditioningBox*>&
+    ScoringTreeConditioningBox::children () const {
+      return __children;
+    }
+
+    
+    /// indicates whether there exists a child at the ith modality
+    INLINE bool ScoringTreeConditioningBox::hasChild ( unsigned int i ) const {
+      return ( __children[i] != 0 );
+    }
+
+    
+    /// returns the ith child
+    INLINE ScoringTreeConditioningBox*
+    ScoringTreeConditioningBox::child ( unsigned int i ) const {
+      return __children[i];
+    }
+      
+ 
+    /// sets the ith child
+    INLINE void
+    ScoringTreeConditioningBox::setChild ( unsigned int i,
+                                           ScoringTreeConditioningBox* box ) {
+      __children[i] = box;
+    }
+
+    
+    /// sets the ith child
+    INLINE void
+    ScoringTreeConditioningBox::setChild ( unsigned int i,
+                                           ScoringTreeTargetSetBox* box ) {
+      __children[i] = reinterpret_cast<ScoringTreeConditioningBox*> ( box );
+    }
+
+    
+    /// indicates whether the box is at the last conditioning level
+    INLINE bool ScoringTreeConditioningBox::isAtFinalLevel () const {
+      return __final_level;
+    }
+      
+
+    /// resize the number of children
+    INLINE void 
+    ScoringTreeConditioningBox::__resize ( unsigned int new_children_size ) {
+      __children.resize ( new_children_size, 0 );
+    }
+
+    
+    /// sets the final_level Boolean
+    INLINE void ScoringTreeConditioningBox::__setFinal ( bool final_level ) {
+      __final_level = final_level;
     }
 
     
