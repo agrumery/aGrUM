@@ -1,4 +1,4 @@
-/***************************************************************************
+  /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
@@ -40,29 +40,6 @@
  *
  * \page prm_page How to use Probabilistic Relational Models ?
  *
- * \section prm_exception Exceptions semantics
- *
- * Exceptions in PRM have specific significations:
- *
- *    - gum::NotFound: raised if an identifier (usually a string or a
- *    gum::NodeId) does not match any gum::prm::ClassElement in a given
- *    gum::prm::ClassElementContainer or gum::prm::Instance.
- *
- *    - gum::TypeError: raised if an gum::prm::PRMObject is not a valid type
- *    when using it in some context.  For example assigning an
- *    gum::prm::Instance to gum::prm::ReferenceSlot where the
- *    gum::prm::Instance type is not a subtype of the gum::prm::ReferenceSlot
- *    slot type will raise a gum::TypeError exception.
- *
- *    - gum::WrongClassElement: raised if a gum::prm::ClassElement is used
- *    where it should not be.  For example adding an gum::prm::Attribute as a
- *    parent of a gum::prm::ReferenceSlot in a gum::prm::Class will raise a
- *    gum::WrongClassElement.
- *
- *    - gum::OutOfUpperBound: raised if a bound is not respected.  For example
- *    if more than one gum::prm::Instance is assigned to a
- *    gum::prm::ReferenceSlot which is not an array a gum::OutOfUpperBound will
- *    be raised.
  *
  *
  * \section prm_typ_inh Type inheritance.
@@ -149,6 +126,29 @@
  * ReferenceSlot to an Interface no inverse ReferenceSlot are added since
  * implementing Class will take care of it.
  *
+ * \section prm_exception Exceptions semantics
+ *
+ * Exceptions in PRM have specific significations:
+ *
+ *    - gum::NotFound: raised if an identifier (usually a string or a
+ *    gum::NodeId) does not match any gum::prm::ClassElement in a given
+ *    gum::prm::ClassElementContainer or gum::prm::Instance.
+ *
+ *    - gum::TypeError: raised if an gum::prm::PRMObject is not a valid type
+ *    when using it in some context.  For example assigning an
+ *    gum::prm::Instance to gum::prm::ReferenceSlot where the
+ *    gum::prm::Instance type is not a subtype of the gum::prm::ReferenceSlot
+ *    slot type will raise a gum::TypeError exception.
+ *
+ *    - gum::WrongClassElement: raised if a gum::prm::ClassElement is used
+ *    where it should not be.  For example adding an gum::prm::Attribute as a
+ *    parent of a gum::prm::ReferenceSlot in a gum::prm::Class will raise a
+ *    gum::WrongClassElement.
+ *
+ *    - gum::OutOfUpperBound: raised if a bound is not respected.  For example
+ *    if more than one gum::prm::Instance is assigned to a
+ *    gum::prm::ReferenceSlot which is not an array a gum::OutOfUpperBound will
+ *    be raised.
 */
 namespace gum {
   namespace prm {
