@@ -8,6 +8,7 @@ IF (DOXYGEN_FOUND)
 	configure_file("${AGRUM_SOURCE_DIR}/docs/agrum.css.in" "${AGRUM_BINARY_DIR}/agrum.css")
 	configure_file("${AGRUM_SOURCE_DIR}/docs/piedpage_agrum.html.in" "${AGRUM_BINARY_DIR}/piedpage_agrum.html")
 	configure_file("${AGRUM_SOURCE_DIR}/docs/agrum.doxy.in" "${AGRUM_BINARY_DIR}/agrum.doxy")
+  configure_file("${AGRUM_SOURCE_DIR}/docs/aGrUMLayout.xml.in" "${AGRUM_BINARY_DIR}/aGrUMLayout.xml")
 
 	add_custom_command(OUTPUT ${DOXYGEN_OUTPUT_DIR}
 	 COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${DOXYGEN_OUTPUT_DIR}
