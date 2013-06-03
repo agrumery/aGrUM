@@ -1,0 +1,113 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief a generic Scoring Tree class designed for learning.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ *
+ * This file provides a Scoring Tree implementation that fills itself by
+ * directly parsing a database. The class can also produce the list of
+ * target set boxes of interest. However, it does not compute scores by itself.
+ */
+
+
+namespace gum {
+
+  
+  namespace learning {
+
+ 
+    /// parse one database record to fill a given target set box
+    ALWAYS_INLINE void
+    ScoringTree::__fillTargetSetBox ( ScoringTreeTargetSetBox* box,
+                                      const DatabaseIterator& iter ) {
+      // increment the record number of parents
+      box->incrementNbParentRecords ();
+      
+      // parse all the pairs for which we shall count the number of
+      // occurences in the database
+      for ( unsigned int i = 0; i < __db_pair_target_ids->size (); ++i ) {
+        // get the modality of the pair for which we shall perform the increment
+        const std::pair<unsigned int,unsigned int>& pair =
+          __db_pair_target_ids->operator[] ( i );
+        box->incrementNbRecords ( i, iter[pair.first] + iter[pair.second] *
+                                  __database->nbrModalities ( pair.first ) );
+      }
+    }
+
+    
+    /// traverse the conditional nodes of the tree corresponding to one db record
+    ALWAYS_INLINE ScoringTreeTargetSetBox*
+    ScoringTree::__parseConditioningBoxes ( const DatabaseIterator& iter ) {
+      // start from the root
+      ScoringTreeConditioningBox* current_box = __root.Conditioning;
+
+      // parse all the nodes that appear in the conditioning set
+      // we parse the conditioning set from the last one to the second one
+      // because all of them are conditioning nodes. The first element of
+      // __db_conditioning_ids will be treated differently because its child
+      // is not a conditioning node but rather a target set node
+      for ( unsigned int i = __db_conditioning_ids->size () - 1; i > 0; --i ) {
+        // get the index of the box at the next level
+        const unsigned int index = iter[__db_conditioning_ids->operator[] ( i )];
+
+        // if the box has not been created yet, do it
+        if ( ! current_box->child ( index ) ) {
+          const bool last_level = i == 1;
+          ScoringTreeConditioningBox* new_box =
+            ScoringTreeConditioningBox::createBox
+            ( __database->nbrModalities
+              ( __db_conditioning_ids->operator[] ( i-1 ) ), last_level );
+            current_box->setChild ( index, new_box );
+          }
+
+        // assign the child as the current box
+        current_box = current_box->child ( index );
+      }
+
+      // for the last conditioning box, go to its child and create it if needed
+      // but the child will be a target set box
+      const unsigned int index = iter[__db_conditioning_ids->operator[] ( 0 )];
+      if ( ! current_box->child ( index ) ) {
+        // create the box
+        ScoringTreeTargetSetBox* new_box =
+          ScoringTreeTargetSetBox::createBox ( __target_modalities );
+
+        // assign it as the child of the current box
+        current_box->setChild ( index, new_box );
+
+        // do not forget to add the child into the list of target set boxes
+        __target_records.pushBack ( new_box );
+
+        // return the box
+        return new_box;
+      }
+      else {
+        // return the target set box resulting from the traversal
+        return reinterpret_cast<ScoringTreeTargetSetBox*>
+          ( current_box->child ( index ) );
+      }
+    }
+    
+
+  } /* namespace learning */
+  
+  
+} /* namespace gum */
