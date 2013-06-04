@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a generic Scoring Tree class designed for learning.
+ * @brief a generic Counting Tree class designed for learning.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
- * This file provides a Scoring Tree implementation that fills itself by
+ * This file provides a Counting Tree implementation that fills itself by
  * directly parsing a database. The class can also produce the list of
  * target set boxes of interest. However, it does not compute scores by itself.
  */
@@ -36,7 +36,7 @@ namespace gum {
  
     /// parse one database record to fill a given target set box
     ALWAYS_INLINE void
-    ScoringTree::__fillTargetSetBoxes ( ScoringTreeTargetSetBox* box,
+    CountingTree::__fillTargetSetBoxes ( CountingTreeTargetSetBox* box,
                                         const DatabaseIterator& iter ) {
       // increment the record number of parents
       box->incrementNbParentRecords ();
@@ -54,10 +54,10 @@ namespace gum {
 
     
     /// traverse the conditional nodes of the tree corresponding to one db record
-    ALWAYS_INLINE ScoringTreeTargetSetBox*
-    ScoringTree::__fillConditioningBoxes ( const DatabaseIterator& iter ) {
+    ALWAYS_INLINE CountingTreeTargetSetBox*
+    CountingTree::__fillConditioningBoxes ( const DatabaseIterator& iter ) {
       // start from the root
-      ScoringTreeConditioningBox* current_box = __root.Conditioning;
+      CountingTreeConditioningBox* current_box = __root.Conditioning;
 
       // parse all the nodes that appear in the conditioning set
       // we parse the conditioning set from the last one to the second one
@@ -71,8 +71,8 @@ namespace gum {
         // if the box has not been created yet, do it
         if ( ! current_box->child ( index ) ) {
           const bool last_level = i == 1;
-          ScoringTreeConditioningBox* new_box =
-            ScoringTreeConditioningBox::createBox
+          CountingTreeConditioningBox* new_box =
+            CountingTreeConditioningBox::createBox
             ( __database->nbrModalities
               ( __db_conditioning_ids->operator[] ( i-1 ) ), last_level );
             current_box->setChild ( index, new_box );
@@ -87,8 +87,8 @@ namespace gum {
       const unsigned int index = iter[__db_conditioning_ids->operator[] ( 0 )];
       if ( ! current_box->child ( index ) ) {
         // create the box
-        ScoringTreeTargetSetBox* new_box =
-          ScoringTreeTargetSetBox::createBox ( __target_modalities );
+        CountingTreeTargetSetBox* new_box =
+          CountingTreeTargetSetBox::createBox ( __target_modalities );
 
         // assign it as the child of the current box
         current_box->setChild ( index, new_box );
@@ -101,18 +101,18 @@ namespace gum {
       }
       else {
         // return the target set box resulting from the traversal
-        return reinterpret_cast<ScoringTreeTargetSetBox*>
+        return reinterpret_cast<CountingTreeTargetSetBox*>
           ( current_box->child ( index ) );
       }
     }
 
     
     /// fill a whole tree by parsing the complete database
-    ALWAYS_INLINE void ScoringTree::__fillUnconditionalPairTree () {
+    ALWAYS_INLINE void CountingTree::__fillUnconditionalPairTree () {
       // first, we shall create the root of the unconditional tree, which is,
       // actually, the only targetSetBox
       __root.TargetSet =
-        ScoringTreeTargetSetBox::createBox ( __target_modalities );
+        CountingTreeTargetSetBox::createBox ( __target_modalities );
 
       // put the root into the list of the target set boxes
       __target_records.pushFront ( __root.TargetSet );
@@ -126,11 +126,11 @@ namespace gum {
 
     
     /// fill a whole tree by parsing the complete database
-    ALWAYS_INLINE void ScoringTree::__fillConditionalPairTree () {
+    ALWAYS_INLINE void CountingTree::__fillConditionalPairTree () {
       // first, we shall create the root of the conditional tree
       const bool last_level = __db_conditioning_ids->size() == 1;
       __root.Conditioning =
-        ScoringTreeConditioningBox::createBox
+        CountingTreeConditioningBox::createBox
         ( __database->nbrModalities
           ( __db_conditioning_ids->operator[]
             ( __db_conditioning_ids->size() - 1 ) ), last_level );
@@ -138,14 +138,14 @@ namespace gum {
       // now fill it by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
-        ScoringTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
         __fillTargetSetBoxes ( target_box, iter );
       }
     }
 
     
     /// assign a new set of target nodes and cmpute countings
-    ALWAYS_INLINE void ScoringTree::setTargetNodes
+    ALWAYS_INLINE void CountingTree::setTargetNodes
     ( const std::vector<unsigned int>& db_single_ids,
       const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids ) {
       // save the target ids
@@ -173,10 +173,10 @@ namespace gum {
       // remove the tree, if any
       if ( __root.Conditioning ) {
         if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
-          ScoringTreeConditioningBox::deleteBox ( __root.Conditioning );
+          CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
-          ScoringTreeTargetSetBox::deleteBox ( __root.TargetSet );
+          CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
         }
       }
       __root.Conditioning = 0;
@@ -196,7 +196,7 @@ namespace gum {
 
 
     /// assign a new set of conditioning and target nodes and compute countings
-    ALWAYS_INLINE void ScoringTree::setNodes
+    ALWAYS_INLINE void CountingTree::setNodes
     ( const std::vector<unsigned int>& db_conditioning_ids,
       const std::vector<unsigned int>& db_single_target_ids,
       const std::vector< std::pair<unsigned int,unsigned int> >&
@@ -207,10 +207,10 @@ namespace gum {
       // target set boxes at this point
       if ( __root.Conditioning ) {
         if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
-          ScoringTreeConditioningBox::deleteBox ( __root.Conditioning );
+          CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
-          ScoringTreeTargetSetBox::deleteBox ( __root.TargetSet );
+          CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
         }
       }
       __root.Conditioning = 0;
@@ -225,22 +225,22 @@ namespace gum {
     
     /// returns the index within target sets of a single target node id
     ALWAYS_INLINE unsigned int
-    ScoringTree::targetIndex ( unsigned int db_target_id ) const {
+    CountingTree::targetIndex ( unsigned int db_target_id ) const {
       return __dbSingle2target[db_target_id];
     }
         
 
     /// returns the index within target sets of a pair of target nodes
     ALWAYS_INLINE unsigned int
-    ScoringTree::targetIndex
+    CountingTree::targetIndex
     ( const std::pair<unsigned int,unsigned int>& db_target_id ) const {
       return __dbPair2target[db_target_id];
     }
 
 
     /// returns the list of target set generated by parsing the database
-    ALWAYS_INLINE const ListBase<ScoringTreeTargetSetBox*>&
-    ScoringTree::nbRecords () const {
+    ALWAYS_INLINE const ListBase<CountingTreeTargetSetBox*>&
+    CountingTree::nbRecords () const {
       return __target_records;
     }
 

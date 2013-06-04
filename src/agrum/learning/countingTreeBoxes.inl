@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the different boxes used by Learning Scoring Trees.
+ * @brief the different boxes used by Learning Counting Trees.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
- * This file provides the different boxes used by learning Scoring Trees. Those are
- * extensively used by learning algorithms: each time some conditionial
+ * This file provides the different boxes used by learning Counting Trees. Those
+ * are extensively used by learning algorithms: each time some conditionial
  * independence tests or local scores are computed by learning algorithms, some
  * tree of these boxes is constructed and the tests or scores are computed
  * by parsing the boxes.
@@ -36,34 +36,34 @@ namespace gum {
     
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                       SCORING TREE TARGET BOX                     === */
+    /* ===                       COUNTING TREE TARGET BOX                    === */
     /* ========================================================================= */
     /* ========================================================================= */
 
     /// default constructor
     ALWAYS_INLINE
-    ScoringTreeTargetBox::ScoringTreeTargetBox ( unsigned int size ) :
+    CountingTreeTargetBox::CountingTreeTargetBox ( unsigned int size ) :
       __nb_records ( size, 0 ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoringTreeTargetBox );
+      GUM_CONSTRUCTOR ( CountingTreeTargetBox );
     }
 
     
     /// destructor
-    ALWAYS_INLINE ScoringTreeTargetBox::~ScoringTreeTargetBox () {
+    ALWAYS_INLINE CountingTreeTargetBox::~CountingTreeTargetBox () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoringTreeTargetBox );
+      GUM_DESTRUCTOR ( CountingTreeTargetBox );
     }
 
     
-    /// select a ScoringTreeTargetBox from a pool and return it
-    ALWAYS_INLINE ScoringTreeTargetBox*
-    ScoringTreeTargetBox::createBox ( unsigned int size ) {
+    /// select a CountingTreeTargetBox from a pool and return it
+    ALWAYS_INLINE CountingTreeTargetBox*
+    CountingTreeTargetBox::createBox ( unsigned int size ) {
       if ( __pool.empty () ) {
-        return new ScoringTreeTargetBox ( size );
+        return new CountingTreeTargetBox ( size );
       }
       else {
-        ScoringTreeTargetBox* box = __pool.front ();
+        CountingTreeTargetBox* box = __pool.front ();
         __pool.popFront ();
         box->__resize ( size );
         return box;
@@ -72,14 +72,14 @@ namespace gum {
 
     
     /// reset the variable to en empty (no modality) variable
-    ALWAYS_INLINE void ScoringTreeTargetBox::__clear () {
+    ALWAYS_INLINE void CountingTreeTargetBox::__clear () {
       __nb_records.clear ();
     }
 
  
-    /// put a ScoringTreeTargetBox into the pool
+    /// put a CountingTreeTargetBox into the pool
     ALWAYS_INLINE void
-    ScoringTreeTargetBox::deleteBox ( ScoringTreeTargetBox* box ) {
+    CountingTreeTargetBox::deleteBox ( CountingTreeTargetBox* box ) {
       box->__clear ();
       if ( __pool.size () >= __pool_max_size ) {
         delete box;
@@ -92,41 +92,41 @@ namespace gum {
 
     /// get the number of records of the ith modality
     ALWAYS_INLINE unsigned int
-    ScoringTreeTargetBox::nbRecords ( unsigned int i ) const {
+    CountingTreeTargetBox::nbRecords ( unsigned int i ) const {
       return __nb_records[i];
     }
 
 
     /// returns the number of records for all the modalities;
     ALWAYS_INLINE const std::vector<unsigned int>&
-    ScoringTreeTargetBox::nbRecords () const {
+    CountingTreeTargetBox::nbRecords () const {
       return __nb_records;
     }
 
     
     /// increments the number of observations of the ith modality
     ALWAYS_INLINE void
-    ScoringTreeTargetBox::incrementNbRecords ( unsigned int i ) {
+    CountingTreeTargetBox::incrementNbRecords ( unsigned int i ) {
       ++__nb_records[i];
     }
 
     
     /// increments the number of observations of the ith modality by k
     ALWAYS_INLINE void
-    ScoringTreeTargetBox::incrementNbRecords ( unsigned int i, unsigned int k ) {
+    CountingTreeTargetBox::incrementNbRecords ( unsigned int i, unsigned int k ) {
       __nb_records[i] += k;
     }
 
     
     /// sets the number of records of the ith modality
     ALWAYS_INLINE void
-    ScoringTreeTargetBox::setNbRecords ( unsigned int i, unsigned int k ) {
+    CountingTreeTargetBox::setNbRecords ( unsigned int i, unsigned int k ) {
       __nb_records[i] = k;
     }
 
     
     /// resize the number of values of the target node
-    ALWAYS_INLINE void ScoringTreeTargetBox::__resize ( unsigned int new_size ) {
+    ALWAYS_INLINE void CountingTreeTargetBox::__resize ( unsigned int new_size ) {
       __nb_records.resize ( new_size, 0 );
     }
 
@@ -135,30 +135,30 @@ namespace gum {
 
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                    SCORING TREE TARGET SET BOX                    === */
+    /* ===                   COUNTING TREE TARGET SET BOX                    === */
     /* ========================================================================= */
     /* ========================================================================= */
 
     /// default constructor
-    ALWAYS_INLINE ScoringTreeTargetSetBox::ScoringTreeTargetSetBox
+    ALWAYS_INLINE CountingTreeTargetSetBox::CountingTreeTargetSetBox
     ( const std::vector<unsigned int>& variable_modalities ) :
       __target_boxes ( variable_modalities.size() ),
       __nb_parent_records ( 0 ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoringTreeTargetSetBox );
+      GUM_CONSTRUCTOR ( CountingTreeTargetSetBox );
 
       // create the set of target boxes
       for ( unsigned int i = 0; i < variable_modalities.size(); ++i ) {
         __target_boxes[i] =
-          ScoringTreeTargetBox::createBox ( variable_modalities[i] );
+          CountingTreeTargetBox::createBox ( variable_modalities[i] );
       }
     }
       
 
     /// destructor
-    ALWAYS_INLINE ScoringTreeTargetSetBox::~ScoringTreeTargetSetBox () {
+    ALWAYS_INLINE CountingTreeTargetSetBox::~CountingTreeTargetSetBox () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoringTreeTargetSetBox );
+      GUM_DESTRUCTOR ( CountingTreeTargetSetBox );
 
       // delete the children
       for ( unsigned int i = 0; i < __target_boxes.size(); ++i ) {
@@ -167,23 +167,23 @@ namespace gum {
     }
 
 
-    /// returns a ScoringTreeTargetSetBox as well as its target boxes
-    ALWAYS_INLINE ScoringTreeTargetSetBox*
-    ScoringTreeTargetSetBox::createBox
+    /// returns a CountingTreeTargetSetBox as well as its target boxes
+    ALWAYS_INLINE CountingTreeTargetSetBox*
+    CountingTreeTargetSetBox::createBox
     ( const std::vector<unsigned int>& variable_modalities ) {
       if ( __pool.empty () ) {
-        return new ScoringTreeTargetSetBox ( variable_modalities );
+        return new CountingTreeTargetSetBox ( variable_modalities );
       }
       else {
         // get the box from the pool
-        ScoringTreeTargetSetBox* box = __pool.front ();
+        CountingTreeTargetSetBox* box = __pool.front ();
         __pool.popFront ();
 
         // fill it with its children
         box->__target_boxes.resize ( variable_modalities.size () );
         for ( unsigned int i = 0; i < variable_modalities.size (); ++i ) {
           box->__target_boxes[i] = 
-            ScoringTreeTargetBox::createBox ( variable_modalities[i] );
+            CountingTreeTargetBox::createBox ( variable_modalities[i] );
         }
         
         return box;
@@ -193,11 +193,11 @@ namespace gum {
     
     /// reset the children to the empty set
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::clear ( bool clear_nb_parent_records ) {
+    CountingTreeTargetSetBox::clear ( bool clear_nb_parent_records ) {
       // remove all the children
       for ( unsigned int i = 0; i < __target_boxes.size (); ++i ) {
         if ( __target_boxes[i] )
-          ScoringTreeTargetBox::deleteBox ( __target_boxes[i] );
+          CountingTreeTargetBox::deleteBox ( __target_boxes[i] );
       }
 
       __target_boxes.clear ();
@@ -208,9 +208,9 @@ namespace gum {
     }
 
  
-    /// put a ScoringTreeTargetBox into the pool
+    /// put a CountingTreeTargetBox into the pool
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::deleteBox ( ScoringTreeTargetSetBox* box ) {
+    CountingTreeTargetSetBox::deleteBox ( CountingTreeTargetSetBox* box ) {
       box->clear ( true );
       if ( __pool.size () >= __pool_max_size ) {
         delete box;
@@ -222,28 +222,28 @@ namespace gum {
 
 
     /// get the number of records observed in the database for the parents
-    ALWAYS_INLINE unsigned int ScoringTreeTargetSetBox::nbParentRecords () const {
+    ALWAYS_INLINE unsigned int CountingTreeTargetSetBox::nbParentRecords () const {
       return __nb_parent_records;
     }
     
       
     /// get the number of cases of the ith variable
     ALWAYS_INLINE const std::vector<unsigned int>&
-    ScoringTreeTargetSetBox::nbRecords ( unsigned int i ) const {
+    CountingTreeTargetSetBox::nbRecords ( unsigned int i ) const {
       return __target_boxes[i]->nbRecords ();
     }
 
 
     /// get the number of cases of the jth modality of the ith variable
     ALWAYS_INLINE unsigned int
-    ScoringTreeTargetSetBox::nbRecords ( unsigned int i, unsigned int j ) const {
+    CountingTreeTargetSetBox::nbRecords ( unsigned int i, unsigned int j ) const {
       return __target_boxes[i]->nbRecords ( j );
     }
    
 
     /// returns the target box for the ith variable
-    ALWAYS_INLINE ScoringTreeTargetBox*
-    ScoringTreeTargetSetBox::child ( unsigned int i ) const {
+    ALWAYS_INLINE CountingTreeTargetBox*
+    CountingTreeTargetSetBox::child ( unsigned int i ) const {
       return __target_boxes[i];
     }
     
@@ -251,7 +251,7 @@ namespace gum {
     /** @brief increment de the number of observations of the jth value of the
      * ith variable */ 
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::incrementNbRecords ( unsigned int i,
+    CountingTreeTargetSetBox::incrementNbRecords ( unsigned int i,
                                                   unsigned int j ) const {
       __target_boxes[i]->incrementNbRecords ( j );
     }
@@ -260,7 +260,7 @@ namespace gum {
     /** @brief increment the number of observations of the jth value of the
      * ith variable by k */
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::incrementNbRecords ( unsigned int i,
+    CountingTreeTargetSetBox::incrementNbRecords ( unsigned int i,
                                                   unsigned int j,
                                                   unsigned int k ) const {
       __target_boxes[i]->incrementNbRecords ( j, k );
@@ -269,7 +269,7 @@ namespace gum {
     
     /// sets the number of cases of the jth value of the ith variable
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::setNbRecords ( unsigned int i,
+    CountingTreeTargetSetBox::setNbRecords ( unsigned int i,
                                             unsigned int j,
                                             unsigned int k ) const {
       __target_boxes[i]->setNbRecords ( j, k );
@@ -277,27 +277,27 @@ namespace gum {
 
     
     /// increment the number of observations of the parents of the container
-    ALWAYS_INLINE void ScoringTreeTargetSetBox::incrementNbParentRecords () {
+    ALWAYS_INLINE void CountingTreeTargetSetBox::incrementNbParentRecords () {
       ++__nb_parent_records;
     }
 
     
     /// increment the number of observations of the parents of the container
     ALWAYS_INLINE void
-    ScoringTreeTargetSetBox::incrementNbParentRecords ( unsigned int k) {
+    CountingTreeTargetSetBox::incrementNbParentRecords ( unsigned int k) {
       __nb_parent_records += k;
     }
 
    
     /// sets a new set of target variables
-    ALWAYS_INLINE void ScoringTreeTargetSetBox::setVariables
+    ALWAYS_INLINE void CountingTreeTargetSetBox::setVariables
     ( const std::vector<unsigned int>& variable_modalities,
       bool clear_nb_parent_records ) {
       __target_boxes.resize ( variable_modalities.size() );
       // create the set of target boxes
       for ( unsigned int i = 0; i < variable_modalities.size(); ++i ) {
         __target_boxes[i] =
-          ScoringTreeTargetBox::createBox ( variable_modalities[i] );
+          CountingTreeTargetBox::createBox ( variable_modalities[i] );
       }
 
       // if needed, reset the counter of records of the parent nodes
@@ -310,31 +310,31 @@ namespace gum {
 
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                   SCORING TREE CONDITIONING BOX                   === */
+    /* ===                   COUNTING TREE CONDITIONING BOX                  === */
     /* ========================================================================= */
     /* ========================================================================= */
      
     /// default constructor
-    ALWAYS_INLINE ScoringTreeConditioningBox::ScoringTreeConditioningBox
+    ALWAYS_INLINE CountingTreeConditioningBox::CountingTreeConditioningBox
     ( unsigned int children_size,
       bool final_level ) :
       __children ( children_size, 0 ),
       __final_level ( final_level ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoringTreeConditioningBox );
+      GUM_CONSTRUCTOR ( CountingTreeConditioningBox );
     }
       
 
     /// destructor
-    INLINE ScoringTreeConditioningBox::~ScoringTreeConditioningBox () {
+    INLINE CountingTreeConditioningBox::~CountingTreeConditioningBox () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoringTreeConditioningBox );
+      GUM_DESTRUCTOR ( CountingTreeConditioningBox );
       
       // remove all the children
       if ( __final_level ) {
         for ( unsigned int i = 0; i < __children.size (); ++i ) {
           if ( __children[i] ) {
-            delete reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] );
+            delete reinterpret_cast<CountingTreeTargetSetBox*> ( __children[i] );
           }
         }
       }
@@ -346,15 +346,15 @@ namespace gum {
     }
 
     
-    /// select a ScoringTreeConditioningBox from a pool and return it
-    ALWAYS_INLINE ScoringTreeConditioningBox*
-    ScoringTreeConditioningBox::createBox ( unsigned int children_size,
+    /// select a CountingTreeConditioningBox from a pool and return it
+    ALWAYS_INLINE CountingTreeConditioningBox*
+    CountingTreeConditioningBox::createBox ( unsigned int children_size,
                                             bool final_level ) {
       if ( __pool.empty () ) {
-        return new ScoringTreeConditioningBox ( children_size, final_level );
+        return new CountingTreeConditioningBox ( children_size, final_level );
       }
       else {
-        ScoringTreeConditioningBox* box = __pool.front ();
+        CountingTreeConditioningBox* box = __pool.front ();
         __pool.popFront ();
         box->__resize ( children_size );
         box->__setFinal ( final_level );
@@ -364,13 +364,13 @@ namespace gum {
 
     
     /// reset the children to the empty set
-    INLINE void ScoringTreeConditioningBox::clear () {
+    INLINE void CountingTreeConditioningBox::clear () {
       // remove all the children, if any
       if ( __final_level ) {
         for ( unsigned int i = 0; i < __children.size (); ++i ) {
           if ( __children[i] ) {
-            ScoringTreeTargetSetBox::deleteBox
-              ( reinterpret_cast<ScoringTreeTargetSetBox*> ( __children[i] ) );
+            CountingTreeTargetSetBox::deleteBox
+              ( reinterpret_cast<CountingTreeTargetSetBox*> ( __children[i] ) );
           }
         }
       }
@@ -384,9 +384,9 @@ namespace gum {
     }
 
  
-    /// put a ScoringTreeConditioningBox into the pool
+    /// put a CountingTreeConditioningBox into the pool
     ALWAYS_INLINE void
-    ScoringTreeConditioningBox::deleteBox ( ScoringTreeConditioningBox* box ) {
+    CountingTreeConditioningBox::deleteBox ( CountingTreeConditioningBox* box ) {
       // clear the box, so that the next time it is created out of the pool, it
       // has no child
       box->clear ();
@@ -400,58 +400,58 @@ namespace gum {
 
 
     /// returns the set of children
-    ALWAYS_INLINE const std::vector<ScoringTreeConditioningBox*>&
-    ScoringTreeConditioningBox::children () const {
+    ALWAYS_INLINE const std::vector<CountingTreeConditioningBox*>&
+    CountingTreeConditioningBox::children () const {
       return __children;
     }
 
     
     /// indicates whether there exists a child at the ith modality
     ALWAYS_INLINE bool
-    ScoringTreeConditioningBox::hasChild ( unsigned int i ) const {
+    CountingTreeConditioningBox::hasChild ( unsigned int i ) const {
       return ( __children[i] != 0 );
     }
 
     
     /// returns the ith child
-    ALWAYS_INLINE ScoringTreeConditioningBox*
-    ScoringTreeConditioningBox::child ( unsigned int i ) const {
+    ALWAYS_INLINE CountingTreeConditioningBox*
+    CountingTreeConditioningBox::child ( unsigned int i ) const {
       return __children[i];
     }
       
  
     /// sets the ith child
     ALWAYS_INLINE void
-    ScoringTreeConditioningBox::setChild ( unsigned int i,
-                                           ScoringTreeConditioningBox* box ) {
+    CountingTreeConditioningBox::setChild ( unsigned int i,
+                                           CountingTreeConditioningBox* box ) {
       __children[i] = box;
     }
 
     
     /// sets the ith child
     ALWAYS_INLINE void
-    ScoringTreeConditioningBox::setChild ( unsigned int i,
-                                           ScoringTreeTargetSetBox* box ) {
-      __children[i] = reinterpret_cast<ScoringTreeConditioningBox*> ( box );
+    CountingTreeConditioningBox::setChild ( unsigned int i,
+                                           CountingTreeTargetSetBox* box ) {
+      __children[i] = reinterpret_cast<CountingTreeConditioningBox*> ( box );
     }
 
     
     /// indicates whether the box is at the last conditioning level
-    ALWAYS_INLINE bool ScoringTreeConditioningBox::isAtFinalLevel () const {
+    ALWAYS_INLINE bool CountingTreeConditioningBox::isAtFinalLevel () const {
       return __final_level;
     }
       
 
     /// resize the number of children
     ALWAYS_INLINE void 
-    ScoringTreeConditioningBox::__resize ( unsigned int new_children_size ) {
+    CountingTreeConditioningBox::__resize ( unsigned int new_children_size ) {
       __children.resize ( new_children_size, 0 );
     }
 
     
     /// sets the final_level Boolean
     ALWAYS_INLINE void
-    ScoringTreeConditioningBox::__setFinal ( bool final_level ) {
+    CountingTreeConditioningBox::__setFinal ( bool final_level ) {
       __final_level = final_level;
     }
 

@@ -18,23 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a generic Scoring Tree class designed for learning.
+ * @brief a generic Counting Tree class designed for learning.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
- * This file provides a Scoring Tree implementation that fills itself by
+ * This file provides a Counting Tree implementation that fills itself by
  * directly parsing a database. The class can also produce the list of
  * target set boxes of interest. However, it does not compute scores by itself.
  */
 
 
 #include <limits>
-#include <agrum/learning/scoringTree.h>
+#include <agrum/learning/countingTree.h>
 
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/scoringTree.inl>
+#include <agrum/learning/countingTree.inl>
 #endif /* GUM_NO_INLINE */
 
 
@@ -44,35 +44,35 @@ namespace gum {
 
 
     /// default constructor
-    ScoringTree::ScoringTree ( const Database& database ) :
+    CountingTree::CountingTree ( const Database& database ) :
       __database ( &database ),
       __db_conditioning_ids ( 0 ),
       __db_single_target_ids ( 0 ),
       __db_pair_target_ids ( 0 ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoringTree );
+      GUM_CONSTRUCTOR ( CountingTree );
       __root.Conditioning = 0;
     }
       
 
     /// destructor
-    ScoringTree::~ScoringTree () {
+    CountingTree::~CountingTree () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoringTree );
+      GUM_DESTRUCTOR ( CountingTree );
 
       // clear the data structures
       clear ();
     }
 
     /// clear the tree and the set of target set nodes, if any
-    void ScoringTree::clear () {
+    void CountingTree::clear () {
       // remove the tree, if any
       if ( __root.Conditioning ) {
         if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
-          ScoringTreeConditioningBox::deleteBox ( __root.Conditioning );
+          CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
-          ScoringTreeTargetSetBox::deleteBox ( __root.TargetSet );
+          CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
         }
       }
 
@@ -89,7 +89,7 @@ namespace gum {
 
     
     /// fill the single targets
-    void ScoringTree::__fillSingleTargetTree () {
+    void CountingTree::__fillSingleTargetTree () {
       // first, we determine for each single target from which pair the single
       // target counting should be computed. To do so, create a vector
       // best_pair_index which assigns to each element of __single_ids the
@@ -147,15 +147,15 @@ namespace gum {
       // now, for each single node, we know from which pair we shall perform
       // the computation, so we can parse the target sets and fill the target
       // boxes of the single nodes
-      for ( const ListBucket<ScoringTreeTargetSetBox*>* iter =
+      for ( const ListBucket<CountingTreeTargetSetBox*>* iter =
               __target_records.frontBucket (); iter; iter = iter->next () ) {
         // fill all the single target boxes of the current target set box
-        ScoringTreeTargetSetBox* set_box = **iter;
+        CountingTreeTargetSetBox* set_box = **iter;
         for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {
           // fill the ith single target box
-          ScoringTreeTargetBox*
+          CountingTreeTargetBox*
             single_box = set_box->child ( single_offset + i );
-          const ScoringTreeTargetBox*
+          const CountingTreeTargetBox*
             pair_box = set_box->child ( best_pair_index[i] );
 
           // fill the countings for all the modalities of the single target
