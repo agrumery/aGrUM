@@ -48,8 +48,30 @@ namespace gum {
     /* ===                          SCORING TREE BOX                         === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class ScoringTree
-     */
+    /** @class ScoringTree is a class whose aim is to parse a database and
+     * compute the list of target set boxes corresponding to a given set of
+     * conditioning nodes and target nodes. The latter are specified as singletons
+     * and pairs. For instance, if we want to check using a G2 (or a chi2) test
+     * whether two nodes X and Y are independent given a set of nodes Z, then
+     * we shall compute sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
+     * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of occurences
+     * of (X,Y,Z) and (X,Z) respectively in the database. In this case, Z is the
+     * set of conditioning nodes, and target nodes are X, Y, and (X,Y); the
+     * countings of the target boxes of pair (X,Y) correspond to #XYZ and the
+     * countings of single target boxes of X correspond to #XZ. The target set
+     * boxes also contain countings #Z. The target boxes of pair (X,Y) contain
+     * countings in an array ordered like c[Y][X], i.e., the values of X are
+     * consecutive and the values of Y are spaced every |X| elements.
+     *
+     * The ScoringTree class is designed to specify sets of single targets (such
+     * a X in the above example) and sets of target pairs. As such, it tries to
+     * optimize the parsing of the database to fill all the target boxes of the
+     * single and pair targets. TargetSetBoxes are vectors of TargetBoxes, each
+     * TargetBox corrsponding to a single target variable or to a pair of target
+     * variables (like (X,Y)). As such, we need to know the mapping between the
+     * indices in the vectors and the corresponding targets. Those are given
+     * by methods targetIndex. Finally, the set of TargetSetBoxes can be
+     * retrieved using method nbRecords (). */
     /* ========================================================================= */
     class ScoringTree {
     public:
@@ -74,28 +96,51 @@ namespace gum {
       /// @{
 
       /// assign a new set of conditioning and target nodes and compute countings
+      /** This method updates the data structure to take into account the new
+       * set of nodes. It also parses the database and computes all the target
+       * set nodes corresponding to those nodes. When you wish to use these
+       * target set boxes, use methods nbRecords and targetIndex. */
       void setNodes
       ( const std::vector<unsigned int>& db_conditioning_ids,
         const std::vector<unsigned int>& db_single_target_ids,
         const std::vector< std::pair<unsigned int,unsigned int> >&
         db_pair_target_ids );
 
-      /// assign a new set of target nodes and cmpute countings
+      /// assign a new set of target nodes and compute countings
+      /** This method is similar to setNodes except that it does nt change the
+       * set of conditioning nodes. This can prove useful when memory is not
+       * sufficiently large to enable the computation of the target set boxes of
+       * all the needed targets in one pass. */
       void setTargetNodes
       ( const std::vector<unsigned int>& db_single_ids,
         const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
 
       /// returns the index within target sets of a single target node id
-      /** @warning This method should be used after setNodes or setTargetNodes
-       * have been executed. As such, to speed-up, if the target id was not
-       * set by the aforementioned methods, an exception is raised. */
+      /** targets are put into target set boxes at locations convenient for the
+       * scoring tree. When you wish to get the target box corresponding to a
+       * given target node, you need to know this location and method targetIndex
+       * precisely gives you this information: just pass to it the id of your
+       * target in the database and it will return the location of the target box
+       * within target set boxes.
+       * @warning This method should be used after setNodes or setTargetNodes
+       * have been executed. As such, if the target id was not set by the
+       * aforementioned methods, an exception is raised. */
       unsigned int targetIndex ( unsigned int db_target_id ) const;
         
       /// returns the index within target sets of a pair of target nodes
-      unsigned int targetIndex ( const std::pair<unsigned int,unsigned int>&
-                                 db_target_id ) const;
+      /** targets are put into target set boxes at locations convenient for the
+       * scoring tree. When you wish to get the target box corresponding to a
+       * given pair of target nodes, you need to know this location and method
+       * targetIndex precisely gives you this information: just pass to it the
+       * pair of ids of your targets in the database and it will return the
+       * location of the target box within target set boxes.
+       * @warning This method should be used after setNodes or setTargetNodes
+       * have been executed. As such, if the pair of target ids was not set by
+       * the aforementioned methods, an exception is raised. */
+       unsigned int targetIndex ( const std::pair<unsigned int,unsigned int>&
+                                  db_target_id ) const;
 
-      /// returns the list of target set generated by parsing the database
+      /// returns the list of target set boxes generated by parsing the database
       const ListBase<ScoringTreeTargetSetBox*>& nbRecords () const;
 
       /// clear the whole tree
