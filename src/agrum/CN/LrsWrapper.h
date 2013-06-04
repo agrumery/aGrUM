@@ -1,3 +1,31 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief Lrs wrapper
+ * @author Matthieu HOURBRACQ
+ * 
+ * easy use of lrs lib
+ */
+
 #ifndef __LRSWrapper_WRAPPER__H__
 #define __LRSWrapper_WRAPPER__H__
 
@@ -49,7 +77,8 @@ namespace gum {
      * @class LRSWrapper LrsWrapper.h <agrum/CN/LrsWrapper.h>
      * @brief Class template acting as a wrapper for Lexicographic Reverse Search by David Avis.
      *
-     * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+		 * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+		 * @author Matthieu HOURBRACQ
      */
     template < typename GUM_SCALAR >
     class LRSWrapper {
@@ -118,9 +147,7 @@ namespace gum {
         mutable int __oldCout;
 
 
-        //////////////////////////////////////////
         /// @name lrs structs
-        //////////////////////////////////////////
         /// @{
 
         /** @brief Structure for holding current dictionary and indices of lrs. */
@@ -137,9 +164,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name flags
-        //////////////////////////////////////////
         /// @{
 
         bool __getVolume;
@@ -150,9 +175,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name cout redirection
-        //////////////////////////////////////////
         /// @{
 
         /** @brief The function that redirects standard cout to /dev/null. */
@@ -163,9 +186,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name lrs datas <-> wrapper datas
-        //////////////////////////////////////////
         /// @{
 
         /** @brief Free lrs space. */
@@ -178,7 +199,7 @@ namespace gum {
          * @brief Fill lrs_dictionnary and datas from \c __input using integer rationals.
          *
          * Build polyhedron constraints and objective.
-         * gum::Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to approximate reals by integer rationals.
+         * Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to approximate reals by integer rationals.
          *
          * @param P A pointer to a lrs_dic struct with flags set.
          * @param Q A pointer to a lrs_dat struct with members set.
@@ -201,9 +222,7 @@ namespace gum {
         /// @}
 
       public :
-        //////////////////////////////////////////
         /// @name Constructors / Destructors
-        //////////////////////////////////////////
         /// @{
 
         /**
@@ -218,9 +237,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name Getters and setters
-        //////////////////////////////////////////
         /// @{
 
         /**
@@ -257,13 +274,11 @@ namespace gum {
         /// @}
 
 
-        //////////////////////////////////////////
         /// @name setUp / tearDown
-        //////////////////////////////////////////
         /// @{
 
         /**
-         * @brief Sets up an H-representation.
+         * @brief %Sets up an H-representation.
          *
          * Initialize input matrix \c __input to correct dimensions and wrapper state \c __state to \c __states::Hup.
          * @param card A constant reference to the cardinality of the variable.
@@ -272,7 +287,7 @@ namespace gum {
 
 
         /**
-         * @brief Sets up a V-representation.
+         * @brief %Sets up a V-representation.
          *
          * Initialize input matrix \c __input to correct dimensions and wrapper state \c __state to \c __states::Vup.
          * @param card A constant reference to the cardinality of the variable.
@@ -301,9 +316,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name Input filling methods
-        //////////////////////////////////////////
         /// @{
 
         /**
@@ -318,11 +331,9 @@ namespace gum {
 				
 				
 				/**
-				 * @warning NOT SAFE ( states && __input bypassed )
+				 * @brief Fill the H-representation from the matrix given in argument.
 				 * 
-				 * @todo finish it
-				 * 
-				 * @warning NOT SAFE
+				 * @param matrix The H-representation of the polytope of the form 0 <= -b + Ax, A is the matrix, each column the coefficient of the variable in x.
 				 */
 				void fillMatrix ( const std::vector< std::vector< GUM_SCALAR > > & matrix );
 
@@ -337,9 +348,7 @@ namespace gum {
 
         /// @}
 
-        //////////////////////////////////////////
         /// @name lrs algorithms
-        //////////////////////////////////////////
         /// @{
 
         /**

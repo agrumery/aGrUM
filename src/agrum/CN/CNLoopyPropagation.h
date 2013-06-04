@@ -1,3 +1,29 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
+ * @author Matthieu HOURBRACQ
+ */
+
 #ifndef __CN_LOOPY_PROPAGATION__H__
 #define __CN_LOOPY_PROPAGATION__H__
 
@@ -20,12 +46,13 @@ namespace credal {
    * @class CNLoopyPropagation CNLoopyPropagation.h <agrum/CN/CNLoopyPropagation.h>
    * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+	 * @author Matthieu HOURBRACQ
    */
   template< typename GUM_SCALAR >
   class CNLoopyPropagation : public InferenceEngine<GUM_SCALAR> {
     public:
-      typedef std::vector< gum::Potential<GUM_SCALAR>* > msg;
-      typedef const gum::Arc *cArcP;
+      typedef std::vector< Potential<GUM_SCALAR>* > msg;
+      typedef const Arc *cArcP;
 
       /**
        * Inference type to be used by the algorithm.
@@ -38,9 +65,7 @@ namespace credal {
         randomOrder /**< Chooses a random arc ordering and sends messages accordingly. A new order is set at each step. A step is going through all arcs. */
       };
 
-//////////////////////////////////////////
       /// @name Public algorithm methods
-//////////////////////////////////////////
       /// @{
 
       /** Starts the inference. */
@@ -48,13 +73,11 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
       /// @name Getters and setters
-//////////////////////////////////////////
       /// @{
 
       /**
-       * Set the inference type.
+       * %Set the inference type.
        * @param inft The choosen \c InferenceType.
        */
       void inferenceType ( InferenceType inft );
@@ -67,9 +90,7 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
       /// @name Post-inference methods
-//////////////////////////////////////////
       /// @{
 
       /**
@@ -87,9 +108,7 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
-/// @name Constructors / Destructors
-//////////////////////////////////////////
+			/// @name Constructors / Destructors
       /// @{
       /**
        * Constructor.
@@ -101,9 +120,7 @@ namespace credal {
       /// @}
 
     protected:
-//////////////////////////////////////////
       /// @name Protected initialization methods
-//////////////////////////////////////////
       /// @{
 
       /** Topological forward propagation to initialize old marginals & messages. */
@@ -111,9 +128,7 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
       /// @name Protected algorithm methods
-//////////////////////////////////////////
       /// @{
       /** Starts the inference with this inference type. */
       void _makeInferenceNodeToNeighbours();
@@ -153,7 +168,7 @@ namespace credal {
        * @param lx The lower and upper likelihood.
        * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
        */
-      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos );
+      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const Idx &pos );
 
       /**
        * Used by _msgL. Enumerate parent's messages.
@@ -164,7 +179,7 @@ namespace credal {
        * @param lx The lower and upper likelihood.
        * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
        */
-      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const gum::Idx &pos );
+      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const NodeId &id, GUM_SCALAR &msg_l_min, GUM_SCALAR &msg_l_max, std::vector<GUM_SCALAR> &lx, const Idx &pos );
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a demanding_child.
@@ -180,7 +195,7 @@ namespace credal {
        * @param msg_p_min The reference to the current lower value of the message to be sent.
        * @param msg_p_max The reference to the current upper value of the message to be sent.
        */
-      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
+      void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p, const NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
 
       /**
        * Used by _msgP. Marginalisation.
@@ -189,7 +204,7 @@ namespace credal {
        * @param msg_p_min The reference to the current lower value of the message to be sent.
        * @param msg_p_max The reference to the current upper value of the message to be sent.
        */
-      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const gum::NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
+      void _compute_ext ( std::vector< std::vector<GUM_SCALAR> > &combi_msg_p, const NodeId &id, GUM_SCALAR &msg_p_min, GUM_SCALAR &msg_p_max );
 
       /** Get the last messages from one's parents and children. */
 			void _refreshLMsPIs( bool refreshIndic = false );
@@ -202,9 +217,7 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
       /// @name Post-inference protected methods
-//////////////////////////////////////////
       /// @{
 
       /** Since the network is binary, expectations can be computed from the final marginals which give us the credal set vertices. */
@@ -222,12 +235,12 @@ namespace credal {
       Property<bool>::onNodes _update_l;
 
       /** The current node-set to iterate through at this current step. */
-      gum::NodeSet active_nodes_set;
+      NodeSet active_nodes_set;
       /** The next node-set, i.e. the nodes that will send messages at the next step. */
-      gum::NodeSet next_active_nodes_set;
+      NodeSet next_active_nodes_set;
 
       /** Used to keep track of one's messages sent to it's parents. */
-      typename Property< gum::NodeSet * >::onNodes _msg_l_sent;
+      typename Property< NodeSet * >::onNodes _msg_l_sent;
 
       /** "Lower" information \f$ \Lambda \f$ coming from one's children. */
       typename Property<GUM_SCALAR>::onArcs _ArcsL_min;
@@ -261,7 +274,7 @@ namespace credal {
       const CredalNet<GUM_SCALAR> * cn;
 
       /** A pointer to it's BayesNet used as a DAG. */
-      const gum::BayesNet<GUM_SCALAR> * bnet;
+      const BayesNet<GUM_SCALAR> * bnet;
 
       //typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       //cnfunc getCN = &infE::getCN;

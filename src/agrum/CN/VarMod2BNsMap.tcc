@@ -1,4 +1,4 @@
-#include <agrum/CN/VarMod2BNsMap.h>
+#include "VarMod2BNsMap.h"
 
 namespace gum {
   namespace credal {
@@ -24,7 +24,7 @@ namespace gum {
 
   template< typename GUM_SCALAR >
   void VarMod2BNsMap< GUM_SCALAR >::setCNet ( const CredalNet<GUM_SCALAR> & cn ) {
-    const typename gum::Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &cn.credalNet_cpt();
+    const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes *cpt = &cn.credalNet_currentCpt();
     auto nNodes = cpt->size();
     _sampleDef.resize ( nNodes );
 
@@ -35,7 +35,7 @@ namespace gum {
       for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
         Size nVertices = ( *cpt ) [node][pconf].size();
         Size nBits, newCard;
-        gum::superiorPow ( nVertices, nBits, newCard );
+        superiorPow ( nVertices, nBits, newCard );
         _sampleDef[node][pconf].resize ( nBits );
       }
     }

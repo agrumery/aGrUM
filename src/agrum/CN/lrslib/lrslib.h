@@ -215,7 +215,7 @@ extern unsigned long dict_count, dict_limit, cache_tries, cache_misses;
 extern lrs_dic *PBnew;    /* we will save Bob's dictionary in getabasis */
 
 /**
- * wrapper for functions from lrsmp.h used by gum::credal::LRSWrapper
+ * wrapper for functions from lrsmp.h used by credal::LRSWrapper
  */
 
 lrs_mp_vector lrs_alloc_mp_vector_wrapper (long n);	/* allocate lrs_mp_vector for n+1 lrs_mp numbers */

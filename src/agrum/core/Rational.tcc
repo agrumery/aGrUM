@@ -5,10 +5,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Rational< GUM_SCALAR >::testRationalAlgorithms ( const unsigned int & iters ) {
     std::cout << " TESTING RATIONAL ALGORITHMS " << std::endl;
-    
-    srand ( time ( nullptr ) );
+    std::cout.precision(10);
+    srand ( std::time ( nullptr ) );
 
-		std::cout << std::setw(10) << std::left << "iter" << std::setw(20) << std::left << "number" << std::setw(35) << std::left << "frac" << std::setw(35) << std::left << "fracC" << std::setw(35) << std::left << "farey" << std::setw(35) << std::left << "continued" << std::endl;
+		std::cout << std::setw(10) << std::left << "iter" << std::setw(20) << std::left << "number" << std::setw(35) << std::left << "farey" << std::setw(35) << std::left << "continued" << std::endl;
 
     double zero = 1e-6;
     double PRECISION = 1000000;
@@ -24,50 +24,31 @@ namespace gum {
       number = (GUM_SCALAR) rand() / (GUM_SCALAR) RAND_MAX;
       std::cout << std::setw(20) << std::left << number;
 
-      frac ( num, den, number );
-      ss << num << "/" << den << " : " << (double)num/den;
-      std::cout << std::setw(35) << std::left << ss.str();
-      ss.str( std::string() );
-
-      fracC ( num, den, ( int ) ( PRECISION * number ), DECI, PRECISION );
-      ss << num << "/" << den << " : " << (double)num/den;
-      std::cout << std::setw(35) << std::left << ss.str();
-      ss.str( std::string() );
-
       farey ( num, den, number, den_max, zero );
-      ss << num << "/" << den << " : " << (double)num/den;
+      ss << num << "/" << den << " : "; ss.precision(10); ss << (double)num/den;
       std::cout << std::setw(35) << std::left << ss.str();
       ss.str( std::string() );
 			
-			continuedFrac ( num, den, number, den_max, zero );
-			ss << num << "/" << den << " : " << (double)num/den;
+			continuedFracFirst ( num, den, number, zero );
+			ss << num << "/" << den << " : "; ss.precision(10); ss << (double)num/den;
 			std::cout << std::setw(35) << std::left << ss.str() << std::endl;
 			ss.str( std::string() );
     }
 
     std::cout << std::endl;
-
+		
     // test 0 and 1 !
 
     std::cout << std::setw(10) << std::left << iters;
     number = 0;
     std::cout << std::setw(20) << std::left << number;
-    frac ( num, den, number );
-    ss << num << "/" << den << " : " << (double)num/den;
-    std::cout << std::setw(35) << std::left << ss.str();
-    ss.str( std::string() );
-
-    fracC ( num, den, ( int ) ( PRECISION * number ), DECI, PRECISION );
-    ss << num << "/" << den << " : " << (double)num/den;
-    std::cout << std::setw(35) << std::left << ss.str();
-    ss.str( std::string() );
-
+    
     farey ( num, den, number, den_max, zero );
     ss << num << "/" << den << " : " << (double)num/den;
     std::cout << std::setw(35) << std::left << ss.str();
     ss.str( std::string() );
 		
-		continuedFrac ( num, den, number, den_max, zero );
+		continuedFracFirst ( num, den, number, zero );
 		ss << num << "/" << den << " : " << (double)num/den;
 		std::cout << std::setw(35) << std::left << ss.str() << std::endl;
 		ss.str( std::string() );
@@ -76,22 +57,13 @@ namespace gum {
     std::cout << std::setw(10) << std::left << iters+1;
     number = 1;
     std::cout << std::setw(20) << std::left << number;
-    frac ( num, den, number );
-    ss << num << "/" << den << " : " << (double)num/den;
-    std::cout << std::setw(35) << std::left << ss.str();
-    ss.str( std::string() );
-
-    fracC ( num, den, ( int ) ( PRECISION * number ), DECI, PRECISION );
-    ss << num << "/" << den << " : " << (double)num/den;
-    std::cout << std::setw(35) << std::left << ss.str();
-    ss.str( std::string() );
-
+    
     farey ( num, den, number, den_max, zero );
     ss << num << "/" << den << " : " << (double)num/den;
     std::cout << std::setw(35) << std::left << ss.str();
     ss.str( std::string() );
 		
-		continuedFrac ( num, den, number, den_max, zero );
+		continuedFracFirst ( num, den, number, zero );
 		ss << num << "/" << den << " : " << (double)num/den;
 		std::cout << std::setw(35) << std::left << ss.str() << std::endl;
 		ss.str( std::string() );
@@ -108,20 +80,10 @@ namespace gum {
       number = fmin + number * ( fmax - fmin );
       std::cout << std::setw(20) << std::left << number;
 
-      frac ( num, den, number );
-      ss << num << "/" << den << " : " << (double)num/den;
-      std::cout << std::setw(35) << std::left << ss.str();
-      ss.str( std::string() );
-
-      fracC ( num, den, ( int ) ( PRECISION * number ), DECI, PRECISION );
-      ss << num << "/" << den << " : " << (double)num/den;
-      std::cout << std::setw(35) << std::left << ss.str();
-      ss.str( std::string() );
-
 			// farey
       std::cout << std::setw(35) << std::left << "1/1, number > 1 !";    
 			
-			continuedFrac ( num, den, number, den_max, zero );
+			continuedFracFirst ( num, den, number, zero );
 			ss << num << "/" << den << " : " << (double)num/den;
 			std::cout << std::setw(35) << std::left << ss.str() << std::endl;
 			ss.str( std::string() );
@@ -129,134 +91,6 @@ namespace gum {
 
   }
 
-  template < typename GUM_SCALAR >
-  bool Rational< GUM_SCALAR >::__less ( const double & a, const double & b, const long int & c, const long int & denum ) {
-    return ( a * denum < b * c );
-  }
-
-  template < typename GUM_SCALAR >
-  bool Rational< GUM_SCALAR >::__leq ( const double & a, const double & b, const long int & c, const long int & denum ) {
-    return ( a * denum <= b * c );
-  }
-
-  template < typename GUM_SCALAR >
-  int Rational< GUM_SCALAR >::__matches ( const double & a, const double & b, const long int & alpha_num, const long int & d_num, const long int & denum ) {
-    if ( __leq ( a, b, alpha_num - d_num, denum ) ) return 0;
-
-    if ( __less ( a, b, alpha_num + d_num, denum ) ) return 1;
-
-    return 0;
-  }
-
-  template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::__find_exact_left ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const long int & alpha_num, const long int & d_num, const long int & denum ) {
-    double k_num = denum * p_b - ( alpha_num + d_num ) * q_b;
-    double k_denum = ( alpha_num + d_num ) * q_a - denum * p_a;
-    double k = ( ( double ) k_num / k_denum ) + 1;
-    num = p_b + k * p_a;
-    den = q_b + k * q_a;
-  }
-
-  template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::__find_exact_right ( const double & p_a, const double & q_a, const double & p_b, const double & q_b, long int & num, long int & den, const long int & alpha_num, const long int & d_num, const long int & denum ) {
-    double k_num = -denum * p_b - ( alpha_num - d_num ) * q_b;
-    double k_denum = - ( alpha_num - d_num ) * q_a + denum * p_a;
-    double k = ( ( double ) k_num / k_denum ) + 1;
-    num = p_b + k * p_a;
-    den = q_b + k * q_a;
-  }
-
-  template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::fracC ( long int & numerator, long int & denominator, const long int & alpha_num, const long int & d_num, const long int & denum ) {
-    double p_a = 0;
-    double q_a = 1;
-    double p_b = 1;
-    double q_b = 1;
-
-    double x, x_num, x_denum, new_p_a, new_q_a, new_p_b, new_q_b;
-    int aa, bb;
-
-    while ( true ) {
-      x_num = denum * p_b - alpha_num * q_b;
-      x_denum = -denum * p_a + alpha_num * q_a;
-      x = ( int ) ( ( x_num + x_denum - 1 ) / x_denum );
-
-      aa = __matches ( p_b + x * p_a, q_b + x * q_a, alpha_num, d_num, denum );
-      bb = __matches ( p_b + ( x - 1 ) * p_a, q_b + ( x - 1 ) * q_a, alpha_num, d_num, denum );
-
-      if ( aa || bb ) {
-        __find_exact_left ( p_a, q_a, p_b, q_b, numerator, denominator, alpha_num, d_num, denum );
-        break;
-      }
-
-      new_p_a = p_b + ( x - 1 ) * p_a;
-      new_q_a = q_b + ( x - 1 ) * q_a;
-      new_p_b = p_b + x * p_a;
-      new_q_b = q_b + x * q_a;
-
-      p_a = new_p_a;
-      p_b = new_p_b;
-      q_a = new_q_a;
-      q_b = new_q_b;
-
-      x_num = alpha_num * q_b - denum * p_b;
-      x_denum = -alpha_num * q_a + denum * p_a;
-      x = ( int ) ( ( x_num + x_denum - 1 ) / x_denum );
-
-      aa = __matches ( p_b + x * p_a, q_b + x * q_a, alpha_num, d_num, denum );
-      bb = __matches ( p_b + ( x - 1 ) * p_a, q_b + ( x - 1 ) * q_a, alpha_num, d_num, denum );
-
-      if ( aa || bb ) {
-        __find_exact_right ( p_a, q_a, p_b, q_b, numerator, denominator, alpha_num, d_num, denum );
-        break;
-      }
-
-      new_p_a = p_b + ( x - 1 ) * p_a;
-      new_q_a = q_b + ( x - 1 ) * q_a;
-      new_p_b = p_b + x * p_a;
-      new_q_b = q_b + x * q_a;
-
-      p_a = new_p_a;
-      p_b = new_p_b;
-      q_a = new_q_a;
-      q_b = new_q_b;
-    }
-  } // end of continued frac
-
-
-  template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::frac ( long int & numerator, long int & denominator, const GUM_SCALAR & number ) {
-    double l = log10 ( abs ( number ) );
-
-    int d1 = l + 1.000001;
-    int d2 = ( d1 <= 0 ) ? 4 : 4 - d1;
-
-    double dd = pow ( 10, d2 );
-		long int di = dd;
-
-    if ( di < dd )
-      di++;
-
-    double nd = number * di;
-		long int ni = nd;
-
-    if ( ni < nd )
-      ni++;
-
-    numerator = ni;
-    denominator = di;
-
-		long int a ( numerator ), b ( denominator ), t;
-
-    while ( b != 0 ) {
-      t = b;
-      b = a % b;
-      a = t;
-    }
-
-    numerator /= a;
-    denominator /= a;
-  } // end of frac
 
   template < typename GUM_SCALAR >
   void Rational< GUM_SCALAR >::farey ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max, const double & zero ) {
@@ -316,60 +150,176 @@ namespace gum {
       denominator = b;
       return;
     }
-  } // end of farey func
+  } /// end of farey func
   
-
+  
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::continuedFrac( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max, const double & zero ) {
+  void Rational< GUM_SCALAR >::continuedFracFirst ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const double & zero ) {
 		const GUM_SCALAR pnumber = ( number > 0 ) ? number : - number;
 		
-		// reciprocal over iterations
+		/// reciprocal over iterations
 		GUM_SCALAR rnumber = pnumber;
 		
-		// a is the interger part of the ( current ) reciprocal
-		// numerator_old / denominator_old are the previous numerator / denominator of the convergents
-		// tmp is a temporary
-		unsigned long int numerator_old, denominator_old, a, tmp;
+		/// convergents
+		std::vector< unsigned long int > p ( { 0, 1 } );
+		std::vector< unsigned long int > q ( { 1, 0 } );
 		
-		// first convergent
-		numerator_old = 0; numerator = 1;
-		// second convergent
-		denominator_old = 1; denominator = 0;
+		/// quotients
+		std::vector< unsigned long int > a;
 		
-		// denominators are monotonous, ascending order
+		unsigned long int p_tmp, q_tmp;
 		
-		// continued fraction - we don't keep all of them, just the last one close enough to number
-		do {
-			a = lrint( floor( rnumber ) );
+		unsigned long int n;
+		double delta, delta_tmp;
+		
+		/// we find all convergents until we found a best one
+		/// since we look for a delta < zero, we can start looking for semi-convergents when we found a convergent with delta < zero, and look for the semi-convergents before
+		while ( true ) {
+			a.push_back ( lrint ( floor ( rnumber ) ) );
+			p.push_back ( a.back () * p.back () + p[ p.size() - 2 ] );
+			q.push_back ( a.back () * q.back () + q[ q.size() - 2 ] );
 			
-			tmp = numerator;
-			numerator = a * numerator + numerator_old;
-			numerator_old = tmp;
+			delta = fabs ( pnumber - ( GUM_SCALAR ) p.back () / q.back () );			
 			
-			tmp = denominator;
-			denominator = a * denominator + denominator_old;
-			denominator_old = tmp;
-			
-			if( fabs( rnumber - a ) < zero || denominator >= den_max || fabs( numerator * 1. / denominator - pnumber ) < zero ) {
-				/// we return the last rational with denominator <= den_max
-				/// knowing that fabs( pnumber - approx ) > zero
-				if ( denominator > den_max ) {
-					numerator = numerator_old;
-					denominator = denominator_old;
-				}
-				
-				if ( number < 0 ) {
-					numerator = - numerator;
-				}
-				
-				return;
+			if ( delta < zero ) {
+				numerator = ( number > 0 ) ? p.back () : - p.back ();
+				denominator = q.back ();
+				break;
 			}
 			
-			rnumber = 1. / ( rnumber - a );
+			if ( fabs ( rnumber - a.back () ) < 1e-6 )
+				break;
 			
-		} while ( 1 );
+			rnumber = 1. / ( rnumber - a.back () );
+		} /// end of while
 		
+		if ( a.size () < 2 )
+			return;
+		
+		/// we can start looking at the semi-convergents made of the last two convergents before the one within precision zero of number found previously
+		unsigned int i = p.size() - 2;
+		/// the last convergent has already been computed previously : end of for is p.size() - 2
+		///for ( ; i < p.size() - 1; ++i ) {
+		// Test n = a[i-1]/2 ( when a[i-1] is even )
+		n = a[ i - 1 ] / 2;
+		p_tmp = n * p[ i ] + p[ i - 1 ];
+		q_tmp = n * q[ i ] + q[ i - 1 ];
+		
+		delta = fabs ( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
+		delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
+		
+		if ( delta < zero ) {
+			numerator = ( number > 0 ) ? p[i] : - p[i];
+			denominator = q[i];
+			return;
+		}
+		
+		if ( delta_tmp < zero ) {
+			numerator = ( number > 0 ) ? p_tmp : - p_tmp;
+			denominator = q_tmp;
+			return;
+		}
+		
+		// next semi-convergents until next convergent from smaller denominator to bigger denominator
+		for ( n = ( a[ i - 1 ] + 2 ) / 2; n < a[ i - 1 ]; ++n ) {
+			p_tmp = n * p[ i ] + p[ i - 1 ];
+			q_tmp = n * q[ i ] + q[ i - 1 ];
+			
+			delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
+			
+			if ( delta_tmp < zero ) {
+				numerator = ( number > 0 ) ? p_tmp : - p_tmp;
+				denominator = q_tmp;						
+				return;
+			}
+		} /// end of for
+				
+		///} // end of for
 	}
+  
+  template < typename GUM_SCALAR >
+  void Rational< GUM_SCALAR >::continuedFracBest ( long int & numerator, long int & denominator, const GUM_SCALAR & number, const long int & den_max ) {
+		const GUM_SCALAR pnumber = ( number > 0 ) ? number : - number;
+		
+		const unsigned long int denMax = ( unsigned long int ) den_max; /// signed and unsigned comparison resolution ...
+		
+		/// reciprocal over iterations
+		GUM_SCALAR rnumber = pnumber;
+		
+		/// convergents
+		std::vector< unsigned long int > p ( { 0, 1 } );
+		std::vector< unsigned long int > q ( { 1, 0 } );
+		
+		/// quotients
+		std::vector< unsigned long int > a;
+		
+		unsigned long int p_tmp, q_tmp;
+		
+		unsigned long int n;
+		double delta, delta_tmp;
+		
+		/// we find all convergents until we met den_max
+		while ( true ) {
+			a.push_back ( lrint ( floor ( rnumber ) ) );
+			
+			p_tmp = a.back () * p.back () + p[ p.size() - 2 ];
+			q_tmp = a.back () * q.back () + q[ q.size() - 2 ];
+			
+			if ( q_tmp > denMax || p_tmp > denMax )
+				break;
+			
+			p.push_back ( p_tmp );
+			q.push_back ( q_tmp );
+			
+			if ( fabs ( rnumber - a.back () ) < 1e-6 )
+				break;
+			
+			rnumber = 1. / ( rnumber - a.back () );
+		} /// end of while
+		
+		if ( a.size () < 2 || q.back () == denMax || p.back () == denMax ) {
+			numerator = ( number > 0 ) ? p.back () : - p.back ();
+			denominator = q.back ();
+			return;
+		}
+		
+		/// we can start looking at the semi-convergents made of the last two convergents before the one within precision zero of number found previously
+		unsigned int i = p.size() - 1;
+		/// the last convergent has already been computed previously : end of for is p.size() - 2
+		///for ( ; i < p.size() - 1; ++i ) {
+		for ( n = a[ i - 1 ] - 1; n >= ( a[ i - 1 ] + 2 ) / 2; --n ) {
+			
+			p_tmp = n * p[ i ] + p[ i - 1 ];
+			q_tmp = n * q[ i ] + q[ i - 1 ];
+			
+			if ( q_tmp > denMax || p_tmp > denMax )
+				continue;
+			
+			numerator = ( number > 0 ) ? p_tmp : - p_tmp;
+			denominator = q_tmp;
+			return;
+		} // end of for
+		
+		// Test n = a[i-1]/2
+		n = a[ i - 1 ] / 2;
+		p_tmp = n * p[ i ] + p[ i - 1 ];
+		q_tmp = n * q[ i ] + q[ i - 1 ];
+		
+		delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
+		delta = fabs ( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
+		
+		if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
+			numerator = ( number > 0 ) ? p_tmp : - p_tmp;
+			denominator = q_tmp;
+		}
+		else {
+			numerator = ( number > 0 ) ? p[ i ] : - p[ i ];
+			denominator = q[ i ];
+		}
+			
+		///}
+	}
+  
 
 
 } // end of gum namespace

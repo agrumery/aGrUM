@@ -1,9 +1,30 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #ifndef __MULTIPLE_INFERENCE_ENGINES__H__
 #define __MULTIPLE_INFERENCE_ENGINES__H__
 
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
+ * @author Matthieu HOURBRACQ
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
@@ -19,6 +40,7 @@ namespace credal {
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
    * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
+	 * @author Matthieu HOURBRACQ
    */
   template < typename GUM_SCALAR, class BNInferenceEngine >
   class MultipleInferenceEngine : public InferenceEngine < GUM_SCALAR > {
@@ -26,19 +48,19 @@ namespace credal {
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       typedef InferenceEngine<GUM_SCALAR> infE;
 
-      typedef typename gum::Property< std::vector< gum::NodeId > >::onNodes cluster;
-      typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
-      typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
-      typedef typename gum::Property< GUM_SCALAR >::onNodes expe;
+      typedef typename Property< std::vector< NodeId > >::onNodes cluster;
+      typedef typename Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
+      typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
+      typedef typename Property< GUM_SCALAR >::onNodes expe;
 
-      typedef gum::BayesNet< GUM_SCALAR > bnet;
+      typedef BayesNet< GUM_SCALAR > bnet;
       typedef std::vector< margi > margis;
       typedef std::vector< expe > expes;
       typedef std::vector< credalSet > credalSets;
       typedef std::vector< std::vector< cluster > > clusters;
 
       //typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
-      typedef typename std::vector< gum::HashTable< std::string, std::vector< GUM_SCALAR > > > modals;
+      typedef typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > > modals;
 			
 			/**
 			 * @brief Ask for redundancy elimination of a node credal set of a calling thread.
@@ -49,7 +71,7 @@ namespace credal {
 			 * @param vertex The vertex to add to the credal set.
 			 * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
 			 */
-			inline void __updateThreadCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund );
+			inline void __updateThreadCredalSets( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund );
 
     protected :
       /** Threads lower marginals, one per thread. */
@@ -72,7 +94,7 @@ namespace credal {
       /** Threads BayesNet. */
       typename std::vector< bnet * > _workingSet;
       /** Threads evidence. */
-      typename std::vector< gum::List< const gum::Potential< GUM_SCALAR > * > * > _workingSetE;
+      typename std::vector< List< const Potential< GUM_SCALAR > * > * > _workingSetE;
       
       /** Threads BNInferenceEngine. */
       typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
@@ -82,9 +104,7 @@ namespace credal {
       //OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp is disabled (avoid creating 2 objects when only one is necessary)
       // it should also avoid calling thread fusion operations
 
-////////////////////////////////////////// 
       /// @name Protected initialization methods
-//////////////////////////////////////////
       /// @{
      
       /**
@@ -98,9 +118,7 @@ namespace credal {
 
       /// @}
 
-////////////////////////////////////////// 
       /// @name Protected algorithms methods
-//////////////////////////////////////////
       /// @{
 
       /**
@@ -111,7 +129,7 @@ namespace credal {
 			 * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
        * @return \c True if the BayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
+      inline bool _updateThread( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
 
       /**
        * @brief Fusion of threads marginals.
@@ -132,9 +150,7 @@ namespace credal {
 
       /// @}
 
-////////////////////////////////////////// 
       /// @name Proptected post-inference methods
-//////////////////////////////////////////
       /// @{
 
       /** Fusion of threads optimal BayesNet. */
@@ -143,46 +159,39 @@ namespace credal {
       void _expFusion();
       /** @deprecated Fusion of threads vertices. */
       void _verticesFusion(); // called ?? not done yet
-
+			
       /// @}
-
+			
     public : 
-//////////////////////////////////////////
       /// @name Constructors / Destructors
-//////////////////////////////////////////
       /// @{
-
+				
       /**
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
       MultipleInferenceEngine ( const CredalNet< GUM_SCALAR > & credalNet );
+			
       /** Destructor. */
       virtual ~MultipleInferenceEngine();
 
       /// @}
-      
-////////////////////////////////////////// 
+			
       /// @name Post-inference methods
-//////////////////////////////////////////
       /// @{
       /**
        * Erase all inference related data to perform another one. You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones. 
        */
       virtual void eraseAllEvidence();
       /// @}
-
-//////////////////////////////////////////
+			
       /// @name Pure virtual methods
-//////////////////////////////////////////
       /// @{
       /** To be redefined by each credal net algorithm. Starts the inference. */
       virtual void makeInference() = 0;
       /// @}
-
-////////////////////////////////////////// 
+			
       /// @name Getters and setters
-//////////////////////////////////////////
       /// @{
       /**
        * Get optimum BayesNet.

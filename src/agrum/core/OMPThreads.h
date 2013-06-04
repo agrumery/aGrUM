@@ -1,3 +1,29 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief wrapper for OMP
+ * @author Matthieu HOURBRACQ
+ */
+
 #ifndef __OMPTHREADS__H__
 #define __OMPTHREADS__H__
 
@@ -29,7 +55,7 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_num_threads ( number );
 #else
-    GUM_ERROR ( gum::OperationNotAllowed, "openMP was not enabled at compilation (or you asked for 0 threads !)" );
+    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (or you asked for 0 threads !)" );
 #endif
   }
 
@@ -96,7 +122,7 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_nested ( ( ( value == true ) ? 1 : 0 ) );
 #else
-    GUM_ERROR ( gum::OperationNotAllowed, "openMP was not enabled at compilation (and you asked for nested parallelism !)" );
+    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (and you asked for nested parallelism !)" );
 #endif
   }
 
@@ -121,7 +147,7 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_dynamic ( ( ( value == true ) ? 1 : 0 ) );
 #else
-    GUM_ERROR ( gum::OperationNotAllowed, "openMP was not enabled at compilation (and you asked for dynamic adjustment of the number of threads !)" );
+    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (and you asked for dynamic adjustment of the number of threads !)" );
 #endif
   }
 

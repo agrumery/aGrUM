@@ -1,3 +1,29 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief Class used to store optimum BayesNet during some inference algorithms.
+ * @author Matthieu HOURBRACQ
+ */
+
 #ifndef __VAR_MOD_2_BNS_MAP__H__
 #define __VAR_MOD_2_BNS_MAP__H__
 
@@ -11,6 +37,7 @@ namespace gum {
    * @class VarMod2BNsMap VarMod2BNsMap.h <agrum/CN/VarMod2BNsMap.h>
    * @brief Class used to store optimum BayesNet during some inference algorithms.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+	 * @author Matthieu HOURBRACQ
    */
 
   template < typename GUM_SCALAR >
@@ -19,13 +46,11 @@ namespace gum {
       typedef std::vector< bool > dBN;
 
       typedef typename std::vector< unsigned int > varKey;
-      //typedef typename std::map< size_t, dBN > hashNet;
+			
       typedef typename gum::HashTable< size_t, dBN > hashNet;
 
-      //typedef typename std::map< varKey, std::list< size_t > > varHashs;
       typedef typename gum::HashTable< varKey, std::list< size_t > > varHashs;
 
-      //typedef typename std::map< size_t, std::list< varKey > > hashVars;
       typedef typename gum::HashTable< size_t, std::list< varKey > > hashVars;
 
     protected :
@@ -50,9 +75,7 @@ namespace gum {
       const CredalNet<GUM_SCALAR> * cnet;
 
     public :
-//////////////////////////////////////////
-/// @name Constructors / Destructors
-//////////////////////////////////////////
+			/// @name Constructors / Destructors
       /// @{
 
       /**
@@ -65,6 +88,7 @@ namespace gum {
 
       /** Default constructor that should be used only by InferenceEngine since it has a member variable. */
       VarMod2BNsMap ();
+			
       /** Destructor. */
       ~VarMod2BNsMap ( );
 
@@ -87,9 +111,7 @@ namespace gum {
 
 
 
-//////////////////////////////////////////
-      /// @name Getters and setters
-//////////////////////////////////////////
+      /// @name Getters and setters			
       /// @{
 
       /**
@@ -101,7 +123,7 @@ namespace gum {
       void setCNet ( const CredalNet<GUM_SCALAR> & cn );
 
       /**
-       * Set the current thread sample and it's hash.
+       * %Set the current thread sample and it's hash.
        * @param sample The constant reference to the sample with structure.
        */
       void setCurrentSample ( const std::vector< std::vector< std::vector < bool > > > & sample );

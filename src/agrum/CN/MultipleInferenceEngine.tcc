@@ -1,5 +1,5 @@
-#include <agrum/CN/InferenceEngine.h>
-#include <agrum/CN/MultipleInferenceEngine.h>
+#include "InferenceEngine.h"
+#include "MultipleInferenceEngine.h"
 
 namespace gum {
   namespace credal {
@@ -59,8 +59,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThread ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
-      int tId = gum::getThreadNumber();
+    inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThread ( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+      int tId = getThreadNumber();
 
       // save E(X) if we don't save vertices
       if ( ! infE::_storeVertices && ! _l_modal[tId].empty() ) {
@@ -140,7 +140,6 @@ namespace gum {
         // store point to compute credal set vertices.
         // check for redundancy at each step or at the end ?
         if ( infE::_storeVertices && ! added && newOne ) {
-          //_l_marginalSets[tId][id].push_back(vertex);
           __updateThreadCredalSets ( id, vertex, elimRedund );
           added = true;
         }
@@ -157,8 +156,8 @@ namespace gum {
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::__updateThreadCredalSets ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
-      int tId = gum::getThreadNumber();
+    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::__updateThreadCredalSets ( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+      int tId = getThreadNumber();
       auto & nodeCredalSet = _l_marginalSets[ tId ][ id ];
       auto dsize = vertex.size();
 
@@ -178,11 +177,17 @@ namespace gum {
           break;
       }
 
-      if ( ! eq || nodeCredalSet.size() == 0 )
+      if ( ! eq || nodeCredalSet.size() == 0 ) {
         nodeCredalSet.push_back ( vertex );
+				return;
+			}
       else
         return;
-
+			
+			/// we need this because of the next lambda return contidion fabs ( *minIt - *maxIt ) > 1e-6 which never happens if there is only one vertice
+			if ( nodeCredalSet.size() == 1 )
+				return;
+			
       // check that the point and all previously added ones are not inside the actual polytope
       auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
       [&] ( const std::vector< GUM_SCALAR > & v ) -> bool {
@@ -212,10 +217,10 @@ namespace gum {
       // there may be points not inside the polytope but on one of it's facet, meaning it's still a convex combination of vertices of this facet. Here we need lrs.
       auto setSize = nodeCredalSet.size();
 
-      gum::credal::LRSWrapper< GUM_SCALAR > lrsWrapper;
+      LRSWrapper< GUM_SCALAR > lrsWrapper;
       lrsWrapper.setUpV ( dsize, setSize );
 
-for ( auto & vtx : nodeCredalSet )
+			for ( auto & vtx : nodeCredalSet )
         lrsWrapper.fillV ( vtx );
 
       lrsWrapper.elimRedundVrep();
@@ -229,10 +234,10 @@ for ( auto & vtx : nodeCredalSet )
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateMarginals() {
       #pragma omp parallel
       {
-        int threadId = gum::getThreadNumber();
+        int threadId = getThreadNumber();
         auto nsize = _workingSet[threadId]->size();
-        #pragma omp for
-
+        
+				#pragma omp for
         for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto dSize = _l_marginalMin[threadId][i].size();
 
@@ -272,11 +277,10 @@ for ( auto & vtx : nodeCredalSet )
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        int tId = gum::getThreadNumber();
+        int tId = getThreadNumber();
         auto nsize = _workingSet[tId]->size();
 
         #pragma omp for
-
         for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto dSize = _l_marginalMin[tId][i].size();
 
@@ -310,11 +314,10 @@ for ( auto & vtx : nodeCredalSet )
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateOldMarginals() {
       #pragma omp parallel
       {
-        int threadId = gum::getThreadNumber();
+        int threadId = getThreadNumber();
         auto nsize = _workingSet[threadId]->size();
 
         #pragma omp for
-
         for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto dSize = _l_marginalMin[threadId][i].size();
 
@@ -353,11 +356,10 @@ for ( auto & vtx : nodeCredalSet )
 
       #pragma omp parallel
       {
-        int threadId = gum::getThreadNumber();
+        int threadId = getThreadNumber();
         auto nsize = _workingSet[ threadId ]->size();
 
         #pragma omp for
-
         for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto tsize = _l_marginalMin.size();
           auto dSize = _l_marginalMin[ threadId ][ i ].size();
@@ -405,13 +407,12 @@ for ( auto & vtx : nodeThreadCredalSet ) {
       if ( infE::_storeVertices ) {
         #pragma omp parallel
         {
-          int threadId = gum::getThreadNumber();
+          int threadId = getThreadNumber();
 
           if ( ! this->_l_modal[threadId].empty() ) {
             auto nsize = _workingSet[threadId]->size();
 
             #pragma omp for
-
             for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
               std::string var_name = _workingSet[ threadId ]->variable ( i ).name();
               auto delim = var_name.find_first_of ( "_" );
@@ -448,13 +449,12 @@ for ( auto & vertex : infE::_marginalSets[ i ] ) {
 
       #pragma omp parallel
       {
-        int threadId = gum::getThreadNumber();
+        int threadId = getThreadNumber();
 
         if ( ! this->_l_modal[threadId].empty() ) {
           auto nsize = _workingSet[threadId]->size();
 
           #pragma omp for
-
           for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
             std::string var_name = _workingSet[threadId]->variable ( i ).name();
             auto delim = var_name.find_first_of ( "_" );

@@ -1,3 +1,29 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
+ * @author Matthieu HOURBRACQ
+ */
+
 #ifndef __CN_MC_SAMPLING__H__
 #define __CN_MC_SAMPLING__H__
 
@@ -9,9 +35,13 @@ namespace gum {
 
     /**
      * @class CNMonteCarloSampling CNMonteCarloSampling.h <agrum/CN/CNMonteCarloSampling.h>
-     * @brief Basic sampling algorithm (pure random).
+		 * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
+     * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation ( recommanded ).
+		 * @author Matthieu HOURBRACQ
+		 * 
+		 * @warning p(e) must be available ( by a call to my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) > 0 for a sample
+		 * the test is made once
      */
     template< typename GUM_SCALAR, class BNInferenceEngine >
     class CNMonteCarloSampling : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
@@ -19,9 +49,7 @@ namespace gum {
         /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > methods. */
         typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > infEs;
 
-//////////////////////////////////////////
         /// @name Private initialization methods
-//////////////////////////////////////////
         /// @{
         /** Initialize approximation Scheme. */
         void __mcInitApproximationScheme();
@@ -29,9 +57,7 @@ namespace gum {
         void __mcThreadDataCopy();
         /// @}
 
-//////////////////////////////////////////
         /// @name Private algorithm methods
-//////////////////////////////////////////
         /// @{
         /** Thread samples a BayesNet from the CredalNet. */
         inline void __verticesSampling();
@@ -58,9 +84,7 @@ namespace gum {
       protected:
 
       public:
-//////////////////////////////////////////
         /// @name Constructors / Destructors
-//////////////////////////////////////////
         /// @{
         /**
          * Constructor.
@@ -71,9 +95,7 @@ namespace gum {
         virtual ~CNMonteCarloSampling();
         /// @}
 
-//////////////////////////////////////////
         /// @name Public algorithm methods
-//////////////////////////////////////////
         /// @{
 
         /** Starts the inference. */
@@ -86,9 +108,7 @@ namespace gum {
 
         //// debug /////
 
-        unsigned int notOptDelete;
-
-        ////////////////
+        ///unsigned int notOptDelete;
 
       protected:
         bool _repetitiveInd;

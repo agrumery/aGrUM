@@ -63,6 +63,7 @@
 
 #include <agrum/CN/LpInterface.h>
 
+#include <agrum/core/Rational.h>
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
@@ -85,10 +86,14 @@ void test_credal() {
 
   std::cout << "dynamic threads : " << gum::getDynamicThreadsNumber() << std::endl;
   std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
-  std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
-  std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
+	std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
+	std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
 
 	////////////////////////////////
+	
+	/*
+	gum::Rational< double >::testRationalAlgorithms();
+	return;
 	
 	gum::credal::CredalNet< double > nCN;
 	
@@ -113,7 +118,7 @@ void test_credal() {
 
 	ins = gum::Instantiation( nCN.current_bn().cpt( c ) );
 	
-	gum::credal::LpInterface llp;
+	gum::credal::lp::LpInterface< double > llp;
 	auto cols = llp.addCols( 3 );
 	
 	for( ; ! ins.end(); ) {
@@ -140,9 +145,11 @@ void test_credal() {
 	std::cout << nCN.toString() << std::endl;	
 		
 	return;
+	*/
 	
 	/////////////////////////////
 	
+	/*
 	gum::credal::CredalNet< double > myCN ( GET_PATH_STR( numerators.bif ) );
 	myCN.idmLearning( 0, true );
 	std::cout << myCN.toString() << std::endl;
@@ -158,27 +165,85 @@ void test_credal() {
 	
 	gum::credal::CredalNet< double > myCN3 ( GET_PATH_STR( numerators.bif ) );
 	myCN3.lagrangeNormalization();
+	*/
 	
 	/*myCN3.idmLearning( 10, true );
 	std::cout << myCN3.toString() << std::endl;*/
 	
+	/*
 	myCN3.bnToCredal( 0.8, true, true );
 	std::cout << myCN3.toString() << std::endl;
 	
 	return;
+	*/
 	
 	//////////////////////////////////
 	
-	gum::credal::CredalNet< double > cn ( GET_PATH_STR( /*gl2u2_*/min.bif ), GET_PATH_STR( /*gl2u2_*/max.bif ) );
-	cn.intervalToCredal();
-	//std::cout << cn.toString() << std::endl;
 	
-	//cn.approximatedBinarization();
+	
+	std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
+	
+	gum::BayesNet<double> monBNa;
+	gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif ) );
+	//GET_PATH_STR ( bn_c.bif ) );
+	readera.proceed();
+	
+	gum::BayesNet<double> monBNb;
+	gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif ) );
+	//GET_PATH_STR ( den_c.bif ) );
+	readerb.proceed();
+	
+	
+	// (G)(L)2U test
+	gum::credal::CredalNet<double> myCNb(monBNa, monBNb);
+	
+	//myCNb.bnToCredal(0.5);
+	
+	myCNb.intervalToCredal();//intervalToCredal();
+	//std::cout << "computing min/max vertex" << std::endl;
+	
+	
+	std::cout << myCNb.toString() << std::endl;
+	
+	myCNb.computeCPTMinMax();
+	gum::credal::CNLoopyPropagation<double> lp2 = gum::credal::CNLoopyPropagation<double>(myCNb);
+	lp2.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "l2u p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp2.marginalMin(*id)[mod] << ", " << lp2.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
+	MCE.storeVertices(true);
+	MCE.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		 for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			 std::cout << "MC p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE.marginalMin(*id)[mod] << ", " << MCE.marginalMax(*id)[mod] << " ] " << std::endl;
+		 }
+		std::cout << "MC vertices of : " << myCNb.src_bn().variable(*id).name() << std::endl;
+		std::cout << MCE.vertices(*id) << std::endl;
+	}
+		 
+	return;
+	
+	
+	
+	gum::credal::CredalNet< double > cn ( GET_PATH_STR( /*gl2u2_*/2Umin.bif ), GET_PATH_STR( /*gl2u2_*/2Umax.bif ) );
+	cn.intervalToCredal();
+	std::cout << cn.toString() << std::endl;
+	
+	///cn.approximatedBinarization();
 	
 	gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
 	//mc.setMaxTime ( 60 * 10 );
 	//mc.setPeriodSize ( 4000 );
-	
+	mc.setMaxTime(1*60);
+	mc.setPeriodSize(1000);
 	mc.makeInference();
 	
 	for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
@@ -187,11 +252,11 @@ void test_credal() {
 			std::cout << "mc p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << mc.marginalMin(*id)[mod] << ", " << mc.marginalMax(*id)[mod] << " ] " << std::endl;
 		}
 	}
-	/*
+	
 	cn.approximatedBinarization();
-	*/
+	
 	//std::cout << cn.toString() << std::endl;
-
+	
 	cn.computeCPTMinMax ();
 	
 	gum::credal::CNLoopyPropagation< double > lp ( cn );

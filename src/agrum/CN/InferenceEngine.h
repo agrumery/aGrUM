@@ -1,9 +1,30 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #ifndef __INFERENCE_ENGINE__H__
 #define __INFERENCE_ENGINE__H__
 
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
+ * @author Matthieu HOURBRACQ
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
@@ -26,19 +47,19 @@ namespace credal {
    * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as CNLoopyPropagation (inner multi-threading) or CNMonteCarloSampling (outer multi-threading).
    *
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+	 * @author Matthieu HOURBRACQ
    */
   template < typename GUM_SCALAR >
   class InferenceEngine : public ApproximationScheme {
     private:
-      typedef typename gum::Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
-      typedef typename gum::Property< std::vector< GUM_SCALAR > >::onNodes margi;
-      typedef typename gum::Property< GUM_SCALAR >::onNodes expe;
+      typedef typename Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
+      typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
+      typedef typename Property< GUM_SCALAR >::onNodes expe;
 
-      //typedef typename std::map< std::string, std::vector< GUM_SCALAR > > dynExpe;
       typedef typename gum::HashTable< std::string, std::vector< GUM_SCALAR > > dynExpe;
 
-      typedef typename gum::Property< std::vector< bool > >::onNodes query;
-      typedef typename gum::Property< std::vector< gum::NodeId > >::onNodes cluster;
+      typedef typename Property< std::vector< bool > >::onNodes query;
+      typedef typename Property< std::vector< NodeId > >::onNodes cluster;
 
     protected:
       /** @brief A pointer to the Credal Net used. */
@@ -96,9 +117,7 @@ namespace credal {
        * @brief The number of time steps of this network (only usefull for dynamic networks). */
       int _timeSteps;
 
-////////////////////////////////////////// 
       /// @name Protected initialization methods
-//////////////////////////////////////////
       /// @{
       /** 
        * Initialize _t0 and _t1 clusters.
@@ -122,9 +141,7 @@ namespace credal {
 
       /// @}
 
-////////////////////////////////////////// 
       /// @name Protected algorithms methods
-//////////////////////////////////////////
       /// @{
       /**
        * Compute approximation scheme epsilon using the old marginals and the new ones. Highest delta on either lower or upper marginal is epsilon.
@@ -141,7 +158,7 @@ namespace credal {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateExpectations( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex );
+      inline void _updateExpectations( const NodeId & id, const std::vector< GUM_SCALAR > & vertex );
 			
       /**
 			 * @deprecated Use _updateCredalSets ( LrsWrapper without intput/output files needed ).
@@ -152,7 +169,7 @@ namespace credal {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateCredalSetsWithFiles( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
+      inline void _updateCredalSetsWithFiles( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
 			
 			/**
 			 * Given a node id and one of it's possible vertex, update it's credal set.
@@ -161,13 +178,11 @@ namespace credal {
 			 * @param id The id of the node to be updated
 			 * @param vertex A (potential) vertex of the node credal set
 			 */
-			inline void _updateCredalSets( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
+			inline void _updateCredalSets( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund = false );
 
       /// @}
 
-////////////////////////////////////////// 
       /// @name Proptected post-inference methods
-//////////////////////////////////////////
       /// @{
       /**
        * Rearrange lower and upper expectations to suit dynamic networks.
@@ -177,9 +192,7 @@ namespace credal {
       
       
     public:
-//////////////////////////////////////////
       /// @name Constructors / Destructors
-//////////////////////////////////////////
       /// @{
 
       //InferenceEngine ();
@@ -196,17 +209,13 @@ namespace credal {
 
       /// @}
 
-//////////////////////////////////////////
       /// @name Pure virtual methods
-//////////////////////////////////////////
       /// @{
       /** To be redefined by each credal net algorithm. Starts the inference. */
       virtual void makeInference() = 0;
       /// @}
 
-////////////////////////////////////////// 
       /// @name Getters and setters
-//////////////////////////////////////////
       /// @{
       /**
        * Get optimum BayesNet.
@@ -224,13 +233,13 @@ namespace credal {
        * Get the _t0 cluster.
        * @return A constant reference to the _t0 cluster.
        */
-      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT0Cluster() const;
+      const typename Property< std::vector< NodeId > >::onNodes & getT0Cluster() const;
 
       /**
        * Get the _t1 cluster.
        * @return A constant reference to the _t1 cluster.
        */
-      const typename gum::Property< std::vector< gum::NodeId > >::onNodes & getT1Cluster() const;
+      const typename Property< std::vector< NodeId > >::onNodes & getT1Cluster() const;
 
       /** 
        * @param repetitive \c True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
@@ -270,9 +279,7 @@ namespace credal {
       /// @}
       
 
-////////////////////////////////////////// 
       /// @name Pre-inference initialization methods
-//////////////////////////////////////////
       /// @{
       /**
        * Insert variables modalities from file to compute expectations.
@@ -302,7 +309,7 @@ namespace credal {
        * Insert evidence from Property.
        * @param evidence The on nodes Property containing likelihoods.
        */
-      void insertEvidence ( const typename gum::Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
+      void insertEvidence ( const typename Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
 
       /**
        * Insert query variables states from file.
@@ -314,14 +321,12 @@ namespace credal {
        * Insert query variables and states from Property.
        * @param query The on nodes Property containing queried variables states.
        */
-      void insertQuery ( const typename gum::Property< std::vector< bool > >::onNodes &query );
+      void insertQuery ( const typename Property< std::vector< bool > >::onNodes &query );
 
       /// @}
     
 
-////////////////////////////////////////// 
       /// @name Post-inference methods
-//////////////////////////////////////////
       /// @{
       /**
        * Erase all inference related data to perform another one. You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones. 
@@ -333,14 +338,14 @@ namespace credal {
        * @param id The node id which lower marginals we want.
        * @return A constant reference to this node lower marginals.
        */
-      const std::vector< GUM_SCALAR > & marginalMin ( const gum::NodeId id ) const;
+      const std::vector< GUM_SCALAR > & marginalMin ( const NodeId id ) const;
       
       /**
        * Get the upper marginals of a given node id.
        * @param id The node id which upper marginals we want.
        * @return A constant reference to this node upper marginals.
        */
-      const std::vector< GUM_SCALAR > & marginalMax ( const gum::NodeId id ) const;
+      const std::vector< GUM_SCALAR > & marginalMax ( const NodeId id ) const;
 
       /**
        * Get the lower marginals of a given variable name.
@@ -361,14 +366,14 @@ namespace credal {
        * @param id The node id which lower expectation we want.
        * @return A constant reference to this node lower expectation.
        */
-      const GUM_SCALAR & expectationMin ( const gum::NodeId id ) const;
+      const GUM_SCALAR & expectationMin ( const NodeId id ) const;
 
       /**
        * Get the upper expectation of a given node id.
        * @param id The node id which upper expectation we want.
        * @return A constant reference to this node upper expectation.
        */
-      const GUM_SCALAR & expectationMax ( const gum::NodeId id ) const;
+      const GUM_SCALAR & expectationMax ( const NodeId id ) const;
 
       /**
        * Get the lower expectation of a given variable name.
@@ -403,7 +408,7 @@ namespace credal {
        * @param id The node id which vertice we want.
        * @return A constant reference to this node vertice.
        */
-      const std::vector< std::vector< GUM_SCALAR > > & vertices ( const gum::NodeId id ) const;
+      const std::vector< std::vector< GUM_SCALAR > > & vertices ( const NodeId id ) const;
       
       /**
        * Saves marginals to file.
@@ -442,8 +447,6 @@ namespace credal {
       const std::string getApproximationSchemeMsg() { return this->messageApproximationScheme(); }
 
       /// @}
-
-      ///////////////////////////////////
 
   };
 

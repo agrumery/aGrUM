@@ -136,7 +136,7 @@ namespace gum {
         __state = __states::Hup;
       else if ( __state == __states::V2Hready ) {
         __state = __states::Vup;
-        GUM_ERROR ( gum::OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::nextHInput : only for H-representation as input. Previous state was : " << __setUpStateNames[ __state ] );
+        GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::nextHInput : only for H-representation as input. Previous state was : " << __setUpStateNames[ __state ] );
       } else {
         __input.clear();
         __state = __states::none;
@@ -163,7 +163,7 @@ namespace gum {
 
       __insertedModals.insert ( modal );
 
-      if ( __insertedModals.size() == __card )
+      if ( __insertedModals.size () == __card )
         __state = __states::H2Vready;
     }
     
@@ -173,10 +173,14 @@ namespace gum {
 			if ( ! __state == __states::Hup )
 				GUM_ERROR ( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not been called or H-representation is complete, current state is : " << __setUpStateNames[ __state ] );
 			
-			if ( matrix[0].size() - 1 > __card )
-				GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillMatrix : size is greater than cardinality : "  << ( matrix[0].size() - 1 ) << " > " << __card );
+			if ( matrix[0].size() - 1 != __card )
+				GUM_ERROR ( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillMatrix : size is different than cardinality : "  << ( matrix[0].size() - 1 ) << " != " << __card );
 			
 			__input = matrix;
+			
+			for ( unsigned int modal = 0; modal < __card; modal++ ) {
+				__insertedModals.insert ( modal );
+			}
 			
 			__state = __states::H2Vready;
 		}
@@ -212,7 +216,7 @@ namespace gum {
         if ( eq ) {
 					__vertices--;
 					return;
-					//GUM_ERROR ( gum::DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV : vertex already present : " << vertex );
+					//GUM_ERROR ( DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV : vertex already present : " << vertex );
 				}
       }
 
@@ -266,7 +270,7 @@ namespace gum {
               __coutOn();
               /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
                 pmp ("", output[i]);*/
-              GUM_ERROR ( gum::FatalError, "LRSWrapper< GUM_SCALAR >::H2V : asked for Q-hull computation or not reading a vertex !" );
+              GUM_ERROR ( FatalError, "LRSWrapper< GUM_SCALAR >::H2V : asked for Q-hull computation or not reading a vertex !" );
             } else
               for ( decltype ( __dat->n ) i = 1, end = __dat->n; i < end; i++ )
                 __getLRSWrapperOutput ( __lrsOutput[i], __lrsOutput[0], Num, Den );
@@ -385,7 +389,7 @@ namespace gum {
 
       /* linearities */
       if ( nlinearity > 0 )
-        GUM_ERROR ( gum::FatalError, "LRSWrapper< GUM_SCALAR >::elimRedundVrep : not reading a vertex but a linearity !" );
+        GUM_ERROR ( FatalError, "LRSWrapper< GUM_SCALAR >::elimRedundVrep : not reading a vertex but a linearity !" );
 
       /* count number of non-redundant inequalities */
       /*
@@ -482,7 +486,7 @@ namespace gum {
 
       for ( decltype ( rows ) row = 0; row < rows; row++ ) {
         for ( decltype ( cols ) col = 0; col < cols; col++ ) {
-          gum::Rational< GUM_SCALAR >::continuedFrac ( numerator, denominator, __input [ row ][ col ] );
+          Rational< GUM_SCALAR >::continuedFracFirst ( numerator, denominator, __input [ row ][ col ] );
 
           num [ col ] = numerator;
           den [ col ] = denominator;

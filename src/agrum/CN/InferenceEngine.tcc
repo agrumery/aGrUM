@@ -76,7 +76,8 @@ namespace gum {
     template< typename GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::storeVertices ( const bool value ) {
       _storeVertices = value;
-      _initMarginalSets();
+			if ( value )
+				_initMarginalSets();
     }
 
     template< typename GUM_SCALAR >
@@ -166,11 +167,11 @@ namespace gum {
 
 
       for ( auto it = modals.cbegin(), theEnd = modals.cend(); it != theEnd; ++it ) {
-        gum::NodeId id;
+        NodeId id;
 
         try {
           id = _credalNet->current_bn().idFromName ( it->first );
-        } catch ( gum::NotFound & err ) {
+        } catch ( NotFound & err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -197,11 +198,11 @@ namespace gum {
         _evidence.clear();
 
       for ( auto it = eviMap.cbegin(), theEnd = eviMap.cend(); it != theEnd; ++it ) {
-        gum::NodeId id;
+        NodeId id;
 
         try {
           id = _credalNet->current_bn().idFromName ( it->first );
-        } catch ( gum::NotFound & err ) {
+        } catch ( NotFound & err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -212,7 +213,7 @@ namespace gum {
 
     // check that observed variables DO exists in the network (otherwise Lazy report an error and app crash)
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename gum::Property< std::vector < GUM_SCALAR > >::onNodes &evidence ) {
+    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename Property< std::vector < GUM_SCALAR > >::onNodes &evidence ) {
       if ( ! _evidence.empty() )
         _evidence.clear();
 
@@ -220,7 +221,7 @@ namespace gum {
       for ( auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
         try {
           _credalNet->current_bn().variable ( it.key() );
-        } catch ( gum::NotFound & err ) {
+        } catch ( NotFound & err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -262,11 +263,11 @@ namespace gum {
         tmp = p;
 
         // if user input is wrong
-        gum::NodeId node = -1;
+        NodeId node = -1;
 
         try {
           node = _credalNet->current_bn().idFromName ( tmp );
-        } catch ( gum::NotFound &err ) {
+        } catch ( NotFound &err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -289,7 +290,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertQuery ( const typename gum::Property< std::vector < bool > >::onNodes &query ) {
+    void InferenceEngine< GUM_SCALAR >::insertQuery ( const typename Property< std::vector < bool > >::onNodes &query ) {
       if ( ! _query.empty() )
         _query.clear();
 
@@ -297,7 +298,7 @@ namespace gum {
       for ( auto it = query.begin(), theEnd = query.end(); it != theEnd; ++it ) {
         try {
           _credalNet->current_bn().variable ( it.key() );
-        } catch ( gum::NotFound &err ) {
+        } catch ( NotFound &err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -339,11 +340,11 @@ namespace gum {
         tmp = p;
 
         // if user input is wrong
-        gum::NodeId node = -1;
+        NodeId node = -1;
 
         try {
           node = _credalNet->current_bn().idFromName ( tmp );
-        } catch ( gum::NotFound &err ) {
+        } catch ( NotFound &err ) {
           GUM_SHOWERROR ( err );
           continue;
         }
@@ -380,7 +381,7 @@ namespace gum {
     const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMin ( const std::string & varName ) const {
       try {
         return _marginalMin[_credalNet->current_bn().idFromName ( varName )];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
@@ -389,25 +390,25 @@ namespace gum {
     const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMax ( const std::string & varName ) const {
       try {
         return _marginalMax[_credalNet->current_bn().idFromName ( varName )];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMin ( const gum::NodeId id ) const {
+    const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMin ( const NodeId id ) const {
       try {
         return _marginalMin[id];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMax ( const gum::NodeId id ) const {
+    const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::marginalMax ( const NodeId id ) const {
       try {
         return _marginalMax[id];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
 
@@ -417,7 +418,7 @@ namespace gum {
     const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin ( const std::string & varName ) const {
       try {
         return _expectationMin[_credalNet->current_bn().idFromName ( varName )];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
@@ -426,25 +427,25 @@ namespace gum {
     const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax ( const std::string & varName ) const {
       try {
         return _expectationMax[_credalNet->current_bn().idFromName ( varName )];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin ( const gum::NodeId id ) const {
+    const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMin ( const NodeId id ) const {
       try {
         return _expectationMin[id];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax ( const gum::NodeId id ) const {
+    const GUM_SCALAR & InferenceEngine< GUM_SCALAR >::expectationMax ( const NodeId id ) const {
       try {
         return _expectationMax[id];
-      } catch ( gum::NotFound & err ) {
+      } catch ( NotFound & err ) {
         throw ( err );
       }
     }
@@ -477,7 +478,7 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    const std::vector< std::vector< GUM_SCALAR > > & InferenceEngine< GUM_SCALAR >::vertices ( const gum::NodeId id ) const {
+    const std::vector< std::vector< GUM_SCALAR > > & InferenceEngine< GUM_SCALAR >::vertices ( const NodeId id ) const {
       return _marginalSets[id];
     }
 
@@ -748,7 +749,7 @@ namespace gum {
       _t0.clear();
       _t1.clear();
 
-      const gum::DAG &dag = _credalNet->current_bn().dag();
+      const DAG &dag = _credalNet->current_bn().dag();
 
       // t = 0 vars belongs to _t0 as keys
       for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
@@ -762,7 +763,7 @@ namespace gum {
         std::string time_step = var_name.substr ( delim + 1, 1 );
 
         if ( time_step.compare ( "0" ) == 0 )
-          _t0.insert ( *id, std::vector< gum::NodeId >() );
+          _t0.insert ( *id, std::vector< NodeId >() );
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
@@ -784,13 +785,13 @@ namespace gum {
             var_0_name = var_0_name.substr ( 0, delim );
 
             if ( var_name.compare ( var_0_name ) == 0 ) {
-              const gum::Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
-              const gum::Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
+              const Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
+              const Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() )
                 _t0[it.key()].push_back ( *id );
               else
-                _t1.insert ( *id, std::vector< gum::NodeId >() );
+                _t1.insert ( *id, std::vector< NodeId >() );
 
               found = true;
               break;
@@ -798,7 +799,7 @@ namespace gum {
           }
 
           if ( ! found ) {
-            _t1.insert ( *id, std::vector< gum::NodeId >() );
+            _t1.insert ( *id, std::vector< NodeId >() );
           }
         }
       }
@@ -830,8 +831,8 @@ namespace gum {
             var_0_name = var_0_name.substr ( 0, delim );
 
             if ( var_name.compare ( var_0_name ) == 0 ) {
-              const gum::Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
-              const gum::Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
+              const Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
+              const Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() ) {
                 _t0[it.key()].push_back ( *id );
@@ -849,8 +850,8 @@ namespace gum {
               var_0_name = var_0_name.substr ( 0, delim );
 
               if ( var_name.compare ( var_0_name ) == 0 ) {
-                const gum::Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
-                const gum::Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
+                const Potential< GUM_SCALAR > * potential ( &_credalNet->current_bn().cpt ( *id ) );
+                const Potential< GUM_SCALAR > * potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
                 if ( potential->domainSize() == potential2->domainSize() ) {
                   _t1[it.key()].push_back ( *id );
@@ -868,7 +869,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateExpectations ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex ) {
+    void InferenceEngine< GUM_SCALAR >::_updateExpectations ( const NodeId & id, const std::vector< GUM_SCALAR > & vertex ) {
       std::string var_name = _credalNet->current_bn().variable ( id ).name();
       auto delim = var_name.find_first_of ( "_" );
       //std::string time_step = var_name.substr ( delim + 1, var_name.size() );
@@ -891,7 +892,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateCredalSetsWithFiles ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+    void InferenceEngine< GUM_SCALAR >::_updateCredalSetsWithFiles ( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
       auto & nodeCredalSet = _marginalSets[ id ];
 
       bool eq = true;
@@ -971,7 +972,7 @@ namespace gum {
           int64_t num, den;
           GUM_SCALAR pr = nodeCredalSet[ vtex ][ modal ];
 
-          gum::Rational< GUM_SCALAR >::farey ( num, den, pr, 1e6, 1e-6 );
+          Rational< GUM_SCALAR >::farey ( num, den, pr, 1e6, 1e-6 );
           v_file << num << '/' << den << ' ';
 
         }
@@ -1091,7 +1092,7 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateCredalSets ( const gum::NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
+    void InferenceEngine< GUM_SCALAR >::_updateCredalSets ( const NodeId & id, const std::vector< GUM_SCALAR > & vertex, const bool & elimRedund ) {
       auto & nodeCredalSet = _marginalSets[ id ];
       auto dsize = vertex.size();
 
@@ -1111,10 +1112,16 @@ namespace gum {
           break;
       }
 
-      if ( ! eq || nodeCredalSet.size() == 0 )
+      if ( ! eq || nodeCredalSet.size() == 0 ) {
         nodeCredalSet.push_back ( vertex );
+				return;
+			}
       else
         return;
+			
+			// because of next lambda return condition
+			if ( nodeCredalSet.size() == 1 )
+				return;
 
       // check that the point and all previously added ones are not inside the actual polytope
       auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
@@ -1145,7 +1152,7 @@ namespace gum {
       // there may be points not inside the polytope but on one of it's facet, meaning it's still a convex combination of vertices of this facet. Here we need lrs.
       auto setSize = nodeCredalSet.size();
 
-      gum::credal::LRSWrapper< GUM_SCALAR > lrsWrapper;
+      LRSWrapper< GUM_SCALAR > lrsWrapper;
       lrsWrapper.setUpV ( dsize, setSize );
 
 for ( auto & vtx : nodeCredalSet )
@@ -1159,12 +1166,12 @@ for ( auto & vtx : nodeCredalSet )
 
 
     template< typename GUM_SCALAR >
-    const typename gum::Property< std::vector< gum::NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
+    const typename Property< std::vector< NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
       return _t0;
     }
 
     template< typename GUM_SCALAR >
-    const typename gum::Property< std::vector< gum::NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
+    const typename Property< std::vector< NodeId > >::onNodes & InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
       return _t1;
     }
 
@@ -1176,11 +1183,10 @@ for ( auto & vtx : nodeCredalSet )
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        int tId = gum::getThreadNumber();
+        ///int tId = getThreadNumber();
         auto nsize = _marginalMin.size();
 
         #pragma omp for
-
         for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto dSize = _marginalMin[i].size();
 

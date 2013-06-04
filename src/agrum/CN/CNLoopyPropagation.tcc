@@ -231,11 +231,11 @@ namespace credal {
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_compute_ext (
     std::vector< std::vector<GUM_SCALAR> > & combi_msg_p,
-    const gum::NodeId &id,
+    const NodeId &id,
     GUM_SCALAR &msg_l_min,
     GUM_SCALAR &msg_l_max,
     std::vector<GUM_SCALAR> & lx,
-    const gum::Idx &pos
+    const Idx &pos
   ) {
     GUM_SCALAR num_min = 0.;
     GUM_SCALAR num_max = 0.;
@@ -252,7 +252,7 @@ namespace credal {
     Size pas = 2;
     Size pp = pos;
     //cn->intPow( pas, pp );
-    gum::intPow ( pas, pp );
+    intPow ( pas, pp );
 
     int combi_den = 0;
     int combi_num = pp;
@@ -298,7 +298,7 @@ namespace credal {
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_compute_ext (
     std::vector< std::vector<GUM_SCALAR> > & combi_msg_p,
-    const gum::NodeId &id,
+    const NodeId &id,
     GUM_SCALAR &msg_p_min,
     GUM_SCALAR &msg_p_max
   ) {
@@ -348,7 +348,7 @@ namespace credal {
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_enum_combi (
     std::vector< std::vector< std::vector<GUM_SCALAR> > > & msgs_p,
-    const gum::NodeId &id,
+    const NodeId &id,
     GUM_SCALAR &msg_p_min,
     GUM_SCALAR &msg_p_max
   ) {
@@ -451,11 +451,11 @@ namespace credal {
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_enum_combi (
     std::vector< std::vector< std::vector<GUM_SCALAR> > > & msgs_p,
-    const gum::NodeId &id,
+    const NodeId &id,
     GUM_SCALAR &msg_l_min,
     GUM_SCALAR &msg_l_max,
     std::vector<GUM_SCALAR> & lx,
-    const gum::Idx &pos
+    const Idx &pos
   ) {
     auto taille = msgs_p.size();
 
@@ -480,7 +480,6 @@ namespace credal {
 
       decltype ( taille ) confs = 1;
       #pragma omp for
-
       for ( decltype ( taille ) i = 0; i < taille; i++ )
         confs *= msgs_p[ i ].size();
 
@@ -491,7 +490,6 @@ namespace credal {
 
       // direct binary representation of config, no need for iterators
       #pragma omp for
-
       for ( decltype ( msgPerm ) j = 0; j < msgPerm; j++ ) {
         // get jth msg :
         auto jvalue = j;
@@ -613,7 +611,7 @@ namespace credal {
 
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_initialize ( ) {
-    gum::DAG graphe = bnet->dag();
+    DAG graphe = bnet->dag();
 
     const Sequence<NodeId> & topoNodes = bnet->topologicalOrder();
 
@@ -622,7 +620,7 @@ namespace credal {
       _update_p.set ( *it, false );
       _update_l.set ( *it, false );
 
-      gum::NodeSet *_parents = new gum::NodeSet();
+      NodeSet *_parents = new NodeSet();
       _msg_l_sent.set ( *it , _parents );
 
       // accelerer init pour evidences
@@ -649,8 +647,8 @@ namespace credal {
         continue;
       }
 
-      gum::NodeSet _par = graphe.parents ( *it );
-      gum::NodeSet _enf = graphe.children ( *it );
+      NodeSet _par = graphe.parents ( *it );
+      NodeSet _enf = graphe.children ( *it );
 
       if ( _par.size() == 0 ) {
         active_nodes_set.insert ( *it );
@@ -668,7 +666,7 @@ namespace credal {
        * messages and so parents need to be read in order of appearance
        * use potentials instead of dag
        */
-      const gum::Potential<GUM_SCALAR> * parents = & bnet->cpt ( *it );
+      const Potential<GUM_SCALAR> * parents = & bnet->cpt ( *it );
 
       std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
       std::vector< std::vector<GUM_SCALAR> > msg_p;
@@ -695,7 +693,7 @@ namespace credal {
       GUM_SCALAR msg_p_min = 1.;
       GUM_SCALAR msg_p_max = 0.;
 
-			if ( cn->getNodeType ( *it ) != cn->INDIC )
+			if ( cn->getCurrentNodeType ( *it ) != cn->INDIC )
 				_enum_combi ( msgs_p, *it, msg_p_min, msg_p_max );
 			
       if ( msg_p_min <= ( GUM_SCALAR ) 0. )
@@ -737,7 +735,7 @@ namespace credal {
 
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceNodeToNeighbours ( ) {
-    gum::DAG graphe = bnet->dag();
+    DAG graphe = bnet->dag();
 
     GUM_SCALAR eps;
     // to validate TestSuite
@@ -745,19 +743,19 @@ namespace credal {
 
     do {
       for ( auto it = active_nodes_set.begin(), theEnd = active_nodes_set.end(); it != theEnd; ++it ) {
-        gum::NodeSet _enfants = graphe.children ( *it );
+        NodeSet _enfants = graphe.children ( *it );
 
         for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt ) {
-					if ( cn->getNodeType ( *jt ) == cn->INDIC )
+					if ( cn->getCurrentNodeType ( *jt ) == cn->INDIC )
 						continue;
 					
           _msgP ( *it, *jt );
 				}
 
-        gum::NodeSet _parents = graphe.parents ( *it );
+        NodeSet _parents = graphe.parents ( *it );
 
         for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt ) {
-					if ( cn->getNodeType ( *it ) == cn->INDIC )
+					if ( cn->getCurrentNodeType ( *it ) == cn->INDIC )
 						continue;
 					
           _msgL ( *it, *kt );
@@ -801,7 +799,7 @@ namespace credal {
       }
 
       for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-				if ( cn->getNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getNodeType ( ( *it )->head() ) == cn->INDIC )
+				if ( cn->getCurrentNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType ( ( *it )->head() ) == cn->INDIC )
 					continue;
 				
         _msgP ( ( *it )->tail(), ( *it )->head() );
@@ -833,7 +831,7 @@ namespace credal {
 
     do {
       for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-				if ( cn->getNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getNodeType ( ( *it )->head() ) == cn->INDIC )
+				if ( cn->getCurrentNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType ( ( *it )->head() ) == cn->INDIC )
 					continue;
 				
         _msgP ( ( *it )->tail(), ( *it )->head() );
@@ -854,7 +852,7 @@ namespace credal {
     NodeSet const &children = bnet->dag().children ( Y );
     NodeSet const &_parents = bnet->dag().parents ( Y );
 
-    const gum::Potential<GUM_SCALAR> * parents = &bnet->cpt ( Y );
+    const Potential<GUM_SCALAR> * parents = &bnet->cpt ( Y );
 
 
     if ( ( ( children.size() + parents->nbrDim() - 1 ) == 1 ) && ( ! infE::_evidence.exists ( Y ) ) )
@@ -947,7 +945,7 @@ namespace credal {
       std::vector< std::vector<GUM_SCALAR> > msg_p;
       std::vector<GUM_SCALAR> distri ( 2 );
 
-      gum::Idx pos;
+      Idx pos;
 
       // +1 from start to avoid counting itself
       // use const iterators with cbegin when available
@@ -1038,7 +1036,7 @@ namespace credal {
   void CNLoopyPropagation<GUM_SCALAR>::_msgP ( const NodeId X, const NodeId demanding_child ) {
     NodeSet const &children = bnet->dag().children ( X );
 
-    const gum::Potential<GUM_SCALAR> * parents = &bnet->cpt ( X );
+    const Potential<GUM_SCALAR> * parents = &bnet->cpt ( X );
 
     if ( ( ( children.size() + parents->nbrDim() - 1 ) == 1 ) && ( ! infE::_evidence.exists ( X ) ) )
       return;
@@ -1242,12 +1240,12 @@ namespace credal {
   void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs ( bool refreshIndic ) {
     for ( auto itX = bnet->beginNodes(), theEnd = bnet->endNodes(); itX != theEnd; ++itX ) {
 			
-			if ( ( ! refreshIndic ) && cn->getNodeType( *itX ) == cn->INDIC )
+			if ( ( ! refreshIndic ) && cn->getCurrentNodeType( *itX ) == cn->INDIC )
 				continue;
 			
       NodeSet const &children = bnet->dag().children ( *itX );
 
-      const gum::Potential<GUM_SCALAR> * parents = &bnet->cpt ( *itX );
+      const Potential<GUM_SCALAR> * parents = &bnet->cpt ( *itX );
 
       if ( _update_l[ *itX ] ) {
         GUM_SCALAR lmin = 1.;
@@ -1449,7 +1447,7 @@ namespace credal {
   template<typename GUM_SCALAR>
   void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices ( ) {
 		for ( auto id = bnet->beginNodes(), end = bnet->endNodes(); id != end; ++id ) {
-			if ( cn->getNodeType ( *id ) != cn->INDIC )
+			if ( cn->getCurrentNodeType ( *id ) != cn->INDIC )
 				continue;
 			
 			auto parents = bnet->dag ( ).parents ( *id );

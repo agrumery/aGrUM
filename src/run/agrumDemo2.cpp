@@ -619,7 +619,7 @@ for(unsigned int i = 0; i < tOpts2[0]->size(); i++)
   std::cout << (*(tOpts2[0]))[i] << " ";
 std::cout << std::endl;*/
 
-std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::endl;
+///std::cout << "deleted nets (useless sample) : " << MCE->notOptDelete << std::endl;
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
