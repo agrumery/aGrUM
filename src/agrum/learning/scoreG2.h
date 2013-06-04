@@ -33,6 +33,7 @@
 #define GUM_LEARNING_SCORE_G2_H
 
 
+#include <cmath>
 #include <agrum/learning/countingTreeBoxes.h>
 
 
