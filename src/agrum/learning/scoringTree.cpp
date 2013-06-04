@@ -47,9 +47,8 @@ namespace gum {
     ScoringTree::ScoringTree ( const Database& database ) :
       __database ( &database ),
       __db_conditioning_ids ( 0 ),
-      __db_single_ids ( 0 ),
-      __db_pair_target_ids ( 0 ),
-      __requires_compute ( false ) {
+      __db_single_target_ids ( 0 ),
+      __db_pair_target_ids ( 0 ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoringTree );
       __root.Conditioning = 0;
@@ -79,54 +78,16 @@ namespace gum {
 
       // empty the hashtables and vectors
       __db_conditioning_ids = 0;
-      __db_single_ids = 0;
+      __db_single_target_ids = 0;
       __db_pair_target_ids = 0;
       __dbSingle2target.clear ();
       __dbPair2target.clear ();
       __target_modalities.clear ();
-      __requires_compute = false;
       __root.Conditioning = 0;
       __target_records.clear ();
     }
 
     
-    /// fill a whole tree by parsing the complete database
-    void ScoringTree::__fillUnconditionalPairTree () {
-      // first, we shall create the root of the unconditional tree, which is,
-      // actually, the only targetSetBox
-      __root.TargetSet =
-        ScoringTreeTargetSetBox::createBox ( __target_modalities );
-
-      // put the root into the list of the target set boxes
-      __target_records.pushFront ( __root.TargetSet );
-
-      // now, fill it by parsing the database
-      for ( DatabaseIterator iter = __database->begin ();
-            iter != __database->end (); ++iter ) {
-        __fillTargetSetBox ( __root.TargetSet, iter );
-      }
-    }
-
-    
-    /// fill a whole tree by parsing the complete database
-    void ScoringTree::__fillConditionalPairTree () {
-      // first, we shall create the root of the conditional tree
-      const bool last_level = __db_conditioning_ids->size() == 1;
-      __root.Conditioning =
-        ScoringTreeConditioningBox::createBox
-        ( __database->nbrModalities
-          ( __db_conditioning_ids->operator[]
-            ( __db_conditioning_ids->size() - 1 ) ), last_level );
-
-      // now fill it by parsing the database
-      for ( DatabaseIterator iter = __database->begin ();
-            iter != __database->end (); ++iter ) {
-        ScoringTreeTargetSetBox* target_box =__parseConditioningBoxes ( iter );
-        __fillTargetSetBox ( target_box, iter );
-      }
-    }
-    
-
     /// fill the single targets
     void ScoringTree::__fillSingleTargetTree () {
       // first, we determine for each single target from which pair the single
@@ -135,21 +96,23 @@ namespace gum {
       // index of the best pair to be used. In addition, vector
       // is_best_pair_first_node indicates whether the single node for which
       // we need some countings is the first one in the pair.
-      std::vector<unsigned int> best_pair_index ( __db_single_ids->size () );
-      std::vector<bool> is_best_pair_first_node ( __db_single_ids->size () );
+      std::vector<unsigned int>
+        best_pair_index ( __db_single_target_ids->size () );
+      std::vector<bool>
+        is_best_pair_first_node ( __db_single_target_ids->size () );
       {
         // create a hashtable indicating for each target id, its index
         // in __db_single_ids
         HashTable<unsigned int, unsigned int>
-          id2index ( 2 * __db_single_ids->size () );
-        for ( unsigned int i = 0; i < __db_single_ids->size (); ++i ) {
-          id2index.insert ( __db_single_ids->operator[] ( i ), i );
+          id2index ( 2 * __db_single_target_ids->size () );
+        for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {
+          id2index.insert ( __db_single_target_ids->operator[] ( i ), i );
         }
           
         // create a vector assigning to each single target node, the
         // number of operations needed to fill its boxes found so far
         std::vector<unsigned int>
-          best_score ( __db_single_ids->size (),
+          best_score ( __db_single_target_ids->size (),
                        std::numeric_limits<unsigned int>::max () );
 
         // parse the __db_pair_target_ids and select the best pair for each
@@ -188,7 +151,7 @@ namespace gum {
               __target_records.frontBucket (); iter; iter = iter->next () ) {
         // fill all the single target boxes of the current target set box
         ScoringTreeTargetSetBox* set_box = **iter;
-        for ( unsigned int i = 0; i < __db_single_ids->size (); ++i ) {
+        for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {
           // fill the ith single target box
           ScoringTreeTargetBox*
             single_box = set_box->child ( single_offset + i );

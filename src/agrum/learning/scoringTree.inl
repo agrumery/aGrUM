@@ -36,8 +36,8 @@ namespace gum {
  
     /// parse one database record to fill a given target set box
     ALWAYS_INLINE void
-    ScoringTree::__fillTargetSetBox ( ScoringTreeTargetSetBox* box,
-                                      const DatabaseIterator& iter ) {
+    ScoringTree::__fillTargetSetBoxes ( ScoringTreeTargetSetBox* box,
+                                        const DatabaseIterator& iter ) {
       // increment the record number of parents
       box->incrementNbParentRecords ();
       
@@ -55,7 +55,7 @@ namespace gum {
     
     /// traverse the conditional nodes of the tree corresponding to one db record
     ALWAYS_INLINE ScoringTreeTargetSetBox*
-    ScoringTree::__parseConditioningBoxes ( const DatabaseIterator& iter ) {
+    ScoringTree::__fillConditioningBoxes ( const DatabaseIterator& iter ) {
       // start from the root
       ScoringTreeConditioningBox* current_box = __root.Conditioning;
 
@@ -105,7 +105,145 @@ namespace gum {
           ( current_box->child ( index ) );
       }
     }
+
     
+    /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void ScoringTree::__fillUnconditionalPairTree () {
+      // first, we shall create the root of the unconditional tree, which is,
+      // actually, the only targetSetBox
+      __root.TargetSet =
+        ScoringTreeTargetSetBox::createBox ( __target_modalities );
+
+      // put the root into the list of the target set boxes
+      __target_records.pushFront ( __root.TargetSet );
+
+      // now, fill it by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        __fillTargetSetBoxes ( __root.TargetSet, iter );
+      }
+    }
+
+    
+    /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void ScoringTree::__fillConditionalPairTree () {
+      // first, we shall create the root of the conditional tree
+      const bool last_level = __db_conditioning_ids->size() == 1;
+      __root.Conditioning =
+        ScoringTreeConditioningBox::createBox
+        ( __database->nbrModalities
+          ( __db_conditioning_ids->operator[]
+            ( __db_conditioning_ids->size() - 1 ) ), last_level );
+
+      // now fill it by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        ScoringTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+        __fillTargetSetBoxes ( target_box, iter );
+      }
+    }
+
+    
+    /// assign a new set of target nodes and cmpute countings
+    ALWAYS_INLINE void ScoringTree::setTargetNodes
+    ( const std::vector<unsigned int>& db_single_ids,
+      const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids ) {
+      // save the target ids
+      __db_single_target_ids = &db_single_ids;
+      __db_pair_target_ids   = &db_pair_ids;
+
+      // fill the pair target index and the target modalities
+      __dbPair2target.clear ();
+      __target_modalities.resize ( db_single_ids.size () + db_pair_ids.size () );
+      for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
+        __dbPair2target.insert ( db_pair_ids[i], i );
+        __target_modalities[i] =
+          __database->nbrModalities ( db_pair_ids[i].first ) *
+          __database->nbrModalities ( db_pair_ids[i].second );
+      }
+
+      // fill the single target index and the target modalities
+      __dbSingle2target.clear ();
+      for ( unsigned int i = 0, j = db_pair_ids.size ();
+            i < db_single_ids.size (); ++i, ++j ) {
+        __dbSingle2target.insert ( db_single_ids[i], j );
+        __target_modalities[j] = __database->nbrModalities ( db_single_ids[i] );
+      }
+
+      // remove the tree, if any
+      if ( __root.Conditioning ) {
+        if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+          ScoringTreeConditioningBox::deleteBox ( __root.Conditioning );
+        }
+        else {
+          ScoringTreeTargetSetBox::deleteBox ( __root.TargetSet );
+        }
+      }
+      __root.Conditioning = 0;
+
+      // clear the old target records
+      __target_records.clear ();
+
+      // recompute the target records
+      if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+        __fillConditionalPairTree ();
+      }
+      else {
+        __fillUnconditionalPairTree ();
+      }
+      __fillSingleTargetTree ();
+    }
+
+
+    /// assign a new set of conditioning and target nodes and compute countings
+    ALWAYS_INLINE void ScoringTree::setNodes
+    ( const std::vector<unsigned int>& db_conditioning_ids,
+      const std::vector<unsigned int>& db_single_target_ids,
+      const std::vector< std::pair<unsigned int,unsigned int> >&
+      db_pair_target_ids ) {
+      // remove the tree, if any. It is compulsory to do this operation before
+      // changing the conditioning nodes because, currently, the tree may
+      // not have any conditioning node and, therefore, we shall remove only
+      // target set boxes at this point
+      if ( __root.Conditioning ) {
+        if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+          ScoringTreeConditioningBox::deleteBox ( __root.Conditioning );
+        }
+        else {
+          ScoringTreeTargetSetBox::deleteBox ( __root.TargetSet );
+        }
+      }
+      __root.Conditioning = 0;
+      
+      // save the conditioning ids
+      __db_conditioning_ids = &db_conditioning_ids;
+
+      // process the target nodes and compute the countings
+      setTargetNodes ( db_single_target_ids, db_pair_target_ids );
+    }
+    
+    
+    /// returns the index within target sets of a single target node id
+    ALWAYS_INLINE unsigned int
+    ScoringTree::targetIndex ( unsigned int db_target_id ) const {
+      return __dbSingle2target[db_target_id];
+    }
+        
+
+    /// returns the index within target sets of a pair of target nodes
+    ALWAYS_INLINE unsigned int
+    ScoringTree::targetIndex
+    ( const std::pair<unsigned int,unsigned int>& db_target_id ) const {
+      return __dbPair2target[db_target_id];
+    }
+
+
+    /// returns the list of target set generated by parsing the database
+    ALWAYS_INLINE const ListBase<ScoringTreeTargetSetBox*>&
+    ScoringTree::nbRecords () const {
+      return __target_records;
+    }
+
 
   } /* namespace learning */
   
