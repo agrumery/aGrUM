@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing G2 scores
+ * @brief the class for computing Chi2 scores
  *
  * The class is only composed of an inline static method score that actually
- * computes the G2 score. To do so, it parses the number of occurrences
+ * computes the Chi2 score. To do so, it parses the number of occurrences
  * stored into a CountingTargetSetBox (see file countingTreeBoxes.h for
  * more details about such a box).
  *
@@ -35,11 +35,11 @@ namespace gum {
   namespace learning {
 
     
-    /// computes the G2 of (X,Y) given conditioning set Z (stored in the box)
-    ALWAYS_INLINE float ScoreG2::score ( const CountingTreeTargetSetBox& box,
-                                         unsigned int x,
-                                         unsigned int y,
-                                         unsigned int xy ) {
+    /// computes the Chi2 of (X,Y) given conditioning set Z (stored in the box)
+    ALWAYS_INLINE float ScoreChi2::score ( const CountingTreeTargetSetBox& box,
+                                           unsigned int x,
+                                           unsigned int y,
+                                           unsigned int xy ) {
       // get the number Nz of occurences of the parents
       const float Nz = box.nbParentRecords ();
 
@@ -53,15 +53,18 @@ namespace gum {
       const unsigned int x_size = Nx.size ();
       const unsigned int y_size = Ny.size ();
 
-      // now, perform 2 sum_X sum_Y sum_Z #XYZ ln ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
+      // now, perform sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
+      // (#XZ * #YZ / #Z )
       float sum = 0;
       for ( unsigned int j = 0, k = 0; j < y_size; ++j ) {
         for ( unsigned int i = 0; i < x_size; ++i, k++ ) {
-          sum += Nxy[k] * log ( ( Nxy[k] * Nz ) / ( Nx[i] * Ny[j] ) );
+          const float tmp1 = ( Nx[i] * Ny[j] ) / Nz;
+          const float tmp2 = Nxy[k] - tmp1;
+          sum += ( tmp2 * tmp2 ) / tmp1;
         }
       }
-
-      return 2 * sum;
+      
+      return sum;
     }
 
 

@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing G2 scores
+ * @brief the class for computing Chi2 scores
  *
  * The class is only composed of an inline static method score that actually
- * computes the G2 score. To do so, it parses the number of occurrences
+ * computes the Chi2 score. To do so, it parses the number of occurrences
  * stored into a CountingTargetSetBox (see file countingTreeBoxes.h for
  * more details about such a box).
  *
@@ -29,8 +29,8 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_G2_H
-#define GUM_LEARNING_SCORE_G2_H
+#ifndef GUM_LEARNING_SCORE_CHI2_H
+#define GUM_LEARNING_SCORE_CHI2_H
 
 
 #include <agrum/learning/countingTreeBoxes.h>
@@ -44,17 +44,16 @@ namespace gum {
     
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                          SCORE G2 CLASS                           === */
+    /* ===                         SCORE CHI2 CLASS                          === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class ScoreG2 */
+    /** @class ScoreChi2 */
     /* ========================================================================= */
-    class ScoreG2 {
+    class ScoreChi2 {
     public:
-      /// computes the G2 of (X,Y) given conditioning set Z (stored in the box)
-      /** This method computes:
-       * 2 sum_X sum_Y sum_Z #XYZ ln ( ( #XYZ * #Z ) / ( #XZ * #YZ ) ),
-       * where #XYZ and #XZ correspond to the number of
+      /// computes the Chi2 of (X,Y) given conditioning set Z (stored in the box)
+      /** This method computes sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
+       * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of
        * occurences of (X,Y,Z) and (X,Z) respectively in the database. Those
        * numbers are stored in the target set box passed in argument and the
        * parameters x, y, xy indicate the indices in the target set box of the
@@ -81,8 +80,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scoreG2.inl>
+#include <agrum/learning/scoreChi2.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_SCORE_G2_H */
+#endif /* GUM_LEARNING_SCORE_CHI2_H */
