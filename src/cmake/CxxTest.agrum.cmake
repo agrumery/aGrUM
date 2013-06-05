@@ -48,7 +48,13 @@ MACRO(add_agrum_test NAME)
 ENDMACRO(add_agrum_test NAME)
 
 IF(PYTHONINTERP_FOUND)
-  include("testunits/testList.cmake")
+  IF ( EXISTS testunits/testList.cmake )
+    INCLUDE ( testunits/testList.cmake )
+  ELSE ()
+    FILE( GLOB AGRUM_TESTS
+          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/ 
+          ${CMAKE_CURRENT_SOURCE_DIR}/testunits/*TestSuite.h )
+  ENDIF ()   
   add_agrum_test(test  ${AGRUM_TESTS})
   target_link_libraries(test ${LIBAGRUM})
 ELSE(PYTHONINTERP_FOUND)
