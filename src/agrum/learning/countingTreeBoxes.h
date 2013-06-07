@@ -105,7 +105,7 @@ namespace gum {
       static CountingTreeConditioningBox* createBox ( unsigned int children_size,
                                                      bool final_level );
 
-      /// remove a CountingTreeConditioningBox and all its descendants
+      /// removes a CountingTreeConditioningBox and all its descendants
       /** If the capacity of the pool is not exceeded, the box is stored into the
        * pool, to be used later on, as well as all its descendants. If the
        * capacity of the pool is exceeded, the box and its descendants are simply
@@ -124,7 +124,7 @@ namespace gum {
       /// reset the children to the empty set
       /** @warning This method removes all the children, if any, by putting them
        * back into the pool (or discarding them from memory if the capacity of
-       * the pool is exceeded. */
+       * the pool is exceeded). */
       void clear ();
 
       /// returns the set of children
@@ -137,10 +137,10 @@ namespace gum {
        * @code
        * const std::vector<CountingTreeConditioningBox*>& vect = box.children ();
        * for ( unsigned int i = 0; i < vect.size(); ++i ) {
-       *   cout << reinterpret_cast<CountingTreeTargetSetBox*> ( vect[i] )
+       *   cout << reinterpret_cast<CountingTreeTargetSetBox*> ( vect[i] );
        * }
-       * Note that reinterpret_cast do not induce any runtime overhead.
-       * @endcode */
+       * @endcode 
+       * Note that reinterpret_casts do not induce any runtime overhead. */
       const std::vector<CountingTreeConditioningBox*>& children () const;
 
       /// indicates whether there exists a child at the ith modality
@@ -205,7 +205,7 @@ namespace gum {
       /// the pool of boxes used for the creations/deletions of boxes
       static gum::ListBase<CountingTreeConditioningBox*> __pool;
 
-      /// the maximal size of the pool (umber of boxes)
+      /// the maximal size of the pool (number of boxes)
       static unsigned int __pool_max_size;
 
       
@@ -221,7 +221,7 @@ namespace gum {
        * @param children_size the number of children boxes of the created box at
        * the next level of the counting tree.
        * @param final_level a Boolean indicating whether the created box is at the
-       * last level of conditioning boxes (true) or not. If final_level is false,
+       * last level of conditioning boxes (true) or not. If final_level is true,
        * then the next tree level contains target set boxes. */
       CountingTreeConditioningBox ( unsigned int children_size,
                                    bool final_level );
@@ -261,8 +261,8 @@ namespace gum {
       void __resize ( unsigned int new_children_size );
 
       /// sets the final_level Boolean
-      /** @param sets the final level Boolean indicating whether or not the box
-       * is at the last conditioning level. */
+      /** @param final_level sets the final level Boolean indicating whether or
+       * not the box is at the last conditioning level. */
       void __setFinal ( bool final_level );
 
       /// @}
@@ -417,7 +417,7 @@ namespace gum {
       /// resize the number of values of the target node
       void __resize ( unsigned int new_size );
 
-      /// reset the variable to en empty (no modality) variable
+      /// reset the variable to an empty (no modality) variable
       void __clear ();
       
       /// @}
@@ -435,7 +435,7 @@ namespace gum {
     /* ===                    COUNTING TREE TARGET SET BOX                   === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class CountingTreeTargetBox
+    /** @class CountingTreeTargetSetBox
      * @brief This class is a container of boxes of target nodes of the tree
      * of CountingTrees
      * @ingroup learning_group
@@ -447,7 +447,7 @@ namespace gum {
      * CountingTreeTargetSetBox. The third type of levels corresponds to the target
      * nodes' boxes, which are represented by class CountingTreeTargetBox.
      *
-     * CountingTreeTargetSetBox is a container of CountingTreeTargetSetBox.
+     * CountingTreeTargetSetBox is a container of CountingTreeTargetBox.
      * Basically, its role is just to enable the simultaneous filling of boxes of
      * several target variables parsing the database only once. The
      * CountingTreeTargetSetBox level in the tree is in between the levels of the
@@ -492,7 +492,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the box for the ith variable
+      /// returns the box for the ith target variable (or pair of variables)
       /** @param i the index of the variable whose target box we wish to get */
       CountingTreeTargetBox* child ( unsigned int i ) const;
 
@@ -505,23 +505,23 @@ namespace gum {
        * @param j the modality of the record we are interested in */
       unsigned int nbRecords ( unsigned int i, unsigned int j ) const;
 
-      /** @brief increment de the number of observations of the jth value of the
+      /** @brief increment the number of observations of the jth value of the
        * ith variable
        * @param i the index of the variable whose record we wish to increment
-       * @param j the modality of the record */ 
+       * @param j the modality of the variable */ 
       void incrementNbRecords ( unsigned int i, unsigned int j ) const;
 
       /** @brief increment the number of observations of the jth value of the
        * ith variable by k
        * @param i the index of the variable whose record we wish to increment
-       * @param j the modality of the record
+       * @param j the modality of the variable
        * @param k the number by which we increment the record */ 
       void incrementNbRecords ( unsigned int i,
                                 unsigned int j, unsigned int k ) const;
 
       /// sets the number of records of the jth value of the ith variable
       /** @param i the index of the variable whose record we wish to set
-       * @param j the modality of the record
+       * @param j the modality of the variable
        * @param k the number assigned to the record */ 
       void setNbRecords ( unsigned int i, unsigned int j, unsigned int k ) const;
       
@@ -547,9 +547,8 @@ namespace gum {
        * does not try to remove any child from memory.
        * @param variable_modalities indicate the number of modalities of each
        * (new) variable that shall be taken into account.
-       * @param clear_nb_parent_records a Boolean indicating whether, while
-       * clearing the children, we must also reset the number of records of the
-       * parent variables to 0. */
+       * @param clear_nb_parent_records a Boolean indicating whether we must
+       * also reset the number of records of the parent variables to 0. */
       void setVariables ( const std::vector<unsigned int>& variable_modalities,
                           bool clear_nb_parent_records );
   

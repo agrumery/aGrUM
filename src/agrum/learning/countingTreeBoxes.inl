@@ -346,6 +346,20 @@ namespace gum {
     }
 
     
+    /// resize the number of children
+    ALWAYS_INLINE void 
+    CountingTreeConditioningBox::__resize ( unsigned int new_children_size ) {
+      __children.resize ( new_children_size, 0 );
+    }
+
+    
+    /// sets the final_level Boolean
+    ALWAYS_INLINE void
+    CountingTreeConditioningBox::__setFinal ( bool final_level ) {
+      __final_level = final_level;
+    }
+
+    
     /// select a CountingTreeConditioningBox from a pool and return it
     ALWAYS_INLINE CountingTreeConditioningBox*
     CountingTreeConditioningBox::createBox ( unsigned int children_size,
@@ -441,20 +455,6 @@ namespace gum {
       return __final_level;
     }
       
-
-    /// resize the number of children
-    ALWAYS_INLINE void 
-    CountingTreeConditioningBox::__resize ( unsigned int new_children_size ) {
-      __children.resize ( new_children_size, 0 );
-    }
-
-    
-    /// sets the final_level Boolean
-    ALWAYS_INLINE void
-    CountingTreeConditioningBox::__setFinal ( bool final_level ) {
-      __final_level = final_level;
-    }
-
     
   } /* namespace gum */
 
