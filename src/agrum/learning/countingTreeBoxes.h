@@ -269,6 +269,207 @@ namespace gum {
 
     };
 
+    
+
+    /* ========================================================================= */
+    /* ========================================================================= */
+    /* ===                    COUNTING TREE TARGET SET BOX                   === */
+    /* ========================================================================= */
+    /* ========================================================================= */
+    /** @class CountingTreeTargetSetBox
+     * @brief This class is a container of boxes of target nodes of the tree
+     * of CountingTrees
+     * @ingroup learning_group
+     * CountingTree converts a Database into a tree with three types of levels:
+     * the first one corresponds to the conditioning nodes, i.e., those at the
+     * right of conditioning bars in statistical tests, and are represented
+     * by CountingTreeConditioningBox; the second type corresponds to a container
+     * of target nodes' boxes, which is represented by class
+     * CountingTreeTargetSetBox. The third type of levels corresponds to the target
+     * nodes' boxes, which are represented by class CountingTreeTargetBox.
+     *
+     * CountingTreeTargetSetBox is a container of CountingTreeTargetBox.
+     * Basically, its role is just to enable the simultaneous filling of boxes of
+     * several target variables parsing the database only once. The
+     * CountingTreeTargetSetBox level in the tree is in between the levels of the
+     * conditioning nodes boxes and the level of the target nodes boxes.
+     */
+    /* ========================================================================= */
+    class CountingTreeTargetSetBox {
+    public:
+      // ##########################################################################
+      /// @name Named Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// returns a CountingTreeTargetSetBox as well as its target boxes
+      /** This method creates a new target set box and fills it with its future
+       * target boxes. The latter contain no records. Everything is constructed
+       * from pools of boxes.
+       * 
+       * To speed-up allocations/deallocations, which are frequent in learning
+       * algorithms, the user shall use a pool of boxes: whenever a box is no
+       * more useful, it should be put back into the pool. Whenever a box is
+       * needed, it shall be taken from the pool. If this one is empty, the box
+       * returned is newly allocated into the heap.
+       * @param variable_modalities indicate the number of modalities (domain
+       * size) of each variable that shall be taken into account */
+      static CountingTreeTargetSetBox*
+      createBox ( const std::vector<unsigned int>& variable_modalities );
+
+      /// removes a CountingTreeTargetSetBox (as well as its own targets)
+      /** If the capacity of the pool is not exceeded, the box and its target
+       * children are stored into pools, to be used later on. If the capacity of
+       * the pool is exceeded, the box and its children are simply removed from
+       * memory.
+       * @param box the root of the subtree to be deleted or put into the pool */
+      static void deleteBox ( CountingTreeTargetSetBox* box );
+
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// returns the box for the ith target variable (or pair of variables)
+      /** @param i the index of the variable whose target box we wish to get */
+      CountingTreeTargetBox* child ( unsigned int i ) const;
+
+      /// get the number of records of the ith variable
+      /** @param i the index of the variable whose records we wish to get */
+      const std::vector<unsigned int>& nbRecords ( unsigned int i ) const;
+
+      /// get the number of records of the jth modality of the ith variable
+      /** @param i the index of the variable whose record we wish to get
+       * @param j the modality of the record we are interested in */
+      unsigned int nbRecords ( unsigned int i, unsigned int j ) const;
+
+      /** @brief increment the number of observations of the jth value of the
+       * ith variable
+       * @param i the index of the variable whose record we wish to increment
+       * @param j the modality of the variable */ 
+      void incrementNbRecords ( unsigned int i, unsigned int j ) const;
+
+      /** @brief increment the number of observations of the jth value of the
+       * ith variable by k
+       * @param i the index of the variable whose record we wish to increment
+       * @param j the modality of the variable
+       * @param k the number by which we increment the record */ 
+      void incrementNbRecords ( unsigned int i,
+                                unsigned int j, unsigned int k ) const;
+
+      /// sets the number of records of the jth value of the ith variable
+      /** @param i the index of the variable whose record we wish to set
+       * @param j the modality of the variable
+       * @param k the number assigned to the record */ 
+      void setNbRecords ( unsigned int i, unsigned int j, unsigned int k ) const;
+      
+      /// get the number of records observed in the database for the parents
+      unsigned int nbParentRecords () const;
+
+      /// set the number of records observed in the database for the parents
+      void setNbParentRecords ( unsigned int new_nb );
+      
+      /// increment the number of observations of the parents of the container
+      void incrementNbParentRecords ();
+      
+      /// increment the number of observations of the parents of the container
+      /** @param k the number by which we increment the number of parent records */
+      void incrementNbParentRecords ( unsigned int k);
+      
+      /// empty the container
+      /** @param clear_nb_parent_records a Boolean indicating whether, while
+       * clearing the children, we must also reset the number of records of the
+       * parent variables to 0. */
+      void clear ( bool clear_nb_parent_records );
+
+      /// sets a new set of target variables
+      /** @warning this method assumes that the target set currently contains no
+       * no variable (for instance, we have just executed a clear() ), hence, it
+       * does not try to remove any child from memory.
+       * @param variable_modalities indicate the number of modalities of each
+       * (new) variable that shall be taken into account.
+       * @param clear_nb_parent_records a Boolean indicating whether we must
+       * also reset the number of records of the parent variables to 0. */
+      void setVariables ( const std::vector<unsigned int>& variable_modalities,
+                          bool clear_nb_parent_records );
+  
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Static members
+      // ##########################################################################
+      /// @{
+
+      /// set the maximal capacity (number of boxes) of the pool
+      /** if the maximal pool size is decreased and the number of boxes currently
+       * stored into the pool is greater than new_size, the boxes in excess are
+       * freed from memory.
+       * @param new_size the new maximal number of boxes in the pool */
+      static void setPoolCapacity ( unsigned int new_size );
+
+      /// clear the pool (free all boxes from memory)
+      static void clearPool ();
+      
+      /// @}
+
+
+    private:
+      /// the set of boxes of the target nodes
+      std::vector<CountingTreeTargetBox*> __target_boxes;
+
+      /// the number of records observed for the parents in the database
+      unsigned int __nb_parent_records;
+
+      /// the pool of boxes
+      static gum::ListBase<CountingTreeTargetSetBox*> __pool;
+
+      /// the maximal size of the pool
+      static unsigned int __pool_max_size;
+
+
+      
+      // ##########################################################################
+      /// @name Private Constructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor: use method createBox instead
+      /** This constructor creates a target set and fills it with target boxes
+       * of the appropriate size. These boxes contain no record.
+       * @param variable_modalities indicate the number of modalities of each
+       * variable that shall be taken into account */
+      CountingTreeTargetSetBox
+      ( const std::vector<unsigned int>& variable_modalities );
+
+      /// copy constructor: prevent its use by making it private
+      CountingTreeTargetSetBox ( const CountingTreeTargetSetBox& );
+
+      /// destructor: use deleteBox instead
+      ~CountingTreeTargetSetBox ();
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator: prevent its use by making it private
+      CountingTreeTargetBox& operator= ( const CountingTreeTargetBox& );
+      
+      /// @}
+
+
+      // conditioning boxes should be able to delete target set boxes when needed
+      friend class CountingTreeConditioningBox;
+
+    };
+    
 
     
     /* ========================================================================= */
@@ -428,204 +629,6 @@ namespace gum {
 
     };
 
-    
-  
-    /* ========================================================================= */
-    /* ========================================================================= */
-    /* ===                    COUNTING TREE TARGET SET BOX                   === */
-    /* ========================================================================= */
-    /* ========================================================================= */
-    /** @class CountingTreeTargetSetBox
-     * @brief This class is a container of boxes of target nodes of the tree
-     * of CountingTrees
-     * @ingroup learning_group
-     * CountingTree converts a Database into a tree with three types of levels:
-     * the first one corresponds to the conditioning nodes, i.e., those at the
-     * right of conditioning bars in statistical tests, and are represented
-     * by CountingTreeConditioningBox; the second type corresponds to a container
-     * of target nodes' boxes, which is represented by class
-     * CountingTreeTargetSetBox. The third type of levels corresponds to the target
-     * nodes' boxes, which are represented by class CountingTreeTargetBox.
-     *
-     * CountingTreeTargetSetBox is a container of CountingTreeTargetBox.
-     * Basically, its role is just to enable the simultaneous filling of boxes of
-     * several target variables parsing the database only once. The
-     * CountingTreeTargetSetBox level in the tree is in between the levels of the
-     * conditioning nodes boxes and the level of the target nodes boxes.
-     */
-    /* ========================================================================= */
-    class CountingTreeTargetSetBox {
-    public:
-      // ##########################################################################
-      /// @name Named Constructors / Destructors
-      // ##########################################################################
-      /// @{
-
-      /// returns a CountingTreeTargetSetBox as well as its target boxes
-      /** This method creates a new target set box and fills it with its future
-       * target boxes. The latter contain no records. Everything is constructed
-       * from pools of boxes.
-       * 
-       * To speed-up allocations/deallocations, which are frequent in learning
-       * algorithms, the user shall use a pool of boxes: whenever a box is no
-       * more useful, it should be put back into the pool. Whenever a box is
-       * needed, it shall be taken from the pool. If this one is empty, the box
-       * returned is newly allocated into the heap.
-       * @param variable_modalities indicate the number of modalities (domain
-       * size) of each variable that shall be taken into account */
-      static CountingTreeTargetSetBox*
-      createBox ( const std::vector<unsigned int>& variable_modalities );
-
-      /// removes a CountingTreeTargetSetBox (as well as its own targets)
-      /** If the capacity of the pool is not exceeded, the box and its target
-       * children are stored into pools, to be used later on. If the capacity of
-       * the pool is exceeded, the box and its children are simply removed from
-       * memory.
-       * @param box the root of the subtree to be deleted or put into the pool */
-      static void deleteBox ( CountingTreeTargetSetBox* box );
-
-      /// @}
-
-      
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// returns the box for the ith target variable (or pair of variables)
-      /** @param i the index of the variable whose target box we wish to get */
-      CountingTreeTargetBox* child ( unsigned int i ) const;
-
-      /// get the number of records of the ith variable
-      /** @param i the index of the variable whose records we wish to get */
-      const std::vector<unsigned int>& nbRecords ( unsigned int i ) const;
-
-      /// get the number of records of the jth modality of the ith variable
-      /** @param i the index of the variable whose record we wish to get
-       * @param j the modality of the record we are interested in */
-      unsigned int nbRecords ( unsigned int i, unsigned int j ) const;
-
-      /** @brief increment the number of observations of the jth value of the
-       * ith variable
-       * @param i the index of the variable whose record we wish to increment
-       * @param j the modality of the variable */ 
-      void incrementNbRecords ( unsigned int i, unsigned int j ) const;
-
-      /** @brief increment the number of observations of the jth value of the
-       * ith variable by k
-       * @param i the index of the variable whose record we wish to increment
-       * @param j the modality of the variable
-       * @param k the number by which we increment the record */ 
-      void incrementNbRecords ( unsigned int i,
-                                unsigned int j, unsigned int k ) const;
-
-      /// sets the number of records of the jth value of the ith variable
-      /** @param i the index of the variable whose record we wish to set
-       * @param j the modality of the variable
-       * @param k the number assigned to the record */ 
-      void setNbRecords ( unsigned int i, unsigned int j, unsigned int k ) const;
-      
-      /// get the number of records observed in the database for the parents
-      unsigned int nbParentRecords () const;
-      
-      /// increment the number of observations of the parents of the container
-      void incrementNbParentRecords ();
-      
-      /// increment the number of observations of the parents of the container
-      /** @param k the number by which we increment the number of parent records */
-      void incrementNbParentRecords ( unsigned int k);
-      
-      /// empty the container
-      /** @param clear_nb_parent_records a Boolean indicating whether, while
-       * clearing the children, we must also reset the number of records of the
-       * parent variables to 0. */
-      void clear ( bool clear_nb_parent_records );
-
-      /// sets a new set of target variables
-      /** @warning this method assumes that the target set currently contains no
-       * no variable (for instance, we have just executed a clear() ), hence, it
-       * does not try to remove any child from memory.
-       * @param variable_modalities indicate the number of modalities of each
-       * (new) variable that shall be taken into account.
-       * @param clear_nb_parent_records a Boolean indicating whether we must
-       * also reset the number of records of the parent variables to 0. */
-      void setVariables ( const std::vector<unsigned int>& variable_modalities,
-                          bool clear_nb_parent_records );
-  
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Static members
-      // ##########################################################################
-      /// @{
-
-      /// set the maximal capacity (number of boxes) of the pool
-      /** if the maximal pool size is decreased and the number of boxes currently
-       * stored into the pool is greater than new_size, the boxes in excess are
-       * freed from memory.
-       * @param new_size the new maximal number of boxes in the pool */
-      static void setPoolCapacity ( unsigned int new_size );
-
-      /// clear the pool (free all boxes from memory)
-      static void clearPool ();
-      
-      /// @}
-
-
-    private:
-      /// the set of boxes of the target nodes
-      std::vector<CountingTreeTargetBox*> __target_boxes;
-
-      /// the number of records observed for the parents in the database
-      unsigned int __nb_parent_records;
-
-      /// the pool of boxes
-      static gum::ListBase<CountingTreeTargetSetBox*> __pool;
-
-      /// the maximal size of the pool
-      static unsigned int __pool_max_size;
-
-
-      
-      // ##########################################################################
-      /// @name Private Constructors
-      // ##########################################################################
-      /// @{
-
-      /// default constructor: use method createBox instead
-      /** This constructor creates a target set and fills it with target boxes
-       * of the appropriate size. These boxes contain no record.
-       * @param variable_modalities indicate the number of modalities of each
-       * variable that shall be taken into account */
-      CountingTreeTargetSetBox
-      ( const std::vector<unsigned int>& variable_modalities );
-
-      /// copy constructor: prevent its use by making it private
-      CountingTreeTargetSetBox ( const CountingTreeTargetSetBox& );
-
-      /// destructor: use deleteBox instead
-      ~CountingTreeTargetSetBox ();
-
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
-
-      /// copy operator: prevent its use by making it private
-      CountingTreeTargetBox& operator= ( const CountingTreeTargetBox& );
-      
-      /// @}
-
-
-      // conditioning boxes should be able to delete target set boxes when needed
-      friend class CountingTreeConditioningBox;
-
-    };
-    
 
   } /* namespace learning */
   

@@ -23,8 +23,17 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
  * This file provides a Counting Tree implementation that fills itself by
- * directly parsing a database. The class can also produce the list of
- * target set boxes of interest. However, it does not compute scores by itself.
+ * directly parsing a database. More precisely, CountingTree converts a Database
+ * into a tree with three types of levels: the first one corresponds to the
+ * conditioning nodes, i.e., those at the right of conditioning bars in
+ * statistical tests, and are represented by CountingTreeConditioningBox; the
+ * second type of levels corresponds to a container of target nodes' boxes, which
+ * is represented by class CountingTreeTargetSetBox. The third type of levels
+ * corresponds to the target nodes' boxes, which are represented by class
+ * CountingTreeTargetBox.
+ * 
+ * The class can produce the list of target set boxes of interest. However, it
+ * does not compute statistical score by itself.
  */
 
 #ifndef GUM_LEARNING_COUNTING_TREE_H
@@ -51,7 +60,7 @@ namespace gum {
     /** @class CountingTree is a class whose aim is to parse a database and
      * compute the list of target set boxes corresponding to a given set of
      * conditioning nodes and target nodes. The latter are specified as singletons
-     * and pairs. For instance, if we want to check using a G2 (or a chi2) test
+     * and pairs. For instance, if we want to check using a chi2 (or a G2) test
      * whether two nodes X and Y are independent given a set of nodes Z, then
      * we shall compute sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
      * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of occurences
@@ -64,14 +73,14 @@ namespace gum {
      * consecutive and the values of Y are spaced every |X| elements.
      *
      * The CountingTree class is designed to specify sets of single targets (such
-     * a X in the above example) and sets of target pairs. As such, it tries to
+     * as X in the above example) and sets of target pairs. As such, it tries to
      * optimize the parsing of the database to fill all the target boxes of the
      * single and pair targets. TargetSetBoxes are vectors of TargetBoxes, each
      * TargetBox corrsponding to a single target variable or to a pair of target
      * variables (like (X,Y)). As such, we need to know the mapping between the
      * indices in the vectors and the corresponding targets. Those are given
-     * by methods targetIndex. Finally, the set of TargetSetBoxes can be
-     * retrieved using method nbRecords (). */
+     * by methods targetIndex. Finally, the set of TargetSetBoxes of the tree can
+     * be retrieved using method nbRecords (). */
     /* ========================================================================= */
     class CountingTree {
     public:
@@ -107,7 +116,7 @@ namespace gum {
         db_pair_target_ids );
 
       /// assign a new set of target nodes and compute countings
-      /** This method is similar to setNodes except that it does nt change the
+      /** This method is similar to setNodes except that it does not change the
        * set of conditioning nodes. This can prove useful when memory is not
        * sufficiently large to enable the computation of the target set boxes of
        * all the needed targets in one pass. */
@@ -136,7 +145,10 @@ namespace gum {
        * location of the target box within target set boxes.
        * @warning This method should be used after setNodes or setTargetNodes
        * have been executed. As such, if the pair of target ids was not set by
-       * the aforementioned methods, an exception is raised. */
+       * the aforementioned methods, an exception is raised.
+       * @warning The method assumes that the pair is ordered, i.e., pair
+       * (X,Y) is supposed to be different from pair (Y,X). So, when calling this
+       * method, be carefull of specifying the pair in the correct order. */
        unsigned int targetIndex ( const std::pair<unsigned int,unsigned int>&
                                   db_target_id ) const;
 
@@ -209,8 +221,8 @@ namespace gum {
 
         
       /// parse one database record to fill a given target set box
-      void __fillTargetSetBoxes ( CountingTreeTargetSetBox* box,
-                                  const DatabaseIterator& iter );
+      void __fillTargetSetBox ( CountingTreeTargetSetBox* box,
+                                const DatabaseIterator& iter );
 
       /// traverse the conditional nodes of the tree corresponding to one db record
       /** this method starts from the root of a conditional tree and traverses
@@ -222,23 +234,25 @@ namespace gum {
       /** @brief fill a whole tree by parsing the complete database when there
        * are no conditional nodes
        *
-       * This method creates from sratch a new tree containing only pair targets
+       * This method creates from scratch a new tree containing only pair targets
        * and fills it by parsing the whole database. When the method completes,
-       * the __target_records fields contains all the counting for target pairs.*/
+       * the __target_records field contains all the countings for target pairs.*/
       void __fillUnconditionalPairTree ();
 
       /** @brief fill a whole tree by parsing the complete database when there
        * are conditional nodes
        *
-       * This method creates from sratch a new tree containing only conditioning
+       * This method creates from scratch a new tree containing only conditioning
        * nodes and pair targets, and it fills it by parsing the whole database.
-       * When the method completes, the __target_records fields contains all the
-       * counting for target pairs. */      
+       * When the method completes, the __target_records field contains all the
+       * countings for target pairs. */      
       void __fillConditionalPairTree ();
 
       /// fill the single targets
       /** assuming that the tree for all conditioning and target pairs has
-       * been successfully created, this method */
+       * been successfully created, this method creates the countings for all
+       * the single target nodes. To do so, it just summarizes the countings
+       * obtained for the pairs of target nodes. */
       void __fillSingleTargetTree ();
 
     };

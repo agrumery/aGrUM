@@ -56,6 +56,12 @@ namespace gum {
     }
 
     
+    /// resize the number of values of the target node
+    ALWAYS_INLINE void CountingTreeTargetBox::__resize ( unsigned int new_size ) {
+      __nb_records.resize ( new_size, 0 );
+    }
+
+    
     /// select a CountingTreeTargetBox from a pool and return it
     ALWAYS_INLINE CountingTreeTargetBox*
     CountingTreeTargetBox::createBox ( unsigned int size ) {
@@ -71,7 +77,7 @@ namespace gum {
     }
 
     
-    /// reset the variable to en empty (no modality) variable
+    /// reset the variable to an empty (no modality) variable
     ALWAYS_INLINE void CountingTreeTargetBox::__clear () {
       __nb_records.clear ();
     }
@@ -80,11 +86,11 @@ namespace gum {
     /// put a CountingTreeTargetBox into the pool
     ALWAYS_INLINE void
     CountingTreeTargetBox::deleteBox ( CountingTreeTargetBox* box ) {
-      box->__clear ();
       if ( __pool.size () >= __pool_max_size ) {
         delete box;
       }
       else {
+        box->__clear ();
         __pool.pushBack ( box );
       }
     }
@@ -125,12 +131,6 @@ namespace gum {
     }
 
     
-    /// resize the number of values of the target node
-    ALWAYS_INLINE void CountingTreeTargetBox::__resize ( unsigned int new_size ) {
-      __nb_records.resize ( new_size, 0 );
-    }
-
-
     
 
     /* ========================================================================= */
@@ -248,11 +248,10 @@ namespace gum {
     }
     
 
-    /** @brief increment de the number of observations of the jth value of the
-     * ith variable */ 
+    /// increment the number of observations of the jth value of the ith variable
     ALWAYS_INLINE void
     CountingTreeTargetSetBox::incrementNbRecords ( unsigned int i,
-                                                  unsigned int j ) const {
+                                                   unsigned int j ) const {
       __target_boxes[i]->incrementNbRecords ( j );
     }
 
@@ -261,8 +260,8 @@ namespace gum {
      * ith variable by k */
     ALWAYS_INLINE void
     CountingTreeTargetSetBox::incrementNbRecords ( unsigned int i,
-                                                  unsigned int j,
-                                                  unsigned int k ) const {
+                                                   unsigned int j,
+                                                   unsigned int k ) const {
       __target_boxes[i]->incrementNbRecords ( j, k );
     }
 
@@ -270,8 +269,8 @@ namespace gum {
     /// sets the number of cases of the jth value of the ith variable
     ALWAYS_INLINE void
     CountingTreeTargetSetBox::setNbRecords ( unsigned int i,
-                                            unsigned int j,
-                                            unsigned int k ) const {
+                                             unsigned int j,
+                                             unsigned int k ) const {
       __target_boxes[i]->setNbRecords ( j, k );
     }
 
@@ -288,7 +287,14 @@ namespace gum {
       __nb_parent_records += k;
     }
 
-   
+    
+    /// set the number of records observed in the database for the parents
+    ALWAYS_INLINE void
+    CountingTreeTargetSetBox::setNbParentRecords ( unsigned int new_nb ) {
+      __nb_parent_records = new_nb;
+    }
+
+
     /// sets a new set of target variables
     ALWAYS_INLINE void CountingTreeTargetSetBox::setVariables
     ( const std::vector<unsigned int>& variable_modalities,
@@ -363,7 +369,7 @@ namespace gum {
     /// select a CountingTreeConditioningBox from a pool and return it
     ALWAYS_INLINE CountingTreeConditioningBox*
     CountingTreeConditioningBox::createBox ( unsigned int children_size,
-                                            bool final_level ) {
+                                             bool final_level ) {
       if ( __pool.empty () ) {
         return new CountingTreeConditioningBox ( children_size, final_level );
       }
@@ -437,7 +443,7 @@ namespace gum {
     /// sets the ith child
     ALWAYS_INLINE void
     CountingTreeConditioningBox::setChild ( unsigned int i,
-                                           CountingTreeConditioningBox* box ) {
+                                            CountingTreeConditioningBox* box ) {
       __children[i] = box;
     }
 
@@ -445,7 +451,7 @@ namespace gum {
     /// sets the ith child
     ALWAYS_INLINE void
     CountingTreeConditioningBox::setChild ( unsigned int i,
-                                           CountingTreeTargetSetBox* box ) {
+                                            CountingTreeTargetSetBox* box ) {
       __children[i] = reinterpret_cast<CountingTreeConditioningBox*> ( box );
     }
 

@@ -172,11 +172,11 @@ namespace gum {
             }
           }
           else {
-            for ( unsigned int j = 0; j < nb_modal1; ++j ) {
+            for ( unsigned int j = 0, last = nb_modal2; j < nb_modal1;
+                  ++j, last += nb_modal2 ) {
               unsigned int count = 0;
-              for ( unsigned int k = 0, h = j * nb_modal2;
-                    k < nb_modal2; ++k, ++h ) {
-                count += pair_box->nbRecords ( h );
+              for ( unsigned int k = j * nb_modal2; k < last; ++k ) {
+                count += pair_box->nbRecords ( k );
               }
               single_box->setNbRecords ( j , count );
             }

@@ -36,8 +36,8 @@ namespace gum {
  
     /// parse one database record to fill a given target set box
     ALWAYS_INLINE void
-    CountingTree::__fillTargetSetBoxes ( CountingTreeTargetSetBox* box,
-                                        const DatabaseIterator& iter ) {
+    CountingTree::__fillTargetSetBox ( CountingTreeTargetSetBox* box,
+                                       const DatabaseIterator& iter ) {
       // increment the record number of parents
       box->incrementNbParentRecords ();
       
@@ -60,7 +60,7 @@ namespace gum {
       CountingTreeConditioningBox* current_box = __root.Conditioning;
 
       // parse all the nodes that appear in the conditioning set
-      // we parse the conditioning set from the last one to the second one
+      // we parse the conditioning set from the last element to the second one
       // because all of them are conditioning nodes. The first element of
       // __db_conditioning_ids will be treated differently because its child
       // is not a conditioning node but rather a target set node
@@ -70,16 +70,20 @@ namespace gum {
 
         // if the box has not been created yet, do it
         if ( ! current_box->child ( index ) ) {
-          const bool last_level = i == 1;
           CountingTreeConditioningBox* new_box =
             CountingTreeConditioningBox::createBox
             ( __database->nbrModalities
-              ( __db_conditioning_ids->operator[] ( i-1 ) ), last_level );
-            current_box->setChild ( index, new_box );
-          }
+              ( __db_conditioning_ids->operator[] ( i-1 ) ),
+              i == 1 ); // when i = 1, this corresponds to the last_level
+          current_box->setChild ( index, new_box );
 
-        // assign the child as the current box
-        current_box = current_box->child ( index );
+          // assign the child as the current box
+          current_box = new_box;
+        }
+        else {
+          // assign the child as the current box
+          current_box = current_box->child ( index );
+        }
       }
 
       // for the last conditioning box, go to its child and create it if needed
@@ -89,6 +93,8 @@ namespace gum {
         // create the box
         CountingTreeTargetSetBox* new_box =
           CountingTreeTargetSetBox::createBox ( __target_modalities );
+        new_box->setNbParentRecords ( 1 ); // there is one set of conditioning
+                                           // node values leading to this box
 
         // assign it as the child of the current box
         current_box->setChild ( index, new_box );
@@ -120,7 +126,7 @@ namespace gum {
       // now, fill it by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
-        __fillTargetSetBoxes ( __root.TargetSet, iter );
+        __fillTargetSetBox ( __root.TargetSet, iter );
       }
     }
 
@@ -139,7 +145,7 @@ namespace gum {
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
         CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
-        __fillTargetSetBoxes ( target_box, iter );
+        __fillTargetSetBox ( target_box, iter );
       }
     }
 
@@ -170,9 +176,13 @@ namespace gum {
         __target_modalities[j] = __database->nbrModalities ( db_single_ids[i] );
       }
 
+      // check whether there are conditioning nodes
+      const bool has_conditionals =
+        __db_conditioning_ids && __db_conditioning_ids->size ();
+
       // remove the tree, if any
       if ( __root.Conditioning ) {
-        if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+        if ( has_conditionals ) {
           CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
@@ -185,7 +195,7 @@ namespace gum {
       __target_records.clear ();
 
       // recompute the target records
-      if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+      if ( has_conditionals ) {
         __fillConditionalPairTree ();
       }
       else {
