@@ -34,10 +34,10 @@ namespace gum {
   namespace learning {
 
  
-    /// parse one database record to fill a given target set box
+    /// parse one database record to fill a given target pair set box
     ALWAYS_INLINE void
-    CountingTree::__fillTargetSetBox ( CountingTreeTargetSetBox* box,
-                                       const DatabaseIterator& iter ) {
+    CountingTree::__fillTargetPairSetBox ( CountingTreeTargetSetBox* box,
+                                           const DatabaseIterator& iter ) {
       // increment the record number of parents
       box->incrementNbParentRecords ();
       
@@ -49,6 +49,21 @@ namespace gum {
           __db_pair_target_ids->operator[] ( i );
         box->incrementNbRecords ( i, iter[pair.first] + iter[pair.second] *
                                   __database->nbrModalities ( pair.first ) );
+      }
+    }
+
+    
+    /// parse one database record to fill a given target single node set box
+    ALWAYS_INLINE void
+    CountingTree::__fillTargetSingleSetBox ( CountingTreeTargetSetBox* box,
+                                             const DatabaseIterator& iter ) {
+      // increment the record number of parents
+      box->incrementNbParentRecords ();
+      
+      // parse all the single targets for which we shall count the number of
+      // occurences in the database
+      for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {
+        box->incrementNbRecords ( i,iter[__db_single_target_ids->operator[] (i)] );
       }
     }
 
@@ -126,11 +141,29 @@ namespace gum {
       // now, fill it by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
-        __fillTargetSetBox ( __root.TargetSet, iter );
+        __fillTargetPairSetBox ( __root.TargetSet, iter );
       }
     }
 
     
+    /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void CountingTree::__fillUnconditionalSingleTree () {
+      // first, we shall create the root of the unconditional tree, which is,
+      // actually, the only targetSetBox
+      __root.TargetSet =
+        CountingTreeTargetSetBox::createBox ( __target_modalities );
+
+      // put the root into the list of the target set boxes
+      __target_records.pushFront ( __root.TargetSet );
+
+      // now, fill it by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        __fillTargetSingleSetBox ( __root.TargetSet, iter );
+      }
+    }
+
+        
     /// fill a whole tree by parsing the complete database
     ALWAYS_INLINE void CountingTree::__fillConditionalPairTree () {
       // first, we shall create the root of the conditional tree
@@ -145,12 +178,31 @@ namespace gum {
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
         CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
-        __fillTargetSetBox ( target_box, iter );
+        __fillTargetPairSetBox ( target_box, iter );
+      }
+    }
+
+
+    /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void CountingTree::__fillConditionalSingleTree () {
+      // first, we shall create the root of the conditional tree
+      const bool last_level = __db_conditioning_ids->size() == 1;
+      __root.Conditioning =
+        CountingTreeConditioningBox::createBox
+        ( __database->nbrModalities
+          ( __db_conditioning_ids->operator[]
+            ( __db_conditioning_ids->size() - 1 ) ), last_level );
+
+      // now fill it by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+        __fillTargetSingleSetBox ( target_box, iter );
       }
     }
 
     
-    /// assign a new set of target nodes and cmpute countings
+    /// assign a new set of target nodes and compute countings
     ALWAYS_INLINE void CountingTree::setTargetNodes
     ( const std::vector<unsigned int>& db_single_ids,
       const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids ) {
@@ -195,13 +247,28 @@ namespace gum {
       __target_records.clear ();
 
       // recompute the target records
-      if ( has_conditionals ) {
-        __fillConditionalPairTree ();
+      if  ( db_pair_ids.size () ) {
+        // here, there are target pairs, so we shall fill the target boxes
+        // of those pairs from the database and, then, fill the single target
+        // boxes from those of the pairs
+        if ( has_conditionals ) {
+          __fillConditionalPairTree ();
+        }
+        else {
+          __fillUnconditionalPairTree ();
+        }
+        __fillSingleTargetTreeFromPairs ();
       }
       else {
-        __fillUnconditionalPairTree ();
+        // here, there are no target pairs, so we whall fill the single pair
+        // boxes by parsing the database
+        if ( has_conditionals ) {
+          __fillConditionalSingleTree ();
+        }
+        else {
+          __fillUnconditionalSingleTree ();
+        }
       }
-      __fillSingleTargetTree ();
     }
 
 

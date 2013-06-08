@@ -124,6 +124,14 @@ namespace gum {
       ( const std::vector<unsigned int>& db_single_ids,
         const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
 
+      /// assign a new set of target nodes and compute countings
+      /** This method is similar to setNodes except that it does not change the
+       * set of conditioning nodes. This can prove useful when memory is not
+       * sufficiently large to enable the computation of the target set boxes of
+       * all the needed targets in one pass. */
+      void setTargetNodes
+      ( const std::vector<unsigned int>& db_single_ids );
+      
       /// returns the index within target sets of a single target node id
       /** targets are put into target set boxes at locations convenient for the
        * counting tree. When you wish to get the target box corresponding to a
@@ -220,9 +228,13 @@ namespace gum {
       /// @}
 
         
-      /// parse one database record to fill a given target set box
-      void __fillTargetSetBox ( CountingTreeTargetSetBox* box,
-                                const DatabaseIterator& iter );
+      /// parse one database record to fill a given pair target set box
+      void __fillTargetPairSetBox ( CountingTreeTargetSetBox* box,
+                                    const DatabaseIterator& iter );
+
+      /// parse one database record to fill a given single node target set box
+      void __fillTargetSingleSetBox ( CountingTreeTargetSetBox* box,
+                                      const DatabaseIterator& iter );
 
       /// traverse the conditional nodes of the tree corresponding to one db record
       /** this method starts from the root of a conditional tree and traverses
@@ -231,15 +243,17 @@ namespace gum {
       CountingTreeTargetSetBox*
       __fillConditioningBoxes ( const DatabaseIterator& iter );
         
-      /** @brief fill a whole tree by parsing the complete database when there
-       * are no conditional nodes
+      /** @brief fill a whole tree (but considering only pair targets and not
+       * single ones) by parsing the complete database when there are no
+       * conditional nodes
        *
        * This method creates from scratch a new tree containing only pair targets
        * and fills it by parsing the whole database. When the method completes,
        * the __target_records field contains all the countings for target pairs.*/
       void __fillUnconditionalPairTree ();
 
-      /** @brief fill a whole tree by parsing the complete database when there
+      /** @brief fill a whole tree (but considering only pair targets and not
+       * single ones) by parsing the complete database when there
        * are conditional nodes
        *
        * This method creates from scratch a new tree containing only conditioning
@@ -248,12 +262,31 @@ namespace gum {
        * countings for target pairs. */      
       void __fillConditionalPairTree ();
 
+      /** @brief fill a whole tree (but considering only single targets and not
+       * pairs) by parsing the complete database when there are no
+       * conditional nodes
+       *
+       * This method creates from scratch a new tree containing only single targets
+       * and fills it by parsing the whole database. When the method completes,
+       * the __target_records field contains all the countings for single
+       * targets. */
+      void __fillUnconditionalSingleTree ();
+
+      /** @brief fill a whole tree (but considering only single targets and not
+       * pairs) by parsing the complete database when there are conditional nodes
+       *
+       * This method creates from scratch a new tree containing only conditioning
+       * nodes and single targets, and it fills it by parsing the whole database.
+       * When the method completes, the __target_records field contains all the
+       * countings for single targets. */      
+      void __fillConditionalSingleTree ();
+
       /// fill the single targets
       /** assuming that the tree for all conditioning and target pairs has
        * been successfully created, this method creates the countings for all
        * the single target nodes. To do so, it just summarizes the countings
        * obtained for the pairs of target nodes. */
-      void __fillSingleTargetTree ();
+      void __fillSingleTargetTreeFromPairs ();
 
     };
     

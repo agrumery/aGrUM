@@ -89,7 +89,7 @@ namespace gum {
 
     
     /// fill the single targets
-    void CountingTree::__fillSingleTargetTree () {
+    void CountingTree::__fillSingleTargetTreeFromPairs () {
       // first, we determine for each single target from which pair the single
       // target counting should be computed. To do so, create a vector
       // best_pair_index which assigns to each element of __single_ids the
