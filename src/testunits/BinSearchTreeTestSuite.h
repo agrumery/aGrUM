@@ -99,9 +99,9 @@ namespace gum_tests {
         tree.erase( 5 );
 
         TS_ASSERT( tree.size() == 4 );
-        TS_GUM_ASSERT_THROWS_NOTHING( tree.erase( 5 ) );
+        TS_ASSERT_THROWS( tree.erase( 5 ) ,gum::NotFound);
         TS_ASSERT( tree.size() == 4 );
-        TS_GUM_ASSERT_THROWS_NOTHING( tree.erase( 9 ) );
+        TS_ASSERT_THROWS( tree.erase( 9 ) ,gum::NotFound);
         TS_ASSERT( tree.size() == 4 );
         tree.erase( 1 );
         TS_ASSERT( tree.size() == 3 );
