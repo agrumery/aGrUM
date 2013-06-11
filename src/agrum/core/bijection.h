@@ -755,7 +755,7 @@ namespace gum {
     void eraseSecond(T2* const second);
 
     // ============================================================================
-    /// friendly displays the content of the CliqueGraph
+    /// friendly displays the content of the bijection
     // ============================================================================
     const std::string toString() const;
     

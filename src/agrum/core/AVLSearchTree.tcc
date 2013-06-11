@@ -606,9 +606,32 @@ namespace gum {
     return new_node;
   }
 
+  template <typename Val, class Cmp>
+  const std::string AVLSearchTree<Val,Cmp>::toString() const {
+    std::stringstream stream;
+    stream << "{ ";
+    bool first = true;
 
+    for ( iterator iter = begin(); iter != end(); ++iter ) {
+      if ( ! first ) stream << ", ";
+      else first = false;
+
+      stream << * iter ;
+    }
+
+    stream << " }";
+    return stream.str();
+  }
+
+// ============================================================================
+/// for friendly displaying the content of AVLSearchTree
+// ============================================================================
+  template <typename Val, class Cmp>
+  std::ostream& operator<< ( std::ostream& stream, const AVLSearchTree<Val,Cmp>& avl) {
+    stream << avl.toString ();
+    return stream;
+  }
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
