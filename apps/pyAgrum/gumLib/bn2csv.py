@@ -28,8 +28,8 @@ represented by a Bayesian network.
 
 import sys,os,csv,random
 
-from progress_bar import ProgressBar
-from pyAgrum_header import pyAgrum_header
+from utils.progress_bar import ProgressBar
+from utils.pyAgrum_header import pyAgrum_header
 
 import pyAgrum as gum
 
@@ -141,7 +141,7 @@ def module_help(exit_value=1):
     sys.exit(exit_value)
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
+    pyAgrum_header("2011-13")
 
     if len(sys.argv)<3:
         module_help()
