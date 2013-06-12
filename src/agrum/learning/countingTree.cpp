@@ -27,6 +27,8 @@
  * target set boxes of interest. However, it does not compute scores by itself.
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 
 #include <limits>
 #include <agrum/learning/countingTree.h>
@@ -190,3 +192,6 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

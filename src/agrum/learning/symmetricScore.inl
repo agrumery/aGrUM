@@ -24,6 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 
 namespace gum {
 
@@ -41,7 +43,7 @@ namespace gum {
           exist_ids.insert ( db_pair_ids[i].first, true );
           _db_induced_ids.push_back ( db_pair_ids[i].first );
         }
-        if ( ! exist_ids ( db_pair_ids[i].second ) ) {
+        if ( ! exist_ids.exists ( db_pair_ids[i].second ) ) {
           exist_ids.insert ( db_pair_ids[i].second, true );
           _db_induced_ids.push_back ( db_pair_ids[i].second );
         }
@@ -53,4 +55,7 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

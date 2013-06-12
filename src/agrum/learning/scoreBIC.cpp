@@ -23,6 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 
 #include <agrum/learning/scoreBIC.h>
 
@@ -155,3 +157,5 @@ namespace gum {
   
 } /* namespace gum */
 
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

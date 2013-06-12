@@ -28,8 +28,10 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/learning/scoreChi2.h>
+
+#include <agrum/learning/indepTestChi2.h>
 
 namespace gum {
 
@@ -38,29 +40,29 @@ namespace gum {
 
     
     /// default constructor
-    ScoreChi2::ScoreChi2 ( const Database& database,
-                           unsigned int max_tree_size = 0 ) :
-    AsymmetricScore ( database, max_tree_size ) {
+    IndepTestChi2::IndepTestChi2 ( const Database& database,
+                                   unsigned int max_tree_size ) :
+    SymmetricIndependenceTest ( database, max_tree_size ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreChi2 );
+      GUM_CONSTRUCTOR ( IndepTestChi2 );
     }
 
 
     /// destructor
-    ScoreChi2::~ScoreChi2 () {
+    IndepTestChi2::~IndepTestChi2 () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreChi2 );
+      GUM_DESTRUCTOR ( IndepTestChi2 );
     }
 
     
     /// computes the Chi2 of (X,Y) given conditioning set Z
-    void ScoreChi2::_computeScores
+    void IndepTestChi2::_computeScores
     ( const std::vector<unsigned int>& db_single_ids ) {
     }
       
 
 
-    score ( const CountingTreeTargetSetBox& box,
+    float score ( const CountingTreeTargetSetBox& box,
                                            unsigned int x,
                                            unsigned int y,
                                            unsigned int xy ) {
@@ -98,3 +100,4 @@ namespace gum {
 } /* namespace gum */
 
 
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

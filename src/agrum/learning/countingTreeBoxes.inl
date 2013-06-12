@@ -29,6 +29,9 @@
  * by parsing the boxes.
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
 namespace gum {
 
   namespace learning {
@@ -467,3 +470,5 @@ namespace gum {
   
 } /* namespace learning */
  
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

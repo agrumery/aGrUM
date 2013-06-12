@@ -122,7 +122,7 @@ namespace gum {
       if ( df > 1 )
         y = gum__ex( -a );
 
-      s = ( even ? y : ( 2.0 * getProbaZValue( -sqrt( x ) ) ) );
+      s = ( even ? y : ( 2.0 * __probaZValue( -sqrt( x ) ) ) );
 
       if ( df > 2 ) {
         x = 0.5 * ( df - 1.0 );
@@ -170,7 +170,7 @@ namespace gum {
       chisqval = df / sqrt( proba );   /* fair first value */
 
       while ( maxchisq - minchisq > GUM_CHI_EPSILON ) {
-        if ( getProbaChi2( chisqval, df ) < proba )
+        if ( __probaChi2( chisqval, df ) < proba )
           maxchisq = chisqval;
         else
           minchisq = chisqval;

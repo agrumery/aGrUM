@@ -27,21 +27,25 @@
 #define GUM_LEARNING_SYMMETRIC_INDEPENDENCE_TEST_H
 
 
+#include <agrum/learning/independenceTest.h>
+
+
 namespace gum {
 
   
   namespace learning {
 
     
-    template<class SCORE> class SymmetricIndependenceTest :
-    public IndependenceTest {
+    class SymmetricIndependenceTest : public IndependenceTest {
+    public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      SymmetricIndependenceTest ( const Database& database );
+      SymmetricIndependenceTest ( const Database& database,
+                                  unsigned int max_tree_size = 0  );
 
       /// destructor
       ~SymmetricIndependenceTest ();
@@ -49,52 +53,24 @@ namespace gum {
       /// @}
 
       
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// set a new set of conditioning and target pairs to test
-      void setNodes
-      ( const std::vector<unsigned int>& db_conditioning_ids,
-        const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
-
-      /// set a new set of target pairs to test
-      void setTargetNodes
-      ( const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
-
-      /// set a new set of conditioning and target single nodes to test
-      void setNodes
-      ( const std::vector<unsigned int>& db_conditioning_ids,
-        const std::vector<unsigned int>& db_single_ids );
-
-      /// set a new set of target pairs to test
-      void setTargetNodes
-      ( const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
-
-      
-      /// returns the score of a given pair X,Y given the conditioning nodes
-      float score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const;
-
-      /// returns the score of a given pair X,Y given the conditioning nodes
-      float score ( unsigned int X, unsigned int Y ) const;
-
-      /// @}
-
-
-    private:
-      /// a pointer to the database
-      Database* __database;
-      
-      /// the counting tree used for the computations
-      CountingTree __tree;
+    protected:
+      /// a function that determines the db single ids needed for the score
+      virtual void _computeInducedSingleIds
+      ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids );
+     
     };
-
+    
 
   } /* namespace learning */
   
   
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/symmetricIndependenceTest.inl>
+#endif /* GUM_NO_INLINE */
 
 
 #endif /* GUM_LEARNING_SYMMETRIC_INDEPENDENCE_TEST_H */

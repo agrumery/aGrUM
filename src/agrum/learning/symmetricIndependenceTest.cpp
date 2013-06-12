@@ -18,12 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the abstract class for all the independence tests
+ * @brief the class for all the independence tests with symmetric scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+#include <agrum/learning/symmetricIndependenceTest.h>
+
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/symmetricIndependenceTest.inl>
+#endif /* GUM_NO_INLINE */
 
 
 namespace gum {
@@ -32,35 +40,22 @@ namespace gum {
   namespace learning {
 
     
-    /// modifies the max size of the counting trees
-    ALWAYS_INLINE void IndependenceTest::setMaxSize ( unsigned int new_size ) {
-      Score::setMaxSize ( new_size );
+    /// default constructor
+    SymmetricIndependenceTest::SymmetricIndependenceTest
+    ( const Database& database,
+      unsigned int max_tree_size ) :
+      IndependenceTest ( database, max_tree_size ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( SymmetricIndependenceTest );
     }
- 
+      
 
-    /// computes the "unconditional" scores of a set of pairs of targets
-    ALWAYS_INLINE void IndependenceTest::computeScores
-    ( const std::vector< std::pair<unsigned int,
-                                   unsigned int> >& db_pair_ids ) {
-      Score::computeScores ( db_pair_ids );
+    /// destructor
+    SymmetricIndependenceTest::~SymmetricIndependenceTest () {
+      // for debugging purposes
+      GUM_DESTRUCTOR ( SymmetricIndependenceTest );
     }
-
-    
-    /// compute the scores of the set of targets conditioned on some nodes
-    ALWAYS_INLINE void IndependenceTest::computeScores
-    ( const std::vector<unsigned int>& db_conditioning_ids,
-      const std::vector< std::pair<unsigned int,
-                                   unsigned int> >& db_pair_ids ) {
-      Score::computeScores ( db_pair_ids );
-    }
-
-
-    /// returns the score of a given pair X,Y given the conditioning nodes
-    ALWAYS_INLINE float IndependenceTest::score
-    ( const std::pair<unsigned int,unsigned int>& XY_pair ) const {
-      return Score::score ( XY_pair );
-    }
-
+      
 
   } /* namespace learning */
   
@@ -69,4 +64,3 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

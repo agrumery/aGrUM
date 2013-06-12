@@ -29,11 +29,12 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_CHI2_H
-#define GUM_LEARNING_SCORE_CHI2_H
+#ifndef GUM_LEARNING_INDEP_TEST_CHI2_H
+#define GUM_LEARNING_INDEP_TEST_CHI2_H
 
 
-#include <agrum/learning/asymmetricScore.h>
+#include <agrum/learning/chi2.h>
+#include <agrum/learning/symmetricIndependenceTest.h>
 
 
 namespace gum {
@@ -49,7 +50,7 @@ namespace gum {
     /* ========================================================================= */
     /** @class ScoreChi2 */
     /* ========================================================================= */
-    class ScoreChi2 : public AsymmetricScore {
+    class IndepTestChi2 : public SymmetricIndependenceTest {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -57,11 +58,11 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ScoreChi2 ( const Database& database,
-                  unsigned int max_tree_size = 0 );
+      IndepTestChi2 ( const Database& database,
+                      unsigned int max_tree_size = 0 );
 
       /// destructor
-      ~ScoreChi2 ();
+      ~IndepTestChi2 ();
 
       /// @}
 
@@ -95,4 +96,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_SCORE_CHI2_H */
+#endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */

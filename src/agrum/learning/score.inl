@@ -23,6 +23,9 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
 namespace gum {
 
   
@@ -318,3 +321,7 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+

@@ -29,6 +29,8 @@
  * by parsing the boxes.
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 
 #include <agrum/learning/countingTreeBoxes.h>
 
@@ -135,3 +137,6 @@ namespace gum {
 
 } /* namespace learning */
  
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
