@@ -235,7 +235,7 @@ namespace credal {
 			 * @param id The \c NodeId of the node
 			 * @return The cardinality of the node 
 			 */
-			inline auto domainSize ( const NodeId & id ) -> decltype ( std::declval< DiscreteVariable >().domainSize() );
+			inline Size domainSize ( const NodeId & id );
 			
 			/// @}
 
