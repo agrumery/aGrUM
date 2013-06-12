@@ -18,22 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing Chi2 scores
- *
- * The class is only composed of an inline static method score that actually
- * computes the Chi2 score. To do so, it parses the number of occurrences
- * stored into a CountingTargetSetBox (see file countingTreeBoxes.h for
- * more details about such a box).
+ * @brief the class for computing BIC scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 
-#ifndef GUM_LEARNING_SCORE_CHI2_H
-#define GUM_LEARNING_SCORE_CHI2_H
+#ifndef GUM_LEARNING_SCORE_BIC_H
+#define GUM_LEARNING_SCORE_BIC_H
 
 
-#include <agrum/learning/countingTreeBoxes.h>
+#include <agrum/learning/asymmetricScore.h>
 
 
 namespace gum {
@@ -44,31 +39,41 @@ namespace gum {
     
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                         SCORE CHI2 CLASS                          === */
+    /* ===                         SCORE BIC CLASS                           === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class ScoreChi2 */
+    /** @class ScoreBIC */
     /* ========================================================================= */
-    class ScoreChi2 {
+    class ScoreBIC : public AsymmetricScore {
     public:
-      /// computes the Chi2 of (X,Y) given conditioning set Z (stored in the box)
-      /** This method computes sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
-       * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of
-       * occurences of (X,Y,Z) and (X,Z) respectively in the database. Those
-       * numbers are stored in the target set box passed in argument and the
-       * parameters x, y, xy indicate the indices in the target set box of the
-       * elements corresponding to #XZ, #YZ and #XYZ respectively. #Z is
-       * directly accessible from the box using method nbParentRecords.
-       * @param box the target set box that contains all the countings required,
-       * i.e., those of x, y, xy and z
-       * @param x the index in 'box' of the targetBox containing the #XZ numbers
-       * @param y the index in 'box' of the targetBox containing the #YZ numbers
-       * @param xy the index in 'box' of the targetBox containing the #XYZ numbers
-       */
-      static float score ( const CountingTreeTargetSetBox& box,
-                           unsigned int x,
-                           unsigned int y,
-                           unsigned int xy );
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      ScoreBIC ( const Database& database,
+                 unsigned int max_tree_size = 0 );
+
+      /// destructor
+      ~ScoreBIC ();
+
+      /// @}
+
+
+    protected:
+      /// computes the BIC score of a set of targets
+      /** @warning The function assumes that the counting tree has already been
+       * constructed */
+      void _computeScores ( const std::vector<unsigned int>& db_single_ids );
+
+      /// computes the BIC score of a set of targets
+      /** @warning The function assumes that the counting tree has already been
+       * constructed */
+      void _computeScores
+      ( const std::vector< std::pair<unsigned int,
+                                     unsigned int> >& db_pair_ids );
+      
     };
     
 
@@ -78,10 +83,4 @@ namespace gum {
 } /* namespace gum */
 
 
-/// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#include <agrum/learning/scoreChi2.inl>
-#endif /* GUM_NO_INLINE */
-
-
-#endif /* GUM_LEARNING_SCORE_CHI2_H */
+#endif /* GUM_LEARNING_SCORE_BIC_H */

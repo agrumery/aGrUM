@@ -18,19 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for all the scores that are like BIC, etc, whose
- * formula is asymmetric w.r.t. the nodes contained in the formula.
+ * @brief the class for all the scores whose formula is symmetric w.r.t. the
+ * nodes it contains.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
-
-#include <agrum/learning/asymmetricScore.h>
-
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/learning/asymmetricScore.inl>
-#endif /* GUM_NO_INLINE */
 
 
 namespace gum {
@@ -39,21 +31,23 @@ namespace gum {
   namespace learning {
 
     
-    /// default constructor
-    AsymmetricScore::AsymmetricScore ( const Database& database,
-                                       unsigned int max_tree_size ) :
-      Score ( database, max_tree_size ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR ( AsymmetricScore );
+    /// a function that determines the db single ids needed for the score
+    ALWAYS_INLINE void SymmetricScore::_computeInducedSingleIds
+    ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
+      HashTable<unsigned int, bool> exist_ids;
+      _db_induced_ids.clear ();
+      for (unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
+        if ( ! exist_ids.exists ( db_pair_ids[i].first ) ) {
+          exist_ids.insert ( db_pair_ids[i].first, true );
+          _db_induced_ids.push_back ( db_pair_ids[i].first );
+        }
+        if ( ! exist_ids ( db_pair_ids[i].second ) ) {
+          exist_ids.insert ( db_pair_ids[i].second, true );
+          _db_induced_ids.push_back ( db_pair_ids[i].second );
+        }
+      }
     }
-
     
-    /// destructor
-    AsymmetricScore::~AsymmetricScore () {
-      // for debugging purposes
-      GUM_DESTRUCTOR ( AsymmetricScore );
-    }
-
 
   } /* namespace learning */
   

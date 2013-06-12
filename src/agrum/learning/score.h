@@ -37,6 +37,7 @@ namespace gum {
 
   
   namespace learning {
+
     
     /* ========================================================================= */
     /* ========================================================================= */
@@ -49,8 +50,8 @@ namespace gum {
      * The class provides a common interface for all the scores that treat
      * nodes in an asymmetric manner. For instance, in the log likelihood score,
      * the formula to be computed involves N_ijk * log ( N_ijk / N_ij ), where
-     * N_ijk crresponds to the number of occurrences of the jth value of variable
-     * i and the kth value of the parents of variable i, and N_ij is the same
+     * N_ijk corresponds to the number of occurrences of the kth value of variable
+     * i and the jth value of the parents of variable i, and N_ij is the same
      * except that we do not care the value of the parents. As such, variable
      * i receives a treatment that is different from its parents and this thus
      * leads to an asymmetric score. */
@@ -63,7 +64,8 @@ namespace gum {
       /// @{
 
       /// default constructor
-      Score ( const Database& database );
+      Score ( const Database& database,
+              unsigned int max_tree_size = 0 );
 
       /// destructor
       ~Score ();
@@ -75,6 +77,9 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// modifies the max size of the counting trees
+      void setMaxSize ( unsigned int new_size );
  
       /// computes the "unconditional" scores of a set of single targets
       /** The method computes the scores of a set of single target nodes
@@ -85,8 +90,7 @@ namespace gum {
        * @warning the method uses a reference to db_single_ids and does
        * not copy it in order to speed-up computations. Be careful not to
        * delete this vector from memory before calling the score method. */
-      virtual void
-      computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
+      void computeScores ( const std::vector<unsigned int>& db_single_ids );
 
       /// compute the scores of the set of targets conditioned on some nodes
       /** The method comptes the scores of some individual target nodes
@@ -98,9 +102,8 @@ namespace gum {
        * db_conditioning_ids, and it does not copy these vectors in order to
        * speed-up computations. So, be careful not to delete these vectors from
        * memory before calling the score method.*/
-      virtual void
-      computeScores ( const std::vector<unsigned int>& db_conditioning_ids,
-                      const std::vector<unsigned int>& db_single_ids ) = 0;
+      void computeScores ( const std::vector<unsigned int>& db_conditioning_ids,
+                           const std::vector<unsigned int>& db_single_ids );
 
       /// computes the "unconditional" scores of a set of pairs of targets
       /** The method computes the scores of a set of pairs of target nodes
@@ -120,10 +123,9 @@ namespace gum {
        * @warning the method uses a reference to db_pair_ids and does
        * not copy it in order to speed-up computations. Be careful not to
        * delete this vector from memory before calling the score method. */
-      virtual void
-      computeScores
+      void computeScores
       ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids ) = 0;
+                                     unsigned int> >& db_pair_ids );
       
       /// compute the scores of the set of targets conditioned on some nodes
       /** The method computes the scores of a set of pairs of target nodes
@@ -144,11 +146,10 @@ namespace gum {
        * db_conditioning_ids, and it does not copy these vectors in order to
        * speed-up computations. So, be careful not to delete these vectors from
        * memory before calling the score method.*/
-      virtual void
-      computeScores
+      void computeScores
       ( const std::vector<unsigned int>& db_conditioning_ids,
         const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids  ) = 0;
+                                     unsigned int> >& db_pair_ids );
 
       /// returns the score of a given single target Y given the conditioning nodes
       /** This method returns the score of Y conditionally to the set of
@@ -158,8 +159,7 @@ namespace gum {
        * computeScores ( db_conditioning_ids, db_single_ids ) has
        * been completed, else its result is undetermined and is most probably
        * an exception raised. */
-      virtual float
-      score ( unsigned int Y ) const = 0;
+      float score ( unsigned int Y ) const;
       
       /// returns the score of a given pair X,Y given the conditioning nodes
       /** This method returns the score of Y conditionally to X plus the set of
@@ -169,8 +169,7 @@ namespace gum {
        * computeScores ( db_conditioning_ids, db_pair_ids ) 
        * has been completed, else its result is undetermined and is most probably
        * an exception raised. */
-      virtual float
-      score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const = 0;
+      float score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const;
 
       /// @}
 
@@ -182,14 +181,78 @@ namespace gum {
       /// the counting tree used for the computations
       CountingTree _tree;
 
+      /// the single ids deduced from pairs of ids, that are needed for the score  
+      std::vector<unsigned int> _db_induced_ids;
       
+      /// the scores for the single target nodes
+      HashTable<unsigned int,float> _single_scores;
+
+      /// the scores for the pair of target nodes
+      HashTable<std::pair<unsigned int,unsigned int>,float> _pair_scores;
+
+
+    private:
+      /// the max size of the tree
+      unsigned int __max_tree_size;
+
+      /// an empty set of conditioning nodes
+      std::vector<unsigned int> __empty_cond_set;
+
+      /// an empty set of target pairs
+      std::vector< std::pair<unsigned int, unsigned int> > __empty_pair_set;
+
+
+    protected:
+      // ##########################################################################
+      // the real computations of the score given an already constructed tree
+      // ##########################################################################
+
+      /// a function that determines the db single ids needed for the score
+      virtual void _computeInducedSingleIds
+      ( const std::vector< std::pair<unsigned int,
+                                     unsigned int> >& db_pair_ids ) = 0;
+
+      /// the function that computes the scores for single targets
+      /** @warning The function assumes that the counting tree has already been
+       * constructed */
+      virtual void
+      _computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
+
+      // /// the function that computes the scores for pairs of targets
+      // /** @warning The function assumes that the counting tree has already been
+      //  * constructed */
+      // virtual void
+      // _computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
+
+      /// the actual function that computes the scores of pairs of targets
+      /** @warning The function assumes that the counting tree has already been
+       * constructed */
+      virtual void
+      _computeScores
+      ( const std::vector< std::pair<unsigned int,
+                                     unsigned int> >& db_pair_ids ) = 0;
+      
+      // /// the actual function that computes the "conditional" scores
+      // /** @warning The function assumes that the counting tree has already been
+      //  * constructed */
+      // virtual void
+      // _computeScores
+      // ( const std::vector<unsigned int>& db_conditioning_ids,
+      //   const std::vector< std::pair<unsigned int,
+      //                                unsigned int> >& db_pair_ids  ) = 0;
+
+
+      
+      // ##########################################################################
+      // ##########################################################################
+
 
       /// prevent copy constructor
       Score ( const Score& );
 
       /// prevent copy operator
       Score& operator= ( const Score& );
-      
+
     };
 
 
@@ -197,6 +260,12 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/score.inl>
+#endif /* GUM_NO_INLINE */
 
 
 #endif /* GUM_LEARNING_SCORE_H */

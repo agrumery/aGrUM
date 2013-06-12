@@ -18,23 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing Chi2 scores
- *
- * The class is only composed of an inline static method score that actually
- * computes the Chi2 score. To do so, it parses the number of occurrences
- * stored into a CountingTargetSetBox (see file countingTreeBoxes.h for
- * more details about such a box).
+ * @brief the class for all the scores whose formula is symmetric w.r.t. the
+ * nodes it contains.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 
-#include <agrum/learning/scoreChi2.h>
-
+#include <agrum/learning/symmetricScore.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/scoreChi2.inl>
+#include <agrum/learning/symmetricScore.inl>
 #endif /* GUM_NO_INLINE */
 
+
+namespace gum {
+
+  
+  namespace learning {
+
+    
+    /// default constructor
+    SymmetricScore::SymmetricScore ( const Database& database,
+                                     unsigned int max_tree_size ) :
+      Score ( database, max_tree_size ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( SymmetricScore );
+    }
+
+    
+    /// destructor
+    SymmetricScore::~SymmetricScore () {
+      // for debugging purposes
+      GUM_DESTRUCTOR ( SymmetricScore );
+    }
+
+
+  } /* namespace learning */
+  
+  
+} /* namespace gum */
 

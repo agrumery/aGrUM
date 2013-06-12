@@ -18,19 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for all the scores that are like BIC, etc, whose
- * formula is asymmetric w.r.t. the nodes contained in the formula.
+ * @brief the class for all the scores whose formula is symmetric w.r.t. the
+ * nodes it contains.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_LEARNING_SYMMETRIC_SCORE_H
+#define GUM_LEARNING_SYMMETRIC_SCORE_H
 
-#include <agrum/learning/asymmetricScore.h>
 
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/learning/asymmetricScore.inl>
-#endif /* GUM_NO_INLINE */
+#include <vector>
+#include <agrum/config.h>
+#include <agrum/learning/score.h>
 
 
 namespace gum {
@@ -39,20 +39,28 @@ namespace gum {
   namespace learning {
 
     
-    /// default constructor
-    AsymmetricScore::AsymmetricScore ( const Database& database,
-                                       unsigned int max_tree_size ) :
-      Score ( database, max_tree_size ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR ( AsymmetricScore );
-    }
+    class SymmetricScore : public Score {
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
 
-    
-    /// destructor
-    AsymmetricScore::~AsymmetricScore () {
-      // for debugging purposes
-      GUM_DESTRUCTOR ( AsymmetricScore );
-    }
+      /// default constructor
+      SymmetricScore ( const Database& database,
+                       unsigned int max_tree_size = 0 );
+
+      /// destructor
+      ~SymmetricScore ();
+
+      /// @}
+
+      
+    protected:
+      /// a function that determines the db single ids needed for the score
+      virtual void _computeInducedSingleIds
+      ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids );
+     
+    };
 
 
   } /* namespace learning */
@@ -60,3 +68,11 @@ namespace gum {
   
 } /* namespace gum */
 
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/symmetricScore.inl>
+#endif /* GUM_NO_INLINE */
+
+
+#endif /* GUM_LEARNING_SYMMETRIC_SCORE_H */

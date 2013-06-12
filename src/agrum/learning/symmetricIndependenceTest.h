@@ -63,6 +63,16 @@ namespace gum {
       void setTargetNodes
       ( const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
 
+      /// set a new set of conditioning and target single nodes to test
+      void setNodes
+      ( const std::vector<unsigned int>& db_conditioning_ids,
+        const std::vector<unsigned int>& db_single_ids );
+
+      /// set a new set of target pairs to test
+      void setTargetNodes
+      ( const std::vector< std::pair<unsigned int,unsigned int> >& db_pair_ids );
+
+      
       /// returns the score of a given pair X,Y given the conditioning nodes
       float score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const;
 

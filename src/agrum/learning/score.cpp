@@ -26,6 +26,11 @@
 
 #include <agrum/learning/score.h>
 
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/score.inl>
+#endif /* GUM_NO_INLINE */
+
 
 namespace gum {
 
@@ -34,11 +39,16 @@ namespace gum {
     
     
     /// default constructor
-    Score::Score ( const Database& database ) :
+    Score::Score ( const Database& database,
+                   unsigned int max_tree_size ) :
       _database ( &database ),
-      _tree ( database ) {
+      _tree ( database ),
+      __max_tree_size ( max_tree_size ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( Score );
+
+      // resize the single scores so that it speeds-up computations
+      _single_scores.resize ( 2 * _database->nbrNodes () );
     }
 
     
