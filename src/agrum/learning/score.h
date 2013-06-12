@@ -218,12 +218,6 @@ namespace gum {
       virtual void
       _computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
 
-      // /// the function that computes the scores for pairs of targets
-      // /** @warning The function assumes that the counting tree has already been
-      //  * constructed */
-      // virtual void
-      // _computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
-
       /// the actual function that computes the scores of pairs of targets
       /** @warning The function assumes that the counting tree has already been
        * constructed */
@@ -232,15 +226,6 @@ namespace gum {
       ( const std::vector< std::pair<unsigned int,
                                      unsigned int> >& db_pair_ids ) = 0;
       
-      // /// the actual function that computes the "conditional" scores
-      // /** @warning The function assumes that the counting tree has already been
-      //  * constructed */
-      // virtual void
-      // _computeScores
-      // ( const std::vector<unsigned int>& db_conditioning_ids,
-      //   const std::vector< std::pair<unsigned int,
-      //                                unsigned int> >& db_pair_ids  ) = 0;
-
 
       
       // ##########################################################################

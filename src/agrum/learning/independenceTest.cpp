@@ -18,13 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for all the scores that are like BIC, etc, whose
- * formula is asymmetric w.r.t. the nodes contained in the formula.
+ * @brief the abstract class for all the independence tests
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/independenceTest.h>
+
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/independenceTest.inl>
+#endif /* GUM_NO_INLINE */
 
 
 namespace gum {
@@ -33,19 +37,32 @@ namespace gum {
   namespace learning {
 
     
-    /// a function that determines the db single ids needed for the score
-    ALWAYS_INLINE void AsymmetricScore::_computeInducedSingleIds
-    ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
-      HashTable<unsigned int, bool> exist_ids;
-      _db_induced_ids.clear ();
-      for (unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
-        if ( ! exist_ids.exists ( db_pair_ids[i].first ) ) {
-          exist_ids.insert ( db_pair_ids[i].first, true );
-          _db_induced_ids.push_back ( db_pair_ids[i].first );
-        }
-      }
+    /// default constructor
+    IndependenceTest::IndependenceTest ( const Database& database,
+                                         unsigned int max_tree_size ) :
+      Score ( database, max_tree_size ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( IndependenceTest );
     }
+      
+
+    /// destructor
+    IndependenceTest::~IndependenceTest () {
+      // for debugging purposes
+      GUM_DESTRUCTOR ( IndependenceTest );
+    }
+
+
+    /// prevent the use of the function computing the scores for single targets
+    void IndependenceTest::_computeScores ( const std::vector<unsigned int>& ) {
+    }
+
     
+    /// prevent the use of the function computing the scores of pairs of targets
+    void IndependenceTest::_computeScores
+    ( const std::vector< std::pair<unsigned int, unsigned int> >& ) {
+    }
+      
 
   } /* namespace learning */
   
@@ -53,4 +70,3 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -18,13 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for all the scores that are like BIC, etc, whose
- * formula is asymmetric w.r.t. the nodes contained in the formula.
+ * @brief the abstract class for all the independence tests
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
 namespace gum {
@@ -33,24 +30,37 @@ namespace gum {
   namespace learning {
 
     
-    /// a function that determines the db single ids needed for the score
-    ALWAYS_INLINE void AsymmetricScore::_computeInducedSingleIds
-    ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
-      HashTable<unsigned int, bool> exist_ids;
-      _db_induced_ids.clear ();
-      for (unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
-        if ( ! exist_ids.exists ( db_pair_ids[i].first ) ) {
-          exist_ids.insert ( db_pair_ids[i].first, true );
-          _db_induced_ids.push_back ( db_pair_ids[i].first );
-        }
-      }
+    /// modifies the max size of the counting trees
+    ALWAYS_INLINE void IndependenceTest::setMaxSize ( unsigned int new_size ) {
+      Score::setMaxSize ( new_size );
     }
+ 
+
+    /// computes the "unconditional" scores of a set of pairs of targets
+    ALWAYS_INLINE void IndependenceTest::computeScores
+    ( const std::vector< std::pair<unsigned int,
+                                   unsigned int> >& db_pair_ids ) {
+      Score::computeScores ( db_pair_ids );
+    }
+
     
+    /// compute the scores of the set of targets conditioned on some nodes
+    ALWAYS_INLINE void IndependenceTest::computeScores
+    ( const std::vector<unsigned int>& db_conditioning_ids,
+      const std::vector< std::pair<unsigned int,
+                                   unsigned int> >& db_pair_ids ) {
+      Score::computeScores ( db_pair_ids );
+    }
+
+
+    /// returns the score of a given pair X,Y given the conditioning nodes
+    ALWAYS_INLINE float IndependenceTest::score
+    ( const std::pair<unsigned int,unsigned int>& XY_pair ) const {
+      return Score::score ( XY_pair );
+    }
+
 
   } /* namespace learning */
   
   
 } /* namespace gum */
-
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

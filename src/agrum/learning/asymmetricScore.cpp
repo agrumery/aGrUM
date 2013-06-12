@@ -24,7 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  
 #include <agrum/learning/asymmetricScore.h>
 
 /// include the inlined functions if necessary
@@ -60,3 +61,6 @@ namespace gum {
   
 } /* namespace gum */
 
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+  
