@@ -25,7 +25,8 @@ import sys
 import os
 import subprocess
 
-from pyAgrum_header import pyAgrum_header
+from utils.pyAgrum_header import pyAgrum_header
+
 import pyAgrum as gum
 
 def dotize(aBN,name,style='pdf'):
@@ -67,7 +68,7 @@ def pdfize(aBN,name):
   dotize(aBN,name,'pdf')
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
+    pyAgrum_header("2011-13")
 
     if len(sys.argv)<2:
         print os.path.basename(sys.argv[0]),"file.{"+gum.availableBNExts()+"}"

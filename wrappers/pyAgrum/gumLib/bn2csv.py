@@ -28,10 +28,11 @@ represented by a Bayesian network.
 
 import sys,os,csv,random
 
-from progress_bar import ProgressBar
-from pyAgrum_header import pyAgrum_header
-import math
+from utils.progress_bar import ProgressBar
+from utils.pyAgrum_header import pyAgrum_header
 
+
+import math
 import pyAgrum as gum
 
 class CSVGenerator:
