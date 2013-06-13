@@ -39,6 +39,24 @@ namespace gum {
   namespace learning {
 
     
+    /* ========================================================================= */
+    /* ========================================================================= */
+    /* ===                       SYMMETRIC SCORE CLASS                       === */
+    /* ========================================================================= */
+    /* ========================================================================= */
+    /** @class SymmetricScore The class for all the scores whose formula is
+     * symmetric w.r.t. the nodes it contains.
+     *
+     * The class should be used as follows: first, to speed-up computations, you
+     * should consider computing all the scores conditioned to a given set of
+     * nodes in one pass. To do so, use the appropriate computeScores method. This
+     * one will compute everything you need. The computeScores methods where you
+     * do not specify a set of conditioning nodes assume that this set is empty.
+     * If available memory is limited, use the setMaxSize method to constrain the
+     * memory that will be used for these computations. Once the computations
+     * have been performed, use methods score to retrieve the scores computed.
+     * See the Score class for details. */
+    /* ========================================================================= */
     class SymmetricScore : public Score {
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -46,18 +64,26 @@ namespace gum {
       /// @{
 
       /// default constructor
+      /** @param database the database from which the scores will be computed
+       * @param max_tree_size the scores are computed using a CountingTree.
+       * Parameter max_tree_size indicates which maximal size in bytes the tree
+       * should have. This number is used approximately, i.e., we do not count
+       * precisely the number of bytes used but we count them roughly. */
       SymmetricScore ( const Database& database,
                        unsigned int max_tree_size = 0 );
 
       /// destructor
-      ~SymmetricScore ();
+      virtual ~SymmetricScore ();
 
       /// @}
 
       
     protected:
       /// a function that determines the db single ids needed for the score
-      virtual void _computeInducedSingleIds
+      /** For some algorithms that compute the score of a given pair, we also need
+       * to count some single nodes occurrences. This method should determine
+       * these nodes. */
+       virtual void _computeInducedSingleIds
       ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids );
      
     };

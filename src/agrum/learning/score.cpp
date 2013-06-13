@@ -51,6 +51,7 @@ namespace gum {
 
       // resize the single scores so that it speeds-up computations
       _single_scores.resize ( 2 * _database->nbrNodes () );
+      _pair_scores.resize ( 2 * _database->nbrNodes () );
     }
 
     

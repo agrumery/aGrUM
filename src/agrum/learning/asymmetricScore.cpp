@@ -21,6 +21,14 @@
  * @brief the class for all the scores that are like BIC, etc, whose
  * formula is asymmetric w.r.t. the nodes contained in the formula.
  *
+ * The class provides a common interface for all the scores that treat
+ * nodes in an asymmetric manner. For instance, in the log likelihood score,
+ * the formula to be computed involves N_ijk * log ( N_ijk / N_ij ), where
+ * N_ijk corresponds to the number of occurrences of the kth value of variable
+ * i and the jth value of the parents of variable i, and N_ij is the same
+ * except that we do not care the value of the parents. As such, variable
+ * i receives a treatment that is different from its parents and this thus
+ * leads to an asymmetric score.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 

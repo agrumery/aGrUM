@@ -34,7 +34,9 @@ namespace gum {
     
     /// modifies the max size of the counting trees
     ALWAYS_INLINE void Score::setMaxSize ( unsigned int new_size ) {
-      __max_tree_size = new_size;
+      // mostly, the memory used by CountingTree boxes is for storing
+      // counts, i.e., they are unsigned ints
+      __max_tree_size = new_size / sizeof (unsigned int); 
     }
 
     
@@ -61,7 +63,6 @@ namespace gum {
 
       _single_scores.clear ();
 
-      bool first_time = true;
       unsigned int current_index = 0;
       while ( true ) {
         // determine up to which element we can compute scores before reaching
@@ -83,13 +84,7 @@ namespace gum {
         ids.resize ( i );
         
         // create the tree and perform the computations
-        if ( first_time ) {
-          first_time = false;
-          _tree.setNodes ( __empty_cond_set, ids, __empty_pair_set );
-        }
-        else {
-          _tree.setTargetNodes ( ids );
-        }
+        _tree.setNodes ( __empty_cond_set, ids, __empty_pair_set );
         _computeScores ( ids );
       }
     }
@@ -114,13 +109,13 @@ namespace gum {
       // here there are size limitations
       // create a vector to store the ids of the nodes we wish to compute. Due
       // to size limitations in memory, we may not be able to compute
-      // th scores of all the ids in one pass
+      // the scores of all the ids in one pass
       std::vector<unsigned int> ids;
 
       _single_scores.clear ();
 
       // compute the size of the conditioning set
-     unsigned int size = 0;
+      unsigned int size = 0;
       unsigned int cond_size = 1;
       for ( unsigned int i = 0; i < db_conditioning_ids.size (); ++i ) {
         cond_size *= _database->nbrModalities ( db_conditioning_ids[i] );
@@ -166,7 +161,7 @@ namespace gum {
     ALWAYS_INLINE void
     Score::computeScores
     ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
-      // if there is no size limitation, do not try to cut db_single_ids into
+      // if there is no size limitation, do not try to cut db_pair_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {
         // compute the single targets that are needed for computing the scores
@@ -176,7 +171,7 @@ namespace gum {
         // create the tree
         _tree.setNodes ( __empty_cond_set, _db_induced_ids, db_pair_ids );
         
-        // compute the scores and store them into _single_scores
+        // compute the scores and store them into _pair_scores
         _pair_scores.clear ();
         _computeScores ( db_pair_ids );
         return;
@@ -190,7 +185,6 @@ namespace gum {
 
       _pair_scores.clear ();
 
-      bool first_time = true;
       unsigned int current_index = 0;
       while ( true ) {
         // determine up to which element we can compute scores before reaching
@@ -216,13 +210,7 @@ namespace gum {
         _computeInducedSingleIds ( ids );
        
         // create the tree and perform the computations
-        if ( first_time ) {
-          first_time = false;
-          _tree.setNodes ( __empty_cond_set, _db_induced_ids, ids );
-        }
-        else {
-          _tree.setTargetNodes ( _db_induced_ids, ids );
-        }
+        _tree.setNodes ( __empty_cond_set, _db_induced_ids, ids );
         _computeScores ( ids );
       }
     }
@@ -233,17 +221,17 @@ namespace gum {
     ( const std::vector<unsigned int>& db_conditioning_ids,
       const std::vector< std::pair<unsigned int,
                                    unsigned int> >& db_pair_ids ) {
-      // if there is no size limitation, do not try to cut db_single_ids into
+      // if there is no size limitation, do not try to cut db_pair_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {
         // compute the single targets that are needed for computing the scores
         // of the target pairs
         _computeInducedSingleIds ( db_pair_ids );
 
-       // create the tree
+        // create the tree
         _tree.setNodes ( db_conditioning_ids, _db_induced_ids, db_pair_ids );
         
-        // compute the scores and store them into _single_scores
+        // compute the scores and store them into _pair_scores
         _pair_scores.clear ();
         _computeScores ( db_pair_ids );
         return;
@@ -316,6 +304,15 @@ namespace gum {
       return _pair_scores[XY_pair];
     }
 
+
+    /// clears all the data structures from memory
+    ALWAYS_INLINE void Score::clear () {
+      _tree.clear ();
+      _db_induced_ids.clear ();
+      _single_scores.clear ();
+      _pair_scores.clear ();
+    }
+    
     
   } /* namespace learning */
   

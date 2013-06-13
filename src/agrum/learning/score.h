@@ -47,14 +47,14 @@ namespace gum {
     /** @class Score The base class for all the scores used for learning
      * (BIC, BDeu, etc)
      *
-     * The class provides a common interface for all the scores that treat
-     * nodes in an asymmetric manner. For instance, in the log likelihood score,
-     * the formula to be computed involves N_ijk * log ( N_ijk / N_ij ), where
-     * N_ijk corresponds to the number of occurrences of the kth value of variable
-     * i and the jth value of the parents of variable i, and N_ij is the same
-     * except that we do not care the value of the parents. As such, variable
-     * i receives a treatment that is different from its parents and this thus
-     * leads to an asymmetric score. */
+     * The class should be used as follows: first, to speed-up computations, you
+     * should consider computing all the scores conditioned to a given set of
+     * nodes in one pass. To do so, use the appropriate computeScores method. This
+     * one will compute everything you need. The computeScores methods where you
+     * do not specify a set of conditioning nodes assume that this set is empty.
+     * If available memory is limited, use the setMaxSize method to constrain the
+     * memory that will be used for these computations. Once the computations
+     * have been performed, use methods score to retrieve the scores computed. */
     /* ========================================================================= */
     class Score {
     public:
@@ -64,11 +64,16 @@ namespace gum {
       /// @{
 
       /// default constructor
+      /** @param database the database from which the scores will be computed
+       * @param max_tree_size the scores are computed using a CountingTree.
+       * Parameter max_tree_size indicates which maximal size in bytes the tree
+       * should have. This number is used approximately, i.e., we do not count
+       * precisely the number of bytes used but we count them roughly. */
       Score ( const Database& database,
               unsigned int max_tree_size = 0 );
 
       /// destructor
-      ~Score ();
+      virtual ~Score ();
 
       /// @}
 
@@ -79,6 +84,10 @@ namespace gum {
       /// @{
 
       /// modifies the max size of the counting trees
+      /** This function sets the maximal size in bytes that the CountingTree
+       * used to compute score should have. This number is used approximately,
+       * i.e., we do not count precisely the number of bytes used but we count
+       * them roughly. */
       void setMaxSize ( unsigned int new_size );
  
       /// computes the "unconditional" scores of a set of single targets
@@ -108,14 +117,14 @@ namespace gum {
       /// computes the "unconditional" scores of a set of pairs of targets
       /** The method computes the scores of a set of pairs of target nodes
        * unconditionally, i.e., the target nodes have no conditioning node. The
-       * score of a pair (X,Y) of target nodes corresponds to the score of Y 
-       * conditioned to X. As such, it could be computed by putting X into
+       * score of a pair (X,Y) of target nodes actually corresponds to the score
+       * of Y conditioned to X. As such, it could be computed by putting X into
        * the set of conditioning nodes and Y into that of target nodes. However,
        * in order to avoid parsing too many times the database, it is more
        * efficient to specify this score as a pair of target node because it
        * enables to factorize the parsing of the database among several scores.
-       * For instance, assume that we wish to test the scores of setting a node
-       * X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
+       * For instance, assume that we wish to test the scores induced by setting a
+       * node X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
        * need to specify the set of target nodes {(X_1,Y),...,(X_n,Y)}.
        *
        * The nodes are identified by their id in the database. Their scores can
@@ -130,14 +139,14 @@ namespace gum {
       /// compute the scores of the set of targets conditioned on some nodes
       /** The method computes the scores of a set of pairs of target nodes
        * conditionally to some other nodes. The score of a pair (X,Y) of target
-       * nodes conditionally to a set Z corresponds to the score of Y 
+       * nodes conditionally to a set Z actually corresponds to the score of Y 
        * conditioned to Z U {X}. As such, it could be computed by putting X into
        * the set of conditioning nodes and Y into that of target nodes. However,
        * in order to avoid parsing too many times the database, it is more
        * efficient to specify this score as a pair of target node because it
        * enables to factorize the parsing of the database among several scores.
-       * For instance, assume that we wish to test the scores of setting a node
-       * X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
+       * For instance, assume that we wish to test the scores induced by setting
+       * a node X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
        * need to specify the set of target nodes {(X_1,Y),...,(X_n,Y)}.
        *
        * The nodes are identified by their id in the database. Their scores can
@@ -171,6 +180,9 @@ namespace gum {
        * an exception raised. */
       float score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const;
 
+      /// clears all the data structures from memory
+      void clear ();
+
       /// @}
 
 
@@ -187,7 +199,7 @@ namespace gum {
       /// the scores for the single target nodes
       HashTable<unsigned int,float> _single_scores;
 
-      /// the scores for the pair of target nodes
+      /// the scores for the pairs of target nodes
       HashTable<std::pair<unsigned int,unsigned int>,float> _pair_scores;
 
 
@@ -224,7 +236,7 @@ namespace gum {
       virtual void
       _computeScores
       ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids ) = 0;
+        unsigned int> >& db_pair_ids ) = 0;
       
 
       

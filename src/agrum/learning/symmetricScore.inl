@@ -36,7 +36,7 @@ namespace gum {
     /// a function that determines the db single ids needed for the score
     ALWAYS_INLINE void SymmetricScore::_computeInducedSingleIds
     ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
-      HashTable<unsigned int, bool> exist_ids;
+      HashTable<unsigned int, bool> exist_ids ( 2 * db_pair_ids.size () );
       _db_induced_ids.clear ();
       for (unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
         if ( ! exist_ids.exists ( db_pair_ids[i].first ) ) {
