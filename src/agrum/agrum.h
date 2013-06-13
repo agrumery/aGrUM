@@ -57,18 +57,17 @@ Here is a list of howtos about some classes of aGrUM :
 aGrUM is in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use. 
 
 To install aGrUm :
-     
-\verbatim
-git clone git://forge.lip6.fr/aGrUM
-\endverbatim
+
+    git clone git://forge.lip6.fr/aGrUM
+
 
 To test aGrUM, you could run (quite long)  
-\verbatim
-act test release -t all
-\endverbatim
+
+    act test release -t all
 
 To install aGruM, you classically have the choice between :
 - system-wide installation : using root privilege
+
 \verbatim
 sudo act install release
 \endverbatim
@@ -113,12 +112,10 @@ target_link_libraries(foo agrum)
 
 - to compile the project (from the project folder)
 
-\verbatim
-mkdir build
-cd build
-cmake ../src/
-make
-\endverbatim
+    mkdir build
+    cd build
+    cmake ../src/
+    make
 
 - build/foo is the executable.
     
