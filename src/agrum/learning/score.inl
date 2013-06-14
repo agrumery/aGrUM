@@ -43,6 +43,9 @@ namespace gum {
     /// computes the "unconditional" scores of a set of single targets
     ALWAYS_INLINE void
     Score::computeScores ( const std::vector<unsigned int>& db_single_ids ) {
+      // set the conditioning nodes to the empty set
+      _db_conditioning_ids = &__empty_cond_set;
+
       // if there is no size limitation, do not try to cut db_single_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {
@@ -94,6 +97,9 @@ namespace gum {
     ALWAYS_INLINE void
     Score::computeScores ( const std::vector<unsigned int>& db_conditioning_ids,
                            const std::vector<unsigned int>& db_single_ids ) {
+      // keep track of the conditioning nodes
+      _db_conditioning_ids = &db_conditioning_ids;
+
       // if there is no size limitation, do not try to cut db_single_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {
@@ -161,6 +167,9 @@ namespace gum {
     ALWAYS_INLINE void
     Score::computeScores
     ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
+      // set the conditioning nodes to the empty set
+      _db_conditioning_ids = &__empty_cond_set;
+
       // if there is no size limitation, do not try to cut db_pair_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {
@@ -221,6 +230,9 @@ namespace gum {
     ( const std::vector<unsigned int>& db_conditioning_ids,
       const std::vector< std::pair<unsigned int,
                                    unsigned int> >& db_pair_ids ) {
+      // keep track of the conditioning nodes
+      _db_conditioning_ids = &db_conditioning_ids;
+
       // if there is no size limitation, do not try to cut db_pair_ids into
       // pieces and perform computations directly
       if ( ! __max_tree_size ) {

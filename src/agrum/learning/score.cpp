@@ -45,6 +45,7 @@ namespace gum {
                    unsigned int max_tree_size ) :
       _database ( &database ),
       _tree ( database ),
+      _db_conditioning_ids ( &__empty_cond_set ),
       __max_tree_size ( max_tree_size ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( Score );

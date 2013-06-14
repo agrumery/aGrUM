@@ -242,13 +242,9 @@ namespace gum {
         __target_modalities[j] = __database->nbrModalities ( db_single_ids[i] );
       }
 
-      // check whether there are conditioning nodes
-      const bool has_conditionals =
-        __db_conditioning_ids && __db_conditioning_ids->size ();
-
       // remove the target trees, if any
       if ( __root.Conditioning ) {
-        if ( has_conditionals ) {
+        if ( ! __last_cond_nodes.empty () ) {
           // remove the curent target set boxes
           for ( const ListBucket<CountingTreeTargetSetBox*>* iter =
                   __target_records.frontBucket (); iter; iter = iter->next () ) {
@@ -264,11 +260,16 @@ namespace gum {
         }
         else {
           CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
+          __root.TargetSet = 0;
         }
       }
 
       // clear the old target records
       __target_records.clear ();
+
+      // check whether there are conditioning nodes
+      const bool has_conditionals =
+        __db_conditioning_ids && __db_conditioning_ids->size ();
 
       // recompute the target records
       if  ( db_pair_ids.size () ) {

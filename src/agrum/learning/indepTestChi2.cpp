@@ -37,7 +37,8 @@ namespace gum {
     /// default constructor
     IndepTestChi2::IndepTestChi2 ( const Database& database,
                                    unsigned int max_tree_size ) :
-    SymmetricIndependenceTest ( database, max_tree_size ) {
+      SymmetricIndependenceTest ( database, max_tree_size ),
+      __chi2 ( database ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( IndepTestChi2 );
     }
@@ -53,6 +54,9 @@ namespace gum {
     /// computes the Chi2 of (X,Y) given conditioning set Z
     void IndepTestChi2::_computeScores
     ( const std::vector< std::pair<unsigned int, unsigned int> >& db_pair_ids ) {
+      // indicate to the chi2 distribution the set of conditioning nodes
+      __chi2.setConditioningNodes ( *_db_conditioning_ids );
+      
       // for each pair, determine the offset of the corresponding induced single
       // ids within the targetSetBox
       std::vector<unsigned int> first_offset ( db_pair_ids.size () );
@@ -104,6 +108,15 @@ namespace gum {
           }
           score[i] += score_i;
         }
+      }
+
+      // ok, here, score[i] contains the value of the chi2 formula for each
+      // pair. To get a meaningful score, we shall compute the critical values
+      // for the Chi2 distribution and assign as the score of the ith pair
+      // (score[i] - alpha ) / alpha, where alpha is the critical value
+      for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
+        float alpha = __chi2.criticalValue ( db_pair_ids[i] );
+        _pair_scores.insert ( db_pair_ids[i], ( score[i] - alpha ) / alpha );
       }
     }
 

@@ -193,6 +193,9 @@ namespace gum {
       /// the counting tree used for the computations
       CountingTree _tree;
 
+      /// the current set of conditioning nodes
+      const std::vector<unsigned int>* _db_conditioning_ids;
+
       /// the single ids deduced from pairs of ids, that are needed for the score  
       std::vector<unsigned int> _db_induced_ids;
       

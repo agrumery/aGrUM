@@ -86,7 +86,10 @@ namespace gum {
       /// @}
 
 
-    protected:
+    private:
+      /// a chi2 distribution for computing critical values
+      Chi2 __chi2;
+      
       /// computes the Chi2 of (X,Y) given conditioning set Z
       /** This method computes sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
        * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of
