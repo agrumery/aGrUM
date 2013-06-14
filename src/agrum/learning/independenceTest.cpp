@@ -61,12 +61,6 @@ namespace gum {
     }
 
     
-    /// prevent the use of the function computing the scores of pairs of targets
-    void IndependenceTest::_computeScores
-    ( const std::vector< std::pair<unsigned int, unsigned int> >& ) {
-    }
-      
-
   } /* namespace learning */
   
   

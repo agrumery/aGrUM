@@ -51,7 +51,7 @@ namespace gum {
     ( const std::vector<unsigned int>& db_conditioning_ids,
       const std::vector< std::pair<unsigned int,
                                    unsigned int> >& db_pair_ids ) {
-      Score::computeScores ( db_pair_ids );
+      Score::computeScores ( db_conditioning_ids, db_pair_ids );
     }
 
 

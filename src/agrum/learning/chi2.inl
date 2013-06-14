@@ -47,7 +47,7 @@ namespace gum {
 
     /// returns the number of degrees of freedom
     ALWAYS_INLINE unsigned long
-    Chi2::chi2DegreesOfFreedom
+    Chi2::degreesOfFreedom
     ( const std::pair<unsigned int, unsigned int>& pair ) {
       return ( __conditioning_size *
                ( __database->nbrModalities ( pair.first ) - 1 ) *
@@ -58,14 +58,14 @@ namespace gum {
     /// computes the critical value according to the number of degrees of freedom
     ALWAYS_INLINE float
     Chi2::criticalValue ( const std::pair<unsigned int, unsigned int>& pair) {
-      // try to see if the threshold is not already in cache
-      unsigned long DF = chi2DegreesOfFreedom( pair );
+      unsigned long DF = degreesOfFreedom( pair );
 
+      // try to see if the threshold is not already in cache
       try {
         return __critical_values[DF];
       }
       catch ( const Exception& ) {
-        // here we have to compute the theshold of the chi2
+        // here we have to compute the threshold of the chi2
         // we use Gary Perlman's algorithm
         float value = __criticalValue ( __confidence_proba, DF );
         __critical_values.insert ( DF, value );

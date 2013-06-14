@@ -78,7 +78,7 @@ namespace gum {
       float criticalValue ( const std::pair<unsigned int, unsigned int>& pair);
 
       /// returns the number of degrees of freedom
-      unsigned long chi2DegreesOfFreedom
+      unsigned long degreesOfFreedom
       ( const std::pair<unsigned int, unsigned int>& pair );
 
       /// modifies the confidence proba
@@ -118,13 +118,13 @@ namespace gum {
 
 
       /// computes the probability of normal z value
-      /** This code has been written by Grary Perlman.
+      /** This code has been written by Gary Perlman.
        * ALGORITHM Adapted from a polynomial approximation in:
        * Ibbetson D, Algorithm 209
        * Collected Algorithms of the CACM 1963 p. 616
        * Note:
        * This routine has six digit accuracy, so it is only useful for absolute
-       * z values < 6.  For z values >= to 6.0, poz() returns 0.0. */
+       * z values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. */
       static double __probaZValue( double z );
 
 

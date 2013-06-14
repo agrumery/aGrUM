@@ -20,6 +20,14 @@
 /** @file
  * @brief the abstract class for all the independence tests
  *
+ * The class should be used as follows: first, to speed-up computations, you
+ * should consider computing all the scores conditioned to a given set of
+ * nodes in one pass. To do so, use the appropriate computeScores method. This
+ * one will compute everything you need. The computeScores methods where you
+ * do not specify a set of conditioning nodes assume that this set is empty.
+ * If available memory is limited, use the setMaxSize method to constrain the
+ * memory that will be used for these computations. Once the computations
+ * have been performed, use methods score to retrieve the scores computed.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -41,6 +49,17 @@ namespace gum {
     /* ===                      INDEPENDENCE TEST CLASS                      === */
     /* ========================================================================= */
     /* ========================================================================= */
+    /** @class IndependenceTest the abstract class for all the independence tests
+     *
+     * The class should be used as follows: first, to speed-up computations, you
+     * should consider computing all the scores conditioned to a given set of
+     * nodes in one pass. To do so, use the appropriate computeScores method. This
+     * one will compute everything you need. The computeScores methods where you
+     * do not specify a set of conditioning nodes assume that this set is empty.
+     * If available memory is limited, use the setMaxSize method to constrain the
+     * memory that will be used for these computations. Once the computations
+     * have been performed, use methods score to retrieve the scores computed. */
+    /* ========================================================================= */
     class IndependenceTest : protected Score {
     public:
       // ##########################################################################
@@ -49,11 +68,16 @@ namespace gum {
       /// @{
       
       /// default constructor
+      /** @param database the database from which the scores will be computed
+       * @param max_tree_size the scores are computed using a CountingTree.
+       * Parameter max_tree_size indicates which maximal size in bytes the tree
+       * should have. This number is used approximately, i.e., we do not count
+       * precisely the number of bytes used but we count them roughly. */
       IndependenceTest ( const Database& database,
                          unsigned int max_tree_size = 0 );
       
       /// destructor
-      ~IndependenceTest ();
+      virtual ~IndependenceTest ();
 
       /// @}
 
@@ -64,6 +88,10 @@ namespace gum {
       /// @{
 
       /// modifies the max size of the counting trees
+      /** This function sets the maximal size in bytes that the CountingTree
+       * used to compute score should have. This number is used approximately,
+       * i.e., we do not count precisely the number of bytes used but we count
+       * them roughly. */
       void setMaxSize ( unsigned int new_size );
  
       /// computes the "unconditional" scores of a set of pairs of targets
@@ -140,11 +168,6 @@ namespace gum {
       /// prevent the use of the function computing the scores for single targets
       void _computeScores ( const std::vector<unsigned int>& );
 
-      /// prevent the use of the function computing the scores of pairs of targets
-      void _computeScores
-      ( const std::vector< std::pair<unsigned int, unsigned int> >& );
-      
-      
       /// prevent copy constructor
       IndependenceTest ( const IndependenceTest& );
 
