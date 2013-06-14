@@ -87,11 +87,23 @@ namespace gum {
 
         // if the box has not been created yet, do it
         if ( ! current_box->child ( index ) ) {
-          CountingTreeConditioningBox* new_box =
-            CountingTreeConditioningBox::createBox
-            ( __database->nbrModalities
-              ( __db_conditioning_ids->operator[] ( i-1 ) ),
-              i == 1 ); // when i = 1, this corresponds to the last_level
+          CountingTreeConditioningBox* new_box;
+          if ( i == 1 ) { // when i = 1, this corresponds to the last_level
+            new_box = CountingTreeConditioningBox::createBox
+              ( __database->nbrModalities
+                ( __db_conditioning_ids->operator[] ( i-1 ) ),
+                true );
+            
+            // add the box to the set of conditioning boxes of the last level
+            __last_cond_nodes.pushBack ( new_box );
+          }
+          else {
+            new_box = CountingTreeConditioningBox::createBox
+              ( __database->nbrModalities
+                ( __db_conditioning_ids->operator[] ( i-1 ) ),
+                false );
+          }
+
           current_box->setChild ( index, new_box );
 
           // assign the child as the current box
@@ -234,16 +246,26 @@ namespace gum {
       const bool has_conditionals =
         __db_conditioning_ids && __db_conditioning_ids->size ();
 
-      // remove the tree, if any
+      // remove the target trees, if any
       if ( __root.Conditioning ) {
         if ( has_conditionals ) {
-          CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
+          // remove the curent target set boxes
+          for ( const ListBucket<CountingTreeTargetSetBox*>* iter =
+                  __target_records.frontBucket (); iter; iter = iter->next () ) {
+            CountingTreeTargetSetBox::deleteBox ( **iter );
+          }
+          
+          // indicate to the conditioning boxes at the last level that their
+          // children do not exist anymore
+          for ( const ListBucket<CountingTreeConditioningBox*>* iter =
+                  __last_cond_nodes.frontBucket (); iter; iter = iter->next () ) {
+            (**iter)->unsetChildren ();
+          }
         }
         else {
           CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
         }
       }
-      __root.Conditioning = 0;
 
       // clear the old target records
       __target_records.clear ();
@@ -273,6 +295,13 @@ namespace gum {
       }
     }
 
+    
+    /// assign a new set of target nodes and compute countings
+    ALWAYS_INLINE void CountingTree::setTargetNodes
+    ( const std::vector<unsigned int>& db_single_ids ) {
+      setTargetNodes ( db_single_ids, __empty_pairs );
+    }
+ 
 
     /// assign a new set of conditioning and target nodes and compute countings
     ALWAYS_INLINE void CountingTree::setNodes
@@ -293,6 +322,7 @@ namespace gum {
         }
       }
       __root.Conditioning = 0;
+      __last_cond_nodes.clear ();
       
       // save the conditioning ids
       __db_conditioning_ids = &db_conditioning_ids;

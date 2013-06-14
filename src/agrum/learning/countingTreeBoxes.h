@@ -103,7 +103,7 @@ namespace gum {
        * a target set box (true) or not.
        * @return a new conditioning box */
       static CountingTreeConditioningBox* createBox ( unsigned int children_size,
-                                                     bool final_level );
+                                                      bool final_level );
 
       /// removes a CountingTreeConditioningBox and all its descendants
       /** If the capacity of the pool is not exceeded, the box is stored into the
@@ -126,6 +126,11 @@ namespace gum {
        * back into the pool (or discarding them from memory if the capacity of
        * the pool is exceeded). */
       void clear ();
+
+      /// indicate to the node that it has no more children
+      /** @warning The children are not actually removed from memory. This method
+       * just remove from the conditioning box the information that they exist. */
+      void unsetChildren ();
 
       /// returns the set of children
       /** @return the set of children of the box
@@ -224,7 +229,7 @@ namespace gum {
        * last level of conditioning boxes (true) or not. If final_level is true,
        * then the next tree level contains target set boxes. */
       CountingTreeConditioningBox ( unsigned int children_size,
-                                   bool final_level );
+                                    bool final_level );
 
       /// copy constructor: prevent its construction
       CountingTreeConditioningBox ( const CountingTreeConditioningBox& );

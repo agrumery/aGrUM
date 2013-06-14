@@ -406,7 +406,15 @@ namespace gum {
       __children.clear ();
     }
 
- 
+    
+    /// indicate to the node that it has no more children
+    ALWAYS_INLINE void CountingTreeConditioningBox::unsetChildren () {
+      for ( unsigned int i = 0; i < __children.size (); ++i ) {
+        __children[i] = 0;
+      }
+    }
+
+    
     /// put a CountingTreeConditioningBox into the pool
     ALWAYS_INLINE void
     CountingTreeConditioningBox::deleteBox ( CountingTreeConditioningBox* box ) {

@@ -202,9 +202,14 @@ namespace gum {
         CountingTreeTargetSetBox*    TargetSet;
       } __root;
 
+      /// the list of conditioning nodes at the last level
+      ListBase<CountingTreeConditioningBox*> __last_cond_nodes;
+      
       /// the list of all target set boxes created by parsing the database
       ListBase<CountingTreeTargetSetBox*> __target_records;
 
+      /// a dummy empty vector of target pairs
+      std::vector< std::pair<unsigned int,unsigned int> > __empty_pairs;
 
         
       // ##########################################################################
