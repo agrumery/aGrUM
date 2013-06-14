@@ -20,21 +20,25 @@
 /** @file
  * @brief the class for computing G2 scores
  *
- * The class is only composed of an inline static method score that actually
- * computes the G2 score. To do so, it parses the number of occurrences
- * stored into a CountingTargetSetBox (see file countingTreeBoxes.h for
- * more details about such a box).
- *
+ * The class should be used as follows: first, to speed-up computations, you
+ * should consider computing all the scores conditioned to a given set of
+ * nodes in one pass. To do so, use the appropriate computeScores method. This
+ * one will compute everything you need. The computeScores methods where you
+ * do not specify a set of conditioning nodes assume that this set is empty.
+ * If available memory is limited, use the setMaxSize method to constrain the
+ * memory that will be used for these computations. Once the computations
+ * have been performed, use methods score to retrieve the scores computed.
+ * See the Score class for details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 
-#ifndef GUM_LEARNING_SCORE_G2_H
-#define GUM_LEARNING_SCORE_G2_H
+#ifndef GUM_LEARNING_INDEP_TEST_G2_H
+#define GUM_LEARNING_INDEP_TEST_G2_H
 
 
-#include <cmath>
-#include <agrum/learning/countingTreeBoxes.h>
+#include <agrum/learning/chi2.h>
+#include <agrum/learning/symmetricIndependenceTest.h>
 
 
 namespace gum {
@@ -48,29 +52,58 @@ namespace gum {
     /* ===                          SCORE G2 CLASS                           === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class ScoreG2 */
+    /** @class ScoreG2
+     *
+     * The class should be used as follows: first, to speed-up computations, you
+     * should consider computing all the scores conditioned to a given set of
+     * nodes in one pass. To do so, use the appropriate computeScores method. This
+     * one will compute everything you need. The computeScores methods where you
+     * do not specify a set of conditioning nodes assume that this set is empty.
+     * If available memory is limited, use the setMaxSize method to constrain the
+     * memory that will be used for these computations. Once the computations
+     * have been performed, use methods score to retrieve the scores computed.
+     * See the Score class for details. */
     /* ========================================================================= */
-    class ScoreG2 {
+    class IndepTestG2 : public SymmetricIndependenceTest {
     public:
-      /// computes the G2 of (X,Y) given conditioning set Z (stored in the box)
-      /** This method computes:
-       * 2 sum_X sum_Y sum_Z #XYZ ln ( ( #XYZ * #Z ) / ( #XZ * #YZ ) ),
-       * where #XYZ and #XZ correspond to the number of
-       * occurences of (X,Y,Z) and (X,Z) respectively in the database. Those
-       * numbers are stored in the target set box passed in argument and the
-       * parameters x, y, xy indicate the indices in the target set box of the
-       * elements corresponding to #XZ, #YZ and #XYZ respectively. #Z is
-       * directly accessible from the box using method nbParentRecords.
-       * @param box the target set box that contains all the countings required,
-       * i.e., those of x, y, xy and z
-       * @param x the index in 'box' of the targetBox containing the #XZ numbers
-       * @param y the index in 'box' of the targetBox containing the #YZ numbers
-       * @param xy the index in 'box' of the targetBox containing the #XYZ numbers
-       */
-      static float score ( const CountingTreeTargetSetBox& box,
-                           unsigned int x,
-                           unsigned int y,
-                           unsigned int xy );
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      /** @param database the database from which the scores will be computed
+       * @param max_tree_size the scores are computed using a CountingTree.
+       * Parameter max_tree_size indicates which maximal size in bytes the tree
+       * should have. This number is used approximately, i.e., we do not count
+       * precisely the number of bytes used but we count them roughly. */
+       IndepTestG2 ( const Database& database,
+                     unsigned int max_tree_size = 0 );
+
+      /// destructor
+      ~IndepTestG2 ();
+
+      /// @}
+
+
+    private:
+      /// a chi2 distribution for computing critical values
+      Chi2 __chi2;
+      
+      /// computes the G2 of (X,Y) given conditioning set Z
+      /** This method computes sum_X sum_Y sum_Z
+       * #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) ), where #XYZ and #XZ
+       * correspond to the number of occurences of (X,Y,Z) and (X,Z) respectively
+       * in the database and #Z to the number of occurrences of Z. Those
+       * numbers are stored in the target set boxes of the counting tree of the
+       * base class Score. #Z is directly accessible from the box using method
+       * nbParentRecords of the targetSetBox.
+       * @warning The function assumes that the counting tree has already been
+       * constructed */
+      void _computeScores
+      ( const std::vector< std::pair<unsigned int,
+                                     unsigned int> >& db_pair_ids );
+ 
     };
     
 
@@ -80,10 +113,4 @@ namespace gum {
 } /* namespace gum */
 
 
-/// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#include <agrum/learning/scoreG2.inl>
-#endif /* GUM_NO_INLINE */
-
-
-#endif /* GUM_LEARNING_SCORE_G2_H */
+#endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */
