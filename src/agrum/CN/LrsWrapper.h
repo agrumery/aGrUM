@@ -22,7 +22,7 @@
  * @file
  * @brief Lrs wrapper
  * @author Matthieu HOURBRACQ
- * 
+ *
  * easy use of lrs lib
  */
 
@@ -76,9 +76,9 @@ namespace gum {
     /**
      * @class LRSWrapper LrsWrapper.h <agrum/CN/LrsWrapper.h>
      * @brief Class template acting as a wrapper for Lexicographic Reverse Search by David Avis.
-     *
-		 * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-		 * @author Matthieu HOURBRACQ
+     * @ingroup cn_group
+     * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
+     * @author Matthieu HOURBRACQ
      */
     template < typename GUM_SCALAR >
     class LRSWrapper {
@@ -217,7 +217,7 @@ namespace gum {
          * @param Num Output integer numerators.
          * @param Den Output integer denominators.
          */
-        void __getLRSWrapperOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > & Num, std::vector< long int > & Den ) const;
+        void __getLRSWrapperOutput ( lrs_mp Nin, lrs_mp Din, std::vector< long int > &Num, std::vector< long int > &Den ) const;
 
         /// @}
 
@@ -327,24 +327,24 @@ namespace gum {
          * @param modal The modality on which we put constraints.
          */
         void fillH ( const GUM_SCALAR &min, const GUM_SCALAR &max, const unsigned int &modal );
-				
-				
-				
-				/**
-				 * @brief Fill the H-representation from the matrix given in argument.
-				 * 
-				 * @param matrix The H-representation of the polytope of the form 0 <= -b + Ax, A is the matrix, each column the coefficient of the variable in x.
-				 */
-				void fillMatrix ( const std::vector< std::vector< GUM_SCALAR > > & matrix );
 
-				
-				
+
+
+        /**
+         * @brief Fill the H-representation from the matrix given in argument.
+         *
+         * @param matrix The H-representation of the polytope of the form 0 <= -b + Ax, A is the matrix, each column the coefficient of the variable in x.
+         */
+        void fillMatrix ( const std::vector< std::vector< GUM_SCALAR > > &matrix );
+
+
+
         /**
          * @brief Creates the V-representation of a polytope by adding a vertex to the problem input \c __input.
          *
          * @param vertex The vertex we wish to add to the V-representation of the polytope.
          */
-        void fillV ( const std::vector< GUM_SCALAR > & vertex );
+        void fillV ( const std::vector< GUM_SCALAR > &vertex );
 
         /// @}
 

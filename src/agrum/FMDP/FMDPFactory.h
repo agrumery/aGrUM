@@ -44,6 +44,7 @@ namespace gum {
   /**
    * @class FMDPFactory FMDPFactory.h <agrum/FMDP/FMDPFactory.h>
    * @brief A factory class to ease Factored Markov Decision Process construction.
+   * @ingroup fmdp_group
    *
    * A FMDPFactory will never create a Factored Markov Decision Process and works on only one
    * Factored Markov Decision Process.
@@ -63,7 +64,7 @@ namespace gum {
   class FMDPFactory : public AbstractFMDPFactory {
 
     public:
-      
+
       // ==========================================================================
       /// @name Constructor & destructor.
       // ==========================================================================
@@ -74,7 +75,7 @@ namespace gum {
        * @param fmdp A pointer over the @ref FactoredMarkovDecisionProcess filled by this factory.
        * @param ddFactory The @ref MultiDimDecisionDiagramFactoryBase that will be used.
        */
-      FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory );
+      FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *ddFactory );
 
       //~ /**
       //~ * @brief Copy constructor.
@@ -107,14 +108,14 @@ namespace gum {
        * @throw OperationNotAllowed Raise if the state of the factory is different
        *                            than NONE.
        */
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP() const;
+      FactoredMarkovDecisionProcess<GUM_SCALAR> *FMDP() const;
 
       /// Returns the current state of the factory.
       FMDPfactory_state state() const;
 
       /// Returns a constant reference on a variable given it's name.
       /// @throw NotFound Raised if no variable matches the name.
-      const DiscreteVariable* variable ( const std::string& name ) const;
+      const DiscreteVariable *variable ( const std::string &name ) const;
 
       /// @}
       // ==========================================================================
@@ -126,8 +127,8 @@ namespace gum {
       void startPropertyDeclaration();
 
       /// Tells the factory to add a property to the current fmdp.
-      void addProperty ( const std::string& propName,
-                  const std::string& propValue );
+      void addProperty ( const std::string &propName,
+                         const std::string &propValue );
 
       /// Tells the factory that we're out of a property declaration.
       void endPropertyDeclaration();
@@ -144,13 +145,13 @@ namespace gum {
       /// Tells the factory the current variable's name.
       /// @throw DuplicateElement Raised if a variable with the same name already
       ///                         exist.
-      void variableName ( const std::string& name );
+      void variableName ( const std::string &name );
 
       /// Tells the factory the current variable's description.
-      void variableDescription ( const std::string& desc );
+      void variableDescription ( const std::string &desc );
 
       /// Adds a modality to the current variable.
-      void addModality ( const std::string& name );
+      void addModality ( const std::string &name );
 
       /// Tells the factory that we're out of a variable declaration.
       /// @throw UndefinedElement Raised if the variable isn't defined (or not
@@ -165,14 +166,14 @@ namespace gum {
 
       /// Tells the factory that we're in an action declaration.
       void startActionDeclaration();
-      
+
       /// Tells the factory to add an action to the current fmdp.
-      void addAction ( const std::string& action );
+      void addAction ( const std::string &action );
 
       /// Tells the factory that we're out of an action declaration.
       void endActionDeclaration();
-      
-    /// @}
+
+      /// @}
       // ==========================================================================
       /// @name Transition declaration methods (NONE -> TRANSITION <- ACTION)
       // ==========================================================================
@@ -180,18 +181,18 @@ namespace gum {
 
       /// Tells the factory that we're in a transition declaration.
       void startTransitionDeclaration();
-      
+
       /// Tells the factory to add a transition table to the current fmdp.
-      void addTransition( const std::string& var, const MultiDimAdressable* transition );
-      
+      void addTransition ( const std::string &var, const MultiDimAdressable *transition );
+
       /// Tells the factory to add a transition table to the current fmdp.
       /// This transition table will be extracted from incorporated multiDimDecisionDiagram.
-      void addTransition ( const std::string& var );
+      void addTransition ( const std::string &var );
 
       /// Tells the factory that we're out of a transition declaration.
       void endTransitionDeclaration();
-      
-    /// @}
+
+      /// @}
       // ==========================================================================
       /// @name Cost declaration methods (NONE -> COST <- ACTION)
       // ==========================================================================
@@ -199,18 +200,18 @@ namespace gum {
 
       /// Tells the factory that we're in a cost declaration.
       void startCostDeclaration();
-      
+
       /// Tells the factory to add a cost table to the current fmdp.
-      void addCost ( const MultiDimAdressable* cost );
-      
+      void addCost ( const MultiDimAdressable *cost );
+
       /// Tells the factory to add a cost table to the current fmdp.
       /// This cost table will be extracted from incorporated multiDimDecisionDiagram.
       void addCost ( );
 
       /// Tells the factory that we're out of a cost declaration.
       void endCostDeclaration();
-      
-    /// @}
+
+      /// @}
       // ==========================================================================
       /// @name Reward declaration methods (NONE -> REWARD <- ACTION)
       // ==========================================================================
@@ -221,19 +222,19 @@ namespace gum {
 
       /// Tells the factory that we're in a reward declaration mode where the global reward diagram is an operation between
       /// simplier decision diagram..
-      void setOperationModeOn( std::string operationType );
-      
+      void setOperationModeOn ( std::string operationType );
+
       /// Tells the factory to add a reward table to the current fmdp.
-      void addReward ( const MultiDimAdressable* reward );
-      
+      void addReward ( const MultiDimAdressable *reward );
+
       /// Tells the factory to add a reward table to the current fmdp.
       /// This reward table will be extracted from incorporated multiDimDecisionDiagram.
       void addReward ( );
 
       /// Tells the factory that we're out of a cost declaration.
       void endRewardDeclaration();
-      
-    /// @}
+
+      /// @}
       // ==========================================================================
       /// @name Discount declaration methods (NONE -> DISCOUNT)
       // ==========================================================================
@@ -241,31 +242,31 @@ namespace gum {
 
       /// Tells the factory that we're in a cost declaration.
       void startDiscountDeclaration();
-      
+
       /// Tells the factory to add a cost table to the current fmdp.
-      void addDiscount( float discount );
+      void addDiscount ( float discount );
 
       /// Tells the factory that we're out of a cost declaration.
       void endDiscountDeclaration();
-      
-    /// @}
+
+      /// @}
       // ==========================================================================
       /// @name DecisionDiagram Creation specific methods
       /// @brief methods used by internal decisiondiagramfactory to build up
       /// a multidimdecisiondiagram
       // ==========================================================================
       /// @{
-      
+
       /// Insert in diagram a non terminal node
-      NodeId addNonTerminalNode( std::string name_of_var );
-      
+      NodeId addNonTerminalNode ( std::string name_of_var );
+
       /// Insert in diagram a terminal node
-      NodeId addTerminalNode( float value );
-      
+      NodeId addTerminalNode ( float value );
+
       /// Insert in diagram an arc
-      void insertArc( NodeId from, NodeId to, Idx modality );
-      
-    /// @}
+      void insertArc ( NodeId from, NodeId to, Idx modality );
+
+      /// @}
 
       /**
        * @name verbosity control
@@ -283,7 +284,7 @@ namespace gum {
         return __verbose;
       };
       /// @}
-      
+
     private:
 
       // ==========================================================================
@@ -302,10 +303,10 @@ namespace gum {
 
       /// Just to keep track of strings between two start/end calls.
       std::vector<const MultiDimImplementation<GUM_SCALAR>*> __ddBag;
-      
+
       /// Used in VARIABLE mode
       /// Checks if in __stringBag there is no other modality with the same name.
-      void __checkModalityInBag ( const std::string& mod );
+      void __checkModalityInBag ( const std::string &mod );
 
       /// Reset the different parts used to constructed the FMDP.
       void __resetParts();
@@ -316,21 +317,21 @@ namespace gum {
       std::vector<FMDPfactory_state> __states;
 
       /// The constructed FMDP
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
-      
+      FactoredMarkovDecisionProcess<GUM_SCALAR> *__fmdp;
+
       /// The factory used to build up decision diagram
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* __decisionDiagramFactory;
+      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *__decisionDiagramFactory;
 
       /// Mapping between a declared variable's name and itself.
-      HashTable< std::string, const DiscreteVariable* > __varNameMap;
-      
+      HashTable< std::string, const DiscreteVariable * > __varNameMap;
+
       bool __verbose;
 
       /// Copy operator is illegal, use only copy constructor.
-      FMDPFactory<GUM_SCALAR>& operator= ( const FMDPFactory<GUM_SCALAR>& source );
+      FMDPFactory<GUM_SCALAR> &operator= ( const FMDPFactory<GUM_SCALAR> &source );
 
       /// Raise an OperationNotAllowed with the message "Illegal state."
-      void __illegalStateError ( const std::string& s );
+      void __illegalStateError ( const std::string &s );
   };
 } /* namespace gum */
 
@@ -339,4 +340,4 @@ namespace gum {
 // ============================================================================
 #endif // GUM_FMDP_FACTORY_H
 // ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

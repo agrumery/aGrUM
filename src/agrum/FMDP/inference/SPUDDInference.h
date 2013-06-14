@@ -40,7 +40,7 @@ namespace gum {
   /**
    * @class SPUDDInference SPUDDInference.h <agrum/FMDP/inference/SPUDDInference.h>
    * @brief A factory class to ease Factored Markov Decision Process construction.
-   *
+   * @ingroup fmdp_group
    * Perform a SPUDD inference on given in parameter factored markov decision process
    *
    */
@@ -50,7 +50,7 @@ namespace gum {
   class SPUDDInference {
 
     public:
-      
+
       // ==========================================================================
       /// @name Constructor & destructor.
       // ==========================================================================
@@ -59,7 +59,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      SPUDDInference ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.001 );
+      SPUDDInference ( FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp, GUM_SCALAR epsilon = 0.001 );
 
       /**
        * Default destructor
@@ -78,12 +78,12 @@ namespace gum {
       void makeInference ();
 
       /// @}
-      
+
     private:
-    
-		FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
-		HashTable< NodeId, List<Idx>* > __bestPolicy; 
-		GUM_SCALAR __epsilon;
+
+      FactoredMarkovDecisionProcess<GUM_SCALAR> *__fmdp;
+      HashTable< NodeId, List<Idx>* > __bestPolicy;
+      GUM_SCALAR __epsilon;
 
   };
 } /* namespace gum */
@@ -93,5 +93,5 @@ namespace gum {
 // ============================================================================
 #endif // GUM_SPUDD_INEFERENCE_H
 // ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

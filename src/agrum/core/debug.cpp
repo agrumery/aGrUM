@@ -42,7 +42,7 @@ namespace gum {
 
 #ifndef NDEBUG
 
-  namespace debug {
+  namespace __debug__ {
     typedef std::map<std::string,int> DEBUG_MAP;
 
 // this static hashtable only on debug mode.
@@ -201,7 +201,7 @@ namespace gum {
     }
 
 
-  } /* namespace gum::debug */
+  } /* namespace gum::__debug__ */
 
 #endif //NDEBUG
 

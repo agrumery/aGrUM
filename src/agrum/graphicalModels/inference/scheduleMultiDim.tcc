@@ -58,7 +58,7 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &__multidims );
     }
 
@@ -80,7 +80,7 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &__multidim_ids );
     }
 
@@ -102,7 +102,7 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &__ids );
     }
 
@@ -124,7 +124,7 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &__vars );
     }
 
@@ -146,7 +146,7 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &__size );
     }
 

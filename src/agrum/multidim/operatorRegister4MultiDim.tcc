@@ -51,7 +51,7 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) theset );
 #endif /* NDEBUG */
     } else {
@@ -117,7 +117,7 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &container.__set );
 
     }

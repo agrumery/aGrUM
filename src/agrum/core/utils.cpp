@@ -44,7 +44,7 @@ namespace gum {
 
   void __atexit( void ) {
 #ifndef NDEBUG
-    gum::debug::__atexit();
+    gum::__debug__::__atexit();
 #endif
   }
 

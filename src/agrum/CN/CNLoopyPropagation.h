@@ -44,9 +44,10 @@ namespace credal {
 
   /**
    * @class CNLoopyPropagation CNLoopyPropagation.h <agrum/CN/CNLoopyPropagation.h>
+   * @ingroup cn_group
    * @brief Class implementing loopy-propagation with binary networks - L2U algorithm.
    * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-	 * @author Matthieu HOURBRACQ
+   * @author Matthieu HOURBRACQ
    */
   template< typename GUM_SCALAR >
   class CNLoopyPropagation : public InferenceEngine<GUM_SCALAR> {

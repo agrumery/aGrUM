@@ -107,7 +107,7 @@ namespace CxxTest {
         delete( __clock );
         newLine();
 #ifndef NDEBUG
-        gum::debug::__atexit();
+        gum::__debug__::__atexit();
 #endif // NDEBUG
 
         ( *_o ) << endl<<"## Profiling : "<<(unsigned int)(1000.0*__totalTime)<<" ms ##"<<endl;
