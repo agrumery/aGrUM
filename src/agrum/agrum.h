@@ -68,8 +68,8 @@ To test aGrUM, you could run (quite long)
     act test release -t all
 
 To install aGruM, you classically have the choice between :
-- system-wide installation : using root privilege
 
+- system-wide installation : using root privilege
 \verbatim
 sudo act install release
 \endverbatim
@@ -103,21 +103,50 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-set(CMAKE_BUILD_TYPE Release)
+# cmake -DCMAKE_BUILD_TYPE=DEBUG 
+# or
+# cmake -DCMAKE_BUILD_TYPE=RELEASE 
+#     RELEASE is the default option (thanks to the next 3 lines)
+if( NOT CMAKE_BUILD_TYPE )
+  set( CMAKE_BUILD_TYPE Release)
+endif()
 
-file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
-file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
 
 add_executable (foo ${FOO_SOURCE})
-target_link_libraries(foo agrum)
+
+if ($CMAKE_BUILD_TYPE  STREQUAL "RELEASE") # release : act install release
+  target_link_libraries(foo agrum)
+else() # debug : act install debug
+  target_link_libraries(foo agrum-dbg)
+endif()
 \endverbatim
+
+- a small minimum src/example.cpp :
+\code
+#include <iostream>
+
+#include <agrum/core/hashTable.h>
+
+int main(void) {
+  gum::HashTable<std::string,int> h;
+
+  h.insert("Hello",1);
+  h.insert("World",2);
+
+  std::cout<<h<<std::endl;
+}
+\endcode
 
 - to compile the project (from the project folder)
 
+\verbatim
     mkdir build
     cd build
     cmake ../src/
     make
+\endverbatim
 
 - build/foo is the executable.
 
