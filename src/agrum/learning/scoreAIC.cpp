@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BIC scores
+ * @brief the class for computing AIC scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-#include <agrum/learning/scoreBIC.h>
+#include <agrum/learning/scoreAIC.h>
 
 
 namespace gum {
@@ -36,30 +36,29 @@ namespace gum {
 
     
     /// default constructor
-    ScoreBIC::ScoreBIC ( const Database& database,
+    ScoreAIC::ScoreAIC ( const Database& database,
                          unsigned int max_tree_size ) :
       AsymmetricScore ( database, max_tree_size ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreBIC );
+      GUM_CONSTRUCTOR ( ScoreAIC );
     }
     
 
     /// destructor
-    ScoreBIC::~ScoreBIC () {
+    ScoreAIC::~ScoreAIC () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreBIC );
+      GUM_DESTRUCTOR ( ScoreAIC );
     }
 
 
-    /// computes the BIC score of a set of targets
+    /// computes the AIC score of a set of targets
     void
-    ScoreBIC::_computeScores ( const std::vector<unsigned int>& db_single_ids ) {
+    ScoreAIC::_computeScores ( const std::vector<unsigned int>& db_single_ids ) {
       // initialize a vector containing the scores of each id: this should be
-      // the penalty of the BIC score, i.e., -0.5 log(N) * (ri-1 ) * qi, but, here
-      // we compute the common penalty to all the single nodes, i.e.,
-      // -0.5 log(N) * qi
+      // the penalty of the AIC score, i.e., -(ri-1 ) * qi, but, here
+      // we compute the common penalty to all the single nodes, i.e., -qi
       std::vector<float> score ( db_single_ids.size (), 0 );
-      float basic_penalty = - 0.5f * log ( _database->nbrLines () );
+      float basic_penalty = -1;
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -100,17 +99,16 @@ namespace gum {
     }
 
     
-    /// computes the BIC score of a set of targets
+    /// computes the AIC score of a set of targets
     void
-    ScoreBIC::_computeScores
+    ScoreAIC::_computeScores
     ( const std::vector< std::pair<unsigned int,
                                    unsigned int> >& db_pair_ids ) {
       // initialize a vector containing the scores of each id: this should be
-      // the penalty of the BIC score, i.e., -0.5 log(N) * (ri-1 ) * qi, but, here
-      // we compute the common penalty to all the pairs of target nodes, i.e.,
-      // -0.5 log(N) * qi
+      // the penalty of the AIC score, i.e., - (ri-1 ) * qi, but, here we
+      // compute the common penalty to all the pairs of target nodes, i.e., -qi
       std::vector<float> score ( db_pair_ids.size (), 0 );
-      float basic_penalty = - 0.5f * log ( _database->nbrLines () );
+      float basic_penalty = -1;
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
