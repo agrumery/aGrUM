@@ -191,6 +191,9 @@ namespace gum {
       __dec_creation ( "BijectionIterator","__empty_bijection_star",0,"static variable correction",0 );
       __dec_creation ( "Set","__empty_edge_set",0,"static variable correction",0 );
       __dec_creation ( "HashTable"  ,"__empty_edge_set",0,"static variable correction",0 );
+      __dec_creation ( "ListBase"  ,"countingTreeBoxes",0,"static variable correction",0 );
+      __dec_creation ( "ListBase"  ,"countingTreeBoxes",0,"static variable correction",0 );
+      __dec_creation ( "ListBase"  ,"countingTreeBoxes",0,"static variable correction",0 );
     }
 
     void __atexit ( void ) {
