@@ -198,6 +198,17 @@ namespace gum {
 
 
     /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void CountingTree::__refillConditionalPairTree () {
+      // fill the tree by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+        __fillTargetPairSetBox ( target_box, iter );
+      }
+    }
+
+
+    /// fill a whole tree by parsing the complete database
     ALWAYS_INLINE void CountingTree::__fillConditionalSingleTree () {
       // first, we shall create the root of the conditional tree
       const bool last_level = __db_conditioning_ids->size() == 1;
@@ -208,6 +219,17 @@ namespace gum {
             ( __db_conditioning_ids->size() - 1 ) ), last_level );
 
       // now fill it by parsing the database
+      for ( DatabaseIterator iter = __database->begin ();
+            iter != __database->end (); ++iter ) {
+        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+        __fillTargetSingleSetBox ( target_box, iter );
+      }
+    }
+
+    
+    /// fill a whole tree by parsing the complete database
+    ALWAYS_INLINE void CountingTree::__refillConditionalSingleTree () {
+      // now fill the tree by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
         CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
@@ -243,22 +265,25 @@ namespace gum {
       }
 
       // remove the target trees, if any
-      if ( __root.Conditioning ) {
-        if ( ! __last_cond_nodes.empty () ) {
-          // remove the curent target set boxes
-          for ( const ListBucket<CountingTreeTargetSetBox*>* iter =
-                  __target_records.frontBucket (); iter; iter = iter->next () ) {
-            CountingTreeTargetSetBox::deleteBox ( **iter );
-          }
-          
-          // indicate to the conditioning boxes at the last level that their
-          // children do not exist anymore
-          for ( const ListBucket<CountingTreeConditioningBox*>* iter =
-                  __last_cond_nodes.frontBucket (); iter; iter = iter->next () ) {
-            (**iter)->unsetChildren ();
-          }
+      bool should_refill = false;
+      if ( ! __last_cond_nodes.empty () ) {
+        should_refill = true;
+        
+        // remove the curent target set boxes
+        for ( const ListBucket<CountingTreeTargetSetBox*>* iter =
+                __target_records.frontBucket (); iter; iter = iter->next () ) {
+          CountingTreeTargetSetBox::deleteBox ( **iter );
         }
-        else {
+          
+        // indicate to the conditioning boxes at the last level that their
+        // children do not exist anymore
+        for ( const ListBucket<CountingTreeConditioningBox*>* iter =
+                __last_cond_nodes.frontBucket (); iter; iter = iter->next () ) {
+          (**iter)->unsetChildren ();
+        }
+      }
+      else {
+        if ( __root.TargetSet ) {
           CountingTreeTargetSetBox::deleteBox ( __root.TargetSet );
           __root.TargetSet = 0;
         }
@@ -267,17 +292,18 @@ namespace gum {
       // clear the old target records
       __target_records.clear ();
 
-      // check whether there are conditioning nodes
-      const bool has_conditionals =
-        __db_conditioning_ids && __db_conditioning_ids->size ();
-
       // recompute the target records
       if  ( db_pair_ids.size () ) {
         // here, there are target pairs, so we shall fill the target boxes
         // of those pairs from the database and, then, fill the single target
         // boxes from those of the pairs
-        if ( has_conditionals ) {
-          __fillConditionalPairTree ();
+        if ( __has_conditioning_nodes ) {
+          if ( should_refill ) {
+            __refillConditionalPairTree ();
+          }
+          else {
+            __fillConditionalPairTree ();
+          }
         }
         else {
           __fillUnconditionalPairTree ();
@@ -287,8 +313,13 @@ namespace gum {
       else {
         // here, there are no target pairs, so we whall fill the single pair
         // boxes by parsing the database
-        if ( has_conditionals ) {
-          __fillConditionalSingleTree ();
+        if ( __has_conditioning_nodes ) {
+          if ( should_refill ) {
+            __refillConditionalSingleTree ();
+          }
+          else {
+            __fillConditionalSingleTree ();
+          }
         }
         else {
           __fillUnconditionalSingleTree ();
@@ -315,7 +346,7 @@ namespace gum {
       // not have any conditioning node and, therefore, we shall remove only
       // target set boxes at this point
       if ( __root.Conditioning ) {
-        if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+        if ( __has_conditioning_nodes ) {
           CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
@@ -327,6 +358,7 @@ namespace gum {
       
       // save the conditioning ids
       __db_conditioning_ids = &db_conditioning_ids;
+      __has_conditioning_nodes = ! __db_conditioning_ids->empty ();
 
       // process the target nodes and compute the countings
       setTargetNodes ( db_single_target_ids, db_pair_target_ids );

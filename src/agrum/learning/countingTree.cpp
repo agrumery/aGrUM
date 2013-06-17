@@ -50,7 +50,8 @@ namespace gum {
       __database ( &database ),
       __db_conditioning_ids ( 0 ),
       __db_single_target_ids ( 0 ),
-      __db_pair_target_ids ( 0 ) {
+      __db_pair_target_ids ( 0 ),
+      __has_conditioning_nodes ( false ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( CountingTree );
       __root.Conditioning = 0;
@@ -70,7 +71,7 @@ namespace gum {
     void CountingTree::clear () {
       // remove the tree, if any
       if ( __root.Conditioning ) {
-        if ( __db_conditioning_ids && __db_conditioning_ids->size () ) {
+        if ( __has_conditioning_nodes ) {
           CountingTreeConditioningBox::deleteBox ( __root.Conditioning );
         }
         else {
@@ -86,6 +87,7 @@ namespace gum {
       __dbPair2target.clear ();
       __target_modalities.clear ();
       __root.Conditioning = 0;
+      __has_conditioning_nodes = false;
       __target_records.clear ();
     }
 
@@ -187,6 +189,14 @@ namespace gum {
       }
     }
 
+
+    /// clear all the boxes pools
+    void CountingTree::clearPools () {
+      CountingTreeConditioningBox::clearPool ();
+      CountingTreeTargetSetBox::clearPool ();
+      CountingTreeTargetBox::clearPool ();
+    }
+ 
     
   } /* namespace learning */
   

@@ -82,7 +82,7 @@ namespace gum {
 
     /// clear the pool
     void CountingTreeConditioningBox::clearPool () {
-      while ( __pool.size () ) {
+      while ( ! __pool.empty () ) {
         delete __pool.front ();
         __pool.popFront ();
       }
@@ -104,7 +104,7 @@ namespace gum {
 
     /// clear the pool
     void CountingTreeTargetBox::clearPool () {
-      while ( __pool.size () ) {
+      while ( ! __pool.empty () ) {
         delete __pool.front ();
         __pool.popFront ();
       }
@@ -126,7 +126,7 @@ namespace gum {
 
     /// clear the pool
     void CountingTreeTargetSetBox::clearPool () {
-      while ( __pool.size () ) {
+      while ( ! __pool.empty () ) {
         delete __pool.front ();
         __pool.popFront ();
       }

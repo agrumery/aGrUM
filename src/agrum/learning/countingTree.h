@@ -165,6 +165,9 @@ namespace gum {
 
       /// clear the whole tree
       void clear ();
+
+      /// clear all the boxes pools
+      static void clearPools ();
         
       /// @}
 
@@ -201,6 +204,15 @@ namespace gum {
         CountingTreeConditioningBox* Conditioning;
         CountingTreeTargetSetBox*    TargetSet;
       } __root;
+
+      /// a Boolean indicating whether the root node is a conditioning node
+      /** This variable is not a priori compulsory since we can infer its
+       * value from the __db_conditioning_ids field. However, reading the
+       * value of __db_conditioning_ids may lead to undesired results if
+       * the user just updates the content of the db_conditioning_ids vector
+       * it passes to computeScores. Therefore, to avoid painfull segfaults,
+       * we chose to add this Boolean. */
+      bool __has_conditioning_nodes;
 
       /// the list of conditioning nodes at the last level
       ListBase<CountingTreeConditioningBox*> __last_cond_nodes;
@@ -267,6 +279,9 @@ namespace gum {
        * countings for target pairs. */      
       void __fillConditionalPairTree ();
 
+      /// do as __fillConditionalPairTree without recreating the top of the tree
+      void __refillConditionalPairTree ();
+      
       /** @brief fill a whole tree (but considering only single targets and not
        * pairs) by parsing the complete database when there are no
        * conditional nodes
@@ -286,6 +301,9 @@ namespace gum {
        * countings for single targets. */      
       void __fillConditionalSingleTree ();
 
+      /// do as __fillConditionalPairTree without recreating the top of the tree
+      void __refillConditionalSingleTree ();
+ 
       /// fill the single targets
       /** assuming that the tree for all conditioning and target pairs has
        * been successfully created, this method creates the countings for all
