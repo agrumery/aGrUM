@@ -122,8 +122,7 @@ namespace gum {
         // create the box
         CountingTreeTargetSetBox* new_box =
           CountingTreeTargetSetBox::createBox ( __target_modalities );
-        new_box->setNbParentRecords ( 1 ); // there is one set of conditioning
-                                           // node values leading to this box
+        new_box->setNbParentRecords ( 0 );
 
         // assign it as the child of the current box
         current_box->setChild ( index, new_box );
@@ -187,7 +186,10 @@ namespace gum {
         ( __database->nbrModalities
           ( __db_conditioning_ids->operator[]
             ( __db_conditioning_ids->size() - 1 ) ), last_level );
-
+      if ( last_level ) {
+        __last_cond_nodes.pushBack ( __root.Conditioning );
+      }
+      
       // now fill it by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
             iter != __database->end (); ++iter ) {
@@ -217,6 +219,9 @@ namespace gum {
         ( __database->nbrModalities
           ( __db_conditioning_ids->operator[]
             ( __db_conditioning_ids->size() - 1 ) ), last_level );
+      if ( last_level ) {
+        __last_cond_nodes.pushBack ( __root.Conditioning );
+      }
 
       // now fill it by parsing the database
       for ( DatabaseIterator iter = __database->begin ();
@@ -274,7 +279,7 @@ namespace gum {
                 __target_records.frontBucket (); iter; iter = iter->next () ) {
           CountingTreeTargetSetBox::deleteBox ( **iter );
         }
-          
+
         // indicate to the conditioning boxes at the last level that their
         // children do not exist anymore
         for ( const ListBucket<CountingTreeConditioningBox*>* iter =
